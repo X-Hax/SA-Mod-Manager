@@ -101,6 +101,14 @@ FARPROC __stdcall MyGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
 		return GetProcAddress(hModule, lpProcName);
 }
 
+inline int backslashes(int c)
+{
+	if (c == '/')
+		return '\\';
+	else
+		return c;
+}
+
 IniGroup settings;
 unordered_map<string, char *> filemap = unordered_map<string, char *>();
 unordered_map<string, string> filereplaces = unordered_map<string, string>();
@@ -110,45 +118,16 @@ const char *_ReplaceFile(const char *lpFileName)
 {
 	EnterCriticalSection(&filereplacesection);
 	string path = lpFileName;
+	transform(path.begin(), path.end(), path.begin(), backslashes);
 	if (path.length() > 2 && (path[0] == '.' && path[1] == '\\'))
 		path = path.substr(2, path.length() - 2);
-	string pathlower = path;
-	transform(pathlower.begin(), pathlower.end(), pathlower.begin(), ::tolower);
-	unordered_map<string, char *>::iterator fileIter = filemap.find(pathlower);
+	transform(path.begin(), path.end(), path.begin(), ::tolower);
+	unordered_map<string, string>::iterator replIter = filereplaces.find(path);
+	if (replIter != filereplaces.end())
+		path = replIter->second;
+	unordered_map<string, char *>::iterator fileIter = filemap.find(path);
 	if (fileIter != filemap.end())
 		lpFileName = fileIter->second;
-	else if (pathlower.length() > systemdir.length() && pathlower.compare(0, systemdir.length(), systemdir) == 0)
-	{
-		string finalpath = pathlower;
-		string replacepath = "";
-		unordered_map<string, string>::iterator replIter = filereplaces.find(pathlower);
-		if (replIter != filereplaces.end())
-		{
-			finalpath = replIter->second;
-			replacepath = finalpath;
-		}
-		char key[8];
-		for (int i = 1; i < 999; i++)
-		{
-			sprintf_s(key, "Mod%d", i);
-			if (settings.find(key) == settings.end())
-				break;
-			string dir = ".\\mods\\" + settings[key] + "\\system\\" + finalpath.substr(systemdir.length(), finalpath.length() - systemdir.length());
-			int attr = GetFileAttributesA(dir.c_str());
-			if (attr != INVALID_FILE_ATTRIBUTES && !(attr & FILE_ATTRIBUTE_DIRECTORY))
-				replacepath = dir;
-		}
-		if (!replacepath.empty())
-		{
-			transform(replacepath.begin(), replacepath.end(), replacepath.begin(), ::tolower);
-			char *buf = new char[replacepath.length() + 1];
-			filemap[pathlower] = buf;
-			replacepath.copy(buf, replacepath.length());
-			buf[replacepath.length()] = 0;
-			printf("Replaced file: \"%s\" = \"%s\"\n", lpFileName, buf);
-			lpFileName = buf;
-		}
-	}
 	LeaveCriticalSection(&filereplacesection);
 	return lpFileName;
 }
@@ -319,6 +298,38 @@ string NormalizePath(string path)
 	return pathlower;
 }
 
+void ScanFolder(string path, int length)
+{
+	_WIN32_FIND_DATAA data;
+	HANDLE hfind = FindFirstFileA((path + "\\*").c_str(), &data);
+	if (hfind == INVALID_HANDLE_VALUE)
+		return;
+	do
+	{
+		if (data.cFileName[0] == '.')
+			continue;
+		else if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+			ScanFolder(path + "\\" + data.cFileName, length);
+		else
+		{
+			string filebase = path + "\\" + data.cFileName;
+			transform(filebase.begin(), filebase.end(), filebase.begin(), ::tolower);
+			string modfile = filebase;
+			filebase = filebase.substr(length);
+			string origfile = systemdir + filebase;
+			char *buf = new char[modfile.length() + 1];
+			if (filemap.find(origfile) != filemap.end())
+				delete[] filemap[origfile];
+			filemap[origfile] = buf;
+			modfile.copy(buf, modfile.length());
+			buf[modfile.length()] = 0;
+			printf("Replaced file: \"%s\" = \"%s\"\n", origfile.c_str(), buf);
+		}
+	}
+	while (FindNextFileA(hfind, &data) != 0);
+	FindClose(hfind);
+}
+
 void __cdecl InitMods(void)
 {
 	chrmodelshandle = LoadLibrary(L".\\system\\CHRMODELS_orig.dll");
@@ -432,6 +443,10 @@ void __cdecl InitMods(void)
 				filereplaces[NormalizePath(it->second)] = NormalizePath(it->first);
 			}
 		}
+		string sysfol = dir + "\\system";
+		transform(sysfol.begin(), sysfol.end(), sysfol.begin(), ::tolower);
+		if ((GetFileAttributesA(sysfol.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
+			ScanFolder(sysfol, sysfol.length() + 1);
 		if (modinfo.find("EXEFile") != modinfo.end())
 		{
 			string modexe = modinfo["EXEFile"];
@@ -470,7 +485,7 @@ void __cdecl InitMods(void)
 							for (int i = 0; i < info->ExportCount; i++)
 								dataoverrides[info->Exports[i].name] = info->Exports[i].data;
 					if (info->Init)
-						info->Init();
+						info->Init(dir.c_str());
 				}
 				else if (console)
 					printf("File \"%s\" is not a valid mod file.\n", filename.c_str());

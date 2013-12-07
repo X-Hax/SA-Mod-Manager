@@ -35,7 +35,7 @@ struct ExportInfo
 struct ModInfo
 {
 	int Version;
-	void (*Init)();
+	void (*Init)(const char *path);
 	PatchInfo *Patches;
 	int PatchCount;
 	PointerInfo *Jumps;
