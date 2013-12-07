@@ -1,7 +1,7 @@
-sa2-mod-loader
+sadx-mod-loader
 ============
 
-Sonic Adventure 2 PC Mod Loader
+Sonic Adventure DX PC Mod Loader
 
 DISCLAIMER:
 Any and all content presented in this repository is presented for informational and educational purposes only.
