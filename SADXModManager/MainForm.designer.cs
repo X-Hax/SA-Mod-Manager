@@ -301,7 +301,7 @@
 			// 
 			this.configEditorButton.AutoSize = true;
 			this.configEditorButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.configEditorButton.Location = new System.Drawing.Point(280, 450);
+			this.configEditorButton.Location = new System.Drawing.Point(295, 450);
 			this.configEditorButton.Name = "configEditorButton";
 			this.configEditorButton.Size = new System.Drawing.Size(77, 23);
 			this.configEditorButton.TabIndex = 6;

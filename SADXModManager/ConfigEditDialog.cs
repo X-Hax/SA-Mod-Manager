@@ -8,6 +8,12 @@ using System.Text;
 using System.Windows.Forms;
 using IniSerializer;
 
+/*
+ * To-Do:
+ *	Error checking
+ *	Input configuration
+*/
+
 namespace SADXModManager
 {
     public partial class ConfigEditDialog : Form
@@ -41,7 +47,7 @@ namespace SADXModManager
 			 * I suppose this could be moved to the constructor as well as cancelButton_Click
 			 * so that it doesn't load the INI every time the window opens, but then modifying
 			 * the file externally would require hitting cancel to reload it.
-			 */
+			*/
 		}
 
 		private void LoadConfigIni()
@@ -51,10 +57,7 @@ namespace SADXModManager
 				configFile = new ConfigFile();
 				configFile = IniFile.Deserialize<ConfigFile>(sadxIni);
 
-				/*
-				//	First let's handle the video settings
-				 */
-
+				// Video
 				// Display mode
 				if (configFile.GameConfig.FullScreen == 1)
 					radioFullscreen.Checked = true;
@@ -79,10 +82,7 @@ namespace SADXModManager
 				// Fog mode
 				comboFog.SelectedIndex = configFile.GameConfig.FogEmulation;
 
-				/*
-				//	Now for sound...
-				 */
-
+				// Sound
 				// Toggles
 				check3DSound.Checked = (configFile.GameConfig.Sound3D != 0);
 				checkSound.Checked = (configFile.GameConfig.SEVoice != 0);
@@ -91,6 +91,15 @@ namespace SADXModManager
 				// Volume
 				numericSoundVol.Value = configFile.GameConfig.VoiceVolume;
 				numericBGMVol.Value = configFile.GameConfig.BGMVolume;
+
+				// Mouse
+				// Mouse Mode
+				if (configFile.GameConfig.MouseMode == 0)
+					radioMouseModeHold.Checked = true;
+				else
+					radioMouseModeRelease.Checked = true;
+
+				// Buttons need to be handled dynamically I guess maybe probably
 
 			}
 			else
@@ -103,12 +112,9 @@ namespace SADXModManager
 		{
 			if (File.Exists(sadxIni))
 			{
-				if (radioFullscreen.Checked)
-					configFile.GameConfig.FullScreen = 1;
-				else
-					configFile.GameConfig.FullScreen = 0;
-
+				configFile.GameConfig.FullScreen = (radioFullscreen.Checked == true) ? 1 : 0;
 				configFile.GameConfig.ScreenSize = comboResolutionPreset.SelectedIndex;
+
 				configFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
 				configFile.GameConfig.ClipLevel = comboClip.SelectedIndex;
 				configFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
@@ -119,11 +125,29 @@ namespace SADXModManager
 
 				configFile.GameConfig.VoiceVolume = (int)numericSoundVol.Value;
 				configFile.GameConfig.BGMVolume = (int)numericBGMVol.Value;
+
+				configFile.GameConfig.MouseMode = (radioMouseModeHold.Checked == true) ? 0 : 1;
 				
 				IniFile.Serialize(configFile, sadxIni);
 			}
 			else
 				return;
+		}
+
+		private void comboMouseActions_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			/*
+			 * Here, we would take the selected Action index, get the Button
+			 * assignment, and select it in comboMouseButtons.
+			*/
+		}
+
+		private void comboMouseButtons_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			/*
+			 * Here, we would take the newly selected Button,
+			 * and assign it to the selected Action.
+			*/
 		}
     }
 
