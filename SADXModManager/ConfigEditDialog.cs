@@ -48,22 +48,19 @@ namespace SADXModManager
 			if (File.Exists(sadxIni))
 				configFile = IniFile.Deserialize<ConfigFile>(sadxIni);
 			else
-			{
 				configFile = new ConfigFile();
-				configFile.GameConfig = new GameConfig();
-				configFile.Controllers = new Dictionary<string, ControllerConfig>();
-				configFile.GameConfig.FrameRate = (int)FrameRate.High;
-				configFile.GameConfig.FogEmulation = (int)FogEmulation.Auto;
-				configFile.GameConfig.Sound3D = 1;
-				configFile.GameConfig.ScreenSize = 0;
-				configFile.GameConfig.ClipLevel = 0;
-				configFile.GameConfig.SEVoice = 1;
-				configFile.GameConfig.BGM = 1;
-				configFile.GameConfig.FullScreen = 0;
-				configFile.GameConfig.MouseMode = 0;
-				configFile.GameConfig.BGMVolume = 100;
-				configFile.GameConfig.VoiceVolume = 100;
-			}
+            if (configFile.GameConfig == null)
+            {
+                configFile.GameConfig = new GameConfig();
+                configFile.GameConfig.FrameRate = (int)FrameRate.High;
+                configFile.GameConfig.Sound3D = 1;
+                configFile.GameConfig.SEVoice = 1;
+                configFile.GameConfig.BGM = 1;
+                configFile.GameConfig.BGMVolume = 100;
+                configFile.GameConfig.VoiceVolume = 100;
+            }
+            if (configFile.Controllers == null)
+                configFile.Controllers = new Dictionary<string, ControllerConfig>();
 
 			// Video
 			// Display mode
