@@ -99,8 +99,9 @@ namespace SADXModManager
 				else
 					radioMouseModeRelease.Checked = true;
 
-				// Buttons need to be handled dynamically I guess maybe probably
-
+				// putting this here because it'll get
+				// overwritten if I put it in InitalizeComponent
+				comboMouseActions.SelectedIndex = 0;
 			}
 			else
 			{
@@ -137,17 +138,92 @@ namespace SADXModManager
 		private void comboMouseActions_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			/*
-			 * Here, we would take the selected Action index, get the Button
+			 * Here, we take the selected Action index, get the Button
 			 * assignment, and select it in comboMouseButtons.
 			*/
+			ushort selected = 0;
+
+			switch (comboMouseActions.SelectedIndex)
+			{
+				case 0:
+					selected = configFile.GameConfig.MouseStart;
+					break;
+				case 1:
+					selected = configFile.GameConfig.MouseAttack;
+					break;
+				case 2:
+					selected = configFile.GameConfig.MouseJump;
+					break;
+				case 3:
+					selected = configFile.GameConfig.MouseAction;
+					break;
+				case 4:
+					selected = configFile.GameConfig.MouseFlute;
+					break;
+
+				default:
+					selected = 0;
+					break;
+			}
+
+			comboMouseButtons.SelectedIndex = MouseToInt(selected);
 		}
 
 		private void comboMouseButtons_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			/*
-			 * Here, we would take the newly selected Button,
+			 * Here, we take the newly selected Button,
 			 * and assign it to the selected Action.
 			*/
+			ushort selected = (ushort)comboMouseButtons.SelectedIndex;
+
+			switch (comboMouseActions.SelectedIndex)
+			{
+				case 0:
+					configFile.GameConfig.MouseStart = IntToMouse(selected);
+					break;
+				case 1:
+					configFile.GameConfig.MouseAttack = IntToMouse(selected);
+					break;
+				case 2:
+					configFile.GameConfig.MouseJump = IntToMouse(selected);
+					break;
+				case 3:
+					configFile.GameConfig.MouseAction = IntToMouse(selected);
+					break;
+				case 4:
+					configFile.GameConfig.MouseFlute = IntToMouse(selected);
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		private ushort MouseToInt(ushort n)
+		{
+			switch (n)
+			{
+				case 258:
+					return 5;
+				case 513:
+					return 6;
+				default:
+					return n;
+			}
+		}
+
+		private ushort IntToMouse(ushort n)
+		{
+			switch (n)
+			{
+				case 5:
+					return 258;
+				case 6:
+					return 513;
+				default:
+					return n;
+			}
 		}
     }
 
@@ -187,9 +263,19 @@ namespace SADXModManager
         public int Language { get; set; }
         [IniName("padconfig")]
         public string PadConfig { get; set; }
-        [IniName("cmd")]
-        [IniCollection(IniCollectionMode.NoSquareBrackets)]
-        public List<int> MouseSettings { get; set; }
+        //[IniName("cmd")]
+        //[IniCollection(IniCollectionMode.NoSquareBrackets)]
+        //public List<int> MouseSettings { get; set; }
+		[IniName("cmd0")]
+		public ushort MouseStart { get; set; }
+		[IniName("cmd1")]
+		public ushort MouseAttack { get; set; }
+		[IniName("cmd2")]
+		public ushort MouseJump { get; set; }
+		[IniName("cmd3")]
+		public ushort MouseAction { get; set; }
+		[IniName("cmd4")]
+		public ushort MouseFlute { get; set; }
     }
 
     enum FrameRate

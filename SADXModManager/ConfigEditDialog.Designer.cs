@@ -56,16 +56,16 @@
 			this.checkMusic = new System.Windows.Forms.CheckBox();
 			this.checkSound = new System.Windows.Forms.CheckBox();
 			this.check3DSound = new System.Windows.Forms.CheckBox();
-			this.toolTip_ConfigEditor = new System.Windows.Forms.ToolTip(this.components);
 			this.tabControls = new System.Windows.Forms.TabPage();
-			this.groupMouseMode = new System.Windows.Forms.GroupBox();
-			this.radioMouseModeHold = new System.Windows.Forms.RadioButton();
-			this.radioMouseModeRelease = new System.Windows.Forms.RadioButton();
 			this.groupMouseButtons = new System.Windows.Forms.GroupBox();
-			this.label8 = new System.Windows.Forms.Label();
-			this.comboMouseActions = new System.Windows.Forms.ComboBox();
-			this.comboMouseButtons = new System.Windows.Forms.ComboBox();
 			this.label9 = new System.Windows.Forms.Label();
+			this.comboMouseButtons = new System.Windows.Forms.ComboBox();
+			this.comboMouseActions = new System.Windows.Forms.ComboBox();
+			this.label8 = new System.Windows.Forms.Label();
+			this.groupMouseMode = new System.Windows.Forms.GroupBox();
+			this.radioMouseModeRelease = new System.Windows.Forms.RadioButton();
+			this.radioMouseModeHold = new System.Windows.Forms.RadioButton();
+			this.toolTip_ConfigEditor = new System.Windows.Forms.ToolTip(this.components);
 			this.tabControl1.SuspendLayout();
 			this.tabPage_Video.SuspendLayout();
 			this.groupBox_Graphics.SuspendLayout();
@@ -76,8 +76,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericSoundVol)).BeginInit();
 			this.groupBox_SoundConfig.SuspendLayout();
 			this.tabControls.SuspendLayout();
-			this.groupMouseMode.SuspendLayout();
 			this.groupMouseButtons.SuspendLayout();
+			this.groupMouseMode.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// okButton
@@ -398,48 +398,12 @@
 			this.tabControls.Text = "Mouse";
 			this.tabControls.UseVisualStyleBackColor = true;
 			// 
-			// groupMouseMode
-			// 
-			this.groupMouseMode.Controls.Add(this.radioMouseModeRelease);
-			this.groupMouseMode.Controls.Add(this.radioMouseModeHold);
-			this.groupMouseMode.Location = new System.Drawing.Point(6, 6);
-			this.groupMouseMode.Name = "groupMouseMode";
-			this.groupMouseMode.Size = new System.Drawing.Size(259, 66);
-			this.groupMouseMode.TabIndex = 0;
-			this.groupMouseMode.TabStop = false;
-			this.groupMouseMode.Text = "Mouse mode";
-			// 
-			// radioMouseModeHold
-			// 
-			this.radioMouseModeHold.AutoSize = true;
-			this.radioMouseModeHold.Location = new System.Drawing.Point(6, 19);
-			this.radioMouseModeHold.Name = "radioMouseModeHold";
-			this.radioMouseModeHold.Size = new System.Drawing.Size(82, 17);
-			this.radioMouseModeHold.TabIndex = 0;
-			this.radioMouseModeHold.TabStop = true;
-			this.radioMouseModeHold.Text = "Drag && Hold";
-			this.toolTip_ConfigEditor.SetToolTip(this.radioMouseModeHold, "Drag and hold the mouse button to continue running. Release to stop.");
-			this.radioMouseModeHold.UseVisualStyleBackColor = true;
-			// 
-			// radioMouseModeRelease
-			// 
-			this.radioMouseModeRelease.AutoSize = true;
-			this.radioMouseModeRelease.Location = new System.Drawing.Point(6, 42);
-			this.radioMouseModeRelease.Name = "radioMouseModeRelease";
-			this.radioMouseModeRelease.Size = new System.Drawing.Size(113, 17);
-			this.radioMouseModeRelease.TabIndex = 1;
-			this.radioMouseModeRelease.TabStop = true;
-			this.radioMouseModeRelease.Text = "Drag to accelerate";
-			this.toolTip_ConfigEditor.SetToolTip(this.radioMouseModeRelease, "Click and drag to accelerate. Drag the opposite direction to decelerate.");
-			this.radioMouseModeRelease.UseVisualStyleBackColor = true;
-			// 
 			// groupMouseButtons
 			// 
 			this.groupMouseButtons.Controls.Add(this.label9);
 			this.groupMouseButtons.Controls.Add(this.comboMouseButtons);
 			this.groupMouseButtons.Controls.Add(this.comboMouseActions);
 			this.groupMouseButtons.Controls.Add(this.label8);
-			this.groupMouseButtons.Enabled = false;
 			this.groupMouseButtons.Location = new System.Drawing.Point(7, 79);
 			this.groupMouseButtons.Name = "groupMouseButtons";
 			this.groupMouseButtons.Size = new System.Drawing.Size(258, 65);
@@ -447,14 +411,32 @@
 			this.groupMouseButtons.TabStop = false;
 			this.groupMouseButtons.Text = "Mouse buttons";
 			// 
-			// label8
+			// label9
 			// 
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(7, 20);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(40, 13);
-			this.label8.TabIndex = 0;
-			this.label8.Text = "Action:";
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(104, 18);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(98, 13);
+			this.label9.TabIndex = 3;
+			this.label9.Text = "Button Assignment:";
+			// 
+			// comboMouseButtons
+			// 
+			this.comboMouseButtons.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboMouseButtons.FormattingEnabled = true;
+			this.comboMouseButtons.Items.AddRange(new object[] {
+            "[None]",
+            "Left Mouse Button",
+            "Right Mouse Button",
+            "Middle Mouse Button",
+            "Other Mouse Button 1",
+            "Left + Right Mouse Button",
+            "Right + Left Mouse Button"});
+			this.comboMouseButtons.Location = new System.Drawing.Point(104, 37);
+			this.comboMouseButtons.Name = "comboMouseButtons";
+			this.comboMouseButtons.Size = new System.Drawing.Size(148, 21);
+			this.comboMouseButtons.TabIndex = 2;
+			this.comboMouseButtons.SelectedIndexChanged += new System.EventHandler(this.comboMouseButtons_SelectedIndexChanged);
 			// 
 			// comboMouseActions
 			// 
@@ -472,32 +454,49 @@
 			this.comboMouseActions.TabIndex = 1;
 			this.comboMouseActions.SelectedIndexChanged += new System.EventHandler(this.comboMouseActions_SelectedIndexChanged);
 			// 
-			// comboMouseButtons
+			// label8
 			// 
-			this.comboMouseButtons.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboMouseButtons.FormattingEnabled = true;
-			this.comboMouseButtons.Items.AddRange(new object[] {
-            "Left Mouse Button",
-            "Right Mouse Button",
-            "Middle Mouse Button",
-            "Other Mouse Button 1",
-            "Left + Right Mouse Button",
-            "Right + Left Mouse Button",
-            "None"});
-			this.comboMouseButtons.Location = new System.Drawing.Point(104, 37);
-			this.comboMouseButtons.Name = "comboMouseButtons";
-			this.comboMouseButtons.Size = new System.Drawing.Size(148, 21);
-			this.comboMouseButtons.TabIndex = 2;
-			this.comboMouseButtons.SelectedIndexChanged += new System.EventHandler(this.comboMouseButtons_SelectedIndexChanged);
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(7, 20);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(40, 13);
+			this.label8.TabIndex = 0;
+			this.label8.Text = "Action:";
 			// 
-			// label9
+			// groupMouseMode
 			// 
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(104, 18);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(41, 13);
-			this.label9.TabIndex = 3;
-			this.label9.Text = "Button:";
+			this.groupMouseMode.Controls.Add(this.radioMouseModeRelease);
+			this.groupMouseMode.Controls.Add(this.radioMouseModeHold);
+			this.groupMouseMode.Location = new System.Drawing.Point(6, 6);
+			this.groupMouseMode.Name = "groupMouseMode";
+			this.groupMouseMode.Size = new System.Drawing.Size(259, 66);
+			this.groupMouseMode.TabIndex = 0;
+			this.groupMouseMode.TabStop = false;
+			this.groupMouseMode.Text = "Mouse mode";
+			// 
+			// radioMouseModeRelease
+			// 
+			this.radioMouseModeRelease.AutoSize = true;
+			this.radioMouseModeRelease.Location = new System.Drawing.Point(6, 42);
+			this.radioMouseModeRelease.Name = "radioMouseModeRelease";
+			this.radioMouseModeRelease.Size = new System.Drawing.Size(113, 17);
+			this.radioMouseModeRelease.TabIndex = 1;
+			this.radioMouseModeRelease.TabStop = true;
+			this.radioMouseModeRelease.Text = "Drag to accelerate";
+			this.toolTip_ConfigEditor.SetToolTip(this.radioMouseModeRelease, "Click and drag to accelerate. Drag the opposite direction to decelerate.");
+			this.radioMouseModeRelease.UseVisualStyleBackColor = true;
+			// 
+			// radioMouseModeHold
+			// 
+			this.radioMouseModeHold.AutoSize = true;
+			this.radioMouseModeHold.Location = new System.Drawing.Point(6, 19);
+			this.radioMouseModeHold.Name = "radioMouseModeHold";
+			this.radioMouseModeHold.Size = new System.Drawing.Size(82, 17);
+			this.radioMouseModeHold.TabIndex = 0;
+			this.radioMouseModeHold.TabStop = true;
+			this.radioMouseModeHold.Text = "Drag && Hold";
+			this.toolTip_ConfigEditor.SetToolTip(this.radioMouseModeHold, "Drag and hold the mouse button to continue running. Release to stop.");
+			this.radioMouseModeHold.UseVisualStyleBackColor = true;
 			// 
 			// ConfigEditDialog
 			// 
@@ -531,10 +530,10 @@
 			this.groupBox_SoundConfig.ResumeLayout(false);
 			this.groupBox_SoundConfig.PerformLayout();
 			this.tabControls.ResumeLayout(false);
-			this.groupMouseMode.ResumeLayout(false);
-			this.groupMouseMode.PerformLayout();
 			this.groupMouseButtons.ResumeLayout(false);
 			this.groupMouseButtons.PerformLayout();
+			this.groupMouseMode.ResumeLayout(false);
+			this.groupMouseMode.PerformLayout();
 			this.ResumeLayout(false);
 
         }
