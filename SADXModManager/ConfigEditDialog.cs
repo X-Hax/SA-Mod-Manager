@@ -40,99 +40,97 @@ namespace SADXModManager
 		private void ConfigEditDialog_Load(object sender, EventArgs e)
 		{
 			// Load the config INI upon window load
-			// Failsafe for incomplete (canceled) configuration
 			LoadConfigIni();
-
-			/*
-			 * I suppose this could be moved to the constructor as well as cancelButton_Click
-			 * so that it doesn't load the INI every time the window opens, but then modifying
-			 * the file externally would require hitting cancel to reload it.
-			*/
 		}
 
 		private void LoadConfigIni()
 		{
 			if (File.Exists(sadxIni))
-			{
-				configFile = new ConfigFile();
 				configFile = IniFile.Deserialize<ConfigFile>(sadxIni);
-
-				// Video
-				// Display mode
-				if (configFile.GameConfig.FullScreen == 1)
-					radioFullscreen.Checked = true;
-				else
-					radioWindowMode.Checked = true;
-
-				// Resolution preset
-				comboResolutionPreset.SelectedIndex = configFile.GameConfig.ScreenSize;
-
-				// Framerate
-				if (configFile.GameConfig.FrameRate == (int)FrameRate.Invalid || configFile.GameConfig.FrameRate > (int)FrameRate.Low)
-				{
-
-					MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					comboFramerate.SelectedIndex = (int)FrameRate.High - 1;
-				}
-				else
-					comboFramerate.SelectedIndex = configFile.GameConfig.FrameRate - 1;
-
-				// Clip level
-				comboClip.SelectedIndex = configFile.GameConfig.ClipLevel;
-				// Fog mode
-				comboFog.SelectedIndex = configFile.GameConfig.FogEmulation;
-
-				// Sound
-				// Toggles
-				check3DSound.Checked = (configFile.GameConfig.Sound3D != 0);
-				checkSound.Checked = (configFile.GameConfig.SEVoice != 0);
-				checkMusic.Checked = (configFile.GameConfig.BGM != 0);
-
-				// Volume
-				numericSoundVol.Value = configFile.GameConfig.VoiceVolume;
-				numericBGMVol.Value = configFile.GameConfig.BGMVolume;
-
-				// Mouse
-				// Mouse Mode
-				if (configFile.GameConfig.MouseMode == 0)
-					radioMouseModeHold.Checked = true;
-				else
-					radioMouseModeRelease.Checked = true;
-
-				// putting this here because it'll get
-				// overwritten if I put it in InitalizeComponent
-				comboMouseActions.SelectedIndex = 0;
-			}
 			else
 			{
-				MessageBox.Show("Unable to find sonicDX.ini.", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				configFile = new ConfigFile();
+				configFile.GameConfig = new GameConfig();
+				configFile.Controllers = new Dictionary<string, ControllerConfig>();
+				configFile.GameConfig.FrameRate = (int)FrameRate.High;
+				configFile.GameConfig.FogEmulation = (int)FogEmulation.Auto;
+				configFile.GameConfig.Sound3D = 1;
+				configFile.GameConfig.ScreenSize = 0;
+				configFile.GameConfig.ClipLevel = 0;
+				configFile.GameConfig.SEVoice = 1;
+				configFile.GameConfig.BGM = 1;
+				configFile.GameConfig.FullScreen = 0;
+				configFile.GameConfig.MouseMode = 0;
+				configFile.GameConfig.BGMVolume = 100;
+				configFile.GameConfig.VoiceVolume = 100;
 			}
+
+			// Video
+			// Display mode
+			if (configFile.GameConfig.FullScreen == 1)
+				radioFullscreen.Checked = true;
+			else
+				radioWindowMode.Checked = true;
+
+			// Resolution preset
+			comboResolutionPreset.SelectedIndex = configFile.GameConfig.ScreenSize;
+
+			// Framerate
+			if (configFile.GameConfig.FrameRate == (int)FrameRate.Invalid || configFile.GameConfig.FrameRate > (int)FrameRate.Low)
+			{
+
+				MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				comboFramerate.SelectedIndex = (int)FrameRate.High - 1;
+			}
+			else
+				comboFramerate.SelectedIndex = configFile.GameConfig.FrameRate - 1;
+
+			// Clip level
+			comboClip.SelectedIndex = configFile.GameConfig.ClipLevel;
+			// Fog mode
+			comboFog.SelectedIndex = configFile.GameConfig.FogEmulation;
+
+			// Sound
+			// Toggles
+			check3DSound.Checked = (configFile.GameConfig.Sound3D != 0);
+			checkSound.Checked = (configFile.GameConfig.SEVoice != 0);
+			checkMusic.Checked = (configFile.GameConfig.BGM != 0);
+
+			// Volume
+			numericSoundVol.Value = configFile.GameConfig.VoiceVolume;
+			numericBGMVol.Value = configFile.GameConfig.BGMVolume;
+
+			// Mouse
+			// Mouse Mode
+			if (configFile.GameConfig.MouseMode == 0)
+				radioMouseModeHold.Checked = true;
+			else
+				radioMouseModeRelease.Checked = true;
+
+			// putting this here because it'll get
+			// overwritten if I put it in InitalizeComponent
+			comboMouseActions.SelectedIndex = 0;
 		}
 
 		private void SaveConfigIni()
 		{
-			if (File.Exists(sadxIni))
-			{
-				configFile.GameConfig.FullScreen = (radioFullscreen.Checked == true) ? 1 : 0;
-				configFile.GameConfig.ScreenSize = comboResolutionPreset.SelectedIndex;
+			configFile.GameConfig.FullScreen = (radioFullscreen.Checked == true) ? 1 : 0;
+			configFile.GameConfig.ScreenSize = comboResolutionPreset.SelectedIndex;
 
-				configFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
-				configFile.GameConfig.ClipLevel = comboClip.SelectedIndex;
-				configFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
+			configFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
+			configFile.GameConfig.ClipLevel = comboClip.SelectedIndex;
+			configFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
 
-				configFile.GameConfig.Sound3D = (check3DSound.Checked == true) ? 1 : 0;
-				configFile.GameConfig.SEVoice = (checkSound.Checked == true) ? 1 : 0;
-				configFile.GameConfig.BGM = (checkMusic.Checked == true) ? 1 : 0;
+			configFile.GameConfig.Sound3D = (check3DSound.Checked == true) ? 1 : 0;
+			configFile.GameConfig.SEVoice = (checkSound.Checked == true) ? 1 : 0;
+			configFile.GameConfig.BGM = (checkMusic.Checked == true) ? 1 : 0;
 
-				configFile.GameConfig.VoiceVolume = (int)numericSoundVol.Value;
-				configFile.GameConfig.BGMVolume = (int)numericBGMVol.Value;
+			configFile.GameConfig.VoiceVolume = (int)numericSoundVol.Value;
+			configFile.GameConfig.BGMVolume = (int)numericBGMVol.Value;
 
-				configFile.GameConfig.MouseMode = (radioMouseModeHold.Checked == true) ? 0 : 1;
+			configFile.GameConfig.MouseMode = (radioMouseModeHold.Checked == true) ? 0 : 1;
 				
-				IniFile.Serialize(configFile, sadxIni);
-			}
-			else
-				return;
+			IniFile.Serialize(configFile, sadxIni);
 		}
 
 		private void comboMouseActions_SelectedIndexChanged(object sender, EventArgs e)
@@ -239,24 +237,34 @@ namespace SADXModManager
     {
         [IniName("framerate")]
         public int FrameRate { get; set; }
+		[IniAlwaysInclude]
         [IniName("fogemulation")]
         public int FogEmulation { get; set; }
+		[IniAlwaysInclude]
         [IniName("sound3d")]
         public int Sound3D { get; set; }
+		[IniAlwaysInclude]
         [IniName("screensize")]
         public int ScreenSize { get; set; }
+		[IniAlwaysInclude]
         [IniName("cliplevel")]
         public int ClipLevel { get; set; }
+		[IniAlwaysInclude]
         [IniName("sevoice")]
         public int SEVoice { get; set; }
+		[IniAlwaysInclude]
         [IniName("bgm")]
         public int BGM { get; set; }
+		[IniAlwaysInclude]
         [IniName("screen")]
         public int FullScreen { get; set; }
+		[IniAlwaysInclude]
         [IniName("mousemode")]
         public int MouseMode { get; set; }
+		[IniAlwaysInclude]
         [IniName("bgmv")]
         public int BGMVolume { get; set; }
+		[IniAlwaysInclude]
         [IniName("voicev")]
         public int VoiceVolume { get; set; }
         [IniName("language")]
