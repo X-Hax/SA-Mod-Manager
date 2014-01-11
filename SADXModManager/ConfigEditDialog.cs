@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using IniSerializer;
+using Microsoft.DirectX.DirectInput;
 
 /*
  * To-Do:
  *	Error checking
- *	Input configuration
 */
 
 namespace SADXModManager
@@ -20,6 +20,22 @@ namespace SADXModManager
     {
 		private ConfigFile configFile;
 		private const string sadxIni = "sonicDX.ini";
+        Device inputDevice;
+        List<ButtonControl> buttonControls = new List<ButtonControl>();
+        List<ControllerConfigInternal> controllerConfig = new List<ControllerConfigInternal>();
+
+        static readonly string[] actionNames = {
+                                                   "Rotate camera right",
+                                                   "Rotate camera left",
+                                                   "Start/Set",
+                                                   "Cancel/Attack",
+                                                   "Jump",
+                                                   "Action",
+                                                   "Flute",
+                                                   "Z Button"
+                                               };
+
+        static readonly int[] buttonIDs = { 16, 17, 3, 2, 1, 10, 9, 8 };
 
         public ConfigEditDialog()
         {
@@ -39,7 +55,32 @@ namespace SADXModManager
 
 		private void ConfigEditDialog_Load(object sender, EventArgs e)
 		{
-			// Load the config INI upon window load
+            DeviceList list = Manager.GetDevices(DeviceClass.GameControl, EnumDevicesFlags.AttachedOnly);
+            if (list.Count > 0)
+            {
+                inputDevice = new Device(list.Cast<DeviceInstance>().First().InstanceGuid);
+                tableLayoutPanel1.RowCount = actionNames.Length;
+                for (int i = 0; i < actionNames.Length; i++)
+                {
+                    tableLayoutPanel1.Controls.Add(new Label() 
+                    {
+                        AutoSize = true,
+                        Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Top,
+                        Text = actionNames[i],
+                        TextAlign = ContentAlignment.MiddleLeft
+                    }, 0, i);
+                    ButtonControl buttonControl = new ButtonControl() { Enabled = false };
+                    tableLayoutPanel1.Controls.Add(buttonControl, 1, i);
+                    buttonControls.Add(buttonControl);
+                    buttonControl.SetButtonClicked += new EventHandler(buttonControl_SetButtonClicked);
+                    buttonControl.ClearButtonClicked += new EventHandler(buttonControl_ClearButtonClicked);
+                    if (i == tableLayoutPanel1.RowStyles.Count)
+                        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                }
+            }
+            else
+                tabControl1.TabPages.Remove(tabPage_Controller);
+            // Load the config INI upon window load
 			LoadConfigIni();
 		}
 
@@ -107,28 +148,63 @@ namespace SADXModManager
 			// putting this here because it'll get
 			// overwritten if I put it in InitalizeComponent
 			comboMouseActions.SelectedIndex = 0;
+
+            foreach (KeyValuePair<string, ControllerConfig> item in configFile.Controllers)
+            {
+                int[] cfg = Enumerable.Repeat(-1, buttonIDs.Length).ToArray();
+                for (int i = 0; i < item.Value.ButtonSettings.Length; i++)
+                    if (Array.IndexOf(buttonIDs, item.Value.ButtonSettings[i]) != -1)
+                        cfg[Array.IndexOf(buttonIDs, item.Value.ButtonSettings[i])] = i;
+                controllerConfig.Add(new ControllerConfigInternal() { Name = item.Key, Buttons = cfg});
+                controllerConfigSelect.Items.Add(item.Key);
+            }
+
+            if (inputDevice != null)
+                for (int i = 0; i < controllerConfig.Count; i++)
+                    if (controllerConfig[i].Name == configFile.GameConfig.PadConfig)
+                    {
+                        controllerConfigSelect.SelectedIndex = i;
+                        break;
+                    }
 		}
 
-		private void SaveConfigIni()
-		{
-			configFile.GameConfig.FullScreen = (radioFullscreen.Checked == true) ? 1 : 0;
-			configFile.GameConfig.ScreenSize = comboResolutionPreset.SelectedIndex;
+        private void SaveConfigIni()
+        {
+            configFile.GameConfig.FullScreen = (radioFullscreen.Checked == true) ? 1 : 0;
+            configFile.GameConfig.ScreenSize = comboResolutionPreset.SelectedIndex;
 
-			configFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
-			configFile.GameConfig.ClipLevel = comboClip.SelectedIndex;
-			configFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
+            configFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
+            configFile.GameConfig.ClipLevel = comboClip.SelectedIndex;
+            configFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
 
-			configFile.GameConfig.Sound3D = (check3DSound.Checked == true) ? 1 : 0;
-			configFile.GameConfig.SEVoice = (checkSound.Checked == true) ? 1 : 0;
-			configFile.GameConfig.BGM = (checkMusic.Checked == true) ? 1 : 0;
+            configFile.GameConfig.Sound3D = (check3DSound.Checked == true) ? 1 : 0;
+            configFile.GameConfig.SEVoice = (checkSound.Checked == true) ? 1 : 0;
+            configFile.GameConfig.BGM = (checkMusic.Checked == true) ? 1 : 0;
 
-			configFile.GameConfig.VoiceVolume = (int)numericSoundVol.Value;
-			configFile.GameConfig.BGMVolume = (int)numericBGMVol.Value;
+            configFile.GameConfig.VoiceVolume = (int)numericSoundVol.Value;
+            configFile.GameConfig.BGMVolume = (int)numericBGMVol.Value;
 
-			configFile.GameConfig.MouseMode = (radioMouseModeHold.Checked == true) ? 0 : 1;
-				
-			IniFile.Serialize(configFile, sadxIni);
-		}
+            configFile.GameConfig.MouseMode = (radioMouseModeHold.Checked == true) ? 0 : 1;
+
+            if (inputDevice != null)
+            {
+                configFile.GameConfig.PadConfig = controllerConfigSelect.SelectedIndex == -1 ? null : controllerConfig[controllerConfigSelect.SelectedIndex].Name;
+
+                configFile.Controllers.Clear();
+                foreach (ControllerConfigInternal item in controllerConfig)
+                {
+                    ControllerConfig config = new ControllerConfig();
+                    config.ButtonCount = item.Buttons.Max() + 1;
+                    config.ButtonSettings = Enumerable.Repeat(-1, config.ButtonCount).ToArray();
+                    for (int i = 0; i < buttonIDs.Length; i++)
+                        if (item.Buttons[i] != -1)
+                            config.ButtonSettings[item.Buttons[i]] = buttonIDs[i];
+                    configFile.Controllers.Add(item.Name, config);
+                }
+            }
+
+            IniFile.Serialize(configFile, sadxIni);
+        }
 
 		private void comboMouseActions_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -220,6 +296,130 @@ namespace SADXModManager
 					return n;
 			}
 		}
+
+        int currentAction;
+        System.Threading.Thread controllerThread;
+
+        void buttonControl_SetButtonClicked(object sender, EventArgs e)
+        {
+            Enabled = false;
+            currentAction = buttonControls.IndexOf((ButtonControl)sender);
+            controllerThread = new System.Threading.Thread(GetControllerInput);
+            controllerThread.Start();
+            ((ButtonControl)sender).Text = "Waiting...";
+        }
+
+        private void GetControllerInput()
+        {
+            System.Threading.AutoResetEvent inputevent = new System.Threading.AutoResetEvent(false);
+            inputDevice.SetEventNotification(inputevent);
+            inputDevice.Acquire();
+            int pressed = -1;
+            while (pressed == -1)
+            {
+                if (!inputevent.WaitOne(20000))
+                    break;
+                byte[] buttons = inputDevice.CurrentJoystickState.GetButtons();
+                for (int i = 0; i < buttons.Length; i++)
+                    if (buttons[i] != 0)
+                    {
+                        pressed = i;
+                        break;
+                    }
+            }
+            inputDevice.Unacquire();
+            inputDevice.SetEventNotification(null);
+            Invoke(new Action<int>(ButtonPressed), pressed);
+        }
+
+        void ButtonPressed(int button)
+        {
+            ControllerConfigInternal config = controllerConfig[controllerConfigSelect.SelectedIndex];
+            if (button != -1)
+            {
+                if (Array.IndexOf(config.Buttons, button) != -1)
+                {
+                    int i = Array.IndexOf(config.Buttons, button);
+                    buttonControls[i].Text = "Unassigned";
+                    config.Buttons[i] = -1;
+                }
+                buttonControls[currentAction].Text = "Button " + (button + 1);
+                config.Buttons[currentAction] = button;
+            }
+            else
+                buttonControls[currentAction].Text = config.Buttons[currentAction] == -1 ? "Unassigned" :
+                    "Button " + (config.Buttons[currentAction] + 1);
+            Enabled = true;
+        }
+
+        void buttonControl_ClearButtonClicked(object sender, EventArgs e)
+        {
+            int i = buttonControls.IndexOf((ButtonControl)sender);
+            buttonControls[i].Text = "Unassigned";
+            controllerConfig[controllerConfigSelect.SelectedIndex].Buttons[i] = -1;
+        }
+
+        private void ConfigEditDialog_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape && controllerThread != null && controllerThread.IsAlive)
+            {
+                controllerThread.Abort();
+                inputDevice.Unacquire();
+                inputDevice.SetEventNotification(null);
+                ControllerConfigInternal config = controllerConfig[controllerConfigSelect.SelectedIndex];
+                buttonControls[currentAction].Text = config.Buttons[currentAction] == -1 ? "Unassigned" :
+                    "Button " + (config.Buttons[currentAction] + 1);
+                Enabled = true;
+            }
+        }
+
+        private void controllerConfigSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (controllerConfigSelect.SelectedIndex == -1)
+            {
+                controllerConfigRemove.Enabled = controllerConfigName.Enabled = false;
+                foreach (ButtonControl control in buttonControls)
+                    control.Enabled = false;
+            }
+            else
+            {
+                controllerConfigRemove.Enabled = controllerConfigName.Enabled = true;
+                ControllerConfigInternal config = controllerConfig[controllerConfigSelect.SelectedIndex];
+                controllerConfigName.Text = config.Name;
+                for (int i = 0; i < buttonControls.Count; i++)
+                {
+                    buttonControls[i].Enabled = true;
+                    buttonControls[i].Text = config.Buttons[i] == -1 ? "Unassigned" : "Button " + (config.Buttons[i] + 1);
+                }
+            }
+        }
+
+        private void controllerConfigAdd_Click(object sender, EventArgs e)
+        {
+            controllerConfig.Add(new ControllerConfigInternal() { Name = "*NEW*",
+                Buttons = Enumerable.Repeat(-1, buttonIDs.Length).ToArray() });
+            controllerConfigSelect.Items.Add("*NEW*");
+            controllerConfigSelect.SelectedIndex = controllerConfigSelect.Items.Count - 1;
+        }
+
+        private void controllerConfigRemove_Click(object sender, EventArgs e)
+        {
+            controllerConfig.RemoveAt(controllerConfigSelect.SelectedIndex);
+            controllerConfigSelect.Items.RemoveAt(controllerConfigSelect.SelectedIndex);
+        }
+
+        private void controllerConfigName_TextChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < controllerConfig.Count; i++)
+                if (i != controllerConfigSelect.SelectedIndex && controllerConfig[i].Name == controllerConfigName.Text)
+                {
+                    controllerConfigName.BackColor = Color.Red;
+                    return;
+                }
+            controllerConfigName.BackColor = SystemColors.Window;
+            controllerConfig[controllerConfigSelect.SelectedIndex].Name = controllerConfigName.Text;
+            controllerConfigSelect.Items[controllerConfigSelect.SelectedIndex] = controllerConfigName.Text;
+        }
     }
 
     class ConfigFile
@@ -303,6 +503,12 @@ namespace SADXModManager
         public int ButtonCount { get; set; }
         [IniName("pad")]
         [IniCollection(IniCollectionMode.NoSquareBrackets)]
-        public List<int> ButtonSettings { get; set; }
+        public int[] ButtonSettings { get; set; }
+    }
+
+    class ControllerConfigInternal
+    {
+        public string Name { get; set; }
+        public int[] Buttons { get; set; }
     }
 }
