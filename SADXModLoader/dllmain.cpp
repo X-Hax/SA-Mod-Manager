@@ -1065,7 +1065,7 @@ void __cdecl InitMods(void)
 	}
 closecodefile:
 	str.close();
-	WriteJump((void *)0x40FF00, ProcessCodes);
+	WriteJump((void *)0x426063, ProcessCodes);
 }
 
 const uint8_t verchk[] = { 0x83, 0xEC, 0x28, 0x57, 0x33 };

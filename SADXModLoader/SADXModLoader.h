@@ -1411,4 +1411,6 @@ DataPointer(short, ObjectPlacementDebug, 0x3B29D08);
 #define ObjectFunc(name,address) FunctionPointer(void,name,(ObjectMaster *obj),address)
 FunctionPointer(int, GetEventFlag, (int flag), 0x412D20);
 FunctionPointer(int, CountUnlockedCharacters, (), 0x512C50);
+FunctionPointer(void, SetDebugTextColor, (int color), 0x7808E0);
+FunctionPointer(void, DisplayDebugString, (signed int position, char *text), 0x7808F0);
 #endif
