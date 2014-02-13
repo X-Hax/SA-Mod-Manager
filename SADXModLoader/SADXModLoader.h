@@ -1409,6 +1409,7 @@ DataPointer(short, ObjectPlacementDebug, 0x3B29D08);
 #define ThiscallFunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) static RETURN_TYPE (__thiscall *const NAME)ARGS = (RETURN_TYPE (__thiscall *)ARGS)ADDRESS
 #define VoidFunc(name,address) FunctionPointer(void,name,(void),address)
 #define ObjectFunc(name,address) FunctionPointer(void,name,(ObjectMaster *obj),address)
+FunctionPointer(int, PrintDebug, (char *format, ...), 0x401000);
 FunctionPointer(int, GetEventFlag, (int flag), 0x412D20);
 FunctionPointer(int, CountUnlockedCharacters, (), 0x512C50);
 FunctionPointer(void, SetDebugTextColor, (int color), 0x7808E0);

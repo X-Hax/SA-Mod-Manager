@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <unordered_map>
+#include <deque>
 #include <algorithm>
 #include <DbgHelp.h>
 #include <cstdio>
@@ -722,17 +723,87 @@ void ProcessCodeList(list<Code> &codes)
 	}
 }
 
+struct message { string text; uint32_t time; };
+
+deque<message> msgqueue;
+
+const int fadecolors[] = {
+	0xF7FFFFFF,
+	0xEEFFFFFF,
+	0xE6FFFFFF,
+	0xDDFFFFFF,
+	0xD5FFFFFF,
+	0xCCFFFFFF,
+	0xC4FFFFFF,
+	0xBBFFFFFF,
+	0xB3FFFFFF,
+	0xAAFFFFFF,
+	0xA2FFFFFF,
+	0x99FFFFFF,
+	0x91FFFFFF,
+	0x88FFFFFF,
+	0x80FFFFFF,
+	0x77FFFFFF,
+	0x6FFFFFFF,
+	0x66FFFFFF,
+	0x5EFFFFFF,
+	0x55FFFFFF,
+	0x4DFFFFFF,
+	0x44FFFFFF,
+	0x3CFFFFFF,
+	0x33FFFFFF,
+	0x2BFFFFFF,
+	0x22FFFFFF,
+	0x1AFFFFFF,
+	0x11FFFFFF,
+	0x09FFFFFF,
+	0
+};
+
 void __cdecl ProcessCodes()
 {
 	ProcessCodeList(codes);
+	int numrows = VerticalResolution / 12;
+	int pos;
+	if (msgqueue.size() <= numrows - 1)
+		pos = (numrows - 1) - (msgqueue.size() - 1);
+	else
+		pos = 0;
+	if (msgqueue.size() > 0)
+		for (deque<message>::iterator i = msgqueue.begin(); i != msgqueue.end(); i++)
+		{
+			int c = -1;
+			if (300 - i->time < LengthOfArray(fadecolors))
+				c = fadecolors[LengthOfArray(fadecolors) - (300 - i->time) - 1];
+			SetDebugTextColor(c);
+			DisplayDebugString(pos++, (char *)i->text.c_str());
+			if (++i->time >= 300)
+			{
+				msgqueue.pop_front();
+				if (msgqueue.size() == 0)
+					break;
+				i = msgqueue.begin();
+			}
+			if (pos == numrows)
+				break;
+		}
 }
 
 int __cdecl SADXDebugOutput(const char *Format, ...)
 {
 	va_list ap;
 	va_start(ap, Format);
-	int result = vprintf(Format, ap);
+	int result = vsnprintf(NULL, 0, Format, ap) + 1;
 	va_end(ap);
+	char *buf = new char[result];
+	va_start(ap, Format);
+	result = vsnprintf(buf, result, Format, ap);
+	va_end(ap);
+	message msg = { buf };
+	delete[] buf;
+	if (msg.text[msg.text.length() - 1] == '\n')
+		msg.text = msg.text.substr(0, msg.text.length() - 1);
+	msgqueue.push_back(msg);
 	return result;
 }
 
@@ -824,7 +895,7 @@ void ScanFolder(string path, int length)
 			filemap[origfile] = buf;
 			modfile.copy(buf, modfile.length());
 			buf[modfile.length()] = 0;
-			printf("Replaced file: \"%s\" = \"%s\"\n", origfile.c_str(), buf);
+			PrintDebug("Replaced file: \"%s\" = \"%s\"\n", origfile.c_str(), buf);
 		}
 	}
 	while (FindNextFileA(hfind, &data) != 0);
@@ -898,13 +969,19 @@ void __cdecl InitMods(void)
 		SetConsoleTitle(L"SADX Mod Loader output");
 		freopen("CONOUT$", "wb", stdout);
 		console = true;
-		printf("SADX Mod Loader version %d, built %s\n", ModLoaderVer, __TIMESTAMP__);
-		printf("Loading mods...\n");
 	}
 	item = settings["ShowSADXDebugOutput"];
 	transform(item.begin(), item.end(), item.begin(), ::tolower);
+	bool debug = false;
 	if (item == "true")
-		WriteJump((void *)0x401000, printf);
+	{
+		if (console)
+			WriteJump(PrintDebug, printf);
+		else
+			WriteJump(PrintDebug, SADXDebugOutput);
+		PrintDebug("SADX Mod Loader version %d, built %s\n", ModLoaderVer, __TIMESTAMP__);
+		debug = true;
+	}
 	item = settings["DontFixWindow"];
 	transform(item.begin(), item.end(), item.begin(), ::tolower);
 	if (item != "true")
@@ -936,6 +1013,7 @@ void __cdecl InitMods(void)
 	VirtualProtect((void *)0x7DB2A0, 0xB6D60, PAGE_WRITECOPY, &oldprot);
 	unordered_map<string, string> filereplaces = unordered_map<string, string>();
 	char key[8];
+	PrintDebug("Loading mods...\n");
 	for (int i = 1; i < 999; i++)
 	{
 		sprintf_s(key, "Mod%d", i);
@@ -945,14 +1023,14 @@ void __cdecl InitMods(void)
 		str = ifstream(dir + "\\mod.ini");
 		if (!str.is_open())
 		{
-			if (console)
-				printf("Could not open file mod.ini in \"mods\\%s\".\n", settings[key].c_str());
+			if (debug)
+				PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", settings[key].c_str());
 			continue;
 		}
 		IniDictionary modini = LoadINI(str);
 		IniGroup modinfo = modini[""].Element;
-		if (console)
-			printf("%d. %s\n", i, modinfo["Name"].c_str());
+		if (debug)
+			PrintDebug("%d. %s\n", i, modinfo["Name"].c_str());
 		IniDictionary::iterator gr = modini.find("IgnoreFiles");
 		if (gr != modini.end())
 		{
@@ -960,8 +1038,8 @@ void __cdecl InitMods(void)
 			for (IniGroup::iterator it = replaces.begin(); it != replaces.end(); it++)
 			{
 				filemap[NormalizePath(it->first)] = "nullfile";
-				if (console)
-					printf("Ignored file: %s\n", it->first.c_str());
+				if (debug)
+					PrintDebug("Ignored file: %s\n", it->first.c_str());
 			}
 		}
 		gr = modini.find("ReplaceFiles");
@@ -1025,11 +1103,11 @@ void __cdecl InitMods(void)
 					if (info->Init)
 						info->Init(dir.c_str());
 				}
-				else if (console)
-					printf("File \"%s\" is not a valid mod file.\n", filename.c_str());
+				else if (debug)
+					PrintDebug("File \"%s\" is not a valid mod file.\n", filename.c_str());
 			}
-			else if (console)
-				printf("Failed loading file \"%s\".\n", filename.c_str());
+			else if (debug)
+				PrintDebug("Failed loading file \"%s\".\n", filename.c_str());
 		}
 	}
 	for (unordered_map<string,string>::iterator it = filereplaces.begin(); it != filereplaces.end(); it++)
@@ -1043,10 +1121,10 @@ void __cdecl InitMods(void)
 			filemap[it->first] = buf;
 			it->second.copy(buf, it->second.length());
 			buf[it->second.length()] = 0;
-			printf("Replaced file: \"%s\" = \"%s\"\n", it->first.c_str(), buf);
+			PrintDebug("Replaced file: \"%s\" = \"%s\"\n", it->first.c_str(), buf);
 		}
 	}
-	printf("Finished loading mods\n");
+	PrintDebug("Finished loading mods\n");
 	str = ifstream("mods\\Codes.dat", ifstream::binary);
 	if (str.is_open())
 	{
@@ -1055,12 +1133,12 @@ void __cdecl InitMods(void)
 		for (int i = 0; i < 6; i++)
 			if (buf[i] != codemagic[i])
 			{
-				printf("Code file not in correct format.\n");
+				PrintDebug("Code file not in correct format.\n");
 				goto closecodefile;
 			}
 		int32_t codecount;
 		str.read((char *)&codecount, sizeof(int32_t));
-		printf("Loading %d codes...\n", codecount);
+		PrintDebug("Loading %d codes...\n", codecount);
 		ReadCodes(str, codes);
 	}
 closecodefile:
