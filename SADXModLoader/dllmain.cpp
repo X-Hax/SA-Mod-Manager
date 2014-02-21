@@ -1,5 +1,6 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <unordered_map>
@@ -789,6 +790,8 @@ void __cdecl ProcessCodes()
 		}
 }
 
+bool dbgConsole, dbgScreen, dbgFile;
+ofstream dbgstr;
 int __cdecl SADXDebugOutput(const char *Format, ...)
 {
 	va_list ap;
@@ -799,11 +802,18 @@ int __cdecl SADXDebugOutput(const char *Format, ...)
 	va_start(ap, Format);
 	result = vsnprintf(buf, result, Format, ap);
 	va_end(ap);
-	message msg = { buf };
+	if (dbgConsole)
+		cout << buf;
+	if (dbgScreen)
+	{
+		message msg = { buf };
+		if (msg.text[msg.text.length() - 1] == '\n')
+			msg.text = msg.text.substr(0, msg.text.length() - 1);
+		msgqueue.push_back(msg);
+	}
+	if (dbgFile && dbgstr.good())
+		dbgstr << buf;
 	delete[] buf;
-	if (msg.text[msg.text.length() - 1] == '\n')
-		msg.text = msg.text.substr(0, msg.text.length() - 1);
-	msgqueue.push_back(msg);
 	return result;
 }
 
@@ -923,7 +933,7 @@ unsigned char ReadCodes(istream &stream, list<Code> &list)
 		stream.read((char *)&code.value, sizeof(code.value));
 		stream.read((char *)&code.repeatcount, sizeof(uint32_t));
 		if (code.type >= ifeq8 && code.type <= ifkbkey)
-			switch (ReadCodes(stream, code.trueCodes))
+		switch (ReadCodes(stream, code.trueCodes))
 		{
 			case _else:
 				if (ReadCodes(stream, code.falseCodes) == 0xFF)
@@ -960,27 +970,29 @@ void __cdecl InitMods(void)
 	string exefilename = pathbuf;
 	exefilename = exefilename.substr(exefilename.find_last_of("/\\") + 1);
 	transform(exefilename.begin(), exefilename.end(), exefilename.begin(), ::tolower);
-	string item = settings["ShowConsole"];
+	string item = settings["DebugConsole"];
 	transform(item.begin(), item.end(), item.begin(), ::tolower);
-	bool console = false;
 	if (item == "true")
 	{
 		AllocConsole();
 		SetConsoleTitle(L"SADX Mod Loader output");
 		freopen("CONOUT$", "wb", stdout);
-		console = true;
+		dbgConsole = true;
 	}
-	item = settings["ShowSADXDebugOutput"];
+	item = settings["DebugScreen"];
 	transform(item.begin(), item.end(), item.begin(), ::tolower);
-	bool debug = false;
+	dbgScreen = item == "true";
+	item = settings["DebugFile"];
+	transform(item.begin(), item.end(), item.begin(), ::tolower);
 	if (item == "true")
 	{
-		if (console)
-			WriteJump(PrintDebug, printf);
-		else
-			WriteJump(PrintDebug, SADXDebugOutput);
+		dbgstr = ofstream("mods\\SADXModLoader.log", ios_base::ate | ios_base::app);
+		dbgFile = dbgstr.is_open();
+	}
+	if (dbgConsole || dbgScreen || dbgFile)
+	{
+		WriteJump(PrintDebug, SADXDebugOutput);
 		PrintDebug("SADX Mod Loader version %d, built %s\n", ModLoaderVer, __TIMESTAMP__);
-		debug = true;
 	}
 	item = settings["DontFixWindow"];
 	transform(item.begin(), item.end(), item.begin(), ::tolower);
@@ -1023,14 +1035,12 @@ void __cdecl InitMods(void)
 		str = ifstream(dir + "\\mod.ini");
 		if (!str.is_open())
 		{
-			if (debug)
-				PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", settings[key].c_str());
+			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", settings[key].c_str());
 			continue;
 		}
 		IniDictionary modini = LoadINI(str);
 		IniGroup modinfo = modini[""].Element;
-		if (debug)
-			PrintDebug("%d. %s\n", i, modinfo["Name"].c_str());
+		PrintDebug("%d. %s\n", i, modinfo["Name"].c_str());
 		IniDictionary::iterator gr = modini.find("IgnoreFiles");
 		if (gr != modini.end())
 		{
@@ -1038,8 +1048,7 @@ void __cdecl InitMods(void)
 			for (IniGroup::iterator it = replaces.begin(); it != replaces.end(); it++)
 			{
 				filemap[NormalizePath(it->first)] = "nullfile";
-				if (debug)
-					PrintDebug("Ignored file: %s\n", it->first.c_str());
+				PrintDebug("Ignored file: %s\n", it->first.c_str());
 			}
 		}
 		gr = modini.find("ReplaceFiles");
@@ -1103,10 +1112,10 @@ void __cdecl InitMods(void)
 					if (info->Init)
 						info->Init(dir.c_str());
 				}
-				else if (debug)
+				else
 					PrintDebug("File \"%s\" is not a valid mod file.\n", filename.c_str());
 			}
-			else if (debug)
+			else
 				PrintDebug("Failed loading file \"%s\".\n", filename.c_str());
 		}
 	}
