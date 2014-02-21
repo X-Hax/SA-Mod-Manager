@@ -318,7 +318,7 @@ namespace SADXModManager
 		public bool DebugConsole { get; set; }
 		public bool DebugScreen { get; set; }
 		public bool DebugFile { get; set; }
-		public bool ShowConsole { get { return false; } set { DebugConsole = value; } }
+		public bool? ShowConsole { get { return null; } set { if (value.HasValue) DebugConsole = value.Value; } }
         public bool DontFixWindow { get; set; }
         public bool DisableCDCheck { get; set; }
         public bool UseCustomResolution { get; set; }
