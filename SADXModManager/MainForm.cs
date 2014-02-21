@@ -37,8 +37,9 @@ namespace SADXModManager
 
 			LoadModList();
             
-            consoleCheckBox.Checked = loaderini.ShowConsole;
-            SADXDebugCheckBox.Checked = loaderini.ShowSADXDebugOutput;
+            consoleCheckBox.Checked = loaderini.DebugConsole;
+			screenCheckBox.Checked = loaderini.DebugScreen;
+			fileCheckBox.Checked = loaderini.DebugFile;
             dontFixWindowCheckBox.Checked = loaderini.DontFixWindow;
             disableCDCheckCheckBox.Checked = loaderini.DisableCDCheck;
             useCustomResolutionCheckBox.Checked = horizontalResolution.Enabled = verticalResolution.Enabled = loaderini.UseCustomResolution;
@@ -132,8 +133,9 @@ namespace SADXModManager
             loaderini.Mods.Clear();
             foreach (ListViewItem item in modListView.CheckedItems)
                 loaderini.Mods.Add((string)item.Tag);
-            loaderini.ShowConsole = consoleCheckBox.Checked;
-            loaderini.ShowSADXDebugOutput = SADXDebugCheckBox.Checked;
+            loaderini.DebugConsole = consoleCheckBox.Checked;
+			loaderini.DebugScreen = screenCheckBox.Checked;
+			loaderini.DebugFile = fileCheckBox.Checked;
             loaderini.DontFixWindow = dontFixWindowCheckBox.Checked;
             loaderini.DisableCDCheck = disableCDCheckCheckBox.Checked;
             loaderini.UseCustomResolution = useCustomResolutionCheckBox.Checked;
@@ -313,8 +315,10 @@ namespace SADXModManager
 
     class LoaderInfo
     {
-        public bool ShowConsole { get; set; }
-        public bool ShowSADXDebugOutput { get; set; }
+		public bool DebugConsole { get; set; }
+		public bool DebugScreen { get; set; }
+		public bool DebugFile { get; set; }
+		public bool ShowConsole { get { return false; } set { DebugConsole = value; } }
         public bool DontFixWindow { get; set; }
         public bool DisableCDCheck { get; set; }
         public bool UseCustomResolution { get; set; }

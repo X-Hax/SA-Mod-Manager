@@ -30,12 +30,12 @@
         {
 			System.Windows.Forms.GroupBox groupBox2;
 			System.Windows.Forms.Label label1;
+			this.label2 = new System.Windows.Forms.Label();
 			this.verticalResolution = new System.Windows.Forms.NumericUpDown();
 			this.horizontalResolution = new System.Windows.Forms.NumericUpDown();
 			this.useCustomResolutionCheckBox = new System.Windows.Forms.CheckBox();
 			this.disableCDCheckCheckBox = new System.Windows.Forms.CheckBox();
 			this.dontFixWindowCheckBox = new System.Windows.Forms.CheckBox();
-			this.SADXDebugCheckBox = new System.Windows.Forms.CheckBox();
 			this.consoleCheckBox = new System.Windows.Forms.CheckBox();
 			this.buttonModsFolder = new System.Windows.Forms.Button();
 			this.buttonRefreshModList = new System.Windows.Forms.Button();
@@ -58,6 +58,8 @@
 			this.editCodeButton = new System.Windows.Forms.Button();
 			this.newCodeButton = new System.Windows.Forms.Button();
 			this.codesCheckedListBox = new System.Windows.Forms.CheckedListBox();
+			this.screenCheckBox = new System.Windows.Forms.CheckBox();
+			this.fileCheckBox = new System.Windows.Forms.CheckBox();
 			groupBox2 = new System.Windows.Forms.GroupBox();
 			label1 = new System.Windows.Forms.Label();
 			groupBox2.SuspendLayout();
@@ -72,13 +74,15 @@
 			// 
 			groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			groupBox2.Controls.Add(this.fileCheckBox);
+			groupBox2.Controls.Add(this.screenCheckBox);
+			groupBox2.Controls.Add(this.label2);
 			groupBox2.Controls.Add(label1);
 			groupBox2.Controls.Add(this.verticalResolution);
 			groupBox2.Controls.Add(this.horizontalResolution);
 			groupBox2.Controls.Add(this.useCustomResolutionCheckBox);
 			groupBox2.Controls.Add(this.disableCDCheckCheckBox);
 			groupBox2.Controls.Add(this.dontFixWindowCheckBox);
-			groupBox2.Controls.Add(this.SADXDebugCheckBox);
 			groupBox2.Controls.Add(this.consoleCheckBox);
 			groupBox2.Location = new System.Drawing.Point(12, 352);
 			groupBox2.Name = "groupBox2";
@@ -86,6 +90,15 @@
 			groupBox2.TabIndex = 2;
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Options";
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(6, 20);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(93, 13);
+			this.label2.TabIndex = 8;
+			this.label2.Text = "Debug Messages:";
 			// 
 			// label1
 			// 
@@ -171,24 +184,14 @@
 			this.dontFixWindowCheckBox.Text = "Don\'t Fix Window";
 			this.dontFixWindowCheckBox.UseVisualStyleBackColor = true;
 			// 
-			// SADXDebugCheckBox
-			// 
-			this.SADXDebugCheckBox.AutoSize = true;
-			this.SADXDebugCheckBox.Location = new System.Drawing.Point(148, 19);
-			this.SADXDebugCheckBox.Name = "SADXDebugCheckBox";
-			this.SADXDebugCheckBox.Size = new System.Drawing.Size(155, 17);
-			this.SADXDebugCheckBox.TabIndex = 1;
-			this.SADXDebugCheckBox.Text = "Show SADX Debug Output";
-			this.SADXDebugCheckBox.UseVisualStyleBackColor = true;
-			// 
 			// consoleCheckBox
 			// 
 			this.consoleCheckBox.AutoSize = true;
-			this.consoleCheckBox.Location = new System.Drawing.Point(6, 19);
+			this.consoleCheckBox.Location = new System.Drawing.Point(105, 19);
 			this.consoleCheckBox.Name = "consoleCheckBox";
-			this.consoleCheckBox.Size = new System.Drawing.Size(136, 17);
+			this.consoleCheckBox.Size = new System.Drawing.Size(64, 17);
 			this.consoleCheckBox.TabIndex = 0;
-			this.consoleCheckBox.Text = "Show Console Window";
+			this.consoleCheckBox.Text = "Console";
 			this.consoleCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// buttonModsFolder
@@ -458,6 +461,26 @@
 			this.codesCheckedListBox.TabIndex = 0;
 			this.codesCheckedListBox.SelectedIndexChanged += new System.EventHandler(this.codesCheckedListBox_SelectedIndexChanged);
 			// 
+			// screenCheckBox
+			// 
+			this.screenCheckBox.AutoSize = true;
+			this.screenCheckBox.Location = new System.Drawing.Point(175, 19);
+			this.screenCheckBox.Name = "screenCheckBox";
+			this.screenCheckBox.Size = new System.Drawing.Size(60, 17);
+			this.screenCheckBox.TabIndex = 9;
+			this.screenCheckBox.Text = "Screen";
+			this.screenCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// fileCheckBox
+			// 
+			this.fileCheckBox.AutoSize = true;
+			this.fileCheckBox.Location = new System.Drawing.Point(241, 19);
+			this.fileCheckBox.Name = "fileCheckBox";
+			this.fileCheckBox.Size = new System.Drawing.Size(42, 17);
+			this.fileCheckBox.TabIndex = 10;
+			this.fileCheckBox.Text = "File";
+			this.fileCheckBox.UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -500,8 +523,7 @@
         private System.Windows.Forms.CheckBox consoleCheckBox;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button saveAndPlayButton;
-        private System.Windows.Forms.Button installButton;
-        private System.Windows.Forms.CheckBox SADXDebugCheckBox;
+		private System.Windows.Forms.Button installButton;
         private System.Windows.Forms.CheckBox disableCDCheckCheckBox;
         private System.Windows.Forms.CheckBox dontFixWindowCheckBox;
         private System.Windows.Forms.CheckBox useCustomResolutionCheckBox;
@@ -520,5 +542,8 @@
 		private System.Windows.Forms.Button newCodeButton;
 		private System.Windows.Forms.Button codeDownButton;
 		private System.Windows.Forms.Button codeUpButton;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.CheckBox fileCheckBox;
+		private System.Windows.Forms.CheckBox screenCheckBox;
 	}
 }
