@@ -133,21 +133,18 @@ HANDLE __stdcall MyCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD d
 	return CreateFileA(_ReplaceFile(lpFileName), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
 }
 
-FunctionPointer(int, PlayVoiceFile, (LPCSTR filename), 0x40CE30);
 int __cdecl PlayVoiceFile_r(LPCSTR filename)
 {
 	filename = _ReplaceFile(filename);
 	return PlayVoiceFile(filename);
 }
 
-FunctionPointer(int, PlayMusicFile, (LPCSTR filename, int loop), 0x40CD20);
-int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
+void __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 {
 	filename = _ReplaceFile(filename);
-	return PlayMusicFile(filename, loop);
+	PlayMusicFile(filename, loop);
 }
 
-const void *const PlayVideoFile = (const void *)0x513ED0;
 __declspec(naked) int PlayVideoFile_r()
 {
 	__asm
@@ -159,7 +156,7 @@ __declspec(naked) int PlayVideoFile_r()
 		add esp, 4
 		pop esi
 		mov [esp+4], eax
-		jmp PlayVideoFile
+		jmp PlayVideoFilePtr
 	}
 }
 
@@ -764,7 +761,7 @@ const int fadecolors[] = {
 void __cdecl ProcessCodes()
 {
 	ProcessCodeList(codes);
-	int numrows = VerticalResolution / 12;
+	unsigned int numrows = VerticalResolution / 12;
 	int pos;
 	if (msgqueue.size() <= numrows - 1)
 		pos = (numrows - 1) - (msgqueue.size() - 1);
@@ -790,6 +787,20 @@ void __cdecl ProcessCodes()
 		}
 }
 
+char * ShiftJISToUTF8(char *shiftjis)
+{
+	int cchWcs = MultiByteToWideChar(932, 0, shiftjis, -1, NULL, 0);
+	if (cchWcs <= 0) return nullptr;
+	wchar_t *wcs = new wchar_t[cchWcs];
+	MultiByteToWideChar(932, 0, shiftjis, -1, wcs, cchWcs);
+	int cbMbs = WideCharToMultiByte(CP_UTF8, 0, wcs, -1, NULL, 0, NULL, NULL);
+	if (cbMbs <= 0) { delete[] wcs; return nullptr; }
+	char *utf8 = new char[cbMbs];
+	WideCharToMultiByte(CP_UTF8, 0, wcs, -1, utf8, cbMbs, NULL, NULL);
+	delete[] wcs;
+	return utf8;
+}
+
 bool dbgConsole, dbgScreen, dbgFile;
 ofstream dbgstr;
 int __cdecl SADXDebugOutput(const char *Format, ...)
@@ -812,12 +823,15 @@ int __cdecl SADXDebugOutput(const char *Format, ...)
 		msgqueue.push_back(msg);
 	}
 	if (dbgFile && dbgstr.good())
-		dbgstr << buf;
+	{
+		char *utf8 = ShiftJISToUTF8(buf);
+		dbgstr << utf8;
+		delete[] utf8;
+	}
 	delete[] buf;
 	return result;
 }
 
-FunctionPointer(char *, GetWindowClassName, (), 0x793F60);
 DataPointer(int, dword_38A5DC4, 0x38A5DC4);
 DataPointer(HWND, hWnd, 0x3D0FD30);
 DataPointer(HINSTANCE, hInstance, 0x3D0FD34);
