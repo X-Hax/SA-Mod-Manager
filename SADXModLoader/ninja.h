@@ -1189,6 +1189,26 @@ typedef struct obj {
 	NJS_CNK_MODEL   *chunkmodel;
 	__declspec(property(get = getsa2bmodel, put = putsa2bmodel))
 	SA2B_Model      *sa2bmodel;
+
+	int countanimated()
+	{
+		int result = (evalflags & NJD_EVAL_SKIP) == NJD_EVAL_SKIP ? 0 : 1;
+		if (child != nullptr)
+			result += child->countanimated();
+		if (sibling != nullptr)
+			result += sibling->countanimated();
+		return result;
+	}
+
+	int countmorph()
+	{
+		int result = (evalflags & NJD_EVAL_SHAPE_SKIP) == NJD_EVAL_SHAPE_SKIP ? 0 : 1;
+		if (child != nullptr)
+			result += child->countmorph();
+		if (sibling != nullptr)
+			result += sibling->countmorph();
+		return result;
+	}
 } NJS_OBJECT;
 
 /*

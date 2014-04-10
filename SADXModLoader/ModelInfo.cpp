@@ -238,6 +238,8 @@ void ModelInfo::init(istream &stream)
 				if (dataptr == (void *)-1 && labelptr == UINT32_MAX)
 					break;
 				dataptr = (uint8_t *)dataptr + modelbase;
+				if (reallocateddata.find(dataptr) != reallocateddata.end())
+					dataptr = reallocateddata[dataptr];
 				tmpaddr = (uint32_t)stream.tellg();
 				stream.seekg((uint32_t)chunkbase + labelptr);
 				string label = getstring(stream);
@@ -269,4 +271,5 @@ void ModelInfo::init(istream &stream)
 		stream.seekg(nextchunk);
 		readdata(stream, chunktype);
 	}
+	reallocateddata.clear();
 }
