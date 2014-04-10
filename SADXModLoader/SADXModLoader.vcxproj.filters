@@ -30,12 +30,18 @@
     <ClInclude Include="ninja.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ModelInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

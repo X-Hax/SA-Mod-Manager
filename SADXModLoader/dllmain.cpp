@@ -1,5 +1,6 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
+#include <cstdint>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -8,7 +9,6 @@
 #include <algorithm>
 #include <DbgHelp.h>
 #include <cstdio>
-#include <cstdint>
 #include "SADXModLoader.h"
 using namespace std;
 
@@ -171,7 +171,7 @@ void HookTheAPI()
     HMODULE hModule = GetModuleHandle(NULL);
     PIMAGE_IMPORT_DESCRIPTOR pImportDesc = NULL;
 
-    pNewFunction = (PROC)MyGetProcAddress ;
+    pNewFunction = (PROC)MyGetProcAddress;
 	PROC pNewCreateFile = (PROC)MyCreateFileA;
     pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "GetProcAddress");
 	PROC pActualCreateFile = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "CreateFileA");
