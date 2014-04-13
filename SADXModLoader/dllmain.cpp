@@ -93,12 +93,9 @@ appendchar:
 
 HMODULE myhandle;
 HMODULE chrmodelshandle;
-unordered_map<string, void *> dataoverrides = unordered_map<string, void *>();
 FARPROC __stdcall MyGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
 {
-	if (dataoverrides.find(lpProcName) != dataoverrides.end())
-		return (FARPROC)dataoverrides[lpProcName];
-	else if (hModule == myhandle)
+	if (hModule == myhandle)
 		return GetProcAddress(chrmodelshandle, lpProcName);
 	else
 		return GetProcAddress(hModule, lpProcName);
@@ -1119,10 +1116,6 @@ void __cdecl InitMods(void)
 					if (info->Pointers)
 						for (int i = 0; i < info->PointerCount; i++)
 							WriteData(info->Pointers[i].address, &info->Pointers[i].data, sizeof(void*));
-					if (info->Version >= 2)
-						if (info->Exports)
-							for (int i = 0; i < info->ExportCount; i++)
-								dataoverrides[info->Exports[i].name] = info->Exports[i].data;
 					if (info->Init)
 						info->Init(dir.c_str());
 				}

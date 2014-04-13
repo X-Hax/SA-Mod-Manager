@@ -27,12 +27,6 @@ struct PointerInfo
 
 #define ptrdecl(address,data) { (void*)address, (void*)data }
 
-struct ExportInfo
-{
-	const char *const name;
-	void *data;
-};
-
 struct ModInfo
 {
 	int Version;
@@ -45,8 +39,6 @@ struct ModInfo
 	int CallCount;
 	PointerInfo *Pointers;
 	int PointerCount;
-	ExportInfo *Exports;
-	int ExportCount;
 };
 
 // Utility Functions
