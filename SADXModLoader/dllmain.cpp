@@ -1189,8 +1189,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 				MessageBox(NULL, L"This copy of Sonic Adventure DX is not the US version.\n\nPlease obtain the EXE file from the US version and try again.", L"SADX Mod Loader", MB_ICONERROR);
 				ExitProcess(1);
 			}
-		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
-		WriteCall((void *)0x401AE2, InitMods);
+		WriteCall((void *)0x402513, InitMods);
 		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
