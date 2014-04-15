@@ -961,12 +961,6 @@ unsigned char ReadCodes(istream &stream, list<Code> &list)
 const char codemagic[] = "codev2";
 void __cdecl InitMods(void)
 {
-	chrmodelshandle = LoadLibrary(L".\\system\\CHRMODELS_orig.dll");
-	if (!chrmodelshandle)
-	{
-		MessageBox(NULL, L"CHRMODELS_orig.dll could not be loaded!\n\nSADX will now proceed to abruptly exit.", L"SADX Mod Loader", MB_ICONERROR);
-		ExitProcess(1);
-	}
 	ifstream str = ifstream("mods\\SADXModLoader.ini");
 	if (!str.is_open())
 	{
@@ -1162,6 +1156,17 @@ closecodefile:
 	WriteJump((void *)0x426063, ProcessCodes);
 }
 
+void __cdecl LoadChrmodels(void)
+{
+	chrmodelshandle = LoadLibrary(L".\\system\\CHRMODELS_orig.dll");
+	if (!chrmodelshandle)
+	{
+		MessageBox(NULL, L"CHRMODELS_orig.dll could not be loaded!\n\nSADX will now proceed to abruptly exit.", L"SADX Mod Loader", MB_ICONERROR);
+		ExitProcess(1);
+	}
+	WriteCall((void *)0x402513, InitMods);
+}
+
 const uint8_t verchk[] = { 0x83, 0xEC, 0x28, 0x57, 0x33 };
 BOOL APIENTRY DllMain( HMODULE hModule,
 	DWORD  ul_reason_for_call,
@@ -1182,7 +1187,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 				MessageBox(NULL, L"This copy of Sonic Adventure DX is not the US version.\n\nPlease obtain the EXE file from the US version and try again.", L"SADX Mod Loader", MB_ICONERROR);
 				ExitProcess(1);
 			}
-		WriteCall((void *)0x402513, InitMods);
+		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
+		WriteCall((void *)0x401AE2, LoadChrmodels);
 		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
