@@ -148,10 +148,14 @@ namespace SADXModManager
 			using (FileStream fs = File.Create(codedatpath))
 			using (BinaryWriter bw = new BinaryWriter(fs, System.Text.Encoding.ASCII))
 			{
-				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '2' });
+				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '3' });
 				bw.Write(codes.Codes.Count((a) => a.Enabled));
 				foreach (Code item in codes.Codes.Where((a) => a.Enabled))
+				{
+					if (item.IsReg)
+						bw.Write((byte)CodeType.newregs);
 					WriteCodes(item.Lines, bw);
+				}
 				bw.Write(byte.MaxValue);
 			}
 		}
@@ -160,13 +164,16 @@ namespace SADXModManager
 		{
 			foreach (CodeLine line in codes)
 			{
-				byte t = (byte)line.Type;
+				writer.Write((byte)line.Type);
+				uint address;
+				if (line.Address.StartsWith("r"))
+					address = uint.Parse(line.Address.Substring(1), System.Globalization.NumberStyles.None, System.Globalization.NumberFormatInfo.InvariantInfo);
+				else
+					address = uint.Parse(line.Address, System.Globalization.NumberStyles.HexNumber);
 				if (line.Pointer)
-					t |= 0x80;
-				writer.Write(t);
-				writer.Write(line.Address);
+					address |= 0x80000000u;
+				writer.Write(address);
 				if (line.Pointer)
-				{
 					if (line.Offsets != null)
 					{
 						writer.Write((byte)line.Offsets.Count);
@@ -175,7 +182,6 @@ namespace SADXModManager
 					}
 					else
 						writer.Write((byte)0);
-				}
 				if (line.Type == CodeType.ifkbkey)
 					writer.Write((int)(Keys)Enum.Parse(typeof(Keys), line.Value));
 				else
@@ -223,11 +229,8 @@ namespace SADXModManager
 		private void saveAndPlayButton_Click(object sender, EventArgs e)
         {
             Save();
-            string exe = "sonic.exe";
-            foreach (string item in loaderini.Mods)
-                if (!string.IsNullOrEmpty(mods[item].EXEFile))
-                    exe = mods[item].EXEFile;
-            System.Diagnostics.Process.Start(exe);
+			System.Diagnostics.Process.Start(loaderini.Mods.Select((item) => mods[item].EXEFile)
+				.FirstOrDefault((item) => !string.IsNullOrEmpty(item)) ?? "sonic.exe");
             Close();
         }
 
@@ -376,19 +379,16 @@ namespace SADXModManager
 		public bool EnabledSpecified { get { return Enabled; } set { } }
 		[XmlElement("CodeLine")]
 		public List<CodeLine> Lines { get; set; }
+
+		[XmlIgnore]
+		public bool IsReg { get { return Lines.Any((line) => line.IsReg); } }
 	}
 
 	public class CodeLine
 	{
 		public CodeType Type { get; set; }
-		[XmlIgnore]
-		public uint Address { get; set; }
-		[XmlElement("Address", IsNullable = false)]
-		public string AddressText
-		{
-			get { return Address.ToString("X8"); }
-			set { Address = uint.Parse(value, System.Globalization.NumberStyles.HexNumber); }
-		}
+		[XmlElement(IsNullable = false)]
+		public string Address { get; set; }
 		public bool Pointer { get; set; }
 		[XmlIgnore]
 		public bool PointerSpecified { get { return Pointer; } set { } }
@@ -418,9 +418,34 @@ namespace SADXModManager
 		[XmlIgnore]
 		public bool FalseLinesSpecified { get { return FalseLines.Count > 0 && IsIf; } set { } }
 
+		[XmlIgnore]
 		public bool IsIf
 		{
-			get { return Type >= CodeType.ifeq8 && Type <= CodeType.ifkbkey; }
+			get
+			{
+				return (Type >= CodeType.ifeq8 && Type <= CodeType.ifkbkey)
+					|| (Type >= CodeType.ifeqreg8 && Type <= CodeType.ifmaskreg32);
+			}
+		}
+
+		[XmlIgnore]
+		public bool IsReg
+		{
+			get
+			{
+				if (IsIf)
+				{
+					if (TrueLines.Any((line) => line.IsReg))
+						return true;
+					if (FalseLines.Any((line) => line.IsReg))
+						return true;
+				}
+				if (Address.StartsWith("r"))
+					return true;
+				if (Type >= CodeType.readreg8 && Type <= CodeType.ifmaskreg32)
+					return true;
+				return false;
+			}
 		}
 	}
 
@@ -455,8 +480,38 @@ namespace SADXModManager
 		ifgteqs8, ifgteqs16, ifgteqs32,
 		ifmask8, ifmask16, ifmask32,
 		ifkbkey,
+		readreg8, readreg16, readreg32,
+		writereg8, writereg16, writereg32,
+		addreg8, addreg16, addreg32, addregfloat,
+		subreg8, subreg16, subreg32, subregfloat,
+		mulregu8, mulregu16, mulregu32, mulregfloat,
+		mulregs8, mulregs16, mulregs32,
+		divregu8, divregu16, divregu32, divregfloat,
+		divregs8, divregs16, divregs32,
+		modregu8, modregu16, modregu32,
+		modregs8, modregs16, modregs32,
+		shlreg8, shlreg16, shlreg32,
+		shrregu8, shrregu16, shrregu32,
+		shrregs8, shrregs16, shrregs32,
+		rolreg8, rolreg16, rolreg32,
+		rorreg8, rorreg16, rorreg32,
+		andreg8, andreg16, andreg32,
+		orreg8, orreg16, orreg32,
+		xorreg8, xorreg16, xorreg32,
+		ifeqreg8, ifeqreg16, ifeqreg32, ifeqregfloat,
+		ifnereg8, ifnereg16, ifnereg32, ifneregfloat,
+		ifltregu8, ifltregu16, ifltregu32, ifltregfloat,
+		ifltregs8, ifltregs16, ifltregs32,
+		iflteqregu8, iflteqregu16, iflteqregu32, iflteqregfloat,
+		iflteqregs8, iflteqregs16, iflteqregs32,
+		ifgtregu8, ifgtregu16, ifgtregu32, ifgtregfloat,
+		ifgtregs8, ifgtregs16, ifgtregs32,
+		ifgteqregu8, ifgteqregu16, ifgteqregu32, ifgteqregfloat,
+		ifgteqregs8, ifgteqregs16, ifgteqregs32,
+		ifmaskreg8, ifmaskreg16, ifmaskreg32,
 		@else,
-		endif
+		endif,
+		newregs
 	}
 
 	public enum ValueType
