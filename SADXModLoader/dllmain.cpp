@@ -1173,20 +1173,16 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	LPVOID lpReserved
 	)
 {
-	const uint8_t *data = (const uint8_t *)0x789E50;
-	const uint8_t *cmp = verchk;
-
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
 		myhandle = hModule;
 		HookTheAPI();
-		for (unsigned int i = 0; i < LengthOfArray(verchk); i++)
-			if (*cmp++ != *data++)
-			{
-				MessageBox(NULL, L"This copy of Sonic Adventure DX is not the US version.\n\nPlease obtain the EXE file from the US version and try again.", L"SADX Mod Loader", MB_ICONERROR);
-				ExitProcess(1);
-			}
+		if (memcmp(verchk, (void *)0x789E50, SizeOfArray(verchk)) != 0)
+		{
+			MessageBox(NULL, L"This copy of Sonic Adventure DX is not the US version.\n\nPlease obtain the EXE file from the US version and try again.", L"SADX Mod Loader", MB_ICONERROR);
+			ExitProcess(1);
+		}
 		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
 		WriteCall((void *)0x401AE2, LoadChrmodels);
 		break;
