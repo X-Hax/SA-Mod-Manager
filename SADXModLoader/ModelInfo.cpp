@@ -78,6 +78,10 @@ void *ModelInfo::getdata(const string &label)
 		return elem->second;
 }
 
+const list<string> &ModelInfo::getanimations() { return animations; }
+
+const list<string> &ModelInfo::getmorphs() { return morphs; }
+
 static string getstring(istream &stream)
 {
 	auto start = stream.tellg();
@@ -249,7 +253,30 @@ void ModelInfo::init(istream &stream)
 			}
 			break;
 		case ChunkTypes_Animation:
+			while (true)
+			{
+				uint32_t labelptr;
+				readdata(stream, labelptr);
+				if (labelptr == UINT32_MAX)
+					break;
+				tmpaddr = (uint32_t)stream.tellg();
+				stream.seekg((uint32_t)chunkbase + labelptr);
+				animations.push_back(getstring(stream));
+				stream.seekg(tmpaddr);
+			}
+			break;
 		case ChunkTypes_Morph:
+			while (true)
+			{
+				uint32_t labelptr;
+				readdata(stream, labelptr);
+				if (labelptr == UINT32_MAX)
+					break;
+				tmpaddr = (uint32_t)stream.tellg();
+				stream.seekg((uint32_t)chunkbase + labelptr);
+				morphs.push_back(getstring(stream));
+				stream.seekg(tmpaddr);
+			}
 			break;
 		case ChunkTypes_Author:
 			author = getstring(stream);

@@ -31,6 +31,8 @@ public:
 	const uint8_t *getmetadata(uint32_t identifier, uint32_t &size);
 	const std::string &getlabel(void *data);
 	void *getdata(const std::string &label);
+	const std::list<std::string> &getanimations();
+	const std::list<std::string> &getmorphs();
 
 private:
 	static const uint64_t SA1MDL = 0x4C444D314153u;
@@ -48,6 +50,7 @@ private:
 	std::vector<std::shared_ptr<void>> allocatedmem;
 	std::unordered_set<void *> fixedpointers;
 	std::unordered_map<void *, void *> reallocateddata;
+	std::list<std::string> animations, morphs;
 
 	enum ChunkTypes : uint32_t
 	{
