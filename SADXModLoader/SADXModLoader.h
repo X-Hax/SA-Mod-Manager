@@ -694,8 +694,7 @@ enum Buttons : int
 
 // SADX Structs
 typedef NJS_VECTOR Vertex, Vector3;
-typedef NJS_TEXLIST TexList;
-typedef NJS_TEXLIST TexListHead;
+typedef NJS_TEXLIST TexList, TexListHead;
 typedef NJS_OBJECT OBJECT;
 typedef NJS_MODEL ATTACH;
 
@@ -909,7 +908,9 @@ struct CharObj2
 	PhysicsData PhysicsData;
 	char gap_120[4];
 	__int16 Animation;
-	char gap_126[26];
+	char gap_126[10];
+	float AnimationFrame;
+	char gap_134[12];
 	AnimData *AnimData;
 	NJS_OBJECT **field_144;
 	char gap_148[148];
@@ -1395,9 +1396,16 @@ DataArray(MusicInfo, MusicList, 0x910298, 125);
 DataArray(PhysicsData, PhysicsArray, 0x9154E8, 8);
 DataArray(PVMEntry *, CharSel_PVMNames, 0x10DB88C, 8);
 DataPointer(int, GameMode, 0x3ABDC7C);
+DataPointer(NJS_VECTOR, Gravity, 0x3B0F0F8);
+DataPointer(int, LevelFrameCount, 0x3B0F108);
+DataPointer(int, FrameCounter, 0x3B0F13C);
 DataPointer(char, LastStoryFlag, 0x3B18DB4);
 DataPointer(char, MetalSonicFlag, 0x3B18DB5);
+DataPointer(short, CurrentCharacter, 0x3B22DC0);
+DataPointer(short, CurrentLevel, 0x3B22DCC);
+DataPointer(char, CurrentAct, 0x3B22DEC);
 DataPointer(short, ObjectPlacementDebug, 0x3B29D08);
+DataPointer(RestartData, RestartLevel, 0x3B42F80);
 
 // SADX Functions
 #define FunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) static RETURN_TYPE (__cdecl *const NAME)ARGS = (RETURN_TYPE (__cdecl *)ARGS)ADDRESS
@@ -1449,7 +1457,8 @@ FunctionPointer(bool, IsLevelChaoGarden, (), 0x4146B0);
 FunctionPointer(int, SetLevelEntrance, (char num), 0x4147F0);
 FunctionPointer(int, GetLevelEntranceID, (), 0x414800);
 FunctionPointer(void, SetNextLevel, (unsigned __int16 level), 0x414B00);
-VoidFunc(CharLoad, 0x4157C0);
+FunctionPointer(bool, IsGamePaused, (), 0x414D70);
+VoidFunc(LoadCharacter, 0x4157C0);
 FunctionPointer(void, UnloadCharTextures, (int Character), 0x420E90);
 FunctionPointer(int, UnloadLevelTextures, (__int16 levelact), 0x421040);
 FunctionPointer(int, LoadPVM, (char *PVMName, TexListHead *TexList), 0x421180);
@@ -1678,14 +1687,18 @@ FunctionPointer(void, SetDebugTextColor, (int a1), 0x7808E0);
 FunctionPointer(void, DisplayDebugString, (signed int position, char *text), 0x7808F0);
 FunctionPointer(void, PrintDebugNumber, (signed int position, int value, signed int numdigits), 0x780970);
 FunctionPointer(void, DisplayDebugStringFormatted, (signed int position, char *text, ...), 0x780B30);
-ThiscallFunctionPointer(int, MatrixScale, (Vector3 *Scale), 0x781700);
+ThiscallFunctionPointer(void, MatrixScale, (Vector3 *Scale), 0x781700);
 FastcallFunctionPointer(void, MatrixRotateXYZ, (D3DMATRIX *a1, signed int XRot, signed int YRot, signed int ZRot), 0x781770);
 FastcallFunctionPointer(void, MatrixRotateZYX, (int a1, signed int XRot, signed int YRot, signed int ZRot), 0x7819C0);
-ThiscallFunctionPointer(int, MatrixTranslate, (Vector3 *), 0x781C10);
-ThiscallFunctionPointer(D3DMATRIX *, MatrixTranslate3, (D3DMATRIX *a1, float XDist, float YDist, float ZDist), 0x784BE0);
-ThiscallFunctionPointer(D3DMATRIX *, MatrixScale3, (D3DMATRIX *a1, float XScale, float YScale, float ZScale), 0x784C70);
+ThiscallFunctionPointer(void, MatrixTranslate, (Vector3 *), 0x781C10);
+ThiscallFunctionPointer(void, MatrixTranslate3, (D3DMATRIX *a1, float XDist, float YDist, float ZDist), 0x784BE0);
+ThiscallFunctionPointer(void, MatrixScale3, (D3DMATRIX *a1, float XScale, float YScale, float ZScale), 0x784C70);
 FastcallFunctionPointer(void, TransformCoordinate, (D3DMATRIX *a1, Vector3 *a3, Vector3 *a2), 0x784D60);
-FastcallFunctionPointer(D3DMATRIX *, MatrixRotateY, (D3DMATRIX *a1, signed int a2), 0x784E20);
+FastcallFunctionPointer(void, MatrixRotateY, (D3DMATRIX *a1, signed int a2), 0x784E20);
+FastcallFunctionPointer(void, MatrixRotateX, (D3DMATRIX *a1, signed int a2), 0x784EE0);
+FastcallFunctionPointer(void, MatrixRotateZ, (D3DMATRIX *a1, signed int a2), 0x784FB0);
+FastcallFunctionPointer(void, MatrixTranslate2, (D3DMATRIX *a1, NJS_VECTOR *a2), 0x785070);
+ThiscallFunctionPointer(void, PushMatrix2, (D3DMATRIX *a1), 0x7850F0);
 ThiscallFunctionPointer(void, PopMatrices, (int numMatrices), 0x785140);
 FastcallFunctionPointer(void, Vector3_Subtract, (Vector3 *a1, Vector3 *a2), 0x787610);
 FunctionPointer(void, RenderSA2Model, (OBJECT *a1), 0x78AB80);
