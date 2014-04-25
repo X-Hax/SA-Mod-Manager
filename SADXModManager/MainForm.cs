@@ -10,57 +10,58 @@ using System.Xml.Serialization;
 
 namespace SADXModManager
 {
-    public partial class MainForm : Form
-    {
-        public MainForm()
-        {
-            InitializeComponent();
-        }
+	public partial class MainForm : Form
+	{
+		public MainForm()
+		{
+			InitializeComponent();
+		}
 
-        const string datadllpath = @"system\CHRMODELS.dll";
-        const string datadllorigpath = @"system\CHRMODELS_orig.dll";
-        const string loaderinipath = @"mods\SADXModLoader.ini";
-        const string loaderdllpath = @"mods\SADXModLoader.dll";
-        LoaderInfo loaderini;
-        Dictionary<string, ModInfo> mods;
+		const string datadllpath = @"system\CHRMODELS.dll";
+		const string datadllorigpath = @"system\CHRMODELS_orig.dll";
+		const string loaderinipath = @"mods\SADXModLoader.ini";
+		const string loaderdllpath = @"mods\SADXModLoader.dll";
+		LoaderInfo loaderini;
+		Dictionary<string, ModInfo> mods;
 		const string codexmlpath = @"mods\Codes.xml";
 		const string codedatpath = @"mods\Codes.dat";
 		CodeList codes;
 		bool installed;
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            if (File.Exists(loaderinipath))
-                loaderini = IniFile.Deserialize<LoaderInfo>(loaderinipath);
-            else
-                loaderini = new LoaderInfo();
+		private void MainForm_Load(object sender, EventArgs e)
+		{
+			if (File.Exists(loaderinipath))
+				loaderini = IniFile.Deserialize<LoaderInfo>(loaderinipath);
+			else
+				loaderini = new LoaderInfo();
 
 			LoadModList();
-            
-            consoleCheckBox.Checked = loaderini.DebugConsole;
+
+			consoleCheckBox.Checked = loaderini.DebugConsole;
 			screenCheckBox.Checked = loaderini.DebugScreen;
 			fileCheckBox.Checked = loaderini.DebugFile;
-            dontFixWindowCheckBox.Checked = loaderini.DontFixWindow;
-            disableCDCheckCheckBox.Checked = loaderini.DisableCDCheck;
-            useCustomResolutionCheckBox.Checked = horizontalResolution.Enabled = verticalResolution.Enabled = loaderini.UseCustomResolution;
-            horizontalResolution.Value = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
-            verticalResolution.Value = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
-            if (!File.Exists(datadllpath))
-            {
-                MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\nCannot determine state of installation.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                installButton.Hide();
-            }
-            else if (File.Exists(datadllorigpath))
-            {
-                installed = true;
-                installButton.Text = "Uninstall loader";
-                MD5 md5 = MD5.Create();
-                byte[] hash1 = md5.ComputeHash(File.ReadAllBytes(loaderdllpath));
-                byte[] hash2 = md5.ComputeHash(File.ReadAllBytes(datadllpath));
-                if (!hash1.SequenceEqual(hash2))
-                    if (MessageBox.Show(this, "Installed loader DLL differs from copy in mods folder.\n\nDo you want to overwrite the installed copy?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.Yes)
-                        File.Copy(loaderdllpath, datadllpath, true);
-            }
+			dontFixWindowCheckBox.Checked = loaderini.DontFixWindow;
+			disableCDCheckCheckBox.Checked = loaderini.DisableCDCheck;
+			useCustomResolutionCheckBox.Checked = horizontalResolution.Enabled = verticalResolution.Enabled = loaderini.UseCustomResolution;
+			horizontalResolution.Value = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
+			verticalResolution.Value = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
+			windowedFullscreenCheckBox.Checked = loaderini.WindowedFullscreen;
+			if (!File.Exists(datadllpath))
+			{
+				MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\nCannot determine state of installation.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				installButton.Hide();
+			}
+			else if (File.Exists(datadllorigpath))
+			{
+				installed = true;
+				installButton.Text = "Uninstall loader";
+				MD5 md5 = MD5.Create();
+				byte[] hash1 = md5.ComputeHash(File.ReadAllBytes(loaderdllpath));
+				byte[] hash2 = md5.ComputeHash(File.ReadAllBytes(datadllpath));
+				if (!hash1.SequenceEqual(hash2))
+					if (MessageBox.Show(this, "Installed loader DLL differs from copy in mods folder.\n\nDo you want to overwrite the installed copy?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.Yes)
+						File.Copy(loaderdllpath, datadllpath, true);
+			}
 			try { codes = CodeList.Load(codexmlpath); }
 			catch { codes = new CodeList() { Codes = new List<Code>() }; }
 			foreach (Code item in codes.Codes)
@@ -93,55 +94,56 @@ namespace SADXModManager
 			modListView.EndUpdate();
 		}
 
-        private void modListView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (modListView.SelectedIndices.Count == 0)
-            {
-                modUpButton.Enabled = modDownButton.Enabled = false;
-                modDescription.Text = "Description: No mod selected.";
-            }
-            else
-            {
-                modDescription.Text = "Description: " + mods[(string)modListView.SelectedItems[0].Tag].Description;
-                modUpButton.Enabled = modListView.SelectedIndices[0] > 0;
-                modDownButton.Enabled = modListView.SelectedIndices[0] < modListView.Items.Count - 1;
-            }
-        }
+		private void modListView_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (modListView.SelectedIndices.Count == 0)
+			{
+				modUpButton.Enabled = modDownButton.Enabled = false;
+				modDescription.Text = "Description: No mod selected.";
+			}
+			else
+			{
+				modDescription.Text = "Description: " + mods[(string)modListView.SelectedItems[0].Tag].Description;
+				modUpButton.Enabled = modListView.SelectedIndices[0] > 0;
+				modDownButton.Enabled = modListView.SelectedIndices[0] < modListView.Items.Count - 1;
+			}
+		}
 
-        private void modUpButton_Click(object sender, EventArgs e)
-        {
-            int i = modListView.SelectedIndices[0];
-            ListViewItem item = modListView.Items[i];
-            modListView.BeginUpdate();
-            modListView.Items.Remove(item);
-            modListView.Items.Insert(i - 1, item);
-            modListView.EndUpdate();
-        }
+		private void modUpButton_Click(object sender, EventArgs e)
+		{
+			int i = modListView.SelectedIndices[0];
+			ListViewItem item = modListView.Items[i];
+			modListView.BeginUpdate();
+			modListView.Items.Remove(item);
+			modListView.Items.Insert(i - 1, item);
+			modListView.EndUpdate();
+		}
 
-        private void modDownButton_Click(object sender, EventArgs e)
-        {
-            int i = modListView.SelectedIndices[0];
-            ListViewItem item = modListView.Items[i];
-            modListView.BeginUpdate();
-            modListView.Items.Remove(item);
-            modListView.Items.Insert(i + 1, item);
-            modListView.EndUpdate();
-        }
+		private void modDownButton_Click(object sender, EventArgs e)
+		{
+			int i = modListView.SelectedIndices[0];
+			ListViewItem item = modListView.Items[i];
+			modListView.BeginUpdate();
+			modListView.Items.Remove(item);
+			modListView.Items.Insert(i + 1, item);
+			modListView.EndUpdate();
+		}
 
-        private void Save()
-        {
-            loaderini.Mods.Clear();
-            foreach (ListViewItem item in modListView.CheckedItems)
-                loaderini.Mods.Add((string)item.Tag);
-            loaderini.DebugConsole = consoleCheckBox.Checked;
+		private void Save()
+		{
+			loaderini.Mods.Clear();
+			foreach (ListViewItem item in modListView.CheckedItems)
+				loaderini.Mods.Add((string)item.Tag);
+			loaderini.DebugConsole = consoleCheckBox.Checked;
 			loaderini.DebugScreen = screenCheckBox.Checked;
 			loaderini.DebugFile = fileCheckBox.Checked;
-            loaderini.DontFixWindow = dontFixWindowCheckBox.Checked;
-            loaderini.DisableCDCheck = disableCDCheckCheckBox.Checked;
-            loaderini.UseCustomResolution = useCustomResolutionCheckBox.Checked;
-            loaderini.HorizontalResolution = (int)horizontalResolution.Value;
-            loaderini.VerticalResolution = (int)verticalResolution.Value;
-            IniFile.Serialize(loaderini, loaderinipath);
+			loaderini.DontFixWindow = dontFixWindowCheckBox.Checked;
+			loaderini.DisableCDCheck = disableCDCheckCheckBox.Checked;
+			loaderini.UseCustomResolution = useCustomResolutionCheckBox.Checked;
+			loaderini.HorizontalResolution = (int)horizontalResolution.Value;
+			loaderini.VerticalResolution = (int)verticalResolution.Value;
+			loaderini.WindowedFullscreen = windowedFullscreenCheckBox.Checked;
+			IniFile.Serialize(loaderini, loaderinipath);
 			for (int i = 0; i < codes.Codes.Count; i++)
 				codes.Codes[i].Enabled = codesCheckedListBox.GetItemChecked(i);
 			codes.Save(codexmlpath);
@@ -227,45 +229,45 @@ namespace SADXModManager
 		}
 
 		private void saveAndPlayButton_Click(object sender, EventArgs e)
-        {
-            Save();
+		{
+			Save();
 			System.Diagnostics.Process.Start(loaderini.Mods.Select((item) => mods[item].EXEFile)
 				.FirstOrDefault((item) => !string.IsNullOrEmpty(item)) ?? "sonic.exe");
-            Close();
-        }
+			Close();
+		}
 
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            Save();
-        }
+		private void saveButton_Click(object sender, EventArgs e)
+		{
+			Save();
+		}
 
-        private void installButton_Click(object sender, EventArgs e)
-        {
-            if (installed)
-            {
-                File.Delete(datadllpath);
-                File.Move(datadllorigpath, datadllpath);
-                installButton.Text = "Install loader";
-            }
-            else
-            {
-                File.Move(datadllpath, datadllorigpath);
-                File.Copy(loaderdllpath, datadllpath);
-                installButton.Text = "Uninstall loader";
-            }
-            installed = !installed;
-        }
+		private void installButton_Click(object sender, EventArgs e)
+		{
+			if (installed)
+			{
+				File.Delete(datadllpath);
+				File.Move(datadllorigpath, datadllpath);
+				installButton.Text = "Install loader";
+			}
+			else
+			{
+				File.Move(datadllpath, datadllorigpath);
+				File.Copy(loaderdllpath, datadllpath);
+				installButton.Text = "Uninstall loader";
+			}
+			installed = !installed;
+		}
 
-        private void useCustomResolutionCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            horizontalResolution.Enabled = verticalResolution.Enabled = useCustomResolutionCheckBox.Checked;
-        }
+		private void useCustomResolutionCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			horizontalResolution.Enabled = verticalResolution.Enabled = useCustomResolutionCheckBox.Checked;
+		}
 
-        private void configEditorButton_Click(object sender, EventArgs e)
-        {
-            using (ConfigEditDialog dlg = new ConfigEditDialog())
-                dlg.ShowDialog(this);
-        }
+		private void configEditorButton_Click(object sender, EventArgs e)
+		{
+			using (ConfigEditDialog dlg = new ConfigEditDialog())
+				dlg.ShowDialog(this);
+		}
 
 		private void codesCheckedListBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -314,39 +316,40 @@ namespace SADXModManager
 		{
 			System.Diagnostics.Process.Start(@"mods");
 		}
-    }
+	}
 
-    class LoaderInfo
-    {
+	class LoaderInfo
+	{
 		public bool DebugConsole { get; set; }
 		public bool DebugScreen { get; set; }
 		public bool DebugFile { get; set; }
 		public bool? ShowConsole { get { return null; } set { if (value.HasValue) DebugConsole = value.Value; } }
-        public bool DontFixWindow { get; set; }
-        public bool DisableCDCheck { get; set; }
-        public bool UseCustomResolution { get; set; }
-        [DefaultValue(640)]
-        public int HorizontalResolution { get; set; }
-        [DefaultValue(480)]
-        public int VerticalResolution { get; set; }
-        [IniName("Mod")]
-        [IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
-        public List<string> Mods { get; set; }
+		public bool DontFixWindow { get; set; }
+		public bool DisableCDCheck { get; set; }
+		public bool UseCustomResolution { get; set; }
+		[DefaultValue(640)]
+		public int HorizontalResolution { get; set; }
+		[DefaultValue(480)]
+		public int VerticalResolution { get; set; }
+		public bool WindowedFullscreen { get; set; }
+		[IniName("Mod")]
+		[IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
+		public List<string> Mods { get; set; }
 
-        public LoaderInfo()
-        {
-            Mods = new List<string>();
-        }
-    }
+		public LoaderInfo()
+		{
+			Mods = new List<string>();
+		}
+	}
 
-    class ModInfo
-    {
-        public string Name { get; set; }
-        public string Author { get; set; }
-        public string Description { get; set; }
-        public string EXEFile { get; set; }
-        public string DLLFile { get; set; }
-    }
+	class ModInfo
+	{
+		public string Name { get; set; }
+		public string Author { get; set; }
+		public string Description { get; set; }
+		public string EXEFile { get; set; }
+		public string DLLFile { get; set; }
+	}
 
 	[XmlRoot(Namespace = "http://www.sonicretro.org")]
 	public class CodeList
