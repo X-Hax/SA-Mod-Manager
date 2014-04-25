@@ -31,7 +31,7 @@ IniDictionary LoadINI(istream &textfile)
 		int endbracket = -1;
 		for (int c = 0; c < (int)line.length(); c++)
 			switch (line[c])
-			{
+		{
 			case '\\': // escape character
 				if (c + 1 == line.length())
 					goto appendchar;
@@ -66,7 +66,7 @@ IniDictionary LoadINI(istream &textfile)
 appendchar:
 				sb += line[c];
 				break;
-			}
+		}
 		line = sb;
 		if (startswithbracket && endbracket != -1)
 		{
@@ -148,71 +148,71 @@ __declspec(naked) int PlayVideoFile_r()
 	{
 		mov eax, [esp+4]
 		push esi
-		push eax
-		call _ReplaceFile
-		add esp, 4
-		pop esi
-		mov [esp+4], eax
-		jmp PlayVideoFilePtr
+			push eax
+			call _ReplaceFile
+			add esp, 4
+			pop esi
+			mov [esp+4], eax
+			jmp PlayVideoFilePtr
 	}
 }
 
 void HookTheAPI()
 {
-    ULONG ulSize = 0;
-    PROC pNewFunction = NULL;
-    PROC pActualFunction = NULL;
+	ULONG ulSize = 0;
+	PROC pNewFunction = NULL;
+	PROC pActualFunction = NULL;
 
-    PSTR pszModName = NULL;
+	PSTR pszModName = NULL;
 
-    HMODULE hModule = GetModuleHandle(NULL);
-    PIMAGE_IMPORT_DESCRIPTOR pImportDesc = NULL;
+	HMODULE hModule = GetModuleHandle(NULL);
+	PIMAGE_IMPORT_DESCRIPTOR pImportDesc = NULL;
 
-    pNewFunction = (PROC)MyGetProcAddress;
+	pNewFunction = (PROC)MyGetProcAddress;
 	PROC pNewCreateFile = (PROC)MyCreateFileA;
-    pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "GetProcAddress");
+	pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "GetProcAddress");
 	PROC pActualCreateFile = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "CreateFileA");
 
-    pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR) ImageDirectoryEntryToData(
-                                                    hModule, TRUE, IMAGE_DIRECTORY_ENTRY_IMPORT, &ulSize);
+	pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR) ImageDirectoryEntryToData(
+		hModule, TRUE, IMAGE_DIRECTORY_ENTRY_IMPORT, &ulSize);
 
-    if(NULL != pImportDesc)
-    {
-        for (; pImportDesc->Name; pImportDesc++)
-        {
-            // get the module name
-            pszModName = (PSTR) ((PBYTE) hModule + pImportDesc->Name);
+	if(NULL != pImportDesc)
+	{
+		for (; pImportDesc->Name; pImportDesc++)
+		{
+			// get the module name
+			pszModName = (PSTR) ((PBYTE) hModule + pImportDesc->Name);
 
-            if(NULL != pszModName)
-            {
-                // check if the module is kernel32.dll
-                if (lstrcmpiA(pszModName, "Kernel32.dll") == 0)
-                {
-                    // get the module
-                    PIMAGE_THUNK_DATA pThunk = (PIMAGE_THUNK_DATA) ((PBYTE) hModule + pImportDesc->FirstThunk);
+			if(NULL != pszModName)
+			{
+				// check if the module is kernel32.dll
+				if (lstrcmpiA(pszModName, "Kernel32.dll") == 0)
+				{
+					// get the module
+					PIMAGE_THUNK_DATA pThunk = (PIMAGE_THUNK_DATA) ((PBYTE) hModule + pImportDesc->FirstThunk);
 
-                     for (; pThunk->u1.Function; pThunk++) 
-                     {
-                        PROC* ppfn = (PROC*) &pThunk->u1.Function;
-                        if(*ppfn == pActualFunction)
-                        {
-                                DWORD dwOldProtect = 0;
-                                VirtualProtect(ppfn, sizeof(pNewFunction), PAGE_WRITECOPY,&dwOldProtect);
-                                     WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewFunction, sizeof(pNewFunction), NULL);
-                                     VirtualProtect(ppfn, sizeof(pNewFunction), dwOldProtect,&dwOldProtect);
-                        } // Function that we are looking for
+					for (; pThunk->u1.Function; pThunk++) 
+					{
+						PROC* ppfn = (PROC*) &pThunk->u1.Function;
+						if(*ppfn == pActualFunction)
+						{
+							DWORD dwOldProtect = 0;
+							VirtualProtect(ppfn, sizeof(pNewFunction), PAGE_WRITECOPY,&dwOldProtect);
+							WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewFunction, sizeof(pNewFunction), NULL);
+							VirtualProtect(ppfn, sizeof(pNewFunction), dwOldProtect,&dwOldProtect);
+						} // Function that we are looking for
 						else if (*ppfn == pActualCreateFile)
 						{
-                                DWORD dwOldProtect = 0;
-                                VirtualProtect(ppfn, sizeof(pNewCreateFile), PAGE_WRITECOPY,&dwOldProtect);
-                                     WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewCreateFile, sizeof(pNewCreateFile), NULL);
-                                     VirtualProtect(ppfn, sizeof(pNewCreateFile), dwOldProtect,&dwOldProtect);
+							DWORD dwOldProtect = 0;
+							VirtualProtect(ppfn, sizeof(pNewCreateFile), PAGE_WRITECOPY,&dwOldProtect);
+							WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewCreateFile, sizeof(pNewCreateFile), NULL);
+							VirtualProtect(ppfn, sizeof(pNewCreateFile), dwOldProtect,&dwOldProtect);
 						}
-                     }
-                } // Compare module name
-            } // Valid module name
-        }
-    }
+					}
+				} // Compare module name
+			} // Valid module name
+		}
+	}
 }
 
 
@@ -335,7 +335,7 @@ void *GetAddress(Code &code, valuetype *regs)
 	cond &= *addru##size op it->value.u##size; \
 	addru##size++; \
 } \
-if (cond) \
+	if (cond) \
 	ProcessCodeList(it->trueCodes); \
 else \
 	ProcessCodeList(it->falseCodes);
@@ -345,7 +345,7 @@ else \
 	cond &= *addrs##size op it->value.s##size; \
 	addrs##size++; \
 } \
-if (cond) \
+	if (cond) \
 	ProcessCodeList(it->trueCodes); \
 else \
 	ProcessCodeList(it->falseCodes);
@@ -355,7 +355,7 @@ else \
 	cond &= *addrf op it->value.f; \
 	addrf++; \
 } \
-if (cond) \
+	if (cond) \
 	ProcessCodeList(it->trueCodes); \
 else \
 	ProcessCodeList(it->falseCodes);
@@ -1331,44 +1331,125 @@ int __cdecl SADXDebugOutput(const char *Format, ...)
 	return result;
 }
 
-DataPointer(int, dword_38A5DC4, 0x38A5DC4);
+DataPointer(int, dword_3D08534, 0x3D08534);
+void __cdecl sub_789BD0()
+{
+  MSG v0; // [sp+4h] [bp-1Ch]@1
+
+  if ( PeekMessageA(&v0, 0, 0, 0, 1u) )
+  {
+    do
+    {
+      TranslateMessage(&v0);
+      DispatchMessageA(&v0);
+    }
+    while ( PeekMessageA(&v0, 0, 0, 0, 1u) );
+    dword_3D08534 = v0.wParam;
+  }
+  else
+  {
+    dword_3D08534 = v0.wParam;
+  }
+}
+
 DataPointer(HWND, hWnd, 0x3D0FD30);
+LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg) {
+    case WM_CLOSE:
+        // we also need to let SADX do cleanup
+        SendMessage(hWnd, WM_CLOSE, wParam, lParam);
+        // what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
+        return 0;
+    default:
+        // alternatively we can return SendMe
+        return DefWindowProc(wrapper, uMsg, wParam, lParam);
+    }
+    /* unreachable */ return 0;
+}
+
+bool windowedfullscreen = false;
+
+DataPointer(int, Windowed, 0x38A5DC4);
 DataPointer(HINSTANCE, hInstance, 0x3D0FD34);
 void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 {
-  signed int v2; // eax@3
-  DWORD v3; // esi@3
-  WNDCLASSA v8; // [sp+4h] [bp-28h]@1
+	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
+	
+	v8.style = 0;
+	v8.lpfnWndProc = (WNDPROC)0x789DE0;
+	v8.cbClsExtra = 0;
+	v8.cbWndExtra = 0;
+	v8.hInstance = _hInstance;
+	v8.hIcon = LoadIconA(_hInstance, MAKEINTRESOURCEA(101));
+	v8.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
+	v8.hbrBackground = (HBRUSH)GetStockObject(0);
+	v8.lpszMenuName = 0;
+	v8.lpszClassName = GetWindowClassName();
+	if (!RegisterClassA(&v8))
+		return;
+	if (!Windowed && windowedfullscreen)
+	{
+		WNDCLASS w;
+		ZeroMemory(&w, sizeof (WNDCLASS));
+		w.lpszClassName = TEXT("WrapperWindow");
+		w.lpfnWndProc = WrapperWndProc;
+		w.hInstance = _hInstance;
+		w.hIcon = LoadIconA(_hInstance, MAKEINTRESOURCEA(101));
+		w.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
+		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+		if (RegisterClass(&w) == 0)
+			return;
 
-  v8.style = 0;
-  v8.lpfnWndProc = (WNDPROC)0x789DE0;
-  v8.cbClsExtra = 0;
-  v8.cbWndExtra = 0;
-  v8.hInstance = _hInstance;
-  v8.hIcon = LoadIconA((HINSTANCE)0x400000, MAKEINTRESOURCEA(101));
-  v8.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
-  v8.hbrBackground = (HBRUSH)GetStockObject(0);
-  v8.lpszMenuName = 0;
-  v8.lpszClassName = GetWindowClassName();
-  if ( RegisterClassA(&v8) )
-  {
-    if ( dword_38A5DC4 )
-    {
-      v3 = 0;
-      v2 = 0xC80000u;
-    }
-    else
-    {
-      v3 = 136;
-      v2 = 0xC00000u;
-    }
-	RECT wndsz = { 0, 0, HorizontalResolution, VerticalResolution };
-	AdjustWindowRectEx(&wndsz, v2, false, 0);
-    hWnd = CreateWindowExA(v3, GetWindowClassName(), GetWindowClassName(), v2, CW_USEDEFAULT, CW_USEDEFAULT, wndsz.right - wndsz.left, wndsz.bottom - wndsz.top, 0, NULL, hInstance, 0);
-    ShowWindow(hWnd, nCmdShow);
-    UpdateWindow(hWnd);
-    SetForegroundWindow(hWnd);
-  }
+		int scrnw = GetSystemMetrics(SM_CXSCREEN);
+		int scrnh = GetSystemMetrics(SM_CYSCREEN);
+
+		HWND wrapper = CreateWindowExA(WS_EX_APPWINDOW,
+			"WrapperWindow",
+			(const char *)0x7DB82C,
+			WS_POPUP,
+			0, 0, scrnw, scrnh,
+			NULL, NULL, hInstance, NULL);
+
+		if (wrapper == NULL)
+			return;
+
+		float num = min((float)scrnw / (float)HorizontalResolution, (float)scrnh / (float)VerticalResolution);
+		int dispw = (int)((float)HorizontalResolution * num);
+		int disph = (int)((float)VerticalResolution * num);
+		int dispx = (scrnw - dispw) / 2;
+		int dispy = (scrnh - disph) / 2;
+
+		hWnd = CreateWindowExA(0, GetWindowClassName(), GetWindowClassName(), WS_CHILD | WS_VISIBLE,
+			dispx, dispy, dispw, disph, wrapper, NULL, hInstance, 0);
+		SetFocus(hWnd);
+		ShowWindow(wrapper, nCmdShow);
+		UpdateWindow(wrapper);
+		SetForegroundWindow(wrapper);
+		Windowed = 1;
+		WriteJump((void *)0x789BD0, sub_789BD0);
+	}
+	else
+	{
+		signed int v2; // eax@3
+		DWORD v3; // esi@3
+		if ( Windowed )
+		{
+			v3 = 0;
+			v2 = WS_CAPTION | WS_SYSMENU;
+		}
+		else
+		{
+			v3 = WS_EX_TOPMOST | WS_EX_TOOLWINDOW;
+			v2 = WS_CAPTION;
+		}
+		RECT wndsz = { 0, 0, HorizontalResolution, VerticalResolution };
+		AdjustWindowRectEx(&wndsz, v2, false, 0);
+		hWnd = CreateWindowExA(v3, GetWindowClassName(), GetWindowClassName(), v2, CW_USEDEFAULT, CW_USEDEFAULT, wndsz.right - wndsz.left, wndsz.bottom - wndsz.top, 0, NULL, hInstance, 0);
+		ShowWindow(hWnd, nCmdShow);
+		UpdateWindow(hWnd);
+		SetForegroundWindow(hWnd);
+	}
 }
 
 __declspec(naked) void sub_789E50_r()
@@ -1377,10 +1458,10 @@ __declspec(naked) void sub_789E50_r()
 	{
 		mov ebx, [esp+4]
 		push ebx
-		push eax
-		call CreateSADXWindow
-		add esp, 8
-		retn
+			push eax
+			call CreateSADXWindow
+			add esp, 8
+			retn
 	}
 }
 
@@ -1457,14 +1538,14 @@ unsigned char ReadCodes(istream &stream, list<Code> &list)
 		stream.read((char *)&code.repeatcount, sizeof(uint32_t));
 		if ((code.type >= ifeq8 && code.type <= ifkbkey) || (code.type >= ifeqreg8 && code.type <= ifmaskreg32))
 			switch (ReadCodes(stream, code.trueCodes))
-			{
-				case _else:
-					if (ReadCodes(stream, code.falseCodes) == 0xFF)
-						return 0xFF;
-					break;
-				case 0xFF:
+		{
+			case _else:
+				if (ReadCodes(stream, code.falseCodes) == 0xFF)
 					return 0xFF;
-			}
+				break;
+			case 0xFF:
+				return 0xFF;
+		}
 		list.push_back(code);
 	}
 	return 0;
@@ -1533,6 +1614,9 @@ void __cdecl InitMods(void)
 			VerticalResolution = strtol(str.c_str(), NULL, 10);
 		VerticalStretch = VerticalResolution / 480.0f;
 	}
+	item = settings["WindowedFullscreen"];
+	transform(item.begin(), item.end(), item.begin(), ::tolower);
+	windowedfullscreen = item == "true";
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
 	WriteCall((void *)0x42544C, PlayMusicFile_r);
 	WriteCall((void *)0x4254F4, PlayVoiceFile_r);
