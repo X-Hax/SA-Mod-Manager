@@ -1348,7 +1348,7 @@ ACCEL accelerators[] = {
 	{ FALT | FVIRTKEY, VK_RETURN, 0 }
 };
 
-WNDCLASSA outerWindowClass;
+WNDCLASS outerWindowClass;
 HWND outerWindow;
 windowmodes windowmode;
 HACCEL accelTbl;
@@ -1382,9 +1382,9 @@ void CreateOuterWindow()
 {
 	windowdata *data = &windowsizes[windowmode];
 
-	outerWindow = CreateWindowExA(data->extendedstyle,
-		"OuterWindow",
-		"SonicAdventureDXPC",
+	outerWindow = CreateWindowEx(data->extendedstyle,
+		L"OuterWindow",
+		L"SonicAdventureDXPC",
 		data->style,
 		data->x, data->y, data->width, data->height,
 		NULL, NULL, hInstance, NULL);
@@ -1415,7 +1415,10 @@ LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM l
 			ShowWindow(outerWindow, SW_SHOW);
 			UpdateWindow(outerWindow);
 			SetForegroundWindow(outerWindow);
-			ShowCursor(windowmode == windowed);
+			if (windowmode == windowed)
+				while (ShowCursor(TRUE) < 0);
+			else
+				while (ShowCursor(FALSE) > 0);
 			return 0;
 		}
 		break;
@@ -1426,6 +1429,8 @@ LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM l
 }
 
 bool windowedfullscreen = false;
+
+uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 };
 
 DataPointer(int, Windowed, 0x38A5DC4);
 void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
@@ -1467,14 +1472,14 @@ void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 
 		windowmode = Windowed ? windowed : fullscreen;
 
-		ZeroMemory(&outerWindowClass, sizeof (WNDCLASSA));
-		outerWindowClass.lpszClassName = "OuterWindow";
+		ZeroMemory(&outerWindowClass, sizeof (WNDCLASS));
+		outerWindowClass.lpszClassName = L"OuterWindow";
 		outerWindowClass.lpfnWndProc = WrapperWndProc;
 		outerWindowClass.hInstance = _hInstance;
 		outerWindowClass.hIcon = LoadIconA(_hInstance, MAKEINTRESOURCEA(101));
 		outerWindowClass.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
 		outerWindowClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-		if (RegisterClassA(&outerWindowClass) == 0)
+		if (RegisterClass(&outerWindowClass) == 0)
 			return;
 
 		CreateOuterWindow();
@@ -1494,6 +1499,7 @@ void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 		SetForegroundWindow(outerWindow);
 		Windowed = 1;
 		WriteJump((void *)0x789BD0, sub_789BD0);
+		WriteData((void *)0x402C61, wndpatch);
 	}
 	else
 	{
