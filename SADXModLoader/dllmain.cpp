@@ -1331,6 +1331,28 @@ int __cdecl SADXDebugOutput(const char *Format, ...)
 	return result;
 }
 
+struct windowsize { int x; int y; int width; int height; };
+
+struct windowdata { int x; int y; int width; int height; DWORD style; DWORD extendedstyle; };
+
+windowdata windowsizes[] = {
+	{ CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, WS_CAPTION | WS_SYSMENU, 0 }, // windowed
+	{ 0, 0, CW_USEDEFAULT, CW_USEDEFAULT, WS_POPUP, WS_EX_APPWINDOW } // fullscreen
+};
+
+enum windowmodes { windowed, fullscreen };
+
+windowsize innersizes[2];
+
+ACCEL accelerators[] = {
+	{ FALT | FVIRTKEY, VK_RETURN, 0 }
+};
+
+WNDCLASSA outerWindowClass;
+HWND outerWindow;
+windowmodes windowmode;
+HACCEL accelTbl;
+
 DataPointer(int, dword_3D08534, 0x3D08534);
 void __cdecl sub_789BD0()
 {
@@ -1340,8 +1362,11 @@ void __cdecl sub_789BD0()
   {
     do
     {
-      TranslateMessage(&v0);
-      DispatchMessageA(&v0);
+		if (!TranslateAccelerator(outerWindow, accelTbl, &v0))
+		{
+			TranslateMessage(&v0);
+			DispatchMessageA(&v0);
+		}
     }
     while ( PeekMessageA(&v0, 0, 0, 0, 1u) );
     dword_3D08534 = v0.wParam;
@@ -1352,80 +1377,121 @@ void __cdecl sub_789BD0()
   }
 }
 
+DataPointer(HINSTANCE, hInstance, 0x3D0FD34);
+void CreateOuterWindow()
+{
+	windowdata *data = &windowsizes[windowmode];
+
+	outerWindow = CreateWindowExA(data->extendedstyle,
+		"OuterWindow",
+		"SonicAdventureDXPC",
+		data->style,
+		data->x, data->y, data->width, data->height,
+		NULL, NULL, hInstance, NULL);
+}
+
 DataPointer(HWND, hWnd, 0x3D0FD30);
 LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg) {
-    case WM_CLOSE:
-        // we also need to let SADX do cleanup
-        SendMessage(hWnd, WM_CLOSE, wParam, lParam);
-        // what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
-        return 0;
+	case WM_COMMAND:
+		if (LOWORD(wParam) == 0)
+		{
+			if (windowmode == windowed)
+			{
+				RECT rect;
+				GetWindowRect(wrapper, &rect);
+				windowsizes[windowed].x = rect.left;
+				windowsizes[windowed].y = rect.top;
+			}
+			windowmode = windowmode == windowed ? fullscreen : windowed;
+			HWND oldwnd = outerWindow;
+			CreateOuterWindow();
+			SetParent(hWnd, outerWindow);
+			windowsize *size = &innersizes[windowmode];
+			SetWindowPos(hWnd, NULL, size->x, size->y, size->width, size->height, 0);
+			DestroyWindow(oldwnd);
+			SetFocus(hWnd);
+			ShowWindow(outerWindow, SW_SHOW);
+			UpdateWindow(outerWindow);
+			SetForegroundWindow(outerWindow);
+			ShowCursor(windowmode == windowed);
+			return 0;
+		}
+		break;
     default:
-        // alternatively we can return SendMe
         return DefWindowProc(wrapper, uMsg, wParam, lParam);
     }
-    /* unreachable */ return 0;
+    return 0;
 }
 
 bool windowedfullscreen = false;
 
 DataPointer(int, Windowed, 0x38A5DC4);
-DataPointer(HINSTANCE, hInstance, 0x3D0FD34);
 void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 {
 	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
-	
-	v8.style = 0;
+	ZeroMemory(&v8, sizeof(v8));
 	v8.lpfnWndProc = (WNDPROC)0x789DE0;
-	v8.cbClsExtra = 0;
-	v8.cbWndExtra = 0;
 	v8.hInstance = _hInstance;
 	v8.hIcon = LoadIconA(_hInstance, MAKEINTRESOURCEA(101));
 	v8.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
 	v8.hbrBackground = (HBRUSH)GetStockObject(0);
-	v8.lpszMenuName = 0;
 	v8.lpszClassName = GetWindowClassName();
 	if (!RegisterClassA(&v8))
 		return;
-	if (!Windowed && windowedfullscreen)
+	RECT wndsz = { 0, 0, HorizontalResolution, VerticalResolution };
+	AdjustWindowRectEx(&wndsz, WS_CAPTION | WS_SYSMENU, false, 0);
+	if (windowedfullscreen)
 	{
-		WNDCLASS w;
-		ZeroMemory(&w, sizeof (WNDCLASS));
-		w.lpszClassName = TEXT("WrapperWindow");
-		w.lpfnWndProc = WrapperWndProc;
-		w.hInstance = _hInstance;
-		w.hIcon = LoadIconA(_hInstance, MAKEINTRESOURCEA(101));
-		w.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
-		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-		if (RegisterClass(&w) == 0)
-			return;
-
 		int scrnw = GetSystemMetrics(SM_CXSCREEN);
 		int scrnh = GetSystemMetrics(SM_CYSCREEN);
+		windowsizes[windowed].width = wndsz.right - wndsz.left;
+		windowsizes[windowed].height = wndsz.bottom - wndsz.top;
+		if (!Windowed)
+		{
+			windowsizes[windowed].x = (scrnw - windowsizes[windowed].width) / 2;
+			windowsizes[windowed].y = (scrnh - windowsizes[windowed].height) / 2;
+		}
+		windowsizes[fullscreen].width = scrnw;
+		windowsizes[fullscreen].height = scrnh;
+		innersizes[windowed].x = 0;
+		innersizes[windowed].y = 0;
+		innersizes[windowed].width = HorizontalResolution;
+		innersizes[windowed].height = VerticalResolution;
+		float num = min((float)scrnw / (float)HorizontalResolution, (float)scrnh / (float)VerticalResolution);
+		innersizes[fullscreen].width = (int)((float)HorizontalResolution * num);
+		innersizes[fullscreen].height = (int)((float)VerticalResolution * num);
+		innersizes[fullscreen].x = (scrnw - innersizes[fullscreen].width) / 2;
+		innersizes[fullscreen].y = (scrnh - innersizes[fullscreen].height) / 2;
 
-		HWND wrapper = CreateWindowExA(WS_EX_APPWINDOW,
-			"WrapperWindow",
-			(const char *)0x7DB82C,
-			WS_POPUP,
-			0, 0, scrnw, scrnh,
-			NULL, NULL, hInstance, NULL);
+		windowmode = Windowed ? windowed : fullscreen;
 
-		if (wrapper == NULL)
+		ZeroMemory(&outerWindowClass, sizeof (WNDCLASSA));
+		outerWindowClass.lpszClassName = "OuterWindow";
+		outerWindowClass.lpfnWndProc = WrapperWndProc;
+		outerWindowClass.hInstance = _hInstance;
+		outerWindowClass.hIcon = LoadIconA(_hInstance, MAKEINTRESOURCEA(101));
+		outerWindowClass.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
+		outerWindowClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+		if (RegisterClassA(&outerWindowClass) == 0)
 			return;
 
-		float num = min((float)scrnw / (float)HorizontalResolution, (float)scrnh / (float)VerticalResolution);
-		int dispw = (int)((float)HorizontalResolution * num);
-		int disph = (int)((float)VerticalResolution * num);
-		int dispx = (scrnw - dispw) / 2;
-		int dispy = (scrnh - disph) / 2;
+		CreateOuterWindow();
+
+		if (outerWindow == NULL)
+			return;
+
+		accelTbl = CreateAcceleratorTable(arrayptrandlength(accelerators));
+
+		windowsize *size = &innersizes[windowmode];
 
 		hWnd = CreateWindowExA(0, GetWindowClassName(), GetWindowClassName(), WS_CHILD | WS_VISIBLE,
-			dispx, dispy, dispw, disph, wrapper, NULL, hInstance, 0);
+			size->x, size->y, size->width, size->height, outerWindow, NULL, hInstance, 0);
 		SetFocus(hWnd);
-		ShowWindow(wrapper, nCmdShow);
-		UpdateWindow(wrapper);
-		SetForegroundWindow(wrapper);
+		ShowWindow(outerWindow, nCmdShow);
+		UpdateWindow(outerWindow);
+		SetForegroundWindow(outerWindow);
 		Windowed = 1;
 		WriteJump((void *)0x789BD0, sub_789BD0);
 	}
@@ -1443,9 +1509,8 @@ void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 			v3 = WS_EX_TOPMOST | WS_EX_TOOLWINDOW;
 			v2 = WS_CAPTION;
 		}
-		RECT wndsz = { 0, 0, HorizontalResolution, VerticalResolution };
-		AdjustWindowRectEx(&wndsz, v2, false, 0);
-		hWnd = CreateWindowExA(v3, GetWindowClassName(), GetWindowClassName(), v2, CW_USEDEFAULT, CW_USEDEFAULT, wndsz.right - wndsz.left, wndsz.bottom - wndsz.top, 0, NULL, hInstance, 0);
+		hWnd = CreateWindowExA(v3, GetWindowClassName(), GetWindowClassName(), v2, CW_USEDEFAULT, CW_USEDEFAULT,
+			wndsz.right - wndsz.left, wndsz.bottom - wndsz.top, 0, NULL, hInstance, 0);
 		ShowWindow(hWnd, nCmdShow);
 		UpdateWindow(hWnd);
 		SetForegroundWindow(hWnd);
