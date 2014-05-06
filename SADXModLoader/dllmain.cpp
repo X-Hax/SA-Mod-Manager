@@ -1391,6 +1391,7 @@ void CreateOuterWindow()
 }
 
 DataPointer(HWND, hWnd, 0x3D0FD30);
+FunctionPointer(LRESULT, sub_401900, (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam), 0x401900);
 LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg) {
@@ -1422,6 +1423,8 @@ LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM l
 			return 0;
 		}
 		break;
+	case WM_ACTIVATEAPP:
+		sub_401900(hWnd, uMsg, wParam, lParam);
     default:
         return DefWindowProc(wrapper, uMsg, wParam, lParam);
     }
