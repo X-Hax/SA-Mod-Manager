@@ -36,6 +36,12 @@
     <ClInclude Include="LandTableInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="bass_vgmstream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -50,5 +56,9 @@
     <ClCompile Include="LandTableInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="bass_vgmstream.lib" />
+    <Library Include="bass.lib" />
   </ItemGroup>
 </Project>

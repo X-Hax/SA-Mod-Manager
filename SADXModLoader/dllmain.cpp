@@ -9,6 +9,10 @@
 #include <algorithm>
 #include <DbgHelp.h>
 #include <cstdio>
+#include <Shlwapi.h>
+#include <wmsdkidl.h>
+#include <dsound.h>
+#include "bass_vgmstream.h"
 #include "SADXModLoader.h"
 using namespace std;
 
@@ -95,10 +99,7 @@ HMODULE myhandle;
 HMODULE chrmodelshandle;
 FARPROC __stdcall MyGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
 {
-	if (hModule == myhandle)
-		return GetProcAddress(chrmodelshandle, lpProcName);
-	else
-		return GetProcAddress(hModule, lpProcName);
+	return GetProcAddress(hModule == myhandle ? chrmodelshandle : hModule, lpProcName);
 }
 
 inline int backslashes(int c)
@@ -110,7 +111,7 @@ inline int backslashes(int c)
 }
 
 IniGroup settings;
-unordered_map<string, char *> filemap;
+unordered_map<string, const char *> filemap;
 const string systemdir = "system\\";
 const char *_ReplaceFile(const char *lpFileName)
 {
@@ -119,8 +120,8 @@ const char *_ReplaceFile(const char *lpFileName)
 	if (path.length() > 2 && (path[0] == '.' && path[1] == '\\'))
 		path = path.substr(2, path.length() - 2);
 	transform(path.begin(), path.end(), path.begin(), ::tolower);
-	unordered_map<string, char *>::iterator fileIter = filemap.find(path);
-	if (fileIter != filemap.end())
+	unordered_map<string, const char *>::iterator fileIter = filemap.find(path);
+	if (fileIter != filemap.cend())
 		lpFileName = fileIter->second;
 	return lpFileName;
 }
@@ -136,10 +137,224 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 	return PlayVoiceFile(filename);
 }
 
-void __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
+#pragma pack(push, 1)
+struct WMPInfo
 {
-	filename = _ReplaceFile(filename);
-	PlayMusicFile(filename, loop);
+	void *WMReaderCallback;
+	LPDIRECTSOUNDBUFFER DirectSoundBuffer;
+	int field_8;
+	int field_C;
+	int field_10;
+	int field_14;
+	int field_18;
+	HANDLE EventHandle;
+	int field_20;
+	IWMReader *WMReader;
+	IWMHeaderInfo *WMHeaderInfo;
+	int field_2C;
+	int field_30;
+	WCHAR *CurrentFile;
+	int field_38;
+	int field_3C;
+	LPWAVEFORMATEX WaveFormat;
+	int Status;
+	int field_48;
+	int field_4C;
+};
+#pragma pack(pop)
+
+enum WMPStatus
+{
+	WMPStatus_Buffering,
+	WMPStatus_Playing,
+	WMPStatus_Stopped
+};
+
+DataPointer(int, MusicVolume, 0x909F28);
+DataPointer(WMPInfo *, WMPVoiceInfo, 0x3ABDF94);
+DataPointer(int, dword_3ABDF98, 0x3ABDF98);
+DataPointer(WMPInfo *, WMPMusicInfo, 0x3ABDF9C);
+DataPointer(int, dword_3ABDFA0, 0x3ABDFA0);
+DataPointer(int, MusicLooping, 0x3ABDFA4);
+DataPointer(int, dword_3ABDFA8, 0x3ABDFA8);
+
+ThiscallFunctionPointer(int, WMPInfo__Release, (WMPInfo *), 0x410F70);
+ThiscallFunctionPointer(int, WMPInfo__Play, (WMPInfo *, int, int, int), 0x410FF0);
+ThiscallFunctionPointer(int, WMPInfo__Pause, (WMPInfo *), 0x4111B0);
+ThiscallFunctionPointer(int, WMPInfo__Resume, (WMPInfo *), 0x4111E0);
+ThiscallFunctionPointer(int, WMPInfo__GetStatus, (WMPInfo *), 0x4113E0);
+ThiscallFunctionPointer(int, WMPInfo__Release2, (WMPInfo *), 0x411450);
+ThiscallFunctionPointer(int, WMPInfo__CreateReader, (WMPInfo *), 0x4116A0);
+ThiscallFunctionPointer(int, WMPInfo__Close, (WMPInfo *), 0x411720);
+ThiscallFunctionPointer(int, WMPInfo__Stop, (WMPInfo *), 0x411760);
+ThiscallFunctionPointer(unsigned int, WMPInfo__Open, (WMPInfo *, const wchar_t *), 0x411830);
+ThiscallFunctionPointer(WMPInfo *, WMPInfo__WMPInfo, (WMPInfo *), 0x411970);
+
+bool enablevgmstream = false;
+bool musicwmp = true;
+DWORD basschan = 0;
+
+void WMPInit_r()
+{
+	enablevgmstream = BASS_Init(-1, 44100, 0, 0, NULL) ? true : false;
+}
+
+int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
+{
+	WCHAR WideCharStr[MAX_PATH]; // [sp+0h] [bp-20Ch]@1
+
+	if (!WMPMusicInfo) return 0;
+	char adxpath[MAX_PATH];
+	strncpy_s(adxpath, filename, MAX_PATH);
+	PathRenameExtensionA(adxpath, ".adx");
+	const char *tmp = _ReplaceFile(adxpath);
+	if (PathFileExistsA(tmp))
+		filename = tmp;
+	else
+		filename = _ReplaceFile(filename);
+	if (musicwmp)
+	{
+		WMPInfo__Stop(WMPMusicInfo);
+		WMPInfo__Close(WMPMusicInfo);
+	}
+	else if (basschan != 0)
+	{
+		BASS_ChannelStop(basschan);
+		BASS_StreamFree(basschan);
+	}
+	if (enablevgmstream && _stricmp(PathFindExtensionA(filename), ".wma") != 0)
+	{
+		musicwmp = false;
+		basschan = BASS_VGMSTREAM_StreamCreate(filename, MusicLooping ? BASS_SAMPLE_LOOP : 0);
+		if (basschan == 0)
+			return 0;
+		BASS_ChannelPlay(basschan, false);
+		BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0);
+		MusicLooping = loop;
+		dword_3ABDFA0 = 1;
+		dword_3ABDF98 = 3;
+		return 1;
+	}
+	musicwmp = true;
+	MultiByteToWideChar(0, 0, filename, -1, WideCharStr, LengthOfArray(WideCharStr));
+	if ( WMPMusicInfo && (WMPInfo__Open(WMPMusicInfo, WideCharStr) & 0x80000000u) == 0)
+	{
+		WMPInfo__Play(WMPMusicInfo, 0, 0, MusicVolume);
+		MusicLooping = loop;
+		dword_3ABDFA0 = 1;
+		dword_3ABDF98 = 3;
+		if ( WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped )
+		{
+			do
+			Sleep(0);
+			while ( WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped );
+		}
+		return 1;
+	}
+	return 0;
+}
+
+void __cdecl WMPRestartMusic_r()
+{
+	LPDIRECTSOUNDBUFFER v0; // eax@6
+
+	if (!musicwmp)
+		return;
+	if ( dword_3ABDFA0 )
+	{
+		if ( WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped )
+		{
+			if ( MusicLooping )
+			{
+				WMPInfo__Stop(WMPMusicInfo);
+				WMPInfo__Play(WMPMusicInfo, 0, 0, MusicVolume);
+			}
+			else
+			{
+				dword_3ABDFA0 = 0;
+				dword_3ABDF98 = 5;
+				WMPInfo__Stop(WMPMusicInfo);
+				WMPInfo__Close(WMPMusicInfo);
+			}
+		}
+		else
+		{
+			v0 = WMPMusicInfo->DirectSoundBuffer;
+			if ( v0 )
+				v0->SetVolume(MusicVolume);
+		}
+	}
+}
+
+void __cdecl PauseSound_r()
+{
+	if ( dword_3ABDFA0 )
+	{
+		++dword_3ABDFA8;
+		if (musicwmp)
+			WMPInfo__Pause(WMPMusicInfo);
+		else
+			BASS_ChannelPause(basschan);
+	}
+	if ( WMPVoiceInfo )
+	{
+		WMPInfo__Stop(WMPVoiceInfo);
+		WMPInfo__Close(WMPVoiceInfo);
+	}
+}
+
+void __cdecl ResumeSound_r()
+{
+	if ( dword_3ABDFA0 )
+	{
+		--dword_3ABDFA8;
+		if ( dword_3ABDFA8 <= 0 )
+		{
+			if (musicwmp)
+				WMPInfo__Resume(WMPMusicInfo);
+			else
+				BASS_ChannelPlay(basschan, false);
+			dword_3ABDFA8 = 0;
+		}
+	}
+}
+
+void __cdecl WMPClose_r(int a1)
+{
+	if ( a1 )
+	{
+		if ( a1 == 1 && WMPVoiceInfo )
+		{
+			WMPInfo__Stop(WMPVoiceInfo);
+			WMPInfo__Close(WMPVoiceInfo);
+			dword_3ABDFA8 = 0;
+			return;
+		}
+	}
+	else
+	{
+		if ( dword_3ABDFA0 )
+		{
+			if (musicwmp)
+			{
+				WMPInfo__Stop(WMPMusicInfo);
+				WMPInfo__Close(WMPMusicInfo);
+			}
+			else
+			{
+				BASS_ChannelStop(basschan);
+				BASS_StreamFree(basschan);
+			}
+			dword_3ABDFA0 = 0;
+			dword_3ABDF98 = 0;
+		}
+	}
+	dword_3ABDFA8 = 0;
+}
+
+void WMPRelease_r()
+{
+	BASS_Free();
 }
 
 __declspec(naked) int PlayVideoFile_r()
@@ -1334,38 +1549,38 @@ int __cdecl SADXDebugOutput(const char *Format, ...)
 DataPointer(int, dword_3D08534, 0x3D08534);
 void __cdecl sub_789BD0()
 {
-  MSG v0; // [sp+4h] [bp-1Ch]@1
+	MSG v0; // [sp+4h] [bp-1Ch]@1
 
-  if ( PeekMessageA(&v0, 0, 0, 0, 1u) )
-  {
-    do
-    {
-      TranslateMessage(&v0);
-      DispatchMessageA(&v0);
-    }
-    while ( PeekMessageA(&v0, 0, 0, 0, 1u) );
-    dword_3D08534 = v0.wParam;
-  }
-  else
-  {
-    dword_3D08534 = v0.wParam;
-  }
+	if ( PeekMessageA(&v0, 0, 0, 0, 1u) )
+	{
+		do
+		{
+			TranslateMessage(&v0);
+			DispatchMessageA(&v0);
+		}
+		while ( PeekMessageA(&v0, 0, 0, 0, 1u) );
+		dword_3D08534 = v0.wParam;
+	}
+	else
+	{
+		dword_3D08534 = v0.wParam;
+	}
 }
 
 DataPointer(HWND, hWnd, 0x3D0FD30);
 LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    switch (uMsg) {
-    case WM_CLOSE:
-        // we also need to let SADX do cleanup
-        SendMessage(hWnd, WM_CLOSE, wParam, lParam);
-        // what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
-        return 0;
-    default:
-        // alternatively we can return SendMe
-        return DefWindowProc(wrapper, uMsg, wParam, lParam);
-    }
-    /* unreachable */ return 0;
+	switch (uMsg) {
+	case WM_CLOSE:
+		// we also need to let SADX do cleanup
+		SendMessage(hWnd, WM_CLOSE, wParam, lParam);
+		// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
+		return 0;
+	default:
+		// alternatively we can return SendMe
+		return DefWindowProc(wrapper, uMsg, wParam, lParam);
+	}
+	/* unreachable */ return 0;
 }
 
 bool windowedfullscreen = false;
@@ -1375,7 +1590,7 @@ DataPointer(HINSTANCE, hInstance, 0x3D0FD34);
 void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 {
 	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
-	
+
 	v8.style = 0;
 	v8.lpfnWndProc = (WNDPROC)0x789DE0;
 	v8.cbClsExtra = 0;
@@ -1622,6 +1837,12 @@ void __cdecl InitMods(void)
 	WriteCall((void *)0x4254F4, PlayVoiceFile_r);
 	WriteCall((void *)0x425569, PlayVoiceFile_r);
 	WriteCall((void *)0x513187, PlayVideoFile_r);
+	WriteJump((void *)0x40D1EA, WMPInit_r);
+	WriteJump((void *)0x40CF50, WMPRestartMusic_r);
+	WriteJump((void *)0x40D060, PauseSound_r);
+	WriteJump((void *)0x40D0A0, ResumeSound_r);
+	WriteJump((void *)0x40CFF0, WMPClose_r);
+	WriteJump((void *)0x40D28A, WMPRelease_r);
 	DWORD oldprot;
 	VirtualProtect((void *)0x7DB2A0, 0xB6D60, PAGE_WRITECOPY, &oldprot);
 	unordered_map<string, string> filereplaces = unordered_map<string, string>();
@@ -1718,7 +1939,7 @@ void __cdecl InitMods(void)
 	}
 	for (unordered_map<string,string>::iterator it = filereplaces.begin(); it != filereplaces.end(); it++)
 	{
-		unordered_map<string,char *>::iterator f = filemap.find(it->second);
+		unordered_map<string, const char *>::iterator f = filemap.find(it->second);
 		if (f != filemap.end())
 			filemap[it->first] = f->second;
 		else
