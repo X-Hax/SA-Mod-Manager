@@ -122,7 +122,7 @@ const char *_ReplaceFile(const char *lpFileName)
 	transform(path.begin(), path.end(), path.begin(), ::tolower);
 	unordered_map<string, const char *>::iterator fileIter = filemap.find(path);
 	if (fileIter != filemap.cend())
-		lpFileName = fileIter->second;
+		return fileIter->second;
 	return lpFileName;
 }
 
@@ -209,17 +209,7 @@ void __stdcall onTrackEnd(HSYNC handle, DWORD channel, DWORD data, void *user)
 
 int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 {
-	WCHAR WideCharStr[MAX_PATH]; // [sp+0h] [bp-20Ch]@1
-
 	if (!WMPMusicInfo) return 0;
-	char adxpath[MAX_PATH];
-	strncpy_s(adxpath, filename, MAX_PATH);
-	PathRenameExtensionA(adxpath, ".adx");
-	const char *tmp = _ReplaceFile(adxpath);
-	if (PathFileExistsA(tmp))
-		filename = tmp;
-	else
-		filename = _ReplaceFile(filename);
 	if (musicwmp)
 	{
 		WMPInfo__Stop(WMPMusicInfo);
@@ -230,21 +220,36 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 		BASS_ChannelStop(basschan);
 		BASS_StreamFree(basschan);
 	}
-	if (enablevgmstream && _stricmp(PathFindExtensionA(filename), ".wma") != 0)
+	if (enablevgmstream)
 	{
-		musicwmp = false;
-		basschan = BASS_VGMSTREAM_StreamCreate(filename, loop ? BASS_SAMPLE_LOOP : 0);
-		if (basschan == 0)
-			return 0;
-		BASS_ChannelPlay(basschan, false);
-		BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0);
-		BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, 0);
-		MusicLooping = loop;
-		dword_3ABDFA0 = 1;
-		dword_3ABDF98 = 3;
-		return 1;
+		char pathnoext[MAX_PATH];
+		strncpy_s(pathnoext, filename, MAX_PATH);
+		PathRemoveExtensionA(pathnoext);
+		string path = pathnoext;
+		transform(path.begin(), path.end(), path.begin(), backslashes);
+		if (path.length() > 2 && (path[0] == '.' && path[1] == '\\'))
+			path = path.substr(2, path.length() - 2);
+		transform(path.begin(), path.end(), path.begin(), ::tolower);
+		for (auto i = filemap.crbegin(); i != filemap.crend(); i++)
+			if (path.compare(0, path.length(), i->first, 0, path.length()) == 0)
+			{
+				basschan = BASS_VGMSTREAM_StreamCreate(i->second, loop ? BASS_SAMPLE_LOOP : 0);
+				if (basschan != 0)
+				{
+					musicwmp = false;
+					BASS_ChannelPlay(basschan, false);
+					BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0f);
+					BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, 0);
+					MusicLooping = loop;
+					dword_3ABDFA0 = 1;
+					dword_3ABDF98 = 3;
+					return 1;
+				}
+			}
 	}
+	filename = _ReplaceFile(filename);
 	musicwmp = true;
+	WCHAR WideCharStr[MAX_PATH];
 	MultiByteToWideChar(0, 0, filename, -1, WideCharStr, LengthOfArray(WideCharStr));
 	if ( WMPMusicInfo && (WMPInfo__Open(WMPMusicInfo, WideCharStr) & 0x80000000u) == 0)
 	{
