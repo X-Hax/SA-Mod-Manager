@@ -199,6 +199,14 @@ void WMPInit_r()
 	enablevgmstream = BASS_Init(-1, 44100, 0, 0, NULL) ? true : false;
 }
 
+void __stdcall onTrackEnd(HSYNC handle, DWORD channel, DWORD data, void *user)
+{
+	dword_3ABDFA0 = 0;
+	dword_3ABDF98 = 5;
+	BASS_ChannelStop(channel);
+	BASS_StreamFree(channel);
+}
+
 int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 {
 	WCHAR WideCharStr[MAX_PATH]; // [sp+0h] [bp-20Ch]@1
@@ -230,6 +238,7 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 			return 0;
 		BASS_ChannelPlay(basschan, false);
 		BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0);
+		BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, 0);
 		MusicLooping = loop;
 		dword_3ABDFA0 = 1;
 		dword_3ABDF98 = 3;
