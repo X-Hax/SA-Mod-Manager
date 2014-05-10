@@ -225,7 +225,7 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 	if (enablevgmstream && _stricmp(PathFindExtensionA(filename), ".wma") != 0)
 	{
 		musicwmp = false;
-		basschan = BASS_VGMSTREAM_StreamCreate(filename, MusicLooping ? BASS_SAMPLE_LOOP : 0);
+		basschan = BASS_VGMSTREAM_StreamCreate(filename, loop ? BASS_SAMPLE_LOOP : 0);
 		if (basschan == 0)
 			return 0;
 		BASS_ChannelPlay(basschan, false);
