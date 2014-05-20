@@ -649,7 +649,7 @@ enum LandTableFlags
 	makemasks(LandTableFlag, TextureName)
 };
 
-enum NPCTextControl : short
+enum NPCTextControl
 {
 	NPCTextControl_EventFlag = -7,
 	NPCTextControl_NPCFlag,
