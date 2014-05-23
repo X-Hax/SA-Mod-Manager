@@ -553,7 +553,7 @@ enum TimesOfDay
 	TimesOfDay_Night
 };
 
-enum ChaoTypes : __int8
+enum ChaoTypes
 {
 	ChaoTypes_Null,
 	ChaoTypes_Egg,
@@ -584,7 +584,7 @@ enum ChaoTypes : __int8
 };
 
 /*  136 */
-enum ChaoGardens : __int8
+enum ChaoGardens
 {
 	ChaoGardens_None,
 	ChaoGardens_StationSquare = 4,
@@ -593,7 +593,7 @@ enum ChaoGardens : __int8
 };
 
 /*  137 */
-enum ChaoModels : __int8
+enum ChaoModels
 {
 	ChaoModels_Normal,
 	ChaoModels_EggChao,
@@ -601,7 +601,7 @@ enum ChaoModels : __int8
 };
 
 /*  138 */
-enum ChaoParts : __int8
+enum ChaoParts
 {
 	ChaoParts_Seal,
 	ChaoParts_Swallow,
@@ -1458,6 +1458,7 @@ FunctionPointer(int, SetLevelEntrance, (char num), 0x4147F0);
 FunctionPointer(int, GetLevelEntranceID, (), 0x414800);
 FunctionPointer(void, SetNextLevel, (unsigned __int16 level), 0x414B00);
 FunctionPointer(bool, IsGamePaused, (), 0x414D70);
+VoidFunc(LoadLevelResults, 0x415540);
 VoidFunc(LoadCharacter, 0x4157C0);
 FunctionPointer(void, UnloadCharTextures, (int Character), 0x420E90);
 FunctionPointer(int, UnloadLevelTextures, (__int16 levelact), 0x421040);
@@ -1501,6 +1502,7 @@ ObjectFunc(MainMenu_Display, 0x432480);
 ObjectFunc(MainMenu_Main, 0x432720);
 ObjectFunc(Camera_Main, 0x438090);
 FunctionPointer(void, ResetGeoPointer, (int Level, int Act), 0x43A4A0);
+FunctionPointer(int, IsPlayerInsideSphere, (NJS_VECTOR *position, float radius), 0x441840);
 FunctionPointer(int, GetCharacterID, (char index), 0x441970);
 FunctionPointer(ObjectMaster *, GetCharacterObject, (unsigned __int8 character), 0x441AC0);
 FunctionPointer(CharObj2 *, GetCharObj2, (char index), 0x441B00);
@@ -1528,6 +1530,8 @@ VoidFunc(LoadSETObjs_NoP2OrDebugOrP2Tails, 0x46BA40);
 VoidFunc(LoadSETObjs, 0x46BCE0);
 ObjectFunc(Knuckles_Main, 0x47A770);
 FunctionPointer(bool, IsFastSonicAI, (), 0x47C200);
+FunctionPointer(void, SetTailsRaceVictory, (), 0x47C450);
+FunctionPointer(void, SetOpponentRaceVictory, (), 0x47C460);
 ObjectFunc(Sonic2PAI_Main, 0x47D640);
 ObjectFunc(Eggman2PAI_Main, 0x47D750);
 ObjectFunc(Sonic2PAI_Load, 0x47D820);
@@ -1701,6 +1705,7 @@ FastcallFunctionPointer(void, MatrixTranslate2, (D3DMATRIX *a1, NJS_VECTOR *a2),
 ThiscallFunctionPointer(void, PushMatrix2, (D3DMATRIX *a1), 0x7850F0);
 ThiscallFunctionPointer(void, PopMatrices, (int numMatrices), 0x785140);
 FastcallFunctionPointer(void, Vector3_Subtract, (Vector3 *a1, Vector3 *a2), 0x787610);
+FastcallFunctionPointer(void, MatrixScale2, (D3DMATRIX *a1, Vector3 *a2), 0x788A50);
 FunctionPointer(void, RenderSA2Model, (OBJECT *a1), 0x78AB80);
 FunctionPointer(char *, GetWindowClassName, (), 0x793F60);
 StdcallFunctionPointer(void, CompletionRoutine, (DWORD, DWORD, LPOVERLAPPED), 0x795340);
