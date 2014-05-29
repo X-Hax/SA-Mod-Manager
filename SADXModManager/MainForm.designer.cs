@@ -30,6 +30,7 @@
         {
 			System.Windows.Forms.GroupBox groupBox2;
 			System.Windows.Forms.Label label1;
+			this.windowedFullscreenCheckBox = new System.Windows.Forms.CheckBox();
 			this.fileCheckBox = new System.Windows.Forms.CheckBox();
 			this.screenCheckBox = new System.Windows.Forms.CheckBox();
 			this.label2 = new System.Windows.Forms.Label();
@@ -53,6 +54,7 @@
 			this.configEditorButton = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.buttonNewMod = new System.Windows.Forms.Button();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.codeDownButton = new System.Windows.Forms.Button();
 			this.codeUpButton = new System.Windows.Forms.Button();
@@ -60,7 +62,6 @@
 			this.editCodeButton = new System.Windows.Forms.Button();
 			this.newCodeButton = new System.Windows.Forms.Button();
 			this.codesCheckedListBox = new System.Windows.Forms.CheckedListBox();
-			this.windowedFullscreenCheckBox = new System.Windows.Forms.CheckBox();
 			groupBox2 = new System.Windows.Forms.GroupBox();
 			label1 = new System.Windows.Forms.Label();
 			groupBox2.SuspendLayout();
@@ -93,13 +94,23 @@
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Options";
 			// 
+			// windowedFullscreenCheckBox
+			// 
+			this.windowedFullscreenCheckBox.AutoSize = true;
+			this.windowedFullscreenCheckBox.Location = new System.Drawing.Point(240, 42);
+			this.windowedFullscreenCheckBox.Name = "windowedFullscreenCheckBox";
+			this.windowedFullscreenCheckBox.Size = new System.Drawing.Size(128, 17);
+			this.windowedFullscreenCheckBox.TabIndex = 5;
+			this.windowedFullscreenCheckBox.Text = "Windowed Fullscreen";
+			this.windowedFullscreenCheckBox.UseVisualStyleBackColor = true;
+			// 
 			// fileCheckBox
 			// 
 			this.fileCheckBox.AutoSize = true;
 			this.fileCheckBox.Location = new System.Drawing.Point(241, 19);
 			this.fileCheckBox.Name = "fileCheckBox";
 			this.fileCheckBox.Size = new System.Drawing.Size(42, 17);
-			this.fileCheckBox.TabIndex = 10;
+			this.fileCheckBox.TabIndex = 2;
 			this.fileCheckBox.Text = "File";
 			this.fileCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -109,7 +120,7 @@
 			this.screenCheckBox.Location = new System.Drawing.Point(175, 19);
 			this.screenCheckBox.Name = "screenCheckBox";
 			this.screenCheckBox.Size = new System.Drawing.Size(60, 17);
-			this.screenCheckBox.TabIndex = 9;
+			this.screenCheckBox.TabIndex = 1;
 			this.screenCheckBox.Text = "Screen";
 			this.screenCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -146,7 +157,7 @@
             0});
 			this.verticalResolution.Name = "verticalResolution";
 			this.verticalResolution.Size = new System.Drawing.Size(62, 20);
-			this.verticalResolution.TabIndex = 6;
+			this.verticalResolution.TabIndex = 8;
 			this.verticalResolution.Value = new decimal(new int[] {
             480,
             0,
@@ -168,7 +179,7 @@
             0});
 			this.horizontalResolution.Name = "horizontalResolution";
 			this.horizontalResolution.Size = new System.Drawing.Size(62, 20);
-			this.horizontalResolution.TabIndex = 5;
+			this.horizontalResolution.TabIndex = 7;
 			this.horizontalResolution.Value = new decimal(new int[] {
             640,
             0,
@@ -181,7 +192,7 @@
 			this.useCustomResolutionCheckBox.Location = new System.Drawing.Point(6, 65);
 			this.useCustomResolutionCheckBox.Name = "useCustomResolutionCheckBox";
 			this.useCustomResolutionCheckBox.Size = new System.Drawing.Size(139, 17);
-			this.useCustomResolutionCheckBox.TabIndex = 4;
+			this.useCustomResolutionCheckBox.TabIndex = 6;
 			this.useCustomResolutionCheckBox.Text = "Use Custom Resolution:";
 			this.useCustomResolutionCheckBox.UseVisualStyleBackColor = true;
 			this.useCustomResolutionCheckBox.CheckedChanged += new System.EventHandler(this.useCustomResolutionCheckBox_CheckedChanged);
@@ -192,7 +203,7 @@
 			this.disableCDCheckCheckBox.Location = new System.Drawing.Point(121, 42);
 			this.disableCDCheckCheckBox.Name = "disableCDCheckCheckBox";
 			this.disableCDCheckCheckBox.Size = new System.Drawing.Size(113, 17);
-			this.disableCDCheckCheckBox.TabIndex = 3;
+			this.disableCDCheckCheckBox.TabIndex = 4;
 			this.disableCDCheckCheckBox.Text = "Disable CD Check";
 			this.disableCDCheckCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -202,7 +213,7 @@
 			this.dontFixWindowCheckBox.Location = new System.Drawing.Point(6, 42);
 			this.dontFixWindowCheckBox.Name = "dontFixWindowCheckBox";
 			this.dontFixWindowCheckBox.Size = new System.Drawing.Size(109, 17);
-			this.dontFixWindowCheckBox.TabIndex = 2;
+			this.dontFixWindowCheckBox.TabIndex = 3;
 			this.dontFixWindowCheckBox.Text = "Don\'t Fix Window";
 			this.dontFixWindowCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -222,7 +233,7 @@
 			this.buttonModsFolder.Location = new System.Drawing.Point(87, 252);
 			this.buttonModsFolder.Name = "buttonModsFolder";
 			this.buttonModsFolder.Size = new System.Drawing.Size(105, 23);
-			this.buttonModsFolder.TabIndex = 7;
+			this.buttonModsFolder.TabIndex = 4;
 			this.buttonModsFolder.Text = "Open Mods folder";
 			this.buttonModsFolder.UseVisualStyleBackColor = true;
 			this.buttonModsFolder.Click += new System.EventHandler(this.buttonModsFolder_Click);
@@ -233,7 +244,7 @@
 			this.buttonRefreshModList.Location = new System.Drawing.Point(6, 252);
 			this.buttonRefreshModList.Name = "buttonRefreshModList";
 			this.buttonRefreshModList.Size = new System.Drawing.Size(75, 23);
-			this.buttonRefreshModList.TabIndex = 6;
+			this.buttonRefreshModList.TabIndex = 3;
 			this.buttonRefreshModList.Text = "Refresh";
 			this.buttonRefreshModList.UseVisualStyleBackColor = true;
 			this.buttonRefreshModList.Click += new System.EventHandler(this.buttonRefreshModList_Click);
@@ -254,9 +265,9 @@
 			this.modDownButton.AutoSize = true;
 			this.modDownButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.modDownButton.Enabled = false;
-			this.modDownButton.Location = new System.Drawing.Point(354, 35);
+			this.modDownButton.Location = new System.Drawing.Point(361, 35);
 			this.modDownButton.Name = "modDownButton";
-			this.modDownButton.Size = new System.Drawing.Size(29, 23);
+			this.modDownButton.Size = new System.Drawing.Size(22, 23);
 			this.modDownButton.TabIndex = 2;
 			this.modDownButton.Text = "↓";
 			this.modDownButton.UseVisualStyleBackColor = true;
@@ -268,9 +279,9 @@
 			this.modUpButton.AutoSize = true;
 			this.modUpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.modUpButton.Enabled = false;
-			this.modUpButton.Location = new System.Drawing.Point(354, 6);
+			this.modUpButton.Location = new System.Drawing.Point(361, 6);
 			this.modUpButton.Name = "modUpButton";
-			this.modUpButton.Size = new System.Drawing.Size(29, 23);
+			this.modUpButton.Size = new System.Drawing.Size(22, 23);
 			this.modUpButton.TabIndex = 1;
 			this.modUpButton.Text = "↑";
 			this.modUpButton.UseVisualStyleBackColor = true;
@@ -290,7 +301,7 @@
 			this.modListView.Location = new System.Drawing.Point(3, 6);
 			this.modListView.MultiSelect = false;
 			this.modListView.Name = "modListView";
-			this.modListView.Size = new System.Drawing.Size(345, 240);
+			this.modListView.Size = new System.Drawing.Size(352, 240);
 			this.modListView.TabIndex = 0;
 			this.modListView.UseCompatibleStateImageBehavior = false;
 			this.modListView.View = System.Windows.Forms.View.Details;
@@ -312,7 +323,7 @@
 			this.saveButton.Location = new System.Drawing.Point(104, 450);
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(75, 23);
-			this.saveButton.TabIndex = 3;
+			this.saveButton.TabIndex = 101;
 			this.saveButton.Text = "Save";
 			this.saveButton.UseVisualStyleBackColor = true;
 			this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
@@ -325,7 +336,7 @@
 			this.saveAndPlayButton.Location = new System.Drawing.Point(12, 450);
 			this.saveAndPlayButton.Name = "saveAndPlayButton";
 			this.saveAndPlayButton.Size = new System.Drawing.Size(86, 23);
-			this.saveAndPlayButton.TabIndex = 4;
+			this.saveAndPlayButton.TabIndex = 100;
 			this.saveAndPlayButton.Text = "Save and Play";
 			this.saveAndPlayButton.UseVisualStyleBackColor = true;
 			this.saveAndPlayButton.Click += new System.EventHandler(this.saveAndPlayButton_Click);
@@ -338,7 +349,7 @@
 			this.installButton.Location = new System.Drawing.Point(185, 450);
 			this.installButton.Name = "installButton";
 			this.installButton.Size = new System.Drawing.Size(76, 23);
-			this.installButton.TabIndex = 5;
+			this.installButton.TabIndex = 102;
 			this.installButton.Text = "Install loader";
 			this.installButton.UseVisualStyleBackColor = true;
 			this.installButton.Click += new System.EventHandler(this.installButton_Click);
@@ -351,7 +362,7 @@
 			this.configEditorButton.Location = new System.Drawing.Point(306, 450);
 			this.configEditorButton.Name = "configEditorButton";
 			this.configEditorButton.Size = new System.Drawing.Size(77, 23);
-			this.configEditorButton.TabIndex = 6;
+			this.configEditorButton.TabIndex = 103;
 			this.configEditorButton.Text = "Config Editor";
 			this.configEditorButton.UseVisualStyleBackColor = true;
 			this.configEditorButton.Click += new System.EventHandler(this.configEditorButton_Click);
@@ -372,6 +383,7 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.buttonNewMod);
 			this.tabPage1.Controls.Add(this.buttonModsFolder);
 			this.tabPage1.Controls.Add(this.buttonRefreshModList);
 			this.tabPage1.Controls.Add(this.modDescription);
@@ -386,6 +398,17 @@
 			this.tabPage1.Text = "Mods";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
+			// buttonNewMod
+			// 
+			this.buttonNewMod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.buttonNewMod.Location = new System.Drawing.Point(280, 252);
+			this.buttonNewMod.Name = "buttonNewMod";
+			this.buttonNewMod.Size = new System.Drawing.Size(75, 23);
+			this.buttonNewMod.TabIndex = 5;
+			this.buttonNewMod.Text = "New Mod";
+			this.buttonNewMod.UseVisualStyleBackColor = true;
+			this.buttonNewMod.Click += new System.EventHandler(this.buttonNewMod_Click);
+			// 
 			// tabPage2
 			// 
 			this.tabPage2.Controls.Add(this.codeDownButton);
@@ -397,7 +420,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(378, 320);
+			this.tabPage2.Size = new System.Drawing.Size(389, 320);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Codes";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -408,9 +431,9 @@
 			this.codeDownButton.AutoSize = true;
 			this.codeDownButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.codeDownButton.Enabled = false;
-			this.codeDownButton.Location = new System.Drawing.Point(343, 35);
+			this.codeDownButton.Location = new System.Drawing.Point(350, 35);
 			this.codeDownButton.Name = "codeDownButton";
-			this.codeDownButton.Size = new System.Drawing.Size(29, 23);
+			this.codeDownButton.Size = new System.Drawing.Size(22, 23);
 			this.codeDownButton.TabIndex = 5;
 			this.codeDownButton.Text = "↓";
 			this.codeDownButton.UseVisualStyleBackColor = true;
@@ -422,9 +445,9 @@
 			this.codeUpButton.AutoSize = true;
 			this.codeUpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.codeUpButton.Enabled = false;
-			this.codeUpButton.Location = new System.Drawing.Point(343, 6);
+			this.codeUpButton.Location = new System.Drawing.Point(350, 6);
 			this.codeUpButton.Name = "codeUpButton";
-			this.codeUpButton.Size = new System.Drawing.Size(29, 23);
+			this.codeUpButton.Size = new System.Drawing.Size(22, 23);
 			this.codeUpButton.TabIndex = 4;
 			this.codeUpButton.Text = "↑";
 			this.codeUpButton.UseVisualStyleBackColor = true;
@@ -482,16 +505,6 @@
 			this.codesCheckedListBox.Size = new System.Drawing.Size(331, 274);
 			this.codesCheckedListBox.TabIndex = 0;
 			this.codesCheckedListBox.SelectedIndexChanged += new System.EventHandler(this.codesCheckedListBox_SelectedIndexChanged);
-			// 
-			// windowedFullscreenCheckBox
-			// 
-			this.windowedFullscreenCheckBox.AutoSize = true;
-			this.windowedFullscreenCheckBox.Location = new System.Drawing.Point(240, 42);
-			this.windowedFullscreenCheckBox.Name = "windowedFullscreenCheckBox";
-			this.windowedFullscreenCheckBox.Size = new System.Drawing.Size(128, 17);
-			this.windowedFullscreenCheckBox.TabIndex = 11;
-			this.windowedFullscreenCheckBox.Text = "Windowed Fullscreen";
-			this.windowedFullscreenCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
@@ -558,5 +571,6 @@
 		private System.Windows.Forms.CheckBox fileCheckBox;
 		private System.Windows.Forms.CheckBox screenCheckBox;
 		private System.Windows.Forms.CheckBox windowedFullscreenCheckBox;
+		private System.Windows.Forms.Button buttonNewMod;
 	}
 }
