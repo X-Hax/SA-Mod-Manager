@@ -71,7 +71,7 @@
 			// buttonOK
 			// 
 			this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonOK.Location = new System.Drawing.Point(136, 123);
+			this.buttonOK.Location = new System.Drawing.Point(136, 135);
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.Size = new System.Drawing.Size(75, 23);
 			this.buttonOK.TabIndex = 4;
@@ -83,7 +83,7 @@
 			// 
 			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonCancel.Location = new System.Drawing.Point(217, 123);
+			this.buttonCancel.Location = new System.Drawing.Point(217, 135);
 			this.buttonCancel.Name = "buttonCancel";
 			this.buttonCancel.Size = new System.Drawing.Size(75, 23);
 			this.buttonCancel.TabIndex = 5;
@@ -110,8 +110,9 @@
 			// 
 			// checkOpenFolder
 			// 
+			this.checkOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.checkOpenFolder.AutoSize = true;
-			this.checkOpenFolder.Location = new System.Drawing.Point(12, 127);
+			this.checkOpenFolder.Location = new System.Drawing.Point(12, 141);
 			this.checkOpenFolder.Name = "checkOpenFolder";
 			this.checkOpenFolder.Size = new System.Drawing.Size(81, 17);
 			this.checkOpenFolder.TabIndex = 3;
@@ -129,7 +130,8 @@
 			this.textModDescription.Location = new System.Drawing.Point(81, 65);
 			this.textModDescription.Multiline = true;
 			this.textModDescription.Name = "textModDescription";
-			this.textModDescription.Size = new System.Drawing.Size(211, 52);
+			this.textModDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.textModDescription.Size = new System.Drawing.Size(211, 64);
 			this.textModDescription.TabIndex = 2;
 			// 
 			// NewModDialog
@@ -138,7 +140,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.buttonCancel;
-			this.ClientSize = new System.Drawing.Size(304, 158);
+			this.ClientSize = new System.Drawing.Size(304, 170);
 			this.Controls.Add(this.textModDescription);
 			this.Controls.Add(this.checkOpenFolder);
 			this.Controls.Add(this.textModAuthor);
