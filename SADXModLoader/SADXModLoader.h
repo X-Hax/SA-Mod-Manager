@@ -3,44 +3,6 @@
 #ifndef SADXMODLOADER_H
 #define SADXMODLOADER_H
 
-static const int ModLoaderVer = 2;
-
-#define arrayptrandlength(data) data, LengthOfArray(data)
-#define arraylengthandptr(data) LengthOfArray(data), data
-#define arrayptrandsize(data) data, SizeOfArray(data)
-#define arraysizeandptr(data) SizeOfArray(data), data
-
-struct PatchInfo
-{
-	void *address;
-	void *data;
-	int datasize;
-};
-
-#define patchdecl(address,data) { (void*)address, arrayptrandsize(data) }
-
-struct PointerInfo
-{
-	void *address;
-	void *data;
-};
-
-#define ptrdecl(address,data) { (void*)address, (void*)data }
-
-struct ModInfo
-{
-	int Version;
-	void (*Init)(const char *path);
-	PatchInfo *Patches;
-	int PatchCount;
-	PointerInfo *Jumps;
-	int JumpCount;
-	PointerInfo *Calls;
-	int CallCount;
-	PointerInfo *Pointers;
-	int PointerCount;
-};
-
 // Utility Functions
 template <typename T, size_t N>
 inline size_t LengthOfArray( const T(&)[ N ] )
@@ -2101,4 +2063,66 @@ static inline void CalcRingPosCircle(Vector3 *position, CharObj1 *parent, signed
 		add esp, 4
 	}
 }
+
+// ModInfo
+
+static const int ModLoaderVer = 3;
+
+#define arrayptrandlength(data) data, LengthOfArray(data)
+#define arraylengthandptr(data) LengthOfArray(data), data
+#define arrayptrandsize(data) data, SizeOfArray(data)
+#define arraysizeandptr(data) SizeOfArray(data), data
+
+struct PatchInfo
+{
+	void *address;
+	void *data;
+	int datasize;
+};
+
+#define patchdecl(address,data) { (void*)address, arrayptrandsize(data) }
+
+struct PointerInfo
+{
+	void *address;
+	void *data;
+};
+
+#define ptrdecl(address,data) { (void*)address, (void*)data }
+
+struct HelperFunctions_v3
+{
+	// The version of the structure.
+	int Version;
+	// Registers a start position for a character.
+	void (__cdecl *RegisterStartPosition)(unsigned char character, const StartPosition &position);
+	// Registers a field start position.
+	void (__cdecl *RegisterFieldStartPosition)(unsigned char character, const FieldStartPosition &position);
+	// Registers a path list.
+	void (__cdecl *RegisterPathList)(const PathDataPtr &paths);
+	// Registers a PVM file for a character.
+	void (__cdecl *RegisterCharacterPVM)(unsigned char character, const PVMEntry &pvm);
+	// Registers a PVM file for a common object.
+	void (__cdecl *RegisterCommonObjectPVM)(const PVMEntry &pvm);
+	// Registers a trial level entry for a character.
+	void (__cdecl *RegisterTrialLevel)(unsigned char character, const TrialLevelListEntry &level);
+	// Registers a trial subgame entry for a character.
+	void (__cdecl *RegisterTrialSubgame)(unsigned char character, const TrialLevelListEntry &level);
+};
+
+typedef HelperFunctions_v3 HelperFunctions;
+
+struct ModInfo
+{
+	int Version;
+	void (__cdecl *Init)(const char *path, const HelperFunctions &helperFunctions);
+	PatchInfo *Patches;
+	int PatchCount;
+	PointerInfo *Jumps;
+	int JumpCount;
+	PointerInfo *Calls;
+	int CallCount;
+	PointerInfo *Pointers;
+	int PointerCount;
+};
 #endif

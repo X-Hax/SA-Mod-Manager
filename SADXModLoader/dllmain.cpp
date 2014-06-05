@@ -1780,6 +1780,164 @@ unsigned char ReadCodes(istream &stream, list<Code> &list)
 	return 0;
 }
 
+unordered_map<unsigned char, unordered_map<int, StartPosition>> StartPositions;
+void RegisterStartPosition(unsigned char character, const StartPosition &position)
+{
+	auto iter = StartPositions.find(character);
+	unordered_map<int, StartPosition> *newlist;
+	if (iter == StartPositions.end())
+	{
+		const StartPosition *origlist;
+		switch (character)
+		{
+		case Characters_Sonic:
+			origlist = (StartPosition *)0x90A5C8;
+			break;
+		case Characters_Tails:
+			origlist = (StartPosition *)0x90AB68;
+			break;
+		case Characters_Knuckles:
+			origlist = (StartPosition *)0x90AEA0;
+			break;
+		case Characters_Amy:
+			origlist = (StartPosition *)0x90B470;
+			break;
+		case Characters_Gamma:
+			origlist = (StartPosition *)0x90B7A8;
+			break;
+		case Characters_Big:
+			origlist = (StartPosition *)0x90B1B0;
+			break;
+		default:
+			return;
+		}
+		StartPositions[character] = unordered_map<int, StartPosition>();
+		newlist = &StartPositions[character];
+		while (origlist->LevelID != LevelIDs_Invalid)
+			(*newlist)[levelact(origlist->LevelID, origlist->ActID)] = *origlist++;
+	}
+	else
+		newlist = &iter->second;
+	(*newlist)[levelact(position.LevelID, position.ActID)] = position;
+}
+
+unordered_map<unsigned char, unordered_map<int, FieldStartPosition>> FieldStartPositions;
+void RegisterFieldStartPosition(unsigned char character, const FieldStartPosition &position)
+{
+	if (character >= Characters_MetalSonic) return;
+	auto iter = FieldStartPositions.find(character);
+	unordered_map<int, FieldStartPosition> *newlist;
+	if (iter == FieldStartPositions.end())
+	{
+		const FieldStartPosition *origlist = ((FieldStartPosition **)0x90BEFC)[character];
+		FieldStartPositions[character] = unordered_map<int, FieldStartPosition>();
+		newlist = &FieldStartPositions[character];
+		while (origlist->LevelID != LevelIDs_Invalid)
+			(*newlist)[levelact(origlist->LevelID, origlist->FieldID)] = *origlist++;
+	}
+	else
+		newlist = &iter->second;
+	(*newlist)[levelact(position.LevelID, position.FieldID)] = position;
+}
+
+unordered_map<int, PathDataPtr> Paths;
+void RegisterPathList(const PathDataPtr &paths)
+{
+	if (Paths.size() == 0)
+	{
+		const PathDataPtr *oldlist = (PathDataPtr *)0x91A858;
+		while (oldlist->LevelAct != 0xFFFF)
+			Paths[oldlist->LevelAct] = *oldlist++;
+	}
+	Paths[paths.LevelAct] = paths;
+}
+
+unordered_map<unsigned char, vector<PVMEntry>> CharacterPVMs;
+void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
+{
+	if (character > Characters_MetalSonic) return;
+	auto iter = CharacterPVMs.find(character);
+	vector<PVMEntry> *newlist;
+	if (iter == CharacterPVMs.end())
+	{
+		const PVMEntry *origlist = ((PVMEntry **)0x90ED54)[character];
+		CharacterPVMs[character] = vector<PVMEntry>();
+		newlist = &CharacterPVMs[character];
+		while (origlist->TexList)
+			newlist->push_back(*origlist++);
+	}
+	else
+		newlist = &iter->second;
+	newlist->push_back(pvm);
+}
+
+vector<PVMEntry> CommonObjectPVMs;
+void RegisterCommonObjectPVM(const PVMEntry &pvm)
+{
+	if (CommonObjectPVMs.size() == 0)
+	{
+		const PVMEntry *oldlist = (PVMEntry *)0x90EC18;
+		while (oldlist->TexList)
+			CommonObjectPVMs.push_back(*oldlist++);
+	}
+	CommonObjectPVMs.push_back(pvm);
+}
+
+unsigned char trialcharacters[] = { 0, 0xFFu, 1, 2, 0xFFu, 3, 5, 4, 6 };
+
+unordered_map<unsigned char, vector<TrialLevelListEntry>> _TrialLevels;
+void RegisterTrialLevel(unsigned char character, const TrialLevelListEntry &level)
+{
+	if (character > Characters_MetalSonic) return;
+	character = trialcharacters[character];
+	if (character == 0xFF) return;
+	auto iter = _TrialLevels.find(character);
+	vector<TrialLevelListEntry> *newlist;
+	if (iter == _TrialLevels.end())
+	{
+		const TrialLevelList *origlist = &TrialLevels[character];
+		_TrialLevels[character] = vector<TrialLevelListEntry>();
+		newlist = &_TrialLevels[character];
+		newlist->resize(origlist->Count);
+		memcpy(newlist->data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
+	}
+	else
+		newlist = &iter->second;
+	newlist->push_back(level);
+}
+
+unordered_map<unsigned char, vector<TrialLevelListEntry>> _TrialSubgames;
+void RegisterTrialSubgame(unsigned char character, const TrialLevelListEntry &level)
+{
+	if (character > Characters_MetalSonic) return;
+	character = trialcharacters[character];
+	if (character == 0xFF) return;
+	auto iter = _TrialSubgames.find(character);
+	vector<TrialLevelListEntry> *newlist;
+	if (iter == _TrialSubgames.end())
+	{
+		const TrialLevelList *origlist = &TrialSubgames[character];
+		_TrialSubgames[character] = vector<TrialLevelListEntry>();
+		newlist = &_TrialSubgames[character];
+		newlist->resize(origlist->Count);
+		memcpy(newlist->data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
+	}
+	else
+		newlist = &iter->second;
+	newlist->push_back(level);
+}
+
+const HelperFunctions helperFunctions = {
+	ModLoaderVer,
+	RegisterStartPosition,
+	RegisterFieldStartPosition,
+	RegisterPathList,
+	RegisterCharacterPVM,
+	RegisterCommonObjectPVM,
+	RegisterTrialLevel,
+	RegisterTrialSubgame
+};
+
 const char codemagic[] = "codev3";
 void __cdecl InitMods(void)
 {
@@ -1942,7 +2100,7 @@ void __cdecl InitMods(void)
 						for (int i = 0; i < info->PointerCount; i++)
 							WriteData(info->Pointers[i].address, &info->Pointers[i].data, sizeof(void*));
 					if (info->Init)
-						info->Init(dir.c_str());
+						info->Init(dir.c_str(), helperFunctions);
 				}
 				else
 					PrintDebug("File \"%s\" is not a valid mod file.\n", filename.c_str());
@@ -1964,6 +2122,93 @@ void __cdecl InitMods(void)
 			buf[it->second.length()] = 0;
 			PrintDebug("Replaced file: \"%s\" = \"%s\"\n", it->first.c_str(), buf);
 		}
+	}
+	for (auto i = StartPositions.cbegin(); i != StartPositions.cend(); i++)
+	{
+		auto poslist = &i->second;
+		StartPosition *newlist = new StartPosition[poslist->size() + 1];
+		StartPosition *cur = newlist;
+		for (auto j = poslist->cbegin(); j != poslist->cend(); j++)
+			*cur++ = j->second;
+		cur->LevelID = LevelIDs_Invalid;
+		switch (i->first)
+		{
+		case Characters_Sonic:
+			WriteData((StartPosition **)0x41491E, newlist);
+			break;
+		case Characters_Tails:
+			WriteData((StartPosition **)0x414925, newlist);
+			break;
+		case Characters_Knuckles:
+			WriteData((StartPosition **)0x41492C, newlist);
+			break;
+		case Characters_Amy:
+			WriteData((StartPosition **)0x41493A, newlist);
+			break;
+		case Characters_Gamma:
+			WriteData((StartPosition **)0x414941, newlist);
+			break;
+		case Characters_Big:
+			WriteData((StartPosition **)0x414933, newlist);
+			break;
+		}
+	}
+	for (auto i = FieldStartPositions.cbegin(); i != FieldStartPositions.cend(); i++)
+	{
+		auto poslist = &i->second;
+		FieldStartPosition *newlist = new FieldStartPosition[poslist->size() + 1];
+		FieldStartPosition *cur = newlist;
+		for (auto j = poslist->cbegin(); j != poslist->cend(); j++)
+			*cur++ = j->second;
+		cur->LevelID = LevelIDs_Invalid;
+		((FieldStartPosition **)0x90BEFC)[i->first] = newlist;
+	}
+	if (Paths.size() > 0)
+	{
+		PathDataPtr *newlist = new PathDataPtr[Paths.size() + 1];
+		PathDataPtr *cur = newlist;
+		for (auto i = Paths.cbegin(); i != Paths.cend(); i++)
+			*cur++ = i->second;
+		cur->LevelAct = 0xFFFF;
+		WriteData((PathDataPtr **)0x49C1A1, newlist);
+		WriteData((PathDataPtr **)0x49C1AF, newlist);
+	}
+	for (auto i = CharacterPVMs.cbegin(); i != CharacterPVMs.cend(); i++)
+	{
+		const vector<PVMEntry> *pvmlist = &i->second;
+		auto size = pvmlist->size();
+		PVMEntry *newlist = new PVMEntry[size + 1];
+		memcpy(newlist, pvmlist->data(), sizeof(PVMEntry) * size);
+		newlist[size].TexList = nullptr;
+		((PVMEntry **)0x90ED54)[i->first] = newlist;
+	}
+	if (CommonObjectPVMs.size() > 0)
+	{
+		auto size = CommonObjectPVMs.size();
+		PVMEntry *newlist = new PVMEntry[size + 1];
+		PVMEntry *cur = newlist;
+		memcpy(newlist, CommonObjectPVMs.data(), sizeof(PVMEntry) * size);
+		newlist[size].TexList = nullptr;
+		*((PVMEntry **)0x90EC70) = newlist;
+		*((PVMEntry **)0x90EC74) = newlist;
+	}
+	for (auto i = _TrialLevels.cbegin(); i != _TrialLevels.cend(); i++)
+	{
+		const vector<TrialLevelListEntry> *levellist = &i->second;
+		auto size = levellist->size();
+		TrialLevelListEntry *newlist = new TrialLevelListEntry[size];
+		memcpy(newlist, levellist->data(), sizeof(PVMEntry) * size);
+		TrialLevels[i->first].Levels = newlist;
+		TrialLevels[i->first].Count = size;
+	}
+	for (auto i = _TrialSubgames.cbegin(); i != _TrialSubgames.cend(); i++)
+	{
+		const vector<TrialLevelListEntry> *levellist = &i->second;
+		auto size = levellist->size();
+		TrialLevelListEntry *newlist = new TrialLevelListEntry[size];
+		memcpy(newlist, levellist->data(), sizeof(PVMEntry) * size);
+		TrialSubgames[i->first].Levels = newlist;
+		TrialSubgames[i->first].Count = size;
 	}
 	PrintDebug("Finished loading mods\n");
 	str = ifstream("mods\\Codes.dat", ifstream::binary);
