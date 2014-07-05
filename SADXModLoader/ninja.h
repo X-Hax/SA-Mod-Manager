@@ -2247,6 +2247,58 @@ typedef struct {
 
 #endif /* _NINJA_DIR_H_ */
 
+static Sint16 *NextChunk(Sint16 *chunk)
+{
+	unsigned char v5 = (unsigned char)*chunk++;
+	if (v5 == NJD_CE)
+		return nullptr;
+	if (v5 >= NJD_TINYOFF)
+	{
+		if (v5 >= NJD_MATOFF)
+			return chunk + *chunk + 1;
+		else
+			return chunk + 1;
+	}
+	return chunk;
+}
+
+static Sint16 *FindChunk(Sint16 *chunk, unsigned char type)
+{
+	chunk = NextChunk(chunk);
+	while (chunk != nullptr)
+		if ((unsigned char)*chunk == type)
+			return chunk;
+		else
+			chunk = NextChunk(chunk);
+	return chunk;
+}
+
+static Sint32 *NextChunk(Sint32 *chunk)
+{
+	unsigned char v5 = (unsigned char)*chunk++;
+	if (v5 == NJD_CE)
+		return nullptr;
+	if (v5 >= NJD_TINYOFF)
+	{
+		if (v5 >= NJD_MATOFF)
+			return chunk + *chunk + 1;
+		else
+			return chunk + 1;
+	}
+	return chunk;
+}
+
+static Sint32 *FindChunk(Sint32 *chunk, unsigned char type)
+{
+	chunk = NextChunk(chunk);
+	while (chunk != nullptr)
+		if ((unsigned char)*chunk == type)
+			return chunk;
+		else
+			chunk = NextChunk(chunk);
+	return chunk;
+}
+
 /*
  * End Of File
  */
