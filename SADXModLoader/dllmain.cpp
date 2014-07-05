@@ -1821,6 +1821,23 @@ void RegisterStartPosition(unsigned char character, const StartPosition &positio
 	(*newlist)[levelact(position.LevelID, position.ActID)] = position;
 }
 
+void ClearStartPositionList(unsigned char character)
+{
+	switch (character)
+	{
+	case Characters_Sonic:
+	case Characters_Tails:
+	case Characters_Knuckles:
+	case Characters_Amy:
+	case Characters_Gamma:
+	case Characters_Big:
+		break;
+	default:
+		return;
+	}
+	StartPositions[character] = unordered_map<int, StartPosition>();
+}
+
 unordered_map<unsigned char, unordered_map<int, FieldStartPosition>> FieldStartPositions;
 void RegisterFieldStartPosition(unsigned char character, const FieldStartPosition &position)
 {
@@ -1840,16 +1857,30 @@ void RegisterFieldStartPosition(unsigned char character, const FieldStartPositio
 	(*newlist)[levelact(position.LevelID, position.FieldID)] = position;
 }
 
+void ClearFieldStartPositionList(unsigned char character)
+{
+	if (character >= Characters_MetalSonic) return;
+	FieldStartPositions[character] = unordered_map<int, FieldStartPosition>();
+}
+
 unordered_map<int, PathDataPtr> Paths;
+bool PathsInitialized;
 void RegisterPathList(const PathDataPtr &paths)
 {
-	if (Paths.size() == 0)
+	if (!PathsInitialized)
 	{
 		const PathDataPtr *oldlist = (PathDataPtr *)0x91A858;
 		while (oldlist->LevelAct != 0xFFFF)
 			Paths[oldlist->LevelAct] = *oldlist++;
+		PathsInitialized = true;
 	}
 	Paths[paths.LevelAct] = paths;
+}
+
+void ClearPathListList()
+{
+	Paths.clear();
+	PathsInitialized = true;
 }
 
 unordered_map<unsigned char, vector<PVMEntry>> CharacterPVMs;
@@ -1871,26 +1902,45 @@ void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
 	newlist->push_back(pvm);
 }
 
+void ClearCharacterPVMList(unsigned char character)
+{
+	if (character > Characters_MetalSonic) return;
+	CharacterPVMs[character] = vector<PVMEntry>();
+}
+
 vector<PVMEntry> CommonObjectPVMs;
+bool CommonObjectPVMsInitialized;
 void RegisterCommonObjectPVM(const PVMEntry &pvm)
 {
-	if (CommonObjectPVMs.size() == 0)
+	if (!CommonObjectPVMsInitialized)
 	{
 		const PVMEntry *oldlist = (PVMEntry *)0x90EC18;
 		while (oldlist->TexList)
 			CommonObjectPVMs.push_back(*oldlist++);
+		CommonObjectPVMsInitialized = true;
 	}
 	CommonObjectPVMs.push_back(pvm);
 }
 
+void ClearCommonObjectPVMList()
+{
+	CommonObjectPVMs.clear();
+	CommonObjectPVMsInitialized = true;
+}
+
 unsigned char trialcharacters[] = { 0, 0xFFu, 1, 2, 0xFFu, 3, 5, 4, 6 };
+inline unsigned char gettrialcharacter(unsigned char character)
+{
+	if (character >= LengthOfArray(trialcharacters))
+		return 0xFF;
+	return trialcharacters[character];
+}
 
 unordered_map<unsigned char, vector<TrialLevelListEntry>> _TrialLevels;
 void RegisterTrialLevel(unsigned char character, const TrialLevelListEntry &level)
 {
-	if (character > Characters_MetalSonic) return;
-	character = trialcharacters[character];
-	if (character == 0xFF) return;
+	character = gettrialcharacter(character);
+	if (character = 0xFF) return;
 	auto iter = _TrialLevels.find(character);
 	vector<TrialLevelListEntry> *newlist;
 	if (iter == _TrialLevels.end())
@@ -1906,12 +1956,18 @@ void RegisterTrialLevel(unsigned char character, const TrialLevelListEntry &leve
 	newlist->push_back(level);
 }
 
+void ClearTrialLevelList(unsigned char character)
+{
+	character = gettrialcharacter(character);
+	if (character = 0xFF) return;
+	_TrialLevels[character] = vector<TrialLevelListEntry>();
+}
+
 unordered_map<unsigned char, vector<TrialLevelListEntry>> _TrialSubgames;
 void RegisterTrialSubgame(unsigned char character, const TrialLevelListEntry &level)
 {
-	if (character > Characters_MetalSonic) return;
-	character = trialcharacters[character];
-	if (character == 0xFF) return;
+	character = gettrialcharacter(character);
+	if (character = 0xFF) return;
 	auto iter = _TrialSubgames.find(character);
 	vector<TrialLevelListEntry> *newlist;
 	if (iter == _TrialSubgames.end())
@@ -1927,15 +1983,29 @@ void RegisterTrialSubgame(unsigned char character, const TrialLevelListEntry &le
 	newlist->push_back(level);
 }
 
+void ClearTrialSubgameList(unsigned char character)
+{
+	character = gettrialcharacter(character);
+	if (character = 0xFF) return;
+	_TrialSubgames[character] = vector<TrialLevelListEntry>();
+}
+
 const HelperFunctions helperFunctions = {
 	ModLoaderVer,
 	RegisterStartPosition,
+	ClearStartPositionList,
 	RegisterFieldStartPosition,
+	ClearFieldStartPositionList,
 	RegisterPathList,
+	ClearPathListList,
 	RegisterCharacterPVM,
+	ClearCharacterPVMList,
 	RegisterCommonObjectPVM,
+	ClearCommonObjectPVMList,
 	RegisterTrialLevel,
-	RegisterTrialSubgame
+	ClearTrialLevelList,
+	RegisterTrialSubgame,
+	ClearTrialSubgameList
 };
 
 const char codemagic[] = "codev3";
@@ -2084,7 +2154,7 @@ void __cdecl InitMods(void)
 			HMODULE module = LoadLibraryA(filename.c_str());
 			if (module)
 			{
-				ModInfo *info = (ModInfo *)GetProcAddress(module, "SADXModInfo");
+				const ModInfo *info = (const ModInfo *)GetProcAddress(module, "SADXModInfo");
 				if (info)
 				{
 					if (info->Patches)
@@ -2098,7 +2168,7 @@ void __cdecl InitMods(void)
 							WriteCall(info->Calls[i].address, info->Calls[i].data);
 					if (info->Pointers)
 						for (int i = 0; i < info->PointerCount; i++)
-							WriteData(info->Pointers[i].address, &info->Pointers[i].data, sizeof(void*));
+							WriteData((void**)info->Pointers[i].address, info->Pointers[i].data);
 					if (info->Init)
 						info->Init(dir.c_str(), helperFunctions);
 				}
@@ -2163,7 +2233,7 @@ void __cdecl InitMods(void)
 		cur->LevelID = LevelIDs_Invalid;
 		((FieldStartPosition **)0x90BEFC)[i->first] = newlist;
 	}
-	if (Paths.size() > 0)
+	if (PathsInitialized)
 	{
 		PathDataPtr *newlist = new PathDataPtr[Paths.size() + 1];
 		PathDataPtr *cur = newlist;
@@ -2182,7 +2252,7 @@ void __cdecl InitMods(void)
 		newlist[size].TexList = nullptr;
 		((PVMEntry **)0x90ED54)[i->first] = newlist;
 	}
-	if (CommonObjectPVMs.size() > 0)
+	if (CommonObjectPVMsInitialized)
 	{
 		auto size = CommonObjectPVMs.size();
 		PVMEntry *newlist = new PVMEntry[size + 1];

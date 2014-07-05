@@ -23,8 +23,7 @@ static BOOL WriteData(void *writeaddress, void *data, SIZE_T datasize, SIZE_T *b
 
 static BOOL WriteData(void *writeaddress, void *data, SIZE_T datasize)
 {
-	SIZE_T written;
-	return WriteData(writeaddress, data, datasize, &written);
+	return WriteData(writeaddress, data, datasize, nullptr);
 }
 
 template<typename T> static BOOL WriteData(T const *writeaddress, T data, SIZE_T *byteswritten)
@@ -34,8 +33,7 @@ template<typename T> static BOOL WriteData(T const *writeaddress, T data, SIZE_T
 
 template<typename T> static BOOL WriteData(T const *writeaddress, T data)
 {
-	SIZE_T written;
-	return WriteData(writeaddress, data, &written);
+	return WriteData(writeaddress, data, nullptr);
 }
 
 template<typename T> static BOOL WriteData(T *writeaddress, T data, SIZE_T *byteswritten)
@@ -45,8 +43,7 @@ template<typename T> static BOOL WriteData(T *writeaddress, T data, SIZE_T *byte
 
 template<typename T> static BOOL WriteData(T *writeaddress, T data)
 {
-	SIZE_T written;
-	return WriteData(writeaddress, data, &written);
+	return WriteData(writeaddress, data, nullptr);
 }
 
 template <typename T, size_t N> static BOOL WriteData(void *writeaddress, T(&data)[N], SIZE_T *byteswritten)
@@ -56,8 +53,7 @@ template <typename T, size_t N> static BOOL WriteData(void *writeaddress, T(&dat
 
 template <typename T, size_t N> static BOOL WriteData(void *writeaddress, T(&data)[N])
 {
-	SIZE_T written;
-	return WriteData(writeaddress, data, &written);
+	return WriteData(writeaddress, data, nullptr);
 }
 
 static BOOL WriteData(void *address, char data, int count, SIZE_T *byteswritten)
@@ -71,8 +67,7 @@ static BOOL WriteData(void *address, char data, int count, SIZE_T *byteswritten)
 
 static BOOL WriteData(void *address, char data, int count)
 {
-	SIZE_T written;
-	return WriteData(address, data, count, &written);
+	return WriteData(address, data, count, nullptr);
 }
 
 static BOOL WriteJump(void *writeaddress, void *funcaddress)
@@ -89,6 +84,24 @@ static BOOL WriteCall(void *writeaddress, void *funcaddress)
 	data[0] = 0xE8;
 	*(signed int *)(data + 1) = (unsigned int)funcaddress - ((unsigned int)writeaddress + 5);
 	return WriteData(writeaddress, data);
+}
+
+static void ResizeTextureList(NJS_TEXLIST *texlist, Uint32 count)
+{
+	texlist->textures = new NJS_TEXNAME[count];
+	texlist->nbTexture = count;
+}
+
+static void ResizeTextureList(NJS_TEXLIST *texlist, NJS_TEXNAME *textures, Uint32 count)
+{
+	texlist->textures = textures;
+	texlist->nbTexture = count;
+}
+
+template <Uint32 N>
+static void ResizeTextureList(NJS_TEXLIST *texlist, NJS_TEXNAME(&textures)[N])
+{
+	ResizeTextureList(texlist, textures, N);
 }
 
 // SADX Enums
@@ -2096,18 +2109,32 @@ struct HelperFunctions_v3
 	int Version;
 	// Registers a start position for a character.
 	void (__cdecl *RegisterStartPosition)(unsigned char character, const StartPosition &position);
-	// Registers a field start position.
+	// Clears the list of registered start positions for a character.
+	void (__cdecl *ClearStartPositionList)(unsigned char character);
+	// Registers a field start position for a character.
 	void (__cdecl *RegisterFieldStartPosition)(unsigned char character, const FieldStartPosition &position);
+	// Clears the list of registered field start positions for a character.
+	void (__cdecl *ClearFieldStartPositionList)(unsigned char character);
 	// Registers a path list.
 	void (__cdecl *RegisterPathList)(const PathDataPtr &paths);
+	// Clears the list of registered path lists.
+	void (__cdecl *ClearPathListList)();
 	// Registers a PVM file for a character.
 	void (__cdecl *RegisterCharacterPVM)(unsigned char character, const PVMEntry &pvm);
+	// Clears the list of registered PVM files for a character.
+	void (__cdecl *ClearCharacterPVMList)(unsigned char character);
 	// Registers a PVM file for a common object.
 	void (__cdecl *RegisterCommonObjectPVM)(const PVMEntry &pvm);
+	// Clears the list of registered PVM files for common objects.
+	void (__cdecl *ClearCommonObjectPVMList)();
 	// Registers a trial level entry for a character.
 	void (__cdecl *RegisterTrialLevel)(unsigned char character, const TrialLevelListEntry &level);
+	// Clears the list of registered trial level entries for a character.
+	void (__cdecl *ClearTrialLevelList)(unsigned char character);
 	// Registers a trial subgame entry for a character.
 	void (__cdecl *RegisterTrialSubgame)(unsigned char character, const TrialLevelListEntry &level);
+	// Clears the list of registered trial subgame entries for a character.
+	void (__cdecl *ClearTrialSubgameList)(unsigned char character);
 };
 
 typedef HelperFunctions_v3 HelperFunctions;
@@ -2116,13 +2143,13 @@ struct ModInfo
 {
 	int Version;
 	void (__cdecl *Init)(const char *path, const HelperFunctions &helperFunctions);
-	PatchInfo *Patches;
+	const PatchInfo *Patches;
 	int PatchCount;
-	PointerInfo *Jumps;
+	const PointerInfo *Jumps;
 	int JumpCount;
-	PointerInfo *Calls;
+	const PointerInfo *Calls;
 	int CallCount;
-	PointerInfo *Pointers;
+	const PointerInfo *Pointers;
 	int PointerCount;
 };
 #endif
