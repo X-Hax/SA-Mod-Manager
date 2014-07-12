@@ -231,7 +231,11 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 			path = path.substr(2, path.length() - 2);
 		transform(path.begin(), path.end(), path.begin(), ::tolower);
 		for (auto i = filemap.crbegin(); i != filemap.crend(); i++)
-			if (path.compare(0, path.length(), i->first, 0, path.length()) == 0)
+		{
+			i->first.copy(pathnoext, i->first.length(), 0);
+			pathnoext[i->first.length()] = 0;
+			PathRemoveExtensionA(pathnoext);
+			if (path.compare(pathnoext) == 0)
 			{
 				basschan = BASS_VGMSTREAM_StreamCreate(i->second, loop ? BASS_SAMPLE_LOOP : 0);
 				if (basschan != 0)
@@ -246,6 +250,7 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 					return 1;
 				}
 			}
+		}
 	}
 	filename = _ReplaceFile(filename);
 	musicwmp = true;

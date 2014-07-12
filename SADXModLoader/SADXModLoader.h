@@ -16,47 +16,47 @@ inline size_t SizeOfArray( const T(&)[ N ] )
 	return N * sizeof(T);
 }
 
-static BOOL WriteData(void *writeaddress, void *data, SIZE_T datasize, SIZE_T *byteswritten)
+static BOOL WriteData(void *writeaddress, const void *data, SIZE_T datasize, SIZE_T *byteswritten)
 {
 	return WriteProcessMemory(GetCurrentProcess(), writeaddress, data, datasize, byteswritten);
 }
 
-static BOOL WriteData(void *writeaddress, void *data, SIZE_T datasize)
+static BOOL WriteData(void *writeaddress, const void *data, SIZE_T datasize)
 {
 	return WriteData(writeaddress, data, datasize, nullptr);
 }
 
-template<typename T> static BOOL WriteData(T const *writeaddress, T data, SIZE_T *byteswritten)
+template<typename T> static BOOL WriteData(T const *writeaddress, const T data, SIZE_T *byteswritten)
 {
 	return WriteData((void*)writeaddress, (void*)&data, (SIZE_T)sizeof(data), byteswritten);
 }
 
-template<typename T> static BOOL WriteData(T const *writeaddress, T data)
+template<typename T> static BOOL WriteData(T const *writeaddress, const T data)
 {
 	return WriteData(writeaddress, data, nullptr);
 }
 
-template<typename T> static BOOL WriteData(T *writeaddress, T data, SIZE_T *byteswritten)
+template<typename T> static BOOL WriteData(T *writeaddress, const T &data, SIZE_T *byteswritten)
 {
 	return WriteData(writeaddress, &data, sizeof(data), byteswritten);
 }
 
-template<typename T> static BOOL WriteData(T *writeaddress, T data)
+template<typename T> static BOOL WriteData(T *writeaddress, const T &data)
 {
 	return WriteData(writeaddress, data, nullptr);
 }
 
-template <typename T, size_t N> static BOOL WriteData(void *writeaddress, T(&data)[N], SIZE_T *byteswritten)
+template <typename T, size_t N> static BOOL WriteData(void *writeaddress, const T(&data)[N], SIZE_T *byteswritten)
 {
 	return WriteData(writeaddress, data, SizeOfArray(data), byteswritten);
 }
 
-template <typename T, size_t N> static BOOL WriteData(void *writeaddress, T(&data)[N])
+template <typename T, size_t N> static BOOL WriteData(void *writeaddress, const T(&data)[N])
 {
 	return WriteData(writeaddress, data, nullptr);
 }
 
-static BOOL WriteData(void *address, char data, int count, SIZE_T *byteswritten)
+static BOOL WriteData(void *address, const char data, int count, SIZE_T *byteswritten)
 {
 	char *buf = new char[count];
 	memset(buf, data, count);
@@ -2089,7 +2089,7 @@ static const int ModLoaderVer = 3;
 struct PatchInfo
 {
 	void *address;
-	void *data;
+	const void *data;
 	int datasize;
 };
 
