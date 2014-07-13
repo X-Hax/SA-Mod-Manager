@@ -1348,6 +1348,19 @@ struct SkyboxScale
 {
 	Vertex Far, Normal, Near;
 };
+
+struct StageLightData
+{
+	char level;
+	char act;
+	char light_num;
+	char use_yxz;
+	float xyz[3];
+	float dif;
+	float mutliplier;
+	float rgb[3];
+	float amb_rgb[3];
+};
 #pragma pack(pop)
 
 // SADX Variables
