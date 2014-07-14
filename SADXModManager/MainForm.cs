@@ -17,14 +17,14 @@ namespace SADXModManager
 			InitializeComponent();
 		}
 
-		const string datadllpath = @"system\CHRMODELS.dll";
-		const string datadllorigpath = @"system\CHRMODELS_orig.dll";
-		const string loaderinipath = @"mods\SADXModLoader.ini";
-		const string loaderdllpath = @"mods\SADXModLoader.dll";
+		const string datadllpath = @"system/CHRMODELS.dll";
+		const string datadllorigpath = @"system/CHRMODELS_orig.dll";
+		const string loaderinipath = @"mods/SADXModLoader.ini";
+		const string loaderdllpath = @"mods/SADXModLoader.dll";
 		LoaderInfo loaderini;
 		Dictionary<string, ModInfo> mods;
-		const string codexmlpath = @"mods\Codes.xml";
-		const string codedatpath = @"mods\Codes.dat";
+		const string codexmlpath = @"mods/Codes.xml";
+		const string codedatpath = @"mods/Codes.dat";
 		CodeList codes;
 		bool installed;
 
