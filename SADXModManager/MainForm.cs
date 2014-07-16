@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
-using IniSerializer;
 using System.Xml.Serialization;
+using IniSerializer;
 
 namespace SADXModManager
 {
@@ -17,16 +17,17 @@ namespace SADXModManager
 			InitializeComponent();
 		}
 
-		const string datadllpath = @"system/CHRMODELS.dll";
-		const string datadllorigpath = @"system/CHRMODELS_orig.dll";
-		const string loaderinipath = @"mods/SADXModLoader.ini";
-		const string loaderdllpath = @"mods/SADXModLoader.dll";
+		const string datadllpath = "system/CHRMODELS.dll";
+		const string datadllorigpath = "system/CHRMODELS_orig.dll";
+		const string loaderinipath = "mods/SADXModLoader.ini";
+		const string loaderdllpath = "mods/SADXModLoader.dll";
 		LoaderInfo loaderini;
 		Dictionary<string, ModInfo> mods;
-		const string codexmlpath = @"mods/Codes.xml";
-		const string codedatpath = @"mods/Codes.dat";
+		const string codexmlpath = "mods/Codes.xml";
+		const string codedatpath = "mods/Codes.dat";
 		CodeList codes;
 		bool installed;
+		bool suppressEvent;
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
@@ -42,9 +43,13 @@ namespace SADXModManager
 			fileCheckBox.Checked = loaderini.DebugFile;
 			dontFixWindowCheckBox.Checked = loaderini.DontFixWindow;
 			disableCDCheckCheckBox.Checked = loaderini.DisableCDCheck;
-			useCustomResolutionCheckBox.Checked = horizontalResolution.Enabled = verticalResolution.Enabled = loaderini.UseCustomResolution;
+			useCustomResolutionCheckBox.Checked = verticalResolution.Enabled = forceAspectRatioCheckBox.Enabled = nativeResolutionButton.Enabled = loaderini.UseCustomResolution;
+			horizontalResolution.Enabled = loaderini.UseCustomResolution && !loaderini.ForceAspectRatio;
 			horizontalResolution.Value = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
 			verticalResolution.Value = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
+			suppressEvent = true;
+			forceAspectRatioCheckBox.Checked = loaderini.ForceAspectRatio;
+			suppressEvent = false;
 			windowedFullscreenCheckBox.Checked = loaderini.WindowedFullscreen;
 			if (!File.Exists(datadllpath))
 			{
@@ -142,6 +147,7 @@ namespace SADXModManager
 			loaderini.UseCustomResolution = useCustomResolutionCheckBox.Checked;
 			loaderini.HorizontalResolution = (int)horizontalResolution.Value;
 			loaderini.VerticalResolution = (int)verticalResolution.Value;
+			loaderini.ForceAspectRatio = forceAspectRatioCheckBox.Checked;
 			loaderini.WindowedFullscreen = windowedFullscreenCheckBox.Checked;
 			IniFile.Serialize(loaderini, loaderinipath);
 			for (int i = 0; i < codes.Codes.Count; i++)
@@ -260,7 +266,39 @@ namespace SADXModManager
 
 		private void useCustomResolutionCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
-			horizontalResolution.Enabled = verticalResolution.Enabled = useCustomResolutionCheckBox.Checked;
+			if (nativeResolutionButton.Enabled = forceAspectRatioCheckBox.Enabled = 
+				verticalResolution.Enabled = useCustomResolutionCheckBox.Checked)
+				horizontalResolution.Enabled = !forceAspectRatioCheckBox.Checked;
+			else
+				horizontalResolution.Enabled = false;
+		}
+
+		const decimal ratio = 4 / 3m;
+		private void forceAspectRatioCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (forceAspectRatioCheckBox.Checked)
+			{
+				horizontalResolution.Enabled = false;
+				horizontalResolution.Value = Math.Round(verticalResolution.Value * ratio);
+			}
+			else if (suppressEvent || MessageBox.Show(this, "Using an aspect ratio other than 4:3 will cause the camera's 'field of view' to shrink, reducing your view of the stage.\nIf you are having a hard time seeing things, set your aspect ratio back to 4:3.", "SADX Mod Manager", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.OK)
+				horizontalResolution.Enabled = true;
+			else
+				forceAspectRatioCheckBox.Checked = true;
+		}
+
+		private void verticalResolution_ValueChanged(object sender, EventArgs e)
+		{
+			if (forceAspectRatioCheckBox.Checked)
+				horizontalResolution.Value = Math.Round(verticalResolution.Value * ratio);
+		}
+
+		private void nativeResolutionButton_Click(object sender, EventArgs e)
+		{
+			System.Drawing.Rectangle rect = Screen.PrimaryScreen.Bounds;
+			verticalResolution.Value = rect.Height;
+			if (!forceAspectRatioCheckBox.Checked)
+				horizontalResolution.Value = rect.Width;
 		}
 
 		private void configEditorButton_Click(object sender, EventArgs e)
@@ -343,6 +381,8 @@ namespace SADXModManager
 		public int HorizontalResolution { get; set; }
 		[DefaultValue(480)]
 		public int VerticalResolution { get; set; }
+		[DefaultValue(true)]
+		public bool ForceAspectRatio { get; set; }
 		public bool WindowedFullscreen { get; set; }
 		[IniName("Mod")]
 		[IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]

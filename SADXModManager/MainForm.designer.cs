@@ -30,6 +30,8 @@
         {
 			System.Windows.Forms.GroupBox groupBox2;
 			System.Windows.Forms.Label label1;
+			this.nativeResolutionButton = new System.Windows.Forms.Button();
+			this.forceAspectRatioCheckBox = new System.Windows.Forms.CheckBox();
 			this.windowedFullscreenCheckBox = new System.Windows.Forms.CheckBox();
 			this.fileCheckBox = new System.Windows.Forms.CheckBox();
 			this.screenCheckBox = new System.Windows.Forms.CheckBox();
@@ -74,8 +76,11 @@
 			// 
 			// groupBox2
 			// 
-			groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			groupBox2.Controls.Add(this.nativeResolutionButton);
+			groupBox2.Controls.Add(this.forceAspectRatioCheckBox);
 			groupBox2.Controls.Add(this.windowedFullscreenCheckBox);
 			groupBox2.Controls.Add(this.fileCheckBox);
 			groupBox2.Controls.Add(this.screenCheckBox);
@@ -89,10 +94,33 @@
 			groupBox2.Controls.Add(this.consoleCheckBox);
 			groupBox2.Location = new System.Drawing.Point(12, 352);
 			groupBox2.Name = "groupBox2";
-			groupBox2.Size = new System.Drawing.Size(371, 92);
+			groupBox2.Size = new System.Drawing.Size(371, 119);
 			groupBox2.TabIndex = 2;
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Options";
+			// 
+			// nativeResolutionButton
+			// 
+			this.nativeResolutionButton.AutoSize = true;
+			this.nativeResolutionButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.nativeResolutionButton.Location = new System.Drawing.Point(147, 90);
+			this.nativeResolutionButton.Name = "nativeResolutionButton";
+			this.nativeResolutionButton.Size = new System.Drawing.Size(101, 23);
+			this.nativeResolutionButton.TabIndex = 10;
+			this.nativeResolutionButton.Text = "Native Resolution";
+			this.nativeResolutionButton.UseVisualStyleBackColor = true;
+			this.nativeResolutionButton.Click += new System.EventHandler(this.nativeResolutionButton_Click);
+			// 
+			// forceAspectRatioCheckBox
+			// 
+			this.forceAspectRatioCheckBox.AutoSize = true;
+			this.forceAspectRatioCheckBox.Location = new System.Drawing.Point(6, 94);
+			this.forceAspectRatioCheckBox.Name = "forceAspectRatioCheckBox";
+			this.forceAspectRatioCheckBox.Size = new System.Drawing.Size(135, 17);
+			this.forceAspectRatioCheckBox.TabIndex = 9;
+			this.forceAspectRatioCheckBox.Text = "Force 4:3 Aspect Ratio";
+			this.forceAspectRatioCheckBox.UseVisualStyleBackColor = true;
+			this.forceAspectRatioCheckBox.CheckedChanged += new System.EventHandler(this.forceAspectRatioCheckBox_CheckedChanged);
 			// 
 			// windowedFullscreenCheckBox
 			// 
@@ -163,6 +191,7 @@
             0,
             0,
             0});
+			this.verticalResolution.ValueChanged += new System.EventHandler(this.verticalResolution_ValueChanged);
 			// 
 			// horizontalResolution
 			// 
@@ -265,9 +294,9 @@
 			this.modDownButton.AutoSize = true;
 			this.modDownButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.modDownButton.Enabled = false;
-			this.modDownButton.Location = new System.Drawing.Point(361, 35);
+			this.modDownButton.Location = new System.Drawing.Point(354, 35);
 			this.modDownButton.Name = "modDownButton";
-			this.modDownButton.Size = new System.Drawing.Size(22, 23);
+			this.modDownButton.Size = new System.Drawing.Size(29, 23);
 			this.modDownButton.TabIndex = 2;
 			this.modDownButton.Text = "↓";
 			this.modDownButton.UseVisualStyleBackColor = true;
@@ -279,9 +308,9 @@
 			this.modUpButton.AutoSize = true;
 			this.modUpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.modUpButton.Enabled = false;
-			this.modUpButton.Location = new System.Drawing.Point(361, 6);
+			this.modUpButton.Location = new System.Drawing.Point(354, 6);
 			this.modUpButton.Name = "modUpButton";
-			this.modUpButton.Size = new System.Drawing.Size(22, 23);
+			this.modUpButton.Size = new System.Drawing.Size(29, 23);
 			this.modUpButton.TabIndex = 1;
 			this.modUpButton.Text = "↑";
 			this.modUpButton.UseVisualStyleBackColor = true;
@@ -320,7 +349,7 @@
 			// saveButton
 			// 
 			this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.saveButton.Location = new System.Drawing.Point(104, 450);
+			this.saveButton.Location = new System.Drawing.Point(104, 477);
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(75, 23);
 			this.saveButton.TabIndex = 101;
@@ -333,7 +362,7 @@
 			this.saveAndPlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.saveAndPlayButton.AutoSize = true;
 			this.saveAndPlayButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.saveAndPlayButton.Location = new System.Drawing.Point(12, 450);
+			this.saveAndPlayButton.Location = new System.Drawing.Point(12, 477);
 			this.saveAndPlayButton.Name = "saveAndPlayButton";
 			this.saveAndPlayButton.Size = new System.Drawing.Size(86, 23);
 			this.saveAndPlayButton.TabIndex = 100;
@@ -346,7 +375,7 @@
 			this.installButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.installButton.AutoSize = true;
 			this.installButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.installButton.Location = new System.Drawing.Point(185, 450);
+			this.installButton.Location = new System.Drawing.Point(185, 477);
 			this.installButton.Name = "installButton";
 			this.installButton.Size = new System.Drawing.Size(76, 23);
 			this.installButton.TabIndex = 102;
@@ -359,7 +388,7 @@
 			this.configEditorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.configEditorButton.AutoSize = true;
 			this.configEditorButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.configEditorButton.Location = new System.Drawing.Point(306, 450);
+			this.configEditorButton.Location = new System.Drawing.Point(306, 477);
 			this.configEditorButton.Name = "configEditorButton";
 			this.configEditorButton.Size = new System.Drawing.Size(77, 23);
 			this.configEditorButton.TabIndex = 103;
@@ -369,8 +398,7 @@
 			// 
 			// tabControl1
 			// 
-			this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+			this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage2);
@@ -431,9 +459,9 @@
 			this.codeDownButton.AutoSize = true;
 			this.codeDownButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.codeDownButton.Enabled = false;
-			this.codeDownButton.Location = new System.Drawing.Point(350, 35);
+			this.codeDownButton.Location = new System.Drawing.Point(343, 35);
 			this.codeDownButton.Name = "codeDownButton";
-			this.codeDownButton.Size = new System.Drawing.Size(22, 23);
+			this.codeDownButton.Size = new System.Drawing.Size(29, 23);
 			this.codeDownButton.TabIndex = 5;
 			this.codeDownButton.Text = "↓";
 			this.codeDownButton.UseVisualStyleBackColor = true;
@@ -445,9 +473,9 @@
 			this.codeUpButton.AutoSize = true;
 			this.codeUpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.codeUpButton.Enabled = false;
-			this.codeUpButton.Location = new System.Drawing.Point(350, 6);
+			this.codeUpButton.Location = new System.Drawing.Point(343, 6);
 			this.codeUpButton.Name = "codeUpButton";
-			this.codeUpButton.Size = new System.Drawing.Size(22, 23);
+			this.codeUpButton.Size = new System.Drawing.Size(29, 23);
 			this.codeUpButton.TabIndex = 4;
 			this.codeUpButton.Text = "↑";
 			this.codeUpButton.UseVisualStyleBackColor = true;
@@ -510,7 +538,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(395, 488);
+			this.ClientSize = new System.Drawing.Size(395, 515);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.configEditorButton);
 			this.Controls.Add(this.installButton);
@@ -572,5 +600,7 @@
 		private System.Windows.Forms.CheckBox screenCheckBox;
 		private System.Windows.Forms.CheckBox windowedFullscreenCheckBox;
 		private System.Windows.Forms.Button buttonNewMod;
+		private System.Windows.Forms.Button nativeResolutionButton;
+		private System.Windows.Forms.CheckBox forceAspectRatioCheckBox;
 	}
 }
