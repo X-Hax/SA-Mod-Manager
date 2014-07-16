@@ -1945,7 +1945,7 @@ unordered_map<unsigned char, vector<TrialLevelListEntry>> _TrialLevels;
 void RegisterTrialLevel(unsigned char character, const TrialLevelListEntry &level)
 {
 	character = gettrialcharacter(character);
-	if (character = 0xFF) return;
+	if (character == 0xFF) return;
 	auto iter = _TrialLevels.find(character);
 	vector<TrialLevelListEntry> *newlist;
 	if (iter == _TrialLevels.end())
@@ -1964,7 +1964,7 @@ void RegisterTrialLevel(unsigned char character, const TrialLevelListEntry &leve
 void ClearTrialLevelList(unsigned char character)
 {
 	character = gettrialcharacter(character);
-	if (character = 0xFF) return;
+	if (character == 0xFF) return;
 	_TrialLevels[character] = vector<TrialLevelListEntry>();
 }
 
@@ -1972,7 +1972,7 @@ unordered_map<unsigned char, vector<TrialLevelListEntry>> _TrialSubgames;
 void RegisterTrialSubgame(unsigned char character, const TrialLevelListEntry &level)
 {
 	character = gettrialcharacter(character);
-	if (character = 0xFF) return;
+	if (character == 0xFF) return;
 	auto iter = _TrialSubgames.find(character);
 	vector<TrialLevelListEntry> *newlist;
 	if (iter == _TrialSubgames.end())
@@ -1991,7 +1991,7 @@ void RegisterTrialSubgame(unsigned char character, const TrialLevelListEntry &le
 void ClearTrialSubgameList(unsigned char character)
 {
 	character = gettrialcharacter(character);
-	if (character = 0xFF) return;
+	if (character == 0xFF) return;
 	_TrialSubgames[character] = vector<TrialLevelListEntry>();
 }
 
@@ -2272,7 +2272,7 @@ void __cdecl InitMods(void)
 		const vector<TrialLevelListEntry> *levellist = &i->second;
 		auto size = levellist->size();
 		TrialLevelListEntry *newlist = new TrialLevelListEntry[size];
-		memcpy(newlist, levellist->data(), sizeof(PVMEntry) * size);
+		memcpy(newlist, levellist->data(), sizeof(TrialLevelListEntry) * size);
 		TrialLevels[i->first].Levels = newlist;
 		TrialLevels[i->first].Count = size;
 	}
@@ -2281,7 +2281,7 @@ void __cdecl InitMods(void)
 		const vector<TrialLevelListEntry> *levellist = &i->second;
 		auto size = levellist->size();
 		TrialLevelListEntry *newlist = new TrialLevelListEntry[size];
-		memcpy(newlist, levellist->data(), sizeof(PVMEntry) * size);
+		memcpy(newlist, levellist->data(), sizeof(TrialLevelListEntry) * size);
 		TrialSubgames[i->first].Levels = newlist;
 		TrialSubgames[i->first].Count = size;
 	}
