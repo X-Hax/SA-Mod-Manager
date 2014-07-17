@@ -33,9 +33,15 @@ inline int backslashes(int c)
 		return c;
 }
 
-unordered_map<string, const char *> filemap;
-const string systemdir = "system\\";
-const char *_ReplaceFile(const char *lpFileName)
+// File replacement map.
+static unordered_map<string, const char *> filemap;
+
+/**
+ * Determine if a filename was replaced by a mod.
+ * @param lpFileName Filename.
+ * @return Replaced filename, or original filename if not replaced by a mod.
+ */
+static const char *_ReplaceFile(const char *lpFileName)
 {
 	string path = lpFileName;
 	transform(path.begin(), path.end(), path.begin(), backslashes);
@@ -45,9 +51,23 @@ const char *_ReplaceFile(const char *lpFileName)
 	unordered_map<string, const char *>::iterator fileIter = filemap.find(path);
 	if (fileIter != filemap.cend())
 		return fileIter->second;
+
+	// File was not replaced by a mod.
+	// Return the filename as-is.
 	return lpFileName;
 }
 
+/**
+ * CreateFileA() wrapper using _ReplaceFile().
+ * @param lpFileName
+ * @param dwDesiredAccess
+ * @param dwShareMode
+ * @param lpSecurityAttibutes
+ * @param dwCreationDisposition
+ * @param dwFlagsAndAttributes
+ * @param hTemplateFile
+ * @return
+ */
 HANDLE __stdcall MyCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
 	return CreateFileA(_ReplaceFile(lpFileName), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
@@ -1648,7 +1668,7 @@ void ScanFolder(string path, int length)
 			transform(filebase.begin(), filebase.end(), filebase.begin(), ::tolower);
 			string modfile = filebase;
 			filebase = filebase.substr(length);
-			string origfile = systemdir + filebase;
+			string origfile = "system\\" + filebase;
 			char *buf = new char[modfile.length() + 1];
 			if (filemap.find(origfile) != filemap.end())
 				delete[] filemap[origfile];
@@ -2023,7 +2043,6 @@ void __cdecl InitMods(void)
 
 	// Unprotect the .rdata section.
 	// TODO: Get .rdata address and length dynamically.
-	// TODO: Reprotect .rdata afterwards.
 	DWORD oldprot;
 	VirtualProtect((void *)0x7DB2A0, 0xB6D60, PAGE_WRITECOPY, &oldprot);
 	unordered_map<string, string> filereplaces;
