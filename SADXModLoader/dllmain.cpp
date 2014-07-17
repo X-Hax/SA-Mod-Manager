@@ -2016,14 +2016,15 @@ const HelperFunctions helperFunctions = {
 const char codemagic[] = "codev3";
 void __cdecl InitMods(void)
 {
-	ifstream str = ifstream("mods\\SADXModLoader.ini");
-	if (!str.is_open())
+	ifstream ini_str("mods\\SADXModLoader.ini");
+	if (!ini_str.is_open())
 	{
 		MessageBox(NULL, L"mods\\SADXModLoader.ini could not be read!", L"SADX Mod Loader", MB_ICONWARNING);
 		return;
 	}
-	IniDictionary ini = LoadINI(str);
-	str.close();
+	IniDictionary ini = LoadINI(ini_str);
+	ini_str.close();
+
 	settings = ini[""].Element;
 	char pathbuf[MAX_PATH];
 	GetModuleFileNameA(NULL, pathbuf, MAX_PATH);
@@ -2101,13 +2102,15 @@ void __cdecl InitMods(void)
 		if (settings.find(key) == settings.end())
 			break;
 		string dir = "mods\\" + settings[key];
-		str = ifstream(dir + "\\mod.ini");
-		if (!str.is_open())
+		ifstream mod_str(dir + "\\mod.ini");
+		if (!mod_str.is_open())
 		{
 			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", settings[key].c_str());
 			continue;
 		}
-		IniDictionary modini = LoadINI(str);
+		IniDictionary modini = LoadINI(mod_str);
+		mod_str.close();
+
 		IniGroup modinfo = modini[""].Element;
 		PrintDebug("%d. %s\n", i, modinfo["Name"].c_str());
 		IniDictionary::iterator gr = modini.find("IgnoreFiles");
@@ -2286,23 +2289,23 @@ void __cdecl InitMods(void)
 		TrialSubgames[i->first].Count = size;
 	}
 	PrintDebug("Finished loading mods\n");
-	str = ifstream("mods\\Codes.dat", ifstream::binary);
-	if (str.is_open())
+	ifstream codes_str("mods\\Codes.dat", ifstream::binary);
+	if (codes_str.is_open())
 	{
 		char buf[6];
-		str.read(buf, sizeof(buf));
+		codes_str.read(buf, sizeof(buf));
 		if (memcmp(buf, codemagic, 6) != 0)
 		{
 			PrintDebug("Code file not in correct format.\n");
 			goto closecodefile;
 		}
 		int32_t codecount;
-		str.read((char *)&codecount, sizeof(int32_t));
+		codes_str.read((char *)&codecount, sizeof(int32_t));
 		PrintDebug("Loading %d codes...\n", codecount);
-		ReadCodes(str, codes);
+		ReadCodes(codes_str, codes);
 	}
 closecodefile:
-	str.close();
+	codes_str.close();
 	WriteJump((void *)0x426063, ProcessCodes);
 }
 
