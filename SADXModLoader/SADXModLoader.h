@@ -3,6 +3,11 @@
 #ifndef SADXMODLOADER_H
 #define SADXMODLOADER_H
 
+#ifdef _MSC_VER
+// MSVC doesn't have snprintf(), but it does have _snprintf().
+#define snprintf(str, size, format, ...) _snprintf(str, size, format, __VA_ARGS__)
+#endif
+
 // Utility Functions
 template <typename T, size_t N>
 inline size_t LengthOfArray( const T(&)[ N ] )

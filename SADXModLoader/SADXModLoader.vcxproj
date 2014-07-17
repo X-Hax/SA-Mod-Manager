@@ -80,6 +80,7 @@
     <ClInclude Include="AnimationFile.h" />
     <ClInclude Include="bass.h" />
     <ClInclude Include="bass_vgmstream.h" />
+    <ClInclude Include="IniFile.hpp" />
     <ClInclude Include="LandTableInfo.h" />
     <ClInclude Include="ModelInfo.h" />
     <ClInclude Include="ninja.h" />
@@ -97,6 +98,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="LandTableInfo.cpp" />
     <ClCompile Include="ModelInfo.cpp" />
     <ClCompile Include="stdafx.cpp">

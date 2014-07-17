@@ -9,91 +9,14 @@
 #include <algorithm>
 #include <DbgHelp.h>
 #include <cstdio>
+#include <memory>
 #include <Shlwapi.h>
 #include <wmsdkidl.h>
 #include <dsound.h>
 #include "bass_vgmstream.h"
+#include "IniFile.hpp"
 #include "SADXModLoader.h"
 using namespace std;
-
-typedef unordered_map<string, string> IniGroup;
-struct IniGroupStr { IniGroup Element; };
-typedef unordered_map<string, IniGroupStr> IniDictionary;
-IniDictionary LoadINI(istream &textfile)
-{
-	IniDictionary result = IniDictionary();
-	result[""] = IniGroupStr();
-	IniGroupStr *curent = &result[""];
-	while (textfile.good())
-	{
-		string line;
-		getline(textfile, line);
-		string sb = string();
-		sb.reserve(line.length());
-		bool startswithbracket = false;
-		int firstequals = -1;
-		int endbracket = -1;
-		for (int c = 0; c < (int)line.length(); c++)
-			switch (line[c])
-		{
-			case '\\': // escape character
-				if (c + 1 == line.length())
-					goto appendchar;
-				c++;
-				switch (line[c])
-				{
-				case 'n': // line feed
-					sb += '\n';
-					break;
-				case 'r': // carriage return
-					sb += '\r';
-					break;
-				default: // literal character
-					goto appendchar;
-				}
-				break;
-			case '=':
-				if (firstequals == -1)
-					firstequals = sb.length();
-				goto appendchar;
-			case '[':
-				if (c == 0)
-					startswithbracket = true;
-				goto appendchar;
-			case ']':
-				endbracket = sb.length();
-				goto appendchar;
-			case ';': // comment character, stop processing this line
-				c = line.length();
-				break;
-			default:
-appendchar:
-				sb += line[c];
-				break;
-		}
-		line = sb;
-		if (startswithbracket && endbracket != -1)
-		{
-			line = line.substr(1, endbracket - 1);
-			result[line] = IniGroupStr();
-			curent = &result[line];
-		}
-		else if (!line.empty())
-		{
-			string key;
-			string value = "";
-			if (firstequals > -1)
-			{
-				key = line.substr(0, firstequals);
-				value = line.substr(firstequals + 1);
-			}
-			else
-				key = line;
-			(*curent).Element[key] = value;
-		}
-	}
-	return result;
-}
 
 HMODULE myhandle;
 HMODULE chrmodelshandle;
@@ -2016,70 +1939,77 @@ const HelperFunctions helperFunctions = {
 const char codemagic[] = "codev3";
 void __cdecl InitMods(void)
 {
-	ifstream ini_str("mods\\SADXModLoader.ini");
-	if (!ini_str.is_open())
+	FILE *f_ini = fopen("mods\\SADXModLoader.ini", "r");
+	if (!f_ini)
 	{
 		MessageBox(NULL, L"mods\\SADXModLoader.ini could not be read!", L"SADX Mod Loader", MB_ICONWARNING);
 		return;
 	}
-	IniDictionary ini = LoadINI(ini_str);
-	ini_str.close();
+	unique_ptr<IniFile> ini(new IniFile(f_ini));
+	fclose(f_ini);
 
-	settings = ini[""].Element;
+	// Get sonic.exe's filename.
+	// FIXME: Don't use MAX_PATH.
 	char pathbuf[MAX_PATH];
 	GetModuleFileNameA(NULL, pathbuf, MAX_PATH);
 	string exefilename = pathbuf;
 	exefilename = exefilename.substr(exefilename.find_last_of("/\\") + 1);
 	transform(exefilename.begin(), exefilename.end(), exefilename.begin(), ::tolower);
-	string item = settings["DebugConsole"];
-	transform(item.begin(), item.end(), item.begin(), ::tolower);
-	if (item == "true")
+
+	// Process the main Mod Loader settings.
+	const IniGroup *settings = ini->getGroup("");
+
+	if (settings->getBool("DebugConsole"))
 	{
+		// Enable the debug console.
 		AllocConsole();
 		SetConsoleTitle(L"SADX Mod Loader output");
 		freopen("CONOUT$", "wb", stdout);
 		dbgConsole = true;
 	}
-	item = settings["DebugScreen"];
-	transform(item.begin(), item.end(), item.begin(), ::tolower);
-	dbgScreen = item == "true";
-	item = settings["DebugFile"];
-	transform(item.begin(), item.end(), item.begin(), ::tolower);
-	if (item == "true")
+
+	dbgScreen = settings->getBool("DebugScreen");
+	if (settings->getBool("DebugFile"))
 	{
+		// Enable debug logging to a file.
 		dbgstr = ofstream("mods\\SADXModLoader.log", ios_base::ate | ios_base::app);
 		dbgFile = dbgstr.is_open();
 	}
+
+	// Is any debug method enabled?
 	if (dbgConsole || dbgScreen || dbgFile)
 	{
 		WriteJump(PrintDebug, SADXDebugOutput);
 		PrintDebug("SADX Mod Loader version %d, built %s\n", ModLoaderVer, __TIMESTAMP__);
 	}
-	item = settings["DontFixWindow"];
-	transform(item.begin(), item.end(), item.begin(), ::tolower);
-	if (item != "true")
+
+	// Other various settings.
+	if (!settings->getBool("DontFixWindow"))
 		WriteJump((void *)0x789E50, sub_789E50_r);
-	item = settings["DisableCDCheck"];
-	transform(item.begin(), item.end(), item.begin(), ::tolower);
-	if (item == "true")
+	if (settings->getBool("DisableCDCheck"))
 		WriteJump((void *)0x402621, (void *)0x402664);
-	item = settings["UseCustomResolution"];
-	transform(item.begin(), item.end(), item.begin(), ::tolower);
-	if (item == "true")
+	if (settings->getBool("UseCustomResolution"))
 	{
 		WriteJump((void *)0x40297A, (void *)0x402A90);
-		string str = settings["HorizontalResolution"];
-		if (!str.empty())
-			HorizontalResolution = strtol(str.c_str(), NULL, 10);
-		HorizontalStretch = HorizontalResolution / 640.0f;
-		str = settings["VerticalResolution"];
-		if (!str.empty())
-			VerticalResolution = strtol(str.c_str(), NULL, 10);
-		VerticalStretch = VerticalResolution / 480.0f;
+
+		int hres = settings->getInt("HorizontalResolution");
+		if (hres > 0)
+		{
+			HorizontalResolution = hres;
+			HorizontalStretch = HorizontalResolution / 640.0f;
+		}
+
+		int vres = settings->getInt("VerticalResolution");
+		if (vres > 0)
+		{
+			VerticalResolution = vres;
+			VerticalStretch = VerticalResolution / 480.0f;
+		}
 	}
-	item = settings["WindowedFullscreen"];
-	transform(item.begin(), item.end(), item.begin(), ::tolower);
-	windowedfullscreen = item == "true";
+
+	windowedfullscreen = settings->getBool("WindowedFullscreen");
+
+	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
 	WriteCall((void *)0x42544C, PlayMusicFile_r);
 	WriteCall((void *)0x4254F4, PlayVoiceFile_r);
@@ -2091,116 +2021,161 @@ void __cdecl InitMods(void)
 	WriteJump((void *)0x40D0A0, ResumeSound_r);
 	WriteJump((void *)0x40CFF0, WMPClose_r);
 	WriteJump((void *)0x40D28A, WMPRelease_r);
+
+	// Unprotect the .rdata section.
+	// TODO: Get .rdata address and length dynamically.
+	// TODO: Reprotect .rdata afterwards.
 	DWORD oldprot;
 	VirtualProtect((void *)0x7DB2A0, 0xB6D60, PAGE_WRITECOPY, &oldprot);
-	unordered_map<string, string> filereplaces = unordered_map<string, string>();
-	char key[8];
+	unordered_map<string, string> filereplaces;
+
+	// It's mod loading time!
 	PrintDebug("Loading mods...\n");
 	for (int i = 1; i < 999; i++)
 	{
-		sprintf_s(key, "Mod%d", i);
-		if (settings.find(key) == settings.end())
+		char key[8];
+		snprintf(key, sizeof(key), "Mod%d", i);
+		if (!settings->hasKey(key))
 			break;
-		string dir = "mods\\" + settings[key];
-		ifstream mod_str(dir + "\\mod.ini");
-		if (!mod_str.is_open())
+
+		string modname = settings->getString(key);
+		string dir = "mods\\" + modname;
+		string filename = dir + "\\mod.ini";
+		FILE *f_mod_ini = fopen(filename.c_str(), "r");
+		if (!f_mod_ini)
 		{
-			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", settings[key].c_str());
+			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", modname.c_str());
 			continue;
 		}
-		IniDictionary modini = LoadINI(mod_str);
-		mod_str.close();
+		unique_ptr<IniFile> ini_mod(new IniFile(f_mod_ini));
+		fclose(f_mod_ini);
 
-		IniGroup modinfo = modini[""].Element;
-		PrintDebug("%d. %s\n", i, modinfo["Name"].c_str());
-		IniDictionary::iterator gr = modini.find("IgnoreFiles");
-		if (gr != modini.end())
+		const IniGroup *modinfo = ini_mod->getGroup("");
+		PrintDebug("%d. %s\n", i, modinfo->getString("Name").c_str());
+
+		if (ini_mod->hasGroup("IgnoreFiles"))
 		{
-			IniGroup replaces = gr->second.Element;
-			for (IniGroup::iterator it = replaces.begin(); it != replaces.end(); it++)
+			const IniGroup *group = ini_mod->getGroup("IgnoreFiles");
+			auto data = group->data();
+			for (unordered_map<string, string>::const_iterator iter = data->begin(); iter != data->end(); ++iter)
 			{
-				filemap[NormalizePath(it->first)] = "nullfile";
-				PrintDebug("Ignored file: %s\n", it->first.c_str());
+				filemap[NormalizePath(iter->first)] = "nullfile";
+				PrintDebug("Ignored file: %s\n", iter->first.c_str());
 			}
 		}
-		gr = modini.find("ReplaceFiles");
-		if (gr != modini.end())
+
+		if (ini_mod->hasGroup("ReplaceFiles"))
 		{
-			IniGroup replaces = gr->second.Element;
-			for (IniGroup::iterator it = replaces.begin(); it != replaces.end(); it++)
-				filereplaces[NormalizePath(it->first)] = NormalizePath(it->second);
-		}
-		gr = modini.find("SwapFiles");
-		if (gr != modini.end())
-		{
-			IniGroup replaces = gr->second.Element;
-			for (IniGroup::iterator it = replaces.begin(); it != replaces.end(); it++)
+			const IniGroup *group = ini_mod->getGroup("ReplaceFiles");
+			auto data = group->data();
+			for (unordered_map<string, string>::const_iterator iter = data->begin(); iter != data->end(); ++iter)
 			{
-				filereplaces[NormalizePath(it->first)] = NormalizePath(it->second);
-				filereplaces[NormalizePath(it->second)] = NormalizePath(it->first);
+				filereplaces[NormalizePath(iter->first)] = NormalizePath(iter->second);
 			}
 		}
+
+		if (ini_mod->hasGroup("SwapFiles"))
+		{
+			const IniGroup *group = ini_mod->getGroup("SwapFiles");
+			auto data = group->data();
+			for (unordered_map<string, string>::const_iterator iter = data->begin(); iter != data->end(); ++iter)
+			{
+				filereplaces[NormalizePath(iter->first)] = NormalizePath(iter->second);
+				filereplaces[NormalizePath(iter->second)] = NormalizePath(iter->first);
+			}
+		}
+
+		// Check for SYSTEM replacements.
 		string sysfol = dir + "\\system";
 		transform(sysfol.begin(), sysfol.end(), sysfol.begin(), ::tolower);
 		if ((GetFileAttributesA(sysfol.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
 			ScanFolder(sysfol, sysfol.length() + 1);
-		if (modinfo.find("EXEFile") != modinfo.end())
+
+		// Check if a custom EXE is required.
+		if (modinfo->hasKey("EXEFile"))
 		{
-			string modexe = modinfo["EXEFile"];
+			string modexe = modinfo->getString("EXEFile");
 			transform(modexe.begin(), modexe.end(), modexe.begin(), ::tolower);
+
+			// Is the EXE correct?
 			if (modexe.compare(exefilename) != 0)
 			{
-				const char *msg = ("Mod \"" + modinfo["Name"] + "\" should be run from \"" + modexe + "\", but you are running \"" + exefilename + "\".\n\nContinue anyway?").c_str();
+				char msg[4096];
+				string mod_name = modinfo->getString("Name");
+				snprintf(msg, sizeof(msg),
+						"Mod \"%s\" should be run from \"%s\", but you are running \"%s\".\n\n"
+						"Continue anyway?", mod_name.c_str(), modexe, exefilename);
 				if (MessageBoxA(NULL, msg, "SADX Mod Loader", MB_ICONWARNING | MB_YESNO) == IDNO)
 					ExitProcess(1);
 			}
 		}
-		string filename = modinfo["DLLFile"];
-		if (!filename.empty())
+
+		// Check if the mod has a DLL file.
+		string dll_filename = modinfo->getString("DLLFile");
+		if (!dll_filename.empty())
 		{
-			filename = dir + "\\" + filename;
-			HMODULE module = LoadLibraryA(filename.c_str());
+			dll_filename = dir + "\\" + dll_filename;
+			HMODULE module = LoadLibraryA(dll_filename.c_str());
 			if (module)
 			{
 				const ModInfo *info = (const ModInfo *)GetProcAddress(module, "SADXModInfo");
 				if (info)
 				{
 					if (info->Patches)
+					{
 						for (int i = 0; i < info->PatchCount; i++)
 							WriteData(info->Patches[i].address, info->Patches[i].data, info->Patches[i].datasize);
+					}
 					if (info->Jumps)
+					{
 						for (int i = 0; i < info->JumpCount; i++)
 							WriteJump(info->Jumps[i].address, info->Jumps[i].data);
+					}
 					if (info->Calls)
+					{
 						for (int i = 0; i < info->CallCount; i++)
 							WriteCall(info->Calls[i].address, info->Calls[i].data);
+					}
 					if (info->Pointers)
+					{
 						for (int i = 0; i < info->PointerCount; i++)
 							WriteData((void**)info->Pointers[i].address, info->Pointers[i].data);
+					}
 					if (info->Init)
+					{
 						info->Init(dir.c_str(), helperFunctions);
+					}
 				}
 				else
-					PrintDebug("File \"%s\" is not a valid mod file.\n", filename.c_str());
+				{
+					PrintDebug("File \"%s\" is not a valid mod file.\n", dll_filename.c_str());
+				}
 			}
 			else
-				PrintDebug("Failed loading file \"%s\".\n", filename.c_str());
+			{
+				PrintDebug("Failed loading file \"%s\".\n", dll_filename.c_str());
+			}
 		}
 	}
-	for (unordered_map<string,string>::iterator it = filereplaces.begin(); it != filereplaces.end(); it++)
+
+	// Replace filenames. ("ReplaceFiles", "SwapFiles")
+	for (unordered_map<string, string>::const_iterator fr_iter = filereplaces.begin(); fr_iter != filereplaces.end(); ++fr_iter)
 	{
-		unordered_map<string, const char *>::iterator f = filemap.find(it->second);
-		if (f != filemap.end())
-			filemap[it->first] = f->second;
+		unordered_map<string, const char *>::const_iterator fm_iter = filemap.find(fr_iter->second);
+		if (fm_iter != filemap.end())
+		{
+			filemap[fr_iter->first] = fm_iter->second;
+		}
 		else
 		{
-			char *buf = new char[it->second.length() + 1];
-			filemap[it->first] = buf;
-			it->second.copy(buf, it->second.length());
-			buf[it->second.length()] = 0;
-			PrintDebug("Replaced file: \"%s\" = \"%s\"\n", it->first.c_str(), buf);
+			char *buf = new char[fr_iter->second.length() + 1];
+			filemap[fr_iter->first] = buf;
+			fr_iter->second.copy(buf, fr_iter->second.length());
+			buf[fr_iter->second.length()] = 0;
+			PrintDebug("Replaced file: \"%s\" = \"%s\"\n", fr_iter->first.c_str(), buf);
 		}
 	}
+
 	for (auto i = StartPositions.cbegin(); i != StartPositions.cend(); i++)
 	{
 		auto poslist = &i->second;
@@ -2231,6 +2206,7 @@ void __cdecl InitMods(void)
 			break;
 		}
 	}
+
 	for (auto i = FieldStartPositions.cbegin(); i != FieldStartPositions.cend(); i++)
 	{
 		auto poslist = &i->second;
@@ -2241,6 +2217,7 @@ void __cdecl InitMods(void)
 		cur->LevelID = LevelIDs_Invalid;
 		((FieldStartPosition **)0x90BEFC)[i->first] = newlist;
 	}
+
 	if (PathsInitialized)
 	{
 		PathDataPtr *newlist = new PathDataPtr[Paths.size() + 1];
@@ -2251,6 +2228,7 @@ void __cdecl InitMods(void)
 		WriteData((PathDataPtr **)0x49C1A1, newlist);
 		WriteData((PathDataPtr **)0x49C1AF, newlist);
 	}
+
 	for (auto i = CharacterPVMs.cbegin(); i != CharacterPVMs.cend(); i++)
 	{
 		const vector<PVMEntry> *pvmlist = &i->second;
@@ -2260,6 +2238,7 @@ void __cdecl InitMods(void)
 		newlist[size].TexList = nullptr;
 		((PVMEntry **)0x90ED54)[i->first] = newlist;
 	}
+
 	if (CommonObjectPVMsInitialized)
 	{
 		auto size = CommonObjectPVMs.size();
@@ -2270,6 +2249,7 @@ void __cdecl InitMods(void)
 		*((PVMEntry **)0x90EC70) = newlist;
 		*((PVMEntry **)0x90EC74) = newlist;
 	}
+
 	for (auto i = _TrialLevels.cbegin(); i != _TrialLevels.cend(); i++)
 	{
 		const vector<TrialLevelListEntry> *levellist = &i->second;
@@ -2279,6 +2259,7 @@ void __cdecl InitMods(void)
 		TrialLevels[i->first].Levels = newlist;
 		TrialLevels[i->first].Count = size;
 	}
+
 	for (auto i = _TrialSubgames.cbegin(); i != _TrialSubgames.cend(); i++)
 	{
 		const vector<TrialLevelListEntry> *levellist = &i->second;
@@ -2288,7 +2269,10 @@ void __cdecl InitMods(void)
 		TrialSubgames[i->first].Levels = newlist;
 		TrialSubgames[i->first].Count = size;
 	}
+
 	PrintDebug("Finished loading mods\n");
+
+	// Check for codes.
 	ifstream codes_str("mods\\Codes.dat", ifstream::binary);
 	if (codes_str.is_open())
 	{
