@@ -80,6 +80,7 @@
     <ClInclude Include="AnimationFile.h" />
     <ClInclude Include="bass.h" />
     <ClInclude Include="bass_vgmstream.h" />
+    <ClInclude Include="CodeParser.hpp" />
     <ClInclude Include="IniFile.hpp" />
     <ClInclude Include="LandTableInfo.h" />
     <ClInclude Include="ModelInfo.h" />
@@ -90,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationFile.cpp" />
+    <ClCompile Include="CodeParser.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
