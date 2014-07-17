@@ -33,7 +33,6 @@ inline int backslashes(int c)
 		return c;
 }
 
-IniGroup settings;
 unordered_map<string, const char *> filemap;
 const string systemdir = "system\\";
 const char *_ReplaceFile(const char *lpFileName)
