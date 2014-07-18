@@ -993,7 +993,7 @@ void CodeParser::processCodeList(void)
  * Read codes from a code file.
  * This will clear all loaded codes before loading new codes.
  * @param filename Code file.
- * @return 0 when completed; codeeof on EOF.
+ * @return 0 when completed; codeeof on EOF; _else or endif while processing.
  */
 unsigned char CodeParser::readCodes(const string &filename)
 {
@@ -1009,7 +1009,7 @@ unsigned char CodeParser::readCodes(const string &filename)
  * Read codes from a code file.
  * This will clear all loaded codes before loading new codes.
  * @param filename Code file.
- * @return 0 when completed; codeeof on EOF.
+ * @return 0 when completed; codeeof on EOF; _else or endif while processing.
  */
 unsigned char CodeParser::readCodes(const wstring &filename)
 {
@@ -1024,7 +1024,7 @@ unsigned char CodeParser::readCodes(const wstring &filename)
 /**
  * Read codes from a code file.
  * @param stream Code file.
- * @return 0 when completed; codeeof on EOF.
+ * @return 0 when completed; codeeof on EOF; _else or endif while processing.
  */
 unsigned char CodeParser::readCodes(istream &stream)
 {
@@ -1047,7 +1047,7 @@ unsigned char CodeParser::readCodes(istream &stream)
  * Internal recursive function; used for internal code lists.
  * @param stream	[in] Code file.
  * @param clist		[out] Code list.
- * @return 0 when completed; codeeof on EOF.
+ * @return 0 when completed; codeeof on EOF; _else or endif while processing.
  */
 unsigned char CodeParser::readCodes_int(istream &stream, list<Code> &clist)
 {
@@ -1064,6 +1064,7 @@ unsigned char CodeParser::readCodes_int(istream &stream, list<Code> &clist)
 			valuetype *regs = new valuetype[16];
 			memset(regs, 0, sizeof(valuetype) * 16);
 			m_registers.push_back(regs);
+			// FIXME: continue; instead?
 			t = stream.get();
 		}
 
@@ -1115,7 +1116,7 @@ void CodeParser::clear(void)
 	for (auto iter = m_registers.begin(); iter != m_registers.end(); ++iter)
 	{
 		// Allocated using new valuetype[16];
-		delete *iter;
+		delete[] *iter;
 	}
 	m_registers.clear();
 }

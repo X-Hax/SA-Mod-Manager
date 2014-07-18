@@ -151,7 +151,7 @@ class CodeParser
 		 * Read codes from a code file.
 		 * This will clear all loaded codes before loading new codes.
 		 * @param filename Code file.
-		 * @return 0 when completed; codeeof on EOF.
+		 * @return 0 when completed; codeeof on EOF; _else or endif while processing.
 		 */
 		unsigned char readCodes(const std::string &filename);
 
@@ -159,7 +159,7 @@ class CodeParser
 		 * Read codes from a code file.
 		 * This will clear all loaded codes before loading new codes.
 		 * @param filename Code file.
-		 * @return 0 when completed; codeeof on EOF.
+		 * @return 0 when completed; codeeof on EOF; _else or endif while processing.
 		 */
 		unsigned char readCodes(const std::wstring &filename);
 
@@ -167,7 +167,7 @@ class CodeParser
 		 * Read codes from a code file.
 		 * This will clear all loaded codes before loading new codes.
 		 * @param stream Code file.
-		 * @return 0 when completed; codeeof on EOF.
+		 * @return 0 when completed; codeeof on EOF; _else or endif while processing.
 		 */
 		unsigned char readCodes(std::istream &stream);
 
@@ -177,7 +177,7 @@ class CodeParser
 		 * Internal recursive function; used for internal code lists.
 		 * @param stream	[in] Code file.
 		 * @param clist		[out] Code list.
-		 * @return 0 when completed; codeeof on EOF.
+		 * @return 0 when completed; codeeof on EOF; _else or endif while processing.
 		 */
 		unsigned char readCodes_int(std::istream &stream, std::list<Code> &clist);
 
