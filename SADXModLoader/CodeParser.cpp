@@ -10,16 +10,39 @@
 #include "SADXModLoader.h"
 
 #include <intrin.h>
-#include <vector>
+#include <fstream>
 using std::istream;
+using std::ifstream;
 using std::list;
+using std::string;
+using std::wstring;
 using std::vector;
 
-// FIXME: Create a struct containing list<Code> and vector<valuetype *>.
-// Alternatively, turn CodeParser into a class.
-static vector<valuetype *> registers;
+CodeParser::CodeParser(const string &filename)
+{
+	readCodes(filename);
+}
 
-static void *GetAddress(const Code &code, valuetype *regs)
+CodeParser::CodeParser(const wstring &filename)
+{
+	readCodes(filename);
+}
+
+CodeParser::CodeParser(istream &f)
+{
+	readCodes(f);
+}
+
+CodeParser::CodeParser()
+{
+}
+
+CodeParser::~CodeParser()
+{
+	clear();
+}
+
+void *CodeParser::GetAddress(const Code &code, valuetype *regs)
 {
 	void *addr = code.address;
 	if (addr < (void *)16)
@@ -48,9 +71,9 @@ do { \
 		addru##size++; \
 	} \
 	if (cond) \
-		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
+		regnum = processCodeList_int(it->trueCodes, regnum); \
 	else \
-		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
+		regnum = processCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 #define ifcodes(size, op) \
@@ -61,9 +84,9 @@ do { \
 		addrs##size++; \
 	} \
 	if (cond) \
-		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
+		regnum = processCodeList_int(it->trueCodes, regnum); \
 	else \
-		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
+		regnum = processCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 #define ifcodef(op) \
@@ -74,9 +97,9 @@ do { \
 		addrf++; \
 	} \
 	if (cond) \
-		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
+		regnum = processCodeList_int(it->trueCodes, regnum); \
 	else \
-		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
+		regnum = processCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 #define ifcodereg(size, op) \
@@ -87,9 +110,9 @@ do { \
 		addru##size++; \
 	} \
 	if (cond) \
-		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
+		regnum = processCodeList_int(it->trueCodes, regnum); \
 	else \
-		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
+		regnum = processCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 #define ifcoderegs(size, op) \
@@ -100,9 +123,9 @@ do { \
 		addrs##size++; \
 	} \
 	if (cond) \
-		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
+		regnum = processCodeList_int(it->trueCodes, regnum); \
 	else \
-		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
+		regnum = processCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 #define ifcoderegf(op) \
@@ -113,9 +136,9 @@ do { \
 		addrf++; \
 	} \
 	if (cond) \
-		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
+		regnum = processCodeList_int(it->trueCodes, regnum); \
 	else \
-		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
+		regnum = processCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 template<typename T>
@@ -234,7 +257,7 @@ inline void xorcode(T *address, uint32_t repeatcount, T data)
  * @param regnum Next register number.
  * @return Last register number used.
  */
-static int ProcessCodeList_int(const list<Code> &codes, int regnum)
+int CodeParser::processCodeList_int(const list<Code> &codes, int regnum)
 {
 	for (list<Code>::const_iterator it = codes.begin(); it != codes.end(); ++it)
 	{
@@ -242,7 +265,7 @@ static int ProcessCodeList_int(const list<Code> &codes, int regnum)
 			regnum++;
 		valuetype *regs = nullptr;
 		if (regnum >= 0)
-			regs = registers[regnum];
+			regs = m_registers[regnum];
 
 		void *address = GetAddress(*it, regs);
 		// TODO: Make this a union.
@@ -257,7 +280,7 @@ static int ProcessCodeList_int(const list<Code> &codes, int regnum)
 		if (it->type != ifkbkey && address == nullptr)
 		{
 			if (distance(it->falseCodes.begin(), it->falseCodes.end()) > 0)
-				regnum = ProcessCodeList_int(it->falseCodes, regnum);
+				regnum = processCodeList_int(it->falseCodes, regnum);
 			continue;
 		}
 
@@ -569,9 +592,9 @@ static int ProcessCodeList_int(const list<Code> &codes, int regnum)
 				addru8++;
 			}
 			if (cond)
-				regnum = ProcessCodeList_int(it->trueCodes, regnum);
+				regnum = processCodeList_int(it->trueCodes, regnum);
 			else
-				regnum = ProcessCodeList_int(it->falseCodes, regnum);
+				regnum = processCodeList_int(it->falseCodes, regnum);
 			break;
 		case ifmask16:
 			for (uint32_t i = 0; i < it->repeatcount; i++)
@@ -580,9 +603,9 @@ static int ProcessCodeList_int(const list<Code> &codes, int regnum)
 				addru16++;
 			}
 			if (cond)
-				regnum = ProcessCodeList_int(it->trueCodes, regnum);
+				regnum = processCodeList_int(it->trueCodes, regnum);
 			else
-				regnum = ProcessCodeList_int(it->falseCodes, regnum);
+				regnum = processCodeList_int(it->falseCodes, regnum);
 			break;
 		case ifmask32:
 			for (uint32_t i = 0; i < it->repeatcount; i++)
@@ -591,15 +614,15 @@ static int ProcessCodeList_int(const list<Code> &codes, int regnum)
 				addru32++;
 			}
 			if (cond)
-				regnum = ProcessCodeList_int(it->trueCodes, regnum);
+				regnum = processCodeList_int(it->trueCodes, regnum);
 			else
-				regnum = ProcessCodeList_int(it->falseCodes, regnum);
+				regnum = processCodeList_int(it->falseCodes, regnum);
 			break;
 		case ifkbkey:
 			if (GetAsyncKeyState(it->value.s32))
-				regnum = ProcessCodeList_int(it->trueCodes, regnum);
+				regnum = processCodeList_int(it->trueCodes, regnum);
 			else
-				regnum = ProcessCodeList_int(it->falseCodes, regnum);
+				regnum = processCodeList_int(it->falseCodes, regnum);
 			break;
 		case readreg8:
 			for (uint32_t i = 0; i < it->repeatcount; i++)
@@ -926,9 +949,9 @@ static int ProcessCodeList_int(const list<Code> &codes, int regnum)
 				addru8++;
 			}
 			if (cond)
-				regnum = ProcessCodeList_int(it->trueCodes, regnum);
+				regnum = processCodeList_int(it->trueCodes, regnum);
 			else
-				regnum = ProcessCodeList_int(it->falseCodes, regnum);
+				regnum = processCodeList_int(it->falseCodes, regnum);
 			break;
 		case ifmaskreg16:
 			for (uint32_t i = 0; i < it->repeatcount; i++)
@@ -937,9 +960,9 @@ static int ProcessCodeList_int(const list<Code> &codes, int regnum)
 				addru16++;
 			}
 			if (cond)
-				regnum = ProcessCodeList_int(it->trueCodes, regnum);
+				regnum = processCodeList_int(it->trueCodes, regnum);
 			else
-				regnum = ProcessCodeList_int(it->falseCodes, regnum);
+				regnum = processCodeList_int(it->falseCodes, regnum);
 			break;
 		case ifmaskreg32:
 			for (uint32_t i = 0; i < it->repeatcount; i++)
@@ -948,9 +971,9 @@ static int ProcessCodeList_int(const list<Code> &codes, int regnum)
 				addru32++;
 			}
 			if (cond)
-				regnum = ProcessCodeList_int(it->trueCodes, regnum);
+				regnum = processCodeList_int(it->trueCodes, regnum);
 			else
-				regnum = ProcessCodeList_int(it->falseCodes, regnum);
+				regnum = processCodeList_int(it->falseCodes, regnum);
 			break;
 		}
 	}
@@ -959,21 +982,74 @@ static int ProcessCodeList_int(const list<Code> &codes, int regnum)
 }
 
 /**
- * Process a code list.
- * @param codes Code list.
+ * Process the code list.
  */
-void ProcessCodeList(const list<Code> &codes)
+void CodeParser::processCodeList(void)
 {
-	ProcessCodeList_int(codes, -1);
+	processCodeList_int(m_codes, -1);
+}
+
+/**
+ * Read codes from a code file.
+ * This will clear all loaded codes before loading new codes.
+ * @param filename Code file.
+ * @return 0 when completed; codeeof on EOF.
+ */
+unsigned char CodeParser::readCodes(const string &filename)
+{
+	clear();
+	ifstream stream(filename, ifstream::binary);
+	if (!stream.is_open())
+		return 0;
+
+	return readCodes(stream);
+}
+
+/**
+ * Read codes from a code file.
+ * This will clear all loaded codes before loading new codes.
+ * @param filename Code file.
+ * @return 0 when completed; codeeof on EOF.
+ */
+unsigned char CodeParser::readCodes(const wstring &filename)
+{
+	clear();
+	ifstream stream(filename, ifstream::binary);
+	if (!stream.is_open())
+		return 0;
+
+	return readCodes(stream);
 }
 
 /**
  * Read codes from a code file.
  * @param stream Code file.
- * @param list Output list.
  * @return 0 when completed; codeeof on EOF.
  */
-unsigned char ReadCodes(istream &stream, list<Code> &list)
+unsigned char CodeParser::readCodes(istream &stream)
+{
+	// Clear the codes first.
+	clear();
+
+	// Assuming the code file is at the correct position.
+	// There is a magic number that's read first, so we
+	// don't want to rewind the stream because we'd end up
+	// re-reading the magic number.
+
+	// TODO: Read the magic number and number of codes here?
+
+	// Read the codes.
+	return readCodes_int(stream, m_codes);
+}
+
+/**
+ * Read codes from a code file.
+ * Internal recursive function; used for internal code lists.
+ * @param stream	[in] Code file.
+ * @param clist		[out] Code list.
+ * @return 0 when completed; codeeof on EOF.
+ */
+unsigned char CodeParser::readCodes_int(istream &stream, list<Code> &clist)
 {
 	while (true)
 	{
@@ -987,7 +1063,7 @@ unsigned char ReadCodes(istream &stream, list<Code> &list)
 			code.newregs = true;
 			valuetype *regs = new valuetype[16];
 			memset(regs, 0, sizeof(valuetype) * 16);
-			registers.push_back(regs);
+			m_registers.push_back(regs);
 			t = stream.get();
 		}
 
@@ -1009,10 +1085,10 @@ unsigned char ReadCodes(istream &stream, list<Code> &list)
 		if ((code.type >= ifeq8 && code.type <= ifkbkey) ||
 		    (code.type >= ifeqreg8 && code.type <= ifmaskreg32))
 		{
-			switch (ReadCodes(stream, code.trueCodes))
+			switch (readCodes_int(stream, code.trueCodes))
 			{
 				case _else:
-					if (ReadCodes(stream, code.falseCodes) == codeeof)
+					if (readCodes_int(stream, code.falseCodes) == codeeof)
 						return codeeof;
 					break;
 				case codeeof:
@@ -1020,7 +1096,26 @@ unsigned char ReadCodes(istream &stream, list<Code> &list)
 			}
 		}
 
-		list.push_back(code);
+		m_codes.push_back(code);
 	}
+
+	// Finished parsing codes.
 	return 0;
+}
+
+/**
+ * Clear the loaded codes.
+ */
+void CodeParser::clear(void)
+{
+	// m_code doesn't have any allocated memory.
+	m_codes.clear();
+
+	// m_registers does have allocated memory.
+	for (auto iter = m_registers.begin(); iter != m_registers.end(); ++iter)
+	{
+		// Allocated using new valuetype[16];
+		delete *iter;
+	}
+	m_registers.clear();
 }

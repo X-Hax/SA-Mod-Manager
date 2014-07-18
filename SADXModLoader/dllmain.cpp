@@ -429,11 +429,12 @@ const int fadecolors[] = {
 	0
 };
 
-static list<Code> codes;
+// Code Parser.
+CodeParser codeParser;
 
 void __cdecl ProcessCodes()
 {
-	ProcessCodeList(codes);
+	codeParser.processCodeList();
 	unsigned int numrows = VerticalResolution / 12;
 	int pos;
 	if (msgqueue.size() <= numrows - 1)
@@ -1249,17 +1250,18 @@ void __cdecl InitMods(void)
 	{
 		char buf[6];
 		codes_str.read(buf, sizeof(buf));
-		if (memcmp(buf, codemagic, 6) != 0)
+		if (!memcmp(buf, codemagic, 6))
+		{
+			int32_t codecount;
+			codes_str.read((char *)&codecount, sizeof(int32_t));
+			PrintDebug("Loading %d codes...\n", codecount);
+			codeParser.readCodes(codes_str);
+		}
+		else
 		{
 			PrintDebug("Code file not in correct format.\n");
-			goto closecodefile;
 		}
-		int32_t codecount;
-		codes_str.read((char *)&codecount, sizeof(int32_t));
-		PrintDebug("Loading %d codes...\n", codecount);
-		ReadCodes(codes_str, codes);
 	}
-closecodefile:
 	codes_str.close();
 	WriteJump((void *)0x426063, ProcessCodes);
 }
