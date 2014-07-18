@@ -48,9 +48,9 @@ do { \
 		addru##size++; \
 	} \
 	if (cond) \
-		ProcessCodeList(it->trueCodes); \
+		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
 	else \
-		ProcessCodeList(it->falseCodes); \
+		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 #define ifcodes(size, op) \
@@ -61,9 +61,9 @@ do { \
 		addrs##size++; \
 	} \
 	if (cond) \
-		ProcessCodeList(it->trueCodes); \
+		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
 	else \
-		ProcessCodeList(it->falseCodes); \
+		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 #define ifcodef(op) \
@@ -74,9 +74,9 @@ do { \
 		addrf++; \
 	} \
 	if (cond) \
-		ProcessCodeList(it->trueCodes); \
+		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
 	else \
-		ProcessCodeList(it->falseCodes); \
+		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 #define ifcodereg(size, op) \
@@ -87,9 +87,9 @@ do { \
 		addru##size++; \
 	} \
 	if (cond) \
-		ProcessCodeList(it->trueCodes); \
+		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
 	else \
-		ProcessCodeList(it->falseCodes); \
+		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 #define ifcoderegs(size, op) \
@@ -100,9 +100,9 @@ do { \
 		addrs##size++; \
 	} \
 	if (cond) \
-		ProcessCodeList(it->trueCodes); \
+		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
 	else \
-		ProcessCodeList(it->falseCodes); \
+		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 #define ifcoderegf(op) \
@@ -113,9 +113,9 @@ do { \
 		addrf++; \
 	} \
 	if (cond) \
-		ProcessCodeList(it->trueCodes); \
+		regnum = ProcessCodeList_int(it->trueCodes, regnum); \
 	else \
-		ProcessCodeList(it->falseCodes); \
+		regnum = ProcessCodeList_int(it->falseCodes, regnum); \
 } while (0)
 
 template<typename T>
