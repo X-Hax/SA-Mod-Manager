@@ -981,7 +981,7 @@ unsigned char ReadCodes(istream &stream, list<Code> &list)
 		if (t == 0xFF || t == _else || t == endif)
 			return t;
 
-		Code code;
+		Code code = { };
 		if (t == newregs)
 		{
 			code.newregs = true;
