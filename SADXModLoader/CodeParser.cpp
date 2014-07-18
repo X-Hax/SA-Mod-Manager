@@ -971,14 +971,14 @@ void ProcessCodeList(const list<Code> &codes)
  * Read codes from a code file.
  * @param stream Code file.
  * @param list Output list.
- * @return ???
+ * @return 0 when completed; codeeof on EOF.
  */
 unsigned char ReadCodes(istream &stream, list<Code> &list)
 {
 	while (true)
 	{
 		uint8_t t = stream.get();
-		if (t == 0xFF || t == _else || t == endif)
+		if (t == codeeof || t == _else || t == endif)
 			return t;
 
 		Code code = { };
@@ -1012,11 +1012,11 @@ unsigned char ReadCodes(istream &stream, list<Code> &list)
 			switch (ReadCodes(stream, code.trueCodes))
 			{
 				case _else:
-					if (ReadCodes(stream, code.falseCodes) == 0xFF)
-						return 0xFF;
+					if (ReadCodes(stream, code.falseCodes) == codeeof)
+						return codeeof;
 					break;
-				case 0xFF:
-					return 0xFF;
+				case codeeof:
+					return codeeof;
 			}
 		}
 

@@ -10,6 +10,9 @@
 #include <iostream>
 #include <list>
 
+/**
+ * Opcodes for the cheat code system.
+ */
 enum CodeType : uint8_t
 {
 	write8, write16, write32, writefloat,
@@ -72,7 +75,10 @@ enum CodeType : uint8_t
 	ifmaskreg8, ifmaskreg16, ifmaskreg32,
 	_else,
 	endif,
-	newregs
+	newregs,
+
+	// End of file
+	codeeof = 0xFF
 };
 
 union valuetype
