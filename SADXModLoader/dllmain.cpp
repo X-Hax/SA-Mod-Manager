@@ -12,6 +12,7 @@
 #include <Shlwapi.h>
 #include <wmsdkidl.h>
 #include <dsound.h>
+#include <GdiPlus.h>
 #include "bass_vgmstream.h"
 #include "SADXModLoader.h"
 using namespace std;
@@ -1586,6 +1587,7 @@ void __cdecl sub_789BD0()
 	}
 }
 
+Gdiplus::Bitmap *bgimg;
 DataPointer(HWND, hWnd, 0x3D0FD30);
 LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -1595,6 +1597,15 @@ LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM l
 		SendMessage(hWnd, WM_CLOSE, wParam, lParam);
 		// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
 		return 0;
+	case WM_ERASEBKGND:
+		SADXDebugOutput("WM_ERASESBKGND\n");
+		if (bgimg != nullptr)
+		{
+			Gdiplus::Graphics gfx((HDC)wParam);
+			gfx.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
+			gfx.DrawImage(bgimg, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
+			return 0;
+		}
 	default:
 		// alternatively we can return SendMe
 		return DefWindowProc(wrapper, uMsg, wParam, lParam);
@@ -1624,6 +1635,13 @@ void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 		return;
 	if (!Windowed && windowedfullscreen)
 	{
+		if (PathFileExists(L"mods\\Border.png"))
+		{
+			Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+			ULONG_PTR gdiplusToken;
+			Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+			bgimg = Gdiplus::Bitmap::FromFile(L"mods\\Border.png");
+		}
 		WNDCLASS w;
 		ZeroMemory(&w, sizeof (WNDCLASS));
 		w.lpszClassName = TEXT("WrapperWindow");
