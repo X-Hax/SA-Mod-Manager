@@ -1,16 +1,16 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
+
+#include <cerrno>
 #include <cstdint>
-#include <iostream>
+#include <cstdio>
+#include <cstring>
+
+#include <deque>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <unordered_map>
-#include <deque>
-#include <algorithm>
-#include <cstdio>
-#include <memory>
-#include <cerrno>
-#include <cstring>
 
 #include <dbghelp.h>
 #include <shlwapi.h>
@@ -26,11 +26,11 @@ using namespace std;
 #include "MediaFns.hpp"
 #include "SADXModLoader.h"
 
-HMODULE myhandle;
-HMODULE chrmodelshandle;
-FARPROC __stdcall MyGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
+static HINSTANCE myhandle;
+static HMODULE chrmodelshandle;
+static FARPROC __stdcall MyGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
 {
-	return GetProcAddress(hModule == myhandle ? chrmodelshandle : hModule, lpProcName);
+	return GetProcAddress((hModule == myhandle ? chrmodelshandle : hModule), lpProcName);
 }
 
 /**
@@ -47,6 +47,8 @@ static inline int backslashes(int c)
 }
 
 // File replacement map.
+// NOTE: Do NOT mark this as static.
+// MediaFns.cpp needs to access the FileMap.
 FileMap sadx_fileMap;
 
 /**
@@ -60,12 +62,12 @@ FileMap sadx_fileMap;
  * @param hTemplateFile
  * @return
  */
-HANDLE __stdcall MyCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
+static HANDLE __stdcall MyCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
 	return CreateFileA(sadx_fileMap.replaceFile(lpFileName), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
 }
 
-int __cdecl PlayVoiceFile_r(LPCSTR filename)
+static int __cdecl PlayVoiceFile_r(LPCSTR filename)
 {
 	filename = sadx_fileMap.replaceFile(filename);
 	return PlayVoiceFile(filename);
@@ -76,12 +78,12 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
  * @param lpFileName Filename.
  * @return Replaced filename, or original filename if not replaced by a mod.
  */ 
-const char *_ReplaceFile(const char *lpFileName)
+static const char *_ReplaceFile(const char *lpFileName)
 {
 	return sadx_fileMap.replaceFile(lpFileName);
 }
 
-__declspec(naked) int PlayVideoFile_r()
+static __declspec(naked) int PlayVideoFile_r()
 {
 	__asm
 	{
@@ -96,7 +98,7 @@ __declspec(naked) int PlayVideoFile_r()
 	}
 }
 
-void HookTheAPI()
+static void HookTheAPI()
 {
 	ULONG ulSize = 0;
 	PROC pNewFunction = NULL;
@@ -154,9 +156,13 @@ void HookTheAPI()
 	}
 }
 
-struct message { string text; uint32_t time; };
+struct message
+{
+	string text;
+	uint32_t time;
+};
 
-deque<message> msgqueue;
+static deque<message> msgqueue;
 
 static const uint32_t fadecolors[] = {
 	0xF7FFFFFF, 0xEEFFFFFF, 0xE6FFFFFF, 0xDDFFFFFF,
@@ -170,9 +176,9 @@ static const uint32_t fadecolors[] = {
 };
 
 // Code Parser.
-CodeParser codeParser;
+static CodeParser codeParser;
 
-void __cdecl ProcessCodes()
+static void __cdecl ProcessCodes()
 {
 	codeParser.processCodeList();
 	const int numrows = (VerticalResolution / 12);
@@ -201,7 +207,7 @@ void __cdecl ProcessCodes()
 		}
 }
 
-char * ShiftJISToUTF8(char *shiftjis)
+static char * ShiftJISToUTF8(char *shiftjis)
 {
 	int cchWcs = MultiByteToWideChar(932, 0, shiftjis, -1, NULL, 0);
 	if (cchWcs <= 0) return nullptr;
@@ -217,7 +223,7 @@ char * ShiftJISToUTF8(char *shiftjis)
 
 static bool dbgConsole, dbgScreen, dbgFile;
 static ofstream dbgstr;
-int __cdecl SADXDebugOutput(const char *Format, ...)
+static int __cdecl SADXDebugOutput(const char *Format, ...)
 {
 	va_list ap;
 	va_start(ap, Format);
@@ -247,7 +253,7 @@ int __cdecl SADXDebugOutput(const char *Format, ...)
 }
 
 DataPointer(int, dword_3D08534, 0x3D08534);
-void __cdecl sub_789BD0()
+static void __cdecl sub_789BD0()
 {
 	MSG v0; // [sp+4h] [bp-1Ch]@1
 
@@ -268,7 +274,7 @@ void __cdecl sub_789BD0()
 }
 
 DataPointer(HWND, hWnd, 0x3D0FD30);
-LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
+static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg) {
 	case WM_CLOSE:
@@ -283,11 +289,11 @@ LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM l
 	/* unreachable */ return 0;
 }
 
-bool windowedfullscreen = false;
+static bool windowedfullscreen = false;
 
 DataPointer(int, Windowed, 0x38A5DC4);
 DataPointer(HINSTANCE, hInstance, 0x3D0FD34);
-void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
+static void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 {
 	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
 
@@ -367,7 +373,7 @@ void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 	}
 }
 
-__declspec(naked) void sub_789E50_r()
+static __declspec(naked) void sub_789E50_r()
 {
 	__asm
 	{
@@ -380,8 +386,8 @@ __declspec(naked) void sub_789E50_r()
 	}
 }
 
-unordered_map<unsigned char, unordered_map<int, StartPosition>> StartPositions;
-void RegisterStartPosition(unsigned char character, const StartPosition &position)
+static unordered_map<unsigned char, unordered_map<int, StartPosition> > StartPositions;
+static void RegisterStartPosition(unsigned char character, const StartPosition &position)
 {
 	auto iter = StartPositions.find(character);
 	unordered_map<int, StartPosition> *newlist;
@@ -426,7 +432,7 @@ void RegisterStartPosition(unsigned char character, const StartPosition &positio
 	(*newlist)[levelact(position.LevelID, position.ActID)] = position;
 }
 
-void ClearStartPositionList(unsigned char character)
+static void ClearStartPositionList(unsigned char character)
 {
 	switch (character)
 	{
@@ -443,8 +449,8 @@ void ClearStartPositionList(unsigned char character)
 	StartPositions[character] = unordered_map<int, StartPosition>();
 }
 
-unordered_map<unsigned char, unordered_map<int, FieldStartPosition>> FieldStartPositions;
-void RegisterFieldStartPosition(unsigned char character, const FieldStartPosition &position)
+static unordered_map<unsigned char, unordered_map<int, FieldStartPosition> > FieldStartPositions;
+static void RegisterFieldStartPosition(unsigned char character, const FieldStartPosition &position)
 {
 	if (character >= Characters_MetalSonic) return;
 	auto iter = FieldStartPositions.find(character);
@@ -467,15 +473,15 @@ void RegisterFieldStartPosition(unsigned char character, const FieldStartPositio
 	(*newlist)[levelact(position.LevelID, position.FieldID)] = position;
 }
 
-void ClearFieldStartPositionList(unsigned char character)
+static void ClearFieldStartPositionList(unsigned char character)
 {
 	if (character >= Characters_MetalSonic) return;
 	FieldStartPositions[character] = unordered_map<int, FieldStartPosition>();
 }
 
-unordered_map<int, PathDataPtr> Paths;
-bool PathsInitialized;
-void RegisterPathList(const PathDataPtr &paths)
+static unordered_map<int, PathDataPtr> Paths;
+static bool PathsInitialized;
+static void RegisterPathList(const PathDataPtr &paths)
 {
 	if (!PathsInitialized)
 	{
@@ -490,14 +496,14 @@ void RegisterPathList(const PathDataPtr &paths)
 	Paths[paths.LevelAct] = paths;
 }
 
-void ClearPathListList()
+static void ClearPathListList()
 {
 	Paths.clear();
 	PathsInitialized = true;
 }
 
-unordered_map<unsigned char, vector<PVMEntry>> CharacterPVMs;
-void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
+static unordered_map<unsigned char, vector<PVMEntry> > CharacterPVMs;
+static void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
 {
 	if (character > Characters_MetalSonic) return;
 	auto iter = CharacterPVMs.find(character);
@@ -515,15 +521,15 @@ void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
 	newlist->push_back(pvm);
 }
 
-void ClearCharacterPVMList(unsigned char character)
+static void ClearCharacterPVMList(unsigned char character)
 {
 	if (character > Characters_MetalSonic) return;
 	CharacterPVMs[character] = vector<PVMEntry>();
 }
 
-vector<PVMEntry> CommonObjectPVMs;
-bool CommonObjectPVMsInitialized;
-void RegisterCommonObjectPVM(const PVMEntry &pvm)
+static vector<PVMEntry> CommonObjectPVMs;
+static bool CommonObjectPVMsInitialized;
+static void RegisterCommonObjectPVM(const PVMEntry &pvm)
 {
 	if (!CommonObjectPVMsInitialized)
 	{
@@ -535,22 +541,22 @@ void RegisterCommonObjectPVM(const PVMEntry &pvm)
 	CommonObjectPVMs.push_back(pvm);
 }
 
-void ClearCommonObjectPVMList()
+static void ClearCommonObjectPVMList()
 {
 	CommonObjectPVMs.clear();
 	CommonObjectPVMsInitialized = true;
 }
 
-unsigned char trialcharacters[] = { 0, 0xFFu, 1, 2, 0xFFu, 3, 5, 4, 6 };
-inline unsigned char gettrialcharacter(unsigned char character)
+static unsigned char trialcharacters[] = { 0, 0xFFu, 1, 2, 0xFFu, 3, 5, 4, 6 };
+static inline unsigned char gettrialcharacter(unsigned char character)
 {
 	if (character >= LengthOfArray(trialcharacters))
 		return 0xFF;
 	return trialcharacters[character];
 }
 
-unordered_map<unsigned char, vector<TrialLevelListEntry>> _TrialLevels;
-void RegisterTrialLevel(unsigned char character, const TrialLevelListEntry &level)
+static unordered_map<unsigned char, vector<TrialLevelListEntry> > _TrialLevels;
+static void RegisterTrialLevel(unsigned char character, const TrialLevelListEntry &level)
 {
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
@@ -569,15 +575,15 @@ void RegisterTrialLevel(unsigned char character, const TrialLevelListEntry &leve
 	newlist->push_back(level);
 }
 
-void ClearTrialLevelList(unsigned char character)
+static void ClearTrialLevelList(unsigned char character)
 {
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
 	_TrialLevels[character] = vector<TrialLevelListEntry>();
 }
 
-unordered_map<unsigned char, vector<TrialLevelListEntry>> _TrialSubgames;
-void RegisterTrialSubgame(unsigned char character, const TrialLevelListEntry &level)
+static unordered_map<unsigned char, vector<TrialLevelListEntry> > _TrialSubgames;
+static void RegisterTrialSubgame(unsigned char character, const TrialLevelListEntry &level)
 {
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
@@ -603,7 +609,8 @@ void ClearTrialSubgameList(unsigned char character)
 	_TrialSubgames[character] = vector<TrialLevelListEntry>();
 }
 
-const HelperFunctions helperFunctions = {
+static const HelperFunctions helperFunctions =
+{
 	ModLoaderVer,
 	RegisterStartPosition,
 	ClearStartPositionList,
@@ -621,7 +628,7 @@ const HelperFunctions helperFunctions = {
 	ClearTrialSubgameList
 };
 
-void __cdecl InitMods(void)
+static void __cdecl InitMods(void)
 {
 	FILE *f_ini = fopen("mods\\SADXModLoader.ini", "r");
 	if (!f_ini)
@@ -1001,7 +1008,7 @@ void __cdecl InitMods(void)
 	WriteJump((void *)0x426063, (void *)ProcessCodes);
 }
 
-void __cdecl LoadChrmodels(void)
+static void __cdecl LoadChrmodels(void)
 {
 	chrmodelshandle = LoadLibrary(L".\\system\\CHRMODELS_orig.dll");
 	if (!chrmodelshandle)
@@ -1012,29 +1019,42 @@ void __cdecl LoadChrmodels(void)
 	WriteCall((void *)0x402513, (void *)InitMods);
 }
 
-static const uint8_t verchk[] = { 0x83, 0xEC, 0x28, 0x57, 0x33 };
-BOOL APIENTRY DllMain( HMODULE hModule,
-	DWORD  ul_reason_for_call,
-	LPVOID lpReserved
-	)
+/**
+ * DLL entry point.
+ * @param hinstDll DLL instance.
+ * @param fdwReason Reason for calling DllMain.
+ * @param lpvReserved Reserved.
+ */
+BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 {
-	switch (ul_reason_for_call)
+	// US version check.
+	static const void* const verchk_addr = (void*)0x789E50;
+	static const uint8_t verchk_data[] = { 0x83, 0xEC, 0x28, 0x57, 0x33 };
+
+	switch (fdwReason)
 	{
-	case DLL_PROCESS_ATTACH:
-		myhandle = hModule;
-		HookTheAPI();
-		if (memcmp(verchk, (void *)0x789E50, SizeOfArray(verchk)) != 0)
-		{
-			MessageBox(NULL, L"This copy of Sonic Adventure DX is not the US version.\n\nPlease obtain the EXE file from the US version and try again.", L"SADX Mod Loader", MB_ICONERROR);
-			ExitProcess(1);
-		}
-		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
-		WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
-		break;
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
-		break;
+		case DLL_PROCESS_ATTACH:
+			myhandle = hinstDll;
+			HookTheAPI();
+
+			// Make sure this is the correct version of SADX.
+			if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
+			{
+				MessageBox(NULL, L"This copy of Sonic Adventure DX is not the US version.\n\n"
+					L"Please obtain the EXE file from the US version and try again.",
+					L"SADX Mod Loader", MB_ICONERROR);
+				ExitProcess(1);
+			}
+
+			WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
+			WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
+			break;
+
+		case DLL_THREAD_ATTACH:
+		case DLL_THREAD_DETACH:
+		case DLL_PROCESS_DETACH:
+			break;
 	}
+
 	return TRUE;
 }
