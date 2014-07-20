@@ -9,6 +9,7 @@
 // TODO: Split WriteData(), etc. into a separate header.
 #include "SADXModLoader.h"
 
+#include <cerrno>
 #include <intrin.h>
 #include <fstream>
 using std::istream;
@@ -20,19 +21,16 @@ using std::vector;
 
 CodeParser::CodeParser(const string &filename)
 {
-	// FIXME: Read the file header.
 	readCodes(filename);
 }
 
 CodeParser::CodeParser(const wstring &filename)
 {
-	// FIXME: Read the file header.
 	readCodes(filename);
 }
 
 CodeParser::CodeParser(istream &f)
 {
-	// FIXME: Read the file header.
 	readCodes(f);
 }
 
@@ -996,14 +994,14 @@ void CodeParser::processCodeList(void)
  * Read codes from a code file.
  * This will clear all loaded codes before loading new codes.
  * @param filename Code file.
- * @return 0 when completed; codeeof on EOF; _else or endif while processing.
+ * @return Number of codes read on success; -ENOENT if stream is closed; -EINVAL if file is invalid.
  */
-unsigned char CodeParser::readCodes(const string &filename)
+int CodeParser::readCodes(const string &filename)
 {
 	clear();
 	ifstream stream(filename, ifstream::binary);
 	if (!stream.is_open())
-		return 0;
+		return -ENOENT;
 
 	return readCodes(stream);
 }
@@ -1012,14 +1010,14 @@ unsigned char CodeParser::readCodes(const string &filename)
  * Read codes from a code file.
  * This will clear all loaded codes before loading new codes.
  * @param filename Code file.
- * @return 0 when completed; codeeof on EOF; _else or endif while processing.
+ * @return Number of codes read on success; -ENOENT if stream is closed; -EINVAL if file is invalid.
  */
-unsigned char CodeParser::readCodes(const wstring &filename)
+int CodeParser::readCodes(const wstring &filename)
 {
 	clear();
 	ifstream stream(filename, ifstream::binary);
 	if (!stream.is_open())
-		return 0;
+		return -ENOENT;
 
 	return readCodes(stream);
 }
@@ -1027,22 +1025,31 @@ unsigned char CodeParser::readCodes(const wstring &filename)
 /**
  * Read codes from a code file.
  * @param stream Code file.
- * @return 0 when completed; codeeof on EOF; _else or endif while processing.
+ * @return Number of codes read on success; -ENOENT if stream is closed; -EINVAL if file is invalid.
  */
-unsigned char CodeParser::readCodes(istream &stream)
+int CodeParser::readCodes(istream &stream)
 {
 	// Clear the codes first.
 	clear();
 
-	// Assuming the code file is at the correct position.
-	// There is a magic number that's read first, so we
-	// don't want to rewind the stream because we'd end up
-	// re-reading the magic number.
+	// Check for the magic number.
+	static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '3'};
+	char buf[sizeof(codemagic)];
+	stream.read(buf, sizeof(buf));
+	if (memcmp(buf, codemagic, sizeof(codemagic)) != 0)
+		return -EINVAL;
 
-	// TODO: Read the magic number and number of codes here?
+	// Get the number of codes defined in the file header.
+	// This might not be equal to the number of codes in the file.
+	int codecount_header;
+	stream.read((char*)&codecount_header, sizeof(codecount_header));
 
 	// Read the codes.
-	return readCodes_int(stream, m_codes);
+	// TODO: Check for codeeof?
+	readCodes_int(stream, m_codes);
+
+	// Return the number of codes read.
+	return (int)m_codes.size();
 }
 
 /**

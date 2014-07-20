@@ -10,6 +10,8 @@
 #include <DbgHelp.h>
 #include <cstdio>
 #include <memory>
+#include <cerrno>
+#include <cstring>
 #include <Shlwapi.h>
 #include <wmsdkidl.h>
 #include <dsound.h>
@@ -913,7 +915,6 @@ const HelperFunctions helperFunctions = {
 	ClearTrialSubgameList
 };
 
-const char codemagic[] = "codev3";
 void __cdecl InitMods(void)
 {
 	FILE *f_ini = fopen("mods\\SADXModLoader.ini", "r");
@@ -1260,18 +1261,37 @@ void __cdecl InitMods(void)
 	ifstream codes_str("mods\\Codes.dat", ifstream::binary);
 	if (codes_str.is_open())
 	{
-		char buf[6];
+		static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '3'};
+		char buf[sizeof(codemagic)];
 		codes_str.read(buf, sizeof(buf));
-		if (!memcmp(buf, codemagic, 6))
+		if (!memcmp(buf, codemagic, sizeof(codemagic)))
 		{
-			int32_t codecount;
-			codes_str.read((char *)&codecount, sizeof(int32_t));
-			PrintDebug("Loading %d codes...\n", codecount);
-			codeParser.readCodes(codes_str);
+			int codecount_header;
+			codes_str.read((char*)&codecount_header, sizeof(codecount_header));
+			PrintDebug("Loading %d codes...\n", codecount_header);
+			codes_str.seekg(0);
+			int codecount = codeParser.readCodes(codes_str);
+			if (codecount >= 0)
+			{
+				PrintDebug("Loaded %d codes.\n", codecount);
+			}
+			else
+			{
+				PrintDebug("ERROR loading codes: ");
+				switch (codecount)
+				{
+					case -EINVAL:
+						PrintDebug("Code file is not in the correct format.\n");
+						break;
+					default:
+						PrintDebug("%s\n", strerror(-codecount));
+						break;
+				}
+			}
 		}
 		else
 		{
-			PrintDebug("Code file not in correct format.\n");
+			PrintDebug("Code file is not in the correct format.\n");
 		}
 	}
 	codes_str.close();

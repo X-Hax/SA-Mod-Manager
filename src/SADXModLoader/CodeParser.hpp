@@ -151,25 +151,25 @@ class CodeParser
 		 * Read codes from a code file.
 		 * This will clear all loaded codes before loading new codes.
 		 * @param filename Code file.
-		 * @return 0 when completed; codeeof on EOF; _else or endif while processing.
+		 * @return Number of codes read on success; -ENOENT if stream is closed; -EINVAL if file is invalid.
 		 */
-		unsigned char readCodes(const std::string &filename);
+		int readCodes(const std::string &filename);
 
 		/**
 		 * Read codes from a code file.
 		 * This will clear all loaded codes before loading new codes.
 		 * @param filename Code file.
-		 * @return 0 when completed; codeeof on EOF; _else or endif while processing.
+		 * @return Number of codes read on success; -ENOENT if stream is closed; -EINVAL if file is invalid.
 		 */
-		unsigned char readCodes(const std::wstring &filename);
+		int readCodes(const std::wstring &filename);
 
 		/**
 		 * Read codes from a code file.
 		 * This will clear all loaded codes before loading new codes.
 		 * @param stream Code file.
-		 * @return 0 when completed; codeeof on EOF; _else or endif while processing.
+		 * @return Number of codes read on success; -ENOENT if stream is closed; -EINVAL if file is invalid.
 		 */
-		unsigned char readCodes(std::istream &stream);
+		int readCodes(std::istream &stream);
 
 	protected:
 		/**
