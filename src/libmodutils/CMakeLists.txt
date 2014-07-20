@@ -9,6 +9,8 @@ SET(libmodutils_SRC
 	AnimationFile.cpp
 	LandTableInfo.cpp
 	ModelInfo.cpp
+	GoalRing.cpp
+	GoalRingModels.cpp
 	)
 
 # Headers.
