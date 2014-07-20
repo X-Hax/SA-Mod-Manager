@@ -6,8 +6,8 @@ Table of Contents
 -----------------
 
 1. System Requirements
-X. License
-Y. Trademarks
+2. License
+3. Trademarks
 
 1. System Requirements
 ----------------------
@@ -15,7 +15,7 @@ Y. Trademarks
 To use SADX Mod Loader, you must have:
   * Sonic Adventure DX PC, 2004 version (US release)
 
-X. License
+2. License
 ----------
 
 DISCLAIMER:
@@ -26,7 +26,7 @@ in these repositories. You assume any and all responsibility for
 using this content responsibly. Sonic Retro claims no responsibility
 or warranty.
 
-Y. Trademarks
+3. Trademarks
 -------------
 
 Sega, Sonic, Sonic the Hedgehog, and Sonic Adventure DX are either
