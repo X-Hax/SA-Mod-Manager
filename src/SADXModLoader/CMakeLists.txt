@@ -62,6 +62,11 @@ SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${SADXModLoader_C_FLAGS_
 INCLUDE(AddMSVCPrecompiledHeader)
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" SADXModLoader_SRC)
 
+# Resource file.
+# Add this after PCH to prevent the RC from depending on the PCH,
+# since the MSVC resource compiler doesn't support /FI.
+LIST(APPEND SADXModLoader_SRC SADXModLoader.rc)
+
 ADD_LIBRARY(SADXModLoader SHARED
 	${SADXModLoader_SRC}
 	${SADXModLoader_H}

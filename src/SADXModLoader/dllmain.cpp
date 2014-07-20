@@ -689,7 +689,7 @@ static void __cdecl InitMods(void)
 	{
 		WriteJump((void *)PrintDebug, (void *)SADXDebugOutput);
 		PrintDebug("SADX Mod Loader v%s (API version %d), built %s\n",
-			SADXMODLOADER_VERSION_STRING, ModLoaderVer, __TIMESTAMP__);
+			MODLOADER_VERSION_STRING, ModLoaderVer, __TIMESTAMP__);
 #ifdef MODLOADER_GIT_VERSION
 #ifdef MODLOADER_GIT_DESCRIBE
 		PrintDebug("%s, %s\n", MODLOADER_GIT_VERSION, MODLOADER_GIT_DESCRIBE);
