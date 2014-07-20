@@ -50,6 +50,13 @@ static inline size_t SizeOfArray(const T(&)[N])
 
 #endif
 
+// Macros for functions that need both an array
+// and the array length or size.
+#define arrayptrandlength(data) data, LengthOfArray(data)
+#define arraylengthandptr(data) LengthOfArray(data), data
+#define arrayptrandsize(data) data, SizeOfArray(data)
+#define arraysizeandptr(data) SizeOfArray(data), data
+
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -179,5 +186,8 @@ static inline BOOL WriteCall(void *writeaddress, void *funcaddress)
 	static RETURN_TYPE (__thiscall *const NAME)ARGS = (RETURN_TYPE (__thiscall *)ARGS)ADDRESS
 #define VoidFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(void),ADDRESS)
 #define ObjectFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(ObjectMaster *obj),ADDRESS)
+
+#define patchdecl(address,data) { (void*)address, arrayptrandsize(data) }
+#define ptrdecl(address,data) { (void*)address, (void*)data }
 
 #endif /* MODLOADER_MEMACCESS_H */

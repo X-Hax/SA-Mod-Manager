@@ -1,5 +1,7 @@
 #include "stdafx.h"
-#include "SADXModLoader.h"
+
+#include "ModLoader/MemAccess.h"
+#include "ninja.h"
 
 NJS_MATERIAL matlist_8D142FC194AB5E8DE47[] = {
 	{ { 0xFFB2B2B2 }, { 0xFFFFFFFF }, 10, 3, NJD_FLAG_USE_ALPHA | NJD_FLAG_USE_TEXTURE | NJD_FLAG_DOUBLE_SIDE | NJD_DA_INV_SRC | NJD_SA_SRC }

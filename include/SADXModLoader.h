@@ -44,11 +44,6 @@ static inline void ResizeTextureList(NJS_TEXLIST *texlist, NJS_TEXNAME(&textures
 // SADX Mod Loader API version.
 static const int ModLoaderVer = 3;
 
-#define arrayptrandlength(data) data, LengthOfArray(data)
-#define arraylengthandptr(data) LengthOfArray(data), data
-#define arrayptrandsize(data) data, SizeOfArray(data)
-#define arraysizeandptr(data) SizeOfArray(data), data
-
 struct PatchInfo
 {
 	void *address;
@@ -56,15 +51,11 @@ struct PatchInfo
 	int datasize;
 };
 
-#define patchdecl(address,data) { (void*)address, arrayptrandsize(data) }
-
 struct PointerInfo
 {
 	void *address;
 	void *data;
 };
-
-#define ptrdecl(address,data) { (void*)address, (void*)data }
 
 struct HelperFunctions_v3
 {
