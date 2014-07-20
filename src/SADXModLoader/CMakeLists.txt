@@ -36,20 +36,12 @@ SET(SADXModLoader_SRC
 	dllmain.cpp
 	CodeParser.cpp
 	IniFile.cpp
-	# TODO: Move to a separate library.
-	AnimationFile.cpp
-	LandTableInfo.cpp
-	ModelInfo.cpp
 	)
 
 # Headers.
 SET(SADXModLoader_H
 	CodeParser.hpp
 	IniFile.hpp
-	# TODO: Move to a separate library.
-	AnimationFile.h
-	LandTableInfo.h
-	ModelInfo.h
 	)
 
 # SADXModLoader is compiled as a Unicode DLL.
