@@ -6,7 +6,7 @@
 #ifndef FILEMAP_HPP
 #define FILEMAP_HPP
 
-#include <list>
+#include <forward_list>
 #include <string>
 #include <unordered_map>
 
@@ -45,9 +45,9 @@ class FileMap
 		/**
 		 * Add a file replacement.
 		 * @param origFile Original filename.
-		 * @param destFile Replacement filename.
+		 * @param modFile Mod filename.
 		 */
-		void addReplaceFile(const std::string &origFile, const std::string &destFile);
+		void addReplaceFile(const std::string &origFile, const std::string &modFile);
 
 		/**
 		 * Recursively scan a directory and add all files to the replacement map.
@@ -66,6 +66,15 @@ class FileMap
 		 */
 		void scanFolder_int(const std::string &srcPath, int srcLen);
 
+		/**
+		 * Set a replacement file in the map.
+		 * Filenames must already be normalized!
+		 * (Internal function; handles memory allocation)
+		 * @param origFile Original file.
+		 * @param modFile Mod filename.
+		 */
+		void setReplaceFile(const std::string &origFile, const std::string &modFile);
+
 	public:
 		/**
 		 * Get a filename from the file replacement map.
@@ -78,9 +87,9 @@ class FileMap
 		 * Find filenames that matches the specified filename, ignoring the extension.
 		 * This is used for BASS vgmstream.
 		 * @param lpFileName Filename.
-		 * @return List of matching filenames, or empty list if not fonud.
+		 * @return List of matching filenames, or nullptr if not fonud.
 		 */
-		std::list<const char *> findFileNoExt(const char *lpFileName);
+		const std::forward_list<const char *>* findFileNoExt(const char *lpFileName) const;
 
 		/**
 		 * Clear the file replacement map.
@@ -94,6 +103,17 @@ class FileMap
 		 * - Value: New filename. (allocated via new[])
 		 */
 		std::unordered_map<std::string, const char *> m_fileMap;
+
+		/**
+		 * File replacement map, sans extensions.
+		 * Used for BASS vgmstream.
+		 * - Key: Normalized original filename, sans extension.
+		 * - Value: forward_list<const char*> (allocated via new[])
+		 *   - Contains mod filenames.
+		 * NOTE: Strings in forward_list are *copied* from m_fileMap.
+		 * They will need to be deleted manually.
+		 */
+		std::unordered_map<std::string, std::forward_list<const char *>* > m_fileNoExtMap;
 };
 
 #endif /* FILEMAP_HPP */
