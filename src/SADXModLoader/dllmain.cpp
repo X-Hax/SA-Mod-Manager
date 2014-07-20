@@ -14,17 +14,7 @@
 
 #include <dbghelp.h>
 #include <shlwapi.h>
-#include <wmsdkidl.h>
 
-// NOTE: mmsystem.h defines PlaySound.
-// Undefine it afterwards due to an SADX function conflict.
-#include <mmsystem.h>
-#ifdef PlaySound
-#undef PlaySound
-#endif
-#include <dsound.h>
-
-#include "bass_vgmstream.h"
 using namespace std;
 
 #include "config.SADXModLoader.h"
@@ -33,6 +23,7 @@ using namespace std;
 #include "IniFile.hpp"
 #include "CodeParser.hpp"
 #include "FileMap.hpp"
+#include "MediaFns.hpp"
 #include "SADXModLoader.h"
 
 HMODULE myhandle;
@@ -56,7 +47,7 @@ static inline int backslashes(int c)
 }
 
 // File replacement map.
-static FileMap fileMap;
+FileMap sadx_fileMap;
 
 /**
  * CreateFileA() wrapper using _ReplaceFile().
@@ -71,262 +62,23 @@ static FileMap fileMap;
  */
 HANDLE __stdcall MyCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
-	return CreateFileA(fileMap.replaceFile(lpFileName), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+	return CreateFileA(sadx_fileMap.replaceFile(lpFileName), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
 }
 
 int __cdecl PlayVoiceFile_r(LPCSTR filename)
 {
-	filename = fileMap.replaceFile(filename);
+	filename = sadx_fileMap.replaceFile(filename);
 	return PlayVoiceFile(filename);
 }
 
-#ifndef _MSC_VER
-// MinGW doesn't have IWMHeaderInfo.
-struct WMHeaderInfo;
-#endif
-
-#pragma pack(push, 1)
-struct WMPInfo
-{
-	void *WMReaderCallback;
-	LPDIRECTSOUNDBUFFER DirectSoundBuffer;
-	int field_8;
-	int field_C;
-	int field_10;
-	int field_14;
-	int field_18;
-	HANDLE EventHandle;
-	int field_20;
-	IWMReader *WMReader;
-	IWMHeaderInfo *WMHeaderInfo;
-	int field_2C;
-	int field_30;
-	WCHAR *CurrentFile;
-	int field_38;
-	int field_3C;
-	LPWAVEFORMATEX WaveFormat;
-	int Status;
-	int field_48;
-	int field_4C;
-};
-#pragma pack(pop)
-
-enum WMPStatus
-{
-	WMPStatus_Buffering,
-	WMPStatus_Playing,
-	WMPStatus_Stopped
-};
-
-DataPointer(int, MusicVolume, 0x909F28);
-DataPointer(WMPInfo *, WMPVoiceInfo, 0x3ABDF94);
-DataPointer(int, dword_3ABDF98, 0x3ABDF98);
-DataPointer(WMPInfo *, WMPMusicInfo, 0x3ABDF9C);
-DataPointer(int, dword_3ABDFA0, 0x3ABDFA0);
-DataPointer(int, MusicLooping, 0x3ABDFA4);
-DataPointer(int, dword_3ABDFA8, 0x3ABDFA8);
-
-ThiscallFunctionPointer(int, WMPInfo__Release, (WMPInfo *), 0x410F70);
-ThiscallFunctionPointer(int, WMPInfo__Play, (WMPInfo *, int, int, int), 0x410FF0);
-ThiscallFunctionPointer(int, WMPInfo__Pause, (WMPInfo *), 0x4111B0);
-ThiscallFunctionPointer(int, WMPInfo__Resume, (WMPInfo *), 0x4111E0);
-ThiscallFunctionPointer(int, WMPInfo__GetStatus, (WMPInfo *), 0x4113E0);
-ThiscallFunctionPointer(int, WMPInfo__Release2, (WMPInfo *), 0x411450);
-ThiscallFunctionPointer(int, WMPInfo__CreateReader, (WMPInfo *), 0x4116A0);
-ThiscallFunctionPointer(int, WMPInfo__Close, (WMPInfo *), 0x411720);
-ThiscallFunctionPointer(int, WMPInfo__Stop, (WMPInfo *), 0x411760);
-ThiscallFunctionPointer(unsigned int, WMPInfo__Open, (WMPInfo *, const wchar_t *), 0x411830);
-ThiscallFunctionPointer(WMPInfo *, WMPInfo__WMPInfo, (WMPInfo *), 0x411970);
-
-static bool enablevgmstream = false;
-static bool musicwmp = true;
-static DWORD basschan = 0;
-
-void WMPInit_r()
-{
-	enablevgmstream = BASS_Init(-1, 44100, 0, 0, NULL) ? true : false;
-}
-
-void __stdcall onTrackEnd(HSYNC handle, DWORD channel, DWORD data, void *user)
-{
-	dword_3ABDFA0 = 0;
-	dword_3ABDF98 = 5;
-	BASS_ChannelStop(channel);
-	BASS_StreamFree(channel);
-}
-
-int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
-{
-	if (!WMPMusicInfo) return 0;
-	if (musicwmp)
-	{
-		WMPInfo__Stop(WMPMusicInfo);
-		WMPInfo__Close(WMPMusicInfo);
-	}
-	else if (basschan != 0)
-	{
-		BASS_ChannelStop(basschan);
-		BASS_StreamFree(basschan);
-	}
-	if (enablevgmstream)
-	{
-		// Check if a file with a matching basename is in the map.
-		const forward_list<const char *>* fileList = fileMap.findFileNoExt(filename);
-		if (fileList != nullptr)
-		{
-			for (auto iter = fileList->cbegin(); iter != fileList->cend(); ++iter)
-			{
-				// Attempt to open this stream.
-				basschan = BASS_VGMSTREAM_StreamCreate(*iter, loop ? BASS_SAMPLE_LOOP : 0);
-				if (basschan != 0)
-				{
-					// Stream opened!
-					musicwmp = false;
-					BASS_ChannelPlay(basschan, false);
-					BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0f);
-					BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, 0);
-					MusicLooping = loop;
-					dword_3ABDFA0 = 1;
-					dword_3ABDF98 = 3;
-					return 1;
-				}
-			}
-		}
-	}
-
-	// No replacement file was found or was able to be opened.
-	filename = fileMap.replaceFile(filename);
-	musicwmp = true;
-	WCHAR WideCharStr[MAX_PATH];
-	MultiByteToWideChar(0, 0, filename, -1, WideCharStr, LengthOfArray(WideCharStr));
-	if ( WMPMusicInfo && (WMPInfo__Open(WMPMusicInfo, WideCharStr) & 0x80000000u) == 0)
-	{
-		WMPInfo__Play(WMPMusicInfo, 0, 0, MusicVolume);
-		MusicLooping = loop;
-		dword_3ABDFA0 = 1;
-		dword_3ABDF98 = 3;
-		if ( WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped )
-		{
-			do
-			Sleep(0);
-			while ( WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped );
-		}
-		return 1;
-	}
-	return 0;
-}
-
-void __cdecl WMPRestartMusic_r()
-{
-	LPDIRECTSOUNDBUFFER v0; // eax@6
-
-	if (!musicwmp)
-		return;
-	if ( dword_3ABDFA0 )
-	{
-		if ( WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped )
-		{
-			if ( MusicLooping )
-			{
-				WMPInfo__Stop(WMPMusicInfo);
-				WMPInfo__Play(WMPMusicInfo, 0, 0, MusicVolume);
-			}
-			else
-			{
-				dword_3ABDFA0 = 0;
-				dword_3ABDF98 = 5;
-				WMPInfo__Stop(WMPMusicInfo);
-				WMPInfo__Close(WMPMusicInfo);
-			}
-		}
-		else
-		{
-			v0 = WMPMusicInfo->DirectSoundBuffer;
-			if ( v0 )
-				v0->SetVolume(MusicVolume);
-		}
-	}
-}
-
-void __cdecl PauseSound_r()
-{
-	if ( dword_3ABDFA0 )
-	{
-		++dword_3ABDFA8;
-		if (musicwmp)
-			WMPInfo__Pause(WMPMusicInfo);
-		else
-			BASS_ChannelPause(basschan);
-	}
-	if ( WMPVoiceInfo )
-	{
-		WMPInfo__Stop(WMPVoiceInfo);
-		WMPInfo__Close(WMPVoiceInfo);
-	}
-}
-
-void __cdecl ResumeSound_r()
-{
-	if ( dword_3ABDFA0 )
-	{
-		--dword_3ABDFA8;
-		if ( dword_3ABDFA8 <= 0 )
-		{
-			if (musicwmp)
-				WMPInfo__Resume(WMPMusicInfo);
-			else
-				BASS_ChannelPlay(basschan, false);
-			dword_3ABDFA8 = 0;
-		}
-	}
-}
-
-void __cdecl WMPClose_r(int a1)
-{
-	if ( a1 )
-	{
-		if ( a1 == 1 && WMPVoiceInfo )
-		{
-			WMPInfo__Stop(WMPVoiceInfo);
-			WMPInfo__Close(WMPVoiceInfo);
-			dword_3ABDFA8 = 0;
-			return;
-		}
-	}
-	else
-	{
-		if ( dword_3ABDFA0 )
-		{
-			if (musicwmp)
-			{
-				WMPInfo__Stop(WMPMusicInfo);
-				WMPInfo__Close(WMPMusicInfo);
-			}
-			else
-			{
-				BASS_ChannelStop(basschan);
-				BASS_StreamFree(basschan);
-			}
-			dword_3ABDFA0 = 0;
-			dword_3ABDF98 = 0;
-		}
-	}
-	dword_3ABDFA8 = 0;
-}
-
-void WMPRelease_r()
-{
-	BASS_Free();
-}
-
 /**
- * C wrapper to call FileMap::replaceFile() from asm.
+ * C wrapper to call sadx_fileMap.replaceFile() from asm.
  * @param lpFileName Filename.
  * @return Replaced filename, or original filename if not replaced by a mod.
  */ 
 const char *_ReplaceFile(const char *lpFileName)
 {
-	return fileMap.replaceFile(lpFileName);
+	return sadx_fileMap.replaceFile(lpFileName);
 }
 
 __declspec(naked) int PlayVideoFile_r()
@@ -968,7 +720,7 @@ void __cdecl InitMods(void)
 	VirtualProtect((void *)0x7DB2A0, 0xB6D60, PAGE_WRITECOPY, &oldprot);
 
 	// Map of files to replace and/or swap.
-	// This is done with a second map instead of fileMap directly
+	// This is done with a second map instead of sadx_fileMap directly
 	// in order to handle multiple mods.
 	unordered_map<string, string> filereplaces;
 
@@ -1003,7 +755,7 @@ void __cdecl InitMods(void)
 			for (unordered_map<string, string>::const_iterator iter = data->begin();
 			     iter != data->end(); ++iter)
 			{
-				fileMap.addIgnoreFile(iter->first);
+				sadx_fileMap.addIgnoreFile(iter->first);
 				PrintDebug("Ignored file: %s\n", iter->first.c_str());
 			}
 		}
@@ -1037,7 +789,7 @@ void __cdecl InitMods(void)
 		// Check for SYSTEM replacements.
 		string modSysDir = dir + "\\system";
 		if ((GetFileAttributesA(modSysDir.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
-			fileMap.scanFolder(modSysDir);
+			sadx_fileMap.scanFolder(modSysDir);
 
 		// Check if a custom EXE is required.
 		if (modinfo->hasKey("EXEFile"))
@@ -1109,7 +861,7 @@ void __cdecl InitMods(void)
 	// Replace filenames. ("ReplaceFiles", "SwapFiles")
 	for (auto iter = filereplaces.cbegin(); iter != filereplaces.cend(); ++iter)
 	{
-		fileMap.addReplaceFile(iter->first, iter->second);
+		sadx_fileMap.addReplaceFile(iter->first, iter->second);
 	}
 
 	for (auto i = StartPositions.cbegin(); i != StartPositions.cend(); ++i)
