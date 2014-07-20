@@ -20,16 +20,19 @@ using std::vector;
 
 CodeParser::CodeParser(const string &filename)
 {
+	// FIXME: Read the file header.
 	readCodes(filename);
 }
 
 CodeParser::CodeParser(const wstring &filename)
 {
+	// FIXME: Read the file header.
 	readCodes(filename);
 }
 
 CodeParser::CodeParser(istream &f)
 {
+	// FIXME: Read the file header.
 	readCodes(f);
 }
 
@@ -1097,7 +1100,7 @@ unsigned char CodeParser::readCodes_int(istream &stream, list<Code> &clist)
 			}
 		}
 
-		m_codes.push_back(code);
+		clist.push_back(code);
 	}
 
 	// Finished parsing codes.
