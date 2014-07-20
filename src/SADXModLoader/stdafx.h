@@ -22,3 +22,6 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+#include "ninja.h"
+#include "SADXModLoader.h"
