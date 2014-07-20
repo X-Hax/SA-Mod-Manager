@@ -4,8 +4,16 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
 # See http://www.cmake.org/Wiki/BuildingWinDLL
 # Note that SADXModLoader doesn't export any symbols.
 
+# mcrecover source and binary directories.
+# Binary directory is required for generated headers.
+INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}")
+INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
+
 # Include the top-level include/ directory.
 INCLUDE_DIRECTORIES("${CMAKE_SOURCE_DIR}/include")
+
+# Include the top-level binary directory for git_version.h.
+INCLUDE_DIRECTORIES("${CMAKE_BINARY_DIR}")
 
 # External libraries.
 FIND_LIBRARY(BASS_LIBRARY bass "${CMAKE_SOURCE_DIR}/extlib/bass")
@@ -17,6 +25,11 @@ IF(NOT BASS_VGMSTREAM_LIBRARY)
 	MESSAGE(FATAL_ERROR "BASS_VGMSTREAM library is missing")
 ENDIF(NOT BASS_VGMSTREAM_LIBRARY)
 INCLUDE_DIRECTORIES("${CMAKE_SOURCE_DIR}/extlib/bass")
+
+# Write the config.h file.
+CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/config.SADXModLoader.h.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/config.SADXModLoader.h"
+	)
 
 # Sources.
 SET(SADXModLoader_SRC

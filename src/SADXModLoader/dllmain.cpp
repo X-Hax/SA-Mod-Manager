@@ -14,10 +14,14 @@
 #include <wmsdkidl.h>
 #include <dsound.h>
 #include "bass_vgmstream.h"
+using namespace std;
+
+#include "config.SADXModLoader.h"
+#include "git.h"
+
 #include "IniFile.hpp"
 #include "CodeParser.hpp"
 #include "SADXModLoader.h"
-using namespace std;
 
 HMODULE myhandle;
 HMODULE chrmodelshandle;
@@ -953,7 +957,15 @@ void __cdecl InitMods(void)
 	if (dbgConsole || dbgScreen || dbgFile)
 	{
 		WriteJump(PrintDebug, SADXDebugOutput);
-		PrintDebug("SADX Mod Loader version %d, built %s\n", ModLoaderVer, __TIMESTAMP__);
+		PrintDebug("SADX Mod Loader v%s (API version %d), built %s\n",
+			SADXMODLOADER_VERSION_STRING, ModLoaderVer, __TIMESTAMP__);
+#ifdef MODLOADER_GIT_VERSION
+#ifdef MODLOADER_GIT_DESCRIBE
+		PrintDebug("%s, %s\n", MODLOADER_GIT_VERSION, MODLOADER_GIT_DESCRIBE);
+#else /* !MODLOADER_GIT_DESCRIBE */
+		PrintDebug("%s\n", MODLOADER_GIT_VERSION);
+#endif /* MODLOADER_GIT_DESCRIBE */
+#endif /* MODLOADER_GIT_VERSION */
 	}
 
 	// Other various settings.
