@@ -9,12 +9,14 @@
 #include <cctype>
 #include <cstring>
 #include <algorithm>
+using std::list;
 using std::string;
 using std::transform;
 using std::unordered_map;
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <shlwapi.h>
 
 FileMap::FileMap()
 {
@@ -232,6 +234,46 @@ const char *FileMap::replaceFile(const char *lpFileName) const
 	// File was not replaced by a mod.
 	// Return the filename as-is.
 	return lpFileName;
+}
+
+/**
+ * Find filenames that matches the specified filename, ignoring the extension.
+ * This is used for BASS vgmstream.
+ * @param lpFileName Filename.
+ * @return List of matching filenames, or empty list if not fonud.
+ */
+list<const char *> FileMap::findFileNoExt(const char *lpFileName)
+{
+	// FIXME: Optimize this so it isn't O(n).
+	// FIXME: We have to return all of the filenames because
+	// we can't call BASS_VGMSTREAM_StreamCreate() here.
+	list<const char *> lstFilenames;
+
+	// Remove the file extension from the specified filename.
+	char pathnoext[MAX_PATH];
+	strncpy(pathnoext, lpFileName, sizeof(pathnoext));
+	PathRemoveExtensionA(pathnoext);
+	string path = normalizePath(pathnoext);
+
+	// FIXME: Add a list with filenames, sans extension.
+	// MSVC apparently maintains ordering; STL does not.
+#ifdef _MSC_VER
+	for (auto iter = m_fileMap.crbegin(); iter != m_fileMap.crend(); iter++)
+#else
+	for (auto iter = m_fileMap.cbegin(); iter != m_fileMap.cend(); iter++)
+#endif
+	{
+		// Remove the extension from this filename.
+		strncpy(pathnoext, iter->first.c_str(), sizeof(pathnoext));
+		PathRemoveExtensionA(pathnoext);
+		if (!path.compare(pathnoext))
+		{
+			// Found a matching filename.
+			lstFilenames.push_back(iter->second);
+		}
+	}
+
+	return lstFilenames;
 }
 
 /**

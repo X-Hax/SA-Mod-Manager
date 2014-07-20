@@ -6,6 +6,7 @@
 #ifndef FILEMAP_HPP
 #define FILEMAP_HPP
 
+#include <list>
 #include <string>
 #include <unordered_map>
 
@@ -72,6 +73,14 @@ class FileMap
 		 * @return Replaced filename, or original filename if not replaced by a mod.
 		 */
 		const char *replaceFile(const char *lpFileName) const;
+
+		/**
+		 * Find filenames that matches the specified filename, ignoring the extension.
+		 * This is used for BASS vgmstream.
+		 * @param lpFileName Filename.
+		 * @return List of matching filenames, or empty list if not fonud.
+		 */
+		std::list<const char *> findFileNoExt(const char *lpFileName);
 
 		/**
 		 * Clear the file replacement map.

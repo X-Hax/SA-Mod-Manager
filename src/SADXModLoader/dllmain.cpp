@@ -138,9 +138,9 @@ ThiscallFunctionPointer(int, WMPInfo__Stop, (WMPInfo *), 0x411760);
 ThiscallFunctionPointer(unsigned int, WMPInfo__Open, (WMPInfo *, const wchar_t *), 0x411830);
 ThiscallFunctionPointer(WMPInfo *, WMPInfo__WMPInfo, (WMPInfo *), 0x411970);
 
-bool enablevgmstream = false;
-bool musicwmp = true;
-DWORD basschan = 0;
+static bool enablevgmstream = false;
+static bool musicwmp = true;
+static DWORD basschan = 0;
 
 void WMPInit_r()
 {
@@ -170,44 +170,28 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 	}
 	if (enablevgmstream)
 	{
-		char pathnoext[MAX_PATH];
-		strncpy(pathnoext, filename, sizeof(pathnoext));
-		PathRemoveExtensionA(pathnoext);
-		string path = pathnoext;
-		transform(path.begin(), path.end(), path.begin(), backslashes);
-		if (path.length() > 2 && (path[0] == '.' && path[1] == '\\'))
-			path = path.substr(2, path.length() - 2);
-		transform(path.begin(), path.end(), path.begin(), ::tolower);
-		// FIXME: Add a list with just filenames.
-		// MSVC apparently maintains ordering; STL does not.
-#if 0 // FIXME: Port to fileMap.
-#ifdef _MSC_VER
-		for (auto i = filemap.crbegin(); i != filemap.crend(); i++)
-#else
-		for (auto i = filemap.cbegin(); i != filemap.cend(); i++)
-#endif
+		// Check if a file with a matching basename is in the map.
+		list<const char *> lstFilenames = fileMap.findFileNoExt(filename);
+		for (auto iter = lstFilenames.cbegin(); iter != lstFilenames.cend(); ++iter)
 		{
-			i->first.copy(pathnoext, i->first.length(), 0);
-			pathnoext[i->first.length()] = 0;
-			PathRemoveExtensionA(pathnoext);
-			if (path.compare(pathnoext) == 0)
+			// Attempt to open this stream.
+			basschan = BASS_VGMSTREAM_StreamCreate(*iter, loop ? BASS_SAMPLE_LOOP : 0);
+			if (basschan != 0)
 			{
-				basschan = BASS_VGMSTREAM_StreamCreate(i->second, loop ? BASS_SAMPLE_LOOP : 0);
-				if (basschan != 0)
-				{
-					musicwmp = false;
-					BASS_ChannelPlay(basschan, false);
-					BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0f);
-					BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, 0);
-					MusicLooping = loop;
-					dword_3ABDFA0 = 1;
-					dword_3ABDF98 = 3;
-					return 1;
-				}
+				// Stream opened!
+				musicwmp = false;
+				BASS_ChannelPlay(basschan, false);
+				BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0f);
+				BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, 0);
+				MusicLooping = loop;
+				dword_3ABDFA0 = 1;
+				dword_3ABDF98 = 3;
+				return 1;
 			}
 		}
-#endif
 	}
+
+	// No replacement file was found or was able to be opened.
 	filename = fileMap.replaceFile(filename);
 	musicwmp = true;
 	WCHAR WideCharStr[MAX_PATH];
