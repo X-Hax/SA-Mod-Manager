@@ -3,6 +3,7 @@ Sonic Adventure DX PC Mod Loader
 Code File Format
 ----------------
 
+
 Table of Contents
 -----------------
 
@@ -11,6 +12,7 @@ Table of Contents
 3. XML format
 4. Binary format
 
+
 1. What is the Code File?
 -------------------------
 
@@ -18,6 +20,7 @@ The code file contains a set of patch codes that are applied to the game in
 memory. The functionality is similar to the Wii Ocarina system as well as
 later Game Shark and Action Replay devices in that it supports comparisons
 and branching as well as assorted arithmetic and logic operations.
+
 
 2. Opcodes
 ----------
@@ -376,10 +379,12 @@ codeeof: End of file.
 
     0xFF: codeeof
 
+
 3. XML format
 -------------
 
 TODO
+
 
 4. Binary format
 ----------------
