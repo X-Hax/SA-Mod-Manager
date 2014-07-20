@@ -4,7 +4,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
 # See http://www.cmake.org/Wiki/BuildingWinDLL
 # Note that SADXModLoader doesn't export any symbols.
 
-# mcrecover source and binary directories.
+# SADXModLoader source and binary directories.
 # Binary directory is required for generated headers.
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}")
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
@@ -16,17 +16,15 @@ INCLUDE_DIRECTORIES("${CMAKE_SOURCE_DIR}/include")
 INCLUDE_DIRECTORIES("${CMAKE_BINARY_DIR}")
 
 # External libraries.
-#FIND_LIBRARY(BASS_LIBRARY bass "${CMAKE_SOURCE_DIR}/extlib/bass")
-#IF(NOT BASS_LIBRARY)
-	#MESSAGE(FATAL_ERROR "BASS library is missing")
-#ENDIF(NOT BASS_LIBRARY)
-#FIND_LIBRARY(BASS_VGMSTREAM_LIBRARY bass_vgmstream "${CMAKE_SOURCE_DIR}/extlib/bass")
-#IF(NOT BASS_VGMSTREAM_LIBRARY)
-	#MESSAGE(FATAL_ERROR "BASS_VGMSTREAM library is missing")
-#ENDIF(NOT BASS_VGMSTREAM_LIBRARY)
+FIND_LIBRARY(BASS_LIBRARY bass "${CMAKE_SOURCE_DIR}/extlib/bass")
+IF(NOT BASS_LIBRARY)
+	MESSAGE(FATAL_ERROR "BASS library is missing")
+ENDIF(NOT BASS_LIBRARY)
+FIND_LIBRARY(BASS_VGMSTREAM_LIBRARY bass_vgmstream "${CMAKE_SOURCE_DIR}/extlib/bass")
+IF(NOT BASS_VGMSTREAM_LIBRARY)
+	MESSAGE(FATAL_ERROR "BASS_VGMSTREAM library is missing")
+ENDIF(NOT BASS_VGMSTREAM_LIBRARY)
 INCLUDE_DIRECTORIES("${CMAKE_SOURCE_DIR}/extlib/bass")
-SET(BASS_LIBRARY "${CMAKE_SOURCE_DIR}/extlib/bass/bass.lib")
-SET(BASS_VGMSTREAM_LIBRARY "${CMAKE_SOURCE_DIR}/extlib/bass/bass_vgmstream.lib")
 
 # Write the config.h file.
 CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/config.SADXModLoader.h.in"
