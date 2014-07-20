@@ -1,8 +1,10 @@
-#pragma once
+#ifndef ANIMATIONFILE_H
+#define ANIMATIONFILE_H
+
+#include <cstdint>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <cstdint>
 #include "SADXModLoader.h"
 
 class AnimationFile
@@ -36,3 +38,5 @@ private:
 
 	void init(std::istream &stream);
 };
+
+#endif /* ANIMATIONFILE_H */

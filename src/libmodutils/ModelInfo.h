@@ -1,8 +1,11 @@
-#pragma once
+#ifndef MODELINFO_H
+#define MODELINFO_H
+
+#include <cstdint>
+#include <list>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <cstdint>
 #include "ninja.h"
 
 enum ModelFormat
@@ -73,3 +76,5 @@ private:
 	void fixobjectpointers(NJS_OBJECT *object, intptr_t base);
 	void init(std::istream &stream);
 };
+
+#endif /* MODELINFO_H */

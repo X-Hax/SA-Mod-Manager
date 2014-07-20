@@ -2,7 +2,18 @@
 #include "AnimationFile.h"
 #include <fstream>
 #include <iostream>
-using namespace std;
+#include <memory>
+using std::default_delete;
+using std::ifstream;
+using std::ios;
+using std::istream;
+using std::list;
+using std::shared_ptr;
+using std::streamoff;
+using std::string;
+#ifdef _MSC_VER
+using std::wstring;
+#endif /* _MSC_VER */
 
 AnimationFile::AnimationFile(const char *filename)
 {

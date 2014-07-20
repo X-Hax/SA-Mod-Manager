@@ -1,8 +1,11 @@
-#pragma once
+#ifndef LANDTABLEINFO_H
+#define LANDTABLEINFO_H
+
+#include <cstdint>
+#include <list>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <cstdint>
 #include "SADXModLoader.h"
 
 class LandTableInfo
@@ -59,3 +62,5 @@ private:
 	void fixlandtablepointers(LandTable *landtable, intptr_t base);
 	void init(std::istream &stream);
 };
+
+#endif /* LANDTABLEINFO_H */
