@@ -36,12 +36,14 @@ SET(SADXModLoader_SRC
 	dllmain.cpp
 	CodeParser.cpp
 	IniFile.cpp
+	FileMap.cpp
 	)
 
 # Headers.
 SET(SADXModLoader_H
 	CodeParser.hpp
 	IniFile.hpp
+	FileMap.hpp
 	)
 
 # SADXModLoader is compiled as a Unicode DLL.

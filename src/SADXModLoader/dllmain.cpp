@@ -32,6 +32,7 @@ using namespace std;
 
 #include "IniFile.hpp"
 #include "CodeParser.hpp"
+#include "FileMap.hpp"
 #include "SADXModLoader.h"
 
 HMODULE myhandle;
@@ -41,7 +42,12 @@ FARPROC __stdcall MyGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
 	return GetProcAddress(hModule == myhandle ? chrmodelshandle : hModule, lpProcName);
 }
 
-inline int backslashes(int c)
+/**
+ * Replace slash characters with backslashes.
+ * @param c Character.
+ * @return If c == '/', '\\'; otherwise, c.
+ */
+static inline int backslashes(int c)
 {
 	if (c == '/')
 		return '\\';
@@ -50,28 +56,7 @@ inline int backslashes(int c)
 }
 
 // File replacement map.
-static unordered_map<string, const char *> filemap;
-
-/**
- * Determine if a filename was replaced by a mod.
- * @param lpFileName Filename.
- * @return Replaced filename, or original filename if not replaced by a mod.
- */
-static const char *_ReplaceFile(const char *lpFileName)
-{
-	string path = lpFileName;
-	transform(path.begin(), path.end(), path.begin(), backslashes);
-	if (path.length() > 2 && (path[0] == '.' && path[1] == '\\'))
-		path = path.substr(2, path.length() - 2);
-	transform(path.begin(), path.end(), path.begin(), ::tolower);
-	unordered_map<string, const char *>::iterator fileIter = filemap.find(path);
-	if (fileIter != filemap.cend())
-		return fileIter->second;
-
-	// File was not replaced by a mod.
-	// Return the filename as-is.
-	return lpFileName;
-}
+static FileMap fileMap;
 
 /**
  * CreateFileA() wrapper using _ReplaceFile().
@@ -86,12 +71,12 @@ static const char *_ReplaceFile(const char *lpFileName)
  */
 HANDLE __stdcall MyCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
-	return CreateFileA(_ReplaceFile(lpFileName), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+	return CreateFileA(fileMap.replaceFile(lpFileName), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
 }
 
 int __cdecl PlayVoiceFile_r(LPCSTR filename)
 {
-	filename = _ReplaceFile(filename);
+	filename = fileMap.replaceFile(filename);
 	return PlayVoiceFile(filename);
 }
 
@@ -195,6 +180,7 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 		transform(path.begin(), path.end(), path.begin(), ::tolower);
 		// FIXME: Add a list with just filenames.
 		// MSVC apparently maintains ordering; STL does not.
+#if 0 // FIXME: Port to fileMap.
 #ifdef _MSC_VER
 		for (auto i = filemap.crbegin(); i != filemap.crend(); i++)
 #else
@@ -220,8 +206,9 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 				}
 			}
 		}
+#endif
 	}
-	filename = _ReplaceFile(filename);
+	filename = fileMap.replaceFile(filename);
 	musicwmp = true;
 	WCHAR WideCharStr[MAX_PATH];
 	MultiByteToWideChar(0, 0, filename, -1, WideCharStr, LengthOfArray(WideCharStr));
@@ -343,6 +330,16 @@ void __cdecl WMPClose_r(int a1)
 void WMPRelease_r()
 {
 	BASS_Free();
+}
+
+/**
+ * C wrapper to call FileMap::replaceFile() from asm.
+ * @param lpFileName Filename.
+ * @return Replaced filename, or original filename if not replaced by a mod.
+ */ 
+const char *_ReplaceFile(const char *lpFileName)
+{
+	return fileMap.replaceFile(lpFileName);
 }
 
 __declspec(naked) int PlayVideoFile_r()
@@ -642,47 +639,6 @@ __declspec(naked) void sub_789E50_r()
 			add esp, 8
 			retn
 	}
-}
-
-string NormalizePath(string path)
-{
-	string pathlower = path;
-	if (pathlower.length() > 2 && (pathlower[0] == '.' && pathlower[1] == '\\'))
-		pathlower = pathlower.substr(2, pathlower.length() - 2);
-	transform(pathlower.begin(), pathlower.end(), pathlower.begin(), ::tolower);
-	return pathlower;
-}
-
-void ScanFolder(string path, int length)
-{
-	_WIN32_FIND_DATAA data;
-	HANDLE hfind = FindFirstFileA((path + "\\*").c_str(), &data);
-	if (hfind == INVALID_HANDLE_VALUE)
-		return;
-	do
-	{
-		if (data.cFileName[0] == '.')
-			continue;
-		else if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-			ScanFolder(path + "\\" + data.cFileName, length);
-		else
-		{
-			string filebase = path + "\\" + data.cFileName;
-			transform(filebase.begin(), filebase.end(), filebase.begin(), ::tolower);
-			string modfile = filebase;
-			filebase = filebase.substr(length);
-			string origfile = "system\\" + filebase;
-			char *buf = new char[modfile.length() + 1];
-			if (filemap.find(origfile) != filemap.end())
-				delete[] filemap[origfile];
-			filemap[origfile] = buf;
-			modfile.copy(buf, modfile.length());
-			buf[modfile.length()] = 0;
-			PrintDebug("Replaced file: \"%s\" = \"%s\"\n", origfile.c_str(), buf);
-		}
-	}
-	while (FindNextFileA(hfind, &data) != 0);
-	FindClose(hfind);
 }
 
 unordered_map<unsigned char, unordered_map<int, StartPosition>> StartPositions;
@@ -1023,6 +979,10 @@ void __cdecl InitMods(void)
 	// TODO: Get .rdata address and length dynamically.
 	DWORD oldprot;
 	VirtualProtect((void *)0x7DB2A0, 0xB6D60, PAGE_WRITECOPY, &oldprot);
+
+	// Map of files to replace and/or swap.
+	// This is done with a second map instead of fileMap directly
+	// in order to handle multiple mods.
 	unordered_map<string, string> filereplaces;
 
 	// It's mod loading time!
@@ -1053,9 +1013,10 @@ void __cdecl InitMods(void)
 		{
 			const IniGroup *group = ini_mod->getGroup("IgnoreFiles");
 			auto data = group->data();
-			for (unordered_map<string, string>::const_iterator iter = data->begin(); iter != data->end(); ++iter)
+			for (unordered_map<string, string>::const_iterator iter = data->begin();
+			     iter != data->end(); ++iter)
 			{
-				filemap[NormalizePath(iter->first)] = "nullfile";
+				fileMap.addIgnoreFile(iter->first);
 				PrintDebug("Ignored file: %s\n", iter->first.c_str());
 			}
 		}
@@ -1064,9 +1025,11 @@ void __cdecl InitMods(void)
 		{
 			const IniGroup *group = ini_mod->getGroup("ReplaceFiles");
 			auto data = group->data();
-			for (unordered_map<string, string>::const_iterator iter = data->begin(); iter != data->end(); ++iter)
+			for (unordered_map<string, string>::const_iterator iter = data->begin();
+			     iter != data->end(); ++iter)
 			{
-				filereplaces[NormalizePath(iter->first)] = NormalizePath(iter->second);
+				filereplaces[FileMap::normalizePath(iter->first)] =
+					FileMap::normalizePath(iter->second);
 			}
 		}
 
@@ -1074,18 +1037,20 @@ void __cdecl InitMods(void)
 		{
 			const IniGroup *group = ini_mod->getGroup("SwapFiles");
 			auto data = group->data();
-			for (unordered_map<string, string>::const_iterator iter = data->begin(); iter != data->end(); ++iter)
+			for (unordered_map<string, string>::const_iterator iter = data->begin();
+			     iter != data->end(); ++iter)
 			{
-				filereplaces[NormalizePath(iter->first)] = NormalizePath(iter->second);
-				filereplaces[NormalizePath(iter->second)] = NormalizePath(iter->first);
+				filereplaces[FileMap::normalizePath(iter->first)] =
+					FileMap::normalizePath(iter->second);
+				filereplaces[FileMap::normalizePath(iter->second)] =
+					FileMap::normalizePath(iter->first);
 			}
 		}
 
 		// Check for SYSTEM replacements.
-		string sysfol = dir + "\\system";
-		transform(sysfol.begin(), sysfol.end(), sysfol.begin(), ::tolower);
-		if ((GetFileAttributesA(sysfol.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
-			ScanFolder(sysfol, sysfol.length() + 1);
+		string modSysDir = dir + "\\system";
+		if ((GetFileAttributesA(modSysDir.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
+			fileMap.scanFolder(modSysDir);
 
 		// Check if a custom EXE is required.
 		if (modinfo->hasKey("EXEFile"))
@@ -1155,29 +1120,17 @@ void __cdecl InitMods(void)
 	}
 
 	// Replace filenames. ("ReplaceFiles", "SwapFiles")
-	for (unordered_map<string, string>::const_iterator fr_iter = filereplaces.begin(); fr_iter != filereplaces.end(); ++fr_iter)
+	for (auto iter = filereplaces.cbegin(); iter != filereplaces.cend(); ++iter)
 	{
-		unordered_map<string, const char *>::const_iterator fm_iter = filemap.find(fr_iter->second);
-		if (fm_iter != filemap.end())
-		{
-			filemap[fr_iter->first] = fm_iter->second;
-		}
-		else
-		{
-			char *buf = new char[fr_iter->second.length() + 1];
-			filemap[fr_iter->first] = buf;
-			fr_iter->second.copy(buf, fr_iter->second.length());
-			buf[fr_iter->second.length()] = 0;
-			PrintDebug("Replaced file: \"%s\" = \"%s\"\n", fr_iter->first.c_str(), buf);
-		}
+		fileMap.addReplaceFile(iter->first, iter->second);
 	}
 
-	for (auto i = StartPositions.cbegin(); i != StartPositions.cend(); i++)
+	for (auto i = StartPositions.cbegin(); i != StartPositions.cend(); ++i)
 	{
 		auto poslist = &i->second;
 		StartPosition *newlist = new StartPosition[poslist->size() + 1];
 		StartPosition *cur = newlist;
-		for (auto j = poslist->cbegin(); j != poslist->cend(); j++)
+		for (auto j = poslist->cbegin(); j != poslist->cend(); ++j)
 			*cur++ = j->second;
 		cur->LevelID = LevelIDs_Invalid;
 		switch (i->first)
@@ -1203,12 +1156,12 @@ void __cdecl InitMods(void)
 		}
 	}
 
-	for (auto i = FieldStartPositions.cbegin(); i != FieldStartPositions.cend(); i++)
+	for (auto i = FieldStartPositions.cbegin(); i != FieldStartPositions.cend(); ++i)
 	{
 		auto poslist = &i->second;
 		FieldStartPosition *newlist = new FieldStartPosition[poslist->size() + 1];
 		FieldStartPosition *cur = newlist;
-		for (auto j = poslist->cbegin(); j != poslist->cend(); j++)
+		for (auto j = poslist->cbegin(); j != poslist->cend(); ++j)
 			*cur++ = j->second;
 		cur->LevelID = LevelIDs_Invalid;
 		((FieldStartPosition **)0x90BEFC)[i->first] = newlist;
@@ -1218,14 +1171,14 @@ void __cdecl InitMods(void)
 	{
 		PathDataPtr *newlist = new PathDataPtr[Paths.size() + 1];
 		PathDataPtr *cur = newlist;
-		for (auto i = Paths.cbegin(); i != Paths.cend(); i++)
+		for (auto i = Paths.cbegin(); i != Paths.cend(); ++i)
 			*cur++ = i->second;
 		cur->LevelAct = 0xFFFF;
 		WriteData((PathDataPtr **)0x49C1A1, newlist);
 		WriteData((PathDataPtr **)0x49C1AF, newlist);
 	}
 
-	for (auto i = CharacterPVMs.cbegin(); i != CharacterPVMs.cend(); i++)
+	for (auto i = CharacterPVMs.cbegin(); i != CharacterPVMs.cend(); ++i)
 	{
 		const vector<PVMEntry> *pvmlist = &i->second;
 		auto size = pvmlist->size();
@@ -1246,7 +1199,7 @@ void __cdecl InitMods(void)
 		*((PVMEntry **)0x90EC74) = newlist;
 	}
 
-	for (auto i = _TrialLevels.cbegin(); i != _TrialLevels.cend(); i++)
+	for (auto i = _TrialLevels.cbegin(); i != _TrialLevels.cend(); ++i)
 	{
 		const vector<TrialLevelListEntry> *levellist = &i->second;
 		auto size = levellist->size();
@@ -1256,7 +1209,7 @@ void __cdecl InitMods(void)
 		TrialLevels[i->first].Count = size;
 	}
 
-	for (auto i = _TrialSubgames.cbegin(); i != _TrialSubgames.cend(); i++)
+	for (auto i = _TrialSubgames.cbegin(); i != _TrialSubgames.cend(); ++i)
 	{
 		const vector<TrialLevelListEntry> *levellist = &i->second;
 		auto size = levellist->size();
