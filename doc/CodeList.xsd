@@ -246,6 +246,7 @@
       <xs:enumeration value="ifmaskreg32" />
       <xs:enumeration value="else" />
       <xs:enumeration value="endif" />
+      <xs:enumeration value="codeeof" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AddressPattern">
