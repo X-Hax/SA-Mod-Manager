@@ -3,6 +3,10 @@
 	
 	COPYRIGHT (C) SEGA ENTERPRISES,LTD.
 */
+
+#ifndef SEGA_NINJA_H
+#define SEGA_NINJA_H
+
 // Chopped up by MainMemory for your convenience.
 #ifndef _TYPEDEF_Uint8
 #define _TYPEDEF_Uint8
@@ -2302,3 +2306,5 @@ static Sint32 *FindChunk(Sint32 *chunk, unsigned char type)
 /*
  * End Of File
  */
+
+#endif /* SEGA_NINJA_H */
