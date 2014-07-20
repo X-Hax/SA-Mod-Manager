@@ -118,7 +118,7 @@ void FileMap::addReplaceFile(const std::string &origFile, const std::string &des
 	else
 	{
 		// Destination file is not already in the map.
-		auto xiter = m_fileMap.find(origFile);
+		auto xiter = m_fileMap.find(origFile_norm);
 		if (xiter != m_fileMap.end())
 		{
 			// Original file is already in the map.
