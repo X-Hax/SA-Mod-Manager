@@ -25,7 +25,6 @@ SET(CMAKE_SKIP_RPATH ON)
 IF(MSVC)
 	INCLUDE(cmake/platform/msvc.cmake)
 ELSE(MSVC)
-	MESSAGE(FATAL_ERROR "gcc is not currently supported.")
 	INCLUDE(cmake/platform/gcc.cmake)
 ENDIF(MSVC)
 

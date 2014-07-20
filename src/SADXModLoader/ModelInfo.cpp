@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "ModelInfo.h"
 #include <fstream>
 #include <iostream>
@@ -11,12 +11,14 @@ ModelInfo::ModelInfo(const char *filename)
 	str.close();
 }
 
+#ifdef _MSC_VER
 ModelInfo::ModelInfo(const wchar_t *filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
+#endif /* _MSC_VER */
 
 ModelInfo::ModelInfo(const string &filename)
 {
@@ -25,12 +27,14 @@ ModelInfo::ModelInfo(const string &filename)
 	str.close();
 }
 
+#ifdef _MSC_VER
 ModelInfo::ModelInfo(const wstring &filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
+#endif /* _MSC_VER */
 
 ModelInfo::ModelInfo(istream &stream) { init(stream); }
 

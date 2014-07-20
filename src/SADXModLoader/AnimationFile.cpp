@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "AnimationFile.h"
 #include <fstream>
 #include <iostream>
@@ -11,12 +11,14 @@ AnimationFile::AnimationFile(const char *filename)
 	str.close();
 }
 
+#ifdef _MSC_VER
 AnimationFile::AnimationFile(const wchar_t *filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
+#endif /* _MSC_VER */
 
 AnimationFile::AnimationFile(const string &filename)
 {
@@ -25,12 +27,14 @@ AnimationFile::AnimationFile(const string &filename)
 	str.close();
 }
 
+#ifdef _MSC_VER
 AnimationFile::AnimationFile(const wstring &filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
+#endif /* _MSC_VER */
 
 AnimationFile::AnimationFile(istream &stream) { init(stream); }
 

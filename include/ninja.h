@@ -1185,6 +1185,9 @@ typedef struct obj {
 	void            putchunkmodel(NJS_CNK_MODEL *value) { model = value; }
 	SA2B_Model      *getsa2bmodel() { return (SA2B_Model*)model; }
 	void            putsa2bmodel(SA2B_Model *value) { model = value; }
+
+#ifdef _MSC_VER
+	// MSVC-specific property emulation.
 	__declspec(property(get = getbasicmodel, put = putbasicmodel))
 	NJS_MODEL       *basicmodel;
 	__declspec(property(get = getbasicdxmodel, put = putbasicdxmodel))
@@ -1193,6 +1196,7 @@ typedef struct obj {
 	NJS_CNK_MODEL   *chunkmodel;
 	__declspec(property(get = getsa2bmodel, put = putsa2bmodel))
 	SA2B_Model      *sa2bmodel;
+#endif
 
 	int countanimated()
 	{
@@ -2251,7 +2255,7 @@ typedef struct {
 
 #endif /* _NINJA_DIR_H_ */
 
-static Sint16 *NextChunk(Sint16 *chunk)
+static inline Sint16 *NextChunk(Sint16 *chunk)
 {
 	unsigned char v5 = (unsigned char)*chunk++;
 	if (v5 == NJD_CE)
@@ -2266,7 +2270,7 @@ static Sint16 *NextChunk(Sint16 *chunk)
 	return chunk;
 }
 
-static Sint16 *FindChunk(Sint16 *chunk, unsigned char type)
+static inline Sint16 *FindChunk(Sint16 *chunk, unsigned char type)
 {
 	chunk = NextChunk(chunk);
 	while (chunk != nullptr)
@@ -2277,7 +2281,7 @@ static Sint16 *FindChunk(Sint16 *chunk, unsigned char type)
 	return chunk;
 }
 
-static Sint32 *NextChunk(Sint32 *chunk)
+static inline Sint32 *NextChunk(Sint32 *chunk)
 {
 	unsigned char v5 = (unsigned char)*chunk++;
 	if (v5 == NJD_CE)
@@ -2292,7 +2296,7 @@ static Sint32 *NextChunk(Sint32 *chunk)
 	return chunk;
 }
 
-static Sint32 *FindChunk(Sint32 *chunk, unsigned char type)
+static inline Sint32 *FindChunk(Sint32 *chunk, unsigned char type)
 {
 	chunk = NextChunk(chunk);
 	while (chunk != nullptr)

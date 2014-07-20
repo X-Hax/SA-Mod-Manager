@@ -24,7 +24,7 @@ DataArray(LevelPVMList *, TexLists_Level, 0x90F010, 59);
 DataArray(char *, CharIDStrings, 0x90F424, 9);
 DataArray(SoundList, SoundLists, 0x90FCB8, 123);
 DataArray(MusicInfo, MusicList, 0x910298, 125);
-DataArray(PhysicsData, PhysicsArray, 0x9154E8, 8);
+DataArray(PhysicsData_t, PhysicsArray, 0x9154E8, 8);
 DataArray(PVMEntry *, CharSel_PVMNames, 0x10DB88C, 8);
 DataPointer(int, GameMode, 0x3ABDC7C);
 DataPointer(NJS_VECTOR, Gravity, 0x3B0F0F8);

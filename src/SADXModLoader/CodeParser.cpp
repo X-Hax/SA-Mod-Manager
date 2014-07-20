@@ -16,7 +16,9 @@ using std::istream;
 using std::ifstream;
 using std::list;
 using std::string;
+#ifdef _MSC_VER
 using std::wstring;
+#endif /* _MSC_VER */
 using std::vector;
 
 CodeParser::CodeParser(const string &filename)
@@ -24,10 +26,12 @@ CodeParser::CodeParser(const string &filename)
 	readCodes(filename);
 }
 
+#ifdef _MSC_VER
 CodeParser::CodeParser(const wstring &filename)
 {
 	readCodes(filename);
 }
+#endif /* _MSC_VER */
 
 CodeParser::CodeParser(istream &f)
 {
@@ -976,6 +980,10 @@ int CodeParser::processCodeList_int(const list<Code> &codes, int regnum)
 			else
 				regnum = processCodeList_int(it->falseCodes, regnum);
 			break;
+		default:
+			// Invalid opcode.
+			// TODO: Show an error message.
+			break;
 		}
 	}
 
@@ -1006,6 +1014,7 @@ int CodeParser::readCodes(const string &filename)
 	return readCodes(stream);
 }
 
+#ifdef _MSC_VER
 /**
  * Read codes from a code file.
  * This will clear all loaded codes before loading new codes.
@@ -1021,6 +1030,7 @@ int CodeParser::readCodes(const wstring &filename)
 
 	return readCodes(stream);
 }
+#endif /* _MSC_VER */
 
 /**
  * Read codes from a code file.

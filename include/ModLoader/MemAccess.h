@@ -138,7 +138,7 @@ static inline BOOL WriteData(void *address, char data, int count)
  * @param funcaddress Address to JMP to.
  * @return Nonzero on success; 0 on error (check GetLastError()).
  */
-static BOOL WriteJump(void *writeaddress, void *funcaddress)
+static inline BOOL WriteJump(void *writeaddress, void *funcaddress)
 {
 	uint8_t data[5];
 	data[0] = 0xE9; // JMP DWORD (relative)
@@ -152,7 +152,7 @@ static BOOL WriteJump(void *writeaddress, void *funcaddress)
  * @param funcaddress Address to CALL.
  * @return Nonzero on success; 0 on error (check GetLastError()).
  */
-static BOOL WriteCall(void *writeaddress, void *funcaddress)
+static inline BOOL WriteCall(void *writeaddress, void *funcaddress)
 {
 	uint8_t data[5];
 	data[0] = 0xE8; // CALL DWORD (relative)

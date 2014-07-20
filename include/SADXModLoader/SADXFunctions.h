@@ -11,7 +11,7 @@
 #include "SADXStructs.h"
 
 // SADX Functions
-FunctionPointer(void, PrintDebug, (char *Format, ...), 0x401000);
+FunctionPointer(void, PrintDebug, (const char *Format, ...), 0x401000);
 VoidFunc(CheckSettings, 0x4025B0);
 FunctionPointer(void, SetTextures, (TexListHead *texturelist), 0x403070);
 FunctionPointer(bool, CheckModelDistance, (Vector3 *center, float radius), 0x403330);

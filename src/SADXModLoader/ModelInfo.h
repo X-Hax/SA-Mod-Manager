@@ -18,9 +18,13 @@ public:
 	struct Metadata { uint32_t size; const uint8_t *data; };
 
 	ModelInfo(const char *filename);
+#ifdef _MSC_VER
 	ModelInfo(const wchar_t *filename);
+#endif /* _MSC_VER */
 	ModelInfo(const std::string &filename);
+#ifdef _MSC_VER
 	ModelInfo(const std::wstring &filename);
+#endif /* _MSC_VER */
 	ModelInfo(std::istream &stream);
 
 	ModelFormat getformat();

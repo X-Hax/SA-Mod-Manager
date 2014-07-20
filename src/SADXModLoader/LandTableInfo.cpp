@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "LandTableInfo.h"
 #include <fstream>
 #include <iostream>
@@ -11,12 +11,14 @@ LandTableInfo::LandTableInfo(const char *filename)
 	str.close();
 }
 
+#ifdef _MSC_VER
 LandTableInfo::LandTableInfo(const wchar_t *filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
+#endif /* _MSC_VER */
 
 LandTableInfo::LandTableInfo(const string &filename)
 {
@@ -25,12 +27,14 @@ LandTableInfo::LandTableInfo(const string &filename)
 	str.close();
 }
 
+#ifdef _MSC_VER
 LandTableInfo::LandTableInfo(const wstring &filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
+#endif /* _MSC_VER */
 
 LandTableInfo::LandTableInfo(istream &stream) { init(stream); }
 
@@ -231,17 +235,17 @@ void LandTableInfo::fixactionpointers(NJS_ACTION *action, intptr_t base)
 
 void LandTableInfo::fixlandtablepointers(LandTable *landtable, intptr_t base)
 {
-	if (landtable->COL != nullptr)
+	if (landtable->COLList != nullptr)
 	{
-		landtable->COL = (COL *)((uint8_t *)landtable->COL + base);
+		landtable->COLList = (COL *)((uint8_t *)landtable->COLList + base);
 		for (int i = 0; i < landtable->COLCount; i++)
-			if (landtable->COL[i].OBJECT != nullptr)
+			if (landtable->COLList[i].OBJECT != nullptr)
 			{
-				landtable->COL[i].OBJECT = (NJS_OBJECT *)((uint8_t *)landtable->COL[i].OBJECT + base);
-				if (fixedpointers.find(landtable->COL[i].OBJECT) == fixedpointers.end())
+				landtable->COLList[i].OBJECT = (NJS_OBJECT *)((uint8_t *)landtable->COLList[i].OBJECT + base);
+				if (fixedpointers.find(landtable->COLList[i].OBJECT) == fixedpointers.end())
 				{
-					fixedpointers.insert(landtable->COL[i].OBJECT);
-					fixobjectpointers(landtable->COL[i].OBJECT, base);
+					fixedpointers.insert(landtable->COLList[i].OBJECT);
+					fixobjectpointers(landtable->COLList[i].OBJECT, base);
 				}
 			}
 	}

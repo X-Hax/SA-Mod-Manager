@@ -10,7 +10,8 @@
 #include "../ninja.h"
 
 typedef NJS_VECTOR Vertex, Vector3;
-typedef NJS_TEXLIST TexList, TexListHead;
+//typedef NJS_TEXLIST TexList, TexListHead;
+typedef NJS_TEXLIST TexListHead;
 typedef NJS_OBJECT OBJECT;
 typedef NJS_MODEL ATTACH;
 
@@ -35,7 +36,7 @@ struct FogData
 struct PVMEntry
 {
 	char *Name;
-	TexList *TexList;
+	NJS_TEXLIST *TexList;
 };
 
 struct LevelPVMList
@@ -118,7 +119,7 @@ struct GeoAnimData
 	float anonymous_2;
 	NJS_OBJECT *Model;
 	NJS_ACTION *Animation;
-	TexList *TexList;
+	NJS_TEXLIST *TexList;
 };
 
 struct LandTable
@@ -127,10 +128,10 @@ struct LandTable
 	int16_t AnimCount;
 	int Flags;
 	float Unknown_1;
-	COL *COL;
+	COL *COLList;
 	GeoAnimData *AnimData;
 	char *TexName;
-	TexList *TexList;
+	NJS_TEXLIST *TexList;
 	int Unknown_4;
 	int Unknown_5;
 };
@@ -158,7 +159,7 @@ struct LoopHead
 	ObjectFuncPtr Object;
 };
 
-struct AnimData
+struct AnimData_t
 {
 	NJS_ACTION *Animation;
 	char field_4;
@@ -168,7 +169,7 @@ struct AnimData
 	float AnimationSpeed;
 };
 
-struct PhysicsData
+struct PhysicsData_t
 {
 	int HangTime;
 	float FloorGrip;
@@ -223,13 +224,13 @@ struct CharObj2
 	char gap_5c[12];
 	ObjectMaster *ObjectHeld;
 	char gap_6c[48];
-	PhysicsData PhysicsData;
+	PhysicsData_t PhysicsData;
 	char gap_120[4];
 	int16_t Animation;
 	char gap_126[10];
 	float AnimationFrame;
 	char gap_134[12];
-	AnimData *AnimData;
+	AnimData_t *AnimData;
 	NJS_OBJECT **field_144;
 	char gap_148[148];
 	int field_1DC;
@@ -394,7 +395,7 @@ struct LevelItemAccess
 struct CharSelData
 {
 	ObjectFuncPtr CodePointer;
-	TexList *TextureList;
+	NJS_TEXLIST *TextureList;
 	NJS_ACTION **anonymous_1;
 	int *anonymous_2;
 };
@@ -491,7 +492,7 @@ struct HintText_Entry
 	HintText_Text *Text;
 };
 
-struct AdventureData
+struct AdventureData_t
 {
 	char TimeOfDay;
 	char field_1;
@@ -584,7 +585,7 @@ struct SaveFileData
 	char EventFlags[64];
 	char NPCFlags[64];
 	char gap_2e0[8];
-	AdventureData AdventureData[8];
+	AdventureData_t AdventureData[8];
 	char LevelClear[344];
 	char MissionFlags[60];
 	int BlackMarketRings;
@@ -706,5 +707,13 @@ struct StageLightData
 };
 
 #pragma pack(pop)
+
+#ifdef _MSC_VER
+// Compatibility macros for old struct names on MSVC.
+typedef NJS_TEXLIST TexList;
+typedef AnimData_t AnimData;
+typedef PhysicsData_t PhysicsData;
+typedef AdventureData_t AdventureData;
+#endif /* _MSC_VER */
 
 #endif /* SADXMODLOADER_SADXSTRUCTS_H */

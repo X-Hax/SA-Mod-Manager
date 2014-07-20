@@ -16,7 +16,9 @@ class CodeParser
 {
 	public:
 		CodeParser(const std::string &filename);
+#ifdef _MSC_VER
 		CodeParser(const std::wstring &filename);
+#endif /* _MSC VER */
 		CodeParser(std::istream &f);
 		CodeParser();
 		~CodeParser();
@@ -155,6 +157,7 @@ class CodeParser
 		 */
 		int readCodes(const std::string &filename);
 
+#ifdef _MSC_VER
 		/**
 		 * Read codes from a code file.
 		 * This will clear all loaded codes before loading new codes.
@@ -162,6 +165,7 @@ class CodeParser
 		 * @return Number of codes read on success; -ENOENT if stream is closed; -EINVAL if file is invalid.
 		 */
 		int readCodes(const std::wstring &filename);
+#endif /* _MSC_VER */
 
 		/**
 		 * Read codes from a code file.

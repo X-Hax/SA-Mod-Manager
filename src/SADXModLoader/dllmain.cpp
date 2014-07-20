@@ -7,14 +7,23 @@
 #include <unordered_map>
 #include <deque>
 #include <algorithm>
-#include <DbgHelp.h>
 #include <cstdio>
 #include <memory>
 #include <cerrno>
 #include <cstring>
-#include <Shlwapi.h>
+
+#include <dbghelp.h>
+#include <shlwapi.h>
 #include <wmsdkidl.h>
+
+// NOTE: mmsystem.h defines PlaySound.
+// Undefine it afterwards due to an SADX function conflict.
+#include <mmsystem.h>
+#ifdef PlaySound
+#undef PlaySound
+#endif
 #include <dsound.h>
+
 #include "bass_vgmstream.h"
 using namespace std;
 
@@ -85,6 +94,11 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 	filename = _ReplaceFile(filename);
 	return PlayVoiceFile(filename);
 }
+
+#ifndef _MSC_VER
+// MinGW doesn't have IWMHeaderInfo.
+struct WMHeaderInfo;
+#endif
 
 #pragma pack(push, 1)
 struct WMPInfo
@@ -172,14 +186,20 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 	if (enablevgmstream)
 	{
 		char pathnoext[MAX_PATH];
-		strncpy_s(pathnoext, filename, MAX_PATH);
+		strncpy(pathnoext, filename, sizeof(pathnoext));
 		PathRemoveExtensionA(pathnoext);
 		string path = pathnoext;
 		transform(path.begin(), path.end(), path.begin(), backslashes);
 		if (path.length() > 2 && (path[0] == '.' && path[1] == '\\'))
 			path = path.substr(2, path.length() - 2);
 		transform(path.begin(), path.end(), path.begin(), ::tolower);
+		// FIXME: Add a list with just filenames.
+		// MSVC apparently maintains ordering; STL does not.
+#ifdef _MSC_VER
 		for (auto i = filemap.crbegin(); i != filemap.crend(); i++)
+#else
+		for (auto i = filemap.cbegin(); i != filemap.cend(); i++)
+#endif
 		{
 			i->first.copy(pathnoext, i->first.length(), 0);
 			pathnoext[i->first.length()] = 0;
@@ -331,12 +351,12 @@ __declspec(naked) int PlayVideoFile_r()
 	{
 		mov eax, [esp+4]
 		push esi
-			push eax
-			call _ReplaceFile
-			add esp, 4
-			pop esi
-			mov [esp+4], eax
-			jmp PlayVideoFilePtr
+		push eax
+		call _ReplaceFile
+		add esp, 4
+		pop esi
+		mov [esp+4], eax
+		jmp PlayVideoFilePtr
 	}
 }
 
@@ -402,37 +422,15 @@ struct message { string text; uint32_t time; };
 
 deque<message> msgqueue;
 
-const int fadecolors[] = {
-	0xF7FFFFFF,
-	0xEEFFFFFF,
-	0xE6FFFFFF,
-	0xDDFFFFFF,
-	0xD5FFFFFF,
-	0xCCFFFFFF,
-	0xC4FFFFFF,
-	0xBBFFFFFF,
-	0xB3FFFFFF,
-	0xAAFFFFFF,
-	0xA2FFFFFF,
-	0x99FFFFFF,
-	0x91FFFFFF,
-	0x88FFFFFF,
-	0x80FFFFFF,
-	0x77FFFFFF,
-	0x6FFFFFFF,
-	0x66FFFFFF,
-	0x5EFFFFFF,
-	0x55FFFFFF,
-	0x4DFFFFFF,
-	0x44FFFFFF,
-	0x3CFFFFFF,
-	0x33FFFFFF,
-	0x2BFFFFFF,
-	0x22FFFFFF,
-	0x1AFFFFFF,
-	0x11FFFFFF,
-	0x09FFFFFF,
-	0
+static const uint32_t fadecolors[] = {
+	0xF7FFFFFF, 0xEEFFFFFF, 0xE6FFFFFF, 0xDDFFFFFF,
+	0xD5FFFFFF, 0xCCFFFFFF, 0xC4FFFFFF, 0xBBFFFFFF,
+	0xB3FFFFFF, 0xAAFFFFFF, 0xA2FFFFFF, 0x99FFFFFF,
+	0x91FFFFFF, 0x88FFFFFF, 0x80FFFFFF, 0x77FFFFFF,
+	0x6FFFFFFF, 0x66FFFFFF, 0x5EFFFFFF, 0x55FFFFFF,
+	0x4DFFFFFF, 0x44FFFFFF, 0x3CFFFFFF, 0x33FFFFFF,
+	0x2BFFFFFF, 0x22FFFFFF, 0x1AFFFFFF, 0x11FFFFFF,
+	0x09FFFFFF, 0
 };
 
 // Code Parser.
@@ -441,9 +439,9 @@ CodeParser codeParser;
 void __cdecl ProcessCodes()
 {
 	codeParser.processCodeList();
-	unsigned int numrows = VerticalResolution / 12;
+	const int numrows = (VerticalResolution / 12);
 	int pos;
-	if (msgqueue.size() <= numrows - 1)
+	if ((int)msgqueue.size() <= numrows - 1)
 		pos = (numrows - 1) - (msgqueue.size() - 1);
 	else
 		pos = 0;
@@ -453,7 +451,7 @@ void __cdecl ProcessCodes()
 			int c = -1;
 			if (300 - i->time < LengthOfArray(fadecolors))
 				c = fadecolors[LengthOfArray(fadecolors) - (300 - i->time) - 1];
-			SetDebugTextColor(c);
+			SetDebugTextColor((int)c);
 			DisplayDebugString(pos++, (char *)i->text.c_str());
 			if (++i->time >= 300)
 			{
@@ -481,8 +479,8 @@ char * ShiftJISToUTF8(char *shiftjis)
 	return utf8;
 }
 
-bool dbgConsole, dbgScreen, dbgFile;
-ofstream dbgstr;
+static bool dbgConsole, dbgScreen, dbgFile;
+static ofstream dbgstr;
 int __cdecl SADXDebugOutput(const char *Format, ...)
 {
 	va_list ap;
@@ -608,7 +606,7 @@ void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 		UpdateWindow(wrapper);
 		SetForegroundWindow(wrapper);
 		Windowed = 1;
-		WriteJump((void *)0x789BD0, sub_789BD0);
+		WriteJump((void *)0x789BD0, (void *)sub_789BD0);
 	}
 	else
 	{
@@ -721,10 +719,15 @@ void RegisterStartPosition(unsigned char character, const StartPosition &positio
 		StartPositions[character] = unordered_map<int, StartPosition>();
 		newlist = &StartPositions[character];
 		while (origlist->LevelID != LevelIDs_Invalid)
-			(*newlist)[levelact(origlist->LevelID, origlist->ActID)] = *origlist++;
+		{
+			(*newlist)[levelact(origlist->LevelID, origlist->ActID)] = *origlist;
+			origlist++;
+		}
 	}
 	else
+	{
 		newlist = &iter->second;
+	}
 	(*newlist)[levelact(position.LevelID, position.ActID)] = position;
 }
 
@@ -757,10 +760,15 @@ void RegisterFieldStartPosition(unsigned char character, const FieldStartPositio
 		FieldStartPositions[character] = unordered_map<int, FieldStartPosition>();
 		newlist = &FieldStartPositions[character];
 		while (origlist->LevelID != LevelIDs_Invalid)
-			(*newlist)[levelact(origlist->LevelID, origlist->FieldID)] = *origlist++;
+		{
+			(*newlist)[levelact(origlist->LevelID, origlist->FieldID)] = *origlist;
+			origlist++;
+		}
 	}
 	else
+	{
 		newlist = &iter->second;
+	}
 	(*newlist)[levelact(position.LevelID, position.FieldID)] = position;
 }
 
@@ -778,7 +786,10 @@ void RegisterPathList(const PathDataPtr &paths)
 	{
 		const PathDataPtr *oldlist = (PathDataPtr *)0x91A858;
 		while (oldlist->LevelAct != 0xFFFF)
-			Paths[oldlist->LevelAct] = *oldlist++;
+		{
+			Paths[oldlist->LevelAct] = *oldlist;
+			oldlist++;
+		}
 		PathsInitialized = true;
 	}
 	Paths[paths.LevelAct] = paths;
@@ -957,7 +968,7 @@ void __cdecl InitMods(void)
 	// Is any debug method enabled?
 	if (dbgConsole || dbgScreen || dbgFile)
 	{
-		WriteJump(PrintDebug, SADXDebugOutput);
+		WriteJump((void *)PrintDebug, (void *)SADXDebugOutput);
 		PrintDebug("SADX Mod Loader v%s (API version %d), built %s\n",
 			SADXMODLOADER_VERSION_STRING, ModLoaderVer, __TIMESTAMP__);
 #ifdef MODLOADER_GIT_VERSION
@@ -971,7 +982,7 @@ void __cdecl InitMods(void)
 
 	// Other various settings.
 	if (!settings->getBool("DontFixWindow"))
-		WriteJump((void *)0x789E50, sub_789E50_r);
+		WriteJump((void *)0x789E50, (void *)sub_789E50_r);
 	if (settings->getBool("DisableCDCheck"))
 		WriteJump((void *)0x402621, (void *)0x402664);
 	if (settings->getBool("UseCustomResolution"))
@@ -997,16 +1008,16 @@ void __cdecl InitMods(void)
 
 	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
-	WriteCall((void *)0x42544C, PlayMusicFile_r);
-	WriteCall((void *)0x4254F4, PlayVoiceFile_r);
-	WriteCall((void *)0x425569, PlayVoiceFile_r);
-	WriteCall((void *)0x513187, PlayVideoFile_r);
-	WriteJump((void *)0x40D1EA, WMPInit_r);
-	WriteJump((void *)0x40CF50, WMPRestartMusic_r);
-	WriteJump((void *)0x40D060, PauseSound_r);
-	WriteJump((void *)0x40D0A0, ResumeSound_r);
-	WriteJump((void *)0x40CFF0, WMPClose_r);
-	WriteJump((void *)0x40D28A, WMPRelease_r);
+	WriteCall((void *)0x42544C, (void *)PlayMusicFile_r);
+	WriteCall((void *)0x4254F4, (void *)PlayVoiceFile_r);
+	WriteCall((void *)0x425569, (void *)PlayVoiceFile_r);
+	WriteCall((void *)0x513187, (void *)PlayVideoFile_r);
+	WriteJump((void *)0x40D1EA, (void *)WMPInit_r);
+	WriteJump((void *)0x40CF50, (void *)WMPRestartMusic_r);
+	WriteJump((void *)0x40D060, (void *)PauseSound_r);
+	WriteJump((void *)0x40D0A0, (void *)ResumeSound_r);
+	WriteJump((void *)0x40CFF0, (void *)WMPClose_r);
+	WriteJump((void *)0x40D28A, (void *)WMPRelease_r);
 
 	// Unprotect the .rdata section.
 	// TODO: Get .rdata address and length dynamically.
@@ -1089,7 +1100,7 @@ void __cdecl InitMods(void)
 				string mod_name = modinfo->getString("Name");
 				snprintf(msg, sizeof(msg),
 						"Mod \"%s\" should be run from \"%s\", but you are running \"%s\".\n\n"
-						"Continue anyway?", mod_name.c_str(), modexe, exefilename);
+						"Continue anyway?", mod_name.c_str(), modexe.c_str(), exefilename.c_str());
 				if (MessageBoxA(NULL, msg, "SADX Mod Loader", MB_ICONWARNING | MB_YESNO) == IDNO)
 					ExitProcess(1);
 			}
@@ -1295,7 +1306,7 @@ void __cdecl InitMods(void)
 		}
 		codes_str.close();
 	}
-	WriteJump((void *)0x426063, ProcessCodes);
+	WriteJump((void *)0x426063, (void *)ProcessCodes);
 }
 
 void __cdecl LoadChrmodels(void)
@@ -1306,10 +1317,10 @@ void __cdecl LoadChrmodels(void)
 		MessageBox(NULL, L"CHRMODELS_orig.dll could not be loaded!\n\nSADX will now proceed to abruptly exit.", L"SADX Mod Loader", MB_ICONERROR);
 		ExitProcess(1);
 	}
-	WriteCall((void *)0x402513, InitMods);
+	WriteCall((void *)0x402513, (void *)InitMods);
 }
 
-const uint8_t verchk[] = { 0x83, 0xEC, 0x28, 0x57, 0x33 };
+static const uint8_t verchk[] = { 0x83, 0xEC, 0x28, 0x57, 0x33 };
 BOOL APIENTRY DllMain( HMODULE hModule,
 	DWORD  ul_reason_for_call,
 	LPVOID lpReserved
@@ -1326,7 +1337,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 			ExitProcess(1);
 		}
 		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
-		WriteCall((void *)0x401AE2, LoadChrmodels);
+		WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
 		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
