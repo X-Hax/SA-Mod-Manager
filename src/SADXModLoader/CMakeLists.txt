@@ -71,4 +71,5 @@ TARGET_LINK_LIBRARIES(SADXModLoader
 	${BASS_VGMSTREAM_LIBRARY}
 	shlwapi
 	dbghelp
+	gdiplus
 	)
