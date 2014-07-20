@@ -1293,8 +1293,8 @@ void __cdecl InitMods(void)
 		{
 			PrintDebug("Code file is not in the correct format.\n");
 		}
+		codes_str.close();
 	}
-	codes_str.close();
 	WriteJump((void *)0x426063, ProcessCodes);
 }
 
