@@ -12,7 +12,7 @@ SET(MODLOADER_CXX_FLAGS_COMMON "${MODLOADER_C_FLAGS_COMMON}")
 # NOTE: Mod loader uses the high bit of addresses for other purposes.
 # SADX itself isn't large address aware, either.
 # FIXME: cmake-2.8.5 is required for /manifest:no to work correctly.
-SET(MODLOADER_EXE_LINKER_FLAGS_COMMON "-nologo /manifest:no -dynamicbase -nxcompat -largeaddressaware:no")
+SET(MODLOADER_EXE_LINKER_FLAGS_COMMON "-nologo /manifest:no -subsystem:5.01 -dynamicbase -nxcompat -largeaddressaware:no")
 
 # Disable C++ RTTI and asynchronous exceptions.
 SET(MODLOADER_CXX_FLAGS_COMMON "${MODLOADER_CXX_FLAGS_COMMON} -GR- -EHsc")
