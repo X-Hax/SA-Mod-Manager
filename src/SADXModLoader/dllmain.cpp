@@ -274,7 +274,7 @@ static void __cdecl sub_789BD0()
 	}
 }
 
-Gdiplus::Bitmap *bgimg;
+static Gdiplus::Bitmap *bgimg;
 DataPointer(HWND, hWnd, 0x3D0FD30);
 static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -285,7 +285,6 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 		// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
 		return 0;
 	case WM_ERASEBKGND:
-		SADXDebugOutput("WM_ERASESBKGND\n");
 		if (bgimg != nullptr)
 		{
 			Gdiplus::Graphics gfx((HDC)wParam);
