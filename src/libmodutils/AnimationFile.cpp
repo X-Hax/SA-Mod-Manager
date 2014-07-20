@@ -2,7 +2,6 @@
 #include "AnimationFile.h"
 #include <fstream>
 #include <iostream>
-#include <memory>
 using std::default_delete;
 using std::ifstream;
 using std::ios;

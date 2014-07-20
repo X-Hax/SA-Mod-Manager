@@ -2,6 +2,7 @@
 #define ANIMATIONFILE_H
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -33,7 +34,7 @@ private:
 	NJS_MOTION *motion;
 	int modelcount;
 	std::string label;
-	std::vector<std::shared_ptr<void>> allocatedmem;
+	std::vector<std::shared_ptr<void> > allocatedmem;
 	std::unordered_set<void *> fixedpointers;
 
 	void init(std::istream &stream);

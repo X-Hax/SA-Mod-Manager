@@ -2,7 +2,7 @@
 #define LANDTABLEINFO_H
 
 #include <cstdint>
-#include <list>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -32,8 +32,8 @@ public:
 	void *getdata(const std::string &label);
 
 private:
-	static const uint64_t SA1LVL = 0x4C564C314153u;
-	static const uint64_t FormatMask = 0xFFFFFFFFFFFFu;
+	static const uint64_t SA1LVL = 0x4C564C314153ULL;
+	static const uint64_t FormatMask = 0xFFFFFFFFFFFFULL;
 	static const uint8_t CurrentVersion = 3;
 	static const int headersize = 0x10;
 
@@ -42,7 +42,7 @@ private:
 	std::unordered_map<uint32_t, Metadata> metadata;
 	std::unordered_map<void *, std::string> labels1;
 	std::unordered_map<std::string, void *> labels2;
-	std::vector<std::shared_ptr<void>> allocatedmem;
+	std::vector<std::shared_ptr<void> > allocatedmem;
 	std::unordered_set<void *> fixedpointers;
 	std::unordered_map<void *, void *> reallocateddata;
 
