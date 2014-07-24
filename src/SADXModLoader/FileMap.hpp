@@ -89,7 +89,7 @@ class FileMap
 		 * @param lpFileName Filename.
 		 * @return List of matching filenames, or nullptr if not fonud.
 		 */
-		const std::forward_list<const char *>* findFileNoExt(const char *lpFileName) const;
+		const std::forward_list<std::string>* findFileNoExt(const char *lpFileName) const;
 
 		/**
 		 * Clear the file replacement map.
@@ -100,20 +100,20 @@ class FileMap
 		/**
 		 * File replacement map.
 		 * - Key: Original filename.
-		 * - Value: New filename. (allocated via new[])
+		 * - Value: New filename.
 		 */
-		std::unordered_map<std::string, const char *> m_fileMap;
+		std::unordered_map<std::string, std::string> m_fileMap;
 
 		/**
 		 * File replacement map, sans extensions.
 		 * Used for BASS vgmstream.
 		 * - Key: Normalized original filename, sans extension.
-		 * - Value: forward_list<const char*> (allocated via new[])
+		 * - Value: forward_list<string>
 		 *   - Contains mod filenames.
 		 * NOTE: Strings in forward_list are *copied* from m_fileMap.
 		 * They will need to be deleted manually.
 		 */
-		std::unordered_map<std::string, std::forward_list<const char *>* > m_fileNoExtMap;
+		std::unordered_map<std::string, std::forward_list<std::string>* > m_fileNoExtMap;
 };
 
 #endif /* FILEMAP_HPP */

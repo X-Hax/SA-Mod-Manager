@@ -73,11 +73,7 @@ string FileMap::normalizePath(const char *filename)
 void FileMap::addIgnoreFile(const string &ignoreFile)
 {
 	string path = normalizePath(ignoreFile);
-
-	static const char nullfile[] = "nullfile";
-	char *buf = new char[sizeof(nullfile)];
-	strncpy(buf, nullfile, sizeof(buf));
-	m_fileMap[path] = buf;
+	m_fileMap[path] = "nullfile";
 }
 
 /**
@@ -171,27 +167,10 @@ void FileMap::scanFolder_int(const std::string &srcPath, int srcLen)
  */
 void FileMap::setReplaceFile(const std::string &origFile, const std::string &destFile)
 {
-	// Check if this file is already in the map.
-	auto iter = m_fileMap.find(origFile);
-	if (iter != m_fileMap.end())
-	{
-		// File is already in the map.
-		// Delete the existing string.
-		delete[] iter->second;
-	}
-	else
-	{
-		// Create an entry in the map.
-		iter = m_fileMap.insert(std::make_pair(origFile, nullptr)).first;
-	}
+	// Update the main map.
+	m_fileMap[origFile] = destFile;
 
-	// Copy the destination filename into the map.
-	const size_t len = destFile.length() + 1;
-	char *buf = new char[len];
-	strncpy(buf, destFile.c_str(), len);
-	iter->second = buf;
-
-	// Remove the file extension from the specified filename.
+	// Remove the file extension from the original filename.
 	char pathnoext[MAX_PATH];
 	strncpy(pathnoext, origFile.c_str(), sizeof(pathnoext));
 	PathRemoveExtensionA(pathnoext);
@@ -202,14 +181,12 @@ void FileMap::setReplaceFile(const std::string &origFile, const std::string &des
 	if (iter_noext == m_fileNoExtMap.end())
 	{
 		// No list yet.
-		iter_noext = m_fileNoExtMap.insert(std::make_pair(s_pathnoext, new forward_list<const char *>())).first;
+		iter_noext = m_fileNoExtMap.insert(std::make_pair(s_pathnoext, new forward_list<string>())).first;
 	}
-	forward_list<const char *> *fileList = iter_noext->second;
+	forward_list<string> *fileList = iter_noext->second;
 
 	// Add the filename to the list.
-	buf = new char[len];
-	strncpy(buf, destFile.c_str(), len);
-	fileList->push_front(buf);
+	fileList->push_front(destFile);
 
 	PrintDebug("Replaced file: \"%s\" = \"%s\"\n", origFile.c_str(), destFile.c_str());
 }
@@ -223,9 +200,12 @@ const char *FileMap::replaceFile(const char *lpFileName) const
 {
 	// Check if the normalized filename is in the file replacement map.
 	string path = normalizePath(lpFileName);
-	unordered_map<string, const char *>::const_iterator iter = m_fileMap.find(path);
+	unordered_map<string, string>::const_iterator iter = m_fileMap.find(path);
 	if (iter != m_fileMap.cend())
-		return iter->second;
+	{
+		const string &newFileName = iter->second;
+		return newFileName.c_str();
+	}
 
 	// File was not replaced by a mod.
 	// Return the filename as-is.
@@ -238,7 +218,7 @@ const char *FileMap::replaceFile(const char *lpFileName) const
  * @param lpFileName Filename.
  * @return List of matching filenames, or nullptr if not fonud.
  */
-const forward_list<const char *>* FileMap::findFileNoExt(const char *lpFileName) const
+const forward_list<string>* FileMap::findFileNoExt(const char *lpFileName) const
 {
 	// Remove the file extension from the specified filename.
 	char pathnoext[MAX_PATH];
@@ -257,26 +237,6 @@ const forward_list<const char *>* FileMap::findFileNoExt(const char *lpFileName)
  */
 void FileMap::clear(void)
 {
-	for (auto iter = m_fileNoExtMap.begin(); iter != m_fileNoExtMap.end(); ++iter)
-	{
-		// Get the forward_list.
-		forward_list<const char *> *fileList = iter->second;
-
-		// Delete all strings.
-		for (auto iter_noext = fileList->begin(); iter_noext != fileList->end(); ++iter_noext)
-		{
-			delete[] *iter_noext;
-		}
-
-		// Delete the list.
-		delete fileList;
-	}
 	m_fileNoExtMap.clear();
-
-	for (auto iter = m_fileMap.begin(); iter != m_fileMap.end(); ++iter)
-	{
-		// Allocated using new[];
-		delete[] iter->second;
-	}
 	m_fileMap.clear();
 }

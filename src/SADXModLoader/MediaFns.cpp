@@ -9,7 +9,9 @@
 #include "bass_vgmstream.h"
 
 #include <forward_list>
+#include <string>
 using std::forward_list;
+using std::string;
 
 static bool enablevgmstream = false;
 static bool musicwmp = true;
@@ -70,13 +72,14 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 	if (enablevgmstream)
 	{
 		// Check if a file with a matching basename is in the map.
-		const forward_list<const char *>* fileList = sadx_fileMap.findFileNoExt(filename);
+		const forward_list<string>* fileList = sadx_fileMap.findFileNoExt(filename);
 		if (fileList != nullptr)
 		{
 			for (auto iter = fileList->cbegin(); iter != fileList->cend(); ++iter)
 			{
 				// Attempt to open this stream.
-				basschan = BASS_VGMSTREAM_StreamCreate(*iter, loop ? BASS_SAMPLE_LOOP : 0);
+				const string &filename = *iter;
+				basschan = BASS_VGMSTREAM_StreamCreate(filename.c_str(), loop ? BASS_SAMPLE_LOOP : 0);
 				if (basschan != 0)
 				{
 					// Stream opened!
