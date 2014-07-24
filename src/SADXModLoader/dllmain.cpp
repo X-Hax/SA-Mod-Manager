@@ -25,6 +25,7 @@ using namespace std;
 #include "CodeParser.hpp"
 #include "FileMap.hpp"
 #include "MediaFns.hpp"
+#include "TextConv.hpp"
 #include "SADXModLoader.h"
 
 static HINSTANCE myhandle;
@@ -208,20 +209,6 @@ static void __cdecl ProcessCodes()
 		}
 }
 
-static char * ShiftJISToUTF8(char *shiftjis)
-{
-	int cchWcs = MultiByteToWideChar(932, 0, shiftjis, -1, NULL, 0);
-	if (cchWcs <= 0) return nullptr;
-	wchar_t *wcs = new wchar_t[cchWcs];
-	MultiByteToWideChar(932, 0, shiftjis, -1, wcs, cchWcs);
-	int cbMbs = WideCharToMultiByte(CP_UTF8, 0, wcs, -1, NULL, 0, NULL, NULL);
-	if (cbMbs <= 0) { delete[] wcs; return nullptr; }
-	char *utf8 = new char[cbMbs];
-	WideCharToMultiByte(CP_UTF8, 0, wcs, -1, utf8, cbMbs, NULL, NULL);
-	delete[] wcs;
-	return utf8;
-}
-
 static bool dbgConsole, dbgScreen, dbgFile;
 static ofstream dbgstr;
 static int __cdecl SADXDebugOutput(const char *Format, ...)
@@ -245,9 +232,14 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 	}
 	if (dbgFile && dbgstr.good())
 	{
-		char *utf8 = ShiftJISToUTF8(buf);
-		dbgstr << utf8;
-		delete[] utf8;
+		// SADX prints text in Shift-JIS.
+		// Convert it to UTF-8 before writing it to the debug file.
+		char *utf8 = SJIStoUTF8(buf);
+		if (utf8)
+		{
+			dbgstr << utf8;
+			delete[] utf8;
+		}
 	}
 	delete[] buf;
 	return result;
