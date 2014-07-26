@@ -15,11 +15,9 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-using std::cout;
 using std::deque;
 using std::ios_base;
 using std::ifstream;
-using std::ofstream;
 using std::string;
 using std::wstring;
 using std::unique_ptr;
@@ -222,8 +220,16 @@ static void __cdecl ProcessCodes()
 		}
 }
 
-static bool dbgConsole, dbgScreen, dbgFile;
-static ofstream dbgstr;
+static bool dbgConsole, dbgScreen;
+// File for logging debugging output.
+static FILE *dbgFile = nullptr;
+
+/**
+ * SADX Debug Output function.
+ * @param Format Format string.
+ * @param args Arguments.
+ * @return Return value from vsnprintf().
+ */
 static int __cdecl SADXDebugOutput(const char *Format, ...)
 {
 	va_list ap;
@@ -234,8 +240,16 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 	va_start(ap, Format);
 	result = vsnprintf(buf, result, Format, ap);
 	va_end(ap);
+
+	// Console output.
 	if (dbgConsole)
-		cout << buf;
+	{
+		// TODO: Convert from Shift-JIS to CP_ACP?
+		fputs(buf, stdout);
+		fflush(stdout);
+	}
+
+	// Screen output.
 	if (dbgScreen)
 	{
 		message msg = { buf };
@@ -243,17 +257,21 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 			msg.text = msg.text.substr(0, msg.text.length() - 1);
 		msgqueue.push_back(msg);
 	}
-	if (dbgFile && dbgstr.good())
+
+	// File output.
+	if (dbgFile)
 	{
 		// SADX prints text in Shift-JIS.
 		// Convert it to UTF-8 before writing it to the debug file.
 		char *utf8 = SJIStoUTF8(buf);
 		if (utf8)
 		{
-			dbgstr << utf8;
+			fputs(utf8, dbgFile);
+			fflush(dbgFile);
 			delete[] utf8;
 		}
 	}
+
 	delete[] buf;
 	return result;
 }
@@ -683,6 +701,7 @@ static void __cdecl InitMods(void)
 	if (settings->getBool("DebugConsole"))
 	{
 		// Enable the debug console.
+		// TODO: setvbuf()?
 		AllocConsole();
 		SetConsoleTitle(L"SADX Mod Loader output");
 		freopen("CONOUT$", "wb", stdout);
@@ -693,8 +712,8 @@ static void __cdecl InitMods(void)
 	if (settings->getBool("DebugFile"))
 	{
 		// Enable debug logging to a file.
-		dbgstr = ofstream("mods\\SADXModLoader.log", ios_base::ate | ios_base::app);
-		dbgFile = dbgstr.is_open();
+		// dbgFile will be nullptr if the file couldn't be opened.
+		dbgFile = _wfopen(L"mods\\SADXModLoader.log", L"a+");
 	}
 
 	// Is any debug method enabled?
@@ -1091,7 +1110,15 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 
 		case DLL_THREAD_ATTACH:
 		case DLL_THREAD_DETACH:
+			break;
+
 		case DLL_PROCESS_DETACH:
+			// Make sure the log file is closed.
+			if (dbgFile)
+			{
+				fclose(dbgFile);
+				dbgFile = nullptr;
+			}
 			break;
 	}
 
