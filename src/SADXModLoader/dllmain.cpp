@@ -661,11 +661,20 @@ static void __cdecl InitMods(void)
 	unique_ptr<IniFile> ini(new IniFile(f_ini));
 	fclose(f_ini);
 
-	// Get sonic.exe's filename.
+	// Get sonic.exe's path and filename.
 	wchar_t pathbuf[MAX_PATH];
 	GetModuleFileName(NULL, pathbuf, MAX_PATH);
-	wstring exefilename(pathbuf);
-	exefilename = exefilename.substr(exefilename.find_last_of(L"/\\") + 1);
+	wstring exepath(pathbuf);
+	wstring exefilename;
+	string::size_type slash_pos = exepath.find_last_of(L"/\\");
+	if (slash_pos != string::npos)
+	{
+		exefilename = exepath.substr(slash_pos + 1);
+		if (slash_pos > 0)
+			exepath = exepath.substr(0, slash_pos);
+	}
+	
+	// Convert the EXE filename to lowercase.
 	transform(exefilename.begin(), exefilename.end(), exefilename.begin(), ::towlower);
 
 	// Process the main Mod Loader settings.
