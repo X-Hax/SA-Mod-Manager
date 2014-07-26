@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "IniFile.hpp"
+#include "TextConv.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -41,6 +42,23 @@ string IniGroup::getString(const string &key, const string &def) const
 {
 	auto iter = m_data.find(key);
 	return (iter != m_data.end() ? iter->second : def);
+}
+
+/**
+ * Get a wide string value from the INI group.
+ * INI strings are converted from UTF-8 to UTF-16.
+ * @param key Key.
+ * @param def Default value.
+ * @return Wide string value.
+ */
+wstring IniGroup::getWString(const string &key, const wstring &def) const
+{
+	auto iter = m_data.find(key);
+	if (iter == m_data.end())
+		return def;
+
+	// Convert the string from UTF-8 to UTF-16.
+	return MBStoUTF16(iter->second, CP_UTF8);
 }
 
 /**
@@ -158,6 +176,22 @@ string IniFile::getString(const string &section, const string &key, const string
 	if (!group)
 		return def;
 	return group->getString(key, def);
+}
+
+/**
+ * Get a wide string value from the INI group.
+ * INI strings are converted from UTF-8 to UTF-16.
+ * @param section Section.
+ * @param key Key.
+ * @param def Default value.
+ * @return Wide string value.
+ */
+wstring IniFile::getWString(const string &section, const string &key, const wstring &def) const
+{
+	const IniGroup *group = getGroup(section);
+	if (!group)
+		return def;
+	return group->getWString(key, def);
 }
 
 /**

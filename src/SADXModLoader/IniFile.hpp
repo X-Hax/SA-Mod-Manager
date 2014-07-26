@@ -23,11 +23,18 @@ class IniGroup
 		const std::unordered_map<std::string, std::string> *data(void) const;
 
 		std::string getString(const std::string &key, const std::string &def = "") const;
+		std::wstring getWString(const std::string &key, const std::wstring &def = L"") const;
 		bool getBool(const std::string &key, bool def = false) const;
 		int getInt(const std::string &key, int def = 0) const;
 
 	protected:
 		friend class IniFile;
+
+		/**
+		 * INI section data.
+		 * - Key: Key name. (UTF-8)
+		 * - Value: Value. (UTF-8)
+		 */
 		std::unordered_map<std::string, std::string> m_data;
 };
 
@@ -49,12 +56,19 @@ class IniFile
 		bool hasKey(const std::string &section, const std::string &key) const;
 
 		std::string getString(const std::string &section, const std::string &key, const std::string &def = "") const;
+		std::wstring getWString(const std::string &section, const std::string &key, const std::wstring &def = L"") const;
 		bool getBool(const std::string &section, const std::string &key, bool def = false) const;
 		int getInt(const std::string &section, const std::string &key, int def = 0) const;
 
 	protected:
 		void load(FILE *f);
 		void clear(void);
+
+		/**
+		 * INI groups.
+		 * - Key: Section name. (UTF-8)
+		 * - Value: IniGroup.
+		 */
 		std::unordered_map<std::string, IniGroup*> m_groups;
 };
 
