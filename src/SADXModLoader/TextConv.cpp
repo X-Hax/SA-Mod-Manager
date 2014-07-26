@@ -63,3 +63,61 @@ char *SJIStoUTF8(const char *sjis)
 
 	return mbs;
 }
+
+/** C++ wrappers. **/
+
+#include <string>
+using std::string;
+using std::wstring;
+
+/**
+ * Convert multibyte text to UTF-16.
+ * @param mbs Multibyte text.
+ * @param cp Code page.
+ * @return UTF-16 text, or empty string on error.
+ */
+wstring MBStoUTF16(const string &mbs, unsigned int cp)
+{
+	wchar_t *wcs = MBStoUTF16(mbs.c_str(), cp);
+	if (!wcs)
+		return wstring();
+
+	wstring wstr(wcs);
+	delete[] wcs;
+	return wstr;
+}
+
+/**
+ * Convert UTF-16 text to multibyte.
+ * @param wcs UTF-16 text.
+ * @param cp Code page.
+ * @return Multibyte text, or empty string on error.
+ */
+string UTF16toMBS(const wstring &wcs, unsigned int cp)
+{
+	char *mbs = UTF16toMBS(wcs.c_str(), cp);
+	if (!mbs)
+		return string();
+
+	string mstr(mbs);
+	delete[] mbs;
+	return mstr;
+}
+
+/** Convenience functions. **/
+
+/**
+ * Convert Shift-JIS text to UTF-8.
+ * @param sjis Shift-JIS text.
+ * @return UTF-8 text, or empty string on error.
+ */
+string SJIStoUTF8(const string &sjis)
+{
+	char *utf8 = SJIStoUTF8(sjis.c_str());
+	if (!utf8)
+		return string();
+
+	string ustr(utf8);
+	delete[] utf8;
+	return ustr;
+}
