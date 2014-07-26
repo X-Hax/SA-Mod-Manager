@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <cctype>
+#include <cwctype>
 
 #include <deque>
 #include <fstream>
@@ -650,7 +652,7 @@ static const HelperFunctions helperFunctions =
 
 static void __cdecl InitMods(void)
 {
-	FILE *f_ini = fopen("mods\\SADXModLoader.ini", "r");
+	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
 	if (!f_ini)
 	{
 		MessageBox(NULL, L"mods\\SADXModLoader.ini could not be read!", L"SADX Mod Loader", MB_ICONWARNING);
@@ -660,12 +662,11 @@ static void __cdecl InitMods(void)
 	fclose(f_ini);
 
 	// Get sonic.exe's filename.
-	// FIXME: Don't use MAX_PATH.
-	char pathbuf[MAX_PATH];
-	GetModuleFileNameA(NULL, pathbuf, MAX_PATH);
-	string exefilename = pathbuf;
-	exefilename = exefilename.substr(exefilename.find_last_of("/\\") + 1);
-	transform(exefilename.begin(), exefilename.end(), exefilename.begin(), ::tolower);
+	wchar_t pathbuf[MAX_PATH];
+	GetModuleFileName(NULL, pathbuf, MAX_PATH);
+	wstring exefilename(pathbuf);
+	exefilename = exefilename.substr(exefilename.find_last_of(L"/\\") + 1);
+	transform(exefilename.begin(), exefilename.end(), exefilename.begin(), ::towlower);
 
 	// Process the main Mod Loader settings.
 	const IniGroup *settings = ini->getGroup("");
@@ -760,20 +761,22 @@ static void __cdecl InitMods(void)
 		if (!settings->hasKey(key))
 			break;
 
-		string modname = settings->getString(key);
-		string dir = "mods\\" + modname;
-		string filename = dir + "\\mod.ini";
-		FILE *f_mod_ini = fopen(filename.c_str(), "r");
+		const string mod_dirA = "mods\\" + settings->getString(key);
+		const wstring mod_dir = L"mods\\" + settings->getWString(key);
+		const wstring mod_inifile = mod_dir + L"\\mod.ini";
+		FILE *f_mod_ini = _wfopen(mod_inifile.c_str(), L"r");
 		if (!f_mod_ini)
 		{
-			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", modname.c_str());
+			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", mod_dirA.c_str());
 			continue;
 		}
 		unique_ptr<IniFile> ini_mod(new IniFile(f_mod_ini));
 		fclose(f_mod_ini);
 
 		const IniGroup *modinfo = ini_mod->getGroup("");
-		PrintDebug("%d. %s\n", i, modinfo->getString("Name").c_str());
+		const string mod_nameA = modinfo->getString("Name");
+		const wstring mod_name = modinfo->getWString("Name");
+		PrintDebug("%d. %s\n", i, mod_nameA.c_str());
 
 		if (ini_mod->hasGroup("IgnoreFiles"))
 		{
@@ -814,35 +817,37 @@ static void __cdecl InitMods(void)
 		}
 
 		// Check for SYSTEM replacements.
-		string modSysDir = dir + "\\system";
-		if ((GetFileAttributesA(modSysDir.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
-			sadx_fileMap.scanFolder(modSysDir);
+		// TODO: Convert to WString.
+		const string modSysDirA = mod_dirA + "\\system";
+		if ((GetFileAttributesA(modSysDirA.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
+			sadx_fileMap.scanFolder(modSysDirA);
 
 		// Check if a custom EXE is required.
 		if (modinfo->hasKey("EXEFile"))
 		{
-			string modexe = modinfo->getString("EXEFile");
-			transform(modexe.begin(), modexe.end(), modexe.begin(), ::tolower);
+			wstring modexe = modinfo->getWString("EXEFile");
+			transform(modexe.begin(), modexe.end(), modexe.begin(), ::towlower);
 
-			// Is the EXE correct?
-			if (modexe.compare(exefilename) != 0)
+			// Are we using the correct EXE?
+			if (!modexe.empty() && modexe.compare(exefilename) != 0)
 			{
-				char msg[4096];
-				string mod_name = modinfo->getString("Name");
-				snprintf(msg, sizeof(msg),
-						"Mod \"%s\" should be run from \"%s\", but you are running \"%s\".\n\n"
-						"Continue anyway?", mod_name.c_str(), modexe.c_str(), exefilename.c_str());
-				if (MessageBoxA(NULL, msg, "SADX Mod Loader", MB_ICONWARNING | MB_YESNO) == IDNO)
+				wchar_t msg[4096];
+				swprintf(msg, LengthOfArray(msg),
+					L"Mod \"%s\" should be run from \"%s\", but you are running \"%s\".\n\n"
+					L"Continue anyway?", mod_name.c_str(), modexe.c_str(), exefilename.c_str());
+				if (MessageBox(NULL, msg, L"SADX Mod Loader", MB_ICONWARNING | MB_YESNO) == IDNO)
 					ExitProcess(1);
 			}
 		}
 
 		// Check if the mod has a DLL file.
-		string dll_filename = modinfo->getString("DLLFile");
+		wstring dll_filename = modinfo->getWString("DLLFile");
 		if (!dll_filename.empty())
 		{
-			dll_filename = dir + "\\" + dll_filename;
-			HMODULE module = LoadLibraryA(dll_filename.c_str());
+			// Prepend the mod directory.
+			// TODO: SetDllDirectory().
+			dll_filename = mod_dir + L'\\' + dll_filename;
+			HMODULE module = LoadLibrary(dll_filename.c_str());
 			if (module)
 			{
 				const ModInfo *info = (const ModInfo *)GetProcAddress(module, "SADXModInfo");
@@ -870,17 +875,20 @@ static void __cdecl InitMods(void)
 					}
 					if (info->Init)
 					{
-						info->Init(dir.c_str(), helperFunctions);
+						// TODO: Convert to Unicode later. (Will require an API bump.)
+						info->Init(mod_dirA.c_str(), helperFunctions);
 					}
 				}
 				else
 				{
-					PrintDebug("File \"%s\" is not a valid mod file.\n", dll_filename.c_str());
+					const string dll_filenameA = UTF16toMBS(dll_filename, CP_ACP);
+					PrintDebug("File \"%s\" is not a valid mod file.\n", dll_filenameA.c_str());
 				}
 			}
 			else
 			{
-				PrintDebug("Failed loading file \"%s\".\n", dll_filename.c_str());
+				const string dll_filenameA = UTF16toMBS(dll_filename, CP_ACP);
+				PrintDebug("Failed loading file \"%s\".\n", dll_filenameA.c_str());
 			}
 		}
 	}
@@ -1033,7 +1041,9 @@ static void __cdecl LoadChrmodels(void)
 	chrmodelshandle = LoadLibrary(L".\\system\\CHRMODELS_orig.dll");
 	if (!chrmodelshandle)
 	{
-		MessageBox(NULL, L"CHRMODELS_orig.dll could not be loaded!\n\nSADX will now proceed to abruptly exit.", L"SADX Mod Loader", MB_ICONERROR);
+		MessageBox(NULL, L"CHRMODELS_orig.dll could not be loaded!\n\n"
+			L"SADX will now proceed to abruptly exit.",
+			L"SADX Mod Loader", MB_ICONERROR);
 		ExitProcess(1);
 	}
 	WriteCall((void *)0x402513, (void *)InitMods);
