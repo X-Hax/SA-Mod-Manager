@@ -9,14 +9,25 @@
 #include <deque>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <unordered_map>
+#include <vector>
+using std::cout;
+using std::deque;
+using std::ios_base;
+using std::ifstream;
+using std::ofstream;
+using std::string;
+using std::wstring;
+using std::unique_ptr;
+using std::unordered_map;
+using std::vector;
 
+// Win32 headers.
 #include <dbghelp.h>
 #include <shlwapi.h>
 #include <gdiplus.h>
-
-using namespace std;
 
 #include "config.SADXModLoader.h"
 #include "git.h"
