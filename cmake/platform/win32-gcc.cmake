@@ -6,7 +6,7 @@ SET(MODLOADER_C_FLAGS_WIN32 "${MODLOADER_C_FLAGS_WIN32} -fshort-wchar")
 
 # Test for static libgcc/libstdc++.
 SET(MODLOADER_EXE_LINKER_FLAGS_WIN32 "")
-FOREACH(FLAG_TEST "-static-libgcc" "-static-libstdc++" "-Wl,--large-address-aware" "-Wl,--nxcompat" "-Wl,--dynamicbase")
+FOREACH(FLAG_TEST "-static-libgcc" "-static-libstdc++" "-Wl,--large-address-aware" "-Wl,--nxcompat" "-Wl,--dynamicbase" "-Wl,--tsaware")
 	# CMake doesn't like "+" characters in variable names.
 	STRING(REPLACE "+" "_" FLAG_TEST_VARNAME "${FLAG_TEST}")
 
