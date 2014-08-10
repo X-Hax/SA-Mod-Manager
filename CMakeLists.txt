@@ -77,10 +77,11 @@ ENDIF(NOT MSVC)
 INCLUDE(cmake/platform.cmake)
 
 # Project subdirectories.
+ADD_SUBDIRECTORY(extlib)
+ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(include)
 ADD_SUBDIRECTORY(data)
 ADD_SUBDIRECTORY(doc)
-ADD_SUBDIRECTORY(include)
-ADD_SUBDIRECTORY(src)
 
 # Install the README.
 # TODO: Convert to native line endings?
