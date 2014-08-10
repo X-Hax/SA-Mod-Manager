@@ -33,6 +33,7 @@ SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${libmodutils_C_FLAGS_CO
 # MSVC precompiled header.
 INCLUDE(AddMSVCPrecompiledHeader)
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" libmodutils_SRC)
+LIST(APPEND libmodutils_H stdafx.h)
 
 # Don't actually build the library, since the
 # ModLoader doesn't use it.
@@ -42,3 +43,12 @@ ADD_LIBRARY(libmodutils STATIC
 	${libmodutils_H}
 	)
 ENDIF(0)
+
+#################
+# Installation. #
+#################
+
+INSTALL(FILES ${libmodutils_SRC} ${libmodutils_H}
+	DESTINATION "libmodutils"
+	COMPONENT "sdk"
+	)

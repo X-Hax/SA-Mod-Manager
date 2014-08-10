@@ -54,6 +54,17 @@ SET(SADXModLoader_H
 # ANSI functions are accessed directly if necessary.
 SET(SADXModLoader_C_FLAGS_COMMON "-DUNICODE -D_UNICODE -D_USRDLL -DSADXMODLOADER_EXPORTS")
 
+# CMake seems to use weird settings for the PDB file.
+# (at least version 2.8.12.2; 3.0.0 might be different)
+STRING(REGEX REPLACE
+	"/Fd<OBJECT_DIR>/${_FS_C}"
+	"/Fd${CMAKE_CURRENT_BINARY_DIR}/SADXModLoader.pdb"
+	CMAKE_C_COMPILE_OBJECT "${CMAKE_C_COMPILE_OBJECT}")
+STRING(REGEX REPLACE
+	"/Fd<OBJECT_DIR>/${_FS_CXX}"
+	"/Fd${CMAKE_CURRENT_BINARY_DIR}/SADXModLoader.pdb"
+	CMAKE_CXX_COMPILE_OBJECT "${CMAKE_CXX_COMPILE_OBJECT}")
+
 # This applies to the current subdirectory only.
 SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${SADXModLoader_C_FLAGS_COMMON}")
 SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${SADXModLoader_C_FLAGS_COMMON}")
@@ -63,6 +74,7 @@ SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${SADXModLoader_C_FLAGS_
 # MSVC precompiled header.
 INCLUDE(AddMSVCPrecompiledHeader)
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" SADXModLoader_SRC)
+LIST(APPEND SADXModLoader_H stdafx.h)
 
 # Resource file.
 # Add this after PCH to prevent the RC from depending on the PCH,
@@ -80,3 +92,33 @@ TARGET_LINK_LIBRARIES(SADXModLoader
 	dbghelp
 	gdiplus
 	)
+
+SET_TARGET_PROPERTIES(SADXModLoader
+	PROPERTIES PDB "${CMAKE_CURRENT_BINARY_DIR}/SADXModLoader.pdb")
+
+# Split debug information. (MinGW only)
+INCLUDE(SplitDebugInformation)
+SPLIT_DEBUG_INFORMATION(SADXModLoader)
+
+#################
+# Installation. #
+#################
+
+INSTALL(TARGETS SADXModLoader
+	RUNTIME DESTINATION "."
+	LIBRARY DESTINATION "."
+	ARCHIVE DESTINATION "."
+	COMPONENT "modloader"
+	)
+
+IF(MSVC)
+	INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/SADXModLoader.pdb"
+		DESTINATION "."
+		COMPONENT "debug"
+		)
+ELSE(MSVC)
+	INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/SADXModLoader.debug"
+		DESTINATION "."
+		COMPONENT "debug"
+		)
+ENDIF(MSVC)
