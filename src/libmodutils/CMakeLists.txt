@@ -62,11 +62,9 @@ ADD_LIBRARY(modutils STATIC
 	${libmodutils_H}
 	)
 
+# PDB filename.
 SET_TARGET_PROPERTIES(modutils
-	PROPERTIES
-		PDB "${LIBMODUTILS_PDB_FILE}"
-		VERSION "${VERSION_MAJOR}.${VERSION_MINOR}"
-	)
+	PROPERTIES PDB "${LIBMODUTILS_PDB_FILE}")
 ENDIF(0)
 
 #################
