@@ -1,4 +1,4 @@
-PROJECT(data)
+PROJECT(include)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 # ModLoader common headers.
