@@ -24,17 +24,6 @@ SET(libmodutils_H
 # ANSI functions are accessed directly if necessary.
 SET(libmodutils_C_FLAGS_COMMON "-DUNICODE -D_UNICODE")
 
-# CMake seems to use weird settings for the PDB file.
-# (at least version 2.8.12.2; 3.0.0 might be different)
-STRING(REGEX REPLACE
-	"/Fd<OBJECT_DIR>/${_FS_C}"
-	"/Fd${CMAKE_CURRENT_BINARY_DIR}/modutils.pdb"
-	CMAKE_C_COMPILE_OBJECT "${CMAKE_C_COMPILE_OBJECT}")
-STRING(REGEX REPLACE
-	"/Fd<OBJECT_DIR>/${_FS_CXX}"
-	"/Fd${CMAKE_CURRENT_BINARY_DIR}/modutils.pdb"
-	CMAKE_CXX_COMPILE_OBJECT "${CMAKE_CXX_COMPILE_OBJECT}")
-
 # This applies to the current subdirectory only.
 SET(CMAKE_C_FLAGS_DEBUG		"${CMAKE_C_FLAGS_DEBUG} ${libmodutils_C_FLAGS_COMMON}")
 SET(CMAKE_CXX_FLAGS_DEBUG	"${CMAKE_CXX_FLAGS_DEBUG} ${libmodutils_C_FLAGS_COMMON}")
