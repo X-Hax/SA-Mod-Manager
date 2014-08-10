@@ -1,8 +1,11 @@
 # Win32-specific CFLAGS/CXXFLAGS.
 # For MinGW compilers.
 
-# Basic platform flags.
-SET(MODLOADER_C_FLAGS_WIN32 "${MODLOADER_C_FLAGS_WIN32} -fshort-wchar")
+# Basic platform flags:
+# - wchar_t is short.
+# - Enable strict type checking in the Windows headers.
+# - Set minimum Windows version to Windows 2000. (Windows NT 5.0)
+SET(MCRECOVER_C_FLAGS_WIN32 "-fshort-wchar -DSTRICT -D_WIN32_WINNT=0x0500")
 
 # Test for static libgcc/libstdc++.
 SET(MODLOADER_EXE_LINKER_FLAGS_WIN32 "")
