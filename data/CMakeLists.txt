@@ -1,13 +1,13 @@
-PROJECT(doc)
+PROJECT(data)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 # Documentation.
-SET(DOC_FILES
-	codes.md
-	CodeList.xsd
+SET(DATA_FILES
+	Border.png
+	Codes.xml
 	)
 
-# TODO (maybe): Convert documentation from Unix to DOS format.
+# TODO (maybe): Convert *.xml from Unix to DOS format.
 # SADXModLoader is usually built with MSVC, so this isn't
 # entirely necessary.
 
@@ -15,7 +15,7 @@ SET(DOC_FILES
 # Installation. #
 #################
 
-INSTALL(FILES ${DOC_FILES}
-	DESTINATION "doc"
-	COMPONENT "doc"
+INSTALL(FILES ${DATA_FILES}
+	DESTINATION "mods"
+	COMPONENT "ModLoader"
 	)

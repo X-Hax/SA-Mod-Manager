@@ -77,6 +77,7 @@ ENDIF(NOT MSVC)
 INCLUDE(cmake/platform.cmake)
 
 # Project subdirectories.
+ADD_SUBDIRECTORY(data)
 ADD_SUBDIRECTORY(doc)
 ADD_SUBDIRECTORY(include)
 ADD_SUBDIRECTORY(src)
