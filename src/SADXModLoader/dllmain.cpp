@@ -201,19 +201,20 @@ static void __cdecl ProcessCodes()
 	else
 		pos = 0;
 	if (msgqueue.size() > 0)
-		for (deque<message>::iterator i = msgqueue.begin(); i != msgqueue.end(); i++)
+		for (deque<message>::iterator iter = msgqueue.begin();
+		     iter != msgqueue.end(); ++iter)
 		{
 			int c = -1;
-			if (300 - i->time < LengthOfArray(fadecolors))
-				c = fadecolors[LengthOfArray(fadecolors) - (300 - i->time) - 1];
+			if (300 - iter->time < LengthOfArray(fadecolors))
+				c = fadecolors[LengthOfArray(fadecolors) - (300 - iter->time) - 1];
 			SetDebugTextColor((int)c);
-			DisplayDebugString(pos++, (char *)i->text.c_str());
-			if (++i->time >= 300)
+			DisplayDebugString(pos++, (char *)iter->text.c_str());
+			if (++iter->time >= 300)
 			{
 				msgqueue.pop_front();
 				if (msgqueue.size() == 0)
 					break;
-				i = msgqueue.begin();
+				iter = msgqueue.begin();
 			}
 			if (pos == numrows)
 				break;
