@@ -74,16 +74,18 @@ LIST(APPEND SADXModLoader_SRC SADXModLoader.rc)
 # Build the library. #
 ######################
 
+SET(SADXMODLOADER_PDB_FILE "${CMAKE_CURRENT_BINARY_DIR}/SADXModLoader.pdb")
+
 IF(MSVC)
 	# CMake seems to use weird settings for the PDB file.
 	# (at least version 2.8.12.2; 3.0.0 might be different)
 	STRING(REGEX REPLACE
 		"/Fd<OBJECT_DIR>/${_FS_C}"
-		"/Fd${CMAKE_CURRENT_BINARY_DIR}/SADXModLoader.pdb"
+		"/Fd${SADXMODLOADER_PDB_FILE}"
 		CMAKE_C_COMPILE_OBJECT "${CMAKE_C_COMPILE_OBJECT}")
 	STRING(REGEX REPLACE
 		"/Fd<OBJECT_DIR>/${_FS_CXX}"
-		"/Fd${CMAKE_CURRENT_BINARY_DIR}/SADXModLoader.pdb"
+		"/Fd${SADXMODLOADER_PDB_FILE}"
 		CMAKE_CXX_COMPILE_OBJECT "${CMAKE_CXX_COMPILE_OBJECT}")
 ENDIF(MSVC)
 
@@ -100,7 +102,10 @@ TARGET_LINK_LIBRARIES(SADXModLoader
 	)
 
 SET_TARGET_PROPERTIES(SADXModLoader
-	PROPERTIES PDB "${CMAKE_CURRENT_BINARY_DIR}/SADXModLoader.pdb")
+	PROPERTIES
+		PDB "${SADXMODLOADER_PDB_FILE}"
+		VERSION "${VERSION_MAJOR}.${VERSION_MINOR}"
+	)
 
 # Split debug information. (MinGW only)
 INCLUDE(SplitDebugInformation)
