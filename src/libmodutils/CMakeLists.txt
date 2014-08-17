@@ -39,21 +39,6 @@ LIST(APPEND libmodutils_H stdafx.h)
 # Build the library. #
 ######################
 
-SET(LIBMODUTILS_PDB_FILE "${CMAKE_CURRENT_BINARY_DIR}/modutils.pdb")
-
-IF(MSVC)
-	# CMake seems to use weird settings for the PDB file.
-	# (at least version 2.8.12.2; 3.0.0 might be different)
-	STRING(REGEX REPLACE
-		"/Fd<OBJECT_DIR>/${_FS_C}"
-		"/Fd${LIBMODUTILS_PDB_FILE}"
-		CMAKE_C_COMPILE_OBJECT "${CMAKE_C_COMPILE_OBJECT}")
-	STRING(REGEX REPLACE
-		"/Fd<OBJECT_DIR>/${_FS_CXX}"
-		"/Fd${LIBMODUTILS_PDB_FILE}"
-		CMAKE_CXX_COMPILE_OBJECT "${CMAKE_CXX_COMPILE_OBJECT}")
-ENDIF(MSVC)
-
 # Don't actually build the library, since the
 # ModLoader doesn't use it.
 IF(0)
@@ -61,10 +46,8 @@ ADD_LIBRARY(modutils STATIC
 	${libmodutils_SRC}
 	${libmodutils_H}
 	)
-
-# PDB filename.
-SET_TARGET_PROPERTIES(modutils
-	PROPERTIES PDB "${LIBMODUTILS_PDB_FILE}")
+INCLUDE(SetMSVCDebugPath)
+SET_MSVC_DEBUG_PATH(modutils)
 ENDIF(0)
 
 #################

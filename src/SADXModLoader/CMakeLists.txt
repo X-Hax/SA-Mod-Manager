@@ -74,21 +74,6 @@ LIST(APPEND SADXModLoader_SRC SADXModLoader.rc)
 # Build the library. #
 ######################
 
-SET(SADXMODLOADER_PDB_FILE "${CMAKE_CURRENT_BINARY_DIR}/SADXModLoader.pdb")
-
-IF(MSVC)
-	# CMake seems to use weird settings for the PDB file.
-	# (at least version 2.8.12.2; 3.0.0 might be different)
-	STRING(REGEX REPLACE
-		"/Fd<OBJECT_DIR>/${_FS_C}"
-		"/Fd${SADXMODLOADER_PDB_FILE}"
-		CMAKE_C_COMPILE_OBJECT "${CMAKE_C_COMPILE_OBJECT}")
-	STRING(REGEX REPLACE
-		"/Fd<OBJECT_DIR>/${_FS_CXX}"
-		"/Fd${SADXMODLOADER_PDB_FILE}"
-		CMAKE_CXX_COMPILE_OBJECT "${CMAKE_CXX_COMPILE_OBJECT}")
-ENDIF(MSVC)
-
 ADD_LIBRARY(SADXModLoader SHARED
 	${SADXModLoader_SRC}
 	${SADXModLoader_H}
@@ -101,9 +86,9 @@ TARGET_LINK_LIBRARIES(SADXModLoader
 	gdiplus
 	)
 
-# PDB filename.
-SET_TARGET_PROPERTIES(SADXModLoader
-	PROPERTIES PDB "${SADXMODLOADER_PDB_FILE}")
+# Set the MSVC debug path.
+INCLUDE(SetMSVCDebugPath)
+SET_MSVC_DEBUG_PATH(SADXModLoader)
 
 # Win32: image version.
 INCLUDE(Win32ImageVersionLinkerFlags)
