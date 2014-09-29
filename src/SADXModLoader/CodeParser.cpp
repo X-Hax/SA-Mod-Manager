@@ -615,7 +615,7 @@ int CodeParser::processCodeList_int(const list<Code> &codes, int regnum)
 		case ifmask32:
 			for (uint32_t i = 0; i < it->repeatcount; i++)
 			{
-				cond &= (*addru16 & it->value.u32) == it->value.u32;
+				cond &= (*addru32 & it->value.u32) == it->value.u32;
 				addru32++;
 			}
 			if (cond)
@@ -972,7 +972,7 @@ int CodeParser::processCodeList_int(const list<Code> &codes, int regnum)
 		case ifmaskreg32:
 			for (uint32_t i = 0; i < it->repeatcount; i++)
 			{
-				cond &= (*addru16 & it->value.u32) == regs[it->value.u8].u32;
+				cond &= (*addru32 & it->value.u32) == regs[it->value.u8].u32;
 				addru32++;
 			}
 			if (cond)
