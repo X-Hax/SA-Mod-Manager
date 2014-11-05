@@ -49,7 +49,7 @@ namespace SADXModManager
 				}
 				catch (Exception error)
 				{
-					MessageBox.Show(this, error.ToString(), "OH NOES", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(this, error.Message, "Mod Creation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 			else

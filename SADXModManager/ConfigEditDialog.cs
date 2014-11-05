@@ -28,8 +28,8 @@ namespace SADXModManager
                                                    "Rotate camera right",
                                                    "Rotate camera left",
                                                    "Start/Set",
-                                                   "Cancel/Attack",
                                                    "Jump",
+                                                   "Cancel/Attack",
                                                    "Action",
                                                    "Flute",
                                                    "Z Button"

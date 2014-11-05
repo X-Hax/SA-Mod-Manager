@@ -389,7 +389,7 @@
 			// checkMusic
 			// 
 			this.checkMusic.AutoSize = true;
-			this.checkMusic.Location = new System.Drawing.Point(110, 42);
+			this.checkMusic.Location = new System.Drawing.Point(122, 42);
 			this.checkMusic.Name = "checkMusic";
 			this.checkMusic.Size = new System.Drawing.Size(90, 17);
 			this.checkMusic.TabIndex = 2;
