@@ -1,6 +1,6 @@
 Sonic Adventure DX PC Mod Loader
 ================================
-Version 3.0.14+
+Version 3.1
 
 
 Table of Contents
