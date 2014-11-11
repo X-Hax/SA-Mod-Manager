@@ -7,6 +7,7 @@ READ THIS DOCUMENT BEFORE RELEASING A NEW VERSION!
 When releasing a new version, the following steps should be performed.
 
 1. Update the version number in CMakeLists.txt.
+-----------------------------------------------
 
 The version number during development might look something like this:
 
@@ -25,12 +26,14 @@ should be bumped and VERSION_DEVEL set to 0:
     SET(VERSION_DEVEL 0)
 
 2. Commit the updated version number.
+-----------------------------------------------
 
     git commit CMakeLists.txt
 
 The commit message should be something like "sadx-mod-loader 3.1".
 
 3. Tag the release.
+-----------------------------------------------
 
     git tag -s sadx-mod-loader-3.1
 
@@ -39,11 +42,13 @@ which is what the -s option does. If you do not have a GPG key,
 you should create one and publish the public key.
 
 4. Push the changes and package the build.
+-----------------------------------------------
 
 You can use `cpack` to package the build automatically, or use
 some other manual or scripted packaging method.
 
 5. Post-release versioning.
+-----------------------------------------------
 
 After the release, VERSION_DEVEL should be set back to 1 again.
 Optionally, this should be committed immediately, but the commit can wait
