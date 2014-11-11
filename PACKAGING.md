@@ -50,6 +50,8 @@ The release tag should be annotated *and* signed with a GPG key,
 which is what the -s option does. If you do not have a GPG key,
 you should create one and publish the public key.
 
+The tag's annotation should be similar to the commit message.
+
 5. Push the changes and package the build.
 -----------------------------------------------
 
