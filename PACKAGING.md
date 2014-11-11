@@ -3,6 +3,7 @@ Sonic Adventure DX PC Mod Loader
 Packaging Notes
 
 READ THIS DOCUMENT BEFORE RELEASING A NEW VERSION!
+--------------------------------------------------
 
 When releasing a new version, the following steps should be performed.
 
