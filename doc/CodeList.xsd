@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ targetNamespace="http://www.sonicretro.org"
+ xmlns="http://www.sonicretro.org"
+ elementFormDefault="qualified">
+  <xs:element name="CodeList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Code" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CodeLine" maxOccurs="unbounded" type="CodeLine" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="enabled" type="xs:boolean" use="optional" default="false" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="CodeLine">
+    <xs:sequence>
+      <xs:element name="Type" type="CodeType" />
+      <xs:element name="Address" type="AddressPattern" minOccurs="0" />
+      <xs:element name="Pointer" type="xs:boolean" minOccurs="0" default="false" />
+      <xs:element name="Offsets" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Offset" type="HexInteger" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Value" type="xs:string" />
+      <xs:element name="ValueType" type="ValueType" />
+      <xs:element name="RepeatCount" type="xs:unsignedInt" minOccurs="0" default="1" />
+      <xs:element name="TrueLines" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="CodeLine" type="CodeLine" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="FalseLines" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="CodeLine" type="CodeLine" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="CodeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="write8" />
+      <xs:enumeration value="write16" />
+      <xs:enumeration value="write32" />
+      <xs:enumeration value="writefloat" />
+      <xs:enumeration value="add8" />
+      <xs:enumeration value="add16" />
+      <xs:enumeration value="add32" />
+      <xs:enumeration value="addfloat" />
+      <xs:enumeration value="sub8" />
+      <xs:enumeration value="sub16" />
+      <xs:enumeration value="sub32" />
+      <xs:enumeration value="subfloat" />
+      <xs:enumeration value="mulu8" />
+      <xs:enumeration value="mulu16" />
+      <xs:enumeration value="mulu32" />
+      <xs:enumeration value="mulfloat" />
+      <xs:enumeration value="muls8" />
+      <xs:enumeration value="muls16" />
+      <xs:enumeration value="muls32" />
+      <xs:enumeration value="divu8" />
+      <xs:enumeration value="divu16" />
+      <xs:enumeration value="divu32" />
+      <xs:enumeration value="divfloat" />
+      <xs:enumeration value="divs8" />
+      <xs:enumeration value="divs16" />
+      <xs:enumeration value="divs32" />
+      <xs:enumeration value="modu8" />
+      <xs:enumeration value="modu16" />
+      <xs:enumeration value="modu32" />
+      <xs:enumeration value="mods8" />
+      <xs:enumeration value="mods16" />
+      <xs:enumeration value="mods32" />
+      <xs:enumeration value="shl8" />
+      <xs:enumeration value="shl16" />
+      <xs:enumeration value="shl32" />
+      <xs:enumeration value="shru8" />
+      <xs:enumeration value="shru16" />
+      <xs:enumeration value="shru32" />
+      <xs:enumeration value="shrs8" />
+      <xs:enumeration value="shrs16" />
+      <xs:enumeration value="shrs32" />
+      <xs:enumeration value="rol8" />
+      <xs:enumeration value="rol16" />
+      <xs:enumeration value="rol32" />
+      <xs:enumeration value="ror8" />
+      <xs:enumeration value="ror16" />
+      <xs:enumeration value="ror32" />
+      <xs:enumeration value="and8" />
+      <xs:enumeration value="and16" />
+      <xs:enumeration value="and32" />
+      <xs:enumeration value="or8" />
+      <xs:enumeration value="or16" />
+      <xs:enumeration value="or32" />
+      <xs:enumeration value="xor8" />
+      <xs:enumeration value="xor16" />
+      <xs:enumeration value="xor32" />
+      <xs:enumeration value="ifeq8" />
+      <xs:enumeration value="ifeq16" />
+      <xs:enumeration value="ifeq32" />
+      <xs:enumeration value="ifeqfloat" />
+      <xs:enumeration value="ifne8" />
+      <xs:enumeration value="ifne16" />
+      <xs:enumeration value="ifne32" />
+      <xs:enumeration value="ifnefloat" />
+      <xs:enumeration value="ifltu8" />
+      <xs:enumeration value="ifltu16" />
+      <xs:enumeration value="ifltu32" />
+      <xs:enumeration value="ifltfloat" />
+      <xs:enumeration value="iflts8" />
+      <xs:enumeration value="iflts16" />
+      <xs:enumeration value="iflts32" />
+      <xs:enumeration value="ifltequ8" />
+      <xs:enumeration value="ifltequ16" />
+      <xs:enumeration value="ifltequ32" />
+      <xs:enumeration value="iflteqfloat" />
+      <xs:enumeration value="iflteqs8" />
+      <xs:enumeration value="iflteqs16" />
+      <xs:enumeration value="iflteqs32" />
+      <xs:enumeration value="ifgtu8" />
+      <xs:enumeration value="ifgtu16" />
+      <xs:enumeration value="ifgtu32" />
+      <xs:enumeration value="ifgtfloat" />
+      <xs:enumeration value="ifgts8" />
+      <xs:enumeration value="ifgts16" />
+      <xs:enumeration value="ifgts32" />
+      <xs:enumeration value="ifgtequ8" />
+      <xs:enumeration value="ifgtequ16" />
+      <xs:enumeration value="ifgtequ32" />
+      <xs:enumeration value="ifgteqfloat" />
+      <xs:enumeration value="ifgteqs8" />
+      <xs:enumeration value="ifgteqs16" />
+      <xs:enumeration value="ifgteqs32" />
+      <xs:enumeration value="ifmask8" />
+      <xs:enumeration value="ifmask16" />
+      <xs:enumeration value="ifmask32" />
+      <xs:enumeration value="ifkbkey" />
+      <xs:enumeration value="readreg8" />
+      <xs:enumeration value="readreg16" />
+      <xs:enumeration value="readreg32" />
+      <xs:enumeration value="writereg8" />
+      <xs:enumeration value="writereg16" />
+      <xs:enumeration value="writereg32" />
+      <xs:enumeration value="addreg8" />
+      <xs:enumeration value="addreg16" />
+      <xs:enumeration value="addreg32" />
+      <xs:enumeration value="addregfloat" />
+      <xs:enumeration value="subreg8" />
+      <xs:enumeration value="subreg16" />
+      <xs:enumeration value="subreg32" />
+      <xs:enumeration value="subregfloat" />
+      <xs:enumeration value="mulregu8" />
+      <xs:enumeration value="mulregu16" />
+      <xs:enumeration value="mulregu32" />
+      <xs:enumeration value="mulregfloat" />
+      <xs:enumeration value="mulregs8" />
+      <xs:enumeration value="mulregs16" />
+      <xs:enumeration value="mulregs32" />
+      <xs:enumeration value="divregu8" />
+      <xs:enumeration value="divregu16" />
+      <xs:enumeration value="divregu32" />
+      <xs:enumeration value="divregfloat" />
+      <xs:enumeration value="divregs8" />
+      <xs:enumeration value="divregs16" />
+      <xs:enumeration value="divregs32" />
+      <xs:enumeration value="modregu8" />
+      <xs:enumeration value="modregu16" />
+      <xs:enumeration value="modregu32" />
+      <xs:enumeration value="modregs8" />
+      <xs:enumeration value="modregs16" />
+      <xs:enumeration value="modregs32" />
+      <xs:enumeration value="shlreg8" />
+      <xs:enumeration value="shlreg16" />
+      <xs:enumeration value="shlreg32" />
+      <xs:enumeration value="shrregu8" />
+      <xs:enumeration value="shrregu16" />
+      <xs:enumeration value="shrregu32" />
+      <xs:enumeration value="shrregs8" />
+      <xs:enumeration value="shrregs16" />
+      <xs:enumeration value="shrregs32" />
+      <xs:enumeration value="rolreg8" />
+      <xs:enumeration value="rolreg16" />
+      <xs:enumeration value="rolreg32" />
+      <xs:enumeration value="rorreg8" />
+      <xs:enumeration value="rorreg16" />
+      <xs:enumeration value="rorreg32" />
+      <xs:enumeration value="andreg8" />
+      <xs:enumeration value="andreg16" />
+      <xs:enumeration value="andreg32" />
+      <xs:enumeration value="orreg8" />
+      <xs:enumeration value="orreg16" />
+      <xs:enumeration value="orreg32" />
+      <xs:enumeration value="xorreg8" />
+      <xs:enumeration value="xorreg16" />
+      <xs:enumeration value="xorreg32" />
+      <xs:enumeration value="ifeqreg8" />
+      <xs:enumeration value="ifeqreg16" />
+      <xs:enumeration value="ifeqreg32" />
+      <xs:enumeration value="ifeqregfloat" />
+      <xs:enumeration value="ifnereg8" />
+      <xs:enumeration value="ifnereg16" />
+      <xs:enumeration value="ifnereg32" />
+      <xs:enumeration value="ifneregfloat" />
+      <xs:enumeration value="ifltregu8" />
+      <xs:enumeration value="ifltregu16" />
+      <xs:enumeration value="ifltregu32" />
+      <xs:enumeration value="ifltregfloat" />
+      <xs:enumeration value="ifltregs8" />
+      <xs:enumeration value="ifltregs16" />
+      <xs:enumeration value="ifltregs32" />
+      <xs:enumeration value="iflteqregu8" />
+      <xs:enumeration value="iflteqregu16" />
+      <xs:enumeration value="iflteqregu32" />
+      <xs:enumeration value="iflteqregfloat" />
+      <xs:enumeration value="iflteqregs8" />
+      <xs:enumeration value="iflteqregs16" />
+      <xs:enumeration value="iflteqregs32" />
+      <xs:enumeration value="ifgtregu8" />
+      <xs:enumeration value="ifgtregu16" />
+      <xs:enumeration value="ifgtregu32" />
+      <xs:enumeration value="ifgtregfloat" />
+      <xs:enumeration value="ifgtregs8" />
+      <xs:enumeration value="ifgtregs16" />
+      <xs:enumeration value="ifgtregs32" />
+      <xs:enumeration value="ifgteqregu8" />
+      <xs:enumeration value="ifgteqregu16" />
+      <xs:enumeration value="ifgteqregu32" />
+      <xs:enumeration value="ifgteqregfloat" />
+      <xs:enumeration value="ifgteqregs8" />
+      <xs:enumeration value="ifgteqregs16" />
+      <xs:enumeration value="ifgteqregs32" />
+      <xs:enumeration value="ifmaskreg8" />
+      <xs:enumeration value="ifmaskreg16" />
+      <xs:enumeration value="ifmaskreg32" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AddressPattern">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9A-F]{1,8}|r1[0-5]|r[0-9]" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HexInteger">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9A-F]{1,8}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ValueType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="decimal" />
+      <xs:enumeration value="hex" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
