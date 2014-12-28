@@ -9,6 +9,11 @@
 #include "ninja.h"
 #include <d3d9.h>
 
+// HACK: Fixes conflict with Windows API PlaySound.
+#ifdef PlaySound
+#undef PlaySound
+#endif
+
 #ifdef _MSC_VER
 // MSVC doesn't have snprintf(), but it does have _snprintf().
 #define snprintf(str, size, format, ...) _snprintf(str, size, format, __VA_ARGS__)
