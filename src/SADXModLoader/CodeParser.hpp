@@ -92,6 +92,7 @@ class CodeParser
 			ifgteqregu8, ifgteqregu16, ifgteqregu32, ifgteqregfloat,
 			ifgteqregs8, ifgteqregs16, ifgteqregs32,
 			ifmaskreg8, ifmaskreg16, ifmaskreg32,
+			s8tos32, s16tos32, s32tofloat, u32tofloat, floattos32, floattou32,
 			_else,
 			endif,
 			newregs,

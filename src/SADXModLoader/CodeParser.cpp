@@ -256,6 +256,10 @@ inline void xorcode(T *address, uint32_t repeatcount, T data)
 	}
 }
 
+inline uint32_t round(float num) {
+  return (uint32_t)(num > 0 ? num + 0.5 : ceil(num - 0.5));
+}
+
 /**
  * Process a code list. (Internal recursive function)
  * @param codes Code list.
@@ -980,6 +984,28 @@ int CodeParser::processCodeList_int(const list<Code> &codes, int regnum)
 			else
 				regnum = processCodeList_int(it->falseCodes, regnum);
 			break;
+		case s8tos32:
+			*addrs32 = *addrs8;
+			break;
+		case s16tos32:
+			*addrs32 = *addrs16;
+			break;
+		case s32tofloat:
+			for (uint32_t i = 0; i < it->repeatcount; i++)
+				*addrf++ = (float)*addrs32++;
+			break;
+		case u32tofloat:
+			for (uint32_t i = 0; i < it->repeatcount; i++)
+				*addrf++ = (float)*addru32++;
+			break;
+		case floattos32:
+			for (uint32_t i = 0; i < it->repeatcount; i++)
+				*addrs32++ = round(*addrf++);
+			break;
+		case floattou32:
+			for (uint32_t i = 0; i < it->repeatcount; i++)
+				*addru32++ = round(*addrf++);
+			break;
 		default:
 			// Invalid opcode.
 			// TODO: Show an error message.
@@ -1043,7 +1069,7 @@ int CodeParser::readCodes(istream &stream)
 	clear();
 
 	// Check for the magic number.
-	static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '3'};
+	static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '4'};
 	char buf[sizeof(codemagic)];
 	stream.read(buf, sizeof(buf));
 	if (memcmp(buf, codemagic, sizeof(codemagic)) != 0)
