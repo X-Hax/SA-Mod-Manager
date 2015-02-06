@@ -27,6 +27,20 @@ bool IniGroup::hasKey(const string &key) const
 	return (m_data.find(key) != m_data.end());
 }
 
+/**
+ * Check if the INI group has the specified key with a non-empty value.
+ * @param key Key.
+ * @return True if the key exists; false if not or value is empty.
+ */
+bool IniGroup::hasKeyNonEmpty(const string &key) const
+{
+	auto iter = m_data.find(key);
+	if (iter == m_data.end())
+		return false;
+
+	return !iter->second.empty();
+}
+
 const unordered_map<string, string> *IniGroup::data(void) const
 {
 	return &m_data;
@@ -161,6 +175,21 @@ bool IniFile::hasKey(const string &section, const string &key) const
 		return false;
 
 	return iter->second->hasKey(key);
+}
+
+/**
+ * Check if the INI file has the specified key with a non-empty value.
+ * @param section Section.
+ * @param key Key.
+ * @return True if the key exists; false if not or value is empty.
+ */
+bool IniFile::hasKeyNonEmpty(const string &section, const string &key) const
+{
+	auto iter = m_groups.find(section);
+	if (iter == m_groups.end())
+		return false;
+
+	return iter->second->hasKeyNonEmpty(key);
 }
 
 /**

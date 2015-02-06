@@ -19,6 +19,7 @@ class IniGroup
 {
 	public:
 		bool hasKey(const std::string &key) const;
+		bool hasKeyNonEmpty(const std::string &key) const;
 
 		const std::unordered_map<std::string, std::string> *data(void) const;
 
@@ -54,6 +55,7 @@ class IniFile
 
 		bool hasGroup(const std::string &section) const;
 		bool hasKey(const std::string &section, const std::string &key) const;
+		bool hasKeyNonEmpty(const std::string &section, const std::string &key) const;
 
 		std::string getString(const std::string &section, const std::string &key, const std::string &def = "") const;
 		std::wstring getWString(const std::string &section, const std::string &key, const std::wstring &def = L"") const;
