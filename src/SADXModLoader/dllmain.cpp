@@ -852,13 +852,13 @@ static void __cdecl InitMods(void)
 			sadx_fileMap.scanFolder(modSysDirA);
 
 		// Check if a custom EXE is required.
-		if (modinfo->hasKey("EXEFile"))
+		if (modinfo->hasKeyNonEmpty("EXEFile"))
 		{
 			wstring modexe = modinfo->getWString("EXEFile");
 			transform(modexe.begin(), modexe.end(), modexe.begin(), ::towlower);
 
 			// Are we using the correct EXE?
-			if (!modexe.empty() && modexe.compare(exefilename) != 0)
+			if (modexe.compare(exefilename) != 0)
 			{
 				wchar_t msg[4096];
 				swprintf(msg, LengthOfArray(msg),
@@ -870,12 +870,11 @@ static void __cdecl InitMods(void)
 		}
 
 		// Check if the mod has a DLL file.
-		wstring dll_filename = modinfo->getWString("DLLFile");
-		if (!dll_filename.empty())
+		if (modinfo->hasKeyNonEmpty("DLLFile"))
 		{
 			// Prepend the mod directory.
 			// TODO: SetDllDirectory().
-			dll_filename = mod_dir + L'\\' + dll_filename;
+			wstring dll_filename = mod_dir + L'\\' + modinfo->getWString("DLLFile");
 			HMODULE module = LoadLibrary(dll_filename.c_str());
 			if (module)
 			{
