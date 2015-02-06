@@ -155,7 +155,7 @@ namespace SADXModManager
 			using (FileStream fs = File.Create(codedatpath))
 			using (BinaryWriter bw = new BinaryWriter(fs, System.Text.Encoding.ASCII))
 			{
-				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '3' });
+				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '4' });
 				bw.Write(codes.Codes.Count((a) => a.Enabled));
 				foreach (Code item in codes.Codes.Where((a) => a.Enabled))
 				{
@@ -563,6 +563,7 @@ namespace SADXModManager
 		ifgteqregu8, ifgteqregu16, ifgteqregu32, ifgteqregfloat,
 		ifgteqregs8, ifgteqregs16, ifgteqregs32,
 		ifmaskreg8, ifmaskreg16, ifmaskreg32,
+		s8tos32, s16tos32, s32tofloat, u32tofloat, floattos32, floattou32,
 		@else,
 		endif,
 		newregs
