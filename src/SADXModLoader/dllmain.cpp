@@ -15,6 +15,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <sstream>
 using std::deque;
 using std::ios_base;
 using std::ifstream;
@@ -38,6 +39,8 @@ using std::vector;
 #include "MediaFns.hpp"
 #include "TextConv.hpp"
 #include "SADXModLoader.h"
+#include "..\libmodutils\LandTableInfo.h"
+#include "..\libmodutils\ModelInfo.h"
 
 static HINSTANCE myhandle;
 static HMODULE chrmodelshandle;
@@ -669,6 +672,22 @@ static const HelperFunctions helperFunctions =
 	ClearTrialSubgameList
 };
 
+vector<string> &split(const string &s, char delim, vector<string> &elems) {
+    std::stringstream ss(s);
+    string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+    return elems;
+}
+
+
+vector<string> split(const string &s, char delim) {
+    vector<string> elems;
+    split(s, delim, elems);
+    return elems;
+}
+
 static void __cdecl InitMods(void)
 {
 	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
@@ -917,6 +936,33 @@ static void __cdecl InitMods(void)
 			{
 				const string dll_filenameA = UTF16toMBS(dll_filename, CP_ACP);
 				PrintDebug("Failed loading file \"%s\".\n", dll_filenameA.c_str());
+			}
+		}
+
+		// Check if the mod has EXE data replacements.
+		if (modinfo->hasKeyNonEmpty("EXEData"))
+		{
+			IniFile *exedata = new IniFile(modinfo->getWString("EXEData"));
+			for (auto iter = exedata->cbegin(); iter != exedata->cend(); iter++)
+			{
+				IniGroup *group = iter->second;
+				string type = group->getString("type");
+				if (type == "landtable")
+				{
+					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointers")) continue;
+					LandTable *landtable = (new LandTableInfo(group->getWString("filename")))->getlandtable();
+					vector<string> ptrs = split(group->getString("pointers"), ',');
+					for (unsigned int i = 0; i < ptrs.size(); i++)
+						*(LandTable **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = landtable;
+				}
+				else if (type == "model")
+				{
+					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointers")) continue;
+					NJS_OBJECT *model = (new ModelInfo(group->getWString("filename")))->getmodel();
+					vector<string> ptrs = split(group->getString("pointers"), ',');
+					for (unsigned int i = 0; i < ptrs.size(); i++)
+						*(NJS_OBJECT **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = model;
+				}
 			}
 		}
 	}
