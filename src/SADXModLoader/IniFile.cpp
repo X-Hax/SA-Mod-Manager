@@ -96,17 +96,29 @@ bool IniGroup::getBool(const string &key, bool def) const
 /**
  * Get an integer value from the INI group.
  * @param key Key.
+ * @param radix Radix.
  * @param def Default value.
  * @return Integer value.
  */
-int IniGroup::getInt(const string &key, int def) const
+int IniGroup::getIntRadix(const string &key, int radix, int def) const
 {
 	auto iter = m_data.find(key);
 	if (iter == m_data.end())
 		return def;
 
 	string value = iter->second;
-	return (int)strtol(value.c_str(), nullptr, 10);
+	return (int)strtol(value.c_str(), nullptr, radix);
+}
+
+/**
+ * Get an integer value from the INI group.
+ * @param key Key.
+ * @param def Default value.
+ * @return Integer value.
+ */
+int IniGroup::getInt(const string &key, int def) const
+{
+	return getIntRadix(key, 10, def);
 }
 
 /** IniFile **/
@@ -242,6 +254,22 @@ bool IniFile::getBool(const string &section, const string &key, bool def) const
  * Get an integer value from the INI file.
  * @param section Section.
  * @param key Key.
+ * @param radix Radix.
+ * @param def Default value.
+ * @return Integer value.
+ */
+int IniFile::getIntRadix(const string &section, const string &key, int radix, int def) const
+{
+	const IniGroup *group = getGroup(section);
+	if (!group)
+		return def;
+	return group->getIntRadix(key, radix, def);
+}
+
+/**
+ * Get an integer value from the INI file.
+ * @param section Section.
+ * @param key Key.
  * @param def Default value.
  * @return Integer value.
  */
@@ -251,6 +279,46 @@ int IniFile::getInt(const string &section, const string &key, int def) const
 	if (!group)
 		return def;
 	return group->getInt(key, def);
+}
+
+std::unordered_map<std::string, IniGroup*>::iterator IniFile::begin()
+{
+	return m_groups.begin();
+}
+
+std::unordered_map<std::string, IniGroup*>::const_iterator IniFile::cbegin() const
+{
+	return m_groups.cbegin();
+}
+
+std::unordered_map<std::string, IniGroup*>::reverse_iterator IniFile::rbegin()
+{
+	return m_groups.rbegin();
+}
+
+std::unordered_map<std::string, IniGroup*>::const_reverse_iterator IniFile::crbegin() const
+{
+	return m_groups.crbegin();
+}
+
+std::unordered_map<std::string, IniGroup*>::iterator IniFile::end()
+{
+	return m_groups.end();
+}
+
+std::unordered_map<std::string, IniGroup*>::const_iterator IniFile::cend() const
+{
+	return m_groups.cend();
+}
+
+std::unordered_map<std::string, IniGroup*>::reverse_iterator IniFile::rend()
+{
+	return m_groups.rend();
+}
+
+std::unordered_map<std::string, IniGroup*>::const_reverse_iterator IniFile::crend() const
+{
+	return m_groups.crend();
 }
 
 /**

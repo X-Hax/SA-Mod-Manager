@@ -26,6 +26,7 @@ class IniGroup
 		std::string getString(const std::string &key, const std::string &def = "") const;
 		std::wstring getWString(const std::string &key, const std::wstring &def = L"") const;
 		bool getBool(const std::string &key, bool def = false) const;
+		int getIntRadix(const std::string &key, int radix, int def = 0) const;
 		int getInt(const std::string &key, int def = 0) const;
 
 	protected:
@@ -60,7 +61,17 @@ class IniFile
 		std::string getString(const std::string &section, const std::string &key, const std::string &def = "") const;
 		std::wstring getWString(const std::string &section, const std::string &key, const std::wstring &def = L"") const;
 		bool getBool(const std::string &section, const std::string &key, bool def = false) const;
+		int getIntRadix(const std::string &section, const std::string &key, int radix, int def = 0) const;
 		int getInt(const std::string &section, const std::string &key, int def = 0) const;
+
+		std::unordered_map<std::string, IniGroup*>::iterator begin();
+		std::unordered_map<std::string, IniGroup*>::const_iterator cbegin() const;
+		std::unordered_map<std::string, IniGroup*>::reverse_iterator rbegin();
+		std::unordered_map<std::string, IniGroup*>::const_reverse_iterator crbegin() const;
+		std::unordered_map<std::string, IniGroup*>::iterator end();
+		std::unordered_map<std::string, IniGroup*>::const_iterator cend() const;
+		std::unordered_map<std::string, IniGroup*>::reverse_iterator rend();
+		std::unordered_map<std::string, IniGroup*>::const_reverse_iterator crend() const;
 
 	protected:
 		void load(FILE *f);
