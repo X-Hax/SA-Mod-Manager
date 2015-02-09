@@ -39,16 +39,12 @@ LIST(APPEND libmodutils_H stdafx.h)
 # Build the library. #
 ######################
 
-# Don't actually build the library, since the
-# ModLoader doesn't use it.
-IF(0)
 ADD_LIBRARY(modutils STATIC
 	${libmodutils_SRC}
 	${libmodutils_H}
 	)
 INCLUDE(SetMSVCDebugPath)
 SET_MSVC_DEBUG_PATH(modutils)
-ENDIF(0)
 
 #################
 # Installation. #

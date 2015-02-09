@@ -84,6 +84,7 @@ TARGET_LINK_LIBRARIES(SADXModLoader
 	shlwapi
 	dbghelp
 	gdiplus
+	modutils
 	)
 
 # Set the MSVC debug path.
