@@ -942,7 +942,7 @@ static void __cdecl InitMods(void)
 		// Check if the mod has EXE data replacements.
 		if (modinfo->hasKeyNonEmpty("EXEData"))
 		{
-			IniFile *exedata = new IniFile(modinfo->getWString("EXEData"));
+			IniFile *exedata = new IniFile(mod_dir + L'\\' + modinfo->getWString("EXEData"));
 			for (auto iter = exedata->cbegin(); iter != exedata->cend(); iter++)
 			{
 				IniGroup *group = iter->second;
@@ -950,7 +950,7 @@ static void __cdecl InitMods(void)
 				if (type == "landtable")
 				{
 					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointers")) continue;
-					LandTable *landtable = (new LandTableInfo(group->getWString("filename")))->getlandtable();
+					LandTable *landtable = (new LandTableInfo(mod_dir + L'\\' + group->getWString("filename")))->getlandtable();
 					vector<string> ptrs = split(group->getString("pointers"), ',');
 					for (unsigned int i = 0; i < ptrs.size(); i++)
 						*(LandTable **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = landtable;
@@ -958,7 +958,7 @@ static void __cdecl InitMods(void)
 				else if (type == "model")
 				{
 					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointers")) continue;
-					NJS_OBJECT *model = (new ModelInfo(group->getWString("filename")))->getmodel();
+					NJS_OBJECT *model = (new ModelInfo(mod_dir + L'\\' + group->getWString("filename")))->getmodel();
 					vector<string> ptrs = split(group->getString("pointers"), ',');
 					for (unsigned int i = 0; i < ptrs.size(); i++)
 						*(NJS_OBJECT **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = model;
