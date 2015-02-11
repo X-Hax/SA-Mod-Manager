@@ -7,8 +7,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
 # Sanity check: ModLoader only works on 32-bit Windows.
 IF(NOT WIN32)
 	MESSAGE(FATAL_ERROR "SADX Mod Loader can only be built for 32-bit Windows.")
-ELSEIF(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(i.|x)86\$")
-	MESSAGE(FATAL_ERROR "SADX Mod Loader can only be built for 32-bit Windows.")
+#ELSEIF(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(i.|x)86\$")
+#	MESSAGE(FATAL_ERROR "SADX Mod Loader can only be built for 32-bit Windows.")
 ENDIF()
 
 # UNSET() was added in cmake-2.6.3.
