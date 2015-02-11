@@ -62,3 +62,8 @@ ipch/
 
 # CMake build directory
 /build/
+/build.release/
+/build.debug/
+
+# MSVC project directory
+/vsproj/
