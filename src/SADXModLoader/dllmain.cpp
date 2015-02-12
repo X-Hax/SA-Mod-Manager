@@ -949,7 +949,7 @@ static void __cdecl InitMods(void)
 				string type = group->getString("type");
 				if (type == "landtable")
 				{
-					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointers")) continue;
+					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) continue;
 					LandTable *landtable = (new LandTableInfo(mod_dir + L'\\' + group->getWString("filename")))->getlandtable();
 					vector<string> ptrs = split(group->getString("pointer"), ',');
 					for (unsigned int i = 0; i < ptrs.size(); i++)
@@ -957,7 +957,7 @@ static void __cdecl InitMods(void)
 				}
 				else if (type == "model")
 				{
-					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointers")) continue;
+					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) continue;
 					NJS_OBJECT *model = (new ModelInfo(mod_dir + L'\\' + group->getWString("filename")))->getmodel();
 					vector<string> ptrs = split(group->getString("pointer"), ',');
 					for (unsigned int i = 0; i < ptrs.size(); i++)
