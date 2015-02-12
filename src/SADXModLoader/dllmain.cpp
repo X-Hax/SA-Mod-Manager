@@ -951,7 +951,7 @@ static void __cdecl InitMods(void)
 				{
 					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointers")) continue;
 					LandTable *landtable = (new LandTableInfo(mod_dir + L'\\' + group->getWString("filename")))->getlandtable();
-					vector<string> ptrs = split(group->getString("pointers"), ',');
+					vector<string> ptrs = split(group->getString("pointer"), ',');
 					for (unsigned int i = 0; i < ptrs.size(); i++)
 						*(LandTable **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = landtable;
 				}
@@ -959,7 +959,7 @@ static void __cdecl InitMods(void)
 				{
 					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointers")) continue;
 					NJS_OBJECT *model = (new ModelInfo(mod_dir + L'\\' + group->getWString("filename")))->getmodel();
-					vector<string> ptrs = split(group->getString("pointers"), ',');
+					vector<string> ptrs = split(group->getString("pointer"), ',');
 					for (unsigned int i = 0; i < ptrs.size(); i++)
 						*(NJS_OBJECT **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = model;
 				}
