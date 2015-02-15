@@ -976,7 +976,7 @@ static void __cdecl InitMods(void)
 				}
 				else if (type == "deathzone")
 				{
-					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointers")) continue;
+					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) continue;
 					wstring dzinipath = mod_dir + L'\\' + group->getWString("filename");
 					IniFile *dzdata = new IniFile(dzinipath);
 					wchar_t *buf = new wchar_t[dzinipath.size() + 1];
