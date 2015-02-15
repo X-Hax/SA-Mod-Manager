@@ -688,6 +688,17 @@ vector<string> split(const string &s, char delim) {
     return elems;
 }
 
+string trim(const string &s)
+{
+	auto st = s.find_first_not_of(' ');
+	if (st == string::npos)
+		st = 0;
+	auto ed = s.find_last_not_of(' ');
+	if (ed == string::npos)
+		ed = s.size() - 1;
+	return s.substr(st, (ed + 1) - st);
+}
+
 static void __cdecl InitMods(void)
 {
 	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
@@ -963,7 +974,61 @@ static void __cdecl InitMods(void)
 					for (unsigned int i = 0; i < ptrs.size(); i++)
 						*(NJS_OBJECT **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = model;
 				}
+				else if (type == "deathzone")
+				{
+					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointers")) continue;
+					wstring dzinipath = mod_dir + L'\\' + group->getWString("filename");
+					IniFile *dzdata = new IniFile(dzinipath);
+					wchar_t *buf = new wchar_t[dzinipath.size() + 1];
+					wcsncpy(buf, dzinipath.c_str(), dzinipath.size());
+					PathRemoveFileSpec(buf);
+					wstring dzpath = buf;
+					delete[] buf;
+					vector<DeathZone> deathzones;
+					for (int i = 0; i < 999; i++)
+					{
+						char key[4];
+						_snprintf(key, sizeof(key), "%d", i);
+						if (!dzdata->hasGroup(key)) break;
+						vector<string> strflags = split(dzdata->getString(key, "Flags"), ',');
+						int flag = 0;
+						for (auto iter = strflags.cbegin(); iter != strflags.cend(); iter++)
+						{
+							string str = trim(*iter);
+							transform(str.begin(), str.end(), str.begin(), ::tolower);
+							if (str == "sonic")
+								flag |= CharacterFlags_Sonic;
+							else if (str == "eggman")
+								flag |= CharacterFlags_Eggman;
+							else if (str == "tails")
+								flag |= CharacterFlags_Tails;
+							else if (str == "knuckles")
+								flag |= CharacterFlags_Knuckles;
+							else if (str == "tikal")
+								flag |= CharacterFlags_Tikal;
+							else if (str == "amy")
+								flag |= CharacterFlags_Amy;
+							else if (str == "gamma")
+								flag |= CharacterFlags_Gamma;
+							else if (str == "big")
+								flag |= CharacterFlags_Big;
+						}
+						wchar_t wkey[4];
+						_snwprintf(wkey, 4, L"%d", i);
+						ModelInfo *dzmdl = new ModelInfo(dzpath + L"\\" + wkey + L".sa1mdl");
+						DeathZone dz = { flag, dzmdl->getmodel() };
+						deathzones.push_back(dz);
+					}
+					delete dzdata;
+					DeathZone *newlist = new DeathZone[deathzones.size() + 1];
+					memcpy(newlist, deathzones.data(), sizeof(DeathZone) * deathzones.size());
+					memset(&newlist[deathzones.size()], 0, sizeof(DeathZone));
+					vector<string> ptrs = split(group->getString("pointer"), ',');
+					for (unsigned int i = 0; i < ptrs.size(); i++)
+						*(DeathZone **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = newlist;
+				}
 			}
+			delete exedata;
 		}
 	}
 
