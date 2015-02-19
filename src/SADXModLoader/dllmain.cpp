@@ -1138,7 +1138,7 @@ static void __cdecl InitMods(void)
 	ifstream codes_str("mods\\Codes.dat", ifstream::binary);
 	if (codes_str.is_open())
 	{
-		static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '3'};
+		static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '4'};
 		char buf[sizeof(codemagic)];
 		codes_str.read(buf, sizeof(buf));
 		if (!memcmp(buf, codemagic, sizeof(codemagic)))
