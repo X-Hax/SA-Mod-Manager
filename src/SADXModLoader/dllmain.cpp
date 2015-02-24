@@ -194,9 +194,13 @@ static const uint32_t fadecolors[] = {
 // Code Parser.
 static CodeParser codeParser;
 
+static vector<ModFrameFunc> modFrameFuncs;
+
 static void __cdecl ProcessCodes()
 {
 	codeParser.processCodeList();
+	for (unsigned int i = 0; i < modFrameFuncs.size(); i++)
+		modFrameFuncs[i]();
 	const int numrows = (VerticalResolution / 12);
 	int pos;
 	if ((int)msgqueue.size() <= numrows - 1)
@@ -929,13 +933,35 @@ static void __cdecl InitMods(void)
 					if (info->Pointers)
 					{
 						for (int i = 0; i < info->PointerCount; i++)
-							WriteData((void**)info->Pointers[i].address, info->Pointers[i].data);
+							WriteData((void **)info->Pointers[i].address, info->Pointers[i].data);
 					}
 					if (info->Init)
 					{
 						// TODO: Convert to Unicode later. (Will require an API bump.)
 						info->Init(mod_dirA.c_str(), helperFunctions);
 					}
+					const ModInitFunc init = (const ModInitFunc)GetProcAddress(module, "Init");
+					if (init)
+						init(mod_dirA.c_str(), helperFunctions);
+					const PatchList *patches = (const PatchList *)GetProcAddress(module, "Patches");
+					if (patches)
+						for (int i = 0; i < patches->Count; i++)
+							WriteData(patches->Patches[i].address, patches->Patches[i].data, patches->Patches[i].datasize);
+					const PointerList *jumps = (const PointerList *)GetProcAddress(module, "Jumps");
+					if (jumps)
+						for (int i = 0; i < jumps->Count; i++)
+							WriteJump(jumps->Pointers[i].address, jumps->Pointers[i].data);
+					const PointerList *calls = (const PointerList *)GetProcAddress(module, "Calls");
+					if (calls)
+						for (int i = 0; i < calls->Count; i++)
+							WriteCall(calls->Pointers[i].address, calls->Pointers[i].data);
+					const PointerList *pointers = (const PointerList *)GetProcAddress(module, "Pointers");
+					if (pointers)
+						for (int i = 0; i < pointers->Count; i++)
+							WriteData((void **)pointers->Pointers[i].address, pointers->Pointers[i].data);
+					const ModFrameFunc frame = (const ModFrameFunc)GetProcAddress(module, "OnFrame");
+					if (frame)
+						modFrameFuncs.push_back(frame);
 				}
 				else
 				{

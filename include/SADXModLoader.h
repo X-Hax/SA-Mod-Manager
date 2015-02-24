@@ -56,10 +56,22 @@ struct PatchInfo
 	int datasize;
 };
 
+struct PatchList
+{
+	const PatchInfo *Patches;
+	int Count;
+};
+
 struct PointerInfo
 {
 	void *address;
 	void *data;
+};
+
+struct PointerList
+{
+	const PointerInfo *Pointers;
+	int Count;
 };
 
 struct HelperFunctions_v3
@@ -98,10 +110,14 @@ struct HelperFunctions_v3
 
 typedef HelperFunctions_v3 HelperFunctions;
 
+typedef void (__cdecl *ModInitFunc)(const char *path, const HelperFunctions &helperFunctions);
+
+typedef void (__cdecl *ModFrameFunc)();
+
 struct ModInfo
 {
 	int Version;
-	void (__cdecl *Init)(const char *path, const HelperFunctions &helperFunctions);
+	ModInitFunc Init;
 	const PatchInfo *Patches;
 	int PatchCount;
 	const PointerInfo *Jumps;
