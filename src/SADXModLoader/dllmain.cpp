@@ -703,6 +703,105 @@ string trim(const string &s)
 	return s.substr(st, (ed + 1) - st);
 }
 
+static const struct { const string name; const uint8_t value; } charflagsnamearray[] = {
+	{ "sonic", CharacterFlags_Sonic },
+	{ "eggman", CharacterFlags_Eggman },
+	{ "tails", CharacterFlags_Tails },
+	{ "knuckles", CharacterFlags_Knuckles },
+	{ "tikal", CharacterFlags_Tikal },
+	{ "amy", CharacterFlags_Amy },
+	{ "gamma", CharacterFlags_Gamma },
+	{ "big", CharacterFlags_Big }
+};
+
+static unordered_map<const string, uint8_t> charflagsnamemap;
+
+uint8_t ParseCharacterFlags(const string &str)
+{
+	if (charflagsnamemap.size() == 0)
+		for (unsigned int i = 0; i < LengthOfArray(charflagsnamearray); i++)
+			charflagsnamemap[charflagsnamearray[i].name] = charflagsnamearray[i].value;
+	vector<string> strflags = split(str, ',');
+	uint8_t flag = 0;
+	for (auto iter = strflags.cbegin(); iter != strflags.cend(); iter++)
+	{
+		string str = trim(*iter);
+		transform(str.begin(), str.end(), str.begin(), ::tolower);
+		auto ch = charflagsnamemap.find(str);
+		if (ch != charflagsnamemap.end())
+			flag |= ch->second;
+	}
+}
+
+template<typename T>
+vector<T **> ParsePointerList(const string &list)
+{
+	vector<string> ptrs = split(list, ',');
+	vector<T **> result;
+	for (unsigned int i = 0; i < ptrs.size(); i++)
+		result.push_back((T **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000));
+	return result;
+}
+
+static void ProcessLandTableINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	LandTable *landtable = (new LandTableInfo(mod_dir + L'\\' + group->getWString("filename")))->getlandtable();
+	vector<LandTable **> ptrs = ParsePointerList<LandTable>(group->getString("pointer"));
+	for (unsigned int i = 0; i < ptrs.size(); i++)
+		*ptrs[i] = landtable;
+}
+
+static void ProcessModelINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	NJS_OBJECT *model = (new ModelInfo(mod_dir + L'\\' + group->getWString("filename")))->getmodel();
+	vector<NJS_OBJECT **> ptrs = ParsePointerList<NJS_OBJECT>(group->getString("pointer"));
+	for (unsigned int i = 0; i < ptrs.size(); i++)
+		*ptrs[i] = model;
+}
+
+static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	wstring dzinipath = mod_dir + L'\\' + group->getWString("filename");
+	IniFile *dzdata = new IniFile(dzinipath);
+	wchar_t *buf = new wchar_t[dzinipath.size() + 1];
+	wcsncpy(buf, dzinipath.c_str(), dzinipath.size());
+	PathRemoveFileSpec(buf);
+	wstring dzpath = buf;
+	delete[] buf;
+	vector<DeathZone> deathzones;
+	for (int i = 0; i < 999; i++)
+	{
+		char key[4];
+		_snprintf(key, sizeof(key), "%d", i);
+		if (!dzdata->hasGroup(key)) break;
+		uint8_t flag = ParseCharacterFlags(dzdata->getString(key, "Flags"));
+		wchar_t wkey[4];
+		_snwprintf(wkey, 4, L"%d", i);
+		ModelInfo *dzmdl = new ModelInfo(dzpath + L"\\" + wkey + L".sa1mdl");
+		DeathZone dz = { flag, dzmdl->getmodel() };
+		deathzones.push_back(dz);
+	}
+	delete dzdata;
+	DeathZone *newlist = new DeathZone[deathzones.size() + 1];
+	memcpy(newlist, deathzones.data(), sizeof(DeathZone) * deathzones.size());
+	memset(&newlist[deathzones.size()], 0, sizeof(DeathZone));
+	vector<DeathZone **> ptrs = ParsePointerList<DeathZone>(group->getString("pointer"));
+	for (unsigned int i = 0; i < ptrs.size(); i++)
+		*ptrs[i] = newlist;
+}
+
+static const struct { const string name; void (__cdecl *func)(const IniGroup *group, const wstring &mod_dir); } datafuncarray[] = {
+	{ "landtable", ProcessLandTableINI },
+	{ "model", ProcessModelINI },
+	{ "basicdxmodel", ProcessModelINI },
+	{ "deathzone", ProcessDeathZoneINI }
+};
+
+static unordered_map<const string, void (__cdecl *)(const IniGroup *group, const wstring &mod_dir)> datafuncmap;
+
 static void __cdecl InitMods(void)
 {
 	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
@@ -979,80 +1078,16 @@ static void __cdecl InitMods(void)
 		// Check if the mod has EXE data replacements.
 		if (modinfo->hasKeyNonEmpty("EXEData"))
 		{
+			if (datafuncmap.size() == 0)
+				for (unsigned int i = 0; i < LengthOfArray(datafuncarray); i++)
+					datafuncmap[datafuncarray[i].name] = datafuncarray[i].func;
 			IniFile *exedata = new IniFile(mod_dir + L'\\' + modinfo->getWString("EXEData"));
 			for (auto iter = exedata->cbegin(); iter != exedata->cend(); iter++)
 			{
 				IniGroup *group = iter->second;
-				string type = group->getString("type");
-				if (type == "landtable")
-				{
-					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) continue;
-					LandTable *landtable = (new LandTableInfo(mod_dir + L'\\' + group->getWString("filename")))->getlandtable();
-					vector<string> ptrs = split(group->getString("pointer"), ',');
-					for (unsigned int i = 0; i < ptrs.size(); i++)
-						*(LandTable **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = landtable;
-				}
-				else if (type == "model")
-				{
-					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) continue;
-					NJS_OBJECT *model = (new ModelInfo(mod_dir + L'\\' + group->getWString("filename")))->getmodel();
-					vector<string> ptrs = split(group->getString("pointer"), ',');
-					for (unsigned int i = 0; i < ptrs.size(); i++)
-						*(NJS_OBJECT **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = model;
-				}
-				else if (type == "deathzone")
-				{
-					if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) continue;
-					wstring dzinipath = mod_dir + L'\\' + group->getWString("filename");
-					IniFile *dzdata = new IniFile(dzinipath);
-					wchar_t *buf = new wchar_t[dzinipath.size() + 1];
-					wcsncpy(buf, dzinipath.c_str(), dzinipath.size());
-					PathRemoveFileSpec(buf);
-					wstring dzpath = buf;
-					delete[] buf;
-					vector<DeathZone> deathzones;
-					for (int i = 0; i < 999; i++)
-					{
-						char key[4];
-						_snprintf(key, sizeof(key), "%d", i);
-						if (!dzdata->hasGroup(key)) break;
-						vector<string> strflags = split(dzdata->getString(key, "Flags"), ',');
-						int flag = 0;
-						for (auto iter = strflags.cbegin(); iter != strflags.cend(); iter++)
-						{
-							string str = trim(*iter);
-							transform(str.begin(), str.end(), str.begin(), ::tolower);
-							if (str == "sonic")
-								flag |= CharacterFlags_Sonic;
-							else if (str == "eggman")
-								flag |= CharacterFlags_Eggman;
-							else if (str == "tails")
-								flag |= CharacterFlags_Tails;
-							else if (str == "knuckles")
-								flag |= CharacterFlags_Knuckles;
-							else if (str == "tikal")
-								flag |= CharacterFlags_Tikal;
-							else if (str == "amy")
-								flag |= CharacterFlags_Amy;
-							else if (str == "gamma")
-								flag |= CharacterFlags_Gamma;
-							else if (str == "big")
-								flag |= CharacterFlags_Big;
-						}
-						wchar_t wkey[4];
-						_snwprintf(wkey, 4, L"%d", i);
-						ModelInfo *dzmdl = new ModelInfo(dzpath + L"\\" + wkey + L".sa1mdl");
-						DeathZone dz = { flag, dzmdl->getmodel() };
-						deathzones.push_back(dz);
-					}
-					delete dzdata;
-					DeathZone *newlist = new DeathZone[deathzones.size() + 1];
-					memcpy(newlist, deathzones.data(), sizeof(DeathZone) * deathzones.size());
-					memset(&newlist[deathzones.size()], 0, sizeof(DeathZone));
-					vector<string> ptrs = split(group->getString("pointer"), ',');
-					for (unsigned int i = 0; i < ptrs.size(); i++)
-						*(DeathZone **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = newlist;
-				}
+				auto type = datafuncmap.find(group->getString("type"));
+				if (type != datafuncmap.end())
+					type->second(group, mod_dir);
 			}
 			delete exedata;
 		}
