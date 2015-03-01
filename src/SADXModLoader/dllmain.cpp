@@ -703,7 +703,7 @@ string trim(const string &s)
 	return s.substr(st, (ed + 1) - st);
 }
 
-static const struct { const string name; const uint8_t value; } charflagsnamearray[] = {
+static const struct { const char *name; const uint8_t value; } charflagsnamearray[] = {
 	{ "sonic", CharacterFlags_Sonic },
 	{ "eggman", CharacterFlags_Eggman },
 	{ "tails", CharacterFlags_Tails },
@@ -714,7 +714,7 @@ static const struct { const string name; const uint8_t value; } charflagsnamearr
 	{ "big", CharacterFlags_Big }
 };
 
-static unordered_map<const string, uint8_t> charflagsnamemap;
+static unordered_map<string, uint8_t> charflagsnamemap;
 
 uint8_t ParseCharacterFlags(const string &str)
 {
@@ -793,14 +793,14 @@ static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 		*ptrs[i] = newlist;
 }
 
-static const struct { const string name; void (__cdecl *func)(const IniGroup *group, const wstring &mod_dir); } datafuncarray[] = {
+static const struct { const char *name; void (__cdecl *func)(const IniGroup *group, const wstring &mod_dir); } datafuncarray[] = {
 	{ "landtable", ProcessLandTableINI },
 	{ "model", ProcessModelINI },
 	{ "basicdxmodel", ProcessModelINI },
 	{ "deathzone", ProcessDeathZoneINI }
 };
 
-static unordered_map<const string, void (__cdecl *)(const IniGroup *group, const wstring &mod_dir)> datafuncmap;
+static unordered_map<string, void (__cdecl *)(const IniGroup *group, const wstring &mod_dir)> datafuncmap;
 
 static void __cdecl InitMods(void)
 {
