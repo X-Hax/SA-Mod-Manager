@@ -731,6 +731,7 @@ uint8_t ParseCharacterFlags(const string &str)
 		if (ch != charflagsnamemap.end())
 			flag |= ch->second;
 	}
+	return flag;
 }
 
 template<typename T>
