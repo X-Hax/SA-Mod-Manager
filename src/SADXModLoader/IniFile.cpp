@@ -121,6 +121,22 @@ int IniGroup::getInt(const string &key, int def) const
 	return getIntRadix(key, 10, def);
 }
 
+/**
+ * Get an floating-point value from the INI group.
+ * @param key Key.
+ * @param def Default value.
+ * @return Floating-point value.
+ */
+float IniGroup::getFloat(const string &key, float def) const
+{
+	auto iter = m_data.find(key);
+	if (iter == m_data.end())
+		return def;
+
+	string value = iter->second;
+	return (float)strtod(value.c_str(), nullptr);
+}
+
 /** IniFile **/
 
 IniFile::IniFile(const string &filename)
@@ -279,6 +295,21 @@ int IniFile::getInt(const string &section, const string &key, int def) const
 	if (!group)
 		return def;
 	return group->getInt(key, def);
+}
+
+/**
+ * Get a floating-point value from the INI file.
+ * @param section Section.
+ * @param key Key.
+ * @param def Default value.
+ * @return Floating-point value.
+ */
+float IniFile::getFloat(const string &section, const string &key, float def) const
+{
+	const IniGroup *group = getGroup(section);
+	if (!group)
+		return def;
+	return group->getFloat(key, def);
 }
 
 std::unordered_map<std::string, IniGroup*>::iterator IniFile::begin()

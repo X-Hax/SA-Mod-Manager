@@ -28,6 +28,7 @@ class IniGroup
 		bool getBool(const std::string &key, bool def = false) const;
 		int getIntRadix(const std::string &key, int radix, int def = 0) const;
 		int getInt(const std::string &key, int def = 0) const;
+		float getFloat(const std::string &key, float def = 0) const;
 
 	protected:
 		friend class IniFile;
@@ -63,6 +64,7 @@ class IniFile
 		bool getBool(const std::string &section, const std::string &key, bool def = false) const;
 		int getIntRadix(const std::string &section, const std::string &key, int radix, int def = 0) const;
 		int getInt(const std::string &section, const std::string &key, int def = 0) const;
+		float getFloat(const std::string &section, const std::string &key, float def = 0) const;
 
 		std::unordered_map<std::string, IniGroup*>::iterator begin();
 		std::unordered_map<std::string, IniGroup*>::const_iterator cbegin() const;
