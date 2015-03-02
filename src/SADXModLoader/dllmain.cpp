@@ -41,6 +41,7 @@ using std::vector;
 #include "SADXModLoader.h"
 #include "..\libmodutils\LandTableInfo.h"
 #include "..\libmodutils\ModelInfo.h"
+#include "..\libmodutils\AnimationFile.h"
 
 static HINSTANCE myhandle;
 static HMODULE chrmodelshandle;
@@ -650,7 +651,7 @@ static void RegisterTrialSubgame(unsigned char character, const TrialLevelListEn
 	newlist->push_back(level);
 }
 
-void ClearTrialSubgameList(unsigned char character)
+static void ClearTrialSubgameList(unsigned char character)
 {
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
@@ -676,7 +677,7 @@ static const HelperFunctions helperFunctions =
 	ClearTrialSubgameList
 };
 
-vector<string> &split(const string &s, char delim, vector<string> &elems) {
+static vector<string> &split(const string &s, char delim, vector<string> &elems) {
     std::stringstream ss(s);
     string item;
     while (std::getline(ss, item, delim)) {
@@ -686,13 +687,13 @@ vector<string> &split(const string &s, char delim, vector<string> &elems) {
 }
 
 
-vector<string> split(const string &s, char delim) {
+static vector<string> split(const string &s, char delim) {
     vector<string> elems;
     split(s, delim, elems);
     return elems;
 }
 
-string trim(const string &s)
+static string trim(const string &s)
 {
 	auto st = s.find_first_not_of(' ');
 	if (st == string::npos)
@@ -716,7 +717,7 @@ static const struct { const char *name; const uint8_t value; } charflagsnamearra
 
 static unordered_map<string, uint8_t> charflagsnamemap;
 
-uint8_t ParseCharacterFlags(const string &str)
+static uint8_t ParseCharacterFlags(const string &str)
 {
 	if (charflagsnamemap.size() == 0)
 		for (unsigned int i = 0; i < LengthOfArray(charflagsnamearray); i++)
@@ -735,7 +736,7 @@ uint8_t ParseCharacterFlags(const string &str)
 }
 
 template<typename T>
-vector<T **> ParsePointerList(const string &list)
+static vector<T **> ParsePointerList(const string &list)
 {
 	vector<string> ptrs = split(list, ',');
 	vector<T **> result;
@@ -753,13 +754,65 @@ static void ProcessLandTableINI(const IniGroup *group, const wstring &mod_dir)
 		*ptrs[i] = landtable;
 }
 
+static unordered_map<string, NJS_OBJECT *> inimodels;
 static void ProcessModelINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	NJS_OBJECT *model = (new ModelInfo(mod_dir + L'\\' + group->getWString("filename")))->getmodel();
+	ModelInfo *mdlinf = new ModelInfo(mod_dir + L'\\' + group->getWString("filename"));
+	NJS_OBJECT *model = mdlinf->getmodel();
+	inimodels[mdlinf->getlabel(model)] = model;
 	vector<NJS_OBJECT **> ptrs = ParsePointerList<NJS_OBJECT>(group->getString("pointer"));
 	for (unsigned int i = 0; i < ptrs.size(); i++)
 		*ptrs[i] = model;
+}
+
+static void ProcessActionINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	NJS_ACTION *action = new NJS_ACTION;
+	action->motion = (new AnimationFile(mod_dir + L'\\' + group->getWString("filename")))->getmotion();
+	action->object = inimodels.find(group->getString("model"))->second;
+	vector<NJS_ACTION **> ptrs = ParsePointerList<NJS_ACTION>(group->getString("pointer"));
+	for (unsigned int i = 0; i < ptrs.size(); i++)
+		*ptrs[i] = action;
+}
+
+static void ProcessAnimationINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	NJS_MOTION *animation = (new AnimationFile(mod_dir + L'\\' + group->getWString("filename")))->getmotion();
+	vector<NJS_MOTION **> ptrs = ParsePointerList<NJS_MOTION>(group->getString("pointer"));
+	for (unsigned int i = 0; i < ptrs.size(); i++)
+		*ptrs[i] = animation;
+}
+
+static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	const IniFile *objlistdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	vector<ObjectListEntry> objs;
+	for (int i = 0; i < 999; i++)
+	{
+		char key[4];
+		_snprintf(key, sizeof(key), "%d", i);
+		if (!objlistdata->hasGroup(key)) break;
+		const IniGroup *objdata = objlistdata->getGroup(key);
+		ObjectListEntry entry = { };
+		entry.Arg1 = objdata->getInt("Arg1");
+		entry.Arg2 = objdata->getInt("Arg2");
+		entry.UseDistance = objdata->getInt("Flags");
+		entry.Distance = objdata->getFloat("Distance");
+		entry.LoadSub = (ObjectFuncPtr)objdata->getIntRadix("Code", 16);
+		entry.Name = strdup(objdata->getString("Name").c_str());
+		objs.push_back(entry);
+	}
+	ObjectList *list = new ObjectList;
+	list->Count = objs.size();
+	list->List = new ObjectListEntry[list->Count];
+	memcpy(list->List, objs.data(), sizeof(ObjectListEntry) * list->Count);
+	vector<ObjectList **> ptrs = ParsePointerList<ObjectList>(group->getString("pointer"));
+	for (unsigned int i = 0; i < ptrs.size(); i++)
+		*ptrs[i] = list;
 }
 
 static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
@@ -798,6 +851,10 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "landtable", ProcessLandTableINI },
 	{ "model", ProcessModelINI },
 	{ "basicdxmodel", ProcessModelINI },
+	{ "chunkmodel", ProcessModelINI },
+	{ "action", ProcessActionINI },
+	{ "animation", ProcessAnimationINI },
+	{ "objlist", ProcessObjListINI },
 	{ "deathzone", ProcessDeathZoneINI }
 };
 
