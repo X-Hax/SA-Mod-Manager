@@ -940,10 +940,25 @@ static void ProcessTexListINI(const IniGroup *group, const wstring &mod_dir)
 	const IniFile *texlistdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<PVMEntry> texs = ProcessTexListINI_Internal(texlistdata);
 	auto numents = texs.size();
-	PVMEntry *list = new PVMEntry[texs.size() + 1];
+	PVMEntry *list = new PVMEntry[numents + 1];
 	memcpy(list, texs.data(), numents * sizeof(PVMEntry));
 	ZeroMemory(&list[numents], sizeof(PVMEntry));
 	ProcessPointerList(group->getString("pointer"), list);
+}
+
+static void ProcessLevelTexListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	const IniFile *texlistdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	vector<PVMEntry> texs = ProcessTexListINI_Internal(texlistdata);
+	auto numents = texs.size();
+	PVMEntry *list = new PVMEntry[numents];
+	memcpy(list, texs.data(), numents * sizeof(PVMEntry));
+	LevelPVMList *lvl = new LevelPVMList;
+	lvl->Level = (int16_t)ParseLevelAndActID(texlistdata->getString("", "Level", "0000"));
+	lvl->NumTextures = (int16_t)numents;
+	lvl->PVMList = list;
+	ProcessPointerList(group->getString("pointer"), lvl);
 }
 
 static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
@@ -986,6 +1001,7 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "objlist", ProcessObjListINI },
 	{ "startpos", ProcessStartPosINI },
 	{ "texlist", ProcessTexListINI },
+	{ "leveltexlist", ProcessLevelTexListINI },
 	{ "deathzone", ProcessDeathZoneINI }
 };
 
