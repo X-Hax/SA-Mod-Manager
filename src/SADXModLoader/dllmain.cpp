@@ -907,10 +907,42 @@ static void ProcessStartPosINI(const IniGroup *group, const wstring &mod_dir)
 		pos.ActID = (int16_t)(levelact & 0xFF);
 		ParseVertex(iter->second->getString("Position", "0,0,0"), pos.Position);
 		pos.YRot = iter->second->getIntRadix("YRotation", 16);
+		poss.push_back(pos);
 	}
-	StartPosition *list = new StartPosition[poss.size() + 1];
-	memcpy(list, poss.data(), poss.size() * sizeof(StartPosition));
-	list[poss.size()].LevelID = LevelIDs_Invalid;
+	auto numents = poss.size();
+	StartPosition *list = new StartPosition[numents + 1];
+	memcpy(list, poss.data(), numents * sizeof(StartPosition));
+	ZeroMemory(&list[numents], sizeof(StartPosition));
+	list[numents].LevelID = LevelIDs_Invalid;
+	ProcessPointerList(group->getString("pointer"), list);
+}
+
+static vector<PVMEntry> ProcessTexListINI_Internal(const IniFile *texlistdata)
+{
+	vector<PVMEntry> texs;
+	for (int i = 0; i < 999; i++)
+	{
+		char key[4];
+		_snprintf(key, sizeof(key), "%d", i);
+		if (!texlistdata->hasGroup(key)) break;
+		const IniGroup *pvmdata = texlistdata->getGroup(key);
+		PVMEntry entry = { };
+		entry.Name = strdup(pvmdata->getString("Name").c_str());
+		entry.TexList = (NJS_TEXLIST *)pvmdata->getIntRadix("Textures", 16);
+		texs.push_back(entry);
+	}
+	return texs;
+}
+
+static void ProcessTexListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	const IniFile *texlistdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	vector<PVMEntry> texs = ProcessTexListINI_Internal(texlistdata);
+	auto numents = texs.size();
+	PVMEntry *list = new PVMEntry[texs.size() + 1];
+	memcpy(list, texs.data(), numents * sizeof(PVMEntry));
+	ZeroMemory(&list[numents], sizeof(PVMEntry));
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
@@ -953,6 +985,7 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "animation", ProcessAnimationINI },
 	{ "objlist", ProcessObjListINI },
 	{ "startpos", ProcessStartPosINI },
+	{ "texlist", ProcessTexListINI },
 	{ "deathzone", ProcessDeathZoneINI }
 };
 
