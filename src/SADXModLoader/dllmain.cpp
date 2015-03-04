@@ -827,7 +827,7 @@ static void ParseRotation(const string str, Rotation &rot)
 }
 
 template<typename T>
-static void ProcessPointerList(const string &list, const T *item)
+static void ProcessPointerList(const string &list, T *item)
 {
 	vector<string> ptrs = split(list, ',');
 	for (unsigned int i = 0; i < ptrs.size(); i++)
@@ -961,6 +961,32 @@ static void ProcessLevelTexListINI(const IniGroup *group, const wstring &mod_dir
 	ProcessPointerList(group->getString("pointer"), lvl);
 }
 
+static void ProcessTrialLevelListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	ifstream fstr(mod_dir + L'\\' + group->getWString("filename"));
+	vector<TrialLevelListEntry> lvls;
+	while (fstr.good())
+	{
+		string str;
+		getline(fstr, str);
+		if (str.size() > 0)
+		{
+			TrialLevelListEntry ent;
+			uint16_t lvl = ParseLevelAndActID(str);
+			ent.Level = (char)(lvl >> 8);
+			ent.Act = (char)lvl;
+			lvls.push_back(ent);
+		}
+	}
+	auto numents = lvls.size();
+	TrialLevelList *list = new TrialLevelList;
+	list->Levels = new TrialLevelListEntry[numents];
+	memcpy(list->Levels, lvls.data(), numents * sizeof(TrialLevelListEntry));
+	list->Count = (int)numents;
+	ProcessPointerList(group->getString("pointer"), list);
+}
+
 static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
@@ -1002,6 +1028,7 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "startpos", ProcessStartPosINI },
 	{ "texlist", ProcessTexListINI },
 	{ "leveltexlist", ProcessLevelTexListINI },
+	{ "triallevellist", ProcessTrialLevelListINI },
 	{ "deathzone", ProcessDeathZoneINI }
 };
 
