@@ -704,6 +704,81 @@ static string trim(const string &s)
 	return s.substr(st, (ed + 1) - st);
 }
 
+static const struct { const char *name; const uint8_t value; } levelidsnamearray[] = {
+	{ "hedgehoghammer", 0 },
+	{ "emeraldcoast", 1 },
+	{ "windyvalley", 2 },
+	{ "twinklepark", 3 },
+	{ "speedhighway", 4 },
+	{ "redmountain", 5 },
+	{ "skydeck", 6 },
+	{ "lostworld", 7 },
+	{ "icecap", 8 },
+	{ "casinopolis", 9 },
+	{ "finalegg", 10 },
+	{ "hotshelter", 12 },
+	{ "chaos0", 15 },
+	{ "chaos2", 16 },
+	{ "chaos4", 17 },
+	{ "chaos6", 18 },
+	{ "perfectchaos", 19 },
+	{ "egghornet", 20 },
+	{ "eggwalker", 21 },
+	{ "eggviper", 22 },
+	{ "zero", 23 },
+	{ "e101", 24 },
+	{ "e101r", 25 },
+	{ "stationsquare", 26 },
+	{ "eggcarrieroutside", 29 },
+	{ "eggcarrierinside", 32 },
+	{ "mysticruins", 33 },
+	{ "past", 34 },
+	{ "twinklecircuit", 35 },
+	{ "skychase1", 36 },
+	{ "skychase2", 37 },
+	{ "sandhill", 38 },
+	{ "ssgarden", 39 },
+	{ "ecgarden", 40 },
+	{ "mrgarden", 41 },
+	{ "chaorace", 42 },
+	{ "invalid", 43 }
+};
+
+static unordered_map<string, uint8_t> levelidsnamemap;
+
+static uint8_t ParseLevelID(string str)
+{
+	if (levelidsnamemap.size() == 0)
+		for (unsigned int i = 0; i < LengthOfArray(levelidsnamearray); i++)
+			levelidsnamemap[levelidsnamearray[i].name] = levelidsnamearray[i].value;
+	str = trim(str);
+	transform(str.begin(), str.end(), str.begin(), ::tolower);
+	auto lv = levelidsnamemap.find(str);
+	if (lv != levelidsnamemap.end())
+		return lv->second;
+	else
+		return (uint8_t)strtol(str.c_str(), nullptr, 10);
+}
+
+static uint16_t ParseLevelAndActID(const string &str)
+{
+	if (str.size() == 4)
+	{
+		const char *cstr = str.c_str();
+		char buf[3];
+		buf[2] = 0;
+		memcpy(buf, cstr, 2);
+		uint16_t result = (uint16_t)(strtol(buf, nullptr, 10) << 8);
+		memcpy(buf, cstr + 2, 2);
+		return result | (uint16_t)strtol(buf, nullptr, 10);
+	}
+	else
+	{
+		vector<string> strs = split(str, ' ');
+		return (uint16_t)((ParseLevelID(strs[0]) << 8) | strtol(strs[1].c_str(), nullptr, 10));
+	}
+}
+
 static const struct { const char *name; const uint8_t value; } charflagsnamearray[] = {
 	{ "sonic", CharacterFlags_Sonic },
 	{ "eggman", CharacterFlags_Eggman },
@@ -735,23 +810,35 @@ static uint8_t ParseCharacterFlags(const string &str)
 	return flag;
 }
 
+static void ParseVertex(const string &str, Vertex &vert)
+{
+	vector<string> vals = split(str, ',');
+	vert.x = (float)strtod(vals[0].c_str(), nullptr);
+	vert.y = (float)strtod(vals[1].c_str(), nullptr);
+	vert.z = (float)strtod(vals[2].c_str(), nullptr);
+}
+
+static void ParseRotation(const string str, Rotation &rot)
+{
+	vector<string> vals = split(str, ',');
+	rot.x = (int)strtol(vals[0].c_str(), nullptr, 16);
+	rot.y = (int)strtol(vals[1].c_str(), nullptr, 16);
+	rot.z = (int)strtol(vals[2].c_str(), nullptr, 16);
+}
+
 template<typename T>
-static vector<T **> ParsePointerList(const string &list)
+static void ProcessPointerList(const string &list, const T *item)
 {
 	vector<string> ptrs = split(list, ',');
-	vector<T **> result;
 	for (unsigned int i = 0; i < ptrs.size(); i++)
-		result.push_back((T **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000));
-	return result;
+		*(T **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = item;
 }
 
 static void ProcessLandTableINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
 	LandTable *landtable = (new LandTableInfo(mod_dir + L'\\' + group->getWString("filename")))->getlandtable();
-	vector<LandTable **> ptrs = ParsePointerList<LandTable>(group->getString("pointer"));
-	for (unsigned int i = 0; i < ptrs.size(); i++)
-		*ptrs[i] = landtable;
+	ProcessPointerList(group->getString("pointer"), landtable);
 }
 
 static unordered_map<string, NJS_OBJECT *> inimodels;
@@ -761,9 +848,7 @@ static void ProcessModelINI(const IniGroup *group, const wstring &mod_dir)
 	ModelInfo *mdlinf = new ModelInfo(mod_dir + L'\\' + group->getWString("filename"));
 	NJS_OBJECT *model = mdlinf->getmodel();
 	inimodels[mdlinf->getlabel(model)] = model;
-	vector<NJS_OBJECT **> ptrs = ParsePointerList<NJS_OBJECT>(group->getString("pointer"));
-	for (unsigned int i = 0; i < ptrs.size(); i++)
-		*ptrs[i] = model;
+	ProcessPointerList(group->getString("pointer"), model);
 }
 
 static void ProcessActionINI(const IniGroup *group, const wstring &mod_dir)
@@ -772,18 +857,14 @@ static void ProcessActionINI(const IniGroup *group, const wstring &mod_dir)
 	NJS_ACTION *action = new NJS_ACTION;
 	action->motion = (new AnimationFile(mod_dir + L'\\' + group->getWString("filename")))->getmotion();
 	action->object = inimodels.find(group->getString("model"))->second;
-	vector<NJS_ACTION **> ptrs = ParsePointerList<NJS_ACTION>(group->getString("pointer"));
-	for (unsigned int i = 0; i < ptrs.size(); i++)
-		*ptrs[i] = action;
+	ProcessPointerList(group->getString("pointer"), action);
 }
 
 static void ProcessAnimationINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
 	NJS_MOTION *animation = (new AnimationFile(mod_dir + L'\\' + group->getWString("filename")))->getmotion();
-	vector<NJS_MOTION **> ptrs = ParsePointerList<NJS_MOTION>(group->getString("pointer"));
-	for (unsigned int i = 0; i < ptrs.size(); i++)
-		*ptrs[i] = animation;
+	ProcessPointerList(group->getString("pointer"), animation);
 }
 
 static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
@@ -810,9 +891,27 @@ static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
 	list->Count = objs.size();
 	list->List = new ObjectListEntry[list->Count];
 	memcpy(list->List, objs.data(), sizeof(ObjectListEntry) * list->Count);
-	vector<ObjectList **> ptrs = ParsePointerList<ObjectList>(group->getString("pointer"));
-	for (unsigned int i = 0; i < ptrs.size(); i++)
-		*ptrs[i] = list;
+	ProcessPointerList(group->getString("pointer"), list);
+}
+
+static void ProcessStartPosINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	const IniFile *startposdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	vector<StartPosition> poss;
+	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); iter++)
+	{
+		StartPosition pos = { };
+		uint16_t levelact = ParseLevelAndActID(iter->first);
+		pos.LevelID = (int16_t)(levelact >> 8);
+		pos.ActID = (int16_t)(levelact & 0xFF);
+		ParseVertex(iter->second->getString("Position", "0,0,0"), pos.Position);
+		pos.YRot = iter->second->getIntRadix("YRotation", 16);
+	}
+	StartPosition *list = new StartPosition[poss.size() + 1];
+	memcpy(list, poss.data(), poss.size() * sizeof(StartPosition));
+	list[poss.size()].LevelID = LevelIDs_Invalid;
+	ProcessPointerList(group->getString("pointer"), list);
 }
 
 static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
@@ -842,9 +941,7 @@ static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 	DeathZone *newlist = new DeathZone[deathzones.size() + 1];
 	memcpy(newlist, deathzones.data(), sizeof(DeathZone) * deathzones.size());
 	memset(&newlist[deathzones.size()], 0, sizeof(DeathZone));
-	vector<DeathZone **> ptrs = ParsePointerList<DeathZone>(group->getString("pointer"));
-	for (unsigned int i = 0; i < ptrs.size(); i++)
-		*ptrs[i] = newlist;
+	ProcessPointerList(group->getString("pointer"), newlist);
 }
 
 static const struct { const char *name; void (__cdecl *func)(const IniGroup *group, const wstring &mod_dir); } datafuncarray[] = {
@@ -855,6 +952,7 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "action", ProcessActionINI },
 	{ "animation", ProcessAnimationINI },
 	{ "objlist", ProcessObjListINI },
+	{ "startpos", ProcessStartPosINI },
 	{ "deathzone", ProcessDeathZoneINI }
 };
 
