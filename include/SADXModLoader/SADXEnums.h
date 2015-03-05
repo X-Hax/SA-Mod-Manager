@@ -569,4 +569,13 @@ enum Buttons : int
 	makemasks(Button, L)
 };
 
+enum Languages
+{
+	Languages_Japanese,
+	Languages_English,
+	Languages_French,
+	Languages_Spanish,
+	Languages_German
+};
+
 #endif /* SADXMODLOADER_SADXENUMS_H */

@@ -705,55 +705,55 @@ static string trim(const string &s)
 }
 
 static const struct { const char *name; const uint8_t value; } levelidsnamearray[] = {
-	{ "hedgehoghammer", 0 },
-	{ "emeraldcoast", 1 },
-	{ "windyvalley", 2 },
-	{ "twinklepark", 3 },
-	{ "speedhighway", 4 },
-	{ "redmountain", 5 },
-	{ "skydeck", 6 },
-	{ "lostworld", 7 },
-	{ "icecap", 8 },
-	{ "casinopolis", 9 },
-	{ "finalegg", 10 },
-	{ "hotshelter", 12 },
-	{ "chaos0", 15 },
-	{ "chaos2", 16 },
-	{ "chaos4", 17 },
-	{ "chaos6", 18 },
-	{ "perfectchaos", 19 },
-	{ "egghornet", 20 },
-	{ "eggwalker", 21 },
-	{ "eggviper", 22 },
-	{ "zero", 23 },
-	{ "e101", 24 },
-	{ "e101r", 25 },
-	{ "stationsquare", 26 },
-	{ "eggcarrieroutside", 29 },
-	{ "eggcarrierinside", 32 },
-	{ "mysticruins", 33 },
-	{ "past", 34 },
-	{ "twinklecircuit", 35 },
-	{ "skychase1", 36 },
-	{ "skychase2", 37 },
-	{ "sandhill", 38 },
-	{ "ssgarden", 39 },
-	{ "ecgarden", 40 },
-	{ "mrgarden", 41 },
-	{ "chaorace", 42 },
-	{ "invalid", 43 }
+	{ "hedgehoghammer", LevelIDs_HedgehogHammer },
+	{ "emeraldcoast", LevelIDs_EmeraldCoast },
+	{ "windyvalley", LevelIDs_WindyValley },
+	{ "twinklepark", LevelIDs_TwinklePark },
+	{ "speedhighway", LevelIDs_SpeedHighway },
+	{ "redmountain", LevelIDs_RedMountain },
+	{ "skydeck", LevelIDs_SkyDeck },
+	{ "lostworld", LevelIDs_LostWorld },
+	{ "icecap", LevelIDs_IceCap },
+	{ "casinopolis", LevelIDs_Casinopolis },
+	{ "finalegg", LevelIDs_FinalEgg },
+	{ "hotshelter", LevelIDs_HotShelter },
+	{ "chaos0", LevelIDs_Chaos0 },
+	{ "chaos2", LevelIDs_Chaos2 },
+	{ "chaos4", LevelIDs_Chaos4 },
+	{ "chaos6", LevelIDs_Chaos6 },
+	{ "perfectchaos", LevelIDs_PerfectChaos },
+	{ "egghornet", LevelIDs_EggHornet },
+	{ "eggwalker", LevelIDs_EggWalker },
+	{ "eggviper", LevelIDs_EggViper },
+	{ "zero", LevelIDs_Zero },
+	{ "e101", LevelIDs_E101 },
+	{ "e101r", LevelIDs_E101R },
+	{ "stationsquare", LevelIDs_StationSquare },
+	{ "eggcarrieroutside", LevelIDs_EggCarrierOutside },
+	{ "eggcarrierinside", LevelIDs_EggCarrierInside },
+	{ "mysticruins", LevelIDs_MysticRuins },
+	{ "past", LevelIDs_Past },
+	{ "twinklecircuit", LevelIDs_TwinkleCircuit },
+	{ "skychase1", LevelIDs_SkyChase1 },
+	{ "skychase2", LevelIDs_SkyChase2 },
+	{ "sandhill", LevelIDs_SandHill },
+	{ "ssgarden", LevelIDs_SSGarden },
+	{ "ecgarden", LevelIDs_ECGarden },
+	{ "mrgarden", LevelIDs_MRGarden },
+	{ "chaorace", LevelIDs_ChaoRace },
+	{ "invalid", LevelIDs_Invalid }
 };
 
 static unordered_map<string, uint8_t> levelidsnamemap;
 
-static uint8_t ParseLevelID(string str)
+static uint8_t ParseLevelID(const string &str)
 {
 	if (levelidsnamemap.size() == 0)
 		for (unsigned int i = 0; i < LengthOfArray(levelidsnamearray); i++)
 			levelidsnamemap[levelidsnamearray[i].name] = levelidsnamearray[i].value;
-	str = trim(str);
-	transform(str.begin(), str.end(), str.begin(), ::tolower);
-	auto lv = levelidsnamemap.find(str);
+	string str2 = trim(str);
+	transform(str2.begin(), str2.end(), str2.begin(), ::tolower);
+	auto lv = levelidsnamemap.find(str2);
 	if (lv != levelidsnamemap.end())
 		return lv->second;
 	else
@@ -808,6 +808,70 @@ static uint8_t ParseCharacterFlags(const string &str)
 			flag |= ch->second;
 	}
 	return flag;
+}
+
+static const struct { const char *name; const uint8_t value; } languagesnamearray[] = {
+	{ "japanese", Languages_Japanese },
+	{ "english", Languages_English },
+	{ "french", Languages_French },
+	{ "spanish", Languages_Spanish },
+	{ "german", Languages_German }
+};
+
+static unordered_map<string, uint8_t> languagesnamemap;
+
+static uint8_t ParseLanguage(const string &str)
+{
+	if (languagesnamemap.size() == 0)
+		for (unsigned int i = 0; i < LengthOfArray(languagesnamearray); i++)
+			languagesnamemap[languagesnamearray[i].name] = languagesnamearray[i].value;
+	string str2 = trim(str);
+	transform(str2.begin(), str2.end(), str2.begin(), ::tolower);
+	auto lv = languagesnamemap.find(str2);
+	if (lv != languagesnamemap.end())
+		return lv->second;
+	return Languages_Japanese;
+}
+
+static string DecodeUTF8(const string &str, int language)
+{
+	if (language <= Languages_English)
+		return UTF8toSJIS(str);
+	else
+		return UTF8to1252(str);
+}
+
+static string UnescapeNewlines(const string &str)
+{
+	string result;
+	result.reserve(str.size());
+	for (unsigned int c = 0; c < str.size(); c++)
+		switch (str[c])
+		{
+			case '\\': // escape character
+				if (c + 1 == str.size())
+				{
+					result.push_back(str[c]);
+					continue;
+				}
+				switch (str[++c])
+				{
+				case 'n': // line feed
+					result.push_back('\n');
+					break;
+				case 'r': // carriage return
+					result.push_back('\r');
+					break;
+				default: // literal character
+					result.push_back(str[c]);
+					break;
+				}
+				break;
+			default:
+				result.push_back(str[c]);
+				break;
+		}
+	return result;
 }
 
 static void ParseVertex(const string &str, Vertex &vert)
@@ -884,7 +948,7 @@ static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
 		entry.UseDistance = objdata->getInt("Flags");
 		entry.Distance = objdata->getFloat("Distance");
 		entry.LoadSub = (ObjectFuncPtr)objdata->getIntRadix("Code", 16);
-		entry.Name = strdup(objdata->getString("Name").c_str());
+		entry.Name = UTF8toSJIS(objdata->getString("Name").c_str());
 		objs.push_back(entry);
 	}
 	ObjectList *list = new ObjectList;
@@ -987,6 +1051,135 @@ static void ProcessTrialLevelListINI(const IniGroup *group, const wstring &mod_d
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
+static void ProcessBossLevelListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	ifstream fstr(mod_dir + L'\\' + group->getWString("filename"));
+	vector<uint16_t> lvls;
+	while (fstr.good())
+	{
+		string str;
+		getline(fstr, str);
+		if (str.size() > 0)
+			lvls.push_back(ParseLevelAndActID(str));
+	}
+	auto numents = lvls.size();
+	uint16_t *list = new uint16_t[numents + 1];
+	memcpy(list, lvls.data(), numents * sizeof(uint16_t));
+	list[numents] = levelact(LevelIDs_Invalid, 0);
+	ProcessPointerList(group->getString("pointer"), list);
+}
+
+static void ProcessFieldStartPosINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	const IniFile *startposdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	vector<FieldStartPosition> poss;
+	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); iter++)
+	{
+		FieldStartPosition pos = { ParseLevelID(iter->first) };
+		pos.FieldID = ParseLevelID(iter->second->getString("Field", "Invalid"));
+		ParseVertex(iter->second->getString("Position", "0,0,0"), pos.Position);
+		pos.YRot = iter->second->getIntRadix("YRotation", 16);
+		poss.push_back(pos);
+	}
+	auto numents = poss.size();
+	FieldStartPosition *list = new FieldStartPosition[numents + 1];
+	memcpy(list, poss.data(), numents * sizeof(FieldStartPosition));
+	ZeroMemory(&list[numents], sizeof(FieldStartPosition));
+	list[numents].LevelID = LevelIDs_Invalid;
+	ProcessPointerList(group->getString("pointer"), list);
+}
+
+static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	vector<SoundTestEntry> sounds;
+	for (int i = 0; i < 999; i++)
+	{
+		char key[4];
+		_snprintf(key, sizeof(key), "%d", i);
+		if (!inidata->hasGroup(key)) break;
+		const IniGroup *snddata = inidata->getGroup(key);
+		SoundTestEntry entry = { };
+		entry.Name = UTF8toSJIS(snddata->getString("Title").c_str());
+		entry.ID = snddata->getInt("Track");
+		sounds.push_back(entry);
+	}
+	auto numents = sounds.size();
+	SoundTestCategory *cat = new SoundTestCategory;
+	cat->Entries = new SoundTestEntry[numents];
+	memcpy(cat->Entries, sounds.data(), numents * sizeof(SoundTestEntry));
+	cat->Count = (int)numents;
+	ProcessPointerList(group->getString("pointer"), cat);
+}
+
+static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	vector<MusicInfo> songs;
+	for (int i = 0; i < 999; i++)
+	{
+		char key[4];
+		_snprintf(key, sizeof(key), "%d", i);
+		if (!inidata->hasGroup(key)) break;
+		const IniGroup *musdata = inidata->getGroup(key);
+		MusicInfo entry = { };
+		entry.Name = strdup(musdata->getString("Filename").c_str());
+		entry.Loop = (int)musdata->getBool("Loop");
+		songs.push_back(entry);
+	}
+	auto numents = songs.size();
+	MusicInfo *list = new MusicInfo[numents];
+	memcpy(list, songs.data(), numents * sizeof(MusicInfo));
+	ProcessPointerList(group->getString("pointer"), list);
+}
+
+static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	vector<SoundFileInfo> sounds;
+	for (int i = 0; i < 999; i++)
+	{
+		char key[4];
+		_snprintf(key, sizeof(key), "%d", i);
+		if (!inidata->hasGroup(key)) break;
+		const IniGroup *snddata = inidata->getGroup(key);
+		SoundFileInfo entry = { };
+		entry.Bank = snddata->getInt("Bank");
+		entry.Filename = strdup(snddata->getString("Filename").c_str());
+		sounds.push_back(entry);
+	}
+	auto numents = sounds.size();
+	SoundList *list = new SoundList;
+	list->List = new SoundFileInfo[numents];
+	memcpy(list->List, sounds.data(), numents * sizeof(SoundFileInfo));
+	list->Count = (int)numents;
+	ProcessPointerList(group->getString("pointer"), list);
+}
+
+static void ProcessStringListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	ifstream fstr(mod_dir + L'\\' + group->getWString("filename"));
+	uint8_t lang = ParseLanguage(group->getString("language"));
+	vector<char *> strs;
+	while (fstr.good())
+	{
+		string str;
+		getline(fstr, str);
+		str = DecodeUTF8(UnescapeNewlines(str), lang);
+		strs.push_back(strdup(str.c_str()));
+	}
+	auto numents = strs.size();
+	char **list = new char *[numents];
+	memcpy(list, strs.data(), numents * sizeof(char *));
+	ProcessPointerList(group->getString("pointer"), list);
+}
+
 static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
@@ -1029,6 +1222,11 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "texlist", ProcessTexListINI },
 	{ "leveltexlist", ProcessLevelTexListINI },
 	{ "triallevellist", ProcessTrialLevelListINI },
+	{ "bosslevellist", ProcessBossLevelListINI },
+	{ "fieldstartpos", ProcessFieldStartPosINI },
+	{ "soundtestlist", ProcessSoundTestListINI },
+	{ "musiclist", ProcessMusicListINI },
+	{ "soundlist", ProcessSoundListINI },
 	{ "deathzone", ProcessDeathZoneINI }
 };
 

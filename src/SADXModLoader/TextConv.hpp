@@ -35,6 +35,20 @@ char *UTF16toMBS(const wchar_t *wcs, unsigned int cp);
  */
 char *SJIStoUTF8(const char *sjis);
 
+/**
+ * Convert UTF-8 text to Shift-JIS.
+ * @param utf8 UTF-8 text, null-terminated.
+ * @return Shift-JIS text (allocated via new[]), or nullptr on error.
+ */
+char *UTF8toSJIS(const char *utf8);
+
+/**
+ * Convert UTF-8 text to Windows-1252.
+ * @param utf8 UTF-8 text, null-terminated.
+ * @return Windows-1252 text (allocated via new[]), or nullptr on error.
+ */
+char *UTF8to1252(const char *utf8);
+
 #ifdef __cplusplus
 }
 
@@ -65,6 +79,20 @@ std::string UTF16toMBS(const std::wstring &wcs, unsigned int cp);
  * @return UTF-8 text, or empty string on error.
  */
 std::string SJIStoUTF8(const std::string &sjis);
+
+/**
+ * Convert UTF-8 text to Shift-JIS.
+ * @param utf8 UTF-8 text.
+ * @return Shift-JIS text, or empty string on error.
+ */
+std::string UTF8toSJIS(const std::string &utf8);
+
+/**
+ * Convert UTF-8 text to Windows-1252.
+ * @param utf8 UTF-8 text.
+ * @return Windows-1252 text, or empty string on error.
+ */
+std::string UTF8to1252(const std::string &utf8);
 
 #endif /* __cplusplus */
 

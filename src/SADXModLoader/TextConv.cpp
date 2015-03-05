@@ -9,6 +9,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#define CP_SJIS 932
+
 /**
  * Convert multibyte text to UTF-16.
  * @param mbs Multibyte text, null-terminated.
@@ -51,12 +53,54 @@ char *UTF16toMBS(const wchar_t *wcs, unsigned int cp)
 char *SJIStoUTF8(const char *sjis)
 {
 	// Convert from Shift-JIS to UTF-16.
-	wchar_t *wcs = MBStoUTF16(sjis, 932);
+	wchar_t *wcs = MBStoUTF16(sjis, CP_SJIS);
 	if (!wcs)
 		return nullptr;
 
 	// Convert from UTF-16 to UTF-8.
 	char *mbs = UTF16toMBS(wcs, CP_UTF8);
+	delete[] wcs;
+	if (!mbs)
+		return nullptr;
+
+	return mbs;
+}
+
+/**
+ * Convert UTF-8 text to Shift-JIS.
+ * @param utf8 UTF-8 text, null-terminated.
+ * @return Shift-JIS text (allocated via new[]), or nullptr on error.
+ */
+char *UTF8toSJIS(const char *utf8)
+{
+	// Convert from UTF-8 to UTF-16.
+	wchar_t *wcs = MBStoUTF16(utf8, CP_UTF8);
+	if (!wcs)
+		return nullptr;
+
+	// Convert from UTF-16 to Shift-JIS.
+	char *mbs = UTF16toMBS(wcs, CP_SJIS);
+	delete[] wcs;
+	if (!mbs)
+		return nullptr;
+
+	return mbs;
+}
+
+/**
+ * Convert UTF-8 text to Windows-1252.
+ * @param utf8 UTF-8 text, null-terminated.
+ * @return Windows-1252 text (allocated via new[]), or nullptr on error.
+ */
+char *UTF8to1252(const char *utf8)
+{
+	// Convert from UTF-8 to UTF-16.
+	wchar_t *wcs = MBStoUTF16(utf8, CP_UTF8);
+	if (!wcs)
+		return nullptr;
+
+	// Convert from UTF-16 to Shift-JIS.
+	char *mbs = UTF16toMBS(wcs, 1252);
 	delete[] wcs;
 	if (!mbs)
 		return nullptr;
@@ -120,4 +164,36 @@ string SJIStoUTF8(const string &sjis)
 	string ustr(utf8);
 	delete[] utf8;
 	return ustr;
+}
+
+/**
+ * Convert UTF-8 text to Shift-JIS.
+ * @param utf8 UTF-8 text.
+ * @return Shift-JIS text, or empty string on error.
+ */
+string UTF8toSJIS(const string &utf8)
+{
+	char *sjis = SJIStoUTF8(utf8.c_str());
+	if (!sjis)
+		return string();
+
+	string jstr(sjis);
+	delete[] sjis;
+	return jstr;
+}
+
+/**
+ * Convert UTF-8 text to Windows-1252.
+ * @param utf8 UTF-8 text.
+ * @return Windows-1252 text, or empty string on error.
+ */
+string UTF8to1252(const string &utf8)
+{
+	char *w1252 = SJIStoUTF8(utf8.c_str());
+	if (!w1252)
+		return string();
+
+	string estr(w1252);
+	delete[] w1252;
+	return estr;
 }
