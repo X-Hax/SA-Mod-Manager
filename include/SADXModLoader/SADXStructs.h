@@ -699,7 +699,7 @@ struct StageLightData
 	char act;
 	char light_num;
 	char use_yxz;
-	float xyz[3];
+	Vertex xyz;
 	float dif;
 	float mutliplier;
 	float rgb[3];

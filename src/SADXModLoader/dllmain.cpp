@@ -704,6 +704,18 @@ static string trim(const string &s)
 	return s.substr(st, (ed + 1) - st);
 }
 
+template<typename T>
+static inline T *arrcpy(T *dst, const T *src, size_t cnt)
+{
+	return (T *)memcpy(dst, src, cnt * sizeof(T));
+}
+
+template<typename T>
+static inline void clrmem(T *mem)
+{
+	ZeroMemory(mem, sizeof(T));
+}
+
 static const struct { const char *name; const uint8_t value; } levelidsnamearray[] = {
 	{ "hedgehoghammer", LevelIDs_HedgehogHammer },
 	{ "emeraldcoast", LevelIDs_EmeraldCoast },
@@ -951,10 +963,11 @@ static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
 		entry.Name = UTF8toSJIS(objdata->getString("Name").c_str());
 		objs.push_back(entry);
 	}
+	delete objlistdata;
 	ObjectList *list = new ObjectList;
 	list->Count = objs.size();
 	list->List = new ObjectListEntry[list->Count];
-	memcpy(list->List, objs.data(), sizeof(ObjectListEntry) * list->Count);
+	arrcpy(list->List, objs.data(), list->Count);
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
@@ -973,10 +986,11 @@ static void ProcessStartPosINI(const IniGroup *group, const wstring &mod_dir)
 		pos.YRot = iter->second->getIntRadix("YRotation", 16);
 		poss.push_back(pos);
 	}
+	delete startposdata;
 	auto numents = poss.size();
 	StartPosition *list = new StartPosition[numents + 1];
-	memcpy(list, poss.data(), numents * sizeof(StartPosition));
-	ZeroMemory(&list[numents], sizeof(StartPosition));
+	arrcpy(list, poss.data(), numents);
+	clrmem(&list[numents]);
 	list[numents].LevelID = LevelIDs_Invalid;
 	ProcessPointerList(group->getString("pointer"), list);
 }
@@ -1003,10 +1017,11 @@ static void ProcessTexListINI(const IniGroup *group, const wstring &mod_dir)
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
 	const IniFile *texlistdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<PVMEntry> texs = ProcessTexListINI_Internal(texlistdata);
+	delete texlistdata;
 	auto numents = texs.size();
 	PVMEntry *list = new PVMEntry[numents + 1];
-	memcpy(list, texs.data(), numents * sizeof(PVMEntry));
-	ZeroMemory(&list[numents], sizeof(PVMEntry));
+	arrcpy(list, texs.data(), numents);
+	clrmem(&list[numents]);
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
@@ -1017,9 +1032,10 @@ static void ProcessLevelTexListINI(const IniGroup *group, const wstring &mod_dir
 	vector<PVMEntry> texs = ProcessTexListINI_Internal(texlistdata);
 	auto numents = texs.size();
 	PVMEntry *list = new PVMEntry[numents];
-	memcpy(list, texs.data(), numents * sizeof(PVMEntry));
+	arrcpy(list, texs.data(), numents);
 	LevelPVMList *lvl = new LevelPVMList;
 	lvl->Level = (int16_t)ParseLevelAndActID(texlistdata->getString("", "Level", "0000"));
+	delete texlistdata;
 	lvl->NumTextures = (int16_t)numents;
 	lvl->PVMList = list;
 	ProcessPointerList(group->getString("pointer"), lvl);
@@ -1047,7 +1063,7 @@ static void ProcessTrialLevelListINI(const IniGroup *group, const wstring &mod_d
 	auto numents = lvls.size();
 	TrialLevelList *list = new TrialLevelList;
 	list->Levels = new TrialLevelListEntry[numents];
-	memcpy(list->Levels, lvls.data(), numents * sizeof(TrialLevelListEntry));
+	arrcpy(list->Levels, lvls.data(), numents);
 	list->Count = (int)numents;
 	ProcessPointerList(group->getString("pointer"), list);
 }
@@ -1067,7 +1083,7 @@ static void ProcessBossLevelListINI(const IniGroup *group, const wstring &mod_di
 	fstr.close();
 	auto numents = lvls.size();
 	uint16_t *list = new uint16_t[numents + 1];
-	memcpy(list, lvls.data(), numents * sizeof(uint16_t));
+	arrcpy(list, lvls.data(), numents);
 	list[numents] = levelact(LevelIDs_Invalid, 0);
 	ProcessPointerList(group->getString("pointer"), list);
 }
@@ -1085,10 +1101,11 @@ static void ProcessFieldStartPosINI(const IniGroup *group, const wstring &mod_di
 		pos.YRot = iter->second->getIntRadix("YRotation", 16);
 		poss.push_back(pos);
 	}
+	delete startposdata;
 	auto numents = poss.size();
 	FieldStartPosition *list = new FieldStartPosition[numents + 1];
-	memcpy(list, poss.data(), numents * sizeof(FieldStartPosition));
-	ZeroMemory(&list[numents], sizeof(FieldStartPosition));
+	arrcpy(list, poss.data(), numents);
+	clrmem(&list[numents]);
 	list[numents].LevelID = LevelIDs_Invalid;
 	ProcessPointerList(group->getString("pointer"), list);
 }
@@ -1109,10 +1126,11 @@ static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_di
 		entry.ID = snddata->getInt("Track");
 		sounds.push_back(entry);
 	}
+	delete inidata;
 	auto numents = sounds.size();
 	SoundTestCategory *cat = new SoundTestCategory;
 	cat->Entries = new SoundTestEntry[numents];
-	memcpy(cat->Entries, sounds.data(), numents * sizeof(SoundTestEntry));
+	arrcpy(cat->Entries, sounds.data(), numents);
 	cat->Count = (int)numents;
 	ProcessPointerList(group->getString("pointer"), cat);
 }
@@ -1133,9 +1151,10 @@ static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
 		entry.Loop = (int)musdata->getBool("Loop");
 		songs.push_back(entry);
 	}
+	delete inidata;
 	auto numents = songs.size();
 	MusicInfo *list = new MusicInfo[numents];
-	memcpy(list, songs.data(), numents * sizeof(MusicInfo));
+	arrcpy(list, songs.data(), numents);
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
@@ -1155,10 +1174,11 @@ static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 		entry.Filename = strdup(snddata->getString("Filename").c_str());
 		sounds.push_back(entry);
 	}
+	delete inidata;
 	auto numents = sounds.size();
 	SoundList *list = new SoundList;
 	list->List = new SoundFileInfo[numents];
-	memcpy(list->List, sounds.data(), numents * sizeof(SoundFileInfo));
+	arrcpy(list->List, sounds.data(), numents);
 	list->Count = (int)numents;
 	ProcessPointerList(group->getString("pointer"), list);
 }
@@ -1185,7 +1205,7 @@ static void ProcessStringArrayINI(const IniGroup *group, const wstring &mod_dir)
 		ParseLanguage(group->getString("language")));
 	auto numents = strs.size();
 	char **list = new char *[numents];
-	memcpy(list, strs.data(), numents * sizeof(char *));
+	arrcpy(list, strs.data(), numents);
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
@@ -1211,10 +1231,11 @@ static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_di
 		entry.AltStartPoint = (char)entdata->getInt("AltStartPos");
 		ents.push_back(entry);
 	}
+	delete inidata;
 	auto numents = ents.size();
 	NextLevelData *list = new NextLevelData[numents + 1];
-	memcpy(list, ents.data(), numents * sizeof(NextLevelData));
-	ZeroMemory(&list[numents], sizeof(NextLevelData));
+	arrcpy(list, ents.data(), numents);
+	clrmem(&list[numents]);
 	list[numents].CurrentLevel = -1;
 	ProcessPointerList(group->getString("pointer"), list);
 }
@@ -1222,7 +1243,7 @@ static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_di
 static const wstring languagenames[] = { L"Japanese", L"English", L"French", L"Spanish", L"German" };
 static void ProcessCutsceneTextINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename")) return;
 	char ***addr = (char ***)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
 	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
@@ -1231,19 +1252,19 @@ static void ProcessCutsceneTextINI(const IniGroup *group, const wstring &mod_dir
 		vector<char *> strs = ProcessStringArrayINI_Internal(pathbase + languagenames[i] + L".txt", i);
 		auto numents = strs.size();
 		char **list = new char *[numents];
-		memcpy(list, strs.data(), numents * sizeof(char *));
+		arrcpy(list, strs.data(), numents);
 		*addr++ = list;
 	}
 }
 
 static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename")) return;
 	int length = group->getInt("length");
 	RecapScreen **addr = (RecapScreen **)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
 	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
-	for (int l = 0; l < LengthOfArray(languagenames); l++)
+	for (unsigned int l = 0; l < LengthOfArray(languagenames); l++)
 	{
 		RecapScreen *list = new RecapScreen[length];
 		for (int i = 0; i < length; i++)
@@ -1257,7 +1278,8 @@ static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
 			for (unsigned int j = 0; j < numents; j++)
 				list[i].TextData[j] = strdup(DecodeUTF8(strs[j], l).c_str());
 			list[i].LineCount = (int)numents;
-			list[i].Speed = inidata->getInt("", "Speed", 1);
+			list[i].Speed = inidata->getFloat("", "Speed", 1);
+			delete inidata;
 		}
 		*addr++ = list;
 	}
@@ -1265,12 +1287,12 @@ static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
 
 static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename")) return;
 	int length = group->getInt("length");
 	HintText_Entry **addr = (HintText_Entry **)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
 	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
-	for (int l = 0; l < LengthOfArray(languagenames); l++)
+	for (unsigned int l = 0; l < LengthOfArray(languagenames); l++)
 	{
 		HintText_Entry *list = new HintText_Entry[length];
 		for (int i = 0; i < length; i++)
@@ -1332,10 +1354,12 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 					hasText = true;
 					entdata = inidata->getGroup(buf2);
 					HintText_Text entry;
-					entry.Message = strdup(DecodeUTF8(entdata->getString("Line")).c_str());
+					entry.Message = strdup(DecodeUTF8(entdata->getString("Line"), l).c_str());
 					entry.Time = entdata->getInt("Time");
 					text.push_back(entry);
 				}
+				delete[] buf2;
+				delete inidata;
 				if (hasText)
 				{
 					HintText_Text t = { };
@@ -1346,20 +1370,46 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 			{
 				props.push_back(NPCTextControl_End);
 				list[i].Properties = new int16_t[props.size()];
-				memcpy(list[i].Properties, props.data(), props.size() * sizeof(int16_t));
+				arrcpy(list[i].Properties, props.data(), props.size());
 			}
 			else
 				list[i].Properties = nullptr;
 			if (text.size() > 0)
 			{
 				list[i].Text = new HintText_Text[text.size()];
-				memcpy(list[i].Text, text.data(), text.size() * sizeof(HintText_Text));
+				arrcpy(list[i].Text, text.data(), text.size());
 			}
 			else
 				list[i].Text = nullptr;
 		}
 		*addr++ = list;
 	}
+}
+
+static void ProcessLevelClearFlagListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	ifstream fstr(mod_dir + L'\\' + group->getWString("filename"));
+	vector<LevelClearFlagData> lvls;
+	while (fstr.good())
+	{
+		string str;
+		getline(fstr, str);
+		if (str.size() > 0)
+		{
+			LevelClearFlagData ent;
+			vector<string> parts = split(str, ' ');
+			ent.Level = ParseLevelID(parts[0]);
+			ent.FlagOffset = (int16_t)strtol(parts[1].c_str(), nullptr, 16);
+			lvls.push_back(ent);
+		}
+	}
+	fstr.close();
+	auto numents = lvls.size();
+	LevelClearFlagData *list = new LevelClearFlagData[numents + 1];
+	arrcpy(list, lvls.data(), numents);
+	list[numents].Level = -1;
+	ProcessPointerList(group->getString("pointer"), list);
 }
 
 static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
@@ -1387,9 +1437,139 @@ static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 	}
 	delete dzdata;
 	DeathZone *newlist = new DeathZone[deathzones.size() + 1];
-	memcpy(newlist, deathzones.data(), sizeof(DeathZone) * deathzones.size());
-	memset(&newlist[deathzones.size()], 0, sizeof(DeathZone));
+	arrcpy(newlist, deathzones.data(), deathzones.size());
+	clrmem(&newlist[deathzones.size()]);
 	ProcessPointerList(group->getString("pointer"), newlist);
+}
+
+static void ProcessSkyboxScaleINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename")) return;
+	int count = group->getInt("count");
+	SkyboxScale **addr = (SkyboxScale **)group->getIntRadix("address", 16);
+	if (addr == nullptr) return;
+	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	for (int i = 0; i < count; i++)
+	{
+		char key[4];
+		_snprintf(key, sizeof(key), "%d", i);
+		if (!inidata->hasGroup(key))
+		{
+			*addr++ = nullptr;
+			continue;
+		}
+		const IniGroup *entdata = inidata->getGroup(key);
+		SkyboxScale *entry = new SkyboxScale;
+		ParseVertex(entdata->getString("Far", "1,1,1"), entry->Far);
+		ParseVertex(entdata->getString("Normal", "1,1,1"), entry->Normal);
+		ParseVertex(entdata->getString("Near", "1,1,1"), entry->Near);
+		*addr++ = entry;
+	}
+	delete inidata;
+}
+
+static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	wstring inipath = mod_dir + L'\\' + group->getWString("filename") + L'\\';
+	vector<PathDataPtr> pathlist;
+	WIN32_FIND_DATA data;
+	HANDLE hFind = FindFirstFileEx(inipath.c_str(), FindExInfoStandard, &data, FindExSearchLimitToDirectories, nullptr, 0);
+	if (hFind == INVALID_HANDLE_VALUE) return;
+	do
+	{
+		if (!(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) continue;
+		uint16_t levelact;
+		try
+		{
+			levelact = ParseLevelAndActID(UTF16toMBS(wstring(data.cFileName), CP_UTF8));
+		}
+		catch (...)
+		{
+			continue;
+		}
+		wstring levelpath = inipath + data.cFileName + L"\\%d.ini";
+		wchar_t *buf = new wchar_t[levelpath.size() + 2];
+		vector<LoopHead *> paths;
+		for (int i = 0; i < 999; i++)
+		{
+			_snwprintf(buf, levelpath.size() + 2, levelpath.c_str(), i);
+			if (!PathFileExists(buf)) break;
+			const IniFile *inidata = new IniFile(buf);
+			const IniGroup *entdata;
+			vector<Loop> points;
+			char buf2[4];
+			for (int j = 0; j < 999; j++)
+			{
+				_snprintf(buf2, LengthOfArray(buf2), "%d", j);
+				if (!inidata->hasGroup(buf2)) break;
+				entdata = inidata->getGroup(buf2);
+				Loop point;
+				point.Ang_X = (int16_t)entdata->getIntRadix("XRotation", 16);
+				point.Ang_Y = (int16_t)entdata->getIntRadix("YRotation", 16);
+				point.Dist = entdata->getFloat("Distance");
+				ParseVertex(entdata->getString("Position", "0,0,0"), point.Position);
+				points.push_back(point);
+			}
+			entdata = inidata->getGroup("");
+			LoopHead *path = new LoopHead;
+			path->Unknown_0 = (int16_t)entdata->getInt("Unknown");
+			path->Count = (int16_t)points.size();
+			path->TotalDist = entdata->getFloat("TotalDistance");
+			path->LoopList = new Loop[path->Count];
+			arrcpy(path->LoopList, points.data(), path->Count);
+			path->Object = (ObjectFuncPtr)entdata->getIntRadix("Code", 16);
+			paths.push_back(path);
+			delete inidata;
+		}
+		delete[] buf;
+		auto numents = paths.size();
+		PathDataPtr ptr;
+		ptr.LevelAct = levelact;
+		ptr.PathList = new LoopHead *[numents + 1];
+		arrcpy(ptr.PathList, paths.data(), numents);
+		ptr.PathList[numents] = nullptr;
+		pathlist.push_back(ptr);
+	}
+	while (FindNextFile(hFind, &data));
+	FindClose(hFind);
+	PathDataPtr *newlist = new PathDataPtr[pathlist.size() + 1];
+	arrcpy(newlist, pathlist.data(), pathlist.size());
+	clrmem(&newlist[pathlist.size()]);
+	newlist[pathlist.size()].LevelAct = -1;
+	ProcessPointerList(group->getString("pointer"), newlist);
+}
+
+static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	vector<StageLightData> ents;
+	for (int i = 0; i < 999; i++)
+	{
+		char key[4];
+		_snprintf(key, sizeof(key), "%d", i);
+		if (!inidata->hasGroup(key)) break;
+		const IniGroup *entdata = inidata->getGroup(key);
+		StageLightData entry;
+		entry.level = (char)ParseLevelID(entdata->getString("Level"));
+		entry.act = (char)entdata->getInt("Act");
+		entry.light_num = (char)entdata->getInt("LightNum");
+		entry.use_yxz = (char)entdata->getBool("UseDirection");
+		ParseVertex(entdata->getString("Direction"), entry.xyz);
+		entry.dif = entdata->getFloat("Dif");
+		entry.mutliplier = entdata->getFloat("Multiplier");
+		ParseVertex(entdata->getString("RGB"), *(Vertex *)entry.rgb);
+		ParseVertex(entdata->getString("AmbientRGB"), *(Vertex *)entry.amb_rgb);
+		ents.push_back(entry);
+	}
+	delete inidata;
+	auto numents = ents.size();
+	StageLightData *list = new StageLightData[numents + 1];
+	arrcpy(list, ents.data(), numents);
+	clrmem(&list[numents]);
+	list[numents].level = -1;
+	ProcessPointerList(group->getString("pointer"), list);
 }
 
 static const struct { const char *name; void (__cdecl *func)(const IniGroup *group, const wstring &mod_dir); } datafuncarray[] = {
@@ -1414,7 +1594,11 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "cutscenetext", ProcessCutsceneTextINI },
 	{ "recapscreen", ProcessRecapScreenINI },
 	{ "npctext", ProcessNPCTextINI },
-	{ "deathzone", ProcessDeathZoneINI }
+	{ "levelclearflaglist", ProcessLevelClearFlagListINI },
+	{ "deathzone", ProcessDeathZoneINI },
+	{ "skyboxscale", ProcessSkyboxScaleINI },
+	{ "levelpathlist", ProcessLevelPathListINI },
+	{ "stagelightdatalist", ProcessStageLightDataListINI }
 };
 
 static unordered_map<string, void (__cdecl *)(const IniGroup *group, const wstring &mod_dir)> datafuncmap;
