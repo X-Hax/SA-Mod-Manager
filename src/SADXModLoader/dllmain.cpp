@@ -1043,6 +1043,7 @@ static void ProcessTrialLevelListINI(const IniGroup *group, const wstring &mod_d
 			lvls.push_back(ent);
 		}
 	}
+	fstr.close();
 	auto numents = lvls.size();
 	TrialLevelList *list = new TrialLevelList;
 	list->Levels = new TrialLevelListEntry[numents];
@@ -1063,6 +1064,7 @@ static void ProcessBossLevelListINI(const IniGroup *group, const wstring &mod_di
 		if (str.size() > 0)
 			lvls.push_back(ParseLevelAndActID(str));
 	}
+	fstr.close();
 	auto numents = lvls.size();
 	uint16_t *list = new uint16_t[numents + 1];
 	memcpy(list, lvls.data(), numents * sizeof(uint16_t));
@@ -1161,23 +1163,77 @@ static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
-static void ProcessStringListINI(const IniGroup *group, const wstring &mod_dir)
+static vector<char *> ProcessStringArrayINI_Internal(const wstring &filename, uint8_t language)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	ifstream fstr(mod_dir + L'\\' + group->getWString("filename"));
-	uint8_t lang = ParseLanguage(group->getString("language"));
+	ifstream fstr(filename);
 	vector<char *> strs;
 	while (fstr.good())
 	{
 		string str;
 		getline(fstr, str);
-		str = DecodeUTF8(UnescapeNewlines(str), lang);
+		str = DecodeUTF8(UnescapeNewlines(str), language);
 		strs.push_back(strdup(str.c_str()));
 	}
+	fstr.close();
+	return strs;
+}
+
+static void ProcessStringArrayINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	vector<char *> strs = ProcessStringArrayINI_Internal(mod_dir + L'\\' + group->getWString("filename"),
+		ParseLanguage(group->getString("language")));
 	auto numents = strs.size();
 	char **list = new char *[numents];
 	memcpy(list, strs.data(), numents * sizeof(char *));
 	ProcessPointerList(group->getString("pointer"), list);
+}
+
+static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	vector<NextLevelData> ents;
+	for (int i = 0; i < 999; i++)
+	{
+		char key[4];
+		_snprintf(key, sizeof(key), "%d", i);
+		if (!inidata->hasGroup(key)) break;
+		const IniGroup *entdata = inidata->getGroup(key);
+		NextLevelData entry = { };
+		entry.CGMovie = (char)entdata->getInt("CGMovie");
+		entry.CurrentLevel = (char)ParseLevelID(entdata->getString("Level"));
+		entry.NextLevelAdventure = (char)ParseLevelID(entdata->getString("NextLevel"));
+		entry.NextActAdventure = (char)entdata->getInt("NextAct");
+		entry.StartPointAdventure = (char)entdata->getInt("StartPos");
+		entry.AltNextLevel = (char)ParseLevelID(entdata->getString("AltNextLevel"));
+		entry.AltNextAct = (char)entdata->getInt("AltNextAct");
+		entry.AltStartPoint = (char)entdata->getInt("AltStartPos");
+		ents.push_back(entry);
+	}
+	auto numents = ents.size();
+	NextLevelData *list = new NextLevelData[numents + 1];
+	memcpy(list, ents.data(), numents * sizeof(NextLevelData));
+	ZeroMemory(&list[numents], sizeof(NextLevelData));
+	list[numents].CurrentLevel = -1;
+	ProcessPointerList(group->getString("pointer"), list);
+}
+
+static const wstring languagenames[] = { L"Japanese", L"English", L"French", L"Spanish", L"German" };
+static void ProcessCutsceneTextINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	char ***addr = (char ***)group->getIntRadix("address", 16);
+	if (addr == nullptr) return;
+	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
+	for (unsigned int i = 0; i < LengthOfArray(languagenames); i++)
+	{
+		vector<char *> strs = ProcessStringArrayINI_Internal(pathbase + languagenames[i] + L".txt", i);
+		auto numents = strs.size();
+		char **list = new char *[numents];
+		memcpy(list, strs.data(), numents * sizeof(char *));
+		*addr++ = list;
+	}
 }
 
 static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
@@ -1227,6 +1283,9 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "soundtestlist", ProcessSoundTestListINI },
 	{ "musiclist", ProcessMusicListINI },
 	{ "soundlist", ProcessSoundListINI },
+	{ "stringarray", ProcessStringArrayINI },
+	{ "nextlevellist", ProcessNextLevelListINI },
+	{ "cutscenetext", ProcessCutsceneTextINI },
 	{ "deathzone", ProcessDeathZoneINI }
 };
 
