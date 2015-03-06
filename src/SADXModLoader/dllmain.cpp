@@ -942,7 +942,7 @@ static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
 		_snprintf(key, sizeof(key), "%d", i);
 		if (!objlistdata->hasGroup(key)) break;
 		const IniGroup *objdata = objlistdata->getGroup(key);
-		ObjectListEntry entry = { };
+		ObjectListEntry entry;
 		entry.Arg1 = objdata->getInt("Arg1");
 		entry.Arg2 = objdata->getInt("Arg2");
 		entry.UseDistance = objdata->getInt("Flags");
@@ -965,7 +965,7 @@ static void ProcessStartPosINI(const IniGroup *group, const wstring &mod_dir)
 	vector<StartPosition> poss;
 	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); iter++)
 	{
-		StartPosition pos = { };
+		StartPosition pos;
 		uint16_t levelact = ParseLevelAndActID(iter->first);
 		pos.LevelID = (int16_t)(levelact >> 8);
 		pos.ActID = (int16_t)(levelact & 0xFF);
@@ -990,7 +990,7 @@ static vector<PVMEntry> ProcessTexListINI_Internal(const IniFile *texlistdata)
 		_snprintf(key, sizeof(key), "%d", i);
 		if (!texlistdata->hasGroup(key)) break;
 		const IniGroup *pvmdata = texlistdata->getGroup(key);
-		PVMEntry entry = { };
+		PVMEntry entry;
 		entry.Name = strdup(pvmdata->getString("Name").c_str());
 		entry.TexList = (NJS_TEXLIST *)pvmdata->getIntRadix("Textures", 16);
 		texs.push_back(entry);
@@ -1104,7 +1104,7 @@ static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_di
 		_snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *snddata = inidata->getGroup(key);
-		SoundTestEntry entry = { };
+		SoundTestEntry entry;
 		entry.Name = UTF8toSJIS(snddata->getString("Title").c_str());
 		entry.ID = snddata->getInt("Track");
 		sounds.push_back(entry);
@@ -1128,7 +1128,7 @@ static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
 		_snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *musdata = inidata->getGroup(key);
-		MusicInfo entry = { };
+		MusicInfo entry;
 		entry.Name = strdup(musdata->getString("Filename").c_str());
 		entry.Loop = (int)musdata->getBool("Loop");
 		songs.push_back(entry);
@@ -1150,7 +1150,7 @@ static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 		_snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *snddata = inidata->getGroup(key);
-		SoundFileInfo entry = { };
+		SoundFileInfo entry;
 		entry.Bank = snddata->getInt("Bank");
 		entry.Filename = strdup(snddata->getString("Filename").c_str());
 		sounds.push_back(entry);
@@ -1200,7 +1200,7 @@ static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_di
 		_snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *entdata = inidata->getGroup(key);
-		NextLevelData entry = { };
+		NextLevelData entry;
 		entry.CGMovie = (char)entdata->getInt("CGMovie");
 		entry.CurrentLevel = (char)ParseLevelID(entdata->getString("Level"));
 		entry.NextLevelAdventure = (char)ParseLevelID(entdata->getString("NextLevel"));
@@ -1232,6 +1232,132 @@ static void ProcessCutsceneTextINI(const IniGroup *group, const wstring &mod_dir
 		auto numents = strs.size();
 		char **list = new char *[numents];
 		memcpy(list, strs.data(), numents * sizeof(char *));
+		*addr++ = list;
+	}
+}
+
+static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	int length = group->getInt("length");
+	RecapScreen **addr = (RecapScreen **)group->getIntRadix("address", 16);
+	if (addr == nullptr) return;
+	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
+	for (int l = 0; l < LengthOfArray(languagenames); l++)
+	{
+		RecapScreen *list = new RecapScreen[length];
+		for (int i = 0; i < length; i++)
+		{
+			wchar_t buf[4];
+			swprintf_s(buf, L"%d", i);
+			const IniFile *inidata = new IniFile(pathbase + buf + L'\\' + languagenames[i] + L".ini");
+			vector<string> strs = split(inidata->getString("", "Text"), '\n');
+			auto numents = strs.size();
+			list[i].TextData = new char *[numents];
+			for (unsigned int j = 0; j < numents; j++)
+				list[i].TextData[j] = strdup(DecodeUTF8(strs[j], l).c_str());
+			list[i].LineCount = (int)numents;
+			list[i].Speed = inidata->getInt("", "Speed", 1);
+		}
+		*addr++ = list;
+	}
+}
+
+static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	int length = group->getInt("length");
+	HintText_Entry **addr = (HintText_Entry **)group->getIntRadix("address", 16);
+	if (addr == nullptr) return;
+	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
+	for (int l = 0; l < LengthOfArray(languagenames); l++)
+	{
+		HintText_Entry *list = new HintText_Entry[length];
+		for (int i = 0; i < length; i++)
+		{
+			wchar_t buf[4];
+			swprintf_s(buf, L"%d", i);
+			const IniFile *inidata = new IniFile(pathbase + buf + L'\\' + languagenames[i] + L".ini");
+			vector<int16_t> props;
+			vector<HintText_Text> text;
+			for (int j = 0; j < 999; j++)
+			{
+				char buf[4];
+				_snprintf(buf, LengthOfArray(buf), "%d", j);
+				if (!inidata->hasGroup(buf)) break;
+				if (props.size() > 0)
+					props.push_back(NPCTextControl_NewGroup);
+				const IniGroup *entdata = inidata->getGroup(buf);
+				if (entdata->hasKeyNonEmpty("EventFlags"))
+				{
+					vector<string> strs = split(entdata->getString("EventFlags"), ',');
+					for (unsigned int k = 0; k < strs.size(); k++)
+					{
+						props.push_back(NPCTextControl_EventFlag);
+						props.push_back((int16_t)strtol(strs[i].c_str(), nullptr, 10));
+					}
+				}
+				if (entdata->hasKeyNonEmpty("NPCFlags"))
+				{
+					vector<string> strs = split(entdata->getString("NPCFlags"), ',');
+					for (unsigned int k = 0; k < strs.size(); k++)
+					{
+						props.push_back(NPCTextControl_NPCFlag);
+						props.push_back((int16_t)strtol(strs[i].c_str(), nullptr, 10));
+					}
+				}
+				if (entdata->hasKeyNonEmpty("Character"))
+				{
+					props.push_back(NPCTextControl_Character);
+					props.push_back((int16_t)ParseCharacterFlags(entdata->getString("Character")));
+				}
+				if (entdata->hasKeyNonEmpty("Voice"))
+				{
+					props.push_back(NPCTextControl_Voice);
+					props.push_back((int16_t)entdata->getInt("Voice"));
+				}
+				if (entdata->hasKeyNonEmpty("SetEventFlag"))
+				{
+					props.push_back(NPCTextControl_SetEventFlag);
+					props.push_back((int16_t)entdata->getInt("SetEventFlag"));
+				}
+				string linekey = buf;
+				linekey += ".Lines[%d]";
+				char *buf2 = new char[linekey.size() + 2];
+				bool hasText = false;
+				for (int k = 0; k < 999; k++)
+				{
+					_snprintf(buf2, linekey.size() + 2, linekey.c_str(), k);
+					if (!inidata->hasGroup(buf2)) break;
+					hasText = true;
+					entdata = inidata->getGroup(buf2);
+					HintText_Text entry;
+					entry.Message = strdup(DecodeUTF8(entdata->getString("Line")).c_str());
+					entry.Time = entdata->getInt("Time");
+					text.push_back(entry);
+				}
+				if (hasText)
+				{
+					HintText_Text t = { };
+					text.push_back(t);
+				}
+			}
+			if (props.size() > 0)
+			{
+				props.push_back(NPCTextControl_End);
+				list[i].Properties = new int16_t[props.size()];
+				memcpy(list[i].Properties, props.data(), props.size() * sizeof(int16_t));
+			}
+			else
+				list[i].Properties = nullptr;
+			if (text.size() > 0)
+			{
+				list[i].Text = new HintText_Text[text.size()];
+				memcpy(list[i].Text, text.data(), text.size() * sizeof(HintText_Text));
+			}
+			else
+				list[i].Text = nullptr;
+		}
 		*addr++ = list;
 	}
 }
@@ -1286,6 +1412,8 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "stringarray", ProcessStringArrayINI },
 	{ "nextlevellist", ProcessNextLevelListINI },
 	{ "cutscenetext", ProcessCutsceneTextINI },
+	{ "recapscreen", ProcessRecapScreenINI },
+	{ "npctext", ProcessNPCTextINI },
 	{ "deathzone", ProcessDeathZoneINI }
 };
 
