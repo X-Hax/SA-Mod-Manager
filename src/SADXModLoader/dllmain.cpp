@@ -1572,7 +1572,7 @@ static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &m
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
-static const struct { const char *name; void (__cdecl *func)(const IniGroup *group, const wstring &mod_dir); } datafuncarray[] = {
+static const struct { const char *name; void (__cdecl *func)(const IniGroup *group, const wstring &mod_dir); } exedatafuncarray[] = {
 	{ "landtable", ProcessLandTableINI },
 	{ "model", ProcessModelINI },
 	{ "basicdxmodel", ProcessModelINI },
@@ -1601,7 +1601,7 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "stagelightdatalist", ProcessStageLightDataListINI }
 };
 
-static unordered_map<string, void (__cdecl *)(const IniGroup *group, const wstring &mod_dir)> datafuncmap;
+static unordered_map<string, void (__cdecl *)(const IniGroup *group, const wstring &mod_dir)> exedatafuncmap;
 
 static void __cdecl InitMods(void)
 {
@@ -1879,15 +1879,15 @@ static void __cdecl InitMods(void)
 		// Check if the mod has EXE data replacements.
 		if (modinfo->hasKeyNonEmpty("EXEData"))
 		{
-			if (datafuncmap.size() == 0)
-				for (unsigned int i = 0; i < LengthOfArray(datafuncarray); i++)
-					datafuncmap[datafuncarray[i].name] = datafuncarray[i].func;
+			if (exedatafuncmap.size() == 0)
+				for (unsigned int i = 0; i < LengthOfArray(exedatafuncarray); i++)
+					exedatafuncmap[exedatafuncarray[i].name] = exedatafuncarray[i].func;
 			IniFile *exedata = new IniFile(mod_dir + L'\\' + modinfo->getWString("EXEData"));
 			for (auto iter = exedata->cbegin(); iter != exedata->cend(); iter++)
 			{
 				IniGroup *group = iter->second;
-				auto type = datafuncmap.find(group->getString("type"));
-				if (type != datafuncmap.end())
+				auto type = exedatafuncmap.find(group->getString("type"));
+				if (type != exedatafuncmap.end())
 					type->second(group, mod_dir);
 			}
 			delete exedata;
