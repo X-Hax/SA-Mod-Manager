@@ -39,6 +39,7 @@ public:
 	const uint8_t *getmetadata(uint32_t identifier, uint32_t &size);
 	const std::string &getlabel(void *data);
 	void *getdata(const std::string &label);
+	const std::unordered_map<std::string, void *> *getlabels();
 	const std::list<std::string> &getanimations();
 	const std::list<std::string> &getmorphs();
 

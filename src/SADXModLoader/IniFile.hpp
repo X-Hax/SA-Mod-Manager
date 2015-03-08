@@ -30,6 +30,15 @@ class IniGroup
 		int getInt(const std::string &key, int def = 0) const;
 		float getFloat(const std::string &key, float def = 0) const;
 
+		std::unordered_map<std::string, std::string>::iterator begin();
+		std::unordered_map<std::string, std::string>::const_iterator cbegin() const;
+		std::unordered_map<std::string, std::string>::reverse_iterator rbegin();
+		std::unordered_map<std::string, std::string>::const_reverse_iterator crbegin() const;
+		std::unordered_map<std::string, std::string>::iterator end();
+		std::unordered_map<std::string, std::string>::const_iterator cend() const;
+		std::unordered_map<std::string, std::string>::reverse_iterator rend();
+		std::unordered_map<std::string, std::string>::const_reverse_iterator crend() const;
+
 	protected:
 		friend class IniFile;
 

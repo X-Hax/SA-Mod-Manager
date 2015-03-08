@@ -30,6 +30,7 @@ public:
 	const uint8_t *getmetadata(uint32_t identifier, uint32_t &size);
 	const std::string &getlabel(void *data);
 	void *getdata(const std::string &label);
+	const std::unordered_map<std::string, void *> *getlabels();
 
 private:
 	static const uint64_t SA1LVL = 0x4C564C314153ULL;

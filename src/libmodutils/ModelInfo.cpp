@@ -92,6 +92,8 @@ void *ModelInfo::getdata(const string &label)
 		return elem->second;
 }
 
+const std::unordered_map<string, void *> *ModelInfo::getlabels() { return &labels2; }
+
 const list<string> &ModelInfo::getanimations() { return animations; }
 
 const list<string> &ModelInfo::getmorphs() { return morphs; }

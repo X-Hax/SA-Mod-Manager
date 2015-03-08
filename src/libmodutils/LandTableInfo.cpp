@@ -90,6 +90,11 @@ void *LandTableInfo::getdata(const string &label)
 		return elem->second;
 }
 
+const std::unordered_map<string, void *> *LandTableInfo::getlabels()
+{
+	return &labels2;
+}
+
 static string getstring(istream &stream)
 {
 	auto start = stream.tellg();

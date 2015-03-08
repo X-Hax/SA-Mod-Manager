@@ -137,6 +137,46 @@ float IniGroup::getFloat(const string &key, float def) const
 	return (float)strtod(value.c_str(), nullptr);
 }
 
+std::unordered_map<string, string>::iterator IniGroup::begin()
+{
+	return m_data.begin();
+}
+
+std::unordered_map<string, string>::const_iterator IniGroup::cbegin() const
+{
+	return m_data.cbegin();
+}
+
+std::unordered_map<string, string>::reverse_iterator IniGroup::rbegin()
+{
+	return m_data.rbegin();
+}
+
+std::unordered_map<string, string>::const_reverse_iterator IniGroup::crbegin() const
+{
+	return m_data.crbegin();
+}
+
+std::unordered_map<string, string>::iterator IniGroup::end()
+{
+	return m_data.end();
+}
+
+std::unordered_map<string, string>::const_iterator IniGroup::cend() const
+{
+	return m_data.cend();
+}
+
+std::unordered_map<string, string>::reverse_iterator IniGroup::rend()
+{
+	return m_data.rend();
+}
+
+std::unordered_map<string, string>::const_reverse_iterator IniGroup::crend() const
+{
+	return m_data.crend();
+}
+
 /** IniFile **/
 
 IniFile::IniFile(const string &filename)
@@ -312,42 +352,42 @@ float IniFile::getFloat(const string &section, const string &key, float def) con
 	return group->getFloat(key, def);
 }
 
-std::unordered_map<std::string, IniGroup*>::iterator IniFile::begin()
+std::unordered_map<string, IniGroup*>::iterator IniFile::begin()
 {
 	return m_groups.begin();
 }
 
-std::unordered_map<std::string, IniGroup*>::const_iterator IniFile::cbegin() const
+std::unordered_map<string, IniGroup*>::const_iterator IniFile::cbegin() const
 {
 	return m_groups.cbegin();
 }
 
-std::unordered_map<std::string, IniGroup*>::reverse_iterator IniFile::rbegin()
+std::unordered_map<string, IniGroup*>::reverse_iterator IniFile::rbegin()
 {
 	return m_groups.rbegin();
 }
 
-std::unordered_map<std::string, IniGroup*>::const_reverse_iterator IniFile::crbegin() const
+std::unordered_map<string, IniGroup*>::const_reverse_iterator IniFile::crbegin() const
 {
 	return m_groups.crbegin();
 }
 
-std::unordered_map<std::string, IniGroup*>::iterator IniFile::end()
+std::unordered_map<string, IniGroup*>::iterator IniFile::end()
 {
 	return m_groups.end();
 }
 
-std::unordered_map<std::string, IniGroup*>::const_iterator IniFile::cend() const
+std::unordered_map<string, IniGroup*>::const_iterator IniFile::cend() const
 {
 	return m_groups.cend();
 }
 
-std::unordered_map<std::string, IniGroup*>::reverse_iterator IniFile::rend()
+std::unordered_map<string, IniGroup*>::reverse_iterator IniFile::rend()
 {
 	return m_groups.rend();
 }
 
-std::unordered_map<std::string, IniGroup*>::const_reverse_iterator IniFile::crend() const
+std::unordered_map<string, IniGroup*>::const_reverse_iterator IniFile::crend() const
 {
 	return m_groups.crend();
 }

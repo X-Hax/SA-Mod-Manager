@@ -1572,7 +1572,7 @@ static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &m
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
-static const struct { const char *name; void (__cdecl *func)(const IniGroup *group, const wstring &mod_dir); } exedatafuncarray[] = {
+static const struct { const char *name; void (__cdecl *func)(const IniGroup *, const wstring &); } exedatafuncarray[] = {
 	{ "landtable", ProcessLandTableINI },
 	{ "model", ProcessModelINI },
 	{ "basicdxmodel", ProcessModelINI },
@@ -1601,7 +1601,104 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *gro
 	{ "stagelightdatalist", ProcessStageLightDataListINI }
 };
 
-static unordered_map<string, void (__cdecl *)(const IniGroup *group, const wstring &mod_dir)> exedatafuncmap;
+static unordered_map<string, void (__cdecl *)(const IniGroup *, const wstring &)> exedatafuncmap;
+
+static unordered_map<string, void *> dlllabels;
+
+static void LoadDLLLandTable(const wstring &path)
+{
+	LandTableInfo *info = new LandTableInfo(path);
+	auto labels = info->getlabels();
+	for (auto iter = labels->cbegin(); iter != labels->cend(); iter++)
+		dlllabels[iter->first] = iter->second;
+}
+
+static void LoadDLLModel(const wstring &path)
+{
+	ModelInfo *info = new ModelInfo(path);
+	auto labels = info->getlabels();
+	for (auto iter = labels->cbegin(); iter != labels->cend(); iter++)
+		dlllabels[iter->first] = iter->second;
+}
+
+static void LoadDLLAnimation(const wstring &path)
+{
+	AnimationFile *info = new AnimationFile(path);
+	dlllabels[info->getlabel()] = info->getmotion();
+}
+
+static const struct { const char *name; void (__cdecl *func)(const wstring &); } dllfilefuncarray[] = {
+	{ "landtable", LoadDLLLandTable },
+	{ "model", LoadDLLModel },
+	{ "basicdxmodel", LoadDLLModel },
+	{ "chunkmodel", LoadDLLModel },
+	{ "animation", LoadDLLAnimation }
+};
+
+static unordered_map<string, void (__cdecl *)(const wstring &)> dllfilefuncmap;
+
+static void ProcessLandTableDLL(const IniGroup *group, void *exp)
+{
+	memcpy(exp, dlllabels[group->getString("Label")], sizeof(LandTable));
+}
+
+static void ProcessLandTableArrayDLL(const IniGroup *group, void *exp)
+{
+	((LandTable **)exp)[group->getInt("Index")] = (LandTable *)dlllabels[group->getString("Label")];
+}
+
+static void ProcessModelDLL(const IniGroup *group, void *exp)
+{
+	memcpy(exp, dlllabels[group->getString("Label")], sizeof(NJS_OBJECT));
+}
+
+static void ProcessModelArrayDLL(const IniGroup *group, void *exp)
+{
+	((NJS_OBJECT **)exp)[group->getInt("Index")] = (NJS_OBJECT *)dlllabels[group->getString("Label")];
+}
+
+static void ProcessActionArrayDLL(const IniGroup *group, void *exp)
+{
+	string field = group->getString("Field");
+	NJS_ACTION *act = ((NJS_ACTION **)exp)[group->getInt("Index")];
+	if (field == "object")
+		act->object = (NJS_OBJECT *)dlllabels[group->getString("Label")];
+	else if (field == "motion")
+		act->motion = (NJS_MOTION *)dlllabels[group->getString("Label")];
+}
+
+static const struct { const char *name; void (__cdecl *func)(const IniGroup *, void *); } dlldatafuncarray[] = {
+	{ "landtable", ProcessLandTableDLL },
+	{ "landtablearray", ProcessLandTableArrayDLL },
+	{ "model", ProcessModelDLL },
+	{ "modelarray", ProcessModelArrayDLL },
+	{ "basicdxmodel", ProcessModelDLL },
+	{ "basicdxmodelarray", ProcessModelArrayDLL },
+	{ "chunkmodel", ProcessModelDLL },
+	{ "chunkmodelarray", ProcessModelArrayDLL },
+	{ "actionarray", ProcessActionArrayDLL },
+};
+
+static unordered_map<string, void (__cdecl *)(const IniGroup *, void *)> dlldatafuncmap;
+
+static const string dlldatakeys[] = {
+	"CHRMODELSData",
+	"ADV00MODELSData",
+	"ADV01MODELSData",
+	"ADV01CMODELSData",
+	"ADV02MODELSData",
+	"ADV03MODELSData",
+	"BOSSCHAOS0MODELSData",
+	"CHAOSTGGARDEN02MR_DAYTIMEData",
+	"CHAOSTGGARDEN02MR_EVENINGData",
+	"CHAOSTGGARDEN02MR_NIGHTData"
+};
+
+static unordered_map<wstring, HMODULE> dllhandles;
+
+struct dllexportinfo { void *address; string type; };
+struct dllexportcontainer { unordered_map<string, dllexportinfo> exports; };
+static unordered_map<wstring, dllexportcontainer> dllexports;
 
 static void __cdecl InitMods(void)
 {
@@ -1892,6 +1989,64 @@ static void __cdecl InitMods(void)
 			}
 			delete exedata;
 		}
+
+		// Check if the mod has DLL data replacements.
+		for (unsigned int i = 0; i < LengthOfArray(dlldatakeys); i++)
+			if (modinfo->hasKeyNonEmpty(dlldatakeys[i]))
+			{
+				IniFile *dlldata = new IniFile(mod_dir + L'\\' + modinfo->getWString(dlldatakeys[i]));
+				if (dllfilefuncmap.size() == 0)
+					for (unsigned int i = 0; i < LengthOfArray(dllfilefuncarray); i++)
+						dllfilefuncmap[dllfilefuncarray[i].name] = dllfilefuncarray[i].func;
+				dlllabels.clear();
+				const IniGroup *group = dlldata->getGroup("Files");
+				for (auto iter = group->cbegin(); iter != group->cend(); iter++)
+				{
+					auto type = dllfilefuncmap.find(split(iter->second, '|')[0]);
+					if (type != dllfilefuncmap.end())
+						type->second(mod_dir + L'\\' + MBStoUTF16(iter->first, CP_UTF8));
+				}
+				wstring dllname = dlldata->getWString("", "name");
+				HMODULE dllhandle;
+				if (dllhandles.find(dllname) != dllhandles.cend())
+					dllhandle = dllhandles[dllname];
+				else
+				{
+					dllhandle = GetModuleHandle(dllname.c_str());
+					dllhandles[dllname] = dllhandle;
+				}
+				if (dllexports.find(dllname) == dllexports.end())
+				{
+					group = dlldata->getGroup("Exports");
+					dllexportcontainer exp;
+					for (auto iter = group->cbegin(); iter != group->cend(); iter++)
+					{
+						dllexportinfo inf;
+						inf.address = GetProcAddress(dllhandle, iter->first.c_str());
+						inf.type = iter->second;
+						exp.exports[iter->first] = inf;
+					}
+					dllexports[dllname] = exp;
+				}
+				const auto exports = &dllexports[dllname].exports;
+				if (dlldatafuncmap.size() == 0)
+					for (unsigned int i = 0; i < LengthOfArray(dlldatafuncarray); i++)
+						dlldatafuncmap[dlldatafuncarray[i].name] = dlldatafuncarray[i].func;
+				char buf[9];
+				for (int i = 0; i < 9999; i++)
+				{
+					_snprintf(buf, 5, "Item%d", i);
+					if (dlldata->hasGroup(buf))
+					{
+						group = dlldata->getGroup(buf);
+						const dllexportinfo &exp = (*exports)[group->getString("Export")];
+						auto type = dlldatafuncmap.find(exp.type);
+						if (type != dlldatafuncmap.end())
+							type->second(group, exp.address);
+					}
+				}
+				delete dlldata;
+			}
 	}
 
 	// Replace filenames. ("ReplaceFiles", "SwapFiles")
@@ -2047,6 +2202,7 @@ static void __cdecl LoadChrmodels(void)
 			L"SADX Mod Loader", MB_ICONERROR);
 		ExitProcess(1);
 	}
+	dllhandles[L"CHRMODELS_orig"] = chrmodelshandle;
 	WriteCall((void *)0x402513, (void *)InitMods);
 }
 
