@@ -256,7 +256,7 @@ inline void xorcode(T *address, uint32_t repeatcount, T data)
 	}
 }
 
-inline uint32_t round(float num) {
+inline uint32_t _round(float num) {
   return (uint32_t)(num > 0 ? num + 0.5 : ceil(num - 0.5));
 }
 
@@ -1000,11 +1000,11 @@ int CodeParser::processCodeList_int(const list<Code> &codes, int regnum)
 			break;
 		case floattos32:
 			for (uint32_t i = 0; i < it->repeatcount; i++)
-				*addrs32++ = round(*addrf++);
+				*addrs32++ = _round(*addrf++);
 			break;
 		case floattou32:
 			for (uint32_t i = 0; i < it->repeatcount; i++)
-				*addru32++ = round(*addrf++);
+				*addru32++ = _round(*addrf++);
 			break;
 		default:
 			// Invalid opcode.

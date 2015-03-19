@@ -716,7 +716,7 @@ static inline void clrmem(T *mem)
 	ZeroMemory(mem, sizeof(T));
 }
 
-static const struct { const char *name; const uint8_t value; } levelidsnamearray[] = {
+static const unordered_map<string, uint8_t> levelidsnamemap = {
 	{ "hedgehoghammer", LevelIDs_HedgehogHammer },
 	{ "emeraldcoast", LevelIDs_EmeraldCoast },
 	{ "windyvalley", LevelIDs_WindyValley },
@@ -756,13 +756,8 @@ static const struct { const char *name; const uint8_t value; } levelidsnamearray
 	{ "invalid", LevelIDs_Invalid }
 };
 
-static unordered_map<string, uint8_t> levelidsnamemap;
-
 static uint8_t ParseLevelID(const string &str)
 {
-	if (levelidsnamemap.size() == 0)
-		for (unsigned int i = 0; i < LengthOfArray(levelidsnamearray); i++)
-			levelidsnamemap[levelidsnamearray[i].name] = levelidsnamearray[i].value;
 	string str2 = trim(str);
 	transform(str2.begin(), str2.end(), str2.begin(), ::tolower);
 	auto lv = levelidsnamemap.find(str2);
@@ -791,7 +786,7 @@ static uint16_t ParseLevelAndActID(const string &str)
 	}
 }
 
-static const struct { const char *name; const uint8_t value; } charflagsnamearray[] = {
+static const unordered_map<string, uint8_t> charflagsnamemap = {
 	{ "sonic", CharacterFlags_Sonic },
 	{ "eggman", CharacterFlags_Eggman },
 	{ "tails", CharacterFlags_Tails },
@@ -802,13 +797,8 @@ static const struct { const char *name; const uint8_t value; } charflagsnamearra
 	{ "big", CharacterFlags_Big }
 };
 
-static unordered_map<string, uint8_t> charflagsnamemap;
-
 static uint8_t ParseCharacterFlags(const string &str)
 {
-	if (charflagsnamemap.size() == 0)
-		for (unsigned int i = 0; i < LengthOfArray(charflagsnamearray); i++)
-			charflagsnamemap[charflagsnamearray[i].name] = charflagsnamearray[i].value;
 	vector<string> strflags = split(str, ',');
 	uint8_t flag = 0;
 	for (auto iter = strflags.cbegin(); iter != strflags.cend(); iter++)
@@ -822,7 +812,7 @@ static uint8_t ParseCharacterFlags(const string &str)
 	return flag;
 }
 
-static const struct { const char *name; const uint8_t value; } languagesnamearray[] = {
+static const unordered_map<string, uint8_t> languagesnamemap = {
 	{ "japanese", Languages_Japanese },
 	{ "english", Languages_English },
 	{ "french", Languages_French },
@@ -830,13 +820,8 @@ static const struct { const char *name; const uint8_t value; } languagesnamearra
 	{ "german", Languages_German }
 };
 
-static unordered_map<string, uint8_t> languagesnamemap;
-
 static uint8_t ParseLanguage(const string &str)
 {
-	if (languagesnamemap.size() == 0)
-		for (unsigned int i = 0; i < LengthOfArray(languagesnamearray); i++)
-			languagesnamemap[languagesnamearray[i].name] = languagesnamearray[i].value;
 	string str2 = trim(str);
 	transform(str2.begin(), str2.end(), str2.begin(), ::tolower);
 	auto lv = languagesnamemap.find(str2);
@@ -1572,7 +1557,7 @@ static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &m
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
-static const struct { const char *name; void (__cdecl *func)(const IniGroup *, const wstring &); } exedatafuncarray[] = {
+static const unordered_map<string, void(__cdecl *)(const IniGroup *, const wstring &)> exedatafuncmap = {
 	{ "landtable", ProcessLandTableINI },
 	{ "model", ProcessModelINI },
 	{ "basicdxmodel", ProcessModelINI },
@@ -1601,8 +1586,6 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *, c
 	{ "stagelightdatalist", ProcessStageLightDataListINI }
 };
 
-static unordered_map<string, void (__cdecl *)(const IniGroup *, const wstring &)> exedatafuncmap;
-
 static unordered_map<string, void *> dlllabels;
 
 static void LoadDLLLandTable(const wstring &path)
@@ -1627,15 +1610,13 @@ static void LoadDLLAnimation(const wstring &path)
 	dlllabels[info->getlabel()] = info->getmotion();
 }
 
-static const struct { const char *name; void (__cdecl *func)(const wstring &); } dllfilefuncarray[] = {
+static const unordered_map<string, void(__cdecl *)(const wstring &)> dllfilefuncmap = {
 	{ "landtable", LoadDLLLandTable },
 	{ "model", LoadDLLModel },
 	{ "basicdxmodel", LoadDLLModel },
 	{ "chunkmodel", LoadDLLModel },
 	{ "animation", LoadDLLAnimation }
 };
-
-static unordered_map<string, void (__cdecl *)(const wstring &)> dllfilefuncmap;
 
 static void ProcessLandTableDLL(const IniGroup *group, void *exp)
 {
@@ -1667,7 +1648,7 @@ static void ProcessActionArrayDLL(const IniGroup *group, void *exp)
 		act->motion = (NJS_MOTION *)dlllabels[group->getString("Label")];
 }
 
-static const struct { const char *name; void (__cdecl *func)(const IniGroup *, void *); } dlldatafuncarray[] = {
+static const unordered_map<string, void(__cdecl *)(const IniGroup *, void *)> dlldatafuncmap = {
 	{ "landtable", ProcessLandTableDLL },
 	{ "landtablearray", ProcessLandTableArrayDLL },
 	{ "model", ProcessModelDLL },
@@ -1678,8 +1659,6 @@ static const struct { const char *name; void (__cdecl *func)(const IniGroup *, v
 	{ "chunkmodelarray", ProcessModelArrayDLL },
 	{ "actionarray", ProcessActionArrayDLL },
 };
-
-static unordered_map<string, void (__cdecl *)(const IniGroup *, void *)> dlldatafuncmap;
 
 static const string dlldatakeys[] = {
 	"CHRMODELSData",
@@ -1976,9 +1955,6 @@ static void __cdecl InitMods(void)
 		// Check if the mod has EXE data replacements.
 		if (modinfo->hasKeyNonEmpty("EXEData"))
 		{
-			if (exedatafuncmap.size() == 0)
-				for (unsigned int i = 0; i < LengthOfArray(exedatafuncarray); i++)
-					exedatafuncmap[exedatafuncarray[i].name] = exedatafuncarray[i].func;
 			IniFile *exedata = new IniFile(mod_dir + L'\\' + modinfo->getWString("EXEData"));
 			for (auto iter = exedata->cbegin(); iter != exedata->cend(); iter++)
 			{
@@ -1995,9 +1971,6 @@ static void __cdecl InitMods(void)
 			if (modinfo->hasKeyNonEmpty(dlldatakeys[i]))
 			{
 				IniFile *dlldata = new IniFile(mod_dir + L'\\' + modinfo->getWString(dlldatakeys[i]));
-				if (dllfilefuncmap.size() == 0)
-					for (unsigned int i = 0; i < LengthOfArray(dllfilefuncarray); i++)
-						dllfilefuncmap[dllfilefuncarray[i].name] = dllfilefuncarray[i].func;
 				dlllabels.clear();
 				const IniGroup *group = dlldata->getGroup("Files");
 				for (auto iter = group->cbegin(); iter != group->cend(); iter++)
@@ -2029,9 +2002,6 @@ static void __cdecl InitMods(void)
 					dllexports[dllname] = exp;
 				}
 				const auto exports = &dllexports[dllname].exports;
-				if (dlldatafuncmap.size() == 0)
-					for (unsigned int i = 0; i < LengthOfArray(dlldatafuncarray); i++)
-						dlldatafuncmap[dlldatafuncarray[i].name] = dlldatafuncarray[i].func;
 				char buf[9];
 				for (int i = 0; i < 9999; i++)
 				{
