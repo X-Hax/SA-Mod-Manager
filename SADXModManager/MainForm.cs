@@ -51,6 +51,7 @@ namespace SADXModManager
 			forceAspectRatioCheckBox.Checked = loaderini.ForceAspectRatio;
 			suppressEvent = false;
 			windowedFullscreenCheckBox.Checked = loaderini.WindowedFullscreen;
+			pauseWhenInactiveCheckBox.Checked = loaderini.PauseWhenInactive;
 			if (!File.Exists(datadllpath))
 			{
 				MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\nCannot determine state of installation.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -148,6 +149,7 @@ namespace SADXModManager
 			loaderini.VerticalResolution = (int)verticalResolution.Value;
 			loaderini.ForceAspectRatio = forceAspectRatioCheckBox.Checked;
 			loaderini.WindowedFullscreen = windowedFullscreenCheckBox.Checked;
+			loaderini.PauseWhenInactive = pauseWhenInactiveCheckBox.Checked;
 			IniFile.Serialize(loaderini, loaderinipath);
 			for (int i = 0; i < codes.Codes.Count; i++)
 				codes.Codes[i].Enabled = codesCheckedListBox.GetItemChecked(i);
@@ -383,6 +385,8 @@ namespace SADXModManager
 		[DefaultValue(true)]
 		public bool ForceAspectRatio { get; set; }
 		public bool WindowedFullscreen { get; set; }
+		[DefaultValue(true)]
+		public bool PauseWhenInactive { get; set; }
 		[IniName("Mod")]
 		[IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
 		public List<string> Mods { get; set; }

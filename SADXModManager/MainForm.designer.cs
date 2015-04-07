@@ -64,6 +64,7 @@
 			this.editCodeButton = new System.Windows.Forms.Button();
 			this.newCodeButton = new System.Windows.Forms.Button();
 			this.codesCheckedListBox = new System.Windows.Forms.CheckedListBox();
+			this.pauseWhenInactiveCheckBox = new System.Windows.Forms.CheckBox();
 			groupBox2 = new System.Windows.Forms.GroupBox();
 			label1 = new System.Windows.Forms.Label();
 			groupBox2.SuspendLayout();
@@ -78,6 +79,7 @@
 			// 
 			groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			groupBox2.Controls.Add(this.pauseWhenInactiveCheckBox);
 			groupBox2.Controls.Add(this.nativeResolutionButton);
 			groupBox2.Controls.Add(this.forceAspectRatioCheckBox);
 			groupBox2.Controls.Add(this.windowedFullscreenCheckBox);
@@ -91,9 +93,9 @@
 			groupBox2.Controls.Add(this.disableCDCheckCheckBox);
 			groupBox2.Controls.Add(this.dontFixWindowCheckBox);
 			groupBox2.Controls.Add(this.consoleCheckBox);
-			groupBox2.Location = new System.Drawing.Point(12, 352);
+			groupBox2.Location = new System.Drawing.Point(12, 363);
 			groupBox2.Name = "groupBox2";
-			groupBox2.Size = new System.Drawing.Size(371, 119);
+			groupBox2.Size = new System.Drawing.Size(371, 140);
 			groupBox2.TabIndex = 2;
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Options";
@@ -258,7 +260,7 @@
 			// buttonModsFolder
 			// 
 			this.buttonModsFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.buttonModsFolder.Location = new System.Drawing.Point(87, 252);
+			this.buttonModsFolder.Location = new System.Drawing.Point(87, 263);
 			this.buttonModsFolder.Name = "buttonModsFolder";
 			this.buttonModsFolder.Size = new System.Drawing.Size(105, 23);
 			this.buttonModsFolder.TabIndex = 4;
@@ -269,7 +271,7 @@
 			// buttonRefreshModList
 			// 
 			this.buttonRefreshModList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.buttonRefreshModList.Location = new System.Drawing.Point(6, 252);
+			this.buttonRefreshModList.Location = new System.Drawing.Point(6, 263);
 			this.buttonRefreshModList.Name = "buttonRefreshModList";
 			this.buttonRefreshModList.Size = new System.Drawing.Size(75, 23);
 			this.buttonRefreshModList.TabIndex = 3;
@@ -281,7 +283,7 @@
 			// 
 			this.modDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.modDescription.Location = new System.Drawing.Point(6, 281);
+			this.modDescription.Location = new System.Drawing.Point(6, 292);
 			this.modDescription.Name = "modDescription";
 			this.modDescription.Size = new System.Drawing.Size(377, 36);
 			this.modDescription.TabIndex = 5;
@@ -293,9 +295,9 @@
 			this.modDownButton.AutoSize = true;
 			this.modDownButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.modDownButton.Enabled = false;
-			this.modDownButton.Location = new System.Drawing.Point(361, 35);
+			this.modDownButton.Location = new System.Drawing.Point(354, 35);
 			this.modDownButton.Name = "modDownButton";
-			this.modDownButton.Size = new System.Drawing.Size(22, 23);
+			this.modDownButton.Size = new System.Drawing.Size(29, 23);
 			this.modDownButton.TabIndex = 2;
 			this.modDownButton.Text = "↓";
 			this.modDownButton.UseVisualStyleBackColor = true;
@@ -307,9 +309,9 @@
 			this.modUpButton.AutoSize = true;
 			this.modUpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.modUpButton.Enabled = false;
-			this.modUpButton.Location = new System.Drawing.Point(361, 6);
+			this.modUpButton.Location = new System.Drawing.Point(354, 6);
 			this.modUpButton.Name = "modUpButton";
-			this.modUpButton.Size = new System.Drawing.Size(22, 23);
+			this.modUpButton.Size = new System.Drawing.Size(29, 23);
 			this.modUpButton.TabIndex = 1;
 			this.modUpButton.Text = "↑";
 			this.modUpButton.UseVisualStyleBackColor = true;
@@ -329,7 +331,7 @@
 			this.modListView.Location = new System.Drawing.Point(6, 6);
 			this.modListView.MultiSelect = false;
 			this.modListView.Name = "modListView";
-			this.modListView.Size = new System.Drawing.Size(349, 240);
+			this.modListView.Size = new System.Drawing.Size(349, 251);
 			this.modListView.TabIndex = 0;
 			this.modListView.UseCompatibleStateImageBehavior = false;
 			this.modListView.View = System.Windows.Forms.View.Details;
@@ -348,7 +350,7 @@
 			// saveButton
 			// 
 			this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.saveButton.Location = new System.Drawing.Point(104, 477);
+			this.saveButton.Location = new System.Drawing.Point(104, 509);
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(75, 23);
 			this.saveButton.TabIndex = 101;
@@ -361,7 +363,7 @@
 			this.saveAndPlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.saveAndPlayButton.AutoSize = true;
 			this.saveAndPlayButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.saveAndPlayButton.Location = new System.Drawing.Point(12, 477);
+			this.saveAndPlayButton.Location = new System.Drawing.Point(12, 509);
 			this.saveAndPlayButton.Name = "saveAndPlayButton";
 			this.saveAndPlayButton.Size = new System.Drawing.Size(86, 23);
 			this.saveAndPlayButton.TabIndex = 100;
@@ -374,7 +376,7 @@
 			this.installButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.installButton.AutoSize = true;
 			this.installButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.installButton.Location = new System.Drawing.Point(185, 477);
+			this.installButton.Location = new System.Drawing.Point(185, 509);
 			this.installButton.Name = "installButton";
 			this.installButton.Size = new System.Drawing.Size(76, 23);
 			this.installButton.TabIndex = 102;
@@ -387,7 +389,7 @@
 			this.configEditorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.configEditorButton.AutoSize = true;
 			this.configEditorButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.configEditorButton.Location = new System.Drawing.Point(306, 477);
+			this.configEditorButton.Location = new System.Drawing.Point(306, 509);
 			this.configEditorButton.Name = "configEditorButton";
 			this.configEditorButton.Size = new System.Drawing.Size(77, 23);
 			this.configEditorButton.TabIndex = 103;
@@ -406,7 +408,7 @@
 			this.tabControl1.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(397, 346);
+			this.tabControl1.Size = new System.Drawing.Size(397, 357);
 			this.tabControl1.TabIndex = 7;
 			// 
 			// tabPage1
@@ -421,7 +423,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(389, 320);
+			this.tabPage1.Size = new System.Drawing.Size(389, 331);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Mods";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -429,7 +431,7 @@
 			// buttonNewMod
 			// 
 			this.buttonNewMod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonNewMod.Location = new System.Drawing.Point(280, 252);
+			this.buttonNewMod.Location = new System.Drawing.Point(280, 263);
 			this.buttonNewMod.Name = "buttonNewMod";
 			this.buttonNewMod.Size = new System.Drawing.Size(75, 23);
 			this.buttonNewMod.TabIndex = 5;
@@ -459,9 +461,9 @@
 			this.codeDownButton.AutoSize = true;
 			this.codeDownButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.codeDownButton.Enabled = false;
-			this.codeDownButton.Location = new System.Drawing.Point(361, 35);
+			this.codeDownButton.Location = new System.Drawing.Point(354, 35);
 			this.codeDownButton.Name = "codeDownButton";
-			this.codeDownButton.Size = new System.Drawing.Size(22, 23);
+			this.codeDownButton.Size = new System.Drawing.Size(29, 23);
 			this.codeDownButton.TabIndex = 5;
 			this.codeDownButton.Text = "↓";
 			this.codeDownButton.UseVisualStyleBackColor = true;
@@ -473,9 +475,9 @@
 			this.codeUpButton.AutoSize = true;
 			this.codeUpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.codeUpButton.Enabled = false;
-			this.codeUpButton.Location = new System.Drawing.Point(361, 6);
+			this.codeUpButton.Location = new System.Drawing.Point(354, 6);
 			this.codeUpButton.Name = "codeUpButton";
-			this.codeUpButton.Size = new System.Drawing.Size(22, 23);
+			this.codeUpButton.Size = new System.Drawing.Size(29, 23);
 			this.codeUpButton.TabIndex = 4;
 			this.codeUpButton.Text = "↑";
 			this.codeUpButton.UseVisualStyleBackColor = true;
@@ -534,11 +536,21 @@
 			this.codesCheckedListBox.TabIndex = 0;
 			this.codesCheckedListBox.SelectedIndexChanged += new System.EventHandler(this.codesCheckedListBox_SelectedIndexChanged);
 			// 
+			// pauseWhenInactiveCheckBox
+			// 
+			this.pauseWhenInactiveCheckBox.AutoSize = true;
+			this.pauseWhenInactiveCheckBox.Location = new System.Drawing.Point(6, 117);
+			this.pauseWhenInactiveCheckBox.Name = "pauseWhenInactiveCheckBox";
+			this.pauseWhenInactiveCheckBox.Size = new System.Drawing.Size(129, 17);
+			this.pauseWhenInactiveCheckBox.TabIndex = 11;
+			this.pauseWhenInactiveCheckBox.Text = "Pause When Inactive";
+			this.pauseWhenInactiveCheckBox.UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(395, 515);
+			this.ClientSize = new System.Drawing.Size(395, 547);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.configEditorButton);
 			this.Controls.Add(this.installButton);
@@ -602,5 +614,6 @@
 		private System.Windows.Forms.Button buttonNewMod;
 		private System.Windows.Forms.Button nativeResolutionButton;
 		private System.Windows.Forms.CheckBox forceAspectRatioCheckBox;
+		private System.Windows.Forms.CheckBox pauseWhenInactiveCheckBox;
 	}
 }
