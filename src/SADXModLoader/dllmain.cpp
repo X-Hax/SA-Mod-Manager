@@ -401,6 +401,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 }
 
 static bool windowedfullscreen = false;
+static bool stretchfullscreen = true;
 
 uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
 
@@ -440,9 +441,17 @@ static void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 		innersizes[windowed].y = 0;
 		innersizes[windowed].width = HorizontalResolution;
 		innersizes[windowed].height = VerticalResolution;
-		float num = min((float)scrnw / (float)HorizontalResolution, (float)scrnh / (float)VerticalResolution);
-		innersizes[fullscreen].width = (int)((float)HorizontalResolution * num);
-		innersizes[fullscreen].height = (int)((float)VerticalResolution * num);
+		if (stretchfullscreen)
+		{
+			float num = min((float)scrnw / (float)HorizontalResolution, (float)scrnh / (float)VerticalResolution);
+			innersizes[fullscreen].width = (int)((float)HorizontalResolution * num);
+			innersizes[fullscreen].height = (int)((float)VerticalResolution * num);
+		}
+		else
+		{
+			innersizes[fullscreen].width = HorizontalResolution;
+			innersizes[fullscreen].height = VerticalResolution;
+		}
 		innersizes[fullscreen].x = (scrnw - innersizes[fullscreen].width) / 2;
 		innersizes[fullscreen].y = (scrnh - innersizes[fullscreen].height) / 2;
 
@@ -1855,6 +1864,7 @@ static void __cdecl InitMods(void)
 	if (!settings->getBool("PauseWhenInactive", true))
 		WriteData((uint8_t *)0x402621, (uint8_t)0xEBu);
 
+	stretchfullscreen = settings->getBool("StretchFullscreen", true);
 
 	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
