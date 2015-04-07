@@ -345,6 +345,7 @@ void CreateOuterWindow()
 }
 
 static Gdiplus::Bitmap *bgimg;
+bool switchingwindowmode = false;
 DataPointer(HWND, hWnd, 0x3D0FD30);
 StdcallFunctionPointer(LRESULT, sub_401900, (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam), 0x401900);
 static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -366,6 +367,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 	case WM_COMMAND:
 		if (LOWORD(wParam) == 0)
 		{
+			switchingwindowmode = true;
 			if (windowmode == windowed)
 			{
 				RECT rect;
@@ -384,11 +386,13 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			ShowWindow(outerWindow, SW_SHOW);
 			UpdateWindow(outerWindow);
 			SetForegroundWindow(outerWindow);
+			switchingwindowmode = false;
 			return 0;
 		}
 		break;
 	case WM_ACTIVATEAPP:
-		sub_401900(hWnd, uMsg, wParam, lParam);
+		if (!switchingwindowmode)
+			sub_401900(hWnd, uMsg, wParam, lParam);
 		if (windowmode == windowed)
 			while (ShowCursor(TRUE) < 0);
 		else
