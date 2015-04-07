@@ -1,8 +1,18 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "ModelInfo.h"
 #include <fstream>
 #include <iostream>
-using namespace std;
+using std::default_delete;
+using std::ifstream;
+using std::ios;
+using std::istream;
+using std::list;
+using std::shared_ptr;
+using std::streamoff;
+using std::string;
+#ifdef _MSC_VER
+using std::wstring;
+#endif /* _MSC_VER */
 
 ModelInfo::ModelInfo(const char *filename)
 {
@@ -11,12 +21,14 @@ ModelInfo::ModelInfo(const char *filename)
 	str.close();
 }
 
+#ifdef _MSC_VER
 ModelInfo::ModelInfo(const wchar_t *filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
+#endif /* _MSC_VER */
 
 ModelInfo::ModelInfo(const string &filename)
 {
@@ -25,12 +37,14 @@ ModelInfo::ModelInfo(const string &filename)
 	str.close();
 }
 
+#ifdef _MSC_VER
 ModelInfo::ModelInfo(const wstring &filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
+#endif /* _MSC_VER */
 
 ModelInfo::ModelInfo(istream &stream) { init(stream); }
 
@@ -77,6 +91,8 @@ void *ModelInfo::getdata(const string &label)
 	else
 		return elem->second;
 }
+
+const std::unordered_map<string, void *> *ModelInfo::getlabels() { return &labels2; }
 
 const list<string> &ModelInfo::getanimations() { return animations; }
 
