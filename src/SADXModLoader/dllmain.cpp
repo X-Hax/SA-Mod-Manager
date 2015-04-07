@@ -1862,7 +1862,7 @@ static void __cdecl InitMods(void)
 	windowedfullscreen = settings->getBool("WindowedFullscreen");
 
 	if (!settings->getBool("PauseWhenInactive", true))
-		WriteData((uint8_t *)0x402621, (uint8_t)0xEBu);
+		WriteData((uint8_t *)0x401914, (uint8_t)0xEBu);
 
 	stretchfullscreen = settings->getBool("StretchFullscreen", true);
 
