@@ -65,6 +65,7 @@
 			this.newCodeButton = new System.Windows.Forms.Button();
 			this.codesCheckedListBox = new System.Windows.Forms.CheckedListBox();
 			this.pauseWhenInactiveCheckBox = new System.Windows.Forms.CheckBox();
+			this.stretchFullscreenCheckBox = new System.Windows.Forms.CheckBox();
 			groupBox2 = new System.Windows.Forms.GroupBox();
 			label1 = new System.Windows.Forms.Label();
 			groupBox2.SuspendLayout();
@@ -79,6 +80,7 @@
 			// 
 			groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			groupBox2.Controls.Add(this.stretchFullscreenCheckBox);
 			groupBox2.Controls.Add(this.pauseWhenInactiveCheckBox);
 			groupBox2.Controls.Add(this.nativeResolutionButton);
 			groupBox2.Controls.Add(this.forceAspectRatioCheckBox);
@@ -546,6 +548,16 @@
 			this.pauseWhenInactiveCheckBox.Text = "Pause When Inactive";
 			this.pauseWhenInactiveCheckBox.UseVisualStyleBackColor = true;
 			// 
+			// stretchFullscreenCheckBox
+			// 
+			this.stretchFullscreenCheckBox.AutoSize = true;
+			this.stretchFullscreenCheckBox.Location = new System.Drawing.Point(141, 117);
+			this.stretchFullscreenCheckBox.Name = "stretchFullscreenCheckBox";
+			this.stretchFullscreenCheckBox.Size = new System.Drawing.Size(111, 17);
+			this.stretchFullscreenCheckBox.TabIndex = 12;
+			this.stretchFullscreenCheckBox.Text = "Stretch Fullscreen";
+			this.stretchFullscreenCheckBox.UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -615,5 +627,6 @@
 		private System.Windows.Forms.Button nativeResolutionButton;
 		private System.Windows.Forms.CheckBox forceAspectRatioCheckBox;
 		private System.Windows.Forms.CheckBox pauseWhenInactiveCheckBox;
+		private System.Windows.Forms.CheckBox stretchFullscreenCheckBox;
 	}
 }
