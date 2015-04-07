@@ -402,7 +402,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 
 static bool windowedfullscreen = false;
 
-uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 };
+uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
 
 DataPointer(int, Windowed, 0x38A5DC4);
 static void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
@@ -1851,6 +1851,10 @@ static void __cdecl InitMods(void)
 	}
 
 	windowedfullscreen = settings->getBool("WindowedFullscreen");
+
+	if (!settings->getBool("PauseWhenInactive", true))
+		WriteData((uint8_t *)0x402621, (uint8_t)0xEBu);
+
 
 	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
