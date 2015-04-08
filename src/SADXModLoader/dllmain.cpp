@@ -290,8 +290,8 @@ struct windowsize { int x; int y; int width; int height; };
 struct windowdata { int x; int y; int width; int height; DWORD style; DWORD extendedstyle; };
 
 windowdata windowsizes[] = {
-	{ CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, WS_CAPTION | WS_SYSMENU, 0 }, // windowed
-	{ 0, 0, CW_USEDEFAULT, CW_USEDEFAULT, WS_POPUP, WS_EX_APPWINDOW } // fullscreen
+	{ CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, 0 }, // windowed
+	{ 0, 0, CW_USEDEFAULT, CW_USEDEFAULT, WS_POPUP | WS_VISIBLE, WS_EX_APPWINDOW } // fullscreen
 };
 
 enum windowmodes { windowed, fullscreen };
@@ -331,19 +331,6 @@ static void __cdecl sub_789BD0()
 	}
 }
 
-DataPointer(HINSTANCE, hInstance, 0x3D0FD34);
-void CreateOuterWindow()
-{
-	windowdata *data = &windowsizes[windowmode];
-
-	outerWindow = CreateWindowEx(data->extendedstyle,
-		L"WrapperWindow",
-		L"SonicAdventureDXPC",
-		data->style,
-		data->x, data->y, data->width, data->height,
-		NULL, NULL, hInstance, NULL);
-}
-
 static Gdiplus::Bitmap *bgimg;
 bool switchingwindowmode = false;
 DataPointer(HWND, hWnd, 0x3D0FD30);
@@ -376,16 +363,13 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 				windowsizes[windowed].y = rect.top;
 			}
 			windowmode = windowmode == windowed ? fullscreen : windowed;
-			HWND oldwnd = outerWindow;
-			CreateOuterWindow();
-			SetParent(hWnd, outerWindow);
 			windowsize *size = &innersizes[windowmode];
 			SetWindowPos(hWnd, NULL, size->x, size->y, size->width, size->height, 0);
-			DestroyWindow(oldwnd);
-			SetFocus(hWnd);
-			ShowWindow(outerWindow, SW_SHOW);
+			windowdata *data = &windowsizes[windowmode];
+			SetWindowLong(outerWindow, GWL_STYLE, data->style);
+			SetWindowLong(outerWindow, GWL_EXSTYLE, data->extendedstyle);
+			SetWindowPos(outerWindow, NULL, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
 			UpdateWindow(outerWindow);
-			SetForegroundWindow(outerWindow);
 			switchingwindowmode = false;
 			return 0;
 		}
@@ -410,7 +394,7 @@ static bool stretchfullscreen = true;
 uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
 
 DataPointer(int, Windowed, 0x38A5DC4);
-static void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
+static void CreateSADXWindow(HINSTANCE hInstance, int nCmdShow)
 {
 	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
 
@@ -418,8 +402,8 @@ static void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 	v8.lpfnWndProc = (WNDPROC)0x789DE0;
 	v8.cbClsExtra = 0;
 	v8.cbWndExtra = 0;
-	v8.hInstance = _hInstance;
-	v8.hIcon = LoadIconA(_hInstance, MAKEINTRESOURCEA(101));
+	v8.hInstance = hInstance;
+	v8.hIcon = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
 	v8.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
 	v8.hbrBackground = (HBRUSH)GetStockObject(0);
 	v8.lpszMenuName = 0;
@@ -472,14 +456,21 @@ static void CreateSADXWindow(HINSTANCE _hInstance, int nCmdShow)
 		ZeroMemory(&w, sizeof (WNDCLASS));
 		w.lpszClassName = TEXT("WrapperWindow");
 		w.lpfnWndProc = WrapperWndProc;
-		w.hInstance = _hInstance;
-		w.hIcon = LoadIconA(_hInstance, MAKEINTRESOURCEA(101));
+		w.hInstance = hInstance;
+		w.hIcon = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
 		w.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
 		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 		if (RegisterClass(&w) == 0)
 			return;
 
-		CreateOuterWindow();
+		windowdata *data = &windowsizes[windowmode];
+
+		outerWindow = CreateWindowEx(data->extendedstyle,
+			L"WrapperWindow",
+			L"SonicAdventureDXPC",
+			data->style,
+			data->x, data->y, data->width, data->height,
+			NULL, NULL, hInstance, NULL);
 
 		if (outerWindow == NULL)
 			return;
