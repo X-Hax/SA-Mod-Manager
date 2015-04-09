@@ -1051,6 +1051,7 @@ static void ProcessStartPosINI(const IniGroup *group, const wstring &mod_dir)
 	vector<StartPosition> poss;
 	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); iter++)
 	{
+		if (iter->first.empty()) continue;
 		StartPosition pos;
 		uint16_t levelact = ParseLevelAndActID(iter->first);
 		pos.LevelID = (int16_t)(levelact >> 8);
@@ -1123,7 +1124,7 @@ static void ProcessTrialLevelListINI(const IniGroup *group, const wstring &mod_d
 	{
 		string str;
 		getline(fstr, str);
-		if (str.size() > 0)
+		if (!str.empty())
 		{
 			TrialLevelListEntry ent;
 			uint16_t lvl = ParseLevelAndActID(str);
@@ -1150,7 +1151,7 @@ static void ProcessBossLevelListINI(const IniGroup *group, const wstring &mod_di
 	{
 		string str;
 		getline(fstr, str);
-		if (str.size() > 0)
+		if (!str.empty())
 			lvls.push_back(ParseLevelAndActID(str));
 	}
 	fstr.close();
@@ -1168,6 +1169,7 @@ static void ProcessFieldStartPosINI(const IniGroup *group, const wstring &mod_di
 	vector<FieldStartPosition> poss;
 	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); iter++)
 	{
+		if (iter->first.empty()) continue;
 		FieldStartPosition pos = { ParseLevelID(iter->first) };
 		pos.FieldID = ParseLevelID(iter->second->getString("Field", "Invalid"));
 		ParseVertex(iter->second->getString("Position", "0,0,0"), pos.Position);
@@ -1468,7 +1470,7 @@ static void ProcessLevelClearFlagListINI(const IniGroup *group, const wstring &m
 	{
 		string str;
 		getline(fstr, str);
-		if (str.size() > 0)
+		if (!str.empty())
 		{
 			LevelClearFlagData ent;
 			vector<string> parts = split(str, ' ');
