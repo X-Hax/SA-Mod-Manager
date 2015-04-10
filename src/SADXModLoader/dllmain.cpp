@@ -980,7 +980,7 @@ static void ProcessPointerList(const string &list, T *item)
 {
 	vector<string> ptrs = split(list, ',');
 	for (unsigned int i = 0; i < ptrs.size(); i++)
-		*(T **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000) = item;
+		WriteData((T **)(strtol(ptrs[i].c_str(), nullptr, 16) + 0x400000), item);
 }
 
 static void ProcessLandTableINI(const IniGroup *group, const wstring &mod_dir)
