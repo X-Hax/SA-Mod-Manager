@@ -133,7 +133,10 @@ void ModelInfo::fixbasicmodelpointers(NJS_MODEL_SADX *model, intptr_t base)
 			NJS_MESHSET_SADX *tmp = new NJS_MESHSET_SADX[model->nbMeshset];
 			reallocateddata[model->meshsets] = tmp;
 			for (int i = 0; i < model->nbMeshset; i++)
+			{
 				memcpy(&tmp[i], &((NJS_MESHSET *)model->meshsets)[i], sizeof(NJS_MESHSET));
+				tmp[i].null = 0;
+			}
 			model->meshsets = tmp;
 			allocatedmem.push_back(shared_ptr<NJS_MESHSET_SADX>(model->meshsets, default_delete<NJS_MESHSET_SADX[]>()));
 			for (int i = 0; i < model->nbMeshset; i++)
@@ -169,6 +172,7 @@ void ModelInfo::fixobjectpointers(NJS_OBJECT *object, intptr_t base)
 				NJS_MODEL_SADX *tmp = new NJS_MODEL_SADX;
 				reallocateddata[object->model] = tmp;
 				memcpy(tmp, object->model, sizeof(NJS_MODEL));
+				tmp->null = 0;
 				object->basicdxmodel = tmp;
 				allocatedmem.push_back(shared_ptr<NJS_MODEL_SADX>(object->basicdxmodel, default_delete<NJS_MODEL_SADX>()));
 				fixbasicmodelpointers(object->basicdxmodel, base);
