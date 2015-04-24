@@ -38,6 +38,9 @@ namespace SADXModManager
 
 			LoadModList();
 
+			for (int i = 0; i < Screen.AllScreens.Length; i++)
+				screenNumComboBox.Items.Add((i + 1).ToString() + " " +  Screen.AllScreens[i].DeviceName);
+
 			consoleCheckBox.Checked = loaderini.DebugConsole;
 			screenCheckBox.Checked = loaderini.DebugScreen;
 			fileCheckBox.Checked = loaderini.DebugFile;
@@ -53,6 +56,10 @@ namespace SADXModManager
 			windowedFullscreenCheckBox.Checked = loaderini.WindowedFullscreen;
 			pauseWhenInactiveCheckBox.Checked = loaderini.PauseWhenInactive;
 			stretchFullscreenCheckBox.Checked = loaderini.StretchFullscreen;
+			int scrn = loaderini.ScreenNum;
+			if (scrn > Screen.AllScreens.Length)
+				scrn = 1;
+			screenNumComboBox.SelectedIndex = scrn;
 			if (!File.Exists(datadllpath))
 			{
 				MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\nCannot determine state of installation.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -152,6 +159,7 @@ namespace SADXModManager
 			loaderini.WindowedFullscreen = windowedFullscreenCheckBox.Checked;
 			loaderini.PauseWhenInactive = pauseWhenInactiveCheckBox.Checked;
 			loaderini.StretchFullscreen = stretchFullscreenCheckBox.Checked;
+			loaderini.ScreenNum = screenNumComboBox.SelectedIndex;
 			IniFile.Serialize(loaderini, loaderinipath);
 			for (int i = 0; i < codes.Codes.Count; i++)
 				codes.Codes[i].Enabled = codesCheckedListBox.GetItemChecked(i);
@@ -299,6 +307,11 @@ namespace SADXModManager
 		private void nativeResolutionButton_Click(object sender, EventArgs e)
 		{
 			System.Drawing.Rectangle rect = Screen.PrimaryScreen.Bounds;
+			if (screenNumComboBox.SelectedIndex > 0)
+				rect = Screen.AllScreens[screenNumComboBox.SelectedIndex].Bounds;
+			else
+				foreach (Screen screen in Screen.AllScreens)
+					rect = System.Drawing.Rectangle.Union(rect, screen.Bounds);
 			verticalResolution.Value = rect.Height;
 			if (!forceAspectRatioCheckBox.Checked)
 				horizontalResolution.Value = rect.Width;
@@ -391,6 +404,8 @@ namespace SADXModManager
 		public bool PauseWhenInactive { get; set; }
 		[DefaultValue(true)]
 		public bool StretchFullscreen { get; set; }
+		[DefaultValue(1)]
+		public int ScreenNum { get; set; }
 		[IniName("Mod")]
 		[IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
 		public List<string> Mods { get; set; }

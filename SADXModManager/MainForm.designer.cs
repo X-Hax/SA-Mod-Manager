@@ -30,6 +30,9 @@
         {
 			System.Windows.Forms.GroupBox groupBox2;
 			System.Windows.Forms.Label label1;
+			System.Windows.Forms.Label label3;
+			this.stretchFullscreenCheckBox = new System.Windows.Forms.CheckBox();
+			this.pauseWhenInactiveCheckBox = new System.Windows.Forms.CheckBox();
 			this.nativeResolutionButton = new System.Windows.Forms.Button();
 			this.forceAspectRatioCheckBox = new System.Windows.Forms.CheckBox();
 			this.windowedFullscreenCheckBox = new System.Windows.Forms.CheckBox();
@@ -64,10 +67,10 @@
 			this.editCodeButton = new System.Windows.Forms.Button();
 			this.newCodeButton = new System.Windows.Forms.Button();
 			this.codesCheckedListBox = new System.Windows.Forms.CheckedListBox();
-			this.pauseWhenInactiveCheckBox = new System.Windows.Forms.CheckBox();
-			this.stretchFullscreenCheckBox = new System.Windows.Forms.CheckBox();
+			this.screenNumComboBox = new System.Windows.Forms.ComboBox();
 			groupBox2 = new System.Windows.Forms.GroupBox();
 			label1 = new System.Windows.Forms.Label();
+			label3 = new System.Windows.Forms.Label();
 			groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.verticalResolution)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.horizontalResolution)).BeginInit();
@@ -80,6 +83,8 @@
 			// 
 			groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			groupBox2.Controls.Add(label3);
+			groupBox2.Controls.Add(this.screenNumComboBox);
 			groupBox2.Controls.Add(this.stretchFullscreenCheckBox);
 			groupBox2.Controls.Add(this.pauseWhenInactiveCheckBox);
 			groupBox2.Controls.Add(this.nativeResolutionButton);
@@ -95,18 +100,38 @@
 			groupBox2.Controls.Add(this.disableCDCheckCheckBox);
 			groupBox2.Controls.Add(this.dontFixWindowCheckBox);
 			groupBox2.Controls.Add(this.consoleCheckBox);
-			groupBox2.Location = new System.Drawing.Point(12, 363);
+			groupBox2.Location = new System.Drawing.Point(12, 350);
 			groupBox2.Name = "groupBox2";
-			groupBox2.Size = new System.Drawing.Size(371, 140);
+			groupBox2.Size = new System.Drawing.Size(371, 168);
 			groupBox2.TabIndex = 2;
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Options";
+			// 
+			// stretchFullscreenCheckBox
+			// 
+			this.stretchFullscreenCheckBox.AutoSize = true;
+			this.stretchFullscreenCheckBox.Location = new System.Drawing.Point(141, 147);
+			this.stretchFullscreenCheckBox.Name = "stretchFullscreenCheckBox";
+			this.stretchFullscreenCheckBox.Size = new System.Drawing.Size(111, 17);
+			this.stretchFullscreenCheckBox.TabIndex = 12;
+			this.stretchFullscreenCheckBox.Text = "Stretch Fullscreen";
+			this.stretchFullscreenCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// pauseWhenInactiveCheckBox
+			// 
+			this.pauseWhenInactiveCheckBox.AutoSize = true;
+			this.pauseWhenInactiveCheckBox.Location = new System.Drawing.Point(6, 147);
+			this.pauseWhenInactiveCheckBox.Name = "pauseWhenInactiveCheckBox";
+			this.pauseWhenInactiveCheckBox.Size = new System.Drawing.Size(129, 17);
+			this.pauseWhenInactiveCheckBox.TabIndex = 11;
+			this.pauseWhenInactiveCheckBox.Text = "Pause When Inactive";
+			this.pauseWhenInactiveCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// nativeResolutionButton
 			// 
 			this.nativeResolutionButton.AutoSize = true;
 			this.nativeResolutionButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.nativeResolutionButton.Location = new System.Drawing.Point(147, 90);
+			this.nativeResolutionButton.Location = new System.Drawing.Point(147, 120);
 			this.nativeResolutionButton.Name = "nativeResolutionButton";
 			this.nativeResolutionButton.Size = new System.Drawing.Size(101, 23);
 			this.nativeResolutionButton.TabIndex = 10;
@@ -117,7 +142,7 @@
 			// forceAspectRatioCheckBox
 			// 
 			this.forceAspectRatioCheckBox.AutoSize = true;
-			this.forceAspectRatioCheckBox.Location = new System.Drawing.Point(6, 94);
+			this.forceAspectRatioCheckBox.Location = new System.Drawing.Point(6, 124);
 			this.forceAspectRatioCheckBox.Name = "forceAspectRatioCheckBox";
 			this.forceAspectRatioCheckBox.Size = new System.Drawing.Size(135, 17);
 			this.forceAspectRatioCheckBox.TabIndex = 9;
@@ -167,7 +192,7 @@
 			// label1
 			// 
 			label1.AutoSize = true;
-			label1.Location = new System.Drawing.Point(219, 66);
+			label1.Location = new System.Drawing.Point(219, 96);
 			label1.Name = "label1";
 			label1.Size = new System.Drawing.Size(12, 13);
 			label1.TabIndex = 7;
@@ -175,7 +200,7 @@
 			// 
 			// verticalResolution
 			// 
-			this.verticalResolution.Location = new System.Drawing.Point(237, 64);
+			this.verticalResolution.Location = new System.Drawing.Point(237, 94);
 			this.verticalResolution.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -198,7 +223,7 @@
 			// 
 			// horizontalResolution
 			// 
-			this.horizontalResolution.Location = new System.Drawing.Point(151, 64);
+			this.horizontalResolution.Location = new System.Drawing.Point(151, 94);
 			this.horizontalResolution.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -221,7 +246,7 @@
 			// useCustomResolutionCheckBox
 			// 
 			this.useCustomResolutionCheckBox.AutoSize = true;
-			this.useCustomResolutionCheckBox.Location = new System.Drawing.Point(6, 65);
+			this.useCustomResolutionCheckBox.Location = new System.Drawing.Point(6, 95);
 			this.useCustomResolutionCheckBox.Name = "useCustomResolutionCheckBox";
 			this.useCustomResolutionCheckBox.Size = new System.Drawing.Size(139, 17);
 			this.useCustomResolutionCheckBox.TabIndex = 6;
@@ -262,7 +287,7 @@
 			// buttonModsFolder
 			// 
 			this.buttonModsFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.buttonModsFolder.Location = new System.Drawing.Point(87, 263);
+			this.buttonModsFolder.Location = new System.Drawing.Point(87, 250);
 			this.buttonModsFolder.Name = "buttonModsFolder";
 			this.buttonModsFolder.Size = new System.Drawing.Size(105, 23);
 			this.buttonModsFolder.TabIndex = 4;
@@ -273,7 +298,7 @@
 			// buttonRefreshModList
 			// 
 			this.buttonRefreshModList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.buttonRefreshModList.Location = new System.Drawing.Point(6, 263);
+			this.buttonRefreshModList.Location = new System.Drawing.Point(6, 250);
 			this.buttonRefreshModList.Name = "buttonRefreshModList";
 			this.buttonRefreshModList.Size = new System.Drawing.Size(75, 23);
 			this.buttonRefreshModList.TabIndex = 3;
@@ -285,7 +310,7 @@
 			// 
 			this.modDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.modDescription.Location = new System.Drawing.Point(6, 292);
+			this.modDescription.Location = new System.Drawing.Point(6, 279);
 			this.modDescription.Name = "modDescription";
 			this.modDescription.Size = new System.Drawing.Size(377, 36);
 			this.modDescription.TabIndex = 5;
@@ -333,7 +358,7 @@
 			this.modListView.Location = new System.Drawing.Point(6, 6);
 			this.modListView.MultiSelect = false;
 			this.modListView.Name = "modListView";
-			this.modListView.Size = new System.Drawing.Size(349, 251);
+			this.modListView.Size = new System.Drawing.Size(349, 238);
 			this.modListView.TabIndex = 0;
 			this.modListView.UseCompatibleStateImageBehavior = false;
 			this.modListView.View = System.Windows.Forms.View.Details;
@@ -352,7 +377,7 @@
 			// saveButton
 			// 
 			this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.saveButton.Location = new System.Drawing.Point(104, 509);
+			this.saveButton.Location = new System.Drawing.Point(104, 524);
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(75, 23);
 			this.saveButton.TabIndex = 101;
@@ -365,7 +390,7 @@
 			this.saveAndPlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.saveAndPlayButton.AutoSize = true;
 			this.saveAndPlayButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.saveAndPlayButton.Location = new System.Drawing.Point(12, 509);
+			this.saveAndPlayButton.Location = new System.Drawing.Point(12, 524);
 			this.saveAndPlayButton.Name = "saveAndPlayButton";
 			this.saveAndPlayButton.Size = new System.Drawing.Size(86, 23);
 			this.saveAndPlayButton.TabIndex = 100;
@@ -378,7 +403,7 @@
 			this.installButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.installButton.AutoSize = true;
 			this.installButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.installButton.Location = new System.Drawing.Point(185, 509);
+			this.installButton.Location = new System.Drawing.Point(185, 524);
 			this.installButton.Name = "installButton";
 			this.installButton.Size = new System.Drawing.Size(76, 23);
 			this.installButton.TabIndex = 102;
@@ -391,7 +416,7 @@
 			this.configEditorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.configEditorButton.AutoSize = true;
 			this.configEditorButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.configEditorButton.Location = new System.Drawing.Point(306, 509);
+			this.configEditorButton.Location = new System.Drawing.Point(306, 524);
 			this.configEditorButton.Name = "configEditorButton";
 			this.configEditorButton.Size = new System.Drawing.Size(77, 23);
 			this.configEditorButton.TabIndex = 103;
@@ -410,7 +435,7 @@
 			this.tabControl1.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(397, 357);
+			this.tabControl1.Size = new System.Drawing.Size(397, 344);
 			this.tabControl1.TabIndex = 7;
 			// 
 			// tabPage1
@@ -425,7 +450,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(389, 331);
+			this.tabPage1.Size = new System.Drawing.Size(389, 318);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Mods";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -433,7 +458,7 @@
 			// buttonNewMod
 			// 
 			this.buttonNewMod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonNewMod.Location = new System.Drawing.Point(280, 263);
+			this.buttonNewMod.Location = new System.Drawing.Point(280, 250);
 			this.buttonNewMod.Name = "buttonNewMod";
 			this.buttonNewMod.Size = new System.Drawing.Size(75, 23);
 			this.buttonNewMod.TabIndex = 5;
@@ -452,7 +477,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(389, 320);
+			this.tabPage2.Size = new System.Drawing.Size(389, 331);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Codes";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -538,31 +563,31 @@
 			this.codesCheckedListBox.TabIndex = 0;
 			this.codesCheckedListBox.SelectedIndexChanged += new System.EventHandler(this.codesCheckedListBox_SelectedIndexChanged);
 			// 
-			// pauseWhenInactiveCheckBox
+			// screenNumComboBox
 			// 
-			this.pauseWhenInactiveCheckBox.AutoSize = true;
-			this.pauseWhenInactiveCheckBox.Location = new System.Drawing.Point(6, 117);
-			this.pauseWhenInactiveCheckBox.Name = "pauseWhenInactiveCheckBox";
-			this.pauseWhenInactiveCheckBox.Size = new System.Drawing.Size(129, 17);
-			this.pauseWhenInactiveCheckBox.TabIndex = 11;
-			this.pauseWhenInactiveCheckBox.Text = "Pause When Inactive";
-			this.pauseWhenInactiveCheckBox.UseVisualStyleBackColor = true;
+			this.screenNumComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.screenNumComboBox.FormattingEnabled = true;
+			this.screenNumComboBox.Items.AddRange(new object[] {
+            "All Screens"});
+			this.screenNumComboBox.Location = new System.Drawing.Point(56, 65);
+			this.screenNumComboBox.Name = "screenNumComboBox";
+			this.screenNumComboBox.Size = new System.Drawing.Size(175, 21);
+			this.screenNumComboBox.TabIndex = 13;
 			// 
-			// stretchFullscreenCheckBox
+			// label3
 			// 
-			this.stretchFullscreenCheckBox.AutoSize = true;
-			this.stretchFullscreenCheckBox.Location = new System.Drawing.Point(141, 117);
-			this.stretchFullscreenCheckBox.Name = "stretchFullscreenCheckBox";
-			this.stretchFullscreenCheckBox.Size = new System.Drawing.Size(111, 17);
-			this.stretchFullscreenCheckBox.TabIndex = 12;
-			this.stretchFullscreenCheckBox.Text = "Stretch Fullscreen";
-			this.stretchFullscreenCheckBox.UseVisualStyleBackColor = true;
+			label3.AutoSize = true;
+			label3.Location = new System.Drawing.Point(6, 68);
+			label3.Name = "label3";
+			label3.Size = new System.Drawing.Size(44, 13);
+			label3.TabIndex = 14;
+			label3.Text = "Screen:";
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(395, 547);
+			this.ClientSize = new System.Drawing.Size(395, 562);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.configEditorButton);
 			this.Controls.Add(this.installButton);
@@ -628,5 +653,6 @@
 		private System.Windows.Forms.CheckBox forceAspectRatioCheckBox;
 		private System.Windows.Forms.CheckBox pauseWhenInactiveCheckBox;
 		private System.Windows.Forms.CheckBox stretchFullscreenCheckBox;
+		private System.Windows.Forms.ComboBox screenNumComboBox;
 	}
 }
