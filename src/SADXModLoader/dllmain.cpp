@@ -348,7 +348,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 		{
 			Gdiplus::Graphics gfx((HDC)wParam);
 			gfx.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
-			gfx.DrawImage(bgimg, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
+			gfx.DrawImage(bgimg, 0, 0, windowsizes[windowmode].width, windowsizes[windowmode].height);
 			return 0;
 		}
 	case WM_COMMAND:
@@ -390,6 +390,14 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 
 static bool windowedfullscreen = false;
 static bool stretchfullscreen = true;
+static unsigned int screennum = 1;
+static vector<RECT> screenbounds;
+
+BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
+{
+	screenbounds.push_back(*lprcMonitor);
+	return TRUE;
+}
 
 uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
 
@@ -414,15 +422,34 @@ static void CreateSADXWindow(HINSTANCE hInstance, int nCmdShow)
 	AdjustWindowRectEx(&wndsz, WS_CAPTION | WS_SYSMENU, false, 0);
 	if (windowedfullscreen)
 	{
-		int scrnw = GetSystemMetrics(SM_CXSCREEN);
-		int scrnh = GetSystemMetrics(SM_CYSCREEN);
+		int scrnx, scrny, scrnw, scrnh;
+		if (screennum > 0)
+		{
+			EnumDisplayMonitors(NULL, NULL, GetMonitorSize, 0);
+			if (screenbounds.size() < screennum)
+				screennum = 1;
+			RECT scrnsz = screenbounds[screennum - 1];
+			scrnx = scrnsz.left;
+			scrny = scrnsz.top;
+			scrnw = scrnsz.right - scrnsz.left;
+			scrnh = scrnsz.bottom - scrnsz.top;
+		}
+		else
+		{
+			scrnx = GetSystemMetrics(SM_XVIRTUALSCREEN);
+			scrny = GetSystemMetrics(SM_YVIRTUALSCREEN);
+			scrnw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+			scrnh = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+		}
 		windowsizes[windowed].width = wndsz.right - wndsz.left;
 		windowsizes[windowed].height = wndsz.bottom - wndsz.top;
 		if (!Windowed)
 		{
-			windowsizes[windowed].x = (scrnw - windowsizes[windowed].width) / 2;
-			windowsizes[windowed].y = (scrnh - windowsizes[windowed].height) / 2;
+			windowsizes[windowed].x = scrnx + ((scrnw - windowsizes[windowed].width) / 2);
+			windowsizes[windowed].y = scrny + ((scrnh - windowsizes[windowed].height) / 2);
 		}
+		windowsizes[fullscreen].x = scrnx;
+		windowsizes[fullscreen].y = scrny;
 		windowsizes[fullscreen].width = scrnw;
 		windowsizes[fullscreen].height = scrnh;
 		innersizes[windowed].x = 0;
@@ -1862,6 +1889,8 @@ static void __cdecl InitMods(void)
 		WriteData((uint8_t *)0x401914, (uint8_t)0xEBu);
 
 	stretchfullscreen = settings->getBool("StretchFullscreen", true);
+
+	screennum = settings->getInt("ScreenNum", 1);
 
 	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
