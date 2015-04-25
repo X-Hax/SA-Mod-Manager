@@ -308,7 +308,7 @@ namespace SADXModManager
 		{
 			System.Drawing.Rectangle rect = Screen.PrimaryScreen.Bounds;
 			if (screenNumComboBox.SelectedIndex > 0)
-				rect = Screen.AllScreens[screenNumComboBox.SelectedIndex].Bounds;
+				rect = Screen.AllScreens[screenNumComboBox.SelectedIndex - 1].Bounds;
 			else
 				foreach (Screen screen in Screen.AllScreens)
 					rect = System.Drawing.Rectangle.Union(rect, screen.Bounds);
