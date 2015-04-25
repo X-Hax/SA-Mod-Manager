@@ -400,6 +400,7 @@ BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonit
 }
 
 uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
+int curscrnsz[2];
 
 DataPointer(int, Windowed, 0x38A5DC4);
 static void CreateSADXWindow(HINSTANCE hInstance, int nCmdShow)
@@ -420,6 +421,13 @@ static void CreateSADXWindow(HINSTANCE hInstance, int nCmdShow)
 		return;
 	RECT wndsz = { 0, 0, HorizontalResolution, VerticalResolution };
 	AdjustWindowRectEx(&wndsz, WS_CAPTION | WS_SYSMENU, false, 0);
+	if (windowedfullscreen || Windowed)
+	{
+		curscrnsz[0] = GetSystemMetrics(SM_CXSCREEN);
+		curscrnsz[1] = GetSystemMetrics(SM_CYSCREEN);
+		WriteData((int **)0x79426E, &curscrnsz[0]);
+		WriteData((int **)0x79427A, &curscrnsz[1]);
+	}
 	if (windowedfullscreen)
 	{
 		int scrnx, scrny, scrnw, scrnh;
