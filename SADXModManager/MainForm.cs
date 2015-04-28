@@ -85,8 +85,9 @@ namespace SADXModManager
 		private void LoadModList()
 		{
 			mods = new Dictionary<string, ModInfo>();
-			foreach (string filename in Directory.GetFiles(Path.Combine(Environment.CurrentDirectory, "mods"), "mod.ini", SearchOption.AllDirectories))
-				mods.Add(new DirectoryInfo(Path.GetDirectoryName(filename)).Name, IniFile.Deserialize<ModInfo>(filename));
+			string modDir = Path.Combine(Environment.CurrentDirectory, "mods");
+			foreach (string filename in Directory.GetFiles(modDir, "mod.ini", SearchOption.AllDirectories))
+				mods.Add(Path.GetDirectoryName(filename).Substring(modDir.Length + 1), IniFile.Deserialize<ModInfo>(filename));
 			modListView.BeginUpdate();
 			foreach (string mod in new List<string>(loaderini.Mods))
 			{
