@@ -94,7 +94,7 @@ namespace SADXModManager
 				if (mods.ContainsKey(mod))
 				{
 					ModInfo inf = mods[mod];
-					modListView.Items.Add(new ListViewItem(new[] { inf.Name, inf.Author }) { Checked = true, Tag = mod });
+					modListView.Items.Add(new ListViewItem(new[] { inf.Name, inf.Author, inf.Version }) { Checked = true, Tag = mod });
 				}
 				else
 				{
@@ -421,6 +421,7 @@ namespace SADXModManager
 	{
 		public string Name { get; set; }
 		public string Author { get; set; }
+		public string Version { get; set; }
 		public string Description { get; set; }
 		public string EXEFile { get; set; }
 		public string DLLFile { get; set; }
