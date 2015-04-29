@@ -104,7 +104,7 @@ namespace SADXModManager
 			}
 			foreach (KeyValuePair<string, ModInfo> inf in mods)
 				if (!loaderini.Mods.Contains(inf.Key))
-					modListView.Items.Add(new ListViewItem(new[] { inf.Value.Name, inf.Value.Author }) { Tag = inf.Key });
+					modListView.Items.Add(new ListViewItem(new[] { inf.Value.Name, inf.Value.Author, inf.Value.Version }) { Tag = inf.Key });
 			modListView.EndUpdate();
 		}
 
