@@ -112,7 +112,7 @@ typedef HelperFunctions_v3 HelperFunctions;
 
 typedef void (__cdecl *ModInitFunc)(const char *path, const HelperFunctions &helperFunctions);
 
-typedef void (__cdecl *ModFrameFunc)();
+typedef void (__cdecl *ModEvent)();
 
 struct ModInfo
 {

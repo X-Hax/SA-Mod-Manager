@@ -94,7 +94,7 @@ static int __cdecl PlayVoiceFile_r(LPCSTR filename)
  * C wrapper to call sadx_fileMap.replaceFile() from asm.
  * @param lpFileName Filename.
  * @return Replaced filename, or original filename if not replaced by a mod.
- */ 
+ */
 static const char *_ReplaceFile(const char *lpFileName)
 {
 	return sadx_fileMap.replaceFile(lpFileName);
@@ -131,40 +131,40 @@ static void HookTheAPI()
 	pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "GetProcAddress");
 	PROC pActualCreateFile = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "CreateFileA");
 
-	pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR) ImageDirectoryEntryToData(
+	pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR)ImageDirectoryEntryToData(
 		hModule, TRUE, IMAGE_DIRECTORY_ENTRY_IMPORT, &ulSize);
 
-	if(NULL != pImportDesc)
+	if (NULL != pImportDesc)
 	{
 		for (; pImportDesc->Name; pImportDesc++)
 		{
 			// get the module name
-			pszModName = (PSTR) ((PBYTE) hModule + pImportDesc->Name);
+			pszModName = (PSTR)((PBYTE)hModule + pImportDesc->Name);
 
-			if(NULL != pszModName)
+			if (NULL != pszModName)
 			{
 				// check if the module is kernel32.dll
 				if (lstrcmpiA(pszModName, "Kernel32.dll") == 0)
 				{
 					// get the module
-					PIMAGE_THUNK_DATA pThunk = (PIMAGE_THUNK_DATA) ((PBYTE) hModule + pImportDesc->FirstThunk);
+					PIMAGE_THUNK_DATA pThunk = (PIMAGE_THUNK_DATA)((PBYTE)hModule + pImportDesc->FirstThunk);
 
-					for (; pThunk->u1.Function; pThunk++) 
+					for (; pThunk->u1.Function; pThunk++)
 					{
-						PROC* ppfn = (PROC*) &pThunk->u1.Function;
-						if(*ppfn == pActualFunction)
+						PROC* ppfn = (PROC*)&pThunk->u1.Function;
+						if (*ppfn == pActualFunction)
 						{
 							DWORD dwOldProtect = 0;
-							VirtualProtect(ppfn, sizeof(pNewFunction), PAGE_WRITECOPY,&dwOldProtect);
+							VirtualProtect(ppfn, sizeof(pNewFunction), PAGE_WRITECOPY, &dwOldProtect);
 							WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewFunction, sizeof(pNewFunction), NULL);
-							VirtualProtect(ppfn, sizeof(pNewFunction), dwOldProtect,&dwOldProtect);
+							VirtualProtect(ppfn, sizeof(pNewFunction), dwOldProtect, &dwOldProtect);
 						} // Function that we are looking for
 						else if (*ppfn == pActualCreateFile)
 						{
 							DWORD dwOldProtect = 0;
-							VirtualProtect(ppfn, sizeof(pNewCreateFile), PAGE_WRITECOPY,&dwOldProtect);
+							VirtualProtect(ppfn, sizeof(pNewCreateFile), PAGE_WRITECOPY, &dwOldProtect);
 							WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewCreateFile, sizeof(pNewCreateFile), NULL);
-							VirtualProtect(ppfn, sizeof(pNewCreateFile), dwOldProtect,&dwOldProtect);
+							VirtualProtect(ppfn, sizeof(pNewCreateFile), dwOldProtect, &dwOldProtect);
 						}
 					}
 				} // Compare module name
@@ -195,13 +195,36 @@ static const uint32_t fadecolors[] = {
 // Code Parser.
 static CodeParser codeParser;
 
-static vector<ModFrameFunc> modFrameFuncs;
+/**
+* Registers an event to the specified event list.
+* @param eventList The event list to add to.
+* @param module The module for the mod DLL.
+* @param name The name of the exported function from the module (i.e OnFrame)
+*/
+static void RegisterEvent(vector<ModEvent>& eventList, HMODULE module, const char* name)
+{
+	const ModEvent modEvent = (const ModEvent)GetProcAddress(module, name);
 
+	if (modEvent != nullptr)
+		eventList.push_back(modEvent);
+}
+
+/**
+* Calls all registered events in the specified event list.
+* @param eventList The list of events to trigger.
+*/
+static inline void RaiseEvents(const vector<ModEvent>& eventList)
+{
+	for (auto &i : eventList)
+		i();
+}
+
+static vector<ModEvent> modFrameEvents;
 static void __cdecl ProcessCodes()
 {
 	codeParser.processCodeList();
-	for (unsigned int i = 0; i < modFrameFuncs.size(); i++)
-		modFrameFuncs[i]();
+	RaiseEvents(modFrameEvents);
+
 	const int numrows = (VerticalResolution / 12);
 	int pos;
 	if ((int)msgqueue.size() <= numrows - 1)
@@ -210,23 +233,29 @@ static void __cdecl ProcessCodes()
 		pos = 0;
 	if (msgqueue.size() > 0)
 		for (deque<message>::iterator iter = msgqueue.begin();
-		     iter != msgqueue.end(); ++iter)
+			iter != msgqueue.end(); ++iter)
+	{
+		int c = -1;
+		if (300 - iter->time < LengthOfArray(fadecolors))
+			c = fadecolors[LengthOfArray(fadecolors) - (300 - iter->time) - 1];
+		SetDebugTextColor((int)c);
+		DisplayDebugString(pos++, (char *)iter->text.c_str());
+		if (++iter->time >= 300)
 		{
-			int c = -1;
-			if (300 - iter->time < LengthOfArray(fadecolors))
-				c = fadecolors[LengthOfArray(fadecolors) - (300 - iter->time) - 1];
-			SetDebugTextColor((int)c);
-			DisplayDebugString(pos++, (char *)iter->text.c_str());
-			if (++iter->time >= 300)
-			{
-				msgqueue.pop_front();
-				if (msgqueue.size() == 0)
-					break;
-				iter = msgqueue.begin();
-			}
-			if (pos == numrows)
+			msgqueue.pop_front();
+			if (msgqueue.size() == 0)
 				break;
+			iter = msgqueue.begin();
 		}
+		if (pos == numrows)
+			break;
+	}
+}
+
+static vector<ModEvent> modInputEvents;
+static void __cdecl OnInput()
+{
+	RaiseEvents(modInputEvents);
 }
 
 static bool dbgConsole, dbgScreen;
@@ -312,7 +341,7 @@ static void __cdecl sub_789BD0()
 {
 	MSG v0; // [sp+4h] [bp-1Ch]@1
 
-	if ( PeekMessageA(&v0, 0, 0, 0, 1u) )
+	if (PeekMessageA(&v0, 0, 0, 0, 1u))
 	{
 		do
 		{
@@ -321,8 +350,7 @@ static void __cdecl sub_789BD0()
 				TranslateMessage(&v0);
 				DispatchMessageA(&v0);
 			}
-		}
-		while ( PeekMessageA(&v0, 0, 0, 0, 1u) );
+		} while (PeekMessageA(&v0, 0, 0, 0, 1u));
 		dword_3D08534 = v0.wParam;
 	}
 	else
@@ -337,7 +365,8 @@ DataPointer(HWND, hWnd, 0x3D0FD30);
 StdcallFunctionPointer(LRESULT, sub_401900, (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam), 0x401900);
 static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch (uMsg) {
+	switch (uMsg)
+	{
 	case WM_CLOSE:
 		// we also need to let SADX do cleanup
 		SendMessage(hWnd, WM_CLOSE, wParam, lParam);
@@ -488,7 +517,7 @@ static void CreateSADXWindow(HINSTANCE hInstance, int nCmdShow)
 			bgimg = Gdiplus::Bitmap::FromFile(L"mods\\Border.png");
 		}
 		WNDCLASS w;
-		ZeroMemory(&w, sizeof (WNDCLASS));
+		ZeroMemory(&w, sizeof(WNDCLASS));
 		w.lpszClassName = TEXT("WrapperWindow");
 		w.lpfnWndProc = WrapperWndProc;
 		w.hInstance = hInstance;
@@ -528,7 +557,7 @@ static void CreateSADXWindow(HINSTANCE hInstance, int nCmdShow)
 	{
 		signed int v2; // eax@3
 		DWORD v3; // esi@3
-		if ( Windowed )
+		if (Windowed)
 		{
 			v3 = 0;
 			v2 = WS_CAPTION | WS_SYSMENU;
@@ -551,10 +580,10 @@ static __declspec(naked) void sub_789E50_r()
 	{
 		mov ebx, [esp+4]
 		push ebx
-			push eax
-			call CreateSADXWindow
-			add esp, 8
-			retn
+		push eax
+		call CreateSADXWindow
+		add esp, 8
+		retn
 	}
 }
 
@@ -800,20 +829,23 @@ static const HelperFunctions helperFunctions =
 	ClearTrialSubgameList
 };
 
-static vector<string> &split(const string &s, char delim, vector<string> &elems) {
-    std::stringstream ss(s);
-    string item;
-    while (std::getline(ss, item, delim)) {
-        elems.push_back(item);
-    }
-    return elems;
+static vector<string> &split(const string &s, char delim, vector<string> &elems)
+{
+	std::stringstream ss(s);
+	string item;
+	while (std::getline(ss, item, delim))
+	{
+		elems.push_back(item);
+	}
+	return elems;
 }
 
 
-static vector<string> split(const string &s, char delim) {
-    vector<string> elems;
-    split(s, delim, elems);
-    return elems;
+static vector<string> split(const string &s, char delim)
+{
+	vector<string> elems;
+	split(s, delim, elems);
+	return elems;
 }
 
 static string trim(const string &s)
@@ -967,30 +999,30 @@ static string UnescapeNewlines(const string &str)
 	result.reserve(str.size());
 	for (unsigned int c = 0; c < str.size(); c++)
 		switch (str[c])
-		{
-			case '\\': // escape character
-				if (c + 1 == str.size())
-				{
-					result.push_back(str[c]);
-					continue;
-				}
-				switch (str[++c])
-				{
-				case 'n': // line feed
-					result.push_back('\n');
-					break;
-				case 'r': // carriage return
-					result.push_back('\r');
-					break;
-				default: // literal character
-					result.push_back(str[c]);
-					break;
-				}
+	{
+		case '\\': // escape character
+			if (c + 1 == str.size())
+			{
+				result.push_back(str[c]);
+				continue;
+			}
+			switch (str[++c])
+			{
+			case 'n': // line feed
+				result.push_back('\n');
 				break;
-			default:
+			case 'r': // carriage return
+				result.push_back('\r');
+				break;
+			default: // literal character
 				result.push_back(str[c]);
 				break;
-		}
+			}
+			break;
+		default:
+			result.push_back(str[c]);
+			break;
+	}
 	return result;
 }
 
@@ -1472,7 +1504,7 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 				delete inidata;
 				if (hasText)
 				{
-					HintText_Text t = { };
+					HintText_Text t = {};
 					text.push_back(t);
 				}
 			}
@@ -1640,8 +1672,7 @@ static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_di
 		arrcpy(ptr.PathList, paths.data(), numents);
 		ptr.PathList[numents] = nullptr;
 		pathlist.push_back(ptr);
-	}
-	while (FindNextFile(hFind, &data));
+	} while (FindNextFile(hFind, &data));
 	FindClose(hFind);
 	PathDataPtr *newlist = new PathDataPtr[pathlist.size() + 1];
 	arrcpy(newlist, pathlist.data(), pathlist.size());
@@ -1827,7 +1858,7 @@ static void __cdecl InitMods(void)
 		if (slash_pos > 0)
 			exepath = exepath.substr(0, slash_pos);
 	}
-	
+
 	// Convert the EXE filename to lowercase.
 	transform(exefilename.begin(), exefilename.end(), exefilename.begin(), ::towlower);
 
@@ -1954,7 +1985,7 @@ static void __cdecl InitMods(void)
 			const IniGroup *group = ini_mod->getGroup("IgnoreFiles");
 			auto data = group->data();
 			for (unordered_map<string, string>::const_iterator iter = data->begin();
-			     iter != data->end(); ++iter)
+				iter != data->end(); ++iter)
 			{
 				sadx_fileMap.addIgnoreFile(iter->first);
 				PrintDebug("Ignored file: %s\n", iter->first.c_str());
@@ -1966,7 +1997,7 @@ static void __cdecl InitMods(void)
 			const IniGroup *group = ini_mod->getGroup("ReplaceFiles");
 			auto data = group->data();
 			for (unordered_map<string, string>::const_iterator iter = data->begin();
-			     iter != data->end(); ++iter)
+				iter != data->end(); ++iter)
 			{
 				filereplaces[FileMap::normalizePath(iter->first)] =
 					FileMap::normalizePath(iter->second);
@@ -1978,7 +2009,7 @@ static void __cdecl InitMods(void)
 			const IniGroup *group = ini_mod->getGroup("SwapFiles");
 			auto data = group->data();
 			for (unordered_map<string, string>::const_iterator iter = data->begin();
-			     iter != data->end(); ++iter)
+				iter != data->end(); ++iter)
 			{
 				filereplaces[FileMap::normalizePath(iter->first)] =
 					FileMap::normalizePath(iter->second);
@@ -2067,9 +2098,9 @@ static void __cdecl InitMods(void)
 					if (pointers)
 						for (int i = 0; i < pointers->Count; i++)
 							WriteData((void **)pointers->Pointers[i].address, pointers->Pointers[i].data);
-					const ModFrameFunc frame = (const ModFrameFunc)GetProcAddress(module, "OnFrame");
-					if (frame)
-						modFrameFuncs.push_back(frame);
+
+					RegisterEvent(modFrameEvents, module, "OnFrame");
+					RegisterEvent(modInputEvents, module, "OnInput");
 				}
 				else
 				{
@@ -2257,7 +2288,7 @@ static void __cdecl InitMods(void)
 	ifstream codes_str("mods\\Codes.dat", ifstream::binary);
 	if (codes_str.is_open())
 	{
-		static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '4'};
+		static const char codemagic[6] = { 'c', 'o', 'd', 'e', 'v', '4' };
 		char buf[sizeof(codemagic)];
 		codes_str.read(buf, sizeof(buf));
 		if (!memcmp(buf, codemagic, sizeof(codemagic)))
@@ -2276,12 +2307,12 @@ static void __cdecl InitMods(void)
 				PrintDebug("ERROR loading codes: ");
 				switch (codecount)
 				{
-					case -EINVAL:
-						PrintDebug("Code file is not in the correct format.\n");
-						break;
-					default:
-						PrintDebug("%s\n", strerror(-codecount));
-						break;
+				case -EINVAL:
+					PrintDebug("Code file is not in the correct format.\n");
+					break;
+				default:
+					PrintDebug("%s\n", strerror(-codecount));
+					break;
 				}
 			}
 		}
@@ -2291,7 +2322,10 @@ static void __cdecl InitMods(void)
 		}
 		codes_str.close();
 	}
-	WriteJump((void *)0x426063, (void *)ProcessCodes);
+
+	// Sets up code/event handling
+	WriteJump((void*)0x00426063, (void*)ProcessCodes);
+	WriteJump((void*)0x0040FDB3, (void*)OnInput);
 }
 
 static void __cdecl LoadChrmodels(void)
@@ -2322,35 +2356,35 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 
 	switch (fdwReason)
 	{
-		case DLL_PROCESS_ATTACH:
-			myhandle = hinstDll;
-			HookTheAPI();
+	case DLL_PROCESS_ATTACH:
+		myhandle = hinstDll;
+		HookTheAPI();
 
-			// Make sure this is the correct version of SADX.
-			if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
-			{
-				MessageBox(NULL, L"This copy of Sonic Adventure DX is not the US version.\n\n"
-					L"Please obtain the EXE file from the US version and try again.",
-					L"SADX Mod Loader", MB_ICONERROR);
-				ExitProcess(1);
-			}
+		// Make sure this is the correct version of SADX.
+		if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
+		{
+			MessageBox(NULL, L"This copy of Sonic Adventure DX is not the US version.\n\n"
+				L"Please obtain the EXE file from the US version and try again.",
+				L"SADX Mod Loader", MB_ICONERROR);
+			ExitProcess(1);
+		}
 
-			WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
-			WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
-			break;
+		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
+		WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
+		break;
 
-		case DLL_THREAD_ATTACH:
-		case DLL_THREAD_DETACH:
-			break;
+	case DLL_THREAD_ATTACH:
+	case DLL_THREAD_DETACH:
+		break;
 
-		case DLL_PROCESS_DETACH:
-			// Make sure the log file is closed.
-			if (dbgFile)
-			{
-				fclose(dbgFile);
-				dbgFile = nullptr;
-			}
-			break;
+	case DLL_PROCESS_DETACH:
+		// Make sure the log file is closed.
+		if (dbgFile)
+		{
+			fclose(dbgFile);
+			dbgFile = nullptr;
+		}
+		break;
 	}
 
 	return TRUE;
