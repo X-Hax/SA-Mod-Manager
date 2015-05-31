@@ -539,7 +539,8 @@ enum NPCTextControl
 
 enum ButtonBits
 {
-	ButtonBits_B = 1,
+	ButtonBits_C,
+	ButtonBits_B,
 	ButtonBits_A,
 	ButtonBits_Start,
 	ButtonBits_Up,
@@ -549,12 +550,18 @@ enum ButtonBits
 	ButtonBits_Z,
 	ButtonBits_Y,
 	ButtonBits_X,
-	ButtonBits_R = 16,
+	ButtonBits_D,
+	ButtonBits_Up2,
+	ButtonBits_Down2,
+	ButtonBits_Left2,
+	ButtonBits_Right2,
+	ButtonBits_R,
 	ButtonBits_L
 };
 
 enum Buttons : int
 {
+	makemasks(Button, C),
 	makemasks(Button, B),
 	makemasks(Button, A),
 	makemasks(Button, Start),
@@ -565,6 +572,11 @@ enum Buttons : int
 	makemasks(Button, Z),
 	makemasks(Button, Y),
 	makemasks(Button, X),
+	makemasks(Button, D),
+	makemasks(Button, Up2),
+	makemasks(Button, Down2),
+	makemasks(Button, Left2),
+	makemasks(Button, Right2),
 	makemasks(Button, R),
 	makemasks(Button, L)
 };
