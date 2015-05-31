@@ -23,7 +23,7 @@
 #include "ModLoader/MemAccess.h"
 #include "SADXModLoader/SADXEnums.h"
 #include "SADXModLoader/SADXStructs.h"
-#include "SADXModLoader/SADXVars.h"
+#include "SADXModLoader/SADXVariables.h"
 #include "SADXModLoader/SADXFunctions.h"
 
 static inline void ResizeTextureList(NJS_TEXLIST *texlist, Uint32 count)

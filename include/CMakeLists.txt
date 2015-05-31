@@ -13,7 +13,7 @@ SET(SADXModLoader_H
 	SADXModLoader/SADXEnums.h
 	SADXModLoader/SADXFunctions.h
 	SADXModLoader/SADXStructs.h
-	SADXModLoader/SADXVars.h
+	SADXModLoader/SADXVariables.h
 	)
 
 # TODO (maybe): Convert headers from Unix to DOS format.
