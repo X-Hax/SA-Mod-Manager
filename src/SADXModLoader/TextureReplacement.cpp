@@ -107,7 +107,7 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 
 	for (unsigned int i = 0; i < texList->nbTexture; i++)
 	{
-#ifdef 0
+#if 0
 		PrintDebug("NJS_TEXNAME Filename:		0x%08X\n",		texList->textures[i].filename);
 		PrintDebug("NJS_TEXNAME Attributes:		%d\n",			texList->textures[i].attr);
 		PrintDebug("NJS_TEXNAME texaddr:		0x%08X\n\n",	texList->textures[i].texaddr);
