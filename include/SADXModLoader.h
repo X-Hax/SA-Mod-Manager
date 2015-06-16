@@ -7,7 +7,7 @@
 #define SADXMODLOADER_H
 
 #include "ninja.h"
-#include <d3d9.h>
+#include <d3d8.h>
 
 // HACK: Fixes conflict with Windows API PlaySound.
 #ifdef PlaySound

@@ -39,6 +39,7 @@ SET(SADXModLoader_SRC
 	FileMap.cpp
 	MediaFns.cpp
 	TextConv.cpp
+	TextureReplacement.cpp
 	)
 
 # Headers.
@@ -48,6 +49,7 @@ SET(SADXModLoader_H
 	FileMap.hpp
 	MediaFns.hpp
 	TextConv.hpp
+	TextureReplacement.h
 	)
 
 # SADXModLoader is compiled as a Unicode DLL.

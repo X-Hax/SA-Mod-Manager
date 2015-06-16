@@ -42,6 +42,7 @@ using std::vector;
 #include "..\libmodutils\LandTableInfo.h"
 #include "..\libmodutils\ModelInfo.h"
 #include "..\libmodutils\AnimationFile.h"
+#include "TextureReplacement.h"
 
 static HINSTANCE myhandle;
 static HMODULE chrmodelshandle;
@@ -1943,6 +1944,7 @@ static void __cdecl InitMods(void)
 	WriteJump((void *)0x40D0A0, (void *)ResumeSound_r);
 	WriteJump((void *)0x40CFF0, (void *)WMPClose_r);
 	WriteJump((void *)0x40D28A, (void *)WMPRelease_r);
+	WriteJump((void*)0x004210A0, LoadPVM_C);	// Texture packs
 
 	// Unprotect the .rdata section.
 	// TODO: Get .rdata address and length dynamically.
@@ -2131,6 +2133,7 @@ static void __cdecl InitMods(void)
 
 		// Check if the mod has DLL data replacements.
 		for (unsigned int i = 0; i < LengthOfArray(dlldatakeys); i++)
+		{
 			if (modinfo->hasKeyNonEmpty(dlldatakeys[i]))
 			{
 				IniFile *dlldata = new IniFile(mod_dir + L'\\' + modinfo->getWString(dlldatakeys[i]));
@@ -2180,6 +2183,12 @@ static void __cdecl InitMods(void)
 				}
 				delete dlldata;
 			}
+		}
+
+		// Texture pack stuff
+		wstring modTextureDir = mod_dir + L"\\textures\\";
+		if (PathFileExists(modTextureDir.c_str()))
+			TexturePackPaths.push_back(modTextureDir);
 	}
 
 	// Replace filenames. ("ReplaceFiles", "SwapFiles")
