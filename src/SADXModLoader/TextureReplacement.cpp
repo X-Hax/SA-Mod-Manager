@@ -60,9 +60,13 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 	if (texList == nullptr)
 		return false;
 
+	string pvmName_a(pvmName.begin(), pvmName.end());
+
+	PrintDebug("Loading texture pack: %s\n", pvmName_a.c_str());
+
 	if (!FileExists(pvmName + L"\\index.txt"))
 	{
-		PrintDebug("\aTexture index missing for %s\n", string(pvmName.begin(), pvmName.end()).c_str());
+		PrintDebug("\aTexture index missing for %s\n", pvmName_a.c_str());
 		return false;
 	}
 
@@ -156,6 +160,7 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 		NJS_TEXMEMLIST* texture = new NJS_TEXMEMLIST;
 		*texture = {};
 
+		texture->count							= 1;	// Required for the game to release the texture.
 		texture->globalIndex					= customEntries[i].globalIndex;
 		texture->texinfo.texsurface.nWidth		= info.Width;
 		texture->texinfo.texsurface.nHeight		= info.Height;
