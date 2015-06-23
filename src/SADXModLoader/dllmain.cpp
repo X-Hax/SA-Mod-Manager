@@ -259,6 +259,17 @@ static void __cdecl OnInput()
 	RaiseEvents(modInputEvents);
 }
 
+DataPointer(short, word_3B2C464, 0x3B2C464);
+static void __declspec(naked) OnInput_MidJump()
+{
+	__asm
+	{
+		inc word_3B2C464
+		pop esi
+		jmp OnInput
+	}
+}
+
 static bool dbgConsole, dbgScreen;
 // File for logging debugging output.
 static FILE *dbgFile = nullptr;
@@ -2334,7 +2345,9 @@ static void __cdecl InitMods(void)
 
 	// Sets up code/event handling
 	WriteJump((void*)0x00426063, (void*)ProcessCodes);
-	WriteJump((void*)0x0040FDB3, (void*)OnInput);
+	WriteJump((void*)0x0040FDB3, (void*)OnInput);			// End of first chunk
+	WriteJump((void*)0x0042F1C5, (void*)OnInput_MidJump);	// Cutscene stuff - Untested. Couldn't trigger ingame.
+	WriteJump((void*)0x0042F1E9, (void*)OnInput);			// Cutscene stuff
 }
 
 static void __cdecl LoadChrmodels(void)

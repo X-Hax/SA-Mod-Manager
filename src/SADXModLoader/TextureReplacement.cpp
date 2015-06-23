@@ -14,7 +14,7 @@
 #include "TextureReplacement.h"
 
 DataPointer(IDirect3DDevice8*, Direct3D_Device, 0x03D128B0);
-DataPointer(char, LoadingFile, 0x3ABDF68);
+DataPointer(bool, LoadingFile, 0x3ABDF68);
 
 #pragma region Filesystem stuff
 
@@ -45,7 +45,7 @@ bool FileExists(const std::string& path)
 
 struct CustomTextureEntry
 {
-	unsigned int globalIndex;
+	uint32_t globalIndex;
 	std::string name;
 };
 
@@ -73,7 +73,7 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 	ifstream indexFile(pvmName + L"\\index.txt");
 	vector<CustomTextureEntry> customEntries;
 	string line;
-	unsigned int lineNumber = 0;
+	uint32_t lineNumber = 0;
 
 	// This reads the custom texture list from disk.
 	// The format is: gbix,filename
@@ -101,7 +101,7 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 
 	indexFile.close();
 
-#ifdef _DEBUG
+#if 0
 	PrintDebug("NJS_TEXLIST Textures:		0x%08X\n", texList->textures);
 	PrintDebug("NJS_TEXLIST Count:			%d\n", texList->nbTexture);
 	PrintDebug("NJS_TEXLIST New Count:		%d\n\n", customEntries.size());
@@ -109,7 +109,7 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 
 	texList->nbTexture = customEntries.size();
 
-	for (unsigned int i = 0; i < texList->nbTexture; i++)
+	for (uint32_t i = 0; i < texList->nbTexture; i++)
 	{
 #if 0
 		PrintDebug("NJS_TEXNAME Filename:		0x%08X\n",		texList->textures[i].filename);
@@ -180,7 +180,7 @@ FunctionPointer(signed int, LoadPVM_D_original, (const char*, NJS_TEXLIST*), 0x0
 void __cdecl LoadPVM_C(const char* pvmName, NJS_TEXLIST* texList)
 {
 	string filename(pvmName);
-	LoadingFile = 1;
+	LoadingFile = true;
 
 	// Custom PVM Directory.
 	// This iterates backwards through the list of texture pack paths to find
@@ -235,7 +235,7 @@ signed int __cdecl LoadPVM_D(const char* pvmName, NJS_TEXLIST* texList)
 		{
 			PrintDebug("Loading PVM: [%08X] %s\n", *(int*)texList, pvmName);
 
-			for (unsigned int i = 0; i < texList->nbTexture; i++)
+			for (uint32_t i = 0; i < texList->nbTexture; i++)
 			{
 				NJS_TEXMEMLIST* texture = (NJS_TEXMEMLIST*)texList->textures[i].texaddr;
 
@@ -248,7 +248,7 @@ signed int __cdecl LoadPVM_D(const char* pvmName, NJS_TEXLIST* texList)
 					IDirect3DTexture8* d3dtexture = (IDirect3DTexture8*)texture->texinfo.texsurface.pSurface;
 					d3dtexture->Release();
 					D3DXCreateTextureFromFileA(Direct3D_Device, file.c_str(), &d3dtexture);
-					texture->texinfo.texsurface.pSurface = (unsigned int32*)d3dtexture;
+					texture->texinfo.texsurface.pSurface = (Uint32*)d3dtexture;
 				}
 			}
 		}
