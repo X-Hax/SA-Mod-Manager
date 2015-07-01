@@ -18,7 +18,7 @@ enum StatusBits
 	StatusBits_LightDash,
 	StatusBits_Attack,
 	StatusBits_HoldObject,
-	StatusBits_DoNextAct
+	StatusBits_DoNextAction
 };
 
 enum Status : uint16_t
@@ -29,7 +29,7 @@ enum Status : uint16_t
 	makemask(Status, LightDash),
 	makemask(Status, Attack),
 	makemask(Status, HoldObject),
-	makemask(Status, DoNextAct)
+	makemask(Status, DoNextAction)
 };
 
 enum PowerupBits
