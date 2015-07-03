@@ -12,24 +12,42 @@
 
 enum StatusBits
 {
-	StatusBits_Ground	= 0,
-	StatusBits_Hurt		= 2,
-	StatusBits_Ball		= 8,
+	StatusBits_Ground,
+	StatusBits_Unknown1,
+	StatusBits_Hurt,
+	StatusBits_ObjectInteract,
+	StatusBits_Unkown2,
+	StatusBits_Unkown3,
+	StatusBits_Unkown4,
+	StatusBits_Unkown5,
+	StatusBits_Ball,
 	StatusBits_LightDash,
 	StatusBits_Attack,
 	StatusBits_HoldObject,
-	StatusBits_DoNextAction
+	StatusBits_DoNextAction,
+	StatusBits_OnPath,
+	StatusBits_DisableControl,
+	StatusBits_Unkown7
 };
 
 enum Status : uint16_t
 {
 	makemask(Status, Ground),
+	makemask(Status, Unknown1),
 	makemask(Status, Hurt),
+	makemask(Status, ObjectInteract),
+	makemask(Status, Unkown2),
+	makemask(Status, Unkown3),
+	makemask(Status, Unkown4),
+	makemask(Status, Unkown5),
 	makemask(Status, Ball),
 	makemask(Status, LightDash),
 	makemask(Status, Attack),
 	makemask(Status, HoldObject),
-	makemask(Status, DoNextAction)
+	makemask(Status, DoNextAction),
+	makemask(Status, OnPath),
+	makemask(Status, DisableControl),
+	makemask(Status, Unkown7)
 };
 
 enum PowerupBits
