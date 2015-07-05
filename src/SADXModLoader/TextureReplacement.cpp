@@ -15,6 +15,7 @@
 
 DataPointer(IDirect3DDevice8*, Direct3D_Device, 0x03D128B0);
 DataPointer(bool, LoadingFile, 0x3ABDF68);
+FunctionPointer(NJS_TEXMEMLIST*, GetGlobalTexture, (int gbix), 0x0077F5B0);
 
 #pragma region Filesystem stuff
 
@@ -78,6 +79,7 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 	// This reads the custom texture list from disk.
 	// The format is: gbix,filename
 	// e.g: 1000,MyCoolTexture.dds
+	// TODO: Add GBIX bypass so texture packs can optionally ignore GBIX on load.
 
 	while (!indexFile.eof())
 	{
@@ -100,12 +102,6 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 	}
 
 	indexFile.close();
-
-#if 0
-	PrintDebug("NJS_TEXLIST Textures:		0x%08X\n", texList->textures);
-	PrintDebug("NJS_TEXLIST Count:			%d\n", texList->nbTexture);
-	PrintDebug("NJS_TEXLIST New Count:		%d\n\n", customEntries.size());
-#endif
 
 	texList->nbTexture = customEntries.size();
 
@@ -145,31 +141,45 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 		PrintDebug("NJS_TEXSURFACE Physical:	0x%08X\n\n\n",	_texture->texinfo.texsurface.pPhysical);
 #endif
 
-		wstring path = pvmName + L"\\" + wstring(customEntries[i].name.begin(), customEntries[i].name.end());
+		uint32_t gbix = customEntries[i].globalIndex;
+		NJS_TEXMEMLIST* texture = GetGlobalTexture(gbix);
 
-		// This loads the DDS/PNG/etc texture from disk.
-		IDirect3DTexture8* d3dtexture;
-		D3DXCreateTextureFromFile(Direct3D_Device, path.c_str(), &d3dtexture);
-		
-		D3DSURFACE_DESC info;
-		d3dtexture->GetLevelDesc(0, &info);
+		// A texture count of 0 indicates that this is an empty texture slot.
+		if (texture != nullptr && texture->count == 0 || texture == nullptr)
+		{
+			wstring path = pvmName + L"\\" + wstring(customEntries[i].name.begin(), customEntries[i].name.end());
+			IDirect3DTexture8* d3dtexture;
+			// This loads the DDS/PNG/etc texture from disk.
+			D3DXCreateTextureFromFile(Direct3D_Device, path.c_str(), &d3dtexture);
 
-		// Now we assign some basic metadata from the texture entry and D3D texture, as well as the pointer to the texture itself.
-		// A few things I know are missing for sure are:
-		// NJS_TEXSURFACE::Type, Depth, Format, Flags. Virtual and Physical are pretty much always null.
-		NJS_TEXMEMLIST* texture = new NJS_TEXMEMLIST;
-		*texture = {};
+			D3DSURFACE_DESC info;
+			d3dtexture->GetLevelDesc(0, &info);
 
-		texture->count							= 1;	// Required for the game to release the texture.
-		texture->globalIndex					= customEntries[i].globalIndex;
-		texture->texinfo.texsurface.nWidth		= info.Width;
-		texture->texinfo.texsurface.nHeight		= info.Height;
-		texture->texinfo.texsurface.TextureSize	= info.Size;
-		texture->texinfo.texsurface.pSurface	= (Uint32*)d3dtexture;
+			// GetGlobalTexture will only return null if over 2048 unique textures have been loaded.
+			// TODO: Add custom texture overflow vector with an access function similar to GetGlobalTexture.
+			// As it is now, I believe this is a memory leak.
+			if (texture == nullptr)
+			{
+				texture = new NJS_TEXMEMLIST;
+				*texture = {};
+			}
+
+			// Now we assign some basic metadata from the texture entry and D3D texture, as well as the pointer to the texture itself.
+			// A few things I know are missing for sure are:
+			// NJS_TEXSURFACE::Type, Depth, Format, Flags. Virtual and Physical are pretty much always null.
+			texture->count								= 1;	// Required for the game to release the texture.
+			texture->globalIndex						= customEntries[i].globalIndex;
+			texture->texinfo.texsurface.nWidth			= info.Width;
+			texture->texinfo.texsurface.nHeight			= info.Height;
+			texture->texinfo.texsurface.TextureSize		= info.Size;
+			texture->texinfo.texsurface.pSurface		= (Uint32*)d3dtexture;
+		}
+		else
+		{
+			PrintDebug("Using cached texture for GBIX %d\n", gbix);
+		}
 
 		texList->textures[i].texaddr = (Uint32)texture;
-
-		// Realistically those two integers should be void*, but I'm just working with what I've got :V
 	}
 
 	return true;
