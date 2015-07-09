@@ -60,10 +60,4 @@ ipch/
 *.vsp
 *.vspx
 
-# CMake build directory
-/build/
-/build.release/
-/build.debug/
-
-# MSVC project directory
-/vsproj/
+SADXModLoader/git_version.h
