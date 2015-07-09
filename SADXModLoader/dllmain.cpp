@@ -30,7 +30,6 @@ using std::vector;
 #include <shlwapi.h>
 #include <gdiplus.h>
 
-#include "config.SADXModLoader.h"
 #include "git.h"
 
 #include "IniFile.hpp"
@@ -1899,8 +1898,8 @@ static void __cdecl InitMods(void)
 	if (dbgConsole || dbgScreen || dbgFile)
 	{
 		WriteJump((void *)PrintDebug, (void *)SADXDebugOutput);
-		PrintDebug("SADX Mod Loader v%s (API version %d), built %s\n",
-			MODLOADER_VERSION_STRING, ModLoaderVer, __TIMESTAMP__);
+		PrintDebug("SADX Mod Loader v3.2 (API version %d), built %s\n",
+			ModLoaderVer, __TIMESTAMP__);
 #ifdef MODLOADER_GIT_VERSION
 #ifdef MODLOADER_GIT_DESCRIBE
 		PrintDebug("%s, %s\n", MODLOADER_GIT_VERSION, MODLOADER_GIT_DESCRIBE);
