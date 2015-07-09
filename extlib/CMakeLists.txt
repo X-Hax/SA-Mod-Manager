@@ -1,3 +1,0 @@
-PROJECT(extlib)
-
-ADD_SUBDIRECTORY(bass)

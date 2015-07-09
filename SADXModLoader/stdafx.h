@@ -11,6 +11,7 @@
 #include <windows.h>
 
 // TODO: reference additional headers your program requires here
+#include <d3dx8tex.h>
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
@@ -22,6 +23,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <string>
 
 #include "ninja.h"
 #include "SADXModLoader.h"

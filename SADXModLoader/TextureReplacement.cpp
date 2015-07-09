@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 // Windows
 #include <d3dx8tex.h>
 #include <Windows.h>
