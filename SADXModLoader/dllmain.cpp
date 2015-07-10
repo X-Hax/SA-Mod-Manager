@@ -1961,6 +1961,11 @@ static void __cdecl InitMods(void)
 	DWORD oldprot;
 	VirtualProtect((void *)0x7DB2A0, 0xB6D60, PAGE_WRITECOPY, &oldprot);
 
+	// Enables GUI texture filtering (D3DTEXF_POINT -> D3DTEXF_LINEAR)
+	WriteData((uint8_t*)0x0078B7C4, (uint8_t)0x02);
+	WriteData((uint8_t*)0x0078B7D8, (uint8_t)0x02);
+	WriteData((uint8_t*)0x0078B7EC, (uint8_t)0x02);
+
 	// Map of files to replace and/or swap.
 	// This is done with a second map instead of sadx_fileMap directly
 	// in order to handle multiple mods.
