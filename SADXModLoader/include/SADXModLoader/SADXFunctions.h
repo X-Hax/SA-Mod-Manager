@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include "../ModLoader/MemAccess.h"
+#include "../d3d8types.h"
 #include "SADXStructs.h"
 
 // SADX Functions
@@ -426,7 +427,7 @@ static inline void LoadCharBossSounds(int a2)
 
 // uint16_t __usercall<ax>(byte *a2<esi>)
 static const void *const CalcSaveChecksumPtr = (void*)0x42CF90;
-static inline uint16_t CalcSaveChecksum(byte *a2)
+static inline uint16_t CalcSaveChecksum(uint8_t *a2)
 {
 	uint16_t result;
 	__asm
