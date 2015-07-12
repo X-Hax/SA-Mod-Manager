@@ -69,35 +69,24 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 		BASS_ChannelStop(basschan);
 		BASS_StreamFree(basschan);
 	}
+	filename = sadx_fileMap.replaceFile(filename);
 	if (enablevgmstream)
 	{
-		// Check if a file with a matching basename is in the map.
-		const forward_list<string>* fileList = sadx_fileMap.findFileNoExt(filename);
-		if (fileList != nullptr)
+		basschan = BASS_VGMSTREAM_StreamCreate(filename, loop ? BASS_SAMPLE_LOOP : 0);
+		if (basschan != 0)
 		{
-			for (auto iter = fileList->cbegin(); iter != fileList->cend(); ++iter)
-			{
-				// Attempt to open this stream.
-				const string &filename = *iter;
-				basschan = BASS_VGMSTREAM_StreamCreate(filename.c_str(), loop ? BASS_SAMPLE_LOOP : 0);
-				if (basschan != 0)
-				{
-					// Stream opened!
-					musicwmp = false;
-					BASS_ChannelPlay(basschan, false);
-					BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0f);
-					BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, 0);
-					MusicLooping = loop;
-					dword_3ABDFA0 = 1;
-					dword_3ABDF98 = 3;
-					return 1;
-				}
-			}
+			// Stream opened!
+			musicwmp = false;
+			BASS_ChannelPlay(basschan, false);
+			BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0f);
+			BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, 0);
+			MusicLooping = loop;
+			dword_3ABDFA0 = 1;
+			dword_3ABDF98 = 3;
+			return 1;
 		}
 	}
 
-	// No replacement file was found or was able to be opened.
-	filename = sadx_fileMap.replaceFile(filename);
 	musicwmp = true;
 	WCHAR WideCharStr[MAX_PATH];
 	MultiByteToWideChar(0, 0, filename, -1, WideCharStr, LengthOfArray(WideCharStr));

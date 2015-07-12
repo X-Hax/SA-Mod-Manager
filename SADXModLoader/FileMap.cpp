@@ -151,6 +151,13 @@ void FileMap::scanFolder_int(const std::string &srcPath, int srcLen)
 			transform(modFile.begin(), modFile.end(), modFile.begin(), ::tolower);
 			string fileBase = modFile.substr(srcLen);
 			string origFile = "system\\" + fileBase;
+			if (origFile.length() > 30 && origFile.compare(0, 29, "system\\sounddata\\bgm\\wma\\"))
+			{
+				char pathcstr[MAX_PATH];
+				strncpy(pathcstr, origFile.c_str(), sizeof(pathcstr));
+				PathRenameExtensionA(pathcstr, ".wma");
+				origFile = pathcstr;
+			}
 			setReplaceFile(origFile, modFile);
 		}
 	}
@@ -214,7 +221,6 @@ const char *FileMap::replaceFile(const char *lpFileName) const
 
 /**
  * Find filenames that matches the specified filename, ignoring the extension.
- * This is used for BASS vgmstream.
  * @param lpFileName Filename.
  * @return List of matching filenames, or nullptr if not fonud.
  */
