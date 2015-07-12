@@ -12,6 +12,10 @@
 // Global
 #include <SADXModLoader.h>
 
+// FileMap from dllmain.cpp.
+#include "FileMap.hpp"
+extern FileMap sadx_fileMap;
+
 // This
 #include "TextureReplacement.h"
 
@@ -211,7 +215,7 @@ void __cdecl LoadPVM_C(const char* pvmName, NJS_TEXLIST* texList)
 	
 	// Default behavior.
 	// Loads real PVM archives if no texture packs were found or successfully loaded.
-	if (FileExists("SYSTEM\\" + filename + ".PVM") || FileExists("SYSTEM\\" + filename))
+	if (FileExists(string(sadx_fileMap.replaceFile(("SYSTEM\\" + filename + ".PVM").c_str()))) || FileExists(string(sadx_fileMap.replaceFile(("SYSTEM\\" + filename).c_str()))))
 	{
 		LoadPVM_D_original(pvmName, texList);
 		return;
