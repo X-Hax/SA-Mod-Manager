@@ -1898,7 +1898,7 @@ static void __cdecl InitMods(void)
 	if (dbgConsole || dbgScreen || dbgFile)
 	{
 		WriteJump((void *)PrintDebug, (void *)SADXDebugOutput);
-		PrintDebug("SADX Mod Loader v3.2 (API version %d), built %s\n",
+		PrintDebug("SADX Mod Loader v3.3 (API version %d), built %s\n",
 			ModLoaderVer, __TIMESTAMP__);
 #ifdef MODLOADER_GIT_VERSION
 #ifdef MODLOADER_GIT_DESCRIBE
