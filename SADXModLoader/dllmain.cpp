@@ -1,23 +1,15 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
 
-#include <cerrno>
-#include <cstdint>
-#include <cstdio>
-#include <cstring>
-#include <cctype>
-#include <cwctype>
-
 #include <deque>
 #include <fstream>
-#include <iostream>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
 #include <sstream>
+
 using std::deque;
-using std::ios_base;
 using std::ifstream;
 using std::string;
 using std::wstring;
@@ -34,7 +26,6 @@ using std::vector;
 
 #include "IniFile.hpp"
 #include "CodeParser.hpp"
-#include "FileMap.hpp"
 #include "MediaFns.hpp"
 #include "TextConv.hpp"
 #include "SADXModLoader.h"
@@ -42,6 +33,8 @@ using std::vector;
 #include "..\libmodutils\ModelInfo.h"
 #include "..\libmodutils\AnimationFile.h"
 #include "TextureReplacement.h"
+#include "FileReplacement.h"
+#include "Events.h"
 
 static HINSTANCE myhandle;
 static HMODULE chrmodelshandle;
@@ -63,58 +56,6 @@ static inline int backslashes(int c)
 		return c;
 }
 
-// File replacement map.
-// NOTE: Do NOT mark this as static.
-// MediaFns.cpp needs to access the FileMap.
-FileMap sadx_fileMap;
-
-/**
- * CreateFileA() wrapper using _ReplaceFile().
- * @param lpFileName
- * @param dwDesiredAccess
- * @param dwShareMode
- * @param lpSecurityAttibutes
- * @param dwCreationDisposition
- * @param dwFlagsAndAttributes
- * @param hTemplateFile
- * @return
- */
-static HANDLE __stdcall MyCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
-{
-	return CreateFileA(sadx_fileMap.replaceFile(lpFileName), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-}
-
-static int __cdecl PlayVoiceFile_r(LPCSTR filename)
-{
-	filename = sadx_fileMap.replaceFile(filename);
-	return PlayVoiceFile(filename);
-}
-
-/**
- * C wrapper to call sadx_fileMap.replaceFile() from asm.
- * @param lpFileName Filename.
- * @return Replaced filename, or original filename if not replaced by a mod.
- */
-static const char *_ReplaceFile(const char *lpFileName)
-{
-	return sadx_fileMap.replaceFile(lpFileName);
-}
-
-static __declspec(naked) int PlayVideoFile_r()
-{
-	__asm
-	{
-		mov eax, [esp+4]
-		push esi
-		push eax
-		call _ReplaceFile
-		add esp, 4
-		pop esi
-		mov [esp+4], eax
-		jmp PlayVideoFilePtr
-	}
-}
-
 static void HookTheAPI()
 {
 	ULONG ulSize = 0;
@@ -134,41 +75,38 @@ static void HookTheAPI()
 	pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR)ImageDirectoryEntryToData(
 		hModule, TRUE, IMAGE_DIRECTORY_ENTRY_IMPORT, &ulSize);
 
-	if (NULL != pImportDesc)
+	if (pImportDesc == nullptr)
+		return;
+
+	for (; pImportDesc->Name; pImportDesc++)
 	{
-		for (; pImportDesc->Name; pImportDesc++)
+		// get the module name
+		pszModName = (PSTR)((PBYTE)hModule + pImportDesc->Name);
+
+		// check if the module is kernel32.dll
+		if (pszModName != nullptr && lstrcmpiA(pszModName, "Kernel32.dll") == 0)
 		{
-			// get the module name
-			pszModName = (PSTR)((PBYTE)hModule + pImportDesc->Name);
+			// get the module
+			PIMAGE_THUNK_DATA pThunk = (PIMAGE_THUNK_DATA)((PBYTE)hModule + pImportDesc->FirstThunk);
 
-			if (NULL != pszModName)
+			for (; pThunk->u1.Function; pThunk++)
 			{
-				// check if the module is kernel32.dll
-				if (lstrcmpiA(pszModName, "Kernel32.dll") == 0)
+				PROC* ppfn = (PROC*)&pThunk->u1.Function;
+				if (*ppfn == pActualFunction)
 				{
-					// get the module
-					PIMAGE_THUNK_DATA pThunk = (PIMAGE_THUNK_DATA)((PBYTE)hModule + pImportDesc->FirstThunk);
-
-					for (; pThunk->u1.Function; pThunk++)
-					{
-						PROC* ppfn = (PROC*)&pThunk->u1.Function;
-						if (*ppfn == pActualFunction)
-						{
-							DWORD dwOldProtect = 0;
-							VirtualProtect(ppfn, sizeof(pNewFunction), PAGE_WRITECOPY, &dwOldProtect);
-							WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewFunction, sizeof(pNewFunction), NULL);
-							VirtualProtect(ppfn, sizeof(pNewFunction), dwOldProtect, &dwOldProtect);
-						} // Function that we are looking for
-						else if (*ppfn == pActualCreateFile)
-						{
-							DWORD dwOldProtect = 0;
-							VirtualProtect(ppfn, sizeof(pNewCreateFile), PAGE_WRITECOPY, &dwOldProtect);
-							WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewCreateFile, sizeof(pNewCreateFile), NULL);
-							VirtualProtect(ppfn, sizeof(pNewCreateFile), dwOldProtect, &dwOldProtect);
-						}
-					}
-				} // Compare module name
-			} // Valid module name
+					DWORD dwOldProtect = 0;
+					VirtualProtect(ppfn, sizeof(pNewFunction), PAGE_WRITECOPY, &dwOldProtect);
+					WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewFunction, sizeof(pNewFunction), NULL);
+					VirtualProtect(ppfn, sizeof(pNewFunction), dwOldProtect, &dwOldProtect);
+				} // Function that we are looking for
+				else if (*ppfn == pActualCreateFile)
+				{
+					DWORD dwOldProtect = 0;
+					VirtualProtect(ppfn, sizeof(pNewCreateFile), PAGE_WRITECOPY, &dwOldProtect);
+					WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewCreateFile, sizeof(pNewCreateFile), NULL);
+					VirtualProtect(ppfn, sizeof(pNewCreateFile), dwOldProtect, &dwOldProtect);
+				}
+			}
 		}
 	}
 }
@@ -195,31 +133,6 @@ static const uint32_t fadecolors[] = {
 // Code Parser.
 static CodeParser codeParser;
 
-/**
-* Registers an event to the specified event list.
-* @param eventList The event list to add to.
-* @param module The module for the mod DLL.
-* @param name The name of the exported function from the module (i.e OnFrame)
-*/
-static void RegisterEvent(vector<ModEvent>& eventList, HMODULE module, const char* name)
-{
-	const ModEvent modEvent = (const ModEvent)GetProcAddress(module, name);
-
-	if (modEvent != nullptr)
-		eventList.push_back(modEvent);
-}
-
-/**
-* Calls all registered events in the specified event list.
-* @param eventList The list of events to trigger.
-*/
-static inline void RaiseEvents(const vector<ModEvent>& eventList)
-{
-	for (auto &i : eventList)
-		i();
-}
-
-static vector<ModEvent> modFrameEvents;
 static void __cdecl ProcessCodes()
 {
 	codeParser.processCodeList();
@@ -252,22 +165,6 @@ static void __cdecl ProcessCodes()
 	}
 }
 
-static vector<ModEvent> modInputEvents;
-static void __cdecl OnInput()
-{
-	RaiseEvents(modInputEvents);
-}
-
-DataPointer(short, word_3B2C464, 0x3B2C464);
-static void __declspec(naked) OnInput_MidJump()
-{
-	__asm
-	{
-		inc word_3B2C464
-		pop esi
-		jmp OnInput
-	}
-}
 
 static bool dbgConsole, dbgScreen;
 // File for logging debugging output.

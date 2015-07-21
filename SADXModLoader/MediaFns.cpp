@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "MediaFns.hpp"
+#include "FileReplacement.h"
 
 #include "bass_vgmstream.h"
 
@@ -17,9 +18,6 @@ static bool enablevgmstream = false;
 static bool musicwmp = true;
 static DWORD basschan = 0;
 
-// FileMap from dllmain.cpp.
-#include "FileMap.hpp"
-extern FileMap sadx_fileMap;
 
 /**
  * Initialize media playback.
@@ -212,4 +210,25 @@ void __cdecl WMPClose_r(int a1)
 void WMPRelease_r()
 {
 	BASS_Free();
+}
+
+__declspec(naked) int PlayVideoFile_r()
+{
+	__asm
+	{
+		mov eax, [esp + 4]
+		push esi
+		push eax
+		call _ReplaceFile
+		add esp, 4
+		pop esi
+		mov[esp + 4], eax
+		jmp PlayVideoFilePtr
+	}
+}
+
+int __cdecl PlayVoiceFile_r(LPCSTR filename)
+{
+	filename = sadx_fileMap.replaceFile(filename);
+	return PlayVoiceFile(filename);
 }

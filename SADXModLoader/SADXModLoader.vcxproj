@@ -13,7 +13,9 @@
   <ItemGroup>
     <ClCompile Include="CodeParser.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Events.cpp" />
     <ClCompile Include="FileMap.cpp" />
+    <ClCompile Include="FileReplacement.cpp" />
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="MediaFns.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -25,7 +27,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CodeParser.hpp" />
+    <ClInclude Include="Events.h" />
     <ClInclude Include="FileMap.hpp" />
+    <ClInclude Include="FileReplacement.h" />
     <ClInclude Include="git.h" />
     <ClInclude Include="include\ModLoader\MemAccess.h" />
     <ClInclude Include="include\ninja.h" />

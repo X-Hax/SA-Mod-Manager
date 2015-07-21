@@ -112,6 +112,7 @@ void __cdecl WMPClose_r(int a1);
 void WMPRelease_r();
 
 int PlayVideoFile_r(void);
+int __cdecl PlayVoiceFile_r(LPCSTR filename);
 
 #ifdef __cplusplus
 }

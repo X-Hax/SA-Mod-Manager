@@ -27,3 +27,5 @@
 
 #include "ninja.h"
 #include "SADXModLoader.h"
+#include "Events.h"
+#include "FileReplacement.h"
