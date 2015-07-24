@@ -608,4 +608,16 @@ enum Languages
 	Languages_German
 };
 
+enum PauseOptions
+{
+	PauseOptions_Continue	= 0x01,
+	PauseOptions_Restart	= 0x02,
+	PauseOptions_Controls	= 0x04,
+	PauseOptions_Quit		= 0x08,
+	PauseOptions_Map		= 0x10,
+	PauseOptions_Camera		= 0x20,
+	PauseOptions_Missions	= 0x40,
+	PauseOptions_Unknown	= 0x80
+};
+
 #endif /* SADXMODLOADER_SADXENUMS_H */
