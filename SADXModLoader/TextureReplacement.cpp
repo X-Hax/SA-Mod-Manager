@@ -89,22 +89,31 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 
 	while (!indexFile.eof())
 	{
-		++lineNumber;
-		getline(indexFile, line);
-		
-		if (line.length() == 0)
-			continue;
-
-		size_t comma = line.find(',');
-
-		if (comma < 1 && comma != line.npos)
+		try
 		{
-			PrintDebug("\aInvalid texture index entry on line %d (missing comma?)\n", lineNumber);
+			++lineNumber;
+			getline(indexFile, line);
+
+			if (line.length() == 0)
+				continue;
+
+			size_t comma = line.find(',');
+
+			if (comma < 1 && comma != line.npos)
+			{
+				PrintDebug("Invalid texture index entry on line %d (missing comma?)\n", lineNumber);
+				indexFile.close();
+				return false;
+			}
+
+			customEntries.push_back({ stoul(line.substr(0, comma)), line.substr(comma + 1) });
+		}
+		catch (std::exception& exception)
+		{
+			PrintDebug("An exception occurred while parsing texture index on line %d: %s", lineNumber, exception.what());
 			indexFile.close();
 			return false;
 		}
-
-		customEntries.push_back({ stoi(line.substr(0, comma)), line.substr(comma + 1) });
 	}
 
 	indexFile.close();
