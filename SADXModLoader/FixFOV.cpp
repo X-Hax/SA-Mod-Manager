@@ -86,7 +86,7 @@ void ConfigureFOV()
 	if ((height * _4x3) < width)
 	{
 		fov_rads = atan2((double)width, (double)height);
-		fov_bams = ((fov_rads * (180.0f / D3DX_PI)) * (65536.0 / 360.0));
+		fov_bams = (int)((fov_rads * (180.0f / D3DX_PI)) * (65536.0 / 360.0));
 
 		WriteJump(SetHorizontalFOV_BAMS, SetHorizontalFOV_BAMS_hook);
 		WriteJump(SetClippingRelatedThing, SetClippingRelatedThing_hook);
