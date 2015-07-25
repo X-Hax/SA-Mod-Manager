@@ -35,6 +35,7 @@ using std::vector;
 #include "TextureReplacement.h"
 #include "FileReplacement.h"
 #include "Events.h"
+#include "FixFOV.h"
 
 static HINSTANCE myhandle;
 static HMODULE chrmodelshandle;
@@ -1829,6 +1830,8 @@ static void __cdecl InitMods(void)
 			VerticalStretch = VerticalResolution / 480.0f;
 		}
 	}
+
+	ConfigureFOV();
 
 	windowedfullscreen = settings->getBool("WindowedFullscreen");
 

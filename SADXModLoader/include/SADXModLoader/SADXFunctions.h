@@ -341,6 +341,9 @@ VoidFunc(InitSonicAnimData, 0x7CEC90);
 VoidFunc(InitEC0NPCData, 0x7D2720);
 VoidFunc(InitEC3NPCData, 0x7D2CF0);
 VoidFunc(InitSSNPCData, 0x7D5810);
+FastcallFunctionPointer(double, BAMSsin, (int bams), 0x00788290);
+FastcallFunctionPointer(double, BAMScos, (int bams), 0x007883C0);
+ThiscallFunctionPointer(double, BAMStan, (int bams), 0x00787E30);
 
 #ifdef _MSC_VER
 

@@ -16,6 +16,7 @@
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="FileMap.cpp" />
     <ClCompile Include="FileReplacement.cpp" />
+    <ClCompile Include="FixFOV.cpp" />
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="MediaFns.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -30,6 +31,7 @@
     <ClInclude Include="Events.h" />
     <ClInclude Include="FileMap.hpp" />
     <ClInclude Include="FileReplacement.h" />
+    <ClInclude Include="FixFOV.h" />
     <ClInclude Include="git.h" />
     <ClInclude Include="include\ModLoader\MemAccess.h" />
     <ClInclude Include="include\ninja.h" />
