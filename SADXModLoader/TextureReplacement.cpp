@@ -101,7 +101,7 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 
 			if (comma < 1 && comma != line.npos)
 			{
-				PrintDebug("Invalid texture index entry on line %d (missing comma?)\n", lineNumber);
+				PrintDebug("Invalid texture index entry on line %u (missing comma?)\n", lineNumber);
 				indexFile.close();
 				return false;
 			}
@@ -110,7 +110,7 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 		}
 		catch (std::exception& exception)
 		{
-			PrintDebug("An exception occurred while parsing texture index on line %d: %s", lineNumber, exception.what());
+			PrintDebug("An exception occurred while parsing texture index on line %u: %s", lineNumber, exception.what());
 			indexFile.close();
 			return false;
 		}
@@ -191,7 +191,7 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 		}
 		else
 		{
-			PrintDebug("Using cached texture for GBIX %d\n", gbix);
+			PrintDebug("Using cached texture for GBIX %u\n", gbix);
 		}
 
 		texList->textures[i].texaddr = (Uint32)texture;
