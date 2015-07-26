@@ -40,17 +40,16 @@ int __cdecl GetHorizontalFOV_BAMS_hook()
 
 void __cdecl SetHorizontalFOV_BAMS_hook(int bams)
 {
-	last_bams = bams;
 	fov_scale = (double)bams_default / bams;
 	int scaled = (bams == fov_bams) ? fov_bams : (int)(fov_bams * fov_scale);
 
 	int* _24 = (int*)&MyCoolMatrix._24;
 
-	if (*_24 != scaled)
-		SetClippingRelatedThing_hook(bams);
+	SetClippingRelatedThing_hook(bams);
 
 	HorizontalFOV_BAMS = scaled;
 	*_24 = scaled;
+	last_bams = bams;
 }
 
 #pragma region assembly
