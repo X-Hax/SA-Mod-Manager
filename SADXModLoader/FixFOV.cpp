@@ -3,7 +3,6 @@
 #include "include/d3d8types.h"
 
 #include "SADXModLoader.h"
-#include "FixFOV.h"
 
 FunctionPointer(void,	SetHorizontalFOV_BAMS,		(int bams), 0x00402ED0);
 FunctionPointer(int,	GetHorizontalFOV_BAMS,		(void),		0x00402F00);
@@ -13,6 +12,13 @@ DataPointer(D3DMATRIX,	MyCoolMatrix,			0x03AAD0A0);
 DataPointer(float,		ClippingRelated,		0x03D0F9E0);
 DataPointer(int,		HorizontalFOV_BAMS,		0x03AB98EC);
 DataPointer(int,		LastHorizontalFOV_BAMS,	0x03B2CBB4);
+
+#define BAMS2DEG(bams)	(bams / (65536.0 / 360.0))
+#define BAMS2RAD(bams)	(bams * 0.000095873802)
+#define DEG2BAMS(deg)	((int)(deg * (65536.0 / 360.0)))
+#define DEG2RAD(deg)	(deg * (D3DX_PI / 180.0))
+#define RAD2BAMS(rad)	((int)(rad * (65536.0 / (D3DX_PI * 2))))
+#define RAD2DEG(rad)	(rad * (180.0 / D3DX_PI))
 
 const int bams_default = 12743;
 
@@ -97,20 +103,21 @@ void __declspec(naked) dothething()
 
 void ConfigureFOV()
 {
-	static const double ratio = 4.0 / 3.0;
+	static const double default_ratio = 4.0 / 3.0;
+	static const double ratio = (double)HorizontalResolution / (double)VerticalResolution;
 	const uint32_t width = HorizontalResolution;
 	const uint32_t height = VerticalResolution;
 
 	// 4:3 and "tallscreen" (5:4, portrait, etc)
 	// We don't need to do anything since these resolutions work fine with the default code.
-	if ((height * ratio) == width || (height * ratio) > width)
+	if ((height * default_ratio) == width || (height * default_ratio) > width)
 		return;
 
 	// Widescreen (16:9, 16:10, etc)
-	if ((height * ratio) < width)
+	if ((height * default_ratio) < width)
 	{
-		fov_rads = atan2((double)width, (double)height);
-		fov_bams = (int)((fov_rads * (180.0f / D3DX_PI)) * (65536.0 / 360.0));
+		fov_rads = DEG2RAD(55.4);	// 55.4 /appears/ to be the default vertical FOV.
+		fov_bams = DEG2BAMS(55.4);
 
 		WriteJump(SetHorizontalFOV_BAMS, SetHorizontalFOV_BAMS_hook);
 		WriteJump(GetHorizontalFOV_BAMS, GetHorizontalFOV_BAMS_hook);
