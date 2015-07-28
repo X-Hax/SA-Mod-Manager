@@ -67,22 +67,22 @@ struct StartPosition
 
 struct ControllerData
 {
-	int field_0;
-	int field_4;
-	int HeldButtons;
-	int NotHeldButtons;
-	int PressedButtons;
-	int ReleasedButtons;
-	int16_t CameraRight;
-	int16_t CameraLeft;
-	int16_t ControlX;
-	int16_t ControlY;
-	int16_t CameraX;
-	int16_t CameraY;
-	int field_24;
-	int field_28;
-	int HeldButtons_Copy;
-	int field_30;
+	uint32_t ID;
+	uint32_t Support;
+	uint32_t HeldButtons;
+	uint32_t NotHeldButtons;
+	uint32_t PressedButtons;
+	uint32_t ReleasedButtons;
+	uint16_t RTriggerPressure;
+	uint16_t LTriggerPressure;
+	int16_t LeftStickX;
+	int16_t LeftStickY;
+	int16_t RightStickX;
+	int16_t RightStickY;
+	char* Name;
+	void* Extend;
+	uint32_t Old;
+	void* Info;
 };
 
 struct SET_Entry
