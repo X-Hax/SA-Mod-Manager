@@ -116,8 +116,8 @@ void ConfigureFOV()
 	// Widescreen (16:9, 16:10, etc)
 	if ((height * default_ratio) < width)
 	{
-		fov_rads = DEG2RAD(55.4);	// 55.4 /appears/ to be the default vertical FOV.
-		fov_bams = DEG2BAMS(55.4);
+		fov_rads = 0.96712852;	// 55.412382 degrees
+		fov_bams = RAD2BAMS(fov_rads);
 
 		WriteJump(SetHorizontalFOV_BAMS, SetHorizontalFOV_BAMS_hook);
 		WriteJump(GetHorizontalFOV_BAMS, GetHorizontalFOV_BAMS_hook);
