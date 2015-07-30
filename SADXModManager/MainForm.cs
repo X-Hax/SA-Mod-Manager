@@ -291,10 +291,8 @@ namespace SADXModManager
 				horizontalResolution.Enabled = false;
 				horizontalResolution.Value = Math.Round(verticalResolution.Value * ratio);
 			}
-			else if (suppressEvent || MessageBox.Show(this, "Using an aspect ratio other than 4:3 will cause the camera's 'field of view' to shrink, reducing your view of the stage.\nIf you are having a hard time seeing things, set your aspect ratio back to 4:3.", "SADX Mod Manager", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.OK)
+			else if (suppressEvent)
 				horizontalResolution.Enabled = true;
-			else
-				forceAspectRatioCheckBox.Checked = true;
 		}
 
 		private void verticalResolution_ValueChanged(object sender, EventArgs e)
@@ -396,7 +394,6 @@ namespace SADXModManager
 		public int HorizontalResolution { get; set; }
 		[DefaultValue(480)]
 		public int VerticalResolution { get; set; }
-		[DefaultValue(true)]
 		public bool ForceAspectRatio { get; set; }
 		public bool WindowedFullscreen { get; set; }
 		[DefaultValue(true)]
