@@ -104,7 +104,6 @@ void __declspec(naked) dothething()
 void ConfigureFOV()
 {
 	static const double default_ratio = 4.0 / 3.0;
-	static const double ratio = (double)HorizontalResolution / (double)VerticalResolution;
 	const uint32_t width = HorizontalResolution;
 	const uint32_t height = VerticalResolution;
 
