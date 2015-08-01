@@ -1855,6 +1855,7 @@ static void __cdecl InitMods(void)
 	WriteJump((void *)0x40CFF0, (void *)WMPClose_r);
 	WriteJump((void *)0x40D28A, (void *)WMPRelease_r);
 	WriteJump((void*)0x004210A0, LoadPVM_C);	// Texture packs
+	WriteJump((void*)0x0077FC80, LoadPVRFile);	// Texture packs
 
 	// Unprotect the .rdata section.
 	// TODO: Get .rdata address and length dynamically.

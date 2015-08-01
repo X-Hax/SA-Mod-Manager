@@ -6,6 +6,7 @@
 
 // Standard
 #include <string>
+#include <algorithm>	// for std::transform
 #include <fstream>
 #include <vector>
 
@@ -50,35 +51,31 @@ bool FileExists(const std::string& path)
 }
 #pragma endregion
 
-struct CustomTextureEntry
-{
-	uint32_t globalIndex;
-	std::string name;
-};
-
 using namespace std;
 
 // List of texture pack directories with trailing slash
 // (e.g mods\MyCoolMod\textures\)
 std::vector<std::wstring> TexturePackPaths;
 
-bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
+#pragma region Parse
+
+std::vector<CustomTextureEntry> ParseIndex(const std::wstring& path)
 {
-	if (texList == nullptr)
-		return false;
+	vector<CustomTextureEntry> result;
+	ParseIndex(path, result);
+	return result;
+}
 
-	string pvmName_a(pvmName.begin(), pvmName.end());
+bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& entries)
+{
+	ifstream indexFile(path);
 
-	PrintDebug("Loading texture pack: %s\n", pvmName_a.c_str());
-
-	if (!FileExists(pvmName + L"\\index.txt"))
+	if (!indexFile.is_open())
 	{
-		PrintDebug("\aTexture index missing for %s\n", pvmName_a.c_str());
+		PrintDebug("Unable to open index file: %s\n", std::string(path.begin(), path.end()).c_str());
 		return false;
 	}
 
-	ifstream indexFile(pvmName + L"\\index.txt");
-	vector<CustomTextureEntry> customEntries;
 	string line;
 	uint32_t lineNumber = 0;
 
@@ -102,103 +99,114 @@ bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
 			if (comma < 1 && comma != line.npos)
 			{
 				PrintDebug("Invalid texture index entry on line %u (missing comma?)\n", lineNumber);
-				indexFile.close();
 				return false;
 			}
 
-			customEntries.push_back({ stoul(line.substr(0, comma)), line.substr(comma + 1) });
+			entries.push_back({ stoul(line.substr(0, comma)), line.substr(comma + 1) });
 		}
 		catch (std::exception& exception)
 		{
 			PrintDebug("An exception occurred while parsing texture index on line %u: %s", lineNumber, exception.what());
-			indexFile.close();
 			return false;
 		}
 	}
 
-	indexFile.close();
+	return true;
+}
+
+#pragma endregion
+
+#pragma region Load
+
+NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, const std::string& name)
+{
+	wstring path = _path + L"\\" + wstring(name.begin(), name.end());
+
+	if (!FileExists(path))
+	{
+		PrintDebug("Texture does not exist: %s\n", path.c_str());
+		return nullptr;
+	}
+
+	NJS_TEXMEMLIST* texture = GetGlobalTexture(globalIndex);
+
+	// A texture count of 0 indicates that this is an empty texture slot.
+	if (texture == nullptr || texture->count == 0)
+	{
+		IDirect3DTexture8* d3dtexture;
+		// This loads the DDS/PNG/etc texture from disk.
+		HRESULT result = D3DXCreateTextureFromFile(Direct3D_Device, path.c_str(), &d3dtexture);
+
+		if (result != D3D_OK)
+		{
+			PrintDebug("Texture load failed with error code %u\n", result);
+			return nullptr;
+		}
+
+		D3DSURFACE_DESC info;
+		d3dtexture->GetLevelDesc(0, &info);
+
+		// GetGlobalTexture will only return null if over 2048 unique textures have been loaded.
+		// TODO: Add custom texture overflow vector with an access function similar to GetGlobalTexture.
+		// As it is now, I believe this is a memory leak.
+		if (texture == nullptr)
+		{
+			texture = new NJS_TEXMEMLIST;
+			*texture = {};
+		}
+
+		// Now we assign some basic metadata from the texture entry and D3D texture, as well as the pointer to the texture itself.
+		// A few things I know are missing for sure are:
+		// NJS_TEXSURFACE::Type, Depth, Format, Flags. Virtual and Physical are pretty much always null.
+		texture->count = 1;	// Required for the game to release the texture.
+		texture->globalIndex = globalIndex;
+		texture->texinfo.texsurface.nWidth = info.Width;
+		texture->texinfo.texsurface.nHeight = info.Height;
+		texture->texinfo.texsurface.TextureSize = info.Size;
+		texture->texinfo.texsurface.pSurface = (Uint32*)d3dtexture;
+	}
+	else
+	{
+		PrintDebug("Using cached texture for GBIX %u\n", globalIndex);
+	}
+
+	return texture;
+}
+
+NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, CustomTextureEntry& entry)
+{
+	return LoadTexture(_path, entry.globalIndex, entry.name);
+}
+
+bool BuildTextureList(const std::wstring& pvmName, NJS_TEXLIST* texList)
+{
+	if (texList == nullptr)
+		return false;
+
+	string pvmName_a(pvmName.begin(), pvmName.end());
+
+	PrintDebug("Loading texture pack: %s\n", pvmName_a.c_str());
+
+	if (!FileExists(pvmName + L"\\index.txt"))
+	{
+		PrintDebug("\aTexture index missing for %s\n", pvmName_a.c_str());
+		return false;
+	}
+
+	vector<CustomTextureEntry> customEntries;
+
+	if (!ParseIndex(pvmName + L"\\index.txt", customEntries))
+		return false;
 
 	texList->nbTexture = customEntries.size();
 
 	for (uint32_t i = 0; i < texList->nbTexture; i++)
-	{
-#if 0
-		PrintDebug("NJS_TEXNAME Filename:		0x%08X\n",		texList->textures[i].filename);
-		PrintDebug("NJS_TEXNAME Attributes:		%d\n",			texList->textures[i].attr);
-		PrintDebug("NJS_TEXNAME texaddr:		0x%08X\n\n",	texList->textures[i].texaddr);
-
-		// This is the CURRENTLY loaded texture list, if any.
-		// We're displaying all the details in order to determine what needs to be assigned
-		// by the custom texture loader.
-		NJS_TEXMEMLIST* _texture = (NJS_TEXMEMLIST*)texList->textures[i].texaddr;
-
-		PrintDebug("NJS_TEXMEMLIST GBIX:		%d\n",			_texture->globalIndex);
-		PrintDebug("NJS_TEXMEMLIST Bank:		%d\n",			_texture->bank);
-		PrintDebug("NJS_TEXMEMLIST TSPP:		0x%08X\n",		_texture->tspparambuffer);
-		PrintDebug("NJS_TEXMEMLIST TPARAM:		0x%08X\n",		_texture->texparambuffer);
-		PrintDebug("NJS_TEXMEMLIST texaddr:		0x%08X\n",		_texture->texaddr);
-		PrintDebug("NJS_TEXMEMLIST TexInfo:		0x%08X\n",		_texture->texinfo);
-		PrintDebug("NJS_TEXMEMLIST Count:		%d\n\n",		_texture->count);
-
-		PrintDebug("NJS_TEXINFO texaddr:		0x%08X\n",		_texture->texinfo.texaddr);
-		PrintDebug("NJS_TEXINFO Surface:		0x%08X\n\n",	_texture->texinfo.texsurface);
-
-		// The surface is the texture itself. It contains a pointer (pSurface) to an IDirect3DTexture8
-		PrintDebug("NJS_TEXSURFACE Type:		0x%08X\n",		_texture->texinfo.texsurface.Type);
-		PrintDebug("NJS_TEXSURFACE Depth:		%d\n",			_texture->texinfo.texsurface.BitDepth);
-		PrintDebug("NJS_TEXSURFACE Format:		%d\n",			_texture->texinfo.texsurface.PixelFormat);
-		PrintDebug("NJS_TEXSURFACE Width:		%d\n",			_texture->texinfo.texsurface.nWidth);
-		PrintDebug("NJS_TEXSURFACE Height:		%d\n",			_texture->texinfo.texsurface.nHeight);
-		PrintDebug("NJS_TEXSURFACE Size:		%d\n",			_texture->texinfo.texsurface.TextureSize);
-		PrintDebug("NJS_TEXSURFACE Flags:		0x%08X\n",		_texture->texinfo.texsurface.fSurfaceFlags);
-		PrintDebug("NJS_TEXSURFACE texaddr:		0x%08X\n",		_texture->texinfo.texsurface.pSurface);
-		PrintDebug("NJS_TEXSURFACE Virtual:		0x%08X\n",		_texture->texinfo.texsurface.pVirtual);
-		PrintDebug("NJS_TEXSURFACE Physical:	0x%08X\n\n\n",	_texture->texinfo.texsurface.pPhysical);
-#endif
-
-		uint32_t gbix = customEntries[i].globalIndex;
-		NJS_TEXMEMLIST* texture = GetGlobalTexture(gbix);
-
-		// A texture count of 0 indicates that this is an empty texture slot.
-		if (texture != nullptr && texture->count == 0 || texture == nullptr)
-		{
-			wstring path = pvmName + L"\\" + wstring(customEntries[i].name.begin(), customEntries[i].name.end());
-			IDirect3DTexture8* d3dtexture;
-			// This loads the DDS/PNG/etc texture from disk.
-			D3DXCreateTextureFromFile(Direct3D_Device, path.c_str(), &d3dtexture);
-
-			D3DSURFACE_DESC info;
-			d3dtexture->GetLevelDesc(0, &info);
-
-			// GetGlobalTexture will only return null if over 2048 unique textures have been loaded.
-			// TODO: Add custom texture overflow vector with an access function similar to GetGlobalTexture.
-			// As it is now, I believe this is a memory leak.
-			if (texture == nullptr)
-			{
-				texture = new NJS_TEXMEMLIST;
-				*texture = {};
-			}
-
-			// Now we assign some basic metadata from the texture entry and D3D texture, as well as the pointer to the texture itself.
-			// A few things I know are missing for sure are:
-			// NJS_TEXSURFACE::Type, Depth, Format, Flags. Virtual and Physical are pretty much always null.
-			texture->count								= 1;	// Required for the game to release the texture.
-			texture->globalIndex						= customEntries[i].globalIndex;
-			texture->texinfo.texsurface.nWidth			= info.Width;
-			texture->texinfo.texsurface.nHeight			= info.Height;
-			texture->texinfo.texsurface.TextureSize		= info.Size;
-			texture->texinfo.texsurface.pSurface		= (Uint32*)d3dtexture;
-		}
-		else
-		{
-			PrintDebug("Using cached texture for GBIX %u\n", gbix);
-		}
-
-		texList->textures[i].texaddr = (Uint32)texture;
-	}
+		texList->textures[i].texaddr = (Uint32)LoadTexture(pvmName, customEntries[i].globalIndex, customEntries[i].name);
 
 	return true;
 }
+
+#pragma endregion
 
 FunctionPointer(signed int, LoadPVM_D_original, (const char*, NJS_TEXLIST*), 0x0077FEB0);
 
@@ -234,54 +242,96 @@ void __cdecl LoadPVM_C(const char* pvmName, NJS_TEXLIST* texList)
 	return;
 }
 
-// This is for individual texture replacement and is currently unused.
-// TODO: Re-enable this but add proper metadata population.
-#if 0
-FunctionPointer(void, sub_792A70, (LPVOID), 0x792A70);
-FunctionPointer(signed int, LoadPVM_HeaderStuff_SetsRAMAddr, (void*, NJS_TEXLIST*), 0x0077FD80);
-FunctionPointer(void*, LoadTextureFromFile, (char*, char*), 0x7929D0);
-signed int __cdecl LoadPVM_D(const char* pvmName, NJS_TEXLIST* texList)
+bool ReplacePVR(const std::string& fileName, NJS_TEXMEMLIST** tex)
 {
-	signed int result; // eax@2
+	string a = fileName;
+	transform(a.begin(), a.end(), a.begin(), ::tolower);
 
-	if (pvmName != nullptr && texList != nullptr)
+	for (size_t i = TexturePackPaths.size(); i-- > 0;)
 	{
-		string name(pvmName);
-		name += ".pvm";
+		wstring path = TexturePackPaths[i] + L"index.txt";
 
-		void* v3 = LoadTextureFromFile((char*)name.c_str(), (char*)name.c_str());
-		result = LoadPVM_HeaderStuff_SetsRAMAddr(v3, texList);
-		sub_792A70(v3);
+		if (!FileExists(path))
+			continue;
 
-		string path(pvmName);
-		path = "Textures\\" + path;
+		auto entries = ParseIndex(path);
 
-		if (DirectoryExists(path.c_str()))
+		if (entries.size() == 0)
+			continue;
+
+		for (auto& e : entries)
 		{
-			PrintDebug("Loading PVM: [%08X] %s\n", *(int*)texList, pvmName);
+			size_t dot = e.name.find_last_of('.');
 
-			for (uint32_t i = 0; i < texList->nbTexture; i++)
+			if (dot != e.name.npos)
 			{
-				NJS_TEXMEMLIST* texture = (NJS_TEXMEMLIST*)texList->textures[i].texaddr;
+				string b = e.name.substr(0, dot);
+				transform(b.begin(), b.end(), b.begin(), ::tolower);
 
-				string file(path);
-				file.append("\\" + to_string(texture->globalIndex) + ".dds");
-
-				if (FileExists(file))
+				if (a == b)
 				{
-					PrintDebug("\tLoading custom texture: %s\n", file.c_str());
-					IDirect3DTexture8* d3dtexture = (IDirect3DTexture8*)texture->texinfo.texsurface.pSurface;
-					d3dtexture->Release();
-					D3DXCreateTextureFromFileA(Direct3D_Device, file.c_str(), &d3dtexture);
-					texture->texinfo.texsurface.pSurface = (Uint32*)d3dtexture;
+					*tex = LoadTexture(TexturePackPaths[i], e.globalIndex, e.name);
+					return *tex != nullptr;
 				}
 			}
 		}
 	}
-	else
-	{
-		result = -1;
-	}
-	return result;
+
+	return false;
 }
-#endif
+
+ThiscallFunctionPointer(int, sub_78CF80, (void*), 0x78CF80);
+FunctionPointer(NJS_TEXMEMLIST*, TexMemList_PixelFormat, (NJS_TEXINFO* info, Uint32 gbix), 0x0077F7F0);
+FunctionPointer(NJS_TEXMEMLIST* , LoadPVR, (void* data, int gbix), 0x0077FBD0);
+FunctionPointer(void*, LoadTextureFromFile, (const char*), 0x007929D0);
+FunctionPointer(void, j__HeapFree_0, (LPVOID lpMem), 0x00792A70);
+DataPointer(char, unk_3CFC000, 0x3CFC000);
+
+signed int __cdecl LoadPVRFile(NJS_TEXLIST* texlist)
+{
+	NJS_TEXMEMLIST* memlist; // edi@7
+	char* v8 = nullptr; // ecx@9
+
+	if (texlist == nullptr)
+		return -1;
+
+	Uint32 i = 0;
+	Uint32 count = texlist->nbTexture;
+
+	for (Uint32 i = 0; i != count; i++)
+	{
+		NJS_TEXNAME* entries = &texlist->textures[i];
+		Uint32 gbix = 0xFFFFFFEF;
+
+		if (entries->attr & NJD_TEXATTR_GLOBALINDEX)
+			gbix = entries->texaddr;
+
+		sub_78CF80(*((void** )&unk_3CFC000 + i));
+		Uint32 attr = entries->attr;
+
+		// If already loaded, grab from memory. Otherwise, load from disk.
+		if (attr & NJD_TEXATTR_TYPE_MEMORY)
+		{
+			if (attr & NJD_TEXATTR_GLOBALINDEX)
+				memlist = TexMemList_PixelFormat((NJS_TEXINFO* )entries->filename, gbix);
+			else
+				memlist = LoadPVR(*(void** )entries->filename, gbix);
+		}
+		else
+		{
+			string fileName((const char*)entries->filename);
+
+			if (ReplacePVR(fileName, (NJS_TEXMEMLIST**)&entries->texaddr))
+				continue;
+
+			fileName += ".pvr";
+			void* data = LoadTextureFromFile(fileName.c_str());
+			memlist = LoadPVR(data, gbix);
+			j__HeapFree_0(data);
+		}
+
+		entries->texaddr = (Uint32)memlist;
+	}
+
+	return 1;
+}
