@@ -58,6 +58,8 @@ using namespace std;
 // List of texture pack directories with trailing slash
 // (e.g mods\MyCoolMod\textures\)
 std::vector<std::wstring> TexturePackPaths;
+std::unordered_map<std::wstring, vector<CustomTextureEntry>> entryCache;
+static bool wasLoading = false;
 
 #pragma region Index Parsing
 
@@ -65,7 +67,7 @@ std::vector<std::wstring> TexturePackPaths;
 /// Parses custom texture index.
 /// </summary>
 /// <param name="path">The path containing index.txt</param>
-/// <returns>A vector containing the entries. Can be empty.</returns>
+/// <returns>A vector containing the entries. Can be empty, particularly on failure.</returns>
 std::vector<CustomTextureEntry> ParseIndex(const std::wstring& path)
 {
 	vector<CustomTextureEntry> result;
@@ -82,12 +84,27 @@ std::vector<CustomTextureEntry> ParseIndex(const std::wstring& path)
 bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& out)
 {
 	wstring index = path + L"index.txt";
+	string path_a = string(path.begin(), path.end());
 
 	if (!FileExists(index))
 	{
-		PrintDebug("Texture index missing for: %s\n", string(path.begin(), path.end()).c_str());
+		//PrintDebug("Texture index missing for: %s\n", path_a.c_str());
 		return false;
 	}
+
+	PrintDebug("Loading texture pack: %s\n", path_a.c_str());
+
+	auto it = entryCache.find(path);
+	if (it != entryCache.end())
+	{
+		out = it->second;
+		return true;
+	}
+
+	if (!wasLoading)
+		PrintDebug("\tBuilding cache...\n");
+
+	wasLoading = LoadingFile;
 
 	ifstream indexFile(index);
 
@@ -127,7 +144,7 @@ bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& out)
 
 			uint32_t gbix = stoul(line.substr(0, comma));
 			string name = line.substr(comma + 1);
-			string texturePath = string(path.begin(), path.end()) + name;
+			string texturePath = path_a + name;
 
 			if (!FileExists(texturePath))
 			{
@@ -149,7 +166,23 @@ bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& out)
 	if (!result)
 		out.clear();
 
+	entryCache[path] = out;
+
 	return result;
+}
+
+void CheckCache()
+{
+	if (!LoadingFile)
+	{
+		if (wasLoading)
+		{
+			PrintDebug("\tClearing cache...\n");
+			entryCache.clear();
+		}
+
+		wasLoading = false;
+	}
 }
 
 #pragma endregion
@@ -239,8 +272,6 @@ bool ReplacePVM(const std::wstring& pvmName, NJS_TEXLIST* texList)
 
 	string pvmName_a(pvmName.begin(), pvmName.end());
 
-	PrintDebug("Loading texture pack: %s\n", pvmName_a.c_str());
-
 	vector<CustomTextureEntry> customEntries;
 
 	if (!ParseIndex(pvmName + L'\\', customEntries))
@@ -272,6 +303,7 @@ FunctionPointer(signed int, LoadPVM_D_original, (const char*, NJS_TEXLIST*), 0x0
 void __cdecl LoadPVM_C(const char* pvmName, NJS_TEXLIST* texList)
 {
 	string filename(pvmName);
+	CheckCache();
 	LoadingFile = true;
 
 	// Custom PVM Directory.
@@ -306,7 +338,6 @@ void __cdecl LoadPVM_C(const char* pvmName, NJS_TEXLIST* texList)
 
 #pragma region PVR
 
-// TODO: Index caching
 /// <summary>
 /// Loads texture pack replacement for specified PVR.
 /// </summary>
@@ -315,8 +346,6 @@ void __cdecl LoadPVM_C(const char* pvmName, NJS_TEXLIST* texList)
 /// <returns><c>true</c> on success.</returns>
 bool ReplacePVR(const std::string& filename, NJS_TEXMEMLIST** tex)
 {
-	PrintDebug("Loading texture pack replacement for: %s\n", filename.c_str());
-
 	string a = filename;
 	transform(a.begin(), a.end(), a.begin(), ::tolower);
 
@@ -351,6 +380,13 @@ FunctionPointer(NJS_TEXMEMLIST* , LoadPVR, (void* data, int gbix), 0x0077FBD0);
 FunctionPointer(void*, LoadTextureFromFile, (const char*), 0x007929D0);
 FunctionPointer(void, j__HeapFree_0, (LPVOID lpMem), 0x00792A70);
 DataPointer(char, unk_3CFC000, 0x3CFC000);
+
+signed int __cdecl LoadPVR_wrapper(NJS_TEXLIST* texlist)
+{
+	CheckCache();
+	LoadingFile = true;
+	return LoadPVRFile(texlist);
+}
 
 signed int __cdecl LoadPVRFile(NJS_TEXLIST* texlist)
 {
