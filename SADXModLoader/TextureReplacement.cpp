@@ -130,7 +130,7 @@ bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& out)
 			++lineNumber;
 			getline(indexFile, line);
 
-			if (line.length() == 0)
+			if (line.length() == 0 || line[0] == '#')
 				continue;
 
 			size_t comma = line.find(',');
@@ -358,11 +358,17 @@ bool ReplacePVR(const std::string& filename, NJS_TEXMEMLIST** tex)
 
 		for (CustomTextureEntry& e : entries)
 		{
+			replace(e.name.begin(), e.name.end(), '/', '\\');
+			size_t npos = e.name.npos;
+
+			size_t slash = e.name.find_last_of('\\');
 			size_t dot = e.name.find_last_of('.');
 
-			if (dot != e.name.npos)
+			slash = (slash == npos) ? 0 : ++slash;
+
+			if (dot != npos)
 			{
-				string b = e.name.substr(0, dot);
+				string b = e.name.substr(slash, dot - slash);
 				transform(b.begin(), b.end(), b.begin(), ::tolower);
 
 				if (a == b)
