@@ -8,7 +8,7 @@ FunctionPointer(void,	SetHorizontalFOV_BAMS,		(int bams), 0x00402ED0);
 FunctionPointer(int,	GetHorizontalFOV_BAMS,		(void),		0x00402F00);
 FunctionPointer(void,	SetClippingRelatedThing,	(int bams), 0x007815C0);
 
-DataPointer(D3DMATRIX,	MyCoolMatrix,			0x03AAD0A0);
+DataPointer(D3DMATRIX,	ProjectionMatrix,			0x03AAD0A0);
 DataPointer(float,		ClippingRelated,		0x03D0F9E0);
 DataPointer(int,		HorizontalFOV_BAMS,		0x03AB98EC);
 DataPointer(int,		LastHorizontalFOV_BAMS,	0x03B2CBB4);
@@ -49,7 +49,7 @@ void __cdecl SetHorizontalFOV_BAMS_hook(int bams)
 	fov_scale = (double)bams_default / bams;
 	int scaled = (bams == fov_bams) ? fov_bams : (int)(fov_bams * fov_scale);
 
-	int* _24 = (int*)&MyCoolMatrix._24;
+	int* _24 = (int*)&ProjectionMatrix._24;
 
 	SetClippingRelatedThing_hook(bams);
 
@@ -112,19 +112,15 @@ void ConfigureFOV()
 	if ((height * default_ratio) == width || (height * default_ratio) > width)
 		return;
 
-	// Widescreen (16:9, 16:10, etc)
-	if ((height * default_ratio) < width)
-	{
-		fov_rads = 0.96712852;	// 55.412382 degrees
-		fov_bams = RAD2BAMS(fov_rads);
+	fov_rads = 0.96712852;	// 55.412382 degrees
+	fov_bams = RAD2BAMS(fov_rads);
 
-		WriteJump(SetHorizontalFOV_BAMS, SetHorizontalFOV_BAMS_hook);
-		WriteJump(GetHorizontalFOV_BAMS, GetHorizontalFOV_BAMS_hook);
-		WriteJump(SetClippingRelatedThing, SetClippingRelatedThing_hook);
-		WriteJump((void*)0x0079124A, &SetFOV);
-		WriteJump((void*)0x00781523, &FixFloatStackPls);
-		WriteJump((void*)0x0040872A, &dothething);
+	WriteJump(SetHorizontalFOV_BAMS, SetHorizontalFOV_BAMS_hook);
+	WriteJump(GetHorizontalFOV_BAMS, GetHorizontalFOV_BAMS_hook);
+	WriteJump(SetClippingRelatedThing, SetClippingRelatedThing_hook);
+	WriteJump((void*)0x0079124A, &SetFOV);
+	WriteJump((void*)0x00781523, &FixFloatStackPls);
+	WriteJump((void*)0x0040872A, &dothething);
 
-		SetHorizontalFOV_BAMS_hook(bams_default);
-	}
+	SetHorizontalFOV_BAMS_hook(bams_default);
 }
