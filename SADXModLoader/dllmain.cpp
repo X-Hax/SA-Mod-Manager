@@ -51,22 +51,19 @@ static FARPROC __stdcall MyGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
  */
 static inline int backslashes(int c)
 {
-	if (c == '/')
-		return '\\';
-	else
-		return c;
+	return (c == '/') ? '\\' : c;
 }
 
 static void HookTheAPI()
 {
 	ULONG ulSize = 0;
-	PROC pNewFunction = NULL;
-	PROC pActualFunction = NULL;
+	PROC pNewFunction;
+	PROC pActualFunction;
 
-	PSTR pszModName = NULL;
+	PSTR pszModName;
 
 	HMODULE hModule = GetModuleHandle(NULL);
-	PIMAGE_IMPORT_DESCRIPTOR pImportDesc = NULL;
+	PIMAGE_IMPORT_DESCRIPTOR pImportDesc;
 
 	pNewFunction = (PROC)MyGetProcAddress;
 	PROC pNewCreateFile = (PROC)MyCreateFileA;
@@ -867,9 +864,9 @@ static uint8_t ParseCharacterFlags(const string &str)
 	uint8_t flag = 0;
 	for (auto iter = strflags.cbegin(); iter != strflags.cend(); iter++)
 	{
-		string str = trim(*iter);
-		transform(str.begin(), str.end(), str.begin(), ::tolower);
-		auto ch = charflagsnamemap.find(str);
+		string s = trim(*iter);
+		transform(s.begin(), s.end(), s.begin(), ::tolower);
+		auto ch = charflagsnamemap.find(s);
 		if (ch != charflagsnamemap.end())
 			flag |= ch->second;
 	}
@@ -1348,9 +1345,9 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 		HintText_Entry *list = new HintText_Entry[length];
 		for (int i = 0; i < length; i++)
 		{
-			wchar_t buf[4];
-			swprintf_s(buf, L"%d", i);
-			const IniFile *inidata = new IniFile(pathbase + buf + L'\\' + languagenames[i] + L".ini");
+			wchar_t wbuf[4];
+			swprintf_s(wbuf, L"%d", i);
+			const IniFile *inidata = new IniFile(pathbase + wbuf + L'\\' + languagenames[i] + L".ini");
 			vector<int16_t> props;
 			vector<HintText_Text> text;
 			for (int j = 0; j < 999; j++)
@@ -1975,23 +1972,23 @@ static void __cdecl InitMods(void)
 				{
 					if (info->Patches)
 					{
-						for (int i = 0; i < info->PatchCount; i++)
-							WriteData(info->Patches[i].address, info->Patches[i].data, info->Patches[i].datasize);
+						for (int j = 0; j < info->PatchCount; j++)
+							WriteData(info->Patches[j].address, info->Patches[j].data, info->Patches[j].datasize);
 					}
 					if (info->Jumps)
 					{
-						for (int i = 0; i < info->JumpCount; i++)
-							WriteJump(info->Jumps[i].address, info->Jumps[i].data);
+						for (int j = 0; j < info->JumpCount; j++)
+							WriteJump(info->Jumps[j].address, info->Jumps[j].data);
 					}
 					if (info->Calls)
 					{
-						for (int i = 0; i < info->CallCount; i++)
-							WriteCall(info->Calls[i].address, info->Calls[i].data);
+						for (int j = 0; j < info->CallCount; j++)
+							WriteCall(info->Calls[j].address, info->Calls[j].data);
 					}
 					if (info->Pointers)
 					{
-						for (int i = 0; i < info->PointerCount; i++)
-							WriteData((void **)info->Pointers[i].address, info->Pointers[i].data);
+						for (int j = 0; j < info->PointerCount; j++)
+							WriteData((void **)info->Pointers[j].address, info->Pointers[j].data);
 					}
 					if (info->Init)
 					{
@@ -2003,20 +2000,20 @@ static void __cdecl InitMods(void)
 						init(mod_dirA.c_str(), helperFunctions);
 					const PatchList *patches = (const PatchList *)GetProcAddress(module, "Patches");
 					if (patches)
-						for (int i = 0; i < patches->Count; i++)
-							WriteData(patches->Patches[i].address, patches->Patches[i].data, patches->Patches[i].datasize);
+						for (int j = 0; j < patches->Count; j++)
+							WriteData(patches->Patches[j].address, patches->Patches[j].data, patches->Patches[j].datasize);
 					const PointerList *jumps = (const PointerList *)GetProcAddress(module, "Jumps");
 					if (jumps)
-						for (int i = 0; i < jumps->Count; i++)
-							WriteJump(jumps->Pointers[i].address, jumps->Pointers[i].data);
+						for (int j = 0; j < jumps->Count; j++)
+							WriteJump(jumps->Pointers[j].address, jumps->Pointers[j].data);
 					const PointerList *calls = (const PointerList *)GetProcAddress(module, "Calls");
 					if (calls)
-						for (int i = 0; i < calls->Count; i++)
-							WriteCall(calls->Pointers[i].address, calls->Pointers[i].data);
+						for (int j = 0; j < calls->Count; j++)
+							WriteCall(calls->Pointers[j].address, calls->Pointers[j].data);
 					const PointerList *pointers = (const PointerList *)GetProcAddress(module, "Pointers");
 					if (pointers)
-						for (int i = 0; i < pointers->Count; i++)
-							WriteData((void **)pointers->Pointers[i].address, pointers->Pointers[i].data);
+						for (int j = 0; j < pointers->Count; j++)
+							WriteData((void **)pointers->Pointers[j].address, pointers->Pointers[j].data);
 
 					RegisterEvent(modFrameEvents, module, "OnFrame");
 					RegisterEvent(modInputEvents, module, "OnInput");
@@ -2049,11 +2046,11 @@ static void __cdecl InitMods(void)
 		}
 
 		// Check if the mod has DLL data replacements.
-		for (unsigned int i = 0; i < LengthOfArray(dlldatakeys); i++)
+		for (unsigned int j = 0; j < LengthOfArray(dlldatakeys); j++)
 		{
-			if (modinfo->hasKeyNonEmpty(dlldatakeys[i]))
+			if (modinfo->hasKeyNonEmpty(dlldatakeys[j]))
 			{
-				IniFile *dlldata = new IniFile(mod_dir + L'\\' + modinfo->getWString(dlldatakeys[i]));
+				IniFile *dlldata = new IniFile(mod_dir + L'\\' + modinfo->getWString(dlldatakeys[j]));
 				dlllabels.clear();
 				const IniGroup *group = dlldata->getGroup("Files");
 				for (auto iter = group->cbegin(); iter != group->cend(); iter++)
@@ -2086,9 +2083,9 @@ static void __cdecl InitMods(void)
 				}
 				const auto exports = &dllexports[dllname].exports;
 				char buf[9];
-				for (int i = 0; i < 9999; i++)
+				for (int k = 0; k < 9999; k++)
 				{
-					_snprintf(buf, 5, "Item%d", i);
+					_snprintf(buf, 5, "Item%d", k);
 					if (dlldata->hasGroup(buf))
 					{
 						group = dlldata->getGroup(buf);
@@ -2181,7 +2178,7 @@ static void __cdecl InitMods(void)
 	{
 		auto size = CommonObjectPVMs.size();
 		PVMEntry *newlist = new PVMEntry[size + 1];
-		PVMEntry *cur = newlist;
+		//PVMEntry *cur = newlist;
 		memcpy(newlist, CommonObjectPVMs.data(), sizeof(PVMEntry) * size);
 		newlist[size].TexList = nullptr;
 		*((PVMEntry **)0x90EC70) = newlist;
