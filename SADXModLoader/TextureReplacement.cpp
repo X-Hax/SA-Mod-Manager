@@ -320,7 +320,7 @@ void __cdecl LoadPVM_C(const char* pvmName, NJS_TEXLIST* texList)
 		if (ReplacePVM(path, texList))
 			return;
 	}
-	
+
 	// Default behavior.
 	// Loads real PVM archives if no texture packs were found or successfully loaded.
 	// TODO: Clean up.
@@ -382,7 +382,7 @@ bool ReplacePVR(const std::string& filename, NJS_TEXMEMLIST** tex)
 
 ThiscallFunctionPointer(int, sub_78CF80, (void*), 0x78CF80);
 FunctionPointer(NJS_TEXMEMLIST*, TexMemList_PixelFormat, (NJS_TEXINFO* info, Uint32 gbix), 0x0077F7F0);
-FunctionPointer(NJS_TEXMEMLIST* , LoadPVR, (void* data, int gbix), 0x0077FBD0);
+FunctionPointer(NJS_TEXMEMLIST*, LoadPVR, (void* data, int gbix), 0x0077FBD0);
 FunctionPointer(void*, LoadTextureFromFile, (const char*), 0x007929D0);
 FunctionPointer(void, j__HeapFree_0, (LPVOID lpMem), 0x00792A70);
 DataPointer(char, unk_3CFC000, 0x3CFC000);
@@ -397,15 +397,11 @@ signed int __cdecl LoadPVR_wrapper(NJS_TEXLIST* texlist)
 signed int __cdecl LoadPVRFile(NJS_TEXLIST* texlist)
 {
 	NJS_TEXMEMLIST* memlist; // edi@7
-	char* v8 = nullptr; // ecx@9
 
 	if (texlist == nullptr)
 		return -1;
 
-	Uint32 i = 0;
-	Uint32 count = texlist->nbTexture;
-
-	for (Uint32 i = 0; i != count; i++)
+	for (Uint32 i = 0; i != texlist->nbTexture; i++)
 	{
 		NJS_TEXNAME* entries = &texlist->textures[i];
 		Uint32 gbix = 0xFFFFFFEF;
@@ -413,16 +409,16 @@ signed int __cdecl LoadPVRFile(NJS_TEXLIST* texlist)
 		if (entries->attr & NJD_TEXATTR_GLOBALINDEX)
 			gbix = entries->texaddr;
 
-		sub_78CF80(*((void** )&unk_3CFC000 + i));
+		sub_78CF80(*((void**)&unk_3CFC000 + i));
 		Uint32 attr = entries->attr;
 
 		// If already loaded, grab from memory. Otherwise, load from disk.
 		if (attr & NJD_TEXATTR_TYPE_MEMORY)
 		{
 			if (attr & NJD_TEXATTR_GLOBALINDEX)
-				memlist = TexMemList_PixelFormat((NJS_TEXINFO* )entries->filename, gbix);
+				memlist = TexMemList_PixelFormat((NJS_TEXINFO*)entries->filename, gbix);
 			else
-				memlist = LoadPVR(*(void** )entries->filename, gbix);
+				memlist = LoadPVR(*(void**)entries->filename, gbix);
 		}
 		else
 		{
