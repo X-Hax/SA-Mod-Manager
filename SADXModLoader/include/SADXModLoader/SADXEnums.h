@@ -6,6 +6,8 @@
 #ifndef SADXMODLOADER_SADXENUMS_H
 #define SADXMODLOADER_SADXENUMS_H
 
+#include <stdint.h>
+
 // SADX Enums
 #define makemask(enumname,membername) enumname##_##membername = (1 << enumname##Bits_##membername)
 #define makemasks(enumname,membername) enumname##s_##membername = (1 << enumname##Bits_##membername)
