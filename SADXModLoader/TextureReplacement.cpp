@@ -27,14 +27,18 @@ FunctionPointer(void, UnloadTextures, (NJS_TEXNAME** texName_pp), 0x00403290);
 
 #define TOMAPSTRING(a) { a, #a }
 
-static const std::unordered_map<HRESULT, const char*> D3DXERR = {
+static const std::unordered_map<HRESULT, const char*> D3DErrors = {
 	TOMAPSTRING(D3DXERR_CANNOTMODIFYINDEXBUFFER),
 	TOMAPSTRING(D3DXERR_INVALIDMESH),
 	TOMAPSTRING(D3DXERR_CANNOTATTRSORT),
 	TOMAPSTRING(D3DXERR_SKINNINGNOTSUPPORTED),
 	TOMAPSTRING(D3DXERR_TOOMANYINFLUENCES),
 	TOMAPSTRING(D3DXERR_INVALIDDATA),
-	TOMAPSTRING(D3DXERR_LOADEDMESHASNODATA)
+	TOMAPSTRING(D3DXERR_LOADEDMESHASNODATA),
+	TOMAPSTRING(D3DERR_NOTAVAILABLE),
+	TOMAPSTRING(D3DERR_OUTOFVIDEOMEMORY),
+	TOMAPSTRING(D3DERR_INVALIDCALL),
+	TOMAPSTRING(E_OUTOFMEMORY)
 };
 
 #pragma region Filesystem stuff
@@ -234,7 +238,7 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 
 			if (result != D3D_OK)
 			{
-				PrintDebug("Failed to load texture %s: %s (%u)\n", name.c_str(), D3DXERR.at(result), result);
+				PrintDebug("Failed to load texture %s: %s (%u)\n", name.c_str(), D3DErrors.at(result), result);
 				return nullptr;
 			}
 
