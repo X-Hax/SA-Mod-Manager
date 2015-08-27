@@ -73,6 +73,7 @@ FunctionPointer(signed int, PlaySound2, (int ID, int a2, int a3, int a4), 0x423E
 ObjectFunc(SoundManager_Main, 0x4253D0);
 ObjectFunc(SoundManager_Delete, 0x425620);
 FunctionPointer(void, PlayMusic, (int song), 0x425690);
+FunctionPointer(void, PlayJingle, (int song), 0x00425860);
 FunctionPointer(void, PlayVoice, (int a1), 0x425710);
 ObjectFunc(SoundManager_Load, 0x425830);
 FunctionPointer(bool, GetDebugMode, (), 0x4258F0);
