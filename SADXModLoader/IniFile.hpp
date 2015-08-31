@@ -32,12 +32,8 @@ class IniGroup
 
 		std::unordered_map<std::string, std::string>::iterator begin();
 		std::unordered_map<std::string, std::string>::const_iterator cbegin() const;
-		std::unordered_map<std::string, std::string>::reverse_iterator rbegin();
-		std::unordered_map<std::string, std::string>::const_reverse_iterator crbegin() const;
 		std::unordered_map<std::string, std::string>::iterator end();
 		std::unordered_map<std::string, std::string>::const_iterator cend() const;
-		std::unordered_map<std::string, std::string>::reverse_iterator rend();
-		std::unordered_map<std::string, std::string>::const_reverse_iterator crend() const;
 
 	protected:
 		friend class IniFile;
@@ -77,12 +73,8 @@ class IniFile
 
 		std::unordered_map<std::string, IniGroup*>::iterator begin();
 		std::unordered_map<std::string, IniGroup*>::const_iterator cbegin() const;
-		std::unordered_map<std::string, IniGroup*>::reverse_iterator rbegin();
-		std::unordered_map<std::string, IniGroup*>::const_reverse_iterator crbegin() const;
 		std::unordered_map<std::string, IniGroup*>::iterator end();
 		std::unordered_map<std::string, IniGroup*>::const_iterator cend() const;
-		std::unordered_map<std::string, IniGroup*>::reverse_iterator rend();
-		std::unordered_map<std::string, IniGroup*>::const_reverse_iterator crend() const;
 
 	protected:
 		void load(FILE *f);
