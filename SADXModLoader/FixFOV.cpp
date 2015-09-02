@@ -1,14 +1,15 @@
 #include "stdafx.h"
 
-#include "include/d3d8types.h"
+#include <d3dx8math.h>	// for D3DX_PI
 
+#include "include/d3d8types.h"
 #include "SADXModLoader.h"
 
 FunctionPointer(void,	SetHorizontalFOV_BAMS,		(int bams), 0x00402ED0);
 FunctionPointer(int,	GetHorizontalFOV_BAMS,		(void),		0x00402F00);
 FunctionPointer(void,	SetClippingRelatedThing,	(int bams), 0x007815C0);
 
-DataPointer(D3DMATRIX,	ProjectionMatrix,			0x03AAD0A0);
+DataPointer(D3DMATRIX,	ProjectionMatrix,		0x03AAD0A0);
 DataPointer(float,		ClippingRelated,		0x03D0F9E0);
 DataPointer(int,		HorizontalFOV_BAMS,		0x03AB98EC);
 DataPointer(int,		LastHorizontalFOV_BAMS,	0x03B2CBB4);
