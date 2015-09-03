@@ -716,6 +716,18 @@ static void ClearTrialSubgameList(unsigned char character)
 	_TrialSubgames[character] = vector<TrialLevelListEntry>();
 }
 
+static const char *mainsavepath = "SAVEDATA";
+static const char *GetMainSavePath()
+{
+	return mainsavepath;
+}
+
+static const char *chaosavepath = "SAVEDATA";
+static const char *GetChaoSavePath()
+{
+	return chaosavepath;
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
@@ -732,7 +744,9 @@ static const HelperFunctions helperFunctions =
 	RegisterTrialLevel,
 	ClearTrialLevelList,
 	RegisterTrialSubgame,
-	ClearTrialSubgameList
+	ClearTrialSubgameList,
+	GetMainSavePath,
+	GetChaoSavePath
 };
 
 static vector<string> &split(const string &s, char delim, vector<string> &elems)
@@ -1870,6 +1884,10 @@ static void __cdecl InitMods(void)
 	// in order to handle multiple mods.
 	unordered_map<string, string> filereplaces;
 
+	vector<std::pair<ModInitFunc, string>> initfuncs;
+
+	string _mainsavepath, _chaosavepath;
+
 	// It's mod loading time!
 	PrintDebug("Loading mods...\n");
 	for (int i = 1; i < 999; i++)
@@ -1993,11 +2011,11 @@ static void __cdecl InitMods(void)
 					if (info->Init)
 					{
 						// TODO: Convert to Unicode later. (Will require an API bump.)
-						info->Init(mod_dirA.c_str(), helperFunctions);
+						initfuncs.push_back({ info->Init, mod_dirA });
 					}
 					const ModInitFunc init = (const ModInitFunc)GetProcAddress(module, "Init");
 					if (init)
-						init(mod_dirA.c_str(), helperFunctions);
+						initfuncs.push_back({ init, mod_dirA.c_str() });
 					const PatchList *patches = (const PatchList *)GetProcAddress(module, "Patches");
 					if (patches)
 						for (int j = 0; j < patches->Count; j++)
@@ -2098,6 +2116,12 @@ static void __cdecl InitMods(void)
 				delete dlldata;
 			}
 		}
+
+		if (modinfo->getBool("RedirectMainSave"))
+			_mainsavepath = mod_dirA + "\\SAVEDATA";
+
+		if (modinfo->getBool("RedirectChaoSave"))
+			_chaosavepath = mod_dirA + "\\SAVEDATA";
 
 		// Texture pack stuff
 		wstring modTextureDir = mod_dir + L"\\textures\\";
@@ -2204,6 +2228,51 @@ static void __cdecl InitMods(void)
 		TrialSubgames[i->first].Levels = newlist;
 		TrialSubgames[i->first].Count = size;
 	}
+
+	if (!_mainsavepath.empty())
+	{
+		char *buf = new char[_mainsavepath.size() + 1];
+		strncpy(buf, _mainsavepath.c_str(), _mainsavepath.size() + 1);
+		mainsavepath = buf;
+		string tmp = "./" + _mainsavepath + "/%s";
+		buf = new char[tmp.size() + 1];
+		strncpy(buf, tmp.c_str(), tmp.size() + 1);
+		WriteData((char **)0x421E4E, buf);
+		WriteData((char **)0x421E6A, buf);
+		WriteData((char **)0x421F07, buf);
+		WriteData((char **)0x42214E, buf);
+		WriteData((char **)0x5050E5, buf);
+		WriteData((char **)0x5051ED, buf);
+		tmp = "./" + _mainsavepath + "/SonicDX%02d.snc";
+		buf = new char[tmp.size() + 1];
+		strncpy(buf, tmp.c_str(), tmp.size() + 1);
+		WriteData((char **)0x42210F, buf);
+		tmp = "./" + _mainsavepath + "/";
+		buf = new char[tmp.size() + 1];
+		strncpy(buf, tmp.c_str(), tmp.size() + 1);
+		WriteData((char **)0x422020, buf);
+		tmp = "./" + _mainsavepath + "/SonicDX??.snc";
+		buf = new char[tmp.size() + 1];
+		strncpy(buf, tmp.c_str(), tmp.size() + 1);
+		WriteData((char **)0x5050AB, buf);
+	}
+
+	if (!_chaosavepath.empty())
+	{
+		char *buf = new char[_chaosavepath.size() + 1];
+		strncpy(buf, _chaosavepath.c_str(), _chaosavepath.size() + 1);
+		chaosavepath = buf;
+		string tmp = "./" + _chaosavepath + "/SONICADVENTURE_DX_CHAOGARDEN.snc";
+		buf = new char[tmp.size() + 1];
+		strncpy(buf, tmp.c_str(), tmp.size() + 1);
+		WriteData((char **)0x7163EF, buf);
+		WriteData((char **)0x71AA6F, buf);
+		WriteData((char **)0x71ACDB, buf);
+		WriteData((char **)0x71ADC5, buf);
+	}
+
+	for (unsigned int i = 0; i < initfuncs.size(); i++)
+		initfuncs[i].first(initfuncs[i].second.c_str(), helperFunctions);
 
 	PrintDebug("Finished loading mods\n");
 
