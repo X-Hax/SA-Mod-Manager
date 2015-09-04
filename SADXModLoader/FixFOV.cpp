@@ -124,4 +124,9 @@ void ConfigureFOV()
 	WriteJump((void*)0x0040872A, &dothething);
 
 	SetHorizontalFOV_BAMS_hook(bams_default);
+	
+	/* Stops the Pause Menu from using horizontal stretch in place of vertical stretch in coordinate calculation */
+	WriteData((uint8_t*)0x00457F69, (uint8_t)0xC4); // Elipse/Oval
+	WriteData((uint8_t*)0x004584EE, (uint8_t)0xC4); // Blue Transparent Box
+	WriteData((uint8_t*)0x0045802F, (uint8_t)0xC4); // Pause Menu Options
 }
