@@ -57,14 +57,14 @@ BEGIN
 			//VALUE "Comments", ""
 			//VALUE "CompanyName", ""
 			VALUE "FileDescription", "SADX Mod Loader " VERSION_STRING
-			VALUE "FileVersion", "SADX Mod Loader " Win32_RC_FileVersion
+			VALUE "FileVersion", Win32_RC_FileVersion
 			VALUE "InternalName", "SADX Mod Loader"
 			//VALUE "LegalCopyright", ""
 			//VALUE "LegalTrademarks", ""
 			//VALUE "OriginalFilename", ""
 			//VALUE "PrivateBuild", ""
 			VALUE "ProductName", "SADX Mod Loader"
-			VALUE "ProductVersion", "SADX Mod Loader " Win32_RC_FileVersion ""
+			VALUE "ProductVersion", Win32_RC_FileVersion
 			//VALUE "SpecialBuild", ""
 		END
 	END
