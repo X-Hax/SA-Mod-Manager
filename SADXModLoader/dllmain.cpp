@@ -2015,7 +2015,7 @@ static void __cdecl InitMods(void)
 					}
 					const ModInitFunc init = (const ModInitFunc)GetProcAddress(module, "Init");
 					if (init)
-						initfuncs.push_back({ init, mod_dirA.c_str() });
+						initfuncs.push_back({ init, mod_dirA });
 					const PatchList *patches = (const PatchList *)GetProcAddress(module, "Patches");
 					if (patches)
 						for (int j = 0; j < patches->Count; j++)
@@ -2134,6 +2134,9 @@ static void __cdecl InitMods(void)
 	{
 		sadx_fileMap.addReplaceFile(iter->first, iter->second);
 	}
+
+	for (unsigned int i = 0; i < initfuncs.size(); i++)
+		initfuncs[i].first(initfuncs[i].second.c_str(), helperFunctions);
 
 	for (auto i = StartPositions.cbegin(); i != StartPositions.cend(); ++i)
 	{
@@ -2270,9 +2273,6 @@ static void __cdecl InitMods(void)
 		WriteData((char **)0x71ACDB, buf);
 		WriteData((char **)0x71ADC5, buf);
 	}
-
-	for (unsigned int i = 0; i < initfuncs.size(); i++)
-		initfuncs[i].first(initfuncs[i].second.c_str(), helperFunctions);
 
 	PrintDebug("Finished loading mods\n");
 
