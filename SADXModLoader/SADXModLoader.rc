@@ -54,18 +54,18 @@ BEGIN
 	BEGIN
 		BLOCK "040904b0"
 		BEGIN
-			//VALUE "Comments", "\0"
-			//VALUE "CompanyName", "\0"
-			VALUE "FileDescription", "SADX Mod Loader " VERSION_STRING "\0"
-			VALUE "FileVersion", "SADX Mod Loader " Win32_RC_FileVersion "\0"
-			VALUE "InternalName", "SADX Mod Loader\0"
-			//VALUE "LegalCopyright", "\0"
-			//VALUE "LegalTrademarks", "\0"
-			//VALUE "OriginalFilename", "\0"
-			//VALUE "PrivateBuild", "\0"
-			VALUE "ProductName", "SADX Mod Loader\0"
-			VALUE "ProductVersion", "SADX Mod Loader " Win32_RC_FileVersion "\0"
-			//VALUE "SpecialBuild", "\0"
+			//VALUE "Comments", ""
+			//VALUE "CompanyName", ""
+			VALUE "FileDescription", "SADX Mod Loader " VERSION_STRING
+			VALUE "FileVersion", "SADX Mod Loader " Win32_RC_FileVersion
+			VALUE "InternalName", "SADX Mod Loader"
+			//VALUE "LegalCopyright", ""
+			//VALUE "LegalTrademarks", ""
+			//VALUE "OriginalFilename", ""
+			//VALUE "PrivateBuild", ""
+			VALUE "ProductName", "SADX Mod Loader"
+			VALUE "ProductVersion", "SADX Mod Loader " Win32_RC_FileVersion ""
+			//VALUE "SpecialBuild", ""
 		END
 	END
 	BLOCK "VarFileInfo"
