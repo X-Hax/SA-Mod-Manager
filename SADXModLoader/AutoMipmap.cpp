@@ -3,18 +3,26 @@
 #include <SADXModLoader.h>
 #include "AutoMipmap.h"
 
-IDirect3DTexture8* __fastcall GenerateMipmaps_c(IDirect3DTexture8* d3d_texture, NJS_TEXMEMLIST* njs_texture)
+static IDirect3DTexture8* __fastcall GenerateMipmaps_c(IDirect3DTexture8* d3d_texture, NJS_TEXMEMLIST* njs_texture)
 {
-	if (d3d_texture == nullptr)
+	if (d3d_texture == nullptr || njs_texture == nullptr)
 		return nullptr;
+
+	Uint32 format = njs_texture->texinfo.texsurface.PixelFormat;
+
+	// TODO: Figure out how Chao palettized textures are handled.
+	if (format == NJD_PIXELFORMAT_PALETTIZED_4BPP || format == NJD_PIXELFORMAT_PALETTIZED_8BPP)
+		PrintDebug("Palettized texture detected.\n");
+
+	// TODO: Consider different filtering. By default, it's D3DX_FILTER_BOX | D3DX_FILTER_DITHER
+	HRESULT result = D3DXFilterTexture(d3d_texture, nullptr, D3DX_DEFAULT, D3DX_DEFAULT);
+
+	if (result != 0)
+		PrintDebug("Mipmap generation failed with error code 0x%08X\n", result);
 
 	D3DSURFACE_DESC info;
 	d3d_texture->GetLevelDesc(0, &info);
 
-	// TODO: Consider different filtering. By default, it's D3DX_FILTER_BOX | D3DX_FILTER_DITHER
-	D3DXFilterTexture(d3d_texture, nullptr, D3DX_DEFAULT, D3DX_DEFAULT);
-
-	d3d_texture->GetLevelDesc(0, &info);
 	njs_texture->texinfo.texsurface.pSurface = (Uint32*)d3d_texture;
 	njs_texture->texinfo.texsurface.TextureSize = info.Size;
 
@@ -22,7 +30,7 @@ IDirect3DTexture8* __fastcall GenerateMipmaps_c(IDirect3DTexture8* d3d_texture, 
 }
 
 void* ret_addr = (void*)0x0078CD37;
-void __declspec(naked) GenerateMipmaps_asm()
+static void __declspec(naked) GenerateMipmaps_asm()
 {
 	// This could probably use some optimizing.
 	__asm
@@ -30,11 +38,9 @@ void __declspec(naked) GenerateMipmaps_asm()
 		mov		edx, esi
 		mov		ecx, eax
 
-		push	esi
 		push	eax
 		call	GenerateMipmaps_c
 		pop		eax
-		pop		esi
 
 		jmp		ret_addr
 	}

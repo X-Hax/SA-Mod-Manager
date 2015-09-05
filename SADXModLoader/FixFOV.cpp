@@ -29,7 +29,7 @@ int	last_bams = bams_default;
 double fov_rads;
 double fov_scale = 1.0;
 
-void __cdecl SetClippingRelatedThing_hook(int bams)
+static void __cdecl SetClippingRelatedThing_hook(int bams)
 {
 	// We're scaling here because this function
 	// can be called independently of SetHorizontalFOV_BAMS
@@ -40,12 +40,12 @@ void __cdecl SetClippingRelatedThing_hook(int bams)
 	ClippingRelated = (float)((double)VerticalResolution / tan);
 }
 
-int __cdecl GetHorizontalFOV_BAMS_hook()
+static int __cdecl GetHorizontalFOV_BAMS_hook()
 {
 	return last_bams;
 }
 
-void __cdecl SetHorizontalFOV_BAMS_hook(int bams)
+static void __cdecl SetHorizontalFOV_BAMS_hook(int bams)
 {
 	fov_scale = (double)bams_default / bams;
 	int scaled = (bams == fov_bams) ? fov_bams : (int)(fov_bams * fov_scale);
@@ -62,7 +62,7 @@ void __cdecl SetHorizontalFOV_BAMS_hook(int bams)
 #pragma region assembly
 
 void* setfov_return = (void*)0x00791251;
-void __declspec(naked) SetFOV()
+static void __declspec(naked) SetFOV()
 {
 	__asm
 	{
@@ -81,7 +81,7 @@ void __declspec(naked) SetFOV()
 void* fix_to = (void*)0x00781529;
 float dummy;
 
-void __declspec(naked) FixFloatStackPls()
+static void __declspec(naked) FixFloatStackPls()
 {
 	__asm
 	{
@@ -91,7 +91,7 @@ void __declspec(naked) FixFloatStackPls()
 }
 
 void* dothething_return = (void*)0x0040872F;
-void __declspec(naked) dothething()
+static void __declspec(naked) dothething()
 {
 	__asm
 	{
