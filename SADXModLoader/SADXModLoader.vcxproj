@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AutoMipmap.cpp" />
     <ClCompile Include="CodeParser.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Events.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="TextureReplacement.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AutoMipmap.h" />
     <ClInclude Include="CodeParser.hpp" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="FileMap.hpp" />

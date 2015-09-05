@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <vector>
 #include <sstream>
+#include "AutoMipmap.h"
 
 using std::deque;
 using std::ifstream;
@@ -1868,6 +1869,7 @@ static void __cdecl InitMods(void)
 	WriteJump((void*)0x004210A0, LoadPVM_C);	// Texture packs
 	WriteJump((void*)0x0077FC80, LoadPVRFile);	// Texture packs
 	WriteJump((void*)0x004228E0, LoadPVR_wrapper);	// Texture packs
+	ConfigureAutoMipmaps();
 
 	// Unprotect the .rdata section.
 	// TODO: Get .rdata address and length dynamically.
