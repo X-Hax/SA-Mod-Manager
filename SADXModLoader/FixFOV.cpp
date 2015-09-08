@@ -59,7 +59,7 @@ static void __cdecl SetHorizontalFOV_BAMS_hook(int bams)
 	last_bams = bams;
 }
 
-#pragma region assembly
+#pragma region Assembly
 
 void* setfov_return = (void*)0x00791251;
 static void __declspec(naked) SetFOV()
@@ -78,9 +78,8 @@ static void __declspec(naked) SetFOV()
 }
 
 // HACK: Dirty hack to disable a write to ClippingRelated and keep the floating point stack balanced.
-void* fix_to = (void*)0x00781529;
 float dummy;
-
+void* fix_to = (void*)0x00781529;
 static void __declspec(naked) FixFloatStackPls()
 {
 	__asm
@@ -90,6 +89,7 @@ static void __declspec(naked) FixFloatStackPls()
 	}
 }
 
+// Handles a case where the FOV is accessed directly. If somebody wants to name this, be my guest :V
 void* dothething_return = (void*)0x0040872F;
 static void __declspec(naked) dothething()
 {
@@ -125,7 +125,7 @@ void ConfigureFOV()
 
 	SetHorizontalFOV_BAMS_hook(bams_default);
 	
-	/* Stops the Pause Menu from using horizontal stretch in place of vertical stretch in coordinate calculation */
+	// Stops the Pause Menu from using horizontal stretch in place of vertical stretch in coordinate calculation
 	WriteData((uint8_t*)0x00457F69, (uint8_t)0xC4); // Elipse/Oval
 	WriteData((uint8_t*)0x004584EE, (uint8_t)0xC4); // Blue Transparent Box
 	WriteData((uint8_t*)0x0045802F, (uint8_t)0xC4); // Pause Menu Options

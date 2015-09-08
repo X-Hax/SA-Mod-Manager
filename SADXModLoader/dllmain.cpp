@@ -1869,7 +1869,6 @@ static void __cdecl InitMods(void)
 	WriteJump((void*)0x004210A0, LoadPVM_C);	// Texture packs
 	WriteJump((void*)0x0077FC80, LoadPVRFile);	// Texture packs
 	WriteJump((void*)0x004228E0, LoadPVR_wrapper);	// Texture packs
-	ConfigureAutoMipmaps();
 
 	// Unprotect the .rdata section.
 	// TODO: Get .rdata address and length dynamically.
@@ -1880,6 +1879,10 @@ static void __cdecl InitMods(void)
 	WriteData((uint8_t*)0x0078B7C4, (uint8_t)0x02);
 	WriteData((uint8_t*)0x0078B7D8, (uint8_t)0x02);
 	WriteData((uint8_t*)0x0078B7EC, (uint8_t)0x02);
+
+	// TODO: Make configurable
+	// Auto-Mipmaps
+	ConfigureAutoMipmaps();
 
 	// Map of files to replace and/or swap.
 	// This is done with a second map instead of sadx_fileMap directly

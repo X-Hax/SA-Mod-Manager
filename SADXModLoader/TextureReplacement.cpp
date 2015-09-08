@@ -126,8 +126,10 @@ bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& out)
 		return true;
 	}
 
+#ifdef _DEBUG
 	if (!wasLoading)
 		PrintDebug("\tBuilding cache...\n");
+#endif
 
 	wasLoading = LoadingFile;
 
@@ -202,7 +204,9 @@ void CheckCache()
 	{
 		if (wasLoading)
 		{
+#ifdef _DEBUG
 			PrintDebug("\tClearing cache...\n");
+#endif
 			entryCache.clear();
 		}
 
@@ -243,6 +247,7 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 		{
 			IDirect3DTexture8* d3dtexture;
 			// This loads the DDS/PNG/etc texture from disk.
+			// TODO: If/When auto-mipmaps are configurable, switch to *Ex and enable/disable mipmap generation accordingly.
 			HRESULT result = D3DXCreateTextureFromFile(Direct3D_Device, path.c_str(), &d3dtexture);
 
 			if (result != D3D_OK)
@@ -356,7 +361,6 @@ void __cdecl LoadPVM_C(const char* pvmName, NJS_TEXLIST* texList)
 	}
 
 	PrintDebug("Unable to locate PVM: %s\n", pvmName);
-	return;
 }
 
 #pragma endregion
