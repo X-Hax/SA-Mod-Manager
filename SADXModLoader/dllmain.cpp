@@ -1756,6 +1756,89 @@ struct dllexportinfo { void *address; string type; };
 struct dllexportcontainer { unordered_map<string, dllexportinfo> exports; };
 static unordered_map<wstring, dllexportcontainer> dllexports;
 
+struct SaveFileInfo { char *Filename; DWORD LowDate; DWORD HighDate; SaveFileInfo *Next; };
+
+VoidFunc(SaveSave, 0x42D630);
+DataPointer(SaveFileInfo *, SaveFiles, 0x3C5E8B8);
+VoidFunc(InputThing__Ctor, 0x40F350);
+void __cdecl WriteSaveFile_r()
+{
+	char v0; // bl@1
+	SaveFileInfo *v2; // edi@8
+	char v3[MAX_PATH]; // esi@8
+	int v4; // eax@19
+	FILE *v5; // edi@20
+
+	v0 = 1;
+	*(char *)0x3ABDF7A = 0;
+	*(char *)0x3B291B1 = 0;
+	if (!*(int *)0x3B29198)
+	{
+		if (*(unsigned char *)0x3B291B2 > 4u)
+		{
+			*(int *)0x3B291A4 = 0;
+			*(char *)0x3B291AD = 0;
+			*(char *)0x3ABDF76 = 0;
+			*(char *)0x3B22E1E = 0;
+			*(char *)0x3B291B2 = 0;
+		}
+		CreateDirectoryA(mainsavepath, 0);
+		if (!*(char *)0x3B291B0)
+			SaveSave();
+		if (*(char *)0x3B291B3)
+		{
+			*(char *)0x3B291B3 = 0;
+			if ((unsigned __int8)*(char *)0x3B290E0 > 98u)
+				return;
+			v2 = SaveFiles->Next;
+			_snprintf(v3, MAX_PATH, "SonicDX%02d.snc", 1);
+			if (v2)
+				while (1)
+				{
+					if (CompareStringA(9u, 1u, v3, -1, v2->Filename, -1) == 2)
+					{
+						v2 = SaveFiles->Next;
+						++v0;
+						if ((unsigned __int8)v0 > 99u)
+							return;
+						_snprintf(v3, MAX_PATH, "SonicDX%02d.snc", (unsigned __int8)v0);
+					}
+					else
+						v2 = v2->Next;
+					if (!v2)
+						break;
+				}
+			if (*(char **)0x3B290DC != 0)
+			{
+				free(*(char **)0x3B290DC);
+				*(char **)0x3B290DC = 0;
+			}
+			*(char **)0x3B290DC = (char *)malloc(0xEu);
+			++*(char *)0x3B290E0;
+			*(char *)0x3B290D8 = v0;
+			_snprintf(*(char **)0x3B290DC, 0xEu, "SonicDX%02d.snc", (unsigned __int8)v0);
+			_snprintf(v3, MAX_PATH, "./%s/SonicDX%02d.snc", mainsavepath, (unsigned __int8)v0);
+		}
+		else
+		{
+			v4 = lstrlenA(*(char **)0x3B290DC);
+			_snprintf(v3, MAX_PATH, "./%s/%s", mainsavepath, *(char **)0x3B290DC);
+		}
+		v5 = fopen(v3, "wb");
+		fwrite((void *)0x3B2B3A8, sizeof(SaveFileData), 1, v5);
+		*(char *)0x3B290E8 = 0;
+		InputThing__Ctor();
+		*(char *)0x3B291B2 = 0;
+		*(int *)0x3B291A4 = 0;
+		*(char *)0x3ABDF7A = 0;
+		*(char *)0x3B291AD = 0;
+		*(char *)0x3ABDF76 = 0;
+		*(char *)0x3B22E1E = 0;
+		fclose(v5);
+		*(char *)0x3B291B1 = 1;
+	}
+}
+
 static void __cdecl InitMods(void)
 {
 	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
@@ -2248,21 +2331,13 @@ static void __cdecl InitMods(void)
 		WriteData((char **)0x421E4E, buf);
 		WriteData((char **)0x421E6A, buf);
 		WriteData((char **)0x421F07, buf);
-		WriteData((char **)0x42214E, buf);
 		WriteData((char **)0x5050E5, buf);
 		WriteData((char **)0x5051ED, buf);
-		tmp = "./" + _mainsavepath + "/SonicDX%02d.snc";
-		buf = new char[tmp.size() + 1];
-		strncpy(buf, tmp.c_str(), tmp.size() + 1);
-		WriteData((char **)0x42210F, buf);
-		tmp = "./" + _mainsavepath + "/";
-		buf = new char[tmp.size() + 1];
-		strncpy(buf, tmp.c_str(), tmp.size() + 1);
-		WriteData((char **)0x422020, buf);
 		tmp = "./" + _mainsavepath + "/SonicDX??.snc";
 		buf = new char[tmp.size() + 1];
 		strncpy(buf, tmp.c_str(), tmp.size() + 1);
 		WriteData((char **)0x5050AB, buf);
+		WriteJump(WriteSaveFile, WriteSaveFile_r);
 	}
 
 	if (!_chaosavepath.empty())
