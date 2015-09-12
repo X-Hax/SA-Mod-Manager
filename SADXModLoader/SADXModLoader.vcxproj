@@ -56,6 +56,9 @@
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>^M
+    <ResourceCompile Include="SADXModLoader.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B537B54A-67A7-4CD8-9679-457E498E592F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -141,4 +144,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SADXModLoader.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
 </Project>
