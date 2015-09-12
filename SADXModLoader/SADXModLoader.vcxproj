@@ -56,7 +56,7 @@
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>^M
+  <ItemGroup>
     <ResourceCompile Include="SADXModLoader.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
