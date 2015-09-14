@@ -9,7 +9,6 @@
 #include <cctype>
 #include <cstring>
 #include <algorithm>
-using std::forward_list;
 using std::list;
 using std::string;
 using std::transform;
@@ -216,24 +215,6 @@ void FileMap::setReplaceFile(const std::string &origFile, const std::string &des
 	// Update the main map.
 	m_fileMap[origFile] = destFile;
 
-	// Remove the file extension from the original filename.
-	char pathnoext[MAX_PATH];
-	strncpy(pathnoext, origFile.c_str(), sizeof(pathnoext));
-	PathRemoveExtensionA(pathnoext);
-	string s_pathnoext(pathnoext);
-
-	// Check if m_fileNoExtMap already has a list.
-	auto iter_noext = m_fileNoExtMap.find(s_pathnoext);
-	if (iter_noext == m_fileNoExtMap.end())
-	{
-		// No list yet.
-		iter_noext = m_fileNoExtMap.insert(std::make_pair(s_pathnoext, new forward_list<string>())).first;
-	}
-	forward_list<string> *fileList = iter_noext->second;
-
-	// Add the filename to the list.
-	fileList->push_front(destFile);
-
 	PrintDebug("Replaced file: \"%s\" = \"%s\"\n", origFile.c_str(), destFile.c_str());
 }
 
@@ -259,29 +240,9 @@ const char *FileMap::replaceFile(const char *lpFileName) const
 }
 
 /**
- * Find filenames that matches the specified filename, ignoring the extension.
- * @param lpFileName Filename.
- * @return List of matching filenames, or nullptr if not fonud.
- */
-const forward_list<string>* FileMap::findFileNoExt(const char *lpFileName) const
-{
-	// Remove the file extension from the specified filename.
-	char pathnoext[MAX_PATH];
-	strncpy(pathnoext, lpFileName, sizeof(pathnoext));
-	PathRemoveExtensionA(pathnoext);
-	string s_pathnoext = normalizePath(pathnoext);
-
-	auto iter = m_fileNoExtMap.find(s_pathnoext);
-	return (iter != m_fileNoExtMap.cend()
-		? iter->second
-		: nullptr);
-}
-
-/**
  * Clear the file replacement map.
  */
 void FileMap::clear(void)
 {
-	m_fileNoExtMap.clear();
 	m_fileMap.clear();
 }
