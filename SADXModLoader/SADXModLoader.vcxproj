@@ -47,6 +47,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TextConv.hpp" />
     <ClInclude Include="TextureReplacement.h" />
+    <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libmodutils\libmodutils.vcxproj">

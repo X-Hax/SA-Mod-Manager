@@ -8,15 +8,8 @@
 // git version
 #include "git.h"
 
-// Current version.
-// Make sure this is updated before every release!
-#define VERSION_STRING "3.3"
-#define VERSION_MAJOR 3
-#define VERSION_MINOR 3
-#define VERSION_BUILD 0
-#define VERSION_REVISION 0
-/*#define VERSION_PRERELEASE 1*/
-#define VERSION_WIN32 VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,VERSION_REVISION
+// program version
+#include "version.h"
 
 #ifdef MODLOADER_GIT_VERSION
 #ifdef MODLOADER_GIT_DESCRIBE
