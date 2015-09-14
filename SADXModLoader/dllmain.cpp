@@ -1968,6 +1968,8 @@ static void __cdecl InitMods(void)
 	// Auto-Mipmaps
 	ConfigureAutoMipmaps();
 
+	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
+
 	// Map of files to replace and/or swap.
 	// This is done with a second map instead of sadx_fileMap directly
 	// in order to handle multiple mods.

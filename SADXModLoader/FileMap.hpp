@@ -56,6 +56,12 @@ class FileMap
 		 */
 		void scanFolder(const std::string &srcPath);
 
+		/**
+		* Scans a sound folder for non-WMA files.
+		* @param srcPath Path to scan.
+		*/
+		void FileMap::scanSoundFolder(const std::string &srcPath);
+
 	protected:
 		/**
 		 * Recursively scan a directory and add all files to the replacement map.
