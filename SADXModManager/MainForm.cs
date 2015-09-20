@@ -424,7 +424,9 @@ namespace SADXModManager
 		public string Description { get; set; }
 		public string EXEFile { get; set; }
 		public string DLLFile { get; set; }
-	}
+        public bool RedirectMainSave { get; set; }
+        public bool RedirectChaoSave { get; set; }
+    }
 
 	[XmlRoot(Namespace = "http://www.sonicretro.org")]
 	public class CodeList
