@@ -24,6 +24,7 @@
 #include <vector>
 #include <string>
 
+#include "D3DCommon.h"
 #include "ninja.h"
 #include "SADXModLoader.h"
 #include "Events.h"

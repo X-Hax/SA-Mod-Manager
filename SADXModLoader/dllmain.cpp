@@ -1938,6 +1938,12 @@ static void __cdecl InitMods(void)
 
 	screennum = settings->getInt("ScreenNum", 1);
 
+	if (settings->getBool("AutoMipmap", true))
+	{
+		forceMipmaps = true;
+		EnableAutoMipmaps();
+	}
+
 	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
 	WriteCall((void *)0x42544C, (void *)PlayMusicFile_r);
@@ -1950,9 +1956,10 @@ static void __cdecl InitMods(void)
 	WriteJump((void *)0x40D0A0, (void *)ResumeSound_r);
 	WriteJump((void *)0x40CFF0, (void *)WMPClose_r);
 	WriteJump((void *)0x40D28A, (void *)WMPRelease_r);
-	WriteJump((void*)0x004210A0, LoadPVM_C);	// Texture packs
-	WriteJump((void*)0x0077FC80, LoadPVRFile);	// Texture packs
-	WriteJump((void*)0x004228E0, LoadPVR_wrapper);	// Texture packs
+	// Texture pack stuff
+	WriteJump((void*)0x004210A0, LoadPVM_C);
+	WriteJump((void*)0x0077FC80, LoadPVRFile);
+	WriteJump((void*)0x004228E0, LoadPVR_wrapper);
 
 	// Unprotect the .rdata section.
 	// TODO: Get .rdata address and length dynamically.
@@ -1963,10 +1970,6 @@ static void __cdecl InitMods(void)
 	WriteData((uint8_t*)0x0078B7C4, (uint8_t)0x02);
 	WriteData((uint8_t*)0x0078B7D8, (uint8_t)0x02);
 	WriteData((uint8_t*)0x0078B7EC, (uint8_t)0x02);
-
-	// TODO: Make configurable
-	// Auto-Mipmaps
-	ConfigureAutoMipmaps();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 

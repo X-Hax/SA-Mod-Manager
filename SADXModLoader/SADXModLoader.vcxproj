@@ -30,6 +30,8 @@
   <ItemGroup>
     <ClInclude Include="AutoMipmap.h" />
     <ClInclude Include="CodeParser.hpp" />
+    <ClInclude Include="D3DCommon.h" />
+    <ClInclude Include="DDS.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="FileMap.hpp" />
     <ClInclude Include="FileReplacement.h" />

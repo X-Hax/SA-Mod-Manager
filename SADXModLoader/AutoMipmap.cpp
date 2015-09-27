@@ -1,11 +1,35 @@
 #include "stdafx.h"
 
-#include <d3dx8tex.h>
 #include <SADXModLoader.h>
 
 #include "AutoMipmap.h"
+#include "D3DCommon.h"
 
-static bool mipmapsEnabled = false;
+static HRESULT CopyTexture(IDirect3DTexture8* dest, IDirect3DTexture8* src, UINT height)
+{
+	HRESULT result;
+	D3DLOCKED_RECT rectA, rectB;
+
+	result = src->LockRect(0, &rectA, nullptr, 0);
+
+	if (!SUCCEEDED(result))
+		return result;
+
+	result = dest->LockRect(0, &rectB, nullptr, 0);
+
+	if (!SUCCEEDED(result))
+	{
+		src->UnlockRect(0);
+		return result;
+	}
+
+	memcpy(rectB.pBits, rectA.pBits, rectA.Pitch * height);
+
+	src->UnlockRect(0);
+	dest->UnlockRect(0);
+
+	return result;
+}
 
 inline void SetSurface(IDirect3DTexture8* d3d_texture, NJS_TEXSURFACE* texsurface)
 {
@@ -21,28 +45,51 @@ inline void SetSurface(IDirect3DTexture8* d3d_texture, NJS_TEXSURFACE* texsurfac
 /// </summary>
 /// <param name="d3d_texture">The DirectX texture to apply mipmaps to.</param>
 /// <param name="njs_texture">The Dremcast texture to receive the DirectX texture.</param>
-static void __fastcall GenerateMipmaps_c(IDirect3DTexture8* d3d_texture, NJS_TEXMEMLIST* njs_texture)
+static void __fastcall GenerateMipmaps_c(IDirect3DTexture8* src, NJS_TEXMEMLIST* njs_texture)
 {
-	if (d3d_texture == nullptr || njs_texture == nullptr)
+	if (src == nullptr || njs_texture == nullptr)
 		return;
 
 	// TODO: Figure out how Chao palettized textures are handled.
 	Uint32 format = njs_texture->texinfo.texsurface.PixelFormat;
-	if (format == NJD_PIXELFORMAT_PALETTIZED_4BPP || format == NJD_PIXELFORMAT_PALETTIZED_8BPP || d3d_texture->GetLevelCount() < 2)
+
+	if (format == NJD_PIXELFORMAT_PALETTIZED_4BPP || format == NJD_PIXELFORMAT_PALETTIZED_8BPP || src->GetLevelCount() > 1)
+		goto ABORT;
+
+	HRESULT result;
+
+	D3DSURFACE_DESC info;
+	result = src->GetLevelDesc(0, &info);
+	if (!SUCCEEDED(result))
+		goto ABORT;
+
+	IDirect3DTexture8* dest;
+	result = Direct3D_Device->CreateTexture(info.Width, info.Height, 0, info.Usage, info.Format, info.Pool, &dest);
+	if (!SUCCEEDED(result))
+		goto ABORT;
+
+	result = CopyTexture(dest, src, info.Height);
+	if (!SUCCEEDED(result))
+		goto ABORT;
+
+	result = D3DXFilterTexture(dest, nullptr, D3DX_DEFAULT, D3DX_DEFAULT);
+	if (!SUCCEEDED(result))
 	{
-		SetSurface(d3d_texture, &njs_texture->texinfo.texsurface);
-		return;
+		PrintDebug("Mipmap generation failed with error code 0x%08X\n", result);
+		dest->Release();
+		goto ABORT;
 	}
 
-	// TODO: Consider different filtering. By default, it's D3DX_FILTER_BOX | D3DX_FILTER_DITHER
-	HRESULT result = D3DXFilterTexture(d3d_texture, nullptr, D3DX_DEFAULT, D3DX_DEFAULT);
+	src->Release();
+	SetSurface(dest, &njs_texture->texinfo.texsurface);
+	return;
 
-	if (result != 0)
-		PrintDebug("Mipmap generation failed with error code 0x%08X\n", result);
-
-	SetSurface(d3d_texture, &njs_texture->texinfo.texsurface);
+ABORT:
+	SetSurface(src, &njs_texture->texinfo.texsurface);
+	return;
 }
 
+/*
 /// <summary>
 /// Disables mipmaps for palettized textures as a work around.
 /// </summary>
@@ -67,6 +114,7 @@ static void __stdcall EnableMipmaps(uint32_t format)
 		mipmapsEnabled = true;
 	}
 }
+*/
 
 #pragma region Assembly
 
@@ -87,6 +135,7 @@ static void __declspec(naked) GenerateMipmaps_asm()
 	}
 }
 
+/*
 static void* EnableMipmaps_return = (void*)0x0078C889;
 static void __declspec(naked) EnableMipmaps_asm()
 {
@@ -107,11 +156,12 @@ static void __declspec(naked) EnableMipmaps_asm()
 		jmp		EnableMipmaps_return
 	}
 }
+*/
 
 #pragma endregion
 
-void ConfigureAutoMipmaps()
+void EnableAutoMipmaps()
 {
 	WriteJump((void*)0x0078CD2A, GenerateMipmaps_asm);	// Hooks the end of the function that converts PVRs to D3D textures
-	WriteJump((void*)0x0078C880, EnableMipmaps_asm);	// Toggles mipmaps off for palettized textures, on otherwise.
+	//WriteJump((void*)0x0078C880, EnableMipmaps_asm);	// Toggles mipmaps off for palettized textures, on otherwise.
 }

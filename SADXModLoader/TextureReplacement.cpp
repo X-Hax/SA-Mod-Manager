@@ -1,16 +1,6 @@
 #include "stdafx.h"
 
-#if defined(_MSC_VER) && _MSC_VER >= 1900
-// MSVC 2015 inlines printf() and scanf() functions.
-// As a result, MSVCRT no longer has definitions for them, resulting
-// in a linker error because d3dx8.lib depends on sprintf().
-// Link in legacy_stdio_definitions.lib to fix this.
-// Reference: https://msdn.microsoft.com/en-us/library/Bb531344.aspx
-#pragma comment(lib, "legacy_stdio_definitions.lib")
-#endif
-
 // Windows
-#include <d3dx8tex.h>
 #include <Windows.h>
 
 // Standard
@@ -24,12 +14,15 @@
 
 // FileMap from dllmain.cpp.
 #include "FileMap.hpp"
+#include "D3DCommon.h"
+#include "DDS.h"
 extern FileMap sadx_fileMap;
 
 // This
 #include "TextureReplacement.h"
 
-DataPointer(IDirect3DDevice8*, Direct3D_Device, 0x03D128B0);
+bool forceMipmaps = false;
+
 DataPointer(bool, LoadingFile, 0x3ABDF68);
 FunctionPointer(NJS_TEXMEMLIST*, GetGlobalTexture, (int gbix), 0x0077F5B0);
 FunctionPointer(void, UnloadTextures, (NJS_TEXNAME** texName_pp), 0x00403290);
@@ -218,6 +211,30 @@ void CheckCache()
 
 #pragma region Texture Loading
 
+bool GetDDSHeader(const wstring& path, DDS_HEADER& header)
+{
+	ifstream file(path, ios::binary);
+
+	if (!file.is_open())
+		return false;
+
+	uint32_t magic = 0;
+	file.read((char*)&magic, sizeof(uint32_t));
+
+	if (magic != DDS_MAGIC)
+		return false;
+
+	uint32_t size = 0;
+	file.read((char*)&size, sizeof(uint32_t));
+
+	if (size != sizeof(DDS_HEADER))
+		return false;
+
+	file.seekg(-(int)sizeof(uint32_t), ios_base::cur);
+	file.read((char*)&header, sizeof(DDS_HEADER));
+	return true;
+}
+
 /// <summary>
 /// Loads a texture from disk in the specified path.
 /// </summary>
@@ -245,10 +262,19 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 		}
 		else
 		{
+			uint32_t levels = (forceMipmaps) ? D3DX_DEFAULT : 1;
+
+			if (!forceMipmaps)
+			{
+				DDS_HEADER header;
+				if (GetDDSHeader(path, header))
+					levels = header.mipMapCount + 1;
+			}
+
 			IDirect3DTexture8* d3dtexture;
-			// This loads the DDS/PNG/etc texture from disk.
-			// TODO: If/When auto-mipmaps are configurable, switch to *Ex and enable/disable mipmap generation accordingly.
-			HRESULT result = D3DXCreateTextureFromFile(Direct3D_Device, path.c_str(), &d3dtexture);
+
+			HRESULT result = D3DXCreateTextureFromFileEx(Direct3D_Device, path.c_str(), D3DX_DEFAULT, D3DX_DEFAULT, /* mip levels */ levels,
+				0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, nullptr, nullptr, &d3dtexture);
 
 			if (result != D3D_OK)
 			{
