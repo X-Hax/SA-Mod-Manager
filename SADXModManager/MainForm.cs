@@ -54,6 +54,7 @@ namespace SADXModManager
 			forceAspectRatioCheckBox.Checked = loaderini.ForceAspectRatio;
 			suppressEvent = false;
 			windowedFullscreenCheckBox.Checked = loaderini.WindowedFullscreen;
+			forceMipmappingCheckBox.Checked = loaderini.AutoMipmap;
 			pauseWhenInactiveCheckBox.Checked = loaderini.PauseWhenInactive;
 			stretchFullscreenCheckBox.Checked = loaderini.StretchFullscreen;
 			int scrn = loaderini.ScreenNum;
@@ -158,6 +159,7 @@ namespace SADXModManager
 			loaderini.VerticalResolution = (int)verticalResolution.Value;
 			loaderini.ForceAspectRatio = forceAspectRatioCheckBox.Checked;
 			loaderini.WindowedFullscreen = windowedFullscreenCheckBox.Checked;
+			loaderini.AutoMipmap = forceMipmappingCheckBox.Checked;
 			loaderini.PauseWhenInactive = pauseWhenInactiveCheckBox.Checked;
 			loaderini.StretchFullscreen = stretchFullscreenCheckBox.Checked;
 			loaderini.ScreenNum = screenNumComboBox.SelectedIndex;
@@ -291,7 +293,7 @@ namespace SADXModManager
 				horizontalResolution.Enabled = false;
 				horizontalResolution.Value = Math.Round(verticalResolution.Value * ratio);
 			}
-			else if (suppressEvent)
+			else if (!suppressEvent)
 				horizontalResolution.Enabled = true;
 		}
 
@@ -396,6 +398,8 @@ namespace SADXModManager
 		public int VerticalResolution { get; set; }
 		public bool ForceAspectRatio { get; set; }
 		public bool WindowedFullscreen { get; set; }
+		[DefaultValue(true)]
+		public bool AutoMipmap { get; set; }
 		[DefaultValue(true)]
 		public bool PauseWhenInactive { get; set; }
 		[DefaultValue(true)]
