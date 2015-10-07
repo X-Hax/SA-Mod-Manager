@@ -9,11 +9,7 @@
 #include <stdint.h>
 #include "../ninja.h"
 
-typedef NJS_VECTOR Vertex, Vector3;
-//typedef NJS_TEXLIST TexList, TexListHead;
-typedef NJS_TEXLIST TexListHead;
-typedef NJS_OBJECT OBJECT;
-typedef NJS_MODEL ATTACH;
+typedef NJS_VECTOR Vector3;
 
 // All structs should be packed.
 #pragma pack(push, 1)
@@ -217,9 +213,8 @@ struct CharObj2
 	char gap_10[8];
 	float LoopDist;
 	char gap_1c[28];
-	float HSpeed;
-	float VSpeed;
-	char gap_40[16];
+	Vector3 Speed;
+	char gap_40[12];
 	Vector3 field_50;
 	char gap_5c[12];
 	ObjectMaster *ObjectHeld;
@@ -690,7 +685,7 @@ struct DeathZone
 
 struct SkyboxScale
 {
-	Vertex Far, Normal, Near;
+	NJS_VECTOR Far, Normal, Near;
 };
 
 struct StageLightData
@@ -699,7 +694,7 @@ struct StageLightData
 	char act;
 	char light_num;
 	char use_yxz;
-	Vertex xyz;
+	NJS_VECTOR xyz;
 	float dif;
 	float mutliplier;
 	float rgb[3];

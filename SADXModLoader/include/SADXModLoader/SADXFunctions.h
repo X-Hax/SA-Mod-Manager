@@ -14,10 +14,10 @@
 // SADX Functions
 FunctionPointer(void, PrintDebug, (const char *Format, ...), 0x401000);
 VoidFunc(CheckSettings, 0x4025B0);
-FunctionPointer(void, SetTextures, (TexListHead *texturelist), 0x403070);
+FunctionPointer(void, SetTextures, (NJS_TEXLIST *texturelist), 0x403070);
 FunctionPointer(bool, CheckModelDistance, (Vector3 *center, float radius), 0x403330);
 FunctionPointer(bool, CheckModelDistance2, (float x, float y, float z, float a4), 0x406F70);
-FunctionPointer(void, ProcessModelNode, (OBJECT *obj, int a2, float a3), 0x4074A0);
+FunctionPointer(void, ProcessModelNode, (NJS_OBJECT *obj, int a2, float a3), 0x4074A0);
 FunctionPointer(void, DoTimeOfDayLighting, (int *a1, int *a2), 0x40A4A0);
 FunctionPointer(void, RunObjectIndex, (int index), 0x40B0C0);
 ObjectFunc(DisplayObject, 0x40B130);
@@ -59,7 +59,7 @@ VoidFunc(LoadLevelResults, 0x415540);
 VoidFunc(LoadCharacter, 0x4157C0);
 FunctionPointer(void, UnloadCharTextures, (int Character), 0x420E90);
 FunctionPointer(int, UnloadLevelTextures, (int16_t levelact), 0x421040);
-FunctionPointer(int, LoadPVM, (char *PVMName, TexListHead *TexList), 0x421180);
+FunctionPointer(int, LoadPVM, (char *PVMName, NJS_TEXLIST *TexList), 0x421180);
 VoidFunc(LoadObjectTextures, 0x4213A0);
 FunctionPointer(void, LoadLevelTextures, (int16_t level), 0x4215B0);
 VoidFunc(WriteSaveFile, 0x421FD0);
@@ -164,7 +164,7 @@ FunctionPointer(bool, GetLevelEmblemCollected, (SaveFileData *savefile, int char
 FunctionPointer(void, SetLevelEmblemCollected, (SaveFileData *savefile, int character, signed int level, int mission), 0x4B4640);
 ObjectFunc(Emblem_Main, 0x4B4940);
 FunctionPointer(signed int, GetHintText, (int id, int *data), 0x4B7C10);
-FunctionPointer(OBJECT *, ProcessAnimatedModelNode, (OBJECT *a1, NJS_MDATA3 *a2), 0x4B7D00);
+FunctionPointer(NJS_OBJECT *, ProcessAnimatedModelNode, (NJS_OBJECT *a1, NJS_MDATA3 *a2), 0x4B7D00);
 VoidFunc(ResetJumpPanels, 0x4B8320);
 ObjectFunc(JumpPanel_Main, 0x4B8D10);
 ObjectFunc(JumpPanel_Load, 0x4B8DC0);
@@ -304,7 +304,7 @@ ThiscallFunctionPointer(void, PushMatrix2, (D3DMATRIX *a1), 0x7850F0);
 ThiscallFunctionPointer(void, PopMatrices, (int numMatrices), 0x785140);
 FastcallFunctionPointer(void, Vector3_Subtract, (Vector3 *a1, Vector3 *a2), 0x787610);
 FastcallFunctionPointer(void, MatrixScale2, (D3DMATRIX *a1, Vector3 *a2), 0x788A50);
-FunctionPointer(void, RenderSA2Model, (OBJECT *a1), 0x78AB80);
+FunctionPointer(void, RenderSA2Model, (NJS_OBJECT *a1), 0x78AB80);
 FunctionPointer(char *, GetWindowClassName, (), 0x793F60);
 StdcallFunctionPointer(void, CompletionRoutine, (DWORD, DWORD, LPOVERLAPPED), 0x795340);
 ObjectFunc(Cart_Main, 0x79A9E0);
@@ -375,9 +375,9 @@ static inline void StartLevelCutscene(int16_t a1)
 	}
 }
 
-// signed int __usercall<eax>(int a1<ebp>, char *a2, TexListHead *a3)
+// signed int __usercall<eax>(int a1<ebp>, char *a2, NJS_TEXLIST *a3)
 static const void *const LoadPvmMEM2Ptr = (void*)0x421260;
-static inline signed int LoadPvmMEM2(int a1, char *a2, TexListHead *a3)
+static inline signed int LoadPvmMEM2(int a1, char *a2, NJS_TEXLIST *a3)
 {
 	signed int result;
 	__asm

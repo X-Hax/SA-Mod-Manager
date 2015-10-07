@@ -948,7 +948,7 @@ static string UnescapeNewlines(const string &str)
 	return result;
 }
 
-static void ParseVertex(const string &str, Vertex &vert)
+static void ParseVertex(const string &str, NJS_VECTOR &vert)
 {
 	vector<string> vals = split(str, ',');
 	vert.x = (float)strtod(vals[0].c_str(), nullptr);
@@ -1622,8 +1622,8 @@ static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &m
 		ParseVertex(entdata->getString("Direction"), entry.xyz);
 		entry.dif = entdata->getFloat("Dif");
 		entry.mutliplier = entdata->getFloat("Multiplier");
-		ParseVertex(entdata->getString("RGB"), *(Vertex *)entry.rgb);
-		ParseVertex(entdata->getString("AmbientRGB"), *(Vertex *)entry.amb_rgb);
+		ParseVertex(entdata->getString("RGB"), *(NJS_VECTOR *)entry.rgb);
+		ParseVertex(entdata->getString("AmbientRGB"), *(NJS_VECTOR *)entry.amb_rgb);
 		ents.push_back(entry);
 	}
 	delete inidata;
