@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using IniSerializer;
 using Microsoft.DirectX.DirectInput;
@@ -72,8 +70,8 @@ namespace SADXModManager
                     ButtonControl buttonControl = new ButtonControl() { Enabled = false };
                     tableLayoutPanel1.Controls.Add(buttonControl, 1, i);
                     buttonControls.Add(buttonControl);
-                    buttonControl.SetButtonClicked += new EventHandler(buttonControl_SetButtonClicked);
-                    buttonControl.ClearButtonClicked += new EventHandler(buttonControl_ClearButtonClicked);
+                    buttonControl.SetButtonClicked += buttonControl_SetButtonClicked;
+                    buttonControl.ClearButtonClicked += buttonControl_ClearButtonClicked;
                     if (i == tableLayoutPanel1.RowStyles.Count)
                         tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 }
@@ -86,19 +84,18 @@ namespace SADXModManager
 
 		private void LoadConfigIni()
 		{
-			if (File.Exists(sadxIni))
-				configFile = IniFile.Deserialize<ConfigFile>(sadxIni);
-			else
-				configFile = new ConfigFile();
+			configFile = File.Exists(sadxIni) ? IniFile.Deserialize<ConfigFile>(sadxIni) : new ConfigFile();
             if (configFile.GameConfig == null)
             {
-                configFile.GameConfig = new GameConfig();
-                configFile.GameConfig.FrameRate = (int)FrameRate.High;
-                configFile.GameConfig.Sound3D = 1;
-                configFile.GameConfig.SEVoice = 1;
-                configFile.GameConfig.BGM = 1;
-                configFile.GameConfig.BGMVolume = 100;
-                configFile.GameConfig.VoiceVolume = 100;
+	            configFile.GameConfig = new GameConfig
+	            {
+		            FrameRate = (int)FrameRate.High,
+		            Sound3D = 1,
+		            SEVoice = 1,
+		            BGM = 1,
+		            BGMVolume = 100,
+		            VoiceVolume = 100
+	            };
             }
             if (configFile.Controllers == null)
                 configFile.Controllers = new Dictionary<string, ControllerConfig>();
@@ -170,21 +167,21 @@ namespace SADXModManager
 
         private void SaveConfigIni()
         {
-            configFile.GameConfig.FullScreen = (radioFullscreen.Checked == true) ? 1 : 0;
+            configFile.GameConfig.FullScreen = radioFullscreen.Checked ? 1 : 0;
             configFile.GameConfig.ScreenSize = comboResolutionPreset.SelectedIndex;
 
             configFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
             configFile.GameConfig.ClipLevel = comboClip.SelectedIndex;
             configFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
 
-            configFile.GameConfig.Sound3D = (check3DSound.Checked == true) ? 1 : 0;
-            configFile.GameConfig.SEVoice = (checkSound.Checked == true) ? 1 : 0;
-            configFile.GameConfig.BGM = (checkMusic.Checked == true) ? 1 : 0;
+            configFile.GameConfig.Sound3D = check3DSound.Checked ? 1 : 0;
+            configFile.GameConfig.SEVoice = checkSound.Checked ? 1 : 0;
+            configFile.GameConfig.BGM = checkMusic.Checked ? 1 : 0;
 
             configFile.GameConfig.VoiceVolume = (int)numericSoundVol.Value;
             configFile.GameConfig.BGMVolume = (int)numericBGMVol.Value;
 
-            configFile.GameConfig.MouseMode = (radioMouseModeHold.Checked == true) ? 0 : 1;
+            configFile.GameConfig.MouseMode = radioMouseModeHold.Checked ? 0 : 1;
 
             if (inputDevice != null)
             {
@@ -193,9 +190,8 @@ namespace SADXModManager
                 configFile.Controllers.Clear();
                 foreach (ControllerConfigInternal item in controllerConfig)
                 {
-                    ControllerConfig config = new ControllerConfig();
-                    config.ButtonCount = item.Buttons.Max() + 1;
-                    config.ButtonSettings = Enumerable.Repeat(-1, config.ButtonCount).ToArray();
+	                ControllerConfig config = new ControllerConfig { ButtonCount = item.Buttons.Max() + 1 };
+	                config.ButtonSettings = Enumerable.Repeat(-1, config.ButtonCount).ToArray();
                     for (int i = 0; i < buttonIDs.Length; i++)
                         if (item.Buttons[i] != -1)
                             config.ButtonSettings[item.Buttons[i]] = buttonIDs[i];
@@ -212,7 +208,7 @@ namespace SADXModManager
 			 * Here, we take the selected Action index, get the Button
 			 * assignment, and select it in comboMouseButtons.
 			*/
-			ushort selected = 0;
+			ushort selected;
 
 			switch (comboMouseActions.SelectedIndex)
 			{
@@ -265,13 +261,10 @@ namespace SADXModManager
 				case 4:
 					configFile.GameConfig.MouseFlute = IntToMouse(selected);
 					break;
-
-				default:
-					break;
 			}
 		}
 
-		private ushort MouseToInt(ushort n)
+		private static ushort MouseToInt(ushort n)
 		{
 			switch (n)
 			{
@@ -284,7 +277,7 @@ namespace SADXModManager
 			}
 		}
 
-		private ushort IntToMouse(ushort n)
+		private static ushort IntToMouse(ushort n)
 		{
 			switch (n)
 			{

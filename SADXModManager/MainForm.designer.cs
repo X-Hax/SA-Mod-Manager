@@ -70,8 +70,8 @@
 			this.newCodeButton = new System.Windows.Forms.Button();
 			this.codesCheckedListBox = new System.Windows.Forms.CheckedListBox();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
-			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.forceMipmappingCheckBox = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			groupBox2 = new System.Windows.Forms.GroupBox();
@@ -84,8 +84,8 @@
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			this.tabPage3.SuspendLayout();
-			this.groupBox3.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			this.groupBox3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox2
@@ -222,6 +222,7 @@
 			this.fileCheckBox.Size = new System.Drawing.Size(42, 17);
 			this.fileCheckBox.TabIndex = 2;
 			this.fileCheckBox.Text = "File";
+			this.toolTip1.SetToolTip(this.fileCheckBox, "Logs debug messages to mods/SADXModLoader.log");
 			this.fileCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// screenCheckBox
@@ -232,6 +233,7 @@
 			this.screenCheckBox.Size = new System.Drawing.Size(60, 17);
 			this.screenCheckBox.TabIndex = 1;
 			this.screenCheckBox.Text = "Screen";
+			this.toolTip1.SetToolTip(this.screenCheckBox, "Displays debug messages ingame.");
 			this.screenCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// verticalResolution
@@ -299,6 +301,7 @@
 			this.consoleCheckBox.Size = new System.Drawing.Size(64, 17);
 			this.consoleCheckBox.TabIndex = 0;
 			this.consoleCheckBox.Text = "Console";
+			this.toolTip1.SetToolTip(this.consoleCheckBox, "Shows a console and displays debug messages.");
 			this.consoleCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// buttonModsFolder
@@ -599,6 +602,20 @@
 			this.tabPage3.Text = "Options";
 			this.tabPage3.UseVisualStyleBackColor = true;
 			// 
+			// groupBox1
+			// 
+			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox1.Controls.Add(this.consoleCheckBox);
+			this.groupBox1.Controls.Add(this.screenCheckBox);
+			this.groupBox1.Controls.Add(this.fileCheckBox);
+			this.groupBox1.Location = new System.Drawing.Point(6, 221);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(366, 42);
+			this.groupBox1.TabIndex = 2;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Debug Messages";
+			// 
 			// groupBox3
 			// 
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -620,20 +637,6 @@
 			this.groupBox3.TabIndex = 0;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Graphics";
-			// 
-			// groupBox1
-			// 
-			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox1.Controls.Add(this.consoleCheckBox);
-			this.groupBox1.Controls.Add(this.screenCheckBox);
-			this.groupBox1.Controls.Add(this.fileCheckBox);
-			this.groupBox1.Location = new System.Drawing.Point(6, 221);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(366, 42);
-			this.groupBox1.TabIndex = 2;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Debug Messages";
 			// 
 			// forceMipmappingCheckBox
 			// 
@@ -672,10 +675,10 @@
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
 			this.tabPage3.ResumeLayout(false);
-			this.groupBox3.ResumeLayout(false);
-			this.groupBox3.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			this.groupBox3.ResumeLayout(false);
+			this.groupBox3.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
