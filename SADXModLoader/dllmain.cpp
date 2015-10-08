@@ -151,7 +151,7 @@ static void __cdecl ProcessCodes()
 		int c = -1;
 		if (300 - iter->time < LengthOfArray(fadecolors))
 			c = fadecolors[LengthOfArray(fadecolors) - (300 - iter->time) - 1];
-		SetDebugTextColor((int)c);
+		SetDebugFontColor((int)c);
 		DisplayDebugString(pos++, (char *)iter->text.c_str());
 		if (++iter->time >= 300)
 		{
