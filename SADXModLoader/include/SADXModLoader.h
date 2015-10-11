@@ -13,11 +13,6 @@
 #undef PlaySound
 #endif
 
-#ifdef _MSC_VER
-// MSVC doesn't have snprintf(), but it does have _snprintf().
-#define snprintf(str, size, format, ...) _snprintf(str, size, format, __VA_ARGS__)
-#endif
-
 // Split-out header files.
 #include "ModLoader/MemAccess.h"
 #include "SADXModLoader/SADXEnums.h"

@@ -1987,7 +1987,7 @@ static void __cdecl InitMods(void)
 	for (int i = 1; i < 999; i++)
 	{
 		char key[8];
-		snprintf(key, sizeof(key), "Mod%d", i);
+		_snprintf(key, sizeof(key), "Mod%d", i);
 		if (!settings->hasKey(key))
 			break;
 
