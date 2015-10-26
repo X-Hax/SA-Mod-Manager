@@ -56,13 +56,39 @@ enum PowerupBits
 {
 	PowerupBits_Barrier,
 	PowerupBits_MagneticBarrier,
-	PowerupBits_Invincibility = 15
+	PowerupBits_Unknown1,
+	PowerupBits_Unknown2,
+	PowerupBits_Unknown3,
+	PowerupBits_Unknown4,
+	PowerupBits_Unknown5,
+	PowerupBits_Unknown6,
+	PowerupBits_Unknown7,
+	PowerupBits_Unknown8,
+	PowerupBits_Unknown9,
+	PowerupBits_Unknown10,
+	PowerupBits_Unknown11,
+	PowerupBits_Unknown12,
+	PowerupBits_Dead,
+	PowerupBits_Invincibility
 };
 
-enum Powerups : uint16_t
+enum Powerups : unsigned short
 {
 	makemasks(Powerup, Barrier),
 	makemasks(Powerup, MagneticBarrier),
+	makemasks(Powerup, Unknown1),
+	makemasks(Powerup, Unknown2),
+	makemasks(Powerup, Unknown3),
+	makemasks(Powerup, Unknown4),
+	makemasks(Powerup, Unknown5),
+	makemasks(Powerup, Unknown6),
+	makemasks(Powerup, Unknown7),
+	makemasks(Powerup, Unknown8),
+	makemasks(Powerup, Unknown9),
+	makemasks(Powerup, Unknown10),
+	makemasks(Powerup, Unknown11),
+	makemasks(Powerup, Unknown12),
+	makemasks(Powerup, Dead),
 	makemasks(Powerup, Invincibility)
 };
 
