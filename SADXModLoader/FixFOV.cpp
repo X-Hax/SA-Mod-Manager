@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-#include <d3dx8math.h>	// for D3DX_PI
-
 #include "include/d3d8types.h"
 #include "SADXModLoader.h"
 
@@ -14,20 +12,12 @@ DataPointer(float,		ClippingRelated,		0x03D0F9E0);
 DataPointer(int,		HorizontalFOV_BAMS,		0x03AB98EC);
 DataPointer(int,		LastHorizontalFOV_BAMS,	0x03B2CBB4);
 
-#define BAMS2DEG(bams)	(bams / (65536.0 / 360.0))
-#define BAMS2RAD(bams)	(bams * 0.000095873802)
-#define DEG2BAMS(deg)	((int)(deg * (65536.0 / 360.0)))
-#define DEG2RAD(deg)	(deg * (D3DX_PI / 180.0))
-#define RAD2BAMS(rad)	((int)(rad * (65536.0 / (D3DX_PI * 2))))
-#define RAD2DEG(rad)	(rad * (180.0 / D3DX_PI))
+static const int	bams_default	= 12743;
+static int			last_bams		= bams_default;
+static int			fov_bams;
 
-const int bams_default = 12743;
-
-int	fov_bams;
-int	last_bams = bams_default;
-
-double fov_rads;
-double fov_scale = 1.0;
+static double fov_rads;
+static double fov_scale = 1.0;
 
 static void __cdecl SetClippingRelatedThing_hook(int bams)
 {
@@ -114,7 +104,7 @@ void ConfigureFOV()
 		return;
 
 	fov_rads = 0.96712852;	// 55.412382 degrees
-	fov_bams = RAD2BAMS(fov_rads);
+	fov_bams = NJM_RAD_ANG(fov_rads);
 
 	WriteJump(SetHorizontalFOV_BAMS, SetHorizontalFOV_BAMS_hook);
 	WriteJump(GetHorizontalFOV_BAMS, GetHorizontalFOV_BAMS_hook);
