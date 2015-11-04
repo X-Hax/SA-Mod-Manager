@@ -207,7 +207,8 @@ struct CharObj2
 	float SpindashSpeed;
 	int16_t Upgrades;
 	int16_t Powerups;
-	int field_8;
+	int16_t JumpTime;
+	int16_t field_A;
 	int16_t UnderwaterTime;
 	int16_t IdleTime;
 	char gap_10[8];

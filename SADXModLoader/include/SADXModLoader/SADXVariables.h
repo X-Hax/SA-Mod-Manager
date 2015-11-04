@@ -42,7 +42,6 @@ DataPointer(short, NextLevel, 0x03B22DF0);
 DataPointer(char, NextAct, 0x03B22E18);
 DataPointer(short, ObjectPlacementDebug, 0x3B29D08);
 DataPointer(RestartData, RestartLevel, 0x3B42F80);
-DataArray(ControllerData, ControllersRaw, 0x03B0E9C8, 4);
 DataArray(ObjectMaster*, PlayerPtrs, 0x03b42e10, 8);
 DataArray(CharObj1*, CharObj1Ptrs, 0x03B42E10, 8);
 DataArray(CharObj2*, CharObj2Ptrs, 0x03B3CDF0, 8);
@@ -52,5 +51,18 @@ DataPointer(int, CasinoRings, 0x03C74880);
 DataPointer(char, Lives, 0x03B0EF34);
 DataPointer(float, SkyChaseHealth, 0x03C82304);
 DataPointer(char, HideHud, 0x03B0EF40);
+DataPointer(int, CutscenePlaying, 0x3B2A2E4);
+
+// Raw input array. It's recommended you use ControllerPointers instead.
+// This will prevent compatibility issues with mods that need to redirect input.
+DataArray(ControllerData, ControllersRaw, 0x03B0E9C8, 4);
+// Pointers to ControllersRaw. It's recommended that you use this over ControllersRaw directly.
+DataArray(ControllerData*, ControllerPointers, 0x03B0E77C, 8);
+DataArray(ControllerData, Controllers, 0x03B0E7F0, 8);
+DataPointer(bool, RumbleEnabled, 0x00913B10);
+// Indicates whether all controllers are enabled.
+DataPointer(bool, ControlEnabled, 0x00909FB0);
+// Indicates whether the controller at the specified index is enabled.
+DataArray(bool, ControllerEnabled, 0x00909FB4, 4);
 
 #endif /* SADXMODLOADER_SADXVARS_H */
