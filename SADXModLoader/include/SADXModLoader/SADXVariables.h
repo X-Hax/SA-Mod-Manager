@@ -31,6 +31,7 @@ DataPointer(short, GameState, 0x03B22DE4);
 DataPointer(NJS_VECTOR, Gravity, 0x3B0F0F8);
 DataPointer(int, LevelFrameCount, 0x3B0F108);
 DataPointer(int, FrameCounter, 0x3B0F13C);
+DataPointer(int, FrameIncrement, 0x03B11178);
 DataPointer(char, LastStoryFlag, 0x3B18DB4);
 DataPointer(char, MetalSonicFlag, 0x3B18DB5);
 DataPointer(short, CurrentCharacter, 0x3B22DC0);
@@ -52,6 +53,9 @@ DataPointer(char, Lives, 0x03B0EF34);
 DataPointer(float, SkyChaseHealth, 0x03C82304);
 DataPointer(char, HideHud, 0x03B0EF40);
 DataPointer(int, CutscenePlaying, 0x3B2A2E4);
+DataPointer(float,	DebugFontSize,	0x03CE7154);
+DataPointer(int, DebugFontColor,	0x03CE715C);
+DataPointer(Uint32, DisplayAdapter, 0x03D0FDFC);
 
 // Raw input array. It's recommended you use ControllerPointers instead.
 // This will prevent compatibility issues with mods that need to redirect input.

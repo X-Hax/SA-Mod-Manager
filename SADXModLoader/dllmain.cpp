@@ -138,7 +138,7 @@ static void __cdecl ProcessCodes()
 	codeParser.processCodeList();
 	RaiseEvents(modFrameEvents);
 
-	const int numrows = (VerticalResolution / 12);
+	const int numrows = (VerticalResolution / (int)DebugFontSize);
 	int pos;
 	if ((int)msgqueue.size() <= numrows - 1)
 		pos = (numrows - 1) - (msgqueue.size() - 1);
@@ -1930,13 +1930,21 @@ static void __cdecl InitMods(void)
 	ConfigureFOV();
 
 	windowedfullscreen = settings->getBool("WindowedFullscreen");
+	stretchfullscreen = settings->getBool("StretchFullscreen", true);
+	screennum = settings->getInt("ScreenNum", 1);
+
+	if (!windowedfullscreen)
+	{
+		vector<uint8_t> nop(5, 0x90);
+		WriteData((void*)0x007943D0, nop.data(), nop.size());
+
+		// SADX automatically corrects values greater than the number of adapters available.
+		// DisplayAdapter is unsigned, so -1 will be greater than the number of adapters, and it will reset.
+		DisplayAdapter = screennum - 1;
+	}
 
 	if (!settings->getBool("PauseWhenInactive", true))
 		WriteData((uint8_t *)0x401914, (uint8_t)0xEBu);
-
-	stretchfullscreen = settings->getBool("StretchFullscreen", true);
-
-	screennum = settings->getInt("ScreenNum", 1);
 
 	if (settings->getBool("AutoMipmap", true))
 	{
