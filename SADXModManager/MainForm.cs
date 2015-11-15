@@ -85,6 +85,7 @@ namespace SADXModManager
 
 		private void LoadModList()
 		{
+			modListView.Items.Clear();
 			mods = new Dictionary<string, ModInfo>();
 			string modDir = Path.Combine(Environment.CurrentDirectory, "mods");
 			foreach (string filename in Directory.GetFiles(modDir, "mod.ini", SearchOption.AllDirectories))
@@ -111,36 +112,68 @@ namespace SADXModManager
 
 		private void modListView_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (modListView.SelectedIndices.Count == 0)
+			int count = modListView.SelectedIndices.Count;
+            if (count == 0)
 			{
 				modUpButton.Enabled = modDownButton.Enabled = false;
 				modDescription.Text = "Description: No mod selected.";
 			}
-			else
+			else if (count == 1)
 			{
 				modDescription.Text = "Description: " + mods[(string)modListView.SelectedItems[0].Tag].Description;
 				modUpButton.Enabled = modListView.SelectedIndices[0] > 0;
 				modDownButton.Enabled = modListView.SelectedIndices[0] < modListView.Items.Count - 1;
 			}
+			else if (count > 1)
+			{
+				modDescription.Text = "Description: Multiple mods selected.";
+				modUpButton.Enabled = modDownButton.Enabled = true;
+			}
 		}
 
 		private void modUpButton_Click(object sender, EventArgs e)
 		{
-			int i = modListView.SelectedIndices[0];
-			ListViewItem item = modListView.Items[i];
+			if (modListView.SelectedItems.Count < 1)
+				return;
+
 			modListView.BeginUpdate();
-			modListView.Items.Remove(item);
-			modListView.Items.Insert(i - 1, item);
+
+			for (int i = 0; i < modListView.SelectedItems.Count; i++)
+			{
+				int index = modListView.SelectedItems[i].Index;
+
+				if (index-- > 0 && !modListView.Items[index].Selected)
+				{
+					ListViewItem item = modListView.SelectedItems[i];
+					modListView.Items.Remove(item);
+					modListView.Items.Insert(index, item);
+				}
+			}
+
+			modListView.SelectedItems[0].EnsureVisible();
 			modListView.EndUpdate();
 		}
 
 		private void modDownButton_Click(object sender, EventArgs e)
 		{
-			int i = modListView.SelectedIndices[0];
-			ListViewItem item = modListView.Items[i];
+			if (modListView.SelectedItems.Count < 1)
+				return;
+
 			modListView.BeginUpdate();
-			modListView.Items.Remove(item);
-			modListView.Items.Insert(i + 1, item);
+
+			for (int i = modListView.SelectedItems.Count - 1; i >= 0; i--)
+			{
+				int index = modListView.SelectedItems[i].Index + 1;
+
+				if (index != modListView.Items.Count && !modListView.Items[index].Selected)
+				{
+					ListViewItem item = modListView.SelectedItems[i];
+					modListView.Items.Remove(item);
+					modListView.Items.Insert(index, item);
+				}
+			}
+
+			modListView.SelectedItems[modListView.SelectedItems.Count - 1].EnsureVisible();
 			modListView.EndUpdate();
 		}
 
@@ -257,6 +290,7 @@ namespace SADXModManager
 		private void saveButton_Click(object sender, EventArgs e)
 		{
 			Save();
+			LoadModList();
 		}
 
 		private void installButton_Click(object sender, EventArgs e)
@@ -361,7 +395,6 @@ namespace SADXModManager
 
 		private void buttonRefreshModList_Click(object sender, EventArgs e)
 		{
-			modListView.Items.Clear();
 			LoadModList();
 		}
 
@@ -375,10 +408,7 @@ namespace SADXModManager
 			using (var ModDialog = new NewModDialog())
 			{
 				if (ModDialog.ShowDialog() == DialogResult.OK)
-				{
-					modListView.Items.Clear();
 					LoadModList();
-				}
 			}
 		}
 	}

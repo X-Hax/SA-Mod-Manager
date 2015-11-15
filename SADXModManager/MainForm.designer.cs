@@ -377,7 +377,6 @@
 			this.modListView.FullRowSelect = true;
 			this.modListView.HideSelection = false;
 			this.modListView.Location = new System.Drawing.Point(6, 6);
-			this.modListView.MultiSelect = false;
 			this.modListView.Name = "modListView";
 			this.modListView.Size = new System.Drawing.Size(338, 211);
 			this.modListView.TabIndex = 0;
@@ -542,7 +541,7 @@
 			this.deleteCodeButton.AutoSize = true;
 			this.deleteCodeButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.deleteCodeButton.Enabled = false;
-			this.deleteCodeButton.Location = new System.Drawing.Point(92, 232);
+			this.deleteCodeButton.Location = new System.Drawing.Point(92, 262);
 			this.deleteCodeButton.Name = "deleteCodeButton";
 			this.deleteCodeButton.Size = new System.Drawing.Size(48, 23);
 			this.deleteCodeButton.TabIndex = 3;
@@ -556,7 +555,7 @@
 			this.editCodeButton.AutoSize = true;
 			this.editCodeButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.editCodeButton.Enabled = false;
-			this.editCodeButton.Location = new System.Drawing.Point(51, 232);
+			this.editCodeButton.Location = new System.Drawing.Point(51, 262);
 			this.editCodeButton.Name = "editCodeButton";
 			this.editCodeButton.Size = new System.Drawing.Size(35, 23);
 			this.editCodeButton.TabIndex = 2;
@@ -569,7 +568,7 @@
 			this.newCodeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.newCodeButton.AutoSize = true;
 			this.newCodeButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.newCodeButton.Location = new System.Drawing.Point(6, 232);
+			this.newCodeButton.Location = new System.Drawing.Point(6, 262);
 			this.newCodeButton.Name = "newCodeButton";
 			this.newCodeButton.Size = new System.Drawing.Size(39, 23);
 			this.newCodeButton.TabIndex = 1;
@@ -585,7 +584,7 @@
 			this.codesCheckedListBox.FormattingEnabled = true;
 			this.codesCheckedListBox.Location = new System.Drawing.Point(6, 6);
 			this.codesCheckedListBox.Name = "codesCheckedListBox";
-			this.codesCheckedListBox.Size = new System.Drawing.Size(338, 199);
+			this.codesCheckedListBox.Size = new System.Drawing.Size(338, 244);
 			this.codesCheckedListBox.TabIndex = 0;
 			this.codesCheckedListBox.SelectedIndexChanged += new System.EventHandler(this.codesCheckedListBox_SelectedIndexChanged);
 			// 
