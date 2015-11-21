@@ -72,6 +72,7 @@
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.forceTextureFilterCheckBox = new System.Windows.Forms.CheckBox();
 			this.forceMipmappingCheckBox = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			groupBox2 = new System.Windows.Forms.GroupBox();
@@ -182,11 +183,11 @@
 			// 
 			this.nativeResolutionButton.AutoSize = true;
 			this.nativeResolutionButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.nativeResolutionButton.Location = new System.Drawing.Point(175, 94);
+			this.nativeResolutionButton.Location = new System.Drawing.Point(305, 67);
 			this.nativeResolutionButton.Name = "nativeResolutionButton";
-			this.nativeResolutionButton.Size = new System.Drawing.Size(101, 23);
-			this.nativeResolutionButton.TabIndex = 9;
-			this.nativeResolutionButton.Text = "Native Resolution";
+			this.nativeResolutionButton.Size = new System.Drawing.Size(48, 23);
+			this.nativeResolutionButton.TabIndex = 8;
+			this.nativeResolutionButton.Text = "Native";
 			this.toolTip1.SetToolTip(this.nativeResolutionButton, "Sets resolution to the selected screen\'s native resolution.");
 			this.nativeResolutionButton.UseVisualStyleBackColor = true;
 			this.nativeResolutionButton.Click += new System.EventHandler(this.nativeResolutionButton_Click);
@@ -197,7 +198,7 @@
 			this.forceAspectRatioCheckBox.Location = new System.Drawing.Point(6, 92);
 			this.forceAspectRatioCheckBox.Name = "forceAspectRatioCheckBox";
 			this.forceAspectRatioCheckBox.Size = new System.Drawing.Size(135, 17);
-			this.forceAspectRatioCheckBox.TabIndex = 8;
+			this.forceAspectRatioCheckBox.TabIndex = 9;
 			this.forceAspectRatioCheckBox.Text = "Force 4:3 Aspect Ratio";
 			this.forceAspectRatioCheckBox.UseVisualStyleBackColor = true;
 			this.forceAspectRatioCheckBox.CheckedChanged += new System.EventHandler(this.forceAspectRatioCheckBox_CheckedChanged);
@@ -619,6 +620,7 @@
 			// 
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.forceTextureFilterCheckBox);
 			this.groupBox3.Controls.Add(this.forceMipmappingCheckBox);
 			this.groupBox3.Controls.Add(this.stretchFullscreenCheckBox);
 			this.groupBox3.Controls.Add(label3);
@@ -636,6 +638,17 @@
 			this.groupBox3.TabIndex = 0;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Graphics";
+			// 
+			// forceTextureFilterCheckBox
+			// 
+			this.forceTextureFilterCheckBox.AutoSize = true;
+			this.forceTextureFilterCheckBox.Location = new System.Drawing.Point(151, 115);
+			this.forceTextureFilterCheckBox.Name = "forceTextureFilterCheckBox";
+			this.forceTextureFilterCheckBox.Size = new System.Drawing.Size(131, 17);
+			this.forceTextureFilterCheckBox.TabIndex = 11;
+			this.forceTextureFilterCheckBox.Text = "Force Texture Filtering";
+			this.toolTip1.SetToolTip(this.forceTextureFilterCheckBox, "Smooths scaled UI textures by changing the filter method from Point to Linear.");
+			this.forceTextureFilterCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// forceMipmappingCheckBox
 			// 
@@ -727,5 +740,6 @@
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.CheckBox forceMipmappingCheckBox;
 		private System.Windows.Forms.ToolTip toolTip1;
+		private System.Windows.Forms.CheckBox forceTextureFilterCheckBox;
 	}
 }

@@ -55,6 +55,7 @@ namespace SADXModManager
 			suppressEvent = false;
 			windowedFullscreenCheckBox.Checked = loaderini.WindowedFullscreen;
 			forceMipmappingCheckBox.Checked = loaderini.AutoMipmap;
+			forceTextureFilterCheckBox.Checked = loaderini.TextureFilter;
 			pauseWhenInactiveCheckBox.Checked = loaderini.PauseWhenInactive;
 			stretchFullscreenCheckBox.Checked = loaderini.StretchFullscreen;
 			int scrn = loaderini.ScreenNum;
@@ -193,6 +194,7 @@ namespace SADXModManager
 			loaderini.ForceAspectRatio = forceAspectRatioCheckBox.Checked;
 			loaderini.WindowedFullscreen = windowedFullscreenCheckBox.Checked;
 			loaderini.AutoMipmap = forceMipmappingCheckBox.Checked;
+			loaderini.TextureFilter = forceTextureFilterCheckBox.Checked;
 			loaderini.PauseWhenInactive = pauseWhenInactiveCheckBox.Checked;
 			loaderini.StretchFullscreen = stretchFullscreenCheckBox.Checked;
 			loaderini.ScreenNum = screenNumComboBox.SelectedIndex;
@@ -430,6 +432,8 @@ namespace SADXModManager
 		public bool WindowedFullscreen { get; set; }
 		[DefaultValue(true)]
 		public bool AutoMipmap { get; set; }
+		[DefaultValue(true)]
+		public bool TextureFilter { get; set; }
 		[DefaultValue(true)]
 		public bool PauseWhenInactive { get; set; }
 		[DefaultValue(true)]
