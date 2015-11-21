@@ -1975,9 +1975,12 @@ static void __cdecl InitMods(void)
 	VirtualProtect((void *)0x7DB2A0, 0xB6D60, PAGE_WRITECOPY, &oldprot);
 
 	// Enables GUI texture filtering (D3DTEXF_POINT -> D3DTEXF_LINEAR)
-	WriteData((uint8_t*)0x0078B7C4, (uint8_t)0x02);
-	WriteData((uint8_t*)0x0078B7D8, (uint8_t)0x02);
-	WriteData((uint8_t*)0x0078B7EC, (uint8_t)0x02);
+	if (settings->getBool("TextureFilter", true))
+	{
+		WriteData((uint8_t*)0x0078B7C4, (uint8_t)0x02);
+		WriteData((uint8_t*)0x0078B7D8, (uint8_t)0x02);
+		WriteData((uint8_t*)0x0078B7EC, (uint8_t)0x02);
+	}
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 
