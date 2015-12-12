@@ -5,6 +5,7 @@
 
 extern std::vector<ModEvent> modFrameEvents;
 extern std::vector<ModEvent> modInputEvents;
+extern std::vector<ModEvent> modExitEvents;
 
 /**
 * Calls all registered events in the specified event list.
@@ -26,3 +27,4 @@ void RegisterEvent(std::vector<ModEvent>& eventList, HMODULE module, const char 
 
 void __cdecl OnInput();
 void __cdecl OnInput_MidJump();
+void __cdecl OnExit(UINT uExitCode, int a1, int a2);

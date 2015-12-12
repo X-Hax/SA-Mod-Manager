@@ -2140,6 +2140,7 @@ static void __cdecl InitMods(void)
 
 					RegisterEvent(modFrameEvents, module, "OnFrame");
 					RegisterEvent(modInputEvents, module, "OnInput");
+					RegisterEvent(modExitEvents, module, "OnExit");
 				}
 				else
 				{

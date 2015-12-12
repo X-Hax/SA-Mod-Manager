@@ -26,6 +26,7 @@
     </ClCompile>
     <ClCompile Include="TextConv.cpp" />
     <ClCompile Include="TextureReplacement.cpp" />
+    <ClCompile Include="Trampoline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoMipmap.h" />
@@ -49,6 +50,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TextConv.hpp" />
     <ClInclude Include="TextureReplacement.h" />
+    <ClInclude Include="Trampoline.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>

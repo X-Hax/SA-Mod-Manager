@@ -29,3 +29,4 @@
 #include "SADXModLoader.h"
 #include "Events.h"
 #include "FileReplacement.h"
+#include "Trampoline.h"
