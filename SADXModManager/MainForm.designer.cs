@@ -669,6 +669,7 @@
 			this.customWindowSizeCheckBox.Size = new System.Drawing.Size(129, 17);
 			this.customWindowSizeCheckBox.TabIndex = 12;
 			this.customWindowSizeCheckBox.Text = "Custom Window Size:";
+			this.toolTip1.SetToolTip(this.customWindowSizeCheckBox, "Allows you to specify a fixed size for the window in windowed mode.");
 			this.customWindowSizeCheckBox.UseVisualStyleBackColor = true;
 			this.customWindowSizeCheckBox.CheckedChanged += new System.EventHandler(this.customWindowSizeCheckBox_CheckedChanged);
 			// 
@@ -734,6 +735,7 @@
 			this.maintainWindowAspectRatioCheckBox.Size = new System.Drawing.Size(130, 17);
 			this.maintainWindowAspectRatioCheckBox.TabIndex = 16;
 			this.maintainWindowAspectRatioCheckBox.Text = "Maintain Aspect Ratio";
+			this.toolTip1.SetToolTip(this.maintainWindowAspectRatioCheckBox, "Forces the window\'s aspect ratio to match the current custom resolution\'s.");
 			this.maintainWindowAspectRatioCheckBox.UseVisualStyleBackColor = true;
 			this.maintainWindowAspectRatioCheckBox.CheckedChanged += new System.EventHandler(this.maintainWindowAspectRatioCheckBox_CheckedChanged);
 			// 
