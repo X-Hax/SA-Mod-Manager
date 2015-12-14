@@ -44,7 +44,6 @@ namespace SADXModManager
 			consoleCheckBox.Checked = loaderini.DebugConsole;
 			screenCheckBox.Checked = loaderini.DebugScreen;
 			fileCheckBox.Checked = loaderini.DebugFile;
-			dontFixWindowCheckBox.Checked = loaderini.DontFixWindow;
 			disableCDCheckCheckBox.Checked = loaderini.DisableCDCheck;
 			useCustomResolutionCheckBox.Checked = verticalResolution.Enabled = forceAspectRatioCheckBox.Enabled = nativeResolutionButton.Enabled = loaderini.UseCustomResolution;
 			horizontalResolution.Enabled = loaderini.UseCustomResolution && !loaderini.ForceAspectRatio;
@@ -186,7 +185,6 @@ namespace SADXModManager
 			loaderini.DebugConsole = consoleCheckBox.Checked;
 			loaderini.DebugScreen = screenCheckBox.Checked;
 			loaderini.DebugFile = fileCheckBox.Checked;
-			loaderini.DontFixWindow = dontFixWindowCheckBox.Checked;
 			loaderini.DisableCDCheck = disableCDCheckCheckBox.Checked;
 			loaderini.UseCustomResolution = useCustomResolutionCheckBox.Checked;
 			loaderini.HorizontalResolution = (int)horizontalResolution.Value;
@@ -421,7 +419,6 @@ namespace SADXModManager
 		public bool DebugScreen { get; set; }
 		public bool DebugFile { get; set; }
 		public bool? ShowConsole { get { return null; } set { if (value.HasValue) DebugConsole = value.Value; } }
-		public bool DontFixWindow { get; set; }
 		public bool DisableCDCheck { get; set; }
 		public bool UseCustomResolution { get; set; }
 		[DefaultValue(640)]

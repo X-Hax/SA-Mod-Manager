@@ -34,7 +34,6 @@
 			System.Windows.Forms.Label label1;
 			this.pauseWhenInactiveCheckBox = new System.Windows.Forms.CheckBox();
 			this.disableCDCheckCheckBox = new System.Windows.Forms.CheckBox();
-			this.dontFixWindowCheckBox = new System.Windows.Forms.CheckBox();
 			this.screenNumComboBox = new System.Windows.Forms.ComboBox();
 			this.stretchFullscreenCheckBox = new System.Windows.Forms.CheckBox();
 			this.nativeResolutionButton = new System.Windows.Forms.Button();
@@ -95,10 +94,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			groupBox2.Controls.Add(this.pauseWhenInactiveCheckBox);
 			groupBox2.Controls.Add(this.disableCDCheckCheckBox);
-			groupBox2.Controls.Add(this.dontFixWindowCheckBox);
 			groupBox2.Location = new System.Drawing.Point(6, 150);
 			groupBox2.Name = "groupBox2";
-			groupBox2.Size = new System.Drawing.Size(366, 65);
+			groupBox2.Size = new System.Drawing.Size(366, 45);
 			groupBox2.TabIndex = 1;
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Misc.";
@@ -106,7 +104,7 @@
 			// pauseWhenInactiveCheckBox
 			// 
 			this.pauseWhenInactiveCheckBox.AutoSize = true;
-			this.pauseWhenInactiveCheckBox.Location = new System.Drawing.Point(6, 42);
+			this.pauseWhenInactiveCheckBox.Location = new System.Drawing.Point(125, 19);
 			this.pauseWhenInactiveCheckBox.Name = "pauseWhenInactiveCheckBox";
 			this.pauseWhenInactiveCheckBox.Size = new System.Drawing.Size(129, 17);
 			this.pauseWhenInactiveCheckBox.TabIndex = 2;
@@ -117,25 +115,13 @@
 			// disableCDCheckCheckBox
 			// 
 			this.disableCDCheckCheckBox.AutoSize = true;
-			this.disableCDCheckCheckBox.Location = new System.Drawing.Point(121, 19);
+			this.disableCDCheckCheckBox.Location = new System.Drawing.Point(6, 19);
 			this.disableCDCheckCheckBox.Name = "disableCDCheckCheckBox";
 			this.disableCDCheckCheckBox.Size = new System.Drawing.Size(113, 17);
 			this.disableCDCheckCheckBox.TabIndex = 1;
 			this.disableCDCheckCheckBox.Text = "Disable CD Check";
 			this.toolTip1.SetToolTip(this.disableCDCheckCheckBox, "Allows you to run the game without the disc.");
 			this.disableCDCheckCheckBox.UseVisualStyleBackColor = true;
-			// 
-			// dontFixWindowCheckBox
-			// 
-			this.dontFixWindowCheckBox.AutoSize = true;
-			this.dontFixWindowCheckBox.Location = new System.Drawing.Point(6, 19);
-			this.dontFixWindowCheckBox.Name = "dontFixWindowCheckBox";
-			this.dontFixWindowCheckBox.Size = new System.Drawing.Size(109, 17);
-			this.dontFixWindowCheckBox.TabIndex = 0;
-			this.dontFixWindowCheckBox.Text = "Don\'t Fix Window";
-			this.toolTip1.SetToolTip(this.dontFixWindowCheckBox, "SADX creates an incorrectly sized window, but the mod loader fixes it.\r\nCheck to " +
-        "disable the automatic fix.");
-			this.dontFixWindowCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// label3
 			// 
@@ -343,9 +329,9 @@
 			this.modDownButton.AutoSize = true;
 			this.modDownButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.modDownButton.Enabled = false;
-			this.modDownButton.Location = new System.Drawing.Point(349, 35);
+			this.modDownButton.Location = new System.Drawing.Point(343, 35);
 			this.modDownButton.Name = "modDownButton";
-			this.modDownButton.Size = new System.Drawing.Size(23, 23);
+			this.modDownButton.Size = new System.Drawing.Size(29, 23);
 			this.modDownButton.TabIndex = 2;
 			this.modDownButton.Text = "↓";
 			this.modDownButton.UseVisualStyleBackColor = true;
@@ -357,9 +343,9 @@
 			this.modUpButton.AutoSize = true;
 			this.modUpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.modUpButton.Enabled = false;
-			this.modUpButton.Location = new System.Drawing.Point(349, 6);
+			this.modUpButton.Location = new System.Drawing.Point(343, 6);
 			this.modUpButton.Name = "modUpButton";
-			this.modUpButton.Size = new System.Drawing.Size(23, 23);
+			this.modUpButton.Size = new System.Drawing.Size(29, 23);
 			this.modUpButton.TabIndex = 1;
 			this.modUpButton.Text = "↑";
 			this.modUpButton.UseVisualStyleBackColor = true;
@@ -514,9 +500,9 @@
 			this.codeDownButton.AutoSize = true;
 			this.codeDownButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.codeDownButton.Enabled = false;
-			this.codeDownButton.Location = new System.Drawing.Point(349, 35);
+			this.codeDownButton.Location = new System.Drawing.Point(343, 35);
 			this.codeDownButton.Name = "codeDownButton";
-			this.codeDownButton.Size = new System.Drawing.Size(23, 23);
+			this.codeDownButton.Size = new System.Drawing.Size(29, 23);
 			this.codeDownButton.TabIndex = 5;
 			this.codeDownButton.Text = "↓";
 			this.codeDownButton.UseVisualStyleBackColor = true;
@@ -528,9 +514,9 @@
 			this.codeUpButton.AutoSize = true;
 			this.codeUpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.codeUpButton.Enabled = false;
-			this.codeUpButton.Location = new System.Drawing.Point(349, 6);
+			this.codeUpButton.Location = new System.Drawing.Point(343, 6);
 			this.codeUpButton.Name = "codeUpButton";
-			this.codeUpButton.Size = new System.Drawing.Size(23, 23);
+			this.codeUpButton.Size = new System.Drawing.Size(29, 23);
 			this.codeUpButton.TabIndex = 4;
 			this.codeUpButton.Text = "↑";
 			this.codeUpButton.UseVisualStyleBackColor = true;
@@ -591,6 +577,7 @@
 			// 
 			// tabPage3
 			// 
+			this.tabPage3.AutoScroll = true;
 			this.tabPage3.Controls.Add(this.groupBox1);
 			this.tabPage3.Controls.Add(this.groupBox3);
 			this.tabPage3.Controls.Add(groupBox2);
@@ -609,7 +596,7 @@
 			this.groupBox1.Controls.Add(this.consoleCheckBox);
 			this.groupBox1.Controls.Add(this.screenCheckBox);
 			this.groupBox1.Controls.Add(this.fileCheckBox);
-			this.groupBox1.Location = new System.Drawing.Point(6, 221);
+			this.groupBox1.Location = new System.Drawing.Point(6, 201);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(366, 42);
 			this.groupBox1.TabIndex = 2;
@@ -707,8 +694,7 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button saveAndPlayButton;
 		private System.Windows.Forms.Button installButton;
-        private System.Windows.Forms.CheckBox disableCDCheckCheckBox;
-        private System.Windows.Forms.CheckBox dontFixWindowCheckBox;
+		private System.Windows.Forms.CheckBox disableCDCheckCheckBox;
         private System.Windows.Forms.CheckBox useCustomResolutionCheckBox;
         private System.Windows.Forms.NumericUpDown horizontalResolution;
         private System.Windows.Forms.NumericUpDown verticalResolution;
