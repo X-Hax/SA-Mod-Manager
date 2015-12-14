@@ -32,6 +32,7 @@
 			System.Windows.Forms.GroupBox groupBox2;
 			System.Windows.Forms.Label label3;
 			System.Windows.Forms.Label label1;
+			System.Windows.Forms.Label label2;
 			this.pauseWhenInactiveCheckBox = new System.Windows.Forms.CheckBox();
 			this.disableCDCheckCheckBox = new System.Windows.Forms.CheckBox();
 			this.screenNumComboBox = new System.Windows.Forms.ComboBox();
@@ -74,9 +75,14 @@
 			this.forceTextureFilterCheckBox = new System.Windows.Forms.CheckBox();
 			this.forceMipmappingCheckBox = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			this.customWindowSizeCheckBox = new System.Windows.Forms.CheckBox();
+			this.windowWidth = new System.Windows.Forms.NumericUpDown();
+			this.windowHeight = new System.Windows.Forms.NumericUpDown();
+			this.maintainWindowAspectRatioCheckBox = new System.Windows.Forms.CheckBox();
 			groupBox2 = new System.Windows.Forms.GroupBox();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
+			label2 = new System.Windows.Forms.Label();
 			groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.verticalResolution)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.horizontalResolution)).BeginInit();
@@ -86,6 +92,8 @@
 			this.tabPage3.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.groupBox3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.windowWidth)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.windowHeight)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupBox2
@@ -94,9 +102,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			groupBox2.Controls.Add(this.pauseWhenInactiveCheckBox);
 			groupBox2.Controls.Add(this.disableCDCheckCheckBox);
-			groupBox2.Location = new System.Drawing.Point(6, 150);
+			groupBox2.Location = new System.Drawing.Point(6, 198);
 			groupBox2.Name = "groupBox2";
-			groupBox2.Size = new System.Drawing.Size(366, 45);
+			groupBox2.Size = new System.Drawing.Size(366, 42);
 			groupBox2.TabIndex = 1;
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Misc.";
@@ -596,7 +604,7 @@
 			this.groupBox1.Controls.Add(this.consoleCheckBox);
 			this.groupBox1.Controls.Add(this.screenCheckBox);
 			this.groupBox1.Controls.Add(this.fileCheckBox);
-			this.groupBox1.Location = new System.Drawing.Point(6, 201);
+			this.groupBox1.Location = new System.Drawing.Point(6, 246);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(366, 42);
 			this.groupBox1.TabIndex = 2;
@@ -607,6 +615,11 @@
 			// 
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.maintainWindowAspectRatioCheckBox);
+			this.groupBox3.Controls.Add(this.windowWidth);
+			this.groupBox3.Controls.Add(label2);
+			this.groupBox3.Controls.Add(this.windowHeight);
+			this.groupBox3.Controls.Add(this.customWindowSizeCheckBox);
 			this.groupBox3.Controls.Add(this.forceTextureFilterCheckBox);
 			this.groupBox3.Controls.Add(this.forceMipmappingCheckBox);
 			this.groupBox3.Controls.Add(this.stretchFullscreenCheckBox);
@@ -621,7 +634,7 @@
 			this.groupBox3.Controls.Add(this.verticalResolution);
 			this.groupBox3.Location = new System.Drawing.Point(6, 6);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(366, 138);
+			this.groupBox3.Size = new System.Drawing.Size(366, 186);
 			this.groupBox3.TabIndex = 0;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Graphics";
@@ -629,7 +642,7 @@
 			// forceTextureFilterCheckBox
 			// 
 			this.forceTextureFilterCheckBox.AutoSize = true;
-			this.forceTextureFilterCheckBox.Location = new System.Drawing.Point(151, 115);
+			this.forceTextureFilterCheckBox.Location = new System.Drawing.Point(125, 163);
 			this.forceTextureFilterCheckBox.Name = "forceTextureFilterCheckBox";
 			this.forceTextureFilterCheckBox.Size = new System.Drawing.Size(131, 17);
 			this.forceTextureFilterCheckBox.TabIndex = 11;
@@ -640,13 +653,89 @@
 			// forceMipmappingCheckBox
 			// 
 			this.forceMipmappingCheckBox.AutoSize = true;
-			this.forceMipmappingCheckBox.Location = new System.Drawing.Point(6, 115);
+			this.forceMipmappingCheckBox.Location = new System.Drawing.Point(6, 163);
 			this.forceMipmappingCheckBox.Name = "forceMipmappingCheckBox";
 			this.forceMipmappingCheckBox.Size = new System.Drawing.Size(113, 17);
 			this.forceMipmappingCheckBox.TabIndex = 10;
 			this.forceMipmappingCheckBox.Text = "Force Mipmapping";
 			this.toolTip1.SetToolTip(this.forceMipmappingCheckBox, "Generates mipmaps for all textures that don\'t have them.");
 			this.forceMipmappingCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// customWindowSizeCheckBox
+			// 
+			this.customWindowSizeCheckBox.AutoSize = true;
+			this.customWindowSizeCheckBox.Location = new System.Drawing.Point(6, 115);
+			this.customWindowSizeCheckBox.Name = "customWindowSizeCheckBox";
+			this.customWindowSizeCheckBox.Size = new System.Drawing.Size(129, 17);
+			this.customWindowSizeCheckBox.TabIndex = 12;
+			this.customWindowSizeCheckBox.Text = "Custom Window Size:";
+			this.customWindowSizeCheckBox.UseVisualStyleBackColor = true;
+			this.customWindowSizeCheckBox.CheckedChanged += new System.EventHandler(this.customWindowSizeCheckBox_CheckedChanged);
+			// 
+			// windowWidth
+			// 
+			this.windowWidth.Location = new System.Drawing.Point(141, 114);
+			this.windowWidth.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+			this.windowWidth.Minimum = new decimal(new int[] {
+            320,
+            0,
+            0,
+            0});
+			this.windowWidth.Name = "windowWidth";
+			this.windowWidth.Size = new System.Drawing.Size(62, 20);
+			this.windowWidth.TabIndex = 13;
+			this.windowWidth.Value = new decimal(new int[] {
+            640,
+            0,
+            0,
+            0});
+			// 
+			// label2
+			// 
+			label2.AutoSize = true;
+			label2.Location = new System.Drawing.Point(209, 116);
+			label2.Name = "label2";
+			label2.Size = new System.Drawing.Size(12, 13);
+			label2.TabIndex = 14;
+			label2.Text = "x";
+			// 
+			// windowHeight
+			// 
+			this.windowHeight.Location = new System.Drawing.Point(227, 114);
+			this.windowHeight.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+			this.windowHeight.Minimum = new decimal(new int[] {
+            240,
+            0,
+            0,
+            0});
+			this.windowHeight.Name = "windowHeight";
+			this.windowHeight.Size = new System.Drawing.Size(62, 20);
+			this.windowHeight.TabIndex = 15;
+			this.windowHeight.Value = new decimal(new int[] {
+            480,
+            0,
+            0,
+            0});
+			this.windowHeight.ValueChanged += new System.EventHandler(this.windowHeight_ValueChanged);
+			// 
+			// maintainWindowAspectRatioCheckBox
+			// 
+			this.maintainWindowAspectRatioCheckBox.AutoSize = true;
+			this.maintainWindowAspectRatioCheckBox.Location = new System.Drawing.Point(6, 140);
+			this.maintainWindowAspectRatioCheckBox.Name = "maintainWindowAspectRatioCheckBox";
+			this.maintainWindowAspectRatioCheckBox.Size = new System.Drawing.Size(130, 17);
+			this.maintainWindowAspectRatioCheckBox.TabIndex = 16;
+			this.maintainWindowAspectRatioCheckBox.Text = "Maintain Aspect Ratio";
+			this.maintainWindowAspectRatioCheckBox.UseVisualStyleBackColor = true;
+			this.maintainWindowAspectRatioCheckBox.CheckedChanged += new System.EventHandler(this.maintainWindowAspectRatioCheckBox_CheckedChanged);
 			// 
 			// MainForm
 			// 
@@ -678,6 +767,8 @@
 			this.groupBox1.PerformLayout();
 			this.groupBox3.ResumeLayout(false);
 			this.groupBox3.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.windowWidth)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.windowHeight)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -727,5 +818,9 @@
 		private System.Windows.Forms.CheckBox forceMipmappingCheckBox;
 		private System.Windows.Forms.ToolTip toolTip1;
 		private System.Windows.Forms.CheckBox forceTextureFilterCheckBox;
+		private System.Windows.Forms.CheckBox customWindowSizeCheckBox;
+		private System.Windows.Forms.NumericUpDown windowWidth;
+		private System.Windows.Forms.NumericUpDown windowHeight;
+		private System.Windows.Forms.CheckBox maintainWindowAspectRatioCheckBox;
 	}
 }

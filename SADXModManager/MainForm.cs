@@ -61,6 +61,18 @@ namespace SADXModManager
 			if (scrn > Screen.AllScreens.Length)
 				scrn = 1;
 			screenNumComboBox.SelectedIndex = scrn;
+			customWindowSizeCheckBox.Checked = windowHeight.Enabled = maintainWindowAspectRatioCheckBox.Enabled = loaderini.CustomWindowSize;
+			windowWidth.Enabled = loaderini.CustomWindowSize && !loaderini.MaintainWindowAspectRatio;
+			System.Drawing.Rectangle rect = Screen.PrimaryScreen.Bounds;
+			foreach (Screen screen in Screen.AllScreens)
+				rect = System.Drawing.Rectangle.Union(rect, screen.Bounds);
+			windowWidth.Maximum = rect.Width;
+			windowWidth.Value = Math.Max(windowWidth.Minimum, Math.Min(rect.Width, loaderini.WindowWidth));
+			windowHeight.Maximum = rect.Height;
+			windowHeight.Value = Math.Max(windowHeight.Minimum, Math.Min(rect.Height, loaderini.WindowHeight));
+			suppressEvent = true;
+			maintainWindowAspectRatioCheckBox.Checked = loaderini.MaintainWindowAspectRatio;
+			suppressEvent = false;
 			if (!File.Exists(datadllpath))
 			{
 				MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\nCannot determine state of installation.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -196,6 +208,10 @@ namespace SADXModManager
 			loaderini.PauseWhenInactive = pauseWhenInactiveCheckBox.Checked;
 			loaderini.StretchFullscreen = stretchFullscreenCheckBox.Checked;
 			loaderini.ScreenNum = screenNumComboBox.SelectedIndex;
+			loaderini.CustomWindowSize = customWindowSizeCheckBox.Checked;
+			loaderini.WindowWidth = (int)windowWidth.Value;
+			loaderini.WindowHeight = (int)windowHeight.Value;
+			loaderini.MaintainWindowAspectRatio = maintainWindowAspectRatioCheckBox.Checked;
 			loaderini.EnabledCodes = codesCheckedListBox.CheckedIndices.OfType<int>().Select(a => codes.Codes[a].Name).ToList();
 			IniFile.Serialize(loaderini, loaderinipath);
 			using (FileStream fs = File.Create(codedatpath))
@@ -411,6 +427,32 @@ namespace SADXModManager
 					LoadModList();
 			}
 		}
+
+		private void customWindowSizeCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (maintainWindowAspectRatioCheckBox.Enabled = windowHeight.Enabled = customWindowSizeCheckBox.Checked)
+				windowWidth.Enabled = !maintainWindowAspectRatioCheckBox.Checked;
+			else
+				windowWidth.Enabled = false;
+
+		}
+
+		private void maintainWindowAspectRatioCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (maintainWindowAspectRatioCheckBox.Checked)
+			{
+				windowWidth.Enabled = false;
+				windowWidth.Value = Math.Round(windowHeight.Value * (horizontalResolution.Value / verticalResolution.Value));
+			}
+			else if (!suppressEvent)
+				windowWidth.Enabled = true;
+		}
+
+		private void windowHeight_ValueChanged(object sender, EventArgs e)
+		{
+			if (maintainWindowAspectRatioCheckBox.Checked)
+				windowWidth.Value = Math.Round(windowHeight.Value * (horizontalResolution.Value / verticalResolution.Value));
+		}
 	}
 
 	class LoaderInfo
@@ -437,6 +479,12 @@ namespace SADXModManager
 		public bool StretchFullscreen { get; set; }
 		[DefaultValue(1)]
 		public int ScreenNum { get; set; }
+		public bool CustomWindowSize { get; set; }
+		[DefaultValue(640)]
+		public int WindowWidth { get; set; }
+		[DefaultValue(480)]
+		public int WindowHeight { get; set; }
+		public bool MaintainWindowAspectRatio { get; set; }
 		[IniName("Mod")]
 		[IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
 		public List<string> Mods { get; set; }
