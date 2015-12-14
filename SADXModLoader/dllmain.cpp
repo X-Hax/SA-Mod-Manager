@@ -329,6 +329,9 @@ static bool windowedfullscreen = false;
 static bool stretchfullscreen = true;
 static unsigned int screennum = 1;
 static vector<RECT> screenbounds;
+static bool customwindowsize = false;
+static int customwindowwidth = 640;
+static int customwindowheight = 480;
 
 BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
 {
@@ -356,7 +359,17 @@ static void CreateSADXWindow(HINSTANCE hInstance, int nCmdShow)
 	v8.lpszClassName = GetWindowClassName();
 	if (!RegisterClassA(&v8))
 		return;
-	RECT wndsz = { 0, 0, HorizontalResolution, VerticalResolution };
+	RECT wndsz = { 0 };
+	if (customwindowsize)
+	{
+		wndsz.right = customwindowwidth;
+		wndsz.bottom = customwindowheight;
+	}
+	else
+	{
+		wndsz.right = HorizontalResolution;
+		wndsz.bottom = VerticalResolution;
+	}
 	AdjustWindowRectEx(&wndsz, WS_CAPTION | WS_SYSMENU, false, 0);
 	if (windowedfullscreen || Windowed)
 	{
@@ -397,10 +410,21 @@ static void CreateSADXWindow(HINSTANCE hInstance, int nCmdShow)
 		windowsizes[fullscreen].y = scrny;
 		windowsizes[fullscreen].width = scrnw;
 		windowsizes[fullscreen].height = scrnh;
-		innersizes[windowed].x = 0;
-		innersizes[windowed].y = 0;
-		innersizes[windowed].width = HorizontalResolution;
-		innersizes[windowed].height = VerticalResolution;
+		if (customwindowsize)
+		{
+			float num = min((float)customwindowwidth / (float)HorizontalResolution, (float)customwindowheight / (float)VerticalResolution);
+			innersizes[windowed].width = (int)((float)HorizontalResolution * num);
+			innersizes[windowed].height = (int)((float)VerticalResolution * num);
+			innersizes[windowed].x = (customwindowwidth - innersizes[windowed].width) / 2;
+			innersizes[windowed].y = (customwindowheight - innersizes[windowed].height) / 2;
+		}
+		else
+		{
+			innersizes[windowed].width = HorizontalResolution;
+			innersizes[windowed].height = VerticalResolution;
+			innersizes[windowed].x = 0;
+			innersizes[windowed].y = 0;
+		}
 		if (stretchfullscreen)
 		{
 			float num = min((float)scrnw / (float)HorizontalResolution, (float)scrnh / (float)VerticalResolution);
@@ -1903,23 +1927,22 @@ static void __cdecl InitMods(void)
 #endif /* MODLOADER_GIT_VERSION */
 	}
 
+	WriteJump((void *)0x789E50, sub_789E50_r); // override window creation function
 	// Other various settings.
-	if (!settings->getBool("DontFixWindow"))
-		WriteJump((void *)0x789E50, (void *)sub_789E50_r);
 	if (settings->getBool("DisableCDCheck"))
 		WriteJump((void *)0x402621, (void *)0x402664);
 	if (settings->getBool("UseCustomResolution"))
 	{
 		WriteJump((void *)0x40297A, (void *)0x402A90);
 
-		int hres = settings->getInt("HorizontalResolution");
+		int hres = settings->getInt("HorizontalResolution", 640);
 		if (hres > 0)
 		{
 			HorizontalResolution = hres;
 			HorizontalStretch = HorizontalResolution / 640.0f;
 		}
 
-		int vres = settings->getInt("VerticalResolution");
+		int vres = settings->getInt("VerticalResolution", 480);
 		if (vres > 0)
 		{
 			VerticalResolution = vres;
@@ -1932,6 +1955,9 @@ static void __cdecl InitMods(void)
 	windowedfullscreen = settings->getBool("WindowedFullscreen");
 	stretchfullscreen = settings->getBool("StretchFullscreen", true);
 	screennum = settings->getInt("ScreenNum", 1);
+	customwindowsize = settings->getBool("CustomWindowSize");
+	customwindowwidth = settings->getInt("WindowWidth", 640);
+	customwindowheight = settings->getInt("WindowHeight", 480);
 
 	if (!windowedfullscreen)
 	{
