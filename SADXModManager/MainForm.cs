@@ -299,7 +299,7 @@ namespace SADXModManager
 		{
 			Save();
 			System.Diagnostics.Process.Start(loaderini.Mods.Select((item) => mods[item].EXEFile)
-				.FirstOrDefault((item) => !string.IsNullOrEmpty(item)) ?? "sonic.exe");
+				.FirstOrDefault((item) => !string.IsNullOrEmpty(item)) ?? "sonic.exe").WaitForInputIdle(10000);
 			Close();
 		}
 
