@@ -33,6 +33,7 @@
 			System.Windows.Forms.Label label3;
 			System.Windows.Forms.Label label1;
 			System.Windows.Forms.Label label2;
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.pauseWhenInactiveCheckBox = new System.Windows.Forms.CheckBox();
 			this.disableCDCheckCheckBox = new System.Windows.Forms.CheckBox();
 			this.screenNumComboBox = new System.Windows.Forms.ComboBox();
@@ -72,13 +73,13 @@
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.maintainWindowAspectRatioCheckBox = new System.Windows.Forms.CheckBox();
+			this.windowWidth = new System.Windows.Forms.NumericUpDown();
+			this.windowHeight = new System.Windows.Forms.NumericUpDown();
+			this.customWindowSizeCheckBox = new System.Windows.Forms.CheckBox();
 			this.forceTextureFilterCheckBox = new System.Windows.Forms.CheckBox();
 			this.forceMipmappingCheckBox = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.customWindowSizeCheckBox = new System.Windows.Forms.CheckBox();
-			this.windowWidth = new System.Windows.Forms.NumericUpDown();
-			this.windowHeight = new System.Windows.Forms.NumericUpDown();
-			this.maintainWindowAspectRatioCheckBox = new System.Windows.Forms.CheckBox();
 			groupBox2 = new System.Windows.Forms.GroupBox();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
@@ -148,6 +149,15 @@
 			label1.Size = new System.Drawing.Size(12, 13);
 			label1.TabIndex = 6;
 			label1.Text = "x";
+			// 
+			// label2
+			// 
+			label2.AutoSize = true;
+			label2.Location = new System.Drawing.Point(209, 116);
+			label2.Name = "label2";
+			label2.Size = new System.Drawing.Size(12, 13);
+			label2.TabIndex = 14;
+			label2.Text = "x";
 			// 
 			// screenNumComboBox
 			// 
@@ -639,39 +649,17 @@
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Graphics";
 			// 
-			// forceTextureFilterCheckBox
+			// maintainWindowAspectRatioCheckBox
 			// 
-			this.forceTextureFilterCheckBox.AutoSize = true;
-			this.forceTextureFilterCheckBox.Location = new System.Drawing.Point(125, 163);
-			this.forceTextureFilterCheckBox.Name = "forceTextureFilterCheckBox";
-			this.forceTextureFilterCheckBox.Size = new System.Drawing.Size(131, 17);
-			this.forceTextureFilterCheckBox.TabIndex = 11;
-			this.forceTextureFilterCheckBox.Text = "Force Texture Filtering";
-			this.toolTip1.SetToolTip(this.forceTextureFilterCheckBox, "Smooths scaled UI textures by changing the filter method from Point to Linear.");
-			this.forceTextureFilterCheckBox.UseVisualStyleBackColor = true;
-			// 
-			// forceMipmappingCheckBox
-			// 
-			this.forceMipmappingCheckBox.AutoSize = true;
-			this.forceMipmappingCheckBox.Location = new System.Drawing.Point(6, 163);
-			this.forceMipmappingCheckBox.Name = "forceMipmappingCheckBox";
-			this.forceMipmappingCheckBox.Size = new System.Drawing.Size(113, 17);
-			this.forceMipmappingCheckBox.TabIndex = 10;
-			this.forceMipmappingCheckBox.Text = "Force Mipmapping";
-			this.toolTip1.SetToolTip(this.forceMipmappingCheckBox, "Generates mipmaps for all textures that don\'t have them.");
-			this.forceMipmappingCheckBox.UseVisualStyleBackColor = true;
-			// 
-			// customWindowSizeCheckBox
-			// 
-			this.customWindowSizeCheckBox.AutoSize = true;
-			this.customWindowSizeCheckBox.Location = new System.Drawing.Point(6, 115);
-			this.customWindowSizeCheckBox.Name = "customWindowSizeCheckBox";
-			this.customWindowSizeCheckBox.Size = new System.Drawing.Size(129, 17);
-			this.customWindowSizeCheckBox.TabIndex = 12;
-			this.customWindowSizeCheckBox.Text = "Custom Window Size:";
-			this.toolTip1.SetToolTip(this.customWindowSizeCheckBox, "Allows you to specify a fixed size for the window in windowed mode.");
-			this.customWindowSizeCheckBox.UseVisualStyleBackColor = true;
-			this.customWindowSizeCheckBox.CheckedChanged += new System.EventHandler(this.customWindowSizeCheckBox_CheckedChanged);
+			this.maintainWindowAspectRatioCheckBox.AutoSize = true;
+			this.maintainWindowAspectRatioCheckBox.Location = new System.Drawing.Point(6, 140);
+			this.maintainWindowAspectRatioCheckBox.Name = "maintainWindowAspectRatioCheckBox";
+			this.maintainWindowAspectRatioCheckBox.Size = new System.Drawing.Size(130, 17);
+			this.maintainWindowAspectRatioCheckBox.TabIndex = 16;
+			this.maintainWindowAspectRatioCheckBox.Text = "Maintain Aspect Ratio";
+			this.toolTip1.SetToolTip(this.maintainWindowAspectRatioCheckBox, "Forces the window\'s aspect ratio to match the current custom resolution\'s.");
+			this.maintainWindowAspectRatioCheckBox.UseVisualStyleBackColor = true;
+			this.maintainWindowAspectRatioCheckBox.CheckedChanged += new System.EventHandler(this.maintainWindowAspectRatioCheckBox_CheckedChanged);
 			// 
 			// windowWidth
 			// 
@@ -694,15 +682,6 @@
             0,
             0,
             0});
-			// 
-			// label2
-			// 
-			label2.AutoSize = true;
-			label2.Location = new System.Drawing.Point(209, 116);
-			label2.Name = "label2";
-			label2.Size = new System.Drawing.Size(12, 13);
-			label2.TabIndex = 14;
-			label2.Text = "x";
 			// 
 			// windowHeight
 			// 
@@ -727,17 +706,39 @@
             0});
 			this.windowHeight.ValueChanged += new System.EventHandler(this.windowHeight_ValueChanged);
 			// 
-			// maintainWindowAspectRatioCheckBox
+			// customWindowSizeCheckBox
 			// 
-			this.maintainWindowAspectRatioCheckBox.AutoSize = true;
-			this.maintainWindowAspectRatioCheckBox.Location = new System.Drawing.Point(6, 140);
-			this.maintainWindowAspectRatioCheckBox.Name = "maintainWindowAspectRatioCheckBox";
-			this.maintainWindowAspectRatioCheckBox.Size = new System.Drawing.Size(130, 17);
-			this.maintainWindowAspectRatioCheckBox.TabIndex = 16;
-			this.maintainWindowAspectRatioCheckBox.Text = "Maintain Aspect Ratio";
-			this.toolTip1.SetToolTip(this.maintainWindowAspectRatioCheckBox, "Forces the window\'s aspect ratio to match the current custom resolution\'s.");
-			this.maintainWindowAspectRatioCheckBox.UseVisualStyleBackColor = true;
-			this.maintainWindowAspectRatioCheckBox.CheckedChanged += new System.EventHandler(this.maintainWindowAspectRatioCheckBox_CheckedChanged);
+			this.customWindowSizeCheckBox.AutoSize = true;
+			this.customWindowSizeCheckBox.Location = new System.Drawing.Point(6, 115);
+			this.customWindowSizeCheckBox.Name = "customWindowSizeCheckBox";
+			this.customWindowSizeCheckBox.Size = new System.Drawing.Size(129, 17);
+			this.customWindowSizeCheckBox.TabIndex = 12;
+			this.customWindowSizeCheckBox.Text = "Custom Window Size:";
+			this.toolTip1.SetToolTip(this.customWindowSizeCheckBox, "Allows you to specify a fixed size for the window in windowed mode.");
+			this.customWindowSizeCheckBox.UseVisualStyleBackColor = true;
+			this.customWindowSizeCheckBox.CheckedChanged += new System.EventHandler(this.customWindowSizeCheckBox_CheckedChanged);
+			// 
+			// forceTextureFilterCheckBox
+			// 
+			this.forceTextureFilterCheckBox.AutoSize = true;
+			this.forceTextureFilterCheckBox.Location = new System.Drawing.Point(125, 163);
+			this.forceTextureFilterCheckBox.Name = "forceTextureFilterCheckBox";
+			this.forceTextureFilterCheckBox.Size = new System.Drawing.Size(131, 17);
+			this.forceTextureFilterCheckBox.TabIndex = 11;
+			this.forceTextureFilterCheckBox.Text = "Force Texture Filtering";
+			this.toolTip1.SetToolTip(this.forceTextureFilterCheckBox, "Smooths scaled UI textures by changing the filter method from Point to Linear.");
+			this.forceTextureFilterCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// forceMipmappingCheckBox
+			// 
+			this.forceMipmappingCheckBox.AutoSize = true;
+			this.forceMipmappingCheckBox.Location = new System.Drawing.Point(6, 163);
+			this.forceMipmappingCheckBox.Name = "forceMipmappingCheckBox";
+			this.forceMipmappingCheckBox.Size = new System.Drawing.Size(113, 17);
+			this.forceMipmappingCheckBox.TabIndex = 10;
+			this.forceMipmappingCheckBox.Text = "Force Mipmapping";
+			this.toolTip1.SetToolTip(this.forceMipmappingCheckBox, "Generates mipmaps for all textures that don\'t have them.");
+			this.forceMipmappingCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
@@ -749,9 +750,9 @@
 			this.Controls.Add(this.installButton);
 			this.Controls.Add(this.saveAndPlayButton);
 			this.Controls.Add(this.saveButton);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainForm";
 			this.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
-			this.ShowIcon = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
 			this.Text = "SADX Mod Manager";
 			this.Load += new System.EventHandler(this.MainForm_Load);
