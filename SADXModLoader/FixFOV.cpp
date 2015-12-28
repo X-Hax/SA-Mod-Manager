@@ -126,8 +126,16 @@ void ConfigureFOV()
 	SetHorizontalFOV_BAMS_hook(bams_default);
 
 	// Stops the Pause Menu from using horizontal stretch in place of vertical stretch in coordinate calculation
-	// TODO: Fix pause submenus (e.g camera options, controls)
-	WriteData((uint8_t*)0x00457F69, (uint8_t)0xC4); // Elipse/Oval
-	WriteData((uint8_t*)0x004584EE, (uint8_t)0xC4); // Blue Transparent Box
-	WriteData((uint8_t*)0x0045802F, (uint8_t)0xC4); // Pause Menu Options
+	// Main Pause Menu
+	WriteData((float**)0x00457F69, &VerticalStretch); // Elipse/Oval
+	WriteData((float**)0x004584EE, &VerticalStretch); // Blue Transparent Box
+	WriteData((float**)0x0045802F, &VerticalStretch); // Pause Menu Options
+	// Camera options
+	WriteData((float**)0x00458D5C, &VerticalStretch); // Blue Transparent Box
+	WriteData((float**)0x00458DF4, &VerticalStretch); // Auto Cam
+	WriteData((float**)0x00458E3A, &VerticalStretch); // Free Cam
+	// Controls
+	WriteData((float**)0x0045905A, &VerticalStretch); // Blue Transparent Box
+	WriteData((float**)0x004590BB, &VerticalStretch); // Each Control Element
+	WriteData((float**)0x00459133, &VerticalStretch); // Default Button
 }
