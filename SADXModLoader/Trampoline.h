@@ -16,9 +16,8 @@ private:
 	LPVOID codeData;
 	size_t originalSize;
 	size_t codeSize;
-	bool restoreCode;
 
-public:	
+public:
 	/// <summary>
 	/// Initializes a new <see cref="Trampoline" />, allowing you to replace functions and still call the original code.
 	/// </summary>
@@ -30,14 +29,14 @@ public:
 
 	// Pointer to original code.
 	LPVOID Target() const
-	{ 
+	{
 		return codeData;
 	}
 	// Pointer to your detour.
 	void* Detour() const
 	{
 		return detour;
-	}	
+	}
 	// Original data size.
 	size_t OriginalSize() const
 	{
@@ -45,7 +44,7 @@ public:
 	}
 	// Size of Target including appended jump to remaining original code.
 	size_t CodeSize() const
-	{ 
+	{
 		return codeSize;
 	}
 };

@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include <exception>
+#include <ninja.h>		// for typedefs
 #include <ModLoader/MemAccess.h>
 
 /// <summary>
@@ -12,7 +13,7 @@
 /// <param name="end">End offset.</param>
 /// <param name="func">Your detour function.</param>
 Trampoline::Trampoline(size_t start, size_t end, DetourFunction func) :
-	target(nullptr), detour(nullptr), codeData(nullptr), codeSize(0), originalSize(0)
+	target(nullptr), detour(nullptr), codeData(nullptr), originalSize(0), codeSize(0)
 {
 	if (start > end)
 		throw std::exception("Start address cannot exceed end address.");
