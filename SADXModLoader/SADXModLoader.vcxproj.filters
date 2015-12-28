@@ -60,9 +60,6 @@
     <ClCompile Include="AutoMipmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Trampoline.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -129,9 +126,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D3DCommon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Trampoline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

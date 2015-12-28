@@ -26,7 +26,6 @@
     </ClCompile>
     <ClCompile Include="TextConv.cpp" />
     <ClCompile Include="TextureReplacement.cpp" />
-    <ClCompile Include="Trampoline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoMipmap.h" />
@@ -50,7 +49,6 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TextConv.hpp" />
     <ClInclude Include="TextureReplacement.h" />
-    <ClInclude Include="Trampoline.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>
@@ -110,7 +108,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_DEBUG;_WINDOWS;_USRDLL;SADXMODLOADER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\include;..\extlib\bass</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\extlib\bass;..\libmodutils</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,7 +130,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;SADXMODLOADER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\include;..\extlib\bass</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\extlib\bass;..\libmodutils</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
