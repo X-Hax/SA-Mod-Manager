@@ -161,13 +161,15 @@
 			// 
 			// screenNumComboBox
 			// 
+			this.screenNumComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.screenNumComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.screenNumComboBox.FormattingEnabled = true;
 			this.screenNumComboBox.Items.AddRange(new object[] {
             "All Screens"});
 			this.screenNumComboBox.Location = new System.Drawing.Point(56, 19);
 			this.screenNumComboBox.Name = "screenNumComboBox";
-			this.screenNumComboBox.Size = new System.Drawing.Size(175, 21);
+			this.screenNumComboBox.Size = new System.Drawing.Size(297, 21);
 			this.screenNumComboBox.TabIndex = 1;
 			this.toolTip1.SetToolTip(this.screenNumComboBox, "The screen to put the game on.");
 			// 
@@ -383,7 +385,7 @@
 			this.modListView.HideSelection = false;
 			this.modListView.Location = new System.Drawing.Point(6, 6);
 			this.modListView.Name = "modListView";
-			this.modListView.Size = new System.Drawing.Size(338, 211);
+			this.modListView.Size = new System.Drawing.Size(331, 211);
 			this.modListView.TabIndex = 0;
 			this.modListView.UseCompatibleStateImageBehavior = false;
 			this.modListView.View = System.Windows.Forms.View.Details;
@@ -397,7 +399,7 @@
 			// columnHeader2
 			// 
 			this.columnHeader2.Text = "Author";
-			this.columnHeader2.Width = 120;
+			this.columnHeader2.Width = 113;
 			// 
 			// columnHeader3
 			// 
@@ -589,7 +591,7 @@
 			this.codesCheckedListBox.FormattingEnabled = true;
 			this.codesCheckedListBox.Location = new System.Drawing.Point(6, 6);
 			this.codesCheckedListBox.Name = "codesCheckedListBox";
-			this.codesCheckedListBox.Size = new System.Drawing.Size(338, 244);
+			this.codesCheckedListBox.Size = new System.Drawing.Size(331, 244);
 			this.codesCheckedListBox.TabIndex = 0;
 			this.codesCheckedListBox.SelectedIndexChanged += new System.EventHandler(this.codesCheckedListBox_SelectedIndexChanged);
 			// 

@@ -39,7 +39,7 @@ namespace SADXModManager
 			LoadModList();
 
 			for (int i = 0; i < Screen.AllScreens.Length; i++)
-				screenNumComboBox.Items.Add((i + 1).ToString() + " " +  Screen.AllScreens[i].DeviceName);
+				screenNumComboBox.Items.Add((i + 1).ToString() + " " + Screen.AllScreens[i].DeviceName + " (" + Screen.AllScreens[i].Bounds.Location.X + "," + Screen.AllScreens[i].Bounds.Y + ") " + Screen.AllScreens[i].Bounds.Width + "x" + Screen.AllScreens[i].Bounds.Height + " " + Screen.AllScreens[i].BitsPerPixel + "bpp" + (Screen.AllScreens[i].Primary ? " Primary" : ""));
 
 			consoleCheckBox.Checked = loaderini.DebugConsole;
 			screenCheckBox.Checked = loaderini.DebugScreen;
