@@ -92,11 +92,21 @@ static void __declspec(naked) dothething()
 
 #pragma endregion
 
+DataPointer(NJS_SPRITE, VideoFrame, 0x03C600A4);
+
+void DisplayVideoFrame_FixAspectRatio()
+{
+	VideoFrame.sx = VideoFrame.sy = min(HorizontalStretch, VerticalStretch);
+}
+
 void ConfigureFOV()
 {
 	static const double default_ratio = 4.0 / 3.0;
 	const uint32_t width = HorizontalResolution;
 	const uint32_t height = VerticalResolution;
+
+	// Taking advantage of a nullsub call.
+	WriteCall((void*)0x00513A88, DisplayVideoFrame_FixAspectRatio);
 
 	// 4:3 and "tallscreen" (5:4, portrait, etc)
 	// We don't need to do anything since these resolutions work fine with the default code.
@@ -114,8 +124,9 @@ void ConfigureFOV()
 	WriteJump((void*)0x0040872A, &dothething);
 
 	SetHorizontalFOV_BAMS_hook(bams_default);
-	
+
 	// Stops the Pause Menu from using horizontal stretch in place of vertical stretch in coordinate calculation
+	// TODO: Fix pause submenus (e.g camera options, controls)
 	WriteData((uint8_t*)0x00457F69, (uint8_t)0xC4); // Elipse/Oval
 	WriteData((uint8_t*)0x004584EE, (uint8_t)0xC4); // Blue Transparent Box
 	WriteData((uint8_t*)0x0045802F, (uint8_t)0xC4); // Pause Menu Options
