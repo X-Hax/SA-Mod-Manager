@@ -30,6 +30,7 @@ static void __cdecl SetClippingRelatedThing_hook(int bams)
 	ClippingRelated = (float)((double)VerticalResolution / tan);
 }
 
+// TODO: Patch code instead
 static int __cdecl GetHorizontalFOV_BAMS_hook()
 {
 	return last_bams;
@@ -51,7 +52,7 @@ static void __cdecl SetHorizontalFOV_BAMS_hook(int bams)
 
 #pragma region Assembly
 
-void* setfov_return = (void*)0x00791251;
+static const void* setfov_return = (void*)0x00791251;
 static void __declspec(naked) SetFOV()
 {
 	__asm
@@ -68,8 +69,8 @@ static void __declspec(naked) SetFOV()
 }
 
 // HACK: Dirty hack to disable a write to ClippingRelated and keep the floating point stack balanced.
-float dummy;
-void* fix_to = (void*)0x00781529;
+static float dummy;
+static const void* fix_to = (void*)0x00781529;
 static void __declspec(naked) FixFloatStackPls()
 {
 	__asm
@@ -80,8 +81,9 @@ static void __declspec(naked) FixFloatStackPls()
 }
 
 // Handles a case where the FOV is accessed directly. If somebody wants to name this, be my guest :V
-void* dothething_return = (void*)0x0040872F;
-static void __declspec(naked) dothething()
+// TODO: Patch code to replace address with last_bams instead of jumping here
+static const void* dothething_return = (void*)0x0040872F;
+static void __declspec(naked) FixDirectAccess()
 {
 	__asm
 	{
@@ -94,7 +96,7 @@ static void __declspec(naked) dothething()
 
 DataPointer(NJS_SPRITE, VideoFrame, 0x03C600A4);
 
-void DisplayVideoFrame_FixAspectRatio()
+static void DisplayVideoFrame_FixAspectRatio()
 {
 	VideoFrame.sx = VideoFrame.sy = min(HorizontalStretch, VerticalStretch);
 }
@@ -116,12 +118,14 @@ void ConfigureFOV()
 	fov_rads = 0.96712852;	// 55.412382 degrees
 	fov_bams = NJM_RAD_ANG(fov_rads);
 
+	// Function hooks
 	WriteJump(SetHorizontalFOV_BAMS, SetHorizontalFOV_BAMS_hook);
 	WriteJump(GetHorizontalFOV_BAMS, GetHorizontalFOV_BAMS_hook);
 	WriteJump(SetClippingRelatedThing, SetClippingRelatedThing_hook);
-	WriteJump((void*)0x0079124A, &SetFOV);
-	WriteJump((void*)0x00781523, &FixFloatStackPls);
-	WriteJump((void*)0x0040872A, &dothething);
+	// Code patches
+	WriteJump((void*)0x0079124A, SetFOV);
+	WriteJump((void*)0x00781523, FixFloatStackPls);
+	WriteJump((void*)0x0040872A, FixDirectAccess);
 
 	SetHorizontalFOV_BAMS_hook(bams_default);
 
