@@ -4,20 +4,29 @@
 #include "SADXModLoader.h"
 
 FunctionPointer(void,	SetHorizontalFOV_BAMS,		(int bams), 0x00402ED0);
-FunctionPointer(int,	GetHorizontalFOV_BAMS,		(void),		0x00402F00);
+//FunctionPointer(int,	GetHorizontalFOV_BAMS,		(void),		0x00402F00);
 FunctionPointer(void,	SetClippingRelatedThing,	(int bams), 0x007815C0);
 
+// This probably isn't even a D3DMATRIX.
 DataPointer(D3DMATRIX,	ProjectionMatrix,		0x03AAD0A0);
 DataPointer(float,		ClippingRelated,		0x03D0F9E0);
 DataPointer(int,		HorizontalFOV_BAMS,		0x03AB98EC);
 DataPointer(int,		LastHorizontalFOV_BAMS,	0x03B2CBB4);
+DataPointer(NJS_SPRITE,	VideoFrame,				0x03C600A4);
 
 static const int	bams_default	= 12743;
 static int			last_bams		= bams_default;
 static int			fov_bams;
 
-static double fov_rads;
+static double fov_rads = 1.0f;
 static double fov_scale = 1.0;
+static float video_scale = 1.0f;
+static float dummy;
+
+static void DisplayVideoFrame_FixAspectRatio()
+{
+	VideoFrame.sx = VideoFrame.sy = video_scale;
+}
 
 static void __cdecl SetClippingRelatedThing_hook(int bams)
 {
@@ -28,12 +37,6 @@ static void __cdecl SetClippingRelatedThing_hook(int bams)
 
 	double tan = BAMStan(bams / 2) * 2;
 	ClippingRelated = (float)((double)VerticalResolution / tan);
-}
-
-// TODO: Patch code instead
-static int __cdecl GetHorizontalFOV_BAMS_hook()
-{
-	return last_bams;
 }
 
 static void __cdecl SetHorizontalFOV_BAMS_hook(int bams)
@@ -49,8 +52,6 @@ static void __cdecl SetHorizontalFOV_BAMS_hook(int bams)
 	*_24 = scaled;
 	last_bams = bams;
 }
-
-#pragma region Assembly
 
 static const void* setfov_return = (void*)0x00791251;
 static void __declspec(naked) SetFOV()
@@ -68,39 +69,6 @@ static void __declspec(naked) SetFOV()
 	}
 }
 
-// HACK: Dirty hack to disable a write to ClippingRelated and keep the floating point stack balanced.
-static float dummy;
-static const void* fix_to = (void*)0x00781529;
-static void __declspec(naked) FixFloatStackPls()
-{
-	__asm
-	{
-		fstp dummy
-		jmp fix_to
-	}
-}
-
-// Handles a case where the FOV is accessed directly. If somebody wants to name this, be my guest :V
-// TODO: Patch code to replace address with last_bams instead of jumping here
-static const void* dothething_return = (void*)0x0040872F;
-static void __declspec(naked) FixDirectAccess()
-{
-	__asm
-	{
-		mov eax, last_bams
-		jmp dothething_return
-	}
-}
-
-#pragma endregion
-
-DataPointer(NJS_SPRITE, VideoFrame, 0x03C600A4);
-
-static void DisplayVideoFrame_FixAspectRatio()
-{
-	VideoFrame.sx = VideoFrame.sy = min(HorizontalStretch, VerticalStretch);
-}
-
 void ConfigureFOV()
 {
 	static const double default_ratio = 4.0 / 3.0;
@@ -109,6 +77,9 @@ void ConfigureFOV()
 
 	// Taking advantage of a nullsub call.
 	WriteCall((void*)0x00513A88, DisplayVideoFrame_FixAspectRatio);
+
+	// Fits video to screen. For "fill", use max instead.
+	video_scale = min(HorizontalStretch, VerticalStretch);
 
 	// 4:3 and "tallscreen" (5:4, portrait, etc)
 	// We don't need to do anything since these resolutions work fine with the default code.
@@ -120,12 +91,13 @@ void ConfigureFOV()
 
 	// Function hooks
 	WriteJump(SetHorizontalFOV_BAMS, SetHorizontalFOV_BAMS_hook);
-	WriteJump(GetHorizontalFOV_BAMS, GetHorizontalFOV_BAMS_hook);
 	WriteJump(SetClippingRelatedThing, SetClippingRelatedThing_hook);
+
 	// Code patches
 	WriteJump((void*)0x0079124A, SetFOV);
-	WriteJump((void*)0x00781523, FixFloatStackPls);
-	WriteJump((void*)0x0040872A, FixDirectAccess);
+	WriteData((float**)0x00781525, &dummy); // Dirty hack to disable a write to ClippingRelated and keep the floating point stack balanced.
+	WriteData((int**)0x0040872B, &last_bams); // Fixes a case of direct access to HorizontalFOV_BAMS
+	WriteData((int**)0x00402F01, &last_bams); // Changes return value of GetHorizontalFOV_BAMS
 
 	SetHorizontalFOV_BAMS_hook(bams_default);
 
