@@ -20,12 +20,30 @@ static int			fov_bams;
 
 static double fov_rads = 1.0f;
 static double fov_scale = 1.0;
-static float video_scale = 1.0f;
 static float dummy;
 
+static const bool fill = false;
 static void DisplayVideoFrame_FixAspectRatio()
 {
-	VideoFrame.sx = VideoFrame.sy = video_scale;
+	// I would be using .sx and .sy (size), but those are always 640x480 no matter the video resolution.
+	int video_width = VideoFrame.tanim[0].cx * 2;
+	int video_height = VideoFrame.tanim[0].cy * 2;
+	int video_resolution;
+	int screen_resolution;
+
+	if (!fill && HorizontalResolution > VerticalResolution || fill && HorizontalResolution < VerticalResolution)
+	{
+		video_resolution = video_height;
+		screen_resolution = VerticalResolution;
+	}
+	else
+	{
+		video_resolution = video_width;
+		screen_resolution = HorizontalResolution;
+	}
+
+	float scale = (float)screen_resolution / (float)video_resolution;
+	VideoFrame.sx = VideoFrame.sy = scale;
 }
 
 static void __cdecl SetClippingRelatedThing_hook(int bams)
@@ -77,9 +95,6 @@ void ConfigureFOV()
 
 	// Taking advantage of a nullsub call.
 	WriteCall((void*)0x00513A88, DisplayVideoFrame_FixAspectRatio);
-
-	// Fits video to screen. For "fill", use max instead.
-	video_scale = min(HorizontalStretch, VerticalStretch);
 
 	// 4:3 and "tallscreen" (5:4, portrait, etc)
 	// We don't need to do anything since these resolutions work fine with the default code.
