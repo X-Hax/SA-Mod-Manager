@@ -53,7 +53,7 @@ static void __cdecl SetClippingRelatedThing_hook(int bams)
 	double m = (double)bams_default / bams;
 	bams = (int)(fov_bams / m);
 
-	double tan = BAMStan(bams / 2) * 2;
+	double tan = njTan(bams / 2) * 2;
 	ClippingRelated = (float)((double)VerticalResolution / tan);
 }
 
