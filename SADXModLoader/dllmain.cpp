@@ -2166,6 +2166,7 @@ static void __cdecl InitMods(void)
 
 					RegisterEvent(modFrameEvents, module, "OnFrame");
 					RegisterEvent(modInputEvents, module, "OnInput");
+					RegisterEvent(modControlEvents, module, "OnControl");
 					RegisterEvent(modExitEvents, module, "OnExit");
 				}
 				else
@@ -2444,6 +2445,7 @@ static void __cdecl InitMods(void)
 	WriteJump((void*)0x0040FDB3, (void*)OnInput);			// End of first chunk
 	WriteJump((void*)0x0042F1C5, (void*)OnInput_MidJump);	// Cutscene stuff - Untested. Couldn't trigger ingame.
 	WriteJump((void*)0x0042F1E9, (void*)OnInput);			// Cutscene stuff
+	WriteJump((void*)0x0040FF00, (void*)OnControl);
 }
 
 static void __cdecl LoadChrmodels(void)
