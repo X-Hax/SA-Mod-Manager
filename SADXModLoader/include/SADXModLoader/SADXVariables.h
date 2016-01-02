@@ -69,4 +69,9 @@ DataPointer(bool, ControlEnabled, 0x00909FB0);
 // Indicates whether the controller at the specified index is enabled.
 DataArray(bool, ControllerEnabled, 0x00909FB4, 4);
 
+// Buttons used for attacking.
+DataPointer(int, AttackButtons, 0x00909F94);
+// Buttons used for grabbing objects.
+DataPointer(int, GrabButtons, 0x00909FA4);
+
 #endif /* SADXMODLOADER_SADXVARS_H */
