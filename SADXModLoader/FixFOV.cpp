@@ -3,20 +3,20 @@
 #include "include/d3d8types.h"
 #include "SADXModLoader.h"
 
-FunctionPointer(void,	SetHorizontalFOV_BAMS,		(int bams), 0x00402ED0);
-//FunctionPointer(int,	GetHorizontalFOV_BAMS,		(void),		0x00402F00);
-FunctionPointer(void,	SetClippingRelatedThing,	(int bams), 0x007815C0);
+FunctionPointer(void,	SetHorizontalFOV_BAMS,		(Angle bams), 0x00402ED0);
+//FunctionPointer(Angle,	GetHorizontalFOV_BAMS,		(void),		0x00402F00);
+FunctionPointer(void,	SetScreenDist,	(Angle bams), 0x007815C0);
 
 // This probably isn't even a D3DMATRIX.
 DataPointer(D3DMATRIX,	ProjectionMatrix,		0x03AAD0A0);
-DataPointer(float,		ClippingRelated,		0x03D0F9E0);
-DataPointer(int,		HorizontalFOV_BAMS,		0x03AB98EC);
-DataPointer(int,		LastHorizontalFOV_BAMS,	0x03B2CBB4);
+DataPointer(NJS_SCREEN, _nj_screen_,			0x03D0F9E0);
+DataPointer(Angle,		HorizontalFOV_BAMS,		0x03AB98EC);
+DataPointer(Angle,		LastHorizontalFOV_BAMS,	0x03B2CBB4);
 DataPointer(NJS_SPRITE,	VideoFrame,				0x03C600A4);
 
-static const int	bams_default	= 12743;
-static int			last_bams		= bams_default;
-static int			fov_bams;
+static const Angle	bams_default	= 12743;
+static Angle		last_bams		= bams_default;
+static Angle		fov_bams;
 
 static double fov_rads = 1.0f;
 static double fov_scale = 1.0;
@@ -46,25 +46,36 @@ static void DisplayVideoFrame_FixAspectRatio()
 	VideoFrame.sx = VideoFrame.sy = scale;
 }
 
-static void __cdecl SetClippingRelatedThing_hook(int bams)
+// Fix for neglected width and height in global NJS_SCREEN
+static void __cdecl SetupScreenFix(NJS_MATRIX* m);
+static Trampoline SetupScreenTrampoline(0x00788240, 0x00788246, (DetourFunction)SetupScreenFix);
+static void __cdecl SetupScreenFix(NJS_MATRIX* m)
+{
+	_nj_screen_.w = (*m)[1];	// Screen Width
+	_nj_screen_.h = (*m)[2];	// Screen Height
+	FunctionPointer(void, SetupScreen, (NJS_MATRIX* m), SetupScreenTrampoline.Target());
+	SetupScreen(m);
+}
+
+static void __cdecl SetScreenDist_hook(Angle bams)
 {
 	// We're scaling here because this function
 	// can be called independently of SetHorizontalFOV_BAMS
 	double m = (double)bams_default / bams;
-	bams = (int)(fov_bams / m);
+	bams = (Angle)(fov_bams / m);
 
 	double tan = njTan(bams / 2) * 2;
-	ClippingRelated = (float)((double)VerticalResolution / tan);
+	_nj_screen_.dist = (float)((double)_nj_screen_.h / tan);
 }
 
-static void __cdecl SetHorizontalFOV_BAMS_hook(int bams)
+static void __cdecl SetHorizontalFOV_BAMS_hook(Angle bams)
 {
 	fov_scale = (double)bams_default / bams;
-	int scaled = (bams == fov_bams) ? fov_bams : (int)(fov_bams * fov_scale);
+	Angle scaled = (bams == fov_bams) ? fov_bams : (Angle)(fov_bams * fov_scale);
 
 	int* _24 = (int*)&ProjectionMatrix._24;
 
-	SetClippingRelatedThing_hook(bams);
+	SetScreenDist_hook(bams);
 
 	HorizontalFOV_BAMS = scaled;
 	*_24 = scaled;
@@ -106,13 +117,13 @@ void ConfigureFOV()
 
 	// Function hooks
 	WriteJump(SetHorizontalFOV_BAMS, SetHorizontalFOV_BAMS_hook);
-	WriteJump(SetClippingRelatedThing, SetClippingRelatedThing_hook);
+	WriteJump(SetScreenDist, SetScreenDist_hook);
 
 	// Code patches
 	WriteJump((void*)0x0079124A, SetFOV);
 	WriteData((float**)0x00781525, &dummy); // Dirty hack to disable a write to ClippingRelated and keep the floating point stack balanced.
-	WriteData((int**)0x0040872B, &last_bams); // Fixes a case of direct access to HorizontalFOV_BAMS
-	WriteData((int**)0x00402F01, &last_bams); // Changes return value of GetHorizontalFOV_BAMS
+	WriteData((Angle**)0x0040872B, &last_bams); // Fixes a case of direct access to HorizontalFOV_BAMS
+	WriteData((Angle**)0x00402F01, &last_bams); // Changes return value of GetHorizontalFOV_BAMS
 
 	SetHorizontalFOV_BAMS_hook(bams_default);
 
