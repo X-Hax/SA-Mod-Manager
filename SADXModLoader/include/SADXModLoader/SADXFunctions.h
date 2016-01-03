@@ -353,7 +353,7 @@ ThiscallFunctionPointer(Float, njTan, (Angle n), 0x00787E30);
 /// <param name="n">Sprite number.</param>
 /// <param name="pri">Priority (Z value). Can be -1.0 through -65535.0.</param>
 /// <param name="attr">Attributes. See the <c>NJD_SPRITE_*</c> preprocessor definitions in ninja.h.</param>
-FunctionPointer(void, njDrawSprite2D, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr), 0x00407070);
+FunctionPointer(void, njDrawSprite2D, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr), 0x0077E050);
 
 /// <summary>
 /// Draws a sprite in 3D space.
@@ -361,7 +361,7 @@ FunctionPointer(void, njDrawSprite2D, (NJS_SPRITE* sp, Int n, Float pri, Uint32 
 /// <param name="sp">Pointer for sprite structure.</param>
 /// <param name="n">Sprite number.</param>
 /// <param name="attr">Attributes. <c>NJD_SPRITE_SCALE</c> makes the sprite always face the camera.</param>
-FunctionPointer(void, njDrawSprite3D, (NJS_SPRITE* sp, Int n, Uint32 attr), 0x0077E050);
+FunctionPointer(void, njDrawSprite3D, (NJS_SPRITE* sp, Int n, Uint32 attr), 0x00407070);
 
 
 #ifdef _MSC_VER
