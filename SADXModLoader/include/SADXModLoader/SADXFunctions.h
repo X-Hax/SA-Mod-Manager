@@ -14,7 +14,7 @@
 // SADX Functions
 FunctionPointer(void, PrintDebug, (const char *Format, ...), 0x401000);
 VoidFunc(CheckSettings, 0x4025B0);
-FunctionPointer(void, SetTextures, (NJS_TEXLIST *texturelist), 0x403070);
+FunctionPointer(void, njSetTexture, (NJS_TEXLIST *texlist), 0x403070);
 FunctionPointer(bool, CheckModelDistance, (Vector3 *center, float radius), 0x403330);
 FunctionPointer(bool, CheckModelDistance2, (float x, float y, float z, float a4), 0x406F70);
 FunctionPointer(void, ProcessModelNode, (NJS_OBJECT *obj, int a2, float a3), 0x4074A0);
@@ -290,21 +290,21 @@ FunctionPointer(void, SetDebugFontSize, (unsigned short size), 0x007808C0);
 FunctionPointer(void, DisplayDebugString, (signed int position, const char *text), 0x7808F0);
 FunctionPointer(void, PrintDebugNumber, (signed int position, int value, signed int numdigits), 0x780970);
 FunctionPointer(void, DisplayDebugStringFormatted, (signed int position, const char *format, ...), 0x780B30);
-ThiscallFunctionPointer(void, MatrixScale, (Vector3 *Scale), 0x781700);
-FastcallFunctionPointer(void, MatrixRotateXYZ, (D3DMATRIX *a1, signed int XRot, signed int YRot, signed int ZRot), 0x781770);
-FastcallFunctionPointer(void, MatrixRotateZYX, (int a1, signed int XRot, signed int YRot, signed int ZRot), 0x7819C0);
-ThiscallFunctionPointer(void, MatrixTranslate, (Vector3 *), 0x781C10);
-ThiscallFunctionPointer(void, MatrixTranslate3, (D3DMATRIX *a1, float XDist, float YDist, float ZDist), 0x784BE0);
-ThiscallFunctionPointer(void, MatrixScale3, (D3DMATRIX *a1, float XScale, float YScale, float ZScale), 0x784C70);
-FastcallFunctionPointer(void, TransformCoordinate, (D3DMATRIX *a1, Vector3 *a3, Vector3 *a2), 0x784D60);
-FastcallFunctionPointer(void, MatrixRotateY, (D3DMATRIX *a1, signed int a2), 0x784E20);
-FastcallFunctionPointer(void, MatrixRotateX, (D3DMATRIX *a1, signed int a2), 0x784EE0);
-FastcallFunctionPointer(void, MatrixRotateZ, (D3DMATRIX *a1, signed int a2), 0x784FB0);
-FastcallFunctionPointer(void, MatrixTranslate2, (D3DMATRIX *a1, NJS_VECTOR *a2), 0x785070);
-ThiscallFunctionPointer(void, PushMatrix2, (D3DMATRIX *a1), 0x7850F0);
-ThiscallFunctionPointer(void, PopMatrices, (int numMatrices), 0x785140);
-FastcallFunctionPointer(void, Vector3_Subtract, (Vector3 *a1, Vector3 *a2), 0x787610);
-FastcallFunctionPointer(void, MatrixScale2, (D3DMATRIX *a1, Vector3 *a2), 0x788A50);
+ThiscallFunctionPointer(void, njScaleEx, (NJS_VECTOR* v), 0x781700);
+FastcallFunctionPointer(void, njRotateXYZ, (NJS_MATRIX *m, Angle angx, Angle angy, Angle angz), 0x781770);
+FastcallFunctionPointer(void, njRotateZYX, (NJS_MATRIX *m, Angle angx, Angle angy, Angle angz), 0x7819C0);
+ThiscallFunctionPointer(void, njTranslateEx, (NJS_VECTOR *v), 0x781C10);
+ThiscallFunctionPointer(void, njTranslate, (NJS_MATRIX *m, Float x, Float y, Float z), 0x784BE0);
+ThiscallFunctionPointer(void, njScale, (NJS_MATRIX *m, Float sx, Float sy, Float sz), 0x784C70);
+FastcallFunctionPointer(void, TransformCoordinate, (NJS_MATRIX* a1, Vector3* a3, Vector3* a2), 0x784D60);
+FastcallFunctionPointer(void, njRotateY, (NJS_MATRIX* m, Angle ang), 0x784E20);
+FastcallFunctionPointer(void, njRotateX, (NJS_MATRIX* m, Angle ang), 0x784EE0);
+FastcallFunctionPointer(void, njRotateZ, (NJS_MATRIX* m, Angle ang), 0x784FB0);
+FastcallFunctionPointer(void, njTranslateV, (NJS_MATRIX* m, NJS_VECTOR* v), 0x785070);
+ThiscallFunctionPointer(void, njPushMatrix, (NJS_MATRIX* m), 0x7850F0);
+ThiscallFunctionPointer(void, njPopMatrix, (Uint32 n), 0x785140);
+FastcallFunctionPointer(void, njSubVector, (Vector3* a1, Vector3* a2), 0x787610);
+FastcallFunctionPointer(void, njScaleV, (NJS_MATRIX* a1, Vector3* a2), 0x788A50);
 FunctionPointer(void, RenderSA2Model, (NJS_OBJECT *a1), 0x78AB80);
 FunctionPointer(char *, GetWindowClassName, (), 0x793F60);
 StdcallFunctionPointer(void, CompletionRoutine, (DWORD, DWORD, LPOVERLAPPED), 0x795340);
@@ -363,6 +363,28 @@ FunctionPointer(void, njDrawSprite2D, (NJS_SPRITE* sp, Int n, Float pri, Uint32 
 /// <param name="attr">Attributes. <c>NJD_SPRITE_SCALE</c> makes the sprite always face the camera.</param>
 FunctionPointer(void, njDrawSprite3D, (NJS_SPRITE* sp, Int n, Uint32 attr), 0x00407070);
 
+FastcallFunctionPointer(void, njProjectScreen, (NJS_MATRIX* m, NJS_VECTOR* p3, NJS_POINT2* p2), 0x00788700);
+FunctionPointer(Sint32, njLoadTexturePvmFile, (const char *filename, NJS_TEXLIST *texlist), 0x0077FEB0);
+ThiscallFunctionPointer(int, DoSomethingWithPalette, (NJS_TEXPALETTE *pl), 0x78CF80);
+FunctionPointer(NJS_TEXMEMLIST*, TexMemList_PixelFormat, (NJS_TEXINFO* info, Uint32 gbix), 0x0077F7F0);
+FunctionPointer(NJS_TEXMEMLIST*, LoadPVR, (void* data, int gbix), 0x0077FBD0);
+FunctionPointer(void*, LoadPVx, (const char*), 0x007929D0);
+FunctionPointer(void, j__HeapFree_0, (LPVOID lpMem), 0x00792A70);
+FunctionPointer(NJS_TEXMEMLIST*, GetCachedTexture, (int gbix), 0x0077F5B0);
+FunctionPointer(Sint32, njReleaseTexture, (NJS_TEXLIST* texlist), 0x00403290);
+FastcallFunctionPointer(Float, njInnerProduct, (NJS_VECTOR *v1, NJS_VECTOR *v2), 0x00787CF0);
+FastcallFunctionPointer(Float, njScalor, (NJS_VECTOR *v), 0x00787CC0);
+FastcallFunctionPointer(Float, njScalor2, (NJS_VECTOR *v), 0x00787E10);
+FunctionPointer(Sint32, njLoadPaletteFile, (const char *filename, NJS_TEXPALETTE *pl), 0x0077F700);
+FunctionPointer(Sint32, njLoadTexturePvmMemory, (Uint8 *addr, NJS_TEXLIST *texlist), 0x0077FD80);
+ThiscallFunctionPointer(Sint32, njReleaseTextureLow, (NJS_TEXMEMLIST* texmemlist), 0x0078CD50);
+FastcallFunctionPointer(Sint32, njSetTextureNum, (Uint32 n), 0x0077F440);
+FastcallFunctionPointer(void, njAddVector, (NJS_VECTOR *vd, NJS_VECTOR *vs), 0x00785170);
+FunctionPointer(void, njSetConstantMaterial, (NJS_ARGB *mat), 0x0077FF90);
+
+FunctionPointer(void, SetHorizontalFOV_BAMS, (Angle bams), 0x00402ED0);
+FunctionPointer(Angle, GetHorizontalFOV_BAMS, (void), 0x00402F00);
+FunctionPointer(void, SetScreenDist, (Angle bams), 0x007815C0);
 
 #ifdef _MSC_VER
 

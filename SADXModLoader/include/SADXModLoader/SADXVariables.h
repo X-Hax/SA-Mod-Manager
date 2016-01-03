@@ -7,6 +7,7 @@
 #define SADXMODLOADER_SADXVARS_H
 
 #include "../ModLoader/MemAccess.h"
+#include "../d3d8types.h"
 #include "SADXStructs.h"
 
 DataArray(TrialLevelList, TrialLevels, 0x7EF5EC, 7);
@@ -56,6 +57,13 @@ DataPointer(int, CutscenePlaying, 0x3B2A2E4);
 DataPointer(float,	DebugFontSize,	0x03CE7154);
 DataPointer(int, DebugFontColor,	0x03CE715C);
 DataPointer(Uint32, DisplayAdapter, 0x03D0FDFC);
+// This is probably NJS_MATRIX and not D3DMATRIX, but they're equivalent in size so it doesn't matter.
+DataPointer(D3DMATRIX, ProjectionMatrix, 0x03AAD0A0);
+DataPointer(NJS_SCREEN, _nj_screen_, 0x03D0F9E0);
+DataPointer(Angle, HorizontalFOV_BAMS, 0x03AB98EC);
+DataPointer(Angle, LastHorizontalFOV_BAMS, 0x03B2CBB4);
+DataPointer(NJS_SPRITE, VideoFrame, 0x03C600A4);
+DataPointer(bool, LoadingFile, 0x3ABDF68);
 
 // Raw input array. It's recommended you use ControllerPointers instead.
 // This will prevent compatibility issues with mods that need to redirect input.

@@ -3,17 +3,6 @@
 #include "include/d3d8types.h"
 #include "SADXModLoader.h"
 
-FunctionPointer(void,	SetHorizontalFOV_BAMS,		(Angle bams), 0x00402ED0);
-//FunctionPointer(Angle,	GetHorizontalFOV_BAMS,		(void),		0x00402F00);
-FunctionPointer(void,	SetScreenDist,	(Angle bams), 0x007815C0);
-
-// This probably isn't even a D3DMATRIX.
-DataPointer(D3DMATRIX,	ProjectionMatrix,		0x03AAD0A0);
-DataPointer(NJS_SCREEN, _nj_screen_,			0x03D0F9E0);
-DataPointer(Angle,		HorizontalFOV_BAMS,		0x03AB98EC);
-DataPointer(Angle,		LastHorizontalFOV_BAMS,	0x03B2CBB4);
-DataPointer(NJS_SPRITE,	VideoFrame,				0x03C600A4);
-
 static const Angle	bams_default	= 12743;
 static Angle		last_bams		= bams_default;
 static Angle		fov_bams;

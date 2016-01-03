@@ -23,10 +23,6 @@ extern FileMap sadx_fileMap;
 
 bool forceMipmaps = false;
 
-DataPointer(bool, LoadingFile, 0x3ABDF68);
-FunctionPointer(NJS_TEXMEMLIST*, GetCachedTexture, (int gbix), 0x0077F5B0);
-FunctionPointer(Sint32, njReleaseTexture, (NJS_TEXLIST* texlist), 0x00403290);
-
 #define TOMAPSTRING(a) { a, #a }
 
 static const std::unordered_map<HRESULT, const char*> D3DErrors = {
@@ -322,7 +318,6 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, CustomTextureEntry& entry
 
 #pragma region PVM
 
-FunctionPointer(Sint32, njLoadTexturePvmFile, (const char*, NJS_TEXLIST*), 0x0077FEB0);
 
 /// <summary>
 /// Replaces the specified PVM with a texture pack virtual PVM.
@@ -400,11 +395,6 @@ void __cdecl LoadPVM_C(const char* filename, NJS_TEXLIST* texlist)
 
 #pragma region PVR
 
-ThiscallFunctionPointer(int, DoSomethingWithPalette, (NJS_TEXPALETTE *pl), 0x78CF80);
-FunctionPointer(NJS_TEXMEMLIST*, TexMemList_PixelFormat, (NJS_TEXINFO* info, Uint32 gbix), 0x0077F7F0);
-FunctionPointer(NJS_TEXMEMLIST*, LoadPVR, (void* data, int gbix), 0x0077FBD0);
-FunctionPointer(void*, LoadPVx, (const char*), 0x007929D0);
-FunctionPointer(void, j__HeapFree_0, (LPVOID lpMem), 0x00792A70);
 DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
 
 /// <summary>
@@ -475,7 +465,7 @@ signed int __cdecl LoadPVRFile(NJS_TEXLIST* texlist)
 		Uint32 attr = entries->attr;
 
 		// If already loaded, grab from memory. Otherwise, load from disk.
-		// If not already in memory, entries->filename is a string. Otherwise unknown.
+		// If type is memory, ->filename is NJS_TEXINFO or data, otherwise a string.
 		if (attr & NJD_TEXATTR_TYPE_MEMORY)
 		{
 			if (attr & NJD_TEXATTR_GLOBALINDEX)
