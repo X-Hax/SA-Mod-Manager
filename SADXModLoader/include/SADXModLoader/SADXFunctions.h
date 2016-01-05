@@ -392,12 +392,17 @@ FunctionPointer(void, njSetConstantMaterial, (NJS_ARGB *mat), 0x0077FF90);
 /// <param name="zfunc_type">When in doubt, use 1. Also commonly used is 4. To be detailed once it's figured out.</param>
 FunctionPointer(void, Draw2DSprite, (NJS_SPRITE *sp, Int n, Float pri, Uint32 attr, char zfunc_type), 0x00404660);
 FunctionPointer(void, SetSpriteColor, (NJS_ARGB *a1), 0x00402F40);
-FunctionPointer(Bool, IsControllerEnabled, (Uint8 index), 0x0040EFD0);
 FunctionPointer(char, IsVisible, (NJS_VECTOR *v), 0x004CD730);
-
 FunctionPointer(void, njSetPerspective, (Angle bams), 0x00402ED0);
 FunctionPointer(Angle, GetHorizontalFOV_BAMS, (void), 0x00402F00);
 FunctionPointer(void, njSetScreenDist, (Angle bams), 0x007815C0);
+
+FunctionPointer(void, EnableController, (Uint8 index), 0x0040EF70);
+FunctionPointer(void, DisableController, (Uint8 index), 0x0040EFA0);
+FunctionPointer(Bool, IsControllerEnabled, (Uint8 index), 0x0040EFD0);
+VoidFunc(EnableControl, 0x0040EF40);
+VoidFunc(DisableControl, 0x0040EF50);
+FunctionPointer(Bool, IsControlEnabled, (void), 0x0040EF60);
 
 #ifdef _MSC_VER
 

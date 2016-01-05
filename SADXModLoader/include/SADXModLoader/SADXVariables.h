@@ -73,8 +73,12 @@ DataArray(ControllerData*, ControllerPointers, 0x03B0E77C, 8);
 DataArray(ControllerData, Controllers, 0x03B0E7F0, 8);
 DataPointer(bool, RumbleEnabled, 0x00913B10);
 // Indicates whether all controllers are enabled.
+// It's recommended that you use the IsControlEnabled, EnableControl and DisableControl functions instead of
+// using this directly to prevent compatibility issues with mods that redirect the variable.
 DataPointer(bool, ControlEnabled, 0x00909FB0);
 // Indicates whether the controller at the specified index is enabled.
+// It's recommended you use the IsControllerEnabled, EnableController and DisableController functions instead of
+// using this directly to prevent compatibility issues with mods that redirect the array.
 DataArray(bool, ControllerEnabled, 0x00909FB4, 4);
 
 // Buttons used for attacking.
