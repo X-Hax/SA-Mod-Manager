@@ -382,9 +382,22 @@ FastcallFunctionPointer(Sint32, njSetTextureNum, (Uint32 n), 0x0077F440);
 FastcallFunctionPointer(void, njAddVector, (NJS_VECTOR *vd, NJS_VECTOR *vs), 0x00785170);
 FunctionPointer(void, njSetConstantMaterial, (NJS_ARGB *mat), 0x0077FF90);
 
-FunctionPointer(void, SetHorizontalFOV_BAMS, (Angle bams), 0x00402ED0);
+/// <summary>
+/// Draws 2D sprite with animations if available.
+/// </summary>
+/// <param name="sp">Pointer for sprite structure.</param>
+/// <param name="n">Sprite number.</param>
+/// <param name="pri">Priority (Z value). Can be -1.0 through -65535.0. When in doubt, use -1.0</param>
+/// <param name="attr">Attributes. See the <c>NJD_SPRITE_*</c> preprocessor definitions in ninja.h.</param>
+/// <param name="zfunc_type">When in doubt, use 1. Also commonly used is 4. To be detailed once it's figured out.</param>
+FunctionPointer(void, Draw2DSprite, (NJS_SPRITE *sp, Int n, Float pri, Uint32 attr, char zfunc_type), 0x00404660);
+FunctionPointer(void, SetSpriteColor, (NJS_ARGB *a1), 0x00402F40);
+FunctionPointer(Bool, IsControllerEnabled, (Uint8 index), 0x0040EFD0);
+FunctionPointer(char, IsVisible, (NJS_VECTOR *v), 0x004CD730);
+
+FunctionPointer(void, njSetPerspective, (Angle bams), 0x00402ED0);
 FunctionPointer(Angle, GetHorizontalFOV_BAMS, (void), 0x00402F00);
-FunctionPointer(void, SetScreenDist, (Angle bams), 0x007815C0);
+FunctionPointer(void, njSetScreenDist, (Angle bams), 0x007815C0);
 
 #ifdef _MSC_VER
 

@@ -46,10 +46,10 @@ static void __cdecl SetupScreenFix(NJS_MATRIX* m)
 	SetupScreen(m);
 }
 
-static void __cdecl SetScreenDist_hook(Angle bams)
+static void __cdecl njSetScreenDist_hook(Angle bams)
 {
 	// We're scaling here because this function
-	// can be called independently of SetHorizontalFOV_BAMS
+	// can be called independently of njSetPerspective
 	double m = (double)bams_default / bams;
 	bams = (Angle)(fov_bams / m);
 
@@ -57,14 +57,14 @@ static void __cdecl SetScreenDist_hook(Angle bams)
 	_nj_screen_.dist = (float)((double)_nj_screen_.h / tan);
 }
 
-static void __cdecl SetHorizontalFOV_BAMS_hook(Angle bams)
+static void __cdecl njSetPerspective_hook(Angle bams)
 {
 	fov_scale = (double)bams_default / bams;
 	Angle scaled = (bams == fov_bams) ? fov_bams : (Angle)(fov_bams * fov_scale);
 
 	int* _24 = (int*)&ProjectionMatrix._24;
 
-	SetScreenDist_hook(bams);
+	njSetScreenDist_hook(bams);
 
 	HorizontalFOV_BAMS = scaled;
 	*_24 = scaled;
@@ -105,8 +105,8 @@ void ConfigureFOV()
 	fov_bams = NJM_RAD_ANG(fov_rads);
 
 	// Function hooks
-	WriteJump(SetHorizontalFOV_BAMS, SetHorizontalFOV_BAMS_hook);
-	WriteJump(SetScreenDist, SetScreenDist_hook);
+	WriteJump(njSetPerspective, njSetPerspective_hook);
+	WriteJump(njSetScreenDist, njSetScreenDist_hook);
 
 	// Code patches
 	WriteJump((void*)0x0079124A, SetFOV);
@@ -114,7 +114,7 @@ void ConfigureFOV()
 	WriteData((Angle**)0x0040872B, &last_bams); // Fixes a case of direct access to HorizontalFOV_BAMS
 	WriteData((Angle**)0x00402F01, &last_bams); // Changes return value of GetHorizontalFOV_BAMS
 
-	SetHorizontalFOV_BAMS_hook(bams_default);
+	njSetPerspective_hook(bams_default);
 
 	// Stops the Pause Menu from using horizontal stretch in place of vertical stretch in coordinate calculation
 	// Main Pause Menu
