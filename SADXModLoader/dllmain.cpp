@@ -2014,6 +2014,7 @@ static void __cdecl InitMods(void)
 	unordered_map<string, string> filereplaces;
 
 	vector<std::pair<ModInitFunc, string>> initfuncs;
+	vector<std::pair<string, string>> errors;
 
 	string _mainsavepath, _chaosavepath;
 
@@ -2033,6 +2034,7 @@ static void __cdecl InitMods(void)
 		if (!f_mod_ini)
 		{
 			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", mod_dirA.c_str());
+			errors.push_back(std::pair<string, string>(mod_dirA, "mod.ini missing"));
 			continue;
 		}
 		unique_ptr<IniFile> ini_mod(new IniFile(f_mod_ini));
@@ -2112,7 +2114,21 @@ static void __cdecl InitMods(void)
 			// TODO: SetDllDirectory().
 			wstring dll_filename = mod_dir + L'\\' + modinfo->getWString("DLLFile");
 			HMODULE module = LoadLibrary(dll_filename.c_str());
-			if (module)
+			if (module == nullptr)
+			{
+				DWORD error = GetLastError();
+				LPSTR buffer;
+				size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+					NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&buffer, 0, NULL);
+
+				string message(buffer, size);
+				LocalFree(buffer);
+
+				const string dll_filenameA = UTF16toMBS(dll_filename, CP_ACP);
+				PrintDebug("Failed loading mod DLL \"%s\": %s\n", dll_filenameA.c_str(), message.c_str());
+				errors.push_back(std::pair<string, string>(mod_nameA, "DLL error - " + message));
+			}
+			else
 			{
 				const ModInfo *info = (const ModInfo *)GetProcAddress(module, "SADXModInfo");
 				if (info)
@@ -2171,12 +2187,8 @@ static void __cdecl InitMods(void)
 				{
 					const string dll_filenameA = UTF16toMBS(dll_filename, CP_ACP);
 					PrintDebug("File \"%s\" is not a valid mod file.\n", dll_filenameA.c_str());
+					errors.push_back(std::pair<string, string>(mod_nameA, "Not a valid mod file."));
 				}
-			}
-			else
-			{
-				const string dll_filenameA = UTF16toMBS(dll_filename, CP_ACP);
-				PrintDebug("Failed loading file \"%s\".\n", dll_filenameA.c_str());
 			}
 		}
 
@@ -2258,6 +2270,17 @@ static void __cdecl InitMods(void)
 		wstring modTextureDir = mod_dir + L"\\textures\\";
 		if (PathFileExists(modTextureDir.c_str()))
 			TexturePackPaths.push_back(modTextureDir);
+	}
+
+	if (!errors.empty())
+	{
+		std::stringstream message;
+		message << "The following mods didn't load correctly:" << std::endl;
+
+		for (auto& i : errors)
+			message << std::endl << i.first << ": " << i.second;
+
+		MessageBoxA(nullptr, message.str().c_str(), "Mods failed to load", MB_OK | MB_ICONERROR);
 	}
 
 	// Replace filenames. ("ReplaceFiles", "SwapFiles")
