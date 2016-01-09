@@ -13,18 +13,18 @@ Uint32 GoalTextFlags;
 FunctionPointer(void, sub_408530, (NJS_OBJECT *), 0x408530);
 void __cdecl GoalRing_Display(ObjectMaster *obj)
 {
-	SetTextures(&GoalRingTextures);
-	PushMatrix2(0);
-	MatrixTranslate2(0, &obj->Data1->Position);
+	njSetTexture(&GoalRingTextures);
+	njPushMatrix(0);
+	njTranslateV(0, &obj->Data1->Position);
 	int yrot = obj->Data1->Rotation.y;
 	if (yrot)
-		MatrixRotateY(0, yrot);
+		njRotateY(0, yrot);
 	if (FrameCounter % 40 >= 25)
 		object_GoalText.evalflags |= NJD_EVAL_HIDE;
 	else
 		object_GoalText.evalflags &= ~NJD_EVAL_HIDE;
 	sub_408530(&object_GoalRing);
-	PopMatrices(1);
+	njPopMatrix(1);
 }
 
 void __cdecl GoalRing_Main(ObjectMaster *obj)

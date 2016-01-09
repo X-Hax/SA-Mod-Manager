@@ -23,10 +23,6 @@ extern FileMap sadx_fileMap;
 
 bool forceMipmaps = false;
 
-DataPointer(bool, LoadingFile, 0x3ABDF68);
-FunctionPointer(NJS_TEXMEMLIST*, GetGlobalTexture, (int gbix), 0x0077F5B0);
-FunctionPointer(void, UnloadTextures, (NJS_TEXNAME** texName_pp), 0x00403290);
-
 #define TOMAPSTRING(a) { a, #a }
 
 static const std::unordered_map<HRESULT, const char*> D3DErrors = {
@@ -78,6 +74,13 @@ using namespace std;
 std::vector<std::wstring> TexturePackPaths;
 std::unordered_map<std::wstring, vector<CustomTextureEntry>> entryCache;
 static bool wasLoading = false;
+
+void InitTextureReplacement()
+{
+	WriteJump((void*)0x004210A0, LoadPVM_C);
+	WriteJump((void*)0x0077FC80, LoadPVRFile);
+	WriteJump((void*)0x004228E0, LoadPVR_wrapper);
+}
 
 #pragma region Index Parsing
 
@@ -245,10 +248,10 @@ bool GetDDSHeader(const wstring& path, DDS_HEADER& header)
 NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, const std::string& name)
 {
 	wstring path = _path + L"\\" + wstring(name.begin(), name.end());
-	NJS_TEXMEMLIST* texture = GetGlobalTexture(globalIndex);
+	NJS_TEXMEMLIST* texture = GetCachedTexture(globalIndex);
 
-	// GetGlobalTexture will only return null if over 2048 unique textures have been loaded.
-	// TODO: Add custom texture overflow vector with an access function similar to GetGlobalTexture.
+	// GetCachedTexture will only return null if over 2048 unique textures have been loaded.
+	// TODO: Add custom texture overflow vector with an access function similar to GetCachedTexture.
 	if (texture == nullptr)
 	{
 		PrintDebug("Failed to allocate global texture for gbix %u (likely exceeded max global texture limit)\n", globalIndex);
@@ -315,50 +318,49 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, CustomTextureEntry& entry
 
 #pragma region PVM
 
+
 /// <summary>
 /// Replaces the specified PVM with a texture pack virtual PVM.
 /// </summary>
-/// <param name="pvmName">Name of the PVM without extension.</param>
-/// <param name="texList">The tex list.</param>
+/// <param name="filename">Name of the PVM without extension.</param>
+/// <param name="texlist">The tex list.</param>
 /// <returns><c>true</c> on success.</returns>
-bool ReplacePVM(const std::wstring& pvmName, NJS_TEXLIST* texList)
+bool ReplacePVM(const std::wstring& filename, NJS_TEXLIST* texlist)
 {
-	if (texList == nullptr)
+	if (texlist == nullptr)
 		return false;
 
-	string pvmName_a(pvmName.begin(), pvmName.end());
+	string filename_a(filename.begin(), filename.end());
 
 	vector<CustomTextureEntry> customEntries;
 
-	if (!ParseIndex(pvmName + L'\\', customEntries))
+	if (!ParseIndex(filename + L'\\', customEntries))
 		return false;
 
-	texList->nbTexture = customEntries.size();
+	texlist->nbTexture = customEntries.size();
 	bool result = true;
 
-	for (uint32_t i = 0; i < texList->nbTexture; i++)
+	for (uint32_t i = 0; i < texlist->nbTexture; i++)
 	{
-		NJS_TEXMEMLIST* texture = LoadTexture(pvmName, customEntries[i]);;
+		NJS_TEXMEMLIST* texture = LoadTexture(filename, customEntries[i]);;
 
 		// I would just break here, but unloading the textures after that causes issues.
 		// TODO: Investigate that further. This is wasteful.
 		if (texture == nullptr && result)
 			result = false;
 
-		texList->textures[i].texaddr = (Uint32)texture;
+		texlist->textures[i].texaddr = (Uint32)texture;
 	}
 
 	if (!result)
-		UnloadTextures((NJS_TEXNAME**)&texList->textures);
+		njReleaseTexture(texlist);
 
 	return result;
 }
 
-FunctionPointer(signed int, LoadPVM_D_original, (const char*, NJS_TEXLIST*), 0x0077FEB0);
-
-void __cdecl LoadPVM_C(const char* pvmName, NJS_TEXLIST* texList)
+void __cdecl LoadPVM_C(const char* filename, NJS_TEXLIST* texlist)
 {
-	string filename(pvmName);
+	string filename_str(filename);
 	CheckCache();
 	LoadingFile = true;
 
@@ -367,31 +369,33 @@ void __cdecl LoadPVM_C(const char* pvmName, NJS_TEXLIST* texList)
 	// the last entry containing the PVM name the game is trying to load.
 	for (size_t i = TexturePackPaths.size(); i-- > 0;)
 	{
-		wstring path = TexturePackPaths[i] + wstring(filename.begin(), filename.end());
+		wstring path = TexturePackPaths[i] + wstring(filename_str.begin(), filename_str.end());
 
 		if (!DirectoryExists(path))
 			continue;
 
 		// On success, the function is exited. Otherwise, the search continues.
-		if (ReplacePVM(path, texList))
+		if (ReplacePVM(path, texlist))
 			return;
 	}
 
 	// Default behavior.
 	// Loads real PVM archives if no texture packs were found or successfully loaded.
 	// TODO: Clean up.
-	if (FileExists(string(sadx_fileMap.replaceFile(("SYSTEM\\" + filename + ".PVM").c_str()))) || FileExists(string(sadx_fileMap.replaceFile(("SYSTEM\\" + filename).c_str()))))
+	if (FileExists(string(sadx_fileMap.replaceFile(("SYSTEM\\" + filename_str + ".PVM").c_str()))) || FileExists(string(sadx_fileMap.replaceFile(("SYSTEM\\" + filename_str).c_str()))))
 	{
-		LoadPVM_D_original(pvmName, texList);
+		njLoadTexturePvmFile(filename, texlist);
 		return;
 	}
 
-	PrintDebug("Unable to locate PVM: %s\n", pvmName);
+	PrintDebug("Unable to locate PVM: %s\n", filename);
 }
 
 #pragma endregion
 
 #pragma region PVR
+
+DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
 
 /// <summary>
 /// Loads texture pack replacement for specified PVR.
@@ -435,13 +439,6 @@ bool ReplacePVR(const std::string& filename, NJS_TEXMEMLIST** tex)
 	return false;
 }
 
-ThiscallFunctionPointer(int, sub_78CF80, (void*), 0x78CF80);
-FunctionPointer(NJS_TEXMEMLIST*, TexMemList_PixelFormat, (NJS_TEXINFO* info, Uint32 gbix), 0x0077F7F0);
-FunctionPointer(NJS_TEXMEMLIST*, LoadPVR, (void* data, int gbix), 0x0077FBD0);
-FunctionPointer(void*, LoadTextureFromFile, (const char*), 0x007929D0);
-FunctionPointer(void, j__HeapFree_0, (LPVOID lpMem), 0x00792A70);
-DataPointer(char, unk_3CFC000, 0x3CFC000);
-
 signed int __cdecl LoadPVR_wrapper(NJS_TEXLIST* texlist)
 {
 	CheckCache();
@@ -464,10 +461,11 @@ signed int __cdecl LoadPVRFile(NJS_TEXLIST* texlist)
 		if (entries->attr & NJD_TEXATTR_GLOBALINDEX)
 			gbix = entries->texaddr;
 
-		sub_78CF80(*((void**)&unk_3CFC000 + i));
+		DoSomethingWithPalette(unk_3CFC000[i]);
 		Uint32 attr = entries->attr;
 
 		// If already loaded, grab from memory. Otherwise, load from disk.
+		// If type is memory, ->filename is NJS_TEXINFO or data, otherwise a string.
 		if (attr & NJD_TEXATTR_TYPE_MEMORY)
 		{
 			if (attr & NJD_TEXATTR_GLOBALINDEX)
@@ -483,7 +481,7 @@ signed int __cdecl LoadPVRFile(NJS_TEXLIST* texlist)
 				continue;
 
 			filename += ".pvr";
-			void* data = LoadTextureFromFile(filename.c_str());
+			void* data = LoadPVx(filename.c_str());
 			memlist = LoadPVR(data, gbix);
 			j__HeapFree_0(data);
 		}
