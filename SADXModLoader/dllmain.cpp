@@ -2246,7 +2246,7 @@ static void __cdecl InitMods(void)
 				char buf[9];
 				for (int k = 0; k < 9999; k++)
 				{
-					_snprintf(buf, 5, "Item%d", k);
+					_snprintf(buf, sizeof(buf), "Item%d", k);
 					if (dlldata->hasGroup(buf))
 					{
 						group = dlldata->getGroup(buf);
