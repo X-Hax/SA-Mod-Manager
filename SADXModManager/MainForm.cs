@@ -25,6 +25,7 @@ namespace SADXModManager
 		Dictionary<string, ModInfo> mods;
 		const string codexmlpath = "mods/Codes.xml";
 		const string codedatpath = "mods/Codes.dat";
+		const string patchdatpath = "mods/Patches.dat";
 		CodeList mainCodes;
 		List<Code> codes;
 		bool installed;
@@ -226,12 +227,32 @@ namespace SADXModManager
 			loaderini.WindowHeight = (int)windowHeight.Value;
 			loaderini.MaintainWindowAspectRatio = maintainWindowAspectRatioCheckBox.Checked;
 			IniFile.Serialize(loaderini, loaderinipath);
+			List<Code> codes = new List<Code>();
+			List<Code> patches = new List<Code>();
+			foreach (Code item in codesCheckedListBox.CheckedIndices.OfType<int>().Select(a => codes[a]))
+				if (item.Patch)
+					patches.Add(item);
+				else
+					codes.Add(item);
+			using (FileStream fs = File.Create(patchdatpath))
+			using (BinaryWriter bw = new BinaryWriter(fs, System.Text.Encoding.ASCII))
+			{
+				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '4' });
+				bw.Write(patches.Count);
+				foreach (Code item in patches)
+				{
+					if (item.IsReg)
+						bw.Write((byte)CodeType.newregs);
+					WriteCodes(item.Lines, bw);
+				}
+				bw.Write(byte.MaxValue);
+			}
 			using (FileStream fs = File.Create(codedatpath))
 			using (BinaryWriter bw = new BinaryWriter(fs, System.Text.Encoding.ASCII))
 			{
 				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '4' });
-				bw.Write(codesCheckedListBox.CheckedIndices.Count);
-				foreach (Code item in codesCheckedListBox.CheckedIndices.OfType<int>().Select(a => codes[a]))
+				bw.Write(codes.Count);
+				foreach (Code item in codes)
 				{
 					if (item.IsReg)
 						bw.Write((byte)CodeType.newregs);
@@ -560,6 +581,8 @@ namespace SADXModManager
 		public string Name { get; set; }
 		[XmlAttribute("required")]
 		public bool Required { get; set; }
+		[XmlAttribute("patch")]
+		public bool Patch { get; set; }
 		[XmlElement("CodeLine")]
 		public List<CodeLine> Lines { get; set; }
 

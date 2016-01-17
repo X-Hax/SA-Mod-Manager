@@ -192,7 +192,7 @@
       <ValueType>hex</ValueType>
     </CodeLine>
   </Code>
-  <Code name="Disable Music">
+  <Code name="Disable Music" patch="true">
     <CodeLine>
       <Type>write8</Type>
       <Address>00425690</Address>
@@ -200,7 +200,7 @@
       <ValueType>hex</ValueType>
     </CodeLine>
   </Code>
-  <Code name="Disable Voices">
+  <Code name="Disable Voices" patch="true">
     <CodeLine>
       <Type>write8</Type>
       <Address>00425710</Address>
@@ -354,7 +354,7 @@
       </TrueLines>
     </CodeLine>
   </Code>
-  <Code name="Tails Can Play Emerald Coast">
+  <Code name="Tails Can Play Emerald Coast" patch="true">
     <CodeLine>
       <Type>write16</Type>
       <Address>004F6B02</Address>
@@ -362,7 +362,7 @@
       <ValueType>hex</ValueType>
     </CodeLine>
   </Code>
-  <Code name="Don't Lose Rings When Hit">
+  <Code name="Don't Lose Rings When Hit" patch="true">
     <CodeLine>
       <Type>write8</Type>
       <Address>00425AB0</Address>
@@ -371,13 +371,21 @@
       <RepeatCount>9</RepeatCount>
     </CodeLine>
   </Code>
-  <Code name="Walk on Water">
+  <Code name="Walk on Water" patch="true">
     <CodeLine>
       <Type>write16</Type>
       <Address>004496E1</Address>
       <Value>9090</Value>
       <ValueType>hex</ValueType>
       <RepeatCount>3</RepeatCount>
+    </CodeLine>
+  </Code>
+  <Code name="Skip Intro" patch="true">
+    <CodeLine>
+      <Type>write32</Type>
+      <Address>0040C10C</Address>
+      <Value>11</Value>
+      <ValueType>decimal</ValueType>
     </CodeLine>
   </Code>
 </CodeList>
