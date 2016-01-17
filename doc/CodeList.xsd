@@ -12,7 +12,8 @@
               <xs:element name="CodeLine" maxOccurs="unbounded" type="CodeLine" />
             </xs:sequence>
             <xs:attribute name="name" type="xs:string" use="required" />
-            <xs:attribute name="enabled" type="xs:boolean" use="optional" default="false" />
+            <xs:attribute name="required" type="xs:boolean" use="optional" default="false" />
+            <xs:attribute name="patch" type="xs:boolean" use="optional" default="false" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>
