@@ -486,6 +486,9 @@ int CodeParser::processCodeList_int(const list<Code> &codes, int regnum)
 		case xor32:
 			xorcode(addru32, it->repeatcount, it->value.u32);
 			break;
+		case writenop:
+			WriteData(addru8, 0x90u, it->value.u32);
+			break;
 		case ifeq8:
 			ifcode(8,==);
 				break;
@@ -843,6 +846,9 @@ int CodeParser::processCodeList_int(const list<Code> &codes, int regnum)
 		case xorreg32:
 			xorcode(addru32, it->repeatcount, regs[it->value.u8].u32);
 			break;
+		case writenopreg:
+			WriteData(addru8, 0x90u, regs[it->value.u8].u32);
+			break;
 		case ifeqreg8:
 			ifcodereg(8,==);
 				break;
@@ -1069,7 +1075,7 @@ int CodeParser::readCodes(istream &stream)
 	clear();
 
 	// Check for the magic number.
-	static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '4'};
+	static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '5'};
 	char buf[sizeof(codemagic)];
 	stream.read(buf, sizeof(buf));
 	if (memcmp(buf, codemagic, sizeof(codemagic)) != 0)
