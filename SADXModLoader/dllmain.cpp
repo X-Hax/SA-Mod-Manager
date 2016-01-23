@@ -39,13 +39,6 @@ using std::vector;
 #include "Events.h"
 #include "FixFOV.h"
 
-static HINSTANCE myhandle;
-static HMODULE chrmodelshandle;
-static FARPROC __stdcall MyGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
-{
-	return GetProcAddress((hModule == myhandle ? chrmodelshandle : hModule), lpProcName);
-}
-
 /**
  * Replace slash characters with backslashes.
  * @param c Character.
@@ -67,10 +60,8 @@ static void HookTheAPI()
 	HMODULE hModule = GetModuleHandle(NULL);
 	PIMAGE_IMPORT_DESCRIPTOR pImportDesc;
 
-	pNewFunction = (PROC)MyGetProcAddress;
-	PROC pNewCreateFile = (PROC)MyCreateFileA;
-	pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "GetProcAddress");
-	PROC pActualCreateFile = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "CreateFileA");
+	pNewFunction = (PROC)MyCreateFileA;
+	pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "CreateFileA");
 
 	pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR)ImageDirectoryEntryToData(
 		hModule, TRUE, IMAGE_DIRECTORY_ENTRY_IMPORT, &ulSize);
@@ -96,16 +87,9 @@ static void HookTheAPI()
 				{
 					DWORD dwOldProtect = 0;
 					VirtualProtect(ppfn, sizeof(pNewFunction), PAGE_WRITECOPY, &dwOldProtect);
-					WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewFunction, sizeof(pNewFunction), NULL);
+					WriteData(ppfn, pNewFunction);
 					VirtualProtect(ppfn, sizeof(pNewFunction), dwOldProtect, &dwOldProtect);
 				} // Function that we are looking for
-				else if (*ppfn == pActualCreateFile)
-				{
-					DWORD dwOldProtect = 0;
-					VirtualProtect(ppfn, sizeof(pNewCreateFile), PAGE_WRITECOPY, &dwOldProtect);
-					WriteProcessMemory(GetCurrentProcess(), ppfn, &pNewCreateFile, sizeof(pNewCreateFile), NULL);
-					VirtualProtect(ppfn, sizeof(pNewCreateFile), dwOldProtect, &dwOldProtect);
-				}
 			}
 		}
 	}
@@ -2511,6 +2495,7 @@ static void __cdecl InitMods(void)
 	WriteJump((void*)0x0040FF00, (void*)OnControl);
 }
 
+DataPointer(HMODULE, chrmodelshandle, 0x3AB9170);
 static void __cdecl LoadChrmodels(void)
 {
 	chrmodelshandle = LoadLibrary(L".\\system\\CHRMODELS_orig.dll");
@@ -2540,7 +2525,6 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 	switch (fdwReason)
 	{
 	case DLL_PROCESS_ATTACH:
-		myhandle = hinstDll;
 		HookTheAPI();
 
 		// Make sure this is the correct version of SADX.
