@@ -356,8 +356,8 @@ struct ObjectMaster
 	void *field_1C;
 	CharObj1 *Data1;
 	void *field_24;
-	void *field_28;
-	void *field_2C;
+	void *UnknownA_ptr;
+	void *UnknownB_ptr;
 	int field_30;
 };
 
