@@ -108,6 +108,7 @@
       <xs:enumeration value="xor8" />
       <xs:enumeration value="xor16" />
       <xs:enumeration value="xor32" />
+      <xs:enumeration value="writenop" />
       <xs:enumeration value="ifeq8" />
       <xs:enumeration value="ifeq16" />
       <xs:enumeration value="ifeq32" />
@@ -206,6 +207,7 @@
       <xs:enumeration value="xorreg8" />
       <xs:enumeration value="xorreg16" />
       <xs:enumeration value="xorreg32" />
+      <xs:enumeration value="writenopreg" />
       <xs:enumeration value="ifeqreg8" />
       <xs:enumeration value="ifeqreg16" />
       <xs:enumeration value="ifeqreg32" />

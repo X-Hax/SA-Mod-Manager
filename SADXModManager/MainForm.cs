@@ -237,7 +237,7 @@ namespace SADXModManager
 			using (FileStream fs = File.Create(patchdatpath))
 			using (BinaryWriter bw = new BinaryWriter(fs, System.Text.Encoding.ASCII))
 			{
-				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '4' });
+				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '5' });
 				bw.Write(patches.Count);
 				foreach (Code item in patches)
 				{
@@ -250,7 +250,7 @@ namespace SADXModManager
 			using (FileStream fs = File.Create(codedatpath))
 			using (BinaryWriter bw = new BinaryWriter(fs, System.Text.Encoding.ASCII))
 			{
-				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '4' });
+				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '5' });
 				bw.Write(codes.Count);
 				foreach (Code item in codes)
 				{
@@ -674,6 +674,7 @@ namespace SADXModManager
 		and8, and16, and32,
 		or8, or16, or32,
 		xor8, xor16, xor32,
+		writenop,
 		ifeq8, ifeq16, ifeq32, ifeqfloat,
 		ifne8, ifne16, ifne32, ifnefloat,
 		ifltu8, ifltu16, ifltu32, ifltfloat,
@@ -704,6 +705,7 @@ namespace SADXModManager
 		andreg8, andreg16, andreg32,
 		orreg8, orreg16, orreg32,
 		xorreg8, xorreg16, xorreg32,
+		writenopreg,
 		ifeqreg8, ifeqreg16, ifeqreg32, ifeqregfloat,
 		ifnereg8, ifnereg16, ifnereg32, ifneregfloat,
 		ifltregu8, ifltregu16, ifltregu32, ifltregfloat,
