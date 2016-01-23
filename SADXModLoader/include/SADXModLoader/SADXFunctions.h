@@ -404,6 +404,13 @@ VoidFunc(EnableControl, 0x0040EF40);
 VoidFunc(DisableControl, 0x0040EF50);
 FunctionPointer(Bool, IsControlEnabled, (void), 0x0040EF60);
 
+// Chao stuff
+FunctionPointer(Bool, IsChaoEnabled, (void), 0x00731CF0);
+FunctionPointer(ObjectMaster*, GetChaoObject, (short idk, short index), 0x0071A1F0);
+FunctionPointer(int, GetCurrentChaoStage, (void), 0x00715140);
+VoidFunc(DisableChao, 0x00731CE0);
+VoidFunc(EnableChao, 0x00731CD0);
+
 #ifdef _MSC_VER
 
 // ObjectMaster *__usercall<eax>(signed int a1<edx>, void (__cdecl *LoadSub)(ObjectMaster *)<edi>)
