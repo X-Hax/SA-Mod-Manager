@@ -135,254 +135,262 @@ For instructions with multiple formats, the formats are as follows:
     0x35: xor8
     0x36: xor16
     0x37: xor32
-
+    
+`writenop`: Replaces `value` bytes starting at `address` with `0x90` (x86 opcode for NOP)
+    
+    0x38: writenop
+    
 `ifeq8`, `ifeq16`, `ifeq32`, `ifeqfloat`: `if (*address == value)`
 
-    0x38: ifeq8
-    0x39: ifeq16
-    0x3A: ifeq32
-    0x3B: ifeqfloat
+    0x39: ifeq8
+    0x3A: ifeq16
+    0x3B: ifeq32
+    0x3C: ifeqfloat
 
 `ifne8`, `ifne16`, `ifne32`, `ifnefloat`: `if (*address != value)`
 
-    0x3C: ifne8
-    0x3D: ifne16
-    0x3E: ifne32
-    0x3F: ifnefloat
+    0x3D: ifne8
+    0x3E: ifne16
+    0x3F: ifne32
+    0x40: ifnefloat
 
 `ifltu8`, `ifltu16`, `ifltu32`, `ifltfloat`, `iflts8`, `iflts16`, `iflts32`: `if (*address < value)`
 
-    0x40: ifltu8
-    0x41: ifltu16
-    0x42: ifltu32
-    0x43: ifltfloat
-    0x44: iflts8
-    0x45: iflts16
-    0x46: iflts32
+    0x41: ifltu8
+    0x42: ifltu16
+    0x43: ifltu32
+    0x44: ifltfloat
+    0x45: iflts8
+    0x46: iflts16
+    0x47: iflts32
 
 `ifltequ8`, `ifltequ16`, `ifltequ32`, `iflteqfloat`, `iflteqs8`, `iflteqs16`, `iflteqs32`: `if (*address <= value)`
 
-    0x47: ifltequ8
-    0x48: ifltequ16
-    0x49: ifltequ32
-    0x4A: iflteqfloat
-    0x4B: iflteqs8
-    0x4C: iflteqs16
-    0x4D: iflteqs32
+    0x48: ifltequ8
+    0x49: ifltequ16
+    0x4A: ifltequ32
+    0x4B: iflteqfloat
+    0x4C: iflteqs8
+    0x4D: iflteqs16
+    0x4E: iflteqs32
 
 `ifgtu8`, `ifgtu16`, `ifgtu32`, `ifgtfloat`, `ifgts8`, `ifgts16`, `ifgts32`: `if (*address > value)`
 
-    0x4E: ifgtu8
-    0x4F: ifgtu16
-    0x50: ifgtu32
-    0x51: ifgtfloat
-    0x52: ifgts8
-    0x53: ifgts16
-    0x54: ifgts32
+    0x4F: ifgtu8
+    0x50: ifgtu16
+    0x51: ifgtu32
+    0x52: ifgtfloat
+    0x53: ifgts8
+    0x54: ifgts16
+    0x55: ifgts32
 
 `ifgtequ8`, `ifgtequ16`, `ifgtequ32`, `ifgteqfloat`, `ifgteqs8`, `ifgteqs16`, `ifgteqs32`: `if (*address >= value)`
 
-    0x55: ifgtequ8
-    0x56: ifgtequ16
-    0x57: ifgtequ32
-    0x58: ifgteqfloat
-    0x59: ifgteqs8
-    0x5A: ifgteqs16
-    0x5B: ifgteqs32
+    0x56: ifgtequ8
+    0x57: ifgtequ16
+    0x58: ifgtequ32
+    0x59: ifgteqfloat
+    0x5A: ifgteqs8
+    0x5B: ifgteqs16
+    0x5C: ifgteqs32
 
 `ifmask8`, `ifmask16`, `ifmask32`: `if (*address & value == value)`
 
-    0x5C: ifmask8
-    0x5D: ifmask16
-    0x5E: ifmask32
+    0x5D: ifmask8
+    0x5E: ifmask16
+    0x5F: ifmask32
 
 `ifkbkey`: If keyboard key is pressed
 
-    0x5F: ifkbkey
+    0x60: ifkbkey
 
 `readreg8`, `readreg16`, `readreg32`: `reg[value] = *address;`
 
-    0x60: readreg8
-    0x61: readreg16
-    0x62: readreg32
+    0x61: readreg8
+    0x62: readreg16
+    0x63: readreg32
 
 `writereg8`, `writereg16`, `writereg32`: `*address = reg[value];`
 
-    0x63: writereg8
-    0x64: writereg16
-    0x65: writereg32
+    0x64: writereg8
+    0x65: writereg16
+    0x66: writereg32
 
 `addreg8`, `addreg16`, `addreg32`, `addregfloat`: `*address += reg[value];`
 
-    0x66: addreg8
-    0x67: addreg16
-    0x68: addreg32
-    0x69: addregfloat
+    0x67: addreg8
+    0x68: addreg16
+    0x69: addreg32
+    0x6A: addregfloat
 
 `subreg8`, `subreg16`, `subreg32`, `subregfloat`: `*address -= reg[value];`
 
-    0x6A: subreg8
-    0x6B: subreg16
-    0x6C: subreg32
-    0x6D: subregfloat
+    0x6B: subreg8
+    0x6C: subreg16
+    0x6D: subreg32
+    0x6E: subregfloat
 
 `mulregu8`, `mulregu16`, `mulregu32`, `mulregfloat`, `mulregs8`, `mulregs16`, `mulregs32`: `*address *= reg[value];`
 
-    0x6E: mulregu8
-    0x6F: mulregu16
-    0x70: mulregu32
-    0x71: mulregfloat
-    0x72: mulregs8
-    0x73: mulregs16
-    0x74: mulregs32
+    0x6F: mulregu8
+    0x70: mulregu16
+    0x71: mulregu32
+    0x72: mulregfloat
+    0x73: mulregs8
+    0x74: mulregs16
+    0x75: mulregs32
 
 `divregu8`, `divregu16`, `divregu32`, `divregfloat`, `divregs8`, `divregs16`, `divregs32`: `*address /= reg[value];`
 
-    0x75: divregu8
-    0x76: divregu16
-    0x77: divregu32
-    0x78: divregfloat
-    0x79: divregs8
-    0x7A: divregs16
-    0x7B: divregs32
+    0x76: divregu8
+    0x77: divregu16
+    0x78: divregu32
+    0x79: divregfloat
+    0x7A: divregs8
+    0x7B: divregs16
+    0x7C: divregs32
 
 `modregu8`, `modregu16`, `modregu32`, `modregs8`, `modregs16`, `modregs32`: `*address %= reg[value];`
 
-    0x7C: modregu8
-    0x7D: modregu16
-    0x7E: modregu32
-    0x7F: modregs8
-    0x80: modregs16
-    0x81: modregs32
+    0x7D: modregu8
+    0x7E: modregu16
+    0x7F: modregu32
+    0x80: modregs8
+    0x81: modregs16
+    0x82: modregs32
 
 `shlreg8`, `shlreg16`, `shlreg32`: `*address <<= reg[value];`
 
-    0x82: shlreg8
-    0x83: shlreg16
-    0x84: shlreg32
+    0x83: shlreg8
+    0x84: shlreg16
+    0x85: shlreg32
 
 `shrregu8`, `shrregu16`, `shrregu32`: Logical shift right `*address` by `reg[value]` bits.
 
-    0x85: shrregu8
-    0x86: shrregu16
-    0x87: shrregu32
+    0x86: shrregu8
+    0x87: shrregu16
+    0x88: shrregu32
 
 `shrregs8`, `shrregs16`, `shrregs32`: Arithmetic shift right `*address` by `reg[value]` bits.
 
-    0x88: shrregs8
-    0x89: shrregs16
-    0x8A: shrregs32
+    0x89: shrregs8
+    0x8A: shrregs16
+    0x8B: shrregs32
 
 `rolreg8`, `rolreg16`, `rolreg32`: Rotate left `*address` by `reg[value]` bits.
 
-    0x8B: rolreg8
-    0x8C: rolreg16
-    0x8D: rolreg32
+    0x8C: rolreg8
+    0x8D: rolreg16
+    0x8E: rolreg32
 
 `rorreg8`, `rorreg16`, `rorreg32`: Rotate right `*address` by `reg[value]` bits.
 
-    0x8E: rorreg8
-    0x8F: rorreg16
-    0x90: rorreg32
+    0x8F: rorreg8
+    0x90: rorreg16
+    0x91: rorreg32
 
 `andreg8`, `andreg16`, `andreg32`: `*address &= reg[value];`
 
-    0x91: andreg8
-    0x92: andreg16
-    0x93: andreg32
+    0x92: andreg8
+    0x93: andreg16
+    0x94: andreg32
 
 `orreg8`, `orreg16`, `orreg32`: `*address |= reg[value];`
 
-    0x94: orreg8
-    0x95: orreg16
-    0x96: orreg32
+    0x95: orreg8
+    0x96: orreg16
+    0x97: orreg32
 
 `xorreg8`, `xorreg16`, `xorreg32`: `*address ^= reg[value];`
 
-    0x97: xorreg8
-    0x98: xorreg16
-    0x99: xorreg32
-
+    0x98: xorreg8
+    0x99: xorreg16
+    0x9A: xorreg32
+    
+`writenopreg`: Replaces `reg[value]` bytes starting at `address` with `0x90` (x86 opcode for NOP)
+    
+    0x9B: writenopreg
+    
 `ifeqreg8`, `ifeqreg16`, `ifeqreg32`, `ifeqregfloat`: `if (*address == reg[value])`
 
-    0x9A: ifeqreg8
-    0x9B: ifeqreg16
-    0x9C: ifeqreg32
-    0x9D: ifeqregfloat
+    0x9C: ifeqreg8
+    0x9D: ifeqreg16
+    0x9E: ifeqreg32
+    0x9F: ifeqregfloat
 
 `ifnereg8`, `ifnereg16`, `ifnereg32`, `ifneregfloat`: `if (*address != reg[value])`
 
-    0x9E: ifnereg8
-    0x9F: ifnereg16
-    0xA0: ifnereg32
-    0xA1: ifneregfloat
+    0xA0: ifnereg8
+    0xA1: ifnereg16
+    0xA2: ifnereg32
+    0xA3: ifneregfloat
 
 `ifltregu8`, `ifltregu16`, `ifltregu32`, `ifltregfloat`, `ifltregs8`, `ifltregs16`, `ifltregs32`: `if (*address < reg[value])`
 
-    0xA2: ifltregu8
-    0xA3: ifltregu16
-    0xA4: ifltregu32
-    0xA5: ifltregfloat
-    0xA6: ifltregs8
-    0xA7: ifltregs16
-    0xA8: ifltregs32
+    0xA4: ifltregu8
+    0xA5: ifltregu16
+    0xA6: ifltregu32
+    0xA7: ifltregfloat
+    0xA8: ifltregs8
+    0xA9: ifltregs16
+    0xAA: ifltregs32
 
 `iflteqregu8`, `iflteqregu16`, `iflteqregu32`, `iflteqregfloat`, `iflteqregs8`, `iflteqregs16`, `iflteqregs32`: `if (*address <= reg[value])`
 
-    0xA9: iflteqregu8
-    0xAA: iflteqregu16
-    0xAB: iflteqregu32
-    0xAC: iflteqregfloat
-    0xAD: iflteqregs8
-    0xAE: iflteqregs16
-    0xAF: iflteqregs32
+    0xAB: iflteqregu8
+    0xAC: iflteqregu16
+    0xAD: iflteqregu32
+    0xAE: iflteqregfloat
+    0xAF: iflteqregs8
+    0xB0: iflteqregs16
+    0xB1: iflteqregs32
 
 `ifgtregu8`, `ifgtregu16`, `ifgtregu32`, `ifgtregfloat`, `ifgtregs8`, `ifgtregs16`, `ifgtregs32`: `if (*address > reg[value])`
 
-    0xB0: ifgtregu8
-    0xB1: ifgtregu16
-    0xB2: ifgtregu32
-    0xB3: ifgtregfloat
-    0xB4: ifgtregs8
-    0xB5: ifgtregs16
-    0xB6: ifgtregs32
+    0xB2: ifgtregu8
+    0xB3: ifgtregu16
+    0xB4: ifgtregu32
+    0xB5: ifgtregfloat
+    0xB6: ifgtregs8
+    0xB7: ifgtregs16
+    0xB8: ifgtregs32
 
 `ifgteqregu8`, `ifgteqregu16`, `ifgteqregu32`, `ifgteqregfloat`, `ifgteqregs8`, `ifgteqregs16`, `ifgteqregs32`: `if (*address >= reg[value])`
 
-    0xB7: ifgteqregu8
-    0xB8: ifgteqregu16
-    0xB9: ifgteqregu32
-    0xBA: ifgteqregfloat
-    0xBB: ifgteqregs8
-    0xBC: ifgteqregs16
-    0xBD: ifgteqregs32
+    0xB9: ifgteqregu8
+    0xBA: ifgteqregu16
+    0xBB: ifgteqregu32
+    0xBC: ifgteqregfloat
+    0xBD: ifgteqregs8
+    0xBE: ifgteqregs16
+    0xBF: ifgteqregs32
 
 `ifmaskreg8`, `ifmaskreg16`, `ifmaskreg32`: `if (*address & reg[value] == reg[value])`
 
-    0xBE: ifmaskreg8
-    0xBF: ifmaskreg16
-    0xC0: ifmaskreg32
+    0xC0: ifmaskreg8
+    0xC1: ifmaskreg16
+    0xC2: ifmaskreg32
     
 `s8tos32`, `s16tos32`, `s32tofloat`, `u32tofloat`, `floattos32`, `floattou32`: `*address = (dsttype)*address`
 
-    0xC1: s8tos32
-    0xC2: s16tos32
-    0xC3: s32tofloat
-    0xC4: u32tofloat
-    0xC5: floattos32
-    0xC6: floattou32
+    0xC3: s8tos32
+    0xC4: s16tos32
+    0xC5: s32tofloat
+    0xC6: u32tofloat
+    0xC7: floattos32
+    0xC8: floattou32
     
 `_else`: 'else' condition block. Use after an 'if' opcode.
 
-    0xC7: else
+    0xC9: else
 
 `endif`: 'endif'. Use after 'if' or 'else' opcodes.
 
-    0xC8: endif
+    0xCA: endif
 
 `newregs`: Create a new register set.
 
-    0xC9: newregs
+    0xCB: newregs
 
 `codeeof`: End of file.
 
@@ -402,7 +410,7 @@ Code files start with the following struct:
 
     #pragma pack(1)
     struct CodeFileHeader {
-        char magic[6];	// "codev4"
+        char magic[6];	// "codev5"
         int codes;	// Number of codes in the file.
     };
     #pragma pack()
