@@ -362,18 +362,27 @@ ifmaskreg8, ifmaskreg16, ifmaskreg32: if (*address & reg[value] == reg[value])
     0xBE: ifmaskreg8
     0xBF: ifmaskreg16
     0xC0: ifmaskreg32
+    
+s8tos32, s16tos32, s32tofloat, u32tofloat, floattos32, floattou32: *address = (dsttype)*address
 
+    0xC1: s8tos32
+    0xC2: s16tos32
+    0xC3: s32tofloat
+    0xC4: u32tofloat
+    0xC5: floattos32
+    0xC6: floattou32
+    
 _else: 'else' condition block. Use after an 'if' opcode.
 
-    0xC1: else
+    0xC7: else
 
 endif: 'endif'. Use after 'if' or 'else' opcodes.
 
-    0xC2: endif
+    0xC8: endif
 
 newregs: Create a new register set.
 
-    0xC3: newregs
+    0xC9: newregs
 
 codeeof: End of file.
 
@@ -383,7 +392,7 @@ codeeof: End of file.
 3. XML format
 -------------
 
-TODO
+See the [XML schema](CodeList.xsd)
 
 
 4. Binary format
@@ -393,7 +402,7 @@ Code files start with the following struct:
 
     #pragma pack(1)
     struct CodeFileHeader {
-        char magic[6];	// "codev3"
+        char magic[6];	// "codev4"
         int codes;	// Number of codes in the file.
     };
     #pragma pack()
