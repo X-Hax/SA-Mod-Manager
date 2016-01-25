@@ -2004,7 +2004,7 @@ static void __cdecl InitMods(void)
 
 	// It's mod loading time!
 	PrintDebug("Loading mods...\n");
-	for (int i = 1; i < 999; i++)
+	for (int i = 1; i <= 999; i++)
 	{
 		char key[8];
 		_snprintf(key, sizeof(key), "Mod%d", i);
