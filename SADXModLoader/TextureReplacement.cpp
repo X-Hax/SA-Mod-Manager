@@ -16,12 +16,12 @@
 #include "FileMap.hpp"
 #include "D3DCommon.h"
 #include "DDS.h"
+#include "AutoMipmap.h"
+
 extern FileMap sadx_fileMap;
 
 // This
 #include "TextureReplacement.h"
-
-bool forceMipmaps = false;
 
 #define TOMAPSTRING(a) { a, #a }
 
@@ -78,8 +78,8 @@ static bool wasLoading = false;
 void InitTextureReplacement()
 {
 	WriteJump((void*)0x004210A0, LoadPVM_C);
-	WriteJump((void*)0x0077FC80, LoadPVRFile);
-	WriteJump((void*)0x004228E0, LoadPVR_wrapper);
+	WriteJump((void*)0x0077FC80, njLoadTexture_Hook);
+	WriteJump((void*)0x004228E0, njLoadTexture_Wrapper);
 }
 
 #pragma region Index Parsing
@@ -245,7 +245,7 @@ bool GetDDSHeader(const wstring& path, DDS_HEADER& header)
 /// <param name="globalIndex">The global index for this texture.</param>
 /// <param name="name">The filename of this texture..</param>
 /// <returns><c>true</c> on success.</returns>
-NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, const std::string& name)
+NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, const std::string& name, bool mipmap)
 {
 	wstring path = _path + L"\\" + wstring(name.begin(), name.end());
 	NJS_TEXMEMLIST* texture = GetCachedTexture(globalIndex);
@@ -265,9 +265,9 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 		}
 		else
 		{
-			uint32_t levels = (forceMipmaps) ? D3DX_DEFAULT : 1;
+			uint32_t levels = (mipmap) ? D3DX_DEFAULT : 1;
 
-			if (!forceMipmaps)
+			if (!mipmap)
 			{
 				DDS_HEADER header;
 				if (GetDDSHeader(path, header))
@@ -309,9 +309,9 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 /// <param name="_path">The folder containing the texture.</param>
 /// <param name="entry">The entry containing the global index and filename.</param>
 /// <returns><c>true</c> on success.</returns>
-NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, CustomTextureEntry& entry)
+NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, CustomTextureEntry& entry, bool mipmap)
 {
-	return LoadTexture(_path, entry.globalIndex, entry.name);
+	return LoadTexture(_path, entry.globalIndex, entry.name, mipmap);
 }
 
 #pragma endregion
@@ -339,10 +339,14 @@ bool ReplacePVM(const std::wstring& filename, NJS_TEXLIST* texlist)
 
 	texlist->nbTexture = customEntries.size();
 	bool result = true;
+	bool blacklisted = mipmap::IsBlacklistedPVM(filename_a.c_str());
+	bool mipmap = mipmap::AutoMipmapsEnabled() && !blacklisted;
 
 	for (uint32_t i = 0; i < texlist->nbTexture; i++)
 	{
-		NJS_TEXMEMLIST* texture = LoadTexture(filename, customEntries[i]);;
+		NJS_TEXMEMLIST* texture = LoadTexture(filename, customEntries[i], mipmap);
+		if (!blacklisted)
+			texture->texaddr |= NJD_TEXATTR_AUTOMIPMAP;
 
 		// I would just break here, but unloading the textures after that causes issues.
 		// TODO: Investigate that further. This is wasteful.
@@ -360,6 +364,7 @@ bool ReplacePVM(const std::wstring& filename, NJS_TEXLIST* texlist)
 
 void __cdecl LoadPVM_C(const char* filename, NJS_TEXLIST* texlist)
 {
+	mipmap::IsBlacklistedPVM(filename);
 	string filename_str(filename);
 	CheckCache();
 	LoadingFile = true;
@@ -376,7 +381,10 @@ void __cdecl LoadPVM_C(const char* filename, NJS_TEXLIST* texlist)
 
 		// On success, the function is exited. Otherwise, the search continues.
 		if (ReplacePVM(path, texlist))
+		{
+			mipmap::SkipMipmap(false);
 			return;
+		}
 	}
 
 	// Default behavior.
@@ -385,6 +393,7 @@ void __cdecl LoadPVM_C(const char* filename, NJS_TEXLIST* texlist)
 	if (FileExists(string(sadx_fileMap.replaceFile(("SYSTEM\\" + filename_str + ".PVM").c_str()))) || FileExists(string(sadx_fileMap.replaceFile(("SYSTEM\\" + filename_str).c_str()))))
 	{
 		njLoadTexturePvmFile(filename, texlist);
+		mipmap::SkipMipmap(false);
 		return;
 	}
 
@@ -431,7 +440,7 @@ bool ReplacePVR(const std::string& filename, NJS_TEXMEMLIST** tex)
 				transform(b.begin(), b.end(), b.begin(), ::tolower);
 
 				if (a == b)
-					return (*tex = LoadTexture(TexturePackPaths[i], e.globalIndex, e.name)) != nullptr;
+					return (*tex = LoadTexture(TexturePackPaths[i], e.globalIndex, e.name, mipmap::IsBlacklistedPVR(filename.c_str()))) != nullptr;
 			}
 		}
 	}
@@ -439,14 +448,14 @@ bool ReplacePVR(const std::string& filename, NJS_TEXMEMLIST** tex)
 	return false;
 }
 
-signed int __cdecl LoadPVR_wrapper(NJS_TEXLIST* texlist)
+Sint32 __cdecl njLoadTexture_Wrapper(NJS_TEXLIST* texlist)
 {
 	CheckCache();
 	LoadingFile = true;
-	return LoadPVRFile(texlist);
+	return njLoadTexture_Hook(texlist);
 }
 
-signed int __cdecl LoadPVRFile(NJS_TEXLIST* texlist)
+Sint32 __cdecl njLoadTexture_Hook(NJS_TEXLIST* texlist)
 {
 	NJS_TEXMEMLIST* memlist; // edi@7
 
@@ -472,6 +481,8 @@ signed int __cdecl LoadPVRFile(NJS_TEXLIST* texlist)
 				memlist = TexMemList_PixelFormat((NJS_TEXINFO*)entries->filename, gbix);
 			else
 				memlist = LoadPVR(*(void**)entries->filename, gbix);
+
+			mipmap::IsBlacklistedGBIX(memlist->globalIndex);
 		}
 		else
 		{
@@ -480,10 +491,15 @@ signed int __cdecl LoadPVRFile(NJS_TEXLIST* texlist)
 			if (ReplacePVR(filename, (NJS_TEXMEMLIST**)&entries->texaddr))
 				continue;
 
+			bool blacklisted = mipmap::IsBlacklistedPVR(filename.c_str());
+
 			filename += ".pvr";
 			void* data = LoadPVx(filename.c_str());
 			memlist = LoadPVR(data, gbix);
 			j__HeapFree_0(data);
+
+			if (blacklisted)
+				mipmap::BlacklistGBIX(memlist->globalIndex);
 		}
 
 		entries->texaddr = (Uint32)memlist;
