@@ -1957,10 +1957,7 @@ static void __cdecl InitMods(void)
 		WriteData((uint8_t *)0x401914, (uint8_t)0xEBu);
 
 	if (settings->getBool("AutoMipmap", true))
-	{
-		forceMipmaps = true;
-		EnableAutoMipmaps();
-	}
+		mipmap::EnableAutoMipmaps();
 
 	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
