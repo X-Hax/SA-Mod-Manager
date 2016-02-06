@@ -787,4 +787,5 @@ string IniFile::escape(const string &str, bool sec, bool key) const
 			result.insert(i++, "\\");
 			break;
 	}
+	return result;
 }
