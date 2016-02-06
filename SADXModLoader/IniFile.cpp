@@ -532,6 +532,7 @@ bool IniFile::removeGroup(const string &section)
 {
 	if (hasGroup(section))
 	{
+		delete m_groups[section];
 		m_groups.erase(section);
 		return true;
 	}
