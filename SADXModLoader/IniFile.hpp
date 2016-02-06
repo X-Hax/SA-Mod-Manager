@@ -30,6 +30,15 @@ class IniGroup
 		int getInt(const std::string &key, int def = 0) const;
 		float getFloat(const std::string &key, float def = 0) const;
 
+		void setString(const std::string &key, const std::string &val);
+		void setWString(const std::string &key, const std::wstring &val);
+		void setBool(const std::string &key, bool val);
+		void setIntRadix(const std::string &key, int radix, int val);
+		void setInt(const std::string &key, int val);
+		void setFloat(const std::string &key, float val);
+
+		bool removeKey(const std::string &key);
+
 		std::unordered_map<std::string, std::string>::iterator begin();
 		std::unordered_map<std::string, std::string>::const_iterator cbegin() const;
 		std::unordered_map<std::string, std::string>::iterator end();
@@ -58,7 +67,9 @@ class IniFile
 		IniFile(FILE *f);
 		~IniFile();
 
+		IniGroup *getGroup(const std::string &section);
 		const IniGroup *getGroup(const std::string &section) const;
+		IniGroup *createGroup(const std::string &section);
 
 		bool hasGroup(const std::string &section) const;
 		bool hasKey(const std::string &section, const std::string &key) const;
@@ -71,6 +82,20 @@ class IniFile
 		int getInt(const std::string &section, const std::string &key, int def = 0) const;
 		float getFloat(const std::string &section, const std::string &key, float def = 0) const;
 
+		void setString(const std::string &section, const std::string &key, const std::string &val);
+		void setWString(const std::string &section, const std::string &key, const std::wstring &val);
+		void setBool(const std::string &section, const std::string &key, bool val);
+		void setIntRadix(const std::string &section, const std::string &key, int radix, int val);
+		void setInt(const std::string &section, const std::string &key, int val);
+		void setFloat(const std::string &section, const std::string &key, float val);
+
+		bool removeGroup(const std::string &group);
+		bool removeKey(const std::string &section, const std::string &key);
+
+		void save(const std::string &filename) const;
+		void save(const std::wstring &filename) const;
+		void save(FILE *f) const;
+
 		std::unordered_map<std::string, IniGroup*>::iterator begin();
 		std::unordered_map<std::string, IniGroup*>::const_iterator cbegin() const;
 		std::unordered_map<std::string, IniGroup*>::iterator end();
@@ -79,6 +104,7 @@ class IniFile
 	protected:
 		void load(FILE *f);
 		void clear(void);
+		std::string escape(const std::string &str, bool sec, bool key) const;
 
 		/**
 		 * INI groups.

@@ -106,8 +106,7 @@ int IniGroup::getIntRadix(const string &key, int radix, int def) const
 	if (iter == m_data.end())
 		return def;
 
-	string value = iter->second;
-	return (int)strtol(value.c_str(), nullptr, radix);
+	return std::stoi(iter->second, nullptr, radix);
 }
 
 /**
@@ -122,7 +121,7 @@ int IniGroup::getInt(const string &key, int def) const
 }
 
 /**
- * Get an floating-point value from the INI group.
+ * Get a floating-point value from the INI group.
  * @param key Key.
  * @param def Default value.
  * @return Floating-point value.
@@ -133,8 +132,106 @@ float IniGroup::getFloat(const string &key, float def) const
 	if (iter == m_data.end())
 		return def;
 
-	string value = iter->second;
-	return (float)strtod(value.c_str(), nullptr);
+	return std::stof(iter->second);
+}
+
+/**
+* Set a string value in the INI group.
+* @param key Key.
+* @param val Value.
+*/
+void IniGroup::setString(const string &key, const string &val)
+{
+	m_data[key] = val;
+}
+
+/**
+* Set a wide string value in the INI group.
+* INI strings are converted from UTF-8 to UTF-16.
+* @param key Key.
+* @param val Value.
+*/
+void IniGroup::setWString(const string &key, const wstring &val)
+{
+	m_data[key] = UTF16toMBS(val, CP_UTF8);
+}
+
+/**
+* Set a boolean value in the INI group.
+* @param key Key.
+* @param val Value.
+*/
+void IniGroup::setBool(const string &key, bool val)
+{
+	string str;
+	if (val)
+		str = "True";
+	else
+		str = "False";
+	m_data[key] = str;
+}
+
+/**
+* Set an integer value in the INI group.
+* @param key Key.
+* @param radix Radix.
+* @param val Value.
+*/
+void IniGroup::setIntRadix(const string &key, int radix, int val)
+{
+	char buf[sizeof(int) * 8 + 1];
+#ifdef _MSC_VER
+	itoa(val, buf, radix);
+#else
+	switch (radix)
+	{
+	case 8:
+		snprintf(buf, LengthOfArray(buf), "%o", val);
+		break;
+	case 16:
+		snprintf(buf, LengthOfArray(buf), "%x", val);
+		break;
+	default:
+		snprintf(buf, LengthOfArray(buf), "%d", val);
+		break;
+	}
+#endif
+	m_data[key] = buf;
+}
+
+/**
+* Set an integer value in the INI group.
+* @param key Key.
+* @param val Value.
+*/
+void IniGroup::setInt(const string &key, int val)
+{
+	m_data[key] = std::to_string(val);
+}
+
+/**
+* Set a floating-point value in the INI group.
+* @param key Key.
+* @param val Value.
+*/
+void IniGroup::setFloat(const string &key, float val)
+{
+	m_data[key] = std::to_string(val);
+}
+
+/**
+* Remove a key from the INI group.
+* @param key Key.
+* @return True if key was found.
+*/
+bool IniGroup::removeKey(const string &key)
+{
+	if (hasKey(key))
+	{
+		m_data.erase(key);
+		return true;
+	}
+	return false;
 }
 
 std::unordered_map<string, string>::iterator IniGroup::begin()
@@ -194,10 +291,36 @@ IniFile::~IniFile()
  * @param section Section.
  * @return INI group, or nullptr if not found.
  */
+IniGroup *IniFile::getGroup(const string &section)
+{
+	auto iter = m_groups.find(section);
+	return (iter != m_groups.end() ? iter->second : nullptr);
+}
+
+/**
+* Get an INI group.
+* @param section Section.
+* @return INI group, or nullptr if not found.
+*/
 const IniGroup *IniFile::getGroup(const string &section) const
 {
 	auto iter = m_groups.find(section);
 	return (iter != m_groups.end() ? iter->second : nullptr);
+}
+
+/**
+* Create an INI group, or retrieve an existing group.
+* @param section Section.
+* @return INI group.
+*/
+IniGroup *IniFile::createGroup(const string &section)
+{
+	auto iter = m_groups.find(section);
+	if (iter != m_groups.end())
+		return iter->second;
+	IniGroup *group = new IniGroup();
+	m_groups[section] = group;
+	return group;
 }
 
 /**
@@ -330,6 +453,152 @@ float IniFile::getFloat(const string &section, const string &key, float def) con
 	if (!group)
 		return def;
 	return group->getFloat(key, def);
+}
+
+/**
+* Set a string value in the INI file.
+* @param section Section.
+* @param key Key.
+* @param val Value.
+*/
+void IniFile::setString(const string &section, const string &key, const string &val)
+{
+	createGroup(section)->setString(key, val);
+}
+
+/**
+* Set a wide string value in the INI file.
+* INI strings are converted from UTF-8 to UTF-16.
+* @param section Section.
+* @param key Key.
+* @param val Value.
+*/
+void IniFile::setWString(const string &section, const string &key, const wstring &val)
+{
+	createGroup(section)->setWString(key, val);
+}
+
+/**
+* Set a boolean value in the INI file.
+* @param section Section.
+* @param key Key.
+* @param val Value.
+*/
+void IniFile::setBool(const string &section, const string &key, bool val)
+{
+	createGroup(section)->setBool(key, val);
+}
+
+/**
+* Set an integer value in the INI file.
+* @param section Section.
+* @param key Key.
+* @param radix Radix.
+* @param val Value.
+*/
+void IniFile::setIntRadix(const string &section, const string &key, int radix, int val)
+{
+	createGroup(section)->setIntRadix(key, radix, val);
+}
+
+/**
+* Set an integer value in the INI file.
+* @param section Section.
+* @param key Key.
+* @param val Value.
+*/
+void IniFile::setInt(const string &section, const string &key, int val)
+{
+	createGroup(section)->setInt(key, val);
+}
+
+/**
+* Set a floating-point value in the INI file.
+* @param section Section.
+* @param key Key.
+* @param val Value.
+*/
+void IniFile::setFloat(const string &section, const string &key, float val)
+{
+	createGroup(section)->setFloat(key, val);
+}
+
+/**
+* Remove a section from the INI file.
+* @param section Section.
+* @return True if section was found.
+*/
+bool IniFile::removeGroup(const string &section)
+{
+	if (hasGroup(section))
+	{
+		m_groups.erase(section);
+		return true;
+	}
+	return false;
+}
+
+/**
+* Remove a key from the INI file.
+* @param section Section.
+* @param key Key.
+* @return True if key was found.
+*/
+bool IniFile::removeKey(const string &section, const string &key)
+{
+	IniGroup *group = getGroup(section);
+	if (group)
+		return group->removeKey(key);
+	return false;
+}
+
+/**
+* Save an INI file.
+* @param filename Name of file to save to.
+*/
+void IniFile::save(const string &filename) const
+{
+	FILE *f = fopen(filename.c_str(), "r");
+	if (!f)
+		return;
+
+	save(f);
+	fclose(f);
+}
+
+/**
+* Save an INI file.
+* @param filename Name of file to save to.
+*/
+void IniFile::save(const wstring &filename) const
+{
+	FILE *f = _wfopen(filename.c_str(), L"r");
+	if (!f)
+		return;
+
+	save(f);
+	fclose(f);
+}
+
+/**
+* Save an INI file.
+* @param f FILE pointer. (File is not closed after processing.)
+*/
+void IniFile::save(FILE *f) const
+{
+	std::list<std::pair<string, IniGroup*>> list;
+	for (auto it = cbegin(); it != cend(); ++it)
+		if (it->first.empty())
+			list.push_front(std::make_pair(it->first, it->second));
+		else
+			list.push_back(std::make_pair(it->first, it->second));
+	for (auto gr : list)
+	{
+		if (!gr.first.empty())
+			fprintf(f, "[%s]\n", escape(gr.first, true, false).c_str());
+		for (auto kv = gr.second->cbegin(); kv != gr.second->cend(); ++kv)
+			fprintf(f, "%s=%s\n", escape(kv->first, false, true).c_str(), escape(kv->second, false, false).c_str());
+	}
 }
 
 std::unordered_map<string, IniGroup*>::iterator IniFile::begin()
@@ -491,4 +760,31 @@ void IniFile::clear(void)
 	}
 
 	m_groups.clear();
+}
+
+string IniFile::escape(const string &str, bool sec, bool key) const
+{
+	string result(str);
+	for (size_t i = 0; i < result.size(); i++)
+		switch (result[i])
+	{
+		case '=':
+			if (key)
+				result.insert(i++, "\\");
+			break;
+		case '[':
+			if (key && i == 0)
+				result.insert(i++, "\\");
+			break;
+		case ']':
+			if (sec)
+				result.insert(i++, "\\");
+			break;
+		case '\\':
+		case '\n':
+		case '\r':
+		case ';':
+			result.insert(i++, "\\");
+			break;
+	}
 }
