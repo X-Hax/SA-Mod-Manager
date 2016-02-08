@@ -760,8 +760,11 @@ namespace mipmap
 
 	bool IsBlacklistedPVR(const char* name)
 	{
+#ifdef _DEBUG
 		if (!strcmp(name, "abc_txt"))
 			PrintDebug("?!\n");
+#endif
+
 		return blacklisted = find(PVRBlacklist, name);
 	}
 	bool IsBlacklistedGBIX(Uint32 gbix)

@@ -514,22 +514,22 @@ static void RegisterStartPosition(unsigned char character, const StartPosition &
 		switch (character)
 		{
 		case Characters_Sonic:
-			origlist = (StartPosition *)0x90A5C8;
+			origlist = SonicStartArray;
 			break;
 		case Characters_Tails:
-			origlist = (StartPosition *)0x90AB68;
+			origlist = TailsStartArray;
 			break;
 		case Characters_Knuckles:
-			origlist = (StartPosition *)0x90AEA0;
+			origlist = KnucklesStartArray;
 			break;
 		case Characters_Amy:
-			origlist = (StartPosition *)0x90B470;
+			origlist = AmyStartArray;
 			break;
 		case Characters_Gamma:
-			origlist = (StartPosition *)0x90B7A8;
+			origlist = GammaStartArray;
 			break;
 		case Characters_Big:
-			origlist = (StartPosition *)0x90B1B0;
+			origlist = BigStartArray;
 			break;
 		default:
 			return;
@@ -574,7 +574,7 @@ static void RegisterFieldStartPosition(unsigned char character, const FieldStart
 	unordered_map<int, FieldStartPosition> *newlist;
 	if (iter == FieldStartPositions.end())
 	{
-		const FieldStartPosition *origlist = ((FieldStartPosition **)0x90BEFC)[character];
+		const FieldStartPosition *origlist = StartPosList_FieldReturn[character];
 		FieldStartPositions[character] = unordered_map<int, FieldStartPosition>();
 		newlist = &FieldStartPositions[character];
 		while (origlist->LevelID != LevelIDs_Invalid)
@@ -602,7 +602,7 @@ static void RegisterPathList(const PathDataPtr &paths)
 {
 	if (!PathsInitialized)
 	{
-		const PathDataPtr *oldlist = (PathDataPtr *)0x91A858;
+		const PathDataPtr *oldlist = PathDataPtrs;
 		while (oldlist->LevelAct != 0xFFFF)
 		{
 			Paths[oldlist->LevelAct] = *oldlist;
@@ -627,7 +627,7 @@ static void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
 	vector<PVMEntry> *newlist;
 	if (iter == CharacterPVMs.end())
 	{
-		const PVMEntry *origlist = ((PVMEntry **)0x90ED54)[character];
+		const PVMEntry *origlist = TexLists_Characters[character];
 		CharacterPVMs[character] = vector<PVMEntry>();
 		newlist = &CharacterPVMs[character];
 		while (origlist->TexList)
@@ -650,7 +650,7 @@ static void RegisterCommonObjectPVM(const PVMEntry &pvm)
 {
 	if (!CommonObjectPVMsInitialized)
 	{
-		const PVMEntry *oldlist = (PVMEntry *)0x90EC18;
+		const PVMEntry *oldlist = &CommonObjectPVMEntries[0];
 		while (oldlist->TexList)
 			CommonObjectPVMs.push_back(*oldlist++);
 		CommonObjectPVMsInitialized = true;
@@ -2312,7 +2312,7 @@ static void __cdecl InitMods(void)
 		for (auto j = poslist->cbegin(); j != poslist->cend(); ++j)
 			*cur++ = j->second;
 		cur->LevelID = LevelIDs_Invalid;
-		((FieldStartPosition **)0x90BEFC)[i->first] = newlist;
+		StartPosList_FieldReturn[i->first] = newlist;
 	}
 
 	if (PathsInitialized)
@@ -2333,7 +2333,7 @@ static void __cdecl InitMods(void)
 		PVMEntry *newlist = new PVMEntry[size + 1];
 		memcpy(newlist, pvmlist->data(), sizeof(PVMEntry) * size);
 		newlist[size].TexList = nullptr;
-		((PVMEntry **)0x90ED54)[i->first] = newlist;
+		TexLists_Characters[i->first] = newlist;
 	}
 
 	if (CommonObjectPVMsInitialized)
@@ -2343,8 +2343,8 @@ static void __cdecl InitMods(void)
 		//PVMEntry *cur = newlist;
 		memcpy(newlist, CommonObjectPVMs.data(), sizeof(PVMEntry) * size);
 		newlist[size].TexList = nullptr;
-		*((PVMEntry **)0x90EC70) = newlist;
-		*((PVMEntry **)0x90EC74) = newlist;
+		TexLists_ObjRegular[0] = newlist;
+		TexLists_ObjRegular[1] = newlist;
 	}
 
 	for (auto i = _TrialLevels.cbegin(); i != _TrialLevels.cend(); ++i)

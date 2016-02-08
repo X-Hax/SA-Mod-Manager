@@ -20,6 +20,8 @@ DataPointer(int, HorizontalResolution, 0x892990);
 DataPointer(int, VerticalResolution, 0x892994);
 DataArray(PVMEntry *, TexLists_Obj, 0x90EB68, 44);
 DataArray(PVMEntry *, TexLists_ObjRegular, 0x90EC70, 3);
+DataArray(PVMEntry, CommonObjectPVMEntries, 0x0090EC18, 8);
+DataArray(PVMEntry, CommonObjectPVMEntries_B, 0x0090EC58, 3);
 DataArray(PVMEntry *, TexLists_Characters, 0x90ED54, 9);
 DataArray(LevelPVMList *, TexLists_Level, 0x90F010, 59);
 DataArray(char *, CharIDStrings, 0x90F424, 9);
@@ -64,6 +66,14 @@ DataPointer(Angle, HorizontalFOV_BAMS, 0x03AB98EC);
 DataPointer(Angle, LastHorizontalFOV_BAMS, 0x03B2CBB4);
 DataPointer(NJS_SPRITE, VideoFrame, 0x03C600A4);
 DataPointer(bool, LoadingFile, 0x3ABDF68);
+DataArray(FieldStartPosition*, StartPosList_FieldReturn, 0x0090BEFC, 8);
+DataArray(StartPosition, SonicStartArray, 0x90A5C8, 72);
+DataArray(StartPosition, TailsStartArray, 0x90AB68, 41);
+DataArray(StartPosition, KnucklesStartArray, 0x90AEA0, 39);
+DataArray(StartPosition, AmyStartArray, 0x90B470, 41);
+DataArray(StartPosition, GammaStartArray, 0x90B7A8, 43);
+DataArray(StartPosition, BigStartArray, 0x90B1B0, 35);
+DataArray(PathDataPtr, PathDataPtrs, 0x0091A858, 22);
 
 // Raw input array. It's recommended you use ControllerPointers instead.
 // This will prevent compatibility issues with mods that need to redirect input.
