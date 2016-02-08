@@ -4,14 +4,15 @@
 #include <string>
 #include <algorithm>
 #include <SADXModLoader.h>
+#include <Trampoline.h>
 
 #include "AutoMipmap.h"
 #include "D3DCommon.h"
 
 namespace mipmap
 {
-
-	const std::vector<std::string> PVMBlacklist = {
+	// TODO: Consider reading these form disk
+	static const std::vector<std::string> PVMBlacklist = {
 		"AL_DX_TEX_XYBUTTON",
 		"AL_ENT_CHAR_E_TEX",
 		"AL_ENT_CHAR_J_TEX",
@@ -187,7 +188,7 @@ namespace mipmap
 		"TX_CHNAM",
 		"TX_CHNAM_E",
 	};
-	const std::vector<std::string> PVRBlacklist = {
+	static const std::vector<std::string> PVRBlacklist = {
 		"ABC_TXT",
 		"ACTION_0",
 		"ACTION_1",
@@ -602,10 +603,10 @@ namespace mipmap
 		"T_STATIONSQUARE",
 		"T_STATIONSQUARE_E",
 	};
-	std::vector<Uint32> gbixBlacklist;
+	static std::vector<Uint32> gbixBlacklist;
 
-	bool blacklisted = false;
-	bool enabled = false;
+	static bool blacklisted = false;
+	static bool enabled = false;
 
 	static HRESULT CopyTexture(IDirect3DTexture8* dest, IDirect3DTexture8* src, UINT height)
 	{
@@ -793,5 +794,33 @@ namespace mipmap
 	bool AutoMipmapsEnabled()
 	{
 		return enabled;
+	}
+
+	// This has something to do with dynamic texture generation. It's used for videos and menus.
+	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, void* a2);
+	static Trampoline sub_77FA10_trampoline(0x0077FA10, 0x0077FA16, (DetourFunction)sub_77FA10_hook);
+	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, void* a2)
+	{
+		blacklisted = true;
+
+		FunctionPointer(Sint32, original, (Uint32, void*), sub_77FA10_trampoline.Target());
+		Sint32 result = original(gbix, a2);
+
+		blacklisted = false;
+		return result;
+	}
+
+	// This one seems to be related to text.
+	// On first call, it generates a new texture maybe. From that point on, it calls the above function.
+	static void sub_40D2A0_hook(void* a1);
+	static Trampoline sub_40D2A0_trampoline(0x0040D2A0, 0x0040D2A8, (DetourFunction)sub_40D2A0_hook);
+	static void sub_40D2A0_hook(void * a1)
+	{
+		blacklisted = true;
+
+		FunctionPointer(Sint32, original, (void*), sub_40D2A0_trampoline.Target());
+		original(a1);
+
+		blacklisted = false;
 	}
 }
