@@ -814,11 +814,11 @@ namespace mipmap
 	// On first call, it generates a new texture maybe. From that point on, it calls the above function.
 	static void sub_40D2A0_hook(void* a1);
 	static Trampoline sub_40D2A0_trampoline(0x0040D2A0, 0x0040D2A8, (DetourFunction)sub_40D2A0_hook);
-	static void sub_40D2A0_hook(void * a1)
+	static void sub_40D2A0_hook(void* a1)
 	{
 		blacklisted = true;
 
-		FunctionPointer(Sint32, original, (void*), sub_40D2A0_trampoline.Target());
+		FunctionPointer(void, original, (void*), sub_40D2A0_trampoline.Target());
 		original(a1);
 
 		blacklisted = false;
