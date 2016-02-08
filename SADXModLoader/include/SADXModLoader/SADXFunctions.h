@@ -411,6 +411,11 @@ FunctionPointer(int, GetCurrentChaoStage, (void), 0x00715140);
 VoidFunc(DisableChao, 0x00731CE0);
 VoidFunc(EnableChao, 0x00731CD0);
 
+FunctionPointer(void, SetCameraControlEnabled, (bool), 0x4348A0);
+FunctionPointer(bool, GetCameraControlEnabled, (void), 0x4348E0);
+FunctionPointer(void, SetCameraMode, (bool), 0x4348F0);
+FunctionPointer(bool, GetCameraMode, (void), 0x434930);
+
 #ifdef _MSC_VER
 
 // ObjectMaster *__usercall<eax>(signed int a1<edx>, void (__cdecl *LoadSub)(ObjectMaster *)<edi>)
