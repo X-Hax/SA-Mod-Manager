@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using IniSerializer;
-using Microsoft.DirectX.DirectInput;
+using SharpDX.DirectInput;
 
 /*
  * To-Do:
@@ -18,7 +18,8 @@ namespace SADXModManager
     {
 		private ConfigFile configFile;
 		private const string sadxIni = "sonicDX.ini";
-        Device inputDevice;
+		DirectInput directInput;
+        Joystick inputDevice;
         List<ButtonControl> buttonControls = new List<ButtonControl>();
         List<ControllerConfigInternal> controllerConfig = new List<ControllerConfigInternal>();
 
@@ -53,10 +54,11 @@ namespace SADXModManager
 
 		private void ConfigEditDialog_Load(object sender, EventArgs e)
 		{
-            DeviceList list = Manager.GetDevices(DeviceClass.GameControl, EnumDevicesFlags.AttachedOnly);
+			directInput = new DirectInput();
+            var list = directInput.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly);
             if (list.Count > 0)
             {
-                inputDevice = new Device(list.Cast<DeviceInstance>().First().InstanceGuid);
+                inputDevice = new Joystick(directInput, list.First().InstanceGuid);
                 tableLayoutPanel1.RowCount = actionNames.Length;
                 for (int i = 0; i < actionNames.Length; i++)
                 {
@@ -305,23 +307,23 @@ namespace SADXModManager
         private void GetControllerInput()
         {
             System.Threading.AutoResetEvent inputevent = new System.Threading.AutoResetEvent(false);
-            inputDevice.SetEventNotification(inputevent);
+            inputDevice.SetNotification(inputevent);
             inputDevice.Acquire();
             int pressed = -1;
             while (pressed == -1)
             {
                 if (!inputevent.WaitOne(20000))
                     break;
-                byte[] buttons = inputDevice.CurrentJoystickState.GetButtons();
+                bool[] buttons = inputDevice.GetCurrentState().Buttons;
                 for (int i = 0; i < buttons.Length; i++)
-                    if (buttons[i] != 0)
+                    if (buttons[i])
                     {
                         pressed = i;
                         break;
                     }
             }
             inputDevice.Unacquire();
-            inputDevice.SetEventNotification(null);
+            inputDevice.SetNotification(null);
             Invoke(new Action<int>(ButtonPressed), pressed);
         }
 
@@ -358,7 +360,7 @@ namespace SADXModManager
             {
                 controllerThread.Abort();
                 inputDevice.Unacquire();
-                inputDevice.SetEventNotification(null);
+                inputDevice.SetNotification(null);
                 ControllerConfigInternal config = controllerConfig[controllerConfigSelect.SelectedIndex];
                 buttonControls[currentAction].Text = config.Buttons[currentAction] == -1 ? "Unassigned" :
                     "Button " + (config.Buttons[currentAction] + 1);
