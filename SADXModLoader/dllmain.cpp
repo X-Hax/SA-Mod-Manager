@@ -1,4 +1,3 @@
-// dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
 
 #include <deque>
@@ -8,7 +7,6 @@
 #include <unordered_map>
 #include <vector>
 #include <sstream>
-#include "AutoMipmap.h"
 
 using std::deque;
 using std::ifstream;
@@ -37,6 +35,8 @@ using std::vector;
 #include "TextureReplacement.h"
 #include "FileReplacement.h"
 #include "Events.h"
+#include "AutoMipmap.h"
+#include "HudScale.h"
 #include "FixFOV.h"
 
 /**
@@ -1986,6 +1986,8 @@ static void __cdecl InitMods(void)
 		WriteData((uint8_t*)0x0078B7D8, (uint8_t)0x02);
 		WriteData((uint8_t*)0x0078B7EC, (uint8_t)0x02);
 	}
+
+	SetupHudScale();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 

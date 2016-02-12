@@ -18,6 +18,7 @@
     <ClCompile Include="FileMap.cpp" />
     <ClCompile Include="FileReplacement.cpp" />
     <ClCompile Include="FixFOV.cpp" />
+    <ClCompile Include="HudScale.cpp" />
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="MediaFns.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -37,6 +38,7 @@
     <ClInclude Include="FileReplacement.h" />
     <ClInclude Include="FixFOV.h" />
     <ClInclude Include="git.h" />
+    <ClInclude Include="HudScale.h" />
     <ClInclude Include="include\ModLoader\MemAccess.h" />
     <ClInclude Include="include\ninja.h" />
     <ClInclude Include="include\SADXModLoader.h" />
