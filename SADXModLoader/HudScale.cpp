@@ -19,6 +19,7 @@ static Trampoline* scalePause;
 static Trampoline* scaleTargetLifeGague;
 static Trampoline* scaleScoreA;
 static Trampoline* scaleTornadoHP;
+static Trampoline* scaleTwinkleCircuitHUD;
 
 #pragma endregion
 
@@ -26,6 +27,7 @@ static Trampoline* scaleTornadoHP;
 
 enum class Align
 {
+	Auto,
 	Left,
 	Center,
 	Right
@@ -129,6 +131,38 @@ static short __cdecl ScalePauseMenu()
 	return result;
 }
 
+static void __cdecl ScaleTargetLifeGague(ObjectMaster* a1)
+{
+	ObjectFunc(original, scaleTargetLifeGague->Target());
+	ScalePush(Align::Right);
+	original(a1);
+	ScalePop();
+}
+
+static void __cdecl ScaleScoreA()
+{
+	ScalePush(Align::Left);
+	VoidFunc(original, scaleScoreA->Target());
+	original();
+	ScalePop();
+}
+
+static void __cdecl ScaleTornadoHP(ObjectMaster* a1)
+{
+	ScalePush(Align::Left);
+	ObjectFunc(original, scaleTornadoHP->Target());
+	original(a1);
+	ScalePop();
+}
+
+static void __cdecl ScaleTwinkleCircuitHUD(ObjectMaster* a1)
+{
+	ScalePush(Align::Center);
+	ObjectFunc(original, scaleTwinkleCircuitHUD->Target());
+	original(a1);
+	ScalePop();
+}
+
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
 {
 	if (sp == nullptr)
@@ -150,7 +184,20 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 		sp->p.x *= scale;
 		sp->p.y *= scale;
 
-		switch (scale_stack.top())
+		Align top = scale_stack.top();
+
+		if (top == Align::Auto)
+		{
+			static const float third = 640.0f / 3.0f;
+			if (sp->p.x < third)
+				top = Align::Left;
+			else if (sp->p.x < third * 2.0f)
+				top = Align::Center;
+			else
+				top = Align::Right;
+		}
+
+		switch (top)
 		{
 			default:
 				break;
@@ -178,30 +225,6 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 	}
 }
 
-static void __cdecl ScaleTargetLifeGague(ObjectMaster* a1)
-{
-	ObjectFunc(original, scaleTargetLifeGague->Target());
-	ScalePush(Align::Right);
-	original(a1);
-	ScalePop();
-}
-
-static void __cdecl ScaleScoreA()
-{
-	ScalePush(Align::Left);
-	VoidFunc(original, scaleScoreA->Target());
-	original();
-	ScalePop();
-}
-
-static void __cdecl ScaleTornadoHP(ObjectMaster* a1)
-{
-	ScalePush(Align::Left);
-	ObjectFunc(original, scaleTornadoHP->Target());
-	original(a1);
-	ScalePop();
-}
-
 void SetupHudScale()
 {
 	scale = min(HorizontalStretch, VerticalStretch);
@@ -224,4 +247,7 @@ void SetupHudScale()
 
 	WriteData((const float**)0x006288C2, &patch_dummy);
 	scaleTornadoHP = new Trampoline(0x00628490, 0x00628496, (DetourFunction)ScaleTornadoHP);
+
+	scaleTwinkleCircuitHUD = new Trampoline(0x004DB5E0, 0x004DB5E5, (DetourFunction)ScaleTwinkleCircuitHUD);
+	WriteCall(scaleTwinkleCircuitHUD->Target(), (void*)0x590620);
 }
