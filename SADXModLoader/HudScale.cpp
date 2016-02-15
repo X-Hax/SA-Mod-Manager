@@ -20,6 +20,11 @@ static Trampoline* scaleTargetLifeGague;
 static Trampoline* scaleScoreA;
 static Trampoline* scaleTornadoHP;
 static Trampoline* scaleTwinkleCircuitHUD;
+static Trampoline* scaleFishingHit;
+static Trampoline* scaleReel;
+static Trampoline* scaleRod;
+static Trampoline* scaleBigHud;
+static Trampoline* scaleRodMeters;
 
 #pragma endregion
 
@@ -163,6 +168,46 @@ static void __cdecl ScaleTwinkleCircuitHUD(ObjectMaster* a1)
 	ScalePop();
 }
 
+static void __cdecl ScaleFishingHit(ObjectMaster* a1)
+{
+	ScalePush(Align::Center);
+	ObjectFunc(original, scaleFishingHit->Target());
+	original(a1);
+	ScalePop();
+}
+
+static void __cdecl ScaleReel()
+{
+	ScalePush(Align::Right);
+	VoidFunc(original, scaleReel->Target());
+	original();
+	ScalePop();
+}
+
+static void __cdecl ScaleRod()
+{
+	ScalePush(Align::Right);
+	VoidFunc(original, scaleRod->Target());
+	original();
+	ScalePop();
+}
+
+static void __cdecl ScaleBigHud(ObjectMaster* a1)
+{
+	ScalePush(Align::Left);
+	ObjectFunc(original, scaleBigHud->Target());
+	original(a1);
+	ScalePop();
+}
+
+static void __cdecl ScaleRodMeters(float a1)
+{
+	ScalePush(Align::Right);
+	FunctionPointer(void, original, (float), scaleRodMeters->Target());
+	original(a1);
+	ScalePop();
+}
+
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
 {
 	if (sp == nullptr)
@@ -248,6 +293,15 @@ void SetupHudScale()
 	WriteData((const float**)0x006288C2, &patch_dummy);
 	scaleTornadoHP = new Trampoline(0x00628490, 0x00628496, (DetourFunction)ScaleTornadoHP);
 
+	// TODO: Consider tracking down the individual functions so that they can be individually aligned.
 	scaleTwinkleCircuitHUD = new Trampoline(0x004DB5E0, 0x004DB5E5, (DetourFunction)ScaleTwinkleCircuitHUD);
 	WriteCall(scaleTwinkleCircuitHUD->Target(), (void*)0x590620);
+
+	// Rod scaling disabled.
+	// TODO: Figure out how gauge is drawn (it doesn't use the texture).
+	//scaleReel = new Trampoline(0x0046C9F0, 0x0046C9F5, (DetourFunction)ScaleReel);
+	//scaleRod = new Trampoline(0x0046CAB0, 0x0046CAB9, (DetourFunction)ScaleRod);
+	//scaleRodMeters = new Trampoline(0x0046CC70, 0x0046CC75, (DetourFunction)ScaleRodMeters);
+	scaleFishingHit = new Trampoline(0x0046C920, 0x0046C926, (DetourFunction)ScaleFishingHit);
+	scaleBigHud = new Trampoline(0x0046FB00, 0x0046FB05, (DetourFunction)ScaleBigHud);
 }
