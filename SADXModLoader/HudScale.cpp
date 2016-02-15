@@ -84,6 +84,39 @@ static void __cdecl DrawAllObjectsHax()
 	}
 }
 
+static void __cdecl ScaleA()
+{
+	ScalePush();
+	VoidFunc(original, scaleRingLife->Target());
+	original();
+	ScalePop();
+}
+
+static void __cdecl ScaleB()
+{
+	ScalePush();
+	VoidFunc(original, scaleScoreTime->Target());
+	original();
+	ScalePop();
+}
+
+static void __cdecl ScaleStageMission(ObjectMaster* _this)
+{
+	ScalePush(true);
+	ObjectFunc(original, scaleStageMission->Target());
+	original(_this);
+	ScalePop();
+}
+
+static short __cdecl ScalePauseMenu()
+{
+	ScalePush(true);
+	FunctionPointer(short, original, (void), scalePause->Target());
+	short result = original();
+	ScalePop();
+	return result;
+}
+
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
 {
 	if (sp == nullptr)
@@ -119,39 +152,6 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 		sp->sx = old_scale.x;
 		sp->sy = old_scale.y;
 	}
-}
-
-static void __cdecl ScaleA()
-{
-	ScalePush();
-	VoidFunc(original, scaleRingLife->Target());
-	original();
-	ScalePop();
-}
-
-static void __cdecl ScaleB()
-{
-	ScalePush();
-	VoidFunc(original, scaleScoreTime->Target());
-	original();
-	ScalePop();
-}
-
-static void __cdecl ScaleStageMission(ObjectMaster* _this)
-{
-	ScalePush(true);
-	ObjectFunc(original, scaleStageMission->Target());
-	original(_this);
-	ScalePop();
-}
-
-static short __cdecl ScalePauseMenu()
-{
-	ScalePush(true);
-	FunctionPointer(short, original, (void), scalePause->Target());
-	short result = original();
-	ScalePop();
-	return result;
 }
 
 void SetupHudScale()
