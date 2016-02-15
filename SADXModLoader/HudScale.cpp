@@ -1,39 +1,55 @@
 #include "stdafx.h"
+
 #include "SADXModLoader.h"
 #include "Trampoline.h"
+
 #include "HudScale.h"
 
 // TODO: Pause menu, misc. 2D things (i.e lens flare), main menu, character select
+// TODO: stack
 
-Trampoline trampoline(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
-Trampoline scaleRingLife(0x00425F90, 0x00425F95, (DetourFunction)ScaleA);
-Trampoline scaleScoreTime(0x00427F50, 0x00427F55, (DetourFunction)ScaleB);
+Trampoline* drawTrampoline;
+Trampoline* scaleRingLife;
+Trampoline* scaleScoreTime;
+Trampoline* scaleStageMission;
+Trampoline* scalePause;
 
 static bool doScale = false;
-static bool center_x = false;
-static bool center_y = false;
+static bool centered = false;
 
 static float scale = 1.0f;
 static float last_h = 0.0f;
 static float last_v = 0.0f;
 
 FunctionPointer(void, ScoreDisplay_Main, (ObjectMaster*), 0x0042BCC0);
-void ScaleResultScreen(ObjectMaster* _this)
+void __cdecl ScaleResultScreen(ObjectMaster* _this)
 {
-	SaveScale();
-	center_x = center_y = true;
+	ScalePush(true);
 	ScoreDisplay_Main(_this);
-	RestoreScale();
+	ScalePop();
 }
 
 void SetupHudScale()
 {
 	scale = min(HorizontalStretch, VerticalStretch);
 	WriteJump((void*)0x0042BEE0, ScaleResultScreen);
+
+	drawTrampoline = new Trampoline(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
+	scaleRingLife = new Trampoline(0x00425F90, 0x00425F95, (DetourFunction)ScaleA);
+	scaleScoreTime = new Trampoline(0x00427F50, 0x00427F55, (DetourFunction)ScaleB);
+	scaleStageMission = new Trampoline(0x00457120, 0x00457126, (DetourFunction)ScaleStageMission);
+
+	scalePause = new Trampoline(0x00415420, 0x00415425, (DetourFunction)ScalePauseMenu);
+	WriteCall(scalePause->Target(), (void*)0x40FDC0);
 }
 
-void __cdecl SaveScale()
+static void __cdecl ScalePush(bool center_screen)
 {
+	centered = center_screen;
+
+	if (doScale)
+		return;
+
 	doScale = true;
 
 	last_h = HorizontalStretch;
@@ -43,20 +59,20 @@ void __cdecl SaveScale()
 	VerticalStretch = 1.0f;
 }
 
-void __cdecl RestoreScale()
+static void __cdecl ScalePop()
 {
 	HorizontalStretch = last_h;
 	VerticalStretch = last_v;
 	doScale = false;
-	center_x = center_y = false;
+	centered = false;
 }
 
-void Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
+static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
 {
 	if (sp == nullptr)
 		return;
 
-	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), trampoline.Target());
+	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), drawTrampoline->Target());
 	if (!doScale)
 	{
 		original(sp, n, pri, attr, zfunc_type);
@@ -71,14 +87,11 @@ void Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_t
 		sp->p.x *= scale;
 		sp->p.y *= scale;
 
-		if (center_x)
+		if (centered)
 		{
 			float w = (float)HorizontalResolution / last_v;
 			if (w > 640.0f)
 				sp->p.x += (float)HorizontalResolution / 8.0f;
-		}
-		if (center_y)
-		{
 			float h = (float)VerticalResolution / last_h;
 			if (h > 480.0f)
 				sp->p.y += (float)VerticalResolution / 8.0f;
@@ -92,18 +105,35 @@ void Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_t
 	}
 }
 
-void __cdecl ScaleA()
+static void __cdecl ScaleA()
 {
-	SaveScale();
-	VoidFunc(original, scaleRingLife.Target());
+	ScalePush();
+	VoidFunc(original, scaleRingLife->Target());
 	original();
-	RestoreScale();
+	ScalePop();
 }
 
-void __cdecl ScaleB()
+static void __cdecl ScaleB()
 {
-	SaveScale();
-	VoidFunc(original, scaleScoreTime.Target());
+	ScalePush();
+	VoidFunc(original, scaleScoreTime->Target());
 	original();
-	RestoreScale();
+	ScalePop();
+}
+
+static void __cdecl ScaleStageMission(ObjectMaster* _this)
+{
+	ScalePush(true);
+	ObjectFunc(original, scaleStageMission->Target());
+	original(_this);
+	ScalePop();
+}
+
+static short __cdecl ScalePauseMenu()
+{
+	ScalePush(true);
+	FunctionPointer(short, original, (void), scalePause->Target());
+	short result = original();
+	ScalePop();
+	return result;
 }
