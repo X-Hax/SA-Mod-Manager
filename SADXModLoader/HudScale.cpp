@@ -7,13 +7,19 @@
 #include "HudScale.h"
 
 // TODO: misc. 2D things (i.e lens flare), main menu, character select
-// TODO: Fix pause menu
+
+#pragma region trampolines
 
 static Trampoline* drawTrampoline;
+static Trampoline* drawObjects;
 static Trampoline* scaleRingLife;
 static Trampoline* scaleScoreTime;
 static Trampoline* scaleStageMission;
 static Trampoline* scalePause;
+
+#pragma endregion
+
+#pragma region scale stack
 
 static bool doScale = false;
 static std::stack<bool> scale_stack;
@@ -21,28 +27,6 @@ static std::stack<bool> scale_stack;
 static float scale = 1.0f;
 static float last_h = 0.0f;
 static float last_v = 0.0f;
-
-FunctionPointer(void, ScoreDisplay_Main, (ObjectMaster*), 0x0042BCC0);
-void __cdecl ScaleResultScreen(ObjectMaster* _this)
-{
-	ScalePush(true);
-	ScoreDisplay_Main(_this);
-	ScalePop();
-}
-
-void SetupHudScale()
-{
-	scale = min(HorizontalStretch, VerticalStretch);
-	WriteJump((void*)0x0042BEE0, ScaleResultScreen);
-
-	drawTrampoline = new Trampoline(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
-	scaleRingLife = new Trampoline(0x00425F90, 0x00425F95, (DetourFunction)ScaleA);
-	scaleScoreTime = new Trampoline(0x00427F50, 0x00427F55, (DetourFunction)ScaleB);
-	scaleStageMission = new Trampoline(0x00457120, 0x00457126, (DetourFunction)ScaleStageMission);
-
-	scalePause = new Trampoline(0x00415420, 0x00415425, (DetourFunction)ScalePauseMenu);
-	WriteCall(scalePause->Target(), (void*)0x40FDC0);
-}
 
 static void __cdecl ScalePush(bool center_screen)
 {
@@ -72,12 +56,41 @@ static void __cdecl ScalePop()
 	}
 }
 
+#pragma endregion
+
+FunctionPointer(void, ScoreDisplay_Main, (ObjectMaster*), 0x0042BCC0);
+static void __cdecl ScaleResultScreen(ObjectMaster* _this)
+{
+	ScalePush(true);
+	ScoreDisplay_Main(_this);
+	ScalePop();
+}
+
+static void __cdecl DrawAllObjectsHax()
+{
+	if (doScale)
+	{
+		HorizontalStretch = last_h;
+		VerticalStretch = last_v;
+	}
+
+	VoidFunc(original, drawObjects->Target());
+	original();
+
+	if (doScale)
+	{
+		HorizontalStretch = 1.0f;
+		VerticalStretch = 1.0f;
+	}
+}
+
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
 {
 	if (sp == nullptr)
 		return;
 
 	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), drawTrampoline->Target());
+
 	if (!doScale)
 	{
 		original(sp, n, pri, attr, zfunc_type);
@@ -139,4 +152,21 @@ static short __cdecl ScalePauseMenu()
 	short result = original();
 	ScalePop();
 	return result;
+}
+
+void SetupHudScale()
+{
+	scale = min(HorizontalStretch, VerticalStretch);
+	WriteJump((void*)0x0042BEE0, ScaleResultScreen);
+
+	drawTrampoline = new Trampoline(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
+	drawObjects = new Trampoline(0x0040B540, 0x0040B546, (DetourFunction)DrawAllObjectsHax);
+	WriteCall((void*)((size_t)drawObjects->Target() + 1), (void*)0x004128F0);
+
+	scaleRingLife = new Trampoline(0x00425F90, 0x00425F95, (DetourFunction)ScaleA);
+	scaleScoreTime = new Trampoline(0x00427F50, 0x00427F55, (DetourFunction)ScaleB);
+	scaleStageMission = new Trampoline(0x00457120, 0x00457126, (DetourFunction)ScaleStageMission);
+
+	scalePause = new Trampoline(0x00415420, 0x00415425, (DetourFunction)ScalePauseMenu);
+	WriteCall(scalePause->Target(), (void*)0x40FDC0);
 }
