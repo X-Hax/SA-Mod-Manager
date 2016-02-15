@@ -34,7 +34,7 @@ enum class Align
 };
 
 static bool doScale = false;
-static std::stack<Align> scale_stack;
+static std::stack<Align, std::vector<Align>> scale_stack;
 
 static const float patch_dummy = 1.0f;
 
