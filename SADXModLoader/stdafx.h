@@ -15,6 +15,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <deque>
+#include <stack>
 #include <fstream>
 #include <iostream>
 #include <list>

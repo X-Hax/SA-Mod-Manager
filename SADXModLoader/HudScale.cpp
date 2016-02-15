@@ -2,20 +2,21 @@
 
 #include "SADXModLoader.h"
 #include "Trampoline.h"
+#include <stack>
 
 #include "HudScale.h"
 
 // TODO: Pause menu, misc. 2D things (i.e lens flare), main menu, character select
 // TODO: stack
 
-Trampoline* drawTrampoline;
-Trampoline* scaleRingLife;
-Trampoline* scaleScoreTime;
-Trampoline* scaleStageMission;
-Trampoline* scalePause;
+static Trampoline* drawTrampoline;
+static Trampoline* scaleRingLife;
+static Trampoline* scaleScoreTime;
+static Trampoline* scaleStageMission;
+static Trampoline* scalePause;
 
 static bool doScale = false;
-static bool centered = false;
+static std::stack<bool> scale_stack;
 
 static float scale = 1.0f;
 static float last_h = 0.0f;
@@ -45,26 +46,30 @@ void SetupHudScale()
 
 static void __cdecl ScalePush(bool center_screen)
 {
-	centered = center_screen;
+	scale_stack.push(center_screen);
 
 	if (doScale)
 		return;
-
-	doScale = true;
 
 	last_h = HorizontalStretch;
 	last_v = VerticalStretch;
 
 	HorizontalStretch = 1.0f;
 	VerticalStretch = 1.0f;
+
+	doScale = true;
 }
 
 static void __cdecl ScalePop()
 {
-	HorizontalStretch = last_h;
-	VerticalStretch = last_v;
-	doScale = false;
-	centered = false;
+	scale_stack.pop();
+	doScale = scale_stack.size() > 0;
+
+	if (!doScale)
+	{
+		HorizontalStretch = last_h;
+		VerticalStretch = last_v;
+	}
 }
 
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
@@ -87,13 +92,11 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 		sp->p.x *= scale;
 		sp->p.y *= scale;
 
-		if (centered)
+		if (scale_stack.top())
 		{
-			float w = (float)HorizontalResolution / last_v;
-			if (w > 640.0f)
+			if ((float)HorizontalResolution / last_v > 640.0f)
 				sp->p.x += (float)HorizontalResolution / 8.0f;
-			float h = (float)VerticalResolution / last_h;
-			if (h > 480.0f)
+			if ((float)VerticalResolution / last_h > 480.0f)
 				sp->p.y += (float)VerticalResolution / 8.0f;
 		}
 
