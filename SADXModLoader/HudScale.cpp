@@ -16,7 +16,9 @@ static Trampoline* scaleRingLife;
 static Trampoline* scaleScoreTime;
 static Trampoline* scaleStageMission;
 static Trampoline* scalePause;
-static Trampoline* scaleLifeGague;
+static Trampoline* scaleTargetLifeGague;
+static Trampoline* scaleScoreA;
+static Trampoline* scaleTornadoHP;
 
 #pragma endregion
 
@@ -31,6 +33,8 @@ enum class Align
 
 static bool doScale = false;
 static std::stack<Align> scale_stack;
+
+static const float patch_dummy = 1.0f;
 
 static float scale = 1.0f;
 static float last_h = 0.0f;
@@ -174,10 +178,26 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 	}
 }
 
-static void __cdecl ScaleLifeGague(ObjectMaster* a1)
+static void __cdecl ScaleTargetLifeGague(ObjectMaster* a1)
 {
-	ObjectFunc(original, scaleLifeGague->Target());
+	ObjectFunc(original, scaleTargetLifeGague->Target());
 	ScalePush(Align::Right);
+	original(a1);
+	ScalePop();
+}
+
+static void __cdecl ScaleScoreA()
+{
+	ScalePush(Align::Left);
+	VoidFunc(original, scaleScoreA->Target());
+	original();
+	ScalePop();
+}
+
+static void __cdecl ScaleTornadoHP(ObjectMaster* a1)
+{
+	ScalePush(Align::Left);
+	ObjectFunc(original, scaleTornadoHP->Target());
 	original(a1);
 	ScalePop();
 }
@@ -198,5 +218,10 @@ void SetupHudScale()
 	scalePause = new Trampoline(0x00415420, 0x00415425, (DetourFunction)ScalePauseMenu);
 	WriteCall(scalePause->Target(), (void*)0x40FDC0);
 
-	scaleLifeGague = new Trampoline(0x004B3830, 0x004B3837, (DetourFunction)ScaleLifeGague);
+	scaleTargetLifeGague = new Trampoline(0x004B3830, 0x004B3837, (DetourFunction)ScaleTargetLifeGague);
+
+	scaleScoreA = new Trampoline(0x00628330, 0x00628335, (DetourFunction)ScaleScoreA);
+
+	WriteData((const float**)0x006288C2, &patch_dummy);
+	scaleTornadoHP = new Trampoline(0x00628490, 0x00628496, (DetourFunction)ScaleTornadoHP);
 }
