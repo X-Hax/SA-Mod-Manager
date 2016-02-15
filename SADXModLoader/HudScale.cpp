@@ -16,21 +16,29 @@ static Trampoline* scaleRingLife;
 static Trampoline* scaleScoreTime;
 static Trampoline* scaleStageMission;
 static Trampoline* scalePause;
+static Trampoline* scaleLifeGague;
 
 #pragma endregion
 
 #pragma region scale stack
 
+enum class Align
+{
+	Left,
+	Center,
+	Right
+};
+
 static bool doScale = false;
-static std::stack<bool> scale_stack;
+static std::stack<Align> scale_stack;
 
 static float scale = 1.0f;
 static float last_h = 0.0f;
 static float last_v = 0.0f;
 
-static void __cdecl ScalePush(bool center_screen)
+static void __cdecl ScalePush(Align align)
 {
-	scale_stack.push(center_screen);
+	scale_stack.push(align);
 
 	if (doScale)
 		return;
@@ -61,7 +69,7 @@ static void __cdecl ScalePop()
 FunctionPointer(void, ScoreDisplay_Main, (ObjectMaster*), 0x0042BCC0);
 static void __cdecl ScaleResultScreen(ObjectMaster* _this)
 {
-	ScalePush(true);
+	ScalePush(Align::Center);
 	ScoreDisplay_Main(_this);
 	ScalePop();
 }
@@ -86,7 +94,7 @@ static void __cdecl DrawAllObjectsHax()
 
 static void __cdecl ScaleA()
 {
-	ScalePush();
+	ScalePush(Align::Left);
 	VoidFunc(original, scaleRingLife->Target());
 	original();
 	ScalePop();
@@ -94,7 +102,7 @@ static void __cdecl ScaleA()
 
 static void __cdecl ScaleB()
 {
-	ScalePush();
+	ScalePush(Align::Left);
 	VoidFunc(original, scaleScoreTime->Target());
 	original();
 	ScalePop();
@@ -102,7 +110,7 @@ static void __cdecl ScaleB()
 
 static void __cdecl ScaleStageMission(ObjectMaster* _this)
 {
-	ScalePush(true);
+	ScalePush(Align::Center);
 	ObjectFunc(original, scaleStageMission->Target());
 	original(_this);
 	ScalePop();
@@ -110,7 +118,7 @@ static void __cdecl ScaleStageMission(ObjectMaster* _this)
 
 static short __cdecl ScalePauseMenu()
 {
-	ScalePush(true);
+	ScalePush(Align::Center);
 	FunctionPointer(short, original, (void), scalePause->Target());
 	short result = original();
 	ScalePop();
@@ -138,12 +146,24 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 		sp->p.x *= scale;
 		sp->p.y *= scale;
 
-		if (scale_stack.top())
+		switch (scale_stack.top())
 		{
-			if ((float)HorizontalResolution / last_v > 640.0f)
-				sp->p.x += (float)HorizontalResolution / 8.0f;
-			if ((float)VerticalResolution / last_h > 480.0f)
-				sp->p.y += (float)VerticalResolution / 8.0f;
+			default:
+				break;
+
+			case Align::Center:
+				if ((float)HorizontalResolution / last_v > 640.0f)
+					sp->p.x += (float)HorizontalResolution / 8.0f;
+				if ((float)VerticalResolution / last_h > 480.0f)
+					sp->p.y += (float)VerticalResolution / 8.0f;
+				break;
+
+			case Align::Right:
+				if ((float)HorizontalResolution / last_v > 640.0f)
+					sp->p.x += (float)HorizontalResolution / 4.0f;
+				if ((float)VerticalResolution / last_h > 480.0f)
+					sp->p.y += (float)VerticalResolution / 4.0f;
+				break;
 		}
 
 		original(sp, n, pri, attr | NJD_SPRITE_SCALE, zfunc_type);
@@ -152,6 +172,14 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 		sp->sx = old_scale.x;
 		sp->sy = old_scale.y;
 	}
+}
+
+static void __cdecl ScaleLifeGague(ObjectMaster* a1)
+{
+	ObjectFunc(original, scaleLifeGague->Target());
+	ScalePush(Align::Right);
+	original(a1);
+	ScalePop();
 }
 
 void SetupHudScale()
@@ -169,4 +197,6 @@ void SetupHudScale()
 
 	scalePause = new Trampoline(0x00415420, 0x00415425, (DetourFunction)ScalePauseMenu);
 	WriteCall(scalePause->Target(), (void*)0x40FDC0);
+
+	scaleLifeGague = new Trampoline(0x004B3830, 0x004B3837, (DetourFunction)ScaleLifeGague);
 }
