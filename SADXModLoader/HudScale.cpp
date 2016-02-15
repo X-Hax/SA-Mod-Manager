@@ -6,8 +6,8 @@
 
 #include "HudScale.h"
 
-// TODO: Pause menu, misc. 2D things (i.e lens flare), main menu, character select
-// TODO: stack
+// TODO: misc. 2D things (i.e lens flare), main menu, character select
+// TODO: Fix pause menu
 
 static Trampoline* drawTrampoline;
 static Trampoline* scaleRingLife;
