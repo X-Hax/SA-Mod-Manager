@@ -10,7 +10,9 @@
 
 #pragma region trampolines
 
-static Trampoline* drawTrampoline;
+static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
+Trampoline drawTrampoline(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
+
 static Trampoline* drawObjects;
 static Trampoline* scaleRingLife;
 static Trampoline* scaleScoreTime;
@@ -240,10 +242,18 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 		sprites.push_back(sp);
 #endif
 
-	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), drawTrampoline->Target());
+	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), drawTrampoline.Target());
 
-	if (!doScale)
+	if (!doScale || sp == (NJS_SPRITE*)0x009BF3B0)
 	{
+		// Scales lens flare and sun.
+		// It uses njProjectScreen so there's no position scaling required.
+		if (sp == (NJS_SPRITE*)0x009BF3B0)
+		{
+			sp->sx *= scale;
+			sp->sy *= scale;
+		}
+
 		original(sp, n, pri, attr, zfunc_type);
 	}
 	else
@@ -302,7 +312,6 @@ void SetupHudScale()
 	scale = min(HorizontalStretch, VerticalStretch);
 	WriteJump((void*)0x0042BEE0, ScaleResultScreen);
 
-	drawTrampoline = new Trampoline(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
 	drawObjects = new Trampoline(0x0040B540, 0x0040B546, (DetourFunction)DrawAllObjectsHax);
 	WriteCall((void*)((size_t)drawObjects->Target() + 1), (void*)0x004128F0);
 
