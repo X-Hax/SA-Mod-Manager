@@ -25,6 +25,8 @@ static Trampoline* scaleReel;
 static Trampoline* scaleRod;
 static Trampoline* scaleBigHud;
 static Trampoline* scaleRodMeters;
+static Trampoline* scaleAnimalPickup;
+static Trampoline* scaleItemBoxSprite;
 
 #pragma endregion
 
@@ -208,10 +210,35 @@ static void __cdecl ScaleRodMeters(float a1)
 	ScalePop();
 }
 
+static void __cdecl ScaleAnimalPickup(ObjectMaster* a1)
+{
+	ScalePush(Align::Right);
+	ObjectFunc(original, scaleAnimalPickup->Target());
+	original(a1);
+	ScalePop();
+}
+
+static void __cdecl ScaleItemBoxSprite(ObjectMaster* a1)
+{
+	ScalePush(Align::Center);
+	ObjectFunc(original, scaleItemBoxSprite->Target());
+	original(a1);
+	ScalePop();
+}
+
+#ifdef _DEBUG
+static std::vector<NJS_SPRITE*> sprites;
+#endif
+
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
 {
 	if (sp == nullptr)
 		return;
+
+#ifdef _DEBUG
+	if (std::find(sprites.begin(), sprites.end(), sp) == sprites.end())
+		sprites.push_back(sp);
+#endif
 
 	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), drawTrampoline->Target());
 
@@ -304,4 +331,8 @@ void SetupHudScale()
 	//scaleRodMeters = new Trampoline(0x0046CC70, 0x0046CC75, (DetourFunction)ScaleRodMeters);
 	scaleFishingHit = new Trampoline(0x0046C920, 0x0046C926, (DetourFunction)ScaleFishingHit);
 	scaleBigHud = new Trampoline(0x0046FB00, 0x0046FB05, (DetourFunction)ScaleBigHud);
+
+	scaleAnimalPickup = new Trampoline(0x0046B330, 0x0046B335, (DetourFunction)ScaleAnimalPickup);
+
+	scaleItemBoxSprite = new Trampoline(0x004C0790, 0x004C0795, (DetourFunction)ScaleItemBoxSprite);
 }
