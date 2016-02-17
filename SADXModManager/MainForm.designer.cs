@@ -61,6 +61,8 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.buttonNewMod = new System.Windows.Forms.Button();
+			this.modDownButton = new System.Windows.Forms.Button();
+			this.modUpButton = new System.Windows.Forms.Button();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.codesCheckedListBox = new System.Windows.Forms.CheckedListBox();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -73,8 +75,7 @@
 			this.forceTextureFilterCheckBox = new System.Windows.Forms.CheckBox();
 			this.forceMipmappingCheckBox = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.modUpButton = new System.Windows.Forms.Button();
-			this.modDownButton = new System.Windows.Forms.Button();
+			this.checkVsync = new System.Windows.Forms.CheckBox();
 			groupBox2 = new System.Windows.Forms.GroupBox();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
@@ -111,7 +112,7 @@
 			this.pauseWhenInactiveCheckBox.Location = new System.Drawing.Point(125, 19);
 			this.pauseWhenInactiveCheckBox.Name = "pauseWhenInactiveCheckBox";
 			this.pauseWhenInactiveCheckBox.Size = new System.Drawing.Size(129, 17);
-			this.pauseWhenInactiveCheckBox.TabIndex = 2;
+			this.pauseWhenInactiveCheckBox.TabIndex = 1;
 			this.pauseWhenInactiveCheckBox.Text = "Pause When Inactive";
 			this.toolTip1.SetToolTip(this.pauseWhenInactiveCheckBox, "Uncheck to allow the game to run in the background.");
 			this.pauseWhenInactiveCheckBox.UseVisualStyleBackColor = true;
@@ -122,7 +123,7 @@
 			this.disableCDCheckCheckBox.Location = new System.Drawing.Point(6, 19);
 			this.disableCDCheckCheckBox.Name = "disableCDCheckCheckBox";
 			this.disableCDCheckCheckBox.Size = new System.Drawing.Size(113, 17);
-			this.disableCDCheckCheckBox.TabIndex = 1;
+			this.disableCDCheckCheckBox.TabIndex = 0;
 			this.disableCDCheckCheckBox.Text = "Disable CD Check";
 			this.toolTip1.SetToolTip(this.disableCDCheckCheckBox, "Allows you to run the game without the disc.");
 			this.disableCDCheckCheckBox.UseVisualStyleBackColor = true;
@@ -148,10 +149,10 @@
 			// label2
 			// 
 			label2.AutoSize = true;
-			label2.Location = new System.Drawing.Point(209, 116);
+			label2.Location = new System.Drawing.Point(219, 116);
 			label2.Name = "label2";
 			label2.Size = new System.Drawing.Size(12, 13);
-			label2.TabIndex = 14;
+			label2.TabIndex = 13;
 			label2.Text = "x";
 			// 
 			// screenNumComboBox
@@ -466,6 +467,34 @@
 			this.buttonNewMod.UseVisualStyleBackColor = true;
 			this.buttonNewMod.Click += new System.EventHandler(this.buttonNewMod_Click);
 			// 
+			// modDownButton
+			// 
+			this.modDownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.modDownButton.AutoSize = true;
+			this.modDownButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.modDownButton.Enabled = false;
+			this.modDownButton.Location = new System.Drawing.Point(349, 35);
+			this.modDownButton.Name = "modDownButton";
+			this.modDownButton.Size = new System.Drawing.Size(23, 23);
+			this.modDownButton.TabIndex = 2;
+			this.modDownButton.Text = "↓";
+			this.modDownButton.UseVisualStyleBackColor = true;
+			this.modDownButton.Click += new System.EventHandler(this.modDownButton_Click);
+			// 
+			// modUpButton
+			// 
+			this.modUpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.modUpButton.AutoSize = true;
+			this.modUpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.modUpButton.Enabled = false;
+			this.modUpButton.Location = new System.Drawing.Point(349, 6);
+			this.modUpButton.Name = "modUpButton";
+			this.modUpButton.Size = new System.Drawing.Size(23, 23);
+			this.modUpButton.TabIndex = 1;
+			this.modUpButton.Text = "↑";
+			this.modUpButton.UseVisualStyleBackColor = true;
+			this.modUpButton.Click += new System.EventHandler(this.modUpButton_Click);
+			// 
 			// tabPage2
 			// 
 			this.tabPage2.Controls.Add(this.codesCheckedListBox);
@@ -480,9 +509,9 @@
 			// 
 			this.codesCheckedListBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.codesCheckedListBox.FormattingEnabled = true;
-			this.codesCheckedListBox.Location = new System.Drawing.Point(3, 3);
+			this.codesCheckedListBox.Location = new System.Drawing.Point(0, 0);
 			this.codesCheckedListBox.Name = "codesCheckedListBox";
-			this.codesCheckedListBox.Size = new System.Drawing.Size(372, 285);
+			this.codesCheckedListBox.Size = new System.Drawing.Size(378, 291);
 			this.codesCheckedListBox.TabIndex = 0;
 			this.codesCheckedListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.codesCheckedListBox_ItemCheck);
 			// 
@@ -518,6 +547,7 @@
 			// 
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.checkVsync);
 			this.groupBox3.Controls.Add(this.maintainWindowAspectRatioCheckBox);
 			this.groupBox3.Controls.Add(this.windowWidth);
 			this.groupBox3.Controls.Add(label2);
@@ -548,7 +578,7 @@
 			this.maintainWindowAspectRatioCheckBox.Location = new System.Drawing.Point(6, 140);
 			this.maintainWindowAspectRatioCheckBox.Name = "maintainWindowAspectRatioCheckBox";
 			this.maintainWindowAspectRatioCheckBox.Size = new System.Drawing.Size(130, 17);
-			this.maintainWindowAspectRatioCheckBox.TabIndex = 16;
+			this.maintainWindowAspectRatioCheckBox.TabIndex = 15;
 			this.maintainWindowAspectRatioCheckBox.Text = "Maintain Aspect Ratio";
 			this.toolTip1.SetToolTip(this.maintainWindowAspectRatioCheckBox, "Forces the window\'s aspect ratio to match the current custom resolution\'s.");
 			this.maintainWindowAspectRatioCheckBox.UseVisualStyleBackColor = true;
@@ -556,7 +586,7 @@
 			// 
 			// windowWidth
 			// 
-			this.windowWidth.Location = new System.Drawing.Point(141, 114);
+			this.windowWidth.Location = new System.Drawing.Point(151, 114);
 			this.windowWidth.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -569,7 +599,7 @@
             0});
 			this.windowWidth.Name = "windowWidth";
 			this.windowWidth.Size = new System.Drawing.Size(62, 20);
-			this.windowWidth.TabIndex = 13;
+			this.windowWidth.TabIndex = 12;
 			this.windowWidth.Value = new decimal(new int[] {
             640,
             0,
@@ -578,7 +608,7 @@
 			// 
 			// windowHeight
 			// 
-			this.windowHeight.Location = new System.Drawing.Point(227, 114);
+			this.windowHeight.Location = new System.Drawing.Point(237, 114);
 			this.windowHeight.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -591,7 +621,7 @@
             0});
 			this.windowHeight.Name = "windowHeight";
 			this.windowHeight.Size = new System.Drawing.Size(62, 20);
-			this.windowHeight.TabIndex = 15;
+			this.windowHeight.TabIndex = 14;
 			this.windowHeight.Value = new decimal(new int[] {
             480,
             0,
@@ -605,7 +635,7 @@
 			this.customWindowSizeCheckBox.Location = new System.Drawing.Point(6, 115);
 			this.customWindowSizeCheckBox.Name = "customWindowSizeCheckBox";
 			this.customWindowSizeCheckBox.Size = new System.Drawing.Size(129, 17);
-			this.customWindowSizeCheckBox.TabIndex = 12;
+			this.customWindowSizeCheckBox.TabIndex = 11;
 			this.customWindowSizeCheckBox.Text = "Custom Window Size:";
 			this.toolTip1.SetToolTip(this.customWindowSizeCheckBox, "Allows you to specify a fixed size for the window in windowed mode.");
 			this.customWindowSizeCheckBox.UseVisualStyleBackColor = true;
@@ -614,10 +644,10 @@
 			// forceTextureFilterCheckBox
 			// 
 			this.forceTextureFilterCheckBox.AutoSize = true;
-			this.forceTextureFilterCheckBox.Location = new System.Drawing.Point(125, 163);
+			this.forceTextureFilterCheckBox.Location = new System.Drawing.Point(6, 163);
 			this.forceTextureFilterCheckBox.Name = "forceTextureFilterCheckBox";
 			this.forceTextureFilterCheckBox.Size = new System.Drawing.Size(131, 17);
-			this.forceTextureFilterCheckBox.TabIndex = 11;
+			this.forceTextureFilterCheckBox.TabIndex = 16;
 			this.forceTextureFilterCheckBox.Text = "Force Texture Filtering";
 			this.toolTip1.SetToolTip(this.forceTextureFilterCheckBox, "Smooths scaled UI textures by changing the filter method from Point to Linear.");
 			this.forceTextureFilterCheckBox.UseVisualStyleBackColor = true;
@@ -625,41 +655,22 @@
 			// forceMipmappingCheckBox
 			// 
 			this.forceMipmappingCheckBox.AutoSize = true;
-			this.forceMipmappingCheckBox.Location = new System.Drawing.Point(6, 163);
+			this.forceMipmappingCheckBox.Location = new System.Drawing.Point(151, 163);
 			this.forceMipmappingCheckBox.Name = "forceMipmappingCheckBox";
 			this.forceMipmappingCheckBox.Size = new System.Drawing.Size(113, 17);
-			this.forceMipmappingCheckBox.TabIndex = 10;
+			this.forceMipmappingCheckBox.TabIndex = 17;
 			this.forceMipmappingCheckBox.Text = "Force Mipmapping";
 			this.toolTip1.SetToolTip(this.forceMipmappingCheckBox, "Generates mipmaps for all textures that don\'t have them.");
 			this.forceMipmappingCheckBox.UseVisualStyleBackColor = true;
 			// 
-			// modUpButton
+			// checkVsync
 			// 
-			this.modUpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.modUpButton.AutoSize = true;
-			this.modUpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.modUpButton.Enabled = false;
-			this.modUpButton.Location = new System.Drawing.Point(343, 6);
-			this.modUpButton.Name = "modUpButton";
-			this.modUpButton.Size = new System.Drawing.Size(29, 23);
-			this.modUpButton.TabIndex = 1;
-			this.modUpButton.Text = "↑";
-			this.modUpButton.UseVisualStyleBackColor = true;
-			this.modUpButton.Click += new System.EventHandler(this.modUpButton_Click);
-			// 
-			// modDownButton
-			// 
-			this.modDownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.modDownButton.AutoSize = true;
-			this.modDownButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.modDownButton.Enabled = false;
-			this.modDownButton.Location = new System.Drawing.Point(343, 35);
-			this.modDownButton.Name = "modDownButton";
-			this.modDownButton.Size = new System.Drawing.Size(29, 23);
-			this.modDownButton.TabIndex = 2;
-			this.modDownButton.Text = "↓";
-			this.modDownButton.UseVisualStyleBackColor = true;
-			this.modDownButton.Click += new System.EventHandler(this.modDownButton_Click);
+			this.checkVsync.Location = new System.Drawing.Point(151, 92);
+			this.checkVsync.Name = "checkVsync";
+			this.checkVsync.Size = new System.Drawing.Size(103, 16);
+			this.checkVsync.TabIndex = 10;
+			this.checkVsync.Text = "Enable V-sync";
+			this.checkVsync.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
@@ -740,5 +751,6 @@
 		private System.Windows.Forms.CheckBox maintainWindowAspectRatioCheckBox;
 		private System.Windows.Forms.Button modDownButton;
 		private System.Windows.Forms.Button modUpButton;
+		private System.Windows.Forms.CheckBox checkVsync;
 	}
 }

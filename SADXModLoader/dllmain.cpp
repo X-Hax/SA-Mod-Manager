@@ -1987,6 +1987,9 @@ static void __cdecl InitMods(void)
 		WriteData((uint8_t*)0x0078B7EC, (uint8_t)0x02);
 	}
 
+	if (settings->getBool("EnableVsync", true))
+		WriteData((int*)0x7940E8, (int)D3DPRESENT_INTERVAL_ONE);
+
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 
 	// Map of files to replace and/or swap.

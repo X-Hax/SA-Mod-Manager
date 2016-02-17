@@ -51,6 +51,7 @@ namespace SADXModManager
 			fileCheckBox.Checked = loaderini.DebugFile;
 			disableCDCheckCheckBox.Checked = loaderini.DisableCDCheck;
 			useCustomResolutionCheckBox.Checked = verticalResolution.Enabled = forceAspectRatioCheckBox.Enabled = nativeResolutionButton.Enabled = loaderini.UseCustomResolution;
+			checkVsync.Checked = loaderini.EnableVsync;
 			horizontalResolution.Enabled = loaderini.UseCustomResolution && !loaderini.ForceAspectRatio;
 			horizontalResolution.Value = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
 			verticalResolution.Value = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
@@ -216,6 +217,7 @@ namespace SADXModManager
 			loaderini.HorizontalResolution = (int)horizontalResolution.Value;
 			loaderini.VerticalResolution = (int)verticalResolution.Value;
 			loaderini.ForceAspectRatio = forceAspectRatioCheckBox.Checked;
+			loaderini.EnableVsync = checkVsync.Checked;
 			loaderini.WindowedFullscreen = windowedFullscreenCheckBox.Checked;
 			loaderini.AutoMipmap = forceMipmappingCheckBox.Checked;
 			loaderini.TextureFilter = forceTextureFilterCheckBox.Checked;
@@ -511,6 +513,8 @@ namespace SADXModManager
 		public int VerticalResolution { get; set; }
 		public bool ForceAspectRatio { get; set; }
 		public bool WindowedFullscreen { get; set; }
+		[DefaultValue(true)]
+		public bool EnableVsync { get; set; }
 		[DefaultValue(true)]
 		public bool AutoMipmap { get; set; }
 		[DefaultValue(true)]
