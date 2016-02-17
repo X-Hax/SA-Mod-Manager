@@ -37,6 +37,7 @@ static Trampoline* scaleEmeraldRadar_Grab;
 static Trampoline* scaleEmeraldRadarB;
 static Trampoline* scaleSandHillMultiplier;
 static Trampoline* scaleGammaTimeAddHud;
+static Trampoline* scaleEmblemScreen;
 
 #pragma endregion
 
@@ -240,7 +241,12 @@ static void __cdecl ScaleSandHillMultiplier(ObjectMaster* a1)
 
 static void __cdecl ScaleGammaTimeAddHud(ObjectMaster* a1)
 {
-	ScaleObjFunc(Align::Left, a1, scaleGammaTimeAddHud);
+	ScaleObjFunc(Align::Right, a1, scaleGammaTimeAddHud);
+}
+
+static void __cdecl ScaleEmblemScreen(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Center, a1, scaleEmblemScreen);
 }
 
 #ifdef _DEBUG
@@ -383,4 +389,8 @@ void SetupHudScale()
 	WriteData((const float**)0x004A005B, &patch_dummy);
 	WriteData((const float**)0x004A0067, &patch_dummy);
 	scaleGammaTimeAddHud = new Trampoline(0x0049FDA0, 0x0049FDA5, (DetourFunction)ScaleGammaTimeAddHud);
+
+	WriteData((float**)0x004B4470, &last_h);
+	WriteData((float**)0x004B444E, &last_v);
+	scaleEmblemScreen = new Trampoline(0x004B4200, 0x004B4205, (DetourFunction)ScaleEmblemScreen);
 }
