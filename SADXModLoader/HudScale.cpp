@@ -31,6 +31,7 @@ static Trampoline* scaleRodMeters;
 static Trampoline* scaleAnimalPickup;
 static Trampoline* scaleItemBoxSprite;
 static Trampoline* scaleBalls;
+static Trampoline* scaleCheckpointTime;
 
 #pragma endregion
 
@@ -210,6 +211,14 @@ static void __cdecl ScaleBalls(ObjectMaster* a1)
 	ScaleObjFunc(Align::Right, a1, scaleBalls);
 }
 
+static void __cdecl ScaleCheckpointTime(int a1, int a2, int a3)
+{
+	ScalePush(Align::Right);
+	FunctionPointer(void, original, (int, int, int), scaleCheckpointTime->Target());
+	original(a1, a2, a3);
+	ScalePop();
+}
+
 #ifdef _DEBUG
 static std::vector<NJS_SPRITE*> sprites;
 #endif
@@ -328,4 +337,10 @@ void SetupHudScale()
 	scaleItemBoxSprite = new Trampoline(0x004C0790, 0x004C0795, (DetourFunction)ScaleItemBoxSprite);
 
 	scaleBalls = new Trampoline(0x005C0B70, 0x005C0B75, (DetourFunction)ScaleBalls);
+
+	scaleCheckpointTime = new Trampoline(0x004BABE0, 0x004BABE5, (DetourFunction)ScaleCheckpointTime);
+	WriteData((const float**)0x0044F2E1, &patch_dummy);
+	WriteData((const float**)0x0044F30B, &patch_dummy);
+	WriteData((const float**)0x00476742, &patch_dummy);
+	WriteData((const float**)0x0047676A, &patch_dummy);
 }
