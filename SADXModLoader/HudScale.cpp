@@ -13,6 +13,7 @@
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
 Trampoline drawTrampoline(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
 
+// TODO: Give Trampoline a default constructor and stuff
 static Trampoline* drawObjects;
 static Trampoline* scaleRingLife;
 static Trampoline* scaleScoreTime;
@@ -29,6 +30,7 @@ static Trampoline* scaleBigHud;
 static Trampoline* scaleRodMeters;
 static Trampoline* scaleAnimalPickup;
 static Trampoline* scaleItemBoxSprite;
+static Trampoline* scaleBalls;
 
 #pragma endregion
 
@@ -228,6 +230,14 @@ static void __cdecl ScaleItemBoxSprite(ObjectMaster* a1)
 	ScalePop();
 }
 
+static void __cdecl ScaleBalls(ObjectMaster* a1)
+{
+	ScalePush(Align::Right);
+	ObjectFunc(original, scaleBalls->Target());
+	original(a1);
+	ScalePop();
+}
+
 #ifdef _DEBUG
 static std::vector<NJS_SPRITE*> sprites;
 #endif
@@ -344,4 +354,6 @@ void SetupHudScale()
 	scaleAnimalPickup = new Trampoline(0x0046B330, 0x0046B335, (DetourFunction)ScaleAnimalPickup);
 
 	scaleItemBoxSprite = new Trampoline(0x004C0790, 0x004C0795, (DetourFunction)ScaleItemBoxSprite);
+
+	scaleBalls = new Trampoline(0x005C0B70, 0x005C0B75, (DetourFunction)ScaleBalls);
 }
