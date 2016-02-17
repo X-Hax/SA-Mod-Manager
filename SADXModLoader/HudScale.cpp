@@ -81,6 +81,20 @@ static void __cdecl ScalePop()
 	}
 }
 
+
+static inline void __stdcall ScaleObjFunc(Align align, ObjectMaster* a1, Trampoline* trampoline)
+{
+	ScalePush(align);
+	((ObjectFuncPtr)trampoline->Target())(a1);
+	ScalePop();
+}
+static inline void __stdcall ScaleVoidFunc(Align align, Trampoline* trampoline)
+{
+	ScalePush(align);
+	((void (__cdecl*)(void))trampoline->Target())();
+	ScalePop();
+}
+
 #pragma endregion
 
 FunctionPointer(void, ScoreDisplay_Main, (ObjectMaster*), 0x0042BCC0);
@@ -111,26 +125,17 @@ static void __cdecl DrawAllObjectsHax()
 
 static void __cdecl ScaleA()
 {
-	ScalePush(Align::Left);
-	VoidFunc(original, scaleRingLife->Target());
-	original();
-	ScalePop();
+	ScaleVoidFunc(Align::Left, scaleRingLife);
 }
 
 static void __cdecl ScaleB()
 {
-	ScalePush(Align::Left);
-	VoidFunc(original, scaleScoreTime->Target());
-	original();
-	ScalePop();
+	ScaleVoidFunc(Align::Left, scaleScoreTime);
 }
 
 static void __cdecl ScaleStageMission(ObjectMaster* _this)
 {
-	ScalePush(Align::Center);
-	ObjectFunc(original, scaleStageMission->Target());
-	original(_this);
-	ScalePop();
+	ScaleObjFunc(Align::Center, _this, scaleStageMission);
 }
 
 static short __cdecl ScalePauseMenu()
@@ -144,66 +149,42 @@ static short __cdecl ScalePauseMenu()
 
 static void __cdecl ScaleTargetLifeGague(ObjectMaster* a1)
 {
-	ObjectFunc(original, scaleTargetLifeGague->Target());
-	ScalePush(Align::Right);
-	original(a1);
-	ScalePop();
+	ScaleObjFunc(Align::Right, a1, scaleTargetLifeGague);
 }
 
 static void __cdecl ScaleScoreA()
 {
-	ScalePush(Align::Left);
-	VoidFunc(original, scaleScoreA->Target());
-	original();
-	ScalePop();
+	ScaleVoidFunc(Align::Left, scaleScoreA);
 }
 
 static void __cdecl ScaleTornadoHP(ObjectMaster* a1)
 {
-	ScalePush(Align::Left);
-	ObjectFunc(original, scaleTornadoHP->Target());
-	original(a1);
-	ScalePop();
+	ScaleObjFunc(Align::Left, a1, scaleTornadoHP);
 }
 
 static void __cdecl ScaleTwinkleCircuitHUD(ObjectMaster* a1)
 {
-	ScalePush(Align::Center);
-	ObjectFunc(original, scaleTwinkleCircuitHUD->Target());
-	original(a1);
-	ScalePop();
+	ScaleObjFunc(Align::Center, a1, scaleTwinkleCircuitHUD);
 }
 
 static void __cdecl ScaleFishingHit(ObjectMaster* a1)
 {
-	ScalePush(Align::Center);
-	ObjectFunc(original, scaleFishingHit->Target());
-	original(a1);
-	ScalePop();
+	ScaleObjFunc(Align::Center, a1, scaleFishingHit);
 }
 
 static void __cdecl ScaleReel()
 {
-	ScalePush(Align::Right);
-	VoidFunc(original, scaleReel->Target());
-	original();
-	ScalePop();
+	ScaleVoidFunc(Align::Right, scaleReel);
 }
 
 static void __cdecl ScaleRod()
 {
-	ScalePush(Align::Right);
-	VoidFunc(original, scaleRod->Target());
-	original();
-	ScalePop();
+	ScaleVoidFunc(Align::Right, scaleRod);
 }
 
 static void __cdecl ScaleBigHud(ObjectMaster* a1)
 {
-	ScalePush(Align::Left);
-	ObjectFunc(original, scaleBigHud->Target());
-	original(a1);
-	ScalePop();
+	ScaleObjFunc(Align::Left, a1, scaleBigHud);
 }
 
 static void __cdecl ScaleRodMeters(float a1)
@@ -216,26 +197,17 @@ static void __cdecl ScaleRodMeters(float a1)
 
 static void __cdecl ScaleAnimalPickup(ObjectMaster* a1)
 {
-	ScalePush(Align::Right);
-	ObjectFunc(original, scaleAnimalPickup->Target());
-	original(a1);
-	ScalePop();
+	ScaleObjFunc(Align::Right, a1, scaleAnimalPickup);
 }
 
 static void __cdecl ScaleItemBoxSprite(ObjectMaster* a1)
 {
-	ScalePush(Align::Center);
-	ObjectFunc(original, scaleItemBoxSprite->Target());
-	original(a1);
-	ScalePop();
+	ScaleObjFunc(Align::Center, a1, scaleItemBoxSprite);
 }
 
 static void __cdecl ScaleBalls(ObjectMaster* a1)
 {
-	ScalePush(Align::Right);
-	ObjectFunc(original, scaleBalls->Target());
-	original(a1);
-	ScalePop();
+	ScaleObjFunc(Align::Right, a1, scaleBalls);
 }
 
 #ifdef _DEBUG
