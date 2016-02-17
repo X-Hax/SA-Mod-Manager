@@ -189,3 +189,4 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 SADXModLoader/git_version.h
+*.opendb
