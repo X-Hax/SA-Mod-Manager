@@ -32,6 +32,9 @@ static Trampoline* scaleAnimalPickup;
 static Trampoline* scaleItemBoxSprite;
 static Trampoline* scaleBalls;
 static Trampoline* scaleCheckpointTime;
+static Trampoline* scaleEmeraldRadarA;
+static Trampoline* scaleEmeraldRadar_Grab;
+static Trampoline* scaleEmeraldRadarB;
 
 #pragma endregion
 
@@ -49,6 +52,7 @@ static bool doScale = false;
 static std::stack<Align, std::vector<Align>> scale_stack;
 
 static const float patch_dummy = 1.0f;
+static const float screen_third = 640.0f / 3.0f;
 
 static float scale = 1.0f;
 static float last_h = 0.0f;
@@ -96,16 +100,6 @@ static inline void __stdcall ScaleVoidFunc(Align align, Trampoline* trampoline)
 	ScalePop();
 }
 
-#pragma endregion
-
-FunctionPointer(void, ScoreDisplay_Main, (ObjectMaster*), 0x0042BCC0);
-static void __cdecl ScaleResultScreen(ObjectMaster* _this)
-{
-	ScalePush(Align::Center);
-	ScoreDisplay_Main(_this);
-	ScalePop();
-}
-
 static void __cdecl DrawAllObjectsHax()
 {
 	if (doScale)
@@ -124,11 +118,20 @@ static void __cdecl DrawAllObjectsHax()
 	}
 }
 
+#pragma endregion
+
+static void __cdecl ScaleResultScreen(ObjectMaster* _this)
+{
+	ScalePush(Align::Center);
+	FunctionPointer(void, ScoreDisplay_Main, (ObjectMaster*), 0x0042BCC0);
+	ScoreDisplay_Main(_this);
+	ScalePop();
+}
+
 static void __cdecl ScaleA()
 {
 	ScaleVoidFunc(Align::Left, scaleRingLife);
 }
-
 static void __cdecl ScaleB()
 {
 	ScaleVoidFunc(Align::Left, scaleScoreTime);
@@ -172,22 +175,18 @@ static void __cdecl ScaleFishingHit(ObjectMaster* a1)
 {
 	ScaleObjFunc(Align::Center, a1, scaleFishingHit);
 }
-
 static void __cdecl ScaleReel()
 {
 	ScaleVoidFunc(Align::Right, scaleReel);
 }
-
 static void __cdecl ScaleRod()
 {
 	ScaleVoidFunc(Align::Right, scaleRod);
 }
-
 static void __cdecl ScaleBigHud(ObjectMaster* a1)
 {
 	ScaleObjFunc(Align::Left, a1, scaleBigHud);
 }
-
 static void __cdecl ScaleRodMeters(float a1)
 {
 	ScalePush(Align::Right);
@@ -217,6 +216,19 @@ static void __cdecl ScaleCheckpointTime(int a1, int a2, int a3)
 	FunctionPointer(void, original, (int, int, int), scaleCheckpointTime->Target());
 	original(a1, a2, a3);
 	ScalePop();
+}
+
+static void __cdecl ScaleEmeraldRadarA(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Auto, a1, scaleEmeraldRadarA);
+}
+static void __cdecl ScaleEmeraldRadar_Grab(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Auto, a1, scaleEmeraldRadar_Grab);
+}
+static void __cdecl ScaleEmeraldRadarB(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Auto, a1, scaleEmeraldRadarB);
 }
 
 #ifdef _DEBUG
@@ -249,6 +261,19 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 	}
 	else
 	{
+		Align top = scale_stack.top();
+
+		if (top == Align::Auto)
+		{
+			// TODO: Check if the *center* of the sprite is within a third of the screen.
+			if (sp->p.x < screen_third)
+				top = Align::Left;
+			else if (sp->p.x < screen_third * 2.0f)
+				top = Align::Center;
+			else
+				top = Align::Right;
+		}
+
 		NJS_POINT2 old_scale = { sp->sx, sp->sy };
 		NJS_POINT3 old_pos = sp->p;
 
@@ -256,19 +281,6 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 		sp->sy *= scale;
 		sp->p.x *= scale;
 		sp->p.y *= scale;
-
-		Align top = scale_stack.top();
-
-		if (top == Align::Auto)
-		{
-			static const float third = 640.0f / 3.0f;
-			if (sp->p.x < third)
-				top = Align::Left;
-			else if (sp->p.x < third * 2.0f)
-				top = Align::Center;
-			else
-				top = Align::Right;
-		}
 
 		switch (top)
 		{
@@ -343,4 +355,14 @@ void SetupHudScale()
 	WriteData((const float**)0x0044F30B, &patch_dummy);
 	WriteData((const float**)0x00476742, &patch_dummy);
 	WriteData((const float**)0x0047676A, &patch_dummy);
+
+	// EmeraldRadarHud_Load
+	WriteData((const float**)0x00475BE3, &patch_dummy);
+	WriteData((const float**)0x00475C00, &patch_dummy);
+	// Emerald get
+	WriteData((const float**)0x00477E8E, &patch_dummy);
+	WriteData((const float**)0x00477EC0, &patch_dummy);
+	scaleEmeraldRadarA = new Trampoline(0x00475A70, 0x00475A75, (DetourFunction)ScaleEmeraldRadarA);
+	scaleEmeraldRadarB = new Trampoline(0x00475E50, 0x00475E55, (DetourFunction)ScaleEmeraldRadarB);
+	scaleEmeraldRadar_Grab = new Trampoline(0x00475D50, 0x00475D55, (DetourFunction)ScaleEmeraldRadar_Grab);
 }
