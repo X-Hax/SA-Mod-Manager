@@ -35,6 +35,7 @@ static Trampoline* scaleCheckpointTime;
 static Trampoline* scaleEmeraldRadarA;
 static Trampoline* scaleEmeraldRadar_Grab;
 static Trampoline* scaleEmeraldRadarB;
+static Trampoline* scaleSandHillMultiplier;
 
 #pragma endregion
 
@@ -231,6 +232,11 @@ static void __cdecl ScaleEmeraldRadarB(ObjectMaster* a1)
 	ScaleObjFunc(Align::Auto, a1, scaleEmeraldRadarB);
 }
 
+static void __cdecl ScaleSandHillMultiplier(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Auto, a1, scaleSandHillMultiplier);
+}
+
 #ifdef _DEBUG
 static std::vector<NJS_SPRITE*> sprites;
 #endif
@@ -364,4 +370,6 @@ void SetupHudScale()
 	scaleEmeraldRadarA = new Trampoline(0x00475A70, 0x00475A75, (DetourFunction)ScaleEmeraldRadarA);
 	scaleEmeraldRadarB = new Trampoline(0x00475E50, 0x00475E55, (DetourFunction)ScaleEmeraldRadarB);
 	scaleEmeraldRadar_Grab = new Trampoline(0x00475D50, 0x00475D55, (DetourFunction)ScaleEmeraldRadar_Grab);
+
+	scaleSandHillMultiplier = new Trampoline(0x005991A0, 0x005991A6, (DetourFunction)ScaleSandHillMultiplier);
 }
