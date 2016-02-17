@@ -265,7 +265,6 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 
 		if (top == Align::Auto)
 		{
-			// TODO: Check if the *center* of the sprite is within a third of the screen.
 			if (sp->p.x < screen_third)
 				top = Align::Left;
 			else if (sp->p.x < screen_third * 2.0f)
