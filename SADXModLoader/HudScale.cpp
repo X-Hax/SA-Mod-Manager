@@ -38,6 +38,7 @@ static Trampoline* scaleEmeraldRadarB;
 static Trampoline* scaleSandHillMultiplier;
 static Trampoline* scaleGammaTimeAddHud;
 static Trampoline* scaleEmblemScreen;
+static Trampoline* scaleBossName;
 
 #pragma endregion
 
@@ -249,6 +250,11 @@ static void __cdecl ScaleEmblemScreen(ObjectMaster* a1)
 	ScaleObjFunc(Align::Center, a1, scaleEmblemScreen);
 }
 
+static void __cdecl ScaleBossName(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Center, a1, scaleBossName);
+}
+
 #ifdef _DEBUG
 static std::vector<NJS_SPRITE*> sprites;
 #endif
@@ -393,4 +399,6 @@ void SetupHudScale()
 	WriteData((float**)0x004B4470, &last_h);
 	WriteData((float**)0x004B444E, &last_v);
 	scaleEmblemScreen = new Trampoline(0x004B4200, 0x004B4205, (DetourFunction)ScaleEmblemScreen);
+
+	scaleBossName = new Trampoline(0x004B33D0, 0x004B33D5, (DetourFunction)ScaleBossName);
 }
