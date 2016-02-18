@@ -68,6 +68,7 @@
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.checkVsync = new System.Windows.Forms.CheckBox();
 			this.maintainWindowAspectRatioCheckBox = new System.Windows.Forms.CheckBox();
 			this.windowWidth = new System.Windows.Forms.NumericUpDown();
 			this.windowHeight = new System.Windows.Forms.NumericUpDown();
@@ -75,7 +76,6 @@
 			this.forceTextureFilterCheckBox = new System.Windows.Forms.CheckBox();
 			this.forceMipmappingCheckBox = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.checkVsync = new System.Windows.Forms.CheckBox();
 			groupBox2 = new System.Windows.Forms.GroupBox();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
@@ -140,16 +140,16 @@
 			// label1
 			// 
 			label1.AutoSize = true;
-			label1.Location = new System.Drawing.Point(219, 70);
+			label1.Location = new System.Drawing.Point(219, 73);
 			label1.Name = "label1";
 			label1.Size = new System.Drawing.Size(12, 13);
-			label1.TabIndex = 6;
+			label1.TabIndex = 7;
 			label1.Text = "x";
 			// 
 			// label2
 			// 
 			label2.AutoSize = true;
-			label2.Location = new System.Drawing.Point(219, 116);
+			label2.Location = new System.Drawing.Point(219, 118);
 			label2.Name = "label2";
 			label2.Size = new System.Drawing.Size(12, 13);
 			label2.TabIndex = 13;
@@ -165,7 +165,7 @@
             "All Screens"});
 			this.screenNumComboBox.Location = new System.Drawing.Point(56, 19);
 			this.screenNumComboBox.Name = "screenNumComboBox";
-			this.screenNumComboBox.Size = new System.Drawing.Size(297, 21);
+			this.screenNumComboBox.Size = new System.Drawing.Size(304, 21);
 			this.screenNumComboBox.TabIndex = 1;
 			this.toolTip1.SetToolTip(this.screenNumComboBox, "The screen to put the game on.");
 			// 
@@ -174,9 +174,9 @@
 			this.stretchFullscreenCheckBox.AutoSize = true;
 			this.stretchFullscreenCheckBox.Location = new System.Drawing.Point(151, 46);
 			this.stretchFullscreenCheckBox.Name = "stretchFullscreenCheckBox";
-			this.stretchFullscreenCheckBox.Size = new System.Drawing.Size(111, 17);
+			this.stretchFullscreenCheckBox.Size = new System.Drawing.Size(102, 17);
 			this.stretchFullscreenCheckBox.TabIndex = 3;
-			this.stretchFullscreenCheckBox.Text = "Stretch Fullscreen";
+			this.stretchFullscreenCheckBox.Text = "Scale to Screen";
 			this.toolTip1.SetToolTip(this.stretchFullscreenCheckBox, "Coupled with Windowed Fullscreen, you can downsample the game from resolutions hi" +
         "gher than your screen supports.");
 			this.stretchFullscreenCheckBox.UseVisualStyleBackColor = true;
@@ -188,7 +188,7 @@
 			this.nativeResolutionButton.Location = new System.Drawing.Point(305, 67);
 			this.nativeResolutionButton.Name = "nativeResolutionButton";
 			this.nativeResolutionButton.Size = new System.Drawing.Size(48, 23);
-			this.nativeResolutionButton.TabIndex = 8;
+			this.nativeResolutionButton.TabIndex = 9;
 			this.nativeResolutionButton.Text = "Native";
 			this.toolTip1.SetToolTip(this.nativeResolutionButton, "Sets resolution to the selected screen\'s native resolution.");
 			this.nativeResolutionButton.UseVisualStyleBackColor = true;
@@ -200,7 +200,7 @@
 			this.forceAspectRatioCheckBox.Location = new System.Drawing.Point(6, 92);
 			this.forceAspectRatioCheckBox.Name = "forceAspectRatioCheckBox";
 			this.forceAspectRatioCheckBox.Size = new System.Drawing.Size(135, 17);
-			this.forceAspectRatioCheckBox.TabIndex = 9;
+			this.forceAspectRatioCheckBox.TabIndex = 10;
 			this.forceAspectRatioCheckBox.Text = "Force 4:3 Aspect Ratio";
 			this.forceAspectRatioCheckBox.UseVisualStyleBackColor = true;
 			this.forceAspectRatioCheckBox.CheckedChanged += new System.EventHandler(this.forceAspectRatioCheckBox_CheckedChanged);
@@ -241,7 +241,7 @@
 			// 
 			// verticalResolution
 			// 
-			this.verticalResolution.Location = new System.Drawing.Point(237, 68);
+			this.verticalResolution.Location = new System.Drawing.Point(237, 69);
 			this.verticalResolution.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -254,7 +254,7 @@
             0});
 			this.verticalResolution.Name = "verticalResolution";
 			this.verticalResolution.Size = new System.Drawing.Size(62, 20);
-			this.verticalResolution.TabIndex = 7;
+			this.verticalResolution.TabIndex = 8;
 			this.verticalResolution.Value = new decimal(new int[] {
             480,
             0,
@@ -264,7 +264,7 @@
 			// 
 			// horizontalResolution
 			// 
-			this.horizontalResolution.Location = new System.Drawing.Point(151, 68);
+			this.horizontalResolution.Location = new System.Drawing.Point(151, 69);
 			this.horizontalResolution.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -277,7 +277,7 @@
             0});
 			this.horizontalResolution.Name = "horizontalResolution";
 			this.horizontalResolution.Size = new System.Drawing.Size(62, 20);
-			this.horizontalResolution.TabIndex = 5;
+			this.horizontalResolution.TabIndex = 6;
 			this.horizontalResolution.Value = new decimal(new int[] {
             640,
             0,
@@ -287,10 +287,10 @@
 			// useCustomResolutionCheckBox
 			// 
 			this.useCustomResolutionCheckBox.AutoSize = true;
-			this.useCustomResolutionCheckBox.Location = new System.Drawing.Point(6, 69);
+			this.useCustomResolutionCheckBox.Location = new System.Drawing.Point(6, 71);
 			this.useCustomResolutionCheckBox.Name = "useCustomResolutionCheckBox";
 			this.useCustomResolutionCheckBox.Size = new System.Drawing.Size(139, 17);
-			this.useCustomResolutionCheckBox.TabIndex = 4;
+			this.useCustomResolutionCheckBox.TabIndex = 5;
 			this.useCustomResolutionCheckBox.Text = "Use Custom Resolution:";
 			this.toolTip1.SetToolTip(this.useCustomResolutionCheckBox, "Overrides resolution preset with custom resolution.");
 			this.useCustomResolutionCheckBox.UseVisualStyleBackColor = true;
@@ -572,6 +572,16 @@
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Graphics";
 			// 
+			// checkVsync
+			// 
+			this.checkVsync.AutoSize = true;
+			this.checkVsync.Location = new System.Drawing.Point(266, 46);
+			this.checkVsync.Name = "checkVsync";
+			this.checkVsync.Size = new System.Drawing.Size(94, 17);
+			this.checkVsync.TabIndex = 4;
+			this.checkVsync.Text = "Enable V-sync";
+			this.checkVsync.UseVisualStyleBackColor = true;
+			// 
 			// maintainWindowAspectRatioCheckBox
 			// 
 			this.maintainWindowAspectRatioCheckBox.AutoSize = true;
@@ -663,15 +673,6 @@
 			this.toolTip1.SetToolTip(this.forceMipmappingCheckBox, "Generates mipmaps for all textures that don\'t have them.");
 			this.forceMipmappingCheckBox.UseVisualStyleBackColor = true;
 			// 
-			// checkVsync
-			// 
-			this.checkVsync.Location = new System.Drawing.Point(151, 92);
-			this.checkVsync.Name = "checkVsync";
-			this.checkVsync.Size = new System.Drawing.Size(103, 16);
-			this.checkVsync.TabIndex = 10;
-			this.checkVsync.Text = "Enable V-sync";
-			this.checkVsync.UseVisualStyleBackColor = true;
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -683,6 +684,7 @@
 			this.Controls.Add(this.saveAndPlayButton);
 			this.Controls.Add(this.saveButton);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MinimumSize = new System.Drawing.Size(400, 400);
 			this.Name = "MainForm";
 			this.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
