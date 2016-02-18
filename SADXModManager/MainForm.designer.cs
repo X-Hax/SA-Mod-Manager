@@ -684,6 +684,7 @@
 			this.Controls.Add(this.saveAndPlayButton);
 			this.Controls.Add(this.saveButton);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MinimumSize = new System.Drawing.Size(400, 400);
 			this.Name = "MainForm";
 			this.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
