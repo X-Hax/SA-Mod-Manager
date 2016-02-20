@@ -6,6 +6,9 @@
 
 #include "HudScale.h"
 
+using std::stack;
+using std::vector;
+
 // TODO: misc. 2D things (i.e lens flare), main menu, character select
 
 #pragma region trampolines
@@ -39,12 +42,14 @@ static Trampoline* scaleSandHillMultiplier;
 static Trampoline* scaleGammaTimeAddHud;
 static Trampoline* scaleEmblemScreen;
 static Trampoline* scaleBossName;
+static Trampoline* scaleCasinoCards;
+static Trampoline* scaleNightsJackpot;
 
 #pragma endregion
 
 #pragma region scale stack
 
-enum class Align
+enum class Align : Uint8
 {
 	Auto,
 	Left,
@@ -52,42 +57,46 @@ enum class Align
 	Right
 };
 
-static bool doScale = false;
-static std::stack<Align, std::vector<Align>> scale_stack;
+struct ScaleEntry
+{
+	Align alignment;
+	NJS_POINT2 scale;
+};
+
+static stack<ScaleEntry, vector<ScaleEntry>> scale_stack;
 
 static const float patch_dummy = 1.0f;
 static const float screen_third = 640.0f / 3.0f;
 
+static bool doScale = false;
 static float scale = 1.0f;
 static float last_h = 0.0f;
 static float last_v = 0.0f;
+static size_t stack_size = 0;
 
-static void __cdecl ScalePush(Align align)
+static void __cdecl ScalePush(Align align, float h = 1.0f, float v = 1.0f)
 {
-	scale_stack.push(align);
+	scale_stack.push({ align, HorizontalStretch, VerticalStretch });
 
-	if (doScale)
-		return;
+#ifdef _DEBUG
+	if (scale_stack.size() > stack_size)
+		PrintDebug("STACK SIZE: %u/%u\n", (stack_size = scale_stack.size()), scale_stack._Get_container().capacity());
+#endif
 
-	last_h = HorizontalStretch;
-	last_v = VerticalStretch;
-
-	HorizontalStretch = 1.0f;
-	VerticalStretch = 1.0f;
+	HorizontalStretch = h;
+	VerticalStretch = v;
 
 	doScale = true;
 }
 
 static void __cdecl ScalePop()
 {
+	auto point = scale_stack.top();
+	HorizontalStretch = point.scale.x;
+	VerticalStretch = point.scale.y;
+
 	scale_stack.pop();
 	doScale = scale_stack.size() > 0;
-
-	if (!doScale)
-	{
-		HorizontalStretch = last_h;
-		VerticalStretch = last_v;
-	}
 }
 
 
@@ -107,19 +116,13 @@ static inline void __stdcall ScaleVoidFunc(Align align, Trampoline* trampoline)
 static void __cdecl DrawAllObjectsHax()
 {
 	if (doScale)
-	{
-		HorizontalStretch = last_h;
-		VerticalStretch = last_v;
-	}
+		ScalePush(Align::Auto, last_h, last_v);
 
 	VoidFunc(original, drawObjects->Target());
 	original();
 
 	if (doScale)
-	{
-		HorizontalStretch = 1.0f;
-		VerticalStretch = 1.0f;
-	}
+		ScalePop();
 }
 
 #pragma endregion
@@ -255,8 +258,17 @@ static void __cdecl ScaleBossName(ObjectMaster* a1)
 	ScaleObjFunc(Align::Center, a1, scaleBossName);
 }
 
+static void __cdecl ScaleCasinoCards(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Auto, a1, scaleCasinoCards);
+}
+static void __cdecl ScaleNightsJackpot(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Center, a1, scaleNightsJackpot);
+}
+
 #ifdef _DEBUG
-static std::vector<NJS_SPRITE*> sprites;
+static vector<NJS_SPRITE*> sprites;
 #endif
 
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
@@ -264,12 +276,18 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 	if (sp == nullptr)
 		return;
 
-#ifdef _DEBUG
-	if (std::find(sprites.begin(), sprites.end(), sp) == sprites.end())
-		sprites.push_back(sp);
-#endif
-
 	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), drawTrampoline.Target());
+
+#ifdef _DEBUG
+	if (find(sprites.begin(), sprites.end(), sp) == sprites.end())
+		sprites.push_back(sp);
+
+	if (ControllerPointers[0]->HeldButtons & Buttons_Z)
+	{
+		original(sp, n, pri, attr, zfunc_type);
+		return;
+	}
+#endif
 
 	if (!doScale || sp == (NJS_SPRITE*)0x009BF3B0)
 	{
@@ -285,16 +303,17 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 	}
 	else
 	{
-		Align top = scale_stack.top();
+		auto top = scale_stack.top();
+		Align align = top.alignment;
 
-		if (top == Align::Auto)
+		if (align == Align::Auto)
 		{
 			if (sp->p.x < screen_third)
-				top = Align::Left;
+				align = Align::Left;
 			else if (sp->p.x < screen_third * 2.0f)
-				top = Align::Center;
+				align = Align::Center;
 			else
-				top = Align::Right;
+				align = Align::Right;
 		}
 
 		NJS_POINT2 old_scale = { sp->sx, sp->sy };
@@ -305,7 +324,7 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 		sp->p.x *= scale;
 		sp->p.y *= scale;
 
-		switch (top)
+		switch (align)
 		{
 			default:
 				break;
@@ -335,7 +354,10 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 
 void SetupHudScale()
 {
-	scale = min(HorizontalStretch, VerticalStretch);
+	last_h = HorizontalStretch;
+	last_v = VerticalStretch;
+
+	scale = min(last_h, last_v);
 	WriteJump((void*)0x0042BEE0, ScaleResultScreen);
 
 	drawObjects = new Trampoline(0x0040B540, 0x0040B546, (DetourFunction)DrawAllObjectsHax);
@@ -401,4 +423,13 @@ void SetupHudScale()
 	scaleEmblemScreen = new Trampoline(0x004B4200, 0x004B4205, (DetourFunction)ScaleEmblemScreen);
 
 	scaleBossName = new Trampoline(0x004B33D0, 0x004B33D5, (DetourFunction)ScaleBossName);
+
+	// FIXME: Problem: The faded background sprite needs to be scaled in some cases and not in others.
+	/*
+	WriteData((float**)0x005D742F, &last_h);
+	WriteData((float**)0x005D744A, &last_h);
+	scaleCasinoCards = new Trampoline(0x005D73F0, 0x005D73F5, (DetourFunction)ScaleCasinoCards);
+	WriteData((float**)0x005D701B, &last_h);
+	scaleNightsJackpot = new Trampoline(0x005D6E60, 0x005D6E67, (DetourFunction)ScaleNightsJackpot);
+	*/
 }
