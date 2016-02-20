@@ -39,6 +39,7 @@ static Trampoline* scaleEmeraldRadarA;
 static Trampoline* scaleEmeraldRadar_Grab;
 static Trampoline* scaleEmeraldRadarB;
 static Trampoline* scaleSandHillMultiplier;
+static Trampoline* scaleIceCapMultiplier;
 static Trampoline* scaleGammaTimeAddHud;
 static Trampoline* scaleEmblemScreen;
 static Trampoline* scaleBossName;
@@ -242,6 +243,10 @@ static void __cdecl ScaleSandHillMultiplier(ObjectMaster* a1)
 {
 	ScaleObjFunc(Align::Auto, a1, scaleSandHillMultiplier);
 }
+static void __cdecl ScaleIceCapMultiplier(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Auto, a1, scaleIceCapMultiplier);
+}
 
 static void __cdecl ScaleGammaTimeAddHud(ObjectMaster* a1)
 {
@@ -412,6 +417,7 @@ void SetupHudScale()
 	scaleEmeraldRadar_Grab = new Trampoline(0x00475D50, 0x00475D55, (DetourFunction)ScaleEmeraldRadar_Grab);
 
 	scaleSandHillMultiplier = new Trampoline(0x005991A0, 0x005991A6, (DetourFunction)ScaleSandHillMultiplier);
+	scaleIceCapMultiplier = new Trampoline(0x004EC120, 0x004EC125, (DetourFunction)ScaleIceCapMultiplier);
 
 	WriteData((const float**)0x0049FF70, &patch_dummy);
 	WriteData((const float**)0x004A005B, &patch_dummy);
