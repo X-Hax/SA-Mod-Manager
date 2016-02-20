@@ -48,6 +48,7 @@ static Trampoline* scaleNightsJackpot;
 static Trampoline* scaleMissionStartClear;
 static Trampoline* scaleMissionTimer;
 static Trampoline* scaleMissionCounter;
+static Trampoline* scaleTailsWinLose;
 
 #pragma endregion
 
@@ -287,6 +288,11 @@ static void __cdecl ScaleMissionCounter()
 	ScaleVoidFunc(Align::Center, scaleMissionCounter);
 }
 
+static void __cdecl ScaleTailsWinLose(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Center, a1, scaleTailsWinLose);
+}
+
 #ifdef _DEBUG
 static vector<NJS_SPRITE*> sprites;
 #endif
@@ -453,4 +459,6 @@ void SetupHudScale()
 
 	scaleMissionTimer = new Trampoline(0x00592D50, 0x00592D59, (DetourFunction)ScaleMissionTimer);
 	scaleMissionCounter = new Trampoline(0x00592A60, 0x00592A68, (DetourFunction)ScaleMissionCounter);
+
+	scaleTailsWinLose = new Trampoline(0x0047C480, 0x0047C485, (DetourFunction)ScaleTailsWinLose);
 }
