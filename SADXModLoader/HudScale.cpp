@@ -42,7 +42,7 @@ static Trampoline* scaleSandHillMultiplier;
 static Trampoline* scaleGammaTimeAddHud;
 static Trampoline* scaleEmblemScreen;
 static Trampoline* scaleBossName;
-static Trampoline* scaleCasinoCards;
+static Trampoline* scaleNightsCards;
 static Trampoline* scaleNightsJackpot;
 
 #pragma endregion
@@ -80,7 +80,7 @@ static void __cdecl ScalePush(Align align, float h = 1.0f, float v = 1.0f)
 
 #ifdef _DEBUG
 	if (scale_stack.size() > stack_size)
-		PrintDebug("STACK SIZE: %u/%u\n", (stack_size = scale_stack.size()), scale_stack._Get_container().capacity());
+		PrintDebug("SCALE STACK SIZE: %u/%u\n", (stack_size = scale_stack.size()), scale_stack._Get_container().capacity());
 #endif
 
 	HorizontalStretch = h;
@@ -258,13 +258,13 @@ static void __cdecl ScaleBossName(ObjectMaster* a1)
 	ScaleObjFunc(Align::Center, a1, scaleBossName);
 }
 
-static void __cdecl ScaleCasinoCards(ObjectMaster* a1)
+static void __cdecl ScaleNightsCards(ObjectMaster* a1)
 {
-	ScaleObjFunc(Align::Auto, a1, scaleCasinoCards);
+	ScaleObjFunc(Align::Auto, a1, scaleNightsCards);
 }
 static void __cdecl ScaleNightsJackpot(ObjectMaster* a1)
 {
-	ScaleObjFunc(Align::Center, a1, scaleNightsJackpot);
+	ScaleObjFunc(Align::Auto, a1, scaleNightsJackpot);
 }
 
 #ifdef _DEBUG
@@ -382,7 +382,7 @@ void SetupHudScale()
 	WriteCall(scaleTwinkleCircuitHUD->Target(), (void*)0x590620);
 
 	// Rod scaling disabled.
-	// TODO: Figure out how gauge is drawn (it doesn't use the texture).
+	// TODO: Figure out how gauge is drawn (it doesn't appear to use the texture).
 	//scaleReel = new Trampoline(0x0046C9F0, 0x0046C9F5, (DetourFunction)ScaleReel);
 	//scaleRod = new Trampoline(0x0046CAB0, 0x0046CAB9, (DetourFunction)ScaleRod);
 	//scaleRodMeters = new Trampoline(0x0046CC70, 0x0046CC75, (DetourFunction)ScaleRodMeters);
@@ -424,12 +424,7 @@ void SetupHudScale()
 
 	scaleBossName = new Trampoline(0x004B33D0, 0x004B33D5, (DetourFunction)ScaleBossName);
 
-	// FIXME: Problem: The faded background sprite needs to be scaled in some cases and not in others.
-	/*
-	WriteData((float**)0x005D742F, &last_h);
-	WriteData((float**)0x005D744A, &last_h);
-	scaleCasinoCards = new Trampoline(0x005D73F0, 0x005D73F5, (DetourFunction)ScaleCasinoCards);
+	scaleNightsCards = new Trampoline(0x005D73F0, 0x005D73F5, (DetourFunction)ScaleNightsCards);
 	WriteData((float**)0x005D701B, &last_h);
 	scaleNightsJackpot = new Trampoline(0x005D6E60, 0x005D6E67, (DetourFunction)ScaleNightsJackpot);
-	*/
 }
