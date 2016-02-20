@@ -14,7 +14,10 @@ using std::vector;
 #pragma region trampolines
 
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
+void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr);
+
 Trampoline drawTrampoline(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
+Trampoline otherDrawTrampoline(0x004070A0, 0x004070A5, (DetourFunction)njDrawSprite2D_4_Hax);
 
 // TODO: Give Trampoline a default constructor and stuff
 static Trampoline* drawObjects;
@@ -49,6 +52,7 @@ static Trampoline* scaleMissionStartClear;
 static Trampoline* scaleMissionTimer;
 static Trampoline* scaleMissionCounter;
 static Trampoline* scaleTailsWinLose;
+static Trampoline* scaleTailsOtherThing;
 
 #pragma endregion
 
@@ -130,6 +134,76 @@ static void __cdecl DrawAllObjectsHax()
 }
 
 #pragma endregion
+
+#pragma region sprite stack
+
+static NJS_SPRITE last_sprite;
+
+static void __cdecl SpritePush(NJS_SPRITE* sp)
+{
+	auto top = scale_stack.top();
+	Align align = top.alignment;
+
+	if (align == Align::Auto)
+	{
+		if (sp->p.x < screen_third)
+			align = Align::Left;
+		else if (sp->p.x < screen_third * 2.0f)
+			align = Align::Center;
+		else
+			align = Align::Right;
+	}
+
+	last_sprite = *sp;
+
+	sp->sx *= scale;
+	sp->sy *= scale;
+	sp->p.x *= scale;
+	sp->p.y *= scale;
+
+	switch (align)
+	{
+		default:
+			break;
+
+		case Align::Center:
+			if ((float)HorizontalResolution / last_v > 640.0f)
+				sp->p.x += (float)HorizontalResolution / 8.0f;
+			if ((float)VerticalResolution / last_h > 480.0f)
+				sp->p.y += (float)VerticalResolution / 8.0f;
+			break;
+
+		case Align::Right:
+			if ((float)HorizontalResolution / last_v > 640.0f)
+				sp->p.x += (float)HorizontalResolution / 4.0f;
+			if ((float)VerticalResolution / last_h > 480.0f)
+				sp->p.y += (float)VerticalResolution / 4.0f;
+			break;
+	}
+}
+
+static void __cdecl SpritePop(NJS_SPRITE* sp)
+{
+	sp->p = last_sprite.p;
+	sp->sx = last_sprite.sx;
+	sp->sy = last_sprite.sy;
+}
+
+#ifdef _DEBUG
+static vector<NJS_SPRITE*> sprites;
+#endif
+
+static void __cdecl StoreSprite(NJS_SPRITE* sp)
+{
+#ifdef _DEBUG
+	if (find(sprites.begin(), sprites.end(), sp) == sprites.end())
+		sprites.push_back(sp);
+#endif
+}
+
+#pragma endregion
+
+#pragma region scale functions
 
 static void __cdecl ScaleResultScreen(ObjectMaster* _this)
 {
@@ -292,10 +366,12 @@ static void __cdecl ScaleTailsWinLose(ObjectMaster* a1)
 {
 	ScaleObjFunc(Align::Center, a1, scaleTailsWinLose);
 }
+static void __cdecl ScaleTailsOtherThing(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Center, a1, scaleTailsOtherThing);
+}
 
-#ifdef _DEBUG
-static vector<NJS_SPRITE*> sprites;
-#endif
+#pragma endregion
 
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
 {
@@ -304,10 +380,9 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 
 	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), drawTrampoline.Target());
 
-#ifdef _DEBUG
-	if (find(sprites.begin(), sprites.end(), sp) == sprites.end())
-		sprites.push_back(sp);
+	StoreSprite(sp);
 
+#ifdef _DEBUG
 	if (ControllerPointers[0]->HeldButtons & Buttons_Z)
 	{
 		original(sp, n, pri, attr, zfunc_type);
@@ -329,52 +404,38 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 	}
 	else
 	{
-		auto top = scale_stack.top();
-		Align align = top.alignment;
-
-		if (align == Align::Auto)
-		{
-			if (sp->p.x < screen_third)
-				align = Align::Left;
-			else if (sp->p.x < screen_third * 2.0f)
-				align = Align::Center;
-			else
-				align = Align::Right;
-		}
-
-		NJS_POINT2 old_scale = { sp->sx, sp->sy };
-		NJS_POINT3 old_pos = sp->p;
-
-		sp->sx *= scale;
-		sp->sy *= scale;
-		sp->p.x *= scale;
-		sp->p.y *= scale;
-
-		switch (align)
-		{
-			default:
-				break;
-
-			case Align::Center:
-				if ((float)HorizontalResolution / last_v > 640.0f)
-					sp->p.x += (float)HorizontalResolution / 8.0f;
-				if ((float)VerticalResolution / last_h > 480.0f)
-					sp->p.y += (float)VerticalResolution / 8.0f;
-				break;
-
-			case Align::Right:
-				if ((float)HorizontalResolution / last_v > 640.0f)
-					sp->p.x += (float)HorizontalResolution / 4.0f;
-				if ((float)VerticalResolution / last_h > 480.0f)
-					sp->p.y += (float)VerticalResolution / 4.0f;
-				break;
-		}
-
+		SpritePush(sp);
 		original(sp, n, pri, attr | NJD_SPRITE_SCALE, zfunc_type);
+		SpritePop(sp);
+	}
+}
 
-		sp->p = old_pos;
-		sp->sx = old_scale.x;
-		sp->sy = old_scale.y;
+void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr)
+{
+	if (sp == nullptr)
+		return;
+
+	FunctionPointer(void, original, (NJS_SPRITE *sp, Int n, Float pri, Uint32 attr), otherDrawTrampoline.Target());
+
+	StoreSprite(sp);
+
+#ifdef _DEBUG
+	if (ControllerPointers[0]->HeldButtons & Buttons_Z)
+	{
+		original(sp, n, pri, attr);
+		return;
+	}
+#endif
+
+	if (!doScale)
+	{
+		original(sp, n, pri, attr);
+	}
+	else
+	{
+		SpritePush(sp);
+		original(sp, n, pri, attr | NJD_SPRITE_SCALE);
+		SpritePop(sp);
 	}
 }
 
@@ -461,4 +522,5 @@ void SetupHudScale()
 	scaleMissionCounter = new Trampoline(0x00592A60, 0x00592A68, (DetourFunction)ScaleMissionCounter);
 
 	scaleTailsWinLose = new Trampoline(0x0047C480, 0x0047C485, (DetourFunction)ScaleTailsWinLose);
+	scaleTailsOtherThing = new Trampoline(0x0047C260, 0x0047C267, (DetourFunction)ScaleTailsOtherThing);
 }
