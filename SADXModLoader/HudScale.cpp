@@ -45,6 +45,7 @@ static Trampoline* scaleEmblemScreen;
 static Trampoline* scaleBossName;
 static Trampoline* scaleNightsCards;
 static Trampoline* scaleNightsJackpot;
+static Trampoline* scaleMissionStartClear;
 
 #pragma endregion
 
@@ -99,7 +100,6 @@ static void __cdecl ScalePop()
 	scale_stack.pop();
 	doScale = scale_stack.size() > 0;
 }
-
 
 static inline void __stdcall ScaleObjFunc(Align align, ObjectMaster* a1, Trampoline* trampoline)
 {
@@ -272,6 +272,11 @@ static void __cdecl ScaleNightsJackpot(ObjectMaster* a1)
 	ScaleObjFunc(Align::Auto, a1, scaleNightsJackpot);
 }
 
+static void __cdecl ScaleMissionStartClear(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Center, a1, scaleMissionStartClear);
+}
+
 #ifdef _DEBUG
 static vector<NJS_SPRITE*> sprites;
 #endif
@@ -433,4 +438,6 @@ void SetupHudScale()
 	scaleNightsCards = new Trampoline(0x005D73F0, 0x005D73F5, (DetourFunction)ScaleNightsCards);
 	WriteData((float**)0x005D701B, &last_h);
 	scaleNightsJackpot = new Trampoline(0x005D6E60, 0x005D6E67, (DetourFunction)ScaleNightsJackpot);
+
+	scaleMissionStartClear = new Trampoline(0x00591260, 0x00591268, (DetourFunction)ScaleMissionStartClear);
 }
