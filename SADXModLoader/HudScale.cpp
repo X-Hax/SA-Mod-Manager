@@ -9,7 +9,7 @@
 using std::stack;
 using std::vector;
 
-// TODO: misc. 2D things (i.e lens flare), main menu, character select
+// TODO: "other" things
 
 #pragma region trampolines
 
