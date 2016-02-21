@@ -85,6 +85,11 @@ static size_t stack_size = 0;
 
 static void __cdecl ScalePush(Align align, float h = 1.0f, float v = 1.0f)
 {
+#ifdef _DEBUG
+	if (ControllerPointers[0]->HeldButtons & Buttons_Z)
+		return;
+#endif
+
 	scale_stack.push({ align, HorizontalStretch, VerticalStretch });
 
 #ifdef _DEBUG
@@ -100,6 +105,9 @@ static void __cdecl ScalePush(Align align, float h = 1.0f, float v = 1.0f)
 
 static void __cdecl ScalePop()
 {
+	if (scale_stack.size() < 1)
+		return;
+
 	auto point = scale_stack.top();
 	HorizontalStretch = point.scale.x;
 	VerticalStretch = point.scale.y;
@@ -382,14 +390,6 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 
 	StoreSprite(sp);
 
-#ifdef _DEBUG
-	if (ControllerPointers[0]->HeldButtons & Buttons_Z)
-	{
-		original(sp, n, pri, attr, zfunc_type);
-		return;
-	}
-#endif
-
 	if (!doScale || sp == (NJS_SPRITE*)0x009BF3B0)
 	{
 		// Scales lens flare and sun.
@@ -418,14 +418,6 @@ void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr)
 	FunctionPointer(void, original, (NJS_SPRITE *sp, Int n, Float pri, Uint32 attr), otherDrawTrampoline.Target());
 
 	StoreSprite(sp);
-
-#ifdef _DEBUG
-	if (ControllerPointers[0]->HeldButtons & Buttons_Z)
-	{
-		original(sp, n, pri, attr);
-		return;
-	}
-#endif
 
 	if (!doScale)
 	{
