@@ -16,11 +16,12 @@ using std::vector;
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
 void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr);
 
-Trampoline drawTrampoline(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
-Trampoline otherDrawTrampoline(0x004070A0, 0x004070A5, (DetourFunction)njDrawSprite2D_4_Hax);
+Trampoline drawSprite(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
+Trampoline drawSpriteWrapper(0x004070A0, 0x004070A5, (DetourFunction)njDrawSprite2D_4_Hax);
 
 // TODO: Give Trampoline a default constructor and stuff
 static Trampoline* drawObjects;
+static Trampoline* missionScreen;
 static Trampoline* scaleRingLife;
 static Trampoline* scaleScoreTime;
 static Trampoline* scaleStageMission;
@@ -140,6 +141,21 @@ static void __cdecl DrawAllObjectsHax()
 
 	if (doScale)
 		ScalePop();
+}
+
+// HACK: Remove when "other things" scaling is implemented
+static Sint32 __cdecl FixMissionScreen()
+{
+	if (doScale)
+		ScalePush(Align::Auto, last_h, last_v);
+
+	FunctionPointer(Sint32, original, (void), missionScreen->Target());
+	Sint32 result = original();
+
+	if (doScale)
+		ScalePop();
+
+	return result;
 }
 
 #pragma endregion
@@ -391,7 +407,7 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 	if (sp == nullptr)
 		return;
 
-	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), drawTrampoline.Target());
+	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), drawSprite.Target());
 
 	StoreSprite(sp);
 
@@ -420,7 +436,7 @@ void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr)
 	if (sp == nullptr)
 		return;
 
-	FunctionPointer(void, original, (NJS_SPRITE *sp, Int n, Float pri, Uint32 attr), otherDrawTrampoline.Target());
+	FunctionPointer(void, original, (NJS_SPRITE *sp, Int n, Float pri, Uint32 attr), drawSpriteWrapper.Target());
 
 	StoreSprite(sp);
 
@@ -446,6 +462,8 @@ void SetupHudScale()
 
 	drawObjects = new Trampoline(0x0040B540, 0x0040B546, (DetourFunction)DrawAllObjectsHax);
 	WriteCall((void*)((size_t)drawObjects->Target() + 1), (void*)0x004128F0);
+
+	missionScreen = new Trampoline(0x00590E60, 0x00590E65, (DetourFunction)FixMissionScreen);
 
 	scaleRingLife = new Trampoline(0x00425F90, 0x00425F95, (DetourFunction)ScaleA);
 	scaleScoreTime = new Trampoline(0x00427F50, 0x00427F55, (DetourFunction)ScaleB);
