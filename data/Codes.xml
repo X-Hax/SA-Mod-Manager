@@ -826,4 +826,12 @@
       <ValueType>decimal</ValueType>
     </CodeLine>
   </Code>
+  <Code name="Infinite Tails Flight" patch="true">
+    <CodeLine>
+      <Type>writenop</Type>
+      <Address>0045D86B</Address>
+      <Value>6</Value>
+      <ValueType>decimal</ValueType>
+    </CodeLine>
+  </Code>
 </CodeList>
