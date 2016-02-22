@@ -44,6 +44,7 @@ static Trampoline* scaleEmeraldRadarB;
 static Trampoline* scaleSandHillMultiplier;
 static Trampoline* scaleIceCapMultiplier;
 static Trampoline* scaleGammaTimeAddHud;
+static Trampoline* scaleGammaTimeRemaining;
 static Trampoline* scaleEmblemScreen;
 static Trampoline* scaleBossName;
 static Trampoline* scaleNightsCards;
@@ -337,6 +338,10 @@ static void __cdecl ScaleGammaTimeAddHud(ObjectMaster* a1)
 {
 	ScaleObjFunc(Align::Right, a1, scaleGammaTimeAddHud);
 }
+static void __cdecl ScaleGammaTimeRemaining(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Center, a1, scaleGammaTimeRemaining);
+}
 
 static void __cdecl ScaleEmblemScreen(ObjectMaster* a1)
 {
@@ -497,6 +502,7 @@ void SetupHudScale()
 	WriteData((const float**)0x004A005B, &patch_dummy);
 	WriteData((const float**)0x004A0067, &patch_dummy);
 	scaleGammaTimeAddHud = new Trampoline(0x0049FDA0, 0x0049FDA5, (DetourFunction)ScaleGammaTimeAddHud);
+	scaleGammaTimeRemaining = new Trampoline(0x004C51D0, 0x004C51D7, (DetourFunction)ScaleGammaTimeRemaining);
 
 	WriteData((float**)0x004B4470, &last_h);
 	WriteData((float**)0x004B444E, &last_v);
