@@ -36,14 +36,10 @@ static void DisplayVideoFrame_FixAspectRatio()
 }
 
 // Fix for neglected width and height in global NJS_SCREEN
-static void __cdecl SetupScreenFix(NJS_MATRIX* m);
-static Trampoline SetupScreenTrampoline(0x00788240, 0x00788246, (DetourFunction)SetupScreenFix);
-static void __cdecl SetupScreenFix(NJS_MATRIX* m)
+FunctionPointer(void, SetupScreen, (NJS_SCREEN*), 0x00788240);
+static void __cdecl SetupScreenFix(NJS_SCREEN* screen)
 {
-	_nj_screen_.w = (*m)[1];	// Screen Width
-	_nj_screen_.h = (*m)[2];	// Screen Height
-	FunctionPointer(void, SetupScreen, (NJS_MATRIX* m), SetupScreenTrampoline.Target());
-	SetupScreen(m);
+	_nj_screen_ = *screen;
 }
 
 static void __cdecl njSetScreenDist_hook(Angle bams)
@@ -92,6 +88,8 @@ void ConfigureFOV()
 	static const double default_ratio = 4.0 / 3.0;
 	const uint32_t width = HorizontalResolution;
 	const uint32_t height = VerticalResolution;
+
+	WriteJump(SetupScreen, SetupScreenFix);
 
 	// Taking advantage of a nullsub call.
 	WriteCall((void*)0x00513A88, DisplayVideoFrame_FixAspectRatio);
