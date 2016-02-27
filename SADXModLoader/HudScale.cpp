@@ -55,6 +55,7 @@ static Trampoline* scaleMissionTimer;
 static Trampoline* scaleMissionCounter;
 static Trampoline* scaleTailsWinLose;
 static Trampoline* scaleTailsOtherThing;
+static Trampoline* scaleDemoPressStart;
 
 #pragma endregion
 
@@ -400,6 +401,11 @@ static void __cdecl ScaleTailsOtherThing(ObjectMaster* a1)
 	ScaleObjFunc(Align::Center, a1, scaleTailsOtherThing);
 }
 
+static void __cdecl ScaleDemoPressStart(ObjectMaster* a1)
+{
+	ScaleObjFunc(Align::Right, a1, scaleDemoPressStart);
+}
+
 #pragma endregion
 
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
@@ -539,4 +545,6 @@ void SetupHudScale()
 
 	scaleTailsWinLose = new Trampoline(0x0047C480, 0x0047C485, (DetourFunction)ScaleTailsWinLose);
 	scaleTailsOtherThing = new Trampoline(0x0047C260, 0x0047C267, (DetourFunction)ScaleTailsOtherThing);
+
+	scaleDemoPressStart = new Trampoline(0x00457D30, 0x00457D36, (DetourFunction)ScaleDemoPressStart);
 }
