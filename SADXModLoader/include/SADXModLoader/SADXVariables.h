@@ -55,7 +55,7 @@ DataPointer(int, CasinoRings, 0x03C74880);
 DataPointer(char, Lives, 0x03B0EF34);
 DataPointer(float, SkyChaseHealth, 0x03C82304);
 DataPointer(char, HideHud, 0x03B0EF40);
-DataPointer(int, CutscenePlaying, 0x3B2A2E4);
+DataPointer(int, DemoPlaying, 0x3B2A2E4);
 DataPointer(float,	DebugFontSize,	0x03CE7154);
 DataPointer(int, DebugFontColor,	0x03CE715C);
 DataPointer(Uint32, DisplayAdapter, 0x03D0FDFC);
