@@ -216,7 +216,7 @@ struct AnimThing
 	int dword14;
 	float *pfloat18;
 	float *pfloat1C;
-	AnimData *AnimData;
+	AnimData_t *AnimData;
 	NJS_OBJECT **object_ptr_ptr;
 	void *unknown_ptr;
 };
@@ -249,7 +249,7 @@ struct CharObj2
 	short LightdashTimer;
 	char gap_84[20];
 	float TailsFlightTime;
-	PhysicsData PhysicsData;
+	PhysicsData_t PhysicsData;
 	AnimThing AnimThing;
 	char gap_14C[144];
 	int field_1DC;
