@@ -202,37 +202,60 @@ struct PhysicsData_t
 	float YOff;
 };
 
+struct AnimThing
+{
+	short field_0;
+	short field_2;
+	short Animation;
+	short field_6;
+	short field_8;
+	short field_A;
+	short field_C;
+	short field_E;
+	float AnimationFrame;
+	int dword14;
+	float *pfloat18;
+	float *pfloat1C;
+	AnimData_t *AnimData;
+	NJS_OBJECT **object_ptr_ptr;
+	void *unknown_ptr;
+};
+
 struct CharObj2
 {
 	float SpindashSpeed;
-	int16_t Upgrades;
-	int16_t Powerups;
-	int16_t JumpTime;
-	int16_t field_A;
-	int16_t UnderwaterTime;
-	int16_t IdleTime;
-	char gap_10[8];
+	short Upgrades;
+	short Powerups;
+	short JumpTime;
+	short field_A;
+	short UnderwaterTime;
+	short IdleTime;
+	char gap_10[2];
+	int field_12;
+	char gap_16[2];
 	float LoopDist;
-	char gap_1c[28];
-	Vector3 Speed;
-	char gap_40[12];
-	Vector3 field_50;
-	char gap_5c[12];
+	char gap_1C[28];
+	NJS_VECTOR Speed;
+	char gap_44[12];
+	NJS_VECTOR field_50;
+	char gap_5C[8];
+	void *array_1x132;
 	ObjectMaster *ObjectHeld;
-	char gap_6c[48];
+	char gap_6C[12];
+	void *array_15x32;
+	short field_7C;
+	short field_7E;
+	short LightdashTime;
+	short LightdashTimer;
+	char gap_84[20];
+	float TailsFlightTime;
 	PhysicsData_t PhysicsData;
-	char gap_120[4];
-	int16_t Animation;
-	char gap_126[10];
-	float AnimationFrame;
-	char gap_134[12];
-	AnimData_t *AnimData;
-	NJS_OBJECT **field_144;
-	char gap_148[148];
+	AnimThing AnimThing;
+	char gap_14C[144];
 	int field_1DC;
-	char gap_1e0[4];
+	char gap_1E0[4];
 	int field_1E4;
-	char gap_1e8[20];
+	char gap_1E8[20];
 	float field_1FC;
 };
 
