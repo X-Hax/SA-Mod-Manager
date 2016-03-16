@@ -412,9 +412,9 @@ VoidFunc(DisableChao, 0x00731CE0);
 VoidFunc(EnableChao, 0x00731CD0);
 
 FunctionPointer(void, SetCameraControlEnabled, (bool), 0x4348A0);
-FunctionPointer(bool, GetCameraControlEnabled, (void), 0x4348E0);
-FunctionPointer(void, SetCameraMode, (bool), 0x4348F0);
-FunctionPointer(bool, GetCameraMode, (void), 0x434930);
+FunctionPointer(bool, IsCameraControlEnabled, (void), 0x4348E0);
+FunctionPointer(void, SetFreeCameraFlag, (bool), 0x4348F0);
+FunctionPointer(bool, IsFreeCameraFlag, (void), 0x434930);
 
 #ifdef _MSC_VER
 
