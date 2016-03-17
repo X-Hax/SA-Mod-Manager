@@ -98,4 +98,7 @@ DataPointer(int, JumpButtons, 0x00909F98);
 // Buttons used for grabbing objects.
 DataPointer(int, GrabButtons, 0x00909FA4);
 
+DataArray(char, CutsceneFlagArray, 0x3B18608, 512);
+DataArray(char, EventFlagArray, 0x3B18808, 512);
+
 #endif /* SADXMODLOADER_SADXVARS_H */
