@@ -1990,7 +1990,8 @@ static void __cdecl InitMods(void)
 	if (settings->getBool("EnableVsync", true))
 		WriteData((int*)0x7940E8, (int)D3DPRESENT_INTERVAL_ONE);
 
-	SetupHudScale();
+	if (settings->getBool("ScaleHud", false))
+		SetupHudScale();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 

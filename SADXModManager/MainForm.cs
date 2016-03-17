@@ -57,6 +57,7 @@ namespace SADXModManager
 			verticalResolution.Value = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
 			suppressEvent = true;
 			forceAspectRatioCheckBox.Checked = loaderini.ForceAspectRatio;
+			checkScaleHud.Checked = loaderini.ScaleHud;
 			suppressEvent = false;
 			windowedFullscreenCheckBox.Checked = loaderini.WindowedFullscreen;
 			forceMipmappingCheckBox.Checked = loaderini.AutoMipmap;
@@ -217,6 +218,7 @@ namespace SADXModManager
 			loaderini.HorizontalResolution = (int)horizontalResolution.Value;
 			loaderini.VerticalResolution = (int)verticalResolution.Value;
 			loaderini.ForceAspectRatio = forceAspectRatioCheckBox.Checked;
+			loaderini.ScaleHud = checkScaleHud.Checked;
 			loaderini.EnableVsync = checkVsync.Checked;
 			loaderini.WindowedFullscreen = windowedFullscreenCheckBox.Checked;
 			loaderini.AutoMipmap = forceMipmappingCheckBox.Checked;
@@ -512,6 +514,8 @@ namespace SADXModManager
 		[DefaultValue(480)]
 		public int VerticalResolution { get; set; }
 		public bool ForceAspectRatio { get; set; }
+		[DefaultValue(false)]
+		public bool ScaleHud { get; set; }
 		public bool WindowedFullscreen { get; set; }
 		[DefaultValue(true)]
 		public bool EnableVsync { get; set; }

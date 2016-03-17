@@ -76,6 +76,7 @@
 			this.forceTextureFilterCheckBox = new System.Windows.Forms.CheckBox();
 			this.forceMipmappingCheckBox = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			this.checkScaleHud = new System.Windows.Forms.CheckBox();
 			groupBox2 = new System.Windows.Forms.GroupBox();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
@@ -547,6 +548,7 @@
 			// 
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.checkScaleHud);
 			this.groupBox3.Controls.Add(this.checkVsync);
 			this.groupBox3.Controls.Add(this.maintainWindowAspectRatioCheckBox);
 			this.groupBox3.Controls.Add(this.windowWidth);
@@ -657,7 +659,7 @@
 			this.forceTextureFilterCheckBox.Location = new System.Drawing.Point(6, 163);
 			this.forceTextureFilterCheckBox.Name = "forceTextureFilterCheckBox";
 			this.forceTextureFilterCheckBox.Size = new System.Drawing.Size(131, 17);
-			this.forceTextureFilterCheckBox.TabIndex = 16;
+			this.forceTextureFilterCheckBox.TabIndex = 17;
 			this.forceTextureFilterCheckBox.Text = "Force Texture Filtering";
 			this.toolTip1.SetToolTip(this.forceTextureFilterCheckBox, "Smooths scaled UI textures by changing the filter method from Point to Linear.");
 			this.forceTextureFilterCheckBox.UseVisualStyleBackColor = true;
@@ -668,10 +670,20 @@
 			this.forceMipmappingCheckBox.Location = new System.Drawing.Point(151, 163);
 			this.forceMipmappingCheckBox.Name = "forceMipmappingCheckBox";
 			this.forceMipmappingCheckBox.Size = new System.Drawing.Size(113, 17);
-			this.forceMipmappingCheckBox.TabIndex = 17;
+			this.forceMipmappingCheckBox.TabIndex = 18;
 			this.forceMipmappingCheckBox.Text = "Force Mipmapping";
 			this.toolTip1.SetToolTip(this.forceMipmappingCheckBox, "Generates mipmaps for all textures that don\'t have them.");
 			this.forceMipmappingCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// checkScaleHud
+			// 
+			this.checkScaleHud.AutoSize = true;
+			this.checkScaleHud.Location = new System.Drawing.Point(151, 140);
+			this.checkScaleHud.Name = "checkScaleHud";
+			this.checkScaleHud.Size = new System.Drawing.Size(148, 17);
+			this.checkScaleHud.TabIndex = 16;
+			this.checkScaleHud.Text = "Scale HUD (experimental)";
+			this.checkScaleHud.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
@@ -754,5 +766,6 @@
 		private System.Windows.Forms.Button modDownButton;
 		private System.Windows.Forms.Button modUpButton;
 		private System.Windows.Forms.CheckBox checkVsync;
+		private System.Windows.Forms.CheckBox checkScaleHud;
 	}
 }
