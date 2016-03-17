@@ -104,7 +104,7 @@ namespace SADXModManager
 			mods = new Dictionary<string, ModInfo>();
 			codes = new List<Code>(mainCodes.Codes);
 			string modDir = Path.Combine(Environment.CurrentDirectory, "mods");
-			foreach (string filename in Directory.GetFiles(modDir, "mod.ini", SearchOption.AllDirectories))
+			foreach (string filename in GetModFiles(new DirectoryInfo(modDir)))
 				mods.Add(Path.GetDirectoryName(filename).Substring(modDir.Length + 1), IniFile.Deserialize<ModInfo>(filename));
 			modListView.BeginUpdate();
 			foreach (string mod in new List<string>(loaderini.Mods))
@@ -136,6 +136,18 @@ namespace SADXModManager
 			foreach (Code item in codes)
 				codesCheckedListBox.Items.Add(item.Name, loaderini.EnabledCodes.Contains(item.Name));
 			codesCheckedListBox.EndUpdate();
+		}
+
+		private IEnumerable<string> GetModFiles(DirectoryInfo directoryInfo)
+		{
+			List<string> files = new List<string>();
+			foreach (DirectoryInfo item in directoryInfo.GetDirectories())
+				if (!item.Name.Equals("system", StringComparison.OrdinalIgnoreCase))
+					files.AddRange(GetModFiles(item));
+			string modini = Path.Combine(directoryInfo.FullName, "mod.ini");
+			if (File.Exists(modini))
+				files.Add(modini);
+			return files;
 		}
 
 		private void modListView_SelectedIndexChanged(object sender, EventArgs e)
