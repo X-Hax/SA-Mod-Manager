@@ -36,7 +36,6 @@ static void DisplayVideoFrame_FixAspectRatio()
 }
 
 // Fix for neglected width and height in global NJS_SCREEN
-FunctionPointer(void, SetupScreen, (NJS_SCREEN*), 0x00788240);
 static void __cdecl SetupScreenFix(NJS_SCREEN* screen)
 {
 	_nj_screen_ = *screen;

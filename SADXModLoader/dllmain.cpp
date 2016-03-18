@@ -327,7 +327,7 @@ uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[h
 int curscrnsz[2];
 
 DataPointer(int, Windowed, 0x38A5DC4);
-static void CreateSADXWindow(HINSTANCE hInstance, int nCmdShow)
+static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 {
 	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
 
@@ -497,7 +497,7 @@ static __declspec(naked) void sub_789E50_r()
 		mov ebx, [esp+4]
 		push ebx
 		push eax
-		call CreateSADXWindow
+		call CreateSADXWindow_r
 		add esp, 8
 		retn
 	}
@@ -1767,9 +1767,7 @@ static unordered_map<wstring, dllexportcontainer> dllexports;
 
 struct SaveFileInfo { char *Filename; DWORD LowDate; DWORD HighDate; SaveFileInfo *Next; };
 
-VoidFunc(SaveSave, 0x42D630);
 DataPointer(SaveFileInfo *, SaveFiles, 0x3C5E8B8);
-VoidFunc(InputThing__Ctor, 0x40F350);
 void __cdecl WriteSaveFile_r()
 {
 	char v0; // bl@1

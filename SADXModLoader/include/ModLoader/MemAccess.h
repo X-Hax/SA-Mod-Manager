@@ -185,7 +185,6 @@ static inline BOOL WriteCall(void *writeaddress, void *funcaddress)
 #define ThiscallFunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) \
 	static RETURN_TYPE (__thiscall *const NAME)ARGS = (RETURN_TYPE (__thiscall *)ARGS)ADDRESS
 #define VoidFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(void),ADDRESS)
-#define ObjectFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(ObjectMaster *obj),ADDRESS)
 
 #define patchdecl(address,data) { (void*)address, arrayptrandsize(data) }
 #define ptrdecl(address,data) { (void*)address, (void*)data }

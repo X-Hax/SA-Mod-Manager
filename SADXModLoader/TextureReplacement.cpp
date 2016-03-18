@@ -77,9 +77,9 @@ static bool wasLoading = false;
 
 void InitTextureReplacement()
 {
-	WriteJump((void*)0x004210A0, LoadPVM_C);
+	WriteJump((void*)LoadPVM_C, LoadPVM_C_r);
 	WriteJump((void*)0x0077FC80, njLoadTexture_Hook);
-	WriteJump((void*)0x004228E0, njLoadTexture_Wrapper);
+	WriteJump((void*)njLoadTexture_Wrapper, njLoadTexture_Wrapper_r);
 }
 
 #pragma region Index Parsing
@@ -362,7 +362,7 @@ bool ReplacePVM(const std::wstring& filename, NJS_TEXLIST* texlist)
 	return result;
 }
 
-void __cdecl LoadPVM_C(const char* filename, NJS_TEXLIST* texlist)
+void __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 {
 	mipmap::IsBlacklistedPVM(filename);
 	string filename_str(filename);
@@ -448,7 +448,7 @@ bool ReplacePVR(const std::string& filename, NJS_TEXMEMLIST** tex)
 	return false;
 }
 
-Sint32 __cdecl njLoadTexture_Wrapper(NJS_TEXLIST* texlist)
+Sint32 __cdecl njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist)
 {
 	CheckCache();
 	LoadingFile = true;
