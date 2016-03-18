@@ -75,6 +75,7 @@ FunctionPointer(void, InitDInputMouse, (HINSTANCE hinst, HWND a2), 0x40BB20);
 FunctionPointer(int, GetDInputMouseState, (), 0x40BB80);
 VoidFunc(ReleaseDInputMouse, 0x40BC40);
 FunctionPointer(int, DoSomethingRelatedToText_, (char *a2), 0x40BD30);
+VoidFunc(GameModeHandler, 0x40C090);
 FunctionPointer(void, PlayMusicFile, (LPCSTR filename, int loop), 0x40CD20);
 FunctionPointer(int, PlayVoiceFile, (LPCSTR filename), 0x40CE30);
 FunctionPointer(int, WMPRestartMusic, (), 0x40CF50);
@@ -300,7 +301,8 @@ FunctionPointer(int, GetCharacterID, (char index), 0x441970);
 FunctionPointer(ObjectMaster *, GetCharacterObject, (unsigned __int8 character), 0x441AC0);
 FunctionPointer(CharObj2 *, GetCharObj2, (char index), 0x441B00);
 FunctionPointer(int, GetPlayerCount, (), 0x441B10);
-FunctionPointer(void, MoveSubsToArraysForSomeReason, (unsigned __int8 id), 0x441C70);
+FunctionPointer(void, BackupPlayerSubs, (unsigned __int8 id), 0x441C70);
+FunctionPointer(void, RestorePlayerSubs, (unsigned __int8 id), 0x441CA0);
 FunctionPointer(void, GiveMagneticBarrier, (char character), 0x441E30);
 FunctionPointer(void, GiveBarrier, (char character), 0x441EA0);
 FunctionPointer(void, GiveInvincibility, (int character), 0x441F10);
@@ -308,7 +310,7 @@ FunctionPointer(void, InitCharacterVars, (int ID, ObjectMaster *character), 0x44
 FunctionPointer(void, SomethingAboutWaterButNotReally, (EntityData1 *entity1, EntityData2 *entity2, CharObj2 *charobj2), 0x445D10);
 FunctionPointer(void, SomethingAboutWater, (EntityData1 *entity1, EntityData2 *entity2, CharObj2 *charobj2), 0x449500);
 FunctionPointer(void, PlayAnimation, (AnimThing *a1), 0x44A800);
-StdcallFunctionPointer(int, DirectSound_Init, (int, int, int, int, int), 0x44DE80);
+ThiscallFunctionPointer(HRESULT, DirectSound_Init, (int a1, int a3, int a4, int a5, int a6, int a7), 0x44DE80);
 VoidFunc(ResetRestartData, 0x44ED50);
 FunctionPointer(int, CheckRestartLevel, (), 0x44ED70);
 FunctionPointer(void, RestartCheckpoint, (Vector3 *Position, Rotation3 *Rotation), 0x44EDB0);
@@ -514,7 +516,7 @@ ObjectFunc(RocketV_Main, 0x4CA7D0);
 ObjectFunc(RocketVS_Main, 0x4CA900);
 ObjectFunc(Switch_Main, 0x4CBA80);
 ObjectFunc(ODynamite, 0x4CBDE0);
-FunctionPointer(ObjectData2 *, AllocateObjectData2, (ObjectMaster *_this, EntityData1 *a2), 0x4CC990);
+FunctionPointer(ObjectData2 *, AllocateObjectData2, (ObjectMaster *obj, EntityData1 *a2), 0x4CC990);
 FunctionPointer(char, IsVisible, (NJS_VECTOR *v), 0x4CD730);
 ObjectFunc(ZERO_Delete, 0x4D1780);
 ObjectFunc(ZERO_Main, 0x4D2480);
@@ -1956,7 +1958,7 @@ FunctionPointer(void, j_DeltaTime_Multiplier, (int a1), 0x77ED40);
 FunctionPointer(int, Direct3D_SetCullMode, (int), 0x77ED50);
 FunctionPointer(int, ReleaseKeyboardDevice, (), 0x77F0F0);
 FunctionPointer(void, njGetTexSurface_Maybe, (NJS_TEXMEMLIST *a1, Uint8 *data), 0x77F2F0);
-ThiscallFunctionPointer(Sint32, Direct3D_SetNJSTexture_List, (NJS_TEXLIST *_this), 0x77F3D0);
+ThiscallFunctionPointer(Sint32, Direct3D_SetNJSTexture_List, (NJS_TEXLIST *__this), 0x77F3D0);
 FastcallFunctionPointer(Sint32, njSetTextureNum, (int num), 0x77F440);
 FunctionPointer(signed int, AddExtension, (char *destination, const char *source, char *extension), 0x77F470);
 FunctionPointer(NJS_TEXMEMLIST *, GetCachedTexture, (int gbix), 0x77F5B0);
@@ -1992,7 +1994,7 @@ FunctionPointer(int, j_Direct3D_Clear, (), 0x781040);
 VoidFunc(j_Direct3D_BeginScene, 0x781050);
 VoidFunc(j_j_DeltaSleep, 0x781060);
 FunctionPointer(void, Direct3D_SetProjectionMatrix_, (D3DMATRIX *matrix), 0x781250);
-ThiscallFunctionPointer(void, SetStartupProjection, (D3DMATRIX *_this), 0x781570);
+ThiscallFunctionPointer(void, SetStartupProjection, (D3DMATRIX *__this), 0x781570);
 FunctionPointer(void, njSetScreenDist, (int bams), 0x7815C0);
 FunctionPointer(void, SetDrawDistance, (float min, float max), 0x7815E0);
 FastcallFunctionPointer(D3DMATRIX *, njMatrixSomething, (NJS_MATRIX *matrix, NJS_VECTOR *vectorA, NJS_VECTOR *vectorB), 0x781670);
@@ -2028,7 +2030,7 @@ VoidFunc(Direct3D_EnableFog_, 0x787220);
 VoidFunc(Direct3D_DisableFog_, 0x787230);
 FunctionPointer(void, j_njSetFogColor, (Uint32 c), 0x787240);
 FunctionPointer(void, njGenerateFogTable3, (float *fog, float n, float f), 0x787260);
-ThiscallFunctionPointer(void, GetIdentityMatrix, (NJS_MATRIX* m), 0x7875F0);
+ThiscallFunctionPointer(void, GetIdentityMatrix, (NJS_MATRIX *m), 0x7875F0);
 FastcallFunctionPointer(void, njSubVector, (NJS_VECTOR *vd, NJS_VECTOR *vs), 0x787610);
 FastcallFunctionPointer(float, njScalor, (NJS_VECTOR *v), 0x787CC0);
 FastcallFunctionPointer(double, njInnerProduct, (NJS_VECTOR *v1, NJS_VECTOR *v2), 0x787CF0);
@@ -2192,6 +2194,8 @@ static inline Bool VerifyTexList(NJS_TEXLIST *a1)
 	}
 	return result;
 }
+
+
 
 // void __usercall(int a1@<eax>)
 static const void *const UnloadsAllTheThingsBecauseYouKnowPtr = (void*)0x406F00;
@@ -2455,7 +2459,7 @@ static inline void Tails_Act1(CharObj2 *data2, EntityData2 *data2_pp, EntityData
 	}
 }
 
-// bool __usercall@<eax>(Vector3 *from@<ecx>, float x, float y, float z, float range)
+// Bool __usercall@<eax>(Vector3 *from@<ecx>, float x, float y, float z, float range)
 static const void *const ObjectInRangePtr = (void*)0x46B750;
 static inline Bool ObjectInRange(Vector3 *from, float x, float y, float z, float range)
 {
@@ -2611,7 +2615,7 @@ static inline signed int Sonic_Hurt(CharObj2 *a1, EntityData1 *a2)
 	return result;
 }
 
-// bool __usercall@<eax>(EntityData1 *a1@<esi>, CharObj2 *a2@<edi>)
+// Bool __usercall@<eax>(EntityData1 *a1@<esi>, CharObj2 *a2@<edi>)
 static const void *const Sonic_JumpCancelPtr = (void*)0x492F50;
 static inline Bool Sonic_JumpCancel(EntityData1 *a1, CharObj2 *a2)
 {
@@ -2626,7 +2630,7 @@ static inline Bool Sonic_JumpCancel(EntityData1 *a1, CharObj2 *a2)
 	return result;
 }
 
-// bool __usercall@<eax>(CharObj2 *a1@<edi>, EntityData1 *a2@<esi>)
+// Bool __usercall@<eax>(CharObj2 *a1@<edi>, EntityData1 *a2@<esi>)
 static const void *const Sonic_CheckLightDashPtr = (void*)0x492F90;
 static inline Bool Sonic_CheckLightDash(CharObj2 *a1, EntityData1 *a2)
 {
@@ -2785,7 +2789,7 @@ static inline BOOL Sonic_ChargeSpindash(CharObj2 *Data2, EntityData1 *Data1)
 	return result;
 }
 
-// void __usercall(NJS_VECTOR *pos@<edi>, NJS_SPRITE *sp@<esi>, int color, Int n, float scale)
+// void __usercall(NJS_VECTOR *pos@<edi>, NJS_SPRITE *_sp@<esi>, int color, Int n, float scale)
 static const void *const DrawParticleProbablyPtr = (void*)0x4A3530;
 static inline void DrawParticleProbably(NJS_VECTOR *pos, NJS_SPRITE *_sp, int color, Int n, float scale)
 {
@@ -2954,7 +2958,38 @@ static inline void RocketVThingA(ObjectMaster *a1)
 	}
 }
 
-// int __usercall@<eax>(ObjectMaster *result@<eax>, NJS_OBJECT *a2@<edi>, int a3)
+// void __usercall(ObjectMaster *obj@<eax>, __int16 type)
+static const void *const DrawColObjPtr = (void*)0x4D42A0;
+static inline void DrawColObj(ObjectMaster *obj, __int16 _type)
+{
+	__asm
+	{
+		push [_type]
+		mov eax, [obj]
+		call DrawColObjPtr
+		add esp, 4
+	}
+}
+
+// double __usercall@<st0>(int a1@<eax>, float x, float y, float pri)
+static const void *const TwinkleCircuit_DrawCurrentLapPtr = (void*)0x4DC7D0;
+static inline double TwinkleCircuit_DrawCurrentLap(int a1, float x, float y, float pri)
+{
+	double result;
+	__asm
+	{
+		push [pri]
+		push [y]
+		push [x]
+		mov eax, [a1]
+		call TwinkleCircuit_DrawCurrentLapPtr
+		add esp, 12
+		fstp result
+	}
+	return result;
+}
+
+// int __usercall@<eax>(ObjectMaster *obj@<eax>, NJS_OBJECT *a2@<edi>, int a3)
 static const void *const YASI0_Display_2Ptr = (void*)0x500CD0;
 static inline int YASI0_Display_2(ObjectMaster *obj, NJS_OBJECT *a2, int a3)
 {
@@ -3209,6 +3244,8 @@ static inline void CreateSADXWindow(HINSTANCE a1, int nCmdShow)
 		add esp, 4
 	}
 }
+
+
 
 // char __usercall@<al>(void *unknown@<edi>, NJS_TEXMEMLIST *texmem)
 static const void *const Direct3D_ProbablyAppliesPalettePtr = (void*)0x78CDC0;
