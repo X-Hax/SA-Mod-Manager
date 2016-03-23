@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <windef.h>
 
 typedef void(*DetourFunction)(void);
 

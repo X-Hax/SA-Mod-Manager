@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include <exception>
+#include <vector>
 #include <ninja.h>		// for typedefs
 #include <ModLoader/MemAccess.h>
 
