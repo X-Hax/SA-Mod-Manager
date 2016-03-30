@@ -12,25 +12,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AutoMipmap.cpp" />
-    <ClCompile Include="CodeParser.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="FileMap.cpp" />
     <ClCompile Include="FileReplacement.cpp" />
     <ClCompile Include="FixFOV.cpp" />
     <ClCompile Include="HudScale.cpp" />
-    <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="MediaFns.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TextConv.cpp" />
     <ClCompile Include="TextureReplacement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoMipmap.h" />
-    <ClInclude Include="CodeParser.hpp" />
     <ClInclude Include="D3DCommon.h" />
     <ClInclude Include="DDS.h" />
     <ClInclude Include="Events.h" />
@@ -46,10 +42,8 @@
     <ClInclude Include="include\SADXModLoader\SADXFunctions.h" />
     <ClInclude Include="include\SADXModLoader\SADXStructs.h" />
     <ClInclude Include="include\SADXModLoader\SADXVariables.h" />
-    <ClInclude Include="IniFile.hpp" />
     <ClInclude Include="MediaFns.hpp" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TextConv.hpp" />
     <ClInclude Include="TextureReplacement.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>
@@ -112,13 +106,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_DEBUG;_WINDOWS;_USRDLL;SADXMODLOADER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\include;..\extlib\bass;..\libmodutils</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\extlib\bass;..\libmodutils;..\mod-loader-common\ModLoaderCommon</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProgramFiles)\DirectX 8.1 SDK\lib;..\extlib\bass</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3dx8.lib;bass.lib;bass_vgmstream.lib;$(OutDir)libmodutils.lib;shlwapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx8.lib;bass.lib;bass_vgmstream.lib;$(OutDir)libmodutils.lib;$(OutDir)ModLoaderCommon.lib;shlwapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
@@ -134,7 +128,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;SADXMODLOADER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\include;..\extlib\bass;..\libmodutils</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\extlib\bass;..\libmodutils;..\mod-loader-common\ModLoaderCommon</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,7 +136,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProgramFiles)\DirectX 8.1 SDK\lib;..\extlib\bass</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3dx8.lib;bass.lib;bass_vgmstream.lib;$(OutDir)libmodutils.lib;shlwapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx8.lib;bass.lib;bass_vgmstream.lib;$(OutDir)libmodutils.lib;$(OutDir)ModLoaderCommon.lib;shlwapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>

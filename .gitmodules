@@ -1,0 +1,3 @@
+[submodule "mod-loader-common"]
+	path = mod-loader-common
+	url = https://github.com/sonicretro/mod-loader-common.git
