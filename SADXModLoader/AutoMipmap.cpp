@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include <vector>
-#include <string>
 #include <algorithm>
 #include <SADXModLoader.h>
 #include <Trampoline.h>

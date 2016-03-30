@@ -16,8 +16,8 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& entries);
 std::vector<CustomTextureEntry> ParseIndex(const std::wstring& path);
 
-Sint32 njLoadTexture_Wrapper(NJS_TEXLIST* texlist);
+Sint32 njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist);
 Sint32 njLoadTexture_Hook(NJS_TEXLIST* texlist);
-void __cdecl LoadPVM_C(const char* filename, NJS_TEXLIST* texlist);
+void __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist);
 
 extern std::vector<std::wstring> TexturePackPaths;

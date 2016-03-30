@@ -623,8 +623,8 @@ typedef Float NJS_FOG_TABLE[128];
 
 /* Mask for the field sent direcly to the H/W */
 #define NJD_SYS_HARD_MASK (NJD_SA_MASK|NJD_SD_MASK	 \
-    |NJD_FOG_MASK|NJD_FLAG_HARD_MASK		 	 \
-    |NJD_D_MASK|NJD_FILTER_MASK)
+	|NJD_FOG_MASK|NJD_FLAG_HARD_MASK		 	 \
+	|NJD_D_MASK|NJD_FILTER_MASK)
  
 
 /* meshset type bits (type_addrId 14-15 bit) */
@@ -954,15 +954,15 @@ typedef struct {
 typedef struct {
 	NJS_POINT2  *p;
 	NJS_COLOR   *col;
-    NJS_TEX     *tex;
-    Uint32      num;
+	NJS_TEX     *tex;
+	Uint32      num;
 } NJS_POINT2COL;
 
 typedef struct {
 	NJS_POINT3  *p;
 	NJS_COLOR   *col;
-    NJS_TEX     *tex;
-    Uint32      num;
+	NJS_TEX     *tex;
+	Uint32      num;
 } NJS_POINT3COL;
 
 typedef struct {
@@ -973,22 +973,22 @@ typedef struct {
 
 /* コリジョン用構造体追加 */
 typedef struct{
-    NJS_POINT3 c;
-    Float      r;
+	NJS_POINT3 c;
+	Float      r;
 } NJS_SPHERE;
 
 typedef struct{
-    NJS_POINT3 c1;
-    NJS_POINT3 c2;
-    Float      r;
+	NJS_POINT3 c1;
+	NJS_POINT3 c2;
+	Float      r;
 } NJS_CAPSULE;
 
 typedef struct{
-    NJS_POINT3 v[8];
+	NJS_POINT3 v[8];
 } NJS_BOX;
 
 typedef struct{
-    NJS_POINT3 v[4];
+	NJS_POINT3 v[4];
 } NJS_RECT;
 /* 追加終わり */
 
@@ -1089,7 +1089,7 @@ typedef struct {
 	NJS_COLOR        specular;
 	Float            exponent;
 	Uint32         attr_texId;  /* attribute and texture ID in texlist        */
-    Uint32          attrflags;  /* attribute flags */
+	Uint32          attrflags;  /* attribute flags */
 } NJS_MATERIAL;
 
 typedef struct {
@@ -1099,7 +1099,7 @@ typedef struct {
 	Uint16          nbMesh;     /* mesh count                   */
 	Sint16          *meshes;    /* mesh array                   */
 	Uint32          *attrs;     /* attribure                    */
-    NJS_VECTOR      *normals;   /* mesh normal list             */
+	NJS_VECTOR      *normals;   /* mesh normal list             */
 	NJS_COLOR       *vertcolor; /* polygon vertex color list    */
 	NJS_TEX         *vertuv;    /* polygon vertex uv list       */
 } NJS_MESHSET;
@@ -1111,7 +1111,7 @@ typedef struct {
 	Uint16          nbMesh;     /* mesh count                   */
 	Sint16          *meshes;    /* mesh array                   */
 	Uint32          *attrs;     /* attribure                    */
-    NJS_VECTOR      *normals;   /* mesh normal list             */
+	NJS_VECTOR      *normals;   /* mesh normal list             */
 	NJS_COLOR       *vertcolor; /* polygon vertex color list    */
 	NJS_TEX         *vertuv;    /* polygon vertex uv list       */
 	void            *null;
@@ -1124,7 +1124,7 @@ typedef struct {
 	NJS_MESHSET     *meshsets;  /* meshset list                 */
 	NJS_MATERIAL    *mats;      /* material list                */
 	Uint16          nbMeshset;  /* meshset count                */
-    Uint16          nbMat;      /* material count               */
+	Uint16          nbMat;      /* material count               */
 	NJS_POINT3      center;     /* model center                 */
 	Float			r;			/* ??????????? */
 } NJS_MODEL;
@@ -1136,7 +1136,7 @@ typedef struct {
 	NJS_MESHSET_SADX *meshsets;  /* meshset list                 */
 	NJS_MATERIAL    *mats;      /* material list                */
 	Uint16          nbMeshset;  /* meshset count                */
-    Uint16          nbMat;      /* material count               */
+	Uint16          nbMat;      /* material count               */
 	NJS_POINT3      center;     /* model center                 */
 	Float			r;			/* ??????????? */
 	void            *null;
@@ -1170,7 +1170,7 @@ struct NJS_CNK_MODEL;
  * NJS_OBJECT
  */
 typedef struct obj {
-    Uint32          evalflags;  /* evalation flags              */
+	Uint32          evalflags;  /* evalation flags              */
 	void            *model;     /* model data pointer           */
 	Float           pos[3];     /* translation                  */
 	Angle           ang[3];     /* rotation                     */
@@ -1274,8 +1274,8 @@ typedef struct {
 } NJS_MKEY_SI32, NJS_MKEY_A1;
 
 typedef struct {
-    Uint32          keyframe;
-    Float           key[4];
+	Uint32          keyframe;
+	Float           key[4];
 } NJS_MKEY_QUAT;
 
 /*
@@ -1800,7 +1800,7 @@ typedef struct {
 
 /* Bump */
 #define NJD_CM_BU   (NJD_MATOFF+8)  /* [CHead][12(Size)][dx(16)][dy(16)][dz(16)]
-                                       [ux(16)][uy(16)][uz(16)]            */
+									   [ux(16)][uy(16)][uz(16)]            */
 
 /* 2para modifier */
 #define NJD_CM_D2   (NJD_MATOFF+9)  /* [CHead][4(Size)][ARGB]              */
@@ -2139,58 +2139,58 @@ typedef struct {
  * NJS_CNK_MODEL
  */
 struct NJS_CNK_MODEL {
-    Sint32            *vlist;   /* vertex list                  */
-    Sint16            *plist;   /* polygon list                 */
-    NJS_POINT3        center;   /* model center                 */
-    Float                  r;   /* radius                       */
+	Sint32            *vlist;   /* vertex list                  */
+	Sint16            *plist;   /* polygon list                 */
+	NJS_POINT3        center;   /* model center                 */
+	Float                  r;   /* radius                       */
 };
 
 
 /** Vertex Buffer    **/
 typedef    struct    {
-    Sint32    clip;             /* clip flag        00:04*/
-    Float    sx;                /* Screen X         04:08*/
-    Float    sy;                /* Screen Y         08:12*/
-    Float    ooz;               /* One over Z       12:16*/
-    NJS_POINT3    p;            /* 3D Point         16:28*/
-    Uint32    dmy1;             /* dummy            28:32*/
-    Sint32    vtype;            /* vetex type       32:36*/
-    NJS_VECTOR    v;            /* Normal vector    36:48*/
-    union  {                    /*                  48:56*/
-        Uint32    argb[2];      /* Packed Color     48:56*/
-        Float    inten[2];      /* intensity        48:56*/
-    } col;                      /* color            48:56*/
-    Sint32    NinjaFlag;        /* Ninja Flag       56:60*/
-    Sint32    UserFlag;         /* User Flag        60:64*/
+	Sint32    clip;             /* clip flag        00:04*/
+	Float    sx;                /* Screen X         04:08*/
+	Float    sy;                /* Screen Y         08:12*/
+	Float    ooz;               /* One over Z       12:16*/
+	NJS_POINT3    p;            /* 3D Point         16:28*/
+	Uint32    dmy1;             /* dummy            28:32*/
+	Sint32    vtype;            /* vetex type       32:36*/
+	NJS_VECTOR    v;            /* Normal vector    36:48*/
+	union  {                    /*                  48:56*/
+		Uint32    argb[2];      /* Packed Color     48:56*/
+		Float    inten[2];      /* intensity        48:56*/
+	} col;                      /* color            48:56*/
+	Sint32    NinjaFlag;        /* Ninja Flag       56:60*/
+	Sint32    UserFlag;         /* User Flag        60:64*/
 } NJS_CNK_VERTEX_BUF;
 
 typedef    struct    {
-    Float    x;                /* Screen X                */
-    Float    y;                /* Screen Y                */
-    Float    ooz;              /* One over Z              */
-    Float    inten;            /* intensity               */
+	Float    x;                /* Screen X                */
+	Float    y;                /* Screen Y                */
+	Float    ooz;              /* One over Z              */
+	Float    inten;            /* intensity               */
 } NJS_CNK_EASY_BUF;
 
 typedef    struct    {
-    Float    z;                /* 3D Z                    */
-    Float    x;                /* Screen X                */
-    Float    y;                /* Screen Y                */
-    Float    ooz;              /* One over Z              */
-    Float    inten;            /* Intensity               */
-    Float    spec;             /* Specular                */
-    Float    nx;               /* Normal X                */
-    Float    ny;               /* Normal Y                */
+	Float    z;                /* 3D Z                    */
+	Float    x;                /* Screen X                */
+	Float    y;                /* Screen Y                */
+	Float    ooz;              /* One over Z              */
+	Float    inten;            /* Intensity               */
+	Float    spec;             /* Specular                */
+	Float    nx;               /* Normal X                */
+	Float    ny;               /* Normal Y                */
 } NJS_CNK_SIMPLE_BUF;
 
 typedef    struct    {
-    Float    z;                /* 3D Z                    */
-    Float    x;                /* Screen X                */
-    Float    y;                /* Screen Y                */
-    Float    ooz;              /* One over Z              */
-    Float    a;                /* Alpha                   */
-    Float    r;                /* Red                     */
-    Float    g;                /* Green                   */
-    Float    b;                /* Blue                    */
+	Float    z;                /* 3D Z                    */
+	Float    x;                /* Screen X                */
+	Float    y;                /* Screen Y                */
+	Float    ooz;              /* One over Z              */
+	Float    a;                /* Alpha                   */
+	Float    r;                /* Red                     */
+	Float    g;                /* Green                   */
+	Float    b;                /* Blue                    */
 } NJS_CNK_EASYMULTI_BUF;
 
 #endif /* _NINJA_CNK_H_ */

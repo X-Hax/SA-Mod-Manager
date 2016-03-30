@@ -54,9 +54,9 @@ struct WMPInfo
 
 enum WMPStatus
 {
-       WMPStatus_Buffering,
-       WMPStatus_Playing,
-       WMPStatus_Stopped
+	WMPStatus_Buffering,
+	WMPStatus_Playing,
+	WMPStatus_Stopped
 };
 
 DataPointer(int, MusicVolume, 0x909F28);

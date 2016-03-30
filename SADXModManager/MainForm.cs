@@ -140,14 +140,13 @@ namespace SADXModManager
 
 		private IEnumerable<string> GetModFiles(DirectoryInfo directoryInfo)
 		{
-			List<string> files = new List<string>();
 			foreach (DirectoryInfo item in directoryInfo.GetDirectories())
 				if (!item.Name.Equals("system", StringComparison.OrdinalIgnoreCase))
-					files.AddRange(GetModFiles(item));
+					foreach (string filename in GetModFiles(item))
+						yield return filename;
 			string modini = Path.Combine(directoryInfo.FullName, "mod.ini");
 			if (File.Exists(modini))
-				files.Add(modini);
-			return files;
+				yield return modini;
 		}
 
 		private void modListView_SelectedIndexChanged(object sender, EventArgs e)

@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include "../ninja.h"
+#include "d3d8types.h"
 
 typedef NJS_VECTOR Vector3;
 
@@ -20,6 +21,26 @@ typedef struct Rotation {
 
 struct ObjectMaster;
 typedef void (__cdecl *ObjectFuncPtr)(ObjectMaster *);
+
+// TODO: Grab actual structs from disassembly.
+typedef void ABC_TXT_struct;
+typedef void AnimFrame_PosRot;
+typedef void AnimFrame_PosRotScale;
+typedef void AnimHead2;
+typedef void AnimHead;
+typedef void ChaoHudThing;
+typedef void PDS_VIBPARAM;
+typedef void pvm_thing;
+typedef void struct_1;
+typedef void what;
+
+struct LineInfo
+{
+	NJS_POINT3 *Points;
+	int *Colors;
+	int field_8;
+	int Count;
+};
 
 struct FogData
 {
@@ -259,112 +280,119 @@ struct CharObj2
 	float field_1FC;
 };
 
-struct ChaoData
+struct CollisionData
 {
-	char gap_0[18];
-	char field_12[7];
-	char gap_19[7];
-	char SwimFraction;
-	char FlyFraction;
-	char RunFraction;
-	char PowerFraction;
-	char StaminaFraction;
-	char gap_25[3];
-	char SwimGrade;
-	char FlyGrade;
-	char RunGrade;
-	char PowerGrade;
-	char StaminaGrade;
-	char gap_2d[3];
-	char SwimLevel;
-	char FlyLevel;
-	char RunLevel;
-	char PowerLevel;
-	char StaminaLevel;
-	char gap_35[3];
-	int16_t SwimStat;
-	int16_t FlyStat;
-	int16_t RunStat;
-	int16_t PowerStat;
-	int16_t StaminaStat;
-	char gap_42[62];
-	ChaoTypes Type;
-	ChaoGardens Garden;
-	char Reincarnate;
-	char gap_83[3];
-	char ClockRollovers;
-	char gap_87[3];
-	int16_t LifeTimeLeft;
-	char gap_8c[28];
-	float PowerRun;
-	float FlySwim;
-	float HeroDark;
-	char gap_b4[12];
-	float EvolutionProgress;
-	char gap_c4[13];
-	char EyeType;
-	char MouthType;
-	char BallType;
-	char gap_d4[1];
-	char Headgear;
-	char HideFeet;
-	char Medal;
-	char Color;
-	char Highlights;
-	char Texture;
-	char Shiny;
-	char EggColor;
-	char Model;
-	char gap_de[81];
-	char Happiness;
-	char gap_130[11];
-	char Mating;
-	char gap_13c[936];
-	char ArmType;
-	char EarType;
-	char EyebrowType;
-	char ForeheadType;
-	char LegType;
-	char TailType;
-	char WingType;
-	char gap_4eb[17];
-	char SonicLike;
-	char gap_4fd[5];
-	char TailsLike;
-	char gap_503[5];
-	char KnucklesLike;
-	char gap_509[5];
-	char AmyLike;
-	char gap_50f[5];
-	char BigLike;
-	char gap_515[5];
-	char GammaLike;
-	char gap_51b[740];
-	char field_7FF;
+	__int16 field_0;
+	__int16 field_2;
+	int field_4;
+	NJS_VECTOR v;
+	float anonymous_1;
+	float anonymous_2;
+	float anonymous_3;
+	int field_20;
+	int field_24;
+	int field_28;
+	int field_2C;
 };
 
-struct CharObj1
+struct CollisionInfo
+{
+	__int16 flags_a;
+	__int16 field_2;
+	__int16 flags_b;
+	__int16 Count;
+	float f8;
+	CollisionData *CollisionArray;
+	Uint8 field_10[140];
+	ObjectMaster *Object;
+	__int16 field_A0;
+	__int16 field_A2;
+	int field_A4;
+};
+
+struct EntityData1
 {
 	char Action;
 	char NextAction;
-	int16_t field_2;
-	int16_t Status;
-	int16_t InvulnerableTime;
+	char Unknown;
+	char Index;
+	__int16 Status;
+	__int16 InvulnerableTime;
 	char CharIndex;
 	char CharID;
-	char gap_a[4];
-	char field_E;
-	char field_F;
+	__int16 field_A;
+	float field_C;
 	Loop *LoopData;
 	Rotation3 Rotation;
-	Vector3 Position;
-	Vector3 Scale;
-	void *Ptr3;
-	char gap_3c[44];
-	int field_68;
-	ChaoData *field_6C;
-	char gap_70[80];
-	CharObj2 *Ptr2;
+	NJS_VECTOR Position;
+	NJS_VECTOR Scale;
+	CollisionInfo *CollisionInfo;
+	char field_3C;
+	char field_3D;
+	char field_3E;
+	char field_3F;
+};
+
+struct EntityData2
+{
+	CharObj2 *CharacterData;
+	NJS_VECTOR field_4;
+	int field_10;
+	float field_14;
+	int field_18;
+	int field_1C;
+	int field_20;
+	int field_24;
+	int field_28;
+	int field_2C;
+	int field_30;
+	float field_34;
+	float field_38;
+	float field_3C;
+};
+
+struct ObjectData2
+{
+	char gap_0[4];
+	float field_4;
+	char gap_8[4];
+	float field_C;
+	char gap_10[62];
+	__int16 field_4E;
+	NJS_VECTOR vector_a;
+	NJS_VECTOR vector_b;
+	NJS_VECTOR vector_c;
+	char gap_74[4];
+	float field_78;
+	char gap_7C[16];
+	float field_8C;
+	char gap_90[12];
+	int field_9C;
+	float field_A0;
+	int field_A4;
+	float field_A8;
+	float field_AC;
+	float field_B0;
+	float field_B4;
+	float field_B8;
+	float field_BC;
+	float field_C0;
+	float field_C4;
+	int field_C8;
+	char gap_CC[220];
+	int field_1A8;
+	char gap_1AC[4];
+	int field_1B0;
+	char gap_1B4[28];
+	int field_1D0;
+	int field_1D4;
+	float field_1D8;
+	float field_1DC;
+	float field_1E0;
+	char gap_1E4[16];
+	AnimHead *AnimHead_ptr_A;
+	AnimHead *AnimHead_ptr_B;
+	NJS_MATRIX matrix;
 };
 
 struct ObjectMaster
@@ -377,8 +405,8 @@ struct ObjectMaster
 	ObjectFuncPtr DisplaySub;
 	ObjectFuncPtr DeleteSub;
 	void *field_1C;
-	CharObj1 *Data1;
-	void *field_24;
+	EntityData1 *Data1;
+	void *Data2;
 	void *UnknownA_ptr;
 	void *UnknownB_ptr;
 	int field_30;
@@ -724,6 +752,308 @@ struct StageLightData
 	float rgb[3];
 	float amb_rgb[3];
 };
+
+struct ChaoCharacterBond
+{
+	char a;
+	char b;
+	int unknown;
+};
+
+struct ChaoDNA
+{
+	char ResetTrigger;
+	char field_1[91];
+	char SwimStatGrade1;
+	char SwimStatGrade2;
+	char FlyStatGrade1;
+	char FlyStatGrade2;
+	char RunStatGrade1;
+	char RunStatGrade2;
+	char PowerStatGrade1;
+	char PowerStatGrade2;
+	char StaminaStatGrade1;
+	char StaminaStatGrade2;
+	char LuckStatGrade1;
+	char LuckStatGrade2;
+	char IntelligenceStatGrade1;
+	char IntelligenceStatGrade2;
+	char UnknownStatGrade1;
+	char UnknownStatGrade2;
+	char field_4A4[34];
+	char FavoriteFruit1;
+	char FavoriteFruit2;
+	char field_4C8[4];
+	char Color1;
+	char Color2;
+	char MonotoneFlag1;
+	char MonotoneFlag2;
+	char Texture1;
+	char Texture2;
+	char ShinyFlag1;
+	char ShinyFlag2;
+	char EggColor1;
+	char EggColor2;
+	char gap_4D6[6];
+};
+
+struct ChaoDataBase
+{
+	char gap_0[18];
+	char Name[7];
+	char gap_19[7];
+	char SwimFraction;
+	char FlyFraction;
+	char RunFraction;
+	char PowerFraction;
+	char StaminaFraction;
+	char LuckyFraction;
+	char IntelligenceFraction;
+	char UnknownFraction;
+	char SwimGrade;
+	char FlyGrade;
+	char RunGrade;
+	char PowerGrade;
+	char StaminaGrade;
+	char LuckyGrade;
+	char IntelligenceGrade;
+	char UnknownGrade;
+	char SwimLevel;
+	char FlyLevel;
+	char RunLevel;
+	char PowerLevel;
+	char StaminaLevel;
+	char LuckLevel;
+	char IntelligenceLevel;
+	char UnknownLevel;
+	__int16 SwimStat;
+	__int16 FlyStat;
+	__int16 RunStat;
+	__int16 PowerStat;
+	__int16 StaminaStat;
+	__int16 LuckStat;
+	char IntelligenceStat;
+	char UnknownStat;
+	char field_46[58];
+	ChaoType Type;
+	char Garden;
+	__int16 Happiness;
+	__int16 field_84;
+	__int16 ClockRollovers;
+	__int16 field_88;
+	__int16 Lifespan;
+	__int16 Lifespan2;
+	__int16 Reincarnations;
+	char field_90[24];
+	float PowerRun;
+	float FlySwim;
+	float Alignment;
+	char gap_B4[12];
+	float EvolutionProgress;
+	char gap_C4[13];
+	char EyeType;
+	char MouthType;
+	char BallType;
+	char gap_D4[1];
+	char Headgear;
+	char HideFeet;
+	char Medal;
+	char Color;
+	char MonotoneHighlights;
+	char Texture;
+	char Shiny;
+	char EggColor;
+	SADXBodyType BodyType;
+	char BodyTypeAnimal;
+	char field_DF[57];
+	int SA2AnimalBehavior;
+	SA2BAnimal SA2BArmType;
+	SA2BAnimal SA2BEarType;
+	SA2BAnimal SA2BForeheadType;
+	SA2BAnimal SA2BHornType;
+	SA2BAnimal SA2BLegType;
+	SA2BAnimal SA2BTailType;
+	SA2BAnimal SA2BWingType;
+	SA2BAnimal SA2BFaceType;
+	char field_124[8];
+	char Joy;
+	char field_12D;
+	char UrgeToCry;
+	char Fear;
+	char field_130;
+	char Dizziness;
+	char field_132[2];
+	__int16 Sleepiness;
+	__int16 Tiredness;
+	__int16 Hunger;
+	__int16 MateDesire;
+	__int16 Boredom;
+	char field_13E[10];
+	__int16 Energy;
+	char Normal_Curiosity;
+	char field_14B;
+	char CryBaby_Energetic;
+	char Naive_Normal;
+	char field_14E[2];
+	char Normal_BigEater;
+	char field_151[4];
+	char Normal_Carefree;
+	char field_156;
+	char FavoriteFruit;
+	char field_158[2];
+	char CoughLevel;
+	char ColdLevel;
+	char RashLevel;
+	char RunnyNoseLevel;
+	char HiccupsLevel;
+	char StomachAcheLevel;
+	char field_160[4];
+	__int16 SA2BToys;
+	char field_166[6];
+	ChaoCharacterBond SA2BCharacterBonds[6];
+	char field_190[680];
+	ChaoDNA DNA;
+	int field_4DC;
+	int SADXAnimalBehaviors;
+	SADXAnimal ArmType;
+	SADXAnimal EarType;
+	SADXAnimal EyebrowType;
+	SADXAnimal ForeheadType;
+	SADXAnimal LegType;
+	SADXAnimal TailType;
+	SADXAnimal WingType;
+	SADXAnimal UnknownType;
+	char field_4EC[16];
+	ChaoCharacterBond SADXCharacterBonds[6];
+};
+
+struct ChaoData
+{
+	ChaoDataBase data;
+	char field_520[736];
+};
+
+struct ChaoUnknownB
+{
+	__int16 field_0;
+	__int16 field_2;
+	__int16 field_4;
+	__int16 field_6;
+	float field_8;
+	int field_C;
+	int field_10;
+	int field_14;
+	int field_18;
+};
+
+struct ChaoUnknown
+{
+	__int16 field_0;
+	__int16 field_2;
+	int field_4;
+	int field_8;
+	int field_C;
+	float field_10;
+	__int16 field_14;
+	__int16 field_16;
+	ChaoUnknownB field_18[32];
+};
+
+struct ChaoUnknownE
+{
+	char pad[960];
+};
+
+struct ChaoUnknownD
+{
+	__int16 field_0;
+	__int16 field_2;
+	__int16 field_4;
+	__int16 field_6;
+	int field_8;
+	int field_C;
+	int field_10;
+	int field_14;
+	int field_18;
+};
+
+struct ChaoData1
+{
+	EntityData1 entity;
+	char field_40[8];
+	ObjectMaster *ObjectMaster_ptr1;
+	char field_4C[4];
+	ObjectMaster *ObjectMaster_ptr2;
+	char field_54[12];
+	int field_60;
+	char field_64[4];
+	int field_68;
+	ChaoDataBase *ChaoDataBase_ptr;
+	char field_70[64];
+	int field_B0;
+	char field_B4[4];
+	int field_B8;
+	char MotionTable[264];
+	ChaoUnknownD unknown_d[7];
+	char field_288[424];
+	int field_430;
+	char field_434[16];
+	int field_444;
+	char field_448[8];
+	int field_450;
+	char field_454[208];
+	int field_524;
+	char field_528[160];
+	ChaoUnknownE *unknown_e_1;
+	ChaoUnknownE *unknown_e_2;
+	char field_5D0[216];
+	__int16 field_6A8;
+	char field_6AA[310];
+	char field_7E0;
+	char field_7E1[19];
+	ChaoUnknown UnknownArray[5];
+	char UnknownArrayEnd;
+	char field_19ED[922];
+	char field_1D87;
+};
+
+struct ChaoData2
+{
+	char field_0[44];
+	int field_2C;
+	char gap_30[4];
+	float field_34;
+	char gap_38[4];
+	float field_3C;
+	char field_40;
+	char gap_41[1];
+	__int16 field_42;
+	char gap_44[4];
+	int field_48;
+	char gap_4C[20];
+	NJS_VECTOR some_vector;
+	char gap_6C[64];
+	float field_AC;
+	char field_B0[4];
+	float field_B4;
+	float field_B8;
+	float field_BC;
+	float field_C0;
+	float field_C4;
+	float field_C8;
+	float field_CC;
+	float field_D0;
+	char gap_d4[407];
+	char field_26B;
+};
+
+struct ChaoDebugFunction
+{
+	int Enabled;
+	void(__cdecl *Function)(ObjectMaster *_this);
+	const char *Name;
+};
+
 
 #pragma pack(pop)
 
