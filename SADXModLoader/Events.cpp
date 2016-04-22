@@ -7,7 +7,7 @@ std::vector<ModEvent> modInputEvents;
 std::vector<ModEvent> modControlEvents;
 std::vector<ModEvent> modExitEvents;
 
-Trampoline exitDetour((size_t)0x0064672F, 0x00646736, (DetourFunction)OnExit);
+Trampoline exitDetour((size_t)0x0064672F, 0x00646736, OnExit);
 
 /**
 * Registers an event to the specified event list.

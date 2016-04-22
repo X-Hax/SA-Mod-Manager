@@ -2,8 +2,6 @@
 
 #include <wtypes.h>
 
-typedef void(*DetourFunction)(void);
-
 // TODO: Better documentation
 // TODO: Clearer member names
 // TODO: Code restoration
@@ -12,10 +10,11 @@ class Trampoline
 {
 private:
 	void* target;
-	DetourFunction detour;
+	void* detour;
 	LPVOID codeData;
 	size_t originalSize;
 	size_t codeSize;
+	const bool revert;
 
 public:
 	/// <summary>
@@ -24,7 +23,10 @@ public:
 	/// <param name="start">Start offset (address of function).</param>
 	/// <param name="end">End offset.</param>
 	/// <param name="func">Your detour function.</param>
-	Trampoline(size_t start, size_t end, DetourFunction func);
+	/// <param name="destructRevert">If <c>true</c>, code changes will be reverted when this instance is destroyed.</param>
+	/// <remarks>If there's a relative jump or call within the range of <see cref="start" /> and <see cref="end" />,
+	/// they need to be replaced with absolute offsets before instantiating a <see cref="Trampoline" />.</remarks>
+	Trampoline(size_t start, size_t end, void* func, bool destructRevert = true);
 	~Trampoline();
 
 	// Pointer to original code.

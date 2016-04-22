@@ -7,14 +7,8 @@
 #include <ninja.h>		// for typedefs
 #include <ModLoader/MemAccess.h>
 
-/// <summary>
-/// Initializes a new <see cref="Trampoline" />, allowing you to replace functions and still call the original code.
-/// </summary>
-/// <param name="start">Start offset (address of function).</param>
-/// <param name="end">End offset.</param>
-/// <param name="func">Your detour function.</param>
-Trampoline::Trampoline(size_t start, size_t end, DetourFunction func) :
-	target(nullptr), detour(nullptr), codeData(nullptr), originalSize(0), codeSize(0)
+Trampoline::Trampoline(size_t start, size_t end, void* func, bool destructRevert) :
+	target(nullptr), detour(nullptr), codeData(nullptr), originalSize(0), codeSize(0), revert(destructRevert)
 {
 	if (start > end)
 		throw std::exception("Start address cannot exceed end address.");
@@ -30,7 +24,7 @@ Trampoline::Trampoline(size_t start, size_t end, DetourFunction func) :
 	// Copy original instructions
 	codeData = VirtualAlloc(nullptr, codeSize, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	if (codeData == nullptr)
-		throw std::exception("VirtualAlloc failure");
+		throw std::exception("VirtualAlloc failure.");
 
 	// ReadProcessMemory maybe?
 	memcpy(codeData, target, originalSize);
@@ -49,5 +43,10 @@ Trampoline::Trampoline(size_t start, size_t end, DetourFunction func) :
 Trampoline::~Trampoline()
 {
 	if (codeData)
+	{
+		if (revert)
+			WriteData(target, codeData, originalSize);
+
 		VirtualFree(codeData, codeSize, MEM_DECOMMIT);
+	}
 }

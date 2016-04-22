@@ -16,8 +16,8 @@ using std::vector;
 static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
 void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr);
 
-Trampoline drawSprite(0x00404660, 0x00404666, (DetourFunction)Draw2DSpriteHax);
-Trampoline drawSpriteWrapper(0x004070A0, 0x004070A5, (DetourFunction)njDrawSprite2D_4_Hax);
+Trampoline drawSprite(0x00404660, 0x00404666, Draw2DSpriteHax);
+Trampoline drawSpriteWrapper(0x004070A0, 0x004070A5, njDrawSprite2D_4_Hax);
 
 // TODO: Give Trampoline a default constructor and stuff
 static Trampoline* drawObjects;
@@ -466,44 +466,44 @@ void SetupHudScale()
 	scale = min(last_h, last_v);
 	WriteJump((void*)0x0042BEE0, ScaleResultScreen);
 
-	drawObjects = new Trampoline(0x0040B540, 0x0040B546, (DetourFunction)DrawAllObjectsHax);
+	drawObjects = new Trampoline(0x0040B540, 0x0040B546, DrawAllObjectsHax);
 	WriteCall((void*)((size_t)drawObjects->Target() + 1), (void*)0x004128F0);
 
-	missionScreen = new Trampoline(0x00590E60, 0x00590E65, (DetourFunction)FixMissionScreen);
+	missionScreen = new Trampoline(0x00590E60, 0x00590E65, FixMissionScreen);
 
-	scaleRingLife = new Trampoline(0x00425F90, 0x00425F95, (DetourFunction)ScaleA);
-	scaleScoreTime = new Trampoline(0x00427F50, 0x00427F55, (DetourFunction)ScaleB);
-	scaleStageMission = new Trampoline(0x00457120, 0x00457126, (DetourFunction)ScaleStageMission);
+	scaleRingLife = new Trampoline(0x00425F90, 0x00425F95, ScaleA);
+	scaleScoreTime = new Trampoline(0x00427F50, 0x00427F55, ScaleB);
+	scaleStageMission = new Trampoline(0x00457120, 0x00457126, ScaleStageMission);
 
-	scalePause = new Trampoline(0x00415420, 0x00415425, (DetourFunction)ScalePauseMenu);
+	scalePause = new Trampoline(0x00415420, 0x00415425, ScalePauseMenu);
 	WriteCall(scalePause->Target(), (void*)0x40FDC0);
 
-	scaleTargetLifeGague = new Trampoline(0x004B3830, 0x004B3837, (DetourFunction)ScaleTargetLifeGague);
+	scaleTargetLifeGague = new Trampoline(0x004B3830, 0x004B3837, ScaleTargetLifeGague);
 
-	scaleScoreA = new Trampoline(0x00628330, 0x00628335, (DetourFunction)ScaleScoreA);
+	scaleScoreA = new Trampoline(0x00628330, 0x00628335, ScaleScoreA);
 
 	WriteData((const float**)0x006288C2, &patch_dummy);
-	scaleTornadoHP = new Trampoline(0x00628490, 0x00628496, (DetourFunction)ScaleTornadoHP);
+	scaleTornadoHP = new Trampoline(0x00628490, 0x00628496, ScaleTornadoHP);
 
 	// TODO: Consider tracking down the individual functions so that they can be individually aligned.
-	scaleTwinkleCircuitHUD = new Trampoline(0x004DB5E0, 0x004DB5E5, (DetourFunction)ScaleTwinkleCircuitHUD);
+	scaleTwinkleCircuitHUD = new Trampoline(0x004DB5E0, 0x004DB5E5, ScaleTwinkleCircuitHUD);
 	WriteCall(scaleTwinkleCircuitHUD->Target(), (void*)0x590620);
 
 	// Rod scaling disabled.
 	// TODO: Figure out how gauge is drawn (it doesn't appear to use the texture).
-	//scaleReel = new Trampoline(0x0046C9F0, 0x0046C9F5, (DetourFunction)ScaleReel);
-	//scaleRod = new Trampoline(0x0046CAB0, 0x0046CAB9, (DetourFunction)ScaleRod);
-	//scaleRodMeters = new Trampoline(0x0046CC70, 0x0046CC75, (DetourFunction)ScaleRodMeters);
-	scaleFishingHit = new Trampoline(0x0046C920, 0x0046C926, (DetourFunction)ScaleFishingHit);
-	scaleBigHud = new Trampoline(0x0046FB00, 0x0046FB05, (DetourFunction)ScaleBigHud);
+	//scaleReel = new Trampoline(0x0046C9F0, 0x0046C9F5, ScaleReel);
+	//scaleRod = new Trampoline(0x0046CAB0, 0x0046CAB9, ScaleRod);
+	//scaleRodMeters = new Trampoline(0x0046CC70, 0x0046CC75, ScaleRodMeters);
+	scaleFishingHit = new Trampoline(0x0046C920, 0x0046C926, ScaleFishingHit);
+	scaleBigHud = new Trampoline(0x0046FB00, 0x0046FB05, ScaleBigHud);
 
-	scaleAnimalPickup = new Trampoline(0x0046B330, 0x0046B335, (DetourFunction)ScaleAnimalPickup);
+	scaleAnimalPickup = new Trampoline(0x0046B330, 0x0046B335, ScaleAnimalPickup);
 
-	scaleItemBoxSprite = new Trampoline(0x004C0790, 0x004C0795, (DetourFunction)ScaleItemBoxSprite);
+	scaleItemBoxSprite = new Trampoline(0x004C0790, 0x004C0795, ScaleItemBoxSprite);
 
-	scaleBalls = new Trampoline(0x005C0B70, 0x005C0B75, (DetourFunction)ScaleBalls);
+	scaleBalls = new Trampoline(0x005C0B70, 0x005C0B75, ScaleBalls);
 
-	scaleCheckpointTime = new Trampoline(0x004BABE0, 0x004BABE5, (DetourFunction)ScaleCheckpointTime);
+	scaleCheckpointTime = new Trampoline(0x004BABE0, 0x004BABE5, ScaleCheckpointTime);
 	WriteData((const float**)0x0044F2E1, &patch_dummy);
 	WriteData((const float**)0x0044F30B, &patch_dummy);
 	WriteData((const float**)0x00476742, &patch_dummy);
@@ -515,36 +515,36 @@ void SetupHudScale()
 	// Emerald get
 	WriteData((const float**)0x00477E8E, &patch_dummy);
 	WriteData((const float**)0x00477EC0, &patch_dummy);
-	scaleEmeraldRadarA = new Trampoline(0x00475A70, 0x00475A75, (DetourFunction)ScaleEmeraldRadarA);
-	scaleEmeraldRadarB = new Trampoline(0x00475E50, 0x00475E55, (DetourFunction)ScaleEmeraldRadarB);
-	scaleEmeraldRadar_Grab = new Trampoline(0x00475D50, 0x00475D55, (DetourFunction)ScaleEmeraldRadar_Grab);
+	scaleEmeraldRadarA = new Trampoline(0x00475A70, 0x00475A75, ScaleEmeraldRadarA);
+	scaleEmeraldRadarB = new Trampoline(0x00475E50, 0x00475E55, ScaleEmeraldRadarB);
+	scaleEmeraldRadar_Grab = new Trampoline(0x00475D50, 0x00475D55, ScaleEmeraldRadar_Grab);
 
-	scaleSandHillMultiplier = new Trampoline(0x005991A0, 0x005991A6, (DetourFunction)ScaleSandHillMultiplier);
-	scaleIceCapMultiplier = new Trampoline(0x004EC120, 0x004EC125, (DetourFunction)ScaleIceCapMultiplier);
+	scaleSandHillMultiplier = new Trampoline(0x005991A0, 0x005991A6, ScaleSandHillMultiplier);
+	scaleIceCapMultiplier = new Trampoline(0x004EC120, 0x004EC125, ScaleIceCapMultiplier);
 
 	WriteData((const float**)0x0049FF70, &patch_dummy);
 	WriteData((const float**)0x004A005B, &patch_dummy);
 	WriteData((const float**)0x004A0067, &patch_dummy);
-	scaleGammaTimeAddHud = new Trampoline(0x0049FDA0, 0x0049FDA5, (DetourFunction)ScaleGammaTimeAddHud);
-	scaleGammaTimeRemaining = new Trampoline(0x004C51D0, 0x004C51D7, (DetourFunction)ScaleGammaTimeRemaining);
+	scaleGammaTimeAddHud = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
+	scaleGammaTimeRemaining = new Trampoline(0x004C51D0, 0x004C51D7, ScaleGammaTimeRemaining);
 
 	WriteData((float**)0x004B4470, &last_h);
 	WriteData((float**)0x004B444E, &last_v);
-	scaleEmblemScreen = new Trampoline(0x004B4200, 0x004B4205, (DetourFunction)ScaleEmblemScreen);
+	scaleEmblemScreen = new Trampoline(0x004B4200, 0x004B4205, ScaleEmblemScreen);
 
-	scaleBossName = new Trampoline(0x004B33D0, 0x004B33D5, (DetourFunction)ScaleBossName);
+	scaleBossName = new Trampoline(0x004B33D0, 0x004B33D5, ScaleBossName);
 
-	scaleNightsCards = new Trampoline(0x005D73F0, 0x005D73F5, (DetourFunction)ScaleNightsCards);
+	scaleNightsCards = new Trampoline(0x005D73F0, 0x005D73F5, ScaleNightsCards);
 	WriteData((float**)0x005D701B, &last_h);
-	scaleNightsJackpot = new Trampoline(0x005D6E60, 0x005D6E67, (DetourFunction)ScaleNightsJackpot);
+	scaleNightsJackpot = new Trampoline(0x005D6E60, 0x005D6E67, ScaleNightsJackpot);
 
-	scaleMissionStartClear = new Trampoline(0x00591260, 0x00591268, (DetourFunction)ScaleMissionStartClear);
+	scaleMissionStartClear = new Trampoline(0x00591260, 0x00591268, ScaleMissionStartClear);
 
-	scaleMissionTimer = new Trampoline(0x00592D50, 0x00592D59, (DetourFunction)ScaleMissionTimer);
-	scaleMissionCounter = new Trampoline(0x00592A60, 0x00592A68, (DetourFunction)ScaleMissionCounter);
+	scaleMissionTimer = new Trampoline(0x00592D50, 0x00592D59, ScaleMissionTimer);
+	scaleMissionCounter = new Trampoline(0x00592A60, 0x00592A68, ScaleMissionCounter);
 
-	scaleTailsWinLose = new Trampoline(0x0047C480, 0x0047C485, (DetourFunction)ScaleTailsWinLose);
-	scaleTailsOtherThing = new Trampoline(0x0047C260, 0x0047C267, (DetourFunction)ScaleTailsOtherThing);
+	scaleTailsWinLose = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
+	scaleTailsOtherThing = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsOtherThing);
 
-	scaleDemoPressStart = new Trampoline(0x00457D30, 0x00457D36, (DetourFunction)ScaleDemoPressStart);
+	scaleDemoPressStart = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
 }

@@ -797,7 +797,7 @@ namespace mipmap
 
 	// This has something to do with dynamic texture generation. It's used for videos and menus.
 	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, void* a2);
-	static Trampoline sub_77FA10_trampoline(0x0077FA10, 0x0077FA16, (DetourFunction)sub_77FA10_hook);
+	static Trampoline sub_77FA10_trampoline(0x0077FA10, 0x0077FA16, sub_77FA10_hook);
 	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, void* a2)
 	{
 		blacklisted = true;
@@ -812,7 +812,7 @@ namespace mipmap
 	// This one seems to be related to text.
 	// On first call, it generates a new texture maybe. From that point on, it calls the above function.
 	static void sub_40D2A0_hook(void* a1);
-	static Trampoline sub_40D2A0_trampoline(0x0040D2A0, 0x0040D2A8, (DetourFunction)sub_40D2A0_hook);
+	static Trampoline sub_40D2A0_trampoline(0x0040D2A0, 0x0040D2A8, sub_40D2A0_hook);
 	static void sub_40D2A0_hook(void* a1)
 	{
 		blacklisted = true;
