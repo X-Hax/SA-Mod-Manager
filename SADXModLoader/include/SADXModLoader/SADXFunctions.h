@@ -2958,9 +2958,9 @@ static inline void RocketVThingA(ObjectMaster *a1)
 	}
 }
 
-// void __usercall(ObjectMaster *obj@<eax>, __int16 type)
+// void __usercall(ObjectMaster *obj@<eax>, int type)
 static const void *const DrawColObjPtr = (void*)0x4D42A0;
-static inline void DrawColObj(ObjectMaster *obj, __int16 _type)
+static inline void DrawColObj(ObjectMaster *obj, int _type)
 {
 	__asm
 	{
