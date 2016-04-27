@@ -46,7 +46,7 @@ DataPointer(short, NextLevel, 0x03B22DF0);
 DataPointer(short, NextAct, 0x03B22E18);
 DataPointer(short, ObjectPlacementDebug, 0x3B29D08);
 DataPointer(RestartData, RestartLevel, 0x3B42F80);
-DataArray(ObjectMaster*, PlayerPtrs, 0x03b42e10, 8);
+DataArray(ObjectMaster*, PlayerPtrs, 0x03B42E30, 8);
 DataArray(EntityData1*, CharObj1Ptrs, 0x03B42E10, 8);
 DataArray(CharObj2*, CharObj2Ptrs, 0x03B3CDF0, 8);
 DataPointer(short, Rings, 0x03B0F0E4);
