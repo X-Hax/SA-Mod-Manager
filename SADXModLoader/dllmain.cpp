@@ -1992,6 +1992,8 @@ static void __cdecl InitMods(void)
 		SetupHudScale();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
+	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
+	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_us\\wma");
 
 	// Map of files to replace and/or swap.
 	// This is done with a second map instead of sadx_fileMap directly

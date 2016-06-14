@@ -190,3 +190,4 @@ ModelManifest.xml
 
 SADXModLoader/git_version.h
 *.opendb
+/SADXModLoader.VC.db

@@ -16,8 +16,9 @@ using std::string;
 
 static bool enablevgmstream = false;
 static bool musicwmp = true;
+static bool voicewmp = true;
 static DWORD basschan = 0;
-
+static DWORD voicechan = 0;
 
 /**
  * Initialize media playback.
@@ -39,6 +40,12 @@ static void __stdcall onTrackEnd(HSYNC handle, DWORD channel, DWORD data, void *
 {
 	dword_3ABDFA0 = 0;
 	dword_3ABDF98 = 5;
+	BASS_ChannelStop(channel);
+	BASS_StreamFree(channel);
+}
+
+static void __stdcall onVoiceEnd(HSYNC handle, DWORD channel, DWORD data, void *user)
+{
 	BASS_ChannelStop(channel);
 	BASS_StreamFree(channel);
 }
@@ -149,8 +156,14 @@ void __cdecl PauseSound_r()
 	}
 	if ( WMPVoiceInfo )
 	{
-		WMPInfo__Stop(WMPVoiceInfo);
-		WMPInfo__Close(WMPVoiceInfo);
+		if (voicewmp)
+		{
+			WMPInfo__Pause(WMPVoiceInfo);
+		}
+		else
+		{
+			BASS_ChannelPause(voicechan);
+		}
 	}
 }
 
@@ -168,6 +181,17 @@ void __cdecl ResumeSound_r()
 			dword_3ABDFA8 = 0;
 		}
 	}
+	if (WMPVoiceInfo)
+	{
+		if (voicewmp)
+		{
+			WMPInfo__Resume(WMPVoiceInfo);
+		}
+		else
+		{
+			BASS_ChannelPlay(voicechan, false);
+		}
+	}
 }
 
 void __cdecl WMPClose_r(int a1)
@@ -176,8 +200,16 @@ void __cdecl WMPClose_r(int a1)
 	{
 		if ( a1 == 1 && WMPVoiceInfo )
 		{
-			WMPInfo__Stop(WMPVoiceInfo);
-			WMPInfo__Close(WMPVoiceInfo);
+			if (voicewmp)
+			{	
+				WMPInfo__Stop(WMPVoiceInfo);
+				WMPInfo__Close(WMPVoiceInfo);
+			}
+			else
+			{
+				BASS_ChannelStop(voicechan);
+				BASS_StreamFree(voicechan);
+			}
 			dword_3ABDFA8 = 0;
 			return;
 		}
@@ -229,6 +261,35 @@ __declspec(naked) int PlayVideoFile_r()
 
 int __cdecl PlayVoiceFile_r(LPCSTR filename)
 {
-	filename = sadx_fileMap.replaceFile(filename);
+	if (!WMPVoiceInfo)
+		return 0;
+
+	if (voicewmp)
+	{
+		WMPInfo__Stop(WMPVoiceInfo);
+		WMPInfo__Close(WMPVoiceInfo);
+	}
+	else if (voicechan != 0)
+	{
+		BASS_ChannelStop(voicechan);
+		BASS_StreamFree(voicechan);
+	}
+
+	auto replaced = sadx_fileMap.replaceFile(filename);
+
+	if (enablevgmstream)
+	{
+		voicechan = BASS_VGMSTREAM_StreamCreate(replaced, 0);
+		if (voicechan != 0)
+		{
+			voicewmp = false;
+			BASS_ChannelPlay(voicechan, false);
+			BASS_ChannelSetAttribute(voicechan, BASS_ATTRIB_VOL, (VoiceVolume + 10000) / 30000.0f);
+			BASS_ChannelSetSync(voicechan, BASS_SYNC_END, 0, onVoiceEnd, nullptr);
+			return 1;
+		}
+	}
+
+	voicewmp = true;
 	return PlayVoiceFile(filename);
 }

@@ -60,6 +60,7 @@ enum WMPStatus
 };
 
 DataPointer(int, MusicVolume, 0x909F28);
+DataPointer(int, VoiceVolume, 0x03ABDFAC);
 DataPointer(WMPInfo *, WMPVoiceInfo, 0x3ABDF94);
 DataPointer(int, dword_3ABDF98, 0x3ABDF98);
 DataPointer(WMPInfo *, WMPMusicInfo, 0x3ABDF9C);
