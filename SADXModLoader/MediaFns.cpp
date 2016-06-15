@@ -9,10 +9,13 @@
 
 #include "bass_vgmstream.h"
 
+#include <Shlwapi.h>
 #include <forward_list>
 #include <string>
+#include <vector>
 using std::forward_list;
 using std::string;
+using std::vector;
 
 static bool enablevgmstream = false;
 static bool musicwmp = true;
@@ -292,4 +295,132 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 
 	voicewmp = true;
 	return PlayVoiceFile(filename);
+}
+
+bool FileExists(const char *path)
+{
+	DWORD dwAttrib = GetFileAttributesA(path);
+
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
+		!(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+
+struc_64 *LoadSoundPack(const char *path, int bank)
+{
+	char filename[MAX_PATH];
+	_snprintf(filename, sizeof(filename), "%sindex.txt", path);
+	const char *pidxpath = filename;
+	pidxpath = sadx_fileMap.replaceFile(pidxpath);
+	if (!FileExists(pidxpath))
+		return nullptr;
+	char path2[MAX_PATH];
+	strncpy(path2, pidxpath, sizeof(path2));
+	PathRemoveFileSpecA(path2);
+	PathAddBackslashA(path2);
+	FILE *f = fopen(pidxpath, "r");
+	if (!f)
+		return nullptr;
+	vector<DATEntry> entries;
+	char line[MAX_PATH];
+	while (!feof(f))
+	{
+		if (!fgets(line, sizeof(line), f))
+		{
+			fclose(f);
+			return nullptr;
+		}
+		if (strnlen(line, sizeof(line)) == 0)
+			continue;
+		_snprintf(filename, sizeof(filename), "%s%s", path2, line);
+		if (!FileExists(filename))
+			return nullptr;
+		FILE *f2 = fopen(filename, "rb");
+		if (!f2)
+		{
+			for (unsigned int i = 0; i < entries.size(); i++)
+			{
+				delete[] entries[i].NameOffset;
+				delete[] entries[i].DataOffset;
+			}
+			fclose(f);
+			return nullptr;
+		}
+		DATEntry ent;
+		ent.NameOffset = new char[14];
+		_snprintf(ent.NameOffset, 14, "B%02d_00_%02d.wav", bank, entries.size());
+		fseek(f2, 0, SEEK_END);
+		ent.DataLength = (int)ftell(f2);
+		ent.DataOffset = new char[ent.DataLength];
+		fseek(f2, 0, SEEK_SET);
+		fread(ent.DataOffset, ent.DataLength, 1, f2);
+		fclose(f2);
+		entries.push_back(ent);
+	}
+	struc_64 *result = (struc_64 *)sub_4D41C0(entries.size() * sizeof(DATEntry) + 28);
+	ZeroMemory(result->ArchiveID, 16);
+	strcpy(result->ArchiveID, "archive  V2.2");
+	result->Filename = (char *)sub_4D41C0(strlen(path) + 1);
+	strncpy(result->Filename, path, strlen(path) + 1);
+	result->DATFile = sub_4D41C0(4); // dummy value
+	result->NumSFX = entries.size();
+	memcpy(&result->DATEntries, entries.data(), entries.size() * sizeof(DATEntry));
+	return result;
+}
+
+void __cdecl LoadSoundList_r(signed int soundlist)
+{
+	signed int v1; // esi@4
+	SoundFileInfo *v2; // edi@5
+	char String1[MAX_PATH]; // [sp+8h] [bp-108h]@7
+
+	if (soundlist < 123)
+	{
+		if (sub_40FF10())
+		{
+			if (dword_38F6EC0)
+			{
+				v1 = 0;
+				if (SoundLists[soundlist].Count)
+				{
+					v2 = SoundLists[soundlist].List;
+					do
+					{
+						if (!dword_3B291C8[v2->Bank])
+						{
+							wsprintfA(String1, "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
+							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
+								continue;
+							wsprintfA(String1, "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
+							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
+								continue;
+							wsprintfA(String1, "%sSoundData\\SE\\%s.dat", CDPath, v2->Filename);
+							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
+								continue;
+						}
+						if (dword_3B291C8[v2->Bank])
+						{
+							sub_423890(v2->Bank);
+							sub_4B4F50(dword_3B291C8[v2->Bank]);
+							dword_3B291C8[v2->Bank] = 0;
+						}
+						wsprintfA(String1, "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
+						dword_3B291C8[v2->Bank] = LoadSoundPack(String1, v2->Bank);
+						if (!dword_3B291C8[v2->Bank])
+						{
+							wsprintfA(String1, "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
+							dword_3B291C8[v2->Bank] = sub_4B4D10(String1, 1);
+							if (!dword_3B291C8[v2->Bank])
+							{
+								wsprintfA(String1, "%sSoundData\\SE\\%s.dat", CDPath, v2->Filename);
+								dword_3B291C8[v2->Bank] = sub_4B4D10(String1, 1);
+							}
+						}
+						++v1;
+						++v2;
+					} while (v1 < SoundLists[soundlist].Count);
+				}
+			}
+		}
+	}
 }

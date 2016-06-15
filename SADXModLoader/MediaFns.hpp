@@ -52,6 +52,26 @@ struct WMPInfo
 };
 #pragma pack(pop)
 
+#pragma pack(push, 1)
+struct DATEntry
+{
+	char *NameOffset;
+	void *DataOffset;
+	int DataLength;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct struc_64
+{
+	char ArchiveID[16];
+	char *Filename;
+	void *DATFile;
+	int NumSFX;
+	DATEntry DATEntries;
+};
+#pragma pack(pop)
+
 enum WMPStatus
 {
 	WMPStatus_Buffering,
@@ -67,6 +87,9 @@ DataPointer(WMPInfo *, WMPMusicInfo, 0x3ABDF9C);
 DataPointer(int, dword_3ABDFA0, 0x3ABDFA0);
 DataPointer(int, MusicLooping, 0x3ABDFA4);
 DataPointer(int, dword_3ABDFA8, 0x3ABDFA8);
+DataArray(char, CDPath, 0x3A8AF78, MAX_PATH);
+DataPointer(int, dword_38F6EC0, 0x38F6EC0);
+DataArray(struc_64 *, dword_3B291C8, 0x3B291C8, 16);
 
 ThiscallFunctionPointer(int, WMPInfo__Release, (WMPInfo *), 0x410F70);
 ThiscallFunctionPointer(int, WMPInfo__Play, (WMPInfo *, int, int, int), 0x410FF0);
@@ -79,6 +102,11 @@ ThiscallFunctionPointer(int, WMPInfo__Close, (WMPInfo *), 0x411720);
 ThiscallFunctionPointer(int, WMPInfo__Stop, (WMPInfo *), 0x411760);
 ThiscallFunctionPointer(unsigned int, WMPInfo__Open, (WMPInfo *, const wchar_t *), 0x411830);
 ThiscallFunctionPointer(WMPInfo *, WMPInfo__WMPInfo, (WMPInfo *), 0x411970);
+FunctionPointer(int, sub_40FF10, (), 0x40FF10);
+FunctionPointer(void, sub_423890, (int), 0x423890);
+FunctionPointer(void, sub_4B4F50, (struc_64 *), 0x4B4F50);
+FunctionPointer(struc_64 *, sub_4B4D10, (LPCSTR, int), 0x4B4D10);
+FunctionPointer(void *, sub_4D41C0, (int), 0x4D41C0);
 
 int __cdecl PlayVoiceFile_r(LPCSTR filename);
 
@@ -114,6 +142,8 @@ void WMPRelease_r();
 
 int PlayVideoFile_r(void);
 int __cdecl PlayVoiceFile_r(LPCSTR filename);
+
+void LoadSoundList_r(int soundlist);
 
 #ifdef __cplusplus
 }

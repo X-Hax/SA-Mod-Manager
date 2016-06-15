@@ -1969,6 +1969,7 @@ static void __cdecl InitMods(void)
 	WriteJump((void *)0x40D0A0, (void *)ResumeSound_r);
 	WriteJump((void *)0x40CFF0, (void *)WMPClose_r);
 	WriteJump((void *)0x40D28A, (void *)WMPRelease_r);
+	WriteJump(LoadSoundList, LoadSoundList_r);
 
 	InitTextureReplacement();
 
