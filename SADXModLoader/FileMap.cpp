@@ -188,7 +188,7 @@ void FileMap::scanSoundFolder(const std::string &srcPath)
 		{
 			continue;
 		}
-		else if (!(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && !stricmp(".wma", PathFindExtensionA(data.cFileName)))
+		else if (!(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && stricmp(".wma", PathFindExtensionA(data.cFileName)))
 		{
 			// Create the mod filename and original filename.
 			string modFile = srcPath + "\\" + string(data.cFileName);
