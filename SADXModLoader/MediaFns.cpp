@@ -390,13 +390,25 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 						{
 							wsprintfA(String1, "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
 							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
+							{
+								++v1;
+								++v2;
 								continue;
+							}
 							wsprintfA(String1, "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
 							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
+							{
+								++v1;
+								++v2;
 								continue;
+							}
 							wsprintfA(String1, "%sSoundData\\SE\\%s.dat", CDPath, v2->Filename);
 							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
+							{
+								++v1;
+								++v2;
 								continue;
+							}
 							sub_423890(v2->Bank);
 							sub_4B4F50(dword_3B291C8[v2->Bank]);
 							dword_3B291C8[v2->Bank] = 0;
