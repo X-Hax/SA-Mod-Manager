@@ -327,10 +327,19 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 	{
 		if (!fgets(line, sizeof(line), f))
 		{
+			if (feof(f)) break;
+			for (size_t i = 0; i < entries.size(); i++)
+			{
+				delete[] entries[i].NameOffset;
+				delete[] entries[i].DataOffset;
+			}
 			fclose(f);
 			return nullptr;
 		}
-		if (strnlen(line, sizeof(line)) == 0)
+		int linelen = strnlen(line, sizeof(line));
+		if (linelen > 0 && line[linelen - 1] == '\n')
+			line[--linelen] = 0;
+		if (linelen == 0)
 			continue;
 		_snprintf(filename, sizeof(filename), "%s%s", path2, line);
 		if (!FileExists(filename))
@@ -338,7 +347,7 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 		FILE *f2 = fopen(filename, "rb");
 		if (!f2)
 		{
-			for (unsigned int i = 0; i < entries.size(); i++)
+			for (size_t i = 0; i < entries.size(); i++)
 			{
 				delete[] entries[i].NameOffset;
 				delete[] entries[i].DataOffset;
@@ -357,7 +366,12 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 		fclose(f2);
 		entries.push_back(ent);
 	}
-	struc_64 *result = (struc_64 *)sub_4D41C0(entries.size() * sizeof(DATEntry) + 28);
+	int size = 28;
+	size += entries.size() * sizeof(DATEntry);
+	size += entries.size() * 14;
+	for (size_t i = 0; i < entries.size(); i++)
+		size += entries[i].DataLength;
+	struc_64 *result = (struc_64 *)sub_4D41C0(size);
 	ZeroMemory(result->ArchiveID, 16);
 	strcpy(result->ArchiveID, "archive  V2.2");
 	result->Filename = (char *)sub_4D41C0(strlen(path) + 1);
@@ -365,6 +379,20 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 	result->DATFile = sub_4D41C0(4); // dummy value
 	result->NumSFX = entries.size();
 	memcpy(&result->DATEntries, entries.data(), entries.size() * sizeof(DATEntry));
+	char *ptr = (char *)&(&result->DATEntries)[entries.size()];
+	DATEntry *ent = &result->DATEntries;
+	for (int i = 0; i < result->NumSFX; i++)
+	{
+		memcpy(ptr, ent->NameOffset, 14);
+		delete[] ent->NameOffset;
+		ent->NameOffset = ptr;
+		ptr += 14;
+		memcpy(ptr, ent->DataOffset, ent->DataLength);
+		delete[] ent->DataOffset;
+		ent->DataOffset = ptr;
+		ptr += ent->DataLength;
+		++ent;
+	}
 	return result;
 }
 
