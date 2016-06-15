@@ -386,7 +386,7 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 					v2 = SoundLists[soundlist].List;
 					do
 					{
-						if (!dword_3B291C8[v2->Bank])
+						if (dword_3B291C8[v2->Bank])
 						{
 							wsprintfA(String1, "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
 							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
@@ -397,9 +397,6 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 							wsprintfA(String1, "%sSoundData\\SE\\%s.dat", CDPath, v2->Filename);
 							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
 								continue;
-						}
-						if (dword_3B291C8[v2->Bank])
-						{
 							sub_423890(v2->Bank);
 							sub_4B4F50(dword_3B291C8[v2->Bank]);
 							dword_3B291C8[v2->Bank] = 0;
