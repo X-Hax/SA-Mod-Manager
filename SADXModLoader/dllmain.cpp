@@ -1318,6 +1318,7 @@ static void ProcessCutsceneTextINI(const IniGroup *group, const wstring &mod_dir
 	if (!group->hasKeyNonEmpty("filename")) return;
 	char ***addr = (char ***)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
+	addr = (char ***)((int)addr + 0x400000);
 	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
 	for (unsigned int i = 0; i < LengthOfArray(languagenames); i++)
 	{
@@ -1335,6 +1336,7 @@ static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
 	int length = group->getInt("length");
 	RecapScreen **addr = (RecapScreen **)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
+	addr = (RecapScreen **)((int)addr + 0x400000);
 	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
 	for (unsigned int l = 0; l < LengthOfArray(languagenames); l++)
 	{
@@ -1363,6 +1365,7 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 	int length = group->getInt("length");
 	HintText_Entry **addr = (HintText_Entry **)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
+	addr = (HintText_Entry **)((int)addr + 0x400000);
 	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
 	for (unsigned int l = 0; l < LengthOfArray(languagenames); l++)
 	{
@@ -1520,6 +1523,7 @@ static void ProcessSkyboxScaleINI(const IniGroup *group, const wstring &mod_dir)
 	int count = group->getInt("count");
 	SkyboxScale **addr = (SkyboxScale **)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
+	addr = (SkyboxScale **)((int)addr + 0x400000);
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	for (int i = 0; i < count; i++)
 	{
