@@ -17,7 +17,7 @@ typedef Uint32 NJD_SPRITE;
 // SADX Functions
 #define ObjectFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(ObjectMaster *obj),ADDRESS)
 
-FunctionPointer(void, PrintDebug, (char *Format, ...), 0x401000);
+FunctionPointer(void, PrintDebug, (const char *Format, ...), 0x401000);
 FunctionPointer(void, CopyToGlobalSprite_ScalePosition, (NJS_SPRITE *sprite), 0x401030);
 FunctionPointer(void, CopyToGlobalSprite_NativeToCurrent, (NJS_SPRITE *sprite), 0x401070);
 FunctionPointer(void, Set_D3DCMPFUNC_Mode, (int a1), 0x401410);
@@ -168,7 +168,7 @@ FunctionPointer(int, SetCurrentTextureToCommon, (), 0x420F90);
 FunctionPointer(int, UnloadLevelTextures, (__int16 levelact), 0x421040);
 FunctionPointer(int, LoadPVM_C, (const char *filename, NJS_TEXLIST *texList), 0x4210A0);
 FunctionPointer(void, LoadPVM, (const char *filename, NJS_TEXLIST *texlist), 0x421180);
-FunctionPointer(signed int, LoadPvmMEM2, (char *pvmName, NJS_TEXLIST *texList), 0x421260);
+FunctionPointer(signed int, LoadPvmMEM2, (const char *pvmName, NJS_TEXLIST *texList), 0x421260);
 FunctionPointer(void, LoadCharTextures, (int charID), 0x421280);
 FunctionPointer(void, LoadRegObjTextures, (int a1), 0x4212E0);
 VoidFunc(LoadChaoObjTxtures, 0x4213A0);
@@ -178,8 +178,8 @@ FunctionPointer(int, ShowNoMemoryCardText_0, (int), 0x421C70);
 FunctionPointer(int, ShowNoMemoryCardText_1, (int), 0x421CD0);
 VoidFunc(WriteSaveFile, 0x421FD0);
 VoidFunc(j_WriteSaveFile, 0x4221D0);
-FunctionPointer(void, LoadFile, (char *name, LPVOID lpBuffer), 0x422200);
-FunctionPointer(void, LoadFileWithMalloc, (char *Name, LPVOID *Data), 0x422310);
+FunctionPointer(void, LoadFile, (const char *name, LPVOID lpBuffer), 0x422200);
+FunctionPointer(void, LoadFileWithMalloc, (const char *Name, LPVOID *Data), 0x422310);
 FunctionPointer(int, ReleaseSetFile, (), 0x422440);
 FunctionPointer(int, GetCharIDString, (), 0x422490);
 VoidFunc(ReleaseCamFile, 0x4224B0);
@@ -1888,9 +1888,9 @@ FunctionPointer(int, Chao_Race_Entry_Door, (ObjectMaster *a1), 0x72AAA0);
 FunctionPointer(int, Chao_Station_Door, (ObjectMaster *a1), 0x72AD60);
 FunctionPointer(void, Chao_Market_Door, (ObjectMaster *), 0x72AEE0);
 VoidFunc(LoadButtonIndicators, 0x72B330);
-FunctionPointer(void *, LoadChaoMessageFile, (char *filename, int language), 0x72C060);
+FunctionPointer(void *, LoadChaoMessageFile, (const char *filename, int language), 0x72C060);
 FunctionPointer(void, j__HeapFree, (LPVOID lpMem), 0x72C110);
-FunctionPointer(void *, LoadChaoMessageFile2, (char *filename), 0x72C180);
+FunctionPointer(void *, LoadChaoMessageFile2, (const char *filename), 0x72C180);
 FunctionPointer(void, DrawOverlaySprite, (NJS_SPRITE *a1, Int n, float pri), 0x72CC70);
 FunctionPointer(void, ProgressChaoEvolution, (ObjectMaster *a1, float a2), 0x730870);
 FunctionPointer(void, IncrementPowerRun, (ObjectMaster *a1, float increment), 0x7308D0);
@@ -1978,10 +1978,10 @@ StdcallFunctionPointer(BOOL, QueryPerformanceCounter_, (LARGE_INTEGER *lpPerform
 FastcallFunctionPointer(void, njInitMatrix, (NJS_MATRIX *matrixStack, Sint32 n, Int flag), 0x780180);
 FunctionPointer(void, SetDebugFontSize, (unsigned __int16 a1), 0x7808C0);
 FunctionPointer(void, SetDebugFontColor, (int a1), 0x7808E0);
-FunctionPointer(void, DisplayDebugString, (signed int position, char *text), 0x7808F0);
+FunctionPointer(void, DisplayDebugString, (signed int position, const char *text), 0x7808F0);
 FunctionPointer(void, PrintDebugNumber, (signed int position, int value, signed int numdigits), 0x780970);
 FunctionPointer(void, DisplayDebugFloat, (int position, float value, signed int percision), 0x780AC0);
-FunctionPointer(void, DisplayDebugStringFormatted, (signed int position, char *text, ...), 0x780B30);
+FunctionPointer(void, DisplayDebugStringFormatted, (signed int position, const char *text, ...), 0x780B30);
 VoidFunc(Direct3D_NextScene, 0x780BE0);
 FunctionPointer(double, SetNjScreenToPreset, (int a1, int a2, int frame_multiplier), 0x780C30);
 FunctionPointer(int, HeapAllocateThing, (DWORD dwBytes), 0x780F60);
@@ -2024,7 +2024,7 @@ FastcallFunctionPointer(void, njAddVector, (NJS_VECTOR *vd, NJS_VECTOR *vs), 0x7
 FunctionPointer(Sint32, pdVibMxStart, (Uint32 port, const PDS_VIBPARAM *a2), 0x785280);
 FunctionPointer(Sint32, pdVibMxStop, (Uint32 port), 0x785330);
 FunctionPointer(int, CreatesVertexBufferAndLocks, (int), 0x7853D0);
-FastcallFunctionPointer(void, SetTexnameInfo, (NJS_TEXNAME *texname, char *filename, NJS_TEXMEMLIST *texaddr, int attr), 0x7871C0);
+FastcallFunctionPointer(void, SetTexnameInfo, (NJS_TEXNAME *texname, const char *filename, NJS_TEXMEMLIST *texaddr, int attr), 0x7871C0);
 StdcallFunctionPointer(double, squareroot, (float), 0x7871F0);
 VoidFunc(Direct3D_EnableFog_, 0x787220);
 VoidFunc(Direct3D_DisableFog_, 0x787230);
@@ -2240,7 +2240,7 @@ static inline ObjectMaster * AllocateObjectMaster(signed int index, void (__cdec
 
 // void __usercall(int act@<ecx>, char *FileName)
 static const void *const LoadCamFilePtr = (void*)0x4224F0;
-static inline void LoadCamFile(int act, char *FileName)
+static inline void LoadCamFile(int act, const char *FileName)
 {
 	__asm
 	{
@@ -2253,7 +2253,7 @@ static inline void LoadCamFile(int act, char *FileName)
 
 // void __usercall(int act@<ecx>, char *FileName)
 static const void *const LoadSetFilePtr = (void*)0x422930;
-static inline void LoadSetFile(int act, char *FileName)
+static inline void LoadSetFile(int act, const char *FileName)
 {
 	__asm
 	{
