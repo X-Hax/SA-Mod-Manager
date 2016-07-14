@@ -150,7 +150,7 @@ void FileMap::scanFolder_int(const std::string &srcPath, int srcLen)
 			transform(modFile.begin(), modFile.end(), modFile.begin(), ::tolower);
 			string fileBase = modFile.substr(srcLen);
 			string origFile = "system\\" + fileBase;
-			if (origFile.length() > 30 && origFile.compare(0, 29, "system\\sounddata\\bgm\\wma\\"))
+			if (!origFile.compare(0, 25, "system\\sounddata\\bgm\\wma\\") || !origFile.compare(0, 29, "system\\sounddata\\voice_us\\wma") || !origFile.compare(0, 29, "system\\sounddata\\voice_jp\\wma"))
 			{
 				char pathcstr[MAX_PATH];
 				strncpy(pathcstr, origFile.c_str(), sizeof(pathcstr));
@@ -197,7 +197,7 @@ void FileMap::scanSoundFolder(const std::string &srcPath)
 			strncpy(pathcstr, modFile.c_str(), sizeof(pathcstr));
 			PathRenameExtensionA(pathcstr, ".wma");
 			string origFile = pathcstr;
-			setReplaceFile(origFile, modFile);
+			m_fileMap[origFile] = modFile;
 		}
 	} while (FindNextFileA(hFind, &data) != 0);
 	FindClose(hFind);
