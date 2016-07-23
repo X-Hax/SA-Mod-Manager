@@ -2174,6 +2174,9 @@ static void __cdecl InitMods(void)
 					RegisterEvent(modInputEvents, module, "OnInput");
 					RegisterEvent(modControlEvents, module, "OnControl");
 					RegisterEvent(modExitEvents, module, "OnExit");
+					auto whatever = reinterpret_cast<TextureLoadEvent>(GetProcAddress(module, "OnCustomTextureLoad"));
+					if (whatever != nullptr)
+						modCustomTextureLoadEvents.push_back(whatever);
 				}
 				else
 				{

@@ -258,6 +258,8 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 	}
 	else
 	{
+		uint32_t levels = (mipmap) ? D3DX_DEFAULT : 1;
+
 		// A texture count of 0 indicates that this is an empty texture slot.
 		if (texture->count != 0)
 		{
@@ -265,8 +267,6 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 		}
 		else
 		{
-			uint32_t levels = (mipmap) ? D3DX_DEFAULT : 1;
-
 			if (!mipmap)
 			{
 				DDS_HEADER header;
@@ -298,6 +298,9 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 			texture->texinfo.texsurface.TextureSize	= info.Size;
 			texture->texinfo.texsurface.pSurface	= (Uint32*)d3dtexture;
 		}
+
+		for (auto& i : modCustomTextureLoadEvents)
+			i(texture, path.c_str(), levels);
 	}
 
 	return texture;

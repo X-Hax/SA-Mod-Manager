@@ -3,10 +3,13 @@
 #include "SADXModLoader.h"
 #include <vector>
 
+using TextureLoadEvent = void(__cdecl *)(NJS_TEXMEMLIST*, const wchar_t*, Uint32);
+
 extern std::vector<ModEvent> modFrameEvents;
 extern std::vector<ModEvent> modInputEvents;
 extern std::vector<ModEvent> modControlEvents;
 extern std::vector<ModEvent> modExitEvents;
+extern std::vector<TextureLoadEvent> modCustomTextureLoadEvents;
 
 /**
 * Calls all registered events in the specified event list.
