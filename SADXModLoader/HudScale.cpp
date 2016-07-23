@@ -76,15 +76,17 @@ struct ScaleEntry
 };
 
 static stack<ScaleEntry, vector<ScaleEntry>> scale_stack;
+static size_t stack_size = 0;
 
-static const float patch_dummy = 1.0f;
+static const float patch_dummy  = 1.0f;
 static const float screen_third = 640.0f / 3.0f;
 
-static bool doScale = false;
-static float scale = 1.0f;
-static float last_h = 0.0f;
-static float last_v = 0.0f;
-static size_t stack_size = 0;
+static bool doScale   = false;
+static float scale    = 0.0f;
+static float scale_h  = 0.0f;
+static float scale_v  = 0.0f;
+static float region_w = 0.0f;
+static float region_h = 0.0f;
 
 static void __cdecl ScalePush(Align align, float h = 1.0f, float v = 1.0f)
 {
@@ -135,7 +137,7 @@ static inline void __stdcall ScaleVoidFunc(Align align, Trampoline* trampoline)
 static void __cdecl DrawAllObjectsHax()
 {
 	if (doScale)
-		ScalePush(Align::Auto, last_h, last_v);
+		ScalePush(Align::Auto, scale_h, scale_v);
 
 	VoidFunc(original, drawObjects->Target());
 	original();
@@ -148,7 +150,7 @@ static void __cdecl DrawAllObjectsHax()
 static Sint32 __cdecl FixMissionScreen()
 {
 	if (doScale)
-		ScalePush(Align::Auto, last_h, last_v);
+		ScalePush(Align::Auto, scale_h, scale_v);
 
 	FunctionPointer(Sint32, original, (void), missionScreen->Target());
 	Sint32 result = original();
@@ -182,10 +184,10 @@ static void __cdecl SpritePush(NJS_SPRITE* sp)
 
 	last_sprite = *sp;
 
-	sp->sx *= scale;
-	sp->sy *= scale;
 	sp->p.x *= scale;
 	sp->p.y *= scale;
+	sp->sx  *= scale;
+	sp->sy  *= scale;
 
 	switch (align)
 	{
@@ -193,17 +195,16 @@ static void __cdecl SpritePush(NJS_SPRITE* sp)
 			break;
 
 		case Align::Center:
-			if ((float)HorizontalResolution / last_v > 640.0f)
-				sp->p.x += (float)HorizontalResolution / 8.0f;
-			if ((float)VerticalResolution / last_h > 480.0f)
-				sp->p.y += (float)VerticalResolution / 8.0f;
+			if ((float)HorizontalResolution / scale_v > 640.0f)
+				sp->p.x += (float)HorizontalResolution / 2.0f - region_w / 2.0f;
+
+			if ((float)VerticalResolution / scale_h > 480.0f)
+				sp->p.y += (float)VerticalResolution / 2.0f - region_h / 2.0f;
+
 			break;
 
 		case Align::Right:
-			if ((float)HorizontalResolution / last_v > 640.0f)
-				sp->p.x += (float)HorizontalResolution / 4.0f;
-			if ((float)VerticalResolution / last_h > 480.0f)
-				sp->p.y += (float)VerticalResolution / 4.0f;
+			sp->p.x += (float)HorizontalResolution - region_w;
 			break;
 	}
 }
@@ -460,10 +461,14 @@ void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr)
 
 void SetupHudScale()
 {
-	last_h = HorizontalStretch;
-	last_v = VerticalStretch;
+	scale_h = HorizontalStretch;
+	scale_v = VerticalStretch;
 
-	scale = min(last_h, last_v);
+	scale = min(scale_h, scale_v);
+
+	region_w = 640.0f * scale;
+	region_h = 480.0f * scale;
+
 	WriteJump((void*)0x0042BEE0, ScaleResultScreen);
 
 	drawObjects = new Trampoline(0x0040B540, 0x0040B546, DrawAllObjectsHax);
@@ -528,14 +533,14 @@ void SetupHudScale()
 	scaleGammaTimeAddHud = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
 	scaleGammaTimeRemaining = new Trampoline(0x004C51D0, 0x004C51D7, ScaleGammaTimeRemaining);
 
-	WriteData((float**)0x004B4470, &last_h);
-	WriteData((float**)0x004B444E, &last_v);
+	WriteData((float**)0x004B4470, &scale_h);
+	WriteData((float**)0x004B444E, &scale_v);
 	scaleEmblemScreen = new Trampoline(0x004B4200, 0x004B4205, ScaleEmblemScreen);
 
 	scaleBossName = new Trampoline(0x004B33D0, 0x004B33D5, ScaleBossName);
 
 	scaleNightsCards = new Trampoline(0x005D73F0, 0x005D73F5, ScaleNightsCards);
-	WriteData((float**)0x005D701B, &last_h);
+	WriteData((float**)0x005D701B, &scale_h);
 	scaleNightsJackpot = new Trampoline(0x005D6E60, 0x005D6E67, ScaleNightsJackpot);
 
 	scaleMissionStartClear = new Trampoline(0x00591260, 0x00591268, ScaleMissionStartClear);
