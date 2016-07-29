@@ -356,10 +356,10 @@
   </Code>
   <Code name="Tails Can Play Emerald Coast" patch="true">
     <CodeLine>
-      <Type>writenop</Type>
+      <Type>write8</Type>
       <Address>004F6B02</Address>
-      <Value>2</Value>
-      <ValueType>decimal</ValueType>
+      <Value>EB</Value>
+      <ValueType>hex</ValueType>
     </CodeLine>
   </Code>
   <Code name="Don't Lose Rings When Hit" patch="true">
