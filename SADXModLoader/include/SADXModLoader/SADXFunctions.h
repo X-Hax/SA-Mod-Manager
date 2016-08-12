@@ -128,7 +128,7 @@ FunctionPointer(void, StartLevelCutscene, (__int16 a1), 0x413C90);
 FunctionPointer(int, DoStageStuff, (), 0x413D40);
 FunctionPointer(int, DoReallyWeirdInputStuff, (), 0x413DD0);
 FunctionPointer(int, DrawHudAndDoWeirdInputStuff, (), 0x413F00);
-FunctionPointer(int, DelayedSound_Main, (ObjectMaster *), 0x414120);
+ObjectFunc(DelayedSound_Main, 0x414120);
 FunctionPointer(ObjectMaster *, Load_DelayedSound_SFX, (int index), 0x414170);
 FunctionPointer(ObjectMaster *, Load_DelayedSound_BGM, (int index), 0x4141B0);
 VoidFunc(LoadLevelObject, 0x4143C0);
