@@ -395,6 +395,16 @@ struct ObjectData2
 	NJS_MATRIX matrix;
 };
 
+struct SETObjData
+{
+	char LoadCount;
+	char f1;
+	int16_t Flags;
+	int dword4;
+	SET_Entry *SETEntry;
+	float Distance;
+};
+
 struct ObjectMaster
 {
 	ObjectMaster *PreviousSibling;
@@ -404,7 +414,7 @@ struct ObjectMaster
 	ObjectFuncPtr MainSub;
 	ObjectFuncPtr DisplaySub;
 	ObjectFuncPtr DeleteSub;
-	void *field_1C;
+	SETObjData *SETData;
 	EntityData1 *Data1;
 	void *Data2;
 	void *UnknownA_ptr;
@@ -699,16 +709,6 @@ struct FieldNPCList
 {
 	void *Data;
 	int Count;
-};
-
-struct SETObjData
-{
-	char LoadCount;
-	char f1;
-	int16_t Flags;
-	int dword4;
-	SET_Entry *SETEntry;
-	float Distance;
 };
 
 struct MusicInfo
