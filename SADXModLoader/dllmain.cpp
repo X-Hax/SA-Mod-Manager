@@ -1850,6 +1850,12 @@ void __cdecl WriteSaveFile_r()
 	}
 }
 
+FunctionPointer(int, sub_40EF20, (int), 0x40EF20);
+int __cdecl FixEKey(int i)
+{
+	return IsCameraControlEnabled() && sub_40EF20(i);
+}
+
 static void __cdecl InitMods(void)
 {
 	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
@@ -1963,6 +1969,7 @@ static void __cdecl InitMods(void)
 
 	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
+	WriteCall((void *)0x437547, FixEKey);
 	WriteCall((void *)0x42544C, (void *)PlayMusicFile_r);
 	WriteCall((void *)0x4254F4, (void *)PlayVoiceFile_r);
 	WriteCall((void *)0x425569, (void *)PlayVoiceFile_r);
