@@ -20,8 +20,8 @@ public:
 	template <typename T>
 	static void Load(ObjectMaster *obj)
 	{
-		new T(obj);
-		obj->MainSub();
+		T *t = new T(obj);
+		t->Main();
 	}
 };
 
