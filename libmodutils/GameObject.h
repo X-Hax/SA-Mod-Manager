@@ -3,7 +3,6 @@
 class GameObject
 {
 private:
-	GameObject(ObjectMaster *obj);
 	static void CallMain(ObjectMaster *obj);
 	static void CallDisplay(ObjectMaster *obj);
 	static void CallDelete(ObjectMaster *obj);
@@ -11,6 +10,7 @@ private:
 protected:
 	ObjectMaster *objData;
 	GameObject(LoadObj flags, int index);
+	GameObject(ObjectMaster *obj);
 	virtual void Delete();
 public:
 	GameObject(int index);
@@ -18,7 +18,11 @@ public:
 	virtual void Main() = 0;
 	virtual void Display();
 	template <typename T>
-	static void Load(ObjectMaster *obj);
+	static void Load(ObjectMaster *obj)
+	{
+		new T(obj);
+		obj->MainSub();
+	}
 };
 
 class GameEntity : GameObject

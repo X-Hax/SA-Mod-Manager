@@ -24,13 +24,6 @@ GameObject::GameObject(ObjectMaster *obj)
 	initFromObj = true;
 }
 
-template <typename T>
-void GameObject::Load(ObjectMaster *obj)
-{
-	new T(obj);
-	obj->MainSub();
-}
-
 void GameObject::CallMain(ObjectMaster *obj)
 {
 	((GameObject *)obj->Data2)->Main();
