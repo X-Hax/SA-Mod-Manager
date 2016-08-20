@@ -39,6 +39,7 @@ void GameObject::CallDelete(ObjectMaster *obj)
 {
 	GameObject *cgo = (GameObject *)obj->Data2;
 	cgo->Delete();
+	obj->Data2 = nullptr;
 	cgo->objData = nullptr;
 	if (cgo->initFromObj)
 		delete cgo;
