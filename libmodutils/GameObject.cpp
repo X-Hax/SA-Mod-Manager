@@ -17,6 +17,7 @@ GameObject::GameObject(int index) : GameObject((LoadObj)0, index){}
 
 GameObject::GameObject(ObjectMaster *obj)
 {
+	objData = obj;
 	objData->MainSub = CallMain;
 	objData->DisplaySub = CallDisplay;
 	objData->DeleteSub = CallDelete;
@@ -51,7 +52,9 @@ GameObject::~GameObject()
 {
 	if (objData)
 	{
+		Delete();
 		objData->Data2 = nullptr;
+		objData->DeleteSub = nullptr;
 		DeleteObject_(objData);
 	}
 }
