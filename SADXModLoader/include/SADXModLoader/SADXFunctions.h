@@ -1897,8 +1897,8 @@ FunctionPointer(void, IncrementPowerRun, (ObjectMaster *a1, float increment), 0x
 FunctionPointer(void, IncrementFlySwim, (ObjectMaster *a1, float increment), 0x730930);
 FunctionPointer(void, IncrementAlignment, (ObjectMaster *a1, float increment), 0x730990);
 FunctionPointer(void, SetupChaoAppearance, (ChaoDataBase *a1, char *a2), 0x730B30);
-FunctionPointer(void, EnableChao, (), 0x731CD0);
-FunctionPointer(void, DisableChao, (), 0x731CE0);
+VoidFunc(EnableChao, 0x731CD0);
+VoidFunc(DisableChao, 0x731CE0);
 FunctionPointer(int, IsChaoEnabled, (), 0x731CF0);
 ObjectFunc(ChaoDebug_MenuBack, 0x731DE0);
 FunctionPointer(void, SetChaoDebugFunction_Disabled, (void (__cdecl *object_function)(ObjectMaster *), char *name), 0x731E00);
