@@ -20,7 +20,7 @@ typedef struct Rotation {
 } Rotation3;
 
 struct ObjectMaster;
-typedef void (__cdecl *ObjectFuncPtr)(ObjectMaster *);
+typedef void(__cdecl *ObjectFuncPtr)(ObjectMaster *);
 
 // TODO: Grab actual structs from disassembly.
 typedef void ABC_TXT_struct;
@@ -593,10 +593,11 @@ struct SoundList
 	SoundFileInfo *List;
 };
 
+typedef void(__cdecl *ItemBoxFunction)(EntityData1 *);
 struct ItemBoxData
 {
 	int Texture;
-	ObjectFuncPtr Function;
+	ItemBoxFunction Function;
 };
 
 struct Time

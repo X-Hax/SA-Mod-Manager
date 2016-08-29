@@ -101,4 +101,15 @@ DataPointer(int, GrabButtons, 0x00909FA4);
 DataArray(char, CutsceneFlagArray, 0x3B18608, 512);
 DataArray(char, EventFlagArray, 0x3B18808, 512);
 
+DataArray(ItemBoxData, ItemBoxPowerups, 0x009BF190, 9);
+DataPointer(int, ItemBoxPowerups_Index, 0x3C5C888);
+DataArray(int, LifeTextures, 0x009BF1D8, 8);
+
+DataPointer(int, SegaLogo_Mode, 0x3B29D6C);
+DataPointer(int, SegaLogo_Frames, 0x3B29D68);
+DataPointer(ObjectMaster*, SoundManager_ptr, 0x03B29D00);
+DataPointer(int, VoiceLanguage, 0x03B0EF38);
+DataPointer(ObjectMaster*, TailsAI_ptr, 0x03B2B358);
+DataPointer(int, IsChaoStage, 0x3B22E80);
+
 #endif /* SADXMODLOADER_SADXVARS_H */
