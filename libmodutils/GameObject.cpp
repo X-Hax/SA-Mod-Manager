@@ -49,6 +49,8 @@ void GameObject::Display(){}
 
 void GameObject::Delete(){}
 
+SETObjData *GameObject::GetSETData(){ return objData->SETData; }
+
 GameObject::~GameObject()
 {
 	if (objData)
