@@ -57,7 +57,7 @@ static void HookTheAPI()
 
 	PSTR pszModName;
 
-	HMODULE hModule = GetModuleHandle(NULL);
+	HMODULE hModule = GetModuleHandle(nullptr);
 	PIMAGE_IMPORT_DESCRIPTOR pImportDesc;
 
 	pNewFunction = (PROC)MyCreateFileA;
@@ -164,7 +164,7 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 {
 	va_list ap;
 	va_start(ap, Format);
-	int result = vsnprintf(NULL, 0, Format, ap) + 1;
+	int result = vsnprintf(nullptr, 0, Format, ap) + 1;
 	va_end(ap);
 	char *buf = new char[result];
 	va_start(ap, Format);
@@ -233,7 +233,7 @@ static void __cdecl sub_789BD0()
 {
 	MSG v0; // [sp+4h] [bp-1Ch]@1
 
-	if (PeekMessageA(&v0, 0, 0, 0, 1u))
+	if (PeekMessageA(&v0, nullptr, 0, 0, 1u))
 	{
 		do
 		{
@@ -242,7 +242,7 @@ static void __cdecl sub_789BD0()
 				TranslateMessage(&v0);
 				DispatchMessageA(&v0);
 			}
-		} while (PeekMessageA(&v0, 0, 0, 0, 1u));
+		} while (PeekMessageA(&v0, nullptr, 0, 0, 1u));
 		dword_3D08534 = v0.wParam;
 	}
 	else
@@ -285,11 +285,11 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			}
 			windowmode = windowmode == windowed ? fullscreen : windowed;
 			windowsize *size = &innersizes[windowmode];
-			SetWindowPos(hWnd, NULL, size->x, size->y, size->width, size->height, 0);
+			SetWindowPos(hWnd, nullptr, size->x, size->y, size->width, size->height, 0);
 			windowdata *data = &windowsizes[windowmode];
 			SetWindowLong(outerWindow, GWL_STYLE, data->style);
 			SetWindowLong(outerWindow, GWL_EXSTYLE, data->extendedstyle);
-			SetWindowPos(outerWindow, NULL, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
+			SetWindowPos(outerWindow, nullptr, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
 			UpdateWindow(outerWindow);
 			switchingwindowmode = false;
 			return 0;
@@ -326,20 +326,108 @@ BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonit
 uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
 int curscrnsz[2];
 
+DataPointer(D3DPRESENT_PARAMETERS, PresentParameters, 0x03D0FDC0);
+DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x03D12780);
+DataPointer(DWORD, StencilThing, 0x03D1289C);
+LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
+{
+	if (Msg > WM_KEYFIRST)
+	{
+		if (Msg < WM_SYSKEYDOWN || Msg > WM_SYSKEYUP)
+		{
+			return DefWindowProcA(a1, Msg, wParam, a4);
+		}
+	}
+	else if (Msg != WM_KEYFIRST)
+	{
+		if (Msg == WM_DESTROY)
+		{
+			PostQuitMessage(0);
+		}
+		else
+		{
+			switch (Msg)
+			{
+				default:
+					break;
+
+				case WM_SIZE:
+				{
+					// TODO: Figure out why menus are breaking
+					if (Direct3D_Device == nullptr)
+						break;
+
+					int w = LOWORD(a4);
+					int h = HIWORD(a4);
+
+					PresentParameters.BackBufferWidth = w;
+					PresentParameters.BackBufferHeight = h;
+
+					DWORD fogenable, fogcolor, fogtablemode, fogstart, fogend, fogdensity;
+
+					Direct3D_Device->GetRenderState(D3DRS_FOGENABLE, &fogenable);
+					Direct3D_Device->GetRenderState(D3DRS_FOGCOLOR, &fogcolor);
+					Direct3D_Device->GetRenderState(D3DRS_FOGTABLEMODE, &fogtablemode);
+					Direct3D_Device->GetRenderState(D3DRS_FOGSTART, &fogstart);
+					Direct3D_Device->GetRenderState(D3DRS_FOGEND, &fogend);
+					Direct3D_Device->GetRenderState(D3DRS_FOGDENSITY, &fogdensity);
+
+					HRESULT result = Direct3D_Device->Reset(&PresentParameters);
+					if (!SUCCEEDED(result))
+						throw;
+
+					Direct3D_Device->SetRenderState(D3DRS_FOGENABLE, fogenable != 0);
+					Direct3D_Device->SetRenderState(D3DRS_FOGCOLOR, fogcolor);
+					Direct3D_Device->SetRenderState(D3DRS_FOGTABLEMODE, fogtablemode);
+					Direct3D_Device->SetRenderState(D3DRS_FOGSTART, fogstart);
+					Direct3D_Device->SetRenderState(D3DRS_FOGEND, fogend);
+					Direct3D_Device->SetRenderState(D3DRS_FOGDENSITY, fogdensity);
+
+					SetStartupProjection(&ProjectionMatrix);
+					Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
+
+					Direct3D_Device->GetViewport(&Direct3D_ViewPort);
+
+					HorizontalResolution = w;
+					VerticalResolution   = h;
+					HorizontalStretch    = (float)w / 640.0f;
+					VerticalStretch      = (float)h / 480.0f;
+
+					NJS_SCREEN screen = {};
+
+					screen.w  = HorizontalStretch * 640.0f;
+					screen.h  = VerticalStretch * 480.0f;
+					screen.cx = screen.w * 0.5f;
+					screen.cy = screen.h * 0.5f;
+
+					SetupScreen(&screen);
+					njSetPerspective(12743);
+
+					break;
+				}
+			}
+		}
+
+		return DefWindowProcA(a1, Msg, wParam, a4);
+	}
+
+	return 1;
+}
+
 DataPointer(int, Windowed, 0x38A5DC4);
 static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 {
 	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
 
 	v8.style = 0;
-	v8.lpfnWndProc = (WNDPROC)0x789DE0;
+	v8.lpfnWndProc = (WNDPROC)WndProc_r;
 	v8.cbClsExtra = 0;
 	v8.cbWndExtra = 0;
 	v8.hInstance = hInstance;
 	v8.hIcon = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
-	v8.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
+	v8.hCursor = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
 	v8.hbrBackground = (HBRUSH)GetStockObject(0);
-	v8.lpszMenuName = 0;
+	v8.lpszMenuName = nullptr;
 	v8.lpszClassName = GetWindowClassName();
 	if (!RegisterClassA(&v8))
 		return;
@@ -367,7 +455,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		int scrnx, scrny, scrnw, scrnh;
 		if (screennum > 0)
 		{
-			EnumDisplayMonitors(NULL, NULL, GetMonitorSize, 0);
+			EnumDisplayMonitors(nullptr, nullptr, GetMonitorSize, 0);
 			if (screenbounds.size() < screennum)
 				screennum = 1;
 			RECT scrnsz = screenbounds[screennum - 1];
@@ -429,7 +517,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		{
 			Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 			ULONG_PTR gdiplusToken;
-			Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+			Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 			bgimg = Gdiplus::Bitmap::FromFile(L"mods\\Border.png");
 		}
 		WNDCLASS w;
@@ -438,7 +526,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		w.lpfnWndProc = WrapperWndProc;
 		w.hInstance = hInstance;
 		w.hIcon = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
-		w.hCursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7F00));
+		w.hCursor = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
 		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 		if (RegisterClass(&w) == 0)
 			return;
@@ -450,9 +538,9 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 			L"SonicAdventureDXPC",
 			data->style,
 			data->x, data->y, data->width, data->height,
-			NULL, NULL, hInstance, NULL);
+			nullptr, nullptr, hInstance, nullptr);
 
-		if (outerWindow == NULL)
+		if (outerWindow == nullptr)
 			return;
 
 		accelTbl = CreateAcceleratorTable(arrayptrandlength(accelerators));
@@ -460,7 +548,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		windowsize *size = &innersizes[windowmode];
 
 		hWnd = CreateWindowExA(0, GetWindowClassName(), GetWindowClassName(), WS_CHILD | WS_VISIBLE,
-			size->x, size->y, size->width, size->height, outerWindow, NULL, hInstance, 0);
+			size->x, size->y, size->width, size->height, outerWindow, nullptr, hInstance, nullptr);
 		SetFocus(hWnd);
 		ShowWindow(outerWindow, nCmdShow);
 		UpdateWindow(outerWindow);
@@ -476,14 +564,14 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		if (Windowed)
 		{
 			v3 = 0;
-			v2 = WS_CAPTION | WS_SYSMENU;
+			v2 = WS_CAPTION | WS_SYSMENU | WS_MAXIMIZEBOX | WS_SIZEBOX | WS_MINIMIZEBOX;
 		}
 		else
 		{
 			v3 = WS_EX_TOPMOST | WS_EX_TOOLWINDOW;
 			v2 = WS_CAPTION;
 		}
-		hWnd = CreateWindowExA(v3, GetWindowClassName(), GetWindowClassName(), v2, CW_USEDEFAULT, CW_USEDEFAULT, wndsz.right - wndsz.left, wndsz.bottom - wndsz.top, 0, NULL, hInstance, 0);
+		hWnd = CreateWindowExA(v3, GetWindowClassName(), GetWindowClassName(), v2, CW_USEDEFAULT, CW_USEDEFAULT, wndsz.right - wndsz.left, wndsz.bottom - wndsz.top, nullptr, nullptr, hInstance, nullptr);
 		ShowWindow(hWnd, nCmdShow);
 		UpdateWindow(hWnd);
 		SetForegroundWindow(hWnd);
@@ -1793,7 +1881,7 @@ void __cdecl WriteSaveFile_r()
 			*(char *)0x3B22E1E = 0;
 			*(char *)0x3B291B2 = 0;
 		}
-		CreateDirectoryA(mainsavepath, 0);
+		CreateDirectoryA(mainsavepath, nullptr);
 		if (!*(char *)0x3B291B0)
 			SaveSave();
 		if (*(char *)0x3B291B3)
@@ -1819,10 +1907,10 @@ void __cdecl WriteSaveFile_r()
 					if (!v2)
 						break;
 				}
-			if (*(char **)0x3B290DC != 0)
+			if (*(char **)0x3B290DC != nullptr)
 			{
 				free(*(char **)0x3B290DC);
-				*(char **)0x3B290DC = 0;
+				*(char **)0x3B290DC = nullptr;
 			}
 			*(char **)0x3B290DC = (char *)malloc(0xEu);
 			++*(char *)0x3B290E0;
@@ -1856,12 +1944,28 @@ int __cdecl FixEKey(int i)
 	return IsCameraControlEnabled() && sub_40EF20(i);
 }
 
+void* wejustdontknow = (void*)0x00794566;
+void __declspec(naked) whatamIdoing()
+{
+	__asm
+	{
+		push D3DPOOL_MANAGED
+		push ecx
+		push D3DUSAGE_WRITEONLY
+		jmp wejustdontknow
+	}
+}
+
 static void __cdecl InitMods(void)
 {
+	WriteData((char*)0x007853F3, (char)D3DPOOL_MANAGED);
+	WriteData((short*)0x007853F6, (short)D3DUSAGE_WRITEONLY);
+	WriteJump((void*)0x0079455F, whatamIdoing);
+
 	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
 	if (!f_ini)
 	{
-		MessageBox(NULL, L"mods\\SADXModLoader.ini could not be read!", L"SADX Mod Loader", MB_ICONWARNING);
+		MessageBox(nullptr, L"mods\\SADXModLoader.ini could not be read!", L"SADX Mod Loader", MB_ICONWARNING);
 		return;
 	}
 	unique_ptr<IniFile> ini(new IniFile(f_ini));
@@ -1869,7 +1973,7 @@ static void __cdecl InitMods(void)
 
 	// Get sonic.exe's path and filename.
 	wchar_t pathbuf[MAX_PATH];
-	GetModuleFileName(NULL, pathbuf, MAX_PATH);
+	GetModuleFileName(nullptr, pathbuf, MAX_PATH);
 	wstring exepath(pathbuf);
 	wstring exefilename;
 	string::size_type slash_pos = exepath.find_last_of(L"/\\");
@@ -2101,7 +2205,7 @@ static void __cdecl InitMods(void)
 				swprintf(msg, LengthOfArray(msg),
 					L"Mod \"%s\" should be run from \"%s\", but you are running \"%s\".\n\n"
 					L"Continue anyway?", mod_name.c_str(), modexe.c_str(), exefilename.c_str());
-				if (MessageBox(NULL, msg, L"SADX Mod Loader", MB_ICONWARNING | MB_YESNO) == IDNO)
+				if (MessageBox(nullptr, msg, L"SADX Mod Loader", MB_ICONWARNING | MB_YESNO) == IDNO)
 					ExitProcess(1);
 			}
 		}
@@ -2118,7 +2222,7 @@ static void __cdecl InitMods(void)
 				DWORD error = GetLastError();
 				LPSTR buffer;
 				size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-					NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&buffer, 0, NULL);
+					nullptr, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&buffer, 0, nullptr);
 
 				string message(buffer, size);
 				LocalFree(buffer);
@@ -2519,7 +2623,7 @@ static void __cdecl LoadChrmodels(void)
 	chrmodelshandle = LoadLibrary(L".\\system\\CHRMODELS_orig.dll");
 	if (!chrmodelshandle)
 	{
-		MessageBox(NULL, L"CHRMODELS_orig.dll could not be loaded!\n\n"
+		MessageBox(nullptr, L"CHRMODELS_orig.dll could not be loaded!\n\n"
 			L"SADX will now proceed to abruptly exit.",
 			L"SADX Mod Loader", MB_ICONERROR);
 		ExitProcess(1);
@@ -2548,7 +2652,7 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 		// Make sure this is the correct version of SADX.
 		if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
 		{
-			MessageBox(NULL, L"This copy of Sonic Adventure DX is not the US version.\n\n"
+			MessageBox(nullptr, L"This copy of Sonic Adventure DX is not the US version.\n\n"
 				L"Please obtain the EXE file from the US version and try again.",
 				L"SADX Mod Loader", MB_ICONERROR);
 			ExitProcess(1);
