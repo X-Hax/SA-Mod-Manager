@@ -11,6 +11,7 @@ GameObject::GameObject(LoadObj flags, int index)
 		objData->DeleteSub = CallDelete;
 		objData->Data2 = this;
 	}
+	initFromObj = false;
 }
 
 GameObject::GameObject(int index) : GameObject((LoadObj)0, index){}
