@@ -407,8 +407,8 @@ struct SETObjData
 
 struct ObjectMaster
 {
-	ObjectMaster *PreviousSibling;
-	ObjectMaster *NextSibling;
+	ObjectMaster *Next;
+	ObjectMaster *Previous;
 	ObjectMaster *Parent;
 	ObjectMaster *Child;
 	ObjectFuncPtr MainSub;
