@@ -459,7 +459,7 @@ void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr)
 	}
 }
 
-void SetupHudScale()
+void SetHudScaleValues()
 {
 	scale_h = HorizontalStretch;
 	scale_v = VerticalStretch;
@@ -468,6 +468,11 @@ void SetupHudScale()
 
 	region_w = 640.0f * scale;
 	region_h = 480.0f * scale;
+}
+
+void SetupHudScale()
+{
+	SetHudScaleValues();
 
 	WriteJump((void*)0x0042BEE0, ScaleResultScreen);
 

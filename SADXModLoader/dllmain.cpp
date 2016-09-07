@@ -402,7 +402,7 @@ LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
 
 					SetupScreen(&screen);
 					njSetPerspective(12743);
-
+					SetHudScaleValues();
 					break;
 				}
 			}
