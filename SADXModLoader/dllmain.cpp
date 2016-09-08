@@ -396,14 +396,6 @@ LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
 
 					CheckAspectRatio();
 
-					NJS_SCREEN screen = {};
-
-					screen.w    = HorizontalStretch * 640.0f;
-					screen.h    = VerticalStretch * 480.0f;
-					screen.cx   = screen.w * 0.5f;
-					screen.cy   = screen.h * 0.5f;
-					screen.dist = 0.0f;
-
 					SetupSomeScreenStuff();
 					Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
 					SetHudScaleValues();
