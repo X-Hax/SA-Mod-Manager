@@ -331,7 +331,105 @@ DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x03D12780);
 DataPointer(DWORD, StencilThing, 0x03D1289C);
 DataPointer(float, ViewPortWidth_Half, 0x03D0FA0C);
 DataPointer(float, ViewPortHeight_Half, 0x03D0FA10);
-LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
+
+static HRESULT Direct3D_Reset()
+{
+	DWORD fogenable, fogcolor, fogtablemode, fogstart, fogend, fogdensity;
+
+	Direct3D_Device->GetRenderState(D3DRS_FOGENABLE, &fogenable);
+	Direct3D_Device->GetRenderState(D3DRS_FOGCOLOR, &fogcolor);
+	Direct3D_Device->GetRenderState(D3DRS_FOGTABLEMODE, &fogtablemode);
+	Direct3D_Device->GetRenderState(D3DRS_FOGSTART, &fogstart);
+	Direct3D_Device->GetRenderState(D3DRS_FOGEND, &fogend);
+	Direct3D_Device->GetRenderState(D3DRS_FOGDENSITY, &fogdensity);
+
+	HRESULT result = Direct3D_Device->Reset(&PresentParameters);
+	if (FAILED(result))
+		return result;
+
+	Direct3D_Device->SetRenderState(D3DRS_FOGENABLE, fogenable != 0);
+	Direct3D_Device->SetRenderState(D3DRS_FOGCOLOR, fogcolor);
+	Direct3D_Device->SetRenderState(D3DRS_FOGTABLEMODE, fogtablemode);
+	Direct3D_Device->SetRenderState(D3DRS_FOGSTART, fogstart);
+	Direct3D_Device->SetRenderState(D3DRS_FOGEND, fogend);
+	Direct3D_Device->SetRenderState(D3DRS_FOGDENSITY, fogdensity);
+
+	Direct3D_Device->GetViewport(&Direct3D_ViewPort);
+	ViewPortWidth_Half  = Direct3D_ViewPort.Width / 2.0f;
+	ViewPortHeight_Half = Direct3D_ViewPort.Height / 2.0f;
+
+	HorizontalResolution = Direct3D_ViewPort.Width;
+	VerticalResolution   = Direct3D_ViewPort.Height;
+	HorizontalStretch    = (float)HorizontalResolution / 640.0f;
+	VerticalStretch      = (float)VerticalResolution / 480.0f;
+
+	CheckAspectRatio();
+
+	SetupSomeScreenStuff();
+	Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
+	SetHudScaleValues();
+	Direct3D_SetDefaultRenderState();
+	Direct3D_SetDefaultTextureStageState();
+
+	return result;
+}
+
+static void Direct3D_DeviceLost()
+{
+	DWORD reset;
+
+	while (true)
+	{
+		auto level = Direct3D_Device->TestCooperativeLevel();
+
+		// No reset necessary if the return value is D3D_OK.
+		if (SUCCEEDED(level))
+			return;
+
+		if (level == D3DERR_DEVICENOTRESET)
+		{
+			if (SUCCEEDED(reset = Direct3D_Reset()))
+				return;
+
+			break;
+		}
+
+		Sleep(1000);
+	}
+
+	switch (reset)
+	{
+		default:
+			break;
+
+		case D3DERR_INVALIDCALL:
+			MessageBox(hWnd, L"The following error occurred while trying to reset DirectX: D3DERR_INVALIDCALL\nThe game will now exit.",
+				L"Direct3D Reset failed", MB_OK | MB_ICONERROR);
+			break;
+
+		case D3DERR_OUTOFVIDEOMEMORY:
+			MessageBox(hWnd, L"The following error occurred while trying to reset DirectX: D3DERR_OUTOFVIDEOMEMORY\nThe game will now exit.",
+				L"Direct3D Reset failed", MB_OK | MB_ICONERROR);
+			break;
+
+		case E_OUTOFMEMORY:
+			MessageBox(hWnd, L"The following error occurred while trying to reset DirectX: E_OUTOFMEMORY\nThe game will now exit.",
+				L"Direct3D Reset failed", MB_OK | MB_ICONERROR);
+			break;
+	}
+
+	exit(reset);
+}
+
+static void __cdecl Direct3D_Present_r()
+{
+	if (Direct3D_Device->Present(nullptr, nullptr, nullptr, nullptr) != D3DERR_DEVICELOST)
+		return;
+
+	Direct3D_DeviceLost();
+}
+
+static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
 {
 	if (Msg > WM_KEYFIRST)
 	{
@@ -361,45 +459,16 @@ LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
 					int w = LOWORD(a4);
 					int h = HIWORD(a4);
 
+					if (!w || !h)
+						break;
+
+					if (w == HorizontalResolution && h == VerticalResolution)
+						break;
+
 					PresentParameters.BackBufferWidth = w;
 					PresentParameters.BackBufferHeight = h;
 
-					DWORD fogenable, fogcolor, fogtablemode, fogstart, fogend, fogdensity;
-
-					Direct3D_Device->GetRenderState(D3DRS_FOGENABLE, &fogenable);
-					Direct3D_Device->GetRenderState(D3DRS_FOGCOLOR, &fogcolor);
-					Direct3D_Device->GetRenderState(D3DRS_FOGTABLEMODE, &fogtablemode);
-					Direct3D_Device->GetRenderState(D3DRS_FOGSTART, &fogstart);
-					Direct3D_Device->GetRenderState(D3DRS_FOGEND, &fogend);
-					Direct3D_Device->GetRenderState(D3DRS_FOGDENSITY, &fogdensity);
-
-					HRESULT result = Direct3D_Device->Reset(&PresentParameters);
-					if (!SUCCEEDED(result))
-						throw;
-
-					Direct3D_Device->SetRenderState(D3DRS_FOGENABLE, fogenable != 0);
-					Direct3D_Device->SetRenderState(D3DRS_FOGCOLOR, fogcolor);
-					Direct3D_Device->SetRenderState(D3DRS_FOGTABLEMODE, fogtablemode);
-					Direct3D_Device->SetRenderState(D3DRS_FOGSTART, fogstart);
-					Direct3D_Device->SetRenderState(D3DRS_FOGEND, fogend);
-					Direct3D_Device->SetRenderState(D3DRS_FOGDENSITY, fogdensity);
-
-					Direct3D_Device->GetViewport(&Direct3D_ViewPort);
-					ViewPortWidth_Half  = Direct3D_ViewPort.Width / 2.0f;
-					ViewPortHeight_Half = Direct3D_ViewPort.Height / 2.0f;
-
-					HorizontalResolution = w;
-					VerticalResolution   = h;
-					HorizontalStretch    = (float)w / 640.0f;
-					VerticalStretch      = (float)h / 480.0f;
-
-					CheckAspectRatio();
-
-					SetupSomeScreenStuff();
-					Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
-					SetHudScaleValues();
-					Direct3D_SetDefaultRenderState();
-					Direct3D_SetDefaultTextureStageState();
+					Direct3D_Reset();
 					break;
 				}
 			}
@@ -1941,6 +2010,7 @@ int __cdecl FixEKey(int i)
 	return IsCameraControlEnabled() && sub_40EF20(i);
 }
 
+// TODO: rename
 void* wejustdontknow = (void*)0x00794566;
 void __declspec(naked) whatamIdoing()
 {
@@ -1955,9 +2025,11 @@ void __declspec(naked) whatamIdoing()
 
 static void __cdecl InitMods(void)
 {
+	// TODO: cleanup
 	WriteData((char*)0x007853F3, (char)D3DPOOL_MANAGED);
 	WriteData((short*)0x007853F6, (short)D3DUSAGE_WRITEONLY);
 	WriteJump((void*)0x0079455F, whatamIdoing);
+	WriteJump(Direct3D_Present, Direct3D_Present_r);
 
 	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
 	if (!f_ini)
