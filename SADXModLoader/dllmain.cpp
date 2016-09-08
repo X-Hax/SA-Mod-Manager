@@ -399,6 +399,8 @@ LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
 					SetupSomeScreenStuff();
 					Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
 					SetHudScaleValues();
+					Direct3D_SetDefaultRenderState();
+					Direct3D_SetDefaultTextureStageState();
 					break;
 				}
 			}
