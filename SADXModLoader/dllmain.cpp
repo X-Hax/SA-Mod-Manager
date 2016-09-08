@@ -355,7 +355,6 @@ LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
 
 				case WM_SIZE:
 				{
-					// TODO: Figure out why menus are breaking
 					if (Direct3D_Device == nullptr)
 						break;
 
