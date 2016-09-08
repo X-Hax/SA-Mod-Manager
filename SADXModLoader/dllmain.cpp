@@ -329,6 +329,8 @@ int curscrnsz[2];
 DataPointer(D3DPRESENT_PARAMETERS, PresentParameters, 0x03D0FDC0);
 DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x03D12780);
 DataPointer(DWORD, StencilThing, 0x03D1289C);
+DataPointer(float, ViewPortWidth_Half, 0x03D0FA0C);
+DataPointer(float, ViewPortHeight_Half, 0x03D0FA10);
 LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
 {
 	if (Msg > WM_KEYFIRST)
@@ -383,25 +385,27 @@ LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
 					Direct3D_Device->SetRenderState(D3DRS_FOGEND, fogend);
 					Direct3D_Device->SetRenderState(D3DRS_FOGDENSITY, fogdensity);
 
-					SetStartupProjection(&ProjectionMatrix);
-					Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
-
 					Direct3D_Device->GetViewport(&Direct3D_ViewPort);
+					ViewPortWidth_Half  = Direct3D_ViewPort.Width / 2.0f;
+					ViewPortHeight_Half = Direct3D_ViewPort.Height / 2.0f;
 
 					HorizontalResolution = w;
 					VerticalResolution   = h;
 					HorizontalStretch    = (float)w / 640.0f;
 					VerticalStretch      = (float)h / 480.0f;
 
+					CheckAspectRatio();
+
 					NJS_SCREEN screen = {};
 
-					screen.w  = HorizontalStretch * 640.0f;
-					screen.h  = VerticalStretch * 480.0f;
-					screen.cx = screen.w * 0.5f;
-					screen.cy = screen.h * 0.5f;
+					screen.w    = HorizontalStretch * 640.0f;
+					screen.h    = VerticalStretch * 480.0f;
+					screen.cx   = screen.w * 0.5f;
+					screen.cy   = screen.h * 0.5f;
+					screen.dist = 0.0f;
 
-					SetupScreen(&screen);
-					njSetPerspective(12743);
+					SetupSomeScreenStuff();
+					Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
 					SetHudScaleValues();
 					break;
 				}
