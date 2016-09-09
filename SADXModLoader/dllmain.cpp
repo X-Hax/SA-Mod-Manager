@@ -210,23 +210,23 @@ struct windowsize { int x; int y; int width; int height; };
 
 struct windowdata { int x; int y; int width; int height; DWORD style; DWORD extendedstyle; };
 
-windowdata windowsizes[] = {
+static windowdata windowsizes[] = {
 	{ CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, 0 }, // windowed
 	{ 0, 0, CW_USEDEFAULT, CW_USEDEFAULT, WS_POPUP | WS_VISIBLE, WS_EX_APPWINDOW } // fullscreen
 };
 
 enum windowmodes { windowed, fullscreen };
 
-windowsize innersizes[2];
+static windowsize innersizes[2] = {};
 
-ACCEL accelerators[] = {
+static ACCEL accelerators[] = {
 	{ FALT | FVIRTKEY, VK_RETURN, 0 }
 };
 
-WNDCLASS outerWindowClass;
-HWND outerWindow;
-windowmodes windowmode;
-HACCEL accelTbl;
+static WNDCLASS outerWindowClass;
+static HWND outerWindow;
+static windowmodes windowmode;
+static HACCEL accelTbl;
 
 DataPointer(int, dword_3D08534, 0x3D08534);
 static void __cdecl sub_789BD0()
@@ -252,7 +252,7 @@ static void __cdecl sub_789BD0()
 }
 
 static Gdiplus::Bitmap *bgimg;
-bool switchingwindowmode = false;
+static bool switchingwindowmode = false;
 DataPointer(HWND, hWnd, 0x3D0FD30);
 StdcallFunctionPointer(LRESULT, sub_401900, (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam), 0x401900);
 static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -323,8 +323,8 @@ BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonit
 	return TRUE;
 }
 
-uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
-int curscrnsz[2];
+static uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
+static int curscrnsz[2];
 
 DataPointer(D3DPRESENT_PARAMETERS, PresentParameters, 0x03D0FDC0);
 DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x03D12780);
@@ -485,19 +485,21 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 {
 	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
 
-	v8.style = 0;
-	v8.lpfnWndProc = (WNDPROC)WndProc_r;
-	v8.cbClsExtra = 0;
-	v8.cbWndExtra = 0;
-	v8.hInstance = hInstance;
-	v8.hIcon = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
-	v8.hCursor = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
+	v8.style         = 0;
+	v8.lpfnWndProc   = (WNDPROC)WndProc_r;
+	v8.cbClsExtra    = 0;
+	v8.cbWndExtra    = 0;
+	v8.hInstance     = hInstance;
+	v8.hIcon         = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
+	v8.hCursor       = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
 	v8.hbrBackground = (HBRUSH)GetStockObject(0);
-	v8.lpszMenuName = nullptr;
+	v8.lpszMenuName  = nullptr;
 	v8.lpszClassName = GetWindowClassName();
+
 	if (!RegisterClassA(&v8))
 		return;
-	RECT wndsz = { 0 };
+
+	RECT wndsz = {};
 	if (customwindowsize)
 	{
 		wndsz.right = customwindowwidth;
@@ -508,7 +510,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		wndsz.right = HorizontalResolution;
 		wndsz.bottom = VerticalResolution;
 	}
-	AdjustWindowRectEx(&wndsz, WS_CAPTION | WS_SYSMENU, false, 0);
+	
 	if (windowedfullscreen || Windowed)
 	{
 		curscrnsz[0] = GetSystemMetrics(SM_CXSCREEN);
@@ -516,14 +518,17 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		WriteData((int **)0x79426E, &curscrnsz[0]);
 		WriteData((int **)0x79427A, &curscrnsz[1]);
 	}
+
 	if (windowedfullscreen)
 	{
+		AdjustWindowRectEx(&wndsz, WS_CAPTION | WS_SYSMENU, false, 0);
 		int scrnx, scrny, scrnw, scrnh;
 		if (screennum > 0)
 		{
 			EnumDisplayMonitors(nullptr, nullptr, GetMonitorSize, 0);
 			if (screenbounds.size() < screennum)
 				screennum = 1;
+
 			RECT scrnsz = screenbounds[screennum - 1];
 			scrnx = scrnsz.left;
 			scrny = scrnsz.top;
@@ -537,17 +542,21 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 			scrnw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
 			scrnh = GetSystemMetrics(SM_CYVIRTUALSCREEN);
 		}
+
 		windowsizes[windowed].width = wndsz.right - wndsz.left;
 		windowsizes[windowed].height = wndsz.bottom - wndsz.top;
+
 		if (!Windowed)
 		{
 			windowsizes[windowed].x = scrnx + ((scrnw - windowsizes[windowed].width) / 2);
 			windowsizes[windowed].y = scrny + ((scrnh - windowsizes[windowed].height) / 2);
 		}
+
 		windowsizes[fullscreen].x = scrnx;
 		windowsizes[fullscreen].y = scrny;
 		windowsizes[fullscreen].width = scrnw;
 		windowsizes[fullscreen].height = scrnh;
+
 		if (customwindowsize)
 		{
 			float num = min((float)customwindowwidth / (float)HorizontalResolution, (float)customwindowheight / (float)VerticalResolution);
@@ -563,6 +572,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 			innersizes[windowed].x = 0;
 			innersizes[windowed].y = 0;
 		}
+
 		if (stretchfullscreen)
 		{
 			float num = min((float)scrnw / (float)HorizontalResolution, (float)scrnh / (float)VerticalResolution);
@@ -574,6 +584,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 			innersizes[fullscreen].width = HorizontalResolution;
 			innersizes[fullscreen].height = VerticalResolution;
 		}
+
 		innersizes[fullscreen].x = (scrnw - innersizes[fullscreen].width) / 2;
 		innersizes[fullscreen].y = (scrnh - innersizes[fullscreen].height) / 2;
 
@@ -586,14 +597,16 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 			Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 			bgimg = Gdiplus::Bitmap::FromFile(L"mods\\Border.png");
 		}
+
 		WNDCLASS w;
 		ZeroMemory(&w, sizeof(WNDCLASS));
 		w.lpszClassName = TEXT("WrapperWindow");
-		w.lpfnWndProc = WrapperWndProc;
-		w.hInstance = hInstance;
-		w.hIcon = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
-		w.hCursor = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
+		w.lpfnWndProc   = WrapperWndProc;
+		w.hInstance     = hInstance;
+		w.hIcon         = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
+		w.hCursor       = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
 		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+
 		if (RegisterClass(&w) == 0)
 			return;
 
@@ -625,19 +638,23 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 	}
 	else
 	{
-		signed int v2; // eax@3
-		DWORD v3; // esi@3
+		DWORD dwStyle; // eax@3
+		DWORD dwExStyle; // esi@3
+
 		if (Windowed)
 		{
-			v3 = 0;
-			v2 = WS_CAPTION | WS_SYSMENU | WS_MAXIMIZEBOX | WS_SIZEBOX | WS_MINIMIZEBOX;
+			dwStyle = WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX;
+			dwExStyle = 0;
 		}
 		else
 		{
-			v3 = WS_EX_TOPMOST | WS_EX_TOOLWINDOW;
-			v2 = WS_CAPTION;
+			dwStyle = WS_CAPTION;
+			dwExStyle = WS_EX_TOPMOST | WS_EX_TOOLWINDOW;
 		}
-		hWnd = CreateWindowExA(v3, GetWindowClassName(), GetWindowClassName(), v2, CW_USEDEFAULT, CW_USEDEFAULT, wndsz.right - wndsz.left, wndsz.bottom - wndsz.top, nullptr, nullptr, hInstance, nullptr);
+
+		AdjustWindowRectEx(&wndsz, dwStyle, false, dwExStyle);
+		hWnd = CreateWindowExA(dwExStyle, GetWindowClassName(), GetWindowClassName(), dwStyle, CW_USEDEFAULT, CW_USEDEFAULT,
+			wndsz.right - wndsz.left, wndsz.bottom - wndsz.top, nullptr, nullptr, hInstance, nullptr);
 		ShowWindow(hWnd, nCmdShow);
 		UpdateWindow(hWnd);
 		SetForegroundWindow(hWnd);
