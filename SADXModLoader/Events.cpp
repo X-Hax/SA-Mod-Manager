@@ -7,6 +7,8 @@ std::vector<ModEvent> modInputEvents;
 std::vector<ModEvent> modControlEvents;
 std::vector<ModEvent> modExitEvents;
 std::vector<TextureLoadEvent> modCustomTextureLoadEvents;
+std::vector<ModEvent> modRenderDeviceLost;
+std::vector<ModEvent> modRenderDeviceReset;
 
 Trampoline exitDetour((size_t)0x0064672F, 0x00646736, OnExit);
 

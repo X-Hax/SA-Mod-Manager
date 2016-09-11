@@ -10,6 +10,8 @@ extern std::vector<ModEvent> modInputEvents;
 extern std::vector<ModEvent> modControlEvents;
 extern std::vector<ModEvent> modExitEvents;
 extern std::vector<TextureLoadEvent> modCustomTextureLoadEvents;
+extern std::vector<ModEvent> modRenderDeviceLost;
+extern std::vector<ModEvent> modRenderDeviceReset;
 
 /**
 * Calls all registered events in the specified event list.

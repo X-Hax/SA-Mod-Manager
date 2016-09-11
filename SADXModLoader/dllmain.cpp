@@ -371,6 +371,8 @@ static HRESULT Direct3D_Reset()
 	Direct3D_SetDefaultRenderState();
 	Direct3D_SetDefaultTextureStageState();
 
+	RaiseEvents(modRenderDeviceReset);
+
 	return result;
 }
 
@@ -380,14 +382,16 @@ static void Direct3D_DeviceLost()
 	DWORD reset = D3D_OK;
 	Uint32 tries = 0;
 
+	auto level = Direct3D_Device->TestCooperativeLevel();
+
+	// No reset necessary if the return value is D3D_OK.
+	if (SUCCEEDED(level))
+		return;
+
+	RaiseEvents(modRenderDeviceLost);
+
 	while (tries < retry_count)
 	{
-		auto level = Direct3D_Device->TestCooperativeLevel();
-
-		// No reset necessary if the return value is D3D_OK.
-		if (SUCCEEDED(level))
-			return;
-
 		if (level == D3DERR_DEVICENOTRESET)
 		{
 			if (SUCCEEDED(reset = Direct3D_Reset()))
@@ -425,6 +429,7 @@ static void Direct3D_DeviceLost()
 		}
 
 		Sleep(1000);
+		level = Direct3D_Device->TestCooperativeLevel();
 	}
 
 	exit(reset);
@@ -2444,6 +2449,9 @@ static void __cdecl InitMods(void)
 					RegisterEvent(modInputEvents, module, "OnInput");
 					RegisterEvent(modControlEvents, module, "OnControl");
 					RegisterEvent(modExitEvents, module, "OnExit");
+					RegisterEvent(modRenderDeviceLost, module, "OnRenderDeviceLost");
+					RegisterEvent(modRenderDeviceReset, module, "OnRenderDeviceReset");
+
 					auto whatever = reinterpret_cast<TextureLoadEvent>(GetProcAddress(module, "OnCustomTextureLoad"));
 					if (whatever != nullptr)
 						modCustomTextureLoadEvents.push_back(whatever);
