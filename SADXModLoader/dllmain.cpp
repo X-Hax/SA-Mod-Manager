@@ -223,31 +223,31 @@ static ACCEL accelerators[] = {
 	{ FALT | FVIRTKEY, VK_RETURN, 0 }
 };
 
-static WNDCLASS outerWindowClass;
-static HWND outerWindow;
-static windowmodes windowmode;
-static HACCEL accelTbl;
+static WNDCLASS outerWindowClass = {};
+static HWND accel_window         = nullptr;
+static windowmodes windowmode    = windowmodes::windowed;
+static HACCEL accel_table        = nullptr;
 
 DataPointer(int, dword_3D08534, 0x3D08534);
-static void __cdecl sub_789BD0()
+static void __cdecl HandleWindowMessages_r()
 {
-	MSG v0; // [sp+4h] [bp-1Ch]@1
+	MSG Msg; // [sp+4h] [bp-1Ch]@1
 
-	if (PeekMessageA(&v0, nullptr, 0, 0, 1u))
+	if (PeekMessageA(&Msg, nullptr, 0, 0, 1u))
 	{
 		do
 		{
-			if (!TranslateAccelerator(outerWindow, accelTbl, &v0))
+			if (!TranslateAccelerator(accel_window, accel_table, &Msg))
 			{
-				TranslateMessage(&v0);
-				DispatchMessageA(&v0);
+				TranslateMessage(&Msg);
+				DispatchMessageA(&Msg);
 			}
-		} while (PeekMessageA(&v0, nullptr, 0, 0, 1u));
-		dword_3D08534 = v0.wParam;
+		} while (PeekMessageA(&Msg, nullptr, 0, 0, 1u));
+		dword_3D08534 = Msg.wParam;
 	}
 	else
 	{
-		dword_3D08534 = v0.wParam;
+		dword_3D08534 = Msg.wParam;
 	}
 }
 
@@ -259,52 +259,52 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 {
 	switch (uMsg)
 	{
-	case WM_CLOSE:
-		// we also need to let SADX do cleanup
-		SendMessage(hWnd, WM_CLOSE, wParam, lParam);
-		// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
-		return 0;
-	case WM_ERASEBKGND:
-		if (bgimg != nullptr)
-		{
-			Gdiplus::Graphics gfx((HDC)wParam);
-			gfx.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
-			gfx.DrawImage(bgimg, 0, 0, windowsizes[windowmode].width, windowsizes[windowmode].height);
+		case WM_CLOSE:
+			// we also need to let SADX do cleanup
+			SendMessage(hWnd, WM_CLOSE, wParam, lParam);
+			// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
 			return 0;
-		}
-	case WM_COMMAND:
-		if (LOWORD(wParam) == 0)
-		{
-			switchingwindowmode = true;
-			if (windowmode == windowed)
+		case WM_ERASEBKGND:
+			if (bgimg != nullptr)
 			{
-				RECT rect;
-				GetWindowRect(wrapper, &rect);
-				windowsizes[windowed].x = rect.left;
-				windowsizes[windowed].y = rect.top;
+				Gdiplus::Graphics gfx((HDC)wParam);
+				gfx.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
+				gfx.DrawImage(bgimg, 0, 0, windowsizes[windowmode].width, windowsizes[windowmode].height);
+				return 0;
 			}
-			windowmode = windowmode == windowed ? fullscreen : windowed;
-			windowsize *size = &innersizes[windowmode];
-			SetWindowPos(hWnd, nullptr, size->x, size->y, size->width, size->height, 0);
-			windowdata *data = &windowsizes[windowmode];
-			SetWindowLong(outerWindow, GWL_STYLE, data->style);
-			SetWindowLong(outerWindow, GWL_EXSTYLE, data->extendedstyle);
-			SetWindowPos(outerWindow, nullptr, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
-			UpdateWindow(outerWindow);
-			switchingwindowmode = false;
-			return 0;
-		}
-		break;
-	case WM_ACTIVATEAPP:
-		if (!switchingwindowmode)
-			sub_401900(hWnd, uMsg, wParam, lParam);
-		if (windowmode == windowed)
-			while (ShowCursor(TRUE) < 0);
-		else
-			while (ShowCursor(FALSE) > 0);
-	default:
-		// alternatively we can return SendMe
-		return DefWindowProc(wrapper, uMsg, wParam, lParam);
+		case WM_COMMAND:
+			if (LOWORD(wParam) == 0)
+			{
+				switchingwindowmode = true;
+				if (windowmode == windowed)
+				{
+					RECT rect;
+					GetWindowRect(wrapper, &rect);
+					windowsizes[windowed].x = rect.left;
+					windowsizes[windowed].y = rect.top;
+				}
+				windowmode = windowmode == windowed ? fullscreen : windowed;
+				windowsize *size = &innersizes[windowmode];
+				SetWindowPos(hWnd, nullptr, size->x, size->y, size->width, size->height, 0);
+				windowdata *data = &windowsizes[windowmode];
+				SetWindowLong(accel_window, GWL_STYLE, data->style);
+				SetWindowLong(accel_window, GWL_EXSTYLE, data->extendedstyle);
+				SetWindowPos(accel_window, nullptr, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
+				UpdateWindow(accel_window);
+				switchingwindowmode = false;
+				return 0;
+			}
+			break;
+		case WM_ACTIVATEAPP:
+			if (!switchingwindowmode)
+				sub_401900(hWnd, uMsg, wParam, lParam);
+			if (windowmode == windowed)
+				while (ShowCursor(TRUE) < 0);
+			else
+				while (ShowCursor(FALSE) > 0);
+		default:
+			// alternatively we can return SendMe
+			return DefWindowProc(wrapper, uMsg, wParam, lParam);
 	}
 	/* unreachable */ return 0;
 }
@@ -376,9 +376,11 @@ static HRESULT Direct3D_Reset()
 
 static void Direct3D_DeviceLost()
 {
-	DWORD reset;
+	const auto retry_count = 5;
+	DWORD reset = D3D_OK;
+	Uint32 tries = 0;
 
-	while (true)
+	while (tries < retry_count)
 	{
 		auto level = Direct3D_Device->TestCooperativeLevel();
 
@@ -391,31 +393,38 @@ static void Direct3D_DeviceLost()
 			if (SUCCEEDED(reset = Direct3D_Reset()))
 				return;
 
-			break;
+			if (++tries >= retry_count)
+			{
+				DWORD mb_result;
+
+				switch (reset)
+				{
+					default:
+					case D3DERR_INVALIDCALL:
+						mb_result = MessageBox(hWnd, L"The following error occurred while trying to reset DirectX:\nD3DERR_INVALIDCALL\n\nPress Cancel to exit, or press Retry to try again.",
+							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
+						break;
+
+					case D3DERR_OUTOFVIDEOMEMORY:
+						mb_result = MessageBox(hWnd, L"The following error occurred while trying to reset DirectX:\nD3DERR_OUTOFVIDEOMEMORY\n\nPress Cancel to exit, or press Retry to try again.",
+							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
+						break;
+
+					case E_OUTOFMEMORY:
+						mb_result = MessageBox(hWnd, L"The following error occurred while trying to reset DirectX:\nE_OUTOFMEMORY\n\nPress Cancel to exit, or press Retry to try again.",
+							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
+						break;
+				}
+
+				if (mb_result == IDRETRY)
+				{
+					tries = 0;
+					continue;
+				}
+			}
 		}
 
 		Sleep(1000);
-	}
-
-	switch (reset)
-	{
-		default:
-			break;
-
-		case D3DERR_INVALIDCALL:
-			MessageBox(hWnd, L"The following error occurred while trying to reset DirectX: D3DERR_INVALIDCALL\nThe game will now exit.",
-				L"Direct3D Reset failed", MB_OK | MB_ICONERROR);
-			break;
-
-		case D3DERR_OUTOFVIDEOMEMORY:
-			MessageBox(hWnd, L"The following error occurred while trying to reset DirectX: D3DERR_OUTOFVIDEOMEMORY\nThe game will now exit.",
-				L"Direct3D Reset failed", MB_OK | MB_ICONERROR);
-			break;
-
-		case E_OUTOFMEMORY:
-			MessageBox(hWnd, L"The following error occurred while trying to reset DirectX: E_OUTOFMEMORY\nThe game will now exit.",
-				L"Direct3D Reset failed", MB_OK | MB_ICONERROR);
-			break;
 	}
 
 	exit(reset);
@@ -429,13 +438,19 @@ static void __cdecl Direct3D_Present_r()
 	Direct3D_DeviceLost();
 }
 
-static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
+static RECT last_rect = {};
+static Uint32 last_width = 0;
+static Uint32 last_height = 0;
+static DWORD last_style = 0;
+static DWORD last_exStyle = 0;
+
+static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	if (Msg > WM_KEYFIRST)
+	if (Msg > WM_KEYFIRST && Msg != WM_COMMAND)
 	{
 		if (Msg < WM_SYSKEYDOWN || Msg > WM_SYSKEYUP)
 		{
-			return DefWindowProcA(a1, Msg, wParam, a4);
+			return DefWindowProcA(a1, Msg, wParam, lParam);
 		}
 	}
 	else if (Msg != WM_KEYFIRST)
@@ -453,34 +468,88 @@ static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM a4)
 
 				case WM_SIZE:
 				{
-					if (Direct3D_Device == nullptr)
-						break;
+					if (!IsWindowed || Direct3D_Device == nullptr)
+						return 0;
 
-					int w = LOWORD(a4);
-					int h = HIWORD(a4);
+					auto w = LOWORD(lParam);
+					auto h = HIWORD(lParam);
 
 					if (!w || !h)
-						break;
+						return 0;
 
 					if (w == HorizontalResolution && h == VerticalResolution)
-						break;
+						return 0;
+
+					PrintDebug("Changing resolution from %ux%u to %ux%u\n",
+						HorizontalResolution, VerticalResolution, w, h);
 
 					PresentParameters.BackBufferWidth = w;
 					PresentParameters.BackBufferHeight = h;
 
 					Direct3D_Reset();
-					break;
+					return 0;
+				}
+
+				case WM_COMMAND:
+				{
+					if (LOWORD(wParam) != 0)
+						break;
+
+					if (PresentParameters.Windowed && IsWindowed)
+					{
+						IsWindowed = false;
+						last_width = HorizontalResolution;
+						last_height = VerticalResolution;
+
+						auto const& rect = screenbounds[screennum == 0 ? 0 : screennum - 1];
+
+						PresentParameters.Windowed         = false;
+						PresentParameters.BackBufferWidth  = rect.right - rect.left;
+						PresentParameters.BackBufferHeight = rect.bottom - rect.top;
+
+						GetWindowRect(a1, &last_rect);
+						last_style   = GetWindowLong(a1, GWL_STYLE);
+						last_exStyle = GetWindowLong(a1, GWL_EXSTYLE);
+						SetWindowLong(a1, GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
+
+						Direct3D_Reset();
+					}
+					else
+					{
+						SetWindowLong(a1, GWL_STYLE, last_style);
+						auto width = last_rect.right - last_rect.left;
+						auto height = last_rect.bottom - last_rect.top;
+
+						if (width <= 0 || height <= 0)
+						{
+							last_rect = {};
+							last_rect.right = 640;
+							last_rect.bottom = 480;
+							AdjustWindowRectEx(&last_rect, last_style, false, last_exStyle);
+							width = last_rect.right - last_rect.left;
+							height = last_rect.bottom - last_rect.top;
+						}
+
+						PresentParameters.Windowed         = true;
+						PresentParameters.BackBufferWidth  = last_width;
+						PresentParameters.BackBufferHeight = last_height;
+
+						Direct3D_Reset();
+						SetWindowPos(a1, nullptr, last_rect.left, last_rect.top, width, height, 0);
+						IsWindowed = true;
+					}
+
+					return 0;
 				}
 			}
 		}
 
-		return DefWindowProcA(a1, Msg, wParam, a4);
+		return DefWindowProcA(a1, Msg, wParam, lParam);
 	}
 
 	return 1;
 }
 
-DataPointer(int, Windowed, 0x38A5DC4);
 static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 {
 	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
@@ -510,8 +579,8 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		wndsz.right = HorizontalResolution;
 		wndsz.bottom = VerticalResolution;
 	}
-	
-	if (windowedfullscreen || Windowed)
+
+	if (windowedfullscreen || IsWindowed)
 	{
 		curscrnsz[0] = GetSystemMetrics(SM_CXSCREEN);
 		curscrnsz[1] = GetSystemMetrics(SM_CYSCREEN);
@@ -519,13 +588,14 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		WriteData((int **)0x79427A, &curscrnsz[1]);
 	}
 
+	EnumDisplayMonitors(nullptr, nullptr, GetMonitorSize, 0);
+
 	if (windowedfullscreen)
 	{
 		AdjustWindowRectEx(&wndsz, WS_CAPTION | WS_SYSMENU, false, 0);
 		int scrnx, scrny, scrnw, scrnh;
 		if (screennum > 0)
 		{
-			EnumDisplayMonitors(nullptr, nullptr, GetMonitorSize, 0);
 			if (screenbounds.size() < screennum)
 				screennum = 1;
 
@@ -546,7 +616,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		windowsizes[windowed].width = wndsz.right - wndsz.left;
 		windowsizes[windowed].height = wndsz.bottom - wndsz.top;
 
-		if (!Windowed)
+		if (!IsWindowed)
 		{
 			windowsizes[windowed].x = scrnx + ((scrnw - windowsizes[windowed].width) / 2);
 			windowsizes[windowed].y = scrny + ((scrnh - windowsizes[windowed].height) / 2);
@@ -588,7 +658,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		innersizes[fullscreen].x = (scrnw - innersizes[fullscreen].width) / 2;
 		innersizes[fullscreen].y = (scrnh - innersizes[fullscreen].height) / 2;
 
-		windowmode = Windowed ? windowed : fullscreen;
+		windowmode = IsWindowed ? windowed : fullscreen;
 
 		if (PathFileExists(L"mods\\Border.png"))
 		{
@@ -612,28 +682,28 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 		windowdata *data = &windowsizes[windowmode];
 
-		outerWindow = CreateWindowEx(data->extendedstyle,
+		accel_window = CreateWindowEx(data->extendedstyle,
 			L"WrapperWindow",
 			L"SonicAdventureDXPC",
 			data->style,
 			data->x, data->y, data->width, data->height,
 			nullptr, nullptr, hInstance, nullptr);
 
-		if (outerWindow == nullptr)
+		if (accel_window == nullptr)
 			return;
 
-		accelTbl = CreateAcceleratorTable(arrayptrandlength(accelerators));
+		accel_table = CreateAcceleratorTable(arrayptrandlength(accelerators));
 
 		windowsize *size = &innersizes[windowmode];
 
 		hWnd = CreateWindowExA(0, GetWindowClassName(), GetWindowClassName(), WS_CHILD | WS_VISIBLE,
-			size->x, size->y, size->width, size->height, outerWindow, nullptr, hInstance, nullptr);
+			size->x, size->y, size->width, size->height, accel_window, nullptr, hInstance, nullptr);
 		SetFocus(hWnd);
-		ShowWindow(outerWindow, nCmdShow);
-		UpdateWindow(outerWindow);
-		SetForegroundWindow(outerWindow);
-		Windowed = 1;
-		WriteJump((void *)0x789BD0, (void *)sub_789BD0);
+		ShowWindow(accel_window, nCmdShow);
+		UpdateWindow(accel_window);
+		SetForegroundWindow(accel_window);
+		IsWindowed = 1;
+		WriteJump((void *)HandleWindowMessages, (void *)HandleWindowMessages_r);
 		WriteData((void *)0x402C61, wndpatch);
 	}
 	else
@@ -641,7 +711,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		DWORD dwStyle; // eax@3
 		DWORD dwExStyle; // esi@3
 
-		if (Windowed)
+		if (IsWindowed)
 		{
 			dwStyle = WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX;
 			dwExStyle = 0;
@@ -655,9 +725,12 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		AdjustWindowRectEx(&wndsz, dwStyle, false, dwExStyle);
 		hWnd = CreateWindowExA(dwExStyle, GetWindowClassName(), GetWindowClassName(), dwStyle, CW_USEDEFAULT, CW_USEDEFAULT,
 			wndsz.right - wndsz.left, wndsz.bottom - wndsz.top, nullptr, nullptr, hInstance, nullptr);
+		accel_table = CreateAcceleratorTable(arrayptrandlength(accelerators));
 		ShowWindow(hWnd, nCmdShow);
 		UpdateWindow(hWnd);
 		SetForegroundWindow(hWnd);
+		WriteJump((void *)0x789BD0, (void *)HandleWindowMessages_r);
+		accel_window = hWnd;
 	}
 }
 
@@ -665,7 +738,7 @@ static __declspec(naked) void sub_789E50_r()
 {
 	__asm
 	{
-		mov ebx, [esp+4]
+		mov ebx, [esp + 4]
 		push ebx
 		push eax
 		call CreateSADXWindow_r
@@ -684,26 +757,26 @@ static void RegisterStartPosition(unsigned char character, const StartPosition &
 		const StartPosition *origlist;
 		switch (character)
 		{
-		case Characters_Sonic:
-			origlist = SonicStartArray;
-			break;
-		case Characters_Tails:
-			origlist = TailsStartArray;
-			break;
-		case Characters_Knuckles:
-			origlist = KnucklesStartArray;
-			break;
-		case Characters_Amy:
-			origlist = AmyStartArray;
-			break;
-		case Characters_Gamma:
-			origlist = GammaStartArray;
-			break;
-		case Characters_Big:
-			origlist = BigStartArray;
-			break;
-		default:
-			return;
+			case Characters_Sonic:
+				origlist = SonicStartArray;
+				break;
+			case Characters_Tails:
+				origlist = TailsStartArray;
+				break;
+			case Characters_Knuckles:
+				origlist = KnucklesStartArray;
+				break;
+			case Characters_Amy:
+				origlist = AmyStartArray;
+				break;
+			case Characters_Gamma:
+				origlist = GammaStartArray;
+				break;
+			case Characters_Big:
+				origlist = BigStartArray;
+				break;
+			default:
+				return;
 		}
 		StartPositions[character] = unordered_map<int, StartPosition>();
 		newlist = &StartPositions[character];
@@ -724,15 +797,15 @@ static void ClearStartPositionList(unsigned char character)
 {
 	switch (character)
 	{
-	case Characters_Sonic:
-	case Characters_Tails:
-	case Characters_Knuckles:
-	case Characters_Amy:
-	case Characters_Gamma:
-	case Characters_Big:
-		break;
-	default:
-		return;
+		case Characters_Sonic:
+		case Characters_Tails:
+		case Characters_Knuckles:
+		case Characters_Amy:
+		case Characters_Gamma:
+		case Characters_Big:
+			break;
+		default:
+			return;
 	}
 	StartPositions[character] = unordered_map<int, StartPosition>();
 }
@@ -1100,30 +1173,30 @@ static string UnescapeNewlines(const string &str)
 	result.reserve(str.size());
 	for (unsigned int c = 0; c < str.size(); c++)
 		switch (str[c])
-	{
-		case '\\': // escape character
-			if (c + 1 == str.size())
-			{
+		{
+			case '\\': // escape character
+				if (c + 1 == str.size())
+				{
+					result.push_back(str[c]);
+					continue;
+				}
+				switch (str[++c])
+				{
+					case 'n': // line feed
+						result.push_back('\n');
+						break;
+					case 'r': // carriage return
+						result.push_back('\r');
+						break;
+					default: // literal character
+						result.push_back(str[c]);
+						break;
+				}
+				break;
+			default:
 				result.push_back(str[c]);
-				continue;
-			}
-			switch (str[++c])
-			{
-			case 'n': // line feed
-				result.push_back('\n');
 				break;
-			case 'r': // carriage return
-				result.push_back('\r');
-				break;
-			default: // literal character
-				result.push_back(str[c]);
-				break;
-			}
-			break;
-		default:
-			result.push_back(str[c]);
-			break;
-	}
+		}
 	return result;
 }
 
@@ -2494,24 +2567,24 @@ static void __cdecl InitMods(void)
 		cur->LevelID = LevelIDs_Invalid;
 		switch (i->first)
 		{
-		case Characters_Sonic:
-			WriteData((StartPosition **)0x41491E, newlist);
-			break;
-		case Characters_Tails:
-			WriteData((StartPosition **)0x414925, newlist);
-			break;
-		case Characters_Knuckles:
-			WriteData((StartPosition **)0x41492C, newlist);
-			break;
-		case Characters_Amy:
-			WriteData((StartPosition **)0x41493A, newlist);
-			break;
-		case Characters_Gamma:
-			WriteData((StartPosition **)0x414941, newlist);
-			break;
-		case Characters_Big:
-			WriteData((StartPosition **)0x414933, newlist);
-			break;
+			case Characters_Sonic:
+				WriteData((StartPosition **)0x41491E, newlist);
+				break;
+			case Characters_Tails:
+				WriteData((StartPosition **)0x414925, newlist);
+				break;
+			case Characters_Knuckles:
+				WriteData((StartPosition **)0x41492C, newlist);
+				break;
+			case Characters_Amy:
+				WriteData((StartPosition **)0x41493A, newlist);
+				break;
+			case Characters_Gamma:
+				WriteData((StartPosition **)0x414941, newlist);
+				break;
+			case Characters_Big:
+				WriteData((StartPosition **)0x414933, newlist);
+				break;
 		}
 	}
 
@@ -2639,12 +2712,12 @@ static void __cdecl InitMods(void)
 				PrintDebug("ERROR loading patches: ");
 				switch (codecount)
 				{
-				case -EINVAL:
-					PrintDebug("Patch file is not in the correct format.\n");
-					break;
-				default:
-					PrintDebug("%s\n", strerror(-codecount));
-					break;
+					case -EINVAL:
+						PrintDebug("Patch file is not in the correct format.\n");
+						break;
+					default:
+						PrintDebug("%s\n", strerror(-codecount));
+						break;
 				}
 			}
 		}
@@ -2679,12 +2752,12 @@ static void __cdecl InitMods(void)
 				PrintDebug("ERROR loading codes: ");
 				switch (codecount)
 				{
-				case -EINVAL:
-					PrintDebug("Code file is not in the correct format.\n");
-					break;
-				default:
-					PrintDebug("%s\n", strerror(-codecount));
-					break;
+					case -EINVAL:
+						PrintDebug("Code file is not in the correct format.\n");
+						break;
+					default:
+						PrintDebug("%s\n", strerror(-codecount));
+						break;
 				}
 			}
 		}
@@ -2732,34 +2805,34 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 
 	switch (fdwReason)
 	{
-	case DLL_PROCESS_ATTACH:
-		HookTheAPI();
+		case DLL_PROCESS_ATTACH:
+			HookTheAPI();
 
-		// Make sure this is the correct version of SADX.
-		if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
-		{
-			MessageBox(nullptr, L"This copy of Sonic Adventure DX is not the US version.\n\n"
-				L"Please obtain the EXE file from the US version and try again.",
-				L"SADX Mod Loader", MB_ICONERROR);
-			ExitProcess(1);
-		}
+			// Make sure this is the correct version of SADX.
+			if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
+			{
+				MessageBox(nullptr, L"This copy of Sonic Adventure DX is not the US version.\n\n"
+					L"Please obtain the EXE file from the US version and try again.",
+					L"SADX Mod Loader", MB_ICONERROR);
+				ExitProcess(1);
+			}
 
-		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
-		WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
-		break;
+			WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
+			WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
+			break;
 
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-		break;
+		case DLL_THREAD_ATTACH:
+		case DLL_THREAD_DETACH:
+			break;
 
-	case DLL_PROCESS_DETACH:
-		// Make sure the log file is closed.
-		if (dbgFile)
-		{
-			fclose(dbgFile);
-			dbgFile = nullptr;
-		}
-		break;
+		case DLL_PROCESS_DETACH:
+			// Make sure the log file is closed.
+			if (dbgFile)
+			{
+				fclose(dbgFile);
+				dbgFile = nullptr;
+			}
+			break;
 	}
 
 	return TRUE;

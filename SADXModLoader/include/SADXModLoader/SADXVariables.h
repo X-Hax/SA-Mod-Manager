@@ -110,6 +110,7 @@ DataPointer(int, SegaLogo_Frames, 0x3B29D68);
 DataPointer(ObjectMaster*, SoundManager_ptr, 0x03B29D00);
 DataPointer(int, VoiceLanguage, 0x03B0EF38);
 DataPointer(ObjectMaster*, TailsAI_ptr, 0x03B2B358);
-DataPointer(int, IsChaoStage, 0x3B22E80);
+DataPointer(Bool, IsChaoStage, 0x3B22E80);
+DataPointer(Bool, IsWindowed, 0x38A5DC4);
 
 #endif /* SADXMODLOADER_SADXVARS_H */
