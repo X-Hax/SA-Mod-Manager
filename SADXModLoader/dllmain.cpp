@@ -1344,7 +1344,7 @@ static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
 		for (int i = 0; i < length; i++)
 		{
 			wchar_t buf[4];
-			swprintf_s(buf, L"%d", i);
+			swprintf_s(buf, L"%d", i + 1);
 			const IniFile *inidata = new IniFile(pathbase + buf + L'\\' + languagenames[l] + L".ini");
 			vector<string> strs = split(inidata->getString("", "Text"), '\n');
 			auto numents = strs.size();
@@ -1373,7 +1373,7 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 		for (int i = 0; i < length; i++)
 		{
 			wchar_t wbuf[4];
-			swprintf_s(wbuf, L"%d", i);
+			swprintf_s(wbuf, L"%d", i + 1);
 			const IniFile *inidata = new IniFile(pathbase + wbuf + L'\\' + languagenames[l] + L".ini");
 			vector<int16_t> props;
 			vector<HintText_Text> text;
