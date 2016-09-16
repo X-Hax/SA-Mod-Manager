@@ -382,12 +382,7 @@ static void Direct3D_DeviceLost()
 	DWORD reset = D3D_OK;
 	Uint32 tries = 0;
 
-	auto level = Direct3D_Device->TestCooperativeLevel();
-
-	// No reset necessary if the return value is D3D_OK.
-	if (SUCCEEDED(level))
-		return;
-
+	auto level = D3DERR_DEVICENOTRESET;
 	RaiseEvents(modRenderDeviceLost);
 
 	while (tries < retry_count)
@@ -491,7 +486,7 @@ static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM lPar
 					PresentParameters.BackBufferWidth = w;
 					PresentParameters.BackBufferHeight = h;
 
-					Direct3D_Reset();
+					Direct3D_DeviceLost();
 					return 0;
 				}
 
@@ -517,7 +512,7 @@ static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM lPar
 						last_exStyle = GetWindowLong(a1, GWL_EXSTYLE);
 						SetWindowLong(a1, GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
 
-						Direct3D_Reset();
+						Direct3D_DeviceLost();
 					}
 					else
 					{
@@ -539,7 +534,7 @@ static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM lPar
 						PresentParameters.BackBufferWidth  = last_width;
 						PresentParameters.BackBufferHeight = last_height;
 
-						Direct3D_Reset();
+						Direct3D_DeviceLost();
 						SetWindowPos(a1, nullptr, last_rect.left, last_rect.top, width, height, 0);
 						IsWindowed = true;
 					}
