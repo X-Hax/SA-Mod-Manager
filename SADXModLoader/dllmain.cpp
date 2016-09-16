@@ -2051,7 +2051,7 @@ static void __cdecl InitMods(void)
 			for (unordered_map<string, string>::const_iterator iter = data->begin();
 				iter != data->end(); ++iter)
 			{
-				sadx_fileMap.addIgnoreFile(iter->first);
+				sadx_fileMap.addIgnoreFile(iter->first, i);
 				PrintDebug("Ignored file: %s\n", iter->first.c_str());
 			}
 		}
@@ -2086,7 +2086,7 @@ static void __cdecl InitMods(void)
 		// TODO: Convert to WString.
 		const string modSysDirA = mod_dirA + "\\system";
 		if ((GetFileAttributesA(modSysDirA.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
-			sadx_fileMap.scanFolder(modSysDirA);
+			sadx_fileMap.scanFolder(modSysDirA, i);
 
 		// Check if a custom EXE is required.
 		if (modinfo->hasKeyNonEmpty("EXEFile"))

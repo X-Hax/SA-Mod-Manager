@@ -400,6 +400,7 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 {
 	signed int v1; // esi@4
 	SoundFileInfo *v2; // edi@5
+	char sndpackpath[MAX_PATH];
 	char String1[MAX_PATH]; // [sp+8h] [bp-108h]@7
 
 	if (soundlist < 123)
@@ -441,11 +442,12 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 							sub_4B4F50(dword_3B291C8[v2->Bank]);
 							dword_3B291C8[v2->Bank] = 0;
 						}
-						wsprintfA(String1, "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
-						dword_3B291C8[v2->Bank] = LoadSoundPack(String1, v2->Bank);
+						wsprintfA(String1, "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
+						wsprintfA(sndpackpath, "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
+						if (sadx_fileMap.getModIndex(sndpackpath) >= sadx_fileMap.getModIndex(String1))
+							dword_3B291C8[v2->Bank] = LoadSoundPack(sndpackpath, v2->Bank);
 						if (!dword_3B291C8[v2->Bank])
 						{
-							wsprintfA(String1, "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
 							dword_3B291C8[v2->Bank] = sub_4B4D10(String1, 1);
 							if (!dword_3B291C8[v2->Bank])
 							{
