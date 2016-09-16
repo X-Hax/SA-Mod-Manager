@@ -73,8 +73,7 @@ string FileMap::normalizePath(const char *filename)
 void FileMap::addIgnoreFile(const string &ignoreFile, int modIdx)
 {
 	string path = normalizePath(ignoreFile);
-	m_fileMap[path] = "nullfile";
-	m_fileIdxs[path] = modIdx;
+	m_fileMap[path] = { "nullfile", modIdx };
 }
 
 /**
@@ -93,7 +92,7 @@ void FileMap::addReplaceFile(const std::string &origFile, const std::string &mod
 	{
 		// Destination file is being replaced.
 		// Use the replacement for the original file.
-		setReplaceFile(origFile_norm, iter->second, getModIndex(modFile_norm.c_str()));
+		setReplaceFile(origFile_norm, iter->second.fileName, iter->second.modIndex);
 	}
 	else
 	{
@@ -201,7 +200,7 @@ void FileMap::scanSoundFolder(const std::string &srcPath)
 			strncpy(pathcstr, modFile.c_str(), sizeof(pathcstr));
 			PathRenameExtensionA(pathcstr, ".wma");
 			string origFile = pathcstr;
-			m_fileMap[origFile] = modFile;
+			m_fileMap[origFile] = { modFile };
 		}
 	} while (FindNextFileA(hFind, &data) != 0);
 	FindClose(hFind);
@@ -218,8 +217,7 @@ void FileMap::scanSoundFolder(const std::string &srcPath)
 void FileMap::setReplaceFile(const std::string &origFile, const std::string &destFile, int modIdx)
 {
 	// Update the main map.
-	m_fileMap[origFile] = destFile;
-	m_fileIdxs[origFile] = modIdx;
+	m_fileMap[origFile] = { destFile, modIdx };
 	PrintDebug("Replaced file: \"%s\" = \"%s\"\n", origFile.c_str(), destFile.c_str());
 }
 
@@ -232,10 +230,10 @@ const char *FileMap::replaceFile(const char *lpFileName) const
 {
 	// Check if the normalized filename is in the file replacement map.
 	string path = normalizePath(lpFileName);
-	unordered_map<string, string>::const_iterator iter = m_fileMap.find(path);
+	unordered_map<string, Entry>::const_iterator iter = m_fileMap.find(path);
 	if (iter != m_fileMap.cend())
 	{
-		const string &newFileName = iter->second;
+		const string &newFileName = iter->second.fileName;
 		return newFileName.c_str();
 	}
 
@@ -253,10 +251,10 @@ int FileMap::getModIndex(const char *lpFileName) const
 {
 	// Check if the normalized filename is in the file replacement map.
 	string path = normalizePath(lpFileName);
-	unordered_map<string, int>::const_iterator iter = m_fileIdxs.find(path);
-	if (iter != m_fileIdxs.cend())
+	unordered_map<string, Entry>::const_iterator iter = m_fileMap.find(path);
+	if (iter != m_fileMap.cend())
 	{
-		return iter->second;
+		return iter->second.modIndex;
 	}
 
 	// File was not replaced by a mod.
@@ -269,5 +267,4 @@ int FileMap::getModIndex(const char *lpFileName) const
 void FileMap::clear(void)
 {
 	m_fileMap.clear();
-	m_fileIdxs.clear();
 }

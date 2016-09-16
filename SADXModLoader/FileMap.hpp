@@ -105,13 +105,19 @@ class FileMap
 		void clear(void);
 
 	protected:
+
+		struct Entry
+		{
+			std::string fileName;
+			int modIndex;
+		};
+
 		/**
 		 * File replacement map.
 		 * - Key: Original filename.
 		 * - Value: New filename.
 		 */
-		std::unordered_map<std::string, std::string> m_fileMap;
-		std::unordered_map<std::string, int> m_fileIdxs;
+		std::unordered_map<std::string, Entry> m_fileMap;
 };
 
 #endif /* FILEMAP_HPP */
