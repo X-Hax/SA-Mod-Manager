@@ -93,7 +93,7 @@ void FileMap::addReplaceFile(const std::string &origFile, const std::string &mod
 	{
 		// Destination file is being replaced.
 		// Use the replacement for the original file.
-		setReplaceFile(origFile_norm, iter->second, getModIndex(iter->second.c_str()));
+		setReplaceFile(origFile_norm, iter->second, getModIndex(modFile_norm.c_str()));
 	}
 	else
 	{
