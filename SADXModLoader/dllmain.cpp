@@ -309,13 +309,14 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 	/* unreachable */ return 0;
 }
 
-static bool windowedfullscreen = false;
-static bool stretchfullscreen = true;
-static unsigned int screennum = 1;
 static vector<RECT> screenbounds;
-static bool customwindowsize = false;
-static int customwindowwidth = 640;
-static int customwindowheight = 480;
+static bool windowedfullscreen = false;
+static bool stretchfullscreen  = true;
+static unsigned int screennum  = 1;
+static bool customwindowsize   = false;
+static int customwindowwidth   = 640;
+static int customwindowheight  = 480;
+static bool vsync              = false;
 
 BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
 {
@@ -331,6 +332,30 @@ DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x03D12780);
 DataPointer(DWORD, StencilThing, 0x03D1289C);
 DataPointer(float, ViewPortWidth_Half, 0x03D0FA0C);
 DataPointer(float, ViewPortHeight_Half, 0x03D0FA10);
+
+static void __fastcall CreateDirect3DDevice_r(void*, int behavior, D3DDEVTYPE type)
+{
+	if (Direct3D_Device != nullptr)
+		return;
+
+	auto& p = PresentParameters;
+
+	if (vsync)
+	{
+		p.SwapEffect = D3DSWAPEFFECT_COPY_VSYNC;
+		p.FullScreen_PresentationInterval = D3DPRESENT_INTERVAL_ONE;
+	}
+	else
+	{
+		p.SwapEffect = D3DSWAPEFFECT_DISCARD;
+		p.FullScreen_PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+	}
+
+	auto result = Direct3D_Object->CreateDevice(DisplayAdapter, type, PresentParameters.hDeviceWindow, behavior, &PresentParameters, &Direct3D_Device);
+
+	if (FAILED(result))
+		Direct3D_Device = nullptr;
+}
 
 static HRESULT Direct3D_Reset()
 {
@@ -2120,6 +2145,7 @@ static void __cdecl InitMods(void)
 	WriteData((short*)0x007853F6, (short)D3DUSAGE_WRITEONLY);
 	WriteJump((void*)0x0079455F, whatamIdoing);
 	WriteJump(Direct3D_Present, Direct3D_Present_r);
+	WriteJump((void*)0x00794000, CreateDirect3DDevice_r);
 
 	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
 	if (!f_ini)
@@ -2260,8 +2286,7 @@ static void __cdecl InitMods(void)
 		WriteData((uint8_t*)0x0078B7EC, (uint8_t)0x02);
 	}
 
-	if (settings->getBool("EnableVsync", true))
-		WriteData((int*)0x7940E8, (int)D3DPRESENT_INTERVAL_ONE);
+	vsync = settings->getBool("EnableVsync", true);
 
 	if (settings->getBool("ScaleHud", false))
 		SetupHudScale();
