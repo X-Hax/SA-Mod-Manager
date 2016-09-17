@@ -1588,7 +1588,7 @@ static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
 		for (int i = 0; i < length; i++)
 		{
 			wchar_t buf[4];
-			swprintf_s(buf, L"%d", i);
+			swprintf_s(buf, L"%d", i + 1);
 			const IniFile *inidata = new IniFile(pathbase + buf + L'\\' + languagenames[l] + L".ini");
 			vector<string> strs = split(inidata->getString("", "Text"), '\n');
 			auto numents = strs.size();
@@ -1617,7 +1617,7 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 		for (int i = 0; i < length; i++)
 		{
 			wchar_t wbuf[4];
-			swprintf_s(wbuf, L"%d", i);
+			swprintf_s(wbuf, L"%d", i + 1);
 			const IniFile *inidata = new IniFile(pathbase + wbuf + L'\\' + languagenames[l] + L".ini");
 			vector<int16_t> props;
 			vector<HintText_Text> text;
@@ -2314,7 +2314,7 @@ static void __cdecl InitMods(void)
 			for (unordered_map<string, string>::const_iterator iter = data->begin();
 				iter != data->end(); ++iter)
 			{
-				sadx_fileMap.addIgnoreFile(iter->first);
+				sadx_fileMap.addIgnoreFile(iter->first, i);
 				PrintDebug("Ignored file: %s\n", iter->first.c_str());
 			}
 		}
@@ -2349,7 +2349,7 @@ static void __cdecl InitMods(void)
 		// TODO: Convert to WString.
 		const string modSysDirA = mod_dirA + "\\system";
 		if ((GetFileAttributesA(modSysDirA.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
-			sadx_fileMap.scanFolder(modSysDirA);
+			sadx_fileMap.scanFolder(modSysDirA, i);
 
 		// Check if a custom EXE is required.
 		if (modinfo->hasKeyNonEmpty("EXEFile"))

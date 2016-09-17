@@ -38,8 +38,9 @@ class FileMap
 		/**
 		 * Ignore a file.
 		 * @param ignoreFile File to ignore.
+		 * @param modIdx Index of the current mod.
 		 */
-		void addIgnoreFile(const std::string &ignoreFile);
+		void addIgnoreFile(const std::string &ignoreFile, int modIdx);
 
 		/**
 		 * Add a file replacement.
@@ -52,8 +53,9 @@ class FileMap
 		 * Recursively scan a directory and add all files to the replacement map.
 		 * Destination is always relative to system/.
 		 * @param srcPath Path to scan.
+		 * @param modIdx Index of the current mod.
 		 */
-		void scanFolder(const std::string &srcPath);
+		void scanFolder(const std::string &srcPath, int modIdx);
 
 		/**
 		* Scans a sound folder for non-WMA files.
@@ -68,8 +70,9 @@ class FileMap
 		 * (Internal recursive function)
 		 * @param srcPath Path to scan.
 		 * @param srcLen Length of original srcPath. (used for recursion)
+		 * @param modIdx Index of the current mod.
 		 */
-		void scanFolder_int(const std::string &srcPath, int srcLen);
+		void scanFolder_int(const std::string &srcPath, int srcLen, int modIdx);
 
 		/**
 		 * Set a replacement file in the map.
@@ -77,8 +80,9 @@ class FileMap
 		 * (Internal function; handles memory allocation)
 		 * @param origFile Original file.
 		 * @param modFile Mod filename.
+		 * @param modIdx Index of the current mod.
 		 */
-		void setReplaceFile(const std::string &origFile, const std::string &modFile);
+		void setReplaceFile(const std::string &origFile, const std::string &modFile, int modIdx);
 
 	public:
 		/**
@@ -89,17 +93,31 @@ class FileMap
 		const char *replaceFile(const char *lpFileName) const;
 
 		/**
+		* Get the index of the mod that replaced a given file.
+		* @param lpFileName Filename.
+		* @return Index of the mod that replaced a file, or 0 if no mod replaced it.
+		*/
+		int getModIndex(const char *lpFileName) const;
+
+		/**
 		 * Clear the file replacement map.
 		 */
 		void clear(void);
 
 	protected:
+
+		struct Entry
+		{
+			std::string fileName;
+			int modIndex;
+		};
+
 		/**
 		 * File replacement map.
 		 * - Key: Original filename.
 		 * - Value: New filename.
 		 */
-		std::unordered_map<std::string, std::string> m_fileMap;
+		std::unordered_map<std::string, Entry> m_fileMap;
 };
 
 #endif /* FILEMAP_HPP */
