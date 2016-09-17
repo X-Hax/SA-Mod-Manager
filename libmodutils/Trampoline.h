@@ -4,7 +4,6 @@
 
 // TODO: Better documentation
 // TODO: Clearer member names
-// TODO: Code restoration
 
 class Trampoline
 {
