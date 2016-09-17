@@ -333,23 +333,28 @@ DataPointer(DWORD, StencilThing, 0x03D1289C);
 DataPointer(float, ViewPortWidth_Half, 0x03D0FA0C);
 DataPointer(float, ViewPortHeight_Half, 0x03D0FA10);
 
-static void __fastcall CreateDirect3DDevice_r(void*, int behavior, D3DDEVTYPE type)
+inline void Direct3D_SetupVsyncParameters()
 {
-	if (Direct3D_Device != nullptr)
-		return;
-
 	auto& p = PresentParameters;
 
 	if (vsync)
 	{
 		p.SwapEffect = D3DSWAPEFFECT_COPY_VSYNC;
-		p.FullScreen_PresentationInterval = D3DPRESENT_INTERVAL_ONE;
+		p.FullScreen_PresentationInterval = IsWindowed ? D3DPRESENT_INTERVAL_DEFAULT : D3DPRESENT_INTERVAL_ONE;
 	}
 	else
 	{
 		p.SwapEffect = D3DSWAPEFFECT_DISCARD;
-		p.FullScreen_PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+		p.FullScreen_PresentationInterval = IsWindowed ? D3DPRESENT_INTERVAL_DEFAULT : D3DPRESENT_INTERVAL_IMMEDIATE;
 	}
+}
+
+static void __fastcall CreateDirect3DDevice_r(void*, int behavior, D3DDEVTYPE type)
+{
+	if (Direct3D_Device != nullptr)
+		return;
+
+	Direct3D_SetupVsyncParameters();
 
 	auto result = Direct3D_Object->CreateDevice(DisplayAdapter, type, PresentParameters.hDeviceWindow, behavior, &PresentParameters, &Direct3D_Device);
 
@@ -406,6 +411,8 @@ static void Direct3D_DeviceLost()
 	const auto retry_count = 5;
 	DWORD reset = D3D_OK;
 	Uint32 tries = 0;
+
+	Direct3D_SetupVsyncParameters();
 
 	auto level = D3DERR_DEVICENOTRESET;
 	RaiseEvents(modRenderDeviceLost);
