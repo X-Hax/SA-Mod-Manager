@@ -29,6 +29,16 @@ Trampoline::Trampoline(size_t start, size_t end, void* func, bool destructRevert
 	// ReadProcessMemory maybe?
 	memcpy(codeData, target, originalSize);
 
+	auto ptr = (char*)codeData;
+
+	// If an existing (hopefully) trampoline has been applied to this address,
+	// correct the jump offset for it.
+	if (ptr[0] == 0xE9i8)
+	{
+		int addr = start + 5 + *(int*)&ptr[1];
+		WriteJump(ptr, (void*)addr);
+	}
+
 	// Append jump (terribly)
 	WriteJump(&((Uint8*)codeData)[originalSize], (void*)end);
 
