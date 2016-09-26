@@ -1434,13 +1434,13 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 					text.push_back(entry);
 				}
 				delete[] buf2;
-				delete inidata;
 				if (hasText)
 				{
 					HintText_Text t = {};
 					text.push_back(t);
 				}
 			}
+			delete inidata;
 			if (props.size() > 0)
 			{
 				props.push_back(NPCTextControl_End);
