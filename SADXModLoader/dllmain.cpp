@@ -1667,7 +1667,7 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 					for (unsigned int k = 0; k < strs.size(); k++)
 					{
 						props.push_back(NPCTextControl_EventFlag);
-						props.push_back((int16_t)strtol(strs[i].c_str(), nullptr, 10));
+						props.push_back((int16_t)strtol(strs[k].c_str(), nullptr, 10));
 					}
 				}
 				if (entdata->hasKeyNonEmpty("NPCFlags"))
@@ -1676,7 +1676,7 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 					for (unsigned int k = 0; k < strs.size(); k++)
 					{
 						props.push_back(NPCTextControl_NPCFlag);
-						props.push_back((int16_t)strtol(strs[i].c_str(), nullptr, 10));
+						props.push_back((int16_t)strtol(strs[k].c_str(), nullptr, 10));
 					}
 				}
 				if (entdata->hasKeyNonEmpty("Character"))
@@ -1710,13 +1710,13 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 					text.push_back(entry);
 				}
 				delete[] buf2;
-				delete inidata;
 				if (hasText)
 				{
 					HintText_Text t = {};
 					text.push_back(t);
 				}
 			}
+			delete inidata;
 			if (props.size() > 0)
 			{
 				props.push_back(NPCTextControl_End);
