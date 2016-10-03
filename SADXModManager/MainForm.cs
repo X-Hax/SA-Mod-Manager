@@ -157,15 +157,23 @@ namespace SADXModManager
 			codesCheckedListBox.EndUpdate();
 		}
 
-		private IEnumerable<string> GetModFiles(DirectoryInfo directoryInfo)
+		private static IEnumerable<string> GetModFiles(DirectoryInfo directoryInfo)
 		{
-			foreach (DirectoryInfo item in directoryInfo.GetDirectories())
-				if (!item.Name.Equals("system", StringComparison.OrdinalIgnoreCase))
-					foreach (string filename in GetModFiles(item))
-						yield return filename;
 			string modini = Path.Combine(directoryInfo.FullName, "mod.ini");
 			if (File.Exists(modini))
+			{
 				yield return modini;
+				yield break;
+			}
+
+			foreach (DirectoryInfo item in directoryInfo.GetDirectories())
+			{
+				if (!item.Name.Equals("system", StringComparison.OrdinalIgnoreCase))
+				{
+					foreach (string filename in GetModFiles(item))
+						yield return filename;
+				}
+			}
 		}
 
 		private void modListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -587,10 +595,10 @@ namespace SADXModManager
 		public string Description { get; set; }
 		public string EXEFile { get; set; }
 		public string DLLFile { get; set; }
-        public bool RedirectMainSave { get; set; }
-        public bool RedirectChaoSave { get; set; }
+		public bool RedirectMainSave { get; set; }
+		public bool RedirectChaoSave { get; set; }
 		public string Codes { get; set; }
-    }
+	}
 
 	[XmlRoot(Namespace = "http://www.sonicretro.org")]
 	public class CodeList
