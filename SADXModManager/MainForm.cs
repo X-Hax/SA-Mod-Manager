@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IniSerializer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using IniSerializer;
 
 namespace SADXModManager
 {
@@ -33,6 +33,25 @@ namespace SADXModManager
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			if (File.Exists("sadxmlver.txt"))
+			{
+				System.Net.WebClient wc = new System.Net.WebClient();
+				string msg = null;
+				try
+				{
+					msg = wc.DownloadString("http://mm.reimuhakurei.net/toolchangelog.php?tool=sadxml&rev=" + File.ReadAllText("sadxmlver.txt"));
+				}
+				catch { MessageBox.Show(this, "Unable to retrieve update information.", "SADX Mod Manager"); goto noupdate; }
+				if (msg.Length > 0)
+					using (UpdateMessageDialog dlg = new UpdateMessageDialog(msg.Replace("\n", "\r\n")))
+						if (dlg.ShowDialog(this) == DialogResult.Yes)
+						{
+							System.Diagnostics.Process.Start("http://mm.reimuhakurei.net/sadxmods/SADXModLoader.7z");
+							Close();
+							return;
+						}
+			}
+		noupdate:
 			if (File.Exists(loaderinipath))
 				loaderini = IniFile.Deserialize<LoaderInfo>(loaderinipath);
 			else
