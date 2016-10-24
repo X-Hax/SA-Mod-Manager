@@ -11,6 +11,10 @@
 #include "d3d8types.h"
 
 typedef NJS_VECTOR Vector3;
+typedef NJS_MDATA2 AnimFrame_PosRot;
+typedef NJS_MDATA3 AnimFrame_PosRotScale;
+typedef NJS_MOTION AnimHead2;
+typedef NJS_ACTION AnimHead;
 
 // All structs should be packed.
 #pragma pack(push, 1)
@@ -24,10 +28,6 @@ typedef void(__cdecl *ObjectFuncPtr)(ObjectMaster *);
 
 // TODO: Grab actual structs from disassembly.
 typedef void ABC_TXT_struct;
-typedef void AnimFrame_PosRot;
-typedef void AnimFrame_PosRotScale;
-typedef void AnimHead2;
-typedef void AnimHead;
 typedef void ChaoHudThing;
 typedef void PDS_VIBPARAM;
 typedef void pvm_thing;
