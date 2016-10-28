@@ -115,14 +115,14 @@ static void __declspec(naked) SetFOV()
 }
 
 static const void* dummyfstp_return = (void*)0x00781529;
-static const void* wtF_ptr = (void*)0x03D0F9E0;
+static const void* wtf_ptr = (void*)0x03D0F9E0;
 static void __declspec(naked) dummyfstp()
 {
 	__asm
 	{
 		cmp		is_wide, 1
 		je		wide
-		fstp	dword ptr wtF_ptr
+		fstp	dword ptr wtf_ptr
 		jmp		dummyfstp_return
 
 	wide:

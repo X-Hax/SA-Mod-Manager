@@ -414,7 +414,7 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 	if (sp == nullptr)
 		return;
 
-	FunctionPointer(void, original, (NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type), drawSprite.Target());
+	FunctionPointer(void, original, (NJS_SPRITE*, Int, Float, Uint32, char), drawSprite.Target());
 
 	StoreSprite(sp);
 
@@ -443,7 +443,7 @@ void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr)
 	if (sp == nullptr)
 		return;
 
-	FunctionPointer(void, original, (NJS_SPRITE *sp, Int n, Float pri, Uint32 attr), drawSpriteWrapper.Target());
+	FunctionPointer(void, original, (NJS_SPRITE*, Int, Float, Uint32), drawSpriteWrapper.Target());
 
 	StoreSprite(sp);
 
