@@ -13,13 +13,12 @@ using std::vector;
 
 #pragma region trampolines
 
-static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
-void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr);
+static void __cdecl Draw2DSprite_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
+static void __cdecl njDrawSprite2D_4_r(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr);
 
-Trampoline drawSprite(0x00404660, 0x00404666, Draw2DSpriteHax);
-Trampoline drawSpriteWrapper(0x004070A0, 0x004070A5, njDrawSprite2D_4_Hax);
+Trampoline drawSprite(0x00404660, 0x00404666, Draw2DSprite_r);
+Trampoline drawSpriteWrapper(0x004070A0, 0x004070A5, njDrawSprite2D_4_r);
 
-// TODO: Give Trampoline a default constructor and stuff
 static Trampoline* drawObjects;
 static Trampoline* missionScreen;
 static Trampoline* scaleRingLife;
@@ -61,25 +60,31 @@ static Trampoline* scaleDemoPressStart;
 
 #pragma region scale stack
 
-enum class Align : Uint8
+enum Align : Uint8
 {
 	Auto,
-	Left,
-	Center,
-	Right
+	HorizontalCenter = 1 << 0,
+	VerticalCenter   = 1 << 1,
+	Center           = HorizontalCenter | VerticalCenter,
+	Left             = 1 << 2,
+	Top              = 1 << 3,
+	Right            = 1 << 4,
+	Bottom           = 1 << 5
 };
 
 struct ScaleEntry
 {
-	Align alignment;
+	Uint8 alignment;
 	NJS_POINT2 scale;
 };
 
 static stack<ScaleEntry, vector<ScaleEntry>> scale_stack;
 static size_t stack_size = 0;
 
-static const float patch_dummy  = 1.0f;
-static const float screen_third = 640.0f / 3.0f;
+static const float patch_dummy = 1.0f;
+
+static const float third_h = 640.0f / 3.0f;
+static const float third_v = 480.0f / 3.0f;
 
 static bool doScale   = false;
 static float scale    = 0.0f;
@@ -88,7 +93,7 @@ static float scale_v  = 0.0f;
 static float region_w = 0.0f;
 static float region_h = 0.0f;
 
-static void __cdecl ScalePush(Align align, float h = 1.0f, float v = 1.0f)
+static void __cdecl ScalePush(Uint8 align, float h = 1.0f, float v = 1.0f)
 {
 #ifdef _DEBUG
 	if (ControllerPointers[0]->HeldButtons & Buttons_Z)
@@ -121,13 +126,13 @@ static void __cdecl ScalePop()
 	doScale = scale_stack.size() > 0;
 }
 
-static inline void __stdcall ScaleObjFunc(Align align, ObjectMaster* a1, Trampoline* trampoline)
+inline void __stdcall ScaleObjFunc(Uint8 align, ObjectMaster* a1, Trampoline* trampoline)
 {
 	ScalePush(align);
 	((ObjectFuncPtr)trampoline->Target())(a1);
 	ScalePop();
 }
-static inline void __stdcall ScaleVoidFunc(Align align, Trampoline* trampoline)
+inline void __stdcall ScaleVoidFunc(Uint8 align, Trampoline* trampoline)
 {
 	ScalePush(align);
 	((void (__cdecl*)(void))trampoline->Target())();
@@ -170,16 +175,35 @@ static NJS_SPRITE last_sprite;
 static void __cdecl SpritePush(NJS_SPRITE* sp)
 {
 	auto top = scale_stack.top();
-	Align align = top.alignment;
+	auto align = top.alignment;
 
 	if (align == Align::Auto)
 	{
-		if (sp->p.x < screen_third)
-			align = Align::Left;
-		else if (sp->p.x < screen_third * 2.0f)
-			align = Align::Center;
+		if (sp->p.x < third_h)
+		{
+			align |= Align::Left;
+		}
+		else if (sp->p.x < third_h * 2.0f)
+		{
+			align |= Align::HorizontalCenter;
+		}
 		else
-			align = Align::Right;
+		{
+			align |= Align::Right;
+		}
+
+		if (sp->p.y < third_v)
+		{
+			align |= Align::Top;
+		}
+		else if (sp->p.y < third_v * 2.0f)
+		{
+			align |= Align::VerticalCenter;
+		}
+		else
+		{
+			align |= Align::Bottom;
+		}
 	}
 
 	last_sprite = *sp;
@@ -189,23 +213,24 @@ static void __cdecl SpritePush(NJS_SPRITE* sp)
 	sp->sx  *= scale;
 	sp->sy  *= scale;
 
-	switch (align)
+	if (align & Align::HorizontalCenter)
 	{
-		default:
-			break;
+		if ((float)HorizontalResolution / scale_v > 640.0f)
+			sp->p.x += (float)HorizontalResolution / 2.0f - region_w / 2.0f;
+	}
+	else if (align & Align::Right)
+	{
+		sp->p.x += (float)HorizontalResolution - region_w;
+	}
 
-		case Align::Center:
-			if ((float)HorizontalResolution / scale_v > 640.0f)
-				sp->p.x += (float)HorizontalResolution / 2.0f - region_w / 2.0f;
-
-			if ((float)VerticalResolution / scale_h > 480.0f)
-				sp->p.y += (float)VerticalResolution / 2.0f - region_h / 2.0f;
-
-			break;
-
-		case Align::Right:
-			sp->p.x += (float)HorizontalResolution - region_w;
-			break;
+	if (align & Align::VerticalCenter)
+	{
+		if ((float)VerticalResolution / scale_h > 480.0f)
+			sp->p.y += (float)VerticalResolution / 2.0f - region_h / 2.0f;
+	}
+	else if (align & Align::Bottom)
+	{
+		sp->p.y += (float)VerticalResolution - region_h;
 	}
 }
 
@@ -240,11 +265,11 @@ static void __cdecl ScaleResultScreen(ObjectMaster* _this)
 	ScalePop();
 }
 
-static void __cdecl ScaleA()
+static void __cdecl ScaleRingLife()
 {
-	ScaleVoidFunc(Align::Left, scaleRingLife);
+	ScaleVoidFunc(Align::Auto, scaleRingLife);
 }
-static void __cdecl ScaleB()
+static void __cdecl ScaleScoreTime()
 {
 	ScaleVoidFunc(Align::Left, scaleScoreTime);
 }
@@ -287,21 +312,23 @@ static void __cdecl ScaleFishingHit(ObjectMaster* a1)
 {
 	ScaleObjFunc(Align::Center, a1, scaleFishingHit);
 }
+/*
 static void __cdecl ScaleReel()
 {
-	ScaleVoidFunc(Align::Right, scaleReel);
+	ScaleVoidFunc(Align::Auto, scaleReel);
 }
 static void __cdecl ScaleRod()
 {
-	ScaleVoidFunc(Align::Right, scaleRod);
+	ScaleVoidFunc(Align::Auto, scaleRod);
 }
+*/
 static void __cdecl ScaleBigHud(ObjectMaster* a1)
 {
-	ScaleObjFunc(Align::Left, a1, scaleBigHud);
+	ScaleObjFunc(Align::Auto, a1, scaleBigHud);
 }
 static void __cdecl ScaleRodMeters(float a1)
 {
-	ScalePush(Align::Right);
+	ScalePush(Align::Auto);
 	FunctionPointer(void, original, (float), scaleRodMeters->Target());
 	original(a1);
 	ScalePop();
@@ -309,12 +336,12 @@ static void __cdecl ScaleRodMeters(float a1)
 
 static void __cdecl ScaleAnimalPickup(ObjectMaster* a1)
 {
-	ScaleObjFunc(Align::Right, a1, scaleAnimalPickup);
+	ScaleObjFunc(Align::Right | Align::Bottom, a1, scaleAnimalPickup);
 }
 
 static void __cdecl ScaleItemBoxSprite(ObjectMaster* a1)
 {
-	ScaleObjFunc(Align::Center, a1, scaleItemBoxSprite);
+	ScaleObjFunc(Align::Bottom | Align::HorizontalCenter, a1, scaleItemBoxSprite);
 }
 
 static void __cdecl ScaleBalls(ObjectMaster* a1)
@@ -324,7 +351,7 @@ static void __cdecl ScaleBalls(ObjectMaster* a1)
 
 static void __cdecl ScaleCheckpointTime(int a1, int a2, int a3)
 {
-	ScalePush(Align::Right);
+	ScalePush(Align::Right | Align::Bottom);
 	FunctionPointer(void, original, (int, int, int), scaleCheckpointTime->Target());
 	original(a1, a2, a3);
 	ScalePop();
@@ -358,7 +385,7 @@ static void __cdecl ScaleGammaTimeAddHud(ObjectMaster* a1)
 }
 static void __cdecl ScaleGammaTimeRemaining(ObjectMaster* a1)
 {
-	ScaleObjFunc(Align::Center, a1, scaleGammaTimeRemaining);
+	ScaleObjFunc(Align::Bottom | Align::HorizontalCenter, a1, scaleGammaTimeRemaining);
 }
 
 static void __cdecl ScaleEmblemScreen(ObjectMaster* a1)
@@ -409,7 +436,7 @@ static void __cdecl ScaleDemoPressStart(ObjectMaster* a1)
 
 #pragma endregion
 
-static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
+static void __cdecl Draw2DSprite_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
 {
 	if (sp == nullptr)
 		return;
@@ -438,7 +465,7 @@ static void __cdecl Draw2DSpriteHax(NJS_SPRITE* sp, Int n, Float pri, Uint32 att
 	}
 }
 
-void __cdecl njDrawSprite2D_4_Hax(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr)
+static void __cdecl njDrawSprite2D_4_r(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr)
 {
 	if (sp == nullptr)
 		return;
@@ -481,8 +508,8 @@ void SetupHudScale()
 
 	missionScreen = new Trampoline(0x00590E60, 0x00590E65, FixMissionScreen);
 
-	scaleRingLife = new Trampoline(0x00425F90, 0x00425F95, ScaleA);
-	scaleScoreTime = new Trampoline(0x00427F50, 0x00427F55, ScaleB);
+	scaleRingLife     = new Trampoline(0x00425F90, 0x00425F95, ScaleRingLife);
+	scaleScoreTime    = new Trampoline(0x00427F50, 0x00427F55, ScaleScoreTime);
 	scaleStageMission = new Trampoline(0x00457120, 0x00457126, ScaleStageMission);
 
 	scalePause = new Trampoline(0x00415420, 0x00415425, ScalePauseMenu);
@@ -525,17 +552,18 @@ void SetupHudScale()
 	// Emerald get
 	WriteData((const float**)0x00477E8E, &patch_dummy);
 	WriteData((const float**)0x00477EC0, &patch_dummy);
-	scaleEmeraldRadarA = new Trampoline(0x00475A70, 0x00475A75, ScaleEmeraldRadarA);
-	scaleEmeraldRadarB = new Trampoline(0x00475E50, 0x00475E55, ScaleEmeraldRadarB);
+
+	scaleEmeraldRadarA     = new Trampoline(0x00475A70, 0x00475A75, ScaleEmeraldRadarA);
+	scaleEmeraldRadarB     = new Trampoline(0x00475E50, 0x00475E55, ScaleEmeraldRadarB);
 	scaleEmeraldRadar_Grab = new Trampoline(0x00475D50, 0x00475D55, ScaleEmeraldRadar_Grab);
 
 	scaleSandHillMultiplier = new Trampoline(0x005991A0, 0x005991A6, ScaleSandHillMultiplier);
-	scaleIceCapMultiplier = new Trampoline(0x004EC120, 0x004EC125, ScaleIceCapMultiplier);
+	scaleIceCapMultiplier   = new Trampoline(0x004EC120, 0x004EC125, ScaleIceCapMultiplier);
 
 	WriteData((const float**)0x0049FF70, &patch_dummy);
 	WriteData((const float**)0x004A005B, &patch_dummy);
 	WriteData((const float**)0x004A0067, &patch_dummy);
-	scaleGammaTimeAddHud = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
+	scaleGammaTimeAddHud    = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
 	scaleGammaTimeRemaining = new Trampoline(0x004C51D0, 0x004C51D7, ScaleGammaTimeRemaining);
 
 	WriteData((float**)0x004B4470, &scale_h);
@@ -550,10 +578,10 @@ void SetupHudScale()
 
 	scaleMissionStartClear = new Trampoline(0x00591260, 0x00591268, ScaleMissionStartClear);
 
-	scaleMissionTimer = new Trampoline(0x00592D50, 0x00592D59, ScaleMissionTimer);
+	scaleMissionTimer   = new Trampoline(0x00592D50, 0x00592D59, ScaleMissionTimer);
 	scaleMissionCounter = new Trampoline(0x00592A60, 0x00592A68, ScaleMissionCounter);
 
-	scaleTailsWinLose = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
+	scaleTailsWinLose    = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
 	scaleTailsOtherThing = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsOtherThing);
 
 	scaleDemoPressStart = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
