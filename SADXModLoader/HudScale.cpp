@@ -53,7 +53,7 @@ static Trampoline* scaleMissionStartClear;
 static Trampoline* scaleMissionTimer;
 static Trampoline* scaleMissionCounter;
 static Trampoline* scaleTailsWinLose;
-static Trampoline* scaleTailsOtherThing;
+static Trampoline* scaleTailsRaceBar;
 static Trampoline* scaleDemoPressStart;
 
 #pragma endregion
@@ -424,9 +424,9 @@ static void __cdecl ScaleTailsWinLose(ObjectMaster* a1)
 {
 	ScaleObjFunc(Align::Center, a1, scaleTailsWinLose);
 }
-static void __cdecl ScaleTailsOtherThing(ObjectMaster* a1)
+static void __cdecl ScaleTailsRaceBar(ObjectMaster* a1)
 {
-	ScaleObjFunc(Align::Center, a1, scaleTailsOtherThing);
+	ScaleObjFunc(Align::HorizontalCenter | Align::Bottom, a1, scaleTailsRaceBar);
 }
 
 static void __cdecl ScaleDemoPressStart(ObjectMaster* a1)
@@ -582,7 +582,7 @@ void SetupHudScale()
 	scaleMissionCounter = new Trampoline(0x00592A60, 0x00592A68, ScaleMissionCounter);
 
 	scaleTailsWinLose    = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
-	scaleTailsOtherThing = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsOtherThing);
+	scaleTailsRaceBar    = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsRaceBar);
 
 	scaleDemoPressStart = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
 }
