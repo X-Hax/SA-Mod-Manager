@@ -501,6 +501,10 @@ void SetupHudScale()
 {
 	SetHudScaleValues();
 
+	// Fixes character scale on character select screen.
+	// TODO: dynamically update character Z position on resolution change.
+	WriteData((float**)0x0051285E, &scale);
+
 	WriteJump((void*)0x0042BEE0, ScaleResultScreen);
 
 	drawObjects = new Trampoline(0x0040B540, 0x0040B546, DrawAllObjectsHax);
