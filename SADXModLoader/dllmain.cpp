@@ -1982,7 +1982,7 @@ static void __cdecl InitMods(void)
 	WriteJump((void *)0x40D28A, (void *)WMPRelease_r);
 	WriteJump(LoadSoundList, LoadSoundList_r);
 
-	InitTextureReplacement();
+	texpack::Init();
 
 	// Unprotect the .rdata section.
 	// TODO: Get .rdata address and length dynamically.
@@ -2271,7 +2271,7 @@ static void __cdecl InitMods(void)
 		// Texture pack stuff
 		wstring modTextureDir = mod_dir + L"\\textures\\";
 		if (PathFileExists(modTextureDir.c_str()))
-			TexturePackPaths.push_back(modTextureDir);
+			texpack::Paths.push_back(modTextureDir);
 	}
 
 	if (!errors.empty())

@@ -9,15 +9,18 @@ struct CustomTextureEntry
 	std::string name;
 };
 
-void InitTextureReplacement();
-
-NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, CustomTextureEntry& entry, bool mipmap);
-NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, const std::string& name, bool mipmap);
-bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& entries);
-std::vector<CustomTextureEntry> ParseIndex(const std::wstring& path);
-
 Sint32 njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist);
 Sint32 njLoadTexture_Hook(NJS_TEXLIST* texlist);
 void __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist);
 
-extern std::vector<std::wstring> TexturePackPaths;
+namespace texpack
+{
+	/// <summary>
+	/// List of texture pack directories with trailing slash (e.g mods\MyCoolMod\textures\)
+	/// </summary>
+	extern std::vector<std::wstring> Paths;
+	/// <summary>
+	/// Initializes function hooks for texture replacement.
+	/// </summary>
+	void Init();
+}

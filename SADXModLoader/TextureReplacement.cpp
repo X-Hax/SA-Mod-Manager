@@ -12,20 +12,22 @@
 // Global
 #include <SADXModLoader.h>
 
-// FileMap from dllmain.cpp.
-#include "FileMap.hpp"
+// Local
+#include "FileReplacement.h"
 #include "D3DCommon.h"
 #include "DDS.h"
 #include "AutoMipmap.h"
-
-extern FileMap sadx_fileMap;
 
 // This
 #include "TextureReplacement.h"
 
 #define TOMAPSTRING(a) { a, #a }
 
-static const std::unordered_map<HRESULT, const char*> D3DErrors = {
+using namespace std;
+
+vector<wstring> texpack::Paths;
+
+static const unordered_map<HRESULT, const char*> d3dErrors = {
 	TOMAPSTRING(D3DXERR_CANNOTMODIFYINDEXBUFFER),
 	TOMAPSTRING(D3DXERR_INVALIDMESH),
 	TOMAPSTRING(D3DXERR_CANNOTATTRSORT),
@@ -38,44 +40,41 @@ static const std::unordered_map<HRESULT, const char*> D3DErrors = {
 	TOMAPSTRING(D3DERR_INVALIDCALL),
 	TOMAPSTRING(E_OUTOFMEMORY)
 };
+static unordered_map<wstring, vector<CustomTextureEntry>> entryCache;
+static bool wasLoading = false;
+
+DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
 
 #pragma region Filesystem stuff
 
-bool DirectoryExists(const std::wstring& path)
+bool DirectoryExists(const wstring& path)
 {
 	DWORD dwAttrib = GetFileAttributesW(path.c_str());
 
 	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
 		(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
-bool DirectoryExists(const std::string& path)
+bool DirectoryExists(const string& path)
 {
-	return DirectoryExists(std::wstring(path.begin(), path.end()));
+	return DirectoryExists(wstring(path.begin(), path.end()));
 }
 
-bool FileExists(const std::wstring& path)
+bool FileExists(const wstring& path)
 {
 	DWORD dwAttrib = GetFileAttributesW(path.c_str());
 
 	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
 		!(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
-bool FileExists(const std::string& path)
+bool FileExists(const string& path)
 {
-	return FileExists(std::wstring(path.begin(), path.end()));
+	return FileExists(wstring(path.begin(), path.end()));
 }
 
 #pragma endregion
 
-using namespace std;
 
-// List of texture pack directories with trailing slash
-// (e.g mods\MyCoolMod\textures\)
-std::vector<std::wstring> TexturePackPaths;
-std::unordered_map<std::wstring, vector<CustomTextureEntry>> entryCache;
-static bool wasLoading = false;
-
-void InitTextureReplacement()
+void texpack::Init()
 {
 	WriteJump((void*)LoadPVM_C, LoadPVM_C_r);
 	WriteJump((void*)0x0077FC80, njLoadTexture_Hook);
@@ -88,21 +87,9 @@ void InitTextureReplacement()
 /// Parses custom texture index.
 /// </summary>
 /// <param name="path">The path containing index.txt</param>
-/// <returns>A vector containing the entries. Can be empty, particularly on failure.</returns>
-std::vector<CustomTextureEntry> ParseIndex(const std::wstring& path)
-{
-	vector<CustomTextureEntry> result;
-	ParseIndex(path, result);
-	return result;
-}
-
-/// <summary>
-/// Parses custom texture index.
-/// </summary>
-/// <param name="path">The path containing index.txt</param>
 /// <param name="out">A vector to populate.</param>
 /// <returns><c>true</c> on success.</returns>
-bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& out)
+bool ParseIndex(const wstring& path, vector<CustomTextureEntry>& out)
 {
 	wstring index = path + L"index.txt";
 	string path_a = string(path.begin(), path.end());
@@ -178,7 +165,7 @@ bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& out)
 
 			out.push_back({ gbix, name });
 		}
-		catch (std::exception& exception)
+		catch (exception& exception)
 		{
 			PrintDebug("An exception occurred while parsing texture index on line %u: %s\n", lineNumber, exception.what());
 			out.clear();
@@ -196,24 +183,30 @@ bool ParseIndex(const std::wstring& path, std::vector<CustomTextureEntry>& out)
 
 void CheckCache()
 {
-	if (!LoadingFile)
-	{
-		if (wasLoading)
-		{
-#ifdef _DEBUG
-			PrintDebug("\tClearing cache...\n");
-#endif
-			entryCache.clear();
-		}
+	if (LoadingFile)
+		return;
 
-		wasLoading = false;
+	if (wasLoading)
+	{
+#ifdef _DEBUG
+		PrintDebug("\tClearing cache...\n");
+#endif
+		entryCache.clear();
 	}
+
+	wasLoading = false;
 }
 
 #pragma endregion
 
 #pragma region Texture Loading
 
+/// <summary>
+/// Reads the header from a DDS file.
+/// </summary>
+/// <param name="path">Path to the texture file.</param>
+/// <param name="header">Output structure.</param>
+/// <returns>Returns <c>true</c> if this file is a valid DDS file and <paramref name="header"/> has been populated.</returns>
 bool GetDDSHeader(const wstring& path, DDS_HEADER& header)
 {
 	ifstream file(path, ios::binary);
@@ -239,26 +232,27 @@ bool GetDDSHeader(const wstring& path, DDS_HEADER& header)
 }
 
 /// <summary>
-/// Loads a texture from disk in the specified path.
+/// Loads the specified texture from disk, or uses a cached texture if available.
 /// </summary>
-/// <param name="_path">The folder containing the texture.</param>
-/// <param name="globalIndex">The global index for this texture.</param>
-/// <param name="name">The filename of this texture..</param>
-/// <returns><c>true</c> on success.</returns>
-NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, const std::string& name, bool mipmap)
+/// <param name="path">The texture pack directory containing the texture.</param>
+/// <param name="globalIndex">Global texture index for cache lookup.</param>
+/// <param name="name">The name of the texture.</param>
+/// <param name="mipmap">If <c>true</c>, automatically generate mipmaps.</param>
+/// <returns>A pointer to the texture, or <c>nullptr</c> on failure.</returns>
+NJS_TEXMEMLIST* LoadTexture(const wstring& path, uint32_t globalIndex, const string& name, bool mipmap)
 {
-	wstring path = _path + L"\\" + wstring(name.begin(), name.end());
-	NJS_TEXMEMLIST* texture = GetCachedTexture(globalIndex);
+	wstring _path = path + L"\\" + wstring(name.begin(), name.end());
+	// TODO: Implement custom texture queue to replace the global texture array
+	auto texture = GetCachedTexture(globalIndex);
 
 	// GetCachedTexture will only return null if over 2048 unique textures have been loaded.
-	// TODO: Add custom texture overflow vector with an access function similar to GetCachedTexture.
 	if (texture == nullptr)
 	{
 		PrintDebug("Failed to allocate global texture for gbix %u (likely exceeded max global texture limit)\n", globalIndex);
 	}
 	else
 	{
-		uint32_t levels = (mipmap) ? D3DX_DEFAULT : 1;
+		uint32_t levels = mipmap ? D3DX_DEFAULT : 1;
 
 		// A texture count of 0 indicates that this is an empty texture slot.
 		if (texture->count != 0)
@@ -272,18 +266,20 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 			if (!mipmap)
 			{
 				DDS_HEADER header;
-				if (GetDDSHeader(path, header))
+				if (GetDDSHeader(_path, header))
+				{
 					levels = header.mipMapCount + 1;
+				}
 			}
 
 			IDirect3DTexture8* d3dtexture;
 
-			HRESULT result = D3DXCreateTextureFromFileEx(Direct3D_Device, path.c_str(), D3DX_DEFAULT, D3DX_DEFAULT, /* mip levels */ levels,
+			HRESULT result = D3DXCreateTextureFromFileEx(Direct3D_Device, _path.c_str(), D3DX_DEFAULT, D3DX_DEFAULT, /* mip levels */ levels,
 				0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, nullptr, nullptr, &d3dtexture);
 
 			if (result != D3D_OK)
 			{
-				PrintDebug("Failed to load texture %s: %s (%u)\n", name.c_str(), D3DErrors.at(result), result);
+				PrintDebug("Failed to load texture %s: %s (%u)\n", name.c_str(), d3dErrors.at(result), result);
 				return nullptr;
 			}
 
@@ -302,27 +298,27 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 		}
 
 		for (auto& i : modCustomTextureLoadEvents)
-			i(texture, path.c_str(), levels);
+			i(texture, _path.c_str(), levels);
 	}
 
 	return texture;
 }
 
 /// <summary>
-/// Loads a texture from disk in the specified path.
+/// Loads the specified texture from disk, or uses a cached texture if available.
 /// </summary>
-/// <param name="_path">The folder containing the texture.</param>
+/// <param name="path">The texture pack directory containing the texture.</param>
 /// <param name="entry">The entry containing the global index and filename.</param>
-/// <returns><c>true</c> on success.</returns>
-NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, CustomTextureEntry& entry, bool mipmap)
+/// <param name="mipmap">If <c>true</c>, automatically generate mipmaps.</param>
+/// <returns>A pointer to the texture, or <c>nullptr</c> on failure.</returns>
+NJS_TEXMEMLIST* LoadTexture(const wstring& path, const CustomTextureEntry& entry, bool mipmap)
 {
-	return LoadTexture(_path, entry.globalIndex, entry.name, mipmap);
+	return LoadTexture(path, entry.globalIndex, entry.name, mipmap);
 }
 
 #pragma endregion
 
 #pragma region PVM
-
 
 /// <summary>
 /// Replaces the specified PVM with a texture pack virtual PVM.
@@ -330,7 +326,7 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, CustomTextureEntry& entry
 /// <param name="filename">Name of the PVM without extension.</param>
 /// <param name="texlist">The tex list.</param>
 /// <returns><c>true</c> on success.</returns>
-bool ReplacePVM(const std::wstring& filename, NJS_TEXLIST* texlist)
+bool ReplacePVM(const wstring& filename, NJS_TEXLIST* texlist)
 {
 	if (texlist == nullptr)
 		return false;
@@ -352,7 +348,7 @@ bool ReplacePVM(const std::wstring& filename, NJS_TEXLIST* texlist)
 		NJS_TEXMEMLIST* texture = LoadTexture(filename, customEntries[i], mipmap);
 
 		// I would just break here, but unloading the textures after that causes issues.
-		// TODO: Investigate that further. This is wasteful.
+		// TODO: Try setting nbTexture to i - 1 (since i failed), then breaking and releasing textures.
 		if (texture == nullptr && result)
 			result = false;
 
@@ -367,6 +363,8 @@ bool ReplacePVM(const std::wstring& filename, NJS_TEXLIST* texlist)
 
 void __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 {
+	// TODO: Don't override PVMs with texture packs. See issue #10.
+
 	mipmap::IsBlacklistedPVM(filename);
 	string filename_str(filename);
 	CheckCache();
@@ -375,9 +373,9 @@ void __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 	// Custom PVM Directory.
 	// This iterates backwards through the list of texture pack paths to find
 	// the last entry containing the PVM name the game is trying to load.
-	for (size_t i = TexturePackPaths.size(); i-- > 0;)
+	for (size_t i = texpack::Paths.size(); i-- > 0;)
 	{
-		wstring path = TexturePackPaths[i] + wstring(filename_str.begin(), filename_str.end());
+		wstring path = texpack::Paths[i] + wstring(filename_str.begin(), filename_str.end());
 
 		if (!DirectoryExists(path))
 			continue;
@@ -392,7 +390,6 @@ void __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 
 	// Default behavior.
 	// Loads real PVM archives if no texture packs were found or successfully loaded.
-	// TODO: Clean up.
 	if (FileExists(string(sadx_fileMap.replaceFile(("SYSTEM\\" + filename_str + ".PVM").c_str()))) || FileExists(string(sadx_fileMap.replaceFile(("SYSTEM\\" + filename_str).c_str()))))
 	{
 		njLoadTexturePvmFile(filename, texlist);
@@ -407,24 +404,22 @@ void __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 
 #pragma region PVR
 
-DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
-
 /// <summary>
 /// Loads texture pack replacement for specified PVR.
 /// </summary>
 /// <param name="filename">The PVR filename without extension.</param>
 /// <param name="tex">The output TEXMEMLIST</param>
 /// <returns><c>true</c> on success.</returns>
-bool ReplacePVR(const std::string& filename, NJS_TEXMEMLIST** tex)
+bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
 {
 	string a = filename;
-	transform(a.begin(), a.end(), a.begin(), ::tolower);
+	transform(a.begin(), a.end(), a.begin(), tolower);
 
-	for (size_t i = TexturePackPaths.size(); i-- > 0;)
+	for (size_t i = texpack::Paths.size(); i-- > 0;)
 	{
 		vector<CustomTextureEntry> entries;
 
-		if (!ParseIndex(TexturePackPaths[i], entries))
+		if (!ParseIndex(texpack::Paths[i], entries))
 			continue;
 
 		for (CustomTextureEntry& e : entries)
@@ -440,10 +435,10 @@ bool ReplacePVR(const std::string& filename, NJS_TEXMEMLIST** tex)
 			if (dot != npos)
 			{
 				string b = e.name.substr(slash, dot - slash);
-				transform(b.begin(), b.end(), b.begin(), ::tolower);
+				transform(b.begin(), b.end(), b.begin(), tolower);
 
 				if (a == b)
-					return (*tex = LoadTexture(TexturePackPaths[i], e.globalIndex, e.name, mipmap::IsBlacklistedPVR(filename.c_str()))) != nullptr;
+					return (*tex = LoadTexture(texpack::Paths[i], e.globalIndex, e.name, mipmap::IsBlacklistedPVR(filename.c_str()))) != nullptr;
 			}
 		}
 	}
@@ -481,9 +476,13 @@ Sint32 __cdecl njLoadTexture_Hook(NJS_TEXLIST* texlist)
 		if (attr & NJD_TEXATTR_TYPE_MEMORY)
 		{
 			if (attr & NJD_TEXATTR_GLOBALINDEX)
+			{
 				memlist = TexMemList_PixelFormat((NJS_TEXINFO*)entries->filename, gbix);
+			}
 			else
+			{
 				memlist = LoadPVR(*(void**)entries->filename, gbix);
+			}
 
 			mipmap::IsBlacklistedGBIX(memlist->globalIndex);
 		}
