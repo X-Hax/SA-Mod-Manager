@@ -34,6 +34,7 @@ using std::vector;
 #include "AnimationFile.h"
 #include "TextureReplacement.h"
 #include "FileReplacement.h"
+#include "FileSystem.h"
 #include "Events.h"
 #include "AutoMipmap.h"
 #include "HudScale.h"
@@ -2085,7 +2086,7 @@ static void __cdecl InitMods(void)
 		// Check for SYSTEM replacements.
 		// TODO: Convert to WString.
 		const string modSysDirA = mod_dirA + "\\system";
-		if ((GetFileAttributesA(modSysDirA.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
+		if (DirectoryExists(modSysDirA))
 			sadx_fileMap.scanFolder(modSysDirA, i);
 
 		// Check if a custom EXE is required.

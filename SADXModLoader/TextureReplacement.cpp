@@ -14,6 +14,7 @@
 
 // Local
 #include "FileReplacement.h"
+#include "FileSystem.h"
 #include "D3DCommon.h"
 #include "DDS.h"
 #include "AutoMipmap.h"
@@ -22,6 +23,12 @@
 #include "TextureReplacement.h"
 
 #define TOMAPSTRING(a) { a, #a }
+
+struct CustomTextureEntry
+{
+	uint32_t globalIndex;
+	std::string name;
+};
 
 using namespace std;
 
@@ -45,39 +52,14 @@ static bool wasLoading = false;
 
 DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
 
-#pragma region Filesystem stuff
-
-bool DirectoryExists(const wstring& path)
-{
-	DWORD dwAttrib = GetFileAttributesW(path.c_str());
-
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-		(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
-}
-bool DirectoryExists(const string& path)
-{
-	return DirectoryExists(wstring(path.begin(), path.end()));
-}
-
-bool FileExists(const wstring& path)
-{
-	DWORD dwAttrib = GetFileAttributesW(path.c_str());
-
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-		!(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
-}
-bool FileExists(const string& path)
-{
-	return FileExists(wstring(path.begin(), path.end()));
-}
-
-#pragma endregion
-
+Sint32 njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist);
+Sint32 njLoadTexture_r(NJS_TEXLIST* texlist);
+void __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist);
 
 void texpack::Init()
 {
 	WriteJump((void*)LoadPVM_C, LoadPVM_C_r);
-	WriteJump((void*)0x0077FC80, njLoadTexture_Hook);
+	WriteJump((void*)0x0077FC80, njLoadTexture_r);
 	WriteJump((void*)njLoadTexture_Wrapper, njLoadTexture_Wrapper_r);
 }
 
@@ -450,10 +432,10 @@ Sint32 __cdecl njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist)
 {
 	CheckCache();
 	LoadingFile = true;
-	return njLoadTexture_Hook(texlist);
+	return njLoadTexture_r(texlist);
 }
 
-Sint32 __cdecl njLoadTexture_Hook(NJS_TEXLIST* texlist)
+Sint32 __cdecl njLoadTexture_r(NJS_TEXLIST* texlist)
 {
 	NJS_TEXMEMLIST* memlist; // edi@7
 
