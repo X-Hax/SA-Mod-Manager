@@ -263,7 +263,9 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 		// A texture count of 0 indicates that this is an empty texture slot.
 		if (texture->count != 0)
 		{
-			PrintDebug("Using cached texture for GBIX %u\n", globalIndex);
+			// Increment the internal reference count to avoid the texture getting freed erroneously.
+			++texture->count;
+			PrintDebug("Using cached texture for GBIX %u (ref count: %u)\n", globalIndex, texture->count);
 		}
 		else
 		{
@@ -291,12 +293,12 @@ NJS_TEXMEMLIST* LoadTexture(const std::wstring& _path, uint32_t globalIndex, con
 			// Now we assign some basic metadata from the texture entry and D3D texture, as well as the pointer to the texture itself.
 			// A few things I know are missing for sure are:
 			// NJS_TEXSURFACE::Type, Depth, Format, Flags. Virtual and Physical are pretty much always null.
-			texture->count							= 1;	// Required for the game to release the texture.
-			texture->globalIndex					= globalIndex;
-			texture->texinfo.texsurface.nWidth		= info.Width;
-			texture->texinfo.texsurface.nHeight		= info.Height;
-			texture->texinfo.texsurface.TextureSize	= info.Size;
-			texture->texinfo.texsurface.pSurface	= (Uint32*)d3dtexture;
+			texture->count                          = 1; // Texture reference count.
+			texture->globalIndex                    = globalIndex;
+			texture->texinfo.texsurface.nWidth      = info.Width;
+			texture->texinfo.texsurface.nHeight     = info.Height;
+			texture->texinfo.texsurface.TextureSize = info.Size;
+			texture->texinfo.texsurface.pSurface    = (Uint32*)d3dtexture;
 		}
 
 		for (auto& i : modCustomTextureLoadEvents)
@@ -348,8 +350,6 @@ bool ReplacePVM(const std::wstring& filename, NJS_TEXLIST* texlist)
 	for (uint32_t i = 0; i < texlist->nbTexture; i++)
 	{
 		NJS_TEXMEMLIST* texture = LoadTexture(filename, customEntries[i], mipmap);
-		if (!blacklisted)
-			texture->texaddr |= NJD_TEXATTR_AUTOMIPMAP;
 
 		// I would just break here, but unloading the textures after that causes issues.
 		// TODO: Investigate that further. This is wasteful.
