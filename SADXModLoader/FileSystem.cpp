@@ -1,28 +1,31 @@
 #include "stdafx.h"
 #include <Windows.h>
 #include <string>
+#include <shlwapi.h>
 
-bool DirectoryExists(const std::wstring& path)
+bool Exists(const std::wstring& path)
 {
-	DWORD dwAttrib = GetFileAttributesW(path.c_str());
-
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-		(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+	return PathFileExistsW(path.c_str()) != 0;
 }
-bool DirectoryExists(const std::string& path)
+bool Exists(const std::string& path)
 {
-	return DirectoryExists(std::wstring(path.begin(), path.end()));
+	return PathFileExistsA(path.c_str()) != 0;
 }
 
-bool FileExists(const std::wstring& path)
+bool IsDirectory(const std::wstring& path)
 {
-	DWORD dwAttrib = GetFileAttributesW(path.c_str());
-
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-		!(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+	return PathIsDirectoryW(path.c_str()) != 0;
 }
-bool FileExists(const std::string& path)
+bool IsDirectory(const std::string& path)
 {
-	return FileExists(std::wstring(path.begin(), path.end()));
+	return PathIsDirectoryA(path.c_str()) != 0;
 }
 
+bool IsFile(const std::wstring& path)
+{
+	return !IsDirectory(path);
+}
+bool IsFile(const std::string& path)
+{
+	return !IsDirectory(path);
+}

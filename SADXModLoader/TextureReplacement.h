@@ -2,12 +2,21 @@
 #include <string>
 #include <vector>
 
+struct TexPackEntry
+{
+	uint32_t globalIndex;
+	std::string name;
+};
+
 namespace texpack
 {
 	/// <summary>
-	/// List of texture pack directories with trailing slash (e.g mods\MyCoolMod\textures\)
+	/// Parses custom texture index.
 	/// </summary>
-	extern std::vector<std::wstring> Paths;
+	/// <param name="path">A valid path to a texture pack directory containing index.txt</param>
+	/// <param name="out">A vector to populate.</param>
+	/// <returns><c>true</c> on success.</returns>
+	bool ParseIndex(const std:: string& path, std::vector<TexPackEntry>& out);
 	/// <summary>
 	/// Initializes function hooks for texture replacement.
 	/// </summary>

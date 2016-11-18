@@ -61,7 +61,14 @@ class FileMap
 		* Scans a sound folder for non-WMA files.
 		* @param srcPath Path to scan.
 		*/
-		void FileMap::scanSoundFolder(const std::string &srcPath);
+		void scanSoundFolder(const std::string &srcPath);
+
+		/**
+		 * Scans a texture pack folder for 
+		 * @param path The path to the "textures" folder to scan.
+		 * @param modIndex Index of the current mod.
+		 */
+		void scanTextureFolder(const std::string& path, int modIndex);
 
 	protected:
 		/**

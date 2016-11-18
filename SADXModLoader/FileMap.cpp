@@ -9,6 +9,8 @@
 #include <cctype>
 #include <cstring>
 #include <algorithm>
+#include "TextureReplacement.h"
+
 using std::list;
 using std::string;
 using std::transform;
@@ -125,9 +127,10 @@ void FileMap::scanFolder_int(const std::string &srcPath, int srcLen, int modIdx)
 	WIN32_FIND_DATAA data;
 	string srcPathSearch = srcPath + "\\*";
 	HANDLE hFind = FindFirstFileA(srcPathSearch.c_str(), &data);
+
+	// No files found.
 	if (hFind == INVALID_HANDLE_VALUE)
 	{
-		// No files found.
 		return;
 	}
 
@@ -140,7 +143,8 @@ void FileMap::scanFolder_int(const std::string &srcPath, int srcLen, int modIdx)
 		{
 			continue;
 		}
-		else if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+
+		if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
 			// Recursively scan this directory.
 			string newSrcPath = srcPath + "\\" + string(data.cFileName);
@@ -151,9 +155,13 @@ void FileMap::scanFolder_int(const std::string &srcPath, int srcLen, int modIdx)
 			// Create the mod filename and original filename.
 			string modFile = srcPath + "\\" + string(data.cFileName);
 			transform(modFile.begin(), modFile.end(), modFile.begin(), ::tolower);
+
 			string fileBase = modFile.substr(srcLen);
 			string origFile = "system\\" + fileBase;
-			if (!origFile.compare(0, 25, "system\\sounddata\\bgm\\wma\\") || !origFile.compare(0, 29, "system\\sounddata\\voice_us\\wma") || !origFile.compare(0, 29, "system\\sounddata\\voice_jp\\wma"))
+
+			if (!origFile.compare(0, 25, "system\\sounddata\\bgm\\wma\\")
+				|| !origFile.compare(0, 29, "system\\sounddata\\voice_us\\wma")
+				|| !origFile.compare(0, 29, "system\\sounddata\\voice_jp\\wma"))
 			{
 				char pathcstr[MAX_PATH];
 				strncpy(pathcstr, origFile.c_str(), sizeof(pathcstr));
@@ -162,8 +170,8 @@ void FileMap::scanFolder_int(const std::string &srcPath, int srcLen, int modIdx)
 			}
 			setReplaceFile(origFile, modFile, modIdx);
 		}
-	}
-	while (FindNextFileA(hFind, &data) != 0);
+	} while (FindNextFileA(hFind, &data) != 0);
+
 	FindClose(hFind);
 }
 
@@ -176,9 +184,10 @@ void FileMap::scanSoundFolder(const std::string &srcPath)
 	WIN32_FIND_DATAA data;
 	string srcPathSearch = srcPath + "\\*";
 	HANDLE hFind = FindFirstFileA(srcPathSearch.c_str(), &data);
+
+	// No files found.
 	if (hFind == INVALID_HANDLE_VALUE)
 	{
-		// No files found.
 		return;
 	}
 
@@ -191,7 +200,8 @@ void FileMap::scanSoundFolder(const std::string &srcPath)
 		{
 			continue;
 		}
-		else if (!(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && stricmp(".wma", PathFindExtensionA(data.cFileName)))
+
+		if (!(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && stricmp(".wma", PathFindExtensionA(data.cFileName)))
 		{
 			// Create the mod filename and original filename.
 			string modFile = srcPath + "\\" + string(data.cFileName);
@@ -203,6 +213,70 @@ void FileMap::scanSoundFolder(const std::string &srcPath)
 			m_fileMap[origFile] = { modFile };
 		}
 	} while (FindNextFileA(hFind, &data) != 0);
+
+	FindClose(hFind);
+}
+
+void FileMap::scanTextureFolder(const std::string& path, int modIndex)
+{
+	WIN32_FIND_DATAA data;
+	auto searchPath = path + "\\*";
+	auto hFind = FindFirstFileA(searchPath.c_str(), &data);
+
+	auto lower = path;
+	transform(lower.begin(), lower.end(), lower.begin(), tolower);
+	std::vector<TexPackEntry> entries;
+
+	if (texpack::ParseIndex(lower, entries))
+	{
+		for (const auto& i : entries)
+		{
+			auto name = i.name;
+			auto dot = name.find('.');
+			name = name.substr(0, dot);
+
+			auto original = "system\\" + name + ".pvr";
+			transform(original.begin(), original.end(), original.begin(), tolower);
+
+			auto index_path = path + "\\index.txt";
+			transform(index_path.begin(), index_path.end(), index_path.begin(), tolower);
+
+			m_fileMap[original] = { index_path, modIndex };
+		}
+	}
+
+	// No files found.
+	if (hFind == INVALID_HANDLE_VALUE)
+	{
+		return;
+	}
+
+	do
+	{
+		// NOTE: This will hide *all* files starting with '.'.
+		// SADX doesn't use any files starting with '.',
+		// so this won't cause any problems.
+		if (data.cFileName[0] == '.')
+		{
+			continue;
+		}
+
+		if (!(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+		{
+			continue;
+		}
+
+		auto fileName = string(data.cFileName);
+
+		auto original = "system\\" + fileName + ".pvm";
+		transform(original.begin(), original.end(), original.begin(), ::tolower);
+
+		auto texPack = path + "\\" + fileName;
+		transform(texPack.begin(), texPack.end(), texPack.begin(), ::tolower);
+		m_fileMap[original] = { texPack, modIndex };
+
+	} while (FindNextFileA(hFind, &data) != 0);
+
 	FindClose(hFind);
 }
 
@@ -218,7 +292,10 @@ void FileMap::setReplaceFile(const std::string &origFile, const std::string &des
 {
 	// Update the main map.
 	m_fileMap[origFile] = { destFile, modIdx };
+
+#ifdef _DEBUG
 	PrintDebug("Replaced file: \"%s\" = \"%s\"\n", origFile.c_str(), destFile.c_str());
+#endif
 }
 
 /**
