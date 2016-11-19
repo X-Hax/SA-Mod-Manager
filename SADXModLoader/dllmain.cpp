@@ -34,6 +34,7 @@ using std::vector;
 #include "AnimationFile.h"
 #include "TextureReplacement.h"
 #include "FileReplacement.h"
+#include "FileSystem.h"
 #include "Events.h"
 #include "AutoMipmap.h"
 #include "HudScale.h"
@@ -692,7 +693,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 		windowmode = IsWindowed ? windowed : fullscreen;
 
-		if (PathFileExists(L"mods\\Border.png"))
+		if (FileExists(L"mods\\Border.png"))
 		{
 			Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 			ULONG_PTR gdiplusToken;
@@ -1846,7 +1847,10 @@ static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_di
 		for (int i = 0; i < 999; i++)
 		{
 			_snwprintf(buf, levelpath.size() + 2, levelpath.c_str(), i);
-			if (!PathFileExists(buf)) break;
+
+			if (!Exists(buf))
+				break;
+
 			const IniFile *inidata = new IniFile(buf);
 			const IniGroup *entdata;
 			vector<Loop> points;
@@ -2278,7 +2282,7 @@ static void __cdecl InitMods(void)
 	WriteJump((void *)0x40D28A, (void *)WMPRelease_r);
 	WriteJump(LoadSoundList, LoadSoundList_r);
 
-	InitTextureReplacement();
+	texpack::Init();
 
 	// Unprotect the .rdata section.
 	// TODO: Get .rdata address and length dynamically.
@@ -2380,8 +2384,12 @@ static void __cdecl InitMods(void)
 		// Check for SYSTEM replacements.
 		// TODO: Convert to WString.
 		const string modSysDirA = mod_dirA + "\\system";
-		if ((GetFileAttributesA(modSysDirA.c_str()) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
+		if (DirectoryExists(modSysDirA))
 			sadx_fileMap.scanFolder(modSysDirA, i);
+
+		const string modTexDir = mod_dirA + "\\textures";
+		if (DirectoryExists(modTexDir))
+			sadx_fileMap.scanTextureFolder(modTexDir, i);
 
 		// Check if a custom EXE is required.
 		if (modinfo->hasKeyNonEmpty("EXEFile"))
@@ -2565,11 +2573,6 @@ static void __cdecl InitMods(void)
 
 		if (modinfo->getBool("RedirectChaoSave"))
 			_chaosavepath = mod_dirA + "\\SAVEDATA";
-
-		// Texture pack stuff
-		wstring modTextureDir = mod_dir + L"\\textures\\";
-		if (PathFileExists(modTextureDir.c_str()))
-			TexturePackPaths.push_back(modTextureDir);
 	}
 
 	if (!errors.empty())

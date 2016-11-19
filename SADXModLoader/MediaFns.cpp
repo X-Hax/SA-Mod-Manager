@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "MediaFns.hpp"
 #include "FileReplacement.h"
+#include "FileSystem.h"
 
 #include "bass_vgmstream.h"
 
@@ -296,15 +297,6 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 	voicewmp = true;
 	return PlayVoiceFile(filename);
 }
-
-bool FileExists(const char *path)
-{
-	DWORD dwAttrib = GetFileAttributesA(path);
-
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-		!(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
-}
-
 
 struc_64 *LoadSoundPack(const char *path, int bank)
 {
