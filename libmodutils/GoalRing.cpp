@@ -19,11 +19,11 @@ class GoalRing : public GameEntity
 void GoalRing::Display()
 {
 	njSetTexture(&GoalRingTextures);
-	njPushMatrix(0);
-	njTranslateV(0, &Position);
+	njPushMatrix(nullptr);
+	njTranslateV(nullptr, &Position);
 	int yrot = Rotation.y;
 	if (yrot)
-		njRotateY(0, yrot);
+		njRotateY(nullptr, yrot);
 	if (FrameCounter % 40 >= 25)
 		object_GoalText.evalflags |= NJD_EVAL_HIDE;
 	else
