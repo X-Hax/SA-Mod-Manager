@@ -3,6 +3,7 @@
 #include <d3d8.h>
 #include <d3dx8tex.h>
 #include <ModLoader/MemAccess.h>
+#include "SADXModLoader/SADXStructs.h"
 
 #if defined(_MSC_VER) && _MSC_VER >= 1900
 // MSVC 2015 inlines printf() and scanf() functions.
@@ -14,3 +15,18 @@
 #endif
 
 DataPointer(IDirect3DDevice8*, Direct3D_Device, 0x03D128B0);
+
+struct MeshSetBuffer
+{
+	NJS_MESHSET_SADX* Meshset;
+	void *field_4;
+	int FVF;
+	IDirect3DVertexBuffer8* VertexBuffer;
+	int Size;
+	IDirect3DIndexBuffer8* IndexBuffer;
+	D3DPRIMITIVETYPE PrimitiveType;
+	int MinIndex;
+	int NumVertecies;
+	int StartIndex;
+	int PrimitiveCount;
+};

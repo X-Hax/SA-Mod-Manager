@@ -132,7 +132,7 @@ void LandTableInfo::fixmodelpointers(NJS_MODEL_SADX *model, intptr_t base)
 			for (int i = 0; i < model->nbMeshset; i++)
 			{
 				memcpy(&tmp[i], &((NJS_MESHSET *)model->meshsets)[i], sizeof(NJS_MESHSET));
-				tmp[i].null = 0;
+				tmp[i].buffer = 0;
 			}
 			model->meshsets = tmp;
 			allocatedmem.push_back(shared_ptr<NJS_MESHSET_SADX>(model->meshsets, default_delete<NJS_MESHSET_SADX[]>()));
@@ -161,7 +161,7 @@ void LandTableInfo::fixobjectpointers(NJS_OBJECT *object, intptr_t base)
 			NJS_MODEL_SADX *tmp = new NJS_MODEL_SADX;
 			reallocateddata[object->model] = tmp;
 			memcpy(tmp, object->model, sizeof(NJS_MODEL));
-			tmp->null = 0;
+			tmp->buffer = 0;
 			object->basicdxmodel = tmp;
 			allocatedmem.push_back(shared_ptr<NJS_MODEL_SADX>(object->basicdxmodel, default_delete<NJS_MODEL_SADX>()));
 			fixmodelpointers(object->basicdxmodel, base);
