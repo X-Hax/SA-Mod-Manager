@@ -331,6 +331,8 @@ static int curscrnsz[2];
 DataPointer(D3DPRESENT_PARAMETERS, PresentParameters, 0x03D0FDC0);
 DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x03D12780);
 DataPointer(DWORD, StencilThing, 0x03D1289C);
+DataPointer(float, ViewPortWidth, 0x03D0FA04);
+DataPointer(float, ViewPortHeight, 0x03D0FA08);
 DataPointer(float, ViewPortWidth_Half, 0x03D0FA0C);
 DataPointer(float, ViewPortHeight_Half, 0x03D0FA10);
 
@@ -386,11 +388,13 @@ static HRESULT Direct3D_Reset()
 	Direct3D_Device->SetRenderState(D3DRS_FOGDENSITY, fogdensity);
 
 	Direct3D_Device->GetViewport(&Direct3D_ViewPort);
-	ViewPortWidth_Half  = Direct3D_ViewPort.Width / 2.0f;
-	ViewPortHeight_Half = Direct3D_ViewPort.Height / 2.0f;
 
+	ViewPortWidth        = (float)Direct3D_ViewPort.Width;
 	HorizontalResolution = Direct3D_ViewPort.Width;
+	ViewPortWidth_Half   = ViewPortWidth / 2.0f;
+	ViewPortHeight       = (float)Direct3D_ViewPort.Height;
 	VerticalResolution   = Direct3D_ViewPort.Height;
+	ViewPortHeight_Half  = ViewPortHeight / 2.0f;
 	HorizontalStretch    = (float)HorizontalResolution / 640.0f;
 	VerticalStretch      = (float)VerticalResolution / 480.0f;
 
