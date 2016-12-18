@@ -37,6 +37,7 @@
     <ClInclude Include="FixFOV.h" />
     <ClInclude Include="git.h" />
     <ClInclude Include="HudScale.h" />
+    <ClInclude Include="include\d3d8types.h" />
     <ClInclude Include="include\ModLoader\MemAccess.h" />
     <ClInclude Include="include\ninja.h" />
     <ClInclude Include="include\SADXModLoader.h" />
