@@ -10,7 +10,6 @@
 
 namespace mipmap
 {
-	// TODO: Consider reading these form disk
 	static const std::vector<std::string> PVMBlacklist = {
 		"AL_DX_TEX_XYBUTTON",
 		"AL_ENT_CHAR_E_TEX",
@@ -656,7 +655,7 @@ namespace mipmap
 			goto ABORT;
 
 #ifndef PALLETIZED_MIPMAPS
-		Uint32 format = njs_texture->texinfo.texsurface.PixelFormat;
+		auto format = njs_texture->texinfo.texsurface.PixelFormat;
 
 		if (format == NJD_PIXELFORMAT_PALETTIZED_4BPP || format == NJD_PIXELFORMAT_PALETTIZED_8BPP)
 			goto ABORT;
@@ -690,17 +689,14 @@ namespace mipmap
 		SetSurface(dest, &njs_texture->texinfo.texsurface);
 		return;
 
+		// TODO: just use exceptions
 	ABORT:
 		SetSurface(src, &njs_texture->texinfo.texsurface);
-		return;
 	}
 
-#pragma region Assembly
-
-	static void* GenerateMipmaps_return = (void*)0x0078CD37;
+	static void* loc_78CD37 = (void*)0x0078CD37;
 	static void __declspec(naked) GenerateMipmaps_asm()
 	{
-		// This could probably use some optimizing.
 		__asm
 		{
 			mov		edx, esi
@@ -710,11 +706,9 @@ namespace mipmap
 			call	GenerateMipmaps_c
 			pop		eax
 
-			jmp		GenerateMipmaps_return
+			jmp		loc_78CD37
 		}
 	}
-
-#pragma endregion
 
 #ifdef PALLETIZED_MIPMAPS
 	void __cdecl GeneratePalletizedMipmaps_c(IDirect3DTexture8* src)
@@ -742,13 +736,13 @@ namespace mipmap
 		WriteJump((void*)0x0078CD2A, GenerateMipmaps_asm);	// Hooks the end of the function that converts PVRs to D3D textures
 #ifdef PALLETIZED_MIPMAPS
 		// This happens every frame for every palletized texture in the scene. Rather inefficient where mipmap generation is concerned.
-		// Assuming somebody can figure out a method of keeping track of palette changes and textures who's mips have already been generated,
+		// Assuming somebody can figure out a method of keeping track of palette changes and textures whose mipmaps have already been generated,
 		// we can enable this for mainstream builds. Otherwise it should stay off.
 		WriteJump((void*)0x0078CF06, GeneratePalletizedMipmaps_asm);
 #endif
 	}
 
-	inline bool find(const std::vector<std::string>& v, const char* name)
+	inline bool find_name(const std::vector<std::string>& v, const char* name)
 	{
 		if (name == nullptr)
 			return false;
@@ -758,31 +752,26 @@ namespace mipmap
 		return std::find(v.begin(), v.end(), str.c_str()) != v.end();
 	}
 
+	bool IsBlacklistedPVM(const char* name)
+	{
+		return blacklisted = find_name(PVMBlacklist, name);
+	}
 	bool IsBlacklistedPVR(const char* name)
 	{
-#ifdef _DEBUG
-		if (!strcmp(name, "abc_txt"))
-			PrintDebug("?!\n");
-#endif
-
-		return blacklisted = find(PVRBlacklist, name);
+		return blacklisted = find_name(PVRBlacklist, name);
 	}
 	bool IsBlacklistedGBIX(Uint32 gbix)
 	{
 		return blacklisted = std::find(gbixBlacklist.begin(), gbixBlacklist.end(), gbix) != gbixBlacklist.end();
 	}
-	bool IsBlacklistedPVM(const char* name)
-	{
-		return blacklisted = find(PVMBlacklist, name);
-	}
 
 	void BlacklistGBIX(Uint32 gbix)
 	{
-		if (!IsBlacklistedGBIX(gbix))
-		{
-			gbixBlacklist.push_back(gbix);
-			PrintDebug("Blacklisted GBIX %u\n", gbix);
-		}
+		if (IsBlacklistedGBIX(gbix))
+			return;
+
+		gbixBlacklist.push_back(gbix);
+		PrintDebug("Blacklisted GBIX %u\n", gbix);
 	}
 
 	void SkipMipmap(bool value)
@@ -796,14 +785,14 @@ namespace mipmap
 	}
 
 	// This has something to do with dynamic texture generation. It's used for videos and menus.
-	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, void* a2);
+	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, IDirect3DTexture8* texture);
 	static Trampoline sub_77FA10_trampoline(0x0077FA10, 0x0077FA16, sub_77FA10_hook);
-	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, void* a2)
+	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, IDirect3DTexture8* texture)
 	{
 		blacklisted = true;
 
-		FunctionPointer(Sint32, original, (Uint32, void*), sub_77FA10_trampoline.Target());
-		Sint32 result = original(gbix, a2);
+		FunctionPointer(Sint32, original, (Uint32, IDirect3DTexture8*), sub_77FA10_trampoline.Target());
+		auto result = original(gbix, texture);
 
 		blacklisted = false;
 		return result;

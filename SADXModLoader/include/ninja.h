@@ -1114,9 +1114,9 @@ typedef struct {
 	NJS_VECTOR      *normals;   /* mesh normal list             */
 	NJS_COLOR       *vertcolor; /* polygon vertex color list    */
 	NJS_TEX         *vertuv;    /* polygon vertex uv list       */
-	void            *null;
+	// A pointer to MeshSetBuffer. See definition in D3DCommon.h.
+	void            *buffer;
 } NJS_MESHSET_SADX;
-
 typedef struct {
 	NJS_POINT3      *points;    /* vertex list                  */
 	NJS_VECTOR      *normals;   /* vertex normal list           */
@@ -1139,7 +1139,7 @@ typedef struct {
 	Uint16          nbMat;      /* material count               */
 	NJS_POINT3      center;     /* model center                 */
 	Float			r;			/* ??????????? */
-	void            *null;
+	void            *buffer;
 } NJS_MODEL_SADX;
 
 struct struct_0
@@ -1177,13 +1177,14 @@ typedef struct obj {
 	Float           scl[3];     /* scaling                      */
 	struct obj      *child;     /* child object                 */
 	struct obj      *sibling;   /* sibling object               */
-	NJS_MODEL       *getbasicmodel() { return (NJS_MODEL*)model; }
+
+	NJS_MODEL       *getbasicmodel() const { return (NJS_MODEL*)model; }
 	void            putbasicmodel(NJS_MODEL *value) { model = value; }
-	NJS_MODEL_SADX  *getbasicdxmodel() { return (NJS_MODEL_SADX*)model; }
+	NJS_MODEL_SADX  *getbasicdxmodel() const { return (NJS_MODEL_SADX*)model; }
 	void            putbasicdxmodel(NJS_MODEL_SADX *value) { model = value; }
-	NJS_CNK_MODEL   *getchunkmodel() { return (NJS_CNK_MODEL*)model; }
+	NJS_CNK_MODEL   *getchunkmodel() const { return (NJS_CNK_MODEL*)model; }
 	void            putchunkmodel(NJS_CNK_MODEL *value) { model = value; }
-	SA2B_Model      *getsa2bmodel() { return (SA2B_Model*)model; }
+	SA2B_Model      *getsa2bmodel() const { return (SA2B_Model*)model; }
 	void            putsa2bmodel(SA2B_Model *value) { model = value; }
 
 #ifdef _MSC_VER
@@ -1198,7 +1199,7 @@ typedef struct obj {
 	SA2B_Model      *sa2bmodel;
 #endif
 
-	int countanimated()
+	int countanimated() const
 	{
 		int result = (evalflags & NJD_EVAL_SKIP) == NJD_EVAL_SKIP ? 0 : 1;
 		if (child != nullptr)
@@ -1208,7 +1209,7 @@ typedef struct obj {
 		return result;
 	}
 
-	int countmorph()
+	int countmorph() const
 	{
 		int result = (evalflags & NJD_EVAL_SHAPE_SKIP) == NJD_EVAL_SHAPE_SKIP ? 0 : 1;
 		if (child != nullptr)
@@ -1217,7 +1218,7 @@ typedef struct obj {
 			result += sibling->countmorph();
 		return result;
 	}
-} NJS_OBJECT;
+} NJS_OBJECT, NJS_CNK_OBJECT;
 
 /*
  * NJS_MOTION

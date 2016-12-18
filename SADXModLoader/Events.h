@@ -3,7 +3,7 @@
 #include "SADXModLoader.h"
 #include <vector>
 
-using TextureLoadEvent = void(__cdecl *)(NJS_TEXMEMLIST*, const wchar_t*, Uint32);
+using TextureLoadEvent = void(__cdecl *)(NJS_TEXMEMLIST*, const char*, Uint32);
 
 extern std::vector<ModEvent> modFrameEvents;
 extern std::vector<ModEvent> modInputEvents;
@@ -27,7 +27,7 @@ inline void RaiseEvents(const std::vector<ModEvent>& eventList)
 * @param module The module for the mod DLL.
 * @param name The name of the exported function from the module (i.e OnFrame)
 */
-void RegisterEvent(std::vector<ModEvent>& eventList, HMODULE module, const char * name);
+void RegisterEvent(std::vector<ModEvent>& eventList, HMODULE module, const char* name);
 
 void __cdecl OnInput();
 void __cdecl OnInput_MidJump();

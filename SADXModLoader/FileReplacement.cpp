@@ -11,7 +11,7 @@ FileMap sadx_fileMap;
 * @param lpFileName
 * @param dwDesiredAccess
 * @param dwShareMode
-* @param lpSecurityAttibutes
+* @param lpSecurityAttributes
 * @param dwCreationDisposition
 * @param dwFlagsAndAttributes
 * @param hTemplateFile

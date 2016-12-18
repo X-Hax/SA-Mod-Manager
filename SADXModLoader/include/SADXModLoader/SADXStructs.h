@@ -9,12 +9,7 @@
 #include <stdint.h>
 #include "../ninja.h"
 #include "d3d8types.h"
-
-typedef NJS_VECTOR Vector3;
-typedef NJS_MDATA2 AnimFrame_PosRot;
-typedef NJS_MDATA3 AnimFrame_PosRotScale;
-typedef NJS_MOTION AnimHead2;
-typedef NJS_ACTION AnimHead;
+#include "SADXEnums.h"
 
 // All structs should be packed.
 #pragma pack(push, 1)
@@ -78,7 +73,7 @@ struct StartPosition
 {
 	int16_t LevelID;
 	int16_t ActID;
-	Vector3 Position;
+	NJS_VECTOR Position;
 	int YRot;
 };
 
@@ -108,8 +103,8 @@ struct SET_Entry
 	int16_t XRotation;
 	int16_t YRotation;
 	int16_t ZRotation;
-	Vector3 Position;
-	Vector3 Properties;
+	NJS_VECTOR Position;
+	NJS_VECTOR Properties;
 };
 
 struct RecapScreen
@@ -121,7 +116,7 @@ struct RecapScreen
 
 struct COL
 {
-	Vector3 Center;
+	NJS_VECTOR Center;
 	float Radius;
 	int Padding[2];
 	NJS_OBJECT *OBJECT;
@@ -156,7 +151,7 @@ struct LandTable
 struct P2Path
 {
 	int field_0;
-	Vector3 Position;
+	NJS_VECTOR Position;
 };
 
 struct Loop
@@ -164,7 +159,7 @@ struct Loop
 	int16_t Ang_X;
 	int16_t Ang_Y;
 	float Dist;
-	Vector3 Position;
+	NJS_VECTOR Position;
 };
 
 struct LoopHead
@@ -390,8 +385,8 @@ struct ObjectData2
 	float field_1DC;
 	float field_1E0;
 	char gap_1E4[16];
-	AnimHead *AnimHead_ptr_A;
-	AnimHead *AnimHead_ptr_B;
+	NJS_ACTION *AnimHead_ptr_A;
+	NJS_ACTION *AnimHead_ptr_B;
 	NJS_MATRIX matrix;
 };
 
@@ -476,9 +471,38 @@ struct CharacterLightData
 	float anonymous_13;
 };
 
+struct PaletteLight
+{
+	Uint8 Level;
+	Uint8 Act;
+	Uint8 Flags;
+	Uint8 Type;
+	NJS_VECTOR Direction;
+	float DIF;     // (0~4 ) Diffuse
+	float AMB_R;   // (0~4 ) Ambient R
+	float AMB_G;   // (0~4 ) Ambient G
+	float AMB_B;   // (0~4 ) Ambient B
+	float CO_pow;  // (0~99) [unused] Upper Color Power (higher is less visible)
+	float CO_R;    // (0~4 ) [unused] Upper Color R
+	float CO_G;    // (0~4 ) [unused] Upper Color G
+	float CO_B;    // (0~4 ) [unused] Upper Color B
+	float SP_pow;  // (0~99) Upper Specular Power (higher is less visible)
+	float SP_R;    // (0~4 ) Upper Specular R
+	float SP_G;    // (0~4 ) Upper Specular G
+	float SP_B;    // (0~4 ) Upper Specular B
+	float CO2_pow; // (0~99) [unused] Lower Color Power (higher is less visible)
+	int CO2_R;     // (0~4 ) [unused] Lower Color R
+	int CO2_G;     // (0~4 ) [unused] Lower Color G
+	int CO2_B;     // (0~4 ) [unused] Lower Color B
+	float SP2_pow; // (0~99) [unused] Lower Specular Power (higher is less visible)
+	float SP2_R;   // (0~4 ) [unused] Lower Specular R
+	float SP2_G;   // (0~4 ) [unused] Lower Specular G
+	float SP2_B;   // (0~4 ) [unused] Lower Specular B
+};
+
 struct SecondaryEntrance
 {
-	Vector3 Position;
+	NJS_VECTOR Position;
 	int YRot;
 };
 
@@ -513,7 +537,7 @@ struct FieldStartPosition
 {
 	int16_t LevelID;
 	int16_t FieldID;
-	Vector3 Position;
+	NJS_VECTOR Position;
 	int YRot;
 };
 
@@ -672,7 +696,7 @@ struct RestartData
 	char Frame;
 	char anonymous_0[3];
 	int CheckpointHit;
-	Vector3 Position;
+	NJS_VECTOR Position;
 	Rotation3 Rotation;
 };
 
@@ -690,7 +714,7 @@ struct MESFileHeader
 
 struct FieldNPCDataYRot
 {
-	Vector3 Position;
+	NJS_VECTOR Position;
 	int16_t YRot;
 	char TextNum;
 	char CharacterNum;
@@ -698,7 +722,7 @@ struct FieldNPCDataYRot
 
 struct FieldNPCDataXYZRot
 {
-	Vector3 Position;
+	NJS_VECTOR Position;
 	int16_t XRot;
 	int16_t YRot;
 	int16_t ZRot;
@@ -1054,7 +1078,6 @@ struct ChaoDebugFunction
 	void(__cdecl *Function)(ObjectMaster *_this);
 	const char *Name;
 };
-
 
 #pragma pack(pop)
 

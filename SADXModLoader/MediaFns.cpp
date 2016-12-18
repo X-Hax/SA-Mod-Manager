@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "MediaFns.hpp"
 #include "FileReplacement.h"
+#include "FileSystem.h"
 
 #include "bass_vgmstream.h"
 
@@ -29,7 +30,7 @@ static DWORD voicechan = 0;
  */
 void WMPInit_r()
 {
-	enablevgmstream = BASS_Init(-1, 44100, 0, 0, NULL) ? true : false;
+	enablevgmstream = BASS_Init(-1, 44100, 0, nullptr, nullptr) ? true : false;
 }
 
 /**
@@ -87,7 +88,7 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 			musicwmp = false;
 			BASS_ChannelPlay(basschan, false);
 			BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0f);
-			BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, 0);
+			BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, nullptr);
 			MusicLooping = loop;
 			dword_3ABDFA0 = 1;
 			dword_3ABDF98 = 3;
@@ -297,15 +298,6 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 	return PlayVoiceFile(filename);
 }
 
-bool FileExists(const char *path)
-{
-	DWORD dwAttrib = GetFileAttributesA(path);
-
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-		!(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
-}
-
-
 struc_64 *LoadSoundPack(const char *path, int bank)
 {
 	char filename[MAX_PATH];
@@ -440,7 +432,7 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 							}
 							sub_423890(v2->Bank);
 							sub_4B4F50(dword_3B291C8[v2->Bank]);
-							dword_3B291C8[v2->Bank] = 0;
+							dword_3B291C8[v2->Bank] = nullptr;
 						}
 						_snprintf(String1, sizeof(String1), "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
 						_snprintf(sndpackpath, sizeof(sndpackpath), "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
