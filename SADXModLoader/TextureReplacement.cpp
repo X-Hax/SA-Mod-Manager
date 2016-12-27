@@ -325,8 +325,10 @@ bool ReplacePVM(const string& path, NJS_TEXLIST* texlist)
 
 		if (texture == nullptr)
 		{
+			auto nbTexture = texlist->nbTexture;
 			texlist->nbTexture = i;
 			njReleaseTexture(texlist);
+			texlist->nbTexture = nbTexture;
 			return false;
 		}
 
