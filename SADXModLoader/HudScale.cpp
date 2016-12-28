@@ -15,9 +15,13 @@ using std::vector;
 
 static void __cdecl Draw2DSprite_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
 static void __cdecl njDrawSprite2D_4_r(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr);
+static void __cdecl DrawRectPoints_r(NJS_POINT2 *points, float scale);
+static void __cdecl sub_404490_r(NJS_POINT2COL *points, int count, float depth, int size, char flags);
 
 Trampoline Draw2DSprite_t(0x00404660, 0x00404666, Draw2DSprite_r);
 Trampoline njDrawSprite2D_4_t(0x004070A0, 0x004070A5, njDrawSprite2D_4_r);
+Trampoline DrawRectPoints_t(0x0077E970, 0x0077E977, DrawRectPoints_r);
+Trampoline sub_404490_t(0x00404490, 0x00404496, sub_404490_r);
 
 static Trampoline* DisplayAllObjects_t;
 static Trampoline* missionScreen;
@@ -58,7 +62,7 @@ static Trampoline* scaleDemoPressStart;
 
 #pragma endregion
 
-#pragma region scale stack
+#pragma region sprite stack
 
 enum Align : Uint8
 {
@@ -86,7 +90,7 @@ static const float patch_dummy = 1.0f;
 static const float third_h = 640.0f / 3.0f;
 static const float third_v = 480.0f / 3.0f;
 
-static bool doScale   = false;
+static bool do_scale  = false;
 static float scale    = 0.0f;
 static float scale_h  = 0.0f;
 static float scale_v  = 0.0f;
@@ -114,7 +118,7 @@ static void __cdecl ScalePush(Uint8 align, float h = 1.0f, float v = 1.0f)
 	HorizontalStretch = h;
 	VerticalStretch = v;
 
-	doScale = true;
+	do_scale = true;
 }
 
 static void __cdecl ScalePop()
@@ -129,12 +133,12 @@ static void __cdecl ScalePop()
 	VerticalStretch = point.scale.y;
 
 	scale_stack.pop();
-	doScale = scale_stack.size() > 0;
+	do_scale = scale_stack.size() > 0;
 }
 
 static void __cdecl DisplayAllObjects_r()
 {
-	if (doScale)
+	if (do_scale)
 	{
 		ScalePush(Align::Auto, scale_h, scale_v);
 	}
@@ -142,7 +146,7 @@ static void __cdecl DisplayAllObjects_r()
 	auto original = (decltype(DisplayAllObjects_r)*)DisplayAllObjects_t->Target();
 	original();
 
-	if (doScale)
+	if (do_scale)
 	{
 		ScalePop();
 	}
@@ -151,7 +155,7 @@ static void __cdecl DisplayAllObjects_r()
 // HACK: Remove when "other things" scaling is implemented
 static Sint32 __cdecl FixMissionScreen()
 {
-	if (doScale)
+	if (do_scale)
 	{
 		ScalePush(Align::Auto, scale_h, scale_v);
 	}
@@ -159,7 +163,7 @@ static Sint32 __cdecl FixMissionScreen()
 	auto original = (decltype(FixMissionScreen)*)missionScreen->Target();
 	Sint32 result = original();
 
-	if (doScale)
+	if (do_scale)
 	{
 		ScalePop();
 	}
@@ -167,76 +171,83 @@ static Sint32 __cdecl FixMissionScreen()
 	return result;
 }
 
-#pragma endregion
-
-#pragma region sprite stack
-
 static NJS_SPRITE last_sprite;
 
-static void __cdecl SpritePush(NJS_SPRITE* sp)
+static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT2& center)
 {
-	auto top = scale_stack.top();
-	auto align = top.alignment;
-
-	if (align == Align::Auto)
+	if (center.x < third_h)
 	{
-		if (sp->p.x < third_h)
-		{
-			align |= Align::Left;
-		}
-		else if (sp->p.x < third_h * 2.0f)
-		{
-			align |= Align::HorizontalCenter;
-		}
-		else
-		{
-			align |= Align::Right;
-		}
-
-		if (sp->p.y < third_v)
-		{
-			align |= Align::Top;
-		}
-		else if (sp->p.y < third_v * 2.0f)
-		{
-			align |= Align::VerticalCenter;
-		}
-		else
-		{
-			align |= Align::Bottom;
-		}
+		align |= Align::Left;
+	}
+	else if (center.x < third_h * 2.0f)
+	{
+		align |= Align::HorizontalCenter;
+	}
+	else
+	{
+		align |= Align::Right;
 	}
 
-	last_sprite = *sp;
+	if (center.y < third_v)
+	{
+		align |= Align::Top;
+	}
+	else if (center.y < third_v * 2.0f)
+	{
+		align |= Align::VerticalCenter;
+	}
+	else
+	{
+		align |= Align::Bottom;
+	}
 
-	sp->p.x *= scale;
-	sp->p.y *= scale;
-	sp->sx  *= scale;
-	sp->sy  *= scale;
+	NJS_POINT2 result = {};
 
 	if (align & Align::HorizontalCenter)
 	{
 		if ((float)HorizontalResolution / scale_v > 640.0f)
 		{
-			sp->p.x += (float)HorizontalResolution / 2.0f - region_w / 2.0f;
+			result.x = (float)HorizontalResolution / 2.0f - region_w / 2.0f;
 		}
 	}
 	else if (align & Align::Right)
 	{
-		sp->p.x += (float)HorizontalResolution - region_w;
+		result.x = (float)HorizontalResolution - region_w;
 	}
 
 	if (align & Align::VerticalCenter)
 	{
 		if ((float)VerticalResolution / scale_h > 480.0f)
 		{
-			sp->p.y += (float)VerticalResolution / 2.0f - region_h / 2.0f;
+			result.y = (float)VerticalResolution / 2.0f - region_h / 2.0f;
 		}
 	}
 	else if (align & Align::Bottom)
 	{
-		sp->p.y += (float)VerticalResolution - region_h;
+		result.y = (float)VerticalResolution - region_h;
 	}
+
+	return result;
+}
+
+static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT3& center)
+{
+	return AutoAlign(align, *(NJS_POINT2*)&center);
+}
+
+static void __cdecl SpritePush(NJS_SPRITE* sp)
+{
+	auto top = scale_stack.top();
+	auto align = top.alignment;
+	
+	auto offset = AutoAlign(align, sp->p);
+
+	last_sprite = *sp;
+
+	sp->p.x = sp->p.x * scale + offset.x;
+	sp->p.y = sp->p.y * scale + offset.y;
+	sp->sx *= scale;
+	sp->sy *= scale;
 }
 
 static void __cdecl SpritePop(NJS_SPRITE* sp)
@@ -244,6 +255,36 @@ static void __cdecl SpritePop(NJS_SPRITE* sp)
 	sp->p = last_sprite.p;
 	sp->sx = last_sprite.sx;
 	sp->sy = last_sprite.sy;
+}
+
+static void ScaleRect(NJS_POINT2* points, size_t count)
+{
+	auto top = scale_stack.top();
+	auto align = top.alignment;
+
+	// 0 = bottom left
+	// 1 = top left
+	// 2 = bottom right
+	// 3 = top right
+
+	NJS_POINT2 center = {};
+	auto m = 1.0f / (float)count;
+
+	for (size_t i = 0; i < count; i++)
+	{
+		const auto& p = points[i];
+		center.x += p.x * m;
+		center.y += p.y * m;
+	}
+
+	auto offset = AutoAlign(align, center);
+
+	for (size_t i = 0; i < count; i++)
+	{
+		auto& p = points[i];
+		p.x = p.x * scale + offset.x;
+		p.y = p.y * scale + offset.y;
+	}
 }
 
 #ifdef _DEBUG
@@ -469,7 +510,7 @@ static void __cdecl Draw2DSprite_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr
 	StoreSprite(sp);
 #endif
 
-	if (!doScale || sp == (NJS_SPRITE*)0x009BF3B0)
+	if (!do_scale || sp == (NJS_SPRITE*)0x009BF3B0)
 	{
 		// Scales lens flare and sun.
 		// It uses njProjectScreen so there's no position scaling required.
@@ -502,7 +543,7 @@ static void __cdecl njDrawSprite2D_4_r(NJS_SPRITE *sp, Int n, Float pri, Uint32 
 	StoreSprite(sp);
 #endif
 
-	if (!doScale)
+	if (!do_scale)
 	{
 		original(sp, n, pri, attr);
 	}
@@ -512,6 +553,44 @@ static void __cdecl njDrawSprite2D_4_r(NJS_SPRITE *sp, Int n, Float pri, Uint32 
 		original(sp, n, pri, attr | NJD_SPRITE_SCALE);
 		SpritePop(sp);
 	}
+}
+
+static void __cdecl DrawRectPoints_r(NJS_POINT2* points, float scale)
+{
+	if (points == nullptr)
+	{
+		return;
+	}
+
+	FunctionPointer(void, original, (NJS_POINT2*, float), DrawRectPoints_t.Target());
+
+	if (!do_scale)
+	{
+		original(points, scale);
+		return;
+	}
+
+	ScaleRect(points, 4);
+	original(points, scale);
+}
+
+static void __cdecl sub_404490_r(NJS_POINT2COL* points, int count, float depth, int size, char flags)
+{
+	if (points == nullptr)
+	{
+		return;
+	}
+
+	FunctionPointer(void, original, (NJS_POINT2COL*, int, float, int, char), sub_404490_t.Target());
+
+	if (!do_scale)
+	{
+		original(points, count, depth, size, flags);
+		return;
+	}
+
+	ScaleRect(points->p, points->num);
+	original(points, count, depth, size, flags);
 }
 
 void SetHudScaleValues()
