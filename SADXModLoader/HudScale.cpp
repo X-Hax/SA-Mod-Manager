@@ -59,6 +59,8 @@ static Trampoline* scaleMissionCounter;
 static Trampoline* scaleTailsWinLose;
 static Trampoline* scaleTailsRaceBar;
 static Trampoline* scaleDemoPressStart;
+static Trampoline* ChaoDX_Message_PlayerAction_Load_t;
+static Trampoline* ChaoDX_Message_PlayerAction_Display_t;
 
 #pragma endregion
 
@@ -237,9 +239,14 @@ static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT3& center)
 
 static void __cdecl SpritePush(NJS_SPRITE* sp)
 {
+	if (scale_stack.empty())
+	{
+		return;
+	}
+
 	auto top = scale_stack.top();
 	auto align = top.alignment;
-	
+
 	auto offset = AutoAlign(align, sp->p);
 
 	last_sprite = *sp;
@@ -259,6 +266,11 @@ static void __cdecl SpritePop(NJS_SPRITE* sp)
 
 static void ScaleRect(NJS_POINT2* points, size_t count)
 {
+	if (scale_stack.empty())
+	{
+		return;
+	}
+
 	auto top = scale_stack.top();
 	auto align = top.alignment;
 
@@ -324,11 +336,6 @@ R ScaleTrampoline(Uint8 align, const T&, const Trampoline* t, Args... args)
 
 #pragma region scale functions
 
-static int wangis()
-{
-	return ScaleTrampoline<int>(Align::Auto, wangis, scaleRingLife);
-}
-
 static void __cdecl ScaleResultScreen(ObjectMaster* _this)
 {
 	ScalePush(Align::Center);
@@ -352,7 +359,8 @@ static void __cdecl ScaleStageMission(ObjectMaster* _this)
 
 static short __cdecl ScalePauseMenu()
 {
-	return ScaleTrampoline<short>(Align::Center, ScalePauseMenu, scalePause);}
+	return ScaleTrampoline<short>(Align::Center, ScalePauseMenu, scalePause);
+}
 
 static void __cdecl ScaleTargetLifeGague(ObjectMaster* a1)
 {
@@ -473,7 +481,7 @@ static void __cdecl ScaleMissionStartClear(ObjectMaster* a1)
 }
 static void __cdecl ScaleMissionTimer()
 {
-	
+
 	ScaleTrampoline(Align::Center, ScaleMissionTimer, scaleMissionTimer);
 }
 static void __cdecl ScaleMissionCounter()
@@ -493,6 +501,17 @@ static void __cdecl ScaleTailsRaceBar(ObjectMaster* a1)
 static void __cdecl ScaleDemoPressStart(ObjectMaster* a1)
 {
 	ScaleTrampoline(Align::Right, ScaleDemoPressStart, scaleDemoPressStart, a1);
+}
+
+static void __cdecl ChaoDX_Message_PlayerAction_Load_r()
+{
+	ScaleTrampoline(Align::Auto, ChaoDX_Message_PlayerAction_Load_r, ChaoDX_Message_PlayerAction_Load_t);
+}
+
+static void __cdecl ChaoDX_Message_PlayerAction_Display_r(ObjectMaster* a1)
+{
+	ScaleTrampoline(Align::Top | Align::Right,
+		ChaoDX_Message_PlayerAction_Display_r, ChaoDX_Message_PlayerAction_Display_t, a1);
 }
 
 #pragma endregion
@@ -566,11 +585,19 @@ static void __cdecl DrawRectPoints_r(NJS_POINT2* points, float scale)
 
 	if (!do_scale)
 	{
+#if 0
 		original(points, scale);
 		return;
+#else
+		ScalePush(Align::Top | Align::Left);
+		ScaleRect(points, 2);
+		original(points, scale);
+		ScalePop();
+		return;
+#endif
 	}
 
-	ScaleRect(points, 4);
+	ScaleRect(points, 2);
 	original(points, scale);
 }
 
@@ -604,6 +631,18 @@ void SetHudScaleValues()
 	region_h = 480.0f * scale;
 }
 
+static Sint32 __fastcall wangis_r(int n);
+static Trampoline wangis(0x0077F440, 0x0077F445, wangis_r);
+static Sint32 __fastcall wangis_r(int n)
+{
+	if (n == 2 && *(NJS_TEXLIST**)0x03D0FA24 == (NJS_TEXLIST*)0x33A1040)
+	{
+		PrintDebug("\aNUMBERWANG\n");
+	}
+	FastcallFunctionPointer(Sint32, wonjis, (int), wangis.Target());
+	return wonjis(n);
+}
+
 void SetupHudScale()
 {
 	SetHudScaleValues();
@@ -619,8 +658,8 @@ void SetupHudScale()
 
 	missionScreen = new Trampoline(0x00590E60, 0x00590E65, FixMissionScreen);
 
-	scaleRingLife     = new Trampoline(0x00425F90, 0x00425F95, ScaleRingLife);
-	scaleScoreTime    = new Trampoline(0x00427F50, 0x00427F55, ScaleScoreTime);
+	scaleRingLife = new Trampoline(0x00425F90, 0x00425F95, ScaleRingLife);
+	scaleScoreTime = new Trampoline(0x00427F50, 0x00427F55, ScaleScoreTime);
 	scaleStageMission = new Trampoline(0x00457120, 0x00457126, ScaleStageMission);
 
 	scalePause = new Trampoline(0x00415420, 0x00415425, ScalePauseMenu);
@@ -663,17 +702,17 @@ void SetupHudScale()
 	WriteData((const float**)0x00477E8E, &patch_dummy);
 	WriteData((const float**)0x00477EC0, &patch_dummy);
 
-	scaleEmeraldRadarA     = new Trampoline(0x00475A70, 0x00475A75, ScaleEmeraldRadarA);
-	scaleEmeraldRadarB     = new Trampoline(0x00475E50, 0x00475E55, ScaleEmeraldRadarB);
+	scaleEmeraldRadarA = new Trampoline(0x00475A70, 0x00475A75, ScaleEmeraldRadarA);
+	scaleEmeraldRadarB = new Trampoline(0x00475E50, 0x00475E55, ScaleEmeraldRadarB);
 	scaleEmeraldRadar_Grab = new Trampoline(0x00475D50, 0x00475D55, ScaleEmeraldRadar_Grab);
 
 	scaleSandHillMultiplier = new Trampoline(0x005991A0, 0x005991A6, ScaleSandHillMultiplier);
-	scaleIceCapMultiplier   = new Trampoline(0x004EC120, 0x004EC125, ScaleIceCapMultiplier);
+	scaleIceCapMultiplier = new Trampoline(0x004EC120, 0x004EC125, ScaleIceCapMultiplier);
 
 	WriteData((const float**)0x0049FF70, &patch_dummy);
 	WriteData((const float**)0x004A005B, &patch_dummy);
 	WriteData((const float**)0x004A0067, &patch_dummy);
-	scaleGammaTimeAddHud    = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
+	scaleGammaTimeAddHud = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
 	scaleGammaTimeRemaining = new Trampoline(0x004C51D0, 0x004C51D7, ScaleGammaTimeRemaining);
 
 	WriteData((float**)0x004B4470, &scale_h);
@@ -688,11 +727,15 @@ void SetupHudScale()
 
 	scaleMissionStartClear = new Trampoline(0x00591260, 0x00591268, ScaleMissionStartClear);
 
-	scaleMissionTimer   = new Trampoline(0x00592D50, 0x00592D59, ScaleMissionTimer);
+	scaleMissionTimer = new Trampoline(0x00592D50, 0x00592D59, ScaleMissionTimer);
 	scaleMissionCounter = new Trampoline(0x00592A60, 0x00592A68, ScaleMissionCounter);
 
-	scaleTailsWinLose    = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
-	scaleTailsRaceBar    = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsRaceBar);
+	scaleTailsWinLose = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
+	scaleTailsRaceBar = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsRaceBar);
 
 	scaleDemoPressStart = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
+
+	ChaoDX_Message_PlayerAction_Load_t = new Trampoline(0x0071B3B0, 0x0071B3B7, ChaoDX_Message_PlayerAction_Load_r);
+	ChaoDX_Message_PlayerAction_Display_t = new Trampoline(0x0071B210, 0x0071B215, ChaoDX_Message_PlayerAction_Display_r);
+	WriteCall(ChaoDX_Message_PlayerAction_Display_t->Target(), (void*)0x590620);
 }
