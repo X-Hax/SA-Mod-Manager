@@ -335,6 +335,7 @@ DataPointer(float, ViewPortWidth, 0x03D0FA04);
 DataPointer(float, ViewPortHeight, 0x03D0FA08);
 DataPointer(float, ViewPortWidth_Half, 0x03D0FA0C);
 DataPointer(float, ViewPortHeight_Half, 0x03D0FA10);
+DataPointer(NJS_POINT2COL, GlobalPoint2Col, 0x03CE7164);
 
 inline void Direct3D_SetupVsyncParameters()
 {
@@ -397,6 +398,17 @@ static HRESULT Direct3D_Reset()
 	ViewPortHeight_Half  = ViewPortHeight / 2.0f;
 	HorizontalStretch    = (float)HorizontalResolution / 640.0f;
 	VerticalStretch      = (float)VerticalResolution / 480.0f;
+
+	auto points = GlobalPoint2Col.p;
+
+	points[0].x = 0.0f;
+	points[0].y = 0.0f;
+	points[1].x = ViewPortWidth;
+	points[1].y = 0.0f;
+	points[2].x = ViewPortWidth;
+	points[2].y = ViewPortHeight;
+	points[3].x = 0.0f;
+	points[3].y = ViewPortHeight;
 
 	CheckAspectRatio();
 
