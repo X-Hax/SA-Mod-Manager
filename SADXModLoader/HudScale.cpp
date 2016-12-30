@@ -177,30 +177,33 @@ static NJS_SPRITE last_sprite;
 
 static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT2& center)
 {
-	if (center.x < third_h)
+	if (align == Align::Auto)
 	{
-		align |= Align::Left;
-	}
-	else if (center.x < third_h * 2.0f)
-	{
-		align |= Align::HorizontalCenter;
-	}
-	else
-	{
-		align |= Align::Right;
-	}
+		if (center.x < third_h)
+		{
+			align |= Align::Left;
+		}
+		else if (center.x < third_h * 2.0f)
+		{
+			align |= Align::HorizontalCenter;
+		}
+		else
+		{
+			align |= Align::Right;
+		}
 
-	if (center.y < third_v)
-	{
-		align |= Align::Top;
-	}
-	else if (center.y < third_v * 2.0f)
-	{
-		align |= Align::VerticalCenter;
-	}
-	else
-	{
-		align |= Align::Bottom;
+		if (center.y < third_v)
+		{
+			align |= Align::Top;
+		}
+		else if (center.y < third_v * 2.0f)
+		{
+			align |= Align::VerticalCenter;
+		}
+		else
+		{
+			align |= Align::Bottom;
+		}
 	}
 
 	NJS_POINT2 result = {};
@@ -585,7 +588,7 @@ static void __cdecl DrawRectPoints_r(NJS_POINT2* points, float scale)
 
 	if (!do_scale)
 	{
-#if 0
+#ifndef  _DEBUG
 		original(points, scale);
 		return;
 #else
@@ -631,6 +634,7 @@ void SetHudScaleValues()
 	region_h = 480.0f * scale;
 }
 
+#ifdef _DEBUG
 static Sint32 __fastcall wangis_r(int n);
 static Trampoline wangis(0x0077F440, 0x0077F445, wangis_r);
 static Sint32 __fastcall wangis_r(int n)
@@ -642,6 +646,7 @@ static Sint32 __fastcall wangis_r(int n)
 	FastcallFunctionPointer(Sint32, wonjis, (int), wangis.Target());
 	return wonjis(n);
 }
+#endif
 
 void SetupHudScale()
 {
