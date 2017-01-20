@@ -2146,10 +2146,10 @@ void __cdecl WriteSaveFile_r()
 	}
 }
 
-FunctionPointer(int, sub_40EF20, (int), 0x40EF20);
+FunctionPointer(Uint8, GetKey, (int index), 0x40EF20);
 int __cdecl FixEKey(int i)
 {
-	return IsCameraControlEnabled() && sub_40EF20(i);
+	return IsCameraControlEnabled() && GetKey(i);
 }
 
 // TODO: rename
