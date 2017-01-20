@@ -347,7 +347,7 @@ int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 	// Since the filename can be passed in with or without an extension, first
 	// we try getting a replacement with the filename as-is (with SYSTEM\ prepended).
 	auto system_path = "SYSTEM\\" + filename_str;
-	auto replaced = sadx_fileMap.replaceFile(system_path.c_str());
+	string replaced = sadx_fileMap.replaceFile(system_path.c_str());
 
 	// But if that failed, we can assume that it was given without an extension
 	// (which is the intended use) and append one before trying again.
@@ -357,19 +357,29 @@ int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 		replaced = sadx_fileMap.replaceFile(system_path_ext.c_str());
 	}
 
-	// If the replaced file path doesn't exist, it isn't a (texture pack) directory, or
-	// the texture pack failed to load, fall back to default behavior.
-	if (!Exists(replaced) || !IsDirectory(replaced) || !ReplacePVM(replaced, texlist))
+	// If we can ensure this path exists, we can determine how to load it.
+	if (Exists(replaced))
 	{
-		if (!Exists(system_path) && !Exists(system_path_ext))
+		// If the replaced file is a PVM, just attempt to load that.
+		if (IsFile(replaced))
 		{
-			PrintDebug("Unable to locate PVM: %s\n", filename);
-			return -1;
+			auto result = njLoadTexturePvmFile(filename, texlist);
+			mipmap::SkipMipmap(false);
+			return result;
 		}
 
-		auto result = njLoadTexturePvmFile(filename, texlist);
-		mipmap::SkipMipmap(false);
-		return result;
+		// Otherwise it's probably a directory, so try loading it as a texture pack.
+		if (ReplacePVM(replaced, texlist))
+		{
+			return 0;
+		}
+	}
+
+	// If the file didn't exist or the texture pack failed to load, fall back to default behavior.
+	if (!Exists(system_path) && !Exists(system_path_ext))
+	{
+		PrintDebug("Unable to locate PVM: %s\n", filename);
+		return -1;
 	}
 
 	mipmap::SkipMipmap(false);
