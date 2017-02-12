@@ -283,7 +283,7 @@ FunctionPointer(int, GetMarketRings, (), 0x425AC0);
 FunctionPointer(int, ResetLives, (), 0x425AF0);
 FunctionPointer(void, GiveLives, (__int16 lives), 0x425B60);
 FunctionPointer(void, AddRings, (__int16 rings), 0x425BE0);
-FunctionPointer(int, GetRings, (), 0x425CC0);
+FunctionPointer(short, GetRings, (), 0x425CC0);
 VoidFunc(HudDisplayRingTimeLife, 0x425CD0);
 VoidFunc(HudDisplayRingTimeLife_Check, 0x425F90);
 FunctionPointer(int, GetLives, (), 0x425FE0);
