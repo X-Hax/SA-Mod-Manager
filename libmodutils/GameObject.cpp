@@ -50,7 +50,7 @@ void GameObject::Display(){}
 
 void GameObject::Delete(){}
 
-SETObjData *GameObject::GetSETData(){ return objData->SETData; }
+SETDataUnion GameObject::GetSETData(){ return objData->SETData; }
 
 GameObject::~GameObject()
 {
