@@ -1115,7 +1115,7 @@ static void ProcessLevelTexListINI(const IniGroup *group, const wstring &mod_dir
 
 static void ProcessTrialLevelListINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	ifstream fstr(mod_dir + L'\\' + group->getWString("filename"));
 	vector<TrialLevelListEntry> lvls;
 	while (fstr.good())
@@ -1133,11 +1133,10 @@ static void ProcessTrialLevelListINI(const IniGroup *group, const wstring &mod_d
 	}
 	fstr.close();
 	auto numents = lvls.size();
-	TrialLevelList *list = new TrialLevelList;
+	TrialLevelList *list = (TrialLevelList*)(group->getIntRadix("address", 16) + 0x400000);
 	list->Levels = new TrialLevelListEntry[numents];
 	arrcpy(list->Levels, lvls.data(), numents);
 	list->Count = (int)numents;
-	ProcessPointerList(group->getString("pointer"), list);
 }
 
 static void ProcessBossLevelListINI(const IniGroup *group, const wstring &mod_dir)
@@ -1185,7 +1184,7 @@ static void ProcessFieldStartPosINI(const IniGroup *group, const wstring &mod_di
 
 static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<SoundTestEntry> sounds;
 	for (int i = 0; i < 999; i++)
@@ -1201,16 +1200,15 @@ static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_di
 	}
 	delete inidata;
 	auto numents = sounds.size();
-	SoundTestCategory *cat = new SoundTestCategory;
+	SoundTestCategory *cat = (SoundTestCategory*)(group->getIntRadix("address", 16) + 0x400000);;
 	cat->Entries = new SoundTestEntry[numents];
 	arrcpy(cat->Entries, sounds.data(), numents);
 	cat->Count = (int)numents;
-	ProcessPointerList(group->getString("pointer"), cat);
 }
 
 static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<MusicInfo> songs;
 	for (int i = 0; i < 999; i++)
@@ -1226,14 +1224,12 @@ static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
 	}
 	delete inidata;
 	auto numents = songs.size();
-	MusicInfo *list = new MusicInfo[numents];
-	arrcpy(list, songs.data(), numents);
-	ProcessPointerList(group->getString("pointer"), list);
+	arrcpy((MusicInfo*)(group->getIntRadix("address", 16) + 0x400000), songs.data(), numents);
 }
 
 static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<SoundFileInfo> sounds;
 	for (int i = 0; i < 999; i++)
@@ -1249,11 +1245,10 @@ static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 	}
 	delete inidata;
 	auto numents = sounds.size();
-	SoundList *list = new SoundList;
+	SoundList *list = (SoundList*)(group->getIntRadix("address", 16) + 0x400000);;
 	list->List = new SoundFileInfo[numents];
 	arrcpy(list->List, sounds.data(), numents);
 	list->Count = (int)numents;
-	ProcessPointerList(group->getString("pointer"), list);
 }
 
 static vector<char *> ProcessStringArrayINI_Internal(const wstring &filename, uint8_t language)
@@ -1273,13 +1268,12 @@ static vector<char *> ProcessStringArrayINI_Internal(const wstring &filename, ui
 
 static void ProcessStringArrayINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	vector<char *> strs = ProcessStringArrayINI_Internal(mod_dir + L'\\' + group->getWString("filename"),
 		ParseLanguage(group->getString("language")));
 	auto numents = strs.size();
-	char **list = new char *[numents];
+	char **list = (char**)(group->getIntRadix("address", 16) + 0x400000);;
 	arrcpy(list, strs.data(), numents);
-	ProcessPointerList(group->getString("pointer"), list);
 }
 
 static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_dir)
