@@ -238,7 +238,7 @@ static void __cdecl sub_789BD0()
 	{
 		do
 		{
-			if (!TranslateAccelerator(outerWindow, accelTbl, &v0))
+			if (!TranslateAcceleratorA(outerWindow, accelTbl, &v0))
 			{
 				TranslateMessage(&v0);
 				DispatchMessageA(&v0);
@@ -262,7 +262,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 	{
 	case WM_CLOSE:
 		// we also need to let SADX do cleanup
-		SendMessage(hWnd, WM_CLOSE, wParam, lParam);
+		SendMessageA(hWnd, WM_CLOSE, wParam, lParam);
 		// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
 		return 0;
 	case WM_ERASEBKGND:
@@ -288,8 +288,8 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			windowsize *size = &innersizes[windowmode];
 			SetWindowPos(hWnd, nullptr, size->x, size->y, size->width, size->height, 0);
 			windowdata *data = &windowsizes[windowmode];
-			SetWindowLong(outerWindow, GWL_STYLE, data->style);
-			SetWindowLong(outerWindow, GWL_EXSTYLE, data->extendedstyle);
+			SetWindowLongA(outerWindow, GWL_STYLE, data->style);
+			SetWindowLongA(outerWindow, GWL_EXSTYLE, data->extendedstyle);
 			SetWindowPos(outerWindow, nullptr, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
 			UpdateWindow(outerWindow);
 			switchingwindowmode = false;
@@ -305,7 +305,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			while (ShowCursor(FALSE) > 0);
 	default:
 		// alternatively we can return SendMe
-		return DefWindowProc(wrapper, uMsg, wParam, lParam);
+		return DefWindowProcA(wrapper, uMsg, wParam, lParam);
 	}
 	/* unreachable */ return 0;
 }
@@ -456,7 +456,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		if (outerWindow == nullptr)
 			return;
 
-		accelTbl = CreateAcceleratorTable(arrayptrandlength(accelerators));
+		accelTbl = CreateAcceleratorTableA(arrayptrandlength(accelerators));
 
 		windowsize *size = &innersizes[windowmode];
 
