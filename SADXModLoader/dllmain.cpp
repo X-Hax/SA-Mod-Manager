@@ -2013,7 +2013,7 @@ static void __cdecl InitMods(void)
 	vector<std::pair<ModInitFunc, string>> initfuncs;
 	vector<std::pair<string, string>> errors;
 
-	string _mainsavepath, _chaosavepath;
+	string _mainsavepath, _chaosavepath, windowtitle;
 
 	// It's mod loading time!
 	PrintDebug("Loading mods...\n");
@@ -2269,6 +2269,9 @@ static void __cdecl InitMods(void)
 
 		if (modinfo->getBool("RedirectChaoSave"))
 			_chaosavepath = mod_dirA + "\\SAVEDATA";
+
+		if (modinfo->hasKeyNonEmpty("WindowTitle"))
+			windowtitle = modinfo->getString("WindowTitle");
 	}
 
 	if (!errors.empty())
@@ -2417,6 +2420,13 @@ static void __cdecl InitMods(void)
 		WriteData((char **)0x71AA6F, buf);
 		WriteData((char **)0x71ACDB, buf);
 		WriteData((char **)0x71ADC5, buf);
+	}
+
+	if (!windowtitle.empty())
+	{
+		char *buf = new char[windowtitle.size() + 1];
+		strncpy(buf, windowtitle.c_str(), windowtitle.size() + 1);
+		*(char**)0x892944 = buf;
 	}
 
 	PrintDebug("Finished loading mods\n");
