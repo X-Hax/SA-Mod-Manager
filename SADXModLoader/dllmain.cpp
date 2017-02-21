@@ -433,22 +433,22 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 			Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 			bgimg = Gdiplus::Bitmap::FromFile(L"mods\\Border.png");
 		}
-		WNDCLASS w;
-		ZeroMemory(&w, sizeof(WNDCLASS));
-		w.lpszClassName = TEXT("WrapperWindow");
+		WNDCLASSA w;
+		ZeroMemory(&w, sizeof(WNDCLASSA));
+		w.lpszClassName = "WrapperWindow";
 		w.lpfnWndProc = WrapperWndProc;
 		w.hInstance = hInstance;
 		w.hIcon = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
 		w.hCursor = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
 		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-		if (RegisterClass(&w) == 0)
+		if (RegisterClassA(&w) == 0)
 			return;
 
 		windowdata *data = &windowsizes[windowmode];
 
-		outerWindow = CreateWindowEx(data->extendedstyle,
-			L"WrapperWindow",
-			L"SonicAdventureDXPC",
+		outerWindow = CreateWindowExA(data->extendedstyle,
+			"WrapperWindow",
+			GetWindowClassName(),
 			data->style,
 			data->x, data->y, data->width, data->height,
 			nullptr, nullptr, hInstance, nullptr);
