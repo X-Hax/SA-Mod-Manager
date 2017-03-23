@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace SADXModManager
+namespace SADXModManager.Forms
 {
 	public partial class UpdateMessageDialog : Form
 	{

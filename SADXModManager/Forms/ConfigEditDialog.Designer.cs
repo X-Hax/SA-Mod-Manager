@@ -1,4 +1,4 @@
-﻿namespace SADXModManager
+﻿namespace SADXModManager.Forms
 {
     partial class ConfigEditDialog
     {
@@ -113,6 +113,7 @@
 			// 
 			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.okButton.Location = new System.Drawing.Point(183, 411);
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size(75, 23);
@@ -125,6 +126,7 @@
 			// 
 			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cancelButton.Location = new System.Drawing.Point(264, 411);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
@@ -178,6 +180,7 @@
 			// comboFog
 			// 
 			this.comboFog.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboFog.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.comboFog.FormattingEnabled = true;
 			this.comboFog.Items.AddRange(new object[] {
             "Auto",
@@ -192,6 +195,7 @@
 			// comboClip
 			// 
 			this.comboClip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboClip.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.comboClip.FormattingEnabled = true;
 			this.comboClip.Items.AddRange(new object[] {
             "Far",
@@ -234,6 +238,7 @@
 			// comboFramerate
 			// 
 			this.comboFramerate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboFramerate.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.comboFramerate.FormattingEnabled = true;
 			this.comboFramerate.Items.AddRange(new object[] {
             "High",
@@ -272,6 +277,7 @@
 			// comboResolutionPreset
 			// 
 			this.comboResolutionPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboResolutionPreset.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.comboResolutionPreset.FormattingEnabled = true;
 			this.comboResolutionPreset.Items.AddRange(new object[] {
             "640x480",
@@ -298,9 +304,10 @@
 			// radioWindowMode
 			// 
 			this.radioWindowMode.AutoSize = true;
+			this.radioWindowMode.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.radioWindowMode.Location = new System.Drawing.Point(104, 43);
 			this.radioWindowMode.Name = "radioWindowMode";
-			this.radioWindowMode.Size = new System.Drawing.Size(93, 17);
+			this.radioWindowMode.Size = new System.Drawing.Size(99, 18);
 			this.radioWindowMode.TabIndex = 1;
 			this.radioWindowMode.Text = "Window mode";
 			this.radioWindowMode.UseVisualStyleBackColor = true;
@@ -308,9 +315,10 @@
 			// radioFullscreen
 			// 
 			this.radioFullscreen.AutoSize = true;
+			this.radioFullscreen.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.radioFullscreen.Location = new System.Drawing.Point(104, 19);
 			this.radioFullscreen.Name = "radioFullscreen";
-			this.radioFullscreen.Size = new System.Drawing.Size(73, 17);
+			this.radioFullscreen.Size = new System.Drawing.Size(79, 18);
 			this.radioFullscreen.TabIndex = 0;
 			this.radioFullscreen.Text = "Fullscreen";
 			this.radioFullscreen.UseVisualStyleBackColor = true;
@@ -389,9 +397,10 @@
 			// checkMusic
 			// 
 			this.checkMusic.AutoSize = true;
+			this.checkMusic.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.checkMusic.Location = new System.Drawing.Point(122, 42);
 			this.checkMusic.Name = "checkMusic";
-			this.checkMusic.Size = new System.Drawing.Size(90, 17);
+			this.checkMusic.Size = new System.Drawing.Size(96, 18);
 			this.checkMusic.TabIndex = 2;
 			this.checkMusic.Text = "Enable Music";
 			this.checkMusic.UseVisualStyleBackColor = true;
@@ -399,9 +408,10 @@
 			// checkSound
 			// 
 			this.checkSound.AutoSize = true;
+			this.checkSound.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.checkSound.Location = new System.Drawing.Point(6, 42);
 			this.checkSound.Name = "checkSound";
-			this.checkSound.Size = new System.Drawing.Size(98, 17);
+			this.checkSound.Size = new System.Drawing.Size(104, 18);
 			this.checkSound.TabIndex = 1;
 			this.checkSound.Text = "Enable Sounds";
 			this.checkSound.UseVisualStyleBackColor = true;
@@ -409,9 +419,10 @@
 			// check3DSound
 			// 
 			this.check3DSound.AutoSize = true;
+			this.check3DSound.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.check3DSound.Location = new System.Drawing.Point(6, 19);
 			this.check3DSound.Name = "check3DSound";
-			this.check3DSound.Size = new System.Drawing.Size(110, 17);
+			this.check3DSound.Size = new System.Drawing.Size(116, 18);
 			this.check3DSound.TabIndex = 0;
 			this.check3DSound.Text = "Enable 3D Sound";
 			this.check3DSound.UseVisualStyleBackColor = true;
@@ -453,6 +464,7 @@
 			// comboMouseButtons
 			// 
 			this.comboMouseButtons.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboMouseButtons.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.comboMouseButtons.FormattingEnabled = true;
 			this.comboMouseButtons.Items.AddRange(new object[] {
             "[None]",
@@ -471,6 +483,7 @@
 			// comboMouseActions
 			// 
 			this.comboMouseActions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboMouseActions.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.comboMouseActions.FormattingEnabled = true;
 			this.comboMouseActions.Items.AddRange(new object[] {
             "Start",
@@ -507,9 +520,10 @@
 			// radioMouseModeRelease
 			// 
 			this.radioMouseModeRelease.AutoSize = true;
+			this.radioMouseModeRelease.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.radioMouseModeRelease.Location = new System.Drawing.Point(6, 42);
 			this.radioMouseModeRelease.Name = "radioMouseModeRelease";
-			this.radioMouseModeRelease.Size = new System.Drawing.Size(113, 17);
+			this.radioMouseModeRelease.Size = new System.Drawing.Size(119, 18);
 			this.radioMouseModeRelease.TabIndex = 1;
 			this.radioMouseModeRelease.TabStop = true;
 			this.radioMouseModeRelease.Text = "Drag to accelerate";
@@ -519,9 +533,10 @@
 			// radioMouseModeHold
 			// 
 			this.radioMouseModeHold.AutoSize = true;
+			this.radioMouseModeHold.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.radioMouseModeHold.Location = new System.Drawing.Point(6, 19);
 			this.radioMouseModeHold.Name = "radioMouseModeHold";
-			this.radioMouseModeHold.Size = new System.Drawing.Size(82, 17);
+			this.radioMouseModeHold.Size = new System.Drawing.Size(88, 18);
 			this.radioMouseModeHold.TabIndex = 0;
 			this.radioMouseModeHold.TabStop = true;
 			this.radioMouseModeHold.Text = "Drag && Hold";
@@ -574,9 +589,10 @@
 			this.controllerConfigRemove.AutoSize = true;
 			this.controllerConfigRemove.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.controllerConfigRemove.Enabled = false;
+			this.controllerConfigRemove.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.controllerConfigRemove.Location = new System.Drawing.Point(253, 4);
 			this.controllerConfigRemove.Name = "controllerConfigRemove";
-			this.controllerConfigRemove.Size = new System.Drawing.Size(57, 23);
+			this.controllerConfigRemove.Size = new System.Drawing.Size(61, 22);
 			this.controllerConfigRemove.TabIndex = 3;
 			this.controllerConfigRemove.Text = "Remove";
 			this.controllerConfigRemove.UseVisualStyleBackColor = true;
@@ -586,9 +602,10 @@
 			// 
 			this.controllerConfigAdd.AutoSize = true;
 			this.controllerConfigAdd.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.controllerConfigAdd.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.controllerConfigAdd.Location = new System.Drawing.Point(211, 4);
 			this.controllerConfigAdd.Name = "controllerConfigAdd";
-			this.controllerConfigAdd.Size = new System.Drawing.Size(36, 23);
+			this.controllerConfigAdd.Size = new System.Drawing.Size(40, 22);
 			this.controllerConfigAdd.TabIndex = 2;
 			this.controllerConfigAdd.Text = "Add";
 			this.controllerConfigAdd.UseVisualStyleBackColor = true;
@@ -597,6 +614,7 @@
 			// controllerConfigSelect
 			// 
 			this.controllerConfigSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.controllerConfigSelect.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.controllerConfigSelect.FormattingEnabled = true;
 			this.controllerConfigSelect.Location = new System.Drawing.Point(84, 6);
 			this.controllerConfigSelect.Name = "controllerConfigSelect";
