@@ -787,7 +787,7 @@ static __declspec(naked) void sub_789E50_r()
 {
 	__asm
 	{
-		mov ebx, [esp + 4]
+		mov ebx, [esp+4]
 		push ebx
 		push eax
 		call CreateSADXWindow_r
@@ -806,26 +806,26 @@ static void RegisterStartPosition(unsigned char character, const StartPosition &
 		const StartPosition *origlist;
 		switch (character)
 		{
-			case Characters_Sonic:
-				origlist = SonicStartArray;
-				break;
-			case Characters_Tails:
-				origlist = TailsStartArray;
-				break;
-			case Characters_Knuckles:
-				origlist = KnucklesStartArray;
-				break;
-			case Characters_Amy:
-				origlist = AmyStartArray;
-				break;
-			case Characters_Gamma:
-				origlist = GammaStartArray;
-				break;
-			case Characters_Big:
-				origlist = BigStartArray;
-				break;
-			default:
-				return;
+		case Characters_Sonic:
+			origlist = SonicStartArray;
+			break;
+		case Characters_Tails:
+			origlist = TailsStartArray;
+			break;
+		case Characters_Knuckles:
+			origlist = KnucklesStartArray;
+			break;
+		case Characters_Amy:
+			origlist = AmyStartArray;
+			break;
+		case Characters_Gamma:
+			origlist = GammaStartArray;
+			break;
+		case Characters_Big:
+			origlist = BigStartArray;
+			break;
+		default:
+			return;
 		}
 		StartPositions[character] = unordered_map<int, StartPosition>();
 		newlist = &StartPositions[character];
@@ -846,15 +846,15 @@ static void ClearStartPositionList(unsigned char character)
 {
 	switch (character)
 	{
-		case Characters_Sonic:
-		case Characters_Tails:
-		case Characters_Knuckles:
-		case Characters_Amy:
-		case Characters_Gamma:
-		case Characters_Big:
-			break;
-		default:
-			return;
+	case Characters_Sonic:
+	case Characters_Tails:
+	case Characters_Knuckles:
+	case Characters_Amy:
+	case Characters_Gamma:
+	case Characters_Big:
+		break;
+	default:
+		return;
 	}
 	StartPositions[character] = unordered_map<int, StartPosition>();
 }
@@ -1222,30 +1222,30 @@ static string UnescapeNewlines(const string &str)
 	result.reserve(str.size());
 	for (unsigned int c = 0; c < str.size(); c++)
 		switch (str[c])
-		{
-			case '\\': // escape character
-				if (c + 1 == str.size())
-				{
-					result.push_back(str[c]);
-					continue;
-				}
-				switch (str[++c])
-				{
-					case 'n': // line feed
-						result.push_back('\n');
-						break;
-					case 'r': // carriage return
-						result.push_back('\r');
-						break;
-					default: // literal character
-						result.push_back(str[c]);
-						break;
-				}
+	{
+		case '\\': // escape character
+			if (c + 1 == str.size())
+			{
+				result.push_back(str[c]);
+				continue;
+			}
+			switch (str[++c])
+			{
+			case 'n': // line feed
+				result.push_back('\n');
 				break;
-			default:
+			case 'r': // carriage return
+				result.push_back('\r');
+				break;
+			default: // literal character
 				result.push_back(str[c]);
 				break;
-		}
+			}
+			break;
+		default:
+			result.push_back(str[c]);
+			break;
+	}
 	return result;
 }
 
@@ -1407,7 +1407,7 @@ static void ProcessLevelTexListINI(const IniGroup *group, const wstring &mod_dir
 
 static void ProcessTrialLevelListINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	ifstream fstr(mod_dir + L'\\' + group->getWString("filename"));
 	vector<TrialLevelListEntry> lvls;
 	while (fstr.good())
@@ -1425,11 +1425,10 @@ static void ProcessTrialLevelListINI(const IniGroup *group, const wstring &mod_d
 	}
 	fstr.close();
 	auto numents = lvls.size();
-	TrialLevelList *list = new TrialLevelList;
+	TrialLevelList *list = (TrialLevelList*)(group->getIntRadix("address", 16) + 0x400000);
 	list->Levels = new TrialLevelListEntry[numents];
 	arrcpy(list->Levels, lvls.data(), numents);
 	list->Count = (int)numents;
-	ProcessPointerList(group->getString("pointer"), list);
 }
 
 static void ProcessBossLevelListINI(const IniGroup *group, const wstring &mod_dir)
@@ -1477,7 +1476,7 @@ static void ProcessFieldStartPosINI(const IniGroup *group, const wstring &mod_di
 
 static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<SoundTestEntry> sounds;
 	for (int i = 0; i < 999; i++)
@@ -1493,16 +1492,15 @@ static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_di
 	}
 	delete inidata;
 	auto numents = sounds.size();
-	SoundTestCategory *cat = new SoundTestCategory;
+	SoundTestCategory *cat = (SoundTestCategory*)(group->getIntRadix("address", 16) + 0x400000);;
 	cat->Entries = new SoundTestEntry[numents];
 	arrcpy(cat->Entries, sounds.data(), numents);
 	cat->Count = (int)numents;
-	ProcessPointerList(group->getString("pointer"), cat);
 }
 
 static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<MusicInfo> songs;
 	for (int i = 0; i < 999; i++)
@@ -1518,14 +1516,12 @@ static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
 	}
 	delete inidata;
 	auto numents = songs.size();
-	MusicInfo *list = new MusicInfo[numents];
-	arrcpy(list, songs.data(), numents);
-	ProcessPointerList(group->getString("pointer"), list);
+	arrcpy((MusicInfo*)(group->getIntRadix("address", 16) + 0x400000), songs.data(), numents);
 }
 
 static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<SoundFileInfo> sounds;
 	for (int i = 0; i < 999; i++)
@@ -1541,11 +1537,10 @@ static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 	}
 	delete inidata;
 	auto numents = sounds.size();
-	SoundList *list = new SoundList;
+	SoundList *list = (SoundList*)(group->getIntRadix("address", 16) + 0x400000);;
 	list->List = new SoundFileInfo[numents];
 	arrcpy(list->List, sounds.data(), numents);
 	list->Count = (int)numents;
-	ProcessPointerList(group->getString("pointer"), list);
 }
 
 static vector<char *> ProcessStringArrayINI_Internal(const wstring &filename, uint8_t language)
@@ -1565,13 +1560,12 @@ static vector<char *> ProcessStringArrayINI_Internal(const wstring &filename, ui
 
 static void ProcessStringArrayINI(const IniGroup *group, const wstring &mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	vector<char *> strs = ProcessStringArrayINI_Internal(mod_dir + L'\\' + group->getWString("filename"),
 		ParseLanguage(group->getString("language")));
 	auto numents = strs.size();
-	char **list = new char *[numents];
+	char **list = (char**)(group->getIntRadix("address", 16) + 0x400000);;
 	arrcpy(list, strs.data(), numents);
-	ProcessPointerList(group->getString("pointer"), list);
 }
 
 static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_dir)
@@ -2330,7 +2324,7 @@ static void __cdecl InitMods(void)
 	vector<std::pair<ModInitFunc, string>> initfuncs;
 	vector<std::pair<string, string>> errors;
 
-	string _mainsavepath, _chaosavepath;
+	string _mainsavepath, _chaosavepath, windowtitle;
 
 	// It's mod loading time!
 	PrintDebug("Loading mods...\n");
@@ -2589,6 +2583,9 @@ static void __cdecl InitMods(void)
 
 		if (modinfo->getBool("RedirectChaoSave"))
 			_chaosavepath = mod_dirA + "\\SAVEDATA";
+
+		if (modinfo->hasKeyNonEmpty("WindowTitle"))
+			windowtitle = modinfo->getString("WindowTitle");
 	}
 
 	if (!errors.empty())
@@ -2621,24 +2618,24 @@ static void __cdecl InitMods(void)
 		cur->LevelID = LevelIDs_Invalid;
 		switch (i->first)
 		{
-			case Characters_Sonic:
-				WriteData((StartPosition **)0x41491E, newlist);
-				break;
-			case Characters_Tails:
-				WriteData((StartPosition **)0x414925, newlist);
-				break;
-			case Characters_Knuckles:
-				WriteData((StartPosition **)0x41492C, newlist);
-				break;
-			case Characters_Amy:
-				WriteData((StartPosition **)0x41493A, newlist);
-				break;
-			case Characters_Gamma:
-				WriteData((StartPosition **)0x414941, newlist);
-				break;
-			case Characters_Big:
-				WriteData((StartPosition **)0x414933, newlist);
-				break;
+		case Characters_Sonic:
+			WriteData((StartPosition **)0x41491E, newlist);
+			break;
+		case Characters_Tails:
+			WriteData((StartPosition **)0x414925, newlist);
+			break;
+		case Characters_Knuckles:
+			WriteData((StartPosition **)0x41492C, newlist);
+			break;
+		case Characters_Amy:
+			WriteData((StartPosition **)0x41493A, newlist);
+			break;
+		case Characters_Gamma:
+			WriteData((StartPosition **)0x414941, newlist);
+			break;
+		case Characters_Big:
+			WriteData((StartPosition **)0x414933, newlist);
+			break;
 		}
 	}
 
@@ -2739,6 +2736,13 @@ static void __cdecl InitMods(void)
 		WriteData((char **)0x71ADC5, buf);
 	}
 
+	if (!windowtitle.empty())
+	{
+		char *buf = new char[windowtitle.size() + 1];
+		strncpy(buf, windowtitle.c_str(), windowtitle.size() + 1);
+		*(char**)0x892944 = buf;
+	}
+
 	PrintDebug("Finished loading mods\n");
 
 	// Check for patches.
@@ -2766,12 +2770,12 @@ static void __cdecl InitMods(void)
 				PrintDebug("ERROR loading patches: ");
 				switch (codecount)
 				{
-					case -EINVAL:
-						PrintDebug("Patch file is not in the correct format.\n");
-						break;
-					default:
-						PrintDebug("%s\n", strerror(-codecount));
-						break;
+				case -EINVAL:
+					PrintDebug("Patch file is not in the correct format.\n");
+					break;
+				default:
+					PrintDebug("%s\n", strerror(-codecount));
+					break;
 				}
 			}
 		}
@@ -2806,12 +2810,12 @@ static void __cdecl InitMods(void)
 				PrintDebug("ERROR loading codes: ");
 				switch (codecount)
 				{
-					case -EINVAL:
-						PrintDebug("Code file is not in the correct format.\n");
-						break;
-					default:
-						PrintDebug("%s\n", strerror(-codecount));
-						break;
+				case -EINVAL:
+					PrintDebug("Code file is not in the correct format.\n");
+					break;
+				default:
+					PrintDebug("%s\n", strerror(-codecount));
+					break;
 				}
 			}
 		}
@@ -2859,34 +2863,34 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 
 	switch (fdwReason)
 	{
-		case DLL_PROCESS_ATTACH:
-			HookTheAPI();
+	case DLL_PROCESS_ATTACH:
+		HookTheAPI();
 
-			// Make sure this is the correct version of SADX.
-			if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
-			{
-				MessageBox(nullptr, L"This copy of Sonic Adventure DX is not the US version.\n\n"
-					L"Please obtain the EXE file from the US version and try again.",
-					L"SADX Mod Loader", MB_ICONERROR);
-				ExitProcess(1);
-			}
+		// Make sure this is the correct version of SADX.
+		if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
+		{
+			MessageBox(nullptr, L"This copy of Sonic Adventure DX is not the US version.\n\n"
+				L"Please obtain the EXE file from the US version and try again.",
+				L"SADX Mod Loader", MB_ICONERROR);
+			ExitProcess(1);
+		}
 
-			WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
-			WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
-			break;
+		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
+		WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
+		break;
 
-		case DLL_THREAD_ATTACH:
-		case DLL_THREAD_DETACH:
-			break;
+	case DLL_THREAD_ATTACH:
+	case DLL_THREAD_DETACH:
+		break;
 
-		case DLL_PROCESS_DETACH:
-			// Make sure the log file is closed.
-			if (dbgFile)
-			{
-				fclose(dbgFile);
-				dbgFile = nullptr;
-			}
-			break;
+	case DLL_PROCESS_DETACH:
+		// Make sure the log file is closed.
+		if (dbgFile)
+		{
+			fclose(dbgFile);
+			dbgFile = nullptr;
+		}
+		break;
 	}
 
 	return TRUE;

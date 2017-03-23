@@ -23,10 +23,10 @@ public:
 		T *t = new T(obj);
 		t->Main();
 	}
-	SETObjData *GetSETData();
+	SETDataUnion GetSETData();
 	// MSVC-specific property emulation.
 #ifdef _MSC_VER
-	__declspec(property(get = GetSETData)) SETObjData *SETData;
+	__declspec(property(get = GetSETData)) SETDataUnion SETData;
 #endif
 };
 

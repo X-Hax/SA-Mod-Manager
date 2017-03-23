@@ -1,4 +1,4 @@
-﻿namespace SADXModManager
+﻿namespace SADXModManager.Forms
 {
 	partial class UpdateMessageDialog
 	{

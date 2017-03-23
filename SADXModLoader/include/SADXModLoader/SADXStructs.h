@@ -400,6 +400,33 @@ struct SETObjData
 	float Distance;
 };
 
+struct PRM_Entry
+{
+	char Mission;
+	char Display;
+	char List;
+	char field_3;
+	char Goal;
+	char NumItems;
+	char TimerSecs;
+	char field_7;
+	char Appearance;
+	char field_9;
+	char field_A;
+	char field_B;
+};
+
+struct MissionSETData : SETObjData
+{
+	PRM_Entry *PRMEntry;
+};
+
+union SETDataUnion
+{
+	SETObjData *SETData;
+	MissionSETData *MissionSETData;
+};
+
 struct ObjectMaster
 {
 	ObjectMaster *Next;
@@ -409,7 +436,7 @@ struct ObjectMaster
 	ObjectFuncPtr MainSub;
 	ObjectFuncPtr DisplaySub;
 	ObjectFuncPtr DeleteSub;
-	SETObjData *SETData;
+	SETDataUnion SETData;
 	EntityData1 *Data1;
 	void *Data2;
 	void *UnknownA_ptr;
