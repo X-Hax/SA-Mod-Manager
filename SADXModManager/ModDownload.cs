@@ -266,19 +266,19 @@ namespace SADXModManager
 						if (File.Exists(oldManPath))
 						{
 							List<ModManifest> oldManifest = ModManifest.FromFile(oldManPath);
-							IEnumerable<ModManifest> unique = oldManifest.Except(newManifest);
+							List<string> unique = oldManifest.Except(newManifest)
+								.Select(x => Path.Combine(Folder, x.FilePath))
+								.ToList();
 
-							foreach (string removed in unique.Select(x => Path.Combine(Folder, x.FilePath)))
+							foreach (string file in unique)
 							{
-								if (File.Exists(removed))
+								if (File.Exists(file))
 								{
-									File.Delete(removed);
-								}
-								else if (Directory.Exists(removed))
-								{
-									Directory.Delete(removed, true);
+									File.Delete(file);
 								}
 							}
+
+							RemoveEmptyDirectories(unique.Select(x => Path.GetDirectoryName(x)).Where(x => x != Folder));
 						}
 
 						foreach (ModManifest file in newManifest)
@@ -317,7 +317,7 @@ namespace SADXModManager
 				case ModDownloadType.Modular:
 					{
 						// First let's download all the new stuff.
-						List<ModManifestDiff> newStuff = ChangedFiles
+						List<ModManifestDiff> newEntries = ChangedFiles
 							.Where(x => x.State == ModManifestState.Added || x.State == ModManifestState.Changed)
 							.ToList();
 
@@ -331,7 +331,7 @@ namespace SADXModManager
 
 						var sync = new object();
 
-						foreach (ModManifestDiff i in newStuff)
+						foreach (ModManifestDiff i in newEntries)
 						{
 							string filePath = Path.Combine(tempDir, i.Current.FilePath);
 							string dir = Path.GetDirectoryName(filePath);
@@ -379,7 +379,7 @@ namespace SADXModManager
 						client.DownloadFileCompleted -= DownloadComplete;
 
 						// Now handle all file operations except where removals are concerned.
-						List<ModManifestDiff> movedStuff = ChangedFiles.Except(newStuff)
+						List<ModManifestDiff> movedEntries = ChangedFiles.Except(newEntries)
 							.Where(x => x.State == ModManifestState.Moved)
 							.ToList();
 
@@ -388,7 +388,7 @@ namespace SADXModManager
 							return;
 						}
 
-						foreach (ModManifestDiff i in movedStuff)
+						foreach (ModManifestDiff i in movedEntries)
 						{
 							ModManifest old = i.Last;
 							// This would be considered an error...
@@ -411,7 +411,7 @@ namespace SADXModManager
 						}
 
 						// Now move the stuff from the temporary folder over to the working directory.
-						foreach (ModManifestDiff i in newStuff.Concat(movedStuff))
+						foreach (ModManifestDiff i in newEntries.Concat(movedEntries))
 						{
 							string tempPath = Path.Combine(tempDir, i.Current.FilePath);
 							string workPath = Path.Combine(Folder, i.Current.FilePath);
@@ -426,20 +426,25 @@ namespace SADXModManager
 						}
 
 						// Once that has succeeded we can safely delete files that have been marked for removal.
-						List<ModManifestDiff> removedFiles = ChangedFiles
+						List<ModManifestDiff> removedEntries = ChangedFiles
 							.Where(x => x.State == ModManifestState.Removed)
 							.ToList();
 
-						foreach (string path in removedFiles.Select(i => Path.Combine(Folder, i.Current.FilePath)).Where(File.Exists))
+						foreach (string path in removedEntries.Select(i => Path.Combine(Folder, i.Current.FilePath)).Where(File.Exists))
 						{
 							File.Delete(path);
 						}
 
 						// Same for files that have been moved.
-						foreach (string path in movedStuff.Select(i => Path.Combine(Folder, i.Last.FilePath)).Where(File.Exists))
+						foreach (string path in movedEntries.Select(i => Path.Combine(Folder, i.Last.FilePath)).Where(File.Exists))
 						{
 							File.Delete(path);
 						}
+
+						// Remove directories that are now empty.
+						RemoveEmptyDirectories(removedEntries
+							.Concat(movedEntries).Select(i => Path.Combine(Folder, Path.GetDirectoryName(i.Last.FilePath) ?? string.Empty))
+							.Where(x => x != Folder));
 
 						// And last but not least, copy over the new manifest.
 						string oldManPath = Path.Combine(Folder, "mod.manifest");
@@ -449,6 +454,24 @@ namespace SADXModManager
 
 				default:
 					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		private static void RemoveEmptyDirectories(IEnumerable<string> unique)
+		{
+			var directories = new HashSet<string>
+			(
+				unique.Where(x => !string.IsNullOrEmpty(x))
+				.Select(x => x.Replace("/", "\\"))
+				.OrderByDescending(x => x.Count(y => y == '\\'))
+			);
+
+			foreach (var dir in directories)
+			{
+				if (Directory.Exists(dir) && Directory.GetFileSystemEntries(dir).Length < 1)
+				{
+					Directory.Delete(dir);
+				}
 			}
 		}
 
