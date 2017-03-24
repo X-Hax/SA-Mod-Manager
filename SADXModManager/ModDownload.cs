@@ -114,10 +114,10 @@ namespace SADXModManager
 		{
 			var options = new ExtractionOptions
 			{
-				ExtractFullPath = true,
-				Overwrite = true,
+				ExtractFullPath    = true,
+				Overwrite          = true,
 				PreserveAttributes = true,
-				PreserveFileTime = true
+				PreserveFileTime   = true
 			};
 
 			while (reader.MoveToNextEntry())
@@ -266,11 +266,11 @@ namespace SADXModManager
 						if (File.Exists(oldManPath))
 						{
 							List<ModManifest> oldManifest = ModManifest.FromFile(oldManPath);
-							List<string> unique = oldManifest.Except(newManifest)
+							List<string> oldFiles = oldManifest.Except(newManifest)
 								.Select(x => Path.Combine(Folder, x.FilePath))
 								.ToList();
 
-							foreach (string file in unique)
+							foreach (string file in oldFiles)
 							{
 								if (File.Exists(file))
 								{
@@ -278,7 +278,7 @@ namespace SADXModManager
 								}
 							}
 
-							RemoveEmptyDirectories(unique.Select(x => Path.GetDirectoryName(x)).Where(x => x != Folder));
+							RemoveEmptyDirectories(oldManifest, newManifest);
 						}
 
 						foreach (ModManifest file in newManifest)
@@ -441,14 +441,20 @@ namespace SADXModManager
 							File.Delete(path);
 						}
 
-						// Remove directories that are now empty.
-						RemoveEmptyDirectories(removedEntries
-							.Concat(movedEntries).Select(i => Path.Combine(Folder, Path.GetDirectoryName(i.Last.FilePath) ?? string.Empty))
-							.Where(x => x != Folder));
+						string oldManPath = Path.Combine(Folder, "mod.manifest");
+						string newManPath = Path.Combine(tempDir, "mod.manifest");
+
+						if (File.Exists(oldManPath))
+						{
+							List<ModManifest> oldManifest = ModManifest.FromFile(oldManPath);
+							List<ModManifest> newManifest = ModManifest.FromFile(newManPath);
+
+							// Remove directories that are now empty.
+							RemoveEmptyDirectories(oldManifest, newManifest);
+						}
 
 						// And last but not least, copy over the new manifest.
-						string oldManPath = Path.Combine(Folder, "mod.manifest");
-						File.Copy(Path.Combine(tempDir, "mod.manifest"), oldManPath, true);
+						File.Copy(newManPath, oldManPath, true);
 						break;
 					}
 
@@ -457,18 +463,22 @@ namespace SADXModManager
 			}
 		}
 
-		private static void RemoveEmptyDirectories(IEnumerable<string> unique)
+		private void RemoveEmptyDirectories(IEnumerable<ModManifest> oldManifest, IEnumerable<ModManifest> newManifest)
 		{
+			// Grab all directories that exist only in the old manifest.
 			var directories = new HashSet<string>
 			(
-				unique.Where(x => !string.IsNullOrEmpty(x))
-				.Select(x => x.Replace("/", "\\"))
-				.OrderByDescending(x => x.Count(y => y == '\\'))
+				oldManifest.Select(x => Path.GetDirectoryName(x.FilePath))
+					.Except(newManifest.Select(x => Path.GetDirectoryName(x.FilePath)))
+					.Where(x => !string.IsNullOrEmpty(x))
+					.Select(x => x.Replace("/", "\\"))
+					.OrderByDescending(x => x.Count(c => c == '\\'))
 			);
 
-			foreach (var dir in directories)
+			// ok delete them thx
+			foreach (var dir in directories.Select(x => Path.Combine(Folder, x)))
 			{
-				if (Directory.Exists(dir) && Directory.GetFileSystemEntries(dir).Length < 1)
+				if (Directory.Exists(dir))
 				{
 					Directory.Delete(dir);
 				}
