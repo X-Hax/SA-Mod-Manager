@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using IniFile;
@@ -62,8 +63,15 @@ namespace SADXModManager
 			}
 		}
 
+		private static void SetDoubleBuffered(Control control, bool enable)
+		{
+			PropertyInfo doubleBufferPropertyInfo = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+			doubleBufferPropertyInfo.SetValue(control, enable, null);
+		}
+
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			SetDoubleBuffered(modListView, true);
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<LoaderInfo>(loaderinipath) : new LoaderInfo();
 
 			if (CheckForUpdates())
