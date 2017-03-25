@@ -88,8 +88,6 @@ namespace SADXModManager
 				var relativePath = f.Substring(modPath.Length + 1);
 				var file = new FileInfo(f);
 
-				byte[] hash;
-
 				++i;
 
 				var args = new FileHashEventArgs(relativePath, i, fileIndex.Count);
@@ -100,13 +98,7 @@ namespace SADXModManager
 					return null;
 				}
 
-				using (var sha = new SHA256Cng())
-				{
-					using (FileStream stream = File.OpenRead(f))
-					{
-						hash = sha.ComputeHash(stream);
-					}
-				}
+				string hash = GetFileHash(f);
 
 				args = new FileHashEventArgs(relativePath, i, fileIndex.Count);
 				OnFileHashEnd(args);
@@ -120,7 +112,7 @@ namespace SADXModManager
 				{
 					FilePath = relativePath,
 					FileSize = file.Length,
-					Checksum = string.Concat(hash.Select(x => x.ToString("x2")))
+					Checksum = hash
 				});
 			}
 
@@ -190,6 +182,80 @@ namespace SADXModManager
 			return result;
 		}
 
+		public List<ModManifestDiff> Verify(string modPath, List<ModManifest> manifest)
+		{
+			var result = new List<ModManifestDiff>();
+			int i = 0;
+
+			foreach (var m in manifest)
+			{
+				var filePath = Path.Combine(modPath, m.FilePath);
+
+				++i;
+
+				var args = new FileHashEventArgs(m.FilePath, i, manifest.Count);
+				OnFileHashStart(args);
+
+				if (args.Cancel)
+				{
+					return null;
+				}
+
+				try
+				{
+					if (!File.Exists(filePath))
+					{
+						result.Add(new ModManifestDiff(ModManifestState.Removed, m, null));
+						continue;
+					}
+
+					var info = new FileInfo(filePath);
+
+					if (info.Length != m.FileSize)
+					{
+						result.Add(new ModManifestDiff(ModManifestState.Changed, m, null));
+						continue;
+					}
+
+					string hash = GetFileHash(filePath);
+					if (!hash.Equals(m.Checksum, StringComparison.InvariantCultureIgnoreCase))
+					{
+						result.Add(new ModManifestDiff(ModManifestState.Changed, m, null));
+						continue;
+					}
+
+					result.Add(new ModManifestDiff(ModManifestState.Unchanged, m, null));
+				}
+				finally
+				{
+					args = new FileHashEventArgs(m.FilePath, i, manifest.Count);
+					OnFileHashEnd(args);
+				}
+
+				if (args.Cancel)
+				{
+					return null;
+				}
+			}
+
+			return result;
+		}
+
+		public static string GetFileHash(string f)
+		{
+			byte[] hash;
+
+			using (var sha = new SHA256Cng())
+			{
+				using (FileStream stream = File.OpenRead(f))
+				{
+					hash = sha.ComputeHash(stream);
+				}
+			}
+
+			return string.Concat(hash.Select(x => x.ToString("x2")));
+		}
+		
 		protected virtual void OnFilesIndexed(FilesIndexedEventArgs e)
 		{
 			FilesIndexed?.Invoke(this, e);
