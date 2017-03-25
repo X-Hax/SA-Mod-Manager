@@ -106,8 +106,23 @@ namespace SADXModManager
 			FilesToDownload = toDownload.Count;
 			Size = Math.Max(toDownload.Select(x => x.Current.FileSize).Sum(), toDownload.Count);
 
-			Changes = "Files changed in this update:\n\n"
-				+ string.Join("\n", ChangedFiles.Select(x => "- " + x.State.ToString() + ":\t" + x.Current.FilePath));
+			var changes = new List<string> { "Files changed in this update:\n" };
+
+			foreach (ModManifestDiff i in ChangedFiles)
+			{
+				string l = "- " + i.State.ToString() + ":\t\t";
+
+				if (i.State == ModManifestState.Moved)
+				{
+					changes.Add($"{l}{i.Last.FilePath} -> {i.Current.FilePath}");
+				}
+				else
+				{
+					changes.Add($"{l}{i.Current.FilePath}");
+				}
+			}
+
+			Changes = string.Join("\n", changes);
 		}
 
 		private static void Extract(IReader reader, string outDir)
@@ -436,7 +451,9 @@ namespace SADXModManager
 						}
 
 						// Same for files that have been moved.
-						foreach (string path in movedEntries.Select(i => Path.Combine(Folder, i.Last.FilePath)).Where(File.Exists))
+						foreach (string path in movedEntries
+							.Where(x => newEntries.All(y => y.Current.FilePath != x.Last.FilePath))
+							.Select(i => Path.Combine(Folder, i.Last.FilePath)).Where(File.Exists))
 						{
 							File.Delete(path);
 						}
