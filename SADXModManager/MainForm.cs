@@ -5,11 +5,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IniFile;
-using Newtonsoft.Json;
 using SADXModManager.Forms;
 
 namespace SADXModManager
@@ -64,8 +63,15 @@ namespace SADXModManager
 			}
 		}
 
+		private static void SetDoubleBuffered(Control control, bool enable)
+		{
+			PropertyInfo doubleBufferPropertyInfo = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+			doubleBufferPropertyInfo.SetValue(control, enable, null);
+		}
+
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			SetDoubleBuffered(modListView, true);
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<LoaderInfo>(loaderinipath) : new LoaderInfo();
 
 			if (CheckForUpdates())
@@ -263,14 +269,22 @@ namespace SADXModManager
 			return false;
 		}
 
+		private void InitializeWorker()
+		{
+			if (updateChecker != null)
+			{
+				return;
+			}
+
+			updateChecker = new BackgroundWorker { WorkerSupportsCancellation = true };
+			updateChecker.DoWork += UpdateChecker_DoWork;
+			updateChecker.RunWorkerCompleted += UpdateChecker_RunWorkerCompleted;
+			updateChecker.RunWorkerCompleted += (sender, args) => buttonCheckForUpdates.Enabled = true;
+		}
+
 		private void CheckForModUpdates(bool force = false)
 		{
-			if (updateChecker == null)
-			{
-				updateChecker = new BackgroundWorker { WorkerSupportsCancellation = true };
-				updateChecker.DoWork += UpdateChecker_DoWork;
-				updateChecker.RunWorkerCompleted += UpdateChecker_RunWorkerCompleted;
-			}
+			InitializeWorker();
 
 			if (!force && !Elapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.ModUpdateTime)))
 			{
@@ -285,7 +299,12 @@ namespace SADXModManager
 
 		private void UpdateChecker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			buttonCheckForUpdates.Enabled = true;
+			if (UpdateHelper.ForceUpdate)
+			{
+				updateChecker?.Dispose();
+				updateChecker = null;
+				UpdateHelper.ForceUpdate = false;
+			}
 
 			if (e.Cancelled)
 			{
@@ -384,7 +403,7 @@ namespace SADXModManager
 				return;
 			}
 
-			var cache = new Dictionary<string, List<GitHubRelease>>();
+			var gitHubCache = new Dictionary<string, List<GitHubRelease>>();
 			var updates = new List<ModDownload>();
 			var errors = new List<string>();
 
@@ -407,7 +426,7 @@ namespace SADXModManager
 							continue;
 						}
 
-						ModDownload d = GetGitHubReleases(mod, info.Key, client, cache, errors);
+						ModDownload d = UpdateHelper.GetGitHubReleases(mod, info.Key, client, gitHubCache, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -415,7 +434,23 @@ namespace SADXModManager
 					}
 					else if (!string.IsNullOrEmpty(mod.UpdateUrl))
 					{
-						ModDownload d = CheckModularVersion(mod, info.Key, client, errors);
+						List<ModManifest> localManifest = null;
+						var manPath = Path.Combine("mods", info.Key, "mod.manifest");
+
+						if (!UpdateHelper.ForceUpdate && File.Exists(manPath))
+						{
+							try
+							{
+								localManifest = ModManifest.FromFile(manPath);
+							}
+							catch (Exception ex)
+							{
+								errors.Add($"[{mod.Name}] Error parsing local manifest: {ex.Message}");
+								continue;
+							}
+						}
+
+						ModDownload d = UpdateHelper.CheckModularVersion(mod, info.Key, localManifest, client, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -427,194 +462,67 @@ namespace SADXModManager
 			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, errors);
 		}
 
-		private static ModDownload GetGitHubReleases(ModInfo mod, string folder, 
-			UpdaterWebClient client, Dictionary<string, List<GitHubRelease>> cache, List<string> errors)
+		// TODO: merge with ^
+		private static void UpdateChecker_DoWorkForced(object sender, DoWorkEventArgs e)
 		{
-			List<GitHubRelease> releases;
-			var url = "https://api.github.com/repos/" + mod.GitHubRepo + "/releases";
-			if (!cache.ContainsKey(url))
-			{
-				try
-				{
-					var text = client.DownloadString(url);
-					releases = JsonConvert.DeserializeObject<List<GitHubRelease>>(text)
-						.Where(x => !x.Draft && !x.PreRelease)
-						.ToList();
+			var worker = sender as BackgroundWorker;
 
-					if (releases.Count > 0)
+			if (worker == null)
+			{
+				throw new Exception("what");
+			}
+
+			var updatableMods = e.Argument as List<Tuple<string, ModInfo, List<ModManifestDiff>>>;
+			if (updatableMods == null || updatableMods.Count == 0)
+			{
+				return;
+			}
+
+			var gitHubCache = new Dictionary<string, List<GitHubRelease>>();
+			var updates = new List<ModDownload>();
+			var errors = new List<string>();
+
+			using (var client = new UpdaterWebClient())
+			{
+				foreach (Tuple<string, ModInfo, List<ModManifestDiff>> info in updatableMods)
+				{
+					if (worker.CancellationPending)
 					{
-						cache[url] = releases;
-					}
-				}
-				catch (Exception ex)
-				{
-					errors.Add($"[{mod.Name}] Error checking for updates at {url}: {ex.Message}");
-					return null;
-				}
-			}
-			else
-			{
-				releases = cache[url];
-			}
-
-			// No releases available.
-			if (releases == null || releases.Count == 0)
-			{
-				return null;
-			}
-
-			string versionPath = Path.Combine("mods", folder, "mod.version");
-			DateTime? localVersion = null;
-
-			if (File.Exists(versionPath))
-			{
-				localVersion = DateTime.Parse(File.ReadAllText(versionPath).Trim());
-			}
-			else
-			{
-				var info = new FileInfo(Path.Combine("mods", folder, "mod.manifest"));
-				if (info.Exists)
-				{
-					localVersion = info.LastWriteTimeUtc;
-				}
-			}
-
-			GitHubRelease latestRelease = null;
-			GitHubAsset latestAsset = null;
-
-			foreach (GitHubRelease release in releases)
-			{
-				GitHubAsset asset = release.Assets
-					.FirstOrDefault(x => x.Name.Equals(mod.GitHubAsset, StringComparison.OrdinalIgnoreCase));
-
-				if (asset == null)
-				{
-					continue;
-				}
-
-				latestRelease = release;
-
-				// No updates available.
-				if (localVersion.HasValue)
-				{
-					DateTime uploaded = DateTime.Parse(asset.Uploaded);
-					if (localVersion >= uploaded)
-					{
+						e.Cancel = true;
 						break;
 					}
-				}
 
-				latestAsset = asset;
-				break;
-			}
+					ModInfo mod = info.Item2;
+					if (!string.IsNullOrEmpty(mod.GitHubRepo))
+					{
+						if (string.IsNullOrEmpty(mod.GitHubAsset))
+						{
+							errors.Add($"[{ mod.Name }] GitHubRepo specified, but GitHubAsset is missing.");
+							continue;
+						}
 
-			if (latestRelease == null)
-			{
-				errors.Add($"[{mod.Name}] No releases with matching asset \"{mod.GitHubAsset}\" could be found in {releases.Count} release(s).");
-				return null;
-			}
+						ModDownload d = UpdateHelper.GetGitHubReleases(mod, info.Item1, client, gitHubCache, errors);
+						if (d != null)
+						{
+							updates.Add(d);
+						}
+					}
+					else if (!string.IsNullOrEmpty(mod.UpdateUrl))
+					{
+						List<ModManifest> localManifest = info.Item3
+							.Where(x => x.State == ModManifestState.Unchanged)
+							.Select(x => x.Current).ToList();
 
-			if (latestAsset == null)
-			{
-				return null;
-			}
-
-			var body = Regex.Replace(latestRelease.Body, "(?<!\r)\n", "\r\n");
-
-			return new ModDownload(mod, Path.Combine("mods", folder), latestAsset.DownloadUrl, body, latestAsset.Size)
-			{
-				HomePage   = "https://github.com/" + mod.GitHubRepo,
-				Name       = latestRelease.Name,
-				Version    = latestRelease.TagName,
-				Published  = latestRelease.Published,
-				Updated    = latestAsset.Uploaded,
-				ReleaseUrl = latestRelease.HtmlUrl
-			};
-		}
-
-		private static ModDownload CheckModularVersion(ModInfo mod, string folder,
-			UpdaterWebClient client, List<string> errors)
-		{
-			if (!mod.UpdateUrl.StartsWith("http://", StringComparison.InvariantCulture)
-			    && !mod.UpdateUrl.StartsWith("https://", StringComparison.InvariantCulture))
-			{
-				mod.UpdateUrl = "http://" + mod.UpdateUrl;
-			}
-
-			if (!mod.UpdateUrl.EndsWith("/", StringComparison.InvariantCulture))
-			{
-				mod.UpdateUrl += "/";
-			}
-
-			var url = new Uri(mod.UpdateUrl);
-			url = new Uri(url, "mod.ini");
-
-			ModInfo remoteInfo;
-
-			try
-			{
-				var dict = IniFile.IniFile.Load(client.OpenRead(url));
-				remoteInfo = IniSerializer.Deserialize<ModInfo>(dict);
-			}
-			catch (Exception ex)
-			{
-				errors.Add($"[{mod.Name}] Error pulling mod.ini from \"{mod.UpdateUrl}\": {ex.Message}");
-				return null;
-			}
-
-			if (remoteInfo.Version == mod.Version)
-			{
-				return null;
-			}
-
-			string manString;
-
-			try
-			{
-				manString = client.DownloadString(new Uri(new Uri(mod.UpdateUrl), "mod.manifest"));
-			}
-			catch (Exception ex)
-			{
-				errors.Add($"[{mod.Name}] Error pulling mod.manifest from \"{mod.UpdateUrl}\": {ex.Message}");
-				return null;
-			}
-
-			List<ModManifest> remoteManifest;
-
-			try
-			{
-				remoteManifest = ModManifest.FromString(manString);
-			}
-			catch (Exception ex)
-			{
-				errors.Add($"[{mod.Name}] Error parsing remote manifest from \"{mod.UpdateUrl}\": {ex.Message}");
-				return null;
-			}
-
-			var manPath = Path.Combine("mods", folder, "mod.manifest");
-			List<ModManifest> localManifest = null;
-
-			if (File.Exists(manPath))
-			{
-				try
-				{
-					localManifest = ModManifest.FromFile(manPath);
-				}
-				catch (Exception ex)
-				{
-					errors.Add($"[{mod.Name}] Error parsing local manifest: {ex.Message}");
-					return null;
+						ModDownload d = UpdateHelper.CheckModularVersion(mod, info.Item1, localManifest, client, errors);
+						if (d != null)
+						{
+							updates.Add(d);
+						}
+					}
 				}
 			}
 
-			List<ModManifestDiff> diff = ModManifestGenerator.Diff(remoteManifest, localManifest);
-
-			if (diff.Count < 1 || diff.All(x => x.State == ModManifestState.Unchanged))
-			{
-				return null;
-			}
-
-			return new ModDownload(mod, Path.Combine("mods", folder), mod.UpdateUrl, diff);
+			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, errors);
 		}
 
 		private void modListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -1157,11 +1065,88 @@ namespace SADXModManager
 				ModManifest.ToFile(manifest, manifestPath);
 			}
 		}
-		
+
+		private void UpdateSelectedMods()
+		{
+			InitializeWorker();
+			updateChecker?.RunWorkerAsync(modListView.SelectedItems.Cast<ListViewItem>()
+				.Select(x => (string)x.Tag)
+				.Select(x => new KeyValuePair<string, ModInfo>(x, mods[x]))
+				.ToList());
+		}
+
 		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			updateChecker?.RunWorkerAsync(modListView.SelectedItems.Cast<ListViewItem>()
-				.Select(x => (string)x.Tag).Select(x => new KeyValuePair<string, ModInfo>(x, mods[x])).ToList());
+			UpdateSelectedMods();
+		}
+
+		private void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var result = MessageBox.Show(this, "This will force all selected mods to be completely re-downloaded."
+				+ " Are you sure you want to continue?",
+				"Force Update", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+			if (result != DialogResult.Yes)
+			{
+				return;
+			}
+
+			UpdateHelper.ForceUpdate = true;
+			UpdateSelectedMods();
+		}
+
+		private void verifyToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			List<Tuple<string, ModInfo>> items = modListView.SelectedItems.Cast<ListViewItem>()
+				.Select(x => (string)x.Tag)
+				.Where(x => File.Exists(Path.Combine("mods", x, "mod.manifest")))
+				.Select(x => new Tuple<string, ModInfo>(x, mods[x]))
+				.ToList();
+
+			if (items.Count < 1)
+			{
+				MessageBox.Show(this, "None of the selected mods have manifests, so they cannot be verified.",
+					"Missing mod.manifest", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+
+			using (var progress = new VerifyModDialog(items))
+			{
+				var result = progress.ShowDialog(this);
+				if (result == DialogResult.Cancel)
+				{
+					return;
+				}
+
+				List<Tuple<string, ModInfo, List<ModManifestDiff>>> failed = progress.Failed;
+				if (failed.Count < 1)
+				{
+					MessageBox.Show(this, "All selected mods passed verification.", "Integrity Pass",
+						MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				else
+				{
+					result = MessageBox.Show(this, "The following mods failed verification:\n"
+						+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: {x.Item3.Count(y => y.State != ModManifestState.Unchanged)} file(s)"))
+						+ "\n\nWould you like to attempt repairs?",
+						"Integrity Fail", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+					if (result != DialogResult.Yes)
+					{
+						return;
+					}
+
+					InitializeWorker();
+
+					updateChecker.DoWork -= UpdateChecker_DoWork;
+					updateChecker.DoWork += UpdateChecker_DoWorkForced;
+
+					updateChecker.RunWorkerAsync(failed);
+
+					UpdateHelper.ForceUpdate = true;
+					buttonCheckForUpdates.Enabled = false;
+				}
+			}
 		}
 
 		private void comboUpdateFrequency_SelectedIndexChanged(object sender, EventArgs e)

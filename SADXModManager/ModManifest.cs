@@ -88,8 +88,6 @@ namespace SADXModManager
 				var relativePath = f.Substring(modPath.Length + 1);
 				var file = new FileInfo(f);
 
-				byte[] hash;
-
 				++i;
 
 				var args = new FileHashEventArgs(relativePath, i, fileIndex.Count);
@@ -100,13 +98,7 @@ namespace SADXModManager
 					return null;
 				}
 
-				using (var sha = new SHA256Cng())
-				{
-					using (FileStream stream = File.OpenRead(f))
-					{
-						hash = sha.ComputeHash(stream);
-					}
-				}
+				string hash = GetFileHash(f);
 
 				args = new FileHashEventArgs(relativePath, i, fileIndex.Count);
 				OnFileHashEnd(args);
@@ -120,7 +112,7 @@ namespace SADXModManager
 				{
 					FilePath = relativePath,
 					FileSize = file.Length,
-					Checksum = string.Concat(hash.Select(x => x.ToString("x2")))
+					Checksum = hash
 				});
 			}
 
@@ -129,6 +121,8 @@ namespace SADXModManager
 
 		public static List<ModManifestDiff> Diff(List<ModManifest> newManifest, List<ModManifest> oldManifest)
 		{
+			// TODO: handle copies instead of moves to reduce download requirements
+
 			var result = new List<ModManifestDiff>();
 
 			List<ModManifest> old = oldManifest != null && oldManifest.Count > 0
@@ -136,6 +130,7 @@ namespace SADXModManager
 
 			foreach (ModManifest entry in newManifest)
 			{
+				// First, check for an exact match. File path/name, hash, size; everything.
 				ModManifest exact = old.FirstOrDefault(x => Equals(x, entry));
 				if (exact != null)
 				{
@@ -144,7 +139,11 @@ namespace SADXModManager
 					continue;
 				}
 
-				List<ModManifest> checksum = old.Where(x => x.Checksum == entry.Checksum).ToList();
+				// There's no exact match, so let's search by checksum.
+				List<ModManifest> checksum = old.Where(x => x.Checksum.Equals(entry.Checksum, StringComparison.InvariantCultureIgnoreCase)).ToList();
+
+				// If we've found matching checksums, we then need to check
+				// the file path to see if it's been moved.
 				if (checksum.Count > 0)
 				{
 					foreach (ModManifest c in checksum)
@@ -152,13 +151,16 @@ namespace SADXModManager
 						old.Remove(c);
 					}
 
-					if (checksum.Any(x => x.FilePath != entry.FilePath))
+					if (checksum.All(x => x.FilePath != entry.FilePath))
 					{
+						old.Remove(old.FirstOrDefault(x => x.FilePath == entry.FilePath));
 						result.Add(new ModManifestDiff(ModManifestState.Moved, entry, checksum[0]));
 						continue;
 					}
 				}
 
+				// If we've made it here, there's no matching checksums, so let's search
+				// for matching paths. If a path matches, the file has been modified.
 				ModManifest nameMatch = old.FirstOrDefault(x => x.FilePath == entry.FilePath);
 				if (nameMatch != null)
 				{
@@ -167,9 +169,11 @@ namespace SADXModManager
 					continue;
 				}
 
+				// In every other case, this file is newly added.
 				result.Add(new ModManifestDiff(ModManifestState.Added, entry, null));
 			}
 
+			// All files that are still unique to the old manifest should be marked for removal.
 			if (old.Count > 0)
 			{
 				result.AddRange(old.Select(x => new ModManifestDiff(ModManifestState.Removed, x, null)));
@@ -178,6 +182,80 @@ namespace SADXModManager
 			return result;
 		}
 
+		public List<ModManifestDiff> Verify(string modPath, List<ModManifest> manifest)
+		{
+			var result = new List<ModManifestDiff>();
+			int i = 0;
+
+			foreach (var m in manifest)
+			{
+				var filePath = Path.Combine(modPath, m.FilePath);
+
+				++i;
+
+				var args = new FileHashEventArgs(m.FilePath, i, manifest.Count);
+				OnFileHashStart(args);
+
+				if (args.Cancel)
+				{
+					return null;
+				}
+
+				try
+				{
+					if (!File.Exists(filePath))
+					{
+						result.Add(new ModManifestDiff(ModManifestState.Removed, m, null));
+						continue;
+					}
+
+					var info = new FileInfo(filePath);
+
+					if (info.Length != m.FileSize)
+					{
+						result.Add(new ModManifestDiff(ModManifestState.Changed, m, null));
+						continue;
+					}
+
+					string hash = GetFileHash(filePath);
+					if (!hash.Equals(m.Checksum, StringComparison.InvariantCultureIgnoreCase))
+					{
+						result.Add(new ModManifestDiff(ModManifestState.Changed, m, null));
+						continue;
+					}
+
+					result.Add(new ModManifestDiff(ModManifestState.Unchanged, m, null));
+				}
+				finally
+				{
+					args = new FileHashEventArgs(m.FilePath, i, manifest.Count);
+					OnFileHashEnd(args);
+				}
+
+				if (args.Cancel)
+				{
+					return null;
+				}
+			}
+
+			return result;
+		}
+
+		public static string GetFileHash(string f)
+		{
+			byte[] hash;
+
+			using (var sha = new SHA256Cng())
+			{
+				using (FileStream stream = File.OpenRead(f))
+				{
+					hash = sha.ComputeHash(stream);
+				}
+			}
+
+			return string.Concat(hash.Select(x => x.ToString("x2")));
+		}
+		
 		protected virtual void OnFilesIndexed(FilesIndexedEventArgs e)
 		{
 			FilesIndexed?.Invoke(this, e);

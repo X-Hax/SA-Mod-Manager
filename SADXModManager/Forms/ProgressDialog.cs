@@ -118,7 +118,7 @@ namespace SADXModManager.Forms
 				return;
 			}
 
-			progressValue = (int)(taskIndex * multiplier + value / multiplier);
+			progressValue = (int)(taskIndex * multiplier + value * multiplier);
 		}
 
 		/// <summary>

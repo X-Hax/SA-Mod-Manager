@@ -89,10 +89,12 @@
 			this.openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.verifyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.uninstallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.forceUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
@@ -840,11 +842,13 @@
             this.openFolderToolStripMenuItem,
             this.toolStripMenuItem1,
             this.checkForUpdatesToolStripMenuItem,
+            this.verifyToolStripMenuItem,
+            this.forceUpdateToolStripMenuItem,
             this.uninstallToolStripMenuItem,
             this.toolStripMenuItem3,
             this.advancedToolStripMenuItem});
 			this.modContextMenu.Name = "modContextMenu";
-			this.modContextMenu.Size = new System.Drawing.Size(171, 104);
+			this.modContextMenu.Size = new System.Drawing.Size(171, 170);
 			// 
 			// openFolderToolStripMenuItem
 			// 
@@ -864,6 +868,13 @@
 			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.checkForUpdatesToolStripMenuItem.Text = "Check for updates";
 			this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+			// 
+			// verifyToolStripMenuItem
+			// 
+			this.verifyToolStripMenuItem.Name = "verifyToolStripMenuItem";
+			this.verifyToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+			this.verifyToolStripMenuItem.Text = "Verify integrity";
+			this.verifyToolStripMenuItem.Click += new System.EventHandler(this.verifyToolStripMenuItem_Click);
 			// 
 			// uninstallToolStripMenuItem
 			// 
@@ -891,6 +902,13 @@
 			this.generateManifestToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
+			// 
+			// forceUpdateToolStripMenuItem
+			// 
+			this.forceUpdateToolStripMenuItem.Name = "forceUpdateToolStripMenuItem";
+			this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+			this.forceUpdateToolStripMenuItem.Text = "Force update";
+			this.forceUpdateToolStripMenuItem.Click += new System.EventHandler(this.forceUpdateToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -997,5 +1015,7 @@
 		private System.Windows.Forms.CheckBox checkUpdateStartup;
 		private System.Windows.Forms.GroupBox groupBox5;
 		private System.Windows.Forms.Button buttonCheckForUpdates;
+		private System.Windows.Forms.ToolStripMenuItem verifyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem forceUpdateToolStripMenuItem;
 	}
 }

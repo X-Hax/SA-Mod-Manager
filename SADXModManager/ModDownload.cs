@@ -106,18 +106,33 @@ namespace SADXModManager
 			FilesToDownload = toDownload.Count;
 			Size = Math.Max(toDownload.Select(x => x.Current.FileSize).Sum(), toDownload.Count);
 
-			Changes = "Files changed in this update:\n\n"
-				+ string.Join("\n", ChangedFiles.Select(x => "- " + x.State.ToString() + ":\t" + x.Current.FilePath));
+			var changes = new List<string> { "Files changed in this update:\n" };
+
+			foreach (ModManifestDiff i in ChangedFiles)
+			{
+				string l = "- " + i.State.ToString() + ":\t\t";
+
+				if (i.State == ModManifestState.Moved)
+				{
+					changes.Add($"{l}{i.Last.FilePath} -> {i.Current.FilePath}");
+				}
+				else
+				{
+					changes.Add($"{l}{i.Current.FilePath}");
+				}
+			}
+
+			Changes = string.Join("\n", changes);
 		}
 
 		private static void Extract(IReader reader, string outDir)
 		{
 			var options = new ExtractionOptions
 			{
-				ExtractFullPath = true,
-				Overwrite = true,
+				ExtractFullPath    = true,
+				Overwrite          = true,
 				PreserveAttributes = true,
-				PreserveFileTime = true
+				PreserveFileTime   = true
 			};
 
 			while (reader.MoveToNextEntry())
@@ -266,19 +281,19 @@ namespace SADXModManager
 						if (File.Exists(oldManPath))
 						{
 							List<ModManifest> oldManifest = ModManifest.FromFile(oldManPath);
-							IEnumerable<ModManifest> unique = oldManifest.Except(newManifest);
+							List<string> oldFiles = oldManifest.Except(newManifest)
+								.Select(x => Path.Combine(Folder, x.FilePath))
+								.ToList();
 
-							foreach (string removed in unique.Select(x => Path.Combine(Folder, x.FilePath)))
+							foreach (string file in oldFiles)
 							{
-								if (File.Exists(removed))
+								if (File.Exists(file))
 								{
-									File.Delete(removed);
-								}
-								else if (Directory.Exists(removed))
-								{
-									Directory.Delete(removed, true);
+									File.Delete(file);
 								}
 							}
+
+							RemoveEmptyDirectories(oldManifest, newManifest);
 						}
 
 						foreach (ModManifest file in newManifest)
@@ -317,7 +332,7 @@ namespace SADXModManager
 				case ModDownloadType.Modular:
 					{
 						// First let's download all the new stuff.
-						List<ModManifestDiff> newStuff = ChangedFiles
+						List<ModManifestDiff> newEntries = ChangedFiles
 							.Where(x => x.State == ModManifestState.Added || x.State == ModManifestState.Changed)
 							.ToList();
 
@@ -331,7 +346,7 @@ namespace SADXModManager
 
 						var sync = new object();
 
-						foreach (ModManifestDiff i in newStuff)
+						foreach (ModManifestDiff i in newEntries)
 						{
 							string filePath = Path.Combine(tempDir, i.Current.FilePath);
 							string dir = Path.GetDirectoryName(filePath);
@@ -379,7 +394,7 @@ namespace SADXModManager
 						client.DownloadFileCompleted -= DownloadComplete;
 
 						// Now handle all file operations except where removals are concerned.
-						List<ModManifestDiff> movedStuff = ChangedFiles.Except(newStuff)
+						List<ModManifestDiff> movedEntries = ChangedFiles.Except(newEntries)
 							.Where(x => x.State == ModManifestState.Moved)
 							.ToList();
 
@@ -388,7 +403,7 @@ namespace SADXModManager
 							return;
 						}
 
-						foreach (ModManifestDiff i in movedStuff)
+						foreach (ModManifestDiff i in movedEntries)
 						{
 							ModManifest old = i.Last;
 							// This would be considered an error...
@@ -411,7 +426,7 @@ namespace SADXModManager
 						}
 
 						// Now move the stuff from the temporary folder over to the working directory.
-						foreach (ModManifestDiff i in newStuff.Concat(movedStuff))
+						foreach (ModManifestDiff i in newEntries.Concat(movedEntries))
 						{
 							string tempPath = Path.Combine(tempDir, i.Current.FilePath);
 							string workPath = Path.Combine(Folder, i.Current.FilePath);
@@ -426,29 +441,64 @@ namespace SADXModManager
 						}
 
 						// Once that has succeeded we can safely delete files that have been marked for removal.
-						List<ModManifestDiff> removedFiles = ChangedFiles
+						List<ModManifestDiff> removedEntries = ChangedFiles
 							.Where(x => x.State == ModManifestState.Removed)
 							.ToList();
 
-						foreach (string path in removedFiles.Select(i => Path.Combine(Folder, i.Current.FilePath)).Where(File.Exists))
+						foreach (string path in removedEntries.Select(i => Path.Combine(Folder, i.Current.FilePath)).Where(File.Exists))
 						{
 							File.Delete(path);
 						}
 
 						// Same for files that have been moved.
-						foreach (string path in movedStuff.Select(i => Path.Combine(Folder, i.Last.FilePath)).Where(File.Exists))
+						foreach (string path in movedEntries
+							.Where(x => newEntries.All(y => y.Current.FilePath != x.Last.FilePath))
+							.Select(i => Path.Combine(Folder, i.Last.FilePath)).Where(File.Exists))
 						{
 							File.Delete(path);
 						}
 
-						// And last but not least, copy over the new manifest.
 						string oldManPath = Path.Combine(Folder, "mod.manifest");
-						File.Copy(Path.Combine(tempDir, "mod.manifest"), oldManPath, true);
+						string newManPath = Path.Combine(tempDir, "mod.manifest");
+
+						if (File.Exists(oldManPath))
+						{
+							List<ModManifest> oldManifest = ModManifest.FromFile(oldManPath);
+							List<ModManifest> newManifest = ModManifest.FromFile(newManPath);
+
+							// Remove directories that are now empty.
+							RemoveEmptyDirectories(oldManifest, newManifest);
+						}
+
+						// And last but not least, copy over the new manifest.
+						File.Copy(newManPath, oldManPath, true);
 						break;
 					}
 
 				default:
 					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		private void RemoveEmptyDirectories(IEnumerable<ModManifest> oldManifest, IEnumerable<ModManifest> newManifest)
+		{
+			// Grab all directories that exist only in the old manifest.
+			var directories = new HashSet<string>
+			(
+				oldManifest.Select(x => Path.GetDirectoryName(x.FilePath))
+					.Except(newManifest.Select(x => Path.GetDirectoryName(x.FilePath)))
+					.Where(x => !string.IsNullOrEmpty(x))
+					.Select(x => x.Replace("/", "\\"))
+					.OrderByDescending(x => x.Count(c => c == '\\'))
+			);
+
+			// ok delete them thx
+			foreach (var dir in directories.Select(x => Path.Combine(Folder, x)))
+			{
+				if (Directory.Exists(dir))
+				{
+					Directory.Delete(dir);
+				}
 			}
 		}
 
