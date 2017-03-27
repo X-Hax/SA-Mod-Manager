@@ -228,6 +228,11 @@ namespace SADXModManager
 
 		private bool CheckForUpdates(bool force = false)
 		{
+			if (!force && !loaderini.UpdateCheck)
+			{
+				return false;
+			}
+
 			if (!force && !Elapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.UpdateTime)))
 			{
 				return false;
@@ -284,6 +289,11 @@ namespace SADXModManager
 
 		private void CheckForModUpdates(bool force = false)
 		{
+			if (!force && !loaderini.ModUpdateCheck)
+			{
+				return;
+			}
+
 			InitializeWorker();
 
 			if (!force && !Elapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.ModUpdateTime)))
