@@ -227,6 +227,8 @@ void FileMap::scanTextureFolder(const std::string& path, int modIndex)
 	transform(lower.begin(), lower.end(), lower.begin(), tolower);
 	std::vector<TexPackEntry> entries;
 
+	// First attempt to parse the root texture pack (for PVR files in the vanilla system folder).
+	// If the path isn't a file or doesn't exist, this function will return false.
 	if (texpack::ParseIndex(lower, entries))
 	{
 		for (const auto& i : entries)
@@ -273,7 +275,13 @@ void FileMap::scanTextureFolder(const std::string& path, int modIndex)
 
 		auto texPack = path + "\\" + fileName;
 		transform(texPack.begin(), texPack.end(), texPack.begin(), ::tolower);
-		m_fileMap[original] = { texPack, modIndex };
+
+		// Since we don't attempt to parse this file, make sure it exists
+		// before registering an empty texture pack directory.
+		if (FileExists(texPack + "\\index.txt"))
+		{
+			m_fileMap[original] = { texPack, modIndex };
+		}
 
 	} while (FindNextFileA(hFind, &data) != 0);
 
