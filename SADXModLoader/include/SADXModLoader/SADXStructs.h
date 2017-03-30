@@ -1106,6 +1106,112 @@ struct ChaoDebugFunction
 	const char *Name;
 };
 
+// Model Queue
+
+struct QueuedModelNode
+{
+	QueuedModelNode *Next;
+	float Depth;
+	Uint8 Flags;
+	char BlendMode;
+	__int16 TexNum;
+	NJS_TEXLIST *TexList;
+	NJS_ARGB Color;
+	int Control3D;
+	int ConstantAndAttr;
+	int ConstantOrAttr;
+};
+
+// Vertex Buffers
+
+struct FVFStruct_A
+{
+	NJS_VECTOR position;
+	Uint32 diffuse;
+	float u;
+	float v;
+};
+
+struct FVFStruct_B
+{
+	NJS_VECTOR position;
+};
+
+struct FVFStruct_C
+{
+	NJS_VECTOR position;
+	NJS_VECTOR normal;
+};
+
+struct FVFStruct_D
+{
+	NJS_VECTOR position;
+	float u;
+	float v;
+};
+
+struct FVFStruct_E
+{
+	NJS_VECTOR position;
+	NJS_VECTOR normal;
+	float u;
+	float v;
+};
+
+struct FVFStruct_F
+{
+	NJS_VECTOR position;
+	Uint32 diffuse;
+};
+
+struct FVFStruct_G
+{
+	NJS_VECTOR position;
+	NJS_VECTOR normal;
+	Uint32 diffuse;
+};
+
+struct FVFStruct_H
+{
+	NJS_VECTOR position;
+	Uint32 diffuse;
+	float u;
+	float v;
+};
+
+struct FVFStruct_I
+{
+	NJS_VECTOR position;
+	NJS_VECTOR normal;
+	Uint32 diffuse;
+	float u;
+	float v;
+};
+
+struct FVFStruct_J
+{
+	float x;
+	float y;
+	float z;
+	float rhw;
+	Uint32 diffuse;
+};
+
+struct FVFStruct_H_B
+{
+	NJS_VECTOR position;
+	float u;
+	float v;
+	int diffuse;
+};
+
+struct FVFStruct_K
+{
+	FVFStruct_J base;
+	float u;
+	float v;
+};
+
 #pragma pack(pop)
 
 #ifdef _MSC_VER

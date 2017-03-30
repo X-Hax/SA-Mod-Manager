@@ -16,6 +16,9 @@ typedef Uint32 NJD_SPRITE;
 typedef Uint32 NJD_FLAG;
 typedef Uint32 NJD_CONTROL_3D;
 typedef DWORD _DWORD;
+typedef Uint32 NJD_COLOR_TARGET;
+typedef Uint32 NJD_COLOR_BLENDING;
+typedef Uint32 NJD_TEX_SHADING;
 
 // SADX Functions
 #define ObjectFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(ObjectMaster *obj),ADDRESS)
@@ -24,19 +27,24 @@ FunctionPointer(void, PrintDebug, (const char *Format, ...), 0x401000);
 FunctionPointer(void, CopyToGlobalSprite_ScalePosition, (NJS_SPRITE *sprite), 0x401030);
 FunctionPointer(void, CopyToGlobalSprite_NativeToCurrent, (NJS_SPRITE *sprite), 0x401070);
 FunctionPointer(void, Set_D3DCMPFUNC_Mode, (int a1), 0x401410);
+VoidFunc(Direct3D_ResetZFunc, 0x401420);
 FunctionPointer(int, DrawModel_ResetRenderFlags_, (NJS_MODEL_SADX *model), 0x401430);
 FunctionPointer(void, SetCurrentLightType_Copy, (char a1), 0x401440);
-FunctionPointer(int, InitializeSomeStuff, (), 0x401830);
+FunctionPointer(void *, ReturnsPartOfObjectMasterWhyDoYouDoThisToMe, (ObjectMaster *a1), 0x4015E0);
+VoidFunc(InitializeSomeStuff, 0x401830);
+StdcallFunctionPointer(LRESULT, WndProc_B, (HWND handle, UINT Msg, WPARAM wParam, LPARAM a4), 0x401900);
 ThiscallFunctionPointer(void, LoadDLLFiles, (HMODULE *_this), 0x401AC0);
 VoidFunc(CheckSettings, 0x4025B0);
 FunctionPointer(float, VectorMaxAbs, (NJS_VECTOR *v), 0x402E70);
 FunctionPointer(void, njSetPerspective, (Angle bams), 0x402ED0);
 FunctionPointer(Angle, GetHorizontalFOV_BAMS, (), 0x402F00);
+FunctionPointer(void, SetGlobalPoint2Col_Colors, (Uint32 a1, Uint32 a2, Uint32 a3), 0x402F10);
 FunctionPointer(void, SetMaterialAndSpriteColor, (NJS_ARGB *a1), 0x402F40);
 FunctionPointer(Sint32, njSetTexture, (NJS_TEXLIST *texlist), 0x403070);
 FunctionPointer(void, njSetTextureNum, (Uint32 num), 0x403090);
 FunctionPointer(int, SetTextureAndGetNum, (), 0x4030B0);
-FunctionPointer(void, njColorBlendingMode, (Int target, Int mode), 0x4030D0);
+FunctionPointer(void, njColorBlendingMode, (NJD_COLOR_TARGET target, NJD_COLOR_BLENDING mode), 0x4030D0);
+FunctionPointer(void, njDrawTextureMemList_ToggleFog, (NJS_TEXTURE_VTX *points, int count, int gbix, int blend), 0x403130);
 FunctionPointer(void, Direct3D_SetNearFarPlanes, (float min_, float max_), 0x403180);
 FunctionPointer(Sint32, njReleaseTexture, (NJS_TEXLIST *texlist), 0x403290);
 FunctionPointer(bool, IsVisible, (NJS_VECTOR *center, float radius), 0x403330);
@@ -44,12 +52,17 @@ FunctionPointer(void, DrawModelThing, (NJS_MODEL_SADX *a1), 0x403470);
 FunctionPointer(void, ProcessModelNode_B, (NJS_OBJECT *obj, float scale), 0x4037F0);
 VoidFunc(SetCurrentLightType_0, 0x403BA0);
 FunctionPointer(void, DrawLineList, (LineInfo *a1, int a2, int a3), 0x403BC0);
-FunctionPointer(void *, late_alloca, (int a1), 0x403D30);
-FunctionPointer(void, SetSpriteColorAndZFuncThing, (char a1), 0x404240);
-FunctionPointer(void, Draw2DSprite, (NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, char zfunc_type), 0x404660);
-FunctionPointer(void, njDrawSprite3D_2, (NJS_SPRITE *sp, Int n, NJD_SPRITE attr, int zfunc_type), 0x404760);
-FunctionPointer(void, SomethingAboutObjectsAndMatrices, (void (__cdecl *function)(void *), ObjectMaster *obj, float depth, char zfunc), 0x404840);
-FunctionPointer(void, DrawModelIGuess_Blend_, (NJS_MODEL_SADX *a1, char a2), 0x4048E0);
+FunctionPointer(void, Set3DSpriteDepth, (Float a1), 0x403D20);
+FunctionPointer(void *, late_alloca, (int size), 0x403D30);
+FunctionPointer(void, late_alloca_sub, (int size), 0x403D80);
+FunctionPointer(Uint8 *, late_alloca_from_end, (int a1), 0x403DB0);
+VoidFunc(SetQueueDrawingState_BlankScreen, 0x403E60);
+FunctionPointer(void, SetSpriteColorAndZFuncThing, (QueuedModelFlagsB a1), 0x404240);
+FunctionPointer(void, Draw2DSprite, (NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queueflags), 0x404660);
+FunctionPointer(void, njDrawSprite3D_Queue, (NJS_SPRITE *sp, Int n, NJD_SPRITE attr, QueuedModelFlagsB zfunc_type), 0x404760);
+FunctionPointer(void, AllocateQueuedModelCallback, (void(__cdecl *function)(void *), void *data, float depth, QueuedModelFlagsB queueflags), 0x404840);
+FunctionPointer(void, DrawModel_Queue, (NJS_MODEL_SADX *a1, QueuedModelFlagsB a2), 0x4048E0);
+FunctionPointer(void, WhatQueueThing, (QueuedModelNode *a1, NJS_MODEL_SADX *a2, float a3), 0x404990);
 FunctionPointer(void, TranslateObject, (NJS_OBJECT *a1), 0x404CC0);
 FunctionPointer(void, ScaleObject, (NJS_OBJECT *a1), 0x404D40);
 FunctionPointer(void, RotateObjectXYZ, (NJS_OBJECT *a1), 0x404DC0);
@@ -65,15 +78,22 @@ FunctionPointer(bool, CheckModelDistance_xyz, (float x, float y, float z, float 
 FunctionPointer(void, njAction, (NJS_ACTION *action, Float frame), 0x407020);
 FunctionPointer(void, njDrawSprite3D, (NJS_SPRITE *_sp, Int n, NJD_SPRITE attr), 0x407070);
 FunctionPointer(void, njDrawSprite2D_4, (NJS_SPRITE *hud, Int n, Float pri, NJD_SPRITE attr), 0x4070A0);
+FunctionPointer(void, njDrawSprite3D_4, (NJS_SPRITE *sp, int n, NJD_SPRITE attr), 0x407130);
+FunctionPointer(void, DrawRect_, (float left, float top, float right, float bottom, float depth, int color), 0x4071C0);
 FunctionPointer(void, AnotherDrawSprite3DWrapper, (NJS_SPRITE *a1, Int n, NJD_SPRITE attr), 0x4072F0);
-FunctionPointer(void, DrawRect, (float left, float top, float right, float bottom, float depth, int color, char zfunc_type), 0x4073B0);
-FunctionPointer(void, ProcessModelNode, (NJS_OBJECT *obj, int blend_mode, float scale), 0x4074A0);
-FunctionPointer(void, DrawModelIGuess_Blend, (NJS_MODEL_SADX *model, char blend), 0x4078F0);
-FunctionPointer(void, DrawModelIGuess, (NJS_MODEL_SADX *a1), 0x407970);
-FunctionPointer(void, ProcessModelNode_A_Wrapper, (NJS_OBJECT *a1, int a2, float a3), 0x407B40);
-FunctionPointer(void, ProcessModelNode_A_WrapperB, (NJS_OBJECT *a1, int a2), 0x407B70);
+VoidFunc(ResetDrawQueue, 0x407330);
+FunctionPointer(void, DrawRect, (float left, float top, float right, float bottom, float depth, int color, QueuedModelFlagsB queueflags), 0x4073B0);
+FunctionPointer(void, ProcessModelNode, (NJS_OBJECT *obj, QueuedModelFlagsB blend_mode, float scale), 0x4074A0);
+FunctionPointer(void, DrawModelIGuess_Blend, (NJS_MODEL_SADX *model, QueuedModelFlagsB blend), 0x4078F0);
+FunctionPointer(void, DrawModel, (NJS_MODEL_SADX *a1), 0x407970);
+VoidFunc(late_alloca_reset, 0x407AB0);
+FunctionPointer(void, ProcessModelNode_A_Wrapper, (NJS_OBJECT *a1, QueuedModelFlagsB a2, float a3), 0x407B40);
+FunctionPointer(void, ProcessModelNode_A_WrapperB, (NJS_OBJECT *a1, QueuedModelFlagsB a2), 0x407B70);
+FunctionPointer(void, _sub_407BB0, (NJS_MODEL_SADX *a1, char a2), 0x407BB0);
 FunctionPointer(void, ProcessModelNode_AB_Wrapper, (NJS_OBJECT *obj, float scale), 0x4085A0);
+VoidFunc(late_alloca_init, 0x408630);
 FunctionPointer(void, ProcessModelNode_A_WrapperC, (NJS_OBJECT *a1, float a2), 0x408690);
+VoidFunc(DrawQueuedModels, 0x4086F0);
 FunctionPointer(void, ProcessModelNode_C, (NJS_OBJECT *obj, int blend_mode, float scale), 0x409080);
 FunctionPointer(void, ProcessModelNode_D, (NJS_OBJECT *obj, int blend_mode, float scale), 0x409A20);
 FunctionPointer(bool, ProcessModelNode_C_VerifyTexList, (NJS_OBJECT *a1, int a2, float a3), 0x40A170);
@@ -88,6 +108,7 @@ FunctionPointer(void, SetStageLightSpecularAndAmbient, (int i, float specular, f
 FunctionPointer(void, SetStageLightDiffuse, (int i, float diffuse_r, float diffuse_g, float diffuse_b), 0x40A5D0);
 FunctionPointer(void, SetStageLightDirection, (int a1, float dir_x, float dir_y, float dir_z), 0x40A600);
 VoidFunc(ApplyLSPalette, 0x40A630);
+FunctionPointer(Sint32, InitDefaultStageLight, (), 0x40A8A0);
 FunctionPointer(StageLightData *, GetStageLight, (int level, int act, int light_num), 0x40A8F0);
 FunctionPointer(void, SetCurrentStageLights, (int level, int act), 0x40A950);
 FunctionPointer(void, SetCurrentLSPalette, (int level, int act, int type), 0x40AAB0);
@@ -112,28 +133,31 @@ ObjectFunc(CheckThingButThenDeleteObject, 0x40B6C0);
 VoidFunc(DeleteMostObjects, 0x40B6E0);
 VoidFunc(DeleteAllObjects, 0x40B730);
 ObjectFunc(DeleteChildObjects, 0x40B7E0);
-FunctionPointer(ObjectMaster *, LoadObject, (LoadObj flags, int index, void (__cdecl *loadSub)(ObjectMaster *)), 0x40B860);
-FunctionPointer(ObjectMaster *, LoadChildObject, (LoadObj a1, void (__cdecl *address)(ObjectMaster *), ObjectMaster *parent), 0x40B940);
+FunctionPointer(ObjectMaster *, LoadObject, (LoadObj flags, int index, void(__cdecl *loadSub)(ObjectMaster *)), 0x40B860);
+FunctionPointer(ObjectMaster *, LoadChildObject, (LoadObj a1, void(__cdecl *address)(ObjectMaster *), ObjectMaster *parent), 0x40B940);
 FunctionPointer(void, InitDInputMouse, (HINSTANCE hinst, HWND a2), 0x40BB20);
 FunctionPointer(int, GetDInputMouseState, (), 0x40BB80);
 VoidFunc(ReleaseDInputMouse, 0x40BC40);
 FunctionPointer(int, DoSomethingRelatedToText_, (char *a2), 0x40BD30);
+VoidFunc(InitVarious, 0x40BF40);
 VoidFunc(GameModeHandler, 0x40C090);
 VoidFunc(GameLoop, 0x40CAD0);
 FunctionPointer(void, PlayMusicFile, (LPCSTR filename, int loop), 0x40CD20);
 FunctionPointer(int, PlayVoiceFile, (LPCSTR filename), 0x40CE30);
 FunctionPointer(int, WMPRestartMusic, (), 0x40CF50);
-FunctionPointer(int, WMPClose, (int), 0x40CFF0);
-FunctionPointer(int, PauseSound, (), 0x40D060);
-FunctionPointer(int, ResumeSound, (), 0x40D0A0);
+FunctionPointer(void, WMPClose, (int a1), 0x40CFF0);
+VoidFunc(PauseSound, 0x40D060);
+VoidFunc(ResumeSound, 0x40D0A0);
 FunctionPointer(int, WMPInit, (), 0x40D0D0);
 FunctionPointer(int, WMPRelease, (), 0x40D1F0);
 FunctionPointer(int, DoesTheThingWithFOVAndDrawsGlobalSprite, (), 0x40D4D0);
 FunctionPointer(void, DoSomethingRelatedToText, (void *a1, char *a2), 0x40E570);
-FunctionPointer(signed int, SetCustomMouseButton, (unsigned __int16 index, int mouseButton), 0x40E8B0);
-FunctionPointer(int, MouseUpdate, (), 0x40E900);
-FunctionPointer(int, RenderCursorTriangle, (), 0x40EAB0);
+FunctionPointer(void, SetMouseMode, (Bool a1), 0x40E8A0);
+FunctionPointer(void, SetCustomMouseButton, (unsigned __int16 index, int mouseButton), 0x40E8B0);
+VoidFunc(MouseUpdate, 0x40E900);
+VoidFunc(CursorTriangle_Draw, 0x40EAB0);
 VoidFunc(KeyboardUpdate, 0x40EE10);
+FunctionPointer(Uint8, GetKey, (int index), 0x40EF20);
 VoidFunc(EnableControl, 0x40EF40);
 VoidFunc(DisableControl, 0x40EF50);
 FunctionPointer(Bool, IsControlEnabled, (), 0x40EF60);
@@ -144,18 +168,29 @@ FunctionPointer(void, UpdateMenuInput, (int index), 0x40F070);
 VoidFunc(WriteAnalogs, 0x40F170);
 VoidFunc(InputThing__Ctor, 0x40F350);
 VoidFunc(InitRawControllers, 0x40F3A0);
-FunctionPointer(int, WriteControllerData, (), 0x40F460);
+VoidFunc(PollInput, 0x40F460);
 VoidFunc(Control, 0x40FDC0);
-FunctionPointer(int, Enable3DSound, (int), 0x40FF20);
+FunctionPointer(void, Enable3DSound, (signed int a1), 0x40FF20);
+FunctionPointer(Bool, Get3DSoundEnabled, (), 0x40FF40);
+StdcallFunctionPointer(DWORD, AudioThread, (LPVOID lpThreadParameter), 0x40FF50);
+FunctionPointer(signed int, StartAudioThread, (), 0x410510);
+FunctionPointer(signed int, StopAudioThread, (), 0x410630);
 VoidFunc(ItDisablesFog, 0x4119B0);
 FunctionPointer(int, UpdateFogTable, (), 0x411A20);
 VoidFunc(ToggleStageFog, 0x411AF0);
 VoidFunc(DisableFog, 0x411B40);
+FunctionPointer(void, SetFrameRateMode, (int mode, int frameIncrement), 0x411E30);
+FunctionPointer(void, ScaleVectorThing_Scale, (float scale), 0x411E90);
+VoidFunc(ScaleVectorThing_RestoreB, 0x411EF0);
+VoidFunc(ScaleVectorThing_Restore, 0x411F30);
 FunctionPointer(void, SetCurrentLightType, (int a1), 0x412160);
 FunctionPointer(void, SetCurrentLightType_B, (signed int a1), 0x412400);
+FunctionPointer(void, Direct3D_PerformLighting, (int type_level), 0x412420);
+FunctionPointer(void, SetScaleVectorThingButOnlyTheEggCarrier, (NJS_VECTOR *a1, float rmaybe, float gmaybe, float bmaybe, float idka, float idkb, float idkc), 0x412740);
 FunctionPointer(void, SetMaterialAndSpriteColor_Float, (float a, float r, float g, float b), 0x4128A0);
 VoidFunc(SetMaterialAndSpriteColor_Temp, 0x4128E0);
 VoidFunc(ClampGlobalColorThing_Thing, 0x4128F0);
+FunctionPointer(void, DoThatThingWhereYouGetCloseAndItLightsUp, (EntityData1 *a1, unsigned __int16 a2), 0x412A20);
 FunctionPointer(void, SetTimeOfDay, (Sint8 time), 0x412C00);
 FunctionPointer(Sint8, GetTimeOfDay, (), 0x412C10);
 FunctionPointer(int, GetCharacterUnlockedAdventure, (Characters character), 0x412C30);
@@ -201,7 +236,7 @@ FunctionPointer(bool, IsIngame, (), 0x414D90);
 FunctionPointer(__int16, DisplayPauseMenu, (), 0x415420);
 VoidFunc(LoadLevelResults, 0x415540);
 VoidFunc(LoadCharacter, 0x4157C0);
-VoidFunc(Load_PRESSSTART_PVM, 0x4159A0);
+VoidFunc(LoadLevel, 0x4159A0);
 FunctionPointer(__int16, GameStateHandler_Mission, (), 0x415AF0);
 FunctionPointer(__int16, GameStateHandler_Trial, (), 0x416610);
 FunctionPointer(__int16, GameStateHandler_Adventure, (), 0x4173B0);
@@ -214,6 +249,7 @@ VoidFunc(ResetObjectCollisionCounts, 0x41B970);
 FunctionPointer(void, WowEvenMoreCollision, (EntityData1 *a2), 0x41BAC0);
 FunctionPointer(void, AddToCollisionList, (EntityData1 *entity), 0x41C280);
 FunctionPointer(void, FreeEntityCollision, (EntityData1 *a1), 0x41C4E0);
+FunctionPointer(void, SetCollisionInfoRadius, (CollisionInfo *info, float radius), 0x41C530);
 VoidFunc(ResetHomingAttackTargetsAndThings, 0x41C680);
 ObjectFunc(FreeCollision, 0x41CAA0);
 FunctionPointer(void, InitCollision, (ObjectMaster *obj, CollisionData *collisionArray, int count, unsigned __int8 list), 0x41CAF0);
@@ -226,6 +262,9 @@ VoidFunc(RunCollision_3, 0x420560);
 VoidFunc(RunCollision_4, 0x420640);
 VoidFunc(RunCollision_5, 0x4206A0);
 VoidFunc(RunObjectCollision, 0x420700);
+FunctionPointer(Bool, get_byte_3B280A8, (), 0x420820);
+VoidFunc(set_byte_3B280A8_1, 0x420830);
+VoidFunc(set_byte_3B280A8_0, 0x420840);
 VoidFunc(SetupSomeScreenStuff, 0x4208E0);
 FunctionPointer(void, ABC_TXT_load, (ABC_TXT_struct *structure), 0x420A00);
 FunctionPointer(void, ABC_TXT_release, (ABC_TXT_struct *a1), 0x420A30);
@@ -233,6 +272,8 @@ FunctionPointer(void, ABC_TXT_copy, (ABC_TXT_struct *a1), 0x420A50);
 FunctionPointer(void, DrawStringCharacter, (char _char, float x, float y, float scale), 0x420AA0);
 FunctionPointer(void, DrawString, (const char *text, float x, float y, float scale), 0x420C50);
 FunctionPointer(void, UnloadCharTextures, (int charID), 0x420E90);
+VoidFunc(FreeCharacterTexlists, 0x420EF0);
+VoidFunc(FreeRegObjTexlists, 0x420F40);
 FunctionPointer(Sint32, SetTextureToCommon, (), 0x420F90);
 FunctionPointer(bool, LevelObjTexlistLoaded, (), 0x420FB0);
 FunctionPointer(Sint32, SetTextureToLevelObj, (), 0x420FC0);
@@ -250,8 +291,8 @@ FunctionPointer(int, ShowNoMemoryCardText_1, (int), 0x421CD0);
 VoidFunc(WriteSaveFile, 0x421FD0);
 VoidFunc(j_WriteSaveFile, 0x4221D0);
 FunctionPointer(void, LoadFile, (const char *name, LPVOID lpBuffer), 0x422200);
-FunctionPointer(void, LoadFileWithMalloc, (const char *Name, LPVOID *Data), 0x422310);
-FunctionPointer(int, ReleaseSetFile, (), 0x422440);
+FunctionPointer(void, LoadFileWithMalloc, (const char *name, LPVOID *data), 0x422310);
+VoidFunc(ReleaseSetFile, 0x422440);
 FunctionPointer(int, GetCharIDString, (), 0x422490);
 VoidFunc(ReleaseCamFile, 0x4224B0);
 FunctionPointer(signed int, njLoadTexture_Wrapper, (NJS_TEXLIST *texlist), 0x4228E0);
@@ -260,17 +301,26 @@ VoidFunc(LoadLevelFiles, 0x422AD0);
 FunctionPointer(void, LoadSoundList, (signed int soundlist), 0x4238E0);
 FunctionPointer(int, PlaySound, (int ID, int a2, int a3, int a4), 0x423D70);
 FunctionPointer(signed int, PlaySound2, (int ID, int a2, int a3, int a4), 0x423E20);
+FunctionPointer(Sint32, QueueSound_DualEntity, (int id, EntityData1 *entity, int a3, EntityData1 *a4, int a5), 0x423F50);
+FunctionPointer(Sint32, QueueSound_XYZ, (int id, EntityData1 *entity, int a3, int a4, int a5, float x, float y, float z), 0x424000);
+FunctionPointer(signed int, SomeOtherSoundThing, (int a1, EntityData1 *a2, int field_0, int field_1C, int field_4, float x, float y, float z), 0x424100);
 FunctionPointer(int, DoSoundQueueThing, (int num), 0x424210);
 FunctionPointer(int, LoadCharVoices, (), 0x4245F0);
 VoidFunc(LoadCharBossSounds, 0x424760);
+FunctionPointer(void, QueueSound, (int id, EntityData1 *entity, int a3, int a4, int a5, float multiplier, EntityData1 *origin_entity), 0x4249E0);
+FunctionPointer(int, InitSoundQueue, (), 0x424C20);
 FunctionPointer(int, LoadLevelSounds, (), 0x424C80);
+VoidFunc(PlayQueuedSounds, 0x4250D0);
 FunctionPointer(int, j_WMPInit, (), 0x4253C0);
 ObjectFunc(SoundManager_Main, 0x4253D0);
 ObjectFunc(SoundManager_Delete, 0x425620);
 FunctionPointer(int, SoundManager_Delete2, (), 0x425670);
 FunctionPointer(void, PlayMusic, (MusicIDs song), 0x425690);
+VoidFunc(StopMusic, 0x4256B0);
 FunctionPointer(int, RestoreLastSong, (), 0x4256E0);
 FunctionPointer(void, PlayVoice, (int a1), 0x425710);
+VoidFunc(StopVoices, 0x425730);
+FunctionPointer(int, Get_dword_3B29CF4, (), 0x425740);
 ObjectFunc(JingleMain, 0x425760);
 VoidFunc(ResetCurrentVoice, 0x4257E0);
 ObjectFunc(SoundManager_Load, 0x425830);
@@ -282,8 +332,8 @@ VoidFunc(Set0Rings, 0x425AB0);
 FunctionPointer(int, GetMarketRings, (), 0x425AC0);
 FunctionPointer(int, ResetLives, (), 0x425AF0);
 FunctionPointer(void, GiveLives, (__int16 lives), 0x425B60);
-FunctionPointer(void, AddRings, (__int16 rings), 0x425BE0);
-FunctionPointer(short, GetRings, (), 0x425CC0);
+FunctionPointer(void, AddRings, (Sint16 amount), 0x425BE0);
+FunctionPointer(Sint16, GetRings, (), 0x425CC0);
 VoidFunc(HudDisplayRingTimeLife, 0x425CD0);
 VoidFunc(HudDisplayRingTimeLife_Check, 0x425F90);
 FunctionPointer(int, GetLives, (), 0x425FE0);
@@ -308,37 +358,53 @@ FunctionPointer(int, HudDisplayScoreOrTimer, (), 0x427F50);
 ObjectFunc(StageResult_Main, 0x42A680);
 ObjectFunc(ScoreDisplay_Main, 0x42BCC0);
 ObjectFunc(j_ScoreDisplay_Main, 0x42BEE0);
-VoidFunc(DrawScreenFade, 0x42BEF0);
-FunctionPointer(int, ScreenFadeThing, (), 0x42BF70);
-FunctionPointer(int, ScreenFadeThing_B, (), 0x42C570);
-FunctionPointer(int, Load_SEGALOGO_E, (), 0x42C730);
-FunctionPointer(int, InitializeSegaLogo, (), 0x42C7B0);
-FunctionPointer(int, DisplayLogoScreen, (unsigned __int8 textureStart), 0x42CB20);
-FunctionPointer(int, RunSegaSonicTeamLogos, (), 0x42CC70);
+VoidFunc(ScreenFade_Draw, 0x42BEF0);
+VoidFunc(ScreenFade_Start, 0x42BF70);
+FunctionPointer(void, ScreenFade_SetColor, (NJS_COLOR *a1), 0x42C4E0);
+VoidFunc(ScreenFade_DrawColor, 0x42C4F0);
+FunctionPointer(Sint16, ScreenFade_Run, (), 0x42C570);
+VoidFunc(ScreenFade_Start_CopyAlpha, 0x42C630);
+FunctionPointer(Sint16, ScreenFade_RunActive, (), 0x42C650);
+VoidFunc(Load_SEGALOGO_E, 0x42C730);
+VoidFunc(InitializeSegaLogo, 0x42C7B0);
+FunctionPointer(void, DisplayLogoScreen, (unsigned __int8 textureStart), 0x42CB20);
+FunctionPointer(Sint32, RunSegaSonicTeamLogos, (), 0x42CC70);
 FunctionPointer(int, GetCharacterSelection, (), 0x42CDE0);
 FunctionPointer(ObjectMaster *, j_LoadCharBoss, (ObjectMaster *a1), 0x42CE40);
+FunctionPointer(int, j_LoadTitleCardTexture, (int minDispTime), 0x42CE80);
+FunctionPointer(Sint32, j_DisplayTitleCard, (), 0x42CE90);
 FunctionPointer(bool, CheckSaveFile, (SaveFileData *saveFile), 0x42D0B0);
 ThiscallFunctionPointer(void, WriteAdventureDataToSaveFile, (void *data), 0x42D200);
 FunctionPointer(int, InitSaveData, (), 0x42D3B0);
 VoidFunc(SaveSave, 0x42D630);
 VoidFunc(LoadSave, 0x42D770);
+FunctionPointer(void, SetTGSCharSelThing, (int a1), 0x42E470);
 FunctionPointer(int, VideoMain, (int n), 0x42F020);
+VoidFunc(j_EnableControl, 0x42F610);
+VoidFunc(j_DisableControl, 0x42F620);
 FunctionPointer(void, DisplayDialogueText, (char *text), 0x42FB20);
 FunctionPointer(ObjectMaster *, j_GetCharacterObject, (unsigned __int8 a1), 0x42FC40);
-FunctionPointer(void, LoadEventCharacter, (unsigned __int8 charID, void (__cdecl *mainsub)(ObjectMaster *), float xpos, float ypos, float zpos, int xrot, int yrot, int zrot), 0x42FD80);
-FunctionPointer(void, EV_MainThread, (void (__cdecl *func)(_DWORD)), 0x431180);
-FunctionPointer(void, EV_CanselThread, (void (__cdecl *func)(int)), 0x431290);
+FunctionPointer(void, LoadEventCharacter, (unsigned __int8 charID, void(__cdecl *mainsub)(ObjectMaster *), float xpos, float ypos, float zpos, int xrot, int yrot, int zrot), 0x42FD80);
+VoidFunc(j_StopVoices, 0x431110);
+FunctionPointer(void, EV_MainThread, (void(__cdecl *func)(_DWORD)), 0x431180);
+FunctionPointer(void, EV_CanselThread, (void(__cdecl *func)(int)), 0x431290);
 FunctionPointer(void, LoadEventObject, (ObjectMaster **a1, ObjectMaster *(*func)(void), float x, float y, float z, int rx, int ry, int rz), 0x4316C0);
+FunctionPointer(int, DrawBG__, (char, float, float, float z, float scaleX, float scaleY), 0x431BB0);
 ObjectFunc(MenuObj_Display, 0x432480);
 VoidFunc(RunCurrentMenuObj_ZfuncThing, 0x4326F0);
 ObjectFunc(MenuObj_Main, 0x432720);
 FunctionPointer(int, LoadMenuObject, (), 0x432C60);
 VoidFunc(RunCurrentMenuObj_KillDisplaySub, 0x432DD0);
-FunctionPointer(int, DoSomeWeirdColorThingWithMenusParticularlyTheFileSelect, (unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4), 0x432F90);
+FunctionPointer(Uint32, BlendColors, (Uint32 a1, Uint32 a2), 0x432DF0);
+FunctionPointer(void, SetVtxColorB, (Uint32 a1), 0x432F40);
+FunctionPointer(void, DoColorGradientThingMaybe, (unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4), 0x432F90);
+FunctionPointer(void, SetVtxColorA, (Uint32 a1), 0x433010);
 VoidFunc(SetDefaultAlphaBlend, 0x433170);
 FunctionPointer(Uint32, GetGlobalIndex, (NJS_TEXLIST *a1, int texIndex), 0x4332F0);
-FunctionPointer(void, DisplayScreenTexture, (int that_cant_be_right, float a2, float a3, float a4), 0x4338D0);
-FunctionPointer(int, DrawBG, (int, float, float, float, float, float), 0x433F80);
+FunctionPointer(void, DisplayScreenTexturePoints, (int texnum, float x, float y, float z, float centerX, float centerY, NJS_TEXTURE_VTX *points), 0x4335A0);
+FunctionPointer(void, DisplayScreenTexture, (int that_cant_be_right, float x, float y, float z), 0x4338D0);
+FunctionPointer(void, DisplayScreenTextureCenter, (int texnum, float x, float y, float z, float centerX, float centerY), 0x433C90);
+FunctionPointer(void, DrawBG, (int texnum, float x, float y, float z, float scaleX, float scaleY), 0x433F80);
 FunctionPointer(int, GetOtherLastHorizontalFOV_BAMS, (), 0x4345F0);
 VoidFunc(Camera_BasicallyCtor, 0x434600);
 ObjectFunc(Camera_Delete, 0x434670);
@@ -347,7 +413,7 @@ FunctionPointer(int, camerahax_b, (), 0x434880);
 FunctionPointer(void, SetCameraControlEnabled, (Bool a1), 0x4348A0);
 FunctionPointer(Bool, IsCameraControlEnabled, (), 0x4348E0);
 FunctionPointer(void, SetCameraMode_, (int a1), 0x4348F0);
-FunctionPointer(int, GetCameraMode_, (), 0x434930);
+FunctionPointer(Uint32, GetCameraMode_, (), 0x434930);
 FunctionPointer(void, SetCameraMode, (char a1), 0x436560);
 FunctionPointer(int, GetCameraMode, (), 0x436590);
 FunctionPointer(int, Get_camera_thing_b, (), 0x4365A0);
@@ -358,15 +424,18 @@ ObjectFunc(Camera_Display, 0x4373D0);
 FunctionPointer(signed int, njCameraAction, (NJS_CACTION *a1, float a2), 0x437E40);
 ObjectFunc(Camera_Main, 0x438090);
 VoidFunc(LoadCamera, 0x438260);
+FunctionPointer(int, BAMS_Wrap, (__int16 bams_a, unsigned __int16 bams_b, int limit), 0x438350);
 VoidFunc(BackupConstantAttr, 0x439520);
 VoidFunc(RestoreConstantAttr, 0x439540);
-FunctionPointer(void, AddConstantAttr, (NJD_FLAG and, NJD_FLAG or), 0x439560);
-FunctionPointer(void, RemoveConstantAttr, (NJD_FLAG and, NJD_FLAG or), 0x439590);
+FunctionPointer(void, AddConstantAttr, (NJD_FLAG and, NJD_FLAG or ), 0x439560);
+FunctionPointer(void, RemoveConstantAttr, (NJD_FLAG and, NJD_FLAG or ), 0x439590);
 VoidFunc(njControl3D_Backup, 0x4395C0);
 VoidFunc(njControl3D_Restore, 0x4395D0);
 FunctionPointer(void, njControl3D_Add, (NJD_CONTROL_3D a1), 0x4395E0);
 FunctionPointer(void, njControl3D_Remove, (NJD_CONTROL_3D a1), 0x439600);
+FunctionPointer(void, SetMatrixInGiganticMatrixArrayIndex, (NJS_MATRIX *a3, int index), 0x439B00);
 FunctionPointer(void, InitSprite, (NJS_SPRITE *a1, NJS_TEXLIST *a2, NJS_TEXANIM *a3), 0x439B20);
+FunctionPointer(float, SkyDeck_IncrementFloat, (float a1, float a2, float a3), 0x439ED0);
 FunctionPointer(void, InitLandTable, (int level, int act), 0x43A260);
 FunctionPointer(void, FreeLandTable, (int level, int act), 0x43A350);
 FunctionPointer(void, ResetLandTablePointer, (int level, int act), 0x43A4A0);
@@ -375,10 +444,14 @@ ObjectFunc(LandTableObj_Delete, 0x43A500);
 VoidFunc(DrawLandTable, 0x43A6A0);
 VoidFunc(UpdateLandTableAnimationMaybe, 0x43A8A0);
 VoidFunc(ListGroundForDrawing, 0x43A900);
+FunctionPointer(void, DynamicCOL_Add, (ColFlags flags, ObjectMaster *entity, NJS_OBJECT *model), 0x43B2E0);
+FunctionPointer(void, DynamicCOL_Remove, (ObjectMaster *entity, NJS_OBJECT *model), 0x43B380);
 FunctionPointer(NJS_OBJECT *, ObjectArray_GetFreeObject, (), 0x43B400);
 FunctionPointer(int, ObjectArray_Remove, (NJS_OBJECT *a1), 0x43B450);
 FunctionPointer(int, ResetGravity, (), 0x43B490);
 FunctionPointer(void, SetGravityMaybe, (int a1, int a2), 0x43B4C0);
+FunctionPointer(void, LandTable_MinimumRadius_Set, (float a1), 0x43B6E0);
+VoidFunc(LandTable_MinimumRadius_Reset, 0x43B6F0);
 VoidFunc(SetCurrentLandTable, 0x43B700);
 ObjectFunc(LandTableObj_MainB, 0x43B780);
 ObjectFunc(LandTableObj_Display, 0x43B830);
@@ -386,13 +459,14 @@ ObjectFunc(LandTableObj_Main, 0x43B8B0);
 VoidFunc(ClearPlayerArrays, 0x43B920);
 FunctionPointer(Bool, DoJumpThing, (EntityData1 *a1, CharObj2 *a2), 0x43BF90);
 FunctionPointer(bool, HaveTarget, (char charid), 0x43C110);
+FunctionPointer(void, ProcessVertexWelds, (EntityData1 *a1, CharObj2 **a2, CharObj2 *a3), 0x43FA90);
 ObjectFunc(j_RestoreLastSong, 0x440E10);
 FunctionPointer(void, ForcePlayerAction, (unsigned __int8 playerNum, char action), 0x441260);
 FunctionPointer(void, EnemyBounceThing, (unsigned __int8 playerID, float speedX, float speedY, float speedZ), 0x441280);
 FunctionPointer(void, EnemyBounceThing_Wrapper, (unsigned __int8 playerID, float a2, float a3, float a4), 0x441370);
 FunctionPointer(void, dothedash, (unsigned __int8 playerID, NJS_VECTOR *_speed, Rotation3 *angle, __int16 disableTime), 0x441490);
 FunctionPointer(void, PositionPlayer, (Uint8 charIndex, float x, float y, float z), 0x441780);
-FunctionPointer(int, IsPlayerInsideSphere, (NJS_VECTOR *x, float radius), 0x441840);
+FunctionPointer(int, IsPlayerInsideSphere, (NJS_VECTOR *x_1, float radius), 0x441840);
 FunctionPointer(int, GetCharacterID, (char index), 0x441970);
 FunctionPointer(ObjectMaster *, GetCharacterObject, (unsigned __int8 character), 0x441AC0);
 FunctionPointer(CharObj2 *, GetCharObj2, (char index), 0x441B00);
@@ -403,11 +477,11 @@ FunctionPointer(void, RestorePlayerSubs, (unsigned __int8 id), 0x441CA0);
 FunctionPointer(void, GiveMagneticBarrier, (char character), 0x441E30);
 FunctionPointer(void, GiveBarrier, (char character), 0x441EA0);
 FunctionPointer(void, GiveInvincibility, (int character), 0x441F10);
+FunctionPointer(void, SetHeldObject, (unsigned __int8 a1, ObjectMaster *a2), 0x4420A0);
 FunctionPointer(void, InitCharacterVars, (int ID, ObjectMaster *character), 0x442750);
 FunctionPointer(void, SomethingAboutWaterButNotReally, (EntityData1 *entity1, EntityData2 *entity2, CharObj2 *charobj2), 0x445D10);
-FunctionPointer(void, SomethingAboutWater, (EntityData1 *entity1, EntityData2 *entity2, CharObj2 *charobj2), 0x449500);
+FunctionPointer(int, SomethingAboutWater, (EntityData1 *data1, EntityData2 *a1, CharObj2 *a3), 0x449500);
 FunctionPointer(void, PlayAnimation, (AnimThing *a1), 0x44A800);
-ThiscallFunctionPointer(HRESULT, DirectSound_Init, (int a1, int a3, int a4, int a5, int a6, int a7), 0x44DE80);
 VoidFunc(ResetRestartData, 0x44ED50);
 FunctionPointer(int, CheckRestartLevel, (), 0x44ED70);
 FunctionPointer(void, RestartCheckpoint, (NJS_VECTOR *Position, Rotation3 *Rotation), 0x44EDB0);
@@ -421,7 +495,6 @@ ObjectFunc(DroppedRing_Main, 0x44FD10);
 FunctionPointer(void, SpawnDroppedRings, (float x, float y, float z, int count), 0x4502D0);
 ObjectFunc(Ring_Main, 0x450370);
 FunctionPointer(void, HurtCharacter, (char a1), 0x4506F0);
-FunctionPointer(void, InitSpriteTable, (what *array, int count), 0x456B80);
 VoidFunc(Direct3D_DrawSpriteTable, 0x456CD0);
 VoidFunc(ClearSpriteTable, 0x456DE0);
 ObjectFunc(DrawStageMissionImage, 0x457120);
@@ -430,7 +503,7 @@ FunctionPointer(signed int, GetMissionType, (int character, signed int a2), 0x45
 ObjectFunc(FreeStageMissionImage, 0x457B90);
 ObjectFunc(PressStartSprite_Main, 0x457D10);
 ObjectFunc(PressStartSprite_Draw, 0x457D30);
-ObjectFunc(ReleasePressStartTexList, 0x457E90);
+ObjectFunc(PressStartSprite_Delete, 0x457E90);
 FunctionPointer(void, PauseMenu_ActuallyDrawTheThings, (int n, NJS_POINT2 *pos, NJS_POINT2 *scale), 0x457EB0);
 FunctionPointer(int, PauseMenu_Draw, (int, int, int), 0x458020);
 FunctionPointer(int, PauseMenu_PrepareToActuallyDrawThethings, (int a1, int, int, int), 0x458080);
@@ -439,6 +512,8 @@ FunctionPointer(char, SetPauseDisplayOptions, (Uint8 *a1), 0x4582E0);
 FunctionPointer(char, IncPauseSelection, (char index), 0x4583F0);
 FunctionPointer(signed int, UpdatePauseSelectionMaybe, (unsigned __int16 selection), 0x458470);
 FunctionPointer(bool, LevelHasMap, (), 0x458720);
+VoidFunc(PauseMenu_Map_DisplayCallback, 0x458830);
+VoidFunc(PauseMenu_Map_Display, 0x458B00);
 FunctionPointer(int, PauseMenu_CameraIGuess, (int), 0x458D00);
 FunctionPointer(signed int, PauseMenu_SetControls, (int mode_maybe), 0x458F90);
 ObjectFunc(Snowboard_Tails_Display, 0x45BC40);
@@ -451,6 +526,7 @@ ObjectFunc(Tails_Display, 0x460C40);
 ObjectFunc(Snowboard_Tails_Load, 0x461510);
 ObjectFunc(Tails_Main, 0x461700);
 FunctionPointer(int, ActuallyDoCameraRotationMaybe, (), 0x4629A0);
+FunctionPointer(int, CameraFunc_FirstPerson, (ObjectMaster *a1), 0x465F50);
 VoidFunc(Camera_SetCameraFunc_Unknown, 0x466B60);
 FunctionPointer(bool, CameraFunc_Unknown, (EntityData1 *a1, EntityData1 *a2, int a3), 0x4682B0);
 ObjectFunc(Capsule_Display, 0x46ADB0);
@@ -470,8 +546,8 @@ FunctionPointer(signed int, ClipSetObject_Min, (ObjectMaster *a1), 0x46C390);
 ObjectFunc(FishingHud_Delete, 0x46C8D0);
 ObjectFunc(FishingHud_DrawHIT, 0x46C920);
 FunctionPointer(int, FishingHud_DrawReel, (), 0x46C9F0);
-FunctionPointer(int, FishingHud_DrawRod, (), 0x46CAB0);
-FunctionPointer(int, FishingHud_DrawMeters, (float), 0x46CC70);
+VoidFunc(FishingHud_DrawRod, 0x46CAB0);
+FunctionPointer(void, FishingHud_DrawMeters, (float a1), 0x46CC70);
 ObjectFunc(BigHud_DrawWeightAndLife, 0x46FB00);
 ObjectFunc(BigHud_Main, 0x470090);
 FunctionPointer(int, ResetBigStuff, (), 0x470120);
@@ -504,6 +580,8 @@ FunctionPointer(void, LoadTailsOpponent, (__int16 character, __int16 loop, __int
 FunctionPointer(float, njScalor_copy, (NJS_VECTOR *a1), 0x47DA70);
 FunctionPointer(float, SomeNormalizationThingIGuess, (NJS_VECTOR *a, NJS_VECTOR *b), 0x47DAA0);
 ObjectFunc(TailsAI_Delete, 0x47DB10);
+FunctionPointer(int, LoadTitleCardTexture, (int minDispTime), 0x47DFB0);
+FunctionPointer(Sint32, DisplayTitleCard, (), 0x47E170);
 FunctionPointer(bool, CheckTailsAI, (), 0x47E7C0);
 ObjectFunc(TailsAI_Main, 0x47E8F0);
 ObjectFunc(Load2PTails, 0x47ED60);
@@ -516,7 +594,9 @@ ObjectFunc(Amy_Main, 0x48ABF0);
 ObjectFunc(Big_Delete, 0x48B730);
 ObjectFunc(Big_Display, 0x48B8B0);
 ObjectFunc(Big_Main, 0x490A00);
-FunctionPointer(void, Sonic_InitLightDash, (EntityData1 *a1, int a2, CharObj2 *a3), 0x492AB0);
+FunctionPointer(void, Sonic_InitLightDash, (EntityData1 *a1, EntityData2 *a2, CharObj2 *a3), 0x492AB0);
+ObjectFunc(SonicHeadMorphTarget_Main, 0x493790);
+ObjectFunc(CollisionCrashThing_Main, 0x493C70);
 FunctionPointer(void, LoadSonicDashTrail, (EntityData1 *a1), 0x494050);
 ObjectFunc(Sonic_Snowboard_Display, 0x494140);
 ObjectFunc(Sonic_SuperPhysics_Delete, 0x4942D0);
@@ -536,12 +616,22 @@ FunctionPointer(int, DoStatusThing, (EntityData1 *data1, EntityData2 *data2, int
 ObjectFunc(O_HANAB_Delete, 0x49D050);
 ObjectFunc(O_HANAB_Main, 0x49D070);
 ObjectFunc(OBowWindow_Main, 0x49D140);
+FunctionPointer(float, DrawShadow, (EntityData1 *a1, float a2), 0x49EE30);
 ObjectFunc(E102_TimeAddHud_Display, 0x49FDA0);
 ObjectFunc(E102_TimeAddHud_Delete, 0x49FEE0);
 ObjectFunc(E102_TimeAddHud_Main, 0x49FF10);
+ObjectFunc(CharBubble_Delete, 0x4A0720);
+ObjectFunc(CharBubble_Display, 0x4A0760);
+ObjectFunc(SonicDashTrail_Display, 0x4A1190);
+ObjectFunc(SonicDashTrail_Main, 0x4A1260);
+ObjectFunc(CharBubble_Main, 0x4A2570);
+ObjectFunc(SonicDashTrail_Init, 0x4A2AA0);
+ObjectFunc(CharBubble_Init, 0x4A2B60);
 ObjectFunc(EmeraldPiece_Display, 0x4A2FB0);
 ObjectFunc(EmeraldPiece_Main, 0x4A2FD0);
 ObjectFunc(EmeraldPiece_Load, 0x4A3420);
+ObjectFunc(TikalHint_Child_Delete, 0x4A3500);
+ObjectFunc(TikalHint_Child_Display, 0x4A3650);
 ObjectFunc(TikalHint_Child_Child, 0x4A38D0);
 ObjectFunc(TikalHint_Child, 0x4A39F0);
 ObjectFunc(ERobo_0, 0x4A6700);
@@ -581,6 +671,8 @@ ObjectFunc(EmblemScreen_Delete, 0x4B4530);
 FunctionPointer(bool, GetLevelEmblemCollected, (SaveFileData *savefile, int character, signed int level, int mission), 0x4B45C0);
 FunctionPointer(void, SetLevelEmblemCollected, (SaveFileData *savefile, int character, signed int level, int mission), 0x4B4640);
 ObjectFunc(Emblem_Main, 0x4B4940);
+FunctionPointer(void, SetCurrentSetData, (int level), 0x4B4BF0);
+FunctionPointer(void, SetCurrentCamData, (int level), 0x4B4C70);
 FunctionPointer(bool, IsBoardingSubGame, (), 0x4B5000);
 FunctionPointer(bool, IsTwinkleCircuit, (), 0x4B5040);
 FunctionPointer(int, HudShowScore, (int), 0x4B50E0);
@@ -588,7 +680,7 @@ FunctionPointer(int, GetCurrentCharIDOrSomething, (), 0x4B5A30);
 FunctionPointer(ObjectMaster *, LoadCharBoss, (ObjectMaster *a1), 0x4B6050);
 FunctionPointer(signed int, GetHintText, (int id, int *data), 0x4B7C10);
 FunctionPointer(NJS_OBJECT *, ProcessAnimatedModelNode, (NJS_OBJECT *a1, NJS_MDATA3 *a2), 0x4B7D00);
-FunctionPointer(signed int, ProcessAnimatedModelNode_, (NJS_MATRIX *a1, NJS_ACTION *a2, float a3, int a4, NJS_MATRIX *a5), 0x4B81F0);
+FunctionPointer(signed int, ProcessAnimatedModelNode_, (NJS_MATRIX_PTR a1, NJS_ACTION *a2, float a3, int a4, NJS_MATRIX_PTR a5), 0x4B81F0);
 VoidFunc(ResetJumpPanels, 0x4B8320);
 ObjectFunc(JumpPanel_Display, 0x4B8660);
 ObjectFunc(JumpPanel_Delete, 0x4B87D0);
@@ -608,7 +700,11 @@ ObjectFunc(Rumble_Main, 0x4BCB20);
 FunctionPointer(void, Rumble_Load, (Uint32 time), 0x4BCB60);
 FunctionPointer(void, RumbleA, (Uint32 port, Sint32 time), 0x4BCBC0);
 FunctionPointer(void, RumbleB, (Uint32 port, Uint32 time, int a3, int a4), 0x4BCC10);
+FunctionPointer(void, DirectionToRotation, (const NJS_VECTOR *dir, Angle *x, Angle *y), 0x4BCCA0);
+FunctionPointer(void, DashHoop_Transform, (NJS_VECTOR *position, NJS_VECTOR *delta), 0x4BCDC0);
+FunctionPointer(void, DrawCollisionSphere, (NJS_VECTOR *pos, float scale), 0x4BCF40);
 FunctionPointer(signed int, Weed_SpawnItem, (EntityData1 *entity, int n), 0x4BD000);
+FunctionPointer(NJS_OBJECT *, DynamicCOL_AddObject, (ObjectMaster *a1, NJS_MODEL_SADX *a2), 0x4BD090);
 ObjectFunc(LevelItem_Display, 0x4BF5A0);
 ObjectFunc(LevelItem_Main, 0x4BF600);
 ObjectFunc(LevelItem_Delete, 0x4BFDA0);
@@ -629,6 +725,7 @@ ObjectFunc(RocketH_Main, 0x4CA530);
 ObjectFunc(RocketHS_Main, 0x4CA660);
 ObjectFunc(RocketV_Main, 0x4CA7D0);
 ObjectFunc(RocketVS_Main, 0x4CA900);
+ObjectFunc(Switch_Display, 0x4CB590);
 ObjectFunc(Switch_Main, 0x4CBA80);
 ObjectFunc(ODynamite, 0x4CBDE0);
 FunctionPointer(ObjectData2 *, AllocateObjectData2, (ObjectMaster *obj, EntityData1 *a2), 0x4CC990);
@@ -816,6 +913,8 @@ ObjectFunc(O_fiw4m, 0x4F4AE0);
 ObjectFunc(O_fiw5m, 0x4F4B10);
 ObjectFunc(O_fiw6m, 0x4F4B40);
 ObjectFunc(O_hako, 0x4F4B70);
+ObjectFunc(OIcicle_Display, 0x4F4BA0);
+ObjectFunc(OIcicle_Main, 0x4F4C20);
 ObjectFunc(OIcicle, 0x4F4D80);
 ObjectFunc(OIcejmp, 0x4F4DE0);
 ObjectFunc(OHyo1noexp, 0x4F57F0);
@@ -901,6 +1000,7 @@ FunctionPointer(void, DoSomethingWithSaveInfo, (LPCSTR a1, _WIN32_FIND_DATAA a2)
 FunctionPointer(unsigned __int8, FindSaveFiles, (), 0x505050);
 ObjectFunc(FileSelect_Main, 0x5053F0);
 ObjectFunc(FileSelect_Display, 0x505550);
+VoidFunc(ResetSelectedTrialLevel, 0x5060E0);
 FunctionPointer(bool, IsAdventureComplete, (int character), 0x5063E0);
 FunctionPointer(int, IsMetalSonicUnlocked, (), 0x506490);
 VoidFunc(j_LoadSave, 0x506620);
@@ -908,7 +1008,7 @@ FunctionPointer(int, GetCharacterUnlockedFlag, (int), 0x506630);
 FunctionPointer(int, MenuSelectButtonsPressed, (), 0x5067E0);
 FunctionPointer(int, MenuBackButtonsPressed, (), 0x5067F0);
 FunctionPointer(int, GetCurrentSave, (), 0x506800);
-FunctionPointer(int, GetMenuVoice, (), 0x5068E0);
+FunctionPointer(signed int, GetMenuVoice, (), 0x5068E0);
 FunctionPointer(int, CountEmblemsCurrentSave, (), 0x507B30);
 FunctionPointer(int, DrawAVA_BACK, (float a5), 0x507BB0);
 ObjectFunc(CharSel_Qmark_Main, 0x5125A0);
@@ -939,6 +1039,7 @@ ObjectFunc(OPalmbase_0, 0x51D760);
 ObjectFunc(OParasol_1, 0x51D840);
 ObjectFunc(OBchair, 0x51D930);
 ObjectFunc(OPalmbase, 0x51DAB0);
+ObjectFunc(OPoolwater_Display, 0x51DBA0);
 ObjectFunc(OPoolwater, 0x51DC30);
 ObjectFunc(OSkydeck_Display, 0x51DF90);
 ObjectFunc(OSkydeck, 0x51DFA0);
@@ -950,7 +1051,7 @@ ObjectFunc(OElevator_1, 0x51E910);
 ObjectFunc(OLivinglight, 0x51EB50);
 ObjectFunc(OSlot, 0x51EF40);
 ObjectFunc(OWasher, 0x51F560);
-VoidFunc(nullsub, 0x51F680);
+FunctionPointer(int, nullsub, (), 0x51F680);
 ObjectFunc(ODosei, 0x51F6D0);
 ObjectFunc(OGunsight, 0x51FEE0);
 ObjectFunc(OEggcap, 0x51FF90);
@@ -981,6 +1082,7 @@ ObjectFunc(OContainer_2, 0x526840);
 ObjectFunc(OBlift, 0x526B20);
 ObjectFunc(OJdoor, 0x526D60);
 ObjectFunc(OJswitch, 0x526F30);
+FunctionPointer(void, njDrawSprite3D_5, (NJS_SPRITE *sp, Int n, NJD_SPRITE attr), 0x527930);
 FunctionPointer(int, SomethingAboutHedgehogHammerStrings, (), 0x5283F0);
 ObjectFunc(MinigameMogura_0, 0x5289F0);
 ObjectFunc(OHammersw, 0x528E20);
@@ -1052,6 +1154,7 @@ ObjectFunc(ODigPlace2, 0x540B30);
 ObjectFunc(ODigPlace1, 0x540EE0);
 ObjectFunc(ItemStand_Main, 0x5413E0);
 VoidFunc(LoadPastNPCs, 0x541890);
+ObjectFunc(Obj_Past_Delete, 0x5419C0);
 ObjectFunc(SkyBox_Past_Load, 0x542030);
 ObjectFunc(Obj_Past, 0x5420C0);
 FunctionPointer(void, GetEntrance_Past, (EntityData1 *a1), 0x542180);
@@ -1082,8 +1185,10 @@ ObjectFunc(SkyBox_Chaos0_Load, 0x545DF0);
 ObjectFunc(Obj_Chaos0, 0x545E60);
 ObjectFunc(Chaos0_Rain, 0x5462F0);
 FunctionPointer(int, Chaos0_Rain_Load, (), 0x546320);
+ObjectFunc(Chaos0_Delete, 0x5481D0);
+ObjectFunc(Chaos0_Display, 0x548360);
 ObjectFunc(Chaos0_Main, 0x548640);
-FunctionPointer(int, Chaos0_Load, (), 0x548B70);
+VoidFunc(Chaos0_Load, 0x548B70);
 ObjectFunc(OBclock_0, 0x548D30);
 ObjectFunc(_0_pole, 0x548E70);
 ObjectFunc(OPato0, 0x549770);
@@ -1096,6 +1201,8 @@ ObjectFunc(OGras2, 0x549AF0);
 ObjectFunc(OGras3, 0x549B20);
 ObjectFunc(SkyBox_Chaos2_Load, 0x54A670);
 ObjectFunc(Obj_Chaos2, 0x54A700);
+ObjectFunc(Chaos2_Delete, 0x54D790);
+ObjectFunc(Chaos2_Display, 0x54D840);
 ObjectFunc(Chaos2_Main, 0x54DB90);
 FunctionPointer(ObjectMaster *, Chaos2_Load, (), 0x54DF00);
 ObjectFunc(Chand, 0x54E2E0);
@@ -1105,9 +1212,11 @@ ObjectFunc(Obj_Chaos4, 0x550A30);
 VoidFunc(j_ClampGlobalColorThing_Thing, 0x551510);
 ObjectFunc(Chaos4_Main, 0x552960);
 FunctionPointer(int, SetClip_Chaos6K, (int), 0x556D60);
-FunctionPointer(int, SetClip_Chaos6S, (int), 0x556E40);
+FunctionPointer(void, SetClip_Chaos6S, (signed int a1), 0x556E40);
 ObjectFunc(SkyBox_Chaos6_Load, 0x557610);
 ObjectFunc(Obj_Chaos6, 0x557920);
+ObjectFunc(Chaos6_Display, 0x558E30);
+ObjectFunc(Chaos6_Delete, 0x559F20);
 ObjectFunc(Chaos6_Main, 0x559FC0);
 ObjectFunc(Smoke, 0x55A940);
 ObjectFunc(Obj_Chaos7, 0x55DCD0);
@@ -1115,10 +1224,17 @@ ObjectFunc(SkyBox_PerfectChaos_Load, 0x55DDC0);
 ObjectFunc(Sonic_SuperAura_Delete, 0x55E5B0);
 ObjectFunc(Sonic_SuperAura_Display, 0x55E620);
 ObjectFunc(Sonic_SuperAura_Main, 0x55E920);
+FunctionPointer(signed int, InitSpinTrailModel, (EntityData1 *a1), 0x55F540);
+ObjectFunc(SonicDashTrail_Delete, 0x55FAB0);
 ObjectFunc(Sonic_SuperAura_Load, 0x55FAF0);
 ObjectFunc(PerfectChaos_Delete, 0x55FEB0);
 ObjectFunc(PerfectChaos_Display, 0x55FED0);
 ObjectFunc(PerfectChaos_Main, 0x560260);
+ObjectFunc(Chaos7Damage_Display, 0x5633C0);
+ObjectFunc(Chaos7Damage_Slave_Main, 0x563450);
+ObjectFunc(Chaos7Damage_Slave_Load, 0x563490);
+ObjectFunc(Chaos7Damage_Master_Main, 0x563BA0);
+ObjectFunc(Chaos7Damage_Master_Load, 0x563C50);
 ObjectFunc(ORedCar, 0x5640A0);
 ObjectFunc(OYellowCar, 0x5640C0);
 ObjectFunc(OBlueCar, 0x5640E0);
@@ -1143,6 +1259,7 @@ ObjectFunc(Obj_E101Beta, 0x566C00);
 FunctionPointer(int, SetClip_E101R, (int), 0x568D20);
 ObjectFunc(Obj_E101BetaMK2, 0x569040);
 ObjectFunc(SkyBox_E101R_Load, 0x569060);
+VoidFunc(Load_E101R_GC_NB, 0x5690D0);
 ObjectFunc(Obj_EggHornet, 0x571850);
 ObjectFunc(SkyBox_EggHornet_Load, 0x571940);
 FunctionPointer(int, PlayVoiceButCheckThing, (), 0x571990);
@@ -1162,15 +1279,52 @@ ObjectFunc(SetCurrentStageLight_EggViper, 0x57E560);
 FunctionPointer(int, SetClip_ZERO, (int), 0x5850F0);
 ObjectFunc(Obj_Zero, 0x585400);
 ObjectFunc(SkyBox_Zero_Load, 0x585430);
+VoidFunc(Load_EROBO_GC_NB, 0x5854A0);
+FunctionPointer(bool, MissionScreenStateIs2, (), 0x590620);
 FunctionPointer(int, Release_MIS_C_TEXLIST, (), 0x590660);
 FunctionPointer(int, MissionCompleteScreen_ProbablyDraws, (), 0x590690);
 FunctionPointer(Sint32, MissionCompleteScreen, (), 0x590E60);
 ObjectFunc(MissionStartClear_Delete, 0x591040);
 ObjectFunc(MissionStartClear_Main, 0x591260);
+VoidFunc(CountCompletedMissions, 0x591880);
 FunctionPointer(int, Mission_Run, (), 0x5919C0);
+FunctionPointer(void, DeactivateMission, (char mission, char deleteobjects), 0x591C10);
+FunctionPointer(ObjectMaster *, GetSetObjInstance, (ObjectMaster *caller, __int16 index), 0x592200);
+FunctionPointer(bool, IsMissionSETObj, (void *a1), 0x592240);
+FunctionPointer(bool, IsActiveMissionObject, (ObjectMaster *a1), 0x592260);
 VoidFunc(LevelDestructor_MissionMode, 0x592370);
+ObjectFunc(ClearMission, 0x5923C0);
+ObjectFunc(CollectMissionItem, 0x592440);
+ObjectFunc(Spinner_MissionStuff, 0x592520);
 FunctionPointer(int, Mission_DrawCounter, (), 0x592A60);
 FunctionPointer(int, Mission_DrawTimer, (), 0x592D50);
+ObjectFunc(MissionTest_Display, 0x593290);
+ObjectFunc(MissionTest_Main, 0x5932E0);
+ObjectFunc(MissionTest_Load, 0x5933E0);
+ObjectFunc(MissionStatue_Display, 0x593410);
+ObjectFunc(MissionStatue_Delete, 0x5934C0);
+ObjectFunc(MissionStatue_Main, 0x593510);
+ObjectFunc(MissionStatue_Load, 0x593670);
+ObjectFunc(MissionTimer_Main, 0x5936B0);
+ObjectFunc(MissionTimer_Load, 0x5937B0);
+ObjectFunc(MissionRobotFish_Main, 0x594D70);
+ObjectFunc(MissionSign_Display, 0x594D90);
+ObjectFunc(MissionSign_Main, 0x594E20);
+ObjectFunc(MissionSign_Load, 0x594F00);
+ObjectFunc(MissionMedal_Display, 0x594F40);
+ObjectFunc(MissionMedal_Main, 0x594FC0);
+ObjectFunc(MissionMedal_Load, 0x595210);
+ObjectFunc(MissionFlag_Display, 0x595260);
+ObjectFunc(MissionFlag_Main, 0x5952E0);
+ObjectFunc(MissionFlag_Load, 0x595440);
+ObjectFunc(MissionBalloon_Display, 0x595480);
+ObjectFunc(MissionBalloon_Main, 0x595590);
+ObjectFunc(MissionBalloon_Load, 0x595760);
+ObjectFunc(MissionEndMark_Display, 0x5957D0);
+ObjectFunc(MissionEndMark_Main, 0x595850);
+ObjectFunc(MissionEndMark_Load, 0x595A40);
+ObjectFunc(MissionStart_Main, 0x595B30);
+ObjectFunc(MissionStart_Load, 0x595CF0);
 ObjectFunc(SGene, 0x597660);
 ObjectFunc(SBass, 0x5977F0);
 ObjectFunc(SkyBox_SandHill_Load, 0x597AE0);
@@ -1189,8 +1343,9 @@ ObjectFunc(SmallCactusB, 0x598960);
 ObjectFunc(BigCactusA, 0x598E30);
 ObjectFunc(BigCactusB, 0x598E50);
 ObjectFunc(BigCactusC, 0x598E70);
-FunctionPointer(float, SandHillScoreMultiplier_Draw, (float x, float y, float _pri, __int16 n), 0x5990D0);
+FunctionPointer(float, SandHillScoreMultiplier_Draw, (float x, float y, float pri, __int16 n), 0x5990D0);
 ObjectFunc(SandHillScoreMultiplier_Main, 0x5991A0);
+FunctionPointer(void, RumbleWithinRange, (NJS_VECTOR *position, float range), 0x599FE0);
 ObjectFunc(SkyBox_HotShelter_Load, 0x59A2A0);
 ObjectFunc(Obj_HotShelter, 0x59A380);
 ObjectFunc(OBoxSwitch, 0x59AAF0);
@@ -1212,7 +1367,7 @@ ObjectFunc(OLight4, 0x59D5C0);
 ObjectFunc(OBluelight, 0x59D760);
 ObjectFunc(OGateside, 0x59D840);
 ObjectFunc(OHasigo_0, 0x59D970);
-ObjectFunc(SomeGenericDelete, 0x59DBF0);
+ObjectFunc(DeleteObject_DynamicCOL, 0x59DBF0);
 ObjectFunc(OUkijima, 0x59DFA0);
 ObjectFunc(OHako_0, 0x59E170);
 ObjectFunc(ODaruma, 0x59E430);
@@ -1419,7 +1574,10 @@ ObjectFunc(OHasgo, 0x5CC5F0);
 ObjectFunc(OSlotkan, 0x5CCAE0);
 ObjectFunc(OCardkan, 0x5CCD90);
 ObjectFunc(OM1fneo, 0x5CCF40);
-ObjectFunc(OTenss, 0x5CD2D0);
+ObjectFunc(OTenss_Delete, 0x5CCF90);
+ObjectFunc(OTenss_Display, 0x5CCFF0);
+ObjectFunc(OTenss_Main, 0x5CD100);
+ObjectFunc(OTenss_Load, 0x5CD2D0);
 ObjectFunc(OTensc, 0x5CD2F0);
 ObjectFunc(OShat1, 0x5CDA50);
 ObjectFunc(OShat2, 0x5CDA60);
@@ -1587,7 +1745,8 @@ ObjectFunc(Ashiba03, 0x5EB950);
 ObjectFunc(Ashikabe01, 0x5EB9A0);
 ObjectFunc(Ashikabe02, 0x5EB9F0);
 ObjectFunc(ORraf, 0x5EC340);
-FunctionPointer(void, CopyObject, (NJS_OBJECT *obj, NJS_COLOR *a2, int n), 0x5ED110);
+FunctionPointer(void, SkyDeck_SimulateAltitude, (Uint16 act), 0x5ECA80);
+FunctionPointer(void, SkyDeck_QueueDraw, (NJS_OBJECT *obj, NJS_TEX *uv, int uv_count), 0x5ED110);
 ObjectFunc(SkyBox_SkyDeck_Display, 0x5ED1E0);
 ObjectFunc(Radder_Display, 0x5EE330);
 ObjectFunc(VariousSolidThings_Delete, 0x5EE520);
@@ -1602,7 +1761,7 @@ ObjectFunc(Hang_c, 0x5F0040);
 ObjectFunc(Trail, 0x5F00E0);
 ObjectFunc(Homing, 0x5F02B0);
 ObjectFunc(Obj_SkyDeck, 0x5F02E0);
-ObjectFunc(SkyBox_SkyDeck_Load, 0x5F0340);
+ObjectFunc(SkyBox_SkyDeck, 0x5F0340);
 ObjectFunc(Edge_0, 0x5F0740);
 ObjectFunc(Branch_l, 0x5F0750);
 ObjectFunc(Branch_s, 0x5F0760);
@@ -1692,6 +1851,7 @@ ObjectFunc(Talap_0, 0x5FB980);
 ObjectFunc(Cannon_h, 0x5FC620);
 ObjectFunc(Cannon_s, 0x5FCCC0);
 ObjectFunc(Cannon_b, 0x5FD840);
+FunctionPointer(void, SetClip_RedMountain, (signed int a1), 0x600700);
 ObjectFunc(SkyBox_RedMountain_Load, 0x600FB0);
 ObjectFunc(Obj_RedMountain, 0x601550);
 ObjectFunc(ExRock_Main, 0x601EB0);
@@ -1710,9 +1870,12 @@ ObjectFunc(ORouya_Main, 0x605E90);
 ObjectFunc(Mt_soto_Main, 0x605EE0);
 ObjectFunc(Mt_tbox_Main, 0x605F00);
 ObjectFunc(Mt_tsaku_Main, 0x605F50);
-ObjectFunc(OHataki_Main, 0x6063B0);
+ObjectFunc(OHataki_Display, 0x605FA0);
+ObjectFunc(OHataki_Main, 0x606100);
+ObjectFunc(OHataki_Load, 0x6063B0);
 ObjectFunc(OLamp1_Main, 0x606820);
 ObjectFunc(OLamp2_Main, 0x606840);
+ObjectFunc(ODeka_Display, 0x606860);
 ObjectFunc(ODeka_Main, 0x606B20);
 ObjectFunc(OHago_Main, 0x606F20);
 ObjectFunc(OBat, 0x6077D0);
@@ -1844,6 +2007,7 @@ ObjectFunc(OGlass, 0x61AE80);
 ObjectFunc(OCrane, 0x61B500);
 ObjectFunc(OFount, 0x61BDC0);
 ObjectFunc(OEv, 0x61C740);
+VoidFunc(j_LandTable_MinimumRadius_Reset, 0x61CA80);
 ObjectFunc(Obj_TwinklePark, 0x61D150);
 ObjectFunc(SkyBox_TwinklePark_Load, 0x61D570);
 ObjectFunc(OCoaster, 0x61DC90);
@@ -1882,6 +2046,7 @@ ObjectFunc(OBarrel, 0x624020);
 ObjectFunc(OShutter, 0x624380);
 ObjectFunc(OMonitor, 0x6247C0);
 ObjectFunc(Obj_HedgehogHammer, 0x624A70);
+FunctionPointer(void, njDrawSprite3D_6, (NJS_SPRITE *sp, Int n, NJD_SPRITE attr), 0x6253F0);
 ObjectFunc(MinigameMogura, 0x6268D0);
 FunctionPointer(int, CheckSkyChaseActionThing, (), 0x626CC0);
 ObjectFunc(Obj_SkyChase1, 0x626CE0);
@@ -1953,6 +2118,7 @@ ObjectFunc(OPowerbox, 0x6365C0);
 ObjectFunc(OKeyblock, 0x636940);
 ObjectFunc(OContainer_1, 0x636B30);
 ObjectFunc(OOfficeDoor, 0x6370C0);
+ObjectFunc(Chao_AddToCollisionList, 0x637340);
 ObjectFunc(OOfficeBarricade, 0x637580);
 ObjectFunc(KartPass_Main, 0x637C90);
 ObjectFunc(IceKey_Main, 0x637FE0);
@@ -2023,7 +2189,7 @@ FunctionPointer(int, j_unknown_libname_27, (), 0x6487BE);
 ObjectFunc(TailsVS_DrawWinLose, 0x6EF510);
 ObjectFunc(j_RunObjectChildren, 0x6F2E40);
 FunctionPointer(Sint32, PRSDec, (Uint8 *a1, Uint8 *a2), 0x6FC900);
-FunctionPointer(int, LoadGGMenuPVM, (), 0x6FE010);
+VoidFunc(LoadGGMenuPVM, 0x6FE010);
 VoidFunc(FreeGGMenuPVM, 0x6FE0A0);
 VoidFunc(j_CopyRawControllers, 0x703430);
 VoidFunc(j_j_CopyRawControllers, 0x703440);
@@ -2035,9 +2201,10 @@ FunctionPointer(SADXChaoStage, GetNextChaoStage, (), 0x715160);
 FunctionPointer(bool, IsNextChaoStageReady, (), 0x715170);
 VoidFunc(ChaoMain_Constructor, 0x715440);
 FunctionPointer(int, ChaoMain_Destructor, (), 0x715540);
-FunctionPointer(int, LoadNextChaoStage, (), 0x715580);
+VoidFunc(LoadNextChaoStage, 0x715580);
 VoidFunc(ChaoMain_Epilog, 0x715770);
 ObjectFunc(ChaoGarden, 0x715820);
+VoidFunc(ChaoMain_Prolog, 0x715AE0);
 VoidFunc(LoadHeldChao, 0x716200);
 ObjectFunc(GBAManager_Main, 0x716850);
 ObjectFunc(GBAManagerDestruct, 0x716A60);
@@ -2045,37 +2212,60 @@ FunctionPointer(int, GBAManagerCreate, (), 0x716BA0);
 FunctionPointer(Uint8 *, GetChaoSaveAddress, (), 0x716FA0);
 VoidFunc(SetupChaoSaveFile, 0x7172D0);
 FunctionPointer(Uint8 *, j_GetChaoSaveAddress, (), 0x717450);
+VoidFunc(Chao_LoadTrees, 0x717BA0);
 VoidFunc(LoadHeldItem, 0x717C80);
 FunctionPointer(int, LoadChaoPVPs, (), 0x717E90);
 FunctionPointer(void, LoadChaoTexlist, (const char *PVMName, NJS_TEXLIST *TexListPtr, unsigned __int16 a3), 0x718880);
-FunctionPointer(void, LoadGameDLL, (const char *name, int a4), 0x718A20);
+FunctionPointer(void, FreeChaoTexlist, (unsigned __int16 a1), 0x7188E0);
+VoidFunc(FreeChaoTexlists, 0x718940);
+VoidFunc(FreeChaoTextures, 0x718960);
+VoidFunc(ResetModules, 0x718990);
+FunctionPointer(void, FreeModule, (int index), 0x7189D0);
+FunctionPointer(void, LoadGameDLL, (const char *name, int index), 0x718A20);
 VoidFunc(LoadMarket, 0x718BB0);
+FunctionPointer(int, ChaoGardenFunc_BlackMarket, (), 0x718BF0);
+VoidFunc(ChaoGardenFunc_MysticRuins, 0x718C10);
 ObjectFunc(ChaoStgGarden02MR_Main, 0x718C30);
 ObjectFunc(ChaoStgGarden02MR_Display, 0x718CC0);
 ObjectFunc(ChaoStgGarden02MR_Delete, 0x718CD0);
 ObjectFunc(ChaoStgGarden02MR_Load, 0x718D00);
 VoidFunc(LoadMRGarden, 0x718E90);
+VoidFunc(ChaoGardenFunc_EggCarrier, 0x718FB0);
 ObjectFunc(ChaoStgGarden01EC_Main, 0x718FD0);
 ObjectFunc(ChaoStgGarden01EC_Delete, 0x719010);
 ObjectFunc(ChaoStgGarden01EC_Load, 0x719040);
 VoidFunc(LoadECGarden, 0x7191D0);
+FunctionPointer(int, ChaoGardenFunc_StationSquare, (), 0x719210);
 ObjectFunc(ChaoStgGarden00SS_Main, 0x719230);
 ObjectFunc(ChaoStgGarden00SS_Delete, 0x7192E0);
 ObjectFunc(ChaoStgGarden00SS_Load, 0x719320);
 VoidFunc(LoadSSGarden, 0x719600);
 ObjectFunc(ChaoStgEntrance_Main, 0x719880);
 VoidFunc(LoadRaceEntry, 0x7199B0);
+FunctionPointer(int, ChaoGardenFunc_RaceEntry, (), 0x7199E0);
+FunctionPointer(int, ChaoGardenFunc_Transporter, (), 0x719A00);
 VoidFunc(LoadChaoNamingMachine, 0x719C40);
 ObjectFunc(ChaoStgRace_Main, 0x719D00);
 VoidFunc(LoadChaoRace, 0x719DB0);
+FunctionPointer(int, ChaoGardenFunc_Race, (), 0x719DF0);
 FunctionPointer(ObjectMaster *, GetChaoObject, (unsigned __int16 zero, unsigned __int16 index), 0x71A1F0);
-FunctionPointer(signed int, AddToGlobalChaoThingMaybe, (unsigned __int16 a1, ObjectMaster *obj, __int16 a3, ChaoData *data), 0x71A600);
+FunctionPointer(Sint32, AddToGlobalChaoThingMaybe, (unsigned __int16 index, ObjectMaster *obj, __int16 a3, ChaoData *data), 0x71A600);
 ObjectFunc(ChaoManager_Main, 0x71A720);
 ObjectFunc(ChaoManager_Display, 0x71A780);
 ObjectFunc(ChaoManager_Delete, 0x71A7B0);
 VoidFunc(ChaoManager_Load, 0x71A7C0);
-FunctionPointer(signed int, _AddToGlobalChaoThingMaybe, (unsigned __int16 a1, ObjectMaster *a2, __int16 a3), 0x71A840);
-VoidFunc(ChaoDX_Message_PlayerAction, 0x71B3B0);
+FunctionPointer(Sint32, _AddToGlobalChaoThingMaybe, (unsigned __int16 index, ObjectMaster *obj, __int16 a3), 0x71A840);
+ObjectFunc(al_confirmsave__FDest, 0x71A910);
+ObjectFunc(al_confirmsave, 0x71A980);
+FunctionPointer(void, al_confirmsave_load, (int a1), 0x71AB20);
+VoidFunc(al_confirmsave_load_zero, 0x71AB70);
+ObjectFunc(al_confirmload__FDest, 0x71AB90);
+ObjectFunc(al_confirmload, 0x71AC10);
+VoidFunc(al_confirmload_load, 0x71AE50);
+ObjectFunc(ChaoDX_Message_PlayerAction_Delete, 0x71B1D0);
+ObjectFunc(ChaoDX_Message_PlayerAction_Display, 0x71B210);
+ObjectFunc(ChaoDX_Message_PlayerAction_Main, 0x71B2B0);
+VoidFunc(ChaoDX_Message_PlayerAction_Load, 0x71B3B0);
 ObjectFunc(Butterfly, 0x71BBB0);
 ObjectFunc(Cracker, 0x71BEA0);
 ObjectFunc(BowChao, 0x71BFF0);
@@ -2101,11 +2291,16 @@ ObjectFunc(Chao_Display, 0x7204B0);
 FunctionPointer(ObjectMaster *, CreateChao, (ChaoData *chaoData, int a2, void *buffer, NJS_VECTOR *position, Angle angle), 0x720670);
 VoidFunc(CnkDisableSpecular, 0x720A10);
 VoidFunc(CnkRestoreSpecular, 0x720A40);
+ObjectFunc(Chao_Tree_Display, 0x721100);
+ObjectFunc(Chao_Tree_Delete, 0x721180);
 ObjectFunc(Chao_Tree_Main, 0x7212A0);
+FunctionPointer(ObjectMaster *, Chao_CreateTree, (NJS_VECTOR *a1, int a2), 0x721800);
+VoidFunc(FreeAnimalTexLists, 0x722550);
 FunctionPointer(void, DisplayDebugShape, (int a1, int a2, int a3, int a4, Uint32 color, float depth_maybe), 0x723B70);
 FunctionPointer(bool, ScaleObjectMaster_XYZ, (ObjectMaster *obj, float x, float y, float z), 0x723C50);
 FunctionPointer(bool, ScaleObjectMaster_XZ, (ObjectMaster *obj, float x, float z), 0x723E60);
 FunctionPointer(int, Load_al_stg_kinder_ad_tex, (), 0x724EA0);
+FunctionPointer(Sint32, SetTexlist_al_stg_kinder_ad_tex, (), 0x724ED0);
 FunctionPointer(int, j_GetMarketRings, (), 0x7257E0);
 ObjectFunc(Chao_Transport_Display, 0x729250);
 ObjectFunc(Chao_Transport_Main, 0x7293E0);
@@ -2115,12 +2310,27 @@ ObjectFunc(Chao_Name_Machine_Delete, 0x729D80);
 ObjectFunc(Chao_Name_Machine_Display, 0x729DB0);
 ObjectFunc(Chao_Name_Machine_Load, 0x729EE0);
 FunctionPointer(void, LoadChaoNameMachine, (NJS_VECTOR *position, int yrotation), 0x729F40);
+VoidFunc(ChaoGardenMR_SetLandTable_Day, 0x72A790);
 VoidFunc(Print_ChaoStgGarden02MR_Daytime_epilog, 0x72A810);
+VoidFunc(ChaoGardenMR_SetLandTable_Evening, 0x72A820);
 VoidFunc(Print_ChaoStgGarden02MR_Evening_epilog, 0x72A8A0);
+VoidFunc(ChaoGardenMR_SetLandTable_Night, 0x72A8B0);
 VoidFunc(Print_ChaoStgGarden02MR_Night_epilog, 0x72A930);
-ObjectFunc(Chao_Race_Entry_Door, 0x72AAA0);
+ObjectFunc(ChaoRaceDoor_Display, 0x72A940);
+ObjectFunc(ChaoRaceDoor_MainD, 0x72A9E0);
+ObjectFunc(ChaoRaceDoor_MainC, 0x72AA60);
+ObjectFunc(ChaoRaceDoor_MainB, 0x72AAA0);
+ObjectFunc(ChaoRaceDoor_Main, 0x72AB10);
+ObjectFunc(ChaoRaceDoor_Load, 0x72AB50);
+ObjectFunc(LoadChaoRaceDoor, 0x72AB80);
+ObjectFunc(SSGardenExit_Display, 0x72AC00);
 ObjectFunc(Chao_Station_Door, 0x72AD60);
+FunctionPointer(int, SSGardenExit_Main, (ObjectMaster *a1), 0x72ADD0);
+ObjectFunc(SSGardenExit_Load, 0x72AE10);
+ObjectFunc(LoadSSGardenExit, 0x72AE40);
+ObjectFunc(Chao_Market_Door_Display, 0x72AE70);
 ObjectFunc(Chao_Market_Door, 0x72AEE0);
+ObjectFunc(LoadChaoMarketDoorChild, 0x72AFD0);
 VoidFunc(LoadButtonIndicators, 0x72B330);
 FunctionPointer(void *, LoadChaoMessageFile, (const char *filename, int language), 0x72C060);
 FunctionPointer(void, j__HeapFree, (LPVOID lpMem), 0x72C110);
@@ -2135,10 +2345,11 @@ VoidFunc(EnableChao, 0x731CD0);
 VoidFunc(DisableChao, 0x731CE0);
 FunctionPointer(int, IsChaoEnabled, (), 0x731CF0);
 ObjectFunc(ChaoDebug_MenuBack, 0x731DE0);
-FunctionPointer(void, SetChaoDebugFunction_Disabled, (void (__cdecl *object_function)(ObjectMaster *), char *name), 0x731E00);
-FunctionPointer(void, SetChaoDebugFunction_Enabled, (void (__cdecl *object_function)(ObjectMaster *), char *name), 0x731E40);
+FunctionPointer(void, SetChaoDebugFunction_Disabled, (void(__cdecl *object_function)(ObjectMaster *), char *name), 0x731E00);
+FunctionPointer(void, SetChaoDebugFunction_Enabled, (void(__cdecl *object_function)(ObjectMaster *), char *name), 0x731E40);
 VoidFunc(SetChaoDebugFunctions, 0x731E80);
-FunctionPointer(void, DoChaoHudThingThing, (ChaoHudThing *a1, NJS_COLOR color), 0x732850);
+FunctionPointer(void, DrawChaoHud, (ChaoHudThing *a1, Uint32 color), 0x732850);
+FunctionPointer(void, DrawChaoHudArray, (ChaoHudThing *array, int count, Uint32 color), 0x732940);
 ObjectFunc(SetDefaultChaoAnimalParts, 0x734930);
 ObjectFunc(LoadChaoMotionTable, 0x734EC0);
 ObjectFunc(ChaoCocoon_Display, 0x73C670);
@@ -2157,6 +2368,8 @@ ObjectFunc(ChaoEgg_Main, 0x7435F0);
 ObjectFunc(ChaoEgg_Display, 0x7436F0);
 ObjectFunc(ChaoEgg_Delete, 0x7438E0);
 FunctionPointer(ObjectMaster *, CreateChaoEgg, (ChaoDNA *dna, ChaoDataBase *data, int n, NJS_VECTOR *a4, int a5), 0x743960);
+ObjectFunc(MRChaoGarden_AnimateWaterfall_Main, 0x7459F0);
+FunctionPointer(void, MRChaoGarden_AnimateWaterfall_Load, (NJS_TEX *uvs, int uvCount), 0x745A20);
 ThiscallFunctionPointer(void, SetChaoName, (void *data), 0x74B2B0);
 ObjectFunc(ChaoDebug_SHAPE, 0x757580);
 ObjectFunc(ChaoDebug_ENV_MAP, 0x757B70);
@@ -2184,24 +2397,31 @@ ObjectFunc(ChaoDebug_JINGLE, 0x7599E0);
 ObjectFunc(ChaoDebug_SKILL, 0x759B80);
 ObjectFunc(ChaoDebug_PARAMETER, 0x759DC0);
 VoidFunc(j_nullsub_1, 0x76DAB0);
-FunctionPointer(int, RegKeyExists, (int, LPCSTR lpValueName, LPBYTE lpData, DWORD cbData), 0x773261);
-FunctionPointer(int, D3DXVtablething, (int), 0x773700);
-FunctionPointer(int, j_nullsub_2, (), 0x77DD80);
+FunctionPointer(void, njDrawTextureMemList, (NJS_TEXTURE_VTX *a1, Int count, Int tex, Int flag), 0x77DC70);
+FunctionPointer(void, SetOceanAlphaModeAndFVF, (int a1), 0x77DCA0);
+FunctionPointer(void, Direct3D_DrawFVF_H, (FVFStruct_H_B *wtf, signed int count), 0x77DD00);
+VoidFunc(j_nullsub_2, 0x77DD80);
 FunctionPointer(void, Direct3D_EnableHudAlpha, (bool enable), 0x77DD90);
 VoidFunc(j_Direct3D_TextureFilterLinear, 0x77DDE0);
 FunctionPointer(void, SetHudColorAndTextureNum, (int n, NJS_COLOR color), 0x77DDF0);
+FunctionPointer(void, Direct3D_DrawSprite, (NJS_POINT2 *points), 0x77DE10);
+FunctionPointer(void, njDrawLine2D, (NJS_POINT2COL *p, Int n, Float pri, Uint32 attr), 0x77DF40);
+FunctionPointer(void, njDrawCircle2D, (NJS_POINT2COL *p, Int n, Float pri, Uint32 attr), 0x77DFC0);
 FunctionPointer(void, njDrawSprite2D, (NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr), 0x77E050);
-FunctionPointer(void, njDrawSprite3D_3, (NJS_SPRITE *sp, int n, NJD_SPRITE attr), 0x77E390);
-FunctionPointer(void, njColorBlendingMode_, (Int target, Int mode), 0x77EC60);
-FunctionPointer(void, njAlphaMode, (Int mode), 0x77ECE0);
-FunctionPointer(void, Direct3D_ZFUNC_thing, (Uint8 index), 0x77ED00);
+FunctionPointer(void, njDrawSprite3D_DrawNow, (NJS_SPRITE *sp, int n, NJD_SPRITE attr), 0x77E390);
+FunctionPointer(void, DrawRectPoints, (NJS_POINT2 *points, float scale), 0x77E970);
+FunctionPointer(void, njDrawPolygon2D, (NJS_POINT2COL *p, Int n, Float pri, Uint32 attr), 0x77E9F0);
+FunctionPointer(void, njColorBlendingMode_, (NJD_COLOR_TARGET target, NJD_COLOR_BLENDING mode), 0x77EC60);
+FunctionPointer(void, Direct3D_EnableAlpha, (BOOL enable), 0x77ECE0);
+FunctionPointer(void, Direct3D_SetZFunc, (Uint8 index), 0x77ED00);
 FunctionPointer(void, Direct3D_EnableZWrite, (DWORD enable), 0x77ED20);
 FunctionPointer(void, j_DeltaTime_Multiplier, (int a1), 0x77ED40);
 FunctionPointer(void, Direct3D_SetCullMode, (int a1), 0x77ED50);
 FunctionPointer(void, njDrawModel_SADX, (NJS_MODEL_SADX *a1), 0x77EDA0);
 FunctionPointer(void, DrawModel_Callback, (NJS_OBJECT *a1), 0x77EF50);
 FunctionPointer(void, DrawModel_ResetRenderFlags, (NJS_MODEL_SADX *a1), 0x77EF70);
-FunctionPointer(int, ReleaseKeyboardDevice, (), 0x77F0F0);
+VoidFunc(PollKeyboard_, 0x77F090);
+VoidFunc(ReleaseKeyboardDevice, 0x77F0F0);
 FunctionPointer(void, njGetTexSurface_Maybe, (NJS_TEXMEMLIST *a1, Uint8 *data), 0x77F2F0);
 ThiscallFunctionPointer(Sint32, Direct3D_SetTexList, (NJS_TEXLIST *__this), 0x77F3D0);
 FastcallFunctionPointer(Sint32, njSetTextureNum_, (int num), 0x77F440);
@@ -2222,8 +2442,11 @@ FunctionPointer(Sint32, njLoadTexturePvmFile, (const char *filename, NJS_TEXLIST
 FunctionPointer(void, njControl3D, (NJD_CONTROL_3D a1), 0x77FF60);
 FunctionPointer(void, njSetConstantAttr, (Uint32 and_attr, Uint32 or_attr), 0x77FF70);
 FunctionPointer(void, njSetConstantMaterial, (NJS_ARGB *color), 0x77FF90);
+VoidFunc(set_dword_3CE712C_0, 0x780090);
 StdcallFunctionPointer(BOOL, QueryPerformanceCounter_, (LARGE_INTEGER *lpPerformanceCount), 0x780140);
 FastcallFunctionPointer(void, njInitMatrix, (NJS_MATRIX *matrixStack, Sint32 n, Int flag), 0x780180);
+FunctionPointer(void, InitPolyBuffers_, (void *a1, int count), 0x780850);
+VoidFunc(InitDebugOutput, 0x780870);
 FunctionPointer(void, SetDebugFontSize, (unsigned __int16 a1), 0x7808C0);
 FunctionPointer(void, SetDebugFontColor, (int color), 0x7808E0);
 FunctionPointer(void, DisplayDebugString, (signed int position, char *text), 0x7808F0);
@@ -2246,33 +2469,33 @@ FunctionPointer(void, Direct3D_SetProjectionMatrix_, (D3DMATRIX *matrix), 0x7812
 ThiscallFunctionPointer(void, SetStartupProjection, (D3DMATRIX *__this), 0x781570);
 FunctionPointer(void, njSetScreenDist, (int bams), 0x7815C0);
 FunctionPointer(void, SetDrawDistance, (float min, float max), 0x7815E0);
-FastcallFunctionPointer(void, njCalcPoint, (NJS_MATRIX *m, NJS_VECTOR *vs, NJS_VECTOR *vd), 0x781670);
-FunctionPointer(Bool, njPopMatrixEx, (void), 0x7816E0);
+FastcallFunctionPointer(void, njCalcPoint, (NJS_MATRIX_PTR m, NJS_VECTOR *vs, NJS_VECTOR *vd), 0x781670);
+VoidFunc(njPopMatrixEx, 0x7816E0);
 ThiscallFunctionPointer(void, njScaleEx, (NJS_VECTOR *Scale), 0x781700);
-FastcallFunctionPointer(void, njRotateXYZ, (NJS_MATRIX *m, Angle angx, Angle angy, Angle angz), 0x781770);
-FastcallFunctionPointer(void, njRotateZYX, (NJS_MATRIX *m, Angle angx, Angle angy, Angle angz), 0x7819C0);
+FastcallFunctionPointer(void, njRotateXYZ, (NJS_MATRIX_PTR m, float angx, Angle angy, Angle angz), 0x781770);
+FastcallFunctionPointer(void, njRotateZYX, (NJS_MATRIX_PTR m, Angle angx, Angle angy, Angle angz), 0x7819C0);
 ThiscallFunctionPointer(void, njTranslateEx, (NJS_VECTOR *v), 0x781C10);
-FunctionPointer(Bool, njPushMatrixEx, (void), 0x781C80);
+VoidFunc(njPushMatrixEx, 0x781C80);
 VoidFunc(CopyConstantMaterial, 0x781CC0);
 VoidFunc(ResetRenderFlags, 0x781DF0);
-FastcallFunctionPointer(void, DrawModel_Callback_, (NJS_OBJECT *obj, void (__cdecl *function)(NJS_MODEL_SADX *)), 0x781E20);
+FastcallFunctionPointer(void, DrawModel_Callback_, (NJS_OBJECT *obj, void(__cdecl *function)(NJS_MODEL_SADX *)), 0x781E20);
 ThiscallFunctionPointer(int, GetConstantMaterialBGRA, (NJS_COLOR *m), 0x781EC0);
-FunctionPointer(void, SetDrawModelMaterialCallback, (void (__cdecl *a1)()), 0x783260);
+FunctionPointer(void, SetDrawModelMaterialCallback, (void(__cdecl *a1)()), 0x783260);
 ThiscallFunctionPointer(void, Direct3D_ParseMaterial, (NJS_MATERIAL *material), 0x784850);
-FunctionPointer(void, njDrawModel_SADX_B, (NJS_MODEL_SADX *callback), 0x784AE0);
-ThiscallFunctionPointer(void, njGetMatrix, (NJS_MATRIX *m), 0x784BC0);
-ThiscallFunctionPointer(void, njTranslate, (NJS_MATRIX *m, Float x, Float y, Float z), 0x784BE0);
-ThiscallFunctionPointer(void, njScale, (NJS_MATRIX *m, Float sx, Float sy, Float sz), 0x784C70);
-FastcallFunctionPointer(void, njSetMatrix, (NJS_MATRIX *md, NJS_MATRIX *ms), 0x784D00);
-FunctionPointer(void, njTranslateV_, (NJS_MATRIX *a3, NJS_VECTOR *a4), 0x784D20);
-FunctionPointer(void, njTranslate_, (NJS_MATRIX *m, float x, float y, float z), 0x784D30);
-FunctionPointer(void, njUnitMatrix_, (NJS_MATRIX *a2), 0x784D50);
-FastcallFunctionPointer(void, njCalcVector, (NJS_MATRIX *m, NJS_VECTOR *vs, NJS_VECTOR *vd), 0x784D60);
-FastcallFunctionPointer(void, njRotateY, (NJS_MATRIX *m, Angle ang), 0x784E20);
-FastcallFunctionPointer(void, njRotateX, (NJS_MATRIX *m, Angle ang), 0x784EE0);
-FastcallFunctionPointer(void, njRotateZ, (NJS_MATRIX *m, Angle ang), 0x784FB0);
-FastcallFunctionPointer(void, njTranslateV, (NJS_MATRIX *m, NJS_VECTOR *v), 0x785070);
-ThiscallFunctionPointer(void, njPushMatrix, (NJS_MATRIX *m), 0x7850F0);
+FunctionPointer(void, njDrawModel_SADX_Dynamic, (NJS_MODEL_SADX *callback), 0x784AE0);
+ThiscallFunctionPointer(void, njGetMatrix, (NJS_MATRIX_PTR m), 0x784BC0);
+ThiscallFunctionPointer(void, njTranslate, (NJS_MATRIX_PTR m, Float x, Float y, Float z), 0x784BE0);
+ThiscallFunctionPointer(void, njScale, (NJS_MATRIX_PTR m, Float sx, Float sy, Float sz), 0x784C70);
+FastcallFunctionPointer(void, njSetMatrix, (NJS_MATRIX_PTR md, NJS_MATRIX_PTR ms), 0x784D00);
+FunctionPointer(void, njTranslateV_, (NJS_MATRIX_PTR a3, NJS_VECTOR *a4), 0x784D20);
+FunctionPointer(void, njTranslate_, (NJS_MATRIX_PTR m, float x, float y, float z), 0x784D30);
+FunctionPointer(void, njUnitMatrix_, (NJS_MATRIX_PTR a2), 0x784D50);
+FastcallFunctionPointer(void, njCalcVector, (NJS_MATRIX_PTR m, NJS_VECTOR *vs, NJS_VECTOR *vd), 0x784D60);
+FastcallFunctionPointer(void, njRotateY, (NJS_MATRIX_PTR m, Angle ang), 0x784E20);
+FastcallFunctionPointer(void, njRotateX, (NJS_MATRIX_PTR m, Angle ang), 0x784EE0);
+FastcallFunctionPointer(void, njRotateZ, (NJS_MATRIX_PTR m, Angle ang), 0x784FB0);
+FastcallFunctionPointer(void, njTranslateV, (NJS_MATRIX_PTR m, NJS_VECTOR *v), 0x785070);
+ThiscallFunctionPointer(void, njPushMatrix, (NJS_MATRIX_PTR m), 0x7850F0);
 ThiscallFunctionPointer(void, njPopMatrix, (Uint32 n), 0x785140);
 FastcallFunctionPointer(void, njAddVector, (NJS_VECTOR *vd, NJS_VECTOR *vs), 0x785170);
 FunctionPointer(Sint32, pdVibMxStart, (Uint32 port, const PDS_VIBPARAM *a2), 0x785280);
@@ -2282,14 +2505,15 @@ FunctionPointer(void, FreeLandTableModel, (NJS_MODEL_SADX *a1), 0x7870A0);
 FunctionPointer(void, FreeLandTableObject, (NJS_OBJECT *a1), 0x787100);
 FunctionPointer(void, InitLandTableObject, (NJS_OBJECT *), 0x787140);
 FastcallFunctionPointer(void, SetTexnameInfo, (NJS_TEXNAME *texname, const char *filename, NJS_TEXMEMLIST *texaddr, int attr), 0x7871C0);
-StdcallFunctionPointer(double, squareroot, (float), 0x7871F0);
+StdcallFunctionPointer(float, squareroot, (float), 0x7871F0);
 VoidFunc(njEnableFog, 0x787220);
 VoidFunc(njDisableFog, 0x787230);
 FunctionPointer(void, njSetFogColor, (Uint32 c), 0x787240);
 FunctionPointer(void, njSetFogTable, (float *fogtable), 0x787250);
 FunctionPointer(void, njGenerateFogTable3, (float *fog, float n, float f), 0x787260);
-ThiscallFunctionPointer(void, njUnitMatrix, (NJS_MATRIX *m), 0x7875F0);
+ThiscallFunctionPointer(void, njUnitMatrix, (NJS_MATRIX_PTR m), 0x7875F0);
 FastcallFunctionPointer(void, njSubVector, (NJS_VECTOR *vd, NJS_VECTOR *vs), 0x787610);
+FastcallFunctionPointer(Bool, njInvertMatrix, (NJS_MATRIX_PTR m), 0x787630);
 FastcallFunctionPointer(float, njScalor, (NJS_VECTOR *v), 0x787CC0);
 FastcallFunctionPointer(float, njInnerProduct, (NJS_VECTOR *v1, NJS_VECTOR *v2), 0x787CF0);
 FastcallFunctionPointer(float, njScalor2, (NJS_VECTOR *v), 0x787E10);
@@ -2298,23 +2522,37 @@ FunctionPointer(void, SetupScreen, (NJS_SCREEN *m), 0x788240);
 FastcallFunctionPointer(void, njSetPvmTextureList_Maybe, (NJS_TEXLIST *texlist, NJS_TEXNAME *texname, pvm_thing *filename, int size), 0x788260);
 FastcallFunctionPointer(Float, njSin, (Angle n), 0x788290);
 FastcallFunctionPointer(Float, njCos, (Angle n), 0x7883C0);
+FastcallFunctionPointer(void, njGetTranslation, (NJS_MATRIX_PTR m, NJS_VECTOR *p), 0x7884F0);
 FunctionPointer(void, njGetCameraMotion, (NJS_CAMERA *a1, NJS_MOTION *a2, NJS_CMOTION_DATA *a3, float a4), 0x788510);
-FastcallFunctionPointer(void, njProjectScreen, (NJS_MATRIX *m, NJS_VECTOR *p3, NJS_POINT2 *p2), 0x788700);
-FastcallFunctionPointer(void, njScaleV, (NJS_MATRIX *m, NJS_VECTOR *v), 0x788A50);
+FastcallFunctionPointer(void, njProjectScreen, (NJS_MATRIX_PTR m, NJS_VECTOR *p3, NJS_POINT2 *p2), 0x788700);
+FastcallFunctionPointer(void, njScaleV, (NJS_MATRIX_PTR m, NJS_VECTOR *v), 0x788A50);
+FastcallFunctionPointer(void, njMultiMatrix, (NJS_MATRIX_PTR md, NJS_MATRIX_PTR ms), 0x788AD0);
+FastcallFunctionPointer(void, njRotate, (NJS_MATRIX_PTR m, NJS_VECTOR *v, Angle ang), 0x788DF0);
+FastcallFunctionPointer(void, njProject, (NJS_MATRIX *m, NJS_PLANE *pl), 0x7893C0);
+ThiscallFunctionPointer(void, njUnitTransPortion, (NJS_MATRIX_PTR _this), 0x789670);
 FastcallFunctionPointer(void, TransformChunkObject, (NJS_CNK_OBJECT *a1), 0x789770);
 FunctionPointer(void, DrawChunkObject, (NJS_CNK_OBJECT *a1), 0x789830);
 VoidFunc(QueryPerformance, 0x789960);
 FunctionPointer(void, DeltaTime_Multiplier, (int a1), 0x7899A0);
 VoidFunc(FrameLimit, 0x7899E0);
 VoidFunc(HandleWindowMessages, 0x789BD0);
+FunctionPointer(BOOL, FocusWindow, (), 0x789C50);
 FunctionPointer(int, Exit, (), 0x789DD0);
-StdcallFunctionPointer(LRESULT, WndProc, (HWND a1, UINT Msg, WPARAM wParam, LPARAM a4), 0x789DE0);
+StdcallFunctionPointer(LRESULT, WndProc, (HWND handle, UINT Msg, WPARAM wParam, LPARAM a4), 0x789DE0);
 VoidFunc(Direct3D_SetChunkModelRenderState, 0x78A010);
 VoidFunc(Direct3D_UnsetChunkModelRenderState, 0x78A0C0);
+VoidFunc(EnableChunkMaterialFlags, 0x78A2D0);
+VoidFunc(DisableChunkMaterialFlags, 0x78A2E0);
+FunctionPointer(void, SetChunkMaterialFlags, (Uint32 flag), 0x78A2F0);
+FunctionPointer(void, SetChunkTextureIndexA, (Uint32 a1), 0x78A300);
+FunctionPointer(void, SetChunkTextureIndexB, (Uint32 index), 0x78A310);
 FunctionPointer(Sint32, njCnkDrawModel, (NJS_CNK_MODEL *model), 0x78AA10);
 FunctionPointer(void, njCnkDrawObject_, (NJS_CNK_OBJECT *a1), 0x78AA90);
 FunctionPointer(void, njCnkDrawObject, (NJS_CNK_OBJECT *a1), 0x78AB80);
+FunctionPointer(__int16, GetChunkTextureIndex, (NJS_CNK_MODEL *a1), 0x78ABE0);
+FunctionPointer(void, GetChaoHatModel, (NJS_CNK_MODEL *a1, int a2), 0x78AF10);
 FunctionPointer(void, DisplayDebugShape_, (int color, float a2, float a3, float a4, float a5, float depth_maybe), 0x78B4C0);
+FastcallFunctionPointer(void, njSubMatrix, (NJS_MATRIX_PTR md, NJS_MATRIX_PTR ms), 0x78B6E0);
 VoidFunc(Direct3D_SetMenuMode, 0x78B780);
 VoidFunc(Direct3D_TextureFilterLinear, 0x78B800);
 VoidFunc(Direct3D_DiffuseSourceVertexColor, 0x78B840);
@@ -2334,23 +2572,31 @@ ThiscallFunctionPointer(void, DoSomethingWithPalette, (NJS_TEXPALETTE *p), 0x78C
 FastcallFunctionPointer(void, Direct3D_SetTextureNum, (int index), 0x78D140);
 ThiscallFunctionPointer(void, Direct3D_SetHudColor, (NJS_COLOR color), 0x78D3E0);
 ThiscallFunctionPointer(void, Direct3D_DrawLine, (LineInfo *_this), 0x78D3F0);
+FunctionPointer(DWORD, DeviceCaps_CheckTexCoordCaps, (), 0x78DB80);
 FastcallFunctionPointer(void, njSetCnkBlendMode, (Uint32 attr), 0x78DB90);
 StdcallFunctionPointer(float, DoWeirdProjectionThings, (float a1), 0x78DBE0);
 FastcallFunctionPointer(int, Direct3D_EnableLighting, (unsigned __int8 a1), 0x78E700);
 FunctionPointer(int, InitPolyBuffers, (int _32, int count, void *a3), 0x78E720);
 VoidFunc(FreePolyBuffers, 0x78E7A0);
+FastcallFunctionPointer(void, DrawRect_TextureVertexTriangleStrip, (NJS_TEXTURE_VTX *points, signed int count), 0x78E7F0);
+ThiscallFunctionPointer(void, DrawRect_LineStrip, (NJS_POINT2COL *_this, float depth), 0x78E8C0);
+ThiscallFunctionPointer(void, DrawRect_TriangleList, (NJS_POINT2COL *_this, float depth), 0x78E960);
+ThiscallFunctionPointer(void, DrawRect_TriangleFan, (NJS_POINT2COL *_this, float depth), 0x78EA10);
+ThiscallFunctionPointer(void, DrawRect_TriangleStrip, (NJS_POINT2COL *_this, float depth), 0x78EAB0);
 ThiscallFunctionPointer(void, ParseNjControl3D, (Sint16 *_this), 0x78EB50);
 StdcallFunctionPointer(void, Direct3D_SetProjectionMatrix, (float hfov, float NearPlane, float FarPlane), 0x791170);
 VoidFunc(Direct3D_SetViewportAndTransform, 0x7912E0);
 VoidFunc(InitDirect3D8, 0x791610);
 VoidFunc(Direct3D_SetDefaultRenderState, 0x791860);
-ThiscallFunctionPointer(void, Direct3D_SetTextureAlphaMode, (char a1), 0x791940);
-ThiscallFunctionPointer(void, SetAlphaMode, (int _this), 0x791990);
+ThiscallFunctionPointer(void, njAlphaMode, (Int mode), 0x791940);
+ThiscallFunctionPointer(void, njTextureShadingMode, (NJD_TEX_SHADING mode), 0x791990);
 VoidFunc(ProjectToWorldSpace, 0x791A50);
 VoidFunc(Direct3D_SetWorldTransform, 0x791AB0);
 VoidFunc(Direct3D_ResetWorldTransform, 0x791AD0);
-FunctionPointer(void, CreateKeyboardDevice, (int *a1, int a2), 0x791B10);
-FunctionPointer(void, DirectInput_CreateDevice, (int a1, int a2, int a3, int a4), 0x791D60);
+VoidFunc(PollKeyboard, 0x791BD0);
+FunctionPointer(void, CreateMousedevice, (int a1, int a2, int a3, int a4), 0x791D60);
+VoidFunc(DirectInput_Release, 0x7920D0);
+FunctionPointer(void, DirectInput_Init, (ControllerData *a1, int a2), 0x7928E0);
 FunctionPointer(Uint8 *, LoadPVx, (const char *str), 0x7929D0);
 FunctionPointer(void, j__HeapFree_0, (LPVOID lpMem), 0x792A70);
 ThiscallFunctionPointer(Uint8 *, LoadPVM_Seek, (void *data), 0x792A90);
@@ -2376,6 +2622,7 @@ VoidFunc(Direct3D_ApplyFogTable, 0x7949F0);
 FunctionPointer(void, SetFogDensityMaybe, (unsigned __int16 n), 0x794DB0);
 FunctionPointer(void, njSetFogTable_, (float *fogtable), 0x794E40);
 VoidFunc(Direct3D_ConfigureFog, 0x794EC0);
+FastcallFunctionPointer(float, njDetMatrix, (NJS_MATRIX_PTR m), 0x795000);
 FunctionPointer(int, GetD3DCapThing, (int), 0x795930);
 VoidFunc(Direct3D_ConfigureLights, 0x796710);
 ObjectFunc(Cart_Main, 0x79A9E0);
@@ -2397,6 +2644,8 @@ ObjectFunc(OMeteorite3, 0x79D1C0);
 ObjectFunc(ODashPanel4Cart, 0x79D450);
 ObjectFunc(OJumpPanel4Cart, 0x79D9D0);
 ObjectFunc(OPanel, 0x79DBC0);
+VoidFunc(j_StopMusic, 0x79E1F0);
+FunctionPointer(void, QueueSound_V, (int id, EntityData1 *entity, NJS_VECTOR *a3, NJS_VECTOR *a4), 0x79E450);
 ObjectFunc(SpringH_Display, 0x79F650);
 ObjectFunc(SpringH_Main, 0x79F710);
 ObjectFunc(SpringH_Load, 0x79F860);
@@ -2412,7 +2661,9 @@ ObjectFunc(TikalHint_Main_5, 0x7A1C90);
 ObjectFunc(TikalHint_Main, 0x7A1CD0);
 ObjectFunc(Balloon_Display, 0x7A1E10);
 ObjectFunc(Balloon_Main, 0x7A21C0);
+FunctionPointer(float, DashHoop_LookAtDestination, (ObjectMaster *a1), 0x7A2280);
 ObjectFunc(DashHoop_Display, 0x7A2470);
+FunctionPointer(bool, DashHoop_LoadChild, (ObjectMaster *a1), 0x7A2660);
 ObjectFunc(DashHoop_Main, 0x7A26F0);
 ObjectFunc(Weed_Main, 0x7A2B60);
 ObjectFunc(Spikes_Main, 0x7A30E0);
@@ -2443,7 +2694,7 @@ ObjectFunc(OSampleS, 0x7AC7B0);
 ObjectFunc(OSampleM, 0x7AC810);
 ObjectFunc(OSampleL, 0x7AC870);
 ObjectFunc(OSampleSw, 0x7AC8D0);
-FunctionPointer(signed int, ProcessNBFile, (void *a1), 0x7B0260);
+FunctionPointer(Sint32, ProcessNBFile, (void *a1), 0x7B0260);
 ObjectFunc(j_ClipSetObject, 0x7B0630);
 ObjectFunc(Zero_Main, 0x7B0640);
 ObjectFunc(Zero_Load, 0x7B0A70);
@@ -2459,9 +2710,11 @@ ObjectFunc(Eggman_Delete, 0x7B4420);
 ObjectFunc(Eggman_Main, 0x7B4EF0);
 FunctionPointer(void, DebugSetMute_wrapper, (int a1), 0x7B7798);
 VoidFunc(InitSonicAnimData, 0x7CEC90);
+VoidFunc(InitSonicWeldInfo, 0x7D0B50);
 VoidFunc(InitEC0NPCData, 0x7D2720);
 VoidFunc(InitEC3NPCData, 0x7D2CF0);
 VoidFunc(InitSSNPCData, 0x7D5810);
+VoidFunc(al_xy_init, 0x7DAE80);
 
 // Bool __usercall@<eax>(NJS_TEXLIST *a1@<eax>)
 static const void *const VerifyTexListPtr = (void*)0x403250;
@@ -2477,20 +2730,51 @@ static inline Bool VerifyTexList(NJS_TEXLIST *a1)
 	return result;
 }
 
-
-
-// void __usercall(int a1@<ebp>, NJS_SPRITE *_sp, int n, NJD_SPRITE attr)
-static const void *const njDrawSprite3D_4Ptr = (void*)0x407130;
-static inline void njDrawSprite3D_4(int a1, NJS_SPRITE *_sp, int n, NJD_SPRITE attr)
+// void __usercall(QueuedModelNode *node@<esi>, float pri, int idk)
+static const void *const AddToQueuePtr = (void*)0x403E80;
+static inline void AddToQueue(QueuedModelNode *node, float pri, int idk)
 {
 	__asm
 	{
-		push [attr]
-		push [n]
-		push [_sp]
-		mov ebp, [a1]
-		call njDrawSprite3D_4Ptr
+		push [idk]
+		push [pri]
+		mov esi, [node]
+		call AddToQueuePtr
+		add esp, 8
+	}
+}
+
+// QueuedModelNode *__usercall@<eax>(__int16 texnum@<ax>, int size, QueuedModelType flags, QueuedModelFlagsB flagsB)
+static const void *const AllocateQueuedModelPtr = (void*)0x403F60;
+static inline QueuedModelNode * AllocateQueuedModel(__int16 texnum, int _size, Uint32 flags, Uint32 flagsB)
+{
+	QueuedModelNode * result;
+	__asm
+	{
+		push [flagsB]
+		push [flags]
+		push [_size]
+		mov ax, [texnum]
+		call AllocateQueuedModelPtr
 		add esp, 12
+		mov result, eax
+	}
+	return result;
+}
+
+// void __usercall(NJS_ACTION *action@<eax>, float frameNumber, int a3, float scale, void (__cdecl *a5)(NJS_MODEL_SADX *, int, int))
+static const void *const DisplayAnimationFramePtr = (void*)0x4053D0;
+static inline void DisplayAnimationFrame(NJS_ACTION *action, float frameNumber, int a3, float scale, void(__cdecl *a5)(NJS_MODEL_SADX *, int, int))
+{
+	__asm
+	{
+		push [a5]
+		push [scale]
+		push [a3]
+		push [frameNumber]
+		mov eax, [action]
+		call DisplayAnimationFramePtr
+		add esp, 16
 	}
 }
 
@@ -2525,7 +2809,7 @@ static inline PaletteLight * GetLSPalette(int level, int act, int _type)
 
 // ObjectMaster *__usercall@<eax>(signed int index@<edx>, void (__cdecl *LoadSub)(ObjectMaster *)@<edi>)
 static const void *const AllocateObjectMasterPtr = (void*)0x40B030;
-static inline ObjectMaster * AllocateObjectMaster(signed int index, void (__cdecl *LoadSub)(ObjectMaster *))
+static inline ObjectMaster * AllocateObjectMaster(signed int index, void(__cdecl *LoadSub)(ObjectMaster *))
 {
 	ObjectMaster * result;
 	__asm
@@ -2577,6 +2861,35 @@ static inline void LoadSetFile(int act, const char *FileName)
 		call LoadSetFilePtr
 		add esp, 4
 	}
+}
+
+// Sint32 __usercall@<eax>(int a1@<edi>)
+static const void *const SoundQueue_GetFreeIndexPtr = (void*)0x423D10;
+static inline Sint32 SoundQueue_GetFreeIndex(int a1)
+{
+	Sint32 result;
+	__asm
+	{
+		mov edi, [a1]
+		call SoundQueue_GetFreeIndexPtr
+		mov result, eax
+	}
+	return result;
+}
+
+// int __usercall@<eax>(int a1@<edi>, EntityData1 *a2@<esi>)
+static const void *const SoundQueue_GetOtherThingPtr = (void*)0x423EB0;
+static inline int SoundQueue_GetOtherThing(int a1, EntityData1 *a2)
+{
+	int result;
+	__asm
+	{
+		mov esi, [a2]
+		mov edi, [a1]
+		call SoundQueue_GetOtherThingPtr
+		mov result, eax
+	}
+	return result;
 }
 
 // void __usercall(signed int ringCount@<eax>, unsigned __int8 digits@<bl>, NJS_SPRITE *hud@<esi>)
@@ -3144,9 +3457,20 @@ static inline BOOL Sonic_ChargeSpindash(CharObj2 *Data2, EntityData1 *Data1)
 	return result;
 }
 
-// void __usercall(NJS_VECTOR *pos@<edi>, NJS_SPRITE *_sp@<esi>, int color, Int n, float scale)
-static const void *const DrawParticleProbablyPtr = (void*)0x4A3530;
-static inline void DrawParticleProbably(NJS_VECTOR *pos, NJS_SPRITE *_sp, int color, Int n, float scale)
+// void __usercall(ObjectMaster *a1@<eax>)
+static const void *const CharBubble_Init_Ptr = (void*)0x4A2AE0;
+static inline void CharBubble_Init_(ObjectMaster *a1)
+{
+	__asm
+	{
+		mov eax, [a1]
+		call CharBubble_Init_Ptr
+	}
+}
+
+// void __usercall(NJS_VECTOR *pos@<edi>, NJS_SPRITE *_sp@<esi>, NJS_ARGB *color, Int n, float scale)
+static const void *const DrawParticlePtr = (void*)0x4A3530;
+static inline void DrawParticle(NJS_VECTOR *pos, NJS_SPRITE *_sp, NJS_ARGB *color, Int n, float scale)
 {
 	__asm
 	{
@@ -3155,7 +3479,7 @@ static inline void DrawParticleProbably(NJS_VECTOR *pos, NJS_SPRITE *_sp, int co
 		push [color]
 		mov esi, [_sp]
 		mov edi, [pos]
-		call DrawParticleProbablyPtr
+		call DrawParticlePtr
 		add esp, 12
 	}
 }
@@ -3276,9 +3600,9 @@ static inline signed int Spinner_Init(EntityData1 *a1, ObjectMaster *a2)
 	return result;
 }
 
-// void __usercall(EntityData1 *data1@<ebx>, EntityData2 *data2)
+// void __usercall(EntityData1 *data1@<ebx>, ObjectData2 *data2)
 static const void *const EPolice_DoSomethingPtr = (void*)0x4B2E90;
-static inline void EPolice_DoSomething(EntityData1 *data1, EntityData2 *data2)
+static inline void EPolice_DoSomething(EntityData1 *data1, ObjectData2 *data2)
 {
 	__asm
 	{
@@ -3371,6 +3695,21 @@ static inline void DrawColObj(ObjectMaster *obj, int _type)
 		call DrawColObjPtr
 		add esp, 4
 	}
+}
+
+// signed int __usercall@<eax>(CollisionData *a1@<edi>, EntityData1 *esi0@<esi>)
+static const void *const NoWater_IsPlayerInRangePtr = (void*)0x4D4C50;
+static inline signed int NoWater_IsPlayerInRange(CollisionData *a1, EntityData1 *esi0)
+{
+	signed int result;
+	__asm
+	{
+		mov esi, [esi0]
+		mov edi, [a1]
+		call NoWater_IsPlayerInRangePtr
+		mov result, eax
+	}
+	return result;
 }
 
 // float __usercall@<st0>(int a1@<eax>, float x, float y, float pri)
@@ -3556,21 +3895,6 @@ static inline void ODosei_Load(ObjectMaster *a1)
 	}
 }
 
-// void __usercall(int a1@<ebp>, NJS_SPRITE *_sp, Int n, NJD_SPRITE attr)
-static const void *const njDrawSprite3D_5Ptr = (void*)0x527930;
-static inline void njDrawSprite3D_5(int a1, NJS_SPRITE *_sp, Int n, NJD_SPRITE attr)
-{
-	__asm
-	{
-		push [attr]
-		push [n]
-		push [_sp]
-		mov ebp, [a1]
-		call njDrawSprite3D_5Ptr
-		add esp, 12
-	}
-}
-
 // void __usercall(EntityData1 *a1@<esi>)
 static const void *const SuperSonic_SubtractRingsPtr = (void*)0x55FDB0;
 static inline void SuperSonic_SubtractRings(EntityData1 *a1)
@@ -3579,6 +3903,19 @@ static inline void SuperSonic_SubtractRings(EntityData1 *a1)
 	{
 		mov esi, [a1]
 		call SuperSonic_SubtractRingsPtr
+	}
+}
+
+// void __usercall(NJS_OBJECT **a1@<ebx>, ObjectMaster *a2)
+static const void *const OTenss_InitPtr = (void*)0x5CD200;
+static inline void OTenss_Init(NJS_OBJECT **a1, ObjectMaster *a2)
+{
+	__asm
+	{
+		push [a2]
+		mov ebx, [a1]
+		call OTenss_InitPtr
+		add esp, 4
 	}
 }
 
@@ -3611,11 +3948,11 @@ static inline void Obj_SkyDeck_Thing(ObjectMaster *a1)
 
 // void __usercall(int@<eax>)
 static const void *const SkyDeckSkyThingRandomRotationPtr = (void*)0x5F2130;
-static inline void SkyDeckSkyThingRandomRotation(int a1)
+static inline void SkyDeckSkyThingRandomRotation(int n)
 {
 	__asm
 	{
-		mov eax, [a1]
+		mov eax, [n]
 		call SkyDeckSkyThingRandomRotationPtr
 	}
 }
@@ -3628,21 +3965,6 @@ static inline void OMtKusa_Thing(ObjectMaster *a1)
 	{
 		mov eax, [a1]
 		call OMtKusa_ThingPtr
-	}
-}
-
-// void __usercall(int a1@<ebp>, NJS_SPRITE *_sp, Int n, NJD_SPRITE attr)
-static const void *const njDrawSprite3D_6Ptr = (void*)0x6253F0;
-static inline void njDrawSprite3D_6(int a1, NJS_SPRITE *_sp, Int n, NJD_SPRITE attr)
-{
-	__asm
-	{
-		push [attr]
-		push [n]
-		push [_sp]
-		mov ebp, [a1]
-		call njDrawSprite3D_6Ptr
-		add esp, 12
 	}
 }
 
@@ -3671,6 +3993,41 @@ static inline void TornadoTargetSprite_TargetLock_Load(EntityData1 *a1)
 	}
 }
 
+// void __usercall(ObjectMaster *a1@<eax>)
+static const void *const Obj_StationSquare_SetOceanStuffPtr = (void*)0x62EEB0;
+static inline void Obj_StationSquare_SetOceanStuff(ObjectMaster *a1)
+{
+	__asm
+	{
+		mov eax, [a1]
+		call Obj_StationSquare_SetOceanStuffPtr
+	}
+}
+
+// void __usercall(ChaoStatIndex index@<eax>, ChaoDataBase *data@<edi>, ChaoDNA *dna@<esi>)
+static const void *const Chao_IncrementStatIndexPtr = (void*)0x71DEF0;
+static inline void Chao_IncrementStatIndex(ChaoStatIndex index, ChaoDataBase *data, ChaoDNA *dna)
+{
+	__asm
+	{
+		mov esi, [dna]
+		mov edi, [data]
+		mov eax, [index]
+		call Chao_IncrementStatIndexPtr
+	}
+}
+
+// void __usercall(ChaoHudThing *a1@<eax>)
+static const void *const DrawChaoHud_WhitePtr = (void*)0x7448B0;
+static inline void DrawChaoHud_White(ChaoHudThing *a1)
+{
+	__asm
+	{
+		mov eax, [a1]
+		call DrawChaoHud_WhitePtr
+	}
+}
+
 // void __usercall(HINSTANCE a1@<eax>, int nCmdShow)
 static const void *const CreateSADXWindowPtr = (void*)0x789E50;
 static inline void CreateSADXWindow(HINSTANCE a1, int nCmdShow)
@@ -3684,7 +4041,17 @@ static inline void CreateSADXWindow(HINSTANCE a1, int nCmdShow)
 	}
 }
 
-
+// void __usercall(NJS_CNK_MODEL *a1)
+static const void *const DrawCnkModelPtr = (void*)0x78AB50;
+static inline void DrawCnkModel(NJS_CNK_MODEL *a1)
+{
+	__asm
+	{
+		push [a1]
+		call DrawCnkModelPtr
+		add esp, 4
+	}
+}
 
 // void __usercall(int texture_index@<edx>, int texture_stage@<ecx>)
 static const void *const Direct3D_SetTextureToStagePtr = (void*)0x78D380;
@@ -3748,9 +4115,9 @@ static inline void CalcRingPosCircle(NJS_VECTOR *position, EntityData1 *parent, 
 	}
 }
 
-// void __usercall(EntityData1 *player@<eax>, EntityData2 *a2@<ecx>, EntityData1 *me@<esi>)
+// void __usercall(EntityData1 *player@<eax>, ObjectData2 *a2@<ecx>, EntityData1 *me@<esi>)
 static const void *const RhinoTank_DoSomethingPtr = (void*)0x7A0790;
-static inline void RhinoTank_DoSomething(EntityData1 *player, EntityData2 *a2, EntityData1 *me)
+static inline void RhinoTank_DoSomething(EntityData1 *player, ObjectData2 *a2, EntityData1 *me)
 {
 	__asm
 	{
@@ -3758,6 +4125,40 @@ static inline void RhinoTank_DoSomething(EntityData1 *player, EntityData2 *a2, E
 		mov ecx, [a2]
 		mov eax, [player]
 		call RhinoTank_DoSomethingPtr
+	}
+}
+
+// void __usercall(ObjectData2 *a1@<eax>, EntityData1 *a2@<ecx>)
+static const void *const RhinoTank_AnimatePtr = (void*)0x7A0F70;
+static inline void RhinoTank_Animate(ObjectData2 *a1, EntityData1 *a2)
+{
+	__asm
+	{
+		mov ecx, [a2]
+		mov eax, [a1]
+		call RhinoTank_AnimatePtr
+	}
+}
+
+// void __usercall(EntityData1 *entity@<esi>)
+static const void *const RhinoTank_DebugSelectedPtr = (void*)0x7A1200;
+static inline void RhinoTank_DebugSelected(EntityData1 *entity)
+{
+	__asm
+	{
+		mov esi, [entity]
+		call RhinoTank_DebugSelectedPtr
+	}
+}
+
+// void __usercall(ObjectMaster *a1@<eax>)
+static const void *const Zero_DebugSelectedPtr = (void*)0x7B04A0;
+static inline void Zero_DebugSelected(ObjectMaster *a1)
+{
+	__asm
+	{
+		mov eax, [a1]
+		call Zero_DebugSelectedPtr
 	}
 }
 

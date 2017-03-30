@@ -2140,7 +2140,6 @@ void __cdecl WriteSaveFile_r()
 	}
 }
 
-FunctionPointer(Uint8, GetKey, (int index), 0x40EF20);
 int __cdecl FixEKey(int i)
 {
 	return IsCameraControlEnabled() && GetKey(i);

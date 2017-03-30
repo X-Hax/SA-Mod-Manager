@@ -10,6 +10,8 @@
 #include "../d3d8types.h"
 #include "SADXStructs.h"
 
+DataArray(HMODULE, ModuleHandles, 0x03CA6E60, 4);
+
 DataArray(TrialLevelList, TrialLevels, 0x7EF5EC, 7);
 DataArray(TrialLevelList, TrialSubgames, 0x7EF624, 7);
 DataArray(SoundTestCategory, SoundtestData, 0x7EFEB8, 6);
@@ -112,5 +114,10 @@ DataPointer(int, VoiceLanguage, 0x03B0EF38);
 DataPointer(ObjectMaster*, TailsAI_ptr, 0x03B2B358);
 DataPointer(Bool, IsChaoStage, 0x3B22E80);
 DataPointer(Bool, IsWindowed, 0x38A5DC4);
+
+DataPointer(Uint32, _nj_constant_attr_and_, 0x03D0F840);
+DataPointer(Uint32, _nj_constant_attr_or_, 0x03D0F9C4);
+DataPointer(Uint32, _nj_control_3d_flag_, 0x03D0F9C8);
+DataPointer(EntityData1*, Camera_Data1, 0x03B2CBB0);
 
 #endif /* SADXMODLOADER_SADXVARS_H */
