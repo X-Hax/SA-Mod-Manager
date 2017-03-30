@@ -487,11 +487,11 @@ static void __cdecl Direct3D_Present_r()
 	Direct3D_DeviceLost();
 }
 
-static RECT last_rect = {};
-static Uint32 last_width = 0;
-static Uint32 last_height = 0;
-static DWORD last_style = 0;
-static DWORD last_exStyle = 0;
+static RECT   last_rect    = {};
+static Uint32 last_width   = 0;
+static Uint32 last_height  = 0;
+static DWORD  last_style   = 0;
+static DWORD  last_exStyle = 0;
 
 static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
@@ -529,8 +529,10 @@ static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM lPar
 					if (w == HorizontalResolution && h == VerticalResolution)
 						return 0;
 
+				#ifdef _DEBUG
 					PrintDebug("Changing resolution from %ux%u to %ux%u\n",
 						HorizontalResolution, VerticalResolution, w, h);
+				#endif
 
 					PresentParameters.BackBufferWidth = w;
 					PresentParameters.BackBufferHeight = h;
@@ -584,7 +586,7 @@ static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM lPar
 						PresentParameters.BackBufferHeight = last_height;
 
 						Direct3D_DeviceLost();
-						SetWindowPos(a1, nullptr, last_rect.left, last_rect.top, width, height, 0);
+						SetWindowPos(a1, HWND_NOTOPMOST, last_rect.left, last_rect.top, width, height, 0);
 						IsWindowed = true;
 					}
 
