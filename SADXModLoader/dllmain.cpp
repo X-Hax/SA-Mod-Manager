@@ -300,9 +300,14 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			if (!switchingwindowmode)
 				sub_401900(hWnd, uMsg, wParam, lParam);
 			if (windowmode == windowed)
+			{
 				while (ShowCursor(TRUE) < 0);
+			}
 			else
+			{
 				while (ShowCursor(FALSE) > 0);
+			}
+
 		default:
 			// alternatively we can return SendMe
 			return DefWindowProc(wrapper, uMsg, wParam, lParam);
@@ -493,112 +498,105 @@ static Uint32 last_height  = 0;
 static DWORD  last_style   = 0;
 static DWORD  last_exStyle = 0;
 
-static LRESULT __stdcall WndProc_r(HWND a1, UINT Msg, WPARAM wParam, LPARAM lParam)
+static LRESULT __stdcall WndProc_r(HWND handle, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	if (Msg > WM_KEYFIRST && Msg != WM_COMMAND)
+	switch (Msg)
 	{
-		if (Msg < WM_SYSKEYDOWN || Msg > WM_SYSKEYUP)
-		{
-			return DefWindowProcA(a1, Msg, wParam, lParam);
-		}
-	}
-	else if (Msg != WM_KEYFIRST)
-	{
-		if (Msg == WM_DESTROY)
-		{
+		default:
+			break;
+
+		case WM_DESTROY:
 			PostQuitMessage(0);
-		}
-		else
+			break;
+
+		case WM_SIZE:
 		{
-			switch (Msg)
+			if (!IsWindowed || Direct3D_Device == nullptr)
 			{
-				default:
-					break;
-
-				case WM_SIZE:
-				{
-					if (!IsWindowed || Direct3D_Device == nullptr)
-						return 0;
-
-					auto w = LOWORD(lParam);
-					auto h = HIWORD(lParam);
-
-					if (!w || !h)
-						return 0;
-
-					if (w == HorizontalResolution && h == VerticalResolution)
-						return 0;
-
-				#ifdef _DEBUG
-					PrintDebug("Changing resolution from %ux%u to %ux%u\n",
-						HorizontalResolution, VerticalResolution, w, h);
-				#endif
-
-					PresentParameters.BackBufferWidth = w;
-					PresentParameters.BackBufferHeight = h;
-
-					Direct3D_DeviceLost();
-					return 0;
-				}
-
-				case WM_COMMAND:
-				{
-					if (LOWORD(wParam) != 0)
-						break;
-
-					if (PresentParameters.Windowed && IsWindowed)
-					{
-						IsWindowed = false;
-						last_width = HorizontalResolution;
-						last_height = VerticalResolution;
-
-						auto const& rect = screenbounds[screennum == 0 ? 0 : screennum - 1];
-
-						PresentParameters.Windowed         = false;
-						PresentParameters.BackBufferWidth  = rect.right - rect.left;
-						PresentParameters.BackBufferHeight = rect.bottom - rect.top;
-
-						GetWindowRect(a1, &last_rect);
-						last_style   = GetWindowLong(a1, GWL_STYLE);
-						last_exStyle = GetWindowLong(a1, GWL_EXSTYLE);
-						SetWindowLong(a1, GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
-
-						Direct3D_DeviceLost();
-					}
-					else
-					{
-						SetWindowLong(a1, GWL_STYLE, last_style);
-						auto width = last_rect.right - last_rect.left;
-						auto height = last_rect.bottom - last_rect.top;
-
-						if (width <= 0 || height <= 0)
-						{
-							last_rect = {};
-							last_rect.right = 640;
-							last_rect.bottom = 480;
-							AdjustWindowRectEx(&last_rect, last_style, false, last_exStyle);
-							width = last_rect.right - last_rect.left;
-							height = last_rect.bottom - last_rect.top;
-						}
-
-						PresentParameters.Windowed         = true;
-						PresentParameters.BackBufferWidth  = last_width;
-						PresentParameters.BackBufferHeight = last_height;
-
-						Direct3D_DeviceLost();
-						SetWindowPos(a1, HWND_NOTOPMOST, last_rect.left, last_rect.top, width, height, 0);
-						IsWindowed = true;
-					}
-
-					return 0;
-				}
+				return 0;
 			}
+
+			auto w = LOWORD(lParam);
+			auto h = HIWORD(lParam);
+
+			if (!w || !h)
+			{
+				break;
+			}
+
+			if (w == HorizontalResolution && h == VerticalResolution)
+			{
+				break;
+			}
+
+			PresentParameters.BackBufferWidth = w;
+			PresentParameters.BackBufferHeight = h;
+
+		#ifdef _DEBUG
+			PrintDebug("Changing resolution from %ux%u to %ux%u\n",
+				HorizontalResolution, VerticalResolution, w, h);
+		#endif
+
+			Direct3D_DeviceLost();
+			break;
 		}
 
-		return DefWindowProcA(a1, Msg, wParam, lParam);
+		case WM_COMMAND:
+		{
+			if (LOWORD(wParam) != 0)
+			{
+				break;
+			}
+
+			if (PresentParameters.Windowed && IsWindowed)
+			{
+				IsWindowed = false;
+				last_width = HorizontalResolution;
+				last_height = VerticalResolution;
+
+				auto const& rect = screenbounds[screennum == 0 ? 0 : screennum - 1];
+
+				PresentParameters.Windowed         = false;
+				PresentParameters.BackBufferWidth  = rect.right - rect.left;
+				PresentParameters.BackBufferHeight = rect.bottom - rect.top;
+
+				GetWindowRect(handle, &last_rect);
+				last_style = GetWindowLong(handle, GWL_STYLE);
+				last_exStyle = GetWindowLong(handle, GWL_EXSTYLE);
+				SetWindowLong(handle, GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
+
+				Direct3D_DeviceLost();
+			}
+			else
+			{
+				SetWindowLong(handle, GWL_STYLE, last_style);
+				auto width = last_rect.right - last_rect.left;
+				auto height = last_rect.bottom - last_rect.top;
+
+				if (width <= 0 || height <= 0)
+				{
+					last_rect = {};
+					last_rect.right = 640;
+					last_rect.bottom = 480;
+					AdjustWindowRectEx(&last_rect, last_style, false, last_exStyle);
+					width = last_rect.right - last_rect.left;
+					height = last_rect.bottom - last_rect.top;
+				}
+
+				PresentParameters.Windowed         = true;
+				PresentParameters.BackBufferWidth  = last_width;
+				PresentParameters.BackBufferHeight = last_height;
+
+				Direct3D_DeviceLost();
+				SetWindowPos(handle, HWND_NOTOPMOST, last_rect.left, last_rect.top, width, height, 0);
+				IsWindowed = true;
+			}
+
+			return 0;
+		}
 	}
 
-	return 1;
+	return DefWindowProcA(handle, Msg, wParam, lParam);
 }
 
 static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
