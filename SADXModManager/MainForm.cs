@@ -133,6 +133,8 @@ namespace SADXModManager
 			maintainWindowAspectRatioCheckBox.Checked = loaderini.MaintainWindowAspectRatio;
 			suppressEvent = false;
 
+			checkWindowResize.Checked = loaderini.ResizableWindow;
+
 			CheckForModUpdates();
 
 			// If we've checked for updates, save the modified
@@ -631,6 +633,7 @@ namespace SADXModManager
 			loaderini.WindowWidth               = (int)windowWidth.Value;
 			loaderini.WindowHeight              = (int)windowHeight.Value;
 			loaderini.MaintainWindowAspectRatio = maintainWindowAspectRatioCheckBox.Checked;
+			loaderini.ResizableWindow           = checkWindowResize.Checked;
 			loaderini.UpdateCheck               = checkUpdateStartup.Checked;
 			loaderini.ModUpdateCheck            = checkUpdateModsStartup.Checked;
 			loaderini.UpdateUnit                = (UpdateUnit)comboUpdateFrequency.SelectedIndex;

@@ -46,6 +46,7 @@ namespace SADXModManager
 		[DefaultValue(480)]
 		public int WindowHeight { get; set; }
 		public bool MaintainWindowAspectRatio { get; set; }
+		public bool ResizableWindow { get; set; }
 
 		[DefaultValue(true)]
 		public bool UpdateCheck { get; set; }

@@ -90,11 +90,12 @@
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.verifyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.forceUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.uninstallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.forceUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.checkWindowResize = new System.Windows.Forms.CheckBox();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
@@ -571,6 +572,7 @@
 			// 
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.checkWindowResize);
 			this.groupBox3.Controls.Add(this.checkVsync);
 			this.groupBox3.Controls.Add(this.maintainWindowAspectRatioCheckBox);
 			this.groupBox3.Controls.Add(this.windowWidth);
@@ -848,7 +850,7 @@
             this.toolStripMenuItem3,
             this.advancedToolStripMenuItem});
 			this.modContextMenu.Name = "modContextMenu";
-			this.modContextMenu.Size = new System.Drawing.Size(171, 170);
+			this.modContextMenu.Size = new System.Drawing.Size(171, 148);
 			// 
 			// openFolderToolStripMenuItem
 			// 
@@ -875,6 +877,13 @@
 			this.verifyToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.verifyToolStripMenuItem.Text = "Verify integrity";
 			this.verifyToolStripMenuItem.Click += new System.EventHandler(this.verifyToolStripMenuItem_Click);
+			// 
+			// forceUpdateToolStripMenuItem
+			// 
+			this.forceUpdateToolStripMenuItem.Name = "forceUpdateToolStripMenuItem";
+			this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+			this.forceUpdateToolStripMenuItem.Text = "Force update";
+			this.forceUpdateToolStripMenuItem.Click += new System.EventHandler(this.forceUpdateToolStripMenuItem_Click);
 			// 
 			// uninstallToolStripMenuItem
 			// 
@@ -903,12 +912,17 @@
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
 			// 
-			// forceUpdateToolStripMenuItem
+			// checkWindowResize
 			// 
-			this.forceUpdateToolStripMenuItem.Name = "forceUpdateToolStripMenuItem";
-			this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-			this.forceUpdateToolStripMenuItem.Text = "Force update";
-			this.forceUpdateToolStripMenuItem.Click += new System.EventHandler(this.forceUpdateToolStripMenuItem_Click);
+			this.checkWindowResize.AutoSize = true;
+			this.checkWindowResize.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.checkWindowResize.Location = new System.Drawing.Point(148, 141);
+			this.checkWindowResize.Name = "checkWindowResize";
+			this.checkWindowResize.Size = new System.Drawing.Size(120, 18);
+			this.checkWindowResize.TabIndex = 16;
+			this.checkWindowResize.Text = "Resizable Window";
+			this.toolTip1.SetToolTip(this.checkWindowResize, "Allows the window to be resized and dynamically adjusts resolution to match.");
+			this.checkWindowResize.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
@@ -1017,5 +1031,6 @@
 		private System.Windows.Forms.Button buttonCheckForUpdates;
 		private System.Windows.Forms.ToolStripMenuItem verifyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem forceUpdateToolStripMenuItem;
+		private System.Windows.Forms.CheckBox checkWindowResize;
 	}
 }
