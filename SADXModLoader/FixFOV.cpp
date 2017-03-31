@@ -13,7 +13,6 @@ static double fov_rads = 1.0f;
 static double fov_scale = 1.0;
 static float dummy;
 
-static const bool fill = false;
 static void DisplayVideoFrame_FixAspectRatio()
 {
 	// I would be using .sx and .sy (size), but those are always 640x480 no matter the video resolution.
@@ -22,7 +21,9 @@ static void DisplayVideoFrame_FixAspectRatio()
 	float video_resolution;
 	float screen_resolution;
 
-	if (!fill && HorizontalResolution > VerticalResolution || fill && HorizontalResolution < VerticalResolution)
+	// Fit to screen.
+	// TODO: configurable (fill, fit, stretch, etc)
+	if (HorizontalResolution > VerticalResolution)
 	{
 		video_resolution = (float)video_height;
 		screen_resolution = (float)VerticalResolution;
@@ -92,25 +93,26 @@ static void __declspec(naked) SetFOV()
 {
 	__asm
 	{
-		cmp		is_wide, 1
-		je		wide
+		cmp    is_wide, 1
+		je     wide
 
 		// default behavior:
+		// atan2(1.0, tan(hfov / 2) / aspect ratio)
 		fpatan
-		fadd	st, st
-		fstp	dword ptr[esp]
+		fadd   st, st
+		fstp   dword ptr[esp]
 
-		jmp		setfov_return
+		jmp    setfov_return
 
 	wide:
-		fstp	dword ptr[esp]
-		fstp	dword ptr[esp]
+		fstp   dword ptr[esp]
+		fstp   dword ptr[esp]
 
-		fld		fov_rads
-		fdiv	fov_scale
-		fstp	dword ptr[esp]
+		fld    fov_rads
+		fdiv   fov_scale
+		fstp   dword ptr[esp]
 
-		jmp		setfov_return
+		jmp    setfov_return
 	}
 }
 
@@ -120,14 +122,14 @@ static void __declspec(naked) dummyfstp()
 {
 	__asm
 	{
-		cmp		is_wide, 1
-		je		wide
-		fstp	dword ptr wtf_ptr
-		jmp		dummyfstp_return
+		cmp  is_wide, 1
+		je   wide
+		fstp dword ptr wtf_ptr
+		jmp  dummyfstp_return
 
 	wide:
-		fstp	dummy
-		jmp		dummyfstp_return
+		fstp dummy
+		jmp  dummyfstp_return
 	}
 }
 
@@ -146,7 +148,7 @@ void ConfigureFOV()
 {
 	WriteJump(SetupScreen, SetupScreen_r);
 
-	// Taking advantage of a nullsub call.
+	// Taking advantage of a nullsub call to perform aspect-correct FMV scaling.
 	WriteCall((void*)0x00513A88, DisplayVideoFrame_FixAspectRatio);
 
 	// Stops the Pause Menu from using horizontal stretch in place of vertical stretch in coordinate calculation
@@ -165,14 +167,17 @@ void ConfigureFOV()
 
 	CheckAspectRatio();
 
-	fov_rads = 0.96712852;	// 55.412382 degrees
+	fov_rads = 0.96712852; // 55.412382 degrees
 	fov_bams = NJM_RAD_ANG(fov_rads);
 
-	// Code patches
+	// Hijacks some code before a call to D3DXMatrixPerpsectiveFovRH to correct the vertical field of view.
 	WriteJump((void*)0x0079124A, SetFOV);
-	WriteJump((void*)0x00781523, dummyfstp); // Dirty hack to disable a write to ClippingRelated and keep the floating point stack balanced.
-	WriteData((Angle**)0x0040872B, &last_bams); // Fixes a case of direct access to HorizontalFOV_BAMS
-	WriteData((Angle**)0x00402F01, &last_bams); // Changes return value of GetHorizontalFOV_BAMS
+	// Dirty hack to disable a write to _nj_screen_.dist and keep the floating point stack balanced.
+	WriteJump((void*)0x00781523, dummyfstp);
+	// Fixes a case of direct access to HorizontalFOV_BAMS
+	WriteData((Angle**)0x0040872B, &last_bams);
+	// Changes return value of GetHorizontalFOV_BAMS
+	WriteData((Angle**)0x00402F01, &last_bams);
 
 	njSetPerspective(bams_default);
 }
