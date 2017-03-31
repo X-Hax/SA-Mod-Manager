@@ -861,11 +861,10 @@ namespace SADXModManager
 
 		private void customWindowSizeCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
-			if (maintainWindowAspectRatioCheckBox.Enabled = windowHeight.Enabled = customWindowSizeCheckBox.Checked)
-				windowWidth.Enabled = !maintainWindowAspectRatioCheckBox.Checked;
-			else
-				windowWidth.Enabled = false;
-
+			maintainWindowAspectRatioCheckBox.Enabled = customWindowSizeCheckBox.Checked;
+			windowHeight.Enabled = customWindowSizeCheckBox.Checked;
+			checkWindowResize.Enabled = !customWindowSizeCheckBox.Checked;
+			windowWidth.Enabled = customWindowSizeCheckBox.Checked && !maintainWindowAspectRatioCheckBox.Checked;
 		}
 
 		private void maintainWindowAspectRatioCheckBox_CheckedChanged(object sender, EventArgs e)

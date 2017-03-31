@@ -207,17 +207,19 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 	return result;
 }
 
+enum windowmodes { windowed, fullscreen };
 struct windowsize { int x; int y; int width; int height; };
+struct windowdata { int x; int y; int width; int height; DWORD style; DWORD exStyle; };
 
-struct windowdata { int x; int y; int width; int height; DWORD style; DWORD extendedstyle; };
-
+// Used for borderless windowed mode.
+// Defines the size of the outer-window which wraps the game window and draws the background.
 static windowdata outerSizes[] = {
 	{ CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, 0 }, // windowed
 	{ 0, 0, CW_USEDEFAULT, CW_USEDEFAULT, WS_POPUP | WS_VISIBLE, WS_EX_APPWINDOW } // fullscreen
 };
 
-enum windowmodes { windowed, fullscreen };
-
+// Used for borderless windowed mode.
+// Defines the size of the inner-window on which the game is rendered.
 static windowsize innerSizes[2] = {};
 
 static ACCEL accelerators[] = {
@@ -265,82 +267,6 @@ static int customWindowHeight           = 480;
 static bool vsync                       = false;
 
 DataPointer(HWND, hWnd, 0x3D0FD30);
-static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	switch (uMsg)
-	{
-		case WM_CLOSE:
-			// we also need to let SADX do cleanup
-			SendMessage(hWnd, WM_CLOSE, wParam, lParam);
-			// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
-			return 0;
-
-		case WM_ERASEBKGND:
-		{
-			if (backgroundImage == nullptr)
-			{
-				break;
-			}
-
-			Gdiplus::Graphics gfx((HDC)wParam);
-			gfx.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
-
-			RECT rect;
-			GetClientRect(wrapper, &rect);
-
-			gfx.DrawImage(backgroundImage, 0, 0, rect.right - rect.left, rect.bottom - rect.top);
-			return 0;
-		}
-
-		case WM_COMMAND:
-		{
-			if (LOWORD(wParam) != 0)
-			{
-				break;
-			}
-
-			switchingWindowMode = true;
-			if (windowMode == windowed)
-			{
-				RECT rect;
-				GetWindowRect(wrapper, &rect);
-				outerSizes[windowed].x = rect.left;
-				outerSizes[windowed].y = rect.top;
-			}
-			windowMode = windowMode == windowed ? fullscreen : windowed;
-			windowsize *size = &innerSizes[windowMode];
-			SetWindowPos(hWnd, nullptr, size->x, size->y, size->width, size->height, 0);
-			windowdata *data = &outerSizes[windowMode];
-			SetWindowLong(accelWindow, GWL_STYLE, data->style);
-			SetWindowLong(accelWindow, GWL_EXSTYLE, data->extendedstyle);
-			SetWindowPos(accelWindow, nullptr, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
-			UpdateWindow(accelWindow);
-			switchingWindowMode = false;
-			return 0;
-		}
-
-		case WM_ACTIVATEAPP:
-			if (!switchingWindowMode)
-			{
-				WndProc_B(hWnd, uMsg, wParam, lParam);
-			}
-
-			if (windowMode == windowed)
-			{
-				while (ShowCursor(TRUE) < 0);
-			}
-			else
-			{
-				while (ShowCursor(FALSE) > 0);
-			}
-
-		default:
-			break;
-	}
-
-	// alternatively we can return SendMe
-	return DefWindowProc(wrapper, uMsg, wParam, lParam);
-}
 
 BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
 {
@@ -472,17 +398,20 @@ static void Direct3D_DeviceLost()
 				{
 					default:
 					case D3DERR_INVALIDCALL:
-						mb_result = MessageBox(hWnd, L"The following error occurred while trying to reset DirectX:\nD3DERR_INVALIDCALL\n\nPress Cancel to exit, or press Retry to try again.",
+						mb_result = MessageBox(hWnd,
+							L"The following error occurred while trying to reset DirectX:\nD3DERR_INVALIDCALL\n\nPress Cancel to exit, or press Retry to try again.",
 							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
 						break;
 
 					case D3DERR_OUTOFVIDEOMEMORY:
-						mb_result = MessageBox(hWnd, L"The following error occurred while trying to reset DirectX:\nD3DERR_OUTOFVIDEOMEMORY\n\nPress Cancel to exit, or press Retry to try again.",
+						mb_result = MessageBox(hWnd,
+							L"The following error occurred while trying to reset DirectX:\nD3DERR_OUTOFVIDEOMEMORY\n\nPress Cancel to exit, or press Retry to try again.",
 							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
 						break;
 
 					case E_OUTOFMEMORY:
-						mb_result = MessageBox(hWnd, L"The following error occurred while trying to reset DirectX:\nE_OUTOFMEMORY\n\nPress Cancel to exit, or press Retry to try again.",
+						mb_result = MessageBox(hWnd,
+							L"The following error occurred while trying to reset DirectX:\nE_OUTOFMEMORY\n\nPress Cancel to exit, or press Retry to try again.",
 							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
 						break;
 				}
@@ -516,7 +445,122 @@ static Uint32 last_height  = 0;
 static DWORD  last_style   = 0;
 static DWORD  last_exStyle = 0;
 
-static LRESULT __stdcall WndProc_r(HWND handle, UINT Msg, WPARAM wParam, LPARAM lParam)
+static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+		case WM_CLOSE:
+			// we also need to let SADX do cleanup
+			SendMessage(hWnd, WM_CLOSE, wParam, lParam);
+			// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
+			return 0;
+
+		case WM_ERASEBKGND:
+		{
+			if (backgroundImage == nullptr || windowResize)
+			{
+				break;
+			}
+
+			Gdiplus::Graphics gfx((HDC)wParam);
+			gfx.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
+
+			RECT rect;
+			GetClientRect(wrapper, &rect);
+
+			auto w = rect.right - rect.left;
+			auto h = rect.bottom - rect.top;
+
+			if (w == innerSizes[windowMode].width && h == innerSizes[windowMode].height)
+			{
+				break;
+			}
+			
+			gfx.DrawImage(backgroundImage, 0, 0, w, h);
+			return 0;
+		}
+
+		case WM_SIZE:
+		{
+			auto& inner = innerSizes[windowMode];
+
+			if (windowResize)
+			{
+				inner.x      = 0;
+				inner.y      = 0;
+				inner.width  = LOWORD(lParam);
+				inner.height = HIWORD(lParam);
+			}
+
+			// update the inner window (game view)
+			SetWindowPos(hWnd, HWND_TOP, inner.x, inner.y, inner.width, inner.height, 0);
+			break;
+		}
+
+		case WM_COMMAND:
+		{
+			if (LOWORD(wParam) != 0)
+			{
+				break;
+			}
+
+			switchingWindowMode = true;
+
+			if (windowMode == windowed)
+			{
+				if (!(GetWindowLong(accelWindow, GWL_STYLE) & WS_MAXIMIZE))
+				{
+					RECT rect;
+					GetWindowRect(wrapper, &rect);
+					outerSizes[windowMode].x = rect.left;
+					outerSizes[windowMode].y = rect.top;
+				}
+				else
+				{
+					if (outerSizes[windowMode].x == CW_USEDEFAULT || outerSizes[windowMode].y == CW_USEDEFAULT)
+					{
+						outerSizes[windowMode].x = 0;
+						outerSizes[windowMode].y = 0;
+					}
+				}
+			}
+
+			windowMode = windowMode == windowed ? fullscreen : windowed;
+			
+			// update outer window (draws background)
+			auto& outer = outerSizes[windowMode];
+			SetWindowLong(accelWindow, GWL_STYLE, outer.style);
+			SetWindowLong(accelWindow, GWL_EXSTYLE, outer.exStyle);
+			SetWindowPos(accelWindow, HWND_NOTOPMOST, outer.x, outer.y, outer.width, outer.height, SWP_FRAMECHANGED);
+
+			switchingWindowMode = false;
+			return 0;
+		}
+
+		case WM_ACTIVATEAPP:
+			if (!switchingWindowMode)
+			{
+				WndProc_B(hWnd, uMsg, wParam, lParam);
+			}
+
+			if (windowMode == windowed)
+			{
+				while (ShowCursor(TRUE) < 0);
+			}
+			else
+			{
+				while (ShowCursor(FALSE) > 0);
+			}
+
+		default:
+			break;
+	}
+
+	// alternatively we can return SendMe
+	return DefWindowProc(wrapper, uMsg, wParam, lParam);
+}
+
+static LRESULT __stdcall WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (Msg)
 	{
@@ -529,6 +573,11 @@ static LRESULT __stdcall WndProc_r(HWND handle, UINT Msg, WPARAM wParam, LPARAM 
 
 		case WM_SIZE:
 		{
+			if (customWindowSize)
+			{
+				break;
+			}
+
 			if (!IsWindowed || Direct3D_Device == nullptr)
 			{
 				return 0;
@@ -622,7 +671,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
 
 	v8.style         = 0;
-	v8.lpfnWndProc   = (WNDPROC)WndProc_r;
+	v8.lpfnWndProc   = (WNDPROC)(windowResize ? WndProc_Resizable : WndProc);
 	v8.cbClsExtra    = 0;
 	v8.cbWndExtra    = 0;
 	v8.hInstance     = hInstance;
@@ -659,7 +708,8 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 	if (borderlessWindow)
 	{
-		AdjustWindowRectEx(&windowRect, WS_CAPTION | WS_SYSMENU, false, 0);
+		AdjustWindowRectEx(&windowRect, WS_CAPTION | WS_SYSMENU
+			| (windowResize ? WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX : 0), false, 0);
 		int screenX, screenY, screenW, screenH;
 		if (screenNum > 0)
 		{
@@ -682,6 +732,11 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 		outerSizes[windowed].width = windowRect.right - windowRect.left;
 		outerSizes[windowed].height = windowRect.bottom - windowRect.top;
+
+		if (windowResize)
+		{
+			outerSizes[windowed].style |= WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX;
+		}
 
 		if (!IsWindowed)
 		{
@@ -747,13 +802,13 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		if (RegisterClass(&w) == 0)
 			return;
 
-		windowdata *data = &outerSizes[windowMode];
+		auto& outerSize = outerSizes[windowMode];
 
-		accelWindow = CreateWindowEx(data->extendedstyle,
+		accelWindow = CreateWindowEx(outerSize.exStyle,
 			L"WrapperWindow",
 			L"SonicAdventureDXPC",
-			data->style,
-			data->x, data->y, data->width, data->height,
+			outerSize.style,
+			outerSize.x, outerSize.y, outerSize.width, outerSize.height,
 			nullptr, nullptr, hInstance, nullptr);
 
 		if (accelWindow == nullptr)
@@ -761,15 +816,18 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 		accelTable = CreateAcceleratorTable(arrayptrandlength(accelerators));
 
-		windowsize *size = &innerSizes[windowMode];
+		auto& innerSize = innerSizes[windowMode];
 
 		hWnd = CreateWindowExA(0, GetWindowClassName(), GetWindowClassName(), WS_CHILD | WS_VISIBLE,
-			size->x, size->y, size->width, size->height, accelWindow, nullptr, hInstance, nullptr);
+			innerSize.x, innerSize.y, innerSize.width, innerSize.height, accelWindow, nullptr, hInstance, nullptr);
+
 		SetFocus(hWnd);
 		ShowWindow(accelWindow, nCmdShow);
 		UpdateWindow(accelWindow);
 		SetForegroundWindow(accelWindow);
+
 		IsWindowed = 1;
+
 		WriteJump((void *)HandleWindowMessages, (void *)HandleWindowMessages_r);
 		WriteData((void *)0x402C61, wndpatch);
 	}
@@ -2278,11 +2336,11 @@ static void __cdecl InitMods(void)
 
 	borderlessWindow   = settings->getBool("WindowedFullscreen");
 	scaleScreen        = settings->getBool("StretchFullscreen", true);
-	windowResize       = settings->getBool("ResizableWindow");
 	screenNum          = settings->getInt("ScreenNum", 1);
 	customWindowSize   = settings->getBool("CustomWindowSize");
 	customWindowWidth  = settings->getInt("WindowWidth", 640);
 	customWindowHeight = settings->getInt("WindowHeight", 480);
+	windowResize       = settings->getBool("ResizableWindow") && !customWindowSize;
 
 	if (!borderlessWindow)
 	{
