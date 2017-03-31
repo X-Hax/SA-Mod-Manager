@@ -211,23 +211,23 @@ struct windowsize { int x; int y; int width; int height; };
 
 struct windowdata { int x; int y; int width; int height; DWORD style; DWORD extendedstyle; };
 
-static windowdata windowsizes[] = {
+static windowdata outerSizes[] = {
 	{ CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, 0 }, // windowed
 	{ 0, 0, CW_USEDEFAULT, CW_USEDEFAULT, WS_POPUP | WS_VISIBLE, WS_EX_APPWINDOW } // fullscreen
 };
 
 enum windowmodes { windowed, fullscreen };
 
-static windowsize innersizes[2] = {};
+static windowsize innerSizes[2] = {};
 
 static ACCEL accelerators[] = {
 	{ FALT | FVIRTKEY, VK_RETURN, 0 }
 };
 
 static WNDCLASS outerWindowClass = {};
-static HWND accel_window         = nullptr;
-static windowmodes windowmode    = windowmodes::windowed;
-static HACCEL accel_table        = nullptr;
+static HWND accelWindow          = nullptr;
+static windowmodes windowMode    = windowmodes::windowed;
+static HACCEL accelTable         = nullptr;
 
 DataPointer(int, dword_3D08534, 0x3D08534);
 static void __cdecl HandleWindowMessages_r()
@@ -238,7 +238,7 @@ static void __cdecl HandleWindowMessages_r()
 	{
 		do
 		{
-			if (!TranslateAccelerator(accel_window, accel_table, &Msg))
+			if (!TranslateAccelerator(accelWindow, accelTable, &Msg))
 			{
 				TranslateMessage(&Msg);
 				DispatchMessageA(&Msg);
@@ -252,10 +252,19 @@ static void __cdecl HandleWindowMessages_r()
 	}
 }
 
-static Gdiplus::Bitmap *bgimg;
-static bool switchingwindowmode = false;
+static vector<RECT> screenBounds;
+static Gdiplus::Bitmap* backgroundImage = nullptr;
+static bool switchingWindowMode         = false;
+static bool borderlessWindow            = false;
+static bool scaleScreen                 = true;
+static bool windowResize                = false;
+static unsigned int screenNum           = 1;
+static bool customWindowSize            = false;
+static int customWindowWidth            = 640;
+static int customWindowHeight           = 480;
+static bool vsync                       = false;
+
 DataPointer(HWND, hWnd, 0x3D0FD30);
-StdcallFunctionPointer(LRESULT, sub_401900, (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam), 0x401900);
 static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -266,40 +275,40 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
 			return 0;
 		case WM_ERASEBKGND:
-			if (bgimg != nullptr)
+			if (backgroundImage != nullptr)
 			{
 				Gdiplus::Graphics gfx((HDC)wParam);
 				gfx.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
-				gfx.DrawImage(bgimg, 0, 0, windowsizes[windowmode].width, windowsizes[windowmode].height);
+				gfx.DrawImage(backgroundImage, 0, 0, outerSizes[windowMode].width, outerSizes[windowMode].height);
 				return 0;
 			}
 		case WM_COMMAND:
 			if (LOWORD(wParam) == 0)
 			{
-				switchingwindowmode = true;
-				if (windowmode == windowed)
+				switchingWindowMode = true;
+				if (windowMode == windowed)
 				{
 					RECT rect;
 					GetWindowRect(wrapper, &rect);
-					windowsizes[windowed].x = rect.left;
-					windowsizes[windowed].y = rect.top;
+					outerSizes[windowed].x = rect.left;
+					outerSizes[windowed].y = rect.top;
 				}
-				windowmode = windowmode == windowed ? fullscreen : windowed;
-				windowsize *size = &innersizes[windowmode];
+				windowMode = windowMode == windowed ? fullscreen : windowed;
+				windowsize *size = &innerSizes[windowMode];
 				SetWindowPos(hWnd, nullptr, size->x, size->y, size->width, size->height, 0);
-				windowdata *data = &windowsizes[windowmode];
-				SetWindowLong(accel_window, GWL_STYLE, data->style);
-				SetWindowLong(accel_window, GWL_EXSTYLE, data->extendedstyle);
-				SetWindowPos(accel_window, nullptr, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
-				UpdateWindow(accel_window);
-				switchingwindowmode = false;
+				windowdata *data = &outerSizes[windowMode];
+				SetWindowLong(accelWindow, GWL_STYLE, data->style);
+				SetWindowLong(accelWindow, GWL_EXSTYLE, data->extendedstyle);
+				SetWindowPos(accelWindow, nullptr, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
+				UpdateWindow(accelWindow);
+				switchingWindowMode = false;
 				return 0;
 			}
 			break;
 		case WM_ACTIVATEAPP:
-			if (!switchingwindowmode)
-				sub_401900(hWnd, uMsg, wParam, lParam);
-			if (windowmode == windowed)
+			if (!switchingWindowMode)
+				WndProc_B(hWnd, uMsg, wParam, lParam);
+			if (windowMode == windowed)
 			{
 				while (ShowCursor(TRUE) < 0);
 			}
@@ -315,23 +324,14 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 	/* unreachable */ return 0;
 }
 
-static vector<RECT> screenbounds;
-static bool windowedfullscreen = false;
-static bool stretchfullscreen  = true;
-static unsigned int screennum  = 1;
-static bool customwindowsize   = false;
-static int customwindowwidth   = 640;
-static int customwindowheight  = 480;
-static bool vsync              = false;
-
 BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
 {
-	screenbounds.push_back(*lprcMonitor);
+	screenBounds.push_back(*lprcMonitor);
 	return TRUE;
 }
 
 static uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
-static int curscrnsz[2];
+static int currentScreenSize[2];
 
 DataPointer(D3DPRESENT_PARAMETERS, PresentParameters, 0x03D0FDC0);
 DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x03D12780);
@@ -486,10 +486,10 @@ static void Direct3D_DeviceLost()
 
 static void __cdecl Direct3D_Present_r()
 {
-	if (Direct3D_Device->Present(nullptr, nullptr, nullptr, nullptr) != D3DERR_DEVICELOST)
-		return;
-
-	Direct3D_DeviceLost();
+	if (Direct3D_Device->Present(nullptr, nullptr, nullptr, nullptr) == D3DERR_DEVICELOST)
+	{
+		Direct3D_DeviceLost();
+	}
 }
 
 static RECT   last_rect    = {};
@@ -554,7 +554,7 @@ static LRESULT __stdcall WndProc_r(HWND handle, UINT Msg, WPARAM wParam, LPARAM 
 				last_width = HorizontalResolution;
 				last_height = VerticalResolution;
 
-				auto const& rect = screenbounds[screennum == 0 ? 0 : screennum - 1];
+				auto const& rect = screenBounds[screenNum == 0 ? 0 : screenNum - 1];
 
 				PresentParameters.Windowed         = false;
 				PresentParameters.BackBufferWidth  = rect.right - rect.left;
@@ -617,104 +617,104 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 	if (!RegisterClassA(&v8))
 		return;
 
-	RECT wndsz = {};
-	if (customwindowsize)
+	RECT windowRect = {};
+	if (customWindowSize)
 	{
-		wndsz.right = customwindowwidth;
-		wndsz.bottom = customwindowheight;
+		windowRect.right = customWindowWidth;
+		windowRect.bottom = customWindowHeight;
 	}
 	else
 	{
-		wndsz.right = HorizontalResolution;
-		wndsz.bottom = VerticalResolution;
+		windowRect.right = HorizontalResolution;
+		windowRect.bottom = VerticalResolution;
 	}
 
-	if (windowedfullscreen || IsWindowed)
+	if (borderlessWindow || IsWindowed)
 	{
-		curscrnsz[0] = GetSystemMetrics(SM_CXSCREEN);
-		curscrnsz[1] = GetSystemMetrics(SM_CYSCREEN);
-		WriteData((int **)0x79426E, &curscrnsz[0]);
-		WriteData((int **)0x79427A, &curscrnsz[1]);
+		currentScreenSize[0] = GetSystemMetrics(SM_CXSCREEN);
+		currentScreenSize[1] = GetSystemMetrics(SM_CYSCREEN);
+		WriteData((int **)0x79426E, &currentScreenSize[0]);
+		WriteData((int **)0x79427A, &currentScreenSize[1]);
 	}
 
 	EnumDisplayMonitors(nullptr, nullptr, GetMonitorSize, 0);
 
-	if (windowedfullscreen)
+	if (borderlessWindow)
 	{
-		AdjustWindowRectEx(&wndsz, WS_CAPTION | WS_SYSMENU, false, 0);
-		int scrnx, scrny, scrnw, scrnh;
-		if (screennum > 0)
+		AdjustWindowRectEx(&windowRect, WS_CAPTION | WS_SYSMENU, false, 0);
+		int screenX, screenY, screenW, screenH;
+		if (screenNum > 0)
 		{
-			if (screenbounds.size() < screennum)
-				screennum = 1;
+			if (screenBounds.size() < screenNum)
+				screenNum = 1;
 
-			RECT scrnsz = screenbounds[screennum - 1];
-			scrnx = scrnsz.left;
-			scrny = scrnsz.top;
-			scrnw = scrnsz.right - scrnsz.left;
-			scrnh = scrnsz.bottom - scrnsz.top;
+			RECT screenSize = screenBounds[screenNum - 1];
+			screenX = screenSize.left;
+			screenY = screenSize.top;
+			screenW = screenSize.right - screenSize.left;
+			screenH = screenSize.bottom - screenSize.top;
 		}
 		else
 		{
-			scrnx = GetSystemMetrics(SM_XVIRTUALSCREEN);
-			scrny = GetSystemMetrics(SM_YVIRTUALSCREEN);
-			scrnw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-			scrnh = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+			screenX = GetSystemMetrics(SM_XVIRTUALSCREEN);
+			screenY = GetSystemMetrics(SM_YVIRTUALSCREEN);
+			screenW = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+			screenH = GetSystemMetrics(SM_CYVIRTUALSCREEN);
 		}
 
-		windowsizes[windowed].width = wndsz.right - wndsz.left;
-		windowsizes[windowed].height = wndsz.bottom - wndsz.top;
+		outerSizes[windowed].width = windowRect.right - windowRect.left;
+		outerSizes[windowed].height = windowRect.bottom - windowRect.top;
 
 		if (!IsWindowed)
 		{
-			windowsizes[windowed].x = scrnx + ((scrnw - windowsizes[windowed].width) / 2);
-			windowsizes[windowed].y = scrny + ((scrnh - windowsizes[windowed].height) / 2);
+			outerSizes[windowed].x = screenX + ((screenW - outerSizes[windowed].width) / 2);
+			outerSizes[windowed].y = screenY + ((screenH - outerSizes[windowed].height) / 2);
 		}
 
-		windowsizes[fullscreen].x = scrnx;
-		windowsizes[fullscreen].y = scrny;
-		windowsizes[fullscreen].width = scrnw;
-		windowsizes[fullscreen].height = scrnh;
+		outerSizes[fullscreen].x = screenX;
+		outerSizes[fullscreen].y = screenY;
+		outerSizes[fullscreen].width = screenW;
+		outerSizes[fullscreen].height = screenH;
 
-		if (customwindowsize)
+		if (customWindowSize)
 		{
-			float num = min((float)customwindowwidth / (float)HorizontalResolution, (float)customwindowheight / (float)VerticalResolution);
-			innersizes[windowed].width = (int)((float)HorizontalResolution * num);
-			innersizes[windowed].height = (int)((float)VerticalResolution * num);
-			innersizes[windowed].x = (customwindowwidth - innersizes[windowed].width) / 2;
-			innersizes[windowed].y = (customwindowheight - innersizes[windowed].height) / 2;
+			float num = min((float)customWindowWidth / (float)HorizontalResolution, (float)customWindowHeight / (float)VerticalResolution);
+			innerSizes[windowed].width = (int)((float)HorizontalResolution * num);
+			innerSizes[windowed].height = (int)((float)VerticalResolution * num);
+			innerSizes[windowed].x = (customWindowWidth - innerSizes[windowed].width) / 2;
+			innerSizes[windowed].y = (customWindowHeight - innerSizes[windowed].height) / 2;
 		}
 		else
 		{
-			innersizes[windowed].width = HorizontalResolution;
-			innersizes[windowed].height = VerticalResolution;
-			innersizes[windowed].x = 0;
-			innersizes[windowed].y = 0;
+			innerSizes[windowed].width = HorizontalResolution;
+			innerSizes[windowed].height = VerticalResolution;
+			innerSizes[windowed].x = 0;
+			innerSizes[windowed].y = 0;
 		}
 
-		if (stretchfullscreen)
+		if (scaleScreen)
 		{
-			float num = min((float)scrnw / (float)HorizontalResolution, (float)scrnh / (float)VerticalResolution);
-			innersizes[fullscreen].width = (int)((float)HorizontalResolution * num);
-			innersizes[fullscreen].height = (int)((float)VerticalResolution * num);
+			float num = min((float)screenW / (float)HorizontalResolution, (float)screenH / (float)VerticalResolution);
+			innerSizes[fullscreen].width = (int)((float)HorizontalResolution * num);
+			innerSizes[fullscreen].height = (int)((float)VerticalResolution * num);
 		}
 		else
 		{
-			innersizes[fullscreen].width = HorizontalResolution;
-			innersizes[fullscreen].height = VerticalResolution;
+			innerSizes[fullscreen].width = HorizontalResolution;
+			innerSizes[fullscreen].height = VerticalResolution;
 		}
 
-		innersizes[fullscreen].x = (scrnw - innersizes[fullscreen].width) / 2;
-		innersizes[fullscreen].y = (scrnh - innersizes[fullscreen].height) / 2;
+		innerSizes[fullscreen].x = (screenW - innerSizes[fullscreen].width) / 2;
+		innerSizes[fullscreen].y = (screenH - innerSizes[fullscreen].height) / 2;
 
-		windowmode = IsWindowed ? windowed : fullscreen;
+		windowMode = IsWindowed ? windowed : fullscreen;
 
 		if (FileExists(L"mods\\Border.png"))
 		{
 			Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 			ULONG_PTR gdiplusToken;
 			Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
-			bgimg = Gdiplus::Bitmap::FromFile(L"mods\\Border.png");
+			backgroundImage = Gdiplus::Bitmap::FromFile(L"mods\\Border.png");
 		}
 
 		WNDCLASS w;
@@ -729,28 +729,28 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		if (RegisterClass(&w) == 0)
 			return;
 
-		windowdata *data = &windowsizes[windowmode];
+		windowdata *data = &outerSizes[windowMode];
 
-		accel_window = CreateWindowEx(data->extendedstyle,
+		accelWindow = CreateWindowEx(data->extendedstyle,
 			L"WrapperWindow",
 			L"SonicAdventureDXPC",
 			data->style,
 			data->x, data->y, data->width, data->height,
 			nullptr, nullptr, hInstance, nullptr);
 
-		if (accel_window == nullptr)
+		if (accelWindow == nullptr)
 			return;
 
-		accel_table = CreateAcceleratorTable(arrayptrandlength(accelerators));
+		accelTable = CreateAcceleratorTable(arrayptrandlength(accelerators));
 
-		windowsize *size = &innersizes[windowmode];
+		windowsize *size = &innerSizes[windowMode];
 
 		hWnd = CreateWindowExA(0, GetWindowClassName(), GetWindowClassName(), WS_CHILD | WS_VISIBLE,
-			size->x, size->y, size->width, size->height, accel_window, nullptr, hInstance, nullptr);
+			size->x, size->y, size->width, size->height, accelWindow, nullptr, hInstance, nullptr);
 		SetFocus(hWnd);
-		ShowWindow(accel_window, nCmdShow);
-		UpdateWindow(accel_window);
-		SetForegroundWindow(accel_window);
+		ShowWindow(accelWindow, nCmdShow);
+		UpdateWindow(accelWindow);
+		SetForegroundWindow(accelWindow);
 		IsWindowed = 1;
 		WriteJump((void *)HandleWindowMessages, (void *)HandleWindowMessages_r);
 		WriteData((void *)0x402C61, wndpatch);
@@ -762,8 +762,13 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 		if (IsWindowed)
 		{
-			dwStyle = WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX;
+			dwStyle = WS_CAPTION | WS_SYSMENU;
 			dwExStyle = 0;
+
+			if (windowResize)
+			{
+				dwStyle |= WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX;
+			}
 		}
 		else
 		{
@@ -771,19 +776,19 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 			dwExStyle = WS_EX_TOPMOST | WS_EX_TOOLWINDOW;
 		}
 
-		AdjustWindowRectEx(&wndsz, dwStyle, false, dwExStyle);
+		AdjustWindowRectEx(&windowRect, dwStyle, false, dwExStyle);
 		hWnd = CreateWindowExA(dwExStyle, GetWindowClassName(), GetWindowClassName(), dwStyle, CW_USEDEFAULT, CW_USEDEFAULT,
-			wndsz.right - wndsz.left, wndsz.bottom - wndsz.top, nullptr, nullptr, hInstance, nullptr);
-		accel_table = CreateAcceleratorTable(arrayptrandlength(accelerators));
+			windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr, hInstance, nullptr);
+		accelTable = CreateAcceleratorTable(arrayptrandlength(accelerators));
 		ShowWindow(hWnd, nCmdShow);
 		UpdateWindow(hWnd);
 		SetForegroundWindow(hWnd);
 		WriteJump((void *)0x789BD0, (void *)HandleWindowMessages_r);
-		accel_window = hWnd;
+		accelWindow = hWnd;
 	}
 }
 
-static __declspec(naked) void sub_789E50_r()
+static __declspec(naked) void CreateSADXWindow_asm()
 {
 	__asm
 	{
@@ -2228,7 +2233,7 @@ static void __cdecl InitMods(void)
 #endif /* MODLOADER_GIT_VERSION */
 	}
 
-	WriteJump((void *)0x789E50, sub_789E50_r); // override window creation function
+	WriteJump((void *)0x789E50, CreateSADXWindow_asm); // override window creation function
 	// Other various settings.
 	if (settings->getBool("DisableCDCheck"))
 		WriteJump((void *)0x402621, (void *)0x402664);
@@ -2253,21 +2258,22 @@ static void __cdecl InitMods(void)
 
 	ConfigureFOV();
 
-	windowedfullscreen = settings->getBool("WindowedFullscreen");
-	stretchfullscreen = settings->getBool("StretchFullscreen", true);
-	screennum = settings->getInt("ScreenNum", 1);
-	customwindowsize = settings->getBool("CustomWindowSize");
-	customwindowwidth = settings->getInt("WindowWidth", 640);
-	customwindowheight = settings->getInt("WindowHeight", 480);
+	borderlessWindow   = settings->getBool("WindowedFullscreen");
+	scaleScreen        = settings->getBool("StretchFullscreen", true);
+	windowResize       = settings->getBool("ResizableWindow");
+	screenNum          = settings->getInt("ScreenNum", 1);
+	customWindowSize   = settings->getBool("CustomWindowSize");
+	customWindowWidth  = settings->getInt("WindowWidth", 640);
+	customWindowHeight = settings->getInt("WindowHeight", 480);
 
-	if (!windowedfullscreen)
+	if (!borderlessWindow)
 	{
 		vector<uint8_t> nop(5, 0x90);
 		WriteData((void*)0x007943D0, nop.data(), nop.size());
 
 		// SADX automatically corrects values greater than the number of adapters available.
 		// DisplayAdapter is unsigned, so -1 will be greater than the number of adapters, and it will reset.
-		DisplayAdapter = screennum - 1;
+		DisplayAdapter = screenNum - 1;
 	}
 
 	if (!settings->getBool("PauseWhenInactive", true))
