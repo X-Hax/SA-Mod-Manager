@@ -439,12 +439,6 @@ static void __cdecl Direct3D_Present_r()
 	}
 }
 
-static RECT   last_rect    = {};
-static Uint32 last_width   = 0;
-static Uint32 last_height  = 0;
-static DWORD  last_style   = 0;
-static DWORD  last_exStyle = 0;
-
 static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -554,6 +548,48 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 	return DefWindowProc(wrapper, uMsg, wParam, lParam);
 }
 
+static RECT   last_rect    = {};
+static Uint32 last_width   = 0;
+static Uint32 last_height  = 0;
+static DWORD  last_style   = 0;
+static DWORD  last_exStyle = 0;
+
+static void EnableFullScreen(HWND handle)
+{
+	IsWindowed = false;
+	last_width = HorizontalResolution;
+	last_height = VerticalResolution;
+
+	GetWindowRect(handle, &last_rect);
+	last_style = GetWindowLong(handle, GWL_STYLE);
+	last_exStyle = GetWindowLong(handle, GWL_EXSTYLE);
+	SetWindowLong(handle, GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
+	while (ShowCursor(FALSE) > 0);
+}
+
+static void EnableWindowedMode(HWND handle)
+{
+	SetWindowLong(handle, GWL_STYLE, last_style);
+	SetWindowLong(handle, GWL_EXSTYLE, last_exStyle);
+
+	auto width = last_rect.right - last_rect.left;
+	auto height = last_rect.bottom - last_rect.top;
+
+	if (width <= 0 || height <= 0)
+	{
+		last_rect = {};
+		last_rect.right = 640;
+		last_rect.bottom = 480;
+		AdjustWindowRectEx(&last_rect, last_style, false, last_exStyle);
+		width = last_rect.right - last_rect.left;
+		height = last_rect.bottom - last_rect.top;
+	}
+
+	SetWindowPos(handle, HWND_NOTOPMOST, last_rect.left, last_rect.top, width, height, 0);
+	IsWindowed = true;
+	while (ShowCursor(TRUE) < 0);
+}
+
 static LRESULT __stdcall WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (Msg)
@@ -611,46 +647,23 @@ static LRESULT __stdcall WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam,
 
 			if (PresentParameters.Windowed && IsWindowed)
 			{
-				IsWindowed = false;
-				last_width = HorizontalResolution;
-				last_height = VerticalResolution;
+				EnableFullScreen(handle);
 
 				auto const& rect = screenBounds[screenNum == 0 ? 0 : screenNum - 1];
 
 				PresentParameters.Windowed         = false;
 				PresentParameters.BackBufferWidth  = rect.right - rect.left;
 				PresentParameters.BackBufferHeight = rect.bottom - rect.top;
-
-				GetWindowRect(handle, &last_rect);
-				last_style = GetWindowLong(handle, GWL_STYLE);
-				last_exStyle = GetWindowLong(handle, GWL_EXSTYLE);
-				SetWindowLong(handle, GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
-
 				Direct3D_DeviceLost();
 			}
 			else
 			{
-				SetWindowLong(handle, GWL_STYLE, last_style);
-				auto width = last_rect.right - last_rect.left;
-				auto height = last_rect.bottom - last_rect.top;
-
-				if (width <= 0 || height <= 0)
-				{
-					last_rect = {};
-					last_rect.right = 640;
-					last_rect.bottom = 480;
-					AdjustWindowRectEx(&last_rect, last_style, false, last_exStyle);
-					width = last_rect.right - last_rect.left;
-					height = last_rect.bottom - last_rect.top;
-				}
-
 				PresentParameters.Windowed         = true;
 				PresentParameters.BackBufferWidth  = last_width;
 				PresentParameters.BackBufferHeight = last_height;
-
 				Direct3D_DeviceLost();
-				SetWindowPos(handle, HWND_NOTOPMOST, last_rect.left, last_rect.top, width, height, 0);
-				IsWindowed = true;
+
+				EnableWindowedMode(handle);
 			}
 
 			return 0;
@@ -827,32 +840,29 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 	}
 	else
 	{
-		DWORD dwStyle; // eax@3
-		DWORD dwExStyle; // esi@3
+		DWORD dwStyle = WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
+		DWORD dwExStyle = 0;
 
-		if (IsWindowed)
+		if (windowResize)
 		{
-			dwStyle = WS_CAPTION | WS_SYSMENU;
-			dwExStyle = 0;
-
-			if (windowResize)
-			{
-				dwStyle |= WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX;
-			}
-		}
-		else
-		{
-			dwStyle = WS_CAPTION;
-			dwExStyle = WS_EX_TOPMOST | WS_EX_TOOLWINDOW;
+			dwStyle |= WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX;
 		}
 
 		AdjustWindowRectEx(&windowRect, dwStyle, false, dwExStyle);
 		hWnd = CreateWindowExA(dwExStyle, GetWindowClassName(), GetWindowClassName(), dwStyle, CW_USEDEFAULT, CW_USEDEFAULT,
 			windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr, hInstance, nullptr);
+
 		accelTable = CreateAcceleratorTable(arrayptrandlength(accelerators));
+
+		if (!IsWindowed)
+		{
+			EnableFullScreen(hWnd);
+		}
+
 		ShowWindow(hWnd, nCmdShow);
 		UpdateWindow(hWnd);
 		SetForegroundWindow(hWnd);
+
 		WriteJump((void *)0x789BD0, (void *)HandleWindowMessages_r);
 		accelWindow = hWnd;
 	}
