@@ -2230,25 +2230,27 @@ int __cdecl FixEKey(int i)
 	return IsCameraControlEnabled() && GetKey(i);
 }
 
-// TODO: rename
-void* wejustdontknow = (void*)0x00794566;
-void __declspec(naked) whatamIdoing()
+const auto loc_794566 = (void*)0x00794566;
+void __declspec(naked) PolyBuff_Init_FixVBuffParams()
 {
 	__asm
 	{
 		push D3DPOOL_MANAGED
 		push ecx
 		push D3DUSAGE_WRITEONLY
-		jmp wejustdontknow
+		jmp loc_794566
 	}
 }
 
-static void __cdecl InitMods(void)
+static void __cdecl InitMods()
 {
-	// TODO: cleanup
+	// MeshSetBuffer_CreateVertexBuffer: Change D3DPOOL_DEFAULT to D3DPOOL_MANAGED
 	WriteData((char*)0x007853F3, (char)D3DPOOL_MANAGED);
+	// MeshSetBuffer_CreateVertexBuffer: Remove D3DUSAGE_DYNAMIC
 	WriteData((short*)0x007853F6, (short)D3DUSAGE_WRITEONLY);
-	WriteJump((void*)0x0079455F, whatamIdoing);
+	// PolyBuff_Init: Remove D3DUSAGE_DYNAMIC and set pool to D3DPOOL_MANAGED
+	WriteJump((void*)0x0079455F, PolyBuff_Init_FixVBuffParams);
+	// Hook present function to handle device lost/reset states
 	WriteJump(Direct3D_Present, Direct3D_Present_r);
 	WriteJump((void*)0x00794000, CreateDirect3DDevice_r);
 
