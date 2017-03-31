@@ -508,21 +508,15 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 
 			if (windowMode == windowed)
 			{
-				if (!(GetWindowLong(accelWindow, GWL_STYLE) & WS_MAXIMIZE))
-				{
-					RECT rect;
-					GetWindowRect(wrapper, &rect);
-					outerSizes[windowMode].x = rect.left;
-					outerSizes[windowMode].y = rect.top;
-				}
-				else
-				{
-					if (outerSizes[windowMode].x == CW_USEDEFAULT || outerSizes[windowMode].y == CW_USEDEFAULT)
-					{
-						outerSizes[windowMode].x = 0;
-						outerSizes[windowMode].y = 0;
-					}
-				}
+				RECT rect;
+				GetWindowRect(wrapper, &rect);
+
+				outerSizes[windowMode].x       = rect.left;
+				outerSizes[windowMode].y       = rect.top;
+				outerSizes[windowMode].width   = rect.right - rect.left;
+				outerSizes[windowMode].height  = rect.bottom - rect.top;
+				outerSizes[windowMode].style   = GetWindowLong(accelWindow, GWL_STYLE);
+				outerSizes[windowMode].exStyle = GetWindowLong(accelWindow, GWL_EXSTYLE);
 			}
 
 			windowMode = windowMode == windowed ? fullscreen : windowed;
