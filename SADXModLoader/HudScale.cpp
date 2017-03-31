@@ -740,7 +740,9 @@ void SetupHudScale()
 
 	scaleDemoPressStart = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
 
+#if 0
 	ChaoDX_Message_PlayerAction_Load_t = new Trampoline(0x0071B3B0, 0x0071B3B7, ChaoDX_Message_PlayerAction_Load_r);
 	ChaoDX_Message_PlayerAction_Display_t = new Trampoline(0x0071B210, 0x0071B215, ChaoDX_Message_PlayerAction_Display_r);
 	WriteCall(ChaoDX_Message_PlayerAction_Display_t->Target(), (void*)0x590620);
+#endif
 }
