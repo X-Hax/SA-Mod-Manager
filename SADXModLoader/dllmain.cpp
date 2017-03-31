@@ -274,40 +274,57 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			SendMessage(hWnd, WM_CLOSE, wParam, lParam);
 			// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
 			return 0;
+
 		case WM_ERASEBKGND:
-			if (backgroundImage != nullptr)
+		{
+			if (backgroundImage == nullptr)
 			{
-				Gdiplus::Graphics gfx((HDC)wParam);
-				gfx.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
-				gfx.DrawImage(backgroundImage, 0, 0, outerSizes[windowMode].width, outerSizes[windowMode].height);
-				return 0;
+				break;
 			}
+
+			Gdiplus::Graphics gfx((HDC)wParam);
+			gfx.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
+
+			RECT rect;
+			GetClientRect(wrapper, &rect);
+
+			gfx.DrawImage(backgroundImage, 0, 0, rect.right - rect.left, rect.bottom - rect.top);
+			return 0;
+		}
+
 		case WM_COMMAND:
-			if (LOWORD(wParam) == 0)
+		{
+			if (LOWORD(wParam) != 0)
 			{
-				switchingWindowMode = true;
-				if (windowMode == windowed)
-				{
-					RECT rect;
-					GetWindowRect(wrapper, &rect);
-					outerSizes[windowed].x = rect.left;
-					outerSizes[windowed].y = rect.top;
-				}
-				windowMode = windowMode == windowed ? fullscreen : windowed;
-				windowsize *size = &innerSizes[windowMode];
-				SetWindowPos(hWnd, nullptr, size->x, size->y, size->width, size->height, 0);
-				windowdata *data = &outerSizes[windowMode];
-				SetWindowLong(accelWindow, GWL_STYLE, data->style);
-				SetWindowLong(accelWindow, GWL_EXSTYLE, data->extendedstyle);
-				SetWindowPos(accelWindow, nullptr, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
-				UpdateWindow(accelWindow);
-				switchingWindowMode = false;
-				return 0;
+				break;
 			}
-			break;
+
+			switchingWindowMode = true;
+			if (windowMode == windowed)
+			{
+				RECT rect;
+				GetWindowRect(wrapper, &rect);
+				outerSizes[windowed].x = rect.left;
+				outerSizes[windowed].y = rect.top;
+			}
+			windowMode = windowMode == windowed ? fullscreen : windowed;
+			windowsize *size = &innerSizes[windowMode];
+			SetWindowPos(hWnd, nullptr, size->x, size->y, size->width, size->height, 0);
+			windowdata *data = &outerSizes[windowMode];
+			SetWindowLong(accelWindow, GWL_STYLE, data->style);
+			SetWindowLong(accelWindow, GWL_EXSTYLE, data->extendedstyle);
+			SetWindowPos(accelWindow, nullptr, data->x, data->y, data->width, data->height, SWP_FRAMECHANGED);
+			UpdateWindow(accelWindow);
+			switchingWindowMode = false;
+			return 0;
+		}
+
 		case WM_ACTIVATEAPP:
 			if (!switchingWindowMode)
+			{
 				WndProc_B(hWnd, uMsg, wParam, lParam);
+			}
+
 			if (windowMode == windowed)
 			{
 				while (ShowCursor(TRUE) < 0);
@@ -318,10 +335,11 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			}
 
 		default:
-			// alternatively we can return SendMe
-			return DefWindowProc(wrapper, uMsg, wParam, lParam);
+			break;
 	}
-	/* unreachable */ return 0;
+
+	// alternatively we can return SendMe
+	return DefWindowProc(wrapper, uMsg, wParam, lParam);
 }
 
 BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
