@@ -2472,7 +2472,7 @@ FunctionPointer(void, SetDrawDistance, (float min, float max), 0x7815E0);
 FastcallFunctionPointer(void, njCalcPoint, (NJS_MATRIX_PTR m, NJS_VECTOR *vs, NJS_VECTOR *vd), 0x781670);
 VoidFunc(njPopMatrixEx, 0x7816E0);
 ThiscallFunctionPointer(void, njScaleEx, (NJS_VECTOR *Scale), 0x781700);
-FastcallFunctionPointer(void, njRotateXYZ, (NJS_MATRIX_PTR m, float angx, Angle angy, Angle angz), 0x781770);
+FastcallFunctionPointer(void, njRotateXYZ, (NJS_MATRIX_PTR m, Angle angx, Angle angy, Angle angz), 0x781770);
 FastcallFunctionPointer(void, njRotateZYX, (NJS_MATRIX_PTR m, Angle angx, Angle angy, Angle angz), 0x7819C0);
 ThiscallFunctionPointer(void, njTranslateEx, (NJS_VECTOR *v), 0x781C10);
 VoidFunc(njPushMatrixEx, 0x781C80);
