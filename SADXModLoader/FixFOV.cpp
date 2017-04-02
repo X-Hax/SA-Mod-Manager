@@ -3,15 +3,15 @@
 #include "include/d3d8types.h"
 #include "SADXModLoader.h"
 
-static bool is_wide = false;
 static const Angle bams_default = 12743;
 
-static Angle last_bams = bams_default;
-static Angle fov_bams = 0;
-
-static double fov_rads = 1.0f;
-static double fov_scale = 1.0;
 static float dummy;
+static bool is_wide = false;
+
+static Angle  last_bams = bams_default;
+static double fov_rads  = 0.96712852; // 55.412382 degrees
+static Angle  fov_bams  = NJM_RAD_ANG(fov_rads);
+static double fov_scale = 1.0;
 
 static void DisplayVideoFrame_FixAspectRatio()
 {
@@ -41,7 +41,12 @@ static void DisplayVideoFrame_FixAspectRatio()
 // Fix for neglected width and height in global NJS_SCREEN
 static void __cdecl SetupScreen_r(NJS_SCREEN* screen)
 {
-	_nj_screen_ = *screen;
+	_nj_screen_.w  = screen->w;
+	_nj_screen_.h  = screen->h;
+	_nj_screen_.cx = screen->cx;
+	_nj_screen_.cy = screen->cy;
+
+	// Specifically excluding .dist because there's no reason to overwrite it here.
 }
 
 static void __cdecl njSetScreenDist_r(Angle bams);
@@ -166,9 +171,6 @@ void ConfigureFOV()
 	WriteData((float**)0x00459133, &VerticalStretch); // Default Button
 
 	CheckAspectRatio();
-
-	fov_rads = 0.96712852; // 55.412382 degrees
-	fov_bams = NJM_RAD_ANG(fov_rads);
 
 	// Hijacks some code before a call to D3DXMatrixPerpsectiveFovRH to correct the vertical field of view.
 	WriteJump((void*)0x0079124A, SetFOV);
