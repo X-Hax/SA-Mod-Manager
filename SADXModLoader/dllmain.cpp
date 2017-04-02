@@ -2244,12 +2244,6 @@ void __declspec(naked) PolyBuff_Init_FixVBuffParams()
 
 static void __cdecl InitMods()
 {
-	// MeshSetBuffer_CreateVertexBuffer: Change D3DPOOL_DEFAULT to D3DPOOL_MANAGED
-	WriteData((char*)0x007853F3, (char)D3DPOOL_MANAGED);
-	// MeshSetBuffer_CreateVertexBuffer: Remove D3DUSAGE_DYNAMIC
-	WriteData((short*)0x007853F6, (short)D3DUSAGE_WRITEONLY);
-	// PolyBuff_Init: Remove D3DUSAGE_DYNAMIC and set pool to D3DPOOL_MANAGED
-	WriteJump((void*)0x0079455F, PolyBuff_Init_FixVBuffParams);
 	// Hook present function to handle device lost/reset states
 	WriteJump(Direct3D_Present, Direct3D_Present_r);
 	WriteJump((void*)0x00794000, CreateDirect3DDevice_r);
@@ -2356,6 +2350,17 @@ static void __cdecl InitMods()
 		// SADX automatically corrects values greater than the number of adapters available.
 		// DisplayAdapter is unsigned, so -1 will be greater than the number of adapters, and it will reset.
 		DisplayAdapter = screenNum - 1;
+	}
+
+	// Causes significant performance drop on some systems.
+	if (windowResize)
+	{
+		// MeshSetBuffer_CreateVertexBuffer: Change D3DPOOL_DEFAULT to D3DPOOL_MANAGED
+		WriteData((char*)0x007853F3, (char)D3DPOOL_MANAGED);
+		// MeshSetBuffer_CreateVertexBuffer: Remove D3DUSAGE_DYNAMIC
+		WriteData((short*)0x007853F6, (short)D3DUSAGE_WRITEONLY);
+		// PolyBuff_Init: Remove D3DUSAGE_DYNAMIC and set pool to D3DPOOL_MANAGED
+		WriteJump((void*)0x0079455F, PolyBuff_Init_FixVBuffParams);
 	}
 
 	if (!settings->getBool("PauseWhenInactive", true))
