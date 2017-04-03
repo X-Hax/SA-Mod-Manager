@@ -110,9 +110,6 @@ namespace SADXModManager.Forms
 			else
 				radioWindowMode.Checked = true;
 
-			// Resolution preset
-			comboResolutionPreset.SelectedIndex = configFile.GameConfig.ScreenSize;
-
 			// Framerate
 			if (configFile.GameConfig.FrameRate == (int)FrameRate.Invalid || configFile.GameConfig.FrameRate > (int)FrameRate.Low)
 			{
@@ -171,7 +168,6 @@ namespace SADXModManager.Forms
 		private void SaveConfigIni()
 		{
 			configFile.GameConfig.FullScreen = radioFullscreen.Checked ? 1 : 0;
-			configFile.GameConfig.ScreenSize = comboResolutionPreset.SelectedIndex;
 
 			configFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
 			configFile.GameConfig.ClipLevel = comboClip.SelectedIndex;

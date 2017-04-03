@@ -33,17 +33,16 @@
 			System.Windows.Forms.Label label1;
 			System.Windows.Forms.Label label2;
 			System.Windows.Forms.GroupBox groupBox2;
+			System.Windows.Forms.Label label5;
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.pauseWhenInactiveCheckBox = new System.Windows.Forms.CheckBox();
 			this.disableCDCheckCheckBox = new System.Windows.Forms.CheckBox();
 			this.screenNumComboBox = new System.Windows.Forms.ComboBox();
 			this.stretchFullscreenCheckBox = new System.Windows.Forms.CheckBox();
-			this.nativeResolutionButton = new System.Windows.Forms.Button();
 			this.forceAspectRatioCheckBox = new System.Windows.Forms.CheckBox();
 			this.windowedFullscreenCheckBox = new System.Windows.Forms.CheckBox();
 			this.verticalResolution = new System.Windows.Forms.NumericUpDown();
 			this.horizontalResolution = new System.Windows.Forms.NumericUpDown();
-			this.useCustomResolutionCheckBox = new System.Windows.Forms.CheckBox();
 			this.buttonRefreshModList = new System.Windows.Forms.Button();
 			this.modDescription = new System.Windows.Forms.Label();
 			this.modListView = new System.Windows.Forms.ListView();
@@ -67,6 +66,7 @@
 			this.forceMipmappingCheckBox = new System.Windows.Forms.CheckBox();
 			this.forceTextureFilterCheckBox = new System.Windows.Forms.CheckBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.checkWindowResize = new System.Windows.Forms.CheckBox();
 			this.checkVsync = new System.Windows.Forms.CheckBox();
 			this.maintainWindowAspectRatioCheckBox = new System.Windows.Forms.CheckBox();
 			this.windowWidth = new System.Windows.Forms.NumericUpDown();
@@ -95,11 +95,12 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.checkWindowResize = new System.Windows.Forms.CheckBox();
+			this.comboResolutionPreset = new System.Windows.Forms.ComboBox();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
 			groupBox2 = new System.Windows.Forms.GroupBox();
+			label5 = new System.Windows.Forms.Label();
 			groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.verticalResolution)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.horizontalResolution)).BeginInit();
@@ -130,7 +131,7 @@
 			// label1
 			// 
 			label1.AutoSize = true;
-			label1.Location = new System.Drawing.Point(219, 73);
+			label1.Location = new System.Drawing.Point(140, 73);
 			label1.Name = "label1";
 			label1.Size = new System.Drawing.Size(12, 13);
 			label1.TabIndex = 7;
@@ -196,6 +197,7 @@
 			this.screenNumComboBox.Size = new System.Drawing.Size(304, 21);
 			this.screenNumComboBox.TabIndex = 1;
 			this.toolTip1.SetToolTip(this.screenNumComboBox, "The screen to put the game on.");
+			this.screenNumComboBox.SelectedIndexChanged += new System.EventHandler(this.screenNumComboBox_SelectedIndexChanged);
 			// 
 			// stretchFullscreenCheckBox
 			// 
@@ -209,20 +211,6 @@
 			this.toolTip1.SetToolTip(this.stretchFullscreenCheckBox, "Coupled with Windowed Fullscreen, you can downsample the game from resolutions hi" +
         "gher than your screen supports.");
 			this.stretchFullscreenCheckBox.UseVisualStyleBackColor = true;
-			// 
-			// nativeResolutionButton
-			// 
-			this.nativeResolutionButton.AutoSize = true;
-			this.nativeResolutionButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.nativeResolutionButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.nativeResolutionButton.Location = new System.Drawing.Point(305, 67);
-			this.nativeResolutionButton.Name = "nativeResolutionButton";
-			this.nativeResolutionButton.Size = new System.Drawing.Size(52, 22);
-			this.nativeResolutionButton.TabIndex = 9;
-			this.nativeResolutionButton.Text = "Native";
-			this.toolTip1.SetToolTip(this.nativeResolutionButton, "Sets resolution to the selected screen\'s native resolution.");
-			this.nativeResolutionButton.UseVisualStyleBackColor = true;
-			this.nativeResolutionButton.Click += new System.EventHandler(this.nativeResolutionButton_Click);
 			// 
 			// forceAspectRatioCheckBox
 			// 
@@ -251,7 +239,7 @@
 			// 
 			// verticalResolution
 			// 
-			this.verticalResolution.Location = new System.Drawing.Point(237, 69);
+			this.verticalResolution.Location = new System.Drawing.Point(158, 69);
 			this.verticalResolution.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -274,7 +262,7 @@
 			// 
 			// horizontalResolution
 			// 
-			this.horizontalResolution.Location = new System.Drawing.Point(151, 69);
+			this.horizontalResolution.Location = new System.Drawing.Point(72, 69);
 			this.horizontalResolution.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -293,19 +281,7 @@
             0,
             0,
             0});
-			// 
-			// useCustomResolutionCheckBox
-			// 
-			this.useCustomResolutionCheckBox.AutoSize = true;
-			this.useCustomResolutionCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.useCustomResolutionCheckBox.Location = new System.Drawing.Point(6, 71);
-			this.useCustomResolutionCheckBox.Name = "useCustomResolutionCheckBox";
-			this.useCustomResolutionCheckBox.Size = new System.Drawing.Size(123, 18);
-			this.useCustomResolutionCheckBox.TabIndex = 5;
-			this.useCustomResolutionCheckBox.Text = "Custom Resolution:";
-			this.toolTip1.SetToolTip(this.useCustomResolutionCheckBox, "Overrides resolution preset with custom resolution.");
-			this.useCustomResolutionCheckBox.UseVisualStyleBackColor = true;
-			this.useCustomResolutionCheckBox.CheckedChanged += new System.EventHandler(this.useCustomResolutionCheckBox_CheckedChanged);
+			this.horizontalResolution.ValueChanged += new System.EventHandler(this.horizontalResolution_ValueChanged);
 			// 
 			// buttonRefreshModList
 			// 
@@ -464,9 +440,9 @@
 			this.modDownButton.AutoSize = true;
 			this.modDownButton.Enabled = false;
 			this.modDownButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modDownButton.Location = new System.Drawing.Point(345, 35);
+			this.modDownButton.Location = new System.Drawing.Point(339, 35);
 			this.modDownButton.Name = "modDownButton";
-			this.modDownButton.Size = new System.Drawing.Size(27, 22);
+			this.modDownButton.Size = new System.Drawing.Size(33, 22);
 			this.modDownButton.TabIndex = 2;
 			this.modDownButton.Text = "↓";
 			this.modDownButton.UseVisualStyleBackColor = true;
@@ -478,9 +454,9 @@
 			this.modUpButton.AutoSize = true;
 			this.modUpButton.Enabled = false;
 			this.modUpButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modUpButton.Location = new System.Drawing.Point(345, 6);
+			this.modUpButton.Location = new System.Drawing.Point(339, 6);
 			this.modUpButton.Name = "modUpButton";
-			this.modUpButton.Size = new System.Drawing.Size(27, 22);
+			this.modUpButton.Size = new System.Drawing.Size(33, 22);
 			this.modUpButton.TabIndex = 1;
 			this.modUpButton.Text = "↑";
 			this.modUpButton.UseVisualStyleBackColor = true;
@@ -572,6 +548,8 @@
 			// 
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.comboResolutionPreset);
+			this.groupBox3.Controls.Add(label5);
 			this.groupBox3.Controls.Add(this.checkWindowResize);
 			this.groupBox3.Controls.Add(this.checkVsync);
 			this.groupBox3.Controls.Add(this.maintainWindowAspectRatioCheckBox);
@@ -583,8 +561,6 @@
 			this.groupBox3.Controls.Add(label3);
 			this.groupBox3.Controls.Add(this.screenNumComboBox);
 			this.groupBox3.Controls.Add(this.forceAspectRatioCheckBox);
-			this.groupBox3.Controls.Add(this.nativeResolutionButton);
-			this.groupBox3.Controls.Add(this.useCustomResolutionCheckBox);
 			this.groupBox3.Controls.Add(this.horizontalResolution);
 			this.groupBox3.Controls.Add(this.windowedFullscreenCheckBox);
 			this.groupBox3.Controls.Add(label1);
@@ -595,6 +571,18 @@
 			this.groupBox3.TabIndex = 0;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Display";
+			// 
+			// checkWindowResize
+			// 
+			this.checkWindowResize.AutoSize = true;
+			this.checkWindowResize.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.checkWindowResize.Location = new System.Drawing.Point(148, 141);
+			this.checkWindowResize.Name = "checkWindowResize";
+			this.checkWindowResize.Size = new System.Drawing.Size(120, 18);
+			this.checkWindowResize.TabIndex = 16;
+			this.checkWindowResize.Text = "Resizable Window";
+			this.toolTip1.SetToolTip(this.checkWindowResize, "Allows the window to be resized and dynamically adjusts resolution to match.");
+			this.checkWindowResize.UseVisualStyleBackColor = true;
 			// 
 			// checkVsync
 			// 
@@ -912,23 +900,44 @@
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
 			// 
-			// checkWindowResize
+			// label5
 			// 
-			this.checkWindowResize.AutoSize = true;
-			this.checkWindowResize.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.checkWindowResize.Location = new System.Drawing.Point(148, 141);
-			this.checkWindowResize.Name = "checkWindowResize";
-			this.checkWindowResize.Size = new System.Drawing.Size(120, 18);
-			this.checkWindowResize.TabIndex = 16;
-			this.checkWindowResize.Text = "Resizable Window";
-			this.toolTip1.SetToolTip(this.checkWindowResize, "Allows the window to be resized and dynamically adjusts resolution to match.");
-			this.checkWindowResize.UseVisualStyleBackColor = true;
+			label5.AutoSize = true;
+			label5.Location = new System.Drawing.Point(6, 71);
+			label5.Name = "label5";
+			label5.Size = new System.Drawing.Size(60, 13);
+			label5.TabIndex = 17;
+			label5.Text = "Resolution:";
+			// 
+			// comboResolutionPreset
+			// 
+			this.comboResolutionPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboResolutionPreset.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.comboResolutionPreset.FormattingEnabled = true;
+			this.comboResolutionPreset.Items.AddRange(new object[] {
+            "640x480",
+            "800x600",
+            "1024x768",
+            "1152x864",
+            "1280x1024",
+            "Native",
+            "1/2x Native",
+            "2x Native",
+            "720p",
+            "1080p",
+            "4K"});
+			this.comboResolutionPreset.Location = new System.Drawing.Point(226, 68);
+			this.comboResolutionPreset.Name = "comboResolutionPreset";
+			this.comboResolutionPreset.Size = new System.Drawing.Size(121, 21);
+			this.comboResolutionPreset.TabIndex = 18;
+			this.toolTip1.SetToolTip(this.comboResolutionPreset, "Allows you to select pre-set values for the resolution.");
+			this.comboResolutionPreset.SelectedIndexChanged += new System.EventHandler(this.comboResolutionPreset_SelectedIndexChanged);
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(384, 361);
+			this.ClientSize = new System.Drawing.Size(384, 362);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.configEditorButton);
 			this.Controls.Add(this.installButton);
@@ -976,7 +985,6 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button saveAndPlayButton;
 		private System.Windows.Forms.Button installButton;
-        private System.Windows.Forms.CheckBox useCustomResolutionCheckBox;
         private System.Windows.Forms.NumericUpDown horizontalResolution;
         private System.Windows.Forms.NumericUpDown verticalResolution;
         private System.Windows.Forms.Button configEditorButton;
@@ -988,7 +996,6 @@
 		private System.Windows.Forms.CheckedListBox codesCheckedListBox;
 		private System.Windows.Forms.CheckBox windowedFullscreenCheckBox;
 		private System.Windows.Forms.Button buttonNewMod;
-		private System.Windows.Forms.Button nativeResolutionButton;
 		private System.Windows.Forms.CheckBox forceAspectRatioCheckBox;
 		private System.Windows.Forms.CheckBox stretchFullscreenCheckBox;
 		private System.Windows.Forms.ComboBox screenNumComboBox;
@@ -1032,5 +1039,6 @@
 		private System.Windows.Forms.ToolStripMenuItem verifyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem forceUpdateToolStripMenuItem;
 		private System.Windows.Forms.CheckBox checkWindowResize;
+		private System.Windows.Forms.ComboBox comboResolutionPreset;
 	}
 }

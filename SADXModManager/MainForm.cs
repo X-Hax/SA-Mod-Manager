@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Windows.Forms;
 using IniFile;
 using SADXModManager.Forms;
+using System.Drawing;
 
 namespace SADXModManager
 {
@@ -93,9 +94,8 @@ namespace SADXModManager
 			screenCheckBox.Checked              = loaderini.DebugScreen;
 			fileCheckBox.Checked                = loaderini.DebugFile;
 			disableCDCheckCheckBox.Checked      = loaderini.DisableCDCheck;
-			useCustomResolutionCheckBox.Checked = verticalResolution.Enabled = forceAspectRatioCheckBox.Enabled = nativeResolutionButton.Enabled = loaderini.UseCustomResolution;
 			checkVsync.Checked                  = loaderini.EnableVsync;
-			horizontalResolution.Enabled        = loaderini.UseCustomResolution && !loaderini.ForceAspectRatio;
+			horizontalResolution.Enabled        = !loaderini.ForceAspectRatio;
 			horizontalResolution.Value          = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
 			verticalResolution.Value            = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
 			checkUpdateStartup.Checked          = loaderini.UpdateCheck;
@@ -617,7 +617,6 @@ namespace SADXModManager
 			loaderini.DebugScreen               = screenCheckBox.Checked;
 			loaderini.DebugFile                 = fileCheckBox.Checked;
 			loaderini.DisableCDCheck            = disableCDCheckCheckBox.Checked;
-			loaderini.UseCustomResolution       = useCustomResolutionCheckBox.Checked;
 			loaderini.HorizontalResolution      = (int)horizontalResolution.Value;
 			loaderini.VerticalResolution        = (int)verticalResolution.Value;
 			loaderini.ForceAspectRatio          = forceAspectRatioCheckBox.Checked;
@@ -799,13 +798,20 @@ namespace SADXModManager
 			installed = !installed;
 		}
 
-		private void useCustomResolutionCheckBox_CheckedChanged(object sender, EventArgs e)
+		private void screenNumComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (nativeResolutionButton.Enabled = forceAspectRatioCheckBox.Enabled =
-				verticalResolution.Enabled = useCustomResolutionCheckBox.Checked)
-				horizontalResolution.Enabled = !forceAspectRatioCheckBox.Checked;
+			Size oldsize = resolutionPresets[5];
+			System.Drawing.Rectangle rect = Screen.PrimaryScreen.Bounds;
+			if (screenNumComboBox.SelectedIndex > 0)
+				rect = Screen.AllScreens[screenNumComboBox.SelectedIndex - 1].Bounds;
 			else
-				horizontalResolution.Enabled = false;
+				foreach (Screen screen in Screen.AllScreens)
+					rect = System.Drawing.Rectangle.Union(rect, screen.Bounds);
+			resolutionPresets[5] = rect.Size;
+			resolutionPresets[6] = new Size(rect.Width / 2, rect.Height / 2);
+			resolutionPresets[7] = new Size(rect.Width * 2, rect.Height * 2);
+			if (comboResolutionPreset.SelectedIndex > 4 && comboResolutionPreset.SelectedIndex < 8 && rect.Size != oldsize)
+				comboResolutionPreset.SelectedIndex = -1;
 		}
 
 		const decimal ratio = 4 / 3m;
@@ -815,28 +821,48 @@ namespace SADXModManager
 			{
 				horizontalResolution.Enabled = false;
 				horizontalResolution.Value = Math.Round(verticalResolution.Value * ratio);
+				comboResolutionPreset.SelectedIndex = -1;
 			}
 			else if (!suppressEvent)
 				horizontalResolution.Enabled = true;
+		}
+
+		private void horizontalResolution_ValueChanged(object sender, EventArgs e)
+		{
+			if (!suppressEvent)
+				comboResolutionPreset.SelectedIndex = -1;
 		}
 
 		private void verticalResolution_ValueChanged(object sender, EventArgs e)
 		{
 			if (forceAspectRatioCheckBox.Checked)
 				horizontalResolution.Value = Math.Round(verticalResolution.Value * ratio);
+			if (!suppressEvent)
+				comboResolutionPreset.SelectedIndex = -1;
 		}
 
-		private void nativeResolutionButton_Click(object sender, EventArgs e)
+		static readonly Size[] resolutionPresets =
 		{
-			System.Drawing.Rectangle rect = Screen.PrimaryScreen.Bounds;
-			if (screenNumComboBox.SelectedIndex > 0)
-				rect = Screen.AllScreens[screenNumComboBox.SelectedIndex - 1].Bounds;
-			else
-				foreach (Screen screen in Screen.AllScreens)
-					rect = System.Drawing.Rectangle.Union(rect, screen.Bounds);
-			verticalResolution.Value = rect.Height;
+			new Size(640, 480), // 640x480
+			new Size(800, 600), // 800x600
+			new Size(1024, 768), // 1024x768
+			new Size(1152, 864), // 1152x864
+			new Size(1280, 1024), // 1280x1024
+			new Size(), // Native
+			new Size(), // 1/2x Native
+			new Size(), // 2x Native
+			new Size(1280, 720), // 720p
+			new Size(1920, 1080), // 1080p
+			new Size(3840, 2160), // 4K
+		};
+		private void comboResolutionPreset_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (comboResolutionPreset.SelectedIndex == -1) return;
+			suppressEvent = true;
+			verticalResolution.Value = resolutionPresets[comboResolutionPreset.SelectedIndex].Height;
 			if (!forceAspectRatioCheckBox.Checked)
-				horizontalResolution.Value = rect.Width;
+				horizontalResolution.Value = resolutionPresets[comboResolutionPreset.SelectedIndex].Width;
+			suppressEvent = false;
 		}
 
 		private void configEditorButton_Click(object sender, EventArgs e)

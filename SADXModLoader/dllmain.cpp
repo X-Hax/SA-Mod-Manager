@@ -2313,23 +2313,22 @@ static void __cdecl InitMods()
 	// Other various settings.
 	if (settings->getBool("DisableCDCheck"))
 		WriteJump((void *)0x402621, (void *)0x402664);
-	if (settings->getBool("UseCustomResolution"))
+
+	// Custom resolution.
+	WriteJump((void *)0x40297A, (void *)0x402A90);
+
+	int hres = settings->getInt("HorizontalResolution", 640);
+	if (hres > 0)
 	{
-		WriteJump((void *)0x40297A, (void *)0x402A90);
+		HorizontalResolution = hres;
+		HorizontalStretch = HorizontalResolution / 640.0f;
+	}
 
-		int hres = settings->getInt("HorizontalResolution", 640);
-		if (hres > 0)
-		{
-			HorizontalResolution = hres;
-			HorizontalStretch = HorizontalResolution / 640.0f;
-		}
-
-		int vres = settings->getInt("VerticalResolution", 480);
-		if (vres > 0)
-		{
-			VerticalResolution = vres;
-			VerticalStretch = VerticalResolution / 480.0f;
-		}
+	int vres = settings->getInt("VerticalResolution", 480);
+	if (vres > 0)
+	{
+		VerticalResolution = vres;
+		VerticalStretch = VerticalResolution / 480.0f;
 	}
 
 	ConfigureFOV();

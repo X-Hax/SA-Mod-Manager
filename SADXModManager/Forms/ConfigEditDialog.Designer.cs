@@ -43,8 +43,6 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.comboFramerate = new System.Windows.Forms.ComboBox();
 			this.groupBox_Screen = new System.Windows.Forms.GroupBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.comboResolutionPreset = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.radioWindowMode = new System.Windows.Forms.RadioButton();
 			this.radioFullscreen = new System.Windows.Forms.RadioButton();
@@ -170,7 +168,7 @@
 			this.groupBox_Graphics.Controls.Add(this.label4);
 			this.groupBox_Graphics.Controls.Add(this.label3);
 			this.groupBox_Graphics.Controls.Add(this.comboFramerate);
-			this.groupBox_Graphics.Location = new System.Drawing.Point(6, 112);
+			this.groupBox_Graphics.Location = new System.Drawing.Point(6, 86);
 			this.groupBox_Graphics.Name = "groupBox_Graphics";
 			this.groupBox_Graphics.Size = new System.Drawing.Size(306, 108);
 			this.groupBox_Graphics.TabIndex = 1;
@@ -253,44 +251,15 @@
 			// 
 			// groupBox_Screen
 			// 
-			this.groupBox_Screen.Controls.Add(this.label2);
-			this.groupBox_Screen.Controls.Add(this.comboResolutionPreset);
 			this.groupBox_Screen.Controls.Add(this.label1);
 			this.groupBox_Screen.Controls.Add(this.radioWindowMode);
 			this.groupBox_Screen.Controls.Add(this.radioFullscreen);
 			this.groupBox_Screen.Location = new System.Drawing.Point(6, 6);
 			this.groupBox_Screen.Name = "groupBox_Screen";
-			this.groupBox_Screen.Size = new System.Drawing.Size(306, 100);
+			this.groupBox_Screen.Size = new System.Drawing.Size(306, 74);
 			this.groupBox_Screen.TabIndex = 0;
 			this.groupBox_Screen.TabStop = false;
 			this.groupBox_Screen.Text = "Screen";
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(6, 69);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(92, 13);
-			this.label2.TabIndex = 4;
-			this.label2.Text = "Resolution preset:";
-			// 
-			// comboResolutionPreset
-			// 
-			this.comboResolutionPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboResolutionPreset.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.comboResolutionPreset.FormattingEnabled = true;
-			this.comboResolutionPreset.Items.AddRange(new object[] {
-            "640x480",
-            "800x600",
-            "1024x768",
-            "1152x864",
-            "1280x1024"});
-			this.comboResolutionPreset.Location = new System.Drawing.Point(104, 66);
-			this.comboResolutionPreset.Name = "comboResolutionPreset";
-			this.comboResolutionPreset.Size = new System.Drawing.Size(121, 21);
-			this.comboResolutionPreset.TabIndex = 2;
-			this.toolTip_ConfigEditor.SetToolTip(this.comboResolutionPreset, "Sets the screen/window resolution.\r\nNote: This is overriden by the custom resolut" +
-        "ion setting.\r\nIt\'s recommended you use that instead.");
 			// 
 			// label1
 			// 
@@ -679,8 +648,6 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ComboBox comboFramerate;
 		private System.Windows.Forms.GroupBox groupBox_Screen;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.ComboBox comboResolutionPreset;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.RadioButton radioWindowMode;
 		private System.Windows.Forms.RadioButton radioFullscreen;

@@ -19,7 +19,6 @@ namespace SADXModManager
 		public bool DebugFile { get; set; }
 		public bool? ShowConsole { get { return null; } set { if (value.HasValue) DebugConsole = value.Value; } }
 		public bool DisableCDCheck { get; set; }
-		public bool UseCustomResolution { get; set; }
 		[DefaultValue(640)]
 		public int HorizontalResolution { get; set; }
 		[DefaultValue(480)]
