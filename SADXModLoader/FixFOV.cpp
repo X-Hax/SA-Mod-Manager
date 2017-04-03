@@ -5,7 +5,6 @@
 
 static const Angle bams_default = 12743;
 
-static float dummy;
 static bool is_wide = false;
 
 static Angle  last_bams = bams_default;
@@ -93,7 +92,7 @@ static void __cdecl njSetPerspective_r(Angle bams)
 	last_bams = bams;
 }
 
-static const void* setfov_return = (void*)0x00791251;
+static const auto loc_791251 = (void*)0x00791251;
 static void __declspec(naked) SetFOV()
 {
 	__asm
@@ -105,40 +104,44 @@ static void __declspec(naked) SetFOV()
 		// atan2(1.0, tan(hfov / 2) / aspect ratio)
 		fpatan
 		fadd   st, st
-		fstp   dword ptr[esp]
+		fstp   dword ptr [esp]
 
-		jmp    setfov_return
+		jmp    loc_791251
 
 	wide:
-		fstp   dword ptr[esp]
-		fstp   dword ptr[esp]
+		// dropping some values off of the stack that we don't need
+		fstp   st(0)
+		fstp   st(0)
 
+		// fov_rads / fov_scale
 		fld    fov_rads
 		fdiv   fov_scale
-		fstp   dword ptr[esp]
+		fstp   dword ptr [esp]
 
-		jmp    setfov_return
+		jmp    loc_791251
 	}
 }
 
-static const void* dummyfstp_return = (void*)0x00781529;
-static const void* wtf_ptr = (void*)0x03D0F9E0;
+static const auto loc_781529 = (void*)0x00781529;
+static const auto _nj_screen_dist = &_nj_screen_.dist;
 static void __declspec(naked) dummyfstp()
 {
 	__asm
 	{
 		cmp  is_wide, 1
 		je   wide
-		fstp dword ptr wtf_ptr
-		jmp  dummyfstp_return
+		// in 4:3, write the value to _nj_screen_.dist
+		fstp [_nj_screen_dist]
+		jmp  loc_781529
 
 	wide:
-		fstp dummy
-		jmp  dummyfstp_return
+		// in widescreen, just drop the value
+		fstp st(0)
+		jmp  loc_781529
 	}
 }
 
-static const double default_ratio = 4.0 / 3.0;
+static constexpr double default_ratio = 4.0 / 3.0;
 void CheckAspectRatio()
 {
 	uint32_t width = HorizontalResolution;
