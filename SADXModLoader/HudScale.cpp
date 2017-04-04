@@ -66,10 +66,22 @@ static Trampoline* DrawTiledBG_AVA_BACK_t;
 static Trampoline* MissionCompleteScreen_Draw_t;
 static Trampoline* RecapBackground_Main_t;
 static Trampoline* CharSelBg_Display_t;
+static Trampoline* TrialLevelList_Display_t;
+static Trampoline* SubGameLevelList_Display_t;
+static Trampoline* EmblemResultMenu_Display_t;
 
 #pragma endregion
 
 #pragma region sprite stack
+
+enum FillMode : Uint8
+{
+	Stretch = 0,
+	Fit     = 1,
+	Fill    = 2
+};
+
+static auto fill_mode = FillMode::Fill;
 
 enum Align : Uint8
 {
@@ -94,15 +106,19 @@ static size_t stack_size = 0;
 
 static const float patch_dummy = 1.0f;
 
-static const float third_h = 640.0f / 3.0f;
-static const float third_v = 480.0f / 3.0f;
+static constexpr float third_h = 640.0f / 3.0f;
+static constexpr float third_v = 480.0f / 3.0f;
 
-static bool do_scale  = false;
-static float scale    = 0.0f;
-static float scale_h  = 0.0f;
-static float scale_v  = 0.0f;
-static float region_w = 0.0f;
-static float region_h = 0.0f;
+static bool  do_scale      = false;
+static bool  is_bg         = false;
+static float scale_min     = 0.0f;
+static float scale_max     = 0.0f;
+static float scale_h       = 0.0f;
+static float scale_v       = 0.0f;
+static float region_fit_w  = 0.0f;
+static float region_fit_h  = 0.0f;
+static float region_fill_w = 0.0f;
+static float region_fill_h = 0.0f;
 
 static void __cdecl ScalePush(Uint8 align, float h = 1.0f, float v = 1.0f)
 {
@@ -159,8 +175,6 @@ static void __cdecl DisplayAllObjects_r()
 	}
 }
 
-static NJS_SPRITE last_sprite;
-
 static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT2& center)
 {
 	if (align == Align::Auto)
@@ -198,24 +212,24 @@ static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT2& center)
 	{
 		if ((float)HorizontalResolution / scale_v > 640.0f)
 		{
-			result.x = ((float)HorizontalResolution - region_w) / 2.0f;
+			result.x = ((float)HorizontalResolution - region_fit_w) / 2.0f;
 		}
 	}
 	else if (align & Align::Right)
 	{
-		result.x = (float)HorizontalResolution - region_w;
+		result.x = (float)HorizontalResolution - region_fit_w;
 	}
 
 	if (align & Align::VerticalCenter)
 	{
-		//if ((float)VerticalResolution / scale_h > 480.0f)
+		if ((float)VerticalResolution / scale_h > 480.0f)
 		{
-			result.y = ((float)VerticalResolution - region_h) / 2.0f;
+			result.y = ((float)VerticalResolution - region_fit_h) / 2.0f;
 		}
 	}
 	else if (align & Align::Bottom)
 	{
-		result.y = (float)VerticalResolution - region_h;
+		result.y = (float)VerticalResolution - region_fit_h;
 	}
 
 	return result;
@@ -224,33 +238,6 @@ static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT2& center)
 static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT3& center)
 {
 	return AutoAlign(align, *(NJS_POINT2*)&center);
-}
-
-static void __cdecl SpritePush(NJS_SPRITE* sp)
-{
-	if (scale_stack.empty())
-	{
-		return;
-	}
-
-	auto top = scale_stack.top();
-	auto align = top.alignment;
-
-	auto offset = AutoAlign(align, sp->p);
-
-	last_sprite = *sp;
-
-	sp->p.x = sp->p.x * scale + offset.x;
-	sp->p.y = sp->p.y * scale + offset.y;
-	sp->sx *= scale;
-	sp->sy *= scale;
-}
-
-static void __cdecl SpritePop(NJS_SPRITE* sp)
-{
-	sp->p = last_sprite.p;
-	sp->sx = last_sprite.sx;
-	sp->sy = last_sprite.sy;
 }
 
 /**
@@ -286,6 +273,9 @@ static void ScalePoints(T* points, size_t count)
 	}
 
 	auto offset = AutoAlign(align, center);
+	auto scale = is_bg && fill_mode == FillMode::Fill
+		? max(scale_h, scale_v)
+		: scale_min;
 
 	for (size_t i = 0; i < count; i++)
 	{
@@ -295,17 +285,33 @@ static void ScalePoints(T* points, size_t count)
 	}
 }
 
-#ifdef _DEBUG
-static vector<NJS_SPRITE*> sprites;
-
-static void __cdecl StoreSprite(NJS_SPRITE* sp)
+static NJS_SPRITE last_sprite = {};
+static void __cdecl SpritePush(NJS_SPRITE* sp)
 {
-	if (find(sprites.begin(), sprites.end(), sp) == sprites.end())
+	if (scale_stack.empty())
 	{
-		sprites.push_back(sp);
+		return;
 	}
+
+	auto top = scale_stack.top();
+	auto align = top.alignment;
+
+	auto offset = AutoAlign(align, sp->p);
+
+	last_sprite = *sp;
+
+	sp->p.x = sp->p.x * scale_min + offset.x;
+	sp->p.y = sp->p.y * scale_min + offset.y;
+	sp->sx *= scale_min;
+	sp->sy *= scale_min;
 }
-#endif
+
+static void __cdecl SpritePop(NJS_SPRITE* sp)
+{
+	sp->p = last_sprite.p;
+	sp->sx = last_sprite.sx;
+	sp->sy = last_sprite.sy;
+}
 
 #pragma endregion
 
@@ -538,19 +544,15 @@ static void __cdecl Draw2DSprite_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr
 	}
 
 	FunctionPointer(void, original, (NJS_SPRITE*, Int, Float, Uint32, char), Draw2DSprite_t.Target());
-
-#ifdef _DEBUG
-	StoreSprite(sp);
-#endif
-
+	
 	if (!do_scale || sp == (NJS_SPRITE*)0x009BF3B0)
 	{
 		// Scales lens flare and sun.
 		// It uses njProjectScreen so there's no position scaling required.
 		if (sp == (NJS_SPRITE*)0x009BF3B0)
 		{
-			sp->sx *= scale;
-			sp->sy *= scale;
+			sp->sx *= scale_min;
+			sp->sy *= scale_min;
 		}
 
 		original(sp, n, pri, attr, zfunc_type);
@@ -571,11 +573,7 @@ static void __cdecl njDrawSprite2D_4_r(NJS_SPRITE *sp, Int n, Float pri, Uint32 
 	}
 
 	FunctionPointer(void, original, (NJS_SPRITE*, Int, Float, Uint32), njDrawSprite2D_4_t.Target());
-
-#ifdef _DEBUG
-	StoreSprite(sp);
-#endif
-
+	
 	if (!do_scale)
 	{
 		original(sp, n, pri, attr);
@@ -639,10 +637,13 @@ void SetHudScaleValues()
 	scale_h = HorizontalStretch;
 	scale_v = VerticalStretch;
 
-	scale = min(scale_h, scale_v);
+	scale_min = min(scale_h, scale_v);
+	scale_max = max(scale_h, scale_v);
 
-	region_w = 640.0f * scale;
-	region_h = 480.0f * scale;
+	region_fit_w  = 640.0f * scale_min;
+	region_fit_h  = 480.0f * scale_min;
+	region_fill_w = 640.0f * scale_max;
+	region_fill_h = 480.0f * scale_max;
 }
 
 #ifdef _DEBUG
@@ -664,7 +665,7 @@ static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *vtx, Int count, Int 
 {
 	auto orig = (decltype(njDrawTextureMemList_r)*)njDrawTextureMemList_t->Target();
 
-	if (!do_scale || count > 4)
+	if (is_bg && fill_mode == FillMode::Stretch || !do_scale || count > 4)
 	{
 		orig(vtx, count, tex, flag);
 		return;
@@ -681,12 +682,16 @@ static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *vtx, Int count, Int 
 
 static void __cdecl DrawAVA_TITLE_BACK_r(float depth)
 {
+	is_bg = true;
 	scaleTrampoline(Align::Center, DrawAVA_TITLE_BACK_r, DrawAVA_TITLE_BACK_t, depth);
+	is_bg = false;
 }
 
 static void __cdecl DrawTiledBG_AVA_BACK_r(float depth)
 {
+	is_bg = true;
 	scaleTrampoline(Align::Center, DrawTiledBG_AVA_BACK_r, DrawTiledBG_AVA_BACK_t, depth);
+	is_bg = false;
 }
 
 void __cdecl MissionCompleteScreen_Draw_r()
@@ -696,13 +701,34 @@ void __cdecl MissionCompleteScreen_Draw_r()
 
 static void __cdecl RecapBackground_Main_r(ObjectMaster *a1)
 {
+	is_bg = true;
 	scaleTrampoline(Align::Center, RecapBackground_Main_r, RecapBackground_Main_t, a1);
+	is_bg = false;
 }
 
 // TODO: fix green gradient thing
+// HACK: unconditionally scales everything
 static void __cdecl CharSelBg_Display_r(ObjectMaster *a1)
 {
 	scaleTrampoline(Align::Center, CharSelBg_Display_r, CharSelBg_Display_t, a1);
+}
+
+// HACK: unconditionally scales everything
+static void __cdecl TrialLevelList_Display_r(ObjectMaster *a1)
+{
+	scaleTrampoline(Align::Center, TrialLevelList_Display_r, TrialLevelList_Display_t, a1);
+}
+
+// HACK: unconditionally scales everything
+static void __cdecl SubGameLevelList_Display_r(ObjectMaster *a1)
+{
+	scaleTrampoline(Align::Center, SubGameLevelList_Display_r, SubGameLevelList_Display_t, a1);
+}
+
+// HACK: unconditionally scales everything
+static void __cdecl EmblemResultMenu_Display_r(ObjectMaster *a1)
+{
+	scaleTrampoline(Align::Center, EmblemResultMenu_Display_r, EmblemResultMenu_Display_t, a1);
 }
 
 void SetupHudScale()
@@ -717,6 +743,9 @@ void SetupHudScale()
 	MissionCompleteScreen_Draw_t = new Trampoline(0x00590690, 0x00590695, MissionCompleteScreen_Draw_r);
 	RecapBackground_Main_t       = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
 	CharSelBg_Display_t          = new Trampoline(0x00512450, 0x00512455, CharSelBg_Display_r);
+	TrialLevelList_Display_t     = new Trampoline(0x0050B410, 0x0050B415, TrialLevelList_Display_r);
+	SubGameLevelList_Display_t   = new Trampoline(0x0050A640, 0x0050A645, SubGameLevelList_Display_r);
+	EmblemResultMenu_Display_t   = new Trampoline(0x0050DFD0, 0x0050DFD5, EmblemResultMenu_Display_r);
 
 	// Fixes character scale on character select screen.
 	WriteData((const float**)0x0051285E, &patch_dummy);
