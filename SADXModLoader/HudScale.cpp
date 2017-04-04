@@ -81,7 +81,8 @@ enum FillMode : Uint8
 	Fill    = 2
 };
 
-static auto fill_mode = FillMode::Fill;
+// TODO: non-const, configurable
+static const auto fill_mode = FillMode::Fill;
 
 enum Align : Uint8
 {
@@ -109,16 +110,15 @@ static const float patch_dummy = 1.0f;
 static constexpr float third_h = 640.0f / 3.0f;
 static constexpr float third_v = 480.0f / 3.0f;
 
-static bool  do_scale      = false;
-static bool  is_bg         = false;
-static float scale_min     = 0.0f;
-static float scale_max     = 0.0f;
-static float scale_h       = 0.0f;
-static float scale_v       = 0.0f;
-static float region_fit_w  = 0.0f;
-static float region_fit_h  = 0.0f;
-static float region_fill_w = 0.0f;
-static float region_fill_h = 0.0f;
+static bool  do_scale  = false;
+static bool  is_bg     = false;
+static float scale_min = 0.0f;
+static float scale_max = 0.0f;
+static float scale_h   = 0.0f;
+static float scale_v   = 0.0f;
+
+static NJS_POINT2 region_fit  = { 0.0f, 0.0f };
+static NJS_POINT2 region_fill = { 0.0f, 0.0f };
 
 static void __cdecl ScalePush(Uint8 align, float h = 1.0f, float v = 1.0f)
 {
@@ -212,24 +212,24 @@ static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT2& center)
 	{
 		if ((float)HorizontalResolution / scale_v > 640.0f)
 		{
-			result.x = ((float)HorizontalResolution - region_fit_w) / 2.0f;
+			result.x = ((float)HorizontalResolution - region_fit.x) / 2.0f;
 		}
 	}
 	else if (align & Align::Right)
 	{
-		result.x = (float)HorizontalResolution - region_fit_w;
+		result.x = (float)HorizontalResolution - region_fit.x;
 	}
 
 	if (align & Align::VerticalCenter)
 	{
 		if ((float)VerticalResolution / scale_h > 480.0f)
 		{
-			result.y = ((float)VerticalResolution - region_fit_h) / 2.0f;
+			result.y = ((float)VerticalResolution - region_fit.y) / 2.0f;
 		}
 	}
 	else if (align & Align::Bottom)
 	{
-		result.y = (float)VerticalResolution - region_fit_h;
+		result.y = (float)VerticalResolution - region_fit.y;
 	}
 
 	return result;
@@ -257,11 +257,6 @@ static void ScalePoints(T* points, size_t count)
 	auto top = scale_stack.top();
 	auto align = top.alignment;
 
-	// 0 = bottom left
-	// 1 = top left
-	// 2 = bottom right
-	// 3 = top right
-
 	NJS_POINT2 center = {};
 	auto m = 1.0f / (float)count;
 
@@ -272,10 +267,22 @@ static void ScalePoints(T* points, size_t count)
 		center.y += p.y * m;
 	}
 
-	auto offset = AutoAlign(align, center);
-	auto scale = is_bg && fill_mode == FillMode::Fill
-		? max(scale_h, scale_v)
-		: scale_min;
+	NJS_POINT2 offset;
+	float scale;
+
+	// if we're scaling a background with fill mode, manually set
+	// coordinate offset so the entire image lands in the center.
+	if (is_bg && fill_mode == FillMode::Fill)
+	{
+		scale = scale_max;
+		offset.x = (HorizontalResolution - region_fill.x) / 2.0f;
+		offset.y = (VerticalResolution - region_fill.y) / 2.0f;
+	}
+	else
+	{
+		scale = scale_min;
+		offset = AutoAlign(align, center);
+	}
 
 	for (size_t i = 0; i < count; i++)
 	{
@@ -640,10 +647,10 @@ void SetHudScaleValues()
 	scale_min = min(scale_h, scale_v);
 	scale_max = max(scale_h, scale_v);
 
-	region_fit_w  = 640.0f * scale_min;
-	region_fit_h  = 480.0f * scale_min;
-	region_fill_w = 640.0f * scale_max;
-	region_fill_h = 480.0f * scale_max;
+	region_fit.x  = 640.0f * scale_min;
+	region_fit.y  = 480.0f * scale_min;
+	region_fill.x = 640.0f * scale_max;
+	region_fill.y = 480.0f * scale_max;
 }
 
 #ifdef _DEBUG
@@ -660,7 +667,6 @@ static Sint32 __fastcall wangis_r(int n)
 }
 #endif
 
-// TODO: fill mode
 static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *vtx, Int count, Int tex, Int flag)
 {
 	auto orig = (decltype(njDrawTextureMemList_r)*)njDrawTextureMemList_t->Target();
