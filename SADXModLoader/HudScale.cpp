@@ -65,6 +65,7 @@ static Trampoline* DrawAVA_TITLE_BACK_t;
 static Trampoline* DrawTiledBG_AVA_BACK_t;
 static Trampoline* MissionCompleteScreen_Draw_t;
 static Trampoline* RecapBackground_Main_t;
+static Trampoline* CharSelBg_Display_t;
 
 #pragma endregion
 
@@ -698,6 +699,12 @@ static void __cdecl RecapBackground_Main_r(ObjectMaster *a1)
 	scaleTrampoline(Align::Center, RecapBackground_Main_r, RecapBackground_Main_t, a1);
 }
 
+// TODO: fix green gradient thing
+static void __cdecl CharSelBg_Display_r(ObjectMaster *a1)
+{
+	scaleTrampoline(Align::Center, CharSelBg_Display_r, CharSelBg_Display_t, a1);
+}
+
 void SetupHudScale()
 {
 	SetHudScaleValues();
@@ -709,10 +716,10 @@ void SetupHudScale()
 	DrawTiledBG_AVA_BACK_t       = new Trampoline(0x00507BB0, 0x00507BB5, DrawTiledBG_AVA_BACK_r);
 	MissionCompleteScreen_Draw_t = new Trampoline(0x00590690, 0x00590695, MissionCompleteScreen_Draw_r);
 	RecapBackground_Main_t       = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
+	CharSelBg_Display_t          = new Trampoline(0x00512450, 0x00512455, CharSelBg_Display_r);
 
 	// Fixes character scale on character select screen.
-	// TODO: dynamically update character Z position on resolution change.
-	WriteData((float**)0x0051285E, &scale);
+	WriteData((const float**)0x0051285E, &patch_dummy);
 
 	WriteJump((void*)0x0042BEE0, ScaleResultScreen);
 
