@@ -24,12 +24,12 @@ Trampoline DrawRectPoints_t(0x0077E970, 0x0077E977, DrawRectPoints_r);
 Trampoline sub_404490_t(0x00404490, 0x00404496, sub_404490_r);
 
 static Trampoline* DisplayAllObjects_t;
-static Trampoline* missionScreen;
-static Trampoline* scaleRingLife;
-static Trampoline* scaleScoreTime;
-static Trampoline* scaleStageMission;
-static Trampoline* scalePause;
-static Trampoline* scaleTargetLifeGague;
+static Trampoline* MissionCompleteScreen_t;
+static Trampoline* HudDisplayRingTimeLife_Check_t;
+static Trampoline* HudDisplayScoreOrTimer_t;
+static Trampoline* DrawStageMissionImage_t;
+static Trampoline* DisplayPauseMenu_t;
+static Trampoline* LifeGauge_Main_t;
 static Trampoline* scaleScoreA;
 static Trampoline* scaleTornadoHP;
 static Trampoline* scaleTwinkleCircuitHUD;
@@ -61,6 +61,11 @@ static Trampoline* scaleTailsRaceBar;
 static Trampoline* scaleDemoPressStart;
 static Trampoline* ChaoDX_Message_PlayerAction_Load_t;
 static Trampoline* ChaoDX_Message_PlayerAction_Display_t;
+static Trampoline* njDrawTextureMemList_t;
+static Trampoline* DrawAVA_TITLE_BACK_t;
+static Trampoline* DrawTiledBG_AVA_BACK_t;
+static Trampoline* MissionCompleteScreen_Draw_t;
+static Trampoline* RecapBackground_Main_t;
 
 #pragma endregion
 
@@ -155,14 +160,14 @@ static void __cdecl DisplayAllObjects_r()
 }
 
 // HACK: Remove when "other things" scaling is implemented
-static Sint32 __cdecl FixMissionScreen()
+static Sint32 __cdecl MissionCompleteScreen_r()
 {
 	if (do_scale)
 	{
 		ScalePush(Align::Auto, scale_h, scale_v);
 	}
 
-	auto original = (decltype(FixMissionScreen)*)missionScreen->Target();
+	auto original = (decltype(MissionCompleteScreen_r)*)MissionCompleteScreen_t->Target();
 	Sint32 result = original();
 
 	if (do_scale)
@@ -212,7 +217,7 @@ static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT2& center)
 	{
 		if ((float)HorizontalResolution / scale_v > 640.0f)
 		{
-			result.x = (float)HorizontalResolution / 2.0f - region_w / 2.0f;
+			result.x = ((float)HorizontalResolution - region_w) / 2.0f;
 		}
 	}
 	else if (align & Align::Right)
@@ -222,9 +227,9 @@ static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT2& center)
 
 	if (align & Align::VerticalCenter)
 	{
-		if ((float)VerticalResolution / scale_h > 480.0f)
+		//if ((float)VerticalResolution / scale_h > 480.0f)
 		{
-			result.y = (float)VerticalResolution / 2.0f - region_h / 2.0f;
+			result.y = ((float)VerticalResolution - region_h) / 2.0f;
 		}
 	}
 	else if (align & Align::Bottom)
@@ -267,7 +272,14 @@ static void __cdecl SpritePop(NJS_SPRITE* sp)
 	sp->sy = last_sprite.sy;
 }
 
-static void ScaleRect(NJS_POINT2* points, size_t count)
+/**
+ * \brief Scales and re-positions an array of structures containing the fields x and y.
+ * \tparam T A structure type containing the fields x and y.
+ * \param points Pointer to an array of T.
+ * \param count Length of the array
+ */
+template <typename T>
+static void ScalePoints(T* points, size_t count)
 {
 	if (scale_stack.empty())
 	{
@@ -318,16 +330,34 @@ static void __cdecl StoreSprite(NJS_SPRITE* sp)
 
 #pragma region template garbage
 
+/**
+ * \brief Calls a trampoline function.
+ * \tparam T Function type
+ * \tparam Args
+ * \param align Alignment mode
+ * \param t Trampoline
+ * \param args Option arguments for function
+ */
 template<typename T, typename... Args>
-void ScaleTrampoline(Uint8 align, const T&, const Trampoline* t, Args... args)
+void scaleTrampoline(Uint8 align, const T&, const Trampoline* t, Args... args)
 {
 	ScalePush(align);
 	((T*)t->Target())(args...);
 	ScalePop();
 }
 
+/**
+ * \brief Calls a trampoline function with a return type.
+ * \tparam R Return type
+ * \tparam T Function type
+ * \tparam Args 
+ * \param align Alignment mode
+ * \param t Trampoline
+ * \param args Optional arguments for function
+ * \return Return value of trampoline function
+ */
 template<typename R, typename T, typename... Args>
-R ScaleTrampoline(Uint8 align, const T&, const Trampoline* t, Args... args)
+R scaleTrampoline(Uint8 align, const T&, const Trampoline* t, Args... args)
 {
 	ScalePush(align);
 	R result = ((T*)t->Target())(args...);
@@ -346,174 +376,174 @@ static void __cdecl ScaleResultScreen(ObjectMaster* _this)
 	ScalePop();
 }
 
-static void __cdecl ScaleRingLife()
+static void __cdecl HudDisplayRingTimeLife_Check_r()
 {
-	ScaleTrampoline(Align::Auto, ScaleRingLife, scaleRingLife);
+	scaleTrampoline(Align::Auto, HudDisplayRingTimeLife_Check_r, HudDisplayRingTimeLife_Check_t);
 }
-static void __cdecl ScaleScoreTime()
+static void __cdecl HudDisplayScoreOrTimer_r()
 {
-	ScaleTrampoline(Align::Left, ScaleScoreTime, scaleScoreTime);
-}
-
-static void __cdecl ScaleStageMission(ObjectMaster* _this)
-{
-	ScaleTrampoline(Align::Center, ScaleStageMission, scaleStageMission, _this);
+	scaleTrampoline(Align::Left, HudDisplayScoreOrTimer_r, HudDisplayScoreOrTimer_t);
 }
 
-static short __cdecl ScalePauseMenu()
+static void __cdecl DrawStageMissionImage_r(ObjectMaster* _this)
 {
-	return ScaleTrampoline<short>(Align::Center, ScalePauseMenu, scalePause);
+	scaleTrampoline(Align::Center, DrawStageMissionImage_r, DrawStageMissionImage_t, _this);
 }
 
-static void __cdecl ScaleTargetLifeGague(ObjectMaster* a1)
+static short __cdecl DisplayPauseMenu_r()
 {
-	ScaleTrampoline(Align::Right, ScaleTargetLifeGague, scaleTargetLifeGague, a1);
+	return scaleTrampoline<short>(Align::Center, DisplayPauseMenu_r, DisplayPauseMenu_t);
+}
+
+static void __cdecl LifeGauge_Main_r(ObjectMaster* a1)
+{
+	scaleTrampoline(Align::Right, LifeGauge_Main_r, LifeGauge_Main_t, a1);
 }
 
 static void __cdecl ScaleScoreA()
 {
-	ScaleTrampoline(Align::Left, ScaleScoreA, scaleScoreA);
+	scaleTrampoline(Align::Left, ScaleScoreA, scaleScoreA);
 }
 
 static void __cdecl ScaleTornadoHP(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Left, ScaleTornadoHP, scaleTornadoHP, a1);
+	scaleTrampoline(Align::Left, ScaleTornadoHP, scaleTornadoHP, a1);
 }
 
 static void __cdecl ScaleTwinkleCircuitHUD(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Center, ScaleTwinkleCircuitHUD, scaleTwinkleCircuitHUD, a1);
+	scaleTrampoline(Align::Center, ScaleTwinkleCircuitHUD, scaleTwinkleCircuitHUD, a1);
 }
 
 static void __cdecl ScaleFishingHit(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Center, ScaleFishingHit, scaleFishingHit, a1);
+	scaleTrampoline(Align::Center, ScaleFishingHit, scaleFishingHit, a1);
 }
 
 static void __cdecl ScaleReel()
 {
-	ScaleTrampoline(Align::Auto, ScaleReel, scaleReel);
+	scaleTrampoline(Align::Auto, ScaleReel, scaleReel);
 }
 static void __cdecl ScaleRod()
 {
-	ScaleTrampoline(Align::Auto, ScaleRod, scaleRod);
+	scaleTrampoline(Align::Auto, ScaleRod, scaleRod);
 }
 
 static void __cdecl ScaleBigHud(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Auto, ScaleBigHud, scaleBigHud, a1);
+	scaleTrampoline(Align::Auto, ScaleBigHud, scaleBigHud, a1);
 }
 static void __cdecl ScaleRodMeters(float a1)
 {
-	ScaleTrampoline(Align::Auto, ScaleRodMeters, scaleRodMeters, a1);
+	scaleTrampoline(Align::Auto, ScaleRodMeters, scaleRodMeters, a1);
 }
 
 static void __cdecl ScaleAnimalPickup(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Right | Align::Bottom, ScaleAnimalPickup, scaleAnimalPickup, a1);
+	scaleTrampoline(Align::Right | Align::Bottom, ScaleAnimalPickup, scaleAnimalPickup, a1);
 }
 
 static void __cdecl ScaleItemBoxSprite(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Bottom | Align::HorizontalCenter, ScaleItemBoxSprite, scaleItemBoxSprite, a1);
+	scaleTrampoline(Align::Bottom | Align::HorizontalCenter, ScaleItemBoxSprite, scaleItemBoxSprite, a1);
 }
 
 static void __cdecl ScaleBalls(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Right, ScaleBalls, scaleBalls, a1);
+	scaleTrampoline(Align::Right, ScaleBalls, scaleBalls, a1);
 }
 
 static void __cdecl ScaleCheckpointTime(int a1, int a2, int a3)
 {
-	ScaleTrampoline(Align::Right | Align::Bottom, ScaleCheckpointTime, scaleCheckpointTime, a1, a2, a3);
+	scaleTrampoline(Align::Right | Align::Bottom, ScaleCheckpointTime, scaleCheckpointTime, a1, a2, a3);
 }
 
 static void __cdecl ScaleEmeraldRadarA(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Auto, ScaleEmeraldRadarA, scaleEmeraldRadarA, a1);
+	scaleTrampoline(Align::Auto, ScaleEmeraldRadarA, scaleEmeraldRadarA, a1);
 }
 static void __cdecl ScaleEmeraldRadar_Grab(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Auto, ScaleEmeraldRadar_Grab, scaleEmeraldRadar_Grab, a1);
+	scaleTrampoline(Align::Auto, ScaleEmeraldRadar_Grab, scaleEmeraldRadar_Grab, a1);
 }
 static void __cdecl ScaleEmeraldRadarB(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Auto, ScaleEmeraldRadarB, scaleEmeraldRadarB, a1);
+	scaleTrampoline(Align::Auto, ScaleEmeraldRadarB, scaleEmeraldRadarB, a1);
 }
 
 static void __cdecl ScaleSandHillMultiplier(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Auto, ScaleSandHillMultiplier, scaleSandHillMultiplier, a1);
+	scaleTrampoline(Align::Auto, ScaleSandHillMultiplier, scaleSandHillMultiplier, a1);
 }
 static void __cdecl ScaleIceCapMultiplier(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Auto, ScaleIceCapMultiplier, scaleIceCapMultiplier, a1);
+	scaleTrampoline(Align::Auto, ScaleIceCapMultiplier, scaleIceCapMultiplier, a1);
 }
 
 static void __cdecl ScaleGammaTimeAddHud(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Right, ScaleGammaTimeAddHud, scaleGammaTimeAddHud, a1);
+	scaleTrampoline(Align::Right, ScaleGammaTimeAddHud, scaleGammaTimeAddHud, a1);
 }
 static void __cdecl ScaleGammaTimeRemaining(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Bottom | Align::HorizontalCenter, ScaleGammaTimeRemaining, scaleGammaTimeRemaining, a1);
+	scaleTrampoline(Align::Bottom | Align::HorizontalCenter, ScaleGammaTimeRemaining, scaleGammaTimeRemaining, a1);
 }
 
 static void __cdecl ScaleEmblemScreen(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Center, ScaleEmblemScreen, scaleEmblemScreen, a1);
+	scaleTrampoline(Align::Center, ScaleEmblemScreen, scaleEmblemScreen, a1);
 }
 
 static void __cdecl ScaleBossName(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Center, ScaleBossName, scaleBossName, a1);
+	scaleTrampoline(Align::Center, ScaleBossName, scaleBossName, a1);
 }
 
 static void __cdecl ScaleNightsCards(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Auto, ScaleNightsCards, scaleNightsCards, a1);
+	scaleTrampoline(Align::Auto, ScaleNightsCards, scaleNightsCards, a1);
 }
 static void __cdecl ScaleNightsJackpot(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Auto, ScaleNightsJackpot, scaleNightsJackpot, a1);
+	scaleTrampoline(Align::Auto, ScaleNightsJackpot, scaleNightsJackpot, a1);
 }
 
 static void __cdecl ScaleMissionStartClear(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Center, ScaleMissionStartClear, scaleMissionStartClear, a1);
+	scaleTrampoline(Align::Center, ScaleMissionStartClear, scaleMissionStartClear, a1);
 }
 static void __cdecl ScaleMissionTimer()
 {
 
-	ScaleTrampoline(Align::Center, ScaleMissionTimer, scaleMissionTimer);
+	scaleTrampoline(Align::Center, ScaleMissionTimer, scaleMissionTimer);
 }
 static void __cdecl ScaleMissionCounter()
 {
-	ScaleTrampoline(Align::Center, ScaleMissionCounter, scaleMissionCounter);
+	scaleTrampoline(Align::Center, ScaleMissionCounter, scaleMissionCounter);
 }
 
 static void __cdecl ScaleTailsWinLose(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Center, ScaleTailsWinLose, scaleTailsWinLose, a1);
+	scaleTrampoline(Align::Center, ScaleTailsWinLose, scaleTailsWinLose, a1);
 }
 static void __cdecl ScaleTailsRaceBar(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::HorizontalCenter | Align::Bottom, ScaleTailsRaceBar, scaleTailsRaceBar, a1);
+	scaleTrampoline(Align::HorizontalCenter | Align::Bottom, ScaleTailsRaceBar, scaleTailsRaceBar, a1);
 }
 
 static void __cdecl ScaleDemoPressStart(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Right, ScaleDemoPressStart, scaleDemoPressStart, a1);
+	scaleTrampoline(Align::Right, ScaleDemoPressStart, scaleDemoPressStart, a1);
 }
 
 static void __cdecl ChaoDX_Message_PlayerAction_Load_r()
 {
-	ScaleTrampoline(Align::Auto, ChaoDX_Message_PlayerAction_Load_r, ChaoDX_Message_PlayerAction_Load_t);
+	scaleTrampoline(Align::Auto, ChaoDX_Message_PlayerAction_Load_r, ChaoDX_Message_PlayerAction_Load_t);
 }
 
 static void __cdecl ChaoDX_Message_PlayerAction_Display_r(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Top | Align::Right,
+	scaleTrampoline(Align::Top | Align::Right,
 		ChaoDX_Message_PlayerAction_Display_r, ChaoDX_Message_PlayerAction_Display_t, a1);
 }
 
@@ -593,14 +623,14 @@ static void __cdecl DrawRectPoints_r(NJS_POINT2* points, float scale)
 		return;
 #else
 		ScalePush(Align::Top | Align::Left);
-		ScaleRect(points, 2);
+		ScalePoints(points, 2);
 		original(points, scale);
 		ScalePop();
 		return;
 #endif
 	}
 
-	ScaleRect(points, 2);
+	ScalePoints(points, 2);
 	original(points, scale);
 }
 
@@ -619,7 +649,7 @@ static void __cdecl sub_404490_r(NJS_POINT2COL* points, int count, float depth, 
 		return;
 	}
 
-	ScaleRect(points->p, points->num);
+	ScalePoints(points->p, points->num);
 	original(points, count, depth, size, flags);
 }
 
@@ -648,9 +678,57 @@ static Sint32 __fastcall wangis_r(int n)
 }
 #endif
 
+// TODO: fill mode
+static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *vtx, Int count, Int tex, Int flag)
+{
+	auto orig = (decltype(njDrawTextureMemList_r)*)njDrawTextureMemList_t->Target();
+
+	if (!do_scale || count > 4)
+	{
+		orig(vtx, count, tex, flag);
+		return;
+	}
+
+	// vtx[0] == top left
+	// vtx[1] == bottom left
+	// vtx[2] == top right
+	// vtx[3] == bottom right
+
+	ScalePoints(vtx, count);
+	orig(vtx, count, tex, flag);
+}
+
+static void __cdecl DrawAVA_TITLE_BACK_r(float depth)
+{
+	scaleTrampoline(Align::Center, DrawAVA_TITLE_BACK_r, DrawAVA_TITLE_BACK_t, depth);
+}
+
+static void __cdecl DrawTiledBG_AVA_BACK_r(float depth)
+{
+	scaleTrampoline(Align::Center, DrawTiledBG_AVA_BACK_r, DrawTiledBG_AVA_BACK_t, depth);
+}
+
+void __cdecl MissionCompleteScreen_Draw_r()
+{
+	scaleTrampoline(Align::Center, MissionCompleteScreen_Draw_r, MissionCompleteScreen_Draw_t);
+}
+
+static void __cdecl RecapBackground_Main_r(ObjectMaster *a1)
+{
+	scaleTrampoline(Align::Center, RecapBackground_Main_r, RecapBackground_Main_t, a1);
+}
+
 void SetupHudScale()
 {
 	SetHudScaleValues();
+
+	njDrawTextureMemList_t = new Trampoline(0x0077DC70, 0x0077DC79, njDrawTextureMemList_r);
+	WriteCall((void*)((size_t)njDrawTextureMemList_t->Target() + 4), njAlphaMode);
+
+	DrawAVA_TITLE_BACK_t         = new Trampoline(0x0050BA90, 0x0050BA96, DrawAVA_TITLE_BACK_r);
+	DrawTiledBG_AVA_BACK_t       = new Trampoline(0x00507BB0, 0x00507BB5, DrawTiledBG_AVA_BACK_r);
+	MissionCompleteScreen_Draw_t = new Trampoline(0x00590690, 0x00590695, MissionCompleteScreen_Draw_r);
+	RecapBackground_Main_t       = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
 
 	// Fixes character scale on character select screen.
 	// TODO: dynamically update character Z position on resolution change.
@@ -661,16 +739,15 @@ void SetupHudScale()
 	DisplayAllObjects_t = new Trampoline(0x0040B540, 0x0040B546, DisplayAllObjects_r);
 	WriteCall((void*)((size_t)DisplayAllObjects_t->Target() + 1), (void*)0x004128F0);
 
-	missionScreen = new Trampoline(0x00590E60, 0x00590E65, FixMissionScreen);
+	MissionCompleteScreen_t        = new Trampoline(0x00590E60, 0x00590E65, MissionCompleteScreen_r);
+	HudDisplayRingTimeLife_Check_t = new Trampoline(0x00425F90, 0x00425F95, HudDisplayRingTimeLife_Check_r);
+	HudDisplayScoreOrTimer_t       = new Trampoline(0x00427F50, 0x00427F55, HudDisplayScoreOrTimer_r);
+	DrawStageMissionImage_t        = new Trampoline(0x00457120, 0x00457126, DrawStageMissionImage_r);
 
-	scaleRingLife = new Trampoline(0x00425F90, 0x00425F95, ScaleRingLife);
-	scaleScoreTime = new Trampoline(0x00427F50, 0x00427F55, ScaleScoreTime);
-	scaleStageMission = new Trampoline(0x00457120, 0x00457126, ScaleStageMission);
+	DisplayPauseMenu_t = new Trampoline(0x00415420, 0x00415425, DisplayPauseMenu_r);
+	WriteCall(DisplayPauseMenu_t->Target(), (void*)0x40FDC0);
 
-	scalePause = new Trampoline(0x00415420, 0x00415425, ScalePauseMenu);
-	WriteCall(scalePause->Target(), (void*)0x40FDC0);
-
-	scaleTargetLifeGague = new Trampoline(0x004B3830, 0x004B3837, ScaleTargetLifeGague);
+	LifeGauge_Main_t = new Trampoline(0x004B3830, 0x004B3837, LifeGauge_Main_r);
 
 	scaleScoreA = new Trampoline(0x00628330, 0x00628335, ScaleScoreA);
 
