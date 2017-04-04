@@ -24,7 +24,6 @@ Trampoline DrawRectPoints_t(0x0077E970, 0x0077E977, DrawRectPoints_r);
 Trampoline sub_404490_t(0x00404490, 0x00404496, sub_404490_r);
 
 static Trampoline* DisplayAllObjects_t;
-static Trampoline* MissionCompleteScreen_t;
 static Trampoline* HudDisplayRingTimeLife_Check_t;
 static Trampoline* HudDisplayScoreOrTimer_t;
 static Trampoline* DrawStageMissionImage_t;
@@ -157,25 +156,6 @@ static void __cdecl DisplayAllObjects_r()
 	{
 		ScalePop();
 	}
-}
-
-// HACK: Remove when "other things" scaling is implemented
-static Sint32 __cdecl MissionCompleteScreen_r()
-{
-	if (do_scale)
-	{
-		ScalePush(Align::Auto, scale_h, scale_v);
-	}
-
-	auto original = (decltype(MissionCompleteScreen_r)*)MissionCompleteScreen_t->Target();
-	Sint32 result = original();
-
-	if (do_scale)
-	{
-		ScalePop();
-	}
-
-	return result;
 }
 
 static NJS_SPRITE last_sprite;
@@ -739,7 +719,6 @@ void SetupHudScale()
 	DisplayAllObjects_t = new Trampoline(0x0040B540, 0x0040B546, DisplayAllObjects_r);
 	WriteCall((void*)((size_t)DisplayAllObjects_t->Target() + 1), (void*)0x004128F0);
 
-	MissionCompleteScreen_t        = new Trampoline(0x00590E60, 0x00590E65, MissionCompleteScreen_r);
 	HudDisplayRingTimeLife_Check_t = new Trampoline(0x00425F90, 0x00425F95, HudDisplayRingTimeLife_Check_r);
 	HudDisplayScoreOrTimer_t       = new Trampoline(0x00427F50, 0x00427F55, HudDisplayScoreOrTimer_r);
 	DrawStageMissionImage_t        = new Trampoline(0x00457120, 0x00457126, DrawStageMissionImage_r);
