@@ -9,6 +9,8 @@
 using std::stack;
 using std::vector;
 
+// TODO: title screen?
+// TODO: splash screens
 // TODO: subtitles/messages (mission screen, quit prompt), map, title cards somehow, credits, tutorials
 // TODO: fix green gradient thing
 
@@ -609,16 +611,8 @@ static void __cdecl DrawRectPoints_r(NJS_POINT2* points, float scale)
 
 	if (!do_scale)
 	{
-#ifndef  _DEBUG
 		original(points, scale);
 		return;
-#else
-		ScalePush(Align::Top | Align::Left);
-		ScalePoints(points, 2);
-		original(points, scale);
-		ScalePop();
-		return;
-#endif
 	}
 
 	ScalePoints(points, 2);
