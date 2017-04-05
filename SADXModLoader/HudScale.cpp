@@ -9,7 +9,7 @@
 using std::stack;
 using std::vector;
 
-// TODO: "other" things
+// TODO: options, subtitles/messages (mission screen, quit prompt), map, title cards somehow
 
 #pragma region trampolines
 
@@ -70,6 +70,7 @@ static Trampoline* TrialLevelList_Display_t;
 static Trampoline* SubGameLevelList_Display_t;
 static Trampoline* EmblemResultMenu_Display_t;
 static Trampoline* FileSelect_Display_t;
+static Trampoline* MenuObj_Display_t;
 
 #pragma endregion
 
@@ -744,6 +745,12 @@ static void __cdecl FileSelect_Display_r(ObjectMaster *a1)
 	scaleTrampoline(Align::Center, FileSelect_Display_r, FileSelect_Display_t, a1);
 }
 
+// HACK: unconditionally scales everything
+static void __cdecl MenuObj_Display_r(ObjectMaster *a1)
+{
+	scaleTrampoline(Align::Center, MenuObj_Display_r, MenuObj_Display_t, a1);
+}
+
 void SetupHudScale()
 {
 	SetHudScaleValues();
@@ -760,6 +767,7 @@ void SetupHudScale()
 	SubGameLevelList_Display_t   = new Trampoline(0x0050A640, 0x0050A645, SubGameLevelList_Display_r);
 	EmblemResultMenu_Display_t   = new Trampoline(0x0050DFD0, 0x0050DFD5, EmblemResultMenu_Display_r);
 	FileSelect_Display_t         = new Trampoline(0x00505550, 0x00505555, FileSelect_Display_r);
+	MenuObj_Display_t            = new Trampoline(0x00432480, 0x00432487, MenuObj_Display_r);
 
 	// Fixes character scale on character select screen.
 	WriteData((const float**)0x0051285E, &patch_dummy);
