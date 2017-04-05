@@ -9,7 +9,8 @@
 using std::stack;
 using std::vector;
 
-// TODO: options, subtitles/messages (mission screen, quit prompt), map, title cards somehow
+// TODO: subtitles/messages (mission screen, quit prompt), map, title cards somehow, credits, tutorials
+// TODO: fix green gradient thing
 
 #pragma region trampolines
 
@@ -71,6 +72,8 @@ static Trampoline* SubGameLevelList_Display_t;
 static Trampoline* EmblemResultMenu_Display_t;
 static Trampoline* FileSelect_Display_t;
 static Trampoline* MenuObj_Display_t;
+static Trampoline* OptionsMenu_Display_t;
+static Trampoline* SoundTest_Display_t;
 
 #pragma endregion
 
@@ -714,7 +717,6 @@ static void __cdecl RecapBackground_Main_r(ObjectMaster *a1)
 	is_bg = false;
 }
 
-// TODO: fix green gradient thing
 // HACK: unconditionally scales everything
 static void __cdecl CharSelBg_Display_r(ObjectMaster *a1)
 {
@@ -751,6 +753,18 @@ static void __cdecl MenuObj_Display_r(ObjectMaster *a1)
 	scaleTrampoline(Align::Center, MenuObj_Display_r, MenuObj_Display_t, a1);
 }
 
+// HACK: unconditionally scales everything
+static void __cdecl OptionsMenu_Display_r(ObjectMaster *a1)
+{
+	scaleTrampoline(Align::Center, OptionsMenu_Display_r, OptionsMenu_Display_t, a1);
+}
+
+// HACK: unconditionally scales everything
+static void __cdecl SoundTest_Display_r(ObjectMaster *a1)
+{
+	scaleTrampoline(Align::Center, SoundTest_Display_r, SoundTest_Display_t, a1);
+}
+
 void SetupHudScale()
 {
 	SetHudScaleValues();
@@ -768,6 +782,8 @@ void SetupHudScale()
 	EmblemResultMenu_Display_t   = new Trampoline(0x0050DFD0, 0x0050DFD5, EmblemResultMenu_Display_r);
 	FileSelect_Display_t         = new Trampoline(0x00505550, 0x00505555, FileSelect_Display_r);
 	MenuObj_Display_t            = new Trampoline(0x00432480, 0x00432487, MenuObj_Display_r);
+	OptionsMenu_Display_t        = new Trampoline(0x00509810, 0x00509815, OptionsMenu_Display_r);
+	SoundTest_Display_t          = new Trampoline(0x00511390, 0x00511395, SoundTest_Display_r);
 
 	// Fixes character scale on character select screen.
 	WriteData((const float**)0x0051285E, &patch_dummy);
