@@ -125,8 +125,40 @@ bool texpack::ParseIndex(const string& path, vector<TexPackEntry>& out)
 				break;
 			}
 
+			uint32_t width = 0;
+			uint32_t height = 0;
+
 			uint32_t gbix = stoul(line.substr(0, comma));
 			auto name = line.substr(comma + 1);
+
+			comma = name.find(',');
+
+			// check for an additional texture dimensions field
+			if (comma != name.npos && comma > 0)
+			{
+				auto tmp = name;
+				name = tmp.substr(0, comma);
+
+				auto dimensions = tmp.substr(++comma);
+				size_t separator = dimensions.find('x');
+
+				// If no 'x' separator is found, try capital
+				if (!separator || separator == dimensions.npos)
+				{
+					separator = dimensions.find('X');
+				}
+
+				if (!separator || separator == dimensions.npos)
+				{
+					PrintDebug("Invalid format for texture dimensions on line %u: %s\n",
+						lineNumber, dimensions.c_str());
+					break;
+				}
+
+				width = stoul(dimensions.substr(0, separator));
+				height = stoul(dimensions.substr(++separator));
+			}
+
 			auto texturePath = path + "\\" + name;
 
 			if (!FileExists(texturePath))
@@ -136,7 +168,7 @@ bool texpack::ParseIndex(const string& path, vector<TexPackEntry>& out)
 				break;
 			}
 
-			out.push_back({ gbix, name });
+			out.push_back({ gbix, name, width, height });
 		}
 		catch (exception& exception)
 		{
@@ -211,8 +243,11 @@ bool GetDDSHeader(const string& path, DDS_HEADER& header)
 /// <param name="globalIndex">Global texture index for cache lookup.</param>
 /// <param name="name">The name of the texture.</param>
 /// <param name="mipmap">If <c>true</c>, automatically generate mipmaps.</param>
+/// <param name="width">If non-zero, overrides texture width info in <see cref="NJS_TEXMEMLIST">.</param>
+/// <param name="height">If non-zero, overrides texture height info in <see cref="NJS_TEXMEMLIST">.</param>
 /// <returns>A pointer to the texture, or <c>nullptr</c> on failure.</returns>
-NJS_TEXMEMLIST* LoadTexture(const string& path, uint32_t globalIndex, const string& name, bool mipmap)
+NJS_TEXMEMLIST* LoadTexture(const string& path, uint32_t globalIndex, const string& name, bool mipmap,
+	uint32_t width, uint32_t height)
 {
 	auto _path = path + "\\" + name;
 
@@ -266,13 +301,16 @@ NJS_TEXMEMLIST* LoadTexture(const string& path, uint32_t globalIndex, const stri
 			D3DSURFACE_DESC info;
 			d3dtexture->GetLevelDesc(0, &info);
 
+			auto w = !width ? info.Width : width;
+			auto h = !height ? info.Height : height;
+
 			// Now we assign some basic metadata from the texture entry and D3D texture, as well as the pointer to the texture itself.
 			// A few things I know are missing for sure are:
 			// NJS_TEXSURFACE::Type, Depth, Format, Flags. Virtual and Physical are pretty much always null.
 			texture->count                          = 1; // Texture reference count.
 			texture->globalIndex                    = globalIndex;
-			texture->texinfo.texsurface.nWidth      = info.Width;
-			texture->texinfo.texsurface.nHeight     = info.Height;
+			texture->texinfo.texsurface.nWidth      = w;
+			texture->texinfo.texsurface.nHeight     = h;
 			texture->texinfo.texsurface.TextureSize = info.Size;
 			texture->texinfo.texsurface.pSurface    = (Uint32*)d3dtexture;
 		}
@@ -293,7 +331,7 @@ NJS_TEXMEMLIST* LoadTexture(const string& path, uint32_t globalIndex, const stri
 /// <returns>A pointer to the texture, or <c>nullptr</c> on failure.</returns>
 NJS_TEXMEMLIST* LoadTexture(const string& path, const TexPackEntry& entry, bool mipmap)
 {
-	return LoadTexture(path, entry.globalIndex, entry.name, mipmap);
+	return LoadTexture(path, entry.globalIndex, entry.name, mipmap, entry.width, entry.height);
 }
 
 #pragma endregion
@@ -445,7 +483,8 @@ bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
 		if (_filename != texture_name)
 			continue;
 
-		*tex = LoadTexture(path, i.globalIndex, name, !mipmap::IsBlacklistedPVR(filename.c_str()));
+		*tex = LoadTexture(path, i.globalIndex, name, !mipmap::IsBlacklistedPVR(filename.c_str()),
+			i.width, i.height);
 		return *tex != nullptr;
 	}
 
