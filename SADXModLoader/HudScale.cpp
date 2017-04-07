@@ -10,7 +10,6 @@ using std::stack;
 using std::vector;
 
 // TODO: title screen?
-// TODO: splash screens
 // TODO: subtitles/messages (mission screen, quit prompt), map, title cards somehow, credits, tutorials
 // TODO: fix green gradient thing
 
@@ -76,6 +75,7 @@ static Trampoline* FileSelect_Display_t;
 static Trampoline* MenuObj_Display_t;
 static Trampoline* OptionsMenu_Display_t;
 static Trampoline* SoundTest_Display_t;
+static Trampoline* DisplayLogoScreen_t;
 
 #pragma endregion
 
@@ -759,6 +759,13 @@ static void __cdecl SoundTest_Display_r(ObjectMaster *a1)
 	scaleTrampoline(Align::Center, SoundTest_Display_r, SoundTest_Display_t, a1);
 }
 
+static void __cdecl DisplayLogoScreen_r(Uint8 index)
+{
+	is_bg = true;
+	scaleTrampoline(Align::Center, DisplayLogoScreen_r, DisplayLogoScreen_t, index);
+	is_bg = false;
+}
+
 void SetupHudScale()
 {
 	SetHudScaleValues();
@@ -778,6 +785,7 @@ void SetupHudScale()
 	MenuObj_Display_t            = new Trampoline(0x00432480, 0x00432487, MenuObj_Display_r);
 	OptionsMenu_Display_t        = new Trampoline(0x00509810, 0x00509815, OptionsMenu_Display_r);
 	SoundTest_Display_t          = new Trampoline(0x00511390, 0x00511395, SoundTest_Display_r);
+	DisplayLogoScreen_t          = new Trampoline(0x0042CB20, 0x0042CB28, DisplayLogoScreen_r);
 
 	// Fixes character scale on character select screen.
 	WriteData((const float**)0x0051285E, &patch_dummy);
