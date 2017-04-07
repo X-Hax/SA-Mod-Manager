@@ -6,6 +6,7 @@ struct TexPackEntry
 {
 	uint32_t globalIndex;
 	std::string name;
+	uint32_t width, height;
 };
 
 namespace texpack
