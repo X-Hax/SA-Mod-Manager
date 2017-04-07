@@ -713,43 +713,42 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 	EnumDisplayMonitors(nullptr, nullptr, GetMonitorSize, 0);
 
+	int screenX, screenY, screenW, screenH, wsX, wsY, wsW, wsH;
+	if (screenNum > 0)
+	{
+		if (screenBounds.size() < screenNum)
+			screenNum = 1;
+
+		RECT screenSize = screenBounds[screenNum - 1];
+		wsX = screenX = screenSize.left;
+		wsY = screenY = screenSize.top;
+		wsW = screenW = screenSize.right - screenSize.left;
+		wsH = screenH = screenSize.bottom - screenSize.top;
+	}
+	else
+	{
+		screenX = GetSystemMetrics(SM_XVIRTUALSCREEN);
+		screenY = GetSystemMetrics(SM_YVIRTUALSCREEN);
+		screenW = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+		screenH = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+		wsX = 0;
+		wsY = 0;
+		wsW = GetSystemMetrics(SM_CXSCREEN);
+		wsH = GetSystemMetrics(SM_CYSCREEN);
+	}
+
 	if (borderlessWindow)
 	{
-		AdjustWindowRectEx(&windowRect, WS_CAPTION | WS_SYSMENU
-			| (windowResize ? WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX : 0), false, 0);
-		int screenX, screenY, screenW, screenH;
-		if (screenNum > 0)
-		{
-			if (screenBounds.size() < screenNum)
-				screenNum = 1;
+		if (windowResize)
+			outerSizes[windowed].style |= WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX;
 
-			RECT screenSize = screenBounds[screenNum - 1];
-			screenX = screenSize.left;
-			screenY = screenSize.top;
-			screenW = screenSize.right - screenSize.left;
-			screenH = screenSize.bottom - screenSize.top;
-		}
-		else
-		{
-			screenX = GetSystemMetrics(SM_XVIRTUALSCREEN);
-			screenY = GetSystemMetrics(SM_YVIRTUALSCREEN);
-			screenW = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-			screenH = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-		}
+		AdjustWindowRectEx(&windowRect, outerSizes[windowed].style, false, 0);
 
 		outerSizes[windowed].width = windowRect.right - windowRect.left;
 		outerSizes[windowed].height = windowRect.bottom - windowRect.top;
 
-		if (windowResize)
-		{
-			outerSizes[windowed].style |= WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX;
-		}
-
-		if (!IsWindowed)
-		{
-			outerSizes[windowed].x = screenX + ((screenW - outerSizes[windowed].width) / 2);
-			outerSizes[windowed].y = screenY + ((screenH - outerSizes[windowed].height) / 2);
-		}
+		outerSizes[windowed].x = wsX + ((wsW - outerSizes[windowed].width) / 2);
+		outerSizes[windowed].y = wsY + ((wsH - outerSizes[windowed].height) / 2);
 
 		outerSizes[fullscreen].x = screenX;
 		outerSizes[fullscreen].y = screenY;
@@ -849,8 +848,12 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		}
 
 		AdjustWindowRectEx(&windowRect, dwStyle, false, dwExStyle);
-		hWnd = CreateWindowExA(dwExStyle, GetWindowClassName(), GetWindowClassName(), dwStyle, CW_USEDEFAULT, CW_USEDEFAULT,
-			windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr, hInstance, nullptr);
+		int w = windowRect.right - windowRect.left;
+		int h = windowRect.bottom - windowRect.top;
+		int x = wsX + ((wsW - w) / 2);
+		int y = wsY + ((wsH - h) / 2);
+		hWnd = CreateWindowExA(dwExStyle, GetWindowClassName(), GetWindowClassName(), dwStyle, x, y,
+			w, h, nullptr, nullptr, hInstance, nullptr);
 
 		accelTable = CreateAcceleratorTable(arrayptrandlength(accelerators));
 
