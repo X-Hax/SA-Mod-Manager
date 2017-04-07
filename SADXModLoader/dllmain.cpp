@@ -2103,6 +2103,17 @@ static void ProcessModelArrayDLL(const IniGroup *group, void *exp)
 	((NJS_OBJECT **)exp)[group->getInt("Index")] = (NJS_OBJECT *)dlllabels[group->getString("Label")];
 }
 
+static void ProcessMorphDLL(const IniGroup *group, void *exp)
+{
+	// won't work for chunk models, but no DLL exports this type of data anyway
+	memcpy(exp, dlllabels[group->getString("Label")], sizeof(NJS_MODEL_SADX));
+}
+
+static void ProcessModelsArrayDLL(const IniGroup *group, void *exp)
+{
+	((void **)exp)[group->getInt("Index")] = ((NJS_OBJECT *)dlllabels[group->getString("Label")])->model;
+}
+
 static void ProcessActionArrayDLL(const IniGroup *group, void *exp)
 {
 	string field = group->getString("Field");
@@ -2122,6 +2133,8 @@ static const unordered_map<string, void(__cdecl *)(const IniGroup *, void *)> dl
 	{ "basicdxmodelarray", ProcessModelArrayDLL },
 	{ "chunkmodel", ProcessModelDLL },
 	{ "chunkmodelarray", ProcessModelArrayDLL },
+	{ "morph", ProcessMorphDLL },
+	{ "modelsarray", ProcessModelsArrayDLL },
 	{ "actionarray", ProcessActionArrayDLL },
 };
 
