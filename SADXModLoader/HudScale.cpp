@@ -15,12 +15,12 @@ using std::vector;
 
 #pragma region trampolines
 
-static void __cdecl Draw2DSprite_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
+static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
 static void __cdecl njDrawSprite2D_4_r(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr);
 static void __cdecl DrawRectPoints_r(NJS_POINT2 *points, float scale);
 static void __cdecl sub_404490_r(NJS_POINT2COL *points, int count, float depth, int size, char flags);
 
-Trampoline Draw2DSprite_t(0x00404660, 0x00404666, Draw2DSprite_r);
+Trampoline njDrawSprite2D_Queue_t(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
 Trampoline njDrawSprite2D_4_t(0x004070A0, 0x004070A5, njDrawSprite2D_4_r);
 Trampoline DrawRectPoints_t(0x0077E970, 0x0077E977, DrawRectPoints_r);
 Trampoline sub_404490_t(0x00404490, 0x00404496, sub_404490_r);
@@ -550,14 +550,14 @@ static void __cdecl ChaoDX_Message_PlayerAction_Display_r(ObjectMaster* a1)
 
 #pragma endregion
 
-static void __cdecl Draw2DSprite_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
+static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
 {
 	if (sp == nullptr)
 	{
 		return;
 	}
 
-	FunctionPointer(void, original, (NJS_SPRITE*, Int, Float, Uint32, char), Draw2DSprite_t.Target());
+	FunctionPointer(void, original, (NJS_SPRITE*, Int, Float, Uint32, char), njDrawSprite2D_Queue_t.Target());
 	
 	if (!do_scale || sp == (NJS_SPRITE*)0x009BF3B0)
 	{
