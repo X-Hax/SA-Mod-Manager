@@ -60,9 +60,9 @@ struct LevelPVMList
 
 struct ObjectListEntry
 {
-	char Arg1;
-	char Arg2;
-	int16_t UseDistance;
+	char Flags;
+	char ObjectListIndex;
+	short UseDistance;
 	float Distance;
 	int field_8;
 	ObjectFuncPtr LoadSub;
@@ -97,7 +97,7 @@ struct ControllerData
 	void* Info;
 };
 
-struct SET_Entry
+struct SETEntry
 {
 	int16_t ObjectType;
 	int16_t XRotation;
@@ -119,7 +119,7 @@ struct COL
 	NJS_VECTOR Center;
 	float Radius;
 	int Padding[2];
-	NJS_OBJECT *OBJECT;
+	NJS_OBJECT *Model;
 	int anonymous_6;
 	int Flags;
 };
@@ -138,9 +138,10 @@ struct LandTable
 {
 	int16_t COLCount;
 	int16_t AnimCount;
+	// see LandTableFlags enum
 	int Flags;
 	float Unknown_1;
-	COL *COLList;
+	COL *Col;
 	GeoAnimData *AnimData;
 	char *TexName;
 	NJS_TEXLIST *TexList;
@@ -218,23 +219,65 @@ struct PhysicsData_t
 	float YOff;
 };
 
+struct WeldInfo
+{
+	NJS_OBJECT *BaseModel;
+	NJS_OBJECT *ModelA;
+	NJS_OBJECT *ModelB;
+	char VertexPairCount;
+	char WeldType;
+	short anonymous_5;
+	NJS_VECTOR *VertexBuffer;
+	unsigned short *VertIndexes;
+};
+
+struct OffsetAnimData
+{
+	int FrameNum;
+	void *anonymous_0;
+};
+
+struct AnimFrame_1
+{
+	void *Item1Off;
+	int Item1Count;
+};
+
+struct AnimFrame_2
+{
+	void *Item1Off;
+	void *Item2Off;
+	int Item1Count;
+	int Item2Count;
+};
+
+struct AnimFrame_3
+{
+	void *Item1Off;
+	void *Item2Off;
+	void *Item3Off;
+	int Item1Count;
+	int Item2Count;
+	int Item3Count;
+};
+
 struct AnimThing
 {
-	short field_0;
+	short State;
 	short field_2;
-	short Animation;
-	short field_6;
-	short field_8;
+	short Index;
+	short LastIndex;
+	short LastIndex2;
 	short field_A;
 	short field_C;
 	short field_E;
-	float AnimationFrame;
+	float Frame;
 	int dword14;
 	float *pfloat18;
 	float *pfloat1C;
 	AnimData_t *AnimData;
-	NJS_OBJECT **object_ptr_ptr;
-	void *unknown_ptr;
+	WeldInfo *WeldInfo;
+	NJS_ACTION *action;
 };
 
 struct CharObj2
@@ -246,63 +289,72 @@ struct CharObj2
 	short field_A;
 	short UnderwaterTime;
 	short IdleTime;
-	char gap_10[2];
+	char gap10[2];
 	int field_12;
-	char gap_16[2];
+	char gap16[2];
 	float LoopDist;
-	char gap_1C[28];
+	float field_1C;
+	NJS_VECTOR field_20;
+	NJS_VECTOR field_2C;
 	NJS_VECTOR Speed;
-	char gap_44[12];
+	char gap44[12];
 	NJS_VECTOR field_50;
-	char gap_5C[8];
-	void *array_1x132;
+	char gap5C[8];
+	float *array_1x132;
 	ObjectMaster *ObjectHeld;
-	char gap_6C[12];
+	char gap6C[12];
 	void *array_15x32;
 	short field_7C;
 	short field_7E;
 	short LightdashTime;
 	short LightdashTimer;
-	char gap_84[20];
+	int field_84;
+	NJS_VECTOR field_88;
+	float SomeFrameNumberThing;
 	float TailsFlightTime;
 	PhysicsData_t PhysicsData;
-	AnimThing AnimThing;
-	char gap_14C[144];
-	int field_1DC;
-	char gap_1E0[4];
-	int field_1E4;
-	char gap_1E8[20];
-	float field_1FC;
+	AnimThing AnimationThing;
+	NJS_VECTOR SoManyVectors[12];
+	int8_t _struct_a3[0x24];
 };
 
 struct CollisionData
 {
-	__int16 field_0;
-	__int16 field_2;
+	short field_0;
+	char field_2;
+	char field_3;
 	int field_4;
 	NJS_VECTOR v;
-	float anonymous_1;
-	float anonymous_2;
-	float anonymous_3;
+	NJS_VECTOR scale;
 	int field_20;
-	int field_24;
-	int field_28;
-	int field_2C;
+	Rotation3 rotation;
+};
+
+struct EntityData1;
+struct CollisionThing
+{
+	char field_0;
+	char field_1;
+	short field_2;
+	EntityData1 *Entity;
 };
 
 struct CollisionInfo
 {
-	__int16 flags_a;
-	__int16 field_2;
-	__int16 flags_b;
-	__int16 Count;
-	float f8;
+	short List;
+	short ThingCount;
+	short Flags;
+	short Count;
+	float Radius;
 	CollisionData *CollisionArray;
-	Uint8 field_10[140];
+	CollisionThing field_10[16];
+	int field_90;
+	int field_94;
+	int field_98;
 	ObjectMaster *Object;
-	__int16 field_A0;
-	__int16 field_A2;
-	int field_A4;
+	short field_A0;
+	short field_A2;
+	CollisionInfo *CollidingObject;
 };
 
 struct EntityData1
@@ -311,32 +363,27 @@ struct EntityData1
 	char NextAction;
 	char Unknown;
 	char Index;
-	__int16 Status;
-	__int16 InvulnerableTime;
+	short Status;
+	short InvulnerableTime;
 	char CharIndex;
 	char CharID;
-	__int16 field_A;
-	float field_C;
-	Loop *LoopData;
+	short field_A;
+	NJS_OBJECT* Object;
+	Loop* LoopData;
 	Rotation3 Rotation;
 	NJS_VECTOR Position;
 	NJS_VECTOR Scale;
-	CollisionInfo *CollisionInfo;
-	char field_3C;
-	char field_3D;
-	char field_3E;
-	char field_3F;
+	CollisionInfo* CollisionInfo;
+	void *field_3C;
 };
 
 struct EntityData2
 {
 	CharObj2 *CharacterData;
-	NJS_VECTOR field_4;
-	int field_10;
-	float field_14;
-	int field_18;
+	NJS_VECTOR VelocityDirection;
+	NJS_VECTOR SomeCollisionVector;
 	int field_1C;
-	int field_20;
+	int forward_y;
 	int field_24;
 	int field_28;
 	int field_2C;
@@ -349,11 +396,9 @@ struct EntityData2
 struct ObjectData2
 {
 	char gap_0[4];
-	float field_4;
-	char gap_8[4];
-	float field_C;
+	NJS_VECTOR field_4;
 	char gap_10[62];
-	__int16 field_4E;
+	short field_4E;
 	NJS_VECTOR vector_a;
 	NJS_VECTOR vector_b;
 	NJS_VECTOR vector_c;
@@ -393,10 +438,10 @@ struct ObjectData2
 struct SETObjData
 {
 	char LoadCount;
-	char f1;
-	int16_t Flags;
-	int dword4;
-	SET_Entry *SETEntry;
+	BYTE f1;
+	short Flags;
+	ObjectMaster *ObjInstance;
+	SETEntry *SETEntry;
 	float Distance;
 };
 
@@ -878,24 +923,24 @@ struct ChaoDataBase
 	char LuckLevel;
 	char IntelligenceLevel;
 	char UnknownLevel;
-	__int16 SwimStat;
-	__int16 FlyStat;
-	__int16 RunStat;
-	__int16 PowerStat;
-	__int16 StaminaStat;
-	__int16 LuckStat;
+	short SwimStat;
+	short FlyStat;
+	short RunStat;
+	short PowerStat;
+	short StaminaStat;
+	short LuckStat;
 	char IntelligenceStat;
 	char UnknownStat;
 	char field_46[58];
 	ChaoType Type;
 	char Garden;
-	__int16 Happiness;
-	__int16 field_84;
-	__int16 ClockRollovers;
-	__int16 field_88;
-	__int16 Lifespan;
-	__int16 Lifespan2;
-	__int16 Reincarnations;
+	short Happiness;
+	short field_84;
+	short ClockRollovers;
+	short field_88;
+	short Lifespan;
+	short Lifespan2;
+	short Reincarnations;
 	char field_90[24];
 	float PowerRun;
 	float FlySwim;
@@ -935,13 +980,13 @@ struct ChaoDataBase
 	char field_130;
 	char Dizziness;
 	char field_132[2];
-	__int16 Sleepiness;
-	__int16 Tiredness;
-	__int16 Hunger;
-	__int16 MateDesire;
-	__int16 Boredom;
+	short Sleepiness;
+	short Tiredness;
+	short Hunger;
+	short MateDesire;
+	short Boredom;
 	char field_13E[10];
-	__int16 Energy;
+	short Energy;
 	char Normal_Curiosity;
 	char field_14B;
 	char CryBaby_Energetic;
@@ -960,7 +1005,7 @@ struct ChaoDataBase
 	char HiccupsLevel;
 	char StomachAcheLevel;
 	char field_160[4];
-	__int16 SA2BToys;
+	short SA2BToys;
 	char field_166[6];
 	ChaoCharacterBond SA2BCharacterBonds[6];
 	char field_190[680];
@@ -987,10 +1032,10 @@ struct ChaoData
 
 struct ChaoUnknownB
 {
-	__int16 field_0;
-	__int16 field_2;
-	__int16 field_4;
-	__int16 field_6;
+	short field_0;
+	short field_2;
+	short field_4;
+	short field_6;
 	float field_8;
 	int field_C;
 	int field_10;
@@ -1000,14 +1045,14 @@ struct ChaoUnknownB
 
 struct ChaoUnknown
 {
-	__int16 field_0;
-	__int16 field_2;
+	short field_0;
+	short field_2;
 	int field_4;
 	int field_8;
 	int field_C;
 	float field_10;
-	__int16 field_14;
-	__int16 field_16;
+	short field_14;
+	short field_16;
 	ChaoUnknownB field_18[32];
 };
 
@@ -1018,10 +1063,10 @@ struct ChaoUnknownE
 
 struct ChaoUnknownD
 {
-	__int16 field_0;
-	__int16 field_2;
-	__int16 field_4;
-	__int16 field_6;
+	short field_0;
+	short field_2;
+	short field_4;
+	short field_6;
 	int field_8;
 	int field_C;
 	int field_10;
@@ -1059,7 +1104,7 @@ struct ChaoData1
 	ChaoUnknownE *unknown_e_1;
 	ChaoUnknownE *unknown_e_2;
 	char field_5D0[216];
-	__int16 field_6A8;
+	short field_6A8;
 	char field_6AA[310];
 	char field_7E0;
 	char field_7E1[19];
@@ -1079,7 +1124,7 @@ struct ChaoData2
 	float field_3C;
 	char field_40;
 	char gap_41[1];
-	__int16 field_42;
+	short field_42;
 	char gap_44[4];
 	int field_48;
 	char gap_4C[20];
@@ -1114,7 +1159,7 @@ struct QueuedModelNode
 	float Depth;
 	Uint8 Flags;
 	char BlendMode;
-	__int16 TexNum;
+	short TexNum;
 	NJS_TEXLIST *TexList;
 	NJS_ARGB Color;
 	int Control3D;

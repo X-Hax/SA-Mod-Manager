@@ -1406,8 +1406,9 @@ static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
 		if (!objlistdata->hasGroup(key)) break;
 		const IniGroup *objdata = objlistdata->getGroup(key);
 		ObjectListEntry entry;
-		entry.Arg1 = objdata->getInt("Arg1");
-		entry.Arg2 = objdata->getInt("Arg2");
+		// TODO: Make these ini fields match structure names
+		entry.Flags = objdata->getInt("Arg1");
+		entry.ObjectListIndex = objdata->getInt("Arg2");
 		entry.UseDistance = objdata->getInt("Flags");
 		entry.Distance = objdata->getFloat("Distance");
 		entry.LoadSub = (ObjectFuncPtr)objdata->getIntRadix("Code", 16);
