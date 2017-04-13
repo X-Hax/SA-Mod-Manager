@@ -254,17 +254,17 @@ void LandTableInfo::fixactionpointers(NJS_ACTION *action, intptr_t base)
 
 void LandTableInfo::fixlandtablepointers(LandTable *landtable, intptr_t base)
 {
-	if (landtable->COLList != nullptr)
+	if (landtable->Col != nullptr)
 	{
-		landtable->COLList = (COL *)((uint8_t *)landtable->COLList + base);
+		landtable->Col = (COL *)((uint8_t *)landtable->Col + base);
 		for (int i = 0; i < landtable->COLCount; i++)
-			if (landtable->COLList[i].OBJECT != nullptr)
+			if (landtable->Col[i].Model != nullptr)
 			{
-				landtable->COLList[i].OBJECT = (NJS_OBJECT *)((uint8_t *)landtable->COLList[i].OBJECT + base);
-				if (fixedpointers.find(landtable->COLList[i].OBJECT) == fixedpointers.end())
+				landtable->Col[i].Model = (NJS_OBJECT *)((uint8_t *)landtable->Col[i].Model + base);
+				if (fixedpointers.find(landtable->Col[i].Model) == fixedpointers.end())
 				{
-					fixedpointers.insert(landtable->COLList[i].OBJECT);
-					fixobjectpointers(landtable->COLList[i].OBJECT, base);
+					fixedpointers.insert(landtable->Col[i].Model);
+					fixobjectpointers(landtable->Col[i].Model, base);
 				}
 			}
 	}
