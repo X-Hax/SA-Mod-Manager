@@ -13,24 +13,31 @@
 // C++ version.
 
 /**
- * Get the number of elements in an array.
- * @return Number of elements in the array.
- */
-template <typename T, size_t N>
-static inline size_t LengthOfArray(const T(&)[N])
+* Get the number of elements in an array.
+* @return Number of elements in the array.
+*/
+template <typename Tret = size_t, typename T, size_t N>
+static inline Tret LengthOfArray(const T(&)[N])
 {
-	return N;
+	return (Tret)N;
 }
 
 /**
- * Get the size of an array.
- * @return Size of the array, in bytes.
- */
-template <typename T, size_t N>
-static inline size_t SizeOfArray(const T(&)[N])
+* Get the size of an array.
+* @return Size of the array, in bytes.
+*/
+template <typename Tret = size_t, typename T, size_t N>
+static inline Tret SizeOfArray(const T(&)[N])
 {
-	return N * sizeof(T);
+	return (Tret)(N * sizeof(T));
 }
+
+// Macros for functions that need both an array
+// and the array length or size.
+#define arrayptrandlengthT(data,T) data, LengthOfArray<T>(data)
+#define arraylengthandptrT(data,T) LengthOfArray<T>(data), data
+#define arrayptrandsizeT(data,T) data, SizeOfArray<T>(data)
+#define arraysizeandptrT(data,T) SizeOfArray<T>(data), data
 #else
 
 // C version.
