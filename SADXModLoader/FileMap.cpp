@@ -10,6 +10,7 @@
 #include <cstring>
 #include <algorithm>
 #include "TextureReplacement.h"
+#include "pvmx.h"
 
 using std::list;
 using std::string;
@@ -263,23 +264,42 @@ void FileMap::scanTextureFolder(const std::string& path, int modIndex)
 			continue;
 		}
 
-		if (!(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
-		{
-			continue;
-		}
-
 		auto fileName = string(data.cFileName);
 
-		auto original = "system\\" + fileName + ".pvm";
-		transform(original.begin(), original.end(), original.begin(), ::tolower);
-
-		auto texPack = path + "\\" + fileName;
-		transform(texPack.begin(), texPack.end(), texPack.begin(), ::tolower);
-
-		// Since we don't attempt to parse this file, make sure it exists
-		// before registering an empty texture pack directory.
-		if (FileExists(texPack + "\\index.txt"))
+		if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
+			auto original = "system\\" + fileName + ".pvm";
+			transform(original.begin(), original.end(), original.begin(), ::tolower);
+
+			auto texPack = path + "\\" + fileName;
+			transform(texPack.begin(), texPack.end(), texPack.begin(), ::tolower);
+
+			// Since we don't attempt to parse this file, make sure it exists
+			// before registering an empty texture pack directory.
+			if (FileExists(texPack + "\\index.txt"))
+			{
+				m_fileMap[original] = { texPack, modIndex };
+			}
+		}
+		else
+		{
+			auto ext = GetExtension(fileName);
+			transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+
+			if (ext != "pvmx")
+			{
+				continue;
+			}
+
+			auto noExt = fileName;
+			StripExtension(noExt);
+
+			auto original = "system\\" + noExt + ".pvm";
+			transform(original.begin(), original.end(), original.begin(), ::tolower);
+
+			auto texPack = path + "\\" + fileName;
+			transform(texPack.begin(), texPack.end(), texPack.begin(), ::tolower);
+			
 			m_fileMap[original] = { texPack, modIndex };
 		}
 

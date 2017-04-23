@@ -40,7 +40,8 @@ static const unordered_map<HRESULT, const char*> d3dErrors = {
 	TOMAPSTRING(E_OUTOFMEMORY)
 };
 
-static unordered_map<string, vector<TexPackEntry>> entryCache;
+static unordered_map<string, vector<TexPackEntry>> raw_cache;
+static unordered_map<string, vector<pvmx::DictionaryEntry>> archive_cache;
 static bool wasLoading = false;
 
 DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
@@ -56,6 +57,7 @@ void texpack::Init()
 	WriteJump((void*)njLoadTexture_Wrapper, njLoadTexture_Wrapper_r);
 }
 
+
 #pragma region Index Parsing
 
 /// <summary>
@@ -68,8 +70,8 @@ bool texpack::ParseIndex(const string& path, vector<TexPackEntry>& out)
 {
 	PrintDebug("Loading texture pack: %s\n", path.c_str());
 
-	auto it = entryCache.find(path);
-	if (it != entryCache.end())
+	auto it = raw_cache.find(path);
+	if (it != raw_cache.end())
 	{
 		out = it->second;
 		return true;
@@ -187,8 +189,48 @@ bool texpack::ParseIndex(const string& path, vector<TexPackEntry>& out)
 		out.clear();
 	}
 
-	entryCache[path] = out;
+	raw_cache[path] = out;
 	return result;
+}
+
+bool GetArchiveIndex(const string& path, ifstream& file, vector<pvmx::DictionaryEntry>& out)
+{
+	PrintDebug("Loading texture pack: %s\n", path.c_str());
+
+	auto it = archive_cache.find(path);
+	if (it != archive_cache.end())
+	{
+		out = it->second;
+		return true;
+	}
+
+	if (!FileExists(path))
+	{
+		return false;
+	}
+
+#ifdef _DEBUG
+	if (!wasLoading && wasLoading != LoadingFile)
+	{
+		PrintDebug("\tBuilding cache...\n");
+	}
+#endif
+
+	wasLoading = LoadingFile;
+
+	if (!file.is_open())
+	{
+		PrintDebug("Unable to open archive file: %s\n", path.c_str());
+		return false;
+	}
+
+	if (pvmx::read_index(file, out))
+	{
+		archive_cache[path] = out;
+		return true;
+	}
+
+	return false;
 }
 
 void CheckCache()
@@ -203,7 +245,8 @@ void CheckCache()
 #ifdef _DEBUG
 		PrintDebug("\tClearing cache...\n");
 #endif
-		entryCache.clear();
+		raw_cache.clear();
+		archive_cache.clear();
 	}
 
 	wasLoading = false;
@@ -212,6 +255,38 @@ void CheckCache()
 #pragma endregion
 
 #pragma region Texture Loading
+
+bool GetDDSHeader(ifstream& file, DDS_HEADER& header)
+{
+	if (!file.is_open())
+	{
+		return false;
+	}
+
+	auto pos = file.tellg();
+	uint32_t magic = 0;
+	file.read((char*)&magic, sizeof(uint32_t));
+
+	if (magic != DDS_MAGIC)
+	{
+		file.seekg(pos);
+		return false;
+	}
+
+	uint32_t size = 0;
+	file.read((char*)&size, sizeof(uint32_t));
+
+	if (size != sizeof(DDS_HEADER))
+	{
+		file.seekg(pos);
+		return false;
+	}
+
+	file.seekg(-(int)sizeof(uint32_t), ios_base::cur);
+	file.read((char*)&header, sizeof(DDS_HEADER));
+	file.seekg(pos);
+	return true;
+}
 
 /// <summary>
 /// Reads the header from a DDS file.
@@ -222,32 +297,87 @@ void CheckCache()
 bool GetDDSHeader(const string& path, DDS_HEADER& header)
 {
 	ifstream file(path, ios::binary);
-
-	if (!file.is_open())
-	{
-		return false;
-	}
-
-	uint32_t magic = 0;
-	file.read((char*)&magic, sizeof(uint32_t));
-
-	if (magic != DDS_MAGIC)
-	{
-		return false;
-	}
-
-	uint32_t size = 0;
-	file.read((char*)&size, sizeof(uint32_t));
-
-	if (size != sizeof(DDS_HEADER))
-	{
-		return false;
-	}
-
-	file.seekg(-(int)sizeof(uint32_t), ios_base::cur);
-	file.read((char*)&header, sizeof(DDS_HEADER));
-	return true;
+	return GetDDSHeader(file, header);
 }
+
+NJS_TEXMEMLIST* LoadTextureImpl(ifstream& file, uint64_t offset, uint64_t size,
+	const std::string& path, uint32_t globalIndex, const string& name, bool mipmap, uint32_t width, uint32_t height)
+{
+	// TODO: Implement custom texture queue to replace the global texture array
+	auto texture = GetCachedTexture(globalIndex);
+
+	// GetCachedTexture will only return null if over 2048 unique textures have been loaded.
+	if (texture == nullptr)
+	{
+		PrintDebug("Failed to allocate global texture for gbix %u (likely exceeded max global texture limit)\n", globalIndex);
+		return nullptr;
+	}
+
+	uint32_t mip_levels = mipmap ? D3DX_DEFAULT : 1;
+	auto texture_path = path + "\\" + name;
+
+	// A texture count of 0 indicates that this is an empty texture slot.
+	if (texture->count != 0)
+	{
+		// Increment the internal reference count to avoid the texture getting freed erroneously.
+		++texture->count;
+
+#ifdef _DEBUG
+		PrintDebug("Using cached texture for GBIX %u (ref count: %u)\n", globalIndex, texture->count);
+#endif
+	}
+	else
+	{
+		if (!mipmap)
+		{
+			DDS_HEADER header;
+			if (GetDDSHeader(file, header))
+			{
+				mip_levels = header.mipMapCount + 1;
+			}
+		}
+
+		vector<uint8_t> buffer;
+		buffer.resize(static_cast<size_t>(size));
+
+		file.seekg(static_cast<size_t>(offset));
+		file.read(reinterpret_cast<char*>(buffer.data()), buffer.size());
+
+		IDirect3DTexture8* d3dtexture = nullptr;
+		HRESULT result = D3DXCreateTextureFromFileInMemoryEx(Direct3D_Device, buffer.data(), buffer.size(), D3DX_DEFAULT, D3DX_DEFAULT, mip_levels,
+			0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, nullptr, nullptr, &d3dtexture);
+
+		if (result != D3D_OK)
+		{
+			PrintDebug("Failed to load texture %s: %s (%u)\n", name.c_str(), d3dErrors.at(result), result);
+			return nullptr;
+		}
+
+		D3DSURFACE_DESC info;
+		d3dtexture->GetLevelDesc(0, &info);
+
+		auto w = !width ? info.Width : width;
+		auto h = !height ? info.Height : height;
+
+		// Now we assign some basic metadata from the texture entry and D3D texture, as well as the pointer to the texture itself.
+		// A few things I know are missing for sure are:
+		// NJS_TEXSURFACE::Type, Depth, Format, Flags. Virtual and Physical are pretty much always null.
+		texture->count                          = 1; // Texture reference count.
+		texture->globalIndex                    = globalIndex;
+		texture->texinfo.texsurface.nWidth      = w;
+		texture->texinfo.texsurface.nHeight     = h;
+		texture->texinfo.texsurface.TextureSize = info.Size;
+		texture->texinfo.texsurface.pSurface    = (Uint32*)d3dtexture;
+	}
+
+	for (auto& event : modCustomTextureLoadEvents)
+	{
+		event(texture, texture_path.c_str(), mip_levels);
+	}
+
+	return texture;
+}
+
 
 /// <summary>
 /// Loads the specified texture from disk, or uses a cached texture if available.
@@ -293,40 +423,10 @@ NJS_TEXMEMLIST* LoadTexture(const string& path, uint32_t globalIndex, const stri
 			return nullptr;
 		}
 
-		if (!mipmap)
-		{
-			DDS_HEADER header;
-			if (GetDDSHeader(texture_path, header))
-			{
-				mip_levels = header.mipMapCount + 1;
-			}
-		}
-
-		IDirect3DTexture8* d3dtexture = nullptr;
-		HRESULT result = D3DXCreateTextureFromFileExA(Direct3D_Device, texture_path.c_str(), D3DX_DEFAULT, D3DX_DEFAULT, mip_levels,
-			0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, nullptr, nullptr, &d3dtexture);
-
-		if (result != D3D_OK)
-		{
-			PrintDebug("Failed to load texture %s: %s (%u)\n", name.c_str(), d3dErrors.at(result), result);
-			return nullptr;
-		}
-
-		D3DSURFACE_DESC info;
-		d3dtexture->GetLevelDesc(0, &info);
-
-		auto w = !width ? info.Width : width;
-		auto h = !height ? info.Height : height;
-
-		// Now we assign some basic metadata from the texture entry and D3D texture, as well as the pointer to the texture itself.
-		// A few things I know are missing for sure are:
-		// NJS_TEXSURFACE::Type, Depth, Format, Flags. Virtual and Physical are pretty much always null.
-		texture->count                          = 1; // Texture reference count.
-		texture->globalIndex                    = globalIndex;
-		texture->texinfo.texsurface.nWidth      = w;
-		texture->texinfo.texsurface.nHeight     = h;
-		texture->texinfo.texsurface.TextureSize = info.Size;
-		texture->texinfo.texsurface.pSurface    = (Uint32*)d3dtexture;
+		ifstream file(texture_path, ios::ate | ios::binary | ios::in);
+		auto size = static_cast<uint64_t>(file.tellg());
+		file.seekg(0);
+		return LoadTextureImpl(file, 0, size, path, globalIndex, name, mipmap, width, height);
 	}
 
 	for (auto& event : modCustomTextureLoadEvents)
@@ -366,18 +466,21 @@ bool ReplacePVM(const string& path, NJS_TEXLIST* texlist)
 		return false;
 	}
 
-	vector<TexPackEntry> customEntries;
-	if (!texpack::ParseIndex(path, customEntries))
+	vector<TexPackEntry> index;
+	if (!texpack::ParseIndex(path, index))
 	{
 		return false;
 	}
 
-	texlist->nbTexture = customEntries.size();
-	bool mipmap = mipmap::AutoMipmapsEnabled() && !mipmap::IsBlacklistedPVM(path.c_str());
+	auto pvmName = GetBaseName(path);
+	StripExtension(pvmName);
+
+	texlist->nbTexture = index.size();
+	bool mipmap = mipmap::AutoMipmapsEnabled() && !mipmap::IsBlacklistedPVM(pvmName.c_str());
 
 	for (uint32_t i = 0; i < texlist->nbTexture; i++)
 	{
-		NJS_TEXMEMLIST* texture = LoadTexture(path, customEntries[i], mipmap);
+		auto texture = LoadTexture(path, index[i], mipmap);
 
 		if (texture == nullptr)
 		{
@@ -388,7 +491,47 @@ bool ReplacePVM(const string& path, NJS_TEXLIST* texlist)
 			return false;
 		}
 
-		texlist->textures[i].texaddr = (Uint32)texture;
+		texlist->textures[i].texaddr = reinterpret_cast<Uint32>(texture);
+	}
+
+	return true;
+}
+
+bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist)
+{
+	if (texlist == nullptr)
+	{
+		return false;
+	}
+
+	using namespace pvmx;
+	vector<DictionaryEntry> index;
+
+	if (!GetArchiveIndex(path, file, index))
+	{
+		return false;
+	}
+
+	auto pvmName = GetBaseName(path);
+	StripExtension(pvmName);
+
+	texlist->nbTexture = index.size();
+	bool mipmap = mipmap::AutoMipmapsEnabled() && !mipmap::IsBlacklistedPVM(pvmName.c_str());
+
+	for (size_t i = 0; i < index.size(); i++)
+	{
+		auto& entry = index[i];
+
+		auto texture = LoadTextureImpl(file, entry.offset, entry.size,
+			path, entry.globalIndex, entry.name, mipmap, entry.width, entry.height);
+
+		if (texture == nullptr)
+		{
+			njReleaseTexture(texlist);
+			return false;
+		}
+
+		texlist->textures[i].texaddr = reinterpret_cast<Uint32>(texture);
 	}
 
 	return true;
@@ -419,6 +562,14 @@ int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 		// If the replaced file is a PVM, just attempt to load that.
 		if (IsFile(replaced))
 		{
+			ifstream pvmx(replaced, ios::in | ios::binary);
+			if (pvmx::is_pvmx(pvmx) && ReplacePVMX(replaced, pvmx, texlist))
+			{
+				return 0;
+			}
+
+			pvmx.close();
+
 			auto result = njLoadTexturePvmFile(filename, texlist);
 			mipmap::SkipMipmap(false);
 			return result;

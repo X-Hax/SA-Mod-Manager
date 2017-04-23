@@ -57,6 +57,9 @@
     <ClCompile Include="FileSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pvmx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="include\d3d8types.h">
       <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="pvmx.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

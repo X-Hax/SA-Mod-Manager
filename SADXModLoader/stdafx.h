@@ -16,6 +16,7 @@
 #include <deque>
 #include <stack>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <list>
 #include <memory>
@@ -31,3 +32,4 @@
 #include "FileReplacement.h"
 #include "Trampoline.h"
 #include "FileSystem.h"
+#include "pvmx.h"
