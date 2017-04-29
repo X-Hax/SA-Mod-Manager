@@ -300,8 +300,20 @@ bool GetDDSHeader(const string& path, DDS_HEADER& header)
 	return GetDDSHeader(file, header);
 }
 
-NJS_TEXMEMLIST* LoadTextureImpl(ifstream& file, uint64_t offset, uint64_t size,
-	const std::string& path, uint32_t globalIndex, const string& name, bool mipmap, uint32_t width, uint32_t height)
+/// <summary>
+/// Loads a texture from the provided file stream.
+/// </summary>
+/// <param name="file">The file stream containing the texture data.</param>
+/// <param name="offset">Offset at which the texture data starts.</param>
+/// <param name="size">The size of the texture data.</param>
+/// <param name="globalIndex">Global texture index for cache lookup.</param>
+/// <param name="name">The name of the texture.</param>
+/// <param name="mipmap">If <c>true</c>, automatically generate mipmaps.</param>
+/// <param name="width">If non-zero, overrides texture width info in <see cref="NJS_TEXMEMLIST"/>.</param>
+/// <param name="height">If non-zero, overrides texture height info in <see cref="NJS_TEXMEMLIST"/>.</param>
+/// <returns>A pointer to the texture, or <c>nullptr</c> on failure.</returns>
+NJS_TEXMEMLIST* LoadTextureStream(ifstream& file, uint64_t offset, uint64_t size,
+	const string& path, uint32_t globalIndex, const string& name, bool mipmap, uint32_t width, uint32_t height)
 {
 	// TODO: Implement custom texture queue to replace the global texture array
 	auto texture = GetCachedTexture(globalIndex);
@@ -426,7 +438,7 @@ NJS_TEXMEMLIST* LoadTexture(const string& path, uint32_t globalIndex, const stri
 		ifstream file(texture_path, ios::ate | ios::binary | ios::in);
 		auto size = static_cast<uint64_t>(file.tellg());
 		file.seekg(0);
-		return LoadTextureImpl(file, 0, size, path, globalIndex, name, mipmap, width, height);
+		return LoadTextureStream(file, 0, size, path, globalIndex, name, mipmap, width, height);
 	}
 
 	for (auto& event : modCustomTextureLoadEvents)
@@ -457,7 +469,7 @@ NJS_TEXMEMLIST* LoadTexture(const string& path, const TexPackEntry& entry, bool 
 /// Replaces the specified PVM with a texture pack virtual PVM.
 /// </summary>
 /// <param name="path">A valid path to a texture pack directory containing index.txt</param>
-/// <param name="texlist">The tex list.</param>
+/// <param name="texlist">The associated texlist.</param>
 /// <returns><c>true</c> on success.</returns>
 bool ReplacePVM(const string& path, NJS_TEXLIST* texlist)
 {
@@ -497,6 +509,13 @@ bool ReplacePVM(const string& path, NJS_TEXLIST* texlist)
 	return true;
 }
 
+/// <summary>
+/// Replaces the specified PVM with a texture pack PVMX archive.
+/// </summary>
+/// <param name="path">The path to the PVMX archive. Used for caching and error handling.</param>
+/// <param name="file">An opened file stream for the PVMX archive.</param>
+/// <param name="texlist">The associated texlist.</param>
+/// <returns><c>true</c> on success.</returns>
 bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist)
 {
 	if (texlist == nullptr)
@@ -522,7 +541,7 @@ bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist)
 	{
 		auto& entry = index[i];
 
-		auto texture = LoadTextureImpl(file, entry.offset, entry.size,
+		auto texture = LoadTextureStream(file, entry.offset, entry.size,
 			path, entry.globalIndex, entry.name, mipmap, entry.width, entry.height);
 
 		if (texture == nullptr)
@@ -559,7 +578,7 @@ int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 	// If we can ensure this path exists, we can determine how to load it.
 	if (Exists(replaced))
 	{
-		// If the replaced file is a PVM, just attempt to load that.
+		// If the replaced path is a file, we should check if it's a PVMX archive.
 		if (IsFile(replaced))
 		{
 			ifstream pvmx(replaced, ios::in | ios::binary);
@@ -568,6 +587,8 @@ int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 				return 0;
 			}
 
+			// At this point it's probably a PVM, so close
+			// the file and fall back to default behavior.
 			pvmx.close();
 
 			auto result = njLoadTexturePvmFile(filename, texlist);
@@ -582,7 +603,6 @@ int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 		}
 	}
 
-	// If the file didn't exist or the texture pack failed to load, fall back to default behavior.
 	if (!Exists(system_path) && !Exists(system_path_ext))
 	{
 		PrintDebug("Unable to locate PVM: %s\n", filename);
