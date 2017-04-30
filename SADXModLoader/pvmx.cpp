@@ -130,7 +130,7 @@ namespace pvmx
 					case DictionaryField::Dimensions:
 						read_t(file, entry.width);
 						read_t(file, entry.height);
-						continue;
+						break;
 
 					// Unknown field type.
 					default:
