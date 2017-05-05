@@ -289,6 +289,16 @@ namespace SADXModManager
 			FilePath = fields[0];
 			FileSize = long.Parse(fields[1]);
 			Checksum = fields[2];
+
+			if (Path.IsPathRooted(FilePath))
+			{
+				throw new Exception($"Absolute paths are forbidden: {FilePath}");
+			}
+
+			if (FilePath.Contains(".."))
+			{
+				throw new Exception($"Parent directory traversal is forbidden: {FilePath}");
+			}
 		}
 
 		public ModManifest() {}

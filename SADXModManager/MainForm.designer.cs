@@ -66,6 +66,7 @@
 			this.forceMipmappingCheckBox = new System.Windows.Forms.CheckBox();
 			this.forceTextureFilterCheckBox = new System.Windows.Forms.CheckBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.comboResolutionPreset = new System.Windows.Forms.ComboBox();
 			this.checkWindowResize = new System.Windows.Forms.CheckBox();
 			this.checkVsync = new System.Windows.Forms.CheckBox();
 			this.maintainWindowAspectRatioCheckBox = new System.Windows.Forms.CheckBox();
@@ -93,9 +94,8 @@
 			this.forceUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.uninstallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-			this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.comboResolutionPreset = new System.Windows.Forms.ComboBox();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
@@ -182,6 +182,15 @@
 			this.disableCDCheckCheckBox.Text = "Disable CD Check";
 			this.toolTip1.SetToolTip(this.disableCDCheckCheckBox, "Allows you to run the game without the disc.");
 			this.disableCDCheckCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// label5
+			// 
+			label5.AutoSize = true;
+			label5.Location = new System.Drawing.Point(6, 71);
+			label5.Name = "label5";
+			label5.Size = new System.Drawing.Size(60, 13);
+			label5.TabIndex = 17;
+			label5.Text = "Resolution:";
 			// 
 			// screenNumComboBox
 			// 
@@ -440,9 +449,9 @@
 			this.modDownButton.AutoSize = true;
 			this.modDownButton.Enabled = false;
 			this.modDownButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modDownButton.Location = new System.Drawing.Point(339, 35);
+			this.modDownButton.Location = new System.Drawing.Point(345, 35);
 			this.modDownButton.Name = "modDownButton";
-			this.modDownButton.Size = new System.Drawing.Size(33, 22);
+			this.modDownButton.Size = new System.Drawing.Size(27, 22);
 			this.modDownButton.TabIndex = 2;
 			this.modDownButton.Text = "↓";
 			this.modDownButton.UseVisualStyleBackColor = true;
@@ -454,9 +463,9 @@
 			this.modUpButton.AutoSize = true;
 			this.modUpButton.Enabled = false;
 			this.modUpButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modUpButton.Location = new System.Drawing.Point(339, 6);
+			this.modUpButton.Location = new System.Drawing.Point(345, 6);
 			this.modUpButton.Name = "modUpButton";
-			this.modUpButton.Size = new System.Drawing.Size(33, 22);
+			this.modUpButton.Size = new System.Drawing.Size(27, 22);
 			this.modUpButton.TabIndex = 1;
 			this.modUpButton.Text = "↑";
 			this.modUpButton.UseVisualStyleBackColor = true;
@@ -571,6 +580,30 @@
 			this.groupBox3.TabIndex = 0;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Display";
+			// 
+			// comboResolutionPreset
+			// 
+			this.comboResolutionPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboResolutionPreset.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.comboResolutionPreset.FormattingEnabled = true;
+			this.comboResolutionPreset.Items.AddRange(new object[] {
+            "640x480",
+            "800x600",
+            "1024x768",
+            "1152x864",
+            "1280x1024",
+            "Native",
+            "1/2x Native",
+            "2x Native",
+            "720p",
+            "1080p",
+            "4K"});
+			this.comboResolutionPreset.Location = new System.Drawing.Point(226, 68);
+			this.comboResolutionPreset.Name = "comboResolutionPreset";
+			this.comboResolutionPreset.Size = new System.Drawing.Size(121, 21);
+			this.comboResolutionPreset.TabIndex = 18;
+			this.toolTip1.SetToolTip(this.comboResolutionPreset, "Allows you to select pre-set values for the resolution.");
+			this.comboResolutionPreset.SelectedIndexChanged += new System.EventHandler(this.comboResolutionPreset_SelectedIndexChanged);
 			// 
 			// checkWindowResize
 			// 
@@ -836,9 +869,9 @@
             this.forceUpdateToolStripMenuItem,
             this.uninstallToolStripMenuItem,
             this.toolStripMenuItem3,
-            this.advancedToolStripMenuItem});
+            this.developerToolStripMenuItem});
 			this.modContextMenu.Name = "modContextMenu";
-			this.modContextMenu.Size = new System.Drawing.Size(171, 148);
+			this.modContextMenu.Size = new System.Drawing.Size(171, 170);
 			// 
 			// openFolderToolStripMenuItem
 			// 
@@ -885,13 +918,13 @@
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
 			this.toolStripMenuItem3.Size = new System.Drawing.Size(167, 6);
 			// 
-			// advancedToolStripMenuItem
+			// developerToolStripMenuItem
 			// 
-			this.advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.developerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generateManifestToolStripMenuItem});
-			this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
-			this.advancedToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-			this.advancedToolStripMenuItem.Text = "Developer";
+			this.developerToolStripMenuItem.Name = "developerToolStripMenuItem";
+			this.developerToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+			this.developerToolStripMenuItem.Text = "Developer";
 			// 
 			// generateManifestToolStripMenuItem
 			// 
@@ -899,39 +932,6 @@
 			this.generateManifestToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
-			// 
-			// label5
-			// 
-			label5.AutoSize = true;
-			label5.Location = new System.Drawing.Point(6, 71);
-			label5.Name = "label5";
-			label5.Size = new System.Drawing.Size(60, 13);
-			label5.TabIndex = 17;
-			label5.Text = "Resolution:";
-			// 
-			// comboResolutionPreset
-			// 
-			this.comboResolutionPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboResolutionPreset.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.comboResolutionPreset.FormattingEnabled = true;
-			this.comboResolutionPreset.Items.AddRange(new object[] {
-            "640x480",
-            "800x600",
-            "1024x768",
-            "1152x864",
-            "1280x1024",
-            "Native",
-            "1/2x Native",
-            "2x Native",
-            "720p",
-            "1080p",
-            "4K"});
-			this.comboResolutionPreset.Location = new System.Drawing.Point(226, 68);
-			this.comboResolutionPreset.Name = "comboResolutionPreset";
-			this.comboResolutionPreset.Size = new System.Drawing.Size(121, 21);
-			this.comboResolutionPreset.TabIndex = 18;
-			this.toolTip1.SetToolTip(this.comboResolutionPreset, "Allows you to select pre-set values for the resolution.");
-			this.comboResolutionPreset.SelectedIndexChanged += new System.EventHandler(this.comboResolutionPreset_SelectedIndexChanged);
 			// 
 			// MainForm
 			// 
@@ -1018,7 +1018,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem uninstallToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-		private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem developerToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem generateManifestToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
 		private System.Windows.Forms.TabPage tabPage4;
