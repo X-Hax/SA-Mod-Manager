@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,7 +11,6 @@ using System.Security.Cryptography;
 using System.Windows.Forms;
 using IniFile;
 using SADXModManager.Forms;
-using System.Drawing;
 
 namespace SADXModManager
 {
@@ -67,7 +67,7 @@ namespace SADXModManager
 		private static void SetDoubleBuffered(Control control, bool enable)
 		{
 			PropertyInfo doubleBufferPropertyInfo = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
-			doubleBufferPropertyInfo.SetValue(control, enable, null);
+			doubleBufferPropertyInfo?.SetValue(control, enable, null);
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -119,10 +119,10 @@ namespace SADXModManager
 			screenNumComboBox.SelectedIndex  = screenNum;
 			customWindowSizeCheckBox.Checked = windowHeight.Enabled = maintainWindowAspectRatioCheckBox.Enabled = loaderini.CustomWindowSize;
 			windowWidth.Enabled              = loaderini.CustomWindowSize && !loaderini.MaintainWindowAspectRatio;
-			System.Drawing.Rectangle rect    = Screen.PrimaryScreen.Bounds;
+			Rectangle rect                   = Screen.PrimaryScreen.Bounds;
 
 			foreach (Screen screen in Screen.AllScreens)
-				rect = System.Drawing.Rectangle.Union(rect, screen.Bounds);
+				rect = Rectangle.Union(rect, screen.Bounds);
 
 			windowWidth.Maximum  = rect.Width;
 			windowWidth.Value    = Math.Max(windowWidth.Minimum, Math.Min(rect.Width, loaderini.WindowWidth));
@@ -286,7 +286,17 @@ namespace SADXModManager
 			updateChecker = new BackgroundWorker { WorkerSupportsCancellation = true };
 			updateChecker.DoWork += UpdateChecker_DoWork;
 			updateChecker.RunWorkerCompleted += UpdateChecker_RunWorkerCompleted;
-			updateChecker.RunWorkerCompleted += (sender, args) => buttonCheckForUpdates.Enabled = true;
+			updateChecker.RunWorkerCompleted += UpdateCheckerOnRunWorkerCompleted;
+		}
+
+		private void UpdateCheckerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
+		{
+			buttonCheckForUpdates.Enabled            = true;
+			checkForUpdatesToolStripMenuItem.Enabled = true;
+			verifyToolStripMenuItem.Enabled          = true;
+			forceUpdateToolStripMenuItem.Enabled     = true;
+			uninstallToolStripMenuItem.Enabled       = true;
+			developerToolStripMenuItem.Enabled       = true;
 		}
 
 		private void CheckForModUpdates(bool force = false)
@@ -400,7 +410,7 @@ namespace SADXModManager
 			LoadModList();
 		}
 
-		private static void UpdateChecker_DoWork(object sender, DoWorkEventArgs e)
+		private void UpdateChecker_DoWork(object sender, DoWorkEventArgs e)
 		{
 			var worker = sender as BackgroundWorker;
 
@@ -408,6 +418,16 @@ namespace SADXModManager
 			{
 				throw new Exception("what");
 			}
+
+			Invoke(new Action(() =>
+			{
+				buttonCheckForUpdates.Enabled            = false;
+				checkForUpdatesToolStripMenuItem.Enabled = false;
+				verifyToolStripMenuItem.Enabled          = false;
+				forceUpdateToolStripMenuItem.Enabled     = false;
+				uninstallToolStripMenuItem.Enabled       = false;
+				developerToolStripMenuItem.Enabled       = false;
+			}));
 
 			var updatableMods = e.Argument as List<KeyValuePair<string, ModInfo>>;
 			if (updatableMods == null || updatableMods.Count == 0)
@@ -801,12 +821,12 @@ namespace SADXModManager
 		private void screenNumComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			Size oldsize = resolutionPresets[5];
-			System.Drawing.Rectangle rect = Screen.PrimaryScreen.Bounds;
+			Rectangle rect = Screen.PrimaryScreen.Bounds;
 			if (screenNumComboBox.SelectedIndex > 0)
 				rect = Screen.AllScreens[screenNumComboBox.SelectedIndex - 1].Bounds;
 			else
 				foreach (Screen screen in Screen.AllScreens)
-					rect = System.Drawing.Rectangle.Union(rect, screen.Bounds);
+					rect = Rectangle.Union(rect, screen.Bounds);
 			resolutionPresets[5] = rect.Size;
 			resolutionPresets[6] = new Size(rect.Width / 2, rect.Height / 2);
 			resolutionPresets[7] = new Size(rect.Width * 2, rect.Height * 2);
