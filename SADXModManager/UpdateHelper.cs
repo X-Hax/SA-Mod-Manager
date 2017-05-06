@@ -184,7 +184,38 @@ namespace SADXModManager
 				return null;
 			}
 
-			return new ModDownload(mod, Path.Combine("mods", folder), mod.UpdateUrl, diff);
+			string changes;
+
+			if (!string.IsNullOrEmpty(mod.ChangelogUrl))
+			{
+				try
+				{
+					changes = client.DownloadString(new Uri(mod.ChangelogUrl));
+				}
+				catch (Exception ex)
+				{
+					changes = ex.Message;
+				}
+			}
+			else
+			{
+				try
+				{
+					changes = client.DownloadString(new Uri(new Uri(mod.UpdateUrl), "changelog.txt"));
+				}
+				catch
+				{
+					// ignored
+					changes = string.Empty;
+				}
+			}
+
+			if (!string.IsNullOrEmpty(changes))
+			{
+				changes = Regex.Replace(changes, "(?<!\r)\n", "\r\n");
+			}
+
+			return new ModDownload(mod, Path.Combine("mods", folder), mod.UpdateUrl, changes, diff);
 		}
 	}
 }

@@ -39,14 +39,14 @@ namespace SADXModManager
 
 	public class ModDownload
 	{
-		public ModInfo Info { get; private set; }
+		public ModInfo Info { get; }
 		public readonly ModDownloadType Type;
 		public readonly string Url;
 		public readonly string Folder;
 		public readonly string Changes;
-		public long Size { get; private set; }
-		public int FilesToDownload { get; private set; }
-		public List<ModManifestDiff> ChangedFiles { get; private set; }
+		public long Size { get; }
+		public int FilesToDownload { get; }
+		public List<ModManifestDiff> ChangedFiles { get; }
 
 		public string HomePage   = string.Empty;
 		public string Name       = string.Empty;
@@ -88,9 +88,10 @@ namespace SADXModManager
 		/// <param name="info">Metadata for the associated mod.</param>
 		/// <param name="folder">The folder containing the mod.</param>
 		/// <param name="url">URL of the mod download.</param>
+		/// <param name="changes">List of changes for this update.</param>
 		/// <param name="diff">A diff of the remote and local manifests.</param>
 		/// <seealso cref="ModDownloadType"/>
-		public ModDownload(ModInfo info, string folder, string url, List<ModManifestDiff> diff)
+		public ModDownload(ModInfo info, string folder, string url, string changes, List<ModManifestDiff> diff)
 		{
 			Info         = info;
 			Type         = ModDownloadType.Modular;
@@ -106,23 +107,7 @@ namespace SADXModManager
 			FilesToDownload = toDownload.Count;
 			Size = Math.Max(toDownload.Select(x => x.Current.FileSize).Sum(), toDownload.Count);
 
-			var changes = new List<string> { "Files changed in this update:\n" };
-
-			foreach (ModManifestDiff i in ChangedFiles)
-			{
-				string l = "- " + i.State.ToString() + ":\t\t";
-
-				if (i.State == ModManifestState.Moved)
-				{
-					changes.Add($"{l}{i.Last.FilePath} -> {i.Current.FilePath}");
-				}
-				else
-				{
-					changes.Add($"{l}{i.Current.FilePath}");
-				}
-			}
-
-			Changes = string.Join("\n", changes);
+			Changes = !string.IsNullOrEmpty(changes) ? changes : string.Empty;
 		}
 
 		private static void Extract(IReader reader, string outDir)
