@@ -2,8 +2,8 @@
 
 #include <d3d8.h>
 #include <d3dx8tex.h>
-#include <ModLoader/MemAccess.h>
-#include "SADXModLoader/SADXStructs.h"
+#include "MemAccess.h"
+#include "SADXStructs.h"
 
 #if defined(_MSC_VER) && _MSC_VER >= 1900
 // MSVC 2015 inlines printf() and scanf() functions.

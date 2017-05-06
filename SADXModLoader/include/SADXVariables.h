@@ -6,8 +6,8 @@
 #ifndef SADXMODLOADER_SADXVARS_H
 #define SADXMODLOADER_SADXVARS_H
 
-#include "../ModLoader/MemAccess.h"
-#include "../d3d8types.h"
+#include "MemAccess.h"
+#include "d3d8types.h"
 #include "SADXStructs.h"
 
 DataArray(HMODULE, ModuleHandles, 0x03CA6E60, 4);

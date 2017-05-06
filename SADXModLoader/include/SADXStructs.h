@@ -7,7 +7,7 @@
 #define SADXMODLOADER_SADXSTRUCTS_H
 
 #include <stdint.h>
-#include "../ninja.h"
+#include "ninja.h"
 #include "d3d8types.h"
 #include "SADXEnums.h"
 
