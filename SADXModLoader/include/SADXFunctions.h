@@ -7,8 +7,8 @@
 #define SADXMODLOADER_SADXFUNCTIONS_H
 
 #include <stdint.h>
-#include "../ModLoader/MemAccess.h"
-#include "../d3d8types.h"
+#include "MemAccess.h"
+#include "d3d8types.h"
 #include "SADXStructs.h"
 #include "SADXEnums.h"
 

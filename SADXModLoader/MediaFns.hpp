@@ -6,7 +6,7 @@
 #ifndef MEDIAFNS_HPP
 #define MEDIAFNS_HPP
 
-#include "ModLoader/MemAccess.h"
+#include "MemAccess.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

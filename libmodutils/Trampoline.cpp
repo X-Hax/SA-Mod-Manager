@@ -5,7 +5,7 @@
 #include <exception>
 #include <vector>
 #include <ninja.h>		// for typedefs
-#include <ModLoader/MemAccess.h>
+#include <MemAccess.h>
 
 Trampoline::Trampoline(size_t start, size_t end, void* func, bool destructRevert) :
 	target(nullptr), detour(nullptr), codeData(nullptr), originalSize(0), codeSize(0), revert(destructRevert)
