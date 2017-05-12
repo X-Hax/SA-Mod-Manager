@@ -86,7 +86,7 @@ namespace SADXModManager
 			foreach (var f in fileIndex)
 			{
 				var relativePath = f.Substring(modPath.Length + 1);
-				var file = new FileInfo(f);
+				FileInfo file = GetFileInfo(f);
 
 				++i;
 
@@ -117,6 +117,23 @@ namespace SADXModManager
 			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Follows symbolic links.
+		/// </summary>
+		/// <param name="path">Path to the file.</param>
+		/// <returns>The <seealso cref="FileInfo"/>  of the real file.</returns>
+		private static FileInfo GetFileInfo(string path)
+		{
+			var file = new FileInfo(path);
+
+			if ((file.Attributes & FileAttributes.ReparsePoint) != 0)
+			{
+				file = new FileInfo(NativeMethods.GetFinalPathName(path).Replace(@"\\?\", null));
+			}
+
+			return file;
 		}
 
 		public static List<ModManifestDiff> Diff(List<ModManifest> newManifest, List<ModManifest> oldManifest)
@@ -209,7 +226,7 @@ namespace SADXModManager
 						continue;
 					}
 
-					var info = new FileInfo(filePath);
+					FileInfo info = GetFileInfo(filePath);
 
 					if (info.Length != m.FileSize)
 					{

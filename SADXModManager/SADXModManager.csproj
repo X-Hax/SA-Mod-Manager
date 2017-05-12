@@ -131,6 +131,7 @@
     <Compile Include="Forms\NewModDialog.Designer.cs">
       <DependentUpon>NewModDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\UpdateMessageDialog.cs">
@@ -141,6 +142,9 @@
     </Compile>
     <Compile Include="SizeSuffix.cs" />
     <Compile Include="UpdateHelper.cs" />
+    <Compile Include="UpdaterWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="Controls\ButtonControl.resx">
       <DependentUpon>ButtonControl.cs</DependentUpon>
     </EmbeddedResource>
