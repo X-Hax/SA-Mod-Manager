@@ -18,6 +18,7 @@ namespace SADXModManager
 		public string GitHubRepo { get; set; }
 		public string GitHubAsset { get; set; }
 		public string UpdateUrl { get; set; }
+		public string ChangelogUrl { get; set; }
 
 		public static IEnumerable<string> GetModFiles(DirectoryInfo directoryInfo)
 		{

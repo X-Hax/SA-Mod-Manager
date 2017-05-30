@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace SADXModManager
 {
@@ -44,20 +42,5 @@ namespace SADXModManager
 		public GitHubAsset[] Assets { get; set; }
 		[JsonProperty("body")]
 		public string Body { get; set; }
-	}
-
-	public class UpdaterWebClient : WebClient
-	{
-		protected override WebRequest GetWebRequest(Uri address)
-		{
-			var request = base.GetWebRequest(address) as HttpWebRequest;
-
-			if (request != null)
-			{
-				request.UserAgent = "sadx-mod-manager";
-			}
-
-			return request;
-		}
 	}
 }

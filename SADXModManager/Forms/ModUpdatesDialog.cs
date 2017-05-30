@@ -49,6 +49,28 @@ namespace SADXModManager.Forms
 		{
 			textChangeLog.Text = entry?.Changes.Trim();
 			modUpdateDetails.SetData(entry);
+
+			listFiles.BeginUpdate();
+			listFiles.Items.Clear();
+
+			if (entry?.Type == ModDownloadType.Modular)
+			{
+				tabPageFiles.Enabled = true;
+
+				foreach (ModManifestDiff i in entry.ChangedFiles)
+				{
+					string file = i.State == ModManifestState.Moved ? $"{i.Last.FilePath} -> {i.Current.FilePath}" : i.Current.FilePath;
+					listFiles.Items.Add(new ListViewItem(new[] { i.State.ToString(), file }));
+				}
+
+				listFiles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+			}
+			else
+			{
+				tabPageFiles.Enabled = false;
+			}
+
+			listFiles.EndUpdate();
 		}
 
 		private void listModUpdates_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)

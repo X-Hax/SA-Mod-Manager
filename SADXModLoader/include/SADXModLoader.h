@@ -14,11 +14,11 @@
 #endif
 
 // Split-out header files.
-#include "ModLoader/MemAccess.h"
-#include "SADXModLoader/SADXEnums.h"
-#include "SADXModLoader/SADXStructs.h"
-#include "SADXModLoader/SADXVariables.h"
-#include "SADXModLoader/SADXFunctions.h"
+#include "MemAccess.h"
+#include "SADXEnums.h"
+#include "SADXStructs.h"
+#include "SADXVariables.h"
+#include "SADXFunctions.h"
 
 static inline void ResizeTextureList(NJS_TEXLIST *texlist, Uint32 count)
 {

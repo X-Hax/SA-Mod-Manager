@@ -39,14 +39,14 @@ namespace SADXModManager
 
 	public class ModDownload
 	{
-		public ModInfo Info { get; private set; }
+		public ModInfo Info { get; }
 		public readonly ModDownloadType Type;
 		public readonly string Url;
 		public readonly string Folder;
 		public readonly string Changes;
-		public long Size { get; private set; }
-		public int FilesToDownload { get; private set; }
-		public List<ModManifestDiff> ChangedFiles { get; private set; }
+		public long Size { get; }
+		public int FilesToDownload { get; }
+		public List<ModManifestDiff> ChangedFiles { get; }
 
 		public string HomePage   = string.Empty;
 		public string Name       = string.Empty;
@@ -88,9 +88,10 @@ namespace SADXModManager
 		/// <param name="info">Metadata for the associated mod.</param>
 		/// <param name="folder">The folder containing the mod.</param>
 		/// <param name="url">URL of the mod download.</param>
+		/// <param name="changes">List of changes for this update.</param>
 		/// <param name="diff">A diff of the remote and local manifests.</param>
 		/// <seealso cref="ModDownloadType"/>
-		public ModDownload(ModInfo info, string folder, string url, List<ModManifestDiff> diff)
+		public ModDownload(ModInfo info, string folder, string url, string changes, List<ModManifestDiff> diff)
 		{
 			Info         = info;
 			Type         = ModDownloadType.Modular;
@@ -106,23 +107,7 @@ namespace SADXModManager
 			FilesToDownload = toDownload.Count;
 			Size = Math.Max(toDownload.Select(x => x.Current.FileSize).Sum(), toDownload.Count);
 
-			var changes = new List<string> { "Files changed in this update:\n" };
-
-			foreach (ModManifestDiff i in ChangedFiles)
-			{
-				string l = "- " + i.State.ToString() + ":\t\t";
-
-				if (i.State == ModManifestState.Moved)
-				{
-					changes.Add($"{l}{i.Last.FilePath} -> {i.Current.FilePath}");
-				}
-				else
-				{
-					changes.Add($"{l}{i.Current.FilePath}");
-				}
-			}
-
-			Changes = string.Join("\n", changes);
+			Changes = !string.IsNullOrEmpty(changes) ? changes : string.Empty;
 		}
 
 		private static void Extract(IReader reader, string outDir)
@@ -361,18 +346,39 @@ namespace SADXModManager
 								return;
 							}
 
-							client.DownloadFileCompleted += DownloadComplete;
-							client.DownloadProgressChanged += DownloadProgressChanged;
+							var info = new FileInfo(filePath);
 							++fileDownloading;
 
-							lock (sync)
+							if (!info.Exists || info.Length != i.Current.FileSize
+							    || !i.Current.Checksum.Equals(ModManifestGenerator.GetFileHash(filePath), StringComparison.InvariantCultureIgnoreCase))
 							{
-								client.DownloadFileAsync(new Uri(uri, i.Current.FilePath), filePath, sync);
-								Monitor.Wait(sync);
-							}
+								client.DownloadFileCompleted += DownloadComplete;
+								client.DownloadProgressChanged += DownloadProgressChanged;
 
-							client.DownloadProgressChanged -= DownloadProgressChanged;
-							client.DownloadFileCompleted -= DownloadComplete;
+								lock (sync)
+								{
+									client.DownloadFileAsync(new Uri(uri, i.Current.FilePath), filePath, sync);
+									Monitor.Wait(sync);
+								}
+
+								client.DownloadProgressChanged -= DownloadProgressChanged;
+								client.DownloadFileCompleted -= DownloadComplete;
+
+								info.Refresh();
+
+								if (info.Length != i.Current.FileSize)
+								{
+									throw new Exception(string.Format("Size of downloaded file \"{0}\" ({1}) differs from manifest ({2}).",
+										i.Current.FilePath, SizeSuffix.GetSizeSuffix(info.Length), SizeSuffix.GetSizeSuffix(i.Current.FileSize)));
+								}
+
+								var hash = ModManifestGenerator.GetFileHash(filePath);
+								if (!i.Current.Checksum.Equals(hash, StringComparison.InvariantCultureIgnoreCase))
+								{
+									throw new Exception(string.Format("Checksum of downloaded file \"{0}\" ({1}) differs from manifest ({2}).",
+										i.Current.FilePath, hash, i.Current.Checksum));
+								}
+							}
 
 							if (cancelArgs.Cancel || downloadArgs?.Cancel == true)
 							{
@@ -403,6 +409,7 @@ namespace SADXModManager
 							return;
 						}
 
+						// Handle existing entries marked as moved.
 						foreach (ModManifestDiff i in movedEntries)
 						{
 							ModManifest old = i.Last;
@@ -502,37 +509,37 @@ namespace SADXModManager
 			}
 		}
 
-		protected virtual bool OnDownloadStarted(CancelEventArgs e)
+		private bool OnDownloadStarted(CancelEventArgs e)
 		{
 			DownloadStarted?.Invoke(this, e);
 			return e.Cancel;
 		}
 
-		protected virtual bool OnDownloadProgress(DownloadProgressEventArgs e)
+		private bool OnDownloadProgress(DownloadProgressEventArgs e)
 		{
 			DownloadProgress?.Invoke(this, e);
 			return e.Cancel;
 		}
 
-		protected virtual bool OnDownloadCompleted(CancelEventArgs e)
+		private bool OnDownloadCompleted(CancelEventArgs e)
 		{
 			DownloadCompleted?.Invoke(this, e);
 			return e.Cancel;
 		}
 
-		protected virtual bool OnExtracting(CancelEventArgs e)
+		private bool OnExtracting(CancelEventArgs e)
 		{
 			Extracting?.Invoke(this, e);
 			return e.Cancel;
 		}
 
-		protected virtual bool OnParsingManifest(CancelEventArgs e)
+		private bool OnParsingManifest(CancelEventArgs e)
 		{
 			ParsingManifest?.Invoke(this, e);
 			return e.Cancel;
 		}
 
-		protected virtual bool OnApplyingManifest(CancelEventArgs e)
+		private bool OnApplyingManifest(CancelEventArgs e)
 		{
 			ApplyingManifest?.Invoke(this, e);
 			return e.Cancel;

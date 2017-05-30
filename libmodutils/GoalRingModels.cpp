@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "ModLoader/MemAccess.h"
+#include "MemAccess.h"
 #include "ninja.h"
 
 NJS_MATERIAL matlist_8D142FC194AB5E8DE47[] = {

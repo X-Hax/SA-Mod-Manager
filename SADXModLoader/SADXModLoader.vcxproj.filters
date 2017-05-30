@@ -16,12 +16,6 @@
     <Filter Include="Header Files\include">
       <UniqueIdentifier>{a284e71f-d76d-4365-a8f7-4f7701515669}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\include\SADXModLoader">
-      <UniqueIdentifier>{88b3779d-d1c8-440f-a99d-fc9b6b173d6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\include\ModLoader">
-      <UniqueIdentifier>{360b6848-16fb-4b5a-ab6c-3c9789dd0bab}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextureReplacement.cpp">
@@ -83,21 +77,6 @@
     <ClInclude Include="include\ninja.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\SADXModLoader\SADXEnums.h">
-      <Filter>Header Files\include\SADXModLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SADXModLoader\SADXFunctions.h">
-      <Filter>Header Files\include\SADXModLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SADXModLoader\SADXStructs.h">
-      <Filter>Header Files\include\SADXModLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SADXModLoader\SADXVariables.h">
-      <Filter>Header Files\include\SADXModLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ModLoader\MemAccess.h">
-      <Filter>Header Files\include\ModLoader</Filter>
-    </ClInclude>
     <ClInclude Include="Events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -130,6 +109,21 @@
     </ClInclude>
     <ClInclude Include="pvmx.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SADXEnums.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SADXFunctions.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SADXStructs.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SADXVariables.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MemAccess.h">
+      <Filter>Header Files\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

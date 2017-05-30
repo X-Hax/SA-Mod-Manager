@@ -39,6 +39,10 @@
 			this.textChangeLog = new System.Windows.Forms.RichTextBox();
 			this.tabPageDetails = new System.Windows.Forms.TabPage();
 			this.modUpdateDetails = new SADXModManager.Controls.ModUpdateDetails();
+			this.tabPageFiles = new System.Windows.Forms.TabPage();
+			this.listFiles = new System.Windows.Forms.ListView();
+			this.columnStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnFile = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -46,6 +50,7 @@
 			this.tabControl1.SuspendLayout();
 			this.tabPageChanges.SuspendLayout();
 			this.tabPageDetails.SuspendLayout();
+			this.tabPageFiles.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -127,6 +132,7 @@
 			// tabControl1
 			// 
 			this.tabControl1.Controls.Add(this.tabPageChanges);
+			this.tabControl1.Controls.Add(this.tabPageFiles);
 			this.tabControl1.Controls.Add(this.tabPageDetails);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -179,6 +185,43 @@
 			this.modUpdateDetails.Size = new System.Drawing.Size(361, 150);
 			this.modUpdateDetails.TabIndex = 0;
 			// 
+			// tabPageFiles
+			// 
+			this.tabPageFiles.Controls.Add(this.listFiles);
+			this.tabPageFiles.Location = new System.Drawing.Point(4, 22);
+			this.tabPageFiles.Name = "tabPageFiles";
+			this.tabPageFiles.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageFiles.Size = new System.Drawing.Size(364, 189);
+			this.tabPageFiles.TabIndex = 2;
+			this.tabPageFiles.Text = "Files";
+			this.tabPageFiles.UseVisualStyleBackColor = true;
+			// 
+			// listFiles
+			// 
+			this.listFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnStatus,
+            this.columnFile});
+			this.listFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.listFiles.FullRowSelect = true;
+			this.listFiles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.listFiles.Location = new System.Drawing.Point(3, 3);
+			this.listFiles.MultiSelect = false;
+			this.listFiles.Name = "listFiles";
+			this.listFiles.Size = new System.Drawing.Size(358, 183);
+			this.listFiles.TabIndex = 0;
+			this.listFiles.UseCompatibleStateImageBehavior = false;
+			this.listFiles.View = System.Windows.Forms.View.Details;
+			// 
+			// columnStatus
+			// 
+			this.columnStatus.Text = "Status";
+			this.columnStatus.Width = 82;
+			// 
+			// columnFile
+			// 
+			this.columnFile.Text = "File";
+			this.columnFile.Width = 248;
+			// 
 			// ModUpdatesDialog
 			// 
 			this.AcceptButton = this.buttonInstall;
@@ -203,6 +246,7 @@
 			this.tabControl1.ResumeLayout(false);
 			this.tabPageChanges.ResumeLayout(false);
 			this.tabPageDetails.ResumeLayout(false);
+			this.tabPageFiles.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -221,5 +265,9 @@
 		private System.Windows.Forms.TabPage tabPageChanges;
 		private System.Windows.Forms.TabPage tabPageDetails;
 		private Controls.ModUpdateDetails modUpdateDetails;
+		private System.Windows.Forms.TabPage tabPageFiles;
+		private System.Windows.Forms.ListView listFiles;
+		private System.Windows.Forms.ColumnHeader columnStatus;
+		private System.Windows.Forms.ColumnHeader columnFile;
 	}
 }

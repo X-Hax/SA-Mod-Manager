@@ -86,7 +86,7 @@ namespace SADXModManager
 			foreach (var f in fileIndex)
 			{
 				var relativePath = f.Substring(modPath.Length + 1);
-				var file = new FileInfo(f);
+				FileInfo file = GetFileInfo(f);
 
 				++i;
 
@@ -119,9 +119,26 @@ namespace SADXModManager
 			return result;
 		}
 
+		/// <summary>
+		/// Follows symbolic links.
+		/// </summary>
+		/// <param name="path">Path to the file.</param>
+		/// <returns>The <seealso cref="FileInfo"/>  of the real file.</returns>
+		private static FileInfo GetFileInfo(string path)
+		{
+			var file = new FileInfo(path);
+
+			if ((file.Attributes & FileAttributes.ReparsePoint) != 0)
+			{
+				file = new FileInfo(NativeMethods.GetFinalPathName(path).Replace(@"\\?\", null));
+			}
+
+			return file;
+		}
+
 		public static List<ModManifestDiff> Diff(List<ModManifest> newManifest, List<ModManifest> oldManifest)
 		{
-			// TODO: handle copies instead of moves to reduce download requirements
+			// TODO: handle copies instead of moves to reduce download requirements (or cache downloads by hash?)
 
 			var result = new List<ModManifestDiff>();
 
@@ -153,7 +170,7 @@ namespace SADXModManager
 
 					if (checksum.All(x => x.FilePath != entry.FilePath))
 					{
-						old.Remove(old.FirstOrDefault(x => x.FilePath == entry.FilePath));
+						old.Remove(old.FirstOrDefault(x => x.FilePath.Equals(entry.FilePath, StringComparison.InvariantCultureIgnoreCase)));
 						result.Add(new ModManifestDiff(ModManifestState.Moved, entry, checksum[0]));
 						continue;
 					}
@@ -161,7 +178,7 @@ namespace SADXModManager
 
 				// If we've made it here, there's no matching checksums, so let's search
 				// for matching paths. If a path matches, the file has been modified.
-				ModManifest nameMatch = old.FirstOrDefault(x => x.FilePath == entry.FilePath);
+				ModManifest nameMatch = old.FirstOrDefault(x => x.FilePath.Equals(entry.FilePath, StringComparison.InvariantCultureIgnoreCase));
 				if (nameMatch != null)
 				{
 					old.Remove(nameMatch);
@@ -209,7 +226,7 @@ namespace SADXModManager
 						continue;
 					}
 
-					var info = new FileInfo(filePath);
+					FileInfo info = GetFileInfo(filePath);
 
 					if (info.Length != m.FileSize)
 					{
@@ -255,18 +272,18 @@ namespace SADXModManager
 
 			return string.Concat(hash.Select(x => x.ToString("x2")));
 		}
-		
-		protected virtual void OnFilesIndexed(FilesIndexedEventArgs e)
+
+		private void OnFilesIndexed(FilesIndexedEventArgs e)
 		{
 			FilesIndexed?.Invoke(this, e);
 		}
 
-		protected virtual void OnFileHashStart(FileHashEventArgs e)
+		private void OnFileHashStart(FileHashEventArgs e)
 		{
 			FileHashStart?.Invoke(this, e);
 		}
 
-		protected virtual void OnFileHashEnd(FileHashEventArgs e)
+		private void OnFileHashEnd(FileHashEventArgs e)
 		{
 			FileHashEnd?.Invoke(this, e);
 		}
@@ -338,7 +355,9 @@ namespace SADXModManager
 				return false;
 			}
 
-			return FileSize == m.FileSize && FilePath == m.FilePath && Checksum == m.Checksum;
+			return FileSize == m.FileSize
+				&& FilePath.Equals(m.FilePath, StringComparison.InvariantCultureIgnoreCase)
+				&& Checksum.Equals(m.Checksum, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		public override int GetHashCode()
