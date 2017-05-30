@@ -11,7 +11,6 @@ using std::vector;
 
 // TODO: title screen?
 // TODO: subtitles/messages (mission screen, quit prompt), map, title cards somehow, credits, tutorials
-// TODO: fix green gradient thing
 
 #pragma region trampolines
 
@@ -19,11 +18,13 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uin
 static void __cdecl njDrawSprite2D_4_r(NJS_SPRITE *sp, Int n, Float pri, Uint32 attr);
 static void __cdecl DrawRectPoints_r(NJS_POINT2 *points, float scale);
 static void __cdecl sub_404490_r(NJS_POINT2COL *points, int count, float depth, int size, char flags);
+static void __cdecl njDrawTriangle2D_SomeOtherVersion_r(NJS_POINT2COL *p, int count, float pri, Uint32 attr);
 
 Trampoline njDrawSprite2D_Queue_t(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
 Trampoline njDrawSprite2D_4_t(0x004070A0, 0x004070A5, njDrawSprite2D_4_r);
 Trampoline DrawRectPoints_t(0x0077E970, 0x0077E977, DrawRectPoints_r);
 Trampoline sub_404490_t(0x00404490, 0x00404496, sub_404490_r);
+Trampoline njDrawTriangle2D_SomeOtherVersion_t(0x004010D0, 0x004010D6, njDrawTriangle2D_SomeOtherVersion_r);
 
 static Trampoline* DisplayAllObjects_t;
 static Trampoline* HudDisplayRingTimeLife_Check_t;
@@ -76,6 +77,7 @@ static Trampoline* MenuObj_Display_t;
 static Trampoline* OptionsMenu_Display_t;
 static Trampoline* SoundTest_Display_t;
 static Trampoline* DisplayLogoScreen_t;
+static Trampoline* GreenMenuRect_Draw_t;
 
 #pragma endregion
 
@@ -638,6 +640,18 @@ static void __cdecl sub_404490_r(NJS_POINT2COL* points, int count, float depth, 
 	original(points, count, depth, size, flags);
 }
 
+void njDrawTriangle2D_SomeOtherVersion_r(NJS_POINT2COL* p, int count, float pri, Uint32 attr)
+{
+	FunctionPointer(void, original, (NJS_POINT2COL* p, int count, float pri, Uint32 attr), njDrawTriangle2D_SomeOtherVersion_t.Target());
+
+	if (p)
+	{
+		ScalePoints(p->p, count);
+	}
+
+	original(p, count, pri, attr);
+}
+
 void SetHudScaleValues()
 {
 	scale_h = HorizontalStretch;
@@ -766,6 +780,16 @@ static void __cdecl DisplayLogoScreen_r(Uint8 index)
 	is_bg = false;
 }
 
+void __cdecl GreenMenuRect_Draw_r(float x, float y, float z, float width, float height)
+{
+	auto _is_bg = is_bg;
+	is_bg = false;
+
+	scaleTrampoline(Align::Center, GreenMenuRect_Draw_r, GreenMenuRect_Draw_t, x, y, z, width, height);
+
+	is_bg = _is_bg;
+}
+
 void SetupHudScale()
 {
 	SetHudScaleValues();
@@ -786,6 +810,7 @@ void SetupHudScale()
 	OptionsMenu_Display_t        = new Trampoline(0x00509810, 0x00509815, OptionsMenu_Display_r);
 	SoundTest_Display_t          = new Trampoline(0x00511390, 0x00511395, SoundTest_Display_r);
 	DisplayLogoScreen_t          = new Trampoline(0x0042CB20, 0x0042CB28, DisplayLogoScreen_r);
+	GreenMenuRect_Draw_t         = new Trampoline(0x004334F0, 0x004334F5, GreenMenuRect_Draw_r);
 
 	// Fixes character scale on character select screen.
 	WriteData((const float**)0x0051285E, &patch_dummy);
