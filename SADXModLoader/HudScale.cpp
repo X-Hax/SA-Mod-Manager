@@ -10,15 +10,17 @@ using std::stack;
 using std::vector;
 
 // TODO: title screen?
-// TODO: subtitles/messages (mission screen, quit prompt), map, title cards somehow, credits
+// TODO: subtitles/messages (mission screen, quit prompt), map
 
 static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
 static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
 static void __cdecl Direct3D_DrawSprite_r(NJS_POINT2 *points);
+static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX *polygon, Int count, Int trans);
 
 static Trampoline njDrawSprite2D_Queue_t(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
 static Trampoline njDrawTriangle2D_t(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
 static Trampoline Direct3D_DrawSprite_t(0x0077DE10, 0x0077DE18, Direct3D_DrawSprite_r);
+static Trampoline njDrawPolygon_t(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
 
 #pragma region trampolines
 
@@ -77,6 +79,8 @@ static Trampoline* GreenMenuRect_Draw_t;
 static Trampoline* TutorialBackground_Display_t;
 static Trampoline* TutorialInstructionOverlay_Display_t;
 static Trampoline* DisplayTitleCard_t;
+static Trampoline* Credits_Main_t;
+static Trampoline* EndBG_Display_t;
 
 #pragma endregion
 
@@ -646,6 +650,26 @@ static Sint32 __cdecl DisplayTitleCard_r()
 	return ScaleTrampoline<Sint32>(Align::Center, false, DisplayTitleCard_r, DisplayTitleCard_t);
 }
 
+static void __cdecl Credits_Main_r(ObjectMaster* a1)
+{
+	ScaleTrampoline(Align::Center, false, Credits_Main_r, Credits_Main_t, a1);
+}
+
+static void __cdecl EndBG_Display_r(ObjectMaster* a1)
+{
+	if (fill_mode == FillMode::Fill)
+	{
+		auto orig = fill_mode;
+		fill_mode = FillMode::Fit;
+		ScaleTrampoline(Align::Center, true, EndBG_Display_r, EndBG_Display_t, a1);
+		fill_mode = orig;
+	}
+	else
+	{
+		ScaleTrampoline(Align::Center, true, EndBG_Display_r, EndBG_Display_t, a1);
+	}
+}
+
 #pragma endregion
 
 void SetHudScaleValues()
@@ -691,24 +715,24 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uin
 	}
 }
 
-static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *vtx, Int count, Int tex, Int flag)
+static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, Int tex, Int flag)
 {
 	auto orig = (decltype(njDrawTextureMemList_r)*)njDrawTextureMemList_t->Target();
 
 	bool is_bg = !scale_stack.empty() && scale_stack.top().is_background;
-	if (is_bg && fill_mode == FillMode::Stretch || !do_scale || count > 4)
+	if (!do_scale || is_bg && fill_mode == FillMode::Stretch || count > 4)
 	{
-		orig(vtx, count, tex, flag);
+		orig(polygon, count, tex, flag);
 		return;
 	}
 
-	// vtx[0] == top left
-	// vtx[1] == bottom left
-	// vtx[2] == top right
-	// vtx[3] == bottom right
+	// polygon[0] == top left
+	// polygon[1] == bottom left
+	// polygon[2] == top right
+	// polygon[3] == bottom right
 
-	ScalePoints(vtx, count);
-	orig(vtx, count, tex, flag);
+	ScalePoints(polygon, count);
+	orig(polygon, count, tex, flag);
 }
 
 static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr)
@@ -745,6 +769,21 @@ static void __cdecl Direct3D_DrawSprite_r(NJS_POINT2* points)
 	original(points);
 }
 
+static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int trans)
+{
+	auto orig = (decltype(njDrawPolygon_r)*)njDrawPolygon_t.Target();
+
+	bool is_bg = !scale_stack.empty() && scale_stack.top().is_background;
+	if (!do_scale || is_bg && fill_mode == FillMode::Stretch || count > 4)
+	{
+		orig(polygon, count, trans);
+		return;
+	}
+
+	ScalePoints(polygon, count);
+	orig(polygon, count, trans);
+}
+
 void SetupHudScale()
 {
 	SetHudScaleValues();
@@ -770,6 +809,8 @@ void SetupHudScale()
 	TutorialBackground_Display_t         = new Trampoline(0x006436B0, 0x006436B7, TutorialBackground_Display_r);
 	TutorialInstructionOverlay_Display_t = new Trampoline(0x006430F0, 0x006430F7, TutorialInstructionOverlay_Display_r);
 	DisplayTitleCard_t                   = new Trampoline(0x0047E170, 0x0047E175, DisplayTitleCard_r);
+	Credits_Main_t                       = new Trampoline(0x006411A0, 0x006411A5, Credits_Main_r);
+	EndBG_Display_t                      = new Trampoline(0x006414A0, 0x006414A7, EndBG_Display_r);
 
 	// Fixes character scale on character select screen.
 	WriteData((const float**)0x0051285E, &patch_dummy);
