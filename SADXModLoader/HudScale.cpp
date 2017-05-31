@@ -12,7 +12,7 @@ using std::vector;
 // TODO: title screen?
 // TODO: subtitles/messages (mission screen, quit prompt), map
 
-static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
+static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags);
 static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
 static void __cdecl Direct3D_DrawSprite_r(NJS_POINT2 *points);
 static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX *polygon, Int count, Int trans);
@@ -123,11 +123,12 @@ static constexpr float third_v = 480.0f / 3.0f;
 // TODO: configurable
 static auto fill_mode = FillMode::Fill;
 
-static bool  do_scale  = false;
-static float scale_min = 0.0f;
-static float scale_max = 0.0f;
-static float scale_h   = 0.0f;
-static float scale_v   = 0.0f;
+static bool  sprite_scale = false;
+static bool  do_scale     = false;
+static float scale_min    = 0.0f;
+static float scale_max    = 0.0f;
+static float scale_h      = 0.0f;
+static float scale_v      = 0.0f;
 
 static NJS_POINT2 region_fit  = { 0.0f, 0.0f };
 static NJS_POINT2 region_fill = { 0.0f, 0.0f };
@@ -254,7 +255,7 @@ static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT3& center)
 template <typename T>
 static void ScalePoints(T* points, size_t count)
 {
-	if (scale_stack.empty())
+	if (sprite_scale || scale_stack.empty())
 	{
 		return;
 	}
@@ -302,6 +303,8 @@ static void ScalePoints(T* points, size_t count)
 static NJS_SPRITE last_sprite = {};
 static void __cdecl SpritePush(NJS_SPRITE* sp)
 {
+	sprite_scale = true;
+
 	if (scale_stack.empty())
 	{
 		return;
@@ -322,6 +325,8 @@ static void __cdecl SpritePush(NJS_SPRITE* sp)
 
 static void __cdecl SpritePop(NJS_SPRITE* sp)
 {
+	sprite_scale = false;
+
 	sp->p = last_sprite.p;
 	sp->sx = last_sprite.sx;
 	sp->sy = last_sprite.sy;
@@ -686,7 +691,7 @@ void SetHudScaleValues()
 	region_fill.y = 480.0f * scale_max;
 }
 
-static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
+static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags)
 {
 	if (sp == nullptr)
 	{
@@ -701,17 +706,17 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uin
 	{
 		sp->sx *= scale_min;
 		sp->sy *= scale_min;
-		original(sp, n, pri, attr, zfunc_type);
+		original(sp, n, pri, attr, queue_flags);
 	}
 	else if (do_scale)
 	{
 		SpritePush(sp);
-		original(sp, n, pri, attr | NJD_SPRITE_SCALE, zfunc_type);
+		original(sp, n, pri, attr | NJD_SPRITE_SCALE, queue_flags);
 		SpritePop(sp);
 	}
 	else
 	{
-		original(sp, n, pri, attr, zfunc_type);
+		original(sp, n, pri, attr, queue_flags);
 	}
 }
 
