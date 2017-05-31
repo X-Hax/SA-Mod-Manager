@@ -10,7 +10,7 @@ using std::stack;
 using std::vector;
 
 // TODO: title screen?
-// TODO: subtitles/messages (mission screen, quit prompt), map
+// TODO: subtitles/messages (mission screen, quit prompt)
 
 static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags);
 static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
@@ -81,6 +81,7 @@ static Trampoline* TutorialInstructionOverlay_Display_t;
 static Trampoline* DisplayTitleCard_t;
 static Trampoline* Credits_Main_t;
 static Trampoline* EndBG_Display_t;
+static Trampoline* PauseMenu_Map_Display_t;
 
 #pragma endregion
 
@@ -675,6 +676,11 @@ static void __cdecl EndBG_Display_r(ObjectMaster* a1)
 	}
 }
 
+static void __cdecl PauseMenu_Map_Display_r()
+{
+	ScaleTrampoline(Align::Center, false, PauseMenu_Map_Display_r, PauseMenu_Map_Display_t);
+}
+
 #pragma endregion
 
 void SetHudScaleValues()
@@ -698,7 +704,7 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD
 		return;
 	}
 
-	FunctionPointer(void, original, (NJS_SPRITE*, Int, Float, Uint32, char), njDrawSprite2D_Queue_t.Target());
+	FunctionPointer(void, original, (NJS_SPRITE*, Int, Float, NJD_SPRITE, QueuedModelFlagsB), njDrawSprite2D_Queue_t.Target());
 
 	// Scales lens flare and sun.
 	// It uses njProjectScreen so there's no position scaling required.
@@ -816,6 +822,7 @@ void SetupHudScale()
 	DisplayTitleCard_t                   = new Trampoline(0x0047E170, 0x0047E175, DisplayTitleCard_r);
 	Credits_Main_t                       = new Trampoline(0x006411A0, 0x006411A5, Credits_Main_r);
 	EndBG_Display_t                      = new Trampoline(0x006414A0, 0x006414A7, EndBG_Display_r);
+	PauseMenu_Map_Display_t              = new Trampoline(0x00458B00, 0x00458B06, PauseMenu_Map_Display_r);
 
 	// Fixes character scale on character select screen.
 	WriteData((const float**)0x0051285E, &patch_dummy);
