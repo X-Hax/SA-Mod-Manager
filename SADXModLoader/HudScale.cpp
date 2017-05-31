@@ -76,6 +76,7 @@ static Trampoline* DisplayLogoScreen_t;
 static Trampoline* GreenMenuRect_Draw_t;
 static Trampoline* TutorialBackground_Display_t;
 static Trampoline* TutorialInstructionOverlay_Display_t;
+static Trampoline* DisplayTitleCard_t;
 
 #pragma endregion
 
@@ -635,6 +636,16 @@ static void __cdecl TutorialBackground_Display_r(ObjectMaster* a1)
 	}
 }
 
+static void __cdecl TutorialInstructionOverlay_Display_r(ObjectMaster* a1)
+{
+	ScaleTrampoline(Align::Center, false, TutorialInstructionOverlay_Display_r, TutorialInstructionOverlay_Display_t, a1);
+}
+
+static Sint32 __cdecl DisplayTitleCard_r()
+{
+	return ScaleTrampoline<Sint32>(Align::Center, false, DisplayTitleCard_r, DisplayTitleCard_t);
+}
+
 #pragma endregion
 
 void SetHudScaleValues()
@@ -734,11 +745,6 @@ static void __cdecl Direct3D_DrawSprite_r(NJS_POINT2* points)
 	original(points);
 }
 
-static void __cdecl TutorialInstructionOverlay_Display_r(ObjectMaster* a1)
-{
-	ScaleTrampoline(Align::Center, false, TutorialInstructionOverlay_Display_r, TutorialInstructionOverlay_Display_t, a1);
-}
-
 void SetupHudScale()
 {
 	SetHudScaleValues();
@@ -763,6 +769,7 @@ void SetupHudScale()
 	GreenMenuRect_Draw_t                 = new Trampoline(0x004334F0, 0x004334F5, GreenMenuRect_Draw_r);
 	TutorialBackground_Display_t         = new Trampoline(0x006436B0, 0x006436B7, TutorialBackground_Display_r);
 	TutorialInstructionOverlay_Display_t = new Trampoline(0x006430F0, 0x006430F7, TutorialInstructionOverlay_Display_r);
+	DisplayTitleCard_t                   = new Trampoline(0x0047E170, 0x0047E175, DisplayTitleCard_r);
 
 	// Fixes character scale on character select screen.
 	WriteData((const float**)0x0051285E, &patch_dummy);
