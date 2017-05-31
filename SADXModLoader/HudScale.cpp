@@ -10,7 +10,7 @@ using std::stack;
 using std::vector;
 
 // TODO: title screen?
-// TODO: subtitles/messages (mission screen, quit prompt), map, title cards somehow, credits, tutorials
+// TODO: subtitles/messages (mission screen, quit prompt), map, title cards somehow, credits
 
 static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type);
 static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
@@ -74,6 +74,8 @@ static Trampoline* OptionsMenu_Display_t;
 static Trampoline* SoundTest_Display_t;
 static Trampoline* DisplayLogoScreen_t;
 static Trampoline* GreenMenuRect_Draw_t;
+static Trampoline* TutorialBackground_Display_t;
+static Trampoline* TutorialInstructionOverlay_Display_t;
 
 #pragma endregion
 
@@ -113,8 +115,8 @@ static const float patch_dummy = 1.0f;
 static constexpr float third_h = 640.0f / 3.0f;
 static constexpr float third_v = 480.0f / 3.0f;
 
-// TODO: non-const, configurable
-static const auto fill_mode = FillMode::Fill;
+// TODO: configurable
+static auto fill_mode = FillMode::Fill;
 
 static bool  do_scale  = false;
 static float scale_min = 0.0f;
@@ -613,9 +615,40 @@ static void __cdecl DisplayLogoScreen_r(Uint8 index)
 	ScaleTrampoline(Align::Center, true, DisplayLogoScreen_r, DisplayLogoScreen_t, index);
 }
 
-void __cdecl GreenMenuRect_Draw_r(float x, float y, float z, float width, float height)
+static void __cdecl GreenMenuRect_Draw_r(float x, float y, float z, float width, float height)
 {
 	ScaleTrampoline(Align::Center, false, GreenMenuRect_Draw_r, GreenMenuRect_Draw_t, x, y, z, width, height);
+}
+
+static void __cdecl TutorialBackground_Display_r(ObjectMaster* a1)
+{
+	if (fill_mode == FillMode::Fill)
+	{
+		auto orig = fill_mode;
+		fill_mode = FillMode::Fit;
+		ScaleTrampoline(Align::Center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
+		fill_mode = orig;
+	}
+	else
+	{
+		ScaleTrampoline(Align::Center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
+	}
+}
+
+#pragma endregion
+
+void SetHudScaleValues()
+{
+	scale_h = HorizontalStretch;
+	scale_v = VerticalStretch;
+
+	scale_min = min(scale_h, scale_v);
+	scale_max = max(scale_h, scale_v);
+
+	region_fit.x  = 640.0f * scale_min;
+	region_fit.y  = 480.0f * scale_min;
+	region_fill.x = 640.0f * scale_max;
+	region_fill.y = 480.0f * scale_max;
 }
 
 static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uint32 attr, char zfunc_type)
@@ -645,22 +678,6 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, Uin
 	{
 		original(sp, n, pri, attr, zfunc_type);
 	}
-}
-
-#pragma endregion
-
-void SetHudScaleValues()
-{
-	scale_h = HorizontalStretch;
-	scale_v = VerticalStretch;
-
-	scale_min = min(scale_h, scale_v);
-	scale_max = max(scale_h, scale_v);
-
-	region_fit.x  = 640.0f * scale_min;
-	region_fit.y  = 480.0f * scale_min;
-	region_fill.x = 640.0f * scale_max;
-	region_fill.y = 480.0f * scale_max;
 }
 
 static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *vtx, Int count, Int tex, Int flag)
@@ -717,6 +734,11 @@ static void __cdecl Direct3D_DrawSprite_r(NJS_POINT2* points)
 	original(points);
 }
 
+static void __cdecl TutorialInstructionOverlay_Display_r(ObjectMaster* a1)
+{
+	ScaleTrampoline(Align::Center, false, TutorialInstructionOverlay_Display_r, TutorialInstructionOverlay_Display_t, a1);
+}
+
 void SetupHudScale()
 {
 	SetHudScaleValues();
@@ -725,20 +747,22 @@ void SetupHudScale()
 	njDrawTextureMemList_t = new Trampoline(0x0077DC70, 0x0077DC79, njDrawTextureMemList_r);
 	WriteCall((void*)((size_t)njDrawTextureMemList_t->Target() + 4), njAlphaMode);
 
-	DrawAVA_TITLE_BACK_t         = new Trampoline(0x0050BA90, 0x0050BA96, DrawAVA_TITLE_BACK_r);
-	DrawTiledBG_AVA_BACK_t       = new Trampoline(0x00507BB0, 0x00507BB5, DrawTiledBG_AVA_BACK_r);
-	MissionCompleteScreen_Draw_t = new Trampoline(0x00590690, 0x00590695, MissionCompleteScreen_Draw_r);
-	RecapBackground_Main_t       = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
-	CharSelBg_Display_t          = new Trampoline(0x00512450, 0x00512455, CharSelBg_Display_r);
-	TrialLevelList_Display_t     = new Trampoline(0x0050B410, 0x0050B415, TrialLevelList_Display_r);
-	SubGameLevelList_Display_t   = new Trampoline(0x0050A640, 0x0050A645, SubGameLevelList_Display_r);
-	EmblemResultMenu_Display_t   = new Trampoline(0x0050DFD0, 0x0050DFD5, EmblemResultMenu_Display_r);
-	FileSelect_Display_t         = new Trampoline(0x00505550, 0x00505555, FileSelect_Display_r);
-	MenuObj_Display_t            = new Trampoline(0x00432480, 0x00432487, MenuObj_Display_r);
-	OptionsMenu_Display_t        = new Trampoline(0x00509810, 0x00509815, OptionsMenu_Display_r);
-	SoundTest_Display_t          = new Trampoline(0x00511390, 0x00511395, SoundTest_Display_r);
-	DisplayLogoScreen_t          = new Trampoline(0x0042CB20, 0x0042CB28, DisplayLogoScreen_r);
-	GreenMenuRect_Draw_t         = new Trampoline(0x004334F0, 0x004334F5, GreenMenuRect_Draw_r);
+	DrawAVA_TITLE_BACK_t                 = new Trampoline(0x0050BA90, 0x0050BA96, DrawAVA_TITLE_BACK_r);
+	DrawTiledBG_AVA_BACK_t               = new Trampoline(0x00507BB0, 0x00507BB5, DrawTiledBG_AVA_BACK_r);
+	MissionCompleteScreen_Draw_t         = new Trampoline(0x00590690, 0x00590695, MissionCompleteScreen_Draw_r);
+	RecapBackground_Main_t               = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
+	CharSelBg_Display_t                  = new Trampoline(0x00512450, 0x00512455, CharSelBg_Display_r);
+	TrialLevelList_Display_t             = new Trampoline(0x0050B410, 0x0050B415, TrialLevelList_Display_r);
+	SubGameLevelList_Display_t           = new Trampoline(0x0050A640, 0x0050A645, SubGameLevelList_Display_r);
+	EmblemResultMenu_Display_t           = new Trampoline(0x0050DFD0, 0x0050DFD5, EmblemResultMenu_Display_r);
+	FileSelect_Display_t                 = new Trampoline(0x00505550, 0x00505555, FileSelect_Display_r);
+	MenuObj_Display_t                    = new Trampoline(0x00432480, 0x00432487, MenuObj_Display_r);
+	OptionsMenu_Display_t                = new Trampoline(0x00509810, 0x00509815, OptionsMenu_Display_r);
+	SoundTest_Display_t                  = new Trampoline(0x00511390, 0x00511395, SoundTest_Display_r);
+	DisplayLogoScreen_t                  = new Trampoline(0x0042CB20, 0x0042CB28, DisplayLogoScreen_r);
+	GreenMenuRect_Draw_t                 = new Trampoline(0x004334F0, 0x004334F5, GreenMenuRect_Draw_r);
+	TutorialBackground_Display_t         = new Trampoline(0x006436B0, 0x006436B7, TutorialBackground_Display_r);
+	TutorialInstructionOverlay_Display_t = new Trampoline(0x006430F0, 0x006430F7, TutorialInstructionOverlay_Display_r);
 
 	// Fixes character scale on character select screen.
 	WriteData((const float**)0x0051285E, &patch_dummy);
