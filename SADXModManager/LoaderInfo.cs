@@ -20,42 +20,42 @@ namespace SADXModManager
 		public bool? ShowConsole { get { return null; } set { if (value.HasValue) DebugConsole = value.Value; } }
 		public bool DisableCDCheck { get; set; }
 		[DefaultValue(640)]
-		public int HorizontalResolution { get; set; }
+		public int HorizontalResolution { get; set; } = 640;
 		[DefaultValue(480)]
-		public int VerticalResolution { get; set; }
+		public int VerticalResolution { get; set; } = 480;
 		public bool ForceAspectRatio { get; set; }
 		[DefaultValue(false)]
 		public bool ScaleHud { get; set; }
 		public bool WindowedFullscreen { get; set; }
 		[DefaultValue(true)]
-		public bool EnableVsync { get; set; }
+		public bool EnableVsync { get; set; } = true;
 		[DefaultValue(true)]
-		public bool AutoMipmap { get; set; }
+		public bool AutoMipmap { get; set; } = true;
 		[DefaultValue(true)]
-		public bool TextureFilter { get; set; }
+		public bool TextureFilter { get; set; } = true;
 		[DefaultValue(true)]
-		public bool PauseWhenInactive { get; set; }
+		public bool PauseWhenInactive { get; set; } = true;
 		[DefaultValue(true)]
-		public bool StretchFullscreen { get; set; }
+		public bool StretchFullscreen { get; set; } = true;
 		[DefaultValue(1)]
-		public int ScreenNum { get; set; }
+		public int ScreenNum { get; set; } = 1;
 		public bool CustomWindowSize { get; set; }
 		[DefaultValue(640)]
-		public int WindowWidth { get; set; }
+		public int WindowWidth { get; set; } = 640;
 		[DefaultValue(480)]
-		public int WindowHeight { get; set; }
+		public int WindowHeight { get; set; } = 480;
 		public bool MaintainWindowAspectRatio { get; set; }
 		public bool ResizableWindow { get; set; }
 
 		[DefaultValue(true)]
-		public bool UpdateCheck { get; set; }
+		public bool UpdateCheck { get; set; } = true;
 		[DefaultValue(true)]
-		public bool ModUpdateCheck { get; set; }
-		
+		public bool ModUpdateCheck { get; set; } = true;
+
 		[DefaultValue(UpdateUnit.Weeks)]
-		public UpdateUnit UpdateUnit { get; set; }
+		public UpdateUnit UpdateUnit { get; set; } = UpdateUnit.Weeks;
 		[DefaultValue(1)]
-		public int UpdateFrequency { get; set; }
+		public int UpdateFrequency { get; set; } = 1;
 
 		[DefaultValue(0)] public long UpdateTime { get; set; }
 		[DefaultValue(0)] public long ModUpdateTime { get; set; }
