@@ -2400,6 +2400,18 @@ static void __cdecl InitMods()
 	WriteJump((void *)0x40D28A, (void *)WMPRelease_r);
 	WriteJump(LoadSoundList, LoadSoundList_r);
 
+	// Replaces half-pixel offset addition with subtraction
+	WriteData((uint8_t*)0x0077DE1E, (uint8_t)0x25);
+	WriteData((uint8_t*)0x0077DE33, (uint8_t)0x25);
+	WriteData((uint8_t*)0x0078E822, (uint8_t)0x25);
+	WriteData((uint8_t*)0x0078E83C, (uint8_t)0x25);
+	WriteData((uint8_t*)0x0078E991, (uint8_t)0x25);
+	WriteData((uint8_t*)0x0078E9AE, (uint8_t)0x25);
+	WriteData((uint8_t*)0x0078EA41, (uint8_t)0x25);
+	WriteData((uint8_t*)0x0078EA5E, (uint8_t)0x25);
+	WriteData((uint8_t*)0x0078EAE1, (uint8_t)0x25);
+	WriteData((uint8_t*)0x0078EAFE, (uint8_t)0x25);
+
 	texpack::Init();
 
 	// Unprotect the .rdata section.
