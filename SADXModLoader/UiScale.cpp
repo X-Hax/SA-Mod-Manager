@@ -4,7 +4,7 @@
 #include "Trampoline.h"
 #include <stack>
 
-#include "HudScale.h"
+#include "UiScale.h"
 
 using std::stack;
 using std::vector;

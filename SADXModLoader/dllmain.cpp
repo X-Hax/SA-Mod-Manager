@@ -37,7 +37,7 @@ using std::vector;
 #include "FileSystem.h"
 #include "Events.h"
 #include "AutoMipmap.h"
-#include "HudScale.h"
+#include "UiScale.h"
 #include "FixFOV.h"
 
 /**
