@@ -396,18 +396,11 @@ static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, 
 {
 	auto original = (decltype(njDrawTextureMemList_r)*)njDrawTextureMemList_t->Target();
 
-	if (!IsScaleEnabled() || count > 4)
+	if (IsScaleEnabled())
 	{
-		original(polygon, count, tex, flag);
-		return;
+		ScalePoints(polygon, count);
 	}
 
-	// polygon[0] == top left
-	// polygon[1] == bottom left
-	// polygon[2] == top right
-	// polygon[3] == bottom right
-
-	ScalePoints(polygon, count);
 	original(polygon, count, tex, flag);
 }
 
@@ -449,13 +442,11 @@ static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int tra
 {
 	auto orig = (decltype(njDrawPolygon_r)*)njDrawPolygon_t.Target();
 
-	if (IsScaleEnabled() || count > 4)
+	if (IsScaleEnabled())
 	{
-		orig(polygon, count, trans);
-		return;
+		ScalePoints(polygon, count);
 	}
 
-	ScalePoints(polygon, count);
 	orig(polygon, count, trans);
 }
 
@@ -839,7 +830,6 @@ static void __cdecl DrawSubtitles_r()
 {
 	ScaleTrampoline(Align::Center, false, DrawSubtitles_r, DrawSubtitles_t);
 }
-
 
 void uiscale::SetupHudScale()
 {
