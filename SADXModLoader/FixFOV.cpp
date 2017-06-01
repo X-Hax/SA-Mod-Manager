@@ -12,31 +12,6 @@ static double fov_rads  = 0.96712852; // 55.412382 degrees
 static Angle  fov_bams  = NJM_RAD_ANG(fov_rads);
 static double fov_scale = 1.0;
 
-static void DisplayVideoFrame_FixAspectRatio()
-{
-	// I would be using .sx and .sy (size), but those are always 640x480 no matter the video resolution.
-	int video_width = VideoFrame.tanim[0].cx * 2;
-	int video_height = VideoFrame.tanim[0].cy * 2;
-	float video_resolution;
-	float screen_resolution;
-
-	// Fit to screen.
-	// TODO: configurable (fill, fit, stretch, etc)
-	if (HorizontalResolution > VerticalResolution)
-	{
-		video_resolution = (float)video_height;
-		screen_resolution = (float)VerticalResolution;
-	}
-	else
-	{
-		video_resolution = (float)video_width;
-		screen_resolution = (float)HorizontalResolution;
-	}
-
-	float scale = screen_resolution / video_resolution;
-	VideoFrame.sx = VideoFrame.sy = scale;
-}
-
 // Fix for neglected width and height in global NJS_SCREEN
 static void __cdecl SetupScreen_r(NJS_SCREEN* screen)
 {
@@ -155,9 +130,6 @@ void CheckAspectRatio()
 void ConfigureFOV()
 {
 	WriteJump(SetupScreen, SetupScreen_r);
-
-	// Taking advantage of a nullsub call to perform aspect-correct FMV scaling.
-	WriteCall((void*)0x00513A88, DisplayVideoFrame_FixAspectRatio);
 
 	// Stops the Pause Menu from using horizontal stretch in place of vertical stretch in coordinate calculation
 	// Main Pause Menu

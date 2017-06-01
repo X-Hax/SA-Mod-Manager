@@ -12,15 +12,13 @@ using std::vector;
 // TODO: title screen?
 // TODO: subtitles/messages (mission screen, quit prompt)
 
-static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags);
-static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
-static void __cdecl Direct3D_DrawSprite_r(NJS_POINT2 *points);
-static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX *polygon, Int count, Int trans);
+namespace uiscale
+{
+	FillMode bg_fill  = FillMode::Fill;
+	FillMode fmv_fill = FillMode::Fit;
+}
 
-static Trampoline njDrawSprite2D_Queue_t(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
-static Trampoline njDrawTriangle2D_t(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
-static Trampoline Direct3D_DrawSprite_t(0x0077DE10, 0x0077DE18, Direct3D_DrawSprite_r);
-static Trampoline njDrawPolygon_t(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
+using namespace uiscale;
 
 #pragma region trampolines
 
@@ -87,13 +85,6 @@ static Trampoline* PauseMenu_Map_Display_t;
 
 #pragma region sprite stack
 
-enum FillMode : Uint8
-{
-	Stretch = 0,
-	Fit     = 1,
-	Fill    = 2
-};
-
 enum Align : Uint8
 {
 	Auto,
@@ -121,9 +112,6 @@ static const float patch_dummy = 1.0f;
 static constexpr float third_h = 640.0f / 3.0f;
 static constexpr float third_v = 480.0f / 3.0f;
 
-// TODO: configurable
-static auto fill_mode = FillMode::Fill;
-
 static bool  sprite_scale = false;
 static bool  do_scale     = false;
 static float scale_min    = 0.0f;
@@ -133,6 +121,11 @@ static float scale_v      = 0.0f;
 
 static NJS_POINT2 region_fit  = { 0.0f, 0.0f };
 static NJS_POINT2 region_fill = { 0.0f, 0.0f };
+
+inline bool IsTopBackground()
+{
+	return !scale_stack.empty() && scale_stack.top().is_background;
+}
 
 static void __cdecl ScalePush(Uint8 align, bool is_background, float h = 1.0f, float v = 1.0f)
 {
@@ -247,6 +240,37 @@ static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT3& center)
 	return AutoAlign(align, *(NJS_POINT2*)&center);
 }
 
+inline NJS_POINT2 GetOffset(Uint8 align, const NJS_POINT2& center)
+{
+	NJS_POINT2 offset{};
+
+	// if we're scaling a background with fill mode, manually set
+	// coordinate offset so the entire image lands in the center.
+	if (IsTopBackground() && bg_fill == FillMode::Fill)
+	{
+		offset.x = (HorizontalResolution - region_fill.x) / 2.0f;
+		offset.y = (VerticalResolution - region_fill.y) / 2.0f;
+	}
+	else
+	{
+		offset = AutoAlign(align, center);
+	}
+
+	return offset;
+}
+
+inline float GetScale()
+{
+	if (IsTopBackground() && bg_fill == FillMode::Fill)
+	{
+		return scale_max;
+	}
+	else
+	{
+		return scale_min;
+	}
+}
+
 /**
  * \brief Scales and re-positions an array of structures containing the fields x and y.
  * \tparam T A structure type containing the fields x and y.
@@ -274,24 +298,8 @@ static void ScalePoints(T* points, size_t count)
 		center.y += p.y * m;
 	}
 
-	NJS_POINT2 offset;
-	float scale;
-
-	bool is_bg = !scale_stack.empty() && scale_stack.top().is_background;
-
-	// if we're scaling a background with fill mode, manually set
-	// coordinate offset so the entire image lands in the center.
-	if (is_bg && fill_mode == FillMode::Fill)
-	{
-		scale = scale_max;
-		offset.x = (HorizontalResolution - region_fill.x) / 2.0f;
-		offset.y = (VerticalResolution - region_fill.y) / 2.0f;
-	}
-	else
-	{
-		scale = scale_min;
-		offset = AutoAlign(align, center);
-	}
+	NJS_POINT2 offset = GetOffset(align, center);
+	float scale = GetScale();
 
 	for (size_t i = 0; i < count; i++)
 	{
@@ -299,6 +307,32 @@ static void ScalePoints(T* points, size_t count)
 		p.x = p.x * scale + offset.x;
 		p.y = p.y * scale + offset.y;
 	}
+}
+
+static void ScaleQuadEx(NJS_QUAD_TEXTURE_EX* quad)
+{
+	if (sprite_scale || scale_stack.empty())
+	{
+		return;
+	}
+
+	auto top = scale_stack.top();
+	auto align = top.alignment;
+
+	NJS_POINT2 center = {
+		quad->x + (quad->vx1 / 2.0f),
+		quad->y + (quad->vy2 / 2.0f)
+	};
+
+	NJS_POINT2 offset = GetOffset(align, center);
+	float scale = GetScale();
+
+	quad->x = quad->x * scale + offset.x;
+	quad->y = quad->y * scale + offset.y;
+	quad->vx1 *= scale;
+	quad->vy1 *= scale;
+	quad->vx2 *= scale;
+	quad->vy2 *= scale;
 }
 
 static NJS_SPRITE last_sprite = {};
@@ -633,12 +667,12 @@ static void __cdecl GreenMenuRect_Draw_r(float x, float y, float z, float width,
 
 static void __cdecl TutorialBackground_Display_r(ObjectMaster* a1)
 {
-	if (fill_mode == FillMode::Fill)
+	if (bg_fill == FillMode::Fill)
 	{
-		auto orig = fill_mode;
-		fill_mode = FillMode::Fit;
+		auto orig = bg_fill;
+		bg_fill = FillMode::Fit;
 		ScaleTrampoline(Align::Center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
-		fill_mode = orig;
+		bg_fill = orig;
 	}
 	else
 	{
@@ -663,12 +697,12 @@ static void __cdecl Credits_Main_r(ObjectMaster* a1)
 
 static void __cdecl EndBG_Display_r(ObjectMaster* a1)
 {
-	if (fill_mode == FillMode::Fill)
+	if (bg_fill == FillMode::Fill)
 	{
-		auto orig = fill_mode;
-		fill_mode = FillMode::Fit;
+		auto orig = bg_fill;
+		bg_fill = FillMode::Fit;
 		ScaleTrampoline(Align::Center, true, EndBG_Display_r, EndBG_Display_t, a1);
-		fill_mode = orig;
+		bg_fill = orig;
 	}
 	else
 	{
@@ -683,19 +717,17 @@ static void __cdecl PauseMenu_Map_Display_r()
 
 #pragma endregion
 
-void SetHudScaleValues()
-{
-	scale_h = HorizontalStretch;
-	scale_v = VerticalStretch;
+#pragma region scale wrappers
 
-	scale_min = min(scale_h, scale_v);
-	scale_max = max(scale_h, scale_v);
+static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags);
+static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
+static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX *points);
+static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX *polygon, Int count, Int trans);
 
-	region_fit.x  = 640.0f * scale_min;
-	region_fit.y  = 480.0f * scale_min;
-	region_fill.x = 640.0f * scale_max;
-	region_fill.y = 480.0f * scale_max;
-}
+static Trampoline njDrawSprite2D_Queue_t(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
+static Trampoline njDrawTriangle2D_t(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
+static Trampoline Direct3D_DrawQuad_t(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
+static Trampoline njDrawPolygon_t(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
 
 static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags)
 {
@@ -730,8 +762,7 @@ static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, 
 {
 	auto orig = (decltype(njDrawTextureMemList_r)*)njDrawTextureMemList_t->Target();
 
-	bool is_bg = !scale_stack.empty() && scale_stack.top().is_background;
-	if (!do_scale || is_bg && fill_mode == FillMode::Stretch || count > 4)
+	if (!do_scale || IsTopBackground() && bg_fill == FillMode::Stretch || count > 4)
 	{
 		orig(polygon, count, tex, flag);
 		return;
@@ -768,24 +799,23 @@ static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint3
 	original(p, n, pri, attr);
 }
 
-static void __cdecl Direct3D_DrawSprite_r(NJS_POINT2* points)
+static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX* quad)
 {
-	auto original = (decltype(Direct3D_DrawSprite_r)*)Direct3D_DrawSprite_t.Target();
+	auto original = (decltype(Direct3D_DrawQuad_r)*)Direct3D_DrawQuad_t.Target();
 
 	if (do_scale)
 	{
-		ScalePoints(points, 8);
+		ScaleQuadEx(quad);
 	}
 
-	original(points);
+	original(quad);
 }
 
 static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int trans)
 {
 	auto orig = (decltype(njDrawPolygon_r)*)njDrawPolygon_t.Target();
 
-	bool is_bg = !scale_stack.empty() && scale_stack.top().is_background;
-	if (!do_scale || is_bg && fill_mode == FillMode::Stretch || count > 4)
+	if (!do_scale || IsTopBackground() && bg_fill == FillMode::Stretch || count > 4)
 	{
 		orig(polygon, count, trans);
 		return;
@@ -795,7 +825,23 @@ static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int tra
 	orig(polygon, count, trans);
 }
 
-void SetupHudScale()
+#pragma endregion
+
+void uiscale::SetHudScaleValues()
+{
+	scale_h = HorizontalStretch;
+	scale_v = VerticalStretch;
+
+	scale_min = min(scale_h, scale_v);
+	scale_max = max(scale_h, scale_v);
+
+	region_fit.x = 640.0f * scale_min;
+	region_fit.y = 480.0f * scale_min;
+	region_fill.x = 640.0f * scale_max;
+	region_fill.y = 480.0f * scale_max;
+}
+
+void uiscale::SetupHudScale()
 {
 	SetHudScaleValues();
 
@@ -915,3 +961,22 @@ void SetupHudScale()
 	WriteCall(ChaoDX_Message_PlayerAction_Display_t->Target(), (void*)0x590620);
 #endif
 }
+
+#pragma region fmv scaling
+
+static Trampoline* DisplayVideoFrame_t = nullptr;
+
+static void __cdecl DisplayVideoFrame_r(int width, int height)
+{
+	auto orig = bg_fill;
+	bg_fill = fmv_fill;
+	ScaleTrampoline(Align::Center, true, DisplayVideoFrame_r, DisplayVideoFrame_t, width, height);
+	bg_fill = orig;
+}
+
+void uiscale::SetupFmvScale()
+{
+	DisplayVideoFrame_t = new Trampoline(0x005139F0, 0x005139F5, DisplayVideoFrame_r);
+}
+
+#pragma endregion

@@ -363,7 +363,7 @@ static HRESULT Direct3D_Reset()
 
 	SetupSomeScreenStuff();
 	Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
-	SetHudScaleValues();
+	uiscale::SetHudScaleValues();
 	Direct3D_SetDefaultRenderState();
 	Direct3D_SetDefaultTextureStageState();
 
@@ -2430,7 +2430,11 @@ static void __cdecl InitMods()
 	vsync = settings->getBool("EnableVsync", true);
 
 	if (settings->getBool("ScaleHud", false))
-		SetupHudScale();
+	{
+		uiscale::SetupHudScale();
+		// TODO: fmv scale configuration
+		uiscale::SetupFmvScale();
+	}
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
