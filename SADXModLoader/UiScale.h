@@ -12,7 +12,9 @@ namespace uiscale
 	extern FillMode bg_fill;
 	extern FillMode fmv_fill;
 
-	void SetHudScaleValues();
+	void Initialize();
+	void UpdateScaleParameters();
 	void SetupHudScale();
+	void SetupBackgroundScale();
 	void SetupFmvScale();
 }

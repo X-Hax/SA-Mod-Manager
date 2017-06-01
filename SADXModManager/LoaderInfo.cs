@@ -12,6 +12,13 @@ namespace SADXModManager
 		Weeks,
 	}
 
+	enum FillMode
+	{
+		Stretch = 0,
+		Fit = 1,
+		Fill = 2
+	}
+
 	class LoaderInfo
 	{
 		public bool DebugConsole { get; set; }
@@ -24,8 +31,6 @@ namespace SADXModManager
 		[DefaultValue(480)]
 		public int VerticalResolution { get; set; } = 480;
 		public bool ForceAspectRatio { get; set; }
-		[DefaultValue(false)]
-		public bool ScaleHud { get; set; }
 		public bool WindowedFullscreen { get; set; }
 		[DefaultValue(true)]
 		public bool EnableVsync { get; set; } = true;
@@ -46,6 +51,13 @@ namespace SADXModManager
 		public int WindowHeight { get; set; } = 480;
 		public bool MaintainWindowAspectRatio { get; set; }
 		public bool ResizableWindow { get; set; }
+
+		[DefaultValue(false)]
+		public bool ScaleHud { get; set; }
+		[DefaultValue((int)FillMode.Fill)]
+		public int BackgroundFillMode { get; set; } = (int)FillMode.Fill;
+		[DefaultValue((int)FillMode.Fit)]
+		public int FmvFillMode { get; set; } = (int)FillMode.Fit;
 
 		[DefaultValue(true)]
 		public bool UpdateCheck { get; set; } = true;

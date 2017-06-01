@@ -108,6 +108,9 @@ namespace SADXModManager
 			checkScaleHud.Checked = loaderini.ScaleHud;
 			suppressEvent = false;
 
+			comboBackgroundFill.SelectedIndex = loaderini.BackgroundFillMode;
+			comboFmvFill.SelectedIndex = loaderini.FmvFillMode;
+
 			windowedFullscreenCheckBox.Checked = loaderini.WindowedFullscreen;
 			forceMipmappingCheckBox.Checked    = loaderini.AutoMipmap;
 			forceTextureFilterCheckBox.Checked = loaderini.TextureFilter;
@@ -641,6 +644,8 @@ namespace SADXModManager
 			loaderini.VerticalResolution        = (int)verticalResolution.Value;
 			loaderini.ForceAspectRatio          = forceAspectRatioCheckBox.Checked;
 			loaderini.ScaleHud                  = checkScaleHud.Checked;
+			loaderini.BackgroundFillMode        = comboBackgroundFill.SelectedIndex;
+			loaderini.FmvFillMode               = comboFmvFill.SelectedIndex;
 			loaderini.EnableVsync               = checkVsync.Checked;
 			loaderini.WindowedFullscreen        = windowedFullscreenCheckBox.Checked;
 			loaderini.AutoMipmap                = forceMipmappingCheckBox.Checked;

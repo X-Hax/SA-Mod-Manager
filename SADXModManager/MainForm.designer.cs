@@ -96,6 +96,11 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.groupBox6 = new System.Windows.Forms.GroupBox();
+			this.comboBackgroundFill = new System.Windows.Forms.ComboBox();
+			this.comboFmvFill = new System.Windows.Forms.ComboBox();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
@@ -117,6 +122,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpdateFrequency)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.modContextMenu.SuspendLayout();
+			this.groupBox6.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label3
@@ -203,7 +209,7 @@
             "All Screens"});
 			this.screenNumComboBox.Location = new System.Drawing.Point(56, 19);
 			this.screenNumComboBox.Name = "screenNumComboBox";
-			this.screenNumComboBox.Size = new System.Drawing.Size(304, 21);
+			this.screenNumComboBox.Size = new System.Drawing.Size(291, 21);
 			this.screenNumComboBox.TabIndex = 1;
 			this.toolTip1.SetToolTip(this.screenNumComboBox, "The screen to put the game on.");
 			this.screenNumComboBox.SelectedIndexChanged += new System.EventHandler(this.screenNumComboBox_SelectedIndexChanged);
@@ -354,7 +360,7 @@
 			// 
 			this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.saveButton.Location = new System.Drawing.Point(87, 323);
+			this.saveButton.Location = new System.Drawing.Point(87, 370);
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(75, 22);
 			this.saveButton.TabIndex = 102;
@@ -366,7 +372,7 @@
 			// 
 			this.saveAndPlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.saveAndPlayButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.saveAndPlayButton.Location = new System.Drawing.Point(3, 323);
+			this.saveAndPlayButton.Location = new System.Drawing.Point(3, 370);
 			this.saveAndPlayButton.Name = "saveAndPlayButton";
 			this.saveAndPlayButton.Size = new System.Drawing.Size(78, 22);
 			this.saveAndPlayButton.TabIndex = 101;
@@ -379,7 +385,7 @@
 			this.installButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.installButton.AutoSize = true;
 			this.installButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.installButton.Location = new System.Drawing.Point(168, 323);
+			this.installButton.Location = new System.Drawing.Point(168, 370);
 			this.installButton.Name = "installButton";
 			this.installButton.Size = new System.Drawing.Size(80, 22);
 			this.installButton.TabIndex = 103;
@@ -391,7 +397,7 @@
 			// 
 			this.configEditorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.configEditorButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.configEditorButton.Location = new System.Drawing.Point(295, 323);
+			this.configEditorButton.Location = new System.Drawing.Point(295, 370);
 			this.configEditorButton.Name = "configEditorButton";
 			this.configEditorButton.Size = new System.Drawing.Size(81, 22);
 			this.configEditorButton.TabIndex = 104;
@@ -412,7 +418,7 @@
 			this.tabControl1.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(386, 317);
+			this.tabControl1.Size = new System.Drawing.Size(386, 364);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabPage1
@@ -494,12 +500,13 @@
 			// tabPage3
 			// 
 			this.tabPage3.AutoScroll = true;
+			this.tabPage3.Controls.Add(this.groupBox6);
 			this.tabPage3.Controls.Add(this.groupBox5);
 			this.tabPage3.Controls.Add(this.groupBox3);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage3.Size = new System.Drawing.Size(378, 291);
+			this.tabPage3.Size = new System.Drawing.Size(378, 338);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Graphics";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -508,25 +515,24 @@
 			// 
 			this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox5.Controls.Add(this.checkScaleHud);
 			this.groupBox5.Controls.Add(this.forceMipmappingCheckBox);
 			this.groupBox5.Controls.Add(this.forceTextureFilterCheckBox);
 			this.groupBox5.Location = new System.Drawing.Point(6, 181);
 			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(366, 70);
+			this.groupBox5.Size = new System.Drawing.Size(366, 43);
 			this.groupBox5.TabIndex = 1;
 			this.groupBox5.TabStop = false;
-			this.groupBox5.Text = "Quality";
+			this.groupBox5.Text = "Enhancements";
 			// 
 			// checkScaleHud
 			// 
 			this.checkScaleHud.AutoSize = true;
 			this.checkScaleHud.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.checkScaleHud.Location = new System.Drawing.Point(6, 43);
+			this.checkScaleHud.Location = new System.Drawing.Point(6, 19);
 			this.checkScaleHud.Name = "checkScaleHud";
-			this.checkScaleHud.Size = new System.Drawing.Size(154, 18);
-			this.checkScaleHud.TabIndex = 2;
-			this.checkScaleHud.Text = "Scale HUD (experimental)";
+			this.checkScaleHud.Size = new System.Drawing.Size(86, 18);
+			this.checkScaleHud.TabIndex = 0;
+			this.checkScaleHud.Text = "Scale HUD";
 			this.checkScaleHud.UseVisualStyleBackColor = true;
 			// 
 			// forceMipmappingCheckBox
@@ -871,7 +877,7 @@
             this.toolStripMenuItem3,
             this.developerToolStripMenuItem});
 			this.modContextMenu.Name = "modContextMenu";
-			this.modContextMenu.Size = new System.Drawing.Size(171, 170);
+			this.modContextMenu.Size = new System.Drawing.Size(171, 148);
 			// 
 			// openFolderToolStripMenuItem
 			// 
@@ -933,11 +939,73 @@
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
 			// 
+			// groupBox6
+			// 
+			this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox6.Controls.Add(this.label7);
+			this.groupBox6.Controls.Add(this.label6);
+			this.groupBox6.Controls.Add(this.comboFmvFill);
+			this.groupBox6.Controls.Add(this.comboBackgroundFill);
+			this.groupBox6.Controls.Add(this.checkScaleHud);
+			this.groupBox6.Location = new System.Drawing.Point(6, 230);
+			this.groupBox6.Name = "groupBox6";
+			this.groupBox6.Size = new System.Drawing.Size(366, 100);
+			this.groupBox6.TabIndex = 2;
+			this.groupBox6.TabStop = false;
+			this.groupBox6.Text = "UI Scaling";
+			// 
+			// comboBackgroundFill
+			// 
+			this.comboBackgroundFill.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboBackgroundFill.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.comboBackgroundFill.FormattingEnabled = true;
+			this.comboBackgroundFill.Items.AddRange(new object[] {
+            "Stretch [Default]",
+            "Fit",
+            "Fill"});
+			this.comboBackgroundFill.Location = new System.Drawing.Point(121, 37);
+			this.comboBackgroundFill.Name = "comboBackgroundFill";
+			this.comboBackgroundFill.Size = new System.Drawing.Size(121, 21);
+			this.comboBackgroundFill.TabIndex = 2;
+			// 
+			// comboFmvFill
+			// 
+			this.comboFmvFill.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboFmvFill.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.comboFmvFill.FormattingEnabled = true;
+			this.comboFmvFill.Items.AddRange(new object[] {
+            "Stretch [Default]",
+            "Fit",
+            "Fill"});
+			this.comboFmvFill.Location = new System.Drawing.Point(121, 64);
+			this.comboFmvFill.Name = "comboFmvFill";
+			this.comboFmvFill.Size = new System.Drawing.Size(121, 21);
+			this.comboFmvFill.TabIndex = 4;
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(6, 40);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(109, 13);
+			this.label6.TabIndex = 1;
+			this.label6.Text = "Background fill mode:";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(42, 67);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(73, 13);
+			this.label7.TabIndex = 3;
+			this.label7.Text = "FMV fill mode:";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(384, 362);
+			this.ClientSize = new System.Drawing.Size(384, 409);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.configEditorButton);
 			this.Controls.Add(this.installButton);
@@ -972,6 +1040,8 @@
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.modContextMenu.ResumeLayout(false);
+			this.groupBox6.ResumeLayout(false);
+			this.groupBox6.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1040,5 +1110,10 @@
 		private System.Windows.Forms.ToolStripMenuItem forceUpdateToolStripMenuItem;
 		private System.Windows.Forms.CheckBox checkWindowResize;
 		private System.Windows.Forms.ComboBox comboResolutionPreset;
+		private System.Windows.Forms.GroupBox groupBox6;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.ComboBox comboFmvFill;
+		private System.Windows.Forms.ComboBox comboBackgroundFill;
 	}
 }

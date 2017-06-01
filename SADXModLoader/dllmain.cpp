@@ -363,7 +363,7 @@ static HRESULT Direct3D_Reset()
 
 	SetupSomeScreenStuff();
 	Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
-	uiscale::SetHudScaleValues();
+	uiscale::UpdateScaleParameters();
 	Direct3D_SetDefaultRenderState();
 	Direct3D_SetDefaultTextureStageState();
 
@@ -2432,7 +2432,19 @@ static void __cdecl InitMods()
 	if (settings->getBool("ScaleHud", false))
 	{
 		uiscale::SetupHudScale();
-		// TODO: fmv scale configuration
+	}
+
+	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode::Fill);
+	if (bgFill >= 0 && bgFill <= 3)
+	{
+		uiscale::bg_fill = (uiscale::FillMode)bgFill;
+		uiscale::SetupBackgroundScale();
+	}
+
+	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode::Fit);
+	if (fmvFill >= 0 && fmvFill <= 3)
+	{
+		uiscale::fmv_fill = (uiscale::FillMode)fmvFill;
 		uiscale::SetupFmvScale();
 	}
 

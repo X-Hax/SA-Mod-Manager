@@ -9,9 +9,6 @@
 using std::stack;
 using std::vector;
 
-// TODO: title screen?
-// TODO: subtitles/messages (mission screen, quit prompt)
-
 namespace uiscale
 {
 	FillMode bg_fill  = FillMode::Fill;
@@ -20,71 +17,7 @@ namespace uiscale
 
 using namespace uiscale;
 
-#pragma region trampolines
-
-static Trampoline* DisplayAllObjects_t;
-static Trampoline* HudDisplayRingTimeLife_Check_t;
-static Trampoline* HudDisplayScoreOrTimer_t;
-static Trampoline* DrawStageMissionImage_t;
-static Trampoline* DisplayPauseMenu_t;
-static Trampoline* LifeGauge_Main_t;
-static Trampoline* scaleScoreA;
-static Trampoline* scaleTornadoHP;
-static Trampoline* scaleTwinkleCircuitHUD;
-static Trampoline* scaleFishingHit;
-static Trampoline* scaleReel;
-static Trampoline* scaleRod;
-static Trampoline* scaleBigHud;
-static Trampoline* scaleRodMeters;
-static Trampoline* scaleAnimalPickup;
-static Trampoline* scaleItemBoxSprite;
-static Trampoline* scaleBalls;
-static Trampoline* scaleCheckpointTime;
-static Trampoline* scaleEmeraldRadarA;
-static Trampoline* scaleEmeraldRadar_Grab;
-static Trampoline* scaleEmeraldRadarB;
-static Trampoline* scaleSandHillMultiplier;
-static Trampoline* scaleIceCapMultiplier;
-static Trampoline* scaleGammaTimeAddHud;
-static Trampoline* scaleGammaTimeRemaining;
-static Trampoline* scaleEmblemScreen;
-static Trampoline* scaleBossName;
-static Trampoline* scaleNightsCards;
-static Trampoline* scaleNightsJackpot;
-static Trampoline* scaleMissionStartClear;
-static Trampoline* scaleMissionTimer;
-static Trampoline* scaleMissionCounter;
-static Trampoline* scaleTailsWinLose;
-static Trampoline* scaleTailsRaceBar;
-static Trampoline* scaleDemoPressStart;
-static Trampoline* ChaoDX_Message_PlayerAction_Load_t;
-static Trampoline* ChaoDX_Message_PlayerAction_Display_t;
-static Trampoline* njDrawTextureMemList_t;
-static Trampoline* DrawAVA_TITLE_BACK_t;
-static Trampoline* DrawTiledBG_AVA_BACK_t;
-static Trampoline* MissionCompleteScreen_Draw_t;
-static Trampoline* RecapBackground_Main_t;
-static Trampoline* CharSelBg_Display_t;
-static Trampoline* TrialLevelList_Display_t;
-static Trampoline* SubGameLevelList_Display_t;
-static Trampoline* EmblemResultMenu_Display_t;
-static Trampoline* FileSelect_Display_t;
-static Trampoline* MenuObj_Display_t;
-static Trampoline* OptionsMenu_Display_t;
-static Trampoline* SoundTest_Display_t;
-static Trampoline* DisplayLogoScreen_t;
-static Trampoline* GreenMenuRect_Draw_t;
-static Trampoline* TutorialBackground_Display_t;
-static Trampoline* TutorialInstructionOverlay_Display_t;
-static Trampoline* DisplayTitleCard_t;
-static Trampoline* Credits_Main_t;
-static Trampoline* EndBG_Display_t;
-static Trampoline* PauseMenu_Map_Display_t;
-static Trampoline* DrawSubtitles_t;
-
-#pragma endregion
-
-#pragma region sprite stack
+#pragma region Scale stack
 
 enum Align : Uint8
 {
@@ -125,6 +58,20 @@ static float backup_v     = 0.0f;
 
 static NJS_POINT2 region_fit  = { 0.0f, 0.0f };
 static NJS_POINT2 region_fill = { 0.0f, 0.0f };
+
+void uiscale::UpdateScaleParameters()
+{
+	scale_h = HorizontalStretch;
+	scale_v = VerticalStretch;
+
+	scale_min = min(scale_h, scale_v);
+	scale_max = max(scale_h, scale_v);
+
+	region_fit.x  = 640.0f * scale_min;
+	region_fit.y  = 480.0f * scale_min;
+	region_fill.x = 640.0f * scale_max;
+	region_fill.y = 480.0f * scale_max;
+}
 
 inline bool IsTopBackground()
 {
@@ -190,6 +137,8 @@ static void ScalePop()
 	scale_stack.pop();
 	do_scale = scale_stack.size() > 0;
 }
+
+static Trampoline* DisplayAllObjects_t;
 
 static void __cdecl DisplayAllObjects_r()
 {
@@ -401,7 +350,128 @@ static void __cdecl SpritePop(NJS_SPRITE* sp)
 
 #pragma endregion
 
-#pragma region template garbage
+#pragma region Scale wrappers
+
+static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags);
+static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
+static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX *points);
+static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX *polygon, Int count, Int trans);
+
+static Trampoline njDrawSprite2D_Queue_t(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
+static Trampoline njDrawTriangle2D_t(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
+static Trampoline Direct3D_DrawQuad_t(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
+static Trampoline njDrawPolygon_t(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
+
+static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags)
+{
+	if (sp == nullptr)
+	{
+		return;
+	}
+
+	FunctionPointer(void, original, (NJS_SPRITE*, Int, Float, NJD_SPRITE, QueuedModelFlagsB), njDrawSprite2D_Queue_t.Target());
+
+	// Scales lens flare and sun.
+	// It uses njProjectScreen so there's no position scaling required.
+	if (sp == (NJS_SPRITE*)0x009BF3B0)
+	{
+		sp->sx *= scale_min;
+		sp->sy *= scale_min;
+		original(sp, n, pri, attr, queue_flags);
+	}
+	else if (IsScaleEnabled())
+	{
+		SpritePush(sp);
+		original(sp, n, pri, attr | NJD_SPRITE_SCALE, queue_flags);
+		SpritePop(sp);
+	}
+	else
+	{
+		original(sp, n, pri, attr, queue_flags);
+	}
+}
+
+static Trampoline* njDrawTextureMemList_t = nullptr;
+static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, Int tex, Int flag)
+{
+	auto original = (decltype(njDrawTextureMemList_r)*)njDrawTextureMemList_t->Target();
+
+	if (!IsScaleEnabled() || count > 4)
+	{
+		original(polygon, count, tex, flag);
+		return;
+	}
+
+	// polygon[0] == top left
+	// polygon[1] == bottom left
+	// polygon[2] == top right
+	// polygon[3] == bottom right
+
+	ScalePoints(polygon, count);
+	original(polygon, count, tex, flag);
+}
+
+static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr)
+{
+	auto original = (decltype(njDrawTriangle2D_r)*)njDrawTriangle2D_t.Target();
+
+	if (IsScaleEnabled())
+	{
+		auto _n = n;
+		if (attr & (NJD_DRAW_FAN | NJD_DRAW_CONNECTED))
+		{
+			_n += 2;
+		}
+		else
+		{
+			_n *= 3;
+		}
+
+		ScalePoints(p->p, _n);
+	}
+
+	original(p, n, pri, attr);
+}
+
+static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX* quad)
+{
+	auto original = (decltype(Direct3D_DrawQuad_r)*)Direct3D_DrawQuad_t.Target();
+
+	if (IsScaleEnabled())
+	{
+		ScaleQuadEx(quad);
+	}
+
+	original(quad);
+}
+
+static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int trans)
+{
+	auto orig = (decltype(njDrawPolygon_r)*)njDrawPolygon_t.Target();
+
+	if (IsScaleEnabled() || count > 4)
+	{
+		orig(polygon, count, trans);
+		return;
+	}
+
+	ScalePoints(polygon, count);
+	orig(polygon, count, trans);
+}
+
+void uiscale::Initialize()
+{
+	// This has to be created dynamically to repair a function call.
+	if (njDrawTextureMemList_t == nullptr)
+	{
+		njDrawTextureMemList_t = new Trampoline(0x0077DC70, 0x0077DC79, njDrawTextureMemList_r);
+		WriteCall((void*)((size_t)njDrawTextureMemList_t->Target() + 4), njAlphaMode);
+	}
+}
+
+#pragma endregion
+
+#pragma region Convenience
 
 /**
  * \brief Calls a trampoline function.
@@ -456,7 +526,63 @@ R ScaleTrampoline(Uint8 align, bool is_background, const T&, const Trampoline* t
 
 #pragma endregion
 
-#pragma region trampoline functions
+#pragma region HUD scaling
+
+#pragma region Trampolines
+
+static Trampoline* HudDisplayRingTimeLife_Check_t;
+static Trampoline* HudDisplayScoreOrTimer_t;
+static Trampoline* DrawStageMissionImage_t;
+static Trampoline* DisplayPauseMenu_t;
+static Trampoline* LifeGauge_Main_t;
+static Trampoline* scaleScoreA;
+static Trampoline* scaleTornadoHP;
+static Trampoline* scaleTwinkleCircuitHUD;
+static Trampoline* scaleFishingHit;
+static Trampoline* scaleReel;
+static Trampoline* scaleRod;
+static Trampoline* scaleBigHud;
+static Trampoline* scaleRodMeters;
+static Trampoline* scaleAnimalPickup;
+static Trampoline* scaleItemBoxSprite;
+static Trampoline* scaleBalls;
+static Trampoline* scaleCheckpointTime;
+static Trampoline* scaleEmeraldRadarA;
+static Trampoline* scaleEmeraldRadar_Grab;
+static Trampoline* scaleEmeraldRadarB;
+static Trampoline* scaleSandHillMultiplier;
+static Trampoline* scaleIceCapMultiplier;
+static Trampoline* scaleGammaTimeAddHud;
+static Trampoline* scaleGammaTimeRemaining;
+static Trampoline* scaleEmblemScreen;
+static Trampoline* scaleBossName;
+static Trampoline* scaleNightsCards;
+static Trampoline* scaleNightsJackpot;
+static Trampoline* scaleMissionStartClear;
+static Trampoline* scaleMissionTimer;
+static Trampoline* scaleMissionCounter;
+static Trampoline* scaleTailsWinLose;
+static Trampoline* scaleTailsRaceBar;
+static Trampoline* scaleDemoPressStart;
+static Trampoline* ChaoDX_Message_PlayerAction_Load_t;
+static Trampoline* ChaoDX_Message_PlayerAction_Display_t;
+static Trampoline* MissionCompleteScreen_Draw_t;
+static Trampoline* CharSelBg_Display_t;
+static Trampoline* TrialLevelList_Display_t;
+static Trampoline* SubGameLevelList_Display_t;
+static Trampoline* EmblemResultMenu_Display_t;
+static Trampoline* FileSelect_Display_t;
+static Trampoline* MenuObj_Display_t;
+static Trampoline* OptionsMenu_Display_t;
+static Trampoline* SoundTest_Display_t;
+static Trampoline* GreenMenuRect_Draw_t;
+static Trampoline* TutorialInstructionOverlay_Display_t;
+static Trampoline* DisplayTitleCard_t;
+static Trampoline* Credits_Main_t;
+static Trampoline* PauseMenu_Map_Display_t;
+static Trampoline* DrawSubtitles_t;
+
+#pragma endregion
 
 static void __cdecl ScaleResultScreen(ObjectMaster* _this)
 {
@@ -469,6 +595,7 @@ static void __cdecl HudDisplayRingTimeLife_Check_r()
 {
 	ScaleTrampoline(Align::Auto, false, HudDisplayRingTimeLife_Check_r, HudDisplayRingTimeLife_Check_t);
 }
+
 static void __cdecl HudDisplayScoreOrTimer_r()
 {
 	ScaleTrampoline(Align::Left, false, HudDisplayScoreOrTimer_r, HudDisplayScoreOrTimer_t);
@@ -551,10 +678,12 @@ static void __cdecl ScaleEmeraldRadarA(ObjectMaster* a1)
 {
 	ScaleTrampoline(Align::Auto, false, ScaleEmeraldRadarA, scaleEmeraldRadarA, a1);
 }
+
 static void __cdecl ScaleEmeraldRadar_Grab(ObjectMaster* a1)
 {
 	ScaleTrampoline(Align::Auto, false, ScaleEmeraldRadar_Grab, scaleEmeraldRadar_Grab, a1);
 }
+
 static void __cdecl ScaleEmeraldRadarB(ObjectMaster* a1)
 {
 	ScaleTrampoline(Align::Auto, false, ScaleEmeraldRadarB, scaleEmeraldRadarB, a1);
@@ -564,6 +693,7 @@ static void __cdecl ScaleSandHillMultiplier(ObjectMaster* a1)
 {
 	ScaleTrampoline(Align::Auto, false, ScaleSandHillMultiplier, scaleSandHillMultiplier, a1);
 }
+
 static void __cdecl ScaleIceCapMultiplier(ObjectMaster* a1)
 {
 	ScaleTrampoline(Align::Auto, false, ScaleIceCapMultiplier, scaleIceCapMultiplier, a1);
@@ -635,97 +765,54 @@ static void __cdecl ChaoDX_Message_PlayerAction_Display_r(ObjectMaster* a1)
 	ScaleTrampoline(Align::Top | Align::Right, false, ChaoDX_Message_PlayerAction_Display_r, ChaoDX_Message_PlayerAction_Display_t, a1);
 }
 
-static void __cdecl DrawAVA_TITLE_BACK_r(float depth)
-{
-	ScaleTrampoline(Align::Center, true, DrawAVA_TITLE_BACK_r, DrawAVA_TITLE_BACK_t, depth);
-}
-
-static void __cdecl DrawTiledBG_AVA_BACK_r(float depth)
-{
-	ScaleTrampoline(Align::Center, true, DrawTiledBG_AVA_BACK_r, DrawTiledBG_AVA_BACK_t, depth);
-}
-
 void __cdecl MissionCompleteScreen_Draw_r()
 {
 	ScaleTrampoline(Align::Center, false, MissionCompleteScreen_Draw_r, MissionCompleteScreen_Draw_t);
 }
 
-static void __cdecl RecapBackground_Main_r(ObjectMaster *a1)
-{
-	ScaleTrampoline(Align::Center, true, RecapBackground_Main_r, RecapBackground_Main_t, a1);
-}
-
-// HACK: unconditionally scales everything
 static void __cdecl CharSelBg_Display_r(ObjectMaster *a1)
 {
 	ScaleTrampoline(Align::Center, false, CharSelBg_Display_r, CharSelBg_Display_t, a1);
 }
 
-// HACK: unconditionally scales everything
 static void __cdecl TrialLevelList_Display_r(ObjectMaster *a1)
 {
 	ScaleTrampoline(Align::Center, false, TrialLevelList_Display_r, TrialLevelList_Display_t, a1);
 }
 
-// HACK: unconditionally scales everything
 static void __cdecl SubGameLevelList_Display_r(ObjectMaster *a1)
 {
 	ScaleTrampoline(Align::Center, false, SubGameLevelList_Display_r, SubGameLevelList_Display_t, a1);
 }
 
-// HACK: unconditionally scales everything
 static void __cdecl EmblemResultMenu_Display_r(ObjectMaster *a1)
 {
 	ScaleTrampoline(Align::Center, false, EmblemResultMenu_Display_r, EmblemResultMenu_Display_t, a1);
 }
 
-// HACK: unconditionally scales everything
 static void __cdecl FileSelect_Display_r(ObjectMaster *a1)
 {
 	ScaleTrampoline(Align::Center, false, FileSelect_Display_r, FileSelect_Display_t, a1);
 }
 
-// HACK: unconditionally scales everything
 static void __cdecl MenuObj_Display_r(ObjectMaster *a1)
 {
 	ScaleTrampoline(Align::Center, false, MenuObj_Display_r, MenuObj_Display_t, a1);
 }
 
-// HACK: unconditionally scales everything
 static void __cdecl OptionsMenu_Display_r(ObjectMaster *a1)
 {
 	ScaleTrampoline(Align::Center, false, OptionsMenu_Display_r, OptionsMenu_Display_t, a1);
 }
 
-// HACK: unconditionally scales everything
 static void __cdecl SoundTest_Display_r(ObjectMaster *a1)
 {
 	ScaleTrampoline(Align::Center, false, SoundTest_Display_r, SoundTest_Display_t, a1);
 }
 
-static void __cdecl DisplayLogoScreen_r(Uint8 index)
-{
-	ScaleTrampoline(Align::Center, true, DisplayLogoScreen_r, DisplayLogoScreen_t, index);
-}
-
 static void __cdecl GreenMenuRect_Draw_r(float x, float y, float z, float width, float height)
 {
 	ScaleTrampoline(Align::Center, false, GreenMenuRect_Draw_r, GreenMenuRect_Draw_t, x, y, z, width, height);
-}
-
-static void __cdecl TutorialBackground_Display_r(ObjectMaster* a1)
-{
-	if (bg_fill == FillMode::Fill)
-	{
-		auto orig = bg_fill;
-		bg_fill = FillMode::Fit;
-		ScaleTrampoline(Align::Center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
-		bg_fill = orig;
-	}
-	else
-	{
-		ScaleTrampoline(Align::Center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
-	}
 }
 
 static void __cdecl TutorialInstructionOverlay_Display_r(ObjectMaster* a1)
@@ -743,21 +830,6 @@ static void __cdecl Credits_Main_r(ObjectMaster* a1)
 	ScaleTrampoline(Align::Center, false, Credits_Main_r, Credits_Main_t, a1);
 }
 
-static void __cdecl EndBG_Display_r(ObjectMaster* a1)
-{
-	if (bg_fill == FillMode::Fill)
-	{
-		auto orig = bg_fill;
-		bg_fill = FillMode::Fit;
-		ScaleTrampoline(Align::Center, true, EndBG_Display_r, EndBG_Display_t, a1);
-		bg_fill = orig;
-	}
-	else
-	{
-		ScaleTrampoline(Align::Center, true, EndBG_Display_r, EndBG_Display_t, a1);
-	}
-}
-
 static void __cdecl PauseMenu_Map_Display_r()
 {
 	ScaleTrampoline(Align::Center, false, PauseMenu_Map_Display_r, PauseMenu_Map_Display_t);
@@ -768,144 +840,13 @@ static void __cdecl DrawSubtitles_r()
 	ScaleTrampoline(Align::Center, false, DrawSubtitles_r, DrawSubtitles_t);
 }
 
-#pragma endregion
-
-#pragma region scale wrappers
-
-static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags);
-static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
-static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX *points);
-static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX *polygon, Int count, Int trans);
-
-static Trampoline njDrawSprite2D_Queue_t(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
-static Trampoline njDrawTriangle2D_t(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
-static Trampoline Direct3D_DrawQuad_t(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
-static Trampoline njDrawPolygon_t(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
-
-static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags)
-{
-	if (sp == nullptr)
-	{
-		return;
-	}
-
-	FunctionPointer(void, original, (NJS_SPRITE*, Int, Float, NJD_SPRITE, QueuedModelFlagsB), njDrawSprite2D_Queue_t.Target());
-
-	// Scales lens flare and sun.
-	// It uses njProjectScreen so there's no position scaling required.
-	if (sp == (NJS_SPRITE*)0x009BF3B0)
-	{
-		sp->sx *= scale_min;
-		sp->sy *= scale_min;
-		original(sp, n, pri, attr, queue_flags);
-	}
-	else if (IsScaleEnabled())
-	{
-		SpritePush(sp);
-		original(sp, n, pri, attr | NJD_SPRITE_SCALE, queue_flags);
-		SpritePop(sp);
-	}
-	else
-	{
-		original(sp, n, pri, attr, queue_flags);
-	}
-}
-
-static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, Int tex, Int flag)
-{
-	auto orig = (decltype(njDrawTextureMemList_r)*)njDrawTextureMemList_t->Target();
-
-	if (!IsScaleEnabled() || count > 4)
-	{
-		orig(polygon, count, tex, flag);
-		return;
-	}
-
-	// polygon[0] == top left
-	// polygon[1] == bottom left
-	// polygon[2] == top right
-	// polygon[3] == bottom right
-
-	ScalePoints(polygon, count);
-	orig(polygon, count, tex, flag);
-}
-
-static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr)
-{
-	auto original = (decltype(njDrawTriangle2D_r)*)njDrawTriangle2D_t.Target();
-
-	if (IsScaleEnabled())
-	{
-		auto _n = n;
-		if (attr & (NJD_DRAW_FAN | NJD_DRAW_CONNECTED))
-		{
-			_n += 2;
-		}
-		else
-		{
-			_n *= 3;
-		}
-
-		ScalePoints(p->p, _n);
-	}
-
-	original(p, n, pri, attr);
-}
-
-static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX* quad)
-{
-	auto original = (decltype(Direct3D_DrawQuad_r)*)Direct3D_DrawQuad_t.Target();
-
-	if (IsScaleEnabled())
-	{
-		ScaleQuadEx(quad);
-	}
-
-	original(quad);
-}
-
-static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int trans)
-{
-	auto orig = (decltype(njDrawPolygon_r)*)njDrawPolygon_t.Target();
-
-	if (IsScaleEnabled() || count > 4)
-	{
-		orig(polygon, count, trans);
-		return;
-	}
-
-	ScalePoints(polygon, count);
-	orig(polygon, count, trans);
-}
-
-#pragma endregion
-
-void uiscale::SetHudScaleValues()
-{
-	scale_h = HorizontalStretch;
-	scale_v = VerticalStretch;
-
-	scale_min = min(scale_h, scale_v);
-	scale_max = max(scale_h, scale_v);
-
-	region_fit.x = 640.0f * scale_min;
-	region_fit.y = 480.0f * scale_min;
-	region_fill.x = 640.0f * scale_max;
-	region_fill.y = 480.0f * scale_max;
-}
 
 void uiscale::SetupHudScale()
 {
-	SetHudScaleValues();
+	UpdateScaleParameters();
+	Initialize();
 
-	// This has to be created dynamically to repair a function call.
-	njDrawTextureMemList_t = new Trampoline(0x0077DC70, 0x0077DC79, njDrawTextureMemList_r);
-	WriteCall((void*)((size_t)njDrawTextureMemList_t->Target() + 4), njAlphaMode);
-
-	DrawAVA_TITLE_BACK_t                 = new Trampoline(0x0050BA90, 0x0050BA96, DrawAVA_TITLE_BACK_r);
-	DrawTiledBG_AVA_BACK_t               = new Trampoline(0x00507BB0, 0x00507BB5, DrawTiledBG_AVA_BACK_r);
 	MissionCompleteScreen_Draw_t         = new Trampoline(0x00590690, 0x00590695, MissionCompleteScreen_Draw_r);
-	RecapBackground_Main_t               = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
 	CharSelBg_Display_t                  = new Trampoline(0x00512450, 0x00512455, CharSelBg_Display_r);
 	TrialLevelList_Display_t             = new Trampoline(0x0050B410, 0x0050B415, TrialLevelList_Display_r);
 	SubGameLevelList_Display_t           = new Trampoline(0x0050A640, 0x0050A645, SubGameLevelList_Display_r);
@@ -914,13 +855,10 @@ void uiscale::SetupHudScale()
 	MenuObj_Display_t                    = new Trampoline(0x00432480, 0x00432487, MenuObj_Display_r);
 	OptionsMenu_Display_t                = new Trampoline(0x00509810, 0x00509815, OptionsMenu_Display_r);
 	SoundTest_Display_t                  = new Trampoline(0x00511390, 0x00511395, SoundTest_Display_r);
-	DisplayLogoScreen_t                  = new Trampoline(0x0042CB20, 0x0042CB28, DisplayLogoScreen_r);
 	GreenMenuRect_Draw_t                 = new Trampoline(0x004334F0, 0x004334F5, GreenMenuRect_Draw_r);
-	TutorialBackground_Display_t         = new Trampoline(0x006436B0, 0x006436B7, TutorialBackground_Display_r);
 	TutorialInstructionOverlay_Display_t = new Trampoline(0x006430F0, 0x006430F7, TutorialInstructionOverlay_Display_r);
 	DisplayTitleCard_t                   = new Trampoline(0x0047E170, 0x0047E175, DisplayTitleCard_r);
 	Credits_Main_t                       = new Trampoline(0x006411A0, 0x006411A5, Credits_Main_r);
-	EndBG_Display_t                      = new Trampoline(0x006414A0, 0x006414A7, EndBG_Display_r);
 	PauseMenu_Map_Display_t              = new Trampoline(0x00458B00, 0x00458B06, PauseMenu_Map_Display_r);
 
 	DrawSubtitles_t = new Trampoline(0x0040D4D0, 0x0040D4D9, DrawSubtitles_r);
@@ -1018,7 +956,83 @@ void uiscale::SetupHudScale()
 #endif
 }
 
-#pragma region fmv scaling
+#pragma endregion
+
+#pragma region Background scaling
+
+static Trampoline* TutorialBackground_Display_t;
+static Trampoline* RecapBackground_Main_t;
+static Trampoline* EndBG_Display_t;
+static Trampoline* DrawTiledBG_AVA_BACK_t;
+static Trampoline* DrawAVA_TITLE_BACK_t;
+static Trampoline* DisplayLogoScreen_t;
+
+static void __cdecl DrawAVA_TITLE_BACK_r(float depth)
+{
+	ScaleTrampoline(Align::Center, true, DrawAVA_TITLE_BACK_r, DrawAVA_TITLE_BACK_t, depth);
+}
+
+static void __cdecl DrawTiledBG_AVA_BACK_r(float depth)
+{
+	ScaleTrampoline(Align::Center, true, DrawTiledBG_AVA_BACK_r, DrawTiledBG_AVA_BACK_t, depth);
+}
+
+static void __cdecl RecapBackground_Main_r(ObjectMaster *a1)
+{
+	ScaleTrampoline(Align::Center, true, RecapBackground_Main_r, RecapBackground_Main_t, a1);
+}
+
+static void __cdecl DisplayLogoScreen_r(Uint8 index)
+{
+	ScaleTrampoline(Align::Center, true, DisplayLogoScreen_r, DisplayLogoScreen_t, index);
+}
+
+static void __cdecl TutorialBackground_Display_r(ObjectMaster* a1)
+{
+	if (bg_fill == FillMode::Fill)
+	{
+		auto orig = bg_fill;
+		bg_fill = FillMode::Fit;
+		ScaleTrampoline(Align::Center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
+		bg_fill = orig;
+	}
+	else
+	{
+		ScaleTrampoline(Align::Center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
+	}
+}
+
+static void __cdecl EndBG_Display_r(ObjectMaster* a1)
+{
+	if (bg_fill == FillMode::Fill)
+	{
+		auto orig = bg_fill;
+		bg_fill = FillMode::Fit;
+		ScaleTrampoline(Align::Center, true, EndBG_Display_r, EndBG_Display_t, a1);
+		bg_fill = orig;
+	}
+	else
+	{
+		ScaleTrampoline(Align::Center, true, EndBG_Display_r, EndBG_Display_t, a1);
+	}
+}
+
+void uiscale::SetupBackgroundScale()
+{
+	UpdateScaleParameters();
+	Initialize();
+
+	TutorialBackground_Display_t = new Trampoline(0x006436B0, 0x006436B7, TutorialBackground_Display_r);
+	RecapBackground_Main_t       = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
+	EndBG_Display_t              = new Trampoline(0x006414A0, 0x006414A7, EndBG_Display_r);
+	DrawTiledBG_AVA_BACK_t       = new Trampoline(0x00507BB0, 0x00507BB5, DrawTiledBG_AVA_BACK_r);
+	DrawAVA_TITLE_BACK_t         = new Trampoline(0x0050BA90, 0x0050BA96, DrawAVA_TITLE_BACK_r);
+	DisplayLogoScreen_t          = new Trampoline(0x0042CB20, 0x0042CB28, DisplayLogoScreen_r);
+}
+
+#pragma endregion
+
+#pragma region FMV scaling
 
 static Trampoline* DisplayVideoFrame_t = nullptr;
 
@@ -1032,6 +1046,9 @@ static void __cdecl DisplayVideoFrame_r(int width, int height)
 
 void uiscale::SetupFmvScale()
 {
+	UpdateScaleParameters();
+	Initialize();
+
 	DisplayVideoFrame_t = new Trampoline(0x005139F0, 0x005139F5, DisplayVideoFrame_r);
 }
 
