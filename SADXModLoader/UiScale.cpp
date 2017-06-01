@@ -114,10 +114,13 @@ static constexpr float third_v = 480.0f / 3.0f;
 
 static bool  sprite_scale = false;
 static bool  do_scale     = false;
+static bool  _do_scale    = false;
 static float scale_min    = 0.0f;
 static float scale_max    = 0.0f;
 static float scale_h      = 0.0f;
 static float scale_v      = 0.0f;
+static float backup_h     = 0.0f;
+static float backup_v     = 0.0f;
 
 static NJS_POINT2 region_fit  = { 0.0f, 0.0f };
 static NJS_POINT2 region_fill = { 0.0f, 0.0f };
@@ -127,7 +130,12 @@ inline bool IsTopBackground()
 	return !scale_stack.empty() && scale_stack.top().is_background;
 }
 
-static void __cdecl ScalePush(Uint8 align, bool is_background, float h = 1.0f, float v = 1.0f)
+inline bool IsScaleEnabled()
+{
+	return do_scale && (!IsTopBackground() || bg_fill != FillMode::Stretch);
+}
+
+static void ScalePush(Uint8 align, bool is_background, float h = 1.0f, float v = 1.0f)
 {
 #ifdef _DEBUG
 	if (ControllerPointers[0]->HeldButtons & Buttons_Z)
@@ -144,7 +152,30 @@ static void __cdecl ScalePush(Uint8 align, bool is_background, float h = 1.0f, f
 	do_scale = true;
 }
 
-static void __cdecl ScalePop()
+static void ScaleDisable()
+{
+	backup_h = HorizontalStretch;
+	backup_v = VerticalStretch;
+	HorizontalStretch = scale_h;
+	VerticalStretch = scale_v;
+	_do_scale = do_scale;
+	do_scale = false;
+}
+
+static void ScaleEnable()
+{
+	do_scale = _do_scale;
+
+	if (do_scale)
+	{
+		HorizontalStretch = backup_h;
+		VerticalStretch = backup_v;
+
+		backup_h = backup_v = 0.0f;
+	}
+}
+
+static void ScalePop()
 {
 	if (scale_stack.size() < 1)
 	{
@@ -380,9 +411,17 @@ static void __cdecl SpritePop(NJS_SPRITE* sp)
  * \param args Option arguments for function
  */
 template<typename T, typename... Args>
-void ScaleTrampoline(Uint8 align, bool is_bg, const T&, const Trampoline* t, Args... args)
+void ScaleTrampoline(Uint8 align, bool is_background, const T&, const Trampoline* t, Args... args)
 {
-	ScalePush(align, is_bg);
+	if (is_background && bg_fill == FillMode::Stretch)
+	{
+		ScaleDisable();
+		((T*)t->Target())(args...);
+		ScaleEnable();
+		return;
+	}
+
+	ScalePush(align, is_background);
 	((T*)t->Target())(args...);
 	ScalePop();
 }
@@ -398,9 +437,17 @@ void ScaleTrampoline(Uint8 align, bool is_bg, const T&, const Trampoline* t, Arg
  * \return Return value of trampoline function
  */
 template<typename R, typename T, typename... Args>
-R ScaleTrampoline(Uint8 align, bool is_bg, const T&, const Trampoline* t, Args... args)
+R ScaleTrampoline(Uint8 align, bool is_background, const T&, const Trampoline* t, Args... args)
 {
-	ScalePush(align, is_bg);
+	if (is_background && bg_fill == FillMode::Stretch)
+	{
+		ScaleDisable();
+		R result = ((T*)t->Target())(args...);
+		ScaleEnable();
+		return result;
+	}
+
+	ScalePush(align, is_background);
 	R result = ((T*)t->Target())(args...);
 	ScalePop();
 	return result;
@@ -746,7 +793,7 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD
 		sp->sy *= scale_min;
 		original(sp, n, pri, attr, queue_flags);
 	}
-	else if (do_scale)
+	else if (IsScaleEnabled())
 	{
 		SpritePush(sp);
 		original(sp, n, pri, attr | NJD_SPRITE_SCALE, queue_flags);
@@ -762,7 +809,7 @@ static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, 
 {
 	auto orig = (decltype(njDrawTextureMemList_r)*)njDrawTextureMemList_t->Target();
 
-	if (!do_scale || IsTopBackground() && bg_fill == FillMode::Stretch || count > 4)
+	if (!IsScaleEnabled() || count > 4)
 	{
 		orig(polygon, count, tex, flag);
 		return;
@@ -781,7 +828,7 @@ static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint3
 {
 	auto original = (decltype(njDrawTriangle2D_r)*)njDrawTriangle2D_t.Target();
 
-	if (do_scale)
+	if (IsScaleEnabled())
 	{
 		auto _n = n;
 		if (attr & (NJD_DRAW_FAN | NJD_DRAW_CONNECTED))
@@ -803,7 +850,7 @@ static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX* quad)
 {
 	auto original = (decltype(Direct3D_DrawQuad_r)*)Direct3D_DrawQuad_t.Target();
 
-	if (do_scale)
+	if (IsScaleEnabled())
 	{
 		ScaleQuadEx(quad);
 	}
@@ -815,7 +862,7 @@ static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int tra
 {
 	auto orig = (decltype(njDrawPolygon_r)*)njDrawPolygon_t.Target();
 
-	if (!do_scale || IsTopBackground() && bg_fill == FillMode::Stretch || count > 4)
+	if (IsScaleEnabled() || count > 4)
 	{
 		orig(polygon, count, trans);
 		return;
