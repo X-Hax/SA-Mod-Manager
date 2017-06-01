@@ -80,6 +80,7 @@ static Trampoline* DisplayTitleCard_t;
 static Trampoline* Credits_Main_t;
 static Trampoline* EndBG_Display_t;
 static Trampoline* PauseMenu_Map_Display_t;
+static Trampoline* DrawSubtitles_t;
 
 #pragma endregion
 
@@ -762,6 +763,11 @@ static void __cdecl PauseMenu_Map_Display_r()
 	ScaleTrampoline(Align::Center, false, PauseMenu_Map_Display_r, PauseMenu_Map_Display_t);
 }
 
+static void __cdecl DrawSubtitles_r()
+{
+	ScaleTrampoline(Align::Center, false, DrawSubtitles_r, DrawSubtitles_t);
+}
+
 #pragma endregion
 
 #pragma region scale wrappers
@@ -916,6 +922,9 @@ void uiscale::SetupHudScale()
 	Credits_Main_t                       = new Trampoline(0x006411A0, 0x006411A5, Credits_Main_r);
 	EndBG_Display_t                      = new Trampoline(0x006414A0, 0x006414A7, EndBG_Display_r);
 	PauseMenu_Map_Display_t              = new Trampoline(0x00458B00, 0x00458B06, PauseMenu_Map_Display_r);
+
+	DrawSubtitles_t = new Trampoline(0x0040D4D0, 0x0040D4D9, DrawSubtitles_r);
+	WriteCall((void*)((size_t)DrawSubtitles_t->Target() + 4), (void*)0x00402F00);
 
 	// Fixes character scale on character select screen.
 	WriteData((const float**)0x0051285E, &patch_dummy);
