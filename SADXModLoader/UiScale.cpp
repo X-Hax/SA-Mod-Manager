@@ -637,11 +637,11 @@ static void __cdecl FishingHud_DrawHIT_r(ObjectMaster* a1)
 
 static void __cdecl FishingHud_DrawReel_r()
 {
-	ScaleTrampoline(Align::Auto, false, FishingHud_DrawReel_r, FishingHud_DrawReel_t);
+	ScaleTrampoline(Align::Right | Align::Bottom, false, FishingHud_DrawReel_r, FishingHud_DrawReel_t);
 }
 static void __cdecl FishingHud_DrawRod_r()
 {
-	ScaleTrampoline(Align::Auto, false, FishingHud_DrawRod_r, FishingHud_DrawRod_t);
+	ScaleTrampoline(Align::Right | Align::Bottom, false, FishingHud_DrawRod_r, FishingHud_DrawRod_t);
 }
 
 static void __cdecl BigHud_DrawWeightAndLife_r(ObjectMaster* a1)
@@ -650,7 +650,7 @@ static void __cdecl BigHud_DrawWeightAndLife_r(ObjectMaster* a1)
 }
 static void __cdecl FishingHud_DrawMeters_r(float length)
 {
-	ScaleTrampoline(Align::Auto, false, FishingHud_DrawMeters_r, FishingHud_DrawMeters_t, length);
+	ScaleTrampoline(Align::Right | Align::Bottom, false, FishingHud_DrawMeters_r, FishingHud_DrawMeters_t, length);
 }
 
 static void __cdecl ScaleAnimalPickup(ObjectMaster* a1)
