@@ -223,7 +223,7 @@ static NJS_POINT2 AutoAlign(Uint8 align, const NJS_POINT3& center)
 
 inline NJS_POINT2 GetOffset(Uint8 align, const NJS_POINT2& center)
 {
-	NJS_POINT2 offset{};
+	NJS_POINT2 offset;
 
 	// if we're scaling a background with fill mode, manually set
 	// coordinate offset so the entire image lands in the center.
@@ -242,14 +242,7 @@ inline NJS_POINT2 GetOffset(Uint8 align, const NJS_POINT2& center)
 
 inline float GetScale()
 {
-	if (IsTopBackground() && bg_fill == FillMode::Fill)
-	{
-		return scale_max;
-	}
-	else
-	{
-		return scale_min;
-	}
+	return IsTopBackground() && bg_fill == FillMode::Fill ? scale_max : scale_min;
 }
 
 /**
@@ -353,11 +346,15 @@ static void __cdecl SpritePop(NJS_SPRITE* sp)
 #pragma region Scale wrappers
 
 static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags);
+static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, float depth, Uint32 attr, QueuedModelFlagsB flags);
 static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
 static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX *points);
 static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX *polygon, Int count, Int trans);
 
+// Must be initialized dynamically to fix a call instruction.
+static Trampoline* njDrawTextureMemList_t = nullptr;
 static Trampoline njDrawSprite2D_Queue_t(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
+static Trampoline Draw2DLinesMaybe_Queue_t(0x00404490, 0x00404496, Draw2DLinesMaybe_Queue_r);
 static Trampoline njDrawTriangle2D_t(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
 static Trampoline Direct3D_DrawQuad_t(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
 static Trampoline njDrawPolygon_t(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
@@ -391,7 +388,18 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD
 	}
 }
 
-static Trampoline* njDrawTextureMemList_t = nullptr;
+static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, float depth, Uint32 attr, QueuedModelFlagsB flags)
+{
+	auto original = (decltype(Draw2DLinesMaybe_Queue_r)*)Draw2DLinesMaybe_Queue_t.Target();
+
+	if (IsScaleEnabled())
+	{
+		ScalePoints(points->p, count);
+	}
+
+	original(points, count, depth, attr, flags);
+}
+
 static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, Int tex, Int flag)
 {
 	auto original = (decltype(njDrawTextureMemList_r)*)njDrawTextureMemList_t->Target();
@@ -529,11 +537,11 @@ static Trampoline* LifeGauge_Main_t;
 static Trampoline* scaleScoreA;
 static Trampoline* scaleTornadoHP;
 static Trampoline* scaleTwinkleCircuitHUD;
-static Trampoline* scaleFishingHit;
-static Trampoline* scaleReel;
-static Trampoline* scaleRod;
-static Trampoline* scaleBigHud;
-static Trampoline* scaleRodMeters;
+static Trampoline* FishingHud_DrawHIT_t;
+static Trampoline* FishingHud_DrawReel_t;
+static Trampoline* FishingHud_DrawRod_t;
+static Trampoline* BigHud_DrawWeightAndLife_t;
+static Trampoline* FishingHud_DrawMeters_t;
 static Trampoline* scaleAnimalPickup;
 static Trampoline* scaleItemBoxSprite;
 static Trampoline* scaleBalls;
@@ -622,27 +630,27 @@ static void __cdecl ScaleTwinkleCircuitHUD(ObjectMaster* a1)
 	ScaleTrampoline(Align::Center, false, ScaleTwinkleCircuitHUD, scaleTwinkleCircuitHUD, a1);
 }
 
-static void __cdecl ScaleFishingHit(ObjectMaster* a1)
+static void __cdecl FishingHud_DrawHIT_r(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Center, false, ScaleFishingHit, scaleFishingHit, a1);
+	ScaleTrampoline(Align::Center, false, FishingHud_DrawHIT_r, FishingHud_DrawHIT_t, a1);
 }
 
-static void __cdecl ScaleReel()
+static void __cdecl FishingHud_DrawReel_r()
 {
-	ScaleTrampoline(Align::Auto, false, ScaleReel, scaleReel);
+	ScaleTrampoline(Align::Auto, false, FishingHud_DrawReel_r, FishingHud_DrawReel_t);
 }
-static void __cdecl ScaleRod()
+static void __cdecl FishingHud_DrawRod_r()
 {
-	ScaleTrampoline(Align::Auto, false, ScaleRod, scaleRod);
+	ScaleTrampoline(Align::Auto, false, FishingHud_DrawRod_r, FishingHud_DrawRod_t);
 }
 
-static void __cdecl ScaleBigHud(ObjectMaster* a1)
+static void __cdecl BigHud_DrawWeightAndLife_r(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Auto, false, ScaleBigHud, scaleBigHud, a1);
+	ScaleTrampoline(Align::Auto, false, BigHud_DrawWeightAndLife_r, BigHud_DrawWeightAndLife_t, a1);
 }
-static void __cdecl ScaleRodMeters(float a1)
+static void __cdecl FishingHud_DrawMeters_r(float length)
 {
-	ScaleTrampoline(Align::Auto, false, ScaleRodMeters, scaleRodMeters, a1);
+	ScaleTrampoline(Align::Auto, false, FishingHud_DrawMeters_r, FishingHud_DrawMeters_t, length);
 }
 
 static void __cdecl ScaleAnimalPickup(ObjectMaster* a1)
@@ -881,11 +889,11 @@ void uiscale::SetupHudScale()
 	WriteCall(scaleTwinkleCircuitHUD->Target(), (void*)0x590620);
 
 	// Rod scaling
-	scaleReel = new Trampoline(0x0046C9F0, 0x0046C9F5, ScaleReel);
-	scaleRod = new Trampoline(0x0046CAB0, 0x0046CAB9, ScaleRod);
-	scaleRodMeters = new Trampoline(0x0046CC70, 0x0046CC75, ScaleRodMeters);
-	scaleFishingHit = new Trampoline(0x0046C920, 0x0046C926, ScaleFishingHit);
-	scaleBigHud = new Trampoline(0x0046FB00, 0x0046FB05, ScaleBigHud);
+	FishingHud_DrawReel_t      = new Trampoline(0x0046C9F0, 0x0046C9F5, FishingHud_DrawReel_r);
+	FishingHud_DrawRod_t       = new Trampoline(0x0046CAB0, 0x0046CAB9, FishingHud_DrawRod_r);
+	FishingHud_DrawMeters_t    = new Trampoline(0x0046CC70, 0x0046CC75, FishingHud_DrawMeters_r);
+	FishingHud_DrawHIT_t       = new Trampoline(0x0046C920, 0x0046C926, FishingHud_DrawHIT_r);
+	BigHud_DrawWeightAndLife_t = new Trampoline(0x0046FB00, 0x0046FB05, BigHud_DrawWeightAndLife_r);
 
 	scaleAnimalPickup = new Trampoline(0x0046B330, 0x0046B335, ScaleAnimalPickup);
 
