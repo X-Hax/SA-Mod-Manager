@@ -119,16 +119,15 @@ static inline BOOL WriteData(void *writeaddress, const T(&data)[N])
  * Write a repeated byte to an arbitrary address.
  * @param address	[in] Address.
  * @param data		[in] Byte to write.
- * @param count		[in] Number of repetitions.
  * @param byteswritten	[out, opt] Number of bytes written.
  * @return Nonzero on success; 0 on error (check GetLastError()).
  */
-static inline BOOL WriteData(void *address, const char data, int count, SIZE_T *byteswritten)
+template <int count>
+static inline BOOL WriteData(void *address, const char data, SIZE_T *byteswritten)
 {
-	char *buf = new char[count];
+	char buf[count];
 	memset(buf, data, count);
 	int result = WriteData(address, buf, count, byteswritten);
-	delete[] buf;
 	return result;
 }
 
@@ -136,12 +135,12 @@ static inline BOOL WriteData(void *address, const char data, int count, SIZE_T *
  * Write a repeated byte to an arbitrary address.
  * @param address	[in] Address.
  * @param data		[in] Byte to write.
- * @param count		[in] Number of repetitions.
  * @return Nonzero on success; 0 on error (check GetLastError()).
  */
-static inline BOOL WriteData(void *address, char data, int count)
+template <int count>
+static inline BOOL WriteData(void *address, char data)
 {
-	return WriteData(address, data, count, nullptr);
+	return WriteData<count>(address, data, nullptr);
 }
 
 #if (defined(__i386__) || defined(_M_IX86)) && \
