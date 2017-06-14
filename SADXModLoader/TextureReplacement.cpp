@@ -26,7 +26,7 @@
 
 using namespace std;
 
-static const unordered_map<HRESULT, const char*> d3dErrors = {
+static const unordered_map<HRESULT, const char*> d3d_errors = {
 	TOMAPSTRING(D3DXERR_CANNOTMODIFYINDEXBUFFER),
 	TOMAPSTRING(D3DXERR_INVALIDMESH),
 	TOMAPSTRING(D3DXERR_CANNOTATTRSORT),
@@ -42,19 +42,21 @@ static const unordered_map<HRESULT, const char*> d3dErrors = {
 
 static unordered_map<string, vector<TexPackEntry>> raw_cache;
 static unordered_map<string, vector<pvmx::DictionaryEntry>> archive_cache;
-static bool wasLoading = false;
+static bool was_loading = false;
 
 DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
 
-Sint32 njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist);
-Sint32 njLoadTexture_r(NJS_TEXLIST* texlist);
-int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist);
+static Sint32 njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist);
+static Sint32 njLoadTexture_r(NJS_TEXLIST* texlist);
+static int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist);
+static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist);
 
 void texpack::Init()
 {
 	WriteJump((void*)LoadSystemPVM, LoadSystemPVM_r);
 	WriteJump((void*)njLoadTexture, njLoadTexture_r);
 	WriteJump((void*)njLoadTexture_Wrapper, njLoadTexture_Wrapper_r);
+	WriteJump((void*)LoadPVM, LoadPVM_r);
 }
 
 
@@ -85,13 +87,13 @@ bool texpack::ParseIndex(const string& path, vector<TexPackEntry>& out)
 	}
 
 #ifdef _DEBUG
-	if (!wasLoading && wasLoading != LoadingFile)
+	if (!was_loading && was_loading != LoadingFile)
 	{
 		PrintDebug("\tBuilding cache...\n");
 	}
 #endif
 
-	wasLoading = LoadingFile;
+	was_loading = LoadingFile;
 
 	ifstream indexFile(index);
 
@@ -210,13 +212,13 @@ bool GetArchiveIndex(const string& path, ifstream& file, vector<pvmx::Dictionary
 	}
 
 #ifdef _DEBUG
-	if (!wasLoading && wasLoading != LoadingFile)
+	if (!was_loading && was_loading != LoadingFile)
 	{
 		PrintDebug("\tBuilding cache...\n");
 	}
 #endif
 
-	wasLoading = LoadingFile;
+	was_loading = LoadingFile;
 
 	if (!file.is_open())
 	{
@@ -240,7 +242,7 @@ void CheckCache()
 		return;
 	}
 
-	if (wasLoading)
+	if (was_loading)
 	{
 #ifdef _DEBUG
 		PrintDebug("\tClearing cache...\n");
@@ -249,7 +251,7 @@ void CheckCache()
 		archive_cache.clear();
 	}
 
-	wasLoading = false;
+	was_loading = false;
 }
 
 #pragma endregion
@@ -361,7 +363,7 @@ NJS_TEXMEMLIST* LoadTextureStream(ifstream& file, uint64_t offset, uint64_t size
 
 		if (result != D3D_OK)
 		{
-			PrintDebug("Failed to load texture %s: %s (%u)\n", name.c_str(), d3dErrors.at(result), result);
+			PrintDebug("Failed to load texture %s: %s (%u)\n", name.c_str(), d3d_errors.at(result), result);
 			return nullptr;
 		}
 
@@ -465,13 +467,23 @@ NJS_TEXMEMLIST* LoadTexture(const string& path, const TexPackEntry& entry, bool 
 
 #pragma region PVM
 
+inline void dynamic_expand(NJS_TEXLIST* texlist, size_t count)
+{
+	auto nbTexture = texlist->nbTexture;
+
+	if (count > nbTexture)
+	{
+		ResizeTextureList(texlist, count);
+	}
+}
+
 /// <summary>
 /// Replaces the specified PVM with a texture pack virtual PVM.
 /// </summary>
 /// <param name="path">A valid path to a texture pack directory containing index.txt</param>
 /// <param name="texlist">The associated texlist.</param>
 /// <returns><c>true</c> on success.</returns>
-bool ReplacePVM(const string& path, NJS_TEXLIST* texlist)
+static bool ReplacePVM(const string& path, NJS_TEXLIST* texlist)
 {
 	if (texlist == nullptr)
 	{
@@ -487,7 +499,7 @@ bool ReplacePVM(const string& path, NJS_TEXLIST* texlist)
 	auto pvmName = GetBaseName(path);
 	StripExtension(pvmName);
 
-	texlist->nbTexture = index.size();
+	dynamic_expand(texlist, index.size());
 	bool mipmap = mipmap::AutoMipmapsEnabled() && !mipmap::IsBlacklistedPVM(pvmName.c_str());
 
 	for (uint32_t i = 0; i < texlist->nbTexture; i++)
@@ -516,7 +528,7 @@ bool ReplacePVM(const string& path, NJS_TEXLIST* texlist)
 /// <param name="file">An opened file stream for the PVMX archive.</param>
 /// <param name="texlist">The associated texlist.</param>
 /// <returns><c>true</c> on success.</returns>
-bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist)
+static bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist)
 {
 	if (texlist == nullptr)
 	{
@@ -534,7 +546,7 @@ bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist)
 	auto pvmName = GetBaseName(path);
 	StripExtension(pvmName);
 
-	texlist->nbTexture = index.size();
+	dynamic_expand(texlist, index.size());
 	bool mipmap = mipmap::AutoMipmapsEnabled() && !mipmap::IsBlacklistedPVM(pvmName.c_str());
 
 	for (size_t i = 0; i < index.size(); i++)
@@ -556,7 +568,7 @@ bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist)
 	return true;
 }
 
-int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist)
+static int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist)
 {
 	mipmap::mip_guard _guard(mipmap::IsBlacklistedPVM(filename));
 
@@ -612,6 +624,19 @@ int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist)
 	return 0;
 }
 
+// This hook's purpose is to pass the actual texlist pointer directly through
+// to LoadSystemPVM_r so it can expand it correctly if necessary.
+static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist)
+{
+	if (texlist == nullptr)
+	{
+		PrintDebug(__FUNCTION__ " texlist == nullptr");
+		return;
+	}
+
+	LoadSystemPVM_r(filename, texlist);
+}
+
 #pragma endregion
 
 #pragma region PVR
@@ -622,7 +647,7 @@ int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist)
 /// <param name="filename">The PVR filename without extension.</param>
 /// <param name="tex">The output TEXMEMLIST</param>
 /// <returns><c>true</c> on success.</returns>
-bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
+static bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
 {
 	static const string index_file = "index.txt";
 
@@ -689,14 +714,14 @@ bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
 	return false;
 }
 
-Sint32 __cdecl njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist)
+static Sint32 __cdecl njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist)
 {
 	CheckCache();
 	LoadingFile = true;
 	return njLoadTexture_r(texlist);
 }
 
-Sint32 __cdecl njLoadTexture_r(NJS_TEXLIST* texlist)
+static Sint32 __cdecl njLoadTexture_r(NJS_TEXLIST* texlist)
 {
 	NJS_TEXMEMLIST* memlist; // edi@7
 
