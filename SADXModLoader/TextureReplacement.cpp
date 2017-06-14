@@ -56,7 +56,7 @@ void texpack::Init()
 	WriteJump((void*)LoadSystemPVM, LoadSystemPVM_r);
 	WriteJump((void*)njLoadTexture, njLoadTexture_r);
 	WriteJump((void*)njLoadTexture_Wrapper, njLoadTexture_Wrapper_r);
-	WriteJump((void*)LoadPVM, LoadPVM_r);
+	//WriteJump((void*)LoadPVM, LoadPVM_r);
 }
 
 
@@ -469,12 +469,16 @@ NJS_TEXMEMLIST* LoadTexture(const string& path, const TexPackEntry& entry, bool 
 
 inline void dynamic_expand(NJS_TEXLIST* texlist, size_t count)
 {
+#if 0
 	auto nbTexture = texlist->nbTexture;
 
 	if (count > nbTexture)
 	{
 		ResizeTextureList(texlist, count);
 	}
+#else
+	texlist->nbTexture = count;
+#endif
 }
 
 /// <summary>
