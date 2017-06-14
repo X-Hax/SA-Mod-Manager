@@ -98,7 +98,7 @@ enum UpgradeBits
 	UpgradeBits_LightShoes,
 	UpgradeBits_AncientLight,
 	UpgradeBits_JetAnklet,
-	UpgradeBits_RhythymBadge,
+	UpgradeBits_RhythmBadge,
 	UpgradeBits_FightingGloves,
 	UpgradeBits_ShovelClaw,
 	UpgradeBits_LongHammer,
@@ -107,7 +107,7 @@ enum UpgradeBits
 	UpgradeBits_JetBooster,
 	UpgradeBits_PowerRod,
 	UpgradeBits_LifeRing,
-	UpgradeBits_SuperSonic
+	UpgradeBits_SuperSonic = 15
 };
 
 enum Upgrades
@@ -115,16 +115,23 @@ enum Upgrades
 	makemasks(Upgrade, CrystalRing),
 	makemasks(Upgrade, LightShoes),
 	makemasks(Upgrade, AncientLight),
+	Upgrades_SonicMask = Upgrades_CrystalRing | Upgrades_LightShoes | Upgrades_AncientLight,
 	makemasks(Upgrade, JetAnklet),
-	makemasks(Upgrade, RhythymBadge),
+	makemasks(Upgrade, RhythmBadge),
+	Upgrades_TailsMask = Upgrades_JetAnklet | Upgrades_RhythmBadge,
 	makemasks(Upgrade, FightingGloves),
 	makemasks(Upgrade, ShovelClaw),
+	Upgrades_KnucklesMask = Upgrades_FightingGloves | Upgrades_ShovelClaw,
 	makemasks(Upgrade, LongHammer),
 	makemasks(Upgrade, WarriorFeather),
+	Upgrades_AmyMask = Upgrades_LongHammer | Upgrades_WarriorFeather,
 	makemasks(Upgrade, LaserBlaster),
 	makemasks(Upgrade, JetBooster),
+	Upgrades_GammaMask = Upgrades_LaserBlaster | Upgrades_JetBooster,
 	makemasks(Upgrade, PowerRod),
 	makemasks(Upgrade, LifeRing),
+	Upgrades_BigMask = Upgrades_PowerRod | Upgrades_LifeRing,
+	Upgrades_UpgradesMask = Upgrades_SonicMask | Upgrades_TailsMask | Upgrades_KnucklesMask | Upgrades_AmyMask | Upgrades_GammaMask | Upgrades_BigMask,
 	makemasks(Upgrade, SuperSonic)
 };
 
