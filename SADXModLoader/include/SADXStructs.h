@@ -850,6 +850,47 @@ struct StageLightData
 	float amb_rgb[3];
 };
 
+struct OceanData
+{
+	NJS_VECTOR Position;
+	char TextureIndex;
+	char OtherIndexIdk;
+	char PlaneCount;
+	char PrimitiveCount;
+	NJS_POINT2 Offset;
+	char VBuffIndex;
+	char field_19;
+	char field_1A;
+	char field_1B;
+};
+
+struct CreditsInfo
+{
+	const char **names;
+	NJS_TEXLIST **texlists;
+	int count;
+	const char *endimagename;
+	NJS_TEXLIST *endtexlist;
+	__int16 *coordinates;
+};
+
+struct CreditsEntry
+{
+	char SomeIndex;
+	char field_1;
+	char field_2;
+	char field_3;
+	const char *Line;
+};
+
+struct CreditsList
+{
+	CreditsEntry *Entries;
+	int Count;
+};
+
+// Chao
+
 struct ChaoCharacterBond
 {
 	char a;
@@ -1153,6 +1194,12 @@ struct ChaoDebugFunction
 
 // Model Queue
 
+union PointType
+{
+	NJS_POINT2COL POINT2COL;
+	NJS_POINT3COL POINT3COL;
+};
+
 struct QueuedModelNode
 {
 	QueuedModelNode *Next;
@@ -1165,6 +1212,123 @@ struct QueuedModelNode
 	int Control3D;
 	int ConstantAndAttr;
 	int ConstantOrAttr;
+};
+
+struct QueuedModelMotionThing
+{
+	QueuedModelNode Node;
+	int Unknown;
+	PointType Points;
+	char field_40[48];
+	float FrameNumber;
+	NJS_OBJECT *Object;
+	NJS_MOTION *Motion;
+	NJS_MOTION *MotionMaybe;
+	Uint32 Attributes;
+	float Scale;
+	void(__cdecl *DrawCallback)(NJS_MODEL_SADX *);
+};
+
+struct QueuedModelTextureMemList
+{
+	QueuedModelNode Node;
+	NJS_MODEL_SADX *Model;
+	NJS_MATRIX Transform;
+	NJS_TEXTURE_VTX *TexturedVertices;
+	int Count;
+	int TextureId;
+	int Flags;
+};
+
+struct QueuedModelAction
+{
+	QueuedModelNode Node;
+	int field_2C;
+	NJS_MATRIX Transform;
+	float FrameNumber;
+	NJS_ACTION Action;
+};
+
+struct QueuedModelObject
+{
+	QueuedModelNode Node;
+	NJS_OBJECT *Object;
+	NJS_MATRIX Transform;
+};
+
+struct QueuedModelActionPtr
+{
+	QueuedModelNode Node;
+	int field_2C;
+	NJS_MATRIX Transform;
+	NJS_ACTION *Action;
+	float FrameNumber;
+};
+
+struct QueuedModelLineA
+{
+	QueuedModelNode Node;
+	int Unknown;
+	PointType Points;
+	NJS_MATRIX Transform;
+	Uint32 Attributes;
+	Uint32 TextureNum;
+};
+
+struct QueuedModelLineB
+{
+	QueuedModelLineA Base;
+	float Pri;
+};
+
+struct QueuedModelParticle
+{
+	QueuedModelNode Node;
+	char idk[36];
+};
+
+struct QueuedModelCallback
+{
+	QueuedModelNode Node;
+	int Unknown;
+	NJS_MATRIX Transform;
+	void(__cdecl *UserFunction)(void *);
+	void *UserData;
+};
+
+struct QueuedModelRect
+{
+	QueuedModelNode Node;
+	int Unknown;
+	float Left;
+	float Top;
+	float Right;
+	float Bottom;
+	float Depth;
+	NJS_COLOR Color;
+};
+
+struct QueuedModelSprite
+{
+	QueuedModelNode Node;
+	int Unknown;
+	NJS_SPRITE Sprite;
+	Uint32 SpriteFlags;
+	float SpritePri;
+	NJS_MATRIX Transform;
+};
+
+struct QueuedModelPointer
+{
+	QueuedModelNode Node;
+	NJS_MODEL_SADX *Model;
+	NJS_MATRIX Transform;
+};
+
+struct QueuedModel
+{
+	NJS_MODEL_SADX model;
+	NJS_MESHSET_SADX meshset;
 };
 
 // Vertex Buffers

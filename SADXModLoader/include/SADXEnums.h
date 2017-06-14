@@ -1547,22 +1547,22 @@ enum Theme : Sint8
 
 enum QueuedModelType : __int8
 {
-	QueuedModelType_00         = 0x0,
-	QueuedModelType_BasicModel = 0x1,
-	QueuedModelType_Sprite2D   = 0x2,
-	QueuedModelType_Sprite3D   = 0x3,
-	QueuedModelType_04         = 0x4,
-	QueuedModelType_05         = 0x5,
-	QueuedModelType_06         = 0x6,
-	QueuedModelType_07         = 0x7,
-	QueuedModelType_08         = 0x8,
-	QueuedModelType_Rect       = 0x9,
-	QueuedModelType_10         = 0xA,
-	QueuedModelType_11         = 0xB,
-	QueuedModelType_Callback   = 0xC,
-	QueuedModelType_13         = 0xD,
-	QueuedModelType_14         = 0xE,
-	QueuedModelType_15         = 0xF,
+	QueuedModelType_00             = 0x0,
+	QueuedModelType_BasicModel     = 0x1,
+	QueuedModelType_Sprite2D       = 0x2,
+	QueuedModelType_Sprite3D       = 0x3,
+	QueuedModelType_Line3D         = 0x4,
+	QueuedModelType_3DLinesMaybe   = 0x5,
+	QueuedModelType_2DLinesMaybe   = 0x6,
+	QueuedModelType_3DTriFanThing  = 0x7,
+	QueuedModelType_ActionPtr      = 0x8,
+	QueuedModelType_Rect           = 0x9,
+	QueuedModelType_Object         = 0xA,
+	QueuedModelType_Action         = 0xB,
+	QueuedModelType_Callback       = 0xC,
+	QueuedModelType_TextureMemList = 0xD,
+	QueuedModelType_Line2D         = 0xE,
+	QueuedModelType_MotionThing    = 0xF,
 };
 
 enum QueuedModelFlags

@@ -5,7 +5,7 @@
 
 // Standard
 #include <string>
-#include <algorithm>	// for std::transform
+#include <algorithm> // for std::transform
 #include <fstream>
 #include <vector>
 
@@ -48,12 +48,12 @@ DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
 
 Sint32 njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist);
 Sint32 njLoadTexture_r(NJS_TEXLIST* texlist);
-int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist);
+int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist);
 
 void texpack::Init()
 {
-	WriteJump((void*)LoadPVM_C, LoadPVM_C_r);
-	WriteJump((void*)0x0077FC80, njLoadTexture_r);
+	WriteJump((void*)LoadSystemPVM, LoadSystemPVM_r);
+	WriteJump((void*)njLoadTexture, njLoadTexture_r);
 	WriteJump((void*)njLoadTexture_Wrapper, njLoadTexture_Wrapper_r);
 }
 
@@ -423,9 +423,9 @@ NJS_TEXMEMLIST* LoadTexture(const string& path, uint32_t globalIndex, const stri
 		// Increment the internal reference count to avoid the texture getting freed erroneously.
 		++texture->count;
 
-	#ifdef _DEBUG
+#ifdef _DEBUG
 		PrintDebug("Using cached texture for GBIX %u (ref count: %u)\n", globalIndex, texture->count);
-	#endif
+#endif
 	}
 	else
 	{
@@ -556,7 +556,7 @@ bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist)
 	return true;
 }
 
-int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
+int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist)
 {
 	mipmap::mip_guard _guard(mipmap::IsBlacklistedPVM(filename));
 
@@ -698,7 +698,7 @@ Sint32 __cdecl njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist)
 
 Sint32 __cdecl njLoadTexture_r(NJS_TEXLIST* texlist)
 {
-	NJS_TEXMEMLIST* memlist = nullptr; // edi@7
+	NJS_TEXMEMLIST* memlist; // edi@7
 
 	if (texlist == nullptr)
 	{
@@ -735,7 +735,7 @@ Sint32 __cdecl njLoadTexture_r(NJS_TEXLIST* texlist)
 		{
 			string filename((const char*)entries->filename);
 			mipmap::mip_guard _guard(mipmap::IsBlacklistedPVR(filename.c_str()));
-			
+
 			if (ReplacePVR(filename, (NJS_TEXMEMLIST**)&entries->texaddr))
 			{
 				continue;
