@@ -8,9 +8,12 @@
 #include "AutoMipmap.h"
 #include "D3DCommon.h"
 
+using namespace std;
+
 namespace mipmap
 {
-	static const std::vector<std::string> PVMBlacklist = {
+	static Trampoline* Direct3D_PvrToTexture_t = nullptr;
+	static const vector<string> PVMBlacklist = {
 		"AL_DX_TEX_XYBUTTON",
 		"AL_ENT_CHAR_E_TEX",
 		"AL_ENT_CHAR_J_TEX",
@@ -186,7 +189,7 @@ namespace mipmap
 		"TX_CHNAM",
 		"TX_CHNAM_E",
 	};
-	static const std::vector<std::string> PVRBlacklist = {
+	static const vector<string> PVRBlacklist = {
 		"ABC_TXT",
 		"ACTION_0",
 		"ACTION_1",
@@ -601,7 +604,7 @@ namespace mipmap
 		"T_STATIONSQUARE",
 		"T_STATIONSQUARE_E",
 	};
-	static std::vector<Uint32> gbixBlacklist;
+	static vector<Uint32> gbixBlacklist;
 
 	static bool blacklisted = false;
 	static bool enabled = false;
@@ -614,7 +617,9 @@ namespace mipmap
 		result = src->LockRect(0, &rectA, nullptr, 0);
 
 		if (!SUCCEEDED(result))
+		{
 			return result;
+		}
 
 		result = dest->LockRect(0, &rectB, nullptr, 0);
 
@@ -641,41 +646,55 @@ namespace mipmap
 		surface->TextureSize = info.Size;
 	}
 
-	/// <summary>
-	/// Generates mipmaps if the specified texture has the levels to accommodate them.
-	/// </summary>
-	/// <param name="src">The DirectX texture to apply mipmaps to.</param>
-	/// <param name="njs_texture">The Dremcast texture to receive the DirectX texture.</param>
-	static void __fastcall GenerateMipmaps_c(IDirect3DTexture8* src, NJS_TEXMEMLIST* njs_texture)
+	static void GenerateMipmaps(NJS_TEXMEMLIST* tex)
 	{
-		if (src == nullptr || njs_texture == nullptr)
+		if (tex == nullptr)
+		{
 			return;
+		}
 
-		if (blacklisted || src->GetLevelCount() > 1)
+		auto pSurface = (IDirect3DTexture8*)tex->texinfo.texsurface.pSurface;
+
+		if (pSurface == nullptr)
+		{
+			return;
+		}
+
+		if (blacklisted || pSurface->GetLevelCount() > 1)
+		{
 			goto ABORT;
+		}
 
 #ifndef PALLETIZED_MIPMAPS
-		auto format = njs_texture->texinfo.texsurface.PixelFormat;
+		auto format = tex->texinfo.texsurface.PixelFormat;
 
 		if (format == NJD_PIXELFORMAT_PALETTIZED_4BPP || format == NJD_PIXELFORMAT_PALETTIZED_8BPP)
+		{
 			goto ABORT;
+		}
 #endif
 
 		HRESULT result;
 
 		D3DSURFACE_DESC info;
-		result = src->GetLevelDesc(0, &info);
+		result = pSurface->GetLevelDesc(0, &info);
 		if (!SUCCEEDED(result))
+		{
 			goto ABORT;
+		}
 
 		IDirect3DTexture8* dest;
 		result = Direct3D_Device->CreateTexture(info.Width, info.Height, 0, info.Usage, info.Format, info.Pool, &dest);
 		if (!SUCCEEDED(result))
+		{
 			goto ABORT;
+		}
 
-		result = CopyTexture(dest, src, info.Height);
+		result = CopyTexture(dest, pSurface, info.Height);
 		if (!SUCCEEDED(result))
+		{
 			goto ABORT;
+		}
 
 		result = D3DXFilterTexture(dest, nullptr, D3DX_DEFAULT, D3DX_DEFAULT);
 		if (!SUCCEEDED(result))
@@ -685,55 +704,30 @@ namespace mipmap
 			goto ABORT;
 		}
 
-		src->Release();
-		SetSurface(dest, &njs_texture->texinfo.texsurface);
+		pSurface->Release();
+		SetSurface(dest, &tex->texinfo.texsurface);
 		return;
 
 		// TODO: just use exceptions
 	ABORT:
-		SetSurface(src, &njs_texture->texinfo.texsurface);
+		SetSurface(pSurface, &tex->texinfo.texsurface);
 	}
 
-	static void* loc_78CD37 = (void*)0x0078CD37;
-	static void __declspec(naked) GenerateMipmaps_asm()
+	void __fastcall Direct3D_PvrToTexture_r(NJS_TEXMEMLIST *tex, IDirect3DTexture8 *surface)
 	{
-		__asm
-		{
-			mov		edx, esi
-			mov		ecx, eax
+		auto original = (decltype(Direct3D_PvrToTexture_r)*)Direct3D_PvrToTexture_t->Target();
 
-			push	eax
-			call	GenerateMipmaps_c
-			pop		eax
-
-			jmp		loc_78CD37
-		}
+		mip_guard _guard(tex != nullptr && IsBlacklistedGBIX(tex->globalIndex));
+		original(tex, surface);
+		GenerateMipmaps(tex);
 	}
-
-#ifdef PALLETIZED_MIPMAPS
-	void __cdecl GeneratePalletizedMipmaps_c(IDirect3DTexture8* src)
-	{
-		if (src->GetLevelCount() >= 2)
-			D3DXFilterTexture(src, nullptr, 0, D3DX_DEFAULT);
-	}
-
-	void* loc_78CE10 = (void*)0x0078CE10;
-	void __declspec(naked) GeneratePalletizedMipmaps_asm()
-	{
-		__asm
-		{
-			push	edi
-			call	test_c
-			pop		edi
-			jmp		loc_78CE10
-		}
-	}
-#endif
 
 	void EnableAutoMipmaps()
 	{
 		enabled = true;
-		WriteJump((void*)0x0078CD2A, GenerateMipmaps_asm);	// Hooks the end of the function that converts PVRs to D3D textures
+
+		Direct3D_PvrToTexture_t = new Trampoline(0x0078CBD0, 0x0078CBD6, Direct3D_PvrToTexture_r);
+
 #ifdef PALLETIZED_MIPMAPS
 		// This happens every frame for every palletized texture in the scene. Rather inefficient where mipmap generation is concerned.
 		// Assuming somebody can figure out a method of keeping track of palette changes and textures whose mipmaps have already been generated,
@@ -742,33 +736,37 @@ namespace mipmap
 #endif
 	}
 
-	inline bool find_name(const std::vector<std::string>& v, const char* name)
+	inline bool find_name(const vector<string>& v, const char* name)
 	{
 		if (name == nullptr)
+		{
 			return false;
+		}
 
-		std::string str(name);
-		std::transform(str.begin(), str.end(), str.begin(), ::toupper);
-		return std::find(v.begin(), v.end(), str.c_str()) != v.end();
+		string str(name);
+		transform(str.begin(), str.end(), str.begin(), toupper);
+		return find(v.begin(), v.end(), str.c_str()) != v.end();
 	}
 
 	bool IsBlacklistedPVM(const char* name)
 	{
-		return blacklisted = find_name(PVMBlacklist, name);
+		return find_name(PVMBlacklist, name);
 	}
 	bool IsBlacklistedPVR(const char* name)
 	{
-		return blacklisted = find_name(PVRBlacklist, name);
+		return find_name(PVRBlacklist, name);
 	}
 	bool IsBlacklistedGBIX(Uint32 gbix)
 	{
-		return blacklisted = std::find(gbixBlacklist.begin(), gbixBlacklist.end(), gbix) != gbixBlacklist.end();
+		return find(gbixBlacklist.begin(), gbixBlacklist.end(), gbix) != gbixBlacklist.end();
 	}
 
 	void BlacklistGBIX(Uint32 gbix)
 	{
 		if (IsBlacklistedGBIX(gbix))
+		{
 			return;
+		}
 
 		gbixBlacklist.push_back(gbix);
 		PrintDebug("Blacklisted GBIX %u\n", gbix);
@@ -784,18 +782,27 @@ namespace mipmap
 		return enabled;
 	}
 
+	mip_guard::mip_guard(bool skip)
+	{
+		last = blacklisted;
+		current = skip;
+		SkipMipmap(skip);
+	}
+
+	mip_guard::~mip_guard()
+	{
+		SkipMipmap(last);
+	}
+
 	// This has something to do with dynamic texture generation. It's used for videos and menus.
 	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, IDirect3DTexture8* texture);
 	static Trampoline sub_77FA10_trampoline(0x0077FA10, 0x0077FA16, sub_77FA10_hook);
 	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, IDirect3DTexture8* texture)
 	{
-		blacklisted = true;
+		mip_guard _guard(true);
 
 		FunctionPointer(Sint32, original, (Uint32, IDirect3DTexture8*), sub_77FA10_trampoline.Target());
-		auto result = original(gbix, texture);
-
-		blacklisted = false;
-		return result;
+		return original(gbix, texture);
 	}
 
 	// This one seems to be related to text.
@@ -804,11 +811,9 @@ namespace mipmap
 	static Trampoline sub_40D2A0_trampoline(0x0040D2A0, 0x0040D2A8, sub_40D2A0_hook);
 	static void sub_40D2A0_hook(void* a1)
 	{
-		blacklisted = true;
+		mip_guard _guard(true);
 
 		FunctionPointer(void, original, (void*), sub_40D2A0_trampoline.Target());
 		original(a1);
-
-		blacklisted = false;
 	}
 }

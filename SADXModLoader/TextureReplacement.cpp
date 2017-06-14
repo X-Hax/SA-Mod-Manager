@@ -558,6 +558,8 @@ bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist)
 
 int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 {
+	mipmap::mip_guard _guard(mipmap::IsBlacklistedPVM(filename));
+
 	string filename_str(filename);
 	CheckCache();
 	LoadingFile = true;
@@ -591,9 +593,7 @@ int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 			// the file and fall back to default behavior.
 			pvmx.close();
 
-			auto result = njLoadTexturePvmFile(filename, texlist);
-			mipmap::SkipMipmap(false);
-			return result;
+			return njLoadTexturePvmFile(filename, texlist);
 		}
 
 		// Otherwise it's probably a directory, so try loading it as a texture pack.
@@ -609,7 +609,6 @@ int __cdecl LoadPVM_C_r(const char* filename, NJS_TEXLIST* texlist)
 		return -1;
 	}
 
-	mipmap::SkipMipmap(false);
 	return 0;
 }
 
@@ -699,7 +698,7 @@ Sint32 __cdecl njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist)
 
 Sint32 __cdecl njLoadTexture_r(NJS_TEXLIST* texlist)
 {
-	NJS_TEXMEMLIST* memlist; // edi@7
+	NJS_TEXMEMLIST* memlist = nullptr; // edi@7
 
 	if (texlist == nullptr)
 	{
@@ -731,26 +730,23 @@ Sint32 __cdecl njLoadTexture_r(NJS_TEXLIST* texlist)
 			{
 				memlist = LoadPVR(*(void**)entries->filename, gbix);
 			}
-
-			mipmap::IsBlacklistedGBIX(memlist->globalIndex);
 		}
 		else
 		{
 			string filename((const char*)entries->filename);
-
+			mipmap::mip_guard _guard(mipmap::IsBlacklistedPVR(filename.c_str()));
+			
 			if (ReplacePVR(filename, (NJS_TEXMEMLIST**)&entries->texaddr))
 			{
 				continue;
 			}
-
-			bool blacklisted = mipmap::IsBlacklistedPVR(filename.c_str());
 
 			filename += ".pvr";
 			void* data = LoadPVx(filename.c_str());
 			memlist = LoadPVR(data, gbix);
 			j__HeapFree_0(data);
 
-			if (blacklisted)
+			if (_guard.is_blacklisted() && memlist != nullptr)
 			{
 				mipmap::BlacklistGBIX(memlist->globalIndex);
 			}
