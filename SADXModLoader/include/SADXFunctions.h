@@ -148,7 +148,7 @@ FunctionPointer(int, GetDInputMouseState, (), 0x40BB80);
 VoidFunc(ReleaseDInputMouse, 0x40BC40);
 FunctionPointer(int, DoSomethingRelatedToText_, (char *a2), 0x40BD30);
 VoidFunc(InitVarious, 0x40BF40);
-VoidFunc(Init, 0x40C030);
+VoidFunc(InitGameLoop, 0x40C030);
 VoidFunc(GameModeHandler, 0x40C090);
 VoidFunc(GameLoop, 0x40CAD0);
 FunctionPointer(void, PlayMusicFile, (LPCSTR filename, int loop), 0x40CD20);
