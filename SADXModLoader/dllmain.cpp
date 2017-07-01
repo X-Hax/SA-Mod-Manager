@@ -2115,7 +2115,7 @@ static void ProcessMorphDLL(const IniGroup *group, void *exp)
 
 static void ProcessModelsArrayDLL(const IniGroup *group, void *exp)
 {
-	((void **)exp)[group->getInt("Index")] = ((NJS_OBJECT *)dlllabels[group->getString("Label")])->model;
+	((NJS_MODEL_SADX **)exp)[group->getInt("Index")] = (NJS_MODEL_SADX *)dlllabels[group->getString("Label")];
 }
 
 static void ProcessActionArrayDLL(const IniGroup *group, void *exp)
