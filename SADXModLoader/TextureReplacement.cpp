@@ -45,6 +45,7 @@ static unordered_map<string, vector<pvmx::DictionaryEntry>> archive_cache;
 static bool was_loading = false;
 
 DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
+DataArray(NJS_TEXNAME, TexNameBuffer, 0x03B28220, 300);
 
 static Sint32 njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist);
 static Sint32 njLoadTexture_r(NJS_TEXLIST* texlist);
@@ -56,7 +57,7 @@ void texpack::Init()
 	WriteJump((void*)LoadSystemPVM, LoadSystemPVM_r);
 	WriteJump((void*)njLoadTexture, njLoadTexture_r);
 	WriteJump((void*)njLoadTexture_Wrapper, njLoadTexture_Wrapper_r);
-	//WriteJump((void*)LoadPVM, LoadPVM_r);
+	WriteJump((void*)LoadPVM, LoadPVM_r);
 }
 
 
@@ -467,18 +468,25 @@ NJS_TEXMEMLIST* LoadTexture(const string& path, const TexPackEntry& entry, bool 
 
 #pragma region PVM
 
+static vector<NJS_TEXNAME> texname_overflow;
+
 inline void dynamic_expand(NJS_TEXLIST* texlist, size_t count)
 {
-#if 0
-	auto nbTexture = texlist->nbTexture;
-
-	if (count > nbTexture)
+	if (count > TexNameBuffer_Length)
 	{
-		ResizeTextureList(texlist, count);
+		static const NJS_TEXNAME dummy = {};
+
+		texname_overflow.resize(count);
+		fill(texname_overflow.begin(), texname_overflow.end(), dummy);
+
+		texlist->textures = texname_overflow.data();
 	}
-#else
+	else if (!texname_overflow.empty())
+	{
+		texname_overflow.clear();
+	}
+
 	texlist->nbTexture = count;
-#endif
 }
 
 /// <summary>
@@ -503,8 +511,9 @@ static bool ReplacePVM(const string& path, NJS_TEXLIST* texlist)
 	auto pvmName = GetBaseName(path);
 	StripExtension(pvmName);
 
-	dynamic_expand(texlist, index.size());
 	bool mipmap = mipmap::AutoMipmapsEnabled() && !mipmap::IsBlacklistedPVM(pvmName.c_str());
+
+	dynamic_expand(texlist, index.size());
 
 	for (uint32_t i = 0; i < texlist->nbTexture; i++)
 	{
@@ -550,8 +559,9 @@ static bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist
 	auto pvmName = GetBaseName(path);
 	StripExtension(pvmName);
 
-	dynamic_expand(texlist, index.size());
 	bool mipmap = mipmap::AutoMipmapsEnabled() && !mipmap::IsBlacklistedPVM(pvmName.c_str());
+
+	dynamic_expand(texlist, index.size());
 
 	for (size_t i = 0; i < index.size(); i++)
 	{
@@ -572,7 +582,7 @@ static bool ReplacePVMX(const string& path, ifstream& file, NJS_TEXLIST* texlist
 	return true;
 }
 
-static int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist)
+static bool TryTexturePack(const char* filename, NJS_TEXLIST* texlist)
 {
 	mipmap::mip_guard _guard(mipmap::IsBlacklistedPVM(filename));
 
@@ -594,51 +604,86 @@ static int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist)
 	}
 
 	// If we can ensure this path exists, we can determine how to load it.
-	if (Exists(replaced))
+	if (!Exists(replaced))
 	{
-		// If the replaced path is a file, we should check if it's a PVMX archive.
-		if (IsFile(replaced))
-		{
-			ifstream pvmx(replaced, ios::in | ios::binary);
-			if (pvmx::is_pvmx(pvmx) && ReplacePVMX(replaced, pvmx, texlist))
-			{
-				return 0;
-			}
-
-			// At this point it's probably a PVM, so close
-			// the file and fall back to default behavior.
-			pvmx.close();
-
-			return njLoadTexturePvmFile(filename, texlist);
-		}
-
-		// Otherwise it's probably a directory, so try loading it as a texture pack.
-		if (ReplacePVM(replaced, texlist))
-		{
-			return 0;
-		}
+		return false;
 	}
 
-	if (!Exists(system_path) && !Exists(system_path_ext))
+	// If the replaced path is a file, we should check if it's a PVMX archive.
+	if (IsFile(replaced))
 	{
-		PrintDebug("Unable to locate PVM: %s\n", filename);
-		return -1;
+		ifstream pvmx(replaced, ios::in | ios::binary);
+		return pvmx::is_pvmx(pvmx) && ReplacePVMX(replaced, pvmx, texlist);
 	}
 
-	return 0;
+	// Otherwise it's probably a directory, so try loading it as a texture pack.
+	return ReplacePVM(replaced, texlist);
 }
 
-// This hook's purpose is to pass the actual texlist pointer directly through
-// to LoadSystemPVM_r so it can expand it correctly if necessary.
+static int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist)
+{
+	mipmap::mip_guard _guard(mipmap::IsBlacklistedPVM(filename));
+
+	auto temp = *texlist;
+
+	if (TryTexturePack(filename, &temp))
+	{
+		*texlist = temp;
+		return 1;
+	}
+
+	return njLoadTexturePvmFile(filename, texlist);
+}
+
 static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist)
 {
-	if (texlist == nullptr)
+	// Some fun stuff from the original code:
+
+	if (!lstrcmpA(filename, "SS_MIZUGI"))
 	{
-		PrintDebug(__FUNCTION__ " texlist == nullptr");
+		PrintDebug("SS_MIZUGI\n");
+	}
+
+	if (!texlist)
+	{
+		PrintDebug("%s %d : ptlo == 0\n", "\\SADXPC\\sonic\\src\\texture.c", 2675);
 		return;
 	}
 
-	LoadSystemPVM_r(filename, texlist);
+	if (!texlist->nbTexture)
+	{
+		return;
+	}
+
+	NJS_TEXLIST temp = *texlist;
+	char textureNames[28 * TexNameBuffer_Length] = {};
+
+	njSetPvmTextureList(&temp, TexNameBuffer, textureNames, 300);
+
+	if (LoadSystemPVM_r(filename, &temp) == -1)
+	{
+		return;
+	}
+
+	auto nbTexture = temp.nbTexture;
+
+	// Expand the static texlist with a dynamically allocated NJS_TEXNAME array.
+	// This could become a memory leak for dynamically allocated NJS_TEXLISTs.
+	if (nbTexture > texlist->nbTexture)
+	{
+		auto textures = new NJS_TEXNAME[nbTexture];
+		memcpy(textures, texlist->textures, texlist->nbTexture * sizeof(NJS_TEXNAME));
+
+		texlist->textures = textures;
+		texlist->nbTexture = nbTexture;
+	}
+
+	// Copy over the texture attributes and addresses.
+	for (uint32_t i = 0; i < nbTexture; i++)
+	{
+		texlist->textures[i].attr = temp.textures[i].attr;
+		texlist->textures[i].texaddr = temp.textures[i].texaddr;
+	}
 }
 
 #pragma endregion
