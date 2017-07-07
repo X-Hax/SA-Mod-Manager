@@ -655,31 +655,30 @@ static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist)
 		return;
 	}
 
-	NJS_TEXLIST temp = *texlist;
+	NJS_TEXLIST temp = {};
 	char textureNames[28 * TexNameBuffer_Length] = {};
 
-	njSetPvmTextureList(&temp, TexNameBuffer, textureNames, 300);
+	njSetPvmTextureList(&temp, TexNameBuffer, textureNames, TexNameBuffer_Length);
 
 	if (LoadSystemPVM_r(filename, &temp) == -1)
 	{
 		return;
 	}
 
-	auto nbTexture = temp.nbTexture;
-
 	// Expand the static texlist with a dynamically allocated NJS_TEXNAME array.
 	// This could become a memory leak for dynamically allocated NJS_TEXLISTs.
-	if (nbTexture > texlist->nbTexture)
+	if (temp.nbTexture > texlist->nbTexture)
 	{
-		auto textures = new NJS_TEXNAME[nbTexture];
+		auto textures = new NJS_TEXNAME[temp.nbTexture] {};
+
 		memcpy(textures, texlist->textures, texlist->nbTexture * sizeof(NJS_TEXNAME));
 
 		texlist->textures = textures;
-		texlist->nbTexture = nbTexture;
+		texlist->nbTexture = temp.nbTexture;
 	}
 
 	// Copy over the texture attributes and addresses.
-	for (uint32_t i = 0; i < nbTexture; i++)
+	for (uint32_t i = 0; i < texlist->nbTexture; i++)
 	{
 		texlist->textures[i].attr = temp.textures[i].attr;
 		texlist->textures[i].texaddr = temp.textures[i].texaddr;
