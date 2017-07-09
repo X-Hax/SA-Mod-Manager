@@ -1688,7 +1688,7 @@ static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_di
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
-static const wstring languagenames[] = { L"Japanese", L"English", L"French", L"Spanish", L"German" };
+static const wchar_t *const languagenames[] = { L"Japanese", L"English", L"French", L"Spanish", L"German" };
 static void ProcessCutsceneTextINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename")) return;
@@ -2142,7 +2142,7 @@ static const unordered_map<string, void(__cdecl *)(const IniGroup *, void *)> dl
 	{ "actionarray", ProcessActionArrayDLL },
 };
 
-static const string dlldatakeys[] = {
+static const char *const dlldatakeys[] = {
 	"CHRMODELSData",
 	"ADV00MODELSData",
 	"ADV01MODELSData",
