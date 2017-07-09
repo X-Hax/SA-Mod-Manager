@@ -1749,7 +1749,7 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 		for (int i = 0; i < length; i++)
 		{
 			wchar_t wbuf[8];
-			swprintf_s(wbuf, L"%d", i + 1);
+			swprintf(wbuf, LengthOfArray(wbuf), L"%d", i + 1);
 			const IniFile *inidata = new IniFile(pathbase + wbuf + L'\\' + languagenames[l] + L".ini");
 			vector<int16_t> props;
 			vector<HintText_Text> text;
