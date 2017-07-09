@@ -5,7 +5,7 @@
 GameObject::GameObject(LoadObj flags, int index)
 {
 	objData = LoadObject(flags, index, CallMain);
-	if (!objData)
+	if (objData)
 	{
 		objData->DisplaySub = CallDisplay;
 		objData->DeleteSub = CallDelete;
