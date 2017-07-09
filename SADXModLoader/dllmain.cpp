@@ -1402,7 +1402,7 @@ static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
 	for (int i = 0; i < 999; i++)
 	{
 		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		snprintf(key, sizeof(key), "%d", i);
 		if (!objlistdata->hasGroup(key)) break;
 		const IniGroup *objdata = objlistdata->getGroup(key);
 		ObjectListEntry entry;
@@ -1454,7 +1454,7 @@ static vector<PVMEntry> ProcessTexListINI_Internal(const IniFile *texlistdata)
 	for (int i = 0; i < 999; i++)
 	{
 		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		snprintf(key, sizeof(key), "%d", i);
 		if (!texlistdata->hasGroup(key)) break;
 		const IniGroup *pvmdata = texlistdata->getGroup(key);
 		PVMEntry entry;
@@ -1571,7 +1571,7 @@ static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_di
 	for (int i = 0; i < 999; i++)
 	{
 		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *snddata = inidata->getGroup(key);
 		SoundTestEntry entry;
@@ -1595,7 +1595,7 @@ static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
 	for (int i = 0; i < 999; i++)
 	{
 		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *musdata = inidata->getGroup(key);
 		MusicInfo entry;
@@ -1616,7 +1616,7 @@ static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 	for (int i = 0; i < 999; i++)
 	{
 		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *snddata = inidata->getGroup(key);
 		SoundFileInfo entry;
@@ -1665,7 +1665,7 @@ static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_di
 	for (int i = 0; i < 999; i++)
 	{
 		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *entdata = inidata->getGroup(key);
 		NextLevelData entry;
@@ -1756,7 +1756,7 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 			for (int j = 0; j < 999; j++)
 			{
 				char buf[4];
-				_snprintf(buf, LengthOfArray(buf), "%d", j);
+				snprintf(buf, LengthOfArray(buf), "%d", j);
 				if (!inidata->hasGroup(buf)) break;
 				if (props.size() > 0)
 					props.push_back(NPCTextControl_NewGroup);
@@ -1800,7 +1800,7 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 				bool hasText = false;
 				for (int k = 0; k < 999; k++)
 				{
-					_snprintf(buf2, linekey.size() + 2, linekey.c_str(), k);
+					snprintf(buf2, linekey.size() + 2, linekey.c_str(), k);
 					if (!inidata->hasGroup(buf2)) break;
 					hasText = true;
 					entdata = inidata->getGroup(buf2);
@@ -1877,7 +1877,7 @@ static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 	for (int i = 0; i < 999; i++)
 	{
 		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		snprintf(key, sizeof(key), "%d", i);
 		if (!dzdata->hasGroup(key)) break;
 		uint8_t flag = ParseCharacterFlags(dzdata->getString(key, "Flags"));
 		wchar_t wkey[4];
@@ -1904,7 +1904,7 @@ static void ProcessSkyboxScaleINI(const IniGroup *group, const wstring &mod_dir)
 	for (int i = 0; i < count; i++)
 	{
 		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key))
 		{
 			*addr++ = nullptr;
@@ -1956,7 +1956,7 @@ static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_di
 			char buf2[4];
 			for (int j = 0; j < 999; j++)
 			{
-				_snprintf(buf2, LengthOfArray(buf2), "%d", j);
+				snprintf(buf2, LengthOfArray(buf2), "%d", j);
 				if (!inidata->hasGroup(buf2)) break;
 				entdata = inidata->getGroup(buf2);
 				Loop point;
@@ -2002,7 +2002,7 @@ static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &m
 	for (int i = 0; i < 999; i++)
 	{
 		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *entdata = inidata->getGroup(key);
 		StageLightData entry;
@@ -2194,7 +2194,7 @@ void __cdecl WriteSaveFile_r()
 			if ((unsigned __int8)*(char *)0x3B290E0 > 98u)
 				return;
 			v2 = SaveFiles->Next;
-			_snprintf(v3, MAX_PATH, "SonicDX%02d.snc", 1);
+			snprintf(v3, MAX_PATH, "SonicDX%02d.snc", 1);
 			if (v2)
 				while (1)
 				{
@@ -2204,7 +2204,7 @@ void __cdecl WriteSaveFile_r()
 						++v0;
 						if ((unsigned __int8)v0 > 99u)
 							return;
-						_snprintf(v3, MAX_PATH, "SonicDX%02d.snc", (unsigned __int8)v0);
+						snprintf(v3, MAX_PATH, "SonicDX%02d.snc", (unsigned __int8)v0);
 					}
 					else
 						v2 = v2->Next;
@@ -2219,13 +2219,13 @@ void __cdecl WriteSaveFile_r()
 			*(char **)0x3B290DC = (char *)malloc(0xEu);
 			++*(char *)0x3B290E0;
 			*(char *)0x3B290D8 = v0;
-			_snprintf(*(char **)0x3B290DC, 0xEu, "SonicDX%02d.snc", (unsigned __int8)v0);
-			_snprintf(v3, MAX_PATH, "./%s/SonicDX%02d.snc", mainsavepath, (unsigned __int8)v0);
+			snprintf(*(char **)0x3B290DC, 0xEu, "SonicDX%02d.snc", (unsigned __int8)v0);
+			snprintf(v3, MAX_PATH, "./%s/SonicDX%02d.snc", mainsavepath, (unsigned __int8)v0);
 		}
 		else
 		{
 			v4 = lstrlenA(*(char **)0x3B290DC);
-			_snprintf(v3, MAX_PATH, "./%s/%s", mainsavepath, *(char **)0x3B290DC);
+			snprintf(v3, MAX_PATH, "./%s/%s", mainsavepath, *(char **)0x3B290DC);
 		}
 		v5 = fopen(v3, "wb");
 		fwrite((void *)0x3B2B3A8, sizeof(SaveFileData), 1, v5);
@@ -2467,7 +2467,7 @@ static void __cdecl InitMods()
 	for (int i = 1; i <= 999; i++)
 	{
 		char key[8];
-		_snprintf(key, sizeof(key), "Mod%d", i);
+		snprintf(key, sizeof(key), "Mod%d", i);
 		if (!settings->hasKey(key))
 			break;
 
@@ -2700,7 +2700,7 @@ static void __cdecl InitMods()
 				char buf[9];
 				for (int k = 0; k < 9999; k++)
 				{
-					_snprintf(buf, sizeof(buf), "Item%d", k);
+					snprintf(buf, sizeof(buf), "Item%d", k);
 					if (dlldata->hasGroup(buf))
 					{
 						group = dlldata->getGroup(buf);
