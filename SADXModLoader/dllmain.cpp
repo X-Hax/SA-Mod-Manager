@@ -1399,10 +1399,10 @@ static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
 	const IniFile *objlistdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<ObjectListEntry> objs;
-	for (int i = 0; i < 999; i++)
+	for (unsigned int i = 0; i < 999; i++)
 	{
-		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		char key[8];
+		snprintf(key, sizeof(key), "%u", i);
 		if (!objlistdata->hasGroup(key)) break;
 		const IniGroup *objdata = objlistdata->getGroup(key);
 		ObjectListEntry entry;
@@ -1451,10 +1451,10 @@ static void ProcessStartPosINI(const IniGroup *group, const wstring &mod_dir)
 static vector<PVMEntry> ProcessTexListINI_Internal(const IniFile *texlistdata)
 {
 	vector<PVMEntry> texs;
-	for (int i = 0; i < 999; i++)
+	for (unsigned int i = 0; i < 999; i++)
 	{
-		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		char key[8];
+		snprintf(key, sizeof(key), "%u", i);
 		if (!texlistdata->hasGroup(key)) break;
 		const IniGroup *pvmdata = texlistdata->getGroup(key);
 		PVMEntry entry;
@@ -1568,10 +1568,10 @@ static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_di
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<SoundTestEntry> sounds;
-	for (int i = 0; i < 999; i++)
+	for (unsigned int i = 0; i < 999; i++)
 	{
-		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		char key[8];
+		snprintf(key, sizeof(key), "%u", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *snddata = inidata->getGroup(key);
 		SoundTestEntry entry;
@@ -1592,10 +1592,10 @@ static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<MusicInfo> songs;
-	for (int i = 0; i < 999; i++)
+	for (unsigned int i = 0; i < 999; i++)
 	{
-		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		char key[8];
+		snprintf(key, sizeof(key), "%u", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *musdata = inidata->getGroup(key);
 		MusicInfo entry;
@@ -1613,10 +1613,10 @@ static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<SoundFileInfo> sounds;
-	for (int i = 0; i < 999; i++)
+	for (unsigned int i = 0; i < 999; i++)
 	{
-		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		char key[8];
+		snprintf(key, sizeof(key), "%u", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *snddata = inidata->getGroup(key);
 		SoundFileInfo entry;
@@ -1662,10 +1662,10 @@ static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_di
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<NextLevelData> ents;
-	for (int i = 0; i < 999; i++)
+	for (unsigned int i = 0; i < 999; i++)
 	{
-		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		char key[8];
+		snprintf(key, sizeof(key), "%u", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *entdata = inidata->getGroup(key);
 		NextLevelData entry;
@@ -1688,7 +1688,7 @@ static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_di
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
-static const wstring languagenames[] = { L"Japanese", L"English", L"French", L"Spanish", L"German" };
+static const wchar_t *const languagenames[] = { L"Japanese", L"English", L"French", L"Spanish", L"German" };
 static void ProcessCutsceneTextINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename")) return;
@@ -1719,9 +1719,9 @@ static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
 		RecapScreen *list = new RecapScreen[length];
 		for (int i = 0; i < length; i++)
 		{
-			wchar_t buf[4];
-			swprintf_s(buf, L"%d", i + 1);
-			const IniFile *inidata = new IniFile(pathbase + buf + L'\\' + languagenames[l] + L".ini");
+			wchar_t wbuf[8];
+			swprintf(wbuf, LengthOfArray(wbuf), L"%d", i + 1);
+			const IniFile *inidata = new IniFile(pathbase + wbuf + L'\\' + languagenames[l] + L".ini");
 			vector<string> strs = split(inidata->getString("", "Text"), '\n');
 			auto numents = strs.size();
 			list[i].TextData = new char *[numents];
@@ -1748,15 +1748,15 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 		HintText_Entry *list = new HintText_Entry[length];
 		for (int i = 0; i < length; i++)
 		{
-			wchar_t wbuf[4];
-			swprintf_s(wbuf, L"%d", i + 1);
+			wchar_t wbuf[8];
+			swprintf(wbuf, LengthOfArray(wbuf), L"%d", i + 1);
 			const IniFile *inidata = new IniFile(pathbase + wbuf + L'\\' + languagenames[l] + L".ini");
 			vector<int16_t> props;
 			vector<HintText_Text> text;
-			for (int j = 0; j < 999; j++)
+			for (unsigned int j = 0; j < 999; j++)
 			{
-				char buf[4];
-				_snprintf(buf, LengthOfArray(buf), "%d", j);
+				char buf[8];
+				snprintf(buf, sizeof(buf), "%u", j);
 				if (!inidata->hasGroup(buf)) break;
 				if (props.size() > 0)
 					props.push_back(NPCTextControl_NewGroup);
@@ -1795,12 +1795,12 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 					props.push_back((int16_t)entdata->getInt("SetEventFlag"));
 				}
 				string linekey = buf;
-				linekey += ".Lines[%d]";
+				linekey += ".Lines[%u]";
 				char *buf2 = new char[linekey.size() + 2];
 				bool hasText = false;
-				for (int k = 0; k < 999; k++)
+				for (unsigned int k = 0; k < 999; k++)
 				{
-					_snprintf(buf2, linekey.size() + 2, linekey.c_str(), k);
+					snprintf(buf2, linekey.size() + 2, linekey.c_str(), k);
 					if (!inidata->hasGroup(buf2)) break;
 					hasText = true;
 					entdata = inidata->getGroup(buf2);
@@ -1874,14 +1874,14 @@ static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 	wstring dzpath = buf;
 	delete[] buf;
 	vector<DeathZone> deathzones;
-	for (int i = 0; i < 999; i++)
+	for (unsigned int i = 0; i < 999; i++)
 	{
-		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		char key[8];
+		snprintf(key, sizeof(key), "%u", i);
 		if (!dzdata->hasGroup(key)) break;
 		uint8_t flag = ParseCharacterFlags(dzdata->getString(key, "Flags"));
-		wchar_t wkey[4];
-		_snwprintf(wkey, 4, L"%d", i);
+		wchar_t wkey[8];
+		_snwprintf(wkey, LengthOfArray(wkey), L"%u", i);
 		ModelInfo *dzmdl = new ModelInfo(dzpath + L"\\" + wkey + L".sa1mdl");
 		DeathZone dz = { flag, dzmdl->getmodel() };
 		deathzones.push_back(dz);
@@ -1903,8 +1903,8 @@ static void ProcessSkyboxScaleINI(const IniGroup *group, const wstring &mod_dir)
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	for (int i = 0; i < count; i++)
 	{
-		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		char key[8];
+		snprintf(key, sizeof(key), "%d", i);
 		if (!inidata->hasGroup(key))
 		{
 			*addr++ = nullptr;
@@ -1940,10 +1940,10 @@ static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_di
 		{
 			continue;
 		}
-		wstring levelpath = inipath + data.cFileName + L"\\%d.ini";
+		wstring levelpath = inipath + data.cFileName + L"\\%u.ini";
 		wchar_t *buf = new wchar_t[levelpath.size() + 2];
 		vector<LoopHead *> paths;
-		for (int i = 0; i < 999; i++)
+		for (unsigned int i = 0; i < 999; i++)
 		{
 			_snwprintf(buf, levelpath.size() + 2, levelpath.c_str(), i);
 
@@ -1953,10 +1953,10 @@ static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_di
 			const IniFile *inidata = new IniFile(buf);
 			const IniGroup *entdata;
 			vector<Loop> points;
-			char buf2[4];
-			for (int j = 0; j < 999; j++)
+			char buf2[8];
+			for (unsigned int j = 0; j < 999; j++)
 			{
-				_snprintf(buf2, LengthOfArray(buf2), "%d", j);
+				snprintf(buf2, LengthOfArray(buf2), "%u", j);
 				if (!inidata->hasGroup(buf2)) break;
 				entdata = inidata->getGroup(buf2);
 				Loop point;
@@ -1999,10 +1999,10 @@ static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &m
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
 	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<StageLightData> ents;
-	for (int i = 0; i < 999; i++)
+	for (unsigned int i = 0; i < 999; i++)
 	{
-		char key[4];
-		_snprintf(key, sizeof(key), "%d", i);
+		char key[8];
+		snprintf(key, sizeof(key), "%u", i);
 		if (!inidata->hasGroup(key)) break;
 		const IniGroup *entdata = inidata->getGroup(key);
 		StageLightData entry;
@@ -2142,7 +2142,7 @@ static const unordered_map<string, void(__cdecl *)(const IniGroup *, void *)> dl
 	{ "actionarray", ProcessActionArrayDLL },
 };
 
-static const string dlldatakeys[] = {
+static const char *const dlldatakeys[] = {
 	"CHRMODELSData",
 	"ADV00MODELSData",
 	"ADV01MODELSData",
@@ -2194,7 +2194,7 @@ void __cdecl WriteSaveFile_r()
 			if ((unsigned __int8)*(char *)0x3B290E0 > 98u)
 				return;
 			v2 = SaveFiles->Next;
-			_snprintf(v3, MAX_PATH, "SonicDX%02d.snc", 1);
+			snprintf(v3, MAX_PATH, "SonicDX%02d.snc", 1);
 			if (v2)
 				while (1)
 				{
@@ -2204,7 +2204,7 @@ void __cdecl WriteSaveFile_r()
 						++v0;
 						if ((unsigned __int8)v0 > 99u)
 							return;
-						_snprintf(v3, MAX_PATH, "SonicDX%02d.snc", (unsigned __int8)v0);
+						snprintf(v3, MAX_PATH, "SonicDX%02d.snc", (unsigned __int8)v0);
 					}
 					else
 						v2 = v2->Next;
@@ -2219,13 +2219,13 @@ void __cdecl WriteSaveFile_r()
 			*(char **)0x3B290DC = (char *)malloc(0xEu);
 			++*(char *)0x3B290E0;
 			*(char *)0x3B290D8 = v0;
-			_snprintf(*(char **)0x3B290DC, 0xEu, "SonicDX%02d.snc", (unsigned __int8)v0);
-			_snprintf(v3, MAX_PATH, "./%s/SonicDX%02d.snc", mainsavepath, (unsigned __int8)v0);
+			snprintf(*(char **)0x3B290DC, 0xEu, "SonicDX%02d.snc", (unsigned __int8)v0);
+			snprintf(v3, MAX_PATH, "./%s/SonicDX%02d.snc", mainsavepath, (unsigned __int8)v0);
 		}
 		else
 		{
 			v4 = lstrlenA(*(char **)0x3B290DC);
-			_snprintf(v3, MAX_PATH, "./%s/%s", mainsavepath, *(char **)0x3B290DC);
+			snprintf(v3, MAX_PATH, "./%s/%s", mainsavepath, *(char **)0x3B290DC);
 		}
 		v5 = fopen(v3, "wb");
 		fwrite((void *)0x3B2B3A8, sizeof(SaveFileData), 1, v5);
@@ -2464,10 +2464,10 @@ static void __cdecl InitMods()
 
 	// It's mod loading time!
 	PrintDebug("Loading mods...\n");
-	for (int i = 1; i <= 999; i++)
+	for (unsigned int i = 1; i <= 999; i++)
 	{
 		char key[8];
-		_snprintf(key, sizeof(key), "Mod%d", i);
+		snprintf(key, sizeof(key), "Mod%u", i);
 		if (!settings->hasKey(key))
 			break;
 
@@ -2487,7 +2487,7 @@ static void __cdecl InitMods()
 		const IniGroup *modinfo = ini_mod->getGroup("");
 		const string mod_nameA = modinfo->getString("Name");
 		const wstring mod_name = modinfo->getWString("Name");
-		PrintDebug("%d. %s\n", i, mod_nameA.c_str());
+		PrintDebug("%u. %s\n", i, mod_nameA.c_str());
 
 		if (ini_mod->hasGroup("IgnoreFiles"))
 		{
@@ -2697,10 +2697,10 @@ static void __cdecl InitMods()
 					dllexports[dllname] = exp;
 				}
 				const auto exports = &dllexports[dllname].exports;
-				char buf[9];
-				for (int k = 0; k < 9999; k++)
+				char buf[16];
+				for (unsigned int k = 0; k < 9999; k++)
 				{
-					_snprintf(buf, sizeof(buf), "Item%d", k);
+					snprintf(buf, sizeof(buf), "Item%u", k);
 					if (dlldata->hasGroup(buf))
 					{
 						group = dlldata->getGroup(buf);

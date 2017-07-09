@@ -301,7 +301,7 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 struc_64 *LoadSoundPack(const char *path, int bank)
 {
 	char filename[MAX_PATH];
-	_snprintf(filename, sizeof(filename), "%sindex.txt", path);
+	snprintf(filename, sizeof(filename), "%sindex.txt", path);
 	const char *pidxpath = filename;
 	pidxpath = sadx_fileMap.replaceFile(pidxpath);
 	if (!FileExists(pidxpath))
@@ -333,7 +333,7 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 			line[--linelen] = 0;
 		if (linelen == 0)
 			continue;
-		_snprintf(filename, sizeof(filename), "%s%s", path2, line);
+		snprintf(filename, sizeof(filename), "%s%s", path2, line);
 		if (!FileExists(filename))
 			return nullptr;
 		FILE *f2 = fopen(filename, "rb");
@@ -349,7 +349,7 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 		}
 		DATEntry ent;
 		ent.NameOffset = new char[14];
-		_snprintf(ent.NameOffset, 14, "B%02d_00_%02d.wav", bank, entries.size());
+		snprintf(ent.NameOffset, 14, "B%02d_00_%02d.wav", bank, entries.size());
 		fseek(f2, 0, SEEK_END);
 		ent.DataLength = (int)ftell(f2);
 		ent.DataOffset = new char[ent.DataLength];
@@ -409,21 +409,21 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 					{
 						if (dword_3B291C8[v2->Bank])
 						{
-							_snprintf(String1, sizeof(String1), "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
+							snprintf(String1, sizeof(String1), "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
 							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
 							{
 								++v1;
 								++v2;
 								continue;
 							}
-							_snprintf(String1, sizeof(String1), "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
+							snprintf(String1, sizeof(String1), "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
 							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
 							{
 								++v1;
 								++v2;
 								continue;
 							}
-							_snprintf(String1, sizeof(String1), "%sSoundData\\SE\\%s.dat", CDPath, v2->Filename);
+							snprintf(String1, sizeof(String1), "%sSoundData\\SE\\%s.dat", CDPath, v2->Filename);
 							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
 							{
 								++v1;
@@ -434,8 +434,8 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 							sub_4B4F50(dword_3B291C8[v2->Bank]);
 							dword_3B291C8[v2->Bank] = nullptr;
 						}
-						_snprintf(String1, sizeof(String1), "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
-						_snprintf(sndpackpath, sizeof(sndpackpath), "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
+						snprintf(String1, sizeof(String1), "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
+						snprintf(sndpackpath, sizeof(sndpackpath), "SYSTEM\\SoundData\\SE\\%s\\", v2->Filename);
 						if (sadx_fileMap.getModIndex(sndpackpath) >= sadx_fileMap.getModIndex(String1))
 							dword_3B291C8[v2->Bank] = LoadSoundPack(sndpackpath, v2->Bank);
 						if (!dword_3B291C8[v2->Bank])
@@ -443,7 +443,7 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 							dword_3B291C8[v2->Bank] = sub_4B4D10(String1, 1);
 							if (!dword_3B291C8[v2->Bank])
 							{
-								_snprintf(String1, sizeof(String1), "%sSoundData\\SE\\%s.dat", CDPath, v2->Filename);
+								snprintf(String1, sizeof(String1), "%sSoundData\\SE\\%s.dat", CDPath, v2->Filename);
 								dword_3B291C8[v2->Bank] = sub_4B4D10(String1, 1);
 							}
 						}
