@@ -3119,6 +3119,14 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 
 		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
 		WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
+
+#if !defined(_MSC_VER) || defined(_DLL)
+		// Disable thread library calls, since we don't
+		// care about thread attachments.
+		// NOTE: On MSVC, don't do this if using the static CRT.
+		// Reference: https://msdn.microsoft.com/en-us/library/windows/desktop/ms682579(v=vs.85).aspx
+		DisableThreadLibraryCalls(hinstDll);
+#endif /* !defined(_MSC_VER) || defined(_DLL) */
 		break;
 
 	case DLL_THREAD_ATTACH:
