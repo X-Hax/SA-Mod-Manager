@@ -1881,7 +1881,7 @@ static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 		if (!dzdata->hasGroup(key)) break;
 		uint8_t flag = ParseCharacterFlags(dzdata->getString(key, "Flags"));
 		wchar_t wkey[8];
-		_snwprintf(wkey, LengthOfArray(wkey), L"%u", i);
+		swprintf(wkey, LengthOfArray(wkey), L"%u", i);
 		ModelInfo *dzmdl = new ModelInfo(dzpath + L"\\" + wkey + L".sa1mdl");
 		DeathZone dz = { flag, dzmdl->getmodel() };
 		deathzones.push_back(dz);
@@ -1945,7 +1945,7 @@ static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_di
 		vector<LoopHead *> paths;
 		for (unsigned int i = 0; i < 999; i++)
 		{
-			_snwprintf(buf, levelpath.size() + 2, levelpath.c_str(), i);
+			swprintf(buf, levelpath.size() + 2, levelpath.c_str(), i);
 
 			if (!Exists(buf))
 				break;
