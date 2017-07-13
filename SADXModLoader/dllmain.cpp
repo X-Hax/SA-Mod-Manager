@@ -1394,7 +1394,11 @@ static void ProcessPointerList(const string &list, T *item)
 static void ProcessLandTableINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	LandTable *landtable = (new LandTableInfo(mod_dir + L'\\' + group->getWString("filename")))->getlandtable();
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	LandTableInfo *const landtableinfo = new LandTableInfo(filename);
+	LandTable *const landtable = landtableinfo->getlandtable();
 	ProcessPointerList(group->getString("pointer"), landtable);
 }
 
@@ -1402,7 +1406,10 @@ static unordered_map<string, NJS_OBJECT *> inimodels;
 static void ProcessModelINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	ModelInfo *mdlinf = new ModelInfo(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	ModelInfo *const mdlinf = new ModelInfo(filename);
 	NJS_OBJECT *model = mdlinf->getmodel();
 	inimodels[mdlinf->getlabel(model)] = model;
 	ProcessPointerList(group->getString("pointer"), model);
@@ -1411,8 +1418,12 @@ static void ProcessModelINI(const IniGroup *group, const wstring &mod_dir)
 static void ProcessActionINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
 	NJS_ACTION *action = new NJS_ACTION;
-	action->motion = (new AnimationFile(mod_dir + L'\\' + group->getWString("filename")))->getmotion();
+	AnimationFile *const animationFile = new AnimationFile(filename);
+	action->motion = animationFile->getmotion();
 	action->object = inimodels.find(group->getString("model"))->second;
 	ProcessPointerList(group->getString("pointer"), action);
 }
@@ -1420,7 +1431,11 @@ static void ProcessActionINI(const IniGroup *group, const wstring &mod_dir)
 static void ProcessAnimationINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	NJS_MOTION *animation = (new AnimationFile(mod_dir + L'\\' + group->getWString("filename")))->getmotion();
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	AnimationFile *const animationFile = new AnimationFile(filename);
+	NJS_MOTION *animation = animationFile->getmotion();
 	ProcessPointerList(group->getString("pointer"), animation);
 }
 
