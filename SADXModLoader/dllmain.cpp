@@ -1949,7 +1949,8 @@ static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 		ModelInfo *dzmdl = new ModelInfo(dzpath);
 		DeathZone dz = { flag, dzmdl->getmodel() };
 		deathzones.push_back(dz);
-		// FIXME: dzmdl is never deleted?
+		// NOTE: dzmdl is not deleted because NJS_OBJECT
+		// points to allocated memory in the ModelInfo.
 	}
 
 	DeathZone *newlist = new DeathZone[deathzones.size() + 1];
