@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include <cassert>
+
 #include <deque>
 #include <fstream>
 #include <memory>
@@ -1362,6 +1364,9 @@ static string UnescapeNewlines(const string &str)
 static void ParseVertex(const string &str, NJS_VECTOR &vert)
 {
 	vector<string> vals = split(str, ',');
+	assert(vals.size() == 3);
+	if (vals.size() < 3)
+		return;
 	vert.x = (float)strtod(vals[0].c_str(), nullptr);
 	vert.y = (float)strtod(vals[1].c_str(), nullptr);
 	vert.z = (float)strtod(vals[2].c_str(), nullptr);
@@ -1370,6 +1375,9 @@ static void ParseVertex(const string &str, NJS_VECTOR &vert)
 static void ParseRotation(const string str, Rotation &rot)
 {
 	vector<string> vals = split(str, ',');
+	assert(vals.size() == 3);
+	if (vals.size() < 3)
+		return;
 	rot.x = (int)strtol(vals[0].c_str(), nullptr, 16);
 	rot.y = (int)strtol(vals[1].c_str(), nullptr, 16);
 	rot.z = (int)strtol(vals[2].c_str(), nullptr, 16);
