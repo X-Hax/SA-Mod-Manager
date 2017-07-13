@@ -888,9 +888,10 @@ static unordered_map<unsigned char, unordered_map<int, StartPosition> > StartPos
 static void RegisterStartPosition(unsigned char character, const StartPosition &position)
 {
 	auto iter = StartPositions.find(character);
-	unordered_map<int, StartPosition> *newlist;
 	if (iter == StartPositions.end())
 	{
+		// No start positions registered for this character.
+		// Initialize it with the default start positions.
 		const StartPosition *origlist;
 		switch (character)
 		{
@@ -915,19 +916,20 @@ static void RegisterStartPosition(unsigned char character, const StartPosition &
 		default:
 			return;
 		}
-		StartPositions[character] = unordered_map<int, StartPosition>();
-		newlist = &StartPositions[character];
-		while (origlist->LevelID != LevelIDs_Invalid)
+		unordered_map<int, StartPosition> &newlist = StartPositions[character];
+		for (; origlist->LevelID != LevelIDs_Invalid; origlist++)
 		{
-			(*newlist)[levelact(origlist->LevelID, origlist->ActID)] = *origlist;
-			origlist++;
+			newlist[levelact(origlist->LevelID, origlist->ActID)] = *origlist;
 		}
+		// Update the start position for the specified level.
+		newlist[levelact(position.LevelID, position.ActID)] = position;
 	}
 	else
 	{
-		newlist = &iter->second;
+		// Start positions have already been registered.
+		// Update the existing map.
+		iter->second[levelact(position.LevelID, position.ActID)] = position;
 	}
-	(*newlist)[levelact(position.LevelID, position.ActID)] = position;
 }
 
 static void ClearStartPositionList(unsigned char character)
@@ -944,7 +946,7 @@ static void ClearStartPositionList(unsigned char character)
 	default:
 		return;
 	}
-	StartPositions[character] = unordered_map<int, StartPosition>();
+	StartPositions[character].clear();
 }
 
 static unordered_map<unsigned char, unordered_map<int, FieldStartPosition> > FieldStartPositions;
@@ -952,29 +954,31 @@ static void RegisterFieldStartPosition(unsigned char character, const FieldStart
 {
 	if (character >= Characters_MetalSonic) return;
 	auto iter = FieldStartPositions.find(character);
-	unordered_map<int, FieldStartPosition> *newlist;
 	if (iter == FieldStartPositions.end())
 	{
+		// No field start positions registered for this character.
+		// Initialize it with the default field start positions.
 		const FieldStartPosition *origlist = StartPosList_FieldReturn[character];
-		FieldStartPositions[character] = unordered_map<int, FieldStartPosition>();
-		newlist = &FieldStartPositions[character];
-		while (origlist->LevelID != LevelIDs_Invalid)
+		unordered_map<int, FieldStartPosition> &newlist = FieldStartPositions[character];
+		for (; origlist->LevelID != LevelIDs_Invalid; origlist++)
 		{
-			(*newlist)[levelact(origlist->LevelID, origlist->FieldID)] = *origlist;
-			origlist++;
+			newlist[levelact(origlist->LevelID, origlist->FieldID)] = *origlist;
 		}
+		// Update the field start position for the specified level.
+		newlist[levelact(position.LevelID, position.FieldID)] = position;
 	}
 	else
 	{
-		newlist = &iter->second;
+		// Field start positions have already been registered.
+		// Update the existing map.
+		iter->second[levelact(position.LevelID, position.FieldID)] = position;
 	}
-	(*newlist)[levelact(position.LevelID, position.FieldID)] = position;
 }
 
 static void ClearFieldStartPositionList(unsigned char character)
 {
 	if (character >= Characters_MetalSonic) return;
-	FieldStartPositions[character] = unordered_map<int, FieldStartPosition>();
+	FieldStartPositions[character].clear();
 }
 
 static unordered_map<int, PathDataPtr> Paths;
@@ -984,10 +988,9 @@ static void RegisterPathList(const PathDataPtr &paths)
 	if (!PathsInitialized)
 	{
 		const PathDataPtr *oldlist = PathDataPtrs;
-		while (oldlist->LevelAct != 0xFFFF)
+		for (; oldlist->LevelAct != 0xFFFF; oldlist++)
 		{
 			Paths[oldlist->LevelAct] = *oldlist;
-			oldlist++;
 		}
 		PathsInitialized = true;
 	}
@@ -1005,24 +1008,31 @@ static void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
 {
 	if (character > Characters_MetalSonic) return;
 	auto iter = CharacterPVMs.find(character);
-	vector<PVMEntry> *newlist;
 	if (iter == CharacterPVMs.end())
 	{
+		// Character PVM vector has not been created yet.
+		// Initialize it with the texture list.
 		const PVMEntry *origlist = TexLists_Characters[character];
-		CharacterPVMs[character] = vector<PVMEntry>();
-		newlist = &CharacterPVMs[character];
-		while (origlist->TexList)
-			newlist->push_back(*origlist++);
+		vector<PVMEntry> &newlist = CharacterPVMs[character];
+		for (; origlist->TexList != nullptr; origlist++)
+		{
+			newlist.push_back(*origlist);
+		}
+		// Add the new PVM.
+		newlist.push_back(pvm);
 	}
 	else
-		newlist = &iter->second;
-	newlist->push_back(pvm);
+	{
+		// Character PVM vector has been created.
+		// Add the new texture.
+		iter->second.push_back(pvm);
+	}
 }
 
 static void ClearCharacterPVMList(unsigned char character)
 {
 	if (character > Characters_MetalSonic) return;
-	CharacterPVMs[character] = vector<PVMEntry>();
+	CharacterPVMs[character].clear();
 }
 
 static vector<PVMEntry> CommonObjectPVMs;
@@ -1032,8 +1042,10 @@ static void RegisterCommonObjectPVM(const PVMEntry &pvm)
 	if (!CommonObjectPVMsInitialized)
 	{
 		const PVMEntry *oldlist = &CommonObjectPVMEntries[0];
-		while (oldlist->TexList)
-			CommonObjectPVMs.push_back(*oldlist++);
+		for (; oldlist->TexList != nullptr; oldlist++)
+		{
+			CommonObjectPVMs.push_back(*oldlist);
+		}
 		CommonObjectPVMsInitialized = true;
 	}
 	CommonObjectPVMs.push_back(pvm);
@@ -1059,25 +1071,30 @@ static void RegisterTrialLevel(unsigned char character, const TrialLevelListEntr
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
 	auto iter = _TrialLevels.find(character);
-	vector<TrialLevelListEntry> *newlist;
 	if (iter == _TrialLevels.end())
 	{
-		const TrialLevelList *origlist = &TrialLevels[character];
-		_TrialLevels[character] = vector<TrialLevelListEntry>();
-		newlist = &_TrialLevels[character];
-		newlist->resize(origlist->Count);
-		memcpy(newlist->data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
+		// Trial level vector has not been registered yet.
+		// Initialize it with the standard trial level list.
+		const TrialLevelList *const origlist = &TrialLevels[character];
+		vector<TrialLevelListEntry> &newlist = _TrialLevels[character];
+		newlist.resize(origlist->Count);
+		memcpy(newlist.data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
+		// Add the new trial level.
+		newlist.push_back(level);
 	}
 	else
-		newlist = &iter->second;
-	newlist->push_back(level);
+	{
+		// Trial level vector has already been created.
+		// Add the new level.
+		iter->second.push_back(level);
+	}
 }
 
 static void ClearTrialLevelList(unsigned char character)
 {
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
-	_TrialLevels[character] = vector<TrialLevelListEntry>();
+	_TrialLevels[character].clear();
 }
 
 static unordered_map<unsigned char, vector<TrialLevelListEntry> > _TrialSubgames;
@@ -1086,25 +1103,30 @@ static void RegisterTrialSubgame(unsigned char character, const TrialLevelListEn
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
 	auto iter = _TrialSubgames.find(character);
-	vector<TrialLevelListEntry> *newlist;
 	if (iter == _TrialSubgames.end())
 	{
-		const TrialLevelList *origlist = &TrialSubgames[character];
-		_TrialSubgames[character] = vector<TrialLevelListEntry>();
-		newlist = &_TrialSubgames[character];
-		newlist->resize(origlist->Count);
-		memcpy(newlist->data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
+		// Trial subgame vector has not been registered yet.
+		// Initialize it with the standard trial subgame list.
+		const TrialLevelList *const origlist = &TrialSubgames[character];
+		vector<TrialLevelListEntry> &newlist = _TrialSubgames[character];
+		newlist.resize(origlist->Count);
+		memcpy(newlist.data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
+		// Add the new trial subgame.
+		newlist.push_back(level);
 	}
 	else
-		newlist = &iter->second;
-	newlist->push_back(level);
+	{
+		// Trial subgame vector has already been created.
+		// Add the new subgame.
+		iter->second.push_back(level);
+	}
 }
 
 static void ClearTrialSubgameList(unsigned char character)
 {
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
-	_TrialSubgames[character] = vector<TrialLevelListEntry>();
+	_TrialSubgames[character].clear();
 }
 
 static const char *mainsavepath = "SAVEDATA";
