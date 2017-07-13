@@ -2123,7 +2123,8 @@ static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &m
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
-static const unordered_map<string, void(__cdecl *)(const IniGroup *, const wstring &)> exedatafuncmap = {
+typedef void (__cdecl *exedatafunc_t)(const IniGroup *group, const wstring &mod_dir);
+static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
 	{ "landtable", ProcessLandTableINI },
 	{ "model", ProcessModelINI },
 	{ "basicdxmodel", ProcessModelINI },
@@ -2176,7 +2177,8 @@ static void LoadDLLAnimation(const wstring &path)
 	dlllabels[info->getlabel()] = info->getmotion();
 }
 
-static const unordered_map<string, void(__cdecl *)(const wstring &)> dllfilefuncmap = {
+typedef void (__cdecl *dllfilefunc_t)(const wstring &path);
+static const unordered_map<string, dllfilefunc_t> dllfilefuncmap = {
 	{ "landtable", LoadDLLLandTable },
 	{ "model", LoadDLLModel },
 	{ "basicdxmodel", LoadDLLModel },
@@ -2225,7 +2227,8 @@ static void ProcessActionArrayDLL(const IniGroup *group, void *exp)
 		act->motion = (NJS_MOTION *)dlllabels[group->getString("Label")];
 }
 
-static const unordered_map<string, void(__cdecl *)(const IniGroup *, void *)> dlldatafuncmap = {
+typedef void (__cdecl *dlldatafunc_t)(const IniGroup *group, void *exp);
+static const unordered_map<string, dlldatafunc_t> dlldatafuncmap = {
 	{ "landtable", ProcessLandTableDLL },
 	{ "landtablearray", ProcessLandTableArrayDLL },
 	{ "model", ProcessModelDLL },
