@@ -1934,7 +1934,7 @@ static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_di
 		uint16_t levelact;
 		try
 		{
-			levelact = ParseLevelAndActID(UTF16toMBS(wstring(data.cFileName), CP_UTF8));
+			levelact = ParseLevelAndActID(UTF16toMBS(data.cFileName, CP_UTF8));
 		}
 		catch (...)
 		{
