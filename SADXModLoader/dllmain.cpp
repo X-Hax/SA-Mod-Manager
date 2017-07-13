@@ -1267,7 +1267,7 @@ static uint8_t ParseCharacterFlags(const string &str)
 {
 	vector<string> strflags = split(str, ',');
 	uint8_t flag = 0;
-	for (auto iter = strflags.cbegin(); iter != strflags.cend(); iter++)
+	for (auto iter = strflags.cbegin(); iter != strflags.cend(); ++iter)
 	{
 		string s = trim(*iter);
 		transform(s.begin(), s.end(), s.begin(), ::tolower);
@@ -1428,7 +1428,7 @@ static void ProcessStartPosINI(const IniGroup *group, const wstring &mod_dir)
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
 	const IniFile *startposdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<StartPosition> poss;
-	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); iter++)
+	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); ++iter)
 	{
 		if (iter->first.empty()) continue;
 		StartPosition pos;
@@ -1545,7 +1545,7 @@ static void ProcessFieldStartPosINI(const IniGroup *group, const wstring &mod_di
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
 	const IniFile *startposdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
 	vector<FieldStartPosition> poss;
-	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); iter++)
+	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); ++iter)
 	{
 		if (iter->first.empty()) continue;
 		FieldStartPosition pos = { ParseLevelID(iter->first) };
@@ -2061,7 +2061,7 @@ static void LoadDLLLandTable(const wstring &path)
 {
 	LandTableInfo *info = new LandTableInfo(path);
 	auto labels = info->getlabels();
-	for (auto iter = labels->cbegin(); iter != labels->cend(); iter++)
+	for (auto iter = labels->cbegin(); iter != labels->cend(); ++iter)
 		dlllabels[iter->first] = iter->second;
 }
 
@@ -2069,7 +2069,7 @@ static void LoadDLLModel(const wstring &path)
 {
 	ModelInfo *info = new ModelInfo(path);
 	auto labels = info->getlabels();
-	for (auto iter = labels->cbegin(); iter != labels->cend(); iter++)
+	for (auto iter = labels->cbegin(); iter != labels->cend(); ++iter)
 		dlllabels[iter->first] = iter->second;
 }
 
@@ -2650,7 +2650,7 @@ static void __cdecl InitMods()
 		if (modinfo->hasKeyNonEmpty("EXEData"))
 		{
 			IniFile *exedata = new IniFile(mod_dir + L'\\' + modinfo->getWString("EXEData"));
-			for (auto iter = exedata->cbegin(); iter != exedata->cend(); iter++)
+			for (auto iter = exedata->cbegin(); iter != exedata->cend(); ++iter)
 			{
 				IniGroup *group = iter->second;
 				auto type = exedatafuncmap.find(group->getString("type"));
@@ -2668,7 +2668,7 @@ static void __cdecl InitMods()
 				IniFile *dlldata = new IniFile(mod_dir + L'\\' + modinfo->getWString(dlldatakeys[j]));
 				dlllabels.clear();
 				const IniGroup *group = dlldata->getGroup("Files");
-				for (auto iter = group->cbegin(); iter != group->cend(); iter++)
+				for (auto iter = group->cbegin(); iter != group->cend(); ++iter)
 				{
 					auto type = dllfilefuncmap.find(split(iter->second, '|')[0]);
 					if (type != dllfilefuncmap.end())
@@ -2687,7 +2687,7 @@ static void __cdecl InitMods()
 				{
 					group = dlldata->getGroup("Exports");
 					dllexportcontainer exp;
-					for (auto iter = group->cbegin(); iter != group->cend(); iter++)
+					for (auto iter = group->cbegin(); iter != group->cend(); ++iter)
 					{
 						dllexportinfo inf;
 						inf.address = GetProcAddress(dllhandle, iter->first.c_str());
