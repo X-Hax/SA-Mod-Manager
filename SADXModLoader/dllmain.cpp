@@ -172,9 +172,9 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 	va_start(ap, Format);
 	int result = vsnprintf(nullptr, 0, Format, ap) + 1;
 	va_end(ap);
-	char *buf = new char[result];
+	char *buf = new char[result+1];
 	va_start(ap, Format);
-	result = vsnprintf(buf, result, Format, ap);
+	result = vsnprintf(buf, result+1, Format, ap);
 	va_end(ap);
 
 	// Console output.
@@ -189,8 +189,13 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 	if (dbgScreen)
 	{
 		message msg = { buf };
-		if (msg.text[msg.text.length() - 1] == '\n')
-			msg.text = msg.text.substr(0, msg.text.length() - 1);
+		// Remove trailing newlines if present.
+		while (!msg.text.empty() &&
+			(msg.text[msg.text.size()-1] == '\n' ||
+			 msg.text[msg.text.size()-1] == '\r'))
+		{
+			msg.text.resize(msg.text.size()-1);
+		}
 		msgqueue.push_back(msg);
 	}
 
