@@ -394,30 +394,33 @@ static void Direct3D_DeviceLost()
 
 			if (++tries >= retry_count)
 			{
-				DWORD mb_result;
-
+				const wchar_t *errstr;
 				switch (reset)
 				{
 					default:
 					case D3DERR_INVALIDCALL:
-						mb_result = MessageBox(hWnd,
-							L"The following error occurred while trying to reset DirectX:\nD3DERR_INVALIDCALL\n\nPress Cancel to exit, or press Retry to try again.",
-							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
+						errstr = L"D3DERR_INVALIDCALL";
 						break;
-
 					case D3DERR_OUTOFVIDEOMEMORY:
-						mb_result = MessageBox(hWnd,
-							L"The following error occurred while trying to reset DirectX:\nD3DERR_OUTOFVIDEOMEMORY\n\nPress Cancel to exit, or press Retry to try again.",
-							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
+						errstr = L"D3DERR_OUTOFVIDEOMEMORY";
 						break;
-
 					case E_OUTOFMEMORY:
-						mb_result = MessageBox(hWnd,
-							L"The following error occurred while trying to reset DirectX:\nE_OUTOFMEMORY\n\nPress Cancel to exit, or press Retry to try again.",
-							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
+						errstr = L"E_OUTOFMEMORY";
+						break;
+					case D3DERR_DEVICELOST:
+						errstr = L"D3DERR_DEVICELOST";
+						break;
+					case D3DERR_DRIVERINTERNALERROR:
+						errstr = L"D3DERR_DRIVERINTERNALERROR";
 						break;
 				}
 
+				wchar_t wbuf[256];
+				swprintf(wbuf, LengthOfArray(wbuf),
+					L"The following error occurred while trying to reset DirectX:\n\n%s\n\n"
+					L"Press Cancel to exit, or press Retry to try again.", errstr);
+				DWORD mb_result = MessageBox(hWnd, wbuf,
+					L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
 				if (mb_result == IDRETRY)
 				{
 					tries = 0;
