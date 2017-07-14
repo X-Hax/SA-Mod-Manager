@@ -22,6 +22,7 @@ using std::vector;
 #include <dbghelp.h>
 #include <shlwapi.h>
 #include <gdiplus.h>
+#include "resource.h"
 
 #include "git.h"
 #include "version.h"
@@ -41,6 +42,8 @@ using std::vector;
 #include "AutoMipmap.h"
 #include "UiScale.h"
 #include "FixFOV.h"
+
+static HINSTANCE g_hinstDll = nullptr;
 
 /**
  * Replace slash characters with backslashes.
@@ -223,10 +226,6 @@ static windowdata outerSizes[] = {
 // Used for borderless windowed mode.
 // Defines the size of the inner-window on which the game is rendered.
 static windowsize innerSizes[2] = {};
-
-static ACCEL accelerators[] = {
-	{ FALT | FVIRTKEY, VK_RETURN, 0 }
-};
 
 static WNDCLASS outerWindowClass = {};
 static HWND accelWindow          = nullptr;
@@ -498,10 +497,8 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 
 		case WM_COMMAND:
 		{
-			if (LOWORD(wParam) != 0)
-			{
+			if (wParam != MAKELONG(ID_FULLSCREEN, 1))
 				break;
-			}
 
 			switchingWindowMode = true;
 
@@ -645,10 +642,8 @@ static LRESULT __stdcall WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam,
 
 		case WM_COMMAND:
 		{
-			if (LOWORD(wParam) != 0)
-			{
+			if (wParam != MAKELONG(ID_FULLSCREEN, 1))
 				break;
-			}
 
 			if (PresentParameters.Windowed && IsWindowed)
 			{
@@ -825,7 +820,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		if (accelWindow == nullptr)
 			return;
 
-		accelTable = CreateAcceleratorTable(arrayptrandlength(accelerators));
+		accelTable = LoadAccelerators(g_hinstDll, MAKEINTRESOURCE(IDR_ACCEL_WRAPPER_WINDOW));
 
 		auto& innerSize = innerSizes[windowMode];
 
@@ -860,7 +855,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		hWnd = CreateWindowExA(dwExStyle, GetWindowClassName(), GetWindowClassName(), dwStyle, x, y,
 			w, h, nullptr, nullptr, hInstance, nullptr);
 
-		accelTable = CreateAcceleratorTable(arrayptrandlength(accelerators));
+		accelTable = LoadAccelerators(g_hinstDll, MAKEINTRESOURCE(IDR_ACCEL_WRAPPER_WINDOW));
 
 		if (!IsWindowed)
 		{
@@ -3109,6 +3104,7 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 	switch (fdwReason)
 	{
 	case DLL_PROCESS_ATTACH:
+		g_hinstDll = hinstDll;
 		HookTheAPI();
 
 		// Make sure this is the correct version of SADX.
