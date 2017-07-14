@@ -592,7 +592,7 @@ static void EnableWindowedMode(HWND handle)
 	while (ShowCursor(TRUE) < 0);
 }
 
-static LRESULT __stdcall WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, LPARAM lParam)
+static LRESULT CALLBACK WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (Msg)
 	{
@@ -675,23 +675,27 @@ static LRESULT __stdcall WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam,
 
 static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 {
-	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
+	// Primary window class name.
+	const char *const lpszClassName = GetWindowClassName();
 
+	// Primary window class for SADX.
+	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
 	v8.style         = 0;
-	v8.lpfnWndProc   = (WNDPROC)(windowResize ? WndProc_Resizable : WndProc);
+	v8.lpfnWndProc   = (windowResize ? WndProc_Resizable : WndProc);
 	v8.cbClsExtra    = 0;
 	v8.cbWndExtra    = 0;
 	v8.hInstance     = hInstance;
-	v8.hIcon         = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
-	v8.hCursor       = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
-	v8.hbrBackground = (HBRUSH)GetStockObject(0);
+	v8.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(101));
+	v8.hCursor       = LoadCursor(nullptr, IDC_ARROW);
+	v8.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	v8.lpszMenuName  = nullptr;
-	v8.lpszClassName = GetWindowClassName();
-
+	v8.lpszClassName = lpszClassName;
 	if (!RegisterClassA(&v8))
 		return;
 
-	RECT windowRect = {};
+	RECT windowRect;
+	windowRect.top = 0;
+	windowRect.left = 0;
 	if (customWindowSize)
 	{
 		windowRect.right = customWindowWidth;
@@ -736,6 +740,8 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		wsW = GetSystemMetrics(SM_CXSCREEN);
 		wsH = GetSystemMetrics(SM_CYSCREEN);
 	}
+
+	accelTable = LoadAccelerators(g_hinstDll, MAKEINTRESOURCE(IDR_ACCEL_WRAPPER_WINDOW));
 
 	if (borderlessWindow)
 	{
@@ -796,19 +802,22 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 			backgroundImage = Gdiplus::Bitmap::FromFile(L"mods\\Border.png");
 		}
 
+		// Register a window class for the wrapper window.
 		WNDCLASS w;
-		ZeroMemory(&w, sizeof(WNDCLASS));
-		w.lpszClassName = TEXT("WrapperWindow");
+		w.style		= 0;
 		w.lpfnWndProc   = WrapperWndProc;
+		w.cbClsExtra	= 0;
+		w.cbWndExtra 	= 0;
 		w.hInstance     = hInstance;
-		w.hIcon         = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
-		w.hCursor       = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
+		w.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(101));
+		w.hCursor       = LoadCursor(nullptr, IDC_ARROW);
 		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-
-		if (RegisterClass(&w) == 0)
+		w.lpszMenuName	= nullptr;
+		w.lpszClassName = L"WrapperWindow";
+		if (!RegisterClass(&w))
 			return;
 
-		auto& outerSize = outerSizes[windowMode];
+		const auto& outerSize = outerSizes[windowMode];
 
 		accelWindow = CreateWindowEx(outerSize.exStyle,
 			L"WrapperWindow",
@@ -820,21 +829,22 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		if (accelWindow == nullptr)
 			return;
 
-		accelTable = LoadAccelerators(g_hinstDll, MAKEINTRESOURCE(IDR_ACCEL_WRAPPER_WINDOW));
+		const auto& innerSize = innerSizes[windowMode];
 
-		auto& innerSize = innerSizes[windowMode];
-
-		hWnd = CreateWindowExA(0, GetWindowClassName(), GetWindowClassName(), WS_CHILD | WS_VISIBLE,
-			innerSize.x, innerSize.y, innerSize.width, innerSize.height, accelWindow, nullptr, hInstance, nullptr);
+		hWnd = CreateWindowExA(0,
+			lpszClassName,
+			lpszClassName,
+			WS_CHILD | WS_VISIBLE,
+			innerSize.x, innerSize.y, innerSize.width, innerSize.height,
+			accelWindow, nullptr, hInstance, nullptr);
 
 		SetFocus(hWnd);
 		ShowWindow(accelWindow, nCmdShow);
 		UpdateWindow(accelWindow);
 		SetForegroundWindow(accelWindow);
 
-		IsWindowed = 1;
+		IsWindowed = true;
 
-		WriteJump((void *)HandleWindowMessages, (void *)HandleWindowMessages_r);
 		WriteData((void *)0x402C61, wndpatch);
 	}
 	else
@@ -852,10 +862,12 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		int h = windowRect.bottom - windowRect.top;
 		int x = wsX + ((wsW - w) / 2);
 		int y = wsY + ((wsH - h) / 2);
-		hWnd = CreateWindowExA(dwExStyle, GetWindowClassName(), GetWindowClassName(), dwStyle, x, y,
-			w, h, nullptr, nullptr, hInstance, nullptr);
-
-		accelTable = LoadAccelerators(g_hinstDll, MAKEINTRESOURCE(IDR_ACCEL_WRAPPER_WINDOW));
+		hWnd = CreateWindowExA(dwExStyle,
+			lpszClassName,
+			lpszClassName,
+			dwStyle,
+			x, y, w, h,
+			nullptr, nullptr, hInstance, nullptr);
 
 		if (!IsWindowed)
 		{
@@ -866,9 +878,11 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		UpdateWindow(hWnd);
 		SetForegroundWindow(hWnd);
 
-		WriteJump((void *)0x789BD0, (void *)HandleWindowMessages_r);
 		accelWindow = hWnd;
 	}
+
+	// Hook the window message handler.
+	WriteJump((void *)HandleWindowMessages, (void *)HandleWindowMessages_r);
 }
 
 static __declspec(naked) void CreateSADXWindow_asm()
