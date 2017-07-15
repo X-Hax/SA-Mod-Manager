@@ -10,9 +10,15 @@
 // Windows Header Files:
 #include <windows.h>
 
-#include <algorithm>
+// C
+#include <stdlib.h>
+
+// C (C++ namespace)
 #include <cstdint>
 #include <cstdio>
+
+// C++
+#include <algorithm>
 #include <deque>
 #include <stack>
 #include <fstream>
@@ -22,6 +28,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 #include <string>
 
