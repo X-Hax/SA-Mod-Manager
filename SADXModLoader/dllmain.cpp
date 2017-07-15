@@ -45,7 +45,22 @@ using std::vector;
 
 static HINSTANCE g_hinstDll = nullptr;
 
-static void HookTheAPI()
+/**
+ * Show an error message indicating that this isn't the 2004 US version.
+ * This function also calls ExitProcess(1).
+ */
+static void ShowNon2004USError(void)
+{
+	MessageBox(nullptr, L"This copy of Sonic Adventure DX is not the 2004 US version.\n\n"
+		L"Please obtain the EXE file from the 2004 US version and try again.",
+		L"SADX Mod Loader", MB_ICONERROR);
+	ExitProcess(1);
+}
+
+/**
+ * Hook SADX's CreateFileA() import.
+ */
+static void HookCreateFileA(void)
 {
 	ULONG ulSize = 0;
 	PROC pNewFunction;
@@ -53,10 +68,12 @@ static void HookTheAPI()
 
 	PCSTR pcszModName;
 
+	// SADX module handle. (main executable)
 	HMODULE hModule = GetModuleHandle(nullptr);
 	PIMAGE_IMPORT_DESCRIPTOR pImportDesc;
 
 	pNewFunction = (PROC)MyCreateFileA;
+	// Get the actual CreateFileA() using GetProcAddress().
 	pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "CreateFileA");
 	assert(pActualFunction != nullptr);
 
@@ -82,14 +99,62 @@ static void HookTheAPI()
 				PROC* ppfn = (PROC*)&pThunk->u1.Function;
 				if (*ppfn == pActualFunction)
 				{
+					// Found CreateFileA().
 					DWORD dwOldProtect = 0;
 					VirtualProtect(ppfn, sizeof(pNewFunction), PAGE_WRITECOPY, &dwOldProtect);
 					WriteData(ppfn, pNewFunction);
 					VirtualProtect(ppfn, sizeof(pNewFunction), dwOldProtect, &dwOldProtect);
+					// FIXME: Would it be listed multiple times?
+					break;
 				} // Function that we are looking for
 			}
 		}
 	}
+}
+
+/**
+ * Change write protection of the .rdata section.
+ * @param protect True to protect; false to unprotect.
+ */
+static void SetRDataWriteProtection(bool protect)
+{
+	// Reference: https://stackoverflow.com/questions/22588151/how-to-find-data-segment-and-code-segment-range-in-program
+	// TODO: Does this handle ASLR? (SADX doesn't use ASLR, though...)
+
+	// SADX module handle. (main executable)
+	HMODULE hModule = GetModuleHandle(nullptr);
+
+	// Get the PE header.
+	const IMAGE_NT_HEADERS *const pNtHdr = ImageNtHeader(hModule);
+	// Section headers are located immediately after the PE header.
+	const IMAGE_SECTION_HEADER *pSectionHdr = reinterpret_cast<const IMAGE_SECTION_HEADER*>(pNtHdr+1);
+
+	// Find the .rdata section.
+	for (unsigned int i = pNtHdr->FileHeader.NumberOfSections; i > 0; i--, pSectionHdr++)
+	{
+		if (strncmp(reinterpret_cast<const char*>(pSectionHdr->Name), ".rdata", sizeof(pSectionHdr->Name)) != 0)
+			continue;
+
+		// Found the .rdata section.
+		// Verify that this matches SADX.
+		if (pSectionHdr->VirtualAddress != 0x3DB000 ||
+			pSectionHdr->Misc.VirtualSize != 0xB6B88)
+		{
+			// Not SADX, or the wrong version.
+			ShowNon2004USError();
+			ExitProcess(1);
+		}
+
+		const intptr_t vaddr = reinterpret_cast<intptr_t>(hModule) + pSectionHdr->VirtualAddress;
+		DWORD flOldProtect;
+		DWORD flNewProtect = (protect ? PAGE_READONLY : PAGE_WRITECOPY);
+		VirtualProtect(reinterpret_cast<void*>(vaddr), pSectionHdr->Misc.VirtualSize, flNewProtect, &flOldProtect);
+		return;
+	}
+
+	// .rdata section not found.
+	ShowNon2004USError();
+	ExitProcess(1);
 }
 
 struct message
@@ -2523,9 +2588,7 @@ static void __cdecl InitMods()
 	texpack::Init();
 
 	// Unprotect the .rdata section.
-	// TODO: Get .rdata address and length dynamically.
-	DWORD oldprot;
-	VirtualProtect((void *)0x7DB2A0, 0xB6D60, PAGE_WRITECOPY, &oldprot);
+	SetRDataWriteProtection(false);
 
 	// Enables GUI texture filtering (D3DTEXF_POINT -> D3DTEXF_LINEAR)
 	if (settings->getBool("TextureFilter", true))
@@ -3115,14 +3178,12 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 	{
 	case DLL_PROCESS_ATTACH:
 		g_hinstDll = hinstDll;
-		HookTheAPI();
+		HookCreateFileA();
 
 		// Make sure this is the correct version of SADX.
 		if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
 		{
-			MessageBox(nullptr, L"This copy of Sonic Adventure DX is not the US version.\n\n"
-				L"Please obtain the EXE file from the US version and try again.",
-				L"SADX Mod Loader", MB_ICONERROR);
+			ShowNon2004USError();
 			ExitProcess(1);
 		}
 
