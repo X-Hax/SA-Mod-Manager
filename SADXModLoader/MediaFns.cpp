@@ -10,11 +10,8 @@
 
 #include "bass_vgmstream.h"
 
-#include <Shlwapi.h>
-#include <forward_list>
 #include <string>
 #include <vector>
-using std::forward_list;
 using std::string;
 using std::vector;
 
@@ -302,17 +299,31 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 {
 	char filename[MAX_PATH];
 	snprintf(filename, sizeof(filename), "%sindex.txt", path);
-	const char *pidxpath = filename;
-	pidxpath = sadx_fileMap.replaceFile(pidxpath);
-	if (!FileExists(pidxpath))
-		return nullptr;
-	char path2[MAX_PATH];
-	strncpy(path2, pidxpath, sizeof(path2));
-	PathRemoveFileSpecA(path2);
-	PathAddBackslashA(path2);
+	const char *pidxpath = sadx_fileMap.replaceFile(filename);
 	FILE *f = fopen(pidxpath, "r");
 	if (!f)
 		return nullptr;
+
+	char path2[MAX_PATH];
+	strncpy(path2, pidxpath, sizeof(path2));
+	// Find the last slash or backslash and remove everything after it.
+	// (Equivalent to PathRemoveFileSpecA())
+	char *bs = strrchr(path2, '\\');
+	char *slash = strrchr(path2, '/');	// just in case...
+	if (slash > bs)
+		bs = slash;
+	if (bs)
+	{
+		bs[1] = 0;
+	}
+	else
+	{
+		// No backslash is not good.
+		// Add a backslash at the end just in case.
+		strcat_s(path2, sizeof(path2), "\\");
+	}
+
+	// Load the sound files.
 	vector<DATEntry> entries;
 	char line[MAX_PATH];
 	while (!feof(f))
@@ -320,6 +331,7 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 		if (!fgets(line, sizeof(line), f))
 		{
 			if (feof(f)) break;
+			// Read error.
 			for (size_t i = 0; i < entries.size(); i++)
 			{
 				delete[] entries[i].NameOffset;
@@ -328,17 +340,21 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 			fclose(f);
 			return nullptr;
 		}
+
+		// Remove trailing newlines.
 		int linelen = strnlen(line, sizeof(line));
-		if (linelen > 0 && line[linelen - 1] == '\n')
+		while (linelen > 0 && (line[linelen-1] == '\n' || line[linelen-1] == '\r'))
+		{
 			line[--linelen] = 0;
+		}
 		if (linelen == 0)
 			continue;
+
 		snprintf(filename, sizeof(filename), "%s%s", path2, line);
-		if (!FileExists(filename))
-			return nullptr;
 		FILE *f2 = fopen(filename, "rb");
 		if (!f2)
 		{
+			// Unable to open a referenced file.
 			for (size_t i = 0; i < entries.size(); i++)
 			{
 				delete[] entries[i].NameOffset;
@@ -347,9 +363,10 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 			fclose(f);
 			return nullptr;
 		}
+
 		DATEntry ent;
 		ent.NameOffset = new char[14];
-		snprintf(ent.NameOffset, 14, "B%02d_00_%02d.wav", bank, entries.size());
+		snprintf(ent.NameOffset, 14, "B%02d_00_%02u.wav", bank, entries.size());
 		fseek(f2, 0, SEEK_END);
 		ent.DataLength = (int)ftell(f2);
 		ent.DataOffset = new char[ent.DataLength];
@@ -358,6 +375,9 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 		fclose(f2);
 		entries.push_back(ent);
 	}
+	fclose(f);
+
+	// Convert the sound pack to the format expected by SADX in memory.
 	int size = 28;
 	size += entries.size() * sizeof(DATEntry);
 	size += entries.size() * 14;
