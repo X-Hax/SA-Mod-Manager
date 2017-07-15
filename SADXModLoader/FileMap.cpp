@@ -120,7 +120,7 @@ void FileMap::scanFolder(const string &srcPath, int modIdx)
  * @param srcLen Length of original srcPath. (used for recursion)
  * @param modIdx Index of the current mod.
  */
-void FileMap::scanFolder_int(const std::string &srcPath, int srcLen, int modIdx)
+void FileMap::scanFolder_int(const string &srcPath, int srcLen, int modIdx)
 {
 	WIN32_FIND_DATAA data;
 	char path[MAX_PATH];
@@ -146,8 +146,8 @@ void FileMap::scanFolder_int(const std::string &srcPath, int srcLen, int modIdx)
 		if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
 			// Recursively scan this directory.
-			snprintf(path, sizeof(path), "%s\\%s", srcPath.c_str(), data.cFileName);
-			scanFolder_int(path, srcLen, modIdx);
+			const string newSrcPath = srcPath + "\\" + string(data.cFileName);
+			scanFolder_int(newSrcPath, srcLen, modIdx);
 		}
 		else
 		{
