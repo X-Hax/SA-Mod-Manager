@@ -1,9 +1,8 @@
 #include "stdafx.h"
+#include <unordered_set>
 
-#include <vector>
-#include <algorithm>
-#include <SADXModLoader.h>
-#include <Trampoline.h>
+#include "SADXModLoader.h"
+#include "Trampoline.h"
 
 #include "AutoMipmap.h"
 #include "D3DCommon.h"
@@ -13,7 +12,11 @@ using namespace std;
 namespace mipmap
 {
 	static Trampoline* Direct3D_PvrToTexture_t = nullptr;
-	static const vector<string> PVMBlacklist = {
+
+	// Blacklisted PVM textures.
+	// NOTE: Must be sorted alphabetically, since this array
+	// is used by bsearch().
+	static const char *const PVMBlacklist[] = {
 		"AL_DX_TEX_XYBUTTON",
 		"AL_ENT_CHAR_E_TEX",
 		"AL_ENT_CHAR_J_TEX",
@@ -188,8 +191,13 @@ namespace mipmap
 		"TVSETTING",
 		"TX_CHNAM",
 		"TX_CHNAM_E",
+		nullptr
 	};
-	static const vector<string> PVRBlacklist = {
+
+	// Blacklisted PVR textures.
+	// NOTE: Must be sorted alphabetically, since this array
+	// is used by bsearch().
+	static const char *const PVRBlacklist[] = {
 		"ABC_TXT",
 		"ACTION_0",
 		"ACTION_1",
@@ -603,8 +611,11 @@ namespace mipmap
 		"T_MISTICRUIN_E",
 		"T_STATIONSQUARE",
 		"T_STATIONSQUARE_E",
+		nullptr
 	};
-	static vector<Uint32> gbixBlacklist;
+
+	// Blacklisted global indexes.
+	static unordered_set<Uint32> gbixBlacklist;
 
 	static bool blacklisted = false;
 	static bool enabled = false;
@@ -736,40 +747,46 @@ namespace mipmap
 #endif
 	}
 
-	inline bool find_name(const vector<string>& v, const char* name)
+	/**
+	 * Comparison function for bsearch().
+	 * @param a Pointer to first const char*.
+	 * @param b Pointer to second const char*.
+	 * @return _stricmp() result.
+	 */
+	static int compar_stricmp(const void *a, const void *b)
 	{
-		if (name == nullptr)
-		{
-			return false;
-		}
-
-		string str(name);
-		transform(str.begin(), str.end(), str.begin(), toupper);
-		return find(v.begin(), v.end(), str.c_str()) != v.end();
+		const char *const str1 = *(static_cast<const char *const *>(a));
+		const char *const str2 = *(static_cast<const char *const *>(b));
+		return _stricmp(str1, str2);
 	}
 
 	bool IsBlacklistedPVM(const char* name)
 	{
-		return find_name(PVMBlacklist, name);
+		const char *const res = static_cast<const char*>(bsearch(&name,
+			PVMBlacklist, LengthOfArray(PVMBlacklist)-1,
+			sizeof(PVMBlacklist[0]), compar_stricmp));
+		return (res != nullptr);
 	}
 	bool IsBlacklistedPVR(const char* name)
 	{
-		return find_name(PVRBlacklist, name);
+		const char *const res = static_cast<const char*>(bsearch(&name,
+			PVRBlacklist, LengthOfArray(PVRBlacklist)-1,
+			sizeof(PVRBlacklist[0]), compar_stricmp));
+		return (res != nullptr);
 	}
 	bool IsBlacklistedGBIX(Uint32 gbix)
 	{
-		return find(gbixBlacklist.begin(), gbixBlacklist.end(), gbix) != gbixBlacklist.end();
+		return (gbixBlacklist.find(gbix) != gbixBlacklist.cend());
 	}
 
 	void BlacklistGBIX(Uint32 gbix)
 	{
-		if (IsBlacklistedGBIX(gbix))
+		if (gbixBlacklist.find(gbix) == gbixBlacklist.cend())
 		{
-			return;
+			// gbix is not blacklisted yet. Blacklist it.
+			gbixBlacklist.insert(gbix);
+			PrintDebug("Blacklisted GBIX %u\n", gbix);
 		}
-
-		gbixBlacklist.push_back(gbix);
-		PrintDebug("Blacklisted GBIX %u\n", gbix);
 	}
 
 	void SkipMipmap(bool value)

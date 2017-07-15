@@ -592,14 +592,14 @@ static bool TryTexturePack(const char* filename, NJS_TEXLIST* texlist)
 
 	// Since the filename can be passed in with or without an extension, first
 	// we try getting a replacement with the filename as-is (with SYSTEM\ prepended).
-	auto system_path = "SYSTEM\\" + filename_str;
+	const string system_path = "SYSTEM\\" + filename_str;
 	string replaced = sadx_fileMap.replaceFile(system_path.c_str());
 
 	// But if that failed, we can assume that it was given without an extension
 	// (which is the intended use) and append one before trying again.
-	auto system_path_ext = system_path + ".PVM";
 	if (!Exists(replaced))
 	{
+		const string system_path_ext = system_path + ".PVM";
 		replaced = sadx_fileMap.replaceFile(system_path_ext.c_str());
 	}
 
@@ -705,7 +705,7 @@ static bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
 	string _filename = filename;
 	transform(_filename.begin(), _filename.end(), _filename.begin(), tolower);
 
-	auto file_path = "system\\" + _filename + ".pvr";
+	string file_path = "system\\" + _filename + ".pvr";
 	string index_path = sadx_fileMap.replaceFile(file_path.c_str());
 
 	if (index_path == file_path)
@@ -730,20 +730,24 @@ static bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
 
 	for (const auto& i : entries)
 	{
-		auto name = i.name;
-
-		replace(name.begin(), name.end(), '/', '\\');
-		auto npos = name.npos;
+		const auto &name = i.name;
 
 		auto dot = name.find_last_of('.');
-
-		if (dot == npos)
+		if (dot == string::npos)
 		{
 			continue;
 		}
 
-		auto slash = name.find_last_of('\\');
-		slash = slash == npos ? 0 : ++slash;
+		// Get the filename portion of the path.
+		auto slash = name.find_last_of("/\\");
+		slash = (slash == string::npos ? 0 : (slash+1));
+		if (slash > dot)
+		{
+			// Should not happen, but this usually means the
+			// dot is part of some other path component, not
+			// the filename.
+			continue;
+		}
 
 		string texture_name = name.substr(slash, dot - slash);
 		transform(texture_name.begin(), texture_name.end(), texture_name.begin(), tolower);

@@ -21,15 +21,13 @@ class ModelInfo
 public:
 	struct Metadata { uint32_t size; const uint8_t *data; };
 
-	ModelInfo(const char *filename);
+	explicit ModelInfo(const char *filename);
+	explicit ModelInfo(const std::string &filename);
 #ifdef _MSC_VER
-	ModelInfo(const wchar_t *filename);
+	explicit ModelInfo(const wchar_t *filename);
+	explicit ModelInfo(const std::wstring &filename);
 #endif /* _MSC_VER */
-	ModelInfo(const std::string &filename);
-#ifdef _MSC_VER
-	ModelInfo(const std::wstring &filename);
-#endif /* _MSC_VER */
-	ModelInfo(std::istream &stream);
+	explicit ModelInfo(std::istream &stream);
 
 	ModelFormat getformat();
 	NJS_OBJECT *getmodel();

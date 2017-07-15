@@ -1,127 +1,99 @@
 #include "stdafx.h"
-#include <Windows.h>
+#include <windows.h>
+
+#include <cassert>
+
 #include <string>
-#include <shlwapi.h>
+using std::string;
+using std::wstring;
 
-bool Exists(const std::wstring& path)
+bool Exists(const wstring& path)
 {
-	return PathFileExistsW(path.c_str()) != 0;
+	return GetFileAttributesW(path.c_str()) != INVALID_FILE_ATTRIBUTES;
 }
-bool Exists(const std::string& path)
+bool Exists(const string& path)
 {
-	return PathFileExistsA(path.c_str()) != 0;
-}
-
-bool IsDirectory(const std::wstring& path)
-{
-	return PathIsDirectoryW(path.c_str()) != 0;
-}
-bool IsDirectory(const std::string& path)
-{
-	return PathIsDirectoryA(path.c_str()) != 0;
+	return GetFileAttributesA(path.c_str()) != INVALID_FILE_ATTRIBUTES;
 }
 
-bool IsFile(const std::wstring& path)
+bool IsDirectory(const wstring& path)
 {
-	return !IsDirectory(path);
+	const DWORD attrs = GetFileAttributesW(path.c_str());
+	return (attrs != INVALID_FILE_ATTRIBUTES && (attrs & FILE_ATTRIBUTE_DIRECTORY));
 }
-bool IsFile(const std::string& path)
+bool IsDirectory(const string& path)
 {
-	return !IsDirectory(path);
+	const DWORD attrs = GetFileAttributesA(path.c_str());
+	return (attrs != INVALID_FILE_ATTRIBUTES && (attrs & FILE_ATTRIBUTE_DIRECTORY));
 }
 
-std::string GetDirectory(const std::string& path)
+bool IsFile(const wstring& path)
 {
-	std::string result;
-	auto npos = path.npos;
+	const DWORD attrs = GetFileAttributesW(path.c_str());
+	return (attrs != INVALID_FILE_ATTRIBUTES && !(attrs & FILE_ATTRIBUTE_DIRECTORY));
+}
+bool IsFile(const string& path)
+{
+	const DWORD attrs = GetFileAttributesA(path.c_str());
+	return (attrs != INVALID_FILE_ATTRIBUTES && !(attrs & FILE_ATTRIBUTE_DIRECTORY));
+}
 
-	auto slash = path.find_last_of('\\');
-	if (slash == npos)
+string GetDirectory(const string& path)
+{
+	auto slash = path.find_last_of("/\\");
+	if (slash == string::npos)
 	{
-		slash = path.find_last_of('/');
-
-		if (slash == npos)
-		{
-			result = "";
-			return result;
-		}
+		return string();
 	}
 
 	if (slash != path.size() - 1)
 	{
-		result = path.substr(0, slash);
-		return result;
+		return path.substr(0, slash);
 	}
 
 	auto last = slash;
-
-	slash = path.find_last_of('\\', last);
-	if (slash == npos)
+	slash = path.find_last_of("/\\", last);
+	if (slash == string::npos)
 	{
-		slash = path.find_last_of('/', last);
+		return string();
 	}
 
-	if (slash == npos)
-	{
-		result = "";
-		return result;
-	}
-
-	result = path.substr(last);
-	return result;
+	return path.substr(last);
 }
 
-std::string GetBaseName(const std::string& path)
+string GetBaseName(const string& path)
 {
-	std::string result;
-	auto npos = path.npos;
-
-	auto slash = path.find_last_of('\\');
-	if (slash == npos)
+	auto slash = path.find_last_of("/\\");
+	if (slash == string::npos)
 	{
-		slash = path.find_last_of('/');
-		if (slash == npos)
-		{
-			result = path;
-			return result;
-		}
+		return path;
 	}
 
 	if (slash != path.size() - 1)
 	{
-		result = path.substr(++slash);
-		return result;
+		return path.substr(slash + 1);
 	}
 
 	auto last = slash - 1;
-
-	slash = path.find_last_of('\\', last);
-	if (slash == npos)
-	{
-		slash = path.find_last_of('/', last);
-	}
-
-	result = (!slash || slash == npos) ? "" : path.substr(slash + 1, last - slash);
-	return result;
+	slash = path.find_last_of("/\\", last);
+	return (!slash || slash == string::npos) ? string() : path.substr(slash + 1, last - slash);
 }
 
-void StripExtension(std::string& path)
+void StripExtension(string& path)
 {
 	auto dot = path.find('.');
-	if (dot == path.npos)
+	if (dot != string::npos)
 	{
-		return;
+		path.resize(dot);
 	}
-
-	path = path.substr(0, dot);
 }
 
-std::string GetExtension(const std::string& path, bool includeDot)
+string GetExtension(const string& path, bool includeDot)
 {
 	auto dot = path.find('.');
-	if (dot == path.npos)
+	if (dot == string::npos)
 	{
-		return "";
+		return string();
 	}
 
 	if (!includeDot)
@@ -130,4 +102,35 @@ std::string GetExtension(const std::string& path, bool includeDot)
 	}
 
 	return path.substr(dot);
+}
+
+/**
+ * Replace the extension of the specified filename.
+ * @param filename	[in/out] Filename.
+ * @param ext		[in] New extension, with leading dot.
+ */
+void ReplaceFileExtension(string &filename, const char *ext)
+{
+	assert(ext != nullptr);
+
+	// Find the last '.'.
+	size_t dot = filename.find_last_of('.');
+	if (dot == string::npos)
+	{
+		// No dot; no extension.
+		return;
+	}
+
+	// Find the last '/' or '\\'.
+	size_t bs = filename.find_last_of("/\\");
+	if (bs != string::npos && bs > dot)
+	{
+		// Dot is before the last slash.
+		// No extension.
+		return;
+	}
+
+	// Resize to the dot, then add ext.
+	filename.resize(dot+1);
+	filename.append(ext);
 }

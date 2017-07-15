@@ -21,15 +21,6 @@ ModelInfo::ModelInfo(const char *filename)
 	str.close();
 }
 
-#ifdef _MSC_VER
-ModelInfo::ModelInfo(const wchar_t *filename)
-{
-	ifstream str(filename, ios::binary);
-	init(str);
-	str.close();
-}
-#endif /* _MSC_VER */
-
 ModelInfo::ModelInfo(const string &filename)
 {
 	ifstream str(filename, ios::binary);
@@ -38,6 +29,13 @@ ModelInfo::ModelInfo(const string &filename)
 }
 
 #ifdef _MSC_VER
+ModelInfo::ModelInfo(const wchar_t *filename)
+{
+	ifstream str(filename, ios::binary);
+	init(str);
+	str.close();
+}
+
 ModelInfo::ModelInfo(const wstring &filename)
 {
 	ifstream str(filename, ios::binary);

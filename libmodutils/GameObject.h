@@ -10,10 +10,10 @@ private:
 protected:
 	ObjectMaster *objData;
 	GameObject(LoadObj flags, int index);
-	GameObject(ObjectMaster *obj);
+	explicit GameObject(ObjectMaster *obj);
 	virtual void Delete();
 public:
-	GameObject(int index);
+	explicit GameObject(int index);
 	~GameObject();
 	virtual void Main() = 0;
 	virtual void Display();
@@ -35,7 +35,7 @@ class GameEntity : GameObject
 protected:
 	EntityData1 *GetData();
 public:
-	GameEntity(int index);
+	explicit GameEntity(int index);
 	char GetAction();
 	void SetAction(char action);
 	short GetInvulnerableTime();

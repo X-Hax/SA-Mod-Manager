@@ -32,3 +32,10 @@ std::string GetDirectory(const std::string& path);
 std::string GetBaseName(const std::string& path);
 void StripExtension(std::string& path);
 std::string GetExtension(const std::string& path, bool includeDot = false);
+
+/**
+ * Replace the extension of the specified filename.
+ * @param filename	[in/out] Filename.
+ * @param ext		[in] New extension, with leading dot.
+ */
+void ReplaceFileExtension(std::string &filename, const char *ext);

@@ -12,7 +12,7 @@ private:
 	void* detour;
 	LPVOID codeData;
 	size_t originalSize;
-	size_t codeSize;
+	size_t codeSize;	// always originalSize + 5
 	const bool revert;
 
 public:
@@ -25,7 +25,7 @@ public:
 	/// <param name="destructRevert">If <c>true</c>, code changes will be reverted when this instance is destroyed.</param>
 	/// <remarks>If there's a relative jump or call within the range of <see cref="start" /> and <see cref="end" />,
 	/// they need to be replaced with absolute offsets before instantiating a <see cref="Trampoline" />.</remarks>
-	Trampoline(size_t start, size_t end, void* func, bool destructRevert = true);
+	Trampoline(intptr_t start, intptr_t end, void* func, bool destructRevert = true);
 	~Trampoline();
 
 	// Pointer to original code.

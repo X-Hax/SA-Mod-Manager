@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include <cassert>
+
 #include <deque>
 #include <fstream>
 #include <memory>
@@ -20,6 +22,7 @@ using std::vector;
 #include <dbghelp.h>
 #include <shlwapi.h>
 #include <gdiplus.h>
+#include "resource.h"
 
 #include "git.h"
 #include "version.h"
@@ -40,29 +43,39 @@ using std::vector;
 #include "UiScale.h"
 #include "FixFOV.h"
 
+static HINSTANCE g_hinstDll = nullptr;
+
 /**
- * Replace slash characters with backslashes.
- * @param c Character.
- * @return If c == '/', '\\'; otherwise, c.
+ * Show an error message indicating that this isn't the 2004 US version.
+ * This function also calls ExitProcess(1).
  */
-static inline int backslashes(int c)
+static void ShowNon2004USError(void)
 {
-	return (c == '/') ? '\\' : c;
+	MessageBox(nullptr, L"This copy of Sonic Adventure DX is not the 2004 US version.\n\n"
+		L"Please obtain the EXE file from the 2004 US version and try again.",
+		L"SADX Mod Loader", MB_ICONERROR);
+	ExitProcess(1);
 }
 
-static void HookTheAPI()
+/**
+ * Hook SADX's CreateFileA() import.
+ */
+static void HookCreateFileA(void)
 {
 	ULONG ulSize = 0;
 	PROC pNewFunction;
 	PROC pActualFunction;
 
-	PSTR pszModName;
+	PCSTR pcszModName;
 
+	// SADX module handle. (main executable)
 	HMODULE hModule = GetModuleHandle(nullptr);
 	PIMAGE_IMPORT_DESCRIPTOR pImportDesc;
 
 	pNewFunction = (PROC)MyCreateFileA;
+	// Get the actual CreateFileA() using GetProcAddress().
 	pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "CreateFileA");
+	assert(pActualFunction != nullptr);
 
 	pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR)ImageDirectoryEntryToData(
 		hModule, TRUE, IMAGE_DIRECTORY_ENTRY_IMPORT, &ulSize);
@@ -73,10 +86,10 @@ static void HookTheAPI()
 	for (; pImportDesc->Name; pImportDesc++)
 	{
 		// get the module name
-		pszModName = (PSTR)((PBYTE)hModule + pImportDesc->Name);
+		pcszModName = (PCSTR)((PBYTE)hModule + pImportDesc->Name);
 
 		// check if the module is kernel32.dll
-		if (pszModName != nullptr && lstrcmpiA(pszModName, "Kernel32.dll") == 0)
+		if (pcszModName != nullptr && _stricmp(pcszModName, "Kernel32.dll") == 0)
 		{
 			// get the module
 			PIMAGE_THUNK_DATA pThunk = (PIMAGE_THUNK_DATA)((PBYTE)hModule + pImportDesc->FirstThunk);
@@ -86,14 +99,62 @@ static void HookTheAPI()
 				PROC* ppfn = (PROC*)&pThunk->u1.Function;
 				if (*ppfn == pActualFunction)
 				{
+					// Found CreateFileA().
 					DWORD dwOldProtect = 0;
 					VirtualProtect(ppfn, sizeof(pNewFunction), PAGE_WRITECOPY, &dwOldProtect);
 					WriteData(ppfn, pNewFunction);
 					VirtualProtect(ppfn, sizeof(pNewFunction), dwOldProtect, &dwOldProtect);
+					// FIXME: Would it be listed multiple times?
+					break;
 				} // Function that we are looking for
 			}
 		}
 	}
+}
+
+/**
+ * Change write protection of the .rdata section.
+ * @param protect True to protect; false to unprotect.
+ */
+static void SetRDataWriteProtection(bool protect)
+{
+	// Reference: https://stackoverflow.com/questions/22588151/how-to-find-data-segment-and-code-segment-range-in-program
+	// TODO: Does this handle ASLR? (SADX doesn't use ASLR, though...)
+
+	// SADX module handle. (main executable)
+	HMODULE hModule = GetModuleHandle(nullptr);
+
+	// Get the PE header.
+	const IMAGE_NT_HEADERS *const pNtHdr = ImageNtHeader(hModule);
+	// Section headers are located immediately after the PE header.
+	const IMAGE_SECTION_HEADER *pSectionHdr = reinterpret_cast<const IMAGE_SECTION_HEADER*>(pNtHdr+1);
+
+	// Find the .rdata section.
+	for (unsigned int i = pNtHdr->FileHeader.NumberOfSections; i > 0; i--, pSectionHdr++)
+	{
+		if (strncmp(reinterpret_cast<const char*>(pSectionHdr->Name), ".rdata", sizeof(pSectionHdr->Name)) != 0)
+			continue;
+
+		// Found the .rdata section.
+		// Verify that this matches SADX.
+		if (pSectionHdr->VirtualAddress != 0x3DB000 ||
+			pSectionHdr->Misc.VirtualSize != 0xB6B88)
+		{
+			// Not SADX, or the wrong version.
+			ShowNon2004USError();
+			ExitProcess(1);
+		}
+
+		const intptr_t vaddr = reinterpret_cast<intptr_t>(hModule) + pSectionHdr->VirtualAddress;
+		DWORD flOldProtect;
+		DWORD flNewProtect = (protect ? PAGE_READONLY : PAGE_WRITECOPY);
+		VirtualProtect(reinterpret_cast<void*>(vaddr), pSectionHdr->Misc.VirtualSize, flNewProtect, &flOldProtect);
+		return;
+	}
+
+	// .rdata section not found.
+	ShowNon2004USError();
+	ExitProcess(1);
 }
 
 struct message
@@ -167,9 +228,9 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 	va_start(ap, Format);
 	int result = vsnprintf(nullptr, 0, Format, ap) + 1;
 	va_end(ap);
-	char *buf = new char[result];
+	char *buf = new char[result+1];
 	va_start(ap, Format);
-	result = vsnprintf(buf, result, Format, ap);
+	result = vsnprintf(buf, result+1, Format, ap);
 	va_end(ap);
 
 	// Console output.
@@ -184,8 +245,13 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 	if (dbgScreen)
 	{
 		message msg = { buf };
-		if (msg.text[msg.text.length() - 1] == '\n')
-			msg.text = msg.text.substr(0, msg.text.length() - 1);
+		// Remove trailing newlines if present.
+		while (!msg.text.empty() &&
+			(msg.text[msg.text.size()-1] == '\n' ||
+			 msg.text[msg.text.size()-1] == '\r'))
+		{
+			msg.text.resize(msg.text.size()-1);
+		}
 		msgqueue.push_back(msg);
 	}
 
@@ -221,10 +287,6 @@ static windowdata outerSizes[] = {
 // Used for borderless windowed mode.
 // Defines the size of the inner-window on which the game is rendered.
 static windowsize innerSizes[2] = {};
-
-static ACCEL accelerators[] = {
-	{ FALT | FVIRTKEY, VK_RETURN, 0 }
-};
 
 static WNDCLASS outerWindowClass = {};
 static HWND accelWindow          = nullptr;
@@ -268,13 +330,13 @@ static bool vsync                       = false;
 
 DataPointer(HWND, hWnd, 0x3D0FD30);
 
-BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
+static BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
 {
 	screenBounds.push_back(*lprcMonitor);
 	return TRUE;
 }
 
-static uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
+static const uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
 static int currentScreenSize[2];
 
 DataPointer(D3DPRESENT_PARAMETERS, PresentParameters, 0x03D0FDC0);
@@ -286,7 +348,7 @@ DataPointer(float, ViewPortWidth_Half, 0x03D0FA0C);
 DataPointer(float, ViewPortHeight_Half, 0x03D0FA10);
 DataPointer(NJS_POINT2COL, GlobalPoint2Col, 0x03CE7164);
 
-inline void Direct3D_SetupVsyncParameters()
+static inline void Direct3D_SetupVsyncParameters()
 {
 	auto& p = PresentParameters;
 
@@ -392,30 +454,33 @@ static void Direct3D_DeviceLost()
 
 			if (++tries >= retry_count)
 			{
-				DWORD mb_result;
-
+				const wchar_t *errstr;
 				switch (reset)
 				{
 					default:
 					case D3DERR_INVALIDCALL:
-						mb_result = MessageBox(hWnd,
-							L"The following error occurred while trying to reset DirectX:\nD3DERR_INVALIDCALL\n\nPress Cancel to exit, or press Retry to try again.",
-							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
+						errstr = L"D3DERR_INVALIDCALL";
 						break;
-
 					case D3DERR_OUTOFVIDEOMEMORY:
-						mb_result = MessageBox(hWnd,
-							L"The following error occurred while trying to reset DirectX:\nD3DERR_OUTOFVIDEOMEMORY\n\nPress Cancel to exit, or press Retry to try again.",
-							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
+						errstr = L"D3DERR_OUTOFVIDEOMEMORY";
 						break;
-
 					case E_OUTOFMEMORY:
-						mb_result = MessageBox(hWnd,
-							L"The following error occurred while trying to reset DirectX:\nE_OUTOFMEMORY\n\nPress Cancel to exit, or press Retry to try again.",
-							L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
+						errstr = L"E_OUTOFMEMORY";
+						break;
+					case D3DERR_DEVICELOST:
+						errstr = L"D3DERR_DEVICELOST";
+						break;
+					case D3DERR_DRIVERINTERNALERROR:
+						errstr = L"D3DERR_DRIVERINTERNALERROR";
 						break;
 				}
 
+				wchar_t wbuf[256];
+				swprintf(wbuf, LengthOfArray(wbuf),
+					L"The following error occurred while trying to reset DirectX:\n\n%s\n\n"
+					L"Press Cancel to exit, or press Retry to try again.", errstr);
+				DWORD mb_result = MessageBox(hWnd, wbuf,
+					L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
 				if (mb_result == IDRETRY)
 				{
 					tries = 0;
@@ -493,10 +558,8 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 
 		case WM_COMMAND:
 		{
-			if (LOWORD(wParam) != 0)
-			{
+			if (wParam != MAKELONG(ID_FULLSCREEN, 1))
 				break;
-			}
 
 			switchingWindowMode = true;
 
@@ -516,7 +579,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			windowMode = windowMode == windowed ? fullscreen : windowed;
 			
 			// update outer window (draws background)
-			auto& outer = outerSizes[windowMode];
+			const auto& outer = outerSizes[windowMode];
 			SetWindowLong(accelWindow, GWL_STYLE, outer.style);
 			SetWindowLong(accelWindow, GWL_EXSTYLE, outer.exStyle);
 			SetWindowPos(accelWindow, HWND_NOTOPMOST, outer.x, outer.y, outer.width, outer.height, SWP_FRAMECHANGED);
@@ -590,7 +653,7 @@ static void EnableWindowedMode(HWND handle)
 	while (ShowCursor(TRUE) < 0);
 }
 
-static LRESULT __stdcall WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, LPARAM lParam)
+static LRESULT CALLBACK WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (Msg)
 	{
@@ -613,8 +676,8 @@ static LRESULT __stdcall WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam,
 				return 0;
 			}
 
-			auto w = LOWORD(lParam);
-			auto h = HIWORD(lParam);
+			int w = LOWORD(lParam);
+			int h = HIWORD(lParam);
 
 			if (!w || !h)
 			{
@@ -640,16 +703,14 @@ static LRESULT __stdcall WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam,
 
 		case WM_COMMAND:
 		{
-			if (LOWORD(wParam) != 0)
-			{
+			if (wParam != MAKELONG(ID_FULLSCREEN, 1))
 				break;
-			}
 
 			if (PresentParameters.Windowed && IsWindowed)
 			{
 				EnableFullScreen(handle);
 
-				auto const& rect = screenBounds[screenNum == 0 ? 0 : screenNum - 1];
+				const auto& rect = screenBounds[screenNum == 0 ? 0 : screenNum - 1];
 
 				PresentParameters.Windowed         = false;
 				PresentParameters.BackBufferWidth  = rect.right - rect.left;
@@ -675,23 +736,27 @@ static LRESULT __stdcall WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam,
 
 static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 {
-	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
+	// Primary window class name.
+	const char *const lpszClassName = GetWindowClassName();
 
+	// Primary window class for SADX.
+	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
 	v8.style         = 0;
-	v8.lpfnWndProc   = (WNDPROC)(windowResize ? WndProc_Resizable : WndProc);
+	v8.lpfnWndProc   = (windowResize ? WndProc_Resizable : WndProc);
 	v8.cbClsExtra    = 0;
 	v8.cbWndExtra    = 0;
 	v8.hInstance     = hInstance;
-	v8.hIcon         = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
-	v8.hCursor       = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
-	v8.hbrBackground = (HBRUSH)GetStockObject(0);
+	v8.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(101));
+	v8.hCursor       = LoadCursor(nullptr, IDC_ARROW);
+	v8.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	v8.lpszMenuName  = nullptr;
-	v8.lpszClassName = GetWindowClassName();
-
+	v8.lpszClassName = lpszClassName;
 	if (!RegisterClassA(&v8))
 		return;
 
-	RECT windowRect = {};
+	RECT windowRect;
+	windowRect.top = 0;
+	windowRect.left = 0;
 	if (customWindowSize)
 	{
 		windowRect.right = customWindowWidth;
@@ -736,6 +801,8 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		wsW = GetSystemMetrics(SM_CXSCREEN);
 		wsH = GetSystemMetrics(SM_CYSCREEN);
 	}
+
+	accelTable = LoadAccelerators(g_hinstDll, MAKEINTRESOURCE(IDR_ACCEL_WRAPPER_WINDOW));
 
 	if (borderlessWindow)
 	{
@@ -796,19 +863,22 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 			backgroundImage = Gdiplus::Bitmap::FromFile(L"mods\\Border.png");
 		}
 
+		// Register a window class for the wrapper window.
 		WNDCLASS w;
-		ZeroMemory(&w, sizeof(WNDCLASS));
-		w.lpszClassName = TEXT("WrapperWindow");
+		w.style		= 0;
 		w.lpfnWndProc   = WrapperWndProc;
+		w.cbClsExtra	= 0;
+		w.cbWndExtra 	= 0;
 		w.hInstance     = hInstance;
-		w.hIcon         = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
-		w.hCursor       = LoadCursorA(nullptr, MAKEINTRESOURCEA(0x7F00));
+		w.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(101));
+		w.hCursor       = LoadCursor(nullptr, IDC_ARROW);
 		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-
-		if (RegisterClass(&w) == 0)
+		w.lpszMenuName	= nullptr;
+		w.lpszClassName = L"WrapperWindow";
+		if (!RegisterClass(&w))
 			return;
 
-		auto& outerSize = outerSizes[windowMode];
+		const auto& outerSize = outerSizes[windowMode];
 
 		accelWindow = CreateWindowEx(outerSize.exStyle,
 			L"WrapperWindow",
@@ -820,21 +890,22 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		if (accelWindow == nullptr)
 			return;
 
-		accelTable = CreateAcceleratorTable(arrayptrandlength(accelerators));
+		const auto& innerSize = innerSizes[windowMode];
 
-		auto& innerSize = innerSizes[windowMode];
-
-		hWnd = CreateWindowExA(0, GetWindowClassName(), GetWindowClassName(), WS_CHILD | WS_VISIBLE,
-			innerSize.x, innerSize.y, innerSize.width, innerSize.height, accelWindow, nullptr, hInstance, nullptr);
+		hWnd = CreateWindowExA(0,
+			lpszClassName,
+			lpszClassName,
+			WS_CHILD | WS_VISIBLE,
+			innerSize.x, innerSize.y, innerSize.width, innerSize.height,
+			accelWindow, nullptr, hInstance, nullptr);
 
 		SetFocus(hWnd);
 		ShowWindow(accelWindow, nCmdShow);
 		UpdateWindow(accelWindow);
 		SetForegroundWindow(accelWindow);
 
-		IsWindowed = 1;
+		IsWindowed = true;
 
-		WriteJump((void *)HandleWindowMessages, (void *)HandleWindowMessages_r);
 		WriteData((void *)0x402C61, wndpatch);
 	}
 	else
@@ -852,10 +923,12 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		int h = windowRect.bottom - windowRect.top;
 		int x = wsX + ((wsW - w) / 2);
 		int y = wsY + ((wsH - h) / 2);
-		hWnd = CreateWindowExA(dwExStyle, GetWindowClassName(), GetWindowClassName(), dwStyle, x, y,
-			w, h, nullptr, nullptr, hInstance, nullptr);
-
-		accelTable = CreateAcceleratorTable(arrayptrandlength(accelerators));
+		hWnd = CreateWindowExA(dwExStyle,
+			lpszClassName,
+			lpszClassName,
+			dwStyle,
+			x, y, w, h,
+			nullptr, nullptr, hInstance, nullptr);
 
 		if (!IsWindowed)
 		{
@@ -866,9 +939,11 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		UpdateWindow(hWnd);
 		SetForegroundWindow(hWnd);
 
-		WriteJump((void *)0x789BD0, (void *)HandleWindowMessages_r);
 		accelWindow = hWnd;
 	}
+
+	// Hook the window message handler.
+	WriteJump((void *)HandleWindowMessages, (void *)HandleWindowMessages_r);
 }
 
 static __declspec(naked) void CreateSADXWindow_asm()
@@ -888,9 +963,10 @@ static unordered_map<unsigned char, unordered_map<int, StartPosition> > StartPos
 static void RegisterStartPosition(unsigned char character, const StartPosition &position)
 {
 	auto iter = StartPositions.find(character);
-	unordered_map<int, StartPosition> *newlist;
 	if (iter == StartPositions.end())
 	{
+		// No start positions registered for this character.
+		// Initialize it with the default start positions.
 		const StartPosition *origlist;
 		switch (character)
 		{
@@ -915,19 +991,20 @@ static void RegisterStartPosition(unsigned char character, const StartPosition &
 		default:
 			return;
 		}
-		StartPositions[character] = unordered_map<int, StartPosition>();
-		newlist = &StartPositions[character];
-		while (origlist->LevelID != LevelIDs_Invalid)
+		unordered_map<int, StartPosition> &newlist = StartPositions[character];
+		for (; origlist->LevelID != LevelIDs_Invalid; origlist++)
 		{
-			(*newlist)[levelact(origlist->LevelID, origlist->ActID)] = *origlist;
-			origlist++;
+			newlist[levelact(origlist->LevelID, origlist->ActID)] = *origlist;
 		}
+		// Update the start position for the specified level.
+		newlist[levelact(position.LevelID, position.ActID)] = position;
 	}
 	else
 	{
-		newlist = &iter->second;
+		// Start positions have already been registered.
+		// Update the existing map.
+		iter->second[levelact(position.LevelID, position.ActID)] = position;
 	}
-	(*newlist)[levelact(position.LevelID, position.ActID)] = position;
 }
 
 static void ClearStartPositionList(unsigned char character)
@@ -944,7 +1021,7 @@ static void ClearStartPositionList(unsigned char character)
 	default:
 		return;
 	}
-	StartPositions[character] = unordered_map<int, StartPosition>();
+	StartPositions[character].clear();
 }
 
 static unordered_map<unsigned char, unordered_map<int, FieldStartPosition> > FieldStartPositions;
@@ -952,29 +1029,31 @@ static void RegisterFieldStartPosition(unsigned char character, const FieldStart
 {
 	if (character >= Characters_MetalSonic) return;
 	auto iter = FieldStartPositions.find(character);
-	unordered_map<int, FieldStartPosition> *newlist;
 	if (iter == FieldStartPositions.end())
 	{
+		// No field start positions registered for this character.
+		// Initialize it with the default field start positions.
 		const FieldStartPosition *origlist = StartPosList_FieldReturn[character];
-		FieldStartPositions[character] = unordered_map<int, FieldStartPosition>();
-		newlist = &FieldStartPositions[character];
-		while (origlist->LevelID != LevelIDs_Invalid)
+		unordered_map<int, FieldStartPosition> &newlist = FieldStartPositions[character];
+		for (; origlist->LevelID != LevelIDs_Invalid; origlist++)
 		{
-			(*newlist)[levelact(origlist->LevelID, origlist->FieldID)] = *origlist;
-			origlist++;
+			newlist[levelact(origlist->LevelID, origlist->FieldID)] = *origlist;
 		}
+		// Update the field start position for the specified level.
+		newlist[levelact(position.LevelID, position.FieldID)] = position;
 	}
 	else
 	{
-		newlist = &iter->second;
+		// Field start positions have already been registered.
+		// Update the existing map.
+		iter->second[levelact(position.LevelID, position.FieldID)] = position;
 	}
-	(*newlist)[levelact(position.LevelID, position.FieldID)] = position;
 }
 
 static void ClearFieldStartPositionList(unsigned char character)
 {
 	if (character >= Characters_MetalSonic) return;
-	FieldStartPositions[character] = unordered_map<int, FieldStartPosition>();
+	FieldStartPositions[character].clear();
 }
 
 static unordered_map<int, PathDataPtr> Paths;
@@ -984,10 +1063,9 @@ static void RegisterPathList(const PathDataPtr &paths)
 	if (!PathsInitialized)
 	{
 		const PathDataPtr *oldlist = PathDataPtrs;
-		while (oldlist->LevelAct != 0xFFFF)
+		for (; oldlist->LevelAct != 0xFFFF; oldlist++)
 		{
 			Paths[oldlist->LevelAct] = *oldlist;
-			oldlist++;
 		}
 		PathsInitialized = true;
 	}
@@ -1005,24 +1083,31 @@ static void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
 {
 	if (character > Characters_MetalSonic) return;
 	auto iter = CharacterPVMs.find(character);
-	vector<PVMEntry> *newlist;
 	if (iter == CharacterPVMs.end())
 	{
+		// Character PVM vector has not been created yet.
+		// Initialize it with the texture list.
 		const PVMEntry *origlist = TexLists_Characters[character];
-		CharacterPVMs[character] = vector<PVMEntry>();
-		newlist = &CharacterPVMs[character];
-		while (origlist->TexList)
-			newlist->push_back(*origlist++);
+		vector<PVMEntry> &newlist = CharacterPVMs[character];
+		for (; origlist->TexList != nullptr; origlist++)
+		{
+			newlist.push_back(*origlist);
+		}
+		// Add the new PVM.
+		newlist.push_back(pvm);
 	}
 	else
-		newlist = &iter->second;
-	newlist->push_back(pvm);
+	{
+		// Character PVM vector has been created.
+		// Add the new texture.
+		iter->second.push_back(pvm);
+	}
 }
 
 static void ClearCharacterPVMList(unsigned char character)
 {
 	if (character > Characters_MetalSonic) return;
-	CharacterPVMs[character] = vector<PVMEntry>();
+	CharacterPVMs[character].clear();
 }
 
 static vector<PVMEntry> CommonObjectPVMs;
@@ -1032,8 +1117,10 @@ static void RegisterCommonObjectPVM(const PVMEntry &pvm)
 	if (!CommonObjectPVMsInitialized)
 	{
 		const PVMEntry *oldlist = &CommonObjectPVMEntries[0];
-		while (oldlist->TexList)
-			CommonObjectPVMs.push_back(*oldlist++);
+		for (; oldlist->TexList != nullptr; oldlist++)
+		{
+			CommonObjectPVMs.push_back(*oldlist);
+		}
 		CommonObjectPVMsInitialized = true;
 	}
 	CommonObjectPVMs.push_back(pvm);
@@ -1059,25 +1146,30 @@ static void RegisterTrialLevel(unsigned char character, const TrialLevelListEntr
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
 	auto iter = _TrialLevels.find(character);
-	vector<TrialLevelListEntry> *newlist;
 	if (iter == _TrialLevels.end())
 	{
-		const TrialLevelList *origlist = &TrialLevels[character];
-		_TrialLevels[character] = vector<TrialLevelListEntry>();
-		newlist = &_TrialLevels[character];
-		newlist->resize(origlist->Count);
-		memcpy(newlist->data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
+		// Trial level vector has not been registered yet.
+		// Initialize it with the standard trial level list.
+		const TrialLevelList *const origlist = &TrialLevels[character];
+		vector<TrialLevelListEntry> &newlist = _TrialLevels[character];
+		newlist.resize(origlist->Count);
+		memcpy(newlist.data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
+		// Add the new trial level.
+		newlist.push_back(level);
 	}
 	else
-		newlist = &iter->second;
-	newlist->push_back(level);
+	{
+		// Trial level vector has already been created.
+		// Add the new level.
+		iter->second.push_back(level);
+	}
 }
 
 static void ClearTrialLevelList(unsigned char character)
 {
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
-	_TrialLevels[character] = vector<TrialLevelListEntry>();
+	_TrialLevels[character].clear();
 }
 
 static unordered_map<unsigned char, vector<TrialLevelListEntry> > _TrialSubgames;
@@ -1086,25 +1178,30 @@ static void RegisterTrialSubgame(unsigned char character, const TrialLevelListEn
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
 	auto iter = _TrialSubgames.find(character);
-	vector<TrialLevelListEntry> *newlist;
 	if (iter == _TrialSubgames.end())
 	{
-		const TrialLevelList *origlist = &TrialSubgames[character];
-		_TrialSubgames[character] = vector<TrialLevelListEntry>();
-		newlist = &_TrialSubgames[character];
-		newlist->resize(origlist->Count);
-		memcpy(newlist->data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
+		// Trial subgame vector has not been registered yet.
+		// Initialize it with the standard trial subgame list.
+		const TrialLevelList *const origlist = &TrialSubgames[character];
+		vector<TrialLevelListEntry> &newlist = _TrialSubgames[character];
+		newlist.resize(origlist->Count);
+		memcpy(newlist.data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
+		// Add the new trial subgame.
+		newlist.push_back(level);
 	}
 	else
-		newlist = &iter->second;
-	newlist->push_back(level);
+	{
+		// Trial subgame vector has already been created.
+		// Add the new subgame.
+		iter->second.push_back(level);
+	}
 }
 
 static void ClearTrialSubgameList(unsigned char character)
 {
 	character = gettrialcharacter(character);
 	if (character == 0xFF) return;
-	_TrialSubgames[character] = vector<TrialLevelListEntry>();
+	_TrialSubgames[character].clear();
 }
 
 static const char *mainsavepath = "SAVEDATA";
@@ -1267,7 +1364,7 @@ static uint8_t ParseCharacterFlags(const string &str)
 {
 	vector<string> strflags = split(str, ',');
 	uint8_t flag = 0;
-	for (auto iter = strflags.cbegin(); iter != strflags.cend(); iter++)
+	for (auto iter = strflags.cbegin(); iter != strflags.cend(); ++iter)
 	{
 		string s = trim(*iter);
 		transform(s.begin(), s.end(), s.begin(), ::tolower);
@@ -1340,6 +1437,9 @@ static string UnescapeNewlines(const string &str)
 static void ParseVertex(const string &str, NJS_VECTOR &vert)
 {
 	vector<string> vals = split(str, ',');
+	assert(vals.size() == 3);
+	if (vals.size() < 3)
+		return;
 	vert.x = (float)strtod(vals[0].c_str(), nullptr);
 	vert.y = (float)strtod(vals[1].c_str(), nullptr);
 	vert.z = (float)strtod(vals[2].c_str(), nullptr);
@@ -1348,6 +1448,9 @@ static void ParseVertex(const string &str, NJS_VECTOR &vert)
 static void ParseRotation(const string str, Rotation &rot)
 {
 	vector<string> vals = split(str, ',');
+	assert(vals.size() == 3);
+	if (vals.size() < 3)
+		return;
 	rot.x = (int)strtol(vals[0].c_str(), nullptr, 16);
 	rot.y = (int)strtol(vals[1].c_str(), nullptr, 16);
 	rot.z = (int)strtol(vals[2].c_str(), nullptr, 16);
@@ -1364,7 +1467,11 @@ static void ProcessPointerList(const string &list, T *item)
 static void ProcessLandTableINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	LandTable *landtable = (new LandTableInfo(mod_dir + L'\\' + group->getWString("filename")))->getlandtable();
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	LandTableInfo *const landtableinfo = new LandTableInfo(filename);
+	LandTable *const landtable = landtableinfo->getlandtable();
 	ProcessPointerList(group->getString("pointer"), landtable);
 }
 
@@ -1372,7 +1479,10 @@ static unordered_map<string, NJS_OBJECT *> inimodels;
 static void ProcessModelINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	ModelInfo *mdlinf = new ModelInfo(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	ModelInfo *const mdlinf = new ModelInfo(filename);
 	NJS_OBJECT *model = mdlinf->getmodel();
 	inimodels[mdlinf->getlabel(model)] = model;
 	ProcessPointerList(group->getString("pointer"), model);
@@ -1381,8 +1491,12 @@ static void ProcessModelINI(const IniGroup *group, const wstring &mod_dir)
 static void ProcessActionINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
 	NJS_ACTION *action = new NJS_ACTION;
-	action->motion = (new AnimationFile(mod_dir + L'\\' + group->getWString("filename")))->getmotion();
+	AnimationFile *const animationFile = new AnimationFile(filename);
+	action->motion = animationFile->getmotion();
 	action->object = inimodels.find(group->getString("model"))->second;
 	ProcessPointerList(group->getString("pointer"), action);
 }
@@ -1390,14 +1504,21 @@ static void ProcessActionINI(const IniGroup *group, const wstring &mod_dir)
 static void ProcessAnimationINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	NJS_MOTION *animation = (new AnimationFile(mod_dir + L'\\' + group->getWString("filename")))->getmotion();
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	AnimationFile *const animationFile = new AnimationFile(filename);
+	NJS_MOTION *animation = animationFile->getmotion();
 	ProcessPointerList(group->getString("pointer"), animation);
 }
 
 static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	const IniFile *objlistdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const objlistdata = new IniFile(filename);
 	vector<ObjectListEntry> objs;
 	for (unsigned int i = 0; i < 999; i++)
 	{
@@ -1426,9 +1547,12 @@ static void ProcessObjListINI(const IniGroup *group, const wstring &mod_dir)
 static void ProcessStartPosINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	const IniFile *startposdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const startposdata = new IniFile(filename);
 	vector<StartPosition> poss;
-	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); iter++)
+	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); ++iter)
 	{
 		if (iter->first.empty()) continue;
 		StartPosition pos;
@@ -1468,7 +1592,10 @@ static vector<PVMEntry> ProcessTexListINI_Internal(const IniFile *texlistdata)
 static void ProcessTexListINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	const IniFile *texlistdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const texlistdata = new IniFile(filename);
 	vector<PVMEntry> texs = ProcessTexListINI_Internal(texlistdata);
 	delete texlistdata;
 	auto numents = texs.size();
@@ -1481,7 +1608,10 @@ static void ProcessTexListINI(const IniGroup *group, const wstring &mod_dir)
 static void ProcessLevelTexListINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	const IniFile *texlistdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const texlistdata = new IniFile(filename);
 	vector<PVMEntry> texs = ProcessTexListINI_Internal(texlistdata);
 	auto numents = texs.size();
 	PVMEntry *list = new PVMEntry[numents];
@@ -1543,9 +1673,12 @@ static void ProcessBossLevelListINI(const IniGroup *group, const wstring &mod_di
 static void ProcessFieldStartPosINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	const IniFile *startposdata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const startposdata = new IniFile(filename);
 	vector<FieldStartPosition> poss;
-	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); iter++)
+	for (auto iter = startposdata->cbegin(); iter != startposdata->cend(); ++iter)
 	{
 		if (iter->first.empty()) continue;
 		FieldStartPosition pos = { ParseLevelID(iter->first) };
@@ -1566,7 +1699,10 @@ static void ProcessFieldStartPosINI(const IniGroup *group, const wstring &mod_di
 static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
-	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const inidata = new IniFile(filename);
 	vector<SoundTestEntry> sounds;
 	for (unsigned int i = 0; i < 999; i++)
 	{
@@ -1590,7 +1726,10 @@ static void ProcessSoundTestListINI(const IniGroup *group, const wstring &mod_di
 static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
-	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const inidata = new IniFile(filename);
 	vector<MusicInfo> songs;
 	for (unsigned int i = 0; i < 999; i++)
 	{
@@ -1611,7 +1750,10 @@ static void ProcessMusicListINI(const IniGroup *group, const wstring &mod_dir)
 static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
-	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const inidata = new IniFile(filename);
 	vector<SoundFileInfo> sounds;
 	for (unsigned int i = 0; i < 999; i++)
 	{
@@ -1632,7 +1774,7 @@ static void ProcessSoundListINI(const IniGroup *group, const wstring &mod_dir)
 	list->Count = (int)numents;
 }
 
-static vector<char *> ProcessStringArrayINI_Internal(const wstring &filename, uint8_t language)
+static vector<char *> ProcessStringArrayINI_Internal(const wchar_t *filename, uint8_t language)
 {
 	ifstream fstr(filename);
 	vector<char *> strs;
@@ -1650,7 +1792,10 @@ static vector<char *> ProcessStringArrayINI_Internal(const wstring &filename, ui
 static void ProcessStringArrayINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address")) return;
-	vector<char *> strs = ProcessStringArrayINI_Internal(mod_dir + L'\\' + group->getWString("filename"),
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	vector<char *> strs = ProcessStringArrayINI_Internal(filename,
 		ParseLanguage(group->getString("language")));
 	auto numents = strs.size();
 	char **list = (char**)(group->getIntRadix("address", 16) + 0x400000);;
@@ -1660,7 +1805,10 @@ static void ProcessStringArrayINI(const IniGroup *group, const wstring &mod_dir)
 static void ProcessNextLevelListINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const inidata = new IniFile(filename);
 	vector<NextLevelData> ents;
 	for (unsigned int i = 0; i < 999; i++)
 	{
@@ -1695,10 +1843,13 @@ static void ProcessCutsceneTextINI(const IniGroup *group, const wstring &mod_dir
 	char ***addr = (char ***)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
 	addr = (char ***)((int)addr + 0x400000);
-	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
+	const wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
 	for (unsigned int i = 0; i < LengthOfArray(languagenames); i++)
 	{
-		vector<char *> strs = ProcessStringArrayINI_Internal(pathbase + languagenames[i] + L".txt", i);
+		wchar_t filename[MAX_PATH];
+		swprintf(filename, LengthOfArray(filename), L"%s%s.txt",
+			pathbase.c_str(), languagenames[i]);
+		vector<char *> strs = ProcessStringArrayINI_Internal(filename, i);
 		auto numents = strs.size();
 		char **list = new char *[numents];
 		arrcpy(list, strs.data(), numents);
@@ -1713,15 +1864,16 @@ static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
 	RecapScreen **addr = (RecapScreen **)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
 	addr = (RecapScreen **)((int)addr + 0x400000);
-	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
+	const wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
 	for (unsigned int l = 0; l < LengthOfArray(languagenames); l++)
 	{
 		RecapScreen *list = new RecapScreen[length];
 		for (int i = 0; i < length; i++)
 		{
-			wchar_t wbuf[8];
-			swprintf(wbuf, LengthOfArray(wbuf), L"%d", i + 1);
-			const IniFile *inidata = new IniFile(pathbase + wbuf + L'\\' + languagenames[l] + L".ini");
+			wchar_t filename[MAX_PATH];
+			swprintf(filename, LengthOfArray(filename), L"%s%d\\%s.ini",
+				pathbase.c_str(), i + 1, languagenames[i]);
+			const IniFile *const inidata = new IniFile(filename);
 			vector<string> strs = split(inidata->getString("", "Text"), '\n');
 			auto numents = strs.size();
 			list[i].TextData = new char *[numents];
@@ -1742,15 +1894,16 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 	HintText_Entry **addr = (HintText_Entry **)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
 	addr = (HintText_Entry **)((int)addr + 0x400000);
-	wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
+	const wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
 	for (unsigned int l = 0; l < LengthOfArray(languagenames); l++)
 	{
 		HintText_Entry *list = new HintText_Entry[length];
 		for (int i = 0; i < length; i++)
 		{
-			wchar_t wbuf[8];
-			swprintf(wbuf, LengthOfArray(wbuf), L"%d", i + 1);
-			const IniFile *inidata = new IniFile(pathbase + wbuf + L'\\' + languagenames[l] + L".ini");
+			wchar_t filename[MAX_PATH];
+			swprintf(filename, LengthOfArray(filename), L"%s%d\\%s.ini",
+				pathbase.c_str(), i + 1, languagenames[i]);
+			const IniFile *const inidata = new IniFile(filename);
 			vector<int16_t> props;
 			vector<HintText_Text> text;
 			for (unsigned int j = 0; j < 999; j++)
@@ -1840,7 +1993,10 @@ static void ProcessNPCTextINI(const IniGroup *group, const wstring &mod_dir)
 static void ProcessLevelClearFlagListINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	ifstream fstr(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	ifstream fstr(filename);
 	vector<LevelClearFlagData> lvls;
 	while (fstr.good())
 	{
@@ -1866,13 +2022,16 @@ static void ProcessLevelClearFlagListINI(const IniGroup *group, const wstring &m
 static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	wstring dzinipath = mod_dir + L'\\' + group->getWString("filename");
-	IniFile *dzdata = new IniFile(dzinipath);
-	wchar_t *buf = new wchar_t[dzinipath.size() + 1];
-	wcsncpy(buf, dzinipath.c_str(), dzinipath.size());
-	PathRemoveFileSpec(buf);
-	wstring dzpath = buf;
-	delete[] buf;
+	wchar_t dzinipath[MAX_PATH];
+	swprintf(dzinipath, LengthOfArray(dzinipath), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const dzdata = new IniFile(dzinipath);
+
+	// Remove the filename portion of the path.
+	// NOTE: This might be a lower directory than mod_dir,
+	// since the filename can have subdirectories.
+	PathRemoveFileSpec(dzinipath);
+
 	vector<DeathZone> deathzones;
 	for (unsigned int i = 0; i < 999; i++)
 	{
@@ -1880,13 +2039,16 @@ static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 		snprintf(key, sizeof(key), "%u", i);
 		if (!dzdata->hasGroup(key)) break;
 		uint8_t flag = ParseCharacterFlags(dzdata->getString(key, "Flags"));
-		wchar_t wkey[8];
-		_snwprintf(wkey, LengthOfArray(wkey), L"%u", i);
-		ModelInfo *dzmdl = new ModelInfo(dzpath + L"\\" + wkey + L".sa1mdl");
+
+		wchar_t dzpath[MAX_PATH];
+		swprintf(dzpath, LengthOfArray(dzpath), L"%s\\%u.sa1mdl", dzinipath, i);
+		ModelInfo *dzmdl = new ModelInfo(dzpath);
 		DeathZone dz = { flag, dzmdl->getmodel() };
 		deathzones.push_back(dz);
+		// NOTE: dzmdl is not deleted because NJS_OBJECT
+		// points to allocated memory in the ModelInfo.
 	}
-	delete dzdata;
+
 	DeathZone *newlist = new DeathZone[deathzones.size() + 1];
 	arrcpy(newlist, deathzones.data(), deathzones.size());
 	clrmem(&newlist[deathzones.size()]);
@@ -1900,7 +2062,11 @@ static void ProcessSkyboxScaleINI(const IniGroup *group, const wstring &mod_dir)
 	SkyboxScale **addr = (SkyboxScale **)group->getIntRadix("address", 16);
 	if (addr == nullptr) return;
 	addr = (SkyboxScale **)((int)addr + 0x400000);
-	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const inidata = new IniFile(filename);
 	for (int i = 0; i < count; i++)
 	{
 		char key[8];
@@ -1910,7 +2076,7 @@ static void ProcessSkyboxScaleINI(const IniGroup *group, const wstring &mod_dir)
 			*addr++ = nullptr;
 			continue;
 		}
-		const IniGroup *entdata = inidata->getGroup(key);
+		const IniGroup *const entdata = inidata->getGroup(key);
 		SkyboxScale *entry = new SkyboxScale;
 		ParseVertex(entdata->getString("Far", "1,1,1"), entry->Far);
 		ParseVertex(entdata->getString("Normal", "1,1,1"), entry->Normal);
@@ -1923,10 +2089,12 @@ static void ProcessSkyboxScaleINI(const IniGroup *group, const wstring &mod_dir)
 static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	wstring inipath = mod_dir + L'\\' + group->getWString("filename") + L'\\';
+	wchar_t inipath[MAX_PATH];
+	swprintf(inipath, LengthOfArray(inipath), L"%s\\%s\\",
+		mod_dir.c_str(), group->getWString("filename").c_str());
 	vector<PathDataPtr> pathlist;
 	WIN32_FIND_DATA data;
-	HANDLE hFind = FindFirstFileEx(inipath.c_str(), FindExInfoStandard, &data, FindExSearchLimitToDirectories, nullptr, 0);
+	HANDLE hFind = FindFirstFileEx(inipath, FindExInfoStandard, &data, FindExSearchLimitToDirectories, nullptr, 0);
 	if (hFind == INVALID_HANDLE_VALUE) return;
 	do
 	{
@@ -1934,23 +2102,23 @@ static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_di
 		uint16_t levelact;
 		try
 		{
-			levelact = ParseLevelAndActID(UTF16toMBS(wstring(data.cFileName), CP_UTF8));
+			levelact = ParseLevelAndActID(UTF16toMBS(data.cFileName, CP_UTF8));
 		}
 		catch (...)
 		{
 			continue;
 		}
-		wstring levelpath = inipath + data.cFileName + L"\\%u.ini";
-		wchar_t *buf = new wchar_t[levelpath.size() + 2];
+
 		vector<LoopHead *> paths;
 		for (unsigned int i = 0; i < 999; i++)
 		{
-			_snwprintf(buf, levelpath.size() + 2, levelpath.c_str(), i);
-
-			if (!Exists(buf))
+			wchar_t levelpath[MAX_PATH];
+			swprintf(levelpath, LengthOfArray(levelpath), L"%s\\%s\\%u.ini",
+				inipath, data.cFileName, i);
+			if (!Exists(levelpath))
 				break;
 
-			const IniFile *inidata = new IniFile(buf);
+			const IniFile *const inidata = new IniFile(levelpath);
 			const IniGroup *entdata;
 			vector<Loop> points;
 			char buf2[8];
@@ -1977,7 +2145,6 @@ static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_di
 			paths.push_back(path);
 			delete inidata;
 		}
-		delete[] buf;
 		auto numents = paths.size();
 		PathDataPtr ptr;
 		ptr.LevelAct = levelact;
@@ -1997,14 +2164,17 @@ static void ProcessLevelPathListINI(const IniGroup *group, const wstring &mod_di
 static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
-	const IniFile *inidata = new IniFile(mod_dir + L'\\' + group->getWString("filename"));
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const inidata = new IniFile(filename);
 	vector<StageLightData> ents;
 	for (unsigned int i = 0; i < 999; i++)
 	{
 		char key[8];
 		snprintf(key, sizeof(key), "%u", i);
 		if (!inidata->hasGroup(key)) break;
-		const IniGroup *entdata = inidata->getGroup(key);
+		const IniGroup *const entdata = inidata->getGroup(key);
 		StageLightData entry;
 		entry.level = (char)ParseLevelID(entdata->getString("Level"));
 		entry.act = (char)entdata->getInt("Act");
@@ -2026,7 +2196,8 @@ static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &m
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
-static const unordered_map<string, void(__cdecl *)(const IniGroup *, const wstring &)> exedatafuncmap = {
+typedef void (__cdecl *exedatafunc_t)(const IniGroup *group, const wstring &mod_dir);
+static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
 	{ "landtable", ProcessLandTableINI },
 	{ "model", ProcessModelINI },
 	{ "basicdxmodel", ProcessModelINI },
@@ -2061,7 +2232,7 @@ static void LoadDLLLandTable(const wstring &path)
 {
 	LandTableInfo *info = new LandTableInfo(path);
 	auto labels = info->getlabels();
-	for (auto iter = labels->cbegin(); iter != labels->cend(); iter++)
+	for (auto iter = labels->cbegin(); iter != labels->cend(); ++iter)
 		dlllabels[iter->first] = iter->second;
 }
 
@@ -2069,7 +2240,7 @@ static void LoadDLLModel(const wstring &path)
 {
 	ModelInfo *info = new ModelInfo(path);
 	auto labels = info->getlabels();
-	for (auto iter = labels->cbegin(); iter != labels->cend(); iter++)
+	for (auto iter = labels->cbegin(); iter != labels->cend(); ++iter)
 		dlllabels[iter->first] = iter->second;
 }
 
@@ -2079,7 +2250,8 @@ static void LoadDLLAnimation(const wstring &path)
 	dlllabels[info->getlabel()] = info->getmotion();
 }
 
-static const unordered_map<string, void(__cdecl *)(const wstring &)> dllfilefuncmap = {
+typedef void (__cdecl *dllfilefunc_t)(const wstring &path);
+static const unordered_map<string, dllfilefunc_t> dllfilefuncmap = {
 	{ "landtable", LoadDLLLandTable },
 	{ "model", LoadDLLModel },
 	{ "basicdxmodel", LoadDLLModel },
@@ -2128,7 +2300,8 @@ static void ProcessActionArrayDLL(const IniGroup *group, void *exp)
 		act->motion = (NJS_MOTION *)dlllabels[group->getString("Label")];
 }
 
-static const unordered_map<string, void(__cdecl *)(const IniGroup *, void *)> dlldatafuncmap = {
+typedef void (__cdecl *dlldatafunc_t)(const IniGroup *group, void *exp);
+static const unordered_map<string, dlldatafunc_t> dlldatafuncmap = {
 	{ "landtable", ProcessLandTableDLL },
 	{ "landtablearray", ProcessLandTableArrayDLL },
 	{ "model", ProcessModelDLL },
@@ -2415,9 +2588,7 @@ static void __cdecl InitMods()
 	texpack::Init();
 
 	// Unprotect the .rdata section.
-	// TODO: Get .rdata address and length dynamically.
-	DWORD oldprot;
-	VirtualProtect((void *)0x7DB2A0, 0xB6D60, PAGE_WRITECOPY, &oldprot);
+	SetRDataWriteProtection(false);
 
 	// Enables GUI texture filtering (D3DTEXF_POINT -> D3DTEXF_LINEAR)
 	if (settings->getBool("TextureFilter", true))
@@ -2484,7 +2655,7 @@ static void __cdecl InitMods()
 		unique_ptr<IniFile> ini_mod(new IniFile(f_mod_ini));
 		fclose(f_mod_ini);
 
-		const IniGroup *modinfo = ini_mod->getGroup("");
+		const IniGroup *const modinfo = ini_mod->getGroup("");
 		const string mod_nameA = modinfo->getString("Name");
 		const wstring mod_name = modinfo->getWString("Name");
 		PrintDebug("%u. %s\n", i, mod_nameA.c_str());
@@ -2649,8 +2820,11 @@ static void __cdecl InitMods()
 		// Check if the mod has EXE data replacements.
 		if (modinfo->hasKeyNonEmpty("EXEData"))
 		{
-			IniFile *exedata = new IniFile(mod_dir + L'\\' + modinfo->getWString("EXEData"));
-			for (auto iter = exedata->cbegin(); iter != exedata->cend(); iter++)
+			wchar_t filename[MAX_PATH];
+			swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+				mod_dir.c_str(), modinfo->getWString("EXEData").c_str());
+			const IniFile *const exedata = new IniFile(filename);
+			for (auto iter = exedata->cbegin(); iter != exedata->cend(); ++iter)
 			{
 				IniGroup *group = iter->second;
 				auto type = exedatafuncmap.find(group->getString("type"));
@@ -2665,10 +2839,13 @@ static void __cdecl InitMods()
 		{
 			if (modinfo->hasKeyNonEmpty(dlldatakeys[j]))
 			{
-				IniFile *dlldata = new IniFile(mod_dir + L'\\' + modinfo->getWString(dlldatakeys[j]));
+				wchar_t filename[MAX_PATH];
+				swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+					mod_dir.c_str(), modinfo->getWString(dlldatakeys[j]).c_str());
+				const IniFile *const dlldata = new IniFile(filename);
 				dlllabels.clear();
 				const IniGroup *group = dlldata->getGroup("Files");
-				for (auto iter = group->cbegin(); iter != group->cend(); iter++)
+				for (auto iter = group->cbegin(); iter != group->cend(); ++iter)
 				{
 					auto type = dllfilefuncmap.find(split(iter->second, '|')[0]);
 					if (type != dllfilefuncmap.end())
@@ -2687,7 +2864,7 @@ static void __cdecl InitMods()
 				{
 					group = dlldata->getGroup("Exports");
 					dllexportcontainer exp;
-					for (auto iter = group->cbegin(); iter != group->cend(); iter++)
+					for (auto iter = group->cbegin(); iter != group->cend(); ++iter)
 					{
 						dllexportinfo inf;
 						inf.address = GetProcAddress(dllhandle, iter->first.c_str());
@@ -3000,19 +3177,26 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 	switch (fdwReason)
 	{
 	case DLL_PROCESS_ATTACH:
-		HookTheAPI();
+		g_hinstDll = hinstDll;
+		HookCreateFileA();
 
 		// Make sure this is the correct version of SADX.
 		if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
 		{
-			MessageBox(nullptr, L"This copy of Sonic Adventure DX is not the US version.\n\n"
-				L"Please obtain the EXE file from the US version and try again.",
-				L"SADX Mod Loader", MB_ICONERROR);
+			ShowNon2004USError();
 			ExitProcess(1);
 		}
 
 		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
 		WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
+
+#if !defined(_MSC_VER) || defined(_DLL)
+		// Disable thread library calls, since we don't
+		// care about thread attachments.
+		// NOTE: On MSVC, don't do this if using the static CRT.
+		// Reference: https://msdn.microsoft.com/en-us/library/windows/desktop/ms682579(v=vs.85).aspx
+		DisableThreadLibraryCalls(hinstDll);
+#endif /* !defined(_MSC_VER) || defined(_DLL) */
 		break;
 
 	case DLL_THREAD_ATTACH:

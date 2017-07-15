@@ -21,15 +21,6 @@ LandTableInfo::LandTableInfo(const char *filename)
 	str.close();
 }
 
-#ifdef _MSC_VER
-LandTableInfo::LandTableInfo(const wchar_t *filename)
-{
-	ifstream str(filename, ios::binary);
-	init(str);
-	str.close();
-}
-#endif /* _MSC_VER */
-
 LandTableInfo::LandTableInfo(const string &filename)
 {
 	ifstream str(filename, ios::binary);
@@ -38,6 +29,13 @@ LandTableInfo::LandTableInfo(const string &filename)
 }
 
 #ifdef _MSC_VER
+LandTableInfo::LandTableInfo(const wchar_t *filename)
+{
+	ifstream str(filename, ios::binary);
+	init(str);
+	str.close();
+}
+
 LandTableInfo::LandTableInfo(const wstring &filename)
 {
 	ifstream str(filename, ios::binary);

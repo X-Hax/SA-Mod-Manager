@@ -4,6 +4,16 @@
  */
 
 #include "windows.h"
+#include "resource.h"
+
+/** Accelerator table. **/
+
+IDR_ACCEL_WRAPPER_WINDOW ACCELERATORS
+BEGIN
+	VK_RETURN,	ID_FULLSCREEN,	VIRTKEY, ALT
+END
+
+/** Application version. **/
 
 // git version
 #include "git.h"
@@ -21,7 +31,6 @@
 #define Win32_RC_FileVersion VERSION_STRING
 #endif /* MODLOADER_GIT_VERSION */
 
-// Application Version
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION VERSION_WIN32
 	PRODUCTVERSION VERSION_WIN32
