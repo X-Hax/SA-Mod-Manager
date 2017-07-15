@@ -13,15 +13,15 @@ class LandTableInfo
 public:
 	struct Metadata { uint32_t size; const uint8_t *data; };
 
-	LandTableInfo(const char *filename);
+	explicit LandTableInfo(const char *filename);
 #ifdef _MSC_VER
-	LandTableInfo(const wchar_t *filename);
+	explicit LandTableInfo(const wchar_t *filename);
 #endif /* _MSC_VER */
-	LandTableInfo(const std::string &filename);
+	explicit LandTableInfo(const std::string &filename);
 #ifdef _MSC_VER
-	LandTableInfo(const std::wstring &filename);
+	explicit LandTableInfo(const std::wstring &filename);
 #endif /* _MSC_VER */
-	LandTableInfo(std::istream &stream);
+	explicit LandTableInfo(std::istream &stream);
 
 	LandTable *getlandtable();
 	const std::string &getauthor();

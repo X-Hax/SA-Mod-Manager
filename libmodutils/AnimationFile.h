@@ -11,15 +11,15 @@
 class AnimationFile
 {
 public:
-	AnimationFile(const char *filename);
+	explicit AnimationFile(const char *filename);
 #ifdef _MSC_VER
-	AnimationFile(const wchar_t *filename);
+	explicit AnimationFile(const wchar_t *filename);
 #endif /* _MSC_VER */
-	AnimationFile(const std::string &filename);
+	explicit AnimationFile(const std::string &filename);
 #ifdef _MSC_VER
-	AnimationFile(const std::wstring &filename);
+	explicit AnimationFile(const std::wstring &filename);
 #endif /* _MSC_VER */
-	AnimationFile(std::istream &stream);
+	explicit AnimationFile(std::istream &stream);
 
 	NJS_MOTION *getmotion();
 	int getmodelcount();
