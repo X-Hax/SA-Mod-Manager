@@ -705,7 +705,7 @@ static bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
 	string _filename = filename;
 	transform(_filename.begin(), _filename.end(), _filename.begin(), tolower);
 
-	auto file_path = "system\\" + _filename + ".pvr";
+	string file_path = "system\\" + _filename + ".pvr";
 	string index_path = sadx_fileMap.replaceFile(file_path.c_str());
 
 	if (index_path == file_path)
@@ -730,20 +730,24 @@ static bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
 
 	for (const auto& i : entries)
 	{
-		auto name = i.name;
-
-		replace(name.begin(), name.end(), '/', '\\');
-		auto npos = name.npos;
+		const auto &name = i.name;
 
 		auto dot = name.find_last_of('.');
-
-		if (dot == npos)
+		if (dot == string::npos)
 		{
 			continue;
 		}
 
-		auto slash = name.find_last_of('\\');
-		slash = slash == npos ? 0 : ++slash;
+		// Get the filename portion of the path.
+		auto slash = name.find_last_of("/\\");
+		slash = (slash == string::npos ? 0 : (slash+1));
+		if (slash > dot)
+		{
+			// Should not happen, but this usually means the
+			// dot is part of some other path component, not
+			// the filename.
+			continue;
+		}
 
 		string texture_name = name.substr(slash, dot - slash);
 		transform(texture_name.begin(), texture_name.end(), texture_name.begin(), tolower);
