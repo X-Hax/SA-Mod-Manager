@@ -1,25 +1,13 @@
-Sonic Adventure DX PC Mod Loader
-================================
-Version 3.1
+# Sonic Adventure DX PC Mod Loader
+Version 3.7
 
-
-Table of Contents
------------------
-
-1. System Requirements
-2. License
-3. Trademarks
-
-
-1. System Requirements
-----------------------
+## System Requirements
 
 To use SADX Mod Loader, you must have:
-  * Sonic Adventure DX PC, 2004 version (US release)
+* Sonic Adventure DX PC, 2004 version (US release)
+* Windows XP or later
 
-
-2. License
-----------
+## License
 
 DISCLAIMER:
 Any and all content presented in this repository is presented for
@@ -30,8 +18,7 @@ using this content responsibly. Sonic Retro claims no responsibility
 or warranty.
 
 
-3. Trademarks
--------------
+## Trademarks
 
 Sega, Sonic, Sonic the Hedgehog, and Sonic Adventure DX are either
 trademarks or registered trademarks of SEGA of America, Inc.
