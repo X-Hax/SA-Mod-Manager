@@ -1,0 +1,15 @@
+# AppVeyor configuration file.
+version: '3.7.0.{build}'
+
+# Build worker image (VM template)
+image: Visual Studio 2017
+
+# clone directory
+clone_folder: c:\projects\sadx-mod-loader
+
+platform:
+  - x86
+
+configuration:
+  - Debug
+  - Release
