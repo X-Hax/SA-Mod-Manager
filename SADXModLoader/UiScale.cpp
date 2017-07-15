@@ -483,16 +483,18 @@ void uiscale::Initialize()
 template<typename T, typename... Args>
 void ScaleTrampoline(Uint8 align, bool is_background, const T&, const Trampoline* t, Args... args)
 {
+	T *const pfn = reinterpret_cast<T*>(t->Target());
+
 	if (is_background && bg_fill == FillMode::Stretch)
 	{
 		ScaleDisable();
-		((T*)t->Target())(args...);
+		pfn(args...);
 		ScaleEnable();
 		return;
 	}
 
 	ScalePush(align, is_background);
-	((T*)t->Target())(args...);
+	pfn(args...);
 	ScalePop();
 }
 
@@ -509,16 +511,18 @@ void ScaleTrampoline(Uint8 align, bool is_background, const T&, const Trampoline
 template<typename R, typename T, typename... Args>
 R ScaleTrampoline(Uint8 align, bool is_background, const T&, const Trampoline* t, Args... args)
 {
+	T *const pfn = reinterpret_cast<T*>(t->Target());
+
 	if (is_background && bg_fill == FillMode::Stretch)
 	{
 		ScaleDisable();
-		R result = ((T*)t->Target())(args...);
+		R result = pfn(args...);
 		ScaleEnable();
 		return result;
 	}
 
 	ScalePush(align, is_background);
-	R result = ((T*)t->Target())(args...);
+	R result = pfn(args...);
 	ScalePop();
 	return result;
 }
