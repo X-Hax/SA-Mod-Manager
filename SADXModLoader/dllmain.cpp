@@ -45,29 +45,20 @@ using std::vector;
 
 static HINSTANCE g_hinstDll = nullptr;
 
-/**
- * Replace slash characters with backslashes.
- * @param c Character.
- * @return If c == '/', '\\'; otherwise, c.
- */
-static inline int backslashes(int c)
-{
-	return (c == '/') ? '\\' : c;
-}
-
 static void HookTheAPI()
 {
 	ULONG ulSize = 0;
 	PROC pNewFunction;
 	PROC pActualFunction;
 
-	PSTR pszModName;
+	PCSTR pcszModName;
 
 	HMODULE hModule = GetModuleHandle(nullptr);
 	PIMAGE_IMPORT_DESCRIPTOR pImportDesc;
 
 	pNewFunction = (PROC)MyCreateFileA;
 	pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "CreateFileA");
+	assert(pActualFunction != nullptr);
 
 	pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR)ImageDirectoryEntryToData(
 		hModule, TRUE, IMAGE_DIRECTORY_ENTRY_IMPORT, &ulSize);
@@ -78,10 +69,10 @@ static void HookTheAPI()
 	for (; pImportDesc->Name; pImportDesc++)
 	{
 		// get the module name
-		pszModName = (PSTR)((PBYTE)hModule + pImportDesc->Name);
+		pcszModName = (PCSTR)((PBYTE)hModule + pImportDesc->Name);
 
 		// check if the module is kernel32.dll
-		if (pszModName != nullptr && lstrcmpiA(pszModName, "Kernel32.dll") == 0)
+		if (pcszModName != nullptr && _stricmp(pcszModName, "Kernel32.dll") == 0)
 		{
 			// get the module
 			PIMAGE_THUNK_DATA pThunk = (PIMAGE_THUNK_DATA)((PBYTE)hModule + pImportDesc->FirstThunk);
@@ -274,13 +265,13 @@ static bool vsync                       = false;
 
 DataPointer(HWND, hWnd, 0x3D0FD30);
 
-BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
+static BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
 {
 	screenBounds.push_back(*lprcMonitor);
 	return TRUE;
 }
 
-static uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
+static const uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
 static int currentScreenSize[2];
 
 DataPointer(D3DPRESENT_PARAMETERS, PresentParameters, 0x03D0FDC0);
@@ -292,7 +283,7 @@ DataPointer(float, ViewPortWidth_Half, 0x03D0FA0C);
 DataPointer(float, ViewPortHeight_Half, 0x03D0FA10);
 DataPointer(NJS_POINT2COL, GlobalPoint2Col, 0x03CE7164);
 
-inline void Direct3D_SetupVsyncParameters()
+static inline void Direct3D_SetupVsyncParameters()
 {
 	auto& p = PresentParameters;
 
@@ -523,7 +514,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			windowMode = windowMode == windowed ? fullscreen : windowed;
 			
 			// update outer window (draws background)
-			auto& outer = outerSizes[windowMode];
+			const auto& outer = outerSizes[windowMode];
 			SetWindowLong(accelWindow, GWL_STYLE, outer.style);
 			SetWindowLong(accelWindow, GWL_EXSTYLE, outer.exStyle);
 			SetWindowPos(accelWindow, HWND_NOTOPMOST, outer.x, outer.y, outer.width, outer.height, SWP_FRAMECHANGED);
@@ -620,8 +611,8 @@ static LRESULT CALLBACK WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, 
 				return 0;
 			}
 
-			auto w = LOWORD(lParam);
-			auto h = HIWORD(lParam);
+			int w = LOWORD(lParam);
+			int h = HIWORD(lParam);
 
 			if (!w || !h)
 			{
@@ -654,7 +645,7 @@ static LRESULT CALLBACK WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, 
 			{
 				EnableFullScreen(handle);
 
-				auto const& rect = screenBounds[screenNum == 0 ? 0 : screenNum - 1];
+				const auto& rect = screenBounds[screenNum == 0 ? 0 : screenNum - 1];
 
 				PresentParameters.Windowed         = false;
 				PresentParameters.BackBufferWidth  = rect.right - rect.left;
