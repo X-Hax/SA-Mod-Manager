@@ -55,8 +55,7 @@ string GetDirectory(const string& path)
 		return string();
 	}
 
-	result = path.substr(last);
-	return result;
+	return path.substr(last);
 }
 
 string GetBaseName(const string& path)
@@ -74,7 +73,7 @@ string GetBaseName(const string& path)
 
 	auto last = slash - 1;
 	slash = path.find_last_of("/\\", last);
-	return (!slash || slash == npos) ? string() : path.substr(slash + 1, last - slash);
+	return (!slash || slash == string::npos) ? string() : path.substr(slash + 1, last - slash);
 }
 
 void StripExtension(string& path)
