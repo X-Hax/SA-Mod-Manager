@@ -592,14 +592,14 @@ static bool TryTexturePack(const char* filename, NJS_TEXLIST* texlist)
 
 	// Since the filename can be passed in with or without an extension, first
 	// we try getting a replacement with the filename as-is (with SYSTEM\ prepended).
-	auto system_path = "SYSTEM\\" + filename_str;
+	const string system_path = "SYSTEM\\" + filename_str;
 	string replaced = sadx_fileMap.replaceFile(system_path.c_str());
 
 	// But if that failed, we can assume that it was given without an extension
 	// (which is the intended use) and append one before trying again.
-	auto system_path_ext = system_path + ".PVM";
 	if (!Exists(replaced))
 	{
+		const string system_path_ext = system_path + ".PVM";
 		replaced = sadx_fileMap.replaceFile(system_path_ext.c_str());
 	}
 
