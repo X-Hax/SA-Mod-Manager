@@ -146,13 +146,13 @@ void FileMap::scanFolder_int(const string &srcPath, int srcLen, int modIdx)
 		if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
 			// Recursively scan this directory.
-			const string newSrcPath = srcPath + "\\" + string(data.cFileName);
+			const string newSrcPath = srcPath + '\\' + string(data.cFileName);
 			scanFolder_int(newSrcPath, srcLen, modIdx);
 		}
 		else
 		{
 			// Create the mod filename and original filename.
-			string modFile = srcPath + "\\" + string(data.cFileName);
+			string modFile = srcPath + '\\' + string(data.cFileName);
 			transform(modFile.begin(), modFile.end(), modFile.begin(), ::tolower);
 
 			// Original filename.
@@ -203,7 +203,7 @@ void FileMap::scanSoundFolder(const std::string &srcPath)
 			_stricmp(".wma", PathFindExtensionA(data.cFileName)))
 		{
 			// Create the mod filename and original filename.
-			string modFile = srcPath + "\\" + string(data.cFileName);
+			string modFile = srcPath + '\\' + string(data.cFileName);
 			transform(modFile.begin(), modFile.end(), modFile.begin(), ::tolower);
 			// Original filename should have a ".wma" extension.
 			string origFile = modFile;
@@ -270,7 +270,7 @@ void FileMap::scanTextureFolder(const string& srcPath, int modIndex)
 			string original = "system\\" + fileName + ".pvm";
 			transform(original.begin(), original.end(), original.begin(), ::tolower);
 
-			string texPack = srcPath + "\\" + fileName;
+			string texPack = srcPath + '\\' + fileName;
 			transform(texPack.begin(), texPack.end(), texPack.begin(), ::tolower);
 
 			// Since we don't attempt to parse this file, make sure it exists
@@ -296,7 +296,7 @@ void FileMap::scanTextureFolder(const string& srcPath, int modIndex)
 			string original = "system\\" + noExt + ".pvm";
 			transform(original.begin(), original.end(), original.begin(), ::tolower);
 
-			string texPack = srcPath + "\\" + fileName;
+			string texPack = srcPath + '\\' + fileName;
 			transform(texPack.begin(), texPack.end(), texPack.begin(), ::tolower);
 			
 			m_fileMap[original] = { texPack, modIndex };
