@@ -16,3 +16,6 @@ configuration:
 
 before_build:
   - git submodule update --init --recursive
+
+build:
+  project: SADXModLoader.sln
