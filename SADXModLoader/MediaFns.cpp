@@ -323,6 +323,9 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 		strcat_s(path2, sizeof(path2), "\\");
 	}
 
+	// Total sound pack size.
+	int size = 28;
+
 	// Load the sound files.
 	vector<DATEntry> entries;
 	char line[MAX_PATH];
@@ -374,36 +377,37 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 		fread(ent.DataOffset, ent.DataLength, 1, f2);
 		fclose(f2);
 		entries.push_back(ent);
+
+		// Add the entry data to the total sound pack size.
+		size += sizeof(DATEntry) + 14 + ent.DataLength;
 	}
 	fclose(f);
 
 	// Convert the sound pack to the format expected by SADX in memory.
-	int size = 28;
-	size += entries.size() * sizeof(DATEntry);
-	size += entries.size() * 14;
-	for (size_t i = 0; i < entries.size(); i++)
-		size += entries[i].DataLength;
 	struc_64 *result = (struc_64 *)sub_4D41C0(size);
-	ZeroMemory(result->ArchiveID, 16);
-	strcpy(result->ArchiveID, "archive  V2.2");
+	// strncpy() zeroes out unused bytes.
+	strncpy(result->ArchiveID, "archive  V2.2", sizeof(result->ArchiveID));
 	result->Filename = (char *)sub_4D41C0(strlen(path) + 1);
 	strncpy(result->Filename, path, strlen(path) + 1);
 	result->DATFile = sub_4D41C0(4); // dummy value
 	result->NumSFX = entries.size();
 	memcpy(&result->DATEntries, entries.data(), entries.size() * sizeof(DATEntry));
-	char *ptr = (char *)&(&result->DATEntries)[entries.size()];
+
+	// Rearrange the sound pack data into a single memory block,
+	// stored after result->DATEntries.
+	char *ptr = reinterpret_cast<char*>(&(&result->DATEntries)[entries.size()]);
 	DATEntry *ent = &result->DATEntries;
-	for (int i = 0; i < result->NumSFX; i++)
+	for (int i = 0; i < result->NumSFX; i++, ent++)
 	{
 		memcpy(ptr, ent->NameOffset, 14);
 		delete[] ent->NameOffset;
 		ent->NameOffset = ptr;
 		ptr += 14;
+
 		memcpy(ptr, ent->DataOffset, ent->DataLength);
 		delete[] ent->DataOffset;
 		ent->DataOffset = ptr;
 		ptr += ent->DataLength;
-		++ent;
 	}
 	return result;
 }

@@ -68,6 +68,7 @@ struct struc_64
 	char *Filename;
 	void *DATFile;
 	int NumSFX;
+	// Technically an array of DATEntries.
 	DATEntry DATEntries;
 };
 #pragma pack(pop)
