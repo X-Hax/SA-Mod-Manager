@@ -65,10 +65,10 @@ class FileMap
 
 		/**
 		 * Scans a texture pack folder for 
-		 * @param path The path to the "textures" folder to scan.
+		 * @param srcPath The path to the "textures" folder to scan.
 		 * @param modIndex Index of the current mod.
 		 */
-		void scanTextureFolder(const std::string& path, int modIndex);
+		void scanTextureFolder(const std::string& srcPath, int modIndex);
 
 	protected:
 		/**

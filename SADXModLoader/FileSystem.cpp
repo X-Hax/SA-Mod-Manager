@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include <windows.h>
+
+#include <cassert>
+
 #include <string>
 using std::string;
 using std::wstring;
@@ -99,4 +102,35 @@ string GetExtension(const string& path, bool includeDot)
 	}
 
 	return path.substr(dot);
+}
+
+/**
+ * Replace the extension of the specified filename.
+ * @param filename	[in/out] Filename.
+ * @param ext		[in] New extension, with leading dot.
+ */
+void ReplaceFileExtension(string &filename, const char *ext)
+{
+	assert(ext != nullptr);
+
+	// Find the last '.'.
+	size_t dot = filename.find_last_of('.');
+	if (dot == string::npos)
+	{
+		// No dot; no extension.
+		return;
+	}
+
+	// Find the last '/' or '\\'.
+	size_t bs = filename.find_last_of("/\\");
+	if (bs != string::npos && bs > dot)
+	{
+		// Dot is before the last slash.
+		// No extension.
+		return;
+	}
+
+	// Resize to the dot, then add ext.
+	filename.resize(dot+1);
+	filename.append(ext);
 }
