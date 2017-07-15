@@ -22,11 +22,9 @@ public:
 	struct Metadata { uint32_t size; const uint8_t *data; };
 
 	explicit ModelInfo(const char *filename);
-#ifdef _MSC_VER
-	explicit ModelInfo(const wchar_t *filename);
-#endif /* _MSC_VER */
 	explicit ModelInfo(const std::string &filename);
 #ifdef _MSC_VER
+	explicit ModelInfo(const wchar_t *filename);
 	explicit ModelInfo(const std::wstring &filename);
 #endif /* _MSC_VER */
 	explicit ModelInfo(std::istream &stream);
