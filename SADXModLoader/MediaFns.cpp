@@ -306,6 +306,7 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 
 	char path2[MAX_PATH];
 	strncpy(path2, pidxpath, sizeof(path2));
+	path2[MAX_PATH-1] = 0;
 	// Find the last slash or backslash and remove everything after it.
 	// (Equivalent to PathRemoveFileSpecA())
 	char *bs = strrchr(path2, '\\');
