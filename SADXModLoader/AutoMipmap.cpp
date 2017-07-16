@@ -818,7 +818,7 @@ namespace mipmap
 	{
 		mip_guard _guard(true);
 
-		FunctionPointer(Sint32, original, (Uint32, IDirect3DTexture8*), sub_77FA10_trampoline.Target());
+		NonStaticFunctionPointer(Sint32, original, (Uint32, IDirect3DTexture8*), sub_77FA10_trampoline.Target());
 		return original(gbix, texture);
 	}
 
@@ -830,7 +830,7 @@ namespace mipmap
 	{
 		mip_guard _guard(true);
 
-		FunctionPointer(void, original, (void*), sub_40D2A0_trampoline.Target());
+		NonStaticFunctionPointer(void, original, (void*), sub_40D2A0_trampoline.Target());
 		original(a1);
 	}
 }

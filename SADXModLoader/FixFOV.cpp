@@ -32,7 +32,7 @@ static void __cdecl njSetScreenDist_r(Angle bams)
 {
 	if (!is_wide)
 	{
-		FunctionPointer(void, original, (Angle), njSetScreenDist_trampoline.Target());
+		NonStaticFunctionPointer(void, original, (Angle), njSetScreenDist_trampoline.Target());
 		original(bams);
 		return;
 	}
@@ -50,7 +50,7 @@ static void __cdecl njSetPerspective_r(Angle bams)
 {
 	if (!is_wide)
 	{
-		FunctionPointer(void, original, (Angle), njSetPerspective_trampoline.Target());
+		NonStaticFunctionPointer(void, original, (Angle), njSetPerspective_trampoline.Target());
 		original(bams);
 		last_bams = HorizontalFOV_BAMS;
 		return;
