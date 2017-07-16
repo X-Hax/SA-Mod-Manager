@@ -130,7 +130,11 @@ void ReplaceFileExtension(string &filename, const char *ext)
 		return;
 	}
 
+	// Check for ext containing a '.'
+	if (ext[0] != '.')
+		dot++;
+
 	// Resize to the dot, then add ext.
-	filename.resize(dot+1);
+	filename.resize(dot);
 	filename.append(ext);
 }
