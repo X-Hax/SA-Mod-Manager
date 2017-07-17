@@ -51,6 +51,6 @@ void OnControl()
 void __cdecl OnExit(UINT uExitCode, int a1, int a2)
 {
 	RaiseEvents(modExitEvents);
-	FunctionPointer(void, original, (UINT, int, int), exitDetour.Target());
+	NonStaticFunctionPointer(void, original, (UINT, int, int), exitDetour.Target());
 	original(uExitCode, a1, a2);
 }
