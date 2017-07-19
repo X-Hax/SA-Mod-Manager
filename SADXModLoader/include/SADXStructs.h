@@ -841,13 +841,13 @@ struct StageLightData
 {
 	char level;
 	char act;
-	char light_num;
-	char use_yxz;
-	NJS_VECTOR xyz;
-	float dif;
-	float mutliplier;
-	float rgb[3];
-	float amb_rgb[3];
+	char index;
+	char use_direction;
+	NJS_VECTOR direction;
+	float specular;
+	float multiplier;
+	float diffuse[3];
+	float ambient[3];
 };
 
 struct OceanData

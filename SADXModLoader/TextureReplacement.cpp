@@ -697,7 +697,9 @@ static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist)
 /// <returns><c>true</c> on success.</returns>
 static bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
 {
-	static const string index_file = "index.txt";
+	// NOTE: This cannot be `static const string` due to
+	// TLS issues with MSVC 2017 on Windows XP.
+	static const char index_file[] = "index.txt";
 
 	// tl;dr compare the base name of the pvr with the base name of each texpack
 	// entry until a mach is found; otherwise return false.
@@ -713,7 +715,7 @@ static bool ReplacePVR(const string& filename, NJS_TEXMEMLIST** tex)
 		return false;
 	}
 
-	auto offset = index_path.length() - index_file.length();
+	auto offset = index_path.length() - (sizeof(index_file)-1);
 	auto end = index_path.substr(offset);
 	auto path = index_path.substr(0, --offset);
 

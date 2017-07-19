@@ -2178,13 +2178,16 @@ static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &m
 		StageLightData entry;
 		entry.level = (char)ParseLevelID(entdata->getString("Level"));
 		entry.act = (char)entdata->getInt("Act");
-		entry.light_num = (char)entdata->getInt("LightNum");
-		entry.use_yxz = (char)entdata->getBool("UseDirection");
-		ParseVertex(entdata->getString("Direction"), entry.xyz);
-		entry.dif = entdata->getFloat("Dif");
-		entry.mutliplier = entdata->getFloat("Multiplier");
-		ParseVertex(entdata->getString("RGB"), *(NJS_VECTOR *)entry.rgb);
-		ParseVertex(entdata->getString("AmbientRGB"), *(NJS_VECTOR *)entry.amb_rgb);
+		entry.index = (char)entdata->getInt("LightNum");
+		entry.use_direction = (char)entdata->getBool("UseDirection");
+		ParseVertex(entdata->getString("Direction"), entry.direction);
+
+		// FIXME: all these INI strings should match the light field names
+		entry.specular = entdata->getFloat("Dif");
+		entry.multiplier = entdata->getFloat("Multiplier");
+		ParseVertex(entdata->getString("RGB"), *(NJS_VECTOR *)entry.diffuse);
+		ParseVertex(entdata->getString("AmbientRGB"), *(NJS_VECTOR *)entry.ambient);
+
 		ents.push_back(entry);
 	}
 	delete inidata;
