@@ -1872,7 +1872,7 @@ static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
 		{
 			wchar_t filename[MAX_PATH];
 			swprintf(filename, LengthOfArray(filename), L"%s%d\\%s.ini",
-				pathbase.c_str(), i + 1, languagenames[i]);
+				pathbase.c_str(), i + 1, languagenames[l]);
 			const IniFile *const inidata = new IniFile(filename);
 			vector<string> strs = split(inidata->getString("", "Text"), '\n');
 			auto numents = strs.size();
