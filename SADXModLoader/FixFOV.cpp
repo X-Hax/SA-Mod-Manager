@@ -156,5 +156,13 @@ void ConfigureFOV()
 	// Changes return value of GetHorizontalFOV_BAMS
 	WriteData((Angle**)0x00402F01, &last_bams);
 
+	// Fixes lens flare positioning
+	// Standard lens flare
+	WriteData((float**)(0x004DA1CF + 2), &_nj_screen_.cx);
+	WriteData((float**)(0x004DA1DD + 2), &_nj_screen_.cy);
+	// Chaos 0 helicopter lens flare
+	WriteData((float**)(0x004DA584 + 2), &_nj_screen_.cx);
+	WriteData((float**)(0x004DA592 + 2), &_nj_screen_.cy);
+
 	njSetPerspective(bams_default);
 }
