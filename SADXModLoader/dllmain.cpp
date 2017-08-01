@@ -2230,10 +2230,15 @@ static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
 };
 
 static unordered_map<string, void *> dlllabels;
+static unordered_map<NJS_TEXLIST *, NJS_TEXLIST *> dlltexlists;
 
 static void LoadDLLLandTable(const wstring &path)
 {
 	LandTableInfo *info = new LandTableInfo(path);
+	LandTable *land = info->getlandtable();
+	auto tl = dlltexlists.find(land->TexList);
+	if (tl != dlltexlists.end())
+		land->TexList = tl->second;
 	auto labels = info->getlabels();
 	for (auto iter = labels->cbegin(); iter != labels->cend(); ++iter)
 		dlllabels[iter->first] = iter->second;
@@ -2846,14 +2851,7 @@ static void __cdecl InitMods()
 				swprintf(filename, LengthOfArray(filename), L"%s\\%s",
 					mod_dir.c_str(), modinfo->getWString(dlldatakeys[j]).c_str());
 				const IniFile *const dlldata = new IniFile(filename);
-				dlllabels.clear();
-				const IniGroup *group = dlldata->getGroup("Files");
-				for (auto iter = group->cbegin(); iter != group->cend(); ++iter)
-				{
-					auto type = dllfilefuncmap.find(split(iter->second, '|')[0]);
-					if (type != dllfilefuncmap.end())
-						type->second(mod_dir + L'\\' + MBStoUTF16(iter->first, CP_UTF8));
-				}
+				const IniGroup *group;
 				wstring dllname = dlldata->getWString("", "name");
 				HMODULE dllhandle;
 				if (dllhandles.find(dllname) != dllhandles.cend())
@@ -2877,6 +2875,30 @@ static void __cdecl InitMods()
 					dllexports[dllname] = exp;
 				}
 				const auto exports = &dllexports[dllname].exports;
+				dlltexlists.clear();
+				if (dlldata->hasGroup("TexLists"))
+				{
+					group = dlldata->getGroup("TexLists");
+					for (auto iter = group->cbegin(); iter != group->cend(); ++iter)
+					{
+						NJS_TEXLIST *key = (NJS_TEXLIST*)std::stoul(iter->first, nullptr, 16);
+						vector<string> valstr = split(iter->second, ',');
+						NJS_TEXLIST *value;
+						if (valstr.size() > 1)
+							value = ((NJS_TEXLIST**)(*exports)[valstr[0]].address)[std::stoul(valstr[1])];
+						else
+							value = (NJS_TEXLIST*)(*exports)[valstr[0]].address;
+						dlltexlists[key] = value;
+					}
+				}
+				dlllabels.clear();
+				group = dlldata->getGroup("Files");
+				for (auto iter = group->cbegin(); iter != group->cend(); ++iter)
+				{
+					auto type = dllfilefuncmap.find(split(iter->second, '|')[0]);
+					if (type != dllfilefuncmap.end())
+						type->second(mod_dir + L'\\' + MBStoUTF16(iter->first, CP_UTF8));
+				}
 				char buf[16];
 				for (unsigned int k = 0; k < 9999; k++)
 				{
