@@ -438,7 +438,7 @@ struct ObjectData2
 struct SETObjData
 {
 	char LoadCount;
-	BYTE f1;
+	Uint8 f1;
 	short Flags;
 	ObjectMaster *ObjInstance;
 	SETEntry *SETEntry;
