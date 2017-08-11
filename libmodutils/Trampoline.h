@@ -12,7 +12,6 @@ private:
 	void* detour;
 	LPVOID codeData;
 	size_t originalSize;
-	size_t codeSize;	// always originalSize + 5
 	const bool revert;
 
 public:
@@ -23,8 +22,11 @@ public:
 	/// <param name="end">End offset.</param>
 	/// <param name="func">Your detour function.</param>
 	/// <param name="destructRevert">If <c>true</c>, code changes will be reverted when this instance is destroyed.</param>
-	/// <remarks>If there's a relative jump or call within the range of <see cref="start" /> and <see cref="end" />,
-	/// they need to be replaced with absolute offsets before instantiating a <see cref="Trampoline" />.</remarks>
+	/// <remarks>
+	/// If the start address begins with a jump or call instruction, the relative address will be automatically repaired.
+	/// Any subsequent jumps or calls caught in the range of <paramref name="start"/> and <paramref name="end"/> will need
+	/// to be repaired manually.
+	/// </remarks>
 	Trampoline(intptr_t start, intptr_t end, void* func, bool destructRevert = true);
 	~Trampoline();
 
@@ -46,6 +48,6 @@ public:
 	// Size of Target including appended jump to remaining original code.
 	size_t CodeSize() const
 	{
-		return codeSize;
+		return originalSize + 5;
 	}
 };

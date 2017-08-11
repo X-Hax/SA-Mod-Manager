@@ -879,7 +879,6 @@ void uiscale::SetupHudScale()
 	DrawStageMissionImage_t        = new Trampoline(0x00457120, 0x00457126, DrawStageMissionImage_r);
 
 	DisplayPauseMenu_t = new Trampoline(0x00415420, 0x00415425, DisplayPauseMenu_r);
-	WriteCall(DisplayPauseMenu_t->Target(), (void*)0x40FDC0);
 
 	LifeGauge_Main_t = new Trampoline(0x004B3830, 0x004B3837, LifeGauge_Main_r);
 
@@ -890,7 +889,6 @@ void uiscale::SetupHudScale()
 
 	// TODO: Consider tracking down the individual functions so that they can be individually aligned.
 	scaleTwinkleCircuitHUD = new Trampoline(0x004DB5E0, 0x004DB5E5, ScaleTwinkleCircuitHUD);
-	WriteCall(scaleTwinkleCircuitHUD->Target(), (void*)0x590620);
 
 	// Rod scaling
 	FishingHud_DrawReel_t      = new Trampoline(0x0046C9F0, 0x0046C9F5, FishingHud_DrawReel_r);
@@ -954,7 +952,6 @@ void uiscale::SetupHudScale()
 #if 0
 	ChaoDX_Message_PlayerAction_Load_t = new Trampoline(0x0071B3B0, 0x0071B3B7, ChaoDX_Message_PlayerAction_Load_r);
 	ChaoDX_Message_PlayerAction_Display_t = new Trampoline(0x0071B210, 0x0071B215, ChaoDX_Message_PlayerAction_Display_r);
-	WriteCall(ChaoDX_Message_PlayerAction_Display_t->Target(), (void*)0x590620);
 #endif
 }
 
