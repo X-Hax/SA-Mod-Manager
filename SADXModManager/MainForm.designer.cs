@@ -61,8 +61,13 @@
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.codesCheckedListBox = new System.Windows.Forms.CheckedListBox();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
-			this.groupBox5 = new System.Windows.Forms.GroupBox();
+			this.groupBox6 = new System.Windows.Forms.GroupBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.comboFmvFill = new System.Windows.Forms.ComboBox();
+			this.comboBackgroundFill = new System.Windows.Forms.ComboBox();
 			this.checkScaleHud = new System.Windows.Forms.CheckBox();
+			this.groupBox5 = new System.Windows.Forms.GroupBox();
 			this.forceMipmappingCheckBox = new System.Windows.Forms.CheckBox();
 			this.forceTextureFilterCheckBox = new System.Windows.Forms.CheckBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -96,11 +101,6 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.groupBox6 = new System.Windows.Forms.GroupBox();
-			this.comboBackgroundFill = new System.Windows.Forms.ComboBox();
-			this.comboFmvFill = new System.Windows.Forms.ComboBox();
-			this.label6 = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
@@ -113,6 +113,7 @@
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			this.tabPage3.SuspendLayout();
+			this.groupBox6.SuspendLayout();
 			this.groupBox5.SuspendLayout();
 			this.groupBox3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.windowWidth)).BeginInit();
@@ -122,7 +123,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpdateFrequency)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.modContextMenu.SuspendLayout();
-			this.groupBox6.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label3
@@ -397,7 +397,7 @@
 			// 
 			this.configEditorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.configEditorButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.configEditorButton.Location = new System.Drawing.Point(295, 370);
+			this.configEditorButton.Location = new System.Drawing.Point(300, 370);
 			this.configEditorButton.Name = "configEditorButton";
 			this.configEditorButton.Size = new System.Drawing.Size(81, 22);
 			this.configEditorButton.TabIndex = 104;
@@ -432,7 +432,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(378, 291);
+			this.tabPage1.Size = new System.Drawing.Size(378, 338);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Mods";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -482,7 +482,7 @@
 			this.tabPage2.Controls.Add(this.codesCheckedListBox);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Size = new System.Drawing.Size(378, 291);
+			this.tabPage2.Size = new System.Drawing.Size(378, 338);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Codes";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -493,7 +493,7 @@
 			this.codesCheckedListBox.FormattingEnabled = true;
 			this.codesCheckedListBox.Location = new System.Drawing.Point(0, 0);
 			this.codesCheckedListBox.Name = "codesCheckedListBox";
-			this.codesCheckedListBox.Size = new System.Drawing.Size(378, 291);
+			this.codesCheckedListBox.Size = new System.Drawing.Size(378, 338);
 			this.codesCheckedListBox.TabIndex = 0;
 			this.codesCheckedListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.codesCheckedListBox_ItemCheck);
 			// 
@@ -511,6 +511,79 @@
 			this.tabPage3.Text = "Graphics";
 			this.tabPage3.UseVisualStyleBackColor = true;
 			// 
+			// groupBox6
+			// 
+			this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox6.Controls.Add(this.label7);
+			this.groupBox6.Controls.Add(this.label6);
+			this.groupBox6.Controls.Add(this.comboFmvFill);
+			this.groupBox6.Controls.Add(this.comboBackgroundFill);
+			this.groupBox6.Controls.Add(this.checkScaleHud);
+			this.groupBox6.Location = new System.Drawing.Point(6, 230);
+			this.groupBox6.Name = "groupBox6";
+			this.groupBox6.Size = new System.Drawing.Size(366, 100);
+			this.groupBox6.TabIndex = 2;
+			this.groupBox6.TabStop = false;
+			this.groupBox6.Text = "UI Scaling";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(42, 67);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(73, 13);
+			this.label7.TabIndex = 3;
+			this.label7.Text = "FMV fill mode:";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(6, 40);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(109, 13);
+			this.label6.TabIndex = 1;
+			this.label6.Text = "Background fill mode:";
+			// 
+			// comboFmvFill
+			// 
+			this.comboFmvFill.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboFmvFill.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.comboFmvFill.FormattingEnabled = true;
+			this.comboFmvFill.Items.AddRange(new object[] {
+            "Stretch [Default]",
+            "Fit",
+            "Fill"});
+			this.comboFmvFill.Location = new System.Drawing.Point(121, 64);
+			this.comboFmvFill.Name = "comboFmvFill";
+			this.comboFmvFill.Size = new System.Drawing.Size(121, 21);
+			this.comboFmvFill.TabIndex = 4;
+			// 
+			// comboBackgroundFill
+			// 
+			this.comboBackgroundFill.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboBackgroundFill.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.comboBackgroundFill.FormattingEnabled = true;
+			this.comboBackgroundFill.Items.AddRange(new object[] {
+            "Stretch [Default]",
+            "Fit",
+            "Fill"});
+			this.comboBackgroundFill.Location = new System.Drawing.Point(121, 37);
+			this.comboBackgroundFill.Name = "comboBackgroundFill";
+			this.comboBackgroundFill.Size = new System.Drawing.Size(121, 21);
+			this.comboBackgroundFill.TabIndex = 2;
+			// 
+			// checkScaleHud
+			// 
+			this.checkScaleHud.AutoSize = true;
+			this.checkScaleHud.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.checkScaleHud.Location = new System.Drawing.Point(6, 19);
+			this.checkScaleHud.Name = "checkScaleHud";
+			this.checkScaleHud.Size = new System.Drawing.Size(86, 18);
+			this.checkScaleHud.TabIndex = 0;
+			this.checkScaleHud.Text = "Scale HUD";
+			this.checkScaleHud.UseVisualStyleBackColor = true;
+			// 
 			// groupBox5
 			// 
 			this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -523,17 +596,6 @@
 			this.groupBox5.TabIndex = 1;
 			this.groupBox5.TabStop = false;
 			this.groupBox5.Text = "Enhancements";
-			// 
-			// checkScaleHud
-			// 
-			this.checkScaleHud.AutoSize = true;
-			this.checkScaleHud.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.checkScaleHud.Location = new System.Drawing.Point(6, 19);
-			this.checkScaleHud.Name = "checkScaleHud";
-			this.checkScaleHud.Size = new System.Drawing.Size(86, 18);
-			this.checkScaleHud.TabIndex = 0;
-			this.checkScaleHud.Text = "Scale HUD";
-			this.checkScaleHud.UseVisualStyleBackColor = true;
 			// 
 			// forceMipmappingCheckBox
 			// 
@@ -713,7 +775,7 @@
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Name = "tabPage4";
 			this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage4.Size = new System.Drawing.Size(378, 291);
+			this.tabPage4.Size = new System.Drawing.Size(378, 338);
 			this.tabPage4.TabIndex = 3;
 			this.tabPage4.Text = "Options";
 			this.tabPage4.UseVisualStyleBackColor = true;
@@ -939,68 +1001,6 @@
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
 			// 
-			// groupBox6
-			// 
-			this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox6.Controls.Add(this.label7);
-			this.groupBox6.Controls.Add(this.label6);
-			this.groupBox6.Controls.Add(this.comboFmvFill);
-			this.groupBox6.Controls.Add(this.comboBackgroundFill);
-			this.groupBox6.Controls.Add(this.checkScaleHud);
-			this.groupBox6.Location = new System.Drawing.Point(6, 230);
-			this.groupBox6.Name = "groupBox6";
-			this.groupBox6.Size = new System.Drawing.Size(366, 100);
-			this.groupBox6.TabIndex = 2;
-			this.groupBox6.TabStop = false;
-			this.groupBox6.Text = "UI Scaling";
-			// 
-			// comboBackgroundFill
-			// 
-			this.comboBackgroundFill.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBackgroundFill.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.comboBackgroundFill.FormattingEnabled = true;
-			this.comboBackgroundFill.Items.AddRange(new object[] {
-            "Stretch [Default]",
-            "Fit",
-            "Fill"});
-			this.comboBackgroundFill.Location = new System.Drawing.Point(121, 37);
-			this.comboBackgroundFill.Name = "comboBackgroundFill";
-			this.comboBackgroundFill.Size = new System.Drawing.Size(121, 21);
-			this.comboBackgroundFill.TabIndex = 2;
-			// 
-			// comboFmvFill
-			// 
-			this.comboFmvFill.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboFmvFill.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.comboFmvFill.FormattingEnabled = true;
-			this.comboFmvFill.Items.AddRange(new object[] {
-            "Stretch [Default]",
-            "Fit",
-            "Fill"});
-			this.comboFmvFill.Location = new System.Drawing.Point(121, 64);
-			this.comboFmvFill.Name = "comboFmvFill";
-			this.comboFmvFill.Size = new System.Drawing.Size(121, 21);
-			this.comboFmvFill.TabIndex = 4;
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(6, 40);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(109, 13);
-			this.label6.TabIndex = 1;
-			this.label6.Text = "Background fill mode:";
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(42, 67);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(73, 13);
-			this.label7.TabIndex = 3;
-			this.label7.Text = "FMV fill mode:";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1027,6 +1027,8 @@
 			this.tabPage1.PerformLayout();
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage3.ResumeLayout(false);
+			this.groupBox6.ResumeLayout(false);
+			this.groupBox6.PerformLayout();
 			this.groupBox5.ResumeLayout(false);
 			this.groupBox5.PerformLayout();
 			this.groupBox3.ResumeLayout(false);
@@ -1040,8 +1042,6 @@
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.modContextMenu.ResumeLayout(false);
-			this.groupBox6.ResumeLayout(false);
-			this.groupBox6.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -123,14 +124,30 @@ namespace SADXModManager
 		/// Follows symbolic links.
 		/// </summary>
 		/// <param name="path">Path to the file.</param>
-		/// <returns>The <seealso cref="FileInfo"/>  of the real file.</returns>
+		/// <returns>The <seealso cref="FileInfo"/> of the real file.</returns>
 		private static FileInfo GetFileInfo(string path)
 		{
 			var file = new FileInfo(path);
 
 			if ((file.Attributes & FileAttributes.ReparsePoint) != 0)
 			{
-				file = new FileInfo(NativeMethods.GetFinalPathName(path).Replace(@"\\?\", null));
+				string reparsed;
+
+				try
+				{
+					reparsed = NativeMethods.GetFinalPathName(path);
+				}
+				catch (Win32Exception ex)
+				{
+					if (ex.NativeErrorCode == 2)
+					{
+						throw new FileNotFoundException();
+					}
+
+					throw;
+				}
+
+				file = new FileInfo(reparsed.Replace(@"\\?\", null));
 			}
 
 			return file;
@@ -226,7 +243,17 @@ namespace SADXModManager
 						continue;
 					}
 
-					FileInfo info = GetFileInfo(filePath);
+					FileInfo info;
+
+					try
+					{
+						info = GetFileInfo(filePath);
+					}
+					catch (FileNotFoundException)
+					{
+						result.Add(new ModManifestDiff(ModManifestState.Removed, m, null));
+						continue;
+					}
 
 					if (info.Length != m.FileSize)
 					{
