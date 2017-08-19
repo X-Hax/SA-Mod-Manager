@@ -21,19 +21,20 @@ namespace SADXModManager.Forms
 		private const string sadxIni = "sonicDX.ini";
 		DirectInput directInput;
 		Joystick inputDevice;
-		List<ButtonControl> buttonControls = new List<ButtonControl>();
-		List<ControllerConfigInternal> controllerConfig = new List<ControllerConfigInternal>();
+		readonly List<ButtonControl> buttonControls = new List<ButtonControl>();
+		readonly List<ControllerConfigInternal> controllerConfig = new List<ControllerConfigInternal>();
 
-		static readonly string[] actionNames = {
-												   "Rotate camera right",
-												   "Rotate camera left",
-												   "Start/Set",
-												   "Jump",
-												   "Cancel/Attack",
-												   "Action",
-												   "Flute",
-												   "Z Button"
-											   };
+		static readonly string[] actionNames =
+		{
+			"Rotate camera right",
+			"Rotate camera left",
+			"Start/Set",
+			"Jump",
+			"Cancel/Attack",
+			"Action",
+			"Flute",
+			"Z Button"
+		};
 
 		static readonly int[] buttonIDs = { 16, 17, 3, 2, 1, 10, 9, 8 };
 
@@ -63,14 +64,14 @@ namespace SADXModManager.Forms
 				tableLayoutPanel1.RowCount = actionNames.Length;
 				for (int i = 0; i < actionNames.Length; i++)
 				{
-					tableLayoutPanel1.Controls.Add(new Label() 
+					tableLayoutPanel1.Controls.Add(new Label
 					{
 						AutoSize = true,
 						Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Top,
 						Text = actionNames[i],
 						TextAlign = ContentAlignment.MiddleLeft
 					}, 0, i);
-					ButtonControl buttonControl = new ButtonControl() { Enabled = false };
+					ButtonControl buttonControl = new ButtonControl { Enabled = false };
 					tableLayoutPanel1.Controls.Add(buttonControl, 1, i);
 					buttonControls.Add(buttonControl);
 					buttonControl.SetButtonClicked += buttonControl_SetButtonClicked;
@@ -80,7 +81,9 @@ namespace SADXModManager.Forms
 				}
 			}
 			else
+			{
 				tabControl1.TabPages.Remove(tabPage_Controller);
+			}
 			// Load the config INI upon window load
 			LoadConfigIni();
 		}
@@ -113,12 +116,13 @@ namespace SADXModManager.Forms
 			// Framerate
 			if (configFile.GameConfig.FrameRate == (int)FrameRate.Invalid || configFile.GameConfig.FrameRate > (int)FrameRate.Low)
 			{
-
 				MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				comboFramerate.SelectedIndex = (int)FrameRate.High - 1;
 			}
 			else
+			{
 				comboFramerate.SelectedIndex = configFile.GameConfig.FrameRate - 1;
+			}
 
 			// Clip level
 			comboClip.SelectedIndex = configFile.GameConfig.ClipLevel;
@@ -150,19 +154,29 @@ namespace SADXModManager.Forms
 			{
 				int[] cfg = Enumerable.Repeat(-1, buttonIDs.Length).ToArray();
 				for (int i = 0; i < item.Value.ButtonSettings.Length; i++)
+				{
 					if (Array.IndexOf(buttonIDs, item.Value.ButtonSettings[i]) != -1)
+					{
 						cfg[Array.IndexOf(buttonIDs, item.Value.ButtonSettings[i])] = i;
-				controllerConfig.Add(new ControllerConfigInternal() { Name = item.Key, Buttons = cfg});
+					}
+				}
+				controllerConfig.Add(new ControllerConfigInternal { Name = item.Key, Buttons = cfg });
 				controllerConfigSelect.Items.Add(item.Key);
 			}
 
-			if (inputDevice != null)
-				for (int i = 0; i < controllerConfig.Count; i++)
-					if (controllerConfig[i].Name == configFile.GameConfig.PadConfig)
-					{
-						controllerConfigSelect.SelectedIndex = i;
-						break;
-					}
+			if (inputDevice == null)
+			{
+				return;
+			}
+
+			for (int i = 0; i < controllerConfig.Count; i++)
+			{
+				if (controllerConfig[i].Name == configFile.GameConfig.PadConfig)
+				{
+					controllerConfigSelect.SelectedIndex = i;
+					break;
+				}
+			}
 		}
 
 		private void SaveConfigIni()
@@ -192,8 +206,12 @@ namespace SADXModManager.Forms
 					ControllerConfig config = new ControllerConfig { ButtonCount = item.Buttons.Max() + 1 };
 					config.ButtonSettings = Enumerable.Repeat(-1, config.ButtonCount).ToArray();
 					for (int i = 0; i < buttonIDs.Length; i++)
+					{
 						if (item.Buttons[i] != -1)
+						{
 							config.ButtonSettings[item.Buttons[i]] = buttonIDs[i];
+						}
+					}
 					configFile.Controllers.Add(item.Name, config);
 				}
 			}
@@ -313,11 +331,13 @@ namespace SADXModManager.Forms
 					break;
 				bool[] buttons = inputDevice.GetCurrentState().Buttons;
 				for (int i = 0; i < buttons.Length; i++)
+				{
 					if (buttons[i])
 					{
 						pressed = i;
 						break;
 					}
+				}
 			}
 			inputDevice.Unacquire();
 			inputDevice.SetNotification(null);
@@ -339,8 +359,11 @@ namespace SADXModManager.Forms
 				config.Buttons[currentAction] = button;
 			}
 			else
-				buttonControls[currentAction].Text = config.Buttons[currentAction] == -1 ? "Unassigned" :
-					"Button " + (config.Buttons[currentAction] + 1);
+			{
+				buttonControls[currentAction].Text = config.Buttons[currentAction] == -1
+					? "Unassigned"
+					: "Button " + (config.Buttons[currentAction] + 1);
+			}
 			Enabled = true;
 		}
 
@@ -359,8 +382,9 @@ namespace SADXModManager.Forms
 				inputDevice.Unacquire();
 				inputDevice.SetNotification(null);
 				ControllerConfigInternal config = controllerConfig[controllerConfigSelect.SelectedIndex];
-				buttonControls[currentAction].Text = config.Buttons[currentAction] == -1 ? "Unassigned" :
-					"Button " + (config.Buttons[currentAction] + 1);
+				buttonControls[currentAction].Text = config.Buttons[currentAction] == -1
+					? "Unassigned"
+					: "Button " + (config.Buttons[currentAction] + 1);
 				Enabled = true;
 			}
 		}
@@ -388,8 +412,11 @@ namespace SADXModManager.Forms
 
 		private void controllerConfigAdd_Click(object sender, EventArgs e)
 		{
-			controllerConfig.Add(new ControllerConfigInternal() { Name = "*NEW*",
-				Buttons = Enumerable.Repeat(-1, buttonIDs.Length).ToArray() });
+			controllerConfig.Add(new ControllerConfigInternal
+			{
+				Name = "*NEW*",
+				Buttons = Enumerable.Repeat(-1, buttonIDs.Length).ToArray()
+			});
 			controllerConfigSelect.Items.Add("*NEW*");
 			controllerConfigSelect.SelectedIndex = controllerConfigSelect.Items.Count - 1;
 		}
@@ -403,14 +430,26 @@ namespace SADXModManager.Forms
 		private void controllerConfigName_TextChanged(object sender, EventArgs e)
 		{
 			for (int i = 0; i < controllerConfig.Count; i++)
+			{
 				if (i != controllerConfigSelect.SelectedIndex && controllerConfig[i].Name == controllerConfigName.Text)
 				{
 					controllerConfigName.BackColor = Color.Red;
 					return;
 				}
+			}
+
 			controllerConfigName.BackColor = SystemColors.Window;
 			controllerConfig[controllerConfigSelect.SelectedIndex].Name = controllerConfigName.Text;
 			controllerConfigSelect.Items[controllerConfigSelect.SelectedIndex] = controllerConfigName.Text;
+		}
+
+		private void ConfigEditDialog_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			directInput?.Dispose();
+			directInput = null;
+
+			inputDevice?.Dispose();
+			inputDevice = null;
 		}
 	}
 

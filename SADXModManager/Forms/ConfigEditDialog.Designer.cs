@@ -608,6 +608,7 @@
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Editor";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConfigEditDialog_FormClosing);
 			this.Load += new System.EventHandler(this.ConfigEditDialog_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConfigEditDialog_KeyDown);
 			this.tabControl1.ResumeLayout(false);

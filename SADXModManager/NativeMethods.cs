@@ -13,29 +13,29 @@ namespace SADXModManager
 		private const uint FILE_READ_EA = 0x0008;
 		private const uint FILE_FLAG_BACKUP_SEMANTICS = 0x2000000;
 
-		[DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-		static extern uint GetFinalPathNameByHandle(IntPtr hFile, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszFilePath, uint cchFilePath, uint dwFlags);
+		[DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+		static extern uint GetFinalPathNameByHandle(IntPtr hFile, StringBuilder lpszFilePath, uint cchFilePath, uint dwFlags);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool CloseHandle(IntPtr hObject);
 
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		public static extern IntPtr CreateFile(
-			[MarshalAs(UnmanagedType.LPTStr)] string filename,
+		[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		private static extern IntPtr CreateFile(
+			string filename,
 			[MarshalAs(UnmanagedType.U4)] uint access,
 			[MarshalAs(UnmanagedType.U4)] FileShare share,
-			IntPtr securityAttributes, // optional SECURITY_ATTRIBUTES struct or IntPtr.Zero
+			IntPtr securityAttributes,
 			[MarshalAs(UnmanagedType.U4)] FileMode creationDisposition,
 			[MarshalAs(UnmanagedType.U4)] uint flagsAndAttributes,
 			IntPtr templateFile);
 
 		public static string GetFinalPathName(string path)
 		{
-			var h = CreateFile(path, FILE_READ_EA, FileShare.ReadWrite | FileShare.Delete, IntPtr.Zero,
+			IntPtr handle = CreateFile(path, FILE_READ_EA, FileShare.ReadWrite | FileShare.Delete, IntPtr.Zero,
 				FileMode.Open, FILE_FLAG_BACKUP_SEMANTICS, IntPtr.Zero);
 
-			if (h == INVALID_HANDLE_VALUE)
+			if (handle == INVALID_HANDLE_VALUE)
 			{
 				throw new Win32Exception();
 			}
@@ -43,9 +43,9 @@ namespace SADXModManager
 			try
 			{
 				var sb = new StringBuilder(1024);
-				var res = GetFinalPathNameByHandle(h, sb, 1024, 0);
+				uint result = GetFinalPathNameByHandle(handle, sb, 1024, 0);
 
-				if (res == 0)
+				if (result == 0)
 				{
 					throw new Win32Exception();
 				}
@@ -54,7 +54,7 @@ namespace SADXModManager
 			}
 			finally
 			{
-				CloseHandle(h);
+				CloseHandle(handle);
 			}
 		}
 	}
