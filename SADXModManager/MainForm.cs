@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Windows.Forms;
 using IniFile;
 using SADXModManager.Forms;
+using SADXModManager.Properties;
 
 namespace SADXModManager
 {
@@ -1072,17 +1073,22 @@ namespace SADXModManager
 
 			LoadModList();
 		}
+
+		private bool displayedManifestWarning;
 		
 		private void generateManifestToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			DialogResult result = MessageBox.Show(this, "This can cause MOD USER DATA (SAVE FILES, CONFIG FILES) TO BE LOST upon next update!"
-				+ " To prevent this, you should never run this on mods you did not develop."
-				+ "\n\nAre you sure you wish to continue?",
-				"Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-			if (result != DialogResult.Yes)
+			if (!displayedManifestWarning)
 			{
-				return;
+				DialogResult result = MessageBox.Show(this, Resources.GenerateManifestWarning,
+					"Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+				if (result != DialogResult.Yes)
+				{
+					return;
+				}
+
+				displayedManifestWarning = true;
 			}
 
 			foreach (ListViewItem item in modListView.SelectedItems)
@@ -1101,7 +1107,6 @@ namespace SADXModManager
 						continue;
 					}
 
-					manifest = progress.manifest;
 					diff = progress.diff;
 				}
 
