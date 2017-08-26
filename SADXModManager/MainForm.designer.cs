@@ -261,7 +261,7 @@
             0,
             0});
 			this.verticalResolution.Minimum = new decimal(new int[] {
-            480,
+            1,
             0,
             0,
             0});
@@ -284,7 +284,7 @@
             0,
             0});
 			this.horizontalResolution.Minimum = new decimal(new int[] {
-            640,
+            1,
             0,
             0,
             0});
@@ -718,7 +718,7 @@
             0,
             0});
 			this.windowWidth.Minimum = new decimal(new int[] {
-            320,
+            1,
             0,
             0,
             0});
@@ -740,7 +740,7 @@
             0,
             0});
 			this.windowHeight.Minimum = new decimal(new int[] {
-            240,
+            1,
             0,
             0,
             0});
