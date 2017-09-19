@@ -276,11 +276,11 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 		BASS_StreamFree(voicechan);
 	}
 
-	auto replaced = sadx_fileMap.replaceFile(filename);
+	filename = sadx_fileMap.replaceFile(filename);
 
 	if (enablevgmstream)
 	{
-		voicechan = BASS_VGMSTREAM_StreamCreate(replaced, 0);
+		voicechan = BASS_VGMSTREAM_StreamCreate(filename, 0);
 		if (voicechan != 0)
 		{
 			voicewmp = false;
