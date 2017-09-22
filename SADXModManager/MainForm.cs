@@ -11,6 +11,8 @@ using System.Security.Cryptography;
 using System.Windows.Forms;
 using IniFile;
 using SADXModManager.Forms;
+using ModManagerCommon;
+using ModManagerCommon.Forms;
 using SADXModManager.Properties;
 
 namespace SADXModManager
@@ -28,8 +30,8 @@ namespace SADXModManager
 		const string datadllorigpath = "system/CHRMODELS_orig.dll";
 		const string loaderinipath = "mods/SADXModLoader.ini";
 		const string loaderdllpath = "mods/SADXModLoader.dll";
-		LoaderInfo loaderini;
-		Dictionary<string, ModInfo> mods;
+		SADXLoaderInfo loaderini;
+		Dictionary<string, SADXModInfo> mods;
 		const string codexmlpath = "mods/Codes.xml";
 		const string codedatpath = "mods/Codes.dat";
 		const string patchdatpath = "mods/Patches.dat";
@@ -74,7 +76,7 @@ namespace SADXModManager
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			SetDoubleBuffered(modListView, true);
-			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<LoaderInfo>(loaderinipath) : new LoaderInfo();
+			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
 
 			if (CheckForUpdates())
 				return;
@@ -181,13 +183,13 @@ namespace SADXModManager
 		private void LoadModList()
 		{
 			modListView.Items.Clear();
-			mods = new Dictionary<string, ModInfo>();
+			mods = new Dictionary<string, SADXModInfo>();
 			codes = new List<Code>(mainCodes.Codes);
 			string modDir = Path.Combine(Environment.CurrentDirectory, "mods");
 
-			foreach (string filename in ModInfo.GetModFiles(new DirectoryInfo(modDir)))
+			foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modDir)))
 			{
-				mods.Add(Path.GetDirectoryName(filename).Substring(modDir.Length + 1), IniSerializer.Deserialize<ModInfo>(filename));
+				mods.Add(Path.GetDirectoryName(filename).Substring(modDir.Length + 1), IniSerializer.Deserialize<SADXModInfo>(filename));
 			}
 
 			modListView.BeginUpdate();
@@ -196,7 +198,7 @@ namespace SADXModManager
 			{
 				if (mods.ContainsKey(mod))
 				{
-					ModInfo inf = mods[mod];
+					SADXModInfo inf = mods[mod];
 					suppressEvent = true;
 					modListView.Items.Add(new ListViewItem(new[] { inf.Name, inf.Author, inf.Version }) { Checked = true, Tag = mod });
 					suppressEvent = false;
@@ -211,7 +213,7 @@ namespace SADXModManager
 				}
 			}
 
-			foreach (KeyValuePair<string, ModInfo> inf in mods)
+			foreach (KeyValuePair<string, SADXModInfo> inf in mods)
 			{
 				if (!loaderini.Mods.Contains(inf.Key))
 					modListView.Items.Add(new ListViewItem(new[] { inf.Value.Name, inf.Value.Author, inf.Value.Version }) { Tag = inf.Key });
@@ -433,7 +435,7 @@ namespace SADXModManager
 				developerToolStripMenuItem.Enabled       = false;
 			}));
 
-			var updatableMods = e.Argument as List<KeyValuePair<string, ModInfo>>;
+			var updatableMods = e.Argument as List<KeyValuePair<string, SADXModInfo>>;
 			if (updatableMods == null || updatableMods.Count == 0)
 			{
 				return;
@@ -445,7 +447,7 @@ namespace SADXModManager
 
 			using (var client = new UpdaterWebClient())
 			{
-				foreach (KeyValuePair<string, ModInfo> info in updatableMods)
+				foreach (KeyValuePair<string, SADXModInfo> info in updatableMods)
 				{
 					if (worker.CancellationPending)
 					{
@@ -453,7 +455,7 @@ namespace SADXModManager
 						break;
 					}
 
-					ModInfo mod = info.Value;
+					SADXModInfo mod = info.Value;
 					if (!string.IsNullOrEmpty(mod.GitHubRepo))
 					{
 						if (string.IsNullOrEmpty(mod.GitHubAsset))
@@ -508,7 +510,7 @@ namespace SADXModManager
 				throw new Exception("what");
 			}
 
-			var updatableMods = e.Argument as List<Tuple<string, ModInfo, List<ModManifestDiff>>>;
+			var updatableMods = e.Argument as List<Tuple<string, SADXModInfo, List<ModManifestDiff>>>;
 			if (updatableMods == null || updatableMods.Count == 0)
 			{
 				return;
@@ -520,7 +522,7 @@ namespace SADXModManager
 
 			using (var client = new UpdaterWebClient())
 			{
-				foreach (Tuple<string, ModInfo, List<ModManifestDiff>> info in updatableMods)
+				foreach (Tuple<string, SADXModInfo, List<ModManifestDiff>> info in updatableMods)
 				{
 					if (worker.CancellationPending)
 					{
@@ -528,7 +530,7 @@ namespace SADXModManager
 						break;
 					}
 
-					ModInfo mod = info.Item2;
+					SADXModInfo mod = info.Item2;
 					if (!string.IsNullOrEmpty(mod.GitHubRepo))
 					{
 						if (string.IsNullOrEmpty(mod.GitHubAsset))
@@ -677,98 +679,8 @@ namespace SADXModManager
 					selectedCodes.Add(item);
 			}
 
-			using (FileStream fs = File.Create(patchdatpath))
-			using (BinaryWriter bw = new BinaryWriter(fs, System.Text.Encoding.ASCII))
-			{
-				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '5' });
-				bw.Write(selectedPatches.Count);
-				foreach (Code item in selectedPatches)
-				{
-					if (item.IsReg)
-						bw.Write((byte)CodeType.newregs);
-					WriteCodes(item.Lines, bw);
-				}
-				bw.Write(byte.MaxValue);
-			}
-			using (FileStream fs = File.Create(codedatpath))
-			using (BinaryWriter bw = new BinaryWriter(fs, System.Text.Encoding.ASCII))
-			{
-				bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '5' });
-				bw.Write(selectedCodes.Count);
-				foreach (Code item in selectedCodes)
-				{
-					if (item.IsReg)
-						bw.Write((byte)CodeType.newregs);
-					WriteCodes(item.Lines, bw);
-				}
-				bw.Write(byte.MaxValue);
-			}
-		}
-
-		private void WriteCodes(IEnumerable<CodeLine> codeList, BinaryWriter writer)
-		{
-			foreach (CodeLine line in codeList)
-			{
-				writer.Write((byte)line.Type);
-				uint address;
-				if (line.Address.StartsWith("r"))
-					address = uint.Parse(line.Address.Substring(1), System.Globalization.NumberStyles.None, System.Globalization.NumberFormatInfo.InvariantInfo);
-				else
-					address = uint.Parse(line.Address, System.Globalization.NumberStyles.HexNumber);
-				if (line.Pointer)
-					address |= 0x80000000u;
-				writer.Write(address);
-				if (line.Pointer)
-					if (line.Offsets != null)
-					{
-						writer.Write((byte)line.Offsets.Count);
-						foreach (int off in line.Offsets)
-							writer.Write(off);
-					}
-					else
-						writer.Write((byte)0);
-				if (line.Type == CodeType.ifkbkey)
-					writer.Write((int)(Keys)Enum.Parse(typeof(Keys), line.Value));
-				else
-					switch (line.ValueType)
-					{
-						case ValueType.@decimal:
-							switch (line.Type)
-							{
-								case CodeType.writefloat:
-								case CodeType.addfloat:
-								case CodeType.subfloat:
-								case CodeType.mulfloat:
-								case CodeType.divfloat:
-								case CodeType.ifeqfloat:
-								case CodeType.ifnefloat:
-								case CodeType.ifltfloat:
-								case CodeType.iflteqfloat:
-								case CodeType.ifgtfloat:
-								case CodeType.ifgteqfloat:
-									writer.Write(float.Parse(line.Value, System.Globalization.NumberStyles.Float, System.Globalization.NumberFormatInfo.InvariantInfo));
-									break;
-								default:
-									writer.Write(unchecked((int)long.Parse(line.Value, System.Globalization.NumberStyles.Integer, System.Globalization.NumberFormatInfo.InvariantInfo)));
-									break;
-							}
-							break;
-						case ValueType.hex:
-							writer.Write(uint.Parse(line.Value, System.Globalization.NumberStyles.HexNumber, System.Globalization.NumberFormatInfo.InvariantInfo));
-							break;
-					}
-				writer.Write(line.RepeatCount ?? 1);
-				if (line.IsIf)
-				{
-					WriteCodes(line.TrueLines, writer);
-					if (line.FalseLines.Count > 0)
-					{
-						writer.Write((byte)CodeType.@else);
-						WriteCodes(line.FalseLines, writer);
-					}
-					writer.Write((byte)CodeType.endif);
-				}
-			}
+			CodeList.WriteDatFile(patchdatpath, selectedPatches);
+			CodeList.WriteDatFile(codedatpath, selectedCodes);
 		}
 
 		private void saveAndPlayButton_Click(object sender, EventArgs e)
@@ -968,7 +880,7 @@ namespace SADXModManager
 			foreach (string mod in modlist)
 				if (mods.ContainsKey(mod))
 				{
-					ModInfo inf = mods[mod];
+					SADXModInfo inf = mods[mod];
 					if (!string.IsNullOrEmpty(inf.Codes))
 						codes.AddRange(CodeList.Load(Path.Combine(Path.Combine(modDir, mod), inf.Codes)).Codes);
 				}
@@ -1139,7 +1051,7 @@ namespace SADXModManager
 			InitializeWorker();
 			updateChecker?.RunWorkerAsync(modListView.SelectedItems.Cast<ListViewItem>()
 				.Select(x => (string)x.Tag)
-				.Select(x => new KeyValuePair<string, ModInfo>(x, mods[x]))
+				.Select(x => new KeyValuePair<string, SADXModInfo>(x, mods[x]))
 				.ToList());
 		}
 
