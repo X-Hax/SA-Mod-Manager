@@ -39,7 +39,7 @@ namespace SADXModManager.Forms
 					Directory.CreateDirectory(Path.Combine(moddir, "SAVEDATA"));
 				}
 
-				ModInfo newMod = new ModInfo
+				SADXModInfo newMod = new SADXModInfo
 				{
 					Name             = textModName.Text,
 					Author           = textModAuthor.Text,
