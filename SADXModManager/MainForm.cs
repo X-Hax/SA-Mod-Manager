@@ -8,11 +8,13 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using IniFile;
-using SADXModManager.Forms;
 using ModManagerCommon;
 using ModManagerCommon.Forms;
+using SADXModManager.Forms;
 using SADXModManager.Properties;
 
 namespace SADXModManager
@@ -40,9 +42,11 @@ namespace SADXModManager
 		bool installed;
 		bool suppressEvent;
 
+		readonly ModUpdater modUpdater = new ModUpdater();
 		BackgroundWorker updateChecker;
+		private bool manualModUpdate;
 
-		private static bool Elapsed(UpdateUnit unit, int amount, DateTime start)
+		private static bool UpdateTimeElapsed(UpdateUnit unit, int amount, DateTime start)
 		{
 			if (unit == UpdateUnit.Always)
 			{
@@ -189,7 +193,7 @@ namespace SADXModManager
 
 			foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modDir)))
 			{
-				mods.Add(Path.GetDirectoryName(filename).Substring(modDir.Length + 1), IniSerializer.Deserialize<SADXModInfo>(filename));
+				mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(modDir.Length + 1), IniSerializer.Deserialize<SADXModInfo>(filename));
 			}
 
 			modListView.BeginUpdate();
@@ -241,7 +245,7 @@ namespace SADXModManager
 				return false;
 			}
 
-			if (!force && !Elapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.UpdateTime)))
+			if (!force && !UpdateTimeElapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.UpdateTime)))
 			{
 				return false;
 			}
@@ -314,24 +318,25 @@ namespace SADXModManager
 
 			InitializeWorker();
 
-			if (!force && !Elapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.ModUpdateTime)))
+			if (!force && !UpdateTimeElapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.ModUpdateTime)))
 			{
 				return;
 			}
 
 			checkedForUpdates = true;
 			loaderini.ModUpdateTime = DateTime.UtcNow.ToFileTimeUtc();
-			updateChecker.RunWorkerAsync(mods.ToList());
+			updateChecker.RunWorkerAsync(mods.Select(x => new KeyValuePair<string, ModInfo>(x.Key, x.Value)).ToList());
 			buttonCheckForUpdates.Enabled = false;
 		}
 
 		private void UpdateChecker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			if (UpdateHelper.ForceUpdate)
+			if (modUpdater.ForceUpdate)
 			{
 				updateChecker?.Dispose();
 				updateChecker = null;
-				UpdateHelper.ForceUpdate = false;
+				modUpdater.ForceUpdate = false;
+				modUpdater.Clear();
 			}
 
 			if (e.Cancelled)
@@ -339,8 +344,7 @@ namespace SADXModManager
 				return;
 			}
 
-			var data = e.Result as Tuple<List<ModDownload>, List<string>>;
-			if (data == null)
+			if (!(e.Result is Tuple<List<ModDownload>, List<string>> data))
 			{
 				return;
 			}
@@ -352,9 +356,17 @@ namespace SADXModManager
 					"Update Errors", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
+			bool manual = manualModUpdate;
+			manualModUpdate = false;
+
 			List<ModDownload> updates = data.Item1;
 			if (updates.Count == 0)
 			{
+				if (manual)
+				{
+					MessageBox.Show(this, "Mods are up to date.",
+						"No Updates", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
 				return;
 			}
 
@@ -416,11 +428,10 @@ namespace SADXModManager
 			LoadModList();
 		}
 
+		// TODO: cancel
 		private void UpdateChecker_DoWork(object sender, DoWorkEventArgs e)
 		{
-			var worker = sender as BackgroundWorker;
-
-			if (worker == null)
+			if (!(sender is BackgroundWorker worker))
 			{
 				throw new Exception("what");
 			}
@@ -435,94 +446,52 @@ namespace SADXModManager
 				developerToolStripMenuItem.Enabled       = false;
 			}));
 
-			var updatableMods = e.Argument as List<KeyValuePair<string, SADXModInfo>>;
-			if (updatableMods == null || updatableMods.Count == 0)
-			{
-				return;
-			}
+			var updatableMods = e.Argument as List<KeyValuePair<string, ModInfo>>;
+			List<ModDownload> updates = null;
+			List<string> errors = null;
 
-			var gitHubCache = new Dictionary<string, List<GitHubRelease>>();
-			var updates = new List<ModDownload>();
-			var errors = new List<string>();
+			var tokenSource = new CancellationTokenSource();
+			CancellationToken token = tokenSource.Token;
 
-			using (var client = new UpdaterWebClient())
+			using (var task = new Task(() => modUpdater.GetModUpdates(updatableMods, out updates, out errors, token), token))
 			{
-				foreach (KeyValuePair<string, SADXModInfo> info in updatableMods)
+				task.Start();
+
+				while (!task.IsCompleted && !task.IsCanceled)
 				{
+					Application.DoEvents();
+
 					if (worker.CancellationPending)
 					{
-						e.Cancel = true;
-						break;
-					}
-
-					SADXModInfo mod = info.Value;
-					if (!string.IsNullOrEmpty(mod.GitHubRepo))
-					{
-						if (string.IsNullOrEmpty(mod.GitHubAsset))
-						{
-							errors.Add($"[{ mod.Name }] GitHubRepo specified, but GitHubAsset is missing.");
-							continue;
-						}
-
-						ModDownload d = UpdateHelper.GetGitHubReleases(mod, info.Key, client, gitHubCache, errors);
-						if (d != null)
-						{
-							updates.Add(d);
-						}
-					}
-					else if (!string.IsNullOrEmpty(mod.UpdateUrl))
-					{
-						List<ModManifest> localManifest = null;
-						var manPath = Path.Combine("mods", info.Key, "mod.manifest");
-
-						if (!UpdateHelper.ForceUpdate && File.Exists(manPath))
-						{
-							try
-							{
-								localManifest = ModManifest.FromFile(manPath);
-							}
-							catch (Exception ex)
-							{
-								errors.Add($"[{mod.Name}] Error parsing local manifest: {ex.Message}");
-								continue;
-							}
-						}
-
-						ModDownload d = UpdateHelper.CheckModularVersion(mod, info.Key, localManifest, client, errors);
-						if (d != null)
-						{
-							updates.Add(d);
-						}
+						tokenSource.Cancel();
 					}
 				}
+
+				task.Wait(token);
 			}
 
 			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, errors);
 		}
 
 		// TODO: merge with ^
-		private static void UpdateChecker_DoWorkForced(object sender, DoWorkEventArgs e)
+		private void UpdateChecker_DoWorkForced(object sender, DoWorkEventArgs e)
 		{
-			var worker = sender as BackgroundWorker;
-
-			if (worker == null)
+			if (!(sender is BackgroundWorker worker))
 			{
 				throw new Exception("what");
 			}
 
-			var updatableMods = e.Argument as List<Tuple<string, SADXModInfo, List<ModManifestDiff>>>;
-			if (updatableMods == null || updatableMods.Count == 0)
+			if (!(e.Argument is List<Tuple<string, ModInfo, List<ModManifestDiff>>> updatableMods) || updatableMods.Count == 0)
 			{
 				return;
 			}
 
-			var gitHubCache = new Dictionary<string, List<GitHubRelease>>();
 			var updates = new List<ModDownload>();
 			var errors = new List<string>();
 
 			using (var client = new UpdaterWebClient())
 			{
-				foreach (Tuple<string, SADXModInfo, List<ModManifestDiff>> info in updatableMods)
+				foreach (Tuple<string, ModInfo, List<ModManifestDiff>> info in updatableMods)
 				{
 					if (worker.CancellationPending)
 					{
@@ -530,7 +499,7 @@ namespace SADXModManager
 						break;
 					}
 
-					SADXModInfo mod = info.Item2;
+					ModInfo mod = info.Item2;
 					if (!string.IsNullOrEmpty(mod.GitHubRepo))
 					{
 						if (string.IsNullOrEmpty(mod.GitHubAsset))
@@ -539,7 +508,7 @@ namespace SADXModManager
 							continue;
 						}
 
-						ModDownload d = UpdateHelper.GetGitHubReleases(mod, info.Item1, client, gitHubCache, errors);
+						ModDownload d = modUpdater.GetGitHubReleases(mod, info.Item1, client, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -551,7 +520,7 @@ namespace SADXModManager
 							.Where(x => x.State == ModManifestState.Unchanged)
 							.Select(x => x.Current).ToList();
 
-						ModDownload d = UpdateHelper.CheckModularVersion(mod, info.Item1, localManifest, client, errors);
+						ModDownload d = modUpdater.CheckModularVersion(mod, info.Item1, localManifest, client, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1019,7 +988,7 @@ namespace SADXModManager
 						continue;
 					}
 
-					diff = progress.diff;
+					diff = progress.Diff;
 				}
 
 				if (diff == null)
@@ -1049,6 +1018,7 @@ namespace SADXModManager
 		private void UpdateSelectedMods()
 		{
 			InitializeWorker();
+			manualModUpdate = true;
 			updateChecker?.RunWorkerAsync(modListView.SelectedItems.Cast<ListViewItem>()
 				.Select(x => (string)x.Tag)
 				.Select(x => new KeyValuePair<string, SADXModInfo>(x, mods[x]))
@@ -1071,7 +1041,7 @@ namespace SADXModManager
 				return;
 			}
 
-			UpdateHelper.ForceUpdate = true;
+			modUpdater.ForceUpdate = true;
 			UpdateSelectedMods();
 		}
 
@@ -1123,7 +1093,7 @@ namespace SADXModManager
 
 					updateChecker.RunWorkerAsync(failed);
 
-					UpdateHelper.ForceUpdate = true;
+					modUpdater.ForceUpdate = true;
 					buttonCheckForUpdates.Enabled = false;
 				}
 			}
@@ -1143,6 +1113,7 @@ namespace SADXModManager
 				return;
 			}
 
+			manualModUpdate = true;
 			CheckForModUpdates(true);
 		}
 	}
