@@ -428,7 +428,6 @@ namespace SADXModManager
 			LoadModList();
 		}
 
-		// TODO: cancel
 		private void UpdateChecker_DoWork(object sender, DoWorkEventArgs e)
 		{
 			if (!(sender is BackgroundWorker worker))
