@@ -39,7 +39,6 @@ struct ScaleEntry
 };
 
 static stack<ScaleEntry, vector<ScaleEntry>> scale_stack;
-static size_t stack_size = 0;
 
 static const float patch_dummy = 1.0f;
 
