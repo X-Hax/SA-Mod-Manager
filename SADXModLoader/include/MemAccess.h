@@ -69,9 +69,11 @@ static inline Tret SizeOfArray(const T(&)[N])
 #endif
 #include <windows.h>
 
+static HANDLE curproc = GetCurrentProcess();
+
 static inline BOOL WriteData(void *writeaddress, const void *data, SIZE_T datasize, SIZE_T *byteswritten)
 {
-	return WriteProcessMemory(GetCurrentProcess(), writeaddress, data, datasize, byteswritten);
+	return WriteProcessMemory(curproc, writeaddress, data, datasize, byteswritten);
 }
 
 static inline BOOL WriteData(void *writeaddress, const void *data, SIZE_T datasize)
