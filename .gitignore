@@ -195,3 +195,4 @@ SADXModLoader/git_version.h
 *.db-shm
 *.db-wal
 *.ide
+/.vs

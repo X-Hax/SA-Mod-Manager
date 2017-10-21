@@ -508,6 +508,14 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 {
 	switch (uMsg)
 	{
+		case WM_ACTIVATE:
+			if (LOWORD(wParam) != WA_INACTIVE && !lParam || reinterpret_cast<HWND>(lParam) == hWnd)
+			{
+				SetFocus(hWnd);
+				return 0;
+			}
+			break;
+
 		case WM_CLOSE:
 			// we also need to let SADX do cleanup
 			SendMessage(hWnd, WM_CLOSE, wParam, lParam);
@@ -734,10 +742,18 @@ static LRESULT CALLBACK WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, 
 	return DefWindowProcA(handle, Msg, wParam, lParam);
 }
 
+LRESULT __stdcall WndProc_hook(HWND handle, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+	return DefWindowProcA(handle, Msg, wParam, lParam);
+}
+
 static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 {
 	// Primary window class name.
 	const char *const lpszClassName = GetWindowClassName();
+
+	// Hook default return of SADX's window procedure to force it to return DefWindowProc
+	WriteJump(reinterpret_cast<void*>(0x00789E48), WndProc_hook);
 
 	// Primary window class for SADX.
 	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
@@ -865,16 +881,18 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 		// Register a window class for the wrapper window.
 		WNDCLASS w;
-		w.style		= 0;
+
+		w.style         = 0;
 		w.lpfnWndProc   = WrapperWndProc;
-		w.cbClsExtra	= 0;
-		w.cbWndExtra 	= 0;
+		w.cbClsExtra    = 0;
+		w.cbWndExtra    = 0;
 		w.hInstance     = hInstance;
 		w.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(101));
 		w.hCursor       = LoadCursor(nullptr, IDC_ARROW);
 		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-		w.lpszMenuName	= nullptr;
+		w.lpszMenuName  = nullptr;
 		w.lpszClassName = L"WrapperWindow";
+
 		if (!RegisterClass(&w))
 			return;
 
