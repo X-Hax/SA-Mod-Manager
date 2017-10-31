@@ -296,10 +296,10 @@ namespace SADXModManager
 			updateChecker = new BackgroundWorker { WorkerSupportsCancellation = true };
 			updateChecker.DoWork += UpdateChecker_DoWork;
 			updateChecker.RunWorkerCompleted += UpdateChecker_RunWorkerCompleted;
-			updateChecker.RunWorkerCompleted += UpdateCheckerOnRunWorkerCompleted;
+			updateChecker.RunWorkerCompleted += UpdateChecker_EnableControls;
 		}
 
-		private void UpdateCheckerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
+		private void UpdateChecker_EnableControls(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
 		{
 			buttonCheckForUpdates.Enabled            = true;
 			checkForUpdatesToolStripMenuItem.Enabled = true;
@@ -1020,7 +1020,7 @@ namespace SADXModManager
 			manualModUpdate = true;
 			updateChecker?.RunWorkerAsync(modListView.SelectedItems.Cast<ListViewItem>()
 				.Select(x => (string)x.Tag)
-				.Select(x => new KeyValuePair<string, SADXModInfo>(x, mods[x]))
+				.Select(x => new KeyValuePair<string, ModInfo>(x, mods[x]))
 				.ToList());
 		}
 
