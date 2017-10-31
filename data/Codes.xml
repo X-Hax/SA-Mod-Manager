@@ -1,5 +1,19 @@
 <?xml version="1.0"?>
 <CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonicretro.org">
+  <Code name="Allow Dynamic Light Direction Globally" patch="true">
+    <CodeLine>
+      <Type>writenop</Type>
+      <Address>00412536</Address>
+      <Value>6</Value>
+      <ValueType>decimal</ValueType>
+    </CodeLine>
+    <CodeLine>
+      <Type>writenop</Type>
+      <Address>00412544</Address>
+      <Value>6</Value>
+      <ValueType>decimal</ValueType>
+    </CodeLine>
+  </Code>
   <Code name="Infinite Rings">
     <CodeLine>
       <Type>write16</Type>
