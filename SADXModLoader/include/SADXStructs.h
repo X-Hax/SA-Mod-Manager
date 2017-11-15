@@ -547,8 +547,8 @@ struct PaletteLight
 {
 	Uint8 Level;
 	Uint8 Act;
-	Uint8 Flags;
 	Uint8 Type;
+	Uint8 Flags;
 	NJS_VECTOR Direction;
 	float DIF;     // (0~4 ) Diffuse
 	float AMB_R;   // (0~4 ) Ambient R
