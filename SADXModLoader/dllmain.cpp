@@ -1234,25 +1234,31 @@ static const char *GetChaoSavePath()
 	return chaosavepath;
 }
 
+const char* __cdecl GetSystemFilePath(const char* path)
+{
+	return sadx_fileMap.replaceFile(path);
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
-	RegisterStartPosition,
-	ClearStartPositionList,
-	RegisterFieldStartPosition,
-	ClearFieldStartPositionList,
-	RegisterPathList,
-	ClearPathListList,
-	RegisterCharacterPVM,
-	ClearCharacterPVMList,
-	RegisterCommonObjectPVM,
-	ClearCommonObjectPVMList,
-	RegisterTrialLevel,
-	ClearTrialLevelList,
-	RegisterTrialSubgame,
-	ClearTrialSubgameList,
-	GetMainSavePath,
-	GetChaoSavePath
+	&RegisterStartPosition,
+	&ClearStartPositionList,
+	&RegisterFieldStartPosition,
+	&ClearFieldStartPositionList,
+	&RegisterPathList,
+	&ClearPathListList,
+	&RegisterCharacterPVM,
+	&ClearCharacterPVMList,
+	&RegisterCommonObjectPVM,
+	&ClearCommonObjectPVMList,
+	&RegisterTrialLevel,
+	&ClearTrialLevelList,
+	&RegisterTrialSubgame,
+	&ClearTrialSubgameList,
+	&GetMainSavePath,
+	&GetChaoSavePath,
+	&GetSystemFilePath
 };
 
 static vector<string> &split(const string &s, char delim, vector<string> &elems)
@@ -2830,9 +2836,9 @@ static void __cdecl InitMods()
 					RegisterEvent(modRenderDeviceLost, module, "OnRenderDeviceLost");
 					RegisterEvent(modRenderDeviceReset, module, "OnRenderDeviceReset");
 
-					auto whatever = reinterpret_cast<TextureLoadEvent>(GetProcAddress(module, "OnCustomTextureLoad"));
-					if (whatever != nullptr)
-						modCustomTextureLoadEvents.push_back(whatever);
+					auto customTextureLoad = reinterpret_cast<TextureLoadEvent>(GetProcAddress(module, "OnCustomTextureLoad"));
+					if (customTextureLoad != nullptr)
+						modCustomTextureLoadEvents.push_back(customTextureLoad);
 				}
 				else
 				{
