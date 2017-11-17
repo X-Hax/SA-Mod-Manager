@@ -1234,9 +1234,12 @@ static const char *GetChaoSavePath()
 	return chaosavepath;
 }
 
-const char* __cdecl GetSystemFilePath(const char* path)
+const char* __cdecl GetReplaceablePath(const char* path)
 {
-	return sadx_fileMap.replaceFile(path);
+	string system_path("SYSTEM\\");
+	system_path.append(path);
+	auto replaced = sadx_fileMap.replaceFile(system_path.c_str());
+	return replaced == system_path.c_str() ? path : replaced;
 }
 
 static const HelperFunctions helperFunctions =
@@ -1258,7 +1261,7 @@ static const HelperFunctions helperFunctions =
 	&ClearTrialSubgameList,
 	&GetMainSavePath,
 	&GetChaoSavePath,
-	&GetSystemFilePath
+	&GetReplaceablePath
 };
 
 static vector<string> &split(const string &s, char delim, vector<string> &elems)

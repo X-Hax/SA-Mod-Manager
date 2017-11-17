@@ -177,6 +177,7 @@ struct HelperFunctions_v5
 	// Returns the path where Chao save files are stored.
 	const char *(__cdecl *GetChaoSavePath)();
 
+	// TODO: update
 	/**
 	 * \brief Gets the real path to a file stored in any mod's SYSTEM folder.
 	 * 
@@ -188,7 +189,7 @@ struct HelperFunctions_v5
 	 * \param [in] path The file name or path to a file in a sub-directory of your SYSTEM folder.
 	 * \return The path to the file.
 	 */
-	const char* (__cdecl* GetSystemFilePath)(const char* path);
+	const char* (__cdecl* GetReplaceablePath)(const char* path);
 };
 
 typedef HelperFunctions_v5 HelperFunctions;
