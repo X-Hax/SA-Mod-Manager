@@ -563,9 +563,9 @@ struct PaletteLight
 	float SP_G;    // (0~4 ) Upper Specular G
 	float SP_B;    // (0~4 ) Upper Specular B
 	float CO2_pow; // (0~99) [unused] Lower Color Power (higher is less visible)
-	int CO2_R;     // (0~4 ) [unused] Lower Color R
-	int CO2_G;     // (0~4 ) [unused] Lower Color G
-	int CO2_B;     // (0~4 ) [unused] Lower Color B
+	float CO2_R;   // (0~4 ) [unused] Lower Color R
+	float CO2_G;   // (0~4 ) [unused] Lower Color G
+	float CO2_B;   // (0~4 ) [unused] Lower Color B
 	float SP2_pow; // (0~99) [unused] Lower Specular Power (higher is less visible)
 	float SP2_R;   // (0~4 ) [unused] Lower Specular R
 	float SP2_G;   // (0~4 ) [unused] Lower Specular G
