@@ -1236,10 +1236,7 @@ static const char *GetChaoSavePath()
 
 const char* __cdecl GetReplaceablePath(const char* path)
 {
-	string system_path("SYSTEM\\");
-	system_path.append(path);
-	auto replaced = sadx_fileMap.replaceFile(system_path.c_str());
-	return replaced == system_path.c_str() ? path : replaced;
+	return sadx_fileMap.replaceFile(path);
 }
 
 static const HelperFunctions helperFunctions =
