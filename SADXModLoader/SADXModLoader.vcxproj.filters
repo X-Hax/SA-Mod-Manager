@@ -125,6 +125,9 @@
     <ClInclude Include="UiScale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\SADXModInfo.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SADXModLoader.rc">
