@@ -101,6 +101,7 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.installURLHandlerButton = new System.Windows.Forms.Button();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
@@ -769,6 +770,7 @@
 			// 
 			// tabPage4
 			// 
+			this.tabPage4.Controls.Add(this.installURLHandlerButton);
 			this.tabPage4.Controls.Add(this.groupBox4);
 			this.tabPage4.Controls.Add(this.groupBox1);
 			this.tabPage4.Controls.Add(groupBox2);
@@ -1001,6 +1003,18 @@
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
 			// 
+			// installURLHandlerButton
+			// 
+			this.installURLHandlerButton.AutoSize = true;
+			this.installURLHandlerButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.installURLHandlerButton.Location = new System.Drawing.Point(6, 198);
+			this.installURLHandlerButton.Name = "installURLHandlerButton";
+			this.installURLHandlerButton.Size = new System.Drawing.Size(109, 23);
+			this.installURLHandlerButton.TabIndex = 3;
+			this.installURLHandlerButton.Text = "Install URL Handler";
+			this.installURLHandlerButton.UseVisualStyleBackColor = true;
+			this.installURLHandlerButton.Click += new System.EventHandler(this.installURLHandlerButton_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1018,6 +1032,7 @@
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
 			this.Text = "SADX Mod Manager";
 			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			groupBox2.ResumeLayout(false);
 			groupBox2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.verticalResolution)).EndInit();
@@ -1036,6 +1051,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.windowWidth)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.windowHeight)).EndInit();
 			this.tabPage4.ResumeLayout(false);
+			this.tabPage4.PerformLayout();
 			this.groupBox4.ResumeLayout(false);
 			this.groupBox4.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpdateFrequency)).EndInit();
@@ -1115,5 +1131,6 @@
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.ComboBox comboFmvFill;
 		private System.Windows.Forms.ComboBox comboBackgroundFill;
+		private System.Windows.Forms.Button installURLHandlerButton;
 	}
 }
