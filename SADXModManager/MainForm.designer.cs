@@ -90,7 +90,7 @@
 			this.consoleCheckBox = new System.Windows.Forms.CheckBox();
 			this.screenCheckBox = new System.Windows.Forms.CheckBox();
 			this.fileCheckBox = new System.Windows.Forms.CheckBox();
-			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.modContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
@@ -175,7 +175,7 @@
 			this.pauseWhenInactiveCheckBox.Size = new System.Drawing.Size(135, 18);
 			this.pauseWhenInactiveCheckBox.TabIndex = 1;
 			this.pauseWhenInactiveCheckBox.Text = "Pause When Inactive";
-			this.toolTip1.SetToolTip(this.pauseWhenInactiveCheckBox, "Uncheck to allow the game to run in the background.");
+			this.toolTip.SetToolTip(this.pauseWhenInactiveCheckBox, "Uncheck to allow the game to run in the background.");
 			this.pauseWhenInactiveCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// disableCDCheckCheckBox
@@ -187,7 +187,7 @@
 			this.disableCDCheckCheckBox.Size = new System.Drawing.Size(119, 18);
 			this.disableCDCheckCheckBox.TabIndex = 0;
 			this.disableCDCheckCheckBox.Text = "Disable CD Check";
-			this.toolTip1.SetToolTip(this.disableCDCheckCheckBox, "Allows you to run the game without the disc.");
+			this.toolTip.SetToolTip(this.disableCDCheckCheckBox, "Allows you to run the game without the disc.");
 			this.disableCDCheckCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// label5
@@ -212,7 +212,7 @@
 			this.screenNumComboBox.Name = "screenNumComboBox";
 			this.screenNumComboBox.Size = new System.Drawing.Size(291, 21);
 			this.screenNumComboBox.TabIndex = 1;
-			this.toolTip1.SetToolTip(this.screenNumComboBox, "The screen to put the game on.");
+			this.toolTip.SetToolTip(this.screenNumComboBox, "The screen to put the game on.");
 			this.screenNumComboBox.SelectedIndexChanged += new System.EventHandler(this.screenNumComboBox_SelectedIndexChanged);
 			// 
 			// stretchFullscreenCheckBox
@@ -224,7 +224,7 @@
 			this.stretchFullscreenCheckBox.Size = new System.Drawing.Size(108, 18);
 			this.stretchFullscreenCheckBox.TabIndex = 3;
 			this.stretchFullscreenCheckBox.Text = "Scale to Screen";
-			this.toolTip1.SetToolTip(this.stretchFullscreenCheckBox, "Coupled with Windowed Fullscreen, you can downsample the game from resolutions hi" +
+			this.toolTip.SetToolTip(this.stretchFullscreenCheckBox, "Coupled with Windowed Fullscreen, you can downsample the game from resolutions hi" +
         "gher than your screen supports.");
 			this.stretchFullscreenCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -249,7 +249,7 @@
 			this.windowedFullscreenCheckBox.Size = new System.Drawing.Size(134, 18);
 			this.windowedFullscreenCheckBox.TabIndex = 2;
 			this.windowedFullscreenCheckBox.Text = "Windowed Fullscreen";
-			this.toolTip1.SetToolTip(this.windowedFullscreenCheckBox, "Enables borderless fullscreen mode.\r\nYou have to enable fullscreen in the config " +
+			this.toolTip.SetToolTip(this.windowedFullscreenCheckBox, "Enables borderless fullscreen mode.\r\nYou have to enable fullscreen in the config " +
         "editor for it to work.");
 			this.windowedFullscreenCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -607,7 +607,7 @@
 			this.forceMipmappingCheckBox.Size = new System.Drawing.Size(119, 18);
 			this.forceMipmappingCheckBox.TabIndex = 1;
 			this.forceMipmappingCheckBox.Text = "Force Mipmapping";
-			this.toolTip1.SetToolTip(this.forceMipmappingCheckBox, "Generates mipmaps for all textures that don\'t have them.");
+			this.toolTip.SetToolTip(this.forceMipmappingCheckBox, "Generates mipmaps for all textures that don\'t have them.");
 			this.forceMipmappingCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// forceTextureFilterCheckBox
@@ -619,7 +619,7 @@
 			this.forceTextureFilterCheckBox.Size = new System.Drawing.Size(137, 18);
 			this.forceTextureFilterCheckBox.TabIndex = 0;
 			this.forceTextureFilterCheckBox.Text = "Force Texture Filtering";
-			this.toolTip1.SetToolTip(this.forceTextureFilterCheckBox, "Smooths scaled UI textures by changing the filter method from Point to Linear.");
+			this.toolTip.SetToolTip(this.forceTextureFilterCheckBox, "Smooths scaled UI textures by changing the filter method from Point to Linear.");
 			this.forceTextureFilterCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// groupBox3
@@ -671,7 +671,7 @@
 			this.comboResolutionPreset.Name = "comboResolutionPreset";
 			this.comboResolutionPreset.Size = new System.Drawing.Size(121, 21);
 			this.comboResolutionPreset.TabIndex = 18;
-			this.toolTip1.SetToolTip(this.comboResolutionPreset, "Allows you to select pre-set values for the resolution.");
+			this.toolTip.SetToolTip(this.comboResolutionPreset, "Allows you to select pre-set values for the resolution.");
 			this.comboResolutionPreset.SelectedIndexChanged += new System.EventHandler(this.comboResolutionPreset_SelectedIndexChanged);
 			// 
 			// checkWindowResize
@@ -683,7 +683,7 @@
 			this.checkWindowResize.Size = new System.Drawing.Size(120, 18);
 			this.checkWindowResize.TabIndex = 16;
 			this.checkWindowResize.Text = "Resizable Window";
-			this.toolTip1.SetToolTip(this.checkWindowResize, "Allows the window to be resized and dynamically adjusts resolution to match.");
+			this.toolTip.SetToolTip(this.checkWindowResize, "Allows the window to be resized and dynamically adjusts resolution to match.");
 			this.checkWindowResize.UseVisualStyleBackColor = true;
 			// 
 			// checkVsync
@@ -706,7 +706,7 @@
 			this.maintainWindowAspectRatioCheckBox.Size = new System.Drawing.Size(136, 18);
 			this.maintainWindowAspectRatioCheckBox.TabIndex = 15;
 			this.maintainWindowAspectRatioCheckBox.Text = "Maintain Aspect Ratio";
-			this.toolTip1.SetToolTip(this.maintainWindowAspectRatioCheckBox, "Forces the window\'s aspect ratio to match the current custom resolution\'s.");
+			this.toolTip.SetToolTip(this.maintainWindowAspectRatioCheckBox, "Forces the window\'s aspect ratio to match the current custom resolution\'s.");
 			this.maintainWindowAspectRatioCheckBox.UseVisualStyleBackColor = true;
 			this.maintainWindowAspectRatioCheckBox.CheckedChanged += new System.EventHandler(this.maintainWindowAspectRatioCheckBox_CheckedChanged);
 			// 
@@ -764,7 +764,7 @@
 			this.customWindowSizeCheckBox.Size = new System.Drawing.Size(135, 18);
 			this.customWindowSizeCheckBox.TabIndex = 11;
 			this.customWindowSizeCheckBox.Text = "Custom Window Size:";
-			this.toolTip1.SetToolTip(this.customWindowSizeCheckBox, "Allows you to specify a fixed size for the window in windowed mode.");
+			this.toolTip.SetToolTip(this.customWindowSizeCheckBox, "Allows you to specify a fixed size for the window in windowed mode.");
 			this.customWindowSizeCheckBox.UseVisualStyleBackColor = true;
 			this.customWindowSizeCheckBox.CheckedChanged += new System.EventHandler(this.customWindowSizeCheckBox_CheckedChanged);
 			// 
@@ -902,7 +902,7 @@
 			this.consoleCheckBox.Size = new System.Drawing.Size(70, 18);
 			this.consoleCheckBox.TabIndex = 0;
 			this.consoleCheckBox.Text = "Console";
-			this.toolTip1.SetToolTip(this.consoleCheckBox, "Shows a console and displays debug messages.");
+			this.toolTip.SetToolTip(this.consoleCheckBox, "Shows a console and displays debug messages.");
 			this.consoleCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// screenCheckBox
@@ -914,7 +914,7 @@
 			this.screenCheckBox.Size = new System.Drawing.Size(66, 18);
 			this.screenCheckBox.TabIndex = 1;
 			this.screenCheckBox.Text = "Screen";
-			this.toolTip1.SetToolTip(this.screenCheckBox, "Displays debug messages ingame.");
+			this.toolTip.SetToolTip(this.screenCheckBox, "Displays debug messages ingame.");
 			this.screenCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// fileCheckBox
@@ -926,7 +926,7 @@
 			this.fileCheckBox.Size = new System.Drawing.Size(48, 18);
 			this.fileCheckBox.TabIndex = 2;
 			this.fileCheckBox.Text = "File";
-			this.toolTip1.SetToolTip(this.fileCheckBox, "Logs debug messages to mods/SADXModLoader.log");
+			this.toolTip.SetToolTip(this.fileCheckBox, "Logs debug messages to mods/SADXModLoader.log");
 			this.fileCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// modContextMenu
@@ -941,7 +941,7 @@
             this.toolStripMenuItem3,
             this.developerToolStripMenuItem});
 			this.modContextMenu.Name = "modContextMenu";
-			this.modContextMenu.Size = new System.Drawing.Size(171, 148);
+			this.modContextMenu.Size = new System.Drawing.Size(171, 170);
 			// 
 			// openFolderToolStripMenuItem
 			// 
@@ -1089,7 +1089,7 @@
 		private System.Windows.Forms.TabPage tabPage3;
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.CheckBox forceMipmappingCheckBox;
-		private System.Windows.Forms.ToolTip toolTip1;
+		private System.Windows.Forms.ToolTip toolTip;
 		private System.Windows.Forms.CheckBox forceTextureFilterCheckBox;
 		private System.Windows.Forms.CheckBox customWindowSizeCheckBox;
 		private System.Windows.Forms.NumericUpDown windowWidth;

@@ -345,7 +345,7 @@ namespace SADXModManager
 				}
 			}
 
-			foreach (KeyValuePair<string, SADXModInfo> inf in mods)
+			foreach (KeyValuePair<string, SADXModInfo> inf in mods.OrderBy(x => x.Value.Name))
 			{
 				if (!loaderini.Mods.Contains(inf.Key))
 					modListView.Items.Add(new ListViewItem(new[] { inf.Value.Name, inf.Value.Author, inf.Value.Version }) { Tag = inf.Key });
@@ -424,10 +424,10 @@ namespace SADXModManager
 			updateChecker = new BackgroundWorker { WorkerSupportsCancellation = true };
 			updateChecker.DoWork += UpdateChecker_DoWork;
 			updateChecker.RunWorkerCompleted += UpdateChecker_RunWorkerCompleted;
-			updateChecker.RunWorkerCompleted += UpdateCheckerOnRunWorkerCompleted;
+			updateChecker.RunWorkerCompleted += UpdateChecker_EnableControls;
 		}
 
-		private void UpdateCheckerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
+		private void UpdateChecker_EnableControls(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
 		{
 			buttonCheckForUpdates.Enabled            = true;
 			checkForUpdatesToolStripMenuItem.Enabled = true;
@@ -1148,7 +1148,7 @@ namespace SADXModManager
 			manualModUpdate = true;
 			updateChecker?.RunWorkerAsync(modListView.SelectedItems.Cast<ListViewItem>()
 				.Select(x => (string)x.Tag)
-				.Select(x => new KeyValuePair<string, SADXModInfo>(x, mods[x]))
+				.Select(x => new KeyValuePair<string, ModInfo>(x, mods[x]))
 				.ToList());
 		}
 

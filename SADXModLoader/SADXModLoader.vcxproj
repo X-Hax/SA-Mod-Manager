@@ -37,6 +37,7 @@
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="FixFOV.h" />
     <ClInclude Include="git.h" />
+    <ClInclude Include="include\SADXModInfo.h" />
     <ClInclude Include="UiScale.h" />
     <ClInclude Include="include\d3d8types.h" />
     <ClInclude Include="include\MemAccess.h" />
