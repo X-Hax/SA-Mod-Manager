@@ -15,7 +15,7 @@
 using std::string;
 using std::vector;
 
-static bool enablevgmstream = false;
+static bool bassinit = false;
 static bool musicwmp = true;
 static bool voicewmp = true;
 static DWORD basschan = 0;
@@ -27,7 +27,7 @@ static DWORD voicechan = 0;
  */
 void WMPInit_r()
 {
-	enablevgmstream = BASS_Init(-1, 44100, 0, nullptr, nullptr) ? true : false;
+	bassinit = BASS_Init(-1, 44100, 0, nullptr, nullptr) ? true : false;
 }
 
 /**
@@ -76,7 +76,7 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 		BASS_StreamFree(basschan);
 	}
 	filename = sadx_fileMap.replaceFile(filename);
-	if (enablevgmstream)
+	if (bassinit)
 	{
 		basschan = BASS_VGMSTREAM_StreamCreate(filename, loop ? BASS_SAMPLE_LOOP : 0);
 		if (basschan != 0)
@@ -278,7 +278,7 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 
 	filename = sadx_fileMap.replaceFile(filename);
 
-	if (enablevgmstream)
+	if (bassinit)
 	{
 		voicechan = BASS_VGMSTREAM_StreamCreate(filename, 0);
 		if (voicechan != 0)
