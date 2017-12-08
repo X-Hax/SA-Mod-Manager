@@ -157,34 +157,6 @@ namespace SADXModManager
 			{
 				IniSerializer.Serialize(loaderini, loaderinipath);
 			}
-
-			if (!File.Exists(datadllpath))
-			{
-				MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\nCannot determine state of installation.",
-					Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				installButton.Hide();
-			}
-			else if (File.Exists(datadllorigpath))
-			{
-				installed = true;
-				installButton.Text = "Uninstall loader";
-				using (MD5 md5 = MD5.Create())
-				{
-					byte[] hash1 = md5.ComputeHash(File.ReadAllBytes(loaderdllpath));
-					byte[] hash2 = md5.ComputeHash(File.ReadAllBytes(datadllpath));
-
-					if (hash1.SequenceEqual(hash2))
-					{
-						return;
-					}
-				}
-
-				DialogResult result = MessageBox.Show(this, "Installed loader DLL differs from copy in mods folder."
-					+ "\n\nDo you want to overwrite the installed copy?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-				if (result == DialogResult.Yes)
-					File.Copy(loaderdllpath, datadllpath, true);
-			}
 		}
 
 		private void HandleUri(string uri)
@@ -291,6 +263,34 @@ namespace SADXModManager
 
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
+			if (!File.Exists(datadllpath))
+			{
+				MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\nCannot determine state of installation.",
+					Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				installButton.Hide();
+			}
+			else if (File.Exists(datadllorigpath))
+			{
+				installed = true;
+				installButton.Text = "Uninstall loader";
+				using (MD5 md5 = MD5.Create())
+				{
+					byte[] hash1 = md5.ComputeHash(File.ReadAllBytes(loaderdllpath));
+					byte[] hash2 = md5.ComputeHash(File.ReadAllBytes(datadllpath));
+
+					if (hash1.SequenceEqual(hash2))
+					{
+						return;
+					}
+				}
+
+				DialogResult result = MessageBox.Show(this, "Installed loader DLL differs from copy in mods folder."
+					+ "\n\nDo you want to overwrite the installed copy?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+				if (result == DialogResult.Yes)
+					File.Copy(loaderdllpath, datadllpath, true);
+			}
+
 			List<string> uris = Program.UriQueue.GetUris();
 
 			foreach (string str in uris)
