@@ -46,9 +46,6 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SharpCompress, Version=0.18.2.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpCompress.0.18.2\lib\net35\SharpCompress.dll</HintPath>
-    </Reference>
     <Reference Include="SharpDX, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
