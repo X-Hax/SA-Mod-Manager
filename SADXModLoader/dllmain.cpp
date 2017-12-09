@@ -339,15 +339,6 @@ static BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lp
 static const uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
 static int currentScreenSize[2];
 
-DataPointer(D3DPRESENT_PARAMETERS, PresentParameters, 0x03D0FDC0);
-DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x03D12780);
-DataPointer(DWORD, StencilThing, 0x03D1289C);
-DataPointer(float, ViewPortWidth, 0x03D0FA04);
-DataPointer(float, ViewPortHeight, 0x03D0FA08);
-DataPointer(float, ViewPortWidth_Half, 0x03D0FA0C);
-DataPointer(float, ViewPortHeight_Half, 0x03D0FA10);
-DataPointer(NJS_POINT2COL, GlobalPoint2Col, 0x03CE7164);
-
 static inline void Direct3D_SetupVsyncParameters()
 {
 	auto& p = PresentParameters;
@@ -1105,7 +1096,7 @@ static void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
 	{
 		// Character PVM vector has not been created yet.
 		// Initialize it with the texture list.
-		const PVMEntry *origlist = TexLists_Characters[character];
+		const PVMEntry *origlist = CharacterPVMEntries[character];
 		vector<PVMEntry> &newlist = CharacterPVMs[character];
 		for (; origlist->TexList != nullptr; origlist++)
 		{
@@ -1134,7 +1125,7 @@ static void RegisterCommonObjectPVM(const PVMEntry &pvm)
 {
 	if (!CommonObjectPVMsInitialized)
 	{
-		const PVMEntry *oldlist = &CommonObjectPVMEntries[0];
+		const PVMEntry *oldlist = &OBJ_REGULAR_TEXLISTS[0];
 		for (; oldlist->TexList != nullptr; oldlist++)
 		{
 			CommonObjectPVMs.push_back(*oldlist);
@@ -2366,9 +2357,6 @@ struct dllexportinfo { void *address; string type; };
 struct dllexportcontainer { unordered_map<string, dllexportinfo> exports; };
 static unordered_map<wstring, dllexportcontainer> dllexports;
 
-struct SaveFileInfo { char *Filename; DWORD LowDate; DWORD HighDate; SaveFileInfo *Next; };
-
-DataPointer(SaveFileInfo *, SaveFiles, 0x3C5E8B8);
 void __cdecl WriteSaveFile_r()
 {
 	char v0; // bl@1
@@ -3030,7 +3018,7 @@ static void __cdecl InitMods()
 		PVMEntry *newlist = new PVMEntry[size + 1];
 		memcpy(newlist, pvmlist->data(), sizeof(PVMEntry) * size);
 		newlist[size].TexList = nullptr;
-		TexLists_Characters[i->first] = newlist;
+		CharacterPVMEntries[i->first] = newlist;
 	}
 
 	if (CommonObjectPVMsInitialized)

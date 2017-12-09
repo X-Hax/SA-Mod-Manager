@@ -29,6 +29,34 @@ typedef void pvm_thing;
 typedef void struct_1;
 typedef void what;
 
+struct AllocatedMem
+{
+	AllocatedMem *next;
+	AllocatedMem *field_4;
+	AllocatedMem *field_8;
+	int PointsToLastThingMaybe;
+	int field_10;
+	int field_14;
+	int field_18;
+	int field_1C;
+	int data;
+	int field_24;
+	int field_28;
+	int field_2C;
+	int field_30;
+	int field_34;
+	int field_38;
+	int field_3C;
+};
+
+struct SaveFileInfo
+{
+	char *Filename;
+	DWORD LowDate;
+	DWORD HighDate;
+	SaveFileInfo *Next;
+};
+
 struct LineInfo
 {
 	NJS_POINT3 *Points;
@@ -95,6 +123,12 @@ struct ControllerData
 	void* Extend;
 	uint32_t Old;
 	void* Info;
+};
+
+struct PolarCoord
+{
+	Angle direction;
+	float magnitude;
 };
 
 struct SETEntry
@@ -175,9 +209,9 @@ struct LoopHead
 struct AnimData_t
 {
 	NJS_ACTION *Animation;
-	char field_4;
+	char Instance;
 	char Property;
-	int16_t NextAnim;
+	short NextAnim;
 	float TransitionSpeed;
 	float AnimationSpeed;
 };
@@ -280,6 +314,19 @@ struct AnimThing
 	NJS_ACTION *action;
 };
 
+struct struct_a3
+{
+	int ShadowRotationX;
+	int ShadowRotationY;
+	int ColFlagsA;
+	int ColFlagsB;
+	float DistanceMin;
+	float DistanceMax;
+	int ColFlagsC;
+	int ColFlagsD;
+	float ShadowScale;
+};
+
 struct CharObj2
 {
 	float SpindashSpeed;
@@ -289,23 +336,26 @@ struct CharObj2
 	short field_A;
 	short UnderwaterTime;
 	short IdleTime;
-	char gap10[2];
+	short StatusBackup;
 	int field_12;
 	char gap16[2];
 	float LoopDist;
-	float field_1C;
-	NJS_VECTOR field_20;
+	float Up;
+	NJS_VECTOR SomeKindOfSpeedOffset;
 	NJS_VECTOR field_2C;
 	NJS_VECTOR Speed;
-	char gap44[12];
-	NJS_VECTOR field_50;
-	char gap5C[8];
-	float *array_1x132;
+	NJS_VECTOR field_44;
+	NJS_VECTOR SurfaceNormal;
+	int SurfaceFlags;
+	int SurfaceFlags_Old;
+	void *array_1x132;
 	ObjectMaster *ObjectHeld;
-	char gap6C[12];
+	void *field_6C;
+	void *SomePointer;
+	int field_74;
 	void *array_15x32;
-	short field_7C;
-	short field_7E;
+	short SonicSpinTimeProbably;
+	short SonicSpinTimer;
 	short LightdashTime;
 	short LightdashTimer;
 	int field_84;
@@ -315,7 +365,7 @@ struct CharObj2
 	PhysicsData_t PhysicsData;
 	AnimThing AnimationThing;
 	NJS_VECTOR SoManyVectors[12];
-	int8_t _struct_a3[0x24];
+	struct_a3 _struct_a3;
 };
 
 struct CollisionData
@@ -324,7 +374,7 @@ struct CollisionData
 	char field_2;
 	char field_3;
 	int field_4;
-	NJS_VECTOR v;
+	NJS_VECTOR origin;
 	NJS_VECTOR scale;
 	int field_20;
 	Rotation3 rotation;
@@ -335,7 +385,7 @@ struct CollisionThing
 {
 	char field_0;
 	char field_1;
-	short field_2;
+	short FlagsMaybe;
 	EntityData1 *Entity;
 };
 
@@ -347,14 +397,21 @@ struct CollisionInfo
 	short Count;
 	float Radius;
 	CollisionData *CollisionArray;
-	CollisionThing field_10[16];
-	int field_90;
+	CollisionThing CollisionThings[16];
+	int CollisionThingsEnd;
 	int field_94;
 	int field_98;
 	ObjectMaster *Object;
 	short field_A0;
 	short field_A2;
 	CollisionInfo *CollidingObject;
+};
+
+struct DynamicCOL
+{
+	int Flags;
+	NJS_OBJECT *Model;
+	ObjectMaster *Entity;
 };
 
 struct EntityData1
@@ -377,20 +434,24 @@ struct EntityData1
 	void *field_3C;
 };
 
+struct HomingAttackTarget
+{
+	EntityData1 *entity;
+	float distance;
+};
+
 struct EntityData2
 {
 	CharObj2 *CharacterData;
 	NJS_VECTOR VelocityDirection;
 	NJS_VECTOR SomeCollisionVector;
-	int field_1C;
-	int forward_y;
-	int field_24;
+	Rotation3 Forward;
 	int field_28;
 	int field_2C;
 	int field_30;
 	float field_34;
 	float field_38;
-	float field_3C;
+	float SomeMultiplier;
 };
 
 struct ObjectData2
@@ -871,7 +932,7 @@ struct CreditsInfo
 	int count;
 	const char *endimagename;
 	NJS_TEXLIST *endtexlist;
-	__int16 *coordinates;
+	short *coordinates;
 };
 
 struct CreditsEntry
@@ -1192,6 +1253,27 @@ struct ChaoDebugFunction
 	const char *Name;
 };
 
+struct BlackMarketItem
+{
+	ChaoItemCategory Category;
+	Sint8 Type;
+};
+
+
+struct ChaoTreeSpawn
+{
+	NJS_VECTOR a;
+	NJS_VECTOR b;
+	NJS_VECTOR c;
+	NJS_VECTOR d;
+	NJS_VECTOR e;
+	NJS_VECTOR f;
+	NJS_VECTOR g;
+	NJS_VECTOR h;
+	NJS_VECTOR i;
+	NJS_VECTOR j;
+};
+
 // Model Queue
 
 union PointType
@@ -1331,6 +1413,12 @@ struct QueuedModel
 	NJS_MESHSET_SADX meshset;
 };
 
+struct DrawQueueHead
+{
+	DrawQueueHead *next;
+	DrawQueueHead *prev;
+};
+
 // Vertex Buffers
 
 struct FVFStruct_A
@@ -1419,6 +1507,65 @@ struct FVFStruct_K
 	FVFStruct_J base;
 	float u;
 	float v;
+};
+
+struct OceanGarbage
+{
+	FVFStruct_H_B points[4];
+};
+
+struct struct_v3
+{
+	int SomeFlag;
+	int dword4;
+	int ShadowRotationX;
+	int ShadowRotationY;
+	float Distance;
+	NJS_VECTOR njs_vector14;
+};
+
+struct Mysterious64Bytes
+{
+	NJS_VECTOR Position;
+	struct_v3 struct_v3_a;
+	struct_v3 struct_v3_b;
+};
+
+struct ChunkModelThing
+{
+	NJS_CNK_OBJECT *model;
+	NJS_TEXLIST *texlist;
+	float scale;
+	int what;
+};
+
+struct ChunkObjectPointer
+{
+	NJS_CNK_OBJECT base[2];
+	char field_68[48];
+	ChunkModelThing thing;
+	int useTransform;
+	NJS_VECTOR position;
+	Rotation3 rotation;
+};
+
+struct NBChunk
+{
+	short Type;
+	short field_2;
+	int Size;
+};
+
+struct TitleCardTexture
+{
+	int Level;
+	char *TextureName;
+};
+
+struct TitleCardTextureList
+{
+	int Count;
+	TitleCardTexture *List;
 };
 
 #pragma pack(pop)

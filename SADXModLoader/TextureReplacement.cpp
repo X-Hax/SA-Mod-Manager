@@ -45,7 +45,6 @@ static unordered_map<string, vector<pvmx::DictionaryEntry>> archive_cache;
 static bool was_loading = false;
 
 DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
-DataArray(NJS_TEXNAME, TexNameBuffer, 0x03B28220, 300);
 
 static Sint32 njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist);
 static Sint32 njLoadTexture_r(NJS_TEXLIST* texlist);
