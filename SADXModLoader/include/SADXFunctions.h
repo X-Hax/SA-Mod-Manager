@@ -31,6 +31,7 @@ FunctionPointer(void, CopyToGlobalSprite_ScalePosition, (NJS_SPRITE *sprite), 0x
 FunctionPointer(void, CopyToGlobalSprite_NativeToCurrent, (NJS_SPRITE *sprite), 0x401070);
 FunctionPointer(void, njDrawTriangle2D_SomeOtherVersion, (NJS_POINT2COL *p, int count, float pri, NJD_DRAW attr), 0x4010D0);
 FunctionPointer(void, Set_D3DCMPFUNC_Mode, (int a1), 0x401410);
+VoidFunc(Direct3D_ResetZFunc, 0x401420);
 FunctionPointer(int, DrawModel_ResetRenderFlags_, (NJS_MODEL_SADX *model), 0x401430);
 FunctionPointer(void, SetCurrentLightType_Copy, (char a1), 0x401440);
 VoidFunc(InitializeSomeStuff, 0x401830);
@@ -196,6 +197,7 @@ VoidFunc(ScaleVectorThing_RestoreB, 0x411EF0);
 VoidFunc(ScaleVectorThing_Restore, 0x411F30);
 FunctionPointer(void, SetCurrentLightType, (int a1), 0x412160);
 FunctionPointer(void, SetCurrentLightType_B, (signed int a1), 0x412400);
+FunctionPointer(void, Direct3D_PerformLighting, (int type_level), 0x412420);
 FunctionPointer(void, SetScaleVectorThingButOnlyTheEggCarrier, (NJS_VECTOR *a1, float rmaybe, float gmaybe, float bmaybe, float idka, float idkb, float idkc), 0x412740);
 FunctionPointer(void, SetMaterialAndSpriteColor_Float, (float a, float r, float g, float b), 0x4128A0);
 VoidFunc(SetMaterialAndSpriteColor_Temp, 0x4128E0);
