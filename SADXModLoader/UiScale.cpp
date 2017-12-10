@@ -85,13 +85,14 @@ inline bool IsScaleEnabled()
 static void ScalePush(Uint8 align, bool is_background, float h = 1.0f, float v = 1.0f)
 {
 #ifdef _DEBUG
-	if (ControllerPointers[0]->HeldButtons & Buttons_Z)
+	auto pad = ControllerPointers[0];
+	if (pad && pad->HeldButtons & Buttons_Z)
 	{
 		return;
 	}
 #endif
 
-	scale_stack.push({ align, HorizontalStretch, VerticalStretch, is_background });
+	scale_stack.push({ align, { HorizontalStretch, VerticalStretch }, is_background });
 
 	HorizontalStretch = h;
 	VerticalStretch = v;
@@ -124,7 +125,7 @@ static void ScaleEnable()
 
 static void ScalePop()
 {
-	if (scale_stack.size() < 1)
+	if (scale_stack.empty())
 	{
 		return;
 	}
@@ -134,7 +135,7 @@ static void ScalePop()
 	VerticalStretch = point.scale.y;
 
 	scale_stack.pop();
-	do_scale = scale_stack.size() > 0;
+	do_scale = !scale_stack.empty();
 }
 
 static Trampoline* DisplayAllObjects_t;
