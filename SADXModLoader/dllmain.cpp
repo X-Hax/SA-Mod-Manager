@@ -2593,6 +2593,27 @@ static void __cdecl InitMods()
 	WriteJump((void *)0x40D28A, (void *)WMPRelease_r);
 	WriteJump(LoadSoundList, LoadSoundList_r);
 
+	// Fixes N-sided polygons (Gamma's headlight) by using
+	// triangle strip vertex buffer initializers.
+
+	for (int i = 0; i < MeshSetInitFunctions_Length; ++i)
+	{
+		auto& a = MeshSetInitFunctions[i];
+		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
+	}
+
+	for (int i = 0; i < PolyBuffDraw_VertexColor_Length; ++i)
+	{
+		auto& a = PolyBuffDraw_VertexColor[i];
+		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
+	}
+
+	for (int i = 0; i < PolyBuffDraw_NoVertexColor_Length; ++i)
+	{
+		auto& a = PolyBuffDraw_NoVertexColor[i];
+		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
+	}
+
 	// Replaces half-pixel offset addition with subtraction
 	WriteData((uint8_t*)0x0077DE1E, (uint8_t)0x25);
 	WriteData((uint8_t*)0x0077DE33, (uint8_t)0x25);

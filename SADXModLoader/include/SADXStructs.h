@@ -20,6 +20,8 @@ typedef struct Rotation {
 
 struct ObjectMaster;
 typedef void(__cdecl *ObjectFuncPtr)(ObjectMaster *);
+typedef void(__cdecl *VBufferFuncPtr)(NJS_MESHSET_SADX*, NJS_POINT3*, NJS_VECTOR*);
+
 
 // TODO: Grab actual structs from disassembly.
 typedef void ABC_TXT_struct;
