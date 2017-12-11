@@ -871,7 +871,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		}
 
 		// Register a window class for the wrapper window.
-		WNDCLASS w;
+		WNDCLASSA w;
 
 		w.style         = 0;
 		w.lpfnWndProc   = WrapperWndProc;
@@ -882,16 +882,16 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		w.hCursor       = LoadCursor(nullptr, IDC_ARROW);
 		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 		w.lpszMenuName  = nullptr;
-		w.lpszClassName = L"WrapperWindow";
+		w.lpszClassName = "WrapperWindow";
 
-		if (!RegisterClass(&w))
+		if (!RegisterClassA(&w))
 			return;
 
 		const auto& outerSize = outerSizes[windowMode];
 
-		accelWindow = CreateWindowEx(outerSize.exStyle,
-			L"WrapperWindow",
-			L"SonicAdventureDXPC",
+		accelWindow = CreateWindowExA(outerSize.exStyle,
+			"WrapperWindow",
+			lpszClassName,
 			outerSize.style,
 			outerSize.x, outerSize.y, outerSize.width, outerSize.height,
 			nullptr, nullptr, hInstance, nullptr);
