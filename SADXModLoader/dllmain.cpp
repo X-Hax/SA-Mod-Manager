@@ -1774,7 +1774,7 @@ static void __cdecl InitMods()
 			wchar_t filename[MAX_PATH];
 			swprintf(filename, LengthOfArray(filename), L"%s\\%s",
 				mod_dir.c_str(), modinfo->getWString("EXEData").c_str());
-			ProcessEXEData(filename);
+			ProcessEXEData(filename, mod_dir);
 		}
 
 		// Check if the mod has DLL data replacements.
