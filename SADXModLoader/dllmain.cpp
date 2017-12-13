@@ -509,7 +509,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 
 		case WM_CLOSE:
 			// we also need to let SADX do cleanup
-			SendMessage(hWnd, WM_CLOSE, wParam, lParam);
+			SendMessageA(hWnd, WM_CLOSE, wParam, lParam);
 			// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
 			return 0;
 
@@ -571,16 +571,16 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 				outerSizes[windowMode].y       = rect.top;
 				outerSizes[windowMode].width   = rect.right - rect.left;
 				outerSizes[windowMode].height  = rect.bottom - rect.top;
-				outerSizes[windowMode].style   = GetWindowLong(accelWindow, GWL_STYLE);
-				outerSizes[windowMode].exStyle = GetWindowLong(accelWindow, GWL_EXSTYLE);
+				outerSizes[windowMode].style   = GetWindowLongA(accelWindow, GWL_STYLE);
+				outerSizes[windowMode].exStyle = GetWindowLongA(accelWindow, GWL_EXSTYLE);
 			}
 
 			windowMode = windowMode == windowed ? fullscreen : windowed;
 			
 			// update outer window (draws background)
 			const auto& outer = outerSizes[windowMode];
-			SetWindowLong(accelWindow, GWL_STYLE, outer.style);
-			SetWindowLong(accelWindow, GWL_EXSTYLE, outer.exStyle);
+			SetWindowLongA(accelWindow, GWL_STYLE, outer.style);
+			SetWindowLongA(accelWindow, GWL_EXSTYLE, outer.exStyle);
 			SetWindowPos(accelWindow, HWND_NOTOPMOST, outer.x, outer.y, outer.width, outer.height, SWP_FRAMECHANGED);
 
 			switchingWindowMode = false;
@@ -607,7 +607,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 	}
 
 	// alternatively we can return SendMe
-	return DefWindowProc(wrapper, uMsg, wParam, lParam);
+	return DefWindowProcA(wrapper, uMsg, wParam, lParam);
 }
 
 static RECT   last_rect    = {};
@@ -623,16 +623,16 @@ static void EnableFullScreen(HWND handle)
 	last_height = VerticalResolution;
 
 	GetWindowRect(handle, &last_rect);
-	last_style = GetWindowLong(handle, GWL_STYLE);
-	last_exStyle = GetWindowLong(handle, GWL_EXSTYLE);
-	SetWindowLong(handle, GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
+	last_style = GetWindowLongA(handle, GWL_STYLE);
+	last_exStyle = GetWindowLongA(handle, GWL_EXSTYLE);
+	SetWindowLongA(handle, GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
 	while (ShowCursor(FALSE) > 0);
 }
 
 static void EnableWindowedMode(HWND handle)
 {
-	SetWindowLong(handle, GWL_STYLE, last_style);
-	SetWindowLong(handle, GWL_EXSTYLE, last_exStyle);
+	SetWindowLongA(handle, GWL_STYLE, last_style);
+	SetWindowLongA(handle, GWL_EXSTYLE, last_exStyle);
 
 	auto width = last_rect.right - last_rect.left;
 	auto height = last_rect.bottom - last_rect.top;
@@ -753,7 +753,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 	v8.cbClsExtra    = 0;
 	v8.cbWndExtra    = 0;
 	v8.hInstance     = hInstance;
-	v8.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(101));
+	v8.hIcon         = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
 	v8.hCursor       = LoadCursor(nullptr, IDC_ARROW);
 	v8.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	v8.lpszMenuName  = nullptr;
@@ -809,7 +809,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		wsH = GetSystemMetrics(SM_CYSCREEN);
 	}
 
-	accelTable = LoadAccelerators(g_hinstDll, MAKEINTRESOURCE(IDR_ACCEL_WRAPPER_WINDOW));
+	accelTable = LoadAcceleratorsA(g_hinstDll, MAKEINTRESOURCEA(IDR_ACCEL_WRAPPER_WINDOW));
 
 	if (borderlessWindow)
 	{
@@ -878,7 +878,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		w.cbClsExtra    = 0;
 		w.cbWndExtra    = 0;
 		w.hInstance     = hInstance;
-		w.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(101));
+		w.hIcon         = LoadIconA(hInstance, MAKEINTRESOURCEA(101));
 		w.hCursor       = LoadCursor(nullptr, IDC_ARROW);
 		w.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 		w.lpszMenuName  = nullptr;
