@@ -278,17 +278,16 @@ namespace SADXModManager
 					byte[] hash1 = md5.ComputeHash(File.ReadAllBytes(loaderdllpath));
 					byte[] hash2 = md5.ComputeHash(File.ReadAllBytes(datadllpath));
 
-					if (hash1.SequenceEqual(hash2))
+					if (!hash1.SequenceEqual(hash2))
 					{
-						return;
+
+						DialogResult result = MessageBox.Show(this, "Installed loader DLL differs from copy in mods folder."
+							+ "\n\nDo you want to overwrite the installed copy?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+						if (result == DialogResult.Yes)
+							File.Copy(loaderdllpath, datadllpath, true);
 					}
 				}
-
-				DialogResult result = MessageBox.Show(this, "Installed loader DLL differs from copy in mods folder."
-					+ "\n\nDo you want to overwrite the installed copy?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-				if (result == DialogResult.Yes)
-					File.Copy(loaderdllpath, datadllpath, true);
 			}
 
 			List<string> uris = Program.UriQueue.GetUris();
