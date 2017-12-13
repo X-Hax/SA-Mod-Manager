@@ -42,6 +42,7 @@ using std::vector;
 #include "AutoMipmap.h"
 #include "UiScale.h"
 #include "FixFOV.h"
+#include "DLLData.h"
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -2244,100 +2245,6 @@ static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
 	{ "stagelightdatalist", ProcessStageLightDataListINI }
 };
 
-static unordered_map<string, void *> dlllabels;
-static unordered_map<NJS_TEXLIST *, NJS_TEXLIST *> dlltexlists;
-
-static void LoadDLLLandTable(const wstring &path)
-{
-	LandTableInfo *info = new LandTableInfo(path);
-	LandTable *land = info->getlandtable();
-	auto tl = dlltexlists.find(land->TexList);
-	if (tl != dlltexlists.end())
-		land->TexList = tl->second;
-	auto labels = info->getlabels();
-	for (auto iter = labels->cbegin(); iter != labels->cend(); ++iter)
-		dlllabels[iter->first] = iter->second;
-}
-
-static void LoadDLLModel(const wstring &path)
-{
-	ModelInfo *info = new ModelInfo(path);
-	auto labels = info->getlabels();
-	for (auto iter = labels->cbegin(); iter != labels->cend(); ++iter)
-		dlllabels[iter->first] = iter->second;
-}
-
-static void LoadDLLAnimation(const wstring &path)
-{
-	AnimationFile *info = new AnimationFile(path);
-	dlllabels[info->getlabel()] = info->getmotion();
-}
-
-typedef void (__cdecl *dllfilefunc_t)(const wstring &path);
-static const unordered_map<string, dllfilefunc_t> dllfilefuncmap = {
-	{ "landtable", LoadDLLLandTable },
-	{ "model", LoadDLLModel },
-	{ "basicdxmodel", LoadDLLModel },
-	{ "chunkmodel", LoadDLLModel },
-	{ "animation", LoadDLLAnimation }
-};
-
-static void ProcessLandTableDLL(const IniGroup *group, void *exp)
-{
-	memcpy(exp, dlllabels[group->getString("Label")], sizeof(LandTable));
-}
-
-static void ProcessLandTableArrayDLL(const IniGroup *group, void *exp)
-{
-	((LandTable **)exp)[group->getInt("Index")] = (LandTable *)dlllabels[group->getString("Label")];
-}
-
-static void ProcessModelDLL(const IniGroup *group, void *exp)
-{
-	memcpy(exp, dlllabels[group->getString("Label")], sizeof(NJS_OBJECT));
-}
-
-static void ProcessModelArrayDLL(const IniGroup *group, void *exp)
-{
-	((NJS_OBJECT **)exp)[group->getInt("Index")] = (NJS_OBJECT *)dlllabels[group->getString("Label")];
-}
-
-static void ProcessMorphDLL(const IniGroup *group, void *exp)
-{
-	// won't work for chunk models, but no DLL exports this type of data anyway
-	memcpy(exp, dlllabels[group->getString("Label")], sizeof(NJS_MODEL_SADX));
-}
-
-static void ProcessModelsArrayDLL(const IniGroup *group, void *exp)
-{
-	((NJS_MODEL_SADX **)exp)[group->getInt("Index")] = (NJS_MODEL_SADX *)dlllabels[group->getString("Label")];
-}
-
-static void ProcessActionArrayDLL(const IniGroup *group, void *exp)
-{
-	string field = group->getString("Field");
-	NJS_ACTION *act = ((NJS_ACTION **)exp)[group->getInt("Index")];
-	if (field == "object")
-		act->object = (NJS_OBJECT *)dlllabels[group->getString("Label")];
-	else if (field == "motion")
-		act->motion = (NJS_MOTION *)dlllabels[group->getString("Label")];
-}
-
-typedef void (__cdecl *dlldatafunc_t)(const IniGroup *group, void *exp);
-static const unordered_map<string, dlldatafunc_t> dlldatafuncmap = {
-	{ "landtable", ProcessLandTableDLL },
-	{ "landtablearray", ProcessLandTableArrayDLL },
-	{ "model", ProcessModelDLL },
-	{ "modelarray", ProcessModelArrayDLL },
-	{ "basicdxmodel", ProcessModelDLL },
-	{ "basicdxmodelarray", ProcessModelArrayDLL },
-	{ "chunkmodel", ProcessModelDLL },
-	{ "chunkmodelarray", ProcessModelArrayDLL },
-	{ "morph", ProcessMorphDLL },
-	{ "modelsarray", ProcessModelsArrayDLL },
-	{ "actionarray", ProcessActionArrayDLL },
-};
-
 static const char *const dlldatakeys[] = {
 	"CHRMODELSData",
 	"ADV00MODELSData",
@@ -2350,12 +2257,6 @@ static const char *const dlldatakeys[] = {
 	"CHAOSTGGARDEN02MR_EVENINGData",
 	"CHAOSTGGARDEN02MR_NIGHTData"
 };
-
-static unordered_map<wstring, HMODULE> dllhandles;
-
-struct dllexportinfo { void *address; string type; };
-struct dllexportcontainer { unordered_map<string, dllexportinfo> exports; };
-static unordered_map<wstring, dllexportcontainer> dllexports;
 
 void __cdecl WriteSaveFile_r()
 {
@@ -2883,69 +2784,7 @@ static void __cdecl InitMods()
 				wchar_t filename[MAX_PATH];
 				swprintf(filename, LengthOfArray(filename), L"%s\\%s",
 					mod_dir.c_str(), modinfo->getWString(dlldatakeys[j]).c_str());
-				const IniFile *const dlldata = new IniFile(filename);
-				const IniGroup *group;
-				wstring dllname = dlldata->getWString("", "name");
-				HMODULE dllhandle;
-				if (dllhandles.find(dllname) != dllhandles.cend())
-					dllhandle = dllhandles[dllname];
-				else
-				{
-					dllhandle = GetModuleHandle(dllname.c_str());
-					dllhandles[dllname] = dllhandle;
-				}
-				if (dllexports.find(dllname) == dllexports.end())
-				{
-					group = dlldata->getGroup("Exports");
-					dllexportcontainer exp;
-					for (auto iter = group->cbegin(); iter != group->cend(); ++iter)
-					{
-						dllexportinfo inf;
-						inf.address = GetProcAddress(dllhandle, iter->first.c_str());
-						inf.type = iter->second;
-						exp.exports[iter->first] = inf;
-					}
-					dllexports[dllname] = exp;
-				}
-				const auto exports = &dllexports[dllname].exports;
-				dlltexlists.clear();
-				if (dlldata->hasGroup("TexLists"))
-				{
-					group = dlldata->getGroup("TexLists");
-					for (auto iter = group->cbegin(); iter != group->cend(); ++iter)
-					{
-						NJS_TEXLIST *key = (NJS_TEXLIST*)std::stoul(iter->first, nullptr, 16);
-						vector<string> valstr = split(iter->second, ',');
-						NJS_TEXLIST *value;
-						if (valstr.size() > 1)
-							value = ((NJS_TEXLIST**)(*exports)[valstr[0]].address)[std::stoul(valstr[1])];
-						else
-							value = (NJS_TEXLIST*)(*exports)[valstr[0]].address;
-						dlltexlists[key] = value;
-					}
-				}
-				dlllabels.clear();
-				group = dlldata->getGroup("Files");
-				for (auto iter = group->cbegin(); iter != group->cend(); ++iter)
-				{
-					auto type = dllfilefuncmap.find(split(iter->second, '|')[0]);
-					if (type != dllfilefuncmap.end())
-						type->second(mod_dir + L'\\' + MBStoUTF16(iter->first, CP_UTF8));
-				}
-				char buf[16];
-				for (unsigned int k = 0; k < 9999; k++)
-				{
-					snprintf(buf, sizeof(buf), "Item%u", k);
-					if (dlldata->hasGroup(buf))
-					{
-						group = dlldata->getGroup(buf);
-						const dllexportinfo &exp = (*exports)[group->getString("Export")];
-						auto type = dlldatafuncmap.find(exp.type);
-						if (type != dlldatafuncmap.end())
-							type->second(group, exp.address);
-					}
-				}
-				delete dlldata;
+				ProcessDLLData(filename, mod_dir);
 			}
 		}
 
@@ -3216,7 +3055,7 @@ static void __cdecl LoadChrmodels(void)
 			L"SADX Mod Loader", MB_ICONERROR);
 		ExitProcess(1);
 	}
-	dllhandles[L"CHRMODELS_orig"] = chrmodelshandle;
+	SetChrmodelsDLLHandle(chrmodelshandle);
 	WriteCall((void *)0x402513, (void *)InitMods);
 }
 
