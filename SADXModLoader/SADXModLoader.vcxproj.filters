@@ -57,6 +57,9 @@
     <ClCompile Include="DLLData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EXEData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -132,6 +135,9 @@
       <Filter>Header Files\include</Filter>
     </ClInclude>
     <ClInclude Include="DLLData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EXEData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
