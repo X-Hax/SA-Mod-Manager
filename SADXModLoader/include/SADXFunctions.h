@@ -457,8 +457,8 @@ FunctionPointer(void, MorphPoints_, (NJS_POINT3 *points_a, NJS_POINT3 *points_b,
 FunctionPointer(void, CalculateVertexNormals, (NJS_MODEL_SADX *a1), 0x4390F0);
 VoidFunc(BackupConstantAttr, 0x439520);
 VoidFunc(RestoreConstantAttr, 0x439540);
-FunctionPointer(void, AddConstantAttr, (NJD_FLAG and, NJD_FLAG or), 0x439560);
-FunctionPointer(void, RemoveConstantAttr, (NJD_FLAG and, NJD_FLAG or), 0x439590);
+FunctionPointer(void, AddConstantAttr, (NJD_FLAG _and, NJD_FLAG _or), 0x439560);
+FunctionPointer(void, RemoveConstantAttr, (NJD_FLAG _and, NJD_FLAG _or), 0x439590);
 VoidFunc(njControl3D_Backup, 0x4395C0);
 VoidFunc(njControl3D_Restore, 0x4395D0);
 FunctionPointer(void, njControl3D_Add, (NJD_CONTROL_3D a1), 0x4395E0);
