@@ -2548,10 +2548,12 @@ VoidFunc(j_nullsub_1, 0x76DAB0);
 FunctionPointer(void, njDrawPolygon, (NJS_POLYGON_VTX *polygon, Int count, Int trans), 0x77DBC0);
 FunctionPointer(void, njDrawTextureMemList, (NJS_TEXTURE_VTX *a1, Int count, Uint32 gbix, Int flag), 0x77DC70);
 FunctionPointer(void, SetOceanAlphaModeAndFVF, (int a1), 0x77DCA0);
+FunctionPointer(void, Direct3D_DrawFVF_H, (FVFStruct_H_B *data, signed int count), 0x77DD00);
 VoidFunc(j_nullsub_2, 0x77DD80);
 FunctionPointer(void, Direct3D_EnableHudAlpha, (bool enable), 0x77DD90);
 VoidFunc(j_Direct3D_TextureFilterLinear, 0x77DDE0);
 FunctionPointer(void, SetHudColorAndTextureNum, (int n, NJS_COLOR color), 0x77DDF0);
+FunctionPointer(void, Direct3D_DrawQuad, (NJS_QUAD_TEXTURE_EX *quad), 0x77DE10);
 FunctionPointer(void, njDrawLine2D, (NJS_POINT2COL *p, Int n, Float pri, Uint32 attr), 0x77DF40);
 FunctionPointer(void, njDrawCircle2D, (NJS_POINT2COL *p, Int n, Float pri, Uint32 attr), 0x77DFC0);
 FunctionPointer(void, njDrawSprite2D_DrawNow, (NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr), 0x77E050);
@@ -2903,6 +2905,23 @@ static inline void AddToQueue(QueuedModelNode *node, float pri, int idk)
 	}
 }
 
+// QueuedModelNode *__usercall@<eax>(__int16 texnum@<ax>, int size, QueuedModelType type, QueuedModelFlagsB flags)
+static const void *const AllocateQueuedModelPtr = (void*)0x403F60;
+static inline QueuedModelNode * AllocateQueuedModel(__int16 texnum, int _size, QueuedModelType _type, QueuedModelFlagsB flags)
+{
+	QueuedModelNode * result;
+	__asm
+	{
+		push dword ptr [flags]
+		push dword ptr [_type]
+		push [_size]
+		mov ax, [texnum]
+		call AllocateQueuedModelPtr
+		add esp, 12
+		mov result, eax
+	}
+	return result;
+}
 
 // signed int __usercall@<eax>(QueuedModelLineB *q@<ebx>, NJS_POINT2COL *p, int count, float pri, NJD_DRAW attr)
 static const void *const Draw2DLinesMaybe_InitPtr = (void*)0x404030;
@@ -2923,6 +2942,21 @@ static inline signed int Draw2DLinesMaybe_Init(QueuedModelLineB *q, NJS_POINT2CO
 	return result;
 }
 
+// void __usercall(NJS_ACTION *action@<eax>, float frameNumber, QueuedModelFlagsB flags, float scale, void (__cdecl *callback)(NJS_MODEL_SADX *, int, int))
+static const void *const DisplayAnimationFramePtr = (void*)0x4053D0;
+static inline void DisplayAnimationFrame(NJS_ACTION *action, float frameNumber, QueuedModelFlagsB flags, float scale, void (__cdecl *callback)(NJS_MODEL_SADX *, int, int))
+{
+	__asm
+	{
+		push [callback]
+		push [scale]
+		push dword ptr [flags]
+		push [frameNumber]
+		mov eax, [action]
+		call DisplayAnimationFramePtr
+		add esp, 16
+	}
+}
 
 // void __usercall(int *act@<edi>, int *level@<ebx>)
 static const void *const TimeOfDayIdPtr = (void*)0x40A420;
@@ -2938,9 +2972,9 @@ static inline void TimeOfDayId(int *act, int *level)
 
 // PaletteLight *__usercall@<eax>(int level, int act, int type@<eax>)
 static const void *const GetLSPalettePtr = (void*)0x40AA30;
-static inline PaletteLight* GetLSPalette(int level, int act, int _type)
+static inline PaletteLight * GetLSPalette(int level, int act, int _type)
 {
-	PaletteLight* result;
+	PaletteLight * result;
 	__asm
 	{
 		mov eax, [_type]
@@ -2955,9 +2989,9 @@ static inline PaletteLight* GetLSPalette(int level, int act, int _type)
 
 // ObjectMaster *__usercall@<eax>(signed int index@<edx>, void (__cdecl *LoadSub)(ObjectMaster *)@<edi>)
 static const void *const AllocateObjectMasterPtr = (void*)0x40B030;
-static inline ObjectMaster* AllocateObjectMaster(signed int index, void (__cdecl *LoadSub)(ObjectMaster *))
+static inline ObjectMaster * AllocateObjectMaster(signed int index, void (__cdecl *LoadSub)(ObjectMaster *))
 {
-	ObjectMaster* result;
+	ObjectMaster * result;
 	__asm
 	{
 		mov edi, [LoadSub]
@@ -3579,6 +3613,22 @@ static inline signed int Sonic_ReleaseSpindash(EntityData1 *a1, CharObj2 *a2)
 		mov esi, [a2]
 		mov edi, [a1]
 		call Sonic_ReleaseSpindashPtr
+		mov result, eax
+	}
+	return result;
+}
+
+// Sint32 __usercall@<eax>(NJS_OBJECT **a1@<edi>, char a2)
+static const void *const CollisionCrashThing_LoadPtr = (void*)0x495860;
+static inline Sint32 CollisionCrashThing_Load(NJS_OBJECT **a1, char a2)
+{
+	Sint32 result;
+	__asm
+	{
+		push dword ptr [a2]
+		mov edi, [a1]
+		call CollisionCrashThing_LoadPtr
+		add esp, 4
 		mov result, eax
 	}
 	return result;
