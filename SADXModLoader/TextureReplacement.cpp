@@ -59,6 +59,20 @@ void texpack::Init()
 	WriteJump((void*)LoadPVM, LoadPVM_r);
 }
 
+inline void check_loading()
+{
+	bool loading = LoadingFile != 0;
+
+#ifdef _DEBUG
+	if (!was_loading && was_loading != loading)
+	{
+		PrintDebug("\tBuilding cache...\n");
+
+	}
+#endif
+
+	was_loading = loading;
+}
 
 #pragma region Index Parsing
 
@@ -86,14 +100,7 @@ bool texpack::ParseIndex(const string& path, vector<TexPackEntry>& out)
 		return false;
 	}
 
-#ifdef _DEBUG
-	if (!was_loading && was_loading != LoadingFile)
-	{
-		PrintDebug("\tBuilding cache...\n");
-	}
-#endif
-
-	was_loading = LoadingFile;
+	check_loading();
 
 	ifstream indexFile(index);
 
@@ -211,14 +218,7 @@ bool GetArchiveIndex(const string& path, ifstream& file, vector<pvmx::Dictionary
 		return false;
 	}
 
-#ifdef _DEBUG
-	if (!was_loading && was_loading != LoadingFile)
-	{
-		PrintDebug("\tBuilding cache...\n");
-	}
-#endif
-
-	was_loading = LoadingFile;
+	check_loading();
 
 	if (!file.is_open())
 	{
