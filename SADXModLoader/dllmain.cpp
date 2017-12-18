@@ -370,6 +370,8 @@ static void __fastcall CreateDirect3DDevice_r(void*, int behavior, D3DDEVTYPE ty
 		Direct3D_Device = nullptr;
 }
 
+DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x3D12780);
+
 static HRESULT Direct3D_Reset()
 {
 	DWORD fogenable, fogcolor, fogtablemode, fogstart, fogend, fogdensity;

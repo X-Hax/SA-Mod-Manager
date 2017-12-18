@@ -54,8 +54,8 @@ struct AllocatedMem
 struct SaveFileInfo
 {
 	char *Filename;
-	DWORD LowDate;
-	DWORD HighDate;
+	uint32_t LowDate;
+	uint32_t HighDate;
 	SaveFileInfo *Next;
 };
 
