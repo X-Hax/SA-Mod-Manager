@@ -987,15 +987,205 @@
     </CodeLine>
   </Code>
   <Code name="Hide HUD" patch="true">
+    <!-- Ring/Time/Life -->
     <CodeLine>
       <Type>write8</Type>
       <Address>00425F90</Address>
       <Value>C3</Value>
       <ValueType>hex</ValueType>
     </CodeLine>
+    <!-- Score/Timer -->
     <CodeLine>
       <Type>write8</Type>
       <Address>00427F50</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Stage Mission Image -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>00457120</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Life Gauge -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>004B3830</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Score -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>00628330</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Tornado HP -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>00628490</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Twinkle Circuit HUD -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>004DB5E0</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Fishing HUD -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>00470546</Address>
+      <Value>EB</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>004706D6</Address>
+      <Value>EB</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Fish Hit -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>0046C920</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Big Weight/Life -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>0046FB00</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Animal Pickup -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>0046B330</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Item Box Sprite -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>004C0790</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Checkpoint Time -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>004BABE0</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Emerald Radar -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>004C0DC0</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Sand Hill Multiplier -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>005991A0</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Ice Cap Multiplier -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>004EC120</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Gamma Time Add -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>0049FDA0</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Gamma Time Remaining -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>004C5090</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Boss Name -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>004B36D0</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- NiGHTS Cards -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>005D73F0</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- NiGHTS Jackpot -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>005D6E60</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Mission Start/Clear -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>00591050</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Mission Timer -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>00592D50</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Mission Counter -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>00592A60</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Tails Win/Lose -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>0047C480</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Tails Race Bar -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>0047C260</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Demo Press Start -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>00457D30</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <!-- Chao Player Action -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>0071B210</Address>
       <Value>C3</Value>
       <ValueType>hex</ValueType>
     </CodeLine>
