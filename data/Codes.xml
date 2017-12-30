@@ -986,4 +986,18 @@
       </FalseLines>
     </CodeLine>
   </Code>
+  <Code name="Hide HUD" patch="true">
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>00425F90</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>00427F50</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+  </Code>
 </CodeList>
