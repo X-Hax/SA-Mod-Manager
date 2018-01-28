@@ -79,6 +79,7 @@
 			this.windowHeight = new System.Windows.Forms.NumericUpDown();
 			this.customWindowSizeCheckBox = new System.Windows.Forms.CheckBox();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
+			this.installURLHandlerButton = new System.Windows.Forms.Button();
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
 			this.buttonCheckForUpdates = new System.Windows.Forms.Button();
 			this.label4 = new System.Windows.Forms.Label();
@@ -101,7 +102,8 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.installURLHandlerButton = new System.Windows.Forms.Button();
+			this.modTopButton = new System.Windows.Forms.Button();
+			this.modBottomButton = new System.Windows.Forms.Button();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
@@ -424,6 +426,8 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.modBottomButton);
+			this.tabPage1.Controls.Add(this.modTopButton);
 			this.tabPage1.Controls.Add(this.buttonNewMod);
 			this.tabPage1.Controls.Add(this.buttonRefreshModList);
 			this.tabPage1.Controls.Add(this.modDescription);
@@ -456,7 +460,7 @@
 			this.modDownButton.AutoSize = true;
 			this.modDownButton.Enabled = false;
 			this.modDownButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modDownButton.Location = new System.Drawing.Point(345, 35);
+			this.modDownButton.Location = new System.Drawing.Point(345, 62);
 			this.modDownButton.Name = "modDownButton";
 			this.modDownButton.Size = new System.Drawing.Size(27, 22);
 			this.modDownButton.TabIndex = 2;
@@ -470,7 +474,7 @@
 			this.modUpButton.AutoSize = true;
 			this.modUpButton.Enabled = false;
 			this.modUpButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modUpButton.Location = new System.Drawing.Point(345, 6);
+			this.modUpButton.Location = new System.Drawing.Point(345, 34);
 			this.modUpButton.Name = "modUpButton";
 			this.modUpButton.Size = new System.Drawing.Size(27, 22);
 			this.modUpButton.TabIndex = 1;
@@ -782,6 +786,18 @@
 			this.tabPage4.Text = "Options";
 			this.tabPage4.UseVisualStyleBackColor = true;
 			// 
+			// installURLHandlerButton
+			// 
+			this.installURLHandlerButton.AutoSize = true;
+			this.installURLHandlerButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.installURLHandlerButton.Location = new System.Drawing.Point(6, 198);
+			this.installURLHandlerButton.Name = "installURLHandlerButton";
+			this.installURLHandlerButton.Size = new System.Drawing.Size(109, 23);
+			this.installURLHandlerButton.TabIndex = 3;
+			this.installURLHandlerButton.Text = "Install URL Handler";
+			this.installURLHandlerButton.UseVisualStyleBackColor = true;
+			this.installURLHandlerButton.Click += new System.EventHandler(this.installURLHandlerButton_Click);
+			// 
 			// groupBox4
 			// 
 			this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -941,7 +957,7 @@
             this.toolStripMenuItem3,
             this.developerToolStripMenuItem});
 			this.modContextMenu.Name = "modContextMenu";
-			this.modContextMenu.Size = new System.Drawing.Size(171, 170);
+			this.modContextMenu.Size = new System.Drawing.Size(171, 148);
 			// 
 			// openFolderToolStripMenuItem
 			// 
@@ -1003,17 +1019,33 @@
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
 			// 
-			// installURLHandlerButton
+			// modTopButton
 			// 
-			this.installURLHandlerButton.AutoSize = true;
-			this.installURLHandlerButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.installURLHandlerButton.Location = new System.Drawing.Point(6, 198);
-			this.installURLHandlerButton.Name = "installURLHandlerButton";
-			this.installURLHandlerButton.Size = new System.Drawing.Size(109, 23);
-			this.installURLHandlerButton.TabIndex = 3;
-			this.installURLHandlerButton.Text = "Install URL Handler";
-			this.installURLHandlerButton.UseVisualStyleBackColor = true;
-			this.installURLHandlerButton.Click += new System.EventHandler(this.installURLHandlerButton_Click);
+			this.modTopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.modTopButton.AutoSize = true;
+			this.modTopButton.Enabled = false;
+			this.modTopButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.modTopButton.Location = new System.Drawing.Point(345, 6);
+			this.modTopButton.Name = "modTopButton";
+			this.modTopButton.Size = new System.Drawing.Size(27, 22);
+			this.modTopButton.TabIndex = 7;
+			this.modTopButton.Text = "⤒";
+			this.modTopButton.UseVisualStyleBackColor = true;
+			this.modTopButton.Click += new System.EventHandler(this.modTopButton_Click);
+			// 
+			// modBottomButton
+			// 
+			this.modBottomButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.modBottomButton.AutoSize = true;
+			this.modBottomButton.Enabled = false;
+			this.modBottomButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.modBottomButton.Location = new System.Drawing.Point(345, 90);
+			this.modBottomButton.Name = "modBottomButton";
+			this.modBottomButton.Size = new System.Drawing.Size(27, 22);
+			this.modBottomButton.TabIndex = 8;
+			this.modBottomButton.Text = "⤓";
+			this.modBottomButton.UseVisualStyleBackColor = true;
+			this.modBottomButton.Click += new System.EventHandler(this.modBottomButton_Click);
 			// 
 			// MainForm
 			// 
@@ -1132,5 +1164,7 @@
 		private System.Windows.Forms.ComboBox comboFmvFill;
 		private System.Windows.Forms.ComboBox comboBackgroundFill;
 		private System.Windows.Forms.Button installURLHandlerButton;
+		private System.Windows.Forms.Button modBottomButton;
+		private System.Windows.Forms.Button modTopButton;
 	}
 }

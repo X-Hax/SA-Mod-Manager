@@ -665,20 +665,45 @@ namespace SADXModManager
 			int count = modListView.SelectedIndices.Count;
 			if (count == 0)
 			{
-				modUpButton.Enabled = modDownButton.Enabled = false;
+				modTopButton.Enabled = modUpButton.Enabled = modDownButton.Enabled = modBottomButton.Enabled = false;
 				modDescription.Text = "Description: No mod selected.";
 			}
 			else if (count == 1)
 			{
 				modDescription.Text = "Description: " + mods[(string)modListView.SelectedItems[0].Tag].Description;
+				modTopButton.Enabled = modListView.SelectedIndices[0] != 0;
 				modUpButton.Enabled = modListView.SelectedIndices[0] > 0;
 				modDownButton.Enabled = modListView.SelectedIndices[0] < modListView.Items.Count - 1;
+				modBottomButton.Enabled = modListView.SelectedIndices[0] != modListView.Items.Count - 1;
 			}
 			else if (count > 1)
 			{
 				modDescription.Text = "Description: Multiple mods selected.";
-				modUpButton.Enabled = modDownButton.Enabled = true;
+				modTopButton.Enabled = modUpButton.Enabled = modDownButton.Enabled = modBottomButton.Enabled = true;
 			}
+		}
+
+		private void modTopButton_Click(object sender, EventArgs e)
+		{
+			if (modListView.SelectedItems.Count < 1)
+				return;
+
+			modListView.BeginUpdate();
+
+			for (int i = 0; i < modListView.SelectedItems.Count; i++)
+			{
+				int index = modListView.SelectedItems[i].Index;
+
+				if (index > 0)
+				{
+					ListViewItem item = modListView.SelectedItems[i];
+					modListView.Items.Remove(item);
+					modListView.Items.Insert(i, item);
+				}
+			}
+
+			modListView.SelectedItems[0].EnsureVisible();
+			modListView.EndUpdate();
 		}
 
 		private void modUpButton_Click(object sender, EventArgs e)
@@ -720,6 +745,29 @@ namespace SADXModManager
 					ListViewItem item = modListView.SelectedItems[i];
 					modListView.Items.Remove(item);
 					modListView.Items.Insert(index, item);
+				}
+			}
+
+			modListView.SelectedItems[modListView.SelectedItems.Count - 1].EnsureVisible();
+			modListView.EndUpdate();
+		}
+
+		private void modBottomButton_Click(object sender, EventArgs e)
+		{
+			if (modListView.SelectedItems.Count < 1)
+				return;
+
+			modListView.BeginUpdate();
+
+			for (int i = modListView.SelectedItems.Count - 1; i >= 0; i--)
+			{
+				int index = modListView.SelectedItems[i].Index;
+
+				if (index != modListView.Items.Count - 1)
+				{
+					ListViewItem item = modListView.SelectedItems[i];
+					modListView.Items.Remove(item);
+					modListView.Items.Insert(modListView.Items.Count, item);
 				}
 			}
 
