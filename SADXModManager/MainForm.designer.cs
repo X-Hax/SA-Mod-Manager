@@ -104,6 +104,7 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.configureModButton = new System.Windows.Forms.Button();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
@@ -431,6 +432,7 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.configureModButton);
 			this.tabPage1.Controls.Add(this.modBottomButton);
 			this.tabPage1.Controls.Add(this.modTopButton);
 			this.tabPage1.Controls.Add(this.buttonNewMod);
@@ -1052,6 +1054,17 @@
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
 			// 
+			// configureModButton
+			// 
+			this.configureModButton.Enabled = false;
+			this.configureModButton.Location = new System.Drawing.Point(87, 223);
+			this.configureModButton.Name = "configureModButton";
+			this.configureModButton.Size = new System.Drawing.Size(75, 23);
+			this.configureModButton.TabIndex = 9;
+			this.configureModButton.Text = "Configure...";
+			this.configureModButton.UseVisualStyleBackColor = true;
+			this.configureModButton.Click += new System.EventHandler(this.configureModButton_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1171,5 +1184,6 @@
 		private System.Windows.Forms.Button installURLHandlerButton;
 		private System.Windows.Forms.Button modBottomButton;
 		private System.Windows.Forms.Button modTopButton;
+		private System.Windows.Forms.Button configureModButton;
 	}
 }

@@ -665,7 +665,7 @@ namespace SADXModManager
 			int count = modListView.SelectedIndices.Count;
 			if (count == 0)
 			{
-				modTopButton.Enabled = modUpButton.Enabled = modDownButton.Enabled = modBottomButton.Enabled = false;
+				modTopButton.Enabled = modUpButton.Enabled = modDownButton.Enabled = modBottomButton.Enabled = configureModButton.Enabled = false;
 				modDescription.Text = "Description: No mod selected.";
 			}
 			else if (count == 1)
@@ -675,11 +675,13 @@ namespace SADXModManager
 				modUpButton.Enabled = modListView.SelectedIndices[0] > 0;
 				modDownButton.Enabled = modListView.SelectedIndices[0] < modListView.Items.Count - 1;
 				modBottomButton.Enabled = modListView.SelectedIndices[0] != modListView.Items.Count - 1;
+				configureModButton.Enabled = File.Exists(Path.Combine("mods", (string)modListView.SelectedItems[0].Tag, "configschema.xml"));
 			}
 			else if (count > 1)
 			{
 				modDescription.Text = "Description: Multiple mods selected.";
 				modTopButton.Enabled = modUpButton.Enabled = modDownButton.Enabled = modBottomButton.Enabled = true;
+				configureModButton.Enabled = false;
 			}
 		}
 
@@ -1338,6 +1340,12 @@ namespace SADXModManager
 		{
 			Process.Start(new ProcessStartInfo(Application.ExecutablePath, "urlhandler") { UseShellExecute = true, Verb = "runas" }).WaitForExit();
 			MessageBox.Show(this, "URL handler installed!", Text);
+		}
+
+		private void configureModButton_Click(object sender, EventArgs e)
+		{
+			using (ModConfigDialog dlg = new ModConfigDialog(Path.Combine("mods", (string)modListView.SelectedItems[0].Tag), modListView.SelectedItems[0].Text))
+				dlg.ShowDialog(this);
 		}
 	}
 }
