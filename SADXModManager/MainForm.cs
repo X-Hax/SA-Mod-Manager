@@ -775,6 +775,47 @@ namespace SADXModManager
 			modListView.EndUpdate();
 		}
 
+		static readonly string moddropname = "Mod" + Process.GetCurrentProcess().Id;
+		private void modListView_ItemDrag(object sender, ItemDragEventArgs e)
+		{
+			modListView.DoDragDrop(new DataObject(moddropname, modListView.SelectedItems.Cast<ListViewItem>().ToArray()), DragDropEffects.Move | DragDropEffects.Scroll);
+		}
+
+		private void modListView_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(moddropname))
+				e.Effect = DragDropEffects.Move | DragDropEffects.Scroll;
+			else
+				e.Effect = DragDropEffects.None;
+		}
+
+		private void modListView_DragOver(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(moddropname))
+				e.Effect = DragDropEffects.Move | DragDropEffects.Scroll;
+			else
+				e.Effect = DragDropEffects.None;
+		}
+
+		private void modListView_DragDrop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(moddropname))
+			{
+				Point clientPoint = modListView.PointToClient(new Point(e.X, e.Y));
+				ListViewItem[] items = (ListViewItem[])e.Data.GetData(moddropname);
+				int ind = modListView.GetItemAt(clientPoint.X, clientPoint.Y).Index;
+				foreach (ListViewItem item in items)
+					if (ind > item.Index)
+						ind++;
+				modListView.BeginUpdate();
+				foreach (ListViewItem item in items)
+					modListView.Items.Insert(ind++, (ListViewItem)item.Clone());
+				foreach (ListViewItem item in items)
+					modListView.Items.Remove(item);
+				modListView.EndUpdate();
+			}
+		}
+
 		private void Save()
 		{
 			loaderini.Mods.Clear();

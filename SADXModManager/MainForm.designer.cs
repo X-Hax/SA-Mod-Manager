@@ -55,6 +55,8 @@
 			this.configEditorButton = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.modBottomButton = new System.Windows.Forms.Button();
+			this.modTopButton = new System.Windows.Forms.Button();
 			this.buttonNewMod = new System.Windows.Forms.Button();
 			this.modDownButton = new System.Windows.Forms.Button();
 			this.modUpButton = new System.Windows.Forms.Button();
@@ -102,8 +104,6 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.modTopButton = new System.Windows.Forms.Button();
-			this.modBottomButton = new System.Windows.Forms.Button();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
@@ -325,6 +325,7 @@
 			// 
 			// modListView
 			// 
+			this.modListView.AllowDrop = true;
 			this.modListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -342,7 +343,11 @@
 			this.modListView.UseCompatibleStateImageBehavior = false;
 			this.modListView.View = System.Windows.Forms.View.Details;
 			this.modListView.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.modListView_ItemCheck);
+			this.modListView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.modListView_ItemDrag);
 			this.modListView.SelectedIndexChanged += new System.EventHandler(this.modListView_SelectedIndexChanged);
+			this.modListView.DragDrop += new System.Windows.Forms.DragEventHandler(this.modListView_DragDrop);
+			this.modListView.DragEnter += new System.Windows.Forms.DragEventHandler(this.modListView_DragEnter);
+			this.modListView.DragOver += new System.Windows.Forms.DragEventHandler(this.modListView_DragOver);
 			this.modListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.modListView_MouseClick);
 			// 
 			// columnHeader1
@@ -441,6 +446,34 @@
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Mods";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// modBottomButton
+			// 
+			this.modBottomButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.modBottomButton.AutoSize = true;
+			this.modBottomButton.Enabled = false;
+			this.modBottomButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.modBottomButton.Location = new System.Drawing.Point(345, 90);
+			this.modBottomButton.Name = "modBottomButton";
+			this.modBottomButton.Size = new System.Drawing.Size(27, 22);
+			this.modBottomButton.TabIndex = 8;
+			this.modBottomButton.Text = "⤓";
+			this.modBottomButton.UseVisualStyleBackColor = true;
+			this.modBottomButton.Click += new System.EventHandler(this.modBottomButton_Click);
+			// 
+			// modTopButton
+			// 
+			this.modTopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.modTopButton.AutoSize = true;
+			this.modTopButton.Enabled = false;
+			this.modTopButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.modTopButton.Location = new System.Drawing.Point(345, 6);
+			this.modTopButton.Name = "modTopButton";
+			this.modTopButton.Size = new System.Drawing.Size(27, 22);
+			this.modTopButton.TabIndex = 7;
+			this.modTopButton.Text = "⤒";
+			this.modTopButton.UseVisualStyleBackColor = true;
+			this.modTopButton.Click += new System.EventHandler(this.modTopButton_Click);
 			// 
 			// buttonNewMod
 			// 
@@ -1018,34 +1051,6 @@
 			this.generateManifestToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
-			// 
-			// modTopButton
-			// 
-			this.modTopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.modTopButton.AutoSize = true;
-			this.modTopButton.Enabled = false;
-			this.modTopButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modTopButton.Location = new System.Drawing.Point(345, 6);
-			this.modTopButton.Name = "modTopButton";
-			this.modTopButton.Size = new System.Drawing.Size(27, 22);
-			this.modTopButton.TabIndex = 7;
-			this.modTopButton.Text = "⤒";
-			this.modTopButton.UseVisualStyleBackColor = true;
-			this.modTopButton.Click += new System.EventHandler(this.modTopButton_Click);
-			// 
-			// modBottomButton
-			// 
-			this.modBottomButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.modBottomButton.AutoSize = true;
-			this.modBottomButton.Enabled = false;
-			this.modBottomButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modBottomButton.Location = new System.Drawing.Point(345, 90);
-			this.modBottomButton.Name = "modBottomButton";
-			this.modBottomButton.Size = new System.Drawing.Size(27, 22);
-			this.modBottomButton.TabIndex = 8;
-			this.modBottomButton.Text = "⤓";
-			this.modBottomButton.UseVisualStyleBackColor = true;
-			this.modBottomButton.Click += new System.EventHandler(this.modBottomButton_Click);
 			// 
 			// MainForm
 			// 
