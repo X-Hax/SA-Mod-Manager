@@ -1234,6 +1234,11 @@ const char* __cdecl GetReplaceablePath(const char* path)
 	return sadx_fileMap.replaceFile(path);
 }
 
+void _ReplaceFile(const char *src, const char *dst)
+{
+	sadx_fileMap.addReplaceFile(src, dst);
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
@@ -1253,7 +1258,8 @@ static const HelperFunctions helperFunctions =
 	&ClearTrialSubgameList,
 	&GetMainSavePath,
 	&GetChaoSavePath,
-	&GetReplaceablePath
+	&GetReplaceablePath,
+	&_ReplaceFile
 };
 
 static const char *const dlldatakeys[] = {
