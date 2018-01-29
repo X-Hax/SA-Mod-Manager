@@ -55,6 +55,7 @@
 			this.configEditorButton = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.configureModButton = new System.Windows.Forms.Button();
 			this.modBottomButton = new System.Windows.Forms.Button();
 			this.modTopButton = new System.Windows.Forms.Button();
 			this.buttonNewMod = new System.Windows.Forms.Button();
@@ -104,7 +105,6 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.configureModButton = new System.Windows.Forms.Button();
 			label3 = new System.Windows.Forms.Label();
 			label1 = new System.Windows.Forms.Label();
 			label2 = new System.Windows.Forms.Label();
@@ -448,6 +448,18 @@
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Mods";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// configureModButton
+			// 
+			this.configureModButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.configureModButton.Enabled = false;
+			this.configureModButton.Location = new System.Drawing.Point(87, 223);
+			this.configureModButton.Name = "configureModButton";
+			this.configureModButton.Size = new System.Drawing.Size(75, 23);
+			this.configureModButton.TabIndex = 9;
+			this.configureModButton.Text = "Configure...";
+			this.configureModButton.UseVisualStyleBackColor = true;
+			this.configureModButton.Click += new System.EventHandler(this.configureModButton_Click);
 			// 
 			// modBottomButton
 			// 
@@ -1053,17 +1065,6 @@
 			this.generateManifestToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
-			// 
-			// configureModButton
-			// 
-			this.configureModButton.Enabled = false;
-			this.configureModButton.Location = new System.Drawing.Point(87, 223);
-			this.configureModButton.Name = "configureModButton";
-			this.configureModButton.Size = new System.Drawing.Size(75, 23);
-			this.configureModButton.TabIndex = 9;
-			this.configureModButton.Text = "Configure...";
-			this.configureModButton.UseVisualStyleBackColor = true;
-			this.configureModButton.Click += new System.EventHandler(this.configureModButton_Click);
 			// 
 			// MainForm
 			// 
