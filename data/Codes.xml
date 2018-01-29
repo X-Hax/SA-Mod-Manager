@@ -192,28 +192,6 @@
       <ValueType>hex</ValueType>
     </CodeLine>
   </Code>
-  <Code name="Super Sonic Flag">
-    <CodeLine>
-      <Type>ifne8</Type>
-      <Address>03ABDC7C</Address>
-      <Value>12</Value>
-      <ValueType>decimal</ValueType>
-      <TrueLines>
-        <CodeLine>
-          <Type>or16</Type>
-          <Address>03B42E30</Address>
-          <Pointer>true</Pointer>
-          <Offsets>
-            <Offset>20</Offset>
-            <Offset>C0</Offset>
-            <Offset>4</Offset>
-          </Offsets>
-          <Value>8000</Value>
-          <ValueType>hex</ValueType>
-        </CodeLine>
-      </TrueLines>
-    </CodeLine>
-  </Code>
   <Code name="Disable Music" patch="true">
     <CodeLine>
       <Type>write8</Type>
