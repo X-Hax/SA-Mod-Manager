@@ -315,6 +315,8 @@ namespace SADXModManager
 
 		private void LoadModList()
 		{
+			modTopButton.Enabled = modUpButton.Enabled = modDownButton.Enabled = modBottomButton.Enabled = configureModButton.Enabled = false;
+			modDescription.Text = "Description: No mod selected.";
 			modListView.Items.Clear();
 			mods = new Dictionary<string, SADXModInfo>();
 			codes = new List<Code>(mainCodes.Codes);
