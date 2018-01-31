@@ -468,9 +468,9 @@
 			this.modBottomButton.Enabled = false;
 			this.modBottomButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.modBottomButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.modBottomButton.Location = new System.Drawing.Point(345, 90);
+			this.modBottomButton.Location = new System.Drawing.Point(344, 90);
 			this.modBottomButton.Name = "modBottomButton";
-			this.modBottomButton.Size = new System.Drawing.Size(27, 22);
+			this.modBottomButton.Size = new System.Drawing.Size(28, 22);
 			this.modBottomButton.TabIndex = 8;
 			this.modBottomButton.Text = "⤓";
 			this.modBottomButton.UseVisualStyleBackColor = true;
@@ -485,7 +485,7 @@
 			this.modTopButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.modTopButton.Location = new System.Drawing.Point(344, 6);
 			this.modTopButton.Name = "modTopButton";
-			this.modTopButton.Size = new System.Drawing.Size(28, 24);
+			this.modTopButton.Size = new System.Drawing.Size(28, 22);
 			this.modTopButton.TabIndex = 7;
 			this.modTopButton.Text = "⤒";
 			this.modTopButton.UseVisualStyleBackColor = true;
