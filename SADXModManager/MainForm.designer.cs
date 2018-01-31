@@ -467,6 +467,7 @@
 			this.modBottomButton.AutoSize = true;
 			this.modBottomButton.Enabled = false;
 			this.modBottomButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.modBottomButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.modBottomButton.Location = new System.Drawing.Point(345, 90);
 			this.modBottomButton.Name = "modBottomButton";
 			this.modBottomButton.Size = new System.Drawing.Size(27, 22);
@@ -481,9 +482,10 @@
 			this.modTopButton.AutoSize = true;
 			this.modTopButton.Enabled = false;
 			this.modTopButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modTopButton.Location = new System.Drawing.Point(345, 6);
+			this.modTopButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.modTopButton.Location = new System.Drawing.Point(344, 6);
 			this.modTopButton.Name = "modTopButton";
-			this.modTopButton.Size = new System.Drawing.Size(27, 22);
+			this.modTopButton.Size = new System.Drawing.Size(28, 24);
 			this.modTopButton.TabIndex = 7;
 			this.modTopButton.Text = "⤒";
 			this.modTopButton.UseVisualStyleBackColor = true;
@@ -507,9 +509,10 @@
 			this.modDownButton.AutoSize = true;
 			this.modDownButton.Enabled = false;
 			this.modDownButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modDownButton.Location = new System.Drawing.Point(345, 62);
+			this.modDownButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.modDownButton.Location = new System.Drawing.Point(344, 62);
 			this.modDownButton.Name = "modDownButton";
-			this.modDownButton.Size = new System.Drawing.Size(27, 22);
+			this.modDownButton.Size = new System.Drawing.Size(28, 22);
 			this.modDownButton.TabIndex = 2;
 			this.modDownButton.Text = "↓";
 			this.modDownButton.UseVisualStyleBackColor = true;
@@ -521,9 +524,10 @@
 			this.modUpButton.AutoSize = true;
 			this.modUpButton.Enabled = false;
 			this.modUpButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modUpButton.Location = new System.Drawing.Point(345, 34);
+			this.modUpButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.modUpButton.Location = new System.Drawing.Point(344, 34);
 			this.modUpButton.Name = "modUpButton";
-			this.modUpButton.Size = new System.Drawing.Size(27, 22);
+			this.modUpButton.Size = new System.Drawing.Size(28, 22);
 			this.modUpButton.TabIndex = 1;
 			this.modUpButton.Text = "↑";
 			this.modUpButton.UseVisualStyleBackColor = true;
