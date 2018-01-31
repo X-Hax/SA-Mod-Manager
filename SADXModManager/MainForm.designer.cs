@@ -339,7 +339,7 @@
 			this.modListView.HideSelection = false;
 			this.modListView.Location = new System.Drawing.Point(6, 6);
 			this.modListView.Name = "modListView";
-			this.modListView.Size = new System.Drawing.Size(330, 211);
+			this.modListView.Size = new System.Drawing.Size(337, 211);
 			this.modListView.TabIndex = 0;
 			this.modListView.UseCompatibleStateImageBehavior = false;
 			this.modListView.View = System.Windows.Forms.View.Details;
@@ -467,11 +467,12 @@
 			this.modBottomButton.AutoSize = true;
 			this.modBottomButton.Enabled = false;
 			this.modBottomButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modBottomButton.Location = new System.Drawing.Point(342, 90);
+			this.modBottomButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.modBottomButton.Location = new System.Drawing.Point(344, 90);
 			this.modBottomButton.Name = "modBottomButton";
-			this.modBottomButton.Size = new System.Drawing.Size(30, 22);
+			this.modBottomButton.Size = new System.Drawing.Size(28, 22);
 			this.modBottomButton.TabIndex = 8;
-			this.modBottomButton.Text = "⏬";
+			this.modBottomButton.Text = "⤓";
 			this.modBottomButton.UseVisualStyleBackColor = true;
 			this.modBottomButton.Click += new System.EventHandler(this.modBottomButton_Click);
 			// 
@@ -481,11 +482,12 @@
 			this.modTopButton.AutoSize = true;
 			this.modTopButton.Enabled = false;
 			this.modTopButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modTopButton.Location = new System.Drawing.Point(342, 6);
+			this.modTopButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.modTopButton.Location = new System.Drawing.Point(344, 6);
 			this.modTopButton.Name = "modTopButton";
-			this.modTopButton.Size = new System.Drawing.Size(30, 22);
+			this.modTopButton.Size = new System.Drawing.Size(28, 22);
 			this.modTopButton.TabIndex = 7;
-			this.modTopButton.Text = "⏫";
+			this.modTopButton.Text = "⤒";
 			this.modTopButton.UseVisualStyleBackColor = true;
 			this.modTopButton.Click += new System.EventHandler(this.modTopButton_Click);
 			// 
@@ -493,7 +495,7 @@
 			// 
 			this.buttonNewMod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonNewMod.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.buttonNewMod.Location = new System.Drawing.Point(261, 223);
+			this.buttonNewMod.Location = new System.Drawing.Point(268, 223);
 			this.buttonNewMod.Name = "buttonNewMod";
 			this.buttonNewMod.Size = new System.Drawing.Size(75, 23);
 			this.buttonNewMod.TabIndex = 5;
@@ -507,11 +509,12 @@
 			this.modDownButton.AutoSize = true;
 			this.modDownButton.Enabled = false;
 			this.modDownButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modDownButton.Location = new System.Drawing.Point(342, 62);
+			this.modDownButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.modDownButton.Location = new System.Drawing.Point(344, 62);
 			this.modDownButton.Name = "modDownButton";
-			this.modDownButton.Size = new System.Drawing.Size(30, 22);
+			this.modDownButton.Size = new System.Drawing.Size(28, 22);
 			this.modDownButton.TabIndex = 2;
-			this.modDownButton.Text = "⏷";
+			this.modDownButton.Text = "↓";
 			this.modDownButton.UseVisualStyleBackColor = true;
 			this.modDownButton.Click += new System.EventHandler(this.modDownButton_Click);
 			// 
@@ -521,11 +524,12 @@
 			this.modUpButton.AutoSize = true;
 			this.modUpButton.Enabled = false;
 			this.modUpButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.modUpButton.Location = new System.Drawing.Point(342, 34);
+			this.modUpButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.modUpButton.Location = new System.Drawing.Point(344, 34);
 			this.modUpButton.Name = "modUpButton";
-			this.modUpButton.Size = new System.Drawing.Size(30, 22);
+			this.modUpButton.Size = new System.Drawing.Size(28, 22);
 			this.modUpButton.TabIndex = 1;
-			this.modUpButton.Text = "⏶";
+			this.modUpButton.Text = "↑";
 			this.modUpButton.UseVisualStyleBackColor = true;
 			this.modUpButton.Click += new System.EventHandler(this.modUpButton_Click);
 			// 
