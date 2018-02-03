@@ -179,22 +179,11 @@ namespace SADXModManager
 
 			var dummyInfo = new ModInfo();
 
-			using (var client = new UpdaterWebClient())
-			{
-				var response = client.DownloadString(
-					string.Format("https://api.gamebanana.com/Core/Item/Data?itemtype={0}&itemid={1}&fields=name,authors",
-						itemType, itemId)
-				);
+			GameBananaItem gbi = GameBananaItem.Load(itemType, long.Parse(itemId));
 
-				var array = JsonConvert.DeserializeObject<string[]>(response);
-				dummyInfo.Name = array[0];
+			dummyInfo.Name = gbi.Name;
 
-				var authors = JsonConvert.DeserializeObject<Dictionary<string, string[][]>>(array[1]);
-
-				// for every array of string[] in authors, select the first element of each array
-				var authorList = from i in (from x in authors select x.Value) from j in i select j[0];
-				dummyInfo.Author = string.Join(", ", authorList);
-			}
+			dummyInfo.Author = gbi.OwnerName;
 
 			DialogResult result = MessageBox.Show(this, $"Do you want to install mod \"{dummyInfo.Name}\" by {dummyInfo.Author} from {new Uri(fields[0]).DnsSafeHost}?", "Mod Download", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
