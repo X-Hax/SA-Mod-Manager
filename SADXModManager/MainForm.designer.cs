@@ -453,6 +453,7 @@
 			// 
 			this.configureModButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.configureModButton.Enabled = false;
+			this.configureModButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.configureModButton.Location = new System.Drawing.Point(87, 223);
 			this.configureModButton.Name = "configureModButton";
 			this.configureModButton.Size = new System.Drawing.Size(75, 23);
