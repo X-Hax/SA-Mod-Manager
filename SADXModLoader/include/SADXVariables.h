@@ -1908,7 +1908,7 @@ DataPointer(int, CursorX, 0x3B0E994);
 DataPointer(int, CursorMagnitude, 0x3B0E998);
 DataPointer(int, CursorCos, 0x3B0E99C);
 DataPointer(int, CursorSin, 0x3B0E9A0);
-DataPointer(ControllerData*, ControllersRaw, 0x3B0E9C8);
+DataArray(ControllerData, ControllersRaw, 0x3B0E9C8, 4);
 DataPointer(int, MouseMode, 0x3B0EAE0);
 DataPointer(int, CustomMouseButtonCount, 0x3B0EAE4);
 DataPointer(int, LastUsedMouseClick, 0x3B0EBF8);
