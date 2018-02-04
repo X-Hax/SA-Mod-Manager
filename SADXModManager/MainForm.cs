@@ -386,7 +386,7 @@ namespace SADXModManager
 
 					if (msg.Length > 0)
 					{
-						using (var dlg = new UpdateMessageDialog(msg.Replace("\n", "\r\n")))
+						using (var dlg = new UpdateMessageDialog("SADX", msg.Replace("\n", "\r\n")))
 						{
 							if (dlg.ShowDialog(this) == DialogResult.Yes)
 							{
@@ -628,6 +628,14 @@ namespace SADXModManager
 						}
 
 						ModDownload d = modUpdater.GetGitHubReleases(mod, info.Item1, client, errors);
+						if (d != null)
+						{
+							updates.Add(d);
+						}
+					}
+					else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
+					{
+						ModDownload d = modUpdater.GetGameBananaReleases(mod, info.Item1, errors);
 						if (d != null)
 						{
 							updates.Add(d);
