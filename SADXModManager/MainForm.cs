@@ -14,7 +14,6 @@ using System.Windows.Forms;
 using IniFile;
 using ModManagerCommon;
 using ModManagerCommon.Forms;
-using Newtonsoft.Json;
 using SADXModManager.Forms;
 using SADXModManager.Properties;
 
@@ -80,6 +79,8 @@ namespace SADXModManager
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			// Try to use TLS 1.2
+			try { ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072; } catch { }
 			if (!Debugger.IsAttached)
 				Environment.CurrentDirectory = Application.StartupPath;
 			SetDoubleBuffered(modListView, true);
