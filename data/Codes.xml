@@ -1168,4 +1168,12 @@
       <ValueType>hex</ValueType>
     </CodeLine>
   </Code>
+  <Code name="Skip All Cutscenes" patch="true">
+    <CodeLine>
+      <Type>writenop</Type>
+      <Address>004311CA</Address>
+      <Value>2</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
+  </Code>
 </CodeList>
