@@ -28,6 +28,7 @@ namespace SADXModManager
 
 		private bool checkedForUpdates;
 
+		const string updatePath = "mods/.updates";
 		const string datadllpath = "system/CHRMODELS.dll";
 		const string datadllorigpath = "system/CHRMODELS_orig.dll";
 		const string loaderinipath = "mods/SADXModLoader.ini";
@@ -85,9 +86,6 @@ namespace SADXModManager
 				Environment.CurrentDirectory = Application.StartupPath;
 			SetDoubleBuffered(modListView, true);
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
-
-			if (CheckForUpdates())
-				return;
 
 			try { mainCodes = CodeList.Load(codexmlpath); }
 			catch { mainCodes = new CodeList() { Codes = new List<Code>() }; }
@@ -193,8 +191,6 @@ namespace SADXModManager
 				return;
 			}
 
-			string updatePath = Path.Combine("mods", ".updates");
-
 			#region create update folder
 			do
 			{
@@ -228,7 +224,7 @@ namespace SADXModManager
 				new ModDownload(dummyInfo, dummyPath, fields[0], null, 0)
 			};
 
-			using (var progress = new DownloadDialog(updates, updatePath))
+			using (var progress = new ModDownloadDialog(updates, updatePath))
 			{
 				progress.ShowDialog(this);
 			}
@@ -253,6 +249,9 @@ namespace SADXModManager
 
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
+			if (CheckForUpdates())
+				return;
+
 			if (!File.Exists(datadllpath))
 			{
 				MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\nCannot determine state of installation.",
@@ -391,9 +390,30 @@ namespace SADXModManager
 						{
 							if (dlg.ShowDialog(this) == DialogResult.Yes)
 							{
-								Process.Start("http://mm.reimuhakurei.net/sadxmods/SADXModLoader.7z");
-								Close();
-								return true;
+								DialogResult result = DialogResult.OK;
+								do
+								{
+									try
+									{
+										if (!Directory.Exists(updatePath))
+										{
+											Directory.CreateDirectory(updatePath);
+										}
+									}
+									catch (Exception ex)
+									{
+										result = MessageBox.Show(this, "Failed to create temporary update directory:\n" + ex.Message
+																	   + "\n\nWould you like to retry?", "Directory Creation Failed", MessageBoxButtons.RetryCancel);
+										if (result == DialogResult.Cancel) return false;
+									}
+								} while (result == DialogResult.Retry);
+
+								using (var dlg2 = new LoaderDownloadDialog("http://mm.reimuhakurei.net/sadxmods/SADXModLoader.7z", updatePath))
+									if (dlg2.ShowDialog(this) == DialogResult.OK)
+									{
+										Close();
+										return true;
+									}
 							}
 						}
 					}
@@ -507,7 +527,6 @@ namespace SADXModManager
 			}
 
 			DialogResult result;
-			string updatePath = Path.Combine("mods", ".updates");
 
 			do
 			{
@@ -526,7 +545,7 @@ namespace SADXModManager
 				}
 			} while (result == DialogResult.Retry);
 
-			using (var progress = new DownloadDialog(updates, updatePath))
+			using (var progress = new ModDownloadDialog(updates, updatePath))
 			{
 				progress.ShowDialog(this);
 			}

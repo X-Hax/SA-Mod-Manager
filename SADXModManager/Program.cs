@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using ModManagerCommon.Forms;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,7 +39,34 @@ namespace SADXModManager
 				}
 				return;
 			}
+
 			bool alreadyRunning = !mutex.WaitOne(0, true);
+
+			if (args.Length > 1 && args[0] == "doupdate")
+			{
+				if (alreadyRunning)
+					try { mutex.WaitOne(); }
+					catch (AbandonedMutexException) { }
+				Application.EnableVisualStyles();
+				Application.SetCompatibleTextRenderingDefault(false);
+				Application.Run(new LoaderManifestDialog(args[1]));
+				return;
+			}
+
+			if (args.Length > 1 && args[0] == "cleanupdate")
+			{
+				if (alreadyRunning)
+					try { mutex.WaitOne(); }
+					catch (AbandonedMutexException) { }
+				alreadyRunning = false;
+				Thread.Sleep(1000);
+				try
+				{
+					File.Delete(args[1] + ".7z");
+					Directory.Delete(args[1], true);
+				}
+				catch { }
+			}
 
 			if (!alreadyRunning)
 			{
