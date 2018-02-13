@@ -1176,4 +1176,12 @@
       <ValueType>hex</ValueType>
     </CodeLine>
   </Code>
+  <Code name="Can Always Skip Credits" patch="true">
+    <CodeLine>
+      <Type>writenop</Type>
+      <Address>00641232</Address>
+      <Value>2</Value>
+      <ValueType>decimal</ValueType>
+    </CodeLine>
+  </Code>
 </CodeList>
