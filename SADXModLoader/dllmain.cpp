@@ -1582,10 +1582,11 @@ static void __cdecl InitMods()
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_us\\wma");
 
-	// Map of files to replace and/or swap.
+	// Map of files to replace.
 	// This is done with a second map instead of sadx_fileMap directly
 	// in order to handle multiple mods.
 	unordered_map<string, string> filereplaces;
+	vector<std::pair<string, string>> fileswaps;
 
 	vector<std::pair<ModInitFunc, string>> initfuncs;
 	vector<std::pair<string, string>> errors;
@@ -1650,10 +1651,8 @@ static void __cdecl InitMods()
 			for (unordered_map<string, string>::const_iterator iter = data->begin();
 				iter != data->end(); ++iter)
 			{
-				filereplaces[FileMap::normalizePath(iter->first)] =
-					FileMap::normalizePath(iter->second);
-				filereplaces[FileMap::normalizePath(iter->second)] =
-					FileMap::normalizePath(iter->first);
+				fileswaps.push_back({ FileMap::normalizePath(iter->first),
+					FileMap::normalizePath(iter->second) });
 			}
 		}
 
@@ -1818,10 +1817,14 @@ static void __cdecl InitMods()
 		MessageBoxA(nullptr, message.str().c_str(), "Mods failed to load", MB_OK | MB_ICONERROR);
 	}
 
-	// Replace filenames. ("ReplaceFiles", "SwapFiles")
+	// Replace filenames. ("ReplaceFiles")
 	for (auto iter = filereplaces.cbegin(); iter != filereplaces.cend(); ++iter)
 	{
 		sadx_fileMap.addReplaceFile(iter->first, iter->second);
+	}
+	for (auto iter = fileswaps.cbegin(); iter != fileswaps.cend(); ++iter)
+	{
+		sadx_fileMap.swapFiles(iter->first, iter->second);
 	}
 
 	for (unsigned int i = 0; i < initfuncs.size(); i++)

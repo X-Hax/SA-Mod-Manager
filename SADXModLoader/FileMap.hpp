@@ -50,6 +50,13 @@ class FileMap
 		void addReplaceFile(const std::string &origFile, const std::string &modFile);
 
 		/**
+		* Swap two files.
+		* @param fileA First filename.
+		* @param fileB Second filename.
+		*/
+		void swapFiles(const std::string &fileA, const std::string &fileB);
+
+		/**
 		 * Recursively scan a directory and add all files to the replacement map.
 		 * Destination is always relative to system/.
 		 * @param srcPath Path to scan.

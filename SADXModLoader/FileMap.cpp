@@ -102,6 +102,45 @@ void FileMap::addReplaceFile(const std::string &origFile, const std::string &mod
 }
 
 /**
+* Swap two files.
+* @param fileA First filename.
+* @param fileB Second filename.
+*/
+void FileMap::swapFiles(const std::string &fileA, const std::string &fileB)
+{
+	string fileA_norm = normalizePath(fileA);
+	string fileB_norm = normalizePath(fileB);
+
+	// Check if the destination file is being replaced.
+	auto iter = m_fileMap.find(fileB_norm);
+	if (iter != m_fileMap.end())
+	{
+		// Destination file is being replaced.
+		// Use the replacement for the original file.
+		setReplaceFile(fileA_norm, iter->second.fileName, iter->second.modIndex);
+	}
+	else
+	{
+		// Destination file is not already in the map.
+		setReplaceFile(fileA_norm, fileB_norm, 0);
+	}
+
+	// Check if the destination file is being replaced.
+	iter = m_fileMap.find(fileA_norm);
+	if (iter != m_fileMap.end())
+	{
+		// Destination file is being replaced.
+		// Use the replacement for the original file.
+		setReplaceFile(fileB_norm, iter->second.fileName, iter->second.modIndex);
+	}
+	else
+	{
+		// Destination file is not already in the map.
+		setReplaceFile(fileB_norm, fileA_norm, 0);
+	}
+}
+
+/**
  * Recursively scan a directory and add all files to the replacement map.
  * Destination is always relative to system/.
  * @param srcPath Path to scan.
