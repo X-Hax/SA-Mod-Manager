@@ -111,33 +111,31 @@ void FileMap::swapFiles(const std::string &fileA, const std::string &fileB)
 	string fileA_norm = normalizePath(fileA);
 	string fileB_norm = normalizePath(fileB);
 
-	// Check if the destination file is being replaced.
-	auto iter = m_fileMap.find(fileB_norm);
-	if (iter != m_fileMap.end())
-	{
-		// Destination file is being replaced.
-		// Use the replacement for the original file.
-		setReplaceFile(fileA_norm, iter->second.fileName, iter->second.modIndex);
-	}
-	else
-	{
-		// Destination file is not already in the map.
-		setReplaceFile(fileA_norm, fileB_norm, 0);
-	}
+	string fileA_repl = fileB_norm;
+	int fileA_ind = 0;
+	string fileB_repl = fileA_norm;
+	int fileB_ind = 0;
 
 	// Check if the destination file is being replaced.
-	iter = m_fileMap.find(fileA_norm);
+	auto iter = m_fileMap.find(fileA_repl);
 	if (iter != m_fileMap.end())
 	{
 		// Destination file is being replaced.
 		// Use the replacement for the original file.
-		setReplaceFile(fileB_norm, iter->second.fileName, iter->second.modIndex);
+		fileA_repl = iter->second.fileName;
+		fileA_ind = iter->second.modIndex;
 	}
-	else
+	auto iter = m_fileMap.find(fileB_repl);
+	if (iter != m_fileMap.end())
 	{
-		// Destination file is not already in the map.
-		setReplaceFile(fileB_norm, fileA_norm, 0);
+		// Destination file is being replaced.
+		// Use the replacement for the original file.
+		fileB_repl = iter->second.fileName;
+		fileB_ind = iter->second.modIndex;
 	}
+
+	setReplaceFile(fileA_norm, fileA_repl, fileA_ind);
+	setReplaceFile(fileB_norm, fileB_repl, fileB_ind);
 }
 
 /**
