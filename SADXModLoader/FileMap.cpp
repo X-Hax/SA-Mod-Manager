@@ -125,7 +125,7 @@ void FileMap::swapFiles(const std::string &fileA, const std::string &fileB)
 		fileA_repl = iter->second.fileName;
 		fileA_ind = iter->second.modIndex;
 	}
-	auto iter = m_fileMap.find(fileB_repl);
+	iter = m_fileMap.find(fileB_repl);
 	if (iter != m_fileMap.end())
 	{
 		// Destination file is being replaced.
