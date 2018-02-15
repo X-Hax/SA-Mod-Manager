@@ -222,6 +222,28 @@
       <ValueType>decimal</ValueType>
     </CodeLine>
   </Code>
+  <Code name="Always Underwater">
+    <CodeLine>
+      <Type>ifne8</Type>
+      <Address>03ABDC7C</Address>
+      <Value>12</Value>
+      <ValueType>decimal</ValueType>
+      <TrueLines>
+        <CodeLine>
+          <Type>or32</Type>
+          <Address>03B42E30</Address>
+          <Pointer>true</Pointer>
+          <Offsets>
+            <Offset>20</Offset>
+            <Offset>C0</Offset>
+            <Offset>1E4</Offset>
+          </Offsets>
+          <Value>2</Value>
+          <ValueType>decimal</ValueType>
+        </CodeLine>
+      </TrueLines>
+    </CodeLine>
+  </Code>
   <Code name="Have All Emblems">
     <CodeLine>
       <Type>write8</Type>
