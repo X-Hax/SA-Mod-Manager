@@ -1055,6 +1055,13 @@
       <Value>C3</Value>
       <ValueType>hex</ValueType>
     </CodeLine>
+    <!-- Balls -->
+    <CodeLine>
+      <Type>write8</Type>
+      <Address>005C0B70</Address>
+      <Value>C3</Value>
+      <ValueType>hex</ValueType>
+    </CodeLine>
     <!-- Checkpoint Time -->
     <CodeLine>
       <Type>write8</Type>
