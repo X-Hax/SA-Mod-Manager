@@ -1,0 +1,257 @@
+Patch "Allow Dynamic Light Direction Globally"
+writenop 00412536 6
+writenop 00412544 6
+
+Code "Infinite Rings"
+write16 03B0F0E4 999
+
+Code "Infinite Lives"
+write8 03B0EF34 99
+
+Code "Low Time"
+write8 03B0EF48 0
+write8 03B0F128 0
+write8 03B0EF35 0
+
+Code "High Time (Gamma)"
+write8 03B0EF48 99
+write8 03B0F128 59
+write8 03B0EF35 59
+
+Code "Max Enemy Bonus"
+write32 03B0F104 99999999
+
+Code "Hold Y for Super Turbo"
+ifmask32 03B0E9D0 0x200
+	ifltfloat p03B42E30|20|C0|38 10
+		writefloat p03B42E30|20|C0|38 10
+	endif
+endif
+
+Code "Hold A for Super Jump"
+ifmask32 03B0E9D0 0x4
+	ifltfloat p03B42E30|20|C0|3C 1
+		writefloat p03B42E30|20|C0|3C 1
+	endif
+endif
+
+Code "Have Invincibility"
+or16 p03B42E30|20|C0|6 0x8000
+
+Code "Have Magnetic Barrier"
+or16 p03B42E30|20|C0|6 0x2
+
+Code "Have All Upgrades"
+or16 p03B42E30|20|C0|4 0x7FFF
+
+Patch "Disable Music"
+write8 00425690 0xC3
+
+Patch "Disable Voices"
+write8 00425710 0xC3
+
+Code "Infinite Underwater Time"
+write16 p03B42E30|20|C0|C 0
+
+Code "Always Underwater"
+ifne8 03ABDC7C 12
+	or32 p03B42E30|20|C0|1E4 2
+endif
+
+Code "Have All Emblems"
+write8 03B2B5E8 0xFF x16
+write8 03B2B5F8 0x3
+
+Code "All Characters Unlocked in Adventure Mode"
+write8 03B18849 1 x7
+
+Code "All Characters Unlocked in Mission Mode"
+write8 03B18850 1 x7
+
+Code "Always Daytime in Fields"
+write8 p03B0EF4C 0
+
+Code "Always Evening in Fields"
+write8 p03B0EF4C 1
+
+Code "Always Night in Fields"
+write8 p03B0EF4C 2
+
+Code "Always Metal Sonic"
+write8 03B18DB5 1
+
+Code "D-Pad Up to Increase Gravity"
+ifmask32 03B0E9D0 0x10
+	mulfloat 03B0F0FC 1.05
+endif
+
+Code "D-Pad Right to Reset Gravity"
+ifmask32 03B0E9D0 0x80
+	writefloat 03B0F0FC -1
+endif
+
+Code "D-Pad Left to Reverse Gravity"
+ifmask32 03B0E9D0 0x40
+	writefloat 03B0F0FC 1
+endif
+
+Code "D-Pad Down to Decrease Gravity"
+ifmask32 03B0E9D0 0x20
+	divfloat 03B0F0FC 1.05
+endif
+
+Patch "Tails Can Play Emerald Coast"
+write8 004F6B02 0xEB
+
+Patch "Don't Lose Rings When Hit"
+writenop 00425AB0 9
+
+Patch "Walk on Water"
+writenop 004496E1 6
+
+Patch "Skip Intro"
+write32 0040C10C 11
+
+Patch "Disable Debug Spam"
+writenop 00415236 5
+writenop 004211BB 5
+writenop 0042126B 5
+writenop 00422447 5
+writenop 004224B6 5
+writenop 0042FBC2 5
+writenop 0042FBD6 5
+writenop 0042FBE6 5
+writenop 0042FBF6 5
+writenop 0042FC03 5
+writenop 00431296 5
+writenop 004312E2 5
+writenop 004312FA 5
+writenop 00431313 5
+writenop 00431327 5
+writenop 00431365 5
+writenop 004313C8 5
+writenop 00431536 5
+writenop 00431558 5
+writenop 0043156E 5
+writenop 004315A0 5
+writenop 004315AA 5
+writenop 004315B9 5
+writenop 004315C8 5
+writenop 004315ED 5
+writenop 004315F7 5
+writenop 00715445 5
+writenop 00715540 5
+writenop 00715775 5
+writenop 007157DF 5
+writenop 00715AE5 5
+writenop 00715B3D 5
+writenop 00716356 5
+writenop 00716375 5
+writenop 00716390 5
+writenop 007163AB 5
+writenop 007164CD 5
+writenop 00716A60 5
+writenop 00716BEC 5
+writenop 00717ECB 5
+writenop 007188AB 5
+writenop 00718915 5
+writenop 00718BB5 5
+writenop 00718BDE 5
+write8 00718BF0 0xC3
+writenop 00718C15 5
+writenop 00718C26 5
+writenop 00718E95 5
+write8 00718FB0 0xC3
+writenop 007191D5 5
+writenop 007191F7 5
+write8 00719210 0xC3
+writenop 00719605 5
+writenop 00719627 5
+writenop 00719810 5
+writenop 0071982C 5
+writenop 0071984E 5
+writenop 007199B5 5
+writenop 007199D7 5
+write8 007199E5 0xC3
+writenop 00719A05 5
+writenop 00719A4D 5
+writenop 00719A69 5
+writenop 00719C45 5
+writenop 00719DB5 5
+writenop 00719DD7 5
+write8 00719DF5 0xC3
+writenop 0072A796 5
+writenop 0072A815 5
+writenop 0072A826 5
+writenop 0072A8A5 5
+writenop 0072A8B6 5
+writenop 0072A935 5
+
+Patch "Infinite Tails Flight"
+writenop 0045D86B 6
+
+Patch "Longer Title Card Display"
+write8 0047E01A 0xEB
+write16 0047E018 120
+
+Code "Use Tornado 2 Health Bar in Sky Chase Act 2"
+ifeq16 03B22DCC 36
+	write16 029383FA 64
+	write16 029383FE 126
+	write16 0293840E 64
+	write16 02938412 126
+	write16 02938422 64
+	write16 02938426 126
+	write16 0293845E 0
+	write16 02938462 64
+else
+	ifeq16 03B22DCC 37
+		write16 029383FA 192
+		write16 029383FE 254
+		write16 0293840E 192
+		write16 02938412 254
+		write16 02938422 192
+		write16 02938426 254
+		write16 0293845E 128
+		write16 02938462 192
+	endif
+endif
+
+Patch "Hide HUD"
+write8 00425F90 0xC3 ; Ring/Time/Life
+write8 00427F50 0xC3 ; Score/Timer
+write8 00457120 0xC3 ; Stage Mission Image
+write8 004B3830 0xC3 ; Life Gauge
+write8 00628330 0xC3 ; Score
+write8 00628490 0xC3 ; Tornado HP
+write8 004DB5E0 0xC3 ; Twinkle Circuit HUD
+write8 00470546 0xEB ; Fishing HUD
+write8 004706D6 0xEB ; Fishing HUD
+write8 0046C920 0xC3 ; Fish Hit
+write8 0046FB00 0xC3 ; Big Weight/Life
+write8 0046B330 0xC3 ; Animal Pickup
+write8 004C0790 0xC3 ; Item Box Sprite
+write8 005C0B70 0xC3 ; Balls
+write8 004BABE0 0xC3 ; Checkpoint Time
+write8 004C0DC0 0xC3 ; Emerald Radar
+write8 005991A0 0xC3 ; Sand Hill Multiplier
+write8 004EC120 0xC3 ; Ice Cap Multiplier
+write8 0049FDA0 0xC3 ; Gamma Time Add
+write8 004C5090 0xC3 ; Gamma Time Remaining
+write8 004B36D0 0xC3 ; Boss Name
+write8 005D73F0 0xC3 ; NiGHTS Cards
+write8 005D6E60 0xC3 ; NiGHTS Jackpot
+write8 00591050 0xC3 ; Mission Start/Clear
+write8 00592D50 0xC3 ; Mission Timer
+write8 00592A60 0xC3 ; Mission Counter
+write8 0047C480 0xC3 ; Tails Win/Lose
+write8 0047C260 0xC3 ; Tails Race Bar
+write8 00457D30 0xC3 ; Demo Press Start
+write8 0071B210 0xC3 ; Chao Player Action
+
+Patch "Skip All Cutscenes"
+writenop 004311CA 0x2
+
+Patch "Can Always Skip Credits"
+writenop 00641232 2
+
