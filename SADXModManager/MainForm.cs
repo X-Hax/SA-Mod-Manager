@@ -159,16 +159,6 @@ namespace SADXModManager
 			suppressEvent = false;
 
 			checkWindowResize.Checked = loaderini.ResizableWindow;
-
-			CheckForModUpdates();
-
-			// If we've checked for updates, save the modified
-			// last update times without requiring the user to
-			// click the save button.
-			if (checkedForUpdates)
-			{
-				IniSerializer.Serialize(loaderini, loaderinipath);
-			}
 		}
 
 		private void HandleUri(string uri)
@@ -300,6 +290,16 @@ namespace SADXModManager
 			}
 
 			Program.UriQueue.UriEnqueued += UriQueueOnUriEnqueued;
+
+			CheckForModUpdates();
+
+			// If we've checked for updates, save the modified
+			// last update times without requiring the user to
+			// click the save button.
+			if (checkedForUpdates)
+			{
+				IniSerializer.Serialize(loaderini, loaderinipath);
+			}
 		}
 
 		private void UriQueueOnUriEnqueued(object sender, OnUriEnqueuedArgs args)
