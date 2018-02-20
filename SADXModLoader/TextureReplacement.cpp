@@ -50,6 +50,7 @@ static Sint32 njLoadTexture_Wrapper_r(NJS_TEXLIST* texlist);
 static Sint32 njLoadTexture_r(NJS_TEXLIST* texlist);
 static int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist);
 static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist);
+static Sint32 __cdecl LoadPvmMEM2_r(const char* filename, NJS_TEXLIST* texlist);
 
 void texpack::init()
 {
@@ -57,6 +58,8 @@ void texpack::init()
 	WriteJump(static_cast<void*>(njLoadTexture), njLoadTexture_r);
 	WriteJump(static_cast<void*>(njLoadTexture_Wrapper), njLoadTexture_Wrapper_r);
 	WriteJump(static_cast<void*>(LoadPVM), LoadPVM_r);
+	WriteJump(static_cast<void*>(LoadPVM), LoadPVM_r);
+	WriteJump(static_cast<void*>(LoadPvmMEM2), LoadPvmMEM2_r);
 }
 
 inline void check_loading()
@@ -592,9 +595,10 @@ static bool replace_pvmx(const string& path, ifstream& file, NJS_TEXLIST* texlis
 
 static bool try_texture_pack(const char* filename, NJS_TEXLIST* texlist)
 {
-	mipmap::MipGuard _guard(mipmap::is_blacklisted_pvm(filename));
+	string filename_str(filename);
+	StripExtension(filename_str);
+	mipmap::MipGuard _guard(mipmap::is_blacklisted_pvm(filename_str.c_str()));
 
-	const string filename_str(filename);
 	check_cache();
 	LoadingFile = true;
 
@@ -691,6 +695,27 @@ static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist)
 		texlist->textures[i].attr = temp.textures[i].attr;
 		texlist->textures[i].texaddr = temp.textures[i].texaddr;
 	}
+}
+
+static Sint32 LoadPvmMEM2_r(const char* filename, NJS_TEXLIST* texlist)
+{
+	PrintDebug("LoadPvmMEM2 - %s\n", filename);
+
+	auto temp = *texlist;
+
+	// set LoadingFile to 1 to attempt cache lookups
+	const auto last = LoadingFile;
+	LoadingFile = 1;
+
+	if (try_texture_pack(filename, &temp))
+	{
+		LoadingFile = last;
+		*texlist = temp;
+		return 1;
+	}
+
+	LoadingFile = last;
+	return njLoadTexturePvmFile(filename, texlist);
 }
 
 #pragma endregion
