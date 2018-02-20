@@ -67,7 +67,7 @@ static inline Tret SizeOfArray(const T(&)[N])
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
-#include <windows.h>
+#include <Windows.h>
 
 static HANDLE curproc;
 static bool curprocinitialized = false;

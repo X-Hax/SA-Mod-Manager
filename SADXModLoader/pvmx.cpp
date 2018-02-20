@@ -64,12 +64,7 @@ namespace pvmx
 		uint8_t version;
 		read_t(file, version);
 
-		if (version != PVMX_VERSION)
-		{
-			return false;
-		}
-
-		return true;
+		return version == PVMX_VERSION;
 	}
 
 	bool is_pvmx(std::ifstream& file)
@@ -79,8 +74,8 @@ namespace pvmx
 			return false;
 		}
 
-		auto pos = file.tellg();
-		auto result = check_header(file);
+		const auto pos = file.tellg();
+		const auto result = check_header(file);
 		file.seekg(pos);
 
 		return result;
@@ -99,7 +94,8 @@ namespace pvmx
 
 	bool read_index(std::ifstream& file, std::vector<DictionaryEntry>& out)
 	{
-		auto pos = file.tellg();
+		const auto pos = file.tellg();
+
 		if (!check_header(file))
 		{
 			file.seekg(pos);
@@ -108,26 +104,26 @@ namespace pvmx
 
 		uint8_t type = 0;
 
-		for (read_t(file, type); type != DictionaryField::None; read_t(file, type))
+		for (read_t(file, type); type != dictionary_field::none; read_t(file, type))
 		{
 			DictionaryEntry entry = {};
 
-			while (type != DictionaryField::None)
+			while (type != dictionary_field::none)
 			{
 				switch (type)
 				{
-					case DictionaryField::None:
+					case dictionary_field::none:
 						break;
 
-					case DictionaryField::GlobalIndex:
-						read_t(file, entry.globalIndex);
+					case dictionary_field::global_index:
+						read_t(file, entry.global_index);
 						break;
 
-					case DictionaryField::Name:
+					case dictionary_field::name:
 						read_cstr(file, entry.name);
 						break;
 
-					case DictionaryField::Dimensions:
+					case dictionary_field::dimensions:
 						read_t(file, entry.width);
 						read_t(file, entry.height);
 						break;
@@ -158,10 +154,10 @@ namespace pvmx
 
 		out.resize(static_cast<size_t>(entry.size));
 
-		auto pos = static_cast<uint64_t>(file.tellg());
+		const auto pos = static_cast<uint64_t>(file.tellg());
 		file.read(reinterpret_cast<char*>(out.data()), out.size());
-		auto delta = static_cast<uint64_t>(file.tellg()) - pos;
 
+		const auto delta = static_cast<uint64_t>(file.tellg()) - pos;
 
 		if (delta != entry.size)
 		{

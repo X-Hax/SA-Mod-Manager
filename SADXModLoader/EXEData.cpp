@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <shlwapi.h>
+#include <Shlwapi.h>
 #include <cassert>
 #include <unordered_map>
 #include <vector>

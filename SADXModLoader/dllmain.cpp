@@ -19,9 +19,9 @@ using std::unordered_map;
 using std::vector;
 
 // Win32 headers.
-#include <dbghelp.h>
-#include <shlwapi.h>
-#include <gdiplus.h>
+#include <DbgHelp.h>
+#include <Shlwapi.h>
+#include <GdiPlus.h>
 #include "resource.h"
 
 #include "git.h"
@@ -221,7 +221,7 @@ static FILE *dbgFile = nullptr;
 /**
  * SADX Debug Output function.
  * @param Format Format string.
- * @param args Arguments.
+ * @param ... Arguments.
  * @return Return value from vsnprintf().
  */
 static int __cdecl SADXDebugOutput(const char *Format, ...)
@@ -246,7 +246,7 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 	// Screen output.
 	if (dbgScreen)
 	{
-		message msg = { buf };
+		message msg = { { buf }, 0 };
 		// Remove trailing newlines if present.
 		while (!msg.text.empty() &&
 			(msg.text[msg.text.size()-1] == '\n' ||
@@ -290,10 +290,9 @@ static windowdata outerSizes[] = {
 // Defines the size of the inner-window on which the game is rendered.
 static windowsize innerSizes[2] = {};
 
-static WNDCLASS outerWindowClass = {};
-static HWND accelWindow          = nullptr;
-static windowmodes windowMode    = windowmodes::windowed;
-static HACCEL accelTable         = nullptr;
+static HWND        accelWindow = nullptr;
+static windowmodes windowMode  = windowmodes::windowed;
+static HACCEL      accelTable  = nullptr;
 
 DataPointer(int, dword_3D08534, 0x3D08534);
 static void __cdecl HandleWindowMessages_r()
@@ -453,19 +452,19 @@ static void Direct3D_DeviceLost()
 				switch (reset)
 				{
 					default:
-					case D3DERR_INVALIDCALL:
+					case static_cast<DWORD>(D3DERR_INVALIDCALL):
 						errstr = L"D3DERR_INVALIDCALL";
 						break;
-					case D3DERR_OUTOFVIDEOMEMORY:
+					case static_cast<DWORD>(D3DERR_OUTOFVIDEOMEMORY):
 						errstr = L"D3DERR_OUTOFVIDEOMEMORY";
 						break;
-					case E_OUTOFMEMORY:
+					case static_cast<DWORD>(E_OUTOFMEMORY):
 						errstr = L"E_OUTOFMEMORY";
 						break;
-					case D3DERR_DEVICELOST:
+					case static_cast<DWORD>(D3DERR_DEVICELOST):
 						errstr = L"D3DERR_DEVICELOST";
 						break;
-					case D3DERR_DRIVERINTERNALERROR:
+					case static_cast<DWORD>(D3DERR_DRIVERINTERNALERROR):
 						errstr = L"D3DERR_DRIVERINTERNALERROR";
 						break;
 				}
@@ -504,7 +503,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 	switch (uMsg)
 	{
 		case WM_ACTIVATE:
-			if (LOWORD(wParam) != WA_INACTIVE && !lParam || reinterpret_cast<HWND>(lParam) == hWnd)
+			if ((LOWORD(wParam) != WA_INACTIVE && !lParam) || reinterpret_cast<HWND>(lParam) == hWnd)
 			{
 				SetFocus(hWnd);
 				return 0;
@@ -1280,7 +1279,6 @@ void __cdecl WriteSaveFile_r()
 	char v0; // bl@1
 	SaveFileInfo *v2; // edi@8
 	char v3[MAX_PATH]; // esi@8
-	int v4; // eax@19
 	FILE *v5; // edi@20
 
 	v0 = 1;
@@ -1335,7 +1333,7 @@ void __cdecl WriteSaveFile_r()
 		}
 		else
 		{
-			v4 = lstrlenA(*(char **)0x3B290DC);
+			lstrlenA(*(char **)0x3B290DC);
 			snprintf(v3, MAX_PATH, "./%s/%s", mainsavepath, *(char **)0x3B290DC);
 		}
 		v5 = fopen(v3, "wb");
@@ -1494,7 +1492,7 @@ static void __cdecl InitMods()
 		WriteData((uint8_t *)0x401914, (uint8_t)0xEBu);
 
 	if (settings->getBool("AutoMipmap", true))
-		mipmap::EnableAutoMipmaps();
+		mipmap::enable_auto_mipmaps();
 
 	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
@@ -1544,7 +1542,7 @@ static void __cdecl InitMods()
 	WriteData((uint8_t*)0x0078EAE1, (uint8_t)0x25);
 	WriteData((uint8_t*)0x0078EAFE, (uint8_t)0x25);
 
-	texpack::Init();
+	texpack::init();
 
 	// Unprotect the .rdata section.
 	SetRDataWriteProtection(false);
@@ -1609,7 +1607,7 @@ static void __cdecl InitMods()
 		if (!f_mod_ini)
 		{
 			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", mod_dirA.c_str());
-			errors.push_back(std::pair<string, string>(mod_dirA, "mod.ini missing"));
+			errors.emplace_back(mod_dirA, "mod.ini missing");
 			continue;
 		}
 		unique_ptr<IniFile> ini_mod(new IniFile(f_mod_ini));
@@ -1624,11 +1622,10 @@ static void __cdecl InitMods()
 		{
 			const IniGroup *group = ini_mod->getGroup("IgnoreFiles");
 			auto data = group->data();
-			for (unordered_map<string, string>::const_iterator iter = data->begin();
-				iter != data->end(); ++iter)
+			for (const auto& iter : *data)
 			{
-				sadx_fileMap.addIgnoreFile(iter->first, i);
-				PrintDebug("Ignored file: %s\n", iter->first.c_str());
+				sadx_fileMap.addIgnoreFile(iter.first, i);
+				PrintDebug("Ignored file: %s\n", iter.first.c_str());
 			}
 		}
 
@@ -1636,11 +1633,10 @@ static void __cdecl InitMods()
 		{
 			const IniGroup *group = ini_mod->getGroup("ReplaceFiles");
 			auto data = group->data();
-			for (unordered_map<string, string>::const_iterator iter = data->begin();
-				iter != data->end(); ++iter)
+			for (const auto& iter : *data)
 			{
-				filereplaces[FileMap::normalizePath(iter->first)] =
-					FileMap::normalizePath(iter->second);
+				filereplaces[FileMap::normalizePath(iter.first)] =
+					FileMap::normalizePath(iter.second);
 			}
 		}
 
@@ -1648,11 +1644,10 @@ static void __cdecl InitMods()
 		{
 			const IniGroup *group = ini_mod->getGroup("SwapFiles");
 			auto data = group->data();
-			for (unordered_map<string, string>::const_iterator iter = data->begin();
-				iter != data->end(); ++iter)
+			for (const auto& iter : *data)
 			{
-				fileswaps.push_back({ FileMap::normalizePath(iter->first),
-					FileMap::normalizePath(iter->second) });
+				fileswaps.emplace_back(FileMap::normalizePath(iter.first),
+					FileMap::normalizePath(iter.second));
 			}
 		}
 
@@ -1673,7 +1668,7 @@ static void __cdecl InitMods()
 			transform(modexe.begin(), modexe.end(), modexe.begin(), ::towlower);
 
 			// Are we using the correct EXE?
-			if (modexe.compare(exefilename) != 0)
+			if (modexe != exefilename)
 			{
 				wchar_t msg[4096];
 				swprintf(msg, LengthOfArray(msg),
@@ -1703,7 +1698,7 @@ static void __cdecl InitMods()
 
 				const string dll_filenameA = UTF16toMBS(dll_filename, CP_ACP);
 				PrintDebug("Failed loading mod DLL \"%s\": %s\n", dll_filenameA.c_str(), message.c_str());
-				errors.push_back(std::pair<string, string>(mod_nameA, "DLL error - " + message));
+				errors.emplace_back(mod_nameA, "DLL error - " + message);
 			}
 			else
 			{
@@ -1733,11 +1728,11 @@ static void __cdecl InitMods()
 					if (info->Init)
 					{
 						// TODO: Convert to Unicode later. (Will require an API bump.)
-						initfuncs.push_back({ info->Init, mod_dirA });
+						initfuncs.emplace_back(info->Init, mod_dirA);
 					}
 					const ModInitFunc init = (const ModInitFunc)GetProcAddress(module, "Init");
 					if (init)
-						initfuncs.push_back({ init, mod_dirA });
+						initfuncs.emplace_back(init, mod_dirA);
 					const PatchList *patches = (const PatchList *)GetProcAddress(module, "Patches");
 					if (patches)
 						for (int j = 0; j < patches->Count; j++)
@@ -1770,7 +1765,7 @@ static void __cdecl InitMods()
 				{
 					const string dll_filenameA = UTF16toMBS(dll_filename, CP_ACP);
 					PrintDebug("File \"%s\" is not a valid mod file.\n", dll_filenameA.c_str());
-					errors.push_back(std::pair<string, string>(mod_nameA, "Not a valid mod file."));
+					errors.emplace_back(mod_nameA, "Not a valid mod file.");
 				}
 			}
 		}
@@ -1818,28 +1813,29 @@ static void __cdecl InitMods()
 	}
 
 	// Replace filenames. ("ReplaceFiles")
-	for (auto iter = filereplaces.cbegin(); iter != filereplaces.cend(); ++iter)
+	for (const auto& filereplace : filereplaces)
 	{
-		sadx_fileMap.addReplaceFile(iter->first, iter->second);
+		sadx_fileMap.addReplaceFile(filereplace.first, filereplace.second);
 	}
-	for (auto iter = fileswaps.cbegin(); iter != fileswaps.cend(); ++iter)
+	for (const auto& fileswap : fileswaps)
 	{
-		sadx_fileMap.swapFiles(iter->first, iter->second);
+		sadx_fileMap.swapFiles(fileswap.first, fileswap.second);
 	}
 
-	for (unsigned int i = 0; i < initfuncs.size(); i++)
-		initfuncs[i].first(initfuncs[i].second.c_str(), helperFunctions);
+	for (auto& initfunc : initfuncs)
+		initfunc.first(initfunc.second.c_str(), helperFunctions);
 
-	for (auto i = StartPositions.cbegin(); i != StartPositions.cend(); ++i)
+	for (const auto& i : StartPositions)
 	{
-		auto poslist = &i->second;
+		auto poslist = &i.second;
 		StartPosition *newlist = new StartPosition[poslist->size() + 1];
 		StartPosition *cur = newlist;
-		for (auto j = poslist->cbegin(); j != poslist->cend(); ++j)
-			*cur++ = j->second;
+		for (const auto& j : *poslist)
+			*cur++ = j.second;
 		cur->LevelID = LevelIDs_Invalid;
-		switch (i->first)
+		switch (i.first)
 		{
+		default:
 		case Characters_Sonic:
 			WriteData((StartPosition **)0x41491E, newlist);
 			break;
@@ -1861,36 +1857,36 @@ static void __cdecl InitMods()
 		}
 	}
 
-	for (auto i = FieldStartPositions.cbegin(); i != FieldStartPositions.cend(); ++i)
+	for (const auto& i : FieldStartPositions)
 	{
-		auto poslist = &i->second;
+		auto poslist = &i.second;
 		FieldStartPosition *newlist = new FieldStartPosition[poslist->size() + 1];
 		FieldStartPosition *cur = newlist;
-		for (auto j = poslist->cbegin(); j != poslist->cend(); ++j)
-			*cur++ = j->second;
+		for (const auto& j : *poslist)
+			*cur++ = j.second;
 		cur->LevelID = LevelIDs_Invalid;
-		StartPosList_FieldReturn[i->first] = newlist;
+		StartPosList_FieldReturn[i.first] = newlist;
 	}
 
 	if (PathsInitialized)
 	{
 		PathDataPtr *newlist = new PathDataPtr[Paths.size() + 1];
 		PathDataPtr *cur = newlist;
-		for (auto i = Paths.cbegin(); i != Paths.cend(); ++i)
-			*cur++ = i->second;
+		for (const auto& path : Paths)
+			*cur++ = path.second;
 		cur->LevelAct = 0xFFFF;
 		WriteData((PathDataPtr **)0x49C1A1, newlist);
 		WriteData((PathDataPtr **)0x49C1AF, newlist);
 	}
 
-	for (auto i = CharacterPVMs.cbegin(); i != CharacterPVMs.cend(); ++i)
+	for (const auto& pvm : CharacterPVMs)
 	{
-		const vector<PVMEntry> *pvmlist = &i->second;
+		const vector<PVMEntry> *pvmlist = &pvm.second;
 		auto size = pvmlist->size();
 		PVMEntry *newlist = new PVMEntry[size + 1];
 		memcpy(newlist, pvmlist->data(), sizeof(PVMEntry) * size);
 		newlist[size].TexList = nullptr;
-		CharacterPVMEntries[i->first] = newlist;
+		CharacterPVMEntries[pvm.first] = newlist;
 	}
 
 	if (CommonObjectPVMsInitialized)
@@ -1904,24 +1900,24 @@ static void __cdecl InitMods()
 		TexLists_ObjRegular[1] = newlist;
 	}
 
-	for (auto i = _TrialLevels.cbegin(); i != _TrialLevels.cend(); ++i)
+	for (const auto& level : _TrialLevels)
 	{
-		const vector<TrialLevelListEntry> *levellist = &i->second;
+		const vector<TrialLevelListEntry> *levellist = &level.second;
 		auto size = levellist->size();
 		TrialLevelListEntry *newlist = new TrialLevelListEntry[size];
 		memcpy(newlist, levellist->data(), sizeof(TrialLevelListEntry) * size);
-		TrialLevels[i->first].Levels = newlist;
-		TrialLevels[i->first].Count = size;
+		TrialLevels[level.first].Levels = newlist;
+		TrialLevels[level.first].Count = size;
 	}
 
-	for (auto i = _TrialSubgames.cbegin(); i != _TrialSubgames.cend(); ++i)
+	for (const auto& subgame : _TrialSubgames)
 	{
-		const vector<TrialLevelListEntry> *levellist = &i->second;
+		const vector<TrialLevelListEntry> *levellist = &subgame.second;
 		auto size = levellist->size();
 		TrialLevelListEntry *newlist = new TrialLevelListEntry[size];
 		memcpy(newlist, levellist->data(), sizeof(TrialLevelListEntry) * size);
-		TrialSubgames[i->first].Levels = newlist;
-		TrialSubgames[i->first].Count = size;
+		TrialSubgames[subgame.first].Levels = newlist;
+		TrialSubgames[subgame.first].Count = size;
 	}
 
 	if (!_mainsavepath.empty())
@@ -2108,10 +2104,6 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 #endif /* !defined(_MSC_VER) || defined(_DLL) */
 		break;
 
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-		break;
-
 	case DLL_PROCESS_DETACH:
 		// Make sure the log file is closed.
 		if (dbgFile)
@@ -2119,6 +2111,9 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 			fclose(dbgFile);
 			dbgFile = nullptr;
 		}
+		break;
+
+	default:
 		break;
 	}
 
