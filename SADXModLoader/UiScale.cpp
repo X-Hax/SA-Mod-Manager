@@ -188,8 +188,8 @@ static NJS_POINT2 auto_align(Uint8 align, const NJS_POINT2& center)
 	}
 
 	NJS_POINT2 result = {};
-	auto h = static_cast<float>(HorizontalResolution);
-	auto v = static_cast<float>(VerticalResolution);
+	const auto h = static_cast<float>(HorizontalResolution);
+	const auto v = static_cast<float>(VerticalResolution);
 
 	if (align & Align::horizontal_center)
 	{
@@ -398,6 +398,12 @@ static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, f
 	{
 		scale_points(points->p, count);
 	}
+#ifdef _DEBUG
+	else
+	{
+		PrintDebug("that's Draw2DLinesMaybe_Queue-wang\n");
+	}
+#endif
 
 	original(points, count, depth, attr, flags);
 }
@@ -410,6 +416,12 @@ static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, 
 	{
 		scale_points(polygon, count);
 	}
+#ifdef _DEBUG
+	else
+	{
+		PrintDebug("that's njDrawTextureMemList-wang\n");
+	}
+#endif
 
 	original(polygon, count, tex, flag);
 }
@@ -432,6 +444,12 @@ static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint3
 
 		scale_points(p->p, _n);
 	}
+#ifdef _DEBUG
+	else
+	{
+		PrintDebug("that's njDrawTriangle2D-wang\n");
+	}
+#endif
 
 	original(p, n, pri, attr);
 }
@@ -444,6 +462,12 @@ static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX* quad)
 	{
 		scale_quad_ex(quad);
 	}
+#ifdef _DEBUG
+	else
+	{
+		PrintDebug("that's Direct3D_DrawQuad-wang\n");
+	}
+#endif
 
 	original(quad);
 }
@@ -456,6 +480,12 @@ static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int tra
 	{
 		scale_points(polygon, count);
 	}
+#ifdef _DEBUG
+	else
+	{
+		PrintDebug("that's numberwang\n");
+	}
+#endif
 
 	orig(polygon, count, trans);
 }
@@ -588,6 +618,8 @@ static Trampoline* DisplayTitleCard_t;
 static Trampoline* Credits_Main_t;
 static Trampoline* PauseMenu_Map_Display_t;
 static Trampoline* DrawSubtitles_t;
+static Trampoline* EmblemCollected_Init_t;
+static Trampoline* EmblemCollected_Main_t;
 
 #pragma endregion
 
@@ -847,6 +879,16 @@ static void __cdecl DrawSubtitles_r()
 	scale_trampoline(Align::center, false, DrawSubtitles_r, DrawSubtitles_t);
 }
 
+static void EmblemCollected_Init_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, EmblemCollected_Init_r, EmblemCollected_Init_t, a1);
+}
+
+static void EmblemCollected_Main_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, EmblemCollected_Main_r, EmblemCollected_Main_t, a1);
+}
+
 void uiscale::initialize()
 {
 	update_parameters();
@@ -866,6 +908,8 @@ void uiscale::initialize()
 	DisplayTitleCard_t                   = new Trampoline(0x0047E170, 0x0047E175, DisplayTitleCard_r);
 	Credits_Main_t                       = new Trampoline(0x006411A0, 0x006411A5, Credits_Main_r);
 	PauseMenu_Map_Display_t              = new Trampoline(0x00458B00, 0x00458B06, PauseMenu_Map_Display_r);
+	EmblemCollected_Init_t               = new Trampoline(0x004B4860, 0x004B4867, EmblemCollected_Init_r);
+	EmblemCollected_Main_t               = new Trampoline(0x004B46A0, 0x004B46A6, EmblemCollected_Main_r);
 
 	DrawSubtitles_t = new Trampoline(0x0040D4D0, 0x0040D4D9, DrawSubtitles_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DrawSubtitles_t->Target()) + 4), reinterpret_cast<void*>(0x00402F00));
