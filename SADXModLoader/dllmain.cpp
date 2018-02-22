@@ -425,7 +425,7 @@ static HRESULT Direct3D_Reset()
 
 	SetupSomeScreenStuff();
 	Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
-	uiscale::UpdateScaleParameters();
+	uiscale::update_parameters();
 	Direct3D_SetDefaultRenderState();
 	Direct3D_SetDefaultTextureStageState();
 
@@ -1570,21 +1570,21 @@ static void __cdecl InitMods()
 
 	if (settings->getBool("ScaleHud", false))
 	{
-		uiscale::SetupHudScale();
+		uiscale::initialize();
 	}
 
-	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode::Fill);
+	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode::fill);
 	if (bgFill >= 0 && bgFill <= 3)
 	{
-		uiscale::bg_fill = (uiscale::FillMode)bgFill;
-		uiscale::SetupBackgroundScale();
+		uiscale::bg_fill = static_cast<uiscale::FillMode>(bgFill);
+		uiscale::setup_background_scale();
 	}
 
-	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode::Fit);
+	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode::fit);
 	if (fmvFill >= 0 && fmvFill <= 3)
 	{
-		uiscale::fmv_fill = (uiscale::FillMode)fmvFill;
-		uiscale::SetupFmvScale();
+		uiscale::fmv_fill = static_cast<uiscale::FillMode>(fmvFill);
+		uiscale::setup_fmv_scale();
 	}
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
