@@ -373,6 +373,9 @@ DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x3D12780);
 
 static HRESULT Direct3D_Reset()
 {
+	// Grab the current FOV before making any changes.
+	auto fov = fov::get_fov();
+
 	DWORD fogenable, fogcolor, fogtablemode, fogstart, fogend, fogdensity;
 
 	Direct3D_Device->GetRenderState(D3DRS_FOGENABLE, &fogenable);
@@ -383,8 +386,11 @@ static HRESULT Direct3D_Reset()
 	Direct3D_Device->GetRenderState(D3DRS_FOGDENSITY, &fogdensity);
 
 	HRESULT result = Direct3D_Device->Reset(&PresentParameters);
+
 	if (FAILED(result))
+	{
 		return result;
+	}
 
 	Direct3D_Device->SetRenderState(D3DRS_FOGENABLE, fogenable != 0);
 	Direct3D_Device->SetRenderState(D3DRS_FOGCOLOR, fogcolor);
@@ -395,14 +401,14 @@ static HRESULT Direct3D_Reset()
 
 	Direct3D_Device->GetViewport(&Direct3D_ViewPort);
 
-	ViewPortWidth        = (float)Direct3D_ViewPort.Width;
+	ViewPortWidth        = static_cast<float>(Direct3D_ViewPort.Width);
 	HorizontalResolution = Direct3D_ViewPort.Width;
 	ViewPortWidth_Half   = ViewPortWidth / 2.0f;
-	ViewPortHeight       = (float)Direct3D_ViewPort.Height;
+	ViewPortHeight       = static_cast<float>(Direct3D_ViewPort.Height);
 	VerticalResolution   = Direct3D_ViewPort.Height;
 	ViewPortHeight_Half  = ViewPortHeight / 2.0f;
-	HorizontalStretch    = (float)HorizontalResolution / 640.0f;
-	VerticalStretch      = (float)VerticalResolution / 480.0f;
+	HorizontalStretch    = static_cast<float>(HorizontalResolution) / 640.0f;
+	VerticalStretch      = static_cast<float>(VerticalResolution) / 480.0f;
 
 	auto points = GlobalPoint2Col.p;
 
@@ -415,13 +421,16 @@ static HRESULT Direct3D_Reset()
 	points[3].x = 0.0f;
 	points[3].y = ViewPortHeight;
 
-	CheckAspectRatio();
+	fov::check_aspect_ratio();
 
 	SetupSomeScreenStuff();
 	Direct3D_SetProjectionMatrix_(&ProjectionMatrix);
 	uiscale::UpdateScaleParameters();
 	Direct3D_SetDefaultRenderState();
 	Direct3D_SetDefaultTextureStageState();
+
+	// Restores previously set FOV in case the game doesn't on its own.
+	njSetPerspective(fov);
 
 	RaiseEvents(modRenderDeviceReset);
 
@@ -444,7 +453,9 @@ static void Direct3D_DeviceLost()
 		if (level == D3DERR_DEVICENOTRESET)
 		{
 			if (SUCCEEDED(reset = Direct3D_Reset()))
+			{
 				return;
+			}
 
 			if (++tries >= retry_count)
 			{
@@ -1457,7 +1468,7 @@ static void __cdecl InitMods()
 		VerticalStretch = VerticalResolution / 480.0f;
 	}
 
-	ConfigureFOV();
+	fov::initialize();
 
 	borderlessWindow   = settings->getBool("WindowedFullscreen");
 	scaleScreen        = settings->getBool("StretchFullscreen", true);
