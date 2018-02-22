@@ -348,7 +348,7 @@ static void __cdecl SpritePop(NJS_SPRITE* sp)
 static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags);
 static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, float depth, Uint32 attr, QueuedModelFlagsB flags);
 static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
-static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX *points);
+static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX* quad);
 static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX *polygon, Int count, Int trans);
 
 // Must be initialized dynamically to fix a call instruction.
@@ -477,6 +477,7 @@ void uiscale::Initialize()
  * \tparam T Function type
  * \tparam Args
  * \param align Alignment mode
+ * \param is_background Enables background scaling mode.
  * \param t Trampoline
  * \param args Option arguments for function
  */
@@ -504,6 +505,7 @@ void ScaleTrampoline(Uint8 align, bool is_background, const T&, const Trampoline
  * \tparam T Function type
  * \tparam Args 
  * \param align Alignment mode
+ * \param is_background Enables background scaling mode.
  * \param t Trampoline
  * \param args Optional arguments for function
  * \return Return value of trampoline function
