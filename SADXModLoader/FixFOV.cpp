@@ -54,6 +54,8 @@ static Trampoline njSetPerspective_trampoline(0x00402ED0, 0x00402ED5, njSetPersp
 
 static void __cdecl njSetScreenDist_r(const Angle bams)
 {
+	last_bams = bams;
+
 	if (!is_wide)
 	{
 		NonStaticFunctionPointer(void, original, (Angle), njSetScreenDist_trampoline.Target());
