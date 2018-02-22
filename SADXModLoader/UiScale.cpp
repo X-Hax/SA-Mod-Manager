@@ -626,7 +626,7 @@ static void __cdecl ScaleScoreA()
 
 static void __cdecl ScaleTornadoHP(ObjectMaster* a1)
 {
-	ScaleTrampoline(Align::Left, false, ScaleTornadoHP, scaleTornadoHP, a1);
+	ScaleTrampoline(Align::Left | Align::Bottom, false, ScaleTornadoHP, scaleTornadoHP, a1);
 }
 
 static void __cdecl ScaleTwinkleCircuitHUD(ObjectMaster* a1)
