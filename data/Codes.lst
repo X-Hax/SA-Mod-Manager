@@ -255,3 +255,7 @@ writenop 004311CA 0x2
 Patch "Can Always Skip Credits"
 writenop 00641232 2
 
+Patch "60FPS Cutscenes (Double Speed)"
+write8 0042F8B7 1
+write8 0042F8B9 1
+write8 00431488 1
