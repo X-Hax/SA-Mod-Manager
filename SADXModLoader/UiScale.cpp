@@ -398,12 +398,6 @@ static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, f
 	{
 		scale_points(points->p, count);
 	}
-#ifdef _DEBUG
-	else
-	{
-		PrintDebug("that's Draw2DLinesMaybe_Queue-wang\n");
-	}
-#endif
 
 	original(points, count, depth, attr, flags);
 }
@@ -416,12 +410,6 @@ static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, 
 	{
 		scale_points(polygon, count);
 	}
-#ifdef _DEBUG
-	else
-	{
-		PrintDebug("that's njDrawTextureMemList-wang\n");
-	}
-#endif
 
 	original(polygon, count, tex, flag);
 }
@@ -444,12 +432,6 @@ static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint3
 
 		scale_points(p->p, _n);
 	}
-#ifdef _DEBUG
-	else
-	{
-		PrintDebug("that's njDrawTriangle2D-wang\n");
-	}
-#endif
 
 	original(p, n, pri, attr);
 }
@@ -462,12 +444,6 @@ static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX* quad)
 	{
 		scale_quad_ex(quad);
 	}
-#ifdef _DEBUG
-	else
-	{
-		PrintDebug("that's Direct3D_DrawQuad-wang\n");
-	}
-#endif
 
 	original(quad);
 }
@@ -480,12 +456,6 @@ static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int tra
 	{
 		scale_points(polygon, count);
 	}
-#ifdef _DEBUG
-	else
-	{
-		PrintDebug("that's numberwang\n");
-	}
-#endif
 
 	orig(polygon, count, trans);
 }
