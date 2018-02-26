@@ -4,22 +4,22 @@
 
 namespace mipmap
 {
-	void EnableAutoMipmaps();
-	bool IsBlacklistedPVM(const char* name);
-	bool IsBlacklistedPVR(const char* name);
-	bool IsBlacklistedGBIX(Uint32 gbix);
-	void BlacklistGBIX(Uint32 gbix);
-	void SkipMipmap(bool value);
-	bool AutoMipmapsEnabled();
+	void enable_auto_mipmaps();
+	bool is_blacklisted_pvm(const char* name);
+	bool is_blacklisted_pvr(const char* name);
+	bool is_blacklisted_gbix(Uint32 gbix);
+	void blacklist_gbix(Uint32 gbix);
+	void skip_mipmap(bool value);
+	bool auto_mipmaps_enabled();
 
-	class mip_guard
+	class MipGuard
 	{
 		bool current = false;
 		bool last = false;
 
 	public:
-		explicit mip_guard(bool skip);
-		~mip_guard();
+		explicit MipGuard(bool skip);
+		~MipGuard();
 
 		bool is_blacklisted() const
 		{

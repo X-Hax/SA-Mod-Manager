@@ -16,7 +16,7 @@ namespace mipmap
 	// Blacklisted PVM textures.
 	// NOTE: Must be sorted alphabetically, since this array
 	// is used by bsearch().
-	static const char *const PVMBlacklist[] = {
+	static const char *const PVM_BLACKLIST[] = {
 		"AL_DX_TEX_XYBUTTON",
 		"AL_ENT_CHAR_E_TEX",
 		"AL_ENT_CHAR_J_TEX",
@@ -197,7 +197,7 @@ namespace mipmap
 	// Blacklisted PVR textures.
 	// NOTE: Must be sorted alphabetically, since this array
 	// is used by bsearch().
-	static const char *const PVRBlacklist[] = {
+	static const char *const PVR_BLACKLIST[] = {
 		"ABC_TXT",
 		"ACTION_0",
 		"ACTION_1",
@@ -615,17 +615,16 @@ namespace mipmap
 	};
 
 	// Blacklisted global indexes.
-	static unordered_set<Uint32> gbixBlacklist;
+	static unordered_set<Uint32> gbix_blacklist;
 
 	static bool blacklisted = false;
 	static bool enabled = false;
 
-	static HRESULT CopyTexture(IDirect3DTexture8* dest, IDirect3DTexture8* src, UINT height)
+	static HRESULT copy_texture(IDirect3DTexture8* dest, IDirect3DTexture8* src, UINT height)
 	{
-		HRESULT result;
 		D3DLOCKED_RECT rectA, rectB;
 
-		result = src->LockRect(0, &rectA, nullptr, 0);
+		HRESULT result = src->LockRect(0, &rectA, nullptr, 0);
 
 		if (!SUCCEEDED(result))
 		{
@@ -648,23 +647,23 @@ namespace mipmap
 		return result;
 	}
 
-	inline void SetSurface(IDirect3DTexture8* src, NJS_TEXSURFACE* surface)
+	inline void set_surface(IDirect3DTexture8* src, NJS_TEXSURFACE* surface)
 	{
 		D3DSURFACE_DESC info;
 		src->GetLevelDesc(0, &info);
 
-		surface->pSurface = (Uint32*)src;
+		surface->pSurface = reinterpret_cast<Uint32*>(src);
 		surface->TextureSize = info.Size;
 	}
 
-	static void GenerateMipmaps(NJS_TEXMEMLIST* tex)
+	static void generate_mipmaps(NJS_TEXMEMLIST* tex)
 	{
 		if (tex == nullptr)
 		{
 			return;
 		}
 
-		auto pSurface = (IDirect3DTexture8*)tex->texinfo.texsurface.pSurface;
+		auto pSurface = reinterpret_cast<IDirect3DTexture8*>(tex->texinfo.texsurface.pSurface);
 
 		if (pSurface == nullptr)
 		{
@@ -685,10 +684,9 @@ namespace mipmap
 		}
 #endif
 
-		HRESULT result;
-
 		D3DSURFACE_DESC info;
-		result = pSurface->GetLevelDesc(0, &info);
+		HRESULT result = pSurface->GetLevelDesc(0, &info);
+
 		if (!SUCCEEDED(result))
 		{
 			goto ABORT;
@@ -701,7 +699,7 @@ namespace mipmap
 			goto ABORT;
 		}
 
-		result = CopyTexture(dest, pSurface, info.Height);
+		result = copy_texture(dest, pSurface, info.Height);
 		if (!SUCCEEDED(result))
 		{
 			goto ABORT;
@@ -716,24 +714,24 @@ namespace mipmap
 		}
 
 		pSurface->Release();
-		SetSurface(dest, &tex->texinfo.texsurface);
+		set_surface(dest, &tex->texinfo.texsurface);
 		return;
 
 		// TODO: just use exceptions
 	ABORT:
-		SetSurface(pSurface, &tex->texinfo.texsurface);
+		set_surface(pSurface, &tex->texinfo.texsurface);
 	}
 
 	void __fastcall Direct3D_PvrToTexture_r(NJS_TEXMEMLIST *tex, IDirect3DTexture8 *surface)
 	{
-		auto original = (decltype(Direct3D_PvrToTexture_r)*)Direct3D_PvrToTexture_t->Target();
+		auto original = static_cast<decltype(Direct3D_PvrToTexture_r)*>(Direct3D_PvrToTexture_t->Target());
 
-		mip_guard _guard(tex != nullptr && IsBlacklistedGBIX(tex->globalIndex));
+		MipGuard _guard(tex != nullptr && is_blacklisted_gbix(tex->globalIndex));
 		original(tex, surface);
-		GenerateMipmaps(tex);
+		generate_mipmaps(tex);
 	}
 
-	void EnableAutoMipmaps()
+	void enable_auto_mipmaps()
 	{
 		enabled = true;
 
@@ -760,55 +758,55 @@ namespace mipmap
 		return _stricmp(str1, str2);
 	}
 
-	bool IsBlacklistedPVM(const char* name)
+	bool is_blacklisted_pvm(const char* name)
 	{
 		const char *const res = static_cast<const char*>(bsearch(&name,
-			PVMBlacklist, LengthOfArray(PVMBlacklist)-1,
-			sizeof(PVMBlacklist[0]), compar_stricmp));
+			PVM_BLACKLIST, LengthOfArray(PVM_BLACKLIST)-1,
+			sizeof(PVM_BLACKLIST[0]), compar_stricmp));
 		return (res != nullptr);
 	}
-	bool IsBlacklistedPVR(const char* name)
+	bool is_blacklisted_pvr(const char* name)
 	{
 		const char *const res = static_cast<const char*>(bsearch(&name,
-			PVRBlacklist, LengthOfArray(PVRBlacklist)-1,
-			sizeof(PVRBlacklist[0]), compar_stricmp));
+			PVR_BLACKLIST, LengthOfArray(PVR_BLACKLIST)-1,
+			sizeof(PVR_BLACKLIST[0]), compar_stricmp));
 		return (res != nullptr);
 	}
-	bool IsBlacklistedGBIX(Uint32 gbix)
+	bool is_blacklisted_gbix(Uint32 gbix)
 	{
-		return (gbixBlacklist.find(gbix) != gbixBlacklist.cend());
+		return (gbix_blacklist.find(gbix) != gbix_blacklist.cend());
 	}
 
-	void BlacklistGBIX(Uint32 gbix)
+	void blacklist_gbix(Uint32 gbix)
 	{
-		if (gbixBlacklist.find(gbix) == gbixBlacklist.cend())
+		if (gbix_blacklist.find(gbix) == gbix_blacklist.cend())
 		{
 			// gbix is not blacklisted yet. Blacklist it.
-			gbixBlacklist.insert(gbix);
+			gbix_blacklist.insert(gbix);
 			PrintDebug("Blacklisted GBIX %u\n", gbix);
 		}
 	}
 
-	void SkipMipmap(bool value)
+	void skip_mipmap(bool value)
 	{
 		blacklisted = value;
 	}
 
-	bool AutoMipmapsEnabled()
+	bool auto_mipmaps_enabled()
 	{
 		return enabled;
 	}
 
-	mip_guard::mip_guard(bool skip)
+	MipGuard::MipGuard(bool skip)
 	{
 		last = blacklisted;
 		current = skip;
-		SkipMipmap(skip);
+		skip_mipmap(skip);
 	}
 
-	mip_guard::~mip_guard()
+	MipGuard::~MipGuard()
 	{
-		SkipMipmap(last);
+		skip_mipmap(last);
 	}
 
 	// This has something to do with dynamic texture generation. It's used for videos and menus.
@@ -816,7 +814,7 @@ namespace mipmap
 	static Trampoline sub_77FA10_trampoline(0x0077FA10, 0x0077FA16, sub_77FA10_hook);
 	static Sint32 __cdecl sub_77FA10_hook(Uint32 gbix, IDirect3DTexture8* texture)
 	{
-		mip_guard _guard(true);
+		MipGuard _guard(true);
 
 		NonStaticFunctionPointer(Sint32, original, (Uint32, IDirect3DTexture8*), sub_77FA10_trampoline.Target());
 		return original(gbix, texture);
@@ -828,7 +826,7 @@ namespace mipmap
 	static Trampoline sub_40D2A0_trampoline(0x0040D2A0, 0x0040D2A8, sub_40D2A0_hook);
 	static void sub_40D2A0_hook(void* a1)
 	{
-		mip_guard _guard(true);
+		MipGuard _guard(true);
 
 		NonStaticFunctionPointer(void, original, (void*), sub_40D2A0_trampoline.Target());
 		original(a1);

@@ -18,8 +18,8 @@ using std::transform;
 using std::unordered_map;
 
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <shlwapi.h>
+#include <Windows.h>
+#include <Shlwapi.h>
 
 FileMap::FileMap()
 { }
@@ -265,7 +265,7 @@ void FileMap::scanTextureFolder(const string& srcPath, int modIndex)
 
 	// First attempt to parse the root texture pack (for PVR files in the vanilla system folder).
 	// If the path isn't a file or doesn't exist, this function will return false.
-	if (texpack::ParseIndex(lower, entries))
+	if (texpack::parse_index(lower, entries))
 	{
 		for (const auto& i : entries)
 		{

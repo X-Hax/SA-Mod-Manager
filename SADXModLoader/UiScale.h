@@ -4,17 +4,16 @@ namespace uiscale
 {
 	enum FillMode : Uint8
 	{
-		Stretch = 0,
-		Fit     = 1,
-		Fill    = 2
+		stretch = 0,
+		fit     = 1,
+		fill    = 2
 	};
 
 	extern FillMode bg_fill;
 	extern FillMode fmv_fill;
 
-	void Initialize();
-	void UpdateScaleParameters();
-	void SetupHudScale();
-	void SetupBackgroundScale();
-	void SetupFmvScale();
+	void update_parameters();
+	void initialize();
+	void setup_background_scale();
+	void setup_fmv_scale();
 }

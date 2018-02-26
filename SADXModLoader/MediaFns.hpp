@@ -9,12 +9,12 @@
 #include "MemAccess.h"
 
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#include <Windows.h>
 #include <wmsdkidl.h>
 
 // NOTE: mmsystem.h defines PlaySound.
 // Undefine it afterwards due to an SADX function conflict.
-#include <mmsystem.h>
+#include <MMSystem.h>
 #include <dsound.h>
 
 #ifdef __cplusplus
