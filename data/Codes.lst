@@ -261,4 +261,6 @@ write8 0042F8B9 1
 write8 00431488 1
 
 Patch "Disable Saving"
-write8 00421FD0 0xC3
+writenop 00422161 5
+writenop 00422175 5
+writenop 004221B0 5
