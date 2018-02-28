@@ -837,6 +837,7 @@ LRESULT __stdcall WndProc_hook(HWND handle, UINT Msg, WPARAM wParam, LPARAM lPar
 	return DefWindowProcA(handle, Msg, wParam, lParam);
 }
 
+wstring borderimg = L"mods\\Border.png";
 static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 {
 	// Primary window class name.
@@ -961,12 +962,14 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 		windowMode = IsWindowed ? windowed : fullscreen;
 
-		if (FileExists(L"mods\\Border.png"))
+		if (!FileExists(borderimg))
+			borderimg = L"mods\\Border_Default.png";
+		if (FileExists(borderimg))
 		{
 			Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 			ULONG_PTR gdiplusToken;
 			Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
-			backgroundImage = Gdiplus::Bitmap::FromFile(L"mods\\Border.png");
+			backgroundImage = Gdiplus::Bitmap::FromFile(borderimg.c_str());
 		}
 
 		// Register a window class for the wrapper window.
@@ -1895,6 +1898,9 @@ static void __cdecl InitMods()
 
 		if (modinfo->hasKeyNonEmpty("WindowTitle"))
 			windowtitle = modinfo->getString("WindowTitle");
+
+		if (modinfo->hasKeyNonEmpty("BorderImage"))
+			borderimg = mod_dir + L'\\' + modinfo->getWString("BorderImage");
 	}
 
 	if (!errors.empty())
