@@ -658,7 +658,7 @@ static void ProcessRecapScreenINI(const IniGroup *group, const wstring &mod_dir)
 			const IniFile *const inidata = new IniFile(filename);
 			vector<string> strs = split(inidata->getString("", "Text"), '\n');
 			auto numents = strs.size();
-			list[i].TextData = new char *[numents];
+			list[i].TextData = new const char *[numents];
 			for (unsigned int j = 0; j < numents; j++)
 				list[i].TextData[j] = strdup(DecodeUTF8(strs[j], l).c_str());
 			list[i].LineCount = (int)numents;

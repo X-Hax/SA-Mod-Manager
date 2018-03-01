@@ -53,7 +53,7 @@ struct AllocatedMem
 
 struct SaveFileInfo
 {
-	char *Filename;
+	const char *Filename;
 	uint32_t LowDate;
 	uint32_t HighDate;
 	SaveFileInfo *Next;
@@ -77,7 +77,7 @@ struct FogData
 
 struct PVMEntry
 {
-	char *Name;
+	const char* Name;
 	NJS_TEXLIST *TexList;
 };
 
@@ -96,7 +96,7 @@ struct ObjectListEntry
 	float Distance;
 	int field_8;
 	ObjectFuncPtr LoadSub;
-	char *Name;
+	const char *Name;
 };
 
 struct StartPosition
@@ -147,7 +147,7 @@ struct RecapScreen
 {
 	float Speed;
 	int LineCount;
-	char **TextData;
+	const char **TextData;
 };
 
 struct COL
@@ -179,7 +179,7 @@ struct LandTable
 	float Unknown_1;
 	COL *Col;
 	GeoAnimData *AnimData;
-	char *TexName;
+	const char *TexName;
 	NJS_TEXLIST *TexList;
 	int Unknown_4;
 	int Unknown_5;
@@ -555,7 +555,7 @@ struct ObjectMaster
 
 struct VideoData
 {
-	char *Filename;
+	const char *Filename;
 	int field_4;
 	int NumFrames;
 	int16_t Width;
@@ -699,7 +699,7 @@ struct CutsceneData
 
 struct HintText_Text
 {
-	char *Message;
+	const char *Message;
 	int Time;
 };
 
@@ -744,7 +744,7 @@ struct TrialLevelList
 struct SoundFileInfo
 {
 	int Bank;
-	char *Filename;
+	const char *Filename;
 };
 
 struct SoundList
@@ -839,7 +839,7 @@ struct RestartData
 struct MESFileText
 {
 	int16_t *field_0;
-	char **field_4;
+	const char **field_4;
 };
 
 struct MESFileHeader
@@ -874,13 +874,13 @@ struct FieldNPCList
 
 struct MusicInfo
 {
-	char *Name;
+	const char *Name;
 	int Loop;
 };
 
 struct SoundTestEntry
 {
-	char *Name;
+	const char *Name;
 	int ID;
 };
 
@@ -1562,7 +1562,7 @@ struct NBChunk
 struct TitleCardTexture
 {
 	int Level;
-	char *TextureName;
+	const char *TextureName;
 };
 
 struct TitleCardTextureList
