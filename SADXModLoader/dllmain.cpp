@@ -526,46 +526,31 @@ static LRESULT CALLBACK WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, 
 				break;
 			}
 
-			if (w == HorizontalResolution && h == VerticalResolution)
-			{
-				break;
-			}
-
-			PresentParameters.BackBufferWidth = w;
-			PresentParameters.BackBufferHeight = h;
-
-		#ifdef _DEBUG
-			PrintDebug("Changing resolution from %ux%u to %ux%u\n",
-				HorizontalResolution, VerticalResolution, w, h);
-		#endif
-
-			direct3d::reset_device();
+			direct3d::change_resolution(w, h);
 			break;
 		}
 
 		case WM_COMMAND:
 		{
 			if (wParam != MAKELONG(ID_FULLSCREEN, 1))
+			{
 				break;
+			}
 
-			if (PresentParameters.Windowed && IsWindowed)
+			if (direct3d::is_windowed() && IsWindowed)
 			{
 				enable_fullscreen_mode(handle);
 
 				const auto& rect = screenBounds[screenNum == 0 ? 0 : screenNum - 1];
 
-				PresentParameters.Windowed         = false;
-				PresentParameters.BackBufferWidth  = rect.right - rect.left;
-				PresentParameters.BackBufferHeight = rect.bottom - rect.top;
-				direct3d::reset_device();
+				const auto w = rect.right - rect.left;
+				const auto h = rect.bottom - rect.top;
+
+				direct3d::change_resolution(w, h, false);
 			}
 			else
 			{
-				PresentParameters.Windowed         = true;
-				PresentParameters.BackBufferWidth  = last_width;
-				PresentParameters.BackBufferHeight = last_height;
-				direct3d::reset_device();
-
+				direct3d::change_resolution(last_width, last_height, true);
 				enable_windowed_mode(handle);
 			}
 

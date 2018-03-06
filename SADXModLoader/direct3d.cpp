@@ -203,6 +203,17 @@ void __cdecl Direct3D_Present_r()
 	}
 }
 
+void direct3d::init()
+{
+	WriteJump(Direct3D_Present, Direct3D_Present_r);
+	WriteJump(reinterpret_cast<void*>(0x00794000), CreateDirect3DDevice_r);
+}
+
+void direct3d::set_vsync(bool value)
+{
+	vsync = value;
+}
+
 void direct3d::reset_device()
 {
 	const auto retry_count = 5;
@@ -270,13 +281,38 @@ void direct3d::reset_device()
 	exit(reset);
 }
 
-void direct3d::init()
+void direct3d::change_resolution(uint32_t width, uint32_t height)
 {
-	WriteJump(Direct3D_Present, Direct3D_Present_r);
-	WriteJump(reinterpret_cast<void*>(0x00794000), CreateDirect3DDevice_r);
+	change_resolution(width, height, PresentParameters.Windowed);
 }
 
-void direct3d::set_vsync(bool value)
+void direct3d::change_resolution(uint32_t width, uint32_t height, bool windowed)
 {
-	vsync = value;
+	if (width == PresentParameters.BackBufferWidth
+		&& height == PresentParameters.BackBufferHeight
+		&& windowed == !!PresentParameters.Windowed)
+	{
+		return;
+	}
+
+	const auto old_width    = PresentParameters.BackBufferWidth;
+	const auto old_height   = PresentParameters.BackBufferHeight;
+	const bool was_windowed = PresentParameters.Windowed;
+
+#ifdef _DEBUG
+	PrintDebug("Changing resolution from %ux%u (%s) to %ux%u (%s)\n",
+			   old_width, old_height, was_windowed ? "windowed" : "fullscreen",
+			   width, height, windowed ? "windowed" : "fullscreen");
+#endif
+
+	PresentParameters.BackBufferWidth  = width;
+	PresentParameters.BackBufferHeight = height;
+	PresentParameters.Windowed         = windowed;
+
+	reset_device();
+}
+
+bool direct3d::is_windowed()
+{
+	return !!PresentParameters.Windowed;
 }

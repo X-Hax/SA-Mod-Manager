@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <cstdint>
 #include <d3d8.h>
 #include <d3dx8tex.h>
 #include "MemAccess.h"
@@ -90,4 +90,7 @@ namespace direct3d
 	void init();
 	void set_vsync(bool value);
 	void reset_device();
+	void change_resolution(uint32_t width, uint32_t height);
+	void change_resolution(uint32_t width, uint32_t height, bool windowed);
+	bool is_windowed();
 }
