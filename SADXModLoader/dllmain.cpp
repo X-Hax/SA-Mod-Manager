@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <vector>
 #include <sstream>
+#include "direct3d.h"
 
 using std::deque;
 using std::ifstream;
@@ -327,9 +328,6 @@ static unsigned int screenNum           = 1;
 static bool customWindowSize            = false;
 static int customWindowWidth            = 640;
 static int customWindowHeight           = 480;
-static bool vsync                       = false;
-
-DataPointer(HWND, hWnd, 0x3D0FD30);
 
 static BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
 {
@@ -340,275 +338,21 @@ static BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lp
 static const uint8_t wndpatch[] = { 0xA1, 0x30, 0xFD, 0xD0, 0x03, 0xEB, 0x08 }; // mov eax,[hWnd] / jmp short 0xf
 static int currentScreenSize[2];
 
-static inline void Direct3D_SetupVsyncParameters()
-{
-	auto& p = PresentParameters;
-
-	if (vsync)
-	{
-		p.SwapEffect = D3DSWAPEFFECT_COPY_VSYNC;
-		p.FullScreen_PresentationInterval = IsWindowed ? D3DPRESENT_INTERVAL_DEFAULT : D3DPRESENT_INTERVAL_ONE;
-	}
-	else
-	{
-		p.SwapEffect = D3DSWAPEFFECT_DISCARD;
-		p.FullScreen_PresentationInterval = IsWindowed ? D3DPRESENT_INTERVAL_DEFAULT : D3DPRESENT_INTERVAL_IMMEDIATE;
-	}
-}
-
-static void __fastcall CreateDirect3DDevice_r(void*, int behavior, D3DDEVTYPE type)
-{
-	if (Direct3D_Device != nullptr)
-		return;
-
-	Direct3D_SetupVsyncParameters();
-
-	auto result = Direct3D_Object->CreateDevice(DisplayAdapter, type, PresentParameters.hDeviceWindow, behavior, &PresentParameters, &Direct3D_Device);
-
-	if (FAILED(result))
-		Direct3D_Device = nullptr;
-}
-
-DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x3D12780);
-
-// oh god
-static const D3DRENDERSTATETYPE D3DRENDERSTATE_TYPES[] = {
-	D3DRS_ZENABLE,
-	D3DRS_FILLMODE,
-	D3DRS_SHADEMODE,
-	D3DRS_LINEPATTERN,
-	D3DRS_ZWRITEENABLE,
-	D3DRS_ALPHATESTENABLE,
-	D3DRS_LASTPIXEL,
-	D3DRS_SRCBLEND,
-	D3DRS_DESTBLEND,
-	D3DRS_CULLMODE,
-	D3DRS_ZFUNC,
-	D3DRS_ALPHAREF,
-	D3DRS_ALPHAFUNC,
-	D3DRS_DITHERENABLE,
-	D3DRS_ALPHABLENDENABLE,
-	D3DRS_FOGENABLE,
-	D3DRS_SPECULARENABLE,
-	D3DRS_ZVISIBLE,
-	D3DRS_FOGCOLOR,
-	D3DRS_FOGTABLEMODE,
-	D3DRS_FOGSTART,
-	D3DRS_FOGEND,
-	D3DRS_FOGDENSITY,
-	D3DRS_EDGEANTIALIAS,
-	D3DRS_ZBIAS,
-	D3DRS_RANGEFOGENABLE,
-	D3DRS_STENCILENABLE,
-	D3DRS_STENCILFAIL,
-	D3DRS_STENCILZFAIL,
-	D3DRS_STENCILPASS,
-	D3DRS_STENCILFUNC,
-	D3DRS_STENCILREF,
-	D3DRS_STENCILMASK,
-	D3DRS_STENCILWRITEMASK,
-	D3DRS_TEXTUREFACTOR,
-	D3DRS_WRAP0,
-	D3DRS_WRAP1,
-	D3DRS_WRAP2,
-	D3DRS_WRAP3,
-	D3DRS_WRAP4,
-	D3DRS_WRAP5,
-	D3DRS_WRAP6,
-	D3DRS_WRAP7,
-	D3DRS_CLIPPING,
-	D3DRS_LIGHTING,
-	D3DRS_AMBIENT,
-	D3DRS_FOGVERTEXMODE,
-	D3DRS_COLORVERTEX,
-	D3DRS_LOCALVIEWER,
-	D3DRS_NORMALIZENORMALS,
-	D3DRS_DIFFUSEMATERIALSOURCE,
-	D3DRS_SPECULARMATERIALSOURCE,
-	D3DRS_AMBIENTMATERIALSOURCE,
-	D3DRS_EMISSIVEMATERIALSOURCE,
-	D3DRS_VERTEXBLEND,
-	D3DRS_CLIPPLANEENABLE,
-	D3DRS_SOFTWAREVERTEXPROCESSING,
-	D3DRS_POINTSIZE,
-	D3DRS_POINTSIZE_MIN,
-	D3DRS_POINTSPRITEENABLE,
-	D3DRS_POINTSCALEENABLE,
-	D3DRS_POINTSCALE_A,
-	D3DRS_POINTSCALE_B,
-	D3DRS_POINTSCALE_C,
-	D3DRS_MULTISAMPLEANTIALIAS,
-	D3DRS_MULTISAMPLEMASK,
-	D3DRS_PATCHEDGESTYLE,
-	D3DRS_PATCHSEGMENTS,
-	D3DRS_DEBUGMONITORTOKEN,
-	D3DRS_POINTSIZE_MAX,
-	D3DRS_INDEXEDVERTEXBLENDENABLE,
-	D3DRS_COLORWRITEENABLE,
-	D3DRS_TWEENFACTOR,
-	D3DRS_BLENDOP,
-	D3DRS_POSITIONORDER,
-	D3DRS_NORMALORDER
-};
-
-static HRESULT Direct3D_Reset()
-{
-	// Grab the current FOV before making any changes.
-	auto fov = fov::get_fov();
-
-	const size_t length = LengthOfArray(D3DRENDERSTATE_TYPES);
-
-	std::vector<DWORD> renderstate_values(length);
-	std::vector<DWORD> renderstate_results(length);
-
-	// Store all the current render states we can grab.
-	for (size_t i = 0; i < length; i++)
-	{
-		renderstate_results[i] = Direct3D_Device->GetRenderState(D3DRENDERSTATE_TYPES[i], &renderstate_values[i]);
-	}
-
-	HRESULT result = Direct3D_Device->Reset(&PresentParameters);
-
-	if (FAILED(result))
-	{
-		return result;
-	}
-
-	// Restore all the render states we stored.
-	for (size_t i = 0; i < length; i++)
-	{
-		if (SUCCEEDED(renderstate_results[i]))
-		{
-			Direct3D_Device->SetRenderState(D3DRENDERSTATE_TYPES[i], renderstate_values[i]);
-		}
-	}
-
-	Direct3D_Device->GetViewport(&Direct3D_ViewPort);
-
-	ViewPortWidth        = static_cast<float>(Direct3D_ViewPort.Width);
-	HorizontalResolution = Direct3D_ViewPort.Width;
-	ViewPortWidth_Half   = ViewPortWidth / 2.0f;
-	ViewPortHeight       = static_cast<float>(Direct3D_ViewPort.Height);
-	VerticalResolution   = Direct3D_ViewPort.Height;
-	ViewPortHeight_Half  = ViewPortHeight / 2.0f;
-	HorizontalStretch    = static_cast<float>(HorizontalResolution) / 640.0f;
-	VerticalStretch      = static_cast<float>(VerticalResolution) / 480.0f;
-
-	fov::check_aspect_ratio();
-	uiscale::update_parameters();
-
-	NJS_POINT2* points = GlobalPoint2Col.p;
-
-	points[0].x = 0.0f;
-	points[0].y = 0.0f;
-	points[1].x = ViewPortWidth;
-	points[1].y = 0.0f;
-	points[2].x = ViewPortWidth;
-	points[2].y = ViewPortHeight;
-	points[3].x = 0.0f;
-	points[3].y = ViewPortHeight;
-
-	screen_setup.w = HorizontalStretch * 640.0f;
-	screen_setup.h = VerticalStretch * 480.0f;
-	screen_setup.cx = screen_setup.w / 2.0f;
-	screen_setup.cy = screen_setup.h / 2.0f;
-	SetupScreen(&screen_setup);
-
-	// Restores previously set FOV in case the game doesn't on its own.
-	njSetPerspective(fov);
-
-	RaiseEvents(modRenderDeviceReset);
-
-	return result;
-}
-
-static void Direct3D_DeviceLost()
-{
-	const auto retry_count = 5;
-	DWORD reset = D3D_OK;
-	Uint32 tries = 0;
-
-	Direct3D_SetupVsyncParameters();
-
-	auto level = D3DERR_DEVICENOTRESET;
-	RaiseEvents(modRenderDeviceLost);
-
-	while (tries < retry_count)
-	{
-		if (level == D3DERR_DEVICENOTRESET)
-		{
-			if (SUCCEEDED(reset = Direct3D_Reset()))
-			{
-				return;
-			}
-
-			if (++tries >= retry_count)
-			{
-				const wchar_t *errstr;
-				switch (reset)
-				{
-					default:
-					case static_cast<DWORD>(D3DERR_INVALIDCALL):
-						errstr = L"D3DERR_INVALIDCALL";
-						break;
-					case static_cast<DWORD>(D3DERR_OUTOFVIDEOMEMORY):
-						errstr = L"D3DERR_OUTOFVIDEOMEMORY";
-						break;
-					case static_cast<DWORD>(E_OUTOFMEMORY):
-						errstr = L"E_OUTOFMEMORY";
-						break;
-					case static_cast<DWORD>(D3DERR_DEVICELOST):
-						errstr = L"D3DERR_DEVICELOST";
-						break;
-					case static_cast<DWORD>(D3DERR_DRIVERINTERNALERROR):
-						errstr = L"D3DERR_DRIVERINTERNALERROR";
-						break;
-				}
-
-				wchar_t wbuf[256];
-				swprintf(wbuf, LengthOfArray(wbuf),
-					L"The following error occurred while trying to reset DirectX:\n\n%s\n\n"
-					L"Press Cancel to exit, or press Retry to try again.", errstr);
-				DWORD mb_result = MessageBox(hWnd, wbuf,
-					L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
-				if (mb_result == IDRETRY)
-				{
-					tries = 0;
-					continue;
-				}
-			}
-		}
-
-		Sleep(1000);
-		level = Direct3D_Device->TestCooperativeLevel();
-	}
-
-	exit(reset);
-}
-
-static void __cdecl Direct3D_Present_r()
-{
-	if (Direct3D_Device->Present(nullptr, nullptr, nullptr, nullptr) == D3DERR_DEVICELOST)
-	{
-		Direct3D_DeviceLost();
-	}
-}
-
 static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
 		case WM_ACTIVATE:
-			if ((LOWORD(wParam) != WA_INACTIVE && !lParam) || reinterpret_cast<HWND>(lParam) == hWnd)
+			if ((LOWORD(wParam) != WA_INACTIVE && !lParam) || reinterpret_cast<HWND>(lParam) == WindowHandle)
 			{
-				SetFocus(hWnd);
+				SetFocus(WindowHandle);
 				return 0;
 			}
 			break;
 
 		case WM_CLOSE:
 			// we also need to let SADX do cleanup
-			SendMessageA(hWnd, WM_CLOSE, wParam, lParam);
+			SendMessageA(WindowHandle, WM_CLOSE, wParam, lParam);
 			// what we do here is up to you: we can check if SADX decides to close, and if so, destroy ourselves, or something like that
 			return 0;
 
@@ -650,7 +394,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			}
 
 			// update the inner window (game view)
-			SetWindowPos(hWnd, HWND_TOP, inner.x, inner.y, inner.width, inner.height, 0);
+			SetWindowPos(WindowHandle, HWND_TOP, inner.x, inner.y, inner.width, inner.height, 0);
 			break;
 		}
 
@@ -689,7 +433,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 		case WM_ACTIVATEAPP:
 			if (!switchingWindowMode)
 			{
-				WndProc_B(hWnd, uMsg, wParam, lParam);
+				WndProc_B(WindowHandle, uMsg, wParam, lParam);
 			}
 
 			if (windowMode == windowed)
@@ -715,7 +459,7 @@ static Uint32 last_height  = 0;
 static DWORD  last_style   = 0;
 static DWORD  last_exStyle = 0;
 
-static void EnableFullScreen(HWND handle)
+static void enable_fullscreen_mode(HWND handle)
 {
 	IsWindowed = false;
 	last_width = HorizontalResolution;
@@ -728,7 +472,7 @@ static void EnableFullScreen(HWND handle)
 	while (ShowCursor(FALSE) > 0);
 }
 
-static void EnableWindowedMode(HWND handle)
+static void enable_windowed_mode(HWND handle)
 {
 	SetWindowLongA(handle, GWL_STYLE, last_style);
 	SetWindowLongA(handle, GWL_EXSTYLE, last_exStyle);
@@ -795,7 +539,7 @@ static LRESULT CALLBACK WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, 
 				HorizontalResolution, VerticalResolution, w, h);
 		#endif
 
-			Direct3D_DeviceLost();
+			direct3d::reset_device();
 			break;
 		}
 
@@ -806,23 +550,23 @@ static LRESULT CALLBACK WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, 
 
 			if (PresentParameters.Windowed && IsWindowed)
 			{
-				EnableFullScreen(handle);
+				enable_fullscreen_mode(handle);
 
 				const auto& rect = screenBounds[screenNum == 0 ? 0 : screenNum - 1];
 
 				PresentParameters.Windowed         = false;
 				PresentParameters.BackBufferWidth  = rect.right - rect.left;
 				PresentParameters.BackBufferHeight = rect.bottom - rect.top;
-				Direct3D_DeviceLost();
+				direct3d::reset_device();
 			}
 			else
 			{
 				PresentParameters.Windowed         = true;
 				PresentParameters.BackBufferWidth  = last_width;
 				PresentParameters.BackBufferHeight = last_height;
-				Direct3D_DeviceLost();
+				direct3d::reset_device();
 
-				EnableWindowedMode(handle);
+				enable_windowed_mode(handle);
 			}
 
 			return 0;
@@ -1003,14 +747,14 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 		const auto& innerSize = innerSizes[windowMode];
 
-		hWnd = CreateWindowExA(0,
+		WindowHandle = CreateWindowExA(0,
 			lpszClassName,
 			lpszClassName,
 			WS_CHILD | WS_VISIBLE,
 			innerSize.x, innerSize.y, innerSize.width, innerSize.height,
 			accelWindow, nullptr, hInstance, nullptr);
 
-		SetFocus(hWnd);
+		SetFocus(WindowHandle);
 		ShowWindow(accelWindow, nCmdShow);
 		UpdateWindow(accelWindow);
 		SetForegroundWindow(accelWindow);
@@ -1034,7 +778,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		int h = windowRect.bottom - windowRect.top;
 		int x = wsX + ((wsW - w) / 2);
 		int y = wsY + ((wsH - h) / 2);
-		hWnd = CreateWindowExA(dwExStyle,
+		WindowHandle = CreateWindowExA(dwExStyle,
 			lpszClassName,
 			lpszClassName,
 			dwStyle,
@@ -1043,14 +787,14 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 
 		if (!IsWindowed)
 		{
-			EnableFullScreen(hWnd);
+			enable_fullscreen_mode(WindowHandle);
 		}
 
-		ShowWindow(hWnd, nCmdShow);
-		UpdateWindow(hWnd);
-		SetForegroundWindow(hWnd);
+		ShowWindow(WindowHandle, nCmdShow);
+		UpdateWindow(WindowHandle);
+		SetForegroundWindow(WindowHandle);
 
-		accelWindow = hWnd;
+		accelWindow = WindowHandle;
 	}
 
 	// Hook the window message handler.
@@ -1470,8 +1214,7 @@ void __declspec(naked) PolyBuff_Init_FixVBuffParams()
 static void __cdecl InitMods()
 {
 	// Hook present function to handle device lost/reset states
-	WriteJump(Direct3D_Present, Direct3D_Present_r);
-	WriteJump((void*)0x00794000, CreateDirect3DDevice_r);
+	direct3d::init();
 
 	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
 	if (!f_ini)
@@ -1654,7 +1397,7 @@ static void __cdecl InitMods()
 		WriteData((uint8_t*)0x0078B7EC, (uint8_t)0x02);
 	}
 
-	vsync = settings->getBool("EnableVsync", true);
+	direct3d::set_vsync(settings->getBool("EnableVsync", true));
 
 	if (settings->getBool("ScaleHud", false))
 	{

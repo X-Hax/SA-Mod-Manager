@@ -15,7 +15,7 @@
 // Local
 #include "FileReplacement.h"
 #include "FileSystem.h"
-#include "D3DCommon.h"
+#include "direct3d.h"
 #include "DDS.h"
 #include "AutoMipmap.h"
 

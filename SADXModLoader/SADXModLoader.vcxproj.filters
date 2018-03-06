@@ -60,6 +60,9 @@
     <ClCompile Include="EXEData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="direct3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -101,9 +104,6 @@
     <ClInclude Include="DDS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D3DCommon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FileSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -138,6 +138,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EXEData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="direct3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

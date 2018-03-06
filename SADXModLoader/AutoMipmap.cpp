@@ -5,7 +5,7 @@
 #include "Trampoline.h"
 
 #include "AutoMipmap.h"
-#include "D3DCommon.h"
+#include "direct3d.h"
 
 using namespace std;
 

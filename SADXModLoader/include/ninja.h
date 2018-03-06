@@ -1114,7 +1114,7 @@ typedef struct {
 	NJS_VECTOR      *normals;   /* mesh normal list             */
 	NJS_COLOR       *vertcolor; /* polygon vertex color list    */
 	NJS_TEX         *vertuv;    /* polygon vertex uv list       */
-	// A pointer to MeshSetBuffer. See definition in D3DCommon.h.
+	// A pointer to MeshSetBuffer. See definition in direct3d.h.
 	void            *buffer;
 } NJS_MESHSET_SADX;
 typedef struct {
