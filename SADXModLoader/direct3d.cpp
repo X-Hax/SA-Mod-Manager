@@ -95,13 +95,13 @@ static HRESULT reset_parameters()
 	// Grab the current FOV before making any changes.
 	auto fov = fov::get_fov();
 
-	const size_t length = LengthOfArray(D3DRENDERSTATE_TYPES);
+	const size_t renderstates_length = LengthOfArray(D3DRENDERSTATE_TYPES);
 
-	std::vector<DWORD> renderstate_values(length);
-	std::vector<DWORD> renderstate_results(length);
+	std::vector<DWORD> renderstate_values(renderstates_length);
+	std::vector<DWORD> renderstate_results(renderstates_length);
 
 	// Store all the current render states we can grab.
-	for (size_t i = 0; i < length; i++)
+	for (size_t i = 0; i < renderstates_length; i++)
 	{
 		renderstate_results[i] = Direct3D_Device->GetRenderState(D3DRENDERSTATE_TYPES[i], &renderstate_values[i]);
 	}
@@ -114,7 +114,7 @@ static HRESULT reset_parameters()
 	}
 
 	// Restore all the render states we stored.
-	for (size_t i = 0; i < length; i++)
+	for (size_t i = 0; i < renderstates_length; i++)
 	{
 		if (SUCCEEDED(renderstate_results[i]))
 		{
@@ -155,6 +155,10 @@ static HRESULT reset_parameters()
 
 	// Restores previously set FOV in case the game doesn't on its own.
 	njSetPerspective(fov);
+
+	// TODO: fix view matrix not being updated while game is paused
+	TransformAndViewportInvalid = 1;
+	Direct3D_SetViewportAndTransform();
 
 	RaiseEvents(modRenderDeviceReset);
 
