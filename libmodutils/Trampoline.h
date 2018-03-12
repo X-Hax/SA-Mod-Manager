@@ -1,6 +1,6 @@
 #pragma once
 
-#include <wtypes.h>
+#include <WTypes.h>
 
 // TODO: Better documentation
 // TODO: Clearer member names
