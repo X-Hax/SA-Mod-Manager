@@ -264,3 +264,7 @@ Patch "Disable Saving"
 writenop 00422161 5
 writenop 00422175 5
 writenop 004221B0 5
+
+Patch "Reduce Light Speed Dash Charge Time"
+write16 00495086 68
+write16 00495097 120
