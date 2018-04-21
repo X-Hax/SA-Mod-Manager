@@ -1066,6 +1066,15 @@ void _ReplaceFile(const char *src, const char *dst)
 	sadx_fileMap.addReplaceFile(src, dst);
 }
 
+string windowtitle;
+void SetWindowTitle(const char *title)
+{
+	if (WindowHandle)
+		SetWindowTextA(WindowHandle, title);
+	else
+		windowtitle = title;
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
@@ -1086,7 +1095,8 @@ static const HelperFunctions helperFunctions =
 	&GetMainSavePath,
 	&GetChaoSavePath,
 	&GetReplaceablePath,
-	&_ReplaceFile
+	&_ReplaceFile,
+	&SetWindowTitle
 };
 
 static const char *const dlldatakeys[] = {
@@ -1416,7 +1426,7 @@ static void __cdecl InitMods()
 	vector<std::pair<ModInitFunc, string>> initfuncs;
 	vector<std::pair<string, string>> errors;
 
-	string _mainsavepath, _chaosavepath, windowtitle;
+	string _mainsavepath, _chaosavepath;
 
 	// It's mod loading time!
 	PrintDebug("Loading mods...\n");
