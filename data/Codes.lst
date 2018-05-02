@@ -268,3 +268,6 @@ writenop 004221B0 5
 Patch "Reduce Light Speed Dash Charge Time"
 write16 00495086 68
 write16 00495097 120
+
+Patch "Chao Stat Multiplier"
+muls16 008895C8 5 x402
