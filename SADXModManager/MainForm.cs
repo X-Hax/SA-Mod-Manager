@@ -23,7 +23,33 @@ namespace SADXModManager
 	{
 		public MainForm()
 		{
+			this.Font = SystemFonts.MessageBoxFont;
 			InitializeComponent();
+
+			// WORKAROUND: Windows 7's system fonts don't have
+			// U+2912 or U+2913. Use Cambria instead.
+			// TODO: Check the actual font to see if it has the glyphs.
+			Font boldFont = null;
+			OperatingSystem os = Environment.OSVersion;
+			if ((os.Platform == PlatformID.Win32NT || os.Platform == PlatformID.Win32Windows) &&
+				(os.Version.Major < 6 || (os.Version.Major == 6 && os.Version.Minor < 2)))
+			{
+				// Windows 7 or earlier.
+				// TODO: Make sure this font exists.
+				// NOTE: U+2912 and U+2913 are missing in Bold, so use Regular.
+				boldFont = new Font("Cambria", this.Font.Size * 1.25f, FontStyle.Regular);
+			}
+			else
+			{
+				// Newer than Windows 7, or not Windows.
+				// Use the default font.
+				boldFont = new Font(this.Font.FontFamily, this.Font.Size * 1.25f, FontStyle.Bold);
+			}
+
+			modTopButton.Font = boldFont;
+			modUpButton.Font = boldFont;
+			modDownButton.Font = boldFont;
+			modBottomButton.Font = boldFont;
 		}
 
 		private bool checkedForUpdates;
