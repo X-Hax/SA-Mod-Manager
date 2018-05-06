@@ -23,6 +23,7 @@ namespace SADXModManager
 	{
 		public MainForm()
 		{
+			this.Font = SystemFonts.MessageBoxFont;
 			InitializeComponent();
 
 			// WORKAROUND: Windows 7's system fonts don't have
