@@ -838,9 +838,10 @@
 			// 
 			this.installURLHandlerButton.AutoSize = true;
 			this.installURLHandlerButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.installURLHandlerButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.installURLHandlerButton.Location = new System.Drawing.Point(6, 198);
 			this.installURLHandlerButton.Name = "installURLHandlerButton";
-			this.installURLHandlerButton.Size = new System.Drawing.Size(109, 23);
+			this.installURLHandlerButton.Size = new System.Drawing.Size(113, 22);
 			this.installURLHandlerButton.TabIndex = 3;
 			this.installURLHandlerButton.Text = "Install URL Handler";
 			this.installURLHandlerButton.UseVisualStyleBackColor = true;
