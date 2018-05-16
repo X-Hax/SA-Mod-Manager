@@ -131,9 +131,9 @@ static inline BOOL WriteData(void *writeaddress, const T(&data)[N])
  * @return Nonzero on success; 0 on error (check GetLastError()).
  */
 template <int count>
-static inline BOOL WriteData(void *address, const char data, SIZE_T *byteswritten)
+static inline BOOL WriteData(void *address, uint8_t data, SIZE_T *byteswritten)
 {
-	char buf[count];
+	uint8_t buf[count];
 	memset(buf, data, count);
 	int result = WriteData(address, buf, count, byteswritten);
 	return result;
@@ -146,7 +146,7 @@ static inline BOOL WriteData(void *address, const char data, SIZE_T *byteswritte
  * @return Nonzero on success; 0 on error (check GetLastError()).
  */
 template <int count>
-static inline BOOL WriteData(void *address, char data)
+static inline BOOL WriteData(void *address, uint8_t data)
 {
 	return WriteData<count>(address, data, nullptr);
 }
