@@ -1424,7 +1424,7 @@ static void __cdecl InitMods()
 	vector<std::pair<string, string>> fileswaps;
 
 	vector<std::pair<ModInitFunc, string>> initfuncs;
-	vector<std::pair<string, string>> errors;
+	vector<std::pair<wstring, wstring>> errors;
 
 	string _mainsavepath, _chaosavepath;
 
@@ -1444,7 +1444,7 @@ static void __cdecl InitMods()
 		if (!f_mod_ini)
 		{
 			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", mod_dirA.c_str());
-			errors.emplace_back(mod_dirA, "mod.ini missing");
+			errors.emplace_back(mod_dir, L"mod.ini missing");
 			continue;
 		}
 		unique_ptr<IniFile> ini_mod(new IniFile(f_mod_ini));
@@ -1526,16 +1526,25 @@ static void __cdecl InitMods()
 			if (module == nullptr)
 			{
 				DWORD error = GetLastError();
-				LPSTR buffer;
-				size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-					nullptr, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&buffer, 0, nullptr);
+				LPWSTR buffer;
+				size_t size = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+					nullptr, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&buffer, 0, nullptr);
+				bool allocated = (size != 0);
 
-				string message(buffer, size);
-				LocalFree(buffer);
+				if (!allocated)
+				{
+					static const wchar_t fmterr[] = L"Unable to format error message.";
+					buffer = const_cast<LPWSTR>(fmterr);
+					size = LengthOfArray(fmterr);
+				}
+				wstring message(buffer, size);
+				if (allocated)
+					LocalFree(buffer);
 
 				const string dll_filenameA = UTF16toMBS(dll_filename, CP_ACP);
-				PrintDebug("Failed loading mod DLL \"%s\": %s\n", dll_filenameA.c_str(), message.c_str());
-				errors.emplace_back(mod_nameA, "DLL error - " + message);
+				const string messageA = UTF16toMBS(message, CP_ACP);
+				PrintDebug("Failed loading mod DLL \"%s\": %s\n", dll_filenameA.c_str(), messageA.c_str());
+				errors.emplace_back(mod_name, L"DLL error - " + message);
 			}
 			else
 			{
@@ -1569,23 +1578,41 @@ static void __cdecl InitMods()
 					}
 					const ModInitFunc init = (const ModInitFunc)GetProcAddress(module, "Init");
 					if (init)
+					{
 						initfuncs.emplace_back(init, mod_dirA);
-					const PatchList *patches = (const PatchList *)GetProcAddress(module, "Patches");
+					}
+					const PatchList *const patches = (const PatchList *)GetProcAddress(module, "Patches");
 					if (patches)
+					{
 						for (int j = 0; j < patches->Count; j++)
+						{
 							WriteData(patches->Patches[j].address, patches->Patches[j].data, patches->Patches[j].datasize);
-					const PointerList *jumps = (const PointerList *)GetProcAddress(module, "Jumps");
+						}
+					}
+					const PointerList *const jumps = (const PointerList *)GetProcAddress(module, "Jumps");
 					if (jumps)
+					{
 						for (int j = 0; j < jumps->Count; j++)
+						{
 							WriteJump(jumps->Pointers[j].address, jumps->Pointers[j].data);
-					const PointerList *calls = (const PointerList *)GetProcAddress(module, "Calls");
+						}
+					}
+					const PointerList *const calls = (const PointerList *)GetProcAddress(module, "Calls");
 					if (calls)
+					{
 						for (int j = 0; j < calls->Count; j++)
+						{
 							WriteCall(calls->Pointers[j].address, calls->Pointers[j].data);
-					const PointerList *pointers = (const PointerList *)GetProcAddress(module, "Pointers");
+						}
+					}
+					const PointerList *const pointers = (const PointerList *)GetProcAddress(module, "Pointers");
 					if (pointers)
+					{
 						for (int j = 0; j < pointers->Count; j++)
+						{
 							WriteData((void **)pointers->Pointers[j].address, pointers->Pointers[j].data);
+						}
+					}
 
 					RegisterEvent(modFrameEvents, module, "OnFrame");
 					RegisterEvent(modInputEvents, module, "OnInput");
@@ -1602,7 +1629,7 @@ static void __cdecl InitMods()
 				{
 					const string dll_filenameA = UTF16toMBS(dll_filename, CP_ACP);
 					PrintDebug("File \"%s\" is not a valid mod file.\n", dll_filenameA.c_str());
-					errors.emplace_back(mod_nameA, "Not a valid mod file.");
+					errors.emplace_back(mod_name, L"Not a valid mod file.");
 				}
 			}
 		}
@@ -1643,13 +1670,19 @@ static void __cdecl InitMods()
 
 	if (!errors.empty())
 	{
-		std::stringstream message;
-		message << "The following mods didn't load correctly:" << std::endl;
+		std::wstringstream message;
+		message << L"The following mods didn't load correctly:" << std::endl;
 
 		for (auto& i : errors)
+		{
 			message << std::endl << i.first << ": " << i.second;
+		}
 
-		MessageBoxA(nullptr, message.str().c_str(), "Mods failed to load", MB_OK | MB_ICONERROR);
+		MessageBox(nullptr, message.str().c_str(), L"Mods failed to load", MB_OK | MB_ICONERROR);
+
+		// Clear the errors vector to free memory.
+		errors.clear();
+		errors.shrink_to_fit();
 	}
 
 	// Replace filenames. ("ReplaceFiles")
