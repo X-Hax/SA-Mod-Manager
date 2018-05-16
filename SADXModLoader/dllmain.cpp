@@ -1535,7 +1535,7 @@ static void __cdecl InitMods()
 				{
 					static const wchar_t fmterr[] = L"Unable to format error message.";
 					buffer = const_cast<LPWSTR>(fmterr);
-					size = LengthOfArray(fmterr);
+					size = LengthOfArray(fmterr)-1;
 				}
 				wstring message(buffer, size);
 				if (allocated)
