@@ -736,7 +736,7 @@ FunctionPointer(bool, IsTwinkleCircuit, (), 0x4B5040);
 FunctionPointer(void, HudShowScore, (int), 0x4B50E0);
 FunctionPointer(int, GetCurrentCharIDOrSomething, (), 0x4B5A30);
 FunctionPointer(ObjectMaster *, LoadCharBoss, (ObjectMaster *a1), 0x4B6050);
-FunctionPointer(void, DisplayHintText, (const char **strings, int duration), 0x4B79C0);
+FunctionPointer(void, DisplayHintText, (const char *const *strings, int duration), 0x4B79C0);
 FunctionPointer(signed int, GetHintText, (int id, int *data), 0x4B7C10);
 FunctionPointer(signed int, ProcessAnimatedModelNode_Instanced, (NJS_MATRIX_PTR a1, NJS_ACTION *a2, float n, Uint32 instance, NJS_MATRIX_PTR a5), 0x4B81F0);
 FunctionPointer(Sint32, SetInstancedMatrix, (Uint32 index, NJS_MATRIX_PTR matrix), 0x4B82D0);
