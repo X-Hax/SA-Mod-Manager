@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using ModManagerCommon;
 using ModManagerCommon.Forms;
 using System;
 using System.Collections.Generic;
