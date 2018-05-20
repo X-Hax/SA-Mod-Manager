@@ -1571,6 +1571,15 @@ struct TitleCardTextureList
 	TitleCardTexture *List;
 };
 
+struct CharBossData
+{
+	int BossID;
+	ObjectMaster *Player1;
+	ObjectMaster *BossCharacter;
+	int anonymous_3;
+	void(__cdecl *DeleteFunc)();
+};
+
 #pragma pack(pop)
 
 #ifdef _MSC_VER
