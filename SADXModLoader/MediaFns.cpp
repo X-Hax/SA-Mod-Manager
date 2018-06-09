@@ -413,6 +413,8 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 	return result;
 }
 
+SoundList *SoundLists_Cust = SoundLists;
+int SoundLists_Cust_Length = SoundLists_Length;
 void __cdecl LoadSoundList_r(signed int soundlist)
 {
 	signed int v1; // esi@4
@@ -420,16 +422,16 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 	char sndpackpath[MAX_PATH];
 	char String1[MAX_PATH]; // [sp+8h] [bp-108h]@7
 
-	if (soundlist < 123)
+	if (soundlist < SoundLists_Cust_Length)
 	{
 		if (sub_40FF10())
 		{
 			if (dword_38F6EC0)
 			{
 				v1 = 0;
-				if (SoundLists[soundlist].Count)
+				if (SoundLists_Cust[soundlist].Count)
 				{
-					v2 = SoundLists[soundlist].List;
+					v2 = SoundLists_Cust[soundlist].List;
 					do
 					{
 						if (dword_3B291C8[v2->Bank])
@@ -474,7 +476,7 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 						}
 						++v1;
 						++v2;
-					} while (v1 < SoundLists[soundlist].Count);
+					} while (v1 < SoundLists_Cust[soundlist].Count);
 				}
 			}
 		}

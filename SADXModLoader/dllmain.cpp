@@ -1075,6 +1075,20 @@ void SetWindowTitle(const char *title)
 		windowtitle = title;
 }
 
+static vector<SoundList> _SoundLists;
+int RegisterSoundList(const SoundList &list)
+{
+	if (_SoundLists.empty())
+	{
+		_SoundLists.resize(SoundLists_Length);
+		memcpy(_SoundLists.data(), SoundLists, sizeof(SoundList) * SoundLists_Length);
+	}
+	_SoundLists.push_back(list);
+	SoundLists_Cust = _SoundLists.data();
+	SoundLists_Cust_Length = _SoundLists.size();
+	return _SoundLists.size() - 1;
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
@@ -1096,7 +1110,8 @@ static const HelperFunctions helperFunctions =
 	&GetChaoSavePath,
 	&GetReplaceablePath,
 	&_ReplaceFile,
-	&SetWindowTitle
+	&SetWindowTitle,
+	&RegisterSoundList
 };
 
 static const char *const dlldatakeys[] = {

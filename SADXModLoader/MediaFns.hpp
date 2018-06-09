@@ -140,6 +140,9 @@ void WMPRelease_r();
 int PlayVideoFile_r(void);
 int __cdecl PlayVoiceFile_r(LPCSTR filename);
 
+extern SoundList *SoundLists_Cust;
+extern int SoundLists_Cust_Length;
+
 void LoadSoundList_r(int soundlist);
 
 #ifdef __cplusplus
