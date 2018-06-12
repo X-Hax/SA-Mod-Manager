@@ -60,6 +60,9 @@
     <ClCompile Include="direct3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="prs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -135,6 +138,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="direct3d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="prs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
