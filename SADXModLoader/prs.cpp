@@ -109,7 +109,6 @@ void prs_shortcopy(PRS_COMPRESSOR* pc,int offset,uint8_t size)
 
 void prs_longcopy(PRS_COMPRESSOR* pc,int offset,uint8_t size)
 {
-    uint8_t byte1,byte2;
     if (size <= 9)
     {
         //offset = ((offset << 3) & 0xFFF8) | ((size - 2) & 7);
@@ -158,30 +157,30 @@ void prs_copy(PRS_COMPRESSOR* pc,int offset,uint8_t size)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-uint32_t prs_compress(void* source,void* dest,uint32_t size)
+uint32_t prs_compress(void* source, void* dest, uint32_t size)
 {
-    PRS_COMPRESSOR pc;
-    int x,y,z;
+    PRS_COMPRESSOR pc {};
     uint32_t xsize;
-    int lsoffset,lssize;
+    int lssize;
     prs_init(&pc,source,dest);
     printf("\n> compressing %08X bytes\n",size);
-    for (x = 0; x < size; x++)
+    for (int x = 0; x < size; x++)
     {
-        lsoffset = lssize = xsize = 0;
-        for (y = x - 3; (y > 0) && (y > (x - 0x1FF0)) && (xsize < 255); y--)
+        int lsoffset = lssize = xsize = 0;
+        for (int y = x - 3; (y > 0) && (y > (x - 0x1FF0)) && (xsize < 255); y--)
         {
             xsize = 3;
             if (!memcmp((void*)((DWORD)source + y),(void*)((DWORD)source + x),xsize))
             {
-                do xsize++;
-                while (!memcmp((void*)((DWORD)source + y),
-                               (void*)((DWORD)source + x),
-                               xsize) &&
-                       (xsize < 256) &&
-                       ((y + xsize) < x) &&
-                       ((x + xsize) <= size)
-                );
+                do
+                {
+                    xsize++;
+                } while (!memcmp((void*)((DWORD)source + y),
+                                 (void*)((DWORD)source + x),
+                                 xsize) &&
+                         (xsize < 256) &&
+                         ((y + xsize) < x) &&
+                         ((x + xsize) <= size));
                 xsize--;
                 if (xsize > lssize)
                 {
@@ -209,19 +208,17 @@ uint32_t prs_compress(void* source,void* dest,uint32_t size)
 
 uint32_t prs_decompress(void* source,void* dest) // 800F7CB0 through 800F7DE4 in mem 
 {
-    uint32_t r0,r3,r5,r6,r9; // 6 unnamed registers 
+    uint32_t r3, r5; // 6 unnamed registers 
     uint32_t bitpos = 9; // 4 named registers 
-    uint8_t* sourceptr = (uint8_t*)source;
-    uint8_t* sourceptr_orig = (uint8_t*)source;
-    uint8_t* destptr = (uint8_t*)dest;
-    uint8_t* destptr_orig = (uint8_t*)dest;
-    uint8_t currentbyte;
-    bool flag;
+    auto sourceptr = (uint8_t*)source;
+    auto sourceptr_orig = (uint8_t*)source;
+    auto destptr = (uint8_t*)dest;
+    auto destptr_orig = (uint8_t*)dest;
     int offset;
-    uint32_t x,t; // 2 placed variables 
+    uint32_t x; // 2 placed variables 
 
     printf("\n> decompressing\n");
-    currentbyte = sourceptr[0];
+    uint8_t currentbyte = sourceptr[0];
     sourceptr++;
     for (;;)
     {
@@ -232,7 +229,7 @@ uint32_t prs_decompress(void* source,void* dest) // 800F7CB0 through 800F7DE4 in
             bitpos = 8;
             sourceptr++;
         }
-        flag = currentbyte & 1;
+        uint8_t flag = currentbyte & 1;
         currentbyte = currentbyte >> 1;
         if (flag)
         {
@@ -293,7 +290,7 @@ uint32_t prs_decompress(void* source,void* dest) // 800F7CB0 through 800F7DE4 in
             printf("> > > %08X->%08X sdat %08X %08X\n",sourceptr - sourceptr_orig,destptr - destptr_orig,r5 - (uint32_t)destptr,r3);
         }
         if (r3 == 0) continue;
-        t = r3;
+        uint32_t t = r3;
         for (x = 0; x < t; x++)
         {
             destptr[0] = *(uint8_t*)r5;
@@ -306,18 +303,17 @@ uint32_t prs_decompress(void* source,void* dest) // 800F7CB0 through 800F7DE4 in
 
 uint32_t prs_decompress_size(void* source)
 {
-    uint32_t r0,r3,r5,r6,r9; // 6 unnamed registers 
+    uint32_t r3,r5; // 6 unnamed registers 
     uint32_t bitpos = 9; // 4 named registers 
-    uint8_t* sourceptr = (uint8_t*)source;
+    auto sourceptr = (uint8_t*)source;
     uint8_t* destptr = NULL;
     uint8_t* destptr_orig = NULL;
-    uint8_t currentbyte,lastbyte;
-    bool flag;
+    //uint8_t lastbyte;
     int offset;
-    uint32_t x,t; // 2 placed variables 
+    uint32_t x; // 2 placed variables 
 
     //printf("> %08X -> %08X: begin\n",sourceptr,destptr);
-    currentbyte = sourceptr[0];
+    uint8_t currentbyte = sourceptr[0];
     //printf("> [ ] %08X -> %02X: command stream\n",sourceptr,currentbyte);
     sourceptr++;
     for (;;)
@@ -325,12 +321,12 @@ uint32_t prs_decompress_size(void* source)
         bitpos--;
         if (bitpos == 0)
         {
-            lastbyte = currentbyte = sourceptr[0];
+            //lastbyte = currentbyte = sourceptr[0];
             bitpos = 8;
             //printf("> [ ] %08X -> %02X: command stream\n",sourceptr,currentbyte);
             sourceptr++;
         }
-        flag = currentbyte & 1;
+        uint8_t flag = currentbyte & 1;
         currentbyte = currentbyte >> 1;
         if (flag)
         {
@@ -343,7 +339,7 @@ uint32_t prs_decompress_size(void* source)
         bitpos--;
         if (bitpos == 0)
         {
-            lastbyte = currentbyte = sourceptr[0];
+            //lastbyte = currentbyte = sourceptr[0];
             bitpos = 8;
             //printf("> [ ] %08X -> %02X: command stream\n",sourceptr,currentbyte);
             sourceptr++;
@@ -373,7 +369,7 @@ uint32_t prs_decompress_size(void* source)
                 bitpos--;
                 if (bitpos == 0)
                 {
-                    lastbyte = currentbyte = sourceptr[0];
+                    //lastbyte = currentbyte = sourceptr[0];
                     bitpos = 8;
                     //printf("> [ ] %08X -> %02X: command stream\n",sourceptr,currentbyte);
                     sourceptr++;
@@ -390,7 +386,7 @@ uint32_t prs_decompress_size(void* source)
             //printf("> > [0] %08X -> %08X: block copy (%d)\n",r5,destptr,r3);
         }
         if (r3 == 0) continue;
-        t = r3;
+        uint32_t t = r3;
         //printf("> > [ ] copying %d bytes\n",t);
         for (x = 0; x < t; x++)
         {

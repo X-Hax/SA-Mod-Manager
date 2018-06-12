@@ -16,7 +16,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct {
+struct PRS_COMPRESSOR
+{
 	uint8_t bitpos;
 	//uint8_t controlbyte;
 	uint8_t* controlbyteptr;
@@ -24,7 +25,7 @@ typedef struct {
 	uint8_t* dstptr_orig;
 	uint8_t* srcptr;
 	uint8_t* dstptr;
-} PRS_COMPRESSOR;
+};
 
 void prs_put_control_bit(PRS_COMPRESSOR* pc, uint8_t bit);
 
@@ -59,4 +60,3 @@ uint32_t prs_compress(void* source, void* dest, uint32_t size);
 uint32_t prs_decompress(void* source, void* dest); // 800F7CB0 through 800F7DE4 in mem 
 
 uint32_t prs_decompress_size(void* source);
-
