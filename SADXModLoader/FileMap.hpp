@@ -91,10 +91,10 @@ class FileMap
 		 * Filenames must already be normalized!
 		 * (Internal function; handles memory allocation)
 		 * @param origFile Original file.
-		 * @param modFile Mod filename.
+		 * @param destFile Mod filename.
 		 * @param modIdx Index of the current mod.
 		 */
-		void setReplaceFile(const std::string &origFile, const std::string &modFile, int modIdx);
+		void setReplaceFile(const std::string& origFile, const std::string& destFile, int modIdx);
 
 	public:
 		/**
