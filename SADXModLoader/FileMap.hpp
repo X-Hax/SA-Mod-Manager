@@ -15,12 +15,10 @@ class FileMap
 		FileMap();
 		~FileMap();
 
-	private:
 		// Disable the copy and assign constructors.
-		FileMap(const FileMap &);
-		FileMap &operator=(const FileMap &);
+		FileMap(const FileMap&) = delete;
+		FileMap& operator=(const FileMap&) = delete;
 
-	public:
 		/**
 		 * Normalize a filename for the file replacement map.
 		 * @param filename Filename.
