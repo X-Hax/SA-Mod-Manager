@@ -114,7 +114,7 @@ class FileMap
 		/**
 		 * Clear the file replacement map.
 		 */
-		void clear(void);
+		void clear();
 
 	protected:
 

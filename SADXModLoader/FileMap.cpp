@@ -405,7 +405,7 @@ int FileMap::getModIndex(const char *lpFileName) const
 /**
  * Clear the file replacement map.
  */
-void FileMap::clear(void)
+void FileMap::clear()
 {
 	m_fileMap.clear();
 }
