@@ -174,25 +174,38 @@ void FileMap::scanFolder_int(const string& srcPath, int srcLen, int modIdx)
 			// Recursively scan this directory.
 			const string newSrcPath = srcPath + '\\' + string(data.cFileName);
 			scanFolder_int(newSrcPath, srcLen, modIdx);
+			continue;
 		}
-		else
+
+		// Create the mod filename and original filename.
+		string modFile = srcPath + '\\' + string(data.cFileName);
+		transform(modFile.begin(), modFile.end(), modFile.begin(), ::tolower);
+
+		// Original filename.
+		string origFile = "system\\" + modFile.substr(srcLen);
+
+		if (!origFile.compare(0, 25, "system\\sounddata\\bgm\\wma\\") ||
+		    !origFile.compare(0, 30, "system\\sounddata\\voice_us\\wma\\") ||
+		    !origFile.compare(0, 30, "system\\sounddata\\voice_jp\\wma\\"))
 		{
-			// Create the mod filename and original filename.
-			string modFile = srcPath + '\\' + string(data.cFileName);
-			transform(modFile.begin(), modFile.end(), modFile.begin(), ::tolower);
-
-			// Original filename.
-			string origFile = "system\\" + modFile.substr(srcLen);
-
-			if (!origFile.compare(0, 25, "system\\sounddata\\bgm\\wma\\") ||
-			    !origFile.compare(0, 30, "system\\sounddata\\voice_us\\wma\\") ||
-			    !origFile.compare(0, 30, "system\\sounddata\\voice_jp\\wma\\"))
-			{
-				// Original filename should have a ".wma" extension.
-				ReplaceFileExtension(origFile, ".wma");
-			}
-			setReplaceFile(origFile, modFile, modIdx);
+			// Original filename should have a ".wma" extension.
+			ReplaceFileExtension(origFile, ".wma");
 		}
+		else if (GetExtension(modFile) == "prs")
+		{
+			string realFile = modFile;
+			StripExtension(realFile);
+
+			auto ext = GetExtension(realFile);
+
+			// Right now, PRS support is limited to PVM and PVR files.
+			if (!ext.empty() && (ext == "pvm" || ext == "pvr"))
+			{
+				StripExtension(origFile);
+			}
+		}
+
+		setReplaceFile(origFile, modFile, modIdx);
 	} while (FindNextFileA(hFind, &data) != 0);
 
 	FindClose(hFind);

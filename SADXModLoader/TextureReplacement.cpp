@@ -51,6 +51,7 @@ static Sint32 njLoadTexture_r(NJS_TEXLIST* texlist);
 static int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist);
 static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist);
 static Sint32 __cdecl LoadPvmMEM2_r(const char* filename, NJS_TEXLIST* texlist);
+static Sint32 __cdecl njLoadTexturePvmFile_r(const char *filename, NJS_TEXLIST *texList);
 
 void texpack::init()
 {
@@ -60,6 +61,7 @@ void texpack::init()
 	WriteJump(static_cast<void*>(LoadPVM), LoadPVM_r);
 	WriteJump(static_cast<void*>(LoadPVM), LoadPVM_r);
 	WriteJump(static_cast<void*>(LoadPvmMEM2), LoadPvmMEM2_r);
+	WriteJump(static_cast<void*>(njLoadTexturePvmFile), njLoadTexturePvmFile_r);
 }
 
 inline void check_loading()
@@ -74,6 +76,43 @@ inline void check_loading()
 #endif
 
 	was_loading = loading;
+}
+
+static std::vector<uint8_t> get_prs_data(const string& path)
+{
+	std::ifstream file(path, std::ios::ate | std::ios::binary);
+
+	if (!file.is_open())
+	{
+		return {};
+	}
+
+	const auto file_size = static_cast<size_t>(file.tellg());
+	file.seekg(0);
+
+	std::vector<uint8_t> in_buf(file_size);
+
+	file.read(reinterpret_cast<char*>(in_buf.data()), file_size);
+	file.close();
+
+	const size_t decompress_size = prs_decompress_size(in_buf.data());
+
+	if (!decompress_size)
+	{
+		return {};
+	}
+
+	std::vector<uint8_t> out_buf(decompress_size);
+	out_buf.shrink_to_fit();
+
+	size_t bytes_decompressed = prs_decompress(in_buf.data(), out_buf.data());
+
+	if (bytes_decompressed != decompress_size)
+	{
+		return {};
+	}
+
+	return out_buf;
 }
 
 #pragma region Index Parsing
@@ -593,6 +632,24 @@ static bool replace_pvmx(const string& path, ifstream& file, NJS_TEXLIST* texlis
 	return true;
 }
 
+static std::string get_replaced_path(const string& filename, const char* extension)
+{
+	// Since the filename can be passed in with or without an extension, first
+	// we try getting a replacement with the filename as-is (with SYSTEM\ prepended).
+	const string system_path = "SYSTEM\\" + filename;
+	std::string replaced = sadx_fileMap.replaceFile(system_path.c_str());
+
+	// But if that failed, we can assume that it was given without an extension
+	// (which is the intended use) and append one before trying again.
+	if (!Exists(replaced))
+	{
+		const string system_path_ext = system_path + extension;
+		replaced = sadx_fileMap.replaceFile(system_path_ext.c_str());
+	}
+
+	return replaced;
+}
+
 static bool try_texture_pack(const char* filename, NJS_TEXLIST* texlist)
 {
 	string filename_str(filename);
@@ -602,18 +659,7 @@ static bool try_texture_pack(const char* filename, NJS_TEXLIST* texlist)
 	check_cache();
 	LoadingFile = true;
 
-	// Since the filename can be passed in with or without an extension, first
-	// we try getting a replacement with the filename as-is (with SYSTEM\ prepended).
-	const string system_path = "SYSTEM\\" + filename_str;
-	string replaced = sadx_fileMap.replaceFile(system_path.c_str());
-
-	// But if that failed, we can assume that it was given without an extension
-	// (which is the intended use) and append one before trying again.
-	if (!Exists(replaced))
-	{
-		const string system_path_ext = system_path + ".PVM";
-		replaced = sadx_fileMap.replaceFile(system_path_ext.c_str());
-	}
+	const string replaced = get_replaced_path(filename_str, ".PVM");
 
 	// If we can ensure this path exists, we can determine how to load it.
 	if (!Exists(replaced))
@@ -716,6 +762,44 @@ static Sint32 LoadPvmMEM2_r(const char* filename, NJS_TEXLIST* texlist)
 
 	LoadingFile = last;
 	return njLoadTexturePvmFile(filename, texlist);
+}
+
+static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
+{
+	if (filename == nullptr || texList == nullptr)
+	{
+		return -1;
+	}
+
+	const std::string replaced = get_replaced_path(filename, ".PVM");
+	const std::string reaplced_extension = GetExtension(replaced);
+
+	if (!_stricmp(reaplced_extension.c_str(), "prs"))
+	{
+		//PrintDebug("Loading PRS'd PVM: %s\n", filename);
+
+		auto out_buf = get_prs_data(replaced);
+
+		if (out_buf.empty())
+		{
+			return -1;
+		}
+
+		return njLoadTexturePvmMemory(out_buf.data(), texList);
+	}
+
+	std::string name = filename;
+	const std::string extension = GetExtension(name);
+
+	if (extension.empty())
+	{
+		name += ".PVM";
+	}
+
+	Uint8* data = LoadPVx(name.c_str());
+	Sint32 result = njLoadTexturePvmMemory(data, texList);
+	j__HeapFree_0(data);
+	return result;
 }
 
 #pragma endregion
@@ -853,10 +937,28 @@ static Sint32 __cdecl njLoadTexture_r(NJS_TEXLIST* texlist)
 				continue;
 			}
 
-			filename += ".pvr";
-			void* data = LoadPVx(filename.c_str());
-			memlist = LoadPVR(data, gbix);
-			j__HeapFree_0(data);
+			const string replaced = get_replaced_path(filename, ".PVR");
+
+			if (!_stricmp(GetExtension(replaced).c_str(), "prs"))
+			{
+				//PrintDebug("Loading PRS'd PVR: %s\n", filename.c_str());
+
+				auto out_buf = get_prs_data(replaced);
+
+				if (out_buf.empty())
+				{
+					return -1;
+				}
+
+				memlist = LoadPVR(out_buf.data(), gbix);
+			}
+			else
+			{
+				filename += ".pvr";
+				void* data = LoadPVx(filename.c_str());
+				memlist = LoadPVR(data, gbix);
+				j__HeapFree_0(data);
+			}
 
 			if (_guard.is_blacklisted() && memlist != nullptr)
 			{
