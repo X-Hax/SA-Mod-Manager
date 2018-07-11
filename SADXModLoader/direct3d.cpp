@@ -299,11 +299,11 @@ void direct3d::change_resolution(uint32_t width, uint32_t height, bool windowed)
 		return;
 	}
 
+#ifdef _DEBUG
 	const auto old_width    = PresentParameters.BackBufferWidth;
 	const auto old_height   = PresentParameters.BackBufferHeight;
 	const bool was_windowed = PresentParameters.Windowed;
 
-#ifdef _DEBUG
 	PrintDebug("Changing resolution from %ux%u (%s) to %ux%u (%s)\n",
 			   old_width, old_height, was_windowed ? "windowed" : "fullscreen",
 			   width, height, windowed ? "windowed" : "fullscreen");
@@ -319,4 +319,249 @@ void direct3d::change_resolution(uint32_t width, uint32_t height, bool windowed)
 bool direct3d::is_windowed()
 {
 	return !!PresentParameters.Windowed;
+}
+
+static IDirect3DVertexBuffer8* particle_quad = nullptr;
+
+struct ParticleData
+{
+	NJS_COLOR diffuse = { 0xFFFFFFFF };
+	float u1 = 0.0f;
+	float v1 = 0.0f;
+	float u2 = 1.0f;
+	float v2 = 1.0f;
+
+	bool operator==(const ParticleData& other) const
+	{
+		return diffuse.color == other.diffuse.color &&
+			   u1 == other.u1 &&
+			   v1 == other.v1 &&
+			   u2 == other.u2 &&
+			   v2 == other.v2;
+	}
+
+	bool operator!=(const ParticleData& other) const
+	{
+		return !(*this == other);
+	}
+};
+
+ParticleData last_particle;
+
+#pragma pack(push, 1)
+struct ParticleVertex  // NOLINT(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
+{
+	static const UINT format = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
+	D3DXVECTOR3 position;
+	uint32_t diffuse;
+	D3DXVECTOR2 tex_coord;
+};
+#pragma pack(pop)
+
+static void draw_particle(NJS_SPRITE* sp, int n, uint32_t attr)
+{
+	ParticleData particle;
+
+	if (attr & NJD_SPRITE_COLOR)
+	{
+		particle.diffuse.argb.b = static_cast<uint8_t>(_nj_constant_material_.b * 255.0);
+		particle.diffuse.argb.g = static_cast<uint8_t>(_nj_constant_material_.g * 255.0);
+		particle.diffuse.argb.r = static_cast<uint8_t>(_nj_constant_material_.r * 255.0);
+		particle.diffuse.argb.a = static_cast<uint8_t>(_nj_constant_material_.a * 255.0);
+	}
+
+	const auto& tanim = sp->tanim[n];
+
+	particle.u1 = tanim.u1 / 255.0f;
+	particle.v1 = tanim.v1 / 255.0f;
+
+	particle.u2 = tanim.u2 / 255.0f;
+	particle.v2 = tanim.v2 / 255.0f;
+
+	if (attr & NJD_SPRITE_HFLIP)
+	{
+		std::swap(particle.u1, particle.u2);
+	}
+
+	if ((!(attr & NJD_SPRITE_VFLIP) && (attr & NJD_SPRITE_SCALE)) || attr & NJD_SPRITE_VFLIP)
+	{
+		std::swap(particle.v1, particle.v2);
+	}
+
+	// diffuse color should probably just be done with a material since this is fixed function stuff!
+	if (particle != last_particle || particle_quad == nullptr)
+	{
+		last_particle = particle;
+
+		if (particle_quad == nullptr)
+		{
+			Direct3D_Device->CreateVertexBuffer(4 * sizeof(ParticleVertex), 0, ParticleVertex::format, D3DPOOL_MANAGED, &particle_quad);
+		}
+
+		BYTE* ppbData;
+		particle_quad->Lock(0, 4 * sizeof(ParticleVertex), &ppbData, D3DLOCK_DISCARD);
+
+		auto quad = reinterpret_cast<ParticleVertex*>(ppbData);
+
+		// top left
+		quad[0].position  = D3DXVECTOR3(-0.5f, -0.5f, 0.0f);
+		quad[0].diffuse   = particle.diffuse.color;
+		quad[0].tex_coord = D3DXVECTOR2(particle.u1, particle.v1);
+
+		// top right
+		quad[1].position  = D3DXVECTOR3(0.5f, -0.5f, 0.0f);
+		quad[1].diffuse   = particle.diffuse.color;
+		quad[1].tex_coord = D3DXVECTOR2(particle.u2, particle.v1);
+
+		// bottom left
+		quad[2].position  = D3DXVECTOR3(-0.5f, 0.5f, 0.0f);
+		quad[2].diffuse   = particle.diffuse.color;
+		quad[2].tex_coord = D3DXVECTOR2(particle.u1, particle.v2);
+
+		// bottom right
+		quad[3].position  = D3DXVECTOR3(0.5f, 0.5f, 0.0f);
+		quad[3].diffuse   = particle.diffuse.color;
+		quad[3].tex_coord = D3DXVECTOR2(particle.u2, particle.v2);
+
+		particle_quad->Unlock();
+	}
+
+	auto old_world = WorldMatrix;
+
+	if (attr & NJD_SPRITE_SCALE)
+	{
+		njAlphaMode((attr & NJD_SPRITE_ALPHA) ? 2 : 0);
+		ProjectToWorldSpace();
+
+		NJS_VECTOR p {};
+		njGetTranslation(&WorldMatrix._11, &p);
+
+		njPushMatrix(_nj_unit_matrix_);
+		{
+			const float scale_x = tanim.sx * sp->sx;
+			const float scale_y = tanim.sy * sp->sy;
+			const float offset_x = scale_x * ((static_cast<float>(tanim.cx) / static_cast<float>(tanim.sx)) - 0.5f);
+			const float offset_y = scale_y * ((static_cast<float>(tanim.cy) / static_cast<float>(tanim.sy)) - 0.5f);
+
+			// translate according to matrix stack (fixes fire glow in lost world)
+			njTranslateEx(&p);
+
+			// translate to world position
+			njTranslateEx(&sp->p);
+
+			// rotate to look at camera (billboard)
+			njRotateEx(reinterpret_cast<Angle*>(&Camera_Data1->Rotation), 1);
+
+			// rotate in screen space
+			if (attr & NJD_SPRITE_ANGLE && sp->ang)
+			{
+				njRotateZ(nullptr, -sp->ang);
+			}
+
+			// apply center-offset
+			njTranslate(nullptr, offset_x, offset_y, 0.0f);
+			// scale to size
+			njScale(nullptr, scale_x, scale_y, 1.0f);
+
+			njGetMatrix(&WorldMatrix._11);
+			Direct3D_SetWorldTransform();
+		}
+		njPopMatrix(1);
+	}
+	else
+	{
+		njTextureShadingMode(attr & NJD_SPRITE_ALPHA ? 2 : 0);
+		ProjectToWorldSpace();
+
+		njPushMatrix(&WorldMatrix._11);
+		{
+			const float scale_x = tanim.sx * sp->sx;
+			const float scale_y = tanim.sy * sp->sy;
+			const float offset_x = scale_x * ((static_cast<float>(tanim.cx) / static_cast<float>(tanim.sx)) - 0.5f);
+			const float offset_y = scale_y * ((static_cast<float>(tanim.cy) / static_cast<float>(tanim.sy)) - 0.5f);
+
+			// translate to world position (if applicable)
+			njTranslateEx(&sp->p);
+
+			// rotate in screen space
+			if (attr & NJD_SPRITE_ANGLE && sp->ang)
+			{
+				njRotateZ(nullptr, -sp->ang);
+			}
+
+			// apply center-offset
+			njTranslate(nullptr, offset_x, offset_y, 0.0f);
+			// scale to size
+			njScale(nullptr, scale_x, scale_y, 1.0f);
+
+			njGetMatrix(&WorldMatrix._11);
+			Direct3D_SetWorldTransform();
+		}
+		njPopMatrixEx();
+	}
+
+	// save original vbuffer
+	IDirect3DVertexBuffer8* stream;
+	UINT stride;
+	Direct3D_Device->GetStreamSource(0, &stream, &stride);
+
+	// store original FVF
+	DWORD FVF;
+	Direct3D_Device->GetVertexShader(&FVF);
+
+	// draw
+	Direct3D_Device->SetVertexShader(ParticleVertex::format);
+	Direct3D_Device->SetStreamSource(0, particle_quad, sizeof(ParticleVertex));
+	Direct3D_Device->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	// restore original vbuffer
+	Direct3D_Device->SetStreamSource(0, stream, stride);
+
+	// restore original FVF
+	Direct3D_Device->SetVertexShader(FVF);
+
+	if (stream)
+	{
+		stream->Release();
+	}
+
+	WorldMatrix = old_world;
+	Direct3D_SetWorldTransform();
+}
+
+void __cdecl njDrawSprite3D_DrawNow_r(NJS_SPRITE* sp, int n, NJD_SPRITE attr);
+static Trampoline njDrawSprite3D_DrawNow_t(0x0077E390, 0x0077E398, &njDrawSprite3D_DrawNow_r);
+void __cdecl njDrawSprite3D_DrawNow_r(NJS_SPRITE* sp, int n, NJD_SPRITE attr)
+{
+	if (sp)
+	{
+		const auto tlist = sp->tlist;
+		if (tlist)
+		{
+			const auto tanim = &sp->tanim[n];
+			Direct3D_SetTexList(tlist);
+			njSetTextureNum_(tanim->texid);
+
+			Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSU, 3);
+			Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSV, 3);
+			Direct3D_DiffuseSourceVertexColor();
+		}
+		else
+		{
+			return;
+		}
+	}
+	else
+	{
+		return;
+	}
+
+	if (ControllerPointers[0] && ControllerPointers[0]->HeldButtons & Buttons_Z)
+	{
+		auto original = reinterpret_cast<decltype(njDrawSprite3D_DrawNow_r)*>(njDrawSprite3D_DrawNow_t.Target());
+		original(sp, n, attr);
+		return;
+	}
+
+	draw_particle(sp, n, attr);
 }
