@@ -7,30 +7,36 @@
 #ifndef SEGA_NINJA_H
 #define SEGA_NINJA_H
 
+#ifdef __cplusplus
+#include <cstdint>
+#else
+#include <stdint.h>
+#endif
+
 // Chopped up by MainMemory for your convenience.
 #ifndef _TYPEDEF_Uint8
 #define _TYPEDEF_Uint8
-typedef unsigned char     Uint8;        /*  unsigned 1 byte integer     */
+typedef uint8_t     Uint8;        /*  unsigned 1 byte integer     */
 #endif
 #ifndef _TYPEDEF_Sint8
 #define _TYPEDEF_Sint8
-typedef signed char     Sint8;          /*  signed 1 byte integer       */
+typedef int8_t     Sint8;          /*  signed 1 byte integer       */
 #endif
 #ifndef _TYPEDEF_Uint16
 #define _TYPEDEF_Uint16
-typedef unsigned short  Uint16;         /*  unsigned 2 byte integer     */
+typedef uint16_t  Uint16;         /*  unsigned 2 byte integer     */
 #endif
 #ifndef _TYPEDEF_Sint16
 #define _TYPEDEF_Sint16
-typedef signed short    Sint16;         /*  signed 2 byte integer       */
+typedef int16_t    Sint16;         /*  signed 2 byte integer       */
 #endif
 #ifndef _TYPEDEF_Uint32
 #define _TYPEDEF_Uint32
-typedef unsigned long   Uint32;         /*  unsigned 4 byte integer     */
+typedef uint32_t   Uint32;         /*  unsigned 4 byte integer     */
 #endif
 #ifndef _TYPEDEF_Sint32
 #define _TYPEDEF_Sint32
-typedef signed long     Sint32;         /*  signed 4 byte integer       */
+typedef int32_t     Sint32;         /*  signed 4 byte integer       */
 #endif
 #ifndef _TYPEDEF_Float32
 #define _TYPEDEF_Float32
@@ -1178,6 +1184,7 @@ typedef struct obj {
 	struct obj      *child;     /* child object                 */
 	struct obj      *sibling;   /* sibling object               */
 
+#ifdef __cplusplus
 	NJS_MODEL       *getbasicmodel() const { return (NJS_MODEL*)model; }
 	void            putbasicmodel(NJS_MODEL *value) { model = value; }
 	NJS_MODEL_SADX  *getbasicdxmodel() const { return (NJS_MODEL_SADX*)model; }
@@ -1218,6 +1225,8 @@ typedef struct obj {
 			result += sibling->countmorph();
 		return result;
 	}
+#endif // #if __cplusplus
+
 } NJS_OBJECT, NJS_CNK_OBJECT;
 
 /*
