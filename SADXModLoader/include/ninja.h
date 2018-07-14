@@ -13,7 +13,7 @@
 #include <stdint.h>
 #endif
 
-// Chopped up by MainMemory for your convenience.
+/* Chopped up by MainMemory for your convenience. */
 #ifndef _TYPEDEF_Uint8
 #define _TYPEDEF_Uint8
 typedef uint8_t     Uint8;        /*  unsigned 1 byte integer     */
@@ -930,7 +930,7 @@ typedef	struct {
 
 typedef union {
 	Uint32  color;
-	//NJS_TEX tex;
+	/*NJS_TEX tex;*/
 	NJS_BGRA argb;
 } NJS_COLOR;
 
@@ -1100,8 +1100,8 @@ typedef struct {
 
 typedef struct {
 	Uint16          type_matId; /* meshset type and attr index
-								   14-15 : meshset type bits
-									0-13 : material id(0-4095)  */
+	                               14-15 : meshset type bits
+	                                0-13 : material id(0-4095)  */
 	Uint16          nbMesh;     /* mesh count                   */
 	Sint16          *meshes;    /* mesh array                   */
 	Uint32          *attrs;     /* attribure                    */
@@ -1112,16 +1112,15 @@ typedef struct {
 
 typedef struct {
 	Uint16          type_matId; /* meshset type and attr index
-								   14-15 : meshset type bits
-									0-13 : material id(0-4095)  */
+	                               14-15 : meshset type bits
+	                                0-13 : material id(0-4095)  */
 	Uint16          nbMesh;     /* mesh count                   */
 	Sint16          *meshes;    /* mesh array                   */
 	Uint32          *attrs;     /* attribure                    */
 	NJS_VECTOR      *normals;   /* mesh normal list             */
 	NJS_COLOR       *vertcolor; /* polygon vertex color list    */
 	NJS_TEX         *vertuv;    /* polygon vertex uv list       */
-	// A pointer to MeshSetBuffer. See definition in direct3d.h.
-	void            *buffer;
+	void            *buffer;    /* A pointer to MeshSetBuffer. See definition in direct3d.h. */
 } NJS_MESHSET_SADX;
 typedef struct {
 	NJS_POINT3      *points;    /* vertex list                  */
@@ -1195,7 +1194,7 @@ typedef struct obj {
 	void            putsa2bmodel(SA2B_Model *value) { model = value; }
 
 #ifdef _MSC_VER
-	// MSVC-specific property emulation.
+	/* MSVC-specific property emulation. */
 	__declspec(property(get = getbasicmodel, put = putbasicmodel))
 	NJS_MODEL       *basicmodel;
 	__declspec(property(get = getbasicdxmodel, put = putbasicdxmodel))
@@ -1225,7 +1224,7 @@ typedef struct obj {
 			result += sibling->countmorph();
 		return result;
 	}
-#endif // #if __cplusplus
+#endif /* __cplusplus */
 
 } NJS_OBJECT, NJS_CNK_OBJECT;
 
