@@ -1580,6 +1580,22 @@ struct CharBossData
 	void(__cdecl *DeleteFunc)();
 };
 
+struct BlackMarketItemAttributes
+{
+	int PurchasePrice;
+	int SalePrice;
+	__int16 RequiredEmblems;
+	__int16 Name;
+	__int16 Description;
+	__int16 anonymous_7;
+};
+
+struct BlackMarketItemAttributesList
+{
+	BlackMarketItemAttributes *Items;
+	int Count;
+};
+
 #pragma pack(pop)
 
 #ifdef _MSC_VER
