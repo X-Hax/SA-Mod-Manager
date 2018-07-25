@@ -1122,6 +1122,7 @@ typedef struct {
 	NJS_TEX         *vertuv;    /* polygon vertex uv list       */
 	void            *buffer;    /* A pointer to MeshSetBuffer. See definition in direct3d.h. */
 } NJS_MESHSET_SADX;
+
 typedef struct {
 	NJS_POINT3      *points;    /* vertex list                  */
 	NJS_VECTOR      *normals;   /* vertex normal list           */
