@@ -258,6 +258,17 @@ static void ProcessLandTableINI(const IniGroup *group, const wstring &mod_dir)
 }
 
 static unordered_map<string, NJS_OBJECT *> inimodels;
+static void GetModelLabels(ModelInfo *mdlinf, NJS_OBJECT *obj)
+{
+	while (obj)
+	{
+		inimodels[mdlinf->getlabel(obj)] = obj;
+		if (obj->child)
+			GetModelLabels(mdlinf, obj->child);
+		obj = obj->sibling;
+	}
+}
+
 static void ProcessModelINI(const IniGroup *group, const wstring &mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
@@ -266,7 +277,7 @@ static void ProcessModelINI(const IniGroup *group, const wstring &mod_dir)
 		mod_dir.c_str(), group->getWString("filename").c_str());
 	ModelInfo *const mdlinf = new ModelInfo(filename);
 	NJS_OBJECT *model = mdlinf->getmodel();
-	inimodels[mdlinf->getlabel(model)] = model;
+	GetModelLabels(mdlinf, model);
 	ProcessPointerList(group->getString("pointer"), model);
 }
 
@@ -981,6 +992,82 @@ static void ProcessStageLightDataListINI(const IniGroup *group, const wstring &m
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
+static void ProcessWeldListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer")) return;
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const inidata = new IniFile(filename);
+	vector<WeldInfo> ents;
+	for (unsigned int i = 0; i < 999; i++)
+	{
+		char key[8];
+		snprintf(key, sizeof(key), "%u", i);
+		if (!inidata->hasGroup(key)) break;
+		const IniGroup *const entdata = inidata->getGroup(key);
+		uint16_t *vilist = nullptr;
+		WeldInfo entry;
+		entry.BaseModel = inimodels[trim(entdata->getString("BaseModel"))];
+		entry.ModelA = inimodels[trim(entdata->getString("ModelA"))];
+		entry.ModelB = inimodels[trim(entdata->getString("ModelB"))];
+		if (entdata->hasKeyNonEmpty("VertIndexes"))
+		{
+			vector<string> strs = split(entdata->getString("VertIndexes"), ',');
+			vilist = new uint16_t[strs.size()];
+			for (unsigned int j = 0; j < strs.size(); j++)
+				vilist[j] = (int16_t)strtol(strs[j].c_str(), nullptr, 10);
+			entry.VertexPairCount = strs.size() / 2;
+		}
+		else
+			entry.VertexPairCount = 0;
+		entry.WeldType = (uint8_t)entdata->getInt("WeldType");
+		entry.anonymous_5 = (int16_t)entdata->getInt("Unknown");
+		entry.VertexBuffer = nullptr;
+		entry.VertIndexes = vilist;
+		ents.push_back(entry);
+	}
+	delete inidata;
+	auto numents = ents.size();
+	WeldInfo *list = new WeldInfo[numents + 1];
+	arrcpy(list, ents.data(), numents);
+	clrmem(&list[numents]);
+	ProcessPointerList(group->getString("pointer"), list);
+}
+
+static void ProcessCreditsTextListINI(const IniGroup *group, const wstring &mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename")) return;
+	CreditsList *addr = (CreditsList *)group->getIntRadix("address", 16);
+	if (addr == nullptr) return;
+	addr = (CreditsList *)((intptr_t)addr + 0x400000);
+	wchar_t filename[MAX_PATH];
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+	const IniFile *const inidata = new IniFile(filename);
+	vector<CreditsEntry> ents;
+	for (unsigned int i = 0; i < 999; i++)
+	{
+		char key[8];
+		snprintf(key, sizeof(key), "%u", i);
+		if (!inidata->hasGroup(key)) break;
+		const IniGroup *const entdata = inidata->getGroup(key);
+		CreditsEntry entry;
+		entry.SomeIndex = entdata->getInt("Type");
+		entry.field_1 = entdata->getInt("TexID", -1);
+		entry.field_2 = entdata->getInt("Unknown1");
+		entry.field_3 = entdata->getInt("Unknown2");
+		entry.field_3 = entdata->getInt("Unknown2");
+		entry.Line = strdup(DecodeUTF8(entdata->getString("Text"), 0).c_str());
+		ents.push_back(entry);
+	}
+	delete inidata;
+	auto numents = ents.size();
+	addr->Entries = new CreditsEntry[numents];
+	addr->Count = numents;
+	arrcpy(addr->Entries, ents.data(), numents);
+}
+
 typedef void(__cdecl *exedatafunc_t)(const IniGroup *group, const wstring &mod_dir);
 static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
 	{ "landtable", ProcessLandTableINI },
@@ -1008,7 +1095,10 @@ static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
 	{ "deathzone", ProcessDeathZoneINI },
 	{ "skyboxscale", ProcessSkyboxScaleINI },
 	{ "levelpathlist", ProcessLevelPathListINI },
-	{ "stagelightdatalist", ProcessStageLightDataListINI }
+	{ "stagelightdatalist", ProcessStageLightDataListINI },
+	{ "weldlist", ProcessWeldListINI },
+	//{ "bmitemattrlist", ProcessBMItemAttrListINI },
+	{ "creditstextlist", ProcessCreditsTextListINI }
 };
 
 void ProcessEXEData(const wchar_t *filename, const wstring &mod_dir)

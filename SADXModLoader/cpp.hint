@@ -1,0 +1,24 @@
+// Data pointer and array declarations.
+#define DataPointer(type, name, address) \
+	static type &name = *(type *)address
+#define DataArray(type, name, address, length) \
+	static type *const name = (type *)address; static const int name##_Length = length
+
+// Function pointer declarations.
+#define FunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) \
+	static RETURN_TYPE (__cdecl *const NAME)ARGS = (RETURN_TYPE (__cdecl *)ARGS)ADDRESS
+#define StdcallFunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) \
+	static RETURN_TYPE (__stdcall *const NAME)ARGS = (RETURN_TYPE (__stdcall *)ARGS)ADDRESS
+#define FastcallFunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) \
+	static RETURN_TYPE (__fastcall *const NAME)ARGS = (RETURN_TYPE (__fastcall *)ARGS)ADDRESS
+#define ThiscallFunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) \
+	static RETURN_TYPE (__thiscall *const NAME)ARGS = (RETURN_TYPE (__thiscall *)ARGS)ADDRESS
+#define VoidFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(void),ADDRESS)
+
+// Non-static FunctionPointer.
+// If declaring a FunctionPointer within a function, use this one instead.
+// Otherwise, the program will crash on Windows XP.
+#define NonStaticFunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) \
+	RETURN_TYPE (__cdecl *const NAME)ARGS = (RETURN_TYPE (__cdecl *)ARGS)ADDRESS
+
+#define ObjectFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(ObjectMaster *obj),ADDRESS)

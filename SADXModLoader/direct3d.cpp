@@ -156,7 +156,11 @@ static HRESULT reset_parameters()
 	// Restores previously set FOV in case the game doesn't on its own.
 	njSetPerspective(fov);
 
-	// TODO: fix view matrix not being updated while game is paused
+	if (Camera_Data1 != nullptr)
+	{
+		Camera_Display_(Camera_Data1);
+	}
+
 	TransformAndViewportInvalid = 1;
 	Direct3D_SetViewportAndTransform();
 
@@ -190,8 +194,8 @@ void __fastcall CreateDirect3DDevice_r(void*, int behavior, D3DDEVTYPE type)
 
 	setup_vsync();
 
-	auto result = Direct3D_Object->CreateDevice(DisplayAdapter, type, PresentParameters.hDeviceWindow, behavior,
-												&PresentParameters, &Direct3D_Device);
+	auto result = Direct3D_Object->CreateDevice(DisplayAdapter, type, PresentParameters.hDeviceWindow,
+	                                            behavior, &PresentParameters, &Direct3D_Device);
 
 	if (FAILED(result))
 	{
@@ -265,8 +269,8 @@ void direct3d::reset_device()
 
 				wchar_t wbuf[256];
 				swprintf(wbuf, LengthOfArray(wbuf),
-						 L"The following error occurred while trying to reset DirectX:\n\n%s\n\n"
-						 L"Press Cancel to exit, or press Retry to try again.", error_str);
+				         L"The following error occurred while trying to reset DirectX:\n\n%s\n\n"
+				         L"Press Cancel to exit, or press Retry to try again.", error_str);
 
 				DWORD mb_result = MessageBox(WindowHandle, wbuf, L"Direct3D Reset failed", MB_RETRYCANCEL | MB_ICONERROR);
 
@@ -293,8 +297,8 @@ void direct3d::change_resolution(uint32_t width, uint32_t height)
 void direct3d::change_resolution(uint32_t width, uint32_t height, bool windowed)
 {
 	if (width == PresentParameters.BackBufferWidth
-		&& height == PresentParameters.BackBufferHeight
-		&& windowed == !!PresentParameters.Windowed)
+	    && height == PresentParameters.BackBufferHeight
+	    && windowed == !!PresentParameters.Windowed)
 	{
 		return;
 	}
@@ -305,8 +309,8 @@ void direct3d::change_resolution(uint32_t width, uint32_t height, bool windowed)
 	const bool was_windowed = PresentParameters.Windowed;
 
 	PrintDebug("Changing resolution from %ux%u (%s) to %ux%u (%s)\n",
-			   old_width, old_height, was_windowed ? "windowed" : "fullscreen",
-			   width, height, windowed ? "windowed" : "fullscreen");
+	           old_width, old_height, was_windowed ? "windowed" : "fullscreen",
+	           width, height, windowed ? "windowed" : "fullscreen");
 #endif
 
 	PresentParameters.BackBufferWidth  = width;
