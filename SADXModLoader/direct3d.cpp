@@ -338,10 +338,10 @@ struct ParticleData
 	bool operator==(const ParticleData& other) const
 	{
 		return diffuse.color == other.diffuse.color &&
-			   u1 == other.u1 &&
-			   v1 == other.v1 &&
-			   u2 == other.u2 &&
-			   v2 == other.v2;
+		       u1 == other.u1 &&
+		       v1 == other.v1 &&
+		       u2 == other.u2 &&
+		       v2 == other.v2;
 	}
 
 	bool operator!=(const ParticleData& other) const
@@ -353,12 +353,12 @@ struct ParticleData
 ParticleData last_particle;
 
 #pragma pack(push, 1)
-struct ParticleVertex  // NOLINT(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
+struct ParticleVertex
 {
 	static const UINT format = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
-	D3DXVECTOR3 position;
-	uint32_t diffuse;
-	D3DXVECTOR2 tex_coord;
+	D3DXVECTOR3 position {};
+	uint32_t diffuse = 0;
+	D3DXVECTOR2 tex_coord {};
 };
 #pragma pack(pop)
 
@@ -442,8 +442,8 @@ static void draw_particle(NJS_SPRITE* sp, int n, uint32_t attr)
 
 		njPushMatrix(_nj_unit_matrix_);
 		{
-			const float scale_x = tanim.sx * sp->sx;
-			const float scale_y = tanim.sy * sp->sy;
+			const float scale_x  = tanim.sx * sp->sx;
+			const float scale_y  = tanim.sy * sp->sy;
 			const float offset_x = scale_x * ((static_cast<float>(tanim.cx) / static_cast<float>(tanim.sx)) - 0.5f);
 			const float offset_y = scale_y * ((static_cast<float>(tanim.cy) / static_cast<float>(tanim.sy)) - 0.5f);
 
@@ -479,8 +479,8 @@ static void draw_particle(NJS_SPRITE* sp, int n, uint32_t attr)
 
 		njPushMatrix(&WorldMatrix._11);
 		{
-			const float scale_x = tanim.sx * sp->sx;
-			const float scale_y = tanim.sy * sp->sy;
+			const float scale_x  = tanim.sx * sp->sx;
+			const float scale_y  = tanim.sy * sp->sy;
 			const float offset_x = scale_x * ((static_cast<float>(tanim.cx) / static_cast<float>(tanim.sx)) - 0.5f);
 			const float offset_y = scale_y * ((static_cast<float>(tanim.cy) / static_cast<float>(tanim.sy)) - 0.5f);
 
@@ -535,25 +535,25 @@ static void draw_particle(NJS_SPRITE* sp, int n, uint32_t attr)
 
 void __cdecl njDrawSprite3D_DrawNow_r(NJS_SPRITE* sp, int n, NJD_SPRITE attr);
 static Trampoline njDrawSprite3D_DrawNow_t(0x0077E390, 0x0077E398, &njDrawSprite3D_DrawNow_r);
+
 void __cdecl njDrawSprite3D_DrawNow_r(NJS_SPRITE* sp, int n, NJD_SPRITE attr)
 {
-	if (sp)
+	if (!sp)
 	{
-		const auto tlist = sp->tlist;
-		if (tlist)
-		{
-			const auto tanim = &sp->tanim[n];
-			Direct3D_SetTexList(tlist);
-			njSetTextureNum_(tanim->texid);
+		return;
+	}
 
-			Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSU, 3);
-			Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSV, 3);
-			Direct3D_DiffuseSourceVertexColor();
-		}
-		else
-		{
-			return;
-		}
+	const auto tlist = sp->tlist;
+
+	if (tlist)
+	{
+		const auto tanim = &sp->tanim[n];
+		Direct3D_SetTexList(tlist);
+		njSetTextureNum_(tanim->texid);
+
+		Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSU, 3);
+		Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSV, 3);
+		Direct3D_DiffuseSourceVertexColor();
 	}
 	else
 	{
