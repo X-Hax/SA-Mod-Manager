@@ -432,6 +432,7 @@ static void draw_particle(NJS_SPRITE* sp, int n, uint32_t attr)
 
 	auto old_world = WorldMatrix;
 
+	// TODO: Fix NiGHTS hoops (Loop)
 	if (attr & NJD_SPRITE_SCALE)
 	{
 		njAlphaMode((attr & NJD_SPRITE_ALPHA) ? 2 : 0);
@@ -494,7 +495,7 @@ static void draw_particle(NJS_SPRITE* sp, int n, uint32_t attr)
 			}
 
 			// apply center-offset
-			njTranslate(nullptr, offset_x, offset_y, 0.0f);
+			njTranslate(nullptr, -offset_x, -offset_y, 0.0f);
 			// scale to size
 			njScale(nullptr, scale_x, scale_y, 1.0f);
 
