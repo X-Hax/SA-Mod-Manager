@@ -555,8 +555,8 @@ void __cdecl njDrawSprite3D_DrawNow_r(NJS_SPRITE* sp, int n, NJD_SPRITE attr)
 		Direct3D_SetTexList(tlist);
 		njSetTextureNum_(tanim->texid);
 
-		Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSU, 3);
-		Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSV, 3);
+		Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP);
+		Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP);
 		Direct3D_DiffuseSourceVertexColor();
 	}
 	else
