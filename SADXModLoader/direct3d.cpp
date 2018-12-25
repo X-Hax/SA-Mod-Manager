@@ -430,34 +430,36 @@ static void draw_particle(NJS_SPRITE* sp, int n, uint32_t attr)
 		particle_quad->Unlock();
 	}
 
-	auto old_world = WorldMatrix;
+	const auto old_world = WorldMatrix;
 
-	// TODO: Fix NiGHTS hoops (Loop)
 	if (attr & NJD_SPRITE_SCALE)
 	{
 		njAlphaMode((attr & NJD_SPRITE_ALPHA) ? 2 : 0);
 		ProjectToWorldSpace();
 
-		NJS_VECTOR p {};
-		njGetTranslation(&WorldMatrix._11, &p);
+		auto m = WorldMatrix;
 
-		njPushMatrix(_nj_unit_matrix_);
+		// translate to world position
+		njTranslateV(&m._11, &sp->p);
+
+		// identity-ify the rotation so it can be replaced with the camera's
+		// rotation; we don't need it anymore in billboard mode
+		*reinterpret_cast<NJS_VECTOR*>(&m._11) = { 1.0f, 0.0f, 0.0f };
+		*reinterpret_cast<NJS_VECTOR*>(&m._21) = { 0.0f, 1.0f, 0.0f };
+		*reinterpret_cast<NJS_VECTOR*>(&m._31) = { 0.0f, 0.0f, 1.0f };
+
+		njPushMatrix(&m._11);
 		{
 			const float scale_x  = tanim.sx * sp->sx;
 			const float scale_y  = tanim.sy * sp->sy;
 			const float offset_x = scale_x * ((static_cast<float>(tanim.cx) / static_cast<float>(tanim.sx)) - 0.5f);
 			const float offset_y = scale_y * ((static_cast<float>(tanim.cy) / static_cast<float>(tanim.sy)) - 0.5f);
 
-			// translate according to matrix stack (fixes fire glow in lost world)
-			njTranslateEx(&p);
+			// match camera's rotation
+			const auto& cam_rot = Camera_Data1->Rotation;
+			njRotateEx(&cam_rot.x, 1);
 
-			// translate to world position
-			njTranslateEx(&sp->p);
-
-			// rotate to look at camera (billboard)
-			njRotateEx(reinterpret_cast<Angle*>(&Camera_Data1->Rotation), 1);
-
-			// rotate in screen space
+			// rotate in screen space around the z axis
 			if (attr & NJD_SPRITE_ANGLE && sp->ang)
 			{
 				njRotateZ(nullptr, -sp->ang);
@@ -465,6 +467,7 @@ static void draw_particle(NJS_SPRITE* sp, int n, uint32_t attr)
 
 			// apply center-offset
 			njTranslate(nullptr, offset_x, offset_y, 0.0f);
+
 			// scale to size
 			njScale(nullptr, scale_x, scale_y, 1.0f);
 
