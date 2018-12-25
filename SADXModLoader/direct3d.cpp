@@ -499,6 +499,7 @@ static void draw_particle(NJS_SPRITE* sp, int n, uint32_t attr)
 
 			// apply center-offset
 			njTranslate(nullptr, -offset_x, -offset_y, 0.0f);
+
 			// scale to size
 			njScale(nullptr, scale_x, scale_y, 1.0f);
 
