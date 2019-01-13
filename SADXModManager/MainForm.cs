@@ -953,8 +953,18 @@ namespace SADXModManager
 			}
 
 			Save();
+			if (!installed)
+				switch (MessageBox.Show(this, "Looks like you're starting the game without the mod loader installed. Without the mod loader, the mods and codes you've selected won't be used, and some settings may not work.\n\nDo you want to install the mod loader now?", "SADX Mod Manager", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1))
+				{
+					case DialogResult.Cancel:
+						return;
+					case DialogResult.Yes:
+						File.Move(datadllpath, datadllorigpath);
+						File.Copy(loaderdllpath, datadllpath);
+						break;
+				}
 			Process process = Process.Start(loaderini.Mods.Select((item) => mods[item].EXEFile)
-				                                .FirstOrDefault((item) => !string.IsNullOrEmpty(item)) ?? "sonic.exe");
+												.FirstOrDefault((item) => !string.IsNullOrEmpty(item)) ?? "sonic.exe");
 			process?.WaitForInputIdle(10000);
 			Close();
 		}
