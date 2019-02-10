@@ -565,12 +565,14 @@ void __cdecl njDrawSprite3D_DrawNow_r(NJS_SPRITE* sp, int n, NJD_SPRITE attr)
 		return;
 	}
 
+#ifdef _DEBUG
 	if (ControllerPointers[0] && ControllerPointers[0]->HeldButtons & Buttons_Z)
 	{
 		auto original = reinterpret_cast<decltype(njDrawSprite3D_DrawNow_r)*>(njDrawSprite3D_DrawNow_t.Target());
 		original(sp, n, attr);
 		return;
 	}
+#endif
 
 	draw_particle(sp, n, attr);
 }
