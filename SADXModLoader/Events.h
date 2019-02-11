@@ -12,6 +12,8 @@ extern std::vector<ModEvent> modExitEvents;
 extern std::vector<TextureLoadEvent> modCustomTextureLoadEvents;
 extern std::vector<ModEvent> modRenderDeviceLost;
 extern std::vector<ModEvent> modRenderDeviceReset;
+extern std::vector<ModEvent> onRenderSceneEnd;
+extern std::vector<ModEvent> onRenderSceneStart;
 
 /**
 * Calls all registered events in the specified event list.

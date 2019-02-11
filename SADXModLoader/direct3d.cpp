@@ -203,16 +203,43 @@ void __fastcall CreateDirect3DDevice_r(void*, int behavior, D3DDEVTYPE type)
 	}
 }
 
+void __cdecl Direct3D_EndScene_r();
+Trampoline Direct3D_EndScene_t(0x0078B960, 0x0078B965, Direct3D_EndScene_r);
+void __cdecl Direct3D_EndScene_r()
+{
+	auto original = reinterpret_cast<decltype(Direct3D_EndScene_r)*>(Direct3D_EndScene_t.Target());
+	original();
+
+	for (auto& event : onRenderSceneEnd)
+	{
+		Direct3D_Device->BeginScene();
+		event();
+		Direct3D_Device->EndScene();
+	}
+}
+
 void __cdecl Direct3D_Present_r()
 {
 	if (Direct3D_Device->Present(nullptr, nullptr, nullptr, nullptr) == D3DERR_DEVICELOST)
 	{
 		direct3d::reset_device();
 	}
+
+	RaiseEvents(onRenderSceneStart);
+}
+
+void __cdecl Direct3D_BeginScene_r();
+Trampoline Direct3D_BeginScene_t(0x0078B880, 0x0078B885, Direct3D_BeginScene_r);
+void __cdecl Direct3D_BeginScene_r()
+{
+	auto original = reinterpret_cast<decltype(Direct3D_BeginScene_r)*>(Direct3D_BeginScene_t.Target());
+	original();
+	//RaiseEvents(onRenderSceneStart);
 }
 
 void direct3d::init()
 {
+	//WriteCall((void*)0x0078B9E3, Direct3D_EndScene_r);
 	WriteJump(Direct3D_Present, Direct3D_Present_r);
 	WriteJump(reinterpret_cast<void*>(0x00794000), CreateDirect3DDevice_r);
 }

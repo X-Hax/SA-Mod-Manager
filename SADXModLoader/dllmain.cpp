@@ -1635,6 +1635,8 @@ static void __cdecl InitMods()
 					RegisterEvent(modExitEvents, module, "OnExit");
 					RegisterEvent(modRenderDeviceLost, module, "OnRenderDeviceLost");
 					RegisterEvent(modRenderDeviceReset, module, "OnRenderDeviceReset");
+					RegisterEvent(onRenderSceneEnd, module, "OnRenderSceneEnd");
+					RegisterEvent(onRenderSceneStart, module, "OnRenderSceneStart");
 
 					auto customTextureLoad = reinterpret_cast<TextureLoadEvent>(GetProcAddress(module, "OnCustomTextureLoad"));
 					if (customTextureLoad != nullptr)
