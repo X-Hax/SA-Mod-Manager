@@ -234,12 +234,10 @@ void __cdecl Direct3D_BeginScene_r()
 {
 	auto original = reinterpret_cast<decltype(Direct3D_BeginScene_r)*>(Direct3D_BeginScene_t.Target());
 	original();
-	//RaiseEvents(onRenderSceneStart);
 }
 
 void direct3d::init()
 {
-	//WriteCall((void*)0x0078B9E3, Direct3D_EndScene_r);
 	WriteJump(Direct3D_Present, Direct3D_Present_r);
 	WriteJump(reinterpret_cast<void*>(0x00794000), CreateDirect3DDevice_r);
 }
