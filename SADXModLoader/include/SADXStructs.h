@@ -1596,6 +1596,38 @@ struct BlackMarketItemAttributesList
 	int Count;
 };
 
+struct TutorialScreenData
+{
+	__int16 BoxX;
+	__int16 BoxY;
+	__int16 anonymous_2;
+	__int16 BoxScaleX;
+	__int16 BoxScaleY;
+	__int16 anonymous_3;
+	void *Pointer1;
+	void *Pointer2;
+};
+
+struct TutorialScreenHead
+{
+	unsigned __int16 arrayLength;
+	unsigned __int16 pageCount;
+	TutorialScreenData *data;
+	NJS_TEXLIST *texlistA;
+	NJS_TEXLIST *texlistB;
+	const char *pvmA;
+	const char *pvmB;
+};
+
+struct DebugStringInfo
+{
+	__int16 column;
+	__int16 row;
+	__int16 fontsize;
+	int color;
+	const char *text;
+};
+
 #pragma pack(pop)
 
 #ifdef _MSC_VER
