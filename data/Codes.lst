@@ -271,3 +271,6 @@ write16 00495097 120
 
 Patch "Chao Stat Multiplier"
 muls16 008895C8 5 x402
+
+Patch "Disable CPU Partner Tails"
+write8 0041592D 0xEB
