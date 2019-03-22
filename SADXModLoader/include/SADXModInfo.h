@@ -9,7 +9,7 @@
 #include "SADXStructs.h"
 
 // SADX Mod Loader API version.
-static const int ModLoaderVer = 8;
+static const int ModLoaderVer = 9;
 
 struct PatchInfo
 {
@@ -99,6 +99,11 @@ struct HelperFunctions
 	// Returns the index of the new sound list.
 	// Requires version >= 8.
 	int(__cdecl *RegisterSoundList)(const SoundList &list);
+
+	// Registers a music file.
+	// Returns the index of the new music file.
+	// Requires version >= 9.
+	int(__cdecl *RegisterMusicFile)(const MusicInfo &track);
 };
 
 typedef void(__cdecl *ModInitFunc)(const char *path, const HelperFunctions &helperFunctions);

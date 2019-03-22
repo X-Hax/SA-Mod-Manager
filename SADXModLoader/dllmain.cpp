@@ -1089,6 +1089,18 @@ int RegisterSoundList(const SoundList &list)
 	return _SoundLists.size() - 1;
 }
 
+static vector<MusicInfo> _MusicList;
+int RegisterMusicFile(const MusicInfo &track)
+{
+	if (_MusicList.empty())
+	{
+		_MusicList.resize(MusicList_Length);
+		memcpy(_MusicList.data(), MusicList, sizeof(MusicInfo) * MusicList_Length);
+	}
+	_MusicList.push_back(track);
+	return _MusicList.size() - 1;
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
@@ -1111,7 +1123,8 @@ static const HelperFunctions helperFunctions =
 	&GetReplaceablePath,
 	&_ReplaceFile,
 	&SetWindowTitle,
-	&RegisterSoundList
+	&RegisterSoundList,
+	&RegisterMusicFile
 };
 
 static const char *const dlldatakeys[] = {
@@ -1746,6 +1759,7 @@ static void __cdecl InitMods()
 			break;
 		}
 	}
+	StartPositions.clear();
 
 	for (const auto& i : FieldStartPositions)
 	{
@@ -1757,6 +1771,7 @@ static void __cdecl InitMods()
 		cur->LevelID = LevelIDs_Invalid;
 		StartPosList_FieldReturn[i.first] = newlist;
 	}
+	FieldStartPositions.clear();
 
 	if (PathsInitialized)
 	{
@@ -1768,6 +1783,7 @@ static void __cdecl InitMods()
 		WriteData((PathDataPtr **)0x49C1A1, newlist);
 		WriteData((PathDataPtr **)0x49C1AF, newlist);
 	}
+	Paths.clear();
 
 	for (const auto& pvm : CharacterPVMs)
 	{
@@ -1778,6 +1794,7 @@ static void __cdecl InitMods()
 		newlist[size].TexList = nullptr;
 		CharacterPVMEntries[pvm.first] = newlist;
 	}
+	CharacterPVMs.clear();
 
 	if (CommonObjectPVMsInitialized)
 	{
@@ -1789,6 +1806,7 @@ static void __cdecl InitMods()
 		TexLists_ObjRegular[0] = newlist;
 		TexLists_ObjRegular[1] = newlist;
 	}
+	CommonObjectPVMs.clear();
 
 	for (const auto& level : _TrialLevels)
 	{
@@ -1799,6 +1817,7 @@ static void __cdecl InitMods()
 		TrialLevels[level.first].Levels = newlist;
 		TrialLevels[level.first].Count = size;
 	}
+	_TrialLevels.clear();
 
 	for (const auto& subgame : _TrialSubgames)
 	{
@@ -1809,6 +1828,7 @@ static void __cdecl InitMods()
 		TrialSubgames[subgame.first].Levels = newlist;
 		TrialSubgames[subgame.first].Count = size;
 	}
+	_TrialSubgames.clear();
 
 	if (!_mainsavepath.empty())
 	{
@@ -1850,6 +1870,18 @@ static void __cdecl InitMods()
 		strncpy(buf, windowtitle.c_str(), windowtitle.size() + 1);
 		*(char**)0x892944 = buf;
 	}
+
+	if (!_MusicList.empty())
+	{
+		auto size = _MusicList.size();
+		MusicInfo *newlist = new MusicInfo[size];
+		memcpy(newlist, _MusicList.data(), sizeof(MusicInfo) * size);
+		WriteData((const char***)0x425424, &newlist->Name);
+		WriteData((int**)0x425442, &newlist->Loop);
+		WriteData((const char***)0x425460, &newlist->Name);
+		WriteData((int**)0x42547E, &newlist->Loop);
+	}
+	_MusicList.clear();
 
 	PrintDebug("Finished loading mods\n");
 
