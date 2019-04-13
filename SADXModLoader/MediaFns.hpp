@@ -139,6 +139,7 @@ void WMPRelease_r();
 
 int PlayVideoFile_r(void);
 int __cdecl PlayVoiceFile_r(LPCSTR filename);
+signed int __cdecl sub_40CF20_r();
 
 extern SoundList *SoundLists_Cust;
 extern int SoundLists_Cust_Length;

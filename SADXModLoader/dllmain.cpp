@@ -1362,17 +1362,18 @@ static void __cdecl InitMods()
 	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
 	WriteCall((void *)0x437547, FixEKey);
-	WriteCall((void *)0x42544C, (void *)PlayMusicFile_r);
-	WriteCall((void *)0x4254F4, (void *)PlayVoiceFile_r);
-	WriteCall((void *)0x425569, (void *)PlayVoiceFile_r);
-	WriteCall((void *)0x513187, (void *)PlayVideoFile_r);
-	WriteJump((void *)0x40D1EA, (void *)WMPInit_r);
-	WriteJump((void *)0x40CF50, (void *)WMPRestartMusic_r);
-	WriteJump((void *)0x40D060, (void *)PauseSound_r);
-	WriteJump((void *)0x40D0A0, (void *)ResumeSound_r);
-	WriteJump((void *)0x40CFF0, (void *)WMPClose_r);
-	WriteJump((void *)0x40D28A, (void *)WMPRelease_r);
+	WriteCall((void *)0x42544C, PlayMusicFile_r);
+	WriteCall((void *)0x4254F4, PlayVoiceFile_r);
+	WriteCall((void *)0x425569, PlayVoiceFile_r);
+	WriteCall((void *)0x513187, PlayVideoFile_r);
+	WriteJump((void *)0x40D1EA, WMPInit_r);
+	WriteJump((void *)0x40CF50, WMPRestartMusic_r);
+	WriteJump((void *)0x40D060, PauseSound_r);
+	WriteJump((void *)0x40D0A0, ResumeSound_r);
+	WriteJump((void *)0x40CFF0, WMPClose_r);
+	WriteJump((void *)0x40D28A, WMPRelease_r);
 	WriteJump(LoadSoundList, LoadSoundList_r);
+	WriteJump((void *)0x40CF20, sub_40CF20_r);
 
 	// Fixes N-sided polygons (Gamma's headlight) by using
 	// triangle strip vertex buffer initializers.

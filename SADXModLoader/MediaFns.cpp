@@ -303,6 +303,24 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 	return PlayVoiceFile(filename);
 }
 
+signed int __cdecl sub_40CF20_r()
+{
+	signed int result; // eax
+
+	if (WMPVoiceInfo)
+	{
+		if (voicewmp)
+			result = WMPInfo__GetStatus(WMPVoiceInfo) != 2 ? 3 : 5;
+		else
+			result = BASS_ChannelIsActive(voicechan) != BASS_ACTIVE_STOPPED ? 3 : 5;
+	}
+	else
+	{
+		result = 5;
+	}
+	return result;
+}
+
 struc_64 *LoadSoundPack(const char *path, int bank)
 {
 	char filename[MAX_PATH];
