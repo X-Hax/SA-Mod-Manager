@@ -79,6 +79,10 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 	if (bassinit)
 	{
 		basschan = BASS_VGMSTREAM_StreamCreate(filename, loop ? BASS_SAMPLE_LOOP : 0);
+
+		if (basschan == 0)
+			basschan = BASS_StreamCreateFile(false, filename, 0, 0, loop ? BASS_SAMPLE_LOOP : 0);
+
 		if (basschan != 0)
 		{
 			// Stream opened!
@@ -281,6 +285,10 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 	if (bassinit)
 	{
 		voicechan = BASS_VGMSTREAM_StreamCreate(filename, 0);
+
+		if (voicechan == 0)
+			voicechan = BASS_StreamCreateFile(false, filename, 0, 0, 0);
+
 		if (voicechan != 0)
 		{
 			voicewmp = false;
