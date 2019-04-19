@@ -274,3 +274,6 @@ muls16 008895C8 5 x402
 
 Patch "Disable CPU Partner Tails"
 write8 0041592D 0xEB
+
+Patch "Make Metal Sonic Stand Normally"
+writenop 004916A5 2
