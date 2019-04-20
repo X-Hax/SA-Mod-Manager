@@ -277,3 +277,11 @@ write8 0041592D 0xEB
 
 Patch "Make Metal Sonic Stand Normally"
 writenop 004916A5 2
+
+Patch "Metal Sonic Hovers At Top Speed"
+write8 00495B10 12
+write8 00495B3A 12
+write8 00495BEB 146
+
+Patch "Metal Sonic Always Hovers"
+write8 00495BEB 146
