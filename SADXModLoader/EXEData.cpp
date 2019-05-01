@@ -823,7 +823,8 @@ static void ProcessDeathZoneINI(const IniGroup *group, const wstring &mod_dir)
 	// Remove the filename portion of the path.
 	// NOTE: This might be a lower directory than mod_dir,
 	// since the filename can have subdirectories.
-	PathRemoveFileSpec(dzinipath);
+	wstring str = GetDirectory(dzinipath);
+	wcscpy(dzinipath, str.c_str());
 
 	vector<DeathZone> deathzones;
 	for (unsigned int i = 0; i < 999; i++)
