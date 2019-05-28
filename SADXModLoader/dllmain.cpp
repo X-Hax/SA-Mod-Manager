@@ -45,6 +45,7 @@ using std::vector;
 #include "FixFOV.h"
 #include "EXEData.h"
 #include "DLLData.h"
+#include "ChunkSpecularFix.h"
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -1407,6 +1408,8 @@ static void __cdecl InitMods()
 	WriteData((uint8_t*)0x0078EA5E, (uint8_t)0x25);
 	WriteData((uint8_t*)0x0078EAE1, (uint8_t)0x25);
 	WriteData((uint8_t*)0x0078EAFE, (uint8_t)0x25);
+
+	ChunkSpecularFix_Init();
 
 	texpack::init();
 

@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AutoMipmap.cpp" />
+    <ClCompile Include="ChunkSpecularFix.cpp" />
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="DLLData.cpp" />
     <ClCompile Include="dllmain.cpp" />
@@ -32,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoMipmap.h" />
+    <ClInclude Include="ChunkSpecularFix.h" />
     <ClInclude Include="DDS.h" />
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="DLLData.h" />
