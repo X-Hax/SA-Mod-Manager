@@ -375,7 +375,10 @@ static vector<PVMEntry> ProcessTexListINI_Internal(const IniFile *texlistdata)
 		if (!texlistdata->hasGroup(key)) break;
 		const IniGroup *pvmdata = texlistdata->getGroup(key);
 		PVMEntry entry;
-		entry.Name = strdup(pvmdata->getString("Name").c_str());
+		if (pvmdata->hasKeyNonEmpty("Name"))
+			entry.Name = strdup(pvmdata->getString("Name").c_str());
+		else
+			entry.Name = nullptr;
 		entry.TexList = (NJS_TEXLIST *)pvmdata->getIntRadix("Textures", 16);
 		texs.push_back(entry);
 	}
