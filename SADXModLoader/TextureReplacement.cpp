@@ -51,7 +51,7 @@ static Sint32 njLoadTexture_r(NJS_TEXLIST* texlist);
 static int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist);
 static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist);
 static Sint32 __cdecl LoadPvmMEM2_r(const char* filename, NJS_TEXLIST* texlist);
-static Sint32 __cdecl njLoadTexturePvmFile_r(const char *filename, NJS_TEXLIST *texList);
+static Sint32 __cdecl njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList);
 
 void texpack::init()
 {
@@ -182,7 +182,7 @@ bool texpack::parse_index(const string& path, vector<TexPackEntry>& out)
 				break;
 			}
 
-			uint32_t width = 0;
+			uint32_t width  = 0;
 			uint32_t height = 0;
 
 			uint32_t gbix = stoul(line.substr(0, comma));
@@ -208,11 +208,11 @@ bool texpack::parse_index(const string& path, vector<TexPackEntry>& out)
 				if (!separator || separator == string::npos)
 				{
 					PrintDebug("Invalid format for texture dimensions on line %u: %s\n",
-						line_number, dimensions.c_str());
+					           line_number, dimensions.c_str());
 					break;
 				}
 
-				width = stoul(dimensions.substr(0, separator));
+				width  = stoul(dimensions.substr(0, separator));
 				height = stoul(dimensions.substr(++separator));
 			}
 
@@ -363,7 +363,7 @@ bool get_dds_header(const string& path, DDS_HEADER& header)
  * \return A pointer to the texture, or \c nullptr on failure.
  */
 NJS_TEXMEMLIST* load_texture_stream(ifstream& file, uint64_t offset, uint64_t size,
-	const string& path, uint32_t global_index, const string& name, bool mipmap, uint32_t width, uint32_t height)
+                                    const string& path, uint32_t global_index, const string& name, bool mipmap, uint32_t width, uint32_t height)
 {
 	// TODO: Implement custom texture queue to replace the global texture array
 	auto texture = GetCachedTexture(global_index);
@@ -410,7 +410,7 @@ NJS_TEXMEMLIST* load_texture_stream(ifstream& file, uint64_t offset, uint64_t si
 
 		IDirect3DTexture8* d3d_texture = nullptr;
 		HRESULT result = D3DXCreateTextureFromFileInMemoryEx(Direct3D_Device, buffer.data(), buffer.size(), D3DX_DEFAULT, D3DX_DEFAULT, mip_levels,
-			0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, nullptr, nullptr, &d3d_texture);
+		                                                     0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, nullptr, nullptr, &d3d_texture);
 
 		if (result != D3D_OK)
 		{
@@ -454,7 +454,7 @@ NJS_TEXMEMLIST* load_texture_stream(ifstream& file, uint64_t offset, uint64_t si
  * \return A pointer to the texture, or \c nullptr on failure.
  */
 NJS_TEXMEMLIST* load_texture(const string& path, uint32_t global_index, const string& name,
-	bool mipmap, uint32_t width, uint32_t height)
+                             bool mipmap, uint32_t width, uint32_t height)
 {
 	// TODO: Implement custom texture queue to replace the global texture array
 	auto texture = GetCachedTexture(global_index);
@@ -618,7 +618,7 @@ static bool replace_pvmx(const string& path, ifstream& file, NJS_TEXLIST* texlis
 		auto& entry = index[i];
 
 		auto texture = load_texture_stream(file, entry.offset, entry.size,
-			path, entry.global_index, entry.name, mipmap, entry.width, entry.height);
+		                                   path, entry.global_index, entry.name, mipmap, entry.width, entry.height);
 
 		if (texture == nullptr)
 		{
@@ -832,9 +832,9 @@ static bool replace_pvr(const string& filename, NJS_TEXMEMLIST** tex)
 		return false;
 	}
 
-	auto offset = index_path.length() - (sizeof(index_file)-1);
-	const auto end = index_path.substr(offset);
-	const auto path = index_path.substr(0, --offset);
+	const auto offset = index_path.length() - (sizeof(index_file) - 1);
+	const auto end    = index_path.substr(offset);
+	const auto path   = index_path.substr(0, offset - 1);
 
 	if (end != index_file)
 	{
@@ -849,7 +849,7 @@ static bool replace_pvr(const string& filename, NJS_TEXMEMLIST** tex)
 
 	for (const auto& i : entries)
 	{
-		const auto &name = i.name;
+		const auto& name = i.name;
 
 		const auto dot = name.find_last_of('.');
 		if (dot == string::npos)
@@ -877,7 +877,7 @@ static bool replace_pvr(const string& filename, NJS_TEXMEMLIST** tex)
 		}
 
 		*tex = load_texture(path, i.global_index, name,
-			!mipmap::is_blacklisted_pvr(filename.c_str()), i.width, i.height);
+		                    !mipmap::is_blacklisted_pvr(filename.c_str()), i.width, i.height);
 
 		return *tex != nullptr;
 	}
