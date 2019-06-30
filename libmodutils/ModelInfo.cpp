@@ -14,14 +14,14 @@ using std::string;
 using std::wstring;
 #endif /* _MSC_VER */
 
-ModelInfo::ModelInfo(const char *filename)
+ModelInfo::ModelInfo(const char* filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
 
-ModelInfo::ModelInfo(const string &filename)
+ModelInfo::ModelInfo(const string& filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
@@ -29,14 +29,14 @@ ModelInfo::ModelInfo(const string &filename)
 }
 
 #ifdef _MSC_VER
-ModelInfo::ModelInfo(const wchar_t *filename)
+ModelInfo::ModelInfo(const wchar_t* filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
 
-ModelInfo::ModelInfo(const wstring &filename)
+ModelInfo::ModelInfo(const wstring& filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
@@ -44,35 +44,34 @@ ModelInfo::ModelInfo(const wstring &filename)
 }
 #endif /* _MSC_VER */
 
-ModelInfo::ModelInfo(istream &stream) { init(stream); }
+ModelInfo::ModelInfo(istream& stream) { init(stream); }
 
-ModelFormat ModelInfo::getformat() { return format; }
+ModelFormat ModelInfo::getformat() const { return format; }
 
-NJS_OBJECT *ModelInfo::getmodel() { return model; }
+NJS_OBJECT* ModelInfo::getmodel() const { return model; }
 
-const string &ModelInfo::getauthor() { return author; }
+const string& ModelInfo::getauthor() const { return author; }
 
-const string &ModelInfo::gettool() { return tool; }
+const string& ModelInfo::gettool() const { return tool; }
 
-const string &ModelInfo::getdescription() { return description; }
+const string& ModelInfo::getdescription() const { return description; }
 
-const uint8_t *ModelInfo::getmetadata(uint32_t identifier, uint32_t &size)
+const uint8_t* ModelInfo::getmetadata(uint32_t identifier, uint32_t& size)
 {
 	auto elem = metadata.find(identifier);
+
 	if (elem == metadata.end())
 	{
 		size = 0;
 		return nullptr;
 	}
-	else
-	{
-		size = elem->second.size;
-		return elem->second.data;
-	}
+
+	size = elem->second.size;
+	return elem->second.data;
 }
 
 static const string empty;
-const string &ModelInfo::getlabel(void *data)
+const string& ModelInfo::getlabel(void* data)
 {
 	auto elem = labels1.find(data);
 	if (elem == labels1.end())
@@ -81,28 +80,30 @@ const string &ModelInfo::getlabel(void *data)
 		return elem->second;
 }
 
-void *ModelInfo::getdata(const string &label)
+void* ModelInfo::getdata(const string& label)
 {
 	auto elem = labels2.find(label);
+
 	if (elem == labels2.end())
+	{
 		return nullptr;
-	else
-		return elem->second;
+	}
+
+	return elem->second;
 }
 
-const std::unordered_map<string, void *> *ModelInfo::getlabels() { return &labels2; }
+const std::unordered_map<string, void*>* ModelInfo::getlabels() const { return &labels2; }
 
-const list<string> &ModelInfo::getanimations() { return animations; }
+const list<string>& ModelInfo::getanimations() const { return animations; }
 
-const list<string> &ModelInfo::getmorphs() { return morphs; }
+const list<string>& ModelInfo::getmorphs() const { return morphs; }
 
-static string getstring(istream &stream)
+static string getstring(istream& stream)
 {
 	auto start = stream.tellg();
-	while (stream.get() != 0)
-		;
-	auto size = stream.tellg() - start;
-	char *buf = new char[(unsigned int)size];
+	while (stream.get() != 0) {}
+	auto size = static_cast<size_t>(stream.tellg() - start);
+	char* buf = new char[size];
 	stream.seekg(start);
 	stream.read(buf, size);
 	string result(buf);
@@ -111,32 +112,40 @@ static string getstring(istream &stream)
 }
 
 template<typename T>
-static inline void fixptr(T *&ptr, intptr_t base)
+static inline void fixptr(T*& ptr, intptr_t base)
 {
 	if (ptr != nullptr)
-		ptr = (T *)((uint8_t *)ptr + base);
+	{
+		ptr = (T*)((uint8_t*)ptr + base);
+	}
 }
 
-void ModelInfo::fixbasicmodelpointers(NJS_MODEL_SADX *model, intptr_t base)
+void ModelInfo::fixbasicmodelpointers(NJS_MODEL_SADX* model, intptr_t base)
 {
 	fixptr(model->points, base);
 	fixptr(model->normals, base);
 	if (model->meshsets != nullptr)
 	{
 		fixptr(model->meshsets, base);
+
 		if (reallocateddata.find(model->meshsets) != reallocateddata.end())
-			model->meshsets = (NJS_MESHSET_SADX *)reallocateddata[model->meshsets];
+		{
+			model->meshsets = (NJS_MESHSET_SADX*)reallocateddata[model->meshsets];
+		}
 		else
 		{
-			NJS_MESHSET_SADX *tmp = new NJS_MESHSET_SADX[model->nbMeshset];
+			auto tmp = new NJS_MESHSET_SADX[model->nbMeshset];
 			reallocateddata[model->meshsets] = tmp;
+
 			for (int i = 0; i < model->nbMeshset; i++)
 			{
-				memcpy(&tmp[i], &((NJS_MESHSET *)model->meshsets)[i], sizeof(NJS_MESHSET));
+				memcpy(&tmp[i], &((NJS_MESHSET*)model->meshsets)[i], sizeof(NJS_MESHSET));
 				tmp[i].buffer = nullptr;
 			}
+
 			model->meshsets = tmp;
 			allocatedmem.push_back(shared_ptr<NJS_MESHSET_SADX>(model->meshsets, default_delete<NJS_MESHSET_SADX[]>()));
+
 			for (int i = 0; i < model->nbMeshset; i++)
 			{
 				fixptr(model->meshsets[i].meshes, base);
@@ -147,27 +156,31 @@ void ModelInfo::fixbasicmodelpointers(NJS_MODEL_SADX *model, intptr_t base)
 			}
 		}
 	}
+
 	fixptr(model->mats, base);
 }
 
-void ModelInfo::fixchunkmodelpointers(NJS_CNK_MODEL *model, intptr_t base)
+void ModelInfo::fixchunkmodelpointers(NJS_CNK_MODEL* model, intptr_t base)
 {
 	fixptr(model->vlist, base);
 	fixptr(model->plist, base);
 }
 
-void ModelInfo::fixobjectpointers(NJS_OBJECT *object, intptr_t base)
+void ModelInfo::fixobjectpointers(NJS_OBJECT* object, intptr_t base)
 {
 	if (object->model != nullptr)
 	{
-		object->model = (uint8_t *)object->model + base;
+		object->model = (uint8_t*)object->model + base;
+
 		if (format == ModelFormat_Basic)
 		{
 			if (reallocateddata.find(object->model) != reallocateddata.end())
+			{
 				object->model = reallocateddata[object->model];
+			}
 			else
 			{
-				NJS_MODEL_SADX *tmp = new NJS_MODEL_SADX;
+				auto* tmp = new NJS_MODEL_SADX;
 				reallocateddata[object->model] = tmp;
 				memcpy(tmp, object->model, sizeof(NJS_MODEL));
 				tmp->buffer = nullptr;
@@ -182,18 +195,20 @@ void ModelInfo::fixobjectpointers(NJS_OBJECT *object, intptr_t base)
 			fixchunkmodelpointers(object->chunkmodel, base);
 		}
 	}
+
 	if (object->child != nullptr)
 	{
-		object->child = (NJS_OBJECT *)((uint8_t *)object->child + base);
+		object->child = (NJS_OBJECT*)((uint8_t*)object->child + base);
 		if (fixedpointers.find(object->child) == fixedpointers.end())
 		{
 			fixedpointers.insert(object->child);
 			fixobjectpointers(object->child, base);
 		}
 	}
+
 	if (object->sibling != nullptr)
 	{
-		object->sibling = (NJS_OBJECT *)((uint8_t *)object->sibling + base);
+		object->sibling = (NJS_OBJECT*)((uint8_t*)object->sibling + base);
 		if (fixedpointers.find(object->sibling) == fixedpointers.end())
 		{
 			fixedpointers.insert(object->sibling);
@@ -203,41 +218,46 @@ void ModelInfo::fixobjectpointers(NJS_OBJECT *object, intptr_t base)
 }
 
 template<typename T>
-static inline void readdata(istream &stream, T &data)
+static inline void readdata(istream& stream, T& data)
 {
-	stream.read((char *)&data, sizeof(T));
+	stream.read((char*)& data, sizeof(T));
 }
 
-void ModelInfo::init(istream &stream)
+void ModelInfo::init(istream& stream)
 {
 	uint64_t magic;
 	readdata(stream, magic);
 	uint8_t version = magic >> 56;
 	magic &= FormatMask;
+
 	if (version != CurrentVersion) // unrecognized file version
-		return;
-	switch (magic)
 	{
-	case SA1MDL:
-		format = ModelFormat_Basic;
-		break;
-	case SA2MDL:
-		format = ModelFormat_Chunk;
-		break;
-	default:
 		return;
 	}
+
+	switch (magic)
+	{
+		case SA1MDL:
+			format = ModelFormat_Basic;
+			break;
+		case SA2MDL:
+			format = ModelFormat_Chunk;
+			break;
+		default:
+			return;
+	}
+
 	uint32_t modeloff;
 	readdata(stream, modeloff);
-	modeloff -= headersize;
+	modeloff -= headerSize;
 	uint32_t tmpaddr;
 	readdata(stream, tmpaddr);
-	int mdlsize = tmpaddr - headersize;
-	uint8_t *modelbuf = new uint8_t[mdlsize];
+	size_t mdlsize = tmpaddr - headerSize;
+	auto* modelbuf = new uint8_t[mdlsize];
 	allocatedmem.push_back(shared_ptr<uint8_t>(modelbuf, default_delete<uint8_t[]>()));
-	stream.read((char *)modelbuf, mdlsize);
-	model = (NJS_OBJECT *)(modelbuf + modeloff);
-	intptr_t modelbase = (intptr_t)modelbuf - headersize;
+	stream.read((char*)modelbuf, mdlsize);
+	model = (NJS_OBJECT*)(modelbuf + modeloff);
+	intptr_t modelbase = (intptr_t)modelbuf - headerSize;
 	fixobjectpointers(model, modelbase);
 	fixedpointers.clear();
 	uint32_t chunktype;
@@ -250,68 +270,68 @@ void ModelInfo::init(istream &stream)
 		auto nextchunk = chunkbase + (streamoff)chunksz;
 		switch (chunktype)
 		{
-		case ChunkTypes_Label:
-			while (true)
-			{
-				void *dataptr;
-				readdata(stream, dataptr);
-				uint32_t labelptr;
-				readdata(stream, labelptr);
-				if (dataptr == (void *)-1 && labelptr == UINT32_MAX)
-					break;
-				dataptr = (uint8_t *)dataptr + modelbase;
-				if (reallocateddata.find(dataptr) != reallocateddata.end())
-					dataptr = reallocateddata[dataptr];
-				tmpaddr = (uint32_t)stream.tellg();
-				stream.seekg((uint32_t)chunkbase + labelptr);
-				string label = getstring(stream);
-				stream.seekg(tmpaddr);
-				labels1[dataptr] = label;
-				labels2[label] = dataptr;
-			}
-			break;
-		case ChunkTypes_Animation:
-			while (true)
-			{
-				uint32_t labelptr;
-				readdata(stream, labelptr);
-				if (labelptr == UINT32_MAX)
-					break;
-				tmpaddr = (uint32_t)stream.tellg();
-				stream.seekg((uint32_t)chunkbase + labelptr);
-				animations.push_back(getstring(stream));
-				stream.seekg(tmpaddr);
-			}
-			break;
-		case ChunkTypes_Morph:
-			while (true)
-			{
-				uint32_t labelptr;
-				readdata(stream, labelptr);
-				if (labelptr == UINT32_MAX)
-					break;
-				tmpaddr = (uint32_t)stream.tellg();
-				stream.seekg((uint32_t)chunkbase + labelptr);
-				morphs.push_back(getstring(stream));
-				stream.seekg(tmpaddr);
-			}
-			break;
-		case ChunkTypes_Author:
-			author = getstring(stream);
-			break;
-		case ChunkTypes_Tool:
-			tool = getstring(stream);
-			break;
-		case ChunkTypes_Description:
-			description = getstring(stream);
-			break;
-		default:
-			uint8_t *buf = new uint8_t[chunksz];
-			allocatedmem.push_back(shared_ptr<uint8_t>(buf, default_delete<uint8_t[]>()));
-			stream.read((char *)buf, chunksz);
-			Metadata meta = { chunksz, buf };
-			metadata[chunktype] = meta;
-			break;
+			case ChunkTypes_Label:
+				while (true)
+				{
+					void* dataptr;
+					readdata(stream, dataptr);
+					uint32_t labelptr;
+					readdata(stream, labelptr);
+					if (dataptr == (void*)-1 && labelptr == UINT32_MAX)
+						break;
+					dataptr = (uint8_t*)dataptr + modelbase;
+					if (reallocateddata.find(dataptr) != reallocateddata.end())
+						dataptr = reallocateddata[dataptr];
+					tmpaddr = (uint32_t)stream.tellg();
+					stream.seekg((uint32_t)chunkbase + labelptr);
+					string label = getstring(stream);
+					stream.seekg(tmpaddr);
+					labels1[dataptr] = label;
+					labels2[label] = dataptr;
+				}
+				break;
+			case ChunkTypes_Animation:
+				while (true)
+				{
+					uint32_t labelptr;
+					readdata(stream, labelptr);
+					if (labelptr == UINT32_MAX)
+						break;
+					tmpaddr = (uint32_t)stream.tellg();
+					stream.seekg((uint32_t)chunkbase + labelptr);
+					animations.push_back(getstring(stream));
+					stream.seekg(tmpaddr);
+				}
+				break;
+			case ChunkTypes_Morph:
+				while (true)
+				{
+					uint32_t labelptr;
+					readdata(stream, labelptr);
+					if (labelptr == UINT32_MAX)
+						break;
+					tmpaddr = (uint32_t)stream.tellg();
+					stream.seekg((uint32_t)chunkbase + labelptr);
+					morphs.push_back(getstring(stream));
+					stream.seekg(tmpaddr);
+				}
+				break;
+			case ChunkTypes_Author:
+				author = getstring(stream);
+				break;
+			case ChunkTypes_Tool:
+				tool = getstring(stream);
+				break;
+			case ChunkTypes_Description:
+				description = getstring(stream);
+				break;
+			default:
+				auto* buf = new uint8_t[chunksz];
+				allocatedmem.push_back(shared_ptr<uint8_t>(buf, default_delete<uint8_t[]>()));
+				stream.read((char*)buf, chunksz);
+				Metadata meta = { chunksz, buf };
+				metadata[chunktype] = meta;
+				break;
 		}
 		stream.seekg(nextchunk);
 		readdata(stream, chunktype);
