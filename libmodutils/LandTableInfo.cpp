@@ -14,14 +14,14 @@ using std::string;
 using std::wstring;
 #endif /* _MSC_VER */
 
-LandTableInfo::LandTableInfo(const char *filename)
+LandTableInfo::LandTableInfo(const char* filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
 
-LandTableInfo::LandTableInfo(const string &filename)
+LandTableInfo::LandTableInfo(const string& filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
@@ -29,14 +29,14 @@ LandTableInfo::LandTableInfo(const string &filename)
 }
 
 #ifdef _MSC_VER
-LandTableInfo::LandTableInfo(const wchar_t *filename)
+LandTableInfo::LandTableInfo(const wchar_t* filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
 	str.close();
 }
 
-LandTableInfo::LandTableInfo(const wstring &filename)
+LandTableInfo::LandTableInfo(const wstring& filename)
 {
 	ifstream str(filename, ios::binary);
 	init(str);
@@ -44,17 +44,17 @@ LandTableInfo::LandTableInfo(const wstring &filename)
 }
 #endif /* _MSC_VER */
 
-LandTableInfo::LandTableInfo(istream &stream) { init(stream); }
+LandTableInfo::LandTableInfo(istream& stream) { init(stream); }
 
-LandTable *LandTableInfo::getlandtable() { return landtable; }
+LandTable* LandTableInfo::getlandtable() const { return landtable; }
 
-const string &LandTableInfo::getauthor() { return author; }
+const string& LandTableInfo::getauthor() const { return author; }
 
-const string &LandTableInfo::gettool() { return tool; }
+const string& LandTableInfo::gettool() const { return tool; }
 
-const string &LandTableInfo::getdescription() { return description; }
+const string& LandTableInfo::getdescription() const { return description; }
 
-const uint8_t *LandTableInfo::getmetadata(uint32_t identifier, uint32_t &size)
+const uint8_t* LandTableInfo::getmetadata(uint32_t identifier, uint32_t& size)
 {
 	auto elem = metadata.find(identifier);
 	if (elem == metadata.end())
@@ -70,7 +70,7 @@ const uint8_t *LandTableInfo::getmetadata(uint32_t identifier, uint32_t &size)
 }
 
 static const string empty;
-const string &LandTableInfo::getlabel(void *data)
+const string& LandTableInfo::getlabel(void* data)
 {
 	auto elem = labels1.find(data);
 	if (elem == labels1.end())
@@ -79,7 +79,7 @@ const string &LandTableInfo::getlabel(void *data)
 		return elem->second;
 }
 
-void *LandTableInfo::getdata(const string &label)
+void* LandTableInfo::getdata(const string& label)
 {
 	auto elem = labels2.find(label);
 	if (elem == labels2.end())
@@ -88,18 +88,18 @@ void *LandTableInfo::getdata(const string &label)
 		return elem->second;
 }
 
-const std::unordered_map<string, void *> *LandTableInfo::getlabels()
+const std::unordered_map<string, void*>* LandTableInfo::getlabels() const
 {
 	return &labels2;
 }
 
-static string getstring(istream &stream)
+static string getstring(istream& stream)
 {
 	auto start = stream.tellg();
 	while (stream.get() != 0)
 		;
 	auto size = stream.tellg() - start;
-	char *buf = new char[(unsigned int)size];
+	char* buf = new char[(unsigned int)size];
 	stream.seekg(start);
 	stream.read(buf, size);
 	string result(buf);
@@ -108,13 +108,13 @@ static string getstring(istream &stream)
 }
 
 template<typename T>
-static inline void fixptr(T *&ptr, intptr_t base)
+static inline void fixptr(T*& ptr, intptr_t base)
 {
 	if (ptr != nullptr)
-		ptr = (T *)((uint8_t *)ptr + base);
+		ptr = (T*)((uint8_t*)ptr + base);
 }
 
-void LandTableInfo::fixmodelpointers(NJS_MODEL_SADX *model, intptr_t base)
+void LandTableInfo::fixmodelpointers(NJS_MODEL_SADX* model, intptr_t base)
 {
 	fixptr(model->points, base);
 	fixptr(model->normals, base);
@@ -122,14 +122,14 @@ void LandTableInfo::fixmodelpointers(NJS_MODEL_SADX *model, intptr_t base)
 	{
 		fixptr(model->meshsets, base);
 		if (reallocateddata.find(model->meshsets) != reallocateddata.end())
-			model->meshsets = (NJS_MESHSET_SADX *)reallocateddata[model->meshsets];
+			model->meshsets = (NJS_MESHSET_SADX*)reallocateddata[model->meshsets];
 		else
 		{
-			NJS_MESHSET_SADX *tmp = new NJS_MESHSET_SADX[model->nbMeshset];
+			auto tmp = new NJS_MESHSET_SADX[model->nbMeshset];
 			reallocateddata[model->meshsets] = tmp;
 			for (int i = 0; i < model->nbMeshset; i++)
 			{
-				memcpy(&tmp[i], &((NJS_MESHSET *)model->meshsets)[i], sizeof(NJS_MESHSET));
+				memcpy(&tmp[i], &((NJS_MESHSET*)model->meshsets)[i], sizeof(NJS_MESHSET));
 				tmp[i].buffer = nullptr;
 			}
 			model->meshsets = tmp;
@@ -147,16 +147,18 @@ void LandTableInfo::fixmodelpointers(NJS_MODEL_SADX *model, intptr_t base)
 	fixptr(model->mats, base);
 }
 
-void LandTableInfo::fixobjectpointers(NJS_OBJECT *object, intptr_t base)
+void LandTableInfo::fixobjectpointers(NJS_OBJECT* object, intptr_t base)
 {
 	if (object->model != nullptr)
 	{
-		object->model = (uint8_t *)object->model + base;
+		object->model = (uint8_t*)object->model + base;
 		if (reallocateddata.find(object->model) != reallocateddata.end())
+		{
 			object->model = reallocateddata[object->model];
+		}
 		else
 		{
-			NJS_MODEL_SADX *tmp = new NJS_MODEL_SADX;
+			auto* tmp = new NJS_MODEL_SADX;
 			reallocateddata[object->model] = tmp;
 			memcpy(tmp, object->model, sizeof(NJS_MODEL));
 			tmp->buffer = nullptr;
@@ -167,7 +169,7 @@ void LandTableInfo::fixobjectpointers(NJS_OBJECT *object, intptr_t base)
 	}
 	if (object->child != nullptr)
 	{
-		object->child = (NJS_OBJECT *)((uint8_t *)object->child + base);
+		object->child = (NJS_OBJECT*)((uint8_t*)object->child + base);
 		if (fixedpointers.find(object->child) == fixedpointers.end())
 		{
 			fixedpointers.insert(object->child);
@@ -176,7 +178,7 @@ void LandTableInfo::fixobjectpointers(NJS_OBJECT *object, intptr_t base)
 	}
 	if (object->sibling != nullptr)
 	{
-		object->sibling = (NJS_OBJECT *)((uint8_t *)object->sibling + base);
+		object->sibling = (NJS_OBJECT*)((uint8_t*)object->sibling + base);
 		if (fixedpointers.find(object->sibling) == fixedpointers.end())
 		{
 			fixedpointers.insert(object->sibling);
@@ -186,52 +188,57 @@ void LandTableInfo::fixobjectpointers(NJS_OBJECT *object, intptr_t base)
 }
 
 template<typename T>
-inline void fixmdatapointers(T *mdata, intptr_t base, int count)
+inline void fixmdatapointers(T* mdata, intptr_t base, int count)
 {
 	for (int c = 0; c < count; c++)
 	{
 		for (int i = 0; i < (int)LengthOfArray(mdata->p); i++)
+		{
 			fixptr(mdata->p[i], base);
-		mdata++;
+		}
+
+		++mdata;
 	}
 }
 
-void LandTableInfo::fixmotionpointers(NJS_MOTION *motion, intptr_t base, int count)
+void LandTableInfo::fixmotionpointers(NJS_MOTION* motion, intptr_t base, int count)
 {
 	if (motion->mdata != nullptr)
 	{
-		motion->mdata = (uint8_t *)motion->mdata + base;
+		motion->mdata = (uint8_t*)motion->mdata + base;
 		if (fixedpointers.find(motion->mdata) == fixedpointers.end())
 		{
 			fixedpointers.insert(motion->mdata);
 			switch (motion->inp_fn & 0xF)
 			{
-			case 1:
-				fixmdatapointers((NJS_MDATA1 *)motion->mdata, base, count);
-				break;
-			case 2:
-				fixmdatapointers((NJS_MDATA2 *)motion->mdata, base, count);
-				break;
-			case 3:
-				fixmdatapointers((NJS_MDATA3 *)motion->mdata, base, count);
-				break;
-			case 4:
-				fixmdatapointers((NJS_MDATA4 *)motion->mdata, base, count);
-				break;
-			case 5:
-				fixmdatapointers((NJS_MDATA5 *)motion->mdata, base, count);
-				break;
+				case 1:
+					fixmdatapointers((NJS_MDATA1*)motion->mdata, base, count);
+					break;
+				case 2:
+					fixmdatapointers((NJS_MDATA2*)motion->mdata, base, count);
+					break;
+				case 3:
+					fixmdatapointers((NJS_MDATA3*)motion->mdata, base, count);
+					break;
+				case 4:
+					fixmdatapointers((NJS_MDATA4*)motion->mdata, base, count);
+					break;
+				case 5:
+					fixmdatapointers((NJS_MDATA5*)motion->mdata, base, count);
+					break;
+				default:
+					break;
 			}
 		}
 	}
 }
 
-void LandTableInfo::fixactionpointers(NJS_ACTION *action, intptr_t base)
+void LandTableInfo::fixactionpointers(NJS_ACTION* action, intptr_t base)
 {
 	int count = 0;
 	if (action->object != nullptr)
 	{
-		action->object = (NJS_OBJECT *)((uint8_t *)action->object + base);
+		action->object = (NJS_OBJECT*)((uint8_t*)action->object + base);
 		if (fixedpointers.find(action->object) == fixedpointers.end())
 		{
 			fixedpointers.insert(action->object);
@@ -241,7 +248,7 @@ void LandTableInfo::fixactionpointers(NJS_ACTION *action, intptr_t base)
 	}
 	if (action->motion != nullptr)
 	{
-		action->motion = (NJS_MOTION *)((uint8_t *)action->motion + base);
+		action->motion = (NJS_MOTION*)((uint8_t*)action->motion + base);
 		if (fixedpointers.find(action->motion) == fixedpointers.end())
 		{
 			fixedpointers.insert(action->motion);
@@ -250,15 +257,15 @@ void LandTableInfo::fixactionpointers(NJS_ACTION *action, intptr_t base)
 	}
 }
 
-void LandTableInfo::fixlandtablepointers(LandTable *landtable, intptr_t base)
+void LandTableInfo::fixlandtablepointers(LandTable* landtable, intptr_t base)
 {
 	if (landtable->Col != nullptr)
 	{
-		landtable->Col = (COL *)((uint8_t *)landtable->Col + base);
+		landtable->Col = (COL*)((uint8_t*)landtable->Col + base);
 		for (int i = 0; i < landtable->COLCount; i++)
 			if (landtable->Col[i].Model != nullptr)
 			{
-				landtable->Col[i].Model = (NJS_OBJECT *)((uint8_t *)landtable->Col[i].Model + base);
+				landtable->Col[i].Model = (NJS_OBJECT*)((uint8_t*)landtable->Col[i].Model + base);
 				if (fixedpointers.find(landtable->Col[i].Model) == fixedpointers.end())
 				{
 					fixedpointers.insert(landtable->Col[i].Model);
@@ -268,12 +275,12 @@ void LandTableInfo::fixlandtablepointers(LandTable *landtable, intptr_t base)
 	}
 	if (landtable->AnimData != nullptr)
 	{
-		landtable->AnimData = (GeoAnimData *)((uint8_t *)landtable->AnimData + base);
+		landtable->AnimData = (GeoAnimData*)((uint8_t*)landtable->AnimData + base);
 		for (int i = 0; i < landtable->AnimCount; i++)
 		{
 			if (landtable->AnimData[i].Model != nullptr)
 			{
-				landtable->AnimData[i].Model = (NJS_OBJECT *)((uint8_t *)landtable->AnimData[i].Model + base);
+				landtable->AnimData[i].Model = (NJS_OBJECT*)((uint8_t*)landtable->AnimData[i].Model + base);
 				if (fixedpointers.find(landtable->AnimData[i].Model) == fixedpointers.end())
 				{
 					fixedpointers.insert(landtable->AnimData[i].Model);
@@ -282,7 +289,7 @@ void LandTableInfo::fixlandtablepointers(LandTable *landtable, intptr_t base)
 			}
 			if (landtable->AnimData[i].Animation != nullptr)
 			{
-				landtable->AnimData[i].Animation = (NJS_ACTION *)((uint8_t *)landtable->AnimData[i].Animation + base);
+				landtable->AnimData[i].Animation = (NJS_ACTION*)((uint8_t*)landtable->AnimData[i].Animation + base);
 				if (fixedpointers.find(landtable->AnimData[i].Animation) == fixedpointers.end())
 				{
 					fixedpointers.insert(landtable->AnimData[i].Animation);
@@ -295,12 +302,12 @@ void LandTableInfo::fixlandtablepointers(LandTable *landtable, intptr_t base)
 }
 
 template<typename T>
-static inline void readdata(istream &stream, T &data)
+static inline void readdata(istream& stream, T& data)
 {
-	stream.read((char *)&data, sizeof(T));
+	stream.read((char*)&data, sizeof(T));
 }
 
-void LandTableInfo::init(istream &stream)
+void LandTableInfo::init(istream& stream)
 {
 	uint64_t magic;
 	readdata(stream, magic);
@@ -312,15 +319,15 @@ void LandTableInfo::init(istream &stream)
 		return;
 	uint32_t landtableoff;
 	readdata(stream, landtableoff);
-	landtableoff -= headersize;
+	landtableoff -= headerSize;
 	uint32_t tmpaddr;
 	readdata(stream, tmpaddr);
-	int mdlsize = tmpaddr - headersize;
-	uint8_t *landtablebuf = new uint8_t[mdlsize];
+	size_t mdlsize = tmpaddr - headerSize;
+	auto* landtablebuf = new uint8_t[mdlsize];
 	allocatedmem.push_back(shared_ptr<uint8_t>(landtablebuf, default_delete<uint8_t[]>()));
-	stream.read((char *)landtablebuf, mdlsize);
-	landtable = (LandTable *)(landtablebuf + landtableoff);
-	intptr_t landtablebase = (intptr_t)landtablebuf - headersize;
+	stream.read((char*)landtablebuf, mdlsize);
+	landtable = (LandTable*)(landtablebuf + landtableoff);
+	intptr_t landtablebase = (intptr_t)landtablebuf - headerSize;
 	fixlandtablepointers(landtable, landtablebase);
 	fixedpointers.clear();
 	uint32_t chunktype;
@@ -333,42 +340,50 @@ void LandTableInfo::init(istream &stream)
 		auto nextchunk = chunkbase + (streamoff)chunksz;
 		switch (chunktype)
 		{
-		case ChunkTypes_Label:
-			while (true)
-			{
-				void *dataptr;
-				readdata(stream, dataptr);
-				uint32_t labelptr;
-				readdata(stream, labelptr);
-				if (dataptr == (void *)-1 && labelptr == UINT32_MAX)
-					break;
-				dataptr = (uint8_t *)dataptr + landtablebase;
-				if (reallocateddata.find(dataptr) != reallocateddata.end())
-					dataptr = reallocateddata[dataptr];
-				tmpaddr = (uint32_t)stream.tellg();
-				stream.seekg((uint32_t)chunkbase + labelptr);
-				string label = getstring(stream);
-				stream.seekg(tmpaddr);
-				labels1[dataptr] = label;
-				labels2[label] = dataptr;
-			}
-			break;
-		case ChunkTypes_Author:
-			author = getstring(stream);
-			break;
-		case ChunkTypes_Tool:
-			tool = getstring(stream);
-			break;
-		case ChunkTypes_Description:
-			description = getstring(stream);
-			break;
-		default:
-			uint8_t *buf = new uint8_t[chunksz];
-			allocatedmem.push_back(shared_ptr<uint8_t>(buf, default_delete<uint8_t[]>()));
-			stream.read((char *)buf, chunksz);
-			Metadata meta = { chunksz, buf };
-			metadata[chunktype] = meta;
-			break;
+			case ChunkTypes_Label:
+				while (true)
+				{
+					void* dataptr;
+					readdata(stream, dataptr);
+					uint32_t labelptr;
+					readdata(stream, labelptr);
+
+					if (dataptr == (void*)-1 && labelptr == UINT32_MAX)
+					{
+						break;
+					}
+
+					dataptr = (uint8_t*)dataptr + landtablebase;
+
+					if (reallocateddata.find(dataptr) != reallocateddata.end())
+					{
+						dataptr = reallocateddata[dataptr];
+					}
+
+					tmpaddr = (uint32_t)stream.tellg();
+					stream.seekg((uint32_t)chunkbase + labelptr);
+					string label = getstring(stream);
+					stream.seekg(tmpaddr);
+					labels1[dataptr] = label;
+					labels2[label] = dataptr;
+				}
+				break;
+			case ChunkTypes_Author:
+				author = getstring(stream);
+				break;
+			case ChunkTypes_Tool:
+				tool = getstring(stream);
+				break;
+			case ChunkTypes_Description:
+				description = getstring(stream);
+				break;
+			default:
+				auto* buf = new uint8_t[chunksz];
+				allocatedmem.push_back(shared_ptr<uint8_t>(buf, default_delete<uint8_t[]>()));
+				stream.read((char*)buf, chunksz);
+				Metadata meta = { chunksz, buf };
+				metadata[chunktype] = meta;
+				break;
 		}
 		stream.seekg(nextchunk);
 		readdata(stream, chunktype);
