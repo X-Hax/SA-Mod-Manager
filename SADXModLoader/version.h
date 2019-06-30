@@ -1,3 +1,5 @@
+#pragma once
+
 // Current version.
 // Make sure this is updated before every release!
 #define VERSION_MAJOR 3
