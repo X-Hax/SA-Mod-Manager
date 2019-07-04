@@ -21,6 +21,7 @@
     <ClCompile Include="FileMap.cpp" />
     <ClCompile Include="FileReplacement.cpp" />
     <ClCompile Include="FixFOV.cpp" />
+    <ClCompile Include="polybuff.cpp" />
     <ClCompile Include="prs.cpp" />
     <ClCompile Include="UiScale.cpp" />
     <ClCompile Include="MediaFns.cpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="FixFOV.h" />
     <ClInclude Include="git.h" />
     <ClInclude Include="include\SADXModInfo.h" />
+    <ClInclude Include="polybuff.h" />
     <ClInclude Include="prs.h" />
     <ClInclude Include="UiScale.h" />
     <ClInclude Include="include\d3d8types.h" />

@@ -1560,6 +1560,8 @@ static void __cdecl InitMods()
 		uiscale::setup_fmv_scale();
 	}
 
+	polybuff::rewrite_init();
+
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_us\\wma");

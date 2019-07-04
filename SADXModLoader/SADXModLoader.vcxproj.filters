@@ -66,6 +66,9 @@
     <ClCompile Include="ChunkSpecularFix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="polybuff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -147,6 +150,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChunkSpecularFix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="polybuff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
