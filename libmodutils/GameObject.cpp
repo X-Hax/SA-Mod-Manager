@@ -8,87 +8,97 @@ GameObject::GameObject(LoadObj flags, int index)
 	if (objData)
 	{
 		objData->DisplaySub = CallDisplay;
-		objData->DeleteSub = CallDelete;
-		objData->Data2 = this;
+		objData->DeleteSub  = CallDelete;
+		objData->Data2      = this;
 	}
 	initFromObj = false;
 }
 
-GameObject::GameObject(int index) : GameObject((LoadObj)0, index){}
-
-GameObject::GameObject(ObjectMaster *obj)
+GameObject::GameObject(int index)
+	: GameObject((LoadObj)0, index)
 {
-	objData = obj;
-	objData->MainSub = CallMain;
+}
+
+GameObject::GameObject(ObjectMaster* obj)
+{
+	objData             = obj;
+	objData->MainSub    = CallMain;
 	objData->DisplaySub = CallDisplay;
-	objData->DeleteSub = CallDelete;
-	objData->Data2 = this;
-	initFromObj = true;
+	objData->DeleteSub  = CallDelete;
+	objData->Data2      = this;
+	initFromObj         = true;
 }
 
-void GameObject::CallMain(ObjectMaster *obj)
+void GameObject::CallMain(ObjectMaster* obj)
 {
-	((GameObject *)obj->Data2)->Main();
+	((GameObject*)obj->Data2)->Main();
 }
 
-void GameObject::CallDisplay(ObjectMaster *obj)
+void GameObject::CallDisplay(ObjectMaster* obj)
 {
-	((GameObject *)obj->Data2)->Display();
+	((GameObject*)obj->Data2)->Display();
 }
 
-void GameObject::CallDelete(ObjectMaster *obj)
+void GameObject::CallDelete(ObjectMaster* obj)
 {
-	GameObject *cgo = (GameObject *)obj->Data2;
+	auto cgo = (GameObject*)obj->Data2;
 	cgo->Delete();
-	obj->Data2 = nullptr;
+	obj->Data2   = nullptr;
 	cgo->objData = nullptr;
 	if (cgo->initFromObj)
 		delete cgo;
 }
 
-void GameObject::Display(){}
+void GameObject::Display()
+{
+}
 
-void GameObject::Delete(){}
+void GameObject::Delete()
+{
+}
 
-SETDataUnion GameObject::GetSETData(){ return objData->SETData; }
+SETDataUnion GameObject::GetSETData() const { return objData->SETData; }
 
 GameObject::~GameObject()
 {
 	if (objData)
 	{
 		Delete();
-		objData->Data2 = nullptr;
+		objData->Data2     = nullptr;
 		objData->DeleteSub = nullptr;
 		DeleteObject_(objData);
 	}
 }
 
-GameEntity::GameEntity(int index) :GameObject(LoadObj_Data1, index){}
+GameEntity::GameEntity(int index)
+	: GameObject(LoadObj_Data1, index)
+{
+}
 
-EntityData1 *GameEntity::GetData() { return objData->Data1; }
+EntityData1* GameEntity::GetData() const { return objData->Data1; }
 
-char GameEntity::GetAction() { return GetData()->Action; }
+char GameEntity::GetAction() const { return GetData()->Action; }
 
-void GameEntity::SetAction(char action) { GetData()->Action = action; }
+void GameEntity::SetAction(char action) const { GetData()->Action = action; }
 
-short GameEntity::GetInvulnerableTime() { return GetData()->InvulnerableTime; }
+short GameEntity::GetInvulnerableTime() const { return GetData()->InvulnerableTime; }
 
-void GameEntity::SetInvulnerableTime(short time) { GetData()->InvulnerableTime = time; }
+void GameEntity::SetInvulnerableTime(short time) const { GetData()->InvulnerableTime = time; }
 
-char GameEntity::GetCharIndex() { return GetData()->CharIndex; }
+char GameEntity::GetCharIndex() const { return GetData()->CharIndex; }
 
-void GameEntity::SetCharIndex(char index) { GetData()->CharIndex = index; }
+void GameEntity::SetCharIndex(char index) const { GetData()->CharIndex = index; }
 
-Rotation3 &GameEntity::GetRotation() { return GetData()->Rotation; }
+Rotation3& GameEntity::GetRotation() const { return GetData()->Rotation; }
 
-void GameEntity::SetRotation(Rotation3 &rotation) { GetData()->Rotation = rotation; }
+void GameEntity::SetRotation(Rotation3& rotation) const { GetData()->Rotation = rotation; }
 
-NJS_VECTOR &GameEntity::GetPosition() { return GetData()->Position; }
+NJS_VECTOR& GameEntity::GetPosition() const { return GetData()->Position; }
 
-void GameEntity::SetPosition(NJS_VECTOR &position) { GetData()->Position = position; }
+void GameEntity::SetPosition(NJS_VECTOR& position) const { GetData()->Position = position; }
 
-NJS_VECTOR &GameEntity::GetScale() { return GetData()->Scale; }
+NJS_VECTOR& GameEntity::GetScale() const { return GetData()->Scale; }
 
-void GameEntity::SetScale(NJS_VECTOR &scale) { GetData()->Scale = scale; }
+void GameEntity::SetScale(NJS_VECTOR& scale) const { GetData()->Scale = scale; }
 
-CollisionInfo *GameEntity::GetCollisionInfo() { return GetData()->CollisionInfo; }
+CollisionInfo* GameEntity::GetCollisionInfo() const { return GetData()->CollisionInfo; }

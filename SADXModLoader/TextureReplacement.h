@@ -17,7 +17,7 @@ namespace texpack
 	 * \param out A vector to populate.
 	 * \return \c true on success.
 	 */
-	bool parse_index(const std:: string& path, std::vector<TexPackEntry>& out);
+	bool parse_index(const std::string& path, std::vector<TexPackEntry>& out);
 
 	/**
 	 * \brief Initializes function hooks for texture replacement.

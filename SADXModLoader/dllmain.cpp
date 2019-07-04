@@ -53,50 +53,46 @@ static HINSTANCE g_hinstDll = nullptr;
  * Show an error message indicating that this isn't the 2004 US version.
  * This function also calls ExitProcess(1).
  */
-static void ShowNon2004USError(void)
+static void ShowNon2004USError()
 {
 	MessageBox(nullptr, L"This copy of Sonic Adventure DX is not the 2004 US version.\n\n"
-		L"Please obtain the EXE file from the 2004 US version and try again.",
-		L"SADX Mod Loader", MB_ICONERROR);
+	           L"Please obtain the EXE file from the 2004 US version and try again.",
+	           L"SADX Mod Loader", MB_ICONERROR);
 	ExitProcess(1);
 }
 
 /**
  * Hook SADX's CreateFileA() import.
  */
-static void HookCreateFileA(void)
+static void HookCreateFileA()
 {
 	ULONG ulSize = 0;
-	PROC pNewFunction;
-	PROC pActualFunction;
-
-	PCSTR pcszModName;
 
 	// SADX module handle. (main executable)
 	HMODULE hModule = GetModuleHandle(nullptr);
-	PIMAGE_IMPORT_DESCRIPTOR pImportDesc;
 
-	pNewFunction = (PROC)MyCreateFileA;
+	PROC pNewFunction = (PROC)MyCreateFileA;
 	// Get the actual CreateFileA() using GetProcAddress().
-	pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "CreateFileA");
+	PROC pActualFunction = GetProcAddress(GetModuleHandle(L"Kernel32.dll"), "CreateFileA");
 	assert(pActualFunction != nullptr);
 
-	pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR)ImageDirectoryEntryToData(
-		hModule, TRUE, IMAGE_DIRECTORY_ENTRY_IMPORT, &ulSize);
+	auto pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR)ImageDirectoryEntryToData(hModule, TRUE, IMAGE_DIRECTORY_ENTRY_IMPORT, &ulSize);
 
 	if (pImportDesc == nullptr)
+	{
 		return;
+	}
 
 	for (; pImportDesc->Name; pImportDesc++)
 	{
 		// get the module name
-		pcszModName = (PCSTR)((PBYTE)hModule + pImportDesc->Name);
+		auto pcszModName = (PCSTR)((PBYTE)hModule + pImportDesc->Name);
 
 		// check if the module is kernel32.dll
 		if (pcszModName != nullptr && _stricmp(pcszModName, "Kernel32.dll") == 0)
 		{
 			// get the module
-			PIMAGE_THUNK_DATA pThunk = (PIMAGE_THUNK_DATA)((PBYTE)hModule + pImportDesc->FirstThunk);
+			auto pThunk = (PIMAGE_THUNK_DATA)((PBYTE)hModule + pImportDesc->FirstThunk);
 
 			for (; pThunk->u1.Function; pThunk++)
 			{
@@ -129,20 +125,22 @@ static void SetRDataWriteProtection(bool protect)
 	HMODULE hModule = GetModuleHandle(nullptr);
 
 	// Get the PE header.
-	const IMAGE_NT_HEADERS *const pNtHdr = ImageNtHeader(hModule);
+	const IMAGE_NT_HEADERS* const pNtHdr = ImageNtHeader(hModule);
 	// Section headers are located immediately after the PE header.
-	const IMAGE_SECTION_HEADER *pSectionHdr = reinterpret_cast<const IMAGE_SECTION_HEADER*>(pNtHdr+1);
+	const auto* pSectionHdr = reinterpret_cast<const IMAGE_SECTION_HEADER*>(pNtHdr + 1);
 
 	// Find the .rdata section.
 	for (unsigned int i = pNtHdr->FileHeader.NumberOfSections; i > 0; i--, pSectionHdr++)
 	{
 		if (strncmp(reinterpret_cast<const char*>(pSectionHdr->Name), ".rdata", sizeof(pSectionHdr->Name)) != 0)
+		{
 			continue;
+		}
 
 		// Found the .rdata section.
 		// Verify that this matches SADX.
 		if (pSectionHdr->VirtualAddress != 0x3DB000 ||
-			pSectionHdr->Misc.VirtualSize != 0xB6B88)
+		    pSectionHdr->Misc.VirtualSize != 0xB6B88)
 		{
 			// Not SADX, or the wrong version.
 			ShowNon2004USError();
@@ -189,36 +187,48 @@ static void __cdecl ProcessCodes()
 	RaiseEvents(modFrameEvents);
 
 	const int numrows = (VerticalResolution / (int)DebugFontSize);
-	int pos;
-	if ((int)msgqueue.size() <= numrows - 1)
-		pos = (numrows - 1) - (msgqueue.size() - 1);
-	else
-		pos = 0;
-	if (msgqueue.size() > 0)
-		for (deque<message>::iterator iter = msgqueue.begin();
-			iter != msgqueue.end(); ++iter)
+	int pos = (int)msgqueue.size() <= numrows - 1 ? numrows - 1 - (msgqueue.size() - 1) : 0;
+
+	if (msgqueue.empty())
+	{
+		return;
+	}
+
+	for (auto iter = msgqueue.begin();
+	     iter != msgqueue.end(); ++iter)
 	{
 		int c = -1;
+		
 		if (300 - iter->time < LengthOfArray(fadecolors))
+		{
 			c = fadecolors[LengthOfArray(fadecolors) - (300 - iter->time) - 1];
+		}
+
 		SetDebugFontColor((int)c);
-		DisplayDebugString(pos++, (char *)iter->text.c_str());
+		DisplayDebugString(pos++, (char*)iter->text.c_str());
 		if (++iter->time >= 300)
 		{
 			msgqueue.pop_front();
-			if (msgqueue.size() == 0)
+
+			if (msgqueue.empty())
+			{
 				break;
+			}
+
 			iter = msgqueue.begin();
 		}
+
 		if (pos == numrows)
+		{
 			break;
+		}
 	}
 }
 
 
 static bool dbgConsole, dbgScreen;
 // File for logging debugging output.
-static FILE *dbgFile = nullptr;
+static FILE* dbgFile = nullptr;
 
 /**
  * SADX Debug Output function.
@@ -226,15 +236,15 @@ static FILE *dbgFile = nullptr;
  * @param ... Arguments.
  * @return Return value from vsnprintf().
  */
-static int __cdecl SADXDebugOutput(const char *Format, ...)
+static int __cdecl SADXDebugOutput(const char* Format, ...)
 {
 	va_list ap;
 	va_start(ap, Format);
 	int result = vsnprintf(nullptr, 0, Format, ap) + 1;
 	va_end(ap);
-	char *buf = new char[result+1];
+	char* buf = new char[result + 1];
 	va_start(ap, Format);
-	result = vsnprintf(buf, result+1, Format, ap);
+	result = vsnprintf(buf, result + 1, Format, ap);
 	va_end(ap);
 
 	// Console output.
@@ -251,10 +261,10 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 		message msg = { { buf }, 0 };
 		// Remove trailing newlines if present.
 		while (!msg.text.empty() &&
-			(msg.text[msg.text.size()-1] == '\n' ||
-			 msg.text[msg.text.size()-1] == '\r'))
+		       (msg.text[msg.text.size() - 1] == '\n' ||
+		        msg.text[msg.text.size() - 1] == '\r'))
 		{
-			msg.text.resize(msg.text.size()-1);
+			msg.text.resize(msg.text.size() - 1);
 		}
 		msgqueue.push_back(msg);
 	}
@@ -264,7 +274,7 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 	{
 		// SADX prints text in Shift-JIS.
 		// Convert it to UTF-8 before writing it to the debug file.
-		char *utf8 = SJIStoUTF8(buf);
+		char* utf8 = SJIStoUTF8(buf);
 		if (utf8)
 		{
 			fputs(utf8, dbgFile);
@@ -278,8 +288,24 @@ static int __cdecl SADXDebugOutput(const char *Format, ...)
 }
 
 enum windowmodes { windowed, fullscreen };
-struct windowsize { int x; int y; int width; int height; };
-struct windowdata { int x; int y; int width; int height; DWORD style; DWORD exStyle; };
+
+struct windowsize
+{
+	int x;
+	int y;
+	int width;
+	int height;
+};
+
+struct windowdata
+{
+	int x;
+	int y;
+	int width;
+	int height;
+	DWORD style;
+	DWORD exStyle;
+};
 
 // Used for borderless windowed mode.
 // Defines the size of the outer-window which wraps the game window and draws the background.
@@ -292,11 +318,12 @@ static windowdata outerSizes[] = {
 // Defines the size of the inner-window on which the game is rendered.
 static windowsize innerSizes[2] = {};
 
-static HWND        accelWindow = nullptr;
-static windowmodes windowMode  = windowmodes::windowed;
-static HACCEL      accelTable  = nullptr;
+static HWND accelWindow       = nullptr;
+static windowmodes windowMode = windowmodes::windowed;
+static HACCEL accelTable      = nullptr;
 
 DataPointer(int, dword_3D08534, 0x3D08534);
+
 static void __cdecl HandleWindowMessages_r()
 {
 	MSG Msg; // [sp+4h] [bp-1Ch]@1
@@ -377,7 +404,7 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			{
 				break;
 			}
-			
+
 			gfx.DrawImage(backgroundImage, 0, 0, w, h);
 			return 0;
 		}
@@ -462,14 +489,17 @@ static DWORD  last_exStyle = 0;
 
 static void enable_fullscreen_mode(HWND handle)
 {
-	IsWindowed = false;
-	last_width = HorizontalResolution;
+	IsWindowed  = false;
+	last_width  = HorizontalResolution;
 	last_height = VerticalResolution;
 
 	GetWindowRect(handle, &last_rect);
-	last_style = GetWindowLongA(handle, GWL_STYLE);
+
+	last_style   = GetWindowLongA(handle, GWL_STYLE);
 	last_exStyle = GetWindowLongA(handle, GWL_EXSTYLE);
+
 	SetWindowLongA(handle, GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
+
 	while (ShowCursor(FALSE) > 0);
 }
 
@@ -478,21 +508,25 @@ static void enable_windowed_mode(HWND handle)
 	SetWindowLongA(handle, GWL_STYLE, last_style);
 	SetWindowLongA(handle, GWL_EXSTYLE, last_exStyle);
 
-	auto width = last_rect.right - last_rect.left;
+	auto width  = last_rect.right - last_rect.left;
 	auto height = last_rect.bottom - last_rect.top;
 
 	if (width <= 0 || height <= 0)
 	{
 		last_rect = {};
-		last_rect.right = 640;
+
+		last_rect.right  = 640;
 		last_rect.bottom = 480;
+
 		AdjustWindowRectEx(&last_rect, last_style, false, last_exStyle);
-		width = last_rect.right - last_rect.left;
+
+		width  = last_rect.right - last_rect.left;
 		height = last_rect.bottom - last_rect.top;
 	}
 
 	SetWindowPos(handle, HWND_NOTOPMOST, last_rect.left, last_rect.top, width, height, 0);
 	IsWindowed = true;
+
 	while (ShowCursor(TRUE) < 0);
 }
 
@@ -568,16 +602,18 @@ LRESULT __stdcall WndProc_hook(HWND handle, UINT Msg, WPARAM wParam, LPARAM lPar
 }
 
 wstring borderimg = L"mods\\Border.png";
+
 static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 {
 	// Primary window class name.
-	const char *const lpszClassName = GetWindowClassName();
+	const char* const lpszClassName = GetWindowClassName();
 
 	// Hook default return of SADX's window procedure to force it to return DefWindowProc
 	WriteJump(reinterpret_cast<void*>(0x00789E48), WndProc_hook);
 
 	// Primary window class for SADX.
-	WNDCLASSA v8; // [sp+4h] [bp-28h]@1
+	WNDCLASSA v8 {}; // [sp+4h] [bp-28h]@1
+
 	v8.style         = 0;
 	v8.lpfnWndProc   = (windowResize ? WndProc_Resizable : WndProc);
 	v8.cbClsExtra    = 0;
@@ -588,20 +624,25 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 	v8.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	v8.lpszMenuName  = nullptr;
 	v8.lpszClassName = lpszClassName;
+
 	if (!RegisterClassA(&v8))
+	{
 		return;
+	}
 
 	RECT windowRect;
-	windowRect.top = 0;
+
+	windowRect.top  = 0;
 	windowRect.left = 0;
+
 	if (customWindowSize)
 	{
-		windowRect.right = customWindowWidth;
+		windowRect.right  = customWindowWidth;
 		windowRect.bottom = customWindowHeight;
 	}
 	else
 	{
-		windowRect.right = HorizontalResolution;
+		windowRect.right  = HorizontalResolution;
 		windowRect.bottom = VerticalResolution;
 	}
 
@@ -619,9 +660,12 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 	if (screenNum > 0)
 	{
 		if (screenBounds.size() < screenNum)
+		{
 			screenNum = 1;
+		}
 
 		RECT screenSize = screenBounds[screenNum - 1];
+
 		wsX = screenX = screenSize.left;
 		wsY = screenY = screenSize.top;
 		wsW = screenW = screenSize.right - screenSize.left;
@@ -633,6 +677,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		screenY = GetSystemMetrics(SM_YVIRTUALSCREEN);
 		screenW = GetSystemMetrics(SM_CXVIRTUALSCREEN);
 		screenH = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+
 		wsX = 0;
 		wsY = 0;
 		wsW = GetSystemMetrics(SM_CXSCREEN);
@@ -644,46 +689,50 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 	if (borderlessWindow)
 	{
 		if (windowResize)
+		{
 			outerSizes[windowed].style |= WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX;
+		}
 
 		AdjustWindowRectEx(&windowRect, outerSizes[windowed].style, false, 0);
 
-		outerSizes[windowed].width = windowRect.right - windowRect.left;
+		outerSizes[windowed].width  = windowRect.right - windowRect.left;
 		outerSizes[windowed].height = windowRect.bottom - windowRect.top;
 
 		outerSizes[windowed].x = wsX + ((wsW - outerSizes[windowed].width) / 2);
 		outerSizes[windowed].y = wsY + ((wsH - outerSizes[windowed].height) / 2);
 
-		outerSizes[fullscreen].x = screenX;
-		outerSizes[fullscreen].y = screenY;
-		outerSizes[fullscreen].width = screenW;
+		outerSizes[fullscreen].x      = screenX;
+		outerSizes[fullscreen].y      = screenY;
+		outerSizes[fullscreen].width  = screenW;
 		outerSizes[fullscreen].height = screenH;
 
 		if (customWindowSize)
 		{
 			float num = min((float)customWindowWidth / (float)HorizontalResolution, (float)customWindowHeight / (float)VerticalResolution);
-			innerSizes[windowed].width = (int)((float)HorizontalResolution * num);
+
+			innerSizes[windowed].width  = (int)((float)HorizontalResolution * num);
 			innerSizes[windowed].height = (int)((float)VerticalResolution * num);
-			innerSizes[windowed].x = (customWindowWidth - innerSizes[windowed].width) / 2;
-			innerSizes[windowed].y = (customWindowHeight - innerSizes[windowed].height) / 2;
+			innerSizes[windowed].x      = (customWindowWidth - innerSizes[windowed].width) / 2;
+			innerSizes[windowed].y      = (customWindowHeight - innerSizes[windowed].height) / 2;
 		}
 		else
 		{
-			innerSizes[windowed].width = HorizontalResolution;
+			innerSizes[windowed].width  = HorizontalResolution;
 			innerSizes[windowed].height = VerticalResolution;
-			innerSizes[windowed].x = 0;
-			innerSizes[windowed].y = 0;
+			innerSizes[windowed].x      = 0;
+			innerSizes[windowed].y      = 0;
 		}
 
 		if (scaleScreen)
 		{
 			float num = min((float)screenW / (float)HorizontalResolution, (float)screenH / (float)VerticalResolution);
-			innerSizes[fullscreen].width = (int)((float)HorizontalResolution * num);
+
+			innerSizes[fullscreen].width  = (int)((float)HorizontalResolution * num);
 			innerSizes[fullscreen].height = (int)((float)VerticalResolution * num);
 		}
 		else
 		{
-			innerSizes[fullscreen].width = HorizontalResolution;
+			innerSizes[fullscreen].width  = HorizontalResolution;
 			innerSizes[fullscreen].height = VerticalResolution;
 		}
 
@@ -693,7 +742,10 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		windowMode = IsWindowed ? windowed : fullscreen;
 
 		if (!FileExists(borderimg))
+		{
 			borderimg = L"mods\\Border_Default.png";
+		}
+
 		if (FileExists(borderimg))
 		{
 			Gdiplus::GdiplusStartupInput gdiplusStartupInput;
@@ -717,28 +769,32 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		w.lpszClassName = "WrapperWindow";
 
 		if (!RegisterClassA(&w))
+		{
 			return;
+		}
 
 		const auto& outerSize = outerSizes[windowMode];
 
 		accelWindow = CreateWindowExA(outerSize.exStyle,
-			"WrapperWindow",
-			lpszClassName,
-			outerSize.style,
-			outerSize.x, outerSize.y, outerSize.width, outerSize.height,
-			nullptr, nullptr, hInstance, nullptr);
+		                              "WrapperWindow",
+		                              lpszClassName,
+		                              outerSize.style,
+		                              outerSize.x, outerSize.y, outerSize.width, outerSize.height,
+		                              nullptr, nullptr, hInstance, nullptr);
 
 		if (accelWindow == nullptr)
+		{
 			return;
+		}
 
 		const auto& innerSize = innerSizes[windowMode];
 
 		WindowHandle = CreateWindowExA(0,
-			lpszClassName,
-			lpszClassName,
-			WS_CHILD | WS_VISIBLE,
-			innerSize.x, innerSize.y, innerSize.width, innerSize.height,
-			accelWindow, nullptr, hInstance, nullptr);
+		                               lpszClassName,
+		                               lpszClassName,
+		                               WS_CHILD | WS_VISIBLE,
+		                               innerSize.x, innerSize.y, innerSize.width, innerSize.height,
+		                               accelWindow, nullptr, hInstance, nullptr);
 
 		SetFocus(WindowHandle);
 		ShowWindow(accelWindow, nCmdShow);
@@ -751,7 +807,7 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 	}
 	else
 	{
-		DWORD dwStyle = WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
+		DWORD dwStyle   = WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
 		DWORD dwExStyle = 0;
 
 		if (windowResize)
@@ -760,16 +816,18 @@ static void CreateSADXWindow_r(HINSTANCE hInstance, int nCmdShow)
 		}
 
 		AdjustWindowRectEx(&windowRect, dwStyle, false, dwExStyle);
+
 		int w = windowRect.right - windowRect.left;
 		int h = windowRect.bottom - windowRect.top;
 		int x = wsX + ((wsW - w) / 2);
 		int y = wsY + ((wsH - h) / 2);
+
 		WindowHandle = CreateWindowExA(dwExStyle,
-			lpszClassName,
-			lpszClassName,
-			dwStyle,
-			x, y, w, h,
-			nullptr, nullptr, hInstance, nullptr);
+		                               lpszClassName,
+		                               lpszClassName,
+		                               dwStyle,
+		                               x, y, w, h,
+		                               nullptr, nullptr, hInstance, nullptr);
 
 		if (!IsWindowed)
 		{
@@ -800,43 +858,48 @@ static __declspec(naked) void CreateSADXWindow_asm()
 	}
 }
 
-static unordered_map<unsigned char, unordered_map<int, StartPosition> > StartPositions;
-static void RegisterStartPosition(unsigned char character, const StartPosition &position)
+static unordered_map<unsigned char, unordered_map<int, StartPosition>> StartPositions;
+
+static void RegisterStartPosition(unsigned char character, const StartPosition& position)
 {
 	auto iter = StartPositions.find(character);
+
 	if (iter == StartPositions.end())
 	{
 		// No start positions registered for this character.
 		// Initialize it with the default start positions.
-		const StartPosition *origlist;
+		const StartPosition* origlist;
 		switch (character)
 		{
-		case Characters_Sonic:
-			origlist = SonicStartArray;
-			break;
-		case Characters_Tails:
-			origlist = TailsStartArray;
-			break;
-		case Characters_Knuckles:
-			origlist = KnucklesStartArray;
-			break;
-		case Characters_Amy:
-			origlist = AmyStartArray;
-			break;
-		case Characters_Gamma:
-			origlist = GammaStartArray;
-			break;
-		case Characters_Big:
-			origlist = BigStartArray;
-			break;
-		default:
-			return;
+			case Characters_Sonic:
+				origlist = SonicStartArray;
+				break;
+			case Characters_Tails:
+				origlist = TailsStartArray;
+				break;
+			case Characters_Knuckles:
+				origlist = KnucklesStartArray;
+				break;
+			case Characters_Amy:
+				origlist = AmyStartArray;
+				break;
+			case Characters_Gamma:
+				origlist = GammaStartArray;
+				break;
+			case Characters_Big:
+				origlist = BigStartArray;
+				break;
+			default:
+				return;
 		}
-		unordered_map<int, StartPosition> &newlist = StartPositions[character];
+
+		unordered_map<int, StartPosition>& newlist = StartPositions[character];
+
 		for (; origlist->LevelID != LevelIDs_Invalid; origlist++)
 		{
 			newlist[levelact(origlist->LevelID, origlist->ActID)] = *origlist;
 		}
+
 		// Update the start position for the specified level.
 		newlist[levelact(position.LevelID, position.ActID)] = position;
 	}
@@ -852,34 +915,42 @@ static void ClearStartPositionList(unsigned char character)
 {
 	switch (character)
 	{
-	case Characters_Sonic:
-	case Characters_Tails:
-	case Characters_Knuckles:
-	case Characters_Amy:
-	case Characters_Gamma:
-	case Characters_Big:
-		break;
-	default:
-		return;
+		case Characters_Sonic:
+		case Characters_Tails:
+		case Characters_Knuckles:
+		case Characters_Amy:
+		case Characters_Gamma:
+		case Characters_Big:
+			break;
+		default:
+			return;
 	}
+
 	StartPositions[character].clear();
 }
 
-static unordered_map<unsigned char, unordered_map<int, FieldStartPosition> > FieldStartPositions;
-static void RegisterFieldStartPosition(unsigned char character, const FieldStartPosition &position)
+static unordered_map<unsigned char, unordered_map<int, FieldStartPosition>> FieldStartPositions;
+
+static void RegisterFieldStartPosition(unsigned char character, const FieldStartPosition& position)
 {
-	if (character >= Characters_MetalSonic) return;
+	if (character >= Characters_MetalSonic)
+	{
+		return;
+	}
+
 	auto iter = FieldStartPositions.find(character);
+
 	if (iter == FieldStartPositions.end())
 	{
 		// No field start positions registered for this character.
 		// Initialize it with the default field start positions.
-		const FieldStartPosition *origlist = StartPosList_FieldReturn[character];
-		unordered_map<int, FieldStartPosition> &newlist = FieldStartPositions[character];
+		const FieldStartPosition* origlist              = StartPosList_FieldReturn[character];
+		unordered_map<int, FieldStartPosition>& newlist = FieldStartPositions[character];
 		for (; origlist->LevelID != LevelIDs_Invalid; origlist++)
 		{
 			newlist[levelact(origlist->LevelID, origlist->FieldID)] = *origlist;
 		}
+
 		// Update the field start position for the specified level.
 		newlist[levelact(position.LevelID, position.FieldID)] = position;
 	}
@@ -893,21 +964,26 @@ static void RegisterFieldStartPosition(unsigned char character, const FieldStart
 
 static void ClearFieldStartPositionList(unsigned char character)
 {
-	if (character >= Characters_MetalSonic) return;
+	if (character >= Characters_MetalSonic)
+	{
+		return;
+	}
+
 	FieldStartPositions[character].clear();
 }
 
 static unordered_map<int, PathDataPtr> Paths;
 static bool PathsInitialized;
-static void RegisterPathList(const PathDataPtr &paths)
+
+static void RegisterPathList(const PathDataPtr& paths)
 {
 	if (!PathsInitialized)
 	{
-		const PathDataPtr *oldlist = PathDataPtrs;
-		for (; oldlist->LevelAct != 0xFFFF; oldlist++)
+		for (const PathDataPtr* oldlist = PathDataPtrs; oldlist->LevelAct != 0xFFFF; oldlist++)
 		{
 			Paths[oldlist->LevelAct] = *oldlist;
 		}
+
 		PathsInitialized = true;
 	}
 	Paths[paths.LevelAct] = paths;
@@ -919,17 +995,23 @@ static void ClearPathListList()
 	PathsInitialized = true;
 }
 
-static unordered_map<unsigned char, vector<PVMEntry> > CharacterPVMs;
-static void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
+static unordered_map<unsigned char, vector<PVMEntry>> CharacterPVMs;
+
+static void RegisterCharacterPVM(unsigned char character, const PVMEntry& pvm)
 {
-	if (character > Characters_MetalSonic) return;
+	if (character > Characters_MetalSonic)
+	{
+		return;
+	}
+
 	auto iter = CharacterPVMs.find(character);
+
 	if (iter == CharacterPVMs.end())
 	{
 		// Character PVM vector has not been created yet.
 		// Initialize it with the texture list.
-		const PVMEntry *origlist = CharacterPVMEntries[character];
-		vector<PVMEntry> &newlist = CharacterPVMs[character];
+		const PVMEntry* origlist  = CharacterPVMEntries[character];
+		vector<PVMEntry>& newlist = CharacterPVMs[character];
 		for (; origlist->TexList != nullptr; origlist++)
 		{
 			newlist.push_back(*origlist);
@@ -947,17 +1029,22 @@ static void RegisterCharacterPVM(unsigned char character, const PVMEntry &pvm)
 
 static void ClearCharacterPVMList(unsigned char character)
 {
-	if (character > Characters_MetalSonic) return;
+	if (character > Characters_MetalSonic)
+	{
+		return;
+	}
+
 	CharacterPVMs[character].clear();
 }
 
 static vector<PVMEntry> CommonObjectPVMs;
 static bool CommonObjectPVMsInitialized;
-static void RegisterCommonObjectPVM(const PVMEntry &pvm)
+
+static void RegisterCommonObjectPVM(const PVMEntry& pvm)
 {
 	if (!CommonObjectPVMsInitialized)
 	{
-		const PVMEntry *oldlist = &OBJ_REGULAR_TEXLISTS[0];
+		const PVMEntry* oldlist = &OBJ_REGULAR_TEXLISTS[0];
 		for (; oldlist->TexList != nullptr; oldlist++)
 		{
 			CommonObjectPVMs.push_back(*oldlist);
@@ -974,6 +1061,7 @@ static void ClearCommonObjectPVMList()
 }
 
 static unsigned char trialcharacters[] = { 0, 0xFFu, 1, 2, 0xFFu, 3, 5, 4, 6 };
+
 static inline unsigned char gettrialcharacter(unsigned char character)
 {
 	if (character >= LengthOfArray(trialcharacters))
@@ -981,18 +1069,24 @@ static inline unsigned char gettrialcharacter(unsigned char character)
 	return trialcharacters[character];
 }
 
-static unordered_map<unsigned char, vector<TrialLevelListEntry> > _TrialLevels;
-static void RegisterTrialLevel(unsigned char character, const TrialLevelListEntry &level)
+static unordered_map<unsigned char, vector<TrialLevelListEntry>> _TrialLevels;
+
+static void RegisterTrialLevel(unsigned char character, const TrialLevelListEntry& level)
 {
 	character = gettrialcharacter(character);
-	if (character == 0xFF) return;
+
+	if (character == 0xFF)
+	{
+		return;
+	}
+
 	auto iter = _TrialLevels.find(character);
 	if (iter == _TrialLevels.end())
 	{
 		// Trial level vector has not been registered yet.
 		// Initialize it with the standard trial level list.
-		const TrialLevelList *const origlist = &TrialLevels[character];
-		vector<TrialLevelListEntry> &newlist = _TrialLevels[character];
+		const TrialLevelList* const origlist = &TrialLevels[character];
+		vector<TrialLevelListEntry>& newlist = _TrialLevels[character];
 		newlist.resize(origlist->Count);
 		memcpy(newlist.data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
 		// Add the new trial level.
@@ -1009,22 +1103,33 @@ static void RegisterTrialLevel(unsigned char character, const TrialLevelListEntr
 static void ClearTrialLevelList(unsigned char character)
 {
 	character = gettrialcharacter(character);
-	if (character == 0xFF) return;
+
+	if (character == 0xFF)
+	{
+		return;
+	}
+
 	_TrialLevels[character].clear();
 }
 
-static unordered_map<unsigned char, vector<TrialLevelListEntry> > _TrialSubgames;
-static void RegisterTrialSubgame(unsigned char character, const TrialLevelListEntry &level)
+static unordered_map<unsigned char, vector<TrialLevelListEntry>> _TrialSubgames;
+
+static void RegisterTrialSubgame(unsigned char character, const TrialLevelListEntry& level)
 {
 	character = gettrialcharacter(character);
-	if (character == 0xFF) return;
+	
+	if (character == 0xFF)
+	{
+		return;
+	}
+
 	auto iter = _TrialSubgames.find(character);
 	if (iter == _TrialSubgames.end())
 	{
 		// Trial subgame vector has not been registered yet.
 		// Initialize it with the standard trial subgame list.
-		const TrialLevelList *const origlist = &TrialSubgames[character];
-		vector<TrialLevelListEntry> &newlist = _TrialSubgames[character];
+		const TrialLevelList* const origlist = &TrialSubgames[character];
+		vector<TrialLevelListEntry>& newlist = _TrialSubgames[character];
 		newlist.resize(origlist->Count);
 		memcpy(newlist.data(), origlist->Levels, sizeof(TrialLevelListEntry) * origlist->Count);
 		// Add the new trial subgame.
@@ -1041,18 +1146,25 @@ static void RegisterTrialSubgame(unsigned char character, const TrialLevelListEn
 static void ClearTrialSubgameList(unsigned char character)
 {
 	character = gettrialcharacter(character);
-	if (character == 0xFF) return;
+
+	if (character == 0xFF)
+	{
+		return;
+	}
+
 	_TrialSubgames[character].clear();
 }
 
-static const char *mainsavepath = "SAVEDATA";
-static const char *GetMainSavePath()
+static const char* mainsavepath = "SAVEDATA";
+
+static const char* GetMainSavePath()
 {
 	return mainsavepath;
 }
 
-static const char *chaosavepath = "SAVEDATA";
-static const char *GetChaoSavePath()
+static const char* chaosavepath = "SAVEDATA";
+
+static const char* GetChaoSavePath()
 {
 	return chaosavepath;
 }
@@ -1062,13 +1174,14 @@ const char* __cdecl GetReplaceablePath(const char* path)
 	return sadx_fileMap.replaceFile(path);
 }
 
-void _ReplaceFile(const char *src, const char *dst)
+void _ReplaceFile(const char* src, const char* dst)
 {
 	sadx_fileMap.addReplaceFile(src, dst);
 }
 
 string windowtitle;
-void SetWindowTitle(const char *title)
+
+void SetWindowTitle(const char* title)
 {
 	if (WindowHandle)
 		SetWindowTextA(WindowHandle, title);
@@ -1077,7 +1190,8 @@ void SetWindowTitle(const char *title)
 }
 
 static vector<SoundList> _SoundLists;
-int RegisterSoundList(const SoundList &list)
+
+int RegisterSoundList(const SoundList& list)
 {
 	if (_SoundLists.empty())
 	{
@@ -1085,13 +1199,14 @@ int RegisterSoundList(const SoundList &list)
 		memcpy(_SoundLists.data(), SoundLists, sizeof(SoundList) * SoundLists_Length);
 	}
 	_SoundLists.push_back(list);
-	SoundLists_Cust = _SoundLists.data();
+	SoundLists_Cust        = _SoundLists.data();
 	SoundLists_Cust_Length = _SoundLists.size();
 	return _SoundLists.size() - 1;
 }
 
 static vector<MusicInfo> _MusicList;
-int RegisterMusicFile(const MusicInfo &track)
+
+int RegisterMusicFile(const MusicInfo& track)
 {
 	if (_MusicList.empty())
 	{
@@ -1128,7 +1243,7 @@ static const HelperFunctions helperFunctions =
 	&RegisterMusicFile
 };
 
-static const char *const dlldatakeys[] = {
+static const char* const dlldatakeys[] = {
 	"CHRMODELSData",
 	"ADV00MODELSData",
 	"ADV01MODELSData",
@@ -1143,19 +1258,16 @@ static const char *const dlldatakeys[] = {
 
 void __cdecl WriteSaveFile_r()
 {
-	char v0; // bl@1
-	SaveFileInfo *v2; // edi@8
 	char v3[MAX_PATH]; // esi@8
-	FILE *v5; // edi@20
 
-	v0 = 1;
+	char v0 = 1;
 	*(char *)0x3ABDF7A = 0;
 	*(char *)0x3B291B1 = 0;
 	if (!*(int *)0x3B29198)
 	{
 		if (*(unsigned char *)0x3B291B2 > 4u)
 		{
-			*(int *)0x3B291A4 = 0;
+			*(int *)0x3B291A4  = 0;
 			*(char *)0x3B291AD = 0;
 			*(char *)0x3ABDF76 = 0;
 			*(char *)0x3B22E1E = 0;
@@ -1169,7 +1281,7 @@ void __cdecl WriteSaveFile_r()
 			*(char *)0x3B291B3 = 0;
 			if ((unsigned __int8)*(char *)0x3B290E0 > 98u)
 				return;
-			v2 = SaveFiles->Next;
+			SaveFileInfo* v2 = SaveFiles->Next;
 			snprintf(v3, MAX_PATH, "SonicDX%02d.snc", 1);
 			if (v2)
 				while (1)
@@ -1203,12 +1315,12 @@ void __cdecl WriteSaveFile_r()
 			lstrlenA(*(char **)0x3B290DC);
 			snprintf(v3, MAX_PATH, "./%s/%s", mainsavepath, *(char **)0x3B290DC);
 		}
-		v5 = fopen(v3, "wb");
+		FILE* v5 = fopen(v3, "wb");
 		fwrite((void *)0x3B2B3A8, sizeof(SaveFileData), 1, v5);
 		*(char *)0x3B290E8 = 0;
 		InputThing__Ctor();
 		*(char *)0x3B291B2 = 0;
-		*(int *)0x3B291A4 = 0;
+		*(int *)0x3B291A4  = 0;
 		*(char *)0x3ABDF7A = 0;
 		*(char *)0x3B291AD = 0;
 		*(char *)0x3ABDF76 = 0;
@@ -1224,6 +1336,7 @@ int __cdecl FixEKey(int i)
 }
 
 const auto loc_794566 = (void*)0x00794566;
+
 void __declspec(naked) PolyBuff_Init_FixVBuffParams()
 {
 	__asm
@@ -1240,7 +1353,7 @@ static void __cdecl InitMods()
 	// Hook present function to handle device lost/reset states
 	direct3d::init();
 
-	FILE *f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
+	FILE* f_ini = _wfopen(L"mods\\SADXModLoader.ini", L"r");
 	if (!f_ini)
 	{
 		MessageBox(nullptr, L"mods\\SADXModLoader.ini could not be read!", L"SADX Mod Loader", MB_ICONWARNING);
@@ -1266,7 +1379,7 @@ static void __cdecl InitMods()
 	transform(exefilename.begin(), exefilename.end(), exefilename.begin(), ::towlower);
 
 	// Process the main Mod Loader settings.
-	const IniGroup *settings = ini->getGroup("");
+	const IniGroup* settings = ini->getGroup("");
 
 	if (settings->getBool("DebugConsole"))
 	{
@@ -1290,15 +1403,17 @@ static void __cdecl InitMods()
 	if (dbgConsole || dbgScreen || dbgFile)
 	{
 		WriteJump((void *)PrintDebug, (void *)SADXDebugOutput);
+
 		PrintDebug("SADX Mod Loader v" VERSION_STRING " (API version %d), built " __TIMESTAMP__ "\n",
-			ModLoaderVer);
-#ifdef MODLOADER_GIT_VERSION
-#ifdef MODLOADER_GIT_DESCRIBE
+		           ModLoaderVer);
+
+	#ifdef MODLOADER_GIT_VERSION
+		#ifdef MODLOADER_GIT_DESCRIBE
 		PrintDebug("%s, %s\n", MODLOADER_GIT_VERSION, MODLOADER_GIT_DESCRIBE);
-#else /* !MODLOADER_GIT_DESCRIBE */
-		PrintDebug("%s\n", MODLOADER_GIT_VERSION);
-#endif /* MODLOADER_GIT_DESCRIBE */
-#endif /* MODLOADER_GIT_VERSION */
+		#else /* !MODLOADER_GIT_DESCRIBE */
+			PrintDebug("%s\n", MODLOADER_GIT_VERSION);
+		#endif /* MODLOADER_GIT_DESCRIBE */
+	#endif /* MODLOADER_GIT_VERSION */
 	}
 
 	WriteJump((void *)0x789E50, CreateSADXWindow_asm); // override window creation function
@@ -1313,14 +1428,14 @@ static void __cdecl InitMods()
 	if (hres > 0)
 	{
 		HorizontalResolution = hres;
-		HorizontalStretch = HorizontalResolution / 640.0f;
+		HorizontalStretch    = static_cast<float>(HorizontalResolution) / 640.0f;
 	}
 
 	int vres = settings->getInt("VerticalResolution", 480);
 	if (vres > 0)
 	{
 		VerticalResolution = vres;
-		VerticalStretch = VerticalResolution / 480.0f;
+		VerticalStretch    = static_cast<float>(VerticalResolution) / 480.0f;
 	}
 
 	fov::initialize();
@@ -1472,7 +1587,9 @@ static void __cdecl InitMods()
 		const string mod_dirA = "mods\\" + settings->getString(key);
 		const wstring mod_dir = L"mods\\" + settings->getWString(key);
 		const wstring mod_inifile = mod_dir + L"\\mod.ini";
-		FILE *f_mod_ini = _wfopen(mod_inifile.c_str(), L"r");
+
+		FILE* f_mod_ini = _wfopen(mod_inifile.c_str(), L"r");
+
 		if (!f_mod_ini)
 		{
 			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", mod_dirA.c_str());
@@ -1482,14 +1599,16 @@ static void __cdecl InitMods()
 		unique_ptr<IniFile> ini_mod(new IniFile(f_mod_ini));
 		fclose(f_mod_ini);
 
-		const IniGroup *const modinfo = ini_mod->getGroup("");
+		const IniGroup* const modinfo = ini_mod->getGroup("");
+
 		const string mod_nameA = modinfo->getString("Name");
 		const wstring mod_name = modinfo->getWString("Name");
+
 		PrintDebug("%u. %s\n", i, mod_nameA.c_str());
 
 		if (ini_mod->hasGroup("IgnoreFiles"))
 		{
-			const IniGroup *group = ini_mod->getGroup("IgnoreFiles");
+			const IniGroup* group = ini_mod->getGroup("IgnoreFiles");
 			auto data = group->data();
 			for (const auto& iter : *data)
 			{
@@ -1500,7 +1619,7 @@ static void __cdecl InitMods()
 
 		if (ini_mod->hasGroup("ReplaceFiles"))
 		{
-			const IniGroup *group = ini_mod->getGroup("ReplaceFiles");
+			const IniGroup* group = ini_mod->getGroup("ReplaceFiles");
 			auto data = group->data();
 			for (const auto& iter : *data)
 			{
@@ -1511,12 +1630,12 @@ static void __cdecl InitMods()
 
 		if (ini_mod->hasGroup("SwapFiles"))
 		{
-			const IniGroup *group = ini_mod->getGroup("SwapFiles");
+			const IniGroup* group = ini_mod->getGroup("SwapFiles");
 			auto data = group->data();
 			for (const auto& iter : *data)
 			{
 				fileswaps.emplace_back(FileMap::normalizePath(iter.first),
-					FileMap::normalizePath(iter.second));
+				                       FileMap::normalizePath(iter.second));
 			}
 		}
 
@@ -1541,8 +1660,8 @@ static void __cdecl InitMods()
 			{
 				wchar_t msg[4096];
 				swprintf(msg, LengthOfArray(msg),
-					L"Mod \"%s\" should be run from \"%s\", but you are running \"%s\".\n\n"
-					L"Continue anyway?", mod_name.c_str(), modexe.c_str(), exefilename.c_str());
+				         L"Mod \"%s\" should be run from \"%s\", but you are running \"%s\".\n\n"
+				         L"Continue anyway?", mod_name.c_str(), modexe.c_str(), exefilename.c_str());
 				if (MessageBox(nullptr, msg, L"SADX Mod Loader", MB_ICONWARNING | MB_YESNO) == IDNO)
 					ExitProcess(1);
 			}
@@ -1552,22 +1671,23 @@ static void __cdecl InitMods()
 		if (modinfo->hasKeyNonEmpty("DLLFile"))
 		{
 			// Prepend the mod directory.
-			// TODO: SetDllDirectory().
+			// TODO: SetDllDirectory()?
 			wstring dll_filename = mod_dir + L'\\' + modinfo->getWString("DLLFile");
 			HMODULE module = LoadLibrary(dll_filename.c_str());
+
 			if (module == nullptr)
 			{
 				DWORD error = GetLastError();
 				LPWSTR buffer;
 				size_t size = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-					nullptr, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), (LPWSTR)&buffer, 0, nullptr);
+				                            nullptr, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), (LPWSTR)&buffer, 0, nullptr);
 				bool allocated = (size != 0);
 
 				if (!allocated)
 				{
 					static const wchar_t fmterr[] = L"Unable to format error message.";
 					buffer = const_cast<LPWSTR>(fmterr);
-					size = LengthOfArray(fmterr)-1;
+					size = LengthOfArray(fmterr) - 1;
 				}
 				wstring message(buffer, size);
 				if (allocated)
@@ -1580,7 +1700,7 @@ static void __cdecl InitMods()
 			}
 			else
 			{
-				const ModInfo *info = (const ModInfo *)GetProcAddress(module, "SADXModInfo");
+				const auto info = (const ModInfo *)GetProcAddress(module, "SADXModInfo");
 				if (info)
 				{
 					if (info->Patches)
@@ -1588,32 +1708,40 @@ static void __cdecl InitMods()
 						for (int j = 0; j < info->PatchCount; j++)
 							WriteData(info->Patches[j].address, info->Patches[j].data, info->Patches[j].datasize);
 					}
+
 					if (info->Jumps)
 					{
 						for (int j = 0; j < info->JumpCount; j++)
 							WriteJump(info->Jumps[j].address, info->Jumps[j].data);
 					}
+
 					if (info->Calls)
 					{
 						for (int j = 0; j < info->CallCount; j++)
 							WriteCall(info->Calls[j].address, info->Calls[j].data);
 					}
+
 					if (info->Pointers)
 					{
 						for (int j = 0; j < info->PointerCount; j++)
 							WriteData((void **)info->Pointers[j].address, info->Pointers[j].data);
 					}
+
 					if (info->Init)
 					{
 						// TODO: Convert to Unicode later. (Will require an API bump.)
 						initfuncs.emplace_back(info->Init, mod_dirA);
 					}
-					const ModInitFunc init = (const ModInitFunc)GetProcAddress(module, "Init");
+
+					const auto init = (const ModInitFunc)GetProcAddress(module, "Init");
+
 					if (init)
 					{
 						initfuncs.emplace_back(init, mod_dirA);
 					}
-					const PatchList *const patches = (const PatchList *)GetProcAddress(module, "Patches");
+
+					const auto* const patches = (const PatchList *)GetProcAddress(module, "Patches");
+
 					if (patches)
 					{
 						for (int j = 0; j < patches->Count; j++)
@@ -1621,7 +1749,9 @@ static void __cdecl InitMods()
 							WriteData(patches->Patches[j].address, patches->Patches[j].data, patches->Patches[j].datasize);
 						}
 					}
-					const PointerList *const jumps = (const PointerList *)GetProcAddress(module, "Jumps");
+
+					const auto* const jumps = (const PointerList *)GetProcAddress(module, "Jumps");
+
 					if (jumps)
 					{
 						for (int j = 0; j < jumps->Count; j++)
@@ -1629,7 +1759,9 @@ static void __cdecl InitMods()
 							WriteJump(jumps->Pointers[j].address, jumps->Pointers[j].data);
 						}
 					}
-					const PointerList *const calls = (const PointerList *)GetProcAddress(module, "Calls");
+
+					const auto* const calls = (const PointerList *)GetProcAddress(module, "Calls");
+
 					if (calls)
 					{
 						for (int j = 0; j < calls->Count; j++)
@@ -1637,7 +1769,9 @@ static void __cdecl InitMods()
 							WriteCall(calls->Pointers[j].address, calls->Pointers[j].data);
 						}
 					}
-					const PointerList *const pointers = (const PointerList *)GetProcAddress(module, "Pointers");
+
+					const auto* const pointers = (const PointerList *)GetProcAddress(module, "Pointers");
+
 					if (pointers)
 					{
 						for (int j = 0; j < pointers->Count; j++)
@@ -1657,7 +1791,9 @@ static void __cdecl InitMods()
 
 					auto customTextureLoad = reinterpret_cast<TextureLoadEvent>(GetProcAddress(module, "OnCustomTextureLoad"));
 					if (customTextureLoad != nullptr)
+					{
 						modCustomTextureLoadEvents.push_back(customTextureLoad);
+					}
 				}
 				else
 				{
@@ -1673,7 +1809,7 @@ static void __cdecl InitMods()
 		{
 			wchar_t filename[MAX_PATH];
 			swprintf(filename, LengthOfArray(filename), L"%s\\%s",
-				mod_dir.c_str(), modinfo->getWString("EXEData").c_str());
+			         mod_dir.c_str(), modinfo->getWString("EXEData").c_str());
 			ProcessEXEData(filename, mod_dir);
 		}
 
@@ -1684,7 +1820,7 @@ static void __cdecl InitMods()
 			{
 				wchar_t filename[MAX_PATH];
 				swprintf(filename, LengthOfArray(filename), L"%s\\%s",
-					mod_dir.c_str(), modinfo->getWString(dlldatakeys[j]).c_str());
+				         mod_dir.c_str(), modinfo->getWString(dlldatakeys[j]).c_str());
 				ProcessDLLData(filename, mod_dir);
 			}
 		}
@@ -1734,33 +1870,37 @@ static void __cdecl InitMods()
 
 	for (const auto& i : StartPositions)
 	{
-		auto poslist = &i.second;
-		StartPosition *newlist = new StartPosition[poslist->size() + 1];
-		StartPosition *cur = newlist;
+		auto poslist       = &i.second;
+		auto newlist      = new StartPosition[poslist->size() + 1];
+		StartPosition* cur = newlist;
+
 		for (const auto& j : *poslist)
+		{
 			*cur++ = j.second;
+		}
+
 		cur->LevelID = LevelIDs_Invalid;
 		switch (i.first)
 		{
-		default:
-		case Characters_Sonic:
-			WriteData((StartPosition **)0x41491E, newlist);
-			break;
-		case Characters_Tails:
-			WriteData((StartPosition **)0x414925, newlist);
-			break;
-		case Characters_Knuckles:
-			WriteData((StartPosition **)0x41492C, newlist);
-			break;
-		case Characters_Amy:
-			WriteData((StartPosition **)0x41493A, newlist);
-			break;
-		case Characters_Gamma:
-			WriteData((StartPosition **)0x414941, newlist);
-			break;
-		case Characters_Big:
-			WriteData((StartPosition **)0x414933, newlist);
-			break;
+			default:
+			case Characters_Sonic:
+				WriteData((StartPosition **)0x41491E, newlist);
+				break;
+			case Characters_Tails:
+				WriteData((StartPosition **)0x414925, newlist);
+				break;
+			case Characters_Knuckles:
+				WriteData((StartPosition **)0x41492C, newlist);
+				break;
+			case Characters_Amy:
+				WriteData((StartPosition **)0x41493A, newlist);
+				break;
+			case Characters_Gamma:
+				WriteData((StartPosition **)0x414941, newlist);
+				break;
+			case Characters_Big:
+				WriteData((StartPosition **)0x414933, newlist);
+				break;
 		}
 	}
 	StartPositions.clear();
@@ -1768,10 +1908,14 @@ static void __cdecl InitMods()
 	for (const auto& i : FieldStartPositions)
 	{
 		auto poslist = &i.second;
-		FieldStartPosition *newlist = new FieldStartPosition[poslist->size() + 1];
-		FieldStartPosition *cur = newlist;
+		auto newlist = new FieldStartPosition[poslist->size() + 1];
+		FieldStartPosition* cur = newlist;
+
 		for (const auto& j : *poslist)
+		{
 			*cur++ = j.second;
+		}
+
 		cur->LevelID = LevelIDs_Invalid;
 		StartPosList_FieldReturn[i.first] = newlist;
 	}
@@ -1779,21 +1923,25 @@ static void __cdecl InitMods()
 
 	if (PathsInitialized)
 	{
-		PathDataPtr *newlist = new PathDataPtr[Paths.size() + 1];
-		PathDataPtr *cur = newlist;
+		auto newlist = new PathDataPtr[Paths.size() + 1];
+		PathDataPtr* cur = newlist;
+
 		for (const auto& path : Paths)
+		{
 			*cur++ = path.second;
+		}
+
 		cur->LevelAct = 0xFFFF;
-		WriteData((PathDataPtr **)0x49C1A1, newlist);
-		WriteData((PathDataPtr **)0x49C1AF, newlist);
+		WriteData((PathDataPtr**)0x49C1A1, newlist);
+		WriteData((PathDataPtr**)0x49C1AF, newlist);
 	}
 	Paths.clear();
 
 	for (const auto& pvm : CharacterPVMs)
 	{
-		const vector<PVMEntry> *pvmlist = &pvm.second;
+		const vector<PVMEntry>* pvmlist = &pvm.second;
 		auto size = pvmlist->size();
-		PVMEntry *newlist = new PVMEntry[size + 1];
+		auto newlist = new PVMEntry[size + 1];
 		memcpy(newlist, pvmlist->data(), sizeof(PVMEntry) * size);
 		newlist[size].TexList = nullptr;
 		CharacterPVMEntries[pvm.first] = newlist;
@@ -1803,7 +1951,7 @@ static void __cdecl InitMods()
 	if (CommonObjectPVMsInitialized)
 	{
 		auto size = CommonObjectPVMs.size();
-		PVMEntry *newlist = new PVMEntry[size + 1];
+		auto newlist = new PVMEntry[size + 1];
 		//PVMEntry *cur = newlist;
 		memcpy(newlist, CommonObjectPVMs.data(), sizeof(PVMEntry) * size);
 		newlist[size].TexList = nullptr;
@@ -1814,9 +1962,9 @@ static void __cdecl InitMods()
 
 	for (const auto& level : _TrialLevels)
 	{
-		const vector<TrialLevelListEntry> *levellist = &level.second;
+		const vector<TrialLevelListEntry>* levellist = &level.second;
 		auto size = levellist->size();
-		TrialLevelListEntry *newlist = new TrialLevelListEntry[size];
+		auto newlist = new TrialLevelListEntry[size];
 		memcpy(newlist, levellist->data(), sizeof(TrialLevelListEntry) * size);
 		TrialLevels[level.first].Levels = newlist;
 		TrialLevels[level.first].Count = size;
@@ -1825,9 +1973,9 @@ static void __cdecl InitMods()
 
 	for (const auto& subgame : _TrialSubgames)
 	{
-		const vector<TrialLevelListEntry> *levellist = &subgame.second;
+		const vector<TrialLevelListEntry>* levellist = &subgame.second;
 		auto size = levellist->size();
-		TrialLevelListEntry *newlist = new TrialLevelListEntry[size];
+		auto newlist = new TrialLevelListEntry[size];
 		memcpy(newlist, levellist->data(), sizeof(TrialLevelListEntry) * size);
 		TrialSubgames[subgame.first].Levels = newlist;
 		TrialSubgames[subgame.first].Count = size;
@@ -1836,41 +1984,41 @@ static void __cdecl InitMods()
 
 	if (!_mainsavepath.empty())
 	{
-		char *buf = new char[_mainsavepath.size() + 1];
+		char* buf = new char[_mainsavepath.size() + 1];
 		strncpy(buf, _mainsavepath.c_str(), _mainsavepath.size() + 1);
 		mainsavepath = buf;
 		string tmp = "./" + _mainsavepath + "/%s";
 		buf = new char[tmp.size() + 1];
 		strncpy(buf, tmp.c_str(), tmp.size() + 1);
-		WriteData((char **)0x421E4E, buf);
-		WriteData((char **)0x421E6A, buf);
-		WriteData((char **)0x421F07, buf);
-		WriteData((char **)0x5050E5, buf);
-		WriteData((char **)0x5051ED, buf);
+		WriteData((char**)0x421E4E, buf);
+		WriteData((char**)0x421E6A, buf);
+		WriteData((char**)0x421F07, buf);
+		WriteData((char**)0x5050E5, buf);
+		WriteData((char**)0x5051ED, buf);
 		tmp = "./" + _mainsavepath + "/SonicDX??.snc";
 		buf = new char[tmp.size() + 1];
 		strncpy(buf, tmp.c_str(), tmp.size() + 1);
-		WriteData((char **)0x5050AB, buf);
+		WriteData((char**)0x5050AB, buf);
 		WriteJump(WriteSaveFile, WriteSaveFile_r);
 	}
 
 	if (!_chaosavepath.empty())
 	{
-		char *buf = new char[_chaosavepath.size() + 1];
+		char* buf = new char[_chaosavepath.size() + 1];
 		strncpy(buf, _chaosavepath.c_str(), _chaosavepath.size() + 1);
 		chaosavepath = buf;
 		string tmp = "./" + _chaosavepath + "/SONICADVENTURE_DX_CHAOGARDEN.snc";
 		buf = new char[tmp.size() + 1];
 		strncpy(buf, tmp.c_str(), tmp.size() + 1);
-		WriteData((char **)0x7163EF, buf);
-		WriteData((char **)0x71AA6F, buf);
-		WriteData((char **)0x71ACDB, buf);
-		WriteData((char **)0x71ADC5, buf);
+		WriteData((char**)0x7163EF, buf);
+		WriteData((char**)0x71AA6F, buf);
+		WriteData((char**)0x71ACDB, buf);
+		WriteData((char**)0x71ADC5, buf);
 	}
 
 	if (!windowtitle.empty())
 	{
-		char *buf = new char[windowtitle.size() + 1];
+		char* buf = new char[windowtitle.size() + 1];
 		strncpy(buf, windowtitle.c_str(), windowtitle.size() + 1);
 		*(char**)0x892944 = buf;
 	}
@@ -1878,7 +2026,7 @@ static void __cdecl InitMods()
 	if (!_MusicList.empty())
 	{
 		auto size = _MusicList.size();
-		MusicInfo *newlist = new MusicInfo[size];
+		auto newlist = new MusicInfo[size];
 		memcpy(newlist, _MusicList.data(), sizeof(MusicInfo) * size);
 		WriteData((const char***)0x425424, &newlist->Name);
 		WriteData((int**)0x425442, &newlist->Loop);
@@ -1914,12 +2062,12 @@ static void __cdecl InitMods()
 				PrintDebug("ERROR loading patches: ");
 				switch (codecount)
 				{
-				case -EINVAL:
-					PrintDebug("Patch file is not in the correct format.\n");
-					break;
-				default:
-					PrintDebug("%s\n", strerror(-codecount));
-					break;
+					case -EINVAL:
+						PrintDebug("Patch file is not in the correct format.\n");
+						break;
+					default:
+						PrintDebug("%s\n", strerror(-codecount));
+						break;
 				}
 			}
 		}
@@ -1932,11 +2080,13 @@ static void __cdecl InitMods()
 
 	// Check for codes.
 	ifstream codes_str("mods\\Codes.dat", ifstream::binary);
+
 	if (codes_str.is_open())
 	{
 		static const char codemagic[6] = { 'c', 'o', 'd', 'e', 'v', '5' };
 		char buf[sizeof(codemagic)];
 		codes_str.read(buf, sizeof(buf));
+
 		if (!memcmp(buf, codemagic, sizeof(codemagic)))
 		{
 			int codecount_header;
@@ -1944,6 +2094,7 @@ static void __cdecl InitMods()
 			PrintDebug("Loading %d codes...\n", codecount_header);
 			codes_str.seekg(0);
 			int codecount = codeParser.readCodes(codes_str);
+
 			if (codecount >= 0)
 			{
 				PrintDebug("Loaded %d codes.\n", codecount);
@@ -1954,12 +2105,12 @@ static void __cdecl InitMods()
 				PrintDebug("ERROR loading codes: ");
 				switch (codecount)
 				{
-				case -EINVAL:
-					PrintDebug("Code file is not in the correct format.\n");
-					break;
-				default:
-					PrintDebug("%s\n", strerror(-codecount));
-					break;
+					case -EINVAL:
+						PrintDebug("Code file is not in the correct format.\n");
+						break;
+					default:
+						PrintDebug("%s\n", strerror(-codecount));
+						break;
 				}
 			}
 		}
@@ -1967,6 +2118,7 @@ static void __cdecl InitMods()
 		{
 			PrintDebug("Code file is not in the correct format.\n");
 		}
+
 		codes_str.close();
 	}
 
@@ -1979,14 +2131,15 @@ static void __cdecl InitMods()
 }
 
 DataPointer(HMODULE, chrmodelshandle, 0x3AB9170);
-static void __cdecl LoadChrmodels(void)
+
+static void __cdecl LoadChrmodels()
 {
 	chrmodelshandle = LoadLibrary(L".\\system\\CHRMODELS_orig.dll");
 	if (!chrmodelshandle)
 	{
 		MessageBox(nullptr, L"CHRMODELS_orig.dll could not be loaded!\n\n"
-			L"SADX will now proceed to abruptly exit.",
-			L"SADX Mod Loader", MB_ICONERROR);
+		           L"SADX will now proceed to abruptly exit.",
+		           L"SADX Mod Loader", MB_ICONERROR);
 		ExitProcess(1);
 	}
 	SetChrmodelsDLLHandle(chrmodelshandle);
@@ -2007,40 +2160,40 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 
 	switch (fdwReason)
 	{
-	case DLL_PROCESS_ATTACH:
-		g_hinstDll = hinstDll;
-		HookCreateFileA();
+		case DLL_PROCESS_ATTACH:
+			g_hinstDll = hinstDll;
+			HookCreateFileA();
 
-		// Make sure this is the correct version of SADX.
-		if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
-		{
-			ShowNon2004USError();
-			ExitProcess(1);
-		}
+			// Make sure this is the correct version of SADX.
+			if (memcmp(verchk_data, verchk_addr, sizeof(verchk_data)) != 0)
+			{
+				ShowNon2004USError();
+				ExitProcess(1);
+			}
 
-		WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
-		WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
+			WriteData((unsigned char*)0x401AE1, (unsigned char)0x90);
+			WriteCall((void *)0x401AE2, (void *)LoadChrmodels);
 
 #if !defined(_MSC_VER) || defined(_DLL)
-		// Disable thread library calls, since we don't
-		// care about thread attachments.
-		// NOTE: On MSVC, don't do this if using the static CRT.
-		// Reference: https://msdn.microsoft.com/en-us/library/windows/desktop/ms682579(v=vs.85).aspx
-		DisableThreadLibraryCalls(hinstDll);
+			// Disable thread library calls, since we don't
+			// care about thread attachments.
+			// NOTE: On MSVC, don't do this if using the static CRT.
+			// Reference: https://msdn.microsoft.com/en-us/library/windows/desktop/ms682579(v=vs.85).aspx
+			DisableThreadLibraryCalls(hinstDll);
 #endif /* !defined(_MSC_VER) || defined(_DLL) */
-		break;
+			break;
 
-	case DLL_PROCESS_DETACH:
-		// Make sure the log file is closed.
-		if (dbgFile)
-		{
-			fclose(dbgFile);
-			dbgFile = nullptr;
-		}
-		break;
+		case DLL_PROCESS_DETACH:
+			// Make sure the log file is closed.
+			if (dbgFile)
+			{
+				fclose(dbgFile);
+				dbgFile = nullptr;
+			}
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 
 	return TRUE;

@@ -15,10 +15,10 @@
 using std::string;
 using std::vector;
 
-static bool bassinit = false;
-static bool musicwmp = true;
-static bool voicewmp = true;
-static DWORD basschan = 0;
+static  bool bassinit  = false;
+static  bool musicwmp  = true;
+static  bool voicewmp  = true;
+static DWORD basschan  = 0;
 static DWORD voicechan = 0;
 
 /**
@@ -27,7 +27,7 @@ static DWORD voicechan = 0;
  */
 void WMPInit_r()
 {
-	bassinit = BASS_Init(-1, 44100, 0, nullptr, nullptr) ? true : false;
+	bassinit = !!BASS_Init(-1, 44100, 0, nullptr, nullptr);
 }
 
 /**
@@ -37,7 +37,7 @@ void WMPInit_r()
  * @param data
  * @param user
  */
-static void __stdcall onTrackEnd(HSYNC handle, DWORD channel, DWORD data, void *user)
+static void __stdcall onTrackEnd(HSYNC handle, DWORD channel, DWORD data, void* user)
 {
 	dword_3ABDFA0 = 0;
 	dword_3ABDF98 = 5;
@@ -45,7 +45,7 @@ static void __stdcall onTrackEnd(HSYNC handle, DWORD channel, DWORD data, void *
 	BASS_StreamFree(channel);
 }
 
-static void __stdcall onVoiceEnd(HSYNC handle, DWORD channel, DWORD data, void *user)
+static void __stdcall onVoiceEnd(HSYNC handle, DWORD channel, DWORD data, void* user)
 {
 	BASS_ChannelStop(channel);
 	BASS_StreamFree(channel);
@@ -64,7 +64,11 @@ static void __stdcall onVoiceEnd(HSYNC handle, DWORD channel, DWORD data, void *
  */
 int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 {
-	if (!WMPMusicInfo) return 0;
+	if (!WMPMusicInfo)
+	{
+		return 0;
+	}
+
 	if (musicwmp)
 	{
 		WMPInfo__Stop(WMPMusicInfo);
@@ -90,7 +94,7 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 			BASS_ChannelPlay(basschan, false);
 			BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0f);
 			BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, nullptr);
-			MusicLooping = loop;
+			MusicLooping  = loop;
 			dword_3ABDFA0 = 1;
 			dword_3ABDF98 = 3;
 			return 1;
@@ -100,17 +104,19 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 	musicwmp = true;
 	WCHAR WideCharStr[MAX_PATH];
 	MultiByteToWideChar(0, 0, filename, -1, WideCharStr, LengthOfArray(WideCharStr));
-	if ( WMPMusicInfo && (WMPInfo__Open(WMPMusicInfo, WideCharStr) & 0x80000000u) == 0)
+	if (WMPMusicInfo && (WMPInfo__Open(WMPMusicInfo, WideCharStr) & 0x80000000u) == 0)
 	{
 		WMPInfo__Play(WMPMusicInfo, 0, 0, MusicVolume);
-		MusicLooping = loop;
+		MusicLooping  = loop;
 		dword_3ABDFA0 = 1;
 		dword_3ABDF98 = 3;
-		if ( WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped )
+
+		if (WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped)
 		{
 			do
-			Sleep(0);
-			while ( WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped );
+			{
+				Sleep(0);
+			} while (WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped);
 		}
 		return 1;
 	}
@@ -119,15 +125,16 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 
 void __cdecl WMPRestartMusic_r()
 {
-	LPDIRECTSOUNDBUFFER v0; // eax@6
-
 	if (!musicwmp)
-		return;
-	if ( dword_3ABDFA0 )
 	{
-		if ( WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped )
+		return;
+	}
+
+	if (dword_3ABDFA0)
+	{
+		if (WMPInfo__GetStatus(WMPMusicInfo) == WMPStatus_Stopped)
 		{
-			if ( MusicLooping )
+			if (MusicLooping)
 			{
 				WMPInfo__Stop(WMPMusicInfo);
 				WMPInfo__Play(WMPMusicInfo, 0, 0, MusicVolume);
@@ -142,16 +149,18 @@ void __cdecl WMPRestartMusic_r()
 		}
 		else
 		{
-			v0 = WMPMusicInfo->DirectSoundBuffer;
-			if ( v0 )
+			LPDIRECTSOUNDBUFFER v0 = WMPMusicInfo->DirectSoundBuffer;
+			if (v0)
+			{
 				v0->SetVolume(MusicVolume);
+			}
 		}
 	}
 }
 
 void __cdecl PauseSound_r()
 {
-	if ( dword_3ABDFA0 )
+	if (dword_3ABDFA0)
 	{
 		++dword_3ABDFA8;
 		if (musicwmp)
@@ -159,7 +168,7 @@ void __cdecl PauseSound_r()
 		else
 			BASS_ChannelPause(basschan);
 	}
-	if ( WMPVoiceInfo )
+	if (WMPVoiceInfo)
 	{
 		if (voicewmp)
 		{
@@ -174,10 +183,10 @@ void __cdecl PauseSound_r()
 
 void __cdecl ResumeSound_r()
 {
-	if ( dword_3ABDFA0 )
+	if (dword_3ABDFA0)
 	{
 		--dword_3ABDFA8;
-		if ( dword_3ABDFA8 <= 0 )
+		if (dword_3ABDFA8 <= 0)
 		{
 			if (musicwmp)
 				WMPInfo__Resume(WMPMusicInfo);
@@ -201,12 +210,12 @@ void __cdecl ResumeSound_r()
 
 void __cdecl WMPClose_r(int a1)
 {
-	if ( a1 )
+	if (a1)
 	{
-		if ( a1 == 1 && WMPVoiceInfo )
+		if (a1 == 1 && WMPVoiceInfo)
 		{
 			if (voicewmp)
-			{	
+			{
 				WMPInfo__Stop(WMPVoiceInfo);
 				WMPInfo__Close(WMPVoiceInfo);
 			}
@@ -221,7 +230,7 @@ void __cdecl WMPClose_r(int a1)
 	}
 	else
 	{
-		if ( dword_3ABDFA0 )
+		if (dword_3ABDFA0)
 		{
 			if (musicwmp)
 			{
@@ -267,7 +276,9 @@ __declspec(naked) int PlayVideoFile_r()
 int __cdecl PlayVoiceFile_r(LPCSTR filename)
 {
 	if (!WMPVoiceInfo)
+	{
 		return 0;
+	}
 
 	if (voicewmp)
 	{
@@ -287,7 +298,9 @@ int __cdecl PlayVoiceFile_r(LPCSTR filename)
 		voicechan = BASS_VGMSTREAM_StreamCreate(filename, 0);
 
 		if (voicechan == 0)
+		{
 			voicechan = BASS_StreamCreateFile(false, filename, 0, 0, 0);
+		}
 
 		if (voicechan != 0)
 		{
@@ -321,24 +334,28 @@ signed int __cdecl sub_40CF20_r()
 	return result;
 }
 
-struc_64 *LoadSoundPack(const char *path, int bank)
+struc_64* LoadSoundPack(const char* path, int bank)
 {
 	char filename[MAX_PATH];
 	snprintf(filename, sizeof(filename), "%sindex.txt", path);
-	const char *pidxpath = sadx_fileMap.replaceFile(filename);
-	FILE *f = fopen(pidxpath, "r");
+	const char* pidxpath = sadx_fileMap.replaceFile(filename);
+	FILE* f = fopen(pidxpath, "r");
 	if (!f)
 		return nullptr;
 
-	char path2[MAX_PATH];
+	char path2[MAX_PATH] {};
 	strncpy(path2, pidxpath, sizeof(path2));
-	path2[MAX_PATH-1] = 0;
+	path2[MAX_PATH - 1] = 0;
 	// Find the last slash or backslash and remove everything after it.
 	// (Equivalent to PathRemoveFileSpecA())
-	char *bs = strrchr(path2, '\\');
-	char *slash = strrchr(path2, '/');	// just in case...
+	char* bs = strrchr(path2, '\\');
+	char* slash = strrchr(path2, '/');	// just in case...
+
 	if (slash > bs)
+	{
 		bs = slash;
+	}
+
 	if (bs)
 	{
 		bs[1] = 0;
@@ -360,41 +377,52 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 	{
 		if (!fgets(line, sizeof(line), f))
 		{
-			if (feof(f)) break;
-			// Read error.
-			for (size_t i = 0; i < entries.size(); i++)
+			if (feof(f))
 			{
-				delete[] entries[i].NameOffset;
-				delete[] entries[i].DataOffset;
+				break;
 			}
+
+			// Read error.
+			for (auto& entrie : entries)
+			{
+				delete[] entrie.NameOffset;
+				delete[] entrie.DataOffset;
+			}
+
 			fclose(f);
 			return nullptr;
 		}
 
 		// Remove trailing newlines.
 		int linelen = strnlen(line, sizeof(line));
-		while (linelen > 0 && (line[linelen-1] == '\n' || line[linelen-1] == '\r'))
+
+		while (linelen > 0 && (line[linelen - 1] == '\n' || line[linelen - 1] == '\r'))
 		{
 			line[--linelen] = 0;
 		}
+
 		if (linelen == 0)
+		{
 			continue;
+		}
 
 		snprintf(filename, sizeof(filename), "%s%s", path2, line);
-		FILE *f2 = fopen(filename, "rb");
+		FILE* f2 = fopen(filename, "rb");
+
 		if (!f2)
 		{
 			// Unable to open a referenced file.
-			for (size_t i = 0; i < entries.size(); i++)
+			for (auto& entrie : entries)
 			{
-				delete[] entries[i].NameOffset;
-				delete[] entries[i].DataOffset;
+				delete[] entrie.NameOffset;
+				delete[] entrie.DataOffset;
 			}
+
 			fclose(f);
 			return nullptr;
 		}
 
-		DATEntry ent;
+		DATEntry ent {};
 		ent.NameOffset = new char[14];
 		snprintf(ent.NameOffset, 14, "B%02d_00_%02u.wav", bank, entries.size());
 		fseek(f2, 0, SEEK_END);
@@ -408,22 +436,24 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 		// Add the entry data to the total sound pack size.
 		size += sizeof(DATEntry) + 14 + ent.DataLength;
 	}
+
 	fclose(f);
 
 	// Convert the sound pack to the format expected by SADX in memory.
-	struc_64 *result = (struc_64 *)sub_4D41C0(size);
+	auto* result = (struc_64 *)sub_4D41C0(size);
 	// strncpy() zeroes out unused bytes.
 	strncpy(result->ArchiveID, "archive  V2.2", sizeof(result->ArchiveID));
 	result->Filename = (char *)sub_4D41C0(strlen(path) + 1);
 	strncpy(result->Filename, path, strlen(path) + 1);
 	result->DATFile = sub_4D41C0(4); // dummy value
-	result->NumSFX = entries.size();
+	result->NumSFX  = entries.size();
 	memcpy(&result->DATEntries, entries.data(), entries.size() * sizeof(DATEntry));
 
 	// Rearrange the sound pack data into a single memory block,
 	// stored after result->DATEntries.
-	char *ptr = reinterpret_cast<char*>(&(&result->DATEntries)[entries.size()]);
-	DATEntry *ent = &result->DATEntries;
+	char* ptr     = reinterpret_cast<char*>(&(&result->DATEntries)[entries.size()]);
+	DATEntry* ent = &result->DATEntries;
+
 	for (int i = 0; i < result->NumSFX; i++, ent++)
 	{
 		memcpy(ptr, ent->NameOffset, 14);
@@ -439,12 +469,11 @@ struc_64 *LoadSoundPack(const char *path, int bank)
 	return result;
 }
 
-SoundList *SoundLists_Cust = SoundLists;
+SoundList* SoundLists_Cust = SoundLists;
 int SoundLists_Cust_Length = SoundLists_Length;
+
 void __cdecl LoadSoundList_r(signed int soundlist)
 {
-	signed int v1; // esi@4
-	SoundFileInfo *v2; // edi@5
 	char sndpackpath[MAX_PATH];
 	char String1[MAX_PATH]; // [sp+8h] [bp-108h]@7
 
@@ -454,10 +483,10 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 		{
 			if (dword_38F6EC0)
 			{
-				v1 = 0;
+				signed int v1 = 0;
 				if (SoundLists_Cust[soundlist].Count)
 				{
-					v2 = SoundLists_Cust[soundlist].List;
+					SoundFileInfo* v2 = SoundLists_Cust[soundlist].List;
 					do
 					{
 						if (dword_3B291C8[v2->Bank])

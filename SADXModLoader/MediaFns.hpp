@@ -18,7 +18,8 @@
 #include <dsound.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #ifndef _MSC_VER
@@ -29,7 +30,7 @@ struct IWMHeaderInfo;
 #pragma pack(push, 1)
 struct WMPInfo
 {
-	void *WMReaderCallback;
+	void* WMReaderCallback;
 	LPDIRECTSOUNDBUFFER DirectSoundBuffer;
 	int field_8;
 	int field_C;
@@ -38,11 +39,11 @@ struct WMPInfo
 	int field_18;
 	HANDLE EventHandle;
 	int field_20;
-	IWMReader *WMReader;
-	IWMHeaderInfo *WMHeaderInfo;
+	IWMReader* WMReader;
+	IWMHeaderInfo* WMHeaderInfo;
 	int field_2C;
 	int field_30;
-	WCHAR *CurrentFile;
+	WCHAR* CurrentFile;
 	int field_38;
 	int field_3C;
 	LPWAVEFORMATEX WaveFormat;
@@ -55,8 +56,8 @@ struct WMPInfo
 #pragma pack(push, 1)
 struct DATEntry
 {
-	char *NameOffset;
-	void *DataOffset;
+	char* NameOffset;
+	void* DataOffset;
 	int DataLength;
 };
 #pragma pack(pop)
@@ -65,8 +66,8 @@ struct DATEntry
 struct struc_64
 {
 	char ArchiveID[16];
-	char *Filename;
-	void *DATFile;
+	char* Filename;
+	void* DATFile;
 	int NumSFX;
 	// Technically an array of DATEntries.
 	DATEntry DATEntries;
@@ -105,13 +106,11 @@ FunctionPointer(void, sub_4B4F50, (struc_64 *), 0x4B4F50);
 FunctionPointer(struc_64 *, sub_4B4D10, (LPCSTR, int), 0x4B4D10);
 FunctionPointer(void *, sub_4D41C0, (int), 0x4D41C0);
 
-int __cdecl PlayVoiceFile_r(LPCSTR filename);
-
 /**
  * Initialize media playback.
  * Replacement for SADX's WMPInit().
  */
-void WMPInit_r(void);
+void WMPInit_r();
 
 /**
  * Play a music file.
@@ -137,11 +136,11 @@ void __cdecl WMPClose_r(int a1);
  */
 void WMPRelease_r();
 
-int PlayVideoFile_r(void);
+int PlayVideoFile_r();
 int __cdecl PlayVoiceFile_r(LPCSTR filename);
 signed int __cdecl sub_40CF20_r();
 
-extern SoundList *SoundLists_Cust;
+extern SoundList* SoundLists_Cust;
 extern int SoundLists_Cust_Length;
 
 void LoadSoundList_r(int soundlist);
