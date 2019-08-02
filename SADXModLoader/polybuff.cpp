@@ -20,15 +20,6 @@ DataPointer(PolyBuff, stru_3D0FEB4, 0x3D0FEB4);
 DataPointer(PolyBuff, stru_3D0FED8, 0x3D0FED8);
 DataPointer(PolyBuff, stru_3D0FF20, 0x3D0FF20);
 
-enum RenderFlags_
-{
-	RenderFlags_EnvironmentMap   = 0x1,
-	RenderFlags_ConstantMaterial = 0x2,
-	RenderFlags_OffsetMaterial   = 0x4,
-	RenderFlags_RenderFlags_8    = 0x8,
-	RenderFlags_NoVertexColor    = 0x10,
-};
-
 void __cdecl polybuff_vcolor_strip_r(NJS_MESHSET_SADX* meshset, NJS_POINT3* points)
 {
 	NJS_COLOR v6; // edi

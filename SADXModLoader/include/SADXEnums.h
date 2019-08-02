@@ -1584,11 +1584,11 @@ enum QueuedModelFlagsB : __int8
 
 enum RenderFlags : int
 {
-	EnvironmentMap   = 0x1,
-	ConstantMaterial = 0x2,
-	OffsetMaterial   = 0x4,
-	RenderFlags_8    = 0x8,
-	RenderFlags_10   = 0x10,
+	RenderFlags_EnvironmentMap   = 0x1,
+	RenderFlags_ConstantMaterial = 0x2,
+	RenderFlags_OffsetMaterial   = 0x4,
+	RenderFlags_RenderFlags_8    = 0x8,
+	RenderFlags_NoVertexColor    = 0x10,
 };
 
 #endif /* SADXMODLOADER_SADXENUMS_H */
