@@ -23,7 +23,7 @@
 
 static inline void ResizeTextureList(NJS_TEXLIST *texlist, Uint32 count)
 {
-	texlist->textures = new NJS_TEXNAME[count];
+	texlist->textures = new NJS_TEXNAME[count] {};
 	texlist->nbTexture = count;
 }
 
