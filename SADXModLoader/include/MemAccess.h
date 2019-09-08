@@ -130,7 +130,7 @@ static inline BOOL WriteData(void *writeaddress, const T(&data)[N])
  * @param byteswritten	[out, opt] Number of bytes written.
  * @return Nonzero on success; 0 on error (check GetLastError()).
  */
-template <int count>
+template <SIZE_T count>
 static inline BOOL WriteData(void *address, uint8_t data, SIZE_T *byteswritten)
 {
 	uint8_t buf[count];
@@ -145,7 +145,7 @@ static inline BOOL WriteData(void *address, uint8_t data, SIZE_T *byteswritten)
  * @param data		[in] Byte to write.
  * @return Nonzero on success; 0 on error (check GetLastError()).
  */
-template <int count>
+template <SIZE_T count>
 static inline BOOL WriteData(void *address, uint8_t data)
 {
 	return WriteData<count>(address, data, nullptr);
@@ -153,6 +153,18 @@ static inline BOOL WriteData(void *address, uint8_t data)
 
 #if (defined(__i386__) || defined(_M_IX86)) && \
 	!(defined(__x86_64__) || defined(_M_X64))
+
+// JMP/CALL DWORD relative opcode union.
+#pragma pack(1)
+union JmpCallDwordRel {
+	struct {
+		uint8_t opcode;
+		int32_t address;
+	};
+	uint8_t u8[5];
+};
+#pragma pack()
+
 /**
  * Write a JMP instruction to an arbitrary address.
  * @param writeaddress Address to insert the JMP instruction.
@@ -161,10 +173,10 @@ static inline BOOL WriteData(void *address, uint8_t data)
  */
 static inline BOOL WriteJump(void *writeaddress, void *funcaddress)
 {
-	uint8_t data[5];
-	data[0] = 0xE9; // JMP DWORD (relative)
-	*(int32_t*)(data + 1) = (uint32_t)funcaddress - ((uint32_t)writeaddress + 5);
-	return WriteData(writeaddress, data);
+	JmpCallDwordRel data;
+	data.opcode = 0xE9; // JMP DWORD (relative)
+	data.address = static_cast<int32_t>((intptr_t)funcaddress - ((intptr_t)writeaddress + 5));
+	return WriteData(writeaddress, data.u8);
 }
 
 /**
@@ -175,10 +187,10 @@ static inline BOOL WriteJump(void *writeaddress, void *funcaddress)
  */
 static inline BOOL WriteCall(void *writeaddress, void *funcaddress)
 {
-	uint8_t data[5];
-	data[0] = 0xE8; // CALL DWORD (relative)
-	*(int32_t*)(data + 1) = (uint32_t)funcaddress - ((uint32_t)writeaddress + 5);
-	return WriteData(writeaddress, data);
+	JmpCallDwordRel data;
+	data.opcode = 0xE8;	// CALL DWORD (relative)
+	data.address = static_cast<int32_t>((intptr_t)funcaddress - ((intptr_t)writeaddress + 5));
+	return WriteData(writeaddress, data.u8);
 }
 
 #endif
