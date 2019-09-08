@@ -197,7 +197,7 @@ static string UnescapeNewlines(const string& str)
 	string result;
 	result.reserve(str.size());
 
-	for (unsigned int c = 0; c < str.size(); c++)
+	for (size_t c = 0; c < str.size(); c++)
 	{
 		switch (str[c])
 		{
@@ -888,10 +888,10 @@ static void ProcessRecapScreenINI(const IniGroup* group, const wstring& mod_dir)
 		return;
 	}
 
-	addr = (RecapScreen**)((int)addr + 0x400000);
+	addr = (RecapScreen**)((intptr_t)addr + 0x400000);
 	const wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
 
-	for (unsigned int l = 0; l < LengthOfArray(languagenames); l++)
+	for (size_t l = 0; l < LengthOfArray(languagenames); l++)
 	{
 		auto* list = new RecapScreen[length];
 		for (int i = 0; i < length; i++)
@@ -904,10 +904,10 @@ static void ProcessRecapScreenINI(const IniGroup* group, const wstring& mod_dir)
 			auto inidata = new IniFile(filename);
 
 			vector<string> strs = split(inidata->getString("", "Text"), '\n');
-			size_t numents = strs.size();
+			const size_t numents = strs.size();
 			list[i].TextData = new const char* [numents];
 
-			for (unsigned int j = 0; j < numents; j++)
+			for (size_t j = 0; j < numents; j++)
 			{
 				list[i].TextData[j] = strdup(DecodeUTF8(strs[j], l).c_str());
 			}
@@ -936,10 +936,10 @@ static void ProcessNPCTextINI(const IniGroup* group, const wstring& mod_dir)
 		return;
 	}
 
-	addr = (HintText_Entry**)((int)addr + 0x400000);
+	addr = (HintText_Entry**)((intptr_t)addr + 0x400000);
 	const wstring pathbase = mod_dir + L'\\' + group->getWString("filename") + L'\\';
 
-	for (unsigned int l = 0; l < LengthOfArray(languagenames); l++)
+	for (size_t l = 0; l < LengthOfArray(languagenames); l++)
 	{
 		auto* list = new HintText_Entry[length];
 		for (int i = 0; i < length; i++)
