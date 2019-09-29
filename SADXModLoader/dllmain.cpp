@@ -1491,6 +1491,9 @@ static void __cdecl InitMods()
 	WriteJump(LoadSoundList, LoadSoundList_r);
 	WriteJump((void *)0x40CF20, sub_40CF20_r);
 
+	// allow HRTF 3D sound
+	WriteData<uint8_t>(reinterpret_cast<uint8_t*>(0x00402773), 0xEBu);
+
 	// Fixes N-sided polygons (Gamma's headlight) by using
 	// triangle strip vertex buffer initializers.
 
