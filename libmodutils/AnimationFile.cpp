@@ -79,14 +79,22 @@ static inline void fixptr(T*& ptr, intptr_t base)
 	}
 }
 
+inline void fixmkeypointers(NJS_MKEY_P* mkey, intptr_t base, int count)
+{
+	for (int i = 0; i < count; i++)
+		fixptr(mkey[i].key, base);
+}
+
 template <typename T>
-inline void fixmdatapointers(T* mdata, intptr_t base, int count)
+inline void fixmdatapointers(T* mdata, intptr_t base, int count, int vertoff, int normoff)
 {
 	for (int c = 0; c < count; c++)
 	{
 		for (int i = 0; i < (int)LengthOfArray(mdata->p); i++)
 		{
 			fixptr(mdata->p[i], base);
+			if (i == vertoff || i == normoff)
+				fixmkeypointers((NJS_MKEY_P*)mdata->p[i], base, mdata->nb[i]);
 		}
 
 		++mdata;
@@ -142,22 +150,59 @@ void AnimationFile::init(istream& stream)
 		{
 			fixedpointers.insert(motion->mdata);
 
+			int vertoff = -1;
+			int normoff = -1;
+
+			if (motion->type & NJD_MTYPE_VERT_4)
+			{
+				vertoff = 0;
+				if (motion->type & NJD_MTYPE_POS_0)
+					++vertoff;
+				if (motion->type & NJD_MTYPE_ANG_1)
+					++vertoff;
+				if (motion->type & NJD_MTYPE_QUAT_1)
+					++vertoff;
+				if (motion->type & NJD_MTYPE_SCL_2)
+					++vertoff;
+				if (motion->type & NJD_MTYPE_TARGET_3)
+					++vertoff;
+				if (motion->type & NJD_MTYPE_VEC_3)
+					++vertoff;
+			}
+			if (motion->type & NJD_MTYPE_NORM_5)
+			{
+				normoff = 0;
+				if (motion->type & NJD_MTYPE_POS_0)
+					++normoff;
+				if (motion->type & NJD_MTYPE_ANG_1)
+					++normoff;
+				if (motion->type & NJD_MTYPE_QUAT_1)
+					++normoff;
+				if (motion->type & NJD_MTYPE_SCL_2)
+					++normoff;
+				if (motion->type & NJD_MTYPE_TARGET_3)
+					++normoff;
+				if (motion->type & NJD_MTYPE_VEC_3)
+					++normoff;
+				if (motion->type & NJD_MTYPE_VERT_4)
+					++normoff;
+			}
 			switch (motion->inp_fn & 0xF)
 			{
 				case 1:
-					fixmdatapointers((NJS_MDATA1*)motion->mdata, motionbase, modelcount);
+					fixmdatapointers((NJS_MDATA1*)motion->mdata, motionbase, modelcount, vertoff, normoff);
 					break;
 				case 2:
-					fixmdatapointers((NJS_MDATA2*)motion->mdata, motionbase, modelcount);
+					fixmdatapointers((NJS_MDATA2*)motion->mdata, motionbase, modelcount, vertoff, normoff);
 					break;
 				case 3:
-					fixmdatapointers((NJS_MDATA3*)motion->mdata, motionbase, modelcount);
+					fixmdatapointers((NJS_MDATA3*)motion->mdata, motionbase, modelcount, vertoff, normoff);
 					break;
 				case 4:
-					fixmdatapointers((NJS_MDATA4*)motion->mdata, motionbase, modelcount);
+					fixmdatapointers((NJS_MDATA4*)motion->mdata, motionbase, modelcount, vertoff, normoff);
 					break;
 				case 5:
-					fixmdatapointers((NJS_MDATA5*)motion->mdata, motionbase, modelcount);
+					fixmdatapointers((NJS_MDATA5*)motion->mdata, motionbase, modelcount, vertoff, normoff);
 					break;
 				default:
 					throw;
