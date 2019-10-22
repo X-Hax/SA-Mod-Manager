@@ -2228,7 +2228,7 @@ DataArray(Sint8, LoadedCharTextures, 0x3B290C4, 6);
 DataArray(NJS_TEXNAME, ava_dlg_e_TEXNAMES, 0x3B290F0, 14);
 DataPointer(Uint8, CHAORetry, 0x3B291AE);
 DataPointer(int, SoundQueueCount, 0x3B29B7C);
-DataPointer(EntityData1 *, SoundQueueOriginEntities, 0x3B29B90);
+DataArray(EntityData1 *, SoundQueueOriginEntities, 0x3B29B90, 26);
 DataPointer(ObjectMaster *, SoundManager_ptr, 0x3B29D00);
 DataPointer(__int16, DebugMode, 0x3B29D08);
 DataPointer(__int16, DebugMode_Copy, 0x3B29D0C);
