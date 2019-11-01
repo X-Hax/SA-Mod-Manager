@@ -155,6 +155,9 @@
     <ClInclude Include="polybuff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UsercallFunctionHandler.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SADXModLoader.rc">

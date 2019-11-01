@@ -60,6 +60,7 @@
     <ClInclude Include="pvmx.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TextureReplacement.h" />
+    <ClInclude Include="UsercallFunctionHandler.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>
