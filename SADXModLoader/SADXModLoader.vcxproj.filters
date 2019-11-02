@@ -155,7 +155,7 @@
     <ClInclude Include="polybuff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UsercallFunctionHandler.h">
+    <ClInclude Include="include\UsercallFunctionHandler.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
   </ItemGroup>
