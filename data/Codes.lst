@@ -285,3 +285,6 @@ write8 00495BEB 146
 
 Patch "Metal Sonic Always Hovers"
 write8 00495BEB 146
+
+Patch "Disable Subtitles"
+write8 0042FB20 0xC3
