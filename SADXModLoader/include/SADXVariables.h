@@ -2107,7 +2107,7 @@ DataPointer(int, SubtitleThing_Count, 0x3B0E338);
 DataArray(int, PressedButtons, 0x3B0E354, 2);
 DataArray(char, ChaoDebug_Buttons, 0x3B0E35C, 12);
 DataArray(PolarCoord, UnusedNormalizedAnalogs, 0x3B0E368, 8);
-DataPointer(int*, HeldButtons, 0x3B0E3A8);
+DataArray(int, HeldButtons, 0x3B0E3A8, 8);
 DataArray(ControllerData *, ControllerPointers, 0x3B0E77C, 8);
 DataArray(PolarCoord, NormalizedAnalogs, 0x3B0E7A0, 8);
 DataArray(ControllerData, Controllers, 0x3B0E7F0, 8);
