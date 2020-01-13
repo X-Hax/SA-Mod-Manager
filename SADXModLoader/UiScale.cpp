@@ -231,8 +231,8 @@ inline NJS_POINT2 get_offset(Uint8 align, const NJS_POINT2& center)
 	// coordinate offset so the entire image lands in the center.
 	if (is_top_background() && bg_fill == FillMode::fill)
 	{
-		offset.x = (HorizontalResolution - region_fill.x) / 2.0f;
-		offset.y = (VerticalResolution - region_fill.y) / 2.0f;
+		offset.x = (static_cast<float>(HorizontalResolution) - region_fill.x) / 2.0f;
+		offset.y = (static_cast<float>(VerticalResolution) - region_fill.y) / 2.0f;
 	}
 	else
 	{
