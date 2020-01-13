@@ -1006,32 +1006,18 @@ static void __cdecl DisplayLogoScreen_r(Uint8 index)
 
 static void __cdecl TutorialBackground_Display_r(ObjectMaster* a1)
 {
-	if (bg_fill == FillMode::fill)
-	{
-		auto orig = bg_fill;
-		bg_fill = FillMode::fit;
-		scale_trampoline(Align::center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
-		bg_fill = orig;
-	}
-	else
-	{
-		scale_trampoline(Align::center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
-	}
+	auto orig = bg_fill;
+	bg_fill = FillMode::fit;
+	scale_trampoline(Align::center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
+	bg_fill = orig;
 }
 
 static void __cdecl EndBG_Display_r(ObjectMaster* a1)
 {
-	if (bg_fill == FillMode::fill)
-	{
-		auto orig = bg_fill;
-		bg_fill = FillMode::fit;
-		scale_trampoline(Align::center, true, EndBG_Display_r, EndBG_Display_t, a1);
-		bg_fill = orig;
-	}
-	else
-	{
-		scale_trampoline(Align::center, true, EndBG_Display_r, EndBG_Display_t, a1);
-	}
+	auto orig = bg_fill;
+	bg_fill = FillMode::fit;
+	scale_trampoline(Align::center, true, EndBG_Display_r, EndBG_Display_t, a1);
+	bg_fill = orig;
 }
 
 void uiscale::setup_background_scale()
