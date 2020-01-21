@@ -480,14 +480,12 @@ static void njDrawTextureMemList_init()
  * \tparam Args
  * \param align Alignment mode
  * \param is_background Enables background scaling mode.
- * \param t Trampoline
- * \param args Option arguments for function
+ * \param pfn The function to call.
+ * \param args Option arguments for function.
  */
 template<typename T, typename... Args>
-void scale_trampoline(Uint8 align, bool is_background, const T&, const Trampoline* t, Args... args)
+void scale_function(Uint8 align, bool is_background, T *const pfn, Args... args)
 {
-	T *const pfn = reinterpret_cast<T*>(t->Target());
-
 	if (is_background && bg_fill == FillMode::stretch)
 	{
 		scale_disable();
@@ -508,15 +506,13 @@ void scale_trampoline(Uint8 align, bool is_background, const T&, const Trampolin
  * \tparam Args 
  * \param align Alignment mode
  * \param is_background Enables background scaling mode.
- * \param t Trampoline
- * \param args Optional arguments for function
- * \return Return value of trampoline function
+ * \param pfn The function to call.
+ * \param args Optional arguments for function.
+ * \return Return value of function.
  */
 template<typename R, typename T, typename... Args>
-R scale_trampoline(Uint8 align, bool is_background, const T&, const Trampoline* t, Args... args)
+R scale_function(Uint8 align, bool is_background, T *const pfn, Args... args)
 {
-	T *const pfn = reinterpret_cast<T*>(t->Target());
-
 	if (is_background && bg_fill == FillMode::stretch)
 	{
 		scale_disable();
@@ -529,6 +525,40 @@ R scale_trampoline(Uint8 align, bool is_background, const T&, const Trampoline* 
 	R result = pfn(args...);
 	scale_pop();
 	return result;
+}
+
+/**
+ * \brief Calls a trampoline function.
+ * \tparam T Function type
+ * \tparam Args
+ * \param align Alignment mode
+ * \param is_background Enables background scaling mode.
+ * \param t Trampoline
+ * \param args Option arguments for function
+ */
+template<typename T, typename... Args>
+void scale_trampoline(Uint8 align, bool is_background, const T&, const Trampoline* t, Args... args)
+{
+	T *const pfn = reinterpret_cast<T*>(t->Target());
+	scale_function(align, is_background, pfn, args...);
+}
+
+/**
+ * \brief Calls a trampoline function with a return type.
+ * \tparam R Return type
+ * \tparam T Function type
+ * \tparam Args 
+ * \param align Alignment mode
+ * \param is_background Enables background scaling mode.
+ * \param t Trampoline
+ * \param args Optional arguments for function
+ * \return Return value of trampoline function
+ */
+template<typename R, typename T, typename... Args>
+R scale_trampoline(Uint8 align, bool is_background, const T&, const Trampoline* t, Args... args)
+{
+	T *const pfn = reinterpret_cast<T*>(t->Target());
+	return scale_function<R>(align, is_background, pfn, args...);
 }
 
 #pragma endregion
@@ -590,6 +620,7 @@ static Trampoline* PauseMenu_Map_Display_t;
 static Trampoline* DrawSubtitles_t;
 static Trampoline* EmblemCollected_Init_t;
 static Trampoline* EmblemCollected_Main_t;
+static Trampoline* DrawTitleScreen_t;
 
 #pragma endregion
 
@@ -859,6 +890,117 @@ static void EmblemCollected_Main_r(ObjectMaster* a1)
 	scale_trampoline(Align::center, false, EmblemCollected_Main_r, EmblemCollected_Main_t, a1);
 }
 
+static void __cdecl DrawTitleScreen_o(void* a1)
+{
+	auto orig = DrawTitleScreen_t->Target();
+
+	__asm
+	{
+		mov esi, a1
+		call orig
+	}
+}
+
+// this replacement function forces the title screen into a 4:3 box for aspect-correct scale
+static void __cdecl DrawTitleScreen_r(void* a1)
+{
+	auto old_fill = bg_fill;
+	bg_fill = FillMode::fit;
+
+	scale_push(Align::center, true);
+	
+	DrawTitleScreen_o(a1);
+
+	bg_fill = old_fill;
+	scale_pop();
+
+	constexpr auto ratio_4_3 = 4.0f / 3.0f;
+
+	const auto width  = static_cast<float>(HorizontalResolution);
+	const auto height = static_cast<float>(VerticalResolution);
+
+	const auto ratio = width / height;
+
+	const bool is_4_3 = std::abs(ratio - ratio_4_3) < std::numeric_limits<float>::epsilon();
+	const bool is_tall = ratio < ratio_4_3 && !is_4_3;
+
+	// convert the current resolution to the smallest fit 4:3 resolution
+	const auto ratio_width  = is_tall ? width : height * ratio_4_3;
+	const auto ratio_height = is_tall ? width / ratio_4_3 : height;
+
+	NJS_POINT2COL rect {};
+
+	// all vertex colors black
+	Uint32 colors[4] = {
+		0xFF000000,
+		0xFF000000,
+		0xFF000000,
+		0xFF000000
+	};
+
+	rect.num = 4;
+	rect.col = reinterpret_cast<NJS_COLOR*>(colors); // NJS_COLOR is a union of Uint32 and NJS_BGRA
+
+	// if we're a tall resolution (ratio < 4:3), draw bars
+	// above and below, otherwise draw bars to the left and right
+	// if the resolution is non-4:3
+	if (is_tall)
+	{
+		const float margin = (height - ratio_height) / 2.0f;
+
+		NJS_POINT2 points[4] = {
+			{ 0.0f, 0.0f },
+			{ 0.0f, margin },
+			{ width, 0.0f },
+			{ width, margin },
+		};
+
+		rect.p = points;
+
+		njDrawTriangle2D(&rect, 2, -1.0f, NJD_DRAW_CONNECTED);
+
+		for (NJS_POINT2& point : points)
+		{
+			point.y += margin + ratio_height;
+		}
+
+		njDrawTriangle2D(&rect, 2, -1.0f, NJD_DRAW_CONNECTED);
+	}
+	else if (!is_4_3)
+	{
+		const float margin = (width - ratio_width) / 2.0f;
+
+		NJS_POINT2 points[4] = {
+			{ 0.0f, 0.0f },
+			{ 0.0f, height },
+			{ margin, 0.0f },
+			{ margin, height },
+		};
+
+		rect.p = points;
+
+		njDrawTriangle2D(&rect, 2, -1.0f, NJD_DRAW_CONNECTED);
+
+		for (NJS_POINT2& point : points)
+		{
+			point.x += margin + ratio_width;
+		}
+
+		njDrawTriangle2D(&rect, 2, -1.0f, NJD_DRAW_CONNECTED);
+	}
+}
+
+static void __declspec(naked) DrawTitleScreen_asm()
+{
+	__asm
+	{
+		push esi
+		call DrawTitleScreen_r
+		pop esi
+		ret
+	}
+}
+
 void uiscale::initialize()
 {
 	update_parameters();
@@ -880,9 +1022,16 @@ void uiscale::initialize()
 	PauseMenu_Map_Display_t              = new Trampoline(0x00458B00, 0x00458B06, PauseMenu_Map_Display_r);
 	EmblemCollected_Init_t               = new Trampoline(0x004B4860, 0x004B4867, EmblemCollected_Init_r);
 	EmblemCollected_Main_t               = new Trampoline(0x004B46A0, 0x004B46A6, EmblemCollected_Main_r);
+	DrawTitleScreen_t                    = new Trampoline(0x0050E470, 0x0050E476, DrawTitleScreen_asm);
 
 	DrawSubtitles_t = new Trampoline(0x0040D4D0, 0x0040D4D9, DrawSubtitles_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DrawSubtitles_t->Target()) + 4), reinterpret_cast<void*>(0x00402F00));
+
+	// Fixes selection of high/low resolution title screen textures
+	WriteData(reinterpret_cast<float**>(0x0050E4B6 + 2), &scale_min);
+	WriteData(reinterpret_cast<float**>(0x0050EA42 + 2), &scale_min);
+	WriteData(reinterpret_cast<float**>(0x0050F47F + 2), &scale_min);
+	WriteData(reinterpret_cast<float**>(0x0050F503 + 2), &scale_min);
 
 	// Fixes character scale on character select screen.
 	WriteData(reinterpret_cast<const float**>(0x0051285E), &patch_dummy);
