@@ -23,7 +23,6 @@
     <ClCompile Include="FixFOV.cpp" />
     <ClCompile Include="polybuff.cpp" />
     <ClCompile Include="prs.cpp" />
-    <ClCompile Include="UiScale.cpp" />
     <ClCompile Include="MediaFns.cpp" />
     <ClCompile Include="pvmx.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -31,6 +30,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TextureReplacement.cpp" />
+    <ClCompile Include="uiscale.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoMipmap.h" />
@@ -47,7 +47,6 @@
     <ClInclude Include="include\SADXModInfo.h" />
     <ClInclude Include="polybuff.h" />
     <ClInclude Include="prs.h" />
-    <ClInclude Include="UiScale.h" />
     <ClInclude Include="include\d3d8types.h" />
     <ClInclude Include="include\MemAccess.h" />
     <ClInclude Include="include\ninja.h" />
@@ -61,6 +60,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TextureReplacement.h" />
     <ClInclude Include="include\UsercallFunctionHandler.h" />
+    <ClInclude Include="uiscale.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>

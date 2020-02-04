@@ -48,9 +48,6 @@
     <ClCompile Include="pvmx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UiScale.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DLLData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -67,6 +64,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="polybuff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="uiscale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,9 +131,6 @@
     <ClInclude Include="include\MemAccess.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="UiScale.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\SADXModInfo.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
@@ -157,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="include\UsercallFunctionHandler.h">
       <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="uiscale.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

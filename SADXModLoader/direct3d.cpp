@@ -4,7 +4,7 @@
 
 #include "include/d3d8types.h"
 #include "FixFOV.h"
-#include "UiScale.h"
+#include "uiscale.h"
 
 DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x3D12780);
 

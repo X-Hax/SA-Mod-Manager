@@ -41,7 +41,7 @@ using std::vector;
 #include "FileSystem.h"
 #include "Events.h"
 #include "AutoMipmap.h"
-#include "UiScale.h"
+#include "uiscale.h"
 #include "FixFOV.h"
 #include "EXEData.h"
 #include "DLLData.h"
