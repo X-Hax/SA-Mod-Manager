@@ -90,7 +90,7 @@ static void __cdecl DrawStageMissionImage_r(ObjectMaster* _this)
 
 static short __cdecl DisplayPauseMenu_r()
 {
-	return scale_trampoline<short>(Align::center, false, DisplayPauseMenu_r, DisplayPauseMenu_t);
+	return scale_trampoline(Align::center, false, DisplayPauseMenu_r, DisplayPauseMenu_t);
 }
 
 static void __cdecl LifeGauge_Main_r(ObjectMaster* a1)
@@ -304,7 +304,7 @@ static void __cdecl TutorialInstructionOverlay_Display_r(ObjectMaster* a1)
 
 static Sint32 __cdecl DisplayTitleCard_r()
 {
-	return scale_trampoline<Sint32>(Align::center, false, DisplayTitleCard_r, DisplayTitleCard_t);
+	return scale_trampoline(Align::center, false, DisplayTitleCard_r, DisplayTitleCard_t);
 }
 
 static void __cdecl Credits_Main_r(ObjectMaster* a1)
