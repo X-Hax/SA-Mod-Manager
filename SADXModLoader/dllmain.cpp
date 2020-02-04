@@ -10,6 +10,8 @@
 #include <vector>
 #include <sstream>
 #include "direct3d.h"
+#include "bgscale.h"
+#include "hudscale.h"
 
 using std::deque;
 using std::ifstream;
@@ -1547,6 +1549,7 @@ static void __cdecl InitMods()
 	if (settings->getBool("ScaleHud", false))
 	{
 		uiscale::initialize();
+		hudscale::initialize();
 	}
 
 	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode::fill);
@@ -1554,6 +1557,7 @@ static void __cdecl InitMods()
 	{
 		uiscale::bg_fill = static_cast<uiscale::FillMode>(bgFill);
 		uiscale::setup_background_scale();
+		bgscale::initialize();
 	}
 
 	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode::fit);

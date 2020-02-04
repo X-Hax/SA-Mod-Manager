@@ -69,6 +69,12 @@
     <ClCompile Include="uiscale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hudscale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bgscale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -156,6 +162,12 @@
       <Filter>Header Files\include</Filter>
     </ClInclude>
     <ClInclude Include="uiscale.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bgscale.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hudscale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

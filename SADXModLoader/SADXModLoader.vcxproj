@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AutoMipmap.cpp" />
+    <ClCompile Include="bgscale.cpp" />
     <ClCompile Include="ChunkSpecularFix.cpp" />
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="DLLData.cpp" />
@@ -21,6 +22,7 @@
     <ClCompile Include="FileMap.cpp" />
     <ClCompile Include="FileReplacement.cpp" />
     <ClCompile Include="FixFOV.cpp" />
+    <ClCompile Include="hudscale.cpp" />
     <ClCompile Include="polybuff.cpp" />
     <ClCompile Include="prs.cpp" />
     <ClCompile Include="MediaFns.cpp" />
@@ -34,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoMipmap.h" />
+    <ClInclude Include="bgscale.h" />
     <ClInclude Include="ChunkSpecularFix.h" />
     <ClInclude Include="DDS.h" />
     <ClInclude Include="direct3d.h" />
@@ -44,6 +47,7 @@
     <ClInclude Include="FileReplacement.h" />
     <ClInclude Include="FixFOV.h" />
     <ClInclude Include="git.h" />
+    <ClInclude Include="hudscale.h" />
     <ClInclude Include="include\SADXModInfo.h" />
     <ClInclude Include="polybuff.h" />
     <ClInclude Include="prs.h" />

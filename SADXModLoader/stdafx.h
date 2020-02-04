@@ -42,6 +42,9 @@
 #include "pvmx.h"
 #include "prs.h"
 #include "polybuff.h"
+#include "uiscale.h"
+#include "hudscale.h"
+#include "bgscale.h"
 
 #if defined(_MSC_VER) && _MSC_VER < 1900
 #define snprintf _snprintf
