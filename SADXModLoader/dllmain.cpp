@@ -540,10 +540,10 @@ static LRESULT CALLBACK WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, 
 			break;
 			
 		case WM_SYSKEYDOWN:
-			return 0;
+			if (wParam != VK_F4 && wParam != VK_F2 && wParam != VK_RETURN) return 0;
 
 		case WM_SYSKEYUP:
-			return 0;
+			if (wParam != VK_F4 && wParam != VK_F2 && wParam != VK_RETURN) return 0;
 
 		case WM_DESTROY:
 			PostQuitMessage(0);
@@ -608,7 +608,7 @@ LRESULT __stdcall WndProc_hook(HWND handle, UINT Msg, WPARAM wParam, LPARAM lPar
 {
 	if (Msg == WM_SYSKEYUP || Msg == WM_SYSKEYDOWN)
 	{
-		return 0;
+		if (wParam != VK_F4 && wParam != VK_F2 && wParam != VK_RETURN) return 0;
 	}
 	else return DefWindowProcA(handle, Msg, wParam, lParam);
 }
