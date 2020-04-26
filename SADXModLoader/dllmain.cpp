@@ -606,11 +606,8 @@ static LRESULT CALLBACK WndProc_Resizable(HWND handle, UINT Msg, WPARAM wParam, 
 
 LRESULT __stdcall WndProc_hook(HWND handle, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	if (Msg == WM_SYSKEYUP || Msg == WM_SYSKEYDOWN)
-	{
-		if (wParam != VK_F4 && wParam != VK_F2 && wParam != VK_RETURN) return 0;
-	}
-	else return DefWindowProcA(handle, Msg, wParam, lParam);
+	if ((Msg == WM_SYSKEYDOWN || Msg == WM_SYSKEYUP) && ((wParam != VK_F4 && wParam != VK_F2 && wParam != VK_RETURN))) return 0;
+	return DefWindowProcA(handle, Msg, wParam, lParam);
 }
 
 wstring borderimg = L"mods\\Border.png";
