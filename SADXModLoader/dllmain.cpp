@@ -463,6 +463,8 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 		case WM_ACTIVATEAPP:
 			if (!switchingWindowMode)
 			{
+				if (wParam) UnpauseAllSounds(0, 0);
+				else PauseAllSounds(0, 0, 0);
 				WndProc_B(WindowHandle, uMsg, wParam, lParam);
 			}
 
@@ -1493,8 +1495,8 @@ static void __cdecl InitMods()
 	WriteCall((void *)0x513187, PlayVideoFile_r);
 	WriteJump((void *)0x40D1EA, WMPInit_r);
 	WriteJump((void *)0x40CF50, WMPRestartMusic_r);
-	WriteJump((void *)0x40D060, PauseSound_r);
-	WriteJump((void *)0x40D0A0, ResumeSound_r);
+	WriteJump((void *)0x40D060, PauseMusic_r);
+	WriteJump((void *)0x40D0A0, ResumeMusic_r);
 	WriteJump((void *)0x40CFF0, WMPClose_r);
 	WriteJump((void *)0x40D28A, WMPRelease_r);
 	WriteJump(LoadSoundList, LoadSoundList_r);
