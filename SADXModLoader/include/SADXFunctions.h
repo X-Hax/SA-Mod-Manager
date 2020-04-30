@@ -159,8 +159,8 @@ FunctionPointer(void, PlayMusicFile, (LPCSTR filename, int loop), 0x40CD20);
 FunctionPointer(int, PlayVoiceFile, (LPCSTR filename), 0x40CE30);
 FunctionPointer(int, WMPRestartMusic, (), 0x40CF50);
 FunctionPointer(void, WMPClose, (int a1), 0x40CFF0);
-VoidFunc(PauseSound, 0x40D060);
-VoidFunc(ResumeSound, 0x40D0A0);
+VoidFunc(PauseMusic, 0x40D060);
+VoidFunc(ResumeMusic, 0x40D0A0);
 FunctionPointer(int, WMPInit, (), 0x40D0D0);
 FunctionPointer(int, WMPRelease, (), 0x40D1F0);
 VoidFunc(DrawSubtitles, 0x40D4D0);
@@ -5036,6 +5036,42 @@ static inline void Zero_DebugSelected(ObjectMaster *a1)
 		mov eax, [a1]
 		call Zero_DebugSelectedPtr
 	}
+}
+
+// int __usercall PauseAllSounds@<eax>(int a1@<ecx>, int a2@<ebx>, int a3@<ebp>)
+static const void* const PauseAllSoundsPtr = (void*)0x424320;
+static inline int PauseAllSounds(int a1, int a2, int a3)
+{
+	int result;
+	__asm
+	{
+		mov ebx, [a2]
+		mov ecx, [a1]
+		push ebp
+		mov ebp, [a3]
+		call PauseAllSoundsPtr
+		pop ebp
+		mov result, eax
+		
+	}
+	return result;
+}
+
+// int __usercall UnpauseAllSounds@<eax>(int volume_3d@<ecx>, int a2@<ebp>)
+static const void* const UnpauseAllSoundsPtr = (void*)0x424380;
+static inline int UnpauseAllSounds(int volume_3d, int a2)
+{
+	int result;
+	__asm
+	{
+		mov ecx, [volume_3d]
+		push ebp
+		mov ebp, [a2]
+		call UnpauseAllSoundsPtr
+		pop ebp
+		mov result, eax
+	}
+	return result;
 }
 
 #endif /* SADXMODLOADER_SADXFUNCTIONS_H */

@@ -126,8 +126,8 @@ void WMPInit_r();
 int __cdecl PlayMusicFile_r(LPCSTR filename, int loop);
 
 void __cdecl WMPRestartMusic_r();
-void __cdecl PauseSound_r();
-void __cdecl ResumeSound_r();
+void __cdecl PauseMusic_r();
+void __cdecl ResumeMusic_r();
 void __cdecl WMPClose_r(int a1);
 
 /**

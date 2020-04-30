@@ -158,7 +158,7 @@ void __cdecl WMPRestartMusic_r()
 	}
 }
 
-void __cdecl PauseSound_r()
+void __cdecl PauseMusic_r()
 {
 	if (dword_3ABDFA0)
 	{
@@ -181,7 +181,7 @@ void __cdecl PauseSound_r()
 	}
 }
 
-void __cdecl ResumeSound_r()
+void __cdecl ResumeMusic_r()
 {
 	if (dword_3ABDFA0)
 	{
