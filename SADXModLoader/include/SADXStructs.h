@@ -372,41 +372,43 @@ struct CharObj2
 
 struct CollisionData
 {
-	char field_0;
-	char field_1;
-	char field_2;
-	char field_3;
-	int field_4;
-	NJS_VECTOR origin;
-	NJS_VECTOR scale;
-	int field_20;
-	Rotation3 rotation;
+	char kind;
+	char form;
+	char push;
+	char damage;
+	Uint32 attr;
+	NJS_VECTOR center;
+	float a;
+	float b;
+	float c;
+	float d;
+	int angx;
+	int angy;
+	int angz;
 };
 
 struct EntityData1;
 struct CollisionThing
 {
-	char field_0;
-	char field_1;
-	short FlagsMaybe;
-	EntityData1 *Entity;
+	char my_num;
+	char hit_num;
+	unsigned __int16 flag;
+	EntityData1 *hit_twp;
 };
 
 struct CollisionInfo
 {
-	short List;
-	short ThingCount;
-	short Flags;
-	short Count;
-	float Radius;
+	unsigned __int16 id;
+	__int16 nbHit;
+	unsigned __int16 flag;
+	unsigned __int16 nbInfo;
+	float colli_range;
 	CollisionData *CollisionArray;
 	CollisionThing CollisionThings[16];
-	int CollisionThingsEnd;
-	int field_94;
-	int field_98;
+	NJS_POINT3 normal;
 	ObjectMaster *Object;
-	short field_A0;
-	short field_A2;
+	__int16 my_num;
+	__int16 hit_num;
 	CollisionInfo *CollidingObject;
 };
 
