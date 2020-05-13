@@ -463,8 +463,8 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 		case WM_ACTIVATEAPP:
 			if (!switchingWindowMode)
 			{
-				if (wParam) UnpauseAllSounds(0, 0);
-				else PauseAllSounds(0, 0, 0);
+				if (wParam) UnpauseAllSounds(0);
+				else PauseAllSounds(0);
 				WndProc_B(WindowHandle, uMsg, wParam, lParam);
 			}
 
