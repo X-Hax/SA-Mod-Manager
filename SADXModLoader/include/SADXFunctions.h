@@ -5038,37 +5038,30 @@ static inline void Zero_DebugSelected(ObjectMaster *a1)
 	}
 }
 
-// int __usercall PauseAllSounds@<eax>(int a1@<ecx>, int a2@<ebx>, int a3@<ebp>)
+// int __usercall PauseAllSounds@<eax>(int a1@<ecx>)
 static const void* const PauseAllSoundsPtr = (void*)0x424320;
-static inline int PauseAllSounds(int a1, int a2, int a3)
+static inline int PauseAllSounds(int a1)
 {
 	int result;
 	__asm
 	{
-		mov ebx, [a2]
 		mov ecx, [a1]
-		push ebp
-		mov ebp, [a3]
 		call PauseAllSoundsPtr
-		pop ebp
 		mov result, eax
 		
 	}
 	return result;
 }
 
-// int __usercall UnpauseAllSounds@<eax>(int volume_3d@<ecx>, int a2@<ebp>)
+// int __usercall UnpauseAllSounds@<eax>(int volume_3d@<ecx>)
 static const void* const UnpauseAllSoundsPtr = (void*)0x424380;
-static inline int UnpauseAllSounds(int volume_3d, int a2)
+static inline int UnpauseAllSounds(int volume_3d)
 {
 	int result;
 	__asm
 	{
 		mov ecx, [volume_3d]
-		push ebp
-		mov ebp, [a2]
 		call UnpauseAllSoundsPtr
-		pop ebp
 		mov result, eax
 	}
 	return result;
