@@ -150,6 +150,8 @@ namespace SADXModManager
 			checkUpdateModsStartup.Checked      = loaderini.ModUpdateCheck;
 			comboUpdateFrequency.SelectedIndex  = (int)loaderini.UpdateUnit;
 			numericUpdateFrequency.Value        = loaderini.UpdateFrequency;
+			comboVoiceLanguage.SelectedIndex    = (int)loaderini.VoiceLanguage;
+			comboTextLanguage.SelectedIndex     = (int)loaderini.TextLanguage;
 
 			suppressEvent = true;
 			forceAspectRatioCheckBox.Checked = loaderini.ForceAspectRatio;
@@ -911,6 +913,8 @@ namespace SADXModManager
 			loaderini.ModUpdateCheck            = checkUpdateModsStartup.Checked;
 			loaderini.UpdateUnit                = (UpdateUnit)comboUpdateFrequency.SelectedIndex;
 			loaderini.UpdateFrequency           = (int)numericUpdateFrequency.Value;
+			loaderini.VoiceLanguage             = (int)comboVoiceLanguage.SelectedIndex;
+			loaderini.TextLanguage              = (int)comboTextLanguage.SelectedIndex;
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
 

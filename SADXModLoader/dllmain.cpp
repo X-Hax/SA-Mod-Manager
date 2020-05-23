@@ -352,6 +352,8 @@ static vector<RECT> screenBounds;
 static Gdiplus::Bitmap* backgroundImage = nullptr;
 static bool switchingWindowMode         = false;
 static bool borderlessWindow            = false;
+static char voiceLanguage               = 1;
+static char textLanguage                = 1;
 static bool scaleScreen                 = true;
 static bool windowResize                = false;
 static unsigned int screenNum           = 1;
@@ -1341,6 +1343,12 @@ void __cdecl WriteSaveFile_r()
 	}
 }
 
+void __cdecl SetLanguage()
+{
+	VoiceLanguage = voiceLanguage;
+	TextLanguage = textLanguage;
+}
+
 int __cdecl FixEKey(int i)
 {
 	return IsCameraControlEnabled() && GetKey(i);
@@ -1451,6 +1459,8 @@ static void __cdecl InitMods()
 
 	fov::initialize();
 
+	voiceLanguage      = settings->getInt("VoiceLanguage", 1);
+	textLanguage       = settings->getInt("TextLanguage", 1);
 	borderlessWindow   = settings->getBool("WindowedFullscreen");
 	scaleScreen        = settings->getBool("StretchFullscreen", true);
 	screenNum          = settings->getInt("ScreenNum", 1);
@@ -1488,6 +1498,7 @@ static void __cdecl InitMods()
 
 	// Hijack a ton of functions in SADX.
 	*(void **)0x38A5DB8 = (void *)0x38A5D94; // depth buffer fix
+	WriteCall((void *)0x402614, SetLanguage);
 	WriteCall((void *)0x437547, FixEKey);
 	WriteCall((void *)0x42544C, PlayMusicFile_r);
 	WriteCall((void *)0x4254F4, PlayVoiceFile_r);

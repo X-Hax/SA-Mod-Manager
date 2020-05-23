@@ -37,6 +37,10 @@ namespace SADXModManager
 		public bool StretchFullscreen { get; set; } = true;
 		[DefaultValue(1)]
 		public int ScreenNum { get; set; } = 1;
+		[DefaultValue(1)]
+		public int VoiceLanguage { get; set; } = 1;
+		[DefaultValue(1)]
+		public int TextLanguage { get; set; } = 1;
 		public bool CustomWindowSize { get; set; }
 		[DefaultValue(640)]
 		public int WindowWidth { get; set; } = 640;
