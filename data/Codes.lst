@@ -45,7 +45,7 @@ Code "Have All Upgrades"
 or16 p03B42E30|20|C0|4 0x7FFF
 
 Patch "Disable Music"
-write8 00425690 0xC3
+write8 0091268C 0
 
 Patch "Disable Voices"
 write8 00425710 0xC3
