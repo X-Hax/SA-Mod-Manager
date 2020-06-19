@@ -998,16 +998,16 @@ namespace SADXModManager
 
 		private void screenNumComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			Size oldsize = resolutionPresets[5];
+			Size oldsize = resolutionPresets[6];
 			Rectangle rect = Screen.PrimaryScreen.Bounds;
 			if (screenNumComboBox.SelectedIndex > 0)
 				rect = Screen.AllScreens[screenNumComboBox.SelectedIndex - 1].Bounds;
 			else
 				foreach (Screen screen in Screen.AllScreens)
 					rect = Rectangle.Union(rect, screen.Bounds);
-			resolutionPresets[5] = rect.Size;
-			resolutionPresets[6] = new Size(rect.Width / 2, rect.Height / 2);
-			resolutionPresets[7] = new Size(rect.Width * 2, rect.Height * 2);
+			resolutionPresets[6] = rect.Size;
+			resolutionPresets[7] = new Size(rect.Width / 2, rect.Height / 2);
+			resolutionPresets[8] = new Size(rect.Width * 2, rect.Height * 2);
 			if (comboResolutionPreset.SelectedIndex > 4 && comboResolutionPreset.SelectedIndex < 8 && rect.Size != oldsize)
 				comboResolutionPreset.SelectedIndex = -1;
 		}
@@ -1045,6 +1045,7 @@ namespace SADXModManager
 			new Size(800, 600), // 800x600
 			new Size(1024, 768), // 1024x768
 			new Size(1152, 864), // 1152x864
+			new Size(1280, 960), // 1280x960
 			new Size(1280, 1024), // 1280x1024
 			new Size(), // Native
 			new Size(), // 1/2x Native
