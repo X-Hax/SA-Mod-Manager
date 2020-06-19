@@ -52,6 +52,8 @@ namespace SADXModManager
 			modBottomButton.Font = boldFont;
 		}
 
+		private ConfigFile configFile;
+		private const string sadxIni = "sonicDX.ini";
 		private bool checkedForUpdates;
 
 		const string updatePath = "mods/.updates";
@@ -187,6 +189,8 @@ namespace SADXModManager
 			suppressEvent = false;
 
 			checkWindowResize.Checked = loaderini.ResizableWindow;
+			// Load the config INI upon window load
+			LoadConfigIni();
 		}
 
 		private void HandleUri(string uri)
@@ -976,6 +980,7 @@ namespace SADXModManager
 		private void saveButton_Click(object sender, EventArgs e)
 		{
 			Save();
+			SaveConfigIni();
 			LoadModList();
 		}
 
@@ -998,16 +1003,16 @@ namespace SADXModManager
 
 		private void screenNumComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			Size oldsize = resolutionPresets[5];
+			Size oldsize = resolutionPresets[6];
 			Rectangle rect = Screen.PrimaryScreen.Bounds;
 			if (screenNumComboBox.SelectedIndex > 0)
 				rect = Screen.AllScreens[screenNumComboBox.SelectedIndex - 1].Bounds;
 			else
 				foreach (Screen screen in Screen.AllScreens)
 					rect = Rectangle.Union(rect, screen.Bounds);
-			resolutionPresets[5] = rect.Size;
-			resolutionPresets[6] = new Size(rect.Width / 2, rect.Height / 2);
-			resolutionPresets[7] = new Size(rect.Width * 2, rect.Height * 2);
+			resolutionPresets[6] = rect.Size;
+			resolutionPresets[7] = new Size(rect.Width / 2, rect.Height / 2);
+			resolutionPresets[8] = new Size(rect.Width * 2, rect.Height * 2);
 			if (comboResolutionPreset.SelectedIndex > 4 && comboResolutionPreset.SelectedIndex < 8 && rect.Size != oldsize)
 				comboResolutionPreset.SelectedIndex = -1;
 		}
@@ -1045,6 +1050,7 @@ namespace SADXModManager
 			new Size(800, 600), // 800x600
 			new Size(1024, 768), // 1024x768
 			new Size(1152, 864), // 1152x864
+			new Size(1280, 960), // 1280x960
 			new Size(1280, 1024), // 1280x1024
 			new Size(), // Native
 			new Size(), // 1/2x Native
@@ -1247,7 +1253,7 @@ namespace SADXModManager
 		}
 
 		private bool displayedManifestWarning;
-		
+
 		private void generateManifestToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (!displayedManifestWarning)
@@ -1419,5 +1425,72 @@ namespace SADXModManager
 			using (ModConfigDialog dlg = new ModConfigDialog(Path.Combine("mods", (string)modListView.SelectedItems[0].Tag), modListView.SelectedItems[0].Text))
 				dlg.ShowDialog(this);
 		}
+
+		private void LoadConfigIni()
+		{
+			configFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<ConfigFile>(sadxIni) : new ConfigFile();
+			if (configFile.GameConfig == null)
+			{
+				configFile.GameConfig = new GameConfig
+				{
+					FrameRate = (int)FrameRate.High,
+					Sound3D = 1,
+					SEVoice = 1,
+					BGM = 1,
+					BGMVolume = 100,
+					VoiceVolume = 100
+				};
+			}
+			// Video
+			// Display mode
+			if (configFile.GameConfig.FullScreen == 1)
+				radioFullscreen.Checked = true;
+			else
+				radioWindowMode.Checked = true;
+
+			// Framerate
+			if (configFile.GameConfig.FrameRate == (int)FrameRate.Invalid || configFile.GameConfig.FrameRate > (int)FrameRate.Low)
+			{
+				MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				comboFramerate.SelectedIndex = (int)FrameRate.High - 1;
+			}
+			else
+			{
+				comboFramerate.SelectedIndex = configFile.GameConfig.FrameRate - 1;
+			}
+
+			// Clip level
+			comboClip.SelectedIndex = configFile.GameConfig.ClipLevel;
+			// Fog mode
+			comboFog.SelectedIndex = configFile.GameConfig.FogEmulation;
+
+			// Sound
+			// Toggles
+			check3DSound.Checked = (configFile.GameConfig.Sound3D != 0);
+			checkSound.Checked = (configFile.GameConfig.SEVoice != 0);
+			checkMusic.Checked = (configFile.GameConfig.BGM != 0);
+
+			// Volume
+			numericSoundVol.Value = configFile.GameConfig.VoiceVolume;
+			numericBGMVol.Value = configFile.GameConfig.BGMVolume;
+		}
+		private void SaveConfigIni()
+		{
+			configFile.GameConfig.FullScreen = radioFullscreen.Checked ? 1 : 0;
+
+			configFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
+			configFile.GameConfig.ClipLevel = comboClip.SelectedIndex;
+			configFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
+
+			configFile.GameConfig.Sound3D = check3DSound.Checked ? 1 : 0;
+			configFile.GameConfig.SEVoice = checkSound.Checked ? 1 : 0;
+			configFile.GameConfig.BGM = checkMusic.Checked ? 1 : 0;
+
+			configFile.GameConfig.VoiceVolume = (int)numericSoundVol.Value;
+			configFile.GameConfig.BGMVolume = (int)numericBGMVol.Value;
+
+			IniSerializer.Serialize(configFile, sadxIni);
+		}
+
 	}
 }

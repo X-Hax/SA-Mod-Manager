@@ -187,9 +187,9 @@ static uint8_t ParseLanguage(const string& str)
 	return Languages_Japanese;
 }
 
-static string DecodeUTF8(const string& str, int language)
+static string DecodeUTF8(const string& str, int language, unsigned int codepage)
 {
-	return (language <= Languages_English) ? UTF8toSJIS(str) : UTF8to1252(str);
+	return (language <= Languages_English) ? UTF8toSJIS(str) : UTF8toCodepage(str, codepage);
 }
 
 static string UnescapeNewlines(const string& str)
@@ -771,7 +771,7 @@ static void ProcessSoundListINI(const IniGroup* group, const wstring& mod_dir)
 	list->Count = (int)numents;
 }
 
-static vector<char*> ProcessStringArrayINI_Internal(const wchar_t* filename, uint8_t language)
+static vector<char*> ProcessStringArrayINI_Internal(const wchar_t* filename, uint8_t language, unsigned int codepage)
 {
 	ifstream fstr(filename);
 	vector<char*> strs;
@@ -779,7 +779,7 @@ static vector<char*> ProcessStringArrayINI_Internal(const wchar_t* filename, uin
 	{
 		string str;
 		getline(fstr, str);
-		str = DecodeUTF8(UnescapeNewlines(str), language);
+		str = DecodeUTF8(UnescapeNewlines(str), language, codepage);
 		strs.push_back(strdup(str.c_str()));
 	}
 	fstr.close();
@@ -793,13 +793,14 @@ static void ProcessStringArrayINI(const IniGroup* group, const wstring& mod_dir)
 		return;
 	}
 
-	wchar_t filename[MAX_PATH] {};
+	wchar_t filename[MAX_PATH]{};
+	unsigned int codepage = group->getInt("codepage", 1252);
 
 	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
 	         mod_dir.c_str(), group->getWString("filename").c_str());
 
 	vector<char*> strs = ProcessStringArrayINI_Internal(filename,
-	                                                    ParseLanguage(group->getString("language")));
+	                                                    ParseLanguage(group->getString("language")), codepage);
 	size_t numents = strs.size();
 	char** list  = (char**)(group->getIntRadix("address", 16) + 0x400000);;
 	arrcpy(list, strs.data(), numents);
@@ -852,6 +853,7 @@ static void ProcessCutsceneTextINI(const IniGroup* group, const wstring& mod_dir
 {
 	if (!group->hasKeyNonEmpty("filename"))
 		return;
+	unsigned int codepage = group->getInt("codepage", 1252);
 	char*** addr = (char***)group->getIntRadix("address", 16);
 	if (addr == nullptr)
 		return;
@@ -864,7 +866,7 @@ static void ProcessCutsceneTextINI(const IniGroup* group, const wstring& mod_dir
 		swprintf(filename, LengthOfArray(filename), L"%s%s.txt",
 		         pathbase.c_str(), languagenames[i]);
 
-		vector<char*> strs = ProcessStringArrayINI_Internal(filename, i);
+		vector<char*> strs = ProcessStringArrayINI_Internal(filename, i, codepage);
 
 		size_t numents = strs.size();
 		char** list = new char* [numents];
@@ -880,6 +882,7 @@ static void ProcessRecapScreenINI(const IniGroup* group, const wstring& mod_dir)
 		return;
 	}
 
+	unsigned int codepage = group->getInt("codepage", 1252);
 	int length = group->getInt("length");
 	auto addr = (RecapScreen**)group->getIntRadix("address", 16);
 
@@ -909,7 +912,7 @@ static void ProcessRecapScreenINI(const IniGroup* group, const wstring& mod_dir)
 
 			for (unsigned int j = 0; j < numents; j++)
 			{
-				list[i].TextData[j] = strdup(DecodeUTF8(strs[j], l).c_str());
+				list[i].TextData[j] = strdup(DecodeUTF8(strs[j], l, codepage).c_str());
 			}
 
 			list[i].LineCount = (int)numents;
@@ -927,7 +930,7 @@ static void ProcessNPCTextINI(const IniGroup* group, const wstring& mod_dir)
 	{
 		return;
 	}
-
+	unsigned int codepage= group->getInt("codepage", 1252);
 	int length = group->getInt("length");
 	auto addr = (HintText_Entry**)group->getIntRadix("address", 16);
 	
@@ -1023,7 +1026,7 @@ static void ProcessNPCTextINI(const IniGroup* group, const wstring& mod_dir)
 					hasText = true;
 					entdata = inidata->getGroup(buf2);
 					HintText_Text entry {};
-					entry.Message = strdup(DecodeUTF8(entdata->getString("Line"), l).c_str());
+					entry.Message = strdup(DecodeUTF8(entdata->getString("Line"), l, codepage).c_str());
 					entry.Time    = entdata->getInt("Time");
 					text.push_back(entry);
 				}
@@ -1452,7 +1455,7 @@ static void ProcessCreditsTextListINI(const IniGroup* group, const wstring& mod_
 	}
 
 	addr = (CreditsList*)((intptr_t)addr + 0x400000);
-
+	unsigned int codepage = group->getInt("codepage", 1252);
 	wchar_t filename[MAX_PATH] {};
 
 	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
@@ -1479,7 +1482,7 @@ static void ProcessCreditsTextListINI(const IniGroup* group, const wstring& mod_
 		entry.field_2   = entdata->getInt("Unknown1");
 		entry.field_3   = entdata->getInt("Unknown2");
 		entry.field_3   = entdata->getInt("Unknown2");
-		entry.Line      = strdup(DecodeUTF8(entdata->getString("Text"), 0).c_str());
+		entry.Line      = strdup(DecodeUTF8(entdata->getString("Text"), 0, codepage).c_str());
 
 		ents.push_back(entry);
 	}
