@@ -52,6 +52,7 @@ static Trampoline* SubGameLevelList_Display_t;
 static Trampoline* EmblemResultMenu_Display_t;
 static Trampoline* FileSelect_Display_t;
 static Trampoline* MenuObj_Display_t;
+static Trampoline* InetDemo_Display_t;
 static Trampoline* OptionsMenu_Display_t;
 static Trampoline* SoundTest_Display_t;
 static Trampoline* GreenMenuRect_Draw_t;
@@ -282,6 +283,11 @@ static void __cdecl MenuObj_Display_r(ObjectMaster* a1)
 	scale_trampoline(Align::center, false, MenuObj_Display_r, MenuObj_Display_t, a1);
 }
 
+static void __cdecl InetDemo_Display_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, InetDemo_Display_r, InetDemo_Display_t, a1);
+}
+
 static void __cdecl OptionsMenu_Display_r(ObjectMaster* a1)
 {
 	scale_trampoline(Align::center, false, OptionsMenu_Display_r, OptionsMenu_Display_t, a1);
@@ -453,6 +459,7 @@ void hudscale::initialize()
 	EmblemResultMenu_Display_t           = new Trampoline(0x0050DFD0, 0x0050DFD5, EmblemResultMenu_Display_r);
 	FileSelect_Display_t                 = new Trampoline(0x00505550, 0x00505555, FileSelect_Display_r);
 	MenuObj_Display_t                    = new Trampoline(0x00432480, 0x00432487, MenuObj_Display_r);
+	InetDemo_Display_t                   = new Trampoline(0x0050D430, 0x0050D435, InetDemo_Display_r);
 	OptionsMenu_Display_t                = new Trampoline(0x00509810, 0x00509815, OptionsMenu_Display_r);
 	SoundTest_Display_t                  = new Trampoline(0x00511390, 0x00511395, SoundTest_Display_r);
 	GreenMenuRect_Draw_t                 = new Trampoline(0x004334F0, 0x004334F5, GreenMenuRect_Draw_r);
