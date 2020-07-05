@@ -961,6 +961,7 @@ namespace SADXModManager
 			}
 
 			Save();
+			SaveConfigIni();
 			if (!installed)
 				switch (MessageBox.Show(this, "Looks like you're starting the game without the mod loader installed. Without the mod loader, the mods and codes you've selected won't be used, and some settings may not work.\n\nDo you want to install the mod loader now?", "SADX Mod Manager", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1))
 				{
