@@ -13,7 +13,6 @@
  // TODO: fix recap language arrays in disassembly (02BC3228)
 
 DataArray(ObjectFuncPtr, Capsule_Actions, 0x7E09CC, 4);
-DataArray(char, texlist, 0x7E5E64, 2);
 DataArray(int, SetDataThings, 0x7E5E98, 44);
 DataArray(int, CamDataThings, 0x7E5F48, 43);
 DataPointer(EventFlags, EventFlagOffset, 0x7E6750);
