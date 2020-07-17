@@ -695,8 +695,8 @@ struct LevelCutsceneData
 
 struct CutsceneData
 {
-	ObjectFuncPtr Function;
-	void *Textures;
+	void(__cdecl* Function)(int a1);
+	PVMEntry* Textures;
 };
 
 struct HintText_Text
