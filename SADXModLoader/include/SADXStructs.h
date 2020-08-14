@@ -174,15 +174,16 @@ struct LandTable
 {
 	int16_t COLCount;
 	int16_t AnimCount;
+	int16_t Attrs;
 	// see LandTableFlags enum
-	int Flags;
-	float Unknown_1;
+	int16_t Flags;
+	float ClippingDistance;
 	COL *Col;
 	GeoAnimData *AnimData;
 	const char *TexName;
 	NJS_TEXLIST *TexList;
-	int Unknown_4;
-	int Unknown_5;
+	int BinaryNamePointer;
+	int LoadFuncPointer;
 };
 
 struct P2Path
