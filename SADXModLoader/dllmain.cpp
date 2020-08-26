@@ -467,7 +467,11 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 			{
 				if (wParam)
 				{
-					if (!IsGamePaused()) UnpauseAllSounds(0);
+					if (!IsGamePaused())
+					{
+						UnpauseAllSounds(0);
+					}
+					ResumeMusic();
 				}
 				else PauseAllSounds(0);
 				WndProc_B(WindowHandle, uMsg, wParam, lParam);
