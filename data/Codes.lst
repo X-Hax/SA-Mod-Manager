@@ -18,7 +18,7 @@ write8 03B0EF48 99
 write8 03B0F128 59
 write8 03B0EF35 59
 
-Code "Infinite rod tension"
+Code "Infinite Rod Tension"
 writefloat 3C5252C 0
 
 Code "Max Enemy Bonus"

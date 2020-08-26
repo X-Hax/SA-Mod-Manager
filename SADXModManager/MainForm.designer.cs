@@ -487,9 +487,9 @@
             // 
             this.configEditorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.configEditorButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.configEditorButton.Location = new System.Drawing.Point(296, 412);
+            this.configEditorButton.Location = new System.Drawing.Point(292, 412);
             this.configEditorButton.Name = "configEditorButton";
-            this.configEditorButton.Size = new System.Drawing.Size(109, 22);
+            this.configEditorButton.Size = new System.Drawing.Size(112, 22);
             this.configEditorButton.TabIndex = 104;
             this.configEditorButton.Text = "&Config Editor (vanilla)";
             this.toolTip.SetToolTip(this.configEditorButton, "Edit vanilla SADX configuration.\r\nThese settings will be used by the game when th" +
