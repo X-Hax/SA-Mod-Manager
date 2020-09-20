@@ -1374,6 +1374,22 @@ void __declspec(naked) PolyBuff_Init_FixVBuffParams()
 	}
 }
 
+void __cdecl Direct3D_TextureFilterPoint_ForceLinear()
+{
+	Direct3D_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	Direct3D_Device->SetRenderState(D3DRS_LIGHTING, 0);
+	Direct3D_Device->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_COLOR1);
+	Direct3D_Device->SetTextureStageState(0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR);
+	Direct3D_Device->SetTextureStageState(0, D3DTSS_MINFILTER, D3DTEXF_LINEAR);
+	Direct3D_Device->SetTextureStageState(0, D3DTSS_MIPFILTER, D3DTEXF_LINEAR);
+}
+
+void __cdecl Direct3D_EnableHudAlpha_Point(bool enable)
+{
+	Direct3D_EnableHudAlpha(enable);
+	Direct3D_TextureFilterPoint();
+}
+
 static void __cdecl InitMods()
 {
 	// Hook present function to handle device lost/reset states
@@ -1566,9 +1582,16 @@ static void __cdecl InitMods()
 	// Enables GUI texture filtering (D3DTEXF_POINT -> D3DTEXF_LINEAR)
 	if (settings->getBool("TextureFilter", true))
 	{
-		WriteData((uint8_t*)0x0078B7C4, (uint8_t)0x02);
-		WriteData((uint8_t*)0x0078B7D8, (uint8_t)0x02);
-		WriteData((uint8_t*)0x0078B7EC, (uint8_t)0x02);
+		WriteCall((void*)0x77DBCA, Direct3D_TextureFilterPoint_ForceLinear); //njDrawPolygon
+		WriteCall((void*)0x77DC79, Direct3D_TextureFilterPoint_ForceLinear); //njDrawTextureMemList
+		WriteCall((void*)0x77DD99, Direct3D_TextureFilterPoint_ForceLinear); //Direct3D_EnableHudAlpha
+		WriteCall((void*)0x77DFA0, Direct3D_TextureFilterPoint_ForceLinear); //njDrawLine2D
+		WriteCall((void*)0x77E032, Direct3D_TextureFilterPoint_ForceLinear); //njDrawCircle2D (?)
+		WriteCall((void*)0x77EA7E, Direct3D_TextureFilterPoint_ForceLinear); //njDrawTriangle2D
+		WriteCall((void*)0x78B074, Direct3D_TextureFilterPoint_ForceLinear); //DrawChaoHudThingB
+		WriteCall((void*)0x78B2F4, Direct3D_TextureFilterPoint_ForceLinear); //Some other Chao thing
+		WriteCall((void*)0x78B4C0, Direct3D_TextureFilterPoint_ForceLinear); //DisplayDebugShape_
+		WriteCall((void*)0x793CDD, Direct3D_EnableHudAlpha_Point); //Debug text still uses point filtering
 	}
 
 	direct3d::set_vsync(settings->getBool("EnableVsync", true));
