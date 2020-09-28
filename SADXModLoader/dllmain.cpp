@@ -1572,6 +1572,9 @@ static void __cdecl InitMods()
 	WriteData((uint8_t*)0x0078EAE1, (uint8_t)0x25);
 	WriteData((uint8_t*)0x0078EAFE, (uint8_t)0x25);
 
+	// Chao stat panel screen dimensions fix
+	WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
+
 	ChunkSpecularFix_Init();
 
 	texpack::init();
