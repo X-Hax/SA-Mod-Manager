@@ -48,7 +48,11 @@
     <ClInclude Include="FixFOV.h" />
     <ClInclude Include="git.h" />
     <ClInclude Include="hudscale.h" />
+    <ClInclude Include="include\SADXEnumsNew.h" />
+    <ClInclude Include="include\SADXFunctionsNew.h" />
     <ClInclude Include="include\SADXModInfo.h" />
+    <ClInclude Include="include\SADXStructsNew.h" />
+    <ClInclude Include="include\SADXVariablesNew.h" />
     <ClInclude Include="polybuff.h" />
     <ClInclude Include="prs.h" />
     <ClInclude Include="include\d3d8types.h" />

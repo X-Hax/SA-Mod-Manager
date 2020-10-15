@@ -24,6 +24,10 @@
 #include "SADXStructs.h"
 #include "SADXVariables.h"
 #include "SADXFunctions.h"
+#include "SADXEnumsNew.h"
+#include "SADXStructsNew.h"
+#include "SADXVariablesNew.h"
+#include "SADXFunctionsNew.h"
 
 static inline void ResizeTextureList(NJS_TEXLIST *texlist, Uint32 count)
 {
