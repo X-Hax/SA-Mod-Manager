@@ -95,8 +95,6 @@
             this.radioFullscreen = new System.Windows.Forms.RadioButton();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.groupBox_SoundVolume = new System.Windows.Forms.GroupBox();
-            this.numericBGMVol = new System.Windows.Forms.NumericUpDown();
-            this.numericSoundVol = new System.Windows.Forms.NumericUpDown();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.groupBox_SoundConfig = new System.Windows.Forms.GroupBox();
@@ -127,6 +125,10 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trackBarMusicVol = new System.Windows.Forms.TrackBar();
+            this.trackBarVoiceVol = new System.Windows.Forms.TrackBar();
+            this.labelMusicVol = new System.Windows.Forms.Label();
+            this.labelVoiceVol = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -146,14 +148,14 @@
             this.groupBox_Display.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.groupBox_SoundVolume.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericBGMVol)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericSoundVol)).BeginInit();
             this.groupBox_SoundConfig.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpdateFrequency)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.modContextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarMusicVol)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarVoiceVol)).BeginInit();
             this.SuspendLayout();
             // 
             // label3
@@ -858,8 +860,8 @@
             this.comboClip.Name = "comboClip";
             this.comboClip.Size = new System.Drawing.Size(121, 21);
             this.comboClip.TabIndex = 10;
-            this.toolTip.SetToolTip(this.comboClip, "Sets detail level. Recommended: High.\r\nAt lower detail level the game skips" +
-        " drawing distant\r\nobjects, disables some effects and pauses some animations.");
+            this.toolTip.SetToolTip(this.comboClip, "Sets detail level. Recommended: High.\r\nAt lower detail level the game skips drawi" +
+        "ng distant\r\nobjects, disables some effects and pauses some animations.");
             // 
             // label10
             // 
@@ -901,8 +903,8 @@
             this.comboFramerate.Name = "comboFramerate";
             this.comboFramerate.Size = new System.Drawing.Size(121, 21);
             this.comboFramerate.TabIndex = 9;
-            this.toolTip.SetToolTip(this.comboFramerate, "Sets the target framerate. Recommended: 60 FPS.\r\nHigher framerate is recommended for smoother gameplay" +
-        ".");
+            this.toolTip.SetToolTip(this.comboFramerate, "Sets the target framerate. Recommended: 60 FPS.\r\nHigher framerate is recommended " +
+        "for smoother gameplay.");
             // 
             // forceMipmappingCheckBox
             // 
@@ -1027,37 +1029,23 @@
             // 
             this.groupBox_SoundVolume.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox_SoundVolume.Controls.Add(this.numericBGMVol);
-            this.groupBox_SoundVolume.Controls.Add(this.numericSoundVol);
+            this.groupBox_SoundVolume.Controls.Add(this.labelVoiceVol);
+            this.groupBox_SoundVolume.Controls.Add(this.labelMusicVol);
+            this.groupBox_SoundVolume.Controls.Add(this.trackBarVoiceVol);
             this.groupBox_SoundVolume.Controls.Add(this.label13);
+            this.groupBox_SoundVolume.Controls.Add(this.trackBarMusicVol);
             this.groupBox_SoundVolume.Controls.Add(this.label14);
             this.groupBox_SoundVolume.Location = new System.Drawing.Point(6, 77);
             this.groupBox_SoundVolume.Name = "groupBox_SoundVolume";
-            this.groupBox_SoundVolume.Size = new System.Drawing.Size(390, 69);
+            this.groupBox_SoundVolume.Size = new System.Drawing.Size(390, 114);
             this.groupBox_SoundVolume.TabIndex = 3;
             this.groupBox_SoundVolume.TabStop = false;
             this.groupBox_SoundVolume.Text = "Volume";
             // 
-            // numericBGMVol
-            // 
-            this.numericBGMVol.Location = new System.Drawing.Point(92, 43);
-            this.numericBGMVol.Name = "numericBGMVol";
-            this.numericBGMVol.Size = new System.Drawing.Size(41, 20);
-            this.numericBGMVol.TabIndex = 4;
-            this.toolTip.SetToolTip(this.numericBGMVol, "Controls the BGM and FMV volume.");
-            // 
-            // numericSoundVol
-            // 
-            this.numericSoundVol.Location = new System.Drawing.Point(92, 17);
-            this.numericSoundVol.Name = "numericSoundVol";
-            this.numericSoundVol.Size = new System.Drawing.Size(41, 20);
-            this.numericSoundVol.TabIndex = 3;
-            this.toolTip.SetToolTip(this.numericSoundVol, "Controls the volume of voices.\r\nSetting it to 0 also disables sound effects.");
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(7, 45);
+            this.label13.Location = new System.Drawing.Point(6, 21);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(75, 13);
             this.label13.TabIndex = 3;
@@ -1066,7 +1054,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(8, 19);
+            this.label14.Location = new System.Drawing.Point(7, 67);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(74, 13);
             this.label14.TabIndex = 2;
@@ -1369,6 +1357,57 @@
             this.generateManifestToolStripMenuItem.Text = "Generate manifest";
             this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
             // 
+            // trackBarMusicVol
+            // 
+            this.trackBarMusicVol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBarMusicVol.BackColor = System.Drawing.SystemColors.Window;
+            this.trackBarMusicVol.LargeChange = 10;
+            this.trackBarMusicVol.Location = new System.Drawing.Point(89, 18);
+            this.trackBarMusicVol.Margin = new System.Windows.Forms.Padding(0);
+            this.trackBarMusicVol.Maximum = 100;
+            this.trackBarMusicVol.Name = "trackBarMusicVol";
+            this.trackBarMusicVol.Size = new System.Drawing.Size(267, 45);
+            this.trackBarMusicVol.TabIndex = 4;
+            this.trackBarMusicVol.TickFrequency = 10;
+            this.trackBarMusicVol.Value = 100;
+            this.trackBarMusicVol.ValueChanged += new System.EventHandler(this.trackBarMusicVol_ValueChanged);
+            // 
+            // trackBarVoiceVol
+            // 
+            this.trackBarVoiceVol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBarVoiceVol.BackColor = System.Drawing.SystemColors.Window;
+            this.trackBarVoiceVol.Location = new System.Drawing.Point(89, 65);
+            this.trackBarVoiceVol.Margin = new System.Windows.Forms.Padding(0);
+            this.trackBarVoiceVol.Maximum = 100;
+            this.trackBarVoiceVol.Name = "trackBarVoiceVol";
+            this.trackBarVoiceVol.Size = new System.Drawing.Size(267, 45);
+            this.trackBarVoiceVol.TabIndex = 5;
+            this.trackBarVoiceVol.TickFrequency = 10;
+            this.trackBarVoiceVol.Value = 100;
+            this.trackBarVoiceVol.ValueChanged += new System.EventHandler(this.trackBarVoiceVol_ValueChanged);
+            // 
+            // labelMusicVol
+            // 
+            this.labelMusicVol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelMusicVol.AutoSize = true;
+            this.labelMusicVol.Location = new System.Drawing.Point(359, 21);
+            this.labelMusicVol.Name = "labelMusicVol";
+            this.labelMusicVol.Size = new System.Drawing.Size(25, 13);
+            this.labelMusicVol.TabIndex = 6;
+            this.labelMusicVol.Text = "100";
+            // 
+            // labelVoiceVol
+            // 
+            this.labelVoiceVol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelVoiceVol.AutoSize = true;
+            this.labelVoiceVol.Location = new System.Drawing.Point(359, 67);
+            this.labelVoiceVol.Name = "labelVoiceVol";
+            this.labelVoiceVol.Size = new System.Drawing.Size(25, 13);
+            this.labelVoiceVol.TabIndex = 7;
+            this.labelVoiceVol.Text = "100";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1407,8 +1446,6 @@
             this.tabPage5.ResumeLayout(false);
             this.groupBox_SoundVolume.ResumeLayout(false);
             this.groupBox_SoundVolume.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericBGMVol)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericSoundVol)).EndInit();
             this.groupBox_SoundConfig.ResumeLayout(false);
             this.groupBox_SoundConfig.PerformLayout();
             this.tabPage4.ResumeLayout(false);
@@ -1419,6 +1456,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.modContextMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarMusicVol)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarVoiceVol)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1510,13 +1549,15 @@
 		private System.Windows.Forms.ComboBox comboFramerate;
 		private System.Windows.Forms.TabPage tabPage5;
 		private System.Windows.Forms.GroupBox groupBox_SoundVolume;
-		private System.Windows.Forms.NumericUpDown numericBGMVol;
-		private System.Windows.Forms.NumericUpDown numericSoundVol;
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.Label label14;
 		private System.Windows.Forms.GroupBox groupBox_SoundConfig;
 		private System.Windows.Forms.CheckBox checkMusic;
 		private System.Windows.Forms.CheckBox checkSound;
 		private System.Windows.Forms.CheckBox check3DSound;
-	}
+        private System.Windows.Forms.TrackBar trackBarVoiceVol;
+        private System.Windows.Forms.TrackBar trackBarMusicVol;
+        private System.Windows.Forms.Label labelVoiceVol;
+        private System.Windows.Forms.Label labelMusicVol;
+    }
 }
