@@ -320,13 +320,20 @@ static void ProcessModelINI(const IniGroup* group, const wstring& mod_dir)
 	         mod_dir.c_str(), group->getWString("filename").c_str());
 
 	auto* const mdlinf = new ModelInfo(filename);
-	NJS_OBJECT* model  = mdlinf->getmodel();
+	NJS_OBJECT* newobject  = mdlinf->getmodel();
 
-	GetModelLabels(mdlinf, model);
+	GetModelLabels(mdlinf, newobject);
 	if (group->hasKeyNonEmpty("pointer"))
-		ProcessPointerList(group->getString("pointer"), model);
+		ProcessPointerList(group->getString("pointer"), newobject);
 	else
-		*(NJS_OBJECT*)(strtol((group->getString("address")).c_str(), nullptr, 16) + 0x400000) = *model;
+	{
+		NJS_OBJECT* object = (NJS_OBJECT*)(strtol((group->getString("address")).c_str(), nullptr, 16) + 0x400000);
+		if (object->basicdxmodel != nullptr)
+		{
+			*object->basicdxmodel = *newobject->basicdxmodel;
+		}
+		*object = *newobject;
+	}
 }
 
 static void ProcessActionINI(const IniGroup* group, const wstring& mod_dir)
@@ -1151,7 +1158,7 @@ static void ProcessDeathZoneINI(const IniGroup* group, const wstring& mod_dir)
 
 		wchar_t dzpath[MAX_PATH];
 		if (dzdata->hasKey(key, "Filename"))
-			swprintf(dzpath, LengthOfArray(dzpath), L"%s\\%s", dzinipath, dzdata->getString(key, "Filename")); // .sa1mdl part added already
+			swprintf(dzpath, LengthOfArray(dzpath), L"%s\\%s", dzinipath, dzdata->getWString(key, "Filename")); // .sa1mdl part added already
 		else
 			swprintf(dzpath, LengthOfArray(dzpath), L"%s\\%u.sa1mdl", dzinipath, i);
 		auto* dzmdl = new ModelInfo(dzpath);
