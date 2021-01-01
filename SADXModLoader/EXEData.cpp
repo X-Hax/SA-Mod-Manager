@@ -287,7 +287,7 @@ static void ProcessLandTableINI(const IniGroup* group, const wstring& mod_dir)
 	if (group->hasKeyNonEmpty("pointer"))
 		ProcessPointerList(group->getString("pointer"), landtable);
 	else
-		*(LandTable*)(group->getInt("address") + 0x400000) = *landtable;
+		*(LandTable*)(strtol((group->getString("address")).c_str(), nullptr, 16) + 0x400000) = *landtable;
 }
 
 static unordered_map<string, NJS_OBJECT*> inimodels;
@@ -326,7 +326,7 @@ static void ProcessModelINI(const IniGroup* group, const wstring& mod_dir)
 	if (group->hasKeyNonEmpty("pointer"))
 		ProcessPointerList(group->getString("pointer"), model);
 	else
-		*(NJS_OBJECT*)(group->getInt("address") + 0x400000) = *model;
+		*(NJS_OBJECT*)(strtol((group->getString("address")).c_str(), nullptr, 16) + 0x400000) = *model;
 }
 
 static void ProcessActionINI(const IniGroup* group, const wstring& mod_dir)
@@ -350,7 +350,7 @@ static void ProcessActionINI(const IniGroup* group, const wstring& mod_dir)
 	if (group->hasKeyNonEmpty("pointer"))
 		ProcessPointerList(group->getString("pointer"), action);
 	else
-		*(NJS_ACTION*)(group->getInt("address") + 0x400000) = *action;
+		*(NJS_ACTION*)(strtol((group->getString("address")).c_str(), nullptr, 16) + 0x400000) = *action;
 }
 
 static void ProcessAnimationINI(const IniGroup* group, const wstring& mod_dir)
@@ -370,7 +370,7 @@ static void ProcessAnimationINI(const IniGroup* group, const wstring& mod_dir)
 	if (group->hasKeyNonEmpty("pointer"))
 		ProcessPointerList(group->getString("pointer"), animation);
 	else
-		*(NJS_MOTION*)(group->getInt("address") + 0x400000) = *animation;
+		*(NJS_MOTION*)(strtol((group->getString("address")).c_str(), nullptr, 16) + 0x400000) = *animation;
 }
 
 static void ProcessObjListINI(const IniGroup* group, const wstring& mod_dir)
