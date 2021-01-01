@@ -170,6 +170,18 @@
     <ClInclude Include="hudscale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\SADXStructsNew.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SADXFunctionsNew.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SADXVariablesNew.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SADXEnumsNew.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SADXModLoader.rc">

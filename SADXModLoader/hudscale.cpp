@@ -64,6 +64,8 @@ static Trampoline* DrawSubtitles_t;
 static Trampoline* EmblemCollected_Init_t;
 static Trampoline* EmblemCollected_Main_t;
 static Trampoline* DrawTitleScreen_t;
+static Trampoline* ChaoRaceTimer_t;
+static Trampoline* ChaoRaceRankings_t;
 
 #pragma endregion
 
@@ -82,6 +84,16 @@ static void __cdecl HudDisplayRingTimeLife_Check_r()
 static void __cdecl HudDisplayScoreOrTimer_r()
 {
 	scale_trampoline(Align::left, false, HudDisplayScoreOrTimer_r, HudDisplayScoreOrTimer_t);
+}
+
+static void __cdecl ChaoRaceTimer_r(int _this)
+{
+	scale_trampoline(Align::center, false, ChaoRaceTimer_r, ChaoRaceTimer_t, _this);
+}
+
+static void __cdecl ChaoRaceRankings_r(int this1, int this2, int this3)
+{
+	scale_trampoline(Align::left, false, ChaoRaceRankings_r, ChaoRaceRankings_t, this1, this2, this3);
 }
 
 static void __cdecl DrawStageMissionImage_r(ObjectMaster* _this)
@@ -470,6 +482,8 @@ void hudscale::initialize()
 	EmblemCollected_Init_t               = new Trampoline(0x004B4860, 0x004B4867, EmblemCollected_Init_r);
 	EmblemCollected_Main_t               = new Trampoline(0x004B46A0, 0x004B46A6, EmblemCollected_Main_r);
 	DrawTitleScreen_t                    = new Trampoline(0x0050E470, 0x0050E476, DrawTitleScreen_asm);
+	ChaoRaceTimer_t                      = new Trampoline(0x00750E70, 0x00750E78, ChaoRaceTimer_r);
+	ChaoRaceRankings_t                   = new Trampoline(0x007512F0, 0x007512F5, ChaoRaceRankings_r);
 
 	DrawSubtitles_t = new Trampoline(0x0040D4D0, 0x0040D4D9, DrawSubtitles_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DrawSubtitles_t->Target()) + 4), reinterpret_cast<void*>(0x00402F00));

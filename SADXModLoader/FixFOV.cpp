@@ -11,8 +11,8 @@
 static const Angle FOV_H = 12743; // Roughly 70 degrees
 
 /**
-* \brief Default *vertical* field of view in radians.
-*/
+ * \brief Default *vertical* field of view in radians.
+ */
 static const double FOV_V_RADS = 0.96712852; // 55.412382 degrees
 
 /**
@@ -27,8 +27,8 @@ static const Angle FOV_V_BAMS = NJM_RAD_ANG(FOV_V_RADS);
 static bool is_wide = false;
 
 /**
-* \brief Last unmodified horizontal field of view in BAMS provided by the game code.
-*/
+ * \brief Last unmodified horizontal field of view in BAMS provided by the game code.
+ */
 static Angle last_bams = FOV_H;
 
 /**

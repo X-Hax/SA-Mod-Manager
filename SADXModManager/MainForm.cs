@@ -1472,8 +1472,10 @@ namespace SADXModManager
 			checkMusic.Checked = (configFile.GameConfig.BGM != 0);
 
 			// Volume
-			numericSoundVol.Value = configFile.GameConfig.VoiceVolume;
-			numericBGMVol.Value = configFile.GameConfig.BGMVolume;
+			trackBarVoiceVol.Value = configFile.GameConfig.VoiceVolume;
+			trackBarMusicVol.Value = configFile.GameConfig.BGMVolume;
+			labelVoiceVol.Text = trackBarVoiceVol.Value.ToString();
+			labelMusicVol.Text = trackBarMusicVol.Value.ToString();
 		}
 		private void SaveConfigIni()
 		{
@@ -1487,11 +1489,20 @@ namespace SADXModManager
 			configFile.GameConfig.SEVoice = checkSound.Checked ? 1 : 0;
 			configFile.GameConfig.BGM = checkMusic.Checked ? 1 : 0;
 
-			configFile.GameConfig.VoiceVolume = (int)numericSoundVol.Value;
-			configFile.GameConfig.BGMVolume = (int)numericBGMVol.Value;
+			configFile.GameConfig.VoiceVolume = (int)trackBarVoiceVol.Value;
+			configFile.GameConfig.BGMVolume = (int)trackBarMusicVol.Value;
 
 			IniSerializer.Serialize(configFile, sadxIni);
 		}
 
-	}
+        private void trackBarVoiceVol_ValueChanged(object sender, EventArgs e)
+        {
+			labelVoiceVol.Text = trackBarVoiceVol.Value.ToString();
+		}
+
+        private void trackBarMusicVol_ValueChanged(object sender, EventArgs e)
+        {
+			labelMusicVol.Text = trackBarMusicVol.Value.ToString();
+		}
+    }
 }

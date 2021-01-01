@@ -7,6 +7,7 @@
 #define SADXMODLOADER_SADXMODINFO_H
 
 #include "SADXStructs.h"
+#include "SADXStructsNew.h"
 
 // SADX Mod Loader API version.
 static const int ModLoaderVer = 9;

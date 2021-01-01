@@ -257,6 +257,8 @@ void LandTableInfo::fixmotionpointers(NJS_MOTION* motion, intptr_t base, int cou
 			}
 			switch (motion->inp_fn & 0xF)
 			{
+			case 0:
+				break;
 			case 1:
 				fixmdatapointers((NJS_MDATA1*)motion->mdata, base, count, vertoff, normoff);
 				break;

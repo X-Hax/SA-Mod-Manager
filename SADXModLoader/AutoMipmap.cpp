@@ -615,7 +615,7 @@ namespace mipmap
 	};
 
 	// Blacklisted global indexes.
-	static unordered_set<Uint32> gbix_blacklist;
+	static unordered_set<Uint32> gbix_blacklist = {199990}; //Chao message text
 
 	static bool blacklisted = false;
 	static bool enabled = false;
