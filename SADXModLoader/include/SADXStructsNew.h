@@ -1072,6 +1072,49 @@ struct AL_PERCEPTION
 	AL_PERCEPTION_INFO Sound;
 };
 
+struct NJS_RGB
+{
+	float r;
+	float g;
+	float b;
+};
+
+struct LE_LIGHT_ENV
+{
+	char stgNo;
+	char actNo;
+	char ligNo;
+	char flgs;
+	NJS_POINT3 vec;
+	float spe;
+	float dif;
+	float r;
+	float g;
+	float b;
+	float ambR;
+	float ambG;
+	float ambB;
+};
+
+struct LE_PALIGHT_ENV
+{
+	char stgNo;
+	char actNo;
+	char chrNo;
+	char flgs;
+	NJS_POINT3 vec;
+	float dif;
+	NJS_RGB amb;
+	float cpow;
+	NJS_RGB co;
+	float spow;
+	NJS_RGB spe;
+	float cpow2;
+	NJS_RGB co2;
+	float spow2;
+	NJS_RGB spe2;
+};
+
 #pragma pack(pop)
 
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */

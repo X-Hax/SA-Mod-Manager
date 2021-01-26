@@ -244,6 +244,21 @@ static void ParseVertex(const string& str, NJS_VECTOR& vert)
 	vert.z = static_cast<float>(strtod(vals[2].c_str(), nullptr));
 }
 
+static void ParseRGB(const string& str, NJS_RGB& vert)
+{
+	vector<string> vals = split(str, ',');
+	assert(vals.size() == 3);
+
+	if (vals.size() < 3)
+	{
+		return;
+	}
+
+	vert.r = static_cast<float>(strtod(vals[0].c_str(), nullptr));
+	vert.g = static_cast<float>(strtod(vals[1].c_str(), nullptr));
+	vert.b = static_cast<float>(strtod(vals[2].c_str(), nullptr));
+}
+
 static void ParseRotation(const string str, Rotation& rot)
 {
 	vector<string> vals = split(str, ',');
@@ -286,7 +301,7 @@ static void ProcessLandTableINI(const IniGroup* group, const wstring& mod_dir)
 	LandTable* const landtable = landtableinfo->getlandtable();
 
 	ProcessPointerList(group->getString("pointer"), landtable);
-}
+} 
 
 static unordered_map<string, NJS_OBJECT*> inimodels;
 
@@ -1372,6 +1387,54 @@ static void ProcessStageLightDataListINI(const IniGroup* group, const wstring& m
 	ProcessPointerList(group->getString("pointer"), list);
 }
 
+static void ProcessPaletteLightListINI(const IniGroup* group, const wstring& mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename"))
+	{
+		return;
+	}
+
+	wchar_t filename[MAX_PATH]{};
+
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+
+	auto inidata = new IniFile(filename);
+
+	for (unsigned int i = 0; i < 255; i++)
+	{
+		char key[8]{};
+		snprintf(key, sizeof(key), "%u", i);
+
+		if (!inidata->hasGroup(key))
+		{
+			break;
+		}
+
+		const IniGroup* const entdata = inidata->getGroup(key);
+
+		le_plyrPal[i].stgNo = (char)ParseLevelID(entdata->getString("Level"));
+		le_plyrPal[i].actNo = (char)entdata->getInt("Act");
+		le_plyrPal[i].chrNo = (char)entdata->getInt("Type");
+		le_plyrPal[i].flgs= (char)entdata->getInt("Flags");
+		ParseVertex(entdata->getString("Direction"), le_plyrPal[i].vec);		
+		le_plyrPal[i].dif = entdata->getFloat("Diffuse");
+		ParseRGB(entdata->getString("Ambient"), le_plyrPal[i].amb);
+		le_plyrPal[i].cpow = entdata->getFloat("Color1Power");
+		ParseRGB(entdata->getString("Color1"), le_plyrPal[i].co);
+		le_plyrPal[i].spow = entdata->getFloat("Specular1Power");
+		ParseRGB(entdata->getString("Specular1"), le_plyrPal[i].spe);
+		le_plyrPal[i].cpow2 = entdata->getFloat("Color2Power");
+		ParseRGB(entdata->getString("Color2"), le_plyrPal[i].co2);
+		le_plyrPal[i].spow2 = entdata->getFloat("Specular2Power");
+		ParseRGB(entdata->getString("Specular2"), le_plyrPal[i].spe2);
+
+	}
+
+	delete inidata;
+
+}
+
 static void ProcessWeldListINI(const IniGroup* group, const wstring& mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer"))
@@ -1525,6 +1588,7 @@ static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
 	{ "skyboxscale",        ProcessSkyboxScaleINI },
 	{ "levelpathlist",      ProcessLevelPathListINI },
 	{ "stagelightdatalist", ProcessStageLightDataListINI },
+	{ "palettelightlist",   ProcessPaletteLightListINI },
 	{ "weldlist",           ProcessWeldListINI },
 	{ "creditstextlist",    ProcessCreditsTextListINI }
 	// { "bmitemattrlist",     ProcessBMItemAttrListINI },
