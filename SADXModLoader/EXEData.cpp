@@ -287,7 +287,7 @@ static void ProcessPointerList(const string& list, T* item)
 
 static void ProcessLandTableINI(const IniGroup* group, const wstring& mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer"))
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address"))
 	{
 		return;
 	}
@@ -299,9 +299,11 @@ static void ProcessLandTableINI(const IniGroup* group, const wstring& mod_dir)
 
 	auto* const landtableinfo  = new LandTableInfo(filename);
 	LandTable* const landtable = landtableinfo->getlandtable();
-
-	ProcessPointerList(group->getString("pointer"), landtable);
-} 
+	if (group->hasKeyNonEmpty("pointer"))
+		ProcessPointerList(group->getString("pointer"), landtable);
+	else
+		*(LandTable*)(strtol((group->getString("address")).c_str(), nullptr, 16) + 0x400000) = *landtable;
+}
 
 static unordered_map<string, NJS_OBJECT*> inimodels;
 
@@ -322,7 +324,7 @@ static void GetModelLabels(ModelInfo* mdlinf, NJS_OBJECT* obj)
 
 static void ProcessModelINI(const IniGroup* group, const wstring& mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer"))
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address"))
 	{
 		return;
 	}
@@ -333,15 +335,25 @@ static void ProcessModelINI(const IniGroup* group, const wstring& mod_dir)
 	         mod_dir.c_str(), group->getWString("filename").c_str());
 
 	auto* const mdlinf = new ModelInfo(filename);
-	NJS_OBJECT* model  = mdlinf->getmodel();
+	NJS_OBJECT* newobject  = mdlinf->getmodel();
 
-	GetModelLabels(mdlinf, model);
-	ProcessPointerList(group->getString("pointer"), model);
+	GetModelLabels(mdlinf, newobject);
+	if (group->hasKeyNonEmpty("pointer"))
+		ProcessPointerList(group->getString("pointer"), newobject);
+	else
+	{
+		NJS_OBJECT* object = (NJS_OBJECT*)(strtol((group->getString("address")).c_str(), nullptr, 16) + 0x400000);
+		if (object->basicdxmodel != nullptr)
+		{
+			*object->basicdxmodel = *newobject->basicdxmodel;
+		}
+		*object = *newobject;
+	}
 }
 
 static void ProcessActionINI(const IniGroup* group, const wstring& mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer"))
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address"))
 	{
 		return;
 	}
@@ -357,12 +369,15 @@ static void ProcessActionINI(const IniGroup* group, const wstring& mod_dir)
 	action->motion = animationFile->getmotion();
 	action->object = inimodels.find(group->getString("model"))->second;
 
-	ProcessPointerList(group->getString("pointer"), action);
+	if (group->hasKeyNonEmpty("pointer"))
+		ProcessPointerList(group->getString("pointer"), action);
+	else
+		*(NJS_ACTION*)(strtol((group->getString("address")).c_str(), nullptr, 16) + 0x400000) = *action;
 }
 
 static void ProcessAnimationINI(const IniGroup* group, const wstring& mod_dir)
 {
-	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer"))
+	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("address"))
 	{
 		return;
 	}
@@ -374,8 +389,10 @@ static void ProcessAnimationINI(const IniGroup* group, const wstring& mod_dir)
 
 	auto* const animationFile = new AnimationFile(filename);
 	NJS_MOTION* animation     = animationFile->getmotion();
-
-	ProcessPointerList(group->getString("pointer"), animation);
+	if (group->hasKeyNonEmpty("pointer"))
+		ProcessPointerList(group->getString("pointer"), animation);
+	else
+		*(NJS_MOTION*)(strtol((group->getString("address")).c_str(), nullptr, 16) + 0x400000) = *animation;
 }
 
 static void ProcessObjListINI(const IniGroup* group, const wstring& mod_dir)
@@ -1155,7 +1172,10 @@ static void ProcessDeathZoneINI(const IniGroup* group, const wstring& mod_dir)
 		uint8_t flag = ParseCharacterFlags(dzdata->getString(key, "Flags"));
 
 		wchar_t dzpath[MAX_PATH];
-		swprintf(dzpath, LengthOfArray(dzpath), L"%s\\%u.sa1mdl", dzinipath, i);
+		if (dzdata->hasKey(key, "Filename"))
+			swprintf(dzpath, LengthOfArray(dzpath), L"%s\\%s", dzinipath, dzdata->getWString(key, "Filename")); // .sa1mdl part added already
+		else
+			swprintf(dzpath, LengthOfArray(dzpath), L"%s\\%u.sa1mdl", dzinipath, i);
 		auto* dzmdl = new ModelInfo(dzpath);
 		DeathZone dz = { flag, dzmdl->getmodel() };
 		deathzones.push_back(dz);
