@@ -1579,6 +1579,63 @@ static void ProcessCreditsTextListINI(const IniGroup* group, const wstring& mod_
 	arrcpy(addr->Entries, ents.data(), numents);
 }
 
+static void ProcessPhysicsDataINI(const IniGroup* group, const wstring& mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename"))
+	{
+		return;
+	}
+
+	auto addr = (player_parameter*)group->getIntRadix("address", 16);
+
+	if (addr == nullptr)
+	{
+		return;
+	}
+
+	addr = (player_parameter*)((intptr_t)addr + 0x400000);
+	wchar_t filename[MAX_PATH] {};
+
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+	         mod_dir.c_str(), group->getWString("filename").c_str());
+
+	auto inidata = new IniFile(filename);
+	addr->jump2_timer = inidata->getInt("", "jump2_timer");
+	addr->pos_error = inidata->getFloat("", "pos_error");
+	addr->lim_h_spd = inidata->getFloat("", "lim_h_spd");
+	addr->lim_v_spd = inidata->getFloat("", "lim_v_spd");
+	addr->max_x_spd = inidata->getFloat("", "max_x_spd");
+	addr->max_psh_spd = inidata->getFloat("", "max_psh_spd");
+	addr->jmp_y_spd = inidata->getFloat("", "jmp_y_spd");
+	addr->nocon_speed = inidata->getFloat("", "nocon_speed");
+	addr->slide_speed = inidata->getFloat("", "slide_speed");
+	addr->jog_speed = inidata->getFloat("", "jog_speed");
+	addr->run_speed = inidata->getFloat("", "run_speed");
+	addr->rush_speed = inidata->getFloat("", "rush_speed");
+	addr->crash_speed = inidata->getFloat("", "crash_speed");
+	addr->dash_speed = inidata->getFloat("", "dash_speed");
+	addr->jmp_addit = inidata->getFloat("", "jmp_addit");
+	addr->run_accel = inidata->getFloat("", "run_accel");
+	addr->air_accel = inidata->getFloat("", "air_accel");
+	addr->slow_down = inidata->getFloat("", "slow_down");
+	addr->run_break = inidata->getFloat("", "run_break");
+	addr->air_break = inidata->getFloat("", "air_break");
+	addr->air_resist_air = inidata->getFloat("", "air_resist_air");
+	addr->air_resist = inidata->getFloat("", "air_resist");
+	addr->air_resist_y = inidata->getFloat("", "air_resist_y");
+	addr->air_resist_z = inidata->getFloat("", "air_resist_z");
+	addr->grd_frict = inidata->getFloat("", "grd_frict");
+	addr->grd_frict_z = inidata->getFloat("", "grd_frict_z");
+	addr->lim_frict = inidata->getFloat("", "lim_frict");
+	addr->rat_bound = inidata->getFloat("", "rat_bound");
+	addr->rad = inidata->getFloat("", "rad");
+	addr->height = inidata->getFloat("", "height");
+	addr->weight = inidata->getFloat("", "weight");
+	addr->eyes_height = inidata->getFloat("", "eyes_height");
+	addr->center_height = inidata->getFloat("", "center_height");
+	delete inidata;
+}
+
 using exedatafunc_t = void(__cdecl*)(const IniGroup* group, const wstring& mod_dir);
 
 static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
@@ -1610,7 +1667,8 @@ static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
 	{ "stagelightdatalist", ProcessStageLightDataListINI },
 	{ "palettelightlist",   ProcessPaletteLightListINI },
 	{ "weldlist",           ProcessWeldListINI },
-	{ "creditstextlist",    ProcessCreditsTextListINI }
+	{ "creditstextlist",    ProcessCreditsTextListINI },
+	{ "physicsdata",    ProcessPhysicsDataINI },
 	// { "bmitemattrlist",     ProcessBMItemAttrListINI },
 };
 
