@@ -44,8 +44,9 @@ public:
 	 * Add a file replacement.
 	 * @param origFile Original filename.
 	 * @param modFile Mod filename.
+	 * @param force Do not check if the destination file is being replaced.
 	 */
-	void addReplaceFile(const std::string& origFile, const std::string& modFile);
+	void addReplaceFile(const std::string& origFile, const std::string& modFile, bool force = false);
 
 	/**
 	* Swap two files.

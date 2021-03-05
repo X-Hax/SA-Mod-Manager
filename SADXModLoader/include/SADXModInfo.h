@@ -114,6 +114,10 @@ struct HelperFunctions
 	// Loads and processes a DLLData INI file.
 	// Requires version >= 10.
 	void(__cdecl *LoadDLLData)(const wchar_t *filename, const std::wstring &mod_dir);
+
+	// Replaces the source file with the destination file without checking if the destination file is also being replaced.
+	// Requires version >= 10.
+	void(__cdecl* ReplaceFileForce)(const char* src, const char* dst);
 };
 
 typedef void(__cdecl *ModInitFunc)(const char *path, const HelperFunctions &helperFunctions);

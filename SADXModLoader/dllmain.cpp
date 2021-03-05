@@ -1199,6 +1199,11 @@ void _ReplaceFile(const char* src, const char* dst)
 	sadx_fileMap.addReplaceFile(src, dst);
 }
 
+void _ReplaceFileForce(const char* src, const char* dst)
+{
+	sadx_fileMap.addReplaceFile(src, dst, true);
+}
+
 string windowtitle;
 
 void SetWindowTitle(const char* title)
@@ -1272,7 +1277,8 @@ static const HelperFunctions helperFunctions =
 	&RegisterSoundList,
 	&RegisterMusicFile,
 	&LoadEXEData,
-	&LoadDLLData
+	&LoadDLLData,
+	&_ReplaceFileForce,
 };
 
 static const char* const dlldatakeys[] = {
