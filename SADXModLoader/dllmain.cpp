@@ -1854,6 +1854,7 @@ static void __cdecl InitMods()
 						}
 					}
 
+					RegisterEvent(modInitEndEvents, module, "OnInitEnd");
 					RegisterEvent(modFrameEvents, module, "OnFrame");
 					RegisterEvent(modInputEvents, module, "OnInput");
 					RegisterEvent(modControlEvents, module, "OnControl");
@@ -2109,6 +2110,7 @@ static void __cdecl InitMods()
 	}
 	_MusicList.clear();
 
+	RaiseEvents(modInitEndEvents);
 	PrintDebug("Finished loading mods\n");
 
 	// Check for patches.

@@ -5,6 +5,7 @@
 
 using TextureLoadEvent = void(__cdecl *)(NJS_TEXMEMLIST*, const char*, Uint32);
 
+extern std::vector<ModEvent> modInitEndEvents;
 extern std::vector<ModEvent> modFrameEvents;
 extern std::vector<ModEvent> modInputEvents;
 extern std::vector<ModEvent> modControlEvents;

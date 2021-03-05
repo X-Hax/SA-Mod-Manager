@@ -2,6 +2,7 @@
 #include "Trampoline.h"
 #include "Events.h"
 
+std::vector<ModEvent>         modInitEndEvents;
 std::vector<ModEvent>         modFrameEvents;
 std::vector<ModEvent>         modInputEvents;
 std::vector<ModEvent>         modControlEvents;
