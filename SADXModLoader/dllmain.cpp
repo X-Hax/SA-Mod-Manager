@@ -1237,6 +1237,16 @@ int RegisterMusicFile(const MusicInfo& track)
 	return _MusicList.size() - 1;
 }
 
+void LoadEXEData(const wchar_t* filename, const wstring &mod_dir)
+{
+	ProcessEXEData(filename, mod_dir);
+}
+
+void LoadDLLData(const wchar_t* filename, const std::wstring &mod_dir)
+{
+	ProcessDLLData(filename, mod_dir);
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
@@ -1260,7 +1270,9 @@ static const HelperFunctions helperFunctions =
 	&_ReplaceFile,
 	&SetWindowTitle,
 	&RegisterSoundList,
-	&RegisterMusicFile
+	&RegisterMusicFile,
+	&LoadEXEData,
+	&LoadDLLData
 };
 
 static const char* const dlldatakeys[] = {

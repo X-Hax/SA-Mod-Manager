@@ -1668,7 +1668,7 @@ static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
 	{ "palettelightlist",   ProcessPaletteLightListINI },
 	{ "weldlist",           ProcessWeldListINI },
 	{ "creditstextlist",    ProcessCreditsTextListINI },
-	{ "physicsdata",    ProcessPhysicsDataINI },
+	{ "physicsdata",		ProcessPhysicsDataINI },
 	// { "bmitemattrlist",     ProcessBMItemAttrListINI },
 };
 
