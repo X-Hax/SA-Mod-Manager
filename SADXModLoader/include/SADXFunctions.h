@@ -2998,19 +2998,6 @@ VoidFunc(InitEC0NPCData, 0x7D2720);
 VoidFunc(InitEC3NPCData, 0x7D2CF0);
 VoidFunc(InitSSNPCData, 0x7D5810);
 VoidFunc(al_xy_init, 0x7DAE80);
-FunctionPointer(void, PlayerGetRotation, (EntityData1* data1, EntityData2* a2, CharObj2* a3), 0x44BB60);
-FunctionPointer(void, PlayerGetAcceleration, (EntityData1* data1, EntityData2* a2, CharObj2* a3), 0x44C270);
-FunctionPointer(void, PlayerGetSpeed, (EntityData1* data1, EntityData2* a2, CharObj2* a3), 0x443F50);
-FunctionPointer(int, PlayerSetPosition, (EntityData1* data, EntityData2* data2, CharObj2* co2), 0x44CDF0);
-FunctionPointer(void, PSetCrashEffect, (EntityData1* a1), 0x440790);
-FunctionPointer(void, PConvertVector_P2G, (EntityData1* a1, NJS_POINT3* a2), 0x43EC90);
-FunctionPointer(void, PConvertVector_G2P, (EntityData1* a1, NJS_POINT3* a2), 0x43EC00);
-FunctionPointer(void, PlayerResetAngle, (EntityData1* a1, EntityData2* a2, CharObj2* a3), 0x443AD0);
-FunctionPointer(void, PlayerGetInertia, (EntityData1* a1, EntityData2* a2, CharObj2* a3), 0x443650);
-FunctionPointer(void, PlayerGetGravity, (EntityData1* a1, EntityData2* a2, CharObj2* a3), 0x443800);
-FunctionPointer(void, PlayerGetAccelerationAir, (EntityData1* a1, EntityData2* a2, CharObj2* a3), 0x44B9C0);
-FunctionPointer(void, Knux_RunsActions, (EntityData1* a1, EntityData2* a2, CharObj2* a3), 0x478020);
-FunctionPointer(bool, Player_CheckBreak, (EntityData1* a1), 0x4429C0);
 
 // Bool __usercall@<eax>(NJS_TEXLIST *a1@<eax>)
 static const void *const VerifyTexListPtr = (void*)0x403250;
@@ -5078,62 +5065,6 @@ static inline int UnpauseAllSounds(int volume_3d)
 		mov result, eax
 	}
 	return result;
-}
-
-static const void* const Knux_NActPtr = (void*)0x476970;
-static inline signed int Knux_NAct(CharObj2* a1, EntityData1* a2, EntityData2* a3)
-{
-	signed int result;
-	__asm
-	{
-		push[a3]
-		mov esi, [a2]
-		mov edi, [a1]
-		call Knux_NActPtr
-		add esp, 4
-		mov result, edi
-	}
-	return result;
-}
-
-static const void* const Knux_CheckJumpPtr = (void*)0x476830;
-static inline signed int Knux_CheckJump(CharObj2* a1, EntityData1* a2)
-{
-	signed int result;
-	__asm
-	{
-		mov ecx, [a2]
-		mov eax, [a1]
-		call Knux_CheckJumpPtr
-		mov result, eax
-	}
-	return result;
-}
-
-static const void* const KnuxCheckStopPtr = (void*)0x477970;
-static inline signed int KnuxCheckStop(CharObj2* a1, EntityData1* a2)
-{
-	signed int result;
-	__asm
-	{
-		mov ecx, [a2]
-		mov eax, [a1]
-		call KnuxCheckStopPtr
-		add esp, 4
-		mov result, eax
-	}
-	return result;
-}
-
-static const void* const Big_GetFloatPtr = (void*)0x48C610;
-static inline void BigGetFloat(CharObj2* a1, EntityData1* a2)
-{
-	__asm
-	{
-		mov esi, [a2]
-		mov eax, [a1]
-		call Big_GetFloatPtr
-	}
 }
 
 #endif /* SADXMODLOADER_SADXFUNCTIONS_H */
