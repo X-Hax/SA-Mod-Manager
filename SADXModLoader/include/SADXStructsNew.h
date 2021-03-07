@@ -1152,6 +1152,151 @@ struct player_parameter
 	float center_height;
 };
 
+union playerwk_work
+{
+	char b[4];
+	__int16 w[2];
+	int l;
+	float f;
+	void* ptr;
+};
+
+union playerwk_free
+{
+	char sb[32];
+	char ub[32];
+	__int16 sw[16];
+	unsigned __int16 uw[16];
+	int sl[8];
+	unsigned int ul[8];
+	float f[8];
+	void* ptr[8];
+};
+
+struct csts
+{
+	float radius;
+	NJS_POINT3 pos;
+	NJS_POINT3 spd;
+	NJS_POINT3 tnorm;
+	unsigned __int16 find_count;
+	unsigned __int16 selected_nmb;
+	float yt;
+	float yb;
+	int angx;
+	int angz;
+	NJS_POINT3 normal;
+	NJS_POINT3 normal2;
+	NJS_POINT3 onpoly;
+	NJS_POINT3 pshbk;
+	NJS_POINT3 anaspdh;
+	NJS_POINT3 anaspdv;
+};
+
+struct PL_FACE
+{
+	char lastface;
+	char face;
+	char reqface;
+	char tblpoint;
+	float frame;
+	float framespeed;
+	FACETBL* tbl;
+	obj* sibling;
+	obj* faceorg;
+	obj* facebuf;
+	NJS_MOTION* facetypes;
+};
+
+struct PL_LANDPOSI
+{
+	float x;
+	float y;
+	float z;
+	float r;
+	float d;
+	float h;
+	int angy_dif;
+	int angy_aim;
+};
+
+struct mtnjvwk
+{
+	__int16 mtnmode;
+	__int16 jvmode;
+	unsigned __int16 reqaction;
+	unsigned __int16 action;
+	unsigned __int16 lastaction;
+	unsigned __int16 nextaction;
+	unsigned __int16 acttimer;
+	__int16 flag;
+	float nframe;
+	float start_frame;
+	float* spdp;
+	float* workp;
+	PL_ACTION* plactptr;
+	PL_JOIN_VERTEX* pljvptr;
+	NJS_ACTION* actwkptr;
+};
+
+struct shadowwk
+{
+	int angx;
+	int angz;
+	unsigned int Attr_top;
+	unsigned int Attr_bottom;
+	float y_top;
+	float y_bottom;
+	unsigned int _Attr_top;
+	unsigned int _Attr_bottom;
+	float scl;
+};
+
+struct playerwk
+{
+	playerwk_work work;
+	__int16 equipment;
+	__int16 item;
+	__int16 jumptimer;
+	__int16 nocontimer;
+	__int16 breathtimer;
+	__int16 waittimer;
+	__int16 flag;
+	__int16 island_num;
+	__int16 path_point;
+	float hpos;
+	float dotp;
+	NJS_POINT3 eff;
+	NJS_POINT3 acc;
+	NJS_POINT3 spd;
+	NJS_POINT3 wall_normal;
+	NJS_POINT3 floor_normal;
+	unsigned int attr;
+	unsigned int last_attr;
+	csts* cstsp;
+	task* htp;
+	task* ttp;
+	PL_FACE* pfp;
+	obj* lclop;
+	PL_LANDPOSI* island_list;
+	playerwk_free free;
+	player_parameter p;
+	mtnjvwk mj;
+	NJS_POINT3 righthand_pos;
+	NJS_POINT3 lefthand_pos;
+	NJS_POINT3 rightfoot_pos;
+	NJS_POINT3 leftfoot_pos;
+	NJS_POINT3 user0_pos;
+	NJS_POINT3 user1_pos;
+	NJS_POINT3 righthand_vec;
+	NJS_POINT3 lefthand_vec;
+	NJS_POINT3 rightfoot_vec;
+	NJS_POINT3 leftfoot_vec;
+	NJS_POINT3 user0_vec;
+	NJS_POINT3 user1_vec;
+	shadowwk shadow;
+};
+
 #pragma pack(pop)
 
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
