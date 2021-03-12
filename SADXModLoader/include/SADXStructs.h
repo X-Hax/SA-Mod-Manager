@@ -154,9 +154,10 @@ struct COL
 {
 	NJS_VECTOR Center;
 	float Radius;
-	int Padding[2];
+	float widthY; // Unused
+	float widthZ; // Unused
 	NJS_OBJECT *Model;
-	int anonymous_6;
+	int blockbits;
 	int Flags;
 };
 
