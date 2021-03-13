@@ -164,7 +164,7 @@ FunctionPointer(void, late_Action, (NJS_ACTION* action, float frame, int queueFl
 
 // Late draw functions: Model
 FunctionPointer(void, late_DrawModel, (NJS_MODEL_SADX* model, int queueFlags), 0x4078F0);
-FunctionPointer(void, late_DrawModelClip, (NJS_MODEL_SADX* model, int queueFlags, float scale), 407870);
+FunctionPointer(void, late_DrawModelClip, (NJS_MODEL_SADX* model, int queueFlags, float scale), 0x407870);
 FunctionPointer(void, late_DrawModelEx, (NJS_MODEL_SADX* model, int queueFlags), 0x409450);
 FunctionPointer(void, late_DrawModelClipEx, (NJS_MODEL_SADX* model, int queueFlags, float scale), 0x4094D0);
 FunctionPointer(void, late_DrawModelMS, (NJS_MODEL_SADX* model, int queueFlags), 0x409920);
