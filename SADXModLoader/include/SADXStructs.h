@@ -163,9 +163,9 @@ struct COL
 
 struct GeoAnimData
 {
-	int anonymous_0;
-	float anonymous_1;
-	float anonymous_2;
+	float Frame;
+	float Speed;
+	float MaxFrame;
 	NJS_OBJECT *Model;
 	NJS_ACTION *Animation;
 	NJS_TEXLIST *TexList;
@@ -177,7 +177,7 @@ struct LandTable
 	int16_t AnimCount;
 	int16_t Attrs;
 	// see LandTableFlags enum
-	int16_t Flags;
+	int16_t LoadFlags;
 	float ClippingDistance;
 	COL *Col;
 	GeoAnimData *AnimData;

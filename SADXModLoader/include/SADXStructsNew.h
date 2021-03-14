@@ -340,7 +340,7 @@ struct _OBJ_MOTLANDENTRY
 	float fStep;
 	float fMaxFrame;
 	obj* pObject;
-	NJS_MOTION* pMotion;
+	NJS_ACTION* pMotion; // NJS_MOTION* in the original struct, but that's wrong
 	NJS_TEXLIST* pTexList;
 };
 
