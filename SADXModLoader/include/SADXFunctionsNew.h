@@ -124,6 +124,7 @@ FunctionPointer(void, dsDrawModel_S, (NJS_MODEL_SADX* model), 0x40A140);
 FunctionPointer(void, ds_DrawModelClip, (NJS_MODEL_SADX* model, float scale), 0x407A00);
 FunctionPointer(void, ds_DrawObjectClip, (NJS_OBJECT* object, float scale), 0x4085A0);
 FunctionPointer(void, dsDrawMotion, (NJS_OBJECT* object, NJS_MOTION* motion, float frame), 0x407040);
+FunctionPointer(void, dsDrawMotionClip , (NJS_OBJECT* object, NJS_MOTION* motion, float frame, float scale), 0x405370);
 FunctionPointer(void, dsDrawMotionLink, (NJS_OBJECT* object, NJS_MOTION_LINK* motionLink, float frame), 0x406C20);
 FunctionPointer(void, dsActionLink, (NJS_ACTION_LINK* actionLink, float frame), 0x406EC0);
 FunctionPointer(void, ds_ActionClip, (NJS_ACTION* action, float frame, float scale), 0x405450);
