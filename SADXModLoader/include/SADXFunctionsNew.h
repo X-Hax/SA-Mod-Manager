@@ -193,7 +193,7 @@ FunctionPointer(void, late_DrawMotionClipMesh, (NJS_OBJECT* object, NJS_MOTION* 
 FunctionPointer(void, late_ActionEx, (NJS_ACTION* action, float frame, int queueFlags), 0x408330);
 FunctionPointer(void, late_ActionClipEx, (NJS_ACTION* action, float frame, int queueFlags, float scale), 0x408350);
 FunctionPointer(void, late_ActionMS, (NJS_ACTION* action, float frame, int queueFlags), 0x408380);
-FunctionPointer(void, late_ActionClipMS, (NJS_ACTION* action, float frame, int queueFlags, int scale), 0x4083A0);
+FunctionPointer(void, late_ActionClipMS, (NJS_ACTION* action, float frame, int queueFlags, float scale), 0x4083A0);
 FunctionPointer(void, late_ActionMesh, (NJS_ACTION* action, float frame, int queueFlags), 0x4083D0);
 FunctionPointer(void, late_ActionClipMesh, (NJS_ACTION* action, float frame, int queueFlags, float scale), 0x4083F0);
 
