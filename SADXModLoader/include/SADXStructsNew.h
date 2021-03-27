@@ -353,9 +353,9 @@ struct _OBJ_LANDTABLE
 	float fFarClipping;
 	_OBJ_LANDENTRY* pLandEntry;
 	_OBJ_MOTLANDENTRY* pMotLandEntry;
-	char* pPvmFileName;
+	const char* pPvmFileName;
 	NJS_TEXLIST* pTexList;
-	char* pBinaryFileName;
+	const char* pBinaryFileName;
 	void* pLoadBinary;
 };
 
