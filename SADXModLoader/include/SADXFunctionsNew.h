@@ -101,6 +101,20 @@ static inline void BigGetFloat(playerwk* a1, taskwk* a2)
 	}
 }
 
+// Bool __usercall@<eax>(NJS_TEXLIST *a1@<eax>)
+static const void* const isTextureNGPtr = (void*)0x403250;
+static inline Bool isTextureNG(NJS_TEXLIST* a1)
+{
+	Bool result;
+	__asm
+	{
+		mov eax, [a1]
+		call isTextureNGPtr
+		mov result, eax
+	}
+	return result;
+}
+
 // Ninja draw function
 FunctionPointer(void, njDrawModel_, (NJS_MODEL_SADX* model), 0x784AE0); // Offloads to polybuff drawing functions
 FunctionPointer(void, njDirectDrawModel, (NJS_MODEL_SADX* model), 0x77EDA0);
