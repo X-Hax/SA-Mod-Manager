@@ -96,32 +96,38 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 		switch (argarray[i])
 		{
 		case rEAX:
-		case rEBX:
 		case rECX:
 		case rEDX:
+			memsz += 4;
+			break;
+		case rEBX:
 		case rESI:
 		case rEDI:
 		case rEBP:
-			memsz += 4;
+			memsz += 6;
 			break;
 		case rAX:
-		case rBX:
 		case rCX:
 		case rDX:
+			memsz += 5;
+			break;
+		case rBX:
 		case rSI:
 		case rDI:
 		case rBP:
-			memsz += 5;
+			memsz += 7;
 			break;
 		case rAL:
-		case rBL:
 		case rCL:
 		case rDL:
 		case rAH:
-		case rBH:
 		case rCH:
 		case rDH:
 			memsz += 4;
+			break;
+		case rBL:
+		case rBH:
+			memsz += 6;
 			break;
 		case stack1:
 		case stack2:
@@ -179,8 +185,7 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			stackoff += 4;
 			break;
 		case rEBX:
-			writebytes(codeData, cdoff, 0x8B, 0x5C, 0x24, stackoff);
-			stackoff += 4;
+			writebytes(codeData, cdoff, 0x53, 0x8B, 0x5C, 0x24, stackoff);
 			break;
 		case rECX:
 			writebytes(codeData, cdoff, 0x8B, 0x4C, 0x24, stackoff);
@@ -191,24 +196,20 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			stackoff += 4;
 			break;
 		case rESI:
-			writebytes(codeData, cdoff, 0x8B, 0x74, 0x24, stackoff);
-			stackoff += 4;
+			writebytes(codeData, cdoff, 0x56, 0x8B, 0x74, 0x24, stackoff);
 			break;
 		case rEDI:
-			writebytes(codeData, cdoff, 0x8B, 0x7C, 0x24, stackoff);
-			stackoff += 4;
+			writebytes(codeData, cdoff, 0x57, 0x8B, 0x7C, 0x24, stackoff);
 			break;
 		case rEBP:
-			writebytes(codeData, cdoff, 0x8B, 0x6C, 0x24, stackoff);
-			stackoff += 4;
+			writebytes(codeData, cdoff, 0x55, 0x8B, 0x6C, 0x24, stackoff);
 			break;
 		case rAX:
 			writebytes(codeData, cdoff, 0x66, 0x8B, 0x44, 0x24, stackoff);
 			stackoff += 4;
 			break;
 		case rBX:
-			writebytes(codeData, cdoff, 0x66, 0x8B, 0x5C, 0x24, stackoff);
-			stackoff += 4;
+			writebytes(codeData, cdoff, 0x53, 0x66, 0x8B, 0x5C, 0x24, stackoff);
 			break;
 		case rCX:
 			writebytes(codeData, cdoff, 0x66, 0x8B, 0x4C, 0x24, stackoff);
@@ -219,24 +220,20 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			stackoff += 4;
 			break;
 		case rSI:
-			writebytes(codeData, cdoff, 0x66, 0x8B, 0x74, 0x24, stackoff);
-			stackoff += 4;
+			writebytes(codeData, cdoff, 0x56, 0x66, 0x8B, 0x74, 0x24, stackoff);
 			break;
 		case rDI:
-			writebytes(codeData, cdoff, 0x66, 0x8B, 0x7C, 0x24, stackoff);
-			stackoff += 4;
+			writebytes(codeData, cdoff, 0x57, 0x66, 0x8B, 0x7C, 0x24, stackoff);
 			break;
 		case rBP:
-			writebytes(codeData, cdoff, 0x66, 0x8B, 0x6C, 0x24, stackoff);
-			stackoff += 4;
+			writebytes(codeData, cdoff, 0x55, 0x66, 0x8B, 0x6C, 0x24, stackoff);
 			break;
 		case rAL:
 			writebytes(codeData, cdoff, 0x8A, 0x44, 0x24, stackoff);
 			stackoff += 4;
 			break;
 		case rBL:
-			writebytes(codeData, cdoff, 0x8A, 0x5C, 0x24, stackoff);
-			stackoff += 4;
+			writebytes(codeData, cdoff, 0x53, 0x8A, 0x5C, 0x24, stackoff);
 			break;
 		case rCL:
 			writebytes(codeData, cdoff, 0x8A, 0x4C, 0x24, stackoff);
@@ -251,8 +248,7 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			stackoff += 4;
 			break;
 		case rBH:
-			writebytes(codeData, cdoff, 0x8A, 0x7C, 0x24, stackoff);
-			stackoff += 4;
+			writebytes(codeData, cdoff, 0x53, 0x8A, 0x7C, 0x24, stackoff);
 			break;
 		case rCH:
 			writebytes(codeData, cdoff, 0x8A, 0x6C, 0x24, stackoff);
@@ -277,6 +273,30 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 	cdoff += 5;
 	if (stackcnt > 0)
 		writebytes(codeData, cdoff, 0x83, 0xC4, (char)(stackcnt * 4));
+	for (size_t i = argc - 1; i >= 0; --i)
+	{
+		switch (argarray[i])
+		{
+		case rEBX:
+		case rBX:
+		case rBL:
+		case rBH:
+			codeData[cdoff++] = 0x5B;
+			break;
+		case rESI:
+		case rSI:
+			codeData[cdoff++] = 0x5E;
+			break;
+		case rEDI:
+		case rDI:
+			codeData[cdoff++] = 0x5F;
+			break;
+		case rEBP:
+		case rBP:
+			codeData[cdoff++] = 0x5D;
+			break;
+		}
+	}
 	switch (ret)
 	{
 	case rEBX:
