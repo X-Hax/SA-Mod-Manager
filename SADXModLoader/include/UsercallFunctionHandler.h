@@ -1,5 +1,6 @@
 #pragma once
 #include "MemAccess.h"
+#include <cassert>
 
 enum registers
 {
@@ -269,7 +270,7 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			break;
 		}
 	}
-	WriteCall(&codeData[cdoff], address);
+	WriteCall(&codeData[cdoff], (void*)address);
 	cdoff += 5;
 	if (stackcnt > 0)
 		writebytes(codeData, cdoff, 0x83, 0xC4, (char)(stackcnt * 4));
@@ -367,6 +368,6 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 		break;
 	}
 	codeData[cdoff++] = 0xC3;
-	static_assert(cdoff == memsz);
+	assert(cdoff == memsz);
 	return (T)codeData;
 }
