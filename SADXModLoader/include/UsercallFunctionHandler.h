@@ -274,7 +274,7 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 	cdoff += 5;
 	if (stackcnt > 0)
 		writebytes(codeData, cdoff, 0x83, 0xC4, (char)(stackcnt * 4));
-	for (size_t i = argc - 1; i >= 0; --i)
+	for (int i = argc - 1; i >= 0; --i)
 	{
 		switch (argarray[i])
 		{
