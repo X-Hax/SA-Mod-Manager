@@ -186,7 +186,9 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			stackoff += 4;
 			break;
 		case rEBX:
+			stackoff += 4;
 			writebytes(codeData, cdoff, 0x53, 0x8B, 0x5C, 0x24, stackoff);
+			stackoff += 4;
 			break;
 		case rECX:
 			writebytes(codeData, cdoff, 0x8B, 0x4C, 0x24, stackoff);
@@ -197,10 +199,14 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			stackoff += 4;
 			break;
 		case rESI:
+			stackoff += 4;
 			writebytes(codeData, cdoff, 0x56, 0x8B, 0x74, 0x24, stackoff);
+			stackoff += 4;
 			break;
 		case rEDI:
+			stackoff += 4;
 			writebytes(codeData, cdoff, 0x57, 0x8B, 0x7C, 0x24, stackoff);
+			stackoff += 4;
 			break;
 		case rEBP:
 			writebytes(codeData, cdoff, 0x55, 0x8B, 0x6C, 0x24, stackoff);
@@ -210,7 +216,9 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			stackoff += 4;
 			break;
 		case rBX:
+			stackoff += 4;
 			writebytes(codeData, cdoff, 0x53, 0x66, 0x8B, 0x5C, 0x24, stackoff);
+			stackoff += 4;
 			break;
 		case rCX:
 			writebytes(codeData, cdoff, 0x66, 0x8B, 0x4C, 0x24, stackoff);
@@ -221,20 +229,28 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			stackoff += 4;
 			break;
 		case rSI:
+			stackoff += 4;
 			writebytes(codeData, cdoff, 0x56, 0x66, 0x8B, 0x74, 0x24, stackoff);
+			stackoff += 4;
 			break;
 		case rDI:
+			stackoff += 4;
 			writebytes(codeData, cdoff, 0x57, 0x66, 0x8B, 0x7C, 0x24, stackoff);
+			stackoff += 4;
 			break;
 		case rBP:
+			stackoff += 4;
 			writebytes(codeData, cdoff, 0x55, 0x66, 0x8B, 0x6C, 0x24, stackoff);
+			stackoff += 4;
 			break;
 		case rAL:
 			writebytes(codeData, cdoff, 0x8A, 0x44, 0x24, stackoff);
 			stackoff += 4;
 			break;
 		case rBL:
+			stackoff += 4;
 			writebytes(codeData, cdoff, 0x53, 0x8A, 0x5C, 0x24, stackoff);
+			stackoff += 4;
 			break;
 		case rCL:
 			writebytes(codeData, cdoff, 0x8A, 0x4C, 0x24, stackoff);
@@ -249,7 +265,9 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			stackoff += 4;
 			break;
 		case rBH:
+			stackoff += 4;
 			writebytes(codeData, cdoff, 0x53, 0x8A, 0x7C, 0x24, stackoff);
+			stackoff += 4;
 			break;
 		case rCH:
 			writebytes(codeData, cdoff, 0x8A, 0x6C, 0x24, stackoff);
