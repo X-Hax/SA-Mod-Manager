@@ -85,8 +85,31 @@ inline void writebytes(char* dst, int& dstoff, char a1, char a2, char a3, char a
 	dst[dstoff++] = a8;
 }
 
+char* curpg = nullptr;
+int pgoff = 0;
+int pgsz = -1;
+char* AllocateCode(int sz)
+{
+	if (pgsz == -1)
+	{
+		SYSTEM_INFO sysinf;
+		GetNativeSystemInfo(&sysinf);
+		pgsz = sysinf.dwPageSize;
+	}
+	if (curpg == nullptr || (pgoff + sz) > pgsz)
+	{
+		curpg = (char*)VirtualAlloc(nullptr, pgsz, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+		pgoff = 0;
+	}
+	char* result = &curpg[pgoff];
+	pgoff += sz;
+	if (pgoff % 0x10 != 0)
+		pgoff += 0x10 - (pgoff % 0x10);
+	return result;
+}
+
 template<typename T, typename... TArgs>
-constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs... args)
+constexpr T const GenerateUsercallWrapper(int ret, intptr_t address, TArgs... args)
 {
 	const size_t argc = sizeof...(TArgs);
 	int argarray[] = { args... };
@@ -174,7 +197,7 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 		break;
 	}
 	++memsz; // retn
-	auto codeData = (char*)VirtualAlloc(nullptr, memsz, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+	auto codeData = AllocateCode(memsz);
 	int cdoff = 0;
 	char stackoff = 4;
 	for (size_t i = 0; i < argc; ++i)
@@ -209,7 +232,9 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			stackoff += 4;
 			break;
 		case rEBP:
+			stackoff += 4;
 			writebytes(codeData, cdoff, 0x55, 0x8B, 0x6C, 0x24, stackoff);
+			stackoff += 4;
 			break;
 		case rAX:
 			writebytes(codeData, cdoff, 0x66, 0x8B, 0x44, 0x24, stackoff);
@@ -279,12 +304,15 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 			break;
 		case stack1:
 			writebytes(codeData, cdoff, 0x0F, 0xBE, 0x44, 0x24, stackoff, 0x50);
+			stackoff += 8;
 			break;
 		case stack2:
 			writebytes(codeData, cdoff, 0x0F, 0xBF, 0x44, 0x24, stackoff, 0x50);
+			stackoff += 8;
 			break;
 		case stack4:
 			writebytes(codeData, cdoff, 0xFF, 0x74, 0x24, stackoff);
+			stackoff += 8;
 			break;
 		}
 	}
@@ -388,4 +416,265 @@ constexpr T const GenerateUsercallCallWrapper(int ret, intptr_t address, TArgs..
 	codeData[cdoff++] = 0xC3;
 	assert(cdoff == memsz);
 	return (T)codeData;
+}
+
+template<typename T, typename... TArgs>
+constexpr void const GenerateUsercallHook(T func, int ret, intptr_t address, TArgs... args)
+{
+	const size_t argc = sizeof...(TArgs);
+	int argarray[] = { args... };
+	int stackcnt = 0;
+	int memsz = 0;
+	for (size_t i = 0; i < argc; ++i)
+	{
+		switch (argarray[i])
+		{
+		case rEAX:
+		case rAX:
+		case rAL:
+		case rEBX:
+		case rBX:
+		case rBL:
+		case rECX:
+		case rCX:
+		case rCL:
+		case rEDX:
+		case rDX:
+		case rDL:
+		case rESI:
+		case rSI:
+		case rEDI:
+		case rDI:
+		case rEBP:
+		case rBP:
+			++memsz;
+			break;
+		case rAH:
+			break;
+		case rBH:
+			break;
+		case rCH:
+			break;
+		case rDH:
+			break;
+		case stack1:
+		case stack2:
+		case stack4:
+			memsz += 4;
+			++stackcnt;
+			break;
+		}
+	}
+	memsz += 5; // call
+	switch (ret)
+	{
+	case rEBX:
+	case rBX:
+	case rBL:
+	case rECX:
+	case rCX:
+	case rCL:
+	case rEDX:
+	case rDX:
+	case rDL:
+	case rESI:
+	case rSI:
+	case rEDI:
+	case rDI:
+	case rEBP:
+	case rBP:
+		memsz += 2;
+		break;
+	case rAH:
+		break;
+	case rBH:
+		break;
+	case rCH:
+		break;
+	case rDH:
+		break;
+	}
+	for (int i = 0; i < argc; ++i)
+	{
+		if (argarray[i] == ret)
+			memsz += 3;
+		else
+			switch (argarray[i])
+			{
+			case rEAX:
+			case rAX:
+			case rAL:
+			case rAH:
+			case rEBX:
+			case rBX:
+			case rBL:
+			case rBH:
+			case rECX:
+			case rCX:
+			case rCL:
+			case rCH:
+			case rEDX:
+			case rDX:
+			case rDL:
+			case rDH:
+			case rESI:
+			case rSI:
+			case rEDI:
+			case rDI:
+			case rEBP:
+			case rBP:
+				++memsz;
+				break;
+			}
+	}
+	if (stackcnt > 0)
+		memsz += 3;
+	++memsz; // retn
+	auto codeData = AllocateCode(memsz);
+	int cdoff = 0;
+	char stackoff = stackcnt * 4;
+	for (int i = argc - 1; i >= 0; --i)
+	{
+		switch (argarray[i])
+		{
+		case rEAX:
+		case rAX:
+		case rAL:
+			codeData[cdoff++] = 0x50;
+			break;
+		case rEBX:
+		case rBX:
+		case rBL:
+			codeData[cdoff++] = 0x53;
+			break;
+		case rECX:
+		case rCX:
+		case rCL:
+			codeData[cdoff++] = 0x51;
+			break;
+		case rEDX:
+		case rDX:
+		case rDL:
+			codeData[cdoff++] = 0x52;
+			break;
+		case rESI:
+		case rSI:
+			codeData[cdoff++] = 0x56;
+			break;
+		case rEDI:
+		case rDI:
+			codeData[cdoff++] = 0x57;
+			break;
+		case rEBP:
+		case rBP:
+			codeData[cdoff++] = 0x55;
+			break;
+		case rAH:
+			break;
+		case rBH:
+			break;
+		case rCH:
+			break;
+		case rDH:
+			break;
+		case stack1:
+		case stack2:
+		case stack4:
+			writebytes(codeData, cdoff, 0xFF, 0x74, 0x24, stackoff);
+			break;
+		}
+	}
+	WriteCall(&codeData[cdoff], func);
+	cdoff += 5;
+	switch (ret)
+	{
+	case rEBX:
+	case rBX:
+	case rBL:
+		writebytes(codeData, cdoff, 0x89, 0xC3);
+		break;
+	case rECX:
+	case rCX:
+	case rCL:
+		writebytes(codeData, cdoff, 0x89, 0xC1);
+		break;
+	case rEDX:
+	case rDX:
+	case rDL:
+		writebytes(codeData, cdoff, 0x89, 0xC2);
+		break;
+	case rESI:
+	case rSI:
+		writebytes(codeData, cdoff, 0x89, 0xC6);
+		break;
+	case rEDI:
+	case rDI:
+		writebytes(codeData, cdoff, 0x89, 0xC7);
+		break;
+	case rEBP:
+	case rBP:
+		writebytes(codeData, cdoff, 0x89, 0xC5);
+		break;
+	case rAH:
+		break;
+	case rBH:
+		break;
+	case rCH:
+		break;
+	case rDH:
+		break;
+	}
+	for (int i = 0; i < argc; ++i)
+	{
+		if (argarray[i] == ret)
+			writebytes(codeData, cdoff, 0x83, 0xC4, 4);
+		else
+			switch (argarray[i])
+			{
+			case rEAX:
+			case rAX:
+			case rAL:
+			case rAH:
+				codeData[cdoff++] = 0x58;
+				break;
+			case rEBX:
+			case rBX:
+			case rBL:
+			case rBH:
+				codeData[cdoff++] = 0x5B;
+				break;
+			case rECX:
+			case rCX:
+			case rCL:
+			case rCH:
+				codeData[cdoff++] = 0x59;
+				break;
+			case rEDX:
+			case rDX:
+			case rDL:
+			case rDH:
+				codeData[cdoff++] = 0x5A;
+				break;
+			case rESI:
+			case rSI:
+				codeData[cdoff++] = 0x5E;
+				break;
+			case rEDI:
+			case rDI:
+				codeData[cdoff++] = 0x5F;
+				break;
+			case rEBP:
+			case rBP:
+				codeData[cdoff++] = 0x5D;
+				break;
+			}
+	}
+	if (stackcnt > 0)
+		writebytes(codeData, cdoff, 0x83, 0xC4, (char)(stackcnt * 4));
+	codeData[cdoff++] = 0xC3;
+	assert(cdoff == memsz);
+	if (*(char*)address == 0xE8)
+		WriteCall((void*)address, codeData);
+	else
+		WriteJump((void*)address, codeData);
 }
