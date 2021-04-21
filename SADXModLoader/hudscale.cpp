@@ -105,6 +105,9 @@ static Trampoline* CreateDecideButton_t;
 static Trampoline* DecideButtonDisplayer_t;
 static Trampoline* AloG00Hintmenu_t;
 static Trampoline* AlgKinderPrDisp_t;
+static Trampoline* ChaoParamWindowExecutor_t;
+static Trampoline* ChaoSelectWindowExecutor_t;
+static Trampoline* AL_ChaoParamWindowExecutor_t;
 
 #pragma endregion
 
@@ -500,6 +503,21 @@ static void __cdecl AlgKinderPrDisp_r(ObjectMaster* a1)
 	scale_trampoline(Align::center, false, AlgKinderPrDisp_r, AlgKinderPrDisp_t, a1);
 }
 
+static void __cdecl ChaoParamWindowExecutor_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, ChaoParamWindowExecutor_r, ChaoParamWindowExecutor_t, a1);
+}
+
+static void __cdecl ChaoSelectWindowExecutor_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, ChaoSelectWindowExecutor_r, ChaoSelectWindowExecutor_t, a1);
+}
+
+static void __cdecl AL_ChaoParamWindowExecutor_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AL_ChaoParamWindowExecutor_r, AL_ChaoParamWindowExecutor_t, a1);
+}
+
 static void __cdecl MissionCompleteScreen_Draw_r()
 {
 	scale_trampoline(Align::center, false, MissionCompleteScreen_Draw_r, MissionCompleteScreen_Draw_t);
@@ -729,6 +747,8 @@ static void InitializeChaoHUDs() {
 	CreateBlueButtonModoru_t                    = new Trampoline(0x00747C00, 0x00747C07, CreateBlueButtonModoru_r);
 	CreateInfoBaseWindow_t                      = new Trampoline(0x00747810, 0x00747817, CreateInfoBaseWindow_r);
 	CreateBlueButtonModoruCS_t                  = new Trampoline(0x007480B0, 0x007480B7, CreateBlueButtonModoruCS_r);
+	ChaoSelectWindowExecutor_t                  = new Trampoline(0x00768E10, 0x00768E16, ChaoSelectWindowExecutor_r);
+	AL_ChaoParamWindowExecutor_t                = new Trampoline(0x00767D40, 0x00767D47, AL_ChaoParamWindowExecutor_r);
 
 	// Chao Name Machine
 	WriteData((float**)0x74DAF5, &scale_v);
@@ -751,6 +771,7 @@ static void InitializeChaoHUDs() {
 	CreateCancelButton_t          = new Trampoline(0x0076A390, 0x0076A395, CreateCancelButton_r);
 	CreateDecideButton_t          = new Trampoline(0x0076A030, 0x0076A035, CreateDecideButton_r);
 	DecideButtonDisplayer_t       = new Trampoline(0x00769E40, 0x00769E47, DecideButtonDisplayer_r);
+	ChaoParamWindowExecutor_t     = new Trampoline(0x0076AA60, 0x0076AA66, ChaoParamWindowExecutor_r);
 
 	// MessageBar
 	WriteData((float**)0x76CE07, &scale_h);

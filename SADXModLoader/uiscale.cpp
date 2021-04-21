@@ -273,6 +273,29 @@ static void scale_points(T* points, size_t count)
 	}
 }
 
+template <typename T>
+static void scale_point(T* point) {
+	if (sprite_scale || scale_stack.empty())
+	{
+		return;
+	}
+
+	const auto& top = scale_stack.top();
+	const Uint8 align = top.alignment;
+
+	NJS_POINT2 center = { point->x, point->y };
+
+	const float scale = uiscale::get_scale();
+	const NJS_POINT2 offset = get_offset(align, center);
+
+	point->x = point->x * scale + offset.x;
+	point->y = point->y * scale + offset.y;
+
+	if (typeid(T) == typeid(NJS_VECTOR)) {
+		point->z *= 1.0f / scale;
+	}
+}
+
 static void scale_quad_ex(NJS_QUAD_TEXTURE_EX* quad)
 {
 	if (sprite_scale || scale_stack.empty())
@@ -345,6 +368,7 @@ static Trampoline* Direct3D_DrawQuad_t = nullptr;
 static Trampoline* njDrawPolygon_t = nullptr;
 static Trampoline* chDrawBillboardSR_t = nullptr;
 static Trampoline* DisplayVideoFrame_t = nullptr;
+static Trampoline* chCalcWorldPosFromScreenPos_t = nullptr;
 
 static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags)
 {
@@ -537,6 +561,17 @@ static void __cdecl DisplayVideoFrame_r(int width, int height)
 	bg_fill = orig;
 }
 
+static void __cdecl chCalcWorldPosFromScreenPos_r(NJS_VECTOR* pos, NJS_VECTOR* ret) {
+	auto orig = static_cast<decltype(chCalcWorldPosFromScreenPos_r)*>(chCalcWorldPosFromScreenPos_t->Target());
+
+	if (uiscale::is_scale_enabled())
+	{
+		scale_point(pos);
+	}
+
+	orig(pos, ret);
+}
+
 #pragma endregion
 
 void uiscale::initialize_common() {
@@ -563,6 +598,8 @@ void uiscale::initialize()
 
 	chDrawBillboardSR_t = new Trampoline(0x0078B070, 0x0078B079, chDrawBillboardSR_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(chDrawBillboardSR_t->Target()) + 4), Direct3D_TextureFilterPoint);
+
+	chCalcWorldPosFromScreenPos_t = new Trampoline(0x00720B10, 0x00720B17, chCalcWorldPosFromScreenPos_r);
 }
 
 void uiscale::setup_background_scale()
