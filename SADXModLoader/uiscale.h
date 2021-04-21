@@ -47,6 +47,7 @@ namespace uiscale
 	extern float scale_v;
 
 	void update_parameters();
+	void initialize_common();
 	void initialize();
 	void setup_background_scale();
 	void setup_fmv_scale();

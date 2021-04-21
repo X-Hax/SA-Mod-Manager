@@ -15,6 +15,8 @@ namespace uiscale
 	float scale_max = 0.0f;
 	float scale_h   = 0.0f;
 	float scale_v   = 0.0f;
+
+	bool initialized = false;
 }
 
 #pragma region Scale stack
@@ -335,19 +337,14 @@ static void __cdecl sprite_pop(NJS_SPRITE* sp)
 
 #pragma region Scale wrappers
 
-static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags);
-static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, float depth, Uint32 attr, QueuedModelFlagsB flags);
-static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr);
-static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX* quad);
-static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX *polygon, Int count, Int trans);
-
-// Must be initialized dynamically to fix a call instruction.
 static Trampoline* njDrawTextureMemList_t = nullptr;
-static Trampoline njDrawSprite2D_Queue_t(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
-static Trampoline Draw2DLinesMaybe_Queue_t(0x00404490, 0x00404496, Draw2DLinesMaybe_Queue_r);
-static Trampoline njDrawTriangle2D_t(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
-static Trampoline Direct3D_DrawQuad_t(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
-static Trampoline njDrawPolygon_t(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
+static Trampoline* njDrawSprite2D_Queue_t = nullptr;
+static Trampoline* Draw2DLinesMaybe_Queue_t = nullptr;
+static Trampoline* njDrawTriangle2D_t = nullptr;
+static Trampoline* Direct3D_DrawQuad_t = nullptr;
+static Trampoline* njDrawPolygon_t = nullptr;
+static Trampoline* chDrawBillboardSR_t = nullptr;
+static Trampoline* DisplayVideoFrame_t = nullptr;
 
 static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags)
 {
@@ -358,7 +355,7 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD
 		return;
 	}
 
-	NonStaticFunctionPointer(void, original, (NJS_SPRITE*, Int, Float, NJD_SPRITE, QueuedModelFlagsB), njDrawSprite2D_Queue_t.Target());
+	NonStaticFunctionPointer(void, original, (NJS_SPRITE*, Int, Float, NJD_SPRITE, QueuedModelFlagsB), njDrawSprite2D_Queue_t->Target());
 
 	// Scales lens flare and sun.
 	// It uses njProjectScreen so there's no position scaling required.
@@ -382,7 +379,7 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD
 
 static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, float depth, Uint32 attr, QueuedModelFlagsB flags)
 {
-	auto original = static_cast<decltype(Draw2DLinesMaybe_Queue_r)*>(Draw2DLinesMaybe_Queue_t.Target());
+	auto original = static_cast<decltype(Draw2DLinesMaybe_Queue_r)*>(Draw2DLinesMaybe_Queue_t->Target());
 
 	if (uiscale::is_scale_enabled())
 	{
@@ -406,7 +403,7 @@ static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, 
 
 static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr)
 {
-	auto original = static_cast<decltype(njDrawTriangle2D_r)*>(njDrawTriangle2D_t.Target());
+	auto original = static_cast<decltype(njDrawTriangle2D_r)*>(njDrawTriangle2D_t->Target());
 
 	if (uiscale::is_scale_enabled())
 	{
@@ -428,7 +425,7 @@ static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint3
 
 static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX* quad)
 {
-	auto original = static_cast<decltype(Direct3D_DrawQuad_r)*>(Direct3D_DrawQuad_t.Target());
+	auto original = static_cast<decltype(Direct3D_DrawQuad_r)*>(Direct3D_DrawQuad_t->Target());
 
 	if (uiscale::is_scale_enabled())
 	{
@@ -440,7 +437,7 @@ static void __cdecl Direct3D_DrawQuad_r(NJS_QUAD_TEXTURE_EX* quad)
 
 static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int trans)
 {
-	auto orig = static_cast<decltype(njDrawPolygon_r)*>(njDrawPolygon_t.Target());
+	auto orig = static_cast<decltype(njDrawPolygon_r)*>(njDrawPolygon_t->Target());
 
 	if (uiscale::is_scale_enabled())
 	{
@@ -450,7 +447,77 @@ static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int tra
 	orig(polygon, count, trans);
 }
 
-static void njDrawTextureMemList_init()
+static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, float y, float depth, float sclx, float scly, int unused, __int16 use_sclx, __int16 use_scly)
+{
+	if (uiscale::is_scale_enabled())
+	{
+		Direct3D_SetTexList(chaosprite->pTexlist);
+		SetHudColorAndTextureNum(chaosprite->TexNum, *(NJS_COLOR*)0x3D08580);
+		Direct3D_EnableHudAlpha(true);
+
+		if (*(int*)0x3D08584 == 1)
+		{
+			Direct3D_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+		}
+		else
+		{
+			Direct3D_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		}
+
+		float sclx_ = sclx * chaosprite->wd;
+		float scly_ = scly * chaosprite->ht;
+		float s0, s1, t0, t1;
+
+		if (chaosprite->adjust != 0)
+		{
+			s0 = chaosprite->s0;
+			s1 = chaosprite->s1;
+			t0 = chaosprite->t0;
+			t1 = chaosprite->t1;
+		}
+		else
+		{
+			s0 = chaosprite->s0 * 0.00390625f;
+			s1 = chaosprite->s1 * 0.00390625f;
+			t0 = chaosprite->t0 * 0.00390625f;
+			t1 = chaosprite->t1 * 0.00390625f;
+		}
+
+		float new_x = x;
+		float new_y = y;
+
+		if (use_sclx == 0)
+		{
+			new_x = x - 0.5f * sclx_;
+		}
+		else if (use_sclx == 1) 
+		{
+			new_x = x - sclx_;
+		}
+
+		if (use_scly == 0)
+		{
+			new_y = y - 0.5f * scly_;
+		}
+		else if (use_scly == 1)
+		{
+			new_y = y - scly_;
+		}
+
+		NJS_QUAD_TEXTURE quad = { new_x + 0.5f, new_y + 0.5f, new_x + sclx_ + 0.5f, new_y + scly_ + 0.5f, s0, t0, s1, t1 };
+		DrawRectPoints((NJS_POINT2*)&quad, depth * -1.0f);
+
+		Direct3D_TextureFilterLinear();
+	}
+	else {
+		auto orig = static_cast<decltype(chDrawBillboardSR_r)*>(chDrawBillboardSR_t->Target());
+		orig(chaosprite, x, y, depth, sclx, scly, unused, use_sclx, use_scly);
+	}
+}
+
+static void __cdecl njDrawTextureMemList_init()
 {
 	// This has to be created dynamically to repair a function call.
 	if (njDrawTextureMemList_t == nullptr)
@@ -459,35 +526,6 @@ static void njDrawTextureMemList_init()
 		WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(njDrawTextureMemList_t->Target()) + 4), njAlphaMode);
 	}
 }
-
-#pragma endregion
-
-#pragma region HUD scaling
-
-void uiscale::initialize()
-{
-	update_parameters();
-	njDrawTextureMemList_init();
-
-	DisplayAllObjects_t = new Trampoline(0x0040B540, 0x0040B546, DisplayAllObjects_r);
-	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DisplayAllObjects_t->Target()) + 1), reinterpret_cast<void*>(0x004128F0));
-}
-
-#pragma endregion
-
-#pragma region Background scaling
-
-void uiscale::setup_background_scale()
-{
-	update_parameters();
-	njDrawTextureMemList_init();
-}
-
-#pragma endregion
-
-#pragma region FMV scaling
-
-static Trampoline* DisplayVideoFrame_t = nullptr;
 
 static void __cdecl DisplayVideoFrame_r(int width, int height)
 {
@@ -499,12 +537,47 @@ static void __cdecl DisplayVideoFrame_r(int width, int height)
 	bg_fill = orig;
 }
 
+#pragma endregion
+
+void uiscale::initialize_common() {
+	if (initialized == false) {
+		update_parameters();
+		njDrawTextureMemList_init();
+
+		Direct3D_DrawQuad_t = new Trampoline(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
+		njDrawPolygon_t = new Trampoline(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
+		njDrawSprite2D_Queue_t = new Trampoline(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
+		Draw2DLinesMaybe_Queue_t = new Trampoline(0x00404490, 0x00404496, Draw2DLinesMaybe_Queue_r);
+		njDrawTriangle2D_t = new Trampoline(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
+
+		initialized = true;
+	}
+}
+
+void uiscale::initialize()
+{
+	initialize_common();
+
+	DisplayAllObjects_t = new Trampoline(0x0040B540, 0x0040B546, DisplayAllObjects_r);
+	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DisplayAllObjects_t->Target()) + 1), reinterpret_cast<void*>(0x004128F0));
+
+	chDrawBillboardSR_t = new Trampoline(0x0078B070, 0x0078B079, chDrawBillboardSR_r);
+	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(chDrawBillboardSR_t->Target()) + 4), Direct3D_TextureFilterPoint);
+}
+
+void uiscale::setup_background_scale()
+{
+	initialize_common();
+}
+
 void uiscale::setup_fmv_scale()
 {
 	update_parameters();
 	njDrawTextureMemList_init();
 
+	if (Direct3D_DrawQuad_t == nullptr) {
+		Direct3D_DrawQuad_t = new Trampoline(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
+	}
+
 	DisplayVideoFrame_t = new Trampoline(0x005139F0, 0x005139F5, DisplayVideoFrame_r);
 }
-
-#pragma endregion
