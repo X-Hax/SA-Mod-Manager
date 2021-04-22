@@ -395,7 +395,7 @@ static void __cdecl AL_EntranceMenuBackGroundDisplayer_r(ObjectMaster* a1)
 
 static void __cdecl MessageBarCreate_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::center, false, MessageBarCreate_r, MessageBarCreate_t, a1);
+	scale_trampoline(Align::left | Align::bottom, false, MessageBarCreate_r, MessageBarCreate_t, a1);
 }
 
 static void __cdecl MessageBar_Display_r(ObjectMaster* a1)
@@ -729,8 +729,8 @@ static void InitializeChaoHUDs() {
 	ChaoDX_Message_PlayerAction_Display_t = new Trampoline(0x0071B210, 0x0071B215, ChaoDX_Message_PlayerAction_Display_r);
 
 	// Black Market
-	WriteData(reinterpret_cast<float**>(0x725852), &scale_h); // ring box offscreen position
-	WriteData(reinterpret_cast<float**>(0x72584A), &scale_h); // ring box offscreen position
+	WriteData(reinterpret_cast<float**>(0x00725852), &scale_h); // ring box offscreen position
+	WriteData(reinterpret_cast<float**>(0x0072584A), &scale_h); // ring box offscreen position
 	AlgKinderBlExec_t          = new Trampoline(0x007289A0, 0x007289A6, AlgKinderBlExec_r);
 	AlgKinderBlDisp_t          = new Trampoline(0x00728980, 0x00728985, AlgKinderBlDisp_r);
 	AL_BlackmarketMenuCreate_t = new Trampoline(0x00728A40, 0x00728A49, AL_BlackmarketMenuCreate_r);
@@ -753,10 +753,10 @@ static void InitializeChaoHUDs() {
 	AL_ChaoParamWindowExecutor_t                = new Trampoline(0x00767D40, 0x00767D47, AL_ChaoParamWindowExecutor_r);
 
 	// Chao Name Machine
-	WriteData(reinterpret_cast<float**>(0x74DAF5), &scale_v);
-	WriteData(reinterpret_cast<float**>(0x74DBD3), &scale_v);
-	WriteData(reinterpret_cast<float**>(0x74DB22), &scale_h);
-	WriteData(reinterpret_cast<float**>(0x74DBA2), &scale_h);
+	WriteData(reinterpret_cast<float**>(0x0074DAF5), &scale_v);
+	WriteData(reinterpret_cast<float**>(0x0074DBD3), &scale_v);
+	WriteData(reinterpret_cast<float**>(0x0074DB22), &scale_h);
+	WriteData(reinterpret_cast<float**>(0x0074DBA2), &scale_h);
 	OdeBGDisplayer_t              = new Trampoline(0x0074DC20, 0x0074DC25, OdeBGDisplayer_r);
 	AlMsgWarnDisp_t               = new Trampoline(0x0072D450, 0x0072D455, AlMsgWarnDisp_r);
 	AlMsgSelectDisp_t             = new Trampoline(0x0072CDA0, 0x0072CDA5, AlMsgSelectDisp_r);
@@ -776,10 +776,10 @@ static void InitializeChaoHUDs() {
 	ChaoParamWindowExecutor_t     = new Trampoline(0x0076AA60, 0x0076AA66, ChaoParamWindowExecutor_r);
 
 	// MessageBar
-	WriteData(reinterpret_cast<float**>(0x76CE07), &scale_h);
-	WriteData(reinterpret_cast<float**>(0x76CCE0), &scale_h);
-	WriteData(reinterpret_cast<float**>(0x749437), &scale_h);
-	WriteData(reinterpret_cast<float**>(0x74935A), &scale_h);
+	WriteData(reinterpret_cast<float**>(0x0076CE07), &scale_h);
+	WriteData(reinterpret_cast<float**>(0x0076CCE0), &scale_h);
+	WriteData(reinterpret_cast<float**>(0x00749437), &scale_h);
+	WriteData(reinterpret_cast<float**>(0x0074935A), &scale_h);
 	AL_OdeTelopCreate_t  = new Trampoline(0x0076CD60, 0x0076CD66, AL_OdeTelopCreate_r);
 	AL_OdeTelopDisp_t    = new Trampoline(0x0076CC80, 0x0076CC85, AL_OdeTelopDisp_r);
 	MessageBarCreate_t   = new Trampoline(0x007493B0, 0x007493B5, MessageBarCreate_r);
