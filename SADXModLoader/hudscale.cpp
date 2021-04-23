@@ -767,7 +767,10 @@ static void InitializeChaoHUDs() {
 	AL_BlackmarketMenuCreate_t = new Trampoline(0x00728A40, 0x00728A49, AL_BlackmarketMenuCreate_r);
 	BlackMarketRingHUD_t       = new Trampoline(0x00744990, 0x00744995, BlackMarketRingHUD_r);
 
-	// Chao Entrance
+	// Race
+	ChaoRaceTimer_t = new Trampoline(0x00750E70, 0x00750E78, ChaoRaceTimer_r);
+
+	// Entrance
 	ChaoEntranceMenu_t                          = new Trampoline(0x0072C4C0, 0x0072C4C5, ChaoEntranceMenu_r);
 	AL_EntranceMenuLargeTitleBarDisplayer_t     = new Trampoline(0x00749830, 0x00749835, AL_EntranceMenuLargeTitleBarDisplayer_r);
 	AL_EntranceMenuSmallTitleBarDisplayer_t     = new Trampoline(0x00749EB0, 0x00749EB5, AL_EntranceMenuSmallTitleBarDisplayer_r);
@@ -782,8 +785,9 @@ static void InitializeChaoHUDs() {
 	CreateBlueButtonModoruCS_t                  = new Trampoline(0x007480B0, 0x007480B7, CreateBlueButtonModoruCS_r);
 	ChaoSelectWindowExecutor_t                  = new Trampoline(0x00768E10, 0x00768E16, ChaoSelectWindowExecutor_r);
 	AL_ChaoParamWindowExecutor_t                = new Trampoline(0x00767D40, 0x00767D47, AL_ChaoParamWindowExecutor_r);
+	WriteData(reinterpret_cast<double*>(0x0088A5D0), 24.0); // Fix sprite padding in AL_ChaoParamWindowDisplayer
 
-	// Chao Name Machine
+	// Name Machine
 	WriteData(reinterpret_cast<float**>(0x0074DAF5), &scale_v);
 	WriteData(reinterpret_cast<float**>(0x0074DBD3), &scale_v);
 	WriteData(reinterpret_cast<float**>(0x0074DB22), &scale_h);
@@ -816,7 +820,7 @@ static void InitializeChaoHUDs() {
 	MessageBarCreate_t   = new Trampoline(0x007493B0, 0x007493B5, MessageBarCreate_r);
 	MessageBar_Display_t = new Trampoline(0x00749300, 0x00749306, MessageBar_Display_r);
 
-	// Chao Monitor
+	// Monitor
 	AloG00Hintmenu_t  = new Trampoline(0x00746800, 0x00746806, AloG00Hintmenu_r);
 	AlgKinderPrDisp_t = new Trampoline(0x00746710, 0x00746715, AlgKinderPrDisp_r);
 }
@@ -841,7 +845,6 @@ void hudscale::initialize()
 	EmblemCollected_Init_t               = new Trampoline(0x004B4860, 0x004B4867, EmblemCollected_Init_r);
 	EmblemCollected_Main_t               = new Trampoline(0x004B46A0, 0x004B46A6, EmblemCollected_Main_r);
 	DrawTitleScreen_t                    = new Trampoline(0x0050E470, 0x0050E476, DrawTitleScreen_asm);
-	ChaoRaceTimer_t                      = new Trampoline(0x00750E70, 0x00750E78, ChaoRaceTimer_r);
 	HudDisplayRingTimeLife_Check_t		 = new Trampoline(0x00425F90, 0x00425F95, HudDisplayRingTimeLife_Check_r);
 	HudDisplayScoreOrTimer_t			 = new Trampoline(0x00427F50, 0x00427F55, HudDisplayScoreOrTimer_r);
 	DrawStageMissionImage_t              = new Trampoline(0x00457120, 0x00457126, DrawStageMissionImage_r);
