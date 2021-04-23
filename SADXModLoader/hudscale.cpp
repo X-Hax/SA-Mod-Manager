@@ -45,6 +45,7 @@ static Trampoline* scaleTailsRaceBar;
 static Trampoline* scaleDemoPressStart;
 static Trampoline* ChaoDX_Message_PlayerAction_Load_t;
 static Trampoline* ChaoDX_Message_PlayerAction_Display_t;
+static Trampoline* HeldChaoParamWindowDisplayer_t;
 static Trampoline* MissionCompleteScreen_Draw_t;
 static Trampoline* CharSelBg_Display_t;
 static Trampoline* TrialLevelList_Display_t;
@@ -306,6 +307,35 @@ static void __cdecl ChaoDX_Message_PlayerAction_Load_r()
 static void __cdecl ChaoDX_Message_PlayerAction_Display_r(ObjectMaster* a1)
 {
 	scale_trampoline(Align::top | Align::right, false, ChaoDX_Message_PlayerAction_Display_r, ChaoDX_Message_PlayerAction_Display_t, a1);
+}
+
+static void __cdecl HeldChaoParamWindowDisplayer_o(ObjectMaster* a1)
+{
+	auto orig = HeldChaoParamWindowDisplayer_t->Target();
+
+	__asm
+	{
+		mov eax, a1
+		call orig
+	}
+}
+
+static void __cdecl HeldChaoParamWindowDisplayer_r(ObjectMaster* a1)
+{
+	scale_push(Align::left, false);
+	HeldChaoParamWindowDisplayer_o(a1);
+	scale_pop();
+}
+
+static void __declspec(naked) HeldChaoParamWindowDisplayer_asm()
+{
+	__asm
+	{
+		push eax
+		call HeldChaoParamWindowDisplayer_r
+		pop eax
+		ret
+	}
 }
 
 static void __cdecl AlgKinderBlExec_r(ObjectMaster* a1)
@@ -720,14 +750,15 @@ static void __declspec(naked) DrawTitleScreen_asm()
 }
 
 static void InitializeChaoHUDs() {
-	// Chao Garden HUD (whistle, pet, pick)
+	// Chao Garden HUD (whistle, pet, pick, stats)
 	WriteData(reinterpret_cast<const float**>(0x0071AEAC), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x0071AF00), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x0071B03C), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x0071B093), &patch_dummy);
 	ChaoDX_Message_PlayerAction_Load_t    = new Trampoline(0x0071B3B0, 0x0071B3B7, ChaoDX_Message_PlayerAction_Load_r);
 	ChaoDX_Message_PlayerAction_Display_t = new Trampoline(0x0071B210, 0x0071B215, ChaoDX_Message_PlayerAction_Display_r);
-
+	HeldChaoParamWindowDisplayer_t        = new Trampoline(0x00737BD0, 0x00737BD5, HeldChaoParamWindowDisplayer_asm);
+	
 	// Black Market
 	WriteData(reinterpret_cast<float**>(0x00725852), &scale_h); // ring box offscreen position
 	WriteData(reinterpret_cast<float**>(0x0072584A), &scale_h); // ring box offscreen position
