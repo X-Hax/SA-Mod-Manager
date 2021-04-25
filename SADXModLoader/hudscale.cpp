@@ -75,14 +75,16 @@ static Trampoline* AL_EntranceMenuLargeTitleBarDisplayer_t;
 static Trampoline* AL_EntranceMenuSmallTitleBarDisplayer_t;
 static Trampoline* AL_EntranceMenuLargeTitleBarDisplayerPost_t;
 static Trampoline* AL_EntranceMenuSmallTitleBarDisplayerPost_t;
-static Trampoline* ChaoEntranceMenu_t;
+static Trampoline* AL_CreateChaoSelectMenu_t;
 static Trampoline* AL_EntranceMenuRaceTitleBarDisplayer_t;
 static Trampoline* ChaoSelectWindowTDisplayer_t;
 static Trampoline* AL_ChaoParamWindowDisplayer_t;
 static Trampoline* CourseNameBarJewelDisplayer_t;
-static Trampoline* CreateBlueButtonModoru_t;
-static Trampoline* CreateInfoBaseWindow_t;
-static Trampoline* CreateBlueButtonModoruCS_t;
+static Trampoline* BlueButtonDisplayer_t;
+static Trampoline* InfoBaseWindowDisplayer_t;
+static Trampoline* PersonalRecordWindowDisplayer_t;
+static Trampoline* PersonalRecordWindowExecutor_t;
+static Trampoline* BlueButtonDisplayerCS_t;
 static Trampoline* AL_EntranceMenuBackGroundDisplayer_t;
 static Trampoline* MessageBarCreate_t;
 static Trampoline* MessageBar_Display_t;
@@ -358,9 +360,9 @@ static void __cdecl BlackMarketRingHUD_r(ObjectMaster* a1)
 	scale_trampoline(Align::center, false, BlackMarketRingHUD_r, BlackMarketRingHUD_t, a1);
 }
 
-static void __cdecl ChaoEntranceMenu_r(ObjectMaster* a1)
+static void __cdecl AL_CreateChaoSelectMenu_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::center, false, ChaoEntranceMenu_r, ChaoEntranceMenu_t, a1);
+	scale_trampoline(Align::center, false, AL_CreateChaoSelectMenu_r, AL_CreateChaoSelectMenu_t, a1);
 }
 
 static void __cdecl AL_EntranceMenuLargeTitleBarDisplayer_r(ObjectMaster* a1)
@@ -403,19 +405,29 @@ static void __cdecl CourseNameBarJewelDisplayer_r(ObjectMaster* a1)
 	scale_trampoline(Align::center, false, CourseNameBarJewelDisplayer_r, CourseNameBarJewelDisplayer_t, a1);
 }
 
-static void __cdecl CreateBlueButtonModoru_r(ObjectMaster* a1)
+static void __cdecl BlueButtonDisplayer_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::center, false, CreateBlueButtonModoru_r, CreateBlueButtonModoru_t, a1);
+	scale_trampoline(Align::center, false, BlueButtonDisplayer_r, BlueButtonDisplayer_t, a1);
 }
 
-static void __cdecl CreateInfoBaseWindow_r(ObjectMaster* a1)
+static void __cdecl InfoBaseWindowDisplayer_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::center, false, CreateInfoBaseWindow_r, CreateInfoBaseWindow_t, a1);
+	scale_trampoline(Align::center, false, InfoBaseWindowDisplayer_r, InfoBaseWindowDisplayer_t, a1);
 }
 
-static void __cdecl CreateBlueButtonModoruCS_r(ObjectMaster* a1)
+static void __cdecl PersonalRecordWindowDisplayer_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::center, false, CreateBlueButtonModoruCS_r, CreateBlueButtonModoruCS_t, a1);
+	scale_trampoline(Align::center, false, PersonalRecordWindowDisplayer_r, PersonalRecordWindowDisplayer_t, a1);
+}
+
+static void __cdecl PersonalRecordWindowExecutor_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, PersonalRecordWindowExecutor_r, PersonalRecordWindowExecutor_t, a1);
+}
+
+static void __cdecl BlueButtonDisplayerCS_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, BlueButtonDisplayerCS_r, BlueButtonDisplayerCS_t, a1);
 }
 
 static void __cdecl AL_EntranceMenuBackGroundDisplayer_r(ObjectMaster* a1)
@@ -771,7 +783,7 @@ static void InitializeChaoHUDs() {
 	ChaoRaceTimer_t = new Trampoline(0x00750E70, 0x00750E78, ChaoRaceTimer_r);
 
 	// Entrance
-	ChaoEntranceMenu_t                          = new Trampoline(0x0072C4C0, 0x0072C4C5, ChaoEntranceMenu_r);
+	AL_CreateChaoSelectMenu_t                   = new Trampoline(0x007491D0, 0x007491D5, AL_CreateChaoSelectMenu_r);
 	AL_EntranceMenuLargeTitleBarDisplayer_t     = new Trampoline(0x00749830, 0x00749835, AL_EntranceMenuLargeTitleBarDisplayer_r);
 	AL_EntranceMenuSmallTitleBarDisplayer_t     = new Trampoline(0x00749EB0, 0x00749EB5, AL_EntranceMenuSmallTitleBarDisplayer_r);
 	AL_EntranceMenuLargeTitleBarDisplayerPost_t = new Trampoline(0x00749820, 0x00749829, AL_EntranceMenuLargeTitleBarDisplayerPost_r);
@@ -780,12 +792,16 @@ static void InitializeChaoHUDs() {
 	ChaoSelectWindowTDisplayer_t                = new Trampoline(0x00769320, 0x00769327, ChaoSelectWindowTDisplayer_r);
 	AL_ChaoParamWindowDisplayer_t               = new Trampoline(0x00768080, 0x00768087, AL_ChaoParamWindowDisplayer_r);
 	CourseNameBarJewelDisplayer_t               = new Trampoline(0x00768AE0, 0x00768AE7, CourseNameBarJewelDisplayer_r);
-	CreateBlueButtonModoru_t                    = new Trampoline(0x00747C00, 0x00747C07, CreateBlueButtonModoru_r);
-	CreateInfoBaseWindow_t                      = new Trampoline(0x00747810, 0x00747817, CreateInfoBaseWindow_r);
-	CreateBlueButtonModoruCS_t                  = new Trampoline(0x007480B0, 0x007480B7, CreateBlueButtonModoruCS_r);
+	BlueButtonDisplayer_t                       = new Trampoline(0x00747C00, 0x00747C07, BlueButtonDisplayer_r);
+	InfoBaseWindowDisplayer_t                   = new Trampoline(0x00747810, 0x00747817, InfoBaseWindowDisplayer_r);
+	PersonalRecordWindowExecutor_t              = new Trampoline(0x00747080, 0x00747085, PersonalRecordWindowExecutor_r);
+	PersonalRecordWindowDisplayer_t             = new Trampoline(0x007472E0, 0x007472E8, PersonalRecordWindowDisplayer_r);
+	BlueButtonDisplayerCS_t                     = new Trampoline(0x007480B0, 0x007480B7, BlueButtonDisplayerCS_r);
 	ChaoSelectWindowExecutor_t                  = new Trampoline(0x00768E10, 0x00768E16, ChaoSelectWindowExecutor_r);
 	AL_ChaoParamWindowExecutor_t                = new Trampoline(0x00767D40, 0x00767D47, AL_ChaoParamWindowExecutor_r);
 	WriteData(reinterpret_cast<double*>(0x0088A5D0), 24.0); // Fix sprite padding in AL_ChaoParamWindowDisplayer
+	WriteData(reinterpret_cast<const float**>(0x0072C6D3), &patch_dummy); // BlueButtonCS height
+	WriteData(reinterpret_cast<const float**>(0x0072C6EC), &patch_dummy); // BlueButtonCS width
 
 	// Name Machine
 	WriteData(reinterpret_cast<float**>(0x0074DAF5), &scale_v);
