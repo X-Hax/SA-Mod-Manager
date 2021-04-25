@@ -367,22 +367,22 @@ static void __cdecl AL_CreateChaoSelectMenu_r(ObjectMaster* a1)
 
 static void __cdecl AL_EntranceMenuLargeTitleBarDisplayer_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::right | Align::top, false, AL_EntranceMenuLargeTitleBarDisplayer_r, AL_EntranceMenuLargeTitleBarDisplayer_t, a1);
+	scale_trampoline(Align::center, false, AL_EntranceMenuLargeTitleBarDisplayer_r, AL_EntranceMenuLargeTitleBarDisplayer_t, a1);
 }
 
 static void __cdecl AL_EntranceMenuSmallTitleBarDisplayer_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::left | Align::top, false, AL_EntranceMenuSmallTitleBarDisplayer_r, AL_EntranceMenuSmallTitleBarDisplayer_t, a1);
+	scale_trampoline(Align::center, false, AL_EntranceMenuSmallTitleBarDisplayer_r, AL_EntranceMenuSmallTitleBarDisplayer_t, a1);
 }
 
 static void __cdecl AL_EntranceMenuLargeTitleBarDisplayerPost_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::right | Align::top, false, AL_EntranceMenuLargeTitleBarDisplayerPost_r, AL_EntranceMenuLargeTitleBarDisplayerPost_t, a1);
+	scale_trampoline(Align::center, false, AL_EntranceMenuLargeTitleBarDisplayerPost_r, AL_EntranceMenuLargeTitleBarDisplayerPost_t, a1);
 }
 
 static void __cdecl AL_EntranceMenuSmallTitleBarDisplayerPost_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::left | Align::top, false, AL_EntranceMenuSmallTitleBarDisplayerPost_r, AL_EntranceMenuSmallTitleBarDisplayerPost_t, a1);
+	scale_trampoline(Align::center, false, AL_EntranceMenuSmallTitleBarDisplayerPost_r, AL_EntranceMenuSmallTitleBarDisplayerPost_t, a1);
 }
 
 static void __cdecl AL_EntranceMenuRaceTitleBarDisplayer_r(ObjectMaster* a1)
@@ -437,12 +437,12 @@ static void __cdecl AL_EntranceMenuBackGroundDisplayer_r(ObjectMaster* a1)
 
 static void __cdecl MessageBarCreate_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::left | Align::bottom, false, MessageBarCreate_r, MessageBarCreate_t, a1);
+	scale_trampoline(Align::bottom, false, MessageBarCreate_r, MessageBarCreate_t, a1);
 }
 
 static void __cdecl MessageBar_Display_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::left | Align::bottom, false, MessageBar_Display_r, MessageBar_Display_t, a1);
+	scale_trampoline(Align::bottom, false, MessageBar_Display_r, MessageBar_Display_t, a1);
 }
 
 static void __cdecl OdeBGDisplayer_r(ObjectMaster* a1)
@@ -467,12 +467,12 @@ static void __cdecl OdeLargeTitleBarDisplayer_r(ObjectMaster* a1)
 
 static void __cdecl AL_OdeTelopCreate_r()
 {
-	scale_trampoline(Align::left | Align::bottom, false, AL_OdeTelopCreate_r, AL_OdeTelopCreate_t);
+	scale_trampoline(Align::bottom, false, AL_OdeTelopCreate_r, AL_OdeTelopCreate_t);
 }
 
 static void __cdecl AL_OdeTelopDisp_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::left | Align::bottom, false, AL_OdeTelopDisp_r, AL_OdeTelopDisp_t, a1);
+	scale_trampoline(Align::bottom, false, AL_OdeTelopDisp_r, AL_OdeTelopDisp_t, a1);
 }
 
 static void __cdecl CreateMainMenuBar_r(char id, float xpos, float ypos, unsigned __int16 WaitTime, char active)
