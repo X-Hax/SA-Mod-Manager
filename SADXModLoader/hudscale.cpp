@@ -68,7 +68,6 @@ static Trampoline* DrawTitleScreen_t;
 static Trampoline* ChaoRaceTimer_t;
 static Trampoline* ChaoRaceRankings_t;
 static Trampoline* AlgKinderBlExec_t;
-static Trampoline* AlgKinderBlDisp_t;
 static Trampoline* AL_BlackmarketMenuCreate_t;
 static Trampoline* BlackMarketRingHUD_t;
 static Trampoline* AL_EntranceMenuLargeTitleBarDisplayer_t;
@@ -343,11 +342,6 @@ static void __declspec(naked) HeldChaoParamWindowDisplayer_asm()
 static void __cdecl AlgKinderBlExec_r(ObjectMaster* a1)
 {
 	scale_trampoline(Align::center, false, AlgKinderBlExec_r, AlgKinderBlExec_t, a1);
-}
-
-static void __cdecl AlgKinderBlDisp_r(ObjectMaster* a1)
-{
-	scale_trampoline(Align::center, false, AlgKinderBlDisp_r, AlgKinderBlDisp_t, a1);
 }
 
 static ObjectMaster* __cdecl AL_BlackmarketMenuCreate_r(ObjectMaster* a1)
@@ -775,12 +769,12 @@ static void InitializeChaoHUDs() {
 	WriteData(reinterpret_cast<float**>(0x00725852), &scale_h); // ring box offscreen position
 	WriteData(reinterpret_cast<float**>(0x0072584A), &scale_h); // ring box offscreen position
 	AlgKinderBlExec_t          = new Trampoline(0x007289A0, 0x007289A6, AlgKinderBlExec_r);
-	AlgKinderBlDisp_t          = new Trampoline(0x00728980, 0x00728985, AlgKinderBlDisp_r);
 	AL_BlackmarketMenuCreate_t = new Trampoline(0x00728A40, 0x00728A49, AL_BlackmarketMenuCreate_r);
 	BlackMarketRingHUD_t       = new Trampoline(0x00744990, 0x00744995, BlackMarketRingHUD_r);
 
 	// Race
 	ChaoRaceTimer_t = new Trampoline(0x00750E70, 0x00750E78, ChaoRaceTimer_r);
+	ChaoRaceRankings_t = new Trampoline(0x007512F0, 0x007512F5, ChaoRaceRankings_r);
 
 	// Entrance
 	AL_CreateChaoSelectMenu_t                   = new Trampoline(0x007491D0, 0x007491D5, AL_CreateChaoSelectMenu_r);
