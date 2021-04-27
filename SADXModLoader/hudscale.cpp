@@ -67,9 +67,9 @@ static Trampoline* EmblemCollected_Main_t;
 static Trampoline* DrawTitleScreen_t;
 static Trampoline* ChaoRaceTimer_t;
 static Trampoline* ChaoRaceRankings_t;
-static Trampoline* AlgKinderBlExec_t;
+static Trampoline* AlgKinderBlDisp__t;
 static Trampoline* AL_BlackmarketMenuCreate_t;
-static Trampoline* BlackMarketRingHUD_t;
+static Trampoline* AL_BlackmarketRingWinDisplayer_t;
 static Trampoline* AL_EntranceMenuLargeTitleBarDisplayer_t;
 static Trampoline* AL_EntranceMenuSmallTitleBarDisplayer_t;
 static Trampoline* AL_EntranceMenuLargeTitleBarDisplayerPost_t;
@@ -110,6 +110,7 @@ static Trampoline* AlgKinderPrDisp_t;
 static Trampoline* ChaoParamWindowExecutor_t;
 static Trampoline* ChaoSelectWindowExecutor_t;
 static Trampoline* AL_ChaoParamWindowExecutor_t;
+static Trampoline* late_exec_t;
 
 #pragma endregion
 
@@ -264,6 +265,7 @@ static void __cdecl ScaleNightsCards(ObjectMaster* a1)
 {
 	scale_trampoline(Align::automatic, false, ScaleNightsCards, scaleNightsCards, a1);
 }
+
 static void __cdecl ScaleNightsJackpot(ObjectMaster* a1)
 {
 	scale_trampoline(Align::automatic, false, ScaleNightsJackpot, scaleNightsJackpot, a1);
@@ -339,9 +341,33 @@ static void __declspec(naked) HeldChaoParamWindowDisplayer_asm()
 	}
 }
 
-static void __cdecl AlgKinderBlExec_r(ObjectMaster* a1)
+static void __cdecl AlgKinderBlDisp__o(void* w)
 {
-	scale_trampoline(Align::center, false, AlgKinderBlExec_r, AlgKinderBlExec_t, a1);
+	auto orig = AlgKinderBlDisp__t->Target();
+
+	__asm
+	{
+		mov eax, w
+		call orig
+	}
+}
+
+static void __cdecl AlgKinderBlDisp__r(void* w)
+{
+	scale_push(Align::center, false);
+	AlgKinderBlDisp__o(w);
+	scale_pop();
+}
+
+static void __declspec(naked) AlgKinderBlDisp__asm(void* w)
+{
+	__asm
+	{
+		push eax
+		call AlgKinderBlDisp__r
+		pop eax
+		ret
+	}
 }
 
 static ObjectMaster* __cdecl AL_BlackmarketMenuCreate_r(ObjectMaster* a1)
@@ -349,9 +375,9 @@ static ObjectMaster* __cdecl AL_BlackmarketMenuCreate_r(ObjectMaster* a1)
 	return scale_trampoline(Align::center, false, AL_BlackmarketMenuCreate_r, AL_BlackmarketMenuCreate_t, a1);
 }
 
-static void __cdecl BlackMarketRingHUD_r(ObjectMaster* a1)
+static void __cdecl AL_BlackmarketRingWinDisplayer_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::center, false, BlackMarketRingHUD_r, BlackMarketRingHUD_t, a1);
+	scale_trampoline(Align::center, false, AL_BlackmarketRingWinDisplayer_r, AL_BlackmarketRingWinDisplayer_t, a1);
 }
 
 static void __cdecl AL_CreateChaoSelectMenu_r(ObjectMaster* a1)
@@ -426,7 +452,26 @@ static void __cdecl BlueButtonDisplayerCS_r(ObjectMaster* a1)
 
 static void __cdecl AL_EntranceMenuBackGroundDisplayer_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::center, false, AL_EntranceMenuBackGroundDisplayer_r, AL_EntranceMenuBackGroundDisplayer_t, a1);
+	EntityData1* data = a1->Data1;
+
+	if (!MissedFrames) {
+		float h = static_cast<float>(VerticalResolution);
+		float w = static_cast<float>(HorizontalResolution);
+
+		njColorBlendingMode(0, NJD_COLOR_BLENDING_SRCALPHA);
+		njColorBlendingMode(NJD_DESTINATION_COLOR, NJD_COLOR_BLENDING_INVSRCALPHA);
+
+		Uint32 color = data->Index << 24;
+
+		NJS_POLYGON_VTX poly[4] = { 
+			{ 0.0f, 0.0f, 0.1f, color },
+			{ 0.0f, h, 0.1f, color },
+			{ w, 0.0f, 0.1f, color },
+			{ w, h, 0.1f, color },
+		};
+
+		njDrawPolygon(poly, 4, 1);
+	}
 }
 
 static void __cdecl MessageBarCreate_r(ObjectMaster* a1)
@@ -644,6 +689,15 @@ static void __cdecl EmblemCollected_Main_r(ObjectMaster* a1)
 	scale_trampoline(Align::center, false, EmblemCollected_Main_r, EmblemCollected_Main_t, a1);
 }
 
+static void __cdecl late_exec_r()
+{
+	auto original = static_cast<decltype(late_exec_r)*>(late_exec_t->Target());
+
+	scale_disable();
+	original();
+	scale_enable();
+}
+
 static void __cdecl DrawTitleScreen_o(void* a1)
 {
 	auto orig = DrawTitleScreen_t->Target();
@@ -764,19 +818,27 @@ static void InitializeChaoHUDs() {
 	ChaoDX_Message_PlayerAction_Load_t    = new Trampoline(0x0071B3B0, 0x0071B3B7, ChaoDX_Message_PlayerAction_Load_r);
 	ChaoDX_Message_PlayerAction_Display_t = new Trampoline(0x0071B210, 0x0071B215, ChaoDX_Message_PlayerAction_Display_r);
 	HeldChaoParamWindowDisplayer_t        = new Trampoline(0x00737BD0, 0x00737BD5, HeldChaoParamWindowDisplayer_asm);
-	
+
 	// Black Market
-	WriteData(reinterpret_cast<float**>(0x00725852), &scale_h); // ring box offscreen position
-	WriteData(reinterpret_cast<float**>(0x0072584A), &scale_h); // ring box offscreen position
-	AlgKinderBlExec_t          = new Trampoline(0x007289A0, 0x007289A6, AlgKinderBlExec_r);
-	AL_BlackmarketMenuCreate_t = new Trampoline(0x00728A40, 0x00728A49, AL_BlackmarketMenuCreate_r);
-	BlackMarketRingHUD_t       = new Trampoline(0x00744990, 0x00744995, BlackMarketRingHUD_r);
+	WriteData(reinterpret_cast<const float**>(0x00725831), &patch_dummy); // Ring box offscreen position V
+	WriteData(reinterpret_cast<const float**>(0x0072587C), &patch_dummy); // Ring box offscreen position H
+	WriteData(reinterpret_cast<const float**>(0x0072562B), &patch_dummy); // Text position V
+	WriteData(reinterpret_cast<const float**>(0x0072564F), &patch_dummy); // Text position H
+	WriteData(reinterpret_cast<const float**>(0x0072599C), &patch_dummy); // Description text position V
+	WriteData(reinterpret_cast<const float**>(0x007259BD), &patch_dummy); // Description text position H
+	AlgKinderBlDisp__t               = new Trampoline(0x007283B0, 0x007283B8, AlgKinderBlDisp__asm);
+	AL_BlackmarketMenuCreate_t       = new Trampoline(0x00728A40, 0x00728A49, AL_BlackmarketMenuCreate_r);
+	AL_BlackmarketRingWinDisplayer_t = new Trampoline(0x00744990, 0x00744995, AL_BlackmarketRingWinDisplayer_r);
 
 	// Race
 	ChaoRaceTimer_t = new Trampoline(0x00750E70, 0x00750E78, ChaoRaceTimer_r);
 	ChaoRaceRankings_t = new Trampoline(0x007512F0, 0x007512F5, ChaoRaceRankings_r);
 
 	// Entrance
+	WriteData(reinterpret_cast<double*>(0x0088A5D0), 24.0); // Fix sprite padding in AL_ChaoParamWindowDisplayer
+	WriteData(reinterpret_cast<const float**>(0x0072C6D3), &patch_dummy); // BlueButtonCS height
+	WriteData(reinterpret_cast<const float**>(0x0072C6EC), &patch_dummy); // BlueButtonCS width
+	WriteJump(reinterpret_cast<void*>(0x0074AB40), AL_EntranceMenuBackGroundDisplayer_r); // Fix fade out
 	AL_CreateChaoSelectMenu_t                   = new Trampoline(0x007491D0, 0x007491D5, AL_CreateChaoSelectMenu_r);
 	AL_EntranceMenuLargeTitleBarDisplayer_t     = new Trampoline(0x00749830, 0x00749835, AL_EntranceMenuLargeTitleBarDisplayer_r);
 	AL_EntranceMenuSmallTitleBarDisplayer_t     = new Trampoline(0x00749EB0, 0x00749EB5, AL_EntranceMenuSmallTitleBarDisplayer_r);
@@ -793,10 +855,7 @@ static void InitializeChaoHUDs() {
 	BlueButtonDisplayerCS_t                     = new Trampoline(0x007480B0, 0x007480B7, BlueButtonDisplayerCS_r);
 	ChaoSelectWindowExecutor_t                  = new Trampoline(0x00768E10, 0x00768E16, ChaoSelectWindowExecutor_r);
 	AL_ChaoParamWindowExecutor_t                = new Trampoline(0x00767D40, 0x00767D47, AL_ChaoParamWindowExecutor_r);
-	WriteData(reinterpret_cast<double*>(0x0088A5D0), 24.0); // Fix sprite padding in AL_ChaoParamWindowDisplayer
-	WriteData(reinterpret_cast<const float**>(0x0072C6D3), &patch_dummy); // BlueButtonCS height
-	WriteData(reinterpret_cast<const float**>(0x0072C6EC), &patch_dummy); // BlueButtonCS width
-
+	
 	// Name Machine
 	WriteData(reinterpret_cast<float**>(0x0074DAF5), &scale_v);
 	WriteData(reinterpret_cast<float**>(0x0074DBD3), &scale_v);
@@ -881,6 +940,7 @@ void hudscale::initialize()
 	FishingHud_DrawMeters_t				 = new Trampoline(0x0046CC70, 0x0046CC75, FishingHud_DrawMeters_r);
 	FishingHud_DrawHIT_t				 = new Trampoline(0x0046C920, 0x0046C926, FishingHud_DrawHIT_r);
 	BigHud_DrawWeightAndLife_t			 = new Trampoline(0x0046FB00, 0x0046FB05, BigHud_DrawWeightAndLife_r);
+	late_exec_t                          = new Trampoline(0x004086F0, 0x004086F6, late_exec_r); // Sometimes used in a display function so we have to disable scaling temporarily
 
 	DrawSubtitles_t = new Trampoline(0x0040D4D0, 0x0040D4D9, DrawSubtitles_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DrawSubtitles_t->Target()) + 4), reinterpret_cast<void*>(0x00402F00));
