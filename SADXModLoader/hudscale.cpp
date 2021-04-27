@@ -452,26 +452,16 @@ static void __cdecl BlueButtonDisplayerCS_r(ObjectMaster* a1)
 
 static void __cdecl AL_EntranceMenuBackGroundDisplayer_r(ObjectMaster* a1)
 {
-	EntityData1* data = a1->Data1;
+	auto original = static_cast<decltype(AL_EntranceMenuBackGroundDisplayer_r)*>(AL_EntranceMenuBackGroundDisplayer_t->Target());
+	auto old_fill = bg_fill;
 
-	if (!MissedFrames) {
-		float h = static_cast<float>(VerticalResolution);
-		float w = static_cast<float>(HorizontalResolution);
+	bg_fill = FillMode::fill;
 
-		njColorBlendingMode(0, NJD_COLOR_BLENDING_SRCALPHA);
-		njColorBlendingMode(NJD_DESTINATION_COLOR, NJD_COLOR_BLENDING_INVSRCALPHA);
+	scale_push(Align::left, true);
+	original(a1);
+	scale_pop();
 
-		Uint32 color = data->Index << 24;
-
-		NJS_POLYGON_VTX poly[4] = { 
-			{ 0.0f, 0.0f, 0.1f, color },
-			{ 0.0f, h, 0.1f, color },
-			{ w, 0.0f, 0.1f, color },
-			{ w, h, 0.1f, color },
-		};
-
-		njDrawPolygon(poly, 4, 1);
-	}
+	bg_fill = old_fill;
 }
 
 static void __cdecl MessageBarCreate_r(ObjectMaster* a1)
@@ -838,8 +828,8 @@ static void InitializeChaoHUDs() {
 	WriteData(reinterpret_cast<double*>(0x0088A5D0), 24.0); // Fix sprite padding in AL_ChaoParamWindowDisplayer
 	WriteData(reinterpret_cast<const float**>(0x0072C6D3), &patch_dummy); // BlueButtonCS height
 	WriteData(reinterpret_cast<const float**>(0x0072C6EC), &patch_dummy); // BlueButtonCS width
-	WriteJump(reinterpret_cast<void*>(0x0074AB40), AL_EntranceMenuBackGroundDisplayer_r); // Fix fade out
 	AL_CreateChaoSelectMenu_t                   = new Trampoline(0x007491D0, 0x007491D5, AL_CreateChaoSelectMenu_r);
+	AL_EntranceMenuBackGroundDisplayer_t        = new Trampoline(0x0074AB40, 0x0074AB47, AL_EntranceMenuBackGroundDisplayer_r);
 	AL_EntranceMenuLargeTitleBarDisplayer_t     = new Trampoline(0x00749830, 0x00749835, AL_EntranceMenuLargeTitleBarDisplayer_r);
 	AL_EntranceMenuSmallTitleBarDisplayer_t     = new Trampoline(0x00749EB0, 0x00749EB5, AL_EntranceMenuSmallTitleBarDisplayer_r);
 	AL_EntranceMenuLargeTitleBarDisplayerPost_t = new Trampoline(0x00749820, 0x00749829, AL_EntranceMenuLargeTitleBarDisplayerPost_r);
