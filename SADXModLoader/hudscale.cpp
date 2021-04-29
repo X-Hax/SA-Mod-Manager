@@ -6,6 +6,10 @@
 using namespace uiscale;
 
 static const float patch_dummy = 1.0f;
+static const float float640 = 640.0f;
+
+static float aspect_scale = 1.0f;
+static int int640 = 640;
 
 #pragma region Trampolines
 
@@ -799,6 +803,11 @@ static void __declspec(naked) DrawTitleScreen_asm()
 	}
 }
 
+static float preview_egg = -34.0f;
+static float preview_animal_hat_shell = -26.0f;
+static float preview_fruit = -22.0f;
+static float preview_pacifier = -13.0f;
+
 static void InitializeChaoHUDs() {
 	// Chao Garden HUD (whistle, pet, pick, stats)
 	WriteData(reinterpret_cast<const float**>(0x0071AEAC), &patch_dummy);
@@ -870,10 +879,11 @@ static void InitializeChaoHUDs() {
 	ChaoParamWindowExecutor_t     = new Trampoline(0x0076AA60, 0x0076AA66, ChaoParamWindowExecutor_r);
 
 	// MessageBar
-	WriteData(reinterpret_cast<float**>(0x0076CE07), &scale_h);
-	WriteData(reinterpret_cast<float**>(0x0076CCE0), &scale_h);
-	WriteData(reinterpret_cast<float**>(0x00749437), &scale_h);
-	WriteData(reinterpret_cast<float**>(0x0074935A), &scale_h);
+	aspect_scale = (float)HorizontalResolution / (640.0f * (float)VerticalResolution / 480.0f);
+	WriteData(reinterpret_cast<float**>(0x0076CE07), &aspect_scale);
+	WriteData(reinterpret_cast<float**>(0x0076CCE0), &aspect_scale);
+	WriteData(reinterpret_cast<float**>(0x00749437), &aspect_scale);
+	WriteData(reinterpret_cast<float**>(0x0074935A), &aspect_scale);
 	AL_OdeTelopCreate_t  = new Trampoline(0x0076CD60, 0x0076CD66, AL_OdeTelopCreate_r);
 	AL_OdeTelopDisp_t    = new Trampoline(0x0076CC80, 0x0076CC85, AL_OdeTelopDisp_r);
 	MessageBarCreate_t   = new Trampoline(0x007493B0, 0x007493B5, MessageBarCreate_r);
@@ -882,6 +892,40 @@ static void InitializeChaoHUDs() {
 	// Monitor
 	AloG00Hintmenu_t  = new Trampoline(0x00746800, 0x00746806, AloG00Hintmenu_r);
 	AlgKinderPrDisp_t = new Trampoline(0x00746710, 0x00746715, AlgKinderPrDisp_r);
+
+	// Black Market item list
+	float vertscale = (float)VerticalResolution / 480.0f;
+	WriteData(reinterpret_cast<int**>(0x00727449), &int640); // Egg
+	WriteData(reinterpret_cast<int**>(0x007274E5), &int640); // Fruit
+	WriteData(reinterpret_cast<int**>(0x00727387), &int640); // Hat
+	WriteData(reinterpret_cast<float*>(0x0072773B), -68.0f * vertscale); // Egg
+	WriteData(reinterpret_cast<float*>(0x0072767B), -44.0f * vertscale); // Fruit
+	WriteData(reinterpret_cast<float*>(0x00727546), -52.0f * vertscale); // Hat
+	WriteData(reinterpret_cast<float*>(0x00727513), -26.0f * vertscale); // Pacifier
+
+	// Black Market item previews
+	WriteData(reinterpret_cast<int**>(0x00725D31), &int640); // Egg
+	WriteData(reinterpret_cast<int**>(0x00725EC2), &int640); // Animal
+	WriteData(reinterpret_cast<int**>(0x00725FDB), &int640); // Fruit
+	WriteData(reinterpret_cast<int**>(0x00726176), &int640); // Hat
+	WriteData(reinterpret_cast<int**>(0x007261D6), &int640); // Pacifier
+	WriteData(reinterpret_cast<int**>(0x0072634A), &int640); // Eggshells
+	preview_egg = -34.0f * vertscale;
+	preview_animal_hat_shell = -26.0f * vertscale;
+	preview_fruit = -22.0f * vertscale;
+	preview_pacifier = -13.0f * vertscale;
+	WriteData((float**)0x00725D52, &preview_egg);
+	WriteData((float**)0x00725EED, &preview_animal_hat_shell);
+	WriteData((float**)0x00726006, &preview_fruit);
+	WriteData(reinterpret_cast<float*>(0x00726211), preview_animal_hat_shell);
+	WriteData(reinterpret_cast<float*>(0x007261CF), preview_pacifier);
+	WriteData((float**)0x0072636B, &preview_animal_hat_shell);
+
+	// Fix weird Z scale to prevent flickering and broken lighting in Black Market
+	WriteData(reinterpret_cast<float*>(0x007276B8), 1.0f);
+	WriteData(reinterpret_cast<float*>(0x00725E2F), 1.0f);
+	WriteData(reinterpret_cast<float*>(0x00725F32), 1.0f);
+	WriteData(reinterpret_cast<float*>(0x0072604B), 1.0f);
 }
 
 void hudscale::initialize()
