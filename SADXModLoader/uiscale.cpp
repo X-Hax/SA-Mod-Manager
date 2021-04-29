@@ -54,6 +54,8 @@ void uiscale::update_parameters()
 	region_fit.y  = 480.0f * scale_min;
 	region_fill.x = 640.0f * scale_max;
 	region_fill.y = 480.0f * scale_max;
+
+	hudscale::update();
 }
 
 bool uiscale::is_top_background()

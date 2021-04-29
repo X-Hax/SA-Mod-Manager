@@ -2,5 +2,6 @@
 
 namespace hudscale
 {
+	void update();
 	void initialize();
 }
