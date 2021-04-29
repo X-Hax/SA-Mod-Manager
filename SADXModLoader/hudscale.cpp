@@ -45,6 +45,7 @@ static Trampoline* scaleTailsRaceBar;
 static Trampoline* scaleDemoPressStart;
 static Trampoline* ChaoDX_Message_PlayerAction_Load_t;
 static Trampoline* ChaoDX_Message_PlayerAction_Display_t;
+static Trampoline* HeldChaoParamWindowDisplayer_t;
 static Trampoline* MissionCompleteScreen_Draw_t;
 static Trampoline* CharSelBg_Display_t;
 static Trampoline* TrialLevelList_Display_t;
@@ -66,6 +67,50 @@ static Trampoline* EmblemCollected_Main_t;
 static Trampoline* DrawTitleScreen_t;
 static Trampoline* ChaoRaceTimer_t;
 static Trampoline* ChaoRaceRankings_t;
+static Trampoline* AlgKinderBlDisp__t;
+static Trampoline* AL_BlackmarketMenuCreate_t;
+static Trampoline* AL_BlackmarketRingWinDisplayer_t;
+static Trampoline* AL_EntranceMenuLargeTitleBarDisplayer_t;
+static Trampoline* AL_EntranceMenuSmallTitleBarDisplayer_t;
+static Trampoline* AL_EntranceMenuLargeTitleBarDisplayerPost_t;
+static Trampoline* AL_EntranceMenuSmallTitleBarDisplayerPost_t;
+static Trampoline* AL_CreateChaoSelectMenu_t;
+static Trampoline* AL_EntranceMenuRaceTitleBarDisplayer_t;
+static Trampoline* ChaoSelectWindowTDisplayer_t;
+static Trampoline* AL_ChaoParamWindowDisplayer_t;
+static Trampoline* CourseNameBarJewelDisplayer_t;
+static Trampoline* BlueButtonDisplayer_t;
+static Trampoline* InfoBaseWindowDisplayer_t;
+static Trampoline* PersonalRecordWindowDisplayer_t;
+static Trampoline* PersonalRecordWindowExecutor_t;
+static Trampoline* BlueButtonDisplayerCS_t;
+static Trampoline* AL_EntranceMenuBackGroundDisplayer_t;
+static Trampoline* MessageBarCreate_t;
+static Trampoline* MessageBar_Display_t;
+static Trampoline* OdeBGDisplayer_t;
+static Trampoline* AlMsgWarnDisp_t;
+static Trampoline* AlMsgSelectDisp_t;
+static Trampoline* OdeLargeTitleBarDisplayer_t;
+static Trampoline* AL_OdeTelopCreate_t;
+static Trampoline* AL_OdeTelopDisp_t;
+static Trampoline* CreateMainMenuBar_t;
+static Trampoline* MainMenuBarDisplayer_t;
+static Trampoline* AL_OdekakeMenuStageNazukeya_t;
+static Trampoline* CreateChaoParamWindow_t;
+static Trampoline* ChaoParamWindowDisplayer_t;
+static Trampoline* CreateSayounaraWindow_t;
+static Trampoline* SayounaraWindowDisplayer_t;
+static Trampoline* CreateKetteiButton_t;
+static Trampoline* GuideButtonDisplayer_t;
+static Trampoline* CreateCancelButton_t;
+static Trampoline* CreateDecideButton_t;
+static Trampoline* DecideButtonDisplayer_t;
+static Trampoline* AloG00Hintmenu_t;
+static Trampoline* AlgKinderPrDisp_t;
+static Trampoline* ChaoParamWindowExecutor_t;
+static Trampoline* ChaoSelectWindowExecutor_t;
+static Trampoline* AL_ChaoParamWindowExecutor_t;
+static Trampoline* late_exec_t;
 
 #pragma endregion
 
@@ -135,6 +180,7 @@ static void __cdecl FishingHud_DrawReel_r()
 {
 	scale_trampoline(Align::right | Align::bottom, false, FishingHud_DrawReel_r, FishingHud_DrawReel_t);
 }
+
 static void __cdecl FishingHud_DrawRod_r()
 {
 	scale_trampoline(Align::right | Align::bottom, false, FishingHud_DrawRod_r, FishingHud_DrawRod_t);
@@ -144,6 +190,7 @@ static void __cdecl BigHud_DrawWeightAndLife_r(ObjectMaster* a1)
 {
 	scale_trampoline(Align::automatic, false, BigHud_DrawWeightAndLife_r, BigHud_DrawWeightAndLife_t, a1);
 }
+
 static void __cdecl FishingHud_DrawMeters_r(float length)
 {
 	scale_trampoline(Align::right | Align::bottom, false, FishingHud_DrawMeters_r, FishingHud_DrawMeters_t, length);
@@ -198,6 +245,7 @@ static void __cdecl ScaleGammaTimeAddHud(ObjectMaster* a1)
 {
 	scale_trampoline(Align::right, false, ScaleGammaTimeAddHud, scaleGammaTimeAddHud, a1);
 }
+
 static void __cdecl ScaleGammaTimeRemaining(ObjectMaster* a1)
 {
 	scale_trampoline(Align::bottom | Align::horizontal_center, false, ScaleGammaTimeRemaining, scaleGammaTimeRemaining, a1);
@@ -217,6 +265,7 @@ static void __cdecl ScaleNightsCards(ObjectMaster* a1)
 {
 	scale_trampoline(Align::automatic, false, ScaleNightsCards, scaleNightsCards, a1);
 }
+
 static void __cdecl ScaleNightsJackpot(ObjectMaster* a1)
 {
 	scale_trampoline(Align::automatic, false, ScaleNightsJackpot, scaleNightsJackpot, a1);
@@ -226,11 +275,13 @@ static void __cdecl ScaleMissionStartClear(ObjectMaster* a1)
 {
 	scale_trampoline(Align::center, false, ScaleMissionStartClear, scaleMissionStartClear, a1);
 }
+
 static void __cdecl ScaleMissionTimer()
 {
 
 	scale_trampoline(Align::center, false, ScaleMissionTimer, scaleMissionTimer);
 }
+
 static void __cdecl ScaleMissionCounter()
 {
 	scale_trampoline(Align::center, false, ScaleMissionCounter, scaleMissionCounter);
@@ -240,6 +291,7 @@ static void __cdecl ScaleTailsWinLose(ObjectMaster* a1)
 {
 	scale_trampoline(Align::center, false, ScaleTailsWinLose, scaleTailsWinLose, a1);
 }
+
 static void __cdecl ScaleTailsRaceBar(ObjectMaster* a1)
 {
 	scale_trampoline(Align::horizontal_center | Align::bottom, false, ScaleTailsRaceBar, scaleTailsRaceBar, a1);
@@ -260,7 +312,284 @@ static void __cdecl ChaoDX_Message_PlayerAction_Display_r(ObjectMaster* a1)
 	scale_trampoline(Align::top | Align::right, false, ChaoDX_Message_PlayerAction_Display_r, ChaoDX_Message_PlayerAction_Display_t, a1);
 }
 
-void __cdecl MissionCompleteScreen_Draw_r()
+static void __cdecl HeldChaoParamWindowDisplayer_o(ObjectMaster* a1)
+{
+	auto orig = HeldChaoParamWindowDisplayer_t->Target();
+
+	__asm
+	{
+		mov eax, a1
+		call orig
+	}
+}
+
+static void __cdecl HeldChaoParamWindowDisplayer_r(ObjectMaster* a1)
+{
+	scale_push(Align::left, false);
+	HeldChaoParamWindowDisplayer_o(a1);
+	scale_pop();
+}
+
+static void __declspec(naked) HeldChaoParamWindowDisplayer_asm()
+{
+	__asm
+	{
+		push eax
+		call HeldChaoParamWindowDisplayer_r
+		pop eax
+		ret
+	}
+}
+
+static void __cdecl AlgKinderBlDisp__o(void* w)
+{
+	auto orig = AlgKinderBlDisp__t->Target();
+
+	__asm
+	{
+		mov eax, w
+		call orig
+	}
+}
+
+static void __cdecl AlgKinderBlDisp__r(void* w)
+{
+	scale_push(Align::center, false);
+	AlgKinderBlDisp__o(w);
+	scale_pop();
+}
+
+static void __declspec(naked) AlgKinderBlDisp__asm(void* w)
+{
+	__asm
+	{
+		push eax
+		call AlgKinderBlDisp__r
+		pop eax
+		ret
+	}
+}
+
+static ObjectMaster* __cdecl AL_BlackmarketMenuCreate_r(ObjectMaster* a1)
+{
+	return scale_trampoline(Align::center, false, AL_BlackmarketMenuCreate_r, AL_BlackmarketMenuCreate_t, a1);
+}
+
+static void __cdecl AL_BlackmarketRingWinDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AL_BlackmarketRingWinDisplayer_r, AL_BlackmarketRingWinDisplayer_t, a1);
+}
+
+static void __cdecl AL_CreateChaoSelectMenu_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AL_CreateChaoSelectMenu_r, AL_CreateChaoSelectMenu_t, a1);
+}
+
+static void __cdecl AL_EntranceMenuLargeTitleBarDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AL_EntranceMenuLargeTitleBarDisplayer_r, AL_EntranceMenuLargeTitleBarDisplayer_t, a1);
+}
+
+static void __cdecl AL_EntranceMenuSmallTitleBarDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AL_EntranceMenuSmallTitleBarDisplayer_r, AL_EntranceMenuSmallTitleBarDisplayer_t, a1);
+}
+
+static void __cdecl AL_EntranceMenuLargeTitleBarDisplayerPost_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AL_EntranceMenuLargeTitleBarDisplayerPost_r, AL_EntranceMenuLargeTitleBarDisplayerPost_t, a1);
+}
+
+static void __cdecl AL_EntranceMenuSmallTitleBarDisplayerPost_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AL_EntranceMenuSmallTitleBarDisplayerPost_r, AL_EntranceMenuSmallTitleBarDisplayerPost_t, a1);
+}
+
+static void __cdecl AL_EntranceMenuRaceTitleBarDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AL_EntranceMenuRaceTitleBarDisplayer_r, AL_EntranceMenuRaceTitleBarDisplayer_t, a1);
+}
+
+static void __cdecl ChaoSelectWindowTDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, ChaoSelectWindowTDisplayer_r, ChaoSelectWindowTDisplayer_t, a1);
+}
+
+static void __cdecl AL_ChaoParamWindowDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AL_ChaoParamWindowDisplayer_r, AL_ChaoParamWindowDisplayer_t, a1);
+}
+
+static void __cdecl CourseNameBarJewelDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, CourseNameBarJewelDisplayer_r, CourseNameBarJewelDisplayer_t, a1);
+}
+
+static void __cdecl BlueButtonDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, BlueButtonDisplayer_r, BlueButtonDisplayer_t, a1);
+}
+
+static void __cdecl InfoBaseWindowDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, InfoBaseWindowDisplayer_r, InfoBaseWindowDisplayer_t, a1);
+}
+
+static void __cdecl PersonalRecordWindowDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, PersonalRecordWindowDisplayer_r, PersonalRecordWindowDisplayer_t, a1);
+}
+
+static void __cdecl PersonalRecordWindowExecutor_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, PersonalRecordWindowExecutor_r, PersonalRecordWindowExecutor_t, a1);
+}
+
+static void __cdecl BlueButtonDisplayerCS_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, BlueButtonDisplayerCS_r, BlueButtonDisplayerCS_t, a1);
+}
+
+static void __cdecl AL_EntranceMenuBackGroundDisplayer_r(ObjectMaster* a1)
+{
+	auto original = static_cast<decltype(AL_EntranceMenuBackGroundDisplayer_r)*>(AL_EntranceMenuBackGroundDisplayer_t->Target());
+	auto old_fill = bg_fill;
+
+	bg_fill = FillMode::fill;
+
+	scale_push(Align::left, true);
+	original(a1);
+	scale_pop();
+
+	bg_fill = old_fill;
+}
+
+static void __cdecl MessageBarCreate_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::bottom, false, MessageBarCreate_r, MessageBarCreate_t, a1);
+}
+
+static void __cdecl MessageBar_Display_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::bottom, false, MessageBar_Display_r, MessageBar_Display_t, a1);
+}
+
+static void __cdecl OdeBGDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::left | Align::top, false, OdeBGDisplayer_r, OdeBGDisplayer_t, a1);
+}
+
+static void __cdecl AlMsgWarnDisp_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AlMsgWarnDisp_r, AlMsgWarnDisp_t, a1);
+}
+
+static void __cdecl AlMsgSelectDisp_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AlMsgSelectDisp_r, AlMsgSelectDisp_t, a1);
+}
+
+static void __cdecl OdeLargeTitleBarDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::right | Align::top, false, OdeLargeTitleBarDisplayer_r, OdeLargeTitleBarDisplayer_t, a1);
+}
+
+static void __cdecl AL_OdeTelopCreate_r()
+{
+	scale_trampoline(Align::bottom, false, AL_OdeTelopCreate_r, AL_OdeTelopCreate_t);
+}
+
+static void __cdecl AL_OdeTelopDisp_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::bottom, false, AL_OdeTelopDisp_r, AL_OdeTelopDisp_t, a1);
+}
+
+static void __cdecl CreateMainMenuBar_r(char id, float xpos, float ypos, unsigned __int16 WaitTime, char active)
+{
+	scale_trampoline(Align::center, false, CreateMainMenuBar_r, CreateMainMenuBar_t, id, xpos, ypos, WaitTime, active);
+}
+
+static void __cdecl MainMenuBarDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, MainMenuBarDisplayer_r, MainMenuBarDisplayer_t, a1);
+}
+
+static void __cdecl AL_OdekakeMenuStageNazukeya_r(void* a1)
+{
+	scale_trampoline(Align::center, false, AL_OdekakeMenuStageNazukeya_r, AL_OdekakeMenuStageNazukeya_t, a1);
+}
+
+static void __cdecl CreateChaoParamWindow_r(float xpos, float ypos, unsigned __int16 WaitTime)
+{
+	scale_trampoline(Align::center, false, CreateChaoParamWindow_r, CreateChaoParamWindow_t, xpos, ypos, WaitTime);
+}
+
+static void __cdecl ChaoParamWindowDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, ChaoParamWindowDisplayer_r, ChaoParamWindowDisplayer_t, a1);
+}
+
+static void __cdecl CreateSayounaraWindow_r(float xpos, float ypos, unsigned __int16 WaitTime)
+{
+	scale_trampoline(Align::center, false, CreateSayounaraWindow_r, CreateSayounaraWindow_t, xpos, ypos, WaitTime);
+}
+
+static void __cdecl SayounaraWindowDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, SayounaraWindowDisplayer_r, SayounaraWindowDisplayer_t, a1);
+}
+
+static void __cdecl CreateKetteiButton_r(float xpos, float ypos, unsigned __int16 WaitTime)
+{
+	scale_trampoline(Align::center, false, CreateKetteiButton_r, CreateKetteiButton_t, xpos, ypos, WaitTime);
+}
+
+static void __cdecl GuideButtonDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, GuideButtonDisplayer_r, GuideButtonDisplayer_t, a1);
+}
+
+static void __cdecl CreateCancelButton_r(float xpos, float ypos, unsigned __int16 WaitTime)
+{
+	scale_trampoline(Align::center, false, CreateCancelButton_r, CreateCancelButton_t, xpos, ypos, WaitTime);
+}
+
+static void __cdecl CreateDecideButton_r(char id, int cursorX, int cursorY, float xpos, float ypos, unsigned __int16 WaitTime)
+{
+	scale_trampoline(Align::center, false, CreateDecideButton_r, CreateDecideButton_t, id, cursorX, cursorY, xpos, ypos, WaitTime);
+}
+
+static void __cdecl DecideButtonDisplayer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, DecideButtonDisplayer_r, DecideButtonDisplayer_t, a1);
+}
+
+static void __cdecl AloG00Hintmenu_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AloG00Hintmenu_r, AloG00Hintmenu_t, a1);
+}
+
+static void __cdecl AlgKinderPrDisp_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AlgKinderPrDisp_r, AlgKinderPrDisp_t, a1);
+}
+
+static void __cdecl ChaoParamWindowExecutor_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, ChaoParamWindowExecutor_r, ChaoParamWindowExecutor_t, a1);
+}
+
+static void __cdecl ChaoSelectWindowExecutor_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, ChaoSelectWindowExecutor_r, ChaoSelectWindowExecutor_t, a1);
+}
+
+static void __cdecl AL_ChaoParamWindowExecutor_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, false, AL_ChaoParamWindowExecutor_r, AL_ChaoParamWindowExecutor_t, a1);
+}
+
+static void __cdecl MissionCompleteScreen_Draw_r()
 {
 	scale_trampoline(Align::center, false, MissionCompleteScreen_Draw_r, MissionCompleteScreen_Draw_t);
 }
@@ -340,14 +669,23 @@ static void __cdecl DrawSubtitles_r()
 	scale_trampoline(Align::center, false, DrawSubtitles_r, DrawSubtitles_t);
 }
 
-static void EmblemCollected_Init_r(ObjectMaster* a1)
+static void __cdecl EmblemCollected_Init_r(ObjectMaster* a1)
 {
 	scale_trampoline(Align::center, false, EmblemCollected_Init_r, EmblemCollected_Init_t, a1);
 }
 
-static void EmblemCollected_Main_r(ObjectMaster* a1)
+static void __cdecl EmblemCollected_Main_r(ObjectMaster* a1)
 {
 	scale_trampoline(Align::center, false, EmblemCollected_Main_r, EmblemCollected_Main_t, a1);
+}
+
+static void __cdecl late_exec_r()
+{
+	auto original = static_cast<decltype(late_exec_r)*>(late_exec_t->Target());
+
+	scale_disable();
+	original();
+	scale_enable();
 }
 
 static void __cdecl DrawTitleScreen_o(void* a1)
@@ -461,6 +799,90 @@ static void __declspec(naked) DrawTitleScreen_asm()
 	}
 }
 
+static void InitializeChaoHUDs() {
+	// Chao Garden HUD (whistle, pet, pick, stats)
+	WriteData(reinterpret_cast<const float**>(0x0071AEAC), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x0071AF00), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x0071B03C), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x0071B093), &patch_dummy);
+	ChaoDX_Message_PlayerAction_Load_t    = new Trampoline(0x0071B3B0, 0x0071B3B7, ChaoDX_Message_PlayerAction_Load_r);
+	ChaoDX_Message_PlayerAction_Display_t = new Trampoline(0x0071B210, 0x0071B215, ChaoDX_Message_PlayerAction_Display_r);
+	HeldChaoParamWindowDisplayer_t        = new Trampoline(0x00737BD0, 0x00737BD5, HeldChaoParamWindowDisplayer_asm);
+
+	// Black Market
+	WriteData(reinterpret_cast<const float**>(0x00725831), &patch_dummy); // Ring box offscreen position V
+	WriteData(reinterpret_cast<const float**>(0x0072587C), &patch_dummy); // Ring box offscreen position H
+	WriteData(reinterpret_cast<const float**>(0x0072562B), &patch_dummy); // Text position V
+	WriteData(reinterpret_cast<const float**>(0x0072564F), &patch_dummy); // Text position H
+	WriteData(reinterpret_cast<const float**>(0x0072599C), &patch_dummy); // Description text position V
+	WriteData(reinterpret_cast<const float**>(0x007259BD), &patch_dummy); // Description text position H
+	AlgKinderBlDisp__t               = new Trampoline(0x007283B0, 0x007283B8, AlgKinderBlDisp__asm);
+	AL_BlackmarketMenuCreate_t       = new Trampoline(0x00728A40, 0x00728A49, AL_BlackmarketMenuCreate_r);
+	AL_BlackmarketRingWinDisplayer_t = new Trampoline(0x00744990, 0x00744995, AL_BlackmarketRingWinDisplayer_r);
+
+	// Race
+	ChaoRaceTimer_t = new Trampoline(0x00750E70, 0x00750E78, ChaoRaceTimer_r);
+	ChaoRaceRankings_t = new Trampoline(0x007512F0, 0x007512F5, ChaoRaceRankings_r);
+
+	// Entrance
+	WriteData(reinterpret_cast<double*>(0x0088A5D0), 24.0); // Fix sprite padding in AL_ChaoParamWindowDisplayer
+	WriteData(reinterpret_cast<const float**>(0x0072C6D3), &patch_dummy); // BlueButtonCS height
+	WriteData(reinterpret_cast<const float**>(0x0072C6EC), &patch_dummy); // BlueButtonCS width
+	AL_CreateChaoSelectMenu_t                   = new Trampoline(0x007491D0, 0x007491D5, AL_CreateChaoSelectMenu_r);
+	AL_EntranceMenuBackGroundDisplayer_t        = new Trampoline(0x0074AB40, 0x0074AB47, AL_EntranceMenuBackGroundDisplayer_r);
+	AL_EntranceMenuLargeTitleBarDisplayer_t     = new Trampoline(0x00749830, 0x00749835, AL_EntranceMenuLargeTitleBarDisplayer_r);
+	AL_EntranceMenuSmallTitleBarDisplayer_t     = new Trampoline(0x00749EB0, 0x00749EB5, AL_EntranceMenuSmallTitleBarDisplayer_r);
+	AL_EntranceMenuLargeTitleBarDisplayerPost_t = new Trampoline(0x00749820, 0x00749829, AL_EntranceMenuLargeTitleBarDisplayerPost_r);
+	AL_EntranceMenuSmallTitleBarDisplayerPost_t = new Trampoline(0x00749E90, 0x00749E95, AL_EntranceMenuSmallTitleBarDisplayerPost_r);
+	AL_EntranceMenuRaceTitleBarDisplayer_t      = new Trampoline(0x0074A1D0, 0x0074A1D7, AL_EntranceMenuRaceTitleBarDisplayer_r);
+	ChaoSelectWindowTDisplayer_t                = new Trampoline(0x00769320, 0x00769327, ChaoSelectWindowTDisplayer_r);
+	AL_ChaoParamWindowDisplayer_t               = new Trampoline(0x00768080, 0x00768087, AL_ChaoParamWindowDisplayer_r);
+	CourseNameBarJewelDisplayer_t               = new Trampoline(0x00768AE0, 0x00768AE7, CourseNameBarJewelDisplayer_r);
+	BlueButtonDisplayer_t                       = new Trampoline(0x00747C00, 0x00747C07, BlueButtonDisplayer_r);
+	InfoBaseWindowDisplayer_t                   = new Trampoline(0x00747810, 0x00747817, InfoBaseWindowDisplayer_r);
+	PersonalRecordWindowExecutor_t              = new Trampoline(0x00747080, 0x00747085, PersonalRecordWindowExecutor_r);
+	PersonalRecordWindowDisplayer_t             = new Trampoline(0x007472E0, 0x007472E8, PersonalRecordWindowDisplayer_r);
+	BlueButtonDisplayerCS_t                     = new Trampoline(0x007480B0, 0x007480B7, BlueButtonDisplayerCS_r);
+	ChaoSelectWindowExecutor_t                  = new Trampoline(0x00768E10, 0x00768E16, ChaoSelectWindowExecutor_r);
+	AL_ChaoParamWindowExecutor_t                = new Trampoline(0x00767D40, 0x00767D47, AL_ChaoParamWindowExecutor_r);
+	
+	// Name Machine
+	WriteData(reinterpret_cast<float**>(0x0074DAF5), &scale_v);
+	WriteData(reinterpret_cast<float**>(0x0074DBD3), &scale_v);
+	WriteData(reinterpret_cast<float**>(0x0074DB22), &scale_h);
+	WriteData(reinterpret_cast<float**>(0x0074DBA2), &scale_h);
+	OdeBGDisplayer_t              = new Trampoline(0x0074DC20, 0x0074DC25, OdeBGDisplayer_r);
+	AlMsgWarnDisp_t               = new Trampoline(0x0072D450, 0x0072D455, AlMsgWarnDisp_r);
+	AlMsgSelectDisp_t             = new Trampoline(0x0072CDA0, 0x0072CDA5, AlMsgSelectDisp_r);
+	OdeLargeTitleBarDisplayer_t   = new Trampoline(0x0076B5E0, 0x0076B5E7, OdeLargeTitleBarDisplayer_r);
+	CreateMainMenuBar_t           = new Trampoline(0x0076D3D0, 0x0076D3D5, CreateMainMenuBar_r);
+	MainMenuBarDisplayer_t        = new Trampoline(0x0076D0E0, 0x0076D0E7, MainMenuBarDisplayer_r);
+	AL_OdekakeMenuStageNazukeya_t = new Trampoline(0x0074BC60, 0x0074BC67, AL_OdekakeMenuStageNazukeya_r);
+	CreateChaoParamWindow_t       = new Trampoline(0x0076B360, 0x0076B365, CreateChaoParamWindow_r);
+	ChaoParamWindowDisplayer_t    = new Trampoline(0x0076AD40, 0x0076AD47, ChaoParamWindowDisplayer_r);
+	CreateSayounaraWindow_t       = new Trampoline(0x0076A9D0, 0x0076A9D5, CreateSayounaraWindow_r);
+	SayounaraWindowDisplayer_t    = new Trampoline(0x0076A640, 0x0076A647, SayounaraWindowDisplayer_r);
+	CreateKetteiButton_t          = new Trampoline(0x0076A2F0, 0x0076A2F5, CreateKetteiButton_r);
+	GuideButtonDisplayer_t        = new Trampoline(0x0076A1D0, 0x0076A1D5, GuideButtonDisplayer_r);
+	CreateCancelButton_t          = new Trampoline(0x0076A390, 0x0076A395, CreateCancelButton_r);
+	CreateDecideButton_t          = new Trampoline(0x0076A030, 0x0076A035, CreateDecideButton_r);
+	DecideButtonDisplayer_t       = new Trampoline(0x00769E40, 0x00769E47, DecideButtonDisplayer_r);
+	ChaoParamWindowExecutor_t     = new Trampoline(0x0076AA60, 0x0076AA66, ChaoParamWindowExecutor_r);
+
+	// MessageBar
+	WriteData(reinterpret_cast<float**>(0x0076CE07), &scale_h);
+	WriteData(reinterpret_cast<float**>(0x0076CCE0), &scale_h);
+	WriteData(reinterpret_cast<float**>(0x00749437), &scale_h);
+	WriteData(reinterpret_cast<float**>(0x0074935A), &scale_h);
+	AL_OdeTelopCreate_t  = new Trampoline(0x0076CD60, 0x0076CD66, AL_OdeTelopCreate_r);
+	AL_OdeTelopDisp_t    = new Trampoline(0x0076CC80, 0x0076CC85, AL_OdeTelopDisp_r);
+	MessageBarCreate_t   = new Trampoline(0x007493B0, 0x007493B5, MessageBarCreate_r);
+	MessageBar_Display_t = new Trampoline(0x00749300, 0x00749306, MessageBar_Display_r);
+
+	// Monitor
+	AloG00Hintmenu_t  = new Trampoline(0x00746800, 0x00746806, AloG00Hintmenu_r);
+	AlgKinderPrDisp_t = new Trampoline(0x00746710, 0x00746715, AlgKinderPrDisp_r);
+}
 
 void hudscale::initialize()
 {
@@ -482,8 +904,33 @@ void hudscale::initialize()
 	EmblemCollected_Init_t               = new Trampoline(0x004B4860, 0x004B4867, EmblemCollected_Init_r);
 	EmblemCollected_Main_t               = new Trampoline(0x004B46A0, 0x004B46A6, EmblemCollected_Main_r);
 	DrawTitleScreen_t                    = new Trampoline(0x0050E470, 0x0050E476, DrawTitleScreen_asm);
-	ChaoRaceTimer_t                      = new Trampoline(0x00750E70, 0x00750E78, ChaoRaceTimer_r);
-	ChaoRaceRankings_t                   = new Trampoline(0x007512F0, 0x007512F5, ChaoRaceRankings_r);
+	HudDisplayRingTimeLife_Check_t		 = new Trampoline(0x00425F90, 0x00425F95, HudDisplayRingTimeLife_Check_r);
+	HudDisplayScoreOrTimer_t			 = new Trampoline(0x00427F50, 0x00427F55, HudDisplayScoreOrTimer_r);
+	DrawStageMissionImage_t              = new Trampoline(0x00457120, 0x00457126, DrawStageMissionImage_r);
+	DisplayPauseMenu_t                   = new Trampoline(0x00415420, 0x00415425, DisplayPauseMenu_r);
+	LifeGauge_Main_t                     = new Trampoline(0x004B3830, 0x004B3837, LifeGauge_Main_r);
+	scaleScoreA                          = new Trampoline(0x00628330, 0x00628335, ScaleScoreA);
+	scaleAnimalPickup                    = new Trampoline(0x0046B330, 0x0046B335, ScaleAnimalPickup);
+	scaleItemBoxSprite                   = new Trampoline(0x004C0790, 0x004C0795, ScaleItemBoxSprite);
+	scaleBalls                           = new Trampoline(0x005C0B70, 0x005C0B75, ScaleBalls);
+	scaleEmeraldRadarA                   = new Trampoline(0x00475A70, 0x00475A75, ScaleEmeraldRadarA);
+	scaleEmeraldRadarB                   = new Trampoline(0x00475E50, 0x00475E55, ScaleEmeraldRadarB);
+	scaleEmeraldRadar_Grab               = new Trampoline(0x00475D50, 0x00475D55, ScaleEmeraldRadar_Grab);
+	scaleSandHillMultiplier              = new Trampoline(0x005991A0, 0x005991A6, ScaleSandHillMultiplier);
+	scaleIceCapMultiplier                = new Trampoline(0x004EC120, 0x004EC125, ScaleIceCapMultiplier);
+	scaleBossName                        = new Trampoline(0x004B33D0, 0x004B33D5, ScaleBossName);
+	scaleMissionStartClear               = new Trampoline(0x00591260, 0x00591268, ScaleMissionStartClear);
+	scaleMissionTimer                    = new Trampoline(0x00592D50, 0x00592D59, ScaleMissionTimer);
+	scaleMissionCounter                  = new Trampoline(0x00592A60, 0x00592A68, ScaleMissionCounter);
+	scaleTailsWinLose                    = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
+	scaleTailsRaceBar                    = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsRaceBar);
+	scaleDemoPressStart                  = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
+	FishingHud_DrawReel_t				 = new Trampoline(0x0046C9F0, 0x0046C9F5, FishingHud_DrawReel_r);
+	FishingHud_DrawRod_t				 = new Trampoline(0x0046CAB0, 0x0046CAB9, FishingHud_DrawRod_r);
+	FishingHud_DrawMeters_t				 = new Trampoline(0x0046CC70, 0x0046CC75, FishingHud_DrawMeters_r);
+	FishingHud_DrawHIT_t				 = new Trampoline(0x0046C920, 0x0046C926, FishingHud_DrawHIT_r);
+	BigHud_DrawWeightAndLife_t			 = new Trampoline(0x0046FB00, 0x0046FB05, BigHud_DrawWeightAndLife_r);
+	late_exec_t                          = new Trampoline(0x004086F0, 0x004086F6, late_exec_r); // Sometimes used in a display function so we have to disable scaling temporarily
 
 	DrawSubtitles_t = new Trampoline(0x0040D4D0, 0x0040D4D9, DrawSubtitles_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DrawSubtitles_t->Target()) + 4), reinterpret_cast<void*>(0x00402F00));
@@ -499,34 +946,11 @@ void hudscale::initialize()
 
 	WriteJump(reinterpret_cast<void*>(0x0042BEE0), scale_result_screen);
 
-	HudDisplayRingTimeLife_Check_t = new Trampoline(0x00425F90, 0x00425F95, HudDisplayRingTimeLife_Check_r);
-	HudDisplayScoreOrTimer_t = new Trampoline(0x00427F50, 0x00427F55, HudDisplayScoreOrTimer_r);
-	DrawStageMissionImage_t = new Trampoline(0x00457120, 0x00457126, DrawStageMissionImage_r);
-
-	DisplayPauseMenu_t = new Trampoline(0x00415420, 0x00415425, DisplayPauseMenu_r);
-
-	LifeGauge_Main_t = new Trampoline(0x004B3830, 0x004B3837, LifeGauge_Main_r);
-
-	scaleScoreA = new Trampoline(0x00628330, 0x00628335, ScaleScoreA);
-
 	WriteData(reinterpret_cast<const float**>(0x006288C2), &patch_dummy);
 	scaleTornadoHP = new Trampoline(0x00628490, 0x00628496, ScaleTornadoHP);
 
 	// TODO: Consider tracking down the individual functions so that they can be individually aligned.
 	scaleTwinkleCircuitHUD = new Trampoline(0x004DB5E0, 0x004DB5E5, ScaleTwinkleCircuitHUD);
-
-	// Rod scaling
-	FishingHud_DrawReel_t = new Trampoline(0x0046C9F0, 0x0046C9F5, FishingHud_DrawReel_r);
-	FishingHud_DrawRod_t = new Trampoline(0x0046CAB0, 0x0046CAB9, FishingHud_DrawRod_r);
-	FishingHud_DrawMeters_t = new Trampoline(0x0046CC70, 0x0046CC75, FishingHud_DrawMeters_r);
-	FishingHud_DrawHIT_t = new Trampoline(0x0046C920, 0x0046C926, FishingHud_DrawHIT_r);
-	BigHud_DrawWeightAndLife_t = new Trampoline(0x0046FB00, 0x0046FB05, BigHud_DrawWeightAndLife_r);
-
-	scaleAnimalPickup = new Trampoline(0x0046B330, 0x0046B335, ScaleAnimalPickup);
-
-	scaleItemBoxSprite = new Trampoline(0x004C0790, 0x004C0795, ScaleItemBoxSprite);
-
-	scaleBalls = new Trampoline(0x005C0B70, 0x005C0B75, ScaleBalls);
 
 	scaleCheckpointTime = new Trampoline(0x004BABE0, 0x004BABE5, ScaleCheckpointTime);
 	WriteData(reinterpret_cast<const float**>(0x0044F2E1), &patch_dummy);
@@ -537,45 +961,27 @@ void hudscale::initialize()
 	// EmeraldRadarHud_Load
 	WriteData(reinterpret_cast<const float**>(0x00475BE3), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x00475C00), &patch_dummy);
+
 	// Emerald get
 	WriteData(reinterpret_cast<const float**>(0x00477E8E), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x00477EC0), &patch_dummy);
 
-	scaleEmeraldRadarA = new Trampoline(0x00475A70, 0x00475A75, ScaleEmeraldRadarA);
-	scaleEmeraldRadarB = new Trampoline(0x00475E50, 0x00475E55, ScaleEmeraldRadarB);
-	scaleEmeraldRadar_Grab = new Trampoline(0x00475D50, 0x00475D55, ScaleEmeraldRadar_Grab);
-
-	scaleSandHillMultiplier = new Trampoline(0x005991A0, 0x005991A6, ScaleSandHillMultiplier);
-	scaleIceCapMultiplier = new Trampoline(0x004EC120, 0x004EC125, ScaleIceCapMultiplier);
-
+	// Gamma
 	WriteData(reinterpret_cast<const float**>(0x0049FF70), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x004A005B), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x004A0067), &patch_dummy);
 	scaleGammaTimeAddHud = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
 	scaleGammaTimeRemaining = new Trampoline(0x004C51D0, 0x004C51D7, ScaleGammaTimeRemaining);
 
+	// Emblem screen
 	WriteData(reinterpret_cast<float**>(0x004B4470), &scale_h);
 	WriteData(reinterpret_cast<float**>(0x004B444E), &scale_v);
 	scaleEmblemScreen = new Trampoline(0x004B4200, 0x004B4205, ScaleEmblemScreen);
 
-	scaleBossName = new Trampoline(0x004B33D0, 0x004B33D5, ScaleBossName);
-
+	// Nights
 	scaleNightsCards = new Trampoline(0x005D73F0, 0x005D73F5, ScaleNightsCards);
 	WriteData(reinterpret_cast<float**>(0x005D701B), &scale_h);
 	scaleNightsJackpot = new Trampoline(0x005D6E60, 0x005D6E67, ScaleNightsJackpot);
 
-	scaleMissionStartClear = new Trampoline(0x00591260, 0x00591268, ScaleMissionStartClear);
-
-	scaleMissionTimer = new Trampoline(0x00592D50, 0x00592D59, ScaleMissionTimer);
-	scaleMissionCounter = new Trampoline(0x00592A60, 0x00592A68, ScaleMissionCounter);
-
-	scaleTailsWinLose = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
-	scaleTailsRaceBar = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsRaceBar);
-
-	scaleDemoPressStart = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
-
-#if 0
-	ChaoDX_Message_PlayerAction_Load_t = new Trampoline(0x0071B3B0, 0x0071B3B7, ChaoDX_Message_PlayerAction_Load_r);
-	ChaoDX_Message_PlayerAction_Display_t = new Trampoline(0x0071B210, 0x0071B215, ChaoDX_Message_PlayerAction_Display_r);
-#endif
+	InitializeChaoHUDs();
 }

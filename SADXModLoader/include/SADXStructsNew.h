@@ -1297,6 +1297,19 @@ struct playerwk
 	shadowwk shadow;
 };
 
+struct CHS_BILL_INFO
+{
+	int adjust; // if true use 0-1 UV, otherwise use 0-255 UV
+	float wd;
+	float ht;
+	float s0;
+	float t0;
+	float s1;
+	float t1;
+	NJS_TEXLIST* pTexlist;
+	int TexNum;
+};
+
 #pragma pack(pop)
 
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
