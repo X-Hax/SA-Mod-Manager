@@ -1408,19 +1408,14 @@ void __cdecl Direct3D_EnableHudAlpha_Point(bool enable)
 	Direct3D_TextureFilterPoint();
 }
 
-void __cdecl njDrawTextureMemList_NoFilter(NJS_TEXTURE_VTX* a1, Int count, Uint32 gbix, Int flag)
+void __cdecl njDrawTextureMemList_NoFilter(NJS_TEXTURE_VTX* polygons, Int count, Uint32 gbix, Int flag)
 {
-	uint8_t Backup1 = *(uint8_t*)0x0078B7C4;
-	uint8_t Backup2 = *(uint8_t*)0x0078B7D8;
-	uint8_t Backup3 = *(uint8_t*)0x0078B7EC;
-	WriteData(reinterpret_cast<uint8_t*>(0x0078B7C4), Backup1);
-	WriteData(reinterpret_cast<uint8_t*>(0x0078B7D8), Backup2);
-	WriteData(reinterpret_cast<uint8_t*>(0x0078B7EC), Backup3);
-	njDrawTextureMemList(a1, count, gbix, flag);
+	njAlphaMode(flag);
 	Direct3D_TextureFilterPoint();
-	WriteData(reinterpret_cast<uint8_t*>(0x0078B7C4), Backup1);
-	WriteData(reinterpret_cast<uint8_t*>(0x0078B7D8), Backup2);
-	WriteData(reinterpret_cast<uint8_t*>(0x0078B7EC), Backup3);
+	njSetTextureNumG(gbix);
+	if (uiscale::is_scale_enabled() == true) uiscale::scale_texmemlist(polygons, count);
+	DrawRect_TextureVertexTriangleStrip(polygons, count);
+	Direct3D_TextureFilterLinear();
 }
 
 static void __cdecl InitMods()

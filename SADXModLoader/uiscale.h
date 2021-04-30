@@ -53,6 +53,7 @@ namespace uiscale
 	void setup_fmv_scale();
 	bool is_top_background();
 	bool is_scale_enabled();
+	void scale_texmemlist(NJS_TEXTURE_VTX* list, Int count);
 
 	/**
 	 * \brief Push a UI scale element onto the scale stack.

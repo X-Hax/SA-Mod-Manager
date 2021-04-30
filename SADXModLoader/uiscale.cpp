@@ -324,6 +324,10 @@ static void scale_quad_ex(NJS_QUAD_TEXTURE_EX* quad)
 	quad->vy2 *= scale;
 }
 
+void uiscale::scale_texmemlist(NJS_TEXTURE_VTX* list, Int count) {
+	scale_points(list, count);
+}
+
 static NJS_SPRITE last_sprite = {};
 static void __cdecl sprite_push(NJS_SPRITE* sp)
 {
@@ -416,16 +420,16 @@ static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, f
 	original(points, count, depth, attr, flags);
 }
 
-static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygon, Int count, Int tex, Int flag)
+static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygons, Int count, Int tex, Int flag)
 {
 	auto original = static_cast<decltype(njDrawTextureMemList_r)*>(njDrawTextureMemList_t->Target());
 
 	if (uiscale::is_scale_enabled())
 	{
-		scale_points(polygon, count);
+		scale_points(polygons, count);
 	}
 
-	original(polygon, count, tex, flag);
+	original(polygons, count, tex, flag);
 }
 
 static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr)
