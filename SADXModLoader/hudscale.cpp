@@ -6,15 +6,15 @@
 using namespace uiscale;
 
 static const float patch_dummy = 1.0f;
-static const float float640 = 640.0f;
-static const int int640 = 640;
+static const float float640    = 640.0f;
+static const int int640        = 640;
 
 // Chao patches
-static float aspect_scale = 1.0f;
-static float preview_egg = -34.0f;
+static float aspect_scale             = 1.0f;
+static float preview_egg              = -34.0f;
 static float preview_animal_hat_shell = -26.0f;
-static float preview_fruit = -22.0f;
-static float preview_pacifier = -13.0f;
+static float preview_fruit            = -22.0f;
+static float preview_pacifier         = -13.0f;
 
 #pragma region Trampolines
 

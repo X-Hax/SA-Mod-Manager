@@ -1408,6 +1408,21 @@ void __cdecl Direct3D_EnableHudAlpha_Point(bool enable)
 	Direct3D_TextureFilterPoint();
 }
 
+void __cdecl njDrawTextureMemList_NoFilter(NJS_TEXTURE_VTX* a1, Int count, Uint32 gbix, Int flag)
+{
+	uint8_t Backup1 = *(uint8_t*)0x0078B7C4;
+	uint8_t Backup2 = *(uint8_t*)0x0078B7D8;
+	uint8_t Backup3 = *(uint8_t*)0x0078B7EC;
+	WriteData(reinterpret_cast<uint8_t*>(0x0078B7C4), Backup1);
+	WriteData(reinterpret_cast<uint8_t*>(0x0078B7D8), Backup2);
+	WriteData(reinterpret_cast<uint8_t*>(0x0078B7EC), Backup3);
+	njDrawTextureMemList(a1, count, gbix, flag);
+	Direct3D_TextureFilterPoint();
+	WriteData(reinterpret_cast<uint8_t*>(0x0078B7C4), Backup1);
+	WriteData(reinterpret_cast<uint8_t*>(0x0078B7D8), Backup2);
+	WriteData(reinterpret_cast<uint8_t*>(0x0078B7EC), Backup3);
+}
+
 static void __cdecl InitMods()
 {
 	// Hook present function to handle device lost/reset states
@@ -1603,16 +1618,17 @@ static void __cdecl InitMods()
 	// Enables GUI texture filtering (D3DTEXF_POINT -> D3DTEXF_LINEAR)
 	if (settings->getBool("TextureFilter", true))
 	{
-		WriteCall((void*)0x77DBCA, Direct3D_TextureFilterPoint_ForceLinear); //njDrawPolygon
-		WriteCall((void*)0x77DC79, Direct3D_TextureFilterPoint_ForceLinear); //njDrawTextureMemList
-		WriteCall((void*)0x77DD99, Direct3D_TextureFilterPoint_ForceLinear); //Direct3D_EnableHudAlpha
-		WriteCall((void*)0x77DFA0, Direct3D_TextureFilterPoint_ForceLinear); //njDrawLine2D
-		WriteCall((void*)0x77E032, Direct3D_TextureFilterPoint_ForceLinear); //njDrawCircle2D (?)
-		WriteCall((void*)0x77EA7E, Direct3D_TextureFilterPoint_ForceLinear); //njDrawTriangle2D
-		WriteCall((void*)0x78B074, Direct3D_TextureFilterPoint_ForceLinear); //DrawChaoHudThingB
-		WriteCall((void*)0x78B2F4, Direct3D_TextureFilterPoint_ForceLinear); //Some other Chao thing
-		WriteCall((void*)0x78B4C0, Direct3D_TextureFilterPoint_ForceLinear); //DisplayDebugShape_
-		WriteCall((void*)0x793CDD, Direct3D_EnableHudAlpha_Point); //Debug text still uses point filtering
+		WriteCall(reinterpret_cast<void*>(0x77DBCA), Direct3D_TextureFilterPoint_ForceLinear); //njDrawPolygon
+		WriteCall(reinterpret_cast<void*>(0x77DC79), Direct3D_TextureFilterPoint_ForceLinear); //njDrawTextureMemList
+		WriteCall(reinterpret_cast<void*>(0x77DD99), Direct3D_TextureFilterPoint_ForceLinear); //Direct3D_EnableHudAlpha
+		WriteCall(reinterpret_cast<void*>(0x77DFA0), Direct3D_TextureFilterPoint_ForceLinear); //njDrawLine2D
+		WriteCall(reinterpret_cast<void*>(0x77E032), Direct3D_TextureFilterPoint_ForceLinear); //njDrawCircle2D (?)
+		WriteCall(reinterpret_cast<void*>(0x77EA7E), Direct3D_TextureFilterPoint_ForceLinear); //njDrawTriangle2D
+		WriteCall(reinterpret_cast<void*>(0x78B074), Direct3D_TextureFilterPoint_ForceLinear); //DrawChaoHudThingB
+		WriteCall(reinterpret_cast<void*>(0x78B2F4), Direct3D_TextureFilterPoint_ForceLinear); //Some other Chao thing
+		WriteCall(reinterpret_cast<void*>(0x78B4C0), Direct3D_TextureFilterPoint_ForceLinear); //DisplayDebugShape_
+		WriteCall(reinterpret_cast<void*>(0x793CDD), Direct3D_EnableHudAlpha_Point); // Debug text still uses point filtering
+		WriteCall(reinterpret_cast<void*>(0x6FE9F8), njDrawTextureMemList_NoFilter); // Emulator plane shouldn't be filtered
 	}
 
 	direct3d::set_vsync(settings->getBool("EnableVsync", true));
@@ -2210,6 +2226,10 @@ static void __cdecl InitMods()
 	WriteJump((void*)0x0042F1C5, (void*)OnInput_MidJump);	// Cutscene stuff - Untested. Couldn't trigger ingame.
 	WriteJump((void*)0x0042F1E9, (void*)OnInput);			// Cutscene stuff
 	WriteJump((void*)0x0040FF00, (void*)OnControl);
+
+	// Remove "Tails Adventure" gray filter
+	WriteData(reinterpret_cast<float*>(0x87CBA8), 0.0f);
+	WriteData(reinterpret_cast<float*>(0x87CBAC), 0.0f);
 }
 
 DataPointer(HMODULE, chrmodelshandle, 0x3AB9170);
