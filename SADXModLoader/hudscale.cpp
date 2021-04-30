@@ -120,6 +120,8 @@ static Trampoline* ChaoParamWindowExecutor_t;
 static Trampoline* ChaoSelectWindowExecutor_t;
 static Trampoline* AL_ChaoParamWindowExecutor_t;
 static Trampoline* late_exec_t;
+static Trampoline* DrawGameGearScreen_t;
+static Trampoline* DrawGameGearSelect_t;
 
 #pragma endregion
 
@@ -697,6 +699,64 @@ static void __cdecl late_exec_r()
 	scale_enable();
 }
 
+static void __cdecl DrawGameGearScreen_o(int a1)
+{
+	auto orig = DrawGameGearScreen_t->Target();
+
+	__asm
+	{
+		mov ecx, a1
+		call orig
+	}
+}
+
+static void __cdecl DrawGameGearScreen_r(int a1)
+{
+	scale_push(Align::center, false);
+	DrawGameGearScreen_o(a1);
+	scale_pop();
+}
+
+static void __declspec(naked) DrawGameGearScreen_asm()
+{
+	__asm
+	{
+		push ecx
+		call DrawGameGearScreen_r
+		pop ecx
+		ret
+	}
+}
+
+static void __cdecl DrawGameGearSelect_o(int a1)
+{
+	auto orig = DrawGameGearSelect_t->Target();
+
+	__asm
+	{
+		mov ecx, a1
+		call orig
+	}
+}
+
+static void __cdecl DrawGameGearSelect_r(int a1)
+{
+	scale_push(Align::center, false);
+	DrawGameGearSelect_o(a1);
+	scale_pop();
+}
+
+static void __declspec(naked) DrawGameGearSelect_asm()
+{
+	__asm
+	{
+		push ecx
+		call DrawGameGearSelect_r
+		pop ecx
+		ret
+	}
+}
+
 static void __cdecl DrawTitleScreen_o(void* a1)
 {
 	auto orig = DrawTitleScreen_t->Target();
@@ -1022,7 +1082,7 @@ void hudscale::initialize()
 	WriteData(reinterpret_cast<const float**>(0x0049FF70), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x004A005B), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x004A0067), &patch_dummy);
-	scaleGammaTimeAddHud = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
+	scaleGammaTimeAddHud    = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
 	scaleGammaTimeRemaining = new Trampoline(0x004C51D0, 0x004C51D7, ScaleGammaTimeRemaining);
 
 	// Emblem screen
@@ -1031,9 +1091,24 @@ void hudscale::initialize()
 	scaleEmblemScreen = new Trampoline(0x004B4200, 0x004B4205, ScaleEmblemScreen);
 
 	// Nights
-	scaleNightsCards = new Trampoline(0x005D73F0, 0x005D73F5, ScaleNightsCards);
 	WriteData(reinterpret_cast<float**>(0x005D701B), &scale_h);
+	scaleNightsCards   = new Trampoline(0x005D73F0, 0x005D73F5, ScaleNightsCards);
 	scaleNightsJackpot = new Trampoline(0x005D6E60, 0x005D6E67, ScaleNightsJackpot);
+
+	// GameGear
+	WriteData(reinterpret_cast<const float**>(0x0070144D), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x0070146F), &patch_dummy);
+	DrawGameGearScreen_t = new Trampoline(0x006FD4D0, 0x006FD4D5, DrawGameGearScreen_asm);
+	DrawGameGearSelect_t = new Trampoline(0x006FD650, 0x006FD655, DrawGameGearSelect_asm);
+	
+	// Honeycomb transition
+	WriteData(reinterpret_cast<const float**>(0x006FF5C8), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x006FF5D9), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x006FF5EB), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x006FF603), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x006FF611), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x006FF632), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x006FF657), &patch_dummy);
 
 	InitializeChaoHUDs();
 	hudscale::update();

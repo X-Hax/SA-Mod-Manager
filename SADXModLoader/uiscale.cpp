@@ -369,6 +369,7 @@ static Trampoline* njDrawTriangle2D_t = nullptr;
 static Trampoline* Direct3D_DrawQuad_t = nullptr;
 static Trampoline* njDrawPolygon_t = nullptr;
 static Trampoline* chDrawBillboardSR_t = nullptr;
+static Trampoline* njDrawCircle2D_t = nullptr;
 static Trampoline* DisplayVideoFrame_t = nullptr;
 static Trampoline* chCalcWorldPosFromScreenPos_t = nullptr;
 
@@ -434,6 +435,7 @@ static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint3
 	if (uiscale::is_scale_enabled())
 	{
 		auto _n = n;
+
 		if (attr & (NJD_DRAW_FAN | NJD_DRAW_CONNECTED))
 		{
 			_n += 2;
@@ -543,6 +545,17 @@ static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, floa
 	}
 }
 
+static void __cdecl njDrawCircle2D_r(NJS_POINT2COL* p, Int n, Float pri, Uint32 attr) {
+	auto original = static_cast<decltype(njDrawCircle2D_r)*>(njDrawCircle2D_t->Target());
+
+	if (uiscale::is_scale_enabled())
+	{
+		scale_points(p->p, n);
+	}
+
+	original(p, n, pri, attr);
+}
+
 static void __cdecl njDrawTextureMemList_init()
 {
 	// This has to be created dynamically to repair a function call.
@@ -581,11 +594,15 @@ void uiscale::initialize_common() {
 		update_parameters();
 		njDrawTextureMemList_init();
 
-		Direct3D_DrawQuad_t = new Trampoline(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
-		njDrawPolygon_t = new Trampoline(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
-		njDrawSprite2D_Queue_t = new Trampoline(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
+		Direct3D_DrawQuad_t      = new Trampoline(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
+		njDrawPolygon_t          = new Trampoline(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
+		njDrawSprite2D_Queue_t   = new Trampoline(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
 		Draw2DLinesMaybe_Queue_t = new Trampoline(0x00404490, 0x00404496, Draw2DLinesMaybe_Queue_r);
-		njDrawTriangle2D_t = new Trampoline(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
+		njDrawTriangle2D_t       = new Trampoline(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
+		njDrawCircle2D_t         = new Trampoline(0x0077DFC0, 0x0077DFC7, njDrawCircle2D_r);
+		
+		// njDrawCircle2D call in njDrawTriangle2D_t is already scaled, use original function instead.
+		WriteCall((void*)0x77EA10, njDrawCircle2D_t->Target());
 
 		initialized = true;
 	}
