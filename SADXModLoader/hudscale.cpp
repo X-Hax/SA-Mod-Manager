@@ -863,6 +863,9 @@ static void InitializeChaoHUDs() {
 	WriteData(reinterpret_cast<double*>(0x0088A5D0), 24.0); // Fix sprite padding in AL_ChaoParamWindowDisplayer
 	WriteData(reinterpret_cast<const float**>(0x0072C6D3), &patch_dummy); // BlueButtonCS height
 	WriteData(reinterpret_cast<const float**>(0x0072C6EC), &patch_dummy); // BlueButtonCS width
+	WriteData(reinterpret_cast<const float**>(0x007691CC), &float640); // Chao select 3D placement patch
+	WriteData(reinterpret_cast<const float**>(0x00747115), &float640); // Chao reccord 3D placement patch
+	WriteData(reinterpret_cast<const float**>(0x00767CF1), &float640); // Chao param 3D placement patch
 	AL_CreateChaoSelectMenu_t                   = new Trampoline(0x007491D0, 0x007491D5, AL_CreateChaoSelectMenu_r);
 	AL_EntranceMenuBackGroundDisplayer_t        = new Trampoline(0x0074AB40, 0x0074AB47, AL_EntranceMenuBackGroundDisplayer_r);
 	AL_EntranceMenuLargeTitleBarDisplayer_t     = new Trampoline(0x00749830, 0x00749835, AL_EntranceMenuLargeTitleBarDisplayer_r);
