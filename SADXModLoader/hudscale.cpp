@@ -120,8 +120,7 @@ static Trampoline* ChaoParamWindowExecutor_t;
 static Trampoline* ChaoSelectWindowExecutor_t;
 static Trampoline* AL_ChaoParamWindowExecutor_t;
 static Trampoline* late_exec_t;
-static Trampoline* DrawGameGearScreen_t;
-static Trampoline* DrawGameGearSelect_t;
+static Trampoline* MiniGameCollectionMenu_t;
 
 #pragma endregion
 
@@ -699,62 +698,9 @@ static void __cdecl late_exec_r()
 	scale_enable();
 }
 
-static void __cdecl DrawGameGearScreen_o(int a1)
+static void __cdecl MiniGameCollectionMenu_r(ObjectMaster* a1)
 {
-	auto orig = DrawGameGearScreen_t->Target();
-
-	__asm
-	{
-		mov ecx, a1
-		call orig
-	}
-}
-
-static void __cdecl DrawGameGearScreen_r(int a1)
-{
-	scale_push(Align::center, false);
-	DrawGameGearScreen_o(a1);
-	scale_pop();
-}
-
-static void __declspec(naked) DrawGameGearScreen_asm()
-{
-	__asm
-	{
-		push ecx
-		call DrawGameGearScreen_r
-		pop ecx
-		ret
-	}
-}
-
-static void __cdecl DrawGameGearSelect_o(int a1)
-{
-	auto orig = DrawGameGearSelect_t->Target();
-
-	__asm
-	{
-		mov ecx, a1
-		call orig
-	}
-}
-
-static void __cdecl DrawGameGearSelect_r(int a1)
-{
-	scale_push(Align::center, false);
-	DrawGameGearSelect_o(a1);
-	scale_pop();
-}
-
-static void __declspec(naked) DrawGameGearSelect_asm()
-{
-	__asm
-	{
-		push ecx
-		call DrawGameGearSelect_r
-		pop ecx
-		ret
-	}
+	scale_trampoline(Align::center, false, MiniGameCollectionMenu_r, MiniGameCollectionMenu_t, a1);
 }
 
 static void __cdecl DrawTitleScreen_o(void* a1)
@@ -1098,8 +1044,7 @@ void hudscale::initialize()
 	// GameGear
 	WriteData(reinterpret_cast<const float**>(0x0070144D), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x0070146F), &patch_dummy);
-	DrawGameGearScreen_t = new Trampoline(0x006FD4D0, 0x006FD4D5, DrawGameGearScreen_asm);
-	DrawGameGearSelect_t = new Trampoline(0x006FD650, 0x006FD655, DrawGameGearSelect_asm);
+	MiniGameCollectionMenu_t = new Trampoline(0x0050C010, 0x0050C017, MiniGameCollectionMenu_r);
 	
 	// Honeycomb transition
 	WriteData(reinterpret_cast<const float**>(0x006FF5C8), &patch_dummy);
