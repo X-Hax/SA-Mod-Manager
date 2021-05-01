@@ -1254,6 +1254,7 @@ void LoadDLLData(const wchar_t* filename, const std::wstring &mod_dir)
 
 void PushScaleUI(ScaleAlign align, bool is_background, float ratio_h, float ratio_v)
 {
+	uiscale::initialize_common(); // make sure sprite functions are hooked
 	uiscale::scale_push(align, is_background, ratio_h, ratio_v);
 }
 

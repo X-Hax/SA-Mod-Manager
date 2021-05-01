@@ -598,13 +598,17 @@ void uiscale::initialize_common() {
 		update_parameters();
 		njDrawTextureMemList_init();
 
-		Direct3D_DrawQuad_t      = new Trampoline(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
-		njDrawPolygon_t          = new Trampoline(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
-		njDrawSprite2D_Queue_t   = new Trampoline(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
-		Draw2DLinesMaybe_Queue_t = new Trampoline(0x00404490, 0x00404496, Draw2DLinesMaybe_Queue_r);
-		njDrawTriangle2D_t       = new Trampoline(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
-		njDrawCircle2D_t         = new Trampoline(0x0077DFC0, 0x0077DFC7, njDrawCircle2D_r);
-		
+		Direct3D_DrawQuad_t           = new Trampoline(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
+		njDrawPolygon_t               = new Trampoline(0x0077DBC0, 0x0077DBC5, njDrawPolygon_r);
+		njDrawSprite2D_Queue_t        = new Trampoline(0x00404660, 0x00404666, njDrawSprite2D_Queue_r);
+		Draw2DLinesMaybe_Queue_t      = new Trampoline(0x00404490, 0x00404496, Draw2DLinesMaybe_Queue_r);
+		njDrawTriangle2D_t            = new Trampoline(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
+		njDrawCircle2D_t              = new Trampoline(0x0077DFC0, 0x0077DFC7, njDrawCircle2D_r);
+		chCalcWorldPosFromScreenPos_t = new Trampoline(0x00720B10, 0x00720B17, chCalcWorldPosFromScreenPos_r);
+
+		chDrawBillboardSR_t = new Trampoline(0x0078B070, 0x0078B079, chDrawBillboardSR_r);
+		WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(chDrawBillboardSR_t->Target()) + 4), Direct3D_TextureFilterPoint);
+
 		// njDrawCircle2D call in njDrawTriangle2D_t is already scaled, use original function instead.
 		WriteCall((void*)0x77EA10, njDrawCircle2D_t->Target());
 
@@ -618,11 +622,6 @@ void uiscale::initialize()
 
 	DisplayAllObjects_t = new Trampoline(0x0040B540, 0x0040B546, DisplayAllObjects_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DisplayAllObjects_t->Target()) + 1), reinterpret_cast<void*>(0x004128F0));
-
-	chDrawBillboardSR_t = new Trampoline(0x0078B070, 0x0078B079, chDrawBillboardSR_r);
-	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(chDrawBillboardSR_t->Target()) + 4), Direct3D_TextureFilterPoint);
-
-	chCalcWorldPosFromScreenPos_t = new Trampoline(0x00720B10, 0x00720B17, chCalcWorldPosFromScreenPos_r);
 }
 
 void uiscale::setup_background_scale()
