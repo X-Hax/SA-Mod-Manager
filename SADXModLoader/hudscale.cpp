@@ -121,6 +121,9 @@ static Trampoline* ChaoSelectWindowExecutor_t;
 static Trampoline* AL_ChaoParamWindowExecutor_t;
 static Trampoline* late_exec_t;
 static Trampoline* MiniGameCollectionMenu_t;
+static Trampoline* DrawGameOver_t;
+static Trampoline* DrawGameOverTC_t;
+static Trampoline* DrawGameOverHH_t;
 
 #pragma endregion
 
@@ -703,6 +706,99 @@ static void __cdecl MiniGameCollectionMenu_r(ObjectMaster* a1)
 	scale_trampoline(Align::center, false, MiniGameCollectionMenu_r, MiniGameCollectionMenu_t, a1);
 }
 
+static void __cdecl DrawGameOver_o(int a1)
+{
+	auto orig = DrawGameOver_t->Target();
+
+	__asm
+	{
+		mov esi, a1
+		call orig
+	}
+}
+
+static void __cdecl DrawGameOver_r(int a1)
+{
+	scale_push(Align::center, false);
+	DrawGameOver_o(a1);
+	scale_pop();
+}
+
+static void __declspec(naked) DrawGameOver_asm()
+{
+	__asm
+	{
+		push esi
+		call DrawGameOver_r
+		pop esi
+		ret
+	}
+}
+
+static void __cdecl DrawGameOverTC_o(int a1)
+{
+	auto orig = DrawGameOverTC_t->Target();
+
+	__asm
+	{
+		mov esi, a1
+		call orig
+	}
+}
+
+static void __cdecl DrawGameOverTC_r(int a1)
+{
+	scale_push(Align::center, false);
+	DrawGameOverTC_o(a1);
+	scale_pop();
+}
+
+static void __declspec(naked) DrawGameOverTC_asm()
+{
+	__asm
+	{
+		push esi
+		call DrawGameOverTC_r
+		pop esi
+		ret
+	}
+}
+
+static void __cdecl DrawGameOverHH_o(int a1)
+{
+	auto orig = DrawGameOverHH_t->Target();
+
+	__asm
+	{
+		mov esi, a1
+		call orig
+	}
+}
+
+static void __cdecl DrawGameOverHH_r(int a1)
+{
+	scale_push(Align::center, false);
+	DrawGameOverHH_o(a1);
+	scale_pop();
+}
+
+static void __declspec(naked) DrawGameOverHH_asm()
+{
+	__asm
+	{
+		push esi
+		call DrawGameOverHH_r
+		pop esi
+		ret
+	}
+}
+
+static void DrawRect_DrawNowMaybe_GameOverHH(float left, float top, float right, float bottom, float depth, int color) {
+	uiscale::scale_disable();
+	DrawRect_DrawNowMaybe(left, top, right, bottom, depth, color);
+	uiscale::scale_enable();
+}
+
 static void __cdecl DrawTitleScreen_o(void* a1)
 {
 	auto orig = DrawTitleScreen_t->Target();
@@ -831,7 +927,7 @@ void hudscale::update() {
 
 	// Black Market Item Preview
 	WriteData(reinterpret_cast<float*>(0x00726211), preview_animal_hat_shell);
-	WriteData(reinterpret_cast<float*>(0x007261CF), preview_pacifier);
+	WriteData(reinterpret_cast<float*>(0x007261CF), preview_pacifier);	
 }
 
 static void InitializeChaoHUDs() {
@@ -1057,6 +1153,14 @@ void hudscale::initialize()
 	WriteData(reinterpret_cast<const float**>(0x006FF611), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x006FF632), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x006FF657), &patch_dummy);
+
+	// Game Over
+	WriteData(reinterpret_cast<float**>(0x00625ED6), &scale_v);
+	WriteData(reinterpret_cast<float**>(0x00625EF6), &scale_h);
+	WriteCall(reinterpret_cast<void*>(0x00625F05), DrawRect_DrawNowMaybe_GameOverHH);
+	DrawGameOver_t   = new Trampoline(0x0042BFD0, 0x0042BFD8, DrawGameOver_asm);   // Normal
+	DrawGameOverTC_t = new Trampoline(0x004DACC0, 0x004DACC5, DrawGameOverTC_asm); // Twinkle Circuit
+	DrawGameOverHH_t = new Trampoline(0x00625D00, 0x00625D09, DrawGameOverHH_asm); // Hedgehog Hammer
 
 	InitializeChaoHUDs();
 	hudscale::update();
