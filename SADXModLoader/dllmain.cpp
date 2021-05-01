@@ -1252,6 +1252,26 @@ void LoadDLLData(const wchar_t* filename, const std::wstring &mod_dir)
 	ProcessDLLData(filename, mod_dir);
 }
 
+void PushScaleUI(ScaleAlign align, bool is_background, float ratio_h, float ratio_v)
+{
+	uiscale::scale_push(align, is_background, ratio_h, ratio_v);
+}
+
+void PopScaleUI()
+{
+	uiscale::scale_pop();
+}
+
+void SetScaleFillMode(ScaleFillMode mode)
+{
+	uiscale::bg_fill = static_cast<uiscale::FillMode>(mode);
+}
+
+ScaleFillMode GetScaleFillMode()
+{
+	return  static_cast<ScaleFillMode>(uiscale::bg_fill);
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
@@ -1279,6 +1299,10 @@ static const HelperFunctions helperFunctions =
 	&LoadEXEData,
 	&LoadDLLData,
 	&_ReplaceFileForce,
+	&PushScaleUI,
+	&PopScaleUI,
+	&SetScaleFillMode,
+	&GetScaleFillMode
 };
 
 static const char* const dlldatakeys[] = {

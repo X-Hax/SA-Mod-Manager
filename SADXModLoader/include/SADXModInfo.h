@@ -11,7 +11,7 @@
 #include <string>
 
 // SADX Mod Loader API version.
-static const int ModLoaderVer = 10;
+static const int ModLoaderVer = 11;
 
 struct PatchInfo
 {
@@ -38,7 +38,27 @@ struct PointerList
 	int Count;
 };
 
+enum ScaleAlign : Uint8
+{
+	Automatic,
+	HorizontalCenter = 1 << 0,
+	VerticalCenter = 1 << 1,
+	Center = HorizontalCenter | VerticalCenter,
+	Left = 1 << 2,
+	Top = 1 << 3,
+	Right = 1 << 4,
+	Bottom = 1 << 5
+};
+
+enum ScaleFillMode : Uint8
+{
+	Stretch = 0,
+	Fit = 1,
+	Fill = 2
+};
+
 #undef ReplaceFile // Windows function macro
+
 struct HelperFunctions
 {
 	// The version of the structure.
@@ -118,6 +138,33 @@ struct HelperFunctions
 	// Replaces the source file with the destination file without checking if the destination file is also being replaced.
 	// Requires version >= 10.
 	void(__cdecl* ReplaceFileForce)(const char* src, const char* dst);
+
+	/**
+	* @brief Adds a UI scale method to the queue, will scale sprites drawn between this and PopScaleUI.
+	*
+	* This will scale all of the sprite drawing functions based on 640x480 frame by default.
+	* It is used by the Mod Loader scaling system, and requires the option to be enabled.
+	* If another method is added, it takes the priority.
+	* Requires version >= 11.
+	*
+	* @param align: The sprite anchor that the 640x480 frame is attached to.
+	* @param background: Treat the sprite as background, which can scale differently based on the user preferences.
+	* @param ratio_h: The horizontal ratio of the frame, 1.0f by default, 1.33f for a 16:9 menu for example.
+	* @param ratio_v: The vertical ratio of the frame, 1.0f by default.
+	*/
+	void(__cdecl* PushScaleUI)(ScaleAlign align, bool is_background, float ratio_h, float ratio_v);
+
+	// Removes the latest UI scale method from the queue.
+	// Requires version >= 11.
+	void(__cdecl* PopScaleUI)();
+
+	// Force a specific filling method for background sprites, make sure to reset the original value once you're done.
+	// Requires version >= 11.
+	void(__cdecl* SetScaleFillMode)(ScaleFillMode mode);
+
+	// Returns the current filling method for background sprites.
+	// Requires version >= 11.
+	ScaleFillMode(__cdecl* GetScaleFillMode)();
 };
 
 typedef void(__cdecl *ModInitFunc)(const char *path, const HelperFunctions &helperFunctions);
