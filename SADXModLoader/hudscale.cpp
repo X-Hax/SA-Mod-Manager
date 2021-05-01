@@ -124,6 +124,7 @@ static Trampoline* MiniGameCollectionMenu_t;
 static Trampoline* DrawGameOver_t;
 static Trampoline* DrawGameOverTC_t;
 static Trampoline* DrawGameOverHH_t;
+static Trampoline* RecapBackground_Main_t;
 
 #pragma endregion
 
@@ -799,6 +800,23 @@ static void DrawRect_DrawNowMaybe_GameOverHH(float left, float top, float right,
 	uiscale::scale_enable();
 }
 
+static void __cdecl RecapBackground_Main_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::center, true, RecapBackground_Main_r, RecapBackground_Main_t, a1);
+}
+
+void __cdecl njDrawTextureMemList_NoSkippedFrames_RecapText(NJS_TEXTURE_VTX* points, Int count, Uint32 gbix, Int flag)
+{
+	uiscale::scale_push(Align::center, false);
+
+	NJS_TEXTURE_VTX* new_points = new NJS_TEXTURE_VTX[count];
+	memcpy(new_points, points, sizeof(NJS_TEXTURE_VTX) * count);
+	njDrawTextureMemList_NoSkippedFrames(new_points, count, gbix, flag);
+	delete[] new_points;
+
+	uiscale::scale_pop();
+}
+
 static void __cdecl DrawTitleScreen_o(void* a1)
 {
 	auto orig = DrawTitleScreen_t->Target();
@@ -1162,6 +1180,12 @@ void hudscale::initialize()
 	DrawGameOverTC_t = new Trampoline(0x004DACC0, 0x004DACC5, DrawGameOverTC_asm); // Twinkle Circuit
 	DrawGameOverHH_t = new Trampoline(0x00625D00, 0x00625D09, DrawGameOverHH_asm); // Hedgehog Hammer
 
+	// Recap
+	WriteData(reinterpret_cast<const float**>(0x0064287A), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x00642896), &patch_dummy);
+	WriteCall(reinterpret_cast<void*>(0x00642427), njDrawTextureMemList_NoSkippedFrames_RecapText);
+	RecapBackground_Main_t = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
+	
 	InitializeChaoHUDs();
 	hudscale::update();
 }
