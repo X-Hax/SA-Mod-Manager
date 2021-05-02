@@ -538,7 +538,7 @@ static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, floa
 			new_y = y - scly_;
 		}
 
-		NJS_QUAD_TEXTURE quad = { new_x + 0.5f, new_y + 0.5f, new_x + sclx_ + 0.5f, new_y + scly_ + 0.5f, s0, t0, s1, t1 };
+		NJS_QUAD_TEXTURE quad = { new_x, new_y, new_x + sclx_, new_y + scly_, s0, t0, s1, t1 };
 		DrawRectPoints((NJS_POINT2*)&quad, depth * -1.0f);
 
 		Direct3D_TextureFilterLinear();
