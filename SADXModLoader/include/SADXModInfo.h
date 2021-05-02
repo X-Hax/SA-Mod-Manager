@@ -8,6 +8,7 @@
 
 #include "SADXStructs.h"
 #include "SADXStructsNew.h"
+#include "ScaleInfo.h"
 #include <string>
 
 // SADX Mod Loader API version.
@@ -36,25 +37,6 @@ struct PointerList
 {
 	const PointerInfo *Pointers;
 	int Count;
-};
-
-enum ScaleAlign : Uint8
-{
-	Automatic,
-	HorizontalCenter = 1 << 0,
-	VerticalCenter = 1 << 1,
-	Center = HorizontalCenter | VerticalCenter,
-	Left = 1 << 2,
-	Top = 1 << 3,
-	Right = 1 << 4,
-	Bottom = 1 << 5
-};
-
-enum ScaleFillMode : Uint8
-{
-	Stretch = 0,
-	Fit = 1,
-	Fill = 2
 };
 
 #undef ReplaceFile // Windows function macro
@@ -150,7 +132,7 @@ struct HelperFunctions
 	* @param ratio_h: The horizontal ratio of the frame (1.0f by default.)
 	* @param ratio_v: The vertical ratio of the frame (1.0f by default.)
 	*/
-	void(__cdecl* PushScaleUI)(ScaleAlign align, bool is_background, float ratio_h, float ratio_v);
+	void(__cdecl* PushScaleUI)(uiscale::Align align, bool is_background, float ratio_h, float ratio_v);
 
 	// Removes the latest UI scale method from the queue.
 	// Requires version >= 11.
@@ -158,11 +140,11 @@ struct HelperFunctions
 
 	// Force a specific filling method for background sprites, make sure to reset the original value once you're done.
 	// Requires version >= 11.
-	void(__cdecl* SetScaleFillMode)(ScaleFillMode mode);
+	void(__cdecl* SetScaleFillMode)(uiscale::FillMode mode);
 
 	// Returns the current filling method for background sprites.
 	// Requires version >= 11.
-	ScaleFillMode(__cdecl* GetScaleFillMode)();
+	uiscale::FillMode(__cdecl* GetScaleFillMode)();
 };
 
 typedef void(__cdecl *ModInitFunc)(const char *path, const HelperFunctions &helperFunctions);

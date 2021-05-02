@@ -1252,7 +1252,7 @@ void LoadDLLData(const wchar_t* filename, const std::wstring &mod_dir)
 	ProcessDLLData(filename, mod_dir);
 }
 
-void PushScaleUI(ScaleAlign align, bool is_background, float ratio_h, float ratio_v)
+void PushScaleUI(uiscale::Align align, bool is_background, float ratio_h, float ratio_v)
 {
 	uiscale::initialize_common(); // make sure sprite functions are hooked
 	uiscale::scale_push(align, is_background, ratio_h, ratio_v);
@@ -1263,14 +1263,14 @@ void PopScaleUI()
 	uiscale::scale_pop();
 }
 
-void SetScaleFillMode(ScaleFillMode mode)
+void SetScaleFillMode(uiscale::FillMode mode)
 {
-	uiscale::bg_fill = static_cast<uiscale::FillMode>(mode);
+	uiscale::bg_fill = mode;
 }
 
-ScaleFillMode GetScaleFillMode()
+uiscale::FillMode GetScaleFillMode()
 {
-	return  static_cast<ScaleFillMode>(uiscale::bg_fill);
+	return uiscale::bg_fill;
 }
 
 static const HelperFunctions helperFunctions =

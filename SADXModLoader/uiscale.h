@@ -4,25 +4,6 @@
 
 namespace uiscale
 {
-	enum Align : Uint8
-	{
-		automatic,
-		horizontal_center = 1 << 0,
-		vertical_center   = 1 << 1,
-		center            = horizontal_center | vertical_center,
-		left              = 1 << 2,
-		top               = 1 << 3,
-		right             = 1 << 4,
-		bottom            = 1 << 5
-	};
-	
-	enum FillMode : Uint8
-	{
-		stretch = 0,
-		fit     = 1,
-		fill    = 2
-	};
-
 	extern FillMode bg_fill;
 	extern FillMode fmv_fill;
 

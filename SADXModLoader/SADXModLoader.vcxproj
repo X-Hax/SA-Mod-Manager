@@ -53,6 +53,7 @@
     <ClInclude Include="include\SADXModInfo.h" />
     <ClInclude Include="include\SADXStructsNew.h" />
     <ClInclude Include="include\SADXVariablesNew.h" />
+    <ClInclude Include="include\ScaleInfo.h" />
     <ClInclude Include="polybuff.h" />
     <ClInclude Include="prs.h" />
     <ClInclude Include="include\d3d8types.h" />
