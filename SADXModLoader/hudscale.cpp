@@ -30,6 +30,7 @@ static Trampoline* FishingHud_DrawHIT_t;
 static Trampoline* FishingHud_DrawReel_t;
 static Trampoline* FishingHud_DrawRod_t;
 static Trampoline* BigHud_DrawWeightAndLife_t;
+static Trampoline* BigWeightBonus_Display_t;
 static Trampoline* FishingHud_DrawMeters_t;
 static Trampoline* scaleAnimalPickup;
 static Trampoline* scaleItemBoxSprite;
@@ -203,6 +204,11 @@ static void __cdecl FishingHud_DrawRod_r()
 static void __cdecl BigHud_DrawWeightAndLife_r(ObjectMaster* a1)
 {
 	scale_trampoline(Align::automatic, false, BigHud_DrawWeightAndLife_r, BigHud_DrawWeightAndLife_t, a1);
+}
+
+static void __cdecl BigWeightBonus_Display_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::left, false, BigWeightBonus_Display_r, BigWeightBonus_Display_t, a1);
 }
 
 static void __cdecl FishingHud_DrawMeters_r(float length)
@@ -945,7 +951,7 @@ void hudscale::update() {
 
 	// Black Market Item Preview
 	WriteData(reinterpret_cast<float*>(0x00726211), preview_animal_hat_shell);
-	WriteData(reinterpret_cast<float*>(0x007261CF), preview_pacifier);	
+	WriteData(reinterpret_cast<float*>(0x007261CF), preview_pacifier);
 }
 
 static void InitializeChaoHUDs() {
@@ -1100,12 +1106,19 @@ void hudscale::initialize()
 	scaleTailsWinLose                    = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
 	scaleTailsRaceBar                    = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsRaceBar);
 	scaleDemoPressStart                  = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
-	FishingHud_DrawReel_t				 = new Trampoline(0x0046C9F0, 0x0046C9F5, FishingHud_DrawReel_r);
-	FishingHud_DrawRod_t				 = new Trampoline(0x0046CAB0, 0x0046CAB9, FishingHud_DrawRod_r);
-	FishingHud_DrawMeters_t				 = new Trampoline(0x0046CC70, 0x0046CC75, FishingHud_DrawMeters_r);
-	FishingHud_DrawHIT_t				 = new Trampoline(0x0046C920, 0x0046C926, FishingHud_DrawHIT_r);
-	BigHud_DrawWeightAndLife_t			 = new Trampoline(0x0046FB00, 0x0046FB05, BigHud_DrawWeightAndLife_r);
 	late_exec_t                          = new Trampoline(0x004086F0, 0x004086F6, late_exec_r); // Sometimes used in a display function so we have to disable scaling temporarily
+
+	// Big UI
+	WriteData(reinterpret_cast<const float**>(0x0047024E), &patch_dummy);
+	WriteData(reinterpret_cast<const float**>(0x004702E5), &patch_dummy);
+	WriteData(reinterpret_cast<float**>(0x0047022F), &aspect_scale);
+	WriteData(reinterpret_cast<float**>(0x004702D6), &aspect_scale);
+	FishingHud_DrawReel_t      = new Trampoline(0x0046C9F0, 0x0046C9F5, FishingHud_DrawReel_r);
+	FishingHud_DrawRod_t       = new Trampoline(0x0046CAB0, 0x0046CAB9, FishingHud_DrawRod_r);
+	FishingHud_DrawMeters_t    = new Trampoline(0x0046CC70, 0x0046CC75, FishingHud_DrawMeters_r);
+	FishingHud_DrawHIT_t       = new Trampoline(0x0046C920, 0x0046C926, FishingHud_DrawHIT_r);
+	BigHud_DrawWeightAndLife_t = new Trampoline(0x0046FB00, 0x0046FB05, BigHud_DrawWeightAndLife_r);
+	BigWeightBonus_Display_t   = new Trampoline(0x0046F580, 0x0046F585, BigWeightBonus_Display_r);
 
 	DrawSubtitles_t = new Trampoline(0x0040D4D0, 0x0040D4D9, DrawSubtitles_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DrawSubtitles_t->Target()) + 4), reinterpret_cast<void*>(0x00402F00));
@@ -1185,7 +1198,7 @@ void hudscale::initialize()
 	WriteData(reinterpret_cast<const float**>(0x00642896), &patch_dummy);
 	WriteCall(reinterpret_cast<void*>(0x00642427), njDrawTextureMemList_NoSkippedFrames_RecapText);
 	RecapBackground_Main_t = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
-	
+
 	InitializeChaoHUDs();
 	hudscale::update();
 }
