@@ -966,8 +966,10 @@ static void InitializeChaoHUDs() {
 	HeldChaoParamWindowDisplayer_t        = new Trampoline(0x00737BD0, 0x00737BD5, HeldChaoParamWindowDisplayer_asm);
 
 	// Black Market
-	WriteData(reinterpret_cast<const float**>(0x00725831), &patch_dummy); // Ring box offscreen position V
-	WriteData(reinterpret_cast<const float**>(0x0072587C), &patch_dummy); // Ring box offscreen position H
+	WriteData(reinterpret_cast<const float**>(0x00725831), &patch_dummy); // Ring box vertical position
+	WriteData(reinterpret_cast<const float**>(0x0072587C), &patch_dummy); // Ring box horizontal position
+	WriteData(reinterpret_cast<float**>(0x0072584A), &aspect_scale); // Ring box offset
+	WriteData(reinterpret_cast<float**>(0x00725852), &aspect_scale); // Ring box offset
 	WriteData(reinterpret_cast<const float**>(0x0072562B), &patch_dummy); // Text position V
 	WriteData(reinterpret_cast<const float**>(0x0072564F), &patch_dummy); // Text position H
 	WriteData(reinterpret_cast<const float**>(0x0072599C), &patch_dummy); // Description text position V
