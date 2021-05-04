@@ -938,6 +938,7 @@ void hudscale::update() {
 	float vertscale = static_cast<float>(VerticalResolution) / 480.0f;
 
 	aspect_scale             = static_cast<float>(HorizontalResolution) / (640.0f * vertscale);
+	aspect_scale             = max(aspect_scale, 1.0f);
 	preview_egg              = -34.0f * vertscale;
 	preview_animal_hat_shell = -26.0f * vertscale;
 	preview_fruit            = -22.0f * vertscale;
