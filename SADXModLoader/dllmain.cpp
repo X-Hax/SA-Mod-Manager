@@ -1418,6 +1418,10 @@ void __cdecl njDrawTextureMemList_NoFilter(NJS_TEXTURE_VTX* polygons, Int count,
 	Direct3D_TextureFilterLinear();
 }
 
+void __cdecl FixLandTableLightType() {
+	Direct3D_PerformLighting(0);
+}
+
 static void __cdecl InitMods()
 {
 	// Hook present function to handle device lost/reset states
@@ -1602,6 +1606,9 @@ static void __cdecl InitMods()
 
 	// Chao stat panel screen dimensions fix
 	WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
+
+	// Fix light incorrectly being applied on LandTables
+	WriteCall((void*)0x0043A6D5, FixLandTableLightType);
 
 	ChunkSpecularFix_Init();
 

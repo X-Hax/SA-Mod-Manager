@@ -265,6 +265,7 @@ void direct3d::reset_device()
 		{
 			if (SUCCEEDED(reset = reset_parameters()))
 			{
+				Direct3D_PerformLighting(0); // Reset lighting
 				return;
 			}
 
