@@ -7,6 +7,7 @@
 #include "uiscale.h"
 
 DataPointer(D3DVIEWPORT8, Direct3D_ViewPort, 0x3D12780);
+DataPointer(D3DCAPS8, Direct3D_DeviceCaps, 0x03D127C0);
 
 static bool vsync = false;
 
@@ -106,6 +107,34 @@ static HRESULT reset_parameters()
 		renderstate_results[i] = Direct3D_Device->GetRenderState(D3DRENDERSTATE_TYPES[i], &renderstate_values[i]);
 	}
 
+	// Store all lights that we can get.
+	std::unordered_map<DWORD, D3DLIGHT8> lights;
+	std::unordered_map<DWORD, BOOL> lights_enabled_state;
+
+	for (DWORD i = 0; i < Direct3D_DeviceCaps.MaxActiveLights; ++i)
+	{
+		D3DLIGHT8 light {};
+		BOOL enabled = FALSE;
+
+		if (Direct3D_Device->GetLight(i, &light) != D3D_OK)
+		{
+			continue;
+		}
+
+		lights[i] = light;
+
+		if (Direct3D_Device->GetLightEnable(i, &enabled) != D3D_OK)
+		{
+			continue;
+		}
+
+		lights_enabled_state[i] = enabled;
+	}
+
+	// Store the only material.
+	D3DMATERIAL8 material {};
+	Direct3D_Device->GetMaterial(&material);
+
 	HRESULT result = Direct3D_Device->Reset(&PresentParameters);
 
 	if (FAILED(result))
@@ -121,6 +150,20 @@ static HRESULT reset_parameters()
 			Direct3D_Device->SetRenderState(D3DRENDERSTATE_TYPES[i], renderstate_values[i]);
 		}
 	}
+
+	// Restore all lights.
+	for (auto& pair : lights)
+	{
+		Direct3D_Device->SetLight(pair.first, &pair.second);
+	}
+
+	for (auto& pair : lights_enabled_state)
+	{
+		Direct3D_Device->LightEnable(pair.first, pair.second);
+	}
+
+	// Restore the only material.
+	Direct3D_Device->SetMaterial(&material);
 
 	Direct3D_Device->GetViewport(&Direct3D_ViewPort);
 
@@ -265,7 +308,6 @@ void direct3d::reset_device()
 		{
 			if (SUCCEEDED(reset = reset_parameters()))
 			{
-				Direct3D_PerformLighting(0); // Reset lighting
 				return;
 			}
 
