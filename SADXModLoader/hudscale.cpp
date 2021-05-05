@@ -25,7 +25,12 @@ static Trampoline* DisplayPauseMenu_t;
 static Trampoline* LifeGauge_Main_t;
 static Trampoline* scaleScoreA;
 static Trampoline* scaleTornadoHP;
-static Trampoline* scaleTwinkleCircuitHUD;
+static Trampoline* TwinkleCircuit_DrawLaps_t;
+static Trampoline* TwinkleCircuit_DrawTime_t;
+static Trampoline* TwinkleCircuit_DrawTimer_t;
+static Trampoline* TwinkleCircuit_DrawLapTimes_t;
+static Trampoline* TwinkleCircuit_DrawLapInfo_t;
+static Trampoline* TwinkleCircuit_DrawTimerCheckpoint_t;
 static Trampoline* FishingHud_DrawHIT_t;
 static Trampoline* FishingHud_DrawReel_t;
 static Trampoline* FishingHud_DrawRod_t;
@@ -181,9 +186,64 @@ static void __cdecl ScaleTornadoHP(ObjectMaster* a1)
 	scale_trampoline(Align::left | Align::bottom, false, ScaleTornadoHP, scaleTornadoHP, a1);
 }
 
-static void __cdecl ScaleTwinkleCircuitHUD(ObjectMaster* a1)
+static void __cdecl TwinkleCircuit_DrawLaps_r(char a1)
 {
-	scale_trampoline(Align::center, false, ScaleTwinkleCircuitHUD, scaleTwinkleCircuitHUD, a1);
+	scale_trampoline(Align::right, false, TwinkleCircuit_DrawLaps_r, TwinkleCircuit_DrawLaps_t, a1);
+}
+
+static void __cdecl TwinkleCircuit_DrawTime_r()
+{
+	scale_trampoline(Align::left, false, TwinkleCircuit_DrawTime_r, TwinkleCircuit_DrawTime_t);
+}
+
+static void __cdecl TwinkleCircuit_DrawTimer_r(ObjectMaster* a1)
+{
+	scale_trampoline(Align::left, false, TwinkleCircuit_DrawTimer_r, TwinkleCircuit_DrawTimer_t, a1);
+}
+
+static void __cdecl TwinkleCircuit_DrawLapTimes_o(char a1, int a2, int a3)
+{
+	auto orig = TwinkleCircuit_DrawLapTimes_t->Target();
+
+	__asm
+	{
+		push a3
+		push a2
+		mov al, [a1]
+		call orig
+		add esp, 08h
+	}
+}
+
+static void __cdecl TwinkleCircuit_DrawLapTimes_r(char a1, int a2, int a3)
+{
+	scale_push(Align::right, false);
+	TwinkleCircuit_DrawLapTimes_o(a1, a2, a3);
+	scale_pop();
+}
+
+static void __declspec(naked) TwinkleCircuit_DrawLapTimes_asm()
+{
+	__asm
+	{
+		push[esp + 08h]
+		push[esp + 08h]
+		push al
+		call TwinkleCircuit_DrawLapTimes_r
+		pop al
+		add esp, 0Ah
+		retn
+	}
+}
+
+static void __cdecl TwinkleCircuit_DrawLapInfo_r(char a1, int a2, int a3)
+{
+	scale_trampoline(Align::left, false, TwinkleCircuit_DrawLapInfo_r, TwinkleCircuit_DrawLapInfo_t, a1, a2, a3);
+}
+
+static void __cdecl TwinkleCircuit_DrawTimerCheckpoint_r(int a1, int a2)
+{
+	scale_trampoline(Align::center, false, TwinkleCircuit_DrawTimerCheckpoint_r, TwinkleCircuit_DrawTimerCheckpoint_t, a1, a2);
 }
 
 static void __cdecl FishingHud_DrawHIT_r(ObjectMaster* a1)
@@ -1126,6 +1186,8 @@ void hudscale::initialize()
 	DrawSubtitles_t = new Trampoline(0x0040D4D0, 0x0040D4D9, DrawSubtitles_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DrawSubtitles_t->Target()) + 4), reinterpret_cast<void*>(0x00402F00));
 
+	WriteJump(reinterpret_cast<void*>(0x0042BEE0), scale_result_screen);
+
 	// Fixes selection of high/low resolution title screen textures
 	WriteData(reinterpret_cast<float**>(0x0050E4B6 + 2), &scale_min);
 	WriteData(reinterpret_cast<float**>(0x0050EA42 + 2), &scale_min);
@@ -1135,14 +1197,20 @@ void hudscale::initialize()
 	// Fixes character scale on character select screen.
 	WriteData(reinterpret_cast<const float**>(0x0051285E), &patch_dummy);
 
-	WriteJump(reinterpret_cast<void*>(0x0042BEE0), scale_result_screen);
-
+	// Tornado
 	WriteData(reinterpret_cast<const float**>(0x006288C2), &patch_dummy);
 	scaleTornadoHP = new Trampoline(0x00628490, 0x00628496, ScaleTornadoHP);
 
-	// TODO: Consider tracking down the individual functions so that they can be individually aligned.
-	scaleTwinkleCircuitHUD = new Trampoline(0x004DB5E0, 0x004DB5E5, ScaleTwinkleCircuitHUD);
-
+	// Twinkle Circuit
+	TwinkleCircuit_DrawLaps_t = new Trampoline(0x004DCFB0, 0x004DCFB6, TwinkleCircuit_DrawLaps_r);
+	TwinkleCircuit_DrawTime_t = new Trampoline(0x004DC7A0, 0x004DC7A9, TwinkleCircuit_DrawTime_r);
+	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(TwinkleCircuit_DrawTime_t->Target()) + 4), njColorBlendingMode);
+	TwinkleCircuit_DrawTimerCheckpoint_t = new Trampoline(0x004DCDD0, 0x004DCDD5, TwinkleCircuit_DrawTimerCheckpoint_r);
+	TwinkleCircuit_DrawTimer_t    = new Trampoline(0x004DCC50, 0x004DCC57, TwinkleCircuit_DrawTimer_r);
+	TwinkleCircuit_DrawLapTimes_t = new Trampoline(0x004DC9B0, 0x004DC9B5, TwinkleCircuit_DrawLapTimes_asm);
+	TwinkleCircuit_DrawLapInfo_t  = new Trampoline(0x004DCBC0, 0x004DCBC5, TwinkleCircuit_DrawLapInfo_r);
+	
+	// Checkpoint
 	scaleCheckpointTime = new Trampoline(0x004BABE0, 0x004BABE5, ScaleCheckpointTime);
 	WriteData(reinterpret_cast<const float**>(0x0044F2E1), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x0044F30B), &patch_dummy);
@@ -1203,5 +1271,6 @@ void hudscale::initialize()
 	RecapBackground_Main_t = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
 
 	InitializeChaoHUDs();
+
 	hudscale::update();
 }
