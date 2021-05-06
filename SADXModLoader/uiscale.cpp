@@ -275,8 +275,8 @@ static void scale_points(T* points, size_t count)
 	}
 }
 
-template <typename T>
-static void scale_point(T* point) {
+static void scale_vector(NJS_VECTOR* point)
+{
 	if (sprite_scale || scale_stack.empty())
 	{
 		return;
@@ -292,10 +292,7 @@ static void scale_point(T* point) {
 
 	point->x = point->x * scale + offset.x;
 	point->y = point->y * scale + offset.y;
-
-	if (typeid(T) == typeid(NJS_VECTOR)) {
-		point->z *= 1.0f / scale;
-	}
+	point->z *= 1.0f / scale;
 }
 
 static void scale_quad_ex(NJS_QUAD_TEXTURE_EX* quad)
@@ -624,12 +621,13 @@ static void __cdecl DisplayVideoFrame_r(int width, int height)
 	bg_fill = orig;
 }
 
-static void __cdecl chCalcWorldPosFromScreenPos_r(NJS_VECTOR* pos, NJS_VECTOR* ret) {
+static void __cdecl chCalcWorldPosFromScreenPos_r(NJS_VECTOR* pos, NJS_VECTOR* ret)
+{
 	auto orig = static_cast<decltype(chCalcWorldPosFromScreenPos_r)*>(chCalcWorldPosFromScreenPos_t->Target());
 
 	if (uiscale::is_scale_enabled())
 	{
-		scale_point(pos);
+		scale_vector(pos);
 	}
 
 	orig(pos, ret);
@@ -637,7 +635,8 @@ static void __cdecl chCalcWorldPosFromScreenPos_r(NJS_VECTOR* pos, NJS_VECTOR* r
 
 #pragma endregion
 
-void uiscale::initialize_common() {
+void uiscale::initialize_common()
+{
 	if (initialized == false) {
 		update_parameters();
 		njDrawTextureMemList_init();
