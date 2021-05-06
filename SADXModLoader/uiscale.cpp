@@ -483,9 +483,14 @@ static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, floa
 {
 	if (uiscale::is_scale_enabled())
 	{
+		Direct3D_TextureFilterPoint();
 		Direct3D_SetTexList(chaosprite->pTexlist);
-		SetHudColorAndTextureNum(chaosprite->TexNum, *(NJS_COLOR*)0x3D08580);
-		Direct3D_EnableHudAlpha(true);
+		njSetTextureNum_(chaosprite->TexNum);
+
+		Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSU, D3DTADDRESS_WRAP);
+		Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSV, D3DTADDRESS_WRAP);
+
+		njAlphaMode(2);
 
 		if (*(int*)0x3D08584 == 1)
 		{
@@ -498,8 +503,6 @@ static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, floa
 			Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 		}
 
-		float sclx_ = sclx * chaosprite->wd;
-		float scly_ = scly * chaosprite->ht;
 		float s0, s1, t0, t1;
 
 		if (chaosprite->adjust != 0)
@@ -517,29 +520,58 @@ static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, floa
 			t1 = chaosprite->t1 * 0.00390625f;
 		}
 
-		float new_x = x;
-		float new_y = y;
+		const float sclx_ = sclx * chaosprite->wd;
+		const float scly_ = scly * chaosprite->ht;
+		float x1 = x;
+		float y1 = y;
 
 		if (use_sclx == 0)
 		{
-			new_x = x - 0.5f * sclx_;
+			x1 = x - 0.5f * sclx_;
 		}
-		else if (use_sclx == 1) 
+		else if (use_sclx == 1)
 		{
-			new_x = x - sclx_;
+			x1 = x - sclx_;
 		}
+
+		x1 += 0.5f;
 
 		if (use_scly == 0)
 		{
-			new_y = y - 0.5f * scly_;
+			y1 = y - 0.5f * scly_;
 		}
 		else if (use_scly == 1)
 		{
-			new_y = y - scly_;
+			y1 = y - scly_;
 		}
 
-		NJS_QUAD_TEXTURE quad = { new_x, new_y, new_x + sclx_, new_y + scly_, s0, t0, s1, t1 };
-		DrawRectPoints((NJS_POINT2*)&quad, depth * -1.0f);
+		y1 += 0.5f;
+
+		const float x2 = x1 + sclx_;
+		const float y2 = y1 + scly_;
+
+		NJS_POINT2 points[]
+		{
+			{ x1, y1 },
+			{ x2, y1 },
+			{ x1, y2 },
+			{ x2, y2 }
+		};
+
+		scale_points(points, 4);
+
+		const Uint32 color    = *reinterpret_cast<Uint32*>(0x3D08580);
+		const float new_depth = DoWeirdProjectionThings(depth * -1.0f);
+
+		FVFStruct_K* vbuff = reinterpret_cast<FVFStruct_K*>(GiantVertexBuffer_ptr);
+
+		vbuff[0] = {{ points[0].x, points[0].y, new_depth, 1.0f, color }, s0, t0 };
+		vbuff[1] = {{ points[1].x, points[1].y, new_depth, 1.0f, color }, s1, t0 };
+		vbuff[2] = {{ points[2].x, points[2].y, new_depth, 1.0f, color }, s0, t1 };
+		vbuff[3] = {{ points[3].x, points[3].y, new_depth, 1.0f, color }, s1, t1 };
+
+		Direct3D_Device->SetVertexShader(D3DFVF_DIFFUSE | D3DFVF_XYZRHW | 0x100);
+		Direct3D_Device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, GiantVertexBuffer_ptr, sizeof(FVFStruct_K));
 
 		Direct3D_TextureFilterLinear();
 	}
