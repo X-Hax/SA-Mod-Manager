@@ -324,6 +324,30 @@ static void scale_quad_ex(NJS_QUAD_TEXTURE_EX* quad)
 	quad->vy2 *= scale;
 }
 
+static void scale_quad(float* x1, float* y1, float* x2, float* y2)
+{
+	if (sprite_scale || scale_stack.empty())
+	{
+		return;
+	}
+
+	const auto& top = scale_stack.top();
+	const Uint8 align = top.alignment;
+
+	const NJS_POINT2 center = {
+		*x1 + (*x2 / 2.0f),
+		*y1 + (*y2 / 2.0f)
+	};
+
+	const float scale = uiscale::get_scale();
+	const NJS_POINT2 offset = get_offset(align, center);
+
+	*x1 = *x1 * scale + offset.x;
+	*y1 = *y1 * scale + offset.y;
+	*x2 = *x2 * scale + offset.x;
+	*y2 = *y2 * scale + offset.y;
+}
+
 void uiscale::scale_texmemlist(NJS_TEXTURE_VTX* list, Int count) {
 	scale_points(list, count);
 }
@@ -534,8 +558,6 @@ static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, floa
 			x1 = x - sclx_;
 		}
 
-		x1 += 0.5f;
-
 		if (use_scly == 0)
 		{
 			y1 = y - 0.5f * scly_;
@@ -545,30 +567,20 @@ static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, floa
 			y1 = y - scly_;
 		}
 
-		y1 += 0.5f;
+		float x2 = x1 + sclx_;
+		float y2 = y1 + scly_;
 
-		const float x2 = x1 + sclx_;
-		const float y2 = y1 + scly_;
-
-		NJS_POINT2 points[]
-		{
-			{ x1, y1 },
-			{ x2, y1 },
-			{ x1, y2 },
-			{ x2, y2 }
-		};
-
-		scale_points(points, 4);
+		scale_quad(&x1, &y1, &x2, &y2);
 
 		const Uint32 color    = *reinterpret_cast<Uint32*>(0x3D08580);
 		const float new_depth = DoWeirdProjectionThings(depth * -1.0f);
 
 		FVFStruct_K* vbuff = reinterpret_cast<FVFStruct_K*>(GiantVertexBuffer_ptr);
 
-		vbuff[0] = {{ points[0].x, points[0].y, new_depth, 1.0f, color }, s0, t0 };
-		vbuff[1] = {{ points[1].x, points[1].y, new_depth, 1.0f, color }, s1, t0 };
-		vbuff[2] = {{ points[2].x, points[2].y, new_depth, 1.0f, color }, s0, t1 };
-		vbuff[3] = {{ points[3].x, points[3].y, new_depth, 1.0f, color }, s1, t1 };
+		vbuff[0] = {{ x1 + 0.5f, y1 + 0.5f, new_depth, 1.0f, color }, s0, t0 };
+		vbuff[1] = {{ x2 + 0.5f, y1 + 0.5f, new_depth, 1.0f, color }, s1, t0 };
+		vbuff[2] = {{ x1 + 0.5f, y2 + 0.5f, new_depth, 1.0f, color }, s0, t1 };
+		vbuff[3] = {{ x2 + 0.5f, y2 + 0.5f, new_depth, 1.0f, color }, s1, t1 };
 
 		Direct3D_Device->SetVertexShader(D3DFVF_DIFFUSE | D3DFVF_XYZRHW | 0x100);
 		Direct3D_Device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, GiantVertexBuffer_ptr, sizeof(FVFStruct_K));
