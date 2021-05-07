@@ -504,7 +504,9 @@ static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, floa
 {
 	if (uiscale::is_scale_enabled())
 	{
-		Direct3D_TextureFilterPoint();
+		void __cdecl SetPreferredFilterOption();
+		SetPreferredFilterOption();
+
 		Direct3D_SetTexList(chaosprite->pTexlist);
 		njSetTextureNum_(chaosprite->TexNum);
 

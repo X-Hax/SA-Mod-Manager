@@ -360,6 +360,7 @@ static unsigned int screenNum           = 1;
 static bool customWindowSize            = false;
 static int customWindowWidth            = 640;
 static int customWindowHeight           = 480;
+static bool textureFilter               = true;
 
 static BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
 {
@@ -1402,6 +1403,18 @@ void __cdecl Direct3D_TextureFilterPoint_ForceLinear()
 	Direct3D_Device->SetTextureStageState(0, D3DTSS_MIPFILTER, D3DTEXF_LINEAR);
 }
 
+void __cdecl SetPreferredFilterOption()
+{
+	if (textureFilter == true)
+	{
+		Direct3D_TextureFilterPoint_ForceLinear();
+	}
+	else
+	{
+		Direct3D_TextureFilterPoint();
+	}
+}
+
 void __cdecl Direct3D_EnableHudAlpha_Point(bool enable)
 {
 	Direct3D_EnableHudAlpha(enable);
@@ -1523,6 +1536,7 @@ static void __cdecl InitMods()
 	customWindowWidth  = settings->getInt("WindowWidth", 640);
 	customWindowHeight = settings->getInt("WindowHeight", 480);
 	windowResize       = settings->getBool("ResizableWindow") && !customWindowSize;
+	textureFilter      = settings->getBool("TextureFilter", true);
 
 	if (!borderlessWindow)
 	{
@@ -1618,7 +1632,7 @@ static void __cdecl InitMods()
 	SetRDataWriteProtection(false);
 
 	// Enables GUI texture filtering (D3DTEXF_POINT -> D3DTEXF_LINEAR)
-	if (settings->getBool("TextureFilter", true))
+	if (textureFilter == true)
 	{
 		WriteCall(reinterpret_cast<void*>(0x77DBCA), Direct3D_TextureFilterPoint_ForceLinear); //njDrawPolygon
 		WriteCall(reinterpret_cast<void*>(0x77DC79), Direct3D_TextureFilterPoint_ForceLinear); //njDrawTextureMemList
