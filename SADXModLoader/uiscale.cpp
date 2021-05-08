@@ -33,11 +33,15 @@ static std::stack<ScaleEntry, std::vector<ScaleEntry>> scale_stack;
 static constexpr float THIRD_H = 640.0f / 3.0f;
 static constexpr float THIRD_V = 480.0f / 3.0f;
 
-static bool  sprite_scale = false;
-static bool  do_scale     = false;
-static bool  _do_scale    = false;
-static float backup_h     = 0.0f;
-static float backup_v     = 0.0f;
+// @formatter:int_align_eq true
+// @formatter:int_align_declaration_names true
+static bool  sprite_scale  = false;
+static bool  do_scale      = false;
+static bool  last_do_scale = false;
+static float backup_h      = 0.0f;
+static float backup_v      = 0.0f;
+// @formatter:int_align_declaration_names restore
+// @formatter:int_align_eq restore
 
 static NJS_POINT2 region_fit  = { 0.0f, 0.0f };
 static NJS_POINT2 region_fill = { 0.0f, 0.0f };
@@ -92,13 +96,13 @@ void uiscale::scale_disable()
 	backup_v = VerticalStretch;
 	HorizontalStretch = scale_h;
 	VerticalStretch = scale_v;
-	_do_scale = do_scale;
+	last_do_scale = do_scale;
 	do_scale = false;
 }
 
 void uiscale::scale_enable()
 {
-	do_scale = _do_scale;
+	do_scale = last_do_scale;
 
 	if (do_scale)
 	{
@@ -345,11 +349,13 @@ static void scale_quad(float* x1, float* y1, float* x2, float* y2)
 	*y2 = *y2 * scale + offset.y;
 }
 
-void uiscale::scale_texmemlist(NJS_TEXTURE_VTX* list, Int count) {
+void uiscale::scale_texmemlist(NJS_TEXTURE_VTX* list, Int count)
+{
 	scale_points(list, count);
 }
 
 static NJS_SPRITE last_sprite = {};
+
 static void __cdecl sprite_push(NJS_SPRITE* sp)
 {
 	using namespace uiscale;
@@ -398,7 +404,7 @@ static Trampoline* njDrawCircle2D_t = nullptr;
 static Trampoline* DisplayVideoFrame_t = nullptr;
 static Trampoline* chCalcWorldPosFromScreenPos_t = nullptr;
 
-static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags)
+static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags)
 {
 	using namespace uiscale;
 
@@ -429,7 +435,7 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD
 	}
 }
 
-static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, float depth, Uint32 attr, QueuedModelFlagsB flags)
+static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL* points, int count, float depth, Uint32 attr, QueuedModelFlagsB flags)
 {
 	auto original = static_cast<decltype(Draw2DLinesMaybe_Queue_r)*>(Draw2DLinesMaybe_Queue_t->Target());
 
@@ -441,7 +447,7 @@ static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, f
 	original(points, count, depth, attr, flags);
 }
 
-static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygons, Int count, Int tex, Int flag)
+static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX* polygons, Int count, Int tex, Int flag)
 {
 	auto original = static_cast<decltype(njDrawTextureMemList_r)*>(njDrawTextureMemList_t->Target());
 
@@ -453,7 +459,7 @@ static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygons, Int count,
 	original(polygons, count, tex, flag);
 }
 
-static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr)
+static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL* p, Int n, Float pri, Uint32 attr)
 {
 	auto original = static_cast<decltype(njDrawTriangle2D_r)*>(njDrawTriangle2D_t->Target());
 
@@ -502,97 +508,99 @@ static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int tra
 
 static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, float y, float depth, float sclx, float scly, int unused, __int16 use_sclx, __int16 use_scly)
 {
-	if (uiscale::is_scale_enabled())
+	if (!uiscale::is_scale_enabled())
 	{
-		void __cdecl SetPreferredFilterOption();
-		SetPreferredFilterOption();
-
-		Direct3D_SetTexList(chaosprite->pTexlist);
-		njSetTextureNum_(chaosprite->TexNum);
-
-		Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSU, D3DTADDRESS_WRAP);
-		Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSV, D3DTADDRESS_WRAP);
-
-		njAlphaMode(2);
-
-		if (*(int*)0x3D08584 == 1)
-		{
-			Direct3D_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-			Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-		}
-		else
-		{
-			Direct3D_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-			Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-		}
-
-		float s0, s1, t0, t1;
-
-		if (chaosprite->adjust != 0)
-		{
-			s0 = chaosprite->s0;
-			s1 = chaosprite->s1;
-			t0 = chaosprite->t0;
-			t1 = chaosprite->t1;
-		}
-		else
-		{
-			s0 = chaosprite->s0 * 0.00390625f;
-			s1 = chaosprite->s1 * 0.00390625f;
-			t0 = chaosprite->t0 * 0.00390625f;
-			t1 = chaosprite->t1 * 0.00390625f;
-		}
-
-		const float sclx_ = sclx * chaosprite->wd;
-		const float scly_ = scly * chaosprite->ht;
-		float x1 = x;
-		float y1 = y;
-
-		if (use_sclx == 0)
-		{
-			x1 = x - 0.5f * sclx_;
-		}
-		else if (use_sclx == 1)
-		{
-			x1 = x - sclx_;
-		}
-
-		if (use_scly == 0)
-		{
-			y1 = y - 0.5f * scly_;
-		}
-		else if (use_scly == 1)
-		{
-			y1 = y - scly_;
-		}
-
-		float x2 = x1 + sclx_;
-		float y2 = y1 + scly_;
-
-		scale_quad(&x1, &y1, &x2, &y2);
-
-		const Uint32 color    = *reinterpret_cast<Uint32*>(0x3D08580);
-		const float new_depth = DoWeirdProjectionThings(depth * -1.0f);
-
-		FVFStruct_K* vbuff = reinterpret_cast<FVFStruct_K*>(GiantVertexBuffer_ptr);
-
-		vbuff[0] = {{ x1 + 0.5f, y1 + 0.5f, new_depth, 1.0f, color }, s0, t0 };
-		vbuff[1] = {{ x2 + 0.5f, y1 + 0.5f, new_depth, 1.0f, color }, s1, t0 };
-		vbuff[2] = {{ x1 + 0.5f, y2 + 0.5f, new_depth, 1.0f, color }, s0, t1 };
-		vbuff[3] = {{ x2 + 0.5f, y2 + 0.5f, new_depth, 1.0f, color }, s1, t1 };
-
-		Direct3D_Device->SetVertexShader(D3DFVF_DIFFUSE | D3DFVF_XYZRHW | 0x100);
-		Direct3D_Device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, GiantVertexBuffer_ptr, sizeof(FVFStruct_K));
-
-		Direct3D_TextureFilterLinear();
-	}
-	else {
 		auto orig = static_cast<decltype(chDrawBillboardSR_r)*>(chDrawBillboardSR_t->Target());
 		orig(chaosprite, x, y, depth, sclx, scly, unused, use_sclx, use_scly);
+		return;
 	}
+
+	// HACK: SetPreferredFilterOption is declared in dllmain.cpp and is not exposed! please fix!
+	void __cdecl SetPreferredFilterOption();
+	SetPreferredFilterOption();
+
+	Direct3D_SetTexList(chaosprite->pTexlist);
+	njSetTextureNum_(chaosprite->TexNum);
+
+	Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSU, D3DTADDRESS_WRAP);
+	Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSV, D3DTADDRESS_WRAP);
+
+	njAlphaMode(2);
+
+	if (*reinterpret_cast<int*>(0x3D08584) == 1)
+	{
+		Direct3D_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	}
+	else
+	{
+		Direct3D_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	}
+
+	float s0, s1, t0, t1;
+
+	if (chaosprite->adjust != 0)
+	{
+		s0 = chaosprite->s0;
+		s1 = chaosprite->s1;
+		t0 = chaosprite->t0;
+		t1 = chaosprite->t1;
+	}
+	else
+	{
+		s0 = chaosprite->s0 * 0.00390625f;
+		s1 = chaosprite->s1 * 0.00390625f;
+		t0 = chaosprite->t0 * 0.00390625f;
+		t1 = chaosprite->t1 * 0.00390625f;
+	}
+
+	const float sclx_ = sclx * chaosprite->wd;
+	const float scly_ = scly * chaosprite->ht;
+	float x1 = x;
+	float y1 = y;
+
+	if (use_sclx == 0)
+	{
+		x1 = x - 0.5f * sclx_;
+	}
+	else if (use_sclx == 1)
+	{
+		x1 = x - sclx_;
+	}
+
+	if (use_scly == 0)
+	{
+		y1 = y - 0.5f * scly_;
+	}
+	else if (use_scly == 1)
+	{
+		y1 = y - scly_;
+	}
+
+	float x2 = x1 + sclx_;
+	float y2 = y1 + scly_;
+
+	scale_quad(&x1, &y1, &x2, &y2);
+
+	const Uint32 color    = *reinterpret_cast<Uint32*>(0x3D08580);
+	const float new_depth = DoWeirdProjectionThings(depth * -1.0f);
+
+	FVFStruct_K* vbuff = reinterpret_cast<FVFStruct_K*>(GiantVertexBuffer_ptr);
+
+	vbuff[0] = { { x1 + 0.5f, y1 + 0.5f, new_depth, 1.0f, color }, s0, t0 };
+	vbuff[1] = { { x2 + 0.5f, y1 + 0.5f, new_depth, 1.0f, color }, s1, t0 };
+	vbuff[2] = { { x1 + 0.5f, y2 + 0.5f, new_depth, 1.0f, color }, s0, t1 };
+	vbuff[3] = { { x2 + 0.5f, y2 + 0.5f, new_depth, 1.0f, color }, s1, t1 };
+
+	Direct3D_Device->SetVertexShader(D3DFVF_DIFFUSE | D3DFVF_XYZRHW | 0x100);
+	Direct3D_Device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, GiantVertexBuffer_ptr, sizeof(FVFStruct_K));
+
+	Direct3D_TextureFilterLinear();
 }
 
-static void __cdecl njDrawCircle2D_r(NJS_POINT2COL* p, Int n, Float pri, Uint32 attr) {
+static void __cdecl njDrawCircle2D_r(NJS_POINT2COL* p, Int n, Float pri, Uint32 attr)
+{
 	auto original = static_cast<decltype(njDrawCircle2D_r)*>(njDrawCircle2D_t->Target());
 
 	if (uiscale::is_scale_enabled())
@@ -639,7 +647,8 @@ static void __cdecl chCalcWorldPosFromScreenPos_r(NJS_VECTOR* pos, NJS_VECTOR* r
 
 void uiscale::initialize_common()
 {
-	if (initialized == false) {
+	if (initialized == false)
+	{
 		update_parameters();
 		njDrawTextureMemList_init();
 
@@ -649,9 +658,9 @@ void uiscale::initialize_common()
 		Draw2DLinesMaybe_Queue_t = new Trampoline(0x00404490, 0x00404496, Draw2DLinesMaybe_Queue_r);
 		njDrawTriangle2D_t       = new Trampoline(0x0077E9F0, 0x0077E9F8, njDrawTriangle2D_r);
 		njDrawCircle2D_t         = new Trampoline(0x0077DFC0, 0x0077DFC7, njDrawCircle2D_r);
-		
+
 		// njDrawCircle2D call in njDrawTriangle2D_t is already scaled, use original function instead.
-		WriteCall((void*)0x77EA10, njDrawCircle2D_t->Target());
+		WriteCall(reinterpret_cast<void*>(0x77EA10), njDrawCircle2D_t->Target());
 
 		initialized = true;
 	}
@@ -680,7 +689,8 @@ void uiscale::setup_fmv_scale()
 	update_parameters();
 	njDrawTextureMemList_init();
 
-	if (Direct3D_DrawQuad_t == nullptr) {
+	if (Direct3D_DrawQuad_t == nullptr)
+	{
 		Direct3D_DrawQuad_t = new Trampoline(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
 	}
 

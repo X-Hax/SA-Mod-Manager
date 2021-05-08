@@ -75,13 +75,13 @@ namespace uiscale
 	float get_scale();
 
 	/**
-	 * \brief Calls a trampoline function.
-	 * \tparam T Function type
-	 * \tparam Args
-	 * \param align Alignment mode
+	 * \brief Calls a function with UI scaling enabled.
+	 * \tparam T Function type.
+	 * \tparam Args Optional arguments for the function.
+	 * \param align Alignment mode.
 	 * \param is_background Enables background scaling mode.
 	 * \param pfn The function to call.
-	 * \param args Option arguments for function.
+	 * \param args Optional arguments for the function.
 	 */
 	template <typename T, typename... Args>
 	auto scale_function(Uint8 align, bool is_background, T* const pfn, Args ... args)
@@ -122,13 +122,13 @@ namespace uiscale
 	}
 
 	/**
-	 * \brief Calls a trampoline function.
-	 * \tparam T Function type
-	 * \tparam Args
-	 * \param align Alignment mode
+	 * \brief Calls a trampoline function with UI scaling enabled.
+	 * \tparam T Function type.
+	 * \tparam Args Optional arguments for the function.
+	 * \param align Alignment mode.
 	 * \param is_background Enables background scaling mode.
 	 * \param t Trampoline
-	 * \param args Option arguments for function
+	 * \param args Optional arguments for the function.
 	 */
 	template <typename T, typename... Args>
 	auto scale_trampoline(Uint8 align, bool is_background, const T&, const Trampoline* t, Args ... args)
