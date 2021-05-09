@@ -8,7 +8,6 @@
 
 #include "SADXStructs.h"
 #include "SADXStructsNew.h"
-#include <string>
 
 // SADX Mod Loader API version.
 static const int ModLoaderVer = 10;
