@@ -1,26 +1,36 @@
 #pragma once
 
 #include <type_traits>
+#include "../include/ninja.h"
 
 namespace uiscale
 {
 	enum Align : Uint8
 	{
-		automatic,
-		horizontal_center = 1 << 0,
-		vertical_center   = 1 << 1,
-		center            = horizontal_center | vertical_center,
-		left              = 1 << 2,
-		top               = 1 << 3,
-		right             = 1 << 4,
-		bottom            = 1 << 5
+		Align_Default = 0,
+
+		Align_Left                 = 1 << 1,
+		Align_Right                = 1 << 2,
+		Align_Center_Horizontal    = Align_Left | Align_Right,
+		Align_Automatic_Horizontal = 1 << 3,
+
+		Align_Top                = 1 << 4,
+		Align_Bottom             = 1 << 5,
+		Align_Center_Vertical    = Align_Top | Align_Bottom,
+		Align_Automatic_Vertical = 1 << 6,
+
+		Align_Center    = Align_Center_Horizontal | Align_Center_Vertical,
+		Align_Automatic = Align_Automatic_Horizontal | Align_Automatic_Vertical
 	};
-	
+
+	// The order of the values in this enum are important for ensuring
+	// compatibility with the Mod Loader's configuration file. Do not
+	// change these values without also updating the mod manager!
 	enum FillMode : Uint8
 	{
-		stretch = 0,
-		fit     = 1,
-		fill    = 2
+		FillMode_Stretch = 0,
+		FillMode_Fit     = 1,
+		FillMode_Fill    = 2
 	};
 
 	extern FillMode bg_fill;
@@ -57,7 +67,7 @@ namespace uiscale
 
 	/**
 	 * \brief Push a UI scale element onto the scale stack.
-	 * \param align The alignment to use for the next drawn elements.
+	 * \param align Combination of \sa Align bits to align the next drawn UI elements.
 	 * \param is_background If \c true, treat the drawn elements as backgrounds.
 	 * \param h Horizontal scale. When in doubt, leave as \c 1.0f
 	 * \param v Vertical scale. When in doubt, leave as \c 1.0f
@@ -88,7 +98,7 @@ namespace uiscale
 	{
 		constexpr bool return_void = std::is_void<std::invoke_result_t<T, Args...>>::value;
 
-		if (is_background && bg_fill == FillMode::stretch)
+		if (is_background && bg_fill == FillMode_Stretch)
 		{
 			scale_disable();
 

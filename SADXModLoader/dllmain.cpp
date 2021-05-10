@@ -1655,7 +1655,7 @@ static void __cdecl InitMods()
 		hudscale::initialize();
 	}
 
-	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode::fill);
+	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode_Fill);
 	if (bgFill >= 0 && bgFill <= 3)
 	{
 		uiscale::bg_fill = static_cast<uiscale::FillMode>(bgFill);
@@ -1663,7 +1663,7 @@ static void __cdecl InitMods()
 		bgscale::initialize();
 	}
 
-	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode::fit);
+	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode_Fit);
 	if (fmvFill >= 0 && fmvFill <= 3)
 	{
 		uiscale::fmv_fill = static_cast<uiscale::FillMode>(fmvFill);
