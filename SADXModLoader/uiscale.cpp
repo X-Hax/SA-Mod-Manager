@@ -321,7 +321,7 @@ static void scale_vector(NJS_VECTOR* point)
 	const auto& top = scale_stack.top();
 	const uiscale::Align align = top.alignment;
 
-	NJS_POINT2 center = { point->x, point->y };
+	const NJS_POINT2 center = { point->x, point->y };
 
 	const float scale = uiscale::get_scale();
 	const NJS_POINT2 offset = get_offset(align, center);

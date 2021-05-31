@@ -128,8 +128,8 @@ namespace uiscale
 	 * \brief Push a UI scale element onto the scale stack.
 	 * \param align Combination of \sa Align bits to align the next drawn UI elements.
 	 * \param is_background If \c true, treat the drawn elements as backgrounds.
-	 * \param h Horizontal scale. When in doubt, leave as \c 1.0f
-	 * \param v Vertical scale. When in doubt, leave as \c 1.0f
+	 * \param h The horizontal reference scale to use for UI rendering. When in doubt, leave as \c 1.0f
+	 * \param v The vertical reference scale to use for UI rendering. When in doubt, leave as \c 1.0f
 	 */
 	void scale_push(Uint8 align, bool is_background, float h = 1.0f, float v = 1.0f);
 
