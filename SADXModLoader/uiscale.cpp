@@ -82,7 +82,7 @@ void uiscale::scale_push(Uint8 align, bool is_background, float h, float v)
 	}
 #endif
 
-	scale_stack.push({ (Align)align, { HorizontalStretch, VerticalStretch }, is_background });
+	scale_stack.push({ static_cast<Align>(align), { HorizontalStretch, VerticalStretch }, is_background });
 
 	HorizontalStretch = h;
 	VerticalStretch = v;
