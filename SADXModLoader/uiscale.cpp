@@ -273,6 +273,15 @@ float uiscale::get_scale()
 	return is_top_background() && bg_fill == FillMode_Fill ? scale_max : scale_min;
 }
 
+void uiscale::check_stack_balance()
+{
+	if (!scale_stack.empty())
+	{
+		// TODO: Maybe this should be a critical error?
+		PrintDebug("UI SCALE STACK IS UNBALANCED! Stack should be empty at end of frame!\n");
+	}
+}
+
 /**
  * \brief Scales and re-positions an array of structures containing the fields x and y.
  * \tparam T A structure type containing the fields x and y.

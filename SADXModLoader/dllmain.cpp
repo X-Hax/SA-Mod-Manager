@@ -187,6 +187,7 @@ static void __cdecl ProcessCodes()
 {
 	codeParser.processCodeList();
 	RaiseEvents(modFrameEvents);
+	uiscale::check_stack_balance();
 
 	const int numrows = (VerticalResolution / (int)DebugFontSize);
 	int pos = (int)msgqueue.size() <= numrows - 1 ? numrows - 1 - (msgqueue.size() - 1) : 0;

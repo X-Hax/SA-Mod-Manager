@@ -155,6 +155,11 @@ namespace uiscale
 	float get_scale();
 
 	/**
+	 * \brief Check that the stack has been emptied at the end of a frame.
+	 */
+	void check_stack_balance();
+
+	/**
 	 * \brief Calls a function with UI scaling enabled.
 	 * \tparam T Function type.
 	 * \tparam Args Optional arguments for the function.
