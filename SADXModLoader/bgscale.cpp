@@ -14,37 +14,37 @@ static Trampoline* DisplayLogoScreen_t;
 
 static void __cdecl DrawAVA_TITLE_BACK_r(float depth)
 {
-	scale_trampoline(Align::center, true, DrawAVA_TITLE_BACK_r, DrawAVA_TITLE_BACK_t, depth);
+	scale_trampoline(Align::Align_Center, true, DrawAVA_TITLE_BACK_r, DrawAVA_TITLE_BACK_t, depth);
 }
 
 static void __cdecl DrawTiledBG_AVA_BACK_r(float depth)
 {
-	scale_trampoline(Align::center, true, DrawTiledBG_AVA_BACK_r, DrawTiledBG_AVA_BACK_t, depth);
+	scale_trampoline(Align::Align_Center, true, DrawTiledBG_AVA_BACK_r, DrawTiledBG_AVA_BACK_t, depth);
 }
 
 static void __cdecl RecapBackground_Main_r(ObjectMaster* a1)
 {
-	scale_trampoline(Align::center, true, RecapBackground_Main_r, RecapBackground_Main_t, a1);
+	scale_trampoline(Align::Align_Center, true, RecapBackground_Main_r, RecapBackground_Main_t, a1);
 }
 
 static void __cdecl DisplayLogoScreen_r(Uint8 index)
 {
-	scale_trampoline(Align::center, true, DisplayLogoScreen_r, DisplayLogoScreen_t, index);
+	scale_trampoline(Align::Align_Center, true, DisplayLogoScreen_r, DisplayLogoScreen_t, index);
 }
 
 static void __cdecl TutorialBackground_Display_r(ObjectMaster* a1)
 {
 	auto orig = bg_fill;
-	bg_fill = FillMode::fit;
-	scale_trampoline(Align::center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
+	bg_fill = FillMode_Fit;
+	scale_trampoline(Align::Align_Center, true, TutorialBackground_Display_r, TutorialBackground_Display_t, a1);
 	bg_fill = orig;
 }
 
 static void __cdecl EndBG_Display_r(ObjectMaster* a1)
 {
 	auto orig = bg_fill;
-	bg_fill = FillMode::fit;
-	scale_trampoline(Align::center, true, EndBG_Display_r, EndBG_Display_t, a1);
+	bg_fill = FillMode_Fit;
+	scale_trampoline(Align::Align_Center, true, EndBG_Display_r, EndBG_Display_t, a1);
 	bg_fill = orig;
 }
 

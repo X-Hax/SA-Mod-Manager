@@ -8,8 +8,8 @@
 
 namespace uiscale
 {
-	FillMode bg_fill  = FillMode::fill;
-	FillMode fmv_fill = FillMode::fit;
+	FillMode bg_fill  = FillMode_Fill;
+	FillMode fmv_fill = FillMode_Fit;
 
 	float scale_min = 0.0f;
 	float scale_max = 0.0f;
@@ -23,7 +23,7 @@ namespace uiscale
 
 struct ScaleEntry
 {
-	Uint8 alignment;
+	uiscale::Align alignment;
 	NJS_POINT2 scale;
 	bool is_background;
 };
@@ -33,11 +33,15 @@ static std::stack<ScaleEntry, std::vector<ScaleEntry>> scale_stack;
 static constexpr float THIRD_H = 640.0f / 3.0f;
 static constexpr float THIRD_V = 480.0f / 3.0f;
 
-static bool  sprite_scale = false;
-static bool  do_scale     = false;
-static bool  _do_scale    = false;
-static float backup_h     = 0.0f;
-static float backup_v     = 0.0f;
+// @formatter:int_align_eq true
+// @formatter:int_align_declaration_names true
+static bool  sprite_scale  = false;
+static bool  do_scale      = false;
+static bool  last_do_scale = false;
+static float backup_h      = 0.0f;
+static float backup_v      = 0.0f;
+// @formatter:int_align_declaration_names restore
+// @formatter:int_align_eq restore
 
 static NJS_POINT2 region_fit  = { 0.0f, 0.0f };
 static NJS_POINT2 region_fill = { 0.0f, 0.0f };
@@ -65,7 +69,7 @@ bool uiscale::is_top_background()
 
 bool uiscale::is_scale_enabled()
 {
-	return do_scale && (!is_top_background() || bg_fill != FillMode::stretch);
+	return do_scale && (!is_top_background() || bg_fill != FillMode_Stretch);
 }
 
 void uiscale::scale_push(Uint8 align, bool is_background, float h, float v)
@@ -78,7 +82,7 @@ void uiscale::scale_push(Uint8 align, bool is_background, float h, float v)
 	}
 #endif
 
-	scale_stack.push({ align, { HorizontalStretch, VerticalStretch }, is_background });
+	scale_stack.push({ static_cast<Align>(align), { HorizontalStretch, VerticalStretch }, is_background });
 
 	HorizontalStretch = h;
 	VerticalStretch = v;
@@ -92,13 +96,13 @@ void uiscale::scale_disable()
 	backup_v = VerticalStretch;
 	HorizontalStretch = scale_h;
 	VerticalStretch = scale_v;
-	_do_scale = do_scale;
+	last_do_scale = do_scale;
 	do_scale = false;
 }
 
 void uiscale::scale_enable()
 {
-	do_scale = _do_scale;
+	do_scale = last_do_scale;
 
 	if (do_scale)
 	{
@@ -128,11 +132,9 @@ static Trampoline* DisplayAllObjects_t = nullptr;
 
 static void __cdecl DisplayAllObjects_r()
 {
-	using uiscale::Align;
-
 	if (do_scale)
 	{
-		uiscale::scale_push(Align::automatic, false, uiscale::scale_h, uiscale::scale_v);
+		uiscale::scale_push(uiscale::Align_Automatic, false, uiscale::scale_h, uiscale::scale_v);
 	}
 
 	auto original = static_cast<decltype(DisplayAllObjects_r)*>(DisplayAllObjects_t->Target());
@@ -144,82 +146,116 @@ static void __cdecl DisplayAllObjects_r()
 	}
 }
 
-static NJS_POINT2 auto_align(Uint8 align, const NJS_POINT2& center)
+static NJS_POINT2 auto_align(uiscale::Align align, const NJS_POINT2& center)
 {
 	using namespace uiscale;
 
-	if (align == Align::automatic)
+	static constexpr Uint8 mask_horizontal = Align_Left | Align_Right | Align_Automatic_Horizontal;
+	static constexpr Uint8 mask_vertical = Align_Top | Align_Bottom | Align_Automatic_Vertical;
+
+	Uint8 actual_alignment = align;
+
+	if (actual_alignment & Align_Automatic_Horizontal)
 	{
+		actual_alignment &= ~(Align_Left | Align_Right);
+
 		if (center.x < THIRD_H)
 		{
-			align |= Align::left;
+			actual_alignment |= Align_Left;
 		}
 		else if (center.x < THIRD_H * 2.0f)
 		{
-			align |= Align::horizontal_center;
+			actual_alignment |= Align_Center_Horizontal;
 		}
 		else
 		{
-			align |= Align::right;
+			actual_alignment |= Align_Right;
 		}
+	}
+
+	if (actual_alignment & Align_Automatic_Vertical)
+	{
+		actual_alignment &= ~(Align_Top | Align_Bottom);
 
 		if (center.y < THIRD_V)
 		{
-			align |= Align::top;
+			actual_alignment |= Align_Top;
 		}
 		else if (center.y < THIRD_V * 2.0f)
 		{
-			align |= Align::vertical_center;
+			actual_alignment |= Align_Center_Vertical;
 		}
 		else
 		{
-			align |= Align::bottom;
+			actual_alignment |= Align_Bottom;
 		}
+	}
+
+	if (!(actual_alignment & mask_horizontal))
+	{
+		actual_alignment |= Align_Left;
+	}
+
+	if (!(actual_alignment & mask_vertical))
+	{
+		actual_alignment |= Align_Top;
 	}
 
 	NJS_POINT2 result = {};
-	const auto h = static_cast<float>(HorizontalResolution);
-	const auto v = static_cast<float>(VerticalResolution);
+	const auto width = static_cast<float>(HorizontalResolution);
+	const auto height = static_cast<float>(VerticalResolution);
 
-	if (align & Align::horizontal_center)
+	switch (actual_alignment & mask_horizontal)
 	{
-		if (h / scale_v > 640.0f)
-		{
-			result.x = (h - region_fit.x) / 2.0f;
-		}
-	}
-	else if (align & Align::right)
-	{
-		result.x = h - region_fit.x;
+		default:
+		case Align_Left:
+			break;
+
+		case Align_Center_Horizontal:
+			if (width / scale_v > 640.0f)
+			{
+				result.x = (width - region_fit.x) / 2.0f;
+			}
+			break;
+
+		case Align_Right:
+			result.x = width - region_fit.x;
+			break;
 	}
 
-	if (align & Align::vertical_center)
+	switch (actual_alignment & mask_vertical)
 	{
-		if (v / scale_h > 480.0f)
-		{
-			result.y = (v - region_fit.y) / 2.0f;
-		}
-	}
-	else if (align & Align::bottom)
-	{
-		result.y = v - region_fit.y;
+		default:
+		case Align_Top:
+			break;
+
+		case Align_Center_Vertical:
+			if (height / scale_h > 480.0f)
+			{
+				result.y = (height - region_fit.y) / 2.0f;
+			}
+			break;
+
+		case Align_Bottom:
+			result.y = height - region_fit.y;
+			break;
 	}
 
 	return result;
 }
 
-static NJS_POINT2 auto_align(Uint8 align, const NJS_POINT3& center)
+static NJS_POINT2 auto_align(uiscale::Align align, const NJS_POINT3& center)
 {
 	return auto_align(align, *reinterpret_cast<const NJS_POINT2*>(&center));
 }
 
-inline NJS_POINT2 get_offset(Uint8 align, const NJS_POINT2& center)
+inline NJS_POINT2 get_offset(uiscale::Align align, const NJS_POINT2& center)
 {
 	NJS_POINT2 offset;
 
 	// if we're scaling a background with fill mode, manually set
 	// coordinate offset so the entire image lands in the center.
-	if (uiscale::is_top_background() && uiscale::bg_fill == uiscale::FillMode::fill)
+	if (uiscale::is_top_background() && uiscale::bg_fill == uiscale::FillMode_Fill)
 	{
 		offset.x = (static_cast<float>(HorizontalResolution) - region_fill.x) / 2.0f;
 		offset.y = (static_cast<float>(VerticalResolution) - region_fill.y) / 2.0f;
@@ -234,7 +270,16 @@ inline NJS_POINT2 get_offset(Uint8 align, const NJS_POINT2& center)
 
 float uiscale::get_scale()
 {
-	return is_top_background() && bg_fill == FillMode::fill ? scale_max : scale_min;
+	return is_top_background() && bg_fill == FillMode_Fill ? scale_max : scale_min;
+}
+
+void uiscale::check_stack_balance()
+{
+	if (!scale_stack.empty())
+	{
+		// TODO: Maybe this should be a critical error?
+		PrintDebug("UI SCALE STACK IS UNBALANCED! Stack should be empty at end of frame!\n");
+	}
 }
 
 /**
@@ -252,7 +297,7 @@ static void scale_points(T* points, size_t count)
 	}
 
 	const auto& top = scale_stack.top();
-	const Uint8 align = top.alignment;
+	const uiscale::Align align = top.alignment;
 
 	NJS_POINT2 center = {};
 	const auto m = 1.0f / static_cast<float>(count);
@@ -275,27 +320,24 @@ static void scale_points(T* points, size_t count)
 	}
 }
 
-template <typename T>
-static void scale_point(T* point) {
+static void scale_vector(NJS_VECTOR* point)
+{
 	if (sprite_scale || scale_stack.empty())
 	{
 		return;
 	}
 
 	const auto& top = scale_stack.top();
-	const Uint8 align = top.alignment;
+	const uiscale::Align align = top.alignment;
 
-	NJS_POINT2 center = { point->x, point->y };
+	const NJS_POINT2 center = { point->x, point->y };
 
 	const float scale = uiscale::get_scale();
 	const NJS_POINT2 offset = get_offset(align, center);
 
 	point->x = point->x * scale + offset.x;
 	point->y = point->y * scale + offset.y;
-
-	if (typeid(T) == typeid(NJS_VECTOR)) {
-		point->z *= 1.0f / scale;
-	}
+	point->z *= 1.0f / scale;
 }
 
 static void scale_quad_ex(NJS_QUAD_TEXTURE_EX* quad)
@@ -306,7 +348,7 @@ static void scale_quad_ex(NJS_QUAD_TEXTURE_EX* quad)
 	}
 
 	const auto& top = scale_stack.top();
-	const Uint8 align = top.alignment;
+	const uiscale::Align align = top.alignment;
 
 	const NJS_POINT2 center = {
 		quad->x + (quad->vx1 / 2.0f),
@@ -324,11 +366,37 @@ static void scale_quad_ex(NJS_QUAD_TEXTURE_EX* quad)
 	quad->vy2 *= scale;
 }
 
-void uiscale::scale_texmemlist(NJS_TEXTURE_VTX* list, Int count) {
+static void scale_quad(float* x1, float* y1, float* x2, float* y2)
+{
+	if (sprite_scale || scale_stack.empty())
+	{
+		return;
+	}
+
+	const auto& top = scale_stack.top();
+	const uiscale::Align align = top.alignment;
+
+	const NJS_POINT2 center = {
+		*x1 + (*x2 / 2.0f),
+		*y1 + (*y2 / 2.0f)
+	};
+
+	const float scale = uiscale::get_scale();
+	const NJS_POINT2 offset = get_offset(align, center);
+
+	*x1 = *x1 * scale + offset.x;
+	*y1 = *y1 * scale + offset.y;
+	*x2 = *x2 * scale + offset.x;
+	*y2 = *y2 * scale + offset.y;
+}
+
+void uiscale::scale_texmemlist(NJS_TEXTURE_VTX* list, Int count)
+{
 	scale_points(list, count);
 }
 
 static NJS_SPRITE last_sprite = {};
+
 static void __cdecl sprite_push(NJS_SPRITE* sp)
 {
 	using namespace uiscale;
@@ -341,7 +409,7 @@ static void __cdecl sprite_push(NJS_SPRITE* sp)
 	}
 
 	const auto& top = scale_stack.top();
-	const Uint8 align = top.alignment;
+	const Align align = top.alignment;
 
 	const NJS_POINT2 offset = auto_align(align, sp->p);
 
@@ -377,7 +445,7 @@ static Trampoline* njDrawCircle2D_t = nullptr;
 static Trampoline* DisplayVideoFrame_t = nullptr;
 static Trampoline* chCalcWorldPosFromScreenPos_t = nullptr;
 
-static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags)
+static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, NJD_SPRITE attr, QueuedModelFlagsB queue_flags)
 {
 	using namespace uiscale;
 
@@ -408,7 +476,7 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE *sp, Int n, Float pri, NJD
 	}
 }
 
-static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, float depth, Uint32 attr, QueuedModelFlagsB flags)
+static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL* points, int count, float depth, Uint32 attr, QueuedModelFlagsB flags)
 {
 	auto original = static_cast<decltype(Draw2DLinesMaybe_Queue_r)*>(Draw2DLinesMaybe_Queue_t->Target());
 
@@ -420,7 +488,7 @@ static void __cdecl Draw2DLinesMaybe_Queue_r(NJS_POINT2COL *points, int count, f
 	original(points, count, depth, attr, flags);
 }
 
-static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygons, Int count, Int tex, Int flag)
+static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX* polygons, Int count, Int tex, Int flag)
 {
 	auto original = static_cast<decltype(njDrawTextureMemList_r)*>(njDrawTextureMemList_t->Target());
 
@@ -432,7 +500,7 @@ static void __cdecl njDrawTextureMemList_r(NJS_TEXTURE_VTX *polygons, Int count,
 	original(polygons, count, tex, flag);
 }
 
-static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL *p, Int n, Float pri, Uint32 attr)
+static void __cdecl njDrawTriangle2D_r(NJS_POINT2COL* p, Int n, Float pri, Uint32 attr)
 {
 	auto original = static_cast<decltype(njDrawTriangle2D_r)*>(njDrawTriangle2D_t->Target());
 
@@ -481,75 +549,99 @@ static void __cdecl njDrawPolygon_r(NJS_POLYGON_VTX* polygon, Int count, Int tra
 
 static void __cdecl chDrawBillboardSR_r(CHS_BILL_INFO* chaosprite, float x, float y, float depth, float sclx, float scly, int unused, __int16 use_sclx, __int16 use_scly)
 {
-	if (uiscale::is_scale_enabled())
+	if (!uiscale::is_scale_enabled())
 	{
-		Direct3D_SetTexList(chaosprite->pTexlist);
-		SetHudColorAndTextureNum(chaosprite->TexNum, *(NJS_COLOR*)0x3D08580);
-		Direct3D_EnableHudAlpha(true);
-
-		if (*(int*)0x3D08584 == 1)
-		{
-			Direct3D_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-			Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-		}
-		else
-		{
-			Direct3D_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-			Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-		}
-
-		float sclx_ = sclx * chaosprite->wd;
-		float scly_ = scly * chaosprite->ht;
-		float s0, s1, t0, t1;
-
-		if (chaosprite->adjust != 0)
-		{
-			s0 = chaosprite->s0;
-			s1 = chaosprite->s1;
-			t0 = chaosprite->t0;
-			t1 = chaosprite->t1;
-		}
-		else
-		{
-			s0 = chaosprite->s0 * 0.00390625f;
-			s1 = chaosprite->s1 * 0.00390625f;
-			t0 = chaosprite->t0 * 0.00390625f;
-			t1 = chaosprite->t1 * 0.00390625f;
-		}
-
-		float new_x = x;
-		float new_y = y;
-
-		if (use_sclx == 0)
-		{
-			new_x = x - 0.5f * sclx_;
-		}
-		else if (use_sclx == 1) 
-		{
-			new_x = x - sclx_;
-		}
-
-		if (use_scly == 0)
-		{
-			new_y = y - 0.5f * scly_;
-		}
-		else if (use_scly == 1)
-		{
-			new_y = y - scly_;
-		}
-
-		NJS_QUAD_TEXTURE quad = { new_x + 0.5f, new_y + 0.5f, new_x + sclx_ + 0.5f, new_y + scly_ + 0.5f, s0, t0, s1, t1 };
-		DrawRectPoints((NJS_POINT2*)&quad, depth * -1.0f);
-
-		Direct3D_TextureFilterLinear();
-	}
-	else {
 		auto orig = static_cast<decltype(chDrawBillboardSR_r)*>(chDrawBillboardSR_t->Target());
 		orig(chaosprite, x, y, depth, sclx, scly, unused, use_sclx, use_scly);
+		return;
 	}
+
+	// HACK: SetPreferredFilterOption is declared in dllmain.cpp and is not exposed! please fix!
+	void __cdecl SetPreferredFilterOption();
+	SetPreferredFilterOption();
+
+	Direct3D_SetTexList(chaosprite->pTexlist);
+	njSetTextureNum_(chaosprite->TexNum);
+
+	Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSU, D3DTADDRESS_WRAP);
+	Direct3D_Device->SetTextureStageState(0, D3DTSS_ADDRESSV, D3DTADDRESS_WRAP);
+
+	njAlphaMode(2);
+
+	if (*reinterpret_cast<int*>(0x3D08584) == 1)
+	{
+		Direct3D_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	}
+	else
+	{
+		Direct3D_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		Direct3D_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	}
+
+	float s0, s1, t0, t1;
+
+	if (chaosprite->adjust != 0)
+	{
+		s0 = chaosprite->s0;
+		s1 = chaosprite->s1;
+		t0 = chaosprite->t0;
+		t1 = chaosprite->t1;
+	}
+	else
+	{
+		s0 = chaosprite->s0 * 0.00390625f;
+		s1 = chaosprite->s1 * 0.00390625f;
+		t0 = chaosprite->t0 * 0.00390625f;
+		t1 = chaosprite->t1 * 0.00390625f;
+	}
+
+	const float sclx_ = sclx * chaosprite->wd;
+	const float scly_ = scly * chaosprite->ht;
+	float x1 = x;
+	float y1 = y;
+
+	if (use_sclx == 0)
+	{
+		x1 = x - 0.5f * sclx_;
+	}
+	else if (use_sclx == 1)
+	{
+		x1 = x - sclx_;
+	}
+
+	if (use_scly == 0)
+	{
+		y1 = y - 0.5f * scly_;
+	}
+	else if (use_scly == 1)
+	{
+		y1 = y - scly_;
+	}
+
+	float x2 = x1 + sclx_;
+	float y2 = y1 + scly_;
+
+	scale_quad(&x1, &y1, &x2, &y2);
+
+	const Uint32 color    = *reinterpret_cast<Uint32*>(0x3D08580);
+	const float new_depth = DoWeirdProjectionThings(depth * -1.0f);
+
+	FVFStruct_K* vbuff = reinterpret_cast<FVFStruct_K*>(GiantVertexBuffer_ptr);
+
+	vbuff[0] = { { x1 + 0.5f, y1 + 0.5f, new_depth, 1.0f, color }, s0, t0 };
+	vbuff[1] = { { x2 + 0.5f, y1 + 0.5f, new_depth, 1.0f, color }, s1, t0 };
+	vbuff[2] = { { x1 + 0.5f, y2 + 0.5f, new_depth, 1.0f, color }, s0, t1 };
+	vbuff[3] = { { x2 + 0.5f, y2 + 0.5f, new_depth, 1.0f, color }, s1, t1 };
+
+	Direct3D_Device->SetVertexShader(D3DFVF_DIFFUSE | D3DFVF_XYZRHW | 0x100);
+	Direct3D_Device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, GiantVertexBuffer_ptr, sizeof(FVFStruct_K));
+
+	Direct3D_TextureFilterLinear();
 }
 
-static void __cdecl njDrawCircle2D_r(NJS_POINT2COL* p, Int n, Float pri, Uint32 attr) {
+static void __cdecl njDrawCircle2D_r(NJS_POINT2COL* p, Int n, Float pri, Uint32 attr)
+{
 	auto original = static_cast<decltype(njDrawCircle2D_r)*>(njDrawCircle2D_t->Target());
 
 	if (uiscale::is_scale_enabled())
@@ -576,16 +668,17 @@ static void __cdecl DisplayVideoFrame_r(int width, int height)
 
 	auto orig = bg_fill;
 	bg_fill = fmv_fill;
-	scale_trampoline(center, true, DisplayVideoFrame_r, DisplayVideoFrame_t, width, height);
+	scale_trampoline(Align_Center, true, DisplayVideoFrame_r, DisplayVideoFrame_t, width, height);
 	bg_fill = orig;
 }
 
-static void __cdecl chCalcWorldPosFromScreenPos_r(NJS_VECTOR* pos, NJS_VECTOR* ret) {
+static void __cdecl chCalcWorldPosFromScreenPos_r(NJS_VECTOR* pos, NJS_VECTOR* ret)
+{
 	auto orig = static_cast<decltype(chCalcWorldPosFromScreenPos_r)*>(chCalcWorldPosFromScreenPos_t->Target());
 
 	if (uiscale::is_scale_enabled())
 	{
-		scale_point(pos);
+		scale_vector(pos);
 	}
 
 	orig(pos, ret);
@@ -593,8 +686,10 @@ static void __cdecl chCalcWorldPosFromScreenPos_r(NJS_VECTOR* pos, NJS_VECTOR* r
 
 #pragma endregion
 
-void uiscale::initialize_common() {
-	if (initialized == false) {
+void uiscale::initialize_common()
+{
+	if (initialized == false)
+	{
 		update_parameters();
 		njDrawTextureMemList_init();
 
@@ -610,7 +705,7 @@ void uiscale::initialize_common() {
 		WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(chDrawBillboardSR_t->Target()) + 4), Direct3D_TextureFilterPoint);
 
 		// njDrawCircle2D call in njDrawTriangle2D_t is already scaled, use original function instead.
-		WriteCall((void*)0x77EA10, njDrawCircle2D_t->Target());
+		WriteCall(reinterpret_cast<void*>(0x77EA10), njDrawCircle2D_t->Target());
 
 		initialized = true;
 	}
@@ -634,7 +729,8 @@ void uiscale::setup_fmv_scale()
 	update_parameters();
 	njDrawTextureMemList_init();
 
-	if (Direct3D_DrawQuad_t == nullptr) {
+	if (Direct3D_DrawQuad_t == nullptr)
+	{
 		Direct3D_DrawQuad_t = new Trampoline(0x0077DE10, 0x0077DE18, Direct3D_DrawQuad_r);
 	}
 

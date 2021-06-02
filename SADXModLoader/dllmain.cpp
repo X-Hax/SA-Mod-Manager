@@ -187,6 +187,7 @@ static void __cdecl ProcessCodes()
 {
 	codeParser.processCodeList();
 	RaiseEvents(modFrameEvents);
+	uiscale::check_stack_balance();
 
 	const int numrows = (VerticalResolution / (int)DebugFontSize);
 	int pos = (int)msgqueue.size() <= numrows - 1 ? numrows - 1 - (msgqueue.size() - 1) : 0;
@@ -360,6 +361,7 @@ static unsigned int screenNum           = 1;
 static bool customWindowSize            = false;
 static int customWindowWidth            = 640;
 static int customWindowHeight           = 480;
+static bool textureFilter               = true;
 
 static BOOL CALLBACK GetMonitorSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
 {
@@ -1242,12 +1244,12 @@ int RegisterMusicFile(const MusicInfo& track)
 	return _MusicList.size() - 1;
 }
 
-void LoadEXEData(const wchar_t* filename, const wstring &mod_dir)
+void LoadEXEData(const wchar_t* filename, const wchar_t *mod_dir)
 {
 	ProcessEXEData(filename, mod_dir);
 }
 
-void LoadDLLData(const wchar_t* filename, const std::wstring &mod_dir)
+void LoadDLLData(const wchar_t* filename, const wchar_t *mod_dir)
 {
 	ProcessDLLData(filename, mod_dir);
 }
@@ -1427,6 +1429,18 @@ void __cdecl Direct3D_TextureFilterPoint_ForceLinear()
 	Direct3D_Device->SetTextureStageState(0, D3DTSS_MIPFILTER, D3DTEXF_LINEAR);
 }
 
+void __cdecl SetPreferredFilterOption()
+{
+	if (textureFilter == true)
+	{
+		Direct3D_TextureFilterPoint_ForceLinear();
+	}
+	else
+	{
+		Direct3D_TextureFilterPoint();
+	}
+}
+
 void __cdecl Direct3D_EnableHudAlpha_Point(bool enable)
 {
 	Direct3D_EnableHudAlpha(enable);
@@ -1441,6 +1455,10 @@ void __cdecl njDrawTextureMemList_NoFilter(NJS_TEXTURE_VTX* polygons, Int count,
 	if (uiscale::is_scale_enabled() == true) uiscale::scale_texmemlist(polygons, count);
 	DrawRect_TextureVertexTriangleStrip(polygons, count);
 	Direct3D_TextureFilterLinear();
+}
+
+void __cdecl FixLandTableLightType() {
+	Direct3D_PerformLighting(0);
 }
 
 static void __cdecl InitMods()
@@ -1544,6 +1562,7 @@ static void __cdecl InitMods()
 	customWindowWidth  = settings->getInt("WindowWidth", 640);
 	customWindowHeight = settings->getInt("WindowHeight", 480);
 	windowResize       = settings->getBool("ResizableWindow") && !customWindowSize;
+	textureFilter      = settings->getBool("TextureFilter", true);
 
 	if (!borderlessWindow)
 	{
@@ -1628,6 +1647,9 @@ static void __cdecl InitMods()
 	// Chao stat panel screen dimensions fix
 	WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
 
+	// Fix light incorrectly being applied on LandTables
+	WriteCall((void*)0x0043A6D5, FixLandTableLightType);
+
 	ChunkSpecularFix_Init();
 
 	texpack::init();
@@ -1636,7 +1658,7 @@ static void __cdecl InitMods()
 	SetRDataWriteProtection(false);
 
 	// Enables GUI texture filtering (D3DTEXF_POINT -> D3DTEXF_LINEAR)
-	if (settings->getBool("TextureFilter", true))
+	if (textureFilter == true)
 	{
 		WriteCall(reinterpret_cast<void*>(0x77DBCA), Direct3D_TextureFilterPoint_ForceLinear); //njDrawPolygon
 		WriteCall(reinterpret_cast<void*>(0x77DC79), Direct3D_TextureFilterPoint_ForceLinear); //njDrawTextureMemList
@@ -1659,7 +1681,7 @@ static void __cdecl InitMods()
 		hudscale::initialize();
 	}
 
-	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode::fill);
+	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode_Fill);
 	if (bgFill >= 0 && bgFill <= 3)
 	{
 		uiscale::bg_fill = static_cast<uiscale::FillMode>(bgFill);
@@ -1667,7 +1689,7 @@ static void __cdecl InitMods()
 		bgscale::initialize();
 	}
 
-	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode::fit);
+	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode_Fit);
 	if (fmvFill >= 0 && fmvFill <= 3)
 	{
 		uiscale::fmv_fill = static_cast<uiscale::FillMode>(fmvFill);

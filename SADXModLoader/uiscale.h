@@ -2,6 +2,7 @@
 
 #include <type_traits>
 #include "ScaleInfo.h"
+#include "../include/ninja.h"
 
 namespace uiscale
 {
@@ -39,14 +40,22 @@ namespace uiscale
 
 	/**
 	 * \brief Push a UI scale element onto the scale stack.
-	 * \param align The alignment to use for the next drawn elements.
+	 * \param align Combination of \sa Align bits to align the next drawn UI elements.
 	 * \param is_background If \c true, treat the drawn elements as backgrounds.
-	 * \param h Horizontal scale. When in doubt, leave as \c 1.0f
-	 * \param v Vertical scale. When in doubt, leave as \c 1.0f
+	 * \param h The horizontal reference scale to use for UI rendering. When in doubt, leave as \c 1.0f
+	 * \param v The vertical reference scale to use for UI rendering. When in doubt, leave as \c 1.0f
 	 */
 	void scale_push(Uint8 align, bool is_background, float h = 1.0f, float v = 1.0f);
 
+	/**
+	 * \brief Disable UI scaling for the next drawn UI element.
+	 * Must have matching call to scale_enable()
+	 */
 	void scale_disable();
+
+	/**
+	 * \brief Enable UI scaling for the next drawn UI element.
+	 */
 	void scale_enable();
 
 	/**
@@ -54,23 +63,31 @@ namespace uiscale
 	 */
 	void scale_pop();
 
+	/**
+	 * \brief Get the current uniform scale factor for UI elements.
+	 */
 	float get_scale();
 
 	/**
-	 * \brief Calls a trampoline function.
-	 * \tparam T Function type
-	 * \tparam Args
-	 * \param align Alignment mode
+	 * \brief Check that the stack has been emptied at the end of a frame.
+	 */
+	void check_stack_balance();
+
+	/**
+	 * \brief Calls a function with UI scaling enabled.
+	 * \tparam T Function type.
+	 * \tparam Args Optional arguments for the function.
+	 * \param align Alignment mode.
 	 * \param is_background Enables background scaling mode.
 	 * \param pfn The function to call.
-	 * \param args Option arguments for function.
+	 * \param args Optional arguments for the function.
 	 */
 	template <typename T, typename... Args>
 	auto scale_function(Uint8 align, bool is_background, T* const pfn, Args ... args)
 	{
 		constexpr bool return_void = std::is_void<std::invoke_result_t<T, Args...>>::value;
 
-		if (is_background && bg_fill == FillMode::stretch)
+		if (is_background && bg_fill == FillMode_Stretch)
 		{
 			scale_disable();
 
@@ -104,13 +121,13 @@ namespace uiscale
 	}
 
 	/**
-	 * \brief Calls a trampoline function.
-	 * \tparam T Function type
-	 * \tparam Args
-	 * \param align Alignment mode
+	 * \brief Calls a trampoline function with UI scaling enabled.
+	 * \tparam T Function type.
+	 * \tparam Args Optional arguments for the function.
+	 * \param align Alignment mode.
 	 * \param is_background Enables background scaling mode.
 	 * \param t Trampoline
-	 * \param args Option arguments for function
+	 * \param args Optional arguments for the function.
 	 */
 	template <typename T, typename... Args>
 	auto scale_trampoline(Uint8 align, bool is_background, const T&, const Trampoline* t, Args ... args)

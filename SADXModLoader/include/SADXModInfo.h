@@ -111,34 +111,36 @@ struct HelperFunctions
 
 	// Loads and processes an EXEData INI file.
 	// Requires version >= 10.
-	void(__cdecl *LoadEXEData)(const wchar_t *filename, const std::wstring &mod_dir);
+	void(__cdecl *LoadEXEData)(const wchar_t *filename, const wchar_t *mod_dir);
 
 	// Loads and processes a DLLData INI file.
 	// Requires version >= 10.
-	void(__cdecl *LoadDLLData)(const wchar_t *filename, const std::wstring &mod_dir);
+	void(__cdecl *LoadDLLData)(const wchar_t *filename, const wchar_t *mod_dir);
 
 	// Replaces the source file with the destination file without checking if the destination file is also being replaced.
 	// Requires version >= 10.
 	void(__cdecl* ReplaceFileForce)(const char* src, const char* dst);
 
 	/**
-	* @brief Adds a UI scale method to the queue, scaling all sprites drawn between this and PopScaleUI.
+	* @brief Push a UI scale element onto the scale stack.
 	*
-	* By default, draw your sprites as if they were in a 640x480 window and the mod loader will handle scaling.
+	* By default, draw your sprites as if they were in a 640x480 canvas and the mod loader will handle scaling.
+	* Once the sprites are drawn, please remove the UI scale element from the stack with PopScaleUI.
 	* Requires version >= 11.
 	*
-	* @param align: The frame anchor.
-	* @param background: Indicates if the frame should be treated as background.
-	* @param ratio_h: The horizontal ratio of the frame (1.0f by default.)
-	* @param ratio_v: The vertical ratio of the frame (1.0f by default.)
+	* @param align: The canvas anchor.
+	* @param background: Indicates if the canvas should be treated as background.
+	* @param ratio_h: The horizontal ratio of the canvas. When in doubt, leave as \c 1.0f
+	* @param ratio_v: The vertical ratio of the canvas. When in doubt, leave as \c 1.0f
 	*/
 	void(__cdecl* PushScaleUI)(uiscale::Align align, bool is_background, float ratio_h, float ratio_v);
 
-	// Removes the latest UI scale method from the queue.
+	// Pop a UI scale element off of the top of the scale stack.
 	// Requires version >= 11.
 	void(__cdecl* PopScaleUI)();
 
-	// Force a specific filling method for background sprites, make sure to reset the original value once you're done.
+	// Force a specific filling method for background sprites.
+	// Make sure to reset the original value.
 	// Requires version >= 11.
 	void(__cdecl* SetScaleFillMode)(uiscale::FillMode mode);
 
