@@ -109,6 +109,11 @@ static void ProcessActionArrayDLL(const IniGroup* group, void* exp)
 	}
 }
 
+static void ProcessMotionArrayDLL(const IniGroup* group, void* exp)
+{
+	((NJS_MOTION**)exp)[group->getInt("Index")] = (NJS_MOTION*)dlllabels[group->getString("Label")];
+}
+
 using dlldatafunc_t = void(__cdecl*)(const IniGroup* group, void* exp);
 
 static const unordered_map<string, dlldatafunc_t> dlldatafuncmap = {
@@ -123,6 +128,7 @@ static const unordered_map<string, dlldatafunc_t> dlldatafuncmap = {
 	{ "morph",             ProcessMorphDLL },
 	{ "modelsarray",       ProcessModelsArrayDLL },
 	{ "actionarray",       ProcessActionArrayDLL },
+	{ "motionarray",       ProcessMotionArrayDLL },
 };
 
 /*
