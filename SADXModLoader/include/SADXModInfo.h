@@ -8,9 +8,10 @@
 
 #include "SADXStructs.h"
 #include "SADXStructsNew.h"
+#include "ScaleInfo.h"
 
 // SADX Mod Loader API version.
-static const int ModLoaderVer = 10;
+static const int ModLoaderVer = 11;
 
 struct PatchInfo
 {
@@ -38,6 +39,7 @@ struct PointerList
 };
 
 #undef ReplaceFile // Windows function macro
+
 struct HelperFunctions
 {
 	// The version of the structure.
@@ -117,6 +119,33 @@ struct HelperFunctions
 	// Replaces the source file with the destination file without checking if the destination file is also being replaced.
 	// Requires version >= 10.
 	void(__cdecl* ReplaceFileForce)(const char* src, const char* dst);
+
+	/**
+	* @brief Push a UI scale element onto the scale stack.
+	*
+	* By default, draw your sprites as if they were in a 640x480 canvas and the mod loader will handle scaling.
+	* Once the sprites are drawn, please remove the UI scale element from the stack with PopScaleUI.
+	* Requires version >= 11.
+	*
+	* @param align: The canvas anchor.
+	* @param background: Indicates if the canvas should be treated as background.
+	* @param ratio_h: The horizontal ratio of the canvas. When in doubt, leave as \c 1.0f
+	* @param ratio_v: The vertical ratio of the canvas. When in doubt, leave as \c 1.0f
+	*/
+	void(__cdecl* PushScaleUI)(uiscale::Align align, bool is_background, float ratio_h, float ratio_v);
+
+	// Pop a UI scale element off of the top of the scale stack.
+	// Requires version >= 11.
+	void(__cdecl* PopScaleUI)();
+
+	// Force a specific filling method for background sprites.
+	// Make sure to reset the original value.
+	// Requires version >= 11.
+	void(__cdecl* SetScaleFillMode)(uiscale::FillMode mode);
+
+	// Returns the current filling method for background sprites.
+	// Requires version >= 11.
+	uiscale::FillMode(__cdecl* GetScaleFillMode)();
 };
 
 typedef void(__cdecl *ModInitFunc)(const char *path, const HelperFunctions &helperFunctions);

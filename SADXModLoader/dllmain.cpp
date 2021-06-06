@@ -187,6 +187,7 @@ static void __cdecl ProcessCodes()
 {
 	codeParser.processCodeList();
 	RaiseEvents(modFrameEvents);
+	uiscale::check_stack_balance();
 
 	const int numrows = (VerticalResolution / (int)DebugFontSize);
 	int pos = (int)msgqueue.size() <= numrows - 1 ? numrows - 1 - (msgqueue.size() - 1) : 0;
@@ -1253,6 +1254,27 @@ void LoadDLLData(const wchar_t* filename, const wchar_t *mod_dir)
 	ProcessDLLData(filename, mod_dir);
 }
 
+void PushScaleUI(uiscale::Align align, bool is_background, float ratio_h, float ratio_v)
+{
+	uiscale::initialize_common(); // make sure sprite functions are hooked
+	uiscale::scale_push(align, is_background, ratio_h, ratio_v);
+}
+
+void PopScaleUI()
+{
+	uiscale::scale_pop();
+}
+
+void SetScaleFillMode(uiscale::FillMode mode)
+{
+	uiscale::bg_fill = mode;
+}
+
+uiscale::FillMode GetScaleFillMode()
+{
+	return uiscale::bg_fill;
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
@@ -1280,6 +1302,10 @@ static const HelperFunctions helperFunctions =
 	&LoadEXEData,
 	&LoadDLLData,
 	&_ReplaceFileForce,
+	&PushScaleUI,
+	&PopScaleUI,
+	&SetScaleFillMode,
+	&GetScaleFillMode
 };
 
 static const char* const dlldatakeys[] = {
@@ -1655,7 +1681,7 @@ static void __cdecl InitMods()
 		hudscale::initialize();
 	}
 
-	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode::fill);
+	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode_Fill);
 	if (bgFill >= 0 && bgFill <= 3)
 	{
 		uiscale::bg_fill = static_cast<uiscale::FillMode>(bgFill);
@@ -1663,7 +1689,7 @@ static void __cdecl InitMods()
 		bgscale::initialize();
 	}
 
-	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode::fit);
+	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode_Fit);
 	if (fmvFill >= 0 && fmvFill <= 3)
 	{
 		uiscale::fmv_fill = static_cast<uiscale::FillMode>(fmvFill);

@@ -1,28 +1,11 @@
 #pragma once
 
 #include <type_traits>
+#include "ScaleInfo.h"
+#include "../include/ninja.h"
 
 namespace uiscale
 {
-	enum Align : Uint8
-	{
-		automatic,
-		horizontal_center = 1 << 0,
-		vertical_center   = 1 << 1,
-		center            = horizontal_center | vertical_center,
-		left              = 1 << 2,
-		top               = 1 << 3,
-		right             = 1 << 4,
-		bottom            = 1 << 5
-	};
-	
-	enum FillMode : Uint8
-	{
-		stretch = 0,
-		fit     = 1,
-		fill    = 2
-	};
-
 	extern FillMode bg_fill;
 	extern FillMode fmv_fill;
 
@@ -57,14 +40,22 @@ namespace uiscale
 
 	/**
 	 * \brief Push a UI scale element onto the scale stack.
-	 * \param align The alignment to use for the next drawn elements.
+	 * \param align Combination of \sa Align bits to align the next drawn UI elements.
 	 * \param is_background If \c true, treat the drawn elements as backgrounds.
-	 * \param h Horizontal scale. When in doubt, leave as \c 1.0f
-	 * \param v Vertical scale. When in doubt, leave as \c 1.0f
+	 * \param h The horizontal reference scale to use for UI rendering. When in doubt, leave as \c 1.0f
+	 * \param v The vertical reference scale to use for UI rendering. When in doubt, leave as \c 1.0f
 	 */
 	void scale_push(Uint8 align, bool is_background, float h = 1.0f, float v = 1.0f);
 
+	/**
+	 * \brief Disable UI scaling for the next drawn UI element.
+	 * Must have matching call to scale_enable()
+	 */
 	void scale_disable();
+
+	/**
+	 * \brief Enable UI scaling for the next drawn UI element.
+	 */
 	void scale_enable();
 
 	/**
@@ -72,7 +63,15 @@ namespace uiscale
 	 */
 	void scale_pop();
 
+	/**
+	 * \brief Get the current uniform scale factor for UI elements.
+	 */
 	float get_scale();
+
+	/**
+	 * \brief Check that the stack has been emptied at the end of a frame.
+	 */
+	void check_stack_balance();
 
 	/**
 	 * \brief Calls a function with UI scaling enabled.
@@ -88,7 +87,7 @@ namespace uiscale
 	{
 		constexpr bool return_void = std::is_void<std::invoke_result_t<T, Args...>>::value;
 
-		if (is_background && bg_fill == FillMode::stretch)
+		if (is_background && bg_fill == FillMode_Stretch)
 		{
 			scale_disable();
 
