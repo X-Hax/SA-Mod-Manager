@@ -61,7 +61,8 @@ namespace uiscale
 		Align_Center = Align_Center_Horizontal | Align_Center_Vertical,
 
 		/**
-		 * \brief Automatically align the canvas
+		 * \brief Automatically align the canvas to horizontal and vertical thirds
+		 * of the screen based on the placement of the UI element.
 		 */
 		Align_Automatic = Align_Automatic_Horizontal | Align_Automatic_Vertical
 	};
