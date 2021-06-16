@@ -150,8 +150,8 @@ static NJS_POINT2 auto_align(uiscale::Align align, const NJS_POINT2& center)
 {
 	using namespace uiscale;
 
-	static constexpr Uint8 mask_horizontal = Align_Left | Align_Right | Align_Automatic_Horizontal;
-	static constexpr Uint8 mask_vertical = Align_Top | Align_Bottom | Align_Automatic_Vertical;
+	static constexpr Uint8 mask_horizontal = Align_Left | Align_Right | Align_Center_Horizontal;
+	static constexpr Uint8 mask_vertical = Align_Top | Align_Bottom | Align_Center_Vertical;
 
 	Uint8 actual_alignment = align;
 
