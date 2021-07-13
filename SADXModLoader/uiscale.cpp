@@ -707,6 +707,9 @@ void uiscale::initialize_common()
 		// njDrawCircle2D call in njDrawTriangle2D_t is already scaled, use original function instead.
 		WriteCall(reinterpret_cast<void*>(0x77EA10), njDrawCircle2D_t->Target());
 
+		// The backgound rectangle should not be scaled
+		WriteCall(reinterpret_cast<void*>(0x78B922), njDrawCircle2D_t->Target());
+
 		initialized = true;
 	}
 }
