@@ -75,6 +75,9 @@
     <ClCompile Include="bgscale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="testspawn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="include\ScaleInfo.h">
       <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="testspawn.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

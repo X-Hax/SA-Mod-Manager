@@ -12,6 +12,7 @@
 #include "direct3d.h"
 #include "bgscale.h"
 #include "hudscale.h"
+#include "testspawn.h"
 
 using std::deque;
 using std::ifstream;
@@ -1695,6 +1696,8 @@ static void __cdecl InitMods()
 		uiscale::fmv_fill = static_cast<uiscale::FillMode>(fmvFill);
 		uiscale::setup_fmv_scale();
 	}
+
+	TestSpawnCheckArgs(helperFunctions);
 
 	polybuff::rewrite_init();
 
