@@ -1697,8 +1697,6 @@ static void __cdecl InitMods()
 		uiscale::setup_fmv_scale();
 	}
 
-	TestSpawnCheckArgs(helperFunctions);
-
 	polybuff::rewrite_init();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
@@ -2176,6 +2174,8 @@ static void __cdecl InitMods()
 		WriteData((int**)0x42547E, &newlist->Loop);
 	}
 	_MusicList.clear();
+
+	TestSpawnCheckArgs(helperFunctions);
 
 	RaiseEvents(modInitEndEvents);
 	PrintDebug("Finished loading mods\n");

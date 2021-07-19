@@ -91,6 +91,39 @@ static uint8_t parse_character_id(const std::wstring& str)
 	return static_cast<uint8_t>(std::stol(lowercase));
 }
 
+static void parse_save(const std::wstring str, const HelperFunctions& helperFunctions)
+{
+	// To normal chars
+	std::string str_(str.begin(), str.end());
+
+	// Insert leading zero if needed
+	if (str_.size() < 2)
+	{
+		str_.insert(0, "0");
+	}
+
+	// Get path to save file
+	std::string savepath = (std::string)helperFunctions.GetMainSavePath() + (std::string)"\\SonicDX" + str_ + (std::string)".snc";
+
+	PrintDebug("Loading save: \"%s\"\n", savepath.c_str());
+
+	FILE* file;
+
+	// Open save file
+	if (!fopen_s(&file, savepath.c_str(), "rb"))
+	{
+		fread_s(&SaveFile, sizeof(SaveFileData), sizeof(SaveFileData), 1, file);
+		fclose(file);
+
+		// Prevent save stuff from being overwritten
+		WriteData<1>(reinterpret_cast<void*>(0x425AF0), 0xC3); // Lives
+		WriteData<24>(reinterpret_cast<void*>(0x41330F), 0x90); // EventFlags
+		WriteData<5>(reinterpret_cast<void*>(0x0042D7CC), 0x90u); // CurrentCharacter
+
+		LoadSave();
+	}
+}
+
 static void Obj_Icecap_r(ObjectMaster* o)
 {
 	if (o)
@@ -108,10 +141,6 @@ void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
 
 	bool level_set = false;
 	bool act_set = false;
-
-	// NOP. Prevents CurrentCharacter from being overwritten. There could be other side
-	// effects, but there are none that we've noticed thus far.
-	WriteData<5>(reinterpret_cast<void*>(0x00415007), 0x90u);
 
 	for (int i = 1; i < argc; i++)
 	{
@@ -138,7 +167,15 @@ void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
 			}
 
 			CurrentCharacter = character_id;
+
+			// NOP. Prevents CurrentCharacter from being overwritten at initialization.
+			WriteData<5>(reinterpret_cast<void*>(0x00415007), 0x90u);
+
 			PrintDebug("Loading character: %d\n", CurrentCharacter);
+		}
+		else if (!wcscmp(argv[i], L"--save") || !wcscmp(argv[i], L"-s"))
+		{
+			parse_save(argv[++i], helperFunctions);
 		}
 		else if (!wcscmp(argv[i], L"--position") || !wcscmp(argv[i], L"-p"))
 		{
@@ -168,7 +205,6 @@ void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
 				WriteData<2>(reinterpret_cast<void*>(0x0041497F), 0x90u);
 				WriteData<2>(reinterpret_cast<void*>(0x00414A70), 0x90u);
 
-				using LevelObjectFunc = void(__cdecl*)(ObjectMaster* this_);
 				LevelObjects[LevelIDs_IceCap] = Obj_Icecap_r;
 			}
 
@@ -179,10 +215,8 @@ void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
 			StartPosition position = {
 				CurrentLevel,
 				static_cast<int16_t>(CurrentAct),
-				// Position
-				{ x, y, z },
-				// YRot
-				0
+				{ x, y, z },	// Position
+				0				// YRot
 			};
 
 			helperFunctions.RegisterStartPosition(static_cast<Uint8>(CurrentCharacter), position);

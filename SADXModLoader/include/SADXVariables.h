@@ -2224,6 +2224,8 @@ DataArray(NJS_TEXLIST *, RegObjTexlists, 0x3B29030, 32);
 DataPointer(NJS_TEXLIST *, CommonTextures, 0x3B290B0);
 DataArray(NJS_TEXLIST *, LevelObjTexlists, 0x3B290B4, 4);
 DataArray(Sint8, LoadedCharTextures, 0x3B290C4, 6);
+DataPointer(int, SaveNum, 0x3B290D8);
+DataPointer(char*, SaveName, 0x3B290DC);
 DataArray(NJS_TEXNAME, ava_dlg_e_TEXNAMES, 0x3B290F0, 14);
 DataPointer(Uint8, CHAORetry, 0x3B291AE);
 DataPointer(int, SoundQueueCount, 0x3B29B7C);
