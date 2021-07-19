@@ -134,6 +134,22 @@ static void Obj_Icecap_r(ObjectMaster* o)
 	}
 }
 
+static void DisableMusic()
+{
+	Music_Enabled = false;
+}
+
+static void DisableVoice()
+{	
+	EnableVoice = false;
+}
+
+static void DisableSound()
+{
+	// RET. Prevents the SoundQueue from running.
+	WriteData<1>(reinterpret_cast<void*>(0x004250D0), 0xC3);
+}
+
 void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
 {
 	int argc = 0;
@@ -220,6 +236,24 @@ void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
 			};
 
 			helperFunctions.RegisterStartPosition(static_cast<Uint8>(CurrentCharacter), position);
+		}
+		else if (!wcscmp(argv[i], L"--no-music"))
+		{
+			DisableMusic();
+		}
+		else if (!wcscmp(argv[i], L"--no-voice"))
+		{
+			DisableVoice();
+		}
+		else if (!wcscmp(argv[i], L"--no-sound"))
+		{
+			DisableSound();
+		}
+		else if (!wcscmp(argv[i], L"--no-audio"))
+		{
+			DisableMusic();
+			DisableVoice();
+			DisableSound();
 		}
 	}
 
