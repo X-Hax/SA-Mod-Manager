@@ -12,6 +12,7 @@
 #include "direct3d.h"
 #include "bgscale.h"
 #include "hudscale.h"
+#include "testspawn.h"
 
 using std::deque;
 using std::ifstream;
@@ -2173,6 +2174,8 @@ static void __cdecl InitMods()
 		WriteData((int**)0x42547E, &newlist->Loop);
 	}
 	_MusicList.clear();
+
+	TestSpawnCheckArgs(helperFunctions);
 
 	RaiseEvents(modInitEndEvents);
 	PrintDebug("Finished loading mods\n");

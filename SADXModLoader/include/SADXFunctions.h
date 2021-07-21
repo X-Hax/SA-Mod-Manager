@@ -314,6 +314,7 @@ FunctionPointer(void, LoadLevelTextures, (__int16 level), 0x4215B0);
 FunctionPointer(void, ShowNoMemoryCardText, (void *a1), 0x421C20);
 FunctionPointer(int, ShowNoMemoryCardText_0, (char *a2), 0x421C70);
 FunctionPointer(int, ShowNoMemoryCardText_1, (char *a2), 0x421CD0);
+VoidFunc(ReadSaveFile, 0x421DE0);
 VoidFunc(WriteSaveFile, 0x421FD0);
 VoidFunc(j_WriteSaveFile, 0x4221D0);
 FunctionPointer(void, LoadFile, (const char *name, LPVOID lpBuffer), 0x422200);

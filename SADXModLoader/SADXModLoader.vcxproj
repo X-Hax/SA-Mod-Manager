@@ -31,6 +31,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="testspawn.cpp" />
     <ClCompile Include="TextureReplacement.cpp" />
     <ClCompile Include="uiscale.cpp" />
   </ItemGroup>
@@ -67,6 +68,7 @@
     <ClInclude Include="MediaFns.hpp" />
     <ClInclude Include="pvmx.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="testspawn.h" />
     <ClInclude Include="TextureReplacement.h" />
     <ClInclude Include="include\UsercallFunctionHandler.h" />
     <ClInclude Include="uiscale.h" />
