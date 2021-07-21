@@ -8,6 +8,9 @@ write16 03B0F0E4 999
 Code "Infinite Lives"
 write8 03B0EF34 99
 
+Patch "Disable Lives Bonus"
+writenop 00425C28 5
+
 Code "Low Time"
 write8 03B0EF48 0
 write8 03B0F128 0
@@ -37,6 +40,10 @@ ifmask32 03B0E9D0 0x4
 		writefloat p03B42E30|20|C0|3C 1
 	endif
 endif
+
+Patch "Don't Lose Rings When Hit"
+writenop 0045072D 5
+write16 00450734 0xE990
 
 Code "Have Invincibility"
 or16 p03B42E30|20|C0|6 0x8000
@@ -295,3 +302,6 @@ write8 007E6FE6 40
 write8 007E6FE8 40
 write8 007E6FEA 40
 write8 007E6FEC 40
+
+Patch "Disable Auto Hints"
+write8 007A1BE0 0xC3
