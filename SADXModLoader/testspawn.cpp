@@ -3,17 +3,6 @@
 #include <string>
 #include <unordered_map>
 
-static const auto loc_40C318 = reinterpret_cast<const void*>(0x0040C318);
-
-__declspec(naked) void ForceTrialMode()
-{
-	__asm
-	{
-		mov GameMode, GameModes_Trial
-		jmp loc_40C318
-	}
-}
-
 static const std::unordered_map<std::wstring, uint8_t> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
 	{ L"emeraldcoast",      LevelIDs_EmeraldCoast },
@@ -259,7 +248,7 @@ void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
 
 	if (level_set || act_set)
 	{
-		WriteJump(reinterpret_cast<void*>(0x0040C115), ForceTrialMode);
+		WriteData(reinterpret_cast<GameModes*>(0x0040C10C), GameModes_Trial);
 	}
 
 	LocalFree(argv);
