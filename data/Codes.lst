@@ -113,9 +113,6 @@ endif
 Patch "Tails Can Play Emerald Coast (BREAKS SAVE)"
 write8 004F6B02 0xEB
 
-Patch "Don't Lose Rings When Hit"
-writenop 00425AB0 9
-
 Patch "Walk on Water"
 writenop 004496E1 6
 
