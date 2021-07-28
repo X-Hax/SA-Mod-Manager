@@ -389,15 +389,13 @@ static void __cdecl ForceEventMode()
 {
 	CutsceneLevelData* data = GetCutsceneData(CurrentDemoCutsceneID);
 
-	if (data == nullptr)
+	if (data != nullptr)
 	{	
-		GameMode = static_cast<GameModes>(0x18); // Cutscene missing, send back to copyright GameMode.
-		return;
+		SetLevelAndAct(data->level, data->act);
+		SetupCharacter(data->character);
 	}
 
 	DemoPlaying = 1;
-	SetLevelAndAct(data->level, data->act);
-	SetupCharacter(data->character);
 	GameMode = static_cast<GameModes>(5 - (GetLevelType() != 1)); // Sends to Adventure or Level GameMode
 }
 
