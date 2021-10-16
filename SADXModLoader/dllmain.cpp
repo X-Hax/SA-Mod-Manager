@@ -2209,8 +2209,10 @@ static void __cdecl InitMods()
 	// Remove "Tails Adventure" gray filter
 	WriteData(reinterpret_cast<float*>(0x87CBA8), 0.0f);
 	WriteData(reinterpret_cast<float*>(0x87CBAC), 0.0f);
-
-	TestSpawnCheckArgs(helperFunctions);
+	if (GetModuleHandle(L"sadx-test-spawn") != NULL)
+		PrintDebug("Test Spawn mod detected.\n");
+	else
+		TestSpawnCheckArgs(helperFunctions);
 }
 
 DataPointer(HMODULE, chrmodelshandle, 0x3AB9170);
