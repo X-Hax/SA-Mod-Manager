@@ -2008,6 +2008,8 @@ static void __cdecl InitMods()
 	for (auto& initfunc : initfuncs)
 		initfunc.first(initfunc.second.c_str(), helperFunctions);
 
+	ProcessTestSpawn(helperFunctions);
+
 	for (const auto& i : StartPositions)
 	{
 		auto poslist       = &i.second;
@@ -2274,7 +2276,7 @@ static void __cdecl InitMods()
 	WriteData(reinterpret_cast<float*>(0x87CBA8), 0.0f);
 	WriteData(reinterpret_cast<float*>(0x87CBAC), 0.0f);
 
-	TestSpawnCheckArgs(helperFunctions);
+	ApplyTestSpawn();
 }
 
 DataPointer(HMODULE, chrmodelshandle, 0x3AB9170);

@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_map>
 
+static bool testspawn_enabled = false;
+
 static const std::unordered_map<std::wstring, uint8_t> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
 	{ L"emeraldcoast",      LevelIDs_EmeraldCoast },
@@ -426,7 +428,7 @@ static void DisableSound()
 	WriteData<1>(reinterpret_cast<void*>(0x004250D0), 0xC3);
 }
 
-void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
+void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 {
 	int argc = 0;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
@@ -440,13 +442,13 @@ void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
 		{
 			CurrentLevel = parse_level_id(argv[++i]);
 			PrintDebug("Loading level: %d\n", CurrentLevel);
-			level_set = true;
+			testspawn_enabled = true;
 		}
 		else if (!wcscmp(argv[i], L"--act") || !wcscmp(argv[i], L"-a"))
 		{
 			CurrentAct = _wtoi(argv[++i]);
 			PrintDebug("Loading act: %d\n", CurrentAct);
-			act_set = true;
+			testspawn_enabled = true;
 		}
 		else if (!wcscmp(argv[i], L"--character") || !wcscmp(argv[i], L"-c"))
 		{
@@ -471,7 +473,7 @@ void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
 		}
 		else if (!wcscmp(argv[i], L"--position") || !wcscmp(argv[i], L"-p"))
 		{
-			if (!level_set && !act_set)
+			if (testspawn_enabled == false)
 			{
 				MessageBoxA(nullptr, "Insufficient arguments for parameter: --position.\n"
 					"Either --level or --act must be specified before --position.",
@@ -544,10 +546,13 @@ void TestSpawnCheckArgs(const HelperFunctions& helperFunctions)
 		}
 	}
 
-	if (level_set || act_set)
+	LocalFree(argv);
+}
+
+void ApplyTestSpawn()
+{
+	if (testspawn_enabled == true)
 	{
 		WriteData(reinterpret_cast<GameModes*>(0x0040C10C), GameModes_Trial);
 	}
-
-	LocalFree(argv);
 }
