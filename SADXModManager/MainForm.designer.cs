@@ -114,10 +114,33 @@
             this.numericUpdateFrequency = new System.Windows.Forms.NumericUpDown();
             this.comboUpdateFrequency = new System.Windows.Forms.ComboBox();
             this.checkUpdateStartup = new System.Windows.Forms.CheckBox();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.consoleCheckBox = new System.Windows.Forms.CheckBox();
             this.screenCheckBox = new System.Windows.Forms.CheckBox();
             this.fileCheckBox = new System.Windows.Forms.CheckBox();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.checkBoxTestSpawnAngleHex = new System.Windows.Forms.CheckBox();
+            this.checkBoxTestSpawnPosition = new System.Windows.Forms.CheckBox();
+            this.buttonTestSpawnPlay = new System.Windows.Forms.Button();
+            this.comboBoxTestSpawnEvent = new System.Windows.Forms.ComboBox();
+            this.checkBoxTestSpawnEvent = new System.Windows.Forms.CheckBox();
+            this.checkBoxTestSpawnCharacter = new System.Windows.Forms.CheckBox();
+            this.checkBoxTestSpawnLevel = new System.Windows.Forms.CheckBox();
+            this.comboBoxTestSpawnCharacter = new System.Windows.Forms.ComboBox();
+            this.numericUpDownTestSpawnAngle = new System.Windows.Forms.NumericUpDown();
+            this.labelTestSpawnAngle = new System.Windows.Forms.Label();
+            this.labelTestSpawnY = new System.Windows.Forms.Label();
+            this.numericUpDownTestSpawnSaveID = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxTestSpawnSave = new System.Windows.Forms.CheckBox();
+            this.labelTestSpawnX = new System.Windows.Forms.Label();
+            this.labelTestSpawnAct = new System.Windows.Forms.Label();
+            this.labelTestSpawnZ = new System.Windows.Forms.Label();
+            this.numericUpDownTestSpawnAct = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownTestSpawnZ = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownTestSpawnY = new System.Windows.Forms.NumericUpDown();
+            this.comboBoxTestSpawnLevel = new System.Windows.Forms.ComboBox();
+            this.numericUpDownTestSpawnX = new System.Windows.Forms.NumericUpDown();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.modContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -154,7 +177,15 @@
             this.tabPage4.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpdateFrequency)).BeginInit();
+            this.tabPage6.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox12.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnAngle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnSaveID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnAct)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnX)).BeginInit();
             this.modContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -509,6 +540,7 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.tabControl1.Name = "tabControl1";
@@ -1163,7 +1195,6 @@
             // 
             this.tabPage4.Controls.Add(this.installURLHandlerButton);
             this.tabPage4.Controls.Add(this.groupBox4);
-            this.tabPage4.Controls.Add(this.groupBox1);
             this.tabPage4.Controls.Add(groupBox2);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
@@ -1178,7 +1209,7 @@
             this.installURLHandlerButton.AutoSize = true;
             this.installURLHandlerButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.installURLHandlerButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.installURLHandlerButton.Location = new System.Drawing.Point(6, 247);
+            this.installURLHandlerButton.Location = new System.Drawing.Point(6, 196);
             this.installURLHandlerButton.Name = "installURLHandlerButton";
             this.installURLHandlerButton.Size = new System.Drawing.Size(113, 22);
             this.installURLHandlerButton.TabIndex = 3;
@@ -1196,7 +1227,7 @@
             this.groupBox4.Controls.Add(this.numericUpdateFrequency);
             this.groupBox4.Controls.Add(this.comboUpdateFrequency);
             this.groupBox4.Controls.Add(this.checkUpdateStartup);
-            this.groupBox4.Location = new System.Drawing.Point(6, 151);
+            this.groupBox4.Location = new System.Drawing.Point(6, 100);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(390, 90);
             this.groupBox4.TabIndex = 2;
@@ -1283,6 +1314,18 @@
             this.checkUpdateStartup.Text = "Check on startup";
             this.checkUpdateStartup.UseVisualStyleBackColor = true;
             // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.groupBox1);
+            this.tabPage6.Controls.Add(this.groupBox12);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Size = new System.Drawing.Size(402, 380);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "Debug";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1290,10 +1333,10 @@
             this.groupBox1.Controls.Add(this.consoleCheckBox);
             this.groupBox1.Controls.Add(this.screenCheckBox);
             this.groupBox1.Controls.Add(this.fileCheckBox);
-            this.groupBox1.Location = new System.Drawing.Point(6, 101);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(390, 42);
-            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Debug Messages";
             // 
@@ -1332,6 +1375,392 @@
             this.fileCheckBox.Text = "File";
             this.toolTip.SetToolTip(this.fileCheckBox, "Logs debug messages to mods/SADXModLoader.log");
             this.fileCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Controls.Add(this.checkBoxTestSpawnAngleHex);
+            this.groupBox12.Controls.Add(this.checkBoxTestSpawnPosition);
+            this.groupBox12.Controls.Add(this.buttonTestSpawnPlay);
+            this.groupBox12.Controls.Add(this.comboBoxTestSpawnEvent);
+            this.groupBox12.Controls.Add(this.checkBoxTestSpawnEvent);
+            this.groupBox12.Controls.Add(this.checkBoxTestSpawnCharacter);
+            this.groupBox12.Controls.Add(this.checkBoxTestSpawnLevel);
+            this.groupBox12.Controls.Add(this.comboBoxTestSpawnCharacter);
+            this.groupBox12.Controls.Add(this.numericUpDownTestSpawnAngle);
+            this.groupBox12.Controls.Add(this.labelTestSpawnAngle);
+            this.groupBox12.Controls.Add(this.labelTestSpawnY);
+            this.groupBox12.Controls.Add(this.numericUpDownTestSpawnSaveID);
+            this.groupBox12.Controls.Add(this.checkBoxTestSpawnSave);
+            this.groupBox12.Controls.Add(this.labelTestSpawnX);
+            this.groupBox12.Controls.Add(this.labelTestSpawnAct);
+            this.groupBox12.Controls.Add(this.labelTestSpawnZ);
+            this.groupBox12.Controls.Add(this.numericUpDownTestSpawnAct);
+            this.groupBox12.Controls.Add(this.numericUpDownTestSpawnZ);
+            this.groupBox12.Controls.Add(this.numericUpDownTestSpawnY);
+            this.groupBox12.Controls.Add(this.comboBoxTestSpawnLevel);
+            this.groupBox12.Controls.Add(this.numericUpDownTestSpawnX);
+            this.groupBox12.Location = new System.Drawing.Point(6, 55);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(390, 216);
+            this.groupBox12.TabIndex = 6;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Test Spawn";
+            // 
+            // checkBoxTestSpawnAngleHex
+            // 
+            this.checkBoxTestSpawnAngleHex.AutoSize = true;
+            this.checkBoxTestSpawnAngleHex.Enabled = false;
+            this.checkBoxTestSpawnAngleHex.Location = new System.Drawing.Point(326, 114);
+            this.checkBoxTestSpawnAngleHex.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnAngleHex.Name = "checkBoxTestSpawnAngleHex";
+            this.checkBoxTestSpawnAngleHex.Size = new System.Drawing.Size(45, 17);
+            this.checkBoxTestSpawnAngleHex.TabIndex = 33;
+            this.checkBoxTestSpawnAngleHex.Text = "Hex";
+            this.toolTip.SetToolTip(this.checkBoxTestSpawnAngleHex, "Display character Y rotation as hexadecimal.");
+            this.checkBoxTestSpawnAngleHex.UseVisualStyleBackColor = true;
+            this.checkBoxTestSpawnAngleHex.CheckedChanged += new System.EventHandler(this.checkBoxTestSpawnAngleHex_CheckedChanged);
+            // 
+            // checkBoxTestSpawnPosition
+            // 
+            this.checkBoxTestSpawnPosition.AutoSize = true;
+            this.checkBoxTestSpawnPosition.Location = new System.Drawing.Point(6, 66);
+            this.checkBoxTestSpawnPosition.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnPosition.Name = "checkBoxTestSpawnPosition";
+            this.checkBoxTestSpawnPosition.Size = new System.Drawing.Size(66, 17);
+            this.checkBoxTestSpawnPosition.TabIndex = 23;
+            this.checkBoxTestSpawnPosition.Text = "Position:";
+            this.toolTip.SetToolTip(this.checkBoxTestSpawnPosition, "Force character spawn position.");
+            this.checkBoxTestSpawnPosition.UseVisualStyleBackColor = true;
+            this.checkBoxTestSpawnPosition.CheckedChanged += new System.EventHandler(this.checkBoxTestSpawnPosition_CheckedChanged);
+            // 
+            // buttonTestSpawnPlay
+            // 
+            this.buttonTestSpawnPlay.Location = new System.Drawing.Point(5, 186);
+            this.buttonTestSpawnPlay.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonTestSpawnPlay.Name = "buttonTestSpawnPlay";
+            this.buttonTestSpawnPlay.Size = new System.Drawing.Size(76, 22);
+            this.buttonTestSpawnPlay.TabIndex = 31;
+            this.buttonTestSpawnPlay.Text = "Play";
+            this.toolTip.SetToolTip(this.buttonTestSpawnPlay, "Run the game with the above Test Spawn settings.");
+            this.buttonTestSpawnPlay.UseVisualStyleBackColor = true;
+            this.buttonTestSpawnPlay.Click += new System.EventHandler(this.buttonTestSpawnPlay_Click);
+            // 
+            // comboBoxTestSpawnEvent
+            // 
+            this.comboBoxTestSpawnEvent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTestSpawnEvent.Enabled = false;
+            this.comboBoxTestSpawnEvent.FormattingEnabled = true;
+            this.comboBoxTestSpawnEvent.Location = new System.Drawing.Point(67, 137);
+            this.comboBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxTestSpawnEvent.Name = "comboBoxTestSpawnEvent";
+            this.comboBoxTestSpawnEvent.Size = new System.Drawing.Size(319, 21);
+            this.comboBoxTestSpawnEvent.TabIndex = 14;
+            this.toolTip.SetToolTip(this.comboBoxTestSpawnEvent, "Start the game on a specific cutscene.");
+            // 
+            // checkBoxTestSpawnEvent
+            // 
+            this.checkBoxTestSpawnEvent.AutoSize = true;
+            this.checkBoxTestSpawnEvent.Location = new System.Drawing.Point(6, 139);
+            this.checkBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnEvent.Name = "checkBoxTestSpawnEvent";
+            this.checkBoxTestSpawnEvent.Size = new System.Drawing.Size(57, 17);
+            this.checkBoxTestSpawnEvent.TabIndex = 22;
+            this.checkBoxTestSpawnEvent.Text = "Event:";
+            this.toolTip.SetToolTip(this.checkBoxTestSpawnEvent, "Start the game on a specific cutscene.");
+            this.checkBoxTestSpawnEvent.UseVisualStyleBackColor = true;
+            this.checkBoxTestSpawnEvent.CheckedChanged += new System.EventHandler(this.checkBoxTestSpawnEvent_CheckedChanged);
+            // 
+            // checkBoxTestSpawnCharacter
+            // 
+            this.checkBoxTestSpawnCharacter.AutoSize = true;
+            this.checkBoxTestSpawnCharacter.Location = new System.Drawing.Point(6, 44);
+            this.checkBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnCharacter.Name = "checkBoxTestSpawnCharacter";
+            this.checkBoxTestSpawnCharacter.Size = new System.Drawing.Size(75, 17);
+            this.checkBoxTestSpawnCharacter.TabIndex = 32;
+            this.checkBoxTestSpawnCharacter.Text = "Character:";
+            this.toolTip.SetToolTip(this.checkBoxTestSpawnCharacter, "Start the game with a specific character.");
+            this.checkBoxTestSpawnCharacter.UseVisualStyleBackColor = true;
+            this.checkBoxTestSpawnCharacter.CheckedChanged += new System.EventHandler(this.checkBoxTestSpawnCharacter_CheckedChanged);
+            // 
+            // checkBoxTestSpawnLevel
+            // 
+            this.checkBoxTestSpawnLevel.AutoSize = true;
+            this.checkBoxTestSpawnLevel.Location = new System.Drawing.Point(6, 21);
+            this.checkBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnLevel.Name = "checkBoxTestSpawnLevel";
+            this.checkBoxTestSpawnLevel.Size = new System.Drawing.Size(55, 17);
+            this.checkBoxTestSpawnLevel.TabIndex = 20;
+            this.checkBoxTestSpawnLevel.Text = "Level:";
+            this.toolTip.SetToolTip(this.checkBoxTestSpawnLevel, "Start the game on a specific level.");
+            this.checkBoxTestSpawnLevel.UseVisualStyleBackColor = true;
+            this.checkBoxTestSpawnLevel.CheckedChanged += new System.EventHandler(this.checkBoxTestSpawnLevel_CheckedChanged);
+            // 
+            // comboBoxTestSpawnCharacter
+            // 
+            this.comboBoxTestSpawnCharacter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTestSpawnCharacter.Enabled = false;
+            this.comboBoxTestSpawnCharacter.FormattingEnabled = true;
+            this.comboBoxTestSpawnCharacter.Items.AddRange(new object[] {
+            "Sonic",
+            "Eggman",
+            "Tails",
+            "Knuckles",
+            "Tikal",
+            "Amy",
+            "Gamma",
+            "Big",
+            "Metal Sonic"});
+            this.comboBoxTestSpawnCharacter.Location = new System.Drawing.Point(83, 42);
+            this.comboBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxTestSpawnCharacter.Name = "comboBoxTestSpawnCharacter";
+            this.comboBoxTestSpawnCharacter.Size = new System.Drawing.Size(149, 21);
+            this.comboBoxTestSpawnCharacter.TabIndex = 22;
+            this.toolTip.SetToolTip(this.comboBoxTestSpawnCharacter, "Start the game with a specific character.");
+            // 
+            // numericUpDownTestSpawnAngle
+            // 
+            this.numericUpDownTestSpawnAngle.Enabled = false;
+            this.numericUpDownTestSpawnAngle.Location = new System.Drawing.Point(242, 112);
+            this.numericUpDownTestSpawnAngle.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnAngle.Maximum = new decimal(new int[] {
+            65536,
+            0,
+            0,
+            0});
+            this.numericUpDownTestSpawnAngle.Name = "numericUpDownTestSpawnAngle";
+            this.numericUpDownTestSpawnAngle.Size = new System.Drawing.Size(80, 20);
+            this.numericUpDownTestSpawnAngle.TabIndex = 30;
+            this.toolTip.SetToolTip(this.numericUpDownTestSpawnAngle, "Character Y Rotation.");
+            // 
+            // labelTestSpawnAngle
+            // 
+            this.labelTestSpawnAngle.AutoSize = true;
+            this.labelTestSpawnAngle.Enabled = false;
+            this.labelTestSpawnAngle.Location = new System.Drawing.Point(201, 114);
+            this.labelTestSpawnAngle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnAngle.Name = "labelTestSpawnAngle";
+            this.labelTestSpawnAngle.Size = new System.Drawing.Size(37, 13);
+            this.labelTestSpawnAngle.TabIndex = 29;
+            this.labelTestSpawnAngle.Text = "Angle:";
+            this.toolTip.SetToolTip(this.labelTestSpawnAngle, "Character Y Rotation.");
+            // 
+            // labelTestSpawnY
+            // 
+            this.labelTestSpawnY.AutoSize = true;
+            this.labelTestSpawnY.Enabled = false;
+            this.labelTestSpawnY.Location = new System.Drawing.Point(114, 89);
+            this.labelTestSpawnY.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnY.Name = "labelTestSpawnY";
+            this.labelTestSpawnY.Size = new System.Drawing.Size(17, 13);
+            this.labelTestSpawnY.TabIndex = 24;
+            this.labelTestSpawnY.Text = "Y:";
+            this.toolTip.SetToolTip(this.labelTestSpawnY, "Character Y Position.");
+            // 
+            // numericUpDownTestSpawnSaveID
+            // 
+            this.numericUpDownTestSpawnSaveID.Enabled = false;
+            this.numericUpDownTestSpawnSaveID.Location = new System.Drawing.Point(121, 164);
+            this.numericUpDownTestSpawnSaveID.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnSaveID.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+            this.numericUpDownTestSpawnSaveID.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownTestSpawnSaveID.Name = "numericUpDownTestSpawnSaveID";
+            this.numericUpDownTestSpawnSaveID.Size = new System.Drawing.Size(51, 20);
+            this.numericUpDownTestSpawnSaveID.TabIndex = 17;
+            this.toolTip.SetToolTip(this.numericUpDownTestSpawnSaveID, "File ID to load, i.e. 1 is SonicAdventureDX01.snc.");
+            this.numericUpDownTestSpawnSaveID.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // checkBoxTestSpawnSave
+            // 
+            this.checkBoxTestSpawnSave.AutoSize = true;
+            this.checkBoxTestSpawnSave.Location = new System.Drawing.Point(6, 166);
+            this.checkBoxTestSpawnSave.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnSave.Name = "checkBoxTestSpawnSave";
+            this.checkBoxTestSpawnSave.Size = new System.Drawing.Size(111, 17);
+            this.checkBoxTestSpawnSave.TabIndex = 16;
+            this.checkBoxTestSpawnSave.Text = "Save Redirection:";
+            this.toolTip.SetToolTip(this.checkBoxTestSpawnSave, "Force the game to load a specific save file.");
+            this.checkBoxTestSpawnSave.UseVisualStyleBackColor = true;
+            this.checkBoxTestSpawnSave.CheckStateChanged += new System.EventHandler(this.checkBoxTestSpawnSave_CheckStateChanged);
+            // 
+            // labelTestSpawnX
+            // 
+            this.labelTestSpawnX.AutoSize = true;
+            this.labelTestSpawnX.Enabled = false;
+            this.labelTestSpawnX.Location = new System.Drawing.Point(9, 89);
+            this.labelTestSpawnX.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnX.Name = "labelTestSpawnX";
+            this.labelTestSpawnX.Size = new System.Drawing.Size(17, 13);
+            this.labelTestSpawnX.TabIndex = 23;
+            this.labelTestSpawnX.Text = "X:";
+            this.toolTip.SetToolTip(this.labelTestSpawnX, "Character X Position.");
+            // 
+            // labelTestSpawnAct
+            // 
+            this.labelTestSpawnAct.AutoSize = true;
+            this.labelTestSpawnAct.Enabled = false;
+            this.labelTestSpawnAct.Location = new System.Drawing.Point(239, 21);
+            this.labelTestSpawnAct.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnAct.Name = "labelTestSpawnAct";
+            this.labelTestSpawnAct.Size = new System.Drawing.Size(26, 13);
+            this.labelTestSpawnAct.TabIndex = 5;
+            this.labelTestSpawnAct.Text = "Act:";
+            this.toolTip.SetToolTip(this.labelTestSpawnAct, "Act ID (zero-based).");
+            // 
+            // labelTestSpawnZ
+            // 
+            this.labelTestSpawnZ.AutoSize = true;
+            this.labelTestSpawnZ.Enabled = false;
+            this.labelTestSpawnZ.Location = new System.Drawing.Point(221, 89);
+            this.labelTestSpawnZ.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnZ.Name = "labelTestSpawnZ";
+            this.labelTestSpawnZ.Size = new System.Drawing.Size(17, 13);
+            this.labelTestSpawnZ.TabIndex = 25;
+            this.labelTestSpawnZ.Text = "Z:";
+            this.toolTip.SetToolTip(this.labelTestSpawnZ, "Character Z Position.");
+            // 
+            // numericUpDownTestSpawnAct
+            // 
+            this.numericUpDownTestSpawnAct.Enabled = false;
+            this.numericUpDownTestSpawnAct.Location = new System.Drawing.Point(267, 20);
+            this.numericUpDownTestSpawnAct.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnAct.Maximum = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
+            this.numericUpDownTestSpawnAct.Name = "numericUpDownTestSpawnAct";
+            this.numericUpDownTestSpawnAct.Size = new System.Drawing.Size(49, 20);
+            this.numericUpDownTestSpawnAct.TabIndex = 2;
+            this.toolTip.SetToolTip(this.numericUpDownTestSpawnAct, "Act ID (zero-based).");
+            // 
+            // numericUpDownTestSpawnZ
+            // 
+            this.numericUpDownTestSpawnZ.Enabled = false;
+            this.numericUpDownTestSpawnZ.Location = new System.Drawing.Point(242, 87);
+            this.numericUpDownTestSpawnZ.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnZ.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.numericUpDownTestSpawnZ.Minimum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownTestSpawnZ.Name = "numericUpDownTestSpawnZ";
+            this.numericUpDownTestSpawnZ.Size = new System.Drawing.Size(80, 20);
+            this.numericUpDownTestSpawnZ.TabIndex = 28;
+            this.toolTip.SetToolTip(this.numericUpDownTestSpawnZ, "Character Z Position.");
+            // 
+            // numericUpDownTestSpawnY
+            // 
+            this.numericUpDownTestSpawnY.Enabled = false;
+            this.numericUpDownTestSpawnY.Location = new System.Drawing.Point(135, 87);
+            this.numericUpDownTestSpawnY.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnY.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.numericUpDownTestSpawnY.Minimum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownTestSpawnY.Name = "numericUpDownTestSpawnY";
+            this.numericUpDownTestSpawnY.Size = new System.Drawing.Size(80, 20);
+            this.numericUpDownTestSpawnY.TabIndex = 27;
+            this.toolTip.SetToolTip(this.numericUpDownTestSpawnY, "Character Y Position.");
+            // 
+            // comboBoxTestSpawnLevel
+            // 
+            this.comboBoxTestSpawnLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTestSpawnLevel.Enabled = false;
+            this.comboBoxTestSpawnLevel.FormattingEnabled = true;
+            this.comboBoxTestSpawnLevel.Items.AddRange(new object[] {
+            "Hedgehog Hammer",
+            "Emerald Coast",
+            "Windy Valley",
+            "Twinkle Park",
+            "Speed Highway",
+            "Red Mountain",
+            "Sky Deck",
+            "Lost World",
+            "Ice Cap",
+            "Casinopolis",
+            "Final Egg",
+            "Unused (11)",
+            "Hot Shelter",
+            "Unused (13)",
+            "Unused (14)",
+            "Chaos 0",
+            "Chaos 2",
+            "Chaos 4",
+            "Chaos 6",
+            "Perfect Chaos",
+            "Egg Hornet",
+            "Egg Walker",
+            "Egg Viper",
+            "ZERO",
+            "E-101",
+            "E-101R",
+            "Station Square",
+            "Station Square Unused (27)",
+            "Station Square Unused (28)",
+            "Egg Carrier Outside",
+            "Unused (30)",
+            "Unused (31)",
+            "Egg Carrier Inside",
+            "Mystic Ruins",
+            "Past",
+            "Twinkle Circuit",
+            "Sky Chase 1",
+            "Sky Chase 2",
+            "Sand Hill",
+            "Station Square Garden",
+            "Egg Carrier Garden",
+            "Mystic Ruins Garden",
+            "Chao Race"});
+            this.comboBoxTestSpawnLevel.Location = new System.Drawing.Point(83, 19);
+            this.comboBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxTestSpawnLevel.Name = "comboBoxTestSpawnLevel";
+            this.comboBoxTestSpawnLevel.Size = new System.Drawing.Size(149, 21);
+            this.comboBoxTestSpawnLevel.TabIndex = 0;
+            this.toolTip.SetToolTip(this.comboBoxTestSpawnLevel, "Start the game on a specific level.");
+            // 
+            // numericUpDownTestSpawnX
+            // 
+            this.numericUpDownTestSpawnX.Enabled = false;
+            this.numericUpDownTestSpawnX.Location = new System.Drawing.Point(30, 87);
+            this.numericUpDownTestSpawnX.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnX.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.numericUpDownTestSpawnX.Minimum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownTestSpawnX.Name = "numericUpDownTestSpawnX";
+            this.numericUpDownTestSpawnX.Size = new System.Drawing.Size(80, 20);
+            this.numericUpDownTestSpawnX.TabIndex = 26;
+            this.toolTip.SetToolTip(this.numericUpDownTestSpawnX, "Character X Position.");
             // 
             // modContextMenu
             // 
@@ -1455,8 +1884,17 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpdateFrequency)).EndInit();
+            this.tabPage6.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnAngle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnSaveID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnAct)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnX)).EndInit();
             this.modContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1508,10 +1946,6 @@
 		private System.Windows.Forms.ToolStripMenuItem generateManifestToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
 		private System.Windows.Forms.TabPage tabPage4;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.CheckBox consoleCheckBox;
-		private System.Windows.Forms.CheckBox screenCheckBox;
-		private System.Windows.Forms.CheckBox fileCheckBox;
 		private System.Windows.Forms.CheckBox pauseWhenInactiveCheckBox;
 		private System.Windows.Forms.CheckBox disableCDCheckCheckBox;
 		private System.Windows.Forms.GroupBox groupBox4;
@@ -1559,5 +1993,32 @@
         private System.Windows.Forms.TrackBar trackBarMusicVol;
         private System.Windows.Forms.Label labelVoiceVol;
         private System.Windows.Forms.Label labelMusicVol;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox consoleCheckBox;
+        private System.Windows.Forms.CheckBox screenCheckBox;
+        private System.Windows.Forms.CheckBox fileCheckBox;
+        private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.CheckBox checkBoxTestSpawnPosition;
+        private System.Windows.Forms.Button buttonTestSpawnPlay;
+        private System.Windows.Forms.ComboBox comboBoxTestSpawnEvent;
+        private System.Windows.Forms.CheckBox checkBoxTestSpawnEvent;
+        private System.Windows.Forms.CheckBox checkBoxTestSpawnCharacter;
+        private System.Windows.Forms.CheckBox checkBoxTestSpawnLevel;
+        private System.Windows.Forms.ComboBox comboBoxTestSpawnCharacter;
+        private System.Windows.Forms.NumericUpDown numericUpDownTestSpawnAngle;
+        private System.Windows.Forms.Label labelTestSpawnAngle;
+        private System.Windows.Forms.Label labelTestSpawnY;
+        private System.Windows.Forms.NumericUpDown numericUpDownTestSpawnSaveID;
+        private System.Windows.Forms.CheckBox checkBoxTestSpawnSave;
+        private System.Windows.Forms.Label labelTestSpawnX;
+        private System.Windows.Forms.Label labelTestSpawnAct;
+        private System.Windows.Forms.Label labelTestSpawnZ;
+        private System.Windows.Forms.NumericUpDown numericUpDownTestSpawnAct;
+        private System.Windows.Forms.NumericUpDown numericUpDownTestSpawnZ;
+        private System.Windows.Forms.NumericUpDown numericUpDownTestSpawnY;
+        private System.Windows.Forms.ComboBox comboBoxTestSpawnLevel;
+        private System.Windows.Forms.NumericUpDown numericUpDownTestSpawnX;
+        private System.Windows.Forms.CheckBox checkBoxTestSpawnAngleHex;
     }
 }
