@@ -1378,6 +1378,8 @@
             // 
             // groupBox12
             // 
+            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox12.Controls.Add(this.checkBoxTestSpawnAngleHex);
             this.groupBox12.Controls.Add(this.checkBoxTestSpawnPosition);
             this.groupBox12.Controls.Add(this.buttonTestSpawnPlay);

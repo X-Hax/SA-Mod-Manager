@@ -1785,7 +1785,7 @@ namespace SADXModManager
             TestSpawnCutsceneList.Add(257, "Don't get too many ideas you fools!");
             TestSpawnCutsceneList.Add(258, "The Egg Carrier has changed chape");
             TestSpawnCutsceneList.Add(259, "Sonic at the Sky Deck entrance");
-            TestSpawnCutsceneList.Add(260, "Sonic right after Sky Deck(Is that it?)");
+            TestSpawnCutsceneList.Add(260, "Sonic right after Sky Deck (Is that it?)");
             TestSpawnCutsceneList.Add(262, "Sonic heading to transform the Egg Carrier");
             TestSpawnCutsceneList.Add(263, "Emergency alert cancelled");
             TestSpawnCutsceneList.Add(272, "Tails and Sonic after landing on the Egg Carrier");
