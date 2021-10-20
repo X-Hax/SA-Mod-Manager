@@ -308,7 +308,9 @@ namespace SADXModManager
 
             if (!File.Exists(datadllpath))
             {
-                MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\nCannot determine state of installation.",
+                MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\n" +
+                    "Cannot determine state of installation. Make sure you are running the Mod Manager from the game's main folder (where sonic.exe is).\n\n" +
+                    "If you are using the Steam version of the game, you need to convert it to the 2004 version before you can use the Mod Loader.",
                     Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 installButton.Hide();
             }
@@ -325,7 +327,7 @@ namespace SADXModManager
                     {
 
                         DialogResult result = MessageBox.Show(this, "Installed loader DLL differs from copy in mods folder."
-                            + "\n\nDo you want to overwrite the installed copy?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                            + "\n\nWould you like to update the installed copy?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                         if (result == DialogResult.Yes)
                             File.Copy(loaderdllpath, datadllpath, true);
