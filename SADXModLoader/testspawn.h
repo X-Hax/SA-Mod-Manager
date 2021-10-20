@@ -1,3 +1,4 @@
 #pragma once
 
-void TestSpawnCheckArgs(const HelperFunctions& helperFunctions);
+void ProcessTestSpawn(const HelperFunctions& helperFunctions);
+void ApplyTestSpawn();
