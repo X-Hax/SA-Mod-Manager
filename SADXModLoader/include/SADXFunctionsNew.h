@@ -56,7 +56,7 @@ static inline signed int Knux_NAct(playerwk* a1, taskwk* a2, motionwk2* a3)
 		mov edi, [a1]
 		call Knux_NActPtr
 		add esp, 4
-		mov result, edi
+		mov result, eax
 	}
 	return result;
 }
@@ -84,7 +84,6 @@ static inline signed int KnuxCheckStop(playerwk* a1, taskwk* a2)
 		mov ecx, [a2]
 		mov eax, [a1]
 		call KnuxCheckStopPtr
-		add esp, 4
 		mov result, eax
 	}
 	return result;
