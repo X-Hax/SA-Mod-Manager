@@ -192,6 +192,8 @@ namespace SADXModManager
 
             checkWindowResize.Checked = loaderini.ResizableWindow;
 
+			checkBASS.Checked = loaderini.DisableBASS;
+
             InitTestSpawnCutsceneList();
             checkBoxTestSpawnLevel.Checked           = loaderini.TestSpawnLevel != -1;
             comboBoxTestSpawnLevel.SelectedIndex     = loaderini.TestSpawnLevel;
@@ -949,6 +951,7 @@ namespace SADXModManager
 			loaderini.UpdateFrequency           = (int)numericUpdateFrequency.Value;
 			loaderini.VoiceLanguage             = (int)comboVoiceLanguage.SelectedIndex;
 			loaderini.TextLanguage              = (int)comboTextLanguage.SelectedIndex;
+			loaderini.DisableBASS = checkBASS.Checked;
 
             loaderini.TestSpawnLevel            = checkBoxTestSpawnLevel.Checked ? comboBoxTestSpawnLevel.SelectedIndex : -1;
             loaderini.TestSpawnAct              = (int)numericUpDownTestSpawnAct.Value;

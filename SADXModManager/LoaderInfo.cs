@@ -56,6 +56,8 @@ namespace SADXModManager
 		[DefaultValue((int)FillMode.Fit)]
 		public int FmvFillMode { get; set; } = (int)FillMode.Fit;
 
+		public bool DisableBASS { get; set; }
+
         [DefaultValue(-1)] public int TestSpawnLevel { get; set; } = -1;
         [DefaultValue(0)] public int TestSpawnAct { get; set; } = 0;
 
