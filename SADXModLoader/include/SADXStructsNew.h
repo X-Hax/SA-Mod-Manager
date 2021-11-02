@@ -1350,10 +1350,14 @@ struct pathctrl
 	NJS_POINT3 pos;
 };
 
-struct pathgrp
+struct pathtbl
 {
-	unsigned int wanmb;
-	pathtag** tags;
+	__int16 slangx;
+	__int16 slangz;
+	float length;
+	float xpos;
+	float ypos;
+	float zpos;
 };
 
 struct pathtag
@@ -1365,14 +1369,10 @@ struct pathtag
 	void* pathtask;
 };
 
-struct pathtbl
+struct pathgrp
 {
-	__int16 slangx;
-	__int16 slangz;
-	float length;
-	float xpos;
-	float ypos;
-	float zpos;
+	unsigned int wanmb;
+	pathtag** tags;
 };
 
 struct pathwk
