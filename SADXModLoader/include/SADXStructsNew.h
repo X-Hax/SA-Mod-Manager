@@ -212,6 +212,7 @@ struct facewk
 	FACETBL* tablePtr;
 };
 
+#pragma pack(push, 4)
 struct eventwk
 {
 	char mode;
@@ -224,6 +225,7 @@ struct eventwk
 	NJS_POINT3 posofs;
 	float shadowSize;
 };
+#pragma pack(pop)
 
 struct taskwk
 {
@@ -1239,6 +1241,7 @@ struct mtnjvwk
 	NJS_ACTION* actwkptr;
 };
 
+#pragma pack(push, 4)
 struct shadowwk
 {
 	int angx;
@@ -1296,6 +1299,7 @@ struct playerwk
 	NJS_POINT3 user1_vec;
 	shadowwk shadow;
 };
+#pragma pack(pop)
 
 struct CHS_BILL_INFO
 {
@@ -1338,6 +1342,47 @@ struct cpathtag
 	unsigned __int8 type;
 	float points;
 	cpathtbl* tblhead;
+};
+
+struct pathctrl
+{
+	float length;
+	NJS_POINT3 pos;
+};
+
+struct pathgrp
+{
+	unsigned int wanmb;
+	pathtag** tags;
+};
+
+struct pathtag
+{
+	unsigned __int8 pathtype;
+	unsigned __int16 points;
+	float totallen;
+	pathtbl* tblhead;
+	void* pathtask;
+};
+
+struct pathtbl
+{
+	__int16 slangx;
+	__int16 slangz;
+	float length;
+	float xpos;
+	float ypos;
+	float zpos;
+};
+
+struct pathwk
+{
+	float mPosX;
+	float mPosZ;
+	float mWidthX;
+	float mWidthZ;
+	float mRadius;
+	int mAngle;
 };
 
 #pragma pack(pop)
