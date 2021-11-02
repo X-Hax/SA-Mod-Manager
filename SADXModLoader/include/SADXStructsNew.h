@@ -12,7 +12,7 @@
 #include "SADXEnums.h"
 
  // All structs should be packed.
-#pragma pack(push, 1)
+#pragma pack(push, 4)
 
 struct task;
 struct taskwk;
@@ -212,7 +212,6 @@ struct facewk
 	FACETBL* tablePtr;
 };
 
-#pragma pack(push, 4)
 struct eventwk
 {
 	char mode;
@@ -225,7 +224,6 @@ struct eventwk
 	NJS_POINT3 posofs;
 	float shadowSize;
 };
-#pragma pack(pop)
 
 struct taskwk
 {
@@ -1241,7 +1239,6 @@ struct mtnjvwk
 	NJS_ACTION* actwkptr;
 };
 
-#pragma pack(push, 4)
 struct shadowwk
 {
 	int angx;
@@ -1299,7 +1296,6 @@ struct playerwk
 	NJS_POINT3 user1_vec;
 	shadowwk shadow;
 };
-#pragma pack(pop)
 
 struct CHS_BILL_INFO
 {
