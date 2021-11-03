@@ -12,7 +12,7 @@
 #include "SADXEnums.h"
 
  // All structs should be packed.
-#pragma pack(push, 1)
+#pragma pack(push, 4)
 
 struct task;
 struct taskwk;
@@ -1308,6 +1308,77 @@ struct CHS_BILL_INFO
 	float t1;
 	NJS_TEXLIST* pTexlist;
 	int TexNum;
+};
+
+struct PADREC_DATA
+{
+	BYTE on;
+	BYTE angle;
+	BYTE stroke;
+};
+
+struct PADREC_DATA_TAG
+{
+	PADREC_DATA** data;
+	int size;
+};
+
+struct cpathtbl
+{
+	__int16 roty;
+	__int16 rotx;
+	__int16 rotz;
+	float camx;
+	float camy;
+	float camz;
+};
+
+struct cpathtag
+{
+	unsigned __int8 type;
+	float points;
+	cpathtbl* tblhead;
+};
+
+struct pathctrl
+{
+	float length;
+	NJS_POINT3 pos;
+};
+
+struct pathtbl
+{
+	__int16 slangx;
+	__int16 slangz;
+	float length;
+	float xpos;
+	float ypos;
+	float zpos;
+};
+
+struct pathtag
+{
+	unsigned __int8 pathtype;
+	unsigned __int16 points;
+	float totallen;
+	pathtbl* tblhead;
+	void* pathtask;
+};
+
+struct pathgrp
+{
+	unsigned int wanmb;
+	pathtag** tags;
+};
+
+struct pathwk
+{
+	float mPosX;
+	float mPosZ;
+	float mWidthX;
+	float mWidthZ;
+	float mRadius;
+	int mAngle;
 };
 
 #pragma pack(pop)

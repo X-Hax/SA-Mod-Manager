@@ -56,7 +56,7 @@ static inline signed int Knux_NAct(playerwk* a1, taskwk* a2, motionwk2* a3)
 		mov edi, [a1]
 		call Knux_NActPtr
 		add esp, 4
-		mov result, edi
+		mov result, eax
 	}
 	return result;
 }
@@ -84,7 +84,6 @@ static inline signed int KnuxCheckStop(playerwk* a1, taskwk* a2)
 		mov ecx, [a2]
 		mov eax, [a1]
 		call KnuxCheckStopPtr
-		add esp, 4
 		mov result, eax
 	}
 	return result;
@@ -228,5 +227,81 @@ FunctionPointer(void, CHAOS_DrawModel, (NJS_MODEL_SADX* model), 0x409EF0);
 FunctionPointer(void, CHAOS_DrawObject, (NJS_OBJECT* object), 0x40A280);
 FunctionPointer(void, CHAOS_Action, (NJS_ACTION* action, float frame), 0x409FB0);
 FunctionPointer(void, CHAOS_DrawShapeMotion, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x40A050);
+
+//Cutscene audio functions
+FunctionPointer(void, voicevolchange, (int vol), 0x40CCF0);
+FunctionPointer(void, EventSe_Play, (int id, int se, int frame), 0x64FD00);
+FunctionPointer(void, EventSe_Stop, (int id), 0x64FD40);
+FunctionPointer(void, EventSe_Volume, (int id, int volume, int frame), 0x64FD80);
+FunctionPointer(void, EventSe_Pan, (int id, int pan, int frame), 0x64FDB0);
+FunctionPointer(void, EventSe_Pitch, (int id, int pitch, int frame), 0x64FDE0);
+FunctionPointer(void, EventSe_Oneshot, (int se, int volume, int pan, int pitch), 0x64FE10);
+
+//cutscene message
+FunctionPointer(void, EV_Msg, (char* str), 0x42FB20);
+VoidFunc(EV_MsgClose, 0x42FBB0);
+VoidFunc(EV_MsgCls, 0x42FC20);
+FunctionPointer(void, EV_MsgW, (int time, char* str), 0x431640);
+
+//cutscene Camera
+VoidFunc(EV_CameraOn, 0x4303E0);
+VoidFunc(EV_CameraOff, 0x4304B0);
+FunctionPointer(void, EV_CameraAng, (int mode, int time, int x, int y, int z), 0x430C90);
+FunctionPointer(void, EV_CameraPos, (int mode, int time, float x, float y, float z), 0x430D00);
+FunctionPointer(void, EV_CameraPosORY, (char mode, int time, task* tp, float x, float y, float z), 0x430D70);
+VoidFunc(EV_CameraTargetFree, 0x430E50);
+FunctionPointer(void, EV_CameraTargetPos, (int mode, int time, float x, float y, float z, float az), 0x430E60);
+FunctionPointer(void, EV_CameraTargetObj, (int mode, int time, task* tp, float x, float y, float z, int az), 0x430EE0);
+VoidFunc(EV_CameraChaseFree, 0x430F60);
+FunctionPointer(void, EV_CameraChase, (task* tp), 0x430F70);
+FunctionPointer(void, EV_CameraChaseRM, (int mode, int time, task* tp, float height, int x0, int y0, int z0, float d0, int x1, int y1, int z1, float d1), 0x430FC0);
+FunctionPointer(void, EV_CameraPerspective, (int mode, int time, int ang), 0x431060);
+FunctionPointer(void, EV_CameraPath, (cpathtag* path, float speed), 0x4310A0);
+
+//cutscene functions
+FunctionPointer(void, EV_CreateObject, (task** tp, float px, float py, float pz, int ax, int ay, int az), 0x431670);
+FunctionPointer(void, EV_CreateObjectFunc, (task** a1, task* (*func)(void), float x, float y, float z, int rx, int ry, int rz), 0x4316C0);
+FunctionPointer(void, EV_InitObject, (task* tp), 0x431730);
+FunctionPointer(void, EV_InitPlayer, (int n), 0x431780);
+FunctionPointer(void, EV_WaitAction, (task* tp), 0x431810);
+FunctionPointer(void, EV_WaitPath, (task* tp), 0x431840);
+FunctionPointer(void, EV_PlayPad, (int no, PADREC_DATA_TAG* tag), 0x431870);
+FunctionPointer(void, EV_WaitMove, (task* tp), 0x4318D0);
+FunctionPointer(void, EV_FreeObject, (task** tp), 0x42FC50);
+FunctionPointer(void, EV_SetPos, (task* tp, float x, float y, float z), 0x42FC70);
+FunctionPointer(void, EV_SetAng, (task* tp, int x, int y, int z), 0x42FCD0);
+FunctionPointer(void, EV_SetMode, (task* tp, int mode), 0x42FD20);
+FunctionPointer(void, EV_SetShadow, (task* tp, float size), 0x42FD40);
+FunctionPointer(void, EV_SetColli, (task* tp, float size), 0x42FD60);
+FunctionPointer(void, EV_CreatePlayer, (int n, void(__cdecl* func)(task*), float px, float py, float pz, int ax, int ay, int az), 0X42FD80);
+FunctionPointer(void, EV_RemovePlayer, (int n), 0x42FDE0);
+FunctionPointer(void, EV_SetAction, (task* tp, NJS_ACTION* ap, NJS_TEXLIST* lp, float speed, int mode, int linkframe), 0x42FE00);
+FunctionPointer(void, EV_SetMotion, (task* tp, NJS_OBJECT* op, NJS_MOTION* mp, NJS_TEXLIST* lp, float speed, int mode, int linkframe), 0x42FE20);
+FunctionPointer(void, EV_ClrAction, (task* tp), 0x42FE40);
+FunctionPointer(void, EV_SetPath, (task* tp, EPATHTAG* path, float speed, int mode), 0x42FE60);
+FunctionPointer(void, EV_ClrPath, (task* tp), 0x42FE80);
+FunctionPointer(void, EV_LookFree, (task* tp), 0x42FFB0);
+FunctionPointer(void, EV_LookObject, (task* tp, task* target, float x, float y, float z), 0x42FFD0);
+FunctionPointer(void, EV_LookPoint, (task* tp, float x, float y, float z), 0x430000);
+FunctionPointer(void, EV_LookAngle, (task* tp, int x, int y, int z), 0x430030);
+FunctionPointer(void, EV_MoveFree, (task* tp), 0x430060);
+FunctionPointer(void, EV_MovePoint, (task* tp, float x, float y, float z), 0x430080);
+FunctionPointer(void, EV_MovePoint2, (task* tp, float x, float y, float z, float s, float a), 0x4300D0);
+FunctionPointer(void, EV_MoveRotation, (task* tp, int x, int y, int z), 0x430120);
+FunctionPointer(void, AmyForEventHammerScaleIm, (char playernmb, float scale), 0x486EC0);
+FunctionPointer(void, stopObject, (task* tp), 0x6EBAB0);
+VoidFunc(stopObjectAll, 0x6EBB00);
+FunctionPointer(void, moveObject, (task* obj, float st_x, float st_y, float st_z, float end_x, float end_y, float end_z, int frame), 0x6EC2B0);
+FunctionPointer(void, moveObjectOn, (task* tp, float x, float y, float z, int frame, task* dest_obj), 0x6EC6D0);
+FunctionPointer(void, moveObjectOnAngle, (task* obj, float far_x, float far_y, float far_z, int ang_x, int ang_y, int ang_z, int frame, task* dest_obj), 0x6EC790);
+FunctionPointer(void, moveObjectOnRotate, (task* obj, float far_x, float far_y, float far_z, signed int frame, task* dest_obj), 0x6EC8B0);
+FunctionPointer(void, moveObjectRightHand, (task* obj, char player_no, float far_x, float far_y, float far_z, int frame), 0x6ECA20);
+FunctionPointer(void, addmotModel, (int model, NJS_ACTION* action, int mot_id), 0x6ECAC0);
+FunctionPointer(void, playModel, (int model_id, int mot_id, float mot_spd, int loop_num), 0x6ECAE0);
+FunctionPointer(void, stopModel, (int model_id), 0x6ECB20);
+FunctionPointer(task*, getobjModel, (int model_id), 0x6ECB40);
+FunctionPointer(void, deleteModel, (int model_id), 0x6ECB50);
+FunctionPointer(void, createModel, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, obj* model, NJS_TEXLIST* texlist, int model_id), 0x6ECE70);
+FunctionPointer(void, createModelEC, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECF20);
 
 #endif /* SADXMODLOADER_SADXFUNCTIONSNEW_H */

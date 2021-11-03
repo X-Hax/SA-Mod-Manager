@@ -430,11 +430,13 @@ static void DisableSound()
 
 void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 {
+	if (GetModuleHandle(L"sadx-test-spawn") != NULL)
+	{
+		return;
+	}
+
 	int argc = 0;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
-
-	bool level_set = false;
-	bool act_set = false;
 
 	for (int i = 1; i < argc; i++)
 	{
@@ -512,7 +514,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 				{ x, y, z },	// Position
 				0				// YRot
 			};
-
+			
 			helperFunctions.RegisterStartPosition(static_cast<Uint8>(CurrentCharacter), position);
 		}
 		else if (!wcscmp(argv[i], L"--event") || !wcscmp(argv[i], L"-e"))

@@ -56,7 +56,25 @@ namespace SADXModManager
 		[DefaultValue((int)FillMode.Fit)]
 		public int FmvFillMode { get; set; } = (int)FillMode.Fit;
 
-		public SADXLoaderInfo()
+		public bool DisableBASS { get; set; }
+
+        [DefaultValue(-1)] public int TestSpawnLevel { get; set; } = -1;
+        [DefaultValue(0)] public int TestSpawnAct { get; set; } = 0;
+
+        [DefaultValue(-1)] public int TestSpawnCharacter { get; set; } = -1;
+
+        [DefaultValue(false)] public bool TestSpawnPositionEnabled { get; set; } = false;
+        [DefaultValue(false)] public bool TestSpawnRotationHex { get; set; } = false;
+        [DefaultValue(0)] public int TestSpawnX { get; set; } = 0;
+        [DefaultValue(0)] public int TestSpawnY { get; set; } = 0;
+        [DefaultValue(0)] public int TestSpawnZ { get; set; } = 0;
+        [DefaultValue(0)] public int TestSpawnRotation { get; set; } = 0;
+
+        [DefaultValue(-1)] public int TestSpawnEvent { get; set; } = -1;
+
+        [DefaultValue(-1)] public int TestSpawnSaveID { get; set; } = -1;
+
+        public SADXLoaderInfo()
 		{
 			Mods = new List<string>();
 			EnabledCodes = new List<string>();

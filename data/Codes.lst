@@ -2,6 +2,13 @@ Patch "Allow Dynamic Light Direction Globally"
 writenop 00412536 6
 writenop 00412544 6
 
+Code "Egg Carrier Ocean Music"
+ifmask32 03C62394 0x1
+	write8 0051BE03 32
+else
+	write8 0051BE03 31
+endif
+
 Code "Infinite Rings"
 write16 03B0F0E4 999
 
@@ -112,9 +119,6 @@ endif
 
 Patch "Tails Can Play Emerald Coast (BREAKS SAVE)"
 write8 004F6B02 0xEB
-
-Patch "Don't Lose Rings When Hit"
-writenop 00425AB0 9
 
 Patch "Walk on Water"
 writenop 004496E1 6
