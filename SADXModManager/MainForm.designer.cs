@@ -1863,7 +1863,7 @@
 			this.checkBASS.Size = new System.Drawing.Size(92, 17);
 			this.checkBASS.TabIndex = 0;
 			this.checkBASS.Text = "Disable BASS";
-			this.toolTip.SetToolTip(this.checkBASS, "Use only WMP for music and voices. Fixes a speedrunning bug in Sonic\'s Sky Deck.");
+			this.toolTip.SetToolTip(this.checkBASS, "Revert to the original game\'s music/voice playback system that can only use WMA files. Normally you should leave this checkbox unchecked.");
 			this.checkBASS.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
