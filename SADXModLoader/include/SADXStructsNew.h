@@ -842,7 +842,8 @@ struct al_entry_work
 	al_entry_work* pLockOn;
 };
 
-struct __declspec(align(2)) AL_BODY_INFO
+#pragma pack(push, 2)
+struct AL_BODY_INFO
 {
 	float HPos;
 	float VPos;
@@ -870,6 +871,7 @@ struct __declspec(align(2)) AL_BODY_INFO
 	char FormNum;
 	char FormSubNum;
 };
+#pragma pack(pop)
 
 struct AL_TIME
 {

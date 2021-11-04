@@ -1173,7 +1173,7 @@ static void ProcessDeathZoneINI(const IniGroup* group, const wstring& mod_dir)
 
 		wchar_t dzpath[MAX_PATH];
 		if (dzdata->hasKey(key, "Filename"))
-			swprintf(dzpath, LengthOfArray(dzpath), L"%s\\%s", dzinipath, dzdata->getWString(key, "Filename")); // .sa1mdl part added already
+			swprintf(dzpath, LengthOfArray(dzpath), L"%s\\%s", dzinipath, dzdata->getWString(key, "Filename").c_str()); // .sa1mdl part added already
 		else
 			swprintf(dzpath, LengthOfArray(dzpath), L"%s\\%u.sa1mdl", dzinipath, i);
 		auto* dzmdl = new ModelInfo(dzpath);
