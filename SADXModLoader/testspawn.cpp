@@ -479,7 +479,6 @@ static void __cdecl ForceEventMode()
 		SetEventFlagsForCutscene(CurrentDemoCutsceneID);
 	}
 	
-	//SetEventFlag((EventFlags)0x80);
 	DemoPlaying = 1;
 	GameMode = static_cast<GameModes>(5 - (GetLevelType() != 1)); // Sends to Adventure or Level GameMode
 }
