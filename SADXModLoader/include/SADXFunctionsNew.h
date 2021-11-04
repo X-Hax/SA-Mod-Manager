@@ -228,7 +228,7 @@ FunctionPointer(void, CHAOS_DrawObject, (NJS_OBJECT* object), 0x40A280);
 FunctionPointer(void, CHAOS_Action, (NJS_ACTION* action, float frame), 0x409FB0);
 FunctionPointer(void, CHAOS_DrawShapeMotion, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x40A050);
 
-//Cutscene audio functions
+// Cutscene audio functions
 FunctionPointer(void, voicevolchange, (int vol), 0x40CCF0);
 FunctionPointer(void, EventSe_Play, (int id, int se, int frame), 0x64FD00);
 FunctionPointer(void, EventSe_Stop, (int id), 0x64FD40);
@@ -237,13 +237,13 @@ FunctionPointer(void, EventSe_Pan, (int id, int pan, int frame), 0x64FDB0);
 FunctionPointer(void, EventSe_Pitch, (int id, int pitch, int frame), 0x64FDE0);
 FunctionPointer(void, EventSe_Oneshot, (int se, int volume, int pan, int pitch), 0x64FE10);
 
-//cutscene message
+// Cutscene message
 FunctionPointer(void, EV_Msg, (char* str), 0x42FB20);
 VoidFunc(EV_MsgClose, 0x42FBB0);
 VoidFunc(EV_MsgCls, 0x42FC20);
 FunctionPointer(void, EV_MsgW, (int time, char* str), 0x431640);
 
-//cutscene Camera
+// Cutscene Camera
 VoidFunc(EV_CameraOn, 0x4303E0);
 VoidFunc(EV_CameraOff, 0x4304B0);
 FunctionPointer(void, EV_CameraAng, (int mode, int time, int x, int y, int z), 0x430C90);
@@ -258,7 +258,7 @@ FunctionPointer(void, EV_CameraChaseRM, (int mode, int time, task* tp, float hei
 FunctionPointer(void, EV_CameraPerspective, (int mode, int time, int ang), 0x431060);
 FunctionPointer(void, EV_CameraPath, (cpathtag* path, float speed), 0x4310A0);
 
-//cutscene functions
+// Cutscene functions
 FunctionPointer(void, EV_CreateObject, (task** tp, float px, float py, float pz, int ax, int ay, int az), 0x431670);
 FunctionPointer(void, EV_CreateObjectFunc, (task** a1, task* (*func)(void), float x, float y, float z, int rx, int ry, int rz), 0x4316C0);
 FunctionPointer(void, EV_InitObject, (task* tp), 0x431730);
@@ -303,5 +303,8 @@ FunctionPointer(task*, getobjModel, (int model_id), 0x6ECB40);
 FunctionPointer(void, deleteModel, (int model_id), 0x6ECB50);
 FunctionPointer(void, createModel, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, obj* model, NJS_TEXLIST* texlist, int model_id), 0x6ECE70);
 FunctionPointer(void, createModelEC, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECF20);
+
+// Story related functions
+FunctionPointer(SEQ_SECTIONTBL*, SeqGetSectionList, (int playerno), 0x44EAF0); // Current story section
 
 #endif /* SADXMODLOADER_SADXFUNCTIONSNEW_H */
