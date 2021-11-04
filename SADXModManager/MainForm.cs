@@ -308,6 +308,14 @@ namespace SADXModManager
             if (CheckForUpdates())
                 return;
 
+            if (File.Exists("d3d8m.dll"))
+                checkBoxEnableD3D9.Enabled = true;
+
+            if (File.Exists("d3d8.dll"))
+            {
+                checkBoxEnableD3D9.Checked = true;
+            }
+
             if (!File.Exists(datadllpath))
             {
                 MessageBox.Show(this, "CHRMODELS.dll could not be found.\n\n" +
@@ -1839,6 +1847,14 @@ namespace SADXModManager
         private void checkBoxTestSpawnAngleHex_CheckedChanged(object sender, EventArgs e)
         {
             numericUpDownTestSpawnAngle.Hexadecimal = checkBoxTestSpawnAngleHex.Checked;
+        }
+
+        private void checkBoxEnableD3D9_Click(object sender, EventArgs e)
+        {
+            if (checkBoxEnableD3D9.Checked && !File.Exists("d3d8.dll"))
+                File.Copy("d3d8m.dll", "d3d8.dll");
+            else if (!checkBoxEnableD3D9.Checked && File.Exists("d3d8.dll"))
+                File.Delete("d3d8.dll");
         }
     }
 }
