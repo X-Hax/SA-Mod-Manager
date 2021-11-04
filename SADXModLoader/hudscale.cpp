@@ -228,10 +228,11 @@ static void __declspec(naked) TwinkleCircuit_DrawLapTimes_asm()
 	{
 		push [esp + 08h]
 		push [esp + 08h]
-		push al
+		movzx eax, al
+		push eax
 		call TwinkleCircuit_DrawLapTimes_r
-		pop al
-		add esp, 0Ah
+		pop eax
+		add esp, 08h
 		retn
 	}
 }
