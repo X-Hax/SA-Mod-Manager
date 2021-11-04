@@ -377,7 +377,7 @@ CutsceneLevelData CutsceneList[]
 
 static CutsceneLevelData* GetCutsceneData(int cutscene)
 {
-	for (auto i : CutsceneList)
+	for (auto &i : CutsceneList)
 	{
 		if (i.cutscene_id == cutscene)
 		{
