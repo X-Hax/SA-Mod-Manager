@@ -176,7 +176,7 @@ CutsceneLevelData CutsceneList[]
 	{ 0x032, 26, 4, 2, 0  }, // Tails and Sonic poolside
 	{ 0x033, 33, 0, 2, 1  }, // Tails faces off with Egg Hornet
 	{ 0x034, 33, 0, 2, 1  }, // Chaos 1 Emerges
-	{ 0x035, 26, 1, 2, 2  }, // Tails and Sonic are gassed at Casinopolis - broken
+	{ 0x035, 26, 1, 2, 2  }, // Tails and Sonic are gassed at Casinopolis
 	{ 0x038, 33, 0, 2, 4  }, // Tails vs. Knuckles
 	{ 0x039, 33, 0, 2, 4  }, // Chaos 4 Emerges
 	{ 0x03A, 33, 0, 2, 4  }, // Tails and Sonic follow Eggman after Chaos 4
@@ -320,7 +320,7 @@ CutsceneLevelData CutsceneList[]
 	{ 0x103, 29, 1, 0, 10 }, // Sonic at the Sky Deck Entrance - broken
 	{ 0x104, 32, 1, 0, 10 }, // Sonic right after Sky Deck (Is that it?)
 	{ 0x106, 29, 2, 0, 10 }, // Sonic heading to transform the Egg Carrier
-	{ 0x107, 29, 3, 3, 10 }, // Egg Carrier returns to normal - broken
+	{ 0x107, 29, 3, 0, 10 }, // Emergency altert cancelled (Sonic) - broken
 
 	// Additional Tails events
 	{ 0x110, 29, 0, 2, 8  }, // Tails and Sonic after landing on the Egg Carrier
@@ -371,7 +371,7 @@ CutsceneLevelData CutsceneList[]
 	{ 0x179, 26, 3, 0, 1  }, // Employee Card appears
 	{ 0x17A, 33, 0, 0, 1  }, // Passage to Angel Island opens (Sonic)
 	{ 0x17B, 33, 0, 2, 0  }, // Passage to Angel Island opens (Tails)
-	{ 0x17C, 33, 0, 7, 1  }, // Passage to Angel Island opens (Gamma)
+	{ 0x17C, 33, 0, 6, 1  }, // Passage to Angel Island opens (Gamma)
 	{ 0x180, 5,  0, 0, 9  }, // Egg Carrier in Red Mountain
 };
 
@@ -392,73 +392,86 @@ static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
 	{
-	case 85:
-		WriteData<1>((char*)0x598040, 0xC3u);
-		WriteData<1>((char*)0x79E4C0, 0xC3u);
-		WriteData<5>((char*)0x597BF3, 0x90u);
+	case 9: // Sonic and Tails gassed
+		SetEventFlag((EventFlags)FLAG_SONIC_SS_ENTRANCE_CASINO);
 		break;
-	case 110:
+	case 53: // Tails and Sonic gassed
+		SetEventFlag((EventFlags)FLAG_MILES_SS_ENTRANCE_CASINO);
+		break;
+	case 85: // Tails saves Froggy in Sand Hill
+		WriteData<1>((char*)0x598040, 0xC3u); // Osfrog
+		WriteData<1>((char*)0x79E4C0, 0xC3u); // Plays level music
+		WriteData<5>((char*)0x597BF3, 0x90u); // Snowboard
+		break;
+	case 110: // Amy discovers Final Egg base
+		SetEventFlag((EventFlags)FLAG_AMY_MR_APPEAR_FINALEGG); // Open Final Egg for Amy
 		SetEventFlag((EventFlags)FLAG_AMY_MR_ENTRANCE_FINALEGG); // Open Final Egg for Amy
 		break;
-	case 114:
+	case 114: // Amy outro
 		SetEventFlag((EventFlags)FLAG_AMY_EC_SINK); // Egg Carrier sunk in Amy's outro
 		break;
-	case 146:
+	case 146: // Knuckles follows Gamma to Final Egg
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_APPEAR_FINALEGG); // Open Final Egg for Knuckles
 		break;
-	case 149:
+	case 149: // Knuckles finds the last missing piece in Sky Deck
 		WriteData<5>((char*)0x5EF6D0, 0x90u); // Sky Deck music
 		WriteData<1>((char*)0x450370, 0xC3u); // Rings
 		WriteData<1>((char*)0x7A1AA0, 0xC3u); // Tikal hints
 		WriteData<1>((char*)0x476440, 0xC3u); // Radar
 		break;
-	case 179:
+	case 179: // Useless machine
 		SetEventFlag((EventFlags)FLAG_E102_MR_FREEPASS); // Open Final Egg for useless machine
 		SetEventFlag((EventFlags)FLAG_E102_CLEAR_BEACH); // Open Final Egg for useless machine
 		SetEventFlag((EventFlags)FLAG_E102_CLEAR_FINALEGG); // Open Final Egg for useless machine
 		SetEventFlag((EventFlags)FLAG_E102_MR_APPEAR_FINALEGG); // Open Final Egg for useless machine
 		break;
-	case 184:
+	case 184: // Gamma goes to the Past
 		WriteData<1>((char*)0x61CA90, 0xC3u); // Kill Emerald Coast music
 		WriteData<1>((char*)0x4AD140, 0xC3u); // Kill Kikis
 		WriteData<1>((char*)0x4FA320, 0xC3u); // Kill OFrog
 		break;
-	case 192:
+	case 192: // Gamma heading to the rear of the ship
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER); // Cutscenes where Gamma appears with the Jet Booster
 		break;
-	case 197:
+	case 197: // Gamma remembers his brothers
 		SetEventFlag((EventFlags)FLAG_E102_MR_ENTRANCE_MOUNTAIN);
 		break;
-	case 212:
+	case 212: // Big loses Froggy to Gamma
 		WriteData<1>((char*)0x61CA90, 0xC3u); // Kill Emerald Coast music
 		break;
-	case 218:
+	case 218: // Big saves Froggy in Hot Shelter (broken)
 		//WriteData<5>((char*)0x59A3F9, 0x90u); // Remove Froggy
 		break;
-	case 321:
-	case 322:
+	case 259: // This must be the way to the Sky Deck!
+		// Must figure out how to place Sonic and the camera correctly
+		//EntityData1Ptrs[0]->Position.x = 0;
+		//EntityData1Ptrs[0]->Position.y = 750;
+		//EntityData1Ptrs[0]->Position.z = 390;
+		break;
+	case 321: // Gamma heads to Hot Shelter
+	case 322: // Gamma rescues E-105
 		SetEventFlag((EventFlags)FLAG_E102_EC_SINK); // Egg Carrier sunk in Gamma's outro
 		break;
-	case 374:
+	case 374: // Ice Stone appears (Sonic)
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_ICESTONE);
 		break;
-	case 375:
+	case 375: // Ice Stone appears (Tails)
 		SetEventFlag((EventFlags)FLAG_MILES_SS_ICESTONE);
 		break;
-	case 376:
+	case 376: // Ice Stone appears (Big)
 		SetEventFlag((EventFlags)FLAG_BIG_SS_ICESTONE);
 		break;
-	case 377:
+	case 377: // Employee Card appears
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_CARD);
 		break;
-	case 378:
+	case 378: // Passage to Angel Island opens (Sonic)
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_WESTROCK);
 		break;
-	case 379:
+	case 379: // Passage to Angel Island opens (Tails)
 		SetEventFlag((EventFlags)FLAG_MILES_MR_WESTROCK);
 		break;
-	case 380:
-		SetEventFlag((EventFlags)FLAG_BIG_MR_WESTROCK);
+	case 380: // Passage to Angel Island opens (Gamma)
+		SetEventFlag((EventFlags)FLAG_E102_MR_WESTROCK);
 		break;
 	}
 }
