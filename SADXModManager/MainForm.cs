@@ -1767,7 +1767,7 @@ namespace SADXModManager
             TestSpawnCutsceneList.Add(220, "Tikal talks to Big");
             TestSpawnCutsceneList.Add(221, "Big returns to the Egg Carrier");
             TestSpawnCutsceneList.Add(222, "Chaos 6 takes Froggy");
-            TestSpawnCutsceneList.Add(223, "Sonic saves Froggy");
+            TestSpawnCutsceneList.Add(223, "Big thanks Sonic for saving Froggy");
             TestSpawnCutsceneList.Add(224, "Big finds the Tornado 2 and leaves");
             TestSpawnCutsceneList.Add(225, "Error");
             TestSpawnCutsceneList.Add(226, "Big outro");
