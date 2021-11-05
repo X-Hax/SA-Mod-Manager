@@ -4,6 +4,8 @@
 #include <unordered_map>
 
 static bool testspawn_enabled = false;
+static Trampoline* MovePlayerToStartPoint_t;
+static StartPosition position_override = { 0, 0, { 0, 0, 0 }, 0 };
 
 static const std::unordered_map<std::wstring, uint8_t> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
@@ -513,6 +515,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 366: // Gamma gets the Laser Blaster
 		SetEventFlag((EventFlags)FLAG_E102_EC_TYPE3LASER);
+		position_override.Position.x = 30;
 		break;
 	case 367: // Gamma gets the Jet Booster
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER);
@@ -606,6 +609,20 @@ static void DisableSound()
 	WriteData<1>(reinterpret_cast<void*>(0x004250D0), 0xC3);
 }
 
+static void __cdecl MovePlayerToStartPoint_r(EntityData1* data1)
+{
+	auto original = static_cast<decltype(MovePlayerToStartPoint_r)*>(MovePlayerToStartPoint_t->Target());
+	original(data1);
+	if (position_override.Position.x != 0)
+		data1->Position.x = position_override.Position.x;
+	if (position_override.Position.y != 0)
+	data1->Position.y = position_override.Position.y;
+	if (position_override.Position.z != 0)
+	data1->Position.z = position_override.Position.z;
+	if (position_override.YRot != 0)
+	data1->Rotation.y = position_override.YRot;
+}
+
 void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 {
 	if (GetModuleHandle(L"sadx-test-spawn") != NULL)
@@ -686,14 +703,27 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			const float y = std::stof(argv[++i]);
 			const float z = std::stof(argv[++i]);
 
-			StartPosition position = {
+			position_override = {
 				CurrentLevel,
 				static_cast<int16_t>(CurrentAct),
 				{ x, y, z },	// Position
 				0				// YRot
 			};
-			
-			helperFunctions.RegisterStartPosition(static_cast<Uint8>(CurrentCharacter), position);
+
+			// Hook the start position setting
+			switch (CurrentLevel)
+			{
+			case LevelIDs_StationSquare:
+			case LevelIDs_EggCarrierOutside:
+			case LevelIDs_EggCarrierInside:
+			case LevelIDs_MysticRuins:
+			case LevelIDs_Past:
+				MovePlayerToStartPoint_t = new Trampoline(0x414810, 0x414815, MovePlayerToStartPoint_r);
+				break;
+			default:
+				helperFunctions.RegisterStartPosition(static_cast<Uint8>(CurrentCharacter), position_override);
+				break;
+			}
 		}
 		else if (!wcscmp(argv[i], L"--event") || !wcscmp(argv[i], L"-e"))
 		{
@@ -705,6 +735,9 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 			// Hook the copyright GameMode and launch the event.
 			WriteJump(reinterpret_cast<void*>(0x0040C106), ForceEventMode_asm);
+
+			// Hook the start position setting
+			MovePlayerToStartPoint_t = new Trampoline(0x414810, 0x414815, MovePlayerToStartPoint_r);
 		}
 		else if (!wcscmp(argv[i], L"--no-music"))
 		{
