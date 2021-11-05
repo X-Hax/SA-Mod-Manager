@@ -394,17 +394,23 @@ static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
 	{
+	case 9: // Sonic and Tails gassed
+		SetEventFlag((EventFlags)FLAG_SONIC_SS_ENTRANCE_CASINO);
+		break;
 	case 29: // Sonic jumps from the Egg Carrier
 		WriteData<5>((char*)0x5578DE, 0x90u); // Don't load Chaos 6
 		break;
 	case 32: // Sonic sees the mural
 		WriteData<1>((char*)0x7B0DA0, 0xC3u); // Lost World 3 end level object
 		break;
-	case 9: // Sonic and Tails gassed
-		SetEventFlag((EventFlags)FLAG_SONIC_SS_ENTRANCE_CASINO);
+	case 36: // Egg Viper
+		DemoPlaying = 0;
 		break;
 	case 41: // Sonic and Tails land on the Egg Carrier
 		SetEventFlag((EventFlags)FLAG_SONIC_EC_TORNADO2_LOST);
+		break;
+	case 49: // Tails rescued by Sonic in Emerald Coast
+		DemoPlaying = 0;
 		break;
 	case 53: // Tails and Sonic gassed
 		SetEventFlag((EventFlags)FLAG_MILES_SS_ENTRANCE_CASINO);
@@ -414,6 +420,9 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 66: // Tails chases Froggy
 		SetTimeOfDay_Evening();
+		break;
+	case 72: // Tails finds Sonic on Red Mountain
+		DemoPlaying = 0;
 		break;
 	case 80: // Egg Walker
 		SetTimeOfDay_Night();
@@ -556,7 +565,7 @@ static void SetEventFlagsForCutscene(int eventID)
 static void __cdecl ForceEventMode()
 {
 	CutsceneLevelData* data = GetCutsceneData(CurrentDemoCutsceneID);
-
+	WriteData<1>((char*)0x425670, 0xC3u);
 	if (data != nullptr)
 	{
 		SetLevelAndAct(data->level, data->act);
@@ -578,10 +587,10 @@ static void __cdecl ForceEventMode()
 			pCurSequence = &seqTable[data->character];
 			pCurSectionList = &SeqGetSectionList(data->character)[data->scene_select];
 		}
+		DemoPlaying = 1;
 		SetEventFlagsForCutscene(CurrentDemoCutsceneID);
 	}
 	
-	DemoPlaying = 1;
 	GameMode = static_cast<GameModes>(5 - (GetLevelType() != 1)); // Sends to Adventure or Level GameMode
 }
 
@@ -731,7 +740,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 		else if (!wcscmp(argv[i], L"--event") || !wcscmp(argv[i], L"-e"))
 		{
 			CurrentDemoCutsceneID = _wtoi(argv[++i]);
-			PrintDebug("Loading event: %d\n", CurrentDemoCutsceneID);
+			PrintDebug("Loading event: EV%04X (%d)\n", CurrentDemoCutsceneID, CurrentDemoCutsceneID);
 
 			// Disable "Press Start" during the cutscene.
 			WriteData<1>((char*)0x457D10, 0xC3u);
