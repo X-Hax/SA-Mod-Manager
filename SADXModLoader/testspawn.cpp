@@ -481,6 +481,9 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 212: // Big loses Froggy to Gamma
 		WriteData<1>((char*)0x61CA90, 0xC3u); // Kill Emerald Coast music
 		break;
+	case 218: // Big saves Froggy in Hot Shelter
+		CutsceneFlagArray[217] = 1;
+		break;
 	case 321: // Gamma heads to Hot Shelter
 	case 322: // Gamma rescues E-105
 		SetEventFlag((EventFlags)FLAG_E102_EC_SINK); // Egg Carrier sunk in Gamma's outro
