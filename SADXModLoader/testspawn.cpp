@@ -4,8 +4,10 @@
 #include <unordered_map>
 
 static bool testspawn_enabled = false;
+static bool hook_position = false;
 static Trampoline* MovePlayerToStartPoint_t;
 static StartPosition position_override = { 0, 0, { 0, 0, 0 }, 0 };
+static int SetTestSpawnTimeOfDay = -1;
 
 static const std::unordered_map<std::wstring, uint8_t> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
@@ -576,6 +578,27 @@ static void SetEventFlagsForCutscene(int eventID)
 	}
 }
 
+static void ForceTimeOfDay(Sint8 time)
+{
+	switch (CurrentLevel)
+	{
+	case 26:
+	case 27:
+	case 28:
+	case 33:
+		PrintDebug("Setting time of day: %d\n", time);
+		InitFlagsAndThings();
+		slSeqRunning = 1;
+		ssSceneNo = CurrentCharacter;
+		pCurSequence = &seqTable[CurrentCharacter];
+		pCurSectionList = &SeqGetSectionList(CurrentCharacter)[0];
+		SetTimeOfDay(time);
+		break;
+	default:
+		break;
+	}
+}
+
 static void __cdecl ForceEventMode()
 {
 	CutsceneLevelData* data = GetCutsceneData(CurrentDemoCutsceneID);
@@ -646,6 +669,8 @@ static void __cdecl MovePlayerToStartPoint_r(EntityData1* data1)
 	data1->Position.z = position_override.Position.z;
 	if (position_override.YRot != 0)
 	data1->Rotation.y = position_override.YRot;
+	if (SetTestSpawnTimeOfDay != -1)
+		ForceTimeOfDay(SetTestSpawnTimeOfDay);
 }
 
 void ProcessTestSpawn(const HelperFunctions& helperFunctions)
@@ -761,8 +786,13 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			// Hook the copyright GameMode and launch the event.
 			WriteJump(reinterpret_cast<void*>(0x0040C106), ForceEventMode_asm);
 
-			// Hook the start position setting
-			MovePlayerToStartPoint_t = new Trampoline(0x414810, 0x414815, MovePlayerToStartPoint_r);
+			// Hook the start position setting if it's not already hooked
+			hook_position = true;
+		}
+		else if (!wcscmp(argv[i], L"--time") || !wcscmp(argv[i], L"-t"))
+		{
+			SetTestSpawnTimeOfDay = _wtoi(argv[++i]);
+			hook_position = true;
 		}
 		else if (!wcscmp(argv[i], L"--no-music"))
 		{
@@ -783,14 +813,13 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			DisableSound();
 		}
 	}
-
 	LocalFree(argv);
 }
 
 void ApplyTestSpawn()
 {
-	if (testspawn_enabled == true)
-	{
+	if (testspawn_enabled)
 		WriteData(reinterpret_cast<GameModes*>(0x0040C10C), GameModes_Trial);
-	}
+	if (hook_position)
+		MovePlayerToStartPoint_t = new Trampoline(0x414810, 0x414815, MovePlayerToStartPoint_r);
 }

@@ -1617,6 +1617,8 @@ namespace SADXModManager
                 }
                 cmdline.Add("-e " + ev_result.ToString());
             }
+            if (comboBoxTestSpawnTime.SelectedIndex > 0)
+                cmdline.Add("-t " + (comboBoxTestSpawnTime.SelectedIndex - 1).ToString());
             if (checkBoxTestSpawnSave.Checked)
                 cmdline.Add("-s " + numericUpDownTestSpawnSaveID.Value.ToString());
             return string.Join(" ", cmdline);

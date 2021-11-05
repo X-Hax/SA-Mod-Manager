@@ -155,6 +155,8 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.comboBoxTestSpawnTime = new System.Windows.Forms.ComboBox();
+            this.labelTestSpawnTime = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -565,7 +567,7 @@
             this.tabPage1.Controls.Add(this.modListView);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(402, 380);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Mods";
@@ -680,7 +682,7 @@
             this.tabPage3.Controls.Add(this.groupBox_Display);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(402, 380);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Graphics";
@@ -1071,7 +1073,7 @@
             this.tabPage5.Controls.Add(this.groupBox_SoundConfig);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage5.Size = new System.Drawing.Size(402, 380);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Sound";
@@ -1242,7 +1244,7 @@
             this.tabPage4.Controls.Add(groupBox2);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage4.Size = new System.Drawing.Size(402, 380);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Options";
@@ -1363,7 +1365,7 @@
             this.tabPage6.Controls.Add(this.groupBox1);
             this.tabPage6.Controls.Add(this.groupBox12);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage6.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Size = new System.Drawing.Size(402, 380);
             this.tabPage6.TabIndex = 5;
@@ -1424,6 +1426,8 @@
             // 
             this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox12.Controls.Add(this.labelTestSpawnTime);
+            this.groupBox12.Controls.Add(this.comboBoxTestSpawnTime);
             this.groupBox12.Controls.Add(this.checkBoxTestSpawnAngleHex);
             this.groupBox12.Controls.Add(this.checkBoxTestSpawnPosition);
             this.groupBox12.Controls.Add(this.buttonTestSpawnPlay);
@@ -1447,7 +1451,7 @@
             this.groupBox12.Controls.Add(this.numericUpDownTestSpawnX);
             this.groupBox12.Location = new System.Drawing.Point(6, 55);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(390, 216);
+            this.groupBox12.Size = new System.Drawing.Size(390, 240);
             this.groupBox12.TabIndex = 6;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Test Spawn";
@@ -1456,8 +1460,8 @@
             // 
             this.checkBoxTestSpawnAngleHex.AutoSize = true;
             this.checkBoxTestSpawnAngleHex.Enabled = false;
-            this.checkBoxTestSpawnAngleHex.Location = new System.Drawing.Point(326, 114);
-            this.checkBoxTestSpawnAngleHex.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxTestSpawnAngleHex.Location = new System.Drawing.Point(326, 122);
+            this.checkBoxTestSpawnAngleHex.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxTestSpawnAngleHex.Name = "checkBoxTestSpawnAngleHex";
             this.checkBoxTestSpawnAngleHex.Size = new System.Drawing.Size(45, 17);
             this.checkBoxTestSpawnAngleHex.TabIndex = 33;
@@ -1469,8 +1473,8 @@
             // checkBoxTestSpawnPosition
             // 
             this.checkBoxTestSpawnPosition.AutoSize = true;
-            this.checkBoxTestSpawnPosition.Location = new System.Drawing.Point(6, 66);
-            this.checkBoxTestSpawnPosition.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxTestSpawnPosition.Location = new System.Drawing.Point(6, 71);
+            this.checkBoxTestSpawnPosition.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxTestSpawnPosition.Name = "checkBoxTestSpawnPosition";
             this.checkBoxTestSpawnPosition.Size = new System.Drawing.Size(66, 17);
             this.checkBoxTestSpawnPosition.TabIndex = 23;
@@ -1481,8 +1485,8 @@
             // 
             // buttonTestSpawnPlay
             // 
-            this.buttonTestSpawnPlay.Location = new System.Drawing.Point(5, 186);
-            this.buttonTestSpawnPlay.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonTestSpawnPlay.Location = new System.Drawing.Point(5, 197);
+            this.buttonTestSpawnPlay.Margin = new System.Windows.Forms.Padding(2);
             this.buttonTestSpawnPlay.Name = "buttonTestSpawnPlay";
             this.buttonTestSpawnPlay.Size = new System.Drawing.Size(76, 22);
             this.buttonTestSpawnPlay.TabIndex = 31;
@@ -1496,8 +1500,8 @@
             this.comboBoxTestSpawnEvent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTestSpawnEvent.Enabled = false;
             this.comboBoxTestSpawnEvent.FormattingEnabled = true;
-            this.comboBoxTestSpawnEvent.Location = new System.Drawing.Point(67, 137);
-            this.comboBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxTestSpawnEvent.Location = new System.Drawing.Point(67, 148);
+            this.comboBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxTestSpawnEvent.Name = "comboBoxTestSpawnEvent";
             this.comboBoxTestSpawnEvent.Size = new System.Drawing.Size(319, 21);
             this.comboBoxTestSpawnEvent.TabIndex = 14;
@@ -1506,8 +1510,8 @@
             // checkBoxTestSpawnEvent
             // 
             this.checkBoxTestSpawnEvent.AutoSize = true;
-            this.checkBoxTestSpawnEvent.Location = new System.Drawing.Point(6, 139);
-            this.checkBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxTestSpawnEvent.Location = new System.Drawing.Point(6, 150);
+            this.checkBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxTestSpawnEvent.Name = "checkBoxTestSpawnEvent";
             this.checkBoxTestSpawnEvent.Size = new System.Drawing.Size(57, 17);
             this.checkBoxTestSpawnEvent.TabIndex = 22;
@@ -1519,8 +1523,8 @@
             // checkBoxTestSpawnCharacter
             // 
             this.checkBoxTestSpawnCharacter.AutoSize = true;
-            this.checkBoxTestSpawnCharacter.Location = new System.Drawing.Point(6, 44);
-            this.checkBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxTestSpawnCharacter.Location = new System.Drawing.Point(6, 46);
+            this.checkBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxTestSpawnCharacter.Name = "checkBoxTestSpawnCharacter";
             this.checkBoxTestSpawnCharacter.Size = new System.Drawing.Size(75, 17);
             this.checkBoxTestSpawnCharacter.TabIndex = 32;
@@ -1533,7 +1537,7 @@
             // 
             this.checkBoxTestSpawnLevel.AutoSize = true;
             this.checkBoxTestSpawnLevel.Location = new System.Drawing.Point(6, 21);
-            this.checkBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxTestSpawnLevel.Name = "checkBoxTestSpawnLevel";
             this.checkBoxTestSpawnLevel.Size = new System.Drawing.Size(55, 17);
             this.checkBoxTestSpawnLevel.TabIndex = 20;
@@ -1557,8 +1561,8 @@
             "Gamma",
             "Big",
             "Metal Sonic"});
-            this.comboBoxTestSpawnCharacter.Location = new System.Drawing.Point(83, 42);
-            this.comboBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxTestSpawnCharacter.Location = new System.Drawing.Point(83, 44);
+            this.comboBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxTestSpawnCharacter.Name = "comboBoxTestSpawnCharacter";
             this.comboBoxTestSpawnCharacter.Size = new System.Drawing.Size(149, 21);
             this.comboBoxTestSpawnCharacter.TabIndex = 22;
@@ -1567,8 +1571,8 @@
             // numericUpDownTestSpawnAngle
             // 
             this.numericUpDownTestSpawnAngle.Enabled = false;
-            this.numericUpDownTestSpawnAngle.Location = new System.Drawing.Point(242, 112);
-            this.numericUpDownTestSpawnAngle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDownTestSpawnAngle.Location = new System.Drawing.Point(242, 120);
+            this.numericUpDownTestSpawnAngle.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDownTestSpawnAngle.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -1583,7 +1587,7 @@
             // 
             this.labelTestSpawnAngle.AutoSize = true;
             this.labelTestSpawnAngle.Enabled = false;
-            this.labelTestSpawnAngle.Location = new System.Drawing.Point(201, 114);
+            this.labelTestSpawnAngle.Location = new System.Drawing.Point(201, 122);
             this.labelTestSpawnAngle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTestSpawnAngle.Name = "labelTestSpawnAngle";
             this.labelTestSpawnAngle.Size = new System.Drawing.Size(37, 13);
@@ -1595,7 +1599,7 @@
             // 
             this.labelTestSpawnY.AutoSize = true;
             this.labelTestSpawnY.Enabled = false;
-            this.labelTestSpawnY.Location = new System.Drawing.Point(114, 89);
+            this.labelTestSpawnY.Location = new System.Drawing.Point(114, 97);
             this.labelTestSpawnY.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTestSpawnY.Name = "labelTestSpawnY";
             this.labelTestSpawnY.Size = new System.Drawing.Size(17, 13);
@@ -1606,8 +1610,8 @@
             // numericUpDownTestSpawnSaveID
             // 
             this.numericUpDownTestSpawnSaveID.Enabled = false;
-            this.numericUpDownTestSpawnSaveID.Location = new System.Drawing.Point(121, 164);
-            this.numericUpDownTestSpawnSaveID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDownTestSpawnSaveID.Location = new System.Drawing.Point(121, 175);
+            this.numericUpDownTestSpawnSaveID.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDownTestSpawnSaveID.Maximum = new decimal(new int[] {
             99,
             0,
@@ -1631,8 +1635,8 @@
             // checkBoxTestSpawnSave
             // 
             this.checkBoxTestSpawnSave.AutoSize = true;
-            this.checkBoxTestSpawnSave.Location = new System.Drawing.Point(6, 166);
-            this.checkBoxTestSpawnSave.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxTestSpawnSave.Location = new System.Drawing.Point(6, 177);
+            this.checkBoxTestSpawnSave.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxTestSpawnSave.Name = "checkBoxTestSpawnSave";
             this.checkBoxTestSpawnSave.Size = new System.Drawing.Size(111, 17);
             this.checkBoxTestSpawnSave.TabIndex = 16;
@@ -1645,7 +1649,7 @@
             // 
             this.labelTestSpawnX.AutoSize = true;
             this.labelTestSpawnX.Enabled = false;
-            this.labelTestSpawnX.Location = new System.Drawing.Point(9, 89);
+            this.labelTestSpawnX.Location = new System.Drawing.Point(9, 97);
             this.labelTestSpawnX.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTestSpawnX.Name = "labelTestSpawnX";
             this.labelTestSpawnX.Size = new System.Drawing.Size(17, 13);
@@ -1657,7 +1661,7 @@
             // 
             this.labelTestSpawnAct.AutoSize = true;
             this.labelTestSpawnAct.Enabled = false;
-            this.labelTestSpawnAct.Location = new System.Drawing.Point(239, 21);
+            this.labelTestSpawnAct.Location = new System.Drawing.Point(250, 21);
             this.labelTestSpawnAct.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTestSpawnAct.Name = "labelTestSpawnAct";
             this.labelTestSpawnAct.Size = new System.Drawing.Size(26, 13);
@@ -1669,7 +1673,7 @@
             // 
             this.labelTestSpawnZ.AutoSize = true;
             this.labelTestSpawnZ.Enabled = false;
-            this.labelTestSpawnZ.Location = new System.Drawing.Point(221, 89);
+            this.labelTestSpawnZ.Location = new System.Drawing.Point(221, 97);
             this.labelTestSpawnZ.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTestSpawnZ.Name = "labelTestSpawnZ";
             this.labelTestSpawnZ.Size = new System.Drawing.Size(17, 13);
@@ -1680,23 +1684,23 @@
             // numericUpDownTestSpawnAct
             // 
             this.numericUpDownTestSpawnAct.Enabled = false;
-            this.numericUpDownTestSpawnAct.Location = new System.Drawing.Point(267, 20);
-            this.numericUpDownTestSpawnAct.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDownTestSpawnAct.Location = new System.Drawing.Point(281, 20);
+            this.numericUpDownTestSpawnAct.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDownTestSpawnAct.Maximum = new decimal(new int[] {
             6,
             0,
             0,
             0});
             this.numericUpDownTestSpawnAct.Name = "numericUpDownTestSpawnAct";
-            this.numericUpDownTestSpawnAct.Size = new System.Drawing.Size(49, 20);
+            this.numericUpDownTestSpawnAct.Size = new System.Drawing.Size(61, 20);
             this.numericUpDownTestSpawnAct.TabIndex = 2;
             this.toolTip.SetToolTip(this.numericUpDownTestSpawnAct, "Act ID (zero-based).");
             // 
             // numericUpDownTestSpawnZ
             // 
             this.numericUpDownTestSpawnZ.Enabled = false;
-            this.numericUpDownTestSpawnZ.Location = new System.Drawing.Point(242, 87);
-            this.numericUpDownTestSpawnZ.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDownTestSpawnZ.Location = new System.Drawing.Point(242, 95);
+            this.numericUpDownTestSpawnZ.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDownTestSpawnZ.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -1715,8 +1719,8 @@
             // numericUpDownTestSpawnY
             // 
             this.numericUpDownTestSpawnY.Enabled = false;
-            this.numericUpDownTestSpawnY.Location = new System.Drawing.Point(135, 87);
-            this.numericUpDownTestSpawnY.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDownTestSpawnY.Location = new System.Drawing.Point(135, 95);
+            this.numericUpDownTestSpawnY.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDownTestSpawnY.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -1782,7 +1786,7 @@
             "Mystic Ruins Garden",
             "Chao Race"});
             this.comboBoxTestSpawnLevel.Location = new System.Drawing.Point(83, 19);
-            this.comboBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxTestSpawnLevel.Name = "comboBoxTestSpawnLevel";
             this.comboBoxTestSpawnLevel.Size = new System.Drawing.Size(149, 21);
             this.comboBoxTestSpawnLevel.TabIndex = 0;
@@ -1791,8 +1795,8 @@
             // numericUpDownTestSpawnX
             // 
             this.numericUpDownTestSpawnX.Enabled = false;
-            this.numericUpDownTestSpawnX.Location = new System.Drawing.Point(30, 87);
-            this.numericUpDownTestSpawnX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDownTestSpawnX.Location = new System.Drawing.Point(30, 95);
+            this.numericUpDownTestSpawnX.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDownTestSpawnX.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -1882,6 +1886,32 @@
             this.generateManifestToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.generateManifestToolStripMenuItem.Text = "Generate manifest";
             this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
+            // 
+            // comboBoxTestSpawnTime
+            // 
+            this.comboBoxTestSpawnTime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTestSpawnTime.FormattingEnabled = true;
+            this.comboBoxTestSpawnTime.Items.AddRange(new object[] {
+            "Unset",
+            "Day",
+            "Evening",
+            "Night"});
+            this.comboBoxTestSpawnTime.Location = new System.Drawing.Point(281, 44);
+            this.comboBoxTestSpawnTime.Name = "comboBoxTestSpawnTime";
+            this.comboBoxTestSpawnTime.Size = new System.Drawing.Size(61, 21);
+            this.comboBoxTestSpawnTime.TabIndex = 34;
+            // 
+            // labelTestSpawnTime
+            // 
+            this.labelTestSpawnTime.AutoSize = true;
+            this.labelTestSpawnTime.Location = new System.Drawing.Point(243, 47);
+            this.labelTestSpawnTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnTime.Name = "labelTestSpawnTime";
+            this.labelTestSpawnTime.Size = new System.Drawing.Size(33, 13);
+            this.labelTestSpawnTime.TabIndex = 35;
+            this.labelTestSpawnTime.Text = "Time:";
+            this.labelTestSpawnTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.toolTip.SetToolTip(this.labelTestSpawnTime, "Act ID (zero-based).");
             // 
             // MainForm
             // 
@@ -2071,5 +2101,7 @@
 		private System.Windows.Forms.GroupBox groupBox_SoundAdvanced;
 		private System.Windows.Forms.CheckBox checkBASS;
         private System.Windows.Forms.CheckBox checkBoxEnableD3D9;
+        private System.Windows.Forms.Label labelTestSpawnTime;
+        private System.Windows.Forms.ComboBox comboBoxTestSpawnTime;
     }
 }
