@@ -565,7 +565,6 @@ static void SetEventFlagsForCutscene(int eventID)
 static void __cdecl ForceEventMode()
 {
 	CutsceneLevelData* data = GetCutsceneData(CurrentDemoCutsceneID);
-	WriteData<1>((char*)0x425670, 0xC3u);
 	if (data != nullptr)
 	{
 		SetLevelAndAct(data->level, data->act);
