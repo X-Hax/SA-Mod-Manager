@@ -231,7 +231,7 @@ CutsceneLevelData CutsceneList[]
 	{ 0x084, 34, 0, 3, 2  }, // Knuckles while in the Past
 	{ 0x085, 34, 0, 3, 2  }, // Tikal's Crisis
 	{ 0x086, 26, 1, 3, 2  }, // Knuckles returns from the Past
-	{ 0x087, 26, 4, 3, 3  }, // Knuckles and Chaos 2 face off
+	{ 0x087, 16, 0, 3, 3  }, // Knuckles and Chaos 2 face off
 	{ 0x088, 16, 0, 3, 3  }, // Eggman tricks Knuckles
 	{ 0x089, 33, 0, 3, 3  }, // Knuckles goes after Sonic
 	{ 0x08A, 33, 0, 3, 4  }, // Knuckles vs. Sonic
@@ -253,7 +253,7 @@ CutsceneLevelData CutsceneList[]
 	{ 0x09C, 26, 0, 3, -1 }, // Error
 	{ 0x09D, 33, 1, 3, 10 }, // Knuckles restores the Master Emerald
 	{ 0x09F, 33, 1, 3, 10 }, // Knuckles Outro
-	{ 0x0A0, 26, 4, 3, 1  }, // Knuckles follows Eggman in Station Square hotel
+	{ 0x0A0, 26, 4, 3, 3  }, // Knuckles follows Eggman in Station Square hotel
 
 	// Gamma events
 	{ 0x0B0, 33, 3, 6, 0  }, // Gamma Intro
@@ -392,16 +392,43 @@ static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
 	{
+	case 29: // Sonic jumps from the Egg Carrier
+		WriteData<5>((char*)0x5578DE, 0x90u); // Don't load Chaos 6
+		break;
+	case 32: // Sonic sees the mural
+		WriteData<1>((char*)0x7B0DA0, 0xC3u); // Lost World 3 end level object
+		break;
 	case 9: // Sonic and Tails gassed
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_ENTRANCE_CASINO);
 		break;
+	case 41: // Sonic and Tails land on the Egg Carrier
+		SetEventFlag((EventFlags)FLAG_SONIC_EC_TORNADO2_LOST);
+		break;
 	case 53: // Tails and Sonic gassed
 		SetEventFlag((EventFlags)FLAG_MILES_SS_ENTRANCE_CASINO);
+		break;
+	case 64: // Tails wakes up from his flashback
+		SetTimeOfDay_Evening();
+		break;
+	case 66: // Tails chases Froggy
+		SetTimeOfDay_Evening();
+		break;
+	case 80: // Egg Walker
+		SetTimeOfDay_Night();
+		break;
+	case 81: // Egg Walker defeated
+		SetTimeOfDay_Night();
+		break;
+	case 84: // Tails and Sonic land on the Egg Carrier
+		SetEventFlag((EventFlags)FLAG_MILES_EC_TORNADO2_LOST);
 		break;
 	case 85: // Tails saves Froggy in Sand Hill
 		WriteData<1>((char*)0x598040, 0xC3u); // Osfrog
 		WriteData<1>((char*)0x79E4C0, 0xC3u); // Plays level music
 		WriteData<5>((char*)0x597BF3, 0x90u); // Snowboard
+		break;
+	case 100: // Amy kidnapped by Zero
+		SetTimeOfDay_Evening();
 		break;
 	case 110: // Amy discovers Final Egg base
 		SetEventFlag((EventFlags)FLAG_AMY_MR_APPEAR_FINALEGG); // Open Final Egg for Amy
@@ -409,6 +436,16 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 114: // Amy outro
 		SetEventFlag((EventFlags)FLAG_AMY_EC_SINK); // Egg Carrier sunk in Amy's outro
+		break;
+	case 117: // Amy taken to the Mystic Ruins by Zero
+		SetTimeOfDay_Evening();
+		break;
+	case 134: // Knuckles returns from the Past to Station Square
+		SetTimeOfDay_Night();
+		SetEventFlag((EventFlags)FLAG_KNUCKLES_SS_ENTRANCE_CASINO);
+		break;
+	case 136: // Knuckles is tricked by Eggman
+		WriteData<5>((char*)0x54A62E, 0x90u); // Don't load Chaos 2
 		break;
 	case 146: // Knuckles follows Gamma to Final Egg
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_APPEAR_FINALEGG); // Open Final Egg for Knuckles
@@ -418,6 +455,9 @@ static void SetEventFlagsForCutscene(int eventID)
 		WriteData<1>((char*)0x450370, 0xC3u); // Rings
 		WriteData<1>((char*)0x7A1AA0, 0xC3u); // Tikal hints
 		WriteData<1>((char*)0x476440, 0xC3u); // Radar
+		break;
+	case 155: // Knuckles defeats Chaos 6
+		WriteData<5>((char*)0x5578DE, 0x90u); // Don't load Chaos 6
 		break;
 	case 179: // Useless machine
 		SetEventFlag((EventFlags)FLAG_E102_MR_FREEPASS); // Open Final Egg for useless machine
@@ -439,18 +479,49 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 212: // Big loses Froggy to Gamma
 		WriteData<1>((char*)0x61CA90, 0xC3u); // Kill Emerald Coast music
 		break;
-	case 218: // Big saves Froggy in Hot Shelter (broken)
-		//WriteData<5>((char*)0x59A3F9, 0x90u); // Remove Froggy
-		break;
-	case 259: // This must be the way to the Sky Deck!
-		// Must figure out how to place Sonic and the camera correctly
-		//EntityData1Ptrs[0]->Position.x = 0;
-		//EntityData1Ptrs[0]->Position.y = 750;
-		//EntityData1Ptrs[0]->Position.z = 390;
-		break;
 	case 321: // Gamma heads to Hot Shelter
 	case 322: // Gamma rescues E-105
 		SetEventFlag((EventFlags)FLAG_E102_EC_SINK); // Egg Carrier sunk in Gamma's outro
+		break;
+	case 357: // Sonic gets the Crystal Ring
+		SetEventFlag((EventFlags)FLAG_SONIC_SS_CRYSTALRING);
+		break;
+	case 358: // Sonic gets the Light Speed Shoes
+		SetEventFlag((EventFlags)FLAG_SONIC_SS_LIGHTSHOOSE);
+		break;
+	case 359: // Sonic gets the Ancient Light
+		SetEventFlag((EventFlags)FLAG_SONIC_MR_ANCIENT_LIGHT);
+		break;
+	case 360: // Tails gets the Jet Anklet
+		SetEventFlag((EventFlags)FLAG_MILES_SS_JETANKLET);
+		break;
+	case 361: // Tails gets the Rhythm Badge
+		SetEventFlag((EventFlags)FLAG_MILES_MR_RHYTHMBROOCH);
+		break;
+	case 362: // Knuckles gets the Fighting Gloves
+		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_FIGHTINGGROVE);
+		break;
+	case 363: // Knuckles gets the Shovel Claw
+		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_SHOVELCLAW);
+		break;
+	case 364: // Amy gets the Long Hammer
+		SetEventFlag((EventFlags)FLAG_AMY_MR_FIGHTERSFEATHER);
+		SetEventFlag((EventFlags)FLAG_AMY_EC_LONGHAMMER);
+		break;
+	case 365: // Amy gets the Warrior Feather
+		SetEventFlag((EventFlags)FLAG_AMY_MR_FIGHTERSFEATHER);
+		break;
+	case 366: // Gamma gets the Laser Blaster
+		SetEventFlag((EventFlags)FLAG_E102_EC_TYPE3LASER);
+		break;
+	case 367: // Gamma gets the Jet Booster
+		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER);
+		break;
+	case 368: // Big gets the Power Rod
+		SetEventFlag((EventFlags)FLAG_BIG_MR_POWERROD);
+		break;
+	case 369: // Big gets the Life Belt
+		SetEventFlag((EventFlags)FLAG_BIG_MR_LIFEBELT);
 		break;
 	case 374: // Ice Stone appears (Sonic)
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_ICESTONE);
@@ -481,14 +552,26 @@ static void __cdecl ForceEventMode()
 	CutsceneLevelData* data = GetCutsceneData(CurrentDemoCutsceneID);
 
 	if (data != nullptr)
-	{	
+	{
 		SetLevelAndAct(data->level, data->act);
 		SetupCharacter(data->character);
 		InitFlagsAndThings();
 		slSeqRunning = 1;
-		ssSceneNo = data->character;
-		pCurSequence = &seqTable[0];
-		pCurSectionList = &SeqGetSectionList(data->character)[data->scene_select];
+		// Last Story check
+		if ((CurrentDemoCutsceneID >= 240 && CurrentDemoCutsceneID <= 255) || CurrentDemoCutsceneID == 355)
+		{
+			LastStoryFlag = 1;
+			SetEventFlag((EventFlags)FLAG_PLAYING_SUPERSONIC);
+			ssSceneNo = 4;
+			pCurSequence = &seqTable[4];
+			pCurSectionList = &SeqGetSectionList(4)[data->scene_select];
+		}
+		else
+		{
+			ssSceneNo = data->character;
+			pCurSequence = &seqTable[data->character];
+			pCurSectionList = &SeqGetSectionList(data->character)[data->scene_select];
+		}
 		SetEventFlagsForCutscene(CurrentDemoCutsceneID);
 	}
 	
