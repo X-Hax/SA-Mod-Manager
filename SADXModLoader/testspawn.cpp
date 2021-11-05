@@ -394,169 +394,183 @@ static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
 	{
-	case 9: // Sonic and Tails gassed
+	case 0x0009: // Sonic and Tails gassed
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_ENTRANCE_CASINO);
 		break;
-	case 29: // Sonic jumps from the Egg Carrier
+	case 0x001D: // Sonic jumps from the Egg Carrier
 		WriteData<5>((char*)0x5578DE, 0x90u); // Don't load Chaos 6
 		break;
-	case 32: // Sonic sees the mural
+	case 0x0020: // Sonic sees the mural
 		WriteData<1>((char*)0x7B0DA0, 0xC3u); // Lost World 3 end level object
 		break;
-	case 36: // Egg Viper
+	case 0x0024: // Egg Viper
 		DemoPlaying = 0;
 		break;
-	case 41: // Sonic and Tails land on the Egg Carrier
+	case 0x0029: // Sonic and Tails land on the Egg Carrier
 		SetEventFlag((EventFlags)FLAG_SONIC_EC_TORNADO2_LOST);
 		break;
-	case 49: // Tails rescued by Sonic in Emerald Coast
+	case 0x0031: // Tails rescued by Sonic in Emerald Coast
 		DemoPlaying = 0;
 		break;
-	case 53: // Tails and Sonic gassed
+	case 0x0035: // Tails and Sonic gassed
 		SetEventFlag((EventFlags)FLAG_MILES_SS_ENTRANCE_CASINO);
 		break;
-	case 64: // Tails wakes up from his flashback
+	case 0x0040: // Tails wakes up from his flashback
 		SetTimeOfDay_Evening();
 		break;
-	case 66: // Tails chases Froggy
+	case 0x0042: // Tails chases Froggy
 		SetTimeOfDay_Evening();
 		break;
-	case 72: // Tails finds Sonic on Red Mountain
+	case 0x0048: // Tails finds Sonic on Red Mountain
 		DemoPlaying = 0;
 		break;
-	case 80: // Egg Walker
+	case 0x0050: // Egg Walker
 		SetTimeOfDay_Night();
 		break;
-	case 81: // Egg Walker defeated
+	case 0x0051: // Egg Walker defeated
 		SetTimeOfDay_Night();
 		break;
-	case 84: // Tails and Sonic land on the Egg Carrier
+	case 0x0054: // Tails and Sonic land on the Egg Carrier
 		SetEventFlag((EventFlags)FLAG_MILES_EC_TORNADO2_LOST);
 		break;
-	case 85: // Tails saves Froggy in Sand Hill
+	case 0x0055: // Tails saves Froggy in Sand Hill
 		WriteData<1>((char*)0x598040, 0xC3u); // Osfrog
 		WriteData<1>((char*)0x79E4C0, 0xC3u); // Plays level music
 		WriteData<5>((char*)0x597BF3, 0x90u); // Snowboard
 		break;
-	case 100: // Amy kidnapped by Zero
+	case 0x0064: // Amy kidnapped by Zero
 		SetTimeOfDay_Evening();
 		break;
-	case 110: // Amy discovers Final Egg base
+	case 0x006E: // Amy discovers Final Egg base
 		SetEventFlag((EventFlags)FLAG_AMY_MR_APPEAR_FINALEGG); // Open Final Egg for Amy
 		SetEventFlag((EventFlags)FLAG_AMY_MR_ENTRANCE_FINALEGG); // Open Final Egg for Amy
 		break;
-	case 114: // Amy outro
+	case 0x0072: // Amy outro
 		SetEventFlag((EventFlags)FLAG_AMY_EC_SINK); // Egg Carrier sunk in Amy's outro
 		break;
-	case 117: // Amy taken to the Mystic Ruins by Zero
+	case 0x0075: // Amy taken to the Mystic Ruins by Zero
 		SetTimeOfDay_Evening();
 		break;
-	case 134: // Knuckles returns from the Past to Station Square
+	case 0x0083: // Knuckles goes to the Past from Casino
+		// Wrong position
+		break;
+	case 0x0086: // Knuckles returns from the Past to Station Square
 		SetTimeOfDay_Night();
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_SS_ENTRANCE_CASINO);
 		break;
-	case 136: // Knuckles is tricked by Eggman
+	case 0x0088: // Knuckles is tricked by Eggman
 		WriteData<5>((char*)0x54A62E, 0x90u); // Don't load Chaos 2
 		break;
-	case 146: // Knuckles follows Gamma to Final Egg
+	case 0x0092: // Knuckles follows Gamma to Final Egg
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_APPEAR_FINALEGG); // Open Final Egg for Knuckles
 		break;
-	case 149: // Knuckles finds the last missing piece in Sky Deck
+	case 0x0095: // Knuckles finds the last missing piece in Sky Deck
 		WriteData<5>((char*)0x5EF6D0, 0x90u); // Sky Deck music
 		WriteData<1>((char*)0x450370, 0xC3u); // Rings
 		WriteData<1>((char*)0x7A1AA0, 0xC3u); // Tikal hints
 		WriteData<1>((char*)0x476440, 0xC3u); // Radar
 		break;
-	case 155: // Knuckles defeats Chaos 6
+	case 0x009B: // Knuckles defeats Chaos 6
 		WriteData<5>((char*)0x5578DE, 0x90u); // Don't load Chaos 6
 		break;
-	case 179: // Useless machine
+	case 0x00B3: // Useless machine
 		SetEventFlag((EventFlags)FLAG_E102_MR_FREEPASS); // Open Final Egg for useless machine
 		SetEventFlag((EventFlags)FLAG_E102_CLEAR_BEACH); // Open Final Egg for useless machine
 		SetEventFlag((EventFlags)FLAG_E102_CLEAR_FINALEGG); // Open Final Egg for useless machine
 		SetEventFlag((EventFlags)FLAG_E102_MR_APPEAR_FINALEGG); // Open Final Egg for useless machine
 		break;
-	case 184: // Gamma goes to the Past
+	case 0x00B8: // Gamma goes to the Past
 		WriteData<1>((char*)0x61CA90, 0xC3u); // Kill Emerald Coast music
 		WriteData<1>((char*)0x4AD140, 0xC3u); // Kill Kikis
 		WriteData<1>((char*)0x4FA320, 0xC3u); // Kill OFrog
 		break;
-	case 192: // Gamma heading to the rear of the ship
+	case 0x00C0: // Gamma heading to the rear of the ship
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER); // Cutscenes where Gamma appears with the Jet Booster
 		break;
-	case 197: // Gamma remembers his brothers
+	case 0x00C3: // Gamma's objectives changed
+		// Gamma invisible for the first few seconds
+		break;
+	case 0x00C5: // Gamma remembers his brothers
 		SetEventFlag((EventFlags)FLAG_E102_MR_ENTRANCE_MOUNTAIN);
 		break;
-	case 212: // Big loses Froggy to Gamma
+	case 0x00D4: // Big loses Froggy to Gamma
 		WriteData<1>((char*)0x61CA90, 0xC3u); // Kill Emerald Coast music
 		break;
-	case 218: // Big saves Froggy in Hot Shelter
+	case 0x00DA: // Big saves Froggy in Hot Shelter
 		CutsceneFlagArray[217] = 1;
 		break;
-	case 321: // Gamma heads to Hot Shelter
-	case 322: // Gamma rescues E-105
+	case 0x00F9: // Sonic was on a snooze cruise
+		// EV_SetPos not working for some reason
+		break;
+	case 0x0113: // Sonic finds the entrance to the Sky Deck
+		// Camera stuck at 0, 0, 0
+		break;
+	case 0x0141: // Gamma heads to Hot Shelter
+	case 0x0142: // Gamma rescues E-105
 		SetEventFlag((EventFlags)FLAG_E102_EC_SINK); // Egg Carrier sunk in Gamma's outro
+		PrintDebug("cock\n\n");
 		break;
-	case 357: // Sonic gets the Crystal Ring
+	case 0x0165: // Sonic gets the Crystal Ring
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_CRYSTALRING);
+		// EV_Set_Pos not working
 		break;
-	case 358: // Sonic gets the Light Speed Shoes
+	case 0x0166: // Sonic gets the Light Speed Shoes
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_LIGHTSHOOSE);
 		break;
-	case 359: // Sonic gets the Ancient Light
+	case 0x0167: // Sonic gets the Ancient Light
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_ANCIENT_LIGHT);
 		break;
-	case 360: // Tails gets the Jet Anklet
+	case 0x0168: // Tails gets the Jet Anklet
 		SetEventFlag((EventFlags)FLAG_MILES_SS_JETANKLET);
 		break;
-	case 361: // Tails gets the Rhythm Badge
+	case 0x0169: // Tails gets the Rhythm Badge
 		SetEventFlag((EventFlags)FLAG_MILES_MR_RHYTHMBROOCH);
 		break;
-	case 362: // Knuckles gets the Fighting Gloves
+	case 0x016A: // Knuckles gets the Fighting Gloves
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_FIGHTINGGROVE);
 		break;
-	case 363: // Knuckles gets the Shovel Claw
+	case 0x016B: // Knuckles gets the Shovel Claw
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_SHOVELCLAW);
 		break;
-	case 364: // Amy gets the Long Hammer
+	case 0x016C: // Amy gets the Long Hammer
 		SetEventFlag((EventFlags)FLAG_AMY_MR_FIGHTERSFEATHER);
 		SetEventFlag((EventFlags)FLAG_AMY_EC_LONGHAMMER);
 		break;
-	case 365: // Amy gets the Warrior Feather
+	case 0x016D: // Amy gets the Warrior Feather
 		SetEventFlag((EventFlags)FLAG_AMY_MR_FIGHTERSFEATHER);
 		break;
-	case 366: // Gamma gets the Laser Blaster
+	case 0x016E: // Gamma gets the Laser Blaster
 		SetEventFlag((EventFlags)FLAG_E102_EC_TYPE3LASER);
 		position_override.Position.x = 30;
 		break;
-	case 367: // Gamma gets the Jet Booster
+	case 0x016F: // Gamma gets the Jet Booster
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER);
 		break;
-	case 368: // Big gets the Power Rod
+	case 0x0170: // Big gets the Power Rod
 		SetEventFlag((EventFlags)FLAG_BIG_MR_POWERROD);
 		break;
-	case 369: // Big gets the Life Belt
+	case 0x0171: // Big gets the Life Belt
 		SetEventFlag((EventFlags)FLAG_BIG_MR_LIFEBELT);
 		break;
-	case 374: // Ice Stone appears (Sonic)
+	case 0x0176: // Ice Stone appears (Sonic)
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_ICESTONE);
 		break;
-	case 375: // Ice Stone appears (Tails)
+	case 0x0177: // Ice Stone appears (Tails)
 		SetEventFlag((EventFlags)FLAG_MILES_SS_ICESTONE);
 		break;
-	case 376: // Ice Stone appears (Big)
+	case 0x0178: // Ice Stone appears (Big)
 		SetEventFlag((EventFlags)FLAG_BIG_SS_ICESTONE);
 		break;
-	case 377: // Employee Card appears
+	case 0x0179: // Employee Card appears
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_CARD);
 		break;
-	case 378: // Passage to Angel Island opens (Sonic)
+	case 0x017A: // Passage to Angel Island opens (Sonic)
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_WESTROCK);
 		break;
-	case 379: // Passage to Angel Island opens (Tails)
+	case 0x017B: // Passage to Angel Island opens (Tails)
 		SetEventFlag((EventFlags)FLAG_MILES_MR_WESTROCK);
 		break;
-	case 380: // Passage to Angel Island opens (Gamma)
+	case 0x017C: // Passage to Angel Island opens (Gamma)
 		SetEventFlag((EventFlags)FLAG_E102_MR_WESTROCK);
 		break;
 	}
@@ -567,7 +581,6 @@ static void __cdecl ForceEventMode()
 	CutsceneLevelData* data = GetCutsceneData(CurrentDemoCutsceneID);
 	if (data != nullptr)
 	{
-		SetLevelAndAct(data->level, data->act);
 		SetupCharacter(data->character);
 		InitFlagsAndThings();
 		slSeqRunning = 1;
@@ -588,6 +601,7 @@ static void __cdecl ForceEventMode()
 		}
 		DemoPlaying = 1;
 		SetEventFlagsForCutscene(CurrentDemoCutsceneID);
+		SetLevelAndAct(data->level, data->act);
 	}
 	
 	GameMode = static_cast<GameModes>(5 - (GetLevelType() != 1)); // Sends to Adventure or Level GameMode
