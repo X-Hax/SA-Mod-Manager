@@ -416,7 +416,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x0020: // Sonic sees the mural
 		WriteData<1>((char*)0x7B0DA0, 0xC3u); // Lost World 3 end level object
-		break;
+		WriteData<1>((char*)0x5E18B0, 0xC3u); // Level object that plays music
 	case 0x0023:
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_APPEAR_FINALEGG);
 		break;
@@ -461,6 +461,9 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x0088: // Knuckles is tricked by Eggman
 		WriteData((char*)0x54DF00, (char)0xC3); // Don't load Chaos 2
 		LevelCutscenes2[3].Cutscene = eventID;
+		break;
+	case 0x008D: // Knuckles goes to the Past from Lost World
+		WriteData<1>((char*)0x5E18B0, 0xC3u); // Level object that plays music
 		break;
 	case 0x0092: // Knuckles follows Gamma to Final Egg
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_APPEAR_FINALEGG); // Open Final Egg for Knuckles
@@ -553,6 +556,10 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x0171: // Big gets the Life Belt
 		SetEventFlag((EventFlags)FLAG_BIG_MR_LIFEBELT);
+		break;
+	case 0x0177: // Ice Stone appears (Tails)
+		SetEventFlag((EventFlags)FLAG_MILES_SS_ICESTONE);
+		SetEventFlag((EventFlags)FLAG_MILES_SS_ENTRANCE_CASINO);
 		break;
 	case 0x017C: // Angel Island opens (Gamma)
 		SetLevelCleared(LevelIDs_WindyValley, Characters_Gamma);
