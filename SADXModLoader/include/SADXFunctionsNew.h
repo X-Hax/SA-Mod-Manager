@@ -305,6 +305,7 @@ FunctionPointer(void, createModel, (float pos_x, float pos_y, float pos_z, int a
 FunctionPointer(void, createModelEC, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECF20);
 
 // Story related functions
+FunctionPointer(void, SeqSetPlayer, (int no), 0x413380); // Current story section
 FunctionPointer(SEQ_SECTIONTBL*, SeqGetSectionList, (int playerno), 0x44EAF0); // Current story section
 
 #endif /* SADXMODLOADER_SADXFUNCTIONSNEW_H */

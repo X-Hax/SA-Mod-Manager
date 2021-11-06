@@ -4,10 +4,6 @@
 #include <unordered_map>
 
 static bool testspawn_enabled = false;
-static bool hook_position = false;
-static Trampoline* MovePlayerToStartPoint_t;
-static StartPosition position_override = { 0, 0, { 0, 0, 0 }, 0 };
-static int SetTestSpawnTimeOfDay = -1;
 
 static const std::unordered_map<std::wstring, uint8_t> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
@@ -135,248 +131,249 @@ struct CutsceneLevelData
 	int level;
 	int act;
 	int character;
-	int scene_select;
+	int scene_select; // if -1, load standalone event
+	int seqno; // subscene of a scene
 };
 
 CutsceneLevelData CutsceneList[]
 {
 	// Sonic events
-	{ 0x001, 26, 3, 0, 0  }, // Sonic Intro
-	{ 0x002, 15, 0, 0, 0  }, // Sonic defeats Chaos 0
-	{ 0x003, 26, 4, 0, 1  }, // Sonic sees Tails crash
-	{ 0x006, 26, 4, 0, 1  }, // Sonic and Tails poolside
-	{ 0x007, 33, 0, 0, 2  }, // Sonic faces off with the Egg Hornet
-	{ 0x008, 33, 0, 0, 2  }, // Chaos 1 Emerges
-	{ 0x009, 26, 1, 0, 0  }, // Sonic and Tails are gassed
-	{ 0x00B, 33, 0, 0, 5  }, // Chaos 4 Transformation
-	{ 0x00C, 33, 0, 0, 5  }, // Sonic and Tails part ways with Knuckles
-	{ 0x00D, 33, 0, 0, 5  }, // Tornado 1 Lift Off Cutscene
-	{ 0x011, 26, 4, 0, 6  }, // Sonic falling into Station Square
-	{ 0x012, 26, 1, 0, 6  }, // Amy finds Sonic
-	{ 0x013, 26, 3, 0, 7  }, // Amy and Sonic go to Twinkle Park
-	{ 0x014, 26, 5, 0, 8  }, // Sonic goes looking for Amy
-	{ 0x015, 26, 1, 0, 9  }, // Sonic finds Zero and Amy
-	{ 0x016, 33, 0, 0, 9  }, // Zero transported to the Egg Carrier
-	{ 0x017, 5,  1, 0, 9  }, // Sonic and Tails on the Tornado 2
-	{ 0x01A, 29, 2, 0, 10 }, // Eggman takes Birdie's Emerald
-	{ 0x01B, 29, 2, 0, 10 }, // Sonic goes to put Eggman out of commission
-	{ 0x01C, 18, 0, 0, 11 }, // Sonic finds Chaos 6
-	{ 0x01D, 18, 0, 0, 12 }, // Sonic chases Eggman to the Mystic Ruins
-	{ 0x01E, 33, 2, 0, 12 }, // Sonic prepares to enter Lost World
-	{ 0x020, 7,  2, 0, 12 }, // Sonic views the Perfect Chaos Mural
-	{ 0x021, 34, 2, 0, 13 }, // Sonic enters the Past
-	{ 0x022, 34, 2, 0, 13 }, // Sonic listens to Tikal in the Past
-	{ 0x023, 33, 2, 0, 14 }, // Sonic sees Eggman heading to his base
-	{ 0x024, 22, 0, 0, 14 }, // Sonic's Final Battle with Eggman
-	{ 0x026, 33, 0, 0, 1  }, // Sonic's Outro
-	{ 0x028, 33, 0, 0, 5  }, // Sonic vs. Knuckles
-	{ 0x029, 29, 0, 0, 10 }, // Tornado 2 lands on the Egg Carrier
-	{ 0x02A, 26, 1, 0, 4  }, // Sonic and Tails awaken after being gassed
-	{ 0x02B, 15, 0, 0, 0  }, // Sonic meets Chaos 0
+	{ 0x001, 26, 3, 0, 0, 0 }, // Sonic Intro
+	{ 0x002, 15, 0, 0, -1 /*0, 1*/ }, // Sonic defeats Chaos 0
+	{ 0x003, 26, 4, 0, 1, 1 }, // Sonic sees Tails crash
+	{ 0x006, 26, 4, 0, 1, 3 }, // Sonic and Tails poolside
+	{ 0x007, 33, 0, 0, 2, 1 }, // Sonic faces off with the Egg Hornet
+	{ 0x008, 33, 0, 0, 2, 3 }, // Chaos 1 Emerges
+	{ 0x009, 26, 1, 0, 0, 6 }, // Sonic and Tails are gassed
+	{ 0x00B, 33, 0, 0, 5, 5 }, // Chaos 4 Transformation
+	{ 0x00C, 33, 0, 0, 5, 8 }, // Sonic and Tails part ways with Knuckles
+	{ 0x00D, 33, 0, 0, 5, 10 }, // Tornado 1 Lift Off Cutscene
+	{ 0x011, 26, 4, 0, 6, 0 }, // Sonic falling into Station Square
+	{ 0x012, 26, 1, 0, 6, 2 }, // Amy finds Sonic
+	{ 0x013, 26, 3, 0, 6, 3 }, // Amy and Sonic go to Twinkle Park
+	{ 0x014, 26, 5, 0, 7, 0 }, // Sonic goes looking for Amy
+	{ 0x015, 26, 1, 0, 8, 0 }, // Sonic finds Zero and Amy
+	{ 0x016, 33, 0, 0, 9, 2 }, // Zero transported to the Egg Carrier
+	{ 0x017, 5,  1, 0, -1 /*9, 3*/  }, // Sonic and Tails on the Tornado 2
+	{ 0x01A, 29, 2, 0, 11, 2 }, // Eggman takes Birdie's Emerald
+	{ 0x01B, 29, 2, 0, 11, 5 }, // Sonic goes to put Eggman out of commission
+	{ 0x01C, 18, 0, 0, 11, 10 }, // Sonic finds Chaos 6
+	{ 0x01D, 18, 0, 0, -1 /*11, 11*/ }, // Sonic chases Eggman to the Mystic Ruins
+	{ 0x01E, 33, 2, 0, 12, 1 }, // Sonic prepares to enter Lost World
+	{ 0x020, 7,  2, 0, -1 /*12, 3*/ }, // Sonic views the Perfect Chaos Mural
+	{ 0x021, 34, 2, 0, 13, 0 }, // Sonic enters the Past
+	{ 0x022, 34, 2, 0, 13, 2 }, // Sonic listens to Tikal in the Past
+	{ 0x023, 33, 2, 0, 14, 1 }, // Sonic sees Eggman heading to his base
+	{ 0x024, 22, 0, 0, 14, 3 }, // Sonic's Final Battle with Eggman
+	{ 0x026, 33, 0, 0, 15, 0 }, // Sonic's Outro
+	{ 0x028, 33, 0, 0, 5, 2 }, // Sonic vs. Knuckles
+	{ 0x029, 29, 0, 0, 10, 0 }, // Tornado 2 lands on the Egg Carrier
+	{ 0x02A, 26, 1, 0, 4, 0 }, // Sonic and Tails awaken after being gassed
+	{ 0x02B, 15, 0, 0, 0, 1 }, // Sonic meets Chaos 0
 
 	// Tails events
-	{ 0x030, 26, 3, 2, 0  }, // Tails Intro
-	{ 0x031, 1,  1, 2, 0  }, // Tails is rescued by Sonic
-	{ 0x032, 26, 4, 2, 0  }, // Tails and Sonic poolside
-	{ 0x033, 33, 0, 2, 1  }, // Tails faces off with Egg Hornet
-	{ 0x034, 33, 0, 2, 1  }, // Chaos 1 Emerges
-	{ 0x035, 26, 1, 2, 2  }, // Tails and Sonic are gassed at Casinopolis
-	{ 0x038, 33, 0, 2, 4  }, // Tails vs. Knuckles
-	{ 0x039, 33, 0, 2, 4  }, // Chaos 4 Emerges
-	{ 0x03A, 33, 0, 2, 4  }, // Tails and Sonic follow Eggman after Chaos 4
-	{ 0x03B, 33, 0, 2, 4  }, // Tails and Sonic depart on the Tornado 1
-	{ 0x03E, 33, 2, 2, 5  }, // Tails' flashback
-	{ 0x040, 33, 0, 2, 6  }, // Tails wakes up from his dream
-	{ 0x042, 33, 2, 2, 6  }, // Tails chases Froggy
-	{ 0x044, 34, 0, 2, 6  }, // Tails enters the Past
-	{ 0x045, 34, 0, 2, 6  }, // Tails talks to Tikal
-	{ 0x046, 33, 0, 2, 7  }, // Tails returns and meets Big
-	{ 0x047, 33, 0, 2, 7  }, // The Tornado 2 takes flight
-	{ 0x048, 5,  1, 2, 7  }, // Tails finds Sonic in Red Mountain
-	{ 0x04B, 29, 2, 2, 8  }, // Tails faces off with Gamma
-	{ 0x04C, 29, 2, 2, 9  }, // Tails departs the Egg Carrier with Amy
-	{ 0x04D, 26, 3, 2, 10 }, // Eggman launches his missile attack
-	{ 0x04E, 26, 3, 2, 10 }, // Tails follows Eggman after the missile
-	{ 0x050, 26, 1, 2, 11 }, // Tails takes on the Egg Walker
-	{ 0x051, 26, 1, 2, 11 }, // Egg Walker defeated, Station Square saved
-	{ 0x052, 33, 0, 2, 0  }, // Tails Outro
+	{ 0x030, 26, 3, 2, 0, 0 }, // Tails Intro
+	{ 0x031, 1,  1, 2, 0, 1 }, // Tails is rescued by Sonic
+	{ 0x032, 26, 4, 2, 0, 2 }, // Tails and Sonic poolside
+	{ 0x033, 33, 0, 2, 1, 1 }, // Tails faces off with Egg Hornet
+	{ 0x034, 33, 0, 2, 1, 3 }, // Chaos 1 Emerges
+	{ 0x035, 26, 1, 2, 2, 3 }, // Tails and Sonic are gassed at Casinopolis
+	{ 0x038, 33, 0, 2, 4, 2 }, // Tails vs. Knuckles
+	{ 0x039, 33, 0, 2, 4, 5 }, // Chaos 4 Emerges
+	{ 0x03A, 33, 0, 2, 4, 8 }, // Tails and Sonic follow Eggman after Chaos 4
+	{ 0x03B, 33, 0, 2, 4, 10 }, // Tails and Sonic depart on the Tornado 1
+	{ 0x03E, 33, 2, 2, 5, 1 }, // Tails' flashback
+	{ 0x040, 33, 0, 2, 5, 3 }, // Tails wakes up from his dream
+	{ 0x042, 33, 2, 2, 5, 4 }, // Tails chases Froggy
+	{ 0x044, 34, 0, 2, 6, 0 }, // Tails enters the Past
+	{ 0x045, 34, 0, 2, 6, 3 }, // Tails talks to Tikal
+	{ 0x046, 33, 0, 2, 7, 0 }, // Tails returns and meets Big
+	{ 0x047, 33, 0, 2, 7, 2 }, // The Tornado 2 takes flight
+	{ 0x048, 5,  1, 2, 7, 3 }, // Tails finds Sonic in Red Mountain
+	{ 0x04B, 29, 2, 2, 9, 2 }, // Tails faces off with Gamma
+	{ 0x04C, 29, 2, 2, 9, 5 }, // Tails departs the Egg Carrier with Amy
+	{ 0x04D, 26, 3, 2, 10, 0 }, // Eggman launches his missile attack
+	{ 0x04E, 26, 3, 2, 10, 2 }, // Tails follows Eggman after the missile
+	{ 0x050, 26, 1, 2, 10, 4 }, // Tails takes on the Egg Walker
+	{ 0x051, 26, 1, 2, 10, 6 }, // Egg Walker defeated, Station Square saved
+	{ 0x052, 33, 0, 2, 11, 0 }, // Tails Outro
 	{ 0x053, 26, 0, 2, -1 }, // Error
-	{ 0x054, 29, 1, 2, 8  }, // Gonna land on the Egg Carrier
-	{ 0x055, 38, 0, 2, 6  }, // Cutscene with Froggy after Sand Hill
-	{ 0x056, 26, 1, 2, 3  }, // Tails and Sonic awake after being gassed
+	{ 0x054, 29, 1, 2, 8, 0 }, // Gonna land on the Egg Carrier
+	{ 0x055, 38, 0, 2, -1 /*5, 5*/ }, // Cutscene with Froggy after Sand Hill
+	{ 0x056, 26, 1, 2, 3, 0 }, // Tails and Sonic awake after being gassed
 
 	// Amy events
-	{ 0x058, 26, 0, 5, 0  }, // Amy's pre-intro ??
-	{ 0x060, 26, 0, 5, 0  }, // Amy's intro
-	{ 0x061, 26, 0, 5, 0  }, // Amy meets Birdie
-	{ 0x062, 26, 1, 5, 1  }, // Amy meets up with Sonic
-	{ 0x063, 26, 3, 5, 1  }, // Amy and Sonic visit Twinkle Park
-	{ 0x064, 26, 3, 5, 2  }, // Amy's kidnapped by Zero
-	{ 0x065, 32, 3, 5, 2  }, // Amy locked up, talking to Gamma
-	{ 0x066, 12, 1, 5, 2  }, // Amy goes to the past after Hot Shelter
-	{ 0x067, 34, 0, 5, 3  }, // Amy enters the past
-	{ 0x068, 34, 1, 5, 3  }, // Amy meets Tikal
-	{ 0x069, 29, 2, 5, 4  }, // Eggman takes Birdie's Emerald
-	{ 0x06A, 29, 2, 5, 4  }, // Amy and Tails leave the Egg Carrier
+	{ 0x058, 26, 0, 5, 0, 1 }, // Amy's pre-intro ??
+	{ 0x060, 26, 0, 5, 0, 0 }, // Amy's intro
+	{ 0x061, 26, 0, 5, 1, 2 }, // Amy meets Birdie
+	{ 0x062, 26, 1, 5, 1, 4 }, // Amy meets up with Sonic
+	{ 0x063, 26, 3, 5, 1, 5 }, // Amy and Sonic visit Twinkle Park
+	{ 0x064, 26, 3, 5, 1, 8 }, // Amy's kidnapped by Zero
+	{ 0x065, 32, 3, 5, 2, 1 }, // Amy locked up, talking to Gamma
+	{ 0x066, 12, 1, 5, -1 /*2, 6*/ }, // Amy goes to the past after Hot Shelter
+	{ 0x067, 34, 0, 5, 3, 0 }, // Amy enters the past
+	{ 0x068, 34, 1, 5, 3, 3 }, // Amy meets Tikal
+	{ 0x069, 29, 2, 5, 4, 2 }, // Eggman takes Birdie's Emerald
+	{ 0x06A, 29, 2, 5, 4, 3 }, // Amy and Tails leave the Egg Carrier
 	{ 0x06B, 26, 0, 5, -1 }, // Error
-	{ 0x06C, 29, 5, 5, 3  }, // Amy returns to the present
-	{ 0x06D, 26, 3, 5, 5  }, // Hunt to find Birdie's family
-	{ 0x06E, 33, 2, 5, 6  }, // Amy discovers the Egg Base
-	{ 0x06F, 10, 0, 5, 6  }, // Amy chased by Zero in Final Egg
-	{ 0x070, 33, 3, 5, 7  }, // Amy and Birdie head back to the Egg Carrier
-	{ 0x071, 23, 0, 5, 8  }, // Zero confronts Amy
-	{ 0x072, 29, 0, 5, 8  }, // Amy's Outro
-	{ 0x075, 26, 1, 5, 2  }, // Amy's kidnapped to the Mystic Ruins
+	{ 0x06C, 29, 5, 5, 4, 1 }, // Amy returns to the present
+	{ 0x06D, 26, 3, 5, 5, 0 }, // Hunt to find Birdie's family
+	{ 0x06E, 33, 2, 5, 6, 1 }, // Amy discovers the Egg Base
+	{ 0x06F, 10, 0, 5, 6, 3 }, // Amy chased by Zero in Final Egg
+	{ 0x070, 33, 3, 5, 7, 0 }, // Amy and Birdie head back to the Egg Carrier
+	{ 0x071, 23, 0, 5, 8, 1 }, // Zero confronts Amy
+	{ 0x072, 29, 0, 5, 8, 4 }, // Amy's Outro
+	{ 0x075, 26, 1, 5, 1, 10 }, // Amy's kidnapped to the Mystic Ruins
 
 	// Knuckles events
-	{ 0x080, 33, 1, 3, 0  }, // Knuckles Intro
-	{ 0x082, 26, 3, 3, 1  }, // Knuckles goes hunting for the Master Emerald
-	{ 0x083, 9,  0, 3, 2  }, // Knuckles enters the Past
-	{ 0x084, 34, 0, 3, 2  }, // Knuckles while in the Past
-	{ 0x085, 34, 0, 3, 2  }, // Tikal's Crisis
-	{ 0x086, 26, 1, 3, 2  }, // Knuckles returns from the Past
-	{ 0x087, 16, 0, 3, 3  }, // Knuckles and Chaos 2 face off
-	{ 0x088, 16, 0, 3, 3  }, // Eggman tricks Knuckles
-	{ 0x089, 33, 0, 3, 3  }, // Knuckles goes after Sonic
-	{ 0x08A, 33, 0, 3, 4  }, // Knuckles vs. Sonic
-	{ 0x08B, 33, 0, 3, 4  }, // Chaos 4 emerges
-	{ 0x08C, 33, 0, 3, 4  }, // Knuckles departs from Sonic and Tails
-	{ 0x08D, 7,  1, 3, 5  }, // Knuckles goes to the Past (from Lost World)
-	{ 0x08E, 34, 1, 3, 5  }, // Knuckles back in the Past
-	{ 0x08F, 34, 1, 3, 5  }, // Tikal's crisis again
-	{ 0x091, 33, 1, 3, 6  }, // Knuckles restores most of the Master Emerald
-	{ 0x092, 33, 2, 3, 6  }, // Knuckles follows Gamma to Final Egg base
-	{ 0x094, 29, 0, 3, 6  }, // Knuckles on the Egg Carrier
-	{ 0x095, 6,  2, 3, 7  }, // Knuckles finds the last missing piece
-	{ 0x096, 34, 2, 3, 8  }, // Knuckles travels back to the past one last time
-	{ 0x097, 34, 2, 3, 8  }, // The aftermath of Tikal's plight
-	{ 0x098, 29, 5, 3, 8  }, // Knuckles returns to the present
-	{ 0x099, 18, 1, 3, 9  }, // Knuckles fights Chaos 6
-	{ 0x09A, 29, 0, 3, 9  }, // Knuckles has all collected the final shards
-	{ 0x09B, 18, 1, 3, 9  }, // Knuckles defeats Chaos 6
+	{ 0x080, 33, 1, 3, 0, 0 }, // Knuckles Intro
+	{ 0x082, 26, 3, 3, 1, 0 }, // Knuckles goes hunting for the Master Emerald
+	{ 0x083, 9,  0, 3, -1 /*1, 4*/ }, // Knuckles enters the Past
+	{ 0x084, 34, 0, 3, 2, 0 }, // Knuckles while in the Past
+	{ 0x085, 34, 0, 3, 2, 2}, // Tikal's Crisis
+	{ 0x086, 26, 1, 3, 3, 0 }, // Knuckles returns from the Past
+	{ 0x087, 16, 0, 3, 3, 3 }, // Knuckles and Chaos 2 face off
+	{ 0x088, 16, 0, 3, -1 /*3, 3*/ }, // Eggman tricks Knuckles
+	{ 0x089, 33, 0, 3, 4, 1 }, // Knuckles goes after Sonic
+	{ 0x08A, 33, 0, 3, 4, 6 }, // Knuckles vs. Sonic
+	{ 0x08B, 33, 0, 3, 4, 9 }, // Chaos 4 emerges
+	{ 0x08C, 33, 0, 3, 4, 12 }, // Knuckles departs from Sonic and Tails
+	{ 0x08D, 7,  1, 3, -1 /*4, 14*/ }, // Knuckles goes to the Past (from Lost World)
+	{ 0x08E, 34, 1, 3, 5, 0 }, // Knuckles back in the Past
+	{ 0x08F, 34, 1, 3, 5, 2 }, // Tikal's crisis again
+	{ 0x091, 33, 1, 3, 6, 1 }, // Knuckles restores most of the Master Emerald
+	{ 0x092, 33, 2, 3, 6, 4 }, // Knuckles follows Gamma to Final Egg base
+	{ 0x094, 29, 0, 3, 7, 0 }, // Knuckles on the Egg Carrier
+	{ 0x095, 6, 2, 3, -1 /*7, 7*/ }, // Knuckles finds the last missing piece
+	{ 0x096, 34, 2, 3, 8, 0 }, // Knuckles travels back to the past one last time
+	{ 0x097, 34, 2, 3, 8, 2 }, // The aftermath of Tikal's plight
+	{ 0x098, 29, 5, 3, 9, 0 }, // Knuckles returns to the present
+	{ 0x099, 18, 1, 3, 9, 4 }, // Knuckles fights Chaos 6
+	{ 0x09A, 29, 0, 3, 9, 2 }, // Knuckles has all collected the final shards
+	{ 0x09B, 18, 1, 3, -1 /*9, 5*/ }, // Knuckles defeats Chaos 6
 	{ 0x09C, 26, 0, 3, -1 }, // Error
-	{ 0x09D, 33, 1, 3, 10 }, // Knuckles restores the Master Emerald
-	{ 0x09F, 33, 1, 3, 10 }, // Knuckles Outro
-	{ 0x0A0, 26, 4, 3, 3  }, // Knuckles follows Eggman in Station Square hotel
+	{ 0x09D, 33, 1, 3, 10, 0 }, // Knuckles restores the Master Emerald
+	{ 0x09F, 33, 1, 3, 11, 2 }, // Knuckles Outro
+	{ 0x0A0, 26, 4, 3, 3, 2 }, // Knuckles follows Eggman in Station Square hotel
 
 	// Gamma events
-	{ 0x0B0, 33, 3, 6, 0  }, // Gamma Intro
-	{ 0x0B1, 33, 3, 6, 1  }, // Gamma Enters Final Egg
-	{ 0x0B2, 33, 3, 6, 1  }, // Gamma Exits Final Egg
-	{ 0x0B3, 33, 3, 6, 1  }, // Useless machine
-	{ 0x0B4, 33, 3, 6, 1  }, // Gamma's Fight with Beta
-	{ 0x0B5, 33, 3, 6, 1  }, // Gamma defeats Beta
-	{ 0x0B7, 32, 1, 6, 2  }, // The hunt for Froggy begins
-	{ 0x0B8, 1,  0, 6, 2  }, // Gamma goes to the Past
-	{ 0x0B9, 34, 1, 6, 3  }, // Gamma in the Past
-	{ 0x0BA, 34, 1, 6, 3  }, // Gamma and Tikal meet
-	{ 0x0BB, 32, 1, 6, 3  }, // Gamma returns to the Egg Carrier
-	{ 0x0BC, 32, 1, 6, 4  }, // Gamma goes to the wrong room
-	{ 0x0BD, 32, 1, 6, 4  }, // Beta's new body being built
-	{ 0x0BE, 32, 1, 6, 4  }, // Gamma leaves Beta's room
-	{ 0x0BF, 32, 3, 6, 4  }, // Gamma enters the jail, meets Amy
-	{ 0x0C0, 32, 1, 6, 4  }, // Gamma heading to the rear of the ship
-	{ 0x0C1, 29, 2, 6, 4  }, // Gamma emerges to fight Sonic
-	{ 0x0C2, 29, 2, 6, 4  }, // Gamma after the battle with Sonic
-	{ 0x0C3, 33, 0, 6, 5  }, // Gamma's objectives changed (wtf?)
-	{ 0x0C5, 33, 1, 6, 7  }, // Gamma remembers his brothers
-	{ 0x0C7, 25, 0, 6, 8  }, // Gamma Outro
+	{ 0x0B0, 33, 3, 6, 0, 0 }, // Gamma Intro
+	{ 0x0B1, 33, 3, 6, 0, 2 }, // Gamma Enters Final Egg
+	{ 0x0B2, 33, 3, 6, 0, 5 }, // Gamma Exits Final Egg
+	{ 0x0B3, 33, 3, 6, 0, 4 }, // Useless machine
+	{ 0x0B4, 33, 3, 6, 0, 7 }, // Gamma's Fight with Beta
+	{ 0x0B5, 33, 3, 6, 0, 8 }, // Gamma defeats Beta
+	{ 0x0B7, 32, 1, 6, 1, 1 }, // The hunt for Froggy begins
+	{ 0x0B8, 1, 0, 6, -1 /*2, 2*/ }, // Gamma goes to the Past
+	{ 0x0B9, 34, 1, 6, 3, 0 }, // Gamma in the Past
+	{ 0x0BA, 34, 1, 6, 3, 2 }, // Gamma and Tikal meet
+	{ 0x0BB, 32, 1, 6, 4, 0 }, // Gamma returns to the Egg Carrier
+	{ 0x0BC, 32, 1, 6, 4, 2 }, // Gamma goes to the wrong room
+	{ 0x0BD, 32, 1, 6, 4, 3 }, // Beta's new body being built
+	{ 0x0BE, 32, 1, 6, 4, 4 }, // Gamma leaves Beta's room
+	{ 0x0BF, 32, 3, 6, 4, 6 }, // Gamma enters the jail, meets Amy
+	{ 0x0C0, 32, 1, 6, 4, 10 }, // Gamma heading to the rear of the ship
+	{ 0x0C1, 29, 2, 6, 4, 12 }, // Gamma emerges to fight Sonic
+	{ 0x0C2, 29, 2, 6, 4, 15 }, // Gamma after the battle with Sonic
+	{ 0x0C3, 33, 0, 6, 5, 1 }, // Gamma's objectives changed
+	{ 0x0C5, 33, 1, 6, 7, 0 }, // Gamma remembers his brothers
+	{ 0x0C7, 25, 0, 6, 8, 6 }, // Gamma Outro
 
 	// Big events
-	{ 0x0D0, 33, 2, 7, 0  }, // Big Intro
-	{ 0x0D1, 26, 3, 7, 0  }, // Big goes searching for Froggy
-	{ 0x0D2, 26, 0, 7, 1  }, // Froggy heads into the sewers
-	{ 0x0D3, 33, 0, 7, 0  }, // Big finds Froggy with Tails
-	{ 0x0D4, 1,  2, 7, 3  }, // Big loses Froggy to Gamma
-	{ 0x0D8, 32, 1, 7, 4  }, // Big enters Hot Shelter
-	{ 0x0D9, 12, 0, 7, 4  }, // Big spots Froggy inside the tanks
-	{ 0x0DA, 12, 0, 7, 4  }, // Big saves Froggy - broken
-	{ 0x0DB, 34, 1, 7, 5  }, // Big heads into the past
-	{ 0x0DC, 34, 1, 7, 5  }, // Tikal talks to Big
-	{ 0x0DD, 32, 1, 7, 5  }, // Big returns and is ready to leave the Egg Carrier
-	{ 0x0DE, 18, 0, 7, 6  }, // Chaos 6 takes Froggy
-	{ 0x0DF, 18, 0, 7, 6  }, // Sonic saves Froggy
-	{ 0x0E0, 29, 0, 7, 6  }, // Big finds the Tornado 2 and leaves
+	{ 0x0D0, 33, 2, 7, 0, 0 }, // Big Intro
+	{ 0x0D1, 26, 3, 7, 1, 0 }, // Big goes searching for Froggy
+	{ 0x0D2, 26, 0, 7, 1, 2 }, // Froggy heads into the sewers
+	{ 0x0D3, 33, 0, 7, 2, 3 }, // Big finds Froggy with Tails
+	{ 0x0D4, 1,  2, 7, -1 /*3, 2*/ }, // Big loses Froggy to Gamma
+	{ 0x0D8, 32, 1, 7, 4, 1 }, // Big enters Hot Shelter
+	{ 0x0D9, 12, 0, 7, -1 /*4, 2*/ }, // Big spots Froggy inside the tanks
+	{ 0x0DA, 12, 0, 7, -1 /*4, 2*/ }, // Big saves Froggy
+	{ 0x0DB, 34, 1, 7, 5, 0 }, // Big heads into the past
+	{ 0x0DC, 34, 1, 7, 5, 2 }, // Tikal talks to Big
+	{ 0x0DD, 32, 1, 7, 6, 0 }, // Big returns and is ready to leave the Egg Carrier
+	{ 0x0DE, 18, 0, 7, 6, 4 }, // Chaos 6 takes Froggy
+	{ 0x0DF, 18, 0, 7, -1 /*6, 5*/ }, // Sonic saves Froggy
+	{ 0x0E0, 29, 0, 7, 6, 7 }, // Big finds the Tornado 2 and leaves
 	{ 0x0E1, 26, 0, 7, -1 }, // Error
-	{ 0x0E2, 33, 2, 7, 7  }, // Big Outro
-	{ 0x0E3, 26, 3, 7, 1  }, // Big sees Froggy heading to the beach
+	{ 0x0E2, 33, 2, 7, 7, 1  }, // Big Outro
+	{ 0x0E3, 26, 3, 7, 3, 1 }, // Big sees Froggy heading to the beach
 
 	// Last Story
-	{ 0x0F0, 33, 2, 0, 0  }, // Tornado 2 Flash scene
-	{ 0x0F2, 33, 2, 0, 1  }, // Eggman heading to the Mystic Ruins base
-	{ 0x0F3, 33, 1, 0, 1  }, // Knuckles at the Master Emerald
-	{ 0x0F4, 33, 0, 0, 1  }, // Tails runs to Sonic
-	{ 0x0F5, 33, 1, 0, 1  }, // Sonic and Tails find Eggman and Knuckles
-	{ 0x0F6, 34, 2, 0, 1  }, // Sonic travels to the past
-	{ 0x0F7, 34, 2, 0, 1  }, // Tikal pleads with her father
-	{ 0x0F8, 34, 2, 0, 1  }, // Tikal seals Chaos
-	{ 0x0F9, 33, 1, 0, 1  }, // Sonic returns to the present
-	{ 0x0FA, 33, 2, 0, 2  }, // Sonic and Tails find the Tornado 2
-	{ 0x0FB, 34, 2, 0, 2  }, // Sonic checks on Tikal in the past
-	{ 0x0FD, 19, 0, 0, 2  }, // Perfect Chaos reveals himself
-	{ 0x0FE, 19, 0, 0, 2  }, // Last Story Outro
-	{ 0x0FF, 19, 0, 0, 2  }, // Everyone brings Sonic the emeralds
+	{ 0x0F0, 33, 2, 0, 0, 0 }, // Tornado 2 Flash scene
+	{ 0x0F2, 33, 2, 0, 1, 2 }, // Eggman heading to the Mystic Ruins base
+	{ 0x0F3, 33, 1, 0, 1, 4 }, // Knuckles at the Master Emerald
+	{ 0x0F4, 33, 0, 0, 1, 6 }, // Tails runs to Sonic
+	{ 0x0F5, 33, 1, 0, 1, 7 }, // Sonic and Tails find Eggman and Knuckles
+	{ 0x0F6, 34, 2, 0, 2, 0 }, // Sonic travels to the past
+	{ 0x0F7, 34, 2, 0, 2, 1 }, // Tikal pleads with her father
+	{ 0x0F8, 34, 2, 0, 2, 4 }, // Tikal seals Chaos
+	{ 0x0F9, 33, 1, 0, 3, 0 }, // Sonic returns to the present
+	{ 0x0FA, 33, 2, 0, 3, 1 }, // Sonic and Tails find the Tornado 2
+	{ 0x0FB, 34, 2, 0, 2, 3}, // Sonic checks on Tikal in the past
+	{ 0x0FD, 19, 0, 0, -1 /*3, 2*/ }, // Perfect Chaos reveals himself
+	{ 0x0FE, 19, 0, 0, -1 /*3, 2*/ }, // Last Story Outro
+	{ 0x0FF, 19, 0, 0, -1 /*3, 2*/ }, // Everyone brings Sonic the emeralds
 
 	// Additional Sonic events
-	{ 0x100, 29, 0, 0, 10 }, // Sonic and Tails after landing on the Egg Carrier
-	{ 0x101, 29, 0, 0, 10 }, // Sonic and Tails Sky Chase attack (don't get too many ideas)
-	{ 0x102, 29, 1, 0, 10 }, // The Egg Carrier Transforms
-	{ 0x103, 29, 1, 0, 10 }, // Sonic at the Sky Deck Entrance - broken
-	{ 0x104, 32, 1, 0, 10 }, // Sonic right after Sky Deck (Is that it?)
-	{ 0x106, 29, 2, 0, 10 }, // Sonic heading to transform the Egg Carrier
-	{ 0x107, 29, 3, 0, 10 }, // Emergency altert cancelled (Sonic) - broken
+	{ 0x100, 29, 0, 0, 10, 1 }, // Sonic and Tails after landing on the Egg Carrier
+	{ 0x101, 29, 0, 0, 10, 3 }, // Sonic and Tails Sky Chase attack (don't get too many ideas)
+	{ 0x102, 29, 1, 0, 10, 5 }, // The Egg Carrier Transforms
+	{ 0x103, 29, 1, 0, 10, 7 }, // Sonic at the Sky Deck Entrance - broken
+	{ 0x104, 32, 1, 0, 11, 0 }, // Sonic right after Sky Deck (Is that it?)
+	{ 0x106, 29, 2, 0, 11, 7 }, // Sonic heading to transform the Egg Carrier
+	{ 0x107, 29, 3, 0, 11, 8 }, // Emergency altert cancelled (Sonic) - broken
 
 	// Additional Tails events
-	{ 0x110, 29, 0, 2, 8  }, // Tails and Sonic after landing on the Egg Carrier
-	{ 0x111, 29, 0, 2, 8  }, // Tails' Sky Chase Attack
-	{ 0x112, 29, 1, 2, 8  }, // The Egg Carrier Transforms
-	{ 0x113, 29, 1, 2, 8  }, // Tails at the Sky Deck Entrance - broken
-	{ 0x114, 32, 1, 2, 8  }, // Tails right after Sky Deck
+	{ 0x110, 29, 0, 2, 8, 1 }, // Tails and Sonic after landing on the Egg Carrier
+	{ 0x111, 29, 0, 2, 8, 3 }, // Tails' Sky Chase Attack
+	{ 0x112, 29, 1, 2, 8, 5 }, // The Egg Carrier Transforms
+	{ 0x113, 29, 1, 2, 8, 7 }, // Tails at the Sky Deck Entrance - broken
+	{ 0x114, 32, 1, 2, 9, 0 }, // Tails right after Sky Deck
 
 	// Additional Knuckles events
-	{ 0x120, 29, 2, 3, 9  }, // Egg Carrier Transforms 1
-	{ 0x121, 29, 2, 3, 9  }, // Egg Carrier Transforms 2
-	{ 0x122, 29, 5, 3, 9  }, // Knuckles sensing the emeralds on the Egg Carrier - broken
+	{ 0x120, 29, 2, 3, 7, 2 }, // Egg Carrier Transforms 1
+	{ 0x121, 29, 2, 3, 7, 4 }, // Egg Carrier Transforms 2
+	{ 0x122, 29, 5, 3, 7, 6 }, // Knuckles sensing the emeralds on the Egg Carrier - broken
 
 	// Additional Amy events
-	{ 0x130, 32, 2, 5, 2  }, // Introduction to Hedgehog Hammer
-	{ 0x131, 32, 2, 5, 2  }, // Winning at Hedgehog Hammer - broken
+	{ 0x130, 32, 2, 5, 2, 3 }, // Introduction to Hedgehog Hammer
+	{ 0x131, 32, 2, 5, 2, 4 }, // Winning at Hedgehog Hammer
 
 	// Additional Gamma events
-	{ 0x140, 32, 1, 6, 4  }, // Gamma is told to find the Jet Booster - broken
-	{ 0x141, 29, 0, 6, 7  }, // Gamma heads to Hot Shelter
-	{ 0x142, 29, 0, 6, 7  }, // Gamma rescues E-105
+	{ 0x140, 32, 1, 6, 4, 8 }, // Gamma is told to find the Jet Booster - broken
+	{ 0x141, 29, 0, 6, 8, 0 }, // Gamma heads to Hot Shelter
+	{ 0x142, 29, 0, 6, 8, 3 }, // Gamma rescues E-105
 
 	// Additional Big events
-	{ 0x150, 29, 3, 7, 4  }, // Egg Carrier Transforms - broken
+	{ 0x150, 29, 3, 7, 6, 1 }, // Egg Carrier Transforms
 
 	// Additional Last Story events
-	{ 0x160, 34, 2, 0, 1  }, // The Echidna tribe faces Chaos
+	{ 0x160, 34, 2, 0, 2, 2 }, // The Echidna tribe faces Chaos
 
 	// Upgrade Cutscenes
-	{ 0x165, 26, 4, 0, 0  }, // Sonic gets the Crystal Ring
-	{ 0x166, 26, 2, 0, 0  }, // Sonic gets the LSDash Shoe
-	{ 0x167, 33, 1, 0, 0  }, // Sonic gets the Ancient Light
-	{ 0x168, 26, 3, 2, 0  }, // Tails gets the Jet Anklet
-	{ 0x169, 34, 0, 2, 0  }, // Tails gets the Rhythm Badge
-	{ 0x16A, 33, 2, 3, 0  }, // Knuckles gets the Fighting Gloves
-	{ 0x16B, 33, 0, 3, 0  }, // Knuckles gets the Shovel Claw
-	{ 0x16C, 32, 2, 5, 0  }, // Amy gets the Long Hammer
-	{ 0x16D, 32, 2, 5, 0  }, // Amy gets the Warrior Feather
-	{ 0x16E, 32, 4, 6, 0  }, // Gamma gets the Laser Blaster
-	{ 0x16F, 32, 0, 6, 0  }, // Gamma gets the Jet Booster
-	{ 0x170, 33, 2, 7, 0  }, // Big gets the PowerRod
-	{ 0x171, 33, 1, 7, 0  }, // Big gets the Life Belt
+	{ 0x165, 26, 4, 0, -1 }, // Sonic gets the Crystal Ring
+	{ 0x166, 26, 2, 0, 3, 2 }, // Sonic gets the LSDash Shoe
+	{ 0x167, 33, 1, 0, 9, 3 }, // Sonic gets the Ancient Light
+	{ 0x168, 26, 3, 2, -1 }, // Tails gets the Jet Anklet
+	{ 0x169, 34, 0, 2, 6, 2 }, // Tails gets the Rhythm Badge
+	{ 0x16A, 33, 2, 3, -1 }, // Knuckles gets the Fighting Gloves
+	{ 0x16B, 33, 0, 3, 4, 5 }, // Knuckles gets the Shovel Claw
+	{ 0x16C, 32, 2, 5, -1 }, // Amy gets the Long Hammer
+	{ 0x16D, 32, 2, 5, 2, 4 }, // Amy gets the Warrior Feather
+	{ 0x16E, 32, 4, 6, -1 }, // Gamma gets the Laser Blaster
+	{ 0x16F, 32, 0, 6, 4, 9 }, // Gamma gets the Jet Booster
+	{ 0x170, 33, 2, 7, -1 }, // Big gets the PowerRod
+	{ 0x171, 33, 1, 7, 2, 2 }, // Big gets the Life Belt
 
 	// Misc Events
-	{ 0x176, 26, 1, 0, 1  }, // Ice Stone appears (Sonic)
-	{ 0x177, 26, 1, 2, 0  }, // Ice Stone appears (Tails)
-	{ 0x178, 26, 3, 7, 0  }, // Ice Stone appears (Big)
-	{ 0x179, 26, 3, 0, 1  }, // Employee Card appears
-	{ 0x17A, 33, 0, 0, 1  }, // Passage to Angel Island opens (Sonic)
-	{ 0x17B, 33, 0, 2, 0  }, // Passage to Angel Island opens (Tails)
-	{ 0x17C, 33, 0, 6, 1  }, // Passage to Angel Island opens (Gamma)
-	{ 0x180, 5,  0, 0, 9  }, // Egg Carrier in Red Mountain
+	{ 0x176, 26, 1, 0, 3, 5 }, // Ice Stone appears (Sonic)
+	{ 0x177, 26, 1, 2, 2, 2 }, // Ice Stone appears (Tails)
+	{ 0x178, 26, 3, 7, 1, 7 }, // Ice Stone appears (Big)
+	{ 0x179, 26, 3, 0, 7, 1 }, // Employee Card appears
+	{ 0x17A, 33, 0, 0, 5, 0 /*2,0 for Big*/ }, // Passage to Angel Island opens (Sonic, Big)
+	{ 0x17B, 33, 0, 2, 4, 0 }, // Passage to Angel Island opens (Tails)
+	{ 0x17C, 33, 0, 6, 6, 0 }, // Passage to Angel Island opens (Gamma)
+	{ 0x180, 5, 0, 0, 9, 3 }, // Egg Carrier in Red Mountain
 };
 
 static CutsceneLevelData* GetCutsceneData(int cutscene)
@@ -400,37 +397,32 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_ENTRANCE_CASINO);
 		break;
 	case 0x001D: // Sonic jumps from the Egg Carrier
-		WriteData<5>((char*)0x5578DE, 0x90u); // Don't load Chaos 6
+		WriteData((char*)0x559FC0, (char)0xC3); // Don't load Chaos 6
 		break;
 	case 0x0020: // Sonic sees the mural
 		WriteData<1>((char*)0x7B0DA0, 0xC3u); // Lost World 3 end level object
 		break;
-	case 0x0024: // Egg Viper
-		DemoPlaying = 0;
+	case 0x0023:
+		SetEventFlag((EventFlags)FLAG_SONIC_MR_APPEAR_FINALEGG);
+		break;
+	case 0x0026:
+		LevelClearCounts[LevelIDs_FinalEgg] = 1;
 		break;
 	case 0x0029: // Sonic and Tails land on the Egg Carrier
 		SetEventFlag((EventFlags)FLAG_SONIC_EC_TORNADO2_LOST);
-		break;
-	case 0x0031: // Tails rescued by Sonic in Emerald Coast
-		DemoPlaying = 0;
 		break;
 	case 0x0035: // Tails and Sonic gassed
 		SetEventFlag((EventFlags)FLAG_MILES_SS_ENTRANCE_CASINO);
 		break;
 	case 0x0040: // Tails wakes up from his flashback
-		SetTimeOfDay_Evening();
-		break;
-	case 0x0042: // Tails chases Froggy
-		SetTimeOfDay_Evening();
+		CutsceneFlagArray[0x003E] = 1;
 		break;
 	case 0x0048: // Tails finds Sonic on Red Mountain
 		DemoPlaying = 0;
 		break;
 	case 0x0050: // Egg Walker
-		SetTimeOfDay_Night();
-		break;
 	case 0x0051: // Egg Walker defeated
-		SetTimeOfDay_Night();
+		LevelClearCounts[43 * Characters_Tails + LevelIDs_SpeedHighway] = 1;
 		break;
 	case 0x0054: // Tails and Sonic land on the Egg Carrier
 		SetEventFlag((EventFlags)FLAG_MILES_EC_TORNADO2_LOST);
@@ -440,9 +432,6 @@ static void SetEventFlagsForCutscene(int eventID)
 		WriteData<1>((char*)0x79E4C0, 0xC3u); // Plays level music
 		WriteData<5>((char*)0x597BF3, 0x90u); // Snowboard
 		break;
-	case 0x0064: // Amy kidnapped by Zero
-		SetTimeOfDay_Evening();
-		break;
 	case 0x006E: // Amy discovers Final Egg base
 		SetEventFlag((EventFlags)FLAG_AMY_MR_APPEAR_FINALEGG); // Open Final Egg for Amy
 		SetEventFlag((EventFlags)FLAG_AMY_MR_ENTRANCE_FINALEGG); // Open Final Egg for Amy
@@ -450,18 +439,11 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x0072: // Amy outro
 		SetEventFlag((EventFlags)FLAG_AMY_EC_SINK); // Egg Carrier sunk in Amy's outro
 		break;
-	case 0x0075: // Amy taken to the Mystic Ruins by Zero
-		SetTimeOfDay_Evening();
-		break;
-	case 0x0083: // Knuckles goes to the Past from Casino
-		// Wrong position
-		break;
 	case 0x0086: // Knuckles returns from the Past to Station Square
-		SetTimeOfDay_Night();
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_SS_ENTRANCE_CASINO);
 		break;
 	case 0x0088: // Knuckles is tricked by Eggman
-		WriteData<5>((char*)0x54A62E, 0x90u); // Don't load Chaos 2
+		WriteData((char*)0x559FC0, (char)0xC3); // Don't load Chaos 2
 		break;
 	case 0x0092: // Knuckles follows Gamma to Final Egg
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_APPEAR_FINALEGG); // Open Final Egg for Knuckles
@@ -489,10 +471,8 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x00C0: // Gamma heading to the rear of the ship
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER); // Cutscenes where Gamma appears with the Jet Booster
 		break;
-	case 0x00C3: // Gamma's objectives changed
-		// Gamma invisible for the first few seconds
-		break;
 	case 0x00C5: // Gamma remembers his brothers
+		LevelClearCounts[43 * Characters_Gamma + LevelIDs_RedMountain] = 1;
 		SetEventFlag((EventFlags)FLAG_E102_MR_ENTRANCE_MOUNTAIN);
 		break;
 	case 0x00D4: // Big loses Froggy to Gamma
@@ -501,20 +481,12 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x00DA: // Big saves Froggy in Hot Shelter
 		CutsceneFlagArray[217] = 1;
 		break;
-	case 0x00F9: // Sonic was on a snooze cruise
-		// EV_SetPos not working for some reason
-		break;
-	case 0x0113: // Sonic finds the entrance to the Sky Deck
-		// Camera stuck at 0, 0, 0
-		break;
 	case 0x0141: // Gamma heads to Hot Shelter
 	case 0x0142: // Gamma rescues E-105
 		SetEventFlag((EventFlags)FLAG_E102_EC_SINK); // Egg Carrier sunk in Gamma's outro
-		PrintDebug("cock\n\n");
 		break;
 	case 0x0165: // Sonic gets the Crystal Ring
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_CRYSTALRING);
-		// EV_Set_Pos not working
 		break;
 	case 0x0166: // Sonic gets the Light Speed Shoes
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_LIGHTSHOOSE);
@@ -543,7 +515,6 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x016E: // Gamma gets the Laser Blaster
 		SetEventFlag((EventFlags)FLAG_E102_EC_TYPE3LASER);
-		position_override.Position.x = 30;
 		break;
 	case 0x016F: // Gamma gets the Jet Booster
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER);
@@ -554,80 +525,61 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x0171: // Big gets the Life Belt
 		SetEventFlag((EventFlags)FLAG_BIG_MR_LIFEBELT);
 		break;
-	case 0x0176: // Ice Stone appears (Sonic)
-		SetEventFlag((EventFlags)FLAG_SONIC_SS_ICESTONE);
+	case 0x017C:
+		LevelClearCounts[43 * Characters_Gamma + LevelIDs_WindyValley] = 1;
 		break;
-	case 0x0177: // Ice Stone appears (Tails)
-		SetEventFlag((EventFlags)FLAG_MILES_SS_ICESTONE);
-		break;
-	case 0x0178: // Ice Stone appears (Big)
-		SetEventFlag((EventFlags)FLAG_BIG_SS_ICESTONE);
-		break;
-	case 0x0179: // Employee Card appears
-		SetEventFlag((EventFlags)FLAG_SONIC_SS_CARD);
-		break;
-	case 0x017A: // Passage to Angel Island opens (Sonic)
-		SetEventFlag((EventFlags)FLAG_SONIC_MR_WESTROCK);
-		break;
-	case 0x017B: // Passage to Angel Island opens (Tails)
-		SetEventFlag((EventFlags)FLAG_MILES_MR_WESTROCK);
-		break;
-	case 0x017C: // Passage to Angel Island opens (Gamma)
-		SetEventFlag((EventFlags)FLAG_E102_MR_WESTROCK);
-		break;
-	}
-}
-
-static void ForceTimeOfDay(Sint8 time)
-{
-	switch (CurrentLevel)
-	{
-	case 26:
-	case 27:
-	case 28:
-	case 33:
-		PrintDebug("Setting time of day: %d\n", time);
-		InitFlagsAndThings();
-		slSeqRunning = 1;
-		ssSceneNo = CurrentCharacter;
-		pCurSequence = &seqTable[CurrentCharacter];
-		pCurSectionList = &SeqGetSectionList(CurrentCharacter)[0];
-		SetTimeOfDay(time);
-		break;
-	default:
+	case 0x00F0:
+	case 0x00F2:
+	case 0x00F3:
+	case 0x00F4:
+	case 0x00F5:
+	case 0x00F6:
+	case 0x00F7:
+	case 0x00F8:
+	case 0x00F9:
+	case 0x00FA:
+	case 0x00FB:
+	case 0x00FD:
+	case 0x00FE:
+	case 0x00FF:
+	case 0x0160:
+		LastStoryFlag = 1;
 		break;
 	}
 }
 
 static void __cdecl ForceEventMode()
 {
-	CutsceneLevelData* data = GetCutsceneData(CurrentDemoCutsceneID);
+	auto data = GetCutsceneData(CurrentDemoCutsceneID);
+
 	if (data != nullptr)
 	{
-		SetupCharacter(data->character);
-		InitFlagsAndThings();
-		slSeqRunning = 1;
-		// Last Story check
-		if ((CurrentDemoCutsceneID >= 240 && CurrentDemoCutsceneID <= 255) || CurrentDemoCutsceneID == 355)
+		SetEventFlagsForCutscene(CurrentDemoCutsceneID); // Manually set necessary event flags
+		SetLevelAndAct(data->level, data->act); // Set default level of the event
+		SetupCharacter(data->character); // Set main character of the event
+
+		// If the event has a story entry then run adventure mode, otherwise consider it a standalone event.
+		if (data->scene_select != -1)
 		{
-			LastStoryFlag = 1;
-			SetEventFlag((EventFlags)FLAG_PLAYING_SUPERSONIC);
-			ssSceneNo = 4;
-			pCurSequence = &seqTable[4];
-			pCurSectionList = &SeqGetSectionList(4)[data->scene_select];
+			*(int*)0x3B18244 = 2; // Force story event to play
+			*(int*)0x3B18A14 = data->cutscene_id; // Story Event ID
+
+			SeqSetPlayer(data->character);
+			pCurSectionList = &pCurSectionList[data->scene_select];
+			pCurSequence->destination = -1;
+			pCurSequence->seqno = data->seqno;
 		}
 		else
 		{
-			ssSceneNo = data->character;
-			pCurSequence = &seqTable[data->character];
-			pCurSectionList = &SeqGetSectionList(data->character)[data->scene_select];
+			DemoPlaying = 1;
 		}
-		DemoPlaying = 1;
-		SetEventFlagsForCutscene(CurrentDemoCutsceneID);
-		SetLevelAndAct(data->level, data->act);
 	}
-	
-	GameMode = static_cast<GameModes>(5 - (GetLevelType() != 1)); // Sends to Adventure or Level GameMode
+	else
+	{
+		DemoPlaying = 1; // If the cutscene do not exist, try to run it standalone in case a mod added one.
+	}
+
+	GameMode = GetLevelType() == 1 ? GameModes_Adventure_Field : GameModes_Adventure_ActionStg;
 }
 
 static const auto loc_40C95F = reinterpret_cast<const void*>(0x0040C95F);
@@ -657,29 +609,8 @@ static void DisableSound()
 	WriteData<1>(reinterpret_cast<void*>(0x004250D0), 0xC3);
 }
 
-static void __cdecl MovePlayerToStartPoint_r(EntityData1* data1)
-{
-	auto original = static_cast<decltype(MovePlayerToStartPoint_r)*>(MovePlayerToStartPoint_t->Target());
-	original(data1);
-	if (position_override.Position.x != 0)
-		data1->Position.x = position_override.Position.x;
-	if (position_override.Position.y != 0)
-	data1->Position.y = position_override.Position.y;
-	if (position_override.Position.z != 0)
-	data1->Position.z = position_override.Position.z;
-	if (position_override.YRot != 0)
-	data1->Rotation.y = position_override.YRot;
-	if (SetTestSpawnTimeOfDay != -1)
-		ForceTimeOfDay(SetTestSpawnTimeOfDay);
-}
-
 void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 {
-	if (GetModuleHandle(L"sadx-test-spawn") != NULL)
-	{
-		return;
-	}
-
 	int argc = 0;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 
@@ -753,46 +684,30 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			const float y = std::stof(argv[++i]);
 			const float z = std::stof(argv[++i]);
 
-			position_override = {
+			StartPosition position = {
 				CurrentLevel,
 				static_cast<int16_t>(CurrentAct),
 				{ x, y, z },	// Position
 				0				// YRot
 			};
 
-			// Hook the start position setting
-			switch (CurrentLevel)
-			{
-			case LevelIDs_StationSquare:
-			case LevelIDs_EggCarrierOutside:
-			case LevelIDs_EggCarrierInside:
-			case LevelIDs_MysticRuins:
-			case LevelIDs_Past:
-				MovePlayerToStartPoint_t = new Trampoline(0x414810, 0x414815, MovePlayerToStartPoint_r);
-				break;
-			default:
-				helperFunctions.RegisterStartPosition(static_cast<Uint8>(CurrentCharacter), position_override);
-				break;
-			}
+			helperFunctions.RegisterStartPosition(static_cast<Uint8>(CurrentCharacter), position);
 		}
 		else if (!wcscmp(argv[i], L"--event") || !wcscmp(argv[i], L"-e"))
 		{
 			CurrentDemoCutsceneID = _wtoi(argv[++i]);
-			PrintDebug("Loading event: EV%04X (%d)\n", CurrentDemoCutsceneID, CurrentDemoCutsceneID);
+			PrintDebug("Loading event: EV%04x (%d)\n", CurrentDemoCutsceneID, CurrentDemoCutsceneID);
 
-			// Disable "Press Start" during the cutscene.
-			WriteData<1>((char*)0x457D10, 0xC3u);
+			WriteData<1>((char*)0x457D10, 0xC3u); // Disable "Press Start" during the cutscene.
+			//WriteData<1>((char*)0x413A38, 0x4u);
 
 			// Hook the copyright GameMode and launch the event.
 			WriteJump(reinterpret_cast<void*>(0x0040C106), ForceEventMode_asm);
-
-			// Hook the start position setting if it's not already hooked
-			hook_position = true;
 		}
 		else if (!wcscmp(argv[i], L"--time") || !wcscmp(argv[i], L"-t"))
 		{
-			SetTestSpawnTimeOfDay = _wtoi(argv[++i]);
-			hook_position = true;
+			WriteData<5>((void*)0x40C85D, 0x90);
+			SetTimeOfDay(_wtoi(argv[++i]));
 		}
 		else if (!wcscmp(argv[i], L"--no-music"))
 		{
@@ -813,13 +728,14 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			DisableSound();
 		}
 	}
+
 	LocalFree(argv);
 }
 
 void ApplyTestSpawn()
 {
 	if (testspawn_enabled)
+	{
 		WriteData(reinterpret_cast<GameModes*>(0x0040C10C), GameModes_Trial);
-	if (hook_position)
-		MovePlayerToStartPoint_t = new Trampoline(0x414810, 0x414815, MovePlayerToStartPoint_r);
+	}
 }
