@@ -262,7 +262,7 @@ CutsceneLevelData CutsceneList[] {
 	{ 0x0B2, 33, 3, 6, 0, 5 }, // Gamma Exits Final Egg
 	{ 0x0B3, 33, 3, 6, 0, 4 }, // Useless machine
 	{ 0x0B4, 33, 3, 6, 0, 7 }, // Gamma's Fight with Beta
-	{ 0x0B5, 33, 3, 6, 0, 8 }, // Gamma defeats Beta
+	{ 0x0B5, 33, 3, 6, 0, 9 }, // Gamma defeats Beta
 	{ 0x0B7, 32, 1, 6, 1, 1 }, // The hunt for Froggy begins
 	{ 0x0B8, 1, 0, 6, 2, 2 }, // Gamma goes to the Past
 	{ 0x0B9, 34, 1, 6, 3, 0 }, // Gamma in the Past
@@ -554,7 +554,7 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x0171: // Big gets the Life Belt
 		SetEventFlag((EventFlags)FLAG_BIG_MR_LIFEBELT);
 		break;
-	case 0x017C:
+	case 0x017C: // Angel Island opens (Gamma)
 		SetLevelCleared(LevelIDs_WindyValley, Characters_Gamma);
 		break;
 	case 0x00F0:
