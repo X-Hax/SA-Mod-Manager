@@ -136,8 +136,7 @@ struct CutsceneLevelData
 	int seqno; // subscene of a scene
 };
 
-CutsceneLevelData CutsceneList[]
-{
+CutsceneLevelData CutsceneList[] {
 	// Sonic events
 	{ 0x001, 26, 3, 0, 0, 0 }, // Sonic Intro
 	{ 0x002, 15, 0, 0, 0, 1 }, // Sonic defeats Chaos 0
@@ -390,6 +389,11 @@ static CutsceneLevelData* GetCutsceneData(int cutscene)
 	return nullptr;
 }
 
+static void SetLevelCleared(int level, int character)
+{
+	LevelClearCounts[43 * character + level] = 1;
+}
+
 static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
@@ -399,6 +403,12 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x0009: // Sonic and Tails gassed
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_ENTRANCE_CASINO);
+		break;
+	case 0x0014:
+		SetLevelCleared(LevelIDs_TwinklePark, Characters_Sonic);
+		break;
+	case 0x0015:
+		SetLevelCleared(LevelIDs_SpeedHighway, Characters_Sonic);
 		break;
 	case 0x001D: // Sonic jumps from the Egg Carrier
 		WriteData((char*)0x559FC0, (char)0xC3); // Don't load Chaos 6
@@ -411,7 +421,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_APPEAR_FINALEGG);
 		break;
 	case 0x0026:
-		LevelClearCounts[LevelIDs_FinalEgg] = 1;
+		SetLevelCleared(LevelIDs_FinalEgg, Characters_Sonic);
 		break;
 	case 0x0029: // Sonic and Tails land on the Egg Carrier
 		SetEventFlag((EventFlags)FLAG_SONIC_EC_TORNADO2_LOST);
@@ -420,18 +430,19 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_MILES_SS_ENTRANCE_CASINO);
 		break;
 	case 0x0040: // Tails wakes up from his flashback
+	case 0x0042: // Tails chases Froggy
 		CutsceneFlagArray[0x003E] = 1;
 		break;
 	case 0x0050: // Egg Walker
 	case 0x0051: // Egg Walker defeated
-		LevelClearCounts[43 * Characters_Tails + LevelIDs_SpeedHighway] = 1;
+		SetLevelCleared(LevelIDs_SpeedHighway, Characters_Tails);
 		break;
 	case 0x0054: // Tails and Sonic land on the Egg Carrier
 		SetEventFlag((EventFlags)FLAG_MILES_EC_TORNADO2_LOST);
 		break;
 	case 0x0055: // Tails saves Froggy in Sand Hill
-		WriteData<1>((char*)0x598040, 0xC3u); // Osfrog
-		WriteData<1>((char*)0x79E4C0, 0xC3u); // Plays level music
+		WriteData((char*)0x598040, (char)0xC3u); // Osfrog
+		WriteData((char*)0x79E4C0, (char)0xC3u); // Plays level music
 		WriteData<5>((char*)0x597BF3, 0x90u); // Snowboard
 		break;
 	case 0x006E: // Amy discovers Final Egg base
@@ -439,7 +450,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_AMY_MR_ENTRANCE_FINALEGG); // Open Final Egg for Amy
 		break;
 	case 0x0070:
-		LevelClearCounts[43 * Characters_Amy + LevelIDs_FinalEgg] = 1;
+		SetLevelCleared(LevelIDs_FinalEgg, Characters_Amy);
 		break;
 	case 0x0072: // Amy outro
 		SetEventFlag((EventFlags)FLAG_AMY_EC_SINK); // Egg Carrier sunk in Amy's outro
@@ -456,9 +467,9 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x0095: // Knuckles finds the last missing piece in Sky Deck
 		WriteData<5>((char*)0x5EF6D0, 0x90u); // Remove Sky Deck music
-		WriteData<1>((char*)0x450370, 0xC3u); // Remove Rings
-		WriteData<1>((char*)0x7A1AA0, 0xC3u); // Remove Tikal hints
-		WriteData<1>((char*)0x476440, 0xC3u); // Remove Radar
+		WriteData((char*)0x450370, (char)0xC3u); // Remove Rings
+		WriteData((char*)0x7A1AA0, (char)0xC3u); // Remove Tikal hints
+		WriteData((char*)0x476440, (char)0xC3u); // Remove Radar
 		break;
 	case 0x009B: // Knuckles defeats Chaos 6
 		WriteData((char*)0x559FC0, (char)0xC3); // Don't load Chaos 6
@@ -471,9 +482,9 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_E102_MR_APPEAR_FINALEGG); // Open Final Egg for useless machine
 		break;
 	case 0x00B8: // Gamma goes to the Past
-		WriteData<1>((char*)0x61CA90, 0xC3u); // Remove Emerald Coast music
-		WriteData<1>((char*)0x4AD140, 0xC3u); // Remove Kikis
-		WriteData<1>((char*)0x4FA320, 0xC3u); // Remove OFrog
+		WriteData((char*)0x61CA90, (char)0xC3u); // Remove Emerald Coast music
+		WriteData((char*)0x4AD140, (char)0xC3u); // Remove Kikis
+		WriteData((char*)0x4FA320, (char)0xC3u); // Remove OFrog
 		break;
 	case 0x00C0: // Gamma heading to the rear of the ship
 	case 0x00C1: // Gamma vs Sonic
@@ -481,11 +492,14 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER); // Cutscenes where Gamma appears with the Jet Booster
 		break;
 	case 0x00C5: // Gamma remembers his brothers
-		LevelClearCounts[43 * Characters_Gamma + LevelIDs_RedMountain] = 1;
+		SetLevelCleared(LevelIDs_RedMountain, Characters_Gamma);
 		SetEventFlag((EventFlags)FLAG_E102_MR_ENTRANCE_MOUNTAIN);
 		break;
+	case 0x00D3: // Big finds Froggy with Tails
+		SetLevelCleared(LevelIDs_IceCap, Characters_Big);
+		break;
 	case 0x00D4: // Big loses Froggy to Gamma
-		WriteData<1>((char*)0x61CA90, 0xC3u); // Remove Emerald Coast music
+		WriteData((char*)0x61CA90, (char)0xC3u); // Remove Emerald Coast music
 		break;
 	case 0x00DA: // Big saves Froggy in Hot Shelter
 		CutsceneFlagArray[217] = 1;
@@ -541,7 +555,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_BIG_MR_LIFEBELT);
 		break;
 	case 0x017C:
-		LevelClearCounts[43 * Characters_Gamma + LevelIDs_WindyValley] = 1;
+		SetLevelCleared(LevelIDs_WindyValley, Characters_Gamma);
 		break;
 	case 0x00F0:
 	case 0x00F2:
@@ -582,7 +596,7 @@ static void __cdecl ForceEventMode()
 
 		// If the event has story integration (ie. is not an optional upgrade event)
 		if (data->scene_select != -1)
-		{ 
+		{
 			pCurSectionList = &pCurSectionList[data->scene_select];
 			pCurSection = pCurSectionList->psec;
 			pCurSequence->seqno = data->seqno;
@@ -596,7 +610,7 @@ static void __cdecl ForceEventMode()
 	}
 
 	pCurSequence->destination = -1; // Force story progression
-	GameMode = GameModes_Adventure_Field; 
+	GameMode = GameModes_Adventure_Field;
 }
 
 static const auto loc_40C95F = reinterpret_cast<const void*>(0x0040C95F);
