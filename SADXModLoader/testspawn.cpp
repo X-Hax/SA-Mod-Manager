@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 static bool testspawn_enabled = false;
+static int testspawn_eventid = -1;
 
 static const std::unordered_map<std::wstring, uint8_t> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
@@ -139,7 +140,7 @@ CutsceneLevelData CutsceneList[]
 {
 	// Sonic events
 	{ 0x001, 26, 3, 0, 0, 0 }, // Sonic Intro
-	{ 0x002, 15, 0, 0, -1 /*0, 1*/ }, // Sonic defeats Chaos 0
+	{ 0x002, 15, 0, 0, 0, 1 }, // Sonic defeats Chaos 0
 	{ 0x003, 26, 4, 0, 1, 1 }, // Sonic sees Tails crash
 	{ 0x006, 26, 4, 0, 1, 3 }, // Sonic and Tails poolside
 	{ 0x007, 33, 0, 0, 2, 1 }, // Sonic faces off with the Egg Hornet
@@ -154,13 +155,13 @@ CutsceneLevelData CutsceneList[]
 	{ 0x014, 26, 5, 0, 7, 0 }, // Sonic goes looking for Amy
 	{ 0x015, 26, 1, 0, 8, 0 }, // Sonic finds Zero and Amy
 	{ 0x016, 33, 0, 0, 9, 2 }, // Zero transported to the Egg Carrier
-	{ 0x017, 5,  1, 0, -1 /*9, 3*/  }, // Sonic and Tails on the Tornado 2
+	{ 0x017, 5,  1, 0, 9, 3  }, // Sonic and Tails on the Tornado 2
 	{ 0x01A, 29, 2, 0, 11, 2 }, // Eggman takes Birdie's Emerald
 	{ 0x01B, 29, 2, 0, 11, 5 }, // Sonic goes to put Eggman out of commission
 	{ 0x01C, 18, 0, 0, 11, 10 }, // Sonic finds Chaos 6
-	{ 0x01D, 18, 0, 0, -1 /*11, 11*/ }, // Sonic chases Eggman to the Mystic Ruins
+	{ 0x01D, 18, 0, 0, 11, 11 }, // Sonic chases Eggman to the Mystic Ruins
 	{ 0x01E, 33, 2, 0, 12, 1 }, // Sonic prepares to enter Lost World
-	{ 0x020, 7,  2, 0, -1 /*12, 3*/ }, // Sonic views the Perfect Chaos Mural
+	{ 0x020, 7,  2, 0, 12, 3 }, // Sonic views the Perfect Chaos Mural
 	{ 0x021, 34, 2, 0, 13, 0 }, // Sonic enters the Past
 	{ 0x022, 34, 2, 0, 13, 2 }, // Sonic listens to Tikal in the Past
 	{ 0x023, 33, 2, 0, 14, 1 }, // Sonic sees Eggman heading to his base
@@ -199,7 +200,7 @@ CutsceneLevelData CutsceneList[]
 	{ 0x052, 33, 0, 2, 11, 0 }, // Tails Outro
 	{ 0x053, 26, 0, 2, -1 }, // Error
 	{ 0x054, 29, 1, 2, 8, 0 }, // Gonna land on the Egg Carrier
-	{ 0x055, 38, 0, 2, -1 /*5, 5*/ }, // Cutscene with Froggy after Sand Hill
+	{ 0x055, 38, 0, 2, 5, 5 }, // Cutscene with Froggy after Sand Hill
 	{ 0x056, 26, 1, 2, 3, 0 }, // Tails and Sonic awake after being gassed
 
 	// Amy events
@@ -210,7 +211,7 @@ CutsceneLevelData CutsceneList[]
 	{ 0x063, 26, 3, 5, 1, 5 }, // Amy and Sonic visit Twinkle Park
 	{ 0x064, 26, 3, 5, 1, 8 }, // Amy's kidnapped by Zero
 	{ 0x065, 32, 3, 5, 2, 1 }, // Amy locked up, talking to Gamma
-	{ 0x066, 12, 1, 5, -1 /*2, 6*/ }, // Amy goes to the past after Hot Shelter
+	{ 0x066, 12, 1, 5, 2, 6 }, // Amy goes to the past after Hot Shelter
 	{ 0x067, 34, 0, 5, 3, 0 }, // Amy enters the past
 	{ 0x068, 34, 1, 5, 3, 3 }, // Amy meets Tikal
 	{ 0x069, 29, 2, 5, 4, 2 }, // Eggman takes Birdie's Emerald
@@ -228,34 +229,34 @@ CutsceneLevelData CutsceneList[]
 	// Knuckles events
 	{ 0x080, 33, 1, 3, 0, 0 }, // Knuckles Intro
 	{ 0x082, 26, 3, 3, 1, 0 }, // Knuckles goes hunting for the Master Emerald
-	{ 0x083, 9,  0, 3, -1 /*1, 4*/ }, // Knuckles enters the Past
+	{ 0x083, 9,  0, 3, 1, 4 }, // Knuckles enters the Past
 	{ 0x084, 34, 0, 3, 2, 0 }, // Knuckles while in the Past
 	{ 0x085, 34, 0, 3, 2, 2}, // Tikal's Crisis
 	{ 0x086, 26, 1, 3, 3, 0 }, // Knuckles returns from the Past
 	{ 0x087, 16, 0, 3, 3, 3 }, // Knuckles and Chaos 2 face off
-	{ 0x088, 16, 0, 3, -1 /*3, 3*/ }, // Eggman tricks Knuckles
+	{ 0x088, 16, 0, 3, 3, 3 }, // Eggman tricks Knuckles
 	{ 0x089, 33, 0, 3, 4, 1 }, // Knuckles goes after Sonic
 	{ 0x08A, 33, 0, 3, 4, 6 }, // Knuckles vs. Sonic
 	{ 0x08B, 33, 0, 3, 4, 9 }, // Chaos 4 emerges
 	{ 0x08C, 33, 0, 3, 4, 12 }, // Knuckles departs from Sonic and Tails
-	{ 0x08D, 7,  1, 3, -1 /*4, 14*/ }, // Knuckles goes to the Past (from Lost World)
+	{ 0x08D, 7, 1, 3, 4, 14 }, // Knuckles goes to the Past (from Lost World)
 	{ 0x08E, 34, 1, 3, 5, 0 }, // Knuckles back in the Past
 	{ 0x08F, 34, 1, 3, 5, 2 }, // Tikal's crisis again
 	{ 0x091, 33, 1, 3, 6, 1 }, // Knuckles restores most of the Master Emerald
 	{ 0x092, 33, 2, 3, 6, 4 }, // Knuckles follows Gamma to Final Egg base
 	{ 0x094, 29, 0, 3, 7, 0 }, // Knuckles on the Egg Carrier
-	{ 0x095, 6, 2, 3, -1 /*7, 7*/ }, // Knuckles finds the last missing piece
+	{ 0x095, 6, 2, 3, 7, 7 }, // Knuckles finds the last missing piece
 	{ 0x096, 34, 2, 3, 8, 0 }, // Knuckles travels back to the past one last time
 	{ 0x097, 34, 2, 3, 8, 2 }, // The aftermath of Tikal's plight
 	{ 0x098, 29, 5, 3, 9, 0 }, // Knuckles returns to the present
 	{ 0x099, 18, 1, 3, 9, 4 }, // Knuckles fights Chaos 6
 	{ 0x09A, 29, 0, 3, 9, 2 }, // Knuckles has all collected the final shards
-	{ 0x09B, 18, 1, 3, -1 /*9, 5*/ }, // Knuckles defeats Chaos 6
+	{ 0x09B, 18, 1, 3, 9, 5 }, // Knuckles defeats Chaos 6
 	{ 0x09C, 26, 0, 3, -1 }, // Error
 	{ 0x09D, 33, 1, 3, 10, 0 }, // Knuckles restores the Master Emerald
 	{ 0x09F, 33, 1, 3, 11, 2 }, // Knuckles Outro
 	{ 0x0A0, 26, 4, 3, 3, 2 }, // Knuckles follows Eggman in Station Square hotel
-
+		
 	// Gamma events
 	{ 0x0B0, 33, 3, 6, 0, 0 }, // Gamma Intro
 	{ 0x0B1, 33, 3, 6, 0, 2 }, // Gamma Enters Final Egg
@@ -264,7 +265,7 @@ CutsceneLevelData CutsceneList[]
 	{ 0x0B4, 33, 3, 6, 0, 7 }, // Gamma's Fight with Beta
 	{ 0x0B5, 33, 3, 6, 0, 8 }, // Gamma defeats Beta
 	{ 0x0B7, 32, 1, 6, 1, 1 }, // The hunt for Froggy begins
-	{ 0x0B8, 1, 0, 6, -1 /*2, 2*/ }, // Gamma goes to the Past
+	{ 0x0B8, 1, 0, 6, 2, 2 }, // Gamma goes to the Past
 	{ 0x0B9, 34, 1, 6, 3, 0 }, // Gamma in the Past
 	{ 0x0BA, 34, 1, 6, 3, 2 }, // Gamma and Tikal meet
 	{ 0x0BB, 32, 1, 6, 4, 0 }, // Gamma returns to the Egg Carrier
@@ -284,15 +285,15 @@ CutsceneLevelData CutsceneList[]
 	{ 0x0D1, 26, 3, 7, 1, 0 }, // Big goes searching for Froggy
 	{ 0x0D2, 26, 0, 7, 1, 2 }, // Froggy heads into the sewers
 	{ 0x0D3, 33, 0, 7, 2, 3 }, // Big finds Froggy with Tails
-	{ 0x0D4, 1,  2, 7, -1 /*3, 2*/ }, // Big loses Froggy to Gamma
+	{ 0x0D4, 1,  2, 7, 3, 2 }, // Big loses Froggy to Gamma
 	{ 0x0D8, 32, 1, 7, 4, 1 }, // Big enters Hot Shelter
-	{ 0x0D9, 12, 0, 7, -1 /*4, 2*/ }, // Big spots Froggy inside the tanks
-	{ 0x0DA, 12, 0, 7, -1 /*4, 2*/ }, // Big saves Froggy
+	{ 0x0D9, 12, 0, 7, 4, 2 }, // Big spots Froggy inside the tanks
+	{ 0x0DA, 12, 0, 7, 4, 2 }, // Big saves Froggy
 	{ 0x0DB, 34, 1, 7, 5, 0 }, // Big heads into the past
 	{ 0x0DC, 34, 1, 7, 5, 2 }, // Tikal talks to Big
 	{ 0x0DD, 32, 1, 7, 6, 0 }, // Big returns and is ready to leave the Egg Carrier
 	{ 0x0DE, 18, 0, 7, 6, 4 }, // Chaos 6 takes Froggy
-	{ 0x0DF, 18, 0, 7, -1 /*6, 5*/ }, // Sonic saves Froggy
+	{ 0x0DF, 18, 0, 7, 6, 5 }, // Sonic saves Froggy
 	{ 0x0E0, 29, 0, 7, 6, 7 }, // Big finds the Tornado 2 and leaves
 	{ 0x0E1, 26, 0, 7, -1 }, // Error
 	{ 0x0E2, 33, 2, 7, 7, 1  }, // Big Outro
@@ -310,9 +311,9 @@ CutsceneLevelData CutsceneList[]
 	{ 0x0F9, 33, 1, 0, 3, 0 }, // Sonic returns to the present
 	{ 0x0FA, 33, 2, 0, 3, 1 }, // Sonic and Tails find the Tornado 2
 	{ 0x0FB, 34, 2, 0, 2, 3}, // Sonic checks on Tikal in the past
-	{ 0x0FD, 19, 0, 0, -1 /*3, 2*/ }, // Perfect Chaos reveals himself
-	{ 0x0FE, 19, 0, 0, -1 /*3, 2*/ }, // Last Story Outro
-	{ 0x0FF, 19, 0, 0, -1 /*3, 2*/ }, // Everyone brings Sonic the emeralds
+	{ 0x0FD, 19, 0, 0, 3, 2 }, // Perfect Chaos reveals himself
+	{ 0x0FE, 19, 0, 0, 3, 2 }, // Last Story Outro
+	{ 0x0FF, 19, 0, 0, 3, 2 }, // Everyone brings Sonic the emeralds
 
 	// Additional Sonic events
 	{ 0x100, 29, 0, 0, 10, 1 }, // Sonic and Tails after landing on the Egg Carrier
@@ -393,11 +394,15 @@ static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
 	{
+	case 0x002:
+		LevelCutscenes2[2].Cutscene = eventID;
+		break;
 	case 0x0009: // Sonic and Tails gassed
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_ENTRANCE_CASINO);
 		break;
 	case 0x001D: // Sonic jumps from the Egg Carrier
 		WriteData((char*)0x559FC0, (char)0xC3); // Don't load Chaos 6
+		LevelCutscenes2[4].Cutscene = eventID;
 		break;
 	case 0x0020: // Sonic sees the mural
 		WriteData<1>((char*)0x7B0DA0, 0xC3u); // Lost World 3 end level object
@@ -446,7 +451,8 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_SS_ENTRANCE_CASINO);
 		break;
 	case 0x0088: // Knuckles is tricked by Eggman
-		WriteData((char*)0x559FC0, (char)0xC3); // Don't load Chaos 2
+		WriteData((char*)0x54DF00, (char)0xC3); // Don't load Chaos 2
+		LevelCutscenes2[3].Cutscene = eventID;
 		break;
 	case 0x0092: // Knuckles follows Gamma to Final Egg
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_APPEAR_FINALEGG); // Open Final Egg for Knuckles
@@ -458,7 +464,8 @@ static void SetEventFlagsForCutscene(int eventID)
 		WriteData<1>((char*)0x476440, 0xC3u); // Radar
 		break;
 	case 0x009B: // Knuckles defeats Chaos 6
-		WriteData<5>((char*)0x5578DE, 0x90u); // Don't load Chaos 6
+		WriteData((char*)0x559FC0, (char)0xC3); // Don't load Chaos 6
+		LevelCutscenes2[5].Cutscene = eventID;
 		break;
 	case 0x00B3: // Useless machine
 		SetEventFlag((EventFlags)FLAG_E102_MR_FREEPASS); // Open Final Egg for useless machine
@@ -483,6 +490,9 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x00DA: // Big saves Froggy in Hot Shelter
 		CutsceneFlagArray[217] = 1;
+		break;
+	case 0x00DF: // Sonic saves Froggy
+		LevelCutscenes2[6].Cutscene = eventID;
 		break;
 	case 0x0141: // Gamma heads to Hot Shelter
 	case 0x0142: // Gamma rescues E-105
@@ -542,10 +552,13 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x00F9:
 	case 0x00FA:
 	case 0x00FB:
-	case 0x00FD:
+	case 0x0160:
+		LastStoryFlag = 1;
+		break;
+	case 0x00FD: // Perfect Chaos level cutscenes
 	case 0x00FE:
 	case 0x00FF:
-	case 0x0160:
+		LevelCutscenes2[7].Cutscene = eventID;
 		LastStoryFlag = 1;
 		break;
 	}
@@ -553,36 +566,35 @@ static void SetEventFlagsForCutscene(int eventID)
 
 static void __cdecl ForceEventMode()
 {
-	auto data = GetCutsceneData(CurrentDemoCutsceneID);
+	auto data = GetCutsceneData(testspawn_eventid);
+
+	StoryEventMode = 2; // Force story event to play
+	StoryEventID = testspawn_eventid;
 
 	if (data != nullptr)
 	{
-		SetEventFlagsForCutscene(CurrentDemoCutsceneID); // Manually set necessary event flags
-		SetLevelAndAct(data->level, data->act); // Set default level of the event
-		SetupCharacter(data->character); // Set main character of the event
+		SetEventFlagsForCutscene(data->cutscene_id);
+		SetLevelAndAct(data->level, data->act);
+		SetupCharacter(data->character);
+		SeqSetPlayer(data->character);
 
-		// If the event has a story entry then run adventure mode, otherwise consider it a standalone event.
+		// If the event has story integration (ie. is not an optional upgrade event)
 		if (data->scene_select != -1)
-		{
-			*(int*)0x3B18244 = 2; // Force story event to play
-			*(int*)0x3B18A14 = data->cutscene_id; // Story Event ID
-
-			SeqSetPlayer(data->character);
+		{ 
 			pCurSectionList = &pCurSectionList[data->scene_select];
-			pCurSequence->destination = -1;
+			pCurSection = pCurSectionList->psec;
 			pCurSequence->seqno = data->seqno;
-		}
-		else
-		{
-			DemoPlaying = 1;
 		}
 	}
 	else
 	{
-		DemoPlaying = 1; // If the cutscene do not exist, try to run it standalone in case a mod added one.
+		// If the event doesn't exist, try anyway with testspawn arguments.
+		SeqSetPlayer(CurrentCharacter);
+		pCurSequence->destination = -1;
 	}
 
-	GameMode = GetLevelType() == 1 ? GameModes_Adventure_Field : GameModes_Adventure_ActionStg;
+	pCurSequence->destination = -1; // Force story progression
+	GameMode = GameModes_Adventure_Field; 
 }
 
 static const auto loc_40C95F = reinterpret_cast<const void*>(0x0040C95F);
@@ -594,11 +606,6 @@ __declspec(naked) void ForceEventMode_asm()
 		call ForceEventMode
 		jmp loc_40C95F
 	}
-}
-
-static void __cdecl DelayEventTask(ObjectMaster* obj)
-{
-	obj->MainSub = (ObjectFuncPtr)0x42CAF0;
 }
 
 static void DisableMusic()
@@ -703,14 +710,11 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 		}
 		else if (!wcscmp(argv[i], L"--event") || !wcscmp(argv[i], L"-e"))
 		{
-			CurrentDemoCutsceneID = _wtoi(argv[++i]);
-			PrintDebug("Loading event: EV%04x (%d)\n", CurrentDemoCutsceneID, CurrentDemoCutsceneID);
+			testspawn_eventid = _wtoi(argv[++i]);
+			PrintDebug("Loading event: EV%04x (%d)\n", testspawn_eventid, testspawn_eventid);
 
-			WriteData<1>((char*)0x457D10, 0xC3u); // Disable "Press Start" during the cutscene.
-			WriteData((ObjectFuncPtr*)0x413A33, DelayEventTask); // Delay sandalone cutscene loading to fix sync issues.
-
-			// Hook the copyright GameMode and launch the event.
-			WriteJump(reinterpret_cast<void*>(0x0040C106), ForceEventMode_asm);
+			// NOP. Prevents story sequence manager to be reset.
+			WriteData<5>((void*)0x413884, 0x90); 
 		}
 		else if (!wcscmp(argv[i], L"--time") || !wcscmp(argv[i], L"-t"))
 		{
@@ -742,6 +746,11 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 void ApplyTestSpawn()
 {
+	if (testspawn_eventid != -1)
+	{
+		WriteJump(reinterpret_cast<void*>(0x0040C106), ForceEventMode_asm);
+	}
+
 	if (testspawn_enabled)
 	{
 		WriteData(reinterpret_cast<GameModes*>(0x0040C10C), GameModes_Trial);
