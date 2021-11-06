@@ -422,9 +422,6 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x0040: // Tails wakes up from his flashback
 		CutsceneFlagArray[0x003E] = 1;
 		break;
-	case 0x0048: // Tails finds Sonic on Red Mountain
-		DemoPlaying = 0;
-		break;
 	case 0x0050: // Egg Walker
 	case 0x0051: // Egg Walker defeated
 		LevelClearCounts[43 * Characters_Tails + LevelIDs_SpeedHighway] = 1;
@@ -458,10 +455,10 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_APPEAR_FINALEGG); // Open Final Egg for Knuckles
 		break;
 	case 0x0095: // Knuckles finds the last missing piece in Sky Deck
-		WriteData<5>((char*)0x5EF6D0, 0x90u); // Sky Deck music
-		WriteData<1>((char*)0x450370, 0xC3u); // Rings
-		WriteData<1>((char*)0x7A1AA0, 0xC3u); // Tikal hints
-		WriteData<1>((char*)0x476440, 0xC3u); // Radar
+		WriteData<5>((char*)0x5EF6D0, 0x90u); // Remove Sky Deck music
+		WriteData<1>((char*)0x450370, 0xC3u); // Remove Rings
+		WriteData<1>((char*)0x7A1AA0, 0xC3u); // Remove Tikal hints
+		WriteData<1>((char*)0x476440, 0xC3u); // Remove Radar
 		break;
 	case 0x009B: // Knuckles defeats Chaos 6
 		WriteData((char*)0x559FC0, (char)0xC3); // Don't load Chaos 6
@@ -474,9 +471,9 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_E102_MR_APPEAR_FINALEGG); // Open Final Egg for useless machine
 		break;
 	case 0x00B8: // Gamma goes to the Past
-		WriteData<1>((char*)0x61CA90, 0xC3u); // Kill Emerald Coast music
-		WriteData<1>((char*)0x4AD140, 0xC3u); // Kill Kikis
-		WriteData<1>((char*)0x4FA320, 0xC3u); // Kill OFrog
+		WriteData<1>((char*)0x61CA90, 0xC3u); // Remove Emerald Coast music
+		WriteData<1>((char*)0x4AD140, 0xC3u); // Remove Kikis
+		WriteData<1>((char*)0x4FA320, 0xC3u); // Remove OFrog
 		break;
 	case 0x00C0: // Gamma heading to the rear of the ship
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER); // Cutscenes where Gamma appears with the Jet Booster
@@ -486,7 +483,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_E102_MR_ENTRANCE_MOUNTAIN);
 		break;
 	case 0x00D4: // Big loses Froggy to Gamma
-		WriteData<1>((char*)0x61CA90, 0xC3u); // Kill Emerald Coast music
+		WriteData<1>((char*)0x61CA90, 0xC3u); // Remove Emerald Coast music
 		break;
 	case 0x00DA: // Big saves Froggy in Hot Shelter
 		CutsceneFlagArray[217] = 1;
@@ -499,7 +496,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x0141: // Gamma heads to Hot Shelter
 	case 0x0142: // Gamma rescues E-105
-		SetEventFlag((EventFlags)FLAG_E102_EC_SINK); // Egg Carrier sunk in Gamma's outro
+		SetEventFlag((EventFlags)FLAG_E102_EC_SINK);
 		break;
 	case 0x0165: // Sonic gets the Crystal Ring
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_CRYSTALRING);
