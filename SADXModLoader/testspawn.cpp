@@ -394,7 +394,7 @@ static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
 	{
-	case 0x002:
+	case 0x0002:
 		LevelCutscenes2[2].Cutscene = eventID;
 		break;
 	case 0x0009: // Sonic and Tails gassed
@@ -438,7 +438,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_AMY_MR_APPEAR_FINALEGG); // Open Final Egg for Amy
 		SetEventFlag((EventFlags)FLAG_AMY_MR_ENTRANCE_FINALEGG); // Open Final Egg for Amy
 		break;
-	case 0x070:
+	case 0x0070:
 		LevelClearCounts[43 * Characters_Amy + LevelIDs_FinalEgg] = 1;
 		break;
 	case 0x0072: // Amy outro
@@ -476,6 +476,8 @@ static void SetEventFlagsForCutscene(int eventID)
 		WriteData<1>((char*)0x4FA320, 0xC3u); // Remove OFrog
 		break;
 	case 0x00C0: // Gamma heading to the rear of the ship
+	case 0x00C1: // Gamma vs Sonic
+	case 0x00C2: // Gamma after fighting Sonic
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER); // Cutscenes where Gamma appears with the Jet Booster
 		break;
 	case 0x00C5: // Gamma remembers his brothers
@@ -491,7 +493,7 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x00DF: // Sonic saves Froggy
 		LevelCutscenes2[6].Cutscene = eventID;
 		break;
-	case 0x122:
+	case 0x0122:
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_EC_PALMSWITCH);
 		break;
 	case 0x0141: // Gamma heads to Hot Shelter
