@@ -25,7 +25,7 @@ DataArray(HintText_Entry, HintText_ECoast_E, 0x7EBBB8, 12);
 DataArray(TrialLevelList, TrialLevels, 0x7EF5EC, 7);
 DataArray(TrialLevelList, TrialSubgames, 0x7EF624, 7);
 DataPointer(__int16*, Character_Select_chars, 0x7EF6B4);
-DataPointer(EventFlags*, AdventureCompleteFlags, 0x7EF6C4);
+DataArray(EventFlags, AdventureCompleteFlags, 0x7EF6C4, 7);
 DataArray(SoundTestEntry, Soundtest_Theme, 0x7EFB88, 11);
 DataPointer(char *, Soundtest_Event, 0x7EFD78);
 DataPointer(char *, Soundtest_Jingle, 0x7EFE28);

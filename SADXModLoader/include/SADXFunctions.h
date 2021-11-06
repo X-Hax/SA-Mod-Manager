@@ -411,6 +411,7 @@ VoidFunc(SaveSave, 0x42D630);
 VoidFunc(LoadSave, 0x42D770);
 FunctionPointer(void, SetTGSCharSelThing, (int a1), 0x42E470);
 FunctionPointer(int, VideoMain, (int n), 0x42F020);
+FunctionPointer(void, LoadCutscene, (int id), 0x42FA30);
 FunctionPointer(void, DisplayDialogueText, (const char *text), 0x42FB20);
 FunctionPointer(ObjectMaster *, j_GetCharacterObject, (unsigned __int8 a1), 0x42FC40);
 FunctionPointer(void, LoadEventCharacter, (unsigned __int8 charID, void (__cdecl *mainsub)(ObjectMaster *), float xpos, float ypos, float zpos, int xrot, int yrot, int zrot), 0x42FD80);
@@ -418,6 +419,7 @@ FunctionPointer(void, InitCutsceneObjectAction, (ObjectMaster *a1, NJS_ACTION *a
 VoidFunc(j_StopVoices, 0x431110);
 FunctionPointer(void, EV_MainThread, (void (__cdecl *func)(_DWORD)), 0x431180);
 FunctionPointer(void, EV_CanselThread, (void (__cdecl *func)(int)), 0x431290);
+VoidFunc(LoadEVThread, 0x431430);
 FunctionPointer(void, LoadEventObject, (ObjectMaster **a1, ObjectMaster *(*func)(void), float x, float y, float z, int rx, int ry, int rz), 0x4316C0);
 FunctionPointer(void, DrawBG_ava_csr_a, (unsigned __int8 a1, float x, float y, float z, float sx, float sy), 0x431B10);
 FunctionPointer(void, DrawBG_ava_square_a, (unsigned __int8 n, float x, float y, float z, float scaleX, float scaleY), 0x431BB0);
