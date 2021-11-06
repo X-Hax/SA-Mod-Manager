@@ -319,29 +319,29 @@ CutsceneLevelData CutsceneList[]
 	{ 0x100, 29, 0, 0, 10, 1 }, // Sonic and Tails after landing on the Egg Carrier
 	{ 0x101, 29, 0, 0, 10, 3 }, // Sonic and Tails Sky Chase attack (don't get too many ideas)
 	{ 0x102, 29, 1, 0, 10, 5 }, // The Egg Carrier Transforms
-	{ 0x103, 29, 1, 0, 10, 7 }, // Sonic at the Sky Deck Entrance - broken
+	{ 0x103, 29, 1, 0, 10, 7 }, // Sonic at the Sky Deck Entrance
 	{ 0x104, 32, 1, 0, 11, 0 }, // Sonic right after Sky Deck (Is that it?)
 	{ 0x106, 29, 2, 0, 11, 7 }, // Sonic heading to transform the Egg Carrier
-	{ 0x107, 29, 3, 0, 11, 8 }, // Emergency altert cancelled (Sonic) - broken
+	{ 0x107, 29, 3, 0, 11, 8 }, // Emergency altert cancelled (Sonic)
 
 	// Additional Tails events
 	{ 0x110, 29, 0, 2, 8, 1 }, // Tails and Sonic after landing on the Egg Carrier
 	{ 0x111, 29, 0, 2, 8, 3 }, // Tails' Sky Chase Attack
 	{ 0x112, 29, 1, 2, 8, 5 }, // The Egg Carrier Transforms
-	{ 0x113, 29, 1, 2, 8, 7 }, // Tails at the Sky Deck Entrance - broken
+	{ 0x113, 29, 1, 2, 8, 7 }, // Tails at the Sky Deck Entrance
 	{ 0x114, 32, 1, 2, 9, 0 }, // Tails right after Sky Deck
 
 	// Additional Knuckles events
 	{ 0x120, 29, 2, 3, 7, 2 }, // Egg Carrier Transforms 1
 	{ 0x121, 29, 2, 3, 7, 4 }, // Egg Carrier Transforms 2
-	{ 0x122, 29, 5, 3, 7, 6 }, // Knuckles sensing the emeralds on the Egg Carrier - broken
+	{ 0x122, 29, 5, 3, 7, 6 }, // Knuckles sensing the emeralds on the Egg Carrier
 
 	// Additional Amy events
 	{ 0x130, 32, 2, 5, 2, 3 }, // Introduction to Hedgehog Hammer
 	{ 0x131, 32, 2, 5, 2, 4 }, // Winning at Hedgehog Hammer
 
 	// Additional Gamma events
-	{ 0x140, 32, 1, 6, 4, 8 }, // Gamma is told to find the Jet Booster - broken
+	{ 0x140, 32, 1, 6, 4, 8 }, // Gamma is told to find the Jet Booster
 	{ 0x141, 29, 0, 6, 8, 0 }, // Gamma heads to Hot Shelter
 	{ 0x142, 29, 0, 6, 8, 3 }, // Gamma rescues E-105
 
@@ -493,6 +493,9 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x00DF: // Sonic saves Froggy
 		LevelCutscenes2[6].Cutscene = eventID;
+		break;
+	case 0x122:
+		SetEventFlag((EventFlags)FLAG_KNUCKLES_EC_PALMSWITCH);
 		break;
 	case 0x0141: // Gamma heads to Hot Shelter
 	case 0x0142: // Gamma rescues E-105
