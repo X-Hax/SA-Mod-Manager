@@ -610,9 +610,9 @@ static void __cdecl ForceEventMode()
 
 	if (data != nullptr)
 	{
-		SetLevelAndAct(data->level, data->act);
 		SetupCharacter(data->character);
 		SetEventFlagsForCutscene(data->cutscene_id);
+		SetLevelAndAct(data->level, data->act);
 
 		// If the event has story integration
 		if (data->scene_select != -1)
