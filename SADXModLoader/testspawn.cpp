@@ -580,37 +580,58 @@ static void SetEventFlagsForCutscene(int eventID)
 	}
 }
 
+static Trampoline* CheckStandaloneEvent_t = nullptr;
+
+static void __cdecl CustomEventTask(task* tp)
+{
+	if (GameState == 15)
+	{
+		tp->exec = (void(__cdecl*)(task*))0x42CAC0;
+		SoundManager_Delete2();
+		LoadCutscene(testspawn_eventid);
+		LoadEVThread();
+
+		// Remove our code changes
+		delete CheckStandaloneEvent_t;
+	}
+}
+
+static void __cdecl CheckStandaloneEvent_r()
+{
+	if (!EV_MainThread_ptr)
+	{
+		CreateElementalTask(0, LEV_0, CustomEventTask);
+	}
+}
+
 static void __cdecl ForceEventMode()
 {
 	auto data = GetCutsceneData(testspawn_eventid);
 
-	StoryEventMode = 2; // Force story event to play
-	StoryEventID = testspawn_eventid;
-
 	if (data != nullptr)
 	{
-		SetEventFlagsForCutscene(data->cutscene_id);
 		SetLevelAndAct(data->level, data->act);
 		SetupCharacter(data->character);
-		SeqSetPlayer(data->character);
+		SetEventFlagsForCutscene(data->cutscene_id);
 
-		// If the event has story integration (ie. is not an optional upgrade event)
+		// If the event has story integration
 		if (data->scene_select != -1)
 		{
-			pCurSectionList = &pCurSectionList[data->scene_select];
-			pCurSection = pCurSectionList->psec;
-			pCurSequence->seqno = data->seqno;
+			StoryEventMode = 2; // Force story event to play
+			StoryEventID = testspawn_eventid;
+			SeqSetPlayer(data->character); // Get story information
+			pCurSectionList = &pCurSectionList[data->scene_select]; // Get scene information
+			pCurSection = pCurSectionList->psec; // Current scene manager functions
+			pCurSequence->seqno = data->seqno; // Current subscene of the scene
+			pCurSequence->destination = -1; // Force story progression
+			GameMode = GameModes_Adventure_Field;
+			return;
 		}
 	}
-	else
-	{
-		// If the event doesn't exist, try anyway with testspawn arguments.
-		SeqSetPlayer(CurrentCharacter);
-		pCurSequence->destination = -1;
-	}
 
-	pCurSequence->destination = -1; // Force story progression
-	GameMode = GameModes_Adventure_Field;
+	// If we have no story information for the event, run it as standalone.
+	CheckStandaloneEvent_t = new Trampoline(0x413A10, 0x413A15, CheckStandaloneEvent_r, true);
+	GameMode = GetLevelType() == 1 ? GameModes_Adventure_Field : GameModes_Adventure_ActionStg;
 }
 
 static const auto loc_40C95F = reinterpret_cast<const void*>(0x0040C95F);
