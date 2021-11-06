@@ -349,7 +349,7 @@ CutsceneLevelData CutsceneList[]
 
 	// Additional Last Story events
 	{ 0x160, 34, 2, 0, 2, 2 }, // The Echidna tribe faces Chaos
-
+		
 	// Upgrade Cutscenes
 	{ 0x165, 26, 4, 0, -1 }, // Sonic gets the Crystal Ring
 	{ 0x166, 26, 2, 0, 3, 2 }, // Sonic gets the LSDash Shoe
@@ -435,6 +435,9 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x006E: // Amy discovers Final Egg base
 		SetEventFlag((EventFlags)FLAG_AMY_MR_APPEAR_FINALEGG); // Open Final Egg for Amy
 		SetEventFlag((EventFlags)FLAG_AMY_MR_ENTRANCE_FINALEGG); // Open Final Egg for Amy
+		break;
+	case 0x070:
+		LevelClearCounts[43 * Characters_Amy + LevelIDs_FinalEgg] = 1;
 		break;
 	case 0x0072: // Amy outro
 		SetEventFlag((EventFlags)FLAG_AMY_EC_SINK); // Egg Carrier sunk in Amy's outro
@@ -593,6 +596,11 @@ __declspec(naked) void ForceEventMode_asm()
 	}
 }
 
+static void __cdecl DelayEventTask(ObjectMaster* obj)
+{
+	obj->MainSub = (ObjectFuncPtr)0x42CAF0;
+}
+
 static void DisableMusic()
 {
 	Music_Enabled = false;
@@ -613,7 +621,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 {
 	int argc = 0;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
-
+	
 	for (int i = 1; i < argc; i++)
 	{
 		if (!wcscmp(argv[i], L"--level") || !wcscmp(argv[i], L"-l"))
@@ -699,7 +707,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			PrintDebug("Loading event: EV%04x (%d)\n", CurrentDemoCutsceneID, CurrentDemoCutsceneID);
 
 			WriteData<1>((char*)0x457D10, 0xC3u); // Disable "Press Start" during the cutscene.
-			//WriteData<1>((char*)0x413A38, 0x4u);
+			WriteData((ObjectFuncPtr*)0x413A33, DelayEventTask); // Delay sandalone cutscene loading to fix sync issues.
 
 			// Hook the copyright GameMode and launch the event.
 			WriteJump(reinterpret_cast<void*>(0x0040C106), ForceEventMode_asm);
