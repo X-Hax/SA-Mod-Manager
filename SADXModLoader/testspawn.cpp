@@ -417,6 +417,7 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x0020: // Sonic sees the mural
 		WriteData<1>((char*)0x7B0DA0, 0xC3u); // Lost World 3 end level object
 		WriteData<1>((char*)0x5E18B0, 0xC3u); // Level object that plays music
+		break;
 	case 0x0023:
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_APPEAR_FINALEGG);
 		break;
