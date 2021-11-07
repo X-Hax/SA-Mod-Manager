@@ -3,8 +3,11 @@
 #include <string>
 #include <unordered_map>
 
-static bool testspawn_enabled = false;
-static int testspawn_eventid = -1;
+static bool testspawn_enabled		= false;
+static bool testspawn_eventenabled	= false;
+
+static int testspawn_eventid;
+static int testspawn_timeofday;
 
 static const std::unordered_map<std::wstring, uint8_t> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
@@ -81,6 +84,30 @@ static uint8_t parse_character_id(const std::wstring& str)
 		return it->second;
 
 	return static_cast<uint8_t>(std::stol(lowercase));
+}
+
+static int8_t ForceTimeOfDay()
+{
+	return testspawn_timeofday;
+}
+
+static const std::unordered_map<std::wstring, int> time_ids_map = {
+	{ L"day",		TimesOfDay_Day },
+	{ L"evening",   TimesOfDay_Evening },
+	{ L"night",		TimesOfDay_Night },
+};
+
+static int parse_time_id(const std::wstring& str)
+{
+	std::wstring lowercase = str;
+	std::transform(lowercase.begin(), lowercase.end(), lowercase.begin(), ::towlower);
+
+	const auto it = time_ids_map.find(lowercase);
+
+	if (it != time_ids_map.end())
+		return it->second;
+
+	return std::stol(lowercase);
 }
 
 static void parse_save(const std::wstring str, const HelperFunctions& helperFunctions)
@@ -705,6 +732,11 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 			PrintDebug("Loading character: %d\n", CurrentCharacter);
 		}
+		else if (!wcscmp(argv[i], L"--time") || !wcscmp(argv[i], L"-t"))
+		{
+			testspawn_timeofday = parse_time_id(argv[++i]);
+			WriteJump(GetTimeOfDay, ForceTimeOfDay);
+		}
 		else if (!wcscmp(argv[i], L"--save") || !wcscmp(argv[i], L"-s"))
 		{
 			parse_save(argv[++i], helperFunctions);
@@ -755,16 +787,12 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 		}
 		else if (!wcscmp(argv[i], L"--event") || !wcscmp(argv[i], L"-e"))
 		{
+			testspawn_eventenabled = true;
 			testspawn_eventid = _wtoi(argv[++i]);
 			PrintDebug("Loading event: EV%04x (%d)\n", testspawn_eventid, testspawn_eventid);
 
 			// NOP. Prevents story sequence manager to be reset.
 			WriteData<5>((void*)0x413884, 0x90); 
-		}
-		else if (!wcscmp(argv[i], L"--time") || !wcscmp(argv[i], L"-t"))
-		{
-			WriteData<5>((void*)0x40C85D, 0x90);
-			SetTimeOfDay(_wtoi(argv[++i]));
 		}
 		else if (!wcscmp(argv[i], L"--no-music"))
 		{
@@ -791,12 +819,11 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 void ApplyTestSpawn()
 {
-	if (testspawn_eventid != -1)
+	if (testspawn_eventenabled == true)
 	{
 		WriteJump(reinterpret_cast<void*>(0x0040C106), ForceEventMode_asm);
 	}
-
-	if (testspawn_enabled)
+	else if (testspawn_enabled == true)
 	{
 		WriteData(reinterpret_cast<GameModes*>(0x0040C10C), GameModes_Trial);
 	}
