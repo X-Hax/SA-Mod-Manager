@@ -451,6 +451,12 @@ static void __cdecl PATCH_EV016E()
 	EV_SetAng(EV_GetPlayer(0), 0, 0x8000, 0);
 }
 
+static void __cdecl PATCH_EV00BA(int n)
+{
+	EV_InitPlayer(n);
+	EV_SetAction(EV_GetPlayer(n), E102_ACTIONS[0], &E102_TEXLIST, 0.3f, 1, 0);
+}
+
 static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
@@ -472,8 +478,8 @@ static void SetEventFlagsForCutscene(int eventID)
 		LevelCutscenes2[4].Cutscene = eventID;
 		break;
 	case 0x0020: // Sonic sees the mural
-		WriteData<1>((char*)0x7B0DA0, 0xC3u); // Lost World 3 end level object
-		WriteData<1>((char*)0x5E18B0, 0xC3u); // Level object that plays music
+		WriteData((char*)0x7B0DA0, (char)0xC3u); // Lost World 3 end level object
+		WriteData((char*)0x5E18B0, (char)0xC3u); // Level object that plays music
 		break;
 	case 0x0023:
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_APPEAR_FINALEGG);
@@ -551,6 +557,9 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x00C1: // Gamma vs Sonic
 	case 0x00C2: // Gamma after fighting Sonic
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER); // Cutscenes where Gamma appears with the Jet Booster
+		break;
+	case 0x00BA: // Gamma meets Tikal
+		WriteCall((void*)0x67DD88, PATCH_EV00BA);
 		break;
 	case 0x00C5: // Gamma remembers his brothers
 		SetLevelCleared(LevelIDs_RedMountain, Characters_Gamma);
