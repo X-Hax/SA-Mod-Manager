@@ -421,6 +421,36 @@ static void SetLevelCleared(int level, int character)
 	LevelClearCounts[43 * character + level] = 1;
 }
 
+static void __cdecl PATCH_EV0103_EV0113()
+{
+	EV_SetPos(EV_GetPlayer(0), 0.0f, 740.0f, 362.0f);
+	EV_SetAng(EV_GetPlayer(0), 0, 0, 0);
+}
+
+static void __cdecl PATCH_EV0122()
+{
+	EV_SetPos(EV_GetPlayer(0), 80.0f, -70.0f, 0.0f);
+	EV_SetAng(EV_GetPlayer(0), 0, 0xC000, 0);
+}
+
+static void __cdecl PATCH_EV0131()
+{
+	EV_SetPos(EV_GetPlayer(0), 0.0f, 12.8f, 0.0f);
+	EV_SetAng(EV_GetPlayer(0), 0, 0x8000, 0);
+}
+
+static void __cdecl PATCH_EV0140()
+{
+	EV_SetPos(EV_GetPlayer(0), -47.0f, 0.0f, 172.0f);
+	EV_SetAng(EV_GetPlayer(0), 0, 0x6000, 0);
+}
+
+static void __cdecl PATCH_EV016E()
+{
+	EV_SetPos(EV_GetPlayer(0), 35.0f, 56.72f, 0.0f);
+	EV_SetAng(EV_GetPlayer(0), 0, 0x8000, 0);
+}
+
 static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
@@ -538,8 +568,21 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x00DF: // Sonic saves Froggy
 		LevelCutscenes2[6].Cutscene = eventID;
 		break;
+	case 0x0103:
+		WriteCall((void*)0x657378, PATCH_EV0103_EV0113);
+		break;
+	case 0x0113:
+		WriteCall((void*)0x655F38, PATCH_EV0103_EV0113);
+		break;
 	case 0x0122:
+		WriteCall((void*)0x655712, PATCH_EV0122);
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_EC_PALMSWITCH);
+		break;
+	case 0x0131:
+		WriteCall((void*)0x655574, PATCH_EV0131);
+		break;
+	case 0x0140:
+		WriteCall((void*)0x6554C8, PATCH_EV0140);
 		break;
 	case 0x0141: // Gamma heads to Hot Shelter
 	case 0x0142: // Gamma rescues E-105
@@ -574,6 +617,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_AMY_MR_FIGHTERSFEATHER);
 		break;
 	case 0x016E: // Gamma gets the Laser Blaster
+		WriteCall((void*)0x650FA8, PATCH_EV016E);
 		SetEventFlag((EventFlags)FLAG_E102_EC_TYPE3LASER);
 		break;
 	case 0x016F: // Gamma gets the Jet Booster

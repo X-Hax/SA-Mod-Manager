@@ -267,6 +267,7 @@ FunctionPointer(void, EV_WaitAction, (task* tp), 0x431810);
 FunctionPointer(void, EV_WaitPath, (task* tp), 0x431840);
 FunctionPointer(void, EV_PlayPad, (int no, PADREC_DATA_TAG* tag), 0x431870);
 FunctionPointer(void, EV_WaitMove, (task* tp), 0x4318D0);
+FunctionPointer(task*, EV_GetPlayer, (uint8_t no), 0x42FC40);
 FunctionPointer(void, EV_FreeObject, (task** tp), 0x42FC50);
 FunctionPointer(void, EV_SetPos, (task* tp, float x, float y, float z), 0x42FC70);
 FunctionPointer(void, EV_SetAng, (task* tp, int x, int y, int z), 0x42FCD0);
