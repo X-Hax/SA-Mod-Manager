@@ -45,6 +45,7 @@ FunctionPointer(void, PlayerGetGravity, (taskwk* a1, motionwk2* a2, playerwk* a3
 FunctionPointer(void, PlayerGetAccelerationAir, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44B9C0);
 FunctionPointer(void, Knux_RunsActions, (taskwk* a1, motionwk2* a2, playerwk* a3), 0x478020);
 FunctionPointer(bool, Player_CheckBreak, (taskwk* a1), 0x4429C0);
+FunctionPointer(void, SetPlayerInitialPosition, (taskwk* twp), 0x414810);
 
 static const void* const Knux_NActPtr = (void*)0x476970;
 static inline signed int Knux_NAct(playerwk* a1, taskwk* a2, motionwk2* a3)

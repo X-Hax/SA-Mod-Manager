@@ -143,14 +143,33 @@ static void parse_save(const std::wstring str, const HelperFunctions& helperFunc
 	}
 }
 
-static void Obj_Icecap_r(ObjectMaster* o)
+static StartPosition gTestSpawnStartPos;
+static Trampoline* SetPlayerInitialPosition_t = nullptr;
+
+static void SetPlayerInitialPosition_r(taskwk* twp)
 {
-	if (o)
+	auto original = static_cast<decltype(SetPlayerInitialPosition_r)*>(SetPlayerInitialPosition_t->Target());
+	
+	if (CurrentLevel == gTestSpawnStartPos.LevelID && CurrentAct == gTestSpawnStartPos.ActID)
 	{
-		MovePlayerToStartPoint(EntityData1Ptrs[0]);
-		o->MainSub = Obj_Icecap;
-		Obj_Icecap(o);
+		twp->pos = gTestSpawnStartPos.Position;
+		twp->ang.y = 0x4000 - gTestSpawnStartPos.YRot;
+		delete SetPlayerInitialPosition_t; // restore original behaviour
 	}
+	else
+	{
+		original(twp);
+	}
+}
+
+static void TestSpawn_HookPosition(int level, int act, float x, float y, float z, Angle ang)
+{
+	if (SetPlayerInitialPosition_t == nullptr)
+	{
+		SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r, true);
+	}
+
+	gTestSpawnStartPos = { (int16_t)level, (int16_t)act, { x, y, z }, ang };
 }
 
 struct CutsceneLevelData
@@ -421,36 +440,6 @@ static void SetLevelCleared(int level, int character)
 	LevelClearCounts[43 * character + level] = 1;
 }
 
-static void __cdecl PATCH_EV0103_EV0113()
-{
-	EV_SetPos(EV_GetPlayer(0), 0.0f, 740.0f, 362.0f);
-	EV_SetAng(EV_GetPlayer(0), 0, 0, 0);
-}
-
-static void __cdecl PATCH_EV0122()
-{
-	EV_SetPos(EV_GetPlayer(0), 80.0f, -70.0f, 0.0f);
-	EV_SetAng(EV_GetPlayer(0), 0, 0xC000, 0);
-}
-
-static void __cdecl PATCH_EV0131()
-{
-	EV_SetPos(EV_GetPlayer(0), 0.0f, 12.8f, 0.0f);
-	EV_SetAng(EV_GetPlayer(0), 0, 0x8000, 0);
-}
-
-static void __cdecl PATCH_EV0140()
-{
-	EV_SetPos(EV_GetPlayer(0), -47.0f, 0.0f, 172.0f);
-	EV_SetAng(EV_GetPlayer(0), 0, 0x6000, 0);
-}
-
-static void __cdecl PATCH_EV016E()
-{
-	EV_SetPos(EV_GetPlayer(0), 35.0f, 56.72f, 0.0f);
-	EV_SetAng(EV_GetPlayer(0), 0, 0x8000, 0);
-}
-
 static void __cdecl PATCH_EV00BA(int n)
 {
 	EV_InitPlayer(n);
@@ -489,7 +478,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		WriteData((char*)0x5E18B0, (char)0xC3u); // Level object that plays music
 		break;
 	case 0x0022:
-		WriteCall((void*)0x6EF1F7, PATCH_EV0022);
+		TestSpawn_HookPosition(LevelIDs_Past, 2, -2.77f, -48.86f, 674.9f, 0x9A80);
 		break;
 	case 0x0023:
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_APPEAR_FINALEGG);
@@ -589,20 +578,18 @@ static void SetEventFlagsForCutscene(int eventID)
 		LevelCutscenes2[6].Cutscene = eventID;
 		break;
 	case 0x0103:
-		WriteCall((void*)0x657378, PATCH_EV0103_EV0113);
-		break;
 	case 0x0113:
-		WriteCall((void*)0x655F38, PATCH_EV0103_EV0113);
+		TestSpawn_HookPosition(LevelIDs_EggCarrierOutside, 1, 0.0f, 740.0f, 362.0f, 0);
 		break;
 	case 0x0122:
-		WriteCall((void*)0x655712, PATCH_EV0122);
+		TestSpawn_HookPosition(LevelIDs_EggCarrierOutside, 5, 80.0f, -70.0f, 0.0f, 0xC000);
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_EC_PALMSWITCH);
 		break;
 	case 0x0131:
-		WriteCall((void*)0x655574, PATCH_EV0131);
+		TestSpawn_HookPosition(LevelIDs_EggCarrierInside, 2, 0.0f, 12.8f, 0.0f, 0x8000);
 		break;
 	case 0x0140:
-		WriteCall((void*)0x6554C8, PATCH_EV0140);
+		TestSpawn_HookPosition(LevelIDs_EggCarrierInside, 1, -47.0f, 0.0f, 172.0f, 0x6000);
 		break;
 	case 0x0141: // Gamma heads to Hot Shelter
 	case 0x0142: // Gamma rescues E-105
@@ -637,7 +624,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_AMY_MR_FIGHTERSFEATHER);
 		break;
 	case 0x016E: // Gamma gets the Laser Blaster
-		WriteCall((void*)0x650FA8, PATCH_EV016E);
+		TestSpawn_HookPosition(LevelIDs_EggCarrierInside, 4, 35.0f, 56.72f, 0.0f, 0x8000);
 		SetEventFlag((EventFlags)FLAG_E102_EC_TYPE3LASER);
 		break;
 	case 0x016F: // Gamma gets the Jet Booster
@@ -824,30 +811,32 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 				continue;
 			}
-
-			if (CurrentLevel == LevelIDs_IceCap)
+			
+			// All Casinopolis positions are hardcoded, remove the correct ones
+			if (CurrentLevel == LevelIDs_Casinopolis)
 			{
-				// NOPs to disable several checks for LevelIDs_IceCap which prevent
-				// correct player positioning and orienting.
-				WriteData<2>(reinterpret_cast<void*>(0x004149EC), 0x90u);
-				WriteData<2>(reinterpret_cast<void*>(0x0041497F), 0x90u);
-				WriteData<2>(reinterpret_cast<void*>(0x00414A70), 0x90u);
-
-				LevelObjects[LevelIDs_IceCap] = Obj_Icecap_r;
+				switch (CurrentAct)
+				{
+				case 0:
+					WriteData<5>((void*)0x5C0D67, 0x90);
+					break;
+				case 1:
+					WriteData<5>((void*)0x5C0E19, 0x90);
+					break;
+				case 2:
+					WriteData<5>((void*)0x5C0E77, 0x90);
+					break;
+				case 3:
+					WriteData<5>((void*)0x5C0EF1, 0x90);
+					break;
+				}
 			}
 
 			const float x = std::stof(argv[++i]);
 			const float y = std::stof(argv[++i]);
 			const float z = std::stof(argv[++i]);
 
-			StartPosition position = {
-				CurrentLevel,
-				static_cast<int16_t>(CurrentAct),
-				{ x, y, z },	// Position
-				0				// YRot
-			};
-
-			helperFunctions.RegisterStartPosition(static_cast<Uint8>(CurrentCharacter), position);
+			TestSpawn_HookPosition(CurrentLevel, CurrentAct, x, y, z, 0);
 		}
 		else if (!wcscmp(argv[i], L"--event") || !wcscmp(argv[i], L"-e"))
 		{
