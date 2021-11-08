@@ -556,6 +556,7 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x00C0: // Gamma heading to the rear of the ship
 	case 0x00C1: // Gamma vs Sonic
 	case 0x00C2: // Gamma after fighting Sonic
+	case 0x00C3: // Gamma's objectives changed
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER); // Cutscenes where Gamma appears with the Jet Booster
 		break;
 	case 0x00BA: // Gamma meets Tikal
