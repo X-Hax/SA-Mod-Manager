@@ -30,6 +30,7 @@ FunctionPointer(void, DestroyTask, (task* tp), 0x40B570);
 FunctionPointer(void, FreeTask, (task* tp), 0x40B6C0);
 FunctionPointer(void, RegisterCollisionEntry, (int slAttribute, task* pTask, obj* pObject), 0x43B2E0);
 FunctionPointer(void, WithdrawCollisionEntry, (task* pTask, obj* pObject), 0x43B380);
+FunctionPointer(float, GetShadowPos, (float x, float y, float z, Angle3* ang), 0x49E920);
 FunctionPointer(void, B_Destructor, (task* tp), 0x59DBF0);
 FunctionPointer(void, PlayerGetRotation, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44BB60);
 FunctionPointer(void, PlayerGetAcceleration, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44C270);

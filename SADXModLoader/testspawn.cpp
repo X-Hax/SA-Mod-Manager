@@ -457,6 +457,13 @@ static void __cdecl PATCH_EV00BA(int n)
 	EV_SetAction(EV_GetPlayer(n), E102_ACTIONS[0], &E102_TEXLIST, 0.3f, 1, 0);
 }
 
+// Patch EV_ALife's GetShadowPos to handle no ground detected situations.
+static float PATCH_EV0022(float x, float y, float z, Angle3* ang)
+{
+	auto ret = GetShadowPos(x, y, z, ang);
+	return ret > -1000000.0f ? ret : y - 1.4f;
+}
+
 static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
@@ -480,6 +487,9 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x0020: // Sonic sees the mural
 		WriteData((char*)0x7B0DA0, (char)0xC3u); // Lost World 3 end level object
 		WriteData((char*)0x5E18B0, (char)0xC3u); // Level object that plays music
+		break;
+	case 0x0022:
+		WriteCall((void*)0x6EF1F7, PATCH_EV0022);
 		break;
 	case 0x0023:
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_APPEAR_FINALEGG);
