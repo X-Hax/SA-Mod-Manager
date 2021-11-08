@@ -2256,6 +2256,7 @@ DataPointer(int, TGSCharSelThing, 0x3B2C420);
 DataPointer(int, CurrentVideo, 0x3B2C45C);
 DataPointer(int, DemoID, 0x3B2C47C);
 DataPointer(LPVOID, HeapThing, 0x3B2C480);
+DataPointer(int, CurrentCutsceneID, 0x3B2C570);
 DataPointer(void *, EV_MainThread_ptr, 0x3B2C578);
 DataPointer(ObjectMaster *, CurrentMenuObj, 0x3B2C588);
 DataArray(NJS_TEXNAME, ava_csr_TEXNAMES, 0x3B2C590, 4);

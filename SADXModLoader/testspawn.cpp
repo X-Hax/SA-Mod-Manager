@@ -446,13 +446,6 @@ static void __cdecl PATCH_EV00BA(int n)
 	EV_SetAction(EV_GetPlayer(n), E102_ACTIONS[0], &E102_TEXLIST, 0.3f, 1, 0);
 }
 
-// Patch EV_ALife's GetShadowPos to handle no ground detected situations.
-static float PATCH_EV0022(float x, float y, float z, Angle3* ang)
-{
-	auto ret = GetShadowPos(x, y, z, ang);
-	return ret > -1000000.0f ? ret : y - 1.4f;
-}
-
 static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
@@ -670,16 +663,20 @@ static Trampoline* CheckStandaloneEvent_t = nullptr;
 
 static void __cdecl CustomEventTask(task* tp)
 {
-	if (GameState == 15)
+	if (!(EV_MainThread_ptr && CurrentCutsceneID == testspawn_eventid))
 	{
 		tp->exec = (void(__cdecl*)(task*))0x42CAC0;
 		SoundManager_Delete2();
 		LoadCutscene(testspawn_eventid);
 		LoadEVThread();
-
-		// Remove our code changes
-		delete CheckStandaloneEvent_t;
 	}
+	else
+	{
+		FreeTask(tp);
+	}
+
+	// Remove our code changes
+	delete CheckStandaloneEvent_t;
 }
 
 static void __cdecl CheckStandaloneEvent_r()
@@ -700,18 +697,23 @@ static void __cdecl ForceEventMode()
 		SetEventFlagsForCutscene(data->cutscene_id);
 		SetLevelAndAct(data->level, data->act);
 
-		// If the event has story integration
+		// If the event has story integration, otherwise run it standalone
 		if (data->scene_select != -1)
 		{
-			StoryEventMode = 2; // Force story event to play
-			StoryEventID = testspawn_eventid;
 			SeqSetPlayer(data->character); // Get story information
 			pCurSectionList = &pCurSectionList[data->scene_select]; // Get scene information
 			pCurSection = pCurSectionList->psec; // Current scene manager functions
 			pCurSequence->seqno = data->seqno; // Current subscene of the scene
 			pCurSequence->destination = -1; // Force story progression
-			GameMode = GameModes_Adventure_Field;
-			return;
+
+			// If in adventure field run event as story event, otherwise run it standalone
+			if (GetLevelType() == 1)
+			{
+				StoryEventMode = 2; // Force story event to play
+				StoryEventID = testspawn_eventid;
+				GameMode = GameModes_Adventure_Field;
+				return;
+			}
 		}
 	}
 
