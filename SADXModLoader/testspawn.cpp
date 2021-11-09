@@ -86,7 +86,7 @@ static uint8_t parse_character_id(const std::wstring& str)
 	return static_cast<uint8_t>(std::stol(lowercase));
 }
 
-static int8_t ForceTimeOfDay()
+static int ForceTimeOfDay()
 {
 	return testspawn_timeofday;
 }
