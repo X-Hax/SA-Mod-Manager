@@ -839,6 +839,10 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 					break;
 				}
 			}
+			else if (IsLevelChaoGarden())
+			{
+				WriteData((char*)0x715350, (char)0xC3); // remove the chao position task
+			}
 
 			const float x = std::stof(argv[++i]);
 			const float y = std::stof(argv[++i]);
