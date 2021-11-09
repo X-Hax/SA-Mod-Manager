@@ -476,6 +476,9 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x0023:
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_APPEAR_FINALEGG);
 		break;
+	case 0x0024: // Egg Viper
+		WriteData((char*)0x57C4A1, (char)0x2u); // Go into the wait for cutscene end action.
+		break;
 	case 0x0026:
 		SetLevelCleared(LevelIDs_FinalEgg, Characters_Sonic);
 		break;
@@ -663,27 +666,30 @@ static Trampoline* CheckStandaloneEvent_t = nullptr;
 
 static void __cdecl CustomEventTask(task* tp)
 {
-	if (!(EV_MainThread_ptr && CurrentCutsceneID == testspawn_eventid))
+	if (++tp->awp->work.sl[0] > 1)
 	{
-		tp->exec = (void(__cdecl*)(task*))0x42CAC0;
-		SoundManager_Delete2();
-		LoadCutscene(testspawn_eventid);
-		LoadEVThread();
-	}
-	else
-	{
-		FreeTask(tp);
-	}
+		if (!(EV_MainThread_ptr && CurrentCutsceneID == testspawn_eventid))
+		{
+			tp->exec = (void(__cdecl*)(task*))0x42CAC0;
+			SoundManager_Delete2();
+			LoadCutscene(testspawn_eventid);
+			LoadEVThread();
+		}
+		else
+		{
+			FreeTask(tp);
+		}
 
-	// Remove our code changes
-	delete CheckStandaloneEvent_t;
+		// Remove our code changes
+		delete CheckStandaloneEvent_t;
+	}
 }
 
 static void __cdecl CheckStandaloneEvent_r()
 {
 	if (!EV_MainThread_ptr)
 	{
-		CreateElementalTask(0, LEV_0, CustomEventTask);
+		CreateElementalTask(8, LEV_0, CustomEventTask);
 	}
 }
 
