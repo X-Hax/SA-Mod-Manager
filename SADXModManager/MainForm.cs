@@ -1601,8 +1601,8 @@ namespace SADXModManager
             if (checkBoxTestSpawnPosition.Checked)
                 cmdline.Add("-p " + numericUpDownTestSpawnX.Value.ToString() + " " +
                     numericUpDownTestSpawnY.Value.ToString() + " " +
-                    numericUpDownTestSpawnZ.Value.ToString() + " " +
-                    numericUpDownTestSpawnAngle.Value.ToString());
+					numericUpDownTestSpawnZ.Value.ToString() + " -r " +
+					numericUpDownTestSpawnAngle.Value.ToString());
             if (checkBoxTestSpawnEvent.Checked)
             {
                 int ev = 0;

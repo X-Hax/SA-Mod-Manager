@@ -5,6 +5,7 @@
 
 static bool testspawn_enabled		= false;
 static bool testspawn_eventenabled	= false;
+static bool testspawn_posenabled	= false;
 
 static int testspawn_eventid;
 static int testspawn_timeofday;
@@ -164,10 +165,11 @@ static void SetPlayerInitialPosition_r(taskwk* twp)
 
 static void TestSpawn_HookPosition(int level, int act, float x, float y, float z, Angle ang)
 {
-	if (SetPlayerInitialPosition_t == nullptr)
+	if (testspawn_posenabled == false)
 	{
 		SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r, true);
 		gTestSpawnStartPos = { (int16_t)level, (int16_t)act, { x, y, z }, ang };
+		testspawn_posenabled = true;
 	}
 }
 
@@ -810,10 +812,10 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 				continue;
 			}
 
-			if (i + 4 >= argc)
+			if (i + 3 >= argc)
 			{
 				MessageBoxA(nullptr, "Insufficient arguments for parameter: --position.\n"
-					"All 4 components (X, Y, Z, ANGLE) of the spawn position must be provided. Default spawn point will be used.",
+					"All 3 components (X, Y, Z) of the spawn position must be provided. Default spawn point will be used.",
 					"Insufficient arguments", MB_OK);
 
 				continue;
@@ -846,9 +848,21 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			const float x = std::stof(argv[++i]);
 			const float y = std::stof(argv[++i]);
 			const float z = std::stof(argv[++i]);
-			const Angle a = std::stol(argv[++i]);
 
-			TestSpawn_HookPosition(CurrentLevel, CurrentAct, x, y, z, a);
+			TestSpawn_HookPosition(CurrentLevel, CurrentAct, x, y, z, 0);
+		}
+		else if (!wcscmp(argv[i], L"--rotation") || !wcscmp(argv[i], L"-r"))
+		{
+			if (testspawn_posenabled == false)
+			{
+				MessageBoxA(nullptr, "Insufficient arguments for parameter: --rotation.\n"
+					"--position must be specified before --rotation.",
+					"Insufficient arguments", MB_OK);
+
+				continue;
+			}
+
+			gTestSpawnStartPos.YRot = _wtoi(argv[++i]);
 		}
 		else if (!wcscmp(argv[i], L"--event") || !wcscmp(argv[i], L"-e"))
 		{
