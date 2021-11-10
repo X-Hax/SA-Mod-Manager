@@ -10,7 +10,7 @@ static bool testspawn_posenabled	= false;
 static int testspawn_eventid;
 static int testspawn_timeofday;
 
-static const std::unordered_map<std::wstring, uint8_t> level_name_ids_map = {
+static const std::unordered_map<std::wstring, int> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
 	{ L"emeraldcoast",      LevelIDs_EmeraldCoast },
 	{ L"windyvalley",       LevelIDs_WindyValley },
@@ -49,7 +49,7 @@ static const std::unordered_map<std::wstring, uint8_t> level_name_ids_map = {
 	{ L"chaorace",          LevelIDs_ChaoRace }
 };
 
-static uint8_t parse_level_id(const std::wstring& str)
+static int parse_level_id(const std::wstring& str)
 {
 	std::wstring lowercase = str;
 	std::transform(lowercase.begin(), lowercase.end(), lowercase.begin(), ::towlower);
@@ -59,10 +59,10 @@ static uint8_t parse_level_id(const std::wstring& str)
 	if (it != level_name_ids_map.end())
 		return it->second;
 
-	return static_cast<uint8_t>(std::stol(lowercase));
+	return std::stol(lowercase);
 }
 
-static const std::unordered_map<std::wstring, uint8_t> character_name_ids_map = {
+static const std::unordered_map<std::wstring, int> character_name_ids_map = {
 	{ L"sonic",      Characters_Sonic },
 	{ L"eggman",     Characters_Eggman },
 	{ L"tails",      Characters_Tails },
@@ -74,7 +74,7 @@ static const std::unordered_map<std::wstring, uint8_t> character_name_ids_map = 
 	{ L"metalsonic", Characters_MetalSonic }
 };
 
-static uint8_t parse_character_id(const std::wstring& str)
+static int parse_character_id(const std::wstring& str)
 {
 	std::wstring lowercase = str;
 	transform(lowercase.begin(), lowercase.end(), lowercase.begin(), ::towlower);
@@ -84,7 +84,7 @@ static uint8_t parse_character_id(const std::wstring& str)
 	if (it != character_name_ids_map.end())
 		return it->second;
 
-	return static_cast<uint8_t>(std::stol(lowercase));
+	return std::stol(lowercase);
 }
 
 static int ForceTimeOfDay()
@@ -765,7 +765,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 	{
 		if (!wcscmp(argv[i], L"--level") || !wcscmp(argv[i], L"-l"))
 		{
-			CurrentLevel = parse_level_id(argv[++i]);
+			CurrentLevel = static_cast<int16_t>(parse_level_id(argv[++i]));
 			PrintDebug("Loading level: %d\n", CurrentLevel);
 			testspawn_enabled = true;
 		}
@@ -777,7 +777,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 		}
 		else if (!wcscmp(argv[i], L"--character") || !wcscmp(argv[i], L"-c"))
 		{
-			uint8_t character_id = parse_character_id(argv[++i]);
+			auto character_id = parse_character_id(argv[++i]);
 
 			if (character_id == Characters_MetalSonic)
 			{
@@ -785,7 +785,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 				character_id = 0;
 			}
 
-			CurrentCharacter = character_id;
+			CurrentCharacter = static_cast<int16_t>(character_id);
 
 			// NOP. Prevents CurrentCharacter from being overwritten at initialization.
 			WriteData<5>(reinterpret_cast<void*>(0x00415007), 0x90u);
