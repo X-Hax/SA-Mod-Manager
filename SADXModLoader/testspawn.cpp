@@ -179,8 +179,8 @@ struct CutsceneLevelData
 	int level;
 	int act;
 	int character;
-	int scene_select; // if -1, load standalone event
-	int seqno; // subscene of a scene
+	int scene_select;	// if -1: no story integration
+	int seqno;			// subscene
 };
 
 CutsceneLevelData CutsceneList[] {
@@ -444,23 +444,23 @@ static void SetLevelCleared(int level, int character)
 static void __cdecl PATCH_EV00BA(int n)
 {
 	EV_InitPlayer(n);
-	EV_SetAction(EV_GetPlayer(n), E102_ACTIONS[0], &E102_TEXLIST, 0.3f, 1, 0);
+	EV_SetAction(EV_GetPlayer(n), E102_ACTIONS[0], &E102_TEXLIST, 0.3f, 1, 0); // Standing animation
 }
 
 static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
 	{
-	case 0x0002:
+	case 0x002: // Sonic defeats Chaos 0
 		LevelCutscenes2[2].Cutscene = eventID;
 		break;
 	case 0x0009: // Sonic and Tails gassed
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_ENTRANCE_CASINO);
 		break;
-	case 0x0014:
+	case 0x0014: // Sonic goes looking for Amy
 		SetLevelCleared(LevelIDs_TwinklePark, Characters_Sonic);
 		break;
-	case 0x0015:
+	case 0x0015: // Sonic finds Zero and Amy
 		SetLevelCleared(LevelIDs_SpeedHighway, Characters_Sonic);
 		break;
 	case 0x001D: // Sonic jumps from the Egg Carrier
@@ -471,16 +471,16 @@ static void SetEventFlagsForCutscene(int eventID)
 		WriteData((char*)0x7B0DA0, (char)0xC3u); // Lost World 3 end level object
 		WriteData((char*)0x5E18B0, (char)0xC3u); // Level object that plays music
 		break;
-	case 0x0022:
+	case 0x0022: // Sonic listens to Tikal in the Past
 		TestSpawn_HookPosition(LevelIDs_Past, 2, -2.77f, -48.86f, 674.9f, 0x9A80);
 		break;
-	case 0x0023:
+	case 0x0023: // Sonic sees Eggman heading to his base
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_APPEAR_FINALEGG);
 		break;
 	case 0x0024: // Egg Viper
 		WriteData((char*)0x57C4A1, (char)0x2u); // Go into the wait for cutscene end action.
 		break;
-	case 0x0026:
+	case 0x0026: // Sonic's Outro
 		SetLevelCleared(LevelIDs_FinalEgg, Characters_Sonic);
 		break;
 	case 0x0029: // Sonic and Tails land on the Egg Carrier
@@ -509,7 +509,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_AMY_MR_APPEAR_FINALEGG); // Open Final Egg for Amy
 		SetEventFlag((EventFlags)FLAG_AMY_MR_ENTRANCE_FINALEGG); // Open Final Egg for Amy
 		break;
-	case 0x0070:
+	case 0x0070: // Amy and Birdie head back to the Egg Carrier
 		SetLevelCleared(LevelIDs_FinalEgg, Characters_Amy);
 		break;
 	case 0x0072: // Amy outro
@@ -574,18 +574,18 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x00DF: // Sonic saves Froggy
 		LevelCutscenes2[6].Cutscene = eventID;
 		break;
-	case 0x0103:
-	case 0x0113:
+	case 0x0103: // Sonic at the Sky Deck entrance
+	case 0x0113: // Tails at the Sky Deck entrance
 		TestSpawn_HookPosition(LevelIDs_EggCarrierOutside, 1, 0.0f, 740.0f, 362.0f, 0);
 		break;
-	case 0x0122:
+	case 0x0122: // Knuckles sensing the emeralds on the Egg Carrier
 		TestSpawn_HookPosition(LevelIDs_EggCarrierOutside, 5, 80.0f, -70.0f, 0.0f, 0xC000);
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_EC_PALMSWITCH);
 		break;
-	case 0x0131:
+	case 0x0131: // Winning at Hedgehog Hammer
 		TestSpawn_HookPosition(LevelIDs_EggCarrierInside, 2, 0.0f, 12.8f, 0.0f, 0x8000);
 		break;
-	case 0x0140:
+	case 0x0140: // Gamma is told to find the Jet Booster
 		TestSpawn_HookPosition(LevelIDs_EggCarrierInside, 1, -47.0f, 0.0f, 172.0f, 0x6000);
 		break;
 	case 0x0141: // Gamma heads to Hot Shelter
@@ -640,7 +640,7 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x017C: // Angel Island opens (Gamma)
 		SetLevelCleared(LevelIDs_WindyValley, Characters_Gamma);
 		break;
-	case 0x00F0:
+	case 0x00F0: // Super Sonic cutscenes
 	case 0x00F2:
 	case 0x00F3:
 	case 0x00F4:
@@ -667,8 +667,10 @@ static Trampoline* CheckStandaloneEvent_t = nullptr;
 
 static void __cdecl CustomEventTask(task* tp)
 {
+	// Wait a few frames for the level to be entirely set up
 	if (++tp->awp->work.sl[0] > 1)
 	{
+		// Don't load the event if it's already playing, override if another event is playing.
 		if (!(EV_MainThread_ptr && CurrentCutsceneID == testspawn_eventid))
 		{
 			tp->exec = (void(__cdecl*)(task*))0x42CAC0;
@@ -681,51 +683,49 @@ static void __cdecl CustomEventTask(task* tp)
 			FreeTask(tp);
 		}
 
-		// Remove our code changes
+		// Remove demo/level event hook
 		delete CheckStandaloneEvent_t;
 	}
 }
 
 static void __cdecl CheckStandaloneEvent_r()
 {
-	if (!EV_MainThread_ptr)
-	{
-		CreateElementalTask(8, LEV_0, CustomEventTask);
-	}
+	CreateElementalTask(8, LEV_0, CustomEventTask);
 }
 
 static void __cdecl ForceEventMode()
 {
 	auto data = GetCutsceneData(testspawn_eventid);
 
+	// If we have data for the event
 	if (data != nullptr)
 	{
 		SetupCharacter(data->character);
 		SetEventFlagsForCutscene(data->cutscene_id);
 		SetLevelAndAct(data->level, data->act);
-
-		// If the event has story integration, otherwise run it standalone
+		
+		// If the event has story integration
 		if (data->scene_select != -1)
 		{
 			SeqSetPlayer(data->character); // Get story information
 			pCurSectionList = &pCurSectionList[data->scene_select]; // Get scene information
-			pCurSection = pCurSectionList->psec; // Current scene manager functions
-			pCurSequence->seqno = data->seqno; // Current subscene of the scene
+			pCurSection = pCurSectionList->psec; // Set current scene manager functions
+			pCurSequence->seqno = data->seqno; // Set current subscene of the scene
 			pCurSequence->destination = -1; // Force story progression
 
-			// If in adventure field run event as story event, otherwise run it standalone
+			// If in adventure field then run the event as a story event
 			if (GetLevelType() == 1)
 			{
 				StoryEventMode = 2; // Force story event to play
-				StoryEventID = testspawn_eventid;
+				StoryEventID = data->cutscene_id;
 				GameMode = GameModes_Adventure_Field;
 				return;
 			}
 		}
 	}
 
-	// If we have no story information for the event, run it as standalone.
-	CheckStandaloneEvent_t = new Trampoline(0x413A10, 0x413A15, CheckStandaloneEvent_r, true);
+	// Otherwise run the requested event as a standalone event
+	CheckStandaloneEvent_t = new Trampoline(0x413A10, 0x413A15, CheckStandaloneEvent_r, true); // Hook the demo/level event check
 	GameMode = GetLevelType() == 1 ? GameModes_Adventure_Field : GameModes_Adventure_ActionStg;
 }
 
@@ -821,7 +821,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 				continue;
 			}
 
-			// All Casinopolis positions are hardcoded, remove the correct ones
+			// Casinopolis start positions are hardcoded, remove the needed one
 			if (CurrentLevel == LevelIDs_Casinopolis)
 			{
 				switch (CurrentAct)
@@ -842,7 +842,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			}
 			else if (IsLevelChaoGarden())
 			{
-				WriteData((char*)0x715350, (char)0xC3); // remove the chao position task
+				WriteData((char*)0x715350, (char)0xC3); // Remove the chao world start position task
 			}
 
 			const float x = std::stof(argv[++i]);
