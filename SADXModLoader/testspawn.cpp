@@ -205,7 +205,7 @@ CutsceneLevelData CutsceneList[] {
 	{ 0x01A, LevelIDs_EggCarrierOutside, 2, Characters_Sonic, 11, 2 }, // Eggman takes Birdie's Emerald
 	{ 0x01B, LevelIDs_EggCarrierOutside, 2, Characters_Sonic, 11, 5 }, // Sonic goes to put Eggman out of commission
 	{ 0x01C, LevelIDs_Chaos6, 0, Characters_Sonic, 11, 10 }, // Sonic finds Chaos 6
-	{ 0x01D, LevelIDs_Chaos6, 0, Characters_Sonic, 11, 11 }, // Sonic chases Eggman to the Mystic Ruins
+	{ 0x01D, LevelIDs_EggCarrierOutside, 0, Characters_Sonic, 11, 11 }, // Sonic chases Eggman to the Mystic Ruins
 	{ 0x01E, LevelIDs_MysticRuins, 2, Characters_Sonic, LevelIDs_HotShelter, 1 }, // Sonic prepares to enter Lost World
 	{ 0x020, LevelIDs_LostWorld,  2, Characters_Sonic, LevelIDs_HotShelter, 3 }, // Sonic views the Perfect Chaos Mural
 	{ 0x021, LevelIDs_Past, 2, Characters_Sonic, 13, 0 }, // Sonic enters the Past
@@ -468,10 +468,6 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x0015: // Sonic finds Zero and Amy
 		SetLevelCleared(LevelIDs_SpeedHighway, Characters_Sonic);
-		break;
-	case 0x001D: // Sonic jumps from the Egg Carrier
-		WriteData((char*)0x559FC0, (char)0xC3); // Don't load Chaos 6
-		LevelCutscenes2[4].Cutscene = eventID;
 		break;
 	case 0x0020: // Sonic sees the mural
 		WriteData((char*)0x7B0DA0, (char)0xC3u); // Lost World 3 end level object
