@@ -441,6 +441,12 @@ static void SetLevelCleared(int level, int character)
 	LevelClearCounts[43 * character + level] = 1;
 }
 
+static void __cdecl PATCH_EV0166(int n)
+{
+	EV_InitPlayer(n);
+	EV_SetAction(EV_GetPlayer(n), SONIC_ACTIONS[1], &SONIC_TEXLIST, 0.5f, 1, 0); // Standing animation
+}
+
 static void __cdecl PATCH_EV00BA(int n)
 {
 	EV_InitPlayer(n);
@@ -596,6 +602,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_CRYSTALRING);
 		break;
 	case 0x0166: // Sonic gets the Light Speed Shoes
+		WriteCall((void*)0x652F5A, PATCH_EV0166);
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_LIGHTSHOOSE);
 		break;
 	case 0x0167: // Sonic gets the Ancient Light
