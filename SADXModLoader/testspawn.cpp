@@ -5,6 +5,7 @@
 
 static bool testspawn_enabled		= false;
 static bool testspawn_eventenabled	= false;
+static bool testspawn_posenabled	= false;
 
 static int testspawn_eventid;
 static int testspawn_timeofday;
@@ -164,12 +165,12 @@ static void SetPlayerInitialPosition_r(taskwk* twp)
 
 static void TestSpawn_HookPosition(int level, int act, float x, float y, float z, Angle ang)
 {
-	if (SetPlayerInitialPosition_t == nullptr)
+	if (testspawn_posenabled == false)
 	{
 		SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r, true);
+		gTestSpawnStartPos = { (int16_t)level, (int16_t)act, { x, y, z }, ang };
+		testspawn_posenabled = true;
 	}
-
-	gTestSpawnStartPos = { (int16_t)level, (int16_t)act, { x, y, z }, ang };
 }
 
 struct CutsceneLevelData
@@ -819,7 +820,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 				continue;
 			}
-			
+
 			// All Casinopolis positions are hardcoded, remove the correct ones
 			if (CurrentLevel == LevelIDs_Casinopolis)
 			{
@@ -849,6 +850,19 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			const float z = std::stof(argv[++i]);
 
 			TestSpawn_HookPosition(CurrentLevel, CurrentAct, x, y, z, 0);
+		}
+		else if (!wcscmp(argv[i], L"--rotation") || !wcscmp(argv[i], L"-r"))
+		{
+			if (testspawn_posenabled == false)
+			{
+				MessageBoxA(nullptr, "Insufficient arguments for parameter: --rotation.\n"
+					"--position must be specified before --rotation.",
+					"Insufficient arguments", MB_OK);
+
+				continue;
+			}
+
+			gTestSpawnStartPos.YRot = 0x4000 - std::stol(argv[++i]);
 		}
 		else if (!wcscmp(argv[i], L"--event") || !wcscmp(argv[i], L"-e"))
 		{
