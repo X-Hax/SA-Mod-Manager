@@ -862,7 +862,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 				continue;
 			}
 
-			gTestSpawnStartPos.YRot = 0x4000 - std::stol(argv[++i]);
+			gTestSpawnStartPos.YRot = std::stol(argv[++i]);
 		}
 		else if (!wcscmp(argv[i], L"--event") || !wcscmp(argv[i], L"-e"))
 		{
