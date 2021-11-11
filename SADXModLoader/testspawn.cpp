@@ -7,10 +7,10 @@ static bool testspawn_enabled      = false;
 static bool testspawn_eventenabled = false;
 static bool testspawn_posenabled   = false;
 
-static int testspawn_eventid;
-static int testspawn_timeofday;
+static int testspawn_eventid = 0;
+static int testspawn_timeofday = TimesOfDay_Day;
 
-static const std::unordered_map<std::wstring, int> level_name_ids_map = {
+static const std::unordered_map<std::wstring, int16_t> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
 	{ L"emeraldcoast",      LevelIDs_EmeraldCoast },
 	{ L"windyvalley",       LevelIDs_WindyValley },
@@ -49,7 +49,7 @@ static const std::unordered_map<std::wstring, int> level_name_ids_map = {
 	{ L"chaorace",          LevelIDs_ChaoRace }
 };
 
-static int parse_level_id(const std::wstring& str)
+static int16_t parse_level_id(const std::wstring& str)
 {
 	std::wstring lowercase = str;
 	std::transform(lowercase.begin(), lowercase.end(), lowercase.begin(), ::towlower);
@@ -59,10 +59,10 @@ static int parse_level_id(const std::wstring& str)
 	if (it != level_name_ids_map.end())
 		return it->second;
 
-	return std::stol(lowercase);
+	return static_cast<int16_t>(std::stol(lowercase));
 }
 
-static const std::unordered_map<std::wstring, int> character_name_ids_map = {
+static const std::unordered_map<std::wstring, int16_t> character_name_ids_map = {
 	{ L"sonic",      Characters_Sonic },
 	{ L"eggman",     Characters_Eggman },
 	{ L"tails",      Characters_Tails },
@@ -74,7 +74,7 @@ static const std::unordered_map<std::wstring, int> character_name_ids_map = {
 	{ L"metalsonic", Characters_MetalSonic }
 };
 
-static int parse_character_id(const std::wstring& str)
+static int16_t parse_character_id(const std::wstring& str)
 {
 	std::wstring lowercase = str;
 	transform(lowercase.begin(), lowercase.end(), lowercase.begin(), ::towlower);
@@ -84,7 +84,7 @@ static int parse_character_id(const std::wstring& str)
 	if (it != character_name_ids_map.end())
 		return it->second;
 
-	return std::stol(lowercase);
+	return static_cast<int16_t>(std::stol(lowercase));
 }
 
 static int ForceTimeOfDay()
@@ -136,9 +136,9 @@ static void parse_save(const std::wstring str, const HelperFunctions& helperFunc
 		fclose(file);
 
 		// Prevent save stuff from being overwritten
-		WriteData<1>(reinterpret_cast<void*>(0x425AF0), 0xC3); // Lives
-		WriteData<24>(reinterpret_cast<void*>(0x41330F), 0x90); // EventFlags
-		WriteData<5>(reinterpret_cast<void*>(0x0042D7CC), 0x90u); // CurrentCharacter
+		WriteData(reinterpret_cast<uint8_t*>(0x425AF0), static_cast<uint8_t>(0xC3u)); // Lives
+		WriteData<24>(reinterpret_cast<void*>(0x41330F), static_cast<uint8_t>(0x90u)); // EventFlags
+		WriteData<5>(reinterpret_cast<void*>(0x0042D7CC), static_cast<uint8_t>(0x90u)); // CurrentCharacter
 
 		LoadSave();
 	}
@@ -175,11 +175,11 @@ static void TestSpawn_HookPosition(int level, int act, float x, float y, float z
 
 struct CutsceneLevelData
 {
-	int level;
-	int act;
+	uint8_t level;
+	uint8_t act;
 	int character;
 	int scene_select; // if -1: no story integration
-	int seqno;        // subscene
+	int16_t seqno;        // subscene
 };
 
 static const std::unordered_map<int, CutsceneLevelData> CutsceneList = {
@@ -455,7 +455,7 @@ static void SetEventFlagsForCutscene(int eventID)
 	switch (eventID)
 	{
 	case 0x002: // Sonic defeats Chaos 0
-		LevelCutscenes2[2].Cutscene = eventID;
+		LevelCutscenes2[2].Cutscene = static_cast<int16_t>(eventID);
 		break;
 	case 0x0009: // Sonic and Tails gassed
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_ENTRANCE_CASINO);
@@ -467,8 +467,8 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetLevelCleared(LevelIDs_SpeedHighway, Characters_Sonic);
 		break;
 	case 0x0020: // Sonic sees the mural
-		WriteData((char*)0x7B0DA0, (char)0xC3u); // Lost World 3 end level object
-		WriteData((char*)0x5E18B0, (char)0xC3u); // Level object that plays music
+		WriteData(reinterpret_cast<uint8_t*>(0x7B0DA0), static_cast<uint8_t>(0xC3u)); // Lost World 3 end level object
+		WriteData(reinterpret_cast<uint8_t*>(0x5E18B0), static_cast<uint8_t>(0xC3u)); // Level object that plays music
 		break;
 	case 0x0022: // Sonic listens to Tikal in the Past
 		TestSpawn_HookPosition(LevelIDs_Past, 2, -2.77f, -48.86f, 674.9f, 0x9A80);
@@ -477,7 +477,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_SONIC_MR_APPEAR_FINALEGG);
 		break;
 	case 0x0024: // Egg Viper
-		WriteData((char*)0x57C4A1, (char)0x2u); // Go into the wait for cutscene end action.
+		WriteData(reinterpret_cast<uint8_t*>(0x57C4A1), static_cast<uint8_t>(0x2u)); // Go into the wait for cutscene end action.
 		break;
 	case 0x0026: // Sonic's Outro
 		SetLevelCleared(LevelIDs_FinalEgg, Characters_Sonic);
@@ -500,9 +500,9 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_MILES_EC_TORNADO2_LOST);
 		break;
 	case 0x0055: // Tails saves Froggy in Sand Hill
-		WriteData((char*)0x598040, (char)0xC3u); // Osfrog
-		WriteData((char*)0x79E4C0, (char)0xC3u); // Plays level music
-		WriteData<5>((char*)0x597BF3, 0x90u); // Snowboard
+		WriteData(reinterpret_cast<uint8_t*>(0x598040), static_cast<uint8_t>(0xC3u)); // Osfrog
+		WriteData(reinterpret_cast<uint8_t*>(0x79E4C0), static_cast<uint8_t>(0xC3u)); // Plays level music
+		WriteData<5>(reinterpret_cast<uint8_t*>(0x597BF3), static_cast<uint8_t>(0x90u)); // Snowboard
 		break;
 	case 0x006E: // Amy discovers Final Egg base
 		SetEventFlag((EventFlags)FLAG_AMY_MR_APPEAR_FINALEGG); // Open Final Egg for Amy
@@ -515,33 +515,33 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_AMY_EC_SINK); // Egg Carrier sunk in Amy's outro
 		break;
 	case 0x0083: // Knuckles goes to the Past from Casino
-		WriteData((char*)0x7A1AA0, (char)0xC3u); // Remove Tikal hints
-		WriteData((char*)0x476440, (char)0xC3u); // Remove Radar
+		WriteData(reinterpret_cast<uint8_t*>(0x7A1AA0), static_cast<uint8_t>(0xC3u)); // Remove Tikal hints
+		WriteData(reinterpret_cast<uint8_t*>(0x476440), static_cast<uint8_t>(0xC3u)); // Remove Radar
 		break;
 	case 0x0086: // Knuckles returns from the Past to Station Square
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_SS_ENTRANCE_CASINO);
 		break;
 	case 0x0088: // Knuckles is tricked by Eggman
-		WriteData((char*)0x54DF00, (char)0xC3); // Don't load Chaos 2
-		LevelCutscenes2[3].Cutscene = eventID;
+		WriteData(reinterpret_cast<uint8_t*>(0x54DF00), static_cast<uint8_t>(0xC3u)); // Don't load Chaos 2
+		LevelCutscenes2[3].Cutscene = static_cast<int16_t>(eventID);
 		break;
 	case 0x008D: // Knuckles goes to the Past from Lost World
-		WriteData<1>((char*)0x5E18B0, 0xC3u); // Level object that plays music
-		WriteData((char*)0x7A1AA0, (char)0xC3u); // Remove Tikal hints
-		WriteData((char*)0x476440, (char)0xC3u); // Remove Radar
+		WriteData<1>(reinterpret_cast<uint8_t*>(0x5E18B0), static_cast<uint8_t>(0xC3u)); // Level object that plays music
+		WriteData(reinterpret_cast<uint8_t*>(0x7A1AA0), static_cast<uint8_t>(0xC3u)); // Remove Tikal hints
+		WriteData(reinterpret_cast<uint8_t*>(0x476440), static_cast<uint8_t>(0xC3u)); // Remove Radar
 		break;
 	case 0x0092: // Knuckles follows Gamma to Final Egg
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_APPEAR_FINALEGG); // Open Final Egg for Knuckles
 		break;
 	case 0x0095: // Knuckles finds the last missing piece in Sky Deck
-		WriteData<5>((char*)0x5EF6D0, 0x90u); // Remove Sky Deck music
-		WriteData((char*)0x450370, (char)0xC3u); // Remove Rings
-		WriteData((char*)0x7A1AA0, (char)0xC3u); // Remove Tikal hints
-		WriteData((char*)0x476440, (char)0xC3u); // Remove Radar
+		WriteData<5>(reinterpret_cast<void*>(0x5EF6D0), static_cast<uint8_t>(0x90u)); // Remove Sky Deck music
+		WriteData(reinterpret_cast<uint8_t*>(0x450370), static_cast<uint8_t>(0xC3u)); // Remove Rings
+		WriteData(reinterpret_cast<uint8_t*>(0x7A1AA0), static_cast<uint8_t>(0xC3u)); // Remove Tikal hints
+		WriteData(reinterpret_cast<uint8_t*>(0x476440), static_cast<uint8_t>(0xC3u)); // Remove Radar
 		break;
 	case 0x009B: // Knuckles defeats Chaos 6
-		WriteData((char*)0x559FC0, (char)0xC3); // Don't load Chaos 6
-		LevelCutscenes2[5].Cutscene = eventID;
+		WriteData(reinterpret_cast<uint8_t*>(0x559FC0), static_cast<uint8_t>(0xC3u)); // Don't load Chaos 6
+		LevelCutscenes2[5].Cutscene = static_cast<int16_t>(eventID);
 		break;
 	case 0x00B3: // Useless machine
 		SetEventFlag((EventFlags)FLAG_E102_MR_FREEPASS); // Open Final Egg for useless machine
@@ -550,9 +550,9 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_E102_MR_APPEAR_FINALEGG); // Open Final Egg for useless machine
 		break;
 	case 0x00B8: // Gamma goes to the Past
-		WriteData((char*)0x61CA90, (char)0xC3u); // Remove Emerald Coast music
-		WriteData((char*)0x4AD140, (char)0xC3u); // Remove Kikis
-		WriteData((char*)0x4FA320, (char)0xC3u); // Remove OFrog
+		WriteData(reinterpret_cast<uint8_t*>(0x61CA90), static_cast<uint8_t>(0xC3u)); // Remove Emerald Coast music
+		WriteData(reinterpret_cast<uint8_t*>(0x4AD140), static_cast<uint8_t>(0xC3u)); // Remove Kikis
+		WriteData(reinterpret_cast<uint8_t*>(0x4FA320), static_cast<uint8_t>(0xC3u)); // Remove OFrog
 		break;
 	case 0x00C0: // Gamma heading to the rear of the ship
 	case 0x00C1: // Gamma vs Sonic
@@ -561,7 +561,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_E102_EC_BOOSTER); // Cutscenes where Gamma appears with the Jet Booster
 		break;
 	case 0x00BA: // Gamma meets Tikal
-		WriteCall((void*)0x67DD88, PATCH_EV00BA);
+		WriteCall(reinterpret_cast<void*>(0x67DD88), PATCH_EV00BA);
 		break;
 	case 0x00C5: // Gamma remembers his brothers
 		SetLevelCleared(LevelIDs_RedMountain, Characters_Gamma);
@@ -571,13 +571,13 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetLevelCleared(LevelIDs_IceCap, Characters_Big);
 		break;
 	case 0x00D4: // Big loses Froggy to Gamma
-		WriteData((char*)0x61CA90, (char)0xC3u); // Remove Emerald Coast music
+		WriteData(reinterpret_cast<uint8_t*>(0x61CA90), static_cast<uint8_t>(0xC3u)); // Remove Emerald Coast music
 		break;
 	case 0x00DA: // Big saves Froggy in Hot Shelter
 		CutsceneFlagArray[217] = 1;
 		break;
 	case 0x00DF: // Sonic saves Froggy
-		LevelCutscenes2[6].Cutscene = eventID;
+		LevelCutscenes2[6].Cutscene = static_cast<int16_t>(eventID);
 		break;
 	case 0x0103: // Sonic at the Sky Deck entrance
 	case 0x0113: // Tails at the Sky Deck entrance
@@ -601,7 +601,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_CRYSTALRING);
 		break;
 	case 0x0166: // Sonic gets the Light Speed Shoes
-		WriteCall((void*)0x652F5A, PATCH_EV0166);
+		WriteCall(reinterpret_cast<void*>(0x652F5A), PATCH_EV0166);
 		SetEventFlag((EventFlags)FLAG_SONIC_SS_LIGHTSHOOSE);
 		break;
 	case 0x0167: // Sonic gets the Ancient Light
@@ -663,7 +663,7 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x00FD: // Perfect Chaos level cutscenes
 	case 0x00FE:
 	case 0x00FF:
-		LevelCutscenes2[7].Cutscene = eventID;
+		LevelCutscenes2[7].Cutscene = static_cast<int16_t>(eventID);
 		LastStoryFlag = 1;
 		break;
 	}
@@ -759,7 +759,7 @@ static void DisableVoice()
 static void DisableSound()
 {
 	// RET. Prevents the SoundQueue from running.
-	WriteData<1>(reinterpret_cast<void*>(0x004250D0), 0xC3);
+	WriteData(reinterpret_cast<uint8_t*>(0x004250D0), static_cast<uint8_t>(0xC3u));
 }
 
 void ProcessTestSpawn(const HelperFunctions& helperFunctions)
@@ -771,7 +771,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 	{
 		if (!wcscmp(argv[i], L"--level") || !wcscmp(argv[i], L"-l"))
 		{
-			CurrentLevel = static_cast<int16_t>(parse_level_id(argv[++i]));
+			CurrentLevel = parse_level_id(argv[++i]);
 			PrintDebug("Loading level: %d\n", CurrentLevel);
 			testspawn_enabled = true;
 		}
@@ -783,7 +783,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 		}
 		else if (!wcscmp(argv[i], L"--character") || !wcscmp(argv[i], L"-c"))
 		{
-			auto character_id = parse_character_id(argv[++i]);
+			int16_t character_id = parse_character_id(argv[++i]);
 
 			if (character_id == Characters_MetalSonic)
 			{
@@ -791,10 +791,10 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 				character_id = 0;
 			}
 
-			CurrentCharacter = static_cast<int16_t>(character_id);
+			CurrentCharacter = character_id;
 
 			// NOP. Prevents CurrentCharacter from being overwritten at initialization.
-			WriteData<5>(reinterpret_cast<void*>(0x00415007), 0x90u);
+			WriteData<5>(reinterpret_cast<void*>(0x00415007), static_cast<uint8_t>(0x90u));
 
 			PrintDebug("Loading character: %d\n", CurrentCharacter);
 		}
@@ -833,22 +833,22 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 				switch (CurrentAct)
 				{
 				case 0:
-					WriteData<5>((void*)0x5C0D67, 0x90);
+					WriteData<5>(reinterpret_cast<void*>(0x5C0D67), static_cast<uint8_t>(0x90u));
 					break;
 				case 1:
-					WriteData<5>((void*)0x5C0E19, 0x90);
+					WriteData<5>(reinterpret_cast<void*>(0x5C0E19), static_cast<uint8_t>(0x90u));
 					break;
 				case 2:
-					WriteData<5>((void*)0x5C0E77, 0x90);
+					WriteData<5>(reinterpret_cast<void*>(0x5C0E77), static_cast<uint8_t>(0x90u));
 					break;
 				case 3:
-					WriteData<5>((void*)0x5C0EF1, 0x90);
+					WriteData<5>(reinterpret_cast<void*>(0x5C0EF1), static_cast<uint8_t>(0x90u));
 					break;
 				}
 			}
 			else if (IsLevelChaoGarden())
 			{
-				WriteData((char*)0x715350, (char)0xC3); // Remove the chao world start position task
+				WriteData((uint8_t*)0x715350, static_cast<uint8_t>(0xC3u)); // Remove the chao world start position task
 			}
 
 			const float x = std::stof(argv[++i]);
@@ -877,7 +877,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			PrintDebug("Loading event: EV%04x (%d)\n", testspawn_eventid, testspawn_eventid);
 
 			// NOP. Prevents story sequence manager to be reset.
-			WriteData<5>((void*)0x413884, 0x90); 
+			WriteData<5>(reinterpret_cast<void*>(0x413884), static_cast<uint8_t>(0x90u));
 		}
 		else if (!wcscmp(argv[i], L"--no-music"))
 		{
