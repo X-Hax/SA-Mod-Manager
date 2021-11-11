@@ -206,8 +206,8 @@ CutsceneLevelData CutsceneList[] {
 	{ 0x01B, LevelIDs_EggCarrierOutside, 2, Characters_Sonic, 11, 5 }, // Sonic goes to put Eggman out of commission
 	{ 0x01C, LevelIDs_Chaos6, 0, Characters_Sonic, 11, 10 }, // Sonic finds Chaos 6
 	{ 0x01D, LevelIDs_EggCarrierOutside, 0, Characters_Sonic, 11, 11 }, // Sonic chases Eggman to the Mystic Ruins
-	{ 0x01E, LevelIDs_MysticRuins, 2, Characters_Sonic, LevelIDs_HotShelter, 1 }, // Sonic prepares to enter Lost World
-	{ 0x020, LevelIDs_LostWorld,  2, Characters_Sonic, LevelIDs_HotShelter, 3 }, // Sonic views the Perfect Chaos Mural
+	{ 0x01E, LevelIDs_MysticRuins, 2, Characters_Sonic, 12, 1 }, // Sonic prepares to enter Lost World
+	{ 0x020, LevelIDs_LostWorld,  2, Characters_Sonic, 12, 3 }, // Sonic views the Perfect Chaos Mural
 	{ 0x021, LevelIDs_Past, 2, Characters_Sonic, 13, 0 }, // Sonic enters the Past
 	{ 0x022, LevelIDs_Past, 2, Characters_Sonic, 13, 2 }, // Sonic listens to Tikal in the Past
 	{ 0x023, LevelIDs_MysticRuins, 2, Characters_Sonic, 14, 1 }, // Sonic sees Eggman heading to his base
@@ -245,7 +245,7 @@ CutsceneLevelData CutsceneList[] {
 	{ 0x051, LevelIDs_StationSquare, 1, Characters_Tails, 10, 6 }, // Egg Walker defeated, Station Square saved
 	{ 0x052, LevelIDs_MysticRuins, 0, Characters_Tails, 11, 0 }, // Tails Outro
 	{ 0x053, LevelIDs_StationSquare, 0, Characters_Tails, -1 }, // Error
-	{ 0x054, LevelIDs_EggCarrierOutside, 1, Characters_Tails, 8, 0 }, // Gonna land on the Egg Carrier
+	{ 0x054, LevelIDs_EggCarrierOutside, 0, Characters_Tails, 8, 0 }, // Gonna land on the Egg Carrier
 	{ 0x055, LevelIDs_SandHill, 0, Characters_Tails, 5, 5 }, // Cutscene with Froggy after Sand Hill
 	{ 0x056, LevelIDs_StationSquare, 1, Characters_Tails, 3, 0 }, // Tails and Sonic awake after being gassed
 
@@ -284,7 +284,7 @@ CutsceneLevelData CutsceneList[] {
 	{ 0x089, LevelIDs_MysticRuins, 0, Characters_Knuckles, 4, 1 }, // Knuckles goes after Sonic
 	{ 0x08A, LevelIDs_MysticRuins, 0, Characters_Knuckles, 4, 6 }, // Knuckles vs. Sonic
 	{ 0x08B, LevelIDs_MysticRuins, 0, Characters_Knuckles, 4, 9 }, // Chaos 4 emerges
-	{ 0x08C, LevelIDs_MysticRuins, 0, Characters_Knuckles, 4, LevelIDs_HotShelter }, // Knuckles departs from Sonic and Tails
+	{ 0x08C, LevelIDs_MysticRuins, 0, Characters_Knuckles, 4, 12 }, // Knuckles departs from Sonic and Tails
 	{ 0x08D, LevelIDs_LostWorld, 1, Characters_Knuckles, 4, 14 }, // Knuckles goes to the Past (from Lost World)
 	{ 0x08E, LevelIDs_Past, 1, Characters_Knuckles, 5, 0 }, // Knuckles back in the Past
 	{ 0x08F, LevelIDs_Past, 1, Characters_Knuckles, 5, 2 }, // Tikal's crisis again
@@ -320,7 +320,7 @@ CutsceneLevelData CutsceneList[] {
 	{ 0x0BE, LevelIDs_EggCarrierInside, 1, Characters_Gamma, 4, 4 }, // Gamma leaves Beta's room
 	{ 0x0BF, LevelIDs_EggCarrierInside, 3, Characters_Gamma, 4, 6 }, // Gamma enters the jail, meets Amy
 	{ 0x0C0, LevelIDs_EggCarrierInside, 1, Characters_Gamma, 4, 10 }, // Gamma heading to the rear of the ship
-	{ 0x0C1, LevelIDs_EggCarrierOutside, 2, Characters_Gamma, 4, LevelIDs_HotShelter }, // Gamma emerges to fight Sonic
+	{ 0x0C1, LevelIDs_EggCarrierOutside, 2, Characters_Gamma, 4, 12 }, // Gamma emerges to fight Sonic
 	{ 0x0C2, LevelIDs_EggCarrierOutside, 2, Characters_Gamma, 4, 15 }, // Gamma after the battle with Sonic
 	{ 0x0C3, LevelIDs_MysticRuins, 0, Characters_Gamma, 5, 1 }, // Gamma's objectives changed
 	{ 0x0C5, LevelIDs_MysticRuins, 1, Characters_Gamma, 7, 0 }, // Gamma remembers his brothers
@@ -517,6 +517,10 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x0072: // Amy outro
 		SetEventFlag((EventFlags)FLAG_AMY_EC_SINK); // Egg Carrier sunk in Amy's outro
 		break;
+	case 0x0083: // Knuckles goes to the Past from Casino
+		WriteData((char*)0x7A1AA0, (char)0xC3u); // Remove Tikal hints
+		WriteData((char*)0x476440, (char)0xC3u); // Remove Radar
+		break;
 	case 0x0086: // Knuckles returns from the Past to Station Square
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_SS_ENTRANCE_CASINO);
 		break;
@@ -526,6 +530,8 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x008D: // Knuckles goes to the Past from Lost World
 		WriteData<1>((char*)0x5E18B0, 0xC3u); // Level object that plays music
+		WriteData((char*)0x7A1AA0, (char)0xC3u); // Remove Tikal hints
+		WriteData((char*)0x476440, (char)0xC3u); // Remove Radar
 		break;
 	case 0x0092: // Knuckles follows Gamma to Final Egg
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_MR_APPEAR_FINALEGG); // Open Final Egg for Knuckles
