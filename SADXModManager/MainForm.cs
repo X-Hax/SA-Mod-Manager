@@ -211,6 +211,7 @@ namespace SADXModManager
             comboBoxTestSpawnEvent.SelectedIndex     = loaderini.TestSpawnEvent;
             checkBoxTestSpawnSave.Checked            = loaderini.TestSpawnSaveID != -1;
             numericUpDownTestSpawnSaveID.Value       = Math.Max(1, loaderini.TestSpawnSaveID);
+            buttonUpdateD3D8to9.Visible              = CheckD3D8to9Update();
             // Load the config INI upon window load
             LoadConfigIni();
         }
@@ -1854,10 +1855,65 @@ namespace SADXModManager
 
         private void checkBoxEnableD3D9_Click(object sender, EventArgs e)
         {
-            if (checkBoxEnableD3D9.Checked && !File.Exists("d3d8.dll"))
-                File.Copy("d3d8m.dll", "d3d8.dll");
+            if (checkBoxEnableD3D9.Checked)
+            {
+                try
+                {
+                    File.Copy("d3d8m.dll", "d3d8.dll", true);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Unable to update d3d8.dll:\n" + ex.Message.ToString());
+                }
+            }
             else if (!checkBoxEnableD3D9.Checked && File.Exists("d3d8.dll"))
                 File.Delete("d3d8.dll");
         }
-    }
+
+        private void buttonUpdateD3D8to9_Click(object sender, EventArgs e)
+        {
+            DialogResult update = MessageBox.Show(this, "The version of d3d8.dll in SADX folder differs from the one included with the Mod Loader. Would you like to update the installed copy?", "SADX Mod Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (update == DialogResult.Yes)
+            {
+                try
+                {
+                    File.Copy("d3d8m.dll", "d3d8.dll", true);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "Unable to update d3d8.dll:\n" + ex.Message.ToString(), "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                buttonUpdateD3D8to9.Visible = CheckD3D8to9Update();
+            }
+        }
+
+        private bool CheckD3D8to9Update()
+        {
+            if (!File.Exists("d3d8m.dll") || !File.Exists("d3d8.dll"))
+                return false;
+            try
+            {
+                long length1 = new System.IO.FileInfo("d3d8.dll").Length;
+                long length2 = new System.IO.FileInfo("d3d8m.dll").Length;
+                if (length1 != length2)
+                    return true;
+                else
+                {
+                    byte[] file1 = File.ReadAllBytes("d3d8.dll");
+                    byte[] file2 = File.ReadAllBytes("d3d8m.dll");
+                    for (int i = 0; i < file1.Length; i++)
+                    {
+                        if (file1[i] != file2[i])
+                            return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Unable to check d3d8to9 version:\n" + ex.Message.ToString(), "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+	}
 }

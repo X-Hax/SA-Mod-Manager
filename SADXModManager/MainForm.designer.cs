@@ -123,6 +123,8 @@
             this.screenCheckBox = new System.Windows.Forms.CheckBox();
             this.fileCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.labelTestSpawnTime = new System.Windows.Forms.Label();
+            this.comboBoxTestSpawnTime = new System.Windows.Forms.ComboBox();
             this.checkBoxTestSpawnAngleHex = new System.Windows.Forms.CheckBox();
             this.checkBoxTestSpawnPosition = new System.Windows.Forms.CheckBox();
             this.buttonTestSpawnPlay = new System.Windows.Forms.Button();
@@ -155,8 +157,7 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.comboBoxTestSpawnTime = new System.Windows.Forms.ComboBox();
-            this.labelTestSpawnTime = new System.Windows.Forms.Label();
+            this.buttonUpdateD3D8to9 = new System.Windows.Forms.Button();
             label3 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -792,6 +793,7 @@
             // 
             this.groupBox_Visuals.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox_Visuals.Controls.Add(this.buttonUpdateD3D8to9);
             this.groupBox_Visuals.Controls.Add(this.checkBoxEnableD3D9);
             this.groupBox_Visuals.Controls.Add(this.label7);
             this.groupBox_Visuals.Controls.Add(this.checkScaleHud);
@@ -1456,6 +1458,32 @@
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Test Spawn";
             // 
+            // labelTestSpawnTime
+            // 
+            this.labelTestSpawnTime.AutoSize = true;
+            this.labelTestSpawnTime.Location = new System.Drawing.Point(243, 47);
+            this.labelTestSpawnTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnTime.Name = "labelTestSpawnTime";
+            this.labelTestSpawnTime.Size = new System.Drawing.Size(33, 13);
+            this.labelTestSpawnTime.TabIndex = 35;
+            this.labelTestSpawnTime.Text = "Time:";
+            this.labelTestSpawnTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.toolTip.SetToolTip(this.labelTestSpawnTime, "Act ID (zero-based).");
+            // 
+            // comboBoxTestSpawnTime
+            // 
+            this.comboBoxTestSpawnTime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTestSpawnTime.FormattingEnabled = true;
+            this.comboBoxTestSpawnTime.Items.AddRange(new object[] {
+            "Unset",
+            "Day",
+            "Evening",
+            "Night"});
+            this.comboBoxTestSpawnTime.Location = new System.Drawing.Point(281, 44);
+            this.comboBoxTestSpawnTime.Name = "comboBoxTestSpawnTime";
+            this.comboBoxTestSpawnTime.Size = new System.Drawing.Size(61, 21);
+            this.comboBoxTestSpawnTime.TabIndex = 34;
+            // 
             // checkBoxTestSpawnAngleHex
             // 
             this.checkBoxTestSpawnAngleHex.AutoSize = true;
@@ -1887,31 +1915,16 @@
             this.generateManifestToolStripMenuItem.Text = "Generate manifest";
             this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
             // 
-            // comboBoxTestSpawnTime
+            // buttonUpdateD3D8to9
             // 
-            this.comboBoxTestSpawnTime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTestSpawnTime.FormattingEnabled = true;
-            this.comboBoxTestSpawnTime.Items.AddRange(new object[] {
-            "Unset",
-            "Day",
-            "Evening",
-            "Night"});
-            this.comboBoxTestSpawnTime.Location = new System.Drawing.Point(281, 44);
-            this.comboBoxTestSpawnTime.Name = "comboBoxTestSpawnTime";
-            this.comboBoxTestSpawnTime.Size = new System.Drawing.Size(61, 21);
-            this.comboBoxTestSpawnTime.TabIndex = 34;
-            // 
-            // labelTestSpawnTime
-            // 
-            this.labelTestSpawnTime.AutoSize = true;
-            this.labelTestSpawnTime.Location = new System.Drawing.Point(243, 47);
-            this.labelTestSpawnTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelTestSpawnTime.Name = "labelTestSpawnTime";
-            this.labelTestSpawnTime.Size = new System.Drawing.Size(33, 13);
-            this.labelTestSpawnTime.TabIndex = 35;
-            this.labelTestSpawnTime.Text = "Time:";
-            this.labelTestSpawnTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.toolTip.SetToolTip(this.labelTestSpawnTime, "Act ID (zero-based).");
+            this.buttonUpdateD3D8to9.Location = new System.Drawing.Point(226, 115);
+            this.buttonUpdateD3D8to9.Name = "buttonUpdateD3D8to9";
+            this.buttonUpdateD3D8to9.Size = new System.Drawing.Size(100, 23);
+            this.buttonUpdateD3D8to9.TabIndex = 13;
+            this.buttonUpdateD3D8to9.Text = "Update D3D8to9";
+            this.buttonUpdateD3D8to9.UseVisualStyleBackColor = true;
+            this.buttonUpdateD3D8to9.Visible = false;
+            this.buttonUpdateD3D8to9.Click += new System.EventHandler(this.buttonUpdateD3D8to9_Click);
             // 
             // MainForm
             // 
@@ -2103,5 +2116,6 @@
         private System.Windows.Forms.CheckBox checkBoxEnableD3D9;
         private System.Windows.Forms.Label labelTestSpawnTime;
         private System.Windows.Forms.ComboBox comboBoxTestSpawnTime;
-    }
+		private System.Windows.Forms.Button buttonUpdateD3D8to9;
+	}
 }
