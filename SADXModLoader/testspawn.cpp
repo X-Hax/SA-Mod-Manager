@@ -3,9 +3,9 @@
 #include <string>
 #include <unordered_map>
 
-static bool testspawn_enabled		= false;
-static bool testspawn_eventenabled	= false;
-static bool testspawn_posenabled	= false;
+static bool testspawn_enabled      = false;
+static bool testspawn_eventenabled = false;
+static bool testspawn_posenabled   = false;
 
 static int testspawn_eventid;
 static int testspawn_timeofday;
@@ -93,9 +93,9 @@ static int ForceTimeOfDay()
 }
 
 static const std::unordered_map<std::wstring, int> time_ids_map = {
-	{ L"day",		TimesOfDay_Day },
-	{ L"evening",   TimesOfDay_Evening },
-	{ L"night",		TimesOfDay_Night },
+	{ L"day",     TimesOfDay_Day },
+	{ L"evening", TimesOfDay_Evening },
+	{ L"night",   TimesOfDay_Night },
 };
 
 static int parse_time_id(const std::wstring& str)
@@ -179,8 +179,8 @@ struct CutsceneLevelData
 	int level;
 	int act;
 	int character;
-	int scene_select;	// if -1: no story integration
-	int seqno;			// subscene
+	int scene_select; // if -1: no story integration
+	int seqno;        // subscene
 };
 
 CutsceneLevelData CutsceneList[] {
@@ -302,7 +302,7 @@ CutsceneLevelData CutsceneList[] {
 	{ 0x09D, LevelIDs_MysticRuins, 1, Characters_Knuckles, 10, 0 }, // Knuckles restores the Master Emerald
 	{ 0x09F, LevelIDs_MysticRuins, 1, Characters_Knuckles, 11, 2 }, // Knuckles Outro
 	{ 0x0A0, LevelIDs_StationSquare, 4, Characters_Knuckles, 3, 2 }, // Knuckles follows Eggman in Station Square hotel
-		
+
 	// Gamma events
 	{ 0x0B0, LevelIDs_MysticRuins, 3, Characters_Gamma, 0, 0 }, // Gamma Intro
 	{ 0x0B1, LevelIDs_MysticRuins, 3, Characters_Gamma, 0, 2 }, // Gamma Enters Final Egg
@@ -396,7 +396,7 @@ CutsceneLevelData CutsceneList[] {
 
 	// Additional Last Story events
 	{ 0x160, LevelIDs_Past, 2, Characters_Sonic, 2, 2 }, // The Echidna tribe faces Chaos
-		
+
 	// Upgrade Cutscenes
 	{ 0x165, LevelIDs_StationSquare, 4, Characters_Sonic, -1 }, // Sonic gets the Crystal Ring
 	{ 0x166, LevelIDs_StationSquare, 2, Characters_Sonic, 3, 2 }, // Sonic gets the LSDash Shoe
