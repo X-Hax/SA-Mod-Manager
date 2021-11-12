@@ -266,7 +266,7 @@ static const std::unordered_map<int, CutsceneLevelData> CutsceneList = {
 	{ 0x06E, { LevelIDs_MysticRuins, 2, Characters_Amy, 6, 1 } }, // Amy discovers the Egg Base
 	{ 0x06F, { LevelIDs_FinalEgg, 0, Characters_Amy, 6, 3 } }, // Amy chased by Zero in Final Egg
 	{ 0x070, { LevelIDs_MysticRuins, 3, Characters_Amy, 7, 0 } }, // Amy and Birdie head back to the Egg Carrier
-	{ 0x071, { LevelIDs_Zero, 0, Characters_Amy, 8, 1 } }, // Zero confronts Amy
+	{ 0x071, { LevelIDs_EggCarrierOutside, 0, Characters_Amy, 8, 1 } }, // Zero confronts Amy
 	{ 0x072, { LevelIDs_EggCarrierOutside, 0, Characters_Amy, 8, 4 } }, // Amy's Outro
 	{ 0x075, { LevelIDs_StationSquare, 1, Characters_Amy, 1, 10 } }, // Amy's kidnapped to the Mystic Ruins
 
@@ -322,7 +322,7 @@ static const std::unordered_map<int, CutsceneLevelData> CutsceneList = {
 	{ 0x0C2, { LevelIDs_EggCarrierOutside, 2, Characters_Gamma, 4, 15 } }, // Gamma after the battle with Sonic
 	{ 0x0C3, { LevelIDs_MysticRuins, 0, Characters_Gamma, 5, 1 } }, // Gamma's objectives changed
 	{ 0x0C5, { LevelIDs_MysticRuins, 1, Characters_Gamma, 7, 0 } }, // Gamma remembers his brothers
-	{ 0x0C7, { LevelIDs_E101R, 0, 6, 8, Characters_Gamma } }, // Gamma Outro
+	{ 0x0C7, { LevelIDs_EggCarrierOutside, 0, 6, 8, Characters_Gamma } }, // Gamma Outro
 
 	// Big events
 	{ 0x0D0, { LevelIDs_MysticRuins, 2, Characters_Big, 0, 0 } }, // Big Intro
@@ -511,6 +511,7 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x0070: // Amy and Birdie head back to the Egg Carrier
 		SetLevelCleared(LevelIDs_FinalEgg, Characters_Amy);
 		break;
+	case 0x0071: // Amy confronted by Zero
 	case 0x0072: // Amy outro
 		SetEventFlag((EventFlags)FLAG_AMY_EC_SINK); // Egg Carrier sunk in Amy's outro
 		break;
@@ -566,6 +567,9 @@ static void SetEventFlagsForCutscene(int eventID)
 	case 0x00C5: // Gamma remembers his brothers
 		SetLevelCleared(LevelIDs_RedMountain, Characters_Gamma);
 		SetEventFlag((EventFlags)FLAG_E102_MR_ENTRANCE_MOUNTAIN);
+		break;
+	case 0x00C7: // Gamma outro
+		SetEventFlag((EventFlags)FLAG_E102_EC_SINK);
 		break;
 	case 0x00D3: // Big finds Froggy with Tails
 		SetLevelCleared(LevelIDs_IceCap, Characters_Big);
