@@ -678,7 +678,7 @@ static Trampoline* CheckStandaloneEvent_t = nullptr;
 static void __cdecl CustomEventTask(task* tp)
 {
 	// Wait a few frames for the level to be entirely set up
-	if (++tp->awp->work.sl[0] > 1)
+	if (++tp->awp->work.sl[0] > 0)
 	{
 		// Don't load the event if it's already playing, override if another event is playing.
 		if (!(EV_MainThread_ptr && CurrentCutsceneID == testspawn_eventid))
