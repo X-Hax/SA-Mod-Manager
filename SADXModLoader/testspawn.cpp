@@ -698,9 +698,10 @@ static void __cdecl CustomEventTask(task* tp)
 	}
 }
 
-static void __cdecl CheckStandaloneEvent_r()
+static signed int __cdecl CheckStandaloneEvent_r()
 {
 	CreateElementalTask(8, LEV_0, CustomEventTask);
+	return 1;
 }
 
 static void __cdecl ForceEventMode()
