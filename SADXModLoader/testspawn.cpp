@@ -723,14 +723,10 @@ static void __cdecl ForceEventMode()
 	// If we have data for the event
 	if (data != nullptr)
 	{
-		// Set up level and character including the override
 		SetupCharacter(testspawn_charenabled ? CurrentCharacter : data->character);
-		SetEventFlagsForCutscene(testspawn_eventid);		
-		if (testspawn_levelenabled)
-			SetLevelAndAct(CurrentLevel, CurrentAct);
-		else
-			SetLevelAndAct(data->level, data->act);
-
+		SetEventFlagsForCutscene(testspawn_eventid);
+		if (!testspawn_levelenabled) SetLevelAndAct(data->level, data->act);
+		
 		// If the event has story integration
 		if (data->scene_select != -1)
 		{
