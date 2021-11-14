@@ -3,7 +3,6 @@
 #include <string>
 #include <unordered_map>
 
-static bool testspawn_enabled      = false;
 static bool testspawn_eventenabled = false;
 static bool testspawn_posenabled   = false;
 static bool testspawn_charenabled  = false;
@@ -796,14 +795,12 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 		{
 			CurrentLevel = parse_level_id(argv[++i]);
 			PrintDebug("Loading level: %d\n", CurrentLevel);
-			testspawn_enabled = true;
 			testspawn_levelenabled = true;
 		}
 		else if (!wcscmp(argv[i], L"--act") || !wcscmp(argv[i], L"-a"))
 		{
 			CurrentAct = _wtoi(argv[++i]);
 			PrintDebug("Loading act: %d\n", CurrentAct);
-			testspawn_enabled = true;
 			testspawn_levelenabled = true;
 		}
 		else if (!wcscmp(argv[i], L"--character") || !wcscmp(argv[i], L"-c"))
@@ -835,7 +832,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 		}
 		else if (!wcscmp(argv[i], L"--position") || !wcscmp(argv[i], L"-p"))
 		{
-			if (!testspawn_enabled)
+			if (!testspawn_levelenabled)
 			{
 				MessageBoxA(nullptr, "Insufficient arguments for parameter: --position.\n"
 					"Either --level or --act must be specified before --position.",
@@ -934,7 +931,7 @@ void ApplyTestSpawn()
 	{
 		WriteJump(reinterpret_cast<void*>(0x0040C106), ForceEventMode_asm);
 	}
-	else if (testspawn_enabled)
+	else if (testspawn_levelenabled)
 	{
 		WriteData(reinterpret_cast<GameModes*>(0x0040C10C), GameModes_Trial);
 	}
