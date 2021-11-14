@@ -6,6 +6,8 @@
 static bool testspawn_enabled      = false;
 static bool testspawn_eventenabled = false;
 static bool testspawn_posenabled   = false;
+static bool testspawn_charenabled  = false;
+static bool testspawn_levelenabled = false;
 
 static int testspawn_eventid = 0;
 static int testspawn_timeofday = TimesOfDay_Day;
@@ -165,7 +167,7 @@ static void SetPlayerInitialPosition_r(taskwk* twp)
 
 static void TestSpawn_HookPosition(int level, int act, float x, float y, float z, Angle ang)
 {
-	if (testspawn_posenabled == false)
+	if (!testspawn_posenabled)
 	{
 		SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r, true);
 		gTestSpawnStartPos = { (int16_t)level, (int16_t)act, { x, y, z }, ang };
@@ -589,6 +591,7 @@ static void SetEventFlagsForCutscene(int eventID)
 		break;
 	case 0x0122: // Knuckles sensing the emeralds on the Egg Carrier
 		TestSpawn_HookPosition(LevelIDs_EggCarrierOutside, 5, 80.0f, -70.0f, 0.0f, 0xC000);
+		WriteData(reinterpret_cast<uint8_t*>(0x51DC30), static_cast<uint8_t>(0xC3u)); // Remove pool water
 		SetEventFlag((EventFlags)FLAG_KNUCKLES_EC_PALMSWITCH);
 		break;
 	case 0x0131: // Winning at Hedgehog Hammer
@@ -678,7 +681,17 @@ static Trampoline* CheckStandaloneEvent_t = nullptr;
 static void __cdecl CustomEventTask(task* tp)
 {
 	// Wait a few frames for the level to be entirely set up
-	if (++tp->awp->work.sl[0] > 0)
+	int delay = 1;
+	switch (testspawn_eventid)
+	{
+	case 0x006F: // Amy chased by Zero in Final Egg
+		delay = 0;
+		break;
+	case 0x0083: // Knuckles taken to the Past from Casino
+		delay = 2;
+		break;
+	}
+	if (++tp->awp->work.sl[0] > delay)
 	{
 		// Don't load the event if it's already playing, override if another event is playing.
 		if (!(EV_MainThread_ptr && CurrentCutsceneID == testspawn_eventid))
@@ -711,10 +724,14 @@ static void __cdecl ForceEventMode()
 	// If we have data for the event
 	if (data != nullptr)
 	{
-		SetupCharacter(data->character);
-		SetEventFlagsForCutscene(testspawn_eventid);
-		SetLevelAndAct(data->level, data->act);
-		
+		// Set up level and character including the override
+		SetupCharacter(testspawn_charenabled ? CurrentCharacter : data->character);
+		SetEventFlagsForCutscene(testspawn_eventid);		
+		if (testspawn_levelenabled)
+			SetLevelAndAct(CurrentLevel, CurrentAct);
+		else
+			SetLevelAndAct(data->level, data->act);
+
 		// If the event has story integration
 		if (data->scene_select != -1)
 		{
@@ -727,7 +744,8 @@ static void __cdecl ForceEventMode()
 			// If in adventure field then run the event as a story event
 			if (GetLevelType() == 1)
 			{
-				StoryEventMode = 2; // Force story event to play
+				if (testspawn_eventid != 0x0080) // Exclude Knuckles' intro because it plays twice
+					StoryEventMode = 2; // Force story event to play
 				StoryEventID = testspawn_eventid;
 				GameMode = GameModes_Adventure_Field;
 				return;
@@ -779,12 +797,14 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			CurrentLevel = parse_level_id(argv[++i]);
 			PrintDebug("Loading level: %d\n", CurrentLevel);
 			testspawn_enabled = true;
+			testspawn_levelenabled = true;
 		}
 		else if (!wcscmp(argv[i], L"--act") || !wcscmp(argv[i], L"-a"))
 		{
 			CurrentAct = _wtoi(argv[++i]);
 			PrintDebug("Loading act: %d\n", CurrentAct);
 			testspawn_enabled = true;
+			testspawn_levelenabled = true;
 		}
 		else if (!wcscmp(argv[i], L"--character") || !wcscmp(argv[i], L"-c"))
 		{
@@ -802,6 +822,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			WriteData<5>(reinterpret_cast<void*>(0x00415007), static_cast<uint8_t>(0x90u));
 
 			PrintDebug("Loading character: %d\n", CurrentCharacter);
+			testspawn_charenabled = true;
 		}
 		else if (!wcscmp(argv[i], L"--time") || !wcscmp(argv[i], L"-t"))
 		{
@@ -814,7 +835,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 		}
 		else if (!wcscmp(argv[i], L"--position") || !wcscmp(argv[i], L"-p"))
 		{
-			if (testspawn_enabled == false)
+			if (!testspawn_enabled)
 			{
 				MessageBoxA(nullptr, "Insufficient arguments for parameter: --position.\n"
 					"Either --level or --act must be specified before --position.",
@@ -864,7 +885,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 		}
 		else if (!wcscmp(argv[i], L"--rotation") || !wcscmp(argv[i], L"-r"))
 		{
-			if (testspawn_posenabled == false)
+			if (!testspawn_posenabled)
 			{
 				MessageBoxA(nullptr, "Insufficient arguments for parameter: --rotation.\n"
 					"--position must be specified before --rotation.",
@@ -909,11 +930,11 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 void ApplyTestSpawn()
 {
-	if (testspawn_eventenabled == true)
+	if (testspawn_eventenabled)
 	{
 		WriteJump(reinterpret_cast<void*>(0x0040C106), ForceEventMode_asm);
 	}
-	else if (testspawn_enabled == true)
+	else if (testspawn_enabled)
 	{
 		WriteData(reinterpret_cast<GameModes*>(0x0040C10C), GameModes_Trial);
 	}
