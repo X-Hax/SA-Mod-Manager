@@ -1571,6 +1571,7 @@ namespace SADXModManager
             comboBoxTestSpawnLevel.Enabled = numericUpDownTestSpawnAct.Enabled = labelTestSpawnAct.Enabled = checkBoxTestSpawnLevel.Checked;
             if (comboBoxTestSpawnLevel.SelectedIndex == -1)
                 comboBoxTestSpawnLevel.SelectedIndex = 0;
+            ShowOrHideTestSpawnEventWarning();
         }
 
         private void checkBoxTestSpawnCharacter_CheckedChanged(object sender, EventArgs e)
@@ -1578,6 +1579,7 @@ namespace SADXModManager
             comboBoxTestSpawnCharacter.Enabled = checkBoxTestSpawnCharacter.Checked;
             if (comboBoxTestSpawnCharacter.SelectedIndex == -1)
                 comboBoxTestSpawnCharacter.SelectedIndex = 0;
+            ShowOrHideTestSpawnEventWarning();
         }
 
         private void checkBoxTestSpawnEvent_CheckedChanged(object sender, EventArgs e)
@@ -1585,6 +1587,7 @@ namespace SADXModManager
             comboBoxTestSpawnEvent.Enabled = checkBoxTestSpawnEvent.Checked;
             if (comboBoxTestSpawnEvent.SelectedIndex == -1)
                 comboBoxTestSpawnEvent.SelectedIndex = 0;
+            ShowOrHideTestSpawnEventWarning();
         }
 
         private void checkBoxTestSpawnSave_CheckStateChanged(object sender, EventArgs e)
@@ -1851,6 +1854,14 @@ namespace SADXModManager
         private void checkBoxTestSpawnAngleHex_CheckedChanged(object sender, EventArgs e)
         {
             numericUpDownTestSpawnAngle.Hexadecimal = checkBoxTestSpawnAngleHex.Checked;
+        }
+
+        private void ShowOrHideTestSpawnEventWarning()
+        {
+            if (!checkBoxTestSpawnEvent.Checked)
+                labelTestSpawnWarning.Visible = false;
+            else
+                labelTestSpawnWarning.Visible = checkBoxTestSpawnCharacter.Checked || checkBoxTestSpawnLevel.Checked;
         }
 
         private void checkBoxEnableD3D9_Click(object sender, EventArgs e)

@@ -75,6 +75,7 @@
             this.windowHeight = new System.Windows.Forms.NumericUpDown();
             this.windowWidth = new System.Windows.Forms.NumericUpDown();
             this.groupBox_Visuals = new System.Windows.Forms.GroupBox();
+            this.buttonUpdateD3D8to9 = new System.Windows.Forms.Button();
             this.checkBoxEnableD3D9 = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.checkScaleHud = new System.Windows.Forms.CheckBox();
@@ -157,7 +158,7 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buttonUpdateD3D8to9 = new System.Windows.Forms.Button();
+            this.labelTestSpawnWarning = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -815,6 +816,17 @@
             this.groupBox_Visuals.TabStop = false;
             this.groupBox_Visuals.Text = "Visuals";
             // 
+            // buttonUpdateD3D8to9
+            // 
+            this.buttonUpdateD3D8to9.Location = new System.Drawing.Point(226, 115);
+            this.buttonUpdateD3D8to9.Name = "buttonUpdateD3D8to9";
+            this.buttonUpdateD3D8to9.Size = new System.Drawing.Size(100, 23);
+            this.buttonUpdateD3D8to9.TabIndex = 13;
+            this.buttonUpdateD3D8to9.Text = "Update D3D8to9";
+            this.buttonUpdateD3D8to9.UseVisualStyleBackColor = true;
+            this.buttonUpdateD3D8to9.Visible = false;
+            this.buttonUpdateD3D8to9.Click += new System.EventHandler(this.buttonUpdateD3D8to9_Click);
+            // 
             // checkBoxEnableD3D9
             // 
             this.checkBoxEnableD3D9.AutoSize = true;
@@ -1428,6 +1440,7 @@
             // 
             this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox12.Controls.Add(this.labelTestSpawnWarning);
             this.groupBox12.Controls.Add(this.labelTestSpawnTime);
             this.groupBox12.Controls.Add(this.comboBoxTestSpawnTime);
             this.groupBox12.Controls.Add(this.checkBoxTestSpawnAngleHex);
@@ -1915,16 +1928,15 @@
             this.generateManifestToolStripMenuItem.Text = "Generate manifest";
             this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
             // 
-            // buttonUpdateD3D8to9
+            // labelTestSpawnWarning
             // 
-            this.buttonUpdateD3D8to9.Location = new System.Drawing.Point(226, 115);
-            this.buttonUpdateD3D8to9.Name = "buttonUpdateD3D8to9";
-            this.buttonUpdateD3D8to9.Size = new System.Drawing.Size(100, 23);
-            this.buttonUpdateD3D8to9.TabIndex = 13;
-            this.buttonUpdateD3D8to9.Text = "Update D3D8to9";
-            this.buttonUpdateD3D8to9.UseVisualStyleBackColor = true;
-            this.buttonUpdateD3D8to9.Visible = false;
-            this.buttonUpdateD3D8to9.Click += new System.EventHandler(this.buttonUpdateD3D8to9_Click);
+            this.labelTestSpawnWarning.AutoSize = true;
+            this.labelTestSpawnWarning.Location = new System.Drawing.Point(91, 202);
+            this.labelTestSpawnWarning.Name = "labelTestSpawnWarning";
+            this.labelTestSpawnWarning.Size = new System.Drawing.Size(293, 13);
+            this.labelTestSpawnWarning.TabIndex = 36;
+            this.labelTestSpawnWarning.Text = "Overriding levels or characters in events may cause crashes.";
+            this.labelTestSpawnWarning.Visible = false;
             // 
             // MainForm
             // 
@@ -2117,5 +2129,6 @@
         private System.Windows.Forms.Label labelTestSpawnTime;
         private System.Windows.Forms.ComboBox comboBoxTestSpawnTime;
 		private System.Windows.Forms.Button buttonUpdateD3D8to9;
+		private System.Windows.Forms.Label labelTestSpawnWarning;
 	}
 }
