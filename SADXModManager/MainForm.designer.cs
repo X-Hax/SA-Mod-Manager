@@ -1594,10 +1594,10 @@
             this.comboBoxTestSpawnCharacter.FormattingEnabled = true;
             this.comboBoxTestSpawnCharacter.Items.AddRange(new object[] {
             "Sonic",
-            "Eggman",
+            "Eggman (unused)",
             "Tails",
             "Knuckles",
-            "Tikal",
+            "Tikal (unused)",
             "Amy",
             "Gamma",
             "Big",
