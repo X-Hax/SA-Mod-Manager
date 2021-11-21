@@ -1383,6 +1383,13 @@ struct pathwk
 	int mAngle;
 };
 
+struct _OBJ_LANDCOLL
+{
+	int slAttribute;
+	obj* pObject;
+	task* pTask;
+};
+
 #pragma pack(pop)
 
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
