@@ -782,8 +782,6 @@ enum StoryFlags
 	FLAG_ALL_LAST = 0x1E5,
 };
 
-
-
 enum EV
 {
 	EV_INIT = 0x0,

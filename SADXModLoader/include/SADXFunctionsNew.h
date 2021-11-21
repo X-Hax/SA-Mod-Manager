@@ -54,7 +54,8 @@ FunctionPointer(void, CharacterShadow, (taskwk* twp, shadowwk* swp), 0x49F1A0);
 FunctionPointer(void, PJoinVertexes, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x43FA90);
 FunctionPointer(void, PInitialize, (int num, task* tp), 0x442750);
 FunctionPointer(BOOL, SeqCheckFlag, (int no), 0x412D20);
-FunctionPointer(int, CheckCollisionCylinderP, (NJS_POINT3* vp, float r, float h), 0x4418D0); // Check if player is in non rotated cylinder, returns 0 or player id + 1.
+FunctionPointer(int, CheckCollisionCylinderP, (NJS_POINT3* vp, float r, float h), 0x4418D0); // Check if a player is in a non-rotated cylinder, returns 0 or player id + 1
+FunctionPointer(int, CheckCollisionP, (NJS_POINT3* vp, float d), 0x441840); // Check if a player is in a sphere, returns 0 or player id + 1
 FunctionPointer(void, SetInputP, (uint8_t pno, int8_t mode), 0x441260);
 FunctionPointer(void, SetPositionP, (uint8_t pno, float x, float y, float z), 0x441780);
 FunctionPointer(void, SetRotationP, (uint8_t pno, Angle angx, Angle angy, Angle angz), 0x4415F0);
