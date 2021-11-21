@@ -27,4 +27,27 @@ DataArray(obj, objMobileLandObject, 0x3B33930, 256);
 DataPointer(uint16_t, numMobileEntry, 0x3B2D510);
 DataArray(_OBJ_LANDCOLL, MobileEntry, 0x3B32D30, 256);
 
+DataArray(pathgrp, pathgrp_tbl, 0x91A858, 22);     // List of null-terminated path list
+DataArray(pathtag*, pathdata_0002, 0x9190F4, 5);
+DataArray(pathtag*, pathdata_0100, 0x10363E4, 6);  // Emerald Coast Act 1 paths
+DataArray(pathtag*, pathdata_0101, 0x10363FC, 9);  // Emerald Coast Act 2 paths
+DataArray(pathtag*, pathdata_0200, 0xC02550, 2);   // Windy Valley Act 1 paths
+DataArray(pathtag*, pathdata_0202, 0xC02558, 8);   // Windy Valley Act 3 paths
+DataArray(pathtag*, pathdata_0301, 0x26B55DC, 5);  // Twinkle Park Act 2 paths
+DataArray(pathtag*, pathdata_0400, 0x26AA508, 5);  // Speed Highway Act 1 paths
+DataArray(pathtag*, pathdata_0402, 0x26AA530, 4);  // Speed Highway Act 3 paths
+DataArray(pathtag*, pathdata_0500, 0x26AA530, 3);  // Red Mountain Act 1 paths
+DataArray(pathtag*, pathdata_0501, 0x24C31B4, 11); // Red Mountain Act 2 paths
+DataArray(pathtag*, pathdata_0600, 0x2230F14, 3);  // Sky Deck Act 1 paths
+DataArray(pathtag*, pathdata_0700, 0x20343CC, 4);  // Lost World Act 1 paths
+DataArray(pathtag*, pathdata_0701, 0x20343DC, 5);  // Lost World Act 2 paths
+DataArray(pathtag*, pathdata_0801, 0xE3BDEC, 2);   // Ice Cap Act 2 paths
+DataArray(pathtag*, pathdata_0802, 0xE3BDF4, 11);  // Ice Cap Act 3 paths
+DataArray(pathtag*, pathdata_0901, 0x1D83980, 9);  // Casinopolis Act 2 paths
+DataArray(pathtag*, pathdata_0A00, 0x1A57714, 4);  // Final Egg Act 1 paths
+DataArray(pathtag*, pathdata_0A01, 0x1A57700, 3);  // Final Egg Act 2 paths
+DataArray(pathtag*, pathdata_0A02, 0x1A57720, 5);  // Final Egg Act 3 paths
+DataArray(pathtag*, pathdata_1A00, 0x2BBC468, 4);  // Station Square Act 1 paths
+DataArray(pathtag*, pathdata_1300, 0x21422140, 4); // Perfect Chaos paths
+
 #endif /* SADXMODLOADER_SADXVARSNEW_H */
