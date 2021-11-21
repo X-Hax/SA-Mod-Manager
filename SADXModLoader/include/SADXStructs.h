@@ -337,7 +337,7 @@ struct CharObj2
 	short Upgrades;
 	short Powerups;
 	short JumpTime;
-	short field_A;
+	short NoControlTime;
 	short UnderwaterTime;
 	short IdleTime;
 	short StatusBackup;
@@ -346,7 +346,7 @@ struct CharObj2
 	float LoopDist;
 	float Up;
 	NJS_VECTOR SomeKindOfSpeedOffset;
-	NJS_VECTOR field_2C;
+	NJS_VECTOR Effect;
 	NJS_VECTOR Speed;
 	NJS_VECTOR field_44;
 	NJS_VECTOR SurfaceNormal;
@@ -354,7 +354,7 @@ struct CharObj2
 	int SurfaceFlags_Old;
 	void *array_1x132;
 	ObjectMaster *ObjectHeld;
-	void *field_6C;
+	ObjectMaster* DynColObject;
 	void *SomePointer;
 	int field_74;
 	void *array_15x32;
