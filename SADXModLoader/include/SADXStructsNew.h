@@ -16,6 +16,12 @@
 
 struct task;
 struct taskwk;
+struct _OBJ_CAMERAPARAM;
+struct _OBJ_ADJUSTPARAM;
+
+typedef void(__cdecl* TaskFuncPtr)(task*);
+typedef void(__cdecl* CamFuncPtr)(_OBJ_CAMERAPARAM*);
+typedef void(__cdecl* CamAdjustPtr)(taskwk*, taskwk*, _OBJ_ADJUSTPARAM*);
 
 struct Angle3
 {
@@ -294,9 +300,9 @@ struct task
 	task* last;
 	task* ptp;
 	task* ctp;
-	void(__cdecl* exec)(task*);
-	void(__cdecl* disp)(task*);
-	void(__cdecl* dest)(task*);
+	TaskFuncPtr exec;
+	TaskFuncPtr disp;
+	TaskFuncPtr dest;
 	OBJ_CONDITION* ocp;
 	taskwk* twp;
 	motionwk* mwp;
@@ -483,7 +489,7 @@ struct enemywk
 	float height;
 	float weight;
 	task* lock_tp;
-	void(__cdecl* dest_org)(task*);
+	TaskFuncPtr dest_org;
 	char pnum;
 	char old_mode;
 	char old_smode;
@@ -562,6 +568,85 @@ struct _OBJ_CAMERAPARAM
 	float zDirPos;
 	float fDistance;
 	unsigned int ulTimer;
+};
+
+struct _OBJ_ADJUSTPARAM
+{
+	__int16 ssAdjustFlag;
+	int angSpeed[3];
+	float fSpeed;
+	int counter;
+};
+
+struct _OBJ_CAMERAMODE {
+	CamFuncPtr fnCamera;
+	char scCameraLevel;
+	char scCameraDirectMode;
+	int boolManual;
+	CamFuncPtr fnDebug;
+};
+
+struct _OBJ_CAMERAADJUST {
+	int slAttribute;
+	CamAdjustPtr fnAdjust;
+};
+
+struct _CameraSystemWork
+{
+	int G_boolSwitched;
+	__int16 G_ssCameraEntry;
+	char G_scCameraMode;
+	char G_scCameraDirect;
+	char G_scCameraLevel;
+	char G_scCameraAdjust;
+	char G_scCameraPriority;
+	char G_scCameraAttribute;
+	CamFuncPtr G_pfnCamera;
+	CamAdjustPtr G_pfnAdjust;
+	unsigned int G_ulTimer;
+	int G_ssRestoreLevel[6];
+	__int16 G_ssRestoreEntry[6];
+	char G_scRestoreAttribute[6];
+	CamFuncPtr G_pfnRestoreCamera[6];
+	CamAdjustPtr G_pfnRestoreAdjust[6];
+	void* G_pCameraEntry;
+	char G_scRestoreCameraMode[6];
+	char G_scRestoreCameraAdjust[6];
+	char G_scRestoreCameraDirect[6];
+	__int16 G_scRestoreCameraLevel[6];
+	NJS_POINT3 G_vecCameraOffset;
+};
+
+struct _camcontwk
+{
+	unsigned __int8 cammode;
+	unsigned __int8 camsmode;
+	unsigned __int8 bBlank;
+	unsigned __int8 btimer;
+	unsigned __int16 wtimer;
+	__int16 ssFlag;
+	float tgtdist;
+	float camxpos;
+	float camypos;
+	float camzpos;
+	float tgtxpos;
+	float tgtypos;
+	float tgtzpos;
+	int angx;
+	int angy;
+	int angz;
+	float prevcamxpos;
+	float prevcamypos;
+	float prevcamzpos;
+	int angx_spd;
+	int angy_spd;
+	int angz_spd;
+	float xspd;
+	float yspd;
+	float zspd;
+	float xacc;
+	float yacc;
+	float zacc;
 };
 
 struct sSplineData

@@ -23,11 +23,13 @@ typedef Uint32 NJD_DRAW;
 typedef Uint32 NJD_TEXATTR;
 typedef bool _BOOL1;
 
-#define TaskFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(task *tp),ADDRESS)
+#define TaskFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(task* tp),ADDRESS)
+#define CamAdjustFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(taskwk* twp,taskwk* ptwp,_OBJ_ADJUSTPARAM* adjwp),ADDRESS)
+#define CamFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(_OBJ_CAMERAPARAM* pParam),ADDRESS)
 
 // SADX Functions
-FunctionPointer(task*, CreateChildTask, (unsigned __int16 im, void(__cdecl* exec)(task*), task* tp), 0x40B940);
-FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, void(__cdecl* exec)(task*)), 0x40B860);
+FunctionPointer(task*, CreateChildTask, (unsigned __int16 im, TaskFuncPtr exec, task* tp), 0x40B940);
+FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, TaskFuncPtr exec), 0x40B860);
 TaskFunc(DestroyTask, 0x40B570);
 TaskFunc(FreeTask, 0x40B6C0);
 TaskFunc(B_Destructor, 0x59DBF0);
@@ -161,6 +163,58 @@ TaskFunc(CamHw1Tube1, 0x613400);             // Path task for camera guiding pat
 TaskFunc(CamHw1Spiral1, 0x613420);           // Path task for camera guiding paths (spiral)
 TaskFunc(CamHw1Hw14, 0x613420);              // Path task for camera guiding paths
 TaskFunc(CamHw1Hw15, 0x613460);              // Path task for camera guiding paths
+
+// Camera Functions
+FunctionPointer(void, CameraSetEventCameraFunc, (CamFuncPtr func, int8_t ucAdjustType, int8_t scCameraDirect), 0x437D20);
+FunctionPointer(void, CameraSetEventCamera, (int16_t ssCameraMode, int8_t ucAdjustType), 0x437BF0);
+FunctionPointer(BOOL, IsEventCamera, (), 0x436520);
+FunctionPointer(BOOL, IsCompulsionCamera, (), 0x436530);
+VoidFunc(CameraReleaseEventCamera, 0x436140);
+VoidFunc(CameraReleaseCollisionCamera, 0x436400);
+CamFunc(CameraFollow, 0x462E90);
+CamFunc(CameraKnuckle, 0x469590);
+CamFunc(CameraMagonote, 0x463360);
+CamFunc(CameraSonic, 0x46A760);
+CamFunc(CameraAshland, 0x46A350);
+CamFunc(CameraFishing, 0x466BB0);
+CamFunc(CameraFixed, 0x4674B0);
+CamFunc(CameraKlamath, 0x46A0A0);
+CamFunc(CameraLine, 0x4648D0);
+CamFunc(CameraNewFollow, 0x467520);
+CamFunc(CameraPoint, 0x469E90);
+CamFunc(CameraSonicP, 0x46A700);
+CamFunc(CameraAdvertise, 0x463000);
+CamFunc(CameraBack, 0x629730);
+CamFunc(CameraBack2, 0x6294B0);
+CamFunc(CameraBuilding, 0x463BD0);
+CamFunc(CameraCart, 0x46A490);
+CamFunc(CameraChaos, 0x4643B0);
+CamFunc(CameraChaosPole, 0x464520);
+CamFunc(CameraChaosStageInit, 0x4646F0);
+CamFunc(CameraChaosStd, 0x464590);
+CamFunc(CameraChaosWall, 0x464580);
+CamFunc(CameraE101R, 0x56CBF0);
+CamFunc(CameraE103, 0x467990);
+CamFunc(CameraEgm3, 0x57D6B0);
+CamFunc(CameraFollowG, 0x467740);
+CamFunc(CameraLR, 0x4627B0);
+CamFunc(CameraRuinWaka1, 0x4676C0);
+CamFunc(CameraSnowboard, 0x468A20);
+CamFunc(CameraSurvey, 0x465F50);
+CamFunc(CameraTaiho, 0x469350);
+CamFunc(CameraTornadeInside, 0x463860);
+CamFunc(CameraTwoHares, 0x466CE0);
+CamFunc(CameraLeave, 0x467680);
+CamFunc(CameraAvoid, 0x467B70);
+CamFunc(CameraModeEditor, 0x463050);
+CamFunc(CameraGuriGuri, 0x4631E0);
+CamFunc(CameraScanPath, 0x463970);
+CamFunc(CameraSurvey_BackKos, 0x466240);
+CamAdjustFunc(AdjustNone, 0x467D80);
+CamAdjustFunc(AdjustNormal, 0x467DC0);
+CamAdjustFunc(AdjustSlow, 0x468000);
+CamAdjustFunc(AdjustThreePoint, 0x469D10);
+CamAdjustFunc(AdjustForFreeCamera, 0x468800);
 
 // Ninja draw function
 FunctionPointer(void, njDrawModel_, (NJS_MODEL_SADX* mdl), 0x784AE0); // Offloads to polybuff drawing functions
