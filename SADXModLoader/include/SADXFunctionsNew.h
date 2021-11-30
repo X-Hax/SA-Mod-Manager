@@ -33,8 +33,6 @@ FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, voi
 FunctionPointer(void, DestroyTask, (task* tp), 0x40B570);
 FunctionPointer(void, FreeTask, (task* tp), 0x40B6C0);
 
-FunctionPointer(void, RegisterCollisionEntry, (int slAttribute, task* pTask, obj* pObject), 0x43B2E0);
-FunctionPointer(void, WithdrawCollisionEntry, (task* pTask, obj* pObject), 0x43B380);
 FunctionPointer(float, GetShadowPos, (float x, float y, float z, Angle3* ang), 0x49E920);
 FunctionPointer(void, B_Destructor, (task* tp), 0x59DBF0);
 FunctionPointer(void, PlayerGetRotation, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44BB60);
@@ -48,28 +46,18 @@ FunctionPointer(void, PlayerResetAngle, (taskwk* a1, motionwk2* a2, playerwk* a3
 FunctionPointer(void, PlayerGetInertia, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443650);
 FunctionPointer(void, PlayerGetGravity, (taskwk* a1, motionwk2* a2, playerwk* a3), 0x443800);
 FunctionPointer(void, PlayerGetAccelerationAir, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44B9C0);
-FunctionPointer(void, Knux_RunsActions, (taskwk* a1, motionwk2* a2, playerwk* a3), 0x478020);
 FunctionPointer(bool, Player_CheckBreak, (taskwk* a1), 0x4429C0);
 FunctionPointer(void, SetPlayerInitialPosition, (taskwk* twp), 0x414810);
 
 static const void* const Knux_NActPtr = (void*)0x476970;
-static inline signed int Knux_NAct(playerwk* a1, taskwk* a2, motionwk2* a3)
+static inline signed int Knux_NAct(playerwk* a1, taskwk* a2, motionwk2* a3);
 
-FunctionPointer(void, B_Destructor, (task* tp), 0x59DBF0);
-FunctionPointer(task*, CreateChildTask, (unsigned __int16 im, TaskFuncPtr exec, task* tp), 0x40B940);
-FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, TaskFuncPtr exec), 0x40B860);
-TaskFunc(DestroyTask, 0x40B570);
-TaskFunc(FreeTask, 0x40B6C0);
-TaskFunc(B_Destructor, 0x59DBF0);
 TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
 
 FunctionPointer(void, PGetRotation, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44BB60);
 FunctionPointer(void, PGetAcceleration, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44C270);
 FunctionPointer(void, PGetSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443F50);
 FunctionPointer(int, PSetPosition, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44CDF0);
-FunctionPointer(void, PSetCrashEffect, (taskwk* twp), 0x440790);
-FunctionPointer(void, PConvertVector_P2G, (taskwk* twp, NJS_POINT3* vp), 0x43EC90);
-FunctionPointer(void, PConvertVector_G2P, (taskwk* twp, NJS_POINT3* vp), 0x43EC00);
 FunctionPointer(void, PResetAngle, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443AD0);
 FunctionPointer(void, PGetInertia, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443650);
 FunctionPointer(void, PGetGravity, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443800);

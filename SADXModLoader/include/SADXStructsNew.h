@@ -1492,6 +1492,7 @@ struct SEQUENCE
 	__int16 nextsec;
 	unsigned __int16 stage;
 	unsigned __int16 destination;
+};
 
 struct _OBJ_LANDCOLL
 {
