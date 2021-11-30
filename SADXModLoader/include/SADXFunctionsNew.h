@@ -32,9 +32,9 @@ FunctionPointer(task*, CreateChildTask, (unsigned __int16 im, void(__cdecl* exec
 FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, void(__cdecl* exec)(task*)), 0x40B860);
 FunctionPointer(void, DestroyTask, (task* tp), 0x40B570);
 FunctionPointer(void, FreeTask, (task* tp), 0x40B6C0);
-
-FunctionPointer(float, GetShadowPos, (float x, float y, float z, Angle3* ang), 0x49E920);
 FunctionPointer(void, B_Destructor, (task* tp), 0x59DBF0);
+TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
+FunctionPointer(float, GetShadowPos, (float x, float y, float z, Angle3* ang), 0x49E920);
 FunctionPointer(void, PlayerGetRotation, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44BB60);
 FunctionPointer(void, PlayerGetAcceleration, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44C270);
 FunctionPointer(void, PlayerGetSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443F50);
@@ -48,12 +48,6 @@ FunctionPointer(void, PlayerGetGravity, (taskwk* a1, motionwk2* a2, playerwk* a3
 FunctionPointer(void, PlayerGetAccelerationAir, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44B9C0);
 FunctionPointer(bool, Player_CheckBreak, (taskwk* a1), 0x4429C0);
 FunctionPointer(void, SetPlayerInitialPosition, (taskwk* twp), 0x414810);
-
-static const void* const Knux_NActPtr = (void*)0x476970;
-static inline signed int Knux_NAct(playerwk* a1, taskwk* a2, motionwk2* a3);
-
-TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
-
 FunctionPointer(void, PGetRotation, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44BB60);
 FunctionPointer(void, PGetAcceleration, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44C270);
 FunctionPointer(void, PGetSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443F50);
