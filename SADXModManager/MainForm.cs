@@ -54,14 +54,16 @@ namespace SADXModManager
 
         private ConfigFile configFile;
         private const string sadxIni = "sonicDX.ini";
-        private bool checkedForUpdates;
+		private const string d3d8to9InstalledDLLName = "d3d8.dll";
+		private const string d3d8to9StoredDLLName = "d3d8m.dll";
+		private bool checkedForUpdates;
 
         const string updatePath = "mods/.updates";
         const string datadllpath = "system/CHRMODELS.dll";
         const string datadllorigpath = "system/CHRMODELS_orig.dll";
         const string loaderinipath = "mods/SADXModLoader.ini";
         const string loaderdllpath = "mods/SADXModLoader.dll";
-        SADXLoaderInfo loaderini;
+		SADXLoaderInfo loaderini;
         Dictionary<string, SADXModInfo> mods;
         const string codelstpath = "mods/Codes.lst";
         const string codexmlpath = "mods/Codes.xml";
@@ -212,8 +214,10 @@ namespace SADXModManager
             checkBoxTestSpawnSave.Checked            = loaderini.TestSpawnSaveID != -1;
             numericUpDownTestSpawnSaveID.Value       = Math.Max(1, loaderini.TestSpawnSaveID);
             buttonUpdateD3D8to9.Visible              = CheckD3D8to9Update();
-            // Load the config INI upon window load
-            LoadConfigIni();
+			checkBoxEnableD3D9.Enabled               = File.Exists(d3d8to9StoredDLLName);
+			checkBoxEnableD3D9.Checked               = File.Exists(d3d8to9InstalledDLLName);
+			// Load the config INI upon window load
+			LoadConfigIni();
         }
 
         private void HandleUri(string uri)
@@ -309,10 +313,6 @@ namespace SADXModManager
         {
             if (CheckForUpdates())
                 return;
-
-            checkBoxEnableD3D9.Enabled = File.Exists("d3d8m.dll");
-
-            checkBoxEnableD3D9.Checked = File.Exists("d3d8.dll");
 
             if (!File.Exists(datadllpath))
             {
@@ -1860,21 +1860,26 @@ namespace SADXModManager
                 labelTestSpawnWarning.Visible = checkBoxTestSpawnCharacter.Checked || checkBoxTestSpawnLevel.Checked;
         }
 
+		private void CopyD3D9Dll()
+		{
+			try
+			{
+				File.Copy(d3d8to9StoredDLLName, d3d8to9InstalledDLLName, true);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(this, "Unable to update d3d8.dll:\n" + ex.Message, "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
         private void checkBoxEnableD3D9_Click(object sender, EventArgs e)
         {
             if (checkBoxEnableD3D9.Checked)
             {
-                try
-                {
-                    File.Copy("d3d8m.dll", "d3d8.dll", true);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Unable to update d3d8.dll:\n" + ex.Message);
-                }
-            }
-            else if (!checkBoxEnableD3D9.Checked && File.Exists("d3d8.dll"))
-                File.Delete("d3d8.dll");
+				CopyD3D9Dll();
+			}
+            else if (!checkBoxEnableD3D9.Checked && File.Exists(d3d8to9InstalledDLLName))
+                File.Delete(d3d8to9InstalledDLLName);
         }
 
         private void buttonUpdateD3D8to9_Click(object sender, EventArgs e)
@@ -1887,32 +1892,25 @@ namespace SADXModManager
                                                   MessageBoxIcon.Question);
             if (update == DialogResult.Yes)
             {
-                try
-                {
-                    File.Copy("d3d8m.dll", "d3d8.dll", true);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(this, "Unable to update d3d8.dll:\n" + ex.Message, "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                buttonUpdateD3D8to9.Visible = CheckD3D8to9Update();
+				CopyD3D9Dll();
+				buttonUpdateD3D8to9.Visible = CheckD3D8to9Update();
             }
         }
 
         private bool CheckD3D8to9Update()
         {
-            if (!File.Exists("d3d8m.dll") || !File.Exists("d3d8.dll"))
+            if (!File.Exists(d3d8to9StoredDLLName) || !File.Exists(d3d8to9InstalledDLLName))
                 return false;
             try
             {
-                long length1 = new FileInfo("d3d8.dll").Length;
-                long length2 = new FileInfo("d3d8m.dll").Length;
+                long length1 = new FileInfo(d3d8to9InstalledDLLName).Length;
+                long length2 = new FileInfo(d3d8to9StoredDLLName).Length;
                 if (length1 != length2)
                     return true;
                 else
                 {
-                    byte[] file1 = File.ReadAllBytes("d3d8.dll");
-                    byte[] file2 = File.ReadAllBytes("d3d8m.dll");
+                    byte[] file1 = File.ReadAllBytes(d3d8to9InstalledDLLName);
+                    byte[] file2 = File.ReadAllBytes(d3d8to9StoredDLLName);
                     for (int i = 0; i < file1.Length; i++)
                     {
                         if (file1[i] != file2[i])
