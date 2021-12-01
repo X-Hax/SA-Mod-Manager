@@ -68,7 +68,7 @@ namespace SADXModManager
 
 		[DefaultValue(false)]
 		public bool TestSpawnPositionEnabled { get; set; } = false;
-        [DefaultValue(false)]
+		[DefaultValue(false)]
 		public bool TestSpawnRotationHex { get; set; } = false;
 		[DefaultValue(0)]
 		public int TestSpawnX { get; set; } = 0;

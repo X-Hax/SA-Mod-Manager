@@ -243,7 +243,7 @@ static const std::unordered_map<int, CutsceneLevelData> CutsceneList = {
 	{ 0x050, { LevelIDs_StationSquare, 1, Characters_Tails, 10, 4 } }, // Tails takes on the Egg Walker
 	{ 0x051, { LevelIDs_StationSquare, 1, Characters_Tails, 10, 6 } }, // Egg Walker defeated, Station Square saved
 	{ 0x052, { LevelIDs_MysticRuins, 0, Characters_Tails, 11, 0 } }, // Tails Outro
-	{ 0x053, { LevelIDs_StationSquare, 0, Characters_Tails, -1 } }, // Error
+	{ 0x053, { LevelIDs_StationSquare, 0, Characters_Tails, -1, -1 } }, // Error
 	{ 0x054, { LevelIDs_EggCarrierOutside, 0, Characters_Tails, 8, 0 } }, // Gonna land on the Egg Carrier
 	{ 0x055, { LevelIDs_SandHill, 0, Characters_Tails, 5, 5 } }, // Cutscene with Froggy after Sand Hill
 	{ 0x056, { LevelIDs_StationSquare, 1, Characters_Tails, 3, 0 } }, // Tails and Sonic awake after being gassed
@@ -261,7 +261,7 @@ static const std::unordered_map<int, CutsceneLevelData> CutsceneList = {
 	{ 0x068, { LevelIDs_Past, 1, Characters_Amy, 3, 3 } }, // Amy meets Tikal
 	{ 0x069, { LevelIDs_EggCarrierOutside, 2, Characters_Amy, 4, 2 } }, // Eggman takes Birdie's Emerald
 	{ 0x06A, { LevelIDs_EggCarrierOutside, 2, Characters_Amy, 4, 3 } }, // Amy and Tails leave the Egg Carrier
-	{ 0x06B, { LevelIDs_StationSquare, 0, Characters_Amy, -1 } }, // Error
+	{ 0x06B, { LevelIDs_StationSquare, 0, Characters_Amy, -1, -1 } }, // Error
 	{ 0x06C, { LevelIDs_EggCarrierOutside, 5, Characters_Amy, 4, 1 } }, // Amy returns to the present
 	{ 0x06D, { LevelIDs_StationSquare, 3, Characters_Amy, 5, 0 } }, // Hunt to find Birdie's family
 	{ 0x06E, { LevelIDs_MysticRuins, 2, Characters_Amy, 6, 1 } }, // Amy discovers the Egg Base
@@ -297,7 +297,7 @@ static const std::unordered_map<int, CutsceneLevelData> CutsceneList = {
 	{ 0x099, { LevelIDs_Chaos6, 1, Characters_Knuckles, 9, 4 } }, // Knuckles fights Chaos 6
 	{ 0x09A, { LevelIDs_EggCarrierOutside, 0, Characters_Knuckles, 9, 2 } }, // Knuckles has all collected the final shards
 	{ 0x09B, { LevelIDs_Chaos6, 1, Characters_Knuckles, 9, 5 } }, // Knuckles defeats Chaos 6
-	{ 0x09C, { LevelIDs_StationSquare, 0, Characters_Knuckles, -1 } }, // Error
+	{ 0x09C, { LevelIDs_StationSquare, 0, Characters_Knuckles, -1, -1 } }, // Error
 	{ 0x09D, { LevelIDs_MysticRuins, 1, Characters_Knuckles, 10, 0 } }, // Knuckles restores the Master Emerald
 	{ 0x09F, { LevelIDs_MysticRuins, 1, Characters_Knuckles, 11, 2 } }, // Knuckles Outro
 	{ 0x0A0, { LevelIDs_StationSquare, 4, Characters_Knuckles, 3, 2 } }, // Knuckles follows Eggman in Station Square hotel
@@ -340,7 +340,7 @@ static const std::unordered_map<int, CutsceneLevelData> CutsceneList = {
 	{ 0x0DE, { LevelIDs_Chaos6, 0, Characters_Big, 6, 4 } }, // Chaos 6 takes Froggy
 	{ 0x0DF, { LevelIDs_Chaos6, 0, Characters_Big, 6, 5 } }, // Sonic saves Froggy
 	{ 0x0E0, { LevelIDs_EggCarrierOutside, 0, Characters_Big, 6, 7 } }, // Big finds the Tornado 2 and leaves
-	{ 0x0E1, { LevelIDs_StationSquare, 0, Characters_Big, -1 } }, // Error
+	{ 0x0E1, { LevelIDs_StationSquare, 0, Characters_Big, -1, -1 } }, // Error
 	{ 0x0E2, { LevelIDs_MysticRuins, 2, Characters_Big, 7, 1  } }, // Big Outro
 	{ 0x0E3, { LevelIDs_StationSquare, 3, Characters_Big, 3, 1 } }, // Big sees Froggy heading to the beach
 
@@ -397,18 +397,18 @@ static const std::unordered_map<int, CutsceneLevelData> CutsceneList = {
 	{ 0x160, { LevelIDs_Past, 2, Characters_Sonic, 2, 2 } }, // The Echidna tribe faces Chaos
 
 	// Upgrade Cutscenes
-	{ 0x165, { LevelIDs_StationSquare, 4, Characters_Sonic, -1 } }, // Sonic gets the Crystal Ring
+	{ 0x165, { LevelIDs_StationSquare, 4, Characters_Sonic, -1, -1 } }, // Sonic gets the Crystal Ring
 	{ 0x166, { LevelIDs_StationSquare, 2, Characters_Sonic, 3, 2 } }, // Sonic gets the LSDash Shoe
 	{ 0x167, { LevelIDs_MysticRuins, 1, Characters_Sonic, 9, 3 } }, // Sonic gets the Ancient Light
-	{ 0x168, { LevelIDs_StationSquare, 3, Characters_Tails, -1 } }, // Tails gets the Jet Anklet
+	{ 0x168, { LevelIDs_StationSquare, 3, Characters_Tails, -1, -1 } }, // Tails gets the Jet Anklet
 	{ 0x169, { LevelIDs_Past, 0, Characters_Tails, 6, 2 } }, // Tails gets the Rhythm Badge
-	{ 0x16A, { LevelIDs_MysticRuins, 2, Characters_Knuckles, -1 } }, // Knuckles gets the Fighting Gloves
+	{ 0x16A, { LevelIDs_MysticRuins, 2, Characters_Knuckles, -1, -1 } }, // Knuckles gets the Fighting Gloves
 	{ 0x16B, { LevelIDs_MysticRuins, 0, Characters_Knuckles, 4, 5 } }, // Knuckles gets the Shovel Claw
-	{ 0x16C, { LevelIDs_EggCarrierInside, 2, Characters_Amy, -1 } }, // Amy gets the Long Hammer
+	{ 0x16C, { LevelIDs_EggCarrierInside, 2, Characters_Amy, -1, -1 } }, // Amy gets the Long Hammer
 	{ 0x16D, { LevelIDs_EggCarrierInside, 2, Characters_Amy, 2, 4 } }, // Amy gets the Warrior Feather
-	{ 0x16E, { LevelIDs_EggCarrierInside, 4, Characters_Gamma, -1 } }, // Gamma gets the Laser Blaster
+	{ 0x16E, { LevelIDs_EggCarrierInside, 4, Characters_Gamma, -1, -1 } }, // Gamma gets the Laser Blaster
 	{ 0x16F, { LevelIDs_EggCarrierInside, 0, Characters_Gamma, 4, 9 } }, // Gamma gets the Jet Booster
-	{ 0x170, { LevelIDs_MysticRuins, 2, Characters_Big, -1 } }, // Big gets the PowerRod
+	{ 0x170, { LevelIDs_MysticRuins, 2, Characters_Big, -1, -1 } }, // Big gets the PowerRod
 	{ 0x171, { LevelIDs_MysticRuins, 1, Characters_Big, 2, 2 } }, // Big gets the Life Belt
 
 	// Misc Events
@@ -455,7 +455,7 @@ static void SetEventFlagsForCutscene(int eventID)
 {
 	switch (eventID)
 	{
-	case 0x002: // Sonic defeats Chaos 0
+	case 0x0002: // Sonic defeats Chaos 0
 		LevelCutscenes2[2].Cutscene = static_cast<int16_t>(eventID);
 		break;
 	case 0x0009: // Sonic and Tails gassed
@@ -784,7 +784,6 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 {
 	int argc = 0;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
-	
 	for (int i = 1; i < argc; i++)
 	{
 		if (!wcscmp(argv[i], L"--level") || !wcscmp(argv[i], L"-l"))
