@@ -54,16 +54,16 @@ namespace SADXModManager
 
         private ConfigFile configFile;
         private const string sadxIni = "sonicDX.ini";
-		private const string d3d8to9InstalledDLLName = "d3d8.dll";
-		private const string d3d8to9StoredDLLName = "d3d8m.dll";
-		private bool checkedForUpdates;
+        private const string d3d8to9InstalledDLLName = "d3d8.dll";
+        private const string d3d8to9StoredDLLName = "d3d8m.dll";
+        private bool checkedForUpdates;
 
         const string updatePath = "mods/.updates";
         const string datadllpath = "system/CHRMODELS.dll";
         const string datadllorigpath = "system/CHRMODELS_orig.dll";
         const string loaderinipath = "mods/SADXModLoader.ini";
         const string loaderdllpath = "mods/SADXModLoader.dll";
-		SADXLoaderInfo loaderini;
+        SADXLoaderInfo loaderini;
         Dictionary<string, SADXModInfo> mods;
         const string codelstpath = "mods/Codes.lst";
         const string codexmlpath = "mods/Codes.xml";
@@ -145,19 +145,19 @@ namespace SADXModManager
             }
 
             consoleCheckBox.Checked             = loaderini.DebugConsole;
-			screenCheckBox.Checked              = loaderini.DebugScreen;
-			fileCheckBox.Checked                = loaderini.DebugFile;
-			disableCDCheckCheckBox.Checked      = loaderini.DisableCDCheck;
-			checkVsync.Checked                  = loaderini.EnableVsync;
-			horizontalResolution.Enabled        = !loaderini.ForceAspectRatio;
-			horizontalResolution.Value          = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
-			verticalResolution.Value            = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
-			checkUpdateStartup.Checked          = loaderini.UpdateCheck;
-			checkUpdateModsStartup.Checked      = loaderini.ModUpdateCheck;
-			comboUpdateFrequency.SelectedIndex  = (int)loaderini.UpdateUnit;
-			numericUpdateFrequency.Value        = loaderini.UpdateFrequency;
-			comboVoiceLanguage.SelectedIndex    = (int)loaderini.VoiceLanguage;
-			comboTextLanguage.SelectedIndex     = (int)loaderini.TextLanguage;
+            screenCheckBox.Checked              = loaderini.DebugScreen;
+            fileCheckBox.Checked                = loaderini.DebugFile;
+            disableCDCheckCheckBox.Checked      = loaderini.DisableCDCheck;
+            checkVsync.Checked                  = loaderini.EnableVsync;
+            horizontalResolution.Enabled        = !loaderini.ForceAspectRatio;
+            horizontalResolution.Value          = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
+            verticalResolution.Value            = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
+            checkUpdateStartup.Checked          = loaderini.UpdateCheck;
+            checkUpdateModsStartup.Checked      = loaderini.ModUpdateCheck;
+            comboUpdateFrequency.SelectedIndex  = (int)loaderini.UpdateUnit;
+            numericUpdateFrequency.Value        = loaderini.UpdateFrequency;
+            comboVoiceLanguage.SelectedIndex    = (int)loaderini.VoiceLanguage;
+            comboTextLanguage.SelectedIndex     = (int)loaderini.TextLanguage;
 
             suppressEvent = true;
             forceAspectRatioCheckBox.Checked = loaderini.ForceAspectRatio;
@@ -194,7 +194,7 @@ namespace SADXModManager
 
             checkWindowResize.Checked = loaderini.ResizableWindow;
 
-			checkBASS.Checked = loaderini.DisableBASS;
+            checkBASS.Checked = loaderini.DisableBASS;
 
             comboBoxTestSpawnTime.SelectedIndex = 0;
             InitTestSpawnCutsceneList();
@@ -214,10 +214,10 @@ namespace SADXModManager
             checkBoxTestSpawnSave.Checked            = loaderini.TestSpawnSaveID != -1;
             numericUpDownTestSpawnSaveID.Value       = Math.Max(1, loaderini.TestSpawnSaveID);
             buttonUpdateD3D8to9.Visible              = CheckD3D8to9Update();
-			checkBoxEnableD3D9.Enabled               = File.Exists(d3d8to9StoredDLLName);
-			checkBoxEnableD3D9.Checked               = File.Exists(d3d8to9InstalledDLLName);
-			// Load the config INI upon window load
-			LoadConfigIni();
+            checkBoxEnableD3D9.Enabled               = File.Exists(d3d8to9StoredDLLName);
+            checkBoxEnableD3D9.Checked               = File.Exists(d3d8to9InstalledDLLName);
+            // Load the config INI upon window load
+            LoadConfigIni();
         }
 
         private void HandleUri(string uri)
@@ -929,35 +929,35 @@ namespace SADXModManager
                 loaderini.Mods.Add((string)item.Tag);
             }
 
-           	loaderini.DebugConsole              = consoleCheckBox.Checked;
-			loaderini.DebugScreen               = screenCheckBox.Checked;
-			loaderini.DebugFile                 = fileCheckBox.Checked;
-			loaderini.DisableCDCheck            = disableCDCheckCheckBox.Checked;
-			loaderini.HorizontalResolution      = (int)horizontalResolution.Value;
-			loaderini.VerticalResolution        = (int)verticalResolution.Value;
-			loaderini.ForceAspectRatio          = forceAspectRatioCheckBox.Checked;
-			loaderini.ScaleHud                  = checkScaleHud.Checked;
-			loaderini.BackgroundFillMode        = comboBackgroundFill.SelectedIndex;
-			loaderini.FmvFillMode               = comboFmvFill.SelectedIndex;
-			loaderini.EnableVsync               = checkVsync.Checked;
-			loaderini.WindowedFullscreen        = windowedFullscreenCheckBox.Checked;
-			loaderini.AutoMipmap                = forceMipmappingCheckBox.Checked;
-			loaderini.TextureFilter             = forceTextureFilterCheckBox.Checked;
-			loaderini.PauseWhenInactive         = pauseWhenInactiveCheckBox.Checked;
-			loaderini.StretchFullscreen         = stretchFullscreenCheckBox.Checked;
-			loaderini.ScreenNum                 = screenNumComboBox.SelectedIndex;
-			loaderini.CustomWindowSize          = customWindowSizeCheckBox.Checked;
-			loaderini.WindowWidth               = (int)windowWidth.Value;
-			loaderini.WindowHeight              = (int)windowHeight.Value;
-			loaderini.MaintainWindowAspectRatio = maintainWindowAspectRatioCheckBox.Checked;
-			loaderini.ResizableWindow           = checkWindowResize.Checked;
-			loaderini.UpdateCheck               = checkUpdateStartup.Checked;
-			loaderini.ModUpdateCheck            = checkUpdateModsStartup.Checked;
-			loaderini.UpdateUnit                = (UpdateUnit)comboUpdateFrequency.SelectedIndex;
-			loaderini.UpdateFrequency           = (int)numericUpdateFrequency.Value;
-			loaderini.VoiceLanguage             = (int)comboVoiceLanguage.SelectedIndex;
-			loaderini.TextLanguage              = (int)comboTextLanguage.SelectedIndex;
-			loaderini.DisableBASS = checkBASS.Checked;
+               loaderini.DebugConsole              = consoleCheckBox.Checked;
+            loaderini.DebugScreen               = screenCheckBox.Checked;
+            loaderini.DebugFile                 = fileCheckBox.Checked;
+            loaderini.DisableCDCheck            = disableCDCheckCheckBox.Checked;
+            loaderini.HorizontalResolution      = (int)horizontalResolution.Value;
+            loaderini.VerticalResolution        = (int)verticalResolution.Value;
+            loaderini.ForceAspectRatio          = forceAspectRatioCheckBox.Checked;
+            loaderini.ScaleHud                  = checkScaleHud.Checked;
+            loaderini.BackgroundFillMode        = comboBackgroundFill.SelectedIndex;
+            loaderini.FmvFillMode               = comboFmvFill.SelectedIndex;
+            loaderini.EnableVsync               = checkVsync.Checked;
+            loaderini.WindowedFullscreen        = windowedFullscreenCheckBox.Checked;
+            loaderini.AutoMipmap                = forceMipmappingCheckBox.Checked;
+            loaderini.TextureFilter             = forceTextureFilterCheckBox.Checked;
+            loaderini.PauseWhenInactive         = pauseWhenInactiveCheckBox.Checked;
+            loaderini.StretchFullscreen         = stretchFullscreenCheckBox.Checked;
+            loaderini.ScreenNum                 = screenNumComboBox.SelectedIndex;
+            loaderini.CustomWindowSize          = customWindowSizeCheckBox.Checked;
+            loaderini.WindowWidth               = (int)windowWidth.Value;
+            loaderini.WindowHeight              = (int)windowHeight.Value;
+            loaderini.MaintainWindowAspectRatio = maintainWindowAspectRatioCheckBox.Checked;
+            loaderini.ResizableWindow           = checkWindowResize.Checked;
+            loaderini.UpdateCheck               = checkUpdateStartup.Checked;
+            loaderini.ModUpdateCheck            = checkUpdateModsStartup.Checked;
+            loaderini.UpdateUnit                = (UpdateUnit)comboUpdateFrequency.SelectedIndex;
+            loaderini.UpdateFrequency           = (int)numericUpdateFrequency.Value;
+            loaderini.VoiceLanguage             = (int)comboVoiceLanguage.SelectedIndex;
+            loaderini.TextLanguage              = (int)comboTextLanguage.SelectedIndex;
+            loaderini.DisableBASS = checkBASS.Checked;
 
             loaderini.TestSpawnLevel            = checkBoxTestSpawnLevel.Checked ? comboBoxTestSpawnLevel.SelectedIndex : -1;
             loaderini.TestSpawnAct              = (int)numericUpDownTestSpawnAct.Value;
@@ -1098,18 +1098,18 @@ namespace SADXModManager
         static readonly Size[] resolutionPresets =
         {
             new Size(640, 480), // 640x480
-			new Size(800, 600), // 800x600
-			new Size(1024, 768), // 1024x768
-			new Size(1152, 864), // 1152x864
-			new Size(1280, 960), // 1280x960
-			new Size(1280, 1024), // 1280x1024
-			new Size(), // Native
-			new Size(), // 1/2x Native
-			new Size(), // 2x Native
-			new Size(1280, 720), // 720p
-			new Size(1920, 1080), // 1080p
-			new Size(3840, 2160), // 4K
-		};
+            new Size(800, 600), // 800x600
+            new Size(1024, 768), // 1024x768
+            new Size(1152, 864), // 1152x864
+            new Size(1280, 960), // 1280x960
+            new Size(1280, 1024), // 1280x1024
+            new Size(), // Native
+            new Size(), // 1/2x Native
+            new Size(), // 2x Native
+            new Size(1280, 720), // 720p
+            new Size(1920, 1080), // 1080p
+            new Size(3840, 2160), // 4K
+        };
         private void comboResolutionPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboResolutionPreset.SelectedIndex == -1) return;
@@ -1601,8 +1601,8 @@ namespace SADXModManager
             if (checkBoxTestSpawnPosition.Checked)
                 cmdline.Add("-p " + numericUpDownTestSpawnX.Value.ToString() + " " +
                     numericUpDownTestSpawnY.Value.ToString() + " " +
-					numericUpDownTestSpawnZ.Value.ToString() + " -r " +
-					numericUpDownTestSpawnAngle.Value.ToString());
+                    numericUpDownTestSpawnZ.Value.ToString() + " -r " +
+                    numericUpDownTestSpawnAngle.Value.ToString());
             if (checkBoxTestSpawnEvent.Checked)
             {
                 int ev = 0;
@@ -1860,24 +1860,24 @@ namespace SADXModManager
                 labelTestSpawnWarning.Visible = checkBoxTestSpawnCharacter.Checked || checkBoxTestSpawnLevel.Checked;
         }
 
-		private void CopyD3D9Dll()
-		{
-			try
-			{
-				File.Copy(d3d8to9StoredDLLName, d3d8to9InstalledDLLName, true);
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(this, "Unable to update d3d8.dll:\n" + ex.Message, "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
+        private void CopyD3D9Dll()
+        {
+            try
+            {
+                File.Copy(d3d8to9StoredDLLName, d3d8to9InstalledDLLName, true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Unable to update d3d8.dll:\n" + ex.Message, "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void checkBoxEnableD3D9_Click(object sender, EventArgs e)
         {
             if (checkBoxEnableD3D9.Checked)
             {
-				CopyD3D9Dll();
-			}
+                CopyD3D9Dll();
+            }
             else if (!checkBoxEnableD3D9.Checked && File.Exists(d3d8to9InstalledDLLName))
                 File.Delete(d3d8to9InstalledDLLName);
         }
@@ -1892,8 +1892,8 @@ namespace SADXModManager
                                                   MessageBoxIcon.Question);
             if (update == DialogResult.Yes)
             {
-				CopyD3D9Dll();
-				buttonUpdateD3D8to9.Visible = CheckD3D8to9Update();
+                CopyD3D9Dll();
+                buttonUpdateD3D8to9.Visible = CheckD3D8to9Update();
             }
         }
 
@@ -1925,5 +1925,5 @@ namespace SADXModManager
                 return false;
             }
         }
-	}
+    }
 }
