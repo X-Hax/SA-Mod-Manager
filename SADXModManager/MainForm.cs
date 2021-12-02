@@ -929,7 +929,7 @@ namespace SADXModManager
                 loaderini.Mods.Add((string)item.Tag);
             }
 
-               loaderini.DebugConsole              = consoleCheckBox.Checked;
+            loaderini.DebugConsole              = consoleCheckBox.Checked;
             loaderini.DebugScreen               = screenCheckBox.Checked;
             loaderini.DebugFile                 = fileCheckBox.Checked;
             loaderini.DisableCDCheck            = disableCDCheckCheckBox.Checked;
