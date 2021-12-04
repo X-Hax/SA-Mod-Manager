@@ -1632,6 +1632,14 @@ struct DebugStringInfo
 	const char *text;
 };
 
+struct DemoData
+{
+	__int16 level;
+	__int16 act;
+	__int16 character;
+	__int16 cutscene;
+};
+
 #pragma pack(pop)
 
 #ifdef _MSC_VER

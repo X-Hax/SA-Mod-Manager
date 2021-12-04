@@ -28,19 +28,30 @@ typedef bool _BOOL1;
 #define CamFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(_OBJ_CAMERAPARAM* pParam),ADDRESS)
 
 // SADX Functions
-FunctionPointer(task*, CreateChildTask, (unsigned __int16 im, TaskFuncPtr exec, task* tp), 0x40B940);
-FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, TaskFuncPtr exec), 0x40B860);
-TaskFunc(DestroyTask, 0x40B570);
-TaskFunc(FreeTask, 0x40B6C0);
-TaskFunc(B_Destructor, 0x59DBF0);
+FunctionPointer(task*, CreateChildTask, (unsigned __int16 im, void(__cdecl* exec)(task*), task* tp), 0x40B940);
+FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, void(__cdecl* exec)(task*)), 0x40B860);
+FunctionPointer(void, DestroyTask, (task* tp), 0x40B570);
+FunctionPointer(void, FreeTask, (task* tp), 0x40B6C0);
+FunctionPointer(void, B_Destructor, (task* tp), 0x59DBF0);
 TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
+FunctionPointer(float, GetShadowPos, (float x, float y, float z, Angle3* ang), 0x49E920);
+FunctionPointer(void, PlayerGetRotation, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44BB60);
+FunctionPointer(void, PlayerGetAcceleration, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44C270);
+FunctionPointer(void, PlayerGetSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443F50);
+FunctionPointer(int, PlayerSetPosition, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44CDF0);
+FunctionPointer(void, PSetCrashEffect, (taskwk* a1), 0x440790);
+FunctionPointer(void, PConvertVector_P2G, (taskwk* a1, NJS_POINT3* a2), 0x43EC90);
+FunctionPointer(void, PConvertVector_G2P, (taskwk* a1, NJS_POINT3* a2), 0x43EC00);
+FunctionPointer(void, PlayerResetAngle, (taskwk* a1, motionwk2* a2, playerwk* a3), 0x443AD0);
+FunctionPointer(void, PlayerGetInertia, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443650);
+FunctionPointer(void, PlayerGetGravity, (taskwk* a1, motionwk2* a2, playerwk* a3), 0x443800);
+FunctionPointer(void, PlayerGetAccelerationAir, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44B9C0);
+FunctionPointer(bool, Player_CheckBreak, (taskwk* a1), 0x4429C0);
+FunctionPointer(void, SetPlayerInitialPosition, (taskwk* twp), 0x414810);
 FunctionPointer(void, PGetRotation, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44BB60);
 FunctionPointer(void, PGetAcceleration, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44C270);
 FunctionPointer(void, PGetSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443F50);
 FunctionPointer(int, PSetPosition, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44CDF0);
-FunctionPointer(void, PSetCrashEffect, (taskwk* twp), 0x440790);
-FunctionPointer(void, PConvertVector_P2G, (taskwk* twp, NJS_POINT3* vp), 0x43EC90);
-FunctionPointer(void, PConvertVector_G2P, (taskwk* twp, NJS_POINT3* vp), 0x43EC00);
 FunctionPointer(void, PResetAngle, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443AD0);
 FunctionPointer(void, PGetInertia, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443650);
 FunctionPointer(void, PGetGravity, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443800);
@@ -64,6 +75,7 @@ VoidFunc(InitFreeCamera, 0x434870);
 
 static const void* const KnucklesCheckInputPtr = (void*)0x476970;
 static inline signed int KnucklesCheckInput(taskwk* twp, motionwk2* mwp, playerwk* pwp)
+
 {
 	signed int result;
 	__asm
@@ -421,6 +433,7 @@ FunctionPointer(void, EV_WaitAction, (task* tp), 0x431810);
 FunctionPointer(void, EV_WaitPath, (task* tp), 0x431840);
 FunctionPointer(void, EV_PlayPad, (int no, PADREC_DATA_TAG* tag), 0x431870);
 FunctionPointer(void, EV_WaitMove, (task* tp), 0x4318D0);
+FunctionPointer(task*, EV_GetPlayer, (uint8_t no), 0x42FC40);
 FunctionPointer(void, EV_FreeObject, (task** tp), 0x42FC50);
 FunctionPointer(void, EV_SetPos, (task* tp, float x, float y, float z), 0x42FC70);
 FunctionPointer(void, EV_SetAng, (task* tp, int x, int y, int z), 0x42FCD0);
@@ -457,5 +470,9 @@ FunctionPointer(task*, getobjModel, (int model_id), 0x6ECB40);
 FunctionPointer(void, deleteModel, (int model_id), 0x6ECB50);
 FunctionPointer(void, createModel, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, obj* model, NJS_TEXLIST* texlist, int model_id), 0x6ECE70);
 FunctionPointer(void, createModelEC, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, obj* model, NJS_TEXLIST* texlist, int model_id), 0x6ECF20);
+
+// Story related functions
+FunctionPointer(void, SeqSetPlayer, (int no), 0x413380); // Current story section
+FunctionPointer(SEQ_SECTIONTBL*, SeqGetSectionList, (int playerno), 0x44EAF0); // Current story section
 
 #endif /* SADXMODLOADER_SADXFUNCTIONSNEW_H */

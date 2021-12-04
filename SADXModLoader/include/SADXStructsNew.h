@@ -1468,6 +1468,32 @@ struct pathwk
 	int mAngle;
 };
 
+struct SEQ_SECTION
+{
+	void(__cdecl* init)();
+	void(__cdecl* main)(int);
+};
+
+struct SEQ_SECTIONTBL
+{
+	SEQ_SECTION* psec;
+	unsigned __int8 stg;
+	unsigned __int8 act;
+	unsigned __int16 entrance;
+	char name[32];
+};
+
+struct SEQUENCE
+{
+	char time;
+	char emerald;
+	__int16 seqno;
+	__int16 sec;
+	__int16 nextsec;
+	unsigned __int16 stage;
+	unsigned __int16 destination;
+};
+
 struct _OBJ_LANDCOLL
 {
 	int slAttribute;

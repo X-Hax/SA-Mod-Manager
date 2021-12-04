@@ -54,6 +54,8 @@ namespace SADXModManager
 
         private ConfigFile configFile;
         private const string sadxIni = "sonicDX.ini";
+        private const string d3d8to9InstalledDLLName = "d3d8.dll";
+        private const string d3d8to9StoredDLLName = "d3d8m.dll";
         private bool checkedForUpdates;
 
         const string updatePath = "mods/.updates";
@@ -143,19 +145,19 @@ namespace SADXModManager
             }
 
             consoleCheckBox.Checked             = loaderini.DebugConsole;
-			screenCheckBox.Checked              = loaderini.DebugScreen;
-			fileCheckBox.Checked                = loaderini.DebugFile;
-			disableCDCheckCheckBox.Checked      = loaderini.DisableCDCheck;
-			checkVsync.Checked                  = loaderini.EnableVsync;
-			horizontalResolution.Enabled        = !loaderini.ForceAspectRatio;
-			horizontalResolution.Value          = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
-			verticalResolution.Value            = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
-			checkUpdateStartup.Checked          = loaderini.UpdateCheck;
-			checkUpdateModsStartup.Checked      = loaderini.ModUpdateCheck;
-			comboUpdateFrequency.SelectedIndex  = (int)loaderini.UpdateUnit;
-			numericUpdateFrequency.Value        = loaderini.UpdateFrequency;
-			comboVoiceLanguage.SelectedIndex    = (int)loaderini.VoiceLanguage;
-			comboTextLanguage.SelectedIndex     = (int)loaderini.TextLanguage;
+            screenCheckBox.Checked              = loaderini.DebugScreen;
+            fileCheckBox.Checked                = loaderini.DebugFile;
+            disableCDCheckCheckBox.Checked      = loaderini.DisableCDCheck;
+            checkVsync.Checked                  = loaderini.EnableVsync;
+            horizontalResolution.Enabled        = !loaderini.ForceAspectRatio;
+            horizontalResolution.Value          = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
+            verticalResolution.Value            = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
+            checkUpdateStartup.Checked          = loaderini.UpdateCheck;
+            checkUpdateModsStartup.Checked      = loaderini.ModUpdateCheck;
+            comboUpdateFrequency.SelectedIndex  = (int)loaderini.UpdateUnit;
+            numericUpdateFrequency.Value        = loaderini.UpdateFrequency;
+            comboVoiceLanguage.SelectedIndex    = (int)loaderini.VoiceLanguage;
+            comboTextLanguage.SelectedIndex     = (int)loaderini.TextLanguage;
 
             suppressEvent = true;
             forceAspectRatioCheckBox.Checked = loaderini.ForceAspectRatio;
@@ -192,8 +194,9 @@ namespace SADXModManager
 
             checkWindowResize.Checked = loaderini.ResizableWindow;
 
-			checkBASS.Checked = loaderini.DisableBASS;
+            checkBASS.Checked = loaderini.DisableBASS;
 
+            comboBoxTestSpawnTime.SelectedIndex = 0;
             InitTestSpawnCutsceneList();
             checkBoxTestSpawnLevel.Checked           = loaderini.TestSpawnLevel != -1;
             comboBoxTestSpawnLevel.SelectedIndex     = loaderini.TestSpawnLevel;
@@ -210,6 +213,9 @@ namespace SADXModManager
             comboBoxTestSpawnEvent.SelectedIndex     = loaderini.TestSpawnEvent;
             checkBoxTestSpawnSave.Checked            = loaderini.TestSpawnSaveID != -1;
             numericUpDownTestSpawnSaveID.Value       = Math.Max(1, loaderini.TestSpawnSaveID);
+            buttonUpdateD3D8to9.Visible              = CheckD3D8to9Update();
+            checkBoxEnableD3D9.Enabled               = File.Exists(d3d8to9StoredDLLName);
+            checkBoxEnableD3D9.Checked               = File.Exists(d3d8to9InstalledDLLName);
             // Load the config INI upon window load
             LoadConfigIni();
         }
@@ -923,35 +929,35 @@ namespace SADXModManager
                 loaderini.Mods.Add((string)item.Tag);
             }
 
-           	loaderini.DebugConsole              = consoleCheckBox.Checked;
-			loaderini.DebugScreen               = screenCheckBox.Checked;
-			loaderini.DebugFile                 = fileCheckBox.Checked;
-			loaderini.DisableCDCheck            = disableCDCheckCheckBox.Checked;
-			loaderini.HorizontalResolution      = (int)horizontalResolution.Value;
-			loaderini.VerticalResolution        = (int)verticalResolution.Value;
-			loaderini.ForceAspectRatio          = forceAspectRatioCheckBox.Checked;
-			loaderini.ScaleHud                  = checkScaleHud.Checked;
-			loaderini.BackgroundFillMode        = comboBackgroundFill.SelectedIndex;
-			loaderini.FmvFillMode               = comboFmvFill.SelectedIndex;
-			loaderini.EnableVsync               = checkVsync.Checked;
-			loaderini.WindowedFullscreen        = windowedFullscreenCheckBox.Checked;
-			loaderini.AutoMipmap                = forceMipmappingCheckBox.Checked;
-			loaderini.TextureFilter             = forceTextureFilterCheckBox.Checked;
-			loaderini.PauseWhenInactive         = pauseWhenInactiveCheckBox.Checked;
-			loaderini.StretchFullscreen         = stretchFullscreenCheckBox.Checked;
-			loaderini.ScreenNum                 = screenNumComboBox.SelectedIndex;
-			loaderini.CustomWindowSize          = customWindowSizeCheckBox.Checked;
-			loaderini.WindowWidth               = (int)windowWidth.Value;
-			loaderini.WindowHeight              = (int)windowHeight.Value;
-			loaderini.MaintainWindowAspectRatio = maintainWindowAspectRatioCheckBox.Checked;
-			loaderini.ResizableWindow           = checkWindowResize.Checked;
-			loaderini.UpdateCheck               = checkUpdateStartup.Checked;
-			loaderini.ModUpdateCheck            = checkUpdateModsStartup.Checked;
-			loaderini.UpdateUnit                = (UpdateUnit)comboUpdateFrequency.SelectedIndex;
-			loaderini.UpdateFrequency           = (int)numericUpdateFrequency.Value;
-			loaderini.VoiceLanguage             = (int)comboVoiceLanguage.SelectedIndex;
-			loaderini.TextLanguage              = (int)comboTextLanguage.SelectedIndex;
-			loaderini.DisableBASS = checkBASS.Checked;
+            loaderini.DebugConsole              = consoleCheckBox.Checked;
+            loaderini.DebugScreen               = screenCheckBox.Checked;
+            loaderini.DebugFile                 = fileCheckBox.Checked;
+            loaderini.DisableCDCheck            = disableCDCheckCheckBox.Checked;
+            loaderini.HorizontalResolution      = (int)horizontalResolution.Value;
+            loaderini.VerticalResolution        = (int)verticalResolution.Value;
+            loaderini.ForceAspectRatio          = forceAspectRatioCheckBox.Checked;
+            loaderini.ScaleHud                  = checkScaleHud.Checked;
+            loaderini.BackgroundFillMode        = comboBackgroundFill.SelectedIndex;
+            loaderini.FmvFillMode               = comboFmvFill.SelectedIndex;
+            loaderini.EnableVsync               = checkVsync.Checked;
+            loaderini.WindowedFullscreen        = windowedFullscreenCheckBox.Checked;
+            loaderini.AutoMipmap                = forceMipmappingCheckBox.Checked;
+            loaderini.TextureFilter             = forceTextureFilterCheckBox.Checked;
+            loaderini.PauseWhenInactive         = pauseWhenInactiveCheckBox.Checked;
+            loaderini.StretchFullscreen         = stretchFullscreenCheckBox.Checked;
+            loaderini.ScreenNum                 = screenNumComboBox.SelectedIndex;
+            loaderini.CustomWindowSize          = customWindowSizeCheckBox.Checked;
+            loaderini.WindowWidth               = (int)windowWidth.Value;
+            loaderini.WindowHeight              = (int)windowHeight.Value;
+            loaderini.MaintainWindowAspectRatio = maintainWindowAspectRatioCheckBox.Checked;
+            loaderini.ResizableWindow           = checkWindowResize.Checked;
+            loaderini.UpdateCheck               = checkUpdateStartup.Checked;
+            loaderini.ModUpdateCheck            = checkUpdateModsStartup.Checked;
+            loaderini.UpdateUnit                = (UpdateUnit)comboUpdateFrequency.SelectedIndex;
+            loaderini.UpdateFrequency           = (int)numericUpdateFrequency.Value;
+            loaderini.VoiceLanguage             = (int)comboVoiceLanguage.SelectedIndex;
+            loaderini.TextLanguage              = (int)comboTextLanguage.SelectedIndex;
+            loaderini.DisableBASS = checkBASS.Checked;
 
             loaderini.TestSpawnLevel            = checkBoxTestSpawnLevel.Checked ? comboBoxTestSpawnLevel.SelectedIndex : -1;
             loaderini.TestSpawnAct              = (int)numericUpDownTestSpawnAct.Value;
@@ -1092,18 +1098,18 @@ namespace SADXModManager
         static readonly Size[] resolutionPresets =
         {
             new Size(640, 480), // 640x480
-			new Size(800, 600), // 800x600
-			new Size(1024, 768), // 1024x768
-			new Size(1152, 864), // 1152x864
-			new Size(1280, 960), // 1280x960
-			new Size(1280, 1024), // 1280x1024
-			new Size(), // Native
-			new Size(), // 1/2x Native
-			new Size(), // 2x Native
-			new Size(1280, 720), // 720p
-			new Size(1920, 1080), // 1080p
-			new Size(3840, 2160), // 4K
-		};
+            new Size(800, 600), // 800x600
+            new Size(1024, 768), // 1024x768
+            new Size(1152, 864), // 1152x864
+            new Size(1280, 960), // 1280x960
+            new Size(1280, 1024), // 1280x1024
+            new Size(), // Native
+            new Size(), // 1/2x Native
+            new Size(), // 2x Native
+            new Size(1280, 720), // 720p
+            new Size(1920, 1080), // 1080p
+            new Size(3840, 2160), // 4K
+        };
         private void comboResolutionPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboResolutionPreset.SelectedIndex == -1) return;
@@ -1561,6 +1567,7 @@ namespace SADXModManager
             comboBoxTestSpawnLevel.Enabled = numericUpDownTestSpawnAct.Enabled = labelTestSpawnAct.Enabled = checkBoxTestSpawnLevel.Checked;
             if (comboBoxTestSpawnLevel.SelectedIndex == -1)
                 comboBoxTestSpawnLevel.SelectedIndex = 0;
+            ShowOrHideTestSpawnEventWarning();
         }
 
         private void checkBoxTestSpawnCharacter_CheckedChanged(object sender, EventArgs e)
@@ -1568,6 +1575,7 @@ namespace SADXModManager
             comboBoxTestSpawnCharacter.Enabled = checkBoxTestSpawnCharacter.Checked;
             if (comboBoxTestSpawnCharacter.SelectedIndex == -1)
                 comboBoxTestSpawnCharacter.SelectedIndex = 0;
+            ShowOrHideTestSpawnEventWarning();
         }
 
         private void checkBoxTestSpawnEvent_CheckedChanged(object sender, EventArgs e)
@@ -1575,6 +1583,7 @@ namespace SADXModManager
             comboBoxTestSpawnEvent.Enabled = checkBoxTestSpawnEvent.Checked;
             if (comboBoxTestSpawnEvent.SelectedIndex == -1)
                 comboBoxTestSpawnEvent.SelectedIndex = 0;
+            ShowOrHideTestSpawnEventWarning();
         }
 
         private void checkBoxTestSpawnSave_CheckStateChanged(object sender, EventArgs e)
@@ -1609,6 +1618,8 @@ namespace SADXModManager
                 }
                 cmdline.Add("-e " + ev_result.ToString());
             }
+            if (comboBoxTestSpawnTime.SelectedIndex > 0)
+                cmdline.Add("-t " + (comboBoxTestSpawnTime.SelectedIndex - 1).ToString());
             if (checkBoxTestSpawnSave.Checked)
                 cmdline.Add("-s " + numericUpDownTestSpawnSaveID.Value.ToString());
             return string.Join(" ", cmdline);
@@ -1628,20 +1639,20 @@ namespace SADXModManager
             TestSpawnCutsceneList.Add(3, "Sonic sees Tails crash");
             TestSpawnCutsceneList.Add(6, "Sonic and Tails poolside");
             TestSpawnCutsceneList.Add(7, "Sonic faces off with the Egg Hornet");
-            TestSpawnCutsceneList.Add(8, "Chaos 1 emerges");
+            TestSpawnCutsceneList.Add(8, "Sonic sees Chaos 1 emerge");
             TestSpawnCutsceneList.Add(9, "Sonic and Tails are gassed");
-            TestSpawnCutsceneList.Add(11, "Chaos 4 transformation");
+            TestSpawnCutsceneList.Add(11, "Sonic sees Chaos 4 transformation");
             TestSpawnCutsceneList.Add(12, "Sonic and Tails part ways with Knuckles");
-            TestSpawnCutsceneList.Add(13, "Tornado 1 takes off");
+            TestSpawnCutsceneList.Add(13, "Sonic and Tails take off on the Tornado 1");
             TestSpawnCutsceneList.Add(17, "Sonic falling into Station Square");
-            TestSpawnCutsceneList.Add(18, "Amy finds Sonic");
-            TestSpawnCutsceneList.Add(19, "Amy and Sonic go to Twinkle Park");
+            TestSpawnCutsceneList.Add(18, "Sonic is found by Amy");
+            TestSpawnCutsceneList.Add(19, "Sonic and Amy go to Twinkle Park");
             TestSpawnCutsceneList.Add(20, "Sonic goes looking for Amy");
-            TestSpawnCutsceneList.Add(21, "Sonic sees Zero and Amy");
-            TestSpawnCutsceneList.Add(22, "Zero transported to the Egg Carrier");
+            TestSpawnCutsceneList.Add(21, "Sonic sees Zero and Amy at the station");
+            TestSpawnCutsceneList.Add(22, "Sonic sees Zero transported to the Egg Carrier");
             TestSpawnCutsceneList.Add(23, "Sonic catches up with Tails on the Tornado 2");
-            TestSpawnCutsceneList.Add(26, "Eggman takes Birdie's Emerald");
-            TestSpawnCutsceneList.Add(27, "Sonic goes to put Eggman out of commission");
+            TestSpawnCutsceneList.Add(26, "Sonic sees Eggman take Birdie's Emerald");
+            TestSpawnCutsceneList.Add(27, "Sonic defeats Gamma");
             TestSpawnCutsceneList.Add(28, "Sonic finds Chaos 6");
             TestSpawnCutsceneList.Add(29, "Sonic jumps from the Egg Carrier into the jungle");
             TestSpawnCutsceneList.Add(30, "Sonic sees the temple come out of the ground");
@@ -1649,20 +1660,20 @@ namespace SADXModManager
             TestSpawnCutsceneList.Add(33, "Sonic enters the Past");
             TestSpawnCutsceneList.Add(34, "Sonic listens to Tikal in the Past");
             TestSpawnCutsceneList.Add(35, "Sonic sees Eggman heading to his base");
-            TestSpawnCutsceneList.Add(36, "Egg Viper");
+            TestSpawnCutsceneList.Add(36, "Sonic faces the Egg Viper");
             TestSpawnCutsceneList.Add(38, "Sonic's outro");
             TestSpawnCutsceneList.Add(40, "Sonic vs. Knuckles");
-            TestSpawnCutsceneList.Add(41, "Tornado 2 lands on the Egg Carrier");
+            TestSpawnCutsceneList.Add(41, "Sonic and Tails land on the Egg Carrier");
             TestSpawnCutsceneList.Add(42, "Sonic and Tails awaken after being gassed");
             TestSpawnCutsceneList.Add(43, "Sonic meets Chaos 0");
             TestSpawnCutsceneList.Add(48, "Tails intro");
             TestSpawnCutsceneList.Add(49, "Tails is rescued by Sonic");
             TestSpawnCutsceneList.Add(50, "Tails and Sonic poolside");
             TestSpawnCutsceneList.Add(51, "Tails faces off with the Egg Hornet");
-            TestSpawnCutsceneList.Add(52, "Chaos 1 emerges");
+            TestSpawnCutsceneList.Add(52, "Tails sees Chaos 1 emerge");
             TestSpawnCutsceneList.Add(53, "Tails and Sonic are gassed at Casinopolis");
             TestSpawnCutsceneList.Add(56, "Tails vs. Knuckles");
-            TestSpawnCutsceneList.Add(57, "Chaos 4 emerges");
+            TestSpawnCutsceneList.Add(57, "Tails sees Chaos 4 emerge");
             TestSpawnCutsceneList.Add(58, "Tails and Sonic part ways with Knuckles");
             TestSpawnCutsceneList.Add(59, "Tails and Sonic depart on the Tornado 1");
             TestSpawnCutsceneList.Add(62, "Tails' flashback");
@@ -1670,63 +1681,63 @@ namespace SADXModManager
             TestSpawnCutsceneList.Add(66, "Tails chases Froggy");
             TestSpawnCutsceneList.Add(68, "Tails enters the Past");
             TestSpawnCutsceneList.Add(69, "Tails talks to Tikal");
-            TestSpawnCutsceneList.Add(70, "Tails returns from the Past and meets Big");
-            TestSpawnCutsceneList.Add(71, "The Tornado 2 takes flight");
+            TestSpawnCutsceneList.Add(70, "Tails meets Big and lets go of Froggy");
+            TestSpawnCutsceneList.Add(71, "Tails takes off on the Tornado 2");
             TestSpawnCutsceneList.Add(72, "Tails finds Sonic in Red Mountain");
             TestSpawnCutsceneList.Add(75, "Tails faces off with Gamma");
-            TestSpawnCutsceneList.Add(76, "Tails escapes from the Egg Carrier with Amy");
-            TestSpawnCutsceneList.Add(77, "Eggman launches his missile attack");
+            TestSpawnCutsceneList.Add(76, "Tails and Amy escape from the Egg Carrier");
+            TestSpawnCutsceneList.Add(77, "Tails sees Eggman launching his missile attack");
             TestSpawnCutsceneList.Add(78, "Tails follows Eggman after the missile");
             TestSpawnCutsceneList.Add(80, "Tails takes on the Egg Walker");
-            TestSpawnCutsceneList.Add(81, "Egg Walker defeated and Station Square saved");
+            TestSpawnCutsceneList.Add(81, "Tails defeated the Egg Walker");
             TestSpawnCutsceneList.Add(82, "Tails outro");
             TestSpawnCutsceneList.Add(83, "Error");
-            TestSpawnCutsceneList.Add(84, "Landing on the Egg Carrier");
+            TestSpawnCutsceneList.Add(84, "Tails and Sonic landing on the Egg Carrier");
             TestSpawnCutsceneList.Add(85, "Tails and Froggy go to the Past");
             TestSpawnCutsceneList.Add(86, "Tails and Sonic awake after being gassed");
-            TestSpawnCutsceneList.Add(88, "Amy Pre-intro(?)");
+            TestSpawnCutsceneList.Add(88, "Unused");
             TestSpawnCutsceneList.Add(96, "Amy intro");
             TestSpawnCutsceneList.Add(97, "Amy meets Birdie");
             TestSpawnCutsceneList.Add(98, "Amy meets up with Sonic");
             TestSpawnCutsceneList.Add(99, "Amy and Sonic visit Twinkle Park");
             TestSpawnCutsceneList.Add(100, "Amy is kidnapped by Zero");
             TestSpawnCutsceneList.Add(101, "Amy is released by Gamma");
-            TestSpawnCutsceneList.Add(102, "Amy goes to the Past after Hot Shelter");
-            TestSpawnCutsceneList.Add(103, "Amy enters the Past");
+            TestSpawnCutsceneList.Add(102, "Amy escapes Hot Shelter");
+            TestSpawnCutsceneList.Add(103, "Amy finds herself in the Past");
             TestSpawnCutsceneList.Add(104, "Amy meets Tikal");
-            TestSpawnCutsceneList.Add(105, "Eggman takes Birdie's Emerald");
+            TestSpawnCutsceneList.Add(105, "Amy sees Eggman take Birdie's Emerald");
             TestSpawnCutsceneList.Add(106, "Amy and Tails escape the Egg Carrier");
             TestSpawnCutsceneList.Add(107, "Error");
             TestSpawnCutsceneList.Add(108, "Amy returns to the present");
-            TestSpawnCutsceneList.Add(109, "Hunt to find Birdie's family");
+            TestSpawnCutsceneList.Add(109, "Amy decides to help find Birdie's family");
             TestSpawnCutsceneList.Add(110, "Amy discovers the Final Egg Base");
             TestSpawnCutsceneList.Add(111, "Amy chased by Zero in Final Egg");
             TestSpawnCutsceneList.Add(112, "Amy and Birdie head back to the Egg Carrier");
-            TestSpawnCutsceneList.Add(113, "Zero confronts Amy");
+            TestSpawnCutsceneList.Add(113, "Amy is confronted by Zero");
             TestSpawnCutsceneList.Add(114, "Amy outro");
             TestSpawnCutsceneList.Add(117, "Amy is kidnapped to the Mystic Ruins");
             TestSpawnCutsceneList.Add(128, "Knuckles intro");
             TestSpawnCutsceneList.Add(130, "Knuckles goes hunting for the Master Emerald");
-            TestSpawnCutsceneList.Add(131, "Knuckles enters the Past");
-            TestSpawnCutsceneList.Add(132, "Knuckles while in the Past");
-            TestSpawnCutsceneList.Add(133, "Tikal talks to her father");
-            TestSpawnCutsceneList.Add(134, "Knuckles returns from the Past");
+            TestSpawnCutsceneList.Add(131, "Knuckles taken to the Past from Casinopolis");
+            TestSpawnCutsceneList.Add(132, "Knuckles finds himself in the Past");
+            TestSpawnCutsceneList.Add(133, "Knuckles sees Tikal talk to her father");
+            TestSpawnCutsceneList.Add(134, "Knuckles returns from the Past to Station Square");
             TestSpawnCutsceneList.Add(135, "Knuckles and Chaos 2 face off");
-            TestSpawnCutsceneList.Add(136, "Eggman tricks Knuckles");
+            TestSpawnCutsceneList.Add(136, "Knuckles is tricked by Eggman");
             TestSpawnCutsceneList.Add(137, "Knuckles goes after Sonic");
             TestSpawnCutsceneList.Add(138, "Knuckles vs. Sonic");
-            TestSpawnCutsceneList.Add(139, "Chaos 4 emerges");
+            TestSpawnCutsceneList.Add(139, "Knuckles sees Chaos 4 emerge");
             TestSpawnCutsceneList.Add(140, "Knuckles parts ways with Sonic and Tails");
-            TestSpawnCutsceneList.Add(141, "Knuckles goes to the Past(from Lost World)");
-            TestSpawnCutsceneList.Add(142, "Knuckles back in the Past");
-            TestSpawnCutsceneList.Add(143, "Tikal talks to Chaos");
+            TestSpawnCutsceneList.Add(141, "Knuckles goes to the Past from the temple");
+            TestSpawnCutsceneList.Add(142, "Knuckles at the Master Emerald Altar");
+            TestSpawnCutsceneList.Add(143, "Knuckles sees Tikal talking to Chaos");
             TestSpawnCutsceneList.Add(145, "Knuckles restores most of the Master Emerald");
             TestSpawnCutsceneList.Add(146, "Knuckles follows Gamma");
             TestSpawnCutsceneList.Add(148, "Knuckles arrives on the Egg Carrier");
             TestSpawnCutsceneList.Add(149, "Knuckles finds the last missing piece");
-            TestSpawnCutsceneList.Add(150, "Knuckles travels back to the Past one last time");
-            TestSpawnCutsceneList.Add(151, "The aftermath of Tikal's plight");
-            TestSpawnCutsceneList.Add(152, "Knuckles returns to the present");
+            TestSpawnCutsceneList.Add(150, "Knuckles sees the Master Emerald Altar on fire");
+            TestSpawnCutsceneList.Add(151, "Knuckles witnesses the aftermath of Tikal's plight");
+            TestSpawnCutsceneList.Add(152, "Knuckles is back to the Egg Carrier");
             TestSpawnCutsceneList.Add(153, "Knuckles fights Chaos 6");
             TestSpawnCutsceneList.Add(154, "Knuckles has collected the final shards");
             TestSpawnCutsceneList.Add(155, "Knuckles defeats Chaos 6");
@@ -1736,48 +1747,48 @@ namespace SADXModManager
             TestSpawnCutsceneList.Add(160, "Knuckles follows Eggman in Station Square hotel");
             TestSpawnCutsceneList.Add(176, "Gamma intro");
             TestSpawnCutsceneList.Add(177, "Gamma enters Final Egg");
-            TestSpawnCutsceneList.Add(178, "Gamma exits Final Egg");
-            TestSpawnCutsceneList.Add(179, "Useless machine");
-            TestSpawnCutsceneList.Add(180, "Gamma's fight with Beta");
+            TestSpawnCutsceneList.Add(178, "Gamma completes his first objective at Final Egg");
+            TestSpawnCutsceneList.Add(179, "Gamma is told that he is a useless machine");
+            TestSpawnCutsceneList.Add(180, "Gamma's first fight with Beta");
             TestSpawnCutsceneList.Add(181, "Gamma defeats Beta");
-            TestSpawnCutsceneList.Add(183, "The hunt for Froggy begins");
-            TestSpawnCutsceneList.Add(184, "Gamma goes to the Past");
-            TestSpawnCutsceneList.Add(185, "Gamma in the Past");
-            TestSpawnCutsceneList.Add(186, "Gamma and Tikal meet");
-            TestSpawnCutsceneList.Add(187, "Gamma returns to the Egg Carrier");
+            TestSpawnCutsceneList.Add(183, "Gamma and other E Series briefing");
+            TestSpawnCutsceneList.Add(184, "Gamma and Froggy go to the Past");
+            TestSpawnCutsceneList.Add(185, "Gamma cannot determine location");
+            TestSpawnCutsceneList.Add(186, "Gamma meets Tikal");
+            TestSpawnCutsceneList.Add(187, "Gamma brings Froggy to Eggman");
             TestSpawnCutsceneList.Add(188, "Gamma goes to the wrong room");
             TestSpawnCutsceneList.Add(189, "Gamma witnesses Beta being rebuilt");
             TestSpawnCutsceneList.Add(190, "Gamma leaves Beta's room");
             TestSpawnCutsceneList.Add(191, "Gamma meets and releases Amy");
             TestSpawnCutsceneList.Add(192, "Gamma heading to the rear of the ship");
             TestSpawnCutsceneList.Add(193, "Gamma emerges to fight Sonic");
-            TestSpawnCutsceneList.Add(194, "Gamma after the battle with Sonic");
+            TestSpawnCutsceneList.Add(194, "Gamma leaves the Egg Carrier");
             TestSpawnCutsceneList.Add(195, "Gamma's objectives changed");
-            TestSpawnCutsceneList.Add(197, "Gamma remembers his brothers");
+            TestSpawnCutsceneList.Add(197, "Gamma sets out to rescue Zeta and Beta");
             TestSpawnCutsceneList.Add(199, "Gamma outro");
             TestSpawnCutsceneList.Add(208, "Big intro");
             TestSpawnCutsceneList.Add(209, "Big goes searching for Froggy");
-            TestSpawnCutsceneList.Add(210, "Froggy heads into the sewers");
-            TestSpawnCutsceneList.Add(211, "Big finds Froggy with Tails");
+            TestSpawnCutsceneList.Add(210, "Big sees Froggy heading into the sewers");
+            TestSpawnCutsceneList.Add(211, "Big finds Froggy and Tails");
             TestSpawnCutsceneList.Add(212, "Big loses Froggy to Gamma");
             TestSpawnCutsceneList.Add(216, "Big enters Hot Shelter");
             TestSpawnCutsceneList.Add(217, "Big spots Froggy inside the tanks");
             TestSpawnCutsceneList.Add(218, "Big saves Froggy in Hot Shelter");
-            TestSpawnCutsceneList.Add(219, "Big heads into the Past");
-            TestSpawnCutsceneList.Add(220, "Tikal talks to Big");
+            TestSpawnCutsceneList.Add(219, "Big finds himself in the Past");
+            TestSpawnCutsceneList.Add(220, "Big sees Tikal and the Master Emerald");
             TestSpawnCutsceneList.Add(221, "Big returns to the Egg Carrier");
-            TestSpawnCutsceneList.Add(222, "Chaos 6 takes Froggy");
-            TestSpawnCutsceneList.Add(223, "Sonic saves Froggy");
-            TestSpawnCutsceneList.Add(224, "Big finds the Tornado 2 and leaves");
+            TestSpawnCutsceneList.Add(222, "Big sees Froggy taken by Chaos 6");
+            TestSpawnCutsceneList.Add(223, "Big thanks Sonic for saving Froggy");
+            TestSpawnCutsceneList.Add(224, "Big and Froggy escape on the Tornado 2");
             TestSpawnCutsceneList.Add(225, "Error");
             TestSpawnCutsceneList.Add(226, "Big outro");
             TestSpawnCutsceneList.Add(227, "Big sees Froggy heading to the beach");
-            TestSpawnCutsceneList.Add(240, "Tornado 2 Flash scene");
+            TestSpawnCutsceneList.Add(240, "Crashed Tornado 2 in the jungle");
             TestSpawnCutsceneList.Add(242, "Eggman heading to the Mystic Ruins base");
             TestSpawnCutsceneList.Add(243, "Knuckles at the Master Emerald");
             TestSpawnCutsceneList.Add(244, "Tails tells Sonic about Angel Island falling");
             TestSpawnCutsceneList.Add(245, "Sonic and Tails find Eggman and Knuckles");
-            TestSpawnCutsceneList.Add(246, "Sonic travels to the Past");
+            TestSpawnCutsceneList.Add(246, "Sonic travels to the Master Emerald Altar");
             TestSpawnCutsceneList.Add(247, "Tikal pleads with her father");
             TestSpawnCutsceneList.Add(248, "Tikal seals Chaos");
             TestSpawnCutsceneList.Add(249, "Sonic returns to the present");
@@ -1787,26 +1798,26 @@ namespace SADXModManager
             TestSpawnCutsceneList.Add(254, "Last Story outro");
             TestSpawnCutsceneList.Add(255, "Everyone brings Sonic the emeralds");
             TestSpawnCutsceneList.Add(256, "Sonic and Tails after landing on the Egg Carrier");
-            TestSpawnCutsceneList.Add(257, "Don't get too many ideas you fools!");
-            TestSpawnCutsceneList.Add(258, "The Egg Carrier has changed chape");
+            TestSpawnCutsceneList.Add(257, "Don't get too many ideas you fools! (Sonic)");
+            TestSpawnCutsceneList.Add(258, "The Egg Carrier has changed chape (Sonic)");
             TestSpawnCutsceneList.Add(259, "Sonic at the Sky Deck entrance");
-            TestSpawnCutsceneList.Add(260, "Sonic right after Sky Deck (Is that it?)");
+            TestSpawnCutsceneList.Add(260, "Sonic got into the Egg Carrier (Is that it?)");
             TestSpawnCutsceneList.Add(262, "Sonic heading to transform the Egg Carrier");
-            TestSpawnCutsceneList.Add(263, "Emergency alert cancelled");
+            TestSpawnCutsceneList.Add(263, "Emergency alert cancelled (Sonic)");
             TestSpawnCutsceneList.Add(272, "Tails and Sonic after landing on the Egg Carrier");
-            TestSpawnCutsceneList.Add(273, "Don't get too many ideas");
-            TestSpawnCutsceneList.Add(274, "The Egg Carrier has changed shape");
+            TestSpawnCutsceneList.Add(273, "Don't get too many ideas (Tails)");
+            TestSpawnCutsceneList.Add(274, "The Egg Carrier has changed shape (Tails)");
             TestSpawnCutsceneList.Add(275, "Tails at the Sky Deck entrance");
-            TestSpawnCutsceneList.Add(276, "Tails right after Sky Deck");
-            TestSpawnCutsceneList.Add(288, "Egg Carrier transforms 1");
-            TestSpawnCutsceneList.Add(289, "Egg Carrier transforms 2");
+            TestSpawnCutsceneList.Add(276, "Tails got into the Egg Carrier (Is that it?)");
+            TestSpawnCutsceneList.Add(288, "The Egg Carrier changes shape (Knuckles)");
+            TestSpawnCutsceneList.Add(289, "The Egg Carrier transforms again (Knuckles)");
             TestSpawnCutsceneList.Add(290, "Knuckles sensing the emeralds on the Egg Carrier");
-            TestSpawnCutsceneList.Add(304, "Introduction to Hedgehog Hammer");
-            TestSpawnCutsceneList.Add(305, "Winning at Hedgehog Hammer");
+            TestSpawnCutsceneList.Add(304, "Amy in the Hedgehog Hammer room");
+            TestSpawnCutsceneList.Add(305, "Amy wins Hedgehog Hammer");
             TestSpawnCutsceneList.Add(320, "Gamma is told to find the Jet Booster");
             TestSpawnCutsceneList.Add(321, "Gamma heads to Hot Shelter");
-            TestSpawnCutsceneList.Add(322, "Gamma rescues E-105");
-            TestSpawnCutsceneList.Add(336, "Emergency alert cancelled");
+            TestSpawnCutsceneList.Add(322, "Gamma spots E-101 R");
+            TestSpawnCutsceneList.Add(336, "Emergency alert cancelled (Big)");
             TestSpawnCutsceneList.Add(352, "The Echidna tribe faces Chaos");
             TestSpawnCutsceneList.Add(357, "Sonic gets the Crystal Ring");
             TestSpawnCutsceneList.Add(358, "Sonic gets the Light Speed Shoes");
@@ -1824,7 +1835,7 @@ namespace SADXModManager
             TestSpawnCutsceneList.Add(374, "Ice Stone appears (Sonic)");
             TestSpawnCutsceneList.Add(375, "Ice Stone appears (Tails)");
             TestSpawnCutsceneList.Add(376, "Ice Stone appears (Big)");
-            TestSpawnCutsceneList.Add(377, "Employee Card appears");
+            TestSpawnCutsceneList.Add(377, "Employee Card appears (Sonic)");
             TestSpawnCutsceneList.Add(378, "Passage to Angel Island opens (Sonic)");
             TestSpawnCutsceneList.Add(379, "Passage to Angel Island opens (Tails)");
             TestSpawnCutsceneList.Add(380, "Passage to Angel Island opens (Gamma)");
@@ -1839,6 +1850,80 @@ namespace SADXModManager
         private void checkBoxTestSpawnAngleHex_CheckedChanged(object sender, EventArgs e)
         {
             numericUpDownTestSpawnAngle.Hexadecimal = checkBoxTestSpawnAngleHex.Checked;
+        }
+
+        private void ShowOrHideTestSpawnEventWarning()
+        {
+            if (!checkBoxTestSpawnEvent.Checked)
+                labelTestSpawnWarning.Visible = false;
+            else
+                labelTestSpawnWarning.Visible = checkBoxTestSpawnCharacter.Checked || checkBoxTestSpawnLevel.Checked;
+        }
+
+        private void CopyD3D9Dll()
+        {
+            try
+            {
+                File.Copy(d3d8to9StoredDLLName, d3d8to9InstalledDLLName, true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Unable to update d3d8.dll:\n" + ex.Message, "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void checkBoxEnableD3D9_Click(object sender, EventArgs e)
+        {
+            if (checkBoxEnableD3D9.Checked)
+            {
+                CopyD3D9Dll();
+            }
+            else if (!checkBoxEnableD3D9.Checked && File.Exists(d3d8to9InstalledDLLName))
+                File.Delete(d3d8to9InstalledDLLName);
+        }
+
+        private void buttonUpdateD3D8to9_Click(object sender, EventArgs e)
+        {
+            DialogResult update = MessageBox.Show(this,
+                                                  "The version of d3d8.dll in SADX folder differs from the one included with the Mod Loader." +
+                                                  " Would you like to update the installed copy?",
+                                                  "SADX Mod Manager",
+                                                  MessageBoxButtons.YesNo,
+                                                  MessageBoxIcon.Question);
+            if (update == DialogResult.Yes)
+            {
+                CopyD3D9Dll();
+                buttonUpdateD3D8to9.Visible = CheckD3D8to9Update();
+            }
+        }
+
+        private bool CheckD3D8to9Update()
+        {
+            if (!File.Exists(d3d8to9StoredDLLName) || !File.Exists(d3d8to9InstalledDLLName))
+                return false;
+            try
+            {
+                long length1 = new FileInfo(d3d8to9InstalledDLLName).Length;
+                long length2 = new FileInfo(d3d8to9StoredDLLName).Length;
+                if (length1 != length2)
+                    return true;
+                else
+                {
+                    byte[] file1 = File.ReadAllBytes(d3d8to9InstalledDLLName);
+                    byte[] file2 = File.ReadAllBytes(d3d8to9StoredDLLName);
+                    for (int i = 0; i < file1.Length; i++)
+                    {
+                        if (file1[i] != file2[i])
+                            return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Unable to check d3d8to9 version:\n" + ex.Message, "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
     }
 }
