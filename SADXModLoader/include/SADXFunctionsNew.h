@@ -148,6 +148,7 @@ FunctionPointer(void, CCL_ClearInfo, (taskwk* twp), 0x418B60);
 FunctionPointer(void, CCL_CalcRange, (taskwk* twp), 0x41BAC0);
 FunctionPointer(void, EntryColliList, (taskwk* twp), 0x41C280);
 FunctionPointer(void, FreeColliWork, (taskwk* twp), 0x41C4E0);
+FunctionPointer(void, SET_COLLI_RANGE, (colliwk* cwp, float range), 0x41C530);
 FunctionPointer(void, CCL_Init, (task* tp, CCL_INFO* info, int nbInfo, unsigned __int8 id), 0x41CAF0);
 
 // Geometry collision functions
@@ -176,6 +177,45 @@ TaskFunc(CamHw1Tube1, 0x613400);             // Path task for camera guiding pat
 TaskFunc(CamHw1Spiral1, 0x613420);           // Path task for camera guiding paths (spiral)
 TaskFunc(CamHw1Hw14, 0x613420);              // Path task for camera guiding paths
 TaskFunc(CamHw1Hw15, 0x613460);              // Path task for camera guiding paths
+
+// Enemy Functions
+FunctionPointer(void, AddEnemyScore, (int add), 0x425C70);
+FunctionPointer(enemywk*, EnemyInitialize, (task* tp, taskwk* twp), 0x4CC990);
+FunctionPointer(char, EnemySearchPlayer, (taskwk* twp, enemywk* ewp), 0x4CCA80); // BOOL8: check if there is a player in ewp field of view
+FunctionPointer(void, EnemyGetShadow, (taskwk* twp, enemywk* ewp), 0x4CCB50); // Gets shadow data in ewp->shadow
+FunctionPointer(void, EnemyCheckWall, (taskwk* twp, enemywk* ewp), 0x4CCC30); // Turn twp->ang.y if wall detected (by ewp->bound_add_angle amount)
+FunctionPointer(void, EnemyPreserveHomePosition, (taskwk* twp, enemywk* ewp), 0x4CD370); // Store twp->pos in ewp->home
+FunctionPointer(void, EnemyPreservePreviousPosition, (taskwk* twp, enemywk* ewp), 0x4CD390); // Store twp->pos in ewp->pre
+FunctionPointer(void, EnemyBackToPreviousPosition, (taskwk* twp, enemywk* ewp), 0x4CD3B0); // Set twp->pos to ewp->pre
+FunctionPointer(float, EnemyDist2FromAim, (taskwk* twp, enemywk* ewp), 0x4CD3D0); // Get distance between twp->pos to ewp->aim (no sqrt)
+FunctionPointer(Angle, EnemyCalcAimAngle, (taskwk* twp, enemywk* ewp), 0x4CD410); // Get angle between twp-pos and ewp->aim
+FunctionPointer(void, EnemyTurnToAim, (taskwk* twp, enemywk* ewp), 0x4CD460); // Turn twp->ang.y to ewp->aim at ewp->angy_spd speed
+FunctionPointer(float, EnemyDistFromHome, (taskwk* twp, enemywk* ewp), 0x4CD4D0); // Get distance between twp->pos and ewp->home
+FunctionPointer(float, EnemyDist2FromHome, (taskwk* twp, enemywk* ewp), 0x4CD510); // Get distance between twp->pos and ewp->home (no sqrt)
+FunctionPointer(Angle, EnemyCalcHomeAngle, (taskwk* twp, enemywk* ewp), 0x4CD550); // Get angle between twp->pos and ewp->home
+FunctionPointer(void, EnemyTurnToHome, (taskwk* twp, enemywk* ewp), 0x4CD5A0); // Turn twp->ang.y to ewp->home at ewp->angy_spd speed
+FunctionPointer(void, EnemyDist2FromPlayer, (taskwk* twp, int num), 0x4CD610); // Get distance between twp->pos and player pos (no sqrt)
+FunctionPointer(Angle, EnemyCalcPlayerAngle, (taskwk* twp, enemywk* ewp, int pnum), 0x4CD670); // Get angle between twp->pos and player pos
+FunctionPointer(void, EnemyTurnToPlayer, (taskwk* twp, enemywk* ewp, unsigned __int8 pnum), 0x4CD6F0); // Turn twp->ang.y to player pos at ewp->angy_spd speed
+FunctionPointer(BOOL, EnemyCheckFrameIn, (NJS_POINT3* pos), 0x4CD730); // Check if position is visible on screen
+FunctionPointer(void, EnemyAimAroundPlayer, (taskwk* twp, enemywk* ewp, int pnum, int aim_num), 0x4CD7A0); // Set ewp->aim to one of 4 hardcoded points around player position
+FunctionPointer(void, CreateExpParts, (taskwk* twp, NJS_MODEL** model, NJS_TEXLIST* tex), 0x4CDCB0); // Simulates an explosion from a null-terminated list of models
+FunctionPointer(void, EnemyBuyoScale, (taskwk* twp, enemywk* ewp), 0x4CDF60);
+FunctionPointer(void, EnemyBumpPlayer, (char pnum), 0x4CDFE0);
+FunctionPointer(BOOL, EnemyCheckDamage, (taskwk* twp, enemywk* ewp), 0x4CE030); // Check if enemy is damaged, sets some damage type flags in ewp->flag
+FunctionPointer(void, EnemyCheckFloor, (taskwk* twp, enemywk* ewp), 0x4CE100); // Check ground status and draw shadow
+FunctionPointer(void, EnemyCheckGroundCollision, (taskwk* twp, enemywk* ewp), 0x4CE370); // Main enemy collision and shadow routine
+
+static const void* const calcAimPosPtr = (void*)0x7B1720;
+static inline void calcAimPos(taskwk* twp, enemywk* ewp)
+{
+	__asm
+	{
+		mov esi, [ewp]
+		mov edi, [twp]
+		call calcAimPosPtr
+	}
+}
 
 // Camera Functions
 FunctionPointer(void, CameraSetEventCameraFunc, (CamFuncPtr func, int8_t ucAdjustType, int8_t scCameraDirect), 0x437D20);

@@ -10,18 +10,21 @@
 #include "d3d8types.h"
 #include "SADXStructsNew.h"
 
+// Player variables
 DataArray(player_parameter, playerwk_default, 0x9154E8, 8);
 DataArray(task*, playertp, 0x3B42E30, 8);
 DataArray(taskwk*, playertwp, 0x3B42E10, 8);
 DataArray(motionwk2*, playermwp, 0x3B36DD0, 8);
 DataArray(playerwk*, playerpwp, 0x3B3CDF0, 8);
 
+// Light variables
 DataArray(LE_PALIGHT_ENV, le_plyrPal, 0x903E88, 255); // Character lights
 DataArray(LE_LIGHT_ENV, le_stgPL, 0x900918, 30); // Unused stage lights array
 DataArray(LE_LIGHT_ENV, le_stg, 0x900E88, 255); // Stage lights
 DataPointer(LE_LIGHT_ENV, le_env_dflt, 0x9008B4); // Default stage light
 DataPointer(LE_LIGHT_ENV, le_ctrl_dflt, 0x9008E4); // Backup default stage light
 
+// Story sequence variables
 DataPointer(int, slSeqRunning, 0x90A0A8); // Story running if 1
 DataPointer(short, ssSceneNo, 0x3B18A24); // Story ID
 DataArray(SEQUENCE, seqTable, 0x03B183A8, 8); // Character story data array
@@ -29,11 +32,13 @@ DataPointer(SEQUENCE*, pCurSequence, 0x3B0EF4C); // Current character story data
 DataPointer(SEQ_SECTIONTBL*, pCurSectionList, 0x3B18A08); // Character story sections array
 DataPointer(SEQ_SECTION*, pCurSection, 0x3B18DB0); // Current story section
 
+// Geometry collision variables
 DataArray(uint8_t, boolMobileLandObject, 0x3B2D410, 256);
 DataArray(obj, objMobileLandObject, 0x3B33930, 256);
 DataPointer(uint16_t, numMobileEntry, 0x3B2D510);
 DataArray(_OBJ_LANDCOLL, MobileEntry, 0x3B32D30, 256);
 
+// Path variables
 DataArray(pathgrp, pathgrp_tbl, 0x91A858, 22);     // List of null-terminated path list
 DataArray(pathtag*, pathdata_0002, 0x9190F4, 5);
 DataArray(pathtag*, pathdata_0100, 0x10363E4, 6);  // Emerald Coast Act 1 paths
@@ -57,6 +62,12 @@ DataArray(pathtag*, pathdata_0A02, 0x1A57720, 5);  // Final Egg Act 3 paths
 DataArray(pathtag*, pathdata_1A00, 0x2BBC468, 4);  // Station Square Act 1 paths
 DataArray(pathtag*, pathdata_1300, 0x21422140, 4); // Perfect Chaos paths
 
+// Enemy variables
+DataPointer(int, ComboTimer, 0x3B29D48);
+DataPointer(int, ComboScore, 0x3B29D28);
+DataPointer(int, EnemyScore, 0x3B0F104);
+
+// Camera variables
 DataArray(_OBJ_CAMERAMODE, CameraMode, 0x975410, 77);        // List of camera modes, see CAMMD enum
 DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x975410, 28);    // List of camera adjusts (how it switches camera)
 DataPointer(_CameraSystemWork, cameraSystemWork, 0x3B2CAD8); // Camera system information (current mode, etc)
