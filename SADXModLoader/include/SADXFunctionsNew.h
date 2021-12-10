@@ -34,10 +34,7 @@ FunctionPointer(void, DestroyTask, (task* tp), 0x40B570);
 FunctionPointer(void, FreeTask, (task* tp), 0x40B6C0);
 FunctionPointer(void, B_Destructor, (task* tp), 0x59DBF0);
 TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
-FunctionPointer(float, GetShadowPos, (float x, float y, float z, Angle3* ang), 0x49E920); // Get Y position and angle of ground below
-FunctionPointer(float, GetShadowPosOnWalter, (float x, float y, float z, Angle3* ang), 0x49EAD0); // Get Y position and angle of ground and water below
-FunctionPointer(BOOL, GetShadowPosXYZ, (xyyzzxsdwstr* answer), 0x49F450);
-FunctionPointer(BOOL, GetShadowPosXYZonWater, (xyyzzxsdwstr* answer), 0x49F720);
+TaskFunc(FreeTaskC, 0x40B7E0); // Free all the children of a task
 FunctionPointer(void, PlayerGetRotation, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44BB60);
 FunctionPointer(void, PlayerGetAcceleration, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44C270);
 FunctionPointer(void, PlayerGetSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443F50);
@@ -61,9 +58,6 @@ FunctionPointer(void, PGetGravity, (taskwk* twp, motionwk2* mwp, playerwk* pwp),
 FunctionPointer(void, PGetAccelerationAir, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44B9C0);
 FunctionPointer(void, Knux_RunsActions, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x478020);
 FunctionPointer(bool, PCheckBreak, (taskwk* twp), 0x4429C0);
-FunctionPointer(BOOL, CheckRangeOutWithR, (task* tp, float fRange), 0x46C010);
-FunctionPointer(BOOL, CheckRangeOut, (task* tp), 0x46C360);
-FunctionPointer(BOOL, CheckRangeOut_L, (task* tp), 0x46C390);
 FunctionPointer(void, CharacterShadow, (taskwk* twp, shadowwk* swp), 0x49F1A0);
 FunctionPointer(void, PJoinVertexes, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x43FA90);
 FunctionPointer(void, PInitialize, (int num, task* tp), 0x442750);
@@ -81,6 +75,7 @@ VoidFunc(SetMatMatMaterial, 0x4128E0);
 VoidFunc(ResetMaterial, 0x4128F0);
 FunctionPointer(signed int, NeonuLoadTexture, (NJS_TEXLIST* pTexlist), 0x4228E0);
 VoidFunc(ResetRenderingParameter, 0x7AF430);
+FunctionPointer(void, SetViewAngle, (int new_view_angle), 0x437240);
 
 static const void* const KnucklesCheckInputPtr = (void*)0x476970;
 static inline signed int KnucklesCheckInput(taskwk* twp, motionwk2* mwp, playerwk* pwp)
@@ -209,6 +204,7 @@ FunctionPointer(void, EnemyTurnToPlayer, (taskwk* twp, enemywk* ewp, unsigned __
 FunctionPointer(BOOL, EnemyCheckFrameIn, (NJS_POINT3* pos), 0x4CD730); // Check if position is visible on screen
 FunctionPointer(void, EnemyAimAroundPlayer, (taskwk* twp, enemywk* ewp, int pnum, int aim_num), 0x4CD7A0); // Set ewp->aim to one of 4 hardcoded points around player position
 FunctionPointer(void, CreateExpParts, (taskwk* twp, NJS_MODEL** model, NJS_TEXLIST* tex), 0x4CDCB0); // Simulates an explosion from a null-terminated list of models
+FunctionPointer(void, CreateExpSpring, (taskwk* twp, unsigned __int8 num), 0x4CDE20);
 FunctionPointer(void, EnemyBuyoScale, (taskwk* twp, enemywk* ewp), 0x4CDF60);
 FunctionPointer(void, EnemyBumpPlayer, (char pnum), 0x4CDFE0);
 FunctionPointer(BOOL, EnemyCheckDamage, (taskwk* twp, enemywk* ewp), 0x4CE030); // Check if enemy is damaged, sets some damage type flags in ewp->flag
@@ -246,11 +242,21 @@ static inline void BSetMotion_Next(bosswk* bwp, int patno)
 }
 
 // Object functions
+FunctionPointer(BOOL, SetRegularTexture, (), 0x420F90); // Set regular object texlist
+FunctionPointer(BOOL, CheckObjectTexture, (), 0x420FB0); // Check if the first level object texlist exists
+FunctionPointer(BOOL, SetObjectTexture, (), 0x420FC0); // Set first level object texlist
+FunctionPointer(int, GetTheNearestPlayerNumber, (NJS_POINT3* pos), 0x441B70);
+FunctionPointer(BOOL, CheckRangeOutWithR, (task* tp, float fRange), 0x46C010);
+TaskFunc(SetContinue, 0x46C120);
+TaskFunc(Dead, 0x46C130); // Set no respawn flag
+TaskFunc(DeadOut, 0x46C150); // Destroy object and set no respawn flag
+FunctionPointer(BOOL, CheckRangeOut, (task* tp), 0x46C360);
+FunctionPointer(BOOL, CheckRangeOut_L, (task* tp), 0x46C390);
 FunctionPointer(BOOL, ObjectMovableInitialize, (taskwk* twp, motionwk* mwp, unsigned int mode), 0x49CDA0); // Modes: 4 is regular, 5 is hold in place, 6 is Big's huge objects, 7 is swingable
 FunctionPointer(void, ObjectMovableSRegularExecute, (task* tp), 0x49D730); // Run small held object physics
 FunctionPointer(void, ObjectMovableMRegularExecute, (task* tp), 0x49DA30); // Run heavy held object physics
 FunctionPointer(void, SetHoldingItemIDP, (uint8_t pno, int itemID), 0x442010); // Set an identifier for the current held object
-FunctionPointer(void, GetHoldingItemIDP, (uint8_t pno), 0x442030); // Get identifier for the current held object
+FunctionPointer(int, GetHoldingItemIDP, (uint8_t pno), 0x442030); // Get identifier for the current held object
 FunctionPointer(void, ObjectSetupInput, (taskwk* twp, motionwk* mwp), 0x49CE60); // Reset acceleration and flags
 TaskFunc(ObjectNormal, 0x49DDF0); // Object task that draws an object in twp->counter with level texlist or twp->value texlist
 TaskFunc(ObjectNormal_LE, 0x49DEF0); // Same as ObjectNormal with different D3D Z Func
@@ -260,10 +266,32 @@ TaskFunc(ObjectGCollision, 0x49E170); // Same as ObjectNormal but with geometry 
 TaskFunc(ObjectScaleDisplay, 0x49D220); // Same as ObjectNormalDisplay with different D3D Z Func
 TaskFunc(ObjectNormalDisplay_LE, 0x49D24B); // Same as ObjectNormalDisplay with different D3D Z Func
 TaskFunc(ObjectNormalDisplay, 0x49DDF0); // Display task that draws an object in twp->counter using regular pos/ang values
-FunctionPointer(BOOL, SetRegularTexture, (), 0x420F90); // Set regular object texlist
-FunctionPointer(BOOL, CheckObjectTexture, (), 0x420FB0); // Check if the first level object texlist exists
-FunctionPointer(BOOL, SetObjectTexture, (), 0x420FC0); // Set first level object texlist
-FunctionPointer(int, GetTheNearestPlayerNumber, (NJS_POINT3* pos), 0x441B70);
+FunctionPointer(float, GetShadowPos, (float x, float y, float z, Angle3* ang), 0x49E920); // Get Y position and angle of ground below
+FunctionPointer(float, GetShadowPosOnWalter, (float x, float y, float z, Angle3* ang), 0x49EAD0); // Get Y position and angle of ground and water below
+FunctionPointer(BOOL, GetShadowPosXYZ, (xyyzzxsdwstr* answer), 0x49F450);
+FunctionPointer(BOOL, GetShadowPosXYZonWater, (xyyzzxsdwstr* answer), 0x49F720);
+FunctionPointer(void, CreateAnimal, (int e_num, float x, float y, float z), 0x4BE610);
+FunctionPointer(void, CreateFlash, (taskwk* twp, float scl), 0x4CAF30); // Create an explosion effect at twp position
+FunctionPointer(void, CreateFlash2, (float x, float y, float z, float scl), 0x4CAF80); // Create an explosion effect
+
+// Sound functions (note: "tone" is sound id)
+FunctionPointer(signed int, dsPlay_oneshot, (int tone, int id, int pri, int volofs), 0x423D70);
+FunctionPointer(signed int, dsPlay_iloop, (int tone, int id, int pri, int volofs), 0x423E20);
+FunctionPointer(signed int, dsPlay_timer, (int tone, int id, int pri, int volofs, int timer), 0x423F50);
+FunctionPointer(signed int, dsPlay_timer_v, (int tone, int id, int pri, int volofs, int timer, float x, float y, float z), 0x424000);
+FunctionPointer(signed int, dsPlay_timer_vq, (int tone, int id, int pri, int volofs, int timer, float x, float y, float z, float rad), 0x424100);
+FunctionPointer(void, dsStop_num, (int tone), 0x424210); // stop sounds by sound id
+FunctionPointer(void, dsStop_id, (int id), 0x424240); // stop sounds using identifier "id"
+FunctionPointer(void, dsVolume_id, (int id, int vol), 0x424270); // change volume of sounds using identifier "id"
+FunctionPointer(void, dsPan_id, (int id, int pan), 0x4242B0); // change panning of sounds using identifier "id"
+FunctionPointer(void, dsPitch_id, (int id, int pitch), 0x4242F0); // change pitch of sounds using identifier "id"
+VoidFunc(dsPause_all, 0x424320);
+VoidFunc(dsRelease_all, 0x424380);
+VoidFunc(dsPauseSndOnly, 0x424400);
+VoidFunc(dsStop_all, 0x424460);
+FunctionPointer(void, dsPlay_oneshot_Dolby, (int tone, int id, int pri, int volofs, int time, taskwk* pTaskwk), 0x424880);
+FunctionPointer(void, dsPlay_Dolby_time, (int tone, int id, int pri, int volofs, int time, taskwk* pTaskwk), 0x424920);
+FunctionPointer(void, dsPlay_Dolby_timer_vq, (int tone, int id, int pri, int volofs, int timer, float rad, taskwk* pTaskwk), 0x4249E0);
 
 // Camera Functions
 FunctionPointer(void, CameraSetEventCameraFunc, (CamFuncPtr func, int8_t ucAdjustType, int8_t scCameraDirect), 0x437D20);
