@@ -34,7 +34,10 @@ FunctionPointer(void, DestroyTask, (task* tp), 0x40B570);
 FunctionPointer(void, FreeTask, (task* tp), 0x40B6C0);
 FunctionPointer(void, B_Destructor, (task* tp), 0x59DBF0);
 TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
-FunctionPointer(float, GetShadowPos, (float x, float y, float z, Angle3* ang), 0x49E920);
+FunctionPointer(float, GetShadowPos, (float x, float y, float z, Angle3* ang), 0x49E920); // Get Y position and angle of ground below
+FunctionPointer(float, GetShadowPosOnWalter, (float x, float y, float z, Angle3* ang), 0x49EAD0); // Get Y position and angle of ground and water below
+FunctionPointer(BOOL, GetShadowPosXYZ, (xyyzzxsdwstr* answer), 0x49F450);
+FunctionPointer(BOOL, GetShadowPosXYZonWater, (xyyzzxsdwstr* answer), 0x49F720);
 FunctionPointer(void, PlayerGetRotation, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44BB60);
 FunctionPointer(void, PlayerGetAcceleration, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44C270);
 FunctionPointer(void, PlayerGetSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443F50);
@@ -77,6 +80,7 @@ FunctionPointer(void, SetMaterial, (float a, float r, float g, float b), 0x4128A
 VoidFunc(SetMatMatMaterial, 0x4128E0);
 VoidFunc(ResetMaterial, 0x4128F0);
 FunctionPointer(signed int, NeonuLoadTexture, (NJS_TEXLIST* pTexlist), 0x4228E0);
+VoidFunc(ResetRenderingParameter, 0x7AF430);
 
 static const void* const KnucklesCheckInputPtr = (void*)0x476970;
 static inline signed int KnucklesCheckInput(taskwk* twp, motionwk2* mwp, playerwk* pwp)
@@ -185,7 +189,7 @@ TaskFunc(CamHw1Hw15, 0x613460);              // Path task for camera guiding pat
 
 // Enemy Functions
 FunctionPointer(void, AddEnemyScore, (int add), 0x425C70);
-FunctionPointer(enemywk*, EnemyInitialize, (task* tp, taskwk* twp), 0x4CC990);
+FunctionPointer(enemywk*, EnemyInitialize, (task* tp, taskwk* twp), 0x4CC990); // Allocates an enemywk
 FunctionPointer(char, EnemySearchPlayer, (taskwk* twp, enemywk* ewp), 0x4CCA80); // BOOL8: check if there is a player in ewp field of view
 FunctionPointer(void, EnemyGetShadow, (taskwk* twp, enemywk* ewp), 0x4CCB50); // Gets shadow data in ewp->shadow
 FunctionPointer(void, EnemyCheckWall, (taskwk* twp, enemywk* ewp), 0x4CCC30); // Turn twp->ang.y if wall detected (by ewp->bound_add_angle amount)
@@ -222,6 +226,25 @@ static inline void calcAimPos(taskwk* twp, enemywk* ewp)
 	}
 }
 
+// Boss functions
+FunctionPointer(bosswk*, BInitialize, (taskwk* twp, unsigned int size), 0x4BD420); // Allocates a bosswk, size is customizable (minimum should be 56)
+FunctionPointer(void, BSetMotion, (taskwk* twp, bosswk* bwp), 0x4BE220);
+FunctionPointer(void, BJoinVertexes, (taskwk* twp, bosswk* bwp), 0x4BDC50);
+FunctionPointer(void, SetDisplayBossName, (char* str, int xpos, int ypos, int time), 0x4B36D0);
+FunctionPointer(void, LoadLifeGauge, (signed int w, signed int h, signed int health), 0x4B3CC0);
+FunctionPointer(void, SetCircleLimit, (NJS_POINT3* pos, NJS_POINT3* center, float radius), 0x7AF3E0); // Creates an object that limits a position into a circle
+
+static const void* const BSetMotion_NextPtr = (void*)0x4BE170;
+static inline void BSetMotion_Next(bosswk* bwp, int patno)
+{
+	__asm
+	{
+		mov ecx, [patno]
+		mov eax, [bwp]
+		call BSetMotion_NextPtr
+	}
+}
+
 // Object functions
 FunctionPointer(BOOL, ObjectMovableInitialize, (taskwk* twp, motionwk* mwp, unsigned int mode), 0x49CDA0); // Modes: 4 is regular, 5 is hold in place, 6 is Big's huge objects, 7 is swingable
 FunctionPointer(void, ObjectMovableSRegularExecute, (task* tp), 0x49D730); // Run small held object physics
@@ -240,6 +263,7 @@ TaskFunc(ObjectNormalDisplay, 0x49DDF0); // Display task that draws an object in
 FunctionPointer(BOOL, SetRegularTexture, (), 0x420F90); // Set regular object texlist
 FunctionPointer(BOOL, CheckObjectTexture, (), 0x420FB0); // Check if the first level object texlist exists
 FunctionPointer(BOOL, SetObjectTexture, (), 0x420FC0); // Set first level object texlist
+FunctionPointer(int, GetTheNearestPlayerNumber, (NJS_POINT3* pos), 0x441B70);
 
 // Camera Functions
 FunctionPointer(void, CameraSetEventCameraFunc, (CamFuncPtr func, int8_t ucAdjustType, int8_t scCameraDirect), 0x437D20);
