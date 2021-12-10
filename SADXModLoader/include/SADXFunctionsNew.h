@@ -72,6 +72,11 @@ FunctionPointer(void, SetPositionP, (uint8_t pno, float x, float y, float z), 0x
 FunctionPointer(void, SetRotationP, (uint8_t pno, Angle angx, Angle angy, Angle angz), 0x4415F0);
 FunctionPointer(void, LadderingPathP, (uint8_t pno, pathtag* pp, int point, Angle3* ang), 0x446C80);
 VoidFunc(InitFreeCamera, 0x434870);
+FunctionPointer(void, ___njSetConstantMaterial, (NJS_ARGB* a1), 0x402F40);
+FunctionPointer(void, SetMaterial, (float a, float r, float g, float b), 0x4128A0);
+VoidFunc(SetMatMatMaterial, 0x4128E0);
+VoidFunc(ResetMaterial, 0x4128F0);
+FunctionPointer(signed int, NeonuLoadTexture, (NJS_TEXLIST* pTexlist), 0x4228E0);
 
 static const void* const KnucklesCheckInputPtr = (void*)0x476970;
 static inline signed int KnucklesCheckInput(taskwk* twp, motionwk2* mwp, playerwk* pwp)
@@ -216,6 +221,25 @@ static inline void calcAimPos(taskwk* twp, enemywk* ewp)
 		call calcAimPosPtr
 	}
 }
+
+// Object functions
+FunctionPointer(BOOL, ObjectMovableInitialize, (taskwk* twp, motionwk* mwp, unsigned int mode), 0x49CDA0); // Modes: 4 is regular, 5 is hold in place, 6 is Big's huge objects, 7 is swingable
+FunctionPointer(void, ObjectMovableSRegularExecute, (task* tp), 0x49D730); // Run small held object physics
+FunctionPointer(void, ObjectMovableMRegularExecute, (task* tp), 0x49DA30); // Run heavy held object physics
+FunctionPointer(void, SetHoldingItemIDP, (uint8_t pno, int itemID), 0x442010); // Set an identifier for the current held object
+FunctionPointer(void, GetHoldingItemIDP, (uint8_t pno), 0x442030); // Get identifier for the current held object
+FunctionPointer(void, ObjectSetupInput, (taskwk* twp, motionwk* mwp), 0x49CE60); // Reset acceleration and flags
+TaskFunc(ObjectNormal, 0x49DDF0); // Object task that draws an object in twp->counter with level texlist or twp->value texlist
+TaskFunc(ObjectNormal_LE, 0x49DEF0); // Same as ObjectNormal with different D3D Z Func
+TaskFunc(ObjectCCollision, 0x49DF70); // Same as ObjectNormal but with collision
+TaskFunc(ObjectScaleCCollision, 0x49DFF0); // Same as ObjectCCollision but with scaling
+TaskFunc(ObjectGCollision, 0x49E170); // Same as ObjectNormal but with geometry collision in twp->timer
+TaskFunc(ObjectScaleDisplay, 0x49D220); // Same as ObjectNormalDisplay with different D3D Z Func
+TaskFunc(ObjectNormalDisplay_LE, 0x49D24B); // Same as ObjectNormalDisplay with different D3D Z Func
+TaskFunc(ObjectNormalDisplay, 0x49DDF0); // Display task that draws an object in twp->counter using regular pos/ang values
+FunctionPointer(BOOL, SetRegularTexture, (), 0x420F90); // Set regular object texlist
+FunctionPointer(BOOL, CheckObjectTexture, (), 0x420FB0); // Check if the first level object texlist exists
+FunctionPointer(BOOL, SetObjectTexture, (), 0x420FC0); // Set first level object texlist
 
 // Camera Functions
 FunctionPointer(void, CameraSetEventCameraFunc, (CamFuncPtr func, int8_t ucAdjustType, int8_t scCameraDirect), 0x437D20);

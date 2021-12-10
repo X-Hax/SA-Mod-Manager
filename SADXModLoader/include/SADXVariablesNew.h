@@ -67,6 +67,9 @@ DataPointer(int, ComboTimer, 0x3B29D48);
 DataPointer(int, ComboScore, 0x3B29D28);
 DataPointer(int, EnemyScore, 0x3B0F104);
 
+// Object variables
+DataArray(char, PlayerHoldingItemID, 0x3B36DC8, 8); // Identifier for current held object
+
 // Camera variables
 DataArray(_OBJ_CAMERAMODE, CameraMode, 0x975410, 77);        // List of camera modes, see CAMMD enum
 DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x975410, 28);    // List of camera adjusts (how it switches camera)
