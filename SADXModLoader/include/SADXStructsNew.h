@@ -335,7 +335,7 @@ struct _OBJ_LANDENTRY
 	float xWidth;
 	float yWidth;
 	float zWidth;
-	obj* pObject;
+	NJS_OBJECT* pObject;
 	int blockbit;
 	int slAttribute;
 };
@@ -345,7 +345,7 @@ struct _OBJ_MOTLANDENTRY
 	float fFrame;
 	float fStep;
 	float fMaxFrame;
-	obj* pObject;
+	NJS_OBJECT* pObject;
 	NJS_ACTION* pMotion; // NJS_MOTION* in the original struct, but that's wrong
 	NJS_TEXLIST* pTexList;
 };
@@ -697,9 +697,9 @@ struct PL_ACTION
 
 struct PL_JOIN_VERTEX
 {
-	obj* objptr;
-	obj* srcobj;
-	obj* dstobj;
+	NJS_OBJECT* objptr;
+	NJS_OBJECT* srcobj;
+	NJS_OBJECT* dstobj;
 	char numVertex;
 	char inpmode;
 	char srcdepth;
@@ -1289,9 +1289,9 @@ struct PL_FACE
 	float frame;
 	float framespeed;
 	FACETBL* tbl;
-	obj* sibling;
-	obj* faceorg;
-	obj* facebuf;
+	NJS_OBJECT* sibling;
+	NJS_OBJECT* faceorg;
+	NJS_OBJECT* facebuf;
 	NJS_MOTION* facetypes;
 };
 
@@ -1364,7 +1364,7 @@ struct playerwk
 	task* htp;
 	task* ttp;
 	PL_FACE* pfp;
-	obj* lclop;
+	NJS_OBJECT* lclop;
 	PL_LANDPOSI* island_list;
 	playerwk_free free;
 	player_parameter p;
@@ -1497,8 +1497,40 @@ struct SEQUENCE
 struct _OBJ_LANDCOLL
 {
 	int slAttribute;
-	obj* pObject;
+	NJS_OBJECT* pObject;
 	task* pTask;
+};
+
+struct PL_KILLCOLLI
+{
+	int character;
+	NJS_OBJECT* object;
+};
+
+struct ___stcClip
+{
+	float f32Near;
+	float f32Far;
+};
+
+struct __declspec(align(4)) ___stcFog
+{
+	float f32StartZ;
+	float f32EndZ;
+	unsigned int Col;
+	unsigned __int8 u8Enable;
+};
+
+struct particle_info
+{
+	float scl;
+	float sclspd;
+	float animspd;
+	float friction;
+	float yacc;
+	NJS_POINT3 pos;
+	NJS_POINT3 velo;
+	NJS_ARGB argb;
 };
 
 #pragma pack(pop)

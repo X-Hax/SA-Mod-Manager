@@ -27,7 +27,7 @@ typedef bool _BOOL1;
 #define CamAdjustFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(taskwk* twp,taskwk* ptwp,_OBJ_ADJUSTPARAM* adjwp),ADDRESS)
 #define CamFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(_OBJ_CAMERAPARAM* pParam),ADDRESS)
 
-// SADX Functions
+// General
 FunctionPointer(task*, CreateChildTask, (unsigned __int16 im, void(__cdecl* exec)(task*), task* tp), 0x40B940);
 FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, void(__cdecl* exec)(task*)), 0x40B860);
 FunctionPointer(void, DestroyTask, (task* tp), 0x40B570);
@@ -35,6 +35,48 @@ FunctionPointer(void, FreeTask, (task* tp), 0x40B6C0);
 FunctionPointer(void, B_Destructor, (task* tp), 0x59DBF0);
 TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
 TaskFunc(FreeTaskC, 0x40B7E0); // Free all the children of a task
+FunctionPointer(int, CheckCollisionCylinderP, (NJS_POINT3* vp, float r, float h), 0x4418D0); // Check if a player is in a non-rotated cylinder, returns 0 or player id + 1
+FunctionPointer(int, CheckCollisionP, (NJS_POINT3* vp, float d), 0x441840); // Check if a player is in a sphere, returns 0 or player id + 1
+VoidFunc(InitFreeCamera, 0x434870);
+FunctionPointer(void, ___njSetConstantMaterial, (NJS_ARGB* a1), 0x402F40);
+FunctionPointer(void, SetMaterial, (float a, float r, float g, float b), 0x4128A0);
+VoidFunc(SetMatMatMaterial, 0x4128E0);
+VoidFunc(ResetMaterial, 0x4128F0);
+FunctionPointer(signed int, NeonuLoadTexture, (NJS_TEXLIST* pTexlist), 0x4228E0);
+VoidFunc(ResetRenderingParameter, 0x7AF430);
+FunctionPointer(void, SetViewAngle, (int new_view_angle), 0x437240);
+VoidFunc(SleepTimer, 0x426040);
+VoidFunc(WakeTimer, 0x426030);
+VoidFunc(AdvanceTime, 0x426075);
+VoidFunc(PadReadOn, 0x40EF40);
+VoidFunc(PadReadOff, 0x40EF50);
+FunctionPointer(void, ___njSetBackColor, (uint32_t c0, uint32_t c1, uint32_t c2), 0x402F10); // Set background color
+FunctionPointer(void, ___njClipZ, (float nearZ, float farZ), 0x403180); // Clip distance (or draw distance)
+VoidFunc(___njFogEnable, 0x411AF0);
+VoidFunc(___njFogDisable, 0x411B40);
+FunctionPointer(int, GetStageNumber, (), 0x414650); // Get stage and act number
+VoidFunc(SetScrollTask, 0x414420); // Load skybox task
+VoidFunc(SetRoundMaster, 0x4143C0); // Load level task
+VoidFunc(ADX_Close, 0x425670); // Stop bgm
+FunctionPointer(void, AdvanceAct, (__int16 Gap), 0x415980); // Advance act number
+FunctionPointer(void, LandChangeStage, (char Gap), 0x43A460); // Release landtable and request act change
+FunctionPointer(void, AddCameraStage, (__int16 Gap), 0x434680); // Release cameras and request act chang
+FunctionPointer(void, AddSetStage, (char Gap), 0x46BF70); // Release objects and request act change
+
+static const void* const isTextureNGPtr = (void*)0x403250;
+static inline BOOL isTextureNG(NJS_TEXLIST* tl) // Check if the texlist is valid
+{
+	BOOL result;
+	__asm
+	{
+		mov eax, [tl]
+		call isTextureNGPtr
+		mov result, eax
+	}
+	return result;
+}
+
+// Player
 FunctionPointer(void, PlayerGetRotation, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44BB60);
 FunctionPointer(void, PlayerGetAcceleration, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44C270);
 FunctionPointer(void, PlayerGetSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443F50);
@@ -55,27 +97,20 @@ FunctionPointer(int, PSetPosition, (taskwk* twp, motionwk2* mwp, playerwk* pwp),
 FunctionPointer(void, PResetAngle, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443AD0);
 FunctionPointer(void, PGetInertia, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443650);
 FunctionPointer(void, PGetGravity, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443800);
+FunctionPointer(void, PGetBreak, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x448E50);
+FunctionPointer(void, PGetPushSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x4442C0);
+FunctionPointer(void, PGetAccelerationPushPull, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x442B50);
+FunctionPointer(void, PGetFriction, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x4432E0);
 FunctionPointer(void, PGetAccelerationAir, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44B9C0);
 FunctionPointer(void, Knux_RunsActions, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x478020);
 FunctionPointer(bool, PCheckBreak, (taskwk* twp), 0x4429C0);
 FunctionPointer(void, CharacterShadow, (taskwk* twp, shadowwk* swp), 0x49F1A0);
 FunctionPointer(void, PJoinVertexes, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x43FA90);
 FunctionPointer(void, PInitialize, (int num, task* tp), 0x442750);
-FunctionPointer(BOOL, SeqCheckFlag, (int no), 0x412D20);
-FunctionPointer(int, CheckCollisionCylinderP, (NJS_POINT3* vp, float r, float h), 0x4418D0); // Check if a player is in a non-rotated cylinder, returns 0 or player id + 1
-FunctionPointer(int, CheckCollisionP, (NJS_POINT3* vp, float d), 0x441840); // Check if a player is in a sphere, returns 0 or player id + 1
 FunctionPointer(void, SetInputP, (uint8_t pno, int8_t mode), 0x441260);
 FunctionPointer(void, SetPositionP, (uint8_t pno, float x, float y, float z), 0x441780);
 FunctionPointer(void, SetRotationP, (uint8_t pno, Angle angx, Angle angy, Angle angz), 0x4415F0);
-FunctionPointer(void, LadderingPathP, (uint8_t pno, pathtag* pp, int point, Angle3* ang), 0x446C80);
-VoidFunc(InitFreeCamera, 0x434870);
-FunctionPointer(void, ___njSetConstantMaterial, (NJS_ARGB* a1), 0x402F40);
-FunctionPointer(void, SetMaterial, (float a, float r, float g, float b), 0x4128A0);
-VoidFunc(SetMatMatMaterial, 0x4128E0);
-VoidFunc(ResetMaterial, 0x4128F0);
-FunctionPointer(signed int, NeonuLoadTexture, (NJS_TEXLIST* pTexlist), 0x4228E0);
-VoidFunc(ResetRenderingParameter, 0x7AF430);
-FunctionPointer(void, SetViewAngle, (int new_view_angle), 0x437240);
+FunctionPointer(void, PSetMotion, (mtnjvwk* mjp), 0x44A800);
 
 static const void* const KnucklesCheckInputPtr = (void*)0x476970;
 static inline signed int KnucklesCheckInput(taskwk* twp, motionwk2* mwp, playerwk* pwp)
@@ -133,41 +168,37 @@ static inline void BigGetFloat(taskwk* twp, playerwk* pwp)
 	}
 }
 
-// Bool __usercall@<eax>(NJS_TEXLIST *tl@<eax>)
-static const void* const isTextureNGPtr = (void*)0x403250;
-static inline BOOL isTextureNG(NJS_TEXLIST* tl)
-{
-	BOOL result;
-	__asm
-	{
-		mov eax, [tl]
-		call isTextureNGPtr
-		mov result, eax
-	}
-	return result;
-}
-
-// CCL (shape collision) functions
+// CCL (shape collision)
 FunctionPointer(void, CCL_ClearInfo, (taskwk* twp), 0x418B60);
 FunctionPointer(void, CCL_CalcRange, (taskwk* twp), 0x41BAC0);
 FunctionPointer(void, EntryColliList, (taskwk* twp), 0x41C280);
 FunctionPointer(void, FreeColliWork, (taskwk* twp), 0x41C4E0);
 FunctionPointer(void, SET_COLLI_RANGE, (colliwk* cwp, float range), 0x41C530);
 FunctionPointer(void, CCL_Init, (task* tp, CCL_INFO* info, int nbInfo, unsigned __int8 id), 0x41CAF0);
+VoidFunc(CCL_ClearSearch, 0x41B9D0);
+FunctionPointer(c_colli_hit_info*, CCL_IsHitKindWithNumEx, (taskwk* twp, uint8_t kind), 0x41BF30);
+FunctionPointer(c_colli_hit_info*, CCL_IsHitPlayerEx, (taskwk* twp), 0x41C6E0);
+FunctionPointer(c_colli_hit_info*, CCL_IsHitBulletEx, (taskwk* twp), 0x41C750);
+FunctionPointer(taskwk*, CCL_IsHitKindWithNum, (taskwk* twp, uint8_t kind), 0x41C910); // Check if twp collides with a collision holding a specific "kind" identifier (see CCL_INFO), returns the object's taskwk or 0
+FunctionPointer(taskwk*, CCL_IsHitKindWithNum2, (taskwk* twp, uint8_t kind), 0x41C930); // Same as CCL_IsHitKindWithNum2 but with unnecessary safe checks.
+FunctionPointer(taskwk*, CCL_IsHitPlayer, (taskwk* twp), 0x41CBC0); // Check if a player collides with twp, returns the player's taskwk or 0
+FunctionPointer(taskwk*, CCL_IsHitBullet, (taskwk* twp), 0x41CBE0); // Check if a projectile collides with twp, returns the projectile's taskwk or 0
 
-// Geometry collision functions
+// Geometry collision
 FunctionPointer(bool, CheckPlayerRideOnMobileLandObjectP, (int pno, task* ttp), 0x441C30);
-FunctionPointer(void, RegisterCollisionEntry, (int slAttribute, task* pTask, obj* pObject), 0x43B2E0);
-FunctionPointer(void, WithdrawCollisionEntry, (task* pTask, obj* pObject), 0x43B380);
-FunctionPointer(void, ReleaseMobileLandObject, (obj* pObjLandObject), 0x43B450);
-FunctionPointer(obj*, GetMobileLandObject, (), 0x43B400);
+FunctionPointer(void, RegisterCollisionEntry, (int slAttribute, task* pTask, NJS_OBJECT* pObject), 0x43B2E0);
+FunctionPointer(void, WithdrawCollisionEntry, (task* pTask, NJS_OBJECT* pObject), 0x43B380);
+FunctionPointer(void, ReleaseMobileLandObject, (NJS_OBJECT* pObjLandObject), 0x43B450);
+FunctionPointer(NJS_OBJECT*, GetMobileLandObject, (), 0x43B400);
 
-// Path functions
+// Path
 FunctionPointer(int, CheckPlayerRideOnPath, (pathtag* pathtagp), 0x440ED0); // Check if P1 or P2 is on the specified path; returns bitfield.
 FunctionPointer(int, GetStatusOnPath, (pathtag* tag, pathinfo* pi), 0x49C330); // Get position, angle and normals at "pi->onpathpos" distance from path in "pi".
-FunctionPointer(BOOL, SCPathPntnmbToOnpos, (pathtag* tag, unsigned int pntnmb, float* onpos), 0x49C630); // Converts path point number to distance on path, returns 0 if point outside of range.
+FunctionPointer(BOOL, SCPathOnposToPntnmb, (pathtag* tag, float onpos, int* pntnmb), 0x49C5E0); // Converts distance on path to point number, FALSE if outside of range
+FunctionPointer(BOOL, SCPathPntnmbToOnpos, (pathtag* tag, unsigned int pntnmb, float* onpos), 0x49C630); // Converts path point number to distance on path, FALSE if point outside of range.
 FunctionPointer(float, SCPathPntNearToOnpos, (pathtag* tag, NJS_POINT3* pnt, NJS_POINT3* onpnt3, float* onpos), 0x49C670); // Get nearest point (in "onpnt3") and distance from path (in "onpos") from point "pnt", returns distance between the two points.
 FunctionPointer(float, RunWithSeeingPathP, (uint8_t pno, pathtag* pp), 0x440E50);
+FunctionPointer(void, LadderingPathP, (uint8_t pno, pathtag* pp, int point, Angle3* ang), 0x446C80);
 FunctionPointer(BOOL, InitPathWork, (), 0x49C870);
 VoidFunc(SetPathWork, 0x49C1A0);
 TaskFunc(ManagePathWork, 0x49C820);
@@ -182,7 +213,7 @@ TaskFunc(CamHw1Spiral1, 0x613420);           // Path task for camera guiding pat
 TaskFunc(CamHw1Hw14, 0x613420);              // Path task for camera guiding paths
 TaskFunc(CamHw1Hw15, 0x613460);              // Path task for camera guiding paths
 
-// Enemy Functions
+// Enemy
 FunctionPointer(void, AddEnemyScore, (int add), 0x425C70);
 FunctionPointer(enemywk*, EnemyInitialize, (task* tp, taskwk* twp), 0x4CC990); // Allocates an enemywk
 FunctionPointer(char, EnemySearchPlayer, (taskwk* twp, enemywk* ewp), 0x4CCA80); // BOOL8: check if there is a player in ewp field of view
@@ -198,7 +229,7 @@ FunctionPointer(float, EnemyDistFromHome, (taskwk* twp, enemywk* ewp), 0x4CD4D0)
 FunctionPointer(float, EnemyDist2FromHome, (taskwk* twp, enemywk* ewp), 0x4CD510); // Get distance between twp->pos and ewp->home (no sqrt)
 FunctionPointer(Angle, EnemyCalcHomeAngle, (taskwk* twp, enemywk* ewp), 0x4CD550); // Get angle between twp->pos and ewp->home
 FunctionPointer(void, EnemyTurnToHome, (taskwk* twp, enemywk* ewp), 0x4CD5A0); // Turn twp->ang.y to ewp->home at ewp->angy_spd speed
-FunctionPointer(void, EnemyDist2FromPlayer, (taskwk* twp, int num), 0x4CD610); // Get distance between twp->pos and player pos (no sqrt)
+FunctionPointer(float, EnemyDist2FromPlayer, (taskwk* twp, int num), 0x4CD610); // Get distance between twp->pos and player pos (no sqrt)
 FunctionPointer(Angle, EnemyCalcPlayerAngle, (taskwk* twp, enemywk* ewp, int pnum), 0x4CD670); // Get angle between twp->pos and player pos
 FunctionPointer(void, EnemyTurnToPlayer, (taskwk* twp, enemywk* ewp, unsigned __int8 pnum), 0x4CD6F0); // Turn twp->ang.y to player pos at ewp->angy_spd speed
 FunctionPointer(BOOL, EnemyCheckFrameIn, (NJS_POINT3* pos), 0x4CD730); // Check if position is visible on screen
@@ -210,6 +241,7 @@ FunctionPointer(void, EnemyBumpPlayer, (char pnum), 0x4CDFE0);
 FunctionPointer(BOOL, EnemyCheckDamage, (taskwk* twp, enemywk* ewp), 0x4CE030); // Check if enemy is damaged, sets some damage type flags in ewp->flag
 FunctionPointer(void, EnemyCheckFloor, (taskwk* twp, enemywk* ewp), 0x4CE100); // Check ground status and draw shadow
 FunctionPointer(void, EnemyCheckGroundCollision, (taskwk* twp, enemywk* ewp), 0x4CE370); // Main enemy collision and shadow routine
+TaskFunc(UniDestructor, 0x4E21D0); // Destructor task for every enemy, does nothing
 
 static const void* const calcAimPosPtr = (void*)0x7B1720;
 static inline void calcAimPos(taskwk* twp, enemywk* ewp)
@@ -222,11 +254,11 @@ static inline void calcAimPos(taskwk* twp, enemywk* ewp)
 	}
 }
 
-// Boss functions
+// Boss
 FunctionPointer(bosswk*, BInitialize, (taskwk* twp, unsigned int size), 0x4BD420); // Allocates a bosswk, size is customizable (minimum should be 56)
 FunctionPointer(void, BSetMotion, (taskwk* twp, bosswk* bwp), 0x4BE220);
 FunctionPointer(void, BJoinVertexes, (taskwk* twp, bosswk* bwp), 0x4BDC50);
-FunctionPointer(void, SetDisplayBossName, (char* str, int xpos, int ypos, int time), 0x4B36D0);
+FunctionPointer(void, SetDisplayBossName, (const char* str, int xpos, int ypos, int time), 0x4B36D0);
 FunctionPointer(void, LoadLifeGauge, (signed int w, signed int h, signed int health), 0x4B3CC0);
 FunctionPointer(void, SetCircleLimit, (NJS_POINT3* pos, NJS_POINT3* center, float radius), 0x7AF3E0); // Creates an object that limits a position into a circle
 
@@ -241,12 +273,15 @@ static inline void BSetMotion_Next(bosswk* bwp, int patno)
 	}
 }
 
-// Object functions
+// Object
 FunctionPointer(BOOL, SetRegularTexture, (), 0x420F90); // Set regular object texlist
 FunctionPointer(BOOL, CheckObjectTexture, (), 0x420FB0); // Check if the first level object texlist exists
 FunctionPointer(BOOL, SetObjectTexture, (), 0x420FC0); // Set first level object texlist
 FunctionPointer(int, GetTheNearestPlayerNumber, (NJS_POINT3* pos), 0x441B70);
 FunctionPointer(BOOL, CheckRangeOutWithR, (task* tp, float fRange), 0x46C010);
+TaskFunc(SetBroken, 0x46C0F0);   // Set flag that objects check with CheckBroken to not respawn
+TaskFunc(SetNoRevive, 0x46C100); // Tell the game to not respawn the object upon restart
+FunctionPointer(BOOL, CheckBroken, (task* tp), 0x46C110); // Check no respawn flag
 TaskFunc(SetContinue, 0x46C120);
 TaskFunc(Dead, 0x46C130); // Set no respawn flag
 TaskFunc(DeadOut, 0x46C150); // Destroy object and set no respawn flag
@@ -273,8 +308,19 @@ FunctionPointer(BOOL, GetShadowPosXYZonWater, (xyyzzxsdwstr* answer), 0x49F720);
 FunctionPointer(void, CreateAnimal, (int e_num, float x, float y, float z), 0x4BE610);
 FunctionPointer(void, CreateFlash, (taskwk* twp, float scl), 0x4CAF30); // Create an explosion effect at twp position
 FunctionPointer(void, CreateFlash2, (float x, float y, float z, float scl), 0x4CAF80); // Create an explosion effect
+TaskFunc(E102KillCursor, 0x4CEFE0); // Remove gamma target on task
+FunctionPointer(BOOL, Knuckles_KakeraGame_Set_PutEme, (uint8_t emeid, NJS_POINT3* emepos), 0x477D90); // Give emerald
+FunctionPointer(BOOL, Knuckles_KakeraGame_Set_CheckEme, (uint8_t emeid, NJS_POINT3* emepos), 0x476660); // Check if emerald exists and signal position to radar
+FunctionPointer(void, CreateSmoke, (NJS_POINT3* pos, NJS_POINT3* velo, float scl), 0x4B9820); // Create smoke effect
+FunctionPointer(void, CreateSmoke2, (particle_info* effect), 0x4B98E0); // Create smoke effect with custom data
+FunctionPointer(void, CreateBomb, (NJS_POINT3* pos, float scl), 0x4CACF0); // Create bomb effect
 
-// Sound functions (note: "tone" is sound id)
+// Object tasks
+TaskFunc(BigDirectAhead, 0x48E2E0);
+TaskFunc(EnemyMountainE104, 0x605B40); // Epsilon
+TaskFunc(mt_gdcontrol, 0x600890); // Delayed bgm load task
+
+// Sound (note: "tone" is sound id)
 FunctionPointer(signed int, dsPlay_oneshot, (int tone, int id, int pri, int volofs), 0x423D70);
 FunctionPointer(signed int, dsPlay_iloop, (int tone, int id, int pri, int volofs), 0x423E20);
 FunctionPointer(signed int, dsPlay_timer, (int tone, int id, int pri, int volofs, int timer), 0x423F50);
@@ -293,7 +339,7 @@ FunctionPointer(void, dsPlay_oneshot_Dolby, (int tone, int id, int pri, int volo
 FunctionPointer(void, dsPlay_Dolby_time, (int tone, int id, int pri, int volofs, int time, taskwk* pTaskwk), 0x424920);
 FunctionPointer(void, dsPlay_Dolby_timer_vq, (int tone, int id, int pri, int volofs, int timer, float rad, taskwk* pTaskwk), 0x4249E0);
 
-// Camera Functions
+// Camera
 FunctionPointer(void, CameraSetEventCameraFunc, (CamFuncPtr func, int8_t ucAdjustType, int8_t scCameraDirect), 0x437D20);
 FunctionPointer(void, CameraSetEventCamera, (int16_t ssCameraMode, int8_t ucAdjustType), 0x437BF0);
 FunctionPointer(BOOL, IsEventCamera, (), 0x436520);
@@ -351,39 +397,39 @@ FunctionPointer(void, njDirectDrawModel, (NJS_MODEL_SADX* mdl), 0x77EDA0);
 
 // Direct draw functions
 FunctionPointer(void, njDrawModel, (NJS_MODEL_SADX* mdl), 0x77EF70);
-FunctionPointer(void, njDrawObject, (obj* object), 0x77EF50);
+FunctionPointer(void, njDrawObject, (NJS_OBJECT* object), 0x77EF50);
 FunctionPointer(void, njActionOld, (NJS_ACTION* action, float frame), 0x789560);
 
 // Easy draw functions
 FunctionPointer(int, njEasyDrawModel, (NJS_MODEL* model), 0x4084F0);
-FunctionPointer(void, njEasyDrawObject, (obj* object), 0x40A100);
-FunctionPointer(void, njEasyDrawMotion, (obj* object, NJS_MOTION* motion, float frame), 0x406FA0);
-FunctionPointer(void, njEasyDrawShapeMotion, (obj* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x406FE0);
+FunctionPointer(void, njEasyDrawObject, (NJS_OBJECT* object), 0x40A100);
+FunctionPointer(void, njEasyDrawMotion, (NJS_OBJECT* object, NJS_MOTION* motion, float frame), 0x406FA0);
+FunctionPointer(void, njEasyDrawShapeMotion, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x406FE0);
 
 // Simple draw functions
 FunctionPointer(int, dsSimpleDrawModel, (NJS_MODEL_SADX* mdl), 0x401430);
 FunctionPointer(void, dsDrawModel, (NJS_MODEL_SADX* mdl), 0x407970);
-FunctionPointer(void, dsDrawObject, (obj* object), 0x408530);
+FunctionPointer(void, dsDrawObject, (NJS_OBJECT* object), 0x408530);
 FunctionPointer(void, dsDrawModel_S, (NJS_MODEL_SADX* mdl), 0x40A140);
 FunctionPointer(void, ds_DrawModelClip, (NJS_MODEL_SADX* mdl, float clipScl), 0x407A00);
-FunctionPointer(void, ds_DrawObjectClip, (obj* object, float clipScl), 0x4085A0);
-FunctionPointer(void, dsDrawMotion, (obj* object, NJS_MOTION* motion, float frame), 0x407040);
-FunctionPointer(void, dsDrawMotionClip , (obj* object, NJS_MOTION* motion, float frame, float clipScl), 0x405370);
-FunctionPointer(void, dsDrawMotionLink, (obj* object, NJS_MOTION_LINK* motionLink, float frame), 0x406C20);
+FunctionPointer(void, ds_DrawObjectClip, (NJS_OBJECT* object, float clipScl), 0x4085A0);
+FunctionPointer(void, dsDrawMotion, (NJS_OBJECT* object, NJS_MOTION* motion, float frame), 0x407040);
+FunctionPointer(void, dsDrawMotionClip , (NJS_OBJECT* object, NJS_MOTION* motion, float frame, float clipScl), 0x405370);
+FunctionPointer(void, dsDrawMotionLink, (NJS_OBJECT* object, NJS_MOTION_LINK* motionLink, float frame), 0x406C20);
 FunctionPointer(void, dsActionLink, (NJS_ACTION_LINK* actionLink, float frame), 0x406EC0);
 FunctionPointer(void, ds_ActionClip, (NJS_ACTION* action, float frame, float clipScl), 0x405450);
-FunctionPointer(void, dsDrawShapeMotion, (obj* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x406030);
+FunctionPointer(void, dsDrawShapeMotion, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x406030);
 
 // Regular draw functions
 FunctionPointer(void, __DrawModel, (NJS_MODEL_SADX* mdl), 0x403470);
-FunctionPointer(int, DrawObject, (obj* model), 0x4034B0);
-FunctionPointer(void, DrawObjectClip, (obj* object, float clipScl), 0x4037F0);
+FunctionPointer(int, DrawObject, (NJS_OBJECT* model), 0x4034B0);
+FunctionPointer(void, DrawObjectClip, (NJS_OBJECT* object, float clipScl), 0x4037F0);
 FunctionPointer(void, DrawModelEx, (NJS_MODEL_SADX* mdl, int flgs), 0x407BB0);
-FunctionPointer(void, DrawObjectClipEx, (obj* object, int flgs, float clipScl), 0x409080);
+FunctionPointer(void, DrawObjectClipEx, (NJS_OBJECT* object, int flgs, float clipScl), 0x409080);
 FunctionPointer(void, DrawModelMS, (NJS_MODEL_SADX* mdl, int flgs), 0x407CF0);
 FunctionPointer(void, DrawModelMesh, (NJS_MODEL_SADX* mdl, int flgs), 0x407FC0);
-FunctionPointer(void, DrawObjectMS, (obj* object, int flgs, float clipScl), 0x409550);
-FunctionPointer(void, DrawObjectClipMesh, (obj* object, int flgs, float clipScl), 0x409A20);
+FunctionPointer(void, DrawObjectMS, (NJS_OBJECT* object, int flgs, float clipScl), 0x409550);
+FunctionPointer(void, DrawObjectClipMesh, (NJS_OBJECT* object, int flgs, float clipScl), 0x409A20);
 
 // void __usercall(NJS_ACTION* action@<eax>, float frame, int flgs, float clpScl, void* drwMdlFnc)
 static const void* const DrawActionPtr = (void*)0x4053D0;
@@ -403,7 +449,7 @@ static inline void DrawAction(NJS_ACTION* action, float frame, int flgs, float c
 
 // void __usercall(obj *object@<edi>, NJS_MOTION *motion@<eax>, float frame, int flgs, float clpScl, void *drwMdlFnc)
 static const void* const DrawMotionPtr = (void*)0x4052F0;
-static inline void DrawMotion(obj* object, NJS_MOTION* motion, float frame, int flgs, float clpScl, void* drwMdlFnc)
+static inline void DrawMotion(NJS_OBJECT* object, NJS_MOTION* motion, float frame, int flgs, float clpScl, void* drwMdlFnc)
 {
 	__asm
 	{
@@ -420,7 +466,7 @@ static inline void DrawMotion(obj* object, NJS_MOTION* motion, float frame, int 
 
 // void __usercall(obj *object, NJS_MOTION_LINK *motionlink@<eax>, float frame, int flgs, float clpScl, void *drwMdlFnc)
 static const void* const DrawMotionLinkPtr = (void*)0x4069A0;
-static inline void DrawMotionLink(obj* object, NJS_MOTION_LINK* motionlink, float frame, int flgs, float clpScl, void* drwMdlFnc)
+static inline void DrawMotionLink(NJS_OBJECT* object, NJS_MOTION_LINK* motionlink, float frame, int flgs, float clpScl, void* drwMdlFnc)
 {
 	__asm
 	{
@@ -437,7 +483,7 @@ static inline void DrawMotionLink(obj* object, NJS_MOTION_LINK* motionlink, floa
 
 // void __usercall(obj *object, NJS_MOTION *motion@<eax>, NJS_MOTION *shape@<edi>, float frame, int flgs, float clpScl, void *drawModel)
 static const void* const DrawShapeMotionPtr = (void*)0x405EF0;
-static inline void DrawShapeMotion(obj* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame, int flgs, float clpScl, void* drawModel)
+static inline void DrawShapeMotion(NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame, int flgs, float clpScl, void* drawModel)
 {
 	__asm
 	{
@@ -455,7 +501,7 @@ static inline void DrawShapeMotion(obj* object, NJS_MOTION* motion, NJS_MOTION* 
 
 // Variable draw functions (picks between Simple and Late)
 FunctionPointer(void, lateDrawModel, (NJS_MODEL_SADX* mdl, int flgs), 0x4048E0);
-FunctionPointer(void, lateDrawObject, (obj* object, int flgs, float clipScl), 0x4074A0);
+FunctionPointer(void, lateDrawObject, (NJS_OBJECT* object, int flgs, float clipScl), 0x4074A0);
 FunctionPointer(void, late_Action, (NJS_ACTION* action, float frame, int flgs, float clipScl), 0x405490);
 
 // Late draw functions: Model
@@ -470,19 +516,19 @@ FunctionPointer(void, late_DrawModelClipMesh, (NJS_MODEL_SADX* mdl, int flgs, fl
 FunctionPointer(void, late_DrawShadowModel, (NJS_MODEL_SADX* mdl, float clipScl), 0x407B00);
 
 // Late draw functions: Object
-FunctionPointer(void, late_DrawObject, (obj* object, int flgs), 0x407B70);
-FunctionPointer(void, late_DrawObjectClip, (obj* object, int flgs, float clipScl), 0x407B40);
-FunctionPointer(void, late_DrawObjectClipEx, (obj* object, int flgs, float clipScl), 0x40A170);
-FunctionPointer(void, late_DrawObjectEx, (obj* object, int flgs), 0x40A1A0);
-FunctionPointer(void, late_DrawObjectClipMS, (obj* object, int flgs, float clipScl), 0x40A1E0);
-FunctionPointer(void, late_DrawObjectMesh, (obj* object, int flgs), 0x40A210);
-FunctionPointer(void, late_DrawObjectClipMesh, (obj* object, int flgs, float clipScl), 0x40A250);
-FunctionPointer(void, late_DrawShadowObject, (obj* object, float clipScl), 0x408690);
+FunctionPointer(void, late_DrawObject, (NJS_OBJECT* object, int flgs), 0x407B70);
+FunctionPointer(void, late_DrawObjectClip, (NJS_OBJECT* object, int flgs, float clipScl), 0x407B40);
+FunctionPointer(void, late_DrawObjectClipEx, (NJS_OBJECT* object, int flgs, float clipScl), 0x40A170);
+FunctionPointer(void, late_DrawObjectEx, (NJS_OBJECT* object, int flgs), 0x40A1A0);
+FunctionPointer(void, late_DrawObjectClipMS, (NJS_OBJECT* object, int flgs, float clipScl), 0x40A1E0);
+FunctionPointer(void, late_DrawObjectMesh, (NJS_OBJECT* object, int flgs), 0x40A210);
+FunctionPointer(void, late_DrawObjectClipMesh, (NJS_OBJECT* object, int flgs, float clipScl), 0x40A250);
+FunctionPointer(void, late_DrawShadowObject, (NJS_OBJECT* object, float clipScl), 0x408690);
 
 // Late draw functions: Motion
-FunctionPointer(void, late_DrawMotionClip, (obj* object, NJS_MOTION* motion, float frame, int flgs, float clipScl), 0x4053A0);
-FunctionPointer(void, late_DrawMotionClipEx, (obj* object, NJS_MOTION* motion, float frame, int flgs, float clipScl), 0x4082D0);
-FunctionPointer(void, late_DrawMotionClipMesh, (obj* object, NJS_MOTION* motion, float frame, int flgs, float clipScl), 0x408300);
+FunctionPointer(void, late_DrawMotionClip, (NJS_OBJECT* object, NJS_MOTION* motion, float frame, int flgs, float clipScl), 0x4053A0);
+FunctionPointer(void, late_DrawMotionClipEx, (NJS_OBJECT* object, NJS_MOTION* motion, float frame, int flgs, float clipScl), 0x4082D0);
+FunctionPointer(void, late_DrawMotionClipMesh, (NJS_OBJECT* object, NJS_MOTION* motion, float frame, int flgs, float clipScl), 0x408300);
 
 // Late draw functions: Action
 FunctionPointer(void, late_ActionEx, (NJS_ACTION* action, float frame, int flgs), 0x408330);
@@ -498,19 +544,19 @@ FunctionPointer(void, late_ActionLinkEx, (NJS_ACTION_LINK* actionLink, float fra
 FunctionPointer(void, late_ActionLinkMesh, (NJS_ACTION_LINK* actionLink, float frame, int flgs), 0x4084D0);
 
 // Late draw functions: MotionLink
-FunctionPointer(void, late_DrawMotionLinkEx, (obj* object, NJS_MOTION_LINK* motionLink, float frame, int flgs), 0x408480);
+FunctionPointer(void, late_DrawMotionLinkEx, (NJS_OBJECT* object, NJS_MOTION_LINK* motionLink, float frame, int flgs), 0x408480);
 
 // Late draw functions: Shape motion
-FunctionPointer(void, late_DrawShapeMotionEx, (obj* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame, int flgs), 0x408420);
-FunctionPointer(void, late_DrawShapeMotionMesh, (obj* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame, int flgs), 0x408450);
+FunctionPointer(void, late_DrawShapeMotionEx, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame, int flgs), 0x408420);
+FunctionPointer(void, late_DrawShapeMotionMesh, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame, int flgs), 0x408450);
 
 // Chaos draw functions
 FunctionPointer(void, CHAOS_DrawModel, (NJS_MODEL_SADX* mdl), 0x409EF0);
-FunctionPointer(void, CHAOS_DrawObject, (obj* object), 0x40A280);
+FunctionPointer(void, CHAOS_DrawObject, (NJS_OBJECT* object), 0x40A280);
 FunctionPointer(void, CHAOS_Action, (NJS_ACTION* action, float frame), 0x409FB0);
-FunctionPointer(void, CHAOS_DrawShapeMotion, (obj* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x40A050);
+FunctionPointer(void, CHAOS_DrawShapeMotion, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x40A050);
 
-// Cutscene audio functions
+// Event audio
 FunctionPointer(void, voicevolchange, (int vol), 0x40CCF0);
 FunctionPointer(void, EventSe_Play, (int id, int se, int frame), 0x64FD00);
 FunctionPointer(void, EventSe_Stop, (int id), 0x64FD40);
@@ -519,13 +565,13 @@ FunctionPointer(void, EventSe_Pan, (int id, int pan, int frame), 0x64FDB0);
 FunctionPointer(void, EventSe_Pitch, (int id, int pitch, int frame), 0x64FDE0);
 FunctionPointer(void, EventSe_Oneshot, (int se, int volume, int pan, int pitch), 0x64FE10);
 
-// Cutscene message
-FunctionPointer(void, EV_Msg, (char* str), 0x42FB20);
+// Event message
+FunctionPointer(void, EV_Msg, (const char* str), 0x42FB20);
 VoidFunc(EV_MsgClose, 0x42FBB0);
 VoidFunc(EV_MsgCls, 0x42FC20);
 FunctionPointer(void, EV_MsgW, (int time, char* str), 0x431640);
 
-// Cutscene Camera
+// Event camera
 VoidFunc(EV_CameraOn, 0x4303E0);
 VoidFunc(EV_CameraOff, 0x4304B0);
 FunctionPointer(void, EV_CameraAng, (int mode, int time, int x, int y, int z), 0x430C90);
@@ -540,7 +586,7 @@ FunctionPointer(void, EV_CameraChaseRM, (int mode, int time, task* tp, float hei
 FunctionPointer(void, EV_CameraPerspective, (int mode, int time, int ang), 0x431060);
 FunctionPointer(void, EV_CameraPath, (cpathtag* path, float speed), 0x4310A0);
 
-// Cutscene functions
+// Event
 FunctionPointer(void, EV_CreateObject, (task** tp, float px, float py, float pz, int ax, int ay, int az), 0x431670);
 FunctionPointer(void, EV_CreateObjectFunc, (task** tp, task* (*func)(void), float x, float y, float z, int rx, int ry, int rz), 0x4316C0);
 FunctionPointer(void, EV_InitObject, (task* tp), 0x431730);
@@ -559,7 +605,7 @@ FunctionPointer(void, EV_SetColli, (task* tp, float size), 0x42FD60);
 FunctionPointer(void, EV_CreatePlayer, (int n, void(__cdecl* func)(task*), float px, float py, float pz, int ax, int ay, int az), 0X42FD80);
 FunctionPointer(void, EV_RemovePlayer, (int n), 0x42FDE0);
 FunctionPointer(void, EV_SetAction, (task* tp, NJS_ACTION* ap, NJS_TEXLIST* lp, float speed, int mode, int linkframe), 0x42FE00);
-FunctionPointer(void, EV_SetMotion, (task* tp, obj* op, NJS_MOTION* mp, NJS_TEXLIST* lp, float speed, int mode, int linkframe), 0x42FE20);
+FunctionPointer(void, EV_SetMotion, (task* tp, NJS_OBJECT* op, NJS_MOTION* mp, NJS_TEXLIST* lp, float speed, int mode, int linkframe), 0x42FE20);
 FunctionPointer(void, EV_ClrAction, (task* tp), 0x42FE40);
 FunctionPointer(void, EV_SetPath, (task* tp, EPATHTAG* path, float speed, int mode), 0x42FE60);
 FunctionPointer(void, EV_ClrPath, (task* tp), 0x42FE80);
@@ -584,10 +630,11 @@ FunctionPointer(void, playModel, (int model_id, int mot_id, float mot_spd, int l
 FunctionPointer(void, stopModel, (int model_id), 0x6ECB20);
 FunctionPointer(task*, getobjModel, (int model_id), 0x6ECB40);
 FunctionPointer(void, deleteModel, (int model_id), 0x6ECB50);
-FunctionPointer(void, createModel, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, obj* model, NJS_TEXLIST* texlist, int model_id), 0x6ECE70);
-FunctionPointer(void, createModelEC, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, obj* model, NJS_TEXLIST* texlist, int model_id), 0x6ECF20);
+FunctionPointer(void, createModel, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECE70);
+FunctionPointer(void, createModelEC, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECF20);
 
-// Story related functions
+// Story sequence
+FunctionPointer(BOOL, SeqCheckFlag, (int no), 0x412D20);
 FunctionPointer(void, SeqSetPlayer, (int no), 0x413380); // Current story section
 FunctionPointer(SEQ_SECTIONTBL*, SeqGetSectionList, (int playerno), 0x44EAF0); // Current story section
 
