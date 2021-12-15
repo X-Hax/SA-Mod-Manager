@@ -367,7 +367,7 @@ struct _OBJ_LANDTABLE
 
 struct TEX_PVMTABLE
 {
-	char* pname;
+	const char* pname;
 	NJS_TEXLIST* ptexlist;
 };
 
@@ -412,7 +412,7 @@ struct PDS_PERIPHERAL
 	__int16 y1;
 	__int16 x2;
 	__int16 y2;
-	char* name;
+	const char* name;
 	void* extend;
 	unsigned int old;
 	PDS_PERIPHERALINFO* info;
@@ -542,7 +542,7 @@ struct NpcMessageTable
 struct NpcMessageTable2
 {
 	__int16* code;
-	char** message;
+	const char** message;
 };
 
 struct SPLINE_DATA
@@ -1515,7 +1515,7 @@ struct _OBJ_ITEMENTRY
 	float fRange;
 	void* ptr;
 	TaskFuncPtr fnExec;
-	char* strObjName;
+	const char* strObjName;
 };
 
 struct _OBJ_ITEMTABLE
