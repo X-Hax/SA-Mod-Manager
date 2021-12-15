@@ -1507,6 +1507,24 @@ struct PL_KILLCOLLI
 	NJS_OBJECT* object;
 };
 
+struct _OBJ_ITEMENTRY
+{
+	unsigned __int8 ucInitMode;
+	unsigned __int8 ucLevel;
+	__int16 ssAttribute;
+	float fRange;
+	void* ptr;
+	TaskFuncPtr fnExec;
+	char* strObjName;
+};
+
+struct _OBJ_ITEMTABLE
+{
+	__int16 ssCount;
+	__int16 ssAttribute;
+	_OBJ_ITEMENTRY* pObjItemEntry;
+};
+
 struct ___stcClip
 {
 	float f32Near;

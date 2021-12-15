@@ -21,6 +21,7 @@ DataPointer(___stcClip, gClipSky, 0x3ABDCA0);
 DataPointer(int, GameTimer, 0x3B0F108);
 DataPointer(__int16, ssStageNumber, 0x3B22DCC);
 DataPointer(int, ssActNumber, 0x3B22DEC);
+DataPointer(int, BlockMask, 0x3B36D48); // Mask to show/hide level geometry with blockbit
 
 // Player
 DataArray(player_parameter, playerwk_default, 0x9154E8, 8);
@@ -80,6 +81,8 @@ DataPointer(int, ComboScore, 0x3B29D28);
 DataPointer(int, EnemyScore, 0x3B0F104);
 
 // Object
+DataArray(TEX_PVMTABLE*, ListofPvmList, 0x90EB68, 44); // Object textures
+DataArray(_OBJ_ITEMTABLE*, objItemTable, 0x974AF8, 344); // Object lists, 43 levels * 8 acts
 DataArray(char, PlayerHoldingItemID, 0x3B36DC8, 8); // Identifier for current held object
 
 // Boss

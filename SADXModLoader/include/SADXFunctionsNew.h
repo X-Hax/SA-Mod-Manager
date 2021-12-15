@@ -28,40 +28,47 @@ typedef bool _BOOL1;
 #define CamFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(_OBJ_CAMERAPARAM* pParam),ADDRESS)
 
 // General
-FunctionPointer(task*, CreateChildTask, (unsigned __int16 im, void(__cdecl* exec)(task*), task* tp), 0x40B940);
-FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, void(__cdecl* exec)(task*)), 0x40B860);
-FunctionPointer(void, DestroyTask, (task* tp), 0x40B570);
-FunctionPointer(void, FreeTask, (task* tp), 0x40B6C0);
-FunctionPointer(void, B_Destructor, (task* tp), 0x59DBF0);
-TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
-TaskFunc(FreeTaskC, 0x40B7E0); // Free all the children of a task
-FunctionPointer(int, CheckCollisionCylinderP, (NJS_POINT3* vp, float r, float h), 0x4418D0); // Check if a player is in a non-rotated cylinder, returns 0 or player id + 1
-FunctionPointer(int, CheckCollisionP, (NJS_POINT3* vp, float d), 0x441840); // Check if a player is in a sphere, returns 0 or player id + 1
-VoidFunc(InitFreeCamera, 0x434870);
+FunctionPointer(void, ___njSetBackColor, (uint32_t c0, uint32_t c1, uint32_t c2), 0x402F10); // Set background color
 FunctionPointer(void, ___njSetConstantMaterial, (NJS_ARGB* a1), 0x402F40);
+FunctionPointer(void, ___njClipZ, (float nearZ, float farZ), 0x403180); // Clip distance (or draw distance)
+TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
+TaskFunc(DestroyTask, 0x40B570);
+TaskFunc(FreeTask, 0x40B6C0);
+TaskFunc(FreeTaskC, 0x40B7E0); // Free all the children of a task
+FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, void(__cdecl* exec)(task*)), 0x40B860);
+FunctionPointer(task*, CreateChildTask, (unsigned __int16 im, void(__cdecl* exec)(task*), task* tp), 0x40B940);
+VoidFunc(PadReadOn, 0x40EF40);
+VoidFunc(PadReadOff, 0x40EF50);
+VoidFunc(___njFogEnable, 0x411AF0);
+VoidFunc(___njFogDisable, 0x411B40);
+FunctionPointer(void, ___dsSetPalette, (int no), 0x412420);
 FunctionPointer(void, SetMaterial, (float a, float r, float g, float b), 0x4128A0);
 VoidFunc(SetMatMatMaterial, 0x4128E0);
 VoidFunc(ResetMaterial, 0x4128F0);
-FunctionPointer(signed int, NeonuLoadTexture, (NJS_TEXLIST* pTexlist), 0x4228E0);
-VoidFunc(ResetRenderingParameter, 0x7AF430);
-FunctionPointer(void, SetViewAngle, (int new_view_angle), 0x437240);
-VoidFunc(SleepTimer, 0x426040);
-VoidFunc(WakeTimer, 0x426030);
-VoidFunc(AdvanceTime, 0x426075);
-VoidFunc(PadReadOn, 0x40EF40);
-VoidFunc(PadReadOff, 0x40EF50);
-FunctionPointer(void, ___njSetBackColor, (uint32_t c0, uint32_t c1, uint32_t c2), 0x402F10); // Set background color
-FunctionPointer(void, ___njClipZ, (float nearZ, float farZ), 0x403180); // Clip distance (or draw distance)
-VoidFunc(___njFogEnable, 0x411AF0);
-VoidFunc(___njFogDisable, 0x411B40);
-FunctionPointer(int, GetStageNumber, (), 0x414650); // Get stage and act number
-VoidFunc(SetScrollTask, 0x414420); // Load skybox task
 VoidFunc(SetRoundMaster, 0x4143C0); // Load level task
-VoidFunc(ADX_Close, 0x425670); // Stop bgm
+VoidFunc(SetScrollTask, 0x414420); // Load skybox task
+FunctionPointer(int, GetStageNumber, (), 0x414650); // Get stage and act number
 FunctionPointer(void, AdvanceAct, (__int16 Gap), 0x415980); // Advance act number
+FunctionPointer(signed int, NeonuLoadTexture, (NJS_TEXLIST* pTexlist), 0x4228E0);
+VoidFunc(ADX_Close, 0x425670); // Stop bgm
+VoidFunc(WakeTimer, 0x426030);
+VoidFunc(SleepTimer, 0x426040);
+VoidFunc(AdvanceTime, 0x426075);
+FunctionPointer(void, SetViewAngle, (int new_view_angle), 0x437240);
 FunctionPointer(void, LandChangeStage, (char Gap), 0x43A460); // Release landtable and request act change
 FunctionPointer(void, AddCameraStage, (__int16 Gap), 0x434680); // Release cameras and request act chang
+VoidFunc(InitFreeCamera, 0x434870);
+FunctionPointer(int, AdjustAngle, (__int16 ang0, unsigned __int16 ang1, int dang), 0x438350); // Slowly adjust ang0 to ang1 at dang speed
+FunctionPointer(int, SubAngle, (int ang0, int ang1), 0x4383B0); // Difference
+FunctionPointer(int, DiffAngle, (int ang0, int ang1), 0x4383D0); // Positive difference
+FunctionPointer(int, VectorAngle, (NJS_POINT3* v1, NJS_POINT3* v2, NJS_POINT3* vn), 0x438410); // Calculate Y rotation between two points; "vn" is ground normal to reverse the angle if upside down (optional)
+FunctionPointer(int, MSetPositionWIgnoreAttribute, (NJS_POINT3* p, NJS_POINT3* v, Angle3* a, int attrmask, float r), 0x439620); // Move position "p" with direction "v" and angle "a"; outputs in "v" and "a"; handles intersection with geo collisions in radius "r" except those whose attributes match attrmask; returns bitmask (1: touched a collision, 2: touched a collision upside down).
+FunctionPointer(BOOL, MSetPosition, (NJS_POINT3* p, NJS_POINT3* v, Angle3* a, float r), 0x43A030); // Move position "p" with direction "v" and angle "a"; outputs in "v" and "a"; handles intersection with any geometry collision in radius "r"; returns whether it touched a collision or not.
+FunctionPointer(BOOL, MSetPositionIgnoreAttribute, (NJS_POINT3* p, NJS_POINT3* v, Angle3* a, int attrmask, float r), 0x43A060); // Move position "p" with direction "v" and angle "a"; outputs in "v" and "a"; handles intersection with geo collisions in radius "r" except those whose attributes match attrmask; returns whether it touched a collision or not.
+FunctionPointer(int, CheckCollisionP, (NJS_POINT3* vp, float d), 0x441840); // Check if a player is in a sphere, returns 0 or player id + 1
+FunctionPointer(int, CheckCollisionCylinderP, (NJS_POINT3* vp, float r, float h), 0x4418D0); // Check if a player is in a cylinder, returns 0 or player id + 1
 FunctionPointer(void, AddSetStage, (char Gap), 0x46BF70); // Release objects and request act change
+VoidFunc(ResetRenderingParameter, 0x7AF430);
 
 static const void* const isTextureNGPtr = (void*)0x403250;
 static inline BOOL isTextureNG(NJS_TEXLIST* tl) // Check if the texlist is valid
@@ -315,10 +322,69 @@ FunctionPointer(void, CreateSmoke, (NJS_POINT3* pos, NJS_POINT3* velo, float scl
 FunctionPointer(void, CreateSmoke2, (particle_info* effect), 0x4B98E0); // Create smoke effect with custom data
 FunctionPointer(void, CreateBomb, (NJS_POINT3* pos, float scl), 0x4CACF0); // Create bomb effect
 
-// Object tasks
+// Object task functions
+TaskFunc(ObjectSavePoint, 0x44F540); // Checkpoint
+TaskFunc(Ring, 0x450370);
 TaskFunc(BigDirectAhead, 0x48E2E0);
+TaskFunc(EnemyLeon, 0x4A85C0);
+TaskFunc(EnemySaru, 0x4AD140);
+TaskFunc(EnemyUniA_Main, 0x4AF190);
+TaskFunc(EnemyUniB_Main, 0x4AF500);
+TaskFunc(EnemyUniC_Main, 0x4AF860);
+TaskFunc(EnemySpinnaA_Main, 0x4B0DF0);
+TaskFunc(EnemySpinnaB_Main, 0x4B0F40);
+TaskFunc(EnemySpinnaC_Main, 0x4B1090);
+TaskFunc(PoliceDisplayer, 0x4B2710);
+TaskFunc(PoliceExecutor, 0x4B30E0);
+TaskFunc(EnemyPolice, 0x4B3210);
+TaskFunc(ObjectJumpPanel, 0x4B8DC0);
+TaskFunc(ObjectItemboxAir, 0x4C07D0);
+TaskFunc(ObjectRocketBaseH, 0x4CA530);
+TaskFunc(ObjectRocketBaseHS, 0x4CA660);
+TaskFunc(ObjectRocketBaseV, 0x4CA7D0);
+TaskFunc(ObjectRocketBaseVS, 0x4CA900);
+TaskFunc(ObjectSwitch, 0x4CBA80);
+TaskFunc(Object_Dynamite, 0x4CBDE0);
+TaskFunc(ObjectItemBox, 0x4D6F10);
+TaskFunc(ColliSphere, 0x4D4700);
+TaskFunc(ColliCylinder, 0x4D4770);
+TaskFunc(ColliCube, 0x4D47E0);
+TaskFunc(ColliWall, 0x4D4850);
+TaskFunc(ColliOttottoRange, 0x4D4B70);
+TaskFunc(B_Destructor, 0x59DBF0); // Standard destroy for geometry collisions (stored in twp->counter)
 TaskFunc(EnemyMountainE104, 0x605B40); // Epsilon
 TaskFunc(mt_gdcontrol, 0x600890); // Delayed bgm load task
+TaskFunc(dispAxelPanel, 0x7A4360);
+TaskFunc(ObjectAxelPanel, 0x7A4450);
+TaskFunc(DrawSpring, 0x7A4980);
+TaskFunc(DrawSpringB, 0x7A4AE0);
+TaskFunc(ObjectIronBallJG, 0x7A3E50);
+TaskFunc(ObjectIronBall, 0x7A4260);
+TaskFunc(ObjectSpring_Main, 0x7A4C30);
+TaskFunc(ObjectSpringB_Main, 0x7A4E50);
+TaskFunc(ObjectLinering, 0x7ABE90);
+TaskFunc(ObjectLineringV, 0x7AC4F0);
+TaskFunc(ObjectToge, 0x7A30E0); // Spikes
+TaskFunc(CallObjectEmeraldDisplay, 0x4A2FB0); // Emerald piece disp
+TaskFunc(ObjectEmeraldPRegular, 0x4A2FD0); // Emerald piece exec
+TaskFunc(ObjectEmeraldP, 0x4A3420); // Emerald piece
+TaskFunc(ObjectReleaseBox, 0x46B170); // Capsule
+TaskFunc(Object_Mountain_Zako, 0x603F80);
+TaskFunc(Object_Mountain_ZakoB, 0x603FF0);
+TaskFunc(Object_Mountain_Blow, 0x605C50);
+TaskFunc(Object_Mountain_Blow2, 0x605D40);
+TaskFunc(ObjectMountainSakusaku, 0x605E40);
+TaskFunc(ObjectMountainSaku, 0x605DF0);
+TaskFunc(ObjectMountainTuribasi1, 0x6080D0);
+TaskFunc(ObjectMountainTuribasi2, 0x6080F0);
+TaskFunc(ObjectMountainTuribasi3, 0x608110);
+TaskFunc(ObjectMountainTuribasi4, 0x608130);
+TaskFunc(EnemySnake, 0x7A0330);
+TaskFunc(EnemySai, 0x7A1380);
+TaskFunc(ObjectTikalHint, 0x7A1AA0);
+TaskFunc(ObjectCmnKusa, 0x7A2B60); // Weed that Tails can cut
+TaskFunc(ObjectCmnDushRing, 0x7A26F0); // Dash hoop
+TaskFunc(ObjectBaloon, 0x7A21C0);
 
 // Sound (note: "tone" is sound id)
 FunctionPointer(signed int, dsPlay_oneshot, (int tone, int id, int pri, int volofs), 0x423D70);
@@ -558,6 +624,8 @@ FunctionPointer(void, CHAOS_DrawShapeMotion, (NJS_OBJECT* object, NJS_MOTION* mo
 
 // Event audio
 FunctionPointer(void, voicevolchange, (int vol), 0x40CCF0);
+FunctionPointer(void, EventSe_Init, (int size), 0x64FC80);
+VoidFunc(EventSe_Close, 0x64FCB0);
 FunctionPointer(void, EventSe_Play, (int id, int se, int frame), 0x64FD00);
 FunctionPointer(void, EventSe_Stop, (int id), 0x64FD40);
 FunctionPointer(void, EventSe_Volume, (int id, int volume, int frame), 0x64FD80);
@@ -587,6 +655,8 @@ FunctionPointer(void, EV_CameraPerspective, (int mode, int time, int ang), 0x431
 FunctionPointer(void, EV_CameraPath, (cpathtag* path, float speed), 0x4310A0);
 
 // Event
+VoidFunc(EV_CanselOn, 0x42F630);
+FunctionPointer(void, EV_Wait, (int time), 0x4314D0);
 FunctionPointer(void, EV_CreateObject, (task** tp, float px, float py, float pz, int ax, int ay, int az), 0x431670);
 FunctionPointer(void, EV_CreateObjectFunc, (task** tp, task* (*func)(void), float x, float y, float z, int rx, int ry, int rz), 0x4316C0);
 FunctionPointer(void, EV_InitObject, (task* tp), 0x431730);
