@@ -327,13 +327,13 @@ TaskFunc(ObjectSavePoint, 0x44F540); // Checkpoint
 TaskFunc(Ring, 0x450370);
 TaskFunc(BigDirectAhead, 0x48E2E0);
 TaskFunc(EnemyLeon, 0x4A85C0);
-TaskFunc(EnemySaru, 0x4AD140);
-TaskFunc(EnemyUniA_Main, 0x4AF190);
-TaskFunc(EnemyUniB_Main, 0x4AF500);
-TaskFunc(EnemyUniC_Main, 0x4AF860);
-TaskFunc(EnemySpinnaA_Main, 0x4B0DF0);
-TaskFunc(EnemySpinnaB_Main, 0x4B0F40);
-TaskFunc(EnemySpinnaC_Main, 0x4B1090);
+TaskFunc(EnemySaru, 0x4AD140); // Kiki
+TaskFunc(EnemyUniA, 0x4AF190);
+TaskFunc(EnemyUniB, 0x4AF500);
+TaskFunc(EnemyUniC, 0x4AF860);
+TaskFunc(EnemySpinnaA, 0x4B0DF0);
+TaskFunc(EnemySpinnaB, 0x4B0F40);
+TaskFunc(EnemySpinnaC, 0x4B1090);
 TaskFunc(PoliceDisplayer, 0x4B2710);
 TaskFunc(PoliceExecutor, 0x4B30E0);
 TaskFunc(EnemyPolice, 0x4B3210);
@@ -360,8 +360,8 @@ TaskFunc(DrawSpring, 0x7A4980);
 TaskFunc(DrawSpringB, 0x7A4AE0);
 TaskFunc(ObjectIronBallJG, 0x7A3E50);
 TaskFunc(ObjectIronBall, 0x7A4260);
-TaskFunc(ObjectSpring_Main, 0x7A4C30);
-TaskFunc(ObjectSpringB_Main, 0x7A4E50);
+TaskFunc(ObjectSpring, 0x7A4C30);
+TaskFunc(ObjectSpringB, 0x7A4E50);
 TaskFunc(ObjectLinering, 0x7ABE90);
 TaskFunc(ObjectLineringV, 0x7AC4F0);
 TaskFunc(ObjectToge, 0x7A30E0); // Spikes
@@ -379,8 +379,9 @@ TaskFunc(ObjectMountainTuribasi1, 0x6080D0);
 TaskFunc(ObjectMountainTuribasi2, 0x6080F0);
 TaskFunc(ObjectMountainTuribasi3, 0x608110);
 TaskFunc(ObjectMountainTuribasi4, 0x608130);
+TaskFunc(ObjectGroupRing, 0x79B2F0);
 TaskFunc(EnemySnake, 0x7A0330);
-TaskFunc(EnemySai, 0x7A1380);
+TaskFunc(EnemySai, 0x7A1380); // Rhinotank
 TaskFunc(ObjectTikalHint, 0x7A1AA0);
 TaskFunc(ObjectCmnKusa, 0x7A2B60); // Weed that Tails can cut
 TaskFunc(ObjectCmnDushRing, 0x7A26F0); // Dash hoop
