@@ -1223,8 +1223,8 @@ int RegisterSoundList(const SoundList& list)
 {
 	if (_SoundLists.empty())
 	{
-		_SoundLists.resize(SoundLists_Length);
-		memcpy(_SoundLists.data(), SoundLists, sizeof(SoundList) * SoundLists_Length);
+		_SoundLists.resize(SoundLists.size());
+		memcpy(_SoundLists.data(), SoundLists, sizeof(SoundList) * SoundLists.size());
 	}
 	_SoundLists.push_back(list);
 	SoundLists_Cust        = _SoundLists.data();
@@ -1238,8 +1238,8 @@ int RegisterMusicFile(const MusicInfo& track)
 {
 	if (_MusicList.empty())
 	{
-		_MusicList.resize(MusicList_Length);
-		memcpy(_MusicList.data(), MusicList, sizeof(MusicInfo) * MusicList_Length);
+		_MusicList.resize(MusicList.size());
+		memcpy(_MusicList.data(), MusicList, sizeof(MusicInfo) * MusicList.size());
 	}
 	_MusicList.push_back(track);
 	return _MusicList.size() - 1;
@@ -1542,19 +1542,19 @@ static void __cdecl InitMods()
 	// Fixes N-sided polygons (Gamma's headlight) by using
 	// triangle strip vertex buffer initializers.
 
-	for (int i = 0; i < MeshSetInitFunctions_Length; ++i)
+	for (int i = 0; i < MeshSetInitFunctions.size(); ++i)
 	{
 		auto& a = MeshSetInitFunctions[i];
 		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
 	}
 
-	for (int i = 0; i < PolyBuffDraw_VertexColor_Length; ++i)
+	for (int i = 0; i < PolyBuffDraw_VertexColor.size(); ++i)
 	{
 		auto& a = PolyBuffDraw_VertexColor[i];
 		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
 	}
 
-	for (int i = 0; i < PolyBuffDraw_NoVertexColor_Length; ++i)
+	for (int i = 0; i < PolyBuffDraw_NoVertexColor.size(); ++i)
 	{
 		auto& a = PolyBuffDraw_NoVertexColor[i];
 		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];

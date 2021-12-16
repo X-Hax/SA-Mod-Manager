@@ -522,7 +522,7 @@ static vector<NJS_TEXNAME> texname_overflow;
 
 inline void dynamic_expand(NJS_TEXLIST* texlist, size_t count)
 {
-	if (count > TexNameBuffer_Length)
+	if (count > TexNameBuffer.size())
 	{
 		static const NJS_TEXNAME dummy = {};
 
@@ -714,9 +714,9 @@ static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist)
 	}
 
 	NJS_TEXLIST temp = {};
-	char texture_names[28 * TexNameBuffer_Length] = {};
+	char texture_names[28 * TexNameBuffer.size()] = {};
 
-	njSetPvmTextureList(&temp, TexNameBuffer, texture_names, TexNameBuffer_Length);
+	njSetPvmTextureList(&temp, TexNameBuffer, texture_names, TexNameBuffer.size());
 
 	if (LoadSystemPVM_r(filename, &temp) == -1)
 	{
