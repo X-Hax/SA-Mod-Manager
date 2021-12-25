@@ -7,6 +7,8 @@
 #define MODLOADER_MEMACCESS_H
 
 #include <stdint.h>
+#include <iterator>
+#include <stdexcept>
 
 // Utility Functions
 
@@ -227,7 +229,7 @@ struct DataArray_t final
 	constexpr reference get() noexcept
 	{
 		static_assert(I < len, "index is within bounds");
-		return data()[i];
+		return data()[I];
 	}
 
 	template<size_type I>
@@ -235,7 +237,7 @@ struct DataArray_t final
 	constexpr const_reference get() const noexcept
 	{
 		static_assert(I < len, "index is within bounds");
-		return cdata()[i];
+		return cdata()[I];
 	}
 
 	// Gets the first item in the array.
