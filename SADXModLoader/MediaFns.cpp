@@ -470,7 +470,7 @@ struc_64* LoadSoundPack(const char* path, int bank)
 }
 
 SoundList* SoundLists_Cust = SoundLists;
-int SoundLists_Cust_Length = SoundLists_Length;
+int SoundLists_Cust_Length = SoundLists.size();
 
 void __cdecl LoadSoundList_r(signed int soundlist)
 {
@@ -505,7 +505,7 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 								++v2;
 								continue;
 							}
-							snprintf(String1, sizeof(String1), "%sSoundData\\SE\\%s.dat", CDPath, v2->Filename);
+							snprintf(String1, sizeof(String1), "%sSoundData\\SE\\%s.dat", &CDPath, v2->Filename);
 							if (!lstrcmpiA(String1, dword_3B291C8[v2->Bank]->Filename))
 							{
 								++v1;
@@ -525,7 +525,7 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 							dword_3B291C8[v2->Bank] = sub_4B4D10(String1, 1);
 							if (!dword_3B291C8[v2->Bank])
 							{
-								snprintf(String1, sizeof(String1), "%sSoundData\\SE\\%s.dat", CDPath, v2->Filename);
+								snprintf(String1, sizeof(String1), "%sSoundData\\SE\\%s.dat", &CDPath, v2->Filename);
 								dword_3B291C8[v2->Bank] = sub_4B4D10(String1, 1);
 							}
 						}

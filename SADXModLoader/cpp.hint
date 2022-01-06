@@ -1,8 +1,8 @@
 // Data pointer and array declarations.
 #define DataPointer(type, name, address) \
 	static type &name = *(type *)address
-#define DataArray(type, name, address, length) \
-	static type *const name = (type *)address; static const int name##_Length = length
+#define DataArray(type, name, address, len) \
+	static DataArray_t<type, address, len> name
 
 // Function pointer declarations.
 #define FunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) \

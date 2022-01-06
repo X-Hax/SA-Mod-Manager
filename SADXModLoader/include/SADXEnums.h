@@ -17,7 +17,7 @@
 enum StatusBits
 {
 	StatusBits_Ground,
-	StatusBits_Unknown1,
+	StatusBits_OnColli,
 	StatusBits_Hurt,
 	StatusBits_ObjectInteract,
 	StatusBits_Unknown2,
@@ -37,7 +37,7 @@ enum StatusBits
 enum Status : uint16_t
 {
 	makemask(Status, Ground),
-	makemask(Status, Unknown1),
+	makemask(Status, OnColli),
 	makemask(Status, Hurt),
 	makemask(Status, ObjectInteract),
 	makemask(Status, Unknown2),
