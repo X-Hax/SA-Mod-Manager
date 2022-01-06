@@ -1455,6 +1455,65 @@ static void ProcessPaletteLightListINI(const IniGroup* group, const wstring& mod
 
 }
 
+static void ProcessFogDataINI(const IniGroup* group, const wstring& mod_dir)
+{
+	if (!group->hasKeyNonEmpty("filename"))
+	{
+		return;
+	}
+
+	int count = group->getInt("count");
+	auto addr = (FogData**)group->getIntRadix("address", 16);
+
+	if (addr == nullptr)
+	{
+		return;
+	}
+
+	addr = (FogData**)((int)addr + 0x400000);
+
+	wchar_t filename[MAX_PATH]{};
+	swprintf(filename, LengthOfArray(filename), L"%s\\%s",
+		mod_dir.c_str(), group->getWString("filename").c_str());
+
+	auto inidata = new IniFile(filename);
+
+	vector<FogData> ents;
+
+	for (int i = 0; i < count; i++)
+	{
+		char key[8]{};
+		snprintf(key, sizeof(key), "%d", i);
+
+		if (!inidata->hasGroup(key))
+		{
+			*addr++ = nullptr;
+			continue;
+		}
+
+		const IniGroup* const entdata = inidata->getGroup(key);
+		auto* entry = new FogData[3];
+		// Far
+		entry[0].Toggle = entdata->getInt("FogEnabledHigh");
+		entry[0].Layer = entdata->getFloat("FogStartHigh");
+		entry[0].Distance = entdata->getFloat("FogEndHigh");
+		entry[0].Color = (((entdata->getInt("ColorA_High") & 0x0ff) << 24 ) | (entdata->getInt("ColorR_High") & 0x0ff) << 16) | ((entdata->getInt("ColorG_High") & 0x0ff) << 8) | (entdata->getInt("ColorB_High") & 0x0ff);
+		// Medium
+		entry[1].Toggle = entdata->getInt("FogEnabledMedium");
+		entry[1].Layer = entdata->getFloat("FogStartMedium");
+		entry[1].Distance = entdata->getFloat("FogEndMedium");
+		entry[1].Color = (((entdata->getInt("ColorA_Medium") & 0x0ff) << 24) | (entdata->getInt("ColorR_Medium") & 0x0ff) << 16) | ((entdata->getInt("ColorG_Medium") & 0x0ff) << 8) | (entdata->getInt("ColorB_Medium") & 0x0ff);
+		// Near
+		entry[2].Toggle = entdata->getInt("FogEnabledLow");
+		entry[2].Layer = entdata->getFloat("FogStartLow");
+		entry[2].Distance = entdata->getFloat("FogEndLow");
+		entry[2].Color = (((entdata->getInt("ColorA_Low") & 0x0ff) << 24) | (entdata->getInt("ColorR_Low") & 0x0ff) << 16) | ((entdata->getInt("ColorG_Low") & 0x0ff) << 8) | (entdata->getInt("ColorB_Low") & 0x0ff);
+		*addr++ = entry;
+	}
+
+	delete inidata;
+}
+
 static void ProcessWeldListINI(const IniGroup* group, const wstring& mod_dir)
 {
 	if (!group->hasKeyNonEmpty("filename") || !group->hasKeyNonEmpty("pointer"))
@@ -1669,6 +1728,7 @@ static const unordered_map<string, exedatafunc_t> exedatafuncmap = {
 	{ "weldlist",           ProcessWeldListINI },
 	{ "creditstextlist",    ProcessCreditsTextListINI },
 	{ "physicsdata",		ProcessPhysicsDataINI },
+	{ "fogdatatable",		ProcessFogDataINI },
 	// { "bmitemattrlist",     ProcessBMItemAttrListINI },
 };
 
