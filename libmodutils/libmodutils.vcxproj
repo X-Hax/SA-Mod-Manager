@@ -84,6 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimationFile.h" />
+    <ClInclude Include="ArchiveX.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="LandTableInfo.h" />
     <ClInclude Include="ModelInfo.h" />
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationFile.cpp" />
+    <ClCompile Include="ArchiveX.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GoalRing.cpp" />
     <ClCompile Include="GoalRingModels.cpp" />
