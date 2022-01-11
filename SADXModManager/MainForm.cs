@@ -112,115 +112,124 @@ namespace SADXModManager
         }
 
         private void MainForm_Load(object sender, EventArgs e)
-        {
-            // Try to use TLS 1.2
-            try { ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072; } catch { }
-            if (!Debugger.IsAttached)
-                Environment.CurrentDirectory = Application.StartupPath;
-            SetDoubleBuffered(modListView, true);
-            loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+		{
+			// Try to use TLS 1.2
+			try { ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072; } catch { }
+			if (!Debugger.IsAttached)
+				Environment.CurrentDirectory = Application.StartupPath;
+			SetDoubleBuffered(modListView, true);
+			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
 
-            try
-            {
-                if (File.Exists(codelstpath))
-                    mainCodes = CodeList.Load(codelstpath);
-                else if (File.Exists(codexmlpath))
-                    mainCodes = CodeList.Load(codexmlpath);
-                else
-                    mainCodes = new CodeList();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, $"Error loading code list: {ex.Message}", "SADX Mod Loader", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                mainCodes = new CodeList();
-            }
+			try
+			{
+				if (File.Exists(codelstpath))
+					mainCodes = CodeList.Load(codelstpath);
+				else if (File.Exists(codexmlpath))
+					mainCodes = CodeList.Load(codexmlpath);
+				else
+					mainCodes = new CodeList();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(this, $"Error loading code list: {ex.Message}", "SADX Mod Loader", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				mainCodes = new CodeList();
+			}
 
-            LoadModList();
+			for (int i = 0; i < Screen.AllScreens.Length; i++)
+			{
+				Screen s = Screen.AllScreens[i];
+				screenNumComboBox.Items.Add($"{ i + 1 } { s.DeviceName } ({ s.Bounds.Location.X },{ s.Bounds.Y })"
+					+ $" { s.Bounds.Width }x{ s.Bounds.Height } { s.BitsPerPixel } bpp { (s.Primary ? "Primary" : "") }");
+			}
 
-            for (int i = 0; i < Screen.AllScreens.Length; i++)
-            {
-                Screen s = Screen.AllScreens[i];
-                screenNumComboBox.Items.Add($"{ i + 1 } { s.DeviceName } ({ s.Bounds.Location.X },{ s.Bounds.Y })"
-                    + $" { s.Bounds.Width }x{ s.Bounds.Height } { s.BitsPerPixel } bpp { (s.Primary ? "Primary" : "") }");
-            }
+			LoadSettings();
+			comboBoxTestSpawnTime.SelectedIndex = 0;
+			InitTestSpawnCutsceneList();
+			buttonUpdateD3D8to9.Visible = CheckD3D8to9Update();
+			checkBoxEnableD3D9.Enabled = File.Exists(d3d8to9StoredDLLName);
+			checkBoxEnableD3D9.Checked = File.Exists(d3d8to9InstalledDLLName);
+			profileNameBox.BeginUpdate();
+			foreach (var item in Directory.EnumerateFiles("mods", "*.ini"))
+				if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase) && !item.EndsWith("desktop.ini", StringComparison.OrdinalIgnoreCase))
+					profileNameBox.Items.Add(Path.GetFileNameWithoutExtension(item));
+			// Load the config INI upon window load
+			LoadConfigIni();
+		}
 
-            consoleCheckBox.Checked             = loaderini.DebugConsole;
-            screenCheckBox.Checked              = loaderini.DebugScreen;
-            fileCheckBox.Checked                = loaderini.DebugFile;
-            disableCDCheckCheckBox.Checked      = loaderini.DisableCDCheck;
-            checkVsync.Checked                  = loaderini.EnableVsync;
-            horizontalResolution.Enabled        = !loaderini.ForceAspectRatio;
-            horizontalResolution.Value          = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
-            verticalResolution.Value            = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
-            checkUpdateStartup.Checked          = loaderini.UpdateCheck;
-            checkUpdateModsStartup.Checked      = loaderini.ModUpdateCheck;
-            comboUpdateFrequency.SelectedIndex  = (int)loaderini.UpdateUnit;
-            numericUpdateFrequency.Value        = loaderini.UpdateFrequency;
-            comboVoiceLanguage.SelectedIndex    = (int)loaderini.VoiceLanguage;
-            comboTextLanguage.SelectedIndex     = (int)loaderini.TextLanguage;
+		private void LoadSettings()
+		{
+			LoadModList();
 
-            suppressEvent = true;
-            forceAspectRatioCheckBox.Checked = loaderini.ForceAspectRatio;
-            checkScaleHud.Checked = loaderini.ScaleHud;
-            suppressEvent = false;
+			consoleCheckBox.Checked = loaderini.DebugConsole;
+			screenCheckBox.Checked = loaderini.DebugScreen;
+			fileCheckBox.Checked = loaderini.DebugFile;
+			disableCDCheckCheckBox.Checked = loaderini.DisableCDCheck;
+			checkVsync.Checked = loaderini.EnableVsync;
+			horizontalResolution.Enabled = !loaderini.ForceAspectRatio;
+			horizontalResolution.Value = Math.Max(horizontalResolution.Minimum, Math.Min(horizontalResolution.Maximum, loaderini.HorizontalResolution));
+			verticalResolution.Value = Math.Max(verticalResolution.Minimum, Math.Min(verticalResolution.Maximum, loaderini.VerticalResolution));
+			checkUpdateStartup.Checked = loaderini.UpdateCheck;
+			checkUpdateModsStartup.Checked = loaderini.ModUpdateCheck;
+			comboUpdateFrequency.SelectedIndex = (int)loaderini.UpdateUnit;
+			numericUpdateFrequency.Value = loaderini.UpdateFrequency;
+			comboVoiceLanguage.SelectedIndex = (int)loaderini.VoiceLanguage;
+			comboTextLanguage.SelectedIndex = (int)loaderini.TextLanguage;
 
-            comboBackgroundFill.SelectedIndex = loaderini.BackgroundFillMode;
-            comboFmvFill.SelectedIndex = loaderini.FmvFillMode;
+			suppressEvent = true;
+			forceAspectRatioCheckBox.Checked = loaderini.ForceAspectRatio;
+			checkScaleHud.Checked = loaderini.ScaleHud;
+			suppressEvent = false;
 
-            windowedFullscreenCheckBox.Checked = loaderini.WindowedFullscreen;
-            forceMipmappingCheckBox.Checked    = loaderini.AutoMipmap;
-            forceTextureFilterCheckBox.Checked = loaderini.TextureFilter;
-            pauseWhenInactiveCheckBox.Checked  = loaderini.PauseWhenInactive;
-            stretchFullscreenCheckBox.Checked  = loaderini.StretchFullscreen;
+			comboBackgroundFill.SelectedIndex = loaderini.BackgroundFillMode;
+			comboFmvFill.SelectedIndex = loaderini.FmvFillMode;
 
-            int screenNum = Math.Min(Screen.AllScreens.Length, loaderini.ScreenNum);
+			windowedFullscreenCheckBox.Checked = loaderini.WindowedFullscreen;
+			forceMipmappingCheckBox.Checked = loaderini.AutoMipmap;
+			forceTextureFilterCheckBox.Checked = loaderini.TextureFilter;
+			pauseWhenInactiveCheckBox.Checked = loaderini.PauseWhenInactive;
+			stretchFullscreenCheckBox.Checked = loaderini.StretchFullscreen;
 
-            screenNumComboBox.SelectedIndex  = screenNum;
-            customWindowSizeCheckBox.Checked = windowHeight.Enabled = maintainWindowAspectRatioCheckBox.Enabled = loaderini.CustomWindowSize;
-            windowWidth.Enabled              = loaderini.CustomWindowSize && !loaderini.MaintainWindowAspectRatio;
-            Rectangle rect                   = Screen.PrimaryScreen.Bounds;
+			int screenNum = Math.Min(Screen.AllScreens.Length, loaderini.ScreenNum);
 
-            foreach (Screen screen in Screen.AllScreens)
-                rect = Rectangle.Union(rect, screen.Bounds);
+			screenNumComboBox.SelectedIndex = screenNum;
+			customWindowSizeCheckBox.Checked = windowHeight.Enabled = maintainWindowAspectRatioCheckBox.Enabled = loaderini.CustomWindowSize;
+			windowWidth.Enabled = loaderini.CustomWindowSize && !loaderini.MaintainWindowAspectRatio;
+			Rectangle rect = Screen.PrimaryScreen.Bounds;
 
-            windowWidth.Maximum  = rect.Width;
-            windowWidth.Value    = Math.Max(windowWidth.Minimum, Math.Min(rect.Width, loaderini.WindowWidth));
-            windowHeight.Maximum = rect.Height;
-            windowHeight.Value   = Math.Max(windowHeight.Minimum, Math.Min(rect.Height, loaderini.WindowHeight));
+			foreach (Screen screen in Screen.AllScreens)
+				rect = Rectangle.Union(rect, screen.Bounds);
 
-            suppressEvent = true;
-            maintainWindowAspectRatioCheckBox.Checked = loaderini.MaintainWindowAspectRatio;
-            suppressEvent = false;
+			windowWidth.Maximum = rect.Width;
+			windowWidth.Value = Math.Max(windowWidth.Minimum, Math.Min(rect.Width, loaderini.WindowWidth));
+			windowHeight.Maximum = rect.Height;
+			windowHeight.Value = Math.Max(windowHeight.Minimum, Math.Min(rect.Height, loaderini.WindowHeight));
 
-            checkWindowResize.Checked = loaderini.ResizableWindow;
+			suppressEvent = true;
+			maintainWindowAspectRatioCheckBox.Checked = loaderini.MaintainWindowAspectRatio;
+			suppressEvent = false;
 
-            checkBASS.Checked = loaderini.DisableBASS;
+			checkWindowResize.Checked = loaderini.ResizableWindow;
 
-            comboBoxTestSpawnTime.SelectedIndex = 0;
-            InitTestSpawnCutsceneList();
-            checkBoxTestSpawnLevel.Checked           = loaderini.TestSpawnLevel != -1;
-            comboBoxTestSpawnLevel.SelectedIndex     = loaderini.TestSpawnLevel;
-            numericUpDownTestSpawnAct.Value          = loaderini.TestSpawnAct;
-            checkBoxTestSpawnCharacter.Checked       = loaderini.TestSpawnCharacter != -1;
-            comboBoxTestSpawnCharacter.SelectedIndex = loaderini.TestSpawnCharacter;
-            checkBoxTestSpawnPosition.Checked        = loaderini.TestSpawnPositionEnabled;
-            numericUpDownTestSpawnX.Value            = loaderini.TestSpawnX;
-            numericUpDownTestSpawnY.Value            = loaderini.TestSpawnY;
-            numericUpDownTestSpawnZ.Value            = loaderini.TestSpawnZ;
-            numericUpDownTestSpawnAngle.Value        = loaderini.TestSpawnRotation;
-            checkBoxTestSpawnAngleHex.Checked        = loaderini.TestSpawnRotationHex;
-            checkBoxTestSpawnEvent.Checked           = loaderini.TestSpawnEvent != -1;
-            comboBoxTestSpawnEvent.SelectedIndex     = loaderini.TestSpawnEvent;
-            checkBoxTestSpawnSave.Checked            = loaderini.TestSpawnSaveID != -1;
-            numericUpDownTestSpawnSaveID.Value       = Math.Max(1, loaderini.TestSpawnSaveID);
-            buttonUpdateD3D8to9.Visible              = CheckD3D8to9Update();
-            checkBoxEnableD3D9.Enabled               = File.Exists(d3d8to9StoredDLLName);
-            checkBoxEnableD3D9.Checked               = File.Exists(d3d8to9InstalledDLLName);
-            // Load the config INI upon window load
-            LoadConfigIni();
-        }
+			checkBASS.Checked = loaderini.DisableBASS;
 
-        private void HandleUri(string uri)
+			checkBoxTestSpawnLevel.Checked = loaderini.TestSpawnLevel != -1;
+			comboBoxTestSpawnLevel.SelectedIndex = loaderini.TestSpawnLevel;
+			numericUpDownTestSpawnAct.Value = loaderini.TestSpawnAct;
+			checkBoxTestSpawnCharacter.Checked = loaderini.TestSpawnCharacter != -1;
+			comboBoxTestSpawnCharacter.SelectedIndex = loaderini.TestSpawnCharacter;
+			checkBoxTestSpawnPosition.Checked = loaderini.TestSpawnPositionEnabled;
+			numericUpDownTestSpawnX.Value = loaderini.TestSpawnX;
+			numericUpDownTestSpawnY.Value = loaderini.TestSpawnY;
+			numericUpDownTestSpawnZ.Value = loaderini.TestSpawnZ;
+			numericUpDownTestSpawnAngle.Value = loaderini.TestSpawnRotation;
+			checkBoxTestSpawnAngleHex.Checked = loaderini.TestSpawnRotationHex;
+			checkBoxTestSpawnEvent.Checked = loaderini.TestSpawnEvent != -1;
+			comboBoxTestSpawnEvent.SelectedIndex = loaderini.TestSpawnEvent;
+			checkBoxTestSpawnSave.Checked = loaderini.TestSpawnSaveID != -1;
+			numericUpDownTestSpawnSaveID.Value = Math.Max(1, loaderini.TestSpawnSaveID);
+		}
+
+		private void HandleUri(string uri)
         {
             if (WindowState == FormWindowState.Minimized)
             {
@@ -1925,5 +1934,36 @@ namespace SADXModManager
                 return false;
             }
         }
-    }
+
+		private void profileNameBox_TextChanged(object sender, EventArgs e)
+		{
+			if (string.IsNullOrEmpty(profileNameBox.Text) || profileNameBox.Text.Equals("SADXModLoader", StringComparison.OrdinalIgnoreCase)
+				|| profileNameBox.Text.Equals("mod", StringComparison.OrdinalIgnoreCase) || profileNameBox.Text.Equals("desktop", StringComparison.OrdinalIgnoreCase)
+				|| profileNameBox.Text.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+			{
+				buttonSaveProfile.Enabled = false;
+				buttonLoadProfile.Enabled = false;
+			}
+			else
+			{
+				buttonSaveProfile.Enabled = true;
+				buttonLoadProfile.Enabled = File.Exists($"mods/{profileNameBox.Text}.ini");
+			}
+		}
+
+		private void buttonLoadProfile_Click(object sender, EventArgs e)
+		{
+			loaderini = IniSerializer.Deserialize<SADXLoaderInfo>($"mods/{profileNameBox.Text}.ini");
+			LoadSettings();
+		}
+
+		private void buttonSaveProfile_Click(object sender, EventArgs e)
+		{
+			Save();
+			File.Copy(loaderinipath, $"mods/{profileNameBox.Text}.ini");
+			if (profileNameBox.FindStringExact(profileNameBox.Text) == -1)
+				profileNameBox.Items.Add(profileNameBox.Text);
+			buttonLoadProfile.Enabled = true;
+		}
+	}
 }
