@@ -1960,7 +1960,7 @@ namespace SADXModManager
 		private void buttonSaveProfile_Click(object sender, EventArgs e)
 		{
 			Save();
-			File.Copy(loaderinipath, $"mods/{profileNameBox.Text}.ini");
+			File.Copy(loaderinipath, $"mods/{profileNameBox.Text}.ini", true);
 			if (profileNameBox.FindStringExact(profileNameBox.Text) == -1)
 				profileNameBox.Items.Add(profileNameBox.Text);
 			buttonLoadProfile.Enabled = true;
