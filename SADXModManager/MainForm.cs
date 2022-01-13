@@ -142,9 +142,9 @@ namespace SADXModManager
 					+ $" { s.Bounds.Width }x{ s.Bounds.Height } { s.BitsPerPixel } bpp { (s.Primary ? "Primary" : "") }");
 			}
 
-			LoadSettings();
 			comboBoxTestSpawnTime.SelectedIndex = 0;
 			InitTestSpawnCutsceneList();
+			LoadSettings();
 			buttonUpdateD3D8to9.Visible = CheckD3D8to9Update();
 			checkBoxEnableD3D9.Enabled = File.Exists(d3d8to9StoredDLLName);
 			checkBoxEnableD3D9.Checked = File.Exists(d3d8to9InstalledDLLName);
