@@ -1539,6 +1539,7 @@ namespace SADXModManager
 		}
 		private void SaveConfigIni()
 		{
+			LoadConfigIni();
 			configFile.GameConfig.FullScreen = radioFullscreen.Checked ? 1 : 0;
 
 			configFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
