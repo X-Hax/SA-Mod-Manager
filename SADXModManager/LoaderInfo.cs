@@ -56,6 +56,10 @@ namespace SADXModManager
 		[DefaultValue((int)FillMode.Fit)]
 		public int FmvFillMode { get; set; } = (int)FillMode.Fit;
 
+		[DefaultValue(false)]
+		public bool DisablePolyBuff { get; set; }
+
+		[DefaultValue(false)]
 		public bool DisableBASS { get; set; }
 
 		[DefaultValue(-1)]
