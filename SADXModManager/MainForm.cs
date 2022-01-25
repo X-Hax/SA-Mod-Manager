@@ -154,7 +154,7 @@ namespace SADXModManager
 					profileNameBox.Items.Add(Path.GetFileNameWithoutExtension(item));
 			profileNameBox.EndUpdate();
 			// Load the config INI upon window load
-			LoadConfigIni();
+			LoadConfigIni(false);
 		}
 
 		private void LoadSettings()
@@ -1489,7 +1489,7 @@ namespace SADXModManager
 				dlg.ShowDialog(this);
 		}
 
-		private void LoadConfigIni()
+		private void LoadConfigIni(bool joyonly)
 		{
 			configFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<ConfigFile>(sadxIni) : new ConfigFile();
 			if (configFile.GameConfig == null)
@@ -1504,44 +1504,48 @@ namespace SADXModManager
 					VoiceVolume = 100
 				};
 			}
-			// Video
-			// Display mode
-			if (configFile.GameConfig.FullScreen == 1)
-				radioFullscreen.Checked = true;
-			else
-				radioWindowMode.Checked = true;
-
-			// Framerate
-			if (configFile.GameConfig.FrameRate == (int)FrameRate.Invalid || configFile.GameConfig.FrameRate > (int)FrameRate.Low)
+			if (!joyonly)
 			{
-				MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				comboFramerate.SelectedIndex = (int)FrameRate.High - 1;
+				// Video
+				// Display mode
+				if (configFile.GameConfig.FullScreen == 1)
+					radioFullscreen.Checked = true;
+				else
+					radioWindowMode.Checked = true;
+
+				// Framerate
+				if (configFile.GameConfig.FrameRate == (int)FrameRate.Invalid || configFile.GameConfig.FrameRate > (int)FrameRate.Low)
+				{
+					MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					comboFramerate.SelectedIndex = (int)FrameRate.High - 1;
+				}
+				else
+				{
+					comboFramerate.SelectedIndex = configFile.GameConfig.FrameRate - 1;
+				}
+
+				// Clip level
+				comboClip.SelectedIndex = configFile.GameConfig.ClipLevel;
+				// Fog mode
+				comboFog.SelectedIndex = configFile.GameConfig.FogEmulation;
+
+				// Sound
+				// Toggles
+				check3DSound.Checked = (configFile.GameConfig.Sound3D != 0);
+				checkSound.Checked = (configFile.GameConfig.SEVoice != 0);
+				checkMusic.Checked = (configFile.GameConfig.BGM != 0);
+
+				// Volume
+				trackBarVoiceVol.Value = configFile.GameConfig.VoiceVolume;
+				trackBarMusicVol.Value = configFile.GameConfig.BGMVolume;
+				labelVoiceVol.Text = trackBarVoiceVol.Value.ToString();
+				labelMusicVol.Text = trackBarMusicVol.Value.ToString();
 			}
-			else
-			{
-				comboFramerate.SelectedIndex = configFile.GameConfig.FrameRate - 1;
-			}
-
-			// Clip level
-			comboClip.SelectedIndex = configFile.GameConfig.ClipLevel;
-			// Fog mode
-			comboFog.SelectedIndex = configFile.GameConfig.FogEmulation;
-
-			// Sound
-			// Toggles
-			check3DSound.Checked = (configFile.GameConfig.Sound3D != 0);
-			checkSound.Checked = (configFile.GameConfig.SEVoice != 0);
-			checkMusic.Checked = (configFile.GameConfig.BGM != 0);
-
-			// Volume
-			trackBarVoiceVol.Value = configFile.GameConfig.VoiceVolume;
-			trackBarMusicVol.Value = configFile.GameConfig.BGMVolume;
-			labelVoiceVol.Text = trackBarVoiceVol.Value.ToString();
-			labelMusicVol.Text = trackBarMusicVol.Value.ToString();
 		}
+
 		private void SaveConfigIni()
 		{
-			LoadConfigIni();
+			LoadConfigIni(true);
 			configFile.GameConfig.FullScreen = radioFullscreen.Checked ? 1 : 0;
 
 			configFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
