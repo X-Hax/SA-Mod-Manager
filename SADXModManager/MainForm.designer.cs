@@ -630,7 +630,7 @@
             this.modBottomButton.Location = new System.Drawing.Point(554, 175);
             this.modBottomButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.modBottomButton.Name = "modBottomButton";
-            this.modBottomButton.Size = new System.Drawing.Size(44, 45);
+            this.modBottomButton.Size = new System.Drawing.Size(46, 45);
             this.modBottomButton.TabIndex = 8;
             this.modBottomButton.Text = "⤓";
             this.modBottomButton.UseVisualStyleBackColor = true;
@@ -645,7 +645,7 @@
             this.modTopButton.Location = new System.Drawing.Point(554, 9);
             this.modTopButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.modTopButton.Name = "modTopButton";
-            this.modTopButton.Size = new System.Drawing.Size(44, 45);
+            this.modTopButton.Size = new System.Drawing.Size(46, 45);
             this.modTopButton.TabIndex = 7;
             this.modTopButton.Text = "⤒";
             this.modTopButton.UseVisualStyleBackColor = true;
@@ -670,7 +670,7 @@
             this.modDownButton.AutoSize = true;
             this.modDownButton.Enabled = false;
             this.modDownButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modDownButton.Location = new System.Drawing.Point(550, 120);
+            this.modDownButton.Location = new System.Drawing.Point(554, 120);
             this.modDownButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.modDownButton.Name = "modDownButton";
             this.modDownButton.Size = new System.Drawing.Size(46, 45);
@@ -685,7 +685,7 @@
             this.modUpButton.AutoSize = true;
             this.modUpButton.Enabled = false;
             this.modUpButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modUpButton.Location = new System.Drawing.Point(550, 65);
+            this.modUpButton.Location = new System.Drawing.Point(554, 65);
             this.modUpButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.modUpButton.Name = "modUpButton";
             this.modUpButton.Size = new System.Drawing.Size(46, 45);
