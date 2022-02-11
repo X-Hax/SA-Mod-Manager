@@ -70,6 +70,16 @@ FunctionPointer(int, CheckCollisionCylinderP, (NJS_POINT3* vp, float r, float h)
 FunctionPointer(void, AddSetStage, (char Gap), 0x46BF70); // Release objects and request act change
 VoidFunc(ResetRenderingParameter, 0x7AF430);
 
+// Lighting
+FunctionPointer(void, lig_setLight, (NJS_POINT3* v, double r, double g, double b, double spe, double dif, double amb), 0x412740); // Converts legacy NJS_LIGHT data to palette generation data
+FastcallFunctionPointer(void, lig_calcPalette, (int no), 0x411F50); // Generates palettes for a specified light type
+FunctionPointer(void, lig_fillOffsetPalette, (int no, unsigned int spe, int num), 0x412180); // Fills the current specular palette with a specicied color
+FunctionPointer(void, lig_cpyPalette, (int dstNo, int srcNo), 0x412210); // Copies one palette to another
+FunctionPointer(void, lig_supplementPalette, (int no, int src1, int src2, double fmix1), 0x412280); // Mixes two palettes
+FunctionPointer(void, lig_convHalfBrightPalette, (int no, double rate), 0x4123C0); // Multiplies the palette's colors by a given value (definition may be wrong)
+FunctionPointer(void, dsScaleLight, (float a), 0x411E90); // Normal scaling for some objects
+FunctionPointer(void, dsReScaleLight, (), 0x411EF0); // Restore scaled normals
+
 static const void* const isTextureNGPtr = (void*)0x403250;
 static inline BOOL isTextureNG(NJS_TEXLIST* tl) // Check if the texlist is valid
 {

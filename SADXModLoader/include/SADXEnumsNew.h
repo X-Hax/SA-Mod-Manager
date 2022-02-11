@@ -3626,4 +3626,28 @@ enum MD_E102
 	MD_E102_EDIT = 0x3C,
 };
 
+// Legacy NJS_LIGHTs enum; LE_LIG_EV_DARK and LE_LIG_EV_CONS are used in E-100 series briefing cutscene when the lights turn off.
+enum LE_LIG
+{
+	LE_LIG_0 = 0x0,
+	LE_LIG_AS = 0x3,
+	LE_LIG_FINALEGG = 0x2,
+	LE_LIG_C0 = 0x2,
+	LE_LIG_CHAOS = 0x2,
+	LE_LIG_SPOT_HIGHWAY = 0x2,
+	LE_LIG_EV_DARK = 0x2,
+	LE_LIG_EV_CONS = 0x2,
+};
+
+// QueuedModelFlagsB in the original disasm
+enum LATE
+{
+	LATE_WZ = 0x1,
+	LATE_EASY = 0x2,
+	LATE_LIG = 0x4,
+	LATE_NO = 0x8,
+	LATE_NCOMP = 0x10,
+	LATE_MAT = 0x0,
+};
+
 #endif /* SADXMODLOADER_SADXENUMSNEW_H */

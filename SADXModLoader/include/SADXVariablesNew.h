@@ -94,4 +94,11 @@ DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x975410, 28);    // List of camera a
 DataPointer(_CameraSystemWork, cameraSystemWork, 0x3B2CAD8); // Camera system information (current mode, etc)
 DataPointer(_camcontwk, cameraControlWork, 0x3B2C660);       // Camera task information (position, angle, target...)
 
+// Lighting
+DataArray(unsigned int[512], LSPAL_0, 0x3B12210, 10);
+DataArray(unsigned int, lsPal0_v_forGC, 1024, 0x3B111A8);
+DataPointer(NJS_ARGB, lig_argb, 0x3B17210);
+DataPointer(float, ls_iamb, 0x3B121AC);
+DataPointer(NJS_VECTOR, ds_pool, 0x3B121B4); // Used in normal scaling for some objects
+DataPointer(NJS_VECTOR, ds_current, 0x3B121F8); // Used in normal scaling for some objects
 #endif /* SADXMODLOADER_SADXVARSNEW_H */
