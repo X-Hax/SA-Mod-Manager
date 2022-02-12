@@ -471,6 +471,12 @@ CamAdjustFunc(AdjustForFreeCamera, 0x468800);
 // Ninja draw function
 FunctionPointer(void, njDrawModel_, (NJS_MODEL_SADX* mdl), 0x784AE0); // Offloads to polybuff drawing functions
 FunctionPointer(void, njDirectDrawModel, (NJS_MODEL_SADX* mdl), 0x77EDA0);
+FunctionPointer(void, njDrawPolygon3D, (NJS_POINT3COL* p, int n, int atr), 0x77EAD0);
+FunctionPointer(void, njDrawSprite2D, (NJS_SPRITE* sp, int n, NJD_SPRITE attr), 0x77E390);
+FunctionPointer(void, njDrawLine3D, (NJS_POINT3COL* p, int n, NJD_DRAW attr), 0x77E820);
+FunctionPointer(void, njDrawLine2D, (NJS_POINT2COL* p, int n, float pri, NJD_DRAW attr), 0x77DF40);
+FunctionPointer(void, njDrawPolygon2D, (NJS_POINT2COL* p, int count, float pri, NJD_DRAW attr), 0x4010D0);
+FunctionPointer(void, njDrawTexture, (NJS_TEXTURE_VTX* a1, Int count, Uint32 gbix, Int flag), 0x77DC70);
 
 // Direct draw functions
 FunctionPointer(void, njDrawModel, (NJS_MODEL_SADX* mdl), 0x77EF70);
@@ -496,6 +502,7 @@ FunctionPointer(void, dsDrawMotionLink, (NJS_OBJECT* object, NJS_MOTION_LINK* mo
 FunctionPointer(void, dsActionLink, (NJS_ACTION_LINK* actionLink, float frame), 0x406EC0);
 FunctionPointer(void, ds_ActionClip, (NJS_ACTION* action, float frame, float clipScl), 0x405450);
 FunctionPointer(void, dsDrawShapeMotion, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x406030);
+FunctionPointer(void, ds_DrawBoxFill2D, (float left, float top, float right, float bottom, float pri, unsigned int argb), 0x4071C0);
 
 // Regular draw functions
 FunctionPointer(void, __DrawModel, (NJS_MODEL_SADX* mdl), 0x403470);
@@ -626,6 +633,12 @@ FunctionPointer(void, late_DrawMotionLinkEx, (NJS_OBJECT* object, NJS_MOTION_LIN
 // Late draw functions: Shape motion
 FunctionPointer(void, late_DrawShapeMotionEx, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame, int flgs), 0x408420);
 FunctionPointer(void, late_DrawShapeMotionMesh, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame, int flgs), 0x408450);
+
+// Late draw functions: Other functions
+FunctionPointer(void, late_DrawTriangle3D, (NJS_POINT3COL* p, int n, unsigned int atr, int flgs), 0x4043D0);
+FunctionPointer(void, late_DrawPolygon2D, (NJS_POINT2COL* p, int n, int count, float depth, unsigned int atr, int flgs, double pri), 0x404490);
+FunctionPointer(void, late_DrawPolygon3D, (NJS_POINT3COL* p, int n, unsigned int atr, int flgs), 0x4045A0);
+FunctionPointer(void, late_DrawLine3D, (NJS_POINT3COL* p, int n, NJD_DRAW attr, int flags), 0x404310);
 
 // Chaos draw functions
 FunctionPointer(void, CHAOS_DrawModel, (NJS_MODEL_SADX* mdl), 0x409EF0);
