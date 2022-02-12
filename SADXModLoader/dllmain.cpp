@@ -1384,8 +1384,14 @@ void __cdecl njDrawTextureMemList_NoFilter(NJS_TEXTURE_VTX* polygons, Int count,
 	Direct3D_TextureFilterLinear();
 }
 
-void __cdecl FixLandTableLightType() {
+void __cdecl FixLandTableLightType() 
+{
 	Direct3D_PerformLighting(0);
+}
+
+void __cdecl PreserveLightType(int a1)
+{
+	Direct3D_PerformLighting(a1 * 2); // Bitwise shift left
 }
 
 static void __cdecl InitMods()
@@ -1576,7 +1582,10 @@ static void __cdecl InitMods()
 	WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
 
 	// Fix light incorrectly being applied on LandTables
-	WriteCall((void*)0x0043A6D5, FixLandTableLightType);
+	WriteCall(reinterpret_cast<void*>(0x0043A6D5), FixLandTableLightType);
+
+	// Enable light type preservation in the draw queue
+	WriteCall(reinterpret_cast<void*>(0x004088B1), PreserveLightType);
 
 	ChunkSpecularFix_Init();
 
