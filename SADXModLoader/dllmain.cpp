@@ -1586,6 +1586,9 @@ static void __cdecl InitMods()
 
 	// Enable light type preservation in the draw queue
 	WriteCall(reinterpret_cast<void*>(0x004088B1), PreserveLightType);
+	
+	// Do not reset light type for queued models
+	WriteData<2>(reinterpret_cast<void*>(0x004088A6), 0x90i8); 
 
 	ChunkSpecularFix_Init();
 
