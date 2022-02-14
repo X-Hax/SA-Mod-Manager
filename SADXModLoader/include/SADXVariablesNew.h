@@ -101,4 +101,8 @@ DataPointer(NJS_ARGB, lig_argb, 0x3B17210);
 DataPointer(float, ls_iamb, 0x3B121AC);
 DataPointer(NJS_VECTOR, ds_pool, 0x3B121B4); // Used in normal scaling for some objects
 DataPointer(NJS_VECTOR, ds_current, 0x3B121F8); // Used in normal scaling for some objects
+
+// Ocean data
+DataArray(NJS_TEXTURE_VTX[35][4], gsaStripPool, 0x3D0B928, 2); // Ocean garbage array
+DataArray(stcWaterSurface, gasPoolStat, 0x3D0B8F0, 2); // OceanData A/B
 #endif /* SADXMODLOADER_SADXVARSNEW_H */

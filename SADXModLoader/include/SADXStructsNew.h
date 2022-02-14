@@ -1551,6 +1551,20 @@ struct particle_info
 	NJS_ARGB argb;
 };
 
+struct __declspec(align(4)) stcWaterSurface
+{
+	float f32x0;
+	float f32y0;
+	float f32z0;
+	char s8AnimNo0;
+	char s8Frame0;
+	char u8WrapX;
+	char u8WrapZ;
+	float f32WrapXZ;
+	float f32TransScale;
+	char u8StripArrayNo;
+};
+
 #pragma pack(pop)
 
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
