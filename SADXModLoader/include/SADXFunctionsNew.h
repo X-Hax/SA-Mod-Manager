@@ -31,6 +31,8 @@ typedef bool _BOOL1;
 FunctionPointer(void, njSetZCompare, (int mode), 0x077ED00); // Direct3D_SetZFunc
 FunctionPointer(void, njSetZUpdateMode, (int enable), 0x77ED20); // Direct3D_EnableZWrite
 FunctionPointer(void, npSetZCompare, (), 0x401420); // Direct3D_ResetZFunc
+FunctionPointer(void, njDrawTexture3DExStart, (int mode), 0x77DCA0); // SetOceanAlphaModeAndFVF
+FunctionPointer(void, njDrawTexture3DExSetData, (NJS_TEXTURE_VTX* p, int count), 0x77DD00); // Direct3D_DrawFVF_H
 FunctionPointer(void, ___njSetBackColor, (uint32_t c0, uint32_t c1, uint32_t c2), 0x402F10); // Set background color
 FunctionPointer(void, ___njSetConstantMaterial, (NJS_ARGB* a1), 0x402F40);
 FunctionPointer(void, ___njClipZ, (float nearZ, float farZ), 0x403180); // Clip distance (or draw distance)
