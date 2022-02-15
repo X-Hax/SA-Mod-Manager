@@ -92,7 +92,7 @@ DataArray(char, PlayerHoldingItemID, 0x3B36DC8, 8); // Identifier for current he
 DataPointer(char, bossmtn_flag, 0x3C5A7EF);
 
 // Camera
-DataPointer(taskwk, camera_twp, 0x3B2CBB0);                  // Camera_Data1
+DataPointer(taskwk*, camera_twp, 0x3B2CBB0);                 // Camera_Data1
 DataArray(_OBJ_CAMERAMODE, CameraMode, 0x975410, 77);        // List of camera modes, see CAMMD enum
 DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x975410, 28);    // List of camera adjusts (how it switches camera)
 DataPointer(_CameraSystemWork, cameraSystemWork, 0x3B2CAD8); // Camera system information (current mode, etc)
