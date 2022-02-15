@@ -11,6 +11,7 @@
 #include "SADXStructsNew.h"
 
 // General
+DataPointer(float, late_z_ofs___, 0x3ABD9C0); // Draw queue depth bias for models
 DataPointer(__int16, ssGameMode, 0x3B22DE4); // GameState
 DataPointer(Uint32, gu32LocalCnt, 0x3ABDF5C); // FrameCounterUnpaused
 DataArray(TaskFuncPtr, RoundMasterList, 0x90BF38, 44); // Level tasks
@@ -91,6 +92,7 @@ DataArray(char, PlayerHoldingItemID, 0x3B36DC8, 8); // Identifier for current he
 DataPointer(char, bossmtn_flag, 0x3C5A7EF);
 
 // Camera
+DataPointer(taskwk, camera_twp, 0x3B2CBB0);                  // Camera_Data1
 DataArray(_OBJ_CAMERAMODE, CameraMode, 0x975410, 77);        // List of camera modes, see CAMMD enum
 DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x975410, 28);    // List of camera adjusts (how it switches camera)
 DataPointer(_CameraSystemWork, cameraSystemWork, 0x3B2CAD8); // Camera system information (current mode, etc)
