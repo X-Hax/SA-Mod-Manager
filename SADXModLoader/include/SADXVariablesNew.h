@@ -11,16 +11,18 @@
 #include "SADXStructsNew.h"
 
 // General
-DataArray(TaskFuncPtr, RoundMasterList, 0x90BF38, 44); // level tasks
-DataArray(TaskFuncPtr, ScrollMasterList, 0x90C1F0, 44); // skybox tasks
+DataPointer(int, ssGameMode, 0x3B22DE4); // GameState
+DataPointer(int, gu32LocalCnt, 0x3ABDF5C); // FrameCounterUnpaused
+DataArray(TaskFuncPtr, RoundMasterList, 0x90BF38, 44); // Level tasks
+DataArray(TaskFuncPtr, ScrollMasterList, 0x90C1F0, 44); // Skybox tasks
 DataArray(PL_KILLCOLLI**, KillingCollisionModelsListList, 0x915908, 43);
 DataArray(_OBJ_LANDTABLE*, objLandTable, 0x97DA08, 120);
 DataPointer(___stcFog, gFog, 0x3ABDC60);
 DataPointer(___stcClip, gClipMap, 0x3ABDC70);
 DataPointer(___stcClip, gClipSky, 0x3ABDCA0);
 DataPointer(int, GameTimer, 0x3B0F108);
-DataPointer(__int16, ssStageNumber, 0x3B22DCC);
-DataPointer(int, ssActNumber, 0x3B22DEC);
+DataPointer(__int16, ssStageNumber, 0x3B22DCC); // CurrentLevel
+DataPointer(int, ssActNumber, 0x3B22DEC); // CurrentAct
 DataPointer(int, BlockMask, 0x3B36D48); // Mask to show/hide level geometry with blockbit
 
 // Player
@@ -105,4 +107,5 @@ DataPointer(NJS_VECTOR, ds_current, 0x3B121F8); // Used in normal scaling for so
 // Ocean data
 DataArray(NJS_TEXTURE_VTX[35][4], gsaStripPool, 0x3D0B928, 2); // Ocean garbage array
 DataArray(stcWaterSurface, gasPoolStat, 0x3D0B8F0, 2); // OceanData A/B
+DataArray(stcAnim, cosSaltWaterAnimation, 0x7EC250, 16); // Emerald Coast ocean animations
 #endif /* SADXMODLOADER_SADXVARSNEW_H */

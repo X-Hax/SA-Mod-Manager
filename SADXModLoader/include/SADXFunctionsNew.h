@@ -28,6 +28,9 @@ typedef bool _BOOL1;
 #define CamFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(_OBJ_CAMERAPARAM* pParam),ADDRESS)
 
 // General
+FunctionPointer(void, njSetZCompare, (int mode), 0x077ED00); // Direct3D_SetZFunc
+FunctionPointer(void, njSetZUpdateMode, (int enable), 0x77ED20); // Direct3D_EnableZWrite
+FunctionPointer(void, npSetZCompare, (), 0x401420); // Direct3D_ResetZFunc
 FunctionPointer(void, ___njSetBackColor, (uint32_t c0, uint32_t c1, uint32_t c2), 0x402F10); // Set background color
 FunctionPointer(void, ___njSetConstantMaterial, (NJS_ARGB* a1), 0x402F40);
 FunctionPointer(void, ___njClipZ, (float nearZ, float farZ), 0x403180); // Clip distance (or draw distance)

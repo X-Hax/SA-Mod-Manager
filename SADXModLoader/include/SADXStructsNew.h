@@ -1565,6 +1565,12 @@ struct __declspec(align(4)) stcWaterSurface
 	char u8StripArrayNo;
 };
 
+struct stcAnim
+{
+	char s8TexNo;
+	char s8Frame;
+};
+
 #pragma pack(pop)
 
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
