@@ -737,5 +737,7 @@ FunctionPointer(void, createModelEC, (float pos_x, float pos_y, float pos_z, int
 FunctionPointer(BOOL, SeqCheckFlag, (int no), 0x412D20);
 FunctionPointer(void, SeqSetPlayer, (int no), 0x413380); // Current story section
 FunctionPointer(SEQ_SECTIONTBL*, SeqGetSectionList, (int playerno), 0x44EAF0); // Current story section
+FunctionPointer(void, SeqSetTime, (Sint8 time), 0x412C00); // Set time of dat
+FunctionPointer(Sint8, SeqGetTime, (), 0x412C10); // Get time of day
 
 #endif /* SADXMODLOADER_SADXFUNCTIONSNEW_H */

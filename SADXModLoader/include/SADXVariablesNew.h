@@ -13,6 +13,10 @@
 // General
 DataPointer(float, late_z_ofs___, 0x3ABD9C0); // Draw queue depth bias for models
 DataPointer(__int16, ssGameMode, 0x3B22DE4); // GameState
+DataPointer(int, loop_count, 0x3B1117C); // MissedFrames
+DataPointer(int, loop_const, 0x3B11178); // Frame increment
+DataPointer(Uint32, ulGlobalTimer, 0x3B0F13C); // FrameCounter
+DataPointer(Uint32, gu32GameCnt, 0x3ABDF58); // FrameCounter2
 DataPointer(Uint32, gu32LocalCnt, 0x3ABDF5C); // FrameCounterUnpaused
 DataArray(TaskFuncPtr, RoundMasterList, 0x90BF38, 44); // Level tasks
 DataArray(TaskFuncPtr, ScrollMasterList, 0x90C1F0, 44); // Skybox tasks
