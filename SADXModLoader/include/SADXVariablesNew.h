@@ -11,8 +11,8 @@
 #include "SADXStructsNew.h"
 
 // General
-DataPointer(int, ssGameMode, 0x3B22DE4); // GameState
-DataPointer(int, gu32LocalCnt, 0x3ABDF5C); // FrameCounterUnpaused
+DataPointer(__int16, ssGameMode, 0x3B22DE4); // GameState
+DataPointer(Uint32, gu32LocalCnt, 0x3ABDF5C); // FrameCounterUnpaused
 DataArray(TaskFuncPtr, RoundMasterList, 0x90BF38, 44); // Level tasks
 DataArray(TaskFuncPtr, ScrollMasterList, 0x90C1F0, 44); // Skybox tasks
 DataArray(PL_KILLCOLLI**, KillingCollisionModelsListList, 0x915908, 43);

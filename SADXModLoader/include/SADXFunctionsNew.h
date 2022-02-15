@@ -28,6 +28,8 @@ typedef bool _BOOL1;
 #define CamFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(_OBJ_CAMERAPARAM* pParam),ADDRESS)
 
 // General
+FunctionPointer(void, njFogEnable, (), 0x411AF0); // ToggleStageFog
+FunctionPointer(void, njFogDisable, (), 0x411B40); // DisableFog
 FunctionPointer(void, njSetZCompare, (int mode), 0x077ED00); // Direct3D_SetZFunc
 FunctionPointer(void, njSetZUpdateMode, (int enable), 0x77ED20); // Direct3D_EnableZWrite
 FunctionPointer(void, npSetZCompare, (), 0x401420); // Direct3D_ResetZFunc
