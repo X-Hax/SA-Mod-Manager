@@ -217,33 +217,33 @@ DataArray(___stcClip*, pClipSky_Sand, 0x173BB44, 1);
 // Skybox scale
 //pScale_Stg00
 DataArray(NJS_POINT3*, pScale_Stg01, 0xE99E6C, 3);
-DataArray(NJS_VECTOR*, pScale_Stg02, 0xAFEAB0, 3);
-DataArray(NJS_VECTOR*, pScale_Stg03, 0x26B345C, 3);
-DataArray(NJS_VECTOR*, pScale_Stg04, 0x24CA574, 3);
-DataArray(NJS_VECTOR*, pScale_Stg05, 0x2240790, 3);
-DataArray(NJS_VECTOR*, pScale_Stg06, 0x203A124, 3);
-DataArray(NJS_VECTOR*, pScale_Stg07, 0x1E79B3C, 3);
-DataArray(NJS_VECTOR*, pScale_Stg08, 0xC67F60, 4);
+DataArray(NJS_POINT3*, pScale_Stg02, 0xAFEAB0, 3);
+DataArray(NJS_POINT3*, pScale_Stg03, 0x26B345C, 3);
+DataArray(NJS_POINT3*, pScale_Stg04, 0x24CA574, 3);
+DataArray(NJS_POINT3*, pScale_Stg05, 0x2240790, 3);
+DataArray(NJS_POINT3*, pScale_Stg06, 0x203A124, 3);
+DataArray(NJS_POINT3*, pScale_Stg07, 0x1E79B3C, 3);
+DataArray(NJS_POINT3*, pScale_Stg08, 0xC67F60, 4);
 //pScale_Stg09
-DataArray(NJS_VECTOR*, pScale_Stg10, 0x19C9080, 3);
-DataArray(NJS_VECTOR*, pScale_Stg12, 0x17C34E0, 3);
+DataArray(NJS_POINT3*, pScale_Stg10, 0x19C9080, 3);
+DataArray(NJS_POINT3*, pScale_Stg12, 0x17C34E0, 3);
 //pScale_Chaos00
-DataArray(NJS_VECTOR*, pScale_Chaos02, 0x1120668, 1);
-DataArray(NJS_VECTOR*, pScale_Chaos06, 0x11EF148, 2);
+DataArray(NJS_POINT3*, pScale_Chaos02, 0x1120668, 1);
+DataArray(NJS_POINT3*, pScale_Chaos06, 0x11EF148, 2);
 //pScale_Chaos07
 //pScale_Egm01
-DataArray(NJS_VECTOR*, pScale_Egm02, 0x15E8824, 1);
+DataArray(NJS_POINT3*, pScale_Egm02, 0x15E8824, 1);
 //pScale_Egm03
 //pScale_Robo
 //pScale_E101
 //pScale_E101r
-DataArray(NJS_VECTOR*, pScale_Adv00, 0x2AA3E30, 6);
-DataArray(NJS_VECTOR*, pScale_Adv01AB, 0x10F245C, 7);
-DataArray(NJS_VECTOR*, pScale_Adv01C, 0x1100D38, 6);
+DataArray(NJS_POINT3*, pScale_Adv00, 0x2AA3E30, 6);
+DataArray(NJS_POINT3*, pScale_Adv01AB, 0x10F245C, 7);
+DataArray(NJS_POINT3*, pScale_Adv01C, 0x1100D38, 6);
 //pScale_Adv02
 //pScale_Adv03
-DataArray(NJS_VECTOR*, pScale_MiniCart, 0x9BF55C, 3);
-DataArray(NJS_VECTOR*, pScale_Sht, 0x27D6DE8, 2);
+DataArray(NJS_POINT3*, pScale_MiniCart, 0x9BF55C, 3);
+DataArray(NJS_POINT3*, pScale_Sht, 0x27D6DE8, 2);
 //pScale_Sand
 
 #endif /* SADXMODLOADER_SADXVARSNEW_H */
