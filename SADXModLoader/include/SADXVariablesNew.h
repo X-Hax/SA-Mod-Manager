@@ -114,4 +114,38 @@ DataPointer(NJS_VECTOR, ds_current, 0x3B121F8); // Used in normal scaling for so
 DataArray(NJS_TEXTURE_VTX[35][4], gsaStripPool, 0x3D0B928, 2); // Ocean garbage array
 DataArray(stcWaterSurface, gasPoolStat, 0x3D0B8F0, 2); // OceanData A/B
 DataArray(stcAnim, cosSaltWaterAnimation, 0x7EC250, 16); // Emerald Coast ocean animations
+
+// Fog data
+DataArray(___stcFog*, pFogTable_Stg00, 0x27C6A00, 1);
+DataArray(___stcFog*, pFogTable_Stg01, 0xE99E90, 3);
+DataArray(___stcFog*, pFogTable_Stg02, 0xAFEAD4, 3);
+DataArray(___stcFog*, pFogTable_Stg03, 0x26B3480, 4);
+DataArray(___stcFog*, pFogTable_Stg04, 0x24CA598, 3);
+DataArray(___stcFog*, pFogTable_Stg05, 0x22407B4, 3);
+DataArray(___stcFog*, pFogTable_Stg06, 0x203A148, 3);
+DataArray(___stcFog*, pFogTable_Stg07, 0x1E79B60, 3);
+DataArray(___stcFog*, pFogTable_Stg08, 0xC67F90, 4);
+DataArray(___stcFog*, pFogTable_Stg09, 0x1C46A80, 4);
+DataArray(___stcFog*, pFogTable_Stg10, 0x19C90A4, 3);
+DataArray(___stcFog*, pFogTable_Stg12, 0x17C3504, 3);
+DataArray(___stcFog*, pFogTable_Chaos00, 0x111F76C, 1);
+DataArray(___stcFog*, pFogTable_Chaos02, 0x1120674, 1);
+DataArray(___stcFog*, pFogTable_Chaos04, 0x118FA3C, 1);
+DataArray(___stcFog*, pFogTable_Chaos06, 0x11EF160, 2);
+DataArray(___stcFog*, pFogTable_Chaos07, 0x1420EA8, 2);
+DataArray(___stcFog*, pFogTable_Egm01, 0x1556B70, 1);
+DataArray(___stcFog*, pFogTable_Egm02, 0x15E8830, 1);
+DataArray(___stcFog*, pFogTable_Egm03, 0x165D370, 1);
+DataArray(___stcFog*, pFogTable_Robo, 0x16B4DEC, 1);
+DataArray(___stcFog*, pFogTable_E101, 0x14D5CF4, 1);
+DataArray(___stcFog*, pFogTable_E101r, 0x152262C, 1);
+DataArray(___stcFog*, pFogTable_Adv00, 0x2AA3E78, 6);
+DataArray(___stcFog*, pFogTable_Adv01AB, 0x10F24B0, 7);
+DataArray(___stcFog*, pFogTable_Adv01C, 0x1100D80, 6);
+DataArray(___stcFog*, pFogTable_Adv02, 0x11035F8, 8);
+DataArray(___stcFog*, pFogTable_Adv03, 0x111E63C, 3);
+DataArray(___stcFog*, pFogTable_MiniCart, 0x9BF5A4, 6);
+DataArray(___stcFog*, pFogTable_Sht, 0x27D6E00, 2);
+DataArray(___stcFog*, pFogTable_Sand, 0x173BBB0, 1);
+
 #endif /* SADXMODLOADER_SADXVARSNEW_H */
