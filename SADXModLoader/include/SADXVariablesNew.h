@@ -148,4 +148,102 @@ DataArray(___stcFog*, pFogTable_MiniCart, 0x9BF5A4, 6);
 DataArray(___stcFog*, pFogTable_Sht, 0x27D6E00, 2);
 DataArray(___stcFog*, pFogTable_Sand, 0x173BBB0, 1);
 
+// Level draw distance
+//pClipMap_Stg00
+DataArray(___stcClip*, pClipMap_Stg01, 0xE99E84, 3);
+DataArray(___stcClip*, pClipMap_Stg02, 0xAFEAC8, 3);
+DataArray(___stcClip*, pClipMap_Stg03, 0x26B3474, 3);
+DataArray(___stcClip*, pClipMap_Stg04, 0x24CA58C, 3);
+DataArray(___stcClip*, pClipMap_Stg05, 0x22407A8, 3);
+DataArray(___stcClip*, pClipMap_Stg06, 0x203A13C, 3);
+DataArray(___stcClip*, pClipMap_Stg07, 0x1E79B54, 3);
+DataArray(___stcClip*, pClipMap_Stg08, 0xC67F80, 4);
+DataArray(___stcClip*, pClipMap_Stg09, 0x1C46A70, 4);
+DataArray(___stcClip*, pClipMap_Stg10, 0x19C9098, 3);
+DataArray(___stcClip*, pClipMap_Stg12, 0x17C34F8, 3);
+//pClipMap_Chaos00
+DataArray(___stcClip*, pClipMap_Chaos02, 0x1120670, 1);
+//pClipMap_Chaos04
+DataArray(___stcClip*, pClipMap_Chaos06, 0x11EF158, 2);
+DataArray(___stcClip*, pClipMap_Chaos07, 0x1420EA0, 2);
+DataArray(___stcClip*, pClipMap_Egm01, 0x1556B6C, 1);
+DataArray(___stcClip*, pClipMap_Egm02, 0x15E882C, 1);
+//pClipMap_Egm03
+DataArray(___stcClip*, pClipMap_Robo, 0x16B4DE8, 1);
+//pClipMap_E101
+DataArray(___stcClip*, pClipMap_E101r, 0x1522628, 1);
+DataArray(___stcClip*, pClipMap_Adv00, 0x2AA3E60, 6);
+DataArray(___stcClip*, pClipMap_Adv01AB, 0x10F2494, 7);
+DataArray(___stcClip*, pClipMap_Adv01C, 0x1100D68, 6);
+DataArray(___stcClip*, pClipMap_Adv02, 0x11035E8, 4);
+DataArray(___stcClip*, pClipMap_Adv03, 0x111E630, 3);
+DataArray(___stcClip*, pClipMap_MiniCart, 0x9BF58C, 3);
+DataArray(___stcClip*, pClipMap_Sht, 0x27D6DF8, 2);
+DataArray(___stcClip*, pClipMap_Sand, 0x173BBAC, 1);
+
+// Sky draw distance
+//pClipSky_Stg00
+DataArray(___stcClip*, pClipSky_Stg01, 0xE99E78, 3);
+DataArray(___stcClip*, pClipSky_Stg02, 0xAFEABC, 3);
+DataArray(___stcClip*, pClipSky_Stg03, 0x26B3468, 3);
+DataArray(___stcClip*, pClipSky_Stg04, 0x24CA580, 3);
+DataArray(___stcClip*, pClipSky_Stg05, 0x224079C, 3);
+DataArray(___stcClip*, pClipSky_Stg06, 0x203A130, 3);
+DataArray(___stcClip*, pClipSky_Stg07, 0x1E79B48, 3);
+DataArray(___stcClip*, pClipSky_Stg08, 0xC67F70, 4);
+//pClipSky_Stg09
+DataArray(___stcClip*, pClipSky_Stg10, 0x19C908C, 3);
+DataArray(___stcClip*, pClipSky_Stg12, 0x17C34EC, 3);
+//pClipSky_Chaos00
+DataArray(___stcClip*, pClipSky_Chaos02, 0x112066C, 1);
+//pClipSky_Chaos04
+//pClipSky_Chaos06
+//pClipSky_Chaos07
+//pClipSky_Egm01
+DataArray(___stcClip*, pClipSky_Egm02, 0x15E8828, 1);
+//pClipSky_Egm03
+//pClipSky_Robo
+//pClipSky_E101
+//pClipSky_E101r
+DataArray(___stcClip*, pClipSky_Adv00, 0x2AA3E48, 6);
+DataArray(___stcClip*, pClipSky_Adv01AB, 0x10F2478, 7);
+DataArray(___stcClip*, pClipSky_Adv01C, 0x1100D50, 6);
+//pClipSky_Adv02
+//pClipSky_Adv03
+DataArray(___stcClip*, pClipSky_MiniCart, 0x9BF574, 3);
+//pClipSky_Sht
+DataArray(___stcClip*, pClipSky_Sand, 0x173BB44, 1);
+
+// Skybox scale
+//pScale_Stg00
+DataArray(NJS_POINT3*, pScale_Stg01, 0xE99E6C, 3);
+DataArray(NJS_VECTOR*, pScale_Stg02, 0xAFEAB0, 3);
+DataArray(NJS_VECTOR*, pScale_Stg03, 0x26B345C, 3);
+DataArray(NJS_VECTOR*, pScale_Stg04, 0x24CA574, 3);
+DataArray(NJS_VECTOR*, pScale_Stg05, 0x2240790, 3);
+DataArray(NJS_VECTOR*, pScale_Stg06, 0x203A124, 3);
+DataArray(NJS_VECTOR*, pScale_Stg07, 0x1E79B3C, 3);
+DataArray(NJS_VECTOR*, pScale_Stg08, 0xC67F60, 4);
+//pScale_Stg09
+DataArray(NJS_VECTOR*, pScale_Stg10, 0x19C9080, 3);
+DataArray(NJS_VECTOR*, pScale_Stg12, 0x17C34E0, 3);
+//pScale_Chaos00
+DataArray(NJS_VECTOR*, pScale_Chaos02, 0x1120668, 1);
+DataArray(NJS_VECTOR*, pScale_Chaos06, 0x11EF148, 2);
+//pScale_Chaos07
+//pScale_Egm01
+DataArray(NJS_VECTOR*, pScale_Egm02, 0x15E8824, 1);
+//pScale_Egm03
+//pScale_Robo
+//pScale_E101
+//pScale_E101r
+DataArray(NJS_VECTOR*, pScale_Adv00, 0x2AA3E30, 6);
+DataArray(NJS_VECTOR*, pScale_Adv01AB, 0x10F245C, 7);
+DataArray(NJS_VECTOR*, pScale_Adv01C, 0x1100D38, 6);
+//pScale_Adv02
+//pScale_Adv03
+DataArray(NJS_VECTOR*, pScale_MiniCart, 0x9BF55C, 3);
+DataArray(NJS_VECTOR*, pScale_Sht, 0x27D6DE8, 2);
+//pScale_Sand
+
 #endif /* SADXMODLOADER_SADXVARSNEW_H */
