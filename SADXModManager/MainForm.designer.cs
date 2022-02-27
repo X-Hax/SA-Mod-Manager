@@ -1139,6 +1139,8 @@
             // 
             // groupMouseMode
             // 
+            this.groupMouseMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupMouseMode.Controls.Add(this.label17);
             this.groupMouseMode.Controls.Add(this.comboMouseButtons);
             this.groupMouseMode.Controls.Add(this.radioMouseModeRelease);
@@ -1232,6 +1234,8 @@
             // 
             // groupBoxController
             // 
+            this.groupBoxController.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxController.Controls.Add(label16);
             this.groupBoxController.Controls.Add(this.controllerConfigName);
             this.groupBoxController.Controls.Add(this.controllerConfigSelect);
