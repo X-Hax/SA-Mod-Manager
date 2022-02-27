@@ -25,6 +25,7 @@ DataArray(_OBJ_LANDTABLE*, objLandTable, 0x97DA08, 120);
 DataPointer(___stcFog, gFog, 0x3ABDC60);
 DataPointer(___stcClip, gClipMap, 0x3ABDC70);
 DataPointer(___stcClip, gClipSky, 0x3ABDCA0);
+DataPointer(NJS_POINT3, gSkyScale, 0x3ABDC94);
 DataPointer(int, GameTimer, 0x3B0F108);
 DataPointer(__int16, ssStageNumber, 0x3B22DCC); // CurrentLevel
 DataPointer(int, ssActNumber, 0x3B22DEC); // CurrentAct
