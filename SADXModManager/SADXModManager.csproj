@@ -63,12 +63,6 @@
     <Compile Include="Controls\ButtonControl.designer.cs">
       <DependentUpon>ButtonControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ConfigEditDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ConfigEditDialog.Designer.cs">
-      <DependentUpon>ConfigEditDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="LoaderInfo.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -87,9 +81,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\ButtonControl.resx">
       <DependentUpon>ButtonControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ConfigEditDialog.resx">
-      <DependentUpon>ConfigEditDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
