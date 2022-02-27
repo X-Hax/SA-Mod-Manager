@@ -1145,7 +1145,7 @@
             this.groupMouseMode.Controls.Add(this.radioMouseModeHold);
             this.groupMouseMode.Controls.Add(this.comboMouseActions);
             this.groupMouseMode.Controls.Add(this.label18);
-            this.groupMouseMode.Location = new System.Drawing.Point(6, 7);
+            this.groupMouseMode.Location = new System.Drawing.Point(6, 6);
             this.groupMouseMode.Name = "groupMouseMode";
             this.groupMouseMode.Size = new System.Drawing.Size(390, 68);
             this.groupMouseMode.TabIndex = 15;
@@ -1155,7 +1155,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(224, 19);
+            this.label17.Location = new System.Drawing.Point(233, 19);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(98, 13);
             this.label17.TabIndex = 3;
@@ -1174,7 +1174,7 @@
             "Other Mouse Button 1",
             "Left + Right Mouse Button",
             "Right + Left Mouse Button"});
-            this.comboMouseButtons.Location = new System.Drawing.Point(227, 38);
+            this.comboMouseButtons.Location = new System.Drawing.Point(236, 35);
             this.comboMouseButtons.Name = "comboMouseButtons";
             this.comboMouseButtons.Size = new System.Drawing.Size(148, 21);
             this.comboMouseButtons.TabIndex = 2;
@@ -1186,10 +1186,10 @@
             this.radioMouseModeRelease.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.radioMouseModeRelease.Location = new System.Drawing.Point(6, 42);
             this.radioMouseModeRelease.Name = "radioMouseModeRelease";
-            this.radioMouseModeRelease.Size = new System.Drawing.Size(119, 18);
+            this.radioMouseModeRelease.Size = new System.Drawing.Size(120, 18);
             this.radioMouseModeRelease.TabIndex = 1;
             this.radioMouseModeRelease.TabStop = true;
-            this.radioMouseModeRelease.Text = "Drag to accelerate";
+            this.radioMouseModeRelease.Text = "Drag to Accelerate";
             this.radioMouseModeRelease.UseVisualStyleBackColor = true;
             // 
             // radioMouseModeHold
@@ -1215,7 +1215,7 @@
             "Jump/Confirm",
             "Action",
             "Flute"});
-            this.comboMouseActions.Location = new System.Drawing.Point(126, 38);
+            this.comboMouseActions.Location = new System.Drawing.Point(138, 35);
             this.comboMouseActions.Name = "comboMouseActions";
             this.comboMouseActions.Size = new System.Drawing.Size(92, 21);
             this.comboMouseActions.TabIndex = 1;
@@ -1224,7 +1224,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(127, 21);
+            this.label18.Location = new System.Drawing.Point(135, 19);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(40, 13);
             this.label18.TabIndex = 0;
@@ -1239,12 +1239,12 @@
             this.groupBoxController.Controls.Add(this.controllerConfigAdd);
             this.groupBoxController.Controls.Add(this.tableLayoutPanel1);
             this.groupBoxController.Controls.Add(this.controllerConfigRemove);
-            this.groupBoxController.Location = new System.Drawing.Point(6, 81);
+            this.groupBoxController.Location = new System.Drawing.Point(6, 80);
             this.groupBoxController.Name = "groupBoxController";
             this.groupBoxController.Size = new System.Drawing.Size(390, 293);
             this.groupBoxController.TabIndex = 14;
             this.groupBoxController.TabStop = false;
-            this.groupBoxController.Text = "Controller (DirectInput only)";
+            this.groupBoxController.Text = "Controller (DirectInput)";
             // 
             // controllerConfigName
             // 
