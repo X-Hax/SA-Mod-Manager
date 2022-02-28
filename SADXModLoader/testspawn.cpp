@@ -152,11 +152,10 @@ static void SetPlayerInitialPosition_r(taskwk* twp)
 {
 	auto original = static_cast<decltype(SetPlayerInitialPosition_r)*>(SetPlayerInitialPosition_t->Target());
 	
-	if (CurrentLevel == gTestSpawnStartPos.LevelID && CurrentAct == gTestSpawnStartPos.ActID)
+	if (!CheckRestartLevel() && CurrentLevel == gTestSpawnStartPos.LevelID && CurrentAct == gTestSpawnStartPos.ActID)
 	{
 		twp->pos = gTestSpawnStartPos.Position;
 		twp->ang.y = 0x4000 - gTestSpawnStartPos.YRot;
-		delete SetPlayerInitialPosition_t; // restore original behaviour
 	}
 	else
 	{
