@@ -85,10 +85,10 @@ inline void writebytes(char* dst, int& dstoff, char a1, char a2, char a3, char a
 	dst[dstoff++] = a8;
 }
 
-char* curpg = nullptr;
-int pgoff = 0;
-int pgsz = -1;
-char* AllocateCode(int sz)
+static char* curpg = nullptr;
+static int pgoff = 0;
+static int pgsz = -1;
+static char* AllocateCode(int sz)
 {
 	if (pgsz == -1)
 	{
