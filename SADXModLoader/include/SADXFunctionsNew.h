@@ -442,6 +442,15 @@ FunctionPointer(BOOL, Knuckles_KakeraGame_Set_CheckEme, (uint8_t emeid, NJS_POIN
 FunctionPointer(void, CreateSmoke, (NJS_POINT3* pos, NJS_POINT3* velo, float scl), 0x4B9820); // Create smoke effect
 FunctionPointer(void, CreateSmoke2, (particle_info* effect), 0x4B98E0); // Create smoke effect with custom data
 FunctionPointer(void, CreateBomb, (NJS_POINT3* pos, float scl), 0x4CACF0); // Create bomb effect
+FunctionPointer(void, ef_speed, (taskwk* twp), 0x4D6BF0);
+FunctionPointer(void, ef_5ring, (taskwk* twp), 0x4D6C50);
+FunctionPointer(void, ef_10ring, (taskwk* twp), 0x4D6C90);
+FunctionPointer(void, ef_random_ring, (taskwk* twp), 0x4D6CD0);
+FunctionPointer(void, ef_1up, (taskwk* twp), 0x4D6D40);
+FunctionPointer(void, ef_muteki, (taskwk* twp), 0x4D6D80);
+FunctionPointer(void, ef_baria, (taskwk* twp), 0x4D6DC0);
+FunctionPointer(void, ef_explosion, (taskwk* twp), 0x4D6E00);
+FunctionPointer(void, ef_th_baria, (taskwk* twp), 0x4D6E40);
 FunctionPointer(void, MirenInitTask, (task* task_p, const TaskInfo* info_p, void* param_p), 0x796B30); // Create a task with information from TaskInfo
 FunctionPointer(void, MirenSetTask, (int level, const TaskInfo* info_p, void* param_p), 0x796B90); // Edit a task with information from TaskInfo
 
@@ -480,15 +489,6 @@ TaskFunc(ColliCylinder, 0x4D4770);
 TaskFunc(ColliCube, 0x4D47E0);
 TaskFunc(ColliWall, 0x4D4850);
 TaskFunc(ColliOttottoRange, 0x4D4B70);
-TaskFunc(ef_speed, 0x4D6BF0);
-TaskFunc(ef_5ring, 0x4D6C50);
-TaskFunc(ef_10ring, 0x4D6C90);
-TaskFunc(ef_random_ring, 0x4D6CD0);
-TaskFunc(ef_1up, 0x4D6D40);
-TaskFunc(ef_muteki, 0x4D6D80);
-TaskFunc(ef_baria, 0x4D6DC0);
-TaskFunc(ef_explosion, 0x4D6E00);
-TaskFunc(ef_th_baria, 0x4D6E40);
 TaskFunc(BossChaos0, 0x548640);
 TaskFunc(Chaos2Column, 0x54AC80);
 TaskFunc(EggCarrierCloud_c6, 0x557690);

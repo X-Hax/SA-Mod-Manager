@@ -166,7 +166,7 @@ DataArray(DialogPrmType, DialogPrm, 0x7EE328, 22); // Main menus dialog prompts
 DataArray(void*, CreateModeFncPtrs, 0x10D7B4C, 14); // Init functions for main menus
 DataArray(void*, FreeModeFncPtrs, 0x10D7B84, 14); // Free functions for main menus
 DataArray(PVMEntry*, MenuTexlists, 0x10D7CB0, 5); // Table of main menu texlists arrays (one per language)
-DataArray(const int32_t*, AvaTexLdLists, 0x10D7CC4, 14); // Which texlist a menu should pick from MenuTexlists (enum AvaTexLdEnum does not match sadx pc)
+DataArray(int*, AvaTexLdLists, 0x10D7CC4, 14); // Which texlist a menu should pick from MenuTexlists (enum AvaTexLdEnum does not match sadx pc)
 DataPointer(ADVERTISE_WORK, AdvertiseWork, 0x3B2A2FA); // General menu information
 DataPointer(task*, DialogTp, 0x3B2C588); // Pointer to dialog manager task
 DataPointer(task*, SeqTp, 0x3C5E8D0); // Pointer to menu manager task
