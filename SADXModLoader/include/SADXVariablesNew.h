@@ -22,6 +22,8 @@ DataArray(TaskFuncPtr, RoundMasterList, 0x90BF38, 44); // Level tasks
 DataArray(TaskFuncPtr, ScrollMasterList, 0x90C1F0, 44); // Skybox tasks
 DataArray(PL_KILLCOLLI**, KillingCollisionModelsListList, 0x915908, 43);
 DataArray(_OBJ_LANDTABLE*, objLandTable, 0x97DA08, 120);
+DataPointer(Angle, ds_perspective_value, 0x3AB98EC); // HorizontalFOV_BAMS
+DataPointer(NJS_TEXLIST*, njds_texList, 0x3ABD950); // CurrentTexList
 DataPointer(___stcFog, gFog, 0x3ABDC60);
 DataPointer(___stcClip, gClipMap, 0x3ABDC70);
 DataPointer(___stcClip, gClipSky, 0x3ABDCA0);
@@ -30,6 +32,12 @@ DataPointer(int, GameTimer, 0x3B0F108);
 DataPointer(__int16, ssStageNumber, 0x3B22DCC); // CurrentLevel
 DataPointer(int, ssActNumber, 0x3B22DEC); // CurrentAct
 DataPointer(int, BlockMask, 0x3B36D48); // Mask to show/hide level geometry with blockbit
+DataPointer(char, scNumPlayer, 0x3B0EF34); // Number of lives
+DataPointer(Sint16, ssNumRing, 0x3B0F0E4);
+DataPointer(PLAYER_CONTINUE_DATA, continue_data, 0x3B42F80); // Last checkpoint data
+DataArray(_OBJ_LANDENTRY*, pDisplayEntry, 0x3B2D518, 1024); // List of all drawn landtable models for the current frame
+DataPointer(_OBJ_LANDTABLE*, pObjLandTable, 0x3B2F718); // CurrentLandTable
+DataPointer(int, late_execMode, 0x3AB98AC); // Draw queue state (0 run; 1 skip, 2 skip and draw a black screen)
 
 // Player
 DataArray(player_parameter, playerwk_default, 0x9154E8, 8);
@@ -38,12 +46,21 @@ DataArray(taskwk*, playertwp, 0x3B42E10, 8);
 DataArray(motionwk2*, playermwp, 0x3B36DD0, 8);
 DataArray(playerwk*, playerpwp, 0x3B3CDF0, 8);
 
+// Input
+DataPointer(Uint8, ucInputStatus, 0x909FB0); // Is input enabled
+DataArray(Uint8, ucInputStatusForEachPlayer, 0x909FB4, 4); // Is input enabled for specific player
+DataArray(SONIC_INPUT, input_data, 0x3B0E368, 8);
+DataArray(PDS_PERIPHERAL*, per, 0x3B0E77C, 8); // ControllerPointers
+DataArray(SONIC_INPUT, input_dataG, 0x3B0E7A0, 8); // NormalizedAnalogs
+DataArray(PDS_PERIPHERAL, perG, 0x3B0E7F0, 8); // Controllers
+
 // Light
 DataArray(LE_PALIGHT_ENV, le_plyrPal, 0x903E88, 255); // Character lights
 DataArray(LE_LIGHT_ENV, le_stgPL, 0x900918, 30); // Unused stage lights array
 DataArray(LE_LIGHT_ENV, le_stg, 0x900E88, 255); // Stage lights
 DataPointer(LE_LIGHT_ENV, le_env_dflt, 0x9008B4); // Default stage light
 DataPointer(LE_LIGHT_ENV, le_ctrl_dflt, 0x9008E4); // Backup default stage light
+DataPointer(int, lig_curGjPaletteNo___, 0x3B12208); // CurrentLightType
 
 // Story sequence
 DataPointer(int, slSeqRunning, 0x90A0A8); // Story running if 1
@@ -54,10 +71,16 @@ DataPointer(SEQ_SECTIONTBL*, pCurSectionList, 0x3B18A08); // Character story sec
 DataPointer(SEQ_SECTION*, pCurSection, 0x3B18DB0); // Current story section
 
 // Geometry collision
-DataArray(uint8_t, boolMobileLandObject, 0x3B2D410, 256);
-DataArray(obj, objMobileLandObject, 0x3B33930, 256);
-DataPointer(uint16_t, numMobileEntry, 0x3B2D510);
-DataArray(_OBJ_LANDCOLL, MobileEntry, 0x3B32D30, 256);
+DataPointer(BOOL, boolLandCollision, 0x915460);           // Enable/disable geometry collisions
+DataPointer(float, mleriRangeRad, 0x915458);              // Minimum radius for collision lookup
+DataArray(uint8_t, boolMobileLandObject, 0x3B2D410, 256); // Tells if a objMobileLandObject entry is taken
+DataArray(obj, objMobileLandObject, 0x3B33930, 256);      // List of NJS_OBJECTS used for mobile collisions
+DataPointer(__int16, numMobileEntry, 0x3B2D510);          // Number of active mobile collisions
+DataArray(_OBJ_LANDCOLL, MobileEntry, 0x3B32D30, 256);    // List of active mobile collisions
+DataPointer(int, ri_landcoll_nmb, 0x3B36D38);
+DataArray(_OBJ_LANDCOLL, ri_landcoll, 0x3B32728, 128);
+DataPointer(__int16, numLandCollList, 0x3B32724);
+DataArray(_OBJ_LANDCOLL, LandCollList, 0x3B2F720, 1024);
 
 // Path
 DataArray(pathgrp, pathgrp_tbl, 0x91A858, 22);     // List of null-terminated path list
@@ -87,21 +110,47 @@ DataArray(pathtag*, pathdata_1300, 0x21422140, 4); // Perfect Chaos paths
 DataPointer(int, ComboTimer, 0x3B29D48);
 DataPointer(int, ComboScore, 0x3B29D28);
 DataPointer(int, EnemyScore, 0x3B0F104);
+DataPointer(E102WK*, e102_work_ptr, 0x3C53B70); // Additional information for E102 (laser, targets, etc.)
+DataPointer(int, e102_hover_flag, 0x3C53C40);   // Is hover active
 
 // Object
-DataArray(TEX_PVMTABLE*, ListofPvmList, 0x90EB68, 44); // Object textures
-DataArray(_OBJ_ITEMTABLE*, objItemTable, 0x974AF8, 344); // Object lists, 43 levels * 8 acts
-DataArray(char, PlayerHoldingItemID, 0x3B36DC8, 8); // Identifier for current held object
+DataArray(TEX_PVMTABLE*, ListofPvmList, 0x90EB68, 44);           // Object textures
+DataArray(_OBJ_ITEMTABLE*, objItemTable, 0x974AF8, 344);         // Object lists, 43 levels * 8 acts
+DataArray(ITEM_INFOMATION, item_info, 0x9BF190, 9);              // Itembox items information
+DataArray(char, PlayerHoldingItemID, 0x3B36DC8, 8);              // Identifier for current held object
+DataPointer(OBJECT_SAVEPOINT_DATA*, savepoint_data, 0x3B42F7C);
+DataPointer(_OBJ_ITEMTABLE*, pObjItemTable, 0x3C4E448);          // Current Object List
+DataPointer(__int16, numStatusEntry, 0x3C4E454);
+DataArray(OBJ_CONDITION, objStatusEntry, 0x3C4E460, 1024);       // Set file entries
+
+// Cart
+DataArray(__int16, cartColor, 0x88C004, 8); // Cart colors
+DataArray(CCL_INFO, cci_cart, 0x38A6BF0, 8); // Cart collisions, one per character
+DataArray(CART_PLAYER_PARAMETER, CartParameter, 0x38C5DA8, 8); // Cart physics
+DataPointer(CART_OTHER_PARAM, CartOtherParam, 0x38C5F88);
+DataArray(CART_LOAD_DATA, cart_load, 0x38C7FF0, 18);
+DataPointer(task*, RaceManageTask_p, 0x3C5D554); // Pointer to race manager task
+DataPointer(BOOL, CartGoalFlag, 0x3D08E00);
+DataPointer(ENEMY_CART_DATA*, cart_data, 0x3D08E0C); // Pointer to player's cart data
 
 // Boss
 DataPointer(char, bossmtn_flag, 0x3C5A7EF);
+DataPointer(taskwk*, chaostwp, 0x3C5A7D8); // pointer to current Chaos boss taskwk
 
 // Camera
 DataPointer(taskwk*, camera_twp, 0x3B2CBB0);                 // Camera_Data1
+DataPointer(BOOL, cameraready, 0x3B2CBB8);                   // Whether it should run the camera code
 DataArray(_OBJ_CAMERAMODE, CameraMode, 0x975410, 77);        // List of camera modes, see CAMMD enum
 DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x975410, 28);    // List of camera adjusts (how it switches camera)
 DataPointer(_CameraSystemWork, cameraSystemWork, 0x3B2CAD8); // Camera system information (current mode, etc)
 DataPointer(_camcontwk, cameraControlWork, 0x3B2C660);       // Camera task information (position, angle, target...)
+DataPointer(FCWRK, fcwrk, 0x3B2C958);                        // Free camera information
+DataPointer(Uint32, free_camera_mode, 0x3B2CBA8);            // Free camera flags
+DataPointer(_OBJ_CAMERAENTRY*, pObjCameraEntry, 0x3B2CAA4);  // Camera layout
+
+// Sound
+DataArray(_SEcallbuf, sebuf, 0x3B292F8, 36); // SoundQueue (length 20 in xbox version)
+DataArray(taskwk*, gpDolbyTask, 0x3B29B90, 36); // SoundQueueOriginEntities (length 20 in xbox version)
 
 // Lighting
 DataArray(unsigned int[512], LSPAL_0, 0x3B12210, 10);
@@ -111,12 +160,29 @@ DataPointer(float, ls_iamb, 0x3B121AC);
 DataPointer(NJS_VECTOR, ds_pool, 0x3B121B4); // Used in normal scaling for some objects
 DataPointer(NJS_VECTOR, ds_current, 0x3B121F8); // Used in normal scaling for some objects
 
+// Menu
+DataPointer(const DialogPrmType, DialogAskQuit, 0x7DD48C); // Dialog prompt for level quitting
+DataArray(DialogPrmType, DialogPrm, 0x7EE328, 22); // Main menus dialog prompts
+DataArray(void*, CreateModeFncPtrs, 0x10D7B4C, 14); // Init functions for main menus
+DataArray(void*, FreeModeFncPtrs, 0x10D7B84, 14); // Free functions for main menus
+DataArray(PVMEntry*, MenuTexlists, 0x10D7CB0, 5); // Table of main menu texlists arrays (one per language)
+DataArray(const int32_t*, AvaTexLdLists, 0x10D7CC4, 14); // Which texlist a menu should pick from MenuTexlists (enum AvaTexLdEnum does not match sadx pc)
+DataPointer(ADVERTISE_WORK, AdvertiseWork, 0x3B2A2FA); // General menu information
+DataPointer(task*, DialogTp, 0x3B2C588); // Pointer to dialog manager task
+DataPointer(task*, SeqTp, 0x3C5E8D0); // Pointer to menu manager task
+DataPointer(BOOL, TldFlg, 0x3C5E8E0); // Menu ready flag
+DataPointer(AvaStgActT, AvaCmnPrm, 0x3C5FED0);
+DataPointer(task*, TrialActStelTp, 0x3C5FEE0);
+DataPointer(task*, TitleNewTp, 0x3C5FF00);
+
 // Ocean data
 DataArray(NJS_TEXTURE_VTX[35][4], gsaStripPool, 0x3D0B928, 2); // Ocean garbage array
 DataArray(stcWaterSurface, gasPoolStat, 0x3D0B8F0, 2); // OceanData A/B
 DataArray(stcAnim, cosSaltWaterAnimation, 0x7EC250, 16); // Emerald Coast ocean animations
 
 // Fog data
+DataPointer(bool, gu8FogEnbale, 0x3ABDCFE); // FogEnabled
+DataPointer(___stcFogEmu, gFogEmu, 0x909EB4); // Fog settings
 DataArray(___stcFog*, pFogTable_Stg00, 0x27C6A00, 1);
 DataArray(___stcFog*, pFogTable_Stg01, 0xE99E90, 3);
 DataArray(___stcFog*, pFogTable_Stg02, 0xAFEAD4, 3);

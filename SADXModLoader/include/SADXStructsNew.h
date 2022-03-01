@@ -9,7 +9,7 @@
 #include <stdint.h>
 #include "ninja.h"
 #include "d3d8types.h"
-#include "SADXEnums.h"
+#include "SADXEnumsNew.h"
 
  // All structs should be packed.
 #pragma pack(push, 4)
@@ -371,20 +371,6 @@ struct TEX_PVMTABLE
 	NJS_TEXLIST* ptexlist;
 };
 
-struct ADVERTISE_WORK
-{
-	char flags[8];
-	char SelectedVmsNo;
-	char SelectedFileNo;
-	char MainMenuSelectedMode;
-	char CharSelCsr;
-	char TitleCnt;
-	char PlayerChar;
-	char Stage;
-	char Act;
-	unsigned __int16 GamePlayerNumber;
-};
-
 struct PDS_PERIPHERALINFO
 {
 	unsigned int type;
@@ -672,6 +658,24 @@ struct _OBJ_CAMERAENTRY
 	float yCamPos;
 	float zCamPos;
 	float fDistance;
+};
+
+// Free Camera information
+struct FCWRK
+{
+	float dist1;
+	float dist2;
+	float dist0;
+	float dist;
+	Angle3 _ang;
+	NJS_POINT3 cammovepos;
+	NJS_POINT3 campos;
+	int counter;
+	int timer;
+	Angle3 pang;
+	NJS_POINT3 camspd;
+	NJS_POINT3 pos;
+	NJS_POINT3 _vec;
 };
 
 struct sSplineData
@@ -1594,6 +1598,588 @@ struct stcAnim
 {
 	char s8TexNo;
 	char s8Frame;
+};
+
+// Collision information set by GetZxShadowOnFDPolygon
+struct zxsdwstr
+{
+	NJS_POINT3 pos;
+	xssunit lower;
+	xssunit upper;
+};
+
+// Draw queue node
+struct LATE_LNK
+{
+	LATE_LNK* lnk;
+	LATE_LNK* last;
+};
+
+struct LATE_RQ
+{
+	LATE_RQ* lnk;
+	float zkey;
+	unsigned __int8 typ;
+	unsigned __int8 alpMd;
+	unsigned __int16 no;
+	NJS_TEXLIST* texLst;
+	NJS_ARGB argb;
+	unsigned int ctrl3dFlg;
+	unsigned int atrAnd;
+	unsigned int atrOr;
+	unsigned int etc;
+};
+
+struct LATE_DRAWTEX_RQ
+{
+	LATE_RQ cmn;
+	NJS_MATRIX mtx;
+	NJS_TEXTURE_VTX* vtx;
+	int num;
+	int ind;
+	int tf;
+};
+
+struct LATE_ACT_RQ
+{
+	LATE_RQ cmn;
+	NJS_MATRIX mtx;
+	NJS_ACTION* act;
+	float frm;
+};
+
+struct LATE_ACTLNK_RQ
+{
+	LATE_RQ cmn;
+	NJS_MATRIX mtx;
+	float frm;
+	NJS_ACTION_LINK actlnk;
+	NJS_MOTION_LINK motlnk;
+};
+
+struct LATE_PO2D_RQ
+{
+	LATE_RQ cmn;
+	NJS_POINT2COL p2c;
+	NJS_MATRIX mtx;
+	unsigned int atr;
+	int texNum;
+	float pri;
+};
+
+struct LATE_S3D_RQ
+{
+	LATE_RQ cmn;
+	NJS_SPRITE spr;
+	unsigned int atr;
+	unsigned int dmy;
+	NJS_MATRIX mtx;
+};
+
+struct LATE_PO3D_RQ
+{
+	LATE_RQ cmn;
+	NJS_POINT3COL p3c;
+	NJS_MATRIX mtx;
+	unsigned int atr;
+	int texNum;
+};
+
+struct LATE_SHPMOT_RQ
+{
+	LATE_RQ cmn;
+	NJS_MATRIX mtx;
+	float frm;
+	NJS_OBJECT* obj;
+	NJS_MOTION* mot;
+	NJS_MOTION* shp;
+	int flgs;
+	float clpScl;
+	void* drwMdl;
+};
+
+struct LATE_OBJ_RQ
+{
+	LATE_RQ cmn;
+	NJS_MATRIX mtx;
+};
+
+struct LATE_BOX2D_RQ
+{
+	LATE_RQ cmn;
+	float x;
+	float y;
+	float x2;
+	float y2;
+	float pri;
+	unsigned int argb;
+};
+
+struct LATE_S2D_RQ
+{
+	LATE_RQ cmn;
+	NJS_SPRITE spr;
+	unsigned int atr;
+	float pri;
+	NJS_MATRIX mtx;
+};
+
+struct LATE_FUNC_RQ
+{
+	LATE_RQ cmn;
+	NJS_MATRIX mtx;
+	void(__cdecl* fnc)(void*);
+	void* arg;
+};
+
+union LATE_RQ_T
+{
+	LATE_S3D_RQ s3d;
+	LATE_S2D_RQ s2d;
+	LATE_OBJ_RQ obj;
+	LATE_ACT_RQ act;
+	LATE_PO2D_RQ po2d;
+	LATE_PO3D_RQ po3d;
+	LATE_SHPMOT_RQ shpmot;
+	LATE_BOX2D_RQ box2d;
+	LATE_DRAWTEX_RQ tex;
+	LATE_FUNC_RQ func;
+	LATE_RQ rq;
+};
+
+struct ___stcFogEmu
+{
+	unsigned __int8 u8Emulation;
+	unsigned __int8 u8FogSplitCnt;
+};
+
+struct OBJECT_SAVEPOINT_DATA
+{
+	int flag;
+	Angle3 ang;
+	Angle3 ang_spd;
+	task* tp[2];
+	float materiral[3];
+	int write_timer;
+	__int16 kiseki_timer;
+};
+
+// Itembox item information
+struct ITEM_INFOMATION
+{
+	unsigned int texture_id;
+	void(__cdecl* effect_func)(taskwk*);
+};
+
+// Cart data
+struct ENEMY_CART_DATA
+{
+	int flag;
+	int ring_timer;
+	float player_colli_r;
+	int fan_angle;
+	__int16 cart_color;
+	__int16 invincible_timer;
+	__int16 motion_timer;
+	__int16 ignor_collision;
+	__int16 drift_mode;
+	__int16 drift_timer;
+	int drift_angle;
+	char vitality;
+	Angle3 unstable;
+	int loop_pos;
+	float restless;
+	float restless_timer;
+	int smoke_timer;
+	int drift_effect_timer;
+	float shadow_pos;
+	NJS_POINT3 vector;
+	Angle3 shadow_ang;
+	float max_spd;
+	NJS_POINT3 add_key;
+	NJS_POINT3 add_nature;
+	float bonus_add;
+	int rest_timer;
+	unsigned __int8 next_point;
+	unsigned __int8 load_line;
+	unsigned __int8 load_indp[2];
+	NJS_POINT3 last_pos;
+	char cart_type;
+	char start_wait;
+	__int16 last_player_flag;
+	char explose_flag[10];
+	NJS_POINT3 explose_point[10];
+	NJS_POINT3 explose_spd[10];
+	Angle3 explose_angle[10];
+	Angle3 explose_rotate[10];
+	float tmp_posi[3];
+	int tmp_angle[3];
+	unsigned int hamari_cnt;
+};
+
+struct CART_PLAYER_PARAMETER
+{
+	float max_spd;
+	float min_spd;
+	float max_back_spd;
+	float slide_spd;
+	float gravitation;
+	float gravitation_max;
+	float hover_point;
+	float grip;
+	float spd_accell;
+	float spd_break;
+	float spd_masatu;
+	int max_vitality;
+	int smoke_vitality;
+	float cart_handle;
+	float drift_rate;
+};
+
+struct CART_OTHER_PARAM
+{
+	float chase_distance;
+	int rest_time;
+	float cart_enemy_accell;
+	float cart_enemy_break;
+	float cart_enemy_search_addspd;
+	float explose_spd;
+	int explose_ang;
+	int dead_wait_time;
+	int ring_sub_timer;
+};
+
+struct CART_LOAD_DATA
+{
+	NJS_POINT3* load_data;
+	int point_num;
+};
+
+struct CartDispTime
+{
+	char sign;
+	char min;
+	char sec;
+	char sec100;
+};
+
+// Information for MirenInitTask
+struct TaskInfo
+{
+	unsigned int size;
+	unsigned int initMode;
+	void(__cdecl* init_p)(task*, void*);
+	TaskFuncPtr exec_p;
+	TaskFuncPtr disp_p;
+	TaskFuncPtr dest_p;
+};
+
+struct PLAYER_CONTINUE_DATA
+{
+	unsigned __int16 stage_number;
+	unsigned __int8 minutes;
+	unsigned __int8 second;
+	unsigned __int8 frame;
+	int continue_flag;
+	NJS_POINT3 pos;
+	Angle3 ang;
+};
+
+struct ADVPOS
+{
+	NJS_POINT3 pos;
+	int angy;
+};
+
+// StartPosition
+struct GM_START_POSANG
+{
+	__int16 stage;
+	__int16 act;
+	NJS_POINT3 p;
+	int angy;
+};
+
+// PolarCoord 
+struct _INPUT
+{
+	int angle;
+	float stroke;
+};
+
+// _INPUT also exists as SONIC_INPUT
+typedef _INPUT SONIC_INPUT;
+
+struct WIREMODEL
+{
+	NJS_POINT3* pos;
+	NJS_COLOR* color;
+	__int16* index;
+	__int16 nbLine;
+	NJS_POINT3COL p3col;
+};
+
+// Additional E102 worker
+struct E102WK
+{
+	char laser_mode;
+	char gun_mode;
+	char lockon_noshot_num;
+	char ctrl_mode;
+	char lock_num;
+	char beam_num;
+	char actgundir;
+	__int16 generaltimer;
+	__int16 lock_combo_num;
+	__int16 shot_combo_num;
+	__int16 add_sec_total;
+	__int16 laser_tmr;
+	__int16 laser_lock_tmr;
+	__int16 dead_eye_tmr;
+	__int16 se_flag;
+	float fan_yofs;
+	int fan_ydif_ang;
+	int fan_ang[3];
+	int wrun_mov_yang;
+	task* lock_now_cs;
+	NJS_POINT3 laser_pos;
+	NJS_POINT3 laser_vec;
+	float laser_dist;
+	float laser_dist2;
+	NJS_POINT3 gunarm_pos;
+	NJS_POINT3 gunarm_vec;
+	task* searchtp;
+	float arm_frame;
+	int arm_ang_y;
+	int arm_ang_z;
+	NJS_ACTION* actwkptr;
+	NJS_ACTION* actgunptr;
+	float scope_frame;
+	int headfl_tmr;
+	int head_ang;
+	float shot_shock;
+	NJS_POINT3 koshi_pos[2];
+	float yspdbak;
+	WIREMODEL cursor1;
+	WIREMODEL cursor2;
+	task* shot_now_csp;
+	task* lock_tp[32];
+	task* beam_tp[32];
+	_INPUT input_buf[8];
+	float ground_ypos;
+	float ground_ydist;
+	unsigned int ground_attr;
+	float walk_dist;
+};
+
+// E-Series boss worker
+struct TGT_WK
+{
+	bosswk bwk;
+	float fHitPoint;
+	int timerGeneral;
+	int timerShot;
+	int flag;
+	int mode_req;
+	int mode_old;
+	int spotTarget;
+	int angHead;
+	int angSpdX;
+	float fGroundY;
+	float fGroundDist;
+	float fTargetDist2;
+	NJS_POINT3 oldPos;
+	NJS_POINT3 spd;
+	NJS_POINT3 posBody;
+	NJS_POINT3 posShoulder[2];
+	NJS_POINT3 posMuzzle[2];
+	NJS_POINT3 vecMissile[2];
+	int angFan;
+	float fFanOfsY;
+	int ColliEntryFlag;
+};
+
+// E-Series bosses missile worker
+struct MISSILE_WK
+{
+	NJS_POINT3 spd;
+	int nLifeTime;
+	int type;
+	int flag;
+	int flagBrink;
+	float fShadowY;
+	colliwk* pIgnoreColliWk;
+};
+
+struct ADVERTISE_WORK
+{
+	char flags[8];
+	char SelectedVmsNo;
+	char SelectedFileNo;
+	char MainMenuSelectedMode;
+	char CharSelCsr;
+	char TitleCnt;
+	char PlayerChar;
+	char Stage;
+	char Act;
+	unsigned __int16 GamePlayerNumber;
+};
+
+struct PanelPrmType
+{
+	float OfsX;
+	float OfsY;
+	unsigned __int8 PvrIdx;
+};
+
+struct __declspec(align(4)) DDlgType
+{
+	float CntrX;
+	float CntrY;
+	float BaseZ;
+	float SclX;
+	float SclY;
+	char Csr;
+};
+
+struct AvaStgActT
+{
+	unsigned __int8 Stg;
+	unsigned __int8 Act;
+};
+
+struct __declspec(align(4)) AvaStgActPrmT
+{
+	AvaStgActT* StgActPtr;
+	unsigned __int8 Num;
+};
+
+struct ModeSelPrmType
+{
+	AdvaModeEnum PrevMode;
+	AdvaModeEnum NextMode;
+	AdvaModeEnum NextModeSub;
+};
+
+struct __declspec(align(2)) TrialActSelWk
+{
+	AdvaStatEnum Stat;
+	AdvaModeEnum PrevMode;
+	AdvaModeEnum NextMode;
+	float BaseZ;
+	float T;
+	unsigned int BaseCol;
+	TrialActSbMdEnum SubMode;
+	AvaStgActT NowStgAct[10];
+	AvaStgActPrmT NowStgActPrm;
+	AvaStgEnum Stg[33];
+	unsigned __int8 StgEnaMax;
+	unsigned int CsrCol;
+	float CsrScale;
+	int CsrAniAng;
+	unsigned __int8 CsrAlpha;
+	unsigned __int8 DispStg;
+	unsigned __int8 SelStg;
+};
+
+struct __declspec(align(4)) CharMdlWk
+{
+	task* PlTskPtrs[7];
+	task* CamTskPtr;
+	float LocX;
+	float LocY;
+	float Scale;
+	char MdlDspCnt;
+	char MotCnts[7];
+	unsigned __int8 SelFlg;
+};
+
+struct __declspec(align(4)) CharSelWk
+{
+	AdvaStatEnum Stat;
+	AdvaModeEnum PrevMode;
+	AdvaModeEnum NextMode;
+	float BaseZ;
+	float T;
+	unsigned int BaseCol;
+	int CsrAniAng;
+	ChSbMdEnum SubMode;
+	AvaCharEnum SelCh;
+	unsigned __int8 SelFile;
+	float AngT;
+	__int16 Cnt;
+	AdvDlgSelEnum DlgStat;
+	unsigned __int8 WakeFlg;
+};
+
+struct __declspec(align(2)) TitleMenuWk
+{
+	AdvaStatEnum Stat;
+	AdvaModeEnum PrevMode;
+	AdvaModeEnum NextMode;
+	AdvaModeEnum NextModeSub;
+	float BaseZ;
+	float T;
+	unsigned int BaseCol;
+	TitleMenuSbMdEnum SubMode;
+	TitleMenuEnum SelMenu;
+	__int16 Cnt;
+	unsigned __int8 WakeFlg;
+};
+
+struct DlgSndPrmType
+{
+	int OpenSnd;
+	int CloseSnd;
+	int MoveSnd;
+	int DecideSnd;
+	int CancelSnd;
+};
+
+struct __declspec(align(4)) DialogPrmType
+{
+	DlgPnlStyleEnum DlgStyle;
+	void(__cdecl* EachDrawFnc)(DDlgType*);
+	NJS_TEXLIST* PnlTlsPtr;
+	PanelPrmType* PnlPrmPtr;
+	DlgSndPrmType* DlgSndPrmPtr;
+	unsigned int DlgColU;
+	unsigned int DlgColD;
+	float CntrX;
+	float CntrY;
+	float BaseZ;
+	float SzX;
+	float SzY;
+	float MagX;
+	float MagY;
+	char CsrMax;
+	char CsrCancel;
+};
+
+struct MSGC
+{
+	unsigned __int8 kind;
+	__int16 x;
+	__int16 y;
+	unsigned __int16 width;
+	unsigned __int16 height;
+	unsigned __int16 buf_width;
+	unsigned __int16 buf_height;
+	unsigned __int16 buf_width2;
+	unsigned __int16 buf_height2;
+	__int16 lx;
+	__int16 ly;
+	__int16 sx;
+	__int16 sy;
+	unsigned __int16 color;
+	NJS_COLOR fc;
+	NJS_COLOR bc;
+	float scale;
+	void* bitmap;
+	unsigned int globalindex;
+	NJS_TEXLIST texlist;
+	NJS_TEXNAME texname;
+	int msgc_flag;
 };
 
 #pragma pack(pop)
