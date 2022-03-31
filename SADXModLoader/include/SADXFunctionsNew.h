@@ -71,6 +71,7 @@ FunctionPointer(__int16, GetNumRing, (), 0x425CC0);
 FunctionPointer(int, ResetNumRing, (), 0x425AB0);
 FunctionPointer(int, ResetNumPlayer, (), 0x425AF0); // ResetLives
 FunctionPointer(int, GetNumPlayer, (), 0x425FE0); // GetLives
+FunctionPointer(Characters, GetPlayerNumber, (), 0x4144E0); // Player ID
 FunctionPointer(BOOL, CheckItemExplosion, (NJS_POINT3* pos), 0x4C0550); // Check if position is within itembox bomb range
 FunctionPointer(void, CalcAdvanceAsPossible, (NJS_POINT3* src, NJS_POINT3* dst, float dist, NJS_POINT3* ans), 0x4BA860); // Get a point (in ans) on line from src to dst, dist as percentage
 FunctionPointer(void, VibShot, (int pno, int Time), 0x4BCBC0); // RumbleA
@@ -78,6 +79,7 @@ FunctionPointer(void, VibConvergence, (int pno, int Power, int Freq, int Time), 
 FunctionPointer(BOOL, CheckContinueData, (), 0x44ED70); // Check if a checkpoint has been taken
 FunctionPointer(void, updateContinueData, (NJS_POINT3* pos, Angle3* ang), 0x44EE70); // Set checkpoint taken
 VoidFunc(SetFinishAction, 0x415540); // LoadLevelResults
+VoidFunc(StopBlowingWind, 0x4C68D0); // Stops Sonic quill jittering
 
 static const void* const isTextureNGPtr = (void*)0x403250;
 static inline BOOL isTextureNG(NJS_TEXLIST* tl) // Check if the texlist is valid
@@ -1018,5 +1020,8 @@ FunctionPointer(void, DrawSkyBg, (float z), 0x507BB0);
 TaskFunc(trial_act_sel_exec, 0x50B220);
 TaskFunc(trial_act_sel_disp, 0x50B410);
 TaskFunc(title_new_exec, 0x5101A0);
+
+// Level objects: Windy Valley
+FunctionPointer(void, ObjectWatageDisplay, (task* tp), 0x004DFA60); // Dandelion
 
 #endif /* SADXMODLOADER_SADXFUNCTIONSNEW_H */

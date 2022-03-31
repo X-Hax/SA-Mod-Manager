@@ -12,6 +12,8 @@
 
 // General
 DataPointer(float, late_z_ofs___, 0x3ABD9C0); // Draw queue depth bias for models
+DataPointer(float, sp_zoffset, 0x03C4859C); //  Draw queue depth bias for sprites
+DataPointer(unsigned __int16, usPlayer, 0x03B22DC0); // Player ID
 DataPointer(__int16, ssGameMode, 0x3B22DE4); // GameState
 DataPointer(int, loop_count, 0x3B1117C); // MissedFrames
 DataPointer(int, loop_const, 0x3B11178); // Frame increment
@@ -38,6 +40,7 @@ DataPointer(PLAYER_CONTINUE_DATA, continue_data, 0x3B42F80); // Last checkpoint 
 DataArray(_OBJ_LANDENTRY*, pDisplayEntry, 0x3B2D518, 1024); // List of all drawn landtable models for the current frame
 DataPointer(_OBJ_LANDTABLE*, pObjLandTable, 0x3B2F718); // CurrentLandTable
 DataPointer(int, late_execMode, 0x3AB98AC); // Draw queue state (0 run; 1 skip, 2 skip and draw a black screen)
+DataPointer(task*, windtp, 0x03C5B32C); // Wind object (Sonic's quills, dandelions in Windy Valley)
 
 // Player
 DataArray(player_parameter, playerwk_default, 0x9154E8, 8);
@@ -312,5 +315,11 @@ DataArray(NJS_POINT3*, pScale_Adv01C, 0x1100D38, 6);
 DataArray(NJS_POINT3*, pScale_MiniCart, 0x9BF55C, 3);
 DataArray(NJS_POINT3*, pScale_Sht, 0x27D6DE8, 2);
 //pScale_Sand
+
+// Texlists
+DataPointer(NJS_TEXLIST, texlist_seates, 0x10C0508); // BEACH_SEA texlist
+DataPointer(NJS_TEXLIST, texlist_beach01, 0xF812AC); // BEACH01 texlist
+DataPointer(NJS_TEXLIST, texlist_beach02, 0xEF553C); // BEACH02 texlist
+DataPointer(NJS_TEXLIST, texlist_beach03, 0xE9A4CC); // BEACH03 texlist
 
 #endif /* SADXMODLOADER_SADXVARSNEW_H */
