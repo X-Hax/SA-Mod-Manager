@@ -2179,4 +2179,51 @@ struct MSGC
 	int msgc_flag;
 };
 
+struct _SC_NUMBERS
+{
+	unsigned __int8 type;
+	unsigned __int8 attr;
+	__int16 rot;
+	unsigned int max;
+	unsigned int value;
+	NJS_POINT3 pos;
+	float scl;
+	unsigned int color;
+};
+
+struct KnFragmNmbStr
+{
+	char nmb[4];
+	unsigned __int16 stgnmb;
+};
+
+struct KnFragmSetStr
+{
+	int id;
+	int boutflag;
+	int psflag;
+	int cpflag;
+	NJS_POINT3 pos;
+	NJS_POINT3 contpos;
+};
+
+struct sMRacePath
+{
+	int flag;
+	NJS_POINT3 pos;
+};
+
+struct sSonicCtrl
+{
+	NJS_POINT3 now_path_pos;
+	NJS_POINT3 tgt_path_pos;
+	NJS_POINT3 vec_snc_tgt;
+	float dist_snc_tgt;
+	int path_flag;
+	int path_flag_bak;
+	int last_ang;
+	float pl_last_spd;
+	int jump_cnt;
+};
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */

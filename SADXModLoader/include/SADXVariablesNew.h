@@ -48,6 +48,45 @@ DataArray(task*, playertp, 0x3B42E30, 8);
 DataArray(taskwk*, playertwp, 0x3B42E10, 8);
 DataArray(motionwk2*, playermwp, 0x3B36DD0, 8);
 DataArray(playerwk*, playerpwp, 0x3B3CDF0, 8);
+DataPointer(taskwk*, gpCharTwp, 0x3ABDF60); // Contains a player's taskwk when its exec function is running
+DataPointer(playerwk*, gpCharPwp, 0x3ABDF64); // Contains a player's playerwk when its exec function is running
+
+// Tails
+DataPointer(sSonicCtrl, SonicCtrlBuff, 0x3C539F8);
+DataPointer(sMRacePath*, PathTbl_Sonic, 0x3C539F4); // Current race path for Sonic
+DataPointer(sMRacePath*, PathTbl_Miles, 0x3C53A64); // Current race path for Tails
+DataArray(sMRacePath*, PPT_MRaceEachStage, 0x91C0B8, 10); // Race path list (sonic, tails)
+
+// Knuckles
+DataArray(KnFragmSetStr, fragmset_tbl, 0x3C52B20, 3); // current emerald set information
+DataArray(KnFragmNmbStr, fragmnmb_tbl, 0x7E0CD8, 6); // 
+
+// E102
+DataPointer(E102WK*, e102_work_ptr, 0x3C53B70);  // Additional information for E102 (laser, targets, etc.)
+DataPointer(char, e102_hover_flag, 0x3C53C40);   // Is hover active
+DataPointer(char, e102_hover_flag_p, 0x3C53C41); // Hover sound toggle
+
+// Big
+DataPointer(int, Sakana_Num, 0x3C524E8);
+DataPointer(__int16, Big_Fish_Flag, 0x3C524EC);
+DataPointer(int, Big_Sakana_Weight_Limit, 0x3C524F0);
+DataPointer(float, reel_tension_add, 0x3C524F4);
+DataPointer(task*, Big_Fish_Ptr, 0x3C524F8);
+DataPointer(int, Big_Fishing_Timer, 0x3C524FC);
+DataPointer(task*, Big_Lure_Ptr, 0x3C52500);
+DataPointer(NJS_POINT3, big_item_pos, 0x3C52504);
+DataPointer(int, Big_Sakana_Weight, 0x3C52510);
+DataPointer(int, Big_Sakana_Kind_High, 0x3C52514);
+DataPointer(int, Big_Stg12_Flag, 0x3C52518);
+DataPointer(__int16, Big_Sakana_Weight_High, 0x3C5251C);
+DataPointer(float, water_level, 0x3C52520);
+DataPointer(float, reel_length, 0x3C52524);
+DataPointer(float, reel_length_d, 0x3C52528);
+DataPointer(float, reel_tension, 0x3C5252C);
+DataPointer(float, reel_tension_aim, 0x3C52530);
+DataPointer(Angle, reel_angle, 0x3C52534);
+DataPointer(int, caution_timer, 0x3C52538);
+DataArray(NJS_OBJECT*, lure_kind, 0x3C5253C, 7);
 
 // Input
 DataPointer(Uint8, ucInputStatus, 0x909FB0); // Is input enabled
@@ -113,8 +152,6 @@ DataArray(pathtag*, pathdata_1300, 0x21422140, 4); // Perfect Chaos paths
 DataPointer(int, ComboTimer, 0x3B29D48);
 DataPointer(int, ComboScore, 0x3B29D28);
 DataPointer(int, EnemyScore, 0x3B0F104);
-DataPointer(E102WK*, e102_work_ptr, 0x3C53B70); // Additional information for E102 (laser, targets, etc.)
-DataPointer(int, e102_hover_flag, 0x3C53C40);   // Is hover active
 
 // Object
 DataArray(TEX_PVMTABLE*, ListofPvmList, 0x90EB68, 44);           // Object textures

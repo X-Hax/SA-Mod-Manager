@@ -80,6 +80,11 @@ FunctionPointer(BOOL, CheckContinueData, (), 0x44ED70); // Check if a checkpoint
 FunctionPointer(void, updateContinueData, (NJS_POINT3* pos, Angle3* ang), 0x44EE70); // Set checkpoint taken
 VoidFunc(SetFinishAction, 0x415540); // LoadLevelResults
 VoidFunc(StopBlowingWind, 0x4C68D0); // Stops Sonic quill jittering
+FunctionPointer(BOOL, GetMiClearStatus, (), 0x590650);
+DataPointer(int, MaskBlock, 0x3B36D48); // Show landtable parts (_OBJ_LANDENTRY) with corresponding "blockbit" flag
+FunctionPointer(void, DrawSNumbers, (_SC_NUMBERS* pscn), 0x427BB0); // Draw a number on screen using the HUD font
+FunctionPointer(void, CharColliOn, (taskwk* twp), 0x4BD180); // Enable character collisions
+FunctionPointer(void, CharColliOff, (taskwk* twp), 0x4BD1B0); // Disable character collisions
 
 static const void* const isTextureNGPtr = (void*)0x403250;
 static inline BOOL isTextureNG(NJS_TEXLIST* tl) // Check if the texlist is valid
@@ -144,10 +149,13 @@ FunctionPointer(void, PConvertVector_P2G, (taskwk* a1, NJS_POINT3* a2), 0x43EC90
 FunctionPointer(void, PJoinVertexes, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x43FA90);
 FunctionPointer(void, PSetCrashEffect, (taskwk* a1), 0x440790);
 FunctionPointer(void, KillHimP, (int pno), 0x440CD0); // Kill player (for damage)
+FunctionPointer(void, CancelAutoPilotP, (unsigned __int8 pno), 0x440FA0);
 FunctionPointer(void, SetInputP, (uint8_t pno, int8_t mode), 0x441260);
 FunctionPointer(void, SetVelocityP, (uint8_t pno, float x, float y, float z), 0x441280);
 FunctionPointer(void, SetVelocityAndRotationAndNoconTimeP, (int pno, NJS_POINT3* v, Angle3* ang, int tm), 0x441490);
+FunctionPointer(void, SetVelocityAndRotationAndNoconTimeWithSpinDashP, (unsigned __int8 pno, NJS_POINT3* v, Angle3* ang, __int16 tm), 0x441540);
 FunctionPointer(void, SetRotationP, (uint8_t pno, Angle angx, Angle angy, Angle angz), 0x4415F0);
+FunctionPointer(void, SetAccelerationP, (unsigned __int8 pno, float x, float y, float z), 0x441750);
 FunctionPointer(void, SetPositionP, (uint8_t pno, float x, float y, float z), 0x441780);
 FunctionPointer(void, GetOutOfCartP, (int pno, float x, float y, float z), 0x441820);
 FunctionPointer(void, GetThunderBarrierP, (char character), 0x441E30);
@@ -164,6 +172,7 @@ FunctionPointer(void, PClearSpeed, (motionwk2* mwp, playerwk* pwp), 0x43C550);
 FunctionPointer(void, PGetSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443F50);
 FunctionPointer(void, PGetPushSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x4442C0);
 FunctionPointer(void, KillHimByFallingDownP, (int pno), 0x446AD0);
+FunctionPointer(void, SetParabolicMotionP, (int playerNum, float a2, NJS_VECTOR* a3), 0x446D90);
 FunctionPointer(void, SetAscendPowerP, (uint8_t pno, float x, float y, float z), 0x446E90);
 FunctionPointer(void, PGetBreak, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x448E50);
 FunctionPointer(void, PGetAccelerationAir, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x44B9C0);
@@ -929,6 +938,7 @@ FunctionPointer(void, EV_CameraPath, (cpathtag* path, float speed), 0x4310A0);
 
 // Event
 VoidFunc(EV_CanselOn, 0x42F630);
+FunctionPointer(BOOL, EV_CheckCansel, (), 0x42FB00);
 FunctionPointer(void, EV_Wait, (int time), 0x4314D0);
 FunctionPointer(void, EV_CreateObject, (task** tp, float px, float py, float pz, int ax, int ay, int az), 0x431670);
 FunctionPointer(void, EV_CreateObjectFunc, (task** tp, task* (*func)(void), float x, float y, float z, int rx, int ry, int rz), 0x4316C0);
