@@ -34,7 +34,8 @@ private:
 	struct ArcFile
 	{
 		std::string folder, name;
-		uint64_t offset, size;
+		uint64_t offset;
+		uint32_t size;
 	};
 
 	enum class ArcField : uint8_t

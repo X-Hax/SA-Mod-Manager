@@ -1548,19 +1548,19 @@ static void __cdecl InitMods()
 	// Fixes N-sided polygons (Gamma's headlight) by using
 	// triangle strip vertex buffer initializers.
 
-	for (int i = 0; i < MeshSetInitFunctions.size(); ++i)
+	for (size_t i = 0; i < MeshSetInitFunctions.size(); ++i)
 	{
 		auto& a = MeshSetInitFunctions[i];
 		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
 	}
 
-	for (int i = 0; i < PolyBuffDraw_VertexColor.size(); ++i)
+	for (size_t i = 0; i < PolyBuffDraw_VertexColor.size(); ++i)
 	{
 		auto& a = PolyBuffDraw_VertexColor[i];
 		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
 	}
 
-	for (int i = 0; i < PolyBuffDraw_NoVertexColor.size(); ++i)
+	for (size_t i = 0; i < PolyBuffDraw_NoVertexColor.size(); ++i)
 	{
 		auto& a = PolyBuffDraw_NoVertexColor[i];
 		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];

@@ -11,9 +11,6 @@
 #include "d3d8types.h"
 #include "SADXEnumsNew.h"
 
- // All structs should be packed.
-#pragma pack(push, 4)
-
 struct task;
 struct taskwk;
 struct _OBJ_CAMERAPARAM;
@@ -2061,7 +2058,7 @@ struct ModeSelPrmType
 	AdvaModeEnum NextModeSub;
 };
 
-struct __declspec(align(2)) TrialActSelWk
+struct TrialActSelWk
 {
 	AdvaStatEnum Stat;
 	AdvaModeEnum PrevMode;
@@ -2112,7 +2109,7 @@ struct __declspec(align(4)) CharSelWk
 	unsigned __int8 WakeFlg;
 };
 
-struct __declspec(align(2)) TitleMenuWk
+struct TitleMenuWk
 {
 	AdvaStatEnum Stat;
 	AdvaModeEnum PrevMode;
@@ -2136,7 +2133,7 @@ struct DlgSndPrmType
 	int CancelSnd;
 };
 
-struct __declspec(align(4)) DialogPrmType
+struct DialogPrmType
 {
 	DlgPnlStyleEnum DlgStyle;
 	void(__cdecl* EachDrawFnc)(DDlgType*);
@@ -2181,7 +2178,5 @@ struct MSGC
 	NJS_TEXNAME texname;
 	int msgc_flag;
 };
-
-#pragma pack(pop)
 
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
