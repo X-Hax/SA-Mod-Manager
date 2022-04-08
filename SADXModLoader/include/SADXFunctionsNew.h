@@ -464,6 +464,8 @@ FunctionPointer(void, ef_explosion, (taskwk* twp), 0x4D6E00);
 FunctionPointer(void, ef_th_baria, (taskwk* twp), 0x4D6E40);
 FunctionPointer(void, MirenInitTask, (task* task_p, const TaskInfo* info_p, void* param_p), 0x796B30); // Create a task with information from TaskInfo
 FunctionPointer(void, MirenSetTask, (int level, const TaskInfo* info_p, void* param_p), 0x796B90); // Edit a task with information from TaskInfo
+FunctionPointer(void, DrawCustomObject, (NJS_OBJECT* top_object, CUSTOM_OBJ* custom), 0x4BA5D0);
+FunctionPointer(void, DrawCustomObject_wz, (NJS_OBJECT* top_object, CUSTOM_OBJ* custom), 0x4BA710);
 
 // Object task functions
 TaskFunc(CameraDisplay, 0x4370F0);

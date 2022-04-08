@@ -187,6 +187,7 @@ DataPointer(_camcontwk, cameraControlWork, 0x3B2C660);       // Camera task info
 DataPointer(FCWRK, fcwrk, 0x3B2C958);                        // Free camera information
 DataPointer(Uint32, free_camera_mode, 0x3B2CBA8);            // Free camera flags
 DataPointer(_OBJ_CAMERAENTRY*, pObjCameraEntry, 0x3B2CAA4);  // Camera layout
+DataPointer(int, flagCameraNoUnderWater, 0x3B2C6C0);         // Doesn't work!
 
 // Sound
 DataArray(_SEcallbuf, sebuf, 0x3B292F8, 36); // SoundQueue (length 20 in xbox version)

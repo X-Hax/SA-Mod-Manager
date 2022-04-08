@@ -2226,4 +2226,10 @@ struct sSonicCtrl
 	int jump_cnt;
 };
 
+struct CUSTOM_OBJ
+{
+	obj* obj;
+	void(__cdecl* exad)(NJS_OBJECT*);
+};
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
