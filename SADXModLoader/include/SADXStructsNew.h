@@ -27,6 +27,12 @@ struct Angle3
 	int z;
 };
 
+struct NJS_MKEY_SA
+{
+	unsigned __int16 keyframe;
+	__int16 key[3];
+};
+
 struct _OBJ_SLEEPCON
 {
 	Angle3 ang;
