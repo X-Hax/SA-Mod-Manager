@@ -28,17 +28,19 @@ void CopyAndRename_ModLoaderIni()
 	strftime(timeStr, 255, "_%d_%m_%Y_%H_%M_%S", &tM);
 	char tmp[256];
 	std::string directory = getcwd(tmp, 256);
-	std::string fullLine = "xcopy " + directory + "\\mods\\SADXModLoader.ini " + directory + "\\CrashDump";
+
+	const std::string quote = "\"";
+	std::string fullLine = "xcopy " + quote + directory + "\\mods\\SADXModLoader.ini" + quote + " " + quote + directory + "\\CrashDump" + quote;
 	int copyState = system(fullLine.c_str());
 
 	if (copyState != -1) {
-		std::string rename = "ren " + directory + "\\CrashDump\\SADXModLoader.ini " + "ModList" + timeStr + ".ini";
+		std::string rename = "ren " + quote + directory + "\\CrashDump\\SADXModLoader.ini" + quote + " " + quote + "ModList" + timeStr + ".ini" + quote;
 		system(rename.c_str());
-		PrintDebug("CrashDump: Successfully copied SADXModLoader.ini to the CrashDump Folder.\n");		
+		PrintDebug("CrashDump: Successfully copied SADXModLoader.ini to the CrashDump Folder.\n");
 	}
 	else
 	{
-		PrintDebug("CrashDump: Failed to copy SADXModLoader.ini to the Crash Dump Folder.\n");
+		PrintDebug("CrashDump: Failed to copy SADXModLoader.ini to the CrashDump Folder.\n");
 	}
 }
 
