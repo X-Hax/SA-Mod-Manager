@@ -49,6 +49,7 @@ using std::vector;
 #include "EXEData.h"
 #include "DLLData.h"
 #include "ChunkSpecularFix.h"
+#include "CrashDump.h"
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -1638,6 +1639,8 @@ static void __cdecl InitMods()
 
 	if (!settings->getBool("DisablePolyBuff", false))
 		polybuff::rewrite_init();
+
+	initCrashDump();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
