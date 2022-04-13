@@ -4,12 +4,12 @@
 #include <direct.h>
 
 //this uses decimal, convert your hex address to decimal if you want to add more crashes.
-static const std::unordered_map<int16_t, std::string> crashes_addresses_map = {
+static const std::unordered_map<intptr_t, std::string> crashes_addresses_map = {
 	{ 7917897, "Texture error: the game failed to apply one or more textures."  },
 	{ 4408852, "Camera error: the game failed to load a cam file for the stage."},
 };
 
-static const std::string getErrorMSG(int16_t address)
+static const std::string getErrorMSG(intptr_t address)
 {
 	if ((crashes_addresses_map.find(address) == crashes_addresses_map.end()))
 	{
@@ -102,8 +102,8 @@ LONG WINAPI HandleException(struct _EXCEPTION_POINTERS* apExceptionInfo)
 
 		CloseHandle(hFile);
 
-		DWORD crashID = (DWORD)info.ExceptionPointers->ExceptionRecord->ExceptionAddress;
-		char hex[15];
+		intptr_t crashID = (intptr_t)info.ExceptionPointers->ExceptionRecord->ExceptionAddress;
+		char hex[30];
 		sprintf_s(hex, "%x", crashID);
 
 		std::string address = hex;
