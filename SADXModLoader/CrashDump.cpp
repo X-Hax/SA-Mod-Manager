@@ -2,11 +2,14 @@
 #include <dbghelp.h> 
 #include <windows.h>
 #include <direct.h>
+#include <Psapi.h>
+#include <shlwapi.h>
 
-//this uses decimal, convert your hex address to decimal if you want to add more crashes.
-static const std::unordered_map<intptr_t, std::string> crashes_addresses_map = {
-	{ 7917897, "Texture error: the game failed to apply one or more textures."  },
-	{ 4408852, "Camera error: the game failed to load a cam file for the stage."},
+using namespace std;
+
+static const std::unordered_map<intptr_t, string> crashes_addresses_map = {
+	{ 0x78D149, "Texture error: the game failed to apply one or more textures."  },
+	{ 0x434614, "Camera error: the game failed to load a cam file for the stage."},
 };
 
 static const std::string getErrorMSG(intptr_t address)
@@ -27,14 +30,14 @@ void CopyAndRename_ModLoaderIni()
 	localtime_s(&tM, &t);
 	strftime(timeStr, 255, "_%d_%m_%Y_%H_%M_%S", &tM);
 	char tmp[256];
-	std::string directory = getcwd(tmp, 256);
+	string directory = getcwd(tmp, 256);
 
-	const std::string quote = "\"";
-	std::string fullLine = "xcopy " + quote + directory + "\\mods\\SADXModLoader.ini" + quote + " " + quote + directory + "\\CrashDump" + quote;
+	const string quote = "\"";
+	string fullLine = "xcopy " + quote + directory + "\\mods\\SADXModLoader.ini" + quote + " " + quote + directory + "\\CrashDump" + quote;
 	int copyState = system(fullLine.c_str());
 
 	if (copyState != -1) {
-		std::string rename = "ren " + quote + directory + "\\CrashDump\\SADXModLoader.ini" + quote + " " + quote + "ModList" + timeStr + ".ini" + quote;
+		string rename = "ren " + quote + directory + "\\CrashDump\\SADXModLoader.ini" + quote + " " + quote + "ModList" + timeStr + ".ini" + quote;
 		system(rename.c_str());
 		PrintDebug("CrashDump: Successfully copied SADXModLoader.ini to the CrashDump Folder.\n");
 	}
@@ -44,13 +47,14 @@ void CopyAndRename_ModLoaderIni()
 	}
 }
 
-bool IsPathExist(const std::string& s)
+bool IsPathExist(const string& s)
 {
 	struct stat buffer;
 	return (stat(s.c_str(), &buffer) == 0);
 }
 
 #pragma comment(lib, "dbghelp.lib") 
+#pragma comment(lib, "Psapi.lib")
 LONG WINAPI HandleException(struct _EXCEPTION_POINTERS* apExceptionInfo)
 {
 	char timeStr[255];
@@ -58,7 +62,7 @@ LONG WINAPI HandleException(struct _EXCEPTION_POINTERS* apExceptionInfo)
 	tm tM;
 	localtime_s(&tM, &t);
 	strftime(timeStr, 255, "CrashDump_%d_%m_%Y_%H_%M_%S.dmp", &tM);
-	std::string s = "CrashDump\\";
+	string s = "CrashDump\\";
 	s.append(timeStr);
 
 	const char* crashFolder = "CrashDump";
@@ -104,24 +108,43 @@ LONG WINAPI HandleException(struct _EXCEPTION_POINTERS* apExceptionInfo)
 
 		CloseHandle(hFile);
 
-		intptr_t crashID = (intptr_t)info.ExceptionPointers->ExceptionRecord->ExceptionAddress;
-		char hex[30];
-		sprintf_s(hex, "%x", crashID);
+		PrintDebug("Done.\n");
 
-		std::string address = hex;
-		std::string errorCommon = getErrorMSG(crashID); //get error message if the crash address is common
-		std::string fullMsg = "SADX has crashed at " + address + ".\n";
+		//get crash address
+		intptr_t crashID = (intptr_t)info.ExceptionPointers->ExceptionRecord->ExceptionAddress;
+		char hex[MAX_PATH];
+		sprintf_s(hex, "%x", crashID);
+		string address = hex;
+
+		PrintDebug("Get fault module name...\n");
+
+		string dllName;
+		HMODULE handle;
+
+		if (GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (LPCSTR)crashID, &handle))
+		{
+			char path[MAX_PATH];
+			if (GetModuleFileNameA(handle, path, MAX_PATH))
+			{
+				auto filename = PathFindFileNameA(path);
+				dllName = filename;
+			}
+		}
+
+		string errorCommon = getErrorMSG(crashID); //get error message if the crash address is common
+		string fullMsg = "SADX has crashed at " + address + " (" + dllName + ").\n";
 
 		if (errorCommon != "NULL") {
 			fullMsg += errorCommon + "\n"; //add the common error message if it exists
 		}
 
 		fullMsg += "A minidump has been created in your SADX folder.\n";
-
-		PrintDebug("Done.\n");
 		CopyAndRename_ModLoaderIni(); //copy ModLoaderIni file to the Crash Dump folder so we know what mod and cheat were used
-		std::string text = "Crash Address: " + address + "\n";
+		string text = "Crash Address: " + address + "\n";
+		PrintDebug("\nFault module name: %s \n", dllName.c_str());
 		PrintDebug(text.c_str());
+
+		PrintDebug("Crash Dump Done.\n");
 		MessageBoxA(0, fullMsg.c_str(), "SADX ERROR", MB_ICONERROR);
 	}
 
