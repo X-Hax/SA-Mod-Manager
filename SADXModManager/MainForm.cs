@@ -24,7 +24,7 @@ namespace SADXModManager
 	public partial class MainForm : Form
 	{
 		#region Variables and classes
-		private ConfigFile configFile;
+		private GameConfigFile configFile;
 		DirectInput directInput;
 		Joystick inputDevice;
 		readonly List<ButtonControl> buttonControls = new List<ButtonControl>();
@@ -118,7 +118,7 @@ namespace SADXModManager
 			Low
 		}
 
-		class ConfigFile
+		class GameConfigFile
 		{
 			[IniName("sonicDX")]
 			public GameConfig GameConfig { get; set; }
@@ -1560,7 +1560,7 @@ namespace SADXModManager
 		#region Game settings
 		private void LoadConfigIni()
 		{
-			configFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<ConfigFile>(sadxIni) : new ConfigFile();
+			configFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<GameConfigFile>(sadxIni) : new GameConfigFile();
 			if (configFile.GameConfig == null)
 			{
 				configFile.GameConfig = new GameConfig
