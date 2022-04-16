@@ -1640,7 +1640,8 @@ static void __cdecl InitMods()
 	if (!settings->getBool("DisablePolyBuff", false))
 		polybuff::rewrite_init();
 
-	initCrashDump();
+	if (settings->getBool("DebugCrashLog", true))
+		initCrashDump();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");

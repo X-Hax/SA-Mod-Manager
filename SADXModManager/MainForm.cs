@@ -300,6 +300,7 @@ namespace SADXModManager
 			consoleCheckBox.Checked = loaderini.DebugConsole;
 			screenCheckBox.Checked = loaderini.DebugScreen;
 			fileCheckBox.Checked = loaderini.DebugFile;
+			crashLogCheckBox.Checked = loaderini.DebugCrashLog;
 			disableCDCheckCheckBox.Checked = loaderini.DisableCDCheck;
 			checkVsync.Checked = loaderini.EnableVsync;
 			horizontalResolution.Enabled = !loaderini.ForceAspectRatio;
@@ -748,6 +749,7 @@ namespace SADXModManager
 			loaderini.DebugConsole = consoleCheckBox.Checked;
 			loaderini.DebugScreen = screenCheckBox.Checked;
 			loaderini.DebugFile = fileCheckBox.Checked;
+			loaderini.DebugCrashLog = crashLogCheckBox.Checked;
 			loaderini.DisableCDCheck = disableCDCheckCheckBox.Checked;
 			loaderini.HorizontalResolution = (int)horizontalResolution.Value;
 			loaderini.VerticalResolution = (int)verticalResolution.Value;

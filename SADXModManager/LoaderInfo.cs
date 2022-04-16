@@ -17,6 +17,8 @@ namespace SADXModManager
 		public bool DebugConsole { get; set; }
 		public bool DebugScreen { get; set; }
 		public bool DebugFile { get; set; }
+		[DefaultValue(true)]
+		public bool DebugCrashLog { get; set; }
 		public bool? ShowConsole { get { return null; } set { if (value.HasValue) DebugConsole = value.Value; } }
 		public bool DisableCDCheck { get; set; }
 		[DefaultValue(640)]
