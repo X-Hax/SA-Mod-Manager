@@ -350,6 +350,7 @@ namespace SADXModManager
 
 			checkBASS.Checked = loaderini.DisableBASS;
 			checkPolyBuff.Checked = loaderini.DisablePolyBuff;
+			checkMaterialColor.Checked = loaderini.DisableMaterialColorFix;
 
 			checkBoxTestSpawnLevel.Checked = loaderini.TestSpawnLevel != -1;
 			comboBoxTestSpawnLevel.SelectedIndex = loaderini.TestSpawnLevel;
@@ -777,6 +778,7 @@ namespace SADXModManager
 			loaderini.TextLanguage = (int)comboTextLanguage.SelectedIndex;
 			loaderini.DisableBASS = checkBASS.Checked;
 			loaderini.DisablePolyBuff = checkPolyBuff.Checked;
+			loaderini.DisableMaterialColorFix = checkMaterialColor.Checked;
 
 			loaderini.TestSpawnLevel = checkBoxTestSpawnLevel.Checked ? comboBoxTestSpawnLevel.SelectedIndex : -1;
 			loaderini.TestSpawnAct = (int)numericUpDownTestSpawnAct.Value;
