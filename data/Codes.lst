@@ -309,3 +309,15 @@ write8 007E6FEC 40
 
 Patch "Disable Auto Hints"
 write8 007A1BE0 0xC3
+
+Patch "Increase Rivals Fight HP"
+write8 004B663C 0x7
+write8 004B655A 0x8
+write8 004B65FB 0x8
+write8 004D5535 0x8
+write8 004D5578 0x7
+write8 004D54AB 0x8
+write8 004D5FD8 0x8
+write8 004D601A 0x7
+write8 004D5F24 0x8
+write8 004B6399 0x8
