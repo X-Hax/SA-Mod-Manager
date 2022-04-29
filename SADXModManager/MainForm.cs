@@ -348,7 +348,6 @@ namespace SADXModManager
 
 			checkWindowResize.Checked = loaderini.ResizableWindow;
 
-			checkBASS.Checked = loaderini.DisableBASS;
 			checkPolyBuff.Checked = loaderini.DisablePolyBuff;
 			checkMaterialColor.Checked = loaderini.DisableMaterialColorFix;
 
@@ -776,7 +775,6 @@ namespace SADXModManager
 			loaderini.UpdateFrequency = (int)numericUpdateFrequency.Value;
 			loaderini.VoiceLanguage = (int)comboVoiceLanguage.SelectedIndex;
 			loaderini.TextLanguage = (int)comboTextLanguage.SelectedIndex;
-			loaderini.DisableBASS = checkBASS.Checked;
 			loaderini.DisablePolyBuff = checkPolyBuff.Checked;
 			loaderini.DisableMaterialColorFix = checkMaterialColor.Checked;
 

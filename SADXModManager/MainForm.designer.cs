@@ -136,6 +136,9 @@
             this.comboUpdateFrequency = new System.Windows.Forms.ComboBox();
             this.checkUpdateStartup = new System.Windows.Forms.CheckBox();
             this.tabPageDebug = new System.Windows.Forms.TabPage();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.checkMaterialColor = new System.Windows.Forms.CheckBox();
+            this.checkPolyBuff = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.crashLogCheckBox = new System.Windows.Forms.CheckBox();
             this.consoleCheckBox = new System.Windows.Forms.CheckBox();
@@ -177,10 +180,6 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.checkBASS = new System.Windows.Forms.CheckBox();
-            this.checkPolyBuff = new System.Windows.Forms.CheckBox();
-            this.checkMaterialColor = new System.Windows.Forms.CheckBox();
             label3 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -213,6 +212,7 @@
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpdateFrequency)).BeginInit();
             this.tabPageDebug.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnAngle)).BeginInit();
@@ -222,7 +222,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnX)).BeginInit();
             this.modContextMenu.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // label3
@@ -1633,6 +1632,43 @@
             this.tabPageDebug.Text = "Debug";
             this.tabPageDebug.UseVisualStyleBackColor = true;
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.checkMaterialColor);
+            this.groupBox5.Controls.Add(this.checkPolyBuff);
+            this.groupBox5.Location = new System.Drawing.Point(6, 301);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(390, 73);
+            this.groupBox5.TabIndex = 8;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Advanced";
+            // 
+            // checkMaterialColor
+            // 
+            this.checkMaterialColor.AutoSize = true;
+            this.checkMaterialColor.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.checkMaterialColor.Location = new System.Drawing.Point(6, 43);
+            this.checkMaterialColor.Name = "checkMaterialColor";
+            this.checkMaterialColor.Size = new System.Drawing.Size(150, 18);
+            this.checkMaterialColor.TabIndex = 3;
+            this.checkMaterialColor.Text = "Disable Material Color Fix";
+            this.toolTip.SetToolTip(this.checkMaterialColor, "The Mod Loader fixes models that have non-standard material colors. Tick this che" +
+        "ckbox to disable the fix.");
+            this.checkMaterialColor.UseVisualStyleBackColor = true;
+            // 
+            // checkPolyBuff
+            // 
+            this.checkPolyBuff.AutoSize = true;
+            this.checkPolyBuff.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.checkPolyBuff.Location = new System.Drawing.Point(6, 19);
+            this.checkPolyBuff.Name = "checkPolyBuff";
+            this.checkPolyBuff.Size = new System.Drawing.Size(143, 18);
+            this.checkPolyBuff.TabIndex = 2;
+            this.checkPolyBuff.Text = "Disable Vertex Color Fix";
+            this.toolTip.SetToolTip(this.checkPolyBuff, "The Mod Loader fixes an issue with the game\'s renderer ignoring object vertex col" +
+        "ors. Tick this checkbox to disable the fix.");
+            this.checkPolyBuff.UseVisualStyleBackColor = true;
+            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -2203,57 +2239,6 @@
             this.generateManifestToolStripMenuItem.Text = "Generate manifest";
             this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
             // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.checkMaterialColor);
-            this.groupBox5.Controls.Add(this.checkPolyBuff);
-            this.groupBox5.Controls.Add(this.checkBASS);
-            this.groupBox5.Location = new System.Drawing.Point(6, 301);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(390, 73);
-            this.groupBox5.TabIndex = 8;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Advanced";
-            // 
-            // checkBASS
-            // 
-            this.checkBASS.AutoSize = true;
-            this.checkBASS.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBASS.Location = new System.Drawing.Point(6, 19);
-            this.checkBASS.Name = "checkBASS";
-            this.checkBASS.Size = new System.Drawing.Size(98, 18);
-            this.checkBASS.TabIndex = 1;
-            this.checkBASS.Text = "Disable BASS";
-            this.toolTip.SetToolTip(this.checkBASS, "Revert to the original game\'s music/voice playback system that can only use WMA f" +
-        "iles. Normally you should leave this checkbox unchecked.");
-            this.checkBASS.UseVisualStyleBackColor = true;
-            // 
-            // checkPolyBuff
-            // 
-            this.checkPolyBuff.AutoSize = true;
-            this.checkPolyBuff.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkPolyBuff.Location = new System.Drawing.Point(6, 42);
-            this.checkPolyBuff.Name = "checkPolyBuff";
-            this.checkPolyBuff.Size = new System.Drawing.Size(143, 18);
-            this.checkPolyBuff.TabIndex = 2;
-            this.checkPolyBuff.Text = "Disable Vertex Color Fix";
-            this.toolTip.SetToolTip(this.checkPolyBuff, "The Mod Loader fixes an issue with the game\'s renderer ignoring object vertex col" +
-        "ors. Tick this checkbox to disable the fix.");
-            this.checkPolyBuff.UseVisualStyleBackColor = true;
-            // 
-            // checkMaterialColor
-            // 
-            this.checkMaterialColor.AutoSize = true;
-            this.checkMaterialColor.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkMaterialColor.Location = new System.Drawing.Point(142, 18);
-            this.checkMaterialColor.Name = "checkMaterialColor";
-            this.checkMaterialColor.Size = new System.Drawing.Size(150, 18);
-            this.checkMaterialColor.TabIndex = 3;
-            this.checkMaterialColor.Text = "Disable Material Color Fix";
-            this.toolTip.SetToolTip(this.checkMaterialColor, "The Mod Loader fixes models that have non-standard material colors. Tick this che" +
-        "ckbox to disable the fix.");
-            this.checkMaterialColor.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2309,6 +2294,8 @@
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpdateFrequency)).EndInit();
             this.tabPageDebug.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox12.ResumeLayout(false);
@@ -2320,8 +2307,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTestSpawnX)).EndInit();
             this.modContextMenu.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2472,6 +2457,5 @@
 		private System.Windows.Forms.GroupBox groupBox5;
 		private System.Windows.Forms.CheckBox checkMaterialColor;
 		private System.Windows.Forms.CheckBox checkPolyBuff;
-		private System.Windows.Forms.CheckBox checkBASS;
 	}
 }
