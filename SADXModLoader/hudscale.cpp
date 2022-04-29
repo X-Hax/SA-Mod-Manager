@@ -2,6 +2,7 @@
 #include "Trampoline.h"
 #include "uiscale.h"
 #include "hudscale.h"
+#include "SkyChaseFixes.h"
 
 using namespace uiscale;
 
@@ -1015,6 +1016,9 @@ void hudscale::update()
 	// Black Market Item Preview
 	WriteData(reinterpret_cast<float*>(0x00726211), preview_animal_hat_shell);
 	WriteData(reinterpret_cast<float*>(0x007261CF), preview_pacifier);
+
+	// Sky Chase
+	SkyChaseFix_UpdateBounds();
 }
 
 static void InitializeChaoHUDs()
@@ -1173,6 +1177,9 @@ void hudscale::initialize()
 	scaleTailsRaceBar                    = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsRaceBar);
 	scaleDemoPressStart                  = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
 	late_exec_t                          = new Trampoline(0x004086F0, 0x004086F6, late_exec_r); // Sometimes used in a display function so we have to disable scaling temporarily
+
+	// Sky Chase reticle and score calculation
+	SkyChaseFix_Init();
 
 	// Big UI
 	WriteData(reinterpret_cast<const float**>(0x0047024E), &patch_dummy);
