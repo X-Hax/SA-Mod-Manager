@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "MaterialColorFixes.h"
 
-static enum DLLExportType
+enum DLLExportType
 {
-	ExportOBJECT = 0,
-	ExportACTION = 1,
-	ExportMODEL = 2,
+	ExportMODEL = 0,
+	ExportOBJECT = 1,
+	ExportACTION = 2,
 	ExportLANDTABLE = 3
 };
 
@@ -35,39 +35,29 @@ static void FixMaterialColors(NJS_OBJECT* obj)
 
 static void FixMaterialColorsDll(LPCWSTR dllname, const char* exportname, int arraysize, DLLExportType DLLExportType)
 {
-	NJS_OBJECT** exportobj = (NJS_OBJECT**)GetProcAddress(GetModuleHandle(dllname), exportname);
-	NJS_ACTION** exportact = (NJS_ACTION**)GetProcAddress(GetModuleHandle(dllname), exportname);
-	NJS_MODEL_SADX** exportmdl = (NJS_MODEL_SADX**)GetProcAddress(GetModuleHandle(dllname), exportname);
-	LandTable** exportland = (LandTable**)GetProcAddress(GetModuleHandle(dllname), exportname);
-	switch (DLLExportType)
+	void** exp = (void**)GetProcAddress(GetModuleHandle(dllname), exportname);
+	for (int i = 0; i < arraysize; i++)
 	{
-	case ExportOBJECT:
-		for (int i = 0; i < arraysize; i++)
-			FixMaterialColors(exportobj[i]);
-		break;
-	case ExportACTION:
-		for (int i = 0; i < arraysize; i++)
+		if (!exp[i])
+			continue;
+		switch (DLLExportType)
 		{
-			if (!exportact[i])
-				continue;
-			FixMaterialColors(exportact[i]->object);
+		case ExportMODEL:
+			FixMaterialColors(((NJS_MODEL_SADX**)exp)[i]);
+			break;
+		case ExportOBJECT:
+			FixMaterialColors(((NJS_OBJECT**)exp)[i]);
+			break;
+		case ExportACTION:
+			FixMaterialColors(((NJS_ACTION**)exp)[i]->object);
+			break;
+		case ExportLANDTABLE:
+			for (int c = 0; c < ((LandTable**)exp)[i]->COLCount; c++)
+				FixMaterialColors(((LandTable**)exp)[i]->Col[c].Model);
+			break;
+		default:
+			break;
 		}
-		break;
-	case ExportMODEL:
-		for (int i = 0; i < arraysize; i++)
-			FixMaterialColors(exportmdl[i]);
-		break;
-	case ExportLANDTABLE:
-		for (int i = 0; i < arraysize; i++)
-		{
-			if (!exportland[i])
-				continue;
-			for (int c = 0; c < exportland[i]->COLCount; c++)
-				FixMaterialColors(exportland[i]->Col[c].Model);
-		}
-		break;
-	default:
-		break;
 	}
 }
 
