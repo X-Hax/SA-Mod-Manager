@@ -23,7 +23,7 @@ DataPointer(Uint32, gu32LocalCnt, 0x3ABDF5C); // FrameCounterUnpaused
 DataArray(TaskFuncPtr, RoundMasterList, 0x90BF38, 44); // Level tasks
 DataArray(TaskFuncPtr, ScrollMasterList, 0x90C1F0, 44); // Skybox tasks
 DataArray(PL_KILLCOLLI**, KillingCollisionModelsListList, 0x915908, 43);
-DataArray(_OBJ_LANDTABLE*, objLandTable[8], 0x97DA08, 43); // Array of landtable pointers, 8 acts per level
+DataArray(_OBJ_LANDTABLE*[8], objLandTable, 0x97DA08, 43); // Array of landtable pointers, 8 acts per level
 DataPointer(Angle, ds_perspective_value, 0x3AB98EC); // HorizontalFOV_BAMS
 DataPointer(NJS_TEXLIST*, njds_texList, 0x3ABD950); // CurrentTexList
 DataPointer(___stcFog, gFog, 0x3ABDC60);
