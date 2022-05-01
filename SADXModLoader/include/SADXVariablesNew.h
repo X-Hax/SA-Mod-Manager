@@ -360,4 +360,72 @@ DataPointer(NJS_TEXLIST, texlist_beach01, 0xF812AC); // BEACH01 texlist
 DataPointer(NJS_TEXLIST, texlist_beach02, 0xEF553C); // BEACH02 texlist
 DataPointer(NJS_TEXLIST, texlist_beach03, 0xE9A4CC); // BEACH03 texlist
 
+// LandTables
+DataPointer(_OBJ_LANDTABLE, objLandTableegm1, 0x1570B1C);
+DataPointer(_OBJ_LANDTABLE, objLandTableegm2, 0x15EC454);
+DataPointer(_OBJ_LANDTABLE, objLandTableegm3, 0x165E990);
+DataPointer(_OBJ_LANDTABLE, objLandTableRobo, 0x16B4D38);
+DataPointer(_OBJ_LANDTABLE, objLandTable1600, 0x112136C);
+DataPointer(_OBJ_LANDTABLE, objLandTable1700, 0x1190930);
+DataPointer(_OBJ_LANDTABLE, objLandTable1800, 0x11EDE38);
+DataPointer(_OBJ_LANDTABLE, objLandTable1801, 0x11ED6F0);
+DataPointer(_OBJ_LANDTABLE, objLandTable1900, 0x142478C);
+DataPointer(_OBJ_LANDTABLE, objLandTable2300, 0x14FCEE8);
+DataPointer(_OBJ_LANDTABLE, objLandTable2400, 0x1522578);
+DataPointer(_OBJ_LANDTABLE, objLandTableChaoBlackMarket, 0x33CAC58);
+DataPointer(_OBJ_LANDTABLE, objLandTableChaoEntrance, 0x3423700);
+DataPointer(_OBJ_LANDTABLE, objLandTableGarden00, 0x340E738);
+DataPointer(_OBJ_LANDTABLE, objLandTableGarden01, 0x3405E54);
+DataPointer(_OBJ_LANDTABLE, objLandTableChaoRace, 0x3424C58);
+DataPointer(_OBJ_LANDTABLE, objLandTableMCart00, 0x9C99A4);
+DataPointer(_OBJ_LANDTABLE, objLandTableMCart01, 0x9C8170);
+DataPointer(_OBJ_LANDTABLE, objLandTableMCart02, 0x9C6C30);
+DataPointer(_OBJ_LANDTABLE, objLandTableMCart03, 0x9C585C);
+DataPointer(_OBJ_LANDTABLE, objLandTableMCart04, 0x9C453C);
+DataPointer(_OBJ_LANDTABLE, objLandTableMCart05, 0x9C3534);
+DataPointer(_OBJ_LANDTABLE, objLandTableSBoard00, 0x173EB64);
+DataPointer(_OBJ_LANDTABLE, objLandTablePractice, 0x27C7BCC);
+DataPointer(_OBJ_LANDTABLE, objLandTable0100, 0xE99CB8);
+DataPointer(_OBJ_LANDTABLE, objLandTable0101, 0x1039E9C);
+DataPointer(_OBJ_LANDTABLE, objLandTable0102, 0x10386B4);
+DataPointer(_OBJ_LANDTABLE, objLandTable0200, 0xC051E0);
+DataPointer(_OBJ_LANDTABLE, objLandTable0201, 0xC046C0);
+DataPointer(_OBJ_LANDTABLE, objLandTable0202, 0xC0433C);
+DataPointer(_OBJ_LANDTABLE, objLandTable0300, 0x26B975C);
+DataPointer(_OBJ_LANDTABLE, objLandTable0301, 0x26B867C);
+DataPointer(_OBJ_LANDTABLE, objLandTable0302, 0x26B6B34);
+DataPointer(_OBJ_LANDTABLE, objLandTable0400, 0x26B1E98);
+DataPointer(_OBJ_LANDTABLE, objLandTable0401, 0x26ADBC8);
+DataPointer(_OBJ_LANDTABLE, objLandTable0402, 0x26ACF40);
+DataPointer(_OBJ_LANDTABLE, objLandTable0500, 0x22405E0);
+DataPointer(_OBJ_LANDTABLE, objLandTable0501, 0x24C8B58);
+DataPointer(_OBJ_LANDTABLE, objLandTable0502, 0x24C6F14);
+DataPointer(_OBJ_LANDTABLE, objLandTable0600, 0x2239ADC);
+DataPointer(_OBJ_LANDTABLE, objLandTable0601, 0x22369A0);
+DataPointer(_OBJ_LANDTABLE, objLandTable0602, 0x2234800);
+DataPointer(_OBJ_LANDTABLE, objLandTable0700, 0x2038B60);
+DataPointer(_OBJ_LANDTABLE, objLandTable0701, 0x2037C9C);
+DataPointer(_OBJ_LANDTABLE, objLandTable0702, 0x2034D14);
+DataPointer(_OBJ_LANDTABLE, objLandTable0800, 0xE41D2C);
+DataPointer(_OBJ_LANDTABLE, objLandTable0801, 0xE414BC);
+DataPointer(_OBJ_LANDTABLE, objLandTable0802, 0xE409C4);
+DataPointer(_OBJ_LANDTABLE, objLandTable0803, 0xE3E024);
+DataPointer(_OBJ_LANDTABLE, objLandTable0900, 0x1D8A9D0);
+DataPointer(_OBJ_LANDTABLE, objLandTable0901, 0x1D887EC);
+DataPointer(_OBJ_LANDTABLE, objLandTable0902, 0x1D86A1C);
+DataPointer(_OBJ_LANDTABLE, objLandTable0903, 0x1D85C08);
+DataPointer(_OBJ_LANDTABLE, objLandTable1001, 0x1A600D0);
+DataPointer(_OBJ_LANDTABLE, objLandTable1002, 0x19C8ED0);
+DataPointer(_OBJ_LANDTABLE, objLandTable1003, 0x1A5CFA8);
+DataPointer(_OBJ_LANDTABLE, objLandTable1201, 0x17D09C0);
+DataPointer(_OBJ_LANDTABLE, objLandTable1202, 0x17CF288);
+DataPointer(_OBJ_LANDTABLE, objLandTable1203, 0x17C9B48);
+
+// LandTable pointer arrays in the DLLs
+DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEBOSSCHAOS0, 0x3AB9168);
+DataPointer(_OBJ_LANDTABLE**, ___LANDTABLESS, 0x3AAD0FC);
+DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEEC0, 0x38F6E78);
+DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEEC3, 0x38F6E88);
+DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEMR, 0x3AAD130);
+DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEPAST, 0x3AAD110);
 #endif /* SADXMODLOADER_SADXVARSNEW_H */
