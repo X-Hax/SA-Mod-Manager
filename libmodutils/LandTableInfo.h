@@ -26,6 +26,7 @@ public:
 	explicit LandTableInfo(std::istream& stream);
 
 	LandTable* getlandtable() const;
+	_OBJ_LANDTABLE* getobjlandtable() const;
 	const std::string& getauthor() const;
 	const std::string& gettool() const;
 	const std::string& getdescription() const;
@@ -41,7 +42,7 @@ private:
 
 	static constexpr size_t headerSize = 0x10;
 
-	LandTable* landtable = nullptr;
+	_OBJ_LANDTABLE* landtable = nullptr;
 	std::string author, tool, description;
 	std::unordered_map<uint32_t, Metadata> metadata;
 	std::unordered_map<void *, std::string> labels1;
@@ -63,7 +64,7 @@ private:
 	void fixobjectpointers(NJS_OBJECT* object, intptr_t base);
 	void fixmotionpointers(NJS_MOTION* motion, intptr_t base, int count);
 	void fixactionpointers(NJS_ACTION* action, intptr_t base);
-	void fixlandtablepointers(LandTable* landtable, intptr_t base);
+	void fixlandtablepointers(_OBJ_LANDTABLE* landtable, intptr_t base);
 	void init(std::istream& stream);
 };
 

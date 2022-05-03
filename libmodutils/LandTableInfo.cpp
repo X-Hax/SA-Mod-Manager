@@ -46,7 +46,9 @@ LandTableInfo::LandTableInfo(const wstring& filename)
 
 LandTableInfo::LandTableInfo(istream& stream) { init(stream); }
 
-LandTable* LandTableInfo::getlandtable() const { return landtable; }
+LandTable* LandTableInfo::getlandtable() const { return (LandTable*)landtable; }
+
+_OBJ_LANDTABLE* LandTableInfo::getobjlandtable() const { return landtable; }
 
 const string& LandTableInfo::getauthor() const { return author; }
 
@@ -305,48 +307,48 @@ void LandTableInfo::fixactionpointers(NJS_ACTION* action, intptr_t base)
 	}
 }
 
-void LandTableInfo::fixlandtablepointers(LandTable* landtable, intptr_t base)
+void LandTableInfo::fixlandtablepointers(_OBJ_LANDTABLE* landtable, intptr_t base)
 {
-	if (landtable->Col != nullptr)
+	if (landtable->pLandEntry != nullptr)
 	{
-		landtable->Col = (COL*)((uint8_t*)landtable->Col + base);
-		for (int i = 0; i < landtable->COLCount; i++)
-			if (landtable->Col[i].Model != nullptr)
+		landtable->pLandEntry = (_OBJ_LANDENTRY*)((uint8_t*)landtable->pLandEntry + base);
+		for (int i = 0; i < landtable->ssCount; i++)
+			if (landtable->pLandEntry[i].pObject != nullptr)
 			{
-				landtable->Col[i].Model = (NJS_OBJECT*)((uint8_t*)landtable->Col[i].Model + base);
-				if (fixedpointers.find(landtable->Col[i].Model) == fixedpointers.end())
+				landtable->pLandEntry[i].pObject = (NJS_OBJECT*)((uint8_t*)landtable->pLandEntry[i].pObject + base);
+				if (fixedpointers.find(landtable->pLandEntry[i].pObject) == fixedpointers.end())
 				{
-					fixedpointers.insert(landtable->Col[i].Model);
-					fixobjectpointers(landtable->Col[i].Model, base);
+					fixedpointers.insert(landtable->pLandEntry[i].pObject);
+					fixobjectpointers(landtable->pLandEntry[i].pObject, base);
 				}
 			}
 	}
-	if (landtable->AnimData != nullptr)
+	if (landtable->pMotLandEntry != nullptr)
 	{
-		landtable->AnimData = (GeoAnimData*)((uint8_t*)landtable->AnimData + base);
-		for (int i = 0; i < landtable->AnimCount; i++)
+		landtable->pMotLandEntry = (_OBJ_MOTLANDENTRY*)((uint8_t*)landtable->pMotLandEntry + base);
+		for (int i = 0; i < landtable->ssMotCount; i++)
 		{
-			if (landtable->AnimData[i].Model != nullptr)
+			if (landtable->pMotLandEntry[i].pObject != nullptr)
 			{
-				landtable->AnimData[i].Model = (NJS_OBJECT*)((uint8_t*)landtable->AnimData[i].Model + base);
-				if (fixedpointers.find(landtable->AnimData[i].Model) == fixedpointers.end())
+				landtable->pMotLandEntry[i].pObject = (NJS_OBJECT*)((uint8_t*)landtable->pMotLandEntry[i].pObject + base);
+				if (fixedpointers.find(landtable->pMotLandEntry[i].pObject) == fixedpointers.end())
 				{
-					fixedpointers.insert(landtable->AnimData[i].Model);
-					fixobjectpointers(landtable->AnimData[i].Model, base);
+					fixedpointers.insert(landtable->pMotLandEntry[i].pObject);
+					fixobjectpointers(landtable->pMotLandEntry[i].pObject, base);
 				}
 			}
-			if (landtable->AnimData[i].Animation != nullptr)
+			if (landtable->pMotLandEntry[i].pMotion != nullptr)
 			{
-				landtable->AnimData[i].Animation = (NJS_ACTION*)((uint8_t*)landtable->AnimData[i].Animation + base);
-				if (fixedpointers.find(landtable->AnimData[i].Animation) == fixedpointers.end())
+				landtable->pMotLandEntry[i].pMotion = (NJS_ACTION*)((uint8_t*)landtable->pMotLandEntry[i].pMotion + base);
+				if (fixedpointers.find(landtable->pMotLandEntry[i].pMotion) == fixedpointers.end())
 				{
-					fixedpointers.insert(landtable->AnimData[i].Animation);
-					fixactionpointers(landtable->AnimData[i].Animation, base);
+					fixedpointers.insert(landtable->pMotLandEntry[i].pMotion);
+					fixactionpointers(landtable->pMotLandEntry[i].pMotion, base);
 				}
 			}
 		}
 	}
-	fixptr(landtable->TexName, base);
+	fixptr(landtable->pPvmFileName, base);
 }
 
 template<typename T>
@@ -374,7 +376,7 @@ void LandTableInfo::init(istream& stream)
 	auto* landtablebuf = new uint8_t[mdlsize];
 	allocatedmem.push_back(shared_ptr<uint8_t>(landtablebuf, default_delete<uint8_t[]>()));
 	stream.read((char*)landtablebuf, mdlsize);
-	landtable = (LandTable*)(landtablebuf + landtableoff);
+	landtable = (_OBJ_LANDTABLE*)(landtablebuf + landtableoff);
 	intptr_t landtablebase = (intptr_t)landtablebuf - headerSize;
 	fixlandtablepointers(landtable, landtablebase);
 	fixedpointers.clear();
