@@ -54,6 +54,7 @@
     <ClInclude Include="hudscale.h" />
     <ClInclude Include="include\SADXEnumsNew.h" />
     <ClInclude Include="include\SADXFunctionsNew.h" />
+    <ClInclude Include="include\SADXModelsNew.h" />
     <ClInclude Include="include\SADXModInfo.h" />
     <ClInclude Include="include\SADXStructsNew.h" />
     <ClInclude Include="include\SADXVariablesNew.h" />
