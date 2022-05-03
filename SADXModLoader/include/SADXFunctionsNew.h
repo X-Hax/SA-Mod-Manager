@@ -51,7 +51,8 @@ VoidFunc(SleepTimer, 0x426040);
 VoidFunc(AdvanceTime, 0x426075);
 FunctionPointer(void, SetViewAngle, (int new_view_angle), 0x437240);
 FunctionPointer(void, LandChangeStage, (char Gap), 0x43A460); // Release landtable and request act change
-FunctionPointer(void, AddCameraStage, (__int16 Gap), 0x434680); // Release cameras and request act chang
+FunctionPointer(void, AddCameraStage, (__int16 Gap), 0x434680); // Release cameras and request act change
+FunctionPointer(void, LandChangeLandTable, (_OBJ_LANDTABLE* pOLT), 0x43A4C0); // Set Chao landtable
 VoidFunc(InitFreeCamera, 0x434870);
 FunctionPointer(int, AdjustAngle, (__int16 ang0, unsigned __int16 ang1, int dang), 0x438350); // Slowly adjust ang0 to ang1 at dang speed
 FunctionPointer(int, SubAngle, (int ang0, int ang1), 0x4383B0); // Difference
