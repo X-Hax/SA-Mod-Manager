@@ -86,7 +86,6 @@ VoidFunc(njReleaseTextureAll_, 0x406F00);
 FunctionPointer(bool, CheckModelDistance_xyz, (float x, float y, float z, float a4), 0x406F70);
 FunctionPointer(void, njAction, (NJS_ACTION *action, Float frame), 0x407020);
 FunctionPointer(void, njAction_QueueObject, (NJS_OBJECT *a1, NJS_MOTION *a2, float a3), 0x407040);
-FunctionPointer(void, njDrawSprite3D, (NJS_SPRITE *_sp, Int n, NJD_SPRITE attr), 0x407070);
 FunctionPointer(void, njDrawSprite2D_4, (NJS_SPRITE *hud, Int n, Float pri, NJD_SPRITE attr), 0x4070A0);
 FunctionPointer(void, njDrawSprite3D_ADV01C_C, (NJS_SPRITE *sp, int n, NJD_SPRITE attr), 0x407130);
 FunctionPointer(void, DrawRect_DrawNowMaybe, (float left, float top, float right, float bottom, float depth, int color), 0x4071C0);
