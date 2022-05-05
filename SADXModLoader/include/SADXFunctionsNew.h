@@ -846,7 +846,6 @@ static inline void DrawShapeMotion(NJS_OBJECT* object, NJS_MOTION* motion, NJS_M
 // Variable draw functions (picks between Simple and Late)
 FunctionPointer(void, lateDrawModel, (NJS_MODEL_SADX* mdl, LATE flgs), 0x4048E0);
 FunctionPointer(void, lateDrawObject, (NJS_OBJECT* object, LATE flgs, float clipScl), 0x4074A0);
-FunctionPointer(void, late_Action, (NJS_ACTION* action, float frame, LATE flgs, float clipScl), 0x405490);
 
 // Late draw functions: Model
 FunctionPointer(void, late_DrawModel, (NJS_MODEL_SADX* mdl, LATE flgs), 0x4078F0);
@@ -862,8 +861,9 @@ FunctionPointer(void, late_DrawShadowModel, (NJS_MODEL_SADX* mdl, float clipScl)
 // Late draw functions: Object
 FunctionPointer(void, late_DrawObject, (NJS_OBJECT* object, LATE flgs), 0x407B70);
 FunctionPointer(void, late_DrawObjectClip, (NJS_OBJECT* object, LATE flgs, float clipScl), 0x407B40);
-FunctionPointer(void, late_DrawObjectClipEx, (NJS_OBJECT* object, LATE flgs, float clipScl), 0x40A170);
 FunctionPointer(void, late_DrawObjectEx, (NJS_OBJECT* object, LATE flgs), 0x40A1A0);
+FunctionPointer(void, late_DrawObjectClipEx, (NJS_OBJECT* object, LATE flgs, float clipScl), 0x40A170);
+// late_DrawObjectMS does not exist
 FunctionPointer(void, late_DrawObjectClipMS, (NJS_OBJECT* object, LATE flgs, float clipScl), 0x40A1E0);
 FunctionPointer(void, late_DrawObjectMesh, (NJS_OBJECT* object, LATE flgs), 0x40A210);
 FunctionPointer(void, late_DrawObjectClipMesh, (NJS_OBJECT* object, LATE flgs, float clipScl), 0x40A250);
@@ -875,7 +875,9 @@ FunctionPointer(void, late_DrawMotionClipEx, (NJS_OBJECT* object, NJS_MOTION* mo
 FunctionPointer(void, late_DrawMotionClipMesh, (NJS_OBJECT* object, NJS_MOTION* motion, float frame, LATE flgs, float clipScl), 0x408300);
 
 // Late draw functions: Action
-FunctionPointer(void, late_ActionEx, (NJS_ACTION* action, float frame, LATE flgs), 0x408330);
+FunctionPointer(void, late_Action, (NJS_ACTION* action, float frame, LATE flgs), 0x405470);
+FunctionPointer(void, late_ActionClip, (NJS_ACTION* action, float frame, LATE flgs, float clipScl), 0x405490);
+FunctionPointer(void, late_ActionEx, (NJS_ACTION* action, float frame, LATE flgs), 0x408330);	
 FunctionPointer(void, late_ActionClipEx, (NJS_ACTION* action, float frame, LATE flgs, float clipScl), 0x408350);
 FunctionPointer(void, late_ActionMS, (NJS_ACTION* action, float frame, LATE flgs), 0x408380);
 FunctionPointer(void, late_ActionClipMS, (NJS_ACTION* action, float frame, LATE flgs, float clipScl), 0x4083A0);
