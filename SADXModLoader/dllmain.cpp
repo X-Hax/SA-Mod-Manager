@@ -50,6 +50,7 @@ using std::vector;
 #include "DLLData.h"
 #include "ChunkSpecularFix.h"
 #include "CrashDump.h"
+#include "MaterialColorFixes.h"
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -1533,8 +1534,7 @@ static void __cdecl InitMods()
 	WriteCall((void *)0x4254F4, PlayVoiceFile_r);
 	WriteCall((void *)0x425569, PlayVoiceFile_r);
 	WriteCall((void *)0x513187, PlayVideoFile_r);
-	if (!settings->getBool("DisableBASS", false))
-		WriteJump((void*)0x40D1EA, WMPInit_r);
+	WriteJump((void*)0x40D1EA, WMPInit_r);
 	WriteJump((void *)0x40CF50, WMPRestartMusic_r);
 	WriteJump((void *)0x40D060, PauseMusic_r);
 	WriteJump((void *)0x40D0A0, ResumeMusic_r);
@@ -1642,6 +1642,9 @@ static void __cdecl InitMods()
 
 	if (settings->getBool("DebugCrashLog", true))
 		initCrashDump();
+
+	if (!settings->getBool("DisableMaterialColorFix", false))
+		MaterialColorFixes_Init();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
