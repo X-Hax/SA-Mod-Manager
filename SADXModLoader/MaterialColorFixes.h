@@ -1,9 +1,10 @@
 #pragma once
+#include "SADXStructs.h"
 
 void MaterialColorFixes_Init();
 
 // NJS_MODEL_SADX addresses in the EXE
-static int EXEModelPointers[] =
+static const intptr_t EXEModelPointers[] =
 {
 	0x2AD4E78,
 	0x2AD4CA8,
