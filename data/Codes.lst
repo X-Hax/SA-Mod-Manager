@@ -117,9 +117,6 @@ ifmask32 03B0E9D0 0x20
 	divfloat 03B0F0FC 1.05
 endif
 
-Patch "Tails Can Play Emerald Coast (BREAKS SAVE)"
-write8 004F6B02 0xEB
-
 Patch "Walk on Water"
 writenop 004496E1 6
 
