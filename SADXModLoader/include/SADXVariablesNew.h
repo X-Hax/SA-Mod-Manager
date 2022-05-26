@@ -165,6 +165,47 @@ DataPointer(_OBJ_ITEMTABLE*, pObjItemTable, 0x3C4E448);          // Current Obje
 DataPointer(__int16, numStatusEntry, 0x3C4E454);
 DataArray(OBJ_CONDITION, objStatusEntry, 0x3C4E460, 1024);       // Set file entries
 
+// Object lists
+DataPointer(_OBJ_ITEMTABLE, objItemTable00, 0x27C71C4);
+DataPointer(_OBJ_ITEMTABLE, objItemTable01, 0x1036AB0);
+DataPointer(_OBJ_ITEMTABLE, objItemTable02, 0xC02BB8);
+DataPointer(_OBJ_ITEMTABLE, objItemTable03, 0x26B5EEC);
+DataPointer(_OBJ_ITEMTABLE, objItemTable04, 0x26AB2D0);
+DataPointer(_OBJ_ITEMTABLE, objItemTable05, 0x24C3974);
+DataPointer(_OBJ_ITEMTABLE, objItemTable06, 0x22319D4);
+DataPointer(_OBJ_ITEMTABLE, objItemTable07, 0x2034AA8);
+DataPointer(_OBJ_ITEMTABLE, objItemTable08, 0xE3C80C);
+DataPointer(_OBJ_ITEMTABLE, objItemTable09, 0x1D84AF0);
+DataPointer(_OBJ_ITEMTABLE, objItemTable10, 0x1A57EE8);
+DataPointer(_OBJ_ITEMTABLE, objItemTable1201, 0x17C6344);
+DataPointer(_OBJ_ITEMTABLE, objItemTable1202, 0x17C5BCC);
+DataPointer(_OBJ_ITEMTABLE, objItemTable1203, 0x17C54D0);
+DataPointer(_OBJ_ITEMTABLE, objItemTable1204, 0x17C4D94);
+DataPointer(_OBJ_ITEMTABLE, objItemTableb0, 0x1120264);
+DataPointer(_OBJ_ITEMTABLE, objItemTable16, 0x1120C34);
+DataPointer(_OBJ_ITEMTABLE, objItemTable17, 0x118FE54);
+DataPointer(_OBJ_ITEMTABLE, objItemTable18, 0x11F00EC);
+DataPointer(_OBJ_ITEMTABLE, objItemTable19, 0x1422A1C);
+DataPointer(_OBJ_ITEMTABLE, objItemTableegm1, 0x156F7FC);
+DataPointer(_OBJ_ITEMTABLE, objItemTableegm2, 0x15E8F58);
+DataPointer(_OBJ_ITEMTABLE, objItemTableegm3, 0x165D554);
+DataPointer(_OBJ_ITEMTABLE, objItemTableBossRobo, 0x16B56C4); // Zero
+DataPointer(_OBJ_ITEMTABLE, objItemTable23, 0x14FBC58); // E-101 Beta
+DataPointer(_OBJ_ITEMTABLE, objItemTable24, 0x1522D08); // E-101 R
+DataPointer(_OBJ_ITEMTABLE, objItemTableSS, 0x2BBCCFC);
+DataPointer(_OBJ_ITEMTABLE, objItemTableEC00, 0x10F401C);
+DataPointer(_OBJ_ITEMTABLE, objItemTableEC30, 0x1101D20);
+DataPointer(_OBJ_ITEMTABLE, objItemTableMR, 0x1104760);
+DataPointer(_OBJ_ITEMTABLE, objItemTablePast, 0x111EE98);
+DataPointer(_OBJ_ITEMTABLE, objItemTableMCart, 0x9C2304);
+DataPointer(_OBJ_ITEMTABLE, objItemTableSht, 0x2998E98);
+DataPointer(_OBJ_ITEMTABLE, objItemTableSBoard, 0x173BF0C);
+DataPointer(_OBJ_ITEMTABLE, objItemTableGarden00, 0x38F6E54); // SS Garden
+DataPointer(_OBJ_ITEMTABLE, objItemTableGarden01, 0x38F6E44); // EC Garden
+DataPointer(_OBJ_ITEMTABLE, objItemTableGarden02, 0x38F6E30); // MR Garden
+DataPointer(_OBJ_ITEMTABLE, objItemTableAL_Race, 0x33A0AEC);
+DataPointer(_OBJ_ITEMTABLE, ObjItemTableMi, 0x170F854); // Mission Mode object list
+
 // Cart
 DataArray(__int16, cartColor, 0x88C004, 8); // Cart colors
 DataArray(CCL_INFO, cci_cart, 0x38A6BF0, 8); // Cart collisions, one per character
