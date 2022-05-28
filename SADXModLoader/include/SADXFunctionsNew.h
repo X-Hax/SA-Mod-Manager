@@ -441,6 +441,7 @@ TaskFunc(ObjectGCollision, 0x49E170); // Same as ObjectNormal but with geometry 
 TaskFunc(ObjectScaleDisplay, 0x49D220); // Same as ObjectNormalDisplay with different D3D Z Func
 TaskFunc(ObjectNormalDisplay_LE, 0x49D24B); // Same as ObjectNormalDisplay with different D3D Z Func
 TaskFunc(ObjectNormalDisplay, 0x49DDF0); // Display task that draws an object in twp->counter using regular pos/ang values
+TaskFunc(ObjectNormalExit, 0x49D050); // Red Mountain and other level objects delete function
 FunctionPointer(float, GetShadowPos, (float x, float y, float z, Angle3* ang), 0x49E920); // Get Y position and angle of ground below
 FunctionPointer(float, GetShadowPosOnWalter, (float x, float y, float z, Angle3* ang), 0x49EAD0); // Get Y position and angle of ground and water below
 FunctionPointer(BOOL, GetShadowPosXYZ, (xyyzzxsdwstr* answer), 0x49F450);
@@ -728,7 +729,13 @@ static inline void CameraSetView(taskwk* twp) // Apply camera perspective
 	}
 }
 
-// Ninja draw function
+// NJD_CONTROL_3D functions
+VoidFunc(SaveControl3D, 0x4395C0); // Backs up NJD_CONTROL_3D flags
+VoidFunc(LoadControl3D, 0x4395D0); // Restores NJD_CONTROL_3D flags
+FunctionPointer(void, OnControl3D, (NJD_CONTROL_3D flag), 0x4395E0); // Adds an NJD_CONTROL_3D flag
+FunctionPointer(void, OffControl3D, (NJD_CONTROL_3D flag), 0x439600); // Removes an NJD_CONTROL_3D flag
+
+// Ninja draw functions
 FunctionPointer(void, njDrawModel_, (NJS_MODEL_SADX* mdl), 0x784AE0); // Offloads to polybuff drawing functions
 FunctionPointer(void, njDirectDrawModel, (NJS_MODEL_SADX* mdl), 0x77EDA0);
 FunctionPointer(void, njDrawPolygon2D, (NJS_POINT2COL* p, int count, float pri, NJD_DRAW attr), 0x4010D0);
