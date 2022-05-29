@@ -252,6 +252,10 @@ namespace SADXModManager
 			comboBoxTestSpawnTime.SelectedIndex = 0;
 			InitTestSpawnCutsceneList();
 			LoadSettings();
+			modListView.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent); // Mod name
+			modListView.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.None); // Author
+			modListView.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.HeaderSize); // Version
+			modListView.AutoResizeColumn(3, ColumnHeaderAutoResizeStyle.ColumnContent); // Category
 			buttonUpdateD3D8to9.Visible = CheckD3D8to9Update();
 			checkBoxEnableD3D9.Enabled = File.Exists(d3d8to9StoredDLLName);
 			checkBoxEnableD3D9.Checked = File.Exists(d3d8to9InstalledDLLName);
