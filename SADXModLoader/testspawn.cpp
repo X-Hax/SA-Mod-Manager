@@ -11,6 +11,8 @@ static bool testspawn_levelenabled = false;
 static int testspawn_eventid = 0;
 static int testspawn_timeofday = TimesOfDay_Day;
 
+static Trampoline* InitCharVictoryAnim_t = nullptr;
+
 static const std::unordered_map<std::wstring, int16_t> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
 	{ L"emeraldcoast",      LevelIDs_EmeraldCoast },
@@ -151,7 +153,7 @@ static Trampoline* SetPlayerInitialPosition_t = nullptr;
 static void SetPlayerInitialPosition_r(taskwk* twp)
 {
 	auto original = static_cast<decltype(SetPlayerInitialPosition_r)*>(SetPlayerInitialPosition_t->Target());
-	
+
 	if (!CheckRestartLevel() && CurrentLevel == gTestSpawnStartPos.LevelID && CurrentAct == gTestSpawnStartPos.ActID)
 	{
 		twp->pos = gTestSpawnStartPos.Position;
@@ -159,7 +161,16 @@ static void SetPlayerInitialPosition_r(taskwk* twp)
 	}
 	else
 	{
+		char charID = twp->counter.b[1];
+
+		if (CurrentCharacter == Characters_Eggman || CurrentCharacter == Characters_Tikal || CurrentCharacter > Characters_MetalSonic)
+		{
+			twp->counter.b[1] = Characters_Sonic; //trick the game to make it thinks we are playing sonic to fix start pos
+		}
+
 		original(twp);
+
+		twp->counter.b[1] = charID; //restore original charID
 	}
 }
 
@@ -779,6 +790,35 @@ static void DisableSound()
 	WriteData(reinterpret_cast<uint8_t*>(0x004250D0), static_cast<uint8_t>(0xC3u));
 }
 
+static void InitCharVictoryAnim_r(int curChar)
+{
+	if (curChar == Characters_Eggman || curChar == Characters_Tikal || curChar > Characters_Big)
+		return;
+
+	FunctionPointer(void, origin, (int curchar), InitCharVictoryAnim_t->Target());
+	origin(curChar);
+}
+
+static void LoadCharacter_r()
+{
+	if (CurrentCharacter == Characters_Tikal || CurrentCharacter == Characters_Eggman)
+	{
+		ClearPlayerArrays();
+		ObjectMaster* player = nullptr;
+		bool isTikal = CurrentCharacter == Characters_Tikal;
+		ObjectFuncPtr char_main = isTikal ? Tikal_Main : Eggman_Main;
+		player = LoadObject((LoadObj)(LoadObj_UnknownA | LoadObj_Data1 | LoadObj_Data2), 1, char_main);
+		player->Data1->CharID = CurrentCharacter;
+		player->Data1->CharIndex = 0;
+		EntityData1Ptrs[0] = player->Data1;
+		EntityData2Ptrs[0] = (EntityData2*)player->Data2;
+		MovePlayerToStartPoint(player->Data1);
+		return;
+	}
+
+	return LoadCharacter();
+}
+
 void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 {
 	int argc = 0;
@@ -805,6 +845,13 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			{
 				MetalSonicFlag = 1;
 				character_id = 0;
+			}
+
+			if (character_id == Characters_Tikal || character_id == Characters_Eggman || character_id > Characters_MetalSonic)
+			{
+				InitCharVictoryAnim_t = new Trampoline((int)0x422680, (int)0x422687, InitCharVictoryAnim_r);
+				WriteCall((void*)0x415A25, LoadCharacter_r);
+				SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r, true);
 			}
 
 			CurrentCharacter = character_id;
