@@ -30,6 +30,7 @@ using std::vector;
 
 #include "git.h"
 #include "version.h"
+#include <direct.h>
 
 #include "IniFile.hpp"
 #include "CodeParser.hpp"
@@ -1912,11 +1913,24 @@ static void __cdecl InitMods()
 			}
 		}
 
-		if (modinfo->getBool("RedirectMainSave"))
+		if (modinfo->getBool("RedirectMainSave")) {
 			_mainsavepath = mod_dirA + "\\SAVEDATA";
 
-		if (modinfo->getBool("RedirectChaoSave"))
+			if (!IsPathExist(_mainsavepath))
+			{
+				_mkdir(_mainsavepath.c_str());
+			}
+		}
+
+		if (modinfo->getBool("RedirectChaoSave")) {
+
 			_chaosavepath = mod_dirA + "\\SAVEDATA";
+
+			if (!IsPathExist(_chaosavepath))
+			{
+				_mkdir(_chaosavepath.c_str());
+			}
+		}
 
 		if (modinfo->hasKeyNonEmpty("WindowTitle"))
 			windowtitle = modinfo->getString("WindowTitle");
