@@ -2305,4 +2305,17 @@ struct __declspec(align(4)) TitleNewWk
 	char kumoindex;
 };
 
+struct ObjectInfo
+{
+	CCL_INFO* colli_t;
+	unsigned int colliNumb;
+	float colliRange;
+};
+
+struct ObjCmnInfo
+{
+	unsigned __int8 id;
+	unsigned __int8 copy;
+};
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */

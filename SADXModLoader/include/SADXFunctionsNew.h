@@ -340,7 +340,7 @@ FunctionPointer(void, BJoinVertexes, (taskwk* twp, bosswk* bwp), 0x4BDC50);
 FunctionPointer(void, SetDisplayBossName, (const char* str, int xpos, int ypos, int time), 0x4B36D0);
 FunctionPointer(void, LoadLifeGauge, (signed int w, signed int h, signed int health), 0x4B3CC0);
 FunctionPointer(BOOL, ChkE104ColliLandXZ, (NJS_POINT3* pPos, float fDistChk, float* pfGroundY, NJS_POINT3* pVec), 0x568AF0); // Ground collision logic for E104
-FunctionPointer(void, SetCircleLimit, (NJS_POINT3* pos, NJS_POINT3* center, float radius), 0x7AF3E0); // Creates an object that limits a position into a circle
+FunctionPointer(task*, SetCircleLimit, (NJS_POINT3* pos, NJS_POINT3* center, float radius), 0x7AF3E0); // Creates an object that limits a position into a circle
 
 static const void* const BSetMotion_NextPtr = (void*)0x4BE170;
 static inline void BSetMotion_Next(bosswk* bwp, int patno)
@@ -410,6 +410,24 @@ static inline void RdMountainInit(task* tp)
 	}
 }
 
+// Miren functions (utilities)
+FunctionPointer(void, MirenInitTask, (task* task_p, const TaskInfo* info_p, void* param_p), 0x796B30); // Create a task with information from TaskInfo
+FunctionPointer(void, MirenSetTask, (int level, const TaskInfo* info_p, void* param_p), 0x796B90); // Edit a task with information from TaskInfo
+FunctionPointer(void, MirenSetChildTask, (task* parent_p, const TaskInfo* info_p, void* param_p), 0x7796BD0); // Creates a child task with information from TaskInfo
+FunctionPointer(void, MirenGameChangeAct, (int actDiff, int bgmId), 0x796C10); // Draw collisions of a colliwk (debug)
+FunctionPointer(void, MirenObjInitCharColli, (task* task_p, const ObjectInfo* objInfo_p, const ObjCmnInfo* cmnInfo_p), 0x79E510); // A wrapper for CCL_Init
+FunctionPointer(void, MirenObjClearForceWork, (forcewk* forceWk_p), 0x79E540); // Clears a forcewk
+FunctionPointer(void, MirenObjEntryMobileLandObject, (task* task_p, obj* obj_p, int attr, float scale), 0x79E580); // Sets unknown collision flags based on model radius * scale then calls RegisterCollisionEntry
+FunctionPointer(bool, MirenObjCheckCollisionP, (taskwk* taskWk_p, float dist), 0x79E600); // Set 0x100 flag if player in range, enables/disables mobile land collision
+FunctionPointer(void, MirenObjFreeMobileLandObject, (task* task_p, NJS_OBJECT* obj_p), 0x79E630); // Removes a mobile land collision.
+FunctionPointer(void, MirenObjFreeFall, (NJS_POINT3* pos_p, NJS_POINT3* spd_p, float yOfs, const NJS_POINT3* slowRate_p), 0x79E650);
+FunctionPointer(void, MirenObjDrawCharColliObjectNoScale, (NJS_OBJECT* obj_p, taskwk* taskWk_p, NJS_TEXLIST* texList_p), 0x79E820);
+FunctionPointer(NJS_OBJECT*, MirenObjAllocMobileLandObject, (const NJS_OBJECT* orgObj_p), 0x79E8B0); // Gets mobile land object entry (with GetMobileLandObject) and copy information from orgObj
+FunctionPointer(void, MirenObjSetObjectMatrix, (NJS_OBJECT* obj_p, const taskwk* taskWk_p, float scale), 0x79E8F0); // Copy position, rotation and scale to obj_p
+FunctionPointer(void, MirenObjDrawMobileLandObject, (NJS_OBJECT* obj_p, taskwk* taskWk_p, float scale, NJS_TEXLIST* texList_p), 0x79E930);
+FunctionPointer(void, MirenObjEditDrawCollisionInfo, (const CCL_INFO* info_p, const taskwk* taskWk_p), 0x79F450);
+FunctionPointer(void, MirenObjEditDrawCollision, (const colliwk* colliWk_p), 0x79F4D0); // Draw collisions of a colliwk (debug)
+
 // Object
 FunctionPointer(BOOL, dsCheckViewV, (NJS_POINT3* ft, float radius), 0x403330); // IsVisible
 FunctionPointer(BOOL, SetRegularTexture, (), 0x420F90); // Set regular object texlist
@@ -464,8 +482,6 @@ FunctionPointer(void, ef_muteki, (taskwk* twp), 0x4D6D80);
 FunctionPointer(void, ef_baria, (taskwk* twp), 0x4D6DC0);
 FunctionPointer(void, ef_explosion, (taskwk* twp), 0x4D6E00);
 FunctionPointer(void, ef_th_baria, (taskwk* twp), 0x4D6E40);
-FunctionPointer(void, MirenInitTask, (task* task_p, const TaskInfo* info_p, void* param_p), 0x796B30); // Create a task with information from TaskInfo
-FunctionPointer(void, MirenSetTask, (int level, const TaskInfo* info_p, void* param_p), 0x796B90); // Edit a task with information from TaskInfo
 FunctionPointer(void, DrawCustomObject, (NJS_OBJECT* top_object, CUSTOM_OBJ* custom), 0x4BA5D0);
 FunctionPointer(void, DrawCustomObject_wz, (NJS_OBJECT* top_object, CUSTOM_OBJ* custom), 0x4BA710);
 
