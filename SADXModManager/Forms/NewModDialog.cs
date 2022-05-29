@@ -45,6 +45,7 @@ namespace SADXModManager.Forms
 					Author           = textModAuthor.Text,
 					Description      = textModDescription.Text,
 					Version          = textVersion.Text,
+					Category         = textModCategory.Text,
 					RedirectMainSave = checkRedirectMainSave.Checked,
 					RedirectChaoSave = checkRedirectChaoSave.Checked,
 					GitHubRepo       = textGitHubRepo.Text,

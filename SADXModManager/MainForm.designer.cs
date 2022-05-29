@@ -52,9 +52,10 @@
             this.buttonRefreshModList = new System.Windows.Forms.Button();
             this.modDescription = new System.Windows.Forms.Label();
             this.modListView = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderVersion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderCategory = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.saveButton = new System.Windows.Forms.Button();
             this.saveAndPlayButton = new System.Windows.Forms.Button();
             this.installButton = new System.Windows.Forms.Button();
@@ -472,7 +473,7 @@
             // 
             this.buttonRefreshModList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonRefreshModList.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonRefreshModList.Location = new System.Drawing.Point(6, 287);
+            this.buttonRefreshModList.Location = new System.Drawing.Point(6, 329);
             this.buttonRefreshModList.Name = "buttonRefreshModList";
             this.buttonRefreshModList.Size = new System.Drawing.Size(75, 23);
             this.buttonRefreshModList.TabIndex = 3;
@@ -484,9 +485,9 @@
             // 
             this.modDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.modDescription.Location = new System.Drawing.Point(6, 316);
+            this.modDescription.Location = new System.Drawing.Point(6, 358);
             this.modDescription.Name = "modDescription";
-            this.modDescription.Size = new System.Drawing.Size(390, 60);
+            this.modDescription.Size = new System.Drawing.Size(440, 60);
             this.modDescription.TabIndex = 6;
             this.modDescription.Text = "Description: No mod selected.";
             // 
@@ -498,14 +499,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.modListView.CheckBoxes = true;
             this.modListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
+            this.columnHeaderName,
+            this.columnHeaderAuthor,
+            this.columnHeaderVersion,
+            this.columnHeaderCategory});
             this.modListView.FullRowSelect = true;
             this.modListView.HideSelection = false;
             this.modListView.Location = new System.Drawing.Point(6, 6);
             this.modListView.Name = "modListView";
-            this.modListView.Size = new System.Drawing.Size(361, 275);
+            this.modListView.Size = new System.Drawing.Size(411, 317);
             this.modListView.TabIndex = 0;
             this.modListView.UseCompatibleStateImageBehavior = false;
             this.modListView.View = System.Windows.Forms.View.Details;
@@ -517,26 +519,30 @@
             this.modListView.DragOver += new System.Windows.Forms.DragEventHandler(this.modListView_DragOver);
             this.modListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.modListView_MouseClick);
             // 
-            // columnHeader1
+            // columnHeaderName
             // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 180;
+            this.columnHeaderName.Text = "Name";
+            this.columnHeaderName.Width = 152;
             // 
-            // columnHeader2
+            // columnHeaderAuthor
             // 
-            this.columnHeader2.Text = "Author";
-            this.columnHeader2.Width = 100;
+            this.columnHeaderAuthor.Text = "Author";
+            this.columnHeaderAuthor.Width = 94;
             // 
-            // columnHeader3
+            // columnHeaderVersion
             // 
-            this.columnHeader3.Text = "Version";
-            this.columnHeader3.Width = 75;
+            this.columnHeaderVersion.Text = "Version";
+            // 
+            // columnHeaderCategory
+            // 
+            this.columnHeaderCategory.Text = "Category";
+            this.columnHeaderCategory.Width = 94;
             // 
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.saveButton.Location = new System.Drawing.Point(88, 411);
+            this.saveButton.Location = new System.Drawing.Point(88, 453);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 22);
             this.saveButton.TabIndex = 102;
@@ -548,7 +554,7 @@
             // 
             this.saveAndPlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.saveAndPlayButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.saveAndPlayButton.Location = new System.Drawing.Point(4, 411);
+            this.saveAndPlayButton.Location = new System.Drawing.Point(4, 453);
             this.saveAndPlayButton.Name = "saveAndPlayButton";
             this.saveAndPlayButton.Size = new System.Drawing.Size(78, 22);
             this.saveAndPlayButton.TabIndex = 101;
@@ -561,7 +567,7 @@
             this.installButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.installButton.AutoSize = true;
             this.installButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.installButton.Location = new System.Drawing.Point(168, 411);
+            this.installButton.Location = new System.Drawing.Point(168, 453);
             this.installButton.Name = "installButton";
             this.installButton.Size = new System.Drawing.Size(80, 22);
             this.installButton.TabIndex = 103;
@@ -585,7 +591,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(410, 405);
+            this.tabControl1.Size = new System.Drawing.Size(460, 447);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageMods
@@ -601,8 +607,8 @@
             this.tabPageMods.Controls.Add(this.modListView);
             this.tabPageMods.Location = new System.Drawing.Point(4, 22);
             this.tabPageMods.Name = "tabPageMods";
-            this.tabPageMods.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMods.Size = new System.Drawing.Size(402, 379);
+            this.tabPageMods.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageMods.Size = new System.Drawing.Size(452, 421);
             this.tabPageMods.TabIndex = 0;
             this.tabPageMods.Text = "Mods";
             this.tabPageMods.UseVisualStyleBackColor = true;
@@ -612,7 +618,7 @@
             this.configureModButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.configureModButton.Enabled = false;
             this.configureModButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.configureModButton.Location = new System.Drawing.Point(87, 287);
+            this.configureModButton.Location = new System.Drawing.Point(87, 329);
             this.configureModButton.Name = "configureModButton";
             this.configureModButton.Size = new System.Drawing.Size(75, 23);
             this.configureModButton.TabIndex = 9;
@@ -626,7 +632,7 @@
             this.modBottomButton.AutoSize = true;
             this.modBottomButton.Enabled = false;
             this.modBottomButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modBottomButton.Location = new System.Drawing.Point(369, 114);
+            this.modBottomButton.Location = new System.Drawing.Point(419, 114);
             this.modBottomButton.Name = "modBottomButton";
             this.modBottomButton.Size = new System.Drawing.Size(31, 29);
             this.modBottomButton.TabIndex = 8;
@@ -640,7 +646,7 @@
             this.modTopButton.AutoSize = true;
             this.modTopButton.Enabled = false;
             this.modTopButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modTopButton.Location = new System.Drawing.Point(369, 6);
+            this.modTopButton.Location = new System.Drawing.Point(419, 6);
             this.modTopButton.Name = "modTopButton";
             this.modTopButton.Size = new System.Drawing.Size(31, 29);
             this.modTopButton.TabIndex = 7;
@@ -652,7 +658,7 @@
             // 
             this.buttonNewMod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonNewMod.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonNewMod.Location = new System.Drawing.Point(292, 287);
+            this.buttonNewMod.Location = new System.Drawing.Point(342, 329);
             this.buttonNewMod.Name = "buttonNewMod";
             this.buttonNewMod.Size = new System.Drawing.Size(75, 23);
             this.buttonNewMod.TabIndex = 5;
@@ -666,7 +672,7 @@
             this.modDownButton.AutoSize = true;
             this.modDownButton.Enabled = false;
             this.modDownButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modDownButton.Location = new System.Drawing.Point(369, 78);
+            this.modDownButton.Location = new System.Drawing.Point(419, 78);
             this.modDownButton.Name = "modDownButton";
             this.modDownButton.Size = new System.Drawing.Size(31, 29);
             this.modDownButton.TabIndex = 2;
@@ -680,7 +686,7 @@
             this.modUpButton.AutoSize = true;
             this.modUpButton.Enabled = false;
             this.modUpButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modUpButton.Location = new System.Drawing.Point(369, 42);
+            this.modUpButton.Location = new System.Drawing.Point(419, 42);
             this.modUpButton.Name = "modUpButton";
             this.modUpButton.Size = new System.Drawing.Size(31, 29);
             this.modUpButton.TabIndex = 1;
@@ -716,7 +722,7 @@
             this.tabPageGraphics.Controls.Add(this.groupBox_Display);
             this.tabPageGraphics.Location = new System.Drawing.Point(4, 22);
             this.tabPageGraphics.Name = "tabPageGraphics";
-            this.tabPageGraphics.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageGraphics.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageGraphics.Size = new System.Drawing.Size(402, 379);
             this.tabPageGraphics.TabIndex = 2;
             this.tabPageGraphics.Text = "Graphics";
@@ -1118,7 +1124,7 @@
             this.tabPageInput.Controls.Add(this.groupBoxController);
             this.tabPageInput.Location = new System.Drawing.Point(4, 22);
             this.tabPageInput.Name = "tabPageInput";
-            this.tabPageInput.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageInput.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageInput.Size = new System.Drawing.Size(402, 379);
             this.tabPageInput.TabIndex = 6;
             this.tabPageInput.Text = "Input";
@@ -1305,7 +1311,7 @@
             this.tabPageSound.Controls.Add(this.groupBox_SoundConfig);
             this.tabPageSound.Location = new System.Drawing.Point(4, 22);
             this.tabPageSound.Name = "tabPageSound";
-            this.tabPageSound.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSound.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageSound.Size = new System.Drawing.Size(402, 379);
             this.tabPageSound.TabIndex = 4;
             this.tabPageSound.Text = "Sound";
@@ -1453,7 +1459,7 @@
             this.tabPageOptions.Controls.Add(groupBox2);
             this.tabPageOptions.Location = new System.Drawing.Point(4, 22);
             this.tabPageOptions.Name = "tabPageOptions";
-            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageOptions.Size = new System.Drawing.Size(402, 379);
             this.tabPageOptions.TabIndex = 3;
             this.tabPageOptions.Text = "Options";
@@ -1625,7 +1631,7 @@
             this.tabPageDebug.Controls.Add(this.groupBox1);
             this.tabPageDebug.Controls.Add(this.groupBox12);
             this.tabPageDebug.Location = new System.Drawing.Point(4, 22);
-            this.tabPageDebug.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPageDebug.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPageDebug.Name = "tabPageDebug";
             this.tabPageDebug.Size = new System.Drawing.Size(402, 379);
             this.tabPageDebug.TabIndex = 5;
@@ -1808,7 +1814,7 @@
             this.checkBoxTestSpawnAngleHex.AutoSize = true;
             this.checkBoxTestSpawnAngleHex.Enabled = false;
             this.checkBoxTestSpawnAngleHex.Location = new System.Drawing.Point(326, 122);
-            this.checkBoxTestSpawnAngleHex.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnAngleHex.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxTestSpawnAngleHex.Name = "checkBoxTestSpawnAngleHex";
             this.checkBoxTestSpawnAngleHex.Size = new System.Drawing.Size(45, 17);
             this.checkBoxTestSpawnAngleHex.TabIndex = 33;
@@ -1822,7 +1828,7 @@
             this.checkBoxTestSpawnPosition.AutoSize = true;
             this.checkBoxTestSpawnPosition.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.checkBoxTestSpawnPosition.Location = new System.Drawing.Point(6, 71);
-            this.checkBoxTestSpawnPosition.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnPosition.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxTestSpawnPosition.Name = "checkBoxTestSpawnPosition";
             this.checkBoxTestSpawnPosition.Size = new System.Drawing.Size(72, 18);
             this.checkBoxTestSpawnPosition.TabIndex = 23;
@@ -1834,7 +1840,7 @@
             // buttonTestSpawnPlay
             // 
             this.buttonTestSpawnPlay.Location = new System.Drawing.Point(5, 197);
-            this.buttonTestSpawnPlay.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonTestSpawnPlay.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonTestSpawnPlay.Name = "buttonTestSpawnPlay";
             this.buttonTestSpawnPlay.Size = new System.Drawing.Size(76, 22);
             this.buttonTestSpawnPlay.TabIndex = 31;
@@ -1849,7 +1855,7 @@
             this.comboBoxTestSpawnEvent.Enabled = false;
             this.comboBoxTestSpawnEvent.FormattingEnabled = true;
             this.comboBoxTestSpawnEvent.Location = new System.Drawing.Point(73, 148);
-            this.comboBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxTestSpawnEvent.Name = "comboBoxTestSpawnEvent";
             this.comboBoxTestSpawnEvent.Size = new System.Drawing.Size(313, 21);
             this.comboBoxTestSpawnEvent.TabIndex = 14;
@@ -1860,7 +1866,7 @@
             this.checkBoxTestSpawnEvent.AutoSize = true;
             this.checkBoxTestSpawnEvent.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.checkBoxTestSpawnEvent.Location = new System.Drawing.Point(6, 150);
-            this.checkBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxTestSpawnEvent.Name = "checkBoxTestSpawnEvent";
             this.checkBoxTestSpawnEvent.Size = new System.Drawing.Size(63, 18);
             this.checkBoxTestSpawnEvent.TabIndex = 22;
@@ -1874,7 +1880,7 @@
             this.checkBoxTestSpawnCharacter.AutoSize = true;
             this.checkBoxTestSpawnCharacter.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.checkBoxTestSpawnCharacter.Location = new System.Drawing.Point(6, 46);
-            this.checkBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxTestSpawnCharacter.Name = "checkBoxTestSpawnCharacter";
             this.checkBoxTestSpawnCharacter.Size = new System.Drawing.Size(81, 18);
             this.checkBoxTestSpawnCharacter.TabIndex = 32;
@@ -1888,7 +1894,7 @@
             this.checkBoxTestSpawnLevel.AutoSize = true;
             this.checkBoxTestSpawnLevel.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.checkBoxTestSpawnLevel.Location = new System.Drawing.Point(6, 21);
-            this.checkBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxTestSpawnLevel.Name = "checkBoxTestSpawnLevel";
             this.checkBoxTestSpawnLevel.Size = new System.Drawing.Size(61, 18);
             this.checkBoxTestSpawnLevel.TabIndex = 20;
@@ -1913,7 +1919,7 @@
             "Big",
             "Metal Sonic"});
             this.comboBoxTestSpawnCharacter.Location = new System.Drawing.Point(93, 44);
-            this.comboBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxTestSpawnCharacter.Name = "comboBoxTestSpawnCharacter";
             this.comboBoxTestSpawnCharacter.Size = new System.Drawing.Size(149, 21);
             this.comboBoxTestSpawnCharacter.TabIndex = 22;
@@ -1923,7 +1929,7 @@
             // 
             this.numericUpDownTestSpawnAngle.Enabled = false;
             this.numericUpDownTestSpawnAngle.Location = new System.Drawing.Point(242, 120);
-            this.numericUpDownTestSpawnAngle.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnAngle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDownTestSpawnAngle.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -1962,7 +1968,7 @@
             // 
             this.numericUpDownTestSpawnSaveID.Enabled = false;
             this.numericUpDownTestSpawnSaveID.Location = new System.Drawing.Point(127, 175);
-            this.numericUpDownTestSpawnSaveID.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnSaveID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDownTestSpawnSaveID.Maximum = new decimal(new int[] {
             99,
             0,
@@ -1988,7 +1994,7 @@
             this.checkBoxTestSpawnSave.AutoSize = true;
             this.checkBoxTestSpawnSave.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.checkBoxTestSpawnSave.Location = new System.Drawing.Point(6, 177);
-            this.checkBoxTestSpawnSave.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnSave.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxTestSpawnSave.Name = "checkBoxTestSpawnSave";
             this.checkBoxTestSpawnSave.Size = new System.Drawing.Size(117, 18);
             this.checkBoxTestSpawnSave.TabIndex = 16;
@@ -2037,7 +2043,7 @@
             // 
             this.numericUpDownTestSpawnAct.Enabled = false;
             this.numericUpDownTestSpawnAct.Location = new System.Drawing.Point(291, 20);
-            this.numericUpDownTestSpawnAct.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnAct.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDownTestSpawnAct.Maximum = new decimal(new int[] {
             6,
             0,
@@ -2052,7 +2058,7 @@
             // 
             this.numericUpDownTestSpawnZ.Enabled = false;
             this.numericUpDownTestSpawnZ.Location = new System.Drawing.Point(242, 95);
-            this.numericUpDownTestSpawnZ.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnZ.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDownTestSpawnZ.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -2072,7 +2078,7 @@
             // 
             this.numericUpDownTestSpawnY.Enabled = false;
             this.numericUpDownTestSpawnY.Location = new System.Drawing.Point(135, 95);
-            this.numericUpDownTestSpawnY.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnY.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDownTestSpawnY.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -2138,7 +2144,7 @@
             "Mystic Ruins Garden",
             "Chao Race"});
             this.comboBoxTestSpawnLevel.Location = new System.Drawing.Point(93, 19);
-            this.comboBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxTestSpawnLevel.Name = "comboBoxTestSpawnLevel";
             this.comboBoxTestSpawnLevel.Size = new System.Drawing.Size(149, 21);
             this.comboBoxTestSpawnLevel.TabIndex = 0;
@@ -2148,7 +2154,7 @@
             // 
             this.numericUpDownTestSpawnX.Enabled = false;
             this.numericUpDownTestSpawnX.Location = new System.Drawing.Point(30, 95);
-            this.numericUpDownTestSpawnX.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDownTestSpawnX.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -2243,7 +2249,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(408, 461);
+            this.ClientSize = new System.Drawing.Size(458, 503);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.installButton);
             this.Controls.Add(this.saveAndPlayButton);
@@ -2315,8 +2321,8 @@
         #endregion
 
         private System.Windows.Forms.ListView modListView;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-		private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeaderName;
+		private System.Windows.Forms.ColumnHeader columnHeaderAuthor;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button saveAndPlayButton;
 		private System.Windows.Forms.Button installButton;
@@ -2333,7 +2339,7 @@
 		private System.Windows.Forms.CheckBox forceAspectRatioCheckBox;
 		private System.Windows.Forms.CheckBox stretchFullscreenCheckBox;
 		private System.Windows.Forms.ComboBox screenNumComboBox;
-		private System.Windows.Forms.ColumnHeader columnHeader3;
+		private System.Windows.Forms.ColumnHeader columnHeaderVersion;
 		private System.Windows.Forms.TabPage tabPageGraphics;
 		private System.Windows.Forms.GroupBox groupBox_Display;
 		private System.Windows.Forms.CheckBox forceMipmappingCheckBox;
@@ -2457,5 +2463,6 @@
 		private System.Windows.Forms.GroupBox groupBox5;
 		private System.Windows.Forms.CheckBox checkMaterialColor;
 		private System.Windows.Forms.CheckBox checkPolyBuff;
+		private System.Windows.Forms.ColumnHeader columnHeaderCategory;
 	}
 }

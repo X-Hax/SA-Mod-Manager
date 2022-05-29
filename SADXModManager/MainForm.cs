@@ -453,7 +453,7 @@ namespace SADXModManager
 				{
 					SADXModInfo inf = mods[mod];
 					suppressEvent = true;
-					modListView.Items.Add(new ListViewItem(new[] { inf.Name, inf.Author, inf.Version }) { Checked = true, Tag = mod });
+					modListView.Items.Add(new ListViewItem(new[] { inf.Name, inf.Author, inf.Version, inf.Category }) { Checked = true, Tag = mod });
 					suppressEvent = false;
 					if (!string.IsNullOrEmpty(inf.Codes))
 						codes.AddRange(CodeList.Load(Path.Combine(Path.Combine(modDir, mod), inf.Codes)).Codes);
@@ -469,7 +469,7 @@ namespace SADXModManager
 			foreach (KeyValuePair<string, SADXModInfo> inf in mods.OrderBy(x => x.Value.Name))
 			{
 				if (!loaderini.Mods.Contains(inf.Key))
-					modListView.Items.Add(new ListViewItem(new[] { inf.Value.Name, inf.Value.Author, inf.Value.Version }) { Tag = inf.Key });
+					modListView.Items.Add(new ListViewItem(new[] { inf.Value.Name, inf.Value.Author, inf.Value.Version, inf.Value.Category }) { Tag = inf.Key });
 			}
 
 			modListView.EndUpdate();
