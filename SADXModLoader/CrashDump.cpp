@@ -6,9 +6,12 @@
 #include <shlwapi.h>
 
 using namespace std;
+string texCrashMsg = "Texture error: the game failed to apply one or more textures. Make sure your textures are loaded.";
 
 static const std::unordered_map<intptr_t, string> crashes_addresses_map = {
-	{ 0x78D149, "Texture error: the game failed to apply one or more textures."  },
+	{ 0x78CF24, texCrashMsg},
+	{ 0x78D149, texCrashMsg },
+	{ 0x7B293A85, "DirectX error: You most likely reached a tex ID out of range."},
 	{ 0x434614, "Camera error: the game failed to load a cam file for the stage."},
 };
 
