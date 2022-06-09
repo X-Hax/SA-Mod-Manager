@@ -10,6 +10,7 @@ static bool testspawn_levelenabled = false;
 
 static int testspawn_eventid = 0;
 static int testspawn_timeofday = TimesOfDay_Day;
+static uint8_t testspawn_gamemode = GameModes_Trial;
 
 static Trampoline* InitCharVictoryAnim_t = nullptr;
 
@@ -109,6 +110,27 @@ static int parse_time_id(const std::wstring& str)
 	const auto it = time_ids_map.find(lowercase);
 
 	if (it != time_ids_map.end())
+		return it->second;
+
+	return std::stol(lowercase);
+}
+
+static const std::unordered_map<std::wstring, uint8_t> gamemode_name_map = {
+	{ L"adventure",  GameModes_Adventure_Field },
+	{ L"trial",     GameModes_Trial },
+	{ L"stage",   GameModes_Adventure_ActionStg },
+	{ L"mission",    GameModes_Mission },
+};
+
+
+static uint8_t parse_gamemode(const std::wstring& str)
+{
+	std::wstring lowercase = str;
+	std::transform(lowercase.begin(), lowercase.end(), lowercase.begin(), ::towlower);
+
+	const auto it = gamemode_name_map.find(lowercase);
+
+	if (it != gamemode_name_map.end())
 		return it->second;
 
 	return std::stol(lowercase);
@@ -867,6 +889,10 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			testspawn_timeofday = parse_time_id(argv[++i]);
 			WriteJump(GetTimeOfDay, ForceTimeOfDay);
 		}
+		else if (!wcscmp(argv[i], L"--gamemode") || !wcscmp(argv[i], L"-g"))
+		{
+			testspawn_gamemode = parse_gamemode(argv[++i]);
+		}
 		else if (!wcscmp(argv[i], L"--save") || !wcscmp(argv[i], L"-s"))
 		{
 			parse_save(argv[++i], helperFunctions);
@@ -974,6 +1000,6 @@ void ApplyTestSpawn()
 	}
 	else if (testspawn_levelenabled)
 	{
-		WriteData(reinterpret_cast<GameModes*>(0x0040C10C), GameModes_Trial);
+		WriteData(reinterpret_cast<GameModes*>(0x0040C10C), (GameModes)testspawn_gamemode);
 	}
 }

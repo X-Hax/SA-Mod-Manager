@@ -55,6 +55,7 @@ namespace SADXModManager
 		private bool manualModUpdate;
 
 		private Dictionary<int, string> TestSpawnCutsceneList;
+		private Dictionary<ushort, string> TestSpawnGameModeList;
 
 		static readonly string[] actionNames =
 		{
@@ -251,6 +252,7 @@ namespace SADXModManager
 
 			comboBoxTestSpawnTime.SelectedIndex = 0;
 			InitTestSpawnCutsceneList();
+			InitTestSpawnGameModeList();
 			LoadSettings();
 			modListView.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent); // Mod name
 			modListView.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.None); // Author
@@ -368,6 +370,8 @@ namespace SADXModManager
 			checkBoxTestSpawnAngleHex.Checked = loaderini.TestSpawnRotationHex;
 			checkBoxTestSpawnEvent.Checked = loaderini.TestSpawnEvent != -1;
 			comboBoxTestSpawnEvent.SelectedIndex = loaderini.TestSpawnEvent;
+			checkBoxTestSpawnGameMode.Checked = loaderini.TestSpawnGameMode != -1;
+			comboBoxTestSpawnGameMode.SelectedIndex = loaderini.TestSpawnGameMode;
 			checkBoxTestSpawnSave.Checked = loaderini.TestSpawnSaveID != -1;
 			numericUpDownTestSpawnSaveID.Value = Math.Max(1, loaderini.TestSpawnSaveID);
 		}
@@ -792,6 +796,7 @@ namespace SADXModManager
 			loaderini.TestSpawnRotation = (int)numericUpDownTestSpawnAngle.Value;
 			loaderini.TestSpawnRotationHex = checkBoxTestSpawnAngleHex.Checked;
 			loaderini.TestSpawnEvent = checkBoxTestSpawnEvent.Checked ? comboBoxTestSpawnEvent.SelectedIndex : -1;
+			loaderini.TestSpawnGameMode = checkBoxTestSpawnGameMode.Checked ? comboBoxTestSpawnGameMode.SelectedIndex : -1;
 			loaderini.TestSpawnSaveID = checkBoxTestSpawnSave.Checked ? (int)numericUpDownTestSpawnSaveID.Value : -1;
 			IniSerializer.Serialize(loaderini, loaderinipath);
 
@@ -1816,6 +1821,14 @@ namespace SADXModManager
 				comboBoxTestSpawnEvent.SelectedIndex = 0;
 			ShowOrHideTestSpawnEventWarning();
 		}
+		private void checkBoxTestSpawnGameMode_CheckedChanged(object sender, EventArgs e)
+		{
+			comboBoxTestSpawnGameMode.Enabled = checkBoxTestSpawnGameMode.Checked;
+
+			if (comboBoxTestSpawnGameMode.SelectedIndex == -1)
+				comboBoxTestSpawnGameMode.SelectedIndex = 0;
+
+		}
 
 		private void checkBoxTestSpawnSave_CheckStateChanged(object sender, EventArgs e)
 		{
@@ -1851,6 +1864,22 @@ namespace SADXModManager
 			}
 			if (comboBoxTestSpawnTime.SelectedIndex > 0)
 				cmdline.Add("-t " + (comboBoxTestSpawnTime.SelectedIndex - 1).ToString());
+
+			if (checkBoxTestSpawnGameMode.Checked)
+			{
+					uint gm = 0;
+					uint gm_result = 0;
+					foreach (var item in TestSpawnGameModeList)
+					{
+						if (gm == comboBoxTestSpawnGameMode.SelectedIndex)
+						{
+							gm_result = item.Key;
+							break;
+						}
+						gm++;
+					}
+					cmdline.Add("-g " + gm_result.ToString());			
+			}
 			if (checkBoxTestSpawnSave.Checked)
 				cmdline.Add("-s " + numericUpDownTestSpawnSaveID.Value.ToString());
 			return string.Join(" ", cmdline);
@@ -2075,6 +2104,21 @@ namespace SADXModManager
 			foreach (var item in TestSpawnCutsceneList)
 			{
 				comboBoxTestSpawnEvent.Items.Add("EV" + item.Key.ToString("X4") + ": " + item.Value);
+			}
+		}
+		private void InitTestSpawnGameModeList()
+		{
+			TestSpawnGameModeList = new Dictionary<ushort, string>
+			{
+				{ 4, "Action Stage" },
+				{ 5, "Adventure" },
+				{ 9, "Trial" },
+				{ 10, "Mission" }
+			};
+			comboBoxTestSpawnGameMode.Items.Clear();
+			foreach (var item in TestSpawnGameModeList)
+			{
+				comboBoxTestSpawnGameMode.Items.Add(item.Value);
 			}
 		}
 
@@ -2424,5 +2468,7 @@ namespace SADXModManager
 			}
 		}
 		#endregion
+
+
 	}
 }

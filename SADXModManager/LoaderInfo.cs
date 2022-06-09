@@ -117,6 +117,8 @@ namespace SADXModManager
 
 		[DefaultValue(-1)]
 		public int TestSpawnEvent { get; set; } = -1;
+		[DefaultValue(-1)]
+		public int TestSpawnGameMode { get; set; } = -1;
 
 		[DefaultValue(-1)]
 		public int TestSpawnSaveID { get; set; } = -1;
