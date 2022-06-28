@@ -539,11 +539,12 @@
             // 
             this.columnHeaderCategory.Text = "Category";
             this.columnHeaderCategory.Width = 94;
-            // 
-            // saveButton
-            // 
+			// 
+			// saveButton
+			// 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.saveButton.AutoSize = true;
+			this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.saveButton.Location = new System.Drawing.Point(88, 453);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 22);
@@ -551,11 +552,12 @@
             this.saveButton.Text = "&Save";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-            // 
-            // saveAndPlayButton
-            // 
-            this.saveAndPlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.saveAndPlayButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			// 
+			// saveAndPlayButton
+			// 
+			this.saveAndPlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.saveAndPlayButton.AutoSize = true;
+			this.saveAndPlayButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.saveAndPlayButton.Location = new System.Drawing.Point(4, 453);
             this.saveAndPlayButton.Name = "saveAndPlayButton";
             this.saveAndPlayButton.Size = new System.Drawing.Size(78, 22);
@@ -1641,14 +1643,16 @@
             this.tabPageDebug.TabIndex = 5;
             this.tabPageDebug.Text = "Debug";
             this.tabPageDebug.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.checkMaterialColor);
+			// 
+			// groupBox5
+			// 
+			this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+		   | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox5.Controls.Add(this.checkMaterialColor);
             this.groupBox5.Controls.Add(this.checkPolyBuff);
             this.groupBox5.Location = new System.Drawing.Point(6, 321);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(390, 73);
+            this.groupBox5.Size = new System.Drawing.Size(440, 73);
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Advanced";
