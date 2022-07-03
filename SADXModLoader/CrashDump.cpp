@@ -4,6 +4,7 @@
 #include <direct.h>
 #include <Psapi.h>
 #include <shlwapi.h>
+#include <time.h>
 
 using namespace std;
 string texCrashMsg = "Texture error: the game failed to apply one or more textures. Make sure your textures are loaded.";
