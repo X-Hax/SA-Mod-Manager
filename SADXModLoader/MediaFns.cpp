@@ -407,10 +407,10 @@ struc_64* LoadSoundPack(const char* path, int bank)
 		}
 
 		snprintf(filename, sizeof(filename), "%s%s", path2, line);
-		FILE* f2 = fopen(filename, "rb");
-
-		if (!f2)
+		FILE* fori = fopen(filename, "rb"); // Original file
+		if (!fori)
 		{
+			PrintDebug("File error\n");
 			// Unable to open a referenced file.
 			for (auto& entrie : entries)
 			{
@@ -421,16 +421,48 @@ struc_64* LoadSoundPack(const char* path, int bank)
 			fclose(f);
 			return nullptr;
 		}
+		fseek(fori, 0, SEEK_END);
+		int inputSize = (int)ftell(fori);
+		fseek(fori, 0, SEEK_SET);
+		void* InputBuffer = malloc(inputSize);
+		fread(InputBuffer, 1, inputSize, fori);
+		fclose(fori);
+		void* vgm = BASS_VGMSTREAM_InitVGMStreamFromMemory(InputBuffer, inputSize, filename);
+		if (!vgm)
+		{
+			PrintDebug("%s: VGMStream is null\n", filename);
+			free(InputBuffer);
+			fclose(f);
+			return nullptr;
+		}
+		int outsize = BASS_VGMSTREAM_GetVGMStreamOutputSize(vgm);
+		void* decodedwav = malloc(outsize);
+		int converror = BASS_VGMSTREAM_ConvertVGMStreamToWav(vgm, (const char*)decodedwav);
+
+		if (converror)
+		{
+			// Unable to open a referenced file.
+			for (auto& entrie : entries)
+			{
+				delete[] entrie.NameOffset;
+				delete[] entrie.DataOffset;
+			}
+			BASS_VGMSTREAM_CloseVGMStream(vgm);
+			free(decodedwav);
+			free(InputBuffer);
+			fclose(f);
+			return nullptr;
+		}
 
 		DATEntry ent {};
 		ent.NameOffset = new char[14];
 		snprintf(ent.NameOffset, 14, "B%02d_00_%02u.wav", bank, entries.size());
-		fseek(f2, 0, SEEK_END);
-		ent.DataLength = (int)ftell(f2);
+		ent.DataLength = outsize;
 		ent.DataOffset = new char[ent.DataLength];
-		fseek(f2, 0, SEEK_SET);
-		fread(ent.DataOffset, ent.DataLength, 1, f2);
-		fclose(f2);
+		memcpy(ent.DataOffset, decodedwav, ent.DataLength);
+		free(decodedwav);
+		BASS_VGMSTREAM_CloseVGMStream(vgm);
+		free(InputBuffer);
 		entries.push_back(ent);
 
 		// Add the entry data to the total sound pack size.
