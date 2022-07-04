@@ -663,3 +663,30 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 		}
 	}
 }
+
+int __cdecl PlayMusicFile_CD_r(LPCSTR filename, int loop)
+{
+	if (!PlayMusicFile_r(filename, loop))
+	{
+		wsprintfA((LPSTR)filename, "%sSoundData\\BGM\\WMA\\%s.adx", (const char*)CDPath, MusicList[CurrentSong].Name);
+			return PlayMusicFile_r(filename, loop);
+	}
+}
+
+int __cdecl PlayVoiceFile_CD_JP_r(LPCSTR filename)
+{
+	if (!PlayVoiceFile(filename))
+	{
+		wsprintfA((LPSTR)filename, "%sSoundData\\VOICE_JP\\WMA\\%04d.adx", (const char*)CDPath, CurrentVoiceNumber);
+		return PlayVoiceFile_r(filename);
+	}
+}
+
+int __cdecl PlayVoiceFile_CD_US_r(LPCSTR filename)
+{
+	if (!PlayVoiceFile(filename))
+	{
+		wsprintfA((LPSTR)filename, "%sSoundData\\VOICE_US\\WMA\\%04d.adx", (const char*)CDPath, CurrentVoiceNumber);
+		return PlayVoiceFile_r(filename);
+	}
+}

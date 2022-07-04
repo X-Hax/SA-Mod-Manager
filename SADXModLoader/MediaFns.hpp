@@ -125,6 +125,27 @@ void WMPInit_r();
  */
 int __cdecl PlayMusicFile_r(LPCSTR filename, int loop);
 
+/**
+  * Play a music file from the CD.
+  * This edit swaps the extension to ADX if the original fails, 
+  * allowing vanilla SADX Steam SoundData folder to be used.
+ */
+int __cdecl PlayMusicFile_CD_r(LPCSTR filename, int loop);
+
+/**
+  * Play a voice file (JP) from the CD.
+  * This edit swaps the extension to ADX if the original fails,
+  * allowing vanilla SADX Steam SoundData folder to be used.
+ */
+int __cdecl PlayVoiceFile_CD_US_r(LPCSTR filename);
+
+/**
+  * Play a voice file (US) from the CD.
+  * This edit swaps the extension to ADX if the original fails,
+  * allowing vanilla SADX Steam SoundData folder to be used.
+ */
+int __cdecl PlayVoiceFile_CD_JP_r(LPCSTR filename);
+
 void __cdecl WMPRestartMusic_r();
 void __cdecl PauseMusic_r();
 void __cdecl ResumeMusic_r();
