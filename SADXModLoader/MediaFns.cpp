@@ -501,6 +501,110 @@ struc_64* LoadSoundPack(const char* path, int bank)
 	return result;
 }
 
+struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
+{
+	vector<DATEntry> newentries;
+
+	// Total sound pack size
+	int newsize = 28;
+
+	// Bxx_xx_xx part of sound name
+	char* realname = new char[10];
+
+	// Set replaceable path
+	const char* path2 = sadx_fileMap.replaceFile(bankpath);
+
+	// Load the original soundbank
+	struc_64* originalbank = sub_4B4D10(path2, 1);
+	if (!originalbank)
+		return NULL;
+	bool adx = originalbank->ArchiveID[14] == 0x5A; // Check for Z at the end
+	//if (adx)
+		//PrintDebug("%s is SADX 2010 bank\n", bankpath);
+
+	// Total sound pack size
+	int numentries = originalbank->NumSFX;
+
+	//PrintDebug("Num entries in %s: %d\n", bankpath, numentries);
+
+	// Convert data
+	DATEntry* entries = (DATEntry*)&originalbank->DATEntries;
+	for (unsigned int s = 0; s < originalbank->NumSFX; s++)
+	{		
+		// Get actual sound ID
+		snprintf(realname, 10, entries[s].NameOffset);
+
+		// Set extension for VGMStream
+		if (adx)
+		{
+			snprintf(entries[s].NameOffset, 15, "%s.ADX", realname);
+		}
+		// Load entry into VGMStream
+
+		void* vgm = BASS_VGMSTREAM_InitVGMStreamFromMemory(entries[s].DataOffset, entries[s].DataLength, entries[s].NameOffset);
+		if (!vgm)
+		{
+			PrintDebug("%s: VGMStream is null\n", entries[s].NameOffset);
+			continue;
+		}
+
+		// Get output size and decode
+		int outsize = BASS_VGMSTREAM_GetVGMStreamOutputSize(vgm);
+		void* decodedwav = malloc(outsize);
+		int converror = BASS_VGMSTREAM_ConvertVGMStreamToWav(vgm, (const char*)decodedwav);
+		if (converror)
+		{
+			BASS_VGMSTREAM_CloseVGMStream(vgm);
+			PrintDebug("%s: Conversion error\n", entries[s].NameOffset);
+			continue;
+		}
+
+		// Create an entry for the new soundbank
+		DATEntry ent{};
+		ent.NameOffset = new char[14];
+		snprintf(ent.NameOffset, 15, "%s.WAV", realname);
+		ent.DataLength = outsize;
+		ent.DataOffset = new char[ent.DataLength];
+		memcpy(ent.DataOffset, decodedwav, ent.DataLength);
+		free(decodedwav);
+		BASS_VGMSTREAM_CloseVGMStream(vgm);
+		newentries.push_back(ent);
+
+		// Add the entry data to the total sound pack size.
+		newsize += sizeof(DATEntry) + 14 + ent.DataLength;
+	}
+	// Convert the sound pack to the format expected by SADX in memory.
+	auto* result = (struc_64*)sub_4D41C0(newsize);
+	// strncpy() zeroes out unused bytes.
+	strncpy(result->ArchiveID, "archive  V2.2", sizeof(result->ArchiveID));
+	result->Filename = (char*)sub_4D41C0(strlen(bankpath) + 1);
+	strncpy(result->Filename, bankpath, strlen(bankpath) + 1);
+	result->DATFile = sub_4D41C0(4); // dummy value
+	result->NumSFX = newentries.size();
+	memcpy(&result->DATEntries, newentries.data(), newentries.size() * sizeof(DATEntry));
+
+	// Rearrange the sound pack data into a single memory block,
+	// stored after result->DATEntries.
+	char* ptr = reinterpret_cast<char*>(&(&result->DATEntries)[newentries.size()]);
+	DATEntry* ent = &result->DATEntries;
+
+	for (int i = 0; i < result->NumSFX; i++, ent++)
+	{
+		memcpy(ptr, ent->NameOffset, 14);
+		delete[] ent->NameOffset;
+		ent->NameOffset = ptr;
+		ptr += 14;
+
+		memcpy(ptr, ent->DataOffset, ent->DataLength);
+		delete[] ent->DataOffset;
+		ent->DataOffset = ptr;
+		ptr += ent->DataLength;
+	}
+
+	originalbank = NULL; // Is this enough to delete it? Not sure
+	return result;
+}
+
 SoundList* SoundLists_Cust = SoundLists;
 int SoundLists_Cust_Length = SoundLists.size();
 
@@ -554,11 +658,11 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 							dword_3B291C8[v2->Bank] = LoadSoundPack(sndpackpath, v2->Bank);
 						if (!dword_3B291C8[v2->Bank])
 						{
-							dword_3B291C8[v2->Bank] = sub_4B4D10(String1, 1);
+							dword_3B291C8[v2->Bank] = LoadSoundPackFromFile(String1, 1);
 							if (!dword_3B291C8[v2->Bank])
 							{
 								snprintf(String1, sizeof(String1), "%sSoundData\\SE\\%s.dat", &CDPath, v2->Filename);
-								dword_3B291C8[v2->Bank] = sub_4B4D10(String1, 1);
+								dword_3B291C8[v2->Bank] = LoadSoundPackFromFile(String1, 1);
 							}
 						}
 						++v1;
