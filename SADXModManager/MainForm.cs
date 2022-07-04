@@ -1564,7 +1564,7 @@ namespace SADXModManager
 		private void installURLHandlerButton_Click(object sender, EventArgs e)
 		{
 			Process.Start(new ProcessStartInfo(Application.ExecutablePath, "urlhandler") { UseShellExecute = true, Verb = "runas" }).WaitForExit();
-			MessageBox.Show(this, "URL handler installed!", Text);
+			MessageBox.Show(this, "1-Click installed!", Text);
 		}
 		#endregion
 

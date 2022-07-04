@@ -1530,7 +1530,7 @@
             this.installURLHandlerButton.Name = "installURLHandlerButton";
             this.installURLHandlerButton.Size = new System.Drawing.Size(113, 22);
             this.installURLHandlerButton.TabIndex = 3;
-            this.installURLHandlerButton.Text = "Install URL Handler";
+            this.installURLHandlerButton.Text = "Enable 1-Click Install";
             this.installURLHandlerButton.UseVisualStyleBackColor = true;
             this.installURLHandlerButton.Click += new System.EventHandler(this.installURLHandlerButton_Click);
             // 
