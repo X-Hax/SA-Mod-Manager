@@ -501,6 +501,8 @@ struc_64* LoadSoundPack(const char* path, int bank)
 	return result;
 }
 
+FunctionPointer(void, UnloadSoundBank, (struc_64* bank), 0x4B4F50);
+
 struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 {
 	vector<DATEntry> newentries;
@@ -601,7 +603,7 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 		ptr += ent->DataLength;
 	}
 
-	originalbank = NULL; // Is this enough to delete it? Not sure
+	UnloadSoundBank(originalbank);
 	return result;
 }
 
