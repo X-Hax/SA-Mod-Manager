@@ -410,7 +410,7 @@ struc_64* LoadSoundPack(const char* path, int bank)
 		FILE* fori = fopen(filename, "rb"); // Original file
 		if (!fori)
 		{
-			PrintDebug("File error\n");
+			PrintDebug("%s: File error\n", filename);
 			// Unable to open a referenced file.
 			for (auto& entrie : entries)
 			{
@@ -441,6 +441,7 @@ struc_64* LoadSoundPack(const char* path, int bank)
 
 		if (converror)
 		{
+			PrintDebug("%s: Format conversion error\n", filename);
 			// Unable to open a referenced file.
 			for (auto& entrie : entries)
 			{
@@ -472,12 +473,12 @@ struc_64* LoadSoundPack(const char* path, int bank)
 	fclose(f);
 
 	// Convert the sound pack to the format expected by SADX in memory.
-	auto* result = (struc_64 *)sub_4D41C0(size);
+	auto* result = (struc_64 *)_alloc(size);
 	// strncpy() zeroes out unused bytes.
 	strncpy(result->ArchiveID, "archive  V2.2", sizeof(result->ArchiveID));
-	result->Filename = (char *)sub_4D41C0(strlen(path) + 1);
+	result->Filename = (char *)_alloc(strlen(path) + 1);
 	strncpy(result->Filename, path, strlen(path) + 1);
-	result->DATFile = sub_4D41C0(4); // dummy value
+	result->DATFile = _alloc(4); // dummy value
 	result->NumSFX  = entries.size();
 	memcpy(&result->DATEntries, entries.data(), entries.size() * sizeof(DATEntry));
 
@@ -501,48 +502,36 @@ struc_64* LoadSoundPack(const char* path, int bank)
 	return result;
 }
 
-FunctionPointer(void, UnloadSoundBank, (struc_64* bank), 0x4B4F50);
-
 struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 {
 	vector<DATEntry> newentries;
-
-	// Total sound pack size
-	int newsize = 28;
-
-	// Bxx_xx_xx part of sound name
-	char* realname = new char[10];
-
-	// Set replaceable path
 	const char* path2 = sadx_fileMap.replaceFile(bankpath);
 
-	// Load the original soundbank
-	struc_64* originalbank = sub_4B4D10(path2, 1);
+	// Load the original soundbank.
+	struc_64* originalbank = MDHeaderOpen(path2, 1);
 	if (!originalbank)
 		return NULL;
-	bool adx = originalbank->ArchiveID[14] == 0x5A; // Check for Z at the end
-	//if (adx)
-		//PrintDebug("%s is SADX 2010 bank\n", bankpath);
-
-	// Total sound pack size
+	// Buffer for the B##_##_## part of sound name.
+	char* realname = new char[10];
+	// Total sound pack size.
+	int newsize = 28;
 	int numentries = originalbank->NumSFX;
 
-	//PrintDebug("Num entries in %s: %d\n", bankpath, numentries);
-
-	// Convert data
+	// Convert data.
 	DATEntry* entries = (DATEntry*)&originalbank->DATEntries;
 	for (unsigned int s = 0; s < originalbank->NumSFX; s++)
 	{		
-		// Get actual sound ID
+		// Get actual sound ID.
 		snprintf(realname, 10, entries[s].NameOffset);
 
-		// Set extension for VGMStream
-		if (adx)
+		// Set extension for VGMStream. 
+		// For SADX 2010 soundbanks force the extension to ADX.
+		if (originalbank->ArchiveID[14] == 'Z') // Check for Z at the end
 		{
 			snprintf(entries[s].NameOffset, 15, "%s.ADX", realname);
 		}
-		// Load entry into VGMStream
 
+		// Load entry into VGMStream.
 		void* vgm = BASS_VGMSTREAM_InitVGMStreamFromMemory(entries[s].DataOffset, entries[s].DataLength, entries[s].NameOffset);
 		if (!vgm)
 		{
@@ -550,7 +539,7 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 			continue;
 		}
 
-		// Get output size and decode
+		// Get output size and decode.
 		int outsize = BASS_VGMSTREAM_GetVGMStreamOutputSize(vgm);
 		void* decodedwav = malloc(outsize);
 		int converror = BASS_VGMSTREAM_ConvertVGMStreamToWav(vgm, (const char*)decodedwav);
@@ -561,7 +550,7 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 			continue;
 		}
 
-		// Create an entry for the new soundbank
+		// Create an entry for the new soundbank.
 		DATEntry ent{};
 		ent.NameOffset = new char[14];
 		snprintf(ent.NameOffset, 15, "%s.WAV", realname);
@@ -571,17 +560,17 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 		free(decodedwav);
 		BASS_VGMSTREAM_CloseVGMStream(vgm);
 		newentries.push_back(ent);
-
 		// Add the entry data to the total sound pack size.
 		newsize += sizeof(DATEntry) + 14 + ent.DataLength;
 	}
+
 	// Convert the sound pack to the format expected by SADX in memory.
-	auto* result = (struc_64*)sub_4D41C0(newsize);
+	auto* result = (struc_64*)_alloc(newsize);
 	// strncpy() zeroes out unused bytes.
 	strncpy(result->ArchiveID, "archive  V2.2", sizeof(result->ArchiveID));
-	result->Filename = (char*)sub_4D41C0(strlen(bankpath) + 1);
+	result->Filename = (char*)_alloc(strlen(bankpath) + 1);
 	strncpy(result->Filename, bankpath, strlen(bankpath) + 1);
-	result->DATFile = sub_4D41C0(4); // dummy value
+	result->DATFile = _alloc(4); // dummy value
 	result->NumSFX = newentries.size();
 	memcpy(&result->DATEntries, newentries.data(), newentries.size() * sizeof(DATEntry));
 
@@ -589,7 +578,6 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 	// stored after result->DATEntries.
 	char* ptr = reinterpret_cast<char*>(&(&result->DATEntries)[newentries.size()]);
 	DATEntry* ent = &result->DATEntries;
-
 	for (int i = 0; i < result->NumSFX; i++, ent++)
 	{
 		memcpy(ptr, ent->NameOffset, 14);
@@ -603,7 +591,7 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 		ptr += ent->DataLength;
 	}
 
-	UnloadSoundBank(originalbank);
+	MDHeaderClose(originalbank);
 	return result;
 }
 
@@ -651,7 +639,7 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 								continue;
 							}
 							sub_423890(v2->Bank);
-							sub_4B4F50(dword_3B291C8[v2->Bank]);
+							MDHeaderClose(dword_3B291C8[v2->Bank]);
 							dword_3B291C8[v2->Bank] = nullptr;
 						}
 						snprintf(String1, sizeof(String1), "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
