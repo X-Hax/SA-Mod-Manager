@@ -261,7 +261,7 @@ write8 00457D30 0xC3 ; Demo Press Start
 write8 0071B210 0xC3 ; Chao Player Action
 
 Patch "Skip All Cutscenes"
-writenop 004311CA 0x2
+writenop 00431521 2
 
 Patch "Can Always Skip Credits"
 writenop 00641232 2
