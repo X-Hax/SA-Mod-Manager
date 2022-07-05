@@ -668,25 +668,20 @@ int __cdecl PlayMusicFile_CD_r(LPCSTR filename, int loop)
 {
 	if (!PlayMusicFile_r(filename, loop))
 	{
-		wsprintfA((LPSTR)filename, "%sSoundData\\BGM\\WMA\\%s.adx", (const char*)CDPath, MusicList[CurrentSong].Name);
-			return PlayMusicFile_r(filename, loop);
+		std::string newfilename = filename;
+		ReplaceFileExtension(newfilename, ".adx");
+		newfilename = (const char*)CDPath + newfilename;
+			return PlayMusicFile_r(newfilename.c_str(), loop);
 	}
 }
 
-int __cdecl PlayVoiceFile_CD_JP_r(LPCSTR filename)
+int __cdecl PlayVoiceFile_CD_r(LPCSTR filename)
 {
-	if (!PlayVoiceFile(filename))
+	if (!PlayVoiceFile_r(filename))
 	{
-		wsprintfA((LPSTR)filename, "%sSoundData\\VOICE_JP\\WMA\\%04d.adx", (const char*)CDPath, CurrentVoiceNumber);
-		return PlayVoiceFile_r(filename);
-	}
-}
-
-int __cdecl PlayVoiceFile_CD_US_r(LPCSTR filename)
-{
-	if (!PlayVoiceFile(filename))
-	{
-		wsprintfA((LPSTR)filename, "%sSoundData\\VOICE_US\\WMA\\%04d.adx", (const char*)CDPath, CurrentVoiceNumber);
-		return PlayVoiceFile_r(filename);
+		std::string newfilename = filename;
+		ReplaceFileExtension(newfilename, ".adx");
+		newfilename = (const char*)CDPath + newfilename;
+		return PlayVoiceFile_r(newfilename.c_str());
 	}
 }

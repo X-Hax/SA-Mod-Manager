@@ -1536,8 +1536,8 @@ static void __cdecl InitMods()
 	WriteCall((void *)0x425569, PlayVoiceFile_r);
 	WriteCall((void *)0x513187, PlayVideoFile_r);
 	WriteCall((void*)0x425488, PlayMusicFile_CD_r);
-	WriteCall((void*)0x425591, PlayVoiceFile_CD_US_r);
-	WriteCall((void*)0x42551D, PlayVoiceFile_CD_JP_r);
+	WriteCall((void*)0x425591, PlayVoiceFile_CD_r);
+	WriteCall((void*)0x42551D, PlayVoiceFile_CD_r);
 	WriteJump((void*)0x40D1EA, WMPInit_r);
 	WriteJump((void *)0x40CF50, WMPRestartMusic_r);
 	WriteJump((void *)0x40D060, PauseMusic_r);
