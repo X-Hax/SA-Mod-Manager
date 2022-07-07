@@ -102,9 +102,9 @@ ThiscallFunctionPointer(unsigned int, WMPInfo__Open, (WMPInfo *, const wchar_t *
 ThiscallFunctionPointer(WMPInfo *, WMPInfo__WMPInfo, (WMPInfo *), 0x411970);
 FunctionPointer(int, sub_40FF10, (), 0x40FF10);
 FunctionPointer(void, sub_423890, (int), 0x423890);
-FunctionPointer(void, sub_4B4F50, (struc_64 *), 0x4B4F50);
-FunctionPointer(struc_64 *, sub_4B4D10, (LPCSTR, int), 0x4B4D10);
-FunctionPointer(void *, sub_4D41C0, (int), 0x4D41C0);
+FunctionPointer(struc_64 *, MDHeaderOpen, (LPCSTR, int), 0x4B4D10);
+FunctionPointer(void, MDHeaderClose, (struc_64* bank), 0x4B4F50);
+FunctionPointer(void *, _alloc, (int), 0x4D41C0);
 
 /**
  * Initialize media playback.
@@ -124,6 +124,20 @@ void WMPInit_r();
  * @param loop If non-zero, loop the music.
  */
 int __cdecl PlayMusicFile_r(LPCSTR filename, int loop);
+
+/**
+  * Play a music file from the CD.
+  * This edit swaps the extension to ADX if the original fails, 
+  * allowing vanilla SADX Steam SoundData folder to be used.
+ */
+int __cdecl PlayMusicFile_CD_r(LPCSTR filename, int loop);
+
+/**
+  * Play a voice file from the CD.
+  * This edit swaps the extension to ADX if the original fails,
+  * allowing vanilla SADX Steam SoundData folder to be used.
+ */
+int __cdecl PlayVoiceFile_CD_r(LPCSTR filename);
 
 void __cdecl WMPRestartMusic_r();
 void __cdecl PauseMusic_r();
