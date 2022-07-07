@@ -907,6 +907,49 @@ namespace SADXModManager
 			}
 		}
 
+		// TODO: Move this function to ModManagerCommon
+		private static void ParseGameBananaOneClickInstallUri(string uriWithoutProtocol, out Uri url, out string itemType, out long itemId)
+		{
+			string[] fields = uriWithoutProtocol.Split(',');
+
+			if (fields.Length < 3)
+			{
+				throw new Exception($"Too few fields in URI \"{uriWithoutProtocol}\". Got: {fields.Length}; Expected: 3 or more.");
+			}
+
+			string PullField(string fieldName)
+			{
+				string field = fields.FirstOrDefault(x => x.StartsWith(fieldName, StringComparison.InvariantCultureIgnoreCase));
+
+				if (string.IsNullOrEmpty(field))
+				{
+					throw new Exception($"{fieldName} is missing from URI");
+				}
+
+				field = field.Substring(field.IndexOf(":", StringComparison.InvariantCulture) + 1).Trim();
+
+				if (string.IsNullOrEmpty(field))
+				{
+					throw new Exception($"{fieldName} is empty");
+				}
+
+				return field;
+			}
+
+			const string itemTypeFieldName = "gb_itemtype";
+			const string itemIdFieldName = "gb_itemid";
+
+			url = new Uri(fields[0]);
+
+			itemType = PullField(itemTypeFieldName);
+			string itemIdString = PullField(itemIdFieldName);
+
+			if (!long.TryParse(itemIdString, out itemId))
+			{
+				throw new Exception($"{itemIdFieldName} \"{itemIdString}\" could not be parsed as long");
+			}
+		}
+
 		private void HandleUri(string uri)
 		{
 			if (WindowState == FormWindowState.Minimized)
@@ -916,36 +959,71 @@ namespace SADXModManager
 
 			Activate();
 
-			var fields = uri.Substring("sadxmm:".Length).Split(',');
+			Uri url;
+			string itemType;
+			long itemId;
 
-			// TODO: lib-ify
-			string itemType = fields.FirstOrDefault(x => x.StartsWith("gb_itemtype", StringComparison.InvariantCultureIgnoreCase));
-			itemType = itemType.Substring(itemType.IndexOf(":") + 1);
+			try
+			{
+				// TODO: Use global constant for "sadxmm". Currently typed manually in many places.
+				string uriWithoutProtocol = uri.Substring("sadxmm:".Length);
 
-			string itemId = fields.FirstOrDefault(x => x.StartsWith("gb_itemid", StringComparison.InvariantCultureIgnoreCase));
-			itemId = itemId.Substring(itemId.IndexOf(":") + 1);
+				ParseGameBananaOneClickInstallUri(uriWithoutProtocol, out url, out itemType, out itemId);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(this,
+				                $"Malformed One-Click Install URI \"{uri}\" caused parse failure:\n{ex.Message}",
+				                "URI Parse Failure",
+				                MessageBoxButtons.OK,
+				                MessageBoxIcon.Error);
 
-			var dummyInfo = new ModInfo();
+				return;
+			}
 
-			GameBananaItem gbi = GameBananaItem.Load(itemType, long.Parse(itemId));
+			GameBananaItem gbi;
 
-			dummyInfo.Name = gbi.Name;
+			try
+			{
+				gbi = GameBananaItem.Load(itemType, itemId);
 
-			dummyInfo.Author = gbi.OwnerName;
+				if (gbi is null)
+				{
+					throw new Exception("GameBananaItem was unexpectedly null");
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(this,
+				                $"GameBanana API query failed:\n{ex.Message}",
+				                "GameBanana API Failure",
+				                MessageBoxButtons.OK,
+				                MessageBoxIcon.Error);
 
-			DialogResult result = MessageBox.Show(this, $"Do you want to install mod \"{dummyInfo.Name}\" by {dummyInfo.Author} from {new Uri(fields[0]).DnsSafeHost}?", "Mod Download", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+				return;
+			}
+
+			var dummyInfo = new ModInfo
+			{
+				Name = gbi.Name,
+				Author = gbi.OwnerName
+			};
+
+			DialogResult result = MessageBox.Show(this, $"Do you want to install mod \"{dummyInfo.Name}\" by {dummyInfo.Author} from {url.DnsSafeHost}?", "Mod Download", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
 			if (result != DialogResult.Yes)
 			{
 				return;
 			}
 
-			#region create update folder
+			#region Create update folder
+
 			do
 			{
 				try
 				{
 					result = DialogResult.Cancel;
+
 					if (!Directory.Exists(updatePath))
 					{
 						Directory.CreateDirectory(updatePath);
@@ -953,10 +1031,15 @@ namespace SADXModManager
 				}
 				catch (Exception ex)
 				{
-					result = MessageBox.Show(this, "Failed to create temporary update directory:\n" + ex.Message
-												   + "\n\nWould you like to retry?", "Directory Creation Failed", MessageBoxButtons.RetryCancel);
+					result = MessageBox.Show(this,
+					                         "Failed to create temporary update directory:\n" +
+					                         ex.Message +
+					                         "\n\nWould you like to retry?",
+					                         "Directory Creation Failed",
+					                         MessageBoxButtons.RetryCancel);
 				}
 			} while (result == DialogResult.Retry);
+
 			#endregion
 
 			string dummyPath = dummyInfo.Name;
@@ -970,7 +1053,7 @@ namespace SADXModManager
 
 			var updates = new List<ModDownload>
 			{
-				new ModDownload(dummyInfo, dummyPath, fields[0], null, 0)
+				new ModDownload(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
 			};
 
 			using (var progress = new ModDownloadDialog(updates, updatePath))
@@ -987,9 +1070,12 @@ namespace SADXModManager
 				}
 				catch (Exception ex)
 				{
-					result = MessageBox.Show(this, "Failed to remove temporary update directory:\n" + ex.Message
-												   + "\n\nWould you like to retry? You can remove the directory manually later.",
-						"Directory Deletion Failed", MessageBoxButtons.RetryCancel);
+					result = MessageBox.Show(this,
+					                         "Failed to remove temporary update directory:\n" +
+					                         ex.Message +
+					                         "\n\nWould you like to retry? You can remove the directory manually later.",
+					                         "Directory Deletion Failed",
+					                         MessageBoxButtons.RetryCancel);
 				}
 			} while (result == DialogResult.Retry);
 
