@@ -27,7 +27,7 @@ static DWORD voicechan = 0;
  */
 void WMPInit_r()
 {
-	bassinit = !!BASS_Init(-1, 44100, 0, nullptr, nullptr);
+	bassinit = !!BASS_Init(-1, 44100, BASS_DEVICE_3D, nullptr, nullptr);
 }
 
 /**

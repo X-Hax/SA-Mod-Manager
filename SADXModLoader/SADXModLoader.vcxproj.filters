@@ -87,6 +87,9 @@
     <ClCompile Include="MaterialColorFixes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="include\SADXModelsNew.h">
       <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
