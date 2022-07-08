@@ -5,11 +5,39 @@
 
 // Make sound effects use BASS instead of DirectSound
 
+enum MD_SOUND
+{
+	MD_SOUND_INIT = 0x1,
+	MD_SOUND_2 = 0x2,
+	MD_SOUND_AUTOSTOP = 0x10,
+	MD_SOUND_20 = 0x20,
+	MD_SOUND_VOL_DIST = 0x100,
+	MD_SOUND_VOL_CUSTOM = 0x200,
+	MD_SOUND_PAN = 0x800,
+	MD_SOUND_PITCH = 0x2000,
+	MD_SOUND_3D = 0x4000
+};
+
+struct MDHEADER
+{
+	unsigned int nofs;
+	unsigned int fofs;
+	unsigned int fsize;
+};
+
+typedef struct MDHANDLE
+{
+	char header[16];
+	char* mdname;
+	void* data;
+	int mdnum;
+	struct MDHEADER md[1];
+} MDHANDLE;
+
 static constexpr int MAX_SOUND = 36;
 
 auto dsGetVolume = GenerateUsercallWrapper<int(*)(int ii)>(rEAX, 0x4244A0, rEAX);
 auto IsPlayOk = GenerateUsercallWrapper<BOOL(*)(int tone)>(rEAX, 0x424590, rEDX);
-auto makesndfilename = GenerateUsercallWrapper<void(*)(int bk, int li)>(noret, 0x423B20, rESI, stack4);
 
 VoidFunc(dsSoundServer, 0x4250D0);
 VoidFunc(wmapause, 0x40D060);
@@ -37,21 +65,71 @@ DataPointer(BOOL, snd_pause_dolby, 0x3B29CE4);
 DataPointer(BOOL, s_3DFlag, 0x3B0EF28);
 DataPointer(uint8_t, n, 0x3B29CE8);
 DataArray(uint8_t, gu8overlap_se, 0x3B292A8, MAX_SOUND * 2);
+DataArray(MDHANDLE*, bankhandle, 0x3B291C8, 16);
 
 HSTREAM bass_channels[MAX_SOUND]{};
+LPCSTR sndname = nullptr;
 
-enum MD_SOUND
+// Make this function use substring instead of strcmp to allow any extension
+int sub_423AD0(MDHANDLE* handle, LPCSTR name)
 {
-	MD_SOUND_INIT = 0x1,
-	MD_SOUND_2 = 0x2,
-	MD_SOUND_AUTOSTOP = 0x10,
-	MD_SOUND_20 = 0x20,
-	MD_SOUND_VOL_DIST = 0x100,
-	MD_SOUND_VOL_CUSTOM = 0x200,
-	MD_SOUND_PAN = 0x800,
-	MD_SOUND_PITCH = 0x2000,
-	MD_SOUND_3D = 0x4000
-};
+	if (!handle)
+	{
+		return -1;
+	}
+
+	if (handle->mdnum <= 0)
+	{
+		return -1;
+	}
+
+	for (int i = 0; i < handle->mdnum; ++i)
+	{
+		if (strstr((LPCSTR)handle->md[i].nofs + 3, name + 3) != NULL)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+// Make this function allow for any sound extension and export the sound name
+static void __cdecl makesndfilename_r(int bk, int li)
+{
+	CHAR name[260];
+	wsprintfA(name, "B%02d_00_%02d", bk, li);
+
+	auto bank = bankhandle[bk];
+	if (bank)
+	{
+		int id = sub_423AD0(bank, name);
+
+		if (id >= 0 && (sndmemory = (void*)bank->md[id].fofs))
+		{
+			sndname = (LPCSTR)bank->md[id].nofs;
+			*(int*)0x3B29AE0 = bank->md[id].fsize;
+			return;
+		}
+	}
+
+	sndname = nullptr;
+	sndmemory = 0;
+	*(int*)0x3B29AE0 = 0;
+}
+
+static void __declspec(naked) makesndfilename_asm()
+{
+	__asm
+	{
+		push [esp+04h]
+		push esi
+		call makesndfilename_r
+		pop esi
+		add esp, 4
+		retn
+	}
+}
 
 static void __cdecl Set3DPositionPCM_r(int ch, float x, float y, float z)
 {
@@ -120,7 +198,7 @@ static void LoadBASS(int ch, void* wavememory, int wavesize, bool dolby)
 		BASS_StreamFree(channel);
 	}
 
-	channel = BASS_VGMSTREAM_StreamCreateFromMemory((unsigned char*)wavememory, wavesize, "temp.wav", dolby ? BASS_SAMPLE_3D : NULL);
+	channel = BASS_VGMSTREAM_StreamCreateFromMemory((unsigned char*)wavememory, wavesize, sndname, dolby ? BASS_SAMPLE_3D : NULL);
 }
 
 static void __cdecl LoadPCM_r(int ch, void* wavememory, int wavesize, int loopflag)
@@ -190,7 +268,7 @@ static void __cdecl IsndPitch_r(int pitch, int handleno)
 		pitch = min(100000, 22050 - (int)((float)pitch * -1.5f));
 		if (pitch <= 100)
 			pitch = 0; // original
-		BASS_ChannelSetAttribute(channel, BASS_ATTRIB_FREQ, pitch);
+		BASS_ChannelSetAttribute(channel, BASS_ATTRIB_FREQ, (float)pitch);
 	}
 }
 
@@ -297,7 +375,7 @@ static void __cdecl dsSoundServer_r()
 
 				if (IsPlayOk(entry.tone))
 				{
-					makesndfilename(bank, startid ? entry.tone - startid - 1 : entry.tone);
+					makesndfilename_r(bank, startid ? entry.tone - startid - 1 : entry.tone);
 					entry.banknum = bank;
 
 					if (entry.mode & MD_SOUND_3D)
@@ -413,4 +491,5 @@ void Sound_Init()
 	WriteJump(dsPauseSndOnly, dsPauseSndOnly_r);
 	WriteJump(dsPauseAll, dsPauseAll_r);
 	WriteJump(dsReleaseAll, dsReleaseAll_r);
+	WriteJump((void*)0x423B20, makesndfilename_asm);
 }
