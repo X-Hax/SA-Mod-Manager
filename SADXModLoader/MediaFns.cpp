@@ -410,7 +410,16 @@ struc_64* LoadSoundPack(const char* path, int bank)
 			continue;
 		}
 
+		// Get individual sound path
 		snprintf(filename, sizeof(filename), "%s%s", path2, line);
+
+		// Get sound name.
+		std::string basename = GetBaseName(filename);
+
+		// Names starting with an underscore are ignored because there are unused files like _B02_00_15 in vanilla.
+		if (basename.substr(0, 1) == "_")
+			continue;
+
 		FILE* fori = fopen(filename, "rb"); // Original file
 		if (!fori)
 		{
@@ -425,48 +434,25 @@ struc_64* LoadSoundPack(const char* path, int bank)
 			fclose(f);
 			return nullptr;
 		}
+
+		// Get extension
+		std::string ext = GetExtension(basename, true);
+
+		// Remove extension from full name
+		StripExtension(basename);
+
+		// Get file size
 		fseek(fori, 0, SEEK_END);
 		int inputSize = (int)ftell(fori);
 		fseek(fori, 0, SEEK_SET);
+
+		// Get data
 		void* InputBuffer = malloc(inputSize);
 		fread(InputBuffer, 1, inputSize, fori);
 		fclose(fori);
-		void* vgm = BASS_VGMSTREAM_InitVGMStreamFromMemory(InputBuffer, inputSize, filename);
-		if (!vgm)
-		{
-			PrintDebug("%s: VGMStream is null\n", filename);
-			free(InputBuffer);
-			fclose(f);
-			return nullptr;
-		}
-		int outsize = BASS_VGMSTREAM_GetVGMStreamOutputSize(vgm);
-		void* decodedwav = malloc(outsize);
-		int converror = BASS_VGMSTREAM_ConvertVGMStreamToWav(vgm, (const char*)decodedwav);
-
-		if (converror)
-		{
-			PrintDebug("%s: Format conversion error\n", filename);
-			// Unable to open a referenced file.
-			for (auto& entrie : entries)
-			{
-				delete[] entrie.NameOffset;
-				delete[] entrie.DataOffset;
-			}
-			BASS_VGMSTREAM_CloseVGMStream(vgm);
-			free(decodedwav);
-			free(InputBuffer);
-			fclose(f);
-			return nullptr;
-		}
-
-		// Get sound name.
-		std::string basename = GetBaseName(filename);
-		StripExtension(basename);
-		// Names starting with an underscore are ignored because there are unused files like _B02_00_15 in vanilla.
-		if (basename.substr(0, 1) == "_")
-			continue;
+		
 		// Put sounds with names in the B##_##_## format into correct slots.
-		else if (basename.substr(0, 2) == "B0" && basename.substr(3, 2) == "_0" && basename.substr(6, 1) == "_")
+		if (basename.substr(0, 2) == "B0" && basename.substr(3, 2) == "_0" && basename.substr(6, 1) == "_")
 		{
 			soundID = std::atoi(basename.substr(7, 2).c_str());
 			soundCounter++;
@@ -481,12 +467,10 @@ struc_64* LoadSoundPack(const char* path, int bank)
 		// Create the sound entry.
 		DATEntry ent{};
 		ent.NameOffset = new char[14];
-		snprintf(ent.NameOffset, 14, "B%02d_00_%02u.wav", bank, soundID);
-		ent.DataLength = outsize;
+		snprintf(ent.NameOffset, 14, "B%02d_00_%02u%s", bank, soundID, ext.c_str());
+		ent.DataLength = inputSize;
 		ent.DataOffset = new char[ent.DataLength];
-		memcpy(ent.DataOffset, decodedwav, ent.DataLength);
-		free(decodedwav);
-		BASS_VGMSTREAM_CloseVGMStream(vgm);
+		memcpy(ent.DataOffset, InputBuffer, ent.DataLength);
 		free(InputBuffer);
 		entries.push_back(ent);
 
