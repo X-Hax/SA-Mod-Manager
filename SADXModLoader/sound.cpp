@@ -463,38 +463,30 @@ static void __cdecl dsSoundServer_r()
 	}
 }
 
-static void __cdecl dsPauseSndOnly_r()
+static int __cdecl dsPauseAll_r()
 {
 	snd_pause = -1;
 	snd_pause_dolby = -1;
 
-	for (int i = 0; i < MAX_SOUND; ++i)
+	for (auto& channel : bass_channels)
 	{
-		int tone = sebuf[i].tone;
-		if (tone == SE_CURSOR || tone == SE_DECIDE || tone == SE_PAUSE)
-			continue;
-		auto& channel = bass_channels[i];
 		if (channel)
 		{
 			BASS_ChannelPause(channel);
 		}
 	}
-}
 
-static void __cdecl dsPauseAll_r()
-{
-	dsPauseSndOnly_r();
 	wmapause();
+	return 0;
 }
 
-static void __cdecl dsReleaseAll_r()
+static int __cdecl dsReleaseAll_r()
 {
 	snd_pause = 0;
 	snd_pause_dolby = 0;
 
-	for (int i = 0; i < MAX_SOUND; ++i)
+	for (auto& channel : bass_channels)
 	{
-		auto& channel = bass_channels[i];
 		if (channel)
 		{
 			BASS_ChannelPlay(channel, FALSE);
@@ -502,6 +494,29 @@ static void __cdecl dsReleaseAll_r()
 	}
 
 	wmaresume();
+	return 0;
+}
+
+static int __cdecl dsPauseSndOnly_r()
+{
+	snd_pause = -1;
+	snd_pause_dolby = -1;
+
+	for (int i = 0; i < MAX_SOUND; ++i)
+	{
+		int tone = sebuf[i].tone;
+
+		if (tone != SE_PAUSE && tone != SE_CURSOR && tone != SE_DECIDE)
+		{
+			auto& channel = bass_channels[i];
+			if (channel)
+			{
+				BASS_ChannelPause(channel);
+			}
+		}
+	}
+
+	return 0;
 }
 
 void Sound_Init()
@@ -516,8 +531,8 @@ void Sound_Init()
 	WriteJump(Load3DPCM, Load3DPCM_r);
 	WriteJump(LoadPCM, LoadPCM_r);
 	WriteJump(Set3DPositionPCM, Set3DPositionPCM_r);
-	WriteJump(dsPauseSndOnly, dsPauseSndOnly_r);
 	WriteJump(dsPauseAll, dsPauseAll_r);
 	WriteJump(dsReleaseAll, dsReleaseAll_r);
+	WriteJump(dsPauseSndOnly, dsPauseSndOnly_r);
 	WriteJump((void*)0x423B20, makesndfilename_asm);
 }
