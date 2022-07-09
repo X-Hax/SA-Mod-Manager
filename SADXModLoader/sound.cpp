@@ -392,7 +392,7 @@ static void __cdecl dsSoundServer_r()
 					if (entry.mode & MD_SOUND_DOLBY)
 					{
 						Load3DPCM_r(i, sndmemory, *(int*)0x3B29AE0, 2);
-						Set3DMinMaxPCM_r(i, entry.volmax ? entry.volmax : 10.0f, 500.0f);
+						Set3DMinMaxPCM_r(i, 10.0f, 500.0f);
 					}
 					else
 					{
