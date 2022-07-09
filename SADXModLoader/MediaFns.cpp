@@ -28,6 +28,8 @@ static DWORD voicechan = 0;
 void WMPInit_r()
 {
 	bassinit = !!BASS_Init(-1, 44100, BASS_DEVICE_3D, nullptr, nullptr);
+	BASS_Set3DFactors(0.1f, 0.1f, 0.0f);
+	BASS_SetConfig(BASS_CONFIG_3DALGORITHM, BASS_3DALG_FULL);
 }
 
 /**
