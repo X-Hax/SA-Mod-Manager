@@ -5,6 +5,10 @@
 
 // Make sound effects use BASS instead of DirectSound
 
+static int SEVolume = 100; // Global sound effect volume, 1-100
+static bool ReverbOn = false;
+static const BASS_DX8_REVERB ReverbEffect = { 0, -20, 1000, 0.001f }; // Reverb effect like on DC
+
 enum MD_SOUND
 {
 	MD_SOUND_INIT = 0x1,
@@ -217,8 +221,9 @@ static void __cdecl Set3DMinMaxPCM_r(int ch, float min, float max)
 	auto& channel = bass_channels[ch];
 	if (channel)
 	{
-		// Doesn't work properly
-		BASS_ChannelSet3DAttributes(channel, BASS_3DMODE_NORMAL, min, max, 0, 0, 1.0f);
+		BASS_Set3DFactors(0.1f, 0.1f, 0.0f); // Need to tweak further
+		BASS_SetConfig(BASS_CONFIG_3DALGORITHM, BASS_3DALG_FULL);
+		BASS_ChannelSet3DAttributes(channel, BASS_3DMODE_NORMAL, min, max, 0, 0, SEVolume / 100.0f);
 		BASS_Apply3D();
 	}
 }
@@ -228,6 +233,11 @@ static void __cdecl PlayPCM_r(int ch)
 	auto& channel = bass_channels[ch];
 	if (channel)
 	{
+		if (ReverbOn)
+		{
+			HFX effect = BASS_ChannelSetFX(channel, BASS_FX_DX8_REVERB, 1);
+			BASS_FXSetParameters(effect, &ReverbEffect);
+		}
 		BASS_ChannelPlay(channel, FALSE);
 	}
 }
@@ -248,7 +258,7 @@ static void __cdecl IsndVolume_r(int vol, int handleno)
 	auto& channel = bass_channels[handleno];
 	if (channel)
 	{
-		BASS_ChannelSetAttribute(channel, BASS_ATTRIB_VOL, (float)(vol + 127) / 254.0f);
+		BASS_ChannelSetAttribute(channel, BASS_ATTRIB_VOL, SEVolume / 100.0f * ((float)(vol + 127) / 254.0f));
 	}
 }
 
@@ -382,8 +392,7 @@ static void __cdecl dsSoundServer_r()
 					if (entry.mode & MD_SOUND_DOLBY)
 					{
 						Load3DPCM_r(i, sndmemory, *(int*)0x3B29AE0, 2);
-						BASS_Set3DFactors(0.1f, 0.1f, 0.0f); // Need to tweak further
-						Set3DMinMaxPCM_r(i, 10.0f, 500.0f);
+						Set3DMinMaxPCM_r(i, entry.volmax ? entry.volmax : 10.0f, 500.0f);
 					}
 					else
 					{
