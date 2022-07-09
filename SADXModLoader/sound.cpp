@@ -457,7 +457,7 @@ static void __cdecl dsSoundServer_r()
 	}
 
 	// Run 3D sounds (inlined in SADXPC)
-	if (s_3DFlag && !snd_pause_dolby)
+	if (!snd_pause_dolby)
 	{
 		dsDolbySound();
 	}
