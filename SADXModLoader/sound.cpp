@@ -14,8 +14,9 @@ enum MD_SOUND
 	MD_SOUND_VOL_DIST = 0x100,
 	MD_SOUND_VOL_CUSTOM = 0x200,
 	MD_SOUND_PAN = 0x800,
+	MD_SOUND_QSOUND = 0x1000,
 	MD_SOUND_PITCH = 0x2000,
-	MD_SOUND_3D = 0x4000
+	MD_SOUND_DOLBY = 0x4000
 };
 
 struct MDHEADER
@@ -161,7 +162,7 @@ static void dsDolbySound()
 	njCalcPoint(0, &top, &top);
 	njPopMatrixEx();
 
-	BASS_Set3DPosition(NULL, &BASS_3DVECTOR(playermwp[0]->spd.x, playermwp[0]->spd.y, playermwp[0]->spd.z), &BASS_3DVECTOR(front.x, front.y, front.z), &BASS_3DVECTOR(top.x, top.y, top.z));
+	BASS_Set3DPosition(&BASS_3DVECTOR(playertwp[0]->pos.x, playertwp[0]->pos.y, playertwp[0]->pos.z), &BASS_3DVECTOR(playermwp[0]->spd.x, playermwp[0]->spd.y, playermwp[0]->spd.z), &BASS_3DVECTOR(front.x, front.y, front.z), &BASS_3DVECTOR(top.x, top.y, top.z));
 	BASS_Apply3D();
 
 	for (int i = 0; i < MAX_SOUND; ++i)
@@ -169,7 +170,7 @@ static void dsDolbySound()
 		auto& entry = sebuf[i];
 		auto& dolbytwp = gpDolbyTask[i];
 
-		if (entry.mode && (entry.mode & 0x4000) && dolbytwp)
+		if (entry.mode && (entry.mode & MD_SOUND_DOLBY) && dolbytwp)
 		{
 			Set3DPositionPCM_r(i, dolbytwp->pos.x, dolbytwp->pos.y, dolbytwp->pos.z);
 		}
@@ -217,7 +218,7 @@ static void __cdecl Set3DMinMaxPCM_r(int ch, float min, float max)
 	if (channel)
 	{
 		// Doesn't work properly
-		BASS_ChannelSet3DAttributes(channel, BASS_3DMODE_NORMAL, min, max, 360, 360, 1.0f);
+		BASS_ChannelSet3DAttributes(channel, BASS_3DMODE_NORMAL, min, max, 0, 0, 1.0f);
 		BASS_Apply3D();
 	}
 }
@@ -292,7 +293,7 @@ static void __cdecl dsSoundServer_r()
 		{
 			if (entry.timer > 0)
 			{
-				if (!(entry.mode & MD_SOUND_3D))
+				if (!(entry.mode & MD_SOUND_DOLBY))
 				{
 					if (entry.mode & (MD_SOUND_20 | MD_SOUND_2))
 					{
@@ -378,9 +379,10 @@ static void __cdecl dsSoundServer_r()
 					makesndfilename_r(bank, startid ? entry.tone - startid - 1 : entry.tone);
 					entry.banknum = bank;
 
-					if (entry.mode & MD_SOUND_3D)
+					if (entry.mode & MD_SOUND_DOLBY)
 					{
 						Load3DPCM_r(i, sndmemory, *(int*)0x3B29AE0, 2);
+						BASS_Set3DFactors(0.1f, 0.1f, 0.0f); // Need to tweak further
 						Set3DMinMaxPCM_r(i, 10.0f, 500.0f);
 					}
 					else
@@ -389,7 +391,7 @@ static void __cdecl dsSoundServer_r()
 					}
 
 					// Likely inlined function since in vanilla code it rechecks MD_SOUND_3D
-					if (!(entry.mode & MD_SOUND_3D))
+					if (!(entry.mode & MD_SOUND_DOLBY))
 					{
 						if (entry.mode & MD_SOUND_VOL_DIST)
 						{
