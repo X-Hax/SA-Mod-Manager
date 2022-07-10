@@ -6,8 +6,8 @@
 // Make sound effects use BASS instead of DirectSound
 
 static int SEVolume = 100; // Global sound effect volume, 1-100
-static bool EmulateDreamcast = false;
-static const BASS_DX8_REVERB ReverbEffect = { 0.0f, -20.0f, 1000.0f, 0.001f }; // Reverb effect like on DC
+static bool EmulateReverb = false;
+static const BASS_DX8_REVERB ReverbEffect = { 0.0f, -20.0f, 1000.0f, 0.001f };
 
 enum MD_SOUND
 {
@@ -231,7 +231,7 @@ static void __cdecl PlayPCM_r(int ch)
 	auto& channel = bass_channels[ch];
 	if (channel)
 	{
-		if (EmulateDreamcast)
+		if (EmulateReverb)
 		{
 			HFX effect = BASS_ChannelSetFX(channel, BASS_FX_DX8_REVERB, 1);
 			BASS_FXSetParameters(effect, &ReverbEffect);
@@ -240,28 +240,13 @@ static void __cdecl PlayPCM_r(int ch)
 	}
 }
 
-static void CALLBACK SlideCallback(HSYNC handle, DWORD channel, DWORD data, void* user)
-{
-	BASS_ChannelStop(channel);
-	BASS_StreamFree(channel);
-}
-
 static void __cdecl StopPCM_r(int ch)
 {
 	auto& channel = bass_channels[ch];
 	if (channel)
 	{
-		if (EmulateDreamcast)
-		{
-			// Emulate sound fade-out
-			BASS_ChannelSlideAttribute(channel, BASS_ATTRIB_VOL, 0.0f, 100);
-			BASS_ChannelSetSync(channel, BASS_SYNC_SLIDE, 0, SlideCallback, nullptr);
-		}
-		else
-		{
-			BASS_ChannelStop(channel);
-			BASS_StreamFree(channel);
-		}
+		BASS_ChannelStop(channel);
+		BASS_StreamFree(channel);
 
 		channel = NULL;
 	}
@@ -272,7 +257,7 @@ static void __cdecl IsndVolume_r(int vol, int handleno)
 	auto& channel = bass_channels[handleno];
 	if (channel)
 	{
-		BASS_ChannelSetAttribute(channel, BASS_ATTRIB_VOL, SEVolume / 100.0f * ((float)(vol + 127) / 254.0f));
+		BASS_ChannelSetAttribute(channel, BASS_ATTRIB_VOL, SEVolume / 100.0f * ((float)(min(127, vol) + 127) / 254.0f));
 	}
 }
 
@@ -406,7 +391,7 @@ static void __cdecl dsSoundServer_r()
 					if (entry.mode & MD_SOUND_DOLBY)
 					{
 						Load3DPCM_r(i, sndmemory, *(int*)0x3B29AE0, 2);
-						Set3DMinMaxPCM_r(i, 10.0f, 500.0f);
+						Set3DMinMaxPCM(i, 10.0f, 500.0f);
 					}
 					else
 					{
