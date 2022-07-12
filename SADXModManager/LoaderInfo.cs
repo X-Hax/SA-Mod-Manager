@@ -84,6 +84,12 @@ namespace SADXModManager
 
 		[DefaultValue(false)]
 		public bool DisablePolyBuff { get; set; }
+		
+		[DefaultValue(false)]
+		public bool EnableBassSFX { get; set; }
+
+		[DefaultValue(100)]
+		public int SEVolume { get; set; }
 
 		[DefaultValue(false)]
 		public bool DisableMaterialColorFix { get; set; }

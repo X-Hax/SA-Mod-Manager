@@ -1651,7 +1651,7 @@ static void __cdecl InitMods()
 	if (!settings->getBool("DisableMaterialColorFix", false))
 		MaterialColorFixes_Init();
 
-	if (!settings->getBool("EnableBassSFX", false))
+	if (settings->getBool("EnableBassSFX", false))
 		Sound_Init(settings->getInt("SEVolume", 100));
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");

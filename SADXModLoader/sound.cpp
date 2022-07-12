@@ -506,6 +506,9 @@ static int __cdecl dsPauseSndOnly_r()
 
 void Sound_Init(int sevolume)
 {
+#ifdef DEBUG
+	PrintDebug("Initializing BASS SFX, volume: %d\n", sevolume);
+#endif
 	SEVolume = sevolume;
 	WriteJump(dsSoundServer, dsSoundServer_r);
 	WriteJump(IsndPitch, IsndPitch_r);
