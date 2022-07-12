@@ -27,7 +27,9 @@ static DWORD voicechan = 0;
  */
 void WMPInit_r()
 {
-	bassinit = !!BASS_Init(-1, 44100, 0, nullptr, nullptr);
+	bassinit = !!BASS_Init(-1, 44100, BASS_DEVICE_3D, nullptr, nullptr);
+	BASS_Set3DFactors(0.1f, 0.1f, 0.0f);
+	BASS_SetConfig(BASS_CONFIG_3DALGORITHM, BASS_3DALG_FULL);
 }
 
 /**
@@ -410,7 +412,16 @@ struc_64* LoadSoundPack(const char* path, int bank)
 			continue;
 		}
 
+		// Get individual sound path
 		snprintf(filename, sizeof(filename), "%s%s", path2, line);
+
+		// Get sound name.
+		std::string basename = GetBaseName(filename);
+
+		// Names starting with an underscore are ignored because there are unused files like _B02_00_15 in vanilla.
+		if (basename.substr(0, 1) == "_")
+			continue;
+
 		FILE* fori = fopen(filename, "rb"); // Original file
 		if (!fori)
 		{
@@ -425,48 +436,25 @@ struc_64* LoadSoundPack(const char* path, int bank)
 			fclose(f);
 			return nullptr;
 		}
+
+		// Get extension
+		std::string ext = GetExtension(basename, true);
+
+		// Remove extension from full name
+		StripExtension(basename);
+
+		// Get file size
 		fseek(fori, 0, SEEK_END);
 		int inputSize = (int)ftell(fori);
 		fseek(fori, 0, SEEK_SET);
+
+		// Get data
 		void* InputBuffer = malloc(inputSize);
 		fread(InputBuffer, 1, inputSize, fori);
 		fclose(fori);
-		void* vgm = BASS_VGMSTREAM_InitVGMStreamFromMemory(InputBuffer, inputSize, filename);
-		if (!vgm)
-		{
-			PrintDebug("%s: VGMStream is null\n", filename);
-			free(InputBuffer);
-			fclose(f);
-			return nullptr;
-		}
-		int outsize = BASS_VGMSTREAM_GetVGMStreamOutputSize(vgm);
-		void* decodedwav = malloc(outsize);
-		int converror = BASS_VGMSTREAM_ConvertVGMStreamToWav(vgm, (const char*)decodedwav);
-
-		if (converror)
-		{
-			PrintDebug("%s: Format conversion error\n", filename);
-			// Unable to open a referenced file.
-			for (auto& entrie : entries)
-			{
-				delete[] entrie.NameOffset;
-				delete[] entrie.DataOffset;
-			}
-			BASS_VGMSTREAM_CloseVGMStream(vgm);
-			free(decodedwav);
-			free(InputBuffer);
-			fclose(f);
-			return nullptr;
-		}
-
-		// Get sound name.
-		std::string basename = GetBaseName(filename);
-		StripExtension(basename);
-		// Names starting with an underscore are ignored because there are unused files like _B02_00_15 in vanilla.
-		if (basename.substr(0, 1) == "_")
-			continue;
+		
 		// Put sounds with names in the B##_##_## format into correct slots.
-		else if (basename.substr(0, 2) == "B0" && basename.substr(3, 2) == "_0" && basename.substr(6, 1) == "_")
+		if (basename.substr(0, 2) == "B0" && basename.substr(3, 2) == "_0" && basename.substr(6, 1) == "_")
 		{
 			soundID = std::atoi(basename.substr(7, 2).c_str());
 			soundCounter++;
@@ -481,12 +469,10 @@ struc_64* LoadSoundPack(const char* path, int bank)
 		// Create the sound entry.
 		DATEntry ent{};
 		ent.NameOffset = new char[14];
-		snprintf(ent.NameOffset, 14, "B%02d_00_%02u.wav", bank, soundID);
-		ent.DataLength = outsize;
+		snprintf(ent.NameOffset, 14, "B%02d_00_%02u%s", bank, soundID, ext.c_str());
+		ent.DataLength = inputSize;
 		ent.DataOffset = new char[ent.DataLength];
-		memcpy(ent.DataOffset, decodedwav, ent.DataLength);
-		free(decodedwav);
-		BASS_VGMSTREAM_CloseVGMStream(vgm);
+		memcpy(ent.DataOffset, InputBuffer, ent.DataLength);
 		free(InputBuffer);
 		entries.push_back(ent);
 
@@ -541,18 +527,28 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 	// Total sound pack size.
 	int newsize = 28;
 	int numentries = originalbank->NumSFX;
+
 	// Convert data.
 	DATEntry* entries = (DATEntry*)&originalbank->DATEntries;
-	for (int s = 0; s < originalbank->NumSFX; s++)
+	for (int i = 0; i < originalbank->NumSFX; i++)
 	{		
+		auto& ent = entries[i];
+
 		// Get sound name.
-		std::string basename = GetBaseName(entries[s].NameOffset);
-		StripExtension(basename);
+		std::string basename = GetBaseName(ent.NameOffset);
+
 		// Names starting with an underscore are ignored because there are unused files like _B02_00_15 in vanilla.
 		if (basename.substr(0, 1) == "_")
 			continue;
+
+		// Get extension
+		std::string ext = GetExtension(basename, true);
+
+		// Remove extension from full name
+		StripExtension(basename);
+		
 		// Put sounds with names in the B##_##_## format into correct slots.
-		else if (basename.substr(0, 2) == "B0" && basename.substr(3, 2) == "_0" && basename.substr(6, 1) == "_")
+		if (basename.substr(0, 2) == "B0" && basename.substr(3, 2) == "_0" && basename.substr(6, 1) == "_")
 		{
 			soundID = std::atoi(basename.substr(7, 2).c_str());
 			soundCounter++;
@@ -563,41 +559,20 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 			soundID = soundCounter;
 			soundCounter++;
 		}
-		// Set extension for VGMStream to be able to load the file. Force ADX extension for SADX 2010 soundbanks.
-		if (originalbank->ArchiveID[14] == 'Z') // Check for Z at the end to tell if it's from SADX 2010.
+
+		// Check for Z at the end to tell if it's from SADX 2010, if so force ADX audio.
+		if (originalbank->ArchiveID[14] == 'Z') 
 		{
-			snprintf(entries[s].NameOffset, 14, "B%02d_00_%02u.ADX", bank, soundID);
+			snprintf(ent.NameOffset, 14, "B%02d_00_%02u.ADX", bank, soundID);
+		}
+		// Otherwise set proper name with original file extension
+		else
+		{
+			snprintf(ent.NameOffset, 14, "B%02d_00_%02u%s", bank, soundID, ext.c_str());
 		}
 
-		// Load entry into VGMStream.
-		void* vgm = BASS_VGMSTREAM_InitVGMStreamFromMemory(entries[s].DataOffset, entries[s].DataLength, entries[s].NameOffset);
-		if (!vgm)
-		{
-			PrintDebug("%s: VGMStream is null\n", entries[s].NameOffset);
-			continue;
-		}
-
-		// Get output size and decode.
-		int outsize = BASS_VGMSTREAM_GetVGMStreamOutputSize(vgm);
-		void* decodedwav = malloc(outsize);
-		int converror = BASS_VGMSTREAM_ConvertVGMStreamToWav(vgm, (const char*)decodedwav);
-		if (converror)
-		{
-			BASS_VGMSTREAM_CloseVGMStream(vgm);
-			PrintDebug("%s: Conversion error\n", entries[s].NameOffset);
-			continue;
-		}
-
-		// Create an entry for the new soundbank.
-		DATEntry ent{};
-		ent.NameOffset = new char[14];
-		snprintf(ent.NameOffset, 14, "B%02d_00_%02u.WAV", bank, soundID);
-		ent.DataLength = outsize;
-		ent.DataOffset = new char[ent.DataLength];
-		memcpy(ent.DataOffset, decodedwav, ent.DataLength);
-		free(decodedwav);
-		BASS_VGMSTREAM_CloseVGMStream(vgm);
 		newentries.push_back(ent);
+
 		// Add the entry data to the total sound pack size.
 		newsize += sizeof(DATEntry) + 14 + ent.DataLength;
 	}
@@ -615,18 +590,18 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 	// Rearrange the sound pack data into a single memory block,
 	// stored after result->DATEntries.
 	char* ptr = reinterpret_cast<char*>(&(&result->DATEntries)[newentries.size()]);
-	DATEntry* ent = &result->DATEntries;
-	for (int i = 0; i < result->NumSFX; i++, ent++)
+	entries = &result->DATEntries;
+	for (int i = 0; i < result->NumSFX; i++)
 	{
-		memcpy(ptr, ent->NameOffset, 14);
-		delete[] ent->NameOffset;
-		ent->NameOffset = ptr;
+		auto& ent = entries[i];
+
+		memcpy(ptr, ent.NameOffset, 14);
+		ent.NameOffset = ptr;
 		ptr += 14;
 
-		memcpy(ptr, ent->DataOffset, ent->DataLength);
-		delete[] ent->DataOffset;
-		ent->DataOffset = ptr;
-		ptr += ent->DataLength;
+		memcpy(ptr, ent.DataOffset, ent.DataLength);
+		ent.DataOffset = ptr;
+		ptr += ent.DataLength;
 	}
 
 	MDHeaderClose(originalbank);

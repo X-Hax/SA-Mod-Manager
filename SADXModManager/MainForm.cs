@@ -318,6 +318,7 @@ namespace SADXModManager
 			numericUpdateFrequency.Value = loaderini.UpdateFrequency;
 			comboVoiceLanguage.SelectedIndex = (int)loaderini.VoiceLanguage;
 			comboTextLanguage.SelectedIndex = (int)loaderini.TextLanguage;
+			trackBarSEVol.Value = (int)loaderini.SEVolume;
 
 			suppressEvent = true;
 			forceAspectRatioCheckBox.Checked = loaderini.ForceAspectRatio;
@@ -355,6 +356,7 @@ namespace SADXModManager
 			checkWindowResize.Checked = loaderini.ResizableWindow;
 
 			checkPolyBuff.Checked = loaderini.DisablePolyBuff;
+			checkBassSE.Checked = loaderini.EnableBassSFX;
 			checkMaterialColor.Checked = loaderini.DisableMaterialColorFix;
 
 			checkBoxTestSpawnLevel.Checked = loaderini.TestSpawnLevel != -1;
@@ -783,7 +785,9 @@ namespace SADXModManager
 			loaderini.UpdateFrequency = (int)numericUpdateFrequency.Value;
 			loaderini.VoiceLanguage = (int)comboVoiceLanguage.SelectedIndex;
 			loaderini.TextLanguage = (int)comboTextLanguage.SelectedIndex;
+			loaderini.SEVolume = trackBarSEVol.Value;
 			loaderini.DisablePolyBuff = checkPolyBuff.Checked;
+			loaderini.EnableBassSFX = checkBassSE.Checked;
 			loaderini.DisableMaterialColorFix = checkMaterialColor.Checked;
 
 			loaderini.TestSpawnLevel = checkBoxTestSpawnLevel.Checked ? comboBoxTestSpawnLevel.SelectedIndex : -1;
@@ -1874,6 +1878,17 @@ namespace SADXModManager
 		{
 			labelMusicVol.Text = trackBarMusicVol.Value.ToString();
 		}
+
+		private void trackBarSEVol_ValueChanged(object sender, EventArgs e)
+		{
+			labelSEVol.Text = trackBarSEVol.Value.ToString();
+		}
+
+		private void checkBassSE_CheckedChanged(object sender, EventArgs e)
+		{
+			labelSEVol.Enabled = trackBarSEVol.Enabled = labelSEVolText.Enabled = checkBassSE.Checked;
+		}
+
 		#endregion
 
 		#region TestSpawn
@@ -2553,8 +2568,7 @@ namespace SADXModManager
 				Enabled = true;
 			}
 		}
+
 		#endregion
-
-
 	}
 }

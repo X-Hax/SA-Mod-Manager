@@ -39,7 +39,7 @@ BASS_VGMSTREAM_API HSTREAM BASS_VGMSTREAM_StreamCreateFromMemory(unsigned char* 
 BASS_VGMSTREAM_API void* BASS_VGMSTREAM_InitVGMStreamFromMemory(void* data, int size, const char* name);
 BASS_VGMSTREAM_API void BASS_VGMSTREAM_CloseVGMStream(void* vgmstream);
 BASS_VGMSTREAM_API int BASS_VGMSTREAM_GetVGMStreamOutputSize(void* vgmstream);
-BASS_VGMSTREAM_API int BASS_VGMSTREAM_ConvertVGMStreamToWav(void* vgmstream, const char* outputdata);
+BASS_VGMSTREAM_API int BASS_VGMSTREAM_ConvertVGMStreamToWav(void* vgmstream, unsigned char* outputdata);
 
 #ifdef __cplusplus
 }

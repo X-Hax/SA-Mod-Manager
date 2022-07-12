@@ -113,6 +113,9 @@
             this.controllerConfigRemove = new System.Windows.Forms.Button();
             this.tabPageSound = new System.Windows.Forms.TabPage();
             this.groupBox_SoundVolume = new System.Windows.Forms.GroupBox();
+            this.labelSEVol = new System.Windows.Forms.Label();
+            this.trackBarSEVol = new System.Windows.Forms.TrackBar();
+            this.labelSEVolText = new System.Windows.Forms.Label();
             this.labelVoiceVol = new System.Windows.Forms.Label();
             this.labelMusicVol = new System.Windows.Forms.Label();
             this.trackBarVoiceVol = new System.Windows.Forms.TrackBar();
@@ -120,6 +123,7 @@
             this.trackBarMusicVol = new System.Windows.Forms.TrackBar();
             this.label14 = new System.Windows.Forms.Label();
             this.groupBox_SoundConfig = new System.Windows.Forms.GroupBox();
+            this.checkBassSE = new System.Windows.Forms.CheckBox();
             this.checkMusic = new System.Windows.Forms.CheckBox();
             this.checkSound = new System.Windows.Forms.CheckBox();
             this.check3DSound = new System.Windows.Forms.CheckBox();
@@ -207,6 +211,7 @@
             this.groupBoxController.SuspendLayout();
             this.tabPageSound.SuspendLayout();
             this.groupBox_SoundVolume.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarSEVol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarVoiceVol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMusicVol)).BeginInit();
             this.groupBox_SoundConfig.SuspendLayout();
@@ -230,27 +235,30 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(6, 22);
+            label3.Location = new System.Drawing.Point(9, 34);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(44, 13);
+            label3.Size = new System.Drawing.Size(64, 20);
             label3.TabIndex = 0;
             label3.Text = "Screen:";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(140, 50);
+            label1.Location = new System.Drawing.Point(210, 77);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(12, 13);
+            label1.Size = new System.Drawing.Size(16, 20);
             label1.TabIndex = 7;
             label1.Text = "x";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(219, 22);
+            label2.Location = new System.Drawing.Point(328, 34);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(12, 13);
+            label2.Size = new System.Drawing.Size(16, 20);
             label2.TabIndex = 13;
             label2.Text = "x";
             // 
@@ -264,9 +272,11 @@
             groupBox2.Controls.Add(this.label8);
             groupBox2.Controls.Add(this.pauseWhenInactiveCheckBox);
             groupBox2.Controls.Add(this.disableCDCheckCheckBox);
-            groupBox2.Location = new System.Drawing.Point(6, 6);
+            groupBox2.Location = new System.Drawing.Point(9, 9);
+            groupBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new System.Drawing.Size(440, 88);
+            groupBox2.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            groupBox2.Size = new System.Drawing.Size(660, 135);
             groupBox2.TabIndex = 0;
             groupBox2.TabStop = false;
             groupBox2.Text = "Misc.";
@@ -282,9 +292,10 @@
             "French",
             "Spanish",
             "German"});
-            this.comboTextLanguage.Location = new System.Drawing.Point(125, 57);
+            this.comboTextLanguage.Location = new System.Drawing.Point(188, 88);
+            this.comboTextLanguage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboTextLanguage.Name = "comboTextLanguage";
-            this.comboTextLanguage.Size = new System.Drawing.Size(97, 21);
+            this.comboTextLanguage.Size = new System.Drawing.Size(144, 28);
             this.comboTextLanguage.TabIndex = 3;
             this.toolTip.SetToolTip(this.comboTextLanguage, "Text language at startup. Loading a save file overrides this.");
             // 
@@ -296,27 +307,30 @@
             this.comboVoiceLanguage.Items.AddRange(new object[] {
             "Japanese",
             "English"});
-            this.comboVoiceLanguage.Location = new System.Drawing.Point(11, 57);
+            this.comboVoiceLanguage.Location = new System.Drawing.Point(16, 88);
+            this.comboVoiceLanguage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboVoiceLanguage.Name = "comboVoiceLanguage";
-            this.comboVoiceLanguage.Size = new System.Drawing.Size(98, 21);
+            this.comboVoiceLanguage.Size = new System.Drawing.Size(145, 28);
             this.comboVoiceLanguage.TabIndex = 2;
             this.toolTip.SetToolTip(this.comboVoiceLanguage, "Voice language at startup. Loading a save file overrides this.");
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(123, 40);
+            this.label9.Location = new System.Drawing.Point(184, 62);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(78, 13);
+            this.label9.Size = new System.Drawing.Size(113, 20);
             this.label9.TabIndex = 4;
             this.label9.Text = "Text language:";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(9, 40);
+            this.label8.Location = new System.Drawing.Point(14, 62);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(84, 13);
+            this.label8.Size = new System.Drawing.Size(123, 20);
             this.label8.TabIndex = 3;
             this.label8.Text = "Voice language:";
             // 
@@ -324,9 +338,10 @@
             // 
             this.pauseWhenInactiveCheckBox.AutoSize = true;
             this.pauseWhenInactiveCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.pauseWhenInactiveCheckBox.Location = new System.Drawing.Point(125, 19);
+            this.pauseWhenInactiveCheckBox.Location = new System.Drawing.Point(188, 29);
+            this.pauseWhenInactiveCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pauseWhenInactiveCheckBox.Name = "pauseWhenInactiveCheckBox";
-            this.pauseWhenInactiveCheckBox.Size = new System.Drawing.Size(135, 18);
+            this.pauseWhenInactiveCheckBox.Size = new System.Drawing.Size(184, 25);
             this.pauseWhenInactiveCheckBox.TabIndex = 1;
             this.pauseWhenInactiveCheckBox.Text = "Pause When Inactive";
             this.toolTip.SetToolTip(this.pauseWhenInactiveCheckBox, "Uncheck to allow the game to run in the background.");
@@ -336,9 +351,10 @@
             // 
             this.disableCDCheckCheckBox.AutoSize = true;
             this.disableCDCheckCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.disableCDCheckCheckBox.Location = new System.Drawing.Point(6, 19);
+            this.disableCDCheckCheckBox.Location = new System.Drawing.Point(9, 29);
+            this.disableCDCheckCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.disableCDCheckCheckBox.Name = "disableCDCheckCheckBox";
-            this.disableCDCheckCheckBox.Size = new System.Drawing.Size(119, 18);
+            this.disableCDCheckCheckBox.Size = new System.Drawing.Size(163, 25);
             this.disableCDCheckCheckBox.TabIndex = 0;
             this.disableCDCheckCheckBox.Text = "Disable CD Check";
             this.toolTip.SetToolTip(this.disableCDCheckCheckBox, "Allows you to run the game without the disc.");
@@ -347,27 +363,30 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(6, 49);
+            label5.Location = new System.Drawing.Point(9, 75);
+            label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(60, 13);
+            label5.Size = new System.Drawing.Size(89, 20);
             label5.TabIndex = 17;
             label5.Text = "Resolution:";
             // 
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new System.Drawing.Point(270, 60);
+            label15.Location = new System.Drawing.Point(405, 92);
+            label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label15.Name = "label15";
-            label15.Size = new System.Drawing.Size(38, 13);
+            label15.Size = new System.Drawing.Size(55, 20);
             label15.TabIndex = 12;
             label15.Text = "Name:";
             // 
             // label16
             // 
             label16.AutoSize = true;
-            label16.Location = new System.Drawing.Point(269, 15);
+            label16.Location = new System.Drawing.Point(404, 23);
+            label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label16.Name = "label16";
-            label16.Size = new System.Drawing.Size(39, 13);
+            label16.Size = new System.Drawing.Size(57, 20);
             label16.TabIndex = 8;
             label16.Text = "Profile:";
             // 
@@ -380,9 +399,10 @@
             this.screenNumComboBox.FormattingEnabled = true;
             this.screenNumComboBox.Items.AddRange(new object[] {
             "All Screens"});
-            this.screenNumComboBox.Location = new System.Drawing.Point(56, 19);
+            this.screenNumComboBox.Location = new System.Drawing.Point(84, 29);
+            this.screenNumComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.screenNumComboBox.Name = "screenNumComboBox";
-            this.screenNumComboBox.Size = new System.Drawing.Size(365, 21);
+            this.screenNumComboBox.Size = new System.Drawing.Size(546, 28);
             this.screenNumComboBox.TabIndex = 1;
             this.toolTip.SetToolTip(this.screenNumComboBox, "The screen to put the game on.");
             this.screenNumComboBox.SelectedIndexChanged += new System.EventHandler(this.screenNumComboBox_SelectedIndexChanged);
@@ -391,9 +411,10 @@
             // 
             this.stretchFullscreenCheckBox.AutoSize = true;
             this.stretchFullscreenCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.stretchFullscreenCheckBox.Location = new System.Drawing.Point(104, 97);
+            this.stretchFullscreenCheckBox.Location = new System.Drawing.Point(156, 149);
+            this.stretchFullscreenCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.stretchFullscreenCheckBox.Name = "stretchFullscreenCheckBox";
-            this.stretchFullscreenCheckBox.Size = new System.Drawing.Size(108, 18);
+            this.stretchFullscreenCheckBox.Size = new System.Drawing.Size(147, 25);
             this.stretchFullscreenCheckBox.TabIndex = 9;
             this.stretchFullscreenCheckBox.Text = "Scale to Screen";
             this.toolTip.SetToolTip(this.stretchFullscreenCheckBox, "Coupled with Borderless Fullscreen, you can downsample the game from resolutions " +
@@ -404,9 +425,10 @@
             // 
             this.forceAspectRatioCheckBox.AutoSize = true;
             this.forceAspectRatioCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.forceAspectRatioCheckBox.Location = new System.Drawing.Point(226, 73);
+            this.forceAspectRatioCheckBox.Location = new System.Drawing.Point(339, 112);
+            this.forceAspectRatioCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.forceAspectRatioCheckBox.Name = "forceAspectRatioCheckBox";
-            this.forceAspectRatioCheckBox.Size = new System.Drawing.Size(141, 18);
+            this.forceAspectRatioCheckBox.Size = new System.Drawing.Size(197, 25);
             this.forceAspectRatioCheckBox.TabIndex = 7;
             this.forceAspectRatioCheckBox.Text = "Force 4:3 Aspect Ratio";
             this.forceAspectRatioCheckBox.UseVisualStyleBackColor = true;
@@ -416,9 +438,10 @@
             // 
             this.windowedFullscreenCheckBox.AutoSize = true;
             this.windowedFullscreenCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.windowedFullscreenCheckBox.Location = new System.Drawing.Point(9, 97);
+            this.windowedFullscreenCheckBox.Location = new System.Drawing.Point(14, 149);
+            this.windowedFullscreenCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.windowedFullscreenCheckBox.Name = "windowedFullscreenCheckBox";
-            this.windowedFullscreenCheckBox.Size = new System.Drawing.Size(81, 18);
+            this.windowedFullscreenCheckBox.Size = new System.Drawing.Size(110, 25);
             this.windowedFullscreenCheckBox.TabIndex = 8;
             this.windowedFullscreenCheckBox.Text = "Borderless";
             this.toolTip.SetToolTip(this.windowedFullscreenCheckBox, "Enables borderless fullscreen mode.\r\nYou have to enable fullscreen mode for it to" +
@@ -427,7 +450,8 @@
             // 
             // verticalResolution
             // 
-            this.verticalResolution.Location = new System.Drawing.Point(157, 47);
+            this.verticalResolution.Location = new System.Drawing.Point(236, 72);
+            this.verticalResolution.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.verticalResolution.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -439,7 +463,7 @@
             0,
             0});
             this.verticalResolution.Name = "verticalResolution";
-            this.verticalResolution.Size = new System.Drawing.Size(62, 20);
+            this.verticalResolution.Size = new System.Drawing.Size(93, 26);
             this.verticalResolution.TabIndex = 3;
             this.verticalResolution.Value = new decimal(new int[] {
             480,
@@ -450,7 +474,8 @@
             // 
             // horizontalResolution
             // 
-            this.horizontalResolution.Location = new System.Drawing.Point(72, 47);
+            this.horizontalResolution.Location = new System.Drawing.Point(108, 72);
+            this.horizontalResolution.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.horizontalResolution.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -462,7 +487,7 @@
             0,
             0});
             this.horizontalResolution.Name = "horizontalResolution";
-            this.horizontalResolution.Size = new System.Drawing.Size(62, 20);
+            this.horizontalResolution.Size = new System.Drawing.Size(93, 26);
             this.horizontalResolution.TabIndex = 2;
             this.horizontalResolution.Value = new decimal(new int[] {
             640,
@@ -475,9 +500,10 @@
             // 
             this.buttonRefreshModList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonRefreshModList.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonRefreshModList.Location = new System.Drawing.Point(6, 329);
+            this.buttonRefreshModList.Location = new System.Drawing.Point(9, 506);
+            this.buttonRefreshModList.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonRefreshModList.Name = "buttonRefreshModList";
-            this.buttonRefreshModList.Size = new System.Drawing.Size(75, 23);
+            this.buttonRefreshModList.Size = new System.Drawing.Size(112, 35);
             this.buttonRefreshModList.TabIndex = 5;
             this.buttonRefreshModList.Text = "&Refresh";
             this.buttonRefreshModList.UseVisualStyleBackColor = true;
@@ -487,9 +513,10 @@
             // 
             this.modDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.modDescription.Location = new System.Drawing.Point(6, 358);
+            this.modDescription.Location = new System.Drawing.Point(9, 551);
+            this.modDescription.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.modDescription.Name = "modDescription";
-            this.modDescription.Size = new System.Drawing.Size(440, 60);
+            this.modDescription.Size = new System.Drawing.Size(660, 92);
             this.modDescription.TabIndex = 6;
             this.modDescription.Text = "Description: No mod selected.";
             // 
@@ -507,9 +534,10 @@
             this.columnHeaderCategory});
             this.modListView.FullRowSelect = true;
             this.modListView.HideSelection = false;
-            this.modListView.Location = new System.Drawing.Point(6, 6);
+            this.modListView.Location = new System.Drawing.Point(9, 9);
+            this.modListView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.modListView.Name = "modListView";
-            this.modListView.Size = new System.Drawing.Size(411, 317);
+            this.modListView.Size = new System.Drawing.Size(614, 486);
             this.modListView.TabIndex = 0;
             this.modListView.UseCompatibleStateImageBehavior = false;
             this.modListView.View = System.Windows.Forms.View.Details;
@@ -539,28 +567,30 @@
             // 
             this.columnHeaderCategory.Text = "Category";
             this.columnHeaderCategory.Width = 94;
-			// 
-			// saveButton
-			// 
+            // 
+            // saveButton
+            // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.saveButton.AutoSize = true;
-			this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.saveButton.Location = new System.Drawing.Point(88, 453);
+            this.saveButton.AutoSize = true;
+            this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.saveButton.Location = new System.Drawing.Point(132, 697);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(75, 22);
+            this.saveButton.Size = new System.Drawing.Size(112, 34);
             this.saveButton.TabIndex = 9;
             this.saveButton.Text = "&Save";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-			// 
-			// saveAndPlayButton
-			// 
-			this.saveAndPlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.saveAndPlayButton.AutoSize = true;
-			this.saveAndPlayButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.saveAndPlayButton.Location = new System.Drawing.Point(4, 453);
+            // 
+            // saveAndPlayButton
+            // 
+            this.saveAndPlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.saveAndPlayButton.AutoSize = true;
+            this.saveAndPlayButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.saveAndPlayButton.Location = new System.Drawing.Point(6, 697);
+            this.saveAndPlayButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.saveAndPlayButton.Name = "saveAndPlayButton";
-            this.saveAndPlayButton.Size = new System.Drawing.Size(78, 22);
+            this.saveAndPlayButton.Size = new System.Drawing.Size(117, 34);
             this.saveAndPlayButton.TabIndex = 8;
             this.saveAndPlayButton.Text = "Save && &Play";
             this.saveAndPlayButton.UseVisualStyleBackColor = true;
@@ -571,9 +601,10 @@
             this.installButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.installButton.AutoSize = true;
             this.installButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.installButton.Location = new System.Drawing.Point(168, 453);
+            this.installButton.Location = new System.Drawing.Point(252, 697);
+            this.installButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.installButton.Name = "installButton";
-            this.installButton.Size = new System.Drawing.Size(80, 22);
+            this.installButton.Size = new System.Drawing.Size(120, 34);
             this.installButton.TabIndex = 10;
             this.installButton.Text = "Install loader";
             this.installButton.UseVisualStyleBackColor = true;
@@ -592,10 +623,10 @@
             this.tabControl1.Controls.Add(this.tabPageOptions);
             this.tabControl1.Controls.Add(this.tabPageDebug);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(460, 447);
+            this.tabControl1.Size = new System.Drawing.Size(690, 688);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageMods
@@ -609,10 +640,11 @@
             this.tabPageMods.Controls.Add(this.modDownButton);
             this.tabPageMods.Controls.Add(this.modUpButton);
             this.tabPageMods.Controls.Add(this.modListView);
-            this.tabPageMods.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMods.Location = new System.Drawing.Point(4, 29);
+            this.tabPageMods.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageMods.Name = "tabPageMods";
-            this.tabPageMods.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMods.Size = new System.Drawing.Size(452, 421);
+            this.tabPageMods.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageMods.Size = new System.Drawing.Size(682, 655);
             this.tabPageMods.TabIndex = 0;
             this.tabPageMods.Text = "Mods";
             this.tabPageMods.UseVisualStyleBackColor = true;
@@ -622,9 +654,10 @@
             this.configureModButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.configureModButton.Enabled = false;
             this.configureModButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.configureModButton.Location = new System.Drawing.Point(87, 329);
+            this.configureModButton.Location = new System.Drawing.Point(130, 506);
+            this.configureModButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.configureModButton.Name = "configureModButton";
-            this.configureModButton.Size = new System.Drawing.Size(75, 23);
+            this.configureModButton.Size = new System.Drawing.Size(112, 35);
             this.configureModButton.TabIndex = 6;
             this.configureModButton.Text = "Configure...";
             this.configureModButton.UseVisualStyleBackColor = true;
@@ -636,9 +669,10 @@
             this.modBottomButton.AutoSize = true;
             this.modBottomButton.Enabled = false;
             this.modBottomButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modBottomButton.Location = new System.Drawing.Point(419, 114);
+            this.modBottomButton.Location = new System.Drawing.Point(628, 175);
+            this.modBottomButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.modBottomButton.Name = "modBottomButton";
-            this.modBottomButton.Size = new System.Drawing.Size(31, 29);
+            this.modBottomButton.Size = new System.Drawing.Size(46, 45);
             this.modBottomButton.TabIndex = 4;
             this.modBottomButton.Text = "⤓";
             this.modBottomButton.UseVisualStyleBackColor = true;
@@ -650,9 +684,10 @@
             this.modTopButton.AutoSize = true;
             this.modTopButton.Enabled = false;
             this.modTopButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modTopButton.Location = new System.Drawing.Point(419, 6);
+            this.modTopButton.Location = new System.Drawing.Point(628, 9);
+            this.modTopButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.modTopButton.Name = "modTopButton";
-            this.modTopButton.Size = new System.Drawing.Size(31, 29);
+            this.modTopButton.Size = new System.Drawing.Size(46, 45);
             this.modTopButton.TabIndex = 1;
             this.modTopButton.Text = "⤒";
             this.modTopButton.UseVisualStyleBackColor = true;
@@ -662,9 +697,10 @@
             // 
             this.buttonNewMod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonNewMod.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonNewMod.Location = new System.Drawing.Point(342, 329);
+            this.buttonNewMod.Location = new System.Drawing.Point(513, 506);
+            this.buttonNewMod.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonNewMod.Name = "buttonNewMod";
-            this.buttonNewMod.Size = new System.Drawing.Size(75, 23);
+            this.buttonNewMod.Size = new System.Drawing.Size(112, 35);
             this.buttonNewMod.TabIndex = 7;
             this.buttonNewMod.Text = "&New...";
             this.buttonNewMod.UseVisualStyleBackColor = true;
@@ -676,9 +712,10 @@
             this.modDownButton.AutoSize = true;
             this.modDownButton.Enabled = false;
             this.modDownButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modDownButton.Location = new System.Drawing.Point(419, 78);
+            this.modDownButton.Location = new System.Drawing.Point(628, 120);
+            this.modDownButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.modDownButton.Name = "modDownButton";
-            this.modDownButton.Size = new System.Drawing.Size(31, 29);
+            this.modDownButton.Size = new System.Drawing.Size(46, 45);
             this.modDownButton.TabIndex = 3;
             this.modDownButton.Text = "↓";
             this.modDownButton.UseVisualStyleBackColor = true;
@@ -690,9 +727,10 @@
             this.modUpButton.AutoSize = true;
             this.modUpButton.Enabled = false;
             this.modUpButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modUpButton.Location = new System.Drawing.Point(419, 42);
+            this.modUpButton.Location = new System.Drawing.Point(628, 65);
+            this.modUpButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.modUpButton.Name = "modUpButton";
-            this.modUpButton.Size = new System.Drawing.Size(31, 29);
+            this.modUpButton.Size = new System.Drawing.Size(46, 45);
             this.modUpButton.TabIndex = 2;
             this.modUpButton.Text = "↑";
             this.modUpButton.UseVisualStyleBackColor = true;
@@ -701,9 +739,10 @@
             // tabPageCodes
             // 
             this.tabPageCodes.Controls.Add(this.codesCheckedListBox);
-            this.tabPageCodes.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCodes.Location = new System.Drawing.Point(4, 29);
+            this.tabPageCodes.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageCodes.Name = "tabPageCodes";
-            this.tabPageCodes.Size = new System.Drawing.Size(452, 421);
+            this.tabPageCodes.Size = new System.Drawing.Size(682, 655);
             this.tabPageCodes.TabIndex = 1;
             this.tabPageCodes.Text = "Codes";
             this.tabPageCodes.UseVisualStyleBackColor = true;
@@ -713,8 +752,9 @@
             this.codesCheckedListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.codesCheckedListBox.FormattingEnabled = true;
             this.codesCheckedListBox.Location = new System.Drawing.Point(0, 0);
+            this.codesCheckedListBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.codesCheckedListBox.Name = "codesCheckedListBox";
-            this.codesCheckedListBox.Size = new System.Drawing.Size(452, 421);
+            this.codesCheckedListBox.Size = new System.Drawing.Size(682, 655);
             this.codesCheckedListBox.TabIndex = 0;
             this.codesCheckedListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.codesCheckedListBox_ItemCheck);
             // 
@@ -724,10 +764,11 @@
             this.tabPageGraphics.Controls.Add(this.groupBox_WindowMode);
             this.tabPageGraphics.Controls.Add(this.groupBox_Visuals);
             this.tabPageGraphics.Controls.Add(this.groupBox_Display);
-            this.tabPageGraphics.Location = new System.Drawing.Point(4, 22);
+            this.tabPageGraphics.Location = new System.Drawing.Point(4, 29);
+            this.tabPageGraphics.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageGraphics.Name = "tabPageGraphics";
-            this.tabPageGraphics.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageGraphics.Size = new System.Drawing.Size(452, 421);
+            this.tabPageGraphics.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageGraphics.Size = new System.Drawing.Size(682, 655);
             this.tabPageGraphics.TabIndex = 2;
             this.tabPageGraphics.Text = "Graphics";
             this.tabPageGraphics.UseVisualStyleBackColor = true;
@@ -742,9 +783,11 @@
             this.groupBox_WindowMode.Controls.Add(this.windowHeight);
             this.groupBox_WindowMode.Controls.Add(this.windowWidth);
             this.groupBox_WindowMode.Controls.Add(label2);
-            this.groupBox_WindowMode.Location = new System.Drawing.Point(6, 133);
+            this.groupBox_WindowMode.Location = new System.Drawing.Point(9, 205);
+            this.groupBox_WindowMode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox_WindowMode.Name = "groupBox_WindowMode";
-            this.groupBox_WindowMode.Size = new System.Drawing.Size(440, 75);
+            this.groupBox_WindowMode.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox_WindowMode.Size = new System.Drawing.Size(660, 115);
             this.groupBox_WindowMode.TabIndex = 1;
             this.groupBox_WindowMode.TabStop = false;
             this.groupBox_WindowMode.Text = "Window mode";
@@ -753,9 +796,10 @@
             // 
             this.checkWindowResize.AutoSize = true;
             this.checkWindowResize.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkWindowResize.Location = new System.Drawing.Point(6, 48);
+            this.checkWindowResize.Location = new System.Drawing.Point(9, 74);
+            this.checkWindowResize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkWindowResize.Name = "checkWindowResize";
-            this.checkWindowResize.Size = new System.Drawing.Size(120, 18);
+            this.checkWindowResize.Size = new System.Drawing.Size(164, 25);
             this.checkWindowResize.TabIndex = 14;
             this.checkWindowResize.Text = "Resizable Window";
             this.toolTip.SetToolTip(this.checkWindowResize, "Allows the window to be resized and dynamically adjusts resolution to match.");
@@ -765,9 +809,10 @@
             // 
             this.customWindowSizeCheckBox.AutoSize = true;
             this.customWindowSizeCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.customWindowSizeCheckBox.Location = new System.Drawing.Point(6, 20);
+            this.customWindowSizeCheckBox.Location = new System.Drawing.Point(9, 31);
+            this.customWindowSizeCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.customWindowSizeCheckBox.Name = "customWindowSizeCheckBox";
-            this.customWindowSizeCheckBox.Size = new System.Drawing.Size(135, 18);
+            this.customWindowSizeCheckBox.Size = new System.Drawing.Size(188, 25);
             this.customWindowSizeCheckBox.TabIndex = 11;
             this.customWindowSizeCheckBox.Text = "Custom Window Size:";
             this.toolTip.SetToolTip(this.customWindowSizeCheckBox, "Allows you to specify a fixed size for the window in windowed mode.");
@@ -778,9 +823,10 @@
             // 
             this.maintainWindowAspectRatioCheckBox.AutoSize = true;
             this.maintainWindowAspectRatioCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.maintainWindowAspectRatioCheckBox.Location = new System.Drawing.Point(151, 48);
+            this.maintainWindowAspectRatioCheckBox.Location = new System.Drawing.Point(226, 74);
+            this.maintainWindowAspectRatioCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.maintainWindowAspectRatioCheckBox.Name = "maintainWindowAspectRatioCheckBox";
-            this.maintainWindowAspectRatioCheckBox.Size = new System.Drawing.Size(136, 18);
+            this.maintainWindowAspectRatioCheckBox.Size = new System.Drawing.Size(190, 25);
             this.maintainWindowAspectRatioCheckBox.TabIndex = 15;
             this.maintainWindowAspectRatioCheckBox.Text = "Maintain Aspect Ratio";
             this.toolTip.SetToolTip(this.maintainWindowAspectRatioCheckBox, "Forces the window\'s aspect ratio to match the current custom resolution\'s.");
@@ -789,7 +835,8 @@
             // 
             // windowHeight
             // 
-            this.windowHeight.Location = new System.Drawing.Point(237, 19);
+            this.windowHeight.Location = new System.Drawing.Point(356, 29);
+            this.windowHeight.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.windowHeight.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -801,7 +848,7 @@
             0,
             0});
             this.windowHeight.Name = "windowHeight";
-            this.windowHeight.Size = new System.Drawing.Size(62, 20);
+            this.windowHeight.Size = new System.Drawing.Size(93, 26);
             this.windowHeight.TabIndex = 13;
             this.windowHeight.Value = new decimal(new int[] {
             480,
@@ -812,7 +859,8 @@
             // 
             // windowWidth
             // 
-            this.windowWidth.Location = new System.Drawing.Point(151, 19);
+            this.windowWidth.Location = new System.Drawing.Point(226, 29);
+            this.windowWidth.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.windowWidth.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -824,7 +872,7 @@
             0,
             0});
             this.windowWidth.Name = "windowWidth";
-            this.windowWidth.Size = new System.Drawing.Size(62, 20);
+            this.windowWidth.Size = new System.Drawing.Size(93, 26);
             this.windowWidth.TabIndex = 12;
             this.windowWidth.Value = new decimal(new int[] {
             640,
@@ -851,18 +899,21 @@
             this.groupBox_Visuals.Controls.Add(this.comboFramerate);
             this.groupBox_Visuals.Controls.Add(this.forceMipmappingCheckBox);
             this.groupBox_Visuals.Controls.Add(this.forceTextureFilterCheckBox);
-            this.groupBox_Visuals.Location = new System.Drawing.Point(6, 214);
+            this.groupBox_Visuals.Location = new System.Drawing.Point(9, 329);
+            this.groupBox_Visuals.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox_Visuals.Name = "groupBox_Visuals";
-            this.groupBox_Visuals.Size = new System.Drawing.Size(440, 164);
+            this.groupBox_Visuals.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox_Visuals.Size = new System.Drawing.Size(660, 252);
             this.groupBox_Visuals.TabIndex = 2;
             this.groupBox_Visuals.TabStop = false;
             this.groupBox_Visuals.Text = "Visuals";
             // 
             // buttonUpdateD3D8to9
             // 
-            this.buttonUpdateD3D8to9.Location = new System.Drawing.Point(226, 114);
+            this.buttonUpdateD3D8to9.Location = new System.Drawing.Point(339, 175);
+            this.buttonUpdateD3D8to9.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonUpdateD3D8to9.Name = "buttonUpdateD3D8to9";
-            this.buttonUpdateD3D8to9.Size = new System.Drawing.Size(100, 23);
+            this.buttonUpdateD3D8to9.Size = new System.Drawing.Size(150, 35);
             this.buttonUpdateD3D8to9.TabIndex = 25;
             this.buttonUpdateD3D8to9.Text = "Update D3D8to9";
             this.buttonUpdateD3D8to9.UseVisualStyleBackColor = true;
@@ -874,9 +925,10 @@
             this.checkBoxEnableD3D9.AutoSize = true;
             this.checkBoxEnableD3D9.Enabled = false;
             this.checkBoxEnableD3D9.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBoxEnableD3D9.Location = new System.Drawing.Point(226, 18);
+            this.checkBoxEnableD3D9.Location = new System.Drawing.Point(339, 28);
+            this.checkBoxEnableD3D9.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxEnableD3D9.Name = "checkBoxEnableD3D9";
-            this.checkBoxEnableD3D9.Size = new System.Drawing.Size(119, 18);
+            this.checkBoxEnableD3D9.Size = new System.Drawing.Size(164, 25);
             this.checkBoxEnableD3D9.TabIndex = 21;
             this.checkBoxEnableD3D9.Text = "Enable Direct3D 9";
             this.toolTip.SetToolTip(this.checkBoxEnableD3D9, "Use Direct3D 8 to 9 wrapper (recommended). Required for the Lantern Engine mod.");
@@ -886,9 +938,10 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(47, 133);
+            this.label7.Location = new System.Drawing.Point(70, 205);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(73, 13);
+            this.label7.Size = new System.Drawing.Size(109, 20);
             this.label7.TabIndex = 3;
             this.label7.Text = "FMV fill mode:";
             // 
@@ -896,9 +949,10 @@
             // 
             this.checkScaleHud.AutoSize = true;
             this.checkScaleHud.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkScaleHud.Location = new System.Drawing.Point(226, 90);
+            this.checkScaleHud.Location = new System.Drawing.Point(339, 138);
+            this.checkScaleHud.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkScaleHud.Name = "checkScaleHud";
-            this.checkScaleHud.Size = new System.Drawing.Size(81, 18);
+            this.checkScaleHud.Size = new System.Drawing.Size(107, 25);
             this.checkScaleHud.TabIndex = 24;
             this.checkScaleHud.Text = "UI Scaling";
             this.toolTip.SetToolTip(this.checkScaleHud, "Enable scaling for UI elements (recommended).");
@@ -907,9 +961,10 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(11, 106);
+            this.label6.Location = new System.Drawing.Point(16, 163);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(109, 13);
+            this.label6.Size = new System.Drawing.Size(161, 20);
             this.label6.TabIndex = 1;
             this.label6.Text = "Background fill mode:";
             // 
@@ -922,9 +977,10 @@
             "Stretch [Default]",
             "Fit",
             "Fill"});
-            this.comboFmvFill.Location = new System.Drawing.Point(128, 130);
+            this.comboFmvFill.Location = new System.Drawing.Point(192, 200);
+            this.comboFmvFill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboFmvFill.Name = "comboFmvFill";
-            this.comboFmvFill.Size = new System.Drawing.Size(89, 21);
+            this.comboFmvFill.Size = new System.Drawing.Size(132, 28);
             this.comboFmvFill.TabIndex = 20;
             // 
             // comboFog
@@ -935,9 +991,10 @@
             this.comboFog.Items.AddRange(new object[] {
             "Auto",
             "Emulation"});
-            this.comboFog.Location = new System.Drawing.Point(96, 71);
+            this.comboFog.Location = new System.Drawing.Point(144, 109);
+            this.comboFog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboFog.Name = "comboFog";
-            this.comboFog.Size = new System.Drawing.Size(121, 21);
+            this.comboFog.Size = new System.Drawing.Size(180, 28);
             this.comboFog.TabIndex = 18;
             this.toolTip.SetToolTip(this.comboFog, "Sets fog mode. Recommended: Auto\r\nOnly set to emulation if you have an archaic vi" +
         "deo card from\r\nbefore 2003.");
@@ -951,9 +1008,10 @@
             "Stretch [Default]",
             "Fit",
             "Fill"});
-            this.comboBackgroundFill.Location = new System.Drawing.Point(128, 103);
+            this.comboBackgroundFill.Location = new System.Drawing.Point(192, 158);
+            this.comboBackgroundFill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBackgroundFill.Name = "comboBackgroundFill";
-            this.comboBackgroundFill.Size = new System.Drawing.Size(89, 21);
+            this.comboBackgroundFill.Size = new System.Drawing.Size(132, 28);
             this.comboBackgroundFill.TabIndex = 19;
             // 
             // comboClip
@@ -965,9 +1023,10 @@
             "High (best)",
             "Low",
             "Lowest"});
-            this.comboClip.Location = new System.Drawing.Point(96, 44);
+            this.comboClip.Location = new System.Drawing.Point(144, 68);
+            this.comboClip.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboClip.Name = "comboClip";
-            this.comboClip.Size = new System.Drawing.Size(121, 21);
+            this.comboClip.Size = new System.Drawing.Size(180, 28);
             this.comboClip.TabIndex = 17;
             this.toolTip.SetToolTip(this.comboClip, "Sets detail level. Recommended: High.\r\nAt lower detail level the game skips drawi" +
         "ng distant\r\nobjects, disables some effects and pauses some animations.");
@@ -975,27 +1034,30 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 74);
+            this.label10.Location = new System.Drawing.Point(18, 114);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(76, 13);
+            this.label10.Size = new System.Drawing.Size(114, 20);
             this.label10.TabIndex = 8;
             this.label10.Text = "Fog emulation:";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(26, 47);
+            this.label11.Location = new System.Drawing.Point(39, 72);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(62, 13);
+            this.label11.Size = new System.Drawing.Size(89, 20);
             this.label11.TabIndex = 7;
             this.label11.Text = "Detail level:";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(28, 20);
+            this.label12.Location = new System.Drawing.Point(42, 31);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(60, 13);
+            this.label12.Size = new System.Drawing.Size(91, 20);
             this.label12.TabIndex = 6;
             this.label12.Text = "Frame rate:";
             // 
@@ -1008,9 +1070,10 @@
             "60 FPS",
             "30 FPS",
             "15 FPS"});
-            this.comboFramerate.Location = new System.Drawing.Point(96, 17);
+            this.comboFramerate.Location = new System.Drawing.Point(144, 26);
+            this.comboFramerate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboFramerate.Name = "comboFramerate";
-            this.comboFramerate.Size = new System.Drawing.Size(121, 21);
+            this.comboFramerate.Size = new System.Drawing.Size(180, 28);
             this.comboFramerate.TabIndex = 16;
             this.toolTip.SetToolTip(this.comboFramerate, "Sets the target framerate. Recommended: 60 FPS.\r\nHigher framerate is recommended " +
         "for smoother gameplay.");
@@ -1019,9 +1082,10 @@
             // 
             this.forceMipmappingCheckBox.AutoSize = true;
             this.forceMipmappingCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.forceMipmappingCheckBox.Location = new System.Drawing.Point(226, 42);
+            this.forceMipmappingCheckBox.Location = new System.Drawing.Point(339, 65);
+            this.forceMipmappingCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.forceMipmappingCheckBox.Name = "forceMipmappingCheckBox";
-            this.forceMipmappingCheckBox.Size = new System.Drawing.Size(119, 18);
+            this.forceMipmappingCheckBox.Size = new System.Drawing.Size(165, 25);
             this.forceMipmappingCheckBox.TabIndex = 22;
             this.forceMipmappingCheckBox.Text = "Force Mipmapping";
             this.toolTip.SetToolTip(this.forceMipmappingCheckBox, "Generates mipmaps for all textures that don\'t have them.");
@@ -1031,9 +1095,10 @@
             // 
             this.forceTextureFilterCheckBox.AutoSize = true;
             this.forceTextureFilterCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.forceTextureFilterCheckBox.Location = new System.Drawing.Point(226, 66);
+            this.forceTextureFilterCheckBox.Location = new System.Drawing.Point(339, 102);
+            this.forceTextureFilterCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.forceTextureFilterCheckBox.Name = "forceTextureFilterCheckBox";
-            this.forceTextureFilterCheckBox.Size = new System.Drawing.Size(137, 18);
+            this.forceTextureFilterCheckBox.Size = new System.Drawing.Size(192, 25);
             this.forceTextureFilterCheckBox.TabIndex = 23;
             this.forceTextureFilterCheckBox.Text = "Force Texture Filtering";
             this.toolTip.SetToolTip(this.forceTextureFilterCheckBox, "Smooths scaled UI textures by changing the filter method from Point to Linear.");
@@ -1056,9 +1121,11 @@
             this.groupBox_Display.Controls.Add(this.windowedFullscreenCheckBox);
             this.groupBox_Display.Controls.Add(label1);
             this.groupBox_Display.Controls.Add(this.verticalResolution);
-            this.groupBox_Display.Location = new System.Drawing.Point(6, 6);
+            this.groupBox_Display.Location = new System.Drawing.Point(9, 9);
+            this.groupBox_Display.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox_Display.Name = "groupBox_Display";
-            this.groupBox_Display.Size = new System.Drawing.Size(440, 121);
+            this.groupBox_Display.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox_Display.Size = new System.Drawing.Size(660, 186);
             this.groupBox_Display.TabIndex = 0;
             this.groupBox_Display.TabStop = false;
             this.groupBox_Display.Text = "Display";
@@ -1081,9 +1148,10 @@
             "720p",
             "1080p",
             "4K"});
-            this.comboResolutionPreset.Location = new System.Drawing.Point(226, 46);
+            this.comboResolutionPreset.Location = new System.Drawing.Point(339, 71);
+            this.comboResolutionPreset.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboResolutionPreset.Name = "comboResolutionPreset";
-            this.comboResolutionPreset.Size = new System.Drawing.Size(145, 21);
+            this.comboResolutionPreset.Size = new System.Drawing.Size(216, 28);
             this.comboResolutionPreset.TabIndex = 4;
             this.toolTip.SetToolTip(this.comboResolutionPreset, "Allows you to select pre-set values for the resolution.");
             this.comboResolutionPreset.SelectedIndexChanged += new System.EventHandler(this.comboResolutionPreset_SelectedIndexChanged);
@@ -1092,9 +1160,10 @@
             // 
             this.radioWindowMode.AutoSize = true;
             this.radioWindowMode.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.radioWindowMode.Location = new System.Drawing.Point(104, 73);
+            this.radioWindowMode.Location = new System.Drawing.Point(156, 112);
+            this.radioWindowMode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.radioWindowMode.Name = "radioWindowMode";
-            this.radioWindowMode.Size = new System.Drawing.Size(99, 18);
+            this.radioWindowMode.Size = new System.Drawing.Size(133, 25);
             this.radioWindowMode.TabIndex = 6;
             this.radioWindowMode.TabStop = true;
             this.radioWindowMode.Text = "Window mode";
@@ -1104,9 +1173,10 @@
             // 
             this.checkVsync.AutoSize = true;
             this.checkVsync.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkVsync.Location = new System.Drawing.Point(226, 97);
+            this.checkVsync.Location = new System.Drawing.Point(339, 149);
+            this.checkVsync.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkVsync.Name = "checkVsync";
-            this.checkVsync.Size = new System.Drawing.Size(100, 18);
+            this.checkVsync.Size = new System.Drawing.Size(136, 25);
             this.checkVsync.TabIndex = 10;
             this.checkVsync.Text = "Enable V-sync";
             this.toolTip.SetToolTip(this.checkVsync, "Limit the game\'s framerate by the monitor refresh rate.");
@@ -1116,9 +1186,10 @@
             // 
             this.radioFullscreen.AutoSize = true;
             this.radioFullscreen.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.radioFullscreen.Location = new System.Drawing.Point(9, 73);
+            this.radioFullscreen.Location = new System.Drawing.Point(14, 112);
+            this.radioFullscreen.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.radioFullscreen.Name = "radioFullscreen";
-            this.radioFullscreen.Size = new System.Drawing.Size(79, 18);
+            this.radioFullscreen.Size = new System.Drawing.Size(106, 25);
             this.radioFullscreen.TabIndex = 5;
             this.radioFullscreen.TabStop = true;
             this.radioFullscreen.Text = "Fullscreen";
@@ -1128,10 +1199,11 @@
             // 
             this.tabPageInput.Controls.Add(this.groupMouseMode);
             this.tabPageInput.Controls.Add(this.groupBoxController);
-            this.tabPageInput.Location = new System.Drawing.Point(4, 22);
+            this.tabPageInput.Location = new System.Drawing.Point(4, 29);
+            this.tabPageInput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageInput.Name = "tabPageInput";
-            this.tabPageInput.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageInput.Size = new System.Drawing.Size(452, 421);
+            this.tabPageInput.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageInput.Size = new System.Drawing.Size(682, 655);
             this.tabPageInput.TabIndex = 6;
             this.tabPageInput.Text = "Input";
             this.tabPageInput.UseVisualStyleBackColor = true;
@@ -1146,9 +1218,11 @@
             this.groupMouseMode.Controls.Add(this.radioMouseModeHold);
             this.groupMouseMode.Controls.Add(this.comboMouseActions);
             this.groupMouseMode.Controls.Add(this.label18);
-            this.groupMouseMode.Location = new System.Drawing.Point(6, 6);
+            this.groupMouseMode.Location = new System.Drawing.Point(9, 9);
+            this.groupMouseMode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupMouseMode.Name = "groupMouseMode";
-            this.groupMouseMode.Size = new System.Drawing.Size(440, 68);
+            this.groupMouseMode.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupMouseMode.Size = new System.Drawing.Size(660, 105);
             this.groupMouseMode.TabIndex = 0;
             this.groupMouseMode.TabStop = false;
             this.groupMouseMode.Text = "Mouse";
@@ -1156,9 +1230,10 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(233, 19);
+            this.label17.Location = new System.Drawing.Point(350, 29);
+            this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(98, 13);
+            this.label17.Size = new System.Drawing.Size(149, 20);
             this.label17.TabIndex = 3;
             this.label17.Text = "Button Assignment:";
             // 
@@ -1175,9 +1250,10 @@
             "Other Mouse Button 1",
             "Left + Right Mouse Button",
             "Right + Left Mouse Button"});
-            this.comboMouseButtons.Location = new System.Drawing.Point(236, 35);
+            this.comboMouseButtons.Location = new System.Drawing.Point(354, 54);
+            this.comboMouseButtons.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboMouseButtons.Name = "comboMouseButtons";
-            this.comboMouseButtons.Size = new System.Drawing.Size(148, 21);
+            this.comboMouseButtons.Size = new System.Drawing.Size(220, 28);
             this.comboMouseButtons.TabIndex = 3;
             this.comboMouseButtons.SelectedIndexChanged += new System.EventHandler(this.comboMouseButtons_SelectedIndexChanged);
             // 
@@ -1185,9 +1261,10 @@
             // 
             this.radioMouseModeRelease.AutoSize = true;
             this.radioMouseModeRelease.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.radioMouseModeRelease.Location = new System.Drawing.Point(6, 42);
+            this.radioMouseModeRelease.Location = new System.Drawing.Point(9, 65);
+            this.radioMouseModeRelease.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.radioMouseModeRelease.Name = "radioMouseModeRelease";
-            this.radioMouseModeRelease.Size = new System.Drawing.Size(120, 18);
+            this.radioMouseModeRelease.Size = new System.Drawing.Size(166, 25);
             this.radioMouseModeRelease.TabIndex = 1;
             this.radioMouseModeRelease.TabStop = true;
             this.radioMouseModeRelease.Text = "Drag to Accelerate";
@@ -1197,9 +1274,10 @@
             // 
             this.radioMouseModeHold.AutoSize = true;
             this.radioMouseModeHold.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.radioMouseModeHold.Location = new System.Drawing.Point(6, 19);
+            this.radioMouseModeHold.Location = new System.Drawing.Point(9, 29);
+            this.radioMouseModeHold.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.radioMouseModeHold.Name = "radioMouseModeHold";
-            this.radioMouseModeHold.Size = new System.Drawing.Size(88, 18);
+            this.radioMouseModeHold.Size = new System.Drawing.Size(120, 25);
             this.radioMouseModeHold.TabIndex = 0;
             this.radioMouseModeHold.TabStop = true;
             this.radioMouseModeHold.Text = "Drag && Hold";
@@ -1216,18 +1294,20 @@
             "Jump/Confirm",
             "Action",
             "Flute"});
-            this.comboMouseActions.Location = new System.Drawing.Point(138, 35);
+            this.comboMouseActions.Location = new System.Drawing.Point(207, 54);
+            this.comboMouseActions.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboMouseActions.Name = "comboMouseActions";
-            this.comboMouseActions.Size = new System.Drawing.Size(92, 21);
+            this.comboMouseActions.Size = new System.Drawing.Size(136, 28);
             this.comboMouseActions.TabIndex = 2;
             this.comboMouseActions.SelectedIndexChanged += new System.EventHandler(this.comboMouseActions_SelectedIndexChanged);
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(135, 19);
+            this.label18.Location = new System.Drawing.Point(202, 29);
+            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(40, 13);
+            this.label18.Size = new System.Drawing.Size(58, 20);
             this.label18.TabIndex = 0;
             this.label18.Text = "Action:";
             // 
@@ -1242,9 +1322,11 @@
             this.groupBoxController.Controls.Add(this.controllerConfigAdd);
             this.groupBoxController.Controls.Add(this.tableLayoutPanel1);
             this.groupBoxController.Controls.Add(this.controllerConfigRemove);
-            this.groupBoxController.Location = new System.Drawing.Point(6, 80);
+            this.groupBoxController.Location = new System.Drawing.Point(9, 123);
+            this.groupBoxController.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBoxController.Name = "groupBoxController";
-            this.groupBoxController.Size = new System.Drawing.Size(440, 293);
+            this.groupBoxController.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBoxController.Size = new System.Drawing.Size(660, 451);
             this.groupBoxController.TabIndex = 1;
             this.groupBoxController.TabStop = false;
             this.groupBoxController.Text = "Controller (DirectInput)";
@@ -1252,9 +1334,10 @@
             // controllerConfigName
             // 
             this.controllerConfigName.Enabled = false;
-            this.controllerConfigName.Location = new System.Drawing.Point(272, 76);
+            this.controllerConfigName.Location = new System.Drawing.Point(408, 117);
+            this.controllerConfigName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.controllerConfigName.Name = "controllerConfigName";
-            this.controllerConfigName.Size = new System.Drawing.Size(112, 20);
+            this.controllerConfigName.Size = new System.Drawing.Size(166, 26);
             this.controllerConfigName.TabIndex = 5;
             this.controllerConfigName.TextChanged += new System.EventHandler(this.controllerConfigName_TextChanged);
             // 
@@ -1263,9 +1346,10 @@
             this.controllerConfigSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.controllerConfigSelect.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.controllerConfigSelect.FormattingEnabled = true;
-            this.controllerConfigSelect.Location = new System.Drawing.Point(272, 31);
+            this.controllerConfigSelect.Location = new System.Drawing.Point(408, 48);
+            this.controllerConfigSelect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.controllerConfigSelect.Name = "controllerConfigSelect";
-            this.controllerConfigSelect.Size = new System.Drawing.Size(112, 21);
+            this.controllerConfigSelect.Size = new System.Drawing.Size(166, 28);
             this.controllerConfigSelect.TabIndex = 4;
             this.controllerConfigSelect.SelectedIndexChanged += new System.EventHandler(this.controllerConfigSelect_SelectedIndexChanged);
             // 
@@ -1274,9 +1358,10 @@
             this.controllerConfigAdd.AutoSize = true;
             this.controllerConfigAdd.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.controllerConfigAdd.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.controllerConfigAdd.Location = new System.Drawing.Point(272, 102);
+            this.controllerConfigAdd.Location = new System.Drawing.Point(408, 157);
+            this.controllerConfigAdd.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.controllerConfigAdd.Name = "controllerConfigAdd";
-            this.controllerConfigAdd.Size = new System.Drawing.Size(40, 22);
+            this.controllerConfigAdd.Size = new System.Drawing.Size(52, 29);
             this.controllerConfigAdd.TabIndex = 6;
             this.controllerConfigAdd.Text = "Add";
             this.controllerConfigAdd.UseVisualStyleBackColor = true;
@@ -1290,7 +1375,8 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 19);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 29);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -1303,9 +1389,10 @@
             this.controllerConfigRemove.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.controllerConfigRemove.Enabled = false;
             this.controllerConfigRemove.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.controllerConfigRemove.Location = new System.Drawing.Point(323, 102);
+            this.controllerConfigRemove.Location = new System.Drawing.Point(484, 157);
+            this.controllerConfigRemove.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.controllerConfigRemove.Name = "controllerConfigRemove";
-            this.controllerConfigRemove.Size = new System.Drawing.Size(61, 22);
+            this.controllerConfigRemove.Size = new System.Drawing.Size(82, 29);
             this.controllerConfigRemove.TabIndex = 7;
             this.controllerConfigRemove.Text = "Remove";
             this.controllerConfigRemove.UseVisualStyleBackColor = true;
@@ -1315,10 +1402,11 @@
             // 
             this.tabPageSound.Controls.Add(this.groupBox_SoundVolume);
             this.tabPageSound.Controls.Add(this.groupBox_SoundConfig);
-            this.tabPageSound.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSound.Location = new System.Drawing.Point(4, 29);
+            this.tabPageSound.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageSound.Name = "tabPageSound";
-            this.tabPageSound.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSound.Size = new System.Drawing.Size(452, 421);
+            this.tabPageSound.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageSound.Size = new System.Drawing.Size(682, 655);
             this.tabPageSound.TabIndex = 4;
             this.tabPageSound.Text = "Sound";
             this.tabPageSound.UseVisualStyleBackColor = true;
@@ -1327,26 +1415,71 @@
             // 
             this.groupBox_SoundVolume.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox_SoundVolume.Controls.Add(this.labelSEVol);
+            this.groupBox_SoundVolume.Controls.Add(this.trackBarSEVol);
+            this.groupBox_SoundVolume.Controls.Add(this.labelSEVolText);
             this.groupBox_SoundVolume.Controls.Add(this.labelVoiceVol);
             this.groupBox_SoundVolume.Controls.Add(this.labelMusicVol);
             this.groupBox_SoundVolume.Controls.Add(this.trackBarVoiceVol);
             this.groupBox_SoundVolume.Controls.Add(this.label13);
             this.groupBox_SoundVolume.Controls.Add(this.trackBarMusicVol);
             this.groupBox_SoundVolume.Controls.Add(this.label14);
-            this.groupBox_SoundVolume.Location = new System.Drawing.Point(6, 77);
+            this.groupBox_SoundVolume.Location = new System.Drawing.Point(9, 118);
+            this.groupBox_SoundVolume.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox_SoundVolume.Name = "groupBox_SoundVolume";
-            this.groupBox_SoundVolume.Size = new System.Drawing.Size(440, 114);
+            this.groupBox_SoundVolume.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox_SoundVolume.Size = new System.Drawing.Size(660, 242);
             this.groupBox_SoundVolume.TabIndex = 3;
             this.groupBox_SoundVolume.TabStop = false;
             this.groupBox_SoundVolume.Text = "Volume";
+            // 
+            // labelSEVol
+            // 
+            this.labelSEVol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelSEVol.AutoSize = true;
+            this.labelSEVol.Enabled = false;
+            this.labelSEVol.Location = new System.Drawing.Point(610, 179);
+            this.labelSEVol.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelSEVol.Name = "labelSEVol";
+            this.labelSEVol.Size = new System.Drawing.Size(36, 20);
+            this.labelSEVol.TabIndex = 10;
+            this.labelSEVol.Text = "100";
+            // 
+            // trackBarSEVol
+            // 
+            this.trackBarSEVol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBarSEVol.BackColor = System.Drawing.SystemColors.Window;
+            this.trackBarSEVol.Enabled = false;
+            this.trackBarSEVol.Location = new System.Drawing.Point(130, 179);
+            this.trackBarSEVol.Margin = new System.Windows.Forms.Padding(0);
+            this.trackBarSEVol.Maximum = 100;
+            this.trackBarSEVol.Name = "trackBarSEVol";
+            this.trackBarSEVol.Size = new System.Drawing.Size(476, 45);
+            this.trackBarSEVol.TabIndex = 2;
+            this.trackBarSEVol.TickFrequency = 10;
+            this.trackBarSEVol.Value = 100;
+            this.trackBarSEVol.ValueChanged += new System.EventHandler(this.trackBarSEVol_ValueChanged);
+            // 
+            // labelSEVolText
+            // 
+            this.labelSEVolText.AutoSize = true;
+            this.labelSEVolText.Enabled = false;
+            this.labelSEVolText.Location = new System.Drawing.Point(23, 179);
+            this.labelSEVolText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelSEVolText.Name = "labelSEVolText";
+            this.labelSEVolText.Size = new System.Drawing.Size(103, 20);
+            this.labelSEVolText.TabIndex = 8;
+            this.labelSEVolText.Text = "SFX Volume:";
             // 
             // labelVoiceVol
             // 
             this.labelVoiceVol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelVoiceVol.AutoSize = true;
-            this.labelVoiceVol.Location = new System.Drawing.Point(409, 67);
+            this.labelVoiceVol.Location = new System.Drawing.Point(610, 108);
+            this.labelVoiceVol.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelVoiceVol.Name = "labelVoiceVol";
-            this.labelVoiceVol.Size = new System.Drawing.Size(25, 13);
+            this.labelVoiceVol.Size = new System.Drawing.Size(36, 20);
             this.labelVoiceVol.TabIndex = 7;
             this.labelVoiceVol.Text = "100";
             // 
@@ -1354,9 +1487,10 @@
             // 
             this.labelMusicVol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelMusicVol.AutoSize = true;
-            this.labelMusicVol.Location = new System.Drawing.Point(409, 21);
+            this.labelMusicVol.Location = new System.Drawing.Point(610, 37);
+            this.labelMusicVol.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelMusicVol.Name = "labelMusicVol";
-            this.labelMusicVol.Size = new System.Drawing.Size(25, 13);
+            this.labelMusicVol.Size = new System.Drawing.Size(36, 20);
             this.labelMusicVol.TabIndex = 6;
             this.labelMusicVol.Text = "100";
             // 
@@ -1365,12 +1499,12 @@
             this.trackBarVoiceVol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarVoiceVol.BackColor = System.Drawing.SystemColors.Window;
-            this.trackBarVoiceVol.Location = new System.Drawing.Point(89, 65);
+            this.trackBarVoiceVol.Location = new System.Drawing.Point(130, 105);
             this.trackBarVoiceVol.Margin = new System.Windows.Forms.Padding(0);
             this.trackBarVoiceVol.Maximum = 100;
             this.trackBarVoiceVol.Name = "trackBarVoiceVol";
-            this.trackBarVoiceVol.Size = new System.Drawing.Size(317, 45);
-            this.trackBarVoiceVol.TabIndex = 5;
+            this.trackBarVoiceVol.Size = new System.Drawing.Size(476, 45);
+            this.trackBarVoiceVol.TabIndex = 1;
             this.trackBarVoiceVol.TickFrequency = 10;
             this.trackBarVoiceVol.Value = 100;
             this.trackBarVoiceVol.ValueChanged += new System.EventHandler(this.trackBarVoiceVol_ValueChanged);
@@ -1378,11 +1512,12 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 21);
+            this.label13.Location = new System.Drawing.Point(14, 37);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(75, 13);
+            this.label13.Size = new System.Drawing.Size(112, 20);
             this.label13.TabIndex = 3;
-            this.label13.Text = "Music volume:";
+            this.label13.Text = "Music Volume:";
             // 
             // trackBarMusicVol
             // 
@@ -1390,12 +1525,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarMusicVol.BackColor = System.Drawing.SystemColors.Window;
             this.trackBarMusicVol.LargeChange = 10;
-            this.trackBarMusicVol.Location = new System.Drawing.Point(89, 18);
+            this.trackBarMusicVol.Location = new System.Drawing.Point(130, 33);
             this.trackBarMusicVol.Margin = new System.Windows.Forms.Padding(0);
             this.trackBarMusicVol.Maximum = 100;
             this.trackBarMusicVol.Name = "trackBarMusicVol";
-            this.trackBarMusicVol.Size = new System.Drawing.Size(317, 45);
-            this.trackBarMusicVol.TabIndex = 4;
+            this.trackBarMusicVol.Size = new System.Drawing.Size(476, 45);
+            this.trackBarMusicVol.TabIndex = 0;
             this.trackBarMusicVol.TickFrequency = 10;
             this.trackBarMusicVol.Value = 100;
             this.trackBarMusicVol.ValueChanged += new System.EventHandler(this.trackBarMusicVol_ValueChanged);
@@ -1403,33 +1538,53 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(7, 67);
+            this.label14.Location = new System.Drawing.Point(15, 105);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(74, 13);
+            this.label14.Size = new System.Drawing.Size(111, 20);
             this.label14.TabIndex = 2;
-            this.label14.Text = "Voice volume:";
+            this.label14.Text = "Voice Volume:";
             // 
             // groupBox_SoundConfig
             // 
             this.groupBox_SoundConfig.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox_SoundConfig.Controls.Add(this.checkBassSE);
             this.groupBox_SoundConfig.Controls.Add(this.checkMusic);
             this.groupBox_SoundConfig.Controls.Add(this.checkSound);
             this.groupBox_SoundConfig.Controls.Add(this.check3DSound);
-            this.groupBox_SoundConfig.Location = new System.Drawing.Point(6, 6);
+            this.groupBox_SoundConfig.Location = new System.Drawing.Point(9, 9);
+            this.groupBox_SoundConfig.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox_SoundConfig.Name = "groupBox_SoundConfig";
-            this.groupBox_SoundConfig.Size = new System.Drawing.Size(440, 65);
+            this.groupBox_SoundConfig.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox_SoundConfig.Size = new System.Drawing.Size(660, 100);
             this.groupBox_SoundConfig.TabIndex = 2;
             this.groupBox_SoundConfig.TabStop = false;
             this.groupBox_SoundConfig.Text = "Sound";
+            // 
+            // checkBassSE
+            // 
+            this.checkBassSE.AutoSize = true;
+            this.checkBassSE.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.checkBassSE.Location = new System.Drawing.Point(176, 64);
+            this.checkBassSE.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.checkBassSE.Name = "checkBassSE";
+            this.checkBassSE.Size = new System.Drawing.Size(240, 25);
+            this.checkBassSE.TabIndex = 4;
+            this.checkBassSE.Text = "Use BASS for Sound Effects";
+            this.toolTip.SetToolTip(this.checkBassSE, "Experimental option to replace DirectSound with BASS. Adds a global volume contr" +
+        "ol and improves sound effects volume. May not be stable yet.");
+            this.checkBassSE.UseVisualStyleBackColor = true;
+            this.checkBassSE.CheckedChanged += new System.EventHandler(this.checkBassSE_CheckedChanged);
             // 
             // checkMusic
             // 
             this.checkMusic.AutoSize = true;
             this.checkMusic.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkMusic.Location = new System.Drawing.Point(122, 42);
+            this.checkMusic.Location = new System.Drawing.Point(176, 29);
+            this.checkMusic.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkMusic.Name = "checkMusic";
-            this.checkMusic.Size = new System.Drawing.Size(96, 18);
+            this.checkMusic.Size = new System.Drawing.Size(129, 25);
             this.checkMusic.TabIndex = 2;
             this.checkMusic.Text = "Enable Music";
             this.checkMusic.UseVisualStyleBackColor = true;
@@ -1438,9 +1593,10 @@
             // 
             this.checkSound.AutoSize = true;
             this.checkSound.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkSound.Location = new System.Drawing.Point(6, 42);
+            this.checkSound.Location = new System.Drawing.Point(8, 29);
+            this.checkSound.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkSound.Name = "checkSound";
-            this.checkSound.Size = new System.Drawing.Size(104, 18);
+            this.checkSound.Size = new System.Drawing.Size(143, 25);
             this.checkSound.TabIndex = 1;
             this.checkSound.Text = "Enable Sounds";
             this.checkSound.UseVisualStyleBackColor = true;
@@ -1449,10 +1605,11 @@
             // 
             this.check3DSound.AutoSize = true;
             this.check3DSound.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.check3DSound.Location = new System.Drawing.Point(6, 19);
+            this.check3DSound.Location = new System.Drawing.Point(8, 64);
+            this.check3DSound.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.check3DSound.Name = "check3DSound";
-            this.check3DSound.Size = new System.Drawing.Size(116, 18);
-            this.check3DSound.TabIndex = 0;
+            this.check3DSound.Size = new System.Drawing.Size(160, 25);
+            this.check3DSound.TabIndex = 3;
             this.check3DSound.Text = "Enable 3D Sound";
             this.toolTip.SetToolTip(this.check3DSound, "Enable or disable surround sound.");
             this.check3DSound.UseVisualStyleBackColor = true;
@@ -1463,10 +1620,11 @@
             this.tabPageOptions.Controls.Add(this.installURLHandlerButton);
             this.tabPageOptions.Controls.Add(this.groupBox4);
             this.tabPageOptions.Controls.Add(groupBox2);
-            this.tabPageOptions.Location = new System.Drawing.Point(4, 22);
+            this.tabPageOptions.Location = new System.Drawing.Point(4, 29);
+            this.tabPageOptions.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageOptions.Name = "tabPageOptions";
-            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageOptions.Size = new System.Drawing.Size(452, 421);
+            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageOptions.Size = new System.Drawing.Size(682, 655);
             this.tabPageOptions.TabIndex = 3;
             this.tabPageOptions.Text = "Options";
             this.tabPageOptions.UseVisualStyleBackColor = true;
@@ -1478,9 +1636,11 @@
             this.groupBox3.Controls.Add(this.buttonSaveProfile);
             this.groupBox3.Controls.Add(this.buttonLoadProfile);
             this.groupBox3.Controls.Add(this.profileNameBox);
-            this.groupBox3.Location = new System.Drawing.Point(6, 196);
+            this.groupBox3.Location = new System.Drawing.Point(9, 302);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(440, 58);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox3.Size = new System.Drawing.Size(660, 89);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Profiles";
@@ -1488,9 +1648,10 @@
             // buttonSaveProfile
             // 
             this.buttonSaveProfile.Enabled = false;
-            this.buttonSaveProfile.Location = new System.Drawing.Point(266, 19);
+            this.buttonSaveProfile.Location = new System.Drawing.Point(399, 29);
+            this.buttonSaveProfile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonSaveProfile.Name = "buttonSaveProfile";
-            this.buttonSaveProfile.Size = new System.Drawing.Size(75, 23);
+            this.buttonSaveProfile.Size = new System.Drawing.Size(112, 35);
             this.buttonSaveProfile.TabIndex = 2;
             this.buttonSaveProfile.Text = "Save";
             this.toolTip.SetToolTip(this.buttonSaveProfile, "Saves all current settings to the profile with the selected name.");
@@ -1500,9 +1661,10 @@
             // buttonLoadProfile
             // 
             this.buttonLoadProfile.Enabled = false;
-            this.buttonLoadProfile.Location = new System.Drawing.Point(185, 19);
+            this.buttonLoadProfile.Location = new System.Drawing.Point(278, 29);
+            this.buttonLoadProfile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonLoadProfile.Name = "buttonLoadProfile";
-            this.buttonLoadProfile.Size = new System.Drawing.Size(75, 23);
+            this.buttonLoadProfile.Size = new System.Drawing.Size(112, 35);
             this.buttonLoadProfile.TabIndex = 1;
             this.buttonLoadProfile.Text = "Load";
             this.toolTip.SetToolTip(this.buttonLoadProfile, "Loads the profile with the selected name.");
@@ -1514,9 +1676,10 @@
             this.profileNameBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.profileNameBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.profileNameBox.FormattingEnabled = true;
-            this.profileNameBox.Location = new System.Drawing.Point(6, 21);
+            this.profileNameBox.Location = new System.Drawing.Point(9, 32);
+            this.profileNameBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.profileNameBox.Name = "profileNameBox";
-            this.profileNameBox.Size = new System.Drawing.Size(169, 21);
+            this.profileNameBox.Size = new System.Drawing.Size(252, 28);
             this.profileNameBox.TabIndex = 0;
             this.toolTip.SetToolTip(this.profileNameBox, "Type in or select the name of a profile to load/save.");
             this.profileNameBox.TextChanged += new System.EventHandler(this.profileNameBox_TextChanged);
@@ -1526,9 +1689,10 @@
             this.installURLHandlerButton.AutoSize = true;
             this.installURLHandlerButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.installURLHandlerButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.installURLHandlerButton.Location = new System.Drawing.Point(6, 260);
+            this.installURLHandlerButton.Location = new System.Drawing.Point(9, 400);
+            this.installURLHandlerButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.installURLHandlerButton.Name = "installURLHandlerButton";
-            this.installURLHandlerButton.Size = new System.Drawing.Size(113, 22);
+            this.installURLHandlerButton.Size = new System.Drawing.Size(170, 29);
             this.installURLHandlerButton.TabIndex = 3;
             this.installURLHandlerButton.Text = "Enable 1-Click Install";
             this.installURLHandlerButton.UseVisualStyleBackColor = true;
@@ -1544,9 +1708,11 @@
             this.groupBox4.Controls.Add(this.numericUpdateFrequency);
             this.groupBox4.Controls.Add(this.comboUpdateFrequency);
             this.groupBox4.Controls.Add(this.checkUpdateStartup);
-            this.groupBox4.Location = new System.Drawing.Point(6, 100);
+            this.groupBox4.Location = new System.Drawing.Point(9, 154);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(440, 90);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox4.Size = new System.Drawing.Size(660, 138);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Updates";
@@ -1554,9 +1720,10 @@
             // buttonCheckForUpdates
             // 
             this.buttonCheckForUpdates.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonCheckForUpdates.Location = new System.Drawing.Point(259, 55);
+            this.buttonCheckForUpdates.Location = new System.Drawing.Point(388, 85);
+            this.buttonCheckForUpdates.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonCheckForUpdates.Name = "buttonCheckForUpdates";
-            this.buttonCheckForUpdates.Size = new System.Drawing.Size(75, 23);
+            this.buttonCheckForUpdates.Size = new System.Drawing.Size(112, 35);
             this.buttonCheckForUpdates.TabIndex = 8;
             this.buttonCheckForUpdates.Text = "Check Now";
             this.buttonCheckForUpdates.UseVisualStyleBackColor = true;
@@ -1565,9 +1732,10 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 40);
+            this.label4.Location = new System.Drawing.Point(9, 62);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(60, 13);
+            this.label4.Size = new System.Drawing.Size(88, 20);
             this.label4.TabIndex = 2;
             this.label4.Text = "Frequency:";
             // 
@@ -1575,16 +1743,18 @@
             // 
             this.checkUpdateModsStartup.AutoSize = true;
             this.checkUpdateModsStartup.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkUpdateModsStartup.Location = new System.Drawing.Point(133, 19);
+            this.checkUpdateModsStartup.Location = new System.Drawing.Point(200, 29);
+            this.checkUpdateModsStartup.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkUpdateModsStartup.Name = "checkUpdateModsStartup";
-            this.checkUpdateModsStartup.Size = new System.Drawing.Size(141, 18);
+            this.checkUpdateModsStartup.Size = new System.Drawing.Size(198, 25);
             this.checkUpdateModsStartup.TabIndex = 5;
             this.checkUpdateModsStartup.Text = "Check mods on startup";
             this.checkUpdateModsStartup.UseVisualStyleBackColor = true;
             // 
             // numericUpdateFrequency
             // 
-            this.numericUpdateFrequency.Location = new System.Drawing.Point(133, 57);
+            this.numericUpdateFrequency.Location = new System.Drawing.Point(200, 88);
+            this.numericUpdateFrequency.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.numericUpdateFrequency.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -1596,7 +1766,7 @@
             0,
             0});
             this.numericUpdateFrequency.Name = "numericUpdateFrequency";
-            this.numericUpdateFrequency.Size = new System.Drawing.Size(120, 20);
+            this.numericUpdateFrequency.Size = new System.Drawing.Size(180, 26);
             this.numericUpdateFrequency.TabIndex = 7;
             this.numericUpdateFrequency.Value = new decimal(new int[] {
             1,
@@ -1614,9 +1784,10 @@
             "Days",
             "Hours",
             "Weeks"});
-            this.comboUpdateFrequency.Location = new System.Drawing.Point(6, 56);
+            this.comboUpdateFrequency.Location = new System.Drawing.Point(9, 86);
+            this.comboUpdateFrequency.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboUpdateFrequency.Name = "comboUpdateFrequency";
-            this.comboUpdateFrequency.Size = new System.Drawing.Size(121, 21);
+            this.comboUpdateFrequency.Size = new System.Drawing.Size(180, 28);
             this.comboUpdateFrequency.TabIndex = 6;
             this.comboUpdateFrequency.SelectedIndexChanged += new System.EventHandler(this.comboUpdateFrequency_SelectedIndexChanged);
             // 
@@ -1624,9 +1795,10 @@
             // 
             this.checkUpdateStartup.AutoSize = true;
             this.checkUpdateStartup.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkUpdateStartup.Location = new System.Drawing.Point(6, 19);
+            this.checkUpdateStartup.Location = new System.Drawing.Point(9, 29);
+            this.checkUpdateStartup.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkUpdateStartup.Name = "checkUpdateStartup";
-            this.checkUpdateStartup.Size = new System.Drawing.Size(113, 18);
+            this.checkUpdateStartup.Size = new System.Drawing.Size(155, 25);
             this.checkUpdateStartup.TabIndex = 4;
             this.checkUpdateStartup.Text = "Check on startup";
             this.checkUpdateStartup.UseVisualStyleBackColor = true;
@@ -1636,23 +1808,24 @@
             this.tabPageDebug.Controls.Add(this.groupBox5);
             this.tabPageDebug.Controls.Add(this.groupBox1);
             this.tabPageDebug.Controls.Add(this.groupBox12);
-            this.tabPageDebug.Location = new System.Drawing.Point(4, 22);
-            this.tabPageDebug.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPageDebug.Location = new System.Drawing.Point(4, 29);
             this.tabPageDebug.Name = "tabPageDebug";
-            this.tabPageDebug.Size = new System.Drawing.Size(452, 421);
+            this.tabPageDebug.Size = new System.Drawing.Size(682, 655);
             this.tabPageDebug.TabIndex = 5;
             this.tabPageDebug.Text = "Debug";
             this.tabPageDebug.UseVisualStyleBackColor = true;
-			// 
-			// groupBox5
-			// 
-			this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-		   | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox5.Controls.Add(this.checkMaterialColor);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.checkMaterialColor);
             this.groupBox5.Controls.Add(this.checkPolyBuff);
-            this.groupBox5.Location = new System.Drawing.Point(6, 321);
+            this.groupBox5.Location = new System.Drawing.Point(9, 494);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(440, 73);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox5.Size = new System.Drawing.Size(660, 112);
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Advanced";
@@ -1661,9 +1834,10 @@
             // 
             this.checkMaterialColor.AutoSize = true;
             this.checkMaterialColor.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkMaterialColor.Location = new System.Drawing.Point(6, 43);
+            this.checkMaterialColor.Location = new System.Drawing.Point(9, 66);
+            this.checkMaterialColor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkMaterialColor.Name = "checkMaterialColor";
-            this.checkMaterialColor.Size = new System.Drawing.Size(150, 18);
+            this.checkMaterialColor.Size = new System.Drawing.Size(212, 25);
             this.checkMaterialColor.TabIndex = 1;
             this.checkMaterialColor.Text = "Disable Material Color Fix";
             this.toolTip.SetToolTip(this.checkMaterialColor, "The Mod Loader fixes models that have non-standard material colors. Tick this che" +
@@ -1674,9 +1848,10 @@
             // 
             this.checkPolyBuff.AutoSize = true;
             this.checkPolyBuff.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkPolyBuff.Location = new System.Drawing.Point(6, 19);
+            this.checkPolyBuff.Location = new System.Drawing.Point(9, 29);
+            this.checkPolyBuff.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkPolyBuff.Name = "checkPolyBuff";
-            this.checkPolyBuff.Size = new System.Drawing.Size(143, 18);
+            this.checkPolyBuff.Size = new System.Drawing.Size(202, 25);
             this.checkPolyBuff.TabIndex = 0;
             this.checkPolyBuff.Text = "Disable Vertex Color Fix";
             this.toolTip.SetToolTip(this.checkPolyBuff, "The Mod Loader fixes an issue with the game\'s renderer ignoring object vertex col" +
@@ -1691,9 +1866,11 @@
             this.groupBox1.Controls.Add(this.consoleCheckBox);
             this.groupBox1.Controls.Add(this.screenCheckBox);
             this.groupBox1.Controls.Add(this.fileCheckBox);
-            this.groupBox1.Location = new System.Drawing.Point(6, 6);
+            this.groupBox1.Location = new System.Drawing.Point(9, 9);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(440, 42);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox1.Size = new System.Drawing.Size(660, 65);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Debug Messages";
@@ -1702,9 +1879,10 @@
             // 
             this.crashLogCheckBox.AutoSize = true;
             this.crashLogCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.crashLogCheckBox.Location = new System.Drawing.Point(208, 19);
+            this.crashLogCheckBox.Location = new System.Drawing.Point(312, 29);
+            this.crashLogCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.crashLogCheckBox.Name = "crashLogCheckBox";
-            this.crashLogCheckBox.Size = new System.Drawing.Size(99, 18);
+            this.crashLogCheckBox.Size = new System.Drawing.Size(136, 25);
             this.crashLogCheckBox.TabIndex = 3;
             this.crashLogCheckBox.Text = "Crash Handler";
             this.toolTip.SetToolTip(this.crashLogCheckBox, "Displays the crash address and generates a crash dump when the game crashes.");
@@ -1714,9 +1892,10 @@
             // 
             this.consoleCheckBox.AutoSize = true;
             this.consoleCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.consoleCheckBox.Location = new System.Drawing.Point(6, 19);
+            this.consoleCheckBox.Location = new System.Drawing.Point(9, 29);
+            this.consoleCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.consoleCheckBox.Name = "consoleCheckBox";
-            this.consoleCheckBox.Size = new System.Drawing.Size(70, 18);
+            this.consoleCheckBox.Size = new System.Drawing.Size(92, 25);
             this.consoleCheckBox.TabIndex = 0;
             this.consoleCheckBox.Text = "Console";
             this.toolTip.SetToolTip(this.consoleCheckBox, "Shows a console and displays debug messages.");
@@ -1726,9 +1905,10 @@
             // 
             this.screenCheckBox.AutoSize = true;
             this.screenCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.screenCheckBox.Location = new System.Drawing.Point(82, 19);
+            this.screenCheckBox.Location = new System.Drawing.Point(123, 29);
+            this.screenCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.screenCheckBox.Name = "screenCheckBox";
-            this.screenCheckBox.Size = new System.Drawing.Size(66, 18);
+            this.screenCheckBox.Size = new System.Drawing.Size(85, 25);
             this.screenCheckBox.TabIndex = 1;
             this.screenCheckBox.Text = "Screen";
             this.toolTip.SetToolTip(this.screenCheckBox, "Displays debug messages ingame.");
@@ -1738,9 +1918,10 @@
             // 
             this.fileCheckBox.AutoSize = true;
             this.fileCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.fileCheckBox.Location = new System.Drawing.Point(154, 19);
+            this.fileCheckBox.Location = new System.Drawing.Point(231, 29);
+            this.fileCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.fileCheckBox.Name = "fileCheckBox";
-            this.fileCheckBox.Size = new System.Drawing.Size(48, 18);
+            this.fileCheckBox.Size = new System.Drawing.Size(59, 25);
             this.fileCheckBox.TabIndex = 2;
             this.fileCheckBox.Text = "File";
             this.toolTip.SetToolTip(this.fileCheckBox, "Logs debug messages to mods/SADXModLoader.log");
@@ -1776,9 +1957,11 @@
             this.groupBox12.Controls.Add(this.numericUpDownTestSpawnY);
             this.groupBox12.Controls.Add(this.comboBoxTestSpawnLevel);
             this.groupBox12.Controls.Add(this.numericUpDownTestSpawnX);
-            this.groupBox12.Location = new System.Drawing.Point(6, 55);
+            this.groupBox12.Location = new System.Drawing.Point(9, 85);
+            this.groupBox12.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(440, 260);
+            this.groupBox12.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox12.Size = new System.Drawing.Size(660, 400);
             this.groupBox12.TabIndex = 1;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Test Spawn";
@@ -1793,10 +1976,9 @@
             "Action Stage",
             "Trial",
             "Mission"});
-            this.comboBoxTestSpawnGameMode.Location = new System.Drawing.Point(100, 179);
-            this.comboBoxTestSpawnGameMode.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxTestSpawnGameMode.Location = new System.Drawing.Point(150, 275);
             this.comboBoxTestSpawnGameMode.Name = "comboBoxTestSpawnGameMode";
-            this.comboBoxTestSpawnGameMode.Size = new System.Drawing.Size(149, 21);
+            this.comboBoxTestSpawnGameMode.Size = new System.Drawing.Size(222, 28);
             this.comboBoxTestSpawnGameMode.TabIndex = 38;
             this.toolTip.SetToolTip(this.comboBoxTestSpawnGameMode, "Start the game on a specific GameMode.");
             // 
@@ -1804,10 +1986,9 @@
             // 
             this.checkBoxTestSpawnGameMode.AutoSize = true;
             this.checkBoxTestSpawnGameMode.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBoxTestSpawnGameMode.Location = new System.Drawing.Point(6, 179);
-            this.checkBoxTestSpawnGameMode.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnGameMode.Location = new System.Drawing.Point(9, 275);
             this.checkBoxTestSpawnGameMode.Name = "checkBoxTestSpawnGameMode";
-            this.checkBoxTestSpawnGameMode.Size = new System.Drawing.Size(90, 18);
+            this.checkBoxTestSpawnGameMode.Size = new System.Drawing.Size(122, 25);
             this.checkBoxTestSpawnGameMode.TabIndex = 37;
             this.checkBoxTestSpawnGameMode.Text = "GameMode:";
             this.toolTip.SetToolTip(this.checkBoxTestSpawnGameMode, "Start the game on a specific GameMode.");
@@ -1817,9 +1998,10 @@
             // labelTestSpawnWarning
             // 
             this.labelTestSpawnWarning.AutoSize = true;
-            this.labelTestSpawnWarning.Location = new System.Drawing.Point(90, 236);
+            this.labelTestSpawnWarning.Location = new System.Drawing.Point(135, 363);
+            this.labelTestSpawnWarning.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTestSpawnWarning.Name = "labelTestSpawnWarning";
-            this.labelTestSpawnWarning.Size = new System.Drawing.Size(293, 13);
+            this.labelTestSpawnWarning.Size = new System.Drawing.Size(431, 20);
             this.labelTestSpawnWarning.TabIndex = 36;
             this.labelTestSpawnWarning.Text = "Overriding levels or characters in events may cause crashes.";
             this.labelTestSpawnWarning.Visible = false;
@@ -1827,10 +2009,9 @@
             // labelTestSpawnTime
             // 
             this.labelTestSpawnTime.AutoSize = true;
-            this.labelTestSpawnTime.Location = new System.Drawing.Point(253, 47);
-            this.labelTestSpawnTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnTime.Location = new System.Drawing.Point(380, 72);
             this.labelTestSpawnTime.Name = "labelTestSpawnTime";
-            this.labelTestSpawnTime.Size = new System.Drawing.Size(33, 13);
+            this.labelTestSpawnTime.Size = new System.Drawing.Size(47, 20);
             this.labelTestSpawnTime.TabIndex = 35;
             this.labelTestSpawnTime.Text = "Time:";
             this.labelTestSpawnTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -1845,19 +2026,19 @@
             "Day",
             "Evening",
             "Night"});
-            this.comboBoxTestSpawnTime.Location = new System.Drawing.Point(291, 44);
+            this.comboBoxTestSpawnTime.Location = new System.Drawing.Point(436, 68);
+            this.comboBoxTestSpawnTime.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBoxTestSpawnTime.Name = "comboBoxTestSpawnTime";
-            this.comboBoxTestSpawnTime.Size = new System.Drawing.Size(61, 21);
+            this.comboBoxTestSpawnTime.Size = new System.Drawing.Size(90, 28);
             this.comboBoxTestSpawnTime.TabIndex = 9;
             // 
             // checkBoxTestSpawnAngleHex
             // 
             this.checkBoxTestSpawnAngleHex.AutoSize = true;
             this.checkBoxTestSpawnAngleHex.Enabled = false;
-            this.checkBoxTestSpawnAngleHex.Location = new System.Drawing.Point(326, 122);
-            this.checkBoxTestSpawnAngleHex.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnAngleHex.Location = new System.Drawing.Point(489, 188);
             this.checkBoxTestSpawnAngleHex.Name = "checkBoxTestSpawnAngleHex";
-            this.checkBoxTestSpawnAngleHex.Size = new System.Drawing.Size(45, 17);
+            this.checkBoxTestSpawnAngleHex.Size = new System.Drawing.Size(56, 24);
             this.checkBoxTestSpawnAngleHex.TabIndex = 15;
             this.checkBoxTestSpawnAngleHex.Text = "Hex";
             this.toolTip.SetToolTip(this.checkBoxTestSpawnAngleHex, "Display character Y rotation as hexadecimal.");
@@ -1868,10 +2049,9 @@
             // 
             this.checkBoxTestSpawnPosition.AutoSize = true;
             this.checkBoxTestSpawnPosition.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBoxTestSpawnPosition.Location = new System.Drawing.Point(6, 71);
-            this.checkBoxTestSpawnPosition.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnPosition.Location = new System.Drawing.Point(9, 109);
             this.checkBoxTestSpawnPosition.Name = "checkBoxTestSpawnPosition";
-            this.checkBoxTestSpawnPosition.Size = new System.Drawing.Size(72, 18);
+            this.checkBoxTestSpawnPosition.Size = new System.Drawing.Size(94, 25);
             this.checkBoxTestSpawnPosition.TabIndex = 10;
             this.checkBoxTestSpawnPosition.Text = "Position:";
             this.toolTip.SetToolTip(this.checkBoxTestSpawnPosition, "Force character spawn position.");
@@ -1880,10 +2060,9 @@
             // 
             // buttonTestSpawnPlay
             // 
-            this.buttonTestSpawnPlay.Location = new System.Drawing.Point(5, 229);
-            this.buttonTestSpawnPlay.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonTestSpawnPlay.Location = new System.Drawing.Point(8, 352);
             this.buttonTestSpawnPlay.Name = "buttonTestSpawnPlay";
-            this.buttonTestSpawnPlay.Size = new System.Drawing.Size(82, 26);
+            this.buttonTestSpawnPlay.Size = new System.Drawing.Size(123, 40);
             this.buttonTestSpawnPlay.TabIndex = 20;
             this.buttonTestSpawnPlay.Text = "Play";
             this.toolTip.SetToolTip(this.buttonTestSpawnPlay, "Run the game with the above Test Spawn settings.");
@@ -1895,10 +2074,9 @@
             this.comboBoxTestSpawnEvent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTestSpawnEvent.Enabled = false;
             this.comboBoxTestSpawnEvent.FormattingEnabled = true;
-            this.comboBoxTestSpawnEvent.Location = new System.Drawing.Point(73, 148);
-            this.comboBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxTestSpawnEvent.Location = new System.Drawing.Point(110, 228);
             this.comboBoxTestSpawnEvent.Name = "comboBoxTestSpawnEvent";
-            this.comboBoxTestSpawnEvent.Size = new System.Drawing.Size(313, 21);
+            this.comboBoxTestSpawnEvent.Size = new System.Drawing.Size(468, 28);
             this.comboBoxTestSpawnEvent.TabIndex = 17;
             this.toolTip.SetToolTip(this.comboBoxTestSpawnEvent, "Start the game on a specific cutscene.");
             // 
@@ -1906,10 +2084,9 @@
             // 
             this.checkBoxTestSpawnEvent.AutoSize = true;
             this.checkBoxTestSpawnEvent.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBoxTestSpawnEvent.Location = new System.Drawing.Point(6, 150);
-            this.checkBoxTestSpawnEvent.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnEvent.Location = new System.Drawing.Point(9, 231);
             this.checkBoxTestSpawnEvent.Name = "checkBoxTestSpawnEvent";
-            this.checkBoxTestSpawnEvent.Size = new System.Drawing.Size(63, 18);
+            this.checkBoxTestSpawnEvent.Size = new System.Drawing.Size(79, 25);
             this.checkBoxTestSpawnEvent.TabIndex = 16;
             this.checkBoxTestSpawnEvent.Text = "Event:";
             this.toolTip.SetToolTip(this.checkBoxTestSpawnEvent, "Start the game on a specific cutscene.");
@@ -1920,10 +2097,9 @@
             // 
             this.checkBoxTestSpawnCharacter.AutoSize = true;
             this.checkBoxTestSpawnCharacter.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBoxTestSpawnCharacter.Location = new System.Drawing.Point(6, 46);
-            this.checkBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnCharacter.Location = new System.Drawing.Point(9, 71);
             this.checkBoxTestSpawnCharacter.Name = "checkBoxTestSpawnCharacter";
-            this.checkBoxTestSpawnCharacter.Size = new System.Drawing.Size(81, 18);
+            this.checkBoxTestSpawnCharacter.Size = new System.Drawing.Size(108, 25);
             this.checkBoxTestSpawnCharacter.TabIndex = 7;
             this.checkBoxTestSpawnCharacter.Text = "Character:";
             this.toolTip.SetToolTip(this.checkBoxTestSpawnCharacter, "Start the game with a specific character.");
@@ -1934,10 +2110,9 @@
             // 
             this.checkBoxTestSpawnLevel.AutoSize = true;
             this.checkBoxTestSpawnLevel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBoxTestSpawnLevel.Location = new System.Drawing.Point(6, 21);
-            this.checkBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnLevel.Location = new System.Drawing.Point(9, 32);
             this.checkBoxTestSpawnLevel.Name = "checkBoxTestSpawnLevel";
-            this.checkBoxTestSpawnLevel.Size = new System.Drawing.Size(61, 18);
+            this.checkBoxTestSpawnLevel.Size = new System.Drawing.Size(75, 25);
             this.checkBoxTestSpawnLevel.TabIndex = 4;
             this.checkBoxTestSpawnLevel.Text = "Level:";
             this.toolTip.SetToolTip(this.checkBoxTestSpawnLevel, "Start the game on a specific level.");
@@ -1959,25 +2134,23 @@
             "Gamma",
             "Big",
             "Metal Sonic"});
-            this.comboBoxTestSpawnCharacter.Location = new System.Drawing.Point(93, 44);
-            this.comboBoxTestSpawnCharacter.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxTestSpawnCharacter.Location = new System.Drawing.Point(140, 68);
             this.comboBoxTestSpawnCharacter.Name = "comboBoxTestSpawnCharacter";
-            this.comboBoxTestSpawnCharacter.Size = new System.Drawing.Size(149, 21);
+            this.comboBoxTestSpawnCharacter.Size = new System.Drawing.Size(222, 28);
             this.comboBoxTestSpawnCharacter.TabIndex = 8;
             this.toolTip.SetToolTip(this.comboBoxTestSpawnCharacter, "Start the game with a specific character.");
             // 
             // numericUpDownTestSpawnAngle
             // 
             this.numericUpDownTestSpawnAngle.Enabled = false;
-            this.numericUpDownTestSpawnAngle.Location = new System.Drawing.Point(242, 120);
-            this.numericUpDownTestSpawnAngle.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnAngle.Location = new System.Drawing.Point(363, 185);
             this.numericUpDownTestSpawnAngle.Maximum = new decimal(new int[] {
             65536,
             0,
             0,
             0});
             this.numericUpDownTestSpawnAngle.Name = "numericUpDownTestSpawnAngle";
-            this.numericUpDownTestSpawnAngle.Size = new System.Drawing.Size(80, 20);
+            this.numericUpDownTestSpawnAngle.Size = new System.Drawing.Size(120, 26);
             this.numericUpDownTestSpawnAngle.TabIndex = 14;
             this.toolTip.SetToolTip(this.numericUpDownTestSpawnAngle, "Character Y Rotation.");
             // 
@@ -1985,10 +2158,9 @@
             // 
             this.labelTestSpawnAngle.AutoSize = true;
             this.labelTestSpawnAngle.Enabled = false;
-            this.labelTestSpawnAngle.Location = new System.Drawing.Point(201, 122);
-            this.labelTestSpawnAngle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnAngle.Location = new System.Drawing.Point(302, 188);
             this.labelTestSpawnAngle.Name = "labelTestSpawnAngle";
-            this.labelTestSpawnAngle.Size = new System.Drawing.Size(37, 13);
+            this.labelTestSpawnAngle.Size = new System.Drawing.Size(54, 20);
             this.labelTestSpawnAngle.TabIndex = 29;
             this.labelTestSpawnAngle.Text = "Angle:";
             this.toolTip.SetToolTip(this.labelTestSpawnAngle, "Character Y Rotation.");
@@ -1997,10 +2169,9 @@
             // 
             this.labelTestSpawnY.AutoSize = true;
             this.labelTestSpawnY.Enabled = false;
-            this.labelTestSpawnY.Location = new System.Drawing.Point(114, 97);
-            this.labelTestSpawnY.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnY.Location = new System.Drawing.Point(171, 149);
             this.labelTestSpawnY.Name = "labelTestSpawnY";
-            this.labelTestSpawnY.Size = new System.Drawing.Size(17, 13);
+            this.labelTestSpawnY.Size = new System.Drawing.Size(24, 20);
             this.labelTestSpawnY.TabIndex = 24;
             this.labelTestSpawnY.Text = "Y:";
             this.toolTip.SetToolTip(this.labelTestSpawnY, "Character Y Position.");
@@ -2008,8 +2179,7 @@
             // numericUpDownTestSpawnSaveID
             // 
             this.numericUpDownTestSpawnSaveID.Enabled = false;
-            this.numericUpDownTestSpawnSaveID.Location = new System.Drawing.Point(127, 205);
-            this.numericUpDownTestSpawnSaveID.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnSaveID.Location = new System.Drawing.Point(190, 315);
             this.numericUpDownTestSpawnSaveID.Maximum = new decimal(new int[] {
             99,
             0,
@@ -2021,7 +2191,7 @@
             0,
             0});
             this.numericUpDownTestSpawnSaveID.Name = "numericUpDownTestSpawnSaveID";
-            this.numericUpDownTestSpawnSaveID.Size = new System.Drawing.Size(51, 20);
+            this.numericUpDownTestSpawnSaveID.Size = new System.Drawing.Size(76, 26);
             this.numericUpDownTestSpawnSaveID.TabIndex = 19;
             this.toolTip.SetToolTip(this.numericUpDownTestSpawnSaveID, "File ID to load, i.e. 1 is SonicAdventureDX01.snc.");
             this.numericUpDownTestSpawnSaveID.Value = new decimal(new int[] {
@@ -2034,10 +2204,9 @@
             // 
             this.checkBoxTestSpawnSave.AutoSize = true;
             this.checkBoxTestSpawnSave.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBoxTestSpawnSave.Location = new System.Drawing.Point(6, 207);
-            this.checkBoxTestSpawnSave.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxTestSpawnSave.Location = new System.Drawing.Point(9, 318);
             this.checkBoxTestSpawnSave.Name = "checkBoxTestSpawnSave";
-            this.checkBoxTestSpawnSave.Size = new System.Drawing.Size(117, 18);
+            this.checkBoxTestSpawnSave.Size = new System.Drawing.Size(159, 25);
             this.checkBoxTestSpawnSave.TabIndex = 18;
             this.checkBoxTestSpawnSave.Text = "Save Redirection:";
             this.toolTip.SetToolTip(this.checkBoxTestSpawnSave, "Force the game to load a specific save file.");
@@ -2048,10 +2217,9 @@
             // 
             this.labelTestSpawnX.AutoSize = true;
             this.labelTestSpawnX.Enabled = false;
-            this.labelTestSpawnX.Location = new System.Drawing.Point(9, 97);
-            this.labelTestSpawnX.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnX.Location = new System.Drawing.Point(14, 149);
             this.labelTestSpawnX.Name = "labelTestSpawnX";
-            this.labelTestSpawnX.Size = new System.Drawing.Size(17, 13);
+            this.labelTestSpawnX.Size = new System.Drawing.Size(24, 20);
             this.labelTestSpawnX.TabIndex = 23;
             this.labelTestSpawnX.Text = "X:";
             this.toolTip.SetToolTip(this.labelTestSpawnX, "Character X Position.");
@@ -2060,10 +2228,9 @@
             // 
             this.labelTestSpawnAct.AutoSize = true;
             this.labelTestSpawnAct.Enabled = false;
-            this.labelTestSpawnAct.Location = new System.Drawing.Point(260, 21);
-            this.labelTestSpawnAct.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnAct.Location = new System.Drawing.Point(390, 32);
             this.labelTestSpawnAct.Name = "labelTestSpawnAct";
-            this.labelTestSpawnAct.Size = new System.Drawing.Size(26, 13);
+            this.labelTestSpawnAct.Size = new System.Drawing.Size(37, 20);
             this.labelTestSpawnAct.TabIndex = 5;
             this.labelTestSpawnAct.Text = "Act:";
             this.toolTip.SetToolTip(this.labelTestSpawnAct, "Act ID (zero-based).");
@@ -2072,10 +2239,9 @@
             // 
             this.labelTestSpawnZ.AutoSize = true;
             this.labelTestSpawnZ.Enabled = false;
-            this.labelTestSpawnZ.Location = new System.Drawing.Point(221, 97);
-            this.labelTestSpawnZ.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTestSpawnZ.Location = new System.Drawing.Point(332, 149);
             this.labelTestSpawnZ.Name = "labelTestSpawnZ";
-            this.labelTestSpawnZ.Size = new System.Drawing.Size(17, 13);
+            this.labelTestSpawnZ.Size = new System.Drawing.Size(23, 20);
             this.labelTestSpawnZ.TabIndex = 25;
             this.labelTestSpawnZ.Text = "Z:";
             this.toolTip.SetToolTip(this.labelTestSpawnZ, "Character Z Position.");
@@ -2083,23 +2249,21 @@
             // numericUpDownTestSpawnAct
             // 
             this.numericUpDownTestSpawnAct.Enabled = false;
-            this.numericUpDownTestSpawnAct.Location = new System.Drawing.Point(291, 20);
-            this.numericUpDownTestSpawnAct.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnAct.Location = new System.Drawing.Point(436, 31);
             this.numericUpDownTestSpawnAct.Maximum = new decimal(new int[] {
             6,
             0,
             0,
             0});
             this.numericUpDownTestSpawnAct.Name = "numericUpDownTestSpawnAct";
-            this.numericUpDownTestSpawnAct.Size = new System.Drawing.Size(61, 20);
+            this.numericUpDownTestSpawnAct.Size = new System.Drawing.Size(92, 26);
             this.numericUpDownTestSpawnAct.TabIndex = 6;
             this.toolTip.SetToolTip(this.numericUpDownTestSpawnAct, "Act ID (zero-based).");
             // 
             // numericUpDownTestSpawnZ
             // 
             this.numericUpDownTestSpawnZ.Enabled = false;
-            this.numericUpDownTestSpawnZ.Location = new System.Drawing.Point(242, 95);
-            this.numericUpDownTestSpawnZ.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnZ.Location = new System.Drawing.Point(363, 146);
             this.numericUpDownTestSpawnZ.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -2111,15 +2275,14 @@
             0,
             -2147483648});
             this.numericUpDownTestSpawnZ.Name = "numericUpDownTestSpawnZ";
-            this.numericUpDownTestSpawnZ.Size = new System.Drawing.Size(80, 20);
+            this.numericUpDownTestSpawnZ.Size = new System.Drawing.Size(120, 26);
             this.numericUpDownTestSpawnZ.TabIndex = 13;
             this.toolTip.SetToolTip(this.numericUpDownTestSpawnZ, "Character Z Position.");
             // 
             // numericUpDownTestSpawnY
             // 
             this.numericUpDownTestSpawnY.Enabled = false;
-            this.numericUpDownTestSpawnY.Location = new System.Drawing.Point(135, 95);
-            this.numericUpDownTestSpawnY.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnY.Location = new System.Drawing.Point(202, 146);
             this.numericUpDownTestSpawnY.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -2131,7 +2294,7 @@
             0,
             -2147483648});
             this.numericUpDownTestSpawnY.Name = "numericUpDownTestSpawnY";
-            this.numericUpDownTestSpawnY.Size = new System.Drawing.Size(80, 20);
+            this.numericUpDownTestSpawnY.Size = new System.Drawing.Size(120, 26);
             this.numericUpDownTestSpawnY.TabIndex = 12;
             this.toolTip.SetToolTip(this.numericUpDownTestSpawnY, "Character Y Position.");
             // 
@@ -2184,18 +2347,16 @@
             "Egg Carrier Garden",
             "Mystic Ruins Garden",
             "Chao Race"});
-            this.comboBoxTestSpawnLevel.Location = new System.Drawing.Point(93, 19);
-            this.comboBoxTestSpawnLevel.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxTestSpawnLevel.Location = new System.Drawing.Point(140, 29);
             this.comboBoxTestSpawnLevel.Name = "comboBoxTestSpawnLevel";
-            this.comboBoxTestSpawnLevel.Size = new System.Drawing.Size(149, 21);
+            this.comboBoxTestSpawnLevel.Size = new System.Drawing.Size(222, 28);
             this.comboBoxTestSpawnLevel.TabIndex = 5;
             this.toolTip.SetToolTip(this.comboBoxTestSpawnLevel, "Start the game on a specific level.");
             // 
             // numericUpDownTestSpawnX
             // 
             this.numericUpDownTestSpawnX.Enabled = false;
-            this.numericUpDownTestSpawnX.Location = new System.Drawing.Point(30, 95);
-            this.numericUpDownTestSpawnX.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownTestSpawnX.Location = new System.Drawing.Point(45, 146);
             this.numericUpDownTestSpawnX.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -2207,7 +2368,7 @@
             0,
             -2147483648});
             this.numericUpDownTestSpawnX.Name = "numericUpDownTestSpawnX";
-            this.numericUpDownTestSpawnX.Size = new System.Drawing.Size(80, 20);
+            this.numericUpDownTestSpawnX.Size = new System.Drawing.Size(120, 26);
             this.numericUpDownTestSpawnX.TabIndex = 11;
             this.toolTip.SetToolTip(this.numericUpDownTestSpawnX, "Character X Position.");
             // 
@@ -2288,17 +2449,18 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(458, 503);
+            this.ClientSize = new System.Drawing.Size(687, 774);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.installButton);
             this.Controls.Add(this.saveAndPlayButton);
             this.Controls.Add(this.saveButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(422, 495);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.MinimumSize = new System.Drawing.Size(625, 741);
             this.Name = "MainForm";
-            this.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.Padding = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "SADX Mod Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -2330,6 +2492,7 @@
             this.tabPageSound.ResumeLayout(false);
             this.groupBox_SoundVolume.ResumeLayout(false);
             this.groupBox_SoundVolume.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarSEVol)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarVoiceVol)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMusicVol)).EndInit();
             this.groupBox_SoundConfig.ResumeLayout(false);
@@ -2507,5 +2670,9 @@
 		private System.Windows.Forms.ColumnHeader columnHeaderCategory;
 		private System.Windows.Forms.ComboBox comboBoxTestSpawnGameMode;
 		private System.Windows.Forms.CheckBox checkBoxTestSpawnGameMode;
+		private System.Windows.Forms.Label labelSEVol;
+		private System.Windows.Forms.TrackBar trackBarSEVol;
+		private System.Windows.Forms.Label labelSEVolText;
+		private System.Windows.Forms.CheckBox checkBassSE;
 	}
 }
