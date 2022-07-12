@@ -1,3 +1,3 @@
 #pragma once
 
-void Sound_Init();
+void Sound_Init(int sevolume);

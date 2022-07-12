@@ -504,8 +504,9 @@ static int __cdecl dsPauseSndOnly_r()
 	return 0;
 }
 
-void Sound_Init()
+void Sound_Init(int sevolume)
 {
+	SEVolume = sevolume;
 	WriteJump(dsSoundServer, dsSoundServer_r);
 	WriteJump(IsndPitch, IsndPitch_r);
 	WriteJump(IsndPan, IsndPan_r);
