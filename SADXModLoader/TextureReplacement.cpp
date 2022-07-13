@@ -40,8 +40,15 @@ static const unordered_map<HRESULT, const char*> D3D_ERRORS = {
 	TOMAPSTRING(E_OUTOFMEMORY)
 };
 
+struct TexReplaceData : TexPackEntry
+{
+	int mod_index;
+	string path;
+};
+
 static unordered_map<string, vector<TexPackEntry>> raw_cache;
 static unordered_map<string, vector<pvmx::DictionaryEntry>> archive_cache;
+static unordered_map<string, unordered_map<string, TexReplaceData>*> replace_cache;
 static bool was_loading = false;
 
 DataArray(NJS_TEXPALETTE*, unk_3CFC000, 0x3CFC000, 0);
@@ -63,6 +70,71 @@ void texpack::init()
 	WriteJump(static_cast<void*>(LoadPvmMEM2), LoadPvmMEM2_r);
 	WriteJump(static_cast<void*>(njLoadTexturePvmFile), njLoadTexturePvmFile_r);
 }
+
+void ScanTextureReplaceFolder(const string& srcPath, int modIndex)
+{
+	WIN32_FIND_DATAA data;
+	char path[MAX_PATH];
+	snprintf(path, sizeof(path), "%s\\*", srcPath.c_str());
+	auto hFind = FindFirstFileA(path, &data);
+
+	string lower = srcPath;
+	transform(lower.begin(), lower.end(), lower.begin(), tolower);
+
+	// No files found.
+	if (hFind == INVALID_HANDLE_VALUE)
+	{
+		return;
+	}
+
+	do
+	{
+		// NOTE: This will hide *all* files starting with '.'.
+		// SADX doesn't use any files starting with '.',
+		// so this won't cause any problems.
+		if (data.cFileName[0] == '.')
+		{
+			continue;
+		}
+
+		const string fileName = string(data.cFileName);
+
+		if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		{
+			string original = fileName;
+			transform(original.begin(), original.end(), original.begin(), ::tolower);
+
+			string texPack = srcPath + '\\' + fileName;
+			transform(texPack.begin(), texPack.end(), texPack.begin(), ::tolower);
+
+			// Since we don't attempt to parse this file, make sure it exists
+			// before registering an empty texture pack directory.
+			vector<TexPackEntry> index;
+			if (texpack::parse_index(texPack, index))
+			{
+				unordered_map<string, TexReplaceData>* pvmdata;
+				auto& iter = replace_cache.find(original);
+				if (iter == replace_cache.end())
+				{
+					pvmdata = new unordered_map<string, TexReplaceData>;
+					replace_cache.insert({ original, pvmdata });
+				}
+				else
+					pvmdata = iter->second;
+				for (const auto& idx : index)
+				{
+					string nameNoExt = idx.name;
+					StripExtension(nameNoExt);
+					transform(nameNoExt.begin(), nameNoExt.end(), nameNoExt.begin(), tolower);
+					(*pvmdata)[nameNoExt] = { idx.global_index, idx.name, idx.width, idx.height, modIndex, texPack };
+				}
+			}
+		}
+	} while (FindNextFileA(hFind, &data) != 0);
+
+	FindClose(hFind);
+}
+
 
 inline void check_loading()
 {
@@ -565,9 +637,31 @@ static bool replace_pvm(const string& path, NJS_TEXLIST* texlist)
 
 	dynamic_expand(texlist, index.size());
 
+	transform(pvm_name.begin(), pvm_name.end(), pvm_name.begin(), ::tolower);
+
+	const unordered_map<string, TexReplaceData>* replacements = nullptr;
+	const auto& repiter = replace_cache.find(pvm_name);
+	if (repiter != replace_cache.cend())
+		replacements = repiter->second;
+
+	string pvm_path = "system\\" + pvm_name + ".pvm";
+	int modIdx = sadx_fileMap.getModIndex(pvm_path.c_str());
+
 	for (uint32_t i = 0; i < texlist->nbTexture; i++)
 	{
-		auto texture = load_texture(path, index[i], mipmap);
+		NJS_TEXMEMLIST* texture = nullptr;
+		if (replacements)
+		{
+			auto lower = index[i].name;
+			StripExtension(lower);
+			transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+			const auto& iter2 = replacements->find(lower);
+			if (iter2 != replacements->cend() && iter2->second.mod_index >= modIdx)
+				texture = load_texture(iter2->second.path, iter2->second, mipmap);
+		}
+
+		if (!texture)
+			texture = load_texture(path, index[i], mipmap);
 
 		if (texture == nullptr)
 		{
@@ -613,12 +707,34 @@ static bool replace_pvmx(const string& path, ifstream& file, NJS_TEXLIST* texlis
 
 	dynamic_expand(texlist, index.size());
 
+	transform(pvm_name.begin(), pvm_name.end(), pvm_name.begin(), ::tolower);
+
+	const unordered_map<string, TexReplaceData>* replacements = nullptr;
+	const auto& repiter = replace_cache.find(pvm_name);
+	if (repiter != replace_cache.cend())
+		replacements = repiter->second;
+
+	string pvm_path = "system\\" + pvm_name + ".pvm";
+	int modIdx = sadx_fileMap.getModIndex(pvm_path.c_str());
+
 	for (size_t i = 0; i < index.size(); i++)
 	{
 		auto& entry = index[i];
 
-		auto texture = load_texture_stream(file, entry.offset, entry.size,
-		                                   path, entry.global_index, entry.name, mipmap, entry.width, entry.height);
+		NJS_TEXMEMLIST* texture = nullptr;
+		if (replacements)
+		{
+			auto lower = entry.name;
+			StripExtension(lower);
+			transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+			const auto& iter2 = replacements->find(lower);
+			if (iter2 != replacements->cend() && iter2->second.mod_index >= modIdx)
+				texture = load_texture(iter2->second.path, iter2->second, mipmap);
+		}
+
+		if (!texture)
+			texture = load_texture_stream(file, entry.offset, entry.size,
+			                              path, entry.global_index, entry.name, mipmap, entry.width, entry.height);
 
 		if (texture == nullptr)
 		{

@@ -1743,6 +1743,10 @@ static void __cdecl InitMods()
 		if (DirectoryExists(modTexDir))
 			sadx_fileMap.scanTextureFolder(modTexDir, i);
 
+		const string modRepTexDir = mod_dirA + "\\replacetex";
+		if (DirectoryExists(modRepTexDir))
+			ScanTextureReplaceFolder(modRepTexDir, i);
+
 		// Check if a custom EXE is required.
 		if (modinfo->hasKeyNonEmpty("EXEFile"))
 		{

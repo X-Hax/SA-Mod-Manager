@@ -9,6 +9,8 @@ struct TexPackEntry
 	uint32_t width, height;
 };
 
+void ScanTextureReplaceFolder(const std::string& srcPath, int modIndex);
+
 namespace texpack
 {
 	/**
