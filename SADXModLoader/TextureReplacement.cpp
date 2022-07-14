@@ -541,6 +541,7 @@ NJS_TEXMEMLIST* load_texture(const string& path, uint32_t global_index, const st
 
 	uint32_t mip_levels = mipmap ? D3DX_DEFAULT : 1;
 	auto texture_path = path + "\\" + name;
+	texture_path = sadx_fileMap.replaceFile(texture_path.c_str()); // allow texture files to be replaced by code
 
 	// A texture count of 0 indicates that this is an empty texture slot.
 	if (texture->count != 0)
@@ -880,6 +881,73 @@ static Sint32 LoadPvmMEM2_r(const char* filename, NJS_TEXLIST* texlist)
 	return njLoadTexturePvmFile(filename, texlist);
 }
 
+static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const void* pvmdata)
+{
+	short flags = ((const short*)pvmdata)[4];
+	int entrysize = 2;
+	if (flags & 1) // global index
+		entrysize += 4;
+	if (flags & 2) // dimensions
+		entrysize += 2;
+	if (flags & 4) // format
+		entrysize += 2;
+	if (flags & 8) // filenames
+		entrysize += 28;
+	else
+		return; // nothing we can do
+
+	string fnbase = GetBaseName(filename);
+	StripExtension(fnbase);
+	transform(fnbase.begin(), fnbase.end(), fnbase.begin(), ::tolower);
+
+	const unordered_map<string, TexReplaceData>* replacements = nullptr;
+	const auto& repiter = replace_cache.find(fnbase);
+	if (repiter != replace_cache.cend())
+		replacements = repiter->second;
+	else
+		return; // nothing to be done
+
+	int modIdx = sadx_fileMap.getModIndex(filename.c_str());
+
+	short numtex = ((const short*)pvmdata)[5];
+	const char* entry = (const char*)pvmdata + 0xE;
+	char fnbuf[29]{}; // extra null terminator at end
+	for (int i = 0; i < numtex; i++)
+	{
+		memcpy(fnbuf, entry, 28);
+		string tfn = fnbuf;
+		transform(tfn.begin(), tfn.end(), tfn.begin(), ::tolower);
+		const auto& iter2 = replacements->find(tfn);
+		if (iter2 != replacements->cend() && iter2->second.mod_index >= modIdx)
+		{
+			auto memlist = reinterpret_cast<NJS_TEXMEMLIST*>(texlist->textures[i].texaddr);
+			if (memlist->count && !--memlist->count)
+			{
+				njReleaseTextureLow(memlist);
+				memlist->globalIndex = -1;
+				memlist->bank = -1;
+				memlist->tspparambuffer = 0;
+				memlist->texparambuffer = 0;
+				memlist->texaddr = 0;
+				memlist->count = 0;
+				memlist->dummy = -1;
+				memlist->texinfo.texaddr = 0;
+				memlist->texinfo.texsurface.Type = 0;
+				memlist->texinfo.texsurface.BitDepth = 0;
+				memlist->texinfo.texsurface.PixelFormat = 0;
+				memlist->texinfo.texsurface.nWidth = 0;
+				memlist->texinfo.texsurface.nHeight = 0;
+				memlist->texinfo.texsurface.TextureSize = 0;
+				memlist->texinfo.texsurface.fSurfaceFlags = 0;
+				memlist->texinfo.texsurface.pSurface = 0;
+				memlist->texinfo.texsurface.pVirtual = 0;
+				memlist->texinfo.texsurface.pPhysical = 0;
+			}
+			texlist->textures[i].texaddr = reinterpret_cast<Uint32>(load_texture(iter2->second.path, iter2->second, true));
+		}
+	}
+}
+
 static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
 {
 	if (filename == nullptr || texList == nullptr)
@@ -888,9 +956,9 @@ static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
 	}
 
 	const std::string replaced = get_replaced_path(filename, ".PVM");
-	const std::string reaplced_extension = GetExtension(replaced);
+	const std::string replaced_extension = GetExtension(replaced);
 
-	if (!_stricmp(reaplced_extension.c_str(), "prs"))
+	if (!_stricmp(replaced_extension.c_str(), "prs"))
 	{
 		//PrintDebug("Loading PRS'd PVM: %s\n", filename);
 
@@ -901,7 +969,14 @@ static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
 			return -1;
 		}
 
-		return njLoadTexturePvmMemory(out_buf.data(), texList);
+		Sint32 result = njLoadTexturePvmMemory(out_buf.data(), texList);
+		if (result == 1)
+		{
+			string pvmname = replaced;
+			StripExtension(pvmname);
+			ReplacePVMTexs(pvmname, texList, out_buf.data());
+		}
+		return result;
 	}
 
 	std::string name = filename;
@@ -914,6 +989,8 @@ static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
 
 	Uint8* data = LoadPVx(name.c_str());
 	Sint32 result = njLoadTexturePvmMemory(data, texList);
+	if (result == 1)
+		ReplacePVMTexs(replaced, texList, data);
 	j__HeapFree_0(data);
 	return result;
 }
