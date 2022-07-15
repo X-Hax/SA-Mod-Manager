@@ -107,8 +107,6 @@ void ScanTextureReplaceFolder(const string& srcPath, int modIndex)
 			string texPack = srcPath + '\\' + fileName;
 			transform(texPack.begin(), texPack.end(), texPack.begin(), ::tolower);
 
-			// Since we don't attempt to parse this file, make sure it exists
-			// before registering an empty texture pack directory.
 			vector<TexPackEntry> index;
 			if (texpack::parse_index(texPack, index))
 			{
@@ -133,6 +131,33 @@ void ScanTextureReplaceFolder(const string& srcPath, int modIndex)
 	} while (FindNextFileA(hFind, &data) != 0);
 
 	FindClose(hFind);
+}
+
+void ReplaceTexture(const char* pvm_name, const char* tex_name, const char* file_path, uint32_t gbix, uint32_t width, uint32_t height)
+{
+	string original = pvm_name;
+	StripExtension(original);
+	transform(original.begin(), original.end(), original.begin(), ::tolower);
+
+	string texPack = GetDirectory(file_path);
+	transform(texPack.begin(), texPack.end(), texPack.begin(), ::tolower);
+
+	string texFile = GetBaseName(file_path);
+	transform(texFile.begin(), texFile.end(), texFile.begin(), ::tolower);
+
+	unordered_map<string, TexReplaceData>* pvmdata;
+	auto& iter = replace_cache.find(original);
+	if (iter == replace_cache.end())
+	{
+		pvmdata = new unordered_map<string, TexReplaceData>;
+		replace_cache.insert({ original, pvmdata });
+	}
+	else
+		pvmdata = iter->second;
+	string nameNoExt = tex_name;
+	StripExtension(nameNoExt);
+	transform(nameNoExt.begin(), nameNoExt.end(), nameNoExt.begin(), tolower);
+	(*pvmdata)[nameNoExt] = { gbix, texFile, width, height, 0, texPack };
 }
 
 
@@ -541,7 +566,6 @@ NJS_TEXMEMLIST* load_texture(const string& path, uint32_t global_index, const st
 
 	uint32_t mip_levels = mipmap ? D3DX_DEFAULT : 1;
 	auto texture_path = path + "\\" + name;
-	texture_path = sadx_fileMap.replaceFile(texture_path.c_str()); // allow texture files to be replaced by code
 
 	// A texture count of 0 indicates that this is an empty texture slot.
 	if (texture->count != 0)

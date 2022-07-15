@@ -1310,7 +1310,8 @@ static const HelperFunctions helperFunctions =
 	&PushScaleUI,
 	&PopScaleUI,
 	&SetScaleFillMode,
-	&GetScaleFillMode
+	&GetScaleFillMode,
+	&ReplaceTexture
 };
 
 static const char* const dlldatakeys[] = {
