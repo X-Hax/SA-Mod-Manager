@@ -9,6 +9,9 @@ struct TexPackEntry
 	uint32_t width, height;
 };
 
+void ScanTextureReplaceFolder(const std::string& srcPath, int modIndex);
+void ReplaceTexture(const char* pvm_name, const char* tex_name, const char* file_path, uint32_t gbix, uint32_t width, uint32_t height);
+
 namespace texpack
 {
 	/**

@@ -1310,7 +1310,8 @@ static const HelperFunctions helperFunctions =
 	&PushScaleUI,
 	&PopScaleUI,
 	&SetScaleFillMode,
-	&GetScaleFillMode
+	&GetScaleFillMode,
+	&ReplaceTexture
 };
 
 static const char* const dlldatakeys[] = {
@@ -1742,6 +1743,10 @@ static void __cdecl InitMods()
 		const string modTexDir = mod_dirA + "\\textures";
 		if (DirectoryExists(modTexDir))
 			sadx_fileMap.scanTextureFolder(modTexDir, i);
+
+		const string modRepTexDir = mod_dirA + "\\replacetex";
+		if (DirectoryExists(modRepTexDir))
+			ScanTextureReplaceFolder(modRepTexDir, i);
 
 		// Check if a custom EXE is required.
 		if (modinfo->hasKeyNonEmpty("EXEFile"))
