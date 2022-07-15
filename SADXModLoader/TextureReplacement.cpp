@@ -73,6 +73,8 @@ void texpack::init()
 
 void ScanTextureReplaceFolder(const string& srcPath, int modIndex)
 {
+	if (srcPath.size() > MAX_PATH - 3)
+		return;
 	WIN32_FIND_DATAA data;
 	char path[MAX_PATH];
 	snprintf(path, sizeof(path), "%s\\*", srcPath.c_str());
