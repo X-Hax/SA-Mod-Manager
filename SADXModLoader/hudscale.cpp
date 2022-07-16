@@ -132,6 +132,9 @@ static Trampoline* DrawGameOver_t;
 static Trampoline* DrawGameOverTC_t;
 static Trampoline* DrawGameOverHH_t;
 static Trampoline* RecapBackground_Main_t;
+static Trampoline* NowLoading_t;
+static Trampoline* NowLoading2_t;
+static Trampoline* NowLoading3_t;
 
 #pragma endregion
 
@@ -200,6 +203,21 @@ static void __cdecl TwinkleCircuit_DrawTime_r()
 static void __cdecl TwinkleCircuit_DrawTimer_r(ObjectMaster* a1)
 {
 	scale_trampoline(Align::Align_Left, false, TwinkleCircuit_DrawTimer_r, TwinkleCircuit_DrawTimer_t, a1);
+}
+
+static void __cdecl NowLoading_r()
+{
+	scale_trampoline(Align::Align_Right, false, NowLoading_r, NowLoading_t);
+}
+
+static void __cdecl NowLoading2_r()
+{
+	scale_trampoline(Align::Align_Right, false, NowLoading2_r, NowLoading2_t);
+}
+
+static void __cdecl NowLoading3_r()
+{
+	scale_trampoline(Align::Align_Right, false, NowLoading3_r, NowLoading3_t);
 }
 
 static void __cdecl TwinkleCircuit_DrawLapTimes_o(char a1, int a2, int a3)
@@ -1137,6 +1155,9 @@ static void InitializeChaoHUDs()
 
 void hudscale::initialize()
 {
+	NowLoading_t                         = new Trampoline(0x0040BDA0, 0x0040BDA5, NowLoading_r);
+	NowLoading2_t                        = new Trampoline(0x005033F0, 0x005033F5, NowLoading2_r);
+	NowLoading3_t                        = new Trampoline(0x00503450, 0x00503457, NowLoading3_r);
 	MissionCompleteScreen_Draw_t         = new Trampoline(0x00590690, 0x00590695, MissionCompleteScreen_Draw_r);
 	CharSelBg_Display_t                  = new Trampoline(0x00512450, 0x00512455, CharSelBg_Display_r);
 	TrialLevelList_Display_t             = new Trampoline(0x0050B410, 0x0050B415, TrialLevelList_Display_r);
