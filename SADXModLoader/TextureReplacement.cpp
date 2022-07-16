@@ -971,6 +971,7 @@ static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const v
 			}
 			texlist->textures[i].texaddr = reinterpret_cast<Uint32>(load_texture(iter2->second.path, iter2->second, true));
 		}
+		entry += entrysize;
 	}
 }
 
