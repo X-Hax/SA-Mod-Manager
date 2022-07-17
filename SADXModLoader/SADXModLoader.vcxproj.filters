@@ -215,6 +215,9 @@
     <ClInclude Include="include\SADXModelsNew.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\SADXMotionsNew.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
     <ClInclude Include="sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
