@@ -835,11 +835,11 @@ static bool try_texture_pack(const char* filename, NJS_TEXLIST* texlist)
 	if (IsFile(replaced))
 	{
 		ifstream pvmx(replaced, ios::in | ios::binary);
-		return pvmx::is_pvmx(pvmx) && replace_pvmx(replaced, pvmx, texlist);
+		return pvmx::is_pvmx(pvmx) && replace_pvmx(replaced, pvmx, texlist, replacements);
 	}
 
 	// Otherwise it's probably a directory, so try loading it as a texture pack.
-	return replace_pvm(replaced, texlist);
+	return replace_pvm(replaced, texlist, replacements);
 }
 
 static int __cdecl LoadSystemPVM_r(const char* filename, NJS_TEXLIST* texlist)
