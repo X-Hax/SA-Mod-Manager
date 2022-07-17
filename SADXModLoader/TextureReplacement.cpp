@@ -644,7 +644,7 @@ inline void dynamic_expand(NJS_TEXLIST* texlist, size_t count)
  * \param texlist The associated texlist.
  * \return \c true on success
  */
-static bool replace_pvm(const string& path, NJS_TEXLIST* texlist)
+static bool replace_pvm(const string& path, NJS_TEXLIST* texlist, unordered_map<string, TexReplaceData>& replacements)
 {
 	if (texlist == nullptr)
 	{
@@ -666,26 +666,18 @@ static bool replace_pvm(const string& path, NJS_TEXLIST* texlist)
 
 	transform(pvm_name.begin(), pvm_name.end(), pvm_name.begin(), ::tolower);
 
-	const unordered_map<string, TexReplaceData>* replacements = nullptr;
-	const auto& repiter = replace_cache.find(pvm_name);
-	if (repiter != replace_cache.cend())
-		replacements = repiter->second;
-
 	string pvm_path = "system\\" + pvm_name + ".pvm";
 	int modIdx = sadx_fileMap.getModIndex(pvm_path.c_str());
 
 	for (uint32_t i = 0; i < texlist->nbTexture; i++)
 	{
 		NJS_TEXMEMLIST* texture = nullptr;
-		if (replacements)
-		{
-			auto lower = index[i].name;
-			StripExtension(lower);
-			transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
-			const auto& iter2 = replacements->find(lower);
-			if (iter2 != replacements->cend() && iter2->second.mod_index >= modIdx)
-				texture = load_texture(iter2->second.path, iter2->second, mipmap);
-		}
+		auto lower = index[i].name;
+		StripExtension(lower);
+		transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+		const auto& iter2 = replacements.find(lower);
+		if (iter2 != replacements.cend() && iter2->second.mod_index >= modIdx)
+			texture = load_texture(iter2->second.path, iter2->second, mipmap);
 
 		if (!texture)
 			texture = load_texture(path, index[i], mipmap);
@@ -712,7 +704,7 @@ static bool replace_pvm(const string& path, NJS_TEXLIST* texlist)
  * \param texlist The associated texlist.
  * \return \c true on success.
  */
-static bool replace_pvmx(const string& path, ifstream& file, NJS_TEXLIST* texlist)
+static bool replace_pvmx(const string& path, ifstream& file, NJS_TEXLIST* texlist, unordered_map<string, TexReplaceData>& replacements)
 {
 	if (texlist == nullptr)
 	{
@@ -736,11 +728,6 @@ static bool replace_pvmx(const string& path, ifstream& file, NJS_TEXLIST* texlis
 
 	transform(pvm_name.begin(), pvm_name.end(), pvm_name.begin(), ::tolower);
 
-	const unordered_map<string, TexReplaceData>* replacements = nullptr;
-	const auto& repiter = replace_cache.find(pvm_name);
-	if (repiter != replace_cache.cend())
-		replacements = repiter->second;
-
 	string pvm_path = "system\\" + pvm_name + ".pvm";
 	int modIdx = sadx_fileMap.getModIndex(pvm_path.c_str());
 
@@ -749,15 +736,12 @@ static bool replace_pvmx(const string& path, ifstream& file, NJS_TEXLIST* texlis
 		auto& entry = index[i];
 
 		NJS_TEXMEMLIST* texture = nullptr;
-		if (replacements)
-		{
-			auto lower = entry.name;
-			StripExtension(lower);
-			transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
-			const auto& iter2 = replacements->find(lower);
-			if (iter2 != replacements->cend() && iter2->second.mod_index >= modIdx)
-				texture = load_texture(iter2->second.path, iter2->second, mipmap);
-		}
+		auto lower = entry.name;
+		StripExtension(lower);
+		transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+		const auto& iter2 = replacements.find(lower);
+		if (iter2 != replacements.cend() && iter2->second.mod_index >= modIdx)
+			texture = load_texture(iter2->second.path, iter2->second, mipmap);
 
 		if (!texture)
 			texture = load_texture_stream(file, entry.offset, entry.size,
@@ -793,6 +777,40 @@ static std::string get_replaced_path(const string& filename, const char* extensi
 	return replaced;
 }
 
+static void GetReplaceTextures(const char* filename, unordered_map<string, TexReplaceData>& replacements)
+{
+	auto pvm_name = GetBaseName(filename);
+	StripExtension(pvm_name);
+
+	transform(pvm_name.begin(), pvm_name.end(), pvm_name.begin(), ::tolower);
+
+	const auto& repiter = replace_cache.find(pvm_name);
+	if (repiter != replace_cache.cend())
+		for (const auto& iter2 : *repiter->second)
+		{
+			const auto& iter3 = replacements.find(iter2.first);
+			if (iter3 == replacements.end() || iter3->second.mod_index <= iter2.second.mod_index)
+				replacements[iter2.first] = iter2.second;
+		}
+
+	auto replaced = GetBaseName(get_replaced_path(filename, ".PVM"));
+	StripExtension(replaced);
+
+	transform(replaced.begin(), replaced.end(), replaced.begin(), ::tolower);
+
+	if (!replaced.compare(pvm_name))
+	{
+		const auto& repiter = replace_cache.find(replaced);
+		if (repiter != replace_cache.cend())
+			for (const auto& iter2 : *repiter->second)
+			{
+				const auto& iter3 = replacements.find(iter2.first);
+				if (iter3 == replacements.end() || iter3->second.mod_index <= iter2.second.mod_index)
+					replacements[iter2.first] = iter2.second;
+			}
+	}
+}
+
 static bool try_texture_pack(const char* filename, NJS_TEXLIST* texlist)
 {
 	string filename_str(filename);
@@ -809,6 +827,9 @@ static bool try_texture_pack(const char* filename, NJS_TEXLIST* texlist)
 	{
 		return false;
 	}
+
+	unordered_map<string, TexReplaceData> replacements;
+	GetReplaceTextures(filename, replacements);
 
 	// If the replaced path is a file, we should check if it's a PVMX archive.
 	if (IsFile(replaced))
@@ -907,7 +928,7 @@ static Sint32 LoadPvmMEM2_r(const char* filename, NJS_TEXLIST* texlist)
 	return njLoadTexturePvmFile(filename, texlist);
 }
 
-static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const void* pvmdata)
+static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const void* pvmdata, unordered_map<string, TexReplaceData>& replacements)
 {
 	short flags = ((const short*)pvmdata)[4];
 	int entrysize = 2;
@@ -922,17 +943,6 @@ static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const v
 	else
 		return; // nothing we can do
 
-	string fnbase = GetBaseName(filename);
-	StripExtension(fnbase);
-	transform(fnbase.begin(), fnbase.end(), fnbase.begin(), ::tolower);
-
-	const unordered_map<string, TexReplaceData>* replacements = nullptr;
-	const auto& repiter = replace_cache.find(fnbase);
-	if (repiter != replace_cache.cend())
-		replacements = repiter->second;
-	else
-		return; // nothing to be done
-
 	int modIdx = sadx_fileMap.getModIndex(filename.c_str());
 
 	short numtex = ((const short*)pvmdata)[5];
@@ -943,8 +953,8 @@ static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const v
 		memcpy(fnbuf, entry, 28);
 		string tfn = fnbuf;
 		transform(tfn.begin(), tfn.end(), tfn.begin(), ::tolower);
-		const auto& iter2 = replacements->find(tfn);
-		if (iter2 != replacements->cend() && iter2->second.mod_index >= modIdx)
+		const auto& iter2 = replacements.find(tfn);
+		if (iter2 != replacements.cend() && iter2->second.mod_index >= modIdx)
 		{
 			auto memlist = reinterpret_cast<NJS_TEXMEMLIST*>(texlist->textures[i].texaddr);
 			if (memlist->count && !--memlist->count)
@@ -985,6 +995,9 @@ static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
 	const std::string replaced = get_replaced_path(filename, ".PVM");
 	const std::string replaced_extension = GetExtension(replaced);
 
+	unordered_map<string, TexReplaceData> replacements;
+	GetReplaceTextures(filename, replacements);
+
 	if (!_stricmp(replaced_extension.c_str(), "prs"))
 	{
 		//PrintDebug("Loading PRS'd PVM: %s\n", filename);
@@ -1001,7 +1014,7 @@ static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
 		{
 			string pvmname = replaced;
 			StripExtension(pvmname);
-			ReplacePVMTexs(pvmname, texList, out_buf.data());
+			ReplacePVMTexs(pvmname, texList, out_buf.data(), replacements);
 		}
 		return result;
 	}
@@ -1017,7 +1030,7 @@ static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
 	Uint8* data = LoadPVx(name.c_str());
 	Sint32 result = njLoadTexturePvmMemory(data, texList);
 	if (result == 1)
-		ReplacePVMTexs(replaced, texList, data);
+		ReplacePVMTexs(replaced, texList, data, replacements);
 	j__HeapFree_0(data);
 	return result;
 }
