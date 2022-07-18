@@ -45,6 +45,7 @@ DataPointer(int, late_execMode, 0x3AB98AC); // Draw queue state (0 run; 1 skip, 
 DataPointer(task*, windtp, 0x03C5B32C); // Wind object (Sonic's quills, dandelions in Windy Valley)
 
 // Player
+DataPointer(unsigned __int8, gu8flgPlayingMetalSonic, 0x3B18DB5); // Metal Sonic flag
 DataArray(player_parameter, playerwk_default, 0x9154E8, 8);
 DataArray(task*, playertp, 0x3B42E30, 8);
 DataArray(taskwk*, playertwp, 0x3B42E10, 8);
