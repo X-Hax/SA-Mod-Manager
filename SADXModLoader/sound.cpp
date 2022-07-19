@@ -275,9 +275,9 @@ static void __cdecl IsndPitch_r(int pitch, int handleno)
 	auto& channel = bass_channels[handleno];
 	if (channel)
 	{
-		pitch = min(100000, 22050 - (int)((float)pitch * -1.5f));
-		if (pitch <= 100)
-			pitch = 0; // original
+		BASS_CHANNELINFO info;
+		BASS_ChannelGetInfo(channel, &info);
+		pitch = max(100, min(100000, info.freq - (int)((float)pitch * -1.5f)));
 		BASS_ChannelSetAttribute(channel, BASS_ATTRIB_FREQ, (float)pitch);
 	}
 }
