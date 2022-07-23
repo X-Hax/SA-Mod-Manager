@@ -44,6 +44,9 @@ DataPointer(_OBJ_LANDTABLE*, pObjLandTable, 0x3B2F718); // CurrentLandTable
 DataPointer(int, late_execMode, 0x3AB98AC); // Draw queue state (0 run; 1 skip, 2 skip and draw a black screen)
 DataPointer(task*, windtp, 0x03C5B32C); // Wind object (Sonic's quills, dandelions in Windy Valley)
 
+// Event
+DataPointer(EVINFO2, evInfo, 0x03B2C568); // Current cutscene struct
+
 // Player
 DataPointer(unsigned __int8, gu8flgPlayingMetalSonic, 0x3B18DB5); // Metal Sonic flag
 DataArray(player_parameter, playerwk_default, 0x9154E8, 8);

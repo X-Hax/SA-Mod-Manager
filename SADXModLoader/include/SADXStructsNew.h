@@ -129,6 +129,26 @@ struct colliwk
 	colliwk* hit_cwp;
 };
 
+struct thread
+{
+	thread* next;
+	thread* prev;
+	thread* parent;
+	thread* child;
+	void* sp;
+	void* spbase;
+	void(__cdecl* dest)();
+	int control;
+	int status;
+};
+
+struct EVINFO2
+{
+	void(__cdecl* func)(int);
+	thread* tp;
+	int no;
+};
+
 struct eventwk_look
 {
 	char mode;
