@@ -1073,4 +1073,9 @@ TaskFunc(title_new_exec, 0x5101A0);
 // Level objects: Windy Valley
 FunctionPointer(void, ObjectWatageDisplay, (task* tp), 0x004DFA60); // Dandelion
 
+// Level objects: Casinopolis
+FunctionPointer(void, ObjCasino_SetTexAnimInfo, (TEXANIMINFO* paniminfo, int cnt), 0x005DD900); // Animates textures using TEXANIMINFO
+FunctionPointer(void, ObjCasino_ResetTexAnimInfo, (TEXANIMINFO* paniminfo, int cnt), 0x005DD920); // Resets texture animation
+FunctionPointer(Sint32, SetObjectTexture2, (int tex), 0x005C09D0); // Sets OBJ_CASINO or OBJ_CASINO9 texlist
+
 #endif /* SADXMODLOADER_SADXFUNCTIONSNEW_H */

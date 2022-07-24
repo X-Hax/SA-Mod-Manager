@@ -2338,4 +2338,23 @@ struct ObjCmnInfo
 	unsigned __int8 copy;
 };
 
+// Texture animation used in Casinopolis
+struct TEXANIMINFO
+{
+	NJS_MATERIAL* pmat;
+	unsigned int newtexid;
+	unsigned int orgtexid;
+};
+
+// UV animation used by Casinopolis objects
+struct __declspec(align(4)) TEXPATINFO
+{
+	int patpitch;
+	int texcnt;
+	TEXANIMINFO* texaniminfo;
+	char* patinfo;
+	char nowpatnum;
+};
+
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
