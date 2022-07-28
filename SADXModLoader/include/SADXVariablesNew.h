@@ -11,6 +11,8 @@
 #include "SADXStructsNew.h"
 
 // General
+DataPointer(float, ScreenRaitoX, 0x8928C0); // Horizontal stretch (X res / 640)
+DataPointer(float, ScreenRaitoY, 0x8928C4); // Vertical stretch (Y res / 480)
 DataPointer(float, late_z_ofs___, 0x3ABD9C0); // Draw queue depth bias for models
 DataPointer(float, sp_zoffset, 0x3C4859C); // Draw queue depth bias for particles
 DataPointer(float, sa_s3_z_ofs, 0x3ABD9BC); // Draw queue depth bias for sprites drawn with saDrawSprite3D
