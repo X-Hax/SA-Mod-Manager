@@ -17,8 +17,9 @@ DataPointer(float, late_z_ofs___, 0x3ABD9C0); // Draw queue depth bias for model
 DataPointer(float, sp_zoffset, 0x3C4859C); // Draw queue depth bias for particles
 DataPointer(float, sa_s3_z_ofs, 0x3ABD9BC); // Draw queue depth bias for sprites drawn with saDrawSprite3D
 DataPointer(float, late_s3_z_ofs, 0x3ABD9B8); // Draw queue depth bias for sprites
-DataPointer(unsigned __int16, usPlayer, 0x03B22DC0); // Player ID
-DataPointer(__int16, ssGameMode, 0x3B22DE4); // GameState
+DataPointer(unsigned __int16, usPlayer, 0x3B22DC0); // Player ID
+DataPointer(__int16, ssGameMode, 0x3B22DE4); // GameState (enum MD_GAME)
+DataPointer(unsigned int, ulGlobalMode, 0x3ABDC7C); // Game Mode (njUserMain mode, enum MD_GameMode)
 DataPointer(int, loop_count, 0x3B1117C); // MissedFrames
 DataPointer(int, loop_const, 0x3B11178); // Frame increment
 DataPointer(Uint32, ulGlobalTimer, 0x3B0F13C); // FrameCounter
