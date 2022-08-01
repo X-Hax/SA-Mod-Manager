@@ -123,7 +123,7 @@ void ScanTextureReplaceFolder(const string& srcPath, int modIndex)
 					pvmdata = iter->second;
 				for (const auto& idx : index)
 				{
-					string nameNoExt = idx.name;
+					string nameNoExt = GetBaseName(idx.name);
 					StripExtension(nameNoExt);
 					transform(nameNoExt.begin(), nameNoExt.end(), nameNoExt.begin(), tolower);
 					(*pvmdata)[nameNoExt] = { idx.global_index, idx.name, idx.width, idx.height, modIndex, texPack };
