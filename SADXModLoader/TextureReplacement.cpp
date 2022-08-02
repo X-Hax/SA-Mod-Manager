@@ -162,6 +162,10 @@ void ReplaceTexture(const char* pvm_name, const char* tex_name, const char* file
 	(*pvmdata)[nameNoExt] = { gbix, texFile, width, height, 0, texPack };
 }
 
+void MipmapBlacklistGBIX(Uint32 index)
+{
+	mipmap::blacklist_gbix(index);
+}
 
 inline void check_loading()
 {

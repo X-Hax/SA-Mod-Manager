@@ -1311,7 +1311,8 @@ static const HelperFunctions helperFunctions =
 	&PopScaleUI,
 	&SetScaleFillMode,
 	&GetScaleFillMode,
-	&ReplaceTexture
+	&ReplaceTexture,
+	&MipmapBlacklistGBIX
 };
 
 static const char* const dlldatakeys[] = {

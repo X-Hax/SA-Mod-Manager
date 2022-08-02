@@ -11,7 +11,7 @@
 #include "ScaleInfo.h"
 
 // SADX Mod Loader API version.
-static const int ModLoaderVer = 12;
+static const int ModLoaderVer = 13;
 
 struct PatchInfo
 {
@@ -150,6 +150,10 @@ struct HelperFunctions
 	// Replaces an individual texture from a PVM file with an image file.
 	// Requires version >= 12.
 	void(__cdecl* ReplaceTexture)(const char* pvm_name, const char* tex_name, const char* file_path, uint32_t gbix, uint32_t width, uint32_t height);
+
+	// Disables mipmap generation for the specified Global Index.
+	// Requires version >= 13.
+	void(__cdecl* MipmapBlacklistGBIX)(Uint32 index);
 };
 
 typedef void(__cdecl *ModInitFunc)(const char *path, const HelperFunctions &helperFunctions);
