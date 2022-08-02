@@ -928,7 +928,7 @@ static Sint32 LoadPvmMEM2_r(const char* filename, NJS_TEXLIST* texlist)
 	return njLoadTexturePvmFile(filename, texlist);
 }
 
-static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const void* pvmdata, unordered_map<string, TexReplaceData>& replacements)
+static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const void* pvmdata, unordered_map<string, TexReplaceData>& replacements, bool mipmap)
 {
 	short flags = ((const short*)pvmdata)[4];
 	int entrysize = 2;
@@ -979,7 +979,7 @@ static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const v
 				memlist->texinfo.texsurface.pVirtual = 0;
 				memlist->texinfo.texsurface.pPhysical = 0;
 			}
-			texlist->textures[i].texaddr = reinterpret_cast<Uint32>(load_texture(iter2->second.path, iter2->second, true));
+			texlist->textures[i].texaddr = reinterpret_cast<Uint32>(load_texture(iter2->second.path, iter2->second, mipmap));
 		}
 		entry += entrysize;
 	}
@@ -991,6 +991,8 @@ static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
 	{
 		return -1;
 	}
+
+	bool mipmap = mipmap::auto_mipmaps_enabled() && !mipmap::is_blacklisted_pvm(filename);
 
 	const std::string replaced = get_replaced_path(filename, ".PVM");
 	const std::string replaced_extension = GetExtension(replaced);
@@ -1014,7 +1016,7 @@ static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
 		{
 			string pvmname = replaced;
 			StripExtension(pvmname);
-			ReplacePVMTexs(pvmname, texList, out_buf.data(), replacements);
+			ReplacePVMTexs(pvmname, texList, out_buf.data(), replacements, mipmap);
 		}
 		return result;
 	}
@@ -1030,7 +1032,7 @@ static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
 	Uint8* data = LoadPVx(name.c_str());
 	Sint32 result = njLoadTexturePvmMemory(data, texList);
 	if (result == 1)
-		ReplacePVMTexs(replaced, texList, data, replacements);
+		ReplacePVMTexs(replaced, texList, data, replacements, mipmap);
 	j__HeapFree_0(data);
 	return result;
 }
