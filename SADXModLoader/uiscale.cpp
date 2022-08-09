@@ -15,8 +15,6 @@ namespace uiscale
 	float scale_max = 0.0f;
 	float scale_h   = 0.0f;
 	float scale_v   = 0.0f;
-
-	bool initialized = false;
 }
 
 #pragma region Scale stack
@@ -454,7 +452,7 @@ static void __cdecl njDrawSprite2D_Queue_r(NJS_SPRITE* sp, Int n, Float pri, NJD
 		return;
 	}
 
-	NonStaticFunctionPointer(void, original, (NJS_SPRITE*, Int, Float, NJD_SPRITE, QueuedModelFlagsB), njDrawSprite2D_Queue_t->Target());
+	auto original = reinterpret_cast<decltype(njDrawSprite2D_Queue_r)*>(njDrawSprite2D_Queue_t->Target());
 
 	// Scales lens flare and sun.
 	// It uses njProjectScreen so there's no position scaling required.
@@ -688,6 +686,7 @@ static void __cdecl chCalcWorldPosFromScreenPos_r(NJS_VECTOR* pos, NJS_VECTOR* r
 
 void uiscale::initialize_common()
 {
+	static bool initialized = false;
 	if (initialized == false)
 	{
 		update_parameters();
