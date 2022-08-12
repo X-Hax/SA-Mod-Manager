@@ -911,49 +911,6 @@ namespace SADXModManager
 			}
 		}
 
-		// TODO: Move this function to ModManagerCommon
-		private static void ParseGameBananaOneClickInstallUri(string uriWithoutProtocol, out Uri url, out string itemType, out long itemId)
-		{
-			string[] fields = uriWithoutProtocol.Split(',');
-
-			if (fields.Length < 3)
-			{
-				throw new Exception($"Too few fields in URI \"{uriWithoutProtocol}\". Got: {fields.Length}; Expected: 3 or more.");
-			}
-
-			string PullField(string fieldName)
-			{
-				string field = fields.FirstOrDefault(x => x.StartsWith(fieldName, StringComparison.InvariantCultureIgnoreCase));
-
-				if (string.IsNullOrEmpty(field))
-				{
-					throw new Exception($"{fieldName} is missing from URI");
-				}
-
-				field = field.Substring(field.IndexOf(":", StringComparison.InvariantCulture) + 1).Trim();
-
-				if (string.IsNullOrEmpty(field))
-				{
-					throw new Exception($"{fieldName} is empty");
-				}
-
-				return field;
-			}
-
-			const string itemTypeFieldName = "gb_itemtype";
-			const string itemIdFieldName = "gb_itemid";
-
-			url = new Uri(fields[0]);
-
-			itemType = PullField(itemTypeFieldName);
-			string itemIdString = PullField(itemIdFieldName);
-
-			if (!long.TryParse(itemIdString, out itemId))
-			{
-				throw new Exception($"{itemIdFieldName} \"{itemIdString}\" could not be parsed as long");
-			}
-		}
-
 		private void HandleUri(string uri)
 		{
 			if (WindowState == FormWindowState.Minimized)
@@ -964,53 +921,81 @@ namespace SADXModManager
 			Activate();
 
 			Uri url;
-			string itemType;
-			long itemId;
-
-			try
+			string name;
+			string author;
+			string[] split = uri.Substring("sadxmm:".Length).Split(',');
+			url = new Uri(split[0]);
+			Dictionary<string, string> fields = new Dictionary<string, string>(split.Length - 1);
+			for (int i = 1; i < split.Length; i++)
 			{
-				// TODO: Use global constant for "sadxmm". Currently typed manually in many places.
-				string uriWithoutProtocol = uri.Substring("sadxmm:".Length);
-
-				ParseGameBananaOneClickInstallUri(uriWithoutProtocol, out url, out itemType, out itemId);
+				int ind = split[i].IndexOf(':');
+				fields.Add(split[i].Substring(0, ind).ToLowerInvariant(), split[i].Substring(ind + 1));
 			}
-			catch (Exception ex)
+			if (fields.ContainsKey("gb_itemtype") && fields.ContainsKey("gb_itemid"))
 			{
-				MessageBox.Show(this,
-				                $"Malformed One-Click Install URI \"{uri}\" caused parse failure:\n{ex.Message}",
-				                "URI Parse Failure",
-				                MessageBoxButtons.OK,
-				                MessageBoxIcon.Error);
+				string itemType;
+				long itemId;
 
-				return;
-			}
-
-			GameBananaItem gbi;
-
-			try
-			{
-				gbi = GameBananaItem.Load(itemType, itemId);
-
-				if (gbi is null)
+				try
 				{
-					throw new Exception("GameBananaItem was unexpectedly null");
+					itemType = fields["gb_itemtype"];
+					itemId = long.Parse(fields["gb_itemid"]);
 				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(this,
+									$"Malformed One-Click Install URI \"{uri}\" caused parse failure:\n{ex.Message}",
+									"URI Parse Failure",
+									MessageBoxButtons.OK,
+									MessageBoxIcon.Error);
+
+					return;
+				}
+
+				GameBananaItem gbi;
+
+				try
+				{
+					gbi = GameBananaItem.Load(itemType, itemId);
+
+					if (gbi is null)
+					{
+						throw new Exception("GameBananaItem was unexpectedly null");
+					}
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(this,
+									$"GameBanana API query failed:\n{ex.Message}",
+									"GameBanana API Failure",
+									MessageBoxButtons.OK,
+									MessageBoxIcon.Error);
+
+					return;
+				}
+				name = gbi.Name;
+				author = gbi.OwnerName;
 			}
-			catch (Exception ex)
+			else if (fields.ContainsKey("name") && fields.ContainsKey("author"))
+			{
+				name = fields["name"];
+				author = fields["author"];
+			}
+			else
 			{
 				MessageBox.Show(this,
-				                $"GameBanana API query failed:\n{ex.Message}",
-				                "GameBanana API Failure",
-				                MessageBoxButtons.OK,
-				                MessageBoxIcon.Error);
+								$"One-Click Install URI \"{uri}\" did not contain required fields.",
+								"URI Parse Failure",
+								MessageBoxButtons.OK,
+								MessageBoxIcon.Error);
 
 				return;
 			}
 
 			var dummyInfo = new ModInfo
 			{
-				Name = gbi.Name,
-				Author = gbi.OwnerName
+				Name = name,
+				Author = author
 			};
 
 			DialogResult result = MessageBox.Show(this, $"Do you want to install mod \"{dummyInfo.Name}\" by {dummyInfo.Author} from {url.DnsSafeHost}?", "Mod Download", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
