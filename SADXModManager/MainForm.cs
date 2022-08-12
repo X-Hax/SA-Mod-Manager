@@ -978,8 +978,8 @@ namespace SADXModManager
 			}
 			else if (fields.ContainsKey("name") && fields.ContainsKey("author"))
 			{
-				name = fields["name"];
-				author = fields["author"];
+				name = Uri.UnescapeDataString(fields["name"]);
+				author = Uri.UnescapeDataString(fields["author"]);
 			}
 			else
 			{
