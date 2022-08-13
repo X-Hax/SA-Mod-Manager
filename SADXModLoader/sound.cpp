@@ -189,7 +189,7 @@ static void InitOverlapSE(uint8_t ini)
 {
 	if (n++ > 3ui8 || ini)
 	{
-		memset(gu8overlap_se, 0, sizeof(gu8overlap_se));
+		memset(gu8overlap_se, 0, gu8overlap_se.size());
 		n = 0;
 	}
 }
