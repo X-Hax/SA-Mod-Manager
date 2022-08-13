@@ -600,6 +600,38 @@ struct _OBJ_CAMERAADJUST {
 	CamAdjustPtr fnAdjust;
 };
 
+struct _OBJ_CAMERAENTRY
+{
+	char scMode;
+	char scPriority;
+	unsigned __int8 ucAdjType;
+	char scColType;
+	unsigned __int16 xColAng;
+	unsigned __int16 yColAng;
+	float xColPos;
+	float yColPos;
+	float zColPos;
+	float xColScl;
+	float yColScl;
+	float zColScl;
+	unsigned __int16 xCamAng;
+	unsigned __int16 yCamAng;
+	float xDirPos;
+	float yDirPos;
+	float zDirPos;
+	float xCamPos;
+	float yCamPos;
+	float zCamPos;
+	float fDistance;
+};
+
+struct _OBJ_CAMERAENTRYTABLE
+{
+	__int16 ssCount;
+	__int16 ssAttribute;
+	_OBJ_CAMERAENTRY* pObjCameraEntry;
+};
+
 struct _CameraSystemWork
 {
 	int G_boolSwitched;
@@ -618,7 +650,7 @@ struct _CameraSystemWork
 	char G_scRestoreAttribute[6];
 	CamFuncPtr G_pfnRestoreCamera[6];
 	CamAdjustPtr G_pfnRestoreAdjust[6];
-	void* G_pCameraEntry;
+	_OBJ_CAMERAENTRY* G_pCameraEntry;
 	char G_scRestoreCameraMode[6];
 	char G_scRestoreCameraAdjust[6];
 	char G_scRestoreCameraDirect[6];
@@ -656,31 +688,6 @@ struct _camcontwk
 	float xacc;
 	float yacc;
 	float zacc;
-};
-
-struct _OBJ_CAMERAENTRY
-{
-	char scMode;
-	char scPriority;
-	unsigned __int8 ucAdjType;
-	char scColType;
-	unsigned __int16 xColAng;
-	unsigned __int16 yColAng;
-	float xColPos;
-	float yColPos;
-	float zColPos;
-	float xColScl;
-	float yColScl;
-	float zColScl;
-	unsigned __int16 xCamAng;
-	unsigned __int16 yCamAng;
-	float xDirPos;
-	float yDirPos;
-	float zDirPos;
-	float xCamPos;
-	float yCamPos;
-	float zCamPos;
-	float fDistance;
 };
 
 // Free Camera information
@@ -2347,7 +2354,7 @@ struct TEXANIMINFO
 };
 
 // UV animation used by Casinopolis objects
-struct __declspec(align(4)) TEXPATINFO
+struct TEXPATINFO
 {
 	int patpitch;
 	int texcnt;
@@ -2356,5 +2363,88 @@ struct __declspec(align(4)) TEXPATINFO
 	char nowpatnum;
 };
 
+// Volume information for MirenSoundPlayOneShotSE
+struct VolumeInfo
+{
+	__int16 nearVolOfs;
+	__int16 farVolOfs;
+	float nearDist;
+	float farDist;
+};
+
+// Data for each item box hud item
+struct ITEM_MANAGER_DATA
+{
+	int item_list;
+	float item_pos;
+	float scale;
+	int random_ring;
+};
+
+// Data for item box hud
+struct ITEM_MANAGER
+{
+	int mode;
+	int current_list;
+	unsigned int counter;
+	ITEM_MANAGER_DATA itemdata[20];
+};
+
+// Additional data for air item box
+struct OBJECT_ITEMBOX_AIR_DATA
+{
+	int flag;
+	int item;
+	NJS_POINT3 position;
+	int panel_ang;
+	float scale;
+	float timer;
+};
+
+// Parabola data (see MakeParabolaInitSpeed, ChkParabolaEnd)
+struct sParabola
+{
+	NJS_POINT3 pos_start;
+	NJS_POINT3 pos_end;
+	float gravity;
+	int time;
+	NJS_POINT3 speed;
+};
+
+// Key information for Amy's locked doors
+struct KeyInfo
+{
+	int LastKey;
+	int Buff[4];
+	int Point;
+	int RightCount;
+	int LeftCount;
+};
+
+// Handle information for Amy's handles
+struct amyhndlstr
+{
+	int hndlmode;
+	int touchflag;
+	int turnang;
+	int hndlangy;
+	NJS_POINT3 hndlpos;
+};
+
+struct Big_ydata
+{
+	int attr;
+	int angx;
+	int angz;
+	float ypos;
+};
+
+// Lure height information set by calcFishingLureY
+struct Big_ypos
+{
+	Big_ydata top;
+	Big_ydata bottom;
+	Big_ydata water;
+};
 
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */

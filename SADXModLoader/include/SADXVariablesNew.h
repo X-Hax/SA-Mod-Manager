@@ -63,6 +63,9 @@ DataArray(playerwk*, playerpwp, 0x3B3CDF0, 8);
 DataPointer(taskwk*, gpCharTwp, 0x3ABDF60); // Contains a player's taskwk when its exec function is running
 DataPointer(playerwk*, gpCharPwp, 0x3ABDF64); // Contains a player's playerwk when its exec function is running
 
+// Sonic
+DataPointer(sParabola, SonicPaboBuff, 0x3C53A68);
+
 // Tails
 DataPointer(sSonicCtrl, SonicCtrlBuff, 0x3C539F8);
 DataPointer(sMRacePath*, PathTbl_Sonic, 0x3C539F4); // Current race path for Sonic
@@ -71,7 +74,11 @@ DataArray(sMRacePath*, PPT_MRaceEachStage, 0x91C0B8, 10); // Race path list (son
 
 // Knuckles
 DataArray(KnFragmSetStr, fragmset_tbl, 0x3C52B20, 3); // current emerald set information
-DataArray(KnFragmNmbStr, fragmnmb_tbl, 0x7E0CD8, 6); // 
+DataArray(KnFragmNmbStr, fragmnmb_tbl, 0x7E0CD8, 6);
+
+// Amy
+DataArray(KeyInfo, KeyBuff, 0x3C72C38, 8);         // Key information for locked doors
+DataPointer(amyhndlstr, amyhndlstatus, 0x3C5B300); // Handle progress
 
 // E102
 DataPointer(E102WK*, e102_work_ptr, 0x3C53B70);  // Additional information for E102 (laser, targets, etc.)
@@ -166,14 +173,15 @@ DataPointer(int, ComboScore, 0x3B29D28);
 DataPointer(int, EnemyScore, 0x3B0F104);
 
 // Object
-DataArray(TEX_PVMTABLE*, ListofPvmList, 0x90EB68, 44);           // Object textures
-DataArray(_OBJ_ITEMTABLE*, objItemTable, 0x974AF8, 344);         // Object lists, 43 levels * 8 acts
-DataArray(ITEM_INFOMATION, item_info, 0x9BF190, 9);              // Itembox items information
-DataArray(char, PlayerHoldingItemID, 0x3B36DC8, 8);              // Identifier for current held object
+DataArray(TEX_PVMTABLE*, ListofPvmList, 0x90EB68, 44);              // Object textures
+DataArray(_OBJ_ITEMTABLE*, objItemTable, 0x974AF8, 344);            // Object lists, 43 levels * 8 acts
+DataArray(ITEM_INFOMATION, item_info, 0x9BF190, 9);                 // Itembox items information
+DataArray(char, PlayerHoldingItemID, 0x3B36DC8, 8);                 // Identifier for current held object
 DataPointer(OBJECT_SAVEPOINT_DATA*, savepoint_data, 0x3B42F7C);
-DataPointer(_OBJ_ITEMTABLE*, pObjItemTable, 0x3C4E448);          // Current Object List
+DataPointer(_OBJ_ITEMTABLE*, pObjItemTable, 0x3C4E448);             // Current Object List
 DataPointer(__int16, numStatusEntry, 0x3C4E454);
-DataArray(OBJ_CONDITION, objStatusEntry, 0x3C4E460, 1024);       // Set file entries
+DataArray(OBJ_CONDITION, objStatusEntry, 0x3C4E460, 1024);          // Set file entries
+DataPointer(OBJECT_ITEMBOX_AIR_DATA*, itembox_air_data, 0x3C5A9D4); // Additional data for air item boxes
 
 // Object lists
 DataPointer(_OBJ_ITEMTABLE, objItemTable00, 0x27C71C4);
@@ -231,16 +239,25 @@ DataPointer(char, bossmtn_flag, 0x3C5A7EF);
 DataPointer(taskwk*, chaostwp, 0x3C5A7D8); // pointer to current Chaos boss taskwk
 
 // Camera
-DataPointer(taskwk*, camera_twp, 0x3B2CBB0);                 // Camera_Data1
-DataPointer(BOOL, cameraready, 0x3B2CBB8);                   // Whether it should run the camera code
-DataArray(_OBJ_CAMERAMODE, CameraMode, 0x975410, 77);        // List of camera modes, see CAMMD enum
-DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x975410, 28);    // List of camera adjusts (how it switches camera)
-DataPointer(_CameraSystemWork, cameraSystemWork, 0x3B2CAD8); // Camera system information (current mode, etc)
-DataPointer(_camcontwk, cameraControlWork, 0x3B2C660);       // Camera task information (position, angle, target...)
-DataPointer(FCWRK, fcwrk, 0x3B2C958);                        // Free camera information
-DataPointer(Uint32, free_camera_mode, 0x3B2CBA8);            // Free camera flags
-DataPointer(_OBJ_CAMERAENTRY*, pObjCameraEntry, 0x3B2CAA4);  // Camera layout
-DataPointer(int, flagCameraNoUnderWater, 0x3B2C6C0);         // Doesn't work!
+DataPointer(taskwk*, camera_twp, 0x3B2CBB0);                          // Camera task work pointer
+DataPointer(taskwk, oldTaskWork, 0x3B2C9D8);                          // Copy of previous camera task work data
+DataPointer(BOOL, cameraready, 0x3B2CBB8);                            // Tells if the camera task is running
+DataArray(_OBJ_CAMERAMODE, CameraMode, 0x975410, 77);                 // List of camera modes, see CAMMD enum
+DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x975410, 28);             // List of camera adjusts (how it switches camera)
+DataPointer(_CameraSystemWork, cameraSystemWork, 0x3B2CAD8);          // Camera system information (current mode, etc)
+DataPointer(_camcontwk, cameraControlWork, 0x3B2C660);                // Camera task information (position, angle, target...)
+DataPointer(FCWRK, fcwrk, 0x3B2C958);                                 // Free camera information
+DataPointer(Uint32, free_camera_mode, 0x3B2CBA8);                     // Free camera flags
+DataPointer(_OBJ_CAMERAENTRY*, pObjCameraEntry, 0x3B2CAA4);           // Camera layout
+DataPointer(int, flagCameraNoUnderWater, 0x3B2C6C0);                  // Do not draw water filter
+DataArray(_OBJ_CAMERAENTRYTABLE*, objCameraEntryTable, 0x3C58180, 8); // Array of camera layout information pointers (one per act)
+DataPointer(_OBJ_CAMERAENTRYTABLE*, pNumCameraEntry, 0x3B2C9C4);      // Pointer to current camera layout information
+DataPointer(_OBJ_CAMERAMODE*, pObjCameraMode, 0x3B2CACC);             // Pointer to the camera modes array
+DataPointer(_OBJ_CAMERAADJUST*, pObjCameraAdjust, 0x3B2CABC);         // Pointer to the camera adjusts array
+DataPointer(Sint32, debug_disp_camera_timer, 0x3B2C6C8);              // Unused
+DataPointer(Bool, boolCameraCollision, 0x915090);                     // If the camera layout should be run
+DataPointer(Bool, Player_stop_flag, 0x3B2CAAC);                       // If the player is not moving and on ground
+DataPointer(NJS_POINT3, CameraInertia, 0x3B2C9CC);                    // Difference between previous camera position and current
 
 // Sound
 DataArray(_SEcallbuf, sebuf, 0x3B292F8, 36); // SoundQueue (length 20 in xbox version)
