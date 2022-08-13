@@ -129,6 +129,9 @@ VoidFunc(SetMatMatMaterial, 0x4128E0);
 VoidFunc(ResetMaterial, 0x4128F0);
 VoidFunc(ResetRenderingParameter, 0x7AF430);
 VoidFunc(ghDefaultBlendingMode, 0x433170);
+VoidFunc(SaveConstantAttr, 0x439520);
+VoidFunc(LoadConstantAttr, 0x439540);
+FunctionPointer(void, OnConstantAttr, (NJD_FLAG _and, NJD_FLAG _or), 0x439560);
 
 // Lighting
 FunctionPointer(void, late_SetFunc, (void(__cdecl* func)(void*), void* data, float depth, int late_flags), 0x404840); // DrawModelCallback_Queue
