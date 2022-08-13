@@ -112,6 +112,10 @@ static inline void calcModerateVector(NJS_POINT3* vec, Angle3* ang)
 	}
 }
 
+// Maths
+StdcallFunctionPointer(Float, njSqrt, (Float n), 0x7871F0);
+FastcallFunctionPointer(Float, njDistanceL2PL, (NJS_LINE* l, NJS_PLANE* pl, NJS_POINT3* cp), 0x788640);
+
 // Rendering-related
 FunctionPointer(void, njSetZCompare, (unsigned __int8 mode), 0x077ED00); // Direct3D_SetZFunc
 FunctionPointer(void, njSetZUpdateMode, (int enable), 0x77ED20); // Direct3D_EnableZWrite
@@ -162,6 +166,8 @@ FunctionPointer(void, SetRotationP, (uint8_t pno, Angle angx, Angle angy, Angle 
 FunctionPointer(void, SetAccelerationP, (unsigned __int8 pno, float x, float y, float z), 0x441750);
 FunctionPointer(void, SetPositionP, (uint8_t pno, float x, float y, float z), 0x441780);
 FunctionPointer(void, GetOutOfCartP, (int pno, float x, float y, float z), 0x441820);
+FunctionPointer(Bool, GetPlayerPosition, (unsigned __int8 pno, __int8 frame, NJS_POINT3* pos, Angle3* ang), 0x4419C0); // Get player position and/or angle a number of frames ago
+FunctionPointer(Bool, SetPlayerPosition, (unsigned __int8 pno, __int8 frame, NJS_POINT3* pos, Angle3* ang), 0x441A40); // Set player position and/or angle a number of frames ago
 FunctionPointer(void, GetThunderBarrierP, (char character), 0x441E30);
 FunctionPointer(void, GetBarrierP, (char character), 0x441EA0);
 FunctionPointer(void, GetInvincibleBodyP, (int character), 0x441F10);
@@ -186,6 +192,8 @@ FunctionPointer(int, PSetPosition, (taskwk* twp, motionwk2* mwp, playerwk* pwp),
 FunctionPointer(void, PSetMotion, (mtnjvwk* mjp), 0x44A800);
 FunctionPointer(void, DamegeRingScatter, (char pno), 0x4506F0); // Kill or hurt player with ring scattering
 FunctionPointer(void, CharacterShadow, (taskwk* twp, shadowwk* swp), 0x49F1A0);
+FunctionPointer(void, MakeParabolaInitSpeed, (sParabola* para), 0x4BD2D0); // Initialize parabola with start pos, end pos and time; sets movement in para->speed
+FunctionPointer(Bool, ChkParabolaEnd, (sParabola* para), 0x4BD380); // Run parabola (set movement in para->speed), returns true if finished
 
 static const void* const KnucklesCheckInputPtr = (void*)0x476970;
 static inline signed int KnucklesCheckInput(taskwk* twp, motionwk2* mwp, playerwk* pwp)
@@ -418,6 +426,7 @@ FunctionPointer(void, MirenInitTask, (task* task_p, const TaskInfo* info_p, void
 FunctionPointer(void, MirenSetTask, (int level, const TaskInfo* info_p, void* param_p), 0x796B90); // Edit a task with information from TaskInfo
 FunctionPointer(void, MirenSetChildTask, (task* parent_p, const TaskInfo* info_p, void* param_p), 0x7796BD0); // Creates a child task with information from TaskInfo
 FunctionPointer(void, MirenGameChangeAct, (int actDiff, int bgmId), 0x796C10); // Draw collisions of a colliwk (debug)
+FunctionPointer(void, MirenSoundPlayOneShotSE, (int se, const NJS_POINT3* pos_p, const VolumeInfo* info_p), 0x79E400); // Creates a simple spatial sound with volume setting
 FunctionPointer(void, MirenObjInitCharColli, (task* task_p, const ObjectInfo* objInfo_p, const ObjCmnInfo* cmnInfo_p), 0x79E510); // A wrapper for CCL_Init
 FunctionPointer(void, MirenObjClearForceWork, (forcewk* forceWk_p), 0x79E540); // Clears a forcewk
 FunctionPointer(void, MirenObjEntryMobileLandObject, (task* task_p, obj* obj_p, int attr, float scale), 0x79E580); // Sets unknown collision flags based on model radius * scale then calls RegisterCollisionEntry

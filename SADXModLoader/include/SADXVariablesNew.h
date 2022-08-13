@@ -63,6 +63,9 @@ DataArray(playerwk*, playerpwp, 0x3B3CDF0, 8);
 DataPointer(taskwk*, gpCharTwp, 0x3ABDF60); // Contains a player's taskwk when its exec function is running
 DataPointer(playerwk*, gpCharPwp, 0x3ABDF64); // Contains a player's playerwk when its exec function is running
 
+// Sonic
+DataPointer(sParabola, SonicPaboBuff, 0x3C53A68);
+
 // Tails
 DataPointer(sSonicCtrl, SonicCtrlBuff, 0x3C539F8);
 DataPointer(sMRacePath*, PathTbl_Sonic, 0x3C539F4); // Current race path for Sonic
@@ -71,7 +74,11 @@ DataArray(sMRacePath*, PPT_MRaceEachStage, 0x91C0B8, 10); // Race path list (son
 
 // Knuckles
 DataArray(KnFragmSetStr, fragmset_tbl, 0x3C52B20, 3); // current emerald set information
-DataArray(KnFragmNmbStr, fragmnmb_tbl, 0x7E0CD8, 6); // 
+DataArray(KnFragmNmbStr, fragmnmb_tbl, 0x7E0CD8, 6);
+
+// Amy
+DataArray(KeyInfo, KeyBuff, 0x3C72C38, 8);         // Key information for locked doors
+DataPointer(amyhndlstr, amyhndlstatus, 0x3C5B300); // Handle progress
 
 // E102
 DataPointer(E102WK*, e102_work_ptr, 0x3C53B70);  // Additional information for E102 (laser, targets, etc.)
@@ -166,14 +173,15 @@ DataPointer(int, ComboScore, 0x3B29D28);
 DataPointer(int, EnemyScore, 0x3B0F104);
 
 // Object
-DataArray(TEX_PVMTABLE*, ListofPvmList, 0x90EB68, 44);           // Object textures
-DataArray(_OBJ_ITEMTABLE*, objItemTable, 0x974AF8, 344);         // Object lists, 43 levels * 8 acts
-DataArray(ITEM_INFOMATION, item_info, 0x9BF190, 9);              // Itembox items information
-DataArray(char, PlayerHoldingItemID, 0x3B36DC8, 8);              // Identifier for current held object
+DataArray(TEX_PVMTABLE*, ListofPvmList, 0x90EB68, 44);              // Object textures
+DataArray(_OBJ_ITEMTABLE*, objItemTable, 0x974AF8, 344);            // Object lists, 43 levels * 8 acts
+DataArray(ITEM_INFOMATION, item_info, 0x9BF190, 9);                 // Itembox items information
+DataArray(char, PlayerHoldingItemID, 0x3B36DC8, 8);                 // Identifier for current held object
 DataPointer(OBJECT_SAVEPOINT_DATA*, savepoint_data, 0x3B42F7C);
-DataPointer(_OBJ_ITEMTABLE*, pObjItemTable, 0x3C4E448);          // Current Object List
+DataPointer(_OBJ_ITEMTABLE*, pObjItemTable, 0x3C4E448);             // Current Object List
 DataPointer(__int16, numStatusEntry, 0x3C4E454);
-DataArray(OBJ_CONDITION, objStatusEntry, 0x3C4E460, 1024);       // Set file entries
+DataArray(OBJ_CONDITION, objStatusEntry, 0x3C4E460, 1024);          // Set file entries
+DataPointer(OBJECT_ITEMBOX_AIR_DATA*, itembox_air_data, 0x3C5A9D4); // Additional data for air item boxes
 
 // Object lists
 DataPointer(_OBJ_ITEMTABLE, objItemTable00, 0x27C71C4);
