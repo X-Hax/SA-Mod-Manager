@@ -600,6 +600,38 @@ struct _OBJ_CAMERAADJUST {
 	CamAdjustPtr fnAdjust;
 };
 
+struct _OBJ_CAMERAENTRY
+{
+	char scMode;
+	char scPriority;
+	unsigned __int8 ucAdjType;
+	char scColType;
+	unsigned __int16 xColAng;
+	unsigned __int16 yColAng;
+	float xColPos;
+	float yColPos;
+	float zColPos;
+	float xColScl;
+	float yColScl;
+	float zColScl;
+	unsigned __int16 xCamAng;
+	unsigned __int16 yCamAng;
+	float xDirPos;
+	float yDirPos;
+	float zDirPos;
+	float xCamPos;
+	float yCamPos;
+	float zCamPos;
+	float fDistance;
+};
+
+struct _OBJ_CAMERAENTRYTABLE
+{
+	__int16 ssCount;
+	__int16 ssAttribute;
+	_OBJ_CAMERAENTRY* pObjCameraEntry;
+};
+
 struct _CameraSystemWork
 {
 	int G_boolSwitched;
@@ -618,7 +650,7 @@ struct _CameraSystemWork
 	char G_scRestoreAttribute[6];
 	CamFuncPtr G_pfnRestoreCamera[6];
 	CamAdjustPtr G_pfnRestoreAdjust[6];
-	void* G_pCameraEntry;
+	_OBJ_CAMERAENTRY* G_pCameraEntry;
 	char G_scRestoreCameraMode[6];
 	char G_scRestoreCameraAdjust[6];
 	char G_scRestoreCameraDirect[6];
@@ -656,31 +688,6 @@ struct _camcontwk
 	float xacc;
 	float yacc;
 	float zacc;
-};
-
-struct _OBJ_CAMERAENTRY
-{
-	char scMode;
-	char scPriority;
-	unsigned __int8 ucAdjType;
-	char scColType;
-	unsigned __int16 xColAng;
-	unsigned __int16 yColAng;
-	float xColPos;
-	float yColPos;
-	float zColPos;
-	float xColScl;
-	float yColScl;
-	float zColScl;
-	unsigned __int16 xCamAng;
-	unsigned __int16 yCamAng;
-	float xDirPos;
-	float yDirPos;
-	float zDirPos;
-	float xCamPos;
-	float yCamPos;
-	float zCamPos;
-	float fDistance;
 };
 
 // Free Camera information

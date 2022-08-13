@@ -3808,4 +3808,35 @@ enum TitleNewSbMdEnum
 	TITLENEW_SMD_MAX = 0x4,
 };
 
+// Camera direct modes
+enum
+{
+	CDM_NONE,
+	CDM_TGTOFST,
+	CDM_LOOKAT,
+	CDM_CAMSTATUS,
+	CDM_NUM
+};
+
+// Camera level
+enum
+{
+	CLEVEL_NORMAL,
+	CLEVEL_AREA,
+	CLEVEL_EVENT,
+	CLEVEL_COMPULSION,
+	CLEVEL_COLLISION,
+	CLEVEL_DEBUG,
+	CLEVEL_NUM
+};
+
+// Camera collision type (layout)
+enum
+{
+	CAMCOL_SPHERE,
+	CAMCOL_PLANE,
+	CAMCOL_BLOCK,
+	CAMCOL_NUM
+};
+
 #endif /* SADXMODLOADER_SADXENUMSNEW_H */
