@@ -243,7 +243,7 @@ DataPointer(taskwk*, camera_twp, 0x3B2CBB0);                          // Camera 
 DataPointer(taskwk, oldTaskWork, 0x3B2C9D8);                          // Copy of previous camera task work data
 DataPointer(BOOL, cameraready, 0x3B2CBB8);                            // Tells if the camera task is running
 DataArray(_OBJ_CAMERAMODE, CameraMode, 0x975410, 77);                 // List of camera modes, see CAMMD enum
-DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x975410, 28);             // List of camera adjusts (how it switches camera)
+DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x9758E0, 28);             // List of camera adjusts (how it switches camera)
 DataPointer(_CameraSystemWork, cameraSystemWork, 0x3B2CAD8);          // Camera system information (current mode, etc)
 DataPointer(_camcontwk, cameraControlWork, 0x3B2C660);                // Camera task information (position, angle, target...)
 DataPointer(FCWRK, fcwrk, 0x3B2C958);                                 // Free camera information
