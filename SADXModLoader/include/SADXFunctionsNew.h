@@ -87,6 +87,11 @@ DataPointer(int, MaskBlock, 0x3B36D48); // Show landtable parts (_OBJ_LANDENTRY)
 FunctionPointer(void, DrawSNumbers, (_SC_NUMBERS* pscn), 0x427BB0); // Draw a number on screen using the HUD font
 FunctionPointer(void, CharColliOn, (taskwk* twp), 0x4BD180); // Enable character collisions
 FunctionPointer(void, CharColliOff, (taskwk* twp), 0x4BD1B0); // Disable character collisions
+FunctionPointer(void, Disp_8, (task* tp), 0x004B9290); // Ripple display function
+FunctionPointer(void, bbl_ripple_draw, (task* tp), 0x007A81A0); // Ripple display function (bubble version)
+FunctionPointer(void, PSetRippleEffect, (int pno, NJS_POINT3* pp), 0x004407C0); // Ripple effect created by player
+FunctionPointer(void, CreateWaterripple, (NJS_POINT3* pos, NJS_POINT3* vec, float scl), 0x004B9430);
+FunctionPointer(void, ModelTurnWhite, (taskwk* twp, __int16 BkNumber), 0x00412A20); // Makes a model "light up" when the character approaches it
 
 static const void* const isTextureNGPtr = (void*)0x403250;
 static inline BOOL isTextureNG(NJS_TEXLIST* tl) // Check if the texlist is valid
@@ -137,6 +142,7 @@ VoidFunc(ghDefaultBlendingMode, 0x433170);
 VoidFunc(SaveConstantAttr, 0x439520);
 VoidFunc(LoadConstantAttr, 0x439540);
 FunctionPointer(void, OnConstantAttr, (NJD_FLAG _and, NJD_FLAG _or), 0x439560);
+FunctionPointer(void, OffConstantAttr, (NJD_FLAG _and, NJD_FLAG _or), 0x439590);
 
 // Lighting
 FunctionPointer(void, late_SetFunc, (void(__cdecl* func)(void*), void* data, float depth, int late_flags), 0x404840); // DrawModelCallback_Queue

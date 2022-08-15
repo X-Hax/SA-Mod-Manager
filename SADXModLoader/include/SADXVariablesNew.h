@@ -49,6 +49,7 @@ DataPointer(int, late_execMode, 0x3AB98AC); // Draw queue state (0 run; 1 skip, 
 DataPointer(task*, windtp, 0x03C5B32C); // Wind object (Sonic's quills, dandelions in Windy Valley)
 DataPointer(NJS_ARGB, cur_argb, 0x3AB9864); // Current global sprite color
 DataPointer(int, nj_control_3d_flag_, 0x3D0F9C8); // Current NJ_CONTROL_3D
+DataPointer(int, tikal_sw, 0x94A2A4); // Set to 1 (default) to force depth bias for Tikal sprites (20048.0)
 
 // Event
 DataPointer(EVINFO2, evInfo, 0x03B2C568); // Current cutscene struct
