@@ -33,6 +33,8 @@ DataArray(_OBJ_LANDTABLE*[8], objLandTable, 0x97DA08, 43); // Array of landtable
 DataPointer(Angle, ds_perspective_value, 0x3AB98EC); // HorizontalFOV_BAMS
 DataPointer(NJS_TEXLIST*, njds_texList, 0x3ABD950); // CurrentTexList
 DataPointer(NJS_POINT2COL, nj_system_bg_p2c_, 0x3CE7164); // Global POINT2COL color
+DataPointer(NJS_ARGB, nj_constant_material_, 0x3D0F7F0);
+DataPointer(NJS_MATRIX, nj_unit_matrix_, 0x389D650);
 DataPointer(___stcFog, gFog, 0x3ABDC60);
 DataPointer(___stcClip, gClipMap, 0x3ABDC70);
 DataPointer(___stcClip, gClipSky, 0x3ABDCA0);

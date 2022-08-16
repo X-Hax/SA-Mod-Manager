@@ -28,6 +28,7 @@ typedef bool _BOOL1;
 #define CamFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(_OBJ_CAMERAPARAM* pParam),ADDRESS)
 
 // General
+FunctionPointer(bool, ChkPause, (), 0x414D70); // Check if the game is paused
 TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
 VoidFunc(DisplayTask, 0x40B540); // Call display function of all active objects
 TaskFunc(DestroyTask, 0x40B570);
