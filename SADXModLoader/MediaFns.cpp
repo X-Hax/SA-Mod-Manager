@@ -449,7 +449,7 @@ struc_64* LoadSoundPack(const char* path, int bank)
 		fseek(fori, 0, SEEK_SET);
 
 		// Get data
-		void* InputBuffer = malloc(inputSize);
+		void* InputBuffer = new char[inputSize];
 		fread(InputBuffer, 1, inputSize, fori);
 		fclose(fori);
 		
@@ -471,9 +471,7 @@ struc_64* LoadSoundPack(const char* path, int bank)
 		ent.NameOffset = new char[14];
 		snprintf(ent.NameOffset, 14, "B%02d_00_%02u%s", bank, soundID, ext.c_str());
 		ent.DataLength = inputSize;
-		ent.DataOffset = new char[ent.DataLength];
-		memcpy(ent.DataOffset, InputBuffer, ent.DataLength);
-		free(InputBuffer);
+		ent.DataOffset = InputBuffer;
 		entries.push_back(ent);
 
 		// Add the entry data to the total sound pack size.
