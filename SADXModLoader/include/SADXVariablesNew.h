@@ -32,6 +32,7 @@ DataArray(PL_KILLCOLLI**, KillingCollisionModelsListList, 0x915908, 43);
 DataArray(_OBJ_LANDTABLE*[8], objLandTable, 0x97DA08, 43); // Array of landtable pointers, 8 acts per level
 DataPointer(Angle, ds_perspective_value, 0x3AB98EC); // HorizontalFOV_BAMS
 DataPointer(NJS_TEXLIST*, njds_texList, 0x3ABD950); // CurrentTexList
+DataPointer(NJS_POINT2COL, nj_system_bg_p2c_, 0x3CE7164); // Global POINT2COL color
 DataPointer(___stcFog, gFog, 0x3ABDC60);
 DataPointer(___stcClip, gClipMap, 0x3ABDC70);
 DataPointer(___stcClip, gClipSky, 0x3ABDCA0);
@@ -50,6 +51,8 @@ DataPointer(task*, windtp, 0x03C5B32C); // Wind object (Sonic's quills, dandelio
 DataPointer(NJS_ARGB, cur_argb, 0x3AB9864); // Current global sprite color
 DataPointer(int, nj_control_3d_flag_, 0x3D0F9C8); // Current NJ_CONTROL_3D
 DataPointer(int, tikal_sw, 0x94A2A4); // Set to 1 (default) to force depth bias for Tikal sprites (20048.0)
+DataPointer(unsigned char, TEXTURE_FLAG, 0x3ABDF79); // Flag to let the game know the font for "Now Saving" is available
+DataPointer(int, mode, 0x3B22E78); // Item selection for the quit prompt in the pause menu
 
 // Event
 DataPointer(EVINFO2, evInfo, 0x03B2C568); // Current cutscene struct

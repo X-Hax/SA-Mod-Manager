@@ -141,6 +141,8 @@ VoidFunc(ResetRenderingParameter, 0x7AF430);
 VoidFunc(ghDefaultBlendingMode, 0x433170);
 VoidFunc(SaveConstantAttr, 0x439520);
 VoidFunc(LoadConstantAttr, 0x439540);
+VoidFunc(late_exec, 0x4086F0); // Draws queued models
+VoidFunc(njWaitVSync, 0x780BE0); // Wait loop
 FunctionPointer(void, OnConstantAttr, (NJD_FLAG _and, NJD_FLAG _or), 0x439560);
 FunctionPointer(void, OffConstantAttr, (NJD_FLAG _and, NJD_FLAG _or), 0x439590);
 
@@ -1026,6 +1028,7 @@ FunctionPointer(void, EV_Msg, (const char* str), 0x42FB20);
 VoidFunc(EV_MsgClose, 0x42FBB0);
 VoidFunc(EV_MsgCls, 0x42FC20);
 FunctionPointer(void, EV_MsgW, (int time, char* str), 0x431640);
+FunctionPointer(MSGC*, CreateMsgTexVtx, (NJS_TEXTURE_VTX* vtx, unsigned int color, float fade, float x, float y, float z, float w, float h), 0x6424A0);
 
 // Event camera
 VoidFunc(EV_CameraOn, 0x4303E0);
