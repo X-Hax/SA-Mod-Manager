@@ -1334,9 +1334,9 @@ void __cdecl SetLanguage()
 	TextLanguage = textLanguage;
 }
 
-int __cdecl FixEKey(int i)
+Bool __cdecl FixEKey(int i)
 {
-	return IsCameraControlEnabled() && GetKey(i);
+	return IsFreeCameraAllowed() == TRUE && GetKey(i) == TRUE;
 }
 
 const auto loc_794566 = (void*)0x00794566;

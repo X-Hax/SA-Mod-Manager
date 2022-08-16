@@ -63,6 +63,8 @@ DataArray(motionwk2*, playermwp, 0x3B36DD0, 8);
 DataArray(playerwk*, playerpwp, 0x3B3CDF0, 8);
 DataPointer(taskwk*, gpCharTwp, 0x3ABDF60); // Contains a player's taskwk when its exec function is running
 DataPointer(playerwk*, gpCharPwp, 0x3ABDF64); // Contains a player's playerwk when its exec function is running
+DataPointer(Angle, angGx, 0x3B0F10C); // Gravity X angle
+DataPointer(Angle, angGz, 0x3B0F0F4); // Gravity Z angle
 
 // Sonic
 DataPointer(sParabola, SonicPaboBuff, 0x3C53A68);
@@ -241,12 +243,12 @@ DataPointer(taskwk*, chaostwp, 0x3C5A7D8); // pointer to current Chaos boss task
 
 // Camera
 DataPointer(taskwk*, camera_twp, 0x3B2CBB0);                          // Camera task work pointer
-DataPointer(taskwk, oldTaskWork, 0x3B2C9D8);                          // Copy of previous camera task work data
+DataPointer(taskwk, oldTaskWork, 0x3B2C9D8);                          // Copy of previous camera task work data, private use (prefer pOldTaskWork to access it)
 DataPointer(BOOL, cameraready, 0x3B2CBB8);                            // Tells if the camera task is running
 DataArray(_OBJ_CAMERAMODE, CameraMode, 0x975410, 77);                 // List of camera modes, see CAMMD enum
 DataArray(_OBJ_CAMERAADJUST, CameraAdjust, 0x9758E0, 28);             // List of camera adjusts (how it switches camera)
-DataPointer(_CameraSystemWork, cameraSystemWork, 0x3B2CAD8);          // Camera system information (current mode, etc)
-DataPointer(_camcontwk, cameraControlWork, 0x3B2C660);                // Camera task information (position, angle, target...)
+DataPointer(_CameraSystemWork, cameraSystemWork, 0x3B2CAD8);          // Camera system information (current mode, etc), private use (prefer pCameraSystemWork to access it)
+DataPointer(_camcontwk, cameraControlWork, 0x3B2C660);                // Camera script information (position, angle, target...), private use (prefer camcont_wp to access it)
 DataPointer(FCWRK, fcwrk, 0x3B2C958);                                 // Free camera information
 DataPointer(Uint32, free_camera_mode, 0x3B2CBA8);                     // Free camera flags
 DataPointer(_OBJ_CAMERAENTRY*, pObjCameraEntry, 0x3B2CAA4);           // Camera layout
@@ -259,6 +261,13 @@ DataPointer(Sint32, debug_disp_camera_timer, 0x3B2C6C8);              // Unused
 DataPointer(Bool, boolCameraCollision, 0x915090);                     // If the camera layout should be run
 DataPointer(Bool, Player_stop_flag, 0x3B2CAAC);                       // If the player is not moving and on ground
 DataPointer(NJS_POINT3, CameraInertia, 0x3B2C9CC);                    // Difference between previous camera position and current
+DataPointer(taskwk*, pOldTaskWork, 0x7DFF8C);                         // Pointer to oldTaskWork, for external access
+DataPointer(_camcontwk*, camcont_wp, 0x7DFF90);                       // Pointer to cameraControlWork
+DataPointer(_CameraSystemWork*, pCameraSystemWork, 0x7DFF94);         // Pointer to cameraSystemWork
+DataPointer(_OBJ_ADJUSTPARAM*, pObjAdjustParam, 0x7DFF98);            // Pointer to objAdjustParam
+DataPointer(Sint32, default_camera_mode, 0x3B2CBAC);                  // Default camera mode (no camera active, or when returning from event camera)
+DataPointer(Sint32, default_camera_adjust, 0x3B2CAC4);                // Default adjust mode (no camera active, or when returning from event camera)
+DataPointer(Sint32, start_camera_mode, 0x3B2CAA8);                    // The camera mode set when the camera is initialized
 
 // Sound
 DataArray(_SEcallbuf, sebuf, 0x3B292F8, 36); // SoundQueue (length 20 in xbox version)

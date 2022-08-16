@@ -702,12 +702,25 @@ FunctionPointer(void, dsPlay_Dolby_timer_vq, (int tone, int id, int pri, int vol
 FunctionPointer(int, dsPlay_oneshot_v, (int tone, int id, int pri, int volofs, float x, float y, float z), 0x424FC0);
 
 // Camera
-FunctionPointer(void, CameraSetEventCameraFunc, (CamFuncPtr func, int8_t ucAdjustType, int8_t scCameraDirect), 0x437D20);
-FunctionPointer(void, CameraSetEventCamera, (int16_t ssCameraMode, int8_t ucAdjustType), 0x437BF0);
-FunctionPointer(BOOL, IsEventCamera, (), 0x436520);
-FunctionPointer(BOOL, IsCompulsionCamera, (), 0x436530);
-VoidFunc(CameraReleaseEventCamera, 0x436140);
-VoidFunc(CameraReleaseCollisionCamera, 0x436400);
+FunctionPointer(void, CameraSetEventCameraFunc, (CamFuncPtr func, Sint8 ucAdjustType, Sint8 scCameraDirect), 0x437D20); // Creates an event camera with custom script, see CDM enum for direct mode
+FunctionPointer(void, CameraSetEventCamera, (Sint16 ssCameraMode, Sint8 ucAdjustType), 0x437BF0); // Creates an event camera, see CAMMD and CAMADJ enums
+FunctionPointer(Bool, IsEventCamera, (), 0x436520); // If the current active camera is an event camera
+FunctionPointer(Bool, IsCompulsionCamera, (), 0x436530); // If the current active camera is a compulsion camera
+VoidFunc(CameraReleaseEventCamera, 0x436140); // Release active event camera
+VoidFunc(CameraReleaseCollisionCamera, 0x436400); // Release active collision camera
+FunctionPointer(void, CamcontSetCameraCAMSTATUS, (taskwk* pTaskWork), 0x435C30); // Copy position (campos) and angle (ang) from control to task; automatically called after camera script if direct mode is CDM_CAMSTATUS
+FunctionPointer(void, CamcontSetCameraLOOKAT, (taskwk* pTaskWork), 0x435C70); // Copy position (campos) from control & calculate angle (ang) to target (tgtpos); automatically called after camera script if direct mode is CDM_LOOKAT
+FunctionPointer(void, CamcontSetCameraTGTOFST, (taskwk* pTaskWork), 0x435D10); // Copy angle (ang) from control & calculate position using angle (ang) and distance (tgtdist); automatically called after camera script if direct mode is CDM_TGTOFST
+FunctionPointer(void, SetAdjustMode, (Sint32 AdjustType), 0x436560); // Change current adjust mode (post-process script)
+FunctionPointer(Sint32, GetAdjustMode, (), 0x436590); // Get current adjust mode (post-process script)
+FunctionPointer(Sint32, GetCameraMode, (), 0x4365A0); // Get current camera mode (script)
+FunctionPointer(void, SetCameraMode, (Sint32 mode), 0x4365B0); // Set current camera mode (script)
+FunctionPointer(void, ChangeCamsetMode, (Sint8 mode), 0x4367A0); // Set current direct mode (see CDM enum)
+FunctionPointer(Sint32, CameraAdditionalCollision, (NJS_POINT3* pos), 0x437E90); // Run collision against sphere/box collision cameras in the camera layout
+FunctionPointer(Sint32, CameraAdditionalPlane, (NJS_POINT3* src, NJS_POINT3* pos), 0x437F20); // Run collision against plane collision cameras in the camera layout
+FunctionPointer(void, CameraPositionSmooth, (NJS_POINT3* last, NJS_POINT3* pos), 0x436C60); // Intended to be a smooth lerp, but broken
+FunctionPointer(void, SetStartCameraMode, (Sint8 mode), 0x436C60); // Set the starting camera mode (when the camera is initialized)
+FunctionPointer(void, SetDefaultNormalCameraMode, (Sint8 mode, Sint8 adjust), 0x4345D0); // Set the default camera mode (no camera? or after an event camera release)
 CamFunc(CameraFollow, 0x462E90);
 CamFunc(CameraKnuckle, 0x469590);
 CamFunc(CameraMagonote, 0x463360);
@@ -748,19 +761,46 @@ CamFunc(CameraModeEditor, 0x463050);
 CamFunc(CameraGuriGuri, 0x4631E0);
 CamFunc(CameraScanPath, 0x463970);
 CamFunc(CameraSurvey_BackKos, 0x466240);
+CamFunc(CameraFishingCatch, 0x46E4C0);
+CamFunc(CameraLureAndFish, 0x46E9A0);
 CamAdjustFunc(AdjustNone, 0x467D80);
 CamAdjustFunc(AdjustNormal, 0x467DC0);
 CamAdjustFunc(AdjustSlow, 0x468000);
 CamAdjustFunc(AdjustThreePoint, 0x469D10);
 CamAdjustFunc(AdjustForFreeCamera, 0x468800);
 
-static const void* const CameraSetViewPtr = (void*)0x435600;
-static inline void CameraSetView(taskwk* twp) // Apply camera perspective
+static const void* const CameraViewSetPtr = (void*)0x435600;
+// Apply camera view (view matrix, projection matrix, etc.)
+static inline void CameraViewSet(taskwk* twp) 
 {
 	__asm
 	{
 		mov eax, [twp]
-		call CameraSetViewPtr
+		call CameraViewSetPtr
+	}
+}
+
+static const void* const CameraCollisitonCheckPtr = (void*)0x462B40;
+// Run collision with environement, should be used in camera scripts
+static inline void CameraCollisitonCheck(NJS_POINT3* src, NJS_POINT3* dst)
+{
+	__asm
+	{
+		mov edi, [dst]
+		mov esi, [src]
+		call CameraCollisitonCheckPtr
+	}
+}
+
+static const void* const CameraCollisitonCheckAdjPtr = (void*)0x462CF0;
+// Run collision with environement, should be used in camera adjusts (post-process scripts)
+static inline void CameraCollisitonCheckAdj(NJS_POINT3* src, NJS_POINT3* dst)
+{
+	__asm
+	{
+		mov edi, [dst]
+		mov esi, [src]
+		call CameraCollisitonCheckAdjPtr
 	}
 }
 
