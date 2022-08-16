@@ -1014,6 +1014,14 @@ FunctionPointer(void, EventSe_Pitch, (int id, int pitch, int frame), 0x64FDE0);
 FunctionPointer(void, EventSe_Oneshot, (int se, int volume, int pan, int pitch), 0x64FE10);
 
 // Event message
+FunctionPointer(void, MSG_LoadTexture, (MSGC* msgc), 0x40D290);
+FunctionPointer(void, MSG_LoadTexture2, (MSGC* msgc), 0x40D2A0);
+FunctionPointer(void, MSG_Close, (MSGC* msgc), 0x40D450);
+FunctionPointer(void, MSG_Disp, (MSGC* msgc), 0x40D490);
+FunctionPointer(void, MSG_Cls, (MSGC* msgc), 0x40D850);
+FunctionPointer(void, NH_MSG_Close, (MSGC* msgc), 0x40E2C0);
+FunctionPointer(void, MSG_Open, (MSGC* msgc, int x, int y, int width, int height, unsigned int globalindex), 0x40E430);
+FunctionPointer(void, MSG_Puts, (MSGC* msgc, const char* str), 0x40E570);
 FunctionPointer(void, EV_Msg, (const char* str), 0x42FB20);
 VoidFunc(EV_MsgClose, 0x42FBB0);
 VoidFunc(EV_MsgCls, 0x42FC20);
@@ -1090,14 +1098,6 @@ FunctionPointer(void, SeqSetPlayer, (int no), 0x413380); // Current story sectio
 FunctionPointer(SEQ_SECTIONTBL*, SeqGetSectionList, (int playerno), 0x44EAF0); // Current story section
 FunctionPointer(void, SeqSetTime, (Sint8 time), 0x412C00); // Set time of dat
 FunctionPointer(Sint8, SeqGetTime, (), 0x412C10); // Get time of day
-
-// Subtitle
-FunctionPointer(void, MSG_Cls, (MSGC* msgc), 0x40D850);
-FunctionPointer(void, MSG_LoadTexture, (MSGC* msgc), 0x40D290);
-FunctionPointer(void, MSG_LoadTexture2, (MSGC* msgc), 0x40D2A0);
-FunctionPointer(void, MSG_Puts, (MSGC* msgc, const char* str), 0x40D290);
-FunctionPointer(void, NH_MSG_Open, (MSGC* msgc, __int16 x, __int16 y, int width, int height, int globalindex, void* buf), 0x40E430);
-FunctionPointer(void, MSG_Close, (MSGC* msgc), 0x40D450);
 
 // Menu
 VoidFunc(DialogJimakuInit, 0x40BC80);
