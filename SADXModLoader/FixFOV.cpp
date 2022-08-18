@@ -131,8 +131,10 @@ static void __declspec(naked) dummyfstp()
 	{
 		cmp  is_wide, 1
 		je   wide
+
 		// in 4:3, write the value to _nj_screen_.dist
-		fstp [_nj_screen_dist]
+		mov  eax, _nj_screen_dist
+		fstp [eax]
 		jmp  loc_781529
 
 	wide:
