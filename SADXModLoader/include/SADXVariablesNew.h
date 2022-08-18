@@ -513,4 +513,25 @@ DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEEC0, 0x38F6E78);
 DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEEC3, 0x38F6E88);
 DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEMR, 0x3AAD130);
 DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEPAST, 0x3AAD110);
+
+//motion
+DataPointer(MOTIONDATA_INFO, nj_motion_data_info_, 0x3AB9910);
+
+//chaos
+DataArray(PL_JOIN_VERTEX, chaos0_jv_list, 0x3C63930, 18);
+DataArray(PL_ACTION, chaos0_action, 0x3C63AE0, 18);
+DataArray(PL_JOIN_VERTEX, chaos2_jv_list, 0x1120830, 22);
+DataArray(PL_ACTION, chaos2_action, 0x117C778, 14);
+DataArray(PL_JOIN_VERTEX, chaos4_jv_list, 0x118FC48, 15);
+DataArray(PL_ACTION, chaos4_action, 0x11C1C58, 9);
+DataArray(PL_JOIN_VERTEX, chaos6_jv_list, 0x11EF3C0, 28);
+DataPointer(task*, ShakeChaos0_Task, 0x03C63C14);
+DataPointer(BUBBLE_DATA, chaos0_bubble, 0x112014C);
+DataPointer(BUBBLE_DATA, chaos2_bubble, 0x118EE58);
+DataPointer(BUBBLE_DATA, chaos4_bubble, 0x11ECD08);
+DataPointer(MORPHWK*, morph_tp, 0x3C63C10);
+DataPointer(MORPHWK*, morph_tp_0, 0x3C63EB8);
+DataPointer(MORPHWK*, morph_tp_1, 0x3C69A30);
+DataPointer(CHAOS_PARAM*, chaosparam, 0x03C5A7E8);
+DataPointer(char, chaos_id, 0x3C5A7E2);
 #endif /* SADXMODLOADER_SADXVARSNEW_H */

@@ -788,6 +788,33 @@ struct bosswk
 	NJS_ACTION* actwkptr;
 };
 
+struct MPOSANG
+{
+	int at_angle[2];
+	NJS_POINT3 gpos;
+};
+
+struct MOBJ
+{
+	__int16 level;
+	NJS_OBJECT* obj;
+	NJS_POINT3* pm;
+	MPOSANG* pos_ang;
+	NJS_POINT3* points_ptr_org;
+};
+
+struct MORPHWK
+{
+	char mode;
+	__int16 objNum;
+	float t;
+	MOBJ* objlist;
+	float puru_a0;
+	float puru_dec0;
+	Rotation3 puru_ang0;
+	Rotation3 puru_angadd0;
+};
+
 struct chaoswk
 {
 	bosswk bwk;
@@ -820,6 +847,46 @@ struct chaoswk
 	void* morph_wp;
 	float param;
 	unsigned int old_texaddr;
+};
+
+struct CHAOS_PARAM
+{
+	char hitpoint;
+	float height;
+	float leg_len;
+	float walk_spd;
+	int turn_spd;
+	NJS_POINT3 c_initpos;
+	float alpha_obj;
+	float morph_xsp;
+	float morph_ysp;
+	float limit_r;
+	float limit_r_sprate;
+	float arm_strtch_spd;
+	__int16 atc_tame_time;
+	__int16 model_alpha;
+	float puncheff_scl;
+	float arm_len;
+	NJS_POINT3 field_center_pos;
+	float sphere_scale;
+	__int16 attack_time_base;
+	__int16 attack_time_ofs;
+	float chaoseme_radius;
+	float chaoseme_yofs;
+};
+
+struct CHAOS_OBJPVTBL
+{
+	char objno;
+	char vecno;
+	NJS_POINT3 ofs_pos;
+};
+
+struct CHAOS_OBJPV
+{
+	NJS_POINT3 pos;
+	NJS_POINT3 oldpos;
+	NJS_POINT3 vec;
 };
 
 struct Chaos0Work
@@ -891,6 +958,34 @@ struct Chaos4Work
 	float manju_alpha;
 	float manju_dalpha;
 	int manju_anim_cnt;
+};
+
+struct C4PunchParam
+{
+	Angle3 joint_angle[5];
+	Angle3 joint_speed[5];
+	float joint_scale;
+	float joint_spring_k;
+	float joint_spring_f;
+	__int16 joint_timer;
+	__int16 joint_now;
+	Angle3 tmp;
+};
+
+struct Chaos4work
+{
+	Angle3 angle_speed;
+	Angle3 angle_target;
+	NJS_POINT3 speed;
+	__int16 timer;
+	unsigned __int8 movemode;
+	unsigned __int8 headmode;
+	Angle3 tmp_ang;
+	C4PunchParam punchparam;
+	unsigned __int8 dispmode;
+	char action_cnt;
+	NJS_POINT3 eme_pos[4];
+	char up_cnt;
 };
 
 struct pathinfo
@@ -2308,6 +2403,16 @@ struct BUBBLE_DATA
 	float scl;
 };
 
+struct bubble_data
+{
+	float radius_min;
+	float radius_max;
+	int yuragi_angspd;
+	float yuragi_min;
+	float yuragi_max;
+	float y_spd_min;
+	float y_spd_max;
+};
 // Title screen worker
 
 struct __declspec(align(4)) TitleNewWk
@@ -2445,6 +2550,18 @@ struct Big_ypos
 	Big_ydata top;
 	Big_ydata bottom;
 	Big_ydata water;
+};
+
+struct MOTIONDATA_INFO
+{
+	void* mdata;
+	void** key;
+	unsigned int* nbkeys;
+	float frame;
+	unsigned int nbframes;
+	unsigned int cnt;
+	unsigned int type;
+	NJS_MATRIX mtrx;
 };
 
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */

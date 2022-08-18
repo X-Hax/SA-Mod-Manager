@@ -204,6 +204,11 @@ FunctionPointer(void, DamegeRingScatter, (char pno), 0x4506F0); // Kill or hurt 
 FunctionPointer(void, CharacterShadow, (taskwk* twp, shadowwk* swp), 0x49F1A0);
 FunctionPointer(void, MakeParabolaInitSpeed, (sParabola* para), 0x4BD2D0); // Initialize parabola with start pos, end pos and time; sets movement in para->speed
 FunctionPointer(Bool, ChkParabolaEnd, (sParabola* para), 0x4BD380); // Run parabola (set movement in para->speed), returns true if finished
+FunctionPointer(void, PGetAcceleration1D, (taskwk* data1, motionwk2* data2, playerwk* co2), 0x442A50);
+FunctionPointer(void, PGetSpeed1D, (taskwk* data1, motionwk2* data2, playerwk* co2), 0x4441B0);
+FunctionPointer(void, PSetPosition1D, (taskwk* data1, motionwk2* data2, playerwk* co2), 0x43E100);
+FunctionPointer(signed int, PCheckHoldObject, (taskwk* a1), 0x43B9C0);
+FunctionPointer(int, PResetAccelerationAir, (taskwk* a1, motionwk2* a2, playerwk* a3), 0x44BD70);
 
 static const void* const KnucklesCheckInputPtr = (void*)0x476970;
 static inline signed int KnucklesCheckInput(taskwk* twp, motionwk2* mwp, playerwk* pwp)

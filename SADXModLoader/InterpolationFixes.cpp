@@ -3,20 +3,6 @@
 // Euler/Quat conversions: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 // Quat lerping: https://stackoverflow.com/a/46187052
 
-struct MOTIONDATA_INFO
-{
-	void* mdata;
-	void** key;
-	unsigned int* nbkeys;
-	float frame;
-	unsigned int nbframes;
-	unsigned int cnt;
-	unsigned int type;
-	NJS_MATRIX mtrx;
-};
-
-DataPointer(MOTIONDATA_INFO, nj_motion_data_info_, 0x3AB9910);
-
 void NinjaAngleToQuaternion(NJS_QUATERNION* q, Angle3* ang)
 {
 	Float yaw = NJM_ANG_RAD(ang->z);
