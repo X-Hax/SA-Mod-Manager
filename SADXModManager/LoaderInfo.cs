@@ -93,6 +93,8 @@ namespace SADXModManager
 
 		[DefaultValue(false)]
 		public bool DisableMaterialColorFix { get; set; }
+		[DefaultValue(false)]
+		public bool DisableInterpolationFix { get; set; }
 
 		[DefaultValue(-1)]
 		public int TestSpawnLevel { get; set; } = -1;

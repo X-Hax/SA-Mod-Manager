@@ -53,6 +53,7 @@ using std::vector;
 #include "CrashDump.h"
 #include "MaterialColorFixes.h"
 #include "sound.h"
+#include "InterpolationFixes.h"
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -1655,6 +1656,9 @@ static void __cdecl InitMods()
 
 	if (settings->getBool("EnableBassSFX", false))
 		Sound_Init(settings->getInt("SEVolume", 100));
+
+	if (!settings->getBool("DisableInterpolationFix", false))
+		init_interpolationAnimFixes();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
