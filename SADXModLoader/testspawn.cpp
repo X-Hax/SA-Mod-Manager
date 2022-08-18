@@ -91,6 +91,16 @@ static int16_t parse_character_id(const std::wstring& str)
 	return static_cast<int16_t>(std::stol(lowercase));
 }
 
+static void Obj_Icecap_r(task* o)
+{
+	if (o)
+	{
+		SetPlayerInitialPosition(playertwp[0]);
+		o->exec = (TaskFuncPtr)Obj_Icecap;
+		Obj_Icecap((ObjectMaster*)o);
+	}
+}
+
 static int ForceTimeOfDay()
 {
 	return testspawn_timeofday;
@@ -987,6 +997,14 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			DisableVoice();
 			DisableSound();
 		}
+	}
+
+	if (CurrentLevel == LevelIDs_IceCap)
+	{
+		WriteData<2>(reinterpret_cast<void*>(0x004149EC), 0x90i8);
+		WriteData<2>(reinterpret_cast<void*>(0x0041497F), 0x90i8);
+		WriteData<2>(reinterpret_cast<void*>(0x00414A70), 0x90i8);
+		RoundMasterList[LevelIDs_IceCap] = Obj_Icecap_r;
 	}
 
 	LocalFree(argv);
