@@ -175,13 +175,13 @@ uint32_t prs_compress(void* source, void* dest, uint32_t size)
 		for (int y = x - 3; (y > 0) && (y > (x - 0x1FF0)) && (xsize < 255); y--)
 		{
 			xsize = 3;
-			if (!memcmp((void*)((DWORD)source + y), (void*)((DWORD)source + x), xsize))
+			if (!memcmp(((uint8_t*)source + y), ((uint8_t*)source + x), xsize))
 			{
 				do
 				{
 					xsize++;
-				} while (!memcmp((void*)((DWORD)source + y),
-				                 (void*)((DWORD)source + x),
+				} while (!memcmp(((uint8_t*)source + y),
+				                 ((uint8_t*)source + x),
 				                 xsize) &&
 				         (xsize < 256) &&
 				         ((y + xsize) < x) &&
@@ -198,7 +198,7 @@ uint32_t prs_compress(void* source, void* dest, uint32_t size)
 		if (lssize == 0)
 		{
 			//printf("> > > %08X->%08X byte\n",x,pc.dstptr - pc.dstptr_orig);
-			//pc.srcptr = (uint8_t*)((DWORD)source + x);
+			//pc.srcptr = ((uint8_t*)source + x);
 			prs_rawbyte(&pc);
 		}
 		else
@@ -290,7 +290,7 @@ uint32_t prs_decompress(void* source, void* dest) // 800F7CB0 through 800F7DE4 i
 				r3 += 2;
 			}
 
-			r5 += (uint32_t)destptr;
+			r5 += (uintptr_t)destptr;
 			//printf("> > > %08X->%08X ldat %08X %08X %s\n",sourceptr - sourceptr_orig,destptr - destptr_orig,r5 - (uint32_t)destptr,r3,flag ? "inline" : "extended");
 		}
 		else
@@ -315,7 +315,7 @@ uint32_t prs_decompress(void* source, void* dest) // 800F7CB0 through 800F7DE4 i
 			offset = sourceptr[0] | 0xFFFFFF00;
 			r3 += 2;
 			sourceptr++;
-			r5 = offset + (uint32_t)destptr;
+			r5 = offset + (uintptr_t)destptr;
 			//printf("> > > %08X->%08X sdat %08X %08X\n",sourceptr - sourceptr_orig,destptr - destptr_orig,r5 - (uint32_t)destptr,r3);
 		}
 
