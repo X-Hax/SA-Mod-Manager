@@ -2564,4 +2564,183 @@ struct MOTIONDATA_INFO
 	NJS_MATRIX mtrx;
 };
 
+//Eggman worker
+
+//Egg Hornet
+struct Eggmoble1Work
+{
+	NJS_POINT3 direction;
+	NJS_POINT3 velocity;
+	NJS_POINT3 accel;
+	NJS_POINT3 tar_pos;
+	NJS_POINT3 src_pos;
+	Angle3 dang;
+	int frame;
+	int role_ang;
+	float speed;
+};
+
+struct Egm1BakuWk
+{
+	NJS_POINT3* Posp;
+	unsigned int Cnt;
+	Egm1BakuCmdEnum Cmd;
+};
+
+struct Egm1BarriPrmT
+{
+	task* BossTp;
+	float OfsAlpha;
+	float GenFrame;
+	float Progress;
+	int TexChgFrame;
+	int TexChgFrameMax;
+	unsigned int PatNum;
+	unsigned __int8 Stat;
+	unsigned __int8 Req;
+};
+
+struct Egm1JetPrmT
+{
+	task* BossTp;
+};
+
+struct Egm1BgmWk
+{
+	int Cnt;
+};
+
+struct Egm1ClayManWk
+{
+	NJS_POINT3 Pos;
+	int Frame;
+	unsigned __int8 Mode;
+};
+
+struct Egm1CrushPrm
+{
+	NJS_TEXLIST* TexListPtr;
+	obj* Obj;
+	NJS_POINT3* PosPtr;
+	Angle3* AngPtr;
+	void(__cdecl* ExeFnc)(NJS_POINT3*, int);
+	int AngSpdRenge;
+	float BaseSpd;
+	unsigned __int16 DropFrameInterval;
+};
+
+struct Egm1JetWk
+{
+	int TexChgFrame[5];
+	int TexChgFrameMax[5];
+	unsigned int TexPatNum[5];
+	int BTexChgFrame[3];
+	int BTexChgFrameMax[3];
+	__int16 BTexPatNum[3];
+	NJS_POINT3* Egm1JetPntSt[5];
+	NJS_POINT3* Egm1JetPntEd[5];
+	unsigned int Egm1JetPntNum[5];
+	task* BossTp;
+	float Scale;
+	float JetStat;
+	unsigned int PassFrame;
+	Egm1JetCmdEnum Cmd;
+};
+
+struct Egm1MissileWk
+{
+	NJS_POINT3 Pnt3p[3];
+	NJS_POINT3* DstPosPtr;
+	float MslT;
+	float DeltaT;
+	unsigned __int16 SmokeTime;
+	unsigned __int16 HomingTime;
+};
+
+struct Egm1MissilesPrm
+{
+	taskwk* Parent_twp;
+	NJS_POINT3* DstPosPtr;
+	unsigned __int16 FireInterval;
+	unsigned __int16 HomingInterval;
+	unsigned __int16 MissileNum;
+};
+
+struct Egm1MissilesT
+{
+	Egm1MissilesPrm Prm;
+	unsigned __int16 Frame;
+	unsigned __int16 FireNum;
+};
+
+struct Egm1OneClayPrm
+{
+	obj* Obj;
+	NJS_TEXLIST* TexListPtr;
+	NJS_POINT3* Posp;
+	NJS_POINT3* Spdp;
+	float Scale;
+	int AngSpdRange;
+};
+
+struct Egm1OneClayWk
+{
+	obj* Obj;
+	NJS_TEXLIST* TexListPtr;
+	NJS_POINT3 Spd;
+	Angle3 AngSpd;
+	float Scale;
+};
+
+struct Egm1SmokeManWk
+{
+	NJS_POINT3 Pos;
+	unsigned __int8 Mode;
+};
+
+
+struct Egm1SpdDivTblT
+{
+	float t;
+	float div;
+};
+
+//Egg hornet worker
+struct bossextwk
+{
+	bosswk bwk;
+	int Fmode;
+	Egm1LocEnum AimArea;
+	Egm1LocEnum OldArea;
+	NJS_POINT3 FlyRoute[3];
+	float LasSpd;
+	float FlyT;
+	float FlyDeltaT;
+	float BasePosY;
+	int UdFrq;
+	int BaseAngX;
+	int KeepAngX;
+	int KeepAngY;
+	float RotRBase;
+	int RotAngOld;
+	int RotAng;
+	int RotAngSpd;
+	int FuriTotalOneSin;
+	int FuriSin;
+	int FuriAngX;
+	int BankZ;
+	int NowBankZ;
+	Egm1BarriPrmT BariPrm;
+	int ForceBreakTime;
+	__int16 WaitTime;
+	char ShotNum;
+	char NowShotsNum;
+	char ShotsNum;
+	char DispMode;
+	char LoopSndFlg;
+	char HitPoint;
+	char DropDieFlg;
+	char TikalFlg;
+};
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
