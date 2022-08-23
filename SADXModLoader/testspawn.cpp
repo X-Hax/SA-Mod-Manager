@@ -132,7 +132,6 @@ static const std::unordered_map<std::wstring, uint8_t> gamemode_name_map = {
 	{ L"mission",    GameModes_Mission },
 };
 
-
 static uint8_t parse_gamemode(const std::wstring& str)
 {
 	std::wstring lowercase = str;
@@ -210,7 +209,7 @@ static void TestSpawn_HookPosition(int level, int act, float x, float y, float z
 {
 	if (!testspawn_posenabled)
 	{
-		SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r, true);
+		SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r);
 		gTestSpawnStartPos = { (int16_t)level, (int16_t)act, { x, y, z }, ang };
 		testspawn_posenabled = true;
 	}
@@ -791,7 +790,7 @@ static void __cdecl ForceEventMode()
 	}
 
 	// Otherwise run the requested event as a standalone event
-	CheckStandaloneEvent_t = new Trampoline(0x413A10, 0x413A15, CheckStandaloneEvent_r, true); // Hook the demo/level event check
+	CheckStandaloneEvent_t = new Trampoline(0x413A10, 0x413A15, CheckStandaloneEvent_r); // Hook the demo/level event check
 	GameMode = GetLevelType() == 1 ? GameModes_Adventure_Field : GameModes_Adventure_ActionStg;
 }
 
@@ -883,7 +882,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			{
 				InitCharVictoryAnim_t = new Trampoline((int)0x422680, (int)0x422687, InitCharVictoryAnim_r);
 				WriteCall((void*)0x415A25, LoadCharacter_r);
-				SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r, true);
+				SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r);
 			}
 
 			CurrentCharacter = character_id;
