@@ -65,10 +65,10 @@ static void __cdecl njSetScreenDist_r(const Angle bams)
 
 	// We're scaling here because this function
 	// can be called independently of njSetPerspective
-	float m = static_cast<float>(FOV_H) / bams;
-	auto scaled = static_cast<Angle>(FOV_V_BAMS / m);
+	const float m = static_cast<float>(FOV_H) / static_cast<float>(bams);
+	const auto scaled = static_cast<Angle>(static_cast<float>(FOV_V_BAMS) / m);
 
-	float tan = njTan(scaled / 2) * 2.0f;
+	const float tan = njTan(scaled / 2) * 2.0f;
 	_nj_screen_.dist = _nj_screen_.h / tan;
 }
 
@@ -82,19 +82,19 @@ static void __cdecl njSetPerspective_r(Angle bams)
 		return;
 	}
 
-	fov_scale = static_cast<float>(FOV_H) / bams;
-	Angle scaled = (bams == FOV_V_BAMS) ? FOV_V_BAMS : static_cast<Angle>(FOV_V_BAMS * fov_scale);
+	fov_scale = static_cast<float>(FOV_H) / static_cast<float>(bams);
+	const Angle scaled = (bams == FOV_V_BAMS) ? FOV_V_BAMS : static_cast<Angle>(static_cast<float>(FOV_V_BAMS) * fov_scale);
 
 	njSetScreenDist_r(bams);
 
-	auto _24 = reinterpret_cast<int*>(&ProjectionMatrix._24);
+	auto* _24 = reinterpret_cast<int*>(&ProjectionMatrix._24);
 	HorizontalFOV_BAMS = scaled;
 	*_24 = scaled;
 	last_bams = bams;
 }
 
 static const auto loc_791251 = reinterpret_cast<void*>(0x00791251);
-static void __declspec(naked) SetFOV()
+static void __declspec(naked) set_fov()
 {
 	__asm
 	{
@@ -124,15 +124,17 @@ static void __declspec(naked) SetFOV()
 }
 
 static const auto loc_781529 = reinterpret_cast<void*>(0x00781529);
-static const auto _nj_screen_dist = &_nj_screen_.dist;
-static void __declspec(naked) dummyfstp()
+static const Float* _nj_screen_dist = &_nj_screen_.dist;
+static void __declspec(naked) dummy_fstp()
 {
 	__asm
 	{
 		cmp  is_wide, 1
 		je   wide
+
 		// in 4:3, write the value to _nj_screen_.dist
-		fstp [_nj_screen_dist]
+		mov  eax, _nj_screen_dist
+		fstp [eax]
 		jmp  loc_781529
 
 	wide:
@@ -146,12 +148,12 @@ static constexpr double default_ratio = 4.0 / 3.0;
 
 void fov::check_aspect_ratio()
 {
-	uint32_t width = HorizontalResolution;
-	uint32_t height = VerticalResolution;
+	const uint32_t width = HorizontalResolution;
+	const uint32_t height = VerticalResolution;
 
 	// 4:3 and "tallscreen" (5:4, portrait, etc)
 	// We don't need to do anything since these resolutions work fine with the default code.
-	is_wide = !(height * default_ratio == width || height * default_ratio > width);
+	is_wide = !(static_cast<uint32_t>(height * default_ratio) == width || static_cast<uint32_t>(height * default_ratio) > width);
 }
 
 void fov::initialize()
@@ -175,9 +177,9 @@ void fov::initialize()
 	check_aspect_ratio();
 
 	// Hijacks some code before a call to D3DXMatrixPerpsectiveFovRH to correct the vertical field of view.
-	WriteJump(reinterpret_cast<void*>(0x0079124A), SetFOV);
+	WriteJump(reinterpret_cast<void*>(0x0079124A), set_fov);
 	// Dirty hack to disable a write to _nj_screen_.dist and keep the floating point stack balanced.
-	WriteJump(reinterpret_cast<void*>(0x00781523), dummyfstp);
+	WriteJump(reinterpret_cast<void*>(0x00781523), dummy_fstp);
 	// Fixes a case of direct access to HorizontalFOV_BAMS
 	WriteData(reinterpret_cast<Angle**>(0x0040872B), &last_bams);
 	// Changes return value of GetHorizontalFOV_BAMS

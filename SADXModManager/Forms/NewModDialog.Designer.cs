@@ -1,4 +1,6 @@
-﻿namespace SADXModManager.Forms
+﻿using System;
+
+namespace SADXModManager.Forms
 {
 	partial class NewModDialog
 	{
@@ -46,6 +48,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.comboModCategory = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -55,8 +59,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.textGitHubAttachment = new System.Windows.Forms.TextBox();
             this.textGitHubRepo = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.textModCategory = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -132,10 +134,11 @@
             this.textModAuthor.Name = "textModAuthor";
             this.textModAuthor.Size = new System.Drawing.Size(256, 20);
             this.textModAuthor.TabIndex = 2;
-            // 
-            // checkOpenFolder
-            // 
-            this.checkOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.textModAuthor.Text = Environment.UserName;
+			// 
+			// checkOpenFolder
+			// 
+			this.checkOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkOpenFolder.AutoSize = true;
             this.checkOpenFolder.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.checkOpenFolder.Location = new System.Drawing.Point(12, 288);
@@ -145,10 +148,11 @@
             this.checkOpenFolder.Text = "Open folder";
             this.toolTip1.SetToolTip(this.checkOpenFolder, "Open the newly created mod\'s folder upon completion.");
             this.checkOpenFolder.UseVisualStyleBackColor = true;
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.ShowAlways = true;
+			this.checkOpenFolder.Checked = true;
+			// 
+			// toolTip1
+			// 
+			this.toolTip1.ShowAlways = true;
             // 
             // textModDescription
             // 
@@ -170,10 +174,11 @@
             this.textVersion.Name = "textVersion";
             this.textVersion.Size = new System.Drawing.Size(256, 20);
             this.textVersion.TabIndex = 3;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
+			this.textVersion.Text = "0.1";
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(39, 63);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(45, 13);
@@ -226,7 +231,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.textModCategory);
+            this.tabPage1.Controls.Add(this.comboModCategory);
             this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.label5);
@@ -246,6 +251,39 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Properties";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // comboModCategory
+            // 
+            this.comboModCategory.FormattingEnabled = true;
+            this.comboModCategory.Items.AddRange(new object[] {
+            "Animations",
+            "Custom Level",
+            "Cutscene",
+            "Game Overhaul",
+            "Gameplay",
+            "Misc",
+			"Music",
+            "Patch",
+            "Skin",
+			"Sound",
+            "Textures",
+            "UI"});
+            this.comboModCategory.Location = new System.Drawing.Point(90, 86);
+            this.comboModCategory.Name = "comboModCategory";
+            this.comboModCategory.Size = new System.Drawing.Size(256, 21);
+            this.comboModCategory.Sorted = true;
+            this.comboModCategory.TabIndex = 4;
+			this.comboModCategory.Text = "--Select a category--";
+			this.toolTip1.SetToolTip(this.comboModCategory, "Enter the category of your mod. If unsure, use Misc.\r\nIf your mod is a huge game changer, use Game Overhaul.");
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(32, 89);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(52, 13);
+            this.label9.TabIndex = 11;
+            this.label9.Text = "Category:";
             // 
             // tabPage2
             // 
@@ -341,24 +379,6 @@
             this.textGitHubRepo.Size = new System.Drawing.Size(231, 20);
             this.textGitHubRepo.TabIndex = 0;
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(32, 89);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(52, 13);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "Category:";
-            // 
-            // textModCategory
-            // 
-            this.textModCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textModCategory.Location = new System.Drawing.Point(90, 86);
-            this.textModCategory.Name = "textModCategory";
-            this.textModCategory.Size = new System.Drawing.Size(256, 20);
-            this.textModCategory.TabIndex = 4;
-            // 
             // NewModDialog
             // 
             this.AcceptButton = this.buttonOK;
@@ -419,7 +439,7 @@
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TextBox textGitHubAttachment;
 		private System.Windows.Forms.TextBox textGitHubRepo;
-		private System.Windows.Forms.TextBox textModCategory;
 		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.ComboBox comboModCategory;
 	}
 }
