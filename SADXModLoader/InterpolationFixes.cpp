@@ -5,16 +5,16 @@
 
 void NinjaAngleToQuaternion(NJS_QUATERNION* q, Angle3* ang)
 {
-	Float yaw = NJM_ANG_RAD(ang->z);
-	Float pitch = NJM_ANG_RAD(ang->y);
-	Float roll = NJM_ANG_RAD(ang->x);
+	auto yaw = (float)NJM_ANG_RAD(ang->z);
+	auto pitch = (float)NJM_ANG_RAD(ang->y);
+	auto roll = (float)NJM_ANG_RAD(ang->x);
 
-	auto cy = cosf(yaw * 0.5f);
-	auto sy = sinf(yaw * 0.5f);
-	auto cp = cosf(pitch * 0.5f);
-	auto sp = sinf(pitch * 0.5f);
-	auto cr = cosf(roll * 0.5f);
-	auto sr = sinf(roll * 0.5f);
+	auto cy = std::cos(yaw * 0.5f);
+	auto sy = std::sin(yaw * 0.5f);
+	auto cp = std::cos(pitch * 0.5f);
+	auto sp = std::sin(pitch * 0.5f);
+	auto cr = std::cos(roll * 0.5f);
+	auto sr = std::sin(roll * 0.5f);
 
 	q->im[0] = sr * cp * cy - cr * sp * sy;
 	q->im[1] = cr * sp * cy + sr * cp * sy;
