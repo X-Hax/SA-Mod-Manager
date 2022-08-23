@@ -39,6 +39,26 @@ namespace SADXModManager.Forms
 					Directory.CreateDirectory(Path.Combine(moddir, "SAVEDATA"));
 				}
 
+				if (comboModCategory.Text == "Music")
+				{
+					Directory.CreateDirectory(@Path.Combine(moddir, "system/SoundData/bgm/wma"));
+				}
+
+				if (comboModCategory.Text == "Sound")
+				{
+					Directory.CreateDirectory(@Path.Combine(moddir, "system/SoundData/SE"));
+				}
+
+				if (comboModCategory.Text == "Textures")
+				{
+					Directory.CreateDirectory(Path.Combine(moddir, "textures"));
+				}
+
+				if (comboModCategory.SelectedIndex < 0)
+				{
+					comboModCategory.Text = "";
+				}
+
 				SADXModInfo newMod = new SADXModInfo
 				{
 					Name             = textModName.Text,

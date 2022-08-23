@@ -148,10 +148,11 @@ namespace SADXModManager.Forms
             this.checkOpenFolder.Text = "Open folder";
             this.toolTip1.SetToolTip(this.checkOpenFolder, "Open the newly created mod\'s folder upon completion.");
             this.checkOpenFolder.UseVisualStyleBackColor = true;
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.ShowAlways = true;
+			this.checkOpenFolder.Checked = true;
+			// 
+			// toolTip1
+			// 
+			this.toolTip1.ShowAlways = true;
             // 
             // textModDescription
             // 
@@ -272,6 +273,7 @@ namespace SADXModManager.Forms
             this.comboModCategory.Size = new System.Drawing.Size(256, 21);
             this.comboModCategory.Sorted = true;
             this.comboModCategory.TabIndex = 4;
+			this.comboModCategory.Text = "--Select a category--";
 			this.toolTip1.SetToolTip(this.comboModCategory, "Enter the category of your mod. If unsure, use Misc.\r\nIf your mod is a huge game changer, use Game Overhaul.");
 			// 
 			// label9
