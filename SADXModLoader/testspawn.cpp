@@ -133,7 +133,7 @@ static uint8_t parse_gamemode(const std::wstring& str)
 	if (it != gamemode_name_map.end())
 		return it->second;
 
-	return std::stol(lowercase);
+	return static_cast<uint8_t>(std::stol(lowercase));
 }
 
 static void parse_save(const std::wstring str, const HelperFunctions& helperFunctions)
@@ -830,7 +830,7 @@ static void LoadCharacter_r()
 		bool isTikal = CurrentCharacter == Characters_Tikal;
 		ObjectFuncPtr char_main = isTikal ? Tikal_Main : Eggman_Main;
 		player = LoadObject((LoadObj)(LoadObj_UnknownA | LoadObj_Data1 | LoadObj_Data2), 1, char_main);
-		player->Data1->CharID = CurrentCharacter;
+		player->Data1->CharID = (char)CurrentCharacter;
 		player->Data1->CharIndex = 0;
 		EntityData1Ptrs[0] = player->Data1;
 		EntityData2Ptrs[0] = (EntityData2*)player->Data2;
