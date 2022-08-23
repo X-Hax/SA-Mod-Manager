@@ -1027,6 +1027,7 @@ FunctionPointer(void, MSG_LoadTexture2, (MSGC* msgc), 0x40D2A0);
 FunctionPointer(void, MSG_Close, (MSGC* msgc), 0x40D450);
 FunctionPointer(void, MSG_Disp, (MSGC* msgc), 0x40D490);
 FunctionPointer(void, MSG_Cls, (MSGC* msgc), 0x40D850);
+FunctionPointer(void, NH_MSG_Open, (MSGC* msgc, __int16 x, __int16 y, int width, int height, int globalindex, void* buf), 0x40E1E0);
 FunctionPointer(void, NH_MSG_Close, (MSGC* msgc), 0x40E2C0);
 FunctionPointer(void, MSG_Open, (MSGC* msgc, int x, int y, int width, int height, unsigned int globalindex), 0x40E430);
 FunctionPointer(void, MSG_Puts, (MSGC* msgc, const char* str), 0x40E570);
