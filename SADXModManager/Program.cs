@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -15,6 +16,10 @@ namespace SADXModManager
 	{
 		private const string pipeName = "sadx-mod-manager";
 		private const string protocol = "sadxmm:";
+		const string datadllorigpath = "system/CHRMODELS_orig.dll";
+		const string loaderinipath = "mods/SADXModLoader.ini";
+		const string loaderdllpath = "mods/SADXModLoader.dll";
+		const string datadllpath = "system/CHRMODELS.dll";
 		private static readonly Mutex mutex = new Mutex(true, pipeName);
 		public static UriQueue UriQueue;
 
@@ -67,6 +72,20 @@ namespace SADXModManager
 				{
 					File.Delete(args[1] + ".7z");
 					Directory.Delete(args[1], true);
+
+					if (File.Exists(datadllorigpath))
+					{
+						using (MD5 md5 = MD5.Create())
+						{
+							byte[] hash1 = md5.ComputeHash(File.ReadAllBytes(loaderdllpath));
+							byte[] hash2 = md5.ComputeHash(File.ReadAllBytes(datadllpath));
+
+							if (!hash1.SequenceEqual(hash2))
+							{
+								File.Copy(loaderdllpath, datadllpath, true);
+							}
+						}
+					}
 				}
 				catch { }
 			}
