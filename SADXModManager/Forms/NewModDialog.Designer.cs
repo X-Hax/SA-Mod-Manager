@@ -1,4 +1,6 @@
-﻿namespace SADXModManager.Forms
+﻿using System;
+
+namespace SADXModManager.Forms
 {
 	partial class NewModDialog
 	{
@@ -132,10 +134,11 @@
             this.textModAuthor.Name = "textModAuthor";
             this.textModAuthor.Size = new System.Drawing.Size(256, 20);
             this.textModAuthor.TabIndex = 2;
-            // 
-            // checkOpenFolder
-            // 
-            this.checkOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.textModAuthor.Text = Environment.UserName;
+			// 
+			// checkOpenFolder
+			// 
+			this.checkOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkOpenFolder.AutoSize = true;
             this.checkOpenFolder.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.checkOpenFolder.Location = new System.Drawing.Point(12, 288);
@@ -170,10 +173,11 @@
             this.textVersion.Name = "textVersion";
             this.textVersion.Size = new System.Drawing.Size(256, 20);
             this.textVersion.TabIndex = 3;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
+			this.textVersion.Text = "0.1";
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(39, 63);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(45, 13);
@@ -254,7 +258,7 @@
             "Animations",
             "Custom Level",
             "Cutscene",
-            "Game overhaul",
+            "Game Overhaul",
             "Gameplay",
             "Misc",
 			"Music",
@@ -268,7 +272,7 @@
             this.comboModCategory.Size = new System.Drawing.Size(256, 21);
             this.comboModCategory.Sorted = true;
             this.comboModCategory.TabIndex = 4;
-			this.toolTip1.SetToolTip(this.comboModCategory, "Enter the category of your mod. If unsure, use Misc.\r\nIf your mod is a game changer, use Game overhaul.");
+			this.toolTip1.SetToolTip(this.comboModCategory, "Enter the category of your mod. If unsure, use Misc.\r\nIf your mod is a huge game changer, use Game Overhaul.");
 			// 
 			// label9
 			// 
