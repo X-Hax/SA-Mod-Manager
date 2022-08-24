@@ -35,7 +35,7 @@ private:
 	{
 		std::string folder, name;
 		uint64_t offset;
-		uint32_t size;
+		uint64_t size;
 	};
 
 	enum class ArcField : uint8_t

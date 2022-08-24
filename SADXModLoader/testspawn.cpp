@@ -132,7 +132,6 @@ static const std::unordered_map<std::wstring, uint8_t> gamemode_name_map = {
 	{ L"mission",    GameModes_Mission },
 };
 
-
 static uint8_t parse_gamemode(const std::wstring& str)
 {
 	std::wstring lowercase = str;
@@ -143,7 +142,7 @@ static uint8_t parse_gamemode(const std::wstring& str)
 	if (it != gamemode_name_map.end())
 		return it->second;
 
-	return std::stol(lowercase);
+	return static_cast<uint8_t>(std::stol(lowercase));
 }
 
 static void parse_save(const std::wstring str, const HelperFunctions& helperFunctions)
@@ -210,7 +209,7 @@ static void TestSpawn_HookPosition(int level, int act, float x, float y, float z
 {
 	if (!testspawn_posenabled)
 	{
-		SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r, true);
+		SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r);
 		gTestSpawnStartPos = { (int16_t)level, (int16_t)act, { x, y, z }, ang };
 		testspawn_posenabled = true;
 	}
@@ -791,7 +790,7 @@ static void __cdecl ForceEventMode()
 	}
 
 	// Otherwise run the requested event as a standalone event
-	CheckStandaloneEvent_t = new Trampoline(0x413A10, 0x413A15, CheckStandaloneEvent_r, true); // Hook the demo/level event check
+	CheckStandaloneEvent_t = new Trampoline(0x413A10, 0x413A15, CheckStandaloneEvent_r); // Hook the demo/level event check
 	GameMode = GetLevelType() == 1 ? GameModes_Adventure_Field : GameModes_Adventure_ActionStg;
 }
 
@@ -840,7 +839,7 @@ static void LoadCharacter_r()
 		bool isTikal = CurrentCharacter == Characters_Tikal;
 		ObjectFuncPtr char_main = isTikal ? Tikal_Main : Eggman_Main;
 		player = LoadObject((LoadObj)(LoadObj_UnknownA | LoadObj_Data1 | LoadObj_Data2), 1, char_main);
-		player->Data1->CharID = CurrentCharacter;
+		player->Data1->CharID = (char)CurrentCharacter;
 		player->Data1->CharIndex = 0;
 		EntityData1Ptrs[0] = player->Data1;
 		EntityData2Ptrs[0] = (EntityData2*)player->Data2;
@@ -883,7 +882,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			{
 				InitCharVictoryAnim_t = new Trampoline((int)0x422680, (int)0x422687, InitCharVictoryAnim_r);
 				WriteCall((void*)0x415A25, LoadCharacter_r);
-				SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r, true);
+				SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r);
 			}
 
 			CurrentCharacter = character_id;

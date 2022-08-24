@@ -227,6 +227,9 @@
     <ClInclude Include="InterpolationFixes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\FunctionHook.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SADXModLoader.rc">

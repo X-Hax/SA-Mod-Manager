@@ -1685,7 +1685,7 @@ struct ___stcClip
 	float f32Far;
 };
 
-struct __declspec(align(4)) ___stcFog
+struct ___stcFog
 {
 	float f32StartZ;
 	float f32EndZ;
