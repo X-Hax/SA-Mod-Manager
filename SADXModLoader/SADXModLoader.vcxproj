@@ -53,7 +53,7 @@
     <ClInclude Include="FileMap.hpp" />
     <ClInclude Include="FileReplacement.h" />
     <ClInclude Include="FixFOV.h" />
-    <ClInclude Include="FunctionHook.h" />
+    <ClInclude Include="include\FunctionHook.h" />
     <ClInclude Include="git.h" />
     <ClInclude Include="hudscale.h" />
     <ClInclude Include="include\SADXEnumsNew.h" />
