@@ -938,6 +938,11 @@ static inline void DrawShapeMotion(NJS_OBJECT* object, NJS_MOTION* motion, NJS_M
 	}
 }
 
+// Quaternion functions
+FunctionPointer(void, njInterpolateQuaternion, (NJS_QUATERNION* q1, NJS_QUATERNION* q2, Float t, NJS_QUATERNION* qd), 0x793790);
+FunctionPointer(void, njZXYAngleToQuaternion, (Angle3* ang, NJS_QUATERNION* q), 0x793900);
+FunctionPointer(void, njXYZAngleToQuaternion, (Angle3* ang, NJS_QUATERNION* q), 0x7939C0);
+
 // Variable draw functions (picks between Simple and Late)
 FunctionPointer(void, lateDrawModel, (NJS_MODEL_SADX* mdl, LATE flgs), 0x4048E0);
 FunctionPointer(void, lateDrawObject, (NJS_OBJECT* object, LATE flgs, float clipScl), 0x4074A0);
