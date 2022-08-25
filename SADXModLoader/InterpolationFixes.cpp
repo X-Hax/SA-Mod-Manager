@@ -1,6 +1,26 @@
 #include "stdafx.h"
 
-// Quat -> Euler conversion: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+// Euler/Quat conversions: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+// Quat lerping: https://stackoverflow.com/a/46187052
+
+void NinjaAngleToQuaternion(NJS_QUATERNION* q, Angle3* ang)
+{
+	auto yaw = (float)NJM_ANG_RAD(ang->z);
+	auto pitch = (float)NJM_ANG_RAD(ang->y);
+	auto roll = (float)NJM_ANG_RAD(ang->x);
+
+	auto cy = cosf(yaw * 0.5f);
+	auto sy = sinf(yaw * 0.5f);
+	auto cp = cosf(pitch * 0.5f);
+	auto sp = sinf(pitch * 0.5f);
+	auto cr = cosf(roll * 0.5f);
+	auto sr = sinf(roll * 0.5f);
+
+	q->im[0] = sr * cp * cy - cr * sp * sy;
+	q->im[1] = cr * sp * cy + sr * cp * sy;
+	q->im[2] = cr * cp * sy - sr * sp * cy;
+	q->re = cr * cp * cy + sr * sp * sy;
+}
 
 void QuaternionToNinjaAngle(Angle3* angle, NJS_QUATERNION* q)
 {
@@ -19,6 +39,47 @@ void QuaternionToNinjaAngle(Angle3* angle, NJS_QUATERNION* q)
 	angle->z = NJM_RAD_ANG(std::atan2(siny_cosp, cosy_cosp));
 }
 
+Float scalorQuaternion(NJS_QUATERNION* q1, NJS_QUATERNION* q2)
+{
+	return q1->im[0] * q2->im[0] + q1->im[1] * q2->im[1] + q1->im[2] * q2->im[2] + q1->re * q2->re;
+}
+
+void negateQuaternion(NJS_QUATERNION* q)
+{
+	q->im[0] = -q->im[0];
+	q->im[1] = -q->im[1];
+	q->im[2] = -q->im[2];
+	q->re = -q->re;
+}
+
+void unitQuaternion(NJS_QUATERNION* q)
+{
+	float l = 1.0f / std::sqrt(scalorQuaternion(q, q));
+	q->im[0] = l * q->im[0];
+	q->im[1] = l * q->im[1];
+	q->im[2] = l * q->im[2];
+	q->re = l * q->re;
+}
+
+void lerpQuaternion(NJS_QUATERNION* q, NJS_QUATERNION* a, NJS_QUATERNION* b, Float t)
+{
+	if (scalorQuaternion(a, b) < 0.0f)
+	{
+		negateQuaternion(b);
+	}
+
+	q->im[0] = a->im[0] - t * (a->im[0] - b->im[0]);
+	q->im[1] = a->im[1] - t * (a->im[1] - b->im[1]);
+	q->im[2] = a->im[2] - t * (a->im[2] - b->im[2]);
+	q->re = a->re - t * (a->re - b->re);
+}
+
+void nlerpQuaternion(NJS_QUATERNION* q, NJS_QUATERNION* a, NJS_QUATERNION* b, Float t)
+{
+	lerpQuaternion(q, a, b, t);
+	unitQuaternion(q);
+}
+
 void __cdecl LinearMotionA_r(int keyno, NJS_MKEY_A* key, Angle3* dst, unsigned int n)
 {
 	NJS_MKEY_A* key_o = &key[keyno];
@@ -28,13 +89,13 @@ void __cdecl LinearMotionA_r(int keyno, NJS_MKEY_A* key, Angle3* dst, unsigned i
 	Angle3 ang_next = { key_n->key[0], key_n->key[1], key_n->key[2] };
 
 	NJS_QUATERNION q1, q2;
-	njXYZAngleToQuaternion(&ang_orig, &q1);
-	njXYZAngleToQuaternion(&ang_next, &q2);
+	NinjaAngleToQuaternion(&q1, &ang_orig);
+	NinjaAngleToQuaternion(&q2, &ang_next);
 
 	Float diff = (Float)(key_n->keyframe - key_o->keyframe);
 
 	NJS_QUATERNION r;
-	njInterpolateQuaternion(&q1, &q2, (nj_motion_data_info_.frame - (float)key_o->keyframe) / (diff > 0 ? diff : 1.0f), &r);
+	nlerpQuaternion(&r, &q1, &q2, (nj_motion_data_info_.frame - (float)key_o->keyframe) / (diff > 0 ? diff : 1.0f));
 
 	QuaternionToNinjaAngle(dst, &r);
 }
@@ -43,7 +104,7 @@ static void __declspec(naked) LinearMotionA_asm()
 {
 	__asm
 	{
-		push[esp + 04h] // count
+		push[esp + 04h] // int count
 		push ebx // rot
 		push ecx // key
 		push eax // id
@@ -51,7 +112,7 @@ static void __declspec(naked) LinearMotionA_asm()
 		pop eax // id
 		pop ecx // key
 		pop ebx // rot
-		add esp, 4 // count
+		add esp, 4 // int count
 		retn
 	}
 }
