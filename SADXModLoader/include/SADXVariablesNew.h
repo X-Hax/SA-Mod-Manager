@@ -445,6 +445,37 @@ DataPointer(NJS_TEXLIST, texlist_beach01, 0xF812AC); // BEACH01 texlist
 DataPointer(NJS_TEXLIST, texlist_beach02, 0xEF553C); // BEACH02 texlist
 DataPointer(NJS_TEXLIST, texlist_beach03, 0xE9A4CC); // BEACH03 texlist
 
+// PVM entries
+DataArray(TEX_PVMTABLE, ListofPVMSS00, 0x0090F184, 1); // Station Square City Hall PVM list
+DataArray(TEX_PVMTABLE, ListofPVMSS01, 0x0090F16C, 3); // Station Square Station/Casino area PVM list
+DataArray(TEX_PVMTABLE, ListofPVMSS02, 0x0090F19C, 1); // Station Square Sewers PVM list
+DataArray(TEX_PVMTABLE, ListofPVMSS03, 0x0090F15C, 2); // Station Square Main/Station area PVM list
+DataArray(TEX_PVMTABLE, ListofPVMSS04, 0x0090F12C, 1); // Station Square Hotel area PVM list
+DataArray(TEX_PVMTABLE, ListofPVMSS05, 0x0090F228, 2); // Station Square Twinkle Circuit area PVM list
+
+DataArray(TEX_PVMTABLE, ListofPVMEC00, 0x010F34F8, 1); // Egg Carrier (Untransformed) PVM list
+DataArray(TEX_PVMTABLE, ListofPVMEC01, 0x010F3508, 1); // Egg Carrier (Transformed A) PVM list
+DataArray(TEX_PVMTABLE, ListofPVMEC02, 0x010F34E0, 1); // Egg Carrier (Transformed B) PVM list
+DataArray(TEX_PVMTABLE, ListofPVMEC03, 0x010F34D8, 1); // Egg Carrier Captain's Room PVM list
+DataArray(TEX_PVMTABLE, ListofPVMEC04, 0x010F3500, 1); // Egg Carrier Private Room PVM list
+DataArray(TEX_PVMTABLE, ListofPVMEC05, 0x010F34E8, 2); // Egg Carrier Pool PVM list
+
+DataArray(TEX_PVMTABLE, ListofPVMEC30, 0x01101370, 1); // Egg Carrier Jet Booster Room PVM list
+DataArray(TEX_PVMTABLE, ListofPVMEC31, 0x01101380, 1); // Egg Carrier Main Hall PVM list
+DataArray(TEX_PVMTABLE, ListofPVMEC32, 0x01101360, 1); // Egg Carrier Hedgehog Hammer Room PVM list
+DataArray(TEX_PVMTABLE, ListofPVMEC33, 0x01101378, 1); // Egg Carrier Prison PVM list
+DataArray(TEX_PVMTABLE, ListofPVMEC34, 0x01101388, 2); // Egg Carrier Laser Blaster Room PVM list
+DataArray(TEX_PVMTABLE, ListofPVMEC35, 0x01101398, 1); // Egg Carrier Chao Transporter Room PVM list
+
+DataArray(TEX_PVMTABLE, ListofPVMMR00, 0x0090F104, 3); // Mystic Ruins Station area PVM list
+DataArray(TEX_PVMTABLE, ListofPVMMR01, 0x0090F11C, 2); // Mystic Ruins Angle Island area PVM list
+DataArray(TEX_PVMTABLE, ListofPVMMR02, 0x0090F208, 4); // Mystic Ruins Jungle area PVM list
+DataArray(TEX_PVMTABLE, ListofPVMMR03, 0x0090F144, 1); // Mystic Ruins Final Egg Base PVM list
+
+DataArray(TEX_PVMTABLE, ListofPVMPast00, 0x0090F18C, 2); // Past Echidna City PVM list
+DataArray(TEX_PVMTABLE, ListofPVMPast01, 0x0090F134, 2); // Past Master Emerald Altar PVM list
+DataArray(TEX_PVMTABLE, ListofPVMPast02, 0x0090F14C, 2); // Past Altar on Fire PVM list
+
 // LandTables
 DataPointer(_OBJ_LANDTABLE, objLandTableegm1, 0x1570B1C);
 DataPointer(_OBJ_LANDTABLE, objLandTableegm2, 0x15EC454);
