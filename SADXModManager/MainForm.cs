@@ -227,6 +227,7 @@ namespace SADXModManager
 				Environment.CurrentDirectory = Application.StartupPath;
 			SetDoubleBuffered(modListView, true);
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+			Load_WindowUserSettings();
 
 			try
 			{
@@ -2532,6 +2533,53 @@ namespace SADXModManager
 			controllerConfigSelect.Items[controllerConfigSelect.SelectedIndex] = controllerConfigName.Text;
 		}
 
+		private void Load_WindowUserSettings()
+		{
+			if (Settings.Default.Maximised)
+			{
+				Location = Settings.Default.Location;
+				WindowState = FormWindowState.Maximized;
+				Size = Settings.Default.Size;
+			}
+			else if (Settings.Default.Minimised)
+			{
+				Location = Settings.Default.Location;
+				WindowState = FormWindowState.Minimized;
+				Size = Settings.Default.Size;
+			}
+			else
+			{
+				Location = Settings.Default.Location;
+				Size = Settings.Default.Size;
+			}
+		}
+
+		private void Save_WindowUserSettings()
+		{
+			if (WindowState == FormWindowState.Maximized)
+			{
+				Settings.Default.Location = RestoreBounds.Location;
+				Settings.Default.Size = RestoreBounds.Size;
+				Settings.Default.Maximised = true;
+				Settings.Default.Minimised = false;
+			}
+			else if (WindowState == FormWindowState.Normal)
+			{
+				Settings.Default.Location = Location;
+				Settings.Default.Size = Size;
+				Settings.Default.Maximised = false;
+				Settings.Default.Minimised = false;
+			}
+			else
+			{
+				Settings.Default.Location = RestoreBounds.Location;
+				Settings.Default.Size = RestoreBounds.Size;
+				Settings.Default.Maximised = false;
+				Settings.Default.Minimised = true;
+			}
+			Settings.Default.Save();
+		}
+
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			directInput?.Dispose();
@@ -2539,6 +2587,8 @@ namespace SADXModManager
 
 			inputDevice?.Dispose();
 			inputDevice = null;
+
+			Save_WindowUserSettings();
 		}
 
 		private void MainForm_KeyDown(object sender, KeyEventArgs e)

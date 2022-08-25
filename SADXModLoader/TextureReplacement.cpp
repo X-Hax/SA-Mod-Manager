@@ -900,8 +900,8 @@ static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist)
 		memcpy(textures, texlist->textures, texlist->nbTexture * sizeof(NJS_TEXNAME));
 
 		texlist->textures = textures;
-		texlist->nbTexture = temp.nbTexture;
 	}
+	texlist->nbTexture = temp.nbTexture;
 
 	// Copy over the texture attributes and addresses.
 	for (uint32_t i = 0; i < texlist->nbTexture; i++)

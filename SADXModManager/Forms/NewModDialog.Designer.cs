@@ -134,7 +134,7 @@ namespace SADXModManager.Forms
             this.textModAuthor.Name = "textModAuthor";
             this.textModAuthor.Size = new System.Drawing.Size(256, 20);
             this.textModAuthor.TabIndex = 2;
-			this.textModAuthor.Text = Environment.UserName;
+			this.textModAuthor.Text = Properties.Settings.Default.ModAuthor;
 			// 
 			// checkOpenFolder
 			// 

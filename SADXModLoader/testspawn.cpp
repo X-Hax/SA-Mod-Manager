@@ -12,7 +12,8 @@ static int testspawn_eventid = 0;
 static int testspawn_timeofday = TimesOfDay_Day;
 static uint8_t testspawn_gamemode = GameModes_Trial;
 
-static Trampoline* InitCharVictoryAnim_t = nullptr;
+static FunctionHook<void, int> LoadPlayerMotionData_t(LoadPlayerMotionData);
+static FunctionHook<void> LoadCharacter_t(LoadCharacter);
 
 static const std::unordered_map<std::wstring, int16_t> level_name_ids_map = {
 	{ L"hedgehoghammer",    LevelIDs_HedgehogHammer },
@@ -179,12 +180,10 @@ static void parse_save(const std::wstring str, const HelperFunctions& helperFunc
 }
 
 static StartPosition gTestSpawnStartPos;
-static Trampoline* SetPlayerInitialPosition_t = nullptr;
+static FunctionHook<void, taskwk*> SetPlayerInitialPosition_t(SetPlayerInitialPosition);
 
 static void SetPlayerInitialPosition_r(taskwk* twp)
 {
-	auto original = static_cast<decltype(SetPlayerInitialPosition_r)*>(SetPlayerInitialPosition_t->Target());
-
 	if (!CheckRestartLevel() && CurrentLevel == gTestSpawnStartPos.LevelID && CurrentAct == gTestSpawnStartPos.ActID)
 	{
 		twp->pos = gTestSpawnStartPos.Position;
@@ -199,7 +198,7 @@ static void SetPlayerInitialPosition_r(taskwk* twp)
 			twp->counter.b[1] = Characters_Sonic; //trick the game to make it thinks we are playing sonic to fix start pos
 		}
 
-		original(twp);
+		SetPlayerInitialPosition_t.Original(twp);
 
 		twp->counter.b[1] = charID; //restore original charID
 	}
@@ -209,7 +208,7 @@ static void TestSpawn_HookPosition(int level, int act, float x, float y, float z
 {
 	if (!testspawn_posenabled)
 	{
-		SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r);
+		SetPlayerInitialPosition_t.Hook(SetPlayerInitialPosition_r);
 		gTestSpawnStartPos = { (int16_t)level, (int16_t)act, { x, y, z }, ang };
 		testspawn_posenabled = true;
 	}
@@ -821,13 +820,12 @@ static void DisableSound()
 	WriteData(reinterpret_cast<uint8_t*>(0x004250D0), static_cast<uint8_t>(0xC3u));
 }
 
-static void InitCharVictoryAnim_r(int curChar)
+static void LoadPlayerMotionData_r(int curChar)
 {
 	if (curChar == Characters_Eggman || curChar == Characters_Tikal || curChar > Characters_Big)
 		return;
 
-	FunctionPointer(void, origin, (int curchar), InitCharVictoryAnim_t->Target());
-	origin(curChar);
+	LoadPlayerMotionData_t.Original(curChar);
 }
 
 static void LoadCharacter_r()
@@ -847,7 +845,7 @@ static void LoadCharacter_r()
 		return;
 	}
 
-	return LoadCharacter();
+	return LoadCharacter_t.Original();
 }
 
 void ProcessTestSpawn(const HelperFunctions& helperFunctions)
@@ -880,9 +878,9 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 			if (character_id == Characters_Tikal || character_id == Characters_Eggman || character_id > Characters_MetalSonic)
 			{
-				InitCharVictoryAnim_t = new Trampoline((int)0x422680, (int)0x422687, InitCharVictoryAnim_r);
-				WriteCall((void*)0x415A25, LoadCharacter_r);
-				SetPlayerInitialPosition_t = new Trampoline(0x414810, 0x414815, SetPlayerInitialPosition_r);
+				LoadPlayerMotionData_t.Hook(LoadPlayerMotionData_r);
+				LoadCharacter_t.Hook(LoadCharacter_r);
+				SetPlayerInitialPosition_t.Hook(SetPlayerInitialPosition_r);
 			}
 
 			CurrentCharacter = character_id;
