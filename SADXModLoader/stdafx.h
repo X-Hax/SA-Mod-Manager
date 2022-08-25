@@ -44,6 +44,7 @@
 #include "uiscale.h"
 #include "hudscale.h"
 #include "bgscale.h"
+#include "FunctionHook.h"
 
 #if defined(_MSC_VER) && _MSC_VER < 1900
 #define snprintf _snprintf

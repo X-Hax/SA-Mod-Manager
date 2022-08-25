@@ -161,6 +161,7 @@ FunctionPointer(void, lig_setGjPaletteNo___, (int no), 0x412160);
 FunctionPointer(void, lig_resetGjPaletteNo___, (signed int no), 0x412400);
 
 // Player
+FunctionPointer(void, LoadPlayerMotionData, (int curChar), 0x422680);
 FunctionPointer(void, SetPlayerInitialPosition, (taskwk* twp), 0x414810);
 FunctionPointer(void, PConvertVector_G2P, (taskwk* a1, NJS_POINT3* a2), 0x43EC00);
 FunctionPointer(void, PConvertVector_P2G, (taskwk* a1, NJS_POINT3* a2), 0x43EC90);
