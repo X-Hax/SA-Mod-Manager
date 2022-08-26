@@ -27,10 +27,10 @@ DataPointer(NJS_ACTION, action_suka_move_suka, 0x94A034);
 DataPointer(NJS_ACTION, action_rako_move_rako, 0x94A03C);
 
 // Chao Animals - Motion lists for garden animations
-DataPointer(NJS_MOTION*, pMotionMinimalHug, 0x03612FF4, 15);
-DataPointer(NJS_MOTION*, pMotionMinimalWait, 0x03619AD4, 15);
-DataPointer(NJS_MOTION*, pMotionMinimalWalk, 0x0361555C, 15);
-DataPointer(NJS_MOTION*, pMotionMinimalFly, 0x03619B10, 15);
+DataArray(NJS_MOTION*, pMotionMinimalHug, 0x03612FF4, 15);
+DataArray(NJS_MOTION*, pMotionMinimalWait, 0x03619AD4, 15);
+DataArray(NJS_MOTION*, pMotionMinimalWalk, 0x0361555C, 15);
+DataArray(NJS_MOTION*, pMotionMinimalFly, 0x03619B10, 15);
 
 // Chao Animals - All motions
 DataPointer(NJS_MOTION, motion_banb_hand_banb, 0x0360D158);
