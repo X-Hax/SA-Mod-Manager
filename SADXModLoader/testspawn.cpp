@@ -854,7 +854,15 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 	for (int i = 1; i < argc; i++)
 	{
-		if (!wcscmp(argv[i], L"--level") || !wcscmp(argv[i], L"-l"))
+		if (!wcscmp(argv[i], L"--movie") || !wcscmp(argv[i], L"-m"))
+		{
+			WriteData(reinterpret_cast<GameModes*>(0x0040C10C), (GameModes)MD_MOVIE);
+			WriteData<6>((char*)0x00413C13, 0x90u); // Prevent movie ID override
+			movie_num = _wtoi(argv[++i]);
+			PrintDebug("Loading movie: %d\n", movie_num);
+			break;
+		}
+		else if (!wcscmp(argv[i], L"--level") || !wcscmp(argv[i], L"-l"))
 		{
 			CurrentLevel = parse_level_id(argv[++i]);
 			PrintDebug("Loading level: %d\n", CurrentLevel);
