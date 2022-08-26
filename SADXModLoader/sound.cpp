@@ -41,8 +41,8 @@ typedef struct MDHANDLE
 
 static constexpr int MAX_SOUND = 36;
 
-auto dsGetVolume = GenerateUsercallWrapper<int(*)(int ii)>(rEAX, 0x4244A0, rEAX);
-auto IsPlayOk = GenerateUsercallWrapper<BOOL(*)(int tone)>(rEAX, 0x424590, rEDX);
+UsercallFunc(int, dsGetVolume, (int ii), (ii), 0x4244A0, rEAX, rEAX);
+UsercallFunc(BOOL, IsPlayOk, (int tone), (tone), 0x424590, rEAX, rEDX);
 
 VoidFunc(dsSoundServer, 0x4250D0);
 VoidFunc(wmapause, 0x40D060);

@@ -59,6 +59,7 @@ static Trampoline* scaleMissionCounter;
 static Trampoline* scaleTailsWinLose;
 static Trampoline* scaleTailsRaceBar;
 static Trampoline* scaleDemoPressStart;
+static Trampoline* scaleTGSPressStart;
 static Trampoline* ChaoDX_Message_PlayerAction_Load_t;
 static Trampoline* ChaoDX_Message_PlayerAction_Display_t;
 static Trampoline* HeldChaoParamWindowDisplayer_t;
@@ -135,6 +136,9 @@ static Trampoline* RecapBackground_Main_t;
 static Trampoline* NowLoading_t;
 static Trampoline* NowLoading2_t;
 static Trampoline* NowLoading3_t;
+static Trampoline* DisplaySelectingCharacter_ss_t;
+static Trampoline* DisplaySelectingStage_ss_t;
+static Trampoline* DisplaySelectingSequence_t;
 
 #pragma endregion
 
@@ -401,6 +405,11 @@ static void __cdecl ScaleDemoPressStart(ObjectMaster* a1)
 	scale_trampoline(Align::Align_Right, false, ScaleDemoPressStart, scaleDemoPressStart, a1);
 }
 
+static void __cdecl ScaleTGSPressStart(ObjectMaster* a1)
+{
+	scale_trampoline(Align::Align_Right, false, ScaleTGSPressStart, scaleTGSPressStart, a1);
+}
+
 static void __cdecl ChaoDX_Message_PlayerAction_Load_r()
 {
 	scale_trampoline(Align::Align_Automatic, false, ChaoDX_Message_PlayerAction_Load_r, ChaoDX_Message_PlayerAction_Load_t);
@@ -409,6 +418,46 @@ static void __cdecl ChaoDX_Message_PlayerAction_Load_r()
 static void __cdecl ChaoDX_Message_PlayerAction_Display_r(ObjectMaster* a1)
 {
 	scale_trampoline(Align::Align_Top | Align::Align_Right, false, ChaoDX_Message_PlayerAction_Display_r, ChaoDX_Message_PlayerAction_Display_t, a1);
+}
+
+static void __cdecl DisplaySelectingStage_ss_r()
+{
+	int origsize = DebugFontSize;
+	SetDebugFontSize(origsize * get_scale());
+	DisplaySelectingStage_ss();
+	SetDebugFontSize(origsize);
+}
+
+static void __cdecl DisplaySelectingCharacter_ss_r()
+{
+	int origsize = DebugFontSize;
+	SetDebugFontSize(origsize * get_scale());
+	DisplaySelectingCharacter_ss();
+	SetDebugFontSize(origsize);
+}
+
+static void __cdecl DisplaySelectingSequence_r()
+{
+	int origsize = DebugFontSize;
+	SetDebugFontSize(origsize * get_scale());
+	DisplaySelectingSequence();
+	SetDebugFontSize(origsize);
+}
+
+static void __cdecl DisplayForwardArrow_r()
+{
+	int origsize = DebugFontSize;
+	SetDebugFontSize(origsize * get_scale());
+	DisplayForwardArrow();
+	SetDebugFontSize(origsize);
+}
+
+static void __cdecl DisplayBackwardArrow_r()
+{
+	int origsize = DebugFontSize;
+	SetDebugFontSize(origsize * get_scale());
+	DisplayBackwardArrow();
+	SetDebugFontSize(origsize);
 }
 
 static void __cdecl HeldChaoParamWindowDisplayer_o(ObjectMaster* a1)
@@ -1197,6 +1246,7 @@ void hudscale::initialize()
 	scaleTailsWinLose                    = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
 	scaleTailsRaceBar                    = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsRaceBar);
 	scaleDemoPressStart                  = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
+	scaleTGSPressStart                   = new Trampoline(0x0042DB40, 0x0042DB47, ScaleTGSPressStart);
 	late_exec_t                          = new Trampoline(0x004086F0, 0x004086F6, late_exec_r); // Sometimes used in a display function so we have to disable scaling temporarily
 
 	// Sky Chase reticle and score calculation
@@ -1300,6 +1350,18 @@ void hudscale::initialize()
 	WriteData(reinterpret_cast<const float**>(0x00642896), &patch_dummy);
 	WriteCall(reinterpret_cast<void*>(0x00642427), njDrawTextureMemList_NoSkippedFrames_RecapText);
 	RecapBackground_Main_t = new Trampoline(0x00643C90, 0x00643C95, RecapBackground_Main_r);
+
+	// TGS menus text
+	WriteCall((void*)0x0042E19B, DisplaySelectingStage_ss_r);
+	WriteCall((void*)0x0042E29D, DisplaySelectingStage_ss_r);
+	WriteCall((void*)0x0042E37F, DisplaySelectingSequence_r);
+	WriteCall((void*)0x0042E3A8, DisplaySelectingSequence_r);
+	WriteCall((void*)0x0042E1A0, DisplayForwardArrow_r);
+	WriteCall((void*)0x0042E2A2, DisplayForwardArrow_r);
+	WriteCall((void*)0x0042E384, DisplayBackwardArrow_r);
+	WriteCall((void*)0x0042E3AD, DisplayBackwardArrow_r);
+	WriteCall((void*)0x0042E196, DisplaySelectingCharacter_ss_r);
+	WriteCall((void*)0x0042E298, DisplaySelectingCharacter_ss_r);
 
 	InitializeChaoHUDs();
 
