@@ -1145,6 +1145,13 @@ TaskFunc(trial_act_sel_exec, 0x50B220);
 TaskFunc(trial_act_sel_disp, 0x50B410);
 TaskFunc(title_new_exec, 0x5101A0);
 
+// TGS Menus
+VoidFunc(DisplaySelectingStage_ss, 0x0042DE70);
+VoidFunc(DisplaySelectingCharacter_ss, 0x0042DDE0);
+VoidFunc(DisplaySelectingSequence, 0x0042DF30);
+VoidFunc(DisplayForwardArrow, 0x0042E010);
+VoidFunc(DisplayBackwardArrow, 0x0042DFE0);
+
 // Level objects: Windy Valley
 FunctionPointer(void, ObjectWatageDisplay, (task* tp), 0x004DFA60); // Dandelion
 
