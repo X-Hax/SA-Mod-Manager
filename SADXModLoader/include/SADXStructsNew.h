@@ -462,6 +462,15 @@ struct PDS_MOUSE_BUTTON
 	char reserved[2];
 };
 
+struct _m_file
+{
+	char* fname;
+	int sfade;
+	int efade;
+	__int16 s16W;
+	__int16 s16H;
+};
+
 union taskwork_subs
 {
 	char b[4];

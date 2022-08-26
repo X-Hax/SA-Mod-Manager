@@ -301,6 +301,15 @@ DataPointer(AvaStgActT, AvaCmnPrm, 0x3C5FED0);
 DataPointer(task*, TrialActStelTp, 0x3C5FEE0);
 DataPointer(task*, TitleNewTp, 0x3C5FF00);
 
+// FMV
+DataArray(char*, movie_pack, 0x010DB964, 9); // FMV lists (a list can have multiple FMVs, -1 is the list terminator, -2 to loop)
+DataArray(_m_file, movie_file, 0x010DB8B0, 9); // List of movie files with width/height and fadeout data
+DataPointer(int, movie_num, 0x03B2C45C); // Current FMV ID
+DataPointer(int, gettime, 0x03C5FFF8);
+DataPointer(int, rtime, 0x03C5FFE8);
+DataPointer(int, polyfade, 0x03C6002C);
+DataPointer(bool, giExit, 0x03ABDF7C); // True when the game is about to quit
+
 // Ocean data
 DataArray(NJS_TEXTURE_VTX[35][4], gsaStripPool, 0x3D0B928, 2); // Ocean garbage array
 DataArray(stcWaterSurface, gasPoolStat, 0x3D0B8F0, 2); // OceanData A/B

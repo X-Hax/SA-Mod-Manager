@@ -29,6 +29,8 @@ typedef bool _BOOL1;
 
 // General
 FunctionPointer(bool, ChkPause, (), 0x414D70); // Check if the game is paused
+VoidFunc(Clear, 0x0040BF30);
+VoidFunc(Reset, 0x0040BF40);
 TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
 VoidFunc(DisplayTask, 0x40B540); // Call display function of all active objects
 TaskFunc(DestroyTask, 0x40B570);
@@ -36,11 +38,6 @@ TaskFunc(FreeTask, 0x40B6C0);
 TaskFunc(FreeTaskC, 0x40B7E0); // Free all the children of a task
 FunctionPointer(task*, CreateElementalTask, (unsigned __int16 im, int level, void(__cdecl* exec)(task*)), 0x40B860);
 FunctionPointer(task*, CreateChildTask, (unsigned __int16 im, void(__cdecl* exec)(task*), task* tp), 0x40B940);
-VoidFunc(PadReadOn, 0x40EF40); // EnableControl
-VoidFunc(PadReadOff, 0x40EF50); // DisableControl
-FunctionPointer(void, PadReadOnP, (unsigned __int8 pno), 0x40EF70); // EnableController
-FunctionPointer(void, PadReadOffP, (unsigned __int8 pno), 0x40EFA0); // DisableController
-FunctionPointer(BOOL, CheckPadReadModeP, (unsigned __int8 pno), 0x40EFD0); // IsControllerEnabled
 VoidFunc(SetRoundMaster, 0x4143C0); // Load level task
 VoidFunc(SetScrollTask, 0x414420); // Load skybox task
 FunctionPointer(int, GetStageNumber, (), 0x414650); // Get stage and act number
@@ -159,6 +156,16 @@ FunctionPointer(void, dsScaleLight, (float a), 0x411E90); // Normal scaling for 
 FunctionPointer(void, dsReScaleLight, (), 0x411EF0); // Restore scaled normals
 FunctionPointer(void, lig_setGjPaletteNo___, (int no), 0x412160);
 FunctionPointer(void, lig_resetGjPaletteNo___, (signed int no), 0x412400);
+
+// Input
+VoidFunc(PadReadOn, 0x40EF40); // EnableControl
+VoidFunc(PadReadOff, 0x40EF50); // DisableControl
+FunctionPointer(void, PadReadOnP, (unsigned __int8 pno), 0x40EF70); // EnableController
+FunctionPointer(void, PadReadOffP, (unsigned __int8 pno), 0x40EFA0); // DisableController
+FunctionPointer(BOOL, CheckPadReadModeP, (unsigned __int8 pno), 0x40EFD0); // IsControllerEnabled
+FunctionPointer(void, input_padUpdate, (), 0x0040F460); // Poll input
+FunctionPointer(void, GetSwitchData, (), 0x0040FDC0); // Control
+FunctionPointer(int, KeyCtrlGetOn, (), 0x0040EF30); // Get pressed state of system key
 
 // Player
 FunctionPointer(void, LoadPlayerMotionData, (int curChar), 0x422680);
@@ -1015,6 +1022,20 @@ FunctionPointer(void, CHAOS_DrawModel, (NJS_MODEL_SADX* mdl), 0x409EF0);
 FunctionPointer(void, CHAOS_DrawObject, (NJS_OBJECT* object), 0x40A280);
 FunctionPointer(void, CHAOS_Action, (NJS_ACTION* action, float frame), 0x409FB0);
 FunctionPointer(void, CHAOS_DrawShapeMotion, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x40A050);
+
+// FMVs
+FunctionPointer(int, movie, (int movie_num), 0x005130A0);
+FunctionPointer(int, CheckMovieStatus, (), 0x00513D50);
+FunctionPointer(int, GetNJTexture, (), 0x00513990);
+FunctionPointer(void, DrawMovieTex, (int width, int height), 0x005139F0);
+FunctionPointer(void, DrawFadePoly, (char fade), 0x00512D30);
+FunctionPointer(signed int, FadeControl, (int video_id), 0x00512DF0);
+FunctionPointer(__int64, syTmrGetCount, (), 0x007800E0);
+VoidFunc(StartDShowTextureRenderer, 0x513850);
+VoidFunc(EndDShowTextureRenderer, 0x00513C50);
+VoidFunc(PlayDShowTextureRenderer, 0x00513D30);
+VoidFunc(saito_init, 0x005136E0);
+VoidFunc(saito_exit, 0x00513840);
 
 // Event audio
 FunctionPointer(void, voicevolchange, (int vol), 0x40CCF0);
