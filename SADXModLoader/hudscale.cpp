@@ -1363,6 +1363,12 @@ void hudscale::initialize()
 	WriteCall((void*)0x0042E196, DisplaySelectingCharacter_ss_r);
 	WriteCall((void*)0x0042E298, DisplaySelectingCharacter_ss_r);
 
+	// TGS black fadeout scale
+	WriteData((float**)0x0042E4B2, (float*)0x007DCB24); // 240 to 480
+	WriteData((float**)0x0042E4CB, (float*)0x007DCB28); // 320 to 640
+	WriteData((float**)0x0042E4A3, (float*)0x007DCB2C); // Don't add 1 to ScreenRaitoY
+	WriteData((float**)0x0042E4C5, (float*)0x007DCB2C); // Don't add 1 to ScreenRaitoX
+
 	InitializeChaoHUDs();
 
 	hudscale::update();
