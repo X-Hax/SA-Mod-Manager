@@ -301,6 +301,10 @@ DataPointer(AvaStgActT, AvaCmnPrm, 0x3C5FED0);
 DataPointer(task*, TrialActStelTp, 0x3C5FEE0);
 DataPointer(task*, TitleNewTp, 0x3C5FF00);
 
+// TGS menus
+DataPointer(char, scSelectedStage, 0x3B2C424);
+DataArray(unsigned __int8[2], stageact_tbl, 0x914488, 76);
+
 // FMV
 DataArray(char*, movie_pack, 0x010DB964, 9); // FMV lists (a list can have multiple FMVs, -1 is the list terminator, -2 to loop)
 DataArray(_m_file, movie_file, 0x010DB8B0, 9); // List of movie files with width/height and fadeout data
