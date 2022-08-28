@@ -44,6 +44,8 @@ VoidFunc(SetScrollTask, 0x414420); // Load skybox task
 FunctionPointer(int, GetStageNumber, (), 0x414650); // Get stage and act number
 FunctionPointer(void, AdvanceAct, (__int16 Gap), 0x415980); // Advance act number
 FunctionPointer(signed int, NeonuLoadTexture, (NJS_TEXLIST* pTexlist), 0x4228E0);
+FunctionPointer(signed int, late_ReleaseTexture, (NJS_TEXLIST* texlist), 0x00403290);
+FunctionPointer(void, texLoadTexturePvmFile, (const char* filename, NJS_TEXLIST* texlist), 0x421180);
 VoidFunc(ADX_Close, 0x425670); // Stop bgm
 VoidFunc(WakeTimer, 0x426030);
 VoidFunc(SleepTimer, 0x426040);

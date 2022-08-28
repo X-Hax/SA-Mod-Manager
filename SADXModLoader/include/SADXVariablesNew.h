@@ -55,6 +55,11 @@ DataPointer(int, nj_control_3d_flag_, 0x3D0F9C8); // Current NJ_CONTROL_3D
 DataPointer(int, tikal_sw, 0x94A2A4); // Set to 1 (default) to force depth bias for Tikal sprites (20048.0)
 DataPointer(unsigned char, TEXTURE_FLAG, 0x3ABDF79); // Flag to let the game know the font for "Now Saving" is available
 DataPointer(int, mode, 0x3B22E78); // Item selection for the quit prompt in the pause menu
+DataPointer(unsigned __int16, usFadeLevel, 0x03B29D64); // Main fadeout alpha
+DataPointer(unsigned __int8, usMainFadeStatus, 0x03B29D67); // Main fadeout mode
+DataPointer(STAGENAME_WORK, StageNameWork, 0x03C53ABC); // Level title card worker
+DataPointer(int, now_saving, 0x03B291A4);
+DataPointer(int, pause_flg, 0x03B28114);
 
 // Event
 DataPointer(EVINFO2, evInfo, 0x03B2C568); // Current cutscene struct
@@ -304,6 +309,8 @@ DataPointer(task*, TitleNewTp, 0x3C5FF00);
 // TGS menus
 DataPointer(char, scSelectedStage, 0x3B2C424);
 DataArray(unsigned __int8[2], stageact_tbl, 0x914488, 76);
+DataPointer(NJS_TEXLIST, texlist_loading, 0x0094A2B8); // Texlist for "Now Loading"
+DataPointer(NJS_TEXANIM, anim_fade_0, 0x00914568); // Texanim for "Now Loading"
 
 // FMV
 DataArray(char*, movie_pack, 0x010DB964, 9); // FMV lists (a list can have multiple FMVs, -1 is the list terminator, -2 to loop)
