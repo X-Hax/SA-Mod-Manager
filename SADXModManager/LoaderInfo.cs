@@ -21,7 +21,7 @@ namespace SADXModManager
 		public bool DebugFile { get; set; }
 
 		[DefaultValue(true)]
-		public bool DebugCrashLog { get; set; }
+		public bool DebugCrashLog { get; set; } = true;
 
 		public bool? ShowConsole { get { return null; } set { if (value.HasValue) DebugConsole = value.Value; } }
 
@@ -89,7 +89,7 @@ namespace SADXModManager
 		public bool EnableBassSFX { get; set; }
 
 		[DefaultValue(100)]
-		public int SEVolume { get; set; }
+		public int SEVolume { get; set; } = 100;
 
 		[DefaultValue(false)]
 		public bool DisableMaterialColorFix { get; set; }
