@@ -66,7 +66,6 @@ void texpack::init()
 	WriteJump(static_cast<void*>(njLoadTexture), njLoadTexture_r);
 	WriteJump(static_cast<void*>(njLoadTexture_Wrapper), njLoadTexture_Wrapper_r);
 	WriteJump(static_cast<void*>(LoadPVM), LoadPVM_r);
-	WriteJump(static_cast<void*>(LoadPVM), LoadPVM_r);
 	WriteJump(static_cast<void*>(LoadPvmMEM2), LoadPvmMEM2_r);
 	WriteJump(static_cast<void*>(njLoadTexturePvmFile), njLoadTexturePvmFile_r);
 }
@@ -900,14 +899,14 @@ static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist)
 		memcpy(textures, texlist->textures, texlist->nbTexture * sizeof(NJS_TEXNAME));
 
 		texlist->textures = textures;
+		texlist->nbTexture = temp.nbTexture;
 	}
-	texlist->nbTexture = temp.nbTexture;
 
 	// Copy over the texture attributes and addresses.
 	for (uint32_t i = 0; i < texlist->nbTexture; i++)
 	{
-		texlist->textures[i].attr = temp.textures[i].attr;
-		texlist->textures[i].texaddr = temp.textures[i].texaddr;
+		texlist->textures[i].attr = temp.textures[i < temp.nbTexture ? i : 0].attr;
+		texlist->textures[i].texaddr = temp.textures[i < temp.nbTexture ? i : 0].texaddr;
 	}
 }
 

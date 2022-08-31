@@ -13,7 +13,6 @@ static Trampoline* DrawAVA_TITLE_BACK_t;
 static Trampoline* DisplayLogoScreen_t;
 static Trampoline* DisplayFadePoly2_t;
 static Trampoline* dsDispFadeWhite_t;
-static Trampoline* dsDispFadeBlack_t;
 static Trampoline* dsDispFadeLoading_t;
 static Trampoline* DispTitle_t;
 static Trampoline* DisplayTitle_ss;
@@ -67,11 +66,6 @@ static void __cdecl dsDispFadeWhite_r()
 	scale_trampoline(Align::Align_Center, true, dsDispFadeWhite_r, dsDispFadeWhite_t);
 }
 
-static void __cdecl dsDispFadeBlack_r()
-{
-	scale_trampoline(Align::Align_Center, true, dsDispFadeBlack_r, dsDispFadeBlack_t);
-}
-
 static void __cdecl DispTitle_r()
 {
 	scale_trampoline(Align::Align_Center, true, DispTitle_r, DispTitle_t);
@@ -109,7 +103,6 @@ void bgscale::initialize()
 	DisplayHint1_t               = new Trampoline(0x0042DA40, 0x0042DA4A, DisplayHint1_r); // TGS character select hint
 	DisplayHint2_t               = new Trampoline(0x0042DAC0, 0x0042DACA, DisplayHint2_r); // TGS character select hint
 	dsDispFadeWhite_t            = new Trampoline(0x0042E4E0, 0x0042E4E6, dsDispFadeWhite_r); // TGS fade white
-	dsDispFadeBlack_t            = new Trampoline(0x0042E480, 0x0042E485, dsDispFadeBlack_r); // TGS fade black
 	dsDispFadeLoading_t          = new Trampoline(0x0042E5F0, 0x0042E5F9, dsDispFadeLoading_r); // TGS fade with "Loading"
 	DisplaySelectingCharacter_t  = new Trampoline(0x0042D8F0, 0x0042D8F5, DisplaySelectingCharacter_r); // TGS character select tutorial 1
 	DisplayFadePoly2_t           = new Trampoline(0x005133C0, 0x005133C7, DisplayFadePoly2_r); // Egg Carrier FMV fadeout

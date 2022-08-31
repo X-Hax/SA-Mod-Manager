@@ -28,6 +28,7 @@ typedef bool _BOOL1;
 #define CamFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(_OBJ_CAMERAPARAM* pParam),ADDRESS)
 
 // General
+FunctionPointer(int, InitGame, (), 0x413C00);
 FunctionPointer(bool, ChkPause, (), 0x414D70); // Check if the game is paused
 VoidFunc(Clear, 0x0040BF30);
 VoidFunc(Reset, 0x0040BF40);
@@ -43,6 +44,8 @@ VoidFunc(SetScrollTask, 0x414420); // Load skybox task
 FunctionPointer(int, GetStageNumber, (), 0x414650); // Get stage and act number
 FunctionPointer(void, AdvanceAct, (__int16 Gap), 0x415980); // Advance act number
 FunctionPointer(signed int, NeonuLoadTexture, (NJS_TEXLIST* pTexlist), 0x4228E0);
+FunctionPointer(signed int, late_ReleaseTexture, (NJS_TEXLIST* texlist), 0x00403290);
+FunctionPointer(void, texLoadTexturePvmFile, (const char* filename, NJS_TEXLIST* texlist), 0x421180);
 VoidFunc(ADX_Close, 0x425670); // Stop bgm
 VoidFunc(WakeTimer, 0x426030);
 VoidFunc(SleepTimer, 0x426040);
@@ -90,6 +93,14 @@ FunctionPointer(void, bbl_ripple_draw, (task* tp), 0x007A81A0); // Ripple displa
 FunctionPointer(void, PSetRippleEffect, (int pno, NJS_POINT3* pp), 0x004407C0); // Ripple effect created by player
 FunctionPointer(void, CreateWaterripple, (NJS_POINT3* pos, NJS_POINT3* vec, float scl), 0x004B9430);
 FunctionPointer(void, ModelTurnWhite, (taskwk* twp, __int16 BkNumber), 0x00412A20); // Makes a model "light up" when the character approaches it
+
+// Debug
+FunctionPointer(void, njPrintColor, (int color), 0x007808E0); // Sets debug font color
+FunctionPointer(void, njPrintC, (signed int position, const char* text), 0x7808F0); // Prints a string
+FunctionPointer(void, njPrintD, (signed int position, int value, signed int numdigits), 0x780970); // Prints a decimal number
+FunctionPointer(void, njPrintF, (int position, float value, signed int precision), 0x780AC0); // Prints a float
+FunctionPointer(void, njPrint, (signed int position, const char* text, ...), 0x780B30); // Prints a formatted string
+FunctionPointer(void, njPrintSize, (unsigned __int16 size), 0x7808C0); // Sets debug font size
 
 static const void* const isTextureNGPtr = (void*)0x403250;
 static inline BOOL isTextureNG(NJS_TEXLIST* tl) // Check if the texlist is valid

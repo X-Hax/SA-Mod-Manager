@@ -2752,4 +2752,14 @@ struct bossextwk
 	char TikalFlg;
 };
 
+struct STAGENAME_WORK
+{
+	unsigned __int8 mode;
+	unsigned __int8 timer;
+	unsigned __int8 StageNo;
+	unsigned __int8 StageType;
+	unsigned __int16 DispTime;
+	NJS_TEXLIST* texlist;
+};
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
