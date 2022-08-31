@@ -54,6 +54,7 @@ using std::vector;
 #include "MaterialColorFixes.h"
 #include "sound.h"
 #include "InterpolationFixes.h"
+#include "MinorPatches.h"
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -1663,6 +1664,8 @@ static void __cdecl InitMods()
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_us\\wma");
+
+	MinorPatches_Init();
 
 	// Map of files to replace.
 	// This is done with a second map instead of sadx_fileMap directly

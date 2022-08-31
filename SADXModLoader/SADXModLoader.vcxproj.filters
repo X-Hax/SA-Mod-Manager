@@ -93,6 +93,9 @@
     <ClCompile Include="InterpolationFixes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MinorPatches.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="include\FunctionHook.h">
       <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="MinorPatches.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
