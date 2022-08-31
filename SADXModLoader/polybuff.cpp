@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "SADXModLoader.h"
 #include "polybuff.h"
 
 /*
@@ -22,7 +21,7 @@ DataPointer(PolyBuff, stru_3D0FF20, 0x3D0FF20);
 
 void __cdecl polybuff_vcolor_strip_r(NJS_MESHSET_SADX* meshset, NJS_POINT3* points)
 {
-	NJS_COLOR v6; // edi
+	NJS_COLOR v6 = { 0 };
 
 	Sint16* meshes = meshset->meshes;
 	int v5 = 0;
@@ -126,11 +125,11 @@ void __cdecl polybuff_vcolor_strip_r(NJS_MESHSET_SADX* meshset, NJS_POINT3* poin
 
 void __cdecl polybuff_vcolor_tri_r(NJS_MESHSET_SADX* meshset, NJS_POINT3* points)
 {
-	NJS_COLOR v5; // edi
-	FVFStruct_F* v9; // edx
-	float v10; // ecx
-	FVFStruct_F* v12; // ecx
-	float v13; // edx
+	NJS_COLOR v5 = { 0 };
+	FVFStruct_F* v9; 
+	float v10;
+	FVFStruct_F* v12; 
+	float v13; 
 
 	Sint16* v4 = meshset->meshes;
 	v5.color = PolyBuffVertexColor.color;
@@ -180,7 +179,7 @@ void __cdecl polybuff_vcolor_tri_r(NJS_MESHSET_SADX* meshset, NJS_POINT3* points
 
 void __cdecl polybuff_normal_vcolor_strip_r(NJS_MESHSET_SADX* meshset, NJS_POINT3* points, NJS_VECTOR* normals)
 {
-	NJS_COLOR v6; // edi
+	NJS_COLOR v6 = { 0 };
 
 	Sint16* meshes = meshset->meshes;
 	int v5 = 0;
@@ -296,7 +295,7 @@ void __cdecl polybuff_normal_vcolor_strip_r(NJS_MESHSET_SADX* meshset, NJS_POINT
 
 void __cdecl polybuff_normal_vcolor_tri_r(NJS_MESHSET_SADX* meshset, NJS_POINT3* points, NJS_VECTOR* normals)
 {
-	NJS_COLOR v6; // edi
+	NJS_COLOR v6 = { 0 };
 
 	Sint16* meshes = meshset->meshes;
 	int nbMesh = meshset->nbMesh;
@@ -362,40 +361,35 @@ void __cdecl polybuff_normal_vcolor_tri_r(NJS_MESHSET_SADX* meshset, NJS_POINT3*
 
 void __cdecl polybuff_normal_vcolor_uv_strip_r(NJS_MESHSET_SADX* meshset, NJS_POINT3* points, NJS_VECTOR* normals)
 {
-	NJS_COLOR v3; // ebp
-	NJS_TEX* uv; // esi
-	Sint16* meshes; // edi
-	int primitiveCount; // ebx
-	Sint16* _meshes; // ecx
-	_BOOL1 done; // zf
-	Sint16 _n; // cx
-	int v26; // ecx
-	NJS_POINT3* v27; // ecx
-	NJS_VECTOR* normal; // ecx
-	FVFStruct_I* v29; // eax
-	int v30; // ecx
-	NJS_VECTOR* v31; // ecx
-	NJS_VECTOR* v32; // edx
-	signed int v33; // ST1C_4
-	int v34; // ecx
-	NJS_POINT3* v35; // ecx
-	NJS_VECTOR* v36; // ecx
-	NJS_TEX* v37; // esi
-	NJS_COLOR v41; // [esp+14h] [ebp-8h]
-	char v42; // [esp+18h] [ebp-4h]
-	unsigned __int16 n_masked; // [esp+18h] [ebp-4h]
-	int a1f; // [esp+20h] [ebp+4h]
-	int a1b; // [esp+20h] [ebp+4h]
-	int a1g; // [esp+20h] [ebp+4h]
-	int a1h; // [esp+20h] [ebp+4h]
+	NJS_COLOR v3 = { 0 };
+	int primitiveCount = 0;
+	_BOOL1 done = false;
+	Sint16 _n = 0;
+	int v26;
+	NJS_POINT3* v27 = nullptr;
+	NJS_VECTOR* normal = { 0 };
+	FVFStruct_I* v29 = nullptr;
+	int v30;
+	NJS_VECTOR* v31 = nullptr;
+	NJS_VECTOR* v32 = nullptr;
+	signed int v33 = 0;
+	int v34;
+	NJS_POINT3* v35 = nullptr;
+	NJS_VECTOR* v36 = nullptr;
+	NJS_TEX* v37 = nullptr;
+	NJS_COLOR v41 = { 0 };
+	unsigned __int16 n_masked;
+	int a1f = 0;
+	int a1b = 0;
+	int a1g = 0;
+	int a1h = 0;
 
 	v3.color = PolyBuffVertexColor.color;
-	uv = meshset->vertuv;
-	meshes = meshset->meshes;
-	primitiveCount = 0;
+	NJS_TEX* uv = meshset->vertuv;
+	Sint16* meshes = meshset->meshes;
 	v41.color = PolyBuffVertexColor.color;
-	v42 = _RenderFlags;
-	_meshes = meshset->meshes;
+	char v42 = _RenderFlags;
+	Sint16* _meshes = meshset->meshes;
 
 	if (meshset->nbMesh)
 	{
@@ -522,7 +516,7 @@ void __cdecl polybuff_normal_vcolor_uv_strip_r(NJS_MESHSET_SADX* meshset, NJS_PO
 
 void __cdecl polybuff_normal_vcolor_uv_tri_r(NJS_MESHSET* a1, NJS_POINT3* points, NJS_VECTOR* normals)
 {
-	NJS_COLOR v18; // [esp+10h] [ebp-8h]
+	NJS_COLOR v18 = { 0 };
 
 	int v3 = Direct3D_CurrentCullMode;
 	v18.color = PolyBuffVertexColor.color;
