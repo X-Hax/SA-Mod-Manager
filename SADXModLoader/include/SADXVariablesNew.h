@@ -60,6 +60,7 @@ DataPointer(unsigned __int8, usMainFadeStatus, 0x03B29D67); // Main fadeout mode
 DataPointer(STAGENAME_WORK, StageNameWork, 0x03C53ABC); // Level title card worker
 DataPointer(int, now_saving, 0x03B291A4);
 DataPointer(int, pause_flg, 0x03B28114);
+DataPointer(bool, PvrAlphaFlag, 0x03B2C650); // Global transparency flag for UI textures
 
 // Event
 DataPointer(EVINFO2, evInfo, 0x03B2C568); // Current cutscene struct

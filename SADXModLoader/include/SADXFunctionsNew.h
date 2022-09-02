@@ -1157,7 +1157,10 @@ FunctionPointer(void, OpenDialog, (const DialogPrmType* dp), 0x432DB0); // Open 
 FunctionPointer(void, ghSetPvrTexMaterial, (unsigned int color), 0x432F40);
 FunctionPointer(void, ghSetPvrTexVertexColor, (unsigned int c0, unsigned int c1, unsigned int c2, unsigned int c3), 0x432F90);
 FunctionPointer(void, DrawTitleBack, (float x, float y, float z, float w, float h), 0x4334F0);
-FunctionPointer(void, ghDrawPvrTexture, (int index, float x, float y, float z), 0x4338D0);
+FunctionPointer(void, ghDrawPvrTexture, (int index, float x, float y, float z), 0x4338D0); // Draws a texture
+FunctionPointer(void, ghDrawPvrTextureS, (int index, float x, float y, float z, float sx, float xy), 0x433F80); // Draws a texture with scale
+FunctionPointer(void, ghDrawPvrTextureWH, (int index, float x, float y, float z, float centerX, float centerY), 0x433C90); // Draws a texture with width and height
+FunctionPointer(void, ghDrawPvrTextureWHUV, (int index, float x, float y, float z, float w, float h, NJS_TEXTURE_VTX* uvset), 0x4335A0); // Draws a texture with width, height and UVs
 FunctionPointer(void, ghSetPvrTexBaseColor, (unsigned int color), 0x433010);
 FunctionPointer(void, DrawShadowWindow, (float x, float y, float z, float w, float h), 0x4343E0);
 FunctionPointer(void, AdvaOpenDialogCsrLet, (DiaTypeEnum dialog_type, char csr, char* csrp), 0x5057D0); // Open a main menu dialog; csr is current selected item, dis_csr_ptr is an array of disabled items
