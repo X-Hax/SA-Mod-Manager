@@ -19,6 +19,7 @@ DataPointer(float, sa_s3_z_ofs, 0x3ABD9BC); // Draw queue depth bias for sprites
 DataPointer(float, late_s3_z_ofs, 0x3ABD9B8); // Draw queue depth bias for sprites
 DataPointer(unsigned __int16, usPlayer, 0x3B22DC0); // Player ID
 DataPointer(__int16, ssGameMode, 0x3B22DE4); // GameState (enum MD_GAME)
+DataPointer(__int16, ssGameModeChange, 0x03B22E1C);
 DataPointer(unsigned int, ulGlobalMode, 0x3ABDC7C); // Game Mode (njUserMain mode, enum MD_GameMode)
 DataPointer(int, loop_count, 0x3B1117C); // MissedFrames
 DataPointer(int, loop_const, 0x3B11178); // Frame increment
@@ -79,20 +80,24 @@ DataPointer(Angle, angGz, 0x3B0F0F4); // Gravity Z angle
 
 // Sonic
 DataPointer(sParabola, SonicPaboBuff, 0x3C53A68);
+DataArray(PL_ACTION, sonic_action, 0x03C56210, 146);
 
 // Tails
 DataPointer(sSonicCtrl, SonicCtrlBuff, 0x3C539F8);
 DataPointer(sMRacePath*, PathTbl_Sonic, 0x3C539F4); // Current race path for Sonic
 DataPointer(sMRacePath*, PathTbl_Miles, 0x3C53A64); // Current race path for Tails
 DataArray(sMRacePath*, PPT_MRaceEachStage, 0x91C0B8, 10); // Race path list (sonic, tails)
+DataArray(PL_ACTION, miles_action, 0x03C49D90, 136);
 
 // Knuckles
 DataArray(KnFragmSetStr, fragmset_tbl, 0x3C52B20, 3); // current emerald set information
 DataArray(KnFragmNmbStr, fragmnmb_tbl, 0x7E0CD8, 6);
+DataArray(PL_ACTION, knuckles_action, 0x03C532A0, 114);
 
 // Amy
 DataArray(KeyInfo, KeyBuff, 0x3C72C38, 8);         // Key information for locked doors
 DataPointer(amyhndlstr, amyhndlstatus, 0x3C5B300); // Handle progress
+DataArray(PL_ACTION, amy_action, 0x03C54880, 101);
 
 // E102
 DataPointer(E102WK*, e102_work_ptr, 0x3C53B70);  // Additional information for E102 (laser, targets, etc.)
@@ -196,6 +201,9 @@ DataPointer(_OBJ_ITEMTABLE*, pObjItemTable, 0x3C4E448);             // Current O
 DataPointer(__int16, numStatusEntry, 0x3C4E454);
 DataArray(OBJ_CONDITION, objStatusEntry, 0x3C4E460, 1024);          // Set file entries
 DataPointer(OBJECT_ITEMBOX_AIR_DATA*, itembox_air_data, 0x3C5A9D4); // Additional data for air item boxes
+DataArray(unsigned int, levelup_texture, 0x009BF1D8, 8);            // 1-up textures
+DataArray(CUSTOM_OBJ, panel_model, 0x00981A78, 2);                  // Item box (air) model+function
+DataPointer(int, item_kind, 0x03C5C888);                            // Current item box item
 
 // Object lists
 DataPointer(_OBJ_ITEMTABLE, objItemTable00, 0x27C71C4);
@@ -250,7 +258,8 @@ DataPointer(ENEMY_CART_DATA*, cart_data, 0x3D08E0C); // Pointer to player's cart
 
 // Boss
 DataPointer(char, bossmtn_flag, 0x3C5A7EF);
-DataPointer(taskwk*, chaostwp, 0x3C5A7D8); // pointer to current Chaos boss taskwk
+DataPointer(taskwk*, chaostwp, 0x3C5A7D8); // Pointer to current Chaos boss taskwk
+DataPointer(float, boss_life_f, 0x03C58158); // Boss hit count
 
 // Camera
 DataPointer(taskwk*, camera_twp, 0x3B2CBB0);                          // Camera task work pointer
@@ -292,6 +301,15 @@ DataPointer(float, ls_iamb, 0x3B121AC);
 DataPointer(NJS_VECTOR, ds_pool, 0x3B121B4); // Used in normal scaling for some objects
 DataPointer(NJS_VECTOR, ds_current, 0x3B121F8); // Used in normal scaling for some objects
 
+// Demos
+DataArray(__int16[4], demotbl, 0x00913AE0, 6); // Demo list
+DataPointer(int, DemoType, 0x3B2C474); // 1 if recorded input is used
+DataPointer(int, DemoPause, 0x03B2C478);
+DataPointer(int, DemoStage, 0x03B2C47C); // 2 if a demo is playing, 0 if Start is hit during the demo
+DataPointer(int, GB_demoevent, 0x3B2A2E8); // Current Event ID for demos
+DataPointer(int, GB_demomode, 0x03B2A2E4);
+DataPointer(__int16, DemoDataPtrNum, 0x3B2C464); // Current demo frame
+
 // Menu
 DataPointer(const DialogPrmType, DialogAskQuit, 0x7DD48C); // Dialog prompt for level quitting
 DataArray(DialogPrmType, DialogPrm, 0x7EE328, 22); // Main menus dialog prompts
@@ -306,6 +324,9 @@ DataPointer(BOOL, TldFlg, 0x3C5E8E0); // Menu ready flag
 DataPointer(AvaStgActT, AvaCmnPrm, 0x3C5FED0);
 DataPointer(task*, TrialActStelTp, 0x3C5FEE0);
 DataPointer(task*, TitleNewTp, 0x3C5FF00);
+DataPointer(STAFFROLL_DATA, StaffRollData, 0x2BC2FD0); // Credits list
+DataArray(NJS_TEXANIM, anim_pause, 0x009177B8, 15); // Pause menu texture data
+DataPointer(NJS_TEXLIST, texlist_pause, 0x009177AC); // Pause menu texture list
 
 // TGS menus
 DataPointer(char, scSelectedStage, 0x3B2C424);
@@ -497,6 +518,8 @@ DataArray(TEX_PVMTABLE, ListofPVMPast00, 0x0090F18C, 2); // Past Echidna City PV
 DataArray(TEX_PVMTABLE, ListofPVMPast01, 0x0090F134, 2); // Past Master Emerald Altar PVM list
 DataArray(TEX_PVMTABLE, ListofPVMPast02, 0x0090F14C, 2); // Past Altar on Fire PVM list
 
+DataArray(TEX_PVMTABLE, PvmListFinalEgg, 0x0090E810, 11);
+
 // LandTables
 DataPointer(_OBJ_LANDTABLE, objLandTableegm1, 0x1570B1C);
 DataPointer(_OBJ_LANDTABLE, objLandTableegm2, 0x15EC454);
@@ -566,10 +589,10 @@ DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEEC3, 0x38F6E88);
 DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEMR, 0x3AAD130);
 DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEPAST, 0x3AAD110);
 
-//motion
+// Motion
 DataPointer(MOTIONDATA_INFO, nj_motion_data_info_, 0x3AB9910);
 
-//chaos
+// Chaos
 DataArray(PL_JOIN_VERTEX, chaos0_jv_list, 0x3C63930, 18);
 DataArray(PL_ACTION, chaos0_action, 0x3C63AE0, 18);
 DataArray(PL_JOIN_VERTEX, chaos2_jv_list, 0x1120830, 22);
@@ -586,4 +609,37 @@ DataPointer(MORPHWK*, morph_tp_0, 0x3C63EB8);
 DataPointer(MORPHWK*, morph_tp_1, 0x3C69A30);
 DataPointer(CHAOS_PARAM*, chaosparam, 0x03C5A7E8);
 DataPointer(char, chaos_id, 0x3C5A7E2);
+
+// Sky Deck objects
+DataArray(float, com_anmcnttbl, 0x0203A6F4, 10); // Sky Deck object animation lengths
+DataArray(NJS_OBJECT*, com_objtbl, 0x0203A1C0, 324); // Sky Deck objects
+DataArray(NJS_MOTION*, com_anmtbl, 0x0203A6CC, 10); // Sky Deck object motions
+DataPointer(float, EC_posy, 0x03C80610); // Sky Deck sky altitude (0 to 700)
+DataPointer(float, bgcolor_ofs__, 0x03C8046C); // Sky Deck background color offset (1.0 is white, 0.0 is normal)
+DataPointer(Uint32, stg06_fogcolor, 0x03C7F048); // Sky Deck fog color (written to but unused in DX)
+
+// Lost World objects
+DataPointer(Uint8, other_flag, 0x3C7512B); // Used by the mirror in Lost World
+DataPointer(Uint8, fog_switch, 0x2038C34); // Disables fog for the mirror in Lost World
+DataPointer(Uint8, discovery, 0x3C75129); // Used by the mirror in Lost World
+DataArray(Uint8, SwitchFlg_1, 0x3C7ED8C, 32); // AokiSwitch flag array
+
+// Ice Cap objects
+DataPointer(NJS_TEXLIST, texlist_piece, 0x00E2FEA4); // Small ice piece effect for the avalanche
+DataPointer(NJS_TEXLIST, texlist_yuki, 0x00E956C8); // Small snowflake effect for the avalanche
+
+// Casinopolis objects
+DataPointer(int, EVL_KazariRotY, 0x01E77568); // Wall gear rotation in Casinopolis
+DataPointer(int, EVL_HagurumaRotY, 0x01E77E58); // Horizontal gear rotation in Casinopolis
+DataPointer(float, EVL_KazariFramePitch, 0x01E77570); // Animation frame for the pumps in the gears room in Casinopolis
+DataArray(TEXANIMINFO, texanim_4, 0x01E75DC8, 2); // OLhtG texture animation in Casinopolis
+DataArray(TEXANIMINFO, texanim_5, 0x01E75DE0, 2); // OLhtR texture animation in Casinopolis
+DataArray(NJS_VECTOR, posi_table, 0x1E79588, 66); // Sonic jackpot letter positions
+DataArray(NJS_SPRITE*, anim_name, 0x1E79570, 6); // Sonic jackpot letter sprites
+DataPointer(task*, teleporttask, 0x3C7507C); // OTeleport task pointer, non-null when Sonic is teleporting
+
+// Station Square objects
+DataArray(int, tex_color_list, 0x2BBE9D8, 6); // Station Square car texture IDs
+DataPointer(NJS_SPRITE, sprite_lamp, 0x02BC0334); // Station Square street light (OGaitou) lamp sprite
+
 #endif /* SADXMODLOADER_SADXVARSNEW_H */

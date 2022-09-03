@@ -47,12 +47,14 @@ FunctionPointer(signed int, NeonuLoadTexture, (NJS_TEXLIST* pTexlist), 0x4228E0)
 FunctionPointer(signed int, late_ReleaseTexture, (NJS_TEXLIST* texlist), 0x00403290);
 FunctionPointer(void, texLoadTexturePvmFile, (const char* filename, NJS_TEXLIST* texlist), 0x421180);
 VoidFunc(ADX_Close, 0x425670); // Stop bgm
+FunctionPointer(void, BGM_Play, (int song), 0x00425690);
 VoidFunc(WakeTimer, 0x426030);
 VoidFunc(SleepTimer, 0x426040);
 VoidFunc(AdvanceTime, 0x426075);
 FunctionPointer(void, SetViewAngle, (int new_view_angle), 0x437240);
 FunctionPointer(void, LandChangeStage, (char Gap), 0x43A460); // Release landtable and request act change
 FunctionPointer(void, AddCameraStage, (__int16 Gap), 0x434680); // Release cameras and request act change
+VoidFunc(DrawMotionGround, 0x0043A810); // Draw landtable animations
 FunctionPointer(void, LandChangeLandTable, (_OBJ_LANDTABLE* pOLT), 0x43A4C0); // Set Chao landtable
 VoidFunc(InitFreeCamera, 0x434870);
 FunctionPointer(Angle, AdjustAngle, (Angle ang0, Angle ang1, Angle dang), 0x438350); // Slowly adjust ang0 to ang1 at dang speed
@@ -93,6 +95,8 @@ FunctionPointer(void, bbl_ripple_draw, (task* tp), 0x007A81A0); // Ripple displa
 FunctionPointer(void, PSetRippleEffect, (int pno, NJS_POINT3* pp), 0x004407C0); // Ripple effect created by player
 FunctionPointer(void, CreateWaterripple, (NJS_POINT3* pos, NJS_POINT3* vec, float scl), 0x004B9430);
 FunctionPointer(void, ModelTurnWhite, (taskwk* twp, __int16 BkNumber), 0x00412A20); // Makes a model "light up" when the character approaches it
+FunctionPointer(void, _gjBeforeRender, (), 0x0078B880);
+FunctionPointer(void, stHWSetVSync, (int a1), 0x007899A0); // Sets the delta time multiplier
 
 // Debug
 FunctionPointer(void, njPrintColor, (int color), 0x007808E0); // Sets debug font color
@@ -154,6 +158,7 @@ VoidFunc(late_exec, 0x4086F0); // Draws queued models
 VoidFunc(njWaitVSync, 0x780BE0); // Wait loop
 FunctionPointer(void, OnConstantAttr, (NJD_FLAG _and, NJD_FLAG _or), 0x439560);
 FunctionPointer(void, OffConstantAttr, (NJD_FLAG _and, NJD_FLAG _or), 0x439590);
+FunctionPointer(void, njSetQuadTexture, (int n, NJS_COLOR color), 0x0077DDF0);
 
 // Lighting
 FunctionPointer(void, late_SetFunc, (void(__cdecl* func)(void*), void* data, float depth, int late_flags), 0x404840); // DrawModelCallback_Queue
@@ -228,6 +233,7 @@ FunctionPointer(void, PGetSpeed1D, (taskwk* data1, motionwk2* data2, playerwk* c
 FunctionPointer(void, PSetPosition1D, (taskwk* data1, motionwk2* data2, playerwk* co2), 0x43E100);
 FunctionPointer(signed int, PCheckHoldObject, (taskwk* a1), 0x43B9C0);
 FunctionPointer(int, PResetAccelerationAir, (taskwk* a1, motionwk2* a2, playerwk* a3), 0x44BD70);
+FunctionPointer(int, PSetSplashEffect, (taskwk* a1), 0x00440890); // Creates a water splash
 
 static const void* const KnucklesCheckInputPtr = (void*)0x476970;
 static inline signed int KnucklesCheckInput(taskwk* twp, motionwk2* mwp, playerwk* pwp)
@@ -530,6 +536,10 @@ FunctionPointer(void, ef_explosion, (taskwk* twp), 0x4D6E00);
 FunctionPointer(void, ef_th_baria, (taskwk* twp), 0x4D6E40);
 FunctionPointer(void, DrawCustomObject, (NJS_OBJECT* top_object, CUSTOM_OBJ* custom), 0x4BA5D0);
 FunctionPointer(void, DrawCustomObject_wz, (NJS_OBJECT* top_object, CUSTOM_OBJ* custom), 0x4BA710);
+TaskFunc(Draw, 0x004D6810); // Draws the item box
+TaskFunc(DrawInWater, 0x004D6990); // Draws the underwater item box
+TaskFunc(Draw_Break, 0x004D6B20); // Draws the destroyed item box
+TaskFunc(Dead_ItemBox, 0x004D6BA0); // Deletes the item box
 
 // Object task functions
 TaskFunc(CameraDisplay, 0x4370F0);
@@ -840,7 +850,7 @@ FunctionPointer(void, OffControl3D, (NJD_CONTROL_3D flag), 0x439600); // Removes
 // Ninja draw functions
 FunctionPointer(void, njDrawModel_, (NJS_MODEL_SADX* mdl), 0x784AE0); // Offloads to polybuff drawing functions
 FunctionPointer(void, njDirectDrawModel, (NJS_MODEL_SADX* mdl), 0x77EDA0);
-FunctionPointer(void, njDrawPolygon2D, (NJS_POINT2COL* p, int count, float pri, NJD_DRAW attr), 0x4010D0);
+FunctionPointer(void, njDrawPolygon2D, (NJS_POINT2COL* p, int count, float pri, NJD_DRAW attr), 0x77DFC0);
 FunctionPointer(void, njDrawPolygon3D, (NJS_POINT3COL* p, int n, int atr), 0x77EAD0);
 FunctionPointer(void, njDrawSprite2D, (NJS_SPRITE* sp, int n, float pri, NJD_SPRITE attr), 0x77E050);
 FunctionPointer(void, njDrawSprite3D, (NJS_SPRITE* sp, int n, NJD_SPRITE attr), 0x77E390);
@@ -1034,8 +1044,13 @@ FunctionPointer(void, CHAOS_DrawObject, (NJS_OBJECT* object), 0x40A280);
 FunctionPointer(void, CHAOS_Action, (NJS_ACTION* action, float frame), 0x409FB0);
 FunctionPointer(void, CHAOS_DrawShapeMotion, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x40A050);
 
+// Demos
+FunctionPointer(void, dsGoDemoLoop, (), 0x0042C820); // Sets up demo stuff
+FunctionPointer(int, dsReturnCheck, (), 0x0042CAA0); // Runs after demos
+
 // FMVs
 FunctionPointer(int, movie, (int movie_num), 0x005130A0);
+FunctionPointer(bool, MsMovie, (int n), 0x0042F020); // Plays videos
 FunctionPointer(int, CheckMovieStatus, (), 0x00513D50);
 FunctionPointer(int, GetNJTexture, (), 0x00513990);
 FunctionPointer(void, DrawMovieTex, (int width, int height), 0x005139F0);
@@ -1092,6 +1107,9 @@ FunctionPointer(void, EV_CameraPath, (cpathtag* path, float speed), 0x4310A0);
 
 // Event
 VoidFunc(EV_CanselOn, 0x42F630);
+FunctionPointer(void, DisplayFade, (task* a1), 0x00412F70); // Event fade display function
+FunctionPointer(void, SeqTaskFadeIn, (task* a1), 0x00412FE0); // Event fade-in main function
+FunctionPointer(void, SeqTaskFadeOut, (task* a1), 0x00413060); // Event fade-out main function
 FunctionPointer(BOOL, EV_CheckCansel, (), 0x42FB00);
 FunctionPointer(void, EV_Wait, (int time), 0x4314D0);
 FunctionPointer(void, EV_CreateObject, (task** tp, float px, float py, float pz, int ax, int ay, int az), 0x431670);
@@ -1139,6 +1157,8 @@ FunctionPointer(task*, getobjModel, (int model_id), 0x6ECB40);
 FunctionPointer(void, deleteModel, (int model_id), 0x6ECB50);
 FunctionPointer(void, createModel, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECE70);
 FunctionPointer(void, createModelEC, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECF20);
+FunctionPointer(void, TH_Wait, (), 0x004014B0); // Called in MSG_Cls
+FunctionPointer(void, ResetCameraTimer, (), 0x436550);
 
 // Story sequence
 FunctionPointer(BOOL, SeqCheckFlag, (int no), 0x412D20);
@@ -1147,7 +1167,7 @@ FunctionPointer(SEQ_SECTIONTBL*, SeqGetSectionList, (int playerno), 0x44EAF0); /
 FunctionPointer(void, SeqSetTime, (Sint8 time), 0x412C00); // Set time of dat
 FunctionPointer(Sint8, SeqGetTime, (), 0x412C10); // Get time of day
 
-// Menu
+// Menu and HUD
 VoidFunc(DialogJimakuInit, 0x40BC80);
 FunctionPointer(void, DialogJimakuPut, (const char* str), 0x40BD30);
 FunctionPointer(char, GetDialogStat, (), 0x432550); // Get the current selected item of a dialog
@@ -1157,6 +1177,8 @@ FunctionPointer(void, OpenDialog, (const DialogPrmType* dp), 0x432DB0); // Open 
 FunctionPointer(void, ghSetPvrTexMaterial, (unsigned int color), 0x432F40);
 FunctionPointer(void, ghSetPvrTexVertexColor, (unsigned int c0, unsigned int c1, unsigned int c2, unsigned int c3), 0x432F90);
 FunctionPointer(void, DrawTitleBack, (float x, float y, float z, float w, float h), 0x4334F0);
+FunctionPointer(void, printMenu2, (PAUSE_TEXTURE_ID id, signed int pos_x, signed int pos_y, int flag), 0x4B62B0); // Draws a pause menu texture (flag is selection rectangle)
+FunctionPointer(void, ghInitPvrTexture, (), 0x432EA0); // Resets global PVR texture settings
 FunctionPointer(void, ghDrawPvrTexture, (int index, float x, float y, float z), 0x4338D0); // Draws a texture
 FunctionPointer(void, ghDrawPvrTextureS, (int index, float x, float y, float z, float sx, float xy), 0x433F80); // Draws a texture with scale
 FunctionPointer(void, ghDrawPvrTextureWH, (int index, float x, float y, float z, float centerX, float centerY), 0x433C90); // Draws a texture with width and height
@@ -1176,6 +1198,7 @@ FunctionPointer(BOOL, AvaGetTrialEnable, (), 0x506780);
 FunctionPointer(int, GetFadeOutColFromT, (float t), 0x506E10); // Return fade out colour from 0-1 range float
 FunctionPointer(int, GetFadeInColFromT, (float t), 0x506E40); // Return fade in colour from 0-1 range float
 FunctionPointer(void, DrawSkyBg, (float z), 0x507BB0);
+FunctionPointer(void, EvBossDispHitPoint, (__HPPOS* hppos), 0x4B62B0); // Displays hit count for character minibosses
 TaskFunc(trial_act_sel_exec, 0x50B220);
 TaskFunc(trial_act_sel_disp, 0x50B410);
 TaskFunc(title_new_exec, 0x5101A0);
@@ -1190,9 +1213,25 @@ VoidFunc(DisplayBackwardArrow, 0x0042DFE0);
 // Level objects: Windy Valley
 FunctionPointer(void, ObjectWatageDisplay, (task* tp), 0x004DFA60); // Dandelion
 
+// Level objects: Twinkle Park
+FunctionPointer(void, dispTPRoof, (task* tp), 0x5F7370); // Renders various Twinkle Park objects using the pointer in the task struct
+
+// Level objects: Red Mountain
+FunctionPointer(void, Object_Mountain_CL_sub, (task* tp, NJS_OBJECT* pObj), 0x600BF0); // Draws Red Mountain clouds
+
+// Level objects: Sky Deck
+FunctionPointer(void, ObjectSkydeck_Shadow_Display, (task* tsk, NJS_OBJECT* obj), 0x005ED790);
+
 // Level objects: Casinopolis
 FunctionPointer(void, ObjCasino_SetTexAnimInfo, (TEXANIMINFO* paniminfo, int cnt), 0x005DD900); // Animates textures using TEXANIMINFO
 FunctionPointer(void, ObjCasino_ResetTexAnimInfo, (TEXANIMINFO* paniminfo, int cnt), 0x005DD920); // Resets texture animation
 FunctionPointer(Sint32, SetObjectTexture2, (int tex), 0x005C09D0); // Sets OBJ_CASINO or OBJ_CASINO9 texlist
+FunctionPointer(void, ObjCasino_MobileObj, (task* tp, NJS_POINT3* vec, int angY), 0x005DD4C0); // Dynamic collision for Casino gears
+
+// Level objects: Station Square
+FunctionPointer(void, LampDisp, (task* a1), 0x0063A930); // Draws the street light in Station Square (night version)
+FunctionPointer(int, checkInSsHodel, (), 0x0062EA30); // Checks if the camera is inside Station Square hotel (lol)
+FunctionPointer(void, SetPositionS_WhenHeGetShoes, (task* tsk), 0x006303D0); // Sets Sonic's position in the sewers when he gets the Light Speed Dash shoes
+VoidFunc(SSChangeTimetex, 0x00633690); // Changes Station Square textures depending on the time of day
 
 #endif /* SADXMODLOADER_SADXFUNCTIONSNEW_H */
