@@ -67,6 +67,12 @@ write8 0091268C 0
 Patch "Disable Voices"
 write8 00425710 0xC3
 
+Patch "Disable Videos"
+write32 005130A0 0x33EC8B55 ; return (n > 0 ? 0 : -1);
+write32 005130A4 0x084539C0 
+write32 005130A8 0x48C09F0F
+write32 005130AC 0xCCCCC35D
+
 Code "Infinite Underwater Time"
 write16 p03B42E30|20|C0|C 0
 
