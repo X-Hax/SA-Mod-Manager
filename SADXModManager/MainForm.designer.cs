@@ -1859,7 +1859,7 @@
             this.comboBoxTestSpawnGameMode.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxTestSpawnGameMode.Name = "comboBoxTestSpawnGameMode";
             this.comboBoxTestSpawnGameMode.Size = new System.Drawing.Size(149, 21);
-            this.comboBoxTestSpawnGameMode.TabIndex = 38;
+            this.comboBoxTestSpawnGameMode.TabIndex = 19;
             this.toolTip.SetToolTip(this.comboBoxTestSpawnGameMode, "Start the game on a specific GameMode.");
             // 
             // checkBoxTestSpawnGameMode
@@ -1870,7 +1870,7 @@
             this.checkBoxTestSpawnGameMode.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxTestSpawnGameMode.Name = "checkBoxTestSpawnGameMode";
             this.checkBoxTestSpawnGameMode.Size = new System.Drawing.Size(90, 18);
-            this.checkBoxTestSpawnGameMode.TabIndex = 37;
+            this.checkBoxTestSpawnGameMode.TabIndex = 18;
             this.checkBoxTestSpawnGameMode.Text = "GameMode:";
             this.toolTip.SetToolTip(this.checkBoxTestSpawnGameMode, "Start the game on a specific GameMode.");
             this.checkBoxTestSpawnGameMode.UseVisualStyleBackColor = true;
@@ -1946,7 +1946,7 @@
             this.buttonTestSpawnPlay.Margin = new System.Windows.Forms.Padding(2);
             this.buttonTestSpawnPlay.Name = "buttonTestSpawnPlay";
             this.buttonTestSpawnPlay.Size = new System.Drawing.Size(82, 26);
-            this.buttonTestSpawnPlay.TabIndex = 20;
+            this.buttonTestSpawnPlay.TabIndex = 22;
             this.buttonTestSpawnPlay.Text = "Play";
             this.toolTip.SetToolTip(this.buttonTestSpawnPlay, "Run the game with the above Test Spawn settings.");
             this.buttonTestSpawnPlay.UseVisualStyleBackColor = true;
@@ -2084,7 +2084,7 @@
             0});
             this.numericUpDownTestSpawnSaveID.Name = "numericUpDownTestSpawnSaveID";
             this.numericUpDownTestSpawnSaveID.Size = new System.Drawing.Size(51, 20);
-            this.numericUpDownTestSpawnSaveID.TabIndex = 19;
+            this.numericUpDownTestSpawnSaveID.TabIndex = 21;
             this.toolTip.SetToolTip(this.numericUpDownTestSpawnSaveID, "File ID to load, i.e. 1 is SonicAdventureDX01.snc.");
             this.numericUpDownTestSpawnSaveID.Value = new decimal(new int[] {
             1,
@@ -2100,7 +2100,7 @@
             this.checkBoxTestSpawnSave.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxTestSpawnSave.Name = "checkBoxTestSpawnSave";
             this.checkBoxTestSpawnSave.Size = new System.Drawing.Size(117, 18);
-            this.checkBoxTestSpawnSave.TabIndex = 18;
+            this.checkBoxTestSpawnSave.TabIndex = 20;
             this.checkBoxTestSpawnSave.Text = "Save Redirection:";
             this.toolTip.SetToolTip(this.checkBoxTestSpawnSave, "Force the game to load a specific save file.");
             this.checkBoxTestSpawnSave.UseVisualStyleBackColor = true;
