@@ -1577,16 +1577,26 @@ static void __cdecl InitMods()
 	}
 
 	// Replaces half-pixel offset addition with subtraction
-	WriteData((uint8_t*)0x0077DE1E, (uint8_t)0x25);
-	WriteData((uint8_t*)0x0077DE33, (uint8_t)0x25);
-	WriteData((uint8_t*)0x0078E822, (uint8_t)0x25);
-	WriteData((uint8_t*)0x0078E83C, (uint8_t)0x25);
-	WriteData((uint8_t*)0x0078E991, (uint8_t)0x25);
-	WriteData((uint8_t*)0x0078E9AE, (uint8_t)0x25);
-	WriteData((uint8_t*)0x0078EA41, (uint8_t)0x25);
-	WriteData((uint8_t*)0x0078EA5E, (uint8_t)0x25);
-	WriteData((uint8_t*)0x0078EAE1, (uint8_t)0x25);
-	WriteData((uint8_t*)0x0078EAFE, (uint8_t)0x25);
+	WriteData((uint8_t*)0x0077DE1E, (uint8_t)0x25); // njDrawQuadTextureEx
+	WriteData((uint8_t*)0x0077DE33, (uint8_t)0x25); // njDrawQuadTextureEx
+	WriteData((uint8_t*)0x0078E822, (uint8_t)0x25); // DrawRect_TextureVertexTriangleStrip
+	WriteData((uint8_t*)0x0078E83C, (uint8_t)0x25); // DrawRect_TextureVertexTriangleStrip
+	WriteData((uint8_t*)0x0078E991, (uint8_t)0x25); // njDrawTriangle2D_List
+	WriteData((uint8_t*)0x0078E9AE, (uint8_t)0x25); // njDrawTriangle2D_List
+	WriteData((uint8_t*)0x0078EA41, (uint8_t)0x25); // Direct3D_DrawTriangleFan2D
+	WriteData((uint8_t*)0x0078EA5E, (uint8_t)0x25); // Direct3D_DrawTriangleFan2D
+	WriteData((uint8_t*)0x0078EAE1, (uint8_t)0x25); // njDrawTriangle2D_Strip
+	WriteData((uint8_t*)0x0078EAFE, (uint8_t)0x25); // njDrawTriangle2D_Strip
+	WriteData((uint8_t*)0x0077DBFC, (uint8_t)0x25); // njDrawPolygon
+	WriteData((uint8_t*)0x0077DC16, (uint8_t)0x25); // njDrawPolygon
+	//WriteData((uint8_t*)0x0078E8F0, (uint8_t)0x25); // njDrawLine2D_Direct3D
+	//WriteData((uint8_t*)0x0078E90D, (uint8_t)0x25); // njDrawLine2D_Direct3D
+	//WriteData((uint8_t*)0x0078B412, (uint8_t)0x25); // Unknown
+	//WriteData((uint8_t*)0x0078B452, (uint8_t)0x25); // Unknown
+	//WriteData((uint8_t*)0x0078B1FD, (uint8_t)0x25); // Chao HUD
+	//WriteData((uint8_t*)0x0078B21B, (uint8_t)0x25); // Chao HUD
+	//WriteData((uint8_t*)0x0078B245, (uint8_t)0x25); // Chao HUD
+	//WriteData((uint8_t*)0x0078B284, (uint8_t)0x25); // Chao HUD
 
 	// Pause sounds when the window is inactive
 	WriteCall(reinterpret_cast<void*>(0x00401939), PauseMusicWithSound);
