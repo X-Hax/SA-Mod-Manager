@@ -52,11 +52,19 @@ Patch "Don't Lose Rings When Hit"
 writenop 0045072D 5
 write16 00450734 0xE990
 
-Code "P1 can't Get Hurt"
-write16 p03B42E30|20|6 30
+Code "P1 can't get hurt"
+ifeq32 03B2C568 0
+	write16 p03B42E30|20|6 30
+else
+	write16 p03B42E30|20|6 0
+endif
 
-Code "P2 can't Get Hurt"
-write16 p03B42E34|20|6 30
+Code "P2 can't get hurt"
+ifeq32 03B2C568 0
+	write16 p03B42E34|20|6 30
+else
+	write16 p03B42E34|20|6 0
+endif
 
 Code "Have Invincibility"
 or16 p03B42E30|20|C0|6 0x8000
