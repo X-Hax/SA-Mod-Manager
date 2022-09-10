@@ -1589,14 +1589,10 @@ static void __cdecl InitMods()
 	WriteData((uint8_t*)0x0078EAFE, (uint8_t)0x25); // njDrawTriangle2D_Strip
 	WriteData((uint8_t*)0x0077DBFC, (uint8_t)0x25); // njDrawPolygon
 	WriteData((uint8_t*)0x0077DC16, (uint8_t)0x25); // njDrawPolygon
-	//WriteData((uint8_t*)0x0078E8F0, (uint8_t)0x25); // njDrawLine2D_Direct3D
-	//WriteData((uint8_t*)0x0078E90D, (uint8_t)0x25); // njDrawLine2D_Direct3D
-	//WriteData((uint8_t*)0x0078B412, (uint8_t)0x25); // Unknown
-	//WriteData((uint8_t*)0x0078B452, (uint8_t)0x25); // Unknown
-	//WriteData((uint8_t*)0x0078B1FD, (uint8_t)0x25); // Chao HUD
-	//WriteData((uint8_t*)0x0078B21B, (uint8_t)0x25); // Chao HUD
-	//WriteData((uint8_t*)0x0078B245, (uint8_t)0x25); // Chao HUD
-	//WriteData((uint8_t*)0x0078B284, (uint8_t)0x25); // Chao HUD
+	WriteData((uint8_t*)0x0078E8F0, (uint8_t)0x25); // njDrawLine2D_Direct3D
+	WriteData((uint8_t*)0x0078E90D, (uint8_t)0x25); // njDrawLine2D_Direct3D
+	WriteData((uint8_t*)0x0078B412, (uint8_t)0x25); // Unknown
+	WriteData((uint8_t*)0x0078B452, (uint8_t)0x25); // Unknown
 
 	// Pause sounds when the window is inactive
 	WriteCall(reinterpret_cast<void*>(0x00401939), PauseMusicWithSound);
