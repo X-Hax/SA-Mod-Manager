@@ -698,3 +698,15 @@ int __cdecl PlayVoiceFile_CD_r(LPCSTR filename)
 	}
 	return 0;
 }
+
+void __cdecl PauseMusicWithSound()
+{
+	PauseMusic();
+	dsPause_all();
+}
+
+void __cdecl ResumeMusicWithSound()
+{
+	ResumeMusic();
+	dsRelease_all();
+}

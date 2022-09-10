@@ -143,6 +143,8 @@ void __cdecl WMPRestartMusic_r();
 void __cdecl PauseMusic_r();
 void __cdecl ResumeMusic_r();
 void __cdecl WMPClose_r(int a1);
+void __cdecl PauseMusicWithSound();
+void __cdecl ResumeMusicWithSound();
 
 /**
  * Shut down media playback.
