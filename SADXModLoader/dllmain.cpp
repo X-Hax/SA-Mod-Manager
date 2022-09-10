@@ -1589,10 +1589,10 @@ static void __cdecl InitMods()
 	WriteData((uint8_t*)0x0078EAFE, (uint8_t)0x25); // njDrawTriangle2D_Strip
 	WriteData((uint8_t*)0x0077DBFC, (uint8_t)0x25); // njDrawPolygon
 	WriteData((uint8_t*)0x0077DC16, (uint8_t)0x25); // njDrawPolygon
-	WriteData((uint8_t*)0x0078E8F0, (uint8_t)0x25); // njDrawLine2D_Direct3D
-	WriteData((uint8_t*)0x0078E90D, (uint8_t)0x25); // njDrawLine2D_Direct3D
-	WriteData((uint8_t*)0x0078B412, (uint8_t)0x25); // Unknown
-	WriteData((uint8_t*)0x0078B452, (uint8_t)0x25); // Unknown
+	WriteData((uint8_t*)0x0078E8F1, (uint8_t)0x25); // njDrawLine2D_Direct3D
+	WriteData((uint8_t*)0x0078E90E, (uint8_t)0x25); // njDrawLine2D_Direct3D
+	WriteData((uint8_t*)0x0078B413, (uint8_t)0x25); // Unknown
+	WriteData((uint8_t*)0x0078B453, (uint8_t)0x25); // Unknown
 
 	// Pause sounds when the window is inactive
 	WriteCall(reinterpret_cast<void*>(0x00401939), PauseMusicWithSound);
