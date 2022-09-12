@@ -2762,4 +2762,50 @@ struct STAGENAME_WORK
 	NJS_TEXLIST* texlist;
 };
 
+struct __HPPOS
+{
+	NJS_POINT3 pos;
+	int hp;
+};
+
+union STAFF_DATA_FLAG
+{
+	unsigned __int8 SnapShotNo;
+	unsigned __int8 pvrindex;
+	unsigned __int8 interval;
+};
+
+struct __declspec(align(4)) STAFF_DATA
+{
+	unsigned __int8 StaffType;
+	STAFF_DATA_FLAG flag;
+	char* str;
+};
+
+struct STAFFROLL_DATA
+{
+	STAFF_DATA* StaffTbl;
+	int nbStaff;
+};
+
+struct standlight_taskwk
+{
+	char free0;
+	char free1;
+	unsigned __int8 id;
+	unsigned __int8 free2;
+	__int16 flag;
+	unsigned __int16 free3;
+	int rot_x_angle;
+	NJS_MODEL* beam_model_p;
+	void* free6;
+	Angle3 ang;
+	NJS_POINT3 pos;
+	float rot_x;
+	float length;
+	float width;
+	colliwk* cwp;
+	eventwk* ewp;
+};
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */

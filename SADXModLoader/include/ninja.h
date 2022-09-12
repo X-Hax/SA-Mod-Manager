@@ -1206,6 +1206,30 @@ typedef struct obj {
 	SA2B_Model      *sa2bmodel;
 #endif
 
+private:
+	static obj* _getNodeByIndex(obj* _obj, int &index)
+	{
+		do
+		{
+			if (index-- == 0)
+				return _obj;
+			if (_obj->child)
+			{
+				obj* tmp = _getNodeByIndex(_obj->child, index);
+				if (tmp)
+					return tmp;
+			}
+			_obj = _obj->sibling;
+		} while (_obj);
+		return nullptr;
+	}
+
+public:
+	obj* getnode(int index)
+	{
+		return _getNodeByIndex(this, index);
+	}
+
 	int countanimated() const
 	{
 		int result = (evalflags & NJD_EVAL_SKIP) == NJD_EVAL_SKIP ? 0 : 1;

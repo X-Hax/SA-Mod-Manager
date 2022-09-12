@@ -711,6 +711,8 @@ public: \
 		if (ishooked) \
 			throw new std::exception("Attempted to hook already hooked function!"); \
 		memcpy(origdata, getptr(), 5); \
+		DWORD oldprot; \
+		VirtualProtect(getptr(), 5, PAGE_EXECUTE_WRITECOPY, &oldprot); \
 		GenerateUsercallHook<PointerType>(hookfunc, RETURN_LOC, ADDRESS, __VA_ARGS__); \
 		ishooked = true; \
 	} \
@@ -719,7 +721,7 @@ public: \
 	{ \
 		if (!ishooked) \
 			throw new std::exception("Attempted to unhook function that wasn't hooked!"); \
-		WriteData(getptr(), origdata, 5); \
+		memcpy(getptr(), origdata, 5); \
 		ishooked = false; \
 	} \
  \
@@ -729,9 +731,9 @@ public: \
 		{ \
 			uint8_t hookdata[5]; \
 			memcpy(hookdata, getptr(), 5); \
-			WriteData(getptr(), origdata, 5); \
+			memcpy(getptr(), origdata, 5); \
 			RETURN_TYPE retval = wrapper##ARGNAMES; \
-			WriteData(getptr(), hookdata, 5); \
+			memcpy(getptr(), hookdata, 5); \
 			return retval; \
 		} \
 		else \
@@ -782,6 +784,8 @@ public: \
 		if (ishooked) \
 			throw new std::exception("Attempted to hook already hooked function!"); \
 		memcpy(origdata, getptr(), 5); \
+		DWORD oldprot; \
+		VirtualProtect(getptr(), 5, PAGE_EXECUTE_WRITECOPY, &oldprot); \
 		GenerateUsercallHook<PointerType>(hookfunc, noret, ADDRESS, __VA_ARGS__); \
 		ishooked = true; \
 	} \
@@ -790,7 +794,7 @@ public: \
 	{ \
 		if (!ishooked) \
 			throw new std::exception("Attempted to unhook function that wasn't hooked!"); \
-		WriteData(getptr(), origdata, 5); \
+		memcpy(getptr(), origdata, 5); \
 		ishooked = false; \
 	} \
  \
@@ -800,9 +804,9 @@ public: \
 		{ \
 			uint8_t hookdata[5]; \
 			memcpy(hookdata, getptr(), 5); \
-			WriteData(getptr(), origdata, 5); \
+			memcpy(getptr(), origdata, 5); \
 			wrapper##ARGNAMES; \
-			WriteData(getptr(), hookdata, 5); \
+			memcpy(getptr(), hookdata, 5); \
 		} \
 		else \
 			wrapper##ARGNAMES; \

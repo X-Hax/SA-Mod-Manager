@@ -144,6 +144,20 @@ union JmpCallDwordRel {
 		int32_t address;
 	};
 	uint8_t u8[5];
+
+	JmpCallDwordRel() {}
+
+	JmpCallDwordRel(bool isCall, intptr_t src, intptr_t dst)
+	{
+		opcode = isCall ? 0xE8 : 0xE9;
+		address = dst - (src + 5);
+	}
+
+	JmpCallDwordRel(bool isCall, void* src, void* dst)
+	{
+		opcode = isCall ? 0xE8 : 0xE9;
+		address = (intptr_t)dst - ((intptr_t)src + 5);
+	}
 };
 #pragma pack()
 
