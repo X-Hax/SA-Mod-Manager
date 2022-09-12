@@ -65,6 +65,7 @@ DataPointer(bool, PvrAlphaFlag, 0x03B2C650); // Global transparency flag for UI 
 
 // Event
 DataPointer(EVINFO2, evInfo, 0x03B2C568); // Current cutscene struct
+DataPointer(int, current_event, 0x00914788); // Current cutscene ID (-1 if not in a cutscene)
 
 // Player
 DataPointer(unsigned __int8, gu8flgPlayingMetalSonic, 0x3B18DB5); // Metal Sonic flag

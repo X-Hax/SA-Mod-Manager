@@ -97,6 +97,8 @@ FunctionPointer(void, CreateWaterripple, (NJS_POINT3* pos, NJS_POINT3* vec, floa
 FunctionPointer(void, ModelTurnWhite, (taskwk* twp, __int16 BkNumber), 0x00412A20); // Makes a model "light up" when the character approaches it
 FunctionPointer(void, _gjBeforeRender, (), 0x0078B880);
 FunctionPointer(void, stHWSetVSync, (int a1), 0x007899A0); // Sets the delta time multiplier
+FunctionPointer(void, njSetWaitVsyncCount, (int a1), 0x0077ED40); // Sets the delta time multiplier (calls stHWSetVSync)
+FunctionPointer(void, dsInitInt, (int mode, int frameIncrement), 0x00411E30); // Sets the framerate limit mode
 
 // Debug
 FunctionPointer(void, njPrintColor, (int color), 0x007808E0); // Sets debug font color
