@@ -237,6 +237,26 @@ FunctionPointer(signed int, PCheckHoldObject, (taskwk* a1), 0x43B9C0);
 FunctionPointer(int, PResetAccelerationAir, (taskwk* a1, motionwk2* a2, playerwk* a3), 0x44BD70);
 FunctionPointer(int, PSetSplashEffect, (taskwk* a1), 0x00440890); // Creates a water splash
 
+//Characters
+TaskFunc(SonicTheHedgehog, 0x49A9B0);
+TaskFunc(SonicDisplay, 0x4948C0);
+TaskFunc(SonicDestruct, 0x494860);
+TaskFunc(MilesTalesPrower, 0x461700);
+TaskFunc(MilesDisplay, 0x460C40);
+TaskFunc(MilesDestruct, 0x45BEA0);
+TaskFunc(KnucklesTheEchidna, 0x47A770);
+TaskFunc(KnucklesDisplay, 0x4721B0);
+TaskFunc(KnucklesDestruct, 0x472180);
+TaskFunc(AmyRose, 0x48ABF0);
+TaskFunc(AmyDisplay, 0x487260);
+TaskFunc(AmyDestruct, 0x484360);
+TaskFunc(E102, 0x483430);
+TaskFunc(E102Display, 0x47FD50);
+TaskFunc(E102Destruct, 0x47EED0);
+TaskFunc(BigDestruct, 0x48B730);
+TaskFunc(BigDisplay, 0x48B8B0);
+TaskFunc(BigTheCat, 0x490A00);
+
 static const void* const KnucklesCheckInputPtr = (void*)0x476970;
 static inline signed int KnucklesCheckInput(taskwk* twp, motionwk2* mwp, playerwk* pwp)
 

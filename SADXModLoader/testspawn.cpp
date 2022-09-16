@@ -12,7 +12,6 @@ static int testspawn_eventid = 0;
 static int testspawn_timeofday = TimesOfDay_Day;
 static uint8_t testspawn_gamemode = GameModes_Trial;
 
-static FunctionHook<void, int> LoadPlayerMotionData_t(LoadPlayerMotionData);
 static FunctionHook<void> LoadCharacter_t(LoadCharacter);
 
 static const std::unordered_map<std::wstring, int16_t> level_name_ids_map = {
@@ -820,14 +819,6 @@ static void DisableSound()
 	WriteData(reinterpret_cast<uint8_t*>(0x004250D0), static_cast<uint8_t>(0xC3u));
 }
 
-static void LoadPlayerMotionData_r(int curChar)
-{
-	if (curChar == Characters_Eggman || curChar == Characters_Tikal || curChar > Characters_Big)
-		return;
-
-	LoadPlayerMotionData_t.Original(curChar);
-}
-
 static void LoadCharacter_r()
 {
 	if (CurrentCharacter == Characters_Tikal || CurrentCharacter == Characters_Eggman)
@@ -886,7 +877,6 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 			if (character_id == Characters_Tikal || character_id == Characters_Eggman || character_id > Characters_MetalSonic)
 			{
-				LoadPlayerMotionData_t.Hook(LoadPlayerMotionData_r);
 				LoadCharacter_t.Hook(LoadCharacter_r);
 				SetPlayerInitialPosition_t.Hook(SetPlayerInitialPosition_r);
 			}
@@ -895,7 +885,8 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 			// NOP. Prevents CurrentCharacter from being overwritten at initialization.
 			WriteData<5>(reinterpret_cast<void*>(0x00415007), static_cast<uint8_t>(0x90u));
-
+			//load all characters animations + fix Tikal and Eggman infinite loop
+			WriteJump(LoadPlayerMotionData, (void*)0x5034A0);
 			PrintDebug("Loading character: %d\n", CurrentCharacter);
 			testspawn_charenabled = true;
 		}
