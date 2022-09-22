@@ -165,6 +165,47 @@ static uint8_t ParseCharacterFlags(const string& str)
 	return flag;
 }
 
+static const unordered_map<string, uint8_t> lspaletteflagsnamemap = {
+	{ "Enabled",             0x01 },
+	{ "UseLSLightDirection", 0x02 },
+	{ "IgnoreDirection",     0x04 },
+	{ "OverrideLastLight",   0x08 },
+	{ "Unknown",             0x10 },
+	{ "Unknown20",           0x20 },
+	{ "Unknown20",           0x40 },
+	{ "Unknown80",           0x80 },
+};
+
+static uint8_t ParseLSPaletteFlags(const string& str)
+{
+	vector<string> strflags = split(str, ',');
+	uint8_t flag = 0;
+	for (const auto& strflag : strflags)
+	{
+		string s = trim(strflag);
+		auto ch = lspaletteflagsnamemap.find(s);
+
+		if (ch != lspaletteflagsnamemap.end())
+		{
+			flag |= ch->second;
+		}
+	}
+	return flag;
+}
+
+static const unordered_map<string, uint8_t> lslighttypesnamemap = {
+	{ "Character",    0 },
+	{ "CharacterAlt", 6 },
+	{ "Boss",         8 },
+};
+
+static uint8_t ParseLSPaletteTypes(const string & str)
+{
+	string str2 = trim(str);
+	auto lv = lslighttypesnamemap.find(str2);
+	return lv != lslighttypesnamemap.end() ? lv->second : (uint8_t)strtol(str.c_str(), nullptr, 10);
+}
+
 static const unordered_map<string, uint8_t> languagesnamemap = {
 	{ "japanese", Languages_Japanese },
 	{ "english",  Languages_English },
@@ -1435,8 +1476,8 @@ static void ProcessPaletteLightListINI(const IniGroup* group, const wstring& mod
 
 		le_plyrPal[i].stgNo = (char)ParseLevelID(entdata->getString("Level"));
 		le_plyrPal[i].actNo = (char)entdata->getInt("Act");
-		le_plyrPal[i].chrNo = (char)entdata->getInt("Type");
-		le_plyrPal[i].flgs= (char)entdata->getInt("Flags");
+		le_plyrPal[i].chrNo = (char)ParseLSPaletteTypes(entdata->getString("Type"));
+		le_plyrPal[i].flgs = (char)ParseLSPaletteFlags(entdata->getString("Flags"));
 		ParseVertex(entdata->getString("Direction"), le_plyrPal[i].vec);		
 		le_plyrPal[i].dif = entdata->getFloat("Diffuse");
 		ParseRGB(entdata->getString("Ambient"), le_plyrPal[i].amb);
