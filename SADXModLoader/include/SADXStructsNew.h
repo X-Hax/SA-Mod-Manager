@@ -2808,4 +2808,65 @@ struct standlight_taskwk
 	eventwk* ewp;
 };
 
+// Event camera
+
+struct EV_CAMERA_W_target
+{
+	unsigned __int8 mode;
+	NJS_POINT3 pos;
+	task* obj;
+};
+
+struct EV_CAMERA_W_pers
+{
+	unsigned __int8 hokanMode;
+	unsigned __int16 time;
+	unsigned __int16 count;
+	int ang;
+	int oldang;
+	int newang;
+};
+
+struct EV_CAMERA_W_path
+{
+	cpathtag* tag;
+	float timer;
+	float speed;
+};
+
+struct EV_CAMERA_W_chase
+{
+	unsigned __int8 mode;
+	unsigned __int16 time;
+	unsigned __int16 count;
+	NJS_POINT3 pos;
+	Angle3 ang;
+	float dist;
+	NJS_POINT3 pos2;
+	Angle3 ang2;
+	float dist2;
+	task* obj;
+};
+
+struct EV_CAMERA_W
+{
+	unsigned __int8 posHokanMode;
+	unsigned __int8 angHokanMode;
+	unsigned __int16 post;
+	unsigned __int16 posc;
+	unsigned __int16 angt;
+	unsigned __int16 angc;
+	NJS_POINT3 pos;
+	Angle3 ang;
+	NJS_POINT3 oldpos;
+	Angle3 oldang;
+	NJS_POINT3 newpos;
+	Angle3 newang;
+	EV_CAMERA_W_target target;
+	EV_CAMERA_W_chase chase;
+	EV_CAMERA_W_pers pers;
+	EV_CAMERA_W_path path;
+	EVINFO2* event;
+};
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
