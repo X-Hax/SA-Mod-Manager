@@ -1,6 +1,8 @@
 # Sonic Adventure DX PC Mod Loader
 Version 3.7
 
+If you need any help, check the [SADX Modding wiki.](https://github.com/X-Hax/SADXModdingGuide/wiki/SADX-Troubleshooting-Guide)
+
 ## System Requirements
 
 To use SADX Mod Loader, you must have:
