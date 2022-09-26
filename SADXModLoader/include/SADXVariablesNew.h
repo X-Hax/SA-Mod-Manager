@@ -66,6 +66,7 @@ DataPointer(bool, PvrAlphaFlag, 0x03B2C650); // Global transparency flag for UI 
 // Event
 DataPointer(EVINFO2, evInfo, 0x03B2C568); // Current cutscene struct
 DataPointer(int, current_event, 0x00914788); // Current cutscene ID (-1 if not in a cutscene)
+DataPointer(EV_CAMERA_W, evCameraW, 0x03B2C490); // Cutscene camera
 
 // Player
 DataPointer(unsigned __int8, gu8flgPlayingMetalSonic, 0x3B18DB5); // Metal Sonic flag
@@ -295,8 +296,8 @@ DataArray(_SEcallbuf, sebuf, 0x3B292F8, 36); // SoundQueue (length 20 in xbox ve
 DataArray(taskwk*, gpDolbyTask, 0x3B29B90, 36); // SoundQueueOriginEntities (length 20 in xbox version)
 
 // Lighting
-DataArray(unsigned int[512], LSPAL_0, 0x3B12210, 10);
-DataArray(unsigned int, lsPal0_v_forGC, 1024, 0x3B111A8);
+DataArray(NJS_COLOR[256][2], LSPAL_0, 0x3B12210, 10); // Palette data; first index is palette ID, second index is color ID, third index is diffuse (0) or specular (1)
+DataArray(unsigned int, lsPal0_v_forGC, 1024, 0x3B111A8); // An array of palettes that seems to be a leftover from the Gamecube version. Generated but unused.
 DataPointer(NJS_ARGB, lig_argb, 0x3B17210);
 DataPointer(float, ls_iamb, 0x3B121AC);
 DataPointer(NJS_VECTOR, ds_pool, 0x3B121B4); // Used in normal scaling for some objects
