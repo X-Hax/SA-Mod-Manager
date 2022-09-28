@@ -99,6 +99,7 @@ FunctionPointer(void, _gjBeforeRender, (), 0x0078B880);
 FunctionPointer(void, stHWSetVSync, (int a1), 0x007899A0); // Sets the delta time multiplier
 FunctionPointer(void, njSetWaitVsyncCount, (int a1), 0x0077ED40); // Sets the delta time multiplier (calls stHWSetVSync)
 FunctionPointer(void, dsInitInt, (int mode, int frameIncrement), 0x00411E30); // Sets the framerate limit mode
+FunctionPointer(float, GetHighestFloatAbs, (float a1, float a2, float a3), 0x0049CC70); // Gets the (absolute) highest value; inlined in SADX X360
 
 // Debug
 FunctionPointer(void, njPrintColor, (int color), 0x007808E0); // Sets debug font color
@@ -904,6 +905,7 @@ FunctionPointer(void, dsDrawMotionClip , (NJS_OBJECT* object, NJS_MOTION* motion
 FunctionPointer(void, dsDrawMotionLink, (NJS_OBJECT* object, NJS_MOTION_LINK* motionLink, float frame), 0x406C20);
 FunctionPointer(void, dsActionLink, (NJS_ACTION_LINK* actionLink, float frame), 0x406EC0);
 FunctionPointer(void, ds_ActionClip, (NJS_ACTION* action, float frame, float clipScl), 0x405450);
+FunctionPointer(void, ds_ActionClipNoScale, (NJS_ACTION* action, float frame), 0x407020); // Same as ds_ActionClip but with scale 1.0; inlined in X360
 FunctionPointer(void, dsDrawShapeMotion, (NJS_OBJECT* object, NJS_MOTION* motion, NJS_MOTION* shape, float frame), 0x406030);
 FunctionPointer(void, ds_DrawBoxFill2D, (float left, float top, float right, float bottom, float pri, unsigned int argb), 0x4071C0);
 FunctionPointer(void, dsDrawSprite2D, (NJS_SPRITE* sp, int n, float pri, NJD_SPRITE attr), 0x4070A0);
