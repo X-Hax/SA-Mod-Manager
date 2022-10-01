@@ -237,6 +237,7 @@ static void __cdecl ProcessCodes()
 
 
 static bool dbgConsole, dbgScreen;
+static bool pauseWhenInactive;
 // File for logging debugging output.
 static FILE* dbgFile = nullptr;
 
@@ -474,15 +475,19 @@ static LRESULT CALLBACK WrapperWndProc(HWND wrapper, UINT uMsg, WPARAM wParam, L
 		case WM_ACTIVATEAPP:
 			if (!switchingWindowMode)
 			{
-				if (wParam)
+				if (pauseWhenInactive)
 				{
-					if (!IsGamePaused())
+					if (wParam)
 					{
-						UnpauseAllSounds(0);
+						if (!IsGamePaused())
+						{
+							UnpauseAllSounds(0);
+						}
+						ResumeMusic();
 					}
-					ResumeMusic();
+					else
+						PauseAllSounds(0);
 				}
-				else PauseAllSounds(0);
 				WndProc_B(WindowHandle, uMsg, wParam, lParam);
 			}
 
@@ -1526,8 +1531,20 @@ static void __cdecl InitMods()
 		WriteJump((void*)0x0079455F, PolyBuff_Init_FixVBuffParams);
 	}
 
-	if (!settings->getBool("PauseWhenInactive", true))
-		WriteData((uint8_t *)0x401914, (uint8_t)0xEBu);
+	pauseWhenInactive = settings->getBool("PauseWhenInactive", true);
+	if (!pauseWhenInactive)
+	{
+		WriteData((uint8_t *)0x00401914, (uint8_t)0xEBu);
+		// Don't pause music and sounds when the window is inactive
+		WriteData<5>(reinterpret_cast<void*>(0x00401939), 0x90u);
+		WriteData<5>(reinterpret_cast<void*>(0x00401920), 0x90u);
+	}
+	else
+	{
+		// Pause music and sounds when the window is inactive
+		WriteCall(reinterpret_cast<void*>(0x00401939), PauseMusicWithSound);
+		WriteCall(reinterpret_cast<void*>(0x00401920), ResumeMusicWithSound);
+	}
 
 	if (settings->getBool("AutoMipmap", true))
 		mipmap::enable_auto_mipmaps();
@@ -1593,10 +1610,6 @@ static void __cdecl InitMods()
 	WriteData((uint8_t*)0x0078E90E, (uint8_t)0x25); // njDrawLine2D_Direct3D
 	WriteData((uint8_t*)0x0078B413, (uint8_t)0x25); // Unknown
 	WriteData((uint8_t*)0x0078B453, (uint8_t)0x25); // Unknown
-
-	// Pause sounds when the window is inactive
-	WriteCall(reinterpret_cast<void*>(0x00401939), PauseMusicWithSound);
-	WriteCall(reinterpret_cast<void*>(0x00401920), ResumeMusicWithSound);
 
 	// Chao stat panel screen dimensions fix
 	WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
