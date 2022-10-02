@@ -142,6 +142,7 @@
             this.checkUpdateStartup = new System.Windows.Forms.CheckBox();
             this.tabPageDebug = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.checkInterpolation = new System.Windows.Forms.CheckBox();
             this.checkMaterialColor = new System.Windows.Forms.CheckBox();
             this.checkPolyBuff = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -187,7 +188,6 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkInterpolation = new System.Windows.Forms.CheckBox();
             label3 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -606,6 +606,7 @@
             // 
             // tabPageMods
             // 
+            this.tabPageMods.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tabPageMods.Controls.Add(this.configureModButton);
             this.tabPageMods.Controls.Add(this.modBottomButton);
             this.tabPageMods.Controls.Add(this.modTopButton);
@@ -621,7 +622,6 @@
             this.tabPageMods.Size = new System.Drawing.Size(452, 421);
             this.tabPageMods.TabIndex = 0;
             this.tabPageMods.Text = "Mods";
-            this.tabPageMods.UseVisualStyleBackColor = true;
             // 
             // configureModButton
             // 
@@ -706,13 +706,13 @@
             // 
             // tabPageCodes
             // 
+            this.tabPageCodes.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tabPageCodes.Controls.Add(this.codesCheckedListBox);
             this.tabPageCodes.Location = new System.Drawing.Point(4, 22);
             this.tabPageCodes.Name = "tabPageCodes";
             this.tabPageCodes.Size = new System.Drawing.Size(452, 421);
             this.tabPageCodes.TabIndex = 1;
             this.tabPageCodes.Text = "Codes";
-            this.tabPageCodes.UseVisualStyleBackColor = true;
             // 
             // codesCheckedListBox
             // 
@@ -727,6 +727,7 @@
             // tabPageGraphics
             // 
             this.tabPageGraphics.AutoScroll = true;
+            this.tabPageGraphics.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tabPageGraphics.Controls.Add(this.groupBox_WindowMode);
             this.tabPageGraphics.Controls.Add(this.groupBox_Visuals);
             this.tabPageGraphics.Controls.Add(this.groupBox_Display);
@@ -736,7 +737,6 @@
             this.tabPageGraphics.Size = new System.Drawing.Size(452, 421);
             this.tabPageGraphics.TabIndex = 2;
             this.tabPageGraphics.Text = "Graphics";
-            this.tabPageGraphics.UseVisualStyleBackColor = true;
             // 
             // groupBox_WindowMode
             // 
@@ -1132,6 +1132,7 @@
             // 
             // tabPageInput
             // 
+            this.tabPageInput.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tabPageInput.Controls.Add(this.groupMouseMode);
             this.tabPageInput.Controls.Add(this.groupBoxController);
             this.tabPageInput.Location = new System.Drawing.Point(4, 22);
@@ -1140,7 +1141,6 @@
             this.tabPageInput.Size = new System.Drawing.Size(452, 421);
             this.tabPageInput.TabIndex = 6;
             this.tabPageInput.Text = "Input";
-            this.tabPageInput.UseVisualStyleBackColor = true;
             // 
             // groupMouseMode
             // 
@@ -1319,6 +1319,7 @@
             // 
             // tabPageSound
             // 
+            this.tabPageSound.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tabPageSound.Controls.Add(this.groupBox_SoundVolume);
             this.tabPageSound.Controls.Add(this.groupBox_SoundConfig);
             this.tabPageSound.Location = new System.Drawing.Point(4, 22);
@@ -1327,7 +1328,6 @@
             this.tabPageSound.Size = new System.Drawing.Size(452, 421);
             this.tabPageSound.TabIndex = 4;
             this.tabPageSound.Text = "Sound";
-            this.tabPageSound.UseVisualStyleBackColor = true;
             // 
             // groupBox_SoundVolume
             // 
@@ -1344,7 +1344,7 @@
             this.groupBox_SoundVolume.Controls.Add(this.label14);
             this.groupBox_SoundVolume.Location = new System.Drawing.Point(6, 77);
             this.groupBox_SoundVolume.Name = "groupBox_SoundVolume";
-            this.groupBox_SoundVolume.Size = new System.Drawing.Size(440, 157);
+            this.groupBox_SoundVolume.Size = new System.Drawing.Size(440, 171);
             this.groupBox_SoundVolume.TabIndex = 3;
             this.groupBox_SoundVolume.TabStop = false;
             this.groupBox_SoundVolume.Text = "Volume";
@@ -1364,7 +1364,7 @@
             // 
             this.trackBarSEVol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBarSEVol.BackColor = System.Drawing.SystemColors.Window;
+            this.trackBarSEVol.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.trackBarSEVol.Enabled = false;
             this.trackBarSEVol.Location = new System.Drawing.Point(87, 116);
             this.trackBarSEVol.Margin = new System.Windows.Forms.Padding(0);
@@ -1410,7 +1410,7 @@
             // 
             this.trackBarVoiceVol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBarVoiceVol.BackColor = System.Drawing.SystemColors.Window;
+            this.trackBarVoiceVol.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.trackBarVoiceVol.Location = new System.Drawing.Point(87, 68);
             this.trackBarVoiceVol.Margin = new System.Windows.Forms.Padding(0);
             this.trackBarVoiceVol.Maximum = 100;
@@ -1434,7 +1434,7 @@
             // 
             this.trackBarMusicVol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBarMusicVol.BackColor = System.Drawing.SystemColors.Window;
+            this.trackBarMusicVol.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.trackBarMusicVol.LargeChange = 10;
             this.trackBarMusicVol.Location = new System.Drawing.Point(87, 21);
             this.trackBarMusicVol.Margin = new System.Windows.Forms.Padding(0);
@@ -1520,6 +1520,7 @@
             // 
             // tabPageOptions
             // 
+            this.tabPageOptions.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tabPageOptions.Controls.Add(this.groupBox3);
             this.tabPageOptions.Controls.Add(this.installURLHandlerButton);
             this.tabPageOptions.Controls.Add(this.groupBox4);
@@ -1530,7 +1531,6 @@
             this.tabPageOptions.Size = new System.Drawing.Size(452, 421);
             this.tabPageOptions.TabIndex = 3;
             this.tabPageOptions.Text = "Options";
-            this.tabPageOptions.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -1694,6 +1694,7 @@
             // 
             // tabPageDebug
             // 
+            this.tabPageDebug.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tabPageDebug.Controls.Add(this.groupBox5);
             this.tabPageDebug.Controls.Add(this.groupBox1);
             this.tabPageDebug.Controls.Add(this.groupBox12);
@@ -1703,7 +1704,6 @@
             this.tabPageDebug.Size = new System.Drawing.Size(452, 421);
             this.tabPageDebug.TabIndex = 5;
             this.tabPageDebug.Text = "Debug";
-            this.tabPageDebug.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
@@ -1718,6 +1718,19 @@
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Advanced";
+            // 
+            // checkInterpolation
+            // 
+            this.checkInterpolation.AutoSize = true;
+            this.checkInterpolation.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.checkInterpolation.Location = new System.Drawing.Point(6, 67);
+            this.checkInterpolation.Name = "checkInterpolation";
+            this.checkInterpolation.Size = new System.Drawing.Size(144, 18);
+            this.checkInterpolation.TabIndex = 2;
+            this.checkInterpolation.Text = "Disable Interpolation Fix";
+            this.toolTip.SetToolTip(this.checkInterpolation, "The Mod Loader fixes some very specific animations that can have rotation errors." +
+        " Tick this checkbox to disable the fix.");
+            this.checkInterpolation.UseVisualStyleBackColor = true;
             // 
             // checkMaterialColor
             // 
@@ -2347,19 +2360,6 @@
             this.generateManifestToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.generateManifestToolStripMenuItem.Text = "Generate manifest";
             this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
-            // 
-            // checkInterpolation
-            // 
-            this.checkInterpolation.AutoSize = true;
-            this.checkInterpolation.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkInterpolation.Location = new System.Drawing.Point(6, 67);
-            this.checkInterpolation.Name = "checkInterpolation";
-            this.checkInterpolation.Size = new System.Drawing.Size(144, 18);
-            this.checkInterpolation.TabIndex = 2;
-            this.checkInterpolation.Text = "Disable Interpolation Fix";
-            this.toolTip.SetToolTip(this.checkInterpolation, "The Mod Loader fixes some very specific animations that can have rotation errors." +
-        " Tick this checkbox to disable the fix.");
-            this.checkInterpolation.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
