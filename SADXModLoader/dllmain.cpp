@@ -1608,8 +1608,6 @@ static void __cdecl InitMods()
 	WriteData((uint8_t*)0x0077DC16, (uint8_t)0x25); // njDrawPolygon
 	WriteData((uint8_t*)0x0078E8F1, (uint8_t)0x25); // njDrawLine2D_Direct3D
 	WriteData((uint8_t*)0x0078E90E, (uint8_t)0x25); // njDrawLine2D_Direct3D
-	WriteData((uint8_t*)0x0078B413, (uint8_t)0x25); // Unknown
-	WriteData((uint8_t*)0x0078B453, (uint8_t)0x25); // Unknown
 
 	// Chao stat panel screen dimensions fix
 	WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
