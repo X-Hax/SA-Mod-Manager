@@ -67,6 +67,9 @@ or16 p03B42E30|20|C0|4 0x7FFF
 Patch "Disable Music"
 write8 0091268C 0
 
+Code "Disable Subtitles (Events)"
+write8 03ABE134 0
+
 Patch "Disable Voices"
 write8 00425710 0xC3
 
