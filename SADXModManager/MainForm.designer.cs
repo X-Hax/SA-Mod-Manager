@@ -672,7 +672,7 @@
             this.buttonNewMod.Name = "buttonNewMod";
             this.buttonNewMod.Size = new System.Drawing.Size(75, 23);
             this.buttonNewMod.TabIndex = 7;
-            this.buttonNewMod.Text = "&New...";
+            this.buttonNewMod.Text = "&New Mod...";
             this.buttonNewMod.UseVisualStyleBackColor = true;
             this.buttonNewMod.Click += new System.EventHandler(this.buttonNewMod_Click);
             // 
