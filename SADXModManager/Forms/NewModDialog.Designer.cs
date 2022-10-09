@@ -257,7 +257,7 @@ namespace SADXModManager.Forms
             this.comboModCategory.FormattingEnabled = true;
             this.comboModCategory.Items.AddRange(new object[] {
             "Animations",
-			"Chaos",
+			"Chao",
             "Custom Level",
             "Cutscene",
             "Game Overhaul",
