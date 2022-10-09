@@ -17,7 +17,6 @@ namespace SADXModManager
 		private const string pipeName = "sadx-mod-manager";
 		private const string protocol = "sadxmm:";
 		const string datadllorigpath = "system/CHRMODELS_orig.dll";
-		const string loaderinipath = "mods/SADXModLoader.ini";
 		const string loaderdllpath = "mods/SADXModLoader.dll";
 		const string datadllpath = "system/CHRMODELS.dll";
 		private static readonly Mutex mutex = new Mutex(true, pipeName);
