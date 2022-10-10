@@ -2869,4 +2869,291 @@ struct EV_CAMERA_W
 	EVINFO2* event;
 };
 
+// Chao
+
+struct AL_SHAPE_ELEMENT
+{
+	unsigned __int8 type;
+	unsigned __int8 DefaultEyeNum;
+	unsigned __int8 DefaultMouthNum;
+	unsigned __int8 HonbuNum;
+	unsigned __int8 ObakeHead;
+	unsigned __int8 ObakeBody;
+	unsigned __int8 MedalNum;
+	unsigned __int8 ColorNum;
+	unsigned __int8 NonTex;
+	unsigned __int8 JewelNum;
+	unsigned __int8 MultiNum;
+	char MinimalParts[8];
+	__int16 HPos;
+	__int16 VPos;
+	__int16 APos;
+	__int16 Growth;
+	unsigned __int8 name[8];
+	unsigned __int16 Skill[8];
+};
+
+struct AL_RECORD
+{
+	char RecordFlag;
+	AL_TIME time;
+	AL_SHAPE_ELEMENT ShapeElement;
+};
+
+struct CHAO_ID
+{
+	unsigned int gid[2];
+	unsigned int id[2];
+	unsigned int num;
+};
+
+struct AL_KARATE_PERSONAL_INFO
+{
+	unsigned __int8 rank;
+	unsigned __int8 level;
+	unsigned __int8 tournament;
+	unsigned __int16 nbBattle;
+	unsigned __int16 nbWin;
+	unsigned __int16 nbLose;
+	unsigned __int16 nbDraw;
+};
+
+struct AL_PARTS
+{
+	unsigned int MinimalFlag;
+	char MinimalParts[8];
+};
+
+struct AL_KNOWLEDGE_PLAYER
+{
+	char like;
+	unsigned __int8 fear;
+	unsigned __int16 distance;
+	unsigned __int16 meet;
+};
+
+struct __declspec(align(4)) AL_KNOWLEDGE_CHAO
+{
+	CHAO_ID id;
+	char like;
+	unsigned __int8 fear;
+	unsigned __int16 distance;
+	unsigned __int16 meet;
+};
+
+struct AL_KNOWLEDGE_BTL
+{
+	unsigned __int8 ArtFlag;
+	unsigned __int8 DanceFlag;
+	unsigned __int8 SongFlag;
+	unsigned __int8 MusicFlag;
+	unsigned __int16 SToyFlag;
+	unsigned __int16 LToyFlag;
+	int KwTimer;
+	AL_KNOWLEDGE_PLAYER player[6];
+	AL_KNOWLEDGE_CHAO chao[20];
+	AL_KNOWLEDGE_OTHER bhv[120];
+};
+
+struct AL_GENE
+{
+	char IsAnalyzed;
+	char EggColor;
+	CHAO_ID MotherID;
+	CHAO_ID FatherID;
+	char MotherName[8];
+	char FatherName[8];
+	char MGroundMotherName[8];
+	char MGroundFatherName[8];
+	char FGroundMotherName[8];
+	char FGroundFatherName[8];
+	unsigned __int8 Abl[8][2];
+	unsigned __int8 LifeTime[2];
+	char HPos[2];
+	char VPos[2];
+	char APos[2];
+	char Personality[13][2];
+	unsigned __int8 Taste[2];
+	unsigned __int8 Tv[2];
+	unsigned __int8 Music[2];
+	unsigned __int8 Color[2];
+	unsigned __int8 NonTex[2];
+	unsigned __int8 Jewel[2];
+	unsigned __int8 Multi[2];
+	unsigned __int8 EyePos[2];
+	unsigned __int8 EyeScl[2];
+	unsigned __int8 EyeRatio[2];
+	unsigned __int8 EyeColor[2];
+};
+
+struct AL_KNOWLEDGE_DX
+{
+	AL_KNOWLEDGE_PLAYER player[6];
+};
+
+struct CHAO_PARAM_GC
+{
+	unsigned __int8 GBAChao;
+	unsigned __int8 GBAEgg;
+	unsigned __int8 GBABerry[8];
+	unsigned __int8 padding0;
+	unsigned __int8 padding1;
+	unsigned int GBARing;
+	unsigned __int8 BootMethod;
+	unsigned __int8 Birthplace;
+	unsigned __int8 name[7];
+	unsigned __int8 GBAType;
+	unsigned __int8 GBASkin;
+	unsigned __int8 GBAMood;
+	unsigned __int8 GBABelly;
+	unsigned __int8 GBASleepy;
+	unsigned __int8 GBALonelyness;
+	unsigned __int8 padding2;
+	unsigned __int8 Exp[8];
+	unsigned __int8 Abl[8];
+	unsigned __int8 Lev[8];
+	unsigned __int16 Skill[8];
+	unsigned __int16 GBAPalette[16];
+	unsigned __int8 rmsg[16];
+	unsigned int runaway;
+	unsigned __int8 dummy[4];
+	unsigned __int8 type;
+	unsigned __int8 place;
+	__int16 like;
+	char ClassNum;
+	unsigned __int16 age;
+	unsigned __int16 old;
+	unsigned __int16 life;
+	unsigned __int16 LifeMax;
+	unsigned __int16 nbSucceed;
+	CHAO_ID ChaoID;
+	unsigned int LifeTimer;
+	AL_BODY_INFO body;
+	AL_RACE_PERSONAL_INFO race;
+	AL_KARATE_PERSONAL_INFO karate;
+	AL_PARTS PartsBTL;
+	AL_EMOTION emotion;
+	AL_KNOWLEDGE_BTL knowledgeBTL;
+	AL_GENE gene;
+	int IsInitializedDX;
+	AL_PARTS partsDX;
+	AL_RACE_PERSONAL_INFO_DX raceDX;
+	AL_KNOWLEDGE_DX knowledgeDX;
+};
+
+struct chao_save_info
+{
+	CHAO_PARAM_GC param;
+	unsigned __int8 dummy[736];
+};
+
+struct AL_RACE_INFO
+{
+	char RaceActiveFlag[3];
+	char CourseChallengedLevel[5];
+	char CourseClearedLevel[5];
+	AL_RECORD CourseRecord[5];
+	AL_TIME time;
+	char CurrRaceNum;
+	char CurrCourseNum;
+	char CurrLevelNum;
+	char nbUserEntry;
+	chao_save_info ChaoInfo[8];
+};
+
+struct AL_ST_POS
+{
+	NJS_POINT3 pos;
+	int angy;
+};
+
+struct TREE_SAVE_INFO
+{
+	unsigned __int8 kind;
+	unsigned __int8 state;
+	unsigned __int8 param;
+	unsigned __int8 water;
+	char FruitGrowth[3];
+	unsigned __int8 angy_pos;
+};
+
+struct PatChngObj
+{
+	obj* obj_p;
+	NJS_MATERIAL* mat_pa[8];
+};
+
+struct CHAO_INFO
+{
+	int EntryFlag;
+};
+
+struct AL_ENT_MENU_WORK
+{
+	int status;
+	int command;
+	eLayerNum LayerNum;
+	int nbRace;
+	int nbCourse;
+	int nbGarden;
+	eGardenNum GardenCursor;
+	int MaxLevel;
+	int nbCourseBeginner;
+	int nbCourseJewel;
+	int key;
+	int level;
+	int xpos;
+	int ypos;
+	int pre_xpos;
+	int pre_ypos;
+	int back_ypos;
+	int nbEntry;
+	task* ChaoTask[8];
+	CHAO_INFO ChaoInfo[4][8];
+	task* pManager;
+	task* pMessageBar;
+	task* pBackGround;
+	task* pLargeTitleBar;
+	task* pSmallTitleBar;
+	task* pBlueButtonModoru;
+	task* pBlueButtonSusumu;
+	int GardenActiveFlag[4];
+	const unsigned int* pMsgList;
+};
+
+struct MOTION_INFO
+{
+	unsigned __int16 mode;
+	float frame;
+	float start;
+	float end;
+	float spd;
+	NJS_MOTION* pMotion;
+};
+
+struct MOTION_TABLE
+{
+	NJS_MOTION* pMotion;
+	__int16 mode;
+	__int16 posture;
+	int next;
+	int link_step;
+	float start;
+	float end;
+	float spd;
+};
+
+struct MOTION_CTRL
+{
+	unsigned __int16 flag;
+	unsigned __int16 posture;
+	int curr_num;
+	int next_num;
+	float multi_spd;
+	float link_spd;
+	float ratio;
+	MOTION_INFO minfo[2];
+	MOTION_TABLE* table;
+};
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */

@@ -30,6 +30,7 @@ typedef bool _BOOL1;
 // General
 FunctionPointer(int, InitGame, (), 0x413C00);
 FunctionPointer(bool, ChkPause, (), 0x414D70); // Check if the game is paused
+FunctionPointer(void*, CAlloc, (int count, int size), 0x0040B2D0); // Allocate memory
 VoidFunc(Clear, 0x0040BF30);
 VoidFunc(Reset, 0x0040BF40);
 TaskFunc(LoopTaskC, 0x40B420); // Run all the children of a task
@@ -100,6 +101,8 @@ FunctionPointer(void, stHWSetVSync, (int a1), 0x007899A0); // Sets the delta tim
 FunctionPointer(void, njSetWaitVsyncCount, (int a1), 0x0077ED40); // Sets the delta time multiplier (calls stHWSetVSync)
 FunctionPointer(void, dsInitInt, (int mode, int frameIncrement), 0x00411E30); // Sets the framerate limit mode
 FunctionPointer(float, GetHighestFloatAbs, (float a1, float a2, float a3), 0x0049CC70); // Gets the (absolute) highest value; inlined in SADX X360
+VoidFunc(ADXTaskInit, 0x004258B0); // Initializes the music manager
+FunctionPointer(void, SetEntranceNumber, (char number), 0x004147F0); // Go to a specific level
 
 // Debug
 FunctionPointer(void, njPrintColor, (int color), 0x007808E0); // Sets debug font color
@@ -237,8 +240,9 @@ FunctionPointer(void, PSetPosition1D, (taskwk* data1, motionwk2* data2, playerwk
 FunctionPointer(signed int, PCheckHoldObject, (taskwk* a1), 0x43B9C0);
 FunctionPointer(int, PResetAccelerationAir, (taskwk* a1, motionwk2* a2, playerwk* a3), 0x44BD70);
 FunctionPointer(int, PSetSplashEffect, (taskwk* a1), 0x00440890); // Creates a water splash
+TaskFunc(ObjectSkydeck_wings_End, 0x004FB290); // Common delete object function
 
-//Characters
+// Characters
 TaskFunc(SonicTheHedgehog, 0x49A9B0);
 TaskFunc(SonicDisplay, 0x4948C0);
 TaskFunc(SonicDestruct, 0x494860);
@@ -332,6 +336,7 @@ FunctionPointer(taskwk*, CCL_IsHitBullet, (taskwk* twp), 0x41CBE0); // Check if 
 FastcallFunctionPointer(BOOL, njCollisionCheckSS, (float* p1, float* p2), 0x789360); // Check if two spheres collide, arguments are two array of 4 floats for x, y, z and radius
 
 // Geometry collision
+FunctionPointer(NJS_OBJECT*, SetModelCollision, (obj* OriginalObj, task* tp, int Flag), 0x49D6C0); // Creates dynamic collision from Task
 FunctionPointer(bool, CheckPlayerRideOnMobileLandObjectP, (int pno, task* ttp), 0x441C30);
 FunctionPointer(void, RegisterCollisionEntry, (int slAttribute, task* pTask, NJS_OBJECT* pObject), 0x43B2E0);
 FunctionPointer(void, WithdrawCollisionEntry, (task* pTask, NJS_OBJECT* pObject), 0x43B380);
@@ -599,6 +604,7 @@ TaskFunc(ColliCylinder, 0x4D4770);
 TaskFunc(ColliCube, 0x4D47E0);
 TaskFunc(ColliWall, 0x4D4850);
 TaskFunc(ColliOttottoRange, 0x4D4B70);
+TaskFunc(ObjectHintbox, 0x007A9C60); // Hint monitor
 TaskFunc(BossChaos0, 0x548640);
 TaskFunc(Chaos2Column, 0x54AC80);
 TaskFunc(EggCarrierCloud_c6, 0x557690);
@@ -1257,5 +1263,52 @@ FunctionPointer(void, LampDisp, (task* a1), 0x0063A930); // Draws the street lig
 FunctionPointer(int, checkInSsHodel, (), 0x0062EA30); // Checks if the camera is inside Station Square hotel (lol)
 FunctionPointer(void, SetPositionS_WhenHeGetShoes, (task* tsk), 0x006303D0); // Sets Sonic's position in the sewers when he gets the Light Speed Dash shoes
 VoidFunc(SSChangeTimetex, 0x00633690); // Changes Station Square textures depending on the time of day
+
+// Chao
+FunctionPointer(void, AL_ChangeStageLater, (eCHAO_STAGE_NUMBER NextChaoStage), 0x00715700); // Goes to the specified Chao stage
+FunctionPointer(void, AL_LoadTex, (const char* filename, NJS_TEXLIST* pTexlist, unsigned __int16 lev), 0x00718880);
+FunctionPointer(void, AL_SetChaoMenuTexInfo, (NJS_TEXLIST* pTexlist, unsigned int WindowTexNum, unsigned int ParamTexNum, unsigned int PortTexNum), 0x0072CC00);
+FunctionPointer(int, AL_LoadAnotherGardenInfoStart, (), 0x00717160);
+FunctionPointer(void, ALCAM_CreateCameraManager, (), 0x72A750);
+FunctionPointer(char, CameraSetCollisionCameraFunc, (void(__cdecl* fnCamera)(_OBJ_CAMERAPARAM*), unsigned __int8 ucAdjustType, char scCameraDirect), 0x00436210);
+FunctionPointer(_camcontwk**, AL_EntCameraFunc, (), 0x0072CCF0);
+FunctionPointer(void, ALO_OdekakeMachineCreate, (NJS_POINT3* pPos, int angy), 0x00729F40);
+FunctionPointer(void, ALO_WarpCreate, (task* parent_tp, int aim, float posx, float posy, float posz, int roty), 0x00729550);
+FunctionPointer(void, AL_ExitToStage, (int stage, int act), 0x715730);
+VoidFunc(ALW_Create, 0x0071A7C0);
+VoidFunc(AL_EntCameraSet, 0x0072CD70);
+VoidFunc(AlEntAnimArrayInit, 0x0072CC30);
+VoidFunc(AL_GBAManagerWakeup, 0x00716A90);
+VoidFunc(AL_JoyInputStart, 0x0072CBC0);
+VoidFunc(AL_EntranceMenuCreate, 0x0072CB40);
+VoidFunc(AL_PlayerDisable, 0x007153F0);
+VoidFunc(ALO_EntDoorCreate, 0x0072C2E0);
+VoidFunc(_al_stage_prolog, 0x00715AE0);
+VoidFunc(_alg_blackmarket_prolog, 0x00718BB0);
+VoidFunc(_alg_garden00_ss_prolog, 0x00719600);
+VoidFunc(_alg_garden01_ec_prolog, 0x007191D0);
+VoidFunc(_alg_garden02_mr_prolog, 0x00718E90);
+VoidFunc(_alg_garden02_mr_daytime_prolog, 0x0072A790);
+VoidFunc(_alg_garden02_mr_evening_prolog, 0x0072A820);
+VoidFunc(_alg_garden02_mr_night_prolog, 0x0072A8B0);
+VoidFunc(_alg_entrance_prolog, 0x007199B0);
+VoidFunc(_al_odekake_prolog, 0x00719C40);
+VoidFunc(_alg_race_prolog, 0x00719DB0);
+TaskFunc(AL_Garden00Master, 0x00719320);
+TaskFunc(AL_Garden01Master, 0x00719040);
+TaskFunc(AL_Garden02Master, 0x00718D00);
+TaskFunc(AL_EntranceMaster, 0x00719880);
+TaskFunc(AL_RaceMaster, 0x00719D00);
+FunctionPointer(void, AL_EntranceMasterExec, (task* a1), 0x7197E0);
+FunctionPointer(void, AL_EntranceMasterDest, (task* a1), 0x7197C0);
+TaskFunc(ObjectAlrCracker, 0x0071BEA0);
+VoidFunc(ObjectAlrCracker_Init, 0x0071BF20);
+TaskFunc(ObjectALGardenDoor, 0x0072AB50);
+FunctionPointer(void, AL_SetMotionLink, (task* a1, int a2), 0x00734F00);
+FunctionPointer(void, AL_SetBehavior, (task* tp, void(__cdecl* Func)(task*)), 0x0071EF10);
+FunctionPointer(void, AL_CreateNormalCameraTask, (), 0x72A570);
+FunctionPointer(void, AlrObjSetTask, (TaskInfo* a2, void* a3), 0x00752E90);
+FunctionPointer(eCHAO_STAGE_NUMBER, AL_GetStageNumber, (), 0x00715140);
+TaskFunc(ChaoSelectWindowTDisplayer, 0x00769320);
 
 #endif /* SADXMODLOADER_SADXFUNCTIONSNEW_H */

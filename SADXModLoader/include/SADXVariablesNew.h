@@ -593,6 +593,9 @@ DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEEC0, 0x38F6E78);
 DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEEC3, 0x38F6E88);
 DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEMR, 0x3AAD130);
 DataPointer(_OBJ_LANDTABLE**, ___LANDTABLEPAST, 0x3AAD110);
+DataPointer(_OBJ_LANDTABLE*, objLandTableGarden02_Daytime, 0x03CA6E88);
+DataPointer(_OBJ_LANDTABLE*, objLandTableGarden02_Evening, 0x03CA6E88);
+DataPointer(_OBJ_LANDTABLE*, objLandTableGarden02_Night, 0x03CA6E88);
 
 // Motion
 DataPointer(MOTIONDATA_INFO, nj_motion_data_info_, 0x3AB9910);
@@ -646,5 +649,42 @@ DataPointer(task*, teleporttask, 0x3C7507C); // OTeleport task pointer, non-null
 // Station Square objects
 DataArray(int, tex_color_list, 0x2BBE9D8, 6); // Station Square car texture IDs
 DataPointer(NJS_SPRITE, sprite_lamp, 0x02BC0334); // Station Square street light (OGaitou) lamp sprite
+
+// Chao
+
+DataPointer(float, CamDist, 0x033D0D44); // Player to camera distance for Chao Gardens
+DataArray(NJS_VECTOR[10], TreeSetPos, 0x33A0D78, 3); // Garden tree positions
+DataPointer(AL_ST_POS, AL_StartPosSS_SS, 0x0339F888);
+DataPointer(AL_ST_POS, AL_StartPosSS_Warp, 0x0339F898);
+DataPointer(AL_ST_POS, AL_StartPosSS_Odekake, 0x0339F8A8);
+DataPointer(AL_ST_POS, AL_StartPosSS_Race, 0x0339F8B8);
+DataPointer(AL_ST_POS, AL_StartPosSS_Market, 0x0339F8C8);
+DataPointer(AL_ST_POS, AL_StartPosEC_EC, 0x0339F8D8);
+DataPointer(AL_ST_POS, AL_StartPosEC_Warp, 0x0339F8E8);
+DataPointer(AL_ST_POS, AL_StartPosEC_Odekake, 0x0339F8F8);
+DataPointer(AL_ST_POS, AL_StartPosMR_MR, 0x0339F908);
+DataPointer(AL_ST_POS, AL_StartPosMR_Warp, 0x0339F918);
+DataPointer(AL_ST_POS, AL_StartPosMR_Odekake, 0x0339F928);
+DataArray(NJS_VECTOR, HolePos, 0x00887910, 8); // Chao positions on the elevator in Chao Race Entry
+DataArray(NJS_VECTOR, ChaoSetPositionSS, 0x33A0AF8, 16);
+DataArray(NJS_VECTOR, ChaoSetPositionEC, 0x33A0BB8, 16);
+DataArray(NJS_VECTOR, ChaoSetPositionMR, 0x33A0C78, 16);
+DataPointer(int, gLoadingAnotherGarden, 0x03CA6EB8);
+DataPointer(int, flagCrackerStart, 0x3CD7714); // Indicates that the Chao Race crackers should fire
+DataArray(NJS_TEXANIM, anim_dialog, 0x00888D70, 32); // Texture data for DC Chao Race menus
+DataPointer(AL_RACE_INFO, RaceInfo, 0x03CD35E0); // Current Chao Race data
+DataPointer(AL_ENT_MENU_WORK*, pEntranceMenuWork, 0x03CDC6B8); // Worker for Chao Race Entry menu
+DataArray(task*, pEntChaoTask, 0x03CE0530, 8); // Chao Race Entry Chao on the elevator
+DataPointer(task*, gTask, 0x03CDC6B4); // Number doors in Chao Race Entry
+DataPointer(task*, ObjectManageTask_p, 0x03CE1258);
+DataPointer(TaskInfo, NeonLogoTaskInfo, 0x0088A708);
+DataPointer(int, pLevel, 0x3CD7710); // Amount of confetti for Chao Race crackers
+
+// Texlists
+DataPointer(NJS_TEXLIST*, texlist_garden02mr_daytime, 0x03CA6E84);
+DataPointer(NJS_TEXLIST*, texlist_garden02mr_evening, 0x03CA6E84);
+DataPointer(NJS_TEXLIST*, texlist_garden02mr_night, 0x03CA6E84);
+DataPointer(NJS_TEXLIST, texlist_chao_entrance, 0x0340E934);
+DataPointer(NJS_TEXLIST, texlist_al_tex_common, 0x033A1040);
 
 #endif /* SADXMODLOADER_SADXVARSNEW_H */
