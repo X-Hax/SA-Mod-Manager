@@ -651,7 +651,7 @@ DataArray(int, tex_color_list, 0x2BBE9D8, 6); // Station Square car texture IDs
 DataPointer(NJS_SPRITE, sprite_lamp, 0x02BC0334); // Station Square street light (OGaitou) lamp sprite
 
 // Chao
-
+DataPointer(eCHAO_STAGE_NUMBER, ChaoStageNumber, 0x0339F87C); // Current Chao stage
 DataPointer(float, CamDist, 0x033D0D44); // Player to camera distance for Chao Gardens
 DataArray(NJS_VECTOR[10], TreeSetPos, 0x33A0D78, 3); // Garden tree positions
 DataPointer(AL_ST_POS, AL_StartPosSS_SS, 0x0339F888);
