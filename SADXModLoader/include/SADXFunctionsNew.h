@@ -1310,5 +1310,6 @@ FunctionPointer(void, AL_CreateNormalCameraTask, (), 0x72A570);
 FunctionPointer(void, AlrObjSetTask, (TaskInfo* a2, void* a3), 0x00752E90);
 FunctionPointer(eCHAO_STAGE_NUMBER, AL_GetStageNumber, (), 0x00715140);
 TaskFunc(ChaoSelectWindowTDisplayer, 0x00769320);
+FunctionPointer(void, AL_DrawTreeSub, (TREE_WORK* pTree, NJS_OBJECT* pObject), 0x00720DF0); // Chao Tree display function
 
 #endif /* SADXMODLOADER_SADXFUNCTIONSNEW_H */
