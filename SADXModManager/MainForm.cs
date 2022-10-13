@@ -454,7 +454,8 @@ namespace SADXModManager
 
 			foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modDir)))
 			{
-				mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(modDir.Length + 1), IniSerializer.Deserialize<SADXModInfo>(filename));
+				SADXModInfo mod = IniSerializer.Deserialize<SADXModInfo>(filename);
+				mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(modDir.Length + 1), mod);
 			}
 
 			modListView.BeginUpdate();
@@ -822,6 +823,61 @@ namespace SADXModManager
 			CodeList.WriteDatFile(codedatpath, selectedCodes);
 		}
 
+		private bool CheckDependencies(string lMod)
+		{
+			bool check = false;
+			SADXModInfo mod = mods[lMod];
+
+			if (mod.Dependencies.Count > 0)
+			{
+				int mID = loaderini.Mods.IndexOf(lMod);
+				foreach (string sDepdency in mod.Dependencies)
+				{
+					ModDependency dependency = new ModDependency(sDepdency);
+					SADXModInfo cMod = mods[dependency.ID];
+					string missingMod = dependency.GetDependencyName();
+
+					if (cMod != null)
+					{
+						// If Dependency Mod Exists, check if mod is active.
+						if (loaderini.Mods.Contains(dependency.ID))
+						{
+							int cID = loaderini.Mods.IndexOf(dependency.ID);
+							if (mID < cID)
+							{
+								MessageBox.Show(missingMod + " needs to be placed above " + mod.Name, "Mod Order", MessageBoxButtons.OKCancel);
+								check = true;
+							}
+						}
+						else
+						{
+							MessageBox.Show(missingMod + " is not enabled. Please enable this mod and place it above " + mod.Name, "Mod Dependency", MessageBoxButtons.OKCancel);
+							check = true;
+						}
+					}
+					else
+					{
+						string msg = "Dependency " + missingMod + " is not installed. Please install " + missingMod + " and place it above " + mod.Name;
+						if (dependency.Link == "")
+						{
+							MessageBox.Show(msg, "Missing Mod", MessageBoxButtons.OKCancel);
+							check = true;
+						}
+						else
+						{
+							DialogResult dg = MessageBox.Show(msg + "\n\nWould you like to download this mod now?", "Missing Mod", MessageBoxButtons.YesNo);
+							if (dg == DialogResult.Yes)
+							{
+								Process.Start(dependency.Link);
+							}
+							check = true;
+						}
+					}
+				}
+			}
+			return check;
+		}
+
 		private void saveAndPlayButton_Click(object sender, EventArgs e)
 		{
 			if (updateChecker?.IsBusy == true)
@@ -857,6 +913,14 @@ namespace SADXModManager
 						File.Copy(loaderdllpath, datadllpath);
 						break;
 				}
+
+			// Check Mod Dependencies
+			foreach (string mod in loaderini.Mods)
+			{
+				if (CheckDependencies(mod))
+					return;
+			}
+
 			Process process = Process.Start(loaderini.Mods.Select((item) => mods[item].EXEFile)
 												.FirstOrDefault((item) => !string.IsNullOrEmpty(item)) ?? "sonic.exe");
 			process?.WaitForInputIdle(10000);
