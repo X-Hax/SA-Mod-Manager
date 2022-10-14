@@ -823,7 +823,23 @@ namespace SADXModManager
 			CodeList.WriteDatFile(codedatpath, selectedCodes);
 		}
 
-		private bool CheckDependencies(string lMod)
+		private Dictionary<string, string> GetModReference()
+		{
+			Dictionary<string, string> activeMods = new Dictionary<string, string>();
+
+			foreach (string mod in mods.Keys)
+			{
+				SADXModInfo modinfo = mods[mod];
+				string id = mod;
+				if (modinfo.ModID != null)
+					id = modinfo.ModID;
+				activeMods.Add(id, mod);
+			}
+
+			return activeMods;
+		}
+
+		private bool CheckDependencies(string lMod, Dictionary<string, string> cMods)
 		{
 			bool check = false;
 			SADXModInfo mod = mods[lMod];
@@ -831,33 +847,41 @@ namespace SADXModManager
 			if (mod.Dependencies.Count > 0)
 			{
 				int mID = loaderini.Mods.IndexOf(lMod);
-				foreach (string sDepdency in mod.Dependencies)
+				foreach (string sDependency in mod.Dependencies)
 				{
-					ModDependency dependency = new ModDependency(sDepdency);
-					SADXModInfo cMod = mods[dependency.ID];
-					string missingMod = dependency.GetDependencyName();
+					ModDependency dependency = new ModDependency(sDependency);
+					if (dependency.ID == "" && dependency.Folder == "")
+						return false;
+					
+					string depName = dependency.GetDependencyName();
 
-					if (cMod != null)
+					bool modExists = false;
+					if (cMods.ContainsKey(dependency.ID))
+						modExists = true;
+					else if (cMods.ContainsValue(dependency.Folder))
+						modExists = true;
+
+					if (modExists)
 					{
 						// If Dependency Mod Exists, check if mod is active.
-						if (loaderini.Mods.Contains(dependency.ID))
+						if (loaderini.Mods.Contains(dependency.Folder))
 						{
-							int cID = loaderini.Mods.IndexOf(dependency.ID);
+							int cID = loaderini.Mods.IndexOf(dependency.Folder);
 							if (mID < cID)
 							{
-								MessageBox.Show(missingMod + " needs to be placed above " + mod.Name, "Mod Order", MessageBoxButtons.OKCancel);
+								MessageBox.Show(depName + " needs to be placed above " + mod.Name, "Mod Order", MessageBoxButtons.OKCancel);
 								check = true;
 							}
 						}
 						else
 						{
-							MessageBox.Show(missingMod + " is not enabled. Please enable this mod and place it above " + mod.Name, "Mod Dependency", MessageBoxButtons.OKCancel);
+							MessageBox.Show(depName + " is not enabled. Please enable this mod and place it above " + mod.Name, "Mod Dependency", MessageBoxButtons.OKCancel);
 							check = true;
 						}
 					}
 					else
 					{
-						string msg = "Dependency " + missingMod + " is not installed. Please install " + missingMod + " and place it above " + mod.Name;
+						string msg = "Dependency " + depName + " is not installed. Please install " + depName + " and place it above " + mod.Name;
 						if (dependency.Link == "")
 						{
 							MessageBox.Show(msg, "Missing Mod", MessageBoxButtons.OKCancel);
@@ -915,9 +939,10 @@ namespace SADXModManager
 				}
 
 			// Check Mod Dependencies
+			Dictionary<string, string> cMods = GetModReference();
 			foreach (string mod in loaderini.Mods)
 			{
-				if (CheckDependencies(mod))
+				if (CheckDependencies(mod, cMods))
 					return;
 			}
 
