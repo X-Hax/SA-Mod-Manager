@@ -3562,6 +3562,379 @@ struct chaowk
 	void* pWork;
 };
 
+// Chao (SA1 related)
+
+struct ADV1_AL_IMPLESSION
+{
+	char like;
+	unsigned __int8 meet;
+};
+
+#pragma pack(push, 4)
+struct ADV1_AL_IMPLESSION2
+{
+	unsigned int id;
+	unsigned __int8 like;
+	unsigned __int8 meet;
+};
+#pragma pack(pop)
+
+struct ADV1_AL_MEMORY
+{
+	ADV1_AL_IMPLESSION player[6];
+	ADV1_AL_IMPLESSION2 chao[32];
+};
+
+#pragma pack(push, 4)
+struct al_status
+{
+	unsigned __int8 type;
+	unsigned __int8 garden_num;
+	char like;
+	unsigned __int8 key1;
+	unsigned __int8 name[8];
+	unsigned __int16 swim;
+	unsigned __int16 fly;
+	unsigned __int16 run;
+	unsigned __int16 power;
+	unsigned __int16 health;
+	unsigned __int16 health_max;
+	unsigned __int8 fruit_kind[8];
+	float h_pos;
+	float v_pos;
+	float growth;
+	unsigned __int16 intimate;
+	unsigned __int16 life;
+	unsigned __int16 old;
+	unsigned __int16 get_minimal;
+	unsigned __int8 win;
+	unsigned __int8 key2;
+	unsigned __int16 flag;
+	NJS_POINT3 pos;
+	unsigned int age;
+	unsigned int id;
+	char animal_part_num[7];
+	unsigned __int8 key3;
+	unsigned __int16 pt_swim;
+	unsigned __int16 pt_fly;
+	unsigned __int16 pt_run;
+	unsigned __int16 pt_power;
+	char kindness;
+	char aggressive;
+	char curiosity;
+	unsigned __int8 charm;
+	unsigned __int8 breed;
+	unsigned __int8 sleep;
+	unsigned __int8 hunger;
+	unsigned __int8 tedious;
+	unsigned __int8 tire;
+	unsigned __int8 stress;
+	unsigned __int8 narrow;
+	unsigned __int8 pleasure;
+	unsigned __int8 anger;
+	unsigned __int8 sorrow;
+	unsigned __int8 fear;
+	unsigned __int8 lonely;
+	ADV1_AL_MEMORY memory;
+	unsigned __int8 nbSucceed;
+	unsigned __int8 lane;
+	unsigned __int8 IsCPU;
+	char key4;
+	char exist;
+	unsigned __int16 mayu_timer;
+	unsigned __int8 race_time[20];
+	unsigned __int8 extra_num;
+};
+#pragma pack(pop)
+
+struct ADV1_AL_TMP_STATUS
+{
+	float aim_h_pos;
+	float aim_v_pos;
+	float aim_grouth;
+	NJS_ARGB aim_argb;
+};
+
+struct al_action_ctrl
+{
+	unsigned __int16 old_mode;
+	unsigned __int16 curr_mode;
+	unsigned __int16 req_mode;
+	unsigned __int16 flag;
+	unsigned __int16 timer;
+};
+
+struct al_motion_table
+{
+	NJS_MOTION* motion;
+	__int16 mode;
+	__int16 next;
+	float start_frame;
+	float end_frame;
+	float frame_spd;
+	float link_spd;
+};
+
+struct ADV1_AL_MOTION_CTRL
+{
+	unsigned __int16 mode;
+	unsigned __int16 flag;
+	unsigned __int16 timer;
+	__int16 curr_num;
+	__int16 link_num;
+	__int16 req_num;
+	float nframe;
+	float pframe;
+	float lframe;
+	float link_ratio;
+	float multi_spd;
+	al_motion_table* motion_table;
+};
+
+struct ADV1_AL_PERCEPTION
+{
+	unsigned int flag;
+};
+
+union alifewk_work
+{
+	char b[4];
+	__int16 w[2];
+	int l;
+	float f;
+	void* ptr;
+};
+
+struct ADV1_AL_SHADOW
+{
+	unsigned __int16 flag;
+	NJS_POINT3 colli_center;
+	float colli_top;
+	float colli_radius;
+	float colli_bottom;
+	float cliff_height;
+	float bound_side;
+	float bound_floor;
+	float bound_friction;
+	float bound_ceiling;
+	int bound_add_angle;
+	float shadow_scl;
+	float shadow_scl_ratio;
+	float water_pos;
+	xyyzzxsdwstr si;
+};
+
+struct ADV1_AL_BODY
+{
+	obj* object;
+	obj* my_parts[50];
+	obj* zero[50];
+	obj* standard[50];
+	obj* fly[50];
+	obj* run[50];
+	obj* power[50];
+	obj* swim[50];
+	NJS_TEXLIST* tex;
+};
+
+struct ADV1_AL_FACE
+{
+	unsigned __int16 timer1;
+	unsigned __int16 timer2;
+	unsigned __int16 timer3;
+	int eye_keep_timer;
+	int mouse_keep_timer;
+	int eyelid_keep_timer;
+	unsigned int flag;
+	int eyelid_brink_ang;
+	int eyelid_close_ang;
+	int eyelid_curr_close_ang;
+	int eyelid_request_close_ang;
+	int eyelid_default_close_ang;
+	int eyelid_express_ang;
+	int eyelid_curr_express_ang;
+	int eyelid_request_express_ang;
+	int eyelid_default_express_ang;
+	__int16 eye_default_num;
+	__int16 eye_request_num;
+	__int16 mouse1_default_num;
+	__int16 mouse2_default_num;
+	__int16 mouse1_request_num;
+	__int16 mouse2_request_num;
+};
+
+struct ADV1_AL_ICON
+{
+	unsigned __int16 flag;
+	unsigned __int16 mode;
+	unsigned __int16 timer;
+	unsigned __int16 next_mode;
+	unsigned __int16 next_timer;
+	NJS_POINT3 pos;
+	NJS_POINT3 velo;
+	NJS_POINT3 diff;
+	int phase;
+	unsigned __int16 timer_u;
+	unsigned __int16 icon_num_u;
+	unsigned __int16 smode_u;
+	float ang_u;
+	float ang_spd_u;
+	NJS_POINT3 pos_u;
+	NJS_POINT3 velo_u;
+	NJS_POINT3 scl_u;
+	NJS_POINT3 sclspd_u;
+	unsigned __int16 timer_d;
+	unsigned __int16 icon_num_d;
+	unsigned __int16 smode_d;
+	float ang_d;
+	float ang_spd_d;
+	NJS_POINT3 pos_d;
+	NJS_POINT3 velo_d;
+	NJS_POINT3 scl_d;
+	NJS_POINT3 sclspd_d;
+	NJS_COLOR col;
+};
+
+
+struct alifewk
+{
+	alifewk_work work;
+	NJS_POINT3 velo;
+	NJS_POINT3 acc;
+	Angle3 ang_aim;
+	Angle3 ang_spd;
+	float rad;
+	float height;
+	float weight;
+	task* lock_tp;
+	void(__cdecl* dest_org)(task*);
+	unsigned __int16 action_timer;
+	unsigned __int16 stimer;
+	unsigned __int16 voice_timer;
+	unsigned __int16 rhythm_timer;
+	__int16 old_mode;
+	__int16 old_smode;
+	__int16 curr_mode;
+	__int16 curr_smode;
+	__int16 req_mode;
+	__int16 req_smode;
+	__int16 hold_mode;
+	unsigned int flag;
+	unsigned __int16 action_mode;
+	NJS_BGRA mat_col;
+	float mayu_scl;
+	float mayu_alpha;
+	int name_alpha;
+	unsigned __int16 name_timer;
+	unsigned __int16 damage_timer;
+	int pitch;
+	int yaw;
+	int roll;
+	__int16 aim_num;
+	NJS_POINT3 home;
+	NJS_POINT3 aim;
+	NJS_POINT3 pre;
+	NJS_POINT3 offset;
+	Angle3 aim_ang;
+	int view_angle;
+	float view_range2;
+	float hear_range2;
+	float buyo_scale;
+	float chao_scl;
+	float aim_hpos;
+	float aim_vpos;
+	float aim_growth;
+	unsigned __int16 sekkachi_timer;
+	al_status* status;
+	ADV1_AL_TMP_STATUS tmp_status;
+	al_action_ctrl action_ctrl;
+	ADV1_AL_MOTION_CTRL motion_ctrl;
+	ADV1_AL_SHADOW shadow;
+	ADV1_AL_BODY body;
+	ADV1_AL_FACE face;
+	ADV1_AL_ICON icon;
+	ADV1_AL_PERCEPTION perception;
+	task* mytask;
+	task* pAdv2ChaoTask;
+};
+
+struct AlrEffUnit
+{
+	NJS_POINT3 trans;
+	NJS_POINT3 velocity;
+	unsigned __int8 frame;
+	char frame_inc_time;
+	unsigned __int8 mode;
+	unsigned __int8 flag;
+	unsigned __int16 timer;
+	unsigned __int16 tmp;
+};
+
+#pragma pack(push, 2)
+struct TaskCommunication
+{
+	task* obj_tp;
+	char obj_kind;
+	char command;
+	unsigned __int8 status;
+};
+#pragma pack(pop)
+
+struct AlrEff
+{
+	AlrEffUnit unit[5];
+	NJS_TEXLIST* texlist;
+	NJS_TEXANIM* anim;
+	float scale;
+	void(__cdecl* exec)(AlrEffUnit*, NJS_POINT3*, NJS_POINT3*);
+	unsigned __int16 frame_inc_time_max;
+	unsigned __int8 anim_num;
+	unsigned __int8 unit_num;
+};
+
+struct AlrEvent
+{
+	unsigned __int8 level;
+	unsigned __int8 cnt;
+	unsigned __int16 timer;
+	void(__cdecl* event)(void*);
+};
+
+#pragma pack(push, 4)
+struct Alr
+{
+	AlrEff eff;
+	AlrEvent event;
+	TaskCommunication communication;
+	unsigned __int8 id;
+	unsigned __int8 area;
+	unsigned __int16 flag;
+	unsigned __int8 rank;
+	unsigned __int8 mode;
+	unsigned __int8 command;
+	unsigned __int8 smode;
+	float sloop;
+	float pathpos;
+	unsigned __int8 use_path;
+	unsigned __int8 ex_mode;
+	unsigned __int16 ex_cnt;
+	int amplitude;
+	unsigned __int8 now;
+	unsigned __int8 motion;
+	unsigned __int8 chao_flag;
+	unsigned __int8 voice;
+	unsigned __int8 zone;
+	__declspec(align(2)) unsigned __int16 para_timer;
+	float monooto;
+	char sleep;
+	char tire;
+	char stress;
+	char tmp;
+	alifewk* awp;
+	taskwk* twp;
+};
+#pragma pack(pop)
+
 // Tutorials
 
 struct GH_PVR_TEX

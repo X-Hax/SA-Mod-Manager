@@ -692,6 +692,7 @@ DataPointer(task*, gTask, 0x03CDC6B4); // Number doors in Chao Race Entry
 DataPointer(task*, ObjectManageTask_p, 0x03CE1258);
 DataPointer(TaskInfo, NeonLogoTaskInfo, 0x0088A708);
 DataPointer(int, pLevel, 0x3CD7710); // Amount of confetti for Chao Race crackers
+DataPointer(NJS_VECTOR, ZeroVector, 0x08894FC); // Null vector used for calculating SA1 Chao node positions (broken in DX)
 
 // Texlists
 DataPointer(NJS_TEXLIST*, texlist_garden02mr_daytime, 0x03CA6E84);

@@ -1280,6 +1280,9 @@ FunctionPointer(_camcontwk**, AL_EntCameraFunc, (), 0x0072CCF0);
 FunctionPointer(void, ALO_OdekakeMachineCreate, (NJS_POINT3* pPos, int angy), 0x00729F40);
 FunctionPointer(void, ALO_WarpCreate, (task* parent_tp, int aim, float posx, float posy, float posz, int roty), 0x00729550);
 FunctionPointer(void, AL_ExitToStage, (int stage, int act), 0x715730);
+FunctionPointer(void, AL_CalcMotionMartix, (al_object* pObject), 0x00765010);
+FunctionPointer(void, AL_InitCalcMotionMatrix, (task* tp), 0x00764B10);
+FunctionPointer(int, ALR_GetBodyPosition, (NJS_VECTOR* vector, taskwk* twp, alifewk* awp, int joint), 0x00754D00); // Calculates SA1 Chao node positions (broken in DX)
 VoidFunc(ALW_Create, 0x0071A7C0);
 VoidFunc(AL_EntCameraSet, 0x0072CD70);
 VoidFunc(AlEntAnimArrayInit, 0x0072CC30);
