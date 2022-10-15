@@ -1119,7 +1119,7 @@ struct AL_BODY_INFO
 	char FormNum;
 	char FormSubNum;
 };
-#pragma pack(pop)
+#pragma pack(pop, 2)
 
 struct AL_TIME
 {
@@ -1714,7 +1714,8 @@ struct particle_info
 	NJS_ARGB argb;
 };
 
-struct __declspec(align(4)) stcWaterSurface
+#pragma pack(push, 4)
+struct stcWaterSurface
 {
 	float f32x0;
 	float f32y0;
@@ -1727,6 +1728,7 @@ struct __declspec(align(4)) stcWaterSurface
 	float f32TransScale;
 	char u8StripArrayNo;
 };
+#pragma pack(pop, 4)
 
 struct stcAnim
 {
@@ -2166,7 +2168,8 @@ struct PanelPrmType
 	unsigned __int8 PvrIdx;
 };
 
-struct __declspec(align(4)) DDlgType
+#pragma pack(push, 4)
+struct DDlgType
 {
 	float CntrX;
 	float CntrY;
@@ -2175,6 +2178,7 @@ struct __declspec(align(4)) DDlgType
 	float SclY;
 	char Csr;
 };
+#pragma pack(pop, 4)
 
 struct AvaStgActT
 {
@@ -2182,11 +2186,13 @@ struct AvaStgActT
 	unsigned __int8 Act;
 };
 
-struct __declspec(align(4)) AvaStgActPrmT
+#pragma pack(push, 4)
+struct AvaStgActPrmT
 {
 	AvaStgActT* StgActPtr;
 	unsigned __int8 Num;
 };
+#pragma pack(pop, 4)
 
 struct ModeSelPrmType
 {
@@ -2226,7 +2232,7 @@ struct WakuPrmT
 	unsigned __int8 YokoPvrIdx;
 	unsigned __int8 TatePvrIdx;
 };
-#pragma pack(pop)
+#pragma pack(pop, 2)
 
 struct AvaTexLdPrmT
 {
@@ -2275,7 +2281,8 @@ struct TrialActSelWk
 	unsigned __int8 SelStg;
 };
 
-struct __declspec(align(4)) CharMdlWk
+#pragma pack(push, 4)
+struct CharMdlWk
 {
 	task* PlTskPtrs[7];
 	task* CamTskPtr;
@@ -2286,8 +2293,10 @@ struct __declspec(align(4)) CharMdlWk
 	char MotCnts[7];
 	unsigned __int8 SelFlg;
 };
+#pragma pack(pop, 4)
 
-struct __declspec(align(4)) CharSelWk
+#pragma pack(push, 4)
+struct CharSelWk
 {
 	AdvaStatEnum Stat;
 	AdvaModeEnum PrevMode;
@@ -2304,6 +2313,7 @@ struct __declspec(align(4)) CharSelWk
 	AdvDlgSelEnum DlgStat;
 	unsigned __int8 WakeFlg;
 };
+#pragma pack(pop, 4)
 
 struct TitleMenuWk
 {
@@ -2481,9 +2491,10 @@ struct bubble_data
 	float y_spd_min;
 	float y_spd_max;
 };
-// Title screen worker
 
-struct __declspec(align(4)) TitleNewWk
+// Title screen worker
+#pragma pack(push, 4)
+struct TitleNewWk
 {
 	AdvaStatEnum Stat;
 	AdvaModeEnum PrevMode;
@@ -2504,6 +2515,7 @@ struct __declspec(align(4)) TitleNewWk
 	float kumotimer;
 	char kumoindex;
 };
+#pragma pack(pop, 4)
 
 struct ObjectInfo
 {
@@ -2834,12 +2846,14 @@ union STAFF_DATA_FLAG
 	unsigned __int8 interval;
 };
 
-struct __declspec(align(4)) STAFF_DATA
+#pragma pack(push, 4)
+struct STAFF_DATA
 {
 	unsigned __int8 StaffType;
 	STAFF_DATA_FLAG flag;
 	char* str;
 };
+#pragma pack(pop, 4)
 
 struct STAFFROLL_DATA
 {
@@ -2991,7 +3005,8 @@ struct AL_KNOWLEDGE_PLAYER
 	unsigned __int16 meet;
 };
 
-struct __declspec(align(4)) AL_KNOWLEDGE_CHAO
+#pragma pack(push, 4)
+struct AL_KNOWLEDGE_CHAO
 {
 	CHAO_ID id;
 	char like;
@@ -2999,6 +3014,7 @@ struct __declspec(align(4)) AL_KNOWLEDGE_CHAO
 	unsigned __int16 distance;
 	unsigned __int16 meet;
 };
+#pragma pack(pop, 4)
 
 struct AL_KNOWLEDGE_BTL
 {
@@ -3577,7 +3593,7 @@ struct ADV1_AL_IMPLESSION2
 	unsigned __int8 like;
 	unsigned __int8 meet;
 };
-#pragma pack(pop)
+#pragma pack(pop, 4)
 
 struct ADV1_AL_MEMORY
 {
@@ -3645,7 +3661,7 @@ struct al_status
 	unsigned __int8 race_time[20];
 	unsigned __int8 extra_num;
 };
-#pragma pack(pop)
+#pragma pack(pop, 4)
 
 struct ADV1_AL_TMP_STATUS
 {
@@ -3878,7 +3894,7 @@ struct TaskCommunication
 	char command;
 	unsigned __int8 status;
 };
-#pragma pack(pop)
+#pragma pack(pop, 2)
 
 struct AlrEff
 {
@@ -3924,7 +3940,7 @@ struct Alr
 	unsigned __int8 chao_flag;
 	unsigned __int8 voice;
 	unsigned __int8 zone;
-	__declspec(align(2)) unsigned __int16 para_timer;
+	unsigned __int16 para_timer;
 	float monooto;
 	char sleep;
 	char tire;
@@ -3933,7 +3949,7 @@ struct Alr
 	alifewk* awp;
 	taskwk* twp;
 };
-#pragma pack(pop)
+#pragma pack(pop, 4)
 
 // Tutorials
 
@@ -3963,4 +3979,40 @@ struct TUTO_BOOK
 	char* pvmname[2];
 };
 
+// Characters
+
+struct bbl_small_work
+{
+	NJS_POINT3 pos;
+	float radius;
+	float ceil;
+	int life;
+	float yuragi_x;
+	float yuragi_z;
+	float yuragi_r;
+	float y_spd;
+	int yuragi_ang;
+	bbl_small_work* prev;
+	bbl_small_work* next;
+};
+
+struct bbl_small_taskwk
+{
+	char free1;
+	char turn;
+	unsigned __int8 id;
+	unsigned __int8 free2;
+	__int16 flag;
+	__int16 bbls_count;
+	bbl_small_work* bbls_work_p;
+	bbl_small_work* free_list_p;
+	bbl_small_work* top_list_p;
+	Angle3 ang;
+	NJS_POINT3 pos;
+	float radius;
+	float freq;
+	float bbl_max;
+	colliwk* cwp;
+	eventwk* ewp;
+};
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
