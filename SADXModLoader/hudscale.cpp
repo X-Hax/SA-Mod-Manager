@@ -422,37 +422,42 @@ static void __cdecl ChaoDX_Message_PlayerAction_Display_r(ObjectMaster* a1)
 
 static void __cdecl DisplaySelectingStage_ss_r()
 {
-	SetDebugFontSize((unsigned short)(DebugFontSize * get_scale()));
+	int origsize = (int)DebugFontSize;
+	SetDebugFontSize((unsigned short)(origsize * get_scale()));
 	DisplaySelectingStage_ss();
-	SetDebugFontSize((unsigned short)DebugFontSize);
+	SetDebugFontSize(origsize);
 }
 
 static void __cdecl DisplaySelectingCharacter_ss_r()
 {
-	SetDebugFontSize((unsigned short)(DebugFontSize * get_scale()));
+	int origsize = (int)DebugFontSize;
+	SetDebugFontSize((unsigned short)(origsize * get_scale()));
 	DisplaySelectingCharacter_ss();
-	SetDebugFontSize((unsigned short)DebugFontSize);
+	SetDebugFontSize(origsize);
 }
 
 static void __cdecl DisplaySelectingSequence_r()
 {
-	SetDebugFontSize((unsigned short)(DebugFontSize * get_scale()));
+	int origsize = (int)DebugFontSize;
+	SetDebugFontSize((unsigned short)(origsize * get_scale()));
 	DisplaySelectingSequence();
-	SetDebugFontSize((unsigned short)DebugFontSize);
+	SetDebugFontSize(origsize);
 }
 
 static void __cdecl DisplayForwardArrow_r()
 {
-	SetDebugFontSize((unsigned short)(DebugFontSize * get_scale()));
+	int origsize = (int)DebugFontSize;
+	SetDebugFontSize((unsigned short)(origsize * get_scale()));
 	DisplayForwardArrow();
-	SetDebugFontSize((unsigned short)DebugFontSize);
+	SetDebugFontSize(origsize);
 }
 
 static void __cdecl DisplayBackwardArrow_r()
 {
-	SetDebugFontSize((unsigned short)(DebugFontSize * get_scale()));
+	int origsize = (int)DebugFontSize;
+	SetDebugFontSize((unsigned short)(origsize * get_scale()));
 	DisplayBackwardArrow();
-	SetDebugFontSize((unsigned short)DebugFontSize);
+	SetDebugFontSize(origsize);
 }
 
 static void __cdecl HeldChaoParamWindowDisplayer_o(ObjectMaster* a1)
