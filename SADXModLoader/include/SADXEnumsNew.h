@@ -14,6 +14,15 @@
 #define makemasks(enumname,membername) enumname##s_##membername = (1 << enumname##Bits_##membername)
 #define levelact(level, act) (((level) << 8) | (act))
 
+enum LANGUAGE : __int32 // Different from X360
+{
+	JAPANESE = 0x0,
+	ENGLISH = 0x1,
+	FRENCH = 0x2,
+	SPANISH = 0x3,
+	GERMAN = 0x4
+};
+
 enum TEX_EFF
 {
 	TEX_EFF_RING = 0x0,

@@ -1236,6 +1236,7 @@ TaskFunc(file_sel_disp, 0x00505550); // File Select display function
 FunctionPointer(void, DisplayTitleNew_3, (float baseZ), 0x0050BA90); // Main menu display function
 FunctionPointer(int, BetweenCol, (unsigned int src, unsigned int dst, float avg), 0x004319D0); // Blends two colors together
 FunctionPointer(void, ghFontPuts, (const char* text, float x, float y, float scale), 0x00420C50); // Draws a string with Ascii16x16FontInfo
+FunctionPointer(AvaCharEnum, GetAdvertisePlayerNumber, (), 0x0042CDE0); // Get current character in menus
 
 // TGS Menus
 VoidFunc(DisplaySelectingStage_ss, 0x0042DE70);

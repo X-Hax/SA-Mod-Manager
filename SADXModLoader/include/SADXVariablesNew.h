@@ -11,6 +11,7 @@
 #include "SADXStructsNew.h"
 
 // General
+DataPointer(LANGUAGE, Language, 0x03B0F0E8); // Current text language
 DataPointer(float, ScreenRaitoX, 0x8928C0); // Horizontal stretch (X res / 640)
 DataPointer(float, ScreenRaitoY, 0x8928C4); // Vertical stretch (Y res / 480)
 DataPointer(float, late_z_ofs___, 0x3ABD9C0); // Draw queue depth bias for models
@@ -698,5 +699,46 @@ DataPointer(NJS_TEXLIST*, texlist_garden02mr_evening, 0x03CA6E84);
 DataPointer(NJS_TEXLIST*, texlist_garden02mr_night, 0x03CA6E84);
 DataPointer(NJS_TEXLIST, texlist_chao_entrance, 0x0340E934);
 DataPointer(NJS_TEXLIST, texlist_al_tex_common, 0x033A1040);
+
+// Tutorial pages
+
+DataArray(TUTO_PAGE, SonicPageTbl_J, 0x2BC3BA0, 7);
+DataArray(TUTO_PAGE, SonicPageTbl_E, 0x2BC3C30, 7);
+DataArray(TUTO_PAGE, SonicPageTbl_F, 0x2BC3CC0, 7);
+DataArray(TUTO_PAGE, SonicPageTbl_S, 0x2BC3D50, 7);
+DataArray(TUTO_PAGE, SonicPageTbl_G, 0x2BC3DE0, 7);
+DataArray(TUTO_PAGE, TailsPageTbl_J, 0x2BC3F78, 8);
+DataArray(TUTO_PAGE, TailsPageTbl_E, 0x2BC4018, 7);
+DataArray(TUTO_PAGE, TailsPageTbl_F, 0x2BC40A8, 7);
+DataArray(TUTO_PAGE, TailsPageTbl_S, 0x2BC4138, 7);
+DataArray(TUTO_PAGE, TailsPageTbl_G, 0x2BC41C8, 7);
+DataArray(TUTO_PAGE, KnucklesPageTbl_J, 0x2BC4398, 9);
+DataArray(TUTO_PAGE, KnucklesPageTbl_E, 0x2BC4450, 8);
+DataArray(TUTO_PAGE, KnucklesPageTbl_F, 0x2BC44F0, 8);
+DataArray(TUTO_PAGE, KnucklesPageTbl_S, 0x2BC4590, 8);
+DataArray(TUTO_PAGE, KnucklesPageTbl_G, 0x2BC4630, 8);
+DataArray(TUTO_PAGE, AmyPageTbl_J, 0x2BC47A0, 7);
+DataArray(TUTO_PAGE, AmyPageTbl_E, 0x2BC4830, 7);
+DataArray(TUTO_PAGE, AmyPageTbl_F, 0x2BC48C0, 7);
+DataArray(TUTO_PAGE, AmyPageTbl_S, 0x2BC4950, 7);
+DataArray(TUTO_PAGE, AmyPageTbl_G, 0x2BC49E0, 7);
+DataArray(TUTO_PAGE, BigPageTbl_J, 0x2BC5090, 10);
+DataArray(TUTO_PAGE, BigPageTbl_E, 0x2BC5158, 9);
+DataArray(TUTO_PAGE, BigPageTbl_F, 0x2BC5210, 9);
+DataArray(TUTO_PAGE, BigPageTbl_S, 0x2BC52C8, 9);
+DataArray(TUTO_PAGE, BigPageTbl_G, 0x2BC5380, 9);
+DataArray(TUTO_PAGE, E102PageTbl_J, 0x2BC4B68, 8);
+DataArray(TUTO_PAGE, E102PageTbl_E, 0x2BC4C08, 8);
+DataArray(TUTO_PAGE, E102PageTbl_F, 0x2BC4CA8, 8);
+DataArray(TUTO_PAGE, E102PageTbl_S, 0x2BC4D48, 8);
+DataArray(TUTO_PAGE, E102PageTbl_G, 0x2BC4DE8, 8);
+
+// Tutorial page lists
+
+DataArray(TUTO_BOOK, TutorialBookTblJ, 0x2BC54C8, 6);
+DataArray(TUTO_BOOK, TutorialBookTblE, 0x2BC5438, 6);
+DataArray(TUTO_BOOK, TutorialBookTblF, 0x2BC5558, 6);
+DataArray(TUTO_BOOK, TutorialBookTblG, 0x2BC55E8, 6);
+DataArray(TUTO_BOOK, TutorialBookTblS, 0x2BC5678, 6);
 
 #endif /* SADXMODLOADER_SADXVARSNEW_H */

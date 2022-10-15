@@ -3562,4 +3562,32 @@ struct chaowk
 	void* pWork;
 };
 
+// Tutorials
+
+struct GH_PVR_TEX
+{
+	__int16 index;
+	__int16 x;
+	__int16 y;
+};
+
+struct TUTO_PAGE
+{
+	unsigned __int16 x;
+	unsigned __int16 y;
+	unsigned __int16 seqflag;
+	unsigned __int16 w;
+	unsigned __int16 h;
+	__int16* sprite[2];
+};
+
+struct TUTO_BOOK
+{
+	unsigned __int16 nbPage;
+	unsigned __int16 PurposePage;
+	TUTO_PAGE* page;
+	NJS_TEXLIST* texlist[2];
+	char* pvmname[2];
+};
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */
