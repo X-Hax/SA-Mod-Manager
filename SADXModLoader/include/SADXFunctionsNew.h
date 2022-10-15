@@ -492,7 +492,7 @@ static inline void RdMountainInit(task* tp)
 // Miren functions (utilities)
 FunctionPointer(void, MirenInitTask, (task* task_p, const TaskInfo* info_p, void* param_p), 0x796B30); // Create a task with information from TaskInfo
 FunctionPointer(void, MirenSetTask, (int level, const TaskInfo* info_p, void* param_p), 0x796B90); // Edit a task with information from TaskInfo
-FunctionPointer(void, MirenSetChildTask, (task* parent_p, const TaskInfo* info_p, void* param_p), 0x7796BD0); // Creates a child task with information from TaskInfo
+FunctionPointer(void, MirenSetChildTask, (task* parent_p, const TaskInfo* info_p, void* param_p), 0x796BD0); // Creates a child task with information from TaskInfo
 FunctionPointer(void, MirenGameChangeAct, (int actDiff, int bgmId), 0x796C10); // Draw collisions of a colliwk (debug)
 FunctionPointer(void, MirenSoundPlayOneShotSE, (int se, const NJS_POINT3* pos_p, const VolumeInfo* info_p), 0x79E400); // Creates a simple spatial sound with volume setting
 FunctionPointer(void, MirenObjInitCharColli, (task* task_p, const ObjectInfo* objInfo_p, const ObjCmnInfo* cmnInfo_p), 0x79E510); // A wrapper for CCL_Init
