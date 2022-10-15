@@ -332,6 +332,18 @@ DataPointer(task*, TitleNewTp, 0x3C5FF00);
 DataPointer(STAFFROLL_DATA, StaffRollData, 0x2BC2FD0); // Credits list
 DataArray(NJS_TEXANIM, anim_pause, 0x009177B8, 15); // Pause menu texture data
 DataPointer(NJS_TEXLIST, texlist_pause, 0x009177AC); // Pause menu texture list
+DataPointer(GH_FONT_INFO, Ascii16x16FontInfo, 0x0090E494); // ABC_TXT struct
+DataPointer(task*, SeqTP, 0x3C5E8D0); // Current menu object
+DataPointer(task*, FileSelTp, 0x03C5E8C0); // File Select task pointer
+DataPointer(NJS_CAMERA, View, 0x3AAD0A0); // Current NJS_CAMERA
+DataPointer(_GC_MEMOCA_STATE, GCMemoca_State, 0x03B290D8); // Memory card state
+DataArray(WakuPrmT, WakuPrm, 0x007ECA38, 3); // File Select right panel yellow frame
+DataArray(unsigned __int8, fs_m_PvrIdx, 0x007ECA20, 4); // File Select texture indices
+DataArray(AvaTexLdPrmT, AvaTexLdPrmJ, 0x007EECF0, 36); // GUI textures (Japanese)
+DataArray(AvaTexLdPrmT, AvaTexLdPrmE, 0x007EEDE0, 36); // GUI textures (English)
+DataArray(AvaTexLdPrmT, AvaTexLdPrmF, 0x007EEED0, 36); // GUI textures (French)
+DataArray(AvaTexLdPrmT, AvaTexLdPrmS, 0x007EEFC0, 36); // GUI textures (Spanish)
+DataArray(AvaTexLdPrmT, AvaTexLdPrmG, 0x007EF0B0, 36); // GUI textures (German)
 
 // TGS menus
 DataPointer(char, scSelectedStage, 0x3B2C424);

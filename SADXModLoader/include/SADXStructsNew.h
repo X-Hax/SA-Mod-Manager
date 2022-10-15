@@ -2195,6 +2195,65 @@ struct ModeSelPrmType
 	AdvaModeEnum NextModeSub;
 };
 
+struct FileSelWk
+{
+	AdvaStatEnum Stat;
+	AdvaModeEnum PrevMode;
+	AdvaModeEnum NextMode;
+	float BaseZ;
+	float T;
+	unsigned int BaseCol;
+	float CsrScale;
+	unsigned int CsrCol;
+	int CsrAniAng;
+	FileSbMdEnum SubMode;
+	int GB_plBak;
+	AvaCharEnum SelCh;
+	__int16 WaitTime;
+	unsigned __int8 CsrAlpha;
+	float OfsX;
+};
+
+#pragma pack(push, 2)
+struct WakuPrmT
+{
+	float OfsX;
+	float OfsY;
+	float OfsZ;
+	unsigned int ColU;
+	unsigned int ColD;
+	unsigned __int8 KadoPvrIdx;
+	unsigned __int8 YokoPvrIdx;
+	unsigned __int8 TatePvrIdx;
+};
+#pragma pack(pop)
+
+struct AvaTexLdPrmT
+{
+	char* FileName;
+	NJS_TEXLIST* TexListPtr;
+};
+
+struct GH_FONT_INFO
+{
+	float char_width;
+	float char_height;
+	float tex_width;
+	float tex_height;
+	NJS_TEXLIST* texlist;
+	unsigned __int8* prop_tbl;
+	unsigned int color[4];
+};
+
+struct _GC_MEMOCA_STATE
+{
+	unsigned __int8 u8FileName;
+	char* string;
+	unsigned __int8 u8FileNum;
+	ERR_TYPE ErrFlag[1];
+	unsigned __int8 MsgFlag;
+};
+
 struct TrialActSelWk
 {
 	AdvaStatEnum Stat;
