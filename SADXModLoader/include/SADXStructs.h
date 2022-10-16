@@ -427,10 +427,10 @@ struct EntityData1
 	char NextAction;
 	char Unknown;
 	char Index;
-	short Status;
-	short InvulnerableTime;
-	char CharIndex;
-	char CharID;
+	short Status; // flag
+	short InvulnerableTime; // btimer
+	char CharIndex; // counter[0]
+	char CharID; // counter[1]
 	short field_A;
 	NJS_OBJECT* Object;
 	Loop* LoopData;

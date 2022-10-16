@@ -500,10 +500,105 @@ DataArray(NJS_POINT3*, pScale_Sht, 0x27D6DE8, 2);
 //pScale_Sand
 
 // Texlists
-DataPointer(NJS_TEXLIST, texlist_seates, 0x10C0508); // BEACH_SEA texlist
-DataPointer(NJS_TEXLIST, texlist_beach01, 0xF812AC); // BEACH01 texlist
-DataPointer(NJS_TEXLIST, texlist_beach02, 0xEF553C); // BEACH02 texlist
-DataPointer(NJS_TEXLIST, texlist_beach03, 0xE9A4CC); // BEACH03 texlist
+DataPointer(NJS_TEXLIST, texlist_adv_EC32, 0x027C6B04); // Hedgehog Hammer (minigame version) texlist
+
+DataPointer(NJS_TEXLIST, texlist_score, 0x00912DFC);
+DataPointer(NJS_TEXLIST, texlist_sonic, 0x0091CB58);
+
+DataPointer(NJS_TEXLIST, texlist_ava_title_cmn_small, 0x010D7C50);
+DataPointer(NJS_TEXLIST, texlist_ava_gtitle0, 0x010D7C48);
+DataPointer(NJS_TEXLIST, texlist_ava_title_back, 0x010D7C80);
+DataPointer(NJS_TEXLIST, texlist_ava_title, 0x010D7C78);
+DataPointer(NJS_TEXLIST, texlist_ava_vmssel, 0x010D7C38);
+DataPointer(NJS_TEXLIST, texlist_ava_filesel, 0x010D7C28);
+
+DataPointer(NJS_TEXLIST, texlist_chao, 0x033A03D4);
+DataPointer(NJS_TEXLIST, texlist_al_body, 0x033A1038);
+DataPointer(NJS_TEXLIST, texlist_chao_hyouji, 0x33A0898);
+DataPointer(NJS_TEXLIST, texlist_chao_object, 0x033A0788);
+DataPointer(NJS_TEXLIST, texlist_al_object, 0x033A11F0);
+DataPointer(NJS_TEXLIST, texlist_obj_al_race, 0x33A6404);
+DataPointer(NJS_TEXLIST, texlist_garden00_object, 0x38F6E5C);
+DataPointer(NJS_TEXLIST, texlist_garden00ss, 0x0363687C);
+DataPointer(NJS_TEXLIST, texlist_garden01ec, 0x033D0F5C);
+DataPointer(NJS_TEXLIST, texlist_chao_race, 0x03425018);
+
+DataPointer(NJS_TEXLIST, texlist_seates, 0x10C0508);
+DataPointer(NJS_TEXLIST, texlist_beach01, 0xF812AC);
+DataPointer(NJS_TEXLIST, texlist_beach02, 0xEF553C);
+DataPointer(NJS_TEXLIST, texlist_beach03, 0xE9A4CC);
+
+DataPointer(NJS_TEXLIST, texlist_windy01, 0x00B98BF8);
+DataPointer(NJS_TEXLIST, texlist_windy02, 0x00B81304);
+DataPointer(NJS_TEXLIST, texlist_windy03, 0x00AFEC30);
+
+DataPointer(NJS_TEXLIST, texlist_twinkle01, 0x26B9960);
+DataPointer(NJS_TEXLIST, texlist_twinkle02, 0x2721A8C);
+DataPointer(NJS_TEXLIST, texlist_twinkle03, 0x26FEA54);
+
+DataPointer(NJS_TEXLIST, texlist_highway01, 0x2592E8C);
+DataPointer(NJS_TEXLIST, texlist_highway02, 0x2581310);
+DataPointer(NJS_TEXLIST, texlist_highway03, 0x24CAC94);
+
+DataPointer(NJS_TEXLIST, texlist_obj_mountain, 0x24208A8);
+DataPointer(NJS_TEXLIST, texlist_mountain01, 0x230FDF4);
+DataPointer(NJS_TEXLIST, texlist_mountain02, 0x229B8CC);
+DataPointer(NJS_TEXLIST, texlist_mountain03, 0x224096C);
+
+DataPointer(NJS_TEXLIST, texlist_obj_skydeck, 0x214BE40);
+DataPointer(NJS_TEXLIST, texlist_skydeck01, 0x20E0BB0);
+DataPointer(NJS_TEXLIST, texlist_skydeck02, 0x20AA63C);
+DataPointer(NJS_TEXLIST, texlist_skydeck03, 0x203ACE0);
+
+DataPointer(NJS_TEXLIST, texlist_ruin01, 0x01F6F02C);
+DataPointer(NJS_TEXLIST, texlist_ruin02, 0x01E9B9AC);
+DataPointer(NJS_TEXLIST, texlist_ruin03, 0x01E79D80);
+
+DataPointer(NJS_TEXLIST, texlist_obj_icecap, 0x00E48F30);
+DataPointer(NJS_TEXLIST, texlist_obj_icecap2, 0x00E48F78);
+DataPointer(NJS_TEXLIST, texlist_icecap01, 0x00DE3A74);
+DataPointer(NJS_TEXLIST, texlist_icecap02, 0x00D39744);
+DataPointer(NJS_TEXLIST, texlist_icecap03, 0x00C68408);
+
+DataPointer(NJS_TEXLIST, texlist_obj_casino2, 0x01D8B3AC);
+DataPointer(NJS_TEXLIST, texlist_obj_casino8, 0x01DF0990);
+DataPointer(NJS_TEXLIST, texlist_obj_casino9, 0x01DF0920);
+
+DataPointer(NJS_TEXLIST, texlist_casino01, 0x01D1B050);
+DataPointer(NJS_TEXLIST, texlist_casino02, 0x01CBD1C4);
+DataPointer(NJS_TEXLIST, texlist_casino03, 0x01C8AF04);
+DataPointer(NJS_TEXLIST, texlist_casino04, 0x01C47004);
+
+DataPointer(NJS_TEXLIST, texlist_FinalEgg1, 0x01B98518);
+DataPointer(NJS_TEXLIST, texlist_FinalEgg2, 0x01A60488);
+DataPointer(NJS_TEXLIST, texlist_FinalEgg3, 0x01AC5780);
+
+DataPointer(NJS_TEXLIST, texlist_HotShelter0, 0x018128A0);
+DataPointer(NJS_TEXLIST, texlist_HotShelter1, 0x0180DFF4);
+DataPointer(NJS_TEXLIST, texlist_HotShelter2, 0x017F56F4);
+DataPointer(NJS_TEXLIST, texlist_HotShelter3, 0x017F4F74);
+DataPointer(NJS_TEXLIST, texlist_HotShelter4, 0x017DFA10);
+
+DataPointer(NJS_TEXLIST, texlist_ec_sky, 0x010F3114);
+DataPointer(NJS_TEXLIST, texlist_ec_sea, 0x010F3300);
+DataPointer(NJS_TEXLIST, texlist_ec_tarai, 0x01101330);
+
+DataPointer(NJS_TEXLIST, texlist_lm_chaos2, 0x0117C76C);
+DataPointer(NJS_TEXLIST, texlist_chaos4_kama, 0x0118FACC);
+DataPointer(NJS_TEXLIST, texlist_chaos4_tikei, 0x0118FF08);
+
+DataPointer(NJS_TEXLIST, texlist_lm_chaos6, 0x0121FF28);
+DataPointer(NJS_TEXLIST, texlist_lm_chaos6_2, 0x011F04A0);
+DataPointer(NJS_TEXLIST, texlist_lm_chaos7_0, 0x01494FBC);
+
+DataPointer(NJS_TEXLIST, texlist_e101_tikei, 0x014FBFB4);
+DataPointer(NJS_TEXLIST, texlist_e101r_tikei, 0x016B460C);
+
+DataPointer(NJS_TEXLIST, texlist_egm1, 0x01561BD4);
+DataPointer(NJS_TEXLIST, texlist_egm1land, 0x01557064);
+DataPointer(NJS_TEXLIST, texlist_egm2_tikei, 0x015E99F8);
+DataPointer(NJS_TEXLIST, texlist_egm3mdl, 0x016754CC);
+DataPointer(NJS_TEXLIST, texlist_egm3chikei, 0x0167E5CC);
 
 // PVM entries
 DataArray(TEX_PVMTABLE, ListofPVMSS00, 0x0090F184, 1); // Station Square City Hall PVM list
@@ -536,7 +631,9 @@ DataArray(TEX_PVMTABLE, ListofPVMPast00, 0x0090F18C, 2); // Past Echidna City PV
 DataArray(TEX_PVMTABLE, ListofPVMPast01, 0x0090F134, 2); // Past Master Emerald Altar PVM list
 DataArray(TEX_PVMTABLE, ListofPVMPast02, 0x0090F14C, 2); // Past Altar on Fire PVM list
 
-DataArray(TEX_PVMTABLE, PvmListFinalEgg, 0x0090E810, 11);
+DataArray(TEX_PVMTABLE, PvmListFinalEgg, 0x0090E810, 11); // Final Egg PVM list
+
+DataArray(TEX_PVMTABLE, PvmListAL_Race, 0x0339F938, 8); // Chao Race PVM list
 
 // LandTables
 DataPointer(_OBJ_LANDTABLE, objLandTableegm1, 0x1570B1C);
