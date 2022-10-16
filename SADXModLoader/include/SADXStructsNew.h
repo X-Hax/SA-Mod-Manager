@@ -1128,7 +1128,6 @@ struct AL_TIME
 	char frame;
 };
 
-
 struct cnkobj
 {
 	unsigned int evalflags;
@@ -1694,7 +1693,6 @@ struct ___stcClip
 	float f32Far;
 };
 
-#pragma pack(push, 4)
 struct ___stcFog
 {
 	float f32StartZ;
@@ -1702,7 +1700,6 @@ struct ___stcFog
 	unsigned int Col;
 	unsigned __int8 u8Enable;
 };
-#pragma pack(pop, 4)
 
 struct particle_info
 {
@@ -1716,7 +1713,6 @@ struct particle_info
 	NJS_ARGB argb;
 };
 
-#pragma pack(push, 4)
 struct stcWaterSurface
 {
 	float f32x0;
@@ -1730,7 +1726,6 @@ struct stcWaterSurface
 	float f32TransScale;
 	char u8StripArrayNo;
 };
-#pragma pack(pop, 4)
 
 struct stcAnim
 {
@@ -2170,7 +2165,6 @@ struct PanelPrmType
 	unsigned __int8 PvrIdx;
 };
 
-#pragma pack(push, 4)
 struct DDlgType
 {
 	float CntrX;
@@ -2180,7 +2174,6 @@ struct DDlgType
 	float SclY;
 	char Csr;
 };
-#pragma pack(pop, 4)
 
 struct AvaStgActT
 {
@@ -2188,13 +2181,11 @@ struct AvaStgActT
 	unsigned __int8 Act;
 };
 
-#pragma pack(push, 4)
 struct AvaStgActPrmT
 {
 	AvaStgActT* StgActPtr;
 	unsigned __int8 Num;
 };
-#pragma pack(pop, 4)
 
 struct ModeSelPrmType
 {
@@ -2283,7 +2274,6 @@ struct TrialActSelWk
 	unsigned __int8 SelStg;
 };
 
-#pragma pack(push, 4)
 struct CharMdlWk
 {
 	task* PlTskPtrs[7];
@@ -2295,9 +2285,7 @@ struct CharMdlWk
 	char MotCnts[7];
 	unsigned __int8 SelFlg;
 };
-#pragma pack(pop, 4)
 
-#pragma pack(push, 4)
 struct CharSelWk
 {
 	AdvaStatEnum Stat;
@@ -2315,7 +2303,6 @@ struct CharSelWk
 	AdvDlgSelEnum DlgStat;
 	unsigned __int8 WakeFlg;
 };
-#pragma pack(pop, 4)
 
 struct TitleMenuWk
 {
@@ -2495,7 +2482,6 @@ struct bubble_data
 };
 
 // Title screen worker
-#pragma pack(push, 4)
 struct TitleNewWk
 {
 	AdvaStatEnum Stat;
@@ -2517,7 +2503,6 @@ struct TitleNewWk
 	float kumotimer;
 	char kumoindex;
 };
-#pragma pack(pop, 4)
 
 struct ObjectInfo
 {
@@ -2848,14 +2833,12 @@ union STAFF_DATA_FLAG
 	unsigned __int8 interval;
 };
 
-#pragma pack(push, 4)
 struct STAFF_DATA
 {
 	unsigned __int8 StaffType;
 	STAFF_DATA_FLAG flag;
 	char* str;
 };
-#pragma pack(pop, 4)
 
 struct STAFFROLL_DATA
 {
@@ -3007,7 +2990,6 @@ struct AL_KNOWLEDGE_PLAYER
 	unsigned __int16 meet;
 };
 
-#pragma pack(push, 4)
 struct AL_KNOWLEDGE_CHAO
 {
 	CHAO_ID id;
@@ -3016,7 +2998,6 @@ struct AL_KNOWLEDGE_CHAO
 	unsigned __int16 distance;
 	unsigned __int16 meet;
 };
-#pragma pack(pop, 4)
 
 struct AL_KNOWLEDGE_BTL
 {
@@ -3588,14 +3569,12 @@ struct ADV1_AL_IMPLESSION
 	unsigned __int8 meet;
 };
 
-#pragma pack(push, 4)
 struct ADV1_AL_IMPLESSION2
 {
 	unsigned int id;
 	unsigned __int8 like;
 	unsigned __int8 meet;
 };
-#pragma pack(pop, 4)
 
 struct ADV1_AL_MEMORY
 {
@@ -3603,7 +3582,6 @@ struct ADV1_AL_MEMORY
 	ADV1_AL_IMPLESSION2 chao[32];
 };
 
-#pragma pack(push, 4)
 struct al_status
 {
 	unsigned __int8 type;
@@ -3663,7 +3641,6 @@ struct al_status
 	unsigned __int8 race_time[20];
 	unsigned __int8 extra_num;
 };
-#pragma pack(pop, 4)
 
 struct ADV1_AL_TMP_STATUS
 {
@@ -3918,7 +3895,6 @@ struct AlrEvent
 	void(__cdecl* event)(void*);
 };
 
-#pragma pack(push, 4)
 struct Alr
 {
 	AlrEff eff;
@@ -3951,7 +3927,6 @@ struct Alr
 	alifewk* awp;
 	taskwk* twp;
 };
-#pragma pack(pop, 4)
 
 // Tutorials
 
