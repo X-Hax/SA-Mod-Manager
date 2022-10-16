@@ -1119,7 +1119,7 @@ struct AL_BODY_INFO
 	char FormNum;
 	char FormSubNum;
 };
-#pragma pack(pop, 2)
+#pragma pack(pop)
 
 struct AL_TIME
 {
@@ -2225,7 +2225,7 @@ struct WakuPrmT
 	unsigned __int8 YokoPvrIdx;
 	unsigned __int8 TatePvrIdx;
 };
-#pragma pack(pop, 2)
+#pragma pack(pop)
 
 struct AvaTexLdPrmT
 {
@@ -3873,7 +3873,7 @@ struct TaskCommunication
 	char command;
 	unsigned __int8 status;
 };
-#pragma pack(pop, 2)
+#pragma pack(pop)
 
 struct AlrEff
 {
