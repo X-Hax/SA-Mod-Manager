@@ -585,6 +585,8 @@ DataPointer(NJS_TEXLIST, texlist_ec_tarai, 0x01101330);
 
 DataPointer(NJS_TEXLIST, texlist_lm_chaos2, 0x0117C76C);
 DataPointer(NJS_TEXLIST, texlist_chaos4_kama, 0x0118FACC);
+DataPointer(NJS_TEXLIST, texlist_chaos4_object, 0x0118FB38);
+DataPointer(NJS_TEXLIST, texlist_numa_f, 0x011C6D4C); // Swamp water texture from the NUMA texlist in Chaos 4
 DataPointer(NJS_TEXLIST, texlist_chaos4_tikei, 0x0118FF08);
 
 DataPointer(NJS_TEXLIST, texlist_lm_chaos6, 0x0121FF28);
@@ -599,6 +601,16 @@ DataPointer(NJS_TEXLIST, texlist_egm1land, 0x01557064);
 DataPointer(NJS_TEXLIST, texlist_egm2_tikei, 0x015E99F8);
 DataPointer(NJS_TEXLIST, texlist_egm3mdl, 0x016754CC);
 DataPointer(NJS_TEXLIST, texlist_egm3chikei, 0x0167E5CC);
+
+DataPointer(NJS_TEXLIST, texlist_mini_cart01, 0x00ADF8A0);
+DataPointer(NJS_TEXLIST, texlist_mini_cart02, 0x00A9734C);
+DataPointer(NJS_TEXLIST, texlist_mini_cart03, 0x00A87E9C);
+DataPointer(NJS_TEXLIST, texlist_mini_cart04, 0x00A4555C);
+DataPointer(NJS_TEXLIST, texlist_mini_cart05, 0x00A0CFD0);
+DataPointer(NJS_TEXLIST, texlist_mini_cart06, 0x009CDD98);
+
+DataPointer(NJS_TEXLIST, texlist_tr2a_s_t2b_body, 0x02BF513C);
+DataPointer(NJS_TEXLIST, _texlist_ev_eggmoble0, 0x02EE0AA4); // Correct EV_EGGMOBLE0 texlist
 
 // PVM entries
 DataArray(TEX_PVMTABLE, ListofPVMSS00, 0x0090F184, 1); // Station Square City Hall PVM list

@@ -1694,6 +1694,7 @@ struct ___stcClip
 	float f32Far;
 };
 
+#pragma pack(push, 4)
 struct ___stcFog
 {
 	float f32StartZ;
@@ -1701,6 +1702,7 @@ struct ___stcFog
 	unsigned int Col;
 	unsigned __int8 u8Enable;
 };
+#pragma pack(pop, 4)
 
 struct particle_info
 {
