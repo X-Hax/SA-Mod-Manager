@@ -504,6 +504,11 @@ DataPointer(NJS_TEXLIST, texlist_adv_EC32, 0x027C6B04); // Hedgehog Hammer (mini
 
 DataPointer(NJS_TEXLIST, texlist_score, 0x00912DFC);
 DataPointer(NJS_TEXLIST, texlist_sonic, 0x0091CB58);
+DataPointer(NJS_TEXLIST, texlist_knuckles, 0x0091BD20);
+DataPointer(NJS_TEXLIST, texlist_knu_eff, 0x0091BD28);
+DataPointer(NJS_TEXLIST, texlist_e102, 0x0091C560);
+DataPointer(NJS_TEXLIST, texlist_chaos_surface, 0x038E1FF0);
+DataPointer(NJS_TEXLIST, texlist_metalsonic, 0x0091CBC0);
 
 DataPointer(NJS_TEXLIST, texlist_ava_title_cmn_small, 0x010D7C50);
 DataPointer(NJS_TEXLIST, texlist_ava_gtitle0, 0x010D7C48);
@@ -532,6 +537,7 @@ DataPointer(NJS_TEXLIST, texlist_windy01, 0x00B98BF8);
 DataPointer(NJS_TEXLIST, texlist_windy02, 0x00B81304);
 DataPointer(NJS_TEXLIST, texlist_windy03, 0x00AFEC30);
 
+DataPointer(NJS_TEXLIST, texlist_obj_shareobj, 0x038AEB70);
 DataPointer(NJS_TEXLIST, texlist_twinkle01, 0x26B9960);
 DataPointer(NJS_TEXLIST, texlist_twinkle02, 0x2721A8C);
 DataPointer(NJS_TEXLIST, texlist_twinkle03, 0x26FEA54);
@@ -609,8 +615,23 @@ DataPointer(NJS_TEXLIST, texlist_mini_cart04, 0x00A4555C);
 DataPointer(NJS_TEXLIST, texlist_mini_cart05, 0x00A0CFD0);
 DataPointer(NJS_TEXLIST, texlist_mini_cart06, 0x009CDD98);
 
+DataPointer(NJS_TEXLIST, texlist_shooting0, 0x02938C7C);
+DataPointer(NJS_TEXLIST, texlist_shooting1, 0x0289D0BC);
+DataPointer(NJS_TEXLIST, texlist_shooting2, 0x027D7398);
+DataPointer(NJS_TEXLIST, texlist_sandboard, 0x0174ED80);
+
+DataPointer(NJS_TEXLIST, texlist_mi_3dasu, 0x016F7E2C);
+
 DataPointer(NJS_TEXLIST, texlist_tr2a_s_t2b_body, 0x02BF513C);
 DataPointer(NJS_TEXLIST, _texlist_ev_eggmoble0, 0x02EE0AA4); // Correct EV_EGGMOBLE0 texlist
+DataPointer(NJS_TEXLIST, texlist_m_em_blue, 0x02D3C930);
+DataPointer(NJS_TEXLIST, texlist_m_em_green, 0x02D3E860);
+DataPointer(NJS_TEXLIST, texlist_m_em_black, 0x02E2C858);
+DataPointer(NJS_TEXLIST, texlist_m_em_red, 0x02CBCF48);
+DataPointer(NJS_TEXLIST, texlist_m_em_yellow, 0x02CBE2B8);
+DataPointer(NJS_TEXLIST, texlist_m_em_sky, 0x02CD6918);
+DataPointer(NJS_TEXLIST, texlist_m_em_purple, 0x02CF1318);
+DataPointer(NJS_TEXLIST, texlist_m_em_white, 0x02D21D10);
 
 // PVM entries
 DataArray(TEX_PVMTABLE, ListofPVMSS00, 0x0090F184, 1); // Station Square City Hall PVM list
