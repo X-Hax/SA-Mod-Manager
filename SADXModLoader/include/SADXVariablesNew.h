@@ -63,6 +63,8 @@ DataPointer(STAGENAME_WORK, StageNameWork, 0x03C53ABC); // Level title card work
 DataPointer(int, now_saving, 0x03B291A4);
 DataPointer(int, pause_flg, 0x03B28114);
 DataPointer(bool, PvrAlphaFlag, 0x03B2C650); // Global transparency flag for UI textures
+DataPointer(NJS_ARGB, default_argb, 0x038CD514);
+DataPointer(int, IsChaoGarden, 0x03B22E80);
 
 // Event
 DataPointer(EVINFO2, evInfo, 0x03B2C568); // Current cutscene struct

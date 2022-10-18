@@ -102,7 +102,8 @@ FunctionPointer(void, njSetWaitVsyncCount, (int a1), 0x0077ED40); // Sets the de
 FunctionPointer(void, dsInitInt, (int mode, int frameIncrement), 0x00411E30); // Sets the framerate limit mode
 FunctionPointer(float, GetHighestFloatAbs, (float a1, float a2, float a3), 0x0049CC70); // Gets the (absolute) highest value; inlined in SADX X360
 VoidFunc(ADXTaskInit, 0x004258B0); // Initializes the music manager
-FunctionPointer(void, SetEntranceNumber, (char number), 0x004147F0); // Go to a specific level
+FunctionPointer(void, SetEntranceNumber, (char number), 0x004147F0); // Set level entrance (return area)
+FunctionPointer(void, ChangeStageWithFadeOut, (unsigned __int8 level, unsigned __int8 act), 0x004145D0); // Go to a specific level with fadeout
 
 // Debug
 FunctionPointer(void, njPrintColor, (int color), 0x007808E0); // Sets debug font color
@@ -400,6 +401,7 @@ FunctionPointer(BOOL, CalcMMMatrix, (NJS_MATRIX_PTR impmat, NJS_ACTION* actptr, 
 FunctionPointer(BOOL, GetMMMatrix, (unsigned int srcnmb, NJS_MATRIX_PTR ansmat), 0x4B82D0); // Get stored matrix (in ansmat) of node (srcnmb), use this once CalcMMMatrix has been called to speed it up
 FunctionPointer(void, clrObjFlags, (NJS_OBJECT** obj, unsigned int flag), 0x4399D0); // Set a flag in the evalflag of an object
 FunctionPointer(void, setObjFlags, (NJS_OBJECT** obj, unsigned int flag), 0x4399A0); // Unset a flag from the evalflag of an object
+FunctionPointer(void, CreateFire, (NJS_VECTOR* pos, NJS_VECTOR* velo, float scl), 0x004CB060); // Creates Unidus fire particles
 
 static const void* const calcAimPosPtr = (void*)0x7B1720;
 static inline void calcAimPos(taskwk* twp, enemywk* ewp)
