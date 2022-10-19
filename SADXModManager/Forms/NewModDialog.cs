@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using IniFile;
 
@@ -10,6 +11,12 @@ namespace SADXModManager.Forms
 		public NewModDialog()
 		{
 			InitializeComponent();
+			textID.Text = GenerateModID();
+		}
+
+		static string GenerateModID()
+		{
+			return "sadx." + ((uint)DateTime.Now.GetHashCode()).ToString();
 		}
 
 		private void buttonOK_Click(object sender, EventArgs e)
@@ -76,7 +83,8 @@ namespace SADXModManager.Forms
 					RedirectChaoSave = checkRedirectChaoSave.Checked,
 					GitHubRepo = isStringNotEmpty(textGitHubRepo.Text) ? textGitHubRepo.Text : null,
 					GitHubAsset = isStringNotEmpty(textGitHubAttachment.Text) ? textGitHubAttachment.Text : null,
-					UpdateUrl = isStringNotEmpty(textDirUrl.Text) ? textDirUrl.Text : null
+					UpdateUrl = isStringNotEmpty(textDirUrl.Text) ? textDirUrl.Text : null,
+					ModID = isStringNotEmpty(textID.Text) ? textID.Text : null
 				};
 
 				IniSerializer.Serialize(newMod, Path.Combine(moddir, "mod.ini"));
@@ -108,6 +116,36 @@ namespace SADXModManager.Forms
 		static bool isStringNotEmpty(string txt)
 		{
 			return txt.Length > 0;
+		}
+
+		static string RemoveSpecialCharacters(string str)
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (char c in str)
+			{
+				if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == '-')
+				{
+					sb.Append(c);
+				}
+			}
+			return sb.ToString().ToLowerInvariant();
+		}
+
+		private void buttonGenerate_Click(object sender, EventArgs e)
+		{
+			textID.Clear();
+			string name = isStringNotEmpty(textModName.Text) ? textModName.Text : null;
+			string author = isStringNotEmpty(textModAuthor.Text) ? textModAuthor.Text : null;
+
+			if (name != null && author != null)
+			{
+				string idName = RemoveSpecialCharacters(name);
+				string idAuthor = RemoveSpecialCharacters(author);
+				textID.Text = String.Format("sadx.{0}.{1}", idAuthor, idName);
+			}
+			else
+				textID.Text = GenerateModID();
+
 		}
 	}
 }

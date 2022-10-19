@@ -40,6 +40,7 @@ namespace SADXModManager.Forms
             this.textModAuthor = new System.Windows.Forms.TextBox();
             this.checkOpenFolder = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.comboModCategory = new System.Windows.Forms.ComboBox();
             this.textModDescription = new System.Windows.Forms.TextBox();
             this.textVersion = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -48,7 +49,6 @@ namespace SADXModManager.Forms
             this.label5 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.comboModCategory = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -59,6 +59,9 @@ namespace SADXModManager.Forms
             this.label6 = new System.Windows.Forms.Label();
             this.textGitHubAttachment = new System.Windows.Forms.TextBox();
             this.textGitHubRepo = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textID = new System.Windows.Forms.TextBox();
+            this.buttonGenerate = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -78,7 +81,7 @@ namespace SADXModManager.Forms
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(21, 115);
+            this.label2.Location = new System.Drawing.Point(21, 142);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 6;
@@ -97,7 +100,7 @@ namespace SADXModManager.Forms
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOK.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonOK.Location = new System.Drawing.Point(216, 283);
+            this.buttonOK.Location = new System.Drawing.Point(216, 309);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 9;
@@ -110,7 +113,7 @@ namespace SADXModManager.Forms
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonCancel.Location = new System.Drawing.Point(297, 283);
+            this.buttonCancel.Location = new System.Drawing.Point(297, 309);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 10;
@@ -134,32 +137,59 @@ namespace SADXModManager.Forms
             this.textModAuthor.Name = "textModAuthor";
             this.textModAuthor.Size = new System.Drawing.Size(256, 20);
             this.textModAuthor.TabIndex = 2;
-			this.textModAuthor.Text = Properties.Settings.Default.ModAuthor;
-			// 
-			// checkOpenFolder
-			// 
-			this.checkOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textModAuthor.Text = global::SADXModManager.Properties.Settings.Default.ModAuthor;
+            // 
+            // checkOpenFolder
+            // 
+            this.checkOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkOpenFolder.AutoSize = true;
+            this.checkOpenFolder.Checked = true;
+            this.checkOpenFolder.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkOpenFolder.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkOpenFolder.Location = new System.Drawing.Point(12, 288);
+            this.checkOpenFolder.Location = new System.Drawing.Point(12, 314);
             this.checkOpenFolder.Name = "checkOpenFolder";
             this.checkOpenFolder.Size = new System.Drawing.Size(87, 18);
             this.checkOpenFolder.TabIndex = 8;
             this.checkOpenFolder.Text = "Open folder";
             this.toolTip1.SetToolTip(this.checkOpenFolder, "Open the newly created mod\'s folder upon completion.");
             this.checkOpenFolder.UseVisualStyleBackColor = true;
-			this.checkOpenFolder.Checked = true;
-			// 
-			// toolTip1
-			// 
-			this.toolTip1.ShowAlways = true;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.ShowAlways = true;
+            // 
+            // comboModCategory
+            // 
+            this.comboModCategory.FormattingEnabled = true;
+            this.comboModCategory.Items.AddRange(new object[] {
+            "Animations",
+            "Chao",
+            "Custom Level",
+            "Cutscene",
+            "Game Overhaul",
+            "Gameplay",
+            "Misc",
+            "Music",
+            "Patch",
+            "Skin",
+            "Sound",
+            "Textures",
+            "UI"});
+            this.comboModCategory.Location = new System.Drawing.Point(90, 86);
+            this.comboModCategory.Name = "comboModCategory";
+            this.comboModCategory.Size = new System.Drawing.Size(256, 21);
+            this.comboModCategory.Sorted = true;
+            this.comboModCategory.TabIndex = 4;
+            this.comboModCategory.Text = "--Select a category--";
+            this.toolTip1.SetToolTip(this.comboModCategory, "Enter the category of your mod. If unsure, use Misc.\r\nIf your mod is a huge game " +
+        "changer, use Game Overhaul.");
             // 
             // textModDescription
             // 
             this.textModDescription.AcceptsReturn = true;
             this.textModDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textModDescription.Location = new System.Drawing.Point(90, 112);
+            this.textModDescription.Location = new System.Drawing.Point(90, 139);
             this.textModDescription.Multiline = true;
             this.textModDescription.Name = "textModDescription";
             this.textModDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -174,11 +204,11 @@ namespace SADXModManager.Forms
             this.textVersion.Name = "textVersion";
             this.textVersion.Size = new System.Drawing.Size(256, 20);
             this.textVersion.TabIndex = 3;
-			this.textVersion.Text = "0.1";
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
+            this.textVersion.Text = "0.1";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(39, 63);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(45, 13);
@@ -189,7 +219,7 @@ namespace SADXModManager.Forms
             // 
             this.checkRedirectMainSave.AutoSize = true;
             this.checkRedirectMainSave.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkRedirectMainSave.Location = new System.Drawing.Point(90, 182);
+            this.checkRedirectMainSave.Location = new System.Drawing.Point(90, 209);
             this.checkRedirectMainSave.Name = "checkRedirectMainSave";
             this.checkRedirectMainSave.Size = new System.Drawing.Size(83, 18);
             this.checkRedirectMainSave.TabIndex = 6;
@@ -200,7 +230,7 @@ namespace SADXModManager.Forms
             // 
             this.checkRedirectChaoSave.AutoSize = true;
             this.checkRedirectChaoSave.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkRedirectChaoSave.Location = new System.Drawing.Point(90, 206);
+            this.checkRedirectChaoSave.Location = new System.Drawing.Point(90, 233);
             this.checkRedirectChaoSave.Name = "checkRedirectChaoSave";
             this.checkRedirectChaoSave.Size = new System.Drawing.Size(85, 18);
             this.checkRedirectChaoSave.TabIndex = 7;
@@ -210,7 +240,7 @@ namespace SADXModManager.Forms
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 184);
+            this.label5.Location = new System.Drawing.Point(6, 211);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(78, 13);
             this.label5.TabIndex = 8;
@@ -226,11 +256,14 @@ namespace SADXModManager.Forms
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(360, 265);
+            this.tabControl1.Size = new System.Drawing.Size(360, 291);
             this.tabControl1.TabIndex = 11;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.buttonGenerate);
+            this.tabPage1.Controls.Add(this.label10);
+            this.tabPage1.Controls.Add(this.textID);
             this.tabPage1.Controls.Add(this.comboModCategory);
             this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Controls.Add(this.label1);
@@ -247,39 +280,14 @@ namespace SADXModManager.Forms
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(352, 239);
+            this.tabPage1.Size = new System.Drawing.Size(352, 265);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Properties";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // comboModCategory
+            // label9
             // 
-            this.comboModCategory.FormattingEnabled = true;
-            this.comboModCategory.Items.AddRange(new object[] {
-            "Animations",
-			"Chao",
-            "Custom Level",
-            "Cutscene",
-            "Game Overhaul",
-            "Gameplay",
-            "Misc",
-			"Music",
-            "Patch",
-            "Skin",
-			"Sound",
-            "Textures",
-            "UI"});
-            this.comboModCategory.Location = new System.Drawing.Point(90, 86);
-            this.comboModCategory.Name = "comboModCategory";
-            this.comboModCategory.Size = new System.Drawing.Size(256, 21);
-            this.comboModCategory.Sorted = true;
-            this.comboModCategory.TabIndex = 4;
-			this.comboModCategory.Text = "--Select a category--";
-			this.toolTip1.SetToolTip(this.comboModCategory, "Enter the category of your mod. If unsure, use Misc.\r\nIf your mod is a huge game changer, use Game Overhaul.");
-			// 
-			// label9
-			// 
-			this.label9.AutoSize = true;
+            this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(32, 89);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(52, 13);
@@ -380,13 +388,44 @@ namespace SADXModManager.Forms
             this.textGitHubRepo.Size = new System.Drawing.Size(231, 20);
             this.textGitHubRepo.TabIndex = 0;
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(39, 116);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(45, 13);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "Mod ID:";
+            // 
+            // textID
+            // 
+            this.textID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textID.Location = new System.Drawing.Point(90, 113);
+            this.textID.Name = "textID";
+            this.textID.Size = new System.Drawing.Size(185, 20);
+            this.textID.TabIndex = 13;
+            this.textID.Text = global::SADXModManager.Properties.Settings.Default.ModAuthor;
+            // 
+            // buttonGenerate
+            // 
+            this.buttonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGenerate.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.buttonGenerate.Location = new System.Drawing.Point(281, 111);
+            this.buttonGenerate.Name = "buttonGenerate";
+            this.buttonGenerate.Size = new System.Drawing.Size(65, 23);
+            this.buttonGenerate.TabIndex = 14;
+            this.buttonGenerate.Text = "Generate";
+            this.buttonGenerate.UseVisualStyleBackColor = true;
+            this.buttonGenerate.Click += new System.EventHandler(this.buttonGenerate_Click);
+            // 
             // NewModDialog
             // 
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(384, 318);
+            this.ClientSize = new System.Drawing.Size(384, 344);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.checkOpenFolder);
             this.Controls.Add(this.buttonCancel);
@@ -442,5 +481,8 @@ namespace SADXModManager.Forms
 		private System.Windows.Forms.TextBox textGitHubRepo;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.ComboBox comboModCategory;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.TextBox textID;
+		private System.Windows.Forms.Button buttonGenerate;
 	}
 }
