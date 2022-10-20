@@ -49,6 +49,9 @@ namespace SADXModManager.Forms
             this.label5 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.buttonGenerate = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textID = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -59,9 +62,6 @@ namespace SADXModManager.Forms
             this.label6 = new System.Windows.Forms.Label();
             this.textGitHubAttachment = new System.Windows.Forms.TextBox();
             this.textGitHubRepo = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textID = new System.Windows.Forms.TextBox();
-            this.buttonGenerate = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -285,6 +285,41 @@ namespace SADXModManager.Forms
             this.tabPage1.Text = "Properties";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // buttonGenerate
+            // 
+            this.buttonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGenerate.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.buttonGenerate.Location = new System.Drawing.Point(281, 111);
+            this.buttonGenerate.Name = "buttonGenerate";
+            this.buttonGenerate.Size = new System.Drawing.Size(65, 23);
+            this.buttonGenerate.TabIndex = 14;
+            this.buttonGenerate.Text = "Generate";
+            this.toolTip1.SetToolTip(this.buttonGenerate, "Generates a new Mod ID. If Mod Name and Author are supplied, it\'ll generate a mod" +
+        " ID based on those. Otherwise, it generates it based on the current time hash.");
+            this.buttonGenerate.UseVisualStyleBackColor = true;
+            this.buttonGenerate.Click += new System.EventHandler(this.buttonGenerate_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(39, 116);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(45, 13);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "Mod ID:";
+            // 
+            // textID
+            // 
+            this.textID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textID.Location = new System.Drawing.Point(90, 113);
+            this.textID.Name = "textID";
+            this.textID.Size = new System.Drawing.Size(185, 20);
+            this.textID.TabIndex = 13;
+            this.textID.Text = global::SADXModManager.Properties.Settings.Default.ModAuthor;
+            this.toolTip1.SetToolTip(this.textID, "Mod ID, used for mod dependencies. Can be manually modified to unique ID if desir" +
+        "ed.");
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -301,7 +336,7 @@ namespace SADXModManager.Forms
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(352, 239);
+            this.tabPage2.Size = new System.Drawing.Size(352, 265);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Updates";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -387,37 +422,6 @@ namespace SADXModManager.Forms
             this.textGitHubRepo.Name = "textGitHubRepo";
             this.textGitHubRepo.Size = new System.Drawing.Size(231, 20);
             this.textGitHubRepo.TabIndex = 0;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(39, 116);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(45, 13);
-            this.label10.TabIndex = 12;
-            this.label10.Text = "Mod ID:";
-            // 
-            // textID
-            // 
-            this.textID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textID.Location = new System.Drawing.Point(90, 113);
-            this.textID.Name = "textID";
-            this.textID.Size = new System.Drawing.Size(185, 20);
-            this.textID.TabIndex = 13;
-            this.textID.Text = global::SADXModManager.Properties.Settings.Default.ModAuthor;
-            // 
-            // buttonGenerate
-            // 
-            this.buttonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonGenerate.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonGenerate.Location = new System.Drawing.Point(281, 111);
-            this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(65, 23);
-            this.buttonGenerate.TabIndex = 14;
-            this.buttonGenerate.Text = "Generate";
-            this.buttonGenerate.UseVisualStyleBackColor = true;
-            this.buttonGenerate.Click += new System.EventHandler(this.buttonGenerate_Click);
             // 
             // NewModDialog
             // 
