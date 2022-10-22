@@ -1850,8 +1850,6 @@ static const intptr_t EXEModelPointers[] =
 	0x8BBD84,
 	0x8C5340,
 	0x8B4080,
-	0x8B24A4,
-	0x8B267C,
 	0x17289F4,
 	0x17286CC,
 	0x17278A0,
