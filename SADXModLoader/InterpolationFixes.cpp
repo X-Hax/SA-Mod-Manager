@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "SADXStructsNew.h"
+#include "SADXVariablesNew.h"
 
 // Euler/Quat conversions: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 // Quat lerping: https://stackoverflow.com/a/46187052
@@ -88,15 +90,26 @@ void __cdecl LinearMotionA_r(int keyno, NJS_MKEY_A* key, Angle3* dst, unsigned i
 	Angle3 ang_orig = { key_o->key[0], key_o->key[1], key_o->key[2] };
 	Angle3 ang_next = { key_n->key[0], key_n->key[1], key_n->key[2] };
 
+	Float diff = (Float)(key_n->keyframe - key_o->keyframe);
+	diff = (nj_motion_data_info_.frame - (float)key_o->keyframe) / (diff > 0 ? diff : 1.0f);
+
+	// If all angles are positive we do not need fancy quaternion maths
+	if (ang_orig.x >= 0 && ang_orig.y >= 0 && ang_orig.z >= 0 &&
+		ang_next.x >= 0 && ang_next.y >= 0 && ang_next.z >= 0)
+	{
+		dst->x = (ang_orig.x * (1.0f - diff) + ang_next.x * diff);
+		dst->y = (ang_orig.y * (1.0f - diff) + ang_next.y * diff);
+		dst->z = (ang_orig.z * (1.0f - diff) + ang_next.z * diff);
+		return;
+	}
+	
 	NJS_QUATERNION q1, q2;
 	NinjaAngleToQuaternion(&q1, &ang_orig);
 	NinjaAngleToQuaternion(&q2, &ang_next);
 
-	Float diff = (Float)(key_n->keyframe - key_o->keyframe);
-
 	NJS_QUATERNION r;
-	nlerpQuaternion(&r, &q1, &q2, (nj_motion_data_info_.frame - (float)key_o->keyframe) / (diff > 0 ? diff : 1.0f));
-
+	nlerpQuaternion(&r, &q1, &q2, diff);
+	
 	QuaternionToNinjaAngle(dst, &r);
 }
 
