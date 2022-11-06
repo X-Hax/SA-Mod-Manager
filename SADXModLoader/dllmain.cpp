@@ -1679,7 +1679,7 @@ static void __cdecl InitMods()
 	if (settings->getBool("EnableBassSFX", false))
 		Sound_Init(settings->getInt("SEVolume", 100));
 
-	if (!settings->getBool("DisableInterpolationFix", false))
+	if (!settings->getBool("DisableInterpolationFix", true))
 		init_interpolationAnimFixes();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
