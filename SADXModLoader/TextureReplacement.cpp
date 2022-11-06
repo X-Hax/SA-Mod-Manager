@@ -894,19 +894,27 @@ static void __cdecl LoadPVM_r(const char* filename, NJS_TEXLIST* texlist)
 	// This could become a memory leak for dynamically allocated NJS_TEXLISTs.
 	if (temp.nbTexture > texlist->nbTexture)
 	{
-		auto textures = new NJS_TEXNAME[temp.nbTexture] {};
+		auto textures = new NJS_TEXNAME[temp.nbTexture]{};
 
 		memcpy(textures, texlist->textures, texlist->nbTexture * sizeof(NJS_TEXNAME));
 
 		texlist->textures = textures;
 		texlist->nbTexture = temp.nbTexture;
-	}
-
+	}	
+	//else if (temp.nbTexture < texlist->nbTexture)
+		//PrintDebug("\tWarning: texlist size (%d) bigger than PVM texture count (%d): %s\n", texlist->nbTexture, temp.nbTexture, filename);
 	// Copy over the texture attributes and addresses.
+	Uint32 texaddr = 0;
+	Uint32 attr = 0;
 	for (uint32_t i = 0; i < texlist->nbTexture; i++)
 	{
-		texlist->textures[i].attr = temp.textures[i < temp.nbTexture ? i : 0].attr;
-		texlist->textures[i].texaddr = temp.textures[i < temp.nbTexture ? i : 0].texaddr;
+		if (i < temp.nbTexture)
+		{
+			texaddr = temp.textures[i].texaddr;
+			attr = temp.textures[i].attr;
+		}
+		texlist->textures[i].attr = attr;
+		texlist->textures[i].texaddr = texaddr;
 	}
 }
 
