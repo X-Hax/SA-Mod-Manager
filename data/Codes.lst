@@ -1,3 +1,7 @@
+Patch "Free Camera Fix"
+write16 00438330 0x0D81
+write16 00434870 0x0D81
+
 Patch "Allow Dynamic Light Direction Globally"
 writenop 00412536 6
 writenop 00412544 6
