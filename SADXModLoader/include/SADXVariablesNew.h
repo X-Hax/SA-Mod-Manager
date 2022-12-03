@@ -795,6 +795,14 @@ DataPointer(task*, teleporttask, 0x3C7507C); // OTeleport task pointer, non-null
 DataArray(int, tex_color_list, 0x2BBE9D8, 6); // Station Square car texture IDs
 DataPointer(NJS_SPRITE, sprite_lamp, 0x02BC0334); // Station Square street light (OGaitou) lamp sprite
 
+// Start positions
+DataArray(GM_START_POSANG, paSonicIP, 0x0090A5C8, 72); // Sonic start positions for Action Stages
+DataArray(GM_START_POSANG, paMilesIP, 0x0090AB68, 41); // Tails start positions for Action Stages
+DataArray(GM_START_POSANG, paKnucklesIP, 0x0090AEA0, 39); // Knuckles start positions for Action Stages
+DataArray(GM_START_POSANG, paAmyIP, 0x0090B470, 41); // Amy start positions for Action Stages
+DataArray(GM_START_POSANG, paBigIP, 0x0090B1B0, 35); // Big start positions for Action Stages
+DataArray(GM_START_POSANG, paE102IP, 0x0090B7A8, 43); // Gamma start positions for Action Stages
+
 // Chao
 DataPointer(eCHAO_STAGE_NUMBER, ChaoStageNumber, 0x0339F87C); // Current Chao stage
 DataPointer(float, CamDist, 0x033D0D44); // Player to camera distance for Chao Gardens
