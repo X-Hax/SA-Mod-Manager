@@ -1130,6 +1130,9 @@ namespace SADXModManager
 
 			string dummyPath = dummyInfo.Name;
 
+			if (fields.ContainsKey("folder"))
+				dummyPath = fields["folder"];
+
 			foreach (char c in Path.GetInvalidFileNameChars())
 			{
 				dummyPath = dummyPath.Replace(c, '_');
