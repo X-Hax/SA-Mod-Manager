@@ -338,3 +338,6 @@ write8 004B6399 0x8
 Patch "More Cars in Speed Highway 3"
 write8 00612148 0x12
 write32 0061214D 0x0026AA93C
+
+Patch "Disable Attract Player"
+write8 00442120 0xC3
