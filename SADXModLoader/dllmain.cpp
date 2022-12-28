@@ -1290,7 +1290,7 @@ uiscale::FillMode GetScaleFillMode()
 static vector<__int16> _USVoiceDurationList;
 static vector<__int16> _JPVoiceDurationList;
 
-void RegisterEnglishVoiceDuration(const uint32_t voiceID, const uint32_t duration)
+void RegisterEnglishVoiceDuration(const uint16_t voiceID, const uint16_t duration)
 {
 	if (_USVoiceDurationList.empty()) //copy original duration voice list
 	{
@@ -1306,11 +1306,11 @@ void RegisterEnglishVoiceDuration(const uint32_t voiceID, const uint32_t duratio
 		_USVoiceDurationList.insert(_USVoiceDurationList.end(), curSize, 2000);
 	}
 
-	vector<__int16>::iterator iter = _USVoiceDurationList.begin() + voiceID; //finally add / edit the voice id requested with the new duration
+	vector<__int16>::iterator iter = _USVoiceDurationList.begin() + voiceID; //finally, add / edit the voice id requested with the new duration
 	_USVoiceDurationList.insert(iter, duration);
 }
 
-void RegisterJapaneseVoiceDuration(const uint32_t voiceID, const uint32_t duration)
+void RegisterJapaneseVoiceDuration(const uint16_t voiceID, const uint16_t duration)
 {
 	if (_JPVoiceDurationList.empty())
 	{
@@ -1450,6 +1450,28 @@ void __cdecl FixLandTableLightType()
 void __cdecl PreserveLightType(int a1)
 {
 	Direct3D_PerformLighting(a1 * 2); // Bitwise shift left
+}
+
+void ProcessVoiceDurationRegisters()
+{
+	if (!_USVoiceDurationList.empty())
+	{
+		auto size = _USVoiceDurationList.size();
+		auto newlist = new __int16[size];
+		memcpy(newlist, _USVoiceDurationList.data(), sizeof(__int16) * size);
+		WriteData((__int16**)0x4255A2, newlist);
+	}
+
+	if (!_JPVoiceDurationList.empty())
+	{
+		auto size = _JPVoiceDurationList.size();
+		auto newlist = new __int16[size];
+		memcpy(newlist, _JPVoiceDurationList.data(), sizeof(__int16) * size);
+		WriteData((__int16**)0x42552F, newlist);
+	}
+
+	_USVoiceDurationList.clear();
+	_JPVoiceDurationList.clear();
 }
 
 static void __cdecl InitMods()
@@ -2234,24 +2256,9 @@ static void __cdecl InitMods()
 	}
 	_MusicList.clear();
 
-	if (!_USVoiceDurationList.empty())
-	{
-		auto size = _USVoiceDurationList.size();
-		auto newlist = new __int16[size];
-		memcpy(newlist, _USVoiceDurationList.data(), sizeof(__int16) * size);
-		WriteData((__int16**)0x4255A2, newlist);
-	}
+	ProcessVoiceDurationRegisters();
 
-	if (!_JPVoiceDurationList.empty())
-	{
-		auto size = _JPVoiceDurationList.size();
-		auto newlist = new __int16[size];
-		memcpy(newlist, _JPVoiceDurationList.data(), sizeof(__int16) * size);
-		WriteData((__int16**)0x42552F, newlist);
-	}
 
-	_USVoiceDurationList.clear();
-	_JPVoiceDurationList.clear();
 
 	RaiseEvents(modInitEndEvents);
 	PrintDebug("Finished loading mods\n");

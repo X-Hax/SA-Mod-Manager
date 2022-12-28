@@ -156,8 +156,8 @@ struct HelperFunctions
 
 	// Registers a voice duration, use it when you edit or add voices to fix cutscene progress.
 	// Requires version >= 14.
-	void(__cdecl* RegisterEnglishVoiceDuration)(const uint32_t voiceID, const uint32_t durationMS);
-	void(__cdecl* RegisterJapaneseVoiceDuration)(const uint32_t voiceID, const uint32_t durationMS);
+	void(__cdecl* RegisterEnglishVoiceDuration)(const uint16_t voiceID, const uint16_t durationMS);
+	void(__cdecl* RegisterJapaneseVoiceDuration)(const uint16_t voiceID, const uint16_t durationMS);
 };
 
 typedef void(__cdecl* ModInitFunc)(const char* path, const HelperFunctions& helperFunctions);
