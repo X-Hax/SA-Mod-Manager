@@ -7,7 +7,7 @@
 #include <time.h>
 
 using namespace std;
-string texCrashMsg = "Texture error: the game failed to apply one or more textures. Make sure your textures are loaded.";
+string texCrashMsg = "Texture error: the game failed to apply one or more textures. This could be a mod conflict.\nIf you are making a mod, make sure all your textures are loaded\n ";
 
 static const std::unordered_map<intptr_t, string> crashes_addresses_map = {
 	{ 0x78CF24, texCrashMsg},
