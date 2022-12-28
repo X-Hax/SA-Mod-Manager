@@ -14,6 +14,7 @@ static const std::unordered_map<intptr_t, string> crashes_addresses_map = {
 	{ 0x78D149, texCrashMsg },
 	{ 0x7B293A85, "DirectX error: You most likely reached a tex ID out of range."},
 	{ 0x434614, "Camera error: the game failed to load a cam file for the stage."},
+	{ 0x787148, "Landtable error: The game crashed on the eval flag check.\nIf you are making a level mod, make sure all your meshes have the flag\n\"Skip Children\" checked."}
 };
 
 static const std::string getErrorMSG(intptr_t address)
