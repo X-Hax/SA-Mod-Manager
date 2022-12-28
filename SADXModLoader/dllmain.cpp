@@ -1287,6 +1287,49 @@ uiscale::FillMode GetScaleFillMode()
 	return uiscale::bg_fill;
 }
 
+static vector<__int16> _USVoiceDurationList;
+static vector<__int16> _JPVoiceDurationList;
+
+void RegisterEnglishVoiceDuration(const uint32_t voiceID, const uint32_t duration)
+{
+	if (_USVoiceDurationList.empty()) //copy original duration voice list
+	{
+		_USVoiceDurationList.resize(duration_us.size());
+		memcpy(_USVoiceDurationList.data(), duration_us, sizeof(__int16) * duration_us.size());
+	}
+
+	short curSize = _USVoiceDurationList.size();
+
+	if (voiceID > curSize) //if the user request a voice ID out of bound, fill the gap with dummy data (2000 ms here)
+	{
+		curSize = voiceID - curSize;
+		_USVoiceDurationList.insert(_USVoiceDurationList.end(), curSize, 2000);
+	}
+
+	vector<__int16>::iterator iter = _USVoiceDurationList.begin() + voiceID; //finally add / edit the voice id requested with the new duration
+	_USVoiceDurationList.insert(iter, duration);
+}
+
+void RegisterJapaneseVoiceDuration(const uint32_t voiceID, const uint32_t duration)
+{
+	if (_JPVoiceDurationList.empty())
+	{
+		_JPVoiceDurationList.resize(duration_jp.size());
+		memcpy(_JPVoiceDurationList.data(), duration_jp, sizeof(__int16) * duration_jp.size());
+	}
+
+	short curSize = _JPVoiceDurationList.size();
+
+	if (voiceID > curSize)
+	{
+		curSize = voiceID - curSize;
+		_JPVoiceDurationList.insert(_JPVoiceDurationList.end(), curSize, 2000);
+	}
+
+	vector<__int16>::iterator iter = _JPVoiceDurationList.begin() + voiceID;
+	_JPVoiceDurationList.insert(iter, duration);
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
@@ -1319,7 +1362,9 @@ static const HelperFunctions helperFunctions =
 	&SetScaleFillMode,
 	&GetScaleFillMode,
 	&ReplaceTexture,
-	&MipmapBlacklistGBIX
+	&MipmapBlacklistGBIX,
+	&RegisterEnglishVoiceDuration,
+	&RegisterJapaneseVoiceDuration
 };
 
 static const char* const dlldatakeys[] = {
@@ -2188,6 +2233,25 @@ static void __cdecl InitMods()
 		WriteData((int**)0x42547E, &newlist->Loop);
 	}
 	_MusicList.clear();
+
+	if (!_USVoiceDurationList.empty())
+	{
+		auto size = _USVoiceDurationList.size();
+		auto newlist = new __int16[size];
+		memcpy(newlist, _USVoiceDurationList.data(), sizeof(__int16) * size);
+		WriteData((__int16**)0x4255A2, newlist);
+	}
+
+	if (!_JPVoiceDurationList.empty())
+	{
+		auto size = _JPVoiceDurationList.size();
+		auto newlist = new __int16[size];
+		memcpy(newlist, _JPVoiceDurationList.data(), sizeof(__int16) * size);
+		WriteData((__int16**)0x42552F, newlist);
+	}
+
+	_USVoiceDurationList.clear();
+	_JPVoiceDurationList.clear();
 
 	RaiseEvents(modInitEndEvents);
 	PrintDebug("Finished loading mods\n");

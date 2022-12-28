@@ -228,6 +228,8 @@ DataArray(MusicInfo, MusicList, 0x910298, 125);
 DataPointer(int, Music_Enabled, 0x91268C);
 DataPointer(int, VoicesEnabled, 0x912690);
 DataPointer(int, CurrentVoiceNumber, 0x912694);
+DataArray(int, duration_us, 0x911688, 2049);
+DataArray(int, duration_jp, 0x910680, 2049);
 DataPointer(int, CurrentSong, 0x912698);
 DataPointer(int, LastSong, 0x91269C);
 DataPointer(int, RealLastSong, 0x9126A8);
