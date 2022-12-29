@@ -76,6 +76,8 @@ public:
 	 */
 	void scanTextureFolder(const std::string& srcPath, int modIndex);
 
+	void FileMap::EditVoiceDuration(std::string modFile, bool isJp);
+
 protected:
 	/**
 	 * Recursively scan a directory and add all files to the replacement map.

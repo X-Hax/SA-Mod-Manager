@@ -54,6 +54,7 @@
     <ClInclude Include="FileMap.hpp" />
     <ClInclude Include="FileReplacement.h" />
     <ClInclude Include="FixFOV.h" />
+    <ClInclude Include="include\AudioFile.h" />
     <ClInclude Include="include\FunctionHook.h" />
     <ClInclude Include="git.h" />
     <ClInclude Include="hudscale.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="include\UsercallFunctionHandler.h" />
     <ClInclude Include="uiscale.h" />
     <ClInclude Include="version.h" />
+    <ClInclude Include="VoiceDuration.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libmodutils\libmodutils.vcxproj">

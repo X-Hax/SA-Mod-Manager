@@ -12,6 +12,7 @@
 
 #include <string>
 #include <vector>
+#include "AudioFile.h"
 using std::string;
 using std::vector;
 
@@ -51,6 +52,22 @@ static void __stdcall onVoiceEnd(HSYNC handle, DWORD channel, DWORD data, void* 
 {
 	BASS_ChannelStop(channel);
 	BASS_StreamFree(channel);
+}
+
+int GetSoundLength(std::string filename)
+{
+	string str2(".wav");
+
+	if (filename.find(str2) != string::npos) 
+	{
+		AudioFile<double> audioFile;
+		audioFile.load(filename);
+		double lengthInSeconds = audioFile.getLengthInSeconds();
+		double lengthInMs = lengthInSeconds *= 1000;
+		return (int)lengthInMs;
+	}
+
+	return 0;
 }
 
 /**

@@ -236,6 +236,12 @@
     <ClInclude Include="MinorPatches.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\AudioFile.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="VoiceDuration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SADXModLoader.rc">

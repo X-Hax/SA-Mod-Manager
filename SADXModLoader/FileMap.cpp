@@ -9,6 +9,7 @@
 #include <cctype>
 #include <algorithm>
 #include "TextureReplacement.h"
+#include "VoiceDuration.h"
 
 using std::list;
 using std::string;
@@ -52,6 +53,29 @@ string FileMap::normalizePath(const char* filename)
 		path = path.substr(2, path.length() - 2);
 	transform(path.begin(), path.end(), path.begin(), ::tolower);
 	return path;
+}
+
+void FileMap::EditVoiceDuration(std::string modFile, bool isJp)
+{
+	int ms = GetSoundLength(modFile);
+	int voiceID = 0;
+
+	if (ms)
+	{
+		std::string newID = base_name(modFile);
+		voiceID = std::stoi(newID);
+
+		if (isJp)
+		{
+			if (voiceID >= 0)
+				SetJapaneseVoiceDuration(voiceID, ms);
+		}
+		else
+		{
+			if (voiceID >= 0)
+				SetEnglishVoiceDuration(voiceID, ms);
+		}
+	}
 }
 
 /**
@@ -184,13 +208,21 @@ void FileMap::scanFolder_int(const string& srcPath, int srcLen, int modIdx)
 
 		// Original filename.
 		string origFile = "system\\" + modFile.substr(srcLen);
+		bool isEng = !origFile.compare(0, 30, "system\\sounddata\\voice_us\\wma\\");
+		bool isJP = !origFile.compare(0, 30, "system\\sounddata\\voice_jp\\wma\\");
 
 		if (!origFile.compare(0, 25, "system\\sounddata\\bgm\\wma\\") ||
-		    !origFile.compare(0, 30, "system\\sounddata\\voice_us\\wma\\") ||
-		    !origFile.compare(0, 30, "system\\sounddata\\voice_jp\\wma\\"))
+			isEng ||
+			isJP)
 		{
 			// Original filename should have a ".wma" extension.
 			ReplaceFileExtension(origFile, ".wma");
+
+			if (isEng || isJP)
+			{
+				EditVoiceDuration(modFile, isJP);
+			}
+
 		}
 		else if (GetExtension(modFile) == "prs")
 		{
@@ -240,7 +272,7 @@ void FileMap::scanSoundFolder(const std::string& srcPath)
 		}
 
 		if (!(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) &&
-		    !!_stricmp(".wma", PathFindExtensionA(data.cFileName)))
+			!!_stricmp(".wma", PathFindExtensionA(data.cFileName)))
 		{
 			// Create the mod filename and original filename.
 			string modFile = srcPath + '\\' + string(data.cFileName);
