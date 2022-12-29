@@ -22,5 +22,5 @@ or warranty.
 
 ## Trademarks
 
-Sega, Sonic, Sonic the Hedgehog, and Sonic Adventure DX are either
+SEGA, Sonic, Sonic the Hedgehog, and Sonic Adventure DX are either
 trademarks or registered trademarks of SEGA of America, Inc.
