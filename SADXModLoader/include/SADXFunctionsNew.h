@@ -105,6 +105,9 @@ VoidFunc(ADXTaskInit, 0x004258B0); // Initializes the music manager
 FunctionPointer(void, SetEntranceNumber, (char number), 0x004147F0); // Set level entrance (return area)
 FunctionPointer(void, ChangeStageWithFadeOut, (unsigned __int8 level, unsigned __int8 act), 0x004145D0); // Go to a specific level with fadeout
 FunctionPointer(void, TH_Wait, (), 0x004014B0); // Thread-related, Called in MSG_Cls
+FunctionPointer(playerwk*, GetPlayerWorkPtr, (char pno), 0x441B00);
+FunctionPointer(void, SetTableBg_mr, (int clipLevel), 0x52F400);
+FunctionPointer(void, SetTableBg_chaos7, (int c_level), 0x55D690);
 
 // Debug
 FunctionPointer(void, njPrintColor, (int color), 0x007808E0); // Sets debug font color
@@ -1124,303 +1127,332 @@ FunctionPointer(void, NH_MSG_Open, (MSGC* msgc, __int16 x, __int16 y, int width,
 FunctionPointer(void, NH_MSG_Close, (MSGC* msgc), 0x40E2C0);
 FunctionPointer(void, MSG_Open, (MSGC* msgc, int x, int y, int width, int height, unsigned int globalindex), 0x40E430);
 FunctionPointer(void, MSG_Puts, (MSGC* msgc, const char* str), 0x40E570);
-FunctionPointer(void, EV_Msg, (const char* str), 0x42FB20);
-VoidFunc(EV_MsgClose, 0x42FBB0);
-VoidFunc(EV_MsgCls, 0x42FC20);
-FunctionPointer(void, EV_MsgW, (int time, char* str), 0x431640);
+FunctionPointer(void, EV_Msg, (const char* str), 0x42FB20); //Event Library: Open a textbox. Note: Doubles as EV_Wait(20).
+VoidFunc(EV_MsgClose, 0x42FBB0); //Event Library: Close a textbox.  Note: Doubles as EV_Wait(20).
+VoidFunc(EV_MsgCls, 0x42FC20); //Event Library: Close text but don't close the textbox.
+FunctionPointer(void, EV_MsgW, (int time, char* str), 0x431640); //Event Library: Display a message and wait.
 FunctionPointer(MSGC*, CreateMsgTexVtx, (NJS_TEXTURE_VTX* vtx, unsigned int color, float fade, float x, float y, float z, float w, float h), 0x6424A0);
 
 // Event camera
-VoidFunc(EV_CameraOn, 0x4303E0);
-VoidFunc(EV_CameraOff, 0x4304B0);
-FunctionPointer(void, EV_CameraAng, (int mode, int time, int x, int y, int z), 0x430C90);
-FunctionPointer(void, EV_CameraPos, (int mode, int time, float x, float y, float z), 0x430D00);
-FunctionPointer(void, EV_CameraPosORY, (char mode, int time, task* tp, float x, float y, float z), 0x430D70);
-VoidFunc(EV_CameraTargetFree, 0x430E50);
-FunctionPointer(void, EV_CameraTargetPos, (int mode, int time, float x, float y, float z, float az), 0x430E60);
-FunctionPointer(void, EV_CameraTargetObj, (int mode, int time, task* tp, float x, float y, float z, int az), 0x430EE0);
-VoidFunc(EV_CameraChaseFree, 0x430F60);
-FunctionPointer(void, EV_CameraChase, (task* tp), 0x430F70);
+VoidFunc(EV_CameraOn, 0x4303E0); //Event Library: Use Event Camera
+VoidFunc(EV_CameraOff, 0x4304B0); //Event Library: Delete Event Camera
+FunctionPointer(void, EV_CameraAng, (int mode, int time, int x, int y, int z), 0x430C90); //Event Library: Set camera rotation.
+FunctionPointer(void, EV_CameraPos, (int mode, int time, float x, float y, float z), 0x430D00); //Event Library: Set camera position.
+FunctionPointer(void, EV_CameraPosORY, (char mode, int time, task* tp, float x, float y, float z), 0x430D70); //Event Library: Set camera position while orbiting an object. Uncommon.
+VoidFunc(EV_CameraTargetFree, 0x430E50); //Event Library: Clear CameraTarget commands.
+FunctionPointer(void, EV_CameraTargetPos, (int mode, int time, float x, float y, float z, float az), 0x430E60); //Event Library: Make the camera look at a point.
+FunctionPointer(void, EV_CameraTargetObj, (int mode, int time, task* tp, float x, float y, float z, int az), 0x430EE0); //Event Library: Make the camera look at an object from a position.
+VoidFunc(EV_CameraChaseFree, 0x430F60); //Event Library: Clear CameraChase commands.
+FunctionPointer(void, EV_CameraChase, (task* tp), 0x430F70); //Event Library: Make the camera follow an object.
+/*Event Library: Make the camera follow an object while also running an animation (ROTMOVE).
+* x0/y0/z0 = start angle
+* x1/y1/z1 = end angle
+* d0 = start distance
+* d1 = end distance*/
 FunctionPointer(void, EV_CameraChaseRM, (int mode, int time, task* tp, float height, int x0, int y0, int z0, float d0, int x1, int y1, int z1, float d1), 0x430FC0);
-FunctionPointer(void, EV_CameraPerspective, (int mode, int time, int ang), 0x431060);
-FunctionPointer(void, EV_CameraPath, (cpathtag* path, float speed), 0x4310A0);
+FunctionPointer(void, EV_CameraPerspective, (int mode, int time, int ang), 0x431060); //Event Library: Set FOV.
+FunctionPointer(void, EV_CameraPath, (cpathtag* path, float speed), 0x4310A0); //Event Library: Make the camera follow a path.
 
 // Event
-VoidFunc(EV_CanselOn, 0x42F630);
+VoidFunc(EV_CanselOn, 0x42F630); //Event Library: Enable event conditions. (Remove the HUD etc.)
+VoidFunc(EV_Exec2, 0x431430); //Event Library: Setup to create an event. Place below EV_Load2.
+FunctionPointer(void, EV_Load2, (int no), 0x42FA30); //Event Library: Load an event. This is what to call if wanting to play one, with Ev_Exec2 directly under it.
 FunctionPointer(void, DisplayFade, (task* a1), 0x00412F70); // Event fade display function
 FunctionPointer(void, SeqTaskFadeIn, (task* a1), 0x00412FE0); // Event fade-in main function
 FunctionPointer(void, SeqTaskFadeOut, (task* a1), 0x00413060); // Event fade-out main function
-FunctionPointer(BOOL, EV_CheckCansel, (), 0x42FB00);
-FunctionPointer(void, EV_Wait, (int time), 0x4314D0);
-FunctionPointer(void, EV_CreateObject, (task** tp, float px, float py, float pz, int ax, int ay, int az), 0x431670);
-FunctionPointer(void, EV_CreateObjectFunc, (task** tp, task* (*func)(void), float x, float y, float z, int rx, int ry, int rz), 0x4316C0);
-FunctionPointer(void, EV_InitObject, (task* tp), 0x431730);
-FunctionPointer(void, EV_InitPlayer, (int n), 0x431780);
-FunctionPointer(void, EV_WaitAction, (task* tp), 0x431810);
-FunctionPointer(void, EV_WaitPath, (task* tp), 0x431840);
-FunctionPointer(void, EV_PlayPad, (int no, PADREC_DATA_TAG* tag), 0x431870);
-FunctionPointer(void, EV_WaitMove, (task* tp), 0x4318D0);
-FunctionPointer(task*, EV_GetPlayer, (uint8_t no), 0x42FC40);
-FunctionPointer(void, EV_FreeObject, (task** tp), 0x42FC50);
-FunctionPointer(void, EV_SetPos, (task* tp, float x, float y, float z), 0x42FC70);
-FunctionPointer(void, EV_SetAng, (task* tp, int x, int y, int z), 0x42FCD0);
-FunctionPointer(void, EV_SetMode, (task* tp, int mode), 0x42FD20);
-FunctionPointer(void, EV_SetShadow, (task* tp, float size), 0x42FD40);
-FunctionPointer(void, EV_SetColli, (task* tp, float size), 0x42FD60);
-FunctionPointer(void, EV_CreatePlayer, (int n, void(__cdecl* func)(task*), float px, float py, float pz, int ax, int ay, int az), 0X42FD80);
-FunctionPointer(void, EV_RemovePlayer, (int n), 0x42FDE0);
+FunctionPointer(BOOL, EV_CheckCansel, (), 0x42FB00); //Event Library: Check if any event is running. Uncommon: Only used in Chaos 0's level and for the Casinopolis doors in Tails' story.
+FunctionPointer(void, EV_Wait, (int time), 0x4314D0); //Event Library: Wait X Frames.
+FunctionPointer(void, EV_CreateObject, (task** tp, float px, float py, float pz, int ax, int ay, int az), 0x431670); //Event Library: Create a generic object.
+FunctionPointer(void, EV_CreateObjectFunc, (task** tp, task* (*func)(void), float x, float y, float z, int rx, int ry, int rz), 0x4316C0); //Event Library: Create an object that has its own main/display functions.
+FunctionPointer(void, EV_InitObject, (task* tp), 0x431730); //Event Library: Clear any existing Action/Path/Move/Face commands from a task.
+FunctionPointer(void, EV_InitPlayer, (int n), 0x431780); //Event Library: Cleanup for the player before/after an event.
+FunctionPointer(void, EV_WaitAction, (task* tp), 0x431810); //Event Library: Wait for a task to finish an Action command.
+FunctionPointer(void, EV_WaitPath, (task* tp), 0x431840); //Event Library: Wait for a task to finish a Path command.
+FunctionPointer(void, EV_PlayPad, (int no, PADREC_DATA_TAG* tag), 0x431870); //Event Library: Automated controller input
+FunctionPointer(void, EV_WaitMove, (task* tp), 0x4318D0); //Event Library: Wait for a task to finish a Move command.
+FunctionPointer(task*, EV_GetPlayer, (uint8_t no), 0x42FC40); //Event Library: Get task of Character in slot no.
+FunctionPointer(void, EV_FreeObject, (task** tp), 0x42FC50); //Event Library: Delete an object.
+FunctionPointer(void, EV_SetPos, (task* tp, float x, float y, float z), 0x42FC70); //Event Library: Set Position of a task.
+FunctionPointer(void, EV_SetAng, (task* tp, int x, int y, int z), 0x42FCD0); //Event Library: Set Rotation of a task.
+FunctionPointer(void, EV_SetMode, (task* tp, int mode), 0x42FD20); //Event Library: Set Mode (Action ID) of a task.
+FunctionPointer(void, EV_SetShadow, (task* tp, float size), 0x42FD40); //Event Library: Set shadow size of a task.
+FunctionPointer(void, EV_SetColli, (task* tp, float size), 0x42FD60); //Event Library: Set collision size of a task.
+FunctionPointer(void, EV_CreatePlayer, (int n, void(__cdecl* func)(task*), float px, float py, float pz, int ax, int ay, int az), 0X42FD80); //Event Library: Create an NPC player character.
+FunctionPointer(void, EV_RemovePlayer, (int n), 0x42FDE0); //Event Library: Remove an NPC player character.
+/*Event Library: Play an animation.
+* This is the game's primary method of displaying props such as Chaos Emeralds.
+* mode: 0 (Don't loop) or 1 (Loop)
+* linkframe: Interpolation frames between the previous Action and this one.
+* linkframe only works with actions called by this or EV_SetMotion.
+* Animations are queued.*/
 FunctionPointer(void, EV_SetAction, (task* tp, NJS_ACTION* ap, NJS_TEXLIST* lp, float speed, int mode, int linkframe), 0x42FE00);
+/*Event Library:Play an animation without a premade NJS_ACTION.
+* Mainly used for objects with shared animations, such as NPCs and tribal Echidnas.*/
 FunctionPointer(void, EV_SetMotion, (task* tp, NJS_OBJECT* op, NJS_MOTION* mp, NJS_TEXLIST* lp, float speed, int mode, int linkframe), 0x42FE20);
-FunctionPointer(void, EV_ClrAction, (task* tp), 0x42FE40);
-FunctionPointer(void, EV_SetPath, (task* tp, EPATHTAG* path, float speed, int mode), 0x42FE60);
-FunctionPointer(void, EV_ClrPath, (task* tp), 0x42FE80);
-FunctionPointer(void, EV_LookFree, (task* tp), 0x42FFB0);
-FunctionPointer(void, EV_LookObject, (task* tp, task* target, float x, float y, float z), 0x42FFD0);
-FunctionPointer(void, EV_LookPoint, (task* tp, float x, float y, float z), 0x430000);
-FunctionPointer(void, EV_LookAngle, (task* tp, int x, int y, int z), 0x430030);
-FunctionPointer(void, EV_MoveFree, (task* tp), 0x430060);
-FunctionPointer(void, EV_MovePoint, (task* tp, float x, float y, float z), 0x430080);
-FunctionPointer(void, EV_MovePoint2, (task* tp, float x, float y, float z, float s, float a), 0x4300D0);
-FunctionPointer(void, EV_MoveRotation, (task* tp, int x, int y, int z), 0x430120);
-FunctionPointer(void, AmyForEventHammerScaleIm, (uint8_t playernmb, float scale), 0x486EC0);
-FunctionPointer(void, stopObject, (task* tp), 0x6EBAB0);
-VoidFunc(stopObjectAll, 0x6EBB00);
-FunctionPointer(void, moveObject, (task* obj, float st_x, float st_y, float st_z, float end_x, float end_y, float end_z, int frame), 0x6EC2B0);
-FunctionPointer(void, moveObjectOn, (task* tp, float x, float y, float z, int frame, task* dest_obj), 0x6EC6D0);
+FunctionPointer(void, EV_ClrAction, (task* tp), 0x42FE40); //Event Library: Clear EV_SetAction/Motion commands.
+FunctionPointer(void, EV_SetPath, (task* tp, EPATHTAG* path, float speed, int mode), 0x42FE60); //Event Library: Make an object follow a path.
+FunctionPointer(void, EV_ClrPath, (task* tp), 0x42FE80); //Event Library: Clear EV_SetPath commands.
+FunctionPointer(void, EV_LookFree, (task* tp), 0x42FFB0); //Event Library: Clear Look commands.
+FunctionPointer(void, EV_LookObject, (task* tp, task* target, float x, float y, float z), 0x42FFD0); //Event Library: Focus a character's head on an object.
+FunctionPointer(void, EV_LookPoint, (task* tp, float x, float y, float z), 0x430000); //Event Library: Focus a character's head on a point.
+FunctionPointer(void, EV_LookAngle, (task* tp, int x, int y, int z), 0x430030); //Event Library: Rotate a character's head.
+FunctionPointer(void, EV_MoveFree, (task* tp), 0x430060); //Event Library: Clear Move
+FunctionPointer(void, EV_MovePoint, (task* tp, float x, float y, float z), 0x430080); //Event Library: Move a character to a point at a fixed speed.
+FunctionPointer(void, EV_MovePoint2, (task* tp, float x, float y, float z, float s, float a), 0x4300D0); //Event Library: Move a character to a point at an adjustable speed and acceleration.
+FunctionPointer(void, EV_MoveRotation, (task* tp, int x, int y, int z), 0x430120); //Event Library: Rotate a character.
+FunctionPointer(void, AmyForEventHammerScaleIm, (uint8_t playernmb, float scale), 0x486EC0); //Event: Set the scale of Amy's Hammer.
+FunctionPointer(void, stopObject, (task* tp), 0x6EBAB0); //Event: Stop moveObject on a task.
+VoidFunc(stopObjectAll, 0x6EBB00); //Event: Stop moveObject on all tasks. Mainly used for cleanup at the end of events.
+FunctionPointer(void, moveObject, (task* obj, float st_x, float st_y, float st_z, float end_x, float end_y, float end_z, int frame), 0x6EC2B0); //Event Move object: Position only
+FunctionPointer(void, moveObjectOn, (task* tp, float x, float y, float z, int frame, task* dest_obj), 0x6EC6D0); //Event Move object: Position, relative to dest_obj.
+/*Event Move object: Position + Angle, relative to dest_obj.
+Only used once - Amy's Flicky in EV0063 (Twinkle Park).*/
 FunctionPointer(void, moveObjectOnAngle, (task* obj, float far_x, float far_y, float far_z, int ang_x, int ang_y, int ang_z, int frame, task* dest_obj), 0x6EC790);
+/*Move object: Position relative to dest_obj. Make obj face the same direction as dest_obj.
+//Only used once - Froggy following Big in his ending, after the fishing sequence.*/
 FunctionPointer(void, moveObjectOnRotate, (task* obj, float far_x, float far_y, float far_z, signed int frame, task* dest_obj), 0x6EC8B0);
+/*Move object: Position relative to the right hand of a given player character.
+Only used twice: EV0087 (Eggman holding a Chaos Emerald) and EV0066 (Amy holding a balloon)*/
 FunctionPointer(void, moveObjectRightHand, (task* obj, char player_no, float far_x, float far_y, float far_z, int frame), 0x6ECA20);
-FunctionPointer(void, addmotModel, (int model, NJS_ACTION* action, int mot_id), 0x6ECAC0);
-FunctionPointer(void, playModel, (int model_id, int mot_id, float mot_spd, int loop_num), 0x6ECAE0);
-FunctionPointer(void, stopModel, (int model_id), 0x6ECB20);
-FunctionPointer(task*, getobjModel, (int model_id), 0x6ECB40);
-FunctionPointer(void, deleteModel, (int model_id), 0x6ECB50);
-FunctionPointer(void, createModel, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECE70);
-FunctionPointer(void, createModelEC, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z, NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECF20);
+FunctionPointer(void, addmotModel, (int model, NJS_ACTION* action, int mot_id), 0x6ECAC0); //Event: Add an animation to a model placed with createModel.
+FunctionPointer(void, playModel, (int model_id, int mot_id, float mot_spd, int loop_num), 0x6ECAE0); //Event: Play animation (added with addmotModel) in a model placed with createModel.
+FunctionPointer(void, stopModel, (int model_id), 0x6ECB20); //Event: Stop animation in a model placed with createModel.
+FunctionPointer(task*, getobjModel, (int model_id), 0x6ECB40); //Event: Get a model placed with createModel.
+FunctionPointer(void, deleteModel, (int model_id), 0x6ECB50); //Event: Delete a model placed with createModel.
+FunctionPointer(void, createModel, (float pos_x, float pos_y, float pos_z, //Event: Place a model. Uncommon, mostly ignored in favor of EV_CreateObject.
+	int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z,
+	NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECE70); 
+FunctionPointer(void, createModelEC, (float pos_x, float pos_y, float pos_z,  //Event: Place a model. (Used Exclusively for low-poly Egg Carrier)
+	int ang_x, int ang_y, int ang_z, float scl_x, float scl_y, float scl_z,
+	NJS_OBJECT* model, NJS_TEXLIST* texlist, int model_id), 0x6ECF20);
 VoidFunc(EV_PadOn, 0x42F610); //Enable Controls
 VoidFunc(EV_PadOff, 0x42F620); //Disable Controls
-FunctionPointer(void, EV_SetFace, (task* tp, const char* str), 0x4310D0); //Face Anim
-FunctionPointer(void, EV_ClrFace, (task* tp), 0x4310F0);
-VoidFunc(EV_SerifStop, 0x431110); //Stop voice
-VoidFunc(EV_SerifWait, 0x431900); //Wait for voice clip to end
-FunctionPointer(void, EV_SerifPlay, (int id), 0x431930); //Play Voice
-FunctionPointer(playerwk*, GetPlayerWorkPtr, (char pno), 0x441B00);
-FunctionPointer(void, tikal_dispSwitch, (int sw), 0x4A3520); //Turns off in-game Tikal orbs in events
-FunctionPointer(void, EggrobForEvent0_RP_Set, (NJS_POINT3* tgt), 0x4D1740);
-FunctionPointer(void, SetTableBg_mr, (int clipLevel), 0x52F400);
-FunctionPointer(void, EvSetTableBgMR, (), 0x52FB20);
-FunctionPointer(void, SetTableBg_chaos7, (int c_level), 0x55D690);
-FunctionPointer(void, shadowOn, (char num, float pos_x, float pos_y, float pos_z, signed int bigInt, signed int smallInt, float scaleMax), 0x6A6680); //ZERO's large shadow
-FunctionPointer(void, moveObjectAngle, (task* obj,
+/*Event Library: Play a face animation.
+* Each letter in the string represents a different face animation.
+* A->Z (Uppercase) a->e (lowercase)
+* Common combos: "CDE" (Talking) "F" (Buggin' face)
+* End string with 0 or use EV_ClrFace to reset the head.
+* By default this only works for Sonic, Tails, Knuckles, Amy and Tikal.
+* Big works too, but is severely broken and will probably crash the game.*/
+FunctionPointer(void, EV_SetFace, (task* tp, const char* str), 0x4310D0);
+FunctionPointer(void, EV_ClrFace, (task* tp), 0x4310F0); //Event Library: Reset a character's face.
+VoidFunc(EV_SerifStop, 0x431110); //Event Library: Stop a voice clip.
+VoidFunc(EV_SerifWait, 0x431900); //Event Library: Wait for a voice clip to end.
+FunctionPointer(void, EV_SerifPlay, (int id), 0x431930); //Event Library: Play a voice clip
+FunctionPointer(void, tikal_dispSwitch, (int sw), 0x4A3520); //Event: Turns off in-game Tikal orbs in events
+FunctionPointer(void, EggrobForEvent0_RP_Set, (NJS_POINT3* tgt), 0x4D1740); //Event: Make Event ZERO attack a point.
+FunctionPointer(void, EvSetTableBgMR, (), 0x52FB20); //Event: Auto-Adjust MR Act 1 Skybox to whatever ClipLevel is set to. Only used in one event (ZERO boarding Egg Carrier).
+FunctionPointer(void, shadowOn, (char num, float pos_x, float pos_y, float pos_z, signed int bigInt, signed int smallInt, float scaleMax), 0x6A6680); //Event: Large shadow animation used by ZERO.
+FunctionPointer(void, moveObjectAngle, (task* obj, //Event Move object: Position + Angle (Given as float). Only used once - by E101 Mk.II after shooting Gamma.
 	float st_x, float st_y, float st_z,
 	float end_x, float end_y, float end_z,
 	float st_ang_x, float st_ang_y, float st_ang_z,
 	float end_ang_x, float end_ang_y, float end_ang_z,
 	signed int frame), 0x6EC3A0);
-FunctionPointer(void, moveObjectAngle2, (task* obj, float st_x, float st_y, float st_z,
+FunctionPointer(void, moveObjectAngle2, (task* obj, float st_x, float st_y, float st_z, //Event Move object: Position + Angle.
 	float en_x, float en_y, float en_z, int st_ang_x, int st_ang_y, int st_ang_z,
 	int en_ang_x, int en_ang_y, int en_ang_z, signed int frame), 0x6EC580);
-FunctionPointer(task*, CTikalLight_Create, (float x, float y, float z), 0x6ED090); //Tikal Ball
-FunctionPointer(void, effect_delete, (__int16 ef_num), 0x6ED490);
-FunctionPointer(void, effect_create2, (task* obj, int ef_num, float ef_x, float ef_y, float ef_z, NJS_TEXLIST* ef_name), 0x6ED770); //Effect generator
-/*Below is an alternate effect generator with less code. Only used before ev_ef_kiran (Shooting star) in Big's intro and Knuckles' ending.
+FunctionPointer(task*, CTikalLight_Create, (float x, float y, float z), 0x6ED090); //Event Tikal Ball
+FunctionPointer(void, effect_delete, (__int16 ef_num), 0x6ED490); //Event: Delete effect.
+FunctionPointer(void, effect_create2, (task* obj, int ef_num, float ef_x, float ef_y, float ef_z, NJS_TEXLIST* ef_name), 0x6ED770); //Event: Effect generator
+/*Event: Alternate effect generator. Only used before ev_ef_kiran (Shooting star) in Big's intro and Knuckles' ending.
 Note: Its display function is broken. It assumes every sprite has 8 frames.*/
 FunctionPointer(void, effect_create, (task* obj, __int16 ef_num, float ef_x, float ef_y, float ef_z, NJS_TEXLIST* ef_name), 0x6ED580);
-FunctionPointer(void, effect_color, (__int16 ef_num, float col_a, float col_r, float col_g, float col_b), 0x6ED910);
-FunctionPointer(void, effect_size_change, (int ef_num, float speed_x, float speed_y), 0x6ED950);
-FunctionPointer(void, effect_anim_speed, (__int16 ef_num, float anim_speed), 0x6ED980);
-VoidFunc(crushLightOff, 0x6ED9A0);
-FunctionPointer(void, crushLightOn, (float pos_x, float pos_y, float pos_z, int crushLightNum, int life,
-	float start_width, float end_width, unsigned int start_col, unsigned int end_col), 0x6EDA20); //Chaos transformation light beams
-FunctionPointer(void, effect_scl, (int ef_num, float sx, float sy), 0x6ED8E0);
-VoidFunc(DeleteChaos0, 0x6EDAB0);
-FunctionPointer(void, Jump2Chaos0, (float pos_x, float pos_y, float pos_z,
+FunctionPointer(void, effect_color, (__int16 ef_num, float col_a, float col_r, float col_g, float col_b), 0x6ED910); //Event: Set effect color.
+FunctionPointer(void, effect_size_change, (int ef_num, float speed_x, float speed_y), 0x6ED950); //Event: Set effect scale. Uncommon, Only used at the end of Sonic's Ancient Light event.
+FunctionPointer(void, effect_anim_speed, (__int16 ef_num, float anim_speed), 0x6ED980); //Event: Set effect animation speed. Only used for fire effect behind Chaos in Super Sonic's flashback.
+VoidFunc(crushLightOff, 0x6ED9A0); //Event: Remove light beams.
+FunctionPointer(void, crushLightOn, (float pos_x, float pos_y, float pos_z, int crushLightNum, int life,  //Chaos transformation light beams
+	float start_width, float end_width, unsigned int start_col, unsigned int end_col), 0x6EDA20);
+FunctionPointer(void, effect_scl, (int ef_num, float sx, float sy), 0x6ED8E0); //Event: Set effect scale. 
+VoidFunc(DeleteChaos0, 0x6EDAB0); //Event: Delete Event Chaos 0.
+FunctionPointer(void, Jump2Chaos0, (float pos_x, float pos_y, float pos_z, //Event: Make Event Chaos 0 Jump
 	float jumph, signed int frame), 0x6EDAD0);
-FunctionPointer(void, Jump3Chaos0, (float pos_x, float pos_y, float pos_z,
+FunctionPointer(void, Jump3Chaos0, (float pos_x, float pos_y, float pos_z, //Event: Make Event Chaos 0 Jump (Alternate Animation) Only used in Knuckles' intro.
 	float jumph, signed int frame), 0x6EDBA0);
-FunctionPointer(void, MoveChaos0, (float pos_x, float pos_y, float pos_z, signed int frame), 0x6EDC70);
-FunctionPointer(task*, GetChaos0, (), 0x6EDCD0);
-VoidFunc(ToWaterChaos0, 0x6EDD00);
-VoidFunc(ToHumanChaos0, 0x6EDD20);
+FunctionPointer(void, MoveChaos0, (float pos_x, float pos_y, float pos_z, signed int frame), 0x6EDC70); //Event: Move Event Chaos 0. NOTE: He has no Walking animation, make sure he's in Puddle form.
+FunctionPointer(task*, GetChaos0, (), 0x6EDCD0); //Event: Get Event Chaos 0's task.
+VoidFunc(ToWaterChaos0, 0x6EDD00); //Event: Make Event Chaos 0 retreat into puddle.
+VoidFunc(ToHumanChaos0, 0x6EDD20); //Event: Make Event Chaos 0 emerge from puddle.
 FunctionPointer(void, SetAngleChaos0, (int ang_x, int ang_y, int ang_z), 0x6EDD60);
-VoidFunc(SetWaterChaos0, 0x6EDD80);
-FunctionPointer(void, ChangeMotspd, (float mod_spd), 0x6EDCE0);
-FunctionPointer(void, SetPositionChaos0, (float pos_x, float pos_y, float pos_z), 0x6EDD40);
-FunctionPointer(void, SetSclChaos0, (float scl_x, float scl_y, float scl_z), 0x6EDDB0);
-VoidFunc(CngMotStand2Chaos0, 0x6EDDD0);
-VoidFunc(CngMotStand4Chaos0, 0x6EDDE0);
-VoidFunc(CngMotFlyChaos0, 0x6EDDF0);
-FunctionPointer(void, CreateChaos0, (float pos_x, float pos_y, float pos_z,
-	int ang_x, int ang_y, int ang_z, signed int cng_int), 0x6EE930); //Chaos 0 Event Actor Controls
-FunctionPointer(void, SetEffectRotaryEmerald, (int eme_num, NJS_TEXLIST* ef_name, float scale, float col_a, float col_r, float col_g, float col_b), 0x6EEA30);
-FunctionPointer(void, SplashRotaryEmerald, (float splash_spd), 0x6EEAC0); //Scatter RotaryEmerald objects
-VoidFunc(deleteRotaryEmeraldTask, 0x6EEE00);
-FunctionPointer(void, CreateRotaryEmerald, (float pos_x, float pos_y, float pos_z,
+VoidFunc(SetWaterChaos0, 0x6EDD80); //Event: Set Event Chaos 0 as puddle form.
+FunctionPointer(void, ChangeMotspd, (float mod_spd), 0x6EDCE0); //Event: Set Event Chaos 0's movement speed.
+FunctionPointer(void, SetPositionChaos0, (float pos_x, float pos_y, float pos_z), 0x6EDD40); //Event: Set Event Chaos 0's Position.
+FunctionPointer(void, SetSclChaos0, (float scl_x, float scl_y, float scl_z), 0x6EDDB0); //Event: Set Event Chaos 0's Scale.
+VoidFunc(CngMotStand2Chaos0, 0x6EDDD0); //Event: Set Event Chaos 0 looking to left. Only used in Ending.
+VoidFunc(CngMotStand4Chaos0, 0x6EDDE0); //Event: Set Event Chaos 0 looking forward. Only used in Ending.
+VoidFunc(CngMotFlyChaos0, 0x6EDDF0); //Event Set Event Chaos 0 looking up. Only used in Ending.
+FunctionPointer(void, CreateChaos0, (float pos_x, float pos_y, float pos_z, //Event: Create Chaos 0 Event Actor
+	int ang_x, int ang_y, int ang_z, signed int cng_int), 0x6EE930); 
+FunctionPointer(void, SetEffectRotaryEmerald, (int eme_num, NJS_TEXLIST* ef_name, float scale, float col_a, float col_r, float col_g, float col_b), 0x6EEA30); //Event: Create effect for RotaryEmerald (Emerald glowing etc.)
+FunctionPointer(void, SplashRotaryEmerald, (float splash_spd), 0x6EEAC0); //Event: Scatter RotaryEmerald objects
+VoidFunc(deleteRotaryEmeraldTask, 0x6EEE00); //Event: delete RotaryEmerald.
+FunctionPointer(void, CreateRotaryEmerald, (float pos_x, float pos_y, float pos_z, //Event: Controller for Emeralds spinning in a circle. Can be given any 7 tasks.
 	float r, int rot_spd, task* eme1_task_p, task* eme2_task_p, task* eme3_task_p,
-	task* eme4_task_p, task* eme5_task_p, task* eme6_task_p, task* eme7_task_p), 0x6EEF40); //Controller for Emeralds spinning in a circle.
-FunctionPointer(void, EV_Alife_FaceChange, (task* tp, int texid), 0x6EEFD0);
-FunctionPointer(task*, EV_Alife, (), 0x6EF2C0); //Tikal's Chao
-FunctionPointer(task*, COverlayCreate, (float s, float a, float r, float g, float b), 0x6EF480); //Overlay
-FunctionPointer(void, COverlaySetSpeed, (task* _this, float s), 0x6EF4C0);
-FunctionPointer(void, COverlaySetAlpha, (task* _this, float a), 0x6EF4D0);
-FunctionPointer(void, COverlaySetColor, (task* _this, float r, float g, float b), 0x6EF4E0);
-FunctionPointer(void, COverlaySetPriority, (task* _this, float p), 0x6EF500);
-FunctionPointer(task*, CIchimaie2_Create, (NJS_TEXLIST* texlistp, char mode), 0x6EF680); //Flashback Image
-FunctionPointer(void, CIchimaie2_SetDstAlpha, (task* _this, float alpha, int frame), 0x6EF6F0);
-FunctionPointer(task*, CIchimaie2_SetPriority, (task* _this, float pri), 0x6EF710); //Set how close you need to be to the camera to show up.
-FunctionPointer(task*, CIchimaie2_SetTextureId, (task* _this, int id), 0x6EF720);
-FunctionPointer(void, CIchimaie2_SetBlendingMode, (task* _this, int index, char mode), 0x6EF730);
-VoidFunc(deleteScanLine, 0x6EF750);
-FunctionPointer(void, createScanLine, (unsigned __int8 a, unsigned __int8 r, unsigned __int8 g, unsigned __int8 b, int res), 0x6EF940); //E102 1st Person Scanlines
-FunctionPointer(task*, CSkyWalk_create2, (task* obj, float height), 0x6EF9C0); //Invisible floor for task obj at height y
-VoidFunc(Last1AHigh_Create, 0x6EFAF0); //Platform for Perfect Chaos Scenes
-VoidFunc(Last1AHigh_Delete, 0x6EFB10);
-VoidFunc(efWhiteOff, 0x6EFB30);
-FunctionPointer(void, efWhiteOn, (int in_int, int out_int), 0x6EFCA0); //Fade to White used by Knuckles reacting to Chaos 4>6 transformation.
-FunctionPointer(void, efWhiteOn2, (int in_int, int white_int, int out_int), 0x6EFD00);  //Fade to white mainly used by Tikal
-FunctionPointer(void, StgChaos7CtrlOff, (int fexit), 0x6EFD70);
-VoidFunc(StgChaos7Howl1, 0x6EFDF0);
-FunctionPointer(void, StgChaos7Breath, (float length), 0x6EFE00);
-FunctionPointer(void, StgChaos7SetPos, (float pos_x, float pos_y, float pos_z), 0x6EFE10);
-FunctionPointer(void, StgChaos7SetAng, (int ang_x, int ang_y, int ang_z), 0x6EFE60);
-FunctionPointer(void, StgChaos7CtrlOn, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, int rot_spd), 0x6EFEC0); //Perfect Chaos Controls
-FunctionPointer(task*, SetEventBirdie0, (), 0x6F0070); //Flickies
-FunctionPointer(task*, SetEventBirdie1, (), 0x6F00A0);
-FunctionPointer(task*, SetEventBirdie2, (), 0x6F00D0);
-FunctionPointer(void, create_eggmoble, (float x, float y, float z, int ax, int ay, int az), 0x6F0940); //Event Eggmobile
-VoidFunc(delete_eggmoble, 0x6F09A0);
-FunctionPointer(void, ChgEggMobleMod, (char mode), 0x6F09C0);
-FunctionPointer(void, ChgEggMobleSMod, (char mode), 0x6F09E0);
-FunctionPointer(void, eggmoble_move_normal, (float x, float y, float z, signed int frame), 0x6F0A00);
-FunctionPointer(void, eggmoble_move_rapid, (float x, float y, float z, signed int frame), 0x6F0A60);
-FunctionPointer(void, eggmoble_turn, (signed int ax, signed int ay, signed int az, signed int frame, char efmode), 0x6F0AC0);
-FunctionPointer(void, eggmoble_moveandturn, (float x, float y, float z, signed int ax, signed int ay, signed int az, signed int frame, char efmode), 0x6F0B20);
-FunctionPointer(void, seteggmobleparam, (float updown_rat, int updown_acc), 0x6F0BC0);
-FunctionPointer(task*, GetEggMobleTask, (), 0x6F0BF0);
-FunctionPointer(task*, Create_SphereBomb, (float x, float y, float z, __int16 frame, float sphere_radius, float scl_spd), 0x6F0D10); //Bomb Effect
-FunctionPointer(void, ChgSphereBombMode, (task* tp, char mode), 0x6F0D90);
-FunctionPointer(void, SetSphereBombParameter, (task* tp, float scl_reduce_acc, float vscroll_spd, float sphere_radious), 0x6F0DB0);
-VoidFunc(WaterPillarOff, 0x6F1000);
-FunctionPointer(void, WaterPillarOn, (float pos_x, float pos_y, float pos_z, float play_spd, float scale), 0x6F15A0); //Super Sonic's Story Tornado 2 Chaos Pillar
-FunctionPointer(void, effect2_delete, (__int16 ef_num), 0x6F17E0);
-FunctionPointer(void, effect2_create, (task* obj, __int16 ef_num, float ef_x, float ef_y, float ef_z, NJS_TEXLIST* ef_name, __int16 ef_frame), 0x6F18C0); //Used for Tikal sealing chaos
-FunctionPointer(void, effect2_scl, (__int16 ef_num, float sx, float sy), 0x6F1A40);
-FunctionPointer(void, effect2_color, (__int16 ef_num, float col_a, float col_r, float col_g, float col_b), 0x6F1A70);
-FunctionPointer(void, effect2_angle, (__int16 ef_num, int ang_start, int ang_speed), 0x6F1AB0);
-FunctionPointer(void, effect2_size_change, (__int16 ef_num, float speed_x, float speed_y), 0x6F1AE0);
-FunctionPointer(void, stopWaveCtrl, (int id), 0x6F1B80);
-FunctionPointer(void, createWaveCtrl, (float x, float y, float z, float a4, float a5, int a6, int a7, int a8), 0x6F1D30); //Water Ripple
-FunctionPointer(task*, SetEventFrog, (), 0x6F1DE0); //Froggy (w/ Tail)
-FunctionPointer(void, chg_frogshape, (char shapeNo), 0x6F1F60); //Change shapefrog's shape.
-FunctionPointer(task*, set_shapefrog, (), 0x6F2330); //Frogggy (w/o Tail)
-VoidFunc(StgChaos6CtrlOff, 0x6F2360);
-VoidFunc(StgChaos6Human2Water, 0x6F23E0);
-VoidFunc(StgChaos6Water2Human, 0x6F23F0);
-FunctionPointer(void, StgChaos6SetPos, (float pos_x, float pos_y, float pos_z), 0x6F2400);
-FunctionPointer(void, StgChaos6SetAng, (int ang_x, int ang_y, int ang_z), 0x6F2450);
-FunctionPointer(void, StgChaos6CtrlOn, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, int rot_spd), 0x6F24B0); //Chaos 6 Boss Actor Controls
-VoidFunc(DeleteChaos4, 0x6F25A0);
-FunctionPointer(void, ChangeMotionSpeedChaos4, (float mod_spd), 0x6F25C0);
-FunctionPointer(void, CreateChaos4, (float pos_, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, signed int cng_int), 0x6F2AB0); //Chaos 4 Event Actor Controls
-FunctionPointer(void, EvCreateKiran2, (NJS_POINT3* pos, NJS_POINT3* velo, float scl, float scl_spd), 0x6F2C40); //Shooting Star Effect in Big's Intro/Knuckles' Outro
-FunctionPointer(void, Create_e102lightning, (float x, float y, float z, int childtask_num), 0x6F2F60); //Broken E102 Effects
-VoidFunc(Delete_e102lightning, 0x6F2FB0);
-FunctionPointer(void, sandStorm, (int frame, int alpha), 0x6F2FD0); //E102 First Person Noise
-VoidFunc(deleteBoot, 0x6F3000);
-FunctionPointer(void, createBoot, (int wait_frame, int sstorm_frame, int poweron_frame, int adjust_frame), 0x6F32E0);  //E102 Intro Boot
-VoidFunc(CreateBootSleep, 0x6F3350); //E102 Shut Down
-FunctionPointer(task*, CObjSmoke_Create, (), 0x6F3450); //Smoke Effect
-FunctionPointer(void, SetE102Effect, (float x, float y, float z), 0x6F3650); //Dust particles for E102 taking liftoff while escaping the Egg Carrier.
-FunctionPointer(void, ChgEffectMod, (char mode), 0x6F3690);
-VoidFunc(DelE102Effect, 0x6F36B0);
-VoidFunc(E101Factory_Create, 0x6F3700); //E101 Egg Carrier Room (Spawns about main interior)
-VoidFunc(E101Factory_Delete, 0x6F3720);
-FunctionPointer(task*, CreateCaptureBeam, (float x, float y, float z, int ax, int ay, int az), 0x6F39C0); //Eggman Capture Beam
-FunctionPointer(void, light_delete, (task* tp), 0x6F3A20);
-FunctionPointer(void, ChgCaptureMod, (task* tp, char mode), 0x6F3A40);
-FunctionPointer(void, SetCaptureParam, (task* tp, float sclx, float scly, float sclz, float scl_large_spd, float scl_small_spd, signed int rot_spd), 0x6F3A60);
-FunctionPointer(task*, ev_e105, (), 0x6F3D10);
-FunctionPointer(task*, ev_e104, (), 0x6F3F40);
-FunctionPointer(task*, ev_e103, (), 0x6F4180);
-FunctionPointer(task*, light_create, (float x, float y, float z), 0x6F43D0);
-FunctionPointer(void, light_turn, (task* tp, float x, float y, float z), 0x6F4400);
-VoidFunc(frog_create, 0x6F44F0); //Screen Froggy
-VoidFunc(frog_delete, 0x6F4530);
-VoidFunc(dark_on, 0x6F4600); //Nonfunctional, original fanfare scene darkness effect.
-VoidFunc(dark_off, 0x6F4620);
-FunctionPointer(task*, ev_e101, (), 0x6F49D0);
-FunctionPointer(void, MemeCreate, (int num), 0x6F53B0); //Emerald Shards flying into Master Emerald
-VoidFunc(MemeDelete, 0x6F53D0);
-VoidFunc(DeleteChaos2, 0x6F53F0);
-VoidFunc(ToHumanChaos2, 0x6F5410);
-FunctionPointer(void, ChangeMotionSpeedChaos2, (float mot_spd), 0x6F5430);
+	task* eme4_task_p, task* eme5_task_p, task* eme6_task_p, task* eme7_task_p), 0x6EEF40); 
+FunctionPointer(void, EV_Alife_FaceChange, (task* tp, int texid), 0x6EEFD0); //Event: Make Tikal's Chao change facial expressions.
+FunctionPointer(task*, EV_Alife, (), 0x6EF2C0); //Event: Tikal's Chao. Create with EV_CreateObjectFunc.
+FunctionPointer(task*, COverlayCreate, (float s, float a, float r, float g, float b), 0x6EF480); //Event: Create Color Overlay
+FunctionPointer(void, COverlaySetSpeed, (task* _this, float s), 0x6EF4C0); //Event: Set Overlay transition speed.
+FunctionPointer(void, COverlaySetAlpha, (task* _this, float a), 0x6EF4D0); //Event: Set Overlay alpha. Use COverlaySetSpeed to control how fast it transitions.
+FunctionPointer(void, COverlaySetColor, (task* _this, float r, float g, float b), 0x6EF4E0); //Event: Set Overlay color.
+FunctionPointer(void, COverlaySetPriority, (task* _this, float p), 0x6EF500); //Event: Set Overlay distance.
+FunctionPointer(task*, CIchimaie2_Create, (NJS_TEXLIST* texlistp, char mode), 0x6EF680); //Event: Create Image Overlay. Used for Flashbacks and Sonic's intro.
+FunctionPointer(void, CIchimaie2_SetDstAlpha, (task* _this, float alpha, int frame), 0x6EF6F0); //Event: Set Image Overlay alpha and transition speed.
+FunctionPointer(task*, CIchimaie2_SetPriority, (task* _this, float pri), 0x6EF710); //Event: Set Overlay distance.
+FunctionPointer(task*, CIchimaie2_SetTextureId, (task* _this, int id), 0x6EF720); //Event: Set Overlay texid (from the list given to CIchimaie2_Create).
+FunctionPointer(void, CIchimaie2_SetBlendingMode, (task* _this, int index, char mode), 0x6EF730); //Event: Set the blending mode for Image Overlay if transparent.
+VoidFunc(deleteScanLine, 0x6EF750); //Event: Delete E102 scanline effect.
+FunctionPointer(void, createScanLine, (unsigned __int8 a, unsigned __int8 r, unsigned __int8 g, unsigned __int8 b, int res), 0x6EF940); //Event: E102 1st Person Scanlines
+FunctionPointer(task*, CSkyWalk_create2, (task* obj, float height), 0x6EF9C0); //Event: Create invisible floor for task obj at height y.
+VoidFunc(Last1AHigh_Create, 0x6EFAF0); //Event: Create the Platform for Perfect Chaos Scenes.
+VoidFunc(Last1AHigh_Delete, 0x6EFB10); //Event: Delete the Platform for Perfect Chaos Scenes.
+VoidFunc(efWhiteOff, 0x6EFB30); //Event: Delete White fade effect.
+FunctionPointer(void, efWhiteOn, (int in_int, int out_int), 0x6EFCA0); //Event: Automated Fade to White. Uncommon. Only used by Knuckles reacting to the Chaos 4>6 transformation.
+FunctionPointer(void, efWhiteOn2, (int in_int, int white_int, int out_int), 0x6EFD00);  //Event: Automated Fade to white, mainly used by Tikal
+FunctionPointer(void, StgChaos7CtrlOff, (int fexit), 0x6EFD70); //Event: Return Perfect Chaos to usual behavior.
+VoidFunc(StgChaos7Howl1, 0x6EFDF0); //Event: Make Perfect Chaos roar.
+FunctionPointer(void, StgChaos7Breath, (float length), 0x6EFE00); //Event: Make Perfect Chaos shoot his mouth laser.
+FunctionPointer(void, StgChaos7SetPos, (float pos_x, float pos_y, float pos_z), 0x6EFE10); //Event: Set Perfect Chaos' Position.
+FunctionPointer(void, StgChaos7SetAng, (int ang_x, int ang_y, int ang_z), 0x6EFE60); //Event: Set Perfect Chaos' Angle.
+FunctionPointer(void, StgChaos7CtrlOn, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, int rot_spd), 0x6EFEC0); //Event: Disable boss behavior for Perfect Chaos.
+FunctionPointer(task*, SetEventBirdie0, (), 0x6F0070); //Event: Setup for Amy's Flicky.
+FunctionPointer(task*, SetEventBirdie1, (), 0x6F00A0); //Event: Setup for E102's Flicky.
+FunctionPointer(task*, SetEventBirdie2, (), 0x6F00D0); //Event: Setup for E101's Flicky.
+FunctionPointer(void, create_eggmoble, (float x, float y, float z, int ax, int ay, int az), 0x6F0940); //Event: Create Eggmobile.
+VoidFunc(delete_eggmoble, 0x6F09A0); //Event: Delete Eggmobile.
+FunctionPointer(void, ChgEggMobleMod, (char mode), 0x6F09C0); //Event: Set Eggmobile hover type.
+FunctionPointer(void, ChgEggMobleSMod, (char mode), 0x6F09E0);  //Event: Set Eggmobile jet type.
+FunctionPointer(void, eggmoble_move_normal, (float x, float y, float z, signed int frame), 0x6F0A00); //Event: Move Eggmobile
+FunctionPointer(void, eggmoble_move_rapid, (float x, float y, float z, signed int frame), 0x6F0A60);  //Event: Move Eggmobile (Faster)
+FunctionPointer(void, eggmoble_turn, (signed int ax, signed int ay, signed int az, signed int frame, char efmode), 0x6F0AC0);  //Event: Rotate Eggmobile
+FunctionPointer(void, eggmoble_moveandturn, (float x, float y, float z, signed int ax, signed int ay, signed int az, signed int frame, char efmode), 0x6F0B20);  //Event: Move and Rotate Eggmobile
+FunctionPointer(void, seteggmobleparam, (float updown_rat, int updown_acc), 0x6F0BC0); //Event: Set the rate and acceleration of Eggmobile's hovering animation.
+FunctionPointer(task*, GetEggMobleTask, (), 0x6F0BF0); //Event: Get Eggmobile's task.
+FunctionPointer(task*, Create_SphereBomb, (float x, float y, float z, __int16 frame, float sphere_radius, float scl_spd), 0x6F0D10); //Event: Create Explosion Effect
+FunctionPointer(void, ChgSphereBombMode, (task* tp, char mode), 0x6F0D90); //Event: Set mode of SphereBomb.
+FunctionPointer(void, SetSphereBombParameter, (task* tp, float scl_reduce_acc, float vscroll_spd, float sphere_radious), 0x6F0DB0); //Event: Set parameters of SphereBomb.
+VoidFunc(WaterPillarOff, 0x6F1000); //Event: Remove Chaos' Water Pillar.
+FunctionPointer(void, WaterPillarOn, (float pos_x, float pos_y, float pos_z, float play_spd, float scale), 0x6F15A0); //Event: Super Sonic's Story Tornado 2 Chaos Pillar
+FunctionPointer(void, effect2_delete, (__int16 ef_num), 0x6F17E0); //Event: Delete effect created with effect2_create.
+FunctionPointer(void, effect2_create, (task* obj, __int16 ef_num, float ef_x, float ef_y, float ef_z, NJS_TEXLIST* ef_name, __int16 ef_frame), 0x6F18C0); //Event: Effect Generator. Uncommon, only used for Tikal sealing chaos.
+FunctionPointer(void, effect2_scl, (__int16 ef_num, float sx, float sy), 0x6F1A40); //Event: Set scale of effect created with effect2_create.
+FunctionPointer(void, effect2_color, (__int16 ef_num, float col_a, float col_r, float col_g, float col_b), 0x6F1A70); //Event: Color effect created with effect2_create.
+FunctionPointer(void, effect2_angle, (__int16 ef_num, int ang_start, int ang_speed), 0x6F1AB0); //Event: Set Angle of effect created with effect2_create.
+FunctionPointer(void, effect2_size_change, (__int16 ef_num, float speed_x, float speed_y), 0x6F1AE0); //Event: Scale effect (animated) created with effect2_create.
+FunctionPointer(void, stopWaveCtrl, (int id), 0x6F1B80); //Event: Delete water ripple.
+FunctionPointer(void, createWaveCtrl, (float x, float y, float z, float a4, float a5, int a6, int a7, int a8), 0x6F1D30); //Event: Water Ripple
+FunctionPointer(task*, SetEventFrog, (), 0x6F1DE0); //Event: Froggy (w/ Tail). Create with EV_CreateObjectFunc.
+FunctionPointer(void, chg_frogshape, (char shapeNo), 0x6F1F60); //Event: Set whether setfrog has the tail or not.
+FunctionPointer(task*, set_shapefrog, (), 0x6F2330); //Froggy (w/o Tail). Create with EV_CreateObjectFunc.
+VoidFunc(StgChaos6CtrlOff, 0x6F2360); //Event: Return Chaos 6 to usual behavior.
+VoidFunc(StgChaos6Human2Water, 0x6F23E0); //Event: Make Chaos 6 retreat into puddle.
+VoidFunc(StgChaos6Water2Human, 0x6F23F0); //Event: Make Chaos 6 emerge from puddle.
+FunctionPointer(void, StgChaos6SetPos, (float pos_x, float pos_y, float pos_z), 0x6F2400); //Event: Set Chaos 6's Position.
+FunctionPointer(void, StgChaos6SetAng, (int ang_x, int ang_y, int ang_z), 0x6F2450); //Event: Set Chaos 6's Angle
+FunctionPointer(void, StgChaos6CtrlOn, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, int rot_spd), 0x6F24B0); //Event: Disable boss behavior for Chaos 6.
+VoidFunc(DeleteChaos4, 0x6F25A0); //Event: Delete Event Chaos 4.
+FunctionPointer(void, ChangeMotionSpeedChaos4, (float mod_spd), 0x6F25C0); //Event: Set Event Chaos 4's movement speed.
+FunctionPointer(void, CreateChaos4, (float pos_, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, signed int cng_int), 0x6F2AB0); //Event: Create Chaos 4 Event Actor
+FunctionPointer(void, EvCreateKiran2, (NJS_POINT3* pos, NJS_POINT3* velo, float scl, float scl_spd), 0x6F2C40); //Event: Shooting Star Effect in Big's Intro/Knuckles' Outro.
+FunctionPointer(void, Create_e102lightning, (float x, float y, float z, int childtask_num), 0x6F2F60); //Event: Broken E102 electrical effects.
+VoidFunc(Delete_e102lightning, 0x6F2FB0); //Event: Delete E102 electrical effects.
+FunctionPointer(void, sandStorm, (int frame, int alpha), 0x6F2FD0); //Event: Set E102 First Person Noise (Requires createBoot)
+VoidFunc(deleteBoot, 0x6F3000);  //Event: Delete E102 Boot task.
+FunctionPointer(void, createBoot, (int wait_frame, int sstorm_frame, int poweron_frame, int adjust_frame), 0x6F32E0);  //Event: E102 1st-person noise/overlay.
+VoidFunc(CreateBootSleep, 0x6F3350); //Event: E102 Shut Down
+FunctionPointer(task*, CObjSmoke_Create, (), 0x6F3450); //Event: Create smoke Effect
+FunctionPointer(void, SetE102Effect, (float x, float y, float z), 0x6F3650); //Event: Dust particles for E102 taking liftoff while escaping the Egg Carrier.
+FunctionPointer(void, ChgEffectMod, (char mode), 0x6F3690); //Event: Change mode for E102Effect.
+VoidFunc(DelE102Effect, 0x6F36B0); //Event: Delete E102Effect.
+VoidFunc(E101Factory_Create, 0x6F3700); //Event: Create E101 Egg Carrier Room (Spawns above main interior)
+VoidFunc(E101Factory_Delete, 0x6F3720); //Event: Delete E101 Egg Carrier Room 
+FunctionPointer(task*, CreateCaptureBeam, (float x, float y, float z, int ax, int ay, int az), 0x6F39C0); //Event: Eggman Capture Beam
+FunctionPointer(void, light_delete, (task* tp), 0x6F3A20); //Event: Delete Capture Beam (Alt name: delete_capturebeam)
+FunctionPointer(void, ChgCaptureMod, (task* tp, char mode), 0x6F3A40); //Event: Change mode for capture beam.
+FunctionPointer(void, SetCaptureParam, (task* tp, float sclx, float scly, float sclz, float scl_large_spd, float scl_small_spd, signed int rot_spd), 0x6F3A60); //Event: Set parameters for capture beam.
+FunctionPointer(task*, ev_e105, (), 0x6F3D10); //Event: E105 (Create with EV_CreateObjectFunc)
+FunctionPointer(task*, ev_e104, (), 0x6F3F40); //Event: E104 (Create with EV_CreateObjectFunc)
+FunctionPointer(task*, ev_e103, (), 0x6F4180); //Event: E103 (Create with EV_CreateObjectFunc)
+FunctionPointer(task*, light_create, (float x, float y, float z), 0x6F43D0); //Event: Eggman's spotlights from fanfare cutscene.
+FunctionPointer(void, light_turn, (task* tp, float x, float y, float z), 0x6F4400); //Event: Move Eggman's spotlights.
+VoidFunc(frog_create, 0x6F44F0); //Event: Egg Carrier Screen Froggy
+VoidFunc(frog_delete, 0x6F4530); //Event: Delete Egg Carrier Screen Froggy
+VoidFunc(dark_on, 0x6F4600); //Event: Nonfunctional, original fanfare scene darkness effect.
+VoidFunc(dark_off, 0x6F4620); //Event: Nonfunctional, delete original fanfare scene darkness effect.
+FunctionPointer(task*, ev_e101, (), 0x6F49D0); //Event: E101 (Create with EV_CreateObjectFunc)
+FunctionPointer(void, MemeCreate, (int num), 0x6F53B0); //Event: Emerald Shards flying into Master Emerald
+VoidFunc(MemeDelete, 0x6F53D0); //Event: Delete Emerald Shards flying into Master Emerald
+VoidFunc(DeleteChaos2, 0x6F53F0); //Event: Delete Event Chaos 2.
+VoidFunc(ToHumanChaos2, 0x6F5410); //Event: Make Event Chaos 2 emerge from puddle.
+FunctionPointer(void, ChangeMotionSpeedChaos2, (float mot_spd), 0x6F5430); //Set Event Chaos 6's Movement Speed.
 FunctionPointer(void, SetPositionChaos2, (float pos_x, float pos_y, float pos_z), 0x6F5450);
 FunctionPointer(void, SetAngleChaos2, (int ang_x, int ang_y, int ang_z), 0x6F5470);
-VoidFunc(SetWaterChaos2, 0x6F5490);
+VoidFunc(SetWaterChaos2, 0x6F5490); //Event: Set Event Chaos 2 as puddle form.
 FunctionPointer(void, CreateChaos2, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, signed int cng_int), 0x6F5A70); //Chaos 2 Event Actor Controls
-FunctionPointer(void, throughplayer_on, (task* tp), 0x6F5B50); //Make this object ignore other object collision.
-FunctionPointer(void, throughplayer_off, (task* tp), 0x6F5B90);
-VoidFunc(DeleteChaos1, 0x6F5BE0);
-VoidFunc(ToWaterChaos1, 0x6F5C00);
-VoidFunc(ToHumanChaos1, 0x6F5C20);
-FunctionPointer(void, ChangeMotionSpeedChaos1, (float mot_spd), 0x6F5C40);
-FunctionPointer(void, SetPositionChaos1, (float pos_x, float pos_y, float pos_z), 0x6F5C60);
-VoidFunc(SetWaterChaos1, 0x6F5C80);
-FunctionPointer(void, CreateChaos1, (float pos_x, float pos_y, float pos_z, int ang_x,
-	int ang_y, int ang_z, int cng_int), 0x6F6120); //Chaos 1 Event Actor Controls
-VoidFunc(StgChaos2CtrlOff, 0x6F6210);
-VoidFunc(StgChaos2Human2Water, 0x6F6290);
-VoidFunc(StgChaos2Water2Human, 0x6F62A0);
-FunctionPointer(void, StgChaos2Action, (float ratio), 0x6F62B0);
-FunctionPointer(void, StgChaos2BubbleAdd, (float num), 0x6F62C0);
-FunctionPointer(void, StgChaos2SetPos, (float pos_x, float pos_y, float pos_z), 0x6F62D0);
-FunctionPointer(void, StgChaos2SetAng, (int ang_x, int ang_y, int ang_z), 0x6F6320);
-FunctionPointer(void, StgChaos2CtrlOn, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, int rot_spd), 0x6F6380); //Chaos 2 Boss Actor Controls
-VoidFunc(CEcCloud_Stop, 0x6F6690);
+FunctionPointer(void, throughplayer_on, (task* tp), 0x6F5B50); //Event: task ignores other tasks' collision.
+FunctionPointer(void, throughplayer_off, (task* tp), 0x6F5B90); //Event: Turn off throughplayer effect.
+VoidFunc(DeleteChaos1, 0x6F5BE0); //Event: Delete Chaos 1.
+VoidFunc(ToWaterChaos1, 0x6F5C00); //Event: Make Chaos 1 retreat into puddle.
+VoidFunc(ToHumanChaos1, 0x6F5C20); //Event: Make Chaos 1 emerge from puddle.
+FunctionPointer(void, ChangeMotionSpeedChaos1, (float mot_spd), 0x6F5C40); //Set Chaos 1's Movement Speed.
+FunctionPointer(void, SetPositionChaos1, (float pos_x, float pos_y, float pos_z), 0x6F5C60);  //Event: Set Chaos 1's Position.
+VoidFunc(SetWaterChaos1, 0x6F5C80); //Event: Set Chaos 1 as puddle form.
+FunctionPointer(void, CreateChaos1, (float pos_x, float pos_y, float pos_z, int ang_x,  //Event: Create Chaos 1 Event Actor
+	int ang_y, int ang_z, int cng_int), 0x6F6120);
+VoidFunc(StgChaos2CtrlOff, 0x6F6210); //Event: Return Chaos 2 to usual behavior.
+VoidFunc(StgChaos2Human2Water, 0x6F6290); //Event: Make Chaos 2 retreat into puddle.
+VoidFunc(StgChaos2Water2Human, 0x6F62A0); //Event: Make Chaos 2 emerge from puddle.
+FunctionPointer(void, StgChaos2Action, (float ratio), 0x6F62B0); //Event: Make Chaos 2 roar.
+FunctionPointer(void, StgChaos2BubbleAdd, (float num), 0x6F62C0); //Event: Set number of bubbles inside Chaos 2.
+FunctionPointer(void, StgChaos2SetPos, (float pos_x, float pos_y, float pos_z), 0x6F62D0); //Event: Set Chaos 2's Position.
+FunctionPointer(void, StgChaos2SetAng, (int ang_x, int ang_y, int ang_z), 0x6F6320); //Event: Set Chaos 2's Angle.
+FunctionPointer(void, StgChaos2CtrlOn, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z, int rot_spd), 0x6F6380); //Event: Disable boss behavior for Chaos 2.
+VoidFunc(CEcCloud_Stop, 0x6F6690); //Event: Stop Egg Carrier wind effect (from CEcCloud_Start).
 FunctionPointer(void, CEcCloud_Start, (float scale, int num), 0x6F6810); //Egg Carrier wind effect.
-FunctionPointer(task*, set_amy, (), 0x6F6B20); //ZERO Carrying Amy
-FunctionPointer(void, setamyparam, (float spd), 0x6F6B40);
-FunctionPointer(task*, mghand_init, (float x, float y, float z, int ax, int ay, int az), 0x6F6F30); //Eggman's claw
-FunctionPointer(void, chgMghandMod, (task* obj, char a2), 0x6F6FC0);
-FunctionPointer(void, mghandsetspd, (task* obj, int angspd_x, int angspd_y), 0x6F6FE0);
-VoidFunc(fadein_delete, 0x6F7000); //Leftover from an old fade implementation in Amy's intro
-VoidFunc(DeleteEggmoble1, 0x6F7020);
-FunctionPointer(void, MoveEggmoble1, (float tar_x, float tar_y, float tar_z), 0x6F7040);
-FunctionPointer(void, SetEggmoble1, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z), 0x6F7090);
-VoidFunc(JetNoneEggmoble1, 0x6F70D0);
-VoidFunc(JetNormalEggmoble1, 0x6F70E0);
-VoidFunc(JetLargeEggmoble1, 0x6F70F0);
-VoidFunc(JetMaxEggmoble1, 0x6F7100);
-FunctionPointer(void, ChangeSpeedEggmoble1, (float speed), 0x6F7110);
-FunctionPointer(void, CreateEggmoble1, (float x, float y, float z, int angx, int angy, int angz), 0x6F78A0); //Egg Hornet Event Actor
-FunctionPointer(void, EV_eggmoble2, (float x, float y, float z, int ax, int ay, int az), 0x6F7D80); //Egg Walker (event).
-FunctionPointer(void, ChgEgg2Mod, (char mode), 0x6F7DF0);
-VoidFunc(EV_deleggmoble2, 0x6F7E00);
-FunctionPointer(void, ShadowEggmoble2, (float size, float height), 0x6F7E20);
-FunctionPointer(task*, SetEventObjectSSCar, (), 0x6F7FE0); //Cars in Egg Walker Cutscene
-FunctionPointer(void, SetEggMissileParam, (task*, float), 0x6F8300);
-FunctionPointer(void, SetMissileEffect, (task*, char), 0x6F8320);
-FunctionPointer(task*, Create_EV_Eggmissile, (), 0x6F8610); //Cutscene Eggman Missile
-FunctionPointer(task*, CSukiari_Create, (int color, NJS_POINT2* a2, int pointn), 0x6F8AB0); //Eggman seeing the Purple Emerald screen effect.
-FunctionPointer(void, CSukiari_Alpha, (task* a1, unsigned char alpha, int frame), 0x6F8B40);
-FunctionPointer(task*, ev_trzangai, (), 0x6F9390); //Crashed prototype plane
-FunctionPointer(task*, miles_with_ptr, (), 0x6F9570); //Prototype plane
-FunctionPointer(void, miles_motchg, (int num, float spd), 0x6F95A0);
-VoidFunc(StgChaos0CtrlOff, 0x6F95D0);
-FunctionPointer(void, StgChaos0SetPos, (float pos_x, float pos_y, float pos_z), 0x6F9650);
-FunctionPointer(void, StgChaos0SetAng, (int ang_x, int ang_y, int ang_z), 0x6F96A0);
-FunctionPointer(void, StgChaos0CtrlOn, (float pos_x, float pos_y, float pos_z,
-	int ang_x, int ang_y, int ang_z, int rot_spd), 0x6F9840); //Chaos 0 Boss Actor Controls
-FunctionPointer(task*, EV_zangai_ctrl, (float x, float y, float z, float sx,
-	float sy, float sz, __int16 a7), 0x6F9B40); //Egg Viper cutscene debris controller
-VoidFunc(EV_EggViperKesu, 0x7B5500);
-VoidFunc(EV_EggViperEggmanToujou, 0x7B5570);
-VoidFunc(EV_EggViperEggmanShaberu, 0x7B5580);
-VoidFunc(EV_EggViperEggmanShaberiYame, 0x7B5590);
-VoidFunc(EV_EggViperEggmanHikkomu, 0x7B55A0);
-VoidFunc(EV_EggViperJoushou, 0x7B55B0);
-FunctionPointer(void, EV_EggViperArawaru, (float xpos, float ypos, float zpos, int yang), 0x7B5CF0);
-FunctionPointer(task*, CreateEventObjectTR, (void), 0x6F89A0); //Tornado 1
+FunctionPointer(task*, set_amy, (), 0x6F6B20); //Event: ZERO Carrying Amy. Create with EV_CreateObjectFunc.
+FunctionPointer(void, setamyparam, (float spd), 0x6F6B40); //Event: Set animation speed for ZERO Carrying Amy. (set_amy)
+FunctionPointer(task*, mghand_init, (float x, float y, float z, int ax, int ay, int az), 0x6F6F30); //Event: Eggman's claw (Or as the game calls it, "Magic Hand")
+FunctionPointer(void, chgMghandMod, (task* obj, char mode), 0x6F6FC0); //Event: Set mode for Eggman's claw.
+FunctionPointer(void, mghandsetspd, (task* obj, int angspd_x, int angspd_y), 0x6F6FE0);  //Event: Set animation speed for Eggman's claw.
+VoidFunc(fadein_delete, 0x6F7000); //Event: Leftover from an old fade implementation in Amy's intro. Just deletes an unused task: task_fadein.
+VoidFunc(DeleteEggmoble1, 0x6F7020); //Event: Delete Event Egg Hornet.
+FunctionPointer(void, MoveEggmoble1, (float tar_x, float tar_y, float tar_z), 0x6F7040); //Event: Move Event Egg Hornet.
+FunctionPointer(void, SetEggmoble1, (float pos_x, float pos_y, float pos_z, int ang_x, int ang_y, int ang_z), 0x6F7090); //Event: Set Event Egg Hornet's Position and Angle.
+VoidFunc(JetNoneEggmoble1, 0x6F70D0); //Event: Event Egg Hornet Jet mode.
+VoidFunc(JetNormalEggmoble1, 0x6F70E0); //Event: Event Egg Hornet Jet mode.
+VoidFunc(JetLargeEggmoble1, 0x6F70F0); //Event: Event Egg Hornet Jet mode.
+VoidFunc(JetMaxEggmoble1, 0x6F7100); //Event: Event Egg Hornet Jet mode.
+FunctionPointer(void, ChangeSpeedEggmoble1, (float speed), 0x6F7110); //Event: Set Event Egg Hornet's flying speed.
+FunctionPointer(void, CreateEggmoble1, (float x, float y, float z, int angx, int angy, int angz), 0x6F78A0); //Event: Egg Hornet Event Actor
+FunctionPointer(void, EV_eggmoble2, (float x, float y, float z, int ax, int ay, int az), 0x6F7D80); //Event: Egg Walker Event Actor.
+FunctionPointer(void, ChgEgg2Mod, (char mode), 0x6F7DF0); //Event: Set mode for Event Egg Walker.
+VoidFunc(EV_deleggmoble2, 0x6F7E00); //Event: Delete Event Egg Walker.
+FunctionPointer(void, ShadowEggmoble2, (float size, float height), 0x6F7E20); //Event: Set the size and height of the shadow below Event Egg Walker.
+FunctionPointer(task*, SetEventObjectSSCar, (), 0x6F7FE0); //Event: Cars in Egg Walker Cutscene. Create with EV_CreateObjectFunc.
+FunctionPointer(void, SetEggMissileParam, (task* tp, float scl), 0x6F8300); //Event: Set Event Missile' scl.
+FunctionPointer(void, SetMissileEffect, (task* tp, char attr), 0x6F8320); //Event: Set active effect bit for Event Eggman Missile
+FunctionPointer(task*, Create_EV_Eggmissile, (), 0x6F8610); //Event: Create Event Eggman Missile
+FunctionPointer(task*, CSukiari_Create, (int color, NJS_POINT2* a2, int pointn), 0x6F8AB0); //Event: Eggman seeing the Purple Emerald screen effect.
+FunctionPointer(void, CSukiari_Alpha, (task* a1, unsigned char alpha, int frame), 0x6F8B40); //Event: Set alpha for CSukiari.
+FunctionPointer(task*, ev_trzangai, (), 0x6F9390); //Event: Crashed prototype plane. Create with EV_CreateObjectFunc.
+FunctionPointer(task*, miles_with_ptr, (), 0x6F9570); //Event: Prototype plane in Tails' intro. Create with EV_CreateObjectFunc.
+FunctionPointer(void, miles_motchg, (int num, float spd), 0x6F95A0); //Event: Set animation for miles_with_ptr.
+VoidFunc(StgChaos0CtrlOff, 0x6F95D0);  //Event: Return Chaos 0 to usual behavior.
+FunctionPointer(void, StgChaos0SetPos, (float pos_x, float pos_y, float pos_z), 0x6F9650); //Event: Set Chaos 0's Position.
+FunctionPointer(void, StgChaos0SetAng, (int ang_x, int ang_y, int ang_z), 0x6F96A0); //Event: Set Chaos 0's Angle.
+FunctionPointer(void, StgChaos0CtrlOn, (float pos_x, float pos_y, float pos_z, // //Event: Disable boss behavior for Chaos 0.
+	int ang_x, int ang_y, int ang_z, int rot_spd), 0x6F9840);
+FunctionPointer(task*, EV_zangai_ctrl, (float x, float y, float z, float sx, //Event: Egg Viper cutscene debris controller
+	float sy, float sz, __int16 a7), 0x6F9B40); 
+VoidFunc(EV_EggViperKesu, 0x7B5500); //Event: Egg Viper: Reset.
+VoidFunc(EV_EggViperEggmanToujou, 0x7B5570); //Event: Egg Viper plays animation: Reveal cockpit.
+VoidFunc(EV_EggViperEggmanShaberu, 0x7B5580); //Event: Egg Viper plays animation: Eggman talking (animated)
+VoidFunc(EV_EggViperEggmanShaberiYame, 0x7B5590); //Event: Egg Viper plays animation: Eggman talking (static)
+VoidFunc(EV_EggViperEggmanHikkomu, 0x7B55A0); //Event: Egg Viper plays animation: Eggman returns to cockpit.
+VoidFunc(EV_EggViperJoushou, 0x7B55B0); //Event: Egg Viper plays animation: Close cockpit.
+FunctionPointer(void, EV_EggViperArawaru, (float xpos, float ypos, float zpos, int yang), 0x7B5CF0); //Event: Set Egg Viper's Position.
+FunctionPointer(task*, CreateEventObjectTR, (void), 0x6F89A0); //Event: Tornado 1. Create with EV_CreateObjectFunc.
 
 // Story sequence
 FunctionPointer(BOOL, SeqCheckFlag, (int no), 0x412D20);
