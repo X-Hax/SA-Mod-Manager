@@ -4,8 +4,8 @@
 #include <unordered_map>
 
 static bool testspawn_eventenabled = false;
-static bool testspawn_posenabled   = false;
-static bool testspawn_charenabled  = false;
+static bool testspawn_posenabled = false;
+static bool testspawn_charenabled = false;
 static bool testspawn_levelenabled = false;
 
 static int testspawn_eventid = 0;
@@ -340,7 +340,7 @@ static const std::unordered_map<int, CutsceneLevelData> CutsceneList = {
 	{ 0x09D, { LevelIDs_MysticRuins, 1, Characters_Knuckles, 10, 0 } }, // Knuckles restores the Master Emerald
 	{ 0x09F, { LevelIDs_MysticRuins, 1, Characters_Knuckles, 11, 2 } }, // Knuckles Outro
 	{ 0x0A0, { LevelIDs_StationSquare, 4, Characters_Knuckles, 3, 2 } }, // Knuckles follows Eggman in Station Square hotel
-	
+
 	// Gamma events
 	{ 0x0B0, { LevelIDs_MysticRuins, 3, Characters_Gamma, 0, 0 } }, // Gamma Intro
 	{ 0x0B1, { LevelIDs_MysticRuins, 3, Characters_Gamma, 0, 2 } }, // Gamma Enters Final Egg
@@ -765,7 +765,7 @@ static void __cdecl ForceEventMode()
 		SetupCharacter(testspawn_charenabled ? CurrentCharacter : data->character);
 		SetEventFlagsForCutscene(testspawn_eventid);
 		if (!testspawn_levelenabled) SetLevelAndAct(data->level, data->act);
-		
+
 		// If the event has story integration
 		if (data->scene_select != -1)
 		{
@@ -809,7 +809,7 @@ static void DisableMusic()
 }
 
 static void DisableVoice()
-{	
+{
 	EnableVoice = false;
 }
 
@@ -843,6 +843,9 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 {
 	int argc = 0;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+
+	bool GmEdited = false;
+
 	for (int i = 1; i < argc; i++)
 	{
 		if (!wcscmp(argv[i], L"--movie") || !wcscmp(argv[i], L"-m"))
@@ -898,6 +901,7 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 		else if (!wcscmp(argv[i], L"--gamemode") || !wcscmp(argv[i], L"-g"))
 		{
 			testspawn_gamemode = parse_gamemode(argv[++i]);
+			GmEdited = true;
 		}
 		else if (!wcscmp(argv[i], L"--save") || !wcscmp(argv[i], L"-s"))
 		{
@@ -993,6 +997,16 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 			DisableVoice();
 			DisableSound();
 		}
+	}
+
+	if (CurrentLevel == LevelIDs_MysticRuins)
+	{
+		WriteData<1>((int*)0x52F140, 0xC3); //remove Char NPC load function to fix crash
+	}
+
+	if (!GmEdited && (CurrentLevel > LevelIDs_StationSquare && CurrentLevel <= LevelIDs_Past))
+	{
+		testspawn_gamemode = GameModes_Adventure_Field;
 	}
 
 	if (CurrentLevel == LevelIDs_IceCap)
