@@ -1001,10 +1001,10 @@ void ProcessTestSpawn(const HelperFunctions& helperFunctions)
 
 	if (CurrentLevel == LevelIDs_MysticRuins)
 	{
-		WriteData<1>((int*)0x52F140, 0xC3); //remove Char NPC load function to fix crash
+		WriteData<1>((int*)0x52F140, 0xC3); //remove NPC Char load function to fix crash
 	}
 
-	if (!GmEdited && (CurrentLevel > LevelIDs_StationSquare && CurrentLevel <= LevelIDs_Past))
+	if (!GmEdited && (CurrentLevel >= LevelIDs_StationSquare && CurrentLevel <= LevelIDs_Past))
 	{
 		testspawn_gamemode = GameModes_Adventure_Field;
 	}
