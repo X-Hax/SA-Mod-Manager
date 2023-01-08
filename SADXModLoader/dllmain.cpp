@@ -1287,6 +1287,16 @@ uiscale::FillMode GetScaleFillMode()
 	return uiscale::bg_fill;
 }
 
+bool isInteger(const std::string& s)
+{
+	if (s.empty() || ((!isdigit(s[0])) && (s[0] != '-') && (s[0] != '+'))) return false;
+
+	char* p;
+	strtol(s.c_str(), &p, 10);
+
+	return (*p == 0);
+}
+
 std::string base_name(std::string const& path)
 {
 	std::string remove = path.substr(path.find_last_of("/\\") + 1);

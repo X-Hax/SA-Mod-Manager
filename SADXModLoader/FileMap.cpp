@@ -62,18 +62,22 @@ void FileMap::EditVoiceDuration(std::string modFile, bool isJp)
 
 	if (ms)
 	{
+	
 		std::string newID = base_name(modFile);
-		voiceID = std::stoi(newID);
+		if (isInteger(newID))
+		{
+			voiceID = std::stoi(newID);
 
-		if (isJp)
-		{
-			if (voiceID >= 0)
-				SetJapaneseVoiceDuration(voiceID, ms);
-		}
-		else
-		{
-			if (voiceID >= 0)
-				SetEnglishVoiceDuration(voiceID, ms);
+			if (isJp)
+			{
+				if (voiceID >= 0)
+					SetJapaneseVoiceDuration(voiceID, ms);
+			}
+			else
+			{
+				if (voiceID >= 0)
+					SetEnglishVoiceDuration(voiceID, ms);
+			}
 		}
 	}
 }
@@ -218,9 +222,12 @@ void FileMap::scanFolder_int(const string& srcPath, int srcLen, int modIdx)
 			// Original filename should have a ".wma" extension.
 			ReplaceFileExtension(origFile, ".wma");
 
-			if (isEng || isJP)
+			if (GetExtension(modFile) == "wav")
 			{
-				EditVoiceDuration(modFile, isJP);
+				if (isEng || isJP)
+				{
+					EditVoiceDuration(modFile, isJP);							
+				}
 			}
 
 		}
