@@ -61,8 +61,8 @@ void FileMap::EditVoiceDuration(std::string modFile, bool isJp)
 	int voiceID = 0;
 
 	if (ms)
-	{
-	
+	{	
+
 		std::string newID = base_name(modFile);
 		if (isInteger(newID))
 		{

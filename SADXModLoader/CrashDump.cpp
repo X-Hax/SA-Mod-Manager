@@ -7,9 +7,11 @@
 #include <time.h>
 
 using namespace std;
-string texCrashMsg = "Texture error: the game failed to apply one or more textures. This could be a mod conflict.\nIf you are making a mod, make sure all your textures are loaded\n ";
 
-static const std::unordered_map<intptr_t, string> crashes_addresses_map = {
+const string texCrashMsg = "Texture error: the game failed to apply one or more textures. This could be a mod conflict.\nIf you are making a mod, make sure all your textures are loaded\n ";
+const string charCrashMsg = "Character Crash: The game crashed in one of the character's main function.\nYou most likely have a mod order conflict.\nMods that edit gameplay should be loaded last.";
+
+static const unordered_map<intptr_t, string> crashes_addresses_map = {
 	{ 0x78CF24, texCrashMsg},
 	{ 0x78D149, texCrashMsg },
 	{ 0x7B293A85, "DirectX error: You most likely reached a tex ID out of range."},
@@ -17,7 +19,41 @@ static const std::unordered_map<intptr_t, string> crashes_addresses_map = {
 	{ 0x787148, "Landtable error: The game crashed on the eval flag check.\nIf you are making a level mod, make sure all your meshes have the flag\n\"Skip Children\" checked."}
 };
 
-static const std::string getErrorMSG(intptr_t address)
+static const unordered_map<intptr_t, intptr_t> characters_addresses_map = {
+	{ (intptr_t)SonicTheHedgehog, 0x49BFBB },
+	{ (intptr_t)Eggman, 0x7B52DE},
+	{ (intptr_t)MilesTalesPrower, 0x4624CB},
+	{ (intptr_t)KnucklesTheEchidna, 0x47B504 },
+	{ (intptr_t)Tikal, 0x7B43E0 },
+	{ (intptr_t)AmyRose, 0x48B5B6 },
+	{ (intptr_t)E102, 0x4841CA },
+	{ (intptr_t)BigTheCat, 0x491438 }
+};
+
+static string getCharacterCrash(intptr_t address)
+{
+	unordered_map<intptr_t, intptr_t>::const_iterator it = characters_addresses_map.begin();
+
+	while (it != characters_addresses_map.end())
+	{
+		intptr_t val1 = it->first;
+		intptr_t val2 = it->second;
+
+		PrintDebug("Looking at %d\n", val1);
+
+		if (address >= val1 && address <= val2)
+		{
+			return charCrashMsg;
+		}
+
+		it++;
+	}
+
+	return "NULL";
+}
+
+
+static string getErrorMSG(intptr_t address)
 {
 	if ((crashes_addresses_map.find(address) == crashes_addresses_map.end()))
 	{
@@ -139,11 +175,22 @@ LONG WINAPI HandleException(struct _EXCEPTION_POINTERS* apExceptionInfo)
 		string errorCommon = getErrorMSG(crashID); //get error message if the crash address is common
 		string fullMsg = "SADX has crashed at " + address + " (" + dllName + ").\n";
 
-		if (errorCommon != "NULL") {
+		if (errorCommon != "NULL") 
+		{
 			fullMsg += errorCommon + "\n"; //add the common error message if it exists
 		}
+		else
+		{
+			//if the crash isn't in the list, check if it's a character crash...
+			auto charcrash = getCharacterCrash(crashID); 
 
-		fullMsg += "A minidump has been created in your SADX folder.\n";
+			if (charcrash != "NULL")
+			{
+				fullMsg += charcrash + "\n"; 
+			}
+		}
+
+		fullMsg += "\nA minidump has been created in your SADX folder.\n";
 		CopyAndRename_ModLoaderIni(); //copy ModLoaderIni file to the Crash Dump folder so we know what mod and cheat were used
 		string text = "Crash Address: " + address + "\n";
 		PrintDebug("\nFault module name: %s \n", dllName.c_str());
