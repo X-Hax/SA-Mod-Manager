@@ -39,8 +39,6 @@ static string getCharacterCrash(intptr_t address)
 		intptr_t val1 = it->first;
 		intptr_t val2 = it->second;
 
-		PrintDebug("Looking at %d\n", val1);
-
 		if (address >= val1 && address <= val2)
 		{
 			return charCrashMsg;
