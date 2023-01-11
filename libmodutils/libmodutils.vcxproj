@@ -14,7 +14,7 @@
     <ProjectGuid>{90CF4AD9-6603-458F-8E3F-E99C0818E43D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>libmodutils</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,11 +41,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);$(ProgramFiles)\DirectX 8.1 SDK\include</IncludePath>
+    <IncludePath>$(IncludePath);$(ProgramFiles)\DirectX 8.1 SDK\include</IncludePath>
     <OutDir>$(SolutionDir)bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);$(ProgramFiles)\DirectX 8.1 SDK\include</IncludePath>
+    <IncludePath>$(IncludePath);$(ProgramFiles)\DirectX 8.1 SDK\include</IncludePath>
     <OutDir>$(SolutionDir)bin\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
