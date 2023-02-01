@@ -231,11 +231,18 @@ void ProcessDLLData(const wchar_t* filename, const wstring& mod_dir)
 	}
 	
 	dlllabels.clear();
+	bool sonicReplaced = false;
 	group = dlldata->getGroup("Files");
 
 	for (const auto& iter : *group)
 	{
 		auto type = dllfilefuncmap.find(split(iter.second, '|')[0]);
+
+		std::string str = ("figure/sonic/models/");
+		if (iter.first.find(str) != string::npos)
+		{
+			sonicReplaced = true;
+		}
 
 		if (type != dllfilefuncmap.end())
 		{
@@ -263,6 +270,10 @@ void ProcessDLLData(const wchar_t* filename, const wstring& mod_dir)
 			type->second(group, exp.address);
 		}
 	}
+
+	//fix Sonic hand not welded with the crystal ring
+	if (sonicReplaced)
+		SONIC_OBJECTS[63]->sibling = SONIC_OBJECTS[4];
 
 	delete dlldata;
 }
