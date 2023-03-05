@@ -216,15 +216,17 @@ inline void setup_vsync()
 {
 	auto& p = PresentParameters;
 
+	bool d3d9 = GetModuleHandle(L"d3d9.dll") != nullptr;
+
 	if (vsync)
 	{
 		p.SwapEffect = D3DSWAPEFFECT_COPY_VSYNC;
-		p.FullScreen_PresentationInterval = IsWindowed ? D3DPRESENT_INTERVAL_DEFAULT : D3DPRESENT_INTERVAL_ONE;
+		p.FullScreen_PresentationInterval = (IsWindowed && !d3d9) ? D3DPRESENT_INTERVAL_DEFAULT : D3DPRESENT_INTERVAL_ONE;
 	}
 	else
 	{
 		p.SwapEffect = D3DSWAPEFFECT_DISCARD;
-		p.FullScreen_PresentationInterval = IsWindowed ? D3DPRESENT_INTERVAL_DEFAULT : D3DPRESENT_INTERVAL_IMMEDIATE;
+		p.FullScreen_PresentationInterval = (IsWindowed && !d3d9) ? D3DPRESENT_INTERVAL_DEFAULT : D3DPRESENT_INTERVAL_IMMEDIATE;
 	}
 }
 
