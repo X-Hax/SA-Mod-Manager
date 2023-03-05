@@ -839,6 +839,7 @@ namespace SADXModManager
 				{
 					MessageBox.Show(this,
 						"Mods with duplicate ID '" + id + "' have been detected.\n" +
+						"Mod name: '" + modinfo.Name + "'.\n" +
 						"Remove duplicate mods or edit the value 'ModID' in mod.ini to fix this error.\n",
 						"SADX Mod Manager Error",
 						MessageBoxButtons.OK,
