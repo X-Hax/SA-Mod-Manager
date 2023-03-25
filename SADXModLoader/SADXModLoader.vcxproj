@@ -25,6 +25,7 @@
     <ClCompile Include="FixFOV.cpp" />
     <ClCompile Include="hudscale.cpp" />
     <ClCompile Include="InterpolationFixes.cpp" />
+    <ClCompile Include="jvList.cpp" />
     <ClCompile Include="MaterialColorFixes.cpp" />
     <ClCompile Include="MinorPatches.cpp" />
     <ClCompile Include="polybuff.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="include\SADXVariablesNew.h" />
     <ClInclude Include="include\ScaleInfo.h" />
     <ClInclude Include="InterpolationFixes.h" />
+    <ClInclude Include="jvList.h" />
     <ClInclude Include="MaterialColorFixes.h" />
     <ClInclude Include="MinorPatches.h" />
     <ClInclude Include="polybuff.h" />

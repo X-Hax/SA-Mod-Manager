@@ -55,6 +55,7 @@ using std::vector;
 #include "sound.h"
 #include "InterpolationFixes.h"
 #include "MinorPatches.h"
+#include "jvList.h"
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -1361,6 +1362,21 @@ void RegisterJapaneseVoiceDuration(const uint16_t voiceID, const uint16_t durati
 	SetJapaneseVoiceDuration(voiceID, duration);
 }
 
+
+void RegisterCharacterWelds(const uint8_t character, const char* iniPath)
+{
+	if (!FileExists(iniPath))
+	{
+#ifdef _DEBUG
+		PrintDebug("Failed to read welds ini file; welds won't be edited.\n");
+#endif
+		return;
+	}
+
+	IniFile* ini = new IniFile(std::string(iniPath));
+	SetNewWelds(character, ini);
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
@@ -1395,7 +1411,8 @@ static const HelperFunctions helperFunctions =
 	&ReplaceTexture,
 	&MipmapBlacklistGBIX,
 	&RegisterEnglishVoiceDuration,
-	&RegisterJapaneseVoiceDuration
+	&RegisterJapaneseVoiceDuration,
+	&RegisterCharacterWelds
 };
 
 static const char* const dlldatakeys[] = {
