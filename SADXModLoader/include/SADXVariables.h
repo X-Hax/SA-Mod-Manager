@@ -2372,6 +2372,7 @@ DataArray(NJS_TEXNAME, BIG_TEXNAMES, 0x3C55020, 38);
 DataArray(NJS_TEXNAME, FISHING_TEXNAME, 0x3C551E8, 65);
 DataArray(WeldInfo, BigWeldInfo, 0x3C55500, 17);
 DataArray(AnimData, BigAnimData, 0x3C556A0, 105);
+DataArray(WeldInfo, NPCBigWeldInfo, 0x3C826E8, 9);
 DataPointer(char, SuperSonicFlag, 0x3C55D45);
 DataPointer(NJS_MODEL_SADX *, SONIC_MODELS5_FullStretch_R, 0x3C55D48);
 DataPointer(NJS_MODEL_SADX *, SONIC_MODELS7_Unstretched_R, 0x3C55D4C);
