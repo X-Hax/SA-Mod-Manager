@@ -1307,59 +1307,37 @@ std::string base_name(std::string const& path)
 
 }
 
-static vector<__int16> _USVoiceDurationList;
-static vector<__int16> _JPVoiceDurationList;
+static vector<__int16> _USVoiceDurationList(duration_us.size());
+static vector<__int16> _JPVoiceDurationList(duration_jp.size());
 
-void SetEnglishVoiceDuration(const uint16_t voiceID, const uint16_t duration)
+void SetVoiceDuration(vector<__int16> &vec, int* voiceArray, uint32_t size, const uint16_t voiceID, const uint16_t duration)
 {
-	if (_USVoiceDurationList.empty()) //copy original duration voice list
+	if (vec.empty()) //copy original duration voice list
 	{
-		_USVoiceDurationList.resize(duration_us.size());
-		memcpy(_USVoiceDurationList.data(), duration_us, sizeof(__int16) * duration_us.size());
+		memcpy(vec.data(), voiceArray, sizeof(__int16) * size);
 	}
 
 	short curSize = _USVoiceDurationList.size();
 
 	if (voiceID >= curSize) //if the user requested a voice ID out of bound, resize vector length.
 	{
-		_USVoiceDurationList.resize(voiceID + 1);
+		vec.resize(voiceID + 1);
 	}
 
-	_USVoiceDurationList.at(voiceID) = duration; //finally, add the new duration to the specificied voice.
+	vec.at(voiceID) = duration; //finally, add the new duration to the specificied voice.
 #ifdef _DEBUG
-	PrintDebug("Edited Eng Voice %d, new duration: %d\n", voiceID, duration);
+	PrintDebug("Edited Voice %d, new duration: %d\n", voiceID, duration);
 #endif
 }
 
 void RegisterEnglishVoiceDuration(const uint16_t voiceID, const uint16_t duration)
 {
-	SetEnglishVoiceDuration(voiceID, duration);
-}
-
-void SetJapaneseVoiceDuration(const uint16_t voiceID, const uint16_t duration)
-{
-	if (_JPVoiceDurationList.empty())
-	{
-		_JPVoiceDurationList.resize(duration_jp.size());
-		memcpy(_JPVoiceDurationList.data(), duration_jp, sizeof(__int16) * duration_jp.size());
-	}
-
-	short curSize = _JPVoiceDurationList.size();
-
-	if (voiceID >= curSize)
-	{
-		_JPVoiceDurationList.resize(voiceID + 1);
-	}
-
-	_JPVoiceDurationList.at(voiceID) = duration;
-#ifdef _DEBUG
-	PrintDebug("Edited JP Voice %d, duration: %d\n", voiceID, duration);
-#endif
+	SetVoiceDuration(_USVoiceDurationList, duration_us, duration_us.size(), voiceID, duration);
 }
 
 void RegisterJapaneseVoiceDuration(const uint16_t voiceID, const uint16_t duration)
 {
-	SetJapaneseVoiceDuration(voiceID, duration);
+	SetVoiceDuration(_JPVoiceDurationList, duration_jp, duration_jp.size(), voiceID, duration);
 }
 
 
