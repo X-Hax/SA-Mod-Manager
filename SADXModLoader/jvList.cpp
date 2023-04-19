@@ -100,6 +100,29 @@ void CreateJVList(NJS_OBJECT* arr[], IniFile* ini, std::vector<PL_JOIN_VERTEX>& 
 	delete ini;
 }
 
+void SetNPCWelds(PL_JOIN_VERTEX* dest, std::vector<PL_JOIN_VERTEX> &origin, const uint16_t size)
+{
+	if (!dest || origin.empty())
+		return;
+
+	uint16_t count = 0;
+
+	for (uint16_t i = 0; i < origin.size(); i++)
+	{
+		if (origin.at(i).inpmode <= 3 && origin.at(i).srcobj && origin.at(i).dstobj) //npcs only support a specific type of welds with valid models
+		{
+			dest[count] = origin.at(i);
+			count++;
+		}
+
+		if (count >= size)
+		{
+			dest[count + 1] = { 0 };
+			break;
+		}		
+	}
+}
+
 void SetSonicNewWelds(IniFile* file)
 {
 	so_jvlist.clear();
@@ -111,8 +134,7 @@ void SetSonicNewWelds(IniFile* file)
 	WriteData((PL_JOIN_VERTEX**)0x49ACB6, so_jvlist.data());
 
 	const auto sizeNPC = NPCSonicWeldInfo.size();
-	memcpy(NPCSonicWeldInfo, so_jvlist.data(), sizeof(PL_JOIN_VERTEX) * sizeNPC);
-	NPCSonicWeldInfo[sizeNPC - 1] = { 0 };
+	SetNPCWelds((PL_JOIN_VERTEX*)&NPCSonicWeldInfo, so_jvlist, sizeNPC);
 	WriteData<1>((int*)0x7D14D0, 0xC3); //remove init NPC welds so they don't overwrite the changes here
 }
 
@@ -152,8 +174,7 @@ void SetMilesNewWelds(IniFile* file)
 	WriteData((PL_JOIN_VERTEX**)0x461896, miles_jvlist.data());
 
 	const auto size = NPCTailsWeldInfo.size();
-	memcpy(NPCTailsWeldInfo, miles_jvlist.data(), sizeof(PL_JOIN_VERTEX) * size);
-	NPCTailsWeldInfo[size - 1] = { 0 };
+	SetNPCWelds((PL_JOIN_VERTEX*)&NPCTailsWeldInfo, miles_jvlist, size);
 	WriteData<1>((int*)0x7C7560, 0xC3);
 }
 
@@ -202,8 +223,7 @@ void SetKnucklesNewWelds(IniFile* file)
 	WriteData((PL_JOIN_VERTEX**)0x47A89E, knux_jvlist.data());
 
 	const auto size = NPCKnucklesWeldInfo.size();
-	memcpy(NPCKnucklesWeldInfo, knux_jvlist.data(), sizeof(PL_JOIN_VERTEX) * size);
-	NPCKnucklesWeldInfo[size - 1] = { 0 };
+	SetNPCWelds((PL_JOIN_VERTEX*)&NPCKnucklesWeldInfo, knux_jvlist, size);
 	WriteData<1>((int*)0x7C9C80, 0xc3);
 	Knuckles_Upgrades_t.Hook(Knuckles_Upgrades_r);
 }
@@ -256,8 +276,7 @@ void SetAmyNewWelds(IniFile* file)
 	WriteData((PL_JOIN_VERTEX**)0x48AD0B, amy_jvlist.data());
 
 	const auto size = NPCAmyWeldInfo.size();
-	memcpy(NPCAmyWeldInfo, amy_jvlist.data(), sizeof(PL_JOIN_VERTEX) * size);
-	NPCAmyWeldInfo[size - 1] = { 0 };
+	SetNPCWelds((PL_JOIN_VERTEX*)&NPCAmyWeldInfo, amy_jvlist, size);
 	WriteData<1>((int*)0x7CD000, 0xC3);
 }
 
@@ -269,8 +288,7 @@ void SetBigNewWelds(IniFile* file)
 	WriteData((PL_JOIN_VERTEX**)0x490C14, big_jvlist.data());
 
 	const auto size = NPCBigWeldInfo.size();
-	memcpy(NPCBigWeldInfo, big_jvlist.data(), sizeof(PL_JOIN_VERTEX) * size);
-	NPCBigWeldInfo[size - 1] = { 0 };
+	SetNPCWelds((PL_JOIN_VERTEX*)&NPCBigWeldInfo, big_jvlist, size);
 	WriteData<1>((int*)0x7D5EB0, 0xC3);
 }
 
