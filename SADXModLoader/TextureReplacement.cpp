@@ -158,7 +158,7 @@ void ReplaceTexture(const char* pvm_name, const char* tex_name, const char* file
 	string nameNoExt = tex_name;
 	StripExtension(nameNoExt);
 	transform(nameNoExt.begin(), nameNoExt.end(), nameNoExt.begin(), tolower);
-	(*pvmdata)[nameNoExt] = { gbix, texFile, width, height, 0, texPack };
+	(*pvmdata)[nameNoExt] = { gbix, texFile, width, height, INT_MAX, texPack };
 }
 
 void MipmapBlacklistGBIX(Uint32 index)
