@@ -5,41 +5,51 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:ModManagerWPF"
 		mc:Ignorable="d"
-		Title="SADX Mod Manager" Height="Auto" Width="Auto" SizeToContent="WidthAndHeight">
-    <Grid Width="450" Height="500">
-        <TabControl x:Name="tcMain" VerticalAlignment="Top" Height="455">
+		Title="SADX Mod Manager"
+        MinHeight="550" MinWidth="590" Height="600" Width="620" WindowStartupLocation="CenterScreen">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="139*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl x:Name="tcMain" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <TabItem x:Name="tabMain" Header="Mods">
                 <Grid Background="#FFE5E5E5">
-                    <ListView x:Name="listMods" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,0,35,120">
+                    <ListView x:Name="listMods" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,0,35,120"
+                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="White">
                         <ListView.View>
                             <GridView>
                                 <GridView.Columns>
-                                    <GridViewColumn Header="Name" Width="Auto">
+                                    <GridViewColumn Header="Name" Width="150">
 
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Author" Width="Auto">
+                                    <GridViewColumn Header="Author" Width="120">
 
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Version" Width="Auto">
+                                    <GridViewColumn Header="Version" Width="60">
 
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Category" Width="Auto">
+                                    <GridViewColumn Header="Category" Width="80">
 
                                     </GridViewColumn>
                                 </GridView.Columns>
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Button x:Name="btnRefresh" Content="Refresh" Margin="0,317,374,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="60"/>
-                    <Button x:Name="btnConfigure" Content="Configure" Margin="0,317,309,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="60"/>
-                    <Button x:Name="btnNewMod" Content="New Mod" HorizontalAlignment="Left" Margin="349,317,0,0" VerticalAlignment="Top" Width="60"/>
+                    <Button x:Name="btnRefresh" Content="Refresh" Margin="10,310,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="96" Height="25"/>
+                    <Button x:Name="btnConfigure" Content="Configure" Margin="129,310,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="96" Height="25"/>
+                    <Button x:Name="btnNewMod" Content="New Mod" HorizontalAlignment="Left" Margin="462,312,0,0" VerticalAlignment="Top" Width="96" Height="25"/>
                     <Label x:Name="lblDescription" Content="Description: No Mod Selected" HorizontalAlignment="Left" Margin="10,342,0,0" VerticalAlignment="Top" Height="80" Width="384"/>
-                    <TextBox HorizontalAlignment="Left" Margin="179,317,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="165" Height="20"/>
-                    <Button x:Name="btnMoveTop" Content="T" HorizontalAlignment="Left" Margin="414,10,0,0" VerticalAlignment="Top" Width="20"/>
-                    <Button x:Name="btnMoveUp" Content="U" HorizontalAlignment="Left" Margin="414,35,0,0" VerticalAlignment="Top" Width="20"/>
-                    <Button x:Name="btnMoveDown" Content="D" HorizontalAlignment="Left" Margin="414,60,0,0" VerticalAlignment="Top" Width="20"/>
-                    <Button x:Name="btnMoveBottom" Content="B" HorizontalAlignment="Left" Margin="414,85,0,0" VerticalAlignment="Top" Width="20"/>
-                    <Label Content="Filter:" HorizontalAlignment="Left" Margin="140,314,0,0" VerticalAlignment="Top"/>
+                    <TextBox HorizontalAlignment="Left" Margin="285,312,0,0" TextWrapping="Wrap" Text="Search..." VerticalAlignment="Top" Width="165" Height="25"/>
+                    <Button x:Name="btnMoveTop" Content="T" HorizontalAlignment="Right" Margin="0,10,9,0" VerticalAlignment="Top" Width="20"/>
+                    <Button x:Name="btnMoveUp" Content="U" HorizontalAlignment="Right" Margin="0,35,9,0" VerticalAlignment="Top" Width="20"/>
+                    <Button x:Name="btnMoveDown" Content="D" HorizontalAlignment="Right" Margin="0,60,9,0" VerticalAlignment="Top" Width="20"/>
+                    <Button x:Name="btnMoveBottom" Content="B" HorizontalAlignment="Right" Margin="0,85,9,0" VerticalAlignment="Top" Width="20"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="tbCodes" Header="Codes">
@@ -89,8 +99,8 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="btnSavePlay" Content="Save &amp; Play" HorizontalAlignment="Left" Margin="10,470,0,0" VerticalAlignment="Top" Width="80"/>
-        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="95,470,0,0" VerticalAlignment="Top" Width="80"/>
-        <Button x:Name="btnInstall" Content="Install Loader" HorizontalAlignment="Left" Margin="180,470,0,0" VerticalAlignment="Top" Width="80"/>
+        <Button x:Name="btnSavePlay" Content="Save &amp; Play" HorizontalAlignment="Left" Margin="10,470,0,0" VerticalAlignment="Top" Width="96" Height="25" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="75,470,0,0" VerticalAlignment="Top" Width="96" Height="25" Grid.Column="1"/>
+        <Button x:Name="btnInstall" Content="Install Loader" HorizontalAlignment="Left" Margin="185,470,0,0" VerticalAlignment="Top" Width="96" Height="25" Grid.Column="1"/>
     </Grid>
 </Window>
