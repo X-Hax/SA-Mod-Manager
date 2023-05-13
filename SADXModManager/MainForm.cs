@@ -918,6 +918,31 @@ namespace SADXModManager
 			return check;
 		}
 
+
+		private bool CheckMSVCRT()
+		{
+			if (Environment.OSVersion.Platform >= PlatformID.Unix)
+				return false;
+
+			string vc140Path = Environment.SystemDirectory + "\\vcruntime140.dll";
+			if (File.Exists(vc140Path))
+			{
+				return false;
+			}			
+			else
+			{
+				DialogResult dg = MessageBox.Show("It looks like you're missing some Visual C++ Redistributables, some mods won't work without them. Would you like to download and install them now?", "Missing VC++", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+				
+				if (dg == DialogResult.Yes)
+				{
+					Process.Start("https://aka.ms/vs/17/release/vc_redist.x86.exe");
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		private void saveAndPlayButton_Click(object sender, EventArgs e)
 		{
 			if (updateChecker?.IsBusy == true)
@@ -961,6 +986,9 @@ namespace SADXModManager
 				if (CheckDependencies(mod, cMods))
 					return;
 			}
+
+			if (CheckMSVCRT())
+				return;
 
 			Process process = Process.Start(loaderini.Mods.Select((item) => mods[item].EXEFile)
 												.FirstOrDefault((item) => !string.IsNullOrEmpty(item)) ?? "sonic.exe");
