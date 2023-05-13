@@ -18,7 +18,7 @@
             <ColumnDefinition Width="139*"/>
         </Grid.ColumnDefinitions>
         <TabControl x:Name="tcMain" VerticalAlignment="Top" Grid.ColumnSpan="2">
-            <TabItem x:Name="tabMain" Header="Mods">
+            <TabItem x:Name="tabMain" Header="Mods" Height="22" Width="50">
                 <Grid Background="#FFE5E5E5">
                     <ListView x:Name="listMods" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,0,35,120"
                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="White">
@@ -52,12 +52,16 @@
                     <Button x:Name="btnMoveBottom" Content="B" HorizontalAlignment="Right" Margin="0,85,9,0" VerticalAlignment="Top" Width="20"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="tbCodes" Header="Codes">
+            <TabItem x:Name="tbCodes" Header="Codes" Margin="3,0,-3,0">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
-            <TabItem x:Name="tabGame" Header="Game Config">
+            <TabItem x:Name="tabGame" Header="Game Config" Margin="6,0,-6,0">
                 <Grid Background="#FFE5E5E5">
-                    <TabControl x:Name="tcGame">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="42*"/>
+                        <ColumnDefinition Width="265*"/>
+                    </Grid.ColumnDefinitions>
+                    <TabControl x:Name="tcGame" Grid.ColumnSpan="2" Margin="0,0,0,80">
                         <TabItem x:Name="tabGraphics" Header="Graphics">
                             <Grid Background="#FFE5E5E5"/>
                         </TabItem>
@@ -76,7 +80,7 @@
                     </TabControl>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="tabConfig" Header="Manager Config">
+            <TabItem x:Name="tabConfig" Header="Manager Config" Margin="9,0,-9,0">
                 <Grid Background="#FFE5E5E5">
                     <GroupBox x:Name="grpManUpdates" Header="Updates" HorizontalAlignment="Center" VerticalAlignment="Top" Height="75" Width="444">
                         <Grid Width="Auto" Height="Auto">
@@ -99,8 +103,12 @@
                 </Grid>
             </TabItem>
         </TabControl>
+
+
         <Button x:Name="btnSavePlay" Content="Save &amp; Play" HorizontalAlignment="Left" Margin="10,470,0,0" VerticalAlignment="Top" Width="96" Height="25" Grid.ColumnSpan="2"/>
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="75,470,0,0" VerticalAlignment="Top" Width="96" Height="25" Grid.Column="1"/>
         <Button x:Name="btnInstall" Content="Install Loader" HorizontalAlignment="Left" Margin="185,470,0,0" VerticalAlignment="Top" Width="96" Height="25" Grid.Column="1"/>
+
+
     </Grid>
 </Window>
