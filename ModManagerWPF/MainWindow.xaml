@@ -24,20 +24,19 @@
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="RefreshBtn" Content="Refresh" Grid.Column="0" />
-                            <Button x:Name="ConfigureModBtn" Content="Configure..." Grid.Column="1"  Margin="10,0,0,0" />
+                            <Button x:Name="RefreshBtn" Content="{DynamicResource MainBtnRefresh}" Grid.Column="0" />
+                            <Button x:Name="ConfigureModBtn" Content="{DynamicResource MainBtnConfigureMod}" Grid.Column="1"  Margin="10,0,0,0" />
                        
                         </Grid>
 
                     </GroupBox>
-
 
                     <GroupBox x:Name="BottomNewMod" Margin="10,5,34,0">
                         <Grid VerticalAlignment="Bottom" Height="30" HorizontalAlignment="Right" Margin="0,0,0,-4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="NewModBtn" Content="New Mod..."/>
+                            <Button x:Name="NewModBtn" Content="{DynamicResource MainBtnNewMod}"/>
                             
                         </Grid>
          
@@ -128,9 +127,9 @@
             </Grid.ColumnDefinitions>
             <Grid x:Name="bottomGrid" Margin="7,0,0,0" VerticalAlignment="Center" Height="60" Grid.ColumnSpan="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button x:Name="SaveAndPlayButton" Content="Save &amp; Play" Width="130" MaxHeight="30" Margin="0,8,0,8"/>
-                    <Button x:Name="SaveButton"  Content="Save"  Width="130" MaxHeight="30" Margin="6,8,5,8"/>
-                    <Button x:Name="InstallLoaderBtn" Content="Uninstall Loader" Width="130" MaxHeight="30" Margin="0,8,0,8"/>
+                    <Button x:Name="SaveAndPlayButton" Content="{DynamicResource MainBtnSaveAndPlay}" Width="130" MaxHeight="30" Margin="0,8,0,8"/>
+                    <Button x:Name="SaveButton"  Content="{DynamicResource MainBtnSave}"  Width="130" MaxHeight="30" Margin="6,8,5,8"/>
+                    <Button x:Name="InstallLoaderBtn" Content="{DynamicResource MainBtnInstallLoader}" Width="130" MaxHeight="30" Margin="0,8,0,8"/>
                 </StackPanel>
             </Grid>
         </Grid>

@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="MainBtnSave" >Sauvegarder</system:String>
+    <system:String x:Key="MainBtnSaveAndPlay" xml:space="preserve">Sauvegarder &amp; &#13;Jouer</system:String>
+    <system:String x:Key="MainBtnInstallLoader" >Installer Loader</system:String>
+
+    <system:String x:Key="MainBtnRefresh" >Actualiser</system:String>
+    <system:String x:Key="MainBtnConfigureMod" >Configurer Mod</system:String>
+    <system:String x:Key="MainBtnNewMod" >Nouveau Mod</system:String>
+    <system:String x:Key="MainDescpMod" >Description: Aucun mod sélectionné</system:String>
+    <system:String x:Key="MainSearchTxt" >Rechercher...</system:String>
+
+    <system:String x:Key="MainTabMods">Mods</system:String>
+    <system:String x:Key="MainTabCodes">Codes</system:String>
+    <system:String x:Key="MainTabGameConfig">Config Jeu</system:String>
+    <system:String x:Key="MainTabManagerConfig">Config Manager</system:String>
+
+    <system:String x:Key="MainTabModName">Nom</system:String>
+    <system:String x:Key="MainTabModAuthor">Auteur</system:String>
+    <system:String x:Key="MainTabModVersion">Version</system:String>
+    <system:String x:Key="MainTabModCategory">Catégorie</system:String>
+</ResourceDictionary>

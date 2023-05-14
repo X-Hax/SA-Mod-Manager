@@ -1,0 +1,26 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Main Form UI Strings -->
+  <system:String x:Key="MainBtnSave" >Save</system:String>
+    <system:String x:Key="MainBtnSaveAndPlay" >Save &amp; Play</system:String>
+    <system:String x:Key="MainBtnInstallLoader" >Install Loader</system:String>    
+    <system:String x:Key="MainBtnRefresh" >Refresh</system:String>
+    <system:String x:Key="MainBtnConfigureMod" >Configure Mod</system:String>
+    <system:String x:Key="MainBtnNewMod" >New Mod</system:String>
+    <system:String x:Key="MainDescpMod" >Description: No Mod Select</system:String>
+    <system:String x:Key="MainSearchTxt" >Search...</system:String>
+
+    <system:String x:Key="MainTabMods">Mods</system:String>
+    <system:String x:Key="MainTabCodes">Codes</system:String>
+    <system:String x:Key="MainTabGameConfig">Game Config</system:String>
+    <system:String x:Key="MainTabManagerConfig">Manager Config</system:String>
+
+    <system:String x:Key="MainTabModName">Name</system:String>
+    <system:String x:Key="MainTabModAuthor">Author</system:String>
+    <system:String x:Key="MainTabModVersion">Version</system:String>
+    <system:String x:Key="MainTabModCategory">Category</system:String>
+
+</ResourceDictionary>
