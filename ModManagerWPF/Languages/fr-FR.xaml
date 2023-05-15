@@ -3,22 +3,22 @@
                      xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <system:String x:Key="MainBtnSave" >Sauvegarder</system:String>
-    <system:String x:Key="MainBtnSaveAndPlay" xml:space="preserve">Sauvegarder &amp; &#13;Jouer</system:String>
+    <system:String x:Key="MainBtnSaveAndPlay" xml:space="preserve">Sauvegarder &amp; Jouer</system:String>
     <system:String x:Key="MainBtnInstallLoader" >Installer Loader</system:String>
 
-    <system:String x:Key="MainBtnRefresh" >Actualiser</system:String>
-    <system:String x:Key="MainBtnConfigureMod" >Configurer Mod</system:String>
-    <system:String x:Key="MainBtnNewMod" >Nouveau Mod</system:String>
-    <system:String x:Key="MainDescpMod" >Description: Aucun mod sélectionné</system:String>
-    <system:String x:Key="MainSearchTxt" >Rechercher...</system:String>
+    <system:String x:Key="ModsBtnRefresh" >Actualiser</system:String>
+    <system:String x:Key="ModsBtnConfigure" >Configurer Mod</system:String>
+    <system:String x:Key="ModsBtnNew" >Nouveau Mod</system:String>
+    <system:String x:Key="ModsLblDescription" >Description: Aucun mod sélectionné</system:String>
+    <system:String x:Key="ModsTextBoxSearch" >Rechercher...</system:String>
 
     <system:String x:Key="MainTabMods">Mods</system:String>
     <system:String x:Key="MainTabCodes">Codes</system:String>
     <system:String x:Key="MainTabGameConfig">Config Jeu</system:String>
     <system:String x:Key="MainTabManagerConfig">Config Manager</system:String>
 
-    <system:String x:Key="MainTabModName">Nom</system:String>
-    <system:String x:Key="MainTabModAuthor">Auteur</system:String>
-    <system:String x:Key="MainTabModVersion">Version</system:String>
-    <system:String x:Key="MainTabModCategory">Catégorie</system:String>
+    <system:String x:Key="ModsListName">Nom</system:String>
+    <system:String x:Key="ModsListAuthor">Auteur</system:String>
+    <system:String x:Key="ModsListVersion">Version</system:String>
+    <system:String x:Key="ModsListCategory">Catégorie</system:String>
 </ResourceDictionary>
