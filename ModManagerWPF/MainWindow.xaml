@@ -241,21 +241,21 @@
             <Grid x:Name="bottomGrid" VerticalAlignment="Center" Height="60">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="175"/>
+                    <ColumnDefinition Width="160"/>
                     <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="175"/>
+                    <ColumnDefinition Width="160"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="SaveAndPlayButton" Content="{DynamicResource MainBtnSaveAndPlay}"  MaxHeight="40" Grid.Column="1"/>
-                <Button x:Name="SaveButton"  Content="{DynamicResource MainBtnSave}" MaxHeight="40" Grid.Column="3"/>
+                <Button x:Name="SaveAndPlayButton" Content="{DynamicResource MainBtnSaveAndPlay}"  MaxHeight="30" Grid.Column="1"/>
+                <Button x:Name="SaveButton"  Content="{DynamicResource MainBtnSave}" MaxHeight="30" Grid.Column="3"/>
             </Grid>
 
             <!--This Grid manages the Install Loader Button.-->
             <Grid HorizontalAlignment="Right" Grid.Column="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="175"/>
+                    <ColumnDefinition Width="170"/>
                     <ColumnDefinition Width="10"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="InstallLoaderBtn" Content="{DynamicResource MainBtnInstallLoader}" MaxHeight="40" />
+                <Button x:Name="InstallLoaderBtn" Content="{DynamicResource MainBtnInstallLoader}" MaxHeight="30" />
             </Grid>
         </Grid>
 
