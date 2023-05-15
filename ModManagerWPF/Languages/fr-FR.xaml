@@ -2,23 +2,47 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <!--Main Window Strings-->
     <system:String x:Key="MainBtnSave" >Sauvegarder</system:String>
     <system:String x:Key="MainBtnSaveAndPlay" xml:space="preserve">Sauvegarder &amp; Jouer</system:String>
     <system:String x:Key="MainBtnInstallLoader" >Installer Loader</system:String>
-
-    <system:String x:Key="ModsBtnRefresh" >Actualiser</system:String>
-    <system:String x:Key="ModsBtnConfigure" >Configurer Mod</system:String>
-    <system:String x:Key="ModsBtnNew" >Nouveau Mod</system:String>
-    <system:String x:Key="ModsLblDescription" >Description: Aucun mod sélectionné</system:String>
-    <system:String x:Key="ModsTextBoxSearch" >Rechercher...</system:String>
-
     <system:String x:Key="MainTabMods">Mods</system:String>
     <system:String x:Key="MainTabCodes">Codes</system:String>
     <system:String x:Key="MainTabGameConfig">Config Jeu</system:String>
     <system:String x:Key="MainTabManagerConfig">Config Manager</system:String>
 
+    <!--Mods Tab Strings-->
     <system:String x:Key="ModsListName">Nom</system:String>
     <system:String x:Key="ModsListAuthor">Auteur</system:String>
     <system:String x:Key="ModsListVersion">Version</system:String>
     <system:String x:Key="ModsListCategory">Catégorie</system:String>
+
+    <system:String x:Key="ModsBtnRefresh" >Actualiser</system:String>
+    <system:String x:Key="ModsBtnConfigure" >Configurer Mod</system:String>
+    <system:String x:Key="ModsBtnNew" >Nouveau Mod...</system:String>
+    <system:String x:Key="ModsLblDescription" >Description: Aucun mod sélectionné</system:String>
+    <system:String x:Key="ModsTextBoxSearch" >Rechercher...</system:String>
+
+    <!--Codes Tab Strings-->
+
+
+    <!--Game Config Tab Strings-->
+    <system:String x:Key="GameTabGraphics">Graphismes</system:String>
+    <system:String x:Key="GameTabInput">Contrôles</system:String>
+    <system:String x:Key="GameTabSound">Son</system:String>
+    <system:String x:Key="GameTabPatches">Patches</system:String>
+    <system:String x:Key="GameTabDebug">Debug</system:String>
+
+    <!--Manager Config Tab Strings-->
+    <system:String x:Key="ManagerGrpUpdates">Mises à jour</system:String>
+    <system:String x:Key="ManagerChkCheckModloader">Vérifier les mises à jour du Mod Loader au démarrage</system:String>
+    <system:String x:Key="ManagerChkCheckMods">Vérifier les mises à jour des Mods au démarrage</system:String>
+    <system:String x:Key="ManagerBtnCheckNow">Vérifier les mises à jour</system:String>
+
+    <system:String x:Key="ManagerGrpOptions">Options</system:String>
+    <system:String x:Key="ManagerLblTheme">Thèmes:</system:String>
+    <system:String x:Key="ManagerLblLang">Langue:</system:String>
+    <system:String x:Key="ManagerLblProfile">Profil:</system:String>
+    <system:String x:Key="ManagerBtnOneClick">Activer 1-Click Install</system:String>
+
 </ResourceDictionary>

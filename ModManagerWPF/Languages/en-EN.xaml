@@ -20,7 +20,7 @@
 
     <system:String x:Key="ModsBtnRefresh" >Refresh</system:String>
     <system:String x:Key="ModsBtnConfigure" >Configure Mod</system:String>
-    <system:String x:Key="ModsBtnNew" >New Mod</system:String>
+    <system:String x:Key="ModsBtnNew" >New Mod...</system:String>
     <system:String x:Key="ModsLblDescription" >Description: No Mod Select</system:String>
     <system:String x:Key="ModsTextBoxSearch" >Search...</system:String>
     
@@ -38,7 +38,7 @@
     <system:String x:Key="ManagerGrpUpdates">Updates</system:String>
     <system:String x:Key="ManagerChkCheckModloader">Check for Mod Loader Updates on Startup</system:String>
     <system:String x:Key="ManagerChkCheckMods">Check for Mod Updates on Startup</system:String>
-    <system:String x:Key="ManagerBtnCheckNow">Check Now for Updates</system:String>
+    <system:String x:Key="ManagerBtnCheckNow">Check For Updates</system:String>
 
     <system:String x:Key="ManagerGrpOptions">Options</system:String>
     <system:String x:Key="ManagerLblTheme">Themes:</system:String>
