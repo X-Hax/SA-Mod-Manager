@@ -7,7 +7,7 @@
     <SolidColorBrush x:Key="MainDialogBottomBrush" Color="#F0F0F0"/>
     <SolidColorBrush x:Key="BtnBackgroundBrush" Color="#E1E1E1"/>
     <SolidColorBrush x:Key="TextBrush" Color="Black"/>
-    <SolidColorBrush x:Key="TabControlBrush" Color="#E1E1E1"/>
+    <SolidColorBrush x:Key="TabControlBrush" Color="#F0F0F0"/>
     <SolidColorBrush x:Key="TabSelectedBrush" Color="#FF006ABC"/>
     <SolidColorBrush x:Key="ForegroundBrush" Color="White"/>
     <Color x:Key="HoverColor" A="255" R="190" G="230" B="253"/>
