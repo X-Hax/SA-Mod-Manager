@@ -3,7 +3,7 @@
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:system="clr-namespace:System;assembly=mscorlib">
     
-    <!--Main Window Strings-->
+    <!--#region Main Window Strings-->
     <system:String x:Key="MainBtnSave" >Save</system:String>
     <system:String x:Key="MainBtnSaveAndPlay" >Save &amp; Play</system:String>
     <system:String x:Key="MainBtnInstallLoader" >Install Loader</system:String>
@@ -11,8 +11,9 @@
     <system:String x:Key="MainTabCodes">Codes</system:String>
     <system:String x:Key="MainTabGameConfig">Game Config</system:String>
     <system:String x:Key="MainTabManagerConfig">Manager Config</system:String>
-
-    <!--Mods Tab Strings-->
+    <!--#endregion-->
+    
+    <!--#region Mods Tab Strings-->
     <system:String x:Key="ModsListName">Name</system:String>
     <system:String x:Key="ModsListAuthor">Author</system:String>
     <system:String x:Key="ModsListVersion">Version</system:String>
@@ -23,18 +24,35 @@
     <system:String x:Key="ModsBtnNew" >New Mod...</system:String>
     <system:String x:Key="ModsLblDescription" >Description: No Mod Select</system:String>
     <system:String x:Key="ModsTextBoxSearch" >Search...</system:String>
+    <!--#endregion-->
     
-    <!--Codes Tab Strings-->
+    <!--#region Codes Tab Strings-->
     
+    <!--#endregion-->
     
-    <!--Game Config Tab Strings-->
+    <!--#region Game Config Tab Strings-->
+    <!--Game Tabs Strings-->
     <system:String x:Key="GameTabGraphics">Graphics</system:String>
     <system:String x:Key="GameTabInput">Input</system:String>
     <system:String x:Key="GameTabSound">Sound</system:String>
     <system:String x:Key="GameTabPatches">Patches</system:String>
     <system:String x:Key="GameTabDebug">Debug</system:String>
     
-    <!--Manager Config Tab Strings-->
+    <!--Graphics Tab Strings-->
+    <system:String x:Key="GameGraphicsGroupDisplay">Display Options</system:String>
+    <system:String x:Key="GameGraphicsGroupWindow">Window Options</system:String>
+    <system:String x:Key="GameGraphicsGroupVisuals">Other Graphics Options</system:String>
+    <system:String x:Key="GameGraphicsLabelScreen">Screen:</system:String>
+    <system:String x:Key="GameGraphicsLabelResolution">Resolution:</system:String>
+    <system:String x:Key="GameGraphicsRadioFullscreen">Fullscreen</system:String>
+    <system:String x:Key="GameGraphicsRadioWindowed">Windowed</system:String>
+    <system:String x:Key="GameGraphicsCheckRatio">Force 4:3 Aspect Ratio</system:String>
+    <system:String x:Key="GameGraphicsCheckBorderless">Borderless</system:String>
+    <system:String x:Key="GameGraphicsCheckScale">Scale UI to Screen</system:String>
+    <system:String x:Key="GameGraphicsCheckVSync">Enable V-Sync</system:String>
+    <!--#endregion-->
+    
+    <!--#region Manager Config Tab Strings-->
     <system:String x:Key="ManagerGrpUpdates">Updates</system:String>
     <system:String x:Key="ManagerChkCheckModloader">Check for Mod Loader Updates on Startup</system:String>
     <system:String x:Key="ManagerChkCheckMods">Check for Mod Updates on Startup</system:String>
@@ -45,6 +63,6 @@
     <system:String x:Key="ManagerLblLang">Language:</system:String>
     <system:String x:Key="ManagerLblProfile">Profile:</system:String>
     <system:String x:Key="ManagerBtnOneClick">Enable 1-Click Install</system:String>
-
+    <!--#endregion-->
 
 </ResourceDictionary>

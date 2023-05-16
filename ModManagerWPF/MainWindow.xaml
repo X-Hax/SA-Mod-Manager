@@ -7,6 +7,8 @@
 		mc:Ignorable="d"
 		Title="SADX Mod Manager"
 		MinHeight="550" MinWidth="590" Height="652" Width="620" WindowStartupLocation="CenterScreen">
+
+    <!--This is where all Resources are stored.-->
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -221,6 +223,7 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
+
     <!--This is the initial grid used by the entire app.-->
     <Grid>
         <Grid.RowDefinitions>
@@ -232,7 +235,7 @@
         <TabControl x:Name="tcMain" Background="Transparent">
 
             <!--This Tab is for Mods.-->
-            <TabItem x:Name="tabMain" Header="{DynamicResource MainTabMods}">
+            <TabItem x:Name="tabMain" Header="{DynamicResource MainTabMods}" Margin="0,0,0,0">
                 <!--Main Grid for Mods Tab-->
                 <Grid x:Name="GridModList">
 
@@ -245,24 +248,23 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="69*"/>
-                            <ColumnDefinition Width="41*"/>
-                            <ColumnDefinition Width="54"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
-                        <ListView x:Name="listMods" Foreground="White" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+                        <ListView x:Name="listMods" Foreground="White" Grid.Column="1" Grid.Row="1">
                             <ListView.View>
                                 <GridView>
                                     <GridView.Columns>
-                                        <GridViewColumn x:Name="modNameColumn" Header="{DynamicResource ModsListName}" Width="150">
+                                        <GridViewColumn x:Name="modNameColumn" Header="{DynamicResource ModsListName}" Width="175">
 
                                         </GridViewColumn>
-                                        <GridViewColumn x:Name="modAuthorColumn" Header="{DynamicResource ModsListAuthor}" Width="120">
+                                        <GridViewColumn x:Name="modAuthorColumn" Header="{DynamicResource ModsListAuthor}" Width="150">
 
                                         </GridViewColumn>
-                                        <GridViewColumn Header="{DynamicResource ModsListVersion}" Width="60">
+                                        <GridViewColumn Header="{DynamicResource ModsListVersion}" Width="100">
 
                                         </GridViewColumn>
-                                        <GridViewColumn Header="{DynamicResource ModsListCategory}" Width="80">
+                                        <GridViewColumn Header="{DynamicResource ModsListCategory}" Width="100">
 
                                         </GridViewColumn>
                                     </GridView.Columns>
@@ -326,24 +328,137 @@
             <TabItem x:Name="tabGame" Header="{DynamicResource MainTabGameConfig}" Margin="6,0,-6,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="42*"/>
-                        <ColumnDefinition Width="265*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TabControl x:Name="tcGame" Grid.ColumnSpan="2" Margin="0,0,0,80">
-                        <TabItem x:Name="tabGraphics" Header="{DynamicResource GameTabGraphics}">
-                            <Grid/>
+                    <TabControl x:Name="tcGame" Grid.Column="0">
+
+                        <!--This Tab is for Game Graphics.-->
+                        <TabItem x:Name="tabGraphics" Header="{DynamicResource GameTabGraphics}" Margin="0,0,0,0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="140"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!--Graphics Display Section-->
+                                <GroupBox x:Name="grpGraphicsDisplay" Header="Display" Grid.Row="0">
+                                    <Grid>
+                                        <!--Graphics Groups Left Side.-->
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="0"/>
+                                                <RowDefinition Height="30"/>
+                                                <RowDefinition Height="5"/>
+                                                <RowDefinition Height="30"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Content="{DynamicResource GameGraphicsLabelScreen}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
+                                            <Label Content="{DynamicResource GameGraphicsLabelResolution}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
+                                        </Grid>
+
+                                        <!--Graphics Group Right Side.-->
+                                        <Grid HorizontalAlignment="Right">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="75"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="75"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="230"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="0"/>
+                                                <RowDefinition Height="30"/>
+                                                <RowDefinition Height="5"/>
+                                                <RowDefinition Height="30"/>
+                                                <RowDefinition Height="0"/>
+                                            </Grid.RowDefinitions>
+                                            <ComboBox x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center"/>
+                                            <ComboBox x:Name="comboDisplay" Grid.Column="4" Grid.Row="3" VerticalAlignment="Center"/>
+                                            <TextBox Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Height="22"/>
+                                            <TextBox Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Height="22"/>
+                                        </Grid>
+
+                                        <!--Graphics Tab Bottom Group-->
+                                        <Grid VerticalAlignment="Bottom">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+                                            <RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+                                            <CheckBox x:Name="chkRatio" Content="{DynamicResource GameGraphicsCheckRatio}" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+                                            <CheckBox x:Name="chkBorderless" Content="{DynamicResource GameGraphicsCheckBorderless}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+                                            <CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameGraphicsCheckScale}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+                                            <CheckBox x:Name="chkVSync" Content="{DynamicResource GameGraphicsCheckVSync}" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+                                        </Grid>
+                                    </Grid>
+                                </GroupBox>
+
+                                <!--Graphics Window Options Section-->
+                                <GroupBox x:Name="grpGraphicsWindow" Header="Window Options" Grid.Row="1">
+                                    <Grid>
+                                        <!--Window Group Left Side.-->
+                                        <Grid>
+
+                                        </Grid>
+                                        <!--Window Group Right Side.-->
+                                        <Grid HorizontalAlignment="Right">
+
+                                        </Grid>
+                                    </Grid>
+                                </GroupBox>
+
+                                <!--Graphics Visuals Section-->
+                                <GroupBox x:Name="grpGraphicsVisuals" Header="Visuals" Grid.Row="2">
+                                    <Grid>
+                                        <!--Visuals Group Left Side.-->
+                                        <Grid>
+
+                                        </Grid>
+                                        <!--Visuals Group Right Side.-->
+                                        <Grid HorizontalAlignment="Right">
+
+                                        </Grid>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
                         </TabItem>
-                        <TabItem x:Name="tabInput" Header="{DynamicResource GameTabInput}">
-                            <Grid/>
+
+                        <!--This Tab is for Game Input.-->
+                        <TabItem x:Name="tabInput" Header="{DynamicResource GameTabInput}" Margin="3,0,-3,0">
+                            <Grid>
+
+                            </Grid>
                         </TabItem>
-                        <TabItem x:Name="tabSound" Header="{DynamicResource GameTabSound}">
-                            <Grid/>
+
+                        <!--This Tab is for Game Sound.-->
+                        <TabItem x:Name="tabSound" Header="{DynamicResource GameTabSound}" Margin="6,0,-6,0">
+                            <Grid>
+
+                            </Grid>
                         </TabItem>
-                        <TabItem x:Name="tabPatches" Header="{DynamicResource GameTabPatches}">
-                            <Grid/>
+
+                        <!--This Tab is for Game Patches.-->
+                        <TabItem x:Name="tabPatches" Header="{DynamicResource GameTabPatches}" Margin="9,0,-9,0">
+                            <Grid>
+
+                            </Grid>
                         </TabItem>
-                        <TabItem x:Name="tabDebug" Header="{DynamicResource GameTabDebug}">
-                            <Grid/>
+
+                        <!--This Tab is for Game Debug.-->
+                        <TabItem x:Name="tabDebug" Header="{DynamicResource GameTabDebug}" Margin="12,0,-12,0">
+                            <Grid>
+
+                            </Grid>
                         </TabItem>
                     </TabControl>
                 </Grid>
