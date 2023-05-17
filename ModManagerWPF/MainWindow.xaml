@@ -129,7 +129,7 @@
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="140"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="100"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
@@ -169,9 +169,13 @@
                                                 <RowDefinition Height="0"/>
                                             </Grid.RowDefinitions>
                                             <ComboBox x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center"/>
-                                            <ComboBox x:Name="comboDisplay" Grid.Column="4" Grid.Row="3" VerticalAlignment="Center"/>
-                                            <TextBox Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Height="22"/>
-                                            <TextBox Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Height="22"/>
+                                            <StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
+                                                <TextBox x:Name="txtResX" Height="22" Width="75"/>
+                                                <Label Content="x"/>
+                                                <TextBox x:Name="txtResY" Height="22" Width="75"/>
+                                                <ComboBox x:Name="comboDisplay" Height="22" Margin="10,0,0,0" Width="225"/>
+
+                                            </StackPanel>
                                         </Grid>
 
                                         <!--Graphics Tab Bottom Group-->
@@ -200,11 +204,24 @@
                                     <Grid>
                                         <!--Window Group Left Side.-->
                                         <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
 
-                                        </Grid>
-                                        <!--Window Group Right Side.-->
-                                        <Grid HorizontalAlignment="Right">
+                                            <CheckBox Grid.Column="0" Grid.Row="0" Content="Custom Window Size:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            <CheckBox Grid.Column="1" Grid.Row="0" Content="Resizable Window" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            <CheckBox Grid.Column="1" Grid.Row="1" Content="Maintain Aspect Ratio" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
+                                            <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBox x:Name="txtCustomResX" Height="22" Width="75"/>
+                                                <Label Content="x"/>
+                                                <TextBox x:Name="txtCustomResY" Height="22" Width="75"/>
+                                            </StackPanel>
                                         </Grid>
                                     </Grid>
                                 </GroupBox>
