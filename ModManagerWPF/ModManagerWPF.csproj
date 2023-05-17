@@ -8,6 +8,10 @@
     <ApplicationIcon>Icons\SADXModManager.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Add.png" />
+  </ItemGroup>
+
 
 
 </Project>

@@ -81,10 +81,10 @@
                             <RowDefinition Height="10"/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
-                        <Button x:Name="btnMoveTop" Content="T" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1"/>
-                        <Button x:Name="btnMoveUp" Content="U" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="3"/>
-                        <Button x:Name="btnMoveDown" Content="D" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="5"/>
-                        <Button x:Name="btnMoveBottom" Content="B" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="7"/>
+                        <Button x:Name="btnMoveTop" Content="⤒" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1"/>
+                        <Button x:Name="btnMoveUp" Content="↑" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="3"/>
+                        <Button x:Name="btnMoveDown" Content="↓" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="5"/>
+                        <Button x:Name="btnMoveBottom" Content="⤓" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="7"/>
                     </Grid>
 
                     <!--This Grid manages the Refresh and Config Buttons.-->
