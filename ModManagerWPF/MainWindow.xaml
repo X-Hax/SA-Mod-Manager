@@ -168,12 +168,12 @@
                                                 <RowDefinition Height="30"/>
                                                 <RowDefinition Height="0"/>
                                             </Grid.RowDefinitions>
-                                            <ComboBox x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center"/>
+                                            <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center"/>
                                             <StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
                                                 <TextBox x:Name="txtResX" Height="22" Width="75"/>
                                                 <Label Content="x"/>
                                                 <TextBox x:Name="txtResY" Height="22" Width="75"/>
-                                                <ComboBox x:Name="comboDisplay" Height="22" Margin="10,0,0,0" Width="225"/>
+                                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboDisplay" Height="22" Margin="10,0,0,0" Width="225"/>
 
                                             </StackPanel>
                                         </Grid>
@@ -354,9 +354,9 @@
                                     <RowDefinition Height="10"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <ComboBox x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,10" Grid.RowSpan="2" SelectionChanged="comboThemes_SelectionChanged"/>
-                                <ComboBox x:Name="comboLanguage" Grid.Row="2" VerticalAlignment="Center" SelectionChanged="comboLanguage_SelectionChanged"/>
-                                <ComboBox x:Name="comboProfile" Grid.Row="4" Margin="0,0,35,0" VerticalAlignment="Center" />
+                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,10" Grid.RowSpan="2" SelectionChanged="comboThemes_SelectionChanged"/>
+                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboLanguage" Grid.Row="2" VerticalAlignment="Center" SelectionChanged="comboLanguage_SelectionChanged"/>
+                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboProfile" Grid.Row="4" Margin="0,0,35,0" VerticalAlignment="Center" />
                                 <Button x:Name="btnProfileSettings" Grid.Row="4" Content="S" Margin="238,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" Width="27" />
                             </Grid>
                         </Grid>
