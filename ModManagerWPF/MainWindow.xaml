@@ -112,17 +112,66 @@
             </TabItem>
 
             <!--This Tab is for Codes.-->
-            <TabItem x:Name="tbCodes" Header="{DynamicResource MainTabCodes}" Margin="3,0,-3,0">
-                <Grid Background="{DynamicResource MainBackgroundBrush}"/>
+            <TabItem x:Name="tbCodes" Header="{DynamicResource MainTabCodes}" >
+
+                <!--This Grid manages the Code list-->
+                <Grid>
+                    <Grid Name="CodesTreeContainer" Margin="10,5,10,41" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Name="CodesTreeDescriptionColumn" Width="225" MinWidth="225"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TreeView x:Name="CodesTree" BorderThickness="0" Margin="0,2,1,0" 
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                              Background="{DynamicResource MainBackgroundBrush}">
+
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}">
+                                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}"/>
+
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                    <HierarchicalDataTemplate.ItemContainerStyle>
+                                        <Style TargetType="{x:Type TreeViewItem}">
+                                            <Setter Property="ToolTipService.ToolTip">
+
+                                            </Setter>
+                                        </Style>
+                                    </HierarchicalDataTemplate.ItemContainerStyle>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="125"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding Path=Code.Enabled}" Margin="0,2,4,2" IsTabStop="False"
+                                                              />
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </Grid>
+                </Grid>
             </TabItem>
 
             <!--This Tab is for Game Configuration.-->
             <TabItem x:Name="tabGame" Header="{DynamicResource MainTabGameConfig}" Margin="6,0,-6,0">
                 <Grid>
+
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="77*"/>
+                        <ColumnDefinition Width="543*"/>
                     </Grid.ColumnDefinitions>
-                    <TabControl x:Name="tcGame" Grid.Column="0">
+                    <TabControl x:Name="tcGame" Grid.Column="0" Grid.ColumnSpan="2">
+
 
                         <!--This Tab is for Game Graphics.-->
                         <TabItem x:Name="tabGraphics" Header="{DynamicResource GameTabGraphics}" Margin="0,0,0,0">

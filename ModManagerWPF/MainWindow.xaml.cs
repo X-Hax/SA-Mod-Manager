@@ -6,6 +6,9 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using ModManagerCommon;
+using ModManagerCommon.Forms;
+using System.Collections.Generic;
 
 namespace ModManagerWPF
 {
@@ -14,6 +17,21 @@ namespace ModManagerWPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		const string updatePath = "mods/.updates";
+		const string datadllpath = "system/CHRMODELS.dll";
+		const string datadllorigpath = "system/CHRMODELS_orig.dll";
+		const string loaderinipath = "mods/SADXModLoader.ini";
+		const string loaderdllpath = "mods/SADXModLoader.dll";
+		SADXLoaderInfo loaderini;
+		Dictionary<string, SADXModInfo> mods;
+		const string codelstpath = "mods/Codes.lst";
+		const string codexmlpath = "mods/Codes.xml";
+		const string codedatpath = "mods/Codes.dat";
+		const string patchdatpath = "mods/Patches.dat";
+		CodeList mainCodes;
+		List<Code> codes;
+		bool installed = false;
+
 		public static LangEntry CurrentLang = new();
 		public static LanguageList LangList = new();
 		public static ThemeEntry CurrentTheme = new();

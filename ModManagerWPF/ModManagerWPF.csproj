@@ -12,6 +12,10 @@
     <None Remove="Add.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\mod-loader-common\ModManagerCommon\ModManagerCommon.csproj" />
+  </ItemGroup>
+
 
 
 </Project>
