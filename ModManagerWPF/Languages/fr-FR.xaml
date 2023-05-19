@@ -25,6 +25,9 @@
 
     <!--Codes Tab Strings-->
 
+    <!-- Codes UI Strings -->
+    <system:String x:Key="CodesUIInfo">Double click this code for more information.</system:String>
+    <system:String x:Key="CodesUIInfoHint">Select a code for more information.</system:String>
 
     <!--Game Config Tab Strings-->
     <system:String x:Key="GameTabGraphics">Graphismes</system:String>
@@ -32,6 +35,21 @@
     <system:String x:Key="GameTabSound">Son</system:String>
     <system:String x:Key="GameTabPatches">Patches</system:String>
     <system:String x:Key="GameTabDebug">Debug</system:String>
+
+
+    <!--Graphics Tab Strings-->
+    <system:String x:Key="GameGraphicsGroupDisplay">Options d'Affichage</system:String>
+    <system:String x:Key="GameGraphicsGroupWindow">Options Fenêtré</system:String>
+    <system:String x:Key="GameGraphicsGroupVisuals">Autres Options Graphique</system:String>
+    <system:String x:Key="GameGraphicsLabelScreen">Ecran:</system:String>
+    <system:String x:Key="GameGraphicsLabelResolution">Résolution:</system:String>
+    <system:String x:Key="GameGraphicsRadioFullscreen">Plein Écran</system:String>
+    <system:String x:Key="GameGraphicsRadioWindowed">Fenêtré</system:String>
+    <system:String x:Key="GameGraphicsCheckRatio">Forcer 4:3 Aspect Ratio</system:String>
+    <system:String x:Key="GameGraphicsCheckBorderless">Sans Bordures</system:String>
+    <system:String x:Key="GameGraphicsCheckScale">Mise à l'echelle de l'interface</system:String>
+    <system:String x:Key="GameGraphicsCheckVSync">Activer V-Sync</system:String>
+    <!--#endregion-->
 
     <!--Manager Config Tab Strings-->
     <system:String x:Key="ManagerGrpUpdates">Mises à jour</system:String>
