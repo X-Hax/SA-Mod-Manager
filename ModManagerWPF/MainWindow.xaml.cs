@@ -9,6 +9,8 @@ using System.Xml.Linq;
 using ModManagerCommon;
 using ModManagerCommon.Forms;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows.Input;
 
 namespace ModManagerWPF
 {
@@ -42,7 +44,36 @@ namespace ModManagerWPF
 			InitializeComponent();
 			AddLanguagesToList();
 			AddThemesToList();
+			InitCodes();
+		}
 
+		private void InitCodes()
+		{
+			try
+			{
+				if (File.Exists(codelstpath))
+					mainCodes = CodeList.Load(codelstpath);
+				else if (File.Exists(codexmlpath))
+					mainCodes = CodeList.Load(codexmlpath);
+				else
+					mainCodes = new CodeList();
+
+				LoadCodes();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(this, $"Error loading code list: {ex.Message}", "SADX Mod Loader");
+				mainCodes = new CodeList();
+			}
+
+		}
+
+		private void LoadCodes()
+		{
+			codes = new List<Code>(mainCodes.Codes);
+
+			foreach (Code item in codes)
+				CodeListView.Items.Add(item.Name);
 		}
 
 		private void comboLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -117,6 +148,42 @@ namespace ModManagerWPF
 		private void comboThemes_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			SwitchTheme(comboThemes.SelectedIndex);
+		}
+
+		private void OpenAboutCodeWindow(Code code)
+		{
+			new AboutCode(code).ShowDialog();
+		}
+
+		private Code GetCodeFromView(object sender)
+		{
+			return codes[CodeListView.SelectedIndex];
+		}
+
+		private void CodesView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+
+			var code = GetCodeFromView(sender);
+
+			if (code == null)
+				return;
+
+			OpenAboutCodeWindow(code);
+		}
+
+		private void CodesView_Item_MouseEnter(object sender, MouseEventArgs e)
+		{
+			
+		}
+
+		private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
+		{
+
+		}
+
+		private void CodesView_Item_Selected(object sender, RoutedEventArgs e)
+		{
+			
 		}
 	}
 }

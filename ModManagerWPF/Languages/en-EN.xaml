@@ -35,6 +35,10 @@
     <system:String x:Key="CodesListInfo"> Double click this code for more information.</system:String>
     <system:String x:Key="CodesListHint">Select a code for more information.</system:String>
 
+    <system:String x:Key="CodeAbout">About {0}</system:String>
+    <system:String x:Key="CodeAuthor">Made by</system:String>
+
+
     <!--#endregion-->
     
     <!--#region Game Config Tab Strings-->
