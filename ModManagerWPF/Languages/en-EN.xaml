@@ -49,7 +49,12 @@
     <system:String x:Key="GameTabPatches">Patches</system:String>
     <system:String x:Key="GameTabDebug">Debug</system:String>
     
-    <!--Graphics Tab Strings-->
+    <!--GameGraphics Strings-->
+    <system:String x:Key="GraphicsGroupDisplay">Display</system:String>
+    <system:String x:Key="GraphicsGroupWindow">Window Settings</system:String>
+    <system:String x:Key="GraphicsGroupFullscreen">Fullscreen Settings</system:String>
+
+        <!--Graphics Tab Strings-->
     <system:String x:Key="GameGraphicsGroupDisplay">Display Options</system:String>
     <system:String x:Key="GameGraphicsGroupWindow">Window Options</system:String>
     <system:String x:Key="GameGraphicsGroupVisuals">Other Graphics Options</system:String>
@@ -59,7 +64,7 @@
     <system:String x:Key="GameGraphicsRadioWindowed">Windowed</system:String>
     <system:String x:Key="GameGraphicsCheckRatio">Force 4:3 Aspect Ratio</system:String>
     <system:String x:Key="GameGraphicsCheckBorderless">Borderless</system:String>
-    <system:String x:Key="GameGraphicsCheckScale">Scale UI to Screen</system:String>
+    <system:String x:Key="GameGraphicsCheckScale">Scale to Screen</system:String>
     <system:String x:Key="GameGraphicsCheckVSync">Enable V-Sync</system:String>
     <!--#endregion-->
     

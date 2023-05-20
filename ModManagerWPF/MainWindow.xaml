@@ -8,424 +8,433 @@
 		Title="SADX Mod Manager"
 		MinHeight="550" MinWidth="590" Height="652" Width="620" WindowStartupLocation="CenterScreen">
 
-    <!--This is where all Resources are stored.-->
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Languages/en-EN.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-    <!--This is the initial grid used by the entire app.-->
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+	<!--This is where all Resources are stored.-->
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Languages/en-EN.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+	<!--This is the initial grid used by the entire app.-->
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
 
-        <!--Tab Container for the Manager's main elements.-->
-        <TabControl x:Name="tcMain" Background="Transparent">
+		<!--Tab Container for the Manager's main elements.-->
+		<TabControl x:Name="tcMain" Background="Transparent">
 
-            <!--This Tab is for Mods.-->
-            <TabItem x:Name="tabMain" Header="{DynamicResource MainTabMods}" Margin="0,0,0,0">
-                <!--Main Grid for Mods Tab-->
-                <Grid x:Name="GridModList">
+			<!--This Tab is for Mods.-->
+			<TabItem x:Name="tabMain" Header="{DynamicResource MainTabMods}" Margin="0,0,0,0">
+				<!--Main Grid for Mods Tab-->
+				<Grid x:Name="GridModList">
 
-                    <!--This Grid manages the Mods list.-->
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="10"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="50"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="50"/>
-                        </Grid.ColumnDefinitions>
-                        <ListView x:Name="listMods" Foreground="White" Grid.Column="1" Grid.Row="1">
-                            <ListView.View>
-                                <GridView>
-                                    <GridView.Columns>
-                                        <GridViewColumn x:Name="modNameColumn" Header="{DynamicResource ModsListName}" Width="175">
+					<!--This Grid manages the Mods list.-->
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="10"/>
+							<RowDefinition Height="*"/>
+							<RowDefinition Height="50"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="10"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="50"/>
+						</Grid.ColumnDefinitions>
+						<ListView x:Name="listMods" Foreground="White" Grid.Column="1" Grid.Row="1">
+							<ListView.View>
+								<GridView>
+									<GridView.Columns>
+										<GridViewColumn x:Name="modNameColumn" Header="{DynamicResource ModsListName}" Width="175">
 
-                                        </GridViewColumn>
-                                        <GridViewColumn x:Name="modAuthorColumn" Header="{DynamicResource ModsListAuthor}" Width="150">
+										</GridViewColumn>
+										<GridViewColumn x:Name="modAuthorColumn" Header="{DynamicResource ModsListAuthor}" Width="150">
 
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="{DynamicResource ModsListVersion}" Width="100">
+										</GridViewColumn>
+										<GridViewColumn Header="{DynamicResource ModsListVersion}" Width="100">
 
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="{DynamicResource ModsListCategory}" Width="100">
+										</GridViewColumn>
+										<GridViewColumn Header="{DynamicResource ModsListCategory}" Width="100">
 
-                                        </GridViewColumn>
-                                    </GridView.Columns>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </Grid>
+										</GridViewColumn>
+									</GridView.Columns>
+								</GridView>
+							</ListView.View>
+						</ListView>
+					</Grid>
 
-                    <!--This Grid manages the Mods List Up/Down Buttons.-->
-                    <Grid HorizontalAlignment="Right">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="10"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="10"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="10"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="10"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="10"/>
-                            <RowDefinition Height="30"/>
-                        </Grid.RowDefinitions>
-                        <Button x:Name="btnMoveTop" Content="⤒" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1"/>
-                        <Button x:Name="btnMoveUp" Content="↑" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="3"/>
-                        <Button x:Name="btnMoveDown" Content="↓" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="5"/>
-                        <Button x:Name="btnMoveBottom" Content="⤓" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="7"/>
-                    </Grid>
+					<!--This Grid manages the Mods List Up/Down Buttons.-->
+					<Grid HorizontalAlignment="Right">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="30"/>
+							<ColumnDefinition Width="10"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="10"/>
+							<RowDefinition Height="30"/>
+							<RowDefinition Height="10"/>
+							<RowDefinition Height="30"/>
+							<RowDefinition Height="10"/>
+							<RowDefinition Height="30"/>
+							<RowDefinition Height="10"/>
+							<RowDefinition Height="30"/>
+						</Grid.RowDefinitions>
+						<Button x:Name="btnMoveTop" Content="⤒" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1"/>
+						<Button x:Name="btnMoveUp" Content="↑" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="3"/>
+						<Button x:Name="btnMoveDown" Content="↓" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="5"/>
+						<Button x:Name="btnMoveBottom" Content="⤓" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="7"/>
+					</Grid>
 
-                    <!--This Grid manages the Refresh and Config Buttons.-->
-                    <Grid VerticalAlignment="Bottom" Height="50">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="10"/>
-                        </Grid.ColumnDefinitions>
-                        <Button x:Name="RefreshBtn" Content="{DynamicResource ModsBtnRefresh}" Grid.Column="1" Margin="0,10,0,10" />
-                        <Button x:Name="ConfigureModBtn" Content="{DynamicResource ModsBtnConfigure}" Grid.Column="3" Margin="0,10,0,10" />
-                    </Grid>
+					<!--This Grid manages the Refresh and Config Buttons.-->
+					<Grid VerticalAlignment="Bottom" Height="50">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="10"/>
+							<ColumnDefinition Width="100"/>
+							<ColumnDefinition Width="10"/>
+							<ColumnDefinition Width="100"/>
+							<ColumnDefinition Width="10"/>
+						</Grid.ColumnDefinitions>
+						<Button x:Name="RefreshBtn" Content="{DynamicResource ModsBtnRefresh}" Grid.Column="1" Margin="0,10,0,10" />
+						<Button x:Name="ConfigureModBtn" Content="{DynamicResource ModsBtnConfigure}" Grid.Column="3" Margin="0,10,0,10" />
+					</Grid>
 
-                    <!--This Grid manages the New Mod Button.-->
-                    <Grid VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Right">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="54"/>
-                        </Grid.ColumnDefinitions>
-                        <Button x:Name="NewModBtn" Content="{DynamicResource ModsBtnNew}" Grid.Column="0" Margin="0,10,0,10"/>
-                    </Grid>
-                </Grid>
-            </TabItem>
+					<!--This Grid manages the New Mod Button.-->
+					<Grid VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Right">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="100"/>
+							<ColumnDefinition Width="54"/>
+						</Grid.ColumnDefinitions>
+						<Button x:Name="NewModBtn" Content="{DynamicResource ModsBtnNew}" Grid.Column="0" Margin="0,10,0,10"/>
+					</Grid>
+				</Grid>
+			</TabItem>
 
-            <!--This Tab is for Codes.-->
-            <TabItem x:Name="tbCodes" Header="{DynamicResource MainTabCodes}" >
+			<!--This Tab is for Codes.-->
+			<TabItem x:Name="tbCodes" Header="{DynamicResource MainTabCodes}" Margin="3,0,-3,0" >
 
-                <!--This Grid manages the Code list-->
-                <Grid>
-                    <Grid Name="CodesTreeContainer" Margin="10,5,10,41" Visibility="Collapsed">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Name="CodesTreeDescriptionColumn" Width="225" MinWidth="225"/>
-                        </Grid.ColumnDefinitions>
-                       
-                    </Grid>
-                   
-                    <ListView Name="CodeListView">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
-
-
-                                <EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
-                                <EventSetter Event="MouseEnter"       Handler="CodesView_Item_MouseEnter"/>
-                                <EventSetter Event="MouseLeave"       Handler="CodesView_Item_MouseLeave"/>
-                                <EventSetter Event="Selected"         Handler="CodesView_Item_Selected"/>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.View>
-                            
-                            <GridView>
-                                <GridViewColumn/>
-                                
-                                
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
-            </TabItem>
-
-            <!--This Tab is for Game Configuration.-->
-            <TabItem x:Name="tabGame" Header="{DynamicResource MainTabGameConfig}" Margin="6,0,-6,0">
-                <Grid>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="77*"/>
-                        <ColumnDefinition Width="543*"/>
-                    </Grid.ColumnDefinitions>
-                    <TabControl x:Name="tcGame" Grid.Column="0" Grid.ColumnSpan="2">
+				<!--This Grid manages the Code list-->
+				<Grid>
+					<Grid Name="CodesTreeContainer" Margin="10,5,10,41" Visibility="Collapsed">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Name="CodesTreeDescriptionColumn" Width="225" MinWidth="225"/>
+						</Grid.ColumnDefinitions>
+					   
+					</Grid>
+				   
+					<ListView Name="CodeListView">
+						<ListView.ItemContainerStyle>
+							<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
 
 
-                        <!--This Tab is for Game Graphics.-->
-                        <TabItem x:Name="tabGraphics" Header="{DynamicResource GameTabGraphics}" Margin="0,0,0,0">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="140"/>
-                                    <RowDefinition Height="100"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
+								<EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
+								<EventSetter Event="MouseEnter"       Handler="CodesView_Item_MouseEnter"/>
+								<EventSetter Event="MouseLeave"       Handler="CodesView_Item_MouseLeave"/>
+								<EventSetter Event="Selected"         Handler="CodesView_Item_Selected"/>
+							</Style>
+						</ListView.ItemContainerStyle>
+						<ListView.View>
+							
+							<GridView>
+								<GridViewColumn/>
+								
+								
+							</GridView>
+						</ListView.View>
+					</ListView>
+				</Grid>
+			</TabItem>
 
-                                <!--Graphics Display Section-->
-                                <GroupBox x:Name="grpGraphicsDisplay" Header="Display" Grid.Row="0">
-                                    <Grid>
-                                        <!--Graphics Groups Left Side.-->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="0"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="0"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="5"/>
-                                                <RowDefinition Height="30"/>
-                                            </Grid.RowDefinitions>
-                                            <Label Content="{DynamicResource GameGraphicsLabelScreen}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
-                                            <Label Content="{DynamicResource GameGraphicsLabelResolution}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
-                                        </Grid>
+			<!--This Tab is for Game Configuration.-->
+			<TabItem x:Name="tabGame" Header="{DynamicResource MainTabGameConfig}" Margin="6,0,-6,0">
+				<Grid>
 
-                                        <!--Graphics Group Right Side.-->
-                                        <Grid HorizontalAlignment="Right">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="75"/>
-                                                <ColumnDefinition Width="10"/>
-                                                <ColumnDefinition Width="75"/>
-                                                <ColumnDefinition Width="10"/>
-                                                <ColumnDefinition Width="230"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="0"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="5"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="0"/>
-                                            </Grid.RowDefinitions>
-                                            <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center"/>
-                                            <StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
-                                                <TextBox x:Name="txtResX" Height="22" Width="75"/>
-                                                <Label Content="x"/>
-                                                <TextBox x:Name="txtResY" Height="22" Width="75"/>
-                                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboDisplay" Height="22" Margin="10,0,0,0" Width="225"/>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="77*"/>
+						<ColumnDefinition Width="543*"/>
+					</Grid.ColumnDefinitions>
+					<TabControl x:Name="tcGame" Grid.Column="0" Grid.ColumnSpan="2">
 
-                                            </StackPanel>
-                                        </Grid>
 
-                                        <!--Graphics Tab Bottom Group-->
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
+						<!--This Tab is for Game Graphics.-->
+						<TabItem x:Name="tabGraphics" Header="{DynamicResource GameTabGraphics}" Margin="0,0,0,0">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+
+								<!--Graphics Display Section-->
+								<GroupBox x:Name="grpGraphicsDisplay" Header="{DynamicResource GraphicsGroupDisplay}" Grid.Row="0">
+									<Grid>
+										<!--Graphics Groups Left Side.-->
+										<Grid>
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="0"/>
+												<ColumnDefinition Width="Auto"/>
+											</Grid.ColumnDefinitions>
+											<Grid.RowDefinitions>
+												<RowDefinition Height="0"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="5"/>
+												<RowDefinition Height="30"/>
+											</Grid.RowDefinitions>
+											<Label Content="{DynamicResource GameGraphicsLabelScreen}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
+											<Label Content="{DynamicResource GameGraphicsLabelResolution}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
+										</Grid>
+
+										<!--Graphics Group Right Side.-->
+										<Grid HorizontalAlignment="Right">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="75"/>
+												<ColumnDefinition Width="10"/>
+												<ColumnDefinition Width="75"/>
+												<ColumnDefinition Width="10"/>
+												<ColumnDefinition Width="230"/>
+											</Grid.ColumnDefinitions>
+											<Grid.RowDefinitions>
+												<RowDefinition Height="0"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="5"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="0"/>
+											</Grid.RowDefinitions>
+											<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center"/>
+											<StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
+												<TextBox x:Name="txtResX" Height="22" Width="75"/>
+												<Label Content="x"/>
+												<TextBox x:Name="txtResY" Height="22" Width="75"/>
+												<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboDisplay" Height="22" Margin="10,0,0,0" Width="225"/>
+
+											</StackPanel>
+										</Grid>
+
+										<!--Graphics Tab Bottom Group-->
+										<Grid x:Name="gridGraphics" VerticalAlignment="Bottom">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="*"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Grid.RowDefinitions>
+                                                <RowDefinition Height="62"/>
                                                 <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            <RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,5"/>
-                                            <RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,5"/>
-                                            <CheckBox x:Name="chkRatio" Content="{DynamicResource GameGraphicsCheckRatio}" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,5"/>
-                                            <CheckBox x:Name="chkBorderless" Content="{DynamicResource GameGraphicsCheckBorderless}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5"/>
-                                            <CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameGraphicsCheckScale}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5"/>
-                                            <CheckBox x:Name="chkVSync" Content="{DynamicResource GameGraphicsCheckVSync}" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5"/>
-                                        </Grid>
-                                    </Grid>
-                                </GroupBox>
+												<RowDefinition Height="*"/>
+												<RowDefinition Height="*"/>
+												<RowDefinition Height="*"/>
+											</Grid.RowDefinitions>
+                                            <CheckBox x:Name="chkRatio" Content="{DynamicResource GameGraphicsCheckRatio}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+                                            <CheckBox x:Name="chkVSync" Content="{DynamicResource GameGraphicsCheckVSync}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+                                            <RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+											<RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+											
+											<!--Window Settings-->
+											<GroupBox x:Name="grpGraphicsWindow" Header="{DynamicResource GraphicsGroupWindow}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" Height="Auto">
+												<Grid VerticalAlignment="Bottom">
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="*"/>
+														<ColumnDefinition Width="*"/>
+													</Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
 
-                                <!--Graphics Window Options Section-->
-                                <GroupBox x:Name="grpGraphicsWindow" Header="Window Options" Grid.Row="1">
-                                    <Grid>
-                                        <!--Window Group Left Side.-->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
+													<CheckBox Grid.Column="0" Grid.Row="0" Content="Resizable Window" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                    <CheckBox Grid.Column="1" Grid.Row="0" Content="Maintain Aspect Ratio" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                    
+                                                    <CheckBox Grid.Column="0" Grid.Row="1" Content="Custom Window Size:" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                    <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center">
+														<TextBox x:Name="txtCustomResX" Height="22" Width="75"/>
+														<Label Content="x"/>
+														<TextBox x:Name="txtCustomResY" Height="22" Width="75"/>
+													</StackPanel>
+												</Grid>
+											</GroupBox>
+											
+											<!--Fullscreen Settings-->
+											<GroupBox x:Name="grpGraphicsFullscreen" Header="{DynamicResource GraphicsGroupFullscreen}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4">
+												<Grid VerticalAlignment="Bottom">
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="*"/>
+														<ColumnDefinition Width="*"/>
+													</Grid.ColumnDefinitions>
 
-                                            <CheckBox Grid.Column="0" Grid.Row="0" Content="Custom Window Size:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                            <CheckBox Grid.Column="1" Grid.Row="0" Content="Resizable Window" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                            <CheckBox Grid.Column="1" Grid.Row="1" Content="Maintain Aspect Ratio" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                    <CheckBox x:Name="chkBorderless" Content="{DynamicResource GameGraphicsCheckBorderless}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+                                                    <CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameGraphicsCheckScale}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+                                                </Grid>
+											</GroupBox>
+										</Grid>
+									</Grid>
+								</GroupBox>
 
-                                            <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <TextBox x:Name="txtCustomResX" Height="22" Width="75"/>
-                                                <Label Content="x"/>
-                                                <TextBox x:Name="txtCustomResY" Height="22" Width="75"/>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Grid>
-                                </GroupBox>
+								<!--Graphics Visuals Section-->
+								<GroupBox x:Name="grpGraphicsVisuals" Header="Visuals" Grid.Row="1">
+									<Grid>
+										<!--Visuals Group Left Side.-->
+										<Grid>
 
-                                <!--Graphics Visuals Section-->
-                                <GroupBox x:Name="grpGraphicsVisuals" Header="Visuals" Grid.Row="2">
-                                    <Grid>
-                                        <!--Visuals Group Left Side.-->
-                                        <Grid>
+										</Grid>
+										<!--Visuals Group Right Side.-->
+										<Grid HorizontalAlignment="Right">
 
-                                        </Grid>
-                                        <!--Visuals Group Right Side.-->
-                                        <Grid HorizontalAlignment="Right">
+										</Grid>
+									</Grid>
+								</GroupBox>
+							</Grid>
+						</TabItem>
 
-                                        </Grid>
-                                    </Grid>
-                                </GroupBox>
-                            </Grid>
-                        </TabItem>
+						<!--This Tab is for Game Input.-->
+						<TabItem x:Name="tabInput" Header="{DynamicResource GameTabInput}" Margin="3,0,-3,0">
+							<Grid>
 
-                        <!--This Tab is for Game Input.-->
-                        <TabItem x:Name="tabInput" Header="{DynamicResource GameTabInput}" Margin="3,0,-3,0">
-                            <Grid>
+							</Grid>
+						</TabItem>
 
-                            </Grid>
-                        </TabItem>
+						<!--This Tab is for Game Sound.-->
+						<TabItem x:Name="tabSound" Header="{DynamicResource GameTabSound}" Margin="6,0,-6,0">
+							<Grid>
 
-                        <!--This Tab is for Game Sound.-->
-                        <TabItem x:Name="tabSound" Header="{DynamicResource GameTabSound}" Margin="6,0,-6,0">
-                            <Grid>
+							</Grid>
+						</TabItem>
 
-                            </Grid>
-                        </TabItem>
+						<!--This Tab is for Game Patches.-->
+						<TabItem x:Name="tabPatches" Header="{DynamicResource GameTabPatches}" Margin="9,0,-9,0">
+							<Grid>
 
-                        <!--This Tab is for Game Patches.-->
-                        <TabItem x:Name="tabPatches" Header="{DynamicResource GameTabPatches}" Margin="9,0,-9,0">
-                            <Grid>
+							</Grid>
+						</TabItem>
 
-                            </Grid>
-                        </TabItem>
+						<!--This Tab is for Game Debug.-->
+						<TabItem x:Name="tabDebug" Header="{DynamicResource GameTabDebug}" Margin="12,0,-12,0">
+							<Grid>
 
-                        <!--This Tab is for Game Debug.-->
-                        <TabItem x:Name="tabDebug" Header="{DynamicResource GameTabDebug}" Margin="12,0,-12,0">
-                            <Grid>
+							</Grid>
+						</TabItem>
+					</TabControl>
+				</Grid>
+			</TabItem>
 
-                            </Grid>
-                        </TabItem>
-                    </TabControl>
-                </Grid>
-            </TabItem>
+			<!--This Tab is for Manager Configuration.-->
+			<TabItem x:Name="tabConfig" Header="{DynamicResource MainTabManagerConfig}" Margin="9,0,-9,0">
 
-            <!--This Tab is for Manager Configuration.-->
-            <TabItem x:Name="tabConfig" Header="{DynamicResource MainTabManagerConfig}" Margin="9,0,-9,0">
+				<!--Main Grid for the Manager Config Tab.-->
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="10"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="10"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="10"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="0"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="10"/>
+					</Grid.RowDefinitions>
 
-                <!--Main Grid for the Manager Config Tab.-->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="10"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="0"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
-                    </Grid.RowDefinitions>
+					<!--Group Box for Update Configuration-->
+					<GroupBox x:Name="grpManUpdates" Grid.Column="1" Grid.Row="1" Header="{DynamicResource ManagerGrpUpdates}"  VerticalAlignment="Top" Height="Auto" >
+						<Grid>
+							<!--Update Check Boxes-->
+							<Grid Margin="5,5,5,5">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="5"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<CheckBox x:Name="chkUpdatesML" Content="{DynamicResource ManagerChkCheckModloader}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top"/>
+								<CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource ManagerChkCheckMods}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top"/>
+							</Grid>
 
-                    <!--Group Box for Update Configuration-->
-                    <GroupBox x:Name="grpManUpdates" Grid.Column="1" Grid.Row="1" Header="{DynamicResource ManagerGrpUpdates}"  VerticalAlignment="Top" Height="Auto" >
-                        <Grid>
-                            <!--Update Check Boxes-->
-                            <Grid Margin="5,5,5,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="5"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <CheckBox x:Name="chkUpdatesML" Content="{DynamicResource ManagerChkCheckModloader}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top"/>
-                                <CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource ManagerChkCheckMods}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top"/>
-                            </Grid>
+							<!--Update Buttons-->
+							<Grid HorizontalAlignment="Right" Margin="5,5,5,5">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="150"/>
+								</Grid.ColumnDefinitions>
+								<Button x:Name="btnCheckUpdates" Content="{DynamicResource ManagerBtnCheckNow}" Grid.Column="0"/>
+							</Grid>
+						</Grid>
+					</GroupBox>
 
-                            <!--Update Buttons-->
-                            <Grid HorizontalAlignment="Right" Margin="5,5,5,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150"/>
-                                </Grid.ColumnDefinitions>
-                                <Button x:Name="btnCheckUpdates" Content="{DynamicResource ManagerBtnCheckNow}" Grid.Column="0"/>
-                            </Grid>
-                        </Grid>
-                    </GroupBox>
+					<!--Group Box for Manager Configuration-->
+					<GroupBox x:Name="grpManSettings" Grid.Column="1" Grid.Row="3" Header="{DynamicResource ManagerGrpOptions}" VerticalAlignment="Top" Height="Auto">
+						<Grid>
+							<!--Left Side Manager Options.-->
+							<Grid Margin="5,5,5,5">
+								<Grid.ColumnDefinitions>
 
-                    <!--Group Box for Manager Configuration-->
-                    <GroupBox x:Name="grpManSettings" Grid.Column="1" Grid.Row="3" Header="{DynamicResource ManagerGrpOptions}" VerticalAlignment="Top" Height="Auto">
-                        <Grid>
-                            <!--Left Side Manager Options.-->
-                            <Grid Margin="5,5,5,5">
-                                <Grid.ColumnDefinitions>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="10"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="10"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="10"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<Label x:Name="lblTheme" Content="{DynamicResource ManagerLblTheme}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+								<Label x:Name="lblLanguage" Content="{DynamicResource ManagerLblLang}" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+								<Label x:Name="lblProfile" Content="{DynamicResource ManagerLblProfile}" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+								<Button x:Name="btnOneClick" Content="{DynamicResource ManagerBtnOneClick}" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+							</Grid>
 
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="10"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="10"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="10"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Label x:Name="lblTheme" Content="{DynamicResource ManagerLblTheme}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <Label x:Name="lblLanguage" Content="{DynamicResource ManagerLblLang}" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <Label x:Name="lblProfile" Content="{DynamicResource ManagerLblProfile}" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <Button x:Name="btnOneClick" Content="{DynamicResource ManagerBtnOneClick}" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
-                            </Grid>
+							<!--Right Side Manager Options-->
+							<Grid HorizontalAlignment="Right" Margin="5,5,5,5">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="265"/>
+									<ColumnDefinition Width="10"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="10"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="10"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,10" Grid.RowSpan="2" SelectionChanged="comboThemes_SelectionChanged"/>
+								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboLanguage" Grid.Row="2" VerticalAlignment="Center" SelectionChanged="comboLanguage_SelectionChanged"/>
+								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboProfile" Grid.Row="4" Margin="0,0,35,0" VerticalAlignment="Center" />
+								<Button x:Name="btnProfileSettings" Grid.Row="4" Content="S" Margin="238,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" Width="27" />
+							</Grid>
+						</Grid>
+					</GroupBox>
+				</Grid>
+			</TabItem>
 
-                            <!--Right Side Manager Options-->
-                            <Grid HorizontalAlignment="Right" Margin="5,5,5,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="265"/>
-                                    <ColumnDefinition Width="10"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="10"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="10"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,10" Grid.RowSpan="2" SelectionChanged="comboThemes_SelectionChanged"/>
-                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboLanguage" Grid.Row="2" VerticalAlignment="Center" SelectionChanged="comboLanguage_SelectionChanged"/>
-                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboProfile" Grid.Row="4" Margin="0,0,35,0" VerticalAlignment="Center" />
-                                <Button x:Name="btnProfileSettings" Grid.Row="4" Content="S" Margin="238,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" Width="27" />
-                            </Grid>
-                        </Grid>
-                    </GroupBox>
-                </Grid>
-            </TabItem>
+		</TabControl>
 
-        </TabControl>
+		<!--This Grid manages the Save, Play, and Install buttons at the bottom of the app.-->
+		<Grid Grid.Row="1"  Background="{DynamicResource MainDialogBottomBrush}">
 
-        <!--This Grid manages the Save, Play, and Install buttons at the bottom of the app.-->
-        <Grid Grid.Row="1"  Background="{DynamicResource MainDialogBottomBrush}">
+			<!--This Gris manages the Save and Play Buttons.-->
+			<Grid x:Name="bottomGrid" VerticalAlignment="Center" Height="60">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="10"/>
+					<ColumnDefinition Width="160"/>
+					<ColumnDefinition Width="10"/>
+					<ColumnDefinition Width="160"/>
+				</Grid.ColumnDefinitions>
+				<Button x:Name="SaveAndPlayButton"  Content="{DynamicResource MainBtnSaveAndPlay}"  MaxHeight="30" Grid.Column="1"/>
+				<Button x:Name="SaveButton" Content="{DynamicResource MainBtnSave}" MaxHeight="30" Grid.Column="3"/>
+			</Grid>
 
-            <!--This Gris manages the Save and Play Buttons.-->
-            <Grid x:Name="bottomGrid" VerticalAlignment="Center" Height="60">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="160"/>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="160"/>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="SaveAndPlayButton"  Content="{DynamicResource MainBtnSaveAndPlay}"  MaxHeight="30" Grid.Column="1"/>
-                <Button x:Name="SaveButton" Content="{DynamicResource MainBtnSave}" MaxHeight="30" Grid.Column="3"/>
-            </Grid>
+			<!--This Grid manages the Install Loader Button.-->
+			<Grid HorizontalAlignment="Right" Grid.Column="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="170"/>
+					<ColumnDefinition Width="10"/>
+				</Grid.ColumnDefinitions>
+				<Button x:Name="InstallLoaderBtn" Content="{DynamicResource MainBtnInstallLoader}" MaxHeight="30" />
+			</Grid>
+		</Grid>
 
-            <!--This Grid manages the Install Loader Button.-->
-            <Grid HorizontalAlignment="Right" Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="170"/>
-                    <ColumnDefinition Width="10"/>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="InstallLoaderBtn" Content="{DynamicResource MainBtnInstallLoader}" MaxHeight="30" />
-            </Grid>
-        </Grid>
-
-    </Grid>
+	</Grid>
 
 </Window>
