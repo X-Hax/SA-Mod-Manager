@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="About" Height="200" Width="Auto" MinWidth="250" MaxHeight="500" MaxWidth="420"
         Loaded="Window_Loaded"
+        Style="{StaticResource SAWindow}"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>

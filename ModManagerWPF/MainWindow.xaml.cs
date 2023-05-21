@@ -109,8 +109,6 @@ namespace ModManagerWPF
 				{
 					comboLanguage.Items.Add(lang.Name);
 				}
-
-				comboLanguage.SelectedIndex = 0;
 			}
 		}
 
@@ -141,8 +139,6 @@ namespace ModManagerWPF
 				{
 					comboThemes.Items.Add(lang.Name);
 				}
-
-				comboThemes.SelectedIndex = 0;
 			}
 		}
 
