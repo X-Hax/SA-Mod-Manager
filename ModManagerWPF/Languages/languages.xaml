@@ -4,9 +4,8 @@
     <local:LanguageList x:Key="Languages">
         <local:LangEntry FileName="en-EN" Name="English"/>
         <local:LangEntry FileName="fr-FR" Name="Français (France)" />
-
-
     </local:LanguageList>
+
 
 
 </ResourceDictionary>

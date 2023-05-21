@@ -5,9 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF"
         mc:Ignorable="d"
-        Title="AboutCode" Height="200" Width="Auto" MinWidth="250" MaxHeight="500" MaxWidth="420"
+        Title="About" Height="200" Width="Auto" MinWidth="250" MaxHeight="500" MaxWidth="420"
+        Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Themes.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <Grid Width="Auto" Height="Auto" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="63"/>
@@ -15,14 +24,14 @@
         </Grid.RowDefinitions>
         <StackPanel Margin="5,0,0,0"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TextBlock Foreground="{DynamicResource TextBrush}" x:Name="TitleText" FontSize="22" Width="Auto"/>
+            <TextBlock  x:Name="TitleText" FontSize="22" Width="Auto"/>
                 <StackPanel Orientation="Horizontal">
 
-                <TextBlock Foreground="{DynamicResource TextBrush}" x:Name="AuthorText" FontSize="14" Width="Auto"/>
+                <TextBlock  x:Name="AuthorText" FontSize="14" Width="Auto"/>
                 </StackPanel>
             </StackPanel>
-            <Rectangle Grid.Row="0" Height="1" Fill="{DynamicResource BorderBrush}"  VerticalAlignment="Bottom"/>
-        <TextBox Foreground="{DynamicResource TextBrush}" Grid.Row="1" x:Name="DescBx" AcceptsReturn="True" Text="Desc" IsReadOnly="True"
+            <Rectangle Grid.Row="0" Height="1"  VerticalAlignment="Bottom"/>
+        <TextBox  Grid.Row="1" x:Name="DescBx" AcceptsReturn="True" Text="Desc" IsReadOnly="True"
                  Margin="5" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="Transparent" BorderThickness="0"/>
         </Grid>
 </Window>

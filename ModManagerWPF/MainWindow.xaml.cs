@@ -19,6 +19,7 @@ namespace ModManagerWPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		public readonly string titleName = "SADX Mod Manager";
 		const string updatePath = "mods/.updates";
 		const string datadllpath = "system/CHRMODELS.dll";
 		const string datadllorigpath = "system/CHRMODELS_orig.dll";
@@ -184,6 +185,11 @@ namespace ModManagerWPF
 		private void CodesView_Item_Selected(object sender, RoutedEventArgs e)
 		{
 			
+		}
+
+		private void AboutBtn_Click(object sender, RoutedEventArgs e)
+		{
+			new AboutManager().ShowDialog();
 		}
 	}
 }

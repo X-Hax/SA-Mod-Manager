@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <SolidColorBrush x:Key="MainBackgroundBrush" Color="#191919"/>
+    <SolidColorBrush x:Key="MainBackgroundBrush" Color="#FF191919"/>
     <Color x:Key="MainBackgroundColor" A="255" R="25" G="25" B="25"/>
-    <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource MainBackgroundColor}"/>
-    <SolidColorBrush x:Key="MainDialogBottomBrush" Color="#131313"/>
-    <SolidColorBrush x:Key="BtnBackgroundBrush" Color="#202020"/>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#FF2D2D30"/>
+    <SolidColorBrush x:Key="MainDialogBottomBrush" Color="#FF131313"/>
+    <SolidColorBrush x:Key="BtnBackgroundBrush" Color="#FF2D2D30"/>
     <SolidColorBrush x:Key="TextBrush" Color="White"/>
     <SolidColorBrush x:Key="TabControlBrush" Color="Transparent"/>
     <SolidColorBrush x:Key="TabSelectedBrush" Color="#FF006ABC"/>    
@@ -13,5 +13,5 @@
     <Color x:Key="HoverColor" A="255" R="45" G="45" B="47"/>
     <SolidColorBrush x:Key="HoverBrush" Color="{DynamicResource HoverColor}"/>
     <SolidColorBrush x:Key="BorderBrush" Color="#FF3F3F46"/>
-    <SolidColorBrush x:Key="ComboBoxBGBrush" Color="{DynamicResource BtnBackgroundBrush}"/>
+    <Color x:Key="ComboBoxBGBrush" A="255" R="45" G="45" B="48"/>
 </ResourceDictionary>

@@ -15,19 +15,24 @@ using ModManagerCommon;
 
 namespace ModManagerWPF
 {
-    /// <summary>
-    /// Interaction logic for AboutCode.xaml
-    /// </summary>
-    public partial class AboutCode : Window
-    {
-        public AboutCode(Code code)
-        {
+	/// <summary>
+	/// Interaction logic for AboutCode.xaml
+	/// </summary>
+	public partial class AboutCode : Window
+	{
+		public AboutCode(Code code)
+		{
 			DataContext = code;
 			InitializeComponent();
-			Title = "About " + code.Name;
+			Title += " " + code.Name;
 			TitleText.Text = code.Name;
 			AuthorText.Text = code.Author != null ? "By " + code.Author : null;
 			DescBx.Text = code.Description;
 		}
-    }
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+
+		}
+	}
 }

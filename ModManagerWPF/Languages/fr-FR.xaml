@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:system="clr-namespace:System;assembly=mscorlib">
-
+    
     <!--Main Window Strings-->
     <system:String x:Key="MainBtnSave" >Sauvegarder</system:String>
     <system:String x:Key="MainBtnSaveAndPlay" xml:space="preserve">Sauvegarder &amp; Jouer</system:String>
@@ -62,5 +62,7 @@
     <system:String x:Key="ManagerLblLang">Langue:</system:String>
     <system:String x:Key="ManagerLblProfile">Profil:</system:String>
     <system:String x:Key="ManagerBtnOneClick">Activer 1-Click Install</system:String>
+
+    <system:String x:Key="AboutBtn">A Propos</system:String>
 
 </ResourceDictionary>

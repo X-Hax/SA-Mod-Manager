@@ -1,0 +1,78 @@
+﻿<Window x:Class="ModManagerWPF.AboutManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModManagerWPF"
+        mc:Ignorable="d"
+        Title="About" Height="480" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Style="{StaticResource SAWindow}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Image Width="65" Height="60" Source="/Icons/SADXModManager_.png"/>
+            <Label Content="SADX Mod Manager" Height="56" Width="341" FontSize="36"/>
+        </StackPanel>
+        <Label Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1"/>
+        <Label Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <GroupBox Header="Credits" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2" Grid.Column="0" Margin="8,8,5,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <Label Content="MainMemory"/>
+                    <Label Content="SonicFreak94"/>
+                    <Label Content="GerbilSoft"/>
+                    <Label Content="PkR"/>
+                    <Label Content="ItsEasyActually"/>
+                    <Label Content="Kell"/>
+                    <Label Content="Sora"/>
+                    <Label Content="Speeps"/>
+                    <Label Content="DankRank"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <Label Content="Original Author"/>
+                    <Label Content="Vice Captain"/>
+                    <Label Content="Contributor"/>
+                    <Label Content="Contributor"/>
+                    <Label Content="Contributor + (Refactoring WPF)"/>
+                    <Label Content="Contributor"/>
+                    <Label Content="Contributor + (Refactoring WPF)"/>
+                    <Label Content="Contributor"/>
+                    <Label Content="Contributor"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Translators" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2" Grid.Column="1" Margin="5,8,8,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <Label Content="Sora"/>
+
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+
+                    <Label Content="French translation"/>
+
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="-4" Grid.Row="3" Grid.ColumnSpan="2">
+            <Button Content="GitHub"  Margin="8,0,0,0" VerticalAlignment="Center" Width="75" Height="23" Click="ButtonGitHub_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

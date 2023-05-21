@@ -10,10 +10,15 @@
 
   <ItemGroup>
     <None Remove="Add.png" />
+    <None Remove="Icons\SADXModManager_.png" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\mod-loader-common\ModManagerCommon\ModManagerCommon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\SADXModManager_.png" />
   </ItemGroup>
 
 
