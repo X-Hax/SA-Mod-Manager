@@ -218,14 +218,30 @@
 												<RowDefinition Height="30"/>
 												<RowDefinition Height="0"/>
 											</Grid.RowDefinitions>
-											<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center"/>
-											<StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
-												<TextBox x:Name="txtResX" Height="22" Width="75"/>
+                                            <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
+                                                <ComboBoxItem Content="All Screens"></ComboBoxItem>
+                                            </ComboBox>
+                                            <StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
+                
+												<TextBox x:Name="txtResX" Height="22" Width="75" Text="640" PreviewTextInput="NumberValidationTextBox"/>
 												<Label Content="x"/>
-												<TextBox x:Name="txtResY" Height="22" Width="75"/>
-												<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboDisplay" Height="22" Margin="10,0,0,0" Width="225"/>
+                                                <TextBox x:Name="txtResY" Height="22" Width="75" Text="480" PreviewTextInput="NumberValidationTextBox"/>
+                                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboDisplay" Height="22" Margin="10,0,0,0" Width="225" SelectionChanged="comboResolutionPreset_SelectedIndexChanged">
+                                                      <ComboBoxItem Content="640x480"/>
+                                                <ComboBoxItem Content="800x600"/>
+                                                <ComboBoxItem Content="1024x768"/>
+                                                <ComboBoxItem Content="1152x864"/>
+                                                <ComboBoxItem Content="1280x960"/>
+                                                <ComboBoxItem Content="1280x1024"/>
+                                                <ComboBoxItem Content="Native"/>
+                                                <ComboBoxItem Content="1/2x Native"/>
+                                                <ComboBoxItem Content="2x Native"/>
+                                                <ComboBoxItem Content="720p"/>
+                                                <ComboBoxItem Content="1080p"/>
+                                                <ComboBoxItem Content="4k"/>
+                                                </ComboBox>
 
-											</StackPanel>
+                                            </StackPanel>
 										</Grid>
 
 										<!--Graphics Display Middle-->

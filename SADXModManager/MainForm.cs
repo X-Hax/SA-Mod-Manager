@@ -1960,7 +1960,8 @@ namespace SADXModManager
 
 		private void comboResolutionPreset_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (comboResolutionPreset.SelectedIndex == -1) return;
+			if (comboResolutionPreset.SelectedIndex == -1) 
+				return;
 			suppressEvent = true;
 			verticalResolution.Value = resolutionPresets[comboResolutionPreset.SelectedIndex].Height;
 			if (!forceAspectRatioCheckBox.Checked)

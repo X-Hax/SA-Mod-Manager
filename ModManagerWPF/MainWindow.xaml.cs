@@ -3,6 +3,7 @@ using ModManagerWPF.Themes;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -11,6 +12,7 @@ using ModManagerCommon.Forms;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Input;
+using System.Text.RegularExpressions;
 
 namespace ModManagerWPF
 {
@@ -19,6 +21,7 @@ namespace ModManagerWPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		#region Variables
 		public readonly string titleName = "SADX Mod Manager";
 		const string updatePath = "mods/.updates";
 		const string datadllpath = "system/CHRMODELS.dll";
@@ -34,20 +37,25 @@ namespace ModManagerWPF
 		CodeList mainCodes;
 		List<Code> codes;
 		bool installed = false;
+		bool suppressEvent = false;
 
 		public static LangEntry CurrentLang = new();
 		public static LanguageList LangList = new();
 		public static ThemeEntry CurrentTheme = new();
 		public static ThemeList ThemeList = new();
+		public GameGraphics graphics;
+		#endregion
 
 		public MainWindow()
-		{
+		{	
 			InitializeComponent();
 			AddLanguagesToList();
 			AddThemesToList();
 			InitCodes();
+			graphics = new GameGraphics(comboScreen);
 		}
 
+		#region Cheat Codes
 		private void InitCodes()
 		{
 			try
@@ -66,7 +74,6 @@ namespace ModManagerWPF
 				MessageBox.Show(this, $"Error loading code list: {ex.Message}", "SADX Mod Loader");
 				mainCodes = new CodeList();
 			}
-
 		}
 
 		private void LoadCodes()
@@ -77,10 +84,48 @@ namespace ModManagerWPF
 				CodeListView.Items.Add(item.Name);
 		}
 
+		private void OpenAboutCodeWindow(Code code)
+		{
+			new AboutCode(code).ShowDialog();
+		}
+
+		private Code GetCodeFromView(object sender)
+		{
+			return codes[CodeListView.SelectedIndex];
+		}
+		private void CodesView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+
+			var code = GetCodeFromView(sender);
+
+			if (code == null)
+				return;
+
+			OpenAboutCodeWindow(code);
+		}
+
+		private void CodesView_Item_MouseEnter(object sender, MouseEventArgs e)
+		{
+
+		}
+
+		private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
+		{
+
+		}
+
+		private void CodesView_Item_Selected(object sender, RoutedEventArgs e)
+		{
+
+		}
+		#endregion
+
+		#region Languages
 		private void comboLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			SwitchLanguage(comboLanguage.SelectedIndex);
 		}
+
 
 		private void SwitchLanguage(int index)
 		{
@@ -111,7 +156,9 @@ namespace ModManagerWPF
 				}
 			}
 		}
+		#endregion
 
+		#region Themes
 		private void SwitchTheme(int index)
 		{
 			if (ThemeList is null)
@@ -146,46 +193,46 @@ namespace ModManagerWPF
 		{
 			SwitchTheme(comboThemes.SelectedIndex);
 		}
+		#endregion
 
-		private void OpenAboutCodeWindow(Code code)
+		#region GraphicsSettings
+
+		private void comboResolutionPreset_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			new AboutCode(code).ShowDialog();
-		}
-
-		private Code GetCodeFromView(object sender)
-		{
-			return codes[CodeListView.SelectedIndex];
-		}
-
-		private void CodesView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-
-			var code = GetCodeFromView(sender);
-
-			if (code == null)
+			if (comboDisplay.SelectedIndex == -1)
 				return;
 
-			OpenAboutCodeWindow(code);
+			suppressEvent = true;
+
+			txtResY.Text = graphics.resolutionPresets[comboDisplay.SelectedIndex].Height.ToString();
+
+			if (chkRatio.IsChecked == false)
+				txtResX.Text = graphics.resolutionPresets[comboDisplay.SelectedIndex].Width.ToString();
+
+			suppressEvent = false;
 		}
+		#endregion
 
-		private void CodesView_Item_MouseEnter(object sender, MouseEventArgs e)
+		#region others
+
+		private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
 		{
-			
-		}
-
-		private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
-		{
-
-		}
-
-		private void CodesView_Item_Selected(object sender, RoutedEventArgs e)
-		{
-			
+			Regex regex = new("[^0-9]+");
+			e.Handled = regex.IsMatch(e.Text);
 		}
 
 		private void AboutBtn_Click(object sender, RoutedEventArgs e)
 		{
 			new AboutManager().ShowDialog();
+		}
+		#endregion
+
+		private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (graphics is null)
+				return;
+
+			graphics.screenNumBox_SelectChanged(comboScreen, comboDisplay);
 		}
 	}
 }
