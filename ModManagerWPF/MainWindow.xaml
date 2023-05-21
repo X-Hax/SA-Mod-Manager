@@ -401,8 +401,8 @@
                                     <RowDefinition Height="10"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,10" Grid.RowSpan="2" SelectionChanged="comboThemes_SelectionChanged"/>
-                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboLanguage" Grid.Row="2" VerticalAlignment="Center" SelectionChanged="comboLanguage_SelectionChanged"/>
+                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,10" Grid.RowSpan="2" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
+                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboLanguage" Grid.Row="2" VerticalAlignment="Center" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
                                 <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboProfile" Grid.Row="4" Margin="0,0,35,0" VerticalAlignment="Center" />
                                 <Button x:Name="btnProfileSettings" Grid.Row="4" Content="S" Margin="238,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" Width="27" />
                             </Grid>
