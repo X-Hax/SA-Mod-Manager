@@ -50,36 +50,47 @@
 	<system:String x:Key="GameTabDebug">Debug</system:String>
 	
 	<!--Graphics Tab Strings-->
-	<system:String x:Key="GameGraphicsGroupDisplay">Display Options</system:String>
-	<system:String x:Key="GameGraphicsGroupWindow">Window Options</system:String>
-	<system:String x:Key="GameGraphicsGroupVisuals">Other Graphics Options</system:String>
-    <system:String x:Key="GameGraphicsGroupEnhancement">Enhancements</system:String>
-    <system:String x:Key="GameGraphicsGroupFullscreen">Fullscreen Options</system:String>
-
+    <system:String x:Key="GameGraphicsGroupDisplay">Display Options</system:String>
     <system:String x:Key="GameGraphicsLabelScreen">Screen:</system:String>
-	<system:String x:Key="GameGraphicsLabelResolution">Resolution:</system:String>
-    <system:String x:Key="GameGraphicsLabelFramerate">Framerate:</system:String>
-    <system:String x:Key="GameGraphicsLabelDetail">Detail Level:</system:String>
-    <system:String x:Key="GameGraphicsLabelFog">Fog Emulation:</system:String>
-    <system:String x:Key="GameGraphicsLabelBackground">Background Fill Mode:</system:String>
-    <system:String x:Key="GameGraphicsLabelFMV">FMV Fill Mode:</system:String>
-    <system:String x:Key="GameGraphicsLabelTexture">Texture Filtering:</system:String>
-
-    <system:String x:Key="GameGraphicsRadioFullscreen">Fullscreen</system:String>
-	<system:String x:Key="GameGraphicsRadioWindowed">Windowed</system:String>
-    
-	<system:String x:Key="GameGraphicsCheckRatio">Force 4:3 Aspect Ratio</system:String>
-	<system:String x:Key="GameGraphicsCheckBorderless">Borderless</system:String>
-	<system:String x:Key="GameGraphicsCheckScale">Scale to Screen</system:String>
+    <system:String x:Key="GameGraphicsLabelResolution">Resolution:</system:String>
+    <system:String x:Key="GameGraphicsCheckRatio">Force 4:3 Aspect Ratio</system:String>
     <system:String x:Key="GameGraphicsCheckVSync">Enable V-Sync</system:String>
+    <system:String x:Key="GameGraphicsRadioFullscreen">Fullscreen</system:String>
+    <system:String x:Key="GameGraphicsRadioWindowed">Windowed</system:String>
+
+    <system:String x:Key="GameGraphicsGroupWindow">Window Options</system:String>
     <system:String x:Key="GameGraphicsCheckResize">Resizable Window</system:String>
     <system:String x:Key="GameGraphicsCheckAspect">Maintain Aspect Ratio</system:String>
     <system:String x:Key="GameGraphicsCheckCustomWindow">Custom Window Size:</system:String>
+
+    <system:String x:Key="GameGraphicsGroupFullscreen">Fullscreen Options</system:String>
+    <system:String x:Key="GameGraphicsCheckBorderless">Borderless</system:String>
+    <system:String x:Key="GameGraphicsCheckScale">Scale to Screen</system:String>
+
+    <system:String x:Key="GameGraphicsGroupVisuals">Other Graphics Options</system:String>
+    <system:String x:Key="GameGraphicsLabelFramerate">Framerate:</system:String>
+    <system:String x:Key="GameGraphicsLabelDetail">Detail Level:</system:String>
+    <system:String x:Key="GameGraphicsBoxDetailHigh">High (best)</system:String>
+    <system:String x:Key="GameGraphicsBoxDetailLow">Low</system:String>
+    <system:String x:Key="GameGraphicsBoxDetailLowest">Lowest</system:String>
+    <system:String x:Key="GameGraphicsLabelFog">Fog Emulation:</system:String>
+    <system:String x:Key="GameGraphicsBoxAuto">Auto</system:String>
+    <system:String x:Key="GameGraphicsBoxEmu">Emulation</system:String>
+    <system:String x:Key="GameGraphicsLabelBackground">Background Fill Mode:</system:String>
+    <system:String x:Key="GameGraphicsBoxStretch">Stretch [Default]</system:String>
+    <system:String x:Key="GameGraphicsBoxFit">Fit</system:String>
+    <system:String x:Key="GameGraphicsBoxFill">Fill</system:String>
+    <system:String x:Key="GameGraphicsLabelFMV">FMV Fill Mode:</system:String>
+    <system:String x:Key="GameGraphicsLabelTexture">Texture Filtering:</system:String>
+
+    <system:String x:Key="GameGraphicsGroupEnhancement">Enhancements</system:String>
     <system:String x:Key="GameGraphicsCheckMipmap">Force Mipmapping</system:String>
     <system:String x:Key="GameGraphicsCheckUIScale">Enable UI Scaling</system:String>
     <system:String x:Key="GameGraphicsCheckD3D8">Enable D3D8to9</system:String>
     
     <system:String x:Key="GameGraphicsButtonUpdateD3D8">Update D3D8to9</system:String>
+        
+    
     <!--#endregion-->
 	
 	<!--#region Manager Config Tab Strings-->

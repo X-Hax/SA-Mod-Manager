@@ -331,10 +331,25 @@
 											<Label Content="{DynamicResource GameGraphicsLabelFramerate}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"/>
 											<Label Content="{DynamicResource GameGraphicsLabelDetail}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
 											<Label Content="{DynamicResource GameGraphicsLabelFog}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
-											<ComboBox x:Name="comboFramerate" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center"/>
-											<ComboBox x:Name="comboDetail" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
-											<ComboBox x:Name="comboFog" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
-										</Grid>
+                                            <ComboBox x:Name="comboFramerate" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
+                                                <ComboBoxItem Content="60 FPS"/>
+                                                <ComboBoxItem Content="30 FPS"/>
+                                                <ComboBoxItem Content="15 FPS"/>
+
+                                            </ComboBox>
+
+                                            <ComboBox x:Name="comboDetail" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" SelectedIndex="0">
+                                            <ComboBoxItem Content="{DynamicResource GameGraphicsBoxDetailHigh}"/>
+                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxDetailLow}"/>
+                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxDetailLowest}"/>
+
+                                            </ComboBox>
+                                            <ComboBox x:Name="comboFog" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" SelectedIndex="0">
+                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxAuto}"/>
+                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxEmu}"/>
+                            
+                                            </ComboBox>
+                                        </Grid>
 
 										<!--Visuals Group Right Side.-->
 										<Grid Grid.Column="2" Grid.Row="1">
@@ -353,9 +368,17 @@
 											<Label Content="{DynamicResource GameGraphicsLabelBackground}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"/>
 											<Label Content="{DynamicResource GameGraphicsLabelFMV}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
 											<Label Content="{DynamicResource GameGraphicsLabelTexture}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
-											<ComboBox x:Name="comboBGFill" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center"/>
-											<ComboBox x:Name="comboFMVFill" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
-											<ComboBox x:Name="comboTextureFilter" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
+                                            <ComboBox x:Name="comboBGFill" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
+                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxStretch}"/>
+                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxFit}"/>
+                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxFill}"/>
+                                            </ComboBox>
+                                            <ComboBox x:Name="comboFMVFill" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" SelectedIndex="0">
+                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxStretch}"/>
+                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxFit}"/>
+                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxFill}"/>
+                                            </ComboBox>
+                                            <ComboBox x:Name="comboTextureFilter" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
 										</Grid>
 
 										<Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2">

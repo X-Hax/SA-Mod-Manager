@@ -36,19 +36,46 @@
     <system:String x:Key="GameTabPatches">Patches</system:String>
     <system:String x:Key="GameTabDebug">Debug</system:String>
 
-
     <!--Graphics Tab Strings-->
     <system:String x:Key="GameGraphicsGroupDisplay">Options d'Affichage</system:String>
-    <system:String x:Key="GameGraphicsGroupWindow">Options Fenêtré</system:String>
-    <system:String x:Key="GameGraphicsGroupVisuals">Autres Options Graphique</system:String>
-    <system:String x:Key="GameGraphicsLabelScreen">Ecran:</system:String>
+    <system:String x:Key="GameGraphicsLabelScreen">Écran:</system:String>
     <system:String x:Key="GameGraphicsLabelResolution">Résolution:</system:String>
+    <system:String x:Key="GameGraphicsCheckRatio">Forcer Ratio d'Aspect 4:3</system:String>
+    <system:String x:Key="GameGraphicsCheckVSync">Activer Synchronisation Verticale</system:String>
     <system:String x:Key="GameGraphicsRadioFullscreen">Plein Écran</system:String>
     <system:String x:Key="GameGraphicsRadioWindowed">Fenêtré</system:String>
-    <system:String x:Key="GameGraphicsCheckRatio">Forcer 4:3 Aspect Ratio</system:String>
-    <system:String x:Key="GameGraphicsCheckBorderless">Sans Bordures</system:String>
-    <system:String x:Key="GameGraphicsCheckScale">Mise à l'echelle de l'interface</system:String>
-    <system:String x:Key="GameGraphicsCheckVSync">Activer V-Sync</system:String>
+
+    <system:String x:Key="GameGraphicsGroupWindow">Options Fenêtré</system:String>
+    <system:String x:Key="GameGraphicsCheckResize">Fenêtre Redimensionnable</system:String>
+    <system:String x:Key="GameGraphicsCheckAspect">Maintenir le Ratio d'Aspect</system:String>
+    <system:String x:Key="GameGraphicsCheckCustomWindow">Taille de fenêtre Personnalisée:</system:String>
+
+    <system:String x:Key="GameGraphicsGroupFullscreen">Options Plein Écran</system:String>
+    <system:String x:Key="GameGraphicsCheckBorderless">Sans bordures</system:String>
+    <system:String x:Key="GameGraphicsCheckScale">Mise à l'echelle de l'Écran</system:String>
+
+    <system:String x:Key="GameGraphicsGroupVisuals">Autre Options Graphiques</system:String>
+    <system:String x:Key="GameGraphicsLabelFramerate">Fréquence d'images:</system:String>
+    <system:String x:Key="GameGraphicsLabelDetail">Qualité:</system:String>
+    <system:String x:Key="GameGraphicsBoxDetailHigh">Élevé (meilleur)</system:String>
+    <system:String x:Key="GameGraphicsBoxDetailLow">Faible</system:String>
+    <system:String x:Key="GameGraphicsBoxDetailLowest">Très faible</system:String>
+    <system:String x:Key="GameGraphicsLabelFog">Émulation de brouillard:</system:String>
+    <system:String x:Key="GameGraphicsBoxAuto">Auto</system:String>
+    <system:String x:Key="GameGraphicsBoxEmu">Émulation</system:String>
+    <system:String x:Key="GameGraphicsLabelBackground">Taille Arrière-Plan:</system:String>
+    <system:String x:Key="GameGraphicsBoxStretch">Extensible [Défaut]</system:String>
+    <system:String x:Key="GameGraphicsBoxFit">Adapté</system:String>
+    <system:String x:Key="GameGraphicsBoxFill">Remplir</system:String>
+    <system:String x:Key="GameGraphicsLabelFMV">Taille FMV:</system:String>
+    <system:String x:Key="GameGraphicsLabelTexture">Filtration Texture</system:String>
+
+    <system:String x:Key="GameGraphicsGroupEnhancement">Améliorations</system:String>
+    <system:String x:Key="GameGraphicsCheckMipmap">Forcer Mipmapping</system:String>
+    <system:String x:Key="GameGraphicsCheckUIScale">Activer Mise à l'échelle de l'interface</system:String>
+    <system:String x:Key="GameGraphicsCheckD3D8">Activer D3D8to9</system:String>
+
+    <system:String x:Key="GameGraphicsButtonUpdateD3D8">Mettre à jour D3D8to9</system:String>
     <!--#endregion-->
 
     <!--Manager Config Tab Strings-->
