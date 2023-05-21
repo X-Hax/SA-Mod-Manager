@@ -8,7 +8,7 @@
 		mc:Ignorable="d"
 		Title="SADX Mod Manager"
 		Style="{StaticResource SAWindow}"
-		MinHeight="550" MinWidth="590" Height="652" Width="620" WindowStartupLocation="CenterScreen">
+		MinHeight="550" MinWidth="590" Height="670" Width="640" WindowStartupLocation="CenterScreen">
 
 	<!--This is where all Resources are stored.-->
 	<Window.Resources>

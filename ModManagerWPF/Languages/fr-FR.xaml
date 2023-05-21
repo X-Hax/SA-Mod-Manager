@@ -55,12 +55,12 @@
     <system:String x:Key="GameGraphicsCheckScale">Mise à l'echelle de l'Écran</system:String>
 
     <system:String x:Key="GameGraphicsGroupVisuals">Autre Options Graphiques</system:String>
-    <system:String x:Key="GameGraphicsLabelFramerate">Fréquence d'images:</system:String>
+    <system:String x:Key="GameGraphicsLabelFramerate">Fréquence d'Images:</system:String>
     <system:String x:Key="GameGraphicsLabelDetail">Qualité:</system:String>
     <system:String x:Key="GameGraphicsBoxDetailHigh">Élevé (meilleur)</system:String>
     <system:String x:Key="GameGraphicsBoxDetailLow">Faible</system:String>
     <system:String x:Key="GameGraphicsBoxDetailLowest">Très faible</system:String>
-    <system:String x:Key="GameGraphicsLabelFog">Émulation de brouillard:</system:String>
+    <system:String x:Key="GameGraphicsLabelFog">Émulation de Brouillard:</system:String>
     <system:String x:Key="GameGraphicsBoxAuto">Auto</system:String>
     <system:String x:Key="GameGraphicsBoxEmu">Émulation</system:String>
     <system:String x:Key="GameGraphicsLabelBackground">Taille Arrière-Plan:</system:String>
