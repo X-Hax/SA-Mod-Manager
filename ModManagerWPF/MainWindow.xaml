@@ -542,8 +542,13 @@
 				</Grid>
 			</TabItem>
 
+			<!--This Tab is for Test Spawn.-->
+			<TabItem x:Name="tabTestSpawn" Header="Test Spawn" Margin="9,0,-9,0">
+				
+			</TabItem>
+
 			<!--This Tab is for Manager Configuration.-->
-			<TabItem x:Name="tabConfig" Header="{DynamicResource MainTabManagerConfig}" Margin="9,0,-9,0">
+			<TabItem x:Name="tabConfig" Header="{DynamicResource MainTabManagerConfig}" Margin="12,0,-12,0">
 
 				<!--Main Grid for the Manager Config Tab.-->
 				<Grid>
