@@ -335,7 +335,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="0"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <!--Group Box for Update Configuration-->
@@ -409,7 +409,7 @@
                         </Grid>
                     </GroupBox>
                     
-                    <GroupBox Grid.Column="1" Header="SADX Mod Manager" Grid.Row="4" VerticalAlignment="Center" Margin="2,0,0,0">
+                    <GroupBox Grid.Column="1" Header="SADX Mod Manager" Grid.Row="4" Margin="2,0,0,0">
                         <Grid>
                             <Button x:Name="btnAbout" Content="{DynamicResource BtnAbout}" MaxHeight="30" Click="AboutBtn_Click"/>
                         </Grid>
