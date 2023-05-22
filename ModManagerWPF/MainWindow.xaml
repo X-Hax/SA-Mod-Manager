@@ -295,7 +295,7 @@
 													<CheckBox x:Name="chkResizableWin" Grid.Column="0" Grid.Row="0" Content="{DynamicResource GameGraphicsCheckResize}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 													<CheckBox x:Name="chkMaintainRatio" Grid.Column="1" Grid.Row="0" Content="{DynamicResource GameGraphicsCheckAspect}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-													<CheckBox x:Name="chkCustomWinSize" Grid.Column="0" Grid.Row="1" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+													<CheckBox x:Name="chkCustomWinSize" Grid.Column="0" Grid.Row="1" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked"/>
 													<StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center">
                                                         <xctk:IntegerUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
 														<Label Content="x"/>
