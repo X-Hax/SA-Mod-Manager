@@ -5,7 +5,8 @@
     <Color x:Key="MainBackgroundColor" A="255" R="25" G="25" B="25"/>
     <SolidColorBrush x:Key="BackgroundBrush" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="MainDialogBottomBrush" Color="#F0F0F0"/>
-    <SolidColorBrush x:Key="BtnBackgroundBrush" Color="#E1E1E1"/>
+    <Color x:Key="BtnBackgroundColor" A="255" R="221" G="221" B="221"/>
+    <Color x:Key="BtnHoverColor" A="255" R="190" G="230" B="253"/>
     <SolidColorBrush x:Key="TextBrush" Color="Black"/>
     <SolidColorBrush x:Key="TabControlBrush" Color="#F0F0F0"/>
     <SolidColorBrush x:Key="TabSelectedBrush" Color="#FF006ABC"/>
