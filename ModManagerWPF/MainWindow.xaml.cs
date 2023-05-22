@@ -100,7 +100,6 @@ namespace ModManagerWPF
 			IniSerializer.Serialize(loaderini, loaderinipath);
 		}
 
-
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
 			Save();
@@ -119,6 +118,11 @@ namespace ModManagerWPF
 			mods = new Dictionary<string, SADXModInfo>();
 			string modDir = Path.Combine(Environment.CurrentDirectory, "mods");
 
+			if (!Directory.Exists(modDir)) 
+			{ 
+				Directory.CreateDirectory(modDir);
+			}
+
 			if (File.Exists(Path.Combine(modDir, "mod.ini")))
 			{
 				/*MessageBox.Show(this, "There is a mod.ini in the mods folder."
@@ -127,6 +131,7 @@ namespace ModManagerWPF
 				Close();
 				return;
 			}
+
 
 			foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modDir)))
 			{
