@@ -18,7 +18,6 @@ namespace ModManagerWPF
 			Fill = 2
 		}
 
-
 		public bool DebugConsole { get; set; }
 
 		public bool DebugScreen { get; set; }
@@ -40,7 +39,7 @@ namespace ModManagerWPF
 
 		public bool ForceAspectRatio { get; set; }
 
-		public bool WindowedFullscreen { get; set; }
+		public bool Borderless { get; set; }
 
 		[DefaultValue(true)]
 		public bool EnableVsync { get; set; } = true;
@@ -78,8 +77,8 @@ namespace ModManagerWPF
 
 		public bool ResizableWindow { get; set; }
 
-		[DefaultValue(false)]
-		public bool ScaleHud { get; set; }
+		[DefaultValue(true)]
+		public bool ScaleHud { get; set; } = true;
 
 		[DefaultValue((int)FillMode.Fill)]
 		public int BackgroundFillMode { get; set; } = (int)FillMode.Fill;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModManagerCommon;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -59,6 +60,21 @@ namespace ModManagerWPF
 
 			if (comboResolutionPreset.SelectedIndex > 4 && comboResolutionPreset.SelectedIndex < 8 && rect.Size != oldsize)
 				comboResolutionPreset.SelectedIndex = -1;
+		}
+
+		public int GetScreenNum(int screenNum)
+		{
+			return Math.Min(Screen.AllScreens.Length, screenNum);
+		}
+
+		public Rectangle GetRectangleStruct()
+		{
+			Rectangle rect = Screen.PrimaryScreen.Bounds;
+
+			foreach (Screen screen in Screen.AllScreens)
+				rect = Rectangle.Union(rect, screen.Bounds);
+
+			return rect;
 		}
 	}
 

@@ -5,6 +5,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:ModManagerWPF"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		mc:Ignorable="d"
 		Title="SADX Mod Manager"
 		Style="{StaticResource SAWindow}"
@@ -129,17 +130,22 @@
 					</Grid>
 
 					<ListView Name="CodeListView">
+         
+                     
 						<ListView.ItemContainerStyle>
-							<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                        
+                                <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                        
 
-
-								<EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
+                                    <EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
 								<EventSetter Event="MouseEnter"       Handler="CodesView_Item_MouseEnter"/>
 								<EventSetter Event="MouseLeave"       Handler="CodesView_Item_MouseLeave"/>
 								<EventSetter Event="Selected"         Handler="CodesView_Item_Selected"/>
 							</Style>
-						</ListView.ItemContainerStyle>
-						<ListView.View>
+       
+                        </ListView.ItemContainerStyle>
+                     
+                        <ListView.View>
 
 							<GridView>
 								<GridViewColumn/>
@@ -222,10 +228,12 @@
                                                 <ComboBoxItem Content="All Screens"></ComboBoxItem>
                                             </ComboBox>
                                             <StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
-                
-												<TextBox x:Name="txtResX" Height="22" Width="75" Text="640" PreviewTextInput="NumberValidationTextBox"/>
+
+                                                <xctk:IntegerUpDown x:Name="txtResX" Height="22" Width="75" Value="640" PreviewTextInput="NumberValidationTextBox"/>
+                                              
 												<Label Content="x"/>
-                                                <TextBox x:Name="txtResY" Height="22" Width="75" Text="480" PreviewTextInput="NumberValidationTextBox"/>
+                                               <xctk:IntegerUpDown x:Name="txtResY" Height="22" Width="75" Value="480" PreviewTextInput="NumberValidationTextBox"/>
+                                    
                                                 <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboDisplay" Height="22" Margin="10,0,0,0" Width="225" SelectionChanged="comboResolutionPreset_SelectedIndexChanged">
                                                       <ComboBoxItem Content="640x480"/>
                                                 <ComboBoxItem Content="800x600"/>
@@ -284,14 +292,14 @@
 														<RowDefinition Height="*"/>
 													</Grid.RowDefinitions>
 
-													<CheckBox Grid.Column="0" Grid.Row="0" Content="{DynamicResource GameGraphicsCheckResize}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-													<CheckBox Grid.Column="1" Grid.Row="0" Content="{DynamicResource GameGraphicsCheckAspect}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+													<CheckBox x:Name="chkResizableWin" Grid.Column="0" Grid.Row="0" Content="{DynamicResource GameGraphicsCheckResize}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+													<CheckBox x:Name="chkMaintainRatio" Grid.Column="1" Grid.Row="0" Content="{DynamicResource GameGraphicsCheckAspect}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-													<CheckBox Grid.Column="0" Grid.Row="1" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+													<CheckBox x:Name="chkCustomWinSize" Grid.Column="0" Grid.Row="1" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 													<StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center">
-														<TextBox x:Name="txtCustomResX" Height="22" Width="75"/>
+                                                        <xctk:IntegerUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
 														<Label Content="x"/>
-														<TextBox x:Name="txtCustomResY" Height="22" Width="75"/>
+                                                        <xctk:IntegerUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480"/>
 													</StackPanel>
 												</Grid>
 											</GroupBox>
@@ -305,7 +313,7 @@
 													</Grid.ColumnDefinitions>
 
 													<CheckBox x:Name="chkBorderless" Content="{DynamicResource GameGraphicsCheckBorderless}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,5"/>
-													<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameGraphicsCheckScale}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+													<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameGraphicsCheckScale}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="True"/>
 												</Grid>
 											</GroupBox>
 										</Grid>
@@ -705,8 +713,8 @@
 					<ColumnDefinition Width="10"/>
 					<ColumnDefinition Width="160"/>
 				</Grid.ColumnDefinitions>
-				<Button x:Name="SaveAndPlayButton"  Content="{DynamicResource MainBtnSaveAndPlay}"  MaxHeight="30" Grid.Column="1"/>
-				<Button x:Name="SaveButton" Content="{DynamicResource MainBtnSave}" MaxHeight="30" Grid.Column="3"/>
+				<Button x:Name="SaveAndPlayButton"  Content="{DynamicResource MainBtnSaveAndPlay}"  MaxHeight="30" Grid.Column="1" Click="SaveAndPlayButton_Click"/>
+				<Button x:Name="SaveButton" Content="{DynamicResource MainBtnSave}" MaxHeight="30" Grid.Column="3" Click="SaveButton_Click"/>
 			</Grid>
 
 			<!--This Grid manages the Install Loader Button.-->
