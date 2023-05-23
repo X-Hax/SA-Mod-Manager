@@ -112,7 +112,7 @@ namespace ModManagerWPF
 		}
 		private void LoadModList()
 		{
-			//modTopButton.Enabled = modUpButton.Enabled = modDownButton.Enabled = modBottomButton.Enabled = configureModButton.Enabled = false;
+			btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
 			//modDescription.Text = "Description: No mod selected.";
 			listMods.Items.Clear();
 			mods = new Dictionary<string, SADXModInfo>();
@@ -145,6 +145,7 @@ namespace ModManagerWPF
 				{
 					SADXModInfo inf = mods[mod];
 					suppressEvent = true;
+					listMods.Items.Add(inf);
 					//listMods.Items.Add(new ListViewItem(new[] { inf.Name, inf.Author, inf.Version, inf.Category }) { IsChecked = true, Tag = mod });
 					suppressEvent = false;
 				}
@@ -157,8 +158,8 @@ namespace ModManagerWPF
 
 			foreach (KeyValuePair<string, SADXModInfo> inf in mods.OrderBy(x => x.Value.Name))
 			{
-				/*if (!loaderini.Mods.Contains(inf.Key))
-					listMods.Items.Add(new ListViewItem(new[] { inf.Value.Name, inf.Value.Author, inf.Value.Version, inf.Value.Category }) { Tag = inf.Key });*/
+				if (!loaderini.Mods.Contains(inf.Key))
+					listMods.Items.Add(new { inf.Value.Name, inf.Value.Author, inf.Value.Version, inf.Value.Category }); //{ Tag = inf.Key });
 			}
 	
 		}
