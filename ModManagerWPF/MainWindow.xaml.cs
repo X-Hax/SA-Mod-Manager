@@ -247,7 +247,7 @@ namespace ModManagerWPF
 				CodeListView.Items.Add(item.Name);
 			}
 
-			//loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
+			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
 		}
 
 		private void OpenAboutCodeWindow(Code code)
@@ -255,14 +255,13 @@ namespace ModManagerWPF
 			new AboutCode(code).ShowDialog();
 		}
 
-		private Code GetCodeFromView(object sender)
+		private Code GetCodeFromView()
 		{
 			return codes[CodeListView.SelectedIndex];
 		}
 		private void CodesView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-
-			var code = GetCodeFromView(sender);
+			var code = GetCodeFromView();
 
 			if (code == null)
 				return;
