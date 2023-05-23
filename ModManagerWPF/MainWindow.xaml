@@ -691,9 +691,9 @@
 									<RowDefinition Height="26"/>
 									<RowDefinition Height="26"/>
 								</Grid.RowDefinitions>
-								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
-								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboLanguage" Grid.Row="1" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
-								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboProfile" Grid.Row="2" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284"/>
+								<ComboBox x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
+								<ComboBox x:Name="comboLanguage" Grid.Row="1" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
+								<ComboBox x:Name="comboProfile" Grid.Row="2" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284"/>
 								<Button x:Name="btnProfileSettings" Content=" Edit Profiles" Grid.Row="3" Margin="5,3,5,3" MaxWidth="284"/>
 							</Grid>
 						</Grid>
