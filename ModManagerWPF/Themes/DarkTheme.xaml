@@ -5,7 +5,8 @@
     <Color x:Key="MainBackgroundColor" A="255" R="25" G="25" B="25"/>
     <SolidColorBrush x:Key="BackgroundBrush" Color="#FF2D2D30"/>
     <SolidColorBrush x:Key="MainDialogBottomBrush" Color="#FF131313"/>
-    <SolidColorBrush x:Key="BtnBackgroundBrush" Color="#FF2D2D30"/>
+    <Color x:Key="BtnBackgroundColor" A="255" R="32" G="32" B="32"/>
+    <Color x:Key="BtnHoverColor" A="255" R="45" G="45" B="47"/>
     <SolidColorBrush x:Key="TextBrush" Color="White"/>
     <SolidColorBrush x:Key="TabControlBrush" Color="Transparent"/>
     <SolidColorBrush x:Key="TabSelectedBrush" Color="#FF006ABC"/>    
@@ -14,4 +15,6 @@
     <SolidColorBrush x:Key="HoverBrush" Color="{DynamicResource HoverColor}"/>
     <SolidColorBrush x:Key="BorderBrush" Color="#FF3F3F46"/>
     <Color x:Key="ComboBoxBGBrush" A="255" R="45" G="45" B="48"/>
+    <Color x:Key="ComboBoxBGBrush2" A="255" R="48" G="48" B="48"/>
+
 </ResourceDictionary>

@@ -385,6 +385,15 @@ namespace ModManagerWPF
 
 			graphics.screenNumBox_SelectChanged(comboScreen, comboDisplay);
 		}
+
+		private void chkCustomWinSize_Checked(object sender, RoutedEventArgs e)
+		{
+			chkMaintainRatio.IsEnabled = (bool)chkCustomWinSize.IsChecked;
+			chkResizableWin.IsEnabled = (bool)!chkCustomWinSize.IsChecked;
+
+			txtCustomResX.IsEnabled = (bool)chkCustomWinSize.IsChecked && (bool)!chkMaintainRatio.IsChecked;
+			txtCustomResY.IsEnabled = (bool)chkCustomWinSize.IsChecked;
+		}
 		#endregion
 
 		#region Others
