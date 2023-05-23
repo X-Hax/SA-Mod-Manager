@@ -14,5 +14,6 @@
     <Color x:Key="HoverColor" A="255" R="190" G="230" B="253"/>
     <SolidColorBrush x:Key="HoverBrush" Color="{DynamicResource HoverColor}"/>
     <SolidColorBrush x:Key="BorderBrush" Color="#FFBBBBBB"/>
-    <Color x:Key="ComboBoxBGBrush" A="255" R="225" G="225" B="225"/>
+    <Color x:Key="ComboBoxBGBrush" A="255" R="238" G="238" B="238"/>
+    <Color x:Key="ComboBoxBGBrush2" A="255" R="242" G="242" B="242"/>
 </ResourceDictionary>
