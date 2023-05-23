@@ -5,7 +5,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:ModManagerWPF"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		mc:Ignorable="d"
 		Title="SADX Mod Manager"
 		Style="{StaticResource SAWindow}"
@@ -130,22 +130,22 @@
 					</Grid>
 
 					<ListView Name="CodeListView">
-         
-                     
-						<ListView.ItemContainerStyle>
-                        
-                                <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
-                        
 
-                                    <EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
+
+						<ListView.ItemContainerStyle>
+
+							<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+
+
+								<EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
 								<EventSetter Event="MouseEnter"       Handler="CodesView_Item_MouseEnter"/>
 								<EventSetter Event="MouseLeave"       Handler="CodesView_Item_MouseLeave"/>
 								<EventSetter Event="Selected"         Handler="CodesView_Item_Selected"/>
 							</Style>
-       
-                        </ListView.ItemContainerStyle>
-                     
-                        <ListView.View>
+
+						</ListView.ItemContainerStyle>
+
+						<ListView.View>
 
 							<GridView>
 								<GridViewColumn/>
@@ -191,7 +191,7 @@
 											<RowDefinition Height="*"/>
 											<RowDefinition Height="10"/>
 										</Grid.RowDefinitions>
-										
+
 										<!--Graphics Display Top Left.-->
 										<Grid Grid.Column="1" Grid.Row="1">
 											<Grid.ColumnDefinitions>
@@ -224,32 +224,32 @@
 												<RowDefinition Height="30"/>
 												<RowDefinition Height="0"/>
 											</Grid.RowDefinitions>
-                                            <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
-                                                <ComboBoxItem Content="All Screens"></ComboBoxItem>
-                                            </ComboBox>
-                                            <StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
+											<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
+												<ComboBoxItem Content="All Screens"></ComboBoxItem>
+											</ComboBox>
+											<StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
 
-                                                <xctk:IntegerUpDown x:Name="txtResX" Height="22" Width="75" Value="640" PreviewTextInput="NumberValidationTextBox"/>
-                                              
+												<xctk:IntegerUpDown x:Name="txtResX" Height="22" Width="75" Value="640" PreviewTextInput="NumberValidationTextBox"/>
+
 												<Label Content="x"/>
-                                               <xctk:IntegerUpDown x:Name="txtResY" Height="22" Width="75" Value="480" PreviewTextInput="NumberValidationTextBox"/>
-                                    
-                                                <ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboDisplay" Height="22" Margin="10,0,0,0" Width="225" SelectionChanged="comboResolutionPreset_SelectedIndexChanged">
-                                                      <ComboBoxItem Content="640x480"/>
-                                                <ComboBoxItem Content="800x600"/>
-                                                <ComboBoxItem Content="1024x768"/>
-                                                <ComboBoxItem Content="1152x864"/>
-                                                <ComboBoxItem Content="1280x960"/>
-                                                <ComboBoxItem Content="1280x1024"/>
-                                                <ComboBoxItem Content="Native"/>
-                                                <ComboBoxItem Content="1/2x Native"/>
-                                                <ComboBoxItem Content="2x Native"/>
-                                                <ComboBoxItem Content="720p"/>
-                                                <ComboBoxItem Content="1080p"/>
-                                                <ComboBoxItem Content="4k"/>
-                                                </ComboBox>
+												<xctk:IntegerUpDown x:Name="txtResY" Height="22" Width="75" Value="480" PreviewTextInput="NumberValidationTextBox"/>
 
-                                            </StackPanel>
+												<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboDisplay" Height="22" Margin="10,0,0,0" Width="225" SelectionChanged="comboResolutionPreset_SelectedIndexChanged">
+													<ComboBoxItem Content="640x480"/>
+													<ComboBoxItem Content="800x600"/>
+													<ComboBoxItem Content="1024x768"/>
+													<ComboBoxItem Content="1152x864"/>
+													<ComboBoxItem Content="1280x960"/>
+													<ComboBoxItem Content="1280x1024"/>
+													<ComboBoxItem Content="Native"/>
+													<ComboBoxItem Content="1/2x Native"/>
+													<ComboBoxItem Content="2x Native"/>
+													<ComboBoxItem Content="720p"/>
+													<ComboBoxItem Content="1080p"/>
+													<ComboBoxItem Content="4k"/>
+												</ComboBox>
+
+											</StackPanel>
 										</Grid>
 
 										<!--Graphics Display Middle-->
@@ -262,10 +262,10 @@
 												<RowDefinition Height="*"/>
 												<RowDefinition Height="*"/>
 											</Grid.RowDefinitions>
-											
+
 											<CheckBox x:Name="chkRatio" Content="{DynamicResource GameGraphicsCheckRatio}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Margin="0,5,0,5"/>
 											<CheckBox x:Name="chkVSync" Content="{DynamicResource GameGraphicsCheckVSync}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="True"/>
-                                            <RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="True" />
+											<RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="True" />
 											<RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5"/>
 										</Grid>
 
@@ -297,9 +297,9 @@
 
 													<CheckBox x:Name="chkCustomWinSize" Grid.Column="0" Grid.Row="1" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 													<StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                        <xctk:IntegerUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
+														<xctk:IntegerUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
 														<Label Content="x"/>
-                                                        <xctk:IntegerUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480"/>
+														<xctk:IntegerUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480"/>
 													</StackPanel>
 												</Grid>
 											</GroupBox>
@@ -335,7 +335,7 @@
 											<RowDefinition Height="*"/>
 											<RowDefinition Height="10"/>
 										</Grid.RowDefinitions>
-										
+
 										<!--Visuals Group Left Side.-->
 										<Grid Grid.Column="1" Grid.Row="1">
 											<Grid.ColumnDefinitions>
@@ -355,25 +355,25 @@
 											<Label Content="{DynamicResource GameGraphicsLabelFramerate}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"/>
 											<Label Content="{DynamicResource GameGraphicsLabelDetail}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
 											<Label Content="{DynamicResource GameGraphicsLabelFog}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
-                                            <ComboBox x:Name="comboFramerate" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
-                                                <ComboBoxItem Content="60 FPS"/>
-                                                <ComboBoxItem Content="30 FPS"/>
-                                                <ComboBoxItem Content="15 FPS"/>
+											<ComboBox x:Name="comboFramerate" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
+												<ComboBoxItem Content="60 FPS"/>
+												<ComboBoxItem Content="30 FPS"/>
+												<ComboBoxItem Content="15 FPS"/>
 
-                                            </ComboBox>
+											</ComboBox>
 
-                                            <ComboBox x:Name="comboDetail" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" SelectedIndex="0">
-                                            <ComboBoxItem Content="{DynamicResource GameGraphicsBoxDetailHigh}"/>
-                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxDetailLow}"/>
-                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxDetailLowest}"/>
+											<ComboBox x:Name="comboDetail" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" SelectedIndex="0">
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxDetailHigh}"/>
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxDetailLow}"/>
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxDetailLowest}"/>
 
-                                            </ComboBox>
-                                            <ComboBox x:Name="comboFog" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" SelectedIndex="0">
-                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxAuto}"/>
-                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxEmu}"/>
-                            
-                                            </ComboBox>
-                                        </Grid>
+											</ComboBox>
+											<ComboBox x:Name="comboFog" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" SelectedIndex="0">
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxAuto}"/>
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxEmu}"/>
+
+											</ComboBox>
+										</Grid>
 
 										<!--Visuals Group Right Side.-->
 										<Grid Grid.Column="2" Grid.Row="1">
@@ -392,17 +392,17 @@
 											<Label Content="{DynamicResource GameGraphicsLabelBackground}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"/>
 											<Label Content="{DynamicResource GameGraphicsLabelFMV}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
 											<Label Content="{DynamicResource GameGraphicsLabelTexture}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
-                                            <ComboBox x:Name="comboBGFill" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
-                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxStretch}"/>
-                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxFit}"/>
-                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxFill}"/>
-                                            </ComboBox>
-                                            <ComboBox x:Name="comboFMVFill" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" SelectedIndex="0">
-                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxStretch}"/>
-                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxFit}"/>
-                                                <ComboBoxItem Content="{DynamicResource GameGraphicsBoxFill}"/>
-                                            </ComboBox>
-                                            <ComboBox x:Name="comboTextureFilter" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
+											<ComboBox x:Name="comboBGFill" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxStretch}"/>
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxFit}"/>
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxFill}"/>
+											</ComboBox>
+											<ComboBox x:Name="comboFMVFill" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" SelectedIndex="0">
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxStretch}"/>
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxFit}"/>
+												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxFill}"/>
+											</ComboBox>
+											<ComboBox x:Name="comboTextureFilter" Template="{DynamicResource ComboBoxTemplate1}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
 										</Grid>
 
 										<Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2">
@@ -472,7 +472,7 @@
 											<RowDefinition Height="*"/>
 											<RowDefinition Height="10"/>
 										</Grid.RowDefinitions>
-										
+
 										<!--Group for Mouse and Keyboard Input Configuration-->
 										<GroupBox Header="Mouse and Keyboard" Grid.Column="1" Grid.Row="1">
 											<Grid>
@@ -500,7 +500,7 @@
 										<!--Group for Controller DInput Configuration-->
 										<GroupBox Header="Controller (DInput)" Grid.Column="1" Grid.Row="2">
 											<Grid>
-												
+
 											</Grid>
 										</GroupBox>
 									</Grid>
@@ -591,7 +591,7 @@
 
 			<!--This Tab is for Test Spawn.-->
 			<TabItem x:Name="tabTestSpawn" Header="Test Spawn" Margin="9,0,-9,0">
-				
+
 			</TabItem>
 
 			<!--This Tab is for Manager Configuration.-->
@@ -615,8 +615,21 @@
 					<!--Group Box for Update Configuration-->
 					<GroupBox x:Name="grpManUpdates" Grid.Column="1" Grid.Row="1" Header="{DynamicResource ManagerGrpUpdates}"  VerticalAlignment="Top" Height="Auto" >
 						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="10"/>
+								<ColumnDefinition Width="20*"/>
+								<ColumnDefinition Width="275*"/>
+								<ColumnDefinition Width="294*"/>
+								<ColumnDefinition Width="10"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="10"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="10"/>
+							</Grid.RowDefinitions>
+
 							<!--Update Check Boxes-->
-							<Grid Margin="5,5,5,5">
+							<Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
@@ -630,9 +643,9 @@
 							</Grid>
 
 							<!--Update Buttons-->
-							<Grid HorizontalAlignment="Right" Margin="5,5,5,5">
+							<Grid Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Margin="94,0,0,0">
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="150"/>
+									<ColumnDefinition Width="200"/>
 								</Grid.ColumnDefinitions>
 								<Button x:Name="btnCheckUpdates" Content="{DynamicResource ManagerBtnCheckNow}" Grid.Column="0"/>
 							</Grid>
@@ -642,69 +655,58 @@
 					<!--Group Box for Manager Configuration-->
 					<GroupBox x:Name="grpManSettings" Grid.Column="1" Grid.Row="3" Header="{DynamicResource ManagerGrpOptions}" VerticalAlignment="Center" Height="Auto">
 						<Grid>
-							<!--Left Side Manager Options.-->
-							<Grid Margin="5,5,5,5">
-								<Grid.ColumnDefinitions>
-
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="10"/>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="10"/>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="10"/>
-									<RowDefinition Height="Auto"/>
-								</Grid.RowDefinitions>
-								<Label x:Name="lblTheme" Content="{DynamicResource ManagerLblTheme}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-								<Label x:Name="lblLanguage" Content="{DynamicResource ManagerLblLang}" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-								<Label x:Name="lblProfile" Content="{DynamicResource ManagerLblProfile}" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-								<Button x:Name="btnOneClick" Content="{DynamicResource ManagerBtnOneClick}" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
-							</Grid>
-
-							<!--Right Side Manager Options-->
-							<Grid HorizontalAlignment="Right" Margin="5,5,5,5">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="265"/>
-									<ColumnDefinition Width="10"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="10"/>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="10"/>
-									<RowDefinition Height="Auto"/>
-								</Grid.RowDefinitions>
-								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,10" Grid.RowSpan="2" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
-								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboLanguage" Grid.Row="2" VerticalAlignment="Center" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
-								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboProfile" Grid.Row="4" Margin="0,0,35,0" VerticalAlignment="Center" />
-								<Button x:Name="btnProfileSettings" Grid.Row="4" Content="S" Margin="238,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" Width="27" />
-							</Grid>
-						</Grid>
-					</GroupBox>
-					
-					<GroupBox Grid.Column="1" Header="SADX Mod Manager" Grid.Row="4" Margin="2,0,0,0">
-						<Grid>
 							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="10"/>
 								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="10"/>
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
+								<RowDefinition Height="10"/>
 								<RowDefinition Height="*"/>
+								<RowDefinition Height="10"/>
 							</Grid.RowDefinitions>
-							<Button x:Name="btnAbout" Content="{DynamicResource ManagerBtnAbout}" Grid.Column="1" Grid.Row="0" MaxHeight="30" MaxWidth="200" Click="AboutBtn_Click"/>
-						</Grid>
-						 
-					</GroupBox>
-				</Grid>
 
+							<Grid Grid.Column="1" Grid.Row="1">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="*"/>
+									<RowDefinition Height="*"/>
+									<RowDefinition Height="*"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
+
+								<Label x:Name="lblTheme" Content="{DynamicResource ManagerLblTheme}" Grid.Row="0" VerticalAlignment="Center"/>
+								<Label x:Name="lblLanguage" Content="{DynamicResource ManagerLblLang}" Grid.Row="1" VerticalAlignment="Center"/>
+								<Label x:Name="lblProfile" Content="{DynamicResource ManagerLblProfile}" Grid.Row="2" VerticalAlignment="Center"/>
+								<Button x:Name="btnOneClick" Content="{DynamicResource ManagerBtnOneClick}" Grid.Row="3" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284"/>
+							</Grid>
+
+							<Grid Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="270"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="26"/>
+									<RowDefinition Height="26"/>
+									<RowDefinition Height="26"/>
+									<RowDefinition Height="26"/>
+								</Grid.RowDefinitions>
+								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
+								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboLanguage" Grid.Row="1" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
+								<ComboBox Template="{DynamicResource ComboBoxTemplate1}" x:Name="comboProfile" Grid.Row="2" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284"/>
+								<Button x:Name="btnProfileSettings" Content=" Edit Profiles" Grid.Row="3" Margin="5,3,5,3" MaxWidth="284"/>
+							</Grid>
+						</Grid>
+					</GroupBox>
+
+					<Button x:Name="btnAbout" Content="{DynamicResource ManagerBtnAbout}" Grid.Column="1" Grid.Row="5"  MaxHeight="30" MaxWidth="200" Click="AboutBtn_Click"/>
+				</Grid>
 			</TabItem>
 
 		</TabControl>
 
 		<!--This Grid manages the Save, Play, and Install buttons at the bottom of the app.-->
 		<Grid Grid.Row="1"  Background="{DynamicResource MainDialogBottomBrush}">
-
 			<!--This Gris manages the Save and Play Buttons.-->
 			<Grid x:Name="bottomGrid" VerticalAlignment="Center" Height="60">
 				<Grid.ColumnDefinitions>
