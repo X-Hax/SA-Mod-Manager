@@ -254,7 +254,7 @@ namespace ModManagerWPF
 
 		private void modListView_SelectedIndexChanged(object sender, EventArgs e)
 		{
-		
+	
 			int count = listMods.SelectedItems.Count;
 	
 			if (count == 0)
