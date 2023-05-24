@@ -105,7 +105,9 @@
 	<system:String x:Key="ManagerLblProfile">Profile:</system:String>
 	<system:String x:Key="ManagerBtnOneClick">Enable 1-Click Install</system:String>
 	
-	<system:String x:Key="ManagerBtnAbout">About</system:String>
+	<system:String x:Key="ManagerBtnCredits">Contributors</system:String>
+	<system:String x:Key="ManagerBtnSource">Source Code</system:String>
+	<system:String x:Key="ManagerBtnDocs">SA Docs</system:String>
 	<!--#endregion-->
 
 	<!--#region Manager About Window-->

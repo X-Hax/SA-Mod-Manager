@@ -662,67 +662,33 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="10"/>
 						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="0"/>
 						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="*"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="10"/>
 					</Grid.RowDefinitions>
 
-					<!--Group Box for Update Configuration-->
-					<GroupBox x:Name="grpManUpdates" Grid.Column="1" Grid.Row="1" Header="{DynamicResource ManagerGrpUpdates}"  VerticalAlignment="Top" Height="Auto" >
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="10"/>
-								<ColumnDefinition Width="20*"/>
-								<ColumnDefinition Width="275*"/>
-								<ColumnDefinition Width="294*"/>
-								<ColumnDefinition Width="10"/>
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="10"/>
-								<RowDefinition Height="*"/>
-								<RowDefinition Height="10"/>
-							</Grid.RowDefinitions>
-
-							<!--Update Check Boxes-->
-							<Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="5"/>
-									<RowDefinition Height="Auto"/>
-								</Grid.RowDefinitions>
-								<CheckBox x:Name="chkUpdatesML" Content="{DynamicResource ManagerChkCheckModloader}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" IsChecked="True"/>
-								<CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource ManagerChkCheckMods}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" IsChecked="True"/>
-							</Grid>
-
-							<!--Update Buttons-->
-							<Grid Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Margin="94,0,0,0">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="200"/>
-								</Grid.ColumnDefinitions>
-								<Button x:Name="btnCheckUpdates" Content="{DynamicResource ManagerBtnCheckNow}" Grid.Column="0"/>
-							</Grid>
-						</Grid>
-					</GroupBox>
-
 					<!--Group Box for Manager Configuration-->
-					<GroupBox x:Name="grpManSettings" Grid.Column="1" Grid.Row="3" Header="{DynamicResource ManagerGrpOptions}" VerticalAlignment="Center" Height="Auto">
+					<GroupBox x:Name="grpManSettings" Grid.Column="1" Grid.Row="2" Header="{DynamicResource ManagerGrpOptions}" VerticalAlignment="Center" Height="Auto">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="10"/>
-								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="10"/>
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="10"/>
 								<RowDefinition Height="*"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="*"/>
 								<RowDefinition Height="10"/>
 							</Grid.RowDefinitions>
 
+							<!--Grid for Options Main Data-->
 							<Grid Grid.Column="1" Grid.Row="1">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="280"/>
+								</Grid.ColumnDefinitions>
 								<Grid.RowDefinitions>
 									<RowDefinition Height="*"/>
 									<RowDefinition Height="*"/>
@@ -733,28 +699,120 @@
 								<Label x:Name="lblTheme" Content="{DynamicResource ManagerLblTheme}" Grid.Row="0" VerticalAlignment="Center"/>
 								<Label x:Name="lblLanguage" Content="{DynamicResource ManagerLblLang}" Grid.Row="1" VerticalAlignment="Center"/>
 								<Label x:Name="lblProfile" Content="{DynamicResource ManagerLblProfile}" Grid.Row="2" VerticalAlignment="Center"/>
-								<Button x:Name="btnOneClick" Content="{DynamicResource ManagerBtnOneClick}" Grid.Row="3" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284"/>
+
+								<ComboBox x:Name="comboThemes" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
+								<ComboBox x:Name="comboLanguage" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
+
+								<StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
+									<ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0"/>
+									<Button x:Name="btnProfileSettings" Grid.Column="2" Content="S" Width="27"/>
+								</StackPanel>
+
+								<Button x:Name="btnOneClick" Content="Enable One-Click Install" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" HorizontalAlignment="Stretch" Margin="5,2,5,2"/>
 							</Grid>
 
-							<Grid Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="270"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="26"/>
-									<RowDefinition Height="26"/>
-									<RowDefinition Height="26"/>
-									<RowDefinition Height="26"/>
-								</Grid.RowDefinitions>
-								<ComboBox x:Name="comboThemes" Grid.Row="0" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
-								<ComboBox x:Name="comboLanguage" Grid.Row="1" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
-								<ComboBox x:Name="comboProfile" Grid.Row="2" VerticalAlignment="Center" Margin="5,0,5,0" MaxWidth="284"/>
-								<Button x:Name="btnProfileSettings" Content=" Edit Profiles" Grid.Row="3" Margin="5,3,5,3" MaxWidth="284"/>
-							</Grid>
+							<!--Group Box for Update Configuration-->
+							<GroupBox x:Name="grpManUpdates" Grid.Column="1" Grid.Row="2" Header="{DynamicResource ManagerGrpUpdates}"  VerticalAlignment="Top" Height="Auto" >
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="10"/>
+										<ColumnDefinition Width="20*"/>
+										<ColumnDefinition Width="275*"/>
+										<ColumnDefinition Width="294*"/>
+										<ColumnDefinition Width="10"/>
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="10"/>
+									</Grid.RowDefinitions>
+
+									<!--Update Check Boxes-->
+									<Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto"/>
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto"/>
+											<RowDefinition Height="5"/>
+											<RowDefinition Height="Auto"/>
+										</Grid.RowDefinitions>
+										<CheckBox x:Name="chkUpdatesML" Content="{DynamicResource ManagerChkCheckModloader}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" IsChecked="True"/>
+										<CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource ManagerChkCheckMods}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" IsChecked="True"/>
+									</Grid>
+
+									<!--Update Buttons-->
+									<Grid Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="200"/>
+										</Grid.ColumnDefinitions>
+										<Button x:Name="btnCheckUpdates" Content="{DynamicResource ManagerBtnCheckNow}" Grid.Column="0"/>
+									</Grid>
+								</Grid>
+							</GroupBox>
+
+							<!--Group Box for Debug Features-->
+							<GroupBox x:Name="grpManDebug" Grid.Column="1" Grid.Row="3" Header="Debug Features">
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="10"/>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="10"/>
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="5"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="10"/>
+									</Grid.RowDefinitions>
+
+									<CheckBox x:Name="checkEnableTestSpawn" Content="Enable Test Spawn" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+									<CheckBox x:Name="checkEnableLogConsole" Content="Enable Console Window" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+									
+									<CheckBox x:Name="checkEnableLogScreen" Content="Print Debug on Screen" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center"/>
+									<CheckBox x:Name="checkEnableLogFile" Content="Log Debug to File" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center"/>
+									<CheckBox x:Name="checkEnableCrashDump" Content="Log Crash Dumps" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center"/>
+								</Grid>
+							</GroupBox>
 						</Grid>
 					</GroupBox>
 
-					<Button x:Name="btnAbout" Content="{DynamicResource ManagerBtnAbout}" Grid.Column="1" Grid.Row="5"  MaxHeight="30" MaxWidth="200" Click="AboutBtn_Click"/>
+					<!--Group Box for About Section-->
+					<GroupBox x:Name="grpManAbout" Grid.Column="1" Grid.Row="3" Header="About">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="10"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="10"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="10"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="10"/>
+							</Grid.RowDefinitions>
+							
+							<Label Content="Testing" Grid.Column="1" Grid.Row="1"/>
+
+							<Grid Grid.Column="1" Grid.Row="2" Margin="0,5,0,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="30"/>
+								</Grid.RowDefinitions>
+
+								<Button x:Name="btnCredits" Content="{DynamicResource ManagerBtnCredits}" Grid.Column="0" Margin="5,0,2.5,0" Click="AboutBtn_Click"/>
+								<Button x:Name="btnSource" Content="{DynamicResource ManagerBtnSource}" Grid.Column="1" Margin="2.5,0,2.5,0"/>
+								<Button x:Name="btnDocs" Content="{DynamicResource ManagerBtnDocs}" Grid.Column="2" Margin="2.5,0,5,0"/>
+							</Grid>
+						</Grid>
+					</GroupBox>
 				</Grid>
 			</TabItem>
 
