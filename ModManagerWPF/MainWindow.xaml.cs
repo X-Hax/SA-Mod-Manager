@@ -50,6 +50,15 @@ namespace ModManagerWPF
 		public static ThemeEntry CurrentTheme = new();
 		public static ThemeList ThemeList = new();
 		public GameGraphics graphics;
+
+		public class ModData
+		{
+			public string? Name { get; set; }
+			public string? Author { get; set; }
+			public string? Version { get; set; }
+			public string? Category { get; set; }
+			public string? Description { get; set; }
+		}
 		#endregion
 
 	
@@ -70,15 +79,12 @@ namespace ModManagerWPF
 		{
 			loaderini.Mods.Clear();
 
-			/*foreach (ListViewItem item in listMods.isch.CheckedItems)
-			{
-				loaderini.Mods.Add((string)item.Tag);
-			}*/
+			//save mod list here
 
 			loaderini.HorizontalResolution = (int)txtResX.Value;
 			loaderini.VerticalResolution = (int)txtResY.Value;
 			loaderini.ForceAspectRatio = (bool)chkRatio.IsChecked;
-			//loaderini.ScaleHud = chkhud.Checked;
+
 			loaderini.BackgroundFillMode = comboBGFill.SelectedIndex;
 			loaderini.FmvFillMode = comboFMVFill.SelectedIndex;
 			loaderini.EnableVsync = (bool)chkVSync.IsChecked;
@@ -145,8 +151,9 @@ namespace ModManagerWPF
 				{
 					SADXModInfo inf = mods[mod];
 					suppressEvent = true;
-					listMods.Items.Add(inf);
-					//listMods.Items.Add(new ListViewItem(new[] { inf.Name, inf.Author, inf.Version, inf.Category }) { IsChecked = true, Tag = mod });
+					listMods.Items.Add(new ModData() { Name = inf.Name, Author = inf.Author, Description = inf.Description, Version = inf.Version, Category = inf.Category });
+
+				//{ IsActive = true, Tag = mod });
 					suppressEvent = false;
 				}
 				else
@@ -159,9 +166,11 @@ namespace ModManagerWPF
 			foreach (KeyValuePair<string, SADXModInfo> inf in mods.OrderBy(x => x.Value.Name))
 			{
 				if (!loaderini.Mods.Contains(inf.Key))
-					listMods.Items.Add(new { inf.Value.Name, inf.Value.Author, inf.Value.Version, inf.Value.Category }); //{ Tag = inf.Key });
+				{
+					listMods.Items.Add(new ModData() { Name = inf.Value.Name, Author = inf.Value.Author, Version = inf.Value.Version, Category = inf.Value.Category, Description = inf.Value.Description });
+					//{ Tag = inf.Key });
+				}
 			}
-	
 		}
 
 		private void LoadSettings()
@@ -216,6 +225,58 @@ namespace ModManagerWPF
 
 			chkResizableWin.IsChecked = loaderini.ResizableWindow;
 		}
+
+
+		private void OpenAboutModWindow(ModData mod)
+		{
+			new AboutMod(mod).ShowDialog();
+		}
+
+		private ModData GetModFromView(object sender)
+		{
+			if (sender is ListViewItem lvItem)
+				return lvItem.Content as ModData;
+			else if (sender is ListView lv)
+				return lv.SelectedItem as ModData;
+
+			return null;
+		}
+
+		private void ModsView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			var mod = GetModFromView(sender);
+
+			if (mod == null)
+				return;
+			
+			OpenAboutModWindow((ModData)mod);
+		}
+
+		private void modListView_SelectedIndexChanged(object sender, EventArgs e)
+		{
+		
+			int count = listMods.SelectedItems.Count;
+	
+			if (count == 0)
+			{
+				btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
+				//.Text = "Description: No mod selected.";
+			}
+			else if (count == 1)
+			{
+				//modDescription.Text = "Description: " + mods[(string)modListView.SelectedItems[0].Tag].Description;
+				ModData mod = (ModData)listMods.SelectedItem;
+				if (mod is not null)
+					ConfigureModBtn.IsEnabled = File.Exists(Path.Combine("mods", mod.Name, "configschema.xml"));
+			}
+			else if (count > 1)
+			{
+				//modDescription.Text = "Description: Multiple mods selected.";
+				btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = true;
+	
+				ConfigureModBtn.IsEnabled = false;
+			}
+		}
 		#endregion
 
 		#region Cheat Codes
@@ -245,7 +306,7 @@ namespace ModManagerWPF
 
 			foreach (Code item in codes)
 			{
-				CodeListView.Items.Add(item.Name);
+				CodeListView.Items.Add(new { item.Name, item.Author });
 			}
 
 			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
@@ -284,6 +345,7 @@ namespace ModManagerWPF
 		{
 
 		}
+
 		#endregion
 
 		#region Languages
@@ -291,7 +353,6 @@ namespace ModManagerWPF
 		{
 			SwitchLanguage(comboLanguage.SelectedIndex);
 		}
-
 
 		private void SwitchLanguage(int index)
 		{

@@ -30,7 +30,7 @@
 
 
 	<!-- Codes UI Strings -->
-	<system:String x:Key="CodesListName">Name{</system:String>
+	<system:String x:Key="CodesListName">Name</system:String>
 	<system:String x:Key="CodesListCategory">Category</system:String>
 	<system:String x:Key="CodesListInfo"> Double click this code for more information.</system:String>
 	<system:String x:Key="CodesListHint">Select a code for more information.</system:String>

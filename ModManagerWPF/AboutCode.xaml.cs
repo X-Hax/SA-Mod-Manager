@@ -29,10 +29,5 @@ namespace ModManagerWPF
 			AuthorText.Text = code.Author != null ? "By " + code.Author : null;
 			DescBx.Text = code.Description;
 		}
-
-		private void Window_Loaded(object sender, RoutedEventArgs e)
-		{
-
-		}
 	}
 }

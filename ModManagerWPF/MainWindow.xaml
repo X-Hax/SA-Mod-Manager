@@ -13,13 +13,13 @@
 
 	<!--This is where all Resources are stored.-->
 	<Window.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Languages/en-EN.xaml"/>
-				<ResourceDictionary Source="Themes/DarkTheme.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Languages/en-EN.xaml"/>
+                <ResourceDictionary Source="Themes/DarkTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
 	<!--This is the initial grid used by the entire app.-->
 	<Grid>
 		<Grid.RowDefinitions>
@@ -48,7 +48,15 @@
 							<ColumnDefinition Width="50"/>
 						</Grid.ColumnDefinitions>
 						<ListView x:Name="listMods" Foreground="White" Grid.Column="1" Grid.Row="1" FontSize="13">
-							<ListView.View>
+                       
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                                    <EventSetter Event="MouseDoubleClick" Handler="ModsView_Item_MouseDoubleClick"/>
+                                    <EventSetter Event="Selected" Handler="modListView_SelectedIndexChanged"/>
+
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.View>
 								<GridView>
 									<GridView.Columns>
 										<GridViewColumn x:Name="modNameColumn" Header="{DynamicResource ModsListName}" Width="175">
@@ -144,43 +152,65 @@
 			</TabItem>
 
 			<!--This Tab is for Codes.-->
-			<TabItem x:Name="tbCodes" Header="{DynamicResource MainTabCodes}" Margin="3,0,-3,0" >
+            <TabItem x:Name="tbCodes" Header="{DynamicResource MainTabCodes}" Margin="3,0,-3,0" >
 
-				<!--This Grid manages the Code list-->
-				<Grid>
-					<Grid Name="CodesTreeContainer" Margin="10,5,10,41" Visibility="Collapsed">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition/>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Name="CodesTreeDescriptionColumn" Width="225" MinWidth="225"/>
-						</Grid.ColumnDefinitions>
+                <!--Main Grid for Mods Tab-->
+                <Grid x:Name="GridCodeList">
 
-					</Grid>
+                    <!--This Grid manages the Codes list.-->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <ListView x:Name="CodeListView" Foreground="White" Grid.Column="1" Grid.Row="1" FontSize="13">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                                    <EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.View>
+                                <GridView>
+                                    <GridView.Columns>
+                                        <GridViewColumn x:Name="codeNameColumn" Header="{DynamicResource CodesListName}" Width="175">
+                                            <GridViewColumn.CellTemplate>
+                                                
+                                                
+                                                <DataTemplate>
+                                                    
+                                                   
+                                                    <StackPanel Orientation="Horizontal">
+                                                       
+                                                        <CheckBox IsChecked="{Binding Enabled}" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding Name}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
 
-					<ListView Name="CodeListView">
+                                        </GridViewColumn>
+                                        <GridViewColumn x:Name="codeAuthorColumn" Header="{DynamicResource ModsListAuthor }" Width="150">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Author}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView.Columns>
 
-							<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
-
-
-								<EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
-								<EventSetter Event="MouseEnter"       Handler="CodesView_Item_MouseEnter"/>
-								<EventSetter Event="MouseLeave"       Handler="CodesView_Item_MouseLeave"/>
-								<EventSetter Event="Selected"         Handler="CodesView_Item_Selected"/>
-							</Style>
-
-	
-
-						<ListView.View>
-
-							<GridView>
-								<GridViewColumn/>
-
-
-							</GridView>
-						</ListView.View>
-					</ListView>
-				</Grid>
-			</TabItem>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Grid>
+            </TabItem>
 
 			<!--This Tab is for Game Configuration.-->
 			<TabItem x:Name="tabGame" Header="{DynamicResource MainTabGameConfig}" Margin="6,0,-6,0">
