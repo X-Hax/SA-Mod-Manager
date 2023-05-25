@@ -61,7 +61,7 @@ namespace ModManagerWPF
 		}
 		#endregion
 
-	
+
 		public MainWindow()
 		{
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
@@ -124,8 +124,8 @@ namespace ModManagerWPF
 			mods = new Dictionary<string, SADXModInfo>();
 			string modDir = Path.Combine(Environment.CurrentDirectory, "mods");
 
-			if (!Directory.Exists(modDir)) 
-			{ 
+			if (!Directory.Exists(modDir))
+			{
 				Directory.CreateDirectory(modDir);
 			}
 
@@ -153,7 +153,7 @@ namespace ModManagerWPF
 					suppressEvent = true;
 					listMods.Items.Add(new ModData() { Name = inf.Name, Author = inf.Author, Description = inf.Description, Version = inf.Version, Category = inf.Category });
 
-				//{ IsActive = true, Tag = mod });
+					//{ IsActive = true, Tag = mod });
 					suppressEvent = false;
 				}
 				else
@@ -182,7 +182,7 @@ namespace ModManagerWPF
 
 			int resXMin = (int)txtResX.Minimum;
 			int resXMax = (int)txtResX.Maximum;
-			
+
 			int resYMin = (int)txtResY.Minimum;
 			int resYMax = (int)txtResY.Maximum;
 
@@ -218,7 +218,7 @@ namespace ModManagerWPF
 			txtCustomResX.Value = Math.Max(CustresXMin, Math.Min(CustresXMax, loaderini.WindowWidth));
 			txtCustomResY.Value = Math.Max(CustresYMin, Math.Min(CustresYMax, loaderini.WindowHeight));
 			txtCustomResY.Maximum = rect.Height;
-	
+
 			suppressEvent = true;
 			chkBorderless.IsChecked = loaderini.MaintainWindowAspectRatio;
 			suppressEvent = false;
@@ -248,15 +248,15 @@ namespace ModManagerWPF
 
 			if (mod == null)
 				return;
-			
+
 			OpenAboutModWindow((ModData)mod);
 		}
 
 		private void modListView_SelectedIndexChanged(object sender, EventArgs e)
 		{
-	
+
 			int count = listMods.SelectedItems.Count;
-	
+
 			if (count == 0)
 			{
 				btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
@@ -265,15 +265,24 @@ namespace ModManagerWPF
 			else if (count == 1)
 			{
 				//modDescription.Text = "Description: " + mods[(string)modListView.SelectedItems[0].Tag].Description;
+
 				ModData mod = (ModData)listMods.SelectedItem;
-				if (mod is not null)
-					ConfigureModBtn.IsEnabled = File.Exists(Path.Combine("mods", mod.Name, "configschema.xml"));
+
+				if (mod is null)
+					return;
+
+				btnMoveTop.IsEnabled = listMods.Items.IndexOf(mod) != 0;
+				btnMoveUp.IsEnabled = listMods.Items.IndexOf(mod) > 0;
+				btnMoveDown.IsEnabled = listMods.Items.IndexOf(mod) < listMods.Items.Count - 1;
+				btnMoveBottom.IsEnabled = listMods.Items.IndexOf(mod) != listMods.Items.Count - 1;
+
+				ConfigureModBtn.IsEnabled = File.Exists(Path.Combine("mods", mod.Name, "configschema.xml"));
 			}
 			else if (count > 1)
 			{
 				//modDescription.Text = "Description: Multiple mods selected.";
 				btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = true;
-	
+
 				ConfigureModBtn.IsEnabled = false;
 			}
 		}
@@ -470,5 +479,65 @@ namespace ModManagerWPF
 			new AboutManager().ShowDialog();
 		}
 		#endregion
+
+		private void btnMoveTop_Click(object sender, RoutedEventArgs e)
+		{
+			if (listMods.SelectedItems.Count < 1)
+				return;
+
+			int index = listMods.SelectedIndex;
+
+			if (index > 0)
+			{
+				var item = listMods.Items.GetItemAt(index);
+				listMods.Items.Remove(item);
+				listMods.Items.Insert(0, item);
+			}
+		}
+
+		private void btnMoveUp_Click(object sender, RoutedEventArgs e)
+		{
+			if (listMods.SelectedItems.Count < 1)
+				return;
+
+			int index = listMods.SelectedIndex;
+
+			if (index > 0)
+			{
+				var item = listMods.Items.GetItemAt(index);
+				listMods.Items.Remove(item);
+				listMods.Items.Insert(index - 1, item);
+			}
+		}
+
+		private void btnMoveBottom_Click(object sender, RoutedEventArgs e)
+		{
+			if (listMods.SelectedItems.Count < 1)
+				return;
+
+			int index = listMods.SelectedIndex;
+
+			if (index != listMods.Items.Count - 1)
+			{
+				var item = listMods.Items.GetItemAt(index);
+				listMods.Items.Remove(item);
+				listMods.Items.Insert(listMods.Items.Count, item);
+			}
+		}
+
+		private void btnMoveDown_Click(object sender, RoutedEventArgs e)
+		{
+			if (listMods.SelectedItems.Count < 1)
+				return;
+
+			int index = listMods.SelectedIndex;
+
+			if (index < listMods.Items.Count)
+			{
+				var item = listMods.Items.GetItemAt(index);
+				listMods.Items.Remove(item);
+				listMods.Items.Insert(index + 1, item);
+			}
+		}
 	}
 }

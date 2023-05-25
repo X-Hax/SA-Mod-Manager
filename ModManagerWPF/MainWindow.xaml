@@ -47,13 +47,12 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
-                        <ListView x:Name="listMods" Foreground="White" Grid.Column="1" Grid.Row="1" FontSize="13">
+                        <ListView x:Name="listMods" Foreground="White" Grid.Column="1" Grid.Row="1" FontSize="13" SelectionChanged="modListView_SelectedIndexChanged">
 
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
                                     <EventSetter Event="MouseDoubleClick" Handler="ModsView_Item_MouseDoubleClick"/>
-                                    <EventSetter Event="Selected" Handler="modListView_SelectedIndexChanged"/>
-
+                 
                                 </Style>
                             </ListView.ItemContainerStyle>
                             <ListView.View>
@@ -121,10 +120,10 @@
                             <RowDefinition Height="10"/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
-                        <Button x:Name="btnMoveTop" Content="⤒" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1"/>
-                        <Button x:Name="btnMoveUp" Content="↑" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="3"/>
-                        <Button x:Name="btnMoveDown" Content="↓" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="5"/>
-                        <Button x:Name="btnMoveBottom" Content="⤓" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="7"/>
+                        <Button x:Name="btnMoveTop" Content="⤒" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1" Click="btnMoveTop_Click"/>
+                        <Button x:Name="btnMoveUp" Content="↑" HorizontalAlignment="Center" Width="30" Grid.Row="3" Click="btnMoveUp_Click"/>
+                        <Button x:Name="btnMoveDown" Content="↓" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="5" Click="btnMoveDown_Click"/>
+                        <Button x:Name="btnMoveBottom" Content="⤓" HorizontalAlignment="Right" Width="30" Grid.Row="7" Click="btnMoveBottom_Click"/>
                     </Grid>
 
                     <!--This Grid manages the Refresh and Config Buttons.-->
