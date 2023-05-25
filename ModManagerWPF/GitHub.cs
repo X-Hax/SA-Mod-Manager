@@ -11,15 +11,40 @@ namespace ModManagerWPF
     {
 		public GitHubClient client = new GitHubClient(new ProductHeaderValue("sadx-mod-loader"));
 
+		public string LastCommit = "";
+		public async Task<Repository> GetRepo()
+		{
+			return await client.Repository.Get("x-hax", "sadx-mod-loader");
+		}
+
+		private async Task<GitHubCommit> GetLastCommit(long repoID, string branchName)
+		{
+			return await client.Repository.Commit.Get(repoID, branchName);
+		}
+
 		/// <summary>
 		/// Gets the most recent commit to the repo.
 		/// </summary>
 		/// <returns>Most Recent Commit as a string</returns>
-		public string GetRecentCommit()
+		public async Task GetRecentCommit()
 		{
-			string commit = "";
+			
+			if (client is null)
+				return;
 
-			return commit;
+			var Repo = await client.Repository.Get("x-hax", "sadx-mod-loader");
+
+			if (Repo is null) 
+				return;
+
+			var id = Repo.Id;
+			var lastCommit = await GetLastCommit(id, "wpf"); //todo swap to "master"
+		
+			if (lastCommit is not null)
+			{
+				LastCommit = lastCommit.Sha[..7];
+				return;
+			}
 		}
 
 		/// <summary>

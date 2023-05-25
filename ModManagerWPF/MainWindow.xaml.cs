@@ -17,6 +17,8 @@ using System.Threading;
 using IniFile;
 using Xceed.Wpf.Toolkit;
 using MessageBox = Xceed.Wpf.Toolkit.MessageBox;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace ModManagerWPF
 {
@@ -26,9 +28,12 @@ namespace ModManagerWPF
 	public partial class MainWindow : Window
 	{
 		#region Variables
+
 		private const string pipeName = "sadx-mod-manager";
 		private static readonly Mutex mutex = new Mutex(true, pipeName);
 		public readonly string titleName = "SADX Mod Manager";
+		public static string Version = "1.0.0";
+		public static string GitVersion = "";
 		const string updatePath = "mods/.updates";
 		const string datadllpath = "system/CHRMODELS.dll";
 		const string datadllorigpath = "system/CHRMODELS_orig.dll";
@@ -50,6 +55,8 @@ namespace ModManagerWPF
 		public static ThemeEntry CurrentTheme = new();
 		public static ThemeList ThemeList = new();
 		public GameGraphics graphics;
+		public GitHub? git = new();
+		static private uint count = 0;
 
 		public class ModData
 		{
@@ -61,11 +68,12 @@ namespace ModManagerWPF
 		}
 		#endregion
 
-
 		public MainWindow()
 		{
-			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
 			InitializeComponent();
+
+			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+			git.GetRecentCommit();
 			AddLanguagesToList();
 			AddThemesToList();
 			graphics = new GameGraphics(comboScreen);
@@ -538,6 +546,35 @@ namespace ModManagerWPF
 				listMods.Items.Remove(item);
 				listMods.Items.Insert(index + 1, item);
 			}
+		}
+
+		private void SetModManagerVersion(object sender, EventArgs e)
+		{
+			if (count >= 3)
+			{
+				(sender as DispatcherTimer).Stop();
+				return;
+			}
+
+			if (!string.IsNullOrEmpty(git.LastCommit))
+			{
+				GitVersion = git.LastCommit;
+				Title = titleName + " " + "(" + Version + "-" + GitVersion + ")";
+				(sender as DispatcherTimer).Stop();
+				return;
+			}
+			else
+			{
+				count++;
+			}
+		}
+
+		private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
+		{
+			DispatcherTimer timer = new DispatcherTimer();
+			timer.Interval = TimeSpan.FromMilliseconds(3000);
+			timer.Tick += SetModManagerVersion;
+			timer.IsEnabled = true;			
 		}
 	}
 }
