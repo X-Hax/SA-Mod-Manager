@@ -35,13 +35,13 @@ namespace ModManagerWPF
 		public static string GitVersion = "";
 		const string loaderinipath = "mods/SADXModLoader.ini";
 		SADXLoaderInfo loaderini;
-		Dictionary<string, SADXModInfo>? mods = null;
+		Dictionary<string, SADXModInfo> mods = null;
 		const string codelstpath = "mods/Codes.lst";
 		const string codexmlpath = "mods/Codes.xml";
 		const string codedatpath = "mods/Codes.dat";
 		const string patchdatpath = "mods/Patches.dat";
-		CodeList? mainCodes = null;
-		List<Code>? codes = null;
+		CodeList mainCodes = null;
+		List<Code> codes = null;
 		bool installed = false;
 		bool suppressEvent = false;
 
@@ -50,16 +50,16 @@ namespace ModManagerWPF
 		public static ThemeEntry CurrentTheme = new();
 		public static ThemeList ThemeList = new();
 		public GameGraphics graphics;
-		public GitHub? git;
+		public GitHub git;
 		static private uint count = 0;
 
 		public class ModData
 		{
-			public string? Name { get; set; }
-			public string? Author { get; set; }
-			public string? Version { get; set; }
-			public string? Category { get; set; }
-			public string? Description { get; set; }
+			public string Name { get; set; }
+			public string Author { get; set; }
+			public string Version { get; set; }
+			public string Category { get; set; }
+			public string Description { get; set; }
 		}
 		#endregion
 
@@ -563,6 +563,7 @@ namespace ModManagerWPF
 			}
 
 			git.GetRecentCommit();
+
 			count++;
 		}
 
@@ -574,7 +575,7 @@ namespace ModManagerWPF
 
 		private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
 		{
-			DispatcherTimer timer = new DispatcherTimer();
+			DispatcherTimer timer = new();
 			timer.Interval = TimeSpan.FromMilliseconds(10000);
 			timer.Tick += SetModManagerVersion;
 			timer.IsEnabled = true;
