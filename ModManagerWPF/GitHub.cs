@@ -46,27 +46,5 @@ namespace ModManagerWPF
 				return;
 			}
 		}
-
-		/// <summary>
-		/// Gets full commit history and returns a list.
-		/// </summary>
-		/// <returns></returns>
-		public List<string> GetCommits()
-		{
-			List<string> commits = new List<string>();
-
-			return commits;
-		}
-
-		/// <summary>
-		/// Gets full list of contributors to the repo and returns the list.
-		/// </summary>
-		/// <returns></returns>
-		public List<string> GetContributors()
-		{
-			List<string> contributors = new List<string>();
-
-			return contributors;
-		}
     }
 }
