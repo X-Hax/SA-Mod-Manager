@@ -30,15 +30,10 @@ namespace ModManagerWPF
 		#region Variables
 
 		private const string pipeName = "sadx-mod-manager";
-		private static readonly Mutex mutex = new Mutex(true, pipeName);
 		public readonly string titleName = "SADX Mod Manager";
 		public static string Version = "1.0.0";
 		public static string GitVersion = "";
-		const string updatePath = "mods/.updates";
-		const string datadllpath = "system/CHRMODELS.dll";
-		const string datadllorigpath = "system/CHRMODELS_orig.dll";
 		const string loaderinipath = "mods/SADXModLoader.ini";
-		const string loaderdllpath = "mods/SADXModLoader.dll";
 		SADXLoaderInfo loaderini;
 		Dictionary<string, SADXModInfo>? mods = null;
 		const string codelstpath = "mods/Codes.lst";
@@ -55,7 +50,7 @@ namespace ModManagerWPF
 		public static ThemeEntry CurrentTheme = new();
 		public static ThemeList ThemeList = new();
 		public GameGraphics graphics;
-		public GitHub? git = new();
+		public GitHub? git;
 		static private uint count = 0;
 
 		public class ModData
@@ -70,8 +65,8 @@ namespace ModManagerWPF
 
 		public MainWindow()
 		{
+			git = new(this);
 			InitializeComponent();
-
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
 			git.GetRecentCommit();
 			AddLanguagesToList();
@@ -550,31 +545,33 @@ namespace ModManagerWPF
 
 		private void SetModManagerVersion(object sender, EventArgs e)
 		{
-			if (count >= 3)
+			if (count >= 3 || Title.Length > titleName.Length + 1)
 			{
 				(sender as DispatcherTimer).Stop();
 				return;
 			}
 
-			if (!string.IsNullOrEmpty(git.LastCommit))
-			{
-				GitVersion = git.LastCommit;
-				Title = titleName + " " + "(" + Version + "-" + GitVersion + ")";
-				(sender as DispatcherTimer).Stop();
-				return;
-			}
-			else
-			{
-				count++;
-			}
+			git.GetRecentCommit();
+			count++;
+		}
+
+		public void SetModManagerVersion()
+		{
+			GitVersion = git.LastCommit;
+			Title = titleName + " " + "(" + Version + "-" + GitVersion + ")";
 		}
 
 		private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
 		{
 			DispatcherTimer timer = new DispatcherTimer();
-			timer.Interval = TimeSpan.FromMilliseconds(3000);
+			timer.Interval = TimeSpan.FromMilliseconds(10000);
 			timer.Tick += SetModManagerVersion;
-			timer.IsEnabled = true;			
+			timer.IsEnabled = true;
+		}
+
+		private void RefreshBtn_Click(object sender, RoutedEventArgs e)
+		{
+			LoadModList();
 		}
 	}
 }
