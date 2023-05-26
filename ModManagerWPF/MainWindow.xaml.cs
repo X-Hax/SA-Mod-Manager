@@ -34,6 +34,7 @@ namespace ModManagerWPF
 		public static string Version = "1.0.0";
 		public static string GitVersion = "";
 		const string loaderinipath = "mods/SADXModLoader.ini";
+		private const string sadxIni = "sonicDX.ini";
 		SADXLoaderInfo loaderini;
 		Dictionary<string, SADXModInfo> mods = null;
 		const string codelstpath = "mods/Codes.lst";
@@ -44,6 +45,8 @@ namespace ModManagerWPF
 		List<Code> codes = null;
 		bool installed = false;
 		bool suppressEvent = false;
+
+		private GameConfigFile gameConfigFile;
 
 		public static LangEntry CurrentLang = new();
 		public static LanguageList LangList = new();
@@ -76,7 +79,39 @@ namespace ModManagerWPF
 			InitCodes();
 		}
 
+		private void MainWindowManager_ContentRendered(object sender, EventArgs e)
+		{
+			LoadGameConfigIni();
+		}
+
 		#region Main
+
+		private void SetModManagerVersion(object sender, EventArgs e)
+		{
+			if (count >= 3 || Title.Length > titleName.Length + 1)
+			{
+				(sender as DispatcherTimer).Stop();
+				return;
+			}
+
+			git.GetRecentCommit();
+
+			count++;
+		}
+
+		public void SetModManagerVersion()
+		{
+			GitVersion = git.LastCommit;
+			Title = titleName + " " + "(" + Version + "-" + GitVersion + ")";
+		}
+
+		private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
+		{
+			DispatcherTimer timer = new();
+			timer.Interval = TimeSpan.FromMilliseconds(10000);
+			timer.Tick += SetModManagerVersion;
+			timer.IsEnabled = true;
+		}
 
 		private void Save()
 		{
@@ -111,15 +146,77 @@ namespace ModManagerWPF
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
 		}
+		private void LoadSettings()
+		{
+			LoadModList();
+
+			chkVSync.IsChecked = loaderini.EnableVsync;
+			txtResX.IsEnabled = !loaderini.ForceAspectRatio;
+
+			int resXMin = (int)txtResX.Minimum;
+			int resXMax = (int)txtResX.Maximum;
+
+			int resYMin = (int)txtResY.Minimum;
+			int resYMax = (int)txtResY.Maximum;
+
+			txtResX.Value = Math.Max(resXMin, Math.Min(resXMax, loaderini.HorizontalResolution));
+			txtResY.Value = Math.Max(resYMin, Math.Min(resYMax, loaderini.VerticalResolution));
+			chkUpdatesML.IsChecked = loaderini.UpdateCheck;
+			chkUpdatesMods.IsChecked = loaderini.ModUpdateCheck;
+
+			suppressEvent = true;
+			chkRatio.IsChecked = loaderini.ForceAspectRatio;
+			checkUIScale.IsChecked = loaderini.ScaleHud;
+			suppressEvent = false;
+
+			comboBGFill.SelectedIndex = loaderini.BackgroundFillMode;
+			comboFMVFill.SelectedIndex = loaderini.FmvFillMode;
+
+			chkBorderless.IsChecked = loaderini.Borderless;
+			checkMipmapping.IsChecked = loaderini.AutoMipmap;
+			chkScaleScreen.IsChecked = loaderini.StretchFullscreen;
+
+			int screenNum = graphics.GetScreenNum(loaderini.ScreenNum);
+
+			comboScreen.SelectedIndex = screenNum;
+			chkBorderless.IsChecked = txtCustomResY.IsEnabled = chkMaintainRatio.IsEnabled = loaderini.CustomWindowSize;
+			txtCustomResX.IsEnabled = loaderini.CustomWindowSize && !loaderini.MaintainWindowAspectRatio;
+			Rectangle rect = graphics.GetRectangleStruct();
+
+			int CustresXMax = (int)txtCustomResX.Maximum;
+			int CustresXMin = (int)txtCustomResX.Minimum;
+			int CustresYMin = (int)txtCustomResY.Minimum;
+			int CustresYMax = (int)txtCustomResY.Maximum;
+			txtCustomResX.Maximum = rect.Width;
+			txtCustomResX.Value = Math.Max(CustresXMin, Math.Min(CustresXMax, loaderini.WindowWidth));
+			txtCustomResY.Value = Math.Max(CustresYMin, Math.Min(CustresYMax, loaderini.WindowHeight));
+			txtCustomResY.Maximum = rect.Height;
+
+			suppressEvent = true;
+			chkBorderless.IsChecked = loaderini.MaintainWindowAspectRatio;
+			suppressEvent = false;
+
+			chkResizableWin.IsChecked = loaderini.ResizableWindow;
+			comboLanguage.SelectedIndex = loaderini.Language;
+			comboThemes.SelectedIndex = loaderini.Theme;
+			checkEnableTestSpawn.IsChecked = loaderini.EnableTestSpawnTab;
+
+			if ((bool)!checkEnableTestSpawn.IsChecked)
+			{
+				tcMain.Items.Remove(tabTestSpawn);
+			}
+		}
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
 			Save();
+			SaveGameConfigIni();
 		}
 
 		private void SaveAndPlayButton_Click(object sender, RoutedEventArgs e)
 		{
 			Save();
+			SaveGameConfigIni();
 
 		}
 		private void LoadModList()
@@ -178,68 +275,6 @@ namespace ModManagerWPF
 				}
 			}
 		}
-
-		private void LoadSettings()
-		{
-			LoadModList();
-
-			chkVSync.IsChecked = loaderini.EnableVsync;
-			txtResX.IsEnabled = !loaderini.ForceAspectRatio;
-
-			int resXMin = (int)txtResX.Minimum;
-			int resXMax = (int)txtResX.Maximum;
-
-			int resYMin = (int)txtResY.Minimum;
-			int resYMax = (int)txtResY.Maximum;
-
-			txtResX.Value = Math.Max(resXMin, Math.Min(resXMax, loaderini.HorizontalResolution));
-			txtResY.Value = Math.Max(resYMin, Math.Min(resYMax, loaderini.VerticalResolution));
-			chkUpdatesML.IsChecked = loaderini.UpdateCheck;
-			chkUpdatesMods.IsChecked = loaderini.ModUpdateCheck;
-
-			suppressEvent = true;
-			chkRatio.IsChecked = loaderini.ForceAspectRatio;
-			checkUIScale.IsChecked = loaderini.ScaleHud;
-			suppressEvent = false;
-
-			comboBGFill.SelectedIndex = loaderini.BackgroundFillMode;
-			comboFMVFill.SelectedIndex = loaderini.FmvFillMode;
-
-			chkBorderless.IsChecked = loaderini.Borderless;
-			checkMipmapping.IsChecked = loaderini.AutoMipmap;
-			chkScaleScreen.IsChecked = loaderini.StretchFullscreen;
-
-			int screenNum = graphics.GetScreenNum(loaderini.ScreenNum);
-
-			comboScreen.SelectedIndex = screenNum;
-			chkBorderless.IsChecked = txtCustomResY.IsEnabled = chkMaintainRatio.IsEnabled = loaderini.CustomWindowSize;
-			txtCustomResX.IsEnabled = loaderini.CustomWindowSize && !loaderini.MaintainWindowAspectRatio;
-			Rectangle rect = graphics.GetRectangleStruct();
-
-			int CustresXMax = (int)txtCustomResX.Maximum;
-			int CustresXMin = (int)txtCustomResX.Minimum;
-			int CustresYMin = (int)txtCustomResY.Minimum;
-			int CustresYMax = (int)txtCustomResY.Maximum;
-			txtCustomResX.Maximum = rect.Width;
-			txtCustomResX.Value = Math.Max(CustresXMin, Math.Min(CustresXMax, loaderini.WindowWidth));
-			txtCustomResY.Value = Math.Max(CustresYMin, Math.Min(CustresYMax, loaderini.WindowHeight));
-			txtCustomResY.Maximum = rect.Height;
-
-			suppressEvent = true;
-			chkBorderless.IsChecked = loaderini.MaintainWindowAspectRatio;
-			suppressEvent = false;
-
-			chkResizableWin.IsChecked = loaderini.ResizableWindow;
-
-			comboLanguage.SelectedIndex = loaderini.Language;
-			comboThemes.SelectedIndex = loaderini.Theme;
-			checkEnableTestSpawn.IsChecked = loaderini.EnableTestSpawnTab;
-			if ((bool)!checkEnableTestSpawn.IsChecked)
-			{
-				tcMain.Items.Remove(tabTestSpawn);
-			}
-		}
-
 
 		private void OpenAboutModWindow(ModData mod)
 		{
@@ -300,6 +335,96 @@ namespace ModManagerWPF
 				ConfigureModBtn.IsEnabled = false;
 			}
 		}
+		#endregion
+
+		#region Game Settings
+
+		private void LoadGameConfigIni()
+		{
+			gameConfigFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<GameConfigFile>(sadxIni) : new GameConfigFile();
+			if (gameConfigFile.GameConfig == null)
+			{
+				gameConfigFile.GameConfig = new GameConfig
+				{
+					FrameRate = (int)FrameRate.High,
+					Sound3D = 1,
+					SEVoice = 1,
+					BGM = 1,
+					BGMVolume = 100,
+					VoiceVolume = 100
+				};
+			}
+
+			if (gameConfigFile.Controllers == null)
+				gameConfigFile.Controllers = new Dictionary<string, ControllerConfig>();
+
+			// Video
+			// Display mode
+			if (gameConfigFile.GameConfig.FullScreen == 1)
+				radFullscreen.IsChecked = true;
+			else
+				radWindowed.IsChecked = true;
+
+			// Framerate
+			if (gameConfigFile.GameConfig.FrameRate == (int)FrameRate.Invalid || gameConfigFile.GameConfig.FrameRate > (int)FrameRate.Low)
+			{
+				//MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				comboFramerate.SelectedIndex = (int)FrameRate.High - 1;
+			}
+			else
+			{
+				comboFramerate.SelectedIndex = gameConfigFile.GameConfig.FrameRate - 1;
+			}
+
+			// Clip level
+			//comboClip.SelectedIndex = gameConfigFile.GameConfig.ClipLevel;
+			// Fog mode
+			comboFog.SelectedIndex = gameConfigFile.GameConfig.FogEmulation;
+
+			//controller mouse vanilla stuff go here
+
+		}
+
+		private void SaveGameConfigIni()
+		{
+			gameConfigFile.GameConfig.FullScreen = (bool)radFullscreen.IsChecked ? 1 : 0;
+
+			gameConfigFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
+			//gameConfigFile.GameConfig.ClipLevel = comboClip.SelectedIndex;
+			gameConfigFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
+
+			/*gameConfigFile.GameConfig.Sound3D = check3DSound.Checked ? 1 : 0;
+			gameConfigFile.GameConfig.SEVoice = checkSound.Checked ? 1 : 0;
+			gameConfigFile.GameConfig.BGM = checkMusic.Checked ? 1 : 0;
+
+			gameConfigFile.GameConfig.VoiceVolume = (int)trackBarVoiceVol.Value;
+			gameConfigFile.GameConfig.BGMVolume = (int)trackBarMusicVol.Value;
+
+			gameConfigFile.GameConfig.MouseMode = radioMouseModeHold.Checked ? 0 : 1;
+
+			if (inputDevice != null)
+			{
+				gameConfigFile.GameConfig.PadConfig = controllerConfigSelect.SelectedIndex == -1 ? null : controllerConfig[controllerConfigSelect.SelectedIndex].Name;
+
+				gameConfigFile.Controllers.Clear();
+				foreach (ControllerConfigInternal item in controllerConfig)
+				{
+					ControllerConfig config = new ControllerConfig { ButtonCount = item.Buttons.Max() + 1 };
+					config.ButtonSettings = Enumerable.Repeat(-1, config.ButtonCount).ToArray();
+					for (int i = 0; i < buttonIDs.Length; i++)
+					{
+						if (item.Buttons[i] != -1)
+						{
+							config.ButtonSettings[item.Buttons[i]] = buttonIDs[i];
+						}
+					}
+					gameConfigFile.Controllers.Add(item.Name, config);
+				}
+			}*/
+
+			IniSerializer.Serialize(gameConfigFile, sadxIni);
+		}
+
 		#endregion
 
 		#region Cheat Codes
@@ -478,6 +603,37 @@ namespace ModManagerWPF
 			txtCustomResX.IsEnabled = (bool)chkCustomWinSize.IsChecked && (bool)!chkMaintainRatio.IsChecked;
 			txtCustomResY.IsEnabled = (bool)chkCustomWinSize.IsChecked;
 		}
+
+		private void radFullscreen_Checked(object sender, RoutedEventArgs e)
+		{
+			if (grpGraphicsFullscreen is null)
+				return;
+
+			int index = gridGraphics.Children.IndexOf(grpGraphicsWindow); //Graphic Window setting is a children of the graphic grid 
+
+			gridGraphics.Children.RemoveAt(index); //we remove it so we can only display the full screen options
+
+			if (!gridGraphics.Children.Contains(grpGraphicsFullscreen)) //if the fullscreen grid doesn't exist, add it back
+			{
+				gridGraphics.Children.Add(grpGraphicsFullscreen);
+			}
+		}
+
+		private void radWindowed_Checked(object sender, RoutedEventArgs e)
+		{
+			if (grpGraphicsWindow is null)
+				return;
+
+			int index = gridGraphics.Children.IndexOf(grpGraphicsFullscreen);  //Graphic Fullscreen setting is a children of the graphic grid 
+
+			gridGraphics.Children.RemoveAt(index); //we remove it so we can only display the Window options
+
+			if (!gridGraphics.Children.Contains(grpGraphicsWindow)) //if the Window grid doesn't exist, add it back
+			{
+				gridGraphics.Children.Add(grpGraphicsWindow);
+			}
+		}
+
 		#endregion
 
 		#region Others
@@ -492,7 +648,6 @@ namespace ModManagerWPF
 		{
 			new AboutManager().ShowDialog();
 		}
-
 
 		private void btnMoveTop_Click(object sender, RoutedEventArgs e)
 		{
@@ -552,33 +707,6 @@ namespace ModManagerWPF
 				listMods.Items.Remove(item);
 				listMods.Items.Insert(index + 1, item);
 			}
-		}
-
-		private void SetModManagerVersion(object sender, EventArgs e)
-		{
-			if (count >= 3 || Title.Length > titleName.Length + 1)
-			{
-				(sender as DispatcherTimer).Stop();
-				return;
-			}
-
-			git.GetRecentCommit();
-
-			count++;
-		}
-
-		public void SetModManagerVersion()
-		{
-			GitVersion = git.LastCommit;
-			Title = titleName + " " + "(" + Version + "-" + GitVersion + ")";
-		}
-
-		private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
-		{
-			DispatcherTimer timer = new();
-			timer.Interval = TimeSpan.FromMilliseconds(10000);
-			timer.Tick += SetModManagerVersion;
-			timer.IsEnabled = true;
 		}
 
 		private void RefreshBtn_Click(object sender, RoutedEventArgs e)

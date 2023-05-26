@@ -11,7 +11,9 @@
 		Title="SADX Mod Manager"
 		Style="{StaticResource SAWindow}"
 		MinHeight="550" MinWidth="590" Height="670" Width="640" WindowStartupLocation="CenterScreen"
-        Loaded="MainWindowManager_Loaded">
+        Loaded="MainWindowManager_Loaded"
+        ContentRendered="MainWindowManager_ContentRendered"
+        >
 
 
     <!--This is where all Resources are stored.-->
@@ -347,8 +349,8 @@
 
                                             <CheckBox x:Name="chkRatio" Content="{DynamicResource GameGraphicsCheckRatio}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Margin="0,5,0,5"/>
                                             <CheckBox x:Name="chkVSync" Content="{DynamicResource GameGraphicsCheckVSync}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="True"/>
-                                            <RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="True"/>
-                                            <RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="False"/>
+                                            <RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="False" Checked="radFullscreen_Checked"/>
+                                            <RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="False" Checked="radWindowed_Checked"/>
                                         </Grid>
 
                                         <!--Graphics Display Bottom-->
