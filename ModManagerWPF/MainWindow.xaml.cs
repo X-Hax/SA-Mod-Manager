@@ -107,6 +107,7 @@ namespace ModManagerWPF
 			loaderini.ModUpdateCheck = (bool)chkUpdatesMods.IsChecked;
 			loaderini.Language = comboLanguage.SelectedIndex;
 			loaderini.Theme = comboThemes.SelectedIndex;
+			loaderini.EnableTestSpawnTab = (bool)checkEnableTestSpawn.IsChecked;
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
 		}
@@ -232,6 +233,11 @@ namespace ModManagerWPF
 
 			comboLanguage.SelectedIndex = loaderini.Language;
 			comboThemes.SelectedIndex = loaderini.Theme;
+			checkEnableTestSpawn.IsChecked = loaderini.EnableTestSpawnTab;
+			if ((bool)!checkEnableTestSpawn.IsChecked)
+			{
+				tcMain.Items.Remove(tabTestSpawn);
+			}
 		}
 
 
@@ -486,7 +492,7 @@ namespace ModManagerWPF
 		{
 			new AboutManager().ShowDialog();
 		}
-		#endregion
+
 
 		private void btnMoveTop_Click(object sender, RoutedEventArgs e)
 		{
@@ -578,5 +584,25 @@ namespace ModManagerWPF
 		{
 			LoadModList();
 		}
+		#endregion
+
+		#region TestSpawn Settings
+		private void checkEnableTestSpawn_Checked(object sender, RoutedEventArgs e)
+		{
+			if (tcMain.Items.Contains(tabTestSpawn))
+				return;
+
+			int index = tcMain.Items.IndexOf(tabConfig);
+			tcMain.Items.Insert(index, tabTestSpawn);
+		}
+
+		private void checkEnableTestSpawn_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!tcMain.Items.Contains(tabTestSpawn))
+				return;
+
+			tcMain.Items.Remove(tabTestSpawn);
+		}
+		#endregion
 	}
 }

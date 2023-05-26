@@ -22,6 +22,10 @@
             <Image Width="65" Height="60" Source="/Icons/SADXModManager_.png"/>
             <Label Content="SADX Mod Manager" Height="56" Width="341" FontSize="36"/>
         </StackPanel>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" Grid.ColumnSpan="2">
+
+            <Label Content="{DynamicResource ManagerTextAbout}"/>
+        </StackPanel>
         <Label Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1"/>
         <Label Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Grid.Row="1"/>
         <GroupBox Header="Credits" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2" Grid.Column="0" Margin="8,8,5,16">

@@ -103,6 +103,7 @@ namespace ModManagerWPF
 		public bool DisableMaterialColorFix { get; set; }
 		[DefaultValue(false)]
 		public bool DisableInterpolationFix { get; set; }
+		public bool EnableTestSpawnTab { get; set; }
 
 		[DefaultValue(-1)]
 		public int TestSpawnLevel { get; set; } = -1;
