@@ -5,10 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Octokit;
 
+
 namespace ModManagerWPF
 {
     public class GitHub
     {
+		MainWindow Window { get; set; }
+		public GitHub(MainWindow window) 
+		{
+			Window = window;
+		}
 		public GitHubClient client = new GitHubClient(new ProductHeaderValue("sadx-mod-loader"));
 
 		public string LastCommit = "";
@@ -41,8 +47,9 @@ namespace ModManagerWPF
 			var lastCommit = await GetLastCommit(id, "wpf"); //todo swap to "master"
 		
 			if (lastCommit is not null)
-			{
+			{		
 				LastCommit = lastCommit.Sha[..7];
+				Window.SetModManagerVersion(); 
 				return;
 			}
 		}
