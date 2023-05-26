@@ -660,13 +660,7 @@
 
                             </Grid>
                         </TabItem>
-
-                        <!--This Tab is for Game Debug.-->
-                        <TabItem x:Name="tabDebug" Header="{DynamicResource GameTabDebug}" Margin="12,0,-12,0">
-                            <Grid>
-
-                            </Grid>
-                        </TabItem>
+                        
                     </TabControl>
                 </Grid>
             </TabItem>
