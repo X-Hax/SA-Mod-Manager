@@ -576,5 +576,10 @@ namespace ModManagerWPF
 			timer.Tick += SetModManagerVersion;
 			timer.IsEnabled = true;			
 		}
+
+		private void RefreshBtn_Click(object sender, RoutedEventArgs e)
+		{
+			LoadModList();
+		}
 	}
 }
