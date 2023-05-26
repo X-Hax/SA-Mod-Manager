@@ -94,6 +94,10 @@ namespace ModManagerWPF
 
 		[DefaultValue(100)]
 		public int SEVolume { get; set; } = 100;
+		[DefaultValue(0)]
+		public int Theme { get; set; } = 0;
+		[DefaultValue(0)]
+		public int Language { get; set; } = 0;
 
 		[DefaultValue(false)]
 		public bool DisableMaterialColorFix { get; set; }

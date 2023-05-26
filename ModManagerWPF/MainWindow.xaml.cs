@@ -105,6 +105,8 @@ namespace ModManagerWPF
 			loaderini.ResizableWindow = (bool)chkResizableWin.IsChecked;
 			loaderini.UpdateCheck = (bool)chkUpdatesML.IsChecked;
 			loaderini.ModUpdateCheck = (bool)chkUpdatesMods.IsChecked;
+			loaderini.Language = comboLanguage.SelectedIndex;
+			loaderini.Theme = comboThemes.SelectedIndex;
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
 		}
@@ -227,6 +229,9 @@ namespace ModManagerWPF
 			suppressEvent = false;
 
 			chkResizableWin.IsChecked = loaderini.ResizableWindow;
+
+			comboLanguage.SelectedIndex = loaderini.Language;
+			comboThemes.SelectedIndex = loaderini.Theme;
 		}
 
 
