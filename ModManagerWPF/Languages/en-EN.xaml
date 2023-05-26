@@ -6,7 +6,6 @@
 	<!--#region Main Window Strings-->
 	<system:String x:Key="MainBtnSave" >Save</system:String>
 	<system:String x:Key="MainBtnSaveAndPlay" >Save &amp; Play</system:String>
-	<system:String x:Key="MainBtnInstallLoader" >Install Loader</system:String>
 	<system:String x:Key="MainTabMods">Mods</system:String>
 	<system:String x:Key="MainTabCodes">Codes</system:String>
 	<system:String x:Key="MainTabGameConfig">Game Config</system:String>
@@ -94,20 +93,41 @@
     <!--#endregion-->
 	
 	<!--#region Manager Config Tab Strings-->
+	<!--Options-->
+	<system:String x:Key="ManagerGrpOptions">Options</system:String>
+	<system:String x:Key="ManagerLblTheme">Themes:</system:String>
+	<system:String x:Key="ManagerLblLang">Language:</system:String>
+	<system:String x:Key="ManagerLblProfile">Profile:</system:String>
+	<system:String x:Key="ManagerLblGameDir">Game Directory:</system:String>
+	
+	<system:String x:Key="ManagerBtnEnableOneClick">Enable Gamebanana 1-Click Install</system:String>
+	<system:String x:Key="ManagerBtnDisableOneClick">Disable Gamebanana 1-Click Install</system:String>
+
+	<system:String x:Key="ManagerBtnInstallLoader">Install Mod Loader</system:String>
+	<system:String x:Key="ManagerBtnUninstallLoader">Uninstall Mod Loader</system:String>
+
+	<system:String x:Key="ManagerCheckKeepOpen">Keep Mod Manager Open after launching game</system:String>
+	<system:String x:Key="ManagerCheckTestSpawn">Enable Test Spawn Tab</system:String>
+	
+	<!--Updates-->
 	<system:String x:Key="ManagerGrpUpdates">Updates</system:String>
 	<system:String x:Key="ManagerChkCheckModloader">Check for Mod Loader Updates on Startup</system:String>
 	<system:String x:Key="ManagerChkCheckMods">Check for Mod Updates on Startup</system:String>
 	<system:String x:Key="ManagerBtnCheckNow">Check For Updates</system:String>
 
-	<system:String x:Key="ManagerGrpOptions">Options</system:String>
-	<system:String x:Key="ManagerLblTheme">Themes:</system:String>
-	<system:String x:Key="ManagerLblLang">Language:</system:String>
-	<system:String x:Key="ManagerLblProfile">Profile:</system:String>
-	<system:String x:Key="ManagerBtnOneClick">Enable 1-Click Install</system:String>
+	<!--Debug Features-->
+	<system:String x:Key="ManagerGrpDebug">Debug Features</system:String>
+	<system:String x:Key="ManagerCheckConsoleWindow">Enable Console Window</system:String>
+	<system:String x:Key="ManagerCheckPrintDebug">Print Debug in Game Window</system:String>
+	<system:String x:Key="ManagerCheckLogToFile">Log Debug Info to File</system:String>
+	<system:String x:Key="ManagerCheckCrashDumps">Create Crash Dumps</system:String>
 	
+	<!--About-->
+	<system:String x:Key="ManagerGrpAbout">About</system:String>
+	<system:String x:Key="ManagerTextAbout">The SADX Mod Manager is a long standing piece of crap.</system:String>
 	<system:String x:Key="ManagerBtnCredits">Contributors</system:String>
 	<system:String x:Key="ManagerBtnSource">Source Code</system:String>
-	<system:String x:Key="ManagerBtnDocs">SA Docs</system:String>
+	<system:String x:Key="ManagerBtnDocs">Open SA Docs</system:String>
 	<!--#endregion-->
 
 	<!--#region Manager About Window-->
