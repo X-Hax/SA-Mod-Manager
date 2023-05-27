@@ -143,6 +143,7 @@ namespace ModManagerWPF
 			loaderini.Language = comboLanguage.SelectedIndex;
 			loaderini.Theme = comboThemes.SelectedIndex;
 			loaderini.EnableTestSpawnTab = (bool)checkEnableTestSpawn.IsChecked;
+			loaderini.InputModEnabled = (bool)radBetterInput.IsChecked;
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
 		}
@@ -200,6 +201,8 @@ namespace ModManagerWPF
 			comboLanguage.SelectedIndex = loaderini.Language;
 			comboThemes.SelectedIndex = loaderini.Theme;
 			checkEnableTestSpawn.IsChecked = loaderini.EnableTestSpawnTab;
+			radBetterInput.IsChecked = loaderini.InputModEnabled;
+			radVanillaInput.IsChecked = !radBetterInput.IsChecked;
 
 			if ((bool)!checkEnableTestSpawn.IsChecked)
 			{
@@ -234,9 +237,9 @@ namespace ModManagerWPF
 
 			if (File.Exists(Path.Combine(modDir, "mod.ini")))
 			{
-				/*MessageBox.Show(this, "There is a mod.ini in the mods folder."
+				MessageBox.Show(this, "There is a mod.ini in the mods folder."
 							+ "\n\nEach mod must be placed in a subfolder in the mods folder. Do not extract mods directly to the mods folder." +
-							"\n\nMove or delete mod.ini in the mods folder and run the Mod Manager again.", "SADX Mod Manager Error", MessageBoxButtons.OK, MessageBoxIcon.Error);*/
+							"\n\nMove or delete mod.ini in the mods folder and run the Mod Manager again.", "SADX Mod Manager Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				Close();
 				return;
 			}
@@ -261,7 +264,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					//MessageBox.Show(this, "Mod \"" + mod + "\" could not be found.\n\nThis mod will be removed from the list.);
+					MessageBox.Show(this, "Mod \"" + mod + "\" could not be found.\n\nThis mod will be removed from the list.)");
 					loaderini.Mods.Remove(mod);
 				}
 			}
@@ -368,7 +371,7 @@ namespace ModManagerWPF
 			// Framerate
 			if (gameConfigFile.GameConfig.FrameRate == (int)FrameRate.Invalid || gameConfigFile.GameConfig.FrameRate > (int)FrameRate.Low)
 			{
-				//MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButton.OK, MessageBoxImage.Error);
 				comboFramerate.SelectedIndex = (int)FrameRate.High - 1;
 			}
 			else
@@ -443,7 +446,8 @@ namespace ModManagerWPF
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(this, $"Error loading code list: {ex.Message}");
+				MessageBox.Show(this, $"Error loading code list: {ex.Message}", "Error Loading Code", MessageBoxButton.OK, MessageBoxImage.Error);
+			
 				mainCodes = new CodeList();
 			}
 		}
@@ -735,8 +739,10 @@ namespace ModManagerWPF
 		#endregion
 
 		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
-		{	
-			var dig = MessageBox.Show("You are about to disable Input Mod!\n\nThe game has many issues without it; such as camera spinning with Xinput controllers.\n\nAre you sure you want to continue?", "Warning",  MessageBoxButton.YesNo, MessageBoxImage.Warning);
+		{
+
+	
+			/*var dig = MessageBox.Show("You are about to disable Input Mod!\n\nThe game has many issues without it; such as camera spinning with Xinput controllers.\n\nAre you sure you want to continue?", "Warning",  MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
 			if (dig != MessageBoxResult.Yes) 
 			{ 
@@ -744,12 +750,12 @@ namespace ModManagerWPF
 	
 			}
 			else
-			{
+			{*/
 				if (!tabInputGrid.Children.Contains(vanillaInputBox)) //if the Grid vanillaInputBox doesn't exist, add it back
 				{
 					tabInputGrid.Children.Add(vanillaInputBox);
 				}
-			}
+			
 		}
 
 		private void radBetterInput_Checked(object sender, RoutedEventArgs e)

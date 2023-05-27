@@ -98,6 +98,8 @@ namespace ModManagerWPF
 		public int Theme { get; set; } = 0;
 		[DefaultValue(0)]
 		public int Language { get; set; } = 0;
+		[DefaultValue(true)]
+		public bool InputModEnabled { get; set; }
 
 		[DefaultValue(false)]
 		public bool DisableMaterialColorFix { get; set; }
