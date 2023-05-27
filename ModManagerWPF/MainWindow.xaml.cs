@@ -19,6 +19,7 @@ using Xceed.Wpf.Toolkit;
 using MessageBox = System.Windows.MessageBox;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using System.Windows.Media.Animation;
 
 namespace ModManagerWPF
 {
@@ -32,9 +33,13 @@ namespace ModManagerWPF
 		private const string pipeName = "sadx-mod-manager";
 		public readonly string titleName = "SADX Mod Manager";
 		public static string Version = "1.0.0";
-		public static string GitVersion = "";
+		public static string GitVersion = string.Empty;
 		const string loaderinipath = "mods/SADXModLoader.ini";
 		private const string sadxIni = "sonicDX.ini";
+		const string datadllorigpath = "system/CHRMODELS_orig.dll";
+		const string loaderdllpath = "mods/SADXModLoader.dll";
+		const string datadllpath = "system/CHRMODELS.dll";
+		string gamePath = string.Empty;
 		SADXLoaderInfo loaderini;
 		Dictionary<string, SADXModInfo> mods = null;
 		const string codelstpath = "mods/Codes.lst";
@@ -119,6 +124,7 @@ namespace ModManagerWPF
 
 			//save mod list here
 
+			loaderini.GamePath = gamePath;
 			loaderini.HorizontalResolution = (int)txtResX.Value;
 			loaderini.VerticalResolution = (int)txtResY.Value;
 			loaderini.ForceAspectRatio = (bool)chkRatio.IsChecked;
@@ -145,12 +151,15 @@ namespace ModManagerWPF
 			loaderini.EnableTestSpawnTab = (bool)checkEnableTestSpawn.IsChecked;
 			loaderini.InputModEnabled = (bool)radBetterInput.IsChecked;
 
+
 			IniSerializer.Serialize(loaderini, loaderinipath);
 		}
 		private void LoadSettings()
 		{
 			LoadModList();
 
+			gamePath = loaderini.GamePath;
+			textGameDir.Text = gamePath;
 			chkVSync.IsChecked = loaderini.EnableVsync;
 			txtResX.IsEnabled = !loaderini.ForceAspectRatio;
 
@@ -767,5 +776,28 @@ namespace ModManagerWPF
 			tabInputGrid.Children.RemoveAt(index); //remove vanilla grid input
 		}
 
+
+		private void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
+		{
+			var dialog = new System.Windows.Forms.FolderBrowserDialog();
+		
+			System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+		
+			if (result == System.Windows.Forms.DialogResult.OK)
+			{
+				string GamePath = dialog.SelectedPath.Replace("/", "\\");
+				string path = Path.Combine(GamePath, datadllpath.Replace("/", "\\"));
+
+				if (File.Exists(path))
+				{
+					textGameDir.Text = GamePath;
+					gamePath = GamePath;
+				}
+				else
+				{
+					MessageBox.Show("Failed to detect CHRMODELS.dll, make sure to select a folder where sonic.exe is installed.", "Failed to set Game Path", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			}
+		}
 	}
 }
