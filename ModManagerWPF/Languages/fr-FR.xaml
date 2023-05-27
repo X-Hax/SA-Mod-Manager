@@ -5,7 +5,6 @@
     <!--Main Window Strings-->
     <system:String x:Key="MainBtnSave" >Sauvegarder</system:String>
     <system:String x:Key="MainBtnSaveAndPlay" xml:space="preserve">Sauvegarder &amp; Jouer</system:String>
-    <system:String x:Key="MainBtnInstallLoader" >Installer Loader</system:String>
     <system:String x:Key="MainTabMods">Mods</system:String>
     <system:String x:Key="MainTabCodes">Codes</system:String>
     <system:String x:Key="MainTabGameConfig">Config Jeu</system:String>
@@ -78,18 +77,68 @@
     <system:String x:Key="GameGraphicsButtonUpdateD3D8">Mettre à jour D3D8to9</system:String>
     <!--#endregion-->
 
-    <!--Manager Config Tab Strings-->
+    <!--Input Tab Strings-->
+
+    <!--Sound Input Strings-->
+    <system:String x:Key="GameSoundGroupSettings">Paramètres du Son</system:String>
+    <system:String x:Key="GameSoundGroupVolume">Contrôle du Volume</system:String>
+    <system:String x:Key="GameSoundCheckBassMusic">Utiliser BASS pour les Musiques</system:String>
+    <system:String x:Key="GameSoundCheckBassSFX">Utiliser BASS pour les SFX</system:String>
+    <system:String x:Key="GameSoundCheckMusic">Activer la Musique</system:String>
+    <system:String x:Key="GameSoundCheckSound">Activer les Sons</system:String>
+    <system:String x:Key="GameSoundCheck3DSound">Activer les Sons 3D</system:String>
+    <system:String x:Key="GameSoundLabelMusic">Volume de la Musique:</system:String>
+    <system:String x:Key="GameSoundLabelVoice">Volume des Voix:</system:String>
+    <system:String x:Key="GameSoundLabelSound">Volume SFX:</system:String>
+
+    <!--#endregion-->
+
+    <!--#region Manager Config Tab Strings-->
+    <!--Options-->
+    <system:String x:Key="ManagerGrpOptions">Options</system:String>
+    <system:String x:Key="ManagerLblTheme">Thèmes:</system:String>
+    <system:String x:Key="ManagerLblLang">Langue:</system:String>
+    <system:String x:Key="ManagerLblProfile">Profil:</system:String>
+    <system:String x:Key="ManagerLblGameDir">Game Directory:</system:String>
+
+    <system:String x:Key="ManagerBtnEnableOneClick">Activer Gamebanana 1-Click Install</system:String>
+    <system:String x:Key="ManagerBtnDisableOneClick">Désactiver Gamebanana 1-Click Install</system:String>
+
+    <system:String x:Key="MainBtnInstallLoader" >Installer Loader</system:String>
+    <system:String x:Key="ManagerBtnUninstallLoader">Désinstaller Mod Loader</system:String>
+
+    <system:String x:Key="ManagerCheckKeepOpen">Laisser le Mod Manager Ouvert après démarrage du jeu</system:String>
+    <system:String x:Key="ManagerCheckTestSpawn">Activer l'onglet Test Spawn</system:String>
+    
+    <!--Updates-->
     <system:String x:Key="ManagerGrpUpdates">Mises à jour</system:String>
     <system:String x:Key="ManagerChkCheckModloader">Vérifier les mises à jour du Mod Loader au démarrage</system:String>
     <system:String x:Key="ManagerChkCheckMods">Vérifier les mises à jour des Mods au démarrage</system:String>
     <system:String x:Key="ManagerBtnCheckNow">Vérifier les mises à jour</system:String>
 
-    <system:String x:Key="ManagerGrpOptions">Options</system:String>
-    <system:String x:Key="ManagerLblTheme">Thèmes:</system:String>
-    <system:String x:Key="ManagerLblLang">Langue:</system:String>
-    <system:String x:Key="ManagerLblProfile">Profil:</system:String>
-    <system:String x:Key="ManagerBtnOneClick">Activer 1-Click Install</system:String>
+    <!--Debug Features-->
+    <system:String x:Key="ManagerGrpDebug">Fonctions de debug</system:String>
+    <system:String x:Key="ManagerCheckConsoleWindow">Activer la Fenêtre Console</system:String>
+    <system:String x:Key="ManagerCheckPrintDebug">Afficher le debug dans la fenêtre du jeu</system:String>
+    <system:String x:Key="ManagerCheckLogToFile">Logger les infos de Debug dans un fichier</system:String>
+    <system:String x:Key="ManagerCheckCrashDumps">Créer des Crash Dumps</system:String>
 
-    <system:String x:Key="AboutBtn">A Propos</system:String>
+    <!--About-->
+    <system:String x:Key="ManagerGrpAbout">À Propos</system:String>
+    <system:String x:Key="ManagerTextAbout">The SADX Mod Manager is a long standing piece of crap.</system:String>
+    <system:String x:Key="ManagerBtnCredits">Contributeurs</system:String>
+    <system:String x:Key="ManagerBtnSource">Code Source</system:String>
+    <system:String x:Key="ManagerBtnReport">Signlar un Bug (Anglais uniquement)</system:String>
+    <system:String x:Key="ManagerBtnDocs">Ouvrir la SA Docs (Anglais uniquement)</system:String>
 
+    <!--Message Box Strings-->
+    <system:String x:Key="SadxManagerError">SADX Mod Manager Erreur</system:String>
+    <system:String x:Key="ModIniError0">Il y a un fichier mod.ini dans le dossier mods.</system:String>
+    <system:String x:Key="ModIniError1" xml:space="preserve">&#x0a;&#x0a;Chaque mod doit être placé dans un sous dossier dans le dossier des mods. Veuillez ne pas extraire des mods directement dans le dossier mods.</system:String>
+    <system:String x:Key="ModIniError2" xml:space="preserve">&#x0a;&#x0a;Déplacez ou supprimer le mod.ini dans le dossier mods puis lancer le Mod Manager à nouveau.</system:String>
+
+
+    <!--About Code Window-->
+    <system:String x:Key="AboutCodeTitle">A Propos</system:String>
+    
 </ResourceDictionary>

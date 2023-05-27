@@ -140,11 +140,28 @@
 	<system:String x:Key="ManagerTextAbout">The SADX Mod Manager is a long standing piece of crap.</system:String>
 	<system:String x:Key="ManagerBtnCredits">Contributors</system:String>
 	<system:String x:Key="ManagerBtnSource">Source Code</system:String>
-	<system:String x:Key="ManagerBtnReport">Report a Bug</system:String>
-	<system:String x:Key="ManagerBtnDocs">Open SA Docs</system:String>
+	<system:String x:Key="ManagerBtnReport">Report a Bug (English only)</system:String>
+	<system:String x:Key="ManagerBtnDocs">Open SA Docs (English only)</system:String>
 	<!--#endregion-->
 
 	<!--#region Manager About Window-->
+    
+    <!--Message Box Strings-->
+    <system:String x:Key="SadxManagerError">SADX Mod Manager Error</system:String>
+    
+    <system:String x:Key="ModIniError0">There is a mod.ini in the mods folder.</system:String>
+    <system:String x:Key="ModIniError1" xml:space="preserve">&#x0a;&#x0a;Each mod must be placed in a subfolder in the mods folder. Do not extract mods directly to the mods folder.</system:String>
+    <system:String x:Key="ModIniError2" xml:space="preserve">&#x0a;&#x0a;Move or delete mod.ini in the mods folder and run the Mod Manager again.</system:String>
+
+    <system:String x:Key="ModRemovedList" xml:space="preserve">could not be found.&#x0a;&#x0a;This mod will be removed from the list.</system:String>
+
+    <system:String x:Key="FaildSetGamePathTitle">Failed to set Game Path</system:String>
+    <system:String x:Key="FaildSetGamePath">Failed to detect CHRMODELS.dll, make sure to select a folder where sonic.exe is installed.</system:String>
+
+    <system:String x:Key="FailedDetectGamePathTitle">Failed to detect Game Path</system:String>
+    <system:String x:Key="FailedDetectGamePathDirectory">Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.</system:String>
+
+    <!--#endregion-->
 
 
 </ResourceDictionary>

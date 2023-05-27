@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF"
         mc:Ignorable="d"
-        Title="About" Height="200" Width="Auto" MinWidth="250" MaxHeight="500" MaxWidth="420"
+        Title="{StaticResource ManagerGrpAbout}" Height="200" Width="Auto" MinWidth="250" MaxHeight="500" MaxWidth="420"
         Style="{StaticResource SAWindow}"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Languages/Languages.xaml"/>
                 <ResourceDictionary Source="Themes/Themes.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

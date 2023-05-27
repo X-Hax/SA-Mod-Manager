@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF"
         mc:Ignorable="d"
-        Title="About" Height="480" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="{StaticResource ManagerGrpAbout}" Height="480" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         Style="{StaticResource SAWindow}">
     <Grid>
         <Grid.RowDefinitions>
