@@ -89,7 +89,20 @@
     
     <system:String x:Key="GameGraphicsButtonUpdateD3D8">Update D3D8to9</system:String>
         
-    
+    <!--Input Tab Strings-->
+	
+	<!--Sound Input Strings-->
+	<system:String x:Key="GameSoundGroupSettings">Sound Settings</system:String>
+	<system:String x:Key="GameSoundGroupVolume">Volume Control</system:String>
+	<system:String x:Key="GameSoundCheckBassMusic">Use BASS for Music</system:String>
+	<system:String x:Key="GameSoundCheckBassSFX">Use BASS for SFX</system:String>
+	<system:String x:Key="GameSoundCheckMusic">Enable Music</system:String>
+	<system:String x:Key="GameSoundCheckSound">Enable Sounds</system:String>
+	<system:String x:Key="GameSoundCheck3DSound">Enable 3D Sound</system:String>
+	<system:String x:Key="GameSoundLabelMusic">Music Volume:</system:String>
+	<system:String x:Key="GameSoundLabelVoice">Voices Volume:</system:String>
+	<system:String x:Key="GameSoundLabelSound">SFX Volume:</system:String>
+	
     <!--#endregion-->
 	
 	<!--#region Manager Config Tab Strings-->

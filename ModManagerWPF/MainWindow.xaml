@@ -604,10 +604,11 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
-                                <GroupBox Header="Sound Settings" Grid.Row="0">
+                                <GroupBox Header="{DynamicResource GameSoundGroupSettings}" Grid.Row="0">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="10"/>
+                                            <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="10"/>
@@ -618,10 +619,16 @@
                                             <RowDefinition Height="*"/>
                                             <RowDefinition Height="10"/>
                                         </Grid.RowDefinitions>
-                                    </Grid>
+
+										<CheckBox x:Name="checkBassMusic" Content="{DynamicResource GameSoundCheckBassMusic}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
+										<CheckBox x:Name="checkBassSFX" Content="{DynamicResource GameSoundCheckBassSFX}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
+										<CheckBox x:Name="checkEnableMusic" Content="{DynamicResource GameSoundCheckMusic}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
+										<CheckBox x:Name="checkEnableSounds" Content="{DynamicResource GameSoundCheckSound}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
+										<CheckBox x:Name="checkEnable3DSound" Content="{DynamicResource GameSoundCheck3DSound}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center"/>
+									</Grid>
                                 </GroupBox>
 
-                                <GroupBox Header="Volume" Grid.Row="1">
+                                <GroupBox Header="{DynamicResource GameSoundGroupVolume}" Grid.Row="1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="10"/>
@@ -639,9 +646,9 @@
                                             <RowDefinition Height="10"/>
                                         </Grid.RowDefinitions>
 
-                                        <Label Content="Music:" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
-                                        <Label Content="Voice:" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
-                                        <Label Content="SFX:" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
+                                        <Label Content="{DynamicResource GameSoundLabelMusic}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
+                                        <Label Content="{DynamicResource GameSoundLabelVoice}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
+                                        <Label Content="{DynamicResource GameSoundLabelSound}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
                                         <Slider x:Name="sliderMusic" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
                                         <Slider x:Name="sliderVoice" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
                                         <Slider x:Name="sliderSFX" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center"/>
