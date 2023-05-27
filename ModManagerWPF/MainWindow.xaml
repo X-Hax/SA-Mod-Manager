@@ -863,16 +863,17 @@
                             <Grid Grid.Column="1" Grid.Row="2" Margin="0,5,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
                                     <RowDefinition Height="30"/>
                                 </Grid.RowDefinitions>
 
-                                <Button x:Name="btnCredits" Content="{DynamicResource ManagerBtnCredits}" Grid.Column="0" Margin="5,0,2.5,0" Click="AboutBtn_Click"/>
-                                <Button x:Name="btnSource" Content="{DynamicResource ManagerBtnSource}" Grid.Column="1" Margin="2.5,0,2.5,0"/>
-                                <Button x:Name="btnDocs" Content="{DynamicResource ManagerBtnDocs}" Grid.Column="2" Margin="2.5,0,5,0"/>
+                                <Button x:Name="btnCredits" Content="{DynamicResource ManagerBtnCredits}" Grid.Column="0" Margin="5,0,5,0" Click="AboutBtn_Click"/>
+								<Button x:Name="btnDocs" Content="{DynamicResource ManagerBtnDocs}" Grid.Column="0" Grid.Row="1" Margin="5,0,5,0"/>
+								<Button x:Name="btnSource" Content="{DynamicResource ManagerBtnSource}" Grid.Column="1" Grid.Row="0" Margin="5,0,5,0"/>
+								<Button x:Name="btnReport" Content="{DynamicResource ManagerBtnReport}" Grid.Column="1" Grid.Row="1" Margin="5,0,5,0"/>
                             </Grid>
                         </Grid>
                     </GroupBox>
