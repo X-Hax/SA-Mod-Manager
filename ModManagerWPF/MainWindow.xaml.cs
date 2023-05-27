@@ -750,7 +750,6 @@ namespace ModManagerWPF
 		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
 		{
 
-	
 			/*var dig = MessageBox.Show("You are about to disable Input Mod!\n\nThe game has many issues without it; such as camera spinning with Xinput controllers.\n\nAre you sure you want to continue?", "Warning",  MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
 			if (dig != MessageBoxResult.Yes) 
@@ -798,6 +797,37 @@ namespace ModManagerWPF
 					MessageBox.Show("Failed to detect CHRMODELS.dll, make sure to select a folder where sonic.exe is installed.", "Failed to set Game Path", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 			}
+		}
+
+		private void btnInstallLoader_Click(object sender, RoutedEventArgs e)
+		{
+			if (string.IsNullOrEmpty(gamePath))
+			{
+				MessageBox.Show("Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.", "Failed to detect Game Path", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			string path = Path.Combine(gamePath, datadllpath.Replace("/", "\\"));
+
+			if (!File.Exists(path))
+			{
+				MessageBox.Show("Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.", "Failed to detect Game Path", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (installed)
+			{
+				//File.Delete(datadllpath);
+				//File.Move(datadllorigpath, datadllpath);
+				btnInstallLoader.Content = FindResource("ManagerBtnInstallLoader");
+			}
+			else
+			{
+				//File.Move(datadllpath, datadllorigpath);
+				//File.Copy(loaderdllpath, datadllpath);
+				btnInstallLoader.Content =FindResource("ManagerBtnUninstallLoader");
+			}
+			installed = !installed;
 		}
 	}
 }
