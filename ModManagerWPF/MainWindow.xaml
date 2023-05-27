@@ -515,7 +515,7 @@
 
                         <!--This Tab is for Game Input.-->
                         <TabItem x:Name="tabInput" Header="{DynamicResource GameTabInput}" Margin="3,0,-3,0">
-                            <Grid>
+                            <Grid x:Name="tabInputGrid">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="70"/>
                                     <RowDefinition Height="*"/>
@@ -537,17 +537,18 @@
                                             <RowDefinition Height="10"/>
                                         </Grid.RowDefinitions>
 
-                                        <RadioButton x:Name="radVanillaInput" Content="Vanilla Input (DInput)" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                        <RadioButton x:Name="radBetterInput" Content="Better Input (SDL2)" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        <RadioButton x:Name="radVanillaInput" Content="Vanilla Input (DInput)" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radVanillaInput_Checked"/>
+                                        <RadioButton x:Name="radBetterInput" Content="Better Input (SDL2)" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radBetterInput_Checked"/>
                                     </Grid>
                                 </GroupBox>
 
                                 <!--Group for Vanilla Input Configuration-->
-                                <GroupBox Header="Vanilla Input Configuration" Grid.Row="1">
+                                <GroupBox x:Name="vanillaInputBox" Header="Vanilla Input Configuration" Grid.Row="1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="10"/>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="17*"/>
                                             <ColumnDefinition Width="10"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -558,7 +559,7 @@
                                         </Grid.RowDefinitions>
 
                                         <!--Group for Mouse and Keyboard Input Configuration-->
-                                        <GroupBox Header="Mouse and Keyboard" Grid.Column="1" Grid.Row="1">
+                                        <GroupBox Header="Mouse and Keyboard" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -582,7 +583,7 @@
                                         </GroupBox>
 
                                         <!--Group for Controller DInput Configuration-->
-                                        <GroupBox Header="Controller (DInput)" Grid.Column="1" Grid.Row="2">
+                                        <GroupBox Header="Controller (DInput)" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
                                             <Grid>
 
                                             </Grid>
@@ -662,7 +663,7 @@
 
                             </Grid>
                         </TabItem>
-                        
+
                     </TabControl>
                 </Grid>
             </TabItem>

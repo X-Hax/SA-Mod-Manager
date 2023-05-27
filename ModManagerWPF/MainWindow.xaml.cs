@@ -16,7 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using IniFile;
 using Xceed.Wpf.Toolkit;
-using MessageBox = Xceed.Wpf.Toolkit.MessageBox;
+using MessageBox = System.Windows.MessageBox;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
@@ -733,5 +733,33 @@ namespace ModManagerWPF
 			tcMain.Items.Remove(tabTestSpawn);
 		}
 		#endregion
+
+		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
+		{	
+			var dig = MessageBox.Show("You are about to disable Input Mod!\n\nThe game has many issues without it; such as camera spinning with Xinput controllers.\n\nAre you sure you want to continue?", "Warning",  MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+			if (dig != MessageBoxResult.Yes) 
+			{ 
+				radVanillaInput.IsChecked = false;
+	
+			}
+			else
+			{
+				if (!tabInputGrid.Children.Contains(vanillaInputBox)) //if the Grid vanillaInputBox doesn't exist, add it back
+				{
+					tabInputGrid.Children.Add(vanillaInputBox);
+				}
+			}
+		}
+
+		private void radBetterInput_Checked(object sender, RoutedEventArgs e)
+		{
+			if (!tabInputGrid.Children.Contains(vanillaInputBox))
+				return;
+
+			int index = tabInputGrid.Children.IndexOf(vanillaInputBox);  //get Vanilla Input Grid index
+			tabInputGrid.Children.RemoveAt(index); //remove vanilla grid input
+		}
+
 	}
 }
