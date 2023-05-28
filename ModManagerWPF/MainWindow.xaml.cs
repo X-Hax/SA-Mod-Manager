@@ -42,6 +42,7 @@ namespace ModManagerWPF
 		string datadllorigpath = "system\\CHRMODELS_orig.dll";
 		string loaderdllpath = "mods\\SADXModLoader.dll";
 		string datadllpath = "system\\CHRMODELS.dll";
+		const string exeName = "sonic.exe";
 
 		string gamePath = string.Empty;
 		SADXLoaderInfo loaderini;
@@ -132,7 +133,7 @@ namespace ModManagerWPF
 
 		private void UpdatePathsStringsInfo()
 		{
-			if (!string.IsNullOrEmpty(gamePath) && File.Exists(Path.Combine(gamePath, "system\\CHRMODELS.dll")))
+			if (!string.IsNullOrEmpty(gamePath) && File.Exists(Path.Combine(gamePath, exeName)))
 			{
 				modDirectory = Path.Combine(gamePath, "mods");
 				loaderinipath = Path.Combine(gamePath, "mods\\SADXModLoader.ini");
@@ -151,6 +152,8 @@ namespace ModManagerWPF
 				gamePath = string.Empty;
 			}
 
+			installed = File.Exists(datadllorigpath);
+			SetBtnInstallLoaderContent(installed);
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
 		}
 
@@ -827,12 +830,18 @@ namespace ModManagerWPF
 			}
 		}
 
-		private void RefreshBtn_Click(object sender, RoutedEventArgs e)
+		private void Refresh()
 		{
 			LoadModList();
 			InitCodes();
 		}
 
+		private void RefreshBtn_Click(object sender, RoutedEventArgs e)
+		{
+			Refresh();
+		}
+
+		//set new game Path
 		private void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
 		{
 			var dialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -842,7 +851,7 @@ namespace ModManagerWPF
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
 				string GamePath = dialog.SelectedPath.Replace("/", "\\");
-				string path = Path.Combine(GamePath, "system\\CHRMODELS.dll");
+				string path = Path.Combine(GamePath, exeName);
 
 				if (File.Exists(path))
 				{
@@ -850,8 +859,7 @@ namespace ModManagerWPF
 					gamePath = GamePath;
 					Properties.Settings.Default.GamePath = gamePath;
 					UpdatePathsStringsInfo();
-					LoadModList();
-					InitCodes();
+					Refresh();
 				}
 				else
 				{
@@ -860,9 +868,21 @@ namespace ModManagerWPF
 			}
 		}
 
+		private void SetBtnInstallLoaderContent(bool installed)
+		{
+			if (installed) 
+			{
+				btnInstallLoader.Content = Lang.GetString("ManagerBtnUninstallLoader");
+			}
+			else
+			{
+				btnInstallLoader.Content = Lang.GetString("ManagerBtnInstallLoader");
+			}
+		}
+
 		private void btnInstallLoader_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(gamePath) || !File.Exists(datadllpath))
+			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
 			{
 				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
@@ -870,18 +890,18 @@ namespace ModManagerWPF
 
 			if (installed)
 			{
-				//File.Delete(datadllpath);
-				//File.Move(datadllorigpath, datadllpath);
-				btnInstallLoader.Content = Lang.GetString("ManagerBtnInstallLoader");
+				File.Delete(datadllpath);
+				Util.MoveFile(datadllorigpath, datadllpath);
 			}
 			else
 			{
-				//File.Move(datadllpath, datadllorigpath);
-				//File.Copy(loaderdllpath, datadllpath);
-				btnInstallLoader.Content = Lang.GetString("ManagerBtnUninstallLoader");
+				Util.MoveFile(datadllpath, datadllorigpath);
+				if (File.Exists(loaderdllpath))
+					File.Copy(loaderdllpath, datadllpath);
 			}
 
 			installed = !installed;
+			SetBtnInstallLoaderContent(installed);
 		}
 
 		private void btnSource_Click(object sender, RoutedEventArgs e)

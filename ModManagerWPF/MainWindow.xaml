@@ -971,7 +971,7 @@
 									<CheckBox x:Name="checkManagerOpen" Content="{DynamicResource ManagerCheckKeepOpen}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
 									<CheckBox x:Name="checkEnableTestSpawn" Content="{DynamicResource ManagerCheckTestSpawn}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Checked="checkEnableTestSpawn_Checked" Unchecked="checkEnableTestSpawn_Unchecked"/>
 									<Button x:Name="btnOneClick" Content="{DynamicResource ManagerBtnEnableOneClick}" Grid.Column="1" Grid.Row="1" MaxWidth="280" VerticalAlignment="Center" Margin="5,0,5,0"/>
-									<Button x:Name="btnInstallLoader" Content="{DynamicResource ManagerBtnInstallLoader}" Grid.Column="1" Grid.Row="3" MaxWidth="280" VerticalAlignment="Center" Margin="5,0,5,0"/>
+                                    <Button x:Name="btnInstallLoader" Content="{DynamicResource ManagerBtnInstallLoader}" Grid.Column="1" Grid.Row="3" MaxWidth="280" VerticalAlignment="Center" Margin="5,0,5,0" Click="btnInstallLoader_Click"/>
 								</Grid>
 							</Grid>
 
@@ -1070,7 +1070,7 @@
 
 								<Button x:Name="btnCredits" Content="{DynamicResource ManagerBtnCredits}" Grid.Column="0" Margin="5,0,5,0" Click="AboutBtn_Click"/>
 								<Button x:Name="btnDocs" Content="{DynamicResource ManagerBtnDocs}" Grid.Column="0" Grid.Row="2" Margin="5,0,5,0"/>
-								<Button x:Name="btnSource" Content="{DynamicResource ManagerBtnSource}" Grid.Column="1" Grid.Row="0" Margin="5,0,5,0"/>
+								<Button x:Name="btnSource" Content="{DynamicResource ManagerBtnSource}" Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" Click="btnSource_Click"/>
 								<Button x:Name="btnReport" Content="{DynamicResource ManagerBtnReport}" Grid.Column="1" Grid.Row="2" Margin="5,0,5,0"/>
 							</Grid>
 						</Grid>
