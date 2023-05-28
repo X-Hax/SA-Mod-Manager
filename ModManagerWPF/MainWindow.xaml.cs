@@ -153,7 +153,7 @@ namespace ModManagerWPF
 			}
 
 			installed = File.Exists(datadllorigpath);
-			SetBtnInstallLoaderContent(installed);
+			UpdateBtnInstallLoader_Text();
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
 		}
 
@@ -501,6 +501,10 @@ namespace ModManagerWPF
 
 		private void SaveGameConfigIni()
 		{
+			if (!File.Exists(sadxIni))
+				return;
+
+
 			gameConfigFile.GameConfig.FullScreen = (bool)radFullscreen.IsChecked ? 1 : 0;
 
 			gameConfigFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
@@ -621,6 +625,7 @@ namespace ModManagerWPF
 		private void comboLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			App.SwitchLanguage();
+			UpdateBtnInstallLoader_Text();
 		}
 
 		#endregion
@@ -868,8 +873,11 @@ namespace ModManagerWPF
 			}
 		}
 
-		private void SetBtnInstallLoaderContent(bool installed)
+		private void UpdateBtnInstallLoader_Text()
 		{
+			if (btnInstallLoader is null)
+				return;
+
 			if (installed) 
 			{
 				btnInstallLoader.Content = Lang.GetString("ManagerBtnUninstallLoader");
@@ -901,7 +909,7 @@ namespace ModManagerWPF
 			}
 
 			installed = !installed;
-			SetBtnInstallLoaderContent(installed);
+			UpdateBtnInstallLoader_Text();
 		}
 
 		private void btnSource_Click(object sender, RoutedEventArgs e)
