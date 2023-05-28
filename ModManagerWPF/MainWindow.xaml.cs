@@ -35,18 +35,20 @@ namespace ModManagerWPF
 		public readonly string titleName = "SADX Mod Manager";
 		public static string Version = "1.0.0";
 		public static string GitVersion = string.Empty;
-		const string loaderinipath = "mods/SADXModLoader.ini";
+		public static string modDirectory = string.Empty;
+		public static string loaderinipath = "mods/SADXModLoader.ini";
 		private const string sadxIni = "sonicDX.ini";
-		const string datadllorigpath = "system/CHRMODELS_orig.dll";
-		const string loaderdllpath = "mods/SADXModLoader.dll";
-		const string datadllpath = "system/CHRMODELS.dll";
+		string datadllorigpath = "system/CHRMODELS_orig.dll";
+		string loaderdllpath = "mods/SADXModLoader.dll";
+		string datadllpath = "system/CHRMODELS.dll";
+
 		string gamePath = string.Empty;
 		SADXLoaderInfo loaderini;
 		Dictionary<string, SADXModInfo> mods = null;
-		const string codelstpath = "mods/Codes.lst";
-		const string codexmlpath = "mods/Codes.xml";
-		const string codedatpath = "mods/Codes.dat";
-		const string patchdatpath = "mods/Patches.dat";
+		string codelstpath = "mods/Codes.lst";
+		string codexmlpath = "mods/Codes.xml";
+		string codedatpath = "mods/Codes.dat";
+		string patchdatpath = "mods/Patches.dat";
 		CodeList mainCodes = null;
 		List<Code> codes = null;
 		bool installed = false;
@@ -68,11 +70,31 @@ namespace ModManagerWPF
 		}
 		#endregion
 
+		private void UpdatePathsStringsInfo()
+		{
+			if (!string.IsNullOrEmpty(gamePath))
+			{
+				modDirectory = Path.Combine(gamePath, "mods");
+				loaderinipath = Path.Combine(gamePath, "mods/SADXModLoader.ini");
+				datadllorigpath = Path.Combine(gamePath, "system/CHRMODELS_orig.dll");
+				loaderdllpath = Path.Combine(gamePath, "mods/SADXModLoader.dll");
+				datadllpath = Path.Combine(gamePath, "system/CHRMODELS.dll");
+
+				codelstpath = Path.Combine(gamePath, "mods/Codes.lst");
+				codexmlpath = Path.Combine(gamePath, "mods/Codes.xml");
+				codedatpath = Path.Combine(gamePath, "mods/Codes.dat");
+				patchdatpath = Path.Combine(gamePath, "mods/Patches.dat");
+			}
+			
+			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+		}
+
 		public MainWindow()
 		{
 			git = new(this);
 			InitializeComponent();
-			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+			UpdatePathsStringsInfo();
+
 			git.GetRecentCommit();
 
 			graphics = new GameGraphics(comboScreen);
@@ -98,7 +120,6 @@ namespace ModManagerWPF
 			}
 
 			git.GetRecentCommit();
-
 			count++;
 		}
 
@@ -118,6 +139,9 @@ namespace ModManagerWPF
 
 		private void Save()
 		{
+			if (!File.Exists(loaderinipath))
+				return;
+
 			loaderini.Mods.Clear();
 
 			//save mod list here
@@ -226,22 +250,34 @@ namespace ModManagerWPF
 		{
 			Save();
 			SaveGameConfigIni();
-
+			if (string.IsNullOrEmpty(gamePath))
+			{
+				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
 		}
+
 		private void LoadModList()
 		{
 			btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
 			//modDescription.Text = "Description: No mod selected.";
 			listMods.Items.Clear();
 			mods = new Dictionary<string, SADXModInfo>();
-			string modDir = Path.Combine(Environment.CurrentDirectory, "mods");
 
-			if (!Directory.Exists(modDir))
+			bool modFolderExist = Directory.Exists(modDirectory);
+
+			//if mod folder doesn't exist and game path hasn't been set, give up the process of loading mods.
+
+			if (!modFolderExist && string.IsNullOrEmpty(gamePath))
 			{
-				Directory.CreateDirectory(modDir);
+				return;
+			}
+			else if (Directory.Exists(gamePath) && !modFolderExist) 
+			{
+				Directory.CreateDirectory(modDirectory);
 			}
 
-			if (File.Exists(Path.Combine(modDir, "mod.ini")))
+			if (File.Exists(Path.Combine(modDirectory, "mod.ini")))
 			{
 				MessageBox.Show(this, Lang.GetString("ModIniError0")
 							+ Lang.GetString("ModIniError1") +
@@ -250,10 +286,10 @@ namespace ModManagerWPF
 				return;
 			}
 
-			foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modDir)))
+			foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modDirectory)))
 			{
 				SADXModInfo mod = IniSerializer.Deserialize<SADXModInfo>(filename);
-				mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(modDir.Length + 1), mod);
+				mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(modDirectory.Length + 1), mod);
 			}
 
 			foreach (string mod in new List<string>(loaderini.Mods))
@@ -506,6 +542,12 @@ namespace ModManagerWPF
 		#endregion
 
 		#region Languages
+
+		private void comboLanguage_Loaded(object sender, RoutedEventArgs e)
+		{
+			comboLanguage.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
+			comboLanguage.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
+		}
 		private void comboLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			App.SwitchLanguage();
@@ -515,10 +557,15 @@ namespace ModManagerWPF
 
 		#region Themes
 
+		private void comboThemes_Loaded(object sender, RoutedEventArgs e)
+		{
+			comboThemes.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
+			comboThemes.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
+		}
+
 		private void comboThemes_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			App.SwitchTheme();
-
 		}
 
 		#endregion
@@ -585,6 +632,57 @@ namespace ModManagerWPF
 			{
 				gridGraphics.Children.Add(grpGraphicsWindow);
 			}
+		}
+
+		#endregion
+
+		#region TestSpawn Settings
+		private void checkEnableTestSpawn_Checked(object sender, RoutedEventArgs e)
+		{
+			if (tcMain.Items.Contains(tabTestSpawn))
+				return;
+
+			int index = tcMain.Items.IndexOf(tabConfig);
+			tcMain.Items.Insert(index, tabTestSpawn);
+		}
+
+		private void checkEnableTestSpawn_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!tcMain.Items.Contains(tabTestSpawn))
+				return;
+
+			tcMain.Items.Remove(tabTestSpawn);
+		}
+		#endregion
+
+		#region Inputs
+
+		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
+		{
+
+			/*var dig = MessageBox.Show("You are about to disable Input Mod!\n\nThe game has many issues without it; such as camera spinning with Xinput controllers.\n\nAre you sure you want to continue?", "Warning",  MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+			if (dig != MessageBoxResult.Yes) 
+			{ 
+				radVanillaInput.IsChecked = false;
+	
+			}
+			else
+			{*/
+				if (!tabInputGrid.Children.Contains(vanillaInputBox)) //if the Grid vanillaInputBox doesn't exist, add it back
+				{
+					tabInputGrid.Children.Add(vanillaInputBox);
+				}
+			
+		}
+
+		private void radBetterInput_Checked(object sender, RoutedEventArgs e)
+		{
+			if (!tabInputGrid.Children.Contains(vanillaInputBox))
+				return;
+
+			int index = tabInputGrid.Children.IndexOf(vanillaInputBox);  //get Vanilla Input Grid index
+			tabInputGrid.Children.RemoveAt(index); //remove vanilla grid input
 		}
 
 		#endregion
@@ -665,56 +763,8 @@ namespace ModManagerWPF
 		private void RefreshBtn_Click(object sender, RoutedEventArgs e)
 		{
 			LoadModList();
+			InitCodes();
 		}
-		#endregion
-
-		#region TestSpawn Settings
-		private void checkEnableTestSpawn_Checked(object sender, RoutedEventArgs e)
-		{
-			if (tcMain.Items.Contains(tabTestSpawn))
-				return;
-
-			int index = tcMain.Items.IndexOf(tabConfig);
-			tcMain.Items.Insert(index, tabTestSpawn);
-		}
-
-		private void checkEnableTestSpawn_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!tcMain.Items.Contains(tabTestSpawn))
-				return;
-
-			tcMain.Items.Remove(tabTestSpawn);
-		}
-		#endregion
-
-		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
-		{
-
-			/*var dig = MessageBox.Show("You are about to disable Input Mod!\n\nThe game has many issues without it; such as camera spinning with Xinput controllers.\n\nAre you sure you want to continue?", "Warning",  MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-			if (dig != MessageBoxResult.Yes) 
-			{ 
-				radVanillaInput.IsChecked = false;
-	
-			}
-			else
-			{*/
-				if (!tabInputGrid.Children.Contains(vanillaInputBox)) //if the Grid vanillaInputBox doesn't exist, add it back
-				{
-					tabInputGrid.Children.Add(vanillaInputBox);
-				}
-			
-		}
-
-		private void radBetterInput_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!tabInputGrid.Children.Contains(vanillaInputBox))
-				return;
-
-			int index = tabInputGrid.Children.IndexOf(vanillaInputBox);  //get Vanilla Input Grid index
-			tabInputGrid.Children.RemoveAt(index); //remove vanilla grid input
-		}
-
 
 		private void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
 		{
@@ -731,6 +781,9 @@ namespace ModManagerWPF
 				{
 					textGameDir.Text = GamePath;
 					gamePath = GamePath;
+					UpdatePathsStringsInfo();
+					LoadModList();
+					InitCodes();
 				}
 				else
 				{
@@ -770,15 +823,6 @@ namespace ModManagerWPF
 			installed = !installed;
 		}
 
-		private void TestBtn_Click(object sender, RoutedEventArgs e)
-		{
-			string t = Lang.GetString("ModIniError0");
-
-			MessageBox.Show(this, Lang.GetString("ModIniError0")
-			+ Lang.GetString("ModIniError1") +
-			Lang.GetString("ModIniError2"), Lang.GetString("SadxManagerError"), MessageBoxButton.OK, MessageBoxImage.Error);
-		}
-
 		private void btnSource_Click(object sender, RoutedEventArgs e)
 		{
 			var ps = new ProcessStartInfo("https://github.com/X-Hax/sadx-mod-loader")
@@ -789,16 +833,6 @@ namespace ModManagerWPF
 			Process.Start(ps);
 		}
 
-		private void comboThemes_Loaded(object sender, RoutedEventArgs e)
-		{	
-			comboThemes.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
-			comboThemes.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
-		}
-
-		private void comboLanguage_Loaded(object sender, RoutedEventArgs e)
-		{
-			comboLanguage.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
-			comboLanguage.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
-		}
+		#endregion
 	}
 }
