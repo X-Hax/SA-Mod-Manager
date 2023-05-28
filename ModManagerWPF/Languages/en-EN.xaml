@@ -159,7 +159,7 @@
     <system:String x:Key="FaildSetGamePath">Failed to detect CHRMODELS.dll, make sure to select a folder where sonic.exe is installed.</system:String>
 
     <system:String x:Key="FailedDetectGamePathTitle">Failed to detect Game Path</system:String>
-    <system:String x:Key="FailedDetectGamePathDirectory">Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.</system:String>
+    <system:String x:Key="FailedDetectGamePath">Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.</system:String>
 
     <!--#endregion-->
 

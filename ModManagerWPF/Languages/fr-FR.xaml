@@ -104,7 +104,7 @@
     <system:String x:Key="ManagerBtnEnableOneClick">Activer Gamebanana 1-Click Install</system:String>
     <system:String x:Key="ManagerBtnDisableOneClick">Désactiver Gamebanana 1-Click Install</system:String>
 
-    <system:String x:Key="MainBtnInstallLoader" >Installer Loader</system:String>
+    <system:String x:Key="ManagerBtnInstallLoader">Installer Loader</system:String>
     <system:String x:Key="ManagerBtnUninstallLoader">Désinstaller Mod Loader</system:String>
 
     <system:String x:Key="ManagerCheckKeepOpen">Laisser le Mod Manager Ouvert après démarrage du jeu</system:String>

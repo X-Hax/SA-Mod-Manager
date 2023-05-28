@@ -20,6 +20,7 @@ using MessageBox = System.Windows.MessageBox;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Windows.Media.Animation;
+using System.Diagnostics;
 
 namespace ModManagerWPF
 {
@@ -53,10 +54,6 @@ namespace ModManagerWPF
 
 		private GameConfigFile gameConfigFile;
 
-		public static LangEntry CurrentLang = new();
-		public static LanguageList LangList = new();
-		public static ThemeEntry CurrentTheme = new();
-		public static ThemeList ThemeList = new();
 		public GameGraphics graphics;
 		public GitHub git;
 		static private uint count = 0;
@@ -77,16 +74,17 @@ namespace ModManagerWPF
 			InitializeComponent();
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
 			git.GetRecentCommit();
-			AddLanguagesToList();
-			AddThemesToList();
+
 			graphics = new GameGraphics(comboScreen);
-			LoadSettings();
+			LoadSettings();	
+			LoadModList();
 			InitCodes();
 		}
 
 		private void MainWindowManager_ContentRendered(object sender, EventArgs e)
 		{
 			LoadGameConfigIni();
+			this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
 		}
 
 		#region Main
@@ -156,8 +154,8 @@ namespace ModManagerWPF
 		}
 		private void LoadSettings()
 		{
-			LoadModList();
-
+			comboLanguage.SelectedIndex = loaderini.Language;
+			comboThemes.SelectedIndex = loaderini.Theme;
 			gamePath = loaderini.GamePath;
 			textGameDir.Text = gamePath;
 			chkVSync.IsChecked = loaderini.EnableVsync;
@@ -207,8 +205,7 @@ namespace ModManagerWPF
 			suppressEvent = false;
 
 			chkResizableWin.IsChecked = loaderini.ResizableWindow;
-			comboLanguage.SelectedIndex = loaderini.Language;
-			comboThemes.SelectedIndex = loaderini.Theme;
+
 			checkEnableTestSpawn.IsChecked = loaderini.EnableTestSpawnTab;
 			radBetterInput.IsChecked = loaderini.InputModEnabled;
 			radVanillaInput.IsChecked = !radBetterInput.IsChecked;
@@ -246,13 +243,12 @@ namespace ModManagerWPF
 
 			if (File.Exists(Path.Combine(modDir, "mod.ini")))
 			{
-				MessageBox.Show(this, "There is a mod.ini in the mods folder."
-							+ "\n\nEach mod must be placed in a subfolder in the mods folder. Do not extract mods directly to the mods folder." +
-							"\n\nMove or delete mod.ini in the mods folder and run the Mod Manager again.", "SADX Mod Manager Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(this, Lang.GetString("ModIniError0")
+							+ Lang.GetString("ModIniError1") +
+							Lang.GetString("ModIniError2"), Lang.GetString("SadxManagerError"), MessageBoxButton.OK, MessageBoxImage.Error);
 				Close();
 				return;
 			}
-
 
 			foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modDir)))
 			{
@@ -273,7 +269,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					MessageBox.Show(this, "Mod \"" + mod + "\" could not be found.\n\nThis mod will be removed from the list.)");
+					MessageBox.Show(this, "Mod \"" + mod + "\"" + Lang.GetString("ModRemovedList"));
 					loaderini.Mods.Remove(mod);
 				}
 			}
@@ -512,75 +508,19 @@ namespace ModManagerWPF
 		#region Languages
 		private void comboLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			SwitchLanguage(comboLanguage.SelectedIndex);
+			App.SwitchLanguage();
 		}
 
-		private void SwitchLanguage(int index)
-		{
-			if (LangList is null)
-				return;
-
-			CurrentLang = LangList[index];
-
-			string name = "Languages/" + CurrentLang.FileName + ".xaml";
-			ResourceDictionary dictionary = new()
-			{
-				Source = new Uri(name, UriKind.Relative)
-			};
-
-			Resources.MergedDictionaries.Add(dictionary);
-		}
-
-		private void AddLanguagesToList()
-		{
-			var mergedDict = Application.Current.Resources.MergedDictionaries.Where(md => md.Source.OriginalString.Equals("Languages/languages.xaml")).FirstOrDefault();
-			LangList = (LanguageList)mergedDict["Languages"];
-
-			if (LangList is not null)
-			{
-				foreach (var lang in LangList)
-				{
-					comboLanguage.Items.Add(lang.Name);
-				}
-			}
-		}
 		#endregion
 
 		#region Themes
-		private void SwitchTheme(int index)
-		{
-			if (ThemeList is null)
-				return;
-
-			CurrentTheme = ThemeList[index];
-
-			string name = "Themes/" + CurrentTheme.FileName + ".xaml";
-			ResourceDictionary dictionary = new()
-			{
-				Source = new Uri(name, UriKind.Relative)
-			};
-
-			Resources.MergedDictionaries.Add(dictionary);
-		}
-
-		private void AddThemesToList()
-		{
-			var mergedDict = Application.Current.Resources.MergedDictionaries.Where(md => md.Source.OriginalString.Equals("Themes/Themes.xaml")).FirstOrDefault();
-			ThemeList = (ThemeList)mergedDict["Themes"];
-
-			if (ThemeList is not null)
-			{
-				foreach (var lang in ThemeList)
-				{
-					comboThemes.Items.Add(lang.Name);
-				}
-			}
-		}
 
 		private void comboThemes_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			SwitchTheme(comboThemes.SelectedIndex);
+			App.SwitchTheme();
+
 		}
+
 		#endregion
 
 		#region Graphics Settings
@@ -794,7 +734,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					MessageBox.Show("Failed to detect CHRMODELS.dll, make sure to select a folder where sonic.exe is installed.", "Failed to set Game Path", MessageBoxButton.OK, MessageBoxImage.Error);
+					MessageBox.Show(Lang.GetString("FaildSetGamePath"), Lang.GetString("FaildSetGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 			}
 		}
@@ -803,7 +743,7 @@ namespace ModManagerWPF
 		{
 			if (string.IsNullOrEmpty(gamePath))
 			{
-				MessageBox.Show("Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.", "Failed to detect Game Path", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
@@ -811,7 +751,7 @@ namespace ModManagerWPF
 
 			if (!File.Exists(path))
 			{
-				MessageBox.Show("Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.", "Failed to detect Game Path", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
@@ -819,15 +759,46 @@ namespace ModManagerWPF
 			{
 				//File.Delete(datadllpath);
 				//File.Move(datadllorigpath, datadllpath);
-				btnInstallLoader.Content = FindResource("ManagerBtnInstallLoader");
+				btnInstallLoader.Content = Lang.GetString("ManagerBtnInstallLoader");
 			}
 			else
 			{
 				//File.Move(datadllpath, datadllorigpath);
 				//File.Copy(loaderdllpath, datadllpath);
-				btnInstallLoader.Content =FindResource("ManagerBtnUninstallLoader");
+				btnInstallLoader.Content = Lang.GetString("ManagerBtnUninstallLoader");
 			}
 			installed = !installed;
+		}
+
+		private void TestBtn_Click(object sender, RoutedEventArgs e)
+		{
+			string t = Lang.GetString("ModIniError0");
+
+			MessageBox.Show(this, Lang.GetString("ModIniError0")
+			+ Lang.GetString("ModIniError1") +
+			Lang.GetString("ModIniError2"), Lang.GetString("SadxManagerError"), MessageBoxButton.OK, MessageBoxImage.Error);
+		}
+
+		private void btnSource_Click(object sender, RoutedEventArgs e)
+		{
+			var ps = new ProcessStartInfo("https://github.com/X-Hax/sadx-mod-loader")
+			{
+				UseShellExecute = true,
+				Verb = "open"
+			};
+			Process.Start(ps);
+		}
+
+		private void comboThemes_Loaded(object sender, RoutedEventArgs e)
+		{	
+			comboThemes.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
+			comboThemes.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
+		}
+
+		private void comboLanguage_Loaded(object sender, RoutedEventArgs e)
+		{
+			comboLanguage.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
+			comboLanguage.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
 		}
 	}
 }

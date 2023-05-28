@@ -1,9 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:ModManagerWPF.Languages">
+                    xmlns:local="clr-namespace:ModManagerWPF.Languages">
+
     <local:LanguageList x:Key="Languages">
         <local:LangEntry FileName="en-EN" Name="English"/>
-        <local:LangEntry FileName="fr-FR" Name="Français (France)" />
+        <local:LangEntry FileName="fr-FR" Name="Français (France)"/>
+
     </local:LanguageList>
 
 

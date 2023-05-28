@@ -9,7 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/Themes.xaml" />
                 <ResourceDictionary Source="Themes/DarkTheme.xaml" />
-                <ResourceDictionary Source="Languages/languages.xaml" />
+                <ResourceDictionary Source="Languages/Languages.xaml" />
                 <ResourceDictionary Source="Languages/en-EN.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
