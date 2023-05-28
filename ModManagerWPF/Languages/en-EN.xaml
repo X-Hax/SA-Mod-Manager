@@ -18,12 +18,23 @@
 	<system:String x:Key="ModsListVersion">Version</system:String>
 	<system:String x:Key="ModsListCategory">Category</system:String>
 
-	<system:String x:Key="ModsBtnRefresh" >Refresh</system:String>
-	<system:String x:Key="ModsBtnConfigure" >Configure Mod</system:String>
-	<system:String x:Key="ModsBtnNew" >Add Mod</system:String>
-	<system:String x:Key="ModsLblDescription" >Description: No Mod Select</system:String>
-	<system:String x:Key="ModsTextBoxSearch" >Search...</system:String>
-	<!--#endregion-->
+	<system:String x:Key="ModsBtnRefresh">Refresh</system:String>
+	<system:String x:Key="ModsBtnConfigure">Configure Mod</system:String>
+	<system:String x:Key="ModsBtnNew">Add Mod</system:String>
+	<system:String x:Key="ModsLblDescription">Description: No Mod Select</system:String>
+	<system:String x:Key="ModsTextBoxSearch">Search...</system:String>
+
+    <!--Mods Items right click Menu-->
+    <system:String x:Key="ModsUIOpenFolder">Open Folder</system:String>
+    <system:String x:Key="ModsUIChkUpdate">Check For Updates</system:String>
+    <system:String x:Key="ModsUIVerifyIntegrity">Verify Integrity</system:String>
+    <system:String x:Key="ModsUIForceUpdate">Force Update</system:String>
+    <system:String x:Key="ModsUIModConfigure">Configure Mod</system:String>
+    <system:String x:Key="ModsUIModEdit">Edit Mod</system:String>
+    <system:String x:Key="ModsUIModDelete">Delete Mod</system:String>
+    <system:String x:Key="ModsUIDev">Developer</system:String>
+
+    <!--#endregion-->
 	
 	<!--#region Codes Tab Strings-->
 	<system:String x:Key="CodesBtnAdd">New Code</system:String>
@@ -145,6 +156,7 @@
 	<!--#endregion-->
 
 	<!--#region Manager About Window-->
+    
     
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerError">SADX Mod Manager Error</system:String>

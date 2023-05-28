@@ -13,7 +13,7 @@
 		MinHeight="550" MinWidth="590" Height="670" Width="640" WindowStartupLocation="CenterScreen"
 		Loaded="MainWindowManager_Loaded"
 		ContentRendered="MainWindowManager_ContentRendered"
-		>
+        Closed="MainForm_FormClosing">
 
 
     <!--We use this to have language and theme to work on the Editor. This is deleted when the program start-->
@@ -23,8 +23,20 @@
 				<ResourceDictionary Source="Languages/en-EN.xaml"/>
 				<ResourceDictionary Source="Themes/DarkTheme.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</Window.Resources>
+	
+        <ContextMenu x:Key="ModContextMenu">
+            <MenuItem x:Name="ModContextOpenFolder" Header="{DynamicResource ModsUIOpenFolder}" Click="ModContextOpenFolder_Click" InputGestureText="(Ctrl+O)"/>
+            <MenuItem x:Name="ModContextChkUpdate" Header="{DynamicResource ModsUIChkUpdate}" Click="ModContextChkUpdate_Click"/>
+            <MenuItem x:Name="ModContextVerifyIntegrity" Header="{DynamicResource ModsUIVerifyIntegrity}" Click="ModContextVerifyIntegrity_Click" />
+            <MenuItem x:Name="ModContextForceUpdate" Header="{DynamicResource ModsUIForceUpdate}" Click="ModContextForceUpdate_Click"/>
+            <MenuItem x:Name="ModContextConfigureMod" Header="{DynamicResource ModsUIModConfigure}" Click="ModContextConfigureMod_Click" InputGestureText="(Ctrl+U)"/>
+            <MenuItem x:Name="ModContextEditMod" Header="{DynamicResource ModsUIModEdit}" Click="ModContextEditMod_Click" InputGestureText="(Ctrl+E)"/>
+            <MenuItem x:Name="ModContextDeleteMod" Header="{DynamicResource ModsUIModDelete}" Click="ModContextDeleteMod_Click" InputGestureText="(Delete)"/>
+            <MenuItem x:Name="ModContextDev" Header="{DynamicResource ModsUIDev}" Click="ModContextDev_Click"/>
+        </ContextMenu>
+        </ResourceDictionary>
+
+    </Window.Resources>
 	<!--This is the initial grid used by the entire app.-->
 	<Grid>
 		<Grid.RowDefinitions>
@@ -59,8 +71,9 @@
 							<ListView.ItemContainerStyle>
 								<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
 									<EventSetter Event="MouseDoubleClick" Handler="ModsView_Item_MouseDoubleClick"/>
+                                    <Setter Property="ContextMenu" Value="{DynamicResource ModContextMenu}"/>
 
-								</Style>
+                                </Style>
 							</ListView.ItemContainerStyle>
 							<ListView.View>
 								<GridView>

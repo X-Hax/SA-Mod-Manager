@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Windows.Media.Animation;
 using System.Diagnostics;
+using ModManagerWPF.Properties;
 
 namespace ModManagerWPF
 {
@@ -37,7 +38,7 @@ namespace ModManagerWPF
 		public static string GitVersion = string.Empty;
 		public static string modDirectory = string.Empty;
 		public static string loaderinipath = "mods/SADXModLoader.ini";
-		private const string sadxIni = "sonicDX.ini";
+		private string sadxIni = "sonicDX.ini";
 		string datadllorigpath = "system/CHRMODELS_orig.dll";
 		string loaderdllpath = "mods/SADXModLoader.dll";
 		string datadllpath = "system/CHRMODELS.dll";
@@ -70,35 +71,16 @@ namespace ModManagerWPF
 		}
 		#endregion
 
-		private void UpdatePathsStringsInfo()
-		{
-			if (!string.IsNullOrEmpty(gamePath))
-			{
-				modDirectory = Path.Combine(gamePath, "mods");
-				loaderinipath = Path.Combine(gamePath, "mods/SADXModLoader.ini");
-				datadllorigpath = Path.Combine(gamePath, "system/CHRMODELS_orig.dll");
-				loaderdllpath = Path.Combine(gamePath, "mods/SADXModLoader.dll");
-				datadllpath = Path.Combine(gamePath, "system/CHRMODELS.dll");
-
-				codelstpath = Path.Combine(gamePath, "mods/Codes.lst");
-				codexmlpath = Path.Combine(gamePath, "mods/Codes.xml");
-				codedatpath = Path.Combine(gamePath, "mods/Codes.dat");
-				patchdatpath = Path.Combine(gamePath, "mods/Patches.dat");
-			}
-			
-			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
-		}
-
 		public MainWindow()
 		{
 			git = new(this);
 			InitializeComponent();
-			UpdatePathsStringsInfo();
-
 			git.GetRecentCommit();
 
 			graphics = new GameGraphics(comboScreen);
-			LoadSettings();	
+			gamePath = Settings.Default.GamePath;
+			UpdatePathsStringsInfo();
+			LoadSettings();
 			LoadModList();
 			InitCodes();
 		}
@@ -107,6 +89,16 @@ namespace ModManagerWPF
 		{
 			LoadGameConfigIni();
 			this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
+		}
+
+		private void Load_WindowUserSettings()
+		{
+
+		}
+
+		private void Save_AppUserSettings()
+		{
+			Settings.Default.Save();
 		}
 
 		#region Main
@@ -137,16 +129,41 @@ namespace ModManagerWPF
 			timer.IsEnabled = true;
 		}
 
+		private void MainForm_FormClosing(object sender, EventArgs e)
+		{
+			Save_AppUserSettings();
+		}
+
+		private void UpdatePathsStringsInfo()
+		{
+			if (!string.IsNullOrEmpty(gamePath))
+			{
+				modDirectory = Path.Combine(gamePath, "mods");
+				loaderinipath = Path.Combine(gamePath, "mods/SADXModLoader.ini");
+				datadllorigpath = Path.Combine(gamePath, "system/CHRMODELS_orig.dll");
+				loaderdllpath = Path.Combine(gamePath, "mods/SADXModLoader.dll");
+				datadllpath = Path.Combine(gamePath, "system/CHRMODELS.dll");
+				sadxIni = Path.Combine(gamePath, "sonicDX.ini");
+
+				codelstpath = Path.Combine(gamePath, "mods/Codes.lst");
+				codexmlpath = Path.Combine(gamePath, "mods/Codes.xml");
+				codedatpath = Path.Combine(gamePath, "mods/Codes.dat");
+				patchdatpath = Path.Combine(gamePath, "mods/Patches.dat");
+			}
+
+			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+		}
+
 		private void Save()
 		{
-			if (!File.Exists(loaderinipath))
+			if (!Directory.Exists(modDirectory))
 				return;
 
 			loaderini.Mods.Clear();
 
 			//save mod list here
 
-			loaderini.GamePath = gamePath;
+			Properties.Settings.Default.GamePath = gamePath;
 			loaderini.HorizontalResolution = (int)txtResX.Value;
 			loaderini.VerticalResolution = (int)txtResY.Value;
 			loaderini.ForceAspectRatio = (bool)chkRatio.IsChecked;
@@ -173,14 +190,13 @@ namespace ModManagerWPF
 			loaderini.EnableTestSpawnTab = (bool)checkEnableTestSpawn.IsChecked;
 			loaderini.InputModEnabled = (bool)radBetterInput.IsChecked;
 
-
 			IniSerializer.Serialize(loaderini, loaderinipath);
 		}
 		private void LoadSettings()
 		{
+
 			comboLanguage.SelectedIndex = loaderini.Language;
 			comboThemes.SelectedIndex = loaderini.Theme;
-			gamePath = loaderini.GamePath;
 			textGameDir.Text = gamePath;
 			chkVSync.IsChecked = loaderini.EnableVsync;
 			txtResX.IsEnabled = !loaderini.ForceAspectRatio;
@@ -255,6 +271,14 @@ namespace ModManagerWPF
 				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
+
+			Process.Start(new ProcessStartInfo(Path.Combine(gamePath, "sonic.exe"))
+			{
+				WorkingDirectory = gamePath
+			}); 
+
+			if ((bool)!checkManagerOpen.IsChecked)
+				Close();
 		}
 
 		private void LoadModList()
@@ -378,6 +402,49 @@ namespace ModManagerWPF
 
 				ConfigureModBtn.IsEnabled = false;
 			}
+
+		}
+
+
+
+		private void ModContextOpenFolder_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void ModContextChkUpdate_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void ModContextVerifyIntegrity_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void ModContextForceUpdate_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void ModContextConfigureMod_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void ModContextEditMod_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void ModContextDeleteMod_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void ModContextDev_Click(object sender, RoutedEventArgs e)
+		{
+
 		}
 		#endregion
 
@@ -781,6 +848,7 @@ namespace ModManagerWPF
 				{
 					textGameDir.Text = GamePath;
 					gamePath = GamePath;
+					Properties.Settings.Default.GamePath = gamePath;
 					UpdatePathsStringsInfo();
 					LoadModList();
 					InitCodes();

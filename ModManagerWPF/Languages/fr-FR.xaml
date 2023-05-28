@@ -22,6 +22,16 @@
     <system:String x:Key="ModsLblDescription" >Description: Aucun mod sélectionné</system:String>
     <system:String x:Key="ModsTextBoxSearch" >Rechercher...</system:String>
 
+    <!--Mods Items right click Menu-->
+    <system:String x:Key="ModsUIOpenFolder">Ouvrir Dossier</system:String>
+    <system:String x:Key="ModsUIChkUpdate">Vérifier les Mises à jour</system:String>
+    <system:String x:Key="ModsUIVerifyIntegrity">Vérifier l'intrégalité</system:String>
+    <system:String x:Key="ModsUIForceUpdate">Forcer la mise à jour</system:String>
+    <system:String x:Key="ModsUIModConfigure">Configurer le Mod</system:String>
+    <system:String x:Key="ModsUIModEdit">Modifier le Mod</system:String>
+    <system:String x:Key="ModsUIModDelete">Supprimer le Mod</system:String>
+    <system:String x:Key="ModsUIDev">Développeur</system:String>
+
     <!--Codes Tab Strings-->
 
     <!-- Codes UI Strings -->

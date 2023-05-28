@@ -4,6 +4,7 @@
     <SolidColorBrush x:Key="MainBackgroundBrush" Color="White"/>
     <Color x:Key="MainBackgroundColor" A="255" R="25" G="25" B="25"/>
     <SolidColorBrush x:Key="BackgroundBrush" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="BackgroundBrush2" Color="#FFDDDDDD"/>
     <SolidColorBrush x:Key="MainDialogBottomBrush" Color="#F0F0F0"/>
     <Color x:Key="BtnBackgroundColor" A="255" R="221" G="221" B="221"/>
     <Color x:Key="BtnHoverColor" A="255" R="190" G="230" B="253"/>
