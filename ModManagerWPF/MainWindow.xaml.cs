@@ -39,17 +39,17 @@ namespace ModManagerWPF
 		public static string modDirectory = string.Empty;
 		public static string loaderinipath = "mods/SADXModLoader.ini";
 		private string sadxIni = "sonicDX.ini";
-		string datadllorigpath = "system/CHRMODELS_orig.dll";
-		string loaderdllpath = "mods/SADXModLoader.dll";
-		string datadllpath = "system/CHRMODELS.dll";
+		string datadllorigpath = "system\\CHRMODELS_orig.dll";
+		string loaderdllpath = "mods\\SADXModLoader.dll";
+		string datadllpath = "system\\CHRMODELS.dll";
 
 		string gamePath = string.Empty;
 		SADXLoaderInfo loaderini;
 		Dictionary<string, SADXModInfo> mods = null;
-		string codelstpath = "mods/Codes.lst";
-		string codexmlpath = "mods/Codes.xml";
-		string codedatpath = "mods/Codes.dat";
-		string patchdatpath = "mods/Patches.dat";
+		string codelstpath = "mods\\Codes.lst";
+		string codexmlpath = "mods\\Codes.xml";
+		string codedatpath = "mods\\Codes.dat";
+		string patchdatpath = "mods\\Patches.dat";
 		CodeList mainCodes = null;
 		List<Code> codes = null;
 		bool installed = false;
@@ -91,10 +91,6 @@ namespace ModManagerWPF
 			this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
 		}
 
-		private void Load_WindowUserSettings()
-		{
-
-		}
 
 		private void Save_AppUserSettings()
 		{
@@ -136,19 +132,23 @@ namespace ModManagerWPF
 
 		private void UpdatePathsStringsInfo()
 		{
-			if (!string.IsNullOrEmpty(gamePath))
+			if (!string.IsNullOrEmpty(gamePath) && File.Exists(Path.Combine(gamePath, "system\\CHRMODELS.dll")))
 			{
 				modDirectory = Path.Combine(gamePath, "mods");
-				loaderinipath = Path.Combine(gamePath, "mods/SADXModLoader.ini");
-				datadllorigpath = Path.Combine(gamePath, "system/CHRMODELS_orig.dll");
-				loaderdllpath = Path.Combine(gamePath, "mods/SADXModLoader.dll");
-				datadllpath = Path.Combine(gamePath, "system/CHRMODELS.dll");
+				loaderinipath = Path.Combine(gamePath, "mods\\SADXModLoader.ini");
+				datadllorigpath = Path.Combine(gamePath, "system\\CHRMODELS_orig.dll");
+				loaderdllpath = Path.Combine(gamePath, "mods\\SADXModLoader.dll");
+				datadllpath = Path.Combine(gamePath, "system\\CHRMODELS.dll");
 				sadxIni = Path.Combine(gamePath, "sonicDX.ini");
 
-				codelstpath = Path.Combine(gamePath, "mods/Codes.lst");
-				codexmlpath = Path.Combine(gamePath, "mods/Codes.xml");
-				codedatpath = Path.Combine(gamePath, "mods/Codes.dat");
-				patchdatpath = Path.Combine(gamePath, "mods/Patches.dat");
+				codelstpath = Path.Combine(gamePath, "mods\\Codes.lst");
+				codexmlpath = Path.Combine(gamePath, "mods\\Codes.xml");
+				codedatpath = Path.Combine(gamePath, "mods\\Codes.dat");
+				patchdatpath = Path.Combine(gamePath, "mods\\Patches.dat");
+			}
+			else
+			{
+				gamePath = string.Empty;
 			}
 
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
@@ -842,7 +842,7 @@ namespace ModManagerWPF
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
 				string GamePath = dialog.SelectedPath.Replace("/", "\\");
-				string path = Path.Combine(GamePath, datadllpath.Replace("/", "\\"));
+				string path = Path.Combine(GamePath, "system\\CHRMODELS.dll");
 
 				if (File.Exists(path))
 				{
@@ -862,15 +862,7 @@ namespace ModManagerWPF
 
 		private void btnInstallLoader_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(gamePath))
-			{
-				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
-
-			string path = Path.Combine(gamePath, datadllpath.Replace("/", "\\"));
-
-			if (!File.Exists(path))
+			if (string.IsNullOrEmpty(gamePath) || !File.Exists(datadllpath))
 			{
 				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
@@ -888,6 +880,7 @@ namespace ModManagerWPF
 				//File.Copy(loaderdllpath, datadllpath);
 				btnInstallLoader.Content = Lang.GetString("ManagerBtnUninstallLoader");
 			}
+
 			installed = !installed;
 		}
 
