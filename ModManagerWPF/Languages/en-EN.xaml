@@ -26,7 +26,7 @@
 	<!--#endregion-->
 	
 	<!--#region Codes Tab Strings-->
-
+	<system:String x:Key="CodesBtnAdd">New Code</system:String>
 
 	<!-- Codes UI Strings -->
 	<system:String x:Key="CodesListName">Name</system:String>
