@@ -69,6 +69,7 @@ namespace ModManagerWPF
 			public string Version { get; set; }
 			public string Category { get; set; }
 			public string Description { get; set; }
+			public bool IsChecked { get; set; }
 		}
 		#endregion
 
@@ -165,6 +166,16 @@ namespace ModManagerWPF
 			loaderini.Mods.Clear();
 
 			//save mod list here
+			foreach (ModData mod in listMods.Items) 
+			{
+				if (mod is ModData)
+				{
+					if (mod.IsChecked)
+					{
+						loaderini.Mods.Add(mod.Name);
+					}
+				}
+			}
 
 			Properties.Settings.Default.GamePath = gamePath;
 			loaderini.HorizontalResolution = (int)txtResX.Value;
@@ -197,7 +208,6 @@ namespace ModManagerWPF
 		}
 		private void LoadSettings()
 		{
-
 			comboLanguage.SelectedIndex = loaderini.Language;
 			comboThemes.SelectedIndex = loaderini.Theme;
 			textGameDir.Text = gamePath;
@@ -325,7 +335,9 @@ namespace ModManagerWPF
 				{
 					SADXModInfo inf = mods[mod];
 					suppressEvent = true;
-					listMods.Items.Add(new ModData() { Name = inf.Name, Author = inf.Author, Description = inf.Description, Version = inf.Version, Category = inf.Category });
+					listMods.Items.Add(new ModData() { Name = inf.Name, Author = inf.Author, Description = inf.Description, Version = inf.Version, Category = inf.Category, IsChecked = true });
+					int lastIndex = listMods.Items.Count;
+			
 
 					//{ IsActive = true, Tag = mod });
 					suppressEvent = false;
@@ -341,7 +353,7 @@ namespace ModManagerWPF
 			{
 				if (!loaderini.Mods.Contains(inf.Key))
 				{
-					listMods.Items.Add(new ModData() { Name = inf.Value.Name, Author = inf.Value.Author, Version = inf.Value.Version, Category = inf.Value.Category, Description = inf.Value.Description });
+					listMods.Items.Add(new ModData() { Name = inf.Value.Name, Author = inf.Value.Author, Version = inf.Value.Version, Category = inf.Value.Category, Description = inf.Value.Description, IsChecked = false });
 					//{ Tag = inf.Key });
 				}
 			}
@@ -408,11 +420,9 @@ namespace ModManagerWPF
 
 		}
 
-
-
 		private void ModContextOpenFolder_Click(object sender, RoutedEventArgs e)
 		{
-
+			//Process.Start(Path.Combine("mods", (string)item.Tag));
 		}
 
 		private void ModContextChkUpdate_Click(object sender, RoutedEventArgs e)
@@ -503,7 +513,6 @@ namespace ModManagerWPF
 		{
 			if (!File.Exists(sadxIni))
 				return;
-
 
 			gameConfigFile.GameConfig.FullScreen = (bool)radFullscreen.IsChecked ? 1 : 0;
 

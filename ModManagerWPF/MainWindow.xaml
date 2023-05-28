@@ -66,7 +66,7 @@
 						</Grid.ColumnDefinitions>
 						<ListView x:Name="listMods" Foreground="White" Grid.Column="1" Grid.Row="1" FontSize="13" SelectionChanged="modListView_SelectedIndexChanged" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
 									  dd:DragDrop.UseDefaultDragAdorner="True" dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
-									  dd:DragDrop.DropHandler="{Binding}">
+									  dd:DragDrop.DropHandler="{Binding}" SelectionMode="Multiple">
 
 							<ListView.ItemContainerStyle>
 								<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
@@ -82,7 +82,7 @@
 											<GridViewColumn.CellTemplate>
 												<DataTemplate>
 													<StackPanel Orientation="Horizontal">
-														<CheckBox IsChecked="{Binding Enabled}" Margin="0,0,5,0"/>
+														<CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0"/>
 														<TextBlock Text="{Binding Name}"/>
 													</StackPanel>
 												</DataTemplate>
