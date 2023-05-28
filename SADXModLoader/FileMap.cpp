@@ -57,13 +57,14 @@ string FileMap::normalizePath(const char* filename)
 
 void FileMap::EditVoiceDuration(std::string modFile, bool isJp)
 {
-	int ms = GetSoundLength(modFile);
+
+	const int ms = GetSoundLength(modFile);
 	int voiceID = 0;
 
 	if (ms)
 	{	
-
 		std::string newID = base_name(modFile);
+
 		if (isInteger(newID))
 		{
 			voiceID = std::stoi(newID);
@@ -71,12 +72,12 @@ void FileMap::EditVoiceDuration(std::string modFile, bool isJp)
 			if (isJp)
 			{
 				if (voiceID >= 0)
-					SetJapaneseVoiceDuration(voiceID, ms);
+					RegisterJapaneseVoiceDuration(voiceID, ms);
 			}
 			else
 			{
 				if (voiceID >= 0)
-					SetEnglishVoiceDuration(voiceID, ms);
+					RegisterEnglishVoiceDuration(voiceID, ms);
 			}
 		}
 	}
@@ -229,7 +230,6 @@ void FileMap::scanFolder_int(const string& srcPath, int srcLen, int modIdx)
 					EditVoiceDuration(modFile, isJP);							
 				}
 			}
-
 		}
 		else if (GetExtension(modFile) == "prs")
 		{

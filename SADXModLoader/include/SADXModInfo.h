@@ -11,7 +11,7 @@
 #include "ScaleInfo.h"
 
  // SADX Mod Loader API version.
-static const int ModLoaderVer = 14;
+static const int ModLoaderVer = 15;
 struct PatchInfo
 {
 	void* address;
@@ -158,6 +158,16 @@ struct HelperFunctions
 	// Requires version >= 14.
 	void(__cdecl* RegisterEnglishVoiceDuration)(const uint16_t voiceID, const uint16_t durationMS);
 	void(__cdecl* RegisterJapaneseVoiceDuration)(const uint16_t voiceID, const uint16_t durationMS);
+
+	/**
+	* @brief Registers new welds for a character, you can add as many welds as you want. This will replace the existing welds.
+	* Requires version >= 15.
+	* 
+	* @param character: Specify the character (you can use the enum list)
+	* @param iniPath: Specify the path of the ini file that contains all the welds with their vertex indices.
+	*
+	*/
+	void(__cdecl* RegisterCharacterWelds)(const uint8_t character, const char* iniPath);
 };
 
 typedef void(__cdecl* ModInitFunc)(const char* path, const HelperFunctions& helperFunctions);

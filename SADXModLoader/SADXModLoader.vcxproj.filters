@@ -96,6 +96,9 @@
     <ClCompile Include="MinorPatches.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="jvList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaFns.hpp">
@@ -240,6 +243,9 @@
       <Filter>Header Files\include</Filter>
     </ClInclude>
     <ClInclude Include="VoiceDuration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jvList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

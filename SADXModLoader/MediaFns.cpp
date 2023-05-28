@@ -16,10 +16,10 @@
 using std::string;
 using std::vector;
 
-static  bool bassinit  = false;
-static  bool musicwmp  = true;
-static  bool voicewmp  = true;
-static DWORD basschan  = 0;
+static  bool bassinit = false;
+static  bool musicwmp = true;
+static  bool voicewmp = true;
+static DWORD basschan = 0;
 static DWORD voicechan = 0;
 
 /**
@@ -56,15 +56,13 @@ static void __stdcall onVoiceEnd(HSYNC handle, DWORD channel, DWORD data, void* 
 
 int GetSoundLength(std::string filename)
 {
-	string str2(".wav");
+	AudioFile<double> audioFile;
 
-	if (filename.find(str2) != string::npos) 
+	if (audioFile.load(filename))
 	{
-		AudioFile<double> audioFile;
-		audioFile.load(filename);
 		double lengthInSeconds = audioFile.getLengthInSeconds();
-		double lengthInMs = lengthInSeconds *= 1000;
-		return (int)lengthInMs;
+		const double lengthInMs = lengthInSeconds *= 1000;
+		return static_cast<int>(lengthInMs);
 	}
 
 	return 0;
@@ -113,7 +111,7 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 			BASS_ChannelPlay(basschan, false);
 			BASS_ChannelSetAttribute(basschan, BASS_ATTRIB_VOL, (MusicVolume + 10000) / 30000.0f);
 			BASS_ChannelSetSync(basschan, BASS_SYNC_END, 0, onTrackEnd, nullptr);
-			MusicLooping  = loop;
+			MusicLooping = loop;
 			dword_3ABDFA0 = 1;
 			dword_3ABDF98 = 3;
 			return 1;
@@ -126,7 +124,7 @@ int __cdecl PlayMusicFile_r(LPCSTR filename, int loop)
 	if (WMPMusicInfo && (WMPInfo__Open(WMPMusicInfo, WideCharStr) & 0x80000000u) == 0)
 	{
 		WMPInfo__Play(WMPMusicInfo, 0, 0, MusicVolume);
-		MusicLooping  = loop;
+		MusicLooping = loop;
 		dword_3ABDFA0 = 1;
 		dword_3ABDF98 = 3;
 
@@ -366,7 +364,7 @@ struc_64* LoadSoundPack(const char* path, int bank)
 	if (!f)
 		return nullptr;
 
-	char path2[MAX_PATH] {};
+	char path2[MAX_PATH]{};
 	strncpy(path2, pidxpath, sizeof(path2));
 	path2[MAX_PATH - 1] = 0;
 	// Find the last slash or backslash and remove everything after it.
@@ -469,7 +467,7 @@ struc_64* LoadSoundPack(const char* path, int bank)
 		void* InputBuffer = new char[inputSize];
 		fread(InputBuffer, 1, inputSize, fori);
 		fclose(fori);
-		
+
 		// Put sounds with names in the B##_##_## format into correct slots.
 		if (basename.substr(0, 2) == "B0" && basename.substr(3, 2) == "_0" && basename.substr(6, 1) == "_")
 		{
@@ -498,18 +496,18 @@ struc_64* LoadSoundPack(const char* path, int bank)
 	fclose(f);
 
 	// Convert the sound pack to the format expected by SADX in memory.
-	auto* result = (struc_64 *)_alloc(size);
+	auto* result = (struc_64*)_alloc(size);
 	// strncpy() zeroes out unused bytes.
 	strncpy(result->ArchiveID, "archive  V2.2", sizeof(result->ArchiveID));
-	result->Filename = (char *)_alloc(strlen(path) + 1);
+	result->Filename = (char*)_alloc(strlen(path) + 1);
 	strncpy(result->Filename, path, strlen(path) + 1);
 	result->DATFile = _alloc(4); // dummy value
-	result->NumSFX  = entries.size();
+	result->NumSFX = entries.size();
 	memcpy(&result->DATEntries, entries.data(), entries.size() * sizeof(DATEntry));
 
 	// Rearrange the sound pack data into a single memory block,
 	// stored after result->DATEntries.
-	char* ptr     = reinterpret_cast<char*>(&(&result->DATEntries)[entries.size()]);
+	char* ptr = reinterpret_cast<char*>(&(&result->DATEntries)[entries.size()]);
 	DATEntry* ent = &result->DATEntries;
 
 	for (int i = 0; i < result->NumSFX; i++, ent++)
@@ -546,7 +544,7 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 	// Convert data.
 	DATEntry* entries = (DATEntry*)&originalbank->DATEntries;
 	for (int i = 0; i < originalbank->NumSFX; i++)
-	{		
+	{
 		auto& ent = entries[i];
 
 		// Get sound name.
@@ -561,7 +559,7 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 
 		// Remove extension from full name
 		StripExtension(basename);
-		
+
 		// Put sounds with names in the B##_##_## format into correct slots.
 		if (basename.substr(0, 2) == "B0" && basename.substr(3, 2) == "_0" && basename.substr(6, 1) == "_")
 		{
@@ -576,7 +574,7 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 		}
 
 		// Check for Z at the end to tell if it's from SADX 2010, if so force ADX audio.
-		if (originalbank->ArchiveID[14] == 'Z') 
+		if (originalbank->ArchiveID[14] == 'Z')
 		{
 			snprintf(ent.NameOffset, 14, "B%02d_00_%02u.ADX", bank, soundID);
 		}
@@ -699,7 +697,7 @@ int __cdecl PlayMusicFile_CD_r(LPCSTR filename, int loop)
 		std::string newfilename = filename;
 		ReplaceFileExtension(newfilename, ".adx");
 		newfilename = (const char*)CDPath + newfilename;
-			return PlayMusicFile_r(newfilename.c_str(), loop);
+		return PlayMusicFile_r(newfilename.c_str(), loop);
 	}
 	return 0;
 }

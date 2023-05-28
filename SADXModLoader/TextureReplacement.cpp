@@ -158,7 +158,7 @@ void ReplaceTexture(const char* pvm_name, const char* tex_name, const char* file
 	string nameNoExt = tex_name;
 	StripExtension(nameNoExt);
 	transform(nameNoExt.begin(), nameNoExt.end(), nameNoExt.begin(), tolower);
-	(*pvmdata)[nameNoExt] = { gbix, texFile, width, height, 0, texPack };
+	(*pvmdata)[nameNoExt] = { gbix, texFile, width, height, INT_MAX, texPack };
 }
 
 void MipmapBlacklistGBIX(Uint32 index)
@@ -959,6 +959,7 @@ static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const v
 	short numtex = ((const short*)pvmdata)[5];
 	const char* entry = (const char*)pvmdata + 0xE;
 	char fnbuf[29]{}; // extra null terminator at end
+	vector<pair<NJS_TEXNAME&, TexReplaceData&>> texreps;
 	for (int i = 0; i < numtex; i++)
 	{
 		memcpy(fnbuf, entry, 28);
@@ -990,10 +991,12 @@ static void ReplacePVMTexs(const string& filename, NJS_TEXLIST* texlist, const v
 				memlist->texinfo.texsurface.pVirtual = 0;
 				memlist->texinfo.texsurface.pPhysical = 0;
 			}
-			texlist->textures[i].texaddr = reinterpret_cast<Uint32>(load_texture(iter2->second.path, iter2->second, mipmap));
+			texreps.push_back({ texlist->textures[i], iter2->second });
 		}
 		entry += entrysize;
 	}
+	for (auto& i : texreps)
+		i.first.texaddr = reinterpret_cast<Uint32>(load_texture(i.second.path, i.second, mipmap));
 }
 
 static Sint32 njLoadTexturePvmFile_r(const char* filename, NJS_TEXLIST* texList)
