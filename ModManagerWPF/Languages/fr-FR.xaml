@@ -142,11 +142,20 @@
     <system:String x:Key="ManagerBtnDocs">Ouvrir la SA Docs (Anglais uniquement)</system:String>
 
     <!--Message Box Strings-->
+    <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
+    
     <system:String x:Key="SadxManagerError">SADX Mod Manager Erreur</system:String>
     <system:String x:Key="ModIniError0">Il y a un fichier mod.ini dans le dossier mods.</system:String>
     <system:String x:Key="ModIniError1" xml:space="preserve">&#x0a;&#x0a;Chaque mod doit être placé dans un sous dossier dans le dossier des mods. Veuillez ne pas extraire des mods directement dans le dossier mods.</system:String>
     <system:String x:Key="ModIniError2" xml:space="preserve">&#x0a;&#x0a;Déplacez ou supprimer le mod.ini dans le dossier mods puis lancer le Mod Manager à nouveau.</system:String>
 
+    <system:String x:Key="FaildSetGamePathTitle">Echec Chemin d'accès</system:String>
+    <system:String x:Key="FaildSetGamePath">Impossible de trouver CHRMODELS.dll, assurez-vous de selectionner le dossier qui contient sonic.exe.</system:String>
+
+    <system:String x:Key="FailedDetectGamePathTitle">Echec détection du chemin d'accès</system:String>
+    <system:String x:Key="FailedDetectGamePath">Impossible de trouver le chemin d'accès du répertoire du jeu. Veuillez sélectionner le chemin dans les paramètres et assurez vous de prendre le dossier qui contient sonic.exe.</system:String>
+
+    <system:String x:Key="DeleteModWarning">Etes vous sur de vouloir supprimer</system:String>
 
     <!--About Code Window-->
     <system:String x:Key="AboutCodeTitle">A Propos</system:String>

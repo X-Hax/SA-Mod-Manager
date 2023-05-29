@@ -70,6 +70,7 @@ namespace ModManagerWPF
 			public string Category { get; set; }
 			public string Description { get; set; }
 			public bool IsChecked { get; set; }
+			public string Tag { get; set; }
 		}
 		#endregion
 
@@ -166,7 +167,7 @@ namespace ModManagerWPF
 			loaderini.Mods.Clear();
 
 			//save mod list here
-			foreach (ModData mod in listMods.Items) 
+			foreach (ModData mod in listMods.Items)
 			{
 				if (mod is ModData)
 				{
@@ -288,7 +289,7 @@ namespace ModManagerWPF
 			Process.Start(new ProcessStartInfo(Path.Combine(gamePath, "sonic.exe"))
 			{
 				WorkingDirectory = gamePath
-			}); 
+			});
 
 			if ((bool)!checkManagerOpen.IsChecked)
 				Close();
@@ -309,7 +310,7 @@ namespace ModManagerWPF
 			{
 				return;
 			}
-			else if (Directory.Exists(gamePath) && !modFolderExist) 
+			else if (Directory.Exists(gamePath) && !modFolderExist)
 			{
 				Directory.CreateDirectory(modDirectory);
 			}
@@ -335,11 +336,7 @@ namespace ModManagerWPF
 				{
 					SADXModInfo inf = mods[mod];
 					suppressEvent = true;
-					listMods.Items.Add(new ModData() { Name = inf.Name, Author = inf.Author, Description = inf.Description, Version = inf.Version, Category = inf.Category, IsChecked = true });
-					int lastIndex = listMods.Items.Count;
-			
-
-					//{ IsActive = true, Tag = mod });
+					listMods.Items.Add(new ModData() { Name = inf.Name, Author = inf.Author, Description = inf.Description, Version = inf.Version, Category = inf.Category, IsChecked = true, Tag = mod});
 					suppressEvent = false;
 				}
 				else
@@ -353,8 +350,7 @@ namespace ModManagerWPF
 			{
 				if (!loaderini.Mods.Contains(inf.Key))
 				{
-					listMods.Items.Add(new ModData() { Name = inf.Value.Name, Author = inf.Value.Author, Version = inf.Value.Version, Category = inf.Value.Category, Description = inf.Value.Description, IsChecked = false });
-					//{ Tag = inf.Key });
+					listMods.Items.Add(new ModData() { Name = inf.Value.Name, Author = inf.Value.Author, Version = inf.Value.Version, Category = inf.Value.Category, Description = inf.Value.Description, IsChecked = false, Tag = inf.Key });
 				}
 			}
 		}
@@ -417,12 +413,18 @@ namespace ModManagerWPF
 
 				ConfigureModBtn.IsEnabled = false;
 			}
-
 		}
 
 		private void ModContextOpenFolder_Click(object sender, RoutedEventArgs e)
 		{
-			//Process.Start(Path.Combine("mods", (string)item.Tag));
+			var item = (ModData)listMods.SelectedItem;
+
+			if (item is not null)
+			{
+				string fullPath = Path.Combine(modDirectory, item.Tag);
+				var psi = new ProcessStartInfo() { FileName = fullPath, UseShellExecute = true };
+				Process.Start(psi);
+			}
 		}
 
 		private void ModContextChkUpdate_Click(object sender, RoutedEventArgs e)
@@ -452,7 +454,23 @@ namespace ModManagerWPF
 
 		private void ModContextDeleteMod_Click(object sender, RoutedEventArgs e)
 		{
+			var item = (ModData)listMods.SelectedItem;
 
+			if (item is not null)
+			{
+				var msg = MessageBox.Show(Lang.GetString("DeleteModWarning") + " " + item.Name + "?", Lang.GetString("SadxManagerTitle"), MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+				if (msg == MessageBoxResult.Yes)
+				{
+					string fullPath = Path.Combine(modDirectory, item.Name);
+
+					if (Directory.Exists(fullPath))
+					{
+						Directory.Delete(fullPath, true);
+					}
+
+					LoadModList();
+				}
+			}
 		}
 
 		private void ModContextDev_Click(object sender, RoutedEventArgs e)
@@ -571,7 +589,7 @@ namespace ModManagerWPF
 			catch (Exception ex)
 			{
 				MessageBox.Show(this, $"Error loading code list: {ex.Message}", "Error Loading Code", MessageBoxButton.OK, MessageBoxImage.Error);
-			
+
 				mainCodes = new CodeList();
 			}
 		}
@@ -753,11 +771,11 @@ namespace ModManagerWPF
 			}
 			else
 			{*/
-				if (!tabInputGrid.Children.Contains(vanillaInputBox)) //if the Grid vanillaInputBox doesn't exist, add it back
-				{
-					tabInputGrid.Children.Add(vanillaInputBox);
-				}
-			
+			if (!tabInputGrid.Children.Contains(vanillaInputBox)) //if the Grid vanillaInputBox doesn't exist, add it back
+			{
+				tabInputGrid.Children.Add(vanillaInputBox);
+			}
+
 		}
 
 		private void radBetterInput_Checked(object sender, RoutedEventArgs e)
@@ -859,9 +877,9 @@ namespace ModManagerWPF
 		private void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
 		{
 			var dialog = new System.Windows.Forms.FolderBrowserDialog();
-		
+
 			System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-		
+
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
 				string GamePath = dialog.SelectedPath.Replace("/", "\\");
@@ -887,7 +905,7 @@ namespace ModManagerWPF
 			if (btnInstallLoader is null)
 				return;
 
-			if (installed) 
+			if (installed)
 			{
 				btnInstallLoader.Content = Lang.GetString("ManagerBtnUninstallLoader");
 			}

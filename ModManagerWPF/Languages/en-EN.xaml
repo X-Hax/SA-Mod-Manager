@@ -159,6 +159,8 @@
     
     
     <!--Message Box Strings-->
+    <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
+
     <system:String x:Key="SadxManagerError">SADX Mod Manager Error</system:String>
     
     <system:String x:Key="ModIniError0">There is a mod.ini in the mods folder.</system:String>
@@ -173,6 +175,7 @@
     <system:String x:Key="FailedDetectGamePathTitle">Failed to detect Game Path</system:String>
     <system:String x:Key="FailedDetectGamePath">Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.</system:String>
 
+    <system:String x:Key="DeleteModWarning">Are you sure you want to delete</system:String>
     <!--#endregion-->
 
 
