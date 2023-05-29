@@ -543,7 +543,7 @@
 													<CheckBox x:Name="checkMipmapping" Content="{DynamicResource GameGraphicsCheckMipmap}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="True"/>
 													<CheckBox x:Name="checkUIScale" Content="{DynamicResource GameGraphicsCheckUIScale}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="True"/>
 													<CheckBox x:Name="checkD3D9" Content="{DynamicResource GameGraphicsCheckD3D8}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="True"/>
-													<Button x:Name="btnUpdateD3D9" Content="{DynamicResource GameGraphicsButtonUpdateD3D8}" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5"/>
+													<Button x:Name="btnUpdateD3D9" Content="{DynamicResource GameGraphicsButtonUpdateD3D8}" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" MinHeight="30" MaxWidth="180"/>
 												</Grid>
 											</GroupBox>
 										</Grid>
