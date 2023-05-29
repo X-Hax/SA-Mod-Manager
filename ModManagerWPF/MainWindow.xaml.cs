@@ -324,6 +324,7 @@ namespace ModManagerWPF
 				return;
 			}
 
+			//browse the mods folder and get each mod name by their ini file
 			foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modDirectory)))
 			{
 				SADXModInfo mod = IniSerializer.Deserialize<SADXModInfo>(filename);
@@ -949,6 +950,18 @@ namespace ModManagerWPF
 			Process.Start(ps);
 		}
 
+		private void btnReport_Click(object sender, RoutedEventArgs e)
+		{
+			var ps = new ProcessStartInfo("https://github.com/X-Hax/sadx-mod-loader/issues/new")
+			{
+				UseShellExecute = true,
+				Verb = "open"
+			};
+
+			Process.Start(ps);	
+		}
+
 		#endregion
+
 	}
 }
