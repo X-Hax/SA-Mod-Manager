@@ -116,6 +116,24 @@
 	
     <!--#endregion-->
 	
+	<!--#region Test Spawn Tab Strings-->
+	<system:String x:Key="SpawnCheckCharacter">Character:</system:String>
+	<system:String x:Key="SpawnCheckLevel">Level:</system:String>
+	<system:String x:Key="SpawnLabelTime">Time:</system:String>
+	<system:String x:Key="SpawnLabelAct">Act:</system:String>
+	<system:String x:Key="SpawnCheckManual">Manually Set:</system:String>
+	<system:String x:Key="SpawnCheckPosition">Position:</system:String>
+	<system:String x:Key="SpawnLabelPosX">Pos X:</system:String>
+	<system:String x:Key="SpawnLabelPosY">Pos Y:</system:String>
+	<system:String x:Key="SpawnLabelPosZ">Pos Z:</system:String>
+	<system:String x:Key="SpawnLabelAngle">Angle:</system:String>
+	<system:String x:Key="SpawnCheckEvent">Event:</system:String>
+	<system:String x:Key="SpawnCheckMode">Game Mode:</system:String>
+	<system:String x:Key="SpawnCheckSave">Redirect Save File:</system:String>
+	<system:String x:Key="SpawnLabelWarning">Overriding levels or characters in events may cause a crash.</system:String>
+	<system:String x:Key="SpawnButtonLaunch">Launch Game</system:String>
+	<!--#endregion-->
+	
 	<!--#region Manager Config Tab Strings-->
 	<!--Options-->
 	<system:String x:Key="ManagerGrpOptions">Options</system:String>

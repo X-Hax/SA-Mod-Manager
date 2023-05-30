@@ -202,7 +202,7 @@ namespace ModManagerWPF
 				{
 					if (mod.IsChecked)
 					{
-						loaderini.Mods.Add(mod.Name);
+						loaderini.Mods.Add(mod.Tag);
 					}
 				}
 			}
@@ -795,30 +795,31 @@ namespace ModManagerWPF
 
 		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
 		{
+			if (vanillaInputBox is null)
+				return;
 
-			/*var dig = MessageBox.Show("You are about to disable Input Mod!\n\nThe game has many issues without it; such as camera spinning with Xinput controllers.\n\nAre you sure you want to continue?", "Warning",  MessageBoxButton.YesNo, MessageBoxImage.Warning);
+			int index = tabInputGrid.Children.IndexOf(sdl2InputGroup); //Graphic Window setting is a children of the graphic grid 
 
-			if (dig != MessageBoxResult.Yes) 
-			{ 
-				radVanillaInput.IsChecked = false;
-	
-			}
-			else
-			{*/
-			if (!tabInputGrid.Children.Contains(vanillaInputBox)) //if the Grid vanillaInputBox doesn't exist, add it back
+			tabInputGrid.Children.RemoveAt(index); //we remove it so we can only display the full screen options
+
+			if (!tabInputGrid.Children.Contains(vanillaInputBox)) //if the fullscreen grid doesn't exist, add it back
 			{
 				tabInputGrid.Children.Add(vanillaInputBox);
 			}
-
 		}
 
 		private void radBetterInput_Checked(object sender, RoutedEventArgs e)
 		{
-			if (!tabInputGrid.Children.Contains(vanillaInputBox))
+			if (sdl2InputGroup is null)
 				return;
 
-			int index = tabInputGrid.Children.IndexOf(vanillaInputBox);  //get Vanilla Input Grid index
-			tabInputGrid.Children.RemoveAt(index); //remove vanilla grid input
+			int index = tabInputGrid.Children.IndexOf(vanillaInputBox);
+			tabInputGrid.Children.RemoveAt(index);
+
+			if (!tabInputGrid.Children.Contains(sdl2InputGroup))
+			{
+				tabInputGrid.Children.Add(sdl2InputGroup);
+			}
 		}
 
 		#endregion
