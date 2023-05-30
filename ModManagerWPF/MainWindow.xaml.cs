@@ -131,7 +131,7 @@ namespace ModManagerWPF
 
 		#region Main
 
-		private void SetModManagerVersion(object sender, EventArgs e)
+		private async void SetModManagerVersion(object sender, EventArgs e)
 		{
 			if (count >= 3 || Title.Length > titleName.Length + 1)
 			{
@@ -139,7 +139,7 @@ namespace ModManagerWPF
 				return;
 			}
 
-			git.GetRecentCommit();
+			await git.GetRecentCommit();
 			count++;
 		}
 
@@ -151,8 +151,10 @@ namespace ModManagerWPF
 
 		private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
 		{
-			DispatcherTimer timer = new();
-			timer.Interval = TimeSpan.FromMilliseconds(10000);
+			DispatcherTimer timer = new()
+			{
+				Interval = TimeSpan.FromMilliseconds(10000)
+			};
 			timer.Tick += SetModManagerVersion;
 			timer.IsEnabled = true;
 		}
@@ -198,7 +200,7 @@ namespace ModManagerWPF
 			//save mod list here
 			foreach (ModData mod in listMods.Items)
 			{
-				if (mod is ModData)
+				if (mod is not null)
 				{
 					if (mod.IsChecked)
 					{
