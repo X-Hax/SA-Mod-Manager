@@ -728,8 +728,55 @@
 
 						<!--This Tab is for Game Patches.-->
 						<TabItem x:Name="tabPatches" Header="{DynamicResource GameTabPatches}" Margin="9,0,-9,0">
-							<Grid>
+							<Grid x:Name="gridPatchesList">
 
+								<!--This Grid manages the Codes list.-->
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="10"/>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="270"/>
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="10"/>
+									</Grid.RowDefinitions>
+									<ListView x:Name="listPatches" Foreground="White" Grid.Column="1" Grid.Row="1" FontSize="13">
+										<ListView.ItemContainerStyle>
+											<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+												<EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
+											</Style>
+										</ListView.ItemContainerStyle>
+										<ListView.View>
+											<GridView>
+												<GridView.Columns>
+													<GridViewColumn x:Name="columnPatchName" Header="{DynamicResource CodesListName}" Width="355">
+														<GridViewColumn.CellTemplate>
+															<DataTemplate>
+																<StackPanel Orientation="Horizontal">
+																	<CheckBox IsChecked="{Binding Enabled}" Margin="0,0,5,0"/>
+																	<TextBlock Text="{Binding Name}"/>
+																</StackPanel>
+															</DataTemplate>
+														</GridViewColumn.CellTemplate>
+													</GridViewColumn>
+												</GridView.Columns>
+											</GridView>
+										</ListView.View>
+									</ListView>
+
+									<Grid Grid.Column="2" Grid.Row="1">
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto"/>
+											<RowDefinition Height="*"/>
+										</Grid.RowDefinitions>
+
+										<TextBlock Text="Patch" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
+										<Separator Grid.Row="0" VerticalAlignment="Bottom"/>
+										<TextBlock Text="Description" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+									</Grid>
+								</Grid>
 							</Grid>
 						</TabItem>
 
