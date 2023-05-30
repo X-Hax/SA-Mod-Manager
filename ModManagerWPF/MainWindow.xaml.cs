@@ -236,6 +236,8 @@ namespace ModManagerWPF
 			loaderini.InputModEnabled = (bool)radBetterInput.IsChecked;
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
+
+			Refresh();
 		}
 		private void LoadSettings()
 		{
