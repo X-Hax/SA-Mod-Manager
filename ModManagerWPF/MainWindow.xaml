@@ -583,7 +583,7 @@
 								</GroupBox>
 
 								<!--Group for Vanilla Input Configuration-->
-								<GroupBox x:Name="vanillaInputBox" Header="Vanilla Input Configuration" Grid.Row="1">
+								<GroupBox x:Name="grpVanillaInput" Header="Vanilla Input Configuration" Grid.Row="1">
 									<Grid>
 										<Grid.ColumnDefinitions>
 											<ColumnDefinition Width="10"/>
@@ -594,7 +594,7 @@
 										<Grid.RowDefinitions>
 											<RowDefinition Height="10"/>
 											<RowDefinition Height="Auto"/>
-											<RowDefinition Height="*"/>
+											<RowDefinition Height="0"/>
 											<RowDefinition Height="10"/>
 										</Grid.RowDefinitions>
 
@@ -616,6 +616,7 @@
 													<RowDefinition Height="Auto"/>
 													<RowDefinition Height="Auto"/>
 													<RowDefinition Height="Auto"/>
+													<RowDefinition Height="5"/>
 												</Grid.RowDefinitions>
 
 												<RadioButton x:Name="inputMouseDragHold" Content="Drag and Hold" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
@@ -647,16 +648,29 @@
 										<!--Group for Controller DInput Configuration-->
 										<GroupBox Header="Controller (DInput)" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
 											<Grid>
-
+												
 											</Grid>
 										</GroupBox>
 									</Grid>
 								</GroupBox>
 
 								<!--Group for Input Mod Configuration-->
-								<GroupBox x:Name="sdl2InputGroup" Header="Better Input Configuration" Grid.Row="2">
+								<GroupBox x:Name="grpSDLInput" Header="Better Input Configuration" Grid.Row="2">
 									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto"/>
+											<RowDefinition Height="Auto"/>
+											<RowDefinition Height="50"/>
+										</Grid.RowDefinitions>
 
+										<TextBlock Text="SDL2 Input, formally Input Mod, is an SDL2 implementation in SADX to replace the basic DInput from the base game. This fixes several issues with the original game input. It's recommended to play with this input method over Vanilla." Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" TextWrapping="Wrap"/>
+										<Separator Grid.ColumnSpan="3" Grid.Row="1" VerticalAlignment="Top"/>
+										<Button x:Name="btnOpenAppLauncher" Content="Open AppLauncher" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5"/>
+										<Button x:Name="btnGetAppLauncher" Content="Get AppLauncher" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5"/>
 									</Grid>
 								</GroupBox>
 							</Grid>

@@ -797,30 +797,30 @@ namespace ModManagerWPF
 
 		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
 		{
-			if (vanillaInputBox is null)
+			if (grpVanillaInput is null)
 				return;
 
-			int index = tabInputGrid.Children.IndexOf(sdl2InputGroup); //Graphic Window setting is a children of the graphic grid 
+			int index = tabInputGrid.Children.IndexOf(grpSDLInput); //Graphic Window setting is a children of the graphic grid 
 
 			tabInputGrid.Children.RemoveAt(index); //we remove it so we can only display the full screen options
 
-			if (!tabInputGrid.Children.Contains(vanillaInputBox)) //if the fullscreen grid doesn't exist, add it back
+			if (!tabInputGrid.Children.Contains(grpVanillaInput)) //if the fullscreen grid doesn't exist, add it back
 			{
-				tabInputGrid.Children.Add(vanillaInputBox);
+				tabInputGrid.Children.Add(grpVanillaInput);
 			}
 		}
 
 		private void radBetterInput_Checked(object sender, RoutedEventArgs e)
 		{
-			if (sdl2InputGroup is null)
+			if (grpSDLInput is null)
 				return;
 
-			int index = tabInputGrid.Children.IndexOf(vanillaInputBox);
+			int index = tabInputGrid.Children.IndexOf(grpVanillaInput);
 			tabInputGrid.Children.RemoveAt(index);
 
-			if (!tabInputGrid.Children.Contains(sdl2InputGroup))
+			if (!tabInputGrid.Children.Contains(grpSDLInput))
 			{
-				tabInputGrid.Children.Add(sdl2InputGroup);
+				tabInputGrid.Children.Add(grpSDLInput);
 			}
 		}
 
