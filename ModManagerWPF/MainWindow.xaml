@@ -715,9 +715,9 @@
 										<Label Content="{DynamicResource GameSoundLabelMusic}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
 										<Label Content="{DynamicResource GameSoundLabelVoice}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
 										<Label Content="{DynamicResource GameSoundLabelSound}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
-										<Slider x:Name="sliderMusic" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
-										<Slider x:Name="sliderVoice" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
-										<Slider x:Name="sliderSFX" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center"/>
+										<Slider x:Name="sliderMusic" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" ValueChanged="sliderMusic_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft"/>
+										<Slider x:Name="sliderVoice" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" ValueChanged="sliderVoice_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft"/>
+										<Slider x:Name="sliderSFX" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" ValueChanged="sliderSFX_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft"/>
 										<Label x:Name="labelMusicLevel" Content="0" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center"/>
 										<Label x:Name="labelVoiceLevel" Content="0" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center"/>
 										<Label x:Name="labelSFXLevel" Content="0" Grid.Column="3" Grid.Row="3" VerticalAlignment="Center"/>

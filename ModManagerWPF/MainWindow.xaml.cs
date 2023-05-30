@@ -1022,5 +1022,20 @@ namespace ModManagerWPF
 		}
 
 		#endregion
+
+		private void sliderMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			labelMusicLevel.Content = ((int)sliderMusic.Value).ToString();
+		}
+
+		private void sliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			labelVoiceLevel.Content = ((int)sliderVoice.Value).ToString();
+		}
+
+		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			labelSFXLevel.Content = ((int)sliderVoice.Value).ToString();
+		}
 	}
 }
