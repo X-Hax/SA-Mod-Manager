@@ -58,6 +58,7 @@
 							<RowDefinition Height="10"/>
 							<RowDefinition Height="*"/>
 							<RowDefinition Height="50"/>
+							<RowDefinition Height="50"/>
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="10"/>
@@ -123,7 +124,14 @@
 								</GridView>
 							</ListView.View>
 						</ListView>
+
+						<!--This Grid manages the description for mods.-->
+						<Grid Grid.Column="1" Grid.Row="2" Margin="5,0,5,0">
+							<TextBlock x:Name="textModsDescription" Text="Testing" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+						</Grid>
 					</Grid>
+
+
 
 					<!--This Grid manages the Mods List Up/Down Buttons.-->
 					<Grid HorizontalAlignment="Right">
@@ -204,7 +212,7 @@
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="10"/>
 							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="270"/>
+							<ColumnDefinition Width="240"/>
 						</Grid.ColumnDefinitions>
 						<Grid.RowDefinitions>
 							<RowDefinition Height="10"/>
@@ -222,19 +230,13 @@
 									<GridView.Columns>
 										<GridViewColumn x:Name="codeNameColumn" Header="{DynamicResource CodesListName}" Width="175">
 											<GridViewColumn.CellTemplate>
-
-
 												<DataTemplate>
-
-
 													<StackPanel Orientation="Horizontal">
-
 														<CheckBox IsChecked="{Binding Enabled}" Margin="0,0,5,0"/>
 														<TextBlock Text="{Binding Name}"/>
 													</StackPanel>
 												</DataTemplate>
 											</GridViewColumn.CellTemplate>
-
 										</GridViewColumn>
 										<GridViewColumn x:Name="codeAuthorColumn" Header="{DynamicResource ModsListAuthor }" Width="150">
 											<GridViewColumn.CellTemplate>
@@ -246,35 +248,29 @@
 											</GridViewColumn.CellTemplate>
 										</GridViewColumn>
 									</GridView.Columns>
-
 								</GridView>
 							</ListView.View>
 						</ListView>
 
-						<Grid Grid.Column="2" Grid.Row="1">
+						<Grid Grid.Column="2" Grid.Row="1" Margin="5,0,0,0">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto" MinHeight="22"/>
-								<RowDefinition Height="Auto" MinHeight="22"/>
+								<RowDefinition Height="Auto" MinHeight="18"/>
+								<RowDefinition Height="Auto" MinHeight="18"/>
+								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 
 							<TextBlock Text="Code" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
 							<Separator Grid.Row="0" VerticalAlignment="Bottom"/>
 							<TextBlock Text="Author" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap"/>
-							<Separator Grid.Row="1" VerticalAlignment="Bottom"/>
 							<TextBlock Text="Category" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap"/>
-							<Separator Grid.Row="2" VerticalAlignment="Bottom"/>
-							<TextBlock Text="Description" Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+							<Separator Grid.Row="3" VerticalAlignment="Bottom"/>
+							<TextBlock Text="Description" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap"/>
 						</Grid>
 
 						<Grid Grid.Column="1" Grid.Row="2">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="150"/>
-								<ColumnDefinition Width="*"/>
-							</Grid.ColumnDefinitions>
-
-							<Button x:Name="btnAddCode" Grid.Column="0" Margin="0,10,0,10">
+							<Button x:Name="btnAddCode" Margin="0,10,0,10">
 								<Grid>
 									<StackPanel Orientation="Horizontal">
 										<Image x:Name="newCode" Width="15" Height="16" Source="/Icons/Add.png" Margin="0,0,5,0"/>
