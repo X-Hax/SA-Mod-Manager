@@ -381,19 +381,16 @@
 											<Grid.ColumnDefinitions>
 												<ColumnDefinition Width="*"/>
 												<ColumnDefinition Width="*"/>
-												<ColumnDefinition Width="50"/>
-												<ColumnDefinition Width="*"/>
-												<ColumnDefinition Width="*"/>
 											</Grid.ColumnDefinitions>
 											<Grid.RowDefinitions>
 												<RowDefinition Height="*"/>
 												<RowDefinition Height="*"/>
 											</Grid.RowDefinitions>
 
-											<CheckBox x:Name="chkRatio" Content="{DynamicResource GameGraphicsCheckRatio}" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Margin="0,5,0,5"/>
-											<CheckBox x:Name="chkVSync" Content="{DynamicResource GameGraphicsCheckVSync}" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0" Margin="0,5,0,5" IsChecked="True"/>
-											<RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="1" Grid.Row="1" Margin="0,5,0,5" IsChecked="False" Checked="radFullscreen_Checked"/>
-											<RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="3" Grid.Row="1" Margin="0,5,0,5" IsChecked="False" Checked="radWindowed_Checked"/>
+											<CheckBox x:Name="chkRatio" Content="{DynamicResource GameGraphicsCheckRatio}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+											<CheckBox x:Name="chkVSync" Content="{DynamicResource GameGraphicsCheckVSync}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="True"/>
+											<RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Margin="0,5,0,5" IsChecked="False" Checked="radFullscreen_Checked"/>
+											<RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,5" IsChecked="False" Checked="radWindowed_Checked"/>
 										</Grid>
 
 										<!--Graphics Display Bottom-->
@@ -413,20 +410,17 @@
 													<Grid.ColumnDefinitions>
 														<ColumnDefinition Width="*"/>
 														<ColumnDefinition Width="*"/>
-														<ColumnDefinition Width="50"/>
-														<ColumnDefinition Width="*"/>
-														<ColumnDefinition Width="*"/>
 													</Grid.ColumnDefinitions>
 													<Grid.RowDefinitions>
 														<RowDefinition Height="*"/>
 														<RowDefinition Height="*"/>
 													</Grid.RowDefinitions>
 
-													<CheckBox x:Name="chkResizableWin" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Content="{DynamicResource GameGraphicsCheckResize}" Margin="0,5,0,5" VerticalAlignment="Center"/>
-													<CheckBox x:Name="chkMaintainRatio" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0" Content="{DynamicResource GameGraphicsCheckAspect}" Margin="0,5,0,5" VerticalAlignment="Center"/>
+													<CheckBox x:Name="chkResizableWin" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{DynamicResource GameGraphicsCheckResize}" Margin="0,5,0,5"/>
+													<CheckBox x:Name="chkMaintainRatio" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{DynamicResource GameGraphicsCheckAspect}" Margin="0,5,0,5"/>
 
-													<CheckBox x:Name="chkCustomWinSize" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Margin="0,5,0,5" VerticalAlignment="Center" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked"/>
-													<StackPanel Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,5" VerticalAlignment="Center">
+													<CheckBox x:Name="chkCustomWinSize" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Margin="0,5,0,5" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked"/>
+													<StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,5">
 														<xctk:IntegerUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
 														<Label Content="x"/>
 														<xctk:IntegerUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480"/>
