@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF"
         mc:Ignorable="d"
-        Title="{StaticResource ManagerGrpAbout}" Height="200" Width="Auto" MinWidth="250" MaxHeight="500" MaxWidth="420"
+        Title="{StaticResource ManagerGrpAbout}" Height="250" Width="Auto" MinWidth="250" MaxHeight="500" MaxWidth="420"
         Style="{StaticResource SAWindow}"
 
         WindowStartupLocation="CenterScreen">
@@ -20,19 +20,18 @@
 
     <Grid Width="Auto" Height="Auto" Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="63"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Margin="5,0,0,0"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TextBlock  x:Name="TitleText" FontSize="22" Width="Auto"/>
-            <StackPanel Orientation="Horizontal">
-
-                <TextBlock  x:Name="AuthorText" FontSize="14" Width="Auto"/>
-            </StackPanel>
-        </StackPanel>
-        <Rectangle Grid.Row="0" Height="1"  VerticalAlignment="Bottom"/>
-        <TextBox Grid.Row="1" x:Name="DescBx" AcceptsReturn="True" Text="Desc" IsReadOnly="True"
+			<TextBlock  x:Name="AuthorText" FontSize="14" FontStyle="Italic" Width="Auto"/>
+			<TextBlock  x:Name="CategoryText" FontSize="14" FontStyle="Italic" Width="Auto"/>
+		</StackPanel>
+		<Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0,5,0,0"/>
+		<Rectangle Grid.Row="0" Height="1"  VerticalAlignment="Bottom"/>
+        <TextBox Grid.Row="1" x:Name="DescBx" AcceptsReturn="True" Text="Desc" FontSize="20" IsReadOnly="True"
                  Margin="5" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextBrush}"/>
     </Grid>
 </Window>
