@@ -18,7 +18,6 @@ namespace ModManagerWPF
 			Fill = 2
 		}
 
-		public string GamePath { get; set; }
 		public bool DebugConsole { get; set; }
 
 		public bool DebugScreen { get; set; }

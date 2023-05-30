@@ -582,11 +582,21 @@
                 </Setter>
             </Style>
 
+            <Style TargetType="{x:Type MenuItem}">
 
-
-
-
-
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Background" Value="{DynamicResource DisabledColor}"/>
+                        <Setter Property="Foreground" Value="{DynamicResource DisabledTextColor}"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+                    </Trigger>
+                    <Trigger Property="IsHighlighted" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
          
     </Application.Resources>

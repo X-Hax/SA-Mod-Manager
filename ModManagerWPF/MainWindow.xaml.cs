@@ -41,7 +41,7 @@ namespace ModManagerWPF
 		private string sadxIni = "sonicDX.ini";
 		string datadllorigpath = "system\\CHRMODELS_orig.dll";
 		string loaderdllpath = "mods\\SADXModLoader.dll";
-		string datadllpath = "system\\CHRMODELS.dll";
+		public string datadllpath = "system\\CHRMODELS.dll";
 		const string exeName = "sonic.exe";
 
 		string gamePath = string.Empty;
@@ -81,11 +81,40 @@ namespace ModManagerWPF
 			git.GetRecentCommit();
 
 			graphics = new GameGraphics(comboScreen);
-			gamePath = Settings.Default.GamePath;
+			SetGamePath(Settings.Default.GamePath);
 			UpdatePathsStringsInfo();
 			LoadSettings();
 			LoadModList();
 			InitCodes();
+			UpdateDLLData();
+		}
+
+		private void UpdateDLLData()
+		{
+			if (File.Exists("SADXModLoader.dll"))
+			{
+				File.Copy("SADXModLoader.dll", loaderdllpath, true);
+			}
+
+			if (File.Exists(loaderdllpath))
+			{
+				File.Copy(loaderdllpath, datadllpath, true);
+			}
+		}
+
+		private void SetGamePath(string path)
+		{
+			if (Directory.Exists(path))
+			{
+				gamePath = path;
+			}
+			else
+			{
+				if (File.Exists(exeName)) //if current game path is wrong, check if the Mod Manager didn't get put in the game folder just in case.
+				{
+					gamePath = Directory.GetCurrentDirectory();
+				}
+			}
 		}
 
 		private void MainWindowManager_ContentRendered(object sender, EventArgs e)
@@ -179,6 +208,7 @@ namespace ModManagerWPF
 			}
 
 			Properties.Settings.Default.GamePath = gamePath;
+			loaderini.DebugConsole = (bool)checkEnableLogConsole.IsChecked;
 			loaderini.HorizontalResolution = (int)txtResX.Value;
 			loaderini.VerticalResolution = (int)txtResY.Value;
 			loaderini.ForceAspectRatio = (bool)chkRatio.IsChecked;
@@ -212,6 +242,9 @@ namespace ModManagerWPF
 			comboLanguage.SelectedIndex = loaderini.Language;
 			comboThemes.SelectedIndex = loaderini.Theme;
 			textGameDir.Text = gamePath;
+
+			checkEnableLogConsole.IsChecked = loaderini.DebugConsole;
+
 			chkVSync.IsChecked = loaderini.EnableVsync;
 			txtResX.IsEnabled = !loaderini.ForceAspectRatio;
 
@@ -405,7 +438,7 @@ namespace ModManagerWPF
 				btnMoveDown.IsEnabled = listMods.Items.IndexOf(mod) < listMods.Items.Count - 1;
 				btnMoveBottom.IsEnabled = listMods.Items.IndexOf(mod) != listMods.Items.Count - 1;
 
-				ConfigureModBtn.IsEnabled = File.Exists(Path.Combine("mods", mod.Name, "configschema.xml"));
+				ConfigureModBtn.IsEnabled = File.Exists(Path.Combine(modDirectory, mod.Name, "configschema.xml"));
 			}
 			else if (count > 1)
 			{
@@ -889,7 +922,7 @@ namespace ModManagerWPF
 				if (File.Exists(path))
 				{
 					textGameDir.Text = GamePath;
-					gamePath = GamePath;
+					SetGamePath(GamePath);
 					Properties.Settings.Default.GamePath = gamePath;
 					UpdatePathsStringsInfo();
 					Refresh();
@@ -961,7 +994,30 @@ namespace ModManagerWPF
 			Process.Start(ps);	
 		}
 
-		#endregion
+		private void ModList_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+		{
+			if (sender is ListViewItem)
+			{
+				var List = (ListViewItem)sender;
 
+				var context = List.ContextMenu;
+
+				if (context is not null)
+				{
+					for (int i = 0; i < context.Items.Count; i++)
+					{
+						MenuItem item = (MenuItem)context.Items[i];
+
+						if (item.Name == "ModContextConfigureMod")
+						{
+							item.IsEnabled = ConfigureModBtn.IsEnabled;
+						}
+					}
+
+				}
+			}
+		}
+
+		#endregion
 	}
 }

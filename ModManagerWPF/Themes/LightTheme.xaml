@@ -19,4 +19,6 @@
     <SolidColorBrush x:Key="BorderBrush" Color="#FFBBBBBB"/>
     <Color x:Key="ComboBoxBGBrush" A="255" R="238" G="238" B="238"/>
     <Color x:Key="ComboBoxBGBrush2" A="255" R="242" G="242" B="242"/>
+    <SolidColorBrush x:Key="DisabledColor" Color="#FFBBBBBB"/>
+    <SolidColorBrush x:Key="DisabledTextColor" Color="#FF858585"/>
 </ResourceDictionary>

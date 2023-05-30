@@ -8,6 +8,7 @@
 	<UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>Icons\SADXModManager.ico</ApplicationIcon>
 	  <Nullable>disable</Nullable>
+	  <BaseOutputPath>..\bin\</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
