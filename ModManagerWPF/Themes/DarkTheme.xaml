@@ -8,6 +8,7 @@
     <SolidColorBrush x:Key="MainDialogBottomBrush" Color="#FF131313"/>
     <Color x:Key="BtnBackgroundColor" A="255" R="32" G="32" B="32"/>
     <Color x:Key="BtnHoverColor" A="255" R="45" G="45" B="47"/>
+    <Color x:Key="BtnClickColor" A="255" R="109" G="109" B="114"/>
     <Color x:Key="BtnDisabledColor" A="255" R="30" G="30" B="30"/>
     <Color x:Key="BtnDisabledTextColor" A="255" R="133" G="133" B="133"/>
     <SolidColorBrush x:Key="TextBrush" Color="White"/>

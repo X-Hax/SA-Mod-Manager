@@ -184,7 +184,7 @@
 	
 	<!--About-->
 	<system:String x:Key="ManagerGrpAbout">About</system:String>
-	<system:String x:Key="ManagerTextAbout">The SADX Mod Manager is a long standing piece of crap.</system:String>
+	<system:String x:Key="ManagerTextAbout">The SADX Mod Manager exists.</system:String>
 	<system:String x:Key="ManagerBtnCredits">Contributors</system:String>
 	<system:String x:Key="ManagerBtnSource">Source Code</system:String>
 	<system:String x:Key="ManagerBtnReport">Report a Bug (English only)</system:String>
