@@ -175,7 +175,14 @@
 
 	<!--#region Manager About Window-->
     
-    
+    <!--#region New / Edit Mod  Window-->
+    <system:String x:Key="NewModDescp">Please fill in the information about your mod.</system:String>
+    <system:String x:Key="EditModTitle">Edit </system:String>
+    <system:String x:Key="NewModTitle">New Mod</system:String>
+    <system:String x:Key="PropertiesTab">Properties</system:String>
+    <system:String x:Key="UpdateTab">Update</system:String>
+
+
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
 

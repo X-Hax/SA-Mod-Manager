@@ -1039,5 +1039,10 @@ namespace ModManagerWPF
 		{
 			labelSFXLevel.Content = ((int)sliderVoice.Value).ToString();
 		}
-	}
+
+		private void NewModBtn_Click(object sender, RoutedEventArgs e)
+		{
+			//new EditMod(null).ShowDialog();
+		}
+    }
 }
