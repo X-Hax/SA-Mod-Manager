@@ -578,7 +578,7 @@
 								</Grid.RowDefinitions>
 
 								<!--Group for Input Selection.-->
-								<GroupBox Header="Input Options">
+								<GroupBox Header="{DynamicResource GameInputGroupOptions}">
 									<Grid>
 										<Grid.ColumnDefinitions>
 											<ColumnDefinition Width="10"/>
@@ -592,13 +592,13 @@
 											<RowDefinition Height="10"/>
 										</Grid.RowDefinitions>
 
-										<RadioButton x:Name="radVanillaInput" Content="Vanilla Input (DInput)" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radVanillaInput_Checked"/>
-										<RadioButton x:Name="radBetterInput" Content="Better Input (SDL2)" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radBetterInput_Checked"/>
+										<RadioButton x:Name="radVanillaInput" Content="{DynamicResource GameInputCheckVanilla}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radVanillaInput_Checked"/>
+										<RadioButton x:Name="radBetterInput" Content="{DynamicResource GameInputCheckSDL2}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radBetterInput_Checked"/>
 									</Grid>
 								</GroupBox>
 
 								<!--Group for Vanilla Input Configuration-->
-								<GroupBox x:Name="grpVanillaInput" Header="Vanilla Input Configuration" Grid.Row="1">
+								<GroupBox x:Name="grpVanillaInput" Header="{DynamicResource GameInputGroupVanilla}" Grid.Row="1">
 									<Grid>
 										<Grid.ColumnDefinitions>
 											<ColumnDefinition Width="10"/>
@@ -614,7 +614,7 @@
 										</Grid.RowDefinitions>
 
 										<!--Group for Mouse and Keyboard Input Configuration-->
-										<GroupBox Header="Mouse and Keyboard" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+										<GroupBox Header="{DynamicResource GameInputGroupMK}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
 											<Grid>
 												<Grid.ColumnDefinitions>
 													<ColumnDefinition Width="*"/>
@@ -634,44 +634,37 @@
 													<RowDefinition Height="5"/>
 												</Grid.RowDefinitions>
 
-												<RadioButton x:Name="inputMouseDragHold" Content="Drag and Hold" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-												<RadioButton x:Name="inputMouseDragAccel" Content="Drag to Accelerate" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+												<RadioButton x:Name="inputMouseDragHold" Content="{DynamicResource GameInputCheckDragHold}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+												<RadioButton x:Name="inputMouseDragAccel" Content="{DynamicResource GameInputCheckDragAccel}" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-												<Label Content="Jump:" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+												<Label Content="{DynamicResource GameInputLabelJump}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
 												<Button x:Name="btnInputJump" Grid.Column="2" Grid.Row="1" Margin="5,2,5,2"/>
 
-												<Label Content="Action:" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+												<Label Content="{DynamicResource GameInputLabelAction}" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 												<Button x:Name="btnInputAction" Grid.Column="5" Grid.Row="1" Margin="5,2,5,2"/>
 
-												<Label Content="Cancel/Attack:" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+												<Label Content="{DynamicResource GameInputLabelCancel}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 												<Button x:Name="btnInputAttack" Grid.Column="2" Grid.Row="2" Margin="5,2,5,2"/>
 
-												<Label Content="Start/Set:" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+												<Label Content="{DynamicResource GameInputLabelStart}" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 												<Button x:Name="btnInputStart" Grid.Column="5" Grid.Row="2" Margin="5,2,5,2"/>
 
-												<Label Content="Rotate Camera Left" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+												<Label Content="{DynamicResource GameInputLabelRotateLeft}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 												<Button x:Name="btnInputCamLeft" Grid.Column="2" Grid.Row="3" Margin="5,2,5,2"/>
 
-												<Label Content="Rotate Camera Right" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+												<Label Content="{DynamicResource GameInputLabelRotateRight}" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 												<Button x:Name="btnInputCamRight" Grid.Column="5" Grid.Row="3" Margin="5,2,5,2"/>
 
-												<Label Content="Flute" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+												<Label Content="{DynamicResource GameInputLabelFlute}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 												<Button x:Name="btnInputFlute" Grid.Column="2" Grid.Row="4" Margin="5,2,5,2"/>
-											</Grid>
-										</GroupBox>
-
-										<!--Group for Controller DInput Configuration-->
-										<GroupBox Header="Controller (DInput)" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
-											<Grid>
-												
 											</Grid>
 										</GroupBox>
 									</Grid>
 								</GroupBox>
 
 								<!--Group for Input Mod Configuration-->
-								<GroupBox x:Name="grpSDLInput" Header="Better Input Configuration" Grid.Row="2">
-									<Grid>
+								<GroupBox x:Name="grpSDLInput" Header="{DynamicResource GameInputGroupSDL2}" Grid.Row="2">
+									<Grid Margin="10,10,10,10">
 										<Grid.ColumnDefinitions>
 											<ColumnDefinition Width="*"/>
 											<ColumnDefinition Width="*"/>
@@ -682,10 +675,10 @@
 											<RowDefinition Height="50"/>
 										</Grid.RowDefinitions>
 
-										<TextBlock Text="SDL2 Input, formally Input Mod, is an SDL2 implementation in SADX to replace the basic DInput from the base game. This fixes several issues with the original game input. It's recommended to play with this input method over Vanilla." Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" TextWrapping="Wrap"/>
+										<TextBlock Text="{DynamicResource GameInputTextSDL2}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" TextWrapping="Wrap"/>
 										<Separator Grid.ColumnSpan="3" Grid.Row="1" VerticalAlignment="Top"/>
-										<Button x:Name="btnOpenAppLauncher" Content="Open AppLauncher" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5"/>
-										<Button x:Name="btnGetAppLauncher" Content="Get AppLauncher" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5"/>
+										<Button x:Name="btnOpenAppLauncher" Content="{DynamicResource GameInputButtonOpenApp}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5"/>
+										<Button x:Name="btnGetAppLauncher" Content="{DynamicResource GameInputButtonGetApp}" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5"/>
 									</Grid>
 								</GroupBox>
 							</Grid>
@@ -887,94 +880,106 @@
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
+						
+							<CheckBox x:Name="tsCheckEvent" Content="{DynamicResource SpawnCheckEvent}" Grid.Column="0" Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center"/>
+							<ComboBox x:Name="tsComboEvent" Grid.Column="1" Grid.Row="0" Margin="5,5,5,5"/>
 
-							<CheckBox x:Name="tsCheckManual" Content="{DynamicResource SpawnCheckManual}" Grid.Column="0" Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center"/>
-							<Grid x:Name="gridTSLevelManual" Grid.Column="1" Grid.Row="0" Margin="5,5,5,5">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<Grid Grid.Column="0" HorizontalAlignment="Right">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-									<Label Content="{DynamicResource SpawnCheckCharacter}" VerticalAlignment="Center"/>
-									<xctk:IntegerUpDown x:Name="tsNumCharacter" Grid.Column="1" Height="22" MinWidth="50"/>
-								</Grid>
-								<Grid Grid.Column="1" HorizontalAlignment="Right">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-									<Label Content="{DynamicResource SpawnCheckLevel}" VerticalAlignment="Center"/>
-									<xctk:IntegerUpDown x:Name="tsNumLevel" Grid.Column="1" Height="22" MinWidth="65"/>
-								</Grid>
-								<Grid Grid.Column="2" HorizontalAlignment="Right">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-									<Label Content="{DynamicResource SpawnLabelAct}" VerticalAlignment="Center"/>
-									<xctk:IntegerUpDown x:Name="tsNumAct" Grid.Column="2" Height="22" MinWidth="65"/>
-								</Grid>
-							</Grid>
+							<CheckBox x:Name="tsCheckGameMode" Content="{DynamicResource SpawnCheckMode}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
+							<ComboBox x:Name="tsComboGameMode" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5"/>
 
-							<CheckBox x:Name="tsCheckPosition" Content="{DynamicResource SpawnCheckPosition}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
-							<Grid x:Name="gridTSPosition" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<Grid Grid.Column="0" HorizontalAlignment="Right">
+							<CheckBox x:Name="tsCheckSave" Content="{DynamicResource SpawnCheckSave}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" VerticalAlignment="Center"/>
+							<ComboBox x:Name="tsComboSave" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5"/>
+
+							<TextBlock x:Name="textEventWarning" Text="{DynamicResource SpawnLabelWarning}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" FontStyle="Oblique" FontSize="18" TextWrapping="Wrap"/>
+
+							<GroupBox x:Name="groupAdvanced" Header="Advanced" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4">
+								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
-									<Label Content="{DynamicResource SpawnLabelPosX}" VerticalAlignment="Center"/>
-									<xctk:DecimalUpDown x:Name="tsNumPosX" Grid.Column="1" Height="22" MinWidth="65"/>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+									</Grid.RowDefinitions>
+									<CheckBox x:Name="tsCheckManual" Content="{DynamicResource SpawnCheckManual}" Grid.Column="0" Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center"/>
+									<Grid x:Name="gridTSLevelManual" Grid.Column="1" Grid.Row="0" Margin="5,5,5,5">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<Grid Grid.Column="0" HorizontalAlignment="Right">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Label Content="{DynamicResource SpawnCheckCharacter}" VerticalAlignment="Center"/>
+											<xctk:IntegerUpDown x:Name="tsNumCharacter" Grid.Column="1" Height="22" MinWidth="50"/>
+										</Grid>
+										<Grid Grid.Column="1" HorizontalAlignment="Right">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Label Content="{DynamicResource SpawnCheckLevel}" VerticalAlignment="Center"/>
+											<xctk:IntegerUpDown x:Name="tsNumLevel" Grid.Column="1" Height="22" MinWidth="65"/>
+										</Grid>
+										<Grid Grid.Column="2" HorizontalAlignment="Right">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Label Content="{DynamicResource SpawnLabelAct}" VerticalAlignment="Center"/>
+											<xctk:IntegerUpDown x:Name="tsNumAct" Grid.Column="2" Height="22" MinWidth="65"/>
+										</Grid>
+									</Grid>
+
+									<CheckBox x:Name="tsCheckPosition" Content="{DynamicResource SpawnCheckPosition}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
+									<Grid x:Name="gridTSPosition" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<Grid Grid.Column="0" HorizontalAlignment="Right">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Label Content="{DynamicResource SpawnLabelPosX}" VerticalAlignment="Center"/>
+											<xctk:DecimalUpDown x:Name="tsNumPosX" Grid.Column="1" Height="22" MinWidth="65"/>
+										</Grid>
+										<Grid Grid.Column="1" HorizontalAlignment="Right">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Label Content="{DynamicResource SpawnLabelPosY}" VerticalAlignment="Center"/>
+											<xctk:DecimalUpDown x:Name="tsNumPosY" Grid.Column="1" Height="22" MinWidth="65"/>
+										</Grid>
+										<Grid Grid.Column="2" HorizontalAlignment="Right">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Label Content="{DynamicResource SpawnLabelPosZ}" VerticalAlignment="Center"/>
+											<xctk:DecimalUpDown x:Name="tsNumPosZ" Grid.Column="1" Height="22" MinWidth="65"/>
+										</Grid>
+										<Grid Grid.Column="3" HorizontalAlignment="Right">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Label Content="{DynamicResource SpawnLabelAngle}" VerticalAlignment="Center"/>
+											<xctk:DecimalUpDown x:Name="tsNumAngle" Grid.Column="1" Height="22" MinWidth="65"/>
+										</Grid>
+									</Grid>
 								</Grid>
-								<Grid Grid.Column="1" HorizontalAlignment="Right">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-									<Label Content="{DynamicResource SpawnLabelPosY}" VerticalAlignment="Center"/>
-									<xctk:DecimalUpDown x:Name="tsNumPosY" Grid.Column="1" Height="22" MinWidth="65"/>
-								</Grid>
-								<Grid Grid.Column="2" HorizontalAlignment="Right">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-									<Label Content="{DynamicResource SpawnLabelPosZ}" VerticalAlignment="Center"/>
-									<xctk:DecimalUpDown x:Name="tsNumPosZ" Grid.Column="1" Height="22" MinWidth="65"/>
-								</Grid>
-								<Grid Grid.Column="3" HorizontalAlignment="Right">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-									<Label Content="{DynamicResource SpawnLabelAngle}" VerticalAlignment="Center"/>
-									<xctk:DecimalUpDown x:Name="tsNumAngle" Grid.Column="1" Height="22" MinWidth="65"/>
-								</Grid>
-							</Grid>
+							</GroupBox>
 							
-							<CheckBox x:Name="tsCheckEvent" Content="{DynamicResource SpawnCheckEvent}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" VerticalAlignment="Center"/>
-							<ComboBox x:Name="tsComboEvent" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5"/>
-
-							<CheckBox x:Name="tsCheckGameMode" Content="{DynamicResource SpawnCheckMode}" Grid.Column="0" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Center"/>
-							<ComboBox x:Name="tsComboGameMode" Grid.Column="1" Grid.Row="3" Margin="5,5,5,5"/>
-
-							<CheckBox x:Name="tsCheckSave" Content="{DynamicResource SpawnCheckSave}" Grid.Column="0" Grid.Row="4" Margin="5,5,5,5" VerticalAlignment="Center"/>
-							<ComboBox x:Name="tsComboSave" Grid.Column="1" Grid.Row="4" Margin="5,5,5,5"/>
-
-							<TextBlock x:Name="textEventWarning" Text="{DynamicResource SpawnLabelWarning}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" FontStyle="Oblique" FontSize="18" TextWrapping="Wrap"/>
-
 							<Button x:Name="btnTSLaunch" Content="{DynamicResource SpawnButtonLaunch}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Margin="5,5,5,5" Height="50"/>
 						</Grid>
 					</Grid>

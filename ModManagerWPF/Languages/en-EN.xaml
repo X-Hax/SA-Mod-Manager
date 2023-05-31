@@ -101,6 +101,24 @@
     <system:String x:Key="GameGraphicsButtonUpdateD3D8">Update D3D8to9</system:String>
         
     <!--Input Tab Strings-->
+	<system:String x:Key="GameInputGroupOptions">Input Options</system:String>
+	<system:String x:Key="GameInputCheckVanilla">Vanilla Input (DInput)</system:String>
+	<system:String x:Key="GameInputCheckSDL2">Better Input (SDL2)</system:String>
+	<system:String x:Key="GameInputGroupVanilla">Vanilla Input Configuration</system:String>
+	<system:String x:Key="GameInputGroupMK">Mouse and Keyboard</system:String>
+	<system:String x:Key="GameInputCheckDragHold">Drag and Hold</system:String>
+	<system:String x:Key="GameInputCheckDragAccel">Drag to Accelerate</system:String>
+	<system:String x:Key="GameInputLabelJump">Jump:</system:String>
+	<system:String x:Key="GameInputLabelAction">Action:</system:String>
+	<system:String x:Key="GameInputLabelCancel">Cancel/Attack:</system:String>
+	<system:String x:Key="GameInputLabelStart">Start/Set:</system:String>
+	<system:String x:Key="GameInputLabelRotateLeft">Rotate Camera Left:</system:String>
+	<system:String x:Key="GameInputLabelRotateRight">Rotate Camera Right:</system:String>
+	<system:String x:Key="GameInputLabelFlute">Flute:</system:String>
+	<system:String x:Key="GameInputGroupSDL2">Better Input Configuration</system:String>
+	<system:String x:Key="GameInputButtonOpenApp">Open AppLauncher</system:String>
+	<system:String x:Key="GameInputButtonGetApp">Get AppLauncher</system:String>
+	<system:String x:Key="GameInputTextSDL2">The Better Input system is an implementation of SDL2 into SADX. It's recommended for playing as it fixes issues with the original DInput system.</system:String>
 	
 	<!--Sound Input Strings-->
 	<system:String x:Key="GameSoundGroupSettings">Sound Settings</system:String>
