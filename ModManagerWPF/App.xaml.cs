@@ -56,11 +56,21 @@ namespace ModManagerWPF
 				Source = new Uri(name, UriKind.Relative)
 			};
 
-			//Remove current resource from the merged dictionaries
-			Current.Resources.MergedDictionaries.RemoveAt(3);
-			Current.Resources.MergedDictionaries.Add(dictionary);
-		}
+			//if a language different than english is set, remove the previous one.
+			if (Current.Resources.MergedDictionaries.Count >= 5)
+			{
+				Current.Resources.MergedDictionaries.RemoveAt(4); 
+			}
 
+			//if we go back to english, give up the process as it's always in the list.
+			if (Current.Resources.MergedDictionaries[3].Source.ToString().Contains("en-EN") && name.Contains("en-EN"))
+			{
+				return;
+			}
+
+			//add new language
+			Current.Resources.MergedDictionaries.Insert(4, dictionary);		
+		}
 
 		public static void SwitchTheme()
 		{
