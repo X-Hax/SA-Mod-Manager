@@ -75,11 +75,11 @@ namespace ModManagerWPF
 		#endregion
 
 		public MainWindow()
-		{
+		{	
 			git = new(this);
 			InitializeComponent();
 			git.GetRecentCommit();
-
+			
 			graphics = new Game.GameGraphics(comboScreen);
 			SetGamePath(Settings.Default.GamePath);
 			UpdatePathsStringsInfo();
@@ -123,7 +123,6 @@ namespace ModManagerWPF
 			this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
 		}
 
-
 		private void Save_AppUserSettings()
 		{
 			Settings.Default.Save();
@@ -147,6 +146,7 @@ namespace ModManagerWPF
 		{
 			GitVersion = git.LastCommit;
 			Title = titleName + " " + "(" + Version + "-" + GitVersion + ")";
+			Settings.Default.LastCommit = git.LastCommit;
 		}
 
 		private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
@@ -1042,7 +1042,7 @@ namespace ModManagerWPF
 
 		private void NewModBtn_Click(object sender, RoutedEventArgs e)
 		{
-			new EditMod(null).ShowDialog();
+			//new EditMod(null).ShowDialog();
 		}
     }
 }
