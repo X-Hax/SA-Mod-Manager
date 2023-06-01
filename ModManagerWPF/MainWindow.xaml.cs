@@ -56,9 +56,9 @@ namespace ModManagerWPF
 		bool installed = false;
 		bool suppressEvent = false;
 
-		private GameConfigFile gameConfigFile;
+		private Game.GameConfigFile gameConfigFile;
 
-		public GameGraphics graphics;
+		public Game.GameGraphics graphics;
 		public GitHub git;
 		static private uint count = 0;
 
@@ -80,7 +80,7 @@ namespace ModManagerWPF
 			InitializeComponent();
 			git.GetRecentCommit();
 
-			graphics = new GameGraphics(comboScreen);
+			graphics = new Game.GameGraphics(comboScreen);
 			SetGamePath(Settings.Default.GamePath);
 			UpdatePathsStringsInfo();
 			LoadSettings();
@@ -521,12 +521,12 @@ namespace ModManagerWPF
 
 		private void LoadGameConfigIni()
 		{
-			gameConfigFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<GameConfigFile>(sadxIni) : new GameConfigFile();
+			gameConfigFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<Game.GameConfigFile>(sadxIni) : new Game.GameConfigFile();
 			if (gameConfigFile.GameConfig == null)
 			{
-				gameConfigFile.GameConfig = new GameConfig
+				gameConfigFile.GameConfig = new Game.GameConfig
 				{
-					FrameRate = (int)FrameRate.High,
+					FrameRate = (int)Game.FrameRate.High,
 					Sound3D = 1,
 					SEVoice = 1,
 					BGM = 1,
@@ -536,7 +536,7 @@ namespace ModManagerWPF
 			}
 
 			if (gameConfigFile.Controllers == null)
-				gameConfigFile.Controllers = new Dictionary<string, ControllerConfig>();
+				gameConfigFile.Controllers = new Dictionary<string, Game.ControllerConfig>();
 
 			// Video
 			// Display mode
@@ -546,10 +546,10 @@ namespace ModManagerWPF
 				radWindowed.IsChecked = true;
 
 			// Framerate
-			if (gameConfigFile.GameConfig.FrameRate == (int)FrameRate.Invalid || gameConfigFile.GameConfig.FrameRate > (int)FrameRate.Low)
+			if (gameConfigFile.GameConfig.FrameRate == (int)Game.FrameRate.Invalid || gameConfigFile.GameConfig.FrameRate > (int)Game.FrameRate.Low)
 			{
 				MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButton.OK, MessageBoxImage.Error);
-				comboFramerate.SelectedIndex = (int)FrameRate.High - 1;
+				comboFramerate.SelectedIndex = (int)Game.FrameRate.High - 1;
 			}
 			else
 			{
@@ -1042,7 +1042,7 @@ namespace ModManagerWPF
 
 		private void NewModBtn_Click(object sender, RoutedEventArgs e)
 		{
-			//new EditMod(null).ShowDialog();
+			new EditMod(null).ShowDialog();
 		}
     }
 }
