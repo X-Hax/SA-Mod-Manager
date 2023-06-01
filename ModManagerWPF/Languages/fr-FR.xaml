@@ -35,8 +35,8 @@
     <!--Codes Tab Strings-->
 
     <!-- Codes UI Strings -->
-    <system:String x:Key="CodesUIInfo">Double click this code for more information.</system:String>
-    <system:String x:Key="CodesUIInfoHint">Select a code for more information.</system:String>
+    <system:String x:Key="CodesUIInfo">Double cliquer sur un code pour plus d'information.</system:String>
+    <system:String x:Key="CodesUIInfoHint">Selectioner un code pour plus d'information.</system:String>
 
     <!--Game Config Tab Strings-->
     <system:String x:Key="GameTabGraphics">Graphismes</system:String>
@@ -88,6 +88,24 @@
     <!--#endregion-->
 
     <!--Input Tab Strings-->
+    <system:String x:Key="GameInputGroupOptions">Options Contrôles</system:String>
+    <system:String x:Key="GameInputCheckVanilla">Contrôles Classique (DInput)</system:String>
+    <system:String x:Key="GameInputCheckSDL2">Meilleur Contrôles (SDL2)</system:String>
+    <system:String x:Key="GameInputGroupVanilla">Configuration des Contrôles Classique</system:String>
+    <system:String x:Key="GameInputGroupMK">Souris et Clavier</system:String>
+    <system:String x:Key="GameInputCheckDragHold">Glisser et Maintenez</system:String>
+    <system:String x:Key="GameInputCheckDragAccel">Glisser pour Accélérer</system:String>
+    <system:String x:Key="GameInputLabelJump">Saut:</system:String>
+    <system:String x:Key="GameInputLabelAction">Action:</system:String>
+    <system:String x:Key="GameInputLabelCancel">Annuler/Attaquer:</system:String>
+    <system:String x:Key="GameInputLabelStart">Start/Set:</system:String>
+    <system:String x:Key="GameInputLabelRotateLeft">Pivoter la Caméra Gauche:</system:String>
+    <system:String x:Key="GameInputLabelRotateRight">Pivoter la Camera Droite:</system:String>
+    <system:String x:Key="GameInputLabelFlute">Flûte:</system:String>
+    <system:String x:Key="GameInputGroupSDL2">Configuration de Meilleur Contrôles</system:String>
+    <system:String x:Key="GameInputButtonOpenApp">Ouvrir l'AppLauncher</system:String>
+    <system:String x:Key="GameInputButtonGetApp">Obtenir l'AppLauncher</system:String>
+    <system:String x:Key="GameInputTextSDL2">Meilleur Contrôles est une implémentation de SDL2 dans SADX. Il est recommandé pour jouer car il résout des bugs avec le système DInput d'origine.</system:String>
 
     <!--Sound Input Strings-->
     <system:String x:Key="GameSoundGroupSettings">Paramètres du Son</system:String>
@@ -109,7 +127,7 @@
     <system:String x:Key="ManagerLblTheme">Thèmes:</system:String>
     <system:String x:Key="ManagerLblLang">Langue:</system:String>
     <system:String x:Key="ManagerLblProfile">Profil:</system:String>
-    <system:String x:Key="ManagerLblGameDir">Game Directory:</system:String>
+    <system:String x:Key="ManagerLblGameDir">Répertoire du Jeu:</system:String>
 
     <system:String x:Key="ManagerBtnEnableOneClick">Activer Gamebanana 1-Click Install</system:String>
     <system:String x:Key="ManagerBtnDisableOneClick">Désactiver Gamebanana 1-Click Install</system:String>
@@ -135,7 +153,7 @@
 
     <!--About-->
     <system:String x:Key="ManagerGrpAbout">À Propos</system:String>
-    <system:String x:Key="ManagerTextAbout">The SADX Mod Manager is a long standing piece of crap.</system:String>
+    <system:String x:Key="ManagerTextAbout">SADX Mod Manager est un programme qui vous permet de gérer facilement les mods dans Sonic Adventure DX.</system:String>
     <system:String x:Key="ManagerBtnCredits">Contributeurs</system:String>
     <system:String x:Key="ManagerBtnSource">Code Source</system:String>
     <system:String x:Key="ManagerBtnReport">Signlar un Bug (Anglais uniquement)</system:String>
@@ -157,7 +175,7 @@
     <system:String x:Key="ModIniError2" xml:space="preserve">&#x0a;&#x0a;Déplacez ou supprimer le mod.ini dans le dossier mods puis lancer le Mod Manager à nouveau.</system:String>
 
     <system:String x:Key="FaildSetGamePathTitle">Echec Chemin d'accès</system:String>
-    <system:String x:Key="FaildSetGamePath">Impossible de trouver CHRMODELS.dll, assurez-vous de selectionner le dossier qui contient sonic.exe.</system:String>
+    <system:String x:Key="FaildSetGamePath">Impossible de trouver sonic.exe, assurez-vous de selectionner le dossier qui contient SADX.</system:String>
 
     <system:String x:Key="FailedDetectGamePathTitle">Echec détection du chemin d'accès</system:String>
     <system:String x:Key="FailedDetectGamePath">Impossible de trouver le chemin d'accès du répertoire du jeu. Veuillez sélectionner le chemin dans les paramètres et assurez vous de prendre le dossier qui contient sonic.exe.</system:String>

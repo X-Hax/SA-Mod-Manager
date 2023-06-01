@@ -66,11 +66,13 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <Label Content="Sora"/>
+                    <Label Content="Jesus__PK" Foreground="White"/>
 
                 </StackPanel>
                 <StackPanel Grid.Column="1">
 
                     <Label Content="French translation"/>
+                    <Label Content="Spanish translation"/>
 
                 </StackPanel>
             </Grid>

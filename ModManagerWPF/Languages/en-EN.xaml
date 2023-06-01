@@ -184,7 +184,7 @@
 	
 	<!--About-->
 	<system:String x:Key="ManagerGrpAbout">About</system:String>
-	<system:String x:Key="ManagerTextAbout">The SADX Mod Manager exists.</system:String>
+	<system:String x:Key="ManagerTextAbout">The SADX Mod Manager is a program that allows you to easily manage mods in Sonic Adventure DX.</system:String>
 	<system:String x:Key="ManagerBtnCredits">Contributors</system:String>
 	<system:String x:Key="ManagerBtnSource">Source Code</system:String>
 	<system:String x:Key="ManagerBtnReport">Report a Bug (English only)</system:String>
@@ -213,7 +213,7 @@
     <system:String x:Key="ModRemovedList" xml:space="preserve">could not be found.&#x0a;&#x0a;This mod will be removed from the list.</system:String>
 
     <system:String x:Key="FaildSetGamePathTitle">Failed to set Game Path</system:String>
-    <system:String x:Key="FaildSetGamePath">Failed to detect CHRMODELS.dll, make sure to select a folder where sonic.exe is installed.</system:String>
+    <system:String x:Key="FaildSetGamePath">Failed to detect sonic.exe, make sure to select a folder where SADX is installed.</system:String>
 
     <system:String x:Key="FailedDetectGamePathTitle">Failed to detect Game Path</system:String>
     <system:String x:Key="FailedDetectGamePath">Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.</system:String>
