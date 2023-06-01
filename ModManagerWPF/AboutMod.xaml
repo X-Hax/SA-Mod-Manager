@@ -41,8 +41,8 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<Button x:Name="btnAuthSite" Content="Author's Site" Grid.Column="0" Margin="5,0,5,0"/>
-			<Button x:Name="btnModSource" Content="Mod Source Code" Grid.Column="1" Margin="5,0,5,0"/>
+            <Button x:Name="btnAuthSite" Content="{DynamicResource AuthorSite}" Grid.Column="0" Margin="5,0,5,0"/>
+            <Button x:Name="btnModSource" Content="{DynamicResource ModSourceCode}" Grid.Column="1" Margin="5,0,5,0"/>
 		</Grid>
     </Grid>
 </Window>

@@ -33,6 +33,10 @@
     <system:String x:Key="ModsUIModEdit">Edit Mod</system:String>
     <system:String x:Key="ModsUIModDelete">Delete Mod</system:String>
     <system:String x:Key="ModsUIDev">Developer</system:String>
+    
+    <!--Mod About Window-->
+    <system:String x:Key="AuthorSite">Author's Site</system:String>
+    <system:String x:Key="ModSourceCode">Mod Source Code</system:String>
 
     <!--#endregion-->
 	

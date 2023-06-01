@@ -27,9 +27,9 @@ namespace ModManagerWPF
 			InitializeComponent();
 			Title += " " + mod.Name;
 			TitleText.Text = mod.Name + " | v" + mod.Version;
-			AuthorText.Text = mod.Author != null ? "Creator: " + mod.Author : null;
-			CategoryText.Text = mod.Category != null ? "Category: " + mod.Category + "\n" : null;
+			AuthorText.Text = mod.Author != null ? Lang.GetString("ModsListAuthor") + ": " + mod.Author : null;
+			CategoryText.Text = mod.Category != null ? Lang.GetString("ModsListCategory") + ": " + mod.Category + "\n" : null;
 			DescBx.Text = mod.Description;
-        }
+		}
     }
 }

@@ -32,11 +32,21 @@
     <system:String x:Key="ModsUIModDelete">Supprimer le Mod</system:String>
     <system:String x:Key="ModsUIDev">Développeur</system:String>
 
-    <!--Codes Tab Strings-->
+    <!--Mod About Window-->
+    <system:String x:Key="AuthorSite">Site de l'Auteur</system:String>
+    <system:String x:Key="ModSourceCode">Code Source du Mod</system:String>
+
+    <!--#region Codes Tab Strings-->
+    <system:String x:Key="CodesBtnAdd">New Code</system:String>
 
     <!-- Codes UI Strings -->
+    <system:String x:Key="CodesListName">Nom</system:String>
+    <system:String x:Key="CodesListCategory">Catégorie</system:String>
     <system:String x:Key="CodesUIInfo">Double cliquer sur un code pour plus d'information.</system:String>
     <system:String x:Key="CodesUIInfoHint">Selectioner un code pour plus d'information.</system:String>
+
+    <system:String x:Key="CodeAbout">A Propos de {0}</system:String>
+    <system:String x:Key="CodeAuthor">Créé par</system:String>
 
     <!--Game Config Tab Strings-->
     <system:String x:Key="GameTabGraphics">Graphismes</system:String>
