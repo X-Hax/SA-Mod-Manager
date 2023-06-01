@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ModManagerWPF.Properties;
 using Octokit;
 
 
 namespace ModManagerWPF
 {
-    public class GitHub
-    {
+	public class GitHub
+	{
 		MainWindow Window { get; set; }
-		public GitHub(MainWindow window) 
+		public GitHub(MainWindow window)
 		{
 			Window = window;
 		}
@@ -34,24 +35,33 @@ namespace ModManagerWPF
 		/// <returns>Most Recent Commit as a string</returns>
 		public async Task GetRecentCommit()
 		{
-			
+
 			if (client is null)
 				return;
 
-			var Repo = await client.Repository.Get("x-hax", "sadx-mod-loader");
+			try
+			{
+				var Repo = await client.Repository.Get("x-hax", "sadx-mod-loader");
 
-			if (Repo is null) 
-				return;
+				if (Repo is null)
+					return;
 
-			var id = Repo.Id;
-			var lastCommit = await GetLastCommit(id, "wpf"); //todo swap to "master"
-		
-			if (lastCommit is not null)
-			{		
-				LastCommit = lastCommit.Sha[..7];
-				Window.SetModManagerVersion(); 
-				return;
+				var id = Repo.Id;
+				var lastCommit = await GetLastCommit(id, "wpf"); //todo swap to "master"
+
+				if (lastCommit is not null)
+				{
+					LastCommit = lastCommit.Sha[..7];
+					Window.SetModManagerVersion();	
+					return;
+				}
+			}
+			catch
+			{
+
+				LastCommit = Settings.Default.LastCommit;
+				Window.SetModManagerVersion();
 			}
 		}
-    }
+	}
 }

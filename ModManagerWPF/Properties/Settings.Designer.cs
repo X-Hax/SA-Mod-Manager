@@ -46,5 +46,17 @@ namespace ModManagerWPF.Properties {
                 this["GamePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastCommit {
+            get {
+                return ((string)(this["LastCommit"]));
+            }
+            set {
+                this["LastCommit"] = value;
+            }
+        }
     }
 }
