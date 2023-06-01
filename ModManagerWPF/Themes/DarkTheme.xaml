@@ -27,4 +27,7 @@
     <SolidColorBrush x:Key="ScrollBarMouseOverThumb" Color="#696968"/>
     <SolidColorBrush x:Key="ScrollBarPressedThumb" Color="#616161"/>
 
+    <Color x:Key="SlideBtnColor" A="255" R="63" G="63" B="70"/>
+    <Color x:Key="SlideTrackColor" A="255" R="72" G="72" B="72"/>
+
 </ResourceDictionary>
