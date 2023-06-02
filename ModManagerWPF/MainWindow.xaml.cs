@@ -430,13 +430,13 @@ namespace ModManagerWPF
 			}
 			else if (count == 1)
 			{
-				//modDescription.Text = "Description: " + mods[(string)modListView.SelectedItems[0].Tag].Description;
 
 				ModData mod = (ModData)listMods.SelectedItem;
 
 				if (mod is null)
 					return;
 
+				textModsDescription.Text = Lang.GetString("ModSelectTextDesc") + " " + mods[mod.Tag].Description;	
 				btnMoveTop.IsEnabled = listMods.Items.IndexOf(mod) != 0;
 				btnMoveUp.IsEnabled = listMods.Items.IndexOf(mod) > 0;
 				btnMoveDown.IsEnabled = listMods.Items.IndexOf(mod) < listMods.Items.Count - 1;
@@ -487,7 +487,13 @@ namespace ModManagerWPF
 
 		private void ModContextEditMod_Click(object sender, RoutedEventArgs e)
 		{
+			var mod = (ModData)listMods.SelectedItem;
 
+			if (mod is not null)
+			{
+				SADXModInfo modInfo = mods[mod.Tag];
+				new EditMod(modInfo).ShowDialog();
+			}
 		}
 
 		private void ModContextDeleteMod_Click(object sender, RoutedEventArgs e)
@@ -1042,7 +1048,7 @@ namespace ModManagerWPF
 
 		private void NewModBtn_Click(object sender, RoutedEventArgs e)
 		{
-			//new EditMod(null).ShowDialog();
+			new EditMod(null).ShowDialog();
 		}
     }
 }
