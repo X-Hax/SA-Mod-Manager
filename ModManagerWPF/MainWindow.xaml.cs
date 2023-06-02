@@ -492,7 +492,9 @@ namespace ModManagerWPF
 			if (mod is not null)
 			{
 				SADXModInfo modInfo = mods[mod.Tag];
-				new EditMod(modInfo).ShowDialog();
+				EditMod Edit = new(modInfo);
+				Edit.Show();
+				Edit.Closed += EditMod_FormClosing;
 			}
 		}
 
@@ -1026,9 +1028,16 @@ namespace ModManagerWPF
 			labelSFXLevel.Content = ((int)sliderVoice.Value).ToString();
 		}
 
+		private void EditMod_FormClosing(object sender, EventArgs e)
+		{
+			Refresh();
+		}
+
 		private void NewModBtn_Click(object sender, RoutedEventArgs e)
 		{
-			new EditMod(null).ShowDialog();
+			EditMod Edit = new(null);
+			Edit.Show();
+			Edit.Closed += EditMod_FormClosing;
 		}
     }
 }
