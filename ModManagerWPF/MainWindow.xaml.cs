@@ -746,32 +746,12 @@ namespace ModManagerWPF
 
 		private void radFullscreen_Checked(object sender, RoutedEventArgs e)
 		{
-			if (grpGraphicsFullscreen is null)
-				return;
-
-			int index = gridGraphics.Children.IndexOf(grpGraphicsWindow); //Graphic Window setting is a children of the graphic grid 
-
-			gridGraphics.Children.RemoveAt(index); //we remove it so we can only display the full screen options
-
-			if (!gridGraphics.Children.Contains(grpGraphicsFullscreen)) //if the fullscreen grid doesn't exist, add it back
-			{
-				gridGraphics.Children.Add(grpGraphicsFullscreen);
-			}
+			
 		}
 
 		private void radWindowed_Checked(object sender, RoutedEventArgs e)
 		{
-			if (grpGraphicsWindow is null)
-				return;
-
-			int index = gridGraphics.Children.IndexOf(grpGraphicsFullscreen);  //Graphic Fullscreen setting is a children of the graphic grid 
-
-			gridGraphics.Children.RemoveAt(index); //we remove it so we can only display the Window options
-
-			if (!gridGraphics.Children.Contains(grpGraphicsWindow)) //if the Window grid doesn't exist, add it back
-			{
-				gridGraphics.Children.Add(grpGraphicsWindow);
-			}
+			
 		}
 
 		#endregion
