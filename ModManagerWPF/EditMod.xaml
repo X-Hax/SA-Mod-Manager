@@ -1,121 +1,217 @@
 ﻿<Window x:Class="ModManagerWPF.EditMod"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ModManagerWPF"
-        xmlns:pt="http://propertytools.org/wpf"
-        mc:Ignorable="d"
-         Style="{StaticResource SAWindow}" WindowStartupLocation="CenterScreen" 
-        MinHeight="400" MinWidth="420" Height="520" Width="440">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:ModManagerWPF"
+		xmlns:pt="http://propertytools.org/wpf"
+		mc:Ignorable="d"
+		 Style="{StaticResource SAWindow}" WindowStartupLocation="CenterScreen" 
+		MinHeight="430" MinWidth="420" Height="430" Width="440"
+		ResizeMode="NoResize">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
 
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="59"/>
-            <RowDefinition Height="Auto" MinHeight="311.96"/>
-            <RowDefinition/>
+		<Grid Grid.Row="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
 
-        </Grid.RowDefinitions>
+			<Grid Margin="5,5,5,5">
+				<Label Content="{StaticResource NewModDescp}" HorizontalAlignment="Center" />
+			</Grid>
 
-        <Grid Margin="0,0,0,13">
-            <Label Content="{StaticResource NewModDescp}" HorizontalAlignment="Center" />
-        </Grid>
-        
-        <!--Tab Container for the Mod New / Edit elements.-->
-        <GroupBox Grid.Row="1" BorderThickness="0.3,0.3,0.3,0.3"  Margin="20,0,20,0">
-            <TabControl x:Name="tcEdit" Background="Transparent" Grid.Row="1" Margin="2">
-                <!--This Tab is for Properties.-->
+			<!--Tab Container for the Mod New / Edit elements.-->
+			<Border Margin="5,5,5,5" Grid.Row="1" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="2">
+				<TabControl x:Name="tcEdit" Background="Transparent" Grid.Row="1" Margin="2">
+					<!--This Tab is for Properties.-->
+					<TabItem x:Name="tabProperties" Header="{StaticResource PropertiesTab}" Margin="0,0,0,0">
+						<Grid x:Name="GridModInfo">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="10"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="270"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
 
-                <TabItem x:Name="tabProperties" Header="{StaticResource PropertiesTab}" Margin="0,0,0,0">
+							<Grid Grid.Column="0" Grid.Row="0" Margin="10,0,0,0">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+								</Grid.RowDefinitions>
 
-                    <Grid x:Name="GridModInfo">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+								<Label x:Name="modName" Content="{DynamicResource ModsListName}" Grid.Row="0" VerticalAlignment="Center"/>
+								<Label x:Name="modAuthor" Content="{DynamicResource ModsListAuthor}" Grid.Row="1" VerticalAlignment="Center"/>
+								<Label x:Name="modDescription" Content="{DynamicResource ModSelectTextDesc}" Grid.Row="2" VerticalAlignment="Center"/>
+								<Label x:Name="modVersion" Content="{DynamicResource ModsListVersion}" Grid.Row="3" VerticalAlignment="Center"/>
+								<Label x:Name="modDLL" Content="{DynamicResource EDLL}" Grid.Row="4" VerticalAlignment="Center"/>
+								<Label x:Name="modCategory" Content="{DynamicResource ModsListCategory}" Grid.Row="5" VerticalAlignment="Center"/>
+								<Label x:Name="modID" Content="{DynamicResource EModID}" Grid.Row="6" VerticalAlignment="Center"/>
+								<Label x:Name="modAuthorURL" Content="{DynamicResource EAuthorURL}" Grid.Row="7" VerticalAlignment="Center"/>
+								<Label x:Name="modSourceURL" Content="Source Code URL:" Grid.Row="8" VerticalAlignment="Center"/>
+							</Grid>
 
-                        <Grid Grid.Column="0" Grid.Row="0" Margin="10,0,0,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
+							<Grid Grid.Column="2" Grid.Row="0" Margin="0,0,10,0">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="30"/>
+								</Grid.RowDefinitions>
+								<TextBox x:Name="nameBox" VerticalAlignment="Center" Height="22"/>
+								<TextBox x:Name="authorBox" Grid.Row="1" VerticalAlignment="Center" Height="22"/>
+								<TextBox x:Name="descriptionBox" Grid.Row="2" VerticalAlignment="Center" Height="22"/>
+								<TextBox x:Name="versionBox" Grid.Row="3" VerticalAlignment="Center" Text="1.0" Height="22"/>
+								<TextBox x:Name="dllText" Grid.Row="4" VerticalAlignment="Center" Height="22"/>
+								<ComboBox x:Name="categoryBox" Grid.Row="5" VerticalAlignment="Center" ItemsSource="{Binding Path=ModCategory}"/>
+								<TextBox x:Name="modIDBox" Grid.Row="6" VerticalAlignment="Center" Height="22"/>
+								<TextBox x:Name="authorURLBox"  Grid.Row="7" VerticalAlignment="Center" Height="22"/>
+								<TextBox x:Name="sourceURLBox" Grid.Row="8" VerticalAlignment="Center" Height="22"/>
+							</Grid>
+						</Grid>
+					</TabItem>
 
-                            <Label x:Name="modName" Content="{DynamicResource ModsListName}" VerticalAlignment="Center"/>
-                            <Label x:Name="modAuthor" Content="{DynamicResource ModsListAuthor}" Grid.Row="1" VerticalAlignment="Center"/>
-                            <Label x:Name="modAuthorURL" Content="{DynamicResource EAuthorURL}" Grid.Row="2" VerticalAlignment="Center"/>
-                            <Label x:Name="modVersion" Content="{DynamicResource ModsListVersion}" Grid.Row="3" VerticalAlignment="Center"/>
-                            <Label x:Name="modCategory" Content="{DynamicResource ModsListCategory}" Grid.Row="4" VerticalAlignment="Center"/>
-                            <Label x:Name="modID" Content="{DynamicResource EModID}" Grid.Row="5" VerticalAlignment="Center"/>
-                            <Label x:Name="modDescription" Content="{DynamicResource ModSelectTextDesc}" Grid.Row="6" VerticalAlignment="Center"/>
-                            <Label x:Name="modDLL" Content="{DynamicResource EDLL}" Grid.Row="7" VerticalAlignment="Center"/>
+					<!--This Tab is for Updates.-->
+					<TabItem x:Name="tabUpdates" Header="{StaticResource UpdateTab}" Width="Auto" Margin="0,0,0,0" TextBlock.TextAlignment="Center">
+						<Grid x:Name="GridModUpdate">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="5"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="5"/>
+								<RowDefinition Height="270"/>
+								<RowDefinition Height="5"/>
+							</Grid.RowDefinitions>
+							<Grid Grid.Column="1" Grid.Row="1">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="50"/>
+									<RowDefinition Height="0"/>
+									<RowDefinition Height="0"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
 
-                        </Grid>
+								<!--GroupBox for Update Selection-->
+								<GroupBox Header="Update Method">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
 
-                        <Grid Grid.Column="1" Grid.Row="0" Margin="0,0,10,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                            </Grid.RowDefinitions>
-                            <TextBox x:Name="nameBox" VerticalAlignment="Center"/>
-                            <TextBox x:Name="authorBox" Grid.Row="1" VerticalAlignment="Center"/>
-                            <TextBox x:Name="authorURLBox"  Grid.Row="2" VerticalAlignment="Center"/>
-                            <TextBox x:Name="versionBox" Grid.Row="3" VerticalAlignment="Center" Text="1.0"/>
-                            <ComboBox x:Name="categoryBox" Grid.Row="4" VerticalAlignment="Center" ItemsSource="{Binding Path=ModCategory}"/>
-                            <TextBox x:Name="modIDBox" Grid.Row="5" VerticalAlignment="Center"/>
-                            <TextBox x:Name="descriptionBox" Grid.Row="6" VerticalAlignment="Center"/>
-                            <TextBox x:Name="dllText" Grid.Row="7" VerticalAlignment="Center"/>
+										<RadioButton x:Name="radGithub" Content="GitHub" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+										<RadioButton x:Name="radGamebanana" Content="GameBanana" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+										<RadioButton x:Name="radSelf" Content="Self Hosted" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+									</Grid>
+								</GroupBox>
 
-                        </Grid>
+								<!--GroupBox for GitHub Updates-->
+								<GroupBox x:Name="grpGithubUpdate" Header="GitHub Update Settings" Grid.Row="1">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto"/>
+											<ColumnDefinition Width="10"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="30"/>
+											<RowDefinition Height="30"/>
+										</Grid.RowDefinitions>
 
+										<Label Content="GitHub URL:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+										<Label Content="GitHub Asset:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+										<TextBox x:Name="boxGitURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22"/>
+										<TextBox x:Name="boxGitAsset" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22"/>
+									</Grid>
+								</GroupBox>
 
-                    </Grid>
-                </TabItem>
+								<!--GroupBox for GameBanana Updates-->
+								<GroupBox x:Name="grpGamebananaUpdate" Header="GameBanana Update Settings" Grid.Row="2">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto"/>
+											<ColumnDefinition Width="10"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="30"/>
+											<RowDefinition Height="30"/>
+										</Grid.RowDefinitions>
 
-                <!--This Tab is for Updates.-->
-                <TabItem x:Name="tbUpdates" Header="{StaticResource UpdateTab}" Width="Auto" Margin="0,0,0,0" TextBlock.TextAlignment="Center">
+										<Label Content="GameBanana URL:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+										<TextBox x:Name="boxGBURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22"/>
+									</Grid>
+								</GroupBox>
 
-                    <Grid x:Name="GridModUpdate">
+								<!--GroupBox for Self-Hosted Updates-->
+								<GroupBox x:Name="grpSelfUpdate" Header="Self Host Update Settings" Grid.Row="3">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto"/>
+											<ColumnDefinition Width="10"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="30"/>
+											<RowDefinition Height="30"/>
+										</Grid.RowDefinitions>
 
-                    </Grid>
-                </TabItem>
-            </TabControl>
-        </GroupBox>
+										<Label Content="Files URL:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+										<Label Content="Changelog URL:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+										<TextBox x:Name="boxSelfURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22"/>
+										<TextBox x:Name="boxChangeURL" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22"/>
+									</Grid>
+								</GroupBox>
+							</Grid>
+						</Grid>
+					</TabItem>
 
-        <Grid Grid.Row="2"  Background="{DynamicResource MainDialogBottomBrush}">
-            <!--This Gris manages the Save and Play Buttons.-->
-            <Grid x:Name="bottomGrid" VerticalAlignment="Center" Height="Auto" MinHeight="30" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="130"/>
-                    <ColumnDefinition Width="130"/>
-                    <ColumnDefinition Width="15"/>
-                    <ColumnDefinition Width="130"/>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="okBtn" Content="{DynamicResource BtnOK}"  MaxHeight="30" Grid.Column="1" Click="okBtn_Click"/>
-                <Button x:Name="cancelBtn" Content="{DynamicResource BtnCancel}" MaxHeight="30" Grid.Column="3" Click="cancelBtn_Click"/>
-            </Grid>
-        </Grid>
-    </Grid>
-    
+					<TabItem x:Name="tabDepdencies" Header="Depdencies">
+						<Grid>
+
+						</Grid>
+					</TabItem>
+				</TabControl>
+			</Border>
+		</Grid>
+		
+		<Grid Grid.Row="1" HorizontalAlignment="Right">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="130"/>
+				<ColumnDefinition Width="10"/>
+				<ColumnDefinition Width="130"/>
+				<ColumnDefinition Width="10"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="10"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="10"/>
+			</Grid.RowDefinitions>
+			<Button x:Name="okBtn" Content="{DynamicResource BtnOK}" Grid.Column="0" Grid.Row="1" Height="30" Click="okBtn_Click"/>
+			<Button x:Name="cancelBtn" Content="{DynamicResource BtnCancel}" Grid.Column="2" Grid.Row="1" Height="30" Click="cancelBtn_Click"/>
+		</Grid>
+	</Grid>
+	
 </Window>
