@@ -23,4 +23,11 @@
     <SolidColorBrush x:Key="DisabledColor" Color="#FF323232"/>
     <SolidColorBrush x:Key="DisabledTextColor" Color="#FFC9C9C9"/>
 
+    <SolidColorBrush x:Key="ScrollBarStaticThumb" Color="#787878"/>
+    <SolidColorBrush x:Key="ScrollBarMouseOverThumb" Color="#696968"/>
+    <SolidColorBrush x:Key="ScrollBarPressedThumb" Color="#616161"/>
+
+    <Color x:Key="SlideBtnColor" A="255" R="63" G="63" B="70"/>
+    <Color x:Key="SlideTrackColor" A="255" R="72" G="72" B="72"/>
+
 </ResourceDictionary>

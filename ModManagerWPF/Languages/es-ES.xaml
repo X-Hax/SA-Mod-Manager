@@ -3,7 +3,11 @@
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<!--#region Main Window Strings-->
+    <!--Region Common UI-->
+    <system:String x:Key="BtnOK">OK</system:String>
+    <system:String x:Key="BtnCancel">Cancel</system:String>
+    
+    <!--#region Main Window Strings-->
 	<system:String x:Key="MainBtnSave" >Guardar</system:String>
 	<system:String x:Key="MainBtnSaveAndPlay" >Guardar y Jugar</system:String>
 	<system:String x:Key="MainTabMods">Mods</system:String>
@@ -21,8 +25,9 @@
 	<system:String x:Key="ModsBtnRefresh">Recargar</system:String>
 	<system:String x:Key="ModsBtnConfigure">Configurar Mod</system:String>
 	<system:String x:Key="ModsBtnNew">Añadir Mod</system:String>
-	<system:String x:Key="ModsLblDescription">Descripción: Ningún Mod Seleccionado</system:String>
-	<system:String x:Key="ModsTextBoxSearch">Buscar...</system:String>
+    <system:String x:Key="ModTextDesc">Descripción: Ningún Mod Seleccionado</system:String>
+    <system:String x:Key="ModSelectTextDesc">Descripción:</system:String>
+    <system:String x:Key="ModsTextBoxSearch">Buscar...</system:String>
 
     <!--Mods Items right click Menu-->
     <system:String x:Key="ModsUIOpenFolder">Abrir Carpeta</system:String>

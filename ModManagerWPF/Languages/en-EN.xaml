@@ -2,9 +2,13 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    
+    <!--Region Common UI-->
+    <system:String x:Key="BtnOK">OK</system:String>
+    <system:String x:Key="BtnCancel">Cancel</system:String>
 
-	<!--#region Main Window Strings-->
-	<system:String x:Key="MainBtnSave" >Save</system:String>
+    <!--#region Main Window Strings-->
+	<system:String x:Key="MainBtnSave">Save</system:String>
 	<system:String x:Key="MainBtnSaveAndPlay" >Save &amp; Play</system:String>
 	<system:String x:Key="MainTabMods">Mods</system:String>
 	<system:String x:Key="MainTabCodes">Codes</system:String>
@@ -21,7 +25,8 @@
 	<system:String x:Key="ModsBtnRefresh">Refresh</system:String>
 	<system:String x:Key="ModsBtnConfigure">Configure Mod</system:String>
 	<system:String x:Key="ModsBtnNew">Add Mod</system:String>
-	<system:String x:Key="ModsLblDescription">Description: No Mod Select</system:String>
+    <system:String x:Key="ModTextDesc">Description: No Mod Selected.</system:String>    
+    <system:String x:Key="ModSelectTextDesc">Description:</system:String>
 	<system:String x:Key="ModsTextBoxSearch">Search...</system:String>
 
     <!--Mods Items right click Menu-->
@@ -203,7 +208,9 @@
     <system:String x:Key="NewModTitle">New Mod</system:String>
     <system:String x:Key="PropertiesTab">Properties</system:String>
     <system:String x:Key="UpdateTab">Update</system:String>
-
+    <system:String x:Key="EAuthorURL">Author URL:</system:String>    
+    <system:String x:Key="EModID">Mod ID:</system:String>
+    <system:String x:Key="EDLL">DLL:</system:String>
 
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
@@ -223,6 +230,13 @@
     <system:String x:Key="FailedDetectGamePath">Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.</system:String>
 
     <system:String x:Key="DeleteModWarning">Are you sure you want to delete</system:String>
+
+    <system:String x:Key="ErrorModDuplicate" xml:space="preserve">A mod with that name already exists.&#x0a;Please choose a different name or rename the existing one.</system:String>
+    <system:String x:Key="ErrorModDuplicateTitle">"Mod already exists"</system:String>
+    <system:String x:Key="ErrorModCreation">"Mod Creation Error"</system:String>
+
+    <system:String x:Key="ErrorNoNameSet">You cannot have a mod without a name.</system:String>
+    <system:String x:Key="ErrorNoNameSetTitle">Invalid mod name</system:String>
     <!--#endregion-->
 
 

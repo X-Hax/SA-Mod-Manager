@@ -56,9 +56,9 @@ namespace ModManagerWPF
 		bool installed = false;
 		bool suppressEvent = false;
 
-		private GameConfigFile gameConfigFile;
+		private Game.GameConfigFile gameConfigFile;
 
-		public GameGraphics graphics;
+		public Game.GameGraphics graphics;
 		public GitHub git;
 		static private uint count = 0;
 
@@ -75,12 +75,12 @@ namespace ModManagerWPF
 		#endregion
 
 		public MainWindow()
-		{
+		{	
 			git = new(this);
 			InitializeComponent();
 			git.GetRecentCommit();
-
-			graphics = new GameGraphics(comboScreen);
+			
+			graphics = new Game.GameGraphics(comboScreen);
 			SetGamePath(Settings.Default.GamePath);
 			UpdatePathsStringsInfo();
 			LoadSettings();
@@ -123,7 +123,6 @@ namespace ModManagerWPF
 			this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
 		}
 
-
 		private void Save_AppUserSettings()
 		{
 			Settings.Default.Save();
@@ -147,6 +146,7 @@ namespace ModManagerWPF
 		{
 			GitVersion = git.LastCommit;
 			Title = titleName + " " + "(" + Version + "-" + GitVersion + ")";
+			Settings.Default.LastCommit = git.LastCommit;
 		}
 
 		private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
@@ -430,13 +430,13 @@ namespace ModManagerWPF
 			}
 			else if (count == 1)
 			{
-				//modDescription.Text = "Description: " + mods[(string)modListView.SelectedItems[0].Tag].Description;
 
 				ModData mod = (ModData)listMods.SelectedItem;
 
 				if (mod is null)
 					return;
 
+				textModsDescription.Text = Lang.GetString("ModSelectTextDesc") + " " + mods[mod.Tag].Description;	
 				btnMoveTop.IsEnabled = listMods.Items.IndexOf(mod) != 0;
 				btnMoveUp.IsEnabled = listMods.Items.IndexOf(mod) > 0;
 				btnMoveDown.IsEnabled = listMods.Items.IndexOf(mod) < listMods.Items.Count - 1;
@@ -487,7 +487,13 @@ namespace ModManagerWPF
 
 		private void ModContextEditMod_Click(object sender, RoutedEventArgs e)
 		{
+			var mod = (ModData)listMods.SelectedItem;
 
+			if (mod is not null)
+			{
+				SADXModInfo modInfo = mods[mod.Tag];
+				new EditMod(modInfo).ShowDialog();
+			}
 		}
 
 		private void ModContextDeleteMod_Click(object sender, RoutedEventArgs e)
@@ -521,12 +527,12 @@ namespace ModManagerWPF
 
 		private void LoadGameConfigIni()
 		{
-			gameConfigFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<GameConfigFile>(sadxIni) : new GameConfigFile();
+			gameConfigFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<Game.GameConfigFile>(sadxIni) : new Game.GameConfigFile();
 			if (gameConfigFile.GameConfig == null)
 			{
-				gameConfigFile.GameConfig = new GameConfig
+				gameConfigFile.GameConfig = new Game.GameConfig
 				{
-					FrameRate = (int)FrameRate.High,
+					FrameRate = (int)Game.FrameRate.High,
 					Sound3D = 1,
 					SEVoice = 1,
 					BGM = 1,
@@ -536,7 +542,7 @@ namespace ModManagerWPF
 			}
 
 			if (gameConfigFile.Controllers == null)
-				gameConfigFile.Controllers = new Dictionary<string, ControllerConfig>();
+				gameConfigFile.Controllers = new Dictionary<string, Game.ControllerConfig>();
 
 			// Video
 			// Display mode
@@ -546,10 +552,10 @@ namespace ModManagerWPF
 				radWindowed.IsChecked = true;
 
 			// Framerate
-			if (gameConfigFile.GameConfig.FrameRate == (int)FrameRate.Invalid || gameConfigFile.GameConfig.FrameRate > (int)FrameRate.Low)
+			if (gameConfigFile.GameConfig.FrameRate == (int)Game.FrameRate.Invalid || gameConfigFile.GameConfig.FrameRate > (int)Game.FrameRate.Low)
 			{
 				MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButton.OK, MessageBoxImage.Error);
-				comboFramerate.SelectedIndex = (int)FrameRate.High - 1;
+				comboFramerate.SelectedIndex = (int)Game.FrameRate.High - 1;
 			}
 			else
 			{
@@ -1022,7 +1028,7 @@ namespace ModManagerWPF
 
 		private void NewModBtn_Click(object sender, RoutedEventArgs e)
 		{
-			//new EditMod(null).ShowDialog();
+			new EditMod(null).ShowDialog();
 		}
     }
 }
