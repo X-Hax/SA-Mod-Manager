@@ -7,8 +7,7 @@
 		xmlns:pt="http://propertytools.org/wpf"
 		mc:Ignorable="d"
 		 Style="{StaticResource SAWindow}" WindowStartupLocation="CenterScreen" 
-		MinHeight="430" MinWidth="420" Height="430" Width="440"
-		ResizeMode="NoResize">
+		MinHeight="460" MinWidth="450" Height="470" Width="460">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
