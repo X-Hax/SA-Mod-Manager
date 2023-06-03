@@ -217,6 +217,7 @@
     <system:String x:Key="ESaveRedirect">Save Redirect:</system:String>
     <system:String x:Key="SaveRedirectMainTxt">Main Save</system:String>
     <system:String x:Key="SaveRedirectChaoTxt">Chao Save</system:String>
+    <system:String x:Key="OpenFolder">Open Folder</system:String>
 	<system:String x:Key="UpdatesMethod">Update Method</system:String>
 	<system:String x:Key="UpdatesMethodSelf">Self Hosted</system:String>
 	<system:String x:Key="UpdatesGithub">Github Update Settings</system:String>

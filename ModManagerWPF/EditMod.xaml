@@ -228,7 +228,7 @@
 				<ColumnDefinition Width="10"/>
 				<ColumnDefinition Width="130"/>
 			</Grid.ColumnDefinitions>
-			<CheckBox x:Name="openFolderChk" Content="Open Folder" Grid.Column="1" VerticalAlignment="Center" IsChecked="True"></CheckBox>
+            <CheckBox x:Name="openFolderChk" Content="{DynamicResource OpenFolder}" Grid.Column="1" VerticalAlignment="Center" IsChecked="True"></CheckBox>
 		</Grid>
 		
 		<Grid Grid.Row="2" HorizontalAlignment="Right">

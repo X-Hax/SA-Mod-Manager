@@ -1,13 +1,8 @@
-﻿using Microsoft.Win32;
-using ModManagerCommon;
-using ModManagerCommon.Forms;
+﻿using ModManagerCommon;
 using ModManagerWPF.Languages;
 using ModManagerWPF.Themes;
 using System;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ModManagerWPF

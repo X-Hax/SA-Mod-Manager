@@ -1,16 +1,10 @@
 ﻿using IniFile;
-using ModManagerCommon;
 using ModManagerWPF.Properties;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows;
-using static System.Net.Mime.MediaTypeNames;
-
-
 
 namespace ModManagerWPF
 {

@@ -190,6 +190,20 @@
     <system:String x:Key="SaveRedirectChaoTxt">Sauvegarde Chao</system:String>
     <system:String x:Key="ESourceCodeURL">URL du Code Source:</system:String>
     <system:String x:Key="ESaveRedirect">Redirection de Sauvegarde:</system:String>
+    <system:String x:Key="OpenFolder">Ouvrir le Dossier</system:String>
+    <system:String x:Key="UpdatesMethod">Methode de Mises à Jour</system:String>
+    <system:String x:Key="UpdatesMethodSelf">Auto-Hébergé</system:String>
+    <system:String x:Key="UpdatesGithub">Paramètres de Mise à Jour Github</system:String>
+    <system:String x:Key="UpdatesGithubAuthor">Auteur et Dépôt:</system:String>
+    <system:String x:Key="UpdatesGithubAsset">Sortie des Asset:</system:String>
+    <system:String x:Key="UpdatesGamebanana">Paramètres de Mise à Jour Github Gamebanana</system:String>
+    <system:String x:Key="UpdatesGamebananaID">Mod ID:</system:String>
+    <system:String x:Key="UpdatesSelf">Paramètres d'Auto-Hébergé</system:String>
+    <system:String x:Key="UpdatesSelfUpdate">URL de Mise à Jour:</system:String>
+    <system:String x:Key="UpdatesSelfChangelog">URL du journal des modifications:</system:String>
+    <system:String x:Key="DependencyWarning">Le système de dépendance ne doit être utilisé que lorsque vous avez créé un mod qui dépend absolument d'un autre mod pour fonctionner correctement.</system:String>
+    <system:String x:Key="DependencyAdd">Ajouter une Dépendance</system:String>
+    <system:String x:Key="DependencyRemove">Supprimer une Dépendance</system:String>
 
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
