@@ -179,10 +179,15 @@
     <system:String x:Key="EditModTitle">Modifier </system:String>
     <system:String x:Key="NewModTitle">Nouveau Mod</system:String>
     <system:String x:Key="PropertiesTab">Propriétés</system:String>
+    <system:String x:Key="DepdenciesTab">Dépendances</system:String>
     <system:String x:Key="UpdateTab">Mises à jour</system:String>
     <system:String x:Key="EAuthorURL">URL de l'Auteur:</system:String>
     <system:String x:Key="EModID">Mod ID:</system:String>
     <system:String x:Key="EDLL">DLL:</system:String>
+    <system:String x:Key="SaveRedirectMainTxt">Sauvegarde Principale</system:String>
+    <system:String x:Key="SaveRedirectChaoTxt">Sauvegarde Chao</system:String>
+    <system:String x:Key="ESourceCodeURL">URL du Code Source:</system:String>
+    <system:String x:Key="ESaveRedirect">Redirection de Sauvegarde:</system:String>
 
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>

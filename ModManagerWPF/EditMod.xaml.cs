@@ -3,6 +3,7 @@ using ModManagerCommon;
 using ModManagerWPF.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 using System.Text;
@@ -21,6 +22,7 @@ namespace ModManagerWPF
 	{
 		static bool editMod { get; set; } = false;
 		static SADXModInfo Mod { get; set; }
+		static string CurrentTime = string.Empty;
 		public EditMod(SADXModInfo mod)
 		{	
 			InitializeComponent();
@@ -31,6 +33,7 @@ namespace ModManagerWPF
 			AddColon(modCategory);
 
 			editMod = mod is not null;
+			CurrentTime = ((uint)DateTime.Now.GetHashCode()).ToString();
 
 			if (editMod)
 			{
@@ -60,9 +63,9 @@ namespace ModManagerWPF
 			lab.Content += ":";
 		}
 
-		static string GenerateModID()
+		string GenerateModID()
 		{
-			return "sadx." + ((uint)DateTime.Now.GetHashCode()).ToString();
+			return "sadx." + nameBox.Text + "." + CurrentTime;
 		}
 
 		static string ValidateFilename(string filename)
@@ -120,11 +123,11 @@ namespace ModManagerWPF
 				Description = descriptionBox.Text.Length > 0 ? descriptionBox.Text : null,
 				Version = isStringNotEmpty(versionBox.Text) ? versionBox.Text : null,
 				Category = isStringNotEmpty(categoryBox.Text) ? categoryBox.Text : null,
-				/*RedirectMainSave = checkRedirectMainSave.Checked,
-				//RedirectChaoSave = checkRedirectChaoSave.Checked,
+				RedirectMainSave = (bool)mainSaveBox.IsChecked,
+				RedirectChaoSave = (bool)chaoSaveBox.IsChecked,
 			//	GitHubRepo = isStringNotEmpty(textGitHubRepo.Text) ? textGitHubRepo.Text : null,
-				GitHubAsset = isStringNotEmpty(textGitHubAttachment.Text) ? textGitHubAttachment.Text : null,
-				UpdateUrl = isStringNotEmpty(textDirUrl.Text) ? textDirUrl.Text : null,*/
+				//GitHubAsset = isStringNotEmpty(textGitHubAttachment.Text) ? textGitHubAttachment.Text : null,
+				//UpdateUrl = isStringNotEmpty(textDirUrl.Text) ? textDirUrl.Text : null,
 				ModID = isStringNotEmpty(modIDBox.Text) ? modIDBox.Text : null,
 				DLLFile = isStringNotEmpty(dllText.Text) ? dllText.Text : null,
 			};
@@ -149,7 +152,13 @@ namespace ModManagerWPF
 				}
 
 				if (File.Exists(fullName))
-					BuildModINI(Path.GetDirectoryName(fullName));		
+					BuildModINI(Path.GetDirectoryName(fullName));
+
+				if ((bool)openFolderChk.IsChecked)
+				{
+					var psi = new ProcessStartInfo() { FileName = modPath, UseShellExecute = true };
+					Process.Start(psi);
+				}
 			}
 
 			Close();
@@ -196,12 +205,11 @@ namespace ModManagerWPF
 
 				BuildModINI(moddir);
 
-				/*if (checkOpenFolder.Checked)
+				if ((bool)openFolderChk.IsChecked)
 				{
-					System.Diagnostics.Process.Start(moddir);
-				}*/
-
-				DialogResult = true;
+					var psi = new ProcessStartInfo() { FileName = moddir, UseShellExecute = true };
+					Process.Start(psi);
+				}
 
 				Close();
 			}
@@ -235,6 +243,18 @@ namespace ModManagerWPF
 		private void cancelBtn_Click(object sender, RoutedEventArgs e)
 		{
 			this.Close();
+		}
+
+		private void nameBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			if (!string.IsNullOrEmpty(nameBox.Text))
+			{
+				modIDBox.Text = GenerateModID();
+			}
+			else
+			{
+				modIDBox.Text = string.Empty;
+			}
 		}
 	}
 }
