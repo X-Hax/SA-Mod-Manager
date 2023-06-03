@@ -2,13 +2,12 @@
 using ModManagerCommon;
 using ModManagerWPF.Properties;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-
 using System.Text;
 using System.Windows;
-
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -43,15 +42,32 @@ namespace ModManagerWPF
 			{
 				Mod = mod;
 				Title = Lang.GetString("EditModTitle") + " " + mod.Name;
+
+				//get and assign mod Information
 				nameBox.Text = mod.Name;
 				authorBox.Text = mod.Author;
+
 				//authorURLBox.Text = mod.AuthorURL;
 				versionBox.Text = mod.Version;
 				descriptionBox.Text = mod.Description;
 				categoryBox.SelectedIndex = SADXModInfo.ModCategory.IndexOf(mod.Category);
 				modIDBox.Text = mod.ModID;
 				dllText.Text = mod.DLLFile;
-				LoadModUpdates(mod);
+				mainSaveBox.IsChecked = mod.RedirectMainSave;
+				chaoSaveBox.IsChecked = mod.RedirectChaoSave;
+
+				boxGitURL.Text = mod.GitHubRepo;
+				boxGitAsset.Text = mod.GitHubAsset;
+				boxSelfURL.Text = mod.UpdateUrl;
+				boxChangeURL.Text = mod.ChangelogUrl;
+				boxGBURL.Text = mod.GameBananaItemId.ToString();
+
+				radGithub.IsChecked = boxGitURL.Text.Length > 0;
+				radGamebanana.IsChecked = boxGBURL.Text.Length > 0;
+				radSelf.IsChecked = boxSelfURL.Text.Length > 0;
+
+
+				openFolderChk.IsChecked = false;
 			}
 			else
 			{
@@ -175,10 +191,43 @@ namespace ModManagerWPF
 			return sb.ToString().ToLowerInvariant();
 		}
 
+		private void HandleSaveRedirection(string modDirectory)
+		{
+			var fullSavepath = Path.Combine(modDirectory, "SAVEDATA");
+			bool saveDirExist = Directory.Exists(fullSavepath);
+
+			if ((bool)!mainSaveBox.IsChecked && (bool)!chaoSaveBox.IsChecked)
+			{
+				if (saveDirExist)
+				{
+					//if user unchecked save redirect and the mod has existing save files, throw warning
+					if (Directory.GetFiles(fullSavepath, "*.snc").Length > 0)
+					{
+						var dialogue = MessageBox.Show(Lang.GetString("WarningDelSaveRedir"), Lang.GetString("Warning"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+						if (dialogue != MessageBoxResult.Yes)
+						{
+							return;
+						}
+					}
+					
+					//delete existing savedata folder in mod directory
+					Directory.Delete(fullSavepath, true);
+				}
+			}
+			else
+			{
+				if (!saveDirExist)
+				{
+					Directory.CreateDirectory(fullSavepath);
+				}
+			}
+		}
+
 		private void BuildModINI(string moddir)
 		{
 			//Assign variables to null if the string are empty so they won't show up at all in mod.ini.
-			SADXModInfo newMod = new SADXModInfo
+			SADXModInfo newMod = editMod ? Mod : new SADXModInfo
 			{
 				Name = nameBox.Text,
 				Author = isStringNotEmpty(authorBox.Text) ? authorBox.Text : null,
@@ -187,17 +236,17 @@ namespace ModManagerWPF
 				Category = isStringNotEmpty(categoryBox.Text) ? categoryBox.Text : null,
 				RedirectMainSave = (bool)mainSaveBox.IsChecked,
 				RedirectChaoSave = (bool)chaoSaveBox.IsChecked,
-			//	GitHubRepo = isStringNotEmpty(textGitHubRepo.Text) ? textGitHubRepo.Text : null,
-				//GitHubAsset = isStringNotEmpty(textGitHubAttachment.Text) ? textGitHubAttachment.Text : null,
-				//UpdateUrl = isStringNotEmpty(textDirUrl.Text) ? textDirUrl.Text : null,
+
 				ModID = isStringNotEmpty(modIDBox.Text) ? modIDBox.Text : null,
 				DLLFile = isStringNotEmpty(dllText.Text) ? dllText.Text : null,
 			};
 
 			SaveModUpdates(newMod);
 
-			IniSerializer.Serialize(newMod, Path.Combine(moddir, "mod.ini"));
+			var modIniPath = Path.Combine(moddir, "mod.ini");
+			IniSerializer.Serialize(newMod, modIniPath);
 		}
+
 
 		private void ModifyMod(string modPath)
 		{
@@ -215,8 +264,13 @@ namespace ModManagerWPF
 					}
 				}
 
+				var modDirectory = Path.GetDirectoryName(fullName);
+
+				HandleSaveRedirection(modDirectory);
+
 				if (File.Exists(fullName))
-					BuildModINI(Path.GetDirectoryName(fullName));
+					BuildModINI(modDirectory);
+
 
 				if ((bool)openFolderChk.IsChecked)
 				{
@@ -232,7 +286,6 @@ namespace ModManagerWPF
 		{
 			try
 			{
-
 				if (Directory.Exists(moddir))
 				{
 					MessageBox.Show(Lang.GetString("ErrorModDuplicate"), Lang.GetString("ErrorModDuplicateTitle"), MessageBoxButton.OK, MessageBoxImage.Asterisk);
@@ -241,10 +294,10 @@ namespace ModManagerWPF
 
 				Directory.CreateDirectory(moddir);
 
-				/*if (checkRedirectMainSave.Checked || checkRedirectChaoSave.Checked)
+				if ((bool)mainSaveBox.IsChecked || (bool)chaoSaveBox.IsChecked)
 				{
 					Directory.CreateDirectory(Path.Combine(moddir, "SAVEDATA"));
-				}*/
+				}
 
 				if (categoryBox.Text == "Music")
 				{
@@ -310,16 +363,16 @@ namespace ModManagerWPF
 
 		private void SaveModUpdates(SADXModInfo mod)
 		{
-			if (radGithub.IsChecked == true)
+			if (radGithub.IsChecked == true && isStringNotEmpty(boxGitURL.Text))
 			{
 				mod.GitHubRepo = boxGitURL.Text;
 				mod.GitHubAsset = boxGitAsset.Text;
 			}
-			else if (radGamebanana.IsChecked == true)
+			else if (radGamebanana.IsChecked == true && isStringNotEmpty(boxGBURL.Text))
 			{
 				mod.GameBananaItemId = int.Parse(boxGBURL.Text);
 			}
-			else if (radSelf.IsChecked == true)
+			else if (radSelf.IsChecked == true && isStringNotEmpty(boxSelfURL.Text))
 			{
 				mod.UpdateUrl = boxSelfURL.Text;
 				mod.ChangelogUrl = boxChangeURL.Text;

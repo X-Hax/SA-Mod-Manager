@@ -5,7 +5,8 @@
     <!--Region Common UI-->
     <system:String x:Key="BtnOK">OK</system:String>
     <system:String x:Key="BtnCancel">Annuler</system:String>
-    
+    <system:String x:Key="Warning">Attention</system:String>
+
     <!--Main Window Strings-->
     <system:String x:Key="MainBtnSave" >Sauvegarder</system:String>
     <system:String x:Key="MainBtnSaveAndPlay" xml:space="preserve">Sauvegarder &amp; Jouer</system:String>
@@ -49,6 +50,7 @@
     <system:String x:Key="CodesListCategory">Catégorie</system:String>
     <system:String x:Key="CodesUIInfo">Double cliquer sur un code pour plus d'information.</system:String>
     <system:String x:Key="CodesUIInfoHint">Selectioner un code pour plus d'information.</system:String>
+
 
     <system:String x:Key="CodeAbout">A Propos de {0}</system:String>
     <system:String x:Key="CodeAuthor">Créé par</system:String>
@@ -211,7 +213,7 @@
     <system:String x:Key="ErrorNoNameSet">Vous ne pouvez pas avoir un mod sans nom.</system:String>
     <system:String x:Key="ErrorNoNameSetTitle">Nom du mod Invalide</system:String>
 
-    <!--About Code Window-->
-    <system:String x:Key="AboutCodeTitle">A Propos</system:String>
+    <system:String x:Key="WarningDelSaveRedir" xml:space="preserve">Vous êtes sur le point de désactiver la redirection de sauvegarde pour ce mod. Si vous continuez, toutes les sauvegardes présentent dans le dossier du mod seront supprimées.&#x0a;&#x0a;Êtes-vous sûr de vouloir continuer?</system:String>
+
     
 </ResourceDictionary>
