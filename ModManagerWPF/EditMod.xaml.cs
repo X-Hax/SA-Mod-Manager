@@ -20,11 +20,15 @@ namespace ModManagerWPF
 	/// </summary>
 	public partial class EditMod : Window
 	{
+		#region Variables
 		static bool editMod { get; set; } = false;
 		static SADXModInfo Mod { get; set; }
 		static string CurrentTime = string.Empty;
+		#endregion
+
+		#region Initializer
 		public EditMod(SADXModInfo mod)
-		{	
+		{
 			InitializeComponent();
 
 			AddColon(modName);
@@ -58,6 +62,80 @@ namespace ModManagerWPF
 
 			DataContext = new SADXModInfo();
 		}
+		#endregion
+
+		#region Form Functions
+
+		#region Main Window Functions
+		private void okBtn_Click(object sender, RoutedEventArgs e)
+		{
+			string moddir = editMod ? MainWindow.modDirectory : Path.Combine(MainWindow.modDirectory, ValidateFilename(nameBox.Text));
+
+			if (nameBox.Text.Length <= 0)
+			{
+				MessageBox.Show(Lang.GetString("ErrorNoNameSet"), Lang.GetString("ErrorNoNameSetTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (editMod)
+			{
+				ModifyMod(moddir);
+			}
+			else
+			{
+				CreateNewMod(moddir);
+			}
+
+		}
+
+		private void cancelBtn_Click(object sender, RoutedEventArgs e)
+		{
+			this.Close();
+		}
+		#endregion
+
+		#region Properties Tab Functions
+		private void nameBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			if (!string.IsNullOrEmpty(nameBox.Text))
+			{
+				modIDBox.Text = GenerateModID();
+			}
+			else
+			{
+				modIDBox.Text = string.Empty;
+			}
+		}
+		#endregion
+
+		#region Updates Tab Functions
+		private void radGithub_Checked(object sender, RoutedEventArgs e)
+		{
+			gridUpdates.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
+			gridUpdates.RowDefinitions[2].Height = new GridLength(0);
+			gridUpdates.RowDefinitions[3].Height = new GridLength(0);
+		}
+
+		private void radGamebanana_Checked(object sender, RoutedEventArgs e)
+		{
+			gridUpdates.RowDefinitions[1].Height = new GridLength(0);
+			gridUpdates.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Star);
+			gridUpdates.RowDefinitions[3].Height = new GridLength(0);
+		}
+
+		private void radSelf_Checked(object sender, RoutedEventArgs e)
+		{
+			gridUpdates.RowDefinitions[1].Height = new GridLength(0);
+			gridUpdates.RowDefinitions[2].Height = new GridLength(0);
+			gridUpdates.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Star);
+		}
+		#endregion
+
+		#region Dependency Tab Functions
+
+		#endregion
+
+		#endregion
 
 		static private void AddColon(System.Windows.Controls.Label lab)
 		{
@@ -95,23 +173,6 @@ namespace ModManagerWPF
 				}
 			}
 			return sb.ToString().ToLowerInvariant();
-		}
-
-		private void buttonGenerate_Click(object sender, EventArgs e)
-		{
-			/*textID.Clear();
-			string name = isStringNotEmpty(textModName.Text) ? textModName.Text : null;
-			string author = isStringNotEmpty(textModAuthor.Text) ? textModAuthor.Text : null;
-
-			if (name != null && author != null)
-			{
-				string idName = RemoveSpecialCharacters(name);
-				string idAuthor = RemoveSpecialCharacters(author);
-				textID.Text = String.Format("sadx.{0}.{1}", idAuthor, idName);
-			}
-			else
-				textID.Text = GenerateModID();*/
-
 		}
 
 		private void BuildModINI(string moddir)
@@ -220,65 +281,6 @@ namespace ModManagerWPF
 				MessageBox.Show(this, error.Message, Lang.GetString("ErrorModCreation"), MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 
-		}
-
-		private void okBtn_Click(object sender, RoutedEventArgs e)
-		{
-			string moddir = editMod ? MainWindow.modDirectory: Path.Combine(MainWindow.modDirectory, ValidateFilename(nameBox.Text));
-
-			if (nameBox.Text.Length <= 0)
-			{
-				MessageBox.Show(Lang.GetString("ErrorNoNameSet"), Lang.GetString("ErrorNoNameSetTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
-
-			if (editMod)
-			{
-				ModifyMod(moddir);
-			}
-			else
-			{
-				CreateNewMod(moddir);
-			}
-
-		}
-		
-		private void cancelBtn_Click(object sender, RoutedEventArgs e)
-		{
-			this.Close();
-		}
-
-		private void nameBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-		{
-			if (!string.IsNullOrEmpty(nameBox.Text))
-			{
-				modIDBox.Text = GenerateModID();
-			}
-			else
-			{
-				modIDBox.Text = string.Empty;
-			}
-		}
-
-		private void radGithub_Checked(object sender, RoutedEventArgs e)
-		{
-			gridUpdates.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
-			gridUpdates.RowDefinitions[2].Height = new GridLength(0);
-			gridUpdates.RowDefinitions[3].Height = new GridLength(0);
-		}
-
-		private void radGamebanana_Checked(object sender, RoutedEventArgs e)
-		{
-			gridUpdates.RowDefinitions[1].Height = new GridLength(0);
-			gridUpdates.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Star);
-			gridUpdates.RowDefinitions[3].Height = new GridLength(0);
-		}
-
-		private void radSelf_Checked(object sender, RoutedEventArgs e)
-		{
-			gridUpdates.RowDefinitions[1].Height = new GridLength(0);
-			gridUpdates.RowDefinitions[2].Height = new GridLength(0);
-			gridUpdates.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Star);
 		}
 
 		private void LoadModUpdates(SADXModInfo mod)
