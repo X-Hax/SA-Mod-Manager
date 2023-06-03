@@ -206,8 +206,8 @@
     <system:String x:Key="NewModDescp">Please fill in the information about your mod.</system:String>
     <system:String x:Key="EditModTitle">Edit </system:String>
     <system:String x:Key="NewModTitle">New Mod</system:String>
-    <system:String x:Key="PropertiesTab">Properties</system:String>
-    <system:String x:Key="UpdateTab">Update</system:String>
+    <system:String x:Key="PropertiesTab">Mod Info</system:String>
+    <system:String x:Key="UpdateTab">Update Info</system:String>
     <system:String x:Key="DepdenciesTab">Dependencies</system:String>
     <system:String x:Key="EAuthorURL">Author URL:</system:String>    
     <system:String x:Key="EModID">Mod ID:</system:String>
@@ -216,7 +216,20 @@
     <system:String x:Key="ESaveRedirect">Save Redirect:</system:String>
     <system:String x:Key="SaveRedirectMainTxt">Main Save</system:String>
     <system:String x:Key="SaveRedirectChaoTxt">Chao Save</system:String>
-
+	<system:String x:Key="UpdatesMethod">Update Method</system:String>
+	<system:String x:Key="UpdatesMethodSelf">Self Hosted</system:String>
+	<system:String x:Key="UpdatesGithub">Github Update Settings</system:String>
+	<system:String x:Key="UpdatesGithubAuthor">Author and Repo:</system:String>
+	<system:String x:Key="UpdatesGithubAsset">Release Asset:</system:String>
+	<system:String x:Key="UpdatesGamebanana">Gamebanana Update Settings</system:String>
+	<system:String x:Key="UpdatesGamebananaID">Mod ID:</system:String>
+	<system:String x:Key="UpdatesSelf">Self Hosted Update Settings</system:String>
+	<system:String x:Key="UpdatesSelfUpdate">Update URL:</system:String>
+	<system:String x:Key="UpdatesSelfChangelog">Changelog URL:</system:String>
+	<system:String x:Key="DependencyWarning">The Dependency system is only to be used when you have created a mod that absolutely relies on another mod to function properly.</system:String>
+	<system:String x:Key="DependencyAdd">Add Dependency</system:String>
+	<system:String x:Key="DependencyRemove">Remove Dependency</system:String>
+		
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
 

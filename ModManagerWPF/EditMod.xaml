@@ -117,7 +117,7 @@
 							</Grid.RowDefinitions>
 
 							<!--GroupBox for Update Selection-->
-							<GroupBox Header="Update Method">
+							<GroupBox Header="{DynamicResource UpdatesMethod}">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>
@@ -127,12 +127,12 @@
 
 									<RadioButton x:Name="radGithub" Content="GitHub" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radGithub_Checked"/>
 									<RadioButton x:Name="radGamebanana" Content="GameBanana" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radGamebanana_Checked"/>
-									<RadioButton x:Name="radSelf" Content="Self Hosted" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radSelf_Checked"/>
+									<RadioButton x:Name="radSelf" Content="{DynamicResource UpdatesMethodSelf}" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radSelf_Checked"/>
 								</Grid>
 							</GroupBox>
 
 							<!--GroupBox for GitHub Updates-->
-							<GroupBox x:Name="grpGithubUpdate" Header="GitHub Update Settings" Grid.Row="1">
+							<GroupBox x:Name="grpGithubUpdate" Header="{DynamicResource UpdatesGithub}" Grid.Row="1">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
@@ -144,15 +144,15 @@
 										<RowDefinition Height="30"/>
 									</Grid.RowDefinitions>
 
-									<Label Content="GitHub URL:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-									<Label Content="GitHub Asset:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+									<Label Content="{DynamicResource UpdatesGithubAuthor}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+									<Label Content="{DynamicResource UpdatesGithubAsset}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
 									<TextBox x:Name="boxGitURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 									<TextBox x:Name="boxGitAsset" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 								</Grid>
 							</GroupBox>
 
 							<!--GroupBox for GameBanana Updates-->
-							<GroupBox x:Name="grpGamebananaUpdate" Header="GameBanana Update Settings" Grid.Row="2">
+							<GroupBox x:Name="grpGamebananaUpdate" Header="{DynamicResource UpdatesGamebanana}" Grid.Row="2">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
@@ -164,13 +164,13 @@
 										<RowDefinition Height="30"/>
 									</Grid.RowDefinitions>
 
-									<Label Content="GameBanana URL:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+									<Label Content="{DynamicResource UpdatesGamebananaID}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
 									<TextBox x:Name="boxGBURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 								</Grid>
 							</GroupBox>
 
 							<!--GroupBox for Self-Hosted Updates-->
-							<GroupBox x:Name="grpSelfUpdate" Header="Self Host Update Settings" Grid.Row="3">
+							<GroupBox x:Name="grpSelfUpdate" Header="{DynamicResource UpdatesSelf}" Grid.Row="3">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
@@ -182,8 +182,8 @@
 										<RowDefinition Height="30"/>
 									</Grid.RowDefinitions>
 
-									<Label Content="Files URL:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-									<Label Content="Changelog URL:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+									<Label Content="{DynamicResource UpdatesSelfUpdate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+									<Label Content="{DynamicResource UpdatesSelfChangelog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
 									<TextBox x:Name="boxSelfURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 									<TextBox x:Name="boxChangeURL" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 								</Grid>
@@ -203,7 +203,7 @@
 							<RowDefinition Height="40"/>
 						</Grid.RowDefinitions>
 
-						<TextBlock Text="Dependency Usage Warning" TextWrapping="Wrap" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5"/>
+						<TextBlock Text="{DynamicResource DependencyWarning}" TextWrapping="Wrap" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" TextBlock.TextAlignment="Center"/>
 
 						<ListView Grid.Row="1" Margin="10,10,10,10">
 							
@@ -215,8 +215,8 @@
 								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
 
-							<Button x:Name="btnAddDependency" Content="Add Dependency" Grid.Column="0" Margin="5,5,5,5"/>
-							<Button x:Name="btnRemDependency" Content="Remove Dependency" Grid.Column="1" Margin="5,5,5,5"/>
+							<Button x:Name="btnAddDependency" Content="{DynamicResource DependencyAdd}" Grid.Column="0" Margin="5,5,5,5"/>
+							<Button x:Name="btnRemDependency" Content="{DynamicResource DependencyRemove}" Grid.Column="1" Margin="5,5,5,5"/>
 						</Grid>
 					</Grid>
 				</TabItem>
