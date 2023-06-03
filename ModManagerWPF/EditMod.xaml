@@ -108,7 +108,7 @@
 							<RowDefinition Height="*"/>
 							<RowDefinition Height="5"/>
 						</Grid.RowDefinitions>
-						<Grid Grid.Column="1" Grid.Row="1">
+						<Grid x:Name="gridUpdates" Grid.Column="1" Grid.Row="1">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="50"/>
 								<RowDefinition Height="*"/>
@@ -125,9 +125,9 @@
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 
-									<RadioButton x:Name="radGithub" Content="GitHub" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-									<RadioButton x:Name="radGamebanana" Content="GameBanana" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-									<RadioButton x:Name="radSelf" Content="Self Hosted" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+									<RadioButton x:Name="radGithub" Content="GitHub" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radGithub_Checked"/>
+									<RadioButton x:Name="radGamebanana" Content="GameBanana" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radGamebanana_Checked"/>
+									<RadioButton x:Name="radSelf" Content="Self Hosted" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radSelf_Checked"/>
 								</Grid>
 							</GroupBox>
 
@@ -146,8 +146,8 @@
 
 									<Label Content="GitHub URL:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
 									<Label Content="GitHub Asset:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-									<TextBox x:Name="boxGitURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22"/>
-									<TextBox x:Name="boxGitAsset" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22"/>
+									<TextBox x:Name="boxGitURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
+									<TextBox x:Name="boxGitAsset" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 								</Grid>
 							</GroupBox>
 
@@ -165,7 +165,7 @@
 									</Grid.RowDefinitions>
 
 									<Label Content="GameBanana URL:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-									<TextBox x:Name="boxGBURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22"/>
+									<TextBox x:Name="boxGBURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 								</Grid>
 							</GroupBox>
 
@@ -184,8 +184,8 @@
 
 									<Label Content="Files URL:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
 									<Label Content="Changelog URL:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-									<TextBox x:Name="boxSelfURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22"/>
-									<TextBox x:Name="boxChangeURL" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22"/>
+									<TextBox x:Name="boxSelfURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
+									<TextBox x:Name="boxChangeURL" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 								</Grid>
 							</GroupBox>
 						</Grid>

@@ -47,6 +47,7 @@ namespace ModManagerWPF
 				categoryBox.SelectedIndex = SADXModInfo.ModCategory.IndexOf(mod.Category);
 				modIDBox.Text = mod.ModID;
 				dllText.Text = mod.DLLFile;
+				LoadModUpdates(mod);
 			}
 			else
 			{
@@ -132,6 +133,8 @@ namespace ModManagerWPF
 				DLLFile = isStringNotEmpty(dllText.Text) ? dllText.Text : null,
 			};
 
+			SaveModUpdates(newMod);
+
 			IniSerializer.Serialize(newMod, Path.Combine(moddir, "mod.ini"));
 		}
 
@@ -156,14 +159,13 @@ namespace ModManagerWPF
 
 				if ((bool)openFolderChk.IsChecked)
 				{
-					var psi = new ProcessStartInfo() { FileName = modPath, UseShellExecute = true };
+					var psi = new ProcessStartInfo() { FileName = Path.GetDirectoryName(fullName), UseShellExecute = true };
 					Process.Start(psi);
 				}
 			}
 
 			Close();
 		}
-
 
 		private void CreateNewMod(string moddir)
 		{
@@ -240,6 +242,7 @@ namespace ModManagerWPF
 			}
 
 		}
+		
 		private void cancelBtn_Click(object sender, RoutedEventArgs e)
 		{
 			this.Close();
@@ -254,6 +257,70 @@ namespace ModManagerWPF
 			else
 			{
 				modIDBox.Text = string.Empty;
+			}
+		}
+
+		private void radGithub_Checked(object sender, RoutedEventArgs e)
+		{
+			gridUpdates.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
+			gridUpdates.RowDefinitions[2].Height = new GridLength(0);
+			gridUpdates.RowDefinitions[3].Height = new GridLength(0);
+		}
+
+		private void radGamebanana_Checked(object sender, RoutedEventArgs e)
+		{
+			gridUpdates.RowDefinitions[1].Height = new GridLength(0);
+			gridUpdates.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Star);
+			gridUpdates.RowDefinitions[3].Height = new GridLength(0);
+		}
+
+		private void radSelf_Checked(object sender, RoutedEventArgs e)
+		{
+			gridUpdates.RowDefinitions[1].Height = new GridLength(0);
+			gridUpdates.RowDefinitions[2].Height = new GridLength(0);
+			gridUpdates.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Star);
+		}
+
+		private void LoadModUpdates(SADXModInfo mod)
+		{
+			if (mod.GitHubRepo != null)
+			{
+				radGithub.IsChecked = true;
+				boxGitURL.Text = mod.GitHubRepo;
+				boxGitAsset.Text = mod.GitHubAsset;
+			}
+			else if (mod.GameBananaItemId != null)
+			{
+				radGamebanana.IsChecked = true;
+				boxGBURL.Text = mod.GameBananaItemId.ToString();
+			}
+			else if (mod.UpdateUrl != null)
+			{
+				radSelf.IsChecked = true;
+				boxSelfURL.Text = mod.UpdateUrl;
+				boxChangeURL.Text = mod.ChangelogUrl;
+			}
+			else
+			{
+				radGithub.IsChecked = true;
+			}
+		}
+
+		private void SaveModUpdates(SADXModInfo mod)
+		{
+			if (radGithub.IsChecked == true)
+			{
+				mod.GitHubRepo = boxGitURL.Text;
+				mod.GitHubAsset = boxGitAsset.Text;
+			}
+			else if (radGamebanana.IsChecked == true)
+			{
+				mod.GameBananaItemId = int.Parse(boxGBURL.Text);
+			}
+			else if (radSelf.IsChecked == true)
+			{
+				mod.UpdateUrl = boxSelfURL.Text;
+				mod.ChangelogUrl = boxChangeURL.Text;
 			}
 		}
 	}
