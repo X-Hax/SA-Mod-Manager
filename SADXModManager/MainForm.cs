@@ -2672,49 +2672,64 @@ namespace SADXModManager
 
 		private void Load_WindowUserSettings()
 		{
-			if (Settings.Default.Maximised)
+			try
 			{
-				Location = Settings.Default.Location;
-				WindowState = FormWindowState.Maximized;
-				Size = Settings.Default.Size;
+				if (Settings.Default.Maximised)
+				{
+					Location = Settings.Default.Location;
+					WindowState = FormWindowState.Maximized;
+					Size = Settings.Default.Size;
+				}
+				else if (Settings.Default.Minimised)
+				{
+					Location = Settings.Default.Location;
+					WindowState = FormWindowState.Minimized;
+					Size = Settings.Default.Size;
+				}
+				else
+				{
+					Location = Settings.Default.Location;
+					Size = Settings.Default.Size;
+				}
 			}
-			else if (Settings.Default.Minimised)
+			catch (Exception)
 			{
-				Location = Settings.Default.Location;
-				WindowState = FormWindowState.Minimized;
-				Size = Settings.Default.Size;
-			}
-			else
-			{
-				Location = Settings.Default.Location;
-				Size = Settings.Default.Size;
+				MessageBox.Show("Invalid window configuration data detected. Window size will not be saved.\nPlease restart SADX Mod Manager to finish resetting to default settings.", "SADX Mod Manager Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				Directory.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SADXModManager"), true);
 			}
 		}
 
 		private void Save_WindowUserSettings()
 		{
-			if (WindowState == FormWindowState.Maximized)
+			try
 			{
-				Settings.Default.Location = RestoreBounds.Location;
-				Settings.Default.Size = RestoreBounds.Size;
-				Settings.Default.Maximised = true;
-				Settings.Default.Minimised = false;
+				if (WindowState == FormWindowState.Maximized)
+				{
+					Settings.Default.Location = RestoreBounds.Location;
+					Settings.Default.Size = RestoreBounds.Size;
+					Settings.Default.Maximised = true;
+					Settings.Default.Minimised = false;
+				}
+				else if (WindowState == FormWindowState.Normal)
+				{
+					Settings.Default.Location = Location;
+					Settings.Default.Size = Size;
+					Settings.Default.Maximised = false;
+					Settings.Default.Minimised = false;
+				}
+				else
+				{
+					Settings.Default.Location = RestoreBounds.Location;
+					Settings.Default.Size = RestoreBounds.Size;
+					Settings.Default.Maximised = false;
+					Settings.Default.Minimised = true;
+				}
+				Settings.Default.Save();
 			}
-			else if (WindowState == FormWindowState.Normal)
+			catch (Exception)
 			{
-				Settings.Default.Location = Location;
-				Settings.Default.Size = Size;
-				Settings.Default.Maximised = false;
-				Settings.Default.Minimised = false;
+				
 			}
-			else
-			{
-				Settings.Default.Location = RestoreBounds.Location;
-				Settings.Default.Size = RestoreBounds.Size;
-				Settings.Default.Maximised = false;
-				Settings.Default.Minimised = true;
-			}
-			Settings.Default.Save();
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

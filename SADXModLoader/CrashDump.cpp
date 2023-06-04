@@ -16,35 +16,36 @@ static const unordered_map<intptr_t, string> crashes_addresses_map = {
 	{ 0x78D149, texCrashMsg },
 	{ 0x7B293A85, "DirectX error: You most likely reached a tex ID out of range."},
 	{ 0x434614, "Camera error: the game failed to load a cam file for the stage."},
-	{ 0x787148, "Landtable error: The game crashed on the eval flag check.\nIf you are making a level mod, make sure all your meshes have the flag\n\"Skip Children\" checked."}
+	{ 0x787148, "Landtable error: The game crashed on the eval flag check.\nIf you are making a level mod, make sure all your meshes have the flag \"Skip Children\" checked."}
 };
 
-static const unordered_map<intptr_t, intptr_t> characters_addresses_map = {
-	{ (intptr_t)SonicTheHedgehog, 0x49BFBB },
-	{ (intptr_t)Eggman, 0x7B52DE},
-	{ (intptr_t)MilesTalesPrower, 0x4624CB},
-	{ (intptr_t)KnucklesTheEchidna, 0x47B504 },
-	{ (intptr_t)Tikal, 0x7B43E0 },
-	{ (intptr_t)AmyRose, 0x48B5B6 },
-	{ (intptr_t)E102, 0x4841CA },
-	{ (intptr_t)BigTheCat, 0x491438 }
-};
-
-static string getCharacterCrash(intptr_t address)
+struct addressRange
 {
-	unordered_map<intptr_t, intptr_t>::const_iterator it = characters_addresses_map.begin();
+	intptr_t start = 0;
+	intptr_t end = 0;
+	string crashMsg = "";
+};
 
-	while (it != characters_addresses_map.end())
+static const addressRange Range_Addresses_list[] =
+{
+	{ (intptr_t)SonicTheHedgehog, 0x49BFBB, charCrashMsg },
+	{ (intptr_t)Eggman, 0x7B52DE, charCrashMsg} ,
+	{ (intptr_t)MilesTalesPrower, 0x4624CB, charCrashMsg },
+	{ (intptr_t)KnucklesTheEchidna, 0x47B504, charCrashMsg },
+	{ (intptr_t)Tikal, 0x7B43E0, charCrashMsg },
+	{ (intptr_t)AmyRose, 0x48B5B6, charCrashMsg },
+	{ (intptr_t)E102, 0x4841CA, charCrashMsg },
+	{ (intptr_t)BigTheCat, 0x491438, charCrashMsg },
+};
+
+static const string GetRangeAddressesCrash(const intptr_t address)
+{
+	for (uint8_t i = 0; i < LengthOfArray(Range_Addresses_list); i++)
 	{
-		intptr_t val1 = it->first;
-		intptr_t val2 = it->second;
-
-		if (address >= val1 && address <= val2)
+		if (address >= Range_Addresses_list[i].start && address <= Range_Addresses_list[i].end)
 		{
-			return charCrashMsg;
+			return Range_Addresses_list[i].crashMsg;
 		}
-
-		it++;
 	}
 
 	return "NULL";
@@ -59,6 +60,29 @@ static string getErrorMSG(intptr_t address)
 	}
 
 	return crashes_addresses_map.find(address)->second; //return a custom error message if the address is known
+}
+
+void SetErrorMessage(string& fullMsg, const string address, const string dllName, const intptr_t crashID)
+{
+	string errorCommon = getErrorMSG(crashID); //get error message if the crash address is common
+	fullMsg = "SADX has crashed at " + address + " (" + dllName + ").\n";
+
+	if (errorCommon != "NULL")
+	{
+		fullMsg += errorCommon + "\n"; //add the common error message if it exists
+	}
+	else
+	{
+		//if the crash isn't in the list, check if it's a common crash from addresses from a whole function...
+		auto charcrash = GetRangeAddressesCrash(crashID);
+
+		if (charcrash != "NULL")
+		{
+			fullMsg += charcrash + "\n";
+		}
+	}
+
+	fullMsg += "\nA minidump has been created in your SADX folder.\n";
 }
 
 void CopyAndRename_ModLoaderIni()
@@ -157,7 +181,7 @@ LONG WINAPI HandleException(struct _EXCEPTION_POINTERS* apExceptionInfo)
 
 		PrintDebug("Get fault module name...\n");
 
-		string dllName;
+		string dllName = "";
 		HMODULE handle;
 
 		if (GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (LPCSTR)crashID, &handle))
@@ -170,32 +194,15 @@ LONG WINAPI HandleException(struct _EXCEPTION_POINTERS* apExceptionInfo)
 			}
 		}
 
-		string errorCommon = getErrorMSG(crashID); //get error message if the crash address is common
-		string fullMsg = "SADX has crashed at " + address + " (" + dllName + ").\n";
-
-		if (errorCommon != "NULL") 
-		{
-			fullMsg += errorCommon + "\n"; //add the common error message if it exists
-		}
-		else
-		{
-			//if the crash isn't in the list, check if it's a character crash...
-			auto charcrash = getCharacterCrash(crashID); 
-
-			if (charcrash != "NULL")
-			{
-				fullMsg += charcrash + "\n"; 
-			}
-		}
-
-		fullMsg += "\nA minidump has been created in your SADX folder.\n";
+		string fullMsg = "";
+		SetErrorMessage(fullMsg, address, dllName, crashID);
 		CopyAndRename_ModLoaderIni(); //copy ModLoaderIni file to the Crash Dump folder so we know what mod and cheat were used
 		string text = "Crash Address: " + address + "\n";
 		PrintDebug("\nFault module name: %s \n", dllName.c_str());
 		PrintDebug(text.c_str());
 
 		PrintDebug("Crash Dump Done.\n");
-		MessageBoxA(0, fullMsg.c_str(), "SADX ERROR", MB_ICONERROR);
+		MessageBoxA(0, fullMsg.c_str(), "SADX Error", MB_ICONERROR);
 	}
 
 	return EXCEPTION_EXECUTE_HANDLER;

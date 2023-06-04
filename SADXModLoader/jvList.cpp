@@ -2,13 +2,16 @@
 #include "IniFile.hpp"
 #include "UsercallFunctionHandler.h"
 
-std::vector<PL_JOIN_VERTEX> so_jvlist;
-std::vector<PL_JOIN_VERTEX> egg_jvlist;
-std::vector<PL_JOIN_VERTEX> miles_jvlist;
-std::vector<PL_JOIN_VERTEX> knux_jvlist;
-std::vector<PL_JOIN_VERTEX> tikal_jvlist;
-std::vector<PL_JOIN_VERTEX> amy_jvlist;
-std::vector<PL_JOIN_VERTEX> big_jvlist;
+using std::string;
+using std::vector;
+
+vector<PL_JOIN_VERTEX> so_jvlist;
+vector<PL_JOIN_VERTEX> egg_jvlist;
+vector<PL_JOIN_VERTEX> miles_jvlist;
+vector<PL_JOIN_VERTEX> knux_jvlist;
+vector<PL_JOIN_VERTEX> tikal_jvlist;
+vector<PL_JOIN_VERTEX> amy_jvlist;
+vector<PL_JOIN_VERTEX> big_jvlist;
 
 DataPointer(NJS_ACTION, action_g_g0001_eggman, 0x0089E254);
 DataPointer(NJS_ACTION, action_ti_dame, 0x008F46BC);
@@ -17,21 +20,42 @@ NJS_OBJECT* eggman_objects[17];
 NJS_OBJECT* tikal_objects[23];
 
 static UsercallFuncVoid(Knuckles_Upgrades_t, (playerwk* a1), (a1), 0x4726A0, rEAX);
-static std::vector<uint16_t> Knux_HandIndices;
-static std::vector<uint16_t> Knux_ShovelClawIndices;
+static vector<uint16_t> Knux_HandIndices;
+static vector<uint16_t> Knux_ShovelClawIndices;
 
-void SetIndices(std::string indices, std::vector<uint16_t>& points)
+static bool isWhiteSpace(const string s) 
 {
+	if (s.empty())
+		return true;
+
+	if (s.find_first_not_of(' ') != std::string::npos)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+static string RemoveAnySpace(string str)
+{
+	std::string::iterator end_pos = std::remove(str.begin(), str.end(), ' ');
+	str.erase(end_pos, str.end());
+	return str;
+}
+
+void SetIndices(string indices, vector<uint16_t>& points)
+{
+	indices = RemoveAnySpace(indices);
 	std::stringstream ss(indices);
-	std::string out;
-	const char de = ', ';
+	string out = "";
+	const char de = ',';
 	while (std::getline(ss, out, de))
 	{
 		points.push_back(stoi(out));
 	}
 }
 
-PL_JOIN_VERTEX BuildJVListEntry(NJS_OBJECT* arr[], int base, int mdlA, int mdlB, int type, std::string indices)
+PL_JOIN_VERTEX BuildJVListEntry(NJS_OBJECT* arr[], int base, int mdlA, int mdlB, int type, string indices)
 {
 	PL_JOIN_VERTEX jvEntry = {};
 
@@ -63,25 +87,32 @@ PL_JOIN_VERTEX BuildJVListEntry(NJS_OBJECT* arr[], int base, int mdlA, int mdlB,
 	return jvEntry;
 }
 
-void CreateJVList(NJS_OBJECT* arr[], IniFile* ini, std::vector<PL_JOIN_VERTEX>& jvlist, bool isKnux = false)
+static int GetIntData(const string id, IniFile* ini, const string st)
+{
+	string s = ini->getString(id, st);
+	s = RemoveAnySpace(s);
+	return isWhiteSpace(s) ? 0 : stoi(s); //return number if it exists
+}
+
+void CreateJVList(NJS_OBJECT* arr[], IniFile* ini, vector<PL_JOIN_VERTEX>& jvlist, bool isKnux = false)
 {
 	int i = 0;
 	while (ini->hasGroup(std::to_string(i)))
 	{
-		std::string s = std::to_string(i);
+		string s = std::to_string(i);
 
 		if (isKnux && ini->hasKey(s, "shovel"))
 		{
-			std::string shovelIndice = ini->getString(s, "shovel", "");
+			string shovelIndice = ini->getString(s, "shovel", "");
 			SetIndices(shovelIndice, Knux_ShovelClawIndices);
 		}
 		else
 		{
-			int base = ini->getInt(s, "BaseModel");
-			int mdlA = ini->getInt(s, "ModelA");
-			int mdlB = ini->getInt(s, "ModelB");
-			int type = ini->getInt(s, "WeldType");
-			std::string indices = ini->getString(s, "VertIndexes", "");
+			int base = GetIntData(s, ini, "BaseModel"); //ini->getInt(s, "BaseModel");
+			int mdlA = GetIntData(s, ini, "ModelA"); // ini->getInt(s, "ModelA");
+			int mdlB = GetIntData(s, ini, "ModelB"); //ini->getInt(s, "ModelB");
+			int type = GetIntData(s, ini, "WeldType");// ini->getInt(s, "WeldType");
+			string indices = ini->getString(s, "VertIndexes", "");
 
 			PL_JOIN_VERTEX jvEntry = BuildJVListEntry(arr, base, mdlA, mdlB, type, indices);
 			jvlist.push_back(jvEntry);
@@ -100,7 +131,7 @@ void CreateJVList(NJS_OBJECT* arr[], IniFile* ini, std::vector<PL_JOIN_VERTEX>& 
 	delete ini;
 }
 
-void SetNPCWelds(PL_JOIN_VERTEX* dest, std::vector<PL_JOIN_VERTEX> &origin, const uint16_t size)
+void SetNPCWelds(PL_JOIN_VERTEX* dest, vector<PL_JOIN_VERTEX> &origin, const uint16_t size)
 {
 	if (!dest || origin.empty())
 		return;

@@ -1307,17 +1307,21 @@ std::string base_name(std::string const& path)
 
 }
 
-static vector<__int16> _USVoiceDurationList(duration_us.size());
-static vector<__int16> _JPVoiceDurationList(duration_jp.size());
+static vector<__int16> _USVoiceDurationList;
+static vector<__int16> _JPVoiceDurationList;
 
 void SetVoiceDuration(vector<__int16> &vec, int* voiceArray, uint32_t size, const uint16_t voiceID, const uint16_t duration)
 {
 	if (vec.empty()) //copy original duration voice list
 	{
-		memcpy(vec.data(), voiceArray, sizeof(__int16) * size);
+		vec.resize(size);
+		memcpy(&vec[vec.size() - size], &voiceArray[0], sizeof(__int16) * size);
 	}
 
 	short curSize = _USVoiceDurationList.size();
+
+	if (voiceID > INT16_MAX)
+		return;
 
 	if (voiceID >= curSize) //if the user requested a voice ID out of bound, resize vector length.
 	{
