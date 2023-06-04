@@ -6,6 +6,7 @@
     <!--Region Common UI-->
     <system:String x:Key="BtnOK">OK</system:String>
     <system:String x:Key="BtnCancel">Cancel</system:String>
+    <system:String x:Key="Warning">Warning</system:String>
 
     <!--#region Main Window Strings-->
 	<system:String x:Key="MainBtnSave">Save</system:String>
@@ -216,6 +217,7 @@
     <system:String x:Key="ESaveRedirect">Save Redirect:</system:String>
     <system:String x:Key="SaveRedirectMainTxt">Main Save</system:String>
     <system:String x:Key="SaveRedirectChaoTxt">Chao Save</system:String>
+    <system:String x:Key="OpenFolder">Open Folder</system:String>
 	<system:String x:Key="UpdatesMethod">Update Method</system:String>
 	<system:String x:Key="UpdatesMethodSelf">Self Hosted</system:String>
 	<system:String x:Key="UpdatesGithub">Github Update Settings</system:String>
@@ -255,6 +257,11 @@
 
     <system:String x:Key="ErrorNoNameSet">You cannot have a mod without a name.</system:String>
     <system:String x:Key="ErrorNoNameSetTitle">Invalid mod name</system:String>
+
+    <system:String x:Key="WarningDelSaveRedir" xml:space="preserve">You are about to disable save redirection for this mod. If you continue, any save in this mod folder will be deleted.&#x0a;&#x0a;Are you sure you want to proceed?</system:String>
+
+
+
     <!--#endregion-->
 
 
