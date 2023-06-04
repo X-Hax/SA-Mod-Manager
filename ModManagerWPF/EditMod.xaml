@@ -228,8 +228,8 @@
 								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
 
-							<Button x:Name="btnAddDependency" Content="{DynamicResource DependencyAdd}" Grid.Column="0" Margin="5,5,5,5"/>
-							<Button x:Name="btnRemDependency" Content="{DynamicResource DependencyRemove}" Grid.Column="1" Margin="5,5,5,5"/>
+							<Button x:Name="btnAddDependency" Content="{DynamicResource DependencyAdd}" Grid.Column="0" Margin="5,5,5,5" Click="btnAddDependency_Click"/>
+							<Button x:Name="btnRemDependency" Content="{DynamicResource DependencyRemove}" Grid.Column="1" Margin="5,5,5,5" Click="btnRemDependency_Click"/>
 						</Grid>
 					</Grid>
 				</TabItem>

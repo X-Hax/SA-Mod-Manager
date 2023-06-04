@@ -20,7 +20,8 @@ namespace ModManagerWPF
 		{
 			Github = 0,
 			Gamebanana = 1,
-			Self = 2
+			Self = 2,
+			None = 3
 		}
 		#endregion
 
@@ -248,7 +249,6 @@ namespace ModManagerWPF
 			IniSerializer.Serialize(newMod, modIniPath);
 		}
 
-
 		private void ModifyMod(string modPath)
 		{
 			string fullName = string.Empty;
@@ -380,18 +380,30 @@ namespace ModManagerWPF
 			}
 		}
 
-		private string ConvertLink(string link, UpdateType type)
+		private string ConvertLink(SADXModInfo mod)
 		{
+			UpdateType type;
 			string retLink = string.Empty;
+
+			if (mod.GitHubRepo != null)
+				type = UpdateType.Github;
+			else if (mod.GameBananaItemId != 0)
+				type = UpdateType.Gamebanana;
+			else if (mod.UpdateUrl != null)
+				type = UpdateType.Self;
+			else
+				type = UpdateType.Github;
+
 			switch (type)
 			{
 				case UpdateType.Github:
-					retLink = "https://github.com/" + link;
+					retLink = "https://github.com/" + mod.GitHubRepo;
 					break;
 				case UpdateType.Gamebanana:
-					retLink = "sadxmm:https://gamebanana.com/mmdl/0,gb_itemtype:Mod,gb_itemid:" + link;
+					retLink = "sadxmm:https://gamebanana.com/mmdl/0,gb_itemtype:Mod,gb_itemid:" + mod.GameBananaItemId.ToString();
 					break;
 			}
+
 			return retLink;
 		}
 
@@ -401,6 +413,36 @@ namespace ModManagerWPF
 			{
 				dependencies.Add(new ModDependency(dep));
 			}
+		}
+
+		private void GenerateDependencies(List<SADXModInfo> mods)
+		{
+			foreach (SADXModInfo mod in mods)
+			{
+				StringBuilder sb = new StringBuilder();
+
+				sb.Append(mod.ModID);
+				sb.Append('|');
+				sb.Append("");
+				sb.Append('|');
+				sb.Append(mod.Name);
+				sb.Append('|');
+				sb.Append(ConvertLink(mod));
+
+				dependencies.Add(new ModDependency(sb.ToString()));
+			}
+		}
+
+		private void btnAddDependency_Click(object sender, RoutedEventArgs e)
+		{
+			ModDependency dependency = new ModDependency("TestName|TestID|TestFolder|TestLink");
+			dependencies.Add(dependency);
+			DependencyGrid.Items.Refresh();
+		}
+
+		private void btnRemDependency_Click(object sender, RoutedEventArgs e)
+		{
+			
 		}
 	}
 }
