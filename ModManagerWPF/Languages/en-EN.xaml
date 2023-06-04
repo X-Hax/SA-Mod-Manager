@@ -231,6 +231,10 @@
 	<system:String x:Key="DependencyWarning">The Dependency system is only to be used when you have created a mod that absolutely relies on another mod to function properly.</system:String>
 	<system:String x:Key="DependencyAdd">Add Dependency</system:String>
 	<system:String x:Key="DependencyRemove">Remove Dependency</system:String>
+	<system:String x:Key="DependencyNameColumn">Name</system:String>
+	<system:String x:Key="DependencyIDColumn">ID</system:String>
+	<system:String x:Key="DependencyFolderColumn">Folder</system:String>
+	<system:String x:Key="DependencyDownloadColumn">Download Link</system:String>
 		
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>

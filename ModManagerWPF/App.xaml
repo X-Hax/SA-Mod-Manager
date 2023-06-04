@@ -149,45 +149,45 @@
             </Style>
 
             <!--> Set Main Color of Grid view columns-->
-            <Style TargetType="{x:Type GridViewColumnHeader}">
-                <Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
-                <Setter Property="Height" Value="22"/>
-                <Setter Property="MinWidth" Value="30"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                            <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderBrush}">
-                                <Grid Background="{TemplateBinding Background}" MinWidth="{TemplateBinding MinWidth}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="2"/>
-                                    </Grid.ColumnDefinitions>
-                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                    <Thumb x:Name="PART_HeaderGripper" Grid.Column="1"/>
-                                </Grid>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="Role" Value="Padding">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="GridViewColumnHeader">
-                                    <Border Background="{TemplateBinding Background}" Margin="0,0,-2,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderBrush}"/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
+			<Style TargetType="{x:Type GridViewColumnHeader}">
+				<Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
+				<Setter Property="Height" Value="22"/>
+				<Setter Property="MinWidth" Value="30"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+							<Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderBrush}">
+								<Grid Background="{TemplateBinding Background}" MinWidth="{TemplateBinding MinWidth}">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="2"/>
+									</Grid.ColumnDefinitions>
+									<ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+									<Thumb x:Name="PART_HeaderGripper" Grid.Column="1"/>
+								</Grid>
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+				<Style.Triggers>
+					<Trigger Property="Role" Value="Padding">
+						<Setter Property="Template">
+							<Setter.Value>
+								<ControlTemplate TargetType="GridViewColumnHeader">
+									<Border Background="{TemplateBinding Background}" Margin="0,0,-2,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderBrush}"/>
+								</ControlTemplate>
+							</Setter.Value>
+						</Setter>
+					</Trigger>
+				</Style.Triggers>
+			</Style>
 
-            <!-- ComboBox-->
+			<!-- ComboBox-->
             <!--> Set Main Color of ListView-->
 
             <Style x:Key="FocusVisual">
@@ -1023,7 +1023,72 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-        </ResourceDictionary>
+			
+			<!--#region Data Grid Style-->
+			<Style TargetType="{x:Type DataGrid}">
+				<Setter Property="Background" Value="{DynamicResource DataGridBackgroundBrush}"/>
+				<Setter Property="BorderThickness" Value="0"/>
+				<Setter Property="FontSize" Value="12"/>
+				<Setter Property="CanUserResizeRows" Value="False"/>
+				<Setter Property="VerticalGridLinesBrush" Value="{DynamicResource DataGridColumnHeaderSeparator}"/>
+				<Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource DataGridColumnHeaderSeparator}"/>
+			</Style>
+			<Style TargetType="{x:Type DataGridColumnHeader}">
+				<Setter Property="Background" Value="Transparent"/>
+				<Setter Property="HorizontalContentAlignment" Value="Center"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource DataGridColumnHeaderSeparator}"/>
+				<Setter Property="BorderThickness" Value="0,0,1,1"/>
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver" Value="true">
+						<Setter Property="Background" Value="{DynamicResource MainHighlightBrush}"/>
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+			<Style x:Key="{ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}"
+				TargetType="{x:Type Button}">
+				<Setter Property="Background" Value="{DynamicResource DataGridRowHeaderBase}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource DataGridColumnHeaderSeparator}"/>
+				<Setter Property="BorderThickness" Value="0,0,1,1"/>
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver" Value="True">
+						<Setter Property="Background" Value="{DynamicResource DataGridRowHeaderHighlight}"/>
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+			<Style TargetType="{x:Type DataGridRowHeader}">
+				<Setter Property="Visibility" Value="Visible"/>
+				<Setter Property="Width" Value="20"/>
+				<Setter Property="Background" Value="{DynamicResource DataGridRowHeaderBase}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource DataGridColumnHeaderSeparator}"/>
+				<Setter Property="BorderThickness" Value="0,0,1,1"/>
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver" Value="true">
+						<Setter Property="Background" Value="{DynamicResource DataGridRowHeaderHighlight}"/>
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+			<Style TargetType="{x:Type DataGridRow}">
+				<Style.Resources>
+					<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{DynamicResource FontColor}"/>
+				</Style.Resources>
+				<Setter Property="Background" Value="Transparent"/>
+				<Setter Property="Foreground" Value="Transparent"/>
+			</Style>
+			<Style TargetType="{x:Type DataGridCell}">
+				<Style.Resources>
+					<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="{DynamicResource HoverColor}"/>
+					<SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{DynamicResource FontColor}"/>
+				</Style.Resources>
+				<Setter Property="Background" Value="Transparent"/>
+				<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver" Value="True">
+						<Setter Property="Background" Value="#90006ABC"/>
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+			<!--#endregion-->
+		</ResourceDictionary>
 
     </Application.Resources>
 </Application>

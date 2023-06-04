@@ -1,6 +1,8 @@
 ﻿using IniFile;
+using ModManagerCommon;
 using ModManagerWPF.Properties;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -13,10 +15,21 @@ namespace ModManagerWPF
 	/// </summary>
 	public partial class EditMod : Window
 	{
+		#region Enums
+		enum UpdateType
+		{
+			Github = 0,
+			Gamebanana = 1,
+			Self = 2
+		}
+		#endregion
+
 		#region Variables
 		static bool editMod { get; set; } = false;
 		static SADXModInfo Mod { get; set; }
 		static string CurrentTime = string.Empty;
+
+		public static List<ModDependency> dependencies = new List<ModDependency>();
 		#endregion
 
 		#region Initializer
@@ -50,16 +63,8 @@ namespace ModManagerWPF
 				mainSaveBox.IsChecked = mod.RedirectMainSave;
 				chaoSaveBox.IsChecked = mod.RedirectChaoSave;
 
-				boxGitURL.Text = mod.GitHubRepo;
-				boxGitAsset.Text = mod.GitHubAsset;
-				boxSelfURL.Text = mod.UpdateUrl;
-				boxChangeURL.Text = mod.ChangelogUrl;
-				boxGBURL.Text = mod.GameBananaItemId.ToString();
-
-				radGithub.IsChecked = boxGitURL.Text.Length > 0;
-				radGamebanana.IsChecked = boxGBURL.Text.Length > 0;
-				radSelf.IsChecked = boxSelfURL.Text.Length > 0;
-
+				LoadModUpdates(mod);
+				LoadDependencies(mod);
 
 				openFolderChk.IsChecked = false;
 			}
@@ -71,6 +76,8 @@ namespace ModManagerWPF
 			}
 
 			DataContext = new SADXModInfo();
+			
+			DependencyGrid.ItemsSource = dependencies;
 		}
 		#endregion
 
@@ -370,6 +377,29 @@ namespace ModManagerWPF
 			{
 				mod.UpdateUrl = boxSelfURL.Text;
 				mod.ChangelogUrl = boxChangeURL.Text;
+			}
+		}
+
+		private string ConvertLink(string link, UpdateType type)
+		{
+			string retLink = string.Empty;
+			switch (type)
+			{
+				case UpdateType.Github:
+					retLink = "https://github.com/" + link;
+					break;
+				case UpdateType.Gamebanana:
+					retLink = "sadxmm:https://gamebanana.com/mmdl/0,gb_itemtype:Mod,gb_itemid:" + link;
+					break;
+			}
+			return retLink;
+		}
+
+		private void LoadDependencies(SADXModInfo mod)
+		{
+			foreach (string dep in mod.Dependencies)
+			{
+				dependencies.Add(new ModDependency(dep));
 			}
 		}
 	}

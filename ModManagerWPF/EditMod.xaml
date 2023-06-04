@@ -7,7 +7,7 @@
 		xmlns:pt="http://propertytools.org/wpf"
 		mc:Ignorable="d"
 		WindowStartupLocation="CenterScreen" 
-		MinHeight="550" MinWidth="450" Height="560" Width="460"
+		MinHeight="550" MinWidth="450" Height="560" Width="560"
 		Style="{StaticResource SAWindow}"
 		ResizeMode="NoResize">
 	<Grid>
@@ -205,10 +205,19 @@
 
 						<TextBlock Text="{DynamicResource DependencyWarning}" TextWrapping="Wrap" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" TextBlock.TextAlignment="Center"/>
 
-						<Border Grid.Row="1" Margin="5,5,5,5" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="4" CornerRadius="10">
-							<Grid Margin="5,5,5,5">
-								<DataGrid x:Name="DependencyGrid">
-									
+						<Border Grid.Row="1" Margin="5,5,5,5" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="2" CornerRadius="10">
+							<Grid>
+								<Border x:Name="BorderMask" Background="White" BorderThickness="1" CornerRadius="8"/>
+								<DataGrid x:Name="DependencyGrid" AutoGenerateColumns="False">
+									<DataGrid.Columns>
+										<DataGridTextColumn Header="{DynamicResource DependencyNameColumn}" Binding="{Binding Name}" Width="Auto"/>
+										<DataGridTextColumn Header="{DynamicResource DependencyIDColumn}" Binding="{Binding ID}" Width="Auto"/>
+										<DataGridTextColumn Header="{DynamicResource DependencyFolderColumn}" Binding="{Binding Folder}" Width="Auto"/>
+										<DataGridTextColumn Header="{DynamicResource DependencyDownloadColumn}" Binding="{Binding Link}" Width="*"/>
+									</DataGrid.Columns>
+									<DataGrid.OpacityMask>
+										<VisualBrush Visual="{Binding ElementName=BorderMask}"/>
+									</DataGrid.OpacityMask>
 								</DataGrid>
 							</Grid>
 						</Border>
@@ -223,6 +232,10 @@
 							<Button x:Name="btnRemDependency" Content="{DynamicResource DependencyRemove}" Grid.Column="1" Margin="5,5,5,5"/>
 						</Grid>
 					</Grid>
+				</TabItem>
+
+				<TabItem Header="Config Schema">
+					
 				</TabItem>
 			</TabControl>
 		</Border>
