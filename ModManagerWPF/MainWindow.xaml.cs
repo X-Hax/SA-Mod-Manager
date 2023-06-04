@@ -229,6 +229,7 @@ namespace ModManagerWPF
 			loaderini.WindowWidth = (int)txtCustomResX.Value;
 			loaderini.WindowHeight = (int)txtCustomResY.Value;
 			loaderini.MaintainWindowAspectRatio = (bool)chkMaintainRatio.IsChecked;
+			loaderini.EnableDynamicBuffer = (bool)chkDynamicBuffers.IsChecked;
 			loaderini.ResizableWindow = (bool)chkResizableWin.IsChecked;
 			loaderini.UpdateCheck = (bool)chkUpdatesML.IsChecked;
 			loaderini.ModUpdateCheck = (bool)chkUpdatesMods.IsChecked;
@@ -236,6 +237,9 @@ namespace ModManagerWPF
 			loaderini.Theme = comboThemes.SelectedIndex;
 			loaderini.EnableTestSpawnTab = (bool)checkEnableTestSpawn.IsChecked;
 			loaderini.InputModEnabled = (bool)radBetterInput.IsChecked;
+			loaderini.SEVolume = (int)sliderSFX.Value;
+			loaderini.EnableBassMusic = (bool)checkBassMusic.IsChecked;
+			loaderini.EnableBassSFX = (bool)checkBassSFX.IsChecked;
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
 
@@ -271,6 +275,7 @@ namespace ModManagerWPF
 			comboBGFill.SelectedIndex = loaderini.BackgroundFillMode;
 			comboFMVFill.SelectedIndex = loaderini.FmvFillMode;
 
+			chkDynamicBuffers.IsChecked = loaderini.EnableDynamicBuffer;
 			chkBorderless.IsChecked = loaderini.Borderless;
 			checkMipmapping.IsChecked = loaderini.AutoMipmap;
 			chkScaleScreen.IsChecked = loaderini.StretchFullscreen;
@@ -300,6 +305,10 @@ namespace ModManagerWPF
 			checkEnableTestSpawn.IsChecked = loaderini.EnableTestSpawnTab;
 			radBetterInput.IsChecked = loaderini.InputModEnabled;
 			radVanillaInput.IsChecked = !radBetterInput.IsChecked;
+
+			checkBassMusic.IsChecked = loaderini.EnableBassMusic;
+			checkBassSFX.IsChecked = loaderini.EnableBassSFX;
+			sliderSFX.Value = loaderini.SEVolume;
 
 			if ((bool)!checkEnableTestSpawn.IsChecked)
 			{
@@ -530,6 +539,7 @@ namespace ModManagerWPF
 		private void LoadGameConfigIni()
 		{
 			gameConfigFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<Game.GameConfigFile>(sadxIni) : new Game.GameConfigFile();
+			
 			if (gameConfigFile.GameConfig == null)
 			{
 				gameConfigFile.GameConfig = new Game.GameConfig
@@ -565,9 +575,17 @@ namespace ModManagerWPF
 			}
 
 			// Clip level
-			//comboClip.SelectedIndex = gameConfigFile.GameConfig.ClipLevel;
+			comboDetail.SelectedIndex = (int)gameConfigFile.GameConfig.ClipLevel;
+
 			// Fog mode
 			comboFog.SelectedIndex = gameConfigFile.GameConfig.FogEmulation;
+
+			sliderMusic.Value = gameConfigFile.GameConfig.BGMVolume;
+			sliderVoice.Value = gameConfigFile.GameConfig.VoiceVolume;
+
+			checkEnableMusic.IsChecked = gameConfigFile.GameConfig.BGM > 0;
+			checkEnableSounds.IsChecked = gameConfigFile.GameConfig.SEVoice > 0;
+			checkEnable3DSound.IsChecked = gameConfigFile.GameConfig.Sound3D > 0;
 
 			//controller mouse vanilla stuff go here
 
@@ -584,14 +602,14 @@ namespace ModManagerWPF
 			//gameConfigFile.GameConfig.ClipLevel = comboClip.SelectedIndex;
 			gameConfigFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
 
-			/*gameConfigFile.GameConfig.Sound3D = check3DSound.Checked ? 1 : 0;
-			gameConfigFile.GameConfig.SEVoice = checkSound.Checked ? 1 : 0;
-			gameConfigFile.GameConfig.BGM = checkMusic.Checked ? 1 : 0;
+			gameConfigFile.GameConfig.Sound3D = (bool)checkEnable3DSound.IsChecked ? 1 : 0;
+			gameConfigFile.GameConfig.SEVoice = (bool)checkEnableSounds.IsChecked ? 1 : 0;
+			gameConfigFile.GameConfig.BGM = (bool)checkEnableMusic.IsChecked ? 1 : 0;
 
-			gameConfigFile.GameConfig.VoiceVolume = (int)trackBarVoiceVol.Value;
-			gameConfigFile.GameConfig.BGMVolume = (int)trackBarMusicVol.Value;
+			gameConfigFile.GameConfig.VoiceVolume = (int)sliderVoice.Value;
+			gameConfigFile.GameConfig.BGMVolume = (int)sliderMusic.Value;
 
-			gameConfigFile.GameConfig.MouseMode = radioMouseModeHold.Checked ? 0 : 1;
+			/*gameConfigFile.GameConfig.MouseMode = radioMouseModeHold.Checked ? 0 : 1;
 
 			if (inputDevice != null)
 			{
@@ -1015,16 +1033,25 @@ namespace ModManagerWPF
 
 		private void sliderMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
+			if (labelMusicLevel is null)
+				return;
+
 			labelMusicLevel.Content = ((int)sliderMusic.Value).ToString();
 		}
 
 		private void sliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
+			if (labelVoiceLevel is null)
+				return;
+
 			labelVoiceLevel.Content = ((int)sliderVoice.Value).ToString();
 		}
 
 		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
+			if (labelSFXLevel is null)
+                return;
+       
 			labelSFXLevel.Content = ((int)sliderVoice.Value).ToString();
 		}
 

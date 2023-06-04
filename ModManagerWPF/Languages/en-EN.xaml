@@ -265,7 +265,6 @@
     <system:String x:Key="WarningDelSaveRedir" xml:space="preserve">You are about to disable save redirection for this mod. If you continue, any save in this mod folder will be deleted.&#x0a;&#x0a;Are you sure you want to proceed?</system:String>
 
 
-
     <!--#endregion-->
 
 
