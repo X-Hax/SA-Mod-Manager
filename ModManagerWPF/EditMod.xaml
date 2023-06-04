@@ -205,9 +205,13 @@
 
 						<TextBlock Text="{DynamicResource DependencyWarning}" TextWrapping="Wrap" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" TextBlock.TextAlignment="Center"/>
 
-						<ListView Grid.Row="1" Margin="10,10,10,10">
-							
-						</ListView>
+						<Border Grid.Row="1" Margin="5,5,5,5" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="4" CornerRadius="10">
+							<Grid Margin="5,5,5,5">
+								<DataGrid x:Name="DependencyGrid">
+									
+								</DataGrid>
+							</Grid>
+						</Border>
 
 						<Grid Grid.Row="2">
 							<Grid.ColumnDefinitions>
