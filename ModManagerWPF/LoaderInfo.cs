@@ -88,6 +88,10 @@ namespace ModManagerWPF
 
 		[DefaultValue(false)]
 		public bool DisablePolyBuff { get; set; }
+		[DefaultValue(false)]
+		public bool EnableDynamicBuffer { get; set; }
+		[DefaultValue(true)]
+		public bool EnableBassMusic { get; set; }
 
 		[DefaultValue(false)]
 		public bool EnableBassSFX { get; set; }
