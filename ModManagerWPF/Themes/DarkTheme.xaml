@@ -1,41 +1,47 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
+	
+	<!--#region Colors-->
 	<Color x:Key="MainHighlightColor" A="255" R="0" G="106" B="188"/>
-	<SolidColorBrush x:Key="MainHighlightBrush" Color="{DynamicResource MainHighlightColor}"/>
-
-	<SolidColorBrush x:Key="MainBackgroundBrush" Color="#FF191919"/>
-    <Color x:Key="MainBackgroundColor" A="255" R="25" G="25" B="25"/>
-    <SolidColorBrush x:Key="BackgroundBrush" Color="#FF2D2D30"/>
-    <SolidColorBrush x:Key="BackgroundBrush2" Color="#FF202020"/>
-    <SolidColorBrush x:Key="MainDialogBottomBrush" Color="#FF131313"/>
-    <Color x:Key="BtnBackgroundColor" A="255" R="32" G="32" B="32"/>
-    <Color x:Key="BtnHoverColor" A="255" R="45" G="45" B="47"/>
-    <Color x:Key="BtnClickColor" A="255" R="109" G="109" B="114"/>
-    <Color x:Key="BtnDisabledColor" A="255" R="30" G="30" B="30"/>
-    <Color x:Key="BtnDisabledTextColor" A="255" R="133" G="133" B="133"/>
+	<Color x:Key="MainBackgroundColor" A="255" R="25" G="25" B="25"/>
+	<Color x:Key="BtnBackgroundColor" A="255" R="32" G="32" B="32"/>
+	<Color x:Key="BtnHoverColor" A="255" R="45" G="45" B="47"/>
+	<Color x:Key="BtnClickColor" A="255" R="109" G="109" B="114"/>
+	<Color x:Key="BtnDisabledColor" A="255" R="30" G="30" B="30"/>
+	<Color x:Key="BtnDisabledTextColor" A="255" R="133" G="133" B="133"/>
 	<Color x:Key="FontColor" A="255" R="255" G="255" B="255"/>
+	<Color x:Key="HoverColor" A="255" R="45" G="45" B="47"/>
+	<Color x:Key="ComboBoxBGBrush" A="255" R="45" G="45" B="48"/>
+	<Color x:Key="ComboBoxBGBrush2" A="255" R="48" G="48" B="48"/>
+	<Color x:Key="SlideBtnColor" A="255" R="63" G="63" B="70"/>
+	<Color x:Key="SlideTrackColor" A="255" R="72" G="72" B="72"/>
+	<!--#endregion-->
+	
+	<!--#region SolidColorBrushes-->
+	<SolidColorBrush x:Key="MainHighlightBrush" Color="{DynamicResource MainHighlightColor}"/>
+	<SolidColorBrush x:Key="MainBackgroundBrush" Color="#FF191919"/>
+	<SolidColorBrush x:Key="BackgroundBrush" Color="#FF2D2D30"/>
+	<SolidColorBrush x:Key="BackgroundBrush2" Color="#FF202020"/>
+	<SolidColorBrush x:Key="MainDialogBottomBrush" Color="#FF131313"/>
 	<SolidColorBrush x:Key="TextBrush" Color="{DynamicResource FontColor}"/>
-    <SolidColorBrush x:Key="TabControlBrush" Color="Transparent"/>
-    <SolidColorBrush x:Key="TabSelectedBrush" Color="{DynamicResource MainHighlightColor}"/>    
-    <SolidColorBrush x:Key="ForegroundBrush" Color="White"/>
-    <Color x:Key="HoverColor" A="255" R="45" G="45" B="47"/>
-    <SolidColorBrush x:Key="HoverBrush" Color="{DynamicResource HoverColor}"/>
-    <SolidColorBrush x:Key="BorderBrush" Color="#FF3F3F46"/>
-    <Color x:Key="ComboBoxBGBrush" A="255" R="45" G="45" B="48"/>
-    <Color x:Key="ComboBoxBGBrush2" A="255" R="48" G="48" B="48"/>
-    <SolidColorBrush x:Key="DisabledColor" Color="#FF323232"/>
-    <SolidColorBrush x:Key="DisabledTextColor" Color="#FFC9C9C9"/>
-
-    <SolidColorBrush x:Key="ScrollBarStaticThumb" Color="#787878"/>
-    <SolidColorBrush x:Key="ScrollBarMouseOverThumb" Color="#696968"/>
-    <SolidColorBrush x:Key="ScrollBarPressedThumb" Color="#616161"/>
-
-    <Color x:Key="SlideBtnColor" A="255" R="63" G="63" B="70"/>
-    <Color x:Key="SlideTrackColor" A="255" R="72" G="72" B="72"/>
-
+	<SolidColorBrush x:Key="TabControlBrush" Color="Transparent"/>
+	<SolidColorBrush x:Key="TabSelectedBrush" Color="{DynamicResource MainHighlightColor}"/>
+	<SolidColorBrush x:Key="ForegroundBrush" Color="White"/>
+	<SolidColorBrush x:Key="HoverBrush" Color="{DynamicResource HoverColor}"/>
+	<SolidColorBrush x:Key="BorderBrush" Color="#FF3F3F46"/>
+	<SolidColorBrush x:Key="DisabledColor" Color="#FF323232"/>
+	<SolidColorBrush x:Key="DisabledTextColor" Color="#FFC9C9C9"/>
+	<SolidColorBrush x:Key="ScrollBarStaticThumb" Color="#787878"/>
+	<SolidColorBrush x:Key="ScrollBarMouseOverThumb" Color="#696968"/>
+	<SolidColorBrush x:Key="ScrollBarPressedThumb" Color="#616161"/>
 	<SolidColorBrush x:Key="DataGridBackgroundBrush" Color="#FF202020"/>
 	<SolidColorBrush x:Key="DataGridColumnHeaderSeparator" Color="#FFD2D2D2"/>
+	<SolidColorBrush x:Key="DataGridRowHeaderBase" Color="{DynamicResource BtnBackgroundColor}"/>
+	<SolidColorBrush x:Key="DataGridRowHeaderHighlight" Color="{DynamicResource MainHighlightColor}"/>
+	<SolidColorBrush x:Key="DataGridCellSelected" Color="#806F6F6F"/>
+	<!--#endregion-->
+	
+	<!--#region LinearGradientBrushes-->
 	<LinearGradientBrush x:Key="DataGridColumnHeaderBase" StartPoint="0,1" EndPoint="0,0">
 		<GradientStop Color="#FF2B2B2B" Offset="0.5"/>
 		<GradientStop Color="#FF717171" Offset="1.0"/>
@@ -44,8 +50,6 @@
 		<GradientStop Color="#FF001A6C" Offset="0.5"/>
 		<GradientStop Color="{DynamicResource MainHighlightColor}" Offset="1.0"/>
 	</LinearGradientBrush>
-	<SolidColorBrush x:Key="DataGridRowHeaderBase" Color="{DynamicResource BtnBackgroundColor}"/>
-	<SolidColorBrush x:Key="DataGridRowHeaderHighlight" Color="{DynamicResource MainHighlightColor}"/>
-	<SolidColorBrush x:Key="DataGridCellSelected" Color="#806F6F6F"/>
+	<!--#region -->
 
 </ResourceDictionary>
