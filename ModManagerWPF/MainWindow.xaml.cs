@@ -476,7 +476,11 @@ namespace ModManagerWPF
 			var item = (ModData)listMods.SelectedItem;
 
 			if (item is not null)
+			{
+				textModsDescription.Text = Lang.GetString("ModSelectTextDesc") + " " + item.Description;
 				return;
+			}
+			
 
 			textModsDescription.Text = Lang.GetString("ModTextDesc");
 		}
