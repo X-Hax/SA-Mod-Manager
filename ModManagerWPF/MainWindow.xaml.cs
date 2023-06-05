@@ -445,7 +445,6 @@ namespace ModManagerWPF
 				if (mod is null)
 					return;
 
-				textModsDescription.Text = Lang.GetString("ModSelectTextDesc") + " " + mods[mod.Tag].Description;	
 				btnMoveTop.IsEnabled = listMods.Items.IndexOf(mod) != 0;
 				btnMoveUp.IsEnabled = listMods.Items.IndexOf(mod) > 0;
 				btnMoveDown.IsEnabled = listMods.Items.IndexOf(mod) < listMods.Items.Count - 1;
@@ -460,6 +459,26 @@ namespace ModManagerWPF
 
 				ConfigureModBtn.IsEnabled = false;
 			}
+		}
+
+		private void ModList_MouseEnter(object sender, MouseEventArgs e)
+		{
+			var mod = GetModFromView(sender);
+
+			if (mod == null)
+				return;
+
+			textModsDescription.Text = Lang.GetString("ModSelectTextDesc") + " " + mods[mod.Tag].Description;
+		}
+
+		private void ModList_MouseLeave(object sender, MouseEventArgs e)
+		{
+			var item = (ModData)listMods.SelectedItem;
+
+			if (item is not null)
+				return;
+
+			textModsDescription.Text = Lang.GetString("ModTextDesc");
 		}
 
 		private void ModContextOpenFolder_Click(object sender, RoutedEventArgs e)
@@ -664,7 +683,7 @@ namespace ModManagerWPF
 
 			foreach (Code item in codes)
 			{
-				CodeListView.Items.Add(new { item.Name, item.Author });
+				CodeListView.Items.Add(item);
 			}
 
 			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
@@ -709,6 +728,9 @@ namespace ModManagerWPF
 		private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
 		{
 
+			CodeAuthorGrid.Text = Lang.GetString("ModsListAuthor");
+			CodeDescGrid.Text = Lang.GetString("ModSelectTextDesc");
+			CodeCategoryGrid.Text = Lang.GetString("CodesListCategory");
 		}
 
 		private void CodesView_Item_Selected(object sender, RoutedEventArgs e)
@@ -1079,9 +1101,5 @@ namespace ModManagerWPF
 			Edit.Closed += EditMod_FormClosing;
 		}
 
-		private void ListViewItem_Selected(object sender, RoutedEventArgs e)
-		{
-
-		}
 	}
 }
