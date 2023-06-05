@@ -223,6 +223,9 @@
 							<ListView.ItemContainerStyle>
 								<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
 									<EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
+                                    <EventSetter Event="MouseEnter" Handler="CodesView_Item_MouseEnter"/>
+                                    <EventSetter Event="MouseLeave" Handler="CodesView_Item_MouseLeave"/>
+                                    <EventSetter Event="Selected" Handler="CodesView_Item_Selected"></EventSetter>
 								</Style>
 							</ListView.ItemContainerStyle>
 							<ListView.View>
@@ -261,12 +264,12 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 
-							<TextBlock Text="Code" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
+                            <TextBlock Text="{DynamicResource Code}" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
 							<Separator Grid.Row="0" VerticalAlignment="Bottom"/>
-							<TextBlock Text="Author" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap"/>
-							<TextBlock Text="Category" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap"/>
+							<TextBlock x:Name="CodeAuthorGrid" Text="{DynamicResource ModsListAuthor}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap"/>
+							<TextBlock x:Name="CodeCategoryGrid" Text="{DynamicResource CodesListCategory}" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap"/>
 							<Separator Grid.Row="3" VerticalAlignment="Bottom"/>
-							<TextBlock Text="Description" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+							<TextBlock x:Name="CodeDescGrid" Text="{DynamicResource ModSelectTextDesc}" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap"/>
 						</Grid>
 
 						<Grid Grid.Column="1" Grid.Row="2">

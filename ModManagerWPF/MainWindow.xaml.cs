@@ -675,13 +675,18 @@ namespace ModManagerWPF
 			new AboutCode(code).ShowDialog();
 		}
 
-		private Code GetCodeFromView()
+		private Code GetCodeFromView(object sender)
 		{
+			if (sender is ListViewItem lvItem)
+				return lvItem.Content as Code;
+			else if (sender is ListView lv)
+				return lv.SelectedItem as Code;
+
 			return codes[CodeListView.SelectedIndex];
 		}
 		private void CodesView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			var code = GetCodeFromView();
+			var code = GetCodeFromView(sender);
 
 			if (code == null)
 				return;
@@ -691,7 +696,14 @@ namespace ModManagerWPF
 
 		private void CodesView_Item_MouseEnter(object sender, MouseEventArgs e)
 		{
+			var code = GetCodeFromView(sender);
 
+			if (code == null)
+				return;
+
+			CodeAuthorGrid.Text += " " + code.Author;
+			CodeDescGrid.Text += " " + code.Description;
+			CodeCategoryGrid.Text += " " + code.Category;
 		}
 
 		private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
@@ -1066,5 +1078,10 @@ namespace ModManagerWPF
 			Edit.Show();
 			Edit.Closed += EditMod_FormClosing;
 		}
-    }
+
+		private void ListViewItem_Selected(object sender, RoutedEventArgs e)
+		{
+
+		}
+	}
 }

@@ -50,6 +50,7 @@
     <system:String x:Key="CodesListCategory">Catégorie</system:String>
     <system:String x:Key="CodesUIInfo">Double cliquer sur un code pour plus d'information.</system:String>
     <system:String x:Key="CodesUIInfoHint">Selectioner un code pour plus d'information.</system:String>
+    <system:String x:Key="Code">Code</system:String>
 
 
     <system:String x:Key="CodeAbout">A Propos de {0}</system:String>
