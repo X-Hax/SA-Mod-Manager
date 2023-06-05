@@ -235,6 +235,10 @@
 	<system:String x:Key="DependencyIDColumn">ID</system:String>
 	<system:String x:Key="DependencyFolderColumn">Folder</system:String>
 	<system:String x:Key="DependencyDownloadColumn">Download Link</system:String>
+	
+	<!--#region Select Dependencies Window-->
+	<system:String x:Key="SelectDependenciesHeader">Select Dependencies</system:String>
+	<!--#endregion-->
 		
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>

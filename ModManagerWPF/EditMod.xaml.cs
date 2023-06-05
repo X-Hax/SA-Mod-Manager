@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 
 namespace ModManagerWPF
 {
@@ -27,10 +29,11 @@ namespace ModManagerWPF
 
 		#region Variables
 		static bool editMod { get; set; } = false;
-		static SADXModInfo Mod { get; set; }
+		public static SADXModInfo Mod { get; set; }
 		static string CurrentTime = string.Empty;
 
 		public static List<ModDependency> dependencies = new List<ModDependency>();
+		SelectDependencies selectWindow;
 		#endregion
 
 		#region Initializer
@@ -415,34 +418,23 @@ namespace ModManagerWPF
 			}
 		}
 
-		private void GenerateDependencies(List<SADXModInfo> mods)
-		{
-			foreach (SADXModInfo mod in mods)
-			{
-				StringBuilder sb = new StringBuilder();
-
-				sb.Append(mod.ModID);
-				sb.Append('|');
-				sb.Append("");
-				sb.Append('|');
-				sb.Append(mod.Name);
-				sb.Append('|');
-				sb.Append(ConvertLink(mod));
-
-				dependencies.Add(new ModDependency(sb.ToString()));
-			}
-		}
-
 		private void btnAddDependency_Click(object sender, RoutedEventArgs e)
 		{
-			ModDependency dependency = new ModDependency("TestName|TestID|TestFolder|TestLink");
-			dependencies.Add(dependency);
-			DependencyGrid.Items.Refresh();
+			selectWindow = new SelectDependencies();
+			selectWindow.ShowDialog();
+			if (selectWindow.IsClosed)
+				if (selectWindow.NeedRefresh)
+					DependencyGrid.Items.Refresh();
 		}
 
 		private void btnRemDependency_Click(object sender, RoutedEventArgs e)
 		{
-			
+			List<ModDependency> selected = DependencyGrid.SelectedItems.Cast<ModDependency>().ToList();
+			foreach (ModDependency dep in selected)
+			{
+				dependencies.Remove(dep);
+			}
+			DependencyGrid.Items.Refresh();
 		}
 	}
 }
