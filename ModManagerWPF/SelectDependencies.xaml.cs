@@ -107,6 +107,28 @@ namespace ModManagerWPF
 			return success;
 		}
 
+		private bool CheckDependencies(ModDependency dependency)
+		{
+			bool modExists = false;
+
+			foreach (ModDependency mod in EditMod.dependencies)
+			{
+				if (mod.ID == dependency.ID)
+				{
+					if (mod.Name == dependency.Name)
+					{
+						modExists = false; break;
+					}
+					else
+						modExists = true;
+				}
+				else
+					modExists = true;
+			}
+
+			return modExists;
+		}
+
 		private string ConvertLink(ModToDependency mod)
 		{
 			UpdateType type;
@@ -139,7 +161,8 @@ namespace ModManagerWPF
 				if (mod.IsChecked)
 				{
 					ModDependency dependency = mod.ToDepdenency();
-					if (!EditMod.dependencies.Contains(dependency))
+					dependency.Link = ConvertLink(mod);
+					if (CheckDependencies(dependency))
 						EditMod.dependencies.Add(dependency);
 				}
 			}

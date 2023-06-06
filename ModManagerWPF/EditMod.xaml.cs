@@ -114,6 +114,8 @@ namespace ModManagerWPF
 		{
 			this.Close();
 		}
+
+
 		#endregion
 
 		#region Properties Tab Functions
@@ -154,82 +156,108 @@ namespace ModManagerWPF
 		#endregion
 
 		#region Dependency Tab Functions
-
-		#endregion
-
-		#endregion
-
-		static private void AddColon(System.Windows.Controls.Label lab)
+		private void btnAddDependency_Click(object sender, RoutedEventArgs e)
 		{
-			lab.Content += ":";
+			selectWindow = new SelectDependencies();
+			selectWindow.ShowDialog();
+			if (selectWindow.IsClosed)
+				if (selectWindow.NeedRefresh)
+					DependencyGrid.Items.Refresh();
 		}
 
-		string GenerateModID()
+		private void btnRemDependency_Click(object sender, RoutedEventArgs e)
 		{
-			return "sadx." + nameBox.Text + "." + CurrentTime;
-		}
-
-		static string ValidateFilename(string filename)
-		{
-			string result = filename;
-
-			foreach (char c in Path.GetInvalidFileNameChars())
-				result = result.Replace(c, '_');
-
-			return result;
-		}
-
-		static bool isStringNotEmpty(string txt)
-		{
-			return string.IsNullOrWhiteSpace(txt) == false;
-		}
-
-		static string RemoveSpecialCharacters(string str)
-		{
-			StringBuilder sb = new StringBuilder();
-			foreach (char c in str)
+			List<ModDependency> selected = DependencyGrid.SelectedItems.Cast<ModDependency>().ToList();
+			foreach (ModDependency dep in selected)
 			{
-				if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == '-')
-				{
-					sb.Append(c);
-				}
+				dependencies.Remove(dep);
 			}
-			return sb.ToString().ToLowerInvariant();
+			DependencyGrid.Items.Refresh();
 		}
+		#endregion
 
-		private void HandleSaveRedirection(string modDirectory)
+		#region Config Schema Tab Functions
+
+		#endregion
+		#endregion
+
+		#region Mod Updates Functions
+		private void LoadModUpdates(SADXModInfo mod)
 		{
-			var fullSavepath = Path.Combine(modDirectory, "SAVEDATA");
-			bool saveDirExist = Directory.Exists(fullSavepath);
-
-			if ((bool)!mainSaveBox.IsChecked && (bool)!chaoSaveBox.IsChecked)
+			if (mod.GitHubRepo != null)
 			{
-				if (saveDirExist)
-				{
-					//if user unchecked save redirect and the mod has existing save files, throw warning
-					if (Directory.GetFiles(fullSavepath, "*.snc").Length > 0)
-					{
-						var dialogue = MessageBox.Show(Lang.GetString("WarningDelSaveRedir"), Lang.GetString("Warning"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-						if (dialogue != MessageBoxResult.Yes)
-						{
-							return;
-						}
-					}
-
-					//delete existing savedata folder in mod directory
-					Directory.Delete(fullSavepath, true);
-				}
+				radGithub.IsChecked = true;
+				boxGitURL.Text = mod.GitHubRepo;
+				boxGitAsset.Text = mod.GitHubAsset;
+			}
+			else if (mod.GameBananaItemId != null)
+			{
+				radGamebanana.IsChecked = true;
+				boxGBURL.Text = mod.GameBananaItemId.ToString();
+			}
+			else if (mod.UpdateUrl != null)
+			{
+				radSelf.IsChecked = true;
+				boxSelfURL.Text = mod.UpdateUrl;
+				boxChangeURL.Text = mod.ChangelogUrl;
 			}
 			else
 			{
-				if (!saveDirExist)
+				radGithub.IsChecked = true;
+			}
+		}
+
+		private void SaveModUpdates(SADXModInfo mod)
+		{
+			if (radGithub.IsChecked == true && isStringNotEmpty(boxGitURL.Text))
+			{
+				mod.GitHubRepo = boxGitURL.Text;
+				mod.GitHubAsset = boxGitAsset.Text;
+			}
+			else if (radGamebanana.IsChecked == true && isStringNotEmpty(boxGBURL.Text))
+			{
+				mod.GameBananaItemId = int.Parse(boxGBURL.Text);
+			}
+			else if (radSelf.IsChecked == true && isStringNotEmpty(boxSelfURL.Text))
+			{
+				mod.UpdateUrl = boxSelfURL.Text;
+				mod.ChangelogUrl = boxChangeURL.Text;
+			}
+		}
+		#endregion
+
+		#region Dependency Functions
+		private void SaveModDependencies(SADXModInfo mod)
+		{
+			if (DependencyGrid.Items.Count > 0)
+			{
+				mod.Dependencies.Clear();
+				foreach (ModDependency dep in DependencyGrid.Items)
 				{
-					Directory.CreateDirectory(fullSavepath);
+					StringBuilder sb = new StringBuilder();
+					sb.Append(dep.ID);
+					sb.Append('|');
+					sb.Append(dep.Folder);
+					sb.Append('|');
+					sb.Append(dep.Name);
+					sb.Append('|');
+					sb.Append(dep.Link);
+					mod.Dependencies.Add(sb.ToString());
 				}
 			}
 		}
 
+		private void LoadDependencies(SADXModInfo mod)
+		{
+			dependencies.Clear();
+			foreach (string dep in mod.Dependencies)
+			{
+				dependencies.Add(new ModDependency(dep));
+			}
+		}
+		#endregion
+
+		#region Build Functions
 		private void BuildModINI(string moddir)
 		{
 			//Assign variables to null if the string are empty so they won't show up at all in mod.ini.
@@ -248,6 +276,7 @@ namespace ModManagerWPF
 			newMod.DLLFile = isStringNotEmpty(dllText.Text) ? dllText.Text : null;
 
 			SaveModUpdates(newMod);
+			SaveModDependencies(newMod);
 
 			var modIniPath = Path.Combine(moddir, "mod.ini");
 			IniSerializer.Serialize(newMod, modIniPath);
@@ -340,102 +369,78 @@ namespace ModManagerWPF
 			}
 
 		}
+		#endregion
 
-		private void LoadModUpdates(SADXModInfo mod)
+		static private void AddColon(System.Windows.Controls.Label lab)
 		{
-			if (mod.GitHubRepo != null)
+			lab.Content += ":";
+		}
+
+		string GenerateModID()
+		{
+			return "sadx." + nameBox.Text + "." + CurrentTime;
+		}
+
+		static string ValidateFilename(string filename)
+		{
+			string result = filename;
+
+			foreach (char c in Path.GetInvalidFileNameChars())
+				result = result.Replace(c, '_');
+
+			return result;
+		}
+
+		static bool isStringNotEmpty(string txt)
+		{
+			return string.IsNullOrWhiteSpace(txt) == false;
+		}
+
+		static string RemoveSpecialCharacters(string str)
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (char c in str)
 			{
-				radGithub.IsChecked = true;
-				boxGitURL.Text = mod.GitHubRepo;
-				boxGitAsset.Text = mod.GitHubAsset;
+				if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == '-')
+				{
+					sb.Append(c);
+				}
 			}
-			else if (mod.GameBananaItemId != null)
+			return sb.ToString().ToLowerInvariant();
+		}
+
+		private void HandleSaveRedirection(string modDirectory)
+		{
+			var fullSavepath = Path.Combine(modDirectory, "SAVEDATA");
+			bool saveDirExist = Directory.Exists(fullSavepath);
+
+			if ((bool)!mainSaveBox.IsChecked && (bool)!chaoSaveBox.IsChecked)
 			{
-				radGamebanana.IsChecked = true;
-				boxGBURL.Text = mod.GameBananaItemId.ToString();
-			}
-			else if (mod.UpdateUrl != null)
-			{
-				radSelf.IsChecked = true;
-				boxSelfURL.Text = mod.UpdateUrl;
-				boxChangeURL.Text = mod.ChangelogUrl;
+				if (saveDirExist)
+				{
+					//if user unchecked save redirect and the mod has existing save files, throw warning
+					if (Directory.GetFiles(fullSavepath, "*.snc").Length > 0)
+					{
+						var dialogue = MessageBox.Show(Lang.GetString("WarningDelSaveRedir"), Lang.GetString("Warning"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+						if (dialogue != MessageBoxResult.Yes)
+						{
+							return;
+						}
+					}
+
+					//delete existing savedata folder in mod directory
+					Directory.Delete(fullSavepath, true);
+				}
 			}
 			else
 			{
-				radGithub.IsChecked = true;
+				if (!saveDirExist)
+				{
+					Directory.CreateDirectory(fullSavepath);
+				}
 			}
-		}
-
-		private void SaveModUpdates(SADXModInfo mod)
-		{
-			if (radGithub.IsChecked == true && isStringNotEmpty(boxGitURL.Text))
-			{
-				mod.GitHubRepo = boxGitURL.Text;
-				mod.GitHubAsset = boxGitAsset.Text;
-			}
-			else if (radGamebanana.IsChecked == true && isStringNotEmpty(boxGBURL.Text))
-			{
-				mod.GameBananaItemId = int.Parse(boxGBURL.Text);
-			}
-			else if (radSelf.IsChecked == true && isStringNotEmpty(boxSelfURL.Text))
-			{
-				mod.UpdateUrl = boxSelfURL.Text;
-				mod.ChangelogUrl = boxChangeURL.Text;
-			}
-		}
-
-		private string ConvertLink(SADXModInfo mod)
-		{
-			UpdateType type;
-			string retLink = string.Empty;
-
-			if (mod.GitHubRepo != null)
-				type = UpdateType.Github;
-			else if (mod.GameBananaItemId != 0)
-				type = UpdateType.Gamebanana;
-			else if (mod.UpdateUrl != null)
-				type = UpdateType.Self;
-			else
-				type = UpdateType.Github;
-
-			switch (type)
-			{
-				case UpdateType.Github:
-					retLink = "https://github.com/" + mod.GitHubRepo;
-					break;
-				case UpdateType.Gamebanana:
-					retLink = "sadxmm:https://gamebanana.com/mmdl/0,gb_itemtype:Mod,gb_itemid:" + mod.GameBananaItemId.ToString();
-					break;
-			}
-
-			return retLink;
-		}
-
-		private void LoadDependencies(SADXModInfo mod)
-		{
-			foreach (string dep in mod.Dependencies)
-			{
-				dependencies.Add(new ModDependency(dep));
-			}
-		}
-
-		private void btnAddDependency_Click(object sender, RoutedEventArgs e)
-		{
-			selectWindow = new SelectDependencies();
-			selectWindow.ShowDialog();
-			if (selectWindow.IsClosed)
-				if (selectWindow.NeedRefresh)
-					DependencyGrid.Items.Refresh();
-		}
-
-		private void btnRemDependency_Click(object sender, RoutedEventArgs e)
-		{
-			List<ModDependency> selected = DependencyGrid.SelectedItems.Cast<ModDependency>().ToList();
-			foreach (ModDependency dep in selected)
-			{
-				dependencies.Remove(dep);
-			}
-			DependencyGrid.Items.Refresh();
 		}
 	}
+
 }
