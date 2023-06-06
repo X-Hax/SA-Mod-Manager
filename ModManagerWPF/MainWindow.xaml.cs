@@ -467,7 +467,7 @@ namespace ModManagerWPF
 			else if (count == 1)
 			{
 
-				ModData mod = (ModData)listMods.SelectedItem;
+				ModData mod = GetModFromView(sender);
 
 				if (mod is null)
 					return;
@@ -539,9 +539,21 @@ namespace ModManagerWPF
 
 		}
 
+		private void InitModConfig()
+		{
+			var mod = (ModData)listMods.SelectedItem;
+
+			if (mod is not null)
+			{
+				SADXModInfo modInfo = mods[mod.Tag];
+				Common.ModConfig config = new(modInfo);
+				config.Show();
+			}
+		}
+
 		private void ModContextConfigureMod_Click(object sender, RoutedEventArgs e)
 		{
-
+			InitModConfig();
 		}
 
 		private void ModContextEditMod_Click(object sender, RoutedEventArgs e)
@@ -1132,5 +1144,9 @@ namespace ModManagerWPF
 			Edit.Closed += EditMod_FormClosing;
 		}
 
+		private void ConfigureModBtn_Click(object sender, RoutedEventArgs e)
+		{
+			InitModConfig();
+		}
 	}
 }
