@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF"
         mc:Ignorable="d"
-        Title="{StaticResource ManagerGrpAbout}" Height="210" Width="Auto" MinWidth="300" MaxHeight="500" MaxWidth="430"
+        Title="{StaticResource ManagerGrpAbout}" Height="210" Width="Auto" MinWidth="350" MaxHeight="500" MaxWidth="450"
         Style="{StaticResource SAWindow}"
         WindowStartupLocation="CenterScreen">
 

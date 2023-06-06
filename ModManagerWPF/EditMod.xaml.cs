@@ -58,12 +58,13 @@ namespace ModManagerWPF
 				nameBox.Text = mod.Name;
 				authorBox.Text = mod.Author;
 
-				//authorURLBox.Text = mod.AuthorURL;
+				authorURLBox.Text = mod.AuthorURL;
 				versionBox.Text = mod.Version;
 				descriptionBox.Text = mod.Description;
 				categoryBox.SelectedIndex = SADXModInfo.ModCategory.IndexOf(mod.Category);
 				modIDBox.Text = mod.ModID;
 				dllText.Text = mod.DLLFile;
+				sourceURLBox.Text = mod.SourceCode;
 				mainSaveBox.IsChecked = mod.RedirectMainSave;
 				chaoSaveBox.IsChecked = mod.RedirectChaoSave;
 
@@ -80,7 +81,7 @@ namespace ModManagerWPF
 			}
 
 			DataContext = new SADXModInfo();
-			
+
 			DependencyGrid.ItemsSource = dependencies;
 		}
 		#endregion
@@ -180,7 +181,7 @@ namespace ModManagerWPF
 
 		static bool isStringNotEmpty(string txt)
 		{
-			return txt.Length > 0;
+			return string.IsNullOrWhiteSpace(txt) == false;
 		}
 
 		static string RemoveSpecialCharacters(string str)
@@ -215,7 +216,7 @@ namespace ModManagerWPF
 							return;
 						}
 					}
-					
+
 					//delete existing savedata folder in mod directory
 					Directory.Delete(fullSavepath, true);
 				}
@@ -232,19 +233,19 @@ namespace ModManagerWPF
 		private void BuildModINI(string moddir)
 		{
 			//Assign variables to null if the string are empty so they won't show up at all in mod.ini.
-			SADXModInfo newMod = editMod ? Mod : new SADXModInfo
-			{
-				Name = nameBox.Text,
-				Author = isStringNotEmpty(authorBox.Text) ? authorBox.Text : null,
-				Description = descriptionBox.Text.Length > 0 ? descriptionBox.Text : null,
-				Version = isStringNotEmpty(versionBox.Text) ? versionBox.Text : null,
-				Category = isStringNotEmpty(categoryBox.Text) ? categoryBox.Text : null,
-				RedirectMainSave = (bool)mainSaveBox.IsChecked,
-				RedirectChaoSave = (bool)chaoSaveBox.IsChecked,
+			SADXModInfo newMod = editMod ? Mod : new SADXModInfo();
 
-				ModID = isStringNotEmpty(modIDBox.Text) ? modIDBox.Text : null,
-				DLLFile = isStringNotEmpty(dllText.Text) ? dllText.Text : null,
-			};
+			newMod.Name = nameBox.Text;
+			newMod.Author = isStringNotEmpty(authorBox.Text) ? authorBox.Text : null;
+			newMod.AuthorURL = isStringNotEmpty(authorURLBox.Text) ? authorURLBox.Text : null;
+			newMod.Description = isStringNotEmpty(descriptionBox.Text) ? descriptionBox.Text : null;
+			newMod.Version = isStringNotEmpty(versionBox.Text) ? versionBox.Text : null;
+			newMod.Category = isStringNotEmpty(categoryBox.Text) ? categoryBox.Text : null;
+			newMod.SourceCode = isStringNotEmpty(sourceURLBox.Text) ? sourceURLBox.Text : null;
+			newMod.RedirectMainSave = (bool)mainSaveBox.IsChecked;
+			newMod.RedirectChaoSave = (bool)chaoSaveBox.IsChecked;
+			newMod.ModID = isStringNotEmpty(modIDBox.Text) ? modIDBox.Text : null;
+			newMod.DLLFile = isStringNotEmpty(dllText.Text) ? dllText.Text : null;
 
 			SaveModUpdates(newMod);
 

@@ -1,6 +1,7 @@
 ﻿using ModManagerCommon;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,13 +17,13 @@ using static ModManagerWPF.MainWindow;
 
 namespace ModManagerWPF
 {
-    /// <summary>
-    /// Interaction logic for AboutMod.xaml
-    /// </summary>
-    public partial class AboutMod : Window
-    {
-        public AboutMod(ModData mod)
-        {
+	/// <summary>
+	/// Interaction logic for AboutMod.xaml
+	/// </summary>
+	public partial class AboutMod : Window
+	{
+		public AboutMod(ModData mod)
+		{
 			DataContext = mod;
 			InitializeComponent();
 			Title += " " + mod.Name;
@@ -30,6 +31,56 @@ namespace ModManagerWPF
 			AuthorText.Text = mod.Author != null ? Lang.GetString("ModsListAuthor") + ": " + mod.Author : null;
 			CategoryText.Text = mod.Category != null ? Lang.GetString("ModsListCategory") + ": " + mod.Category + "\n" : null;
 			DescBx.Text = mod.Description;
+			btnAuthSite.Visibility = string.IsNullOrWhiteSpace(mod.AuthorURL) ? Visibility.Hidden : Visibility.Visible;
+			btnModSource.Visibility = string.IsNullOrWhiteSpace(mod.SourceCode) ? Visibility.Hidden : Visibility.Visible;
+
+			if (btnAuthSite.Visibility == Visibility.Hidden && btnModSource.Visibility == Visibility.Hidden)
+			{
+				btnAuthSite.IsEnabled = false;
+				btnModSource.IsEnabled = false;
+				MaxHeight -= 20;
+				Height -= 20;
+			}
 		}
-    }
+
+		private void btnAuthSite_Click(object sender, RoutedEventArgs e)
+		{
+			var mod = (ModData)DataContext;
+
+			if (mod is null || mod is not ModData)
+				return;
+
+			try
+			{
+				var ps = new ProcessStartInfo(mod.AuthorURL)
+				{
+					UseShellExecute = true,
+					Verb = "open"
+				};
+				Process.Start(ps);
+			}
+			catch { }
+		}
+
+		private void btnModSource_Click(object sender, RoutedEventArgs e)
+		{
+			var mod = (ModData)DataContext;
+
+			if (mod is null || mod is not ModData)
+				return;
+
+			try
+			{
+				var ps = new ProcessStartInfo(mod.SourceCode)
+				{
+					UseShellExecute = true,
+					Verb = "open"
+				};
+				Process.Start(ps);
+			}
+			catch
+			{}
+
+		}
+	}
 }

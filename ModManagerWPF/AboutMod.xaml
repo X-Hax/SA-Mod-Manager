@@ -5,9 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF"
         mc:Ignorable="d"
-        Title="{StaticResource ManagerGrpAbout}" Height="300" Width="Auto" MinWidth="270" MaxHeight="500" MaxWidth="450"
+        Title="{StaticResource ManagerGrpAbout}" Height="300" Width="Auto" MinWidth="300" MaxHeight="500" MaxWidth="450"
         Style="{StaticResource SAWindow}"
-
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -41,8 +40,8 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-            <Button x:Name="btnAuthSite" Content="{DynamicResource AuthorSite}" Grid.Column="0" Margin="5,0,5,0"/>
-            <Button x:Name="btnModSource" Content="{DynamicResource ModSourceCode}" Grid.Column="1" Margin="5,0,5,0"/>
+            <Button x:Name="btnAuthSite" Content="{DynamicResource AuthorSite}" Grid.Column="0" Margin="5,0,5,0" Click="btnAuthSite_Click"/>
+            <Button x:Name="btnModSource" Content="{DynamicResource ModSourceCode}" Grid.Column="1" Margin="5,0,5,0" Click="btnModSource_Click"/>
 		</Grid>
     </Grid>
 </Window>

@@ -66,9 +66,11 @@ namespace ModManagerWPF
 		{
 			public string Name { get; set; }
 			public string Author { get; set; }
+			public string AuthorURL { get; set; }
 			public string Version { get; set; }
 			public string Category { get; set; }
 			public string Description { get; set; }
+			public string SourceCode { get; set; }
 			public bool IsChecked { get; set; }
 			public string Tag { get; set; }
 		}
@@ -383,7 +385,19 @@ namespace ModManagerWPF
 				{
 					SADXModInfo inf = mods[mod];
 					suppressEvent = true;
-					listMods.Items.Add(new ModData() { Name = inf.Name, Author = inf.Author, Description = inf.Description, Version = inf.Version, Category = inf.Category, IsChecked = true, Tag = mod});
+					var item = new ModData()
+					{
+						Name = inf.Name,
+						Author = inf.Author,
+						AuthorURL = inf.AuthorURL,
+						Description = inf.Description,
+						Version = inf.Version,
+						Category = inf.Category,
+						SourceCode = inf.SourceCode,
+						IsChecked = true,
+						Tag = mod
+					};
+					listMods.Items.Add(item);
 					suppressEvent = false;
 				}
 				else
@@ -397,7 +411,20 @@ namespace ModManagerWPF
 			{
 				if (!loaderini.Mods.Contains(inf.Key))
 				{
-					listMods.Items.Add(new ModData() { Name = inf.Value.Name, Author = inf.Value.Author, Version = inf.Value.Version, Category = inf.Value.Category, Description = inf.Value.Description, IsChecked = false, Tag = inf.Key });
+					var item = new ModData()
+					{
+						Name = inf.Value.Name,
+						Author = inf.Value.Author,
+						AuthorURL = inf.Value.AuthorURL,
+						Description = inf.Value.Description,
+						Version = inf.Value.Version,
+						Category = inf.Value.Category,
+						SourceCode = inf.Value.SourceCode,
+						IsChecked = false,
+						Tag = inf.Key,
+					};
+
+					listMods.Items.Add(item);
 				}
 			}
 		}
