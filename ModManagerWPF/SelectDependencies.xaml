@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ModManagerWPF"
         mc:Ignorable="d"
 		Style="{StaticResource SAWindow}"
-        Title="{DynamicResource SelectDependenciesHeader}" Height="450" Width="400" WindowStartupLocation="CenterOwner" Closing="Window_Closing">
+        Title="{DynamicResource SelectDependenciesHeader}" Height="450" Width="400" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
