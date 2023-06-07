@@ -454,40 +454,6 @@ namespace ModManagerWPF
 			OpenAboutModWindow((ModData)mod);
 		}
 
-		private void modListView_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-			int count = listMods.SelectedItems.Count;
-
-			if (count == 0)
-			{
-				btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
-				//.Text = "Description: No mod selected.";
-			}
-			else if (count == 1)
-			{
-
-				ModData mod = GetModFromView(sender);
-
-				if (mod is null)
-					return;
-
-				btnMoveTop.IsEnabled = listMods.Items.IndexOf(mod) != 0;
-				btnMoveUp.IsEnabled = listMods.Items.IndexOf(mod) > 0;
-				btnMoveDown.IsEnabled = listMods.Items.IndexOf(mod) < listMods.Items.Count - 1;
-				btnMoveBottom.IsEnabled = listMods.Items.IndexOf(mod) != listMods.Items.Count - 1;
-
-				ConfigureModBtn.IsEnabled = File.Exists(Path.Combine(modDirectory, mod.Name, "configschema.xml"));
-			}
-			else if (count > 1)
-			{
-				//modDescription.Text = "Description: Multiple mods selected.";
-				btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = true;
-
-				ConfigureModBtn.IsEnabled = false;
-			}
-		}
-
 		private void ModList_MouseEnter(object sender, MouseEventArgs e)
 		{
 			var mod = GetModFromView(sender);
@@ -500,7 +466,7 @@ namespace ModManagerWPF
 
 		private void ModList_MouseLeave(object sender, MouseEventArgs e)
 		{
-			var item = (ModData)listMods.SelectedItem;
+			var item = GetModFromView(sender);
 
 			if (item is not null)
 			{
@@ -508,10 +474,10 @@ namespace ModManagerWPF
 				return;
 			}
 			
-
 			textModsDescription.Text = Lang.GetString("ModTextDesc");
 		}
 
+	#region ModContext
 		private void ModContextOpenFolder_Click(object sender, RoutedEventArgs e)
 		{
 			var item = (ModData)listMods.SelectedItem;
@@ -539,22 +505,17 @@ namespace ModManagerWPF
 
 		}
 
-		private void InitModConfig()
+		private void ModContextEditMod_Click(object sender, RoutedEventArgs e)
 		{
 			var mod = (ModData)listMods.SelectedItem;
 
-			if (mod is not null)
-			{
-				SADXModInfo modInfo = mods[mod.Tag];
-				string fullPath = Path.Combine(modDirectory, mod.Tag);
-				Common.ModConfig config = new(modInfo, fullPath);
-				config.Show();
-			}
-		}
+			if (mod == null)
+				return;
 
-		private void ModContextEditMod_Click(object sender, RoutedEventArgs e)
-		{
-			InitModConfig();
+			SADXModInfo modInfo = mods[mod.Tag];
+			EditMod Edit = new(modInfo);
+			Edit.Show();
+			Edit.Closed += EditMod_FormClosing;
 		}
 
 		private void ModContextDeleteMod_Click(object sender, RoutedEventArgs e)
@@ -582,6 +543,71 @@ namespace ModManagerWPF
 		{
 
 		}
+		#endregion
+
+		private void InitModConfig()
+		{
+			var mod = (ModData)listMods.SelectedItem;
+
+			if (mod is not null)
+			{
+				SADXModInfo modInfo = mods[mod.Tag];
+				string fullPath = Path.Combine(modDirectory, mod.Tag);
+				Common.ModConfig config = new(modInfo, fullPath);
+				config.Show();
+			}
+		}
+		private void EditMod_FormClosing(object sender, EventArgs e)
+		{
+			Refresh();
+		}
+
+		private void NewModBtn_Click(object sender, RoutedEventArgs e)
+		{
+			EditMod Edit = new(null);
+			Edit.Show();
+			Edit.Closed += EditMod_FormClosing;
+		}
+
+		private void ConfigureModBtn_Click(object sender, RoutedEventArgs e)
+		{
+			InitModConfig();
+		}
+
+		private void ModContextConfigureMod_Click(object sender, RoutedEventArgs e)
+		{
+			InitModConfig();
+		}
+
+		private void modListView_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
+		{
+			int count = listMods.SelectedItems.Count;
+
+			if (count == 0)
+			{
+				btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
+				//.Text = "Description: No mod selected.";
+			}
+			else if (count == 1)
+			{
+				var mod = GetModFromView(sender);
+
+				btnMoveTop.IsEnabled = listMods.Items.IndexOf(mod) != 0;
+				btnMoveUp.IsEnabled = listMods.Items.IndexOf(mod) > 0;
+				btnMoveDown.IsEnabled = listMods.Items.IndexOf(mod) < listMods.Items.Count - 1;
+				btnMoveBottom.IsEnabled = listMods.Items.IndexOf(mod) != listMods.Items.Count - 1;
+
+				ConfigureModBtn.IsEnabled = File.Exists(Path.Combine(modDirectory, mod.Tag, "configschema.xml"));
+			}
+			else if (count > 1)
+			{
+				//modDescription.Text = "Description: Multiple mods selected.";
+				btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = true;
+
+				ConfigureModBtn.IsEnabled = false;
+			}
+		}
+
 		#endregion
 
 		#region Game Settings
@@ -1118,28 +1144,6 @@ namespace ModManagerWPF
                 return;
        
 			labelSFXLevel.Content = ((int)sliderVoice.Value).ToString();
-		}
-
-		private void EditMod_FormClosing(object sender, EventArgs e)
-		{
-			Refresh();
-		}
-
-		private void NewModBtn_Click(object sender, RoutedEventArgs e)
-		{
-			EditMod Edit = new(null);
-			Edit.Show();
-			Edit.Closed += EditMod_FormClosing;
-		}
-
-		private void ConfigureModBtn_Click(object sender, RoutedEventArgs e)
-		{
-			InitModConfig();
-		}
-
-		private void ModContextConfigureMod_Click(object sender, RoutedEventArgs e)
-		{
-			InitModConfig();
 		}
 	}
 }
