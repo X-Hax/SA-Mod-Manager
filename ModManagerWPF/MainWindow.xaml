@@ -15,14 +15,14 @@
 		ContentRendered="MainWindowManager_ContentRendered"
         Closed="MainForm_FormClosing">
 
-
     <!--We use this to have language and theme to work on the Editor. This is deleted when the program start-->
     <Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Languages/en-EN.xaml"/>
 				<ResourceDictionary Source="Themes/DarkTheme.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Icons/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
 			<ContextMenu x:Key="ModContextMenu">
 				<MenuItem x:Name="ModContextOpenFolder" Header="{DynamicResource ModsUIOpenFolder}" Click="ModContextOpenFolder_Click" InputGestureText="(Ctrl+O)"/>
@@ -1169,16 +1169,16 @@
 				</Grid.ColumnDefinitions>
 				<Button x:Name="SaveAndPlayButton" MaxHeight="30" Grid.Column="1" Click="SaveAndPlayButton_Click">
 					<Grid>
-						<StackPanel Orientation="Horizontal">
-							<Image/>
-							<TextBlock Text="{DynamicResource MainBtnSaveAndPlay}" VerticalAlignment="Center"/>
-						</StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="savePlayIcon" Width="20" Height="20" Source="{StaticResource IconSave}" Margin="0,0,5,0"/>
+                            <TextBlock Text="{DynamicResource MainBtnSaveAndPlay}" VerticalAlignment="Center"/>
+                        </StackPanel>
 					</Grid>
 				</Button>
 				<Button x:Name="SaveButton" MaxHeight="30" Grid.Column="3" Click="SaveButton_Click">
 					<StackPanel Orientation="Horizontal">
-						<Image/>
-						<TextBlock Text="{DynamicResource MainBtnSave}" VerticalAlignment="Center"/>
+                        <Image x:Name="saveIcon" Width="20" Height="20" Source="{StaticResource IconSave}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{DynamicResource MainBtnSave}" VerticalAlignment="Center"/>
 					</StackPanel>
 				</Button>
 			</Grid>
