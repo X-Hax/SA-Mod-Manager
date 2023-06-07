@@ -12,6 +12,7 @@
 				<ResourceDictionary Source="Themes/DarkTheme.xaml" />
 				<ResourceDictionary Source="Languages/Languages.xaml" />
 				<ResourceDictionary Source="Languages/en-EN.xaml" />
+				<ResourceDictionary Source="Icons/Icons.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 
 			
@@ -120,7 +121,7 @@
 				<Setter Property="MinHeight" Value="30" />
 				<Setter Property="MinWidth" Value="50" />
 				<Setter Property="Padding" Value="10,0,10,0"/>
-				<Setter Property="LayoutTransform" >
+				<Setter Property="LayoutTransform">
 					<Setter.Value>
 						<ScaleTransform x:Name="scaleTransform" />
 					</Setter.Value>

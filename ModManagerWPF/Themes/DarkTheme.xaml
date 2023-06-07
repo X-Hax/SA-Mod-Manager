@@ -51,5 +51,22 @@
 		<GradientStop Color="{DynamicResource MainHighlightColor}" Offset="1.0"/>
 	</LinearGradientBrush>
 	<!--#region -->
+	
+	<!--#region Icon SolidColorBrushes-->
+	<Color x:Key="IconColorGreen" A="255" R="0" G="188" B="0"/>
+	<Color x:Key="IconColorBlue" A="255" R="0" G="106" B="188"/>
+	<Color x:Key="IconColorRed" A="255" R="188" G="0" B="0"/>
+	<Color x:Key="IconColorGray" A="255" R="158" G="158" B="158"/>
+
+	<SolidColorBrush x:Key="IconBrushAdd" Color="{DynamicResource IconColorGreen}"/>
+	<SolidColorBrush x:Key="IconBrushRefresh" Color="{DynamicResource IconColorBlue}"/>
+	<SolidColorBrush x:Key="IconBrushConfig" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushEdit" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushCheck" Color="{DynamicResource IconColorGreen}"/>
+	<SolidColorBrush x:Key="IconBrushClose" Color="{DynamicResource IconColorRed}"/>
+	<SolidColorBrush x:Key="IconBrushSave" Color="{DynamicResource IconColorBlue}"/>
+	<SolidColorBrush x:Key="IconBrushDelete" Color="{DynamicResource IconColorRed}"/>
+	<SolidColorBrush x:Key="IconBrushPlay" Color="{DynamicResource IconColorGreen}"/>
+	<!--#endregion-->
 
 </ResourceDictionary>

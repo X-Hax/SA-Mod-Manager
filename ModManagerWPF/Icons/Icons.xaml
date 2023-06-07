@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="Add.xaml"/>
+		<ResourceDictionary Source="Check.xaml"/>
+		<ResourceDictionary Source="Close.xaml"/>
+		<ResourceDictionary Source="Config.xaml"/>
+		<ResourceDictionary Source="Delete.xaml"/>
+		<ResourceDictionary Source="Edit.xaml"/>
+		<ResourceDictionary Source="Refresh.xaml"/>
+		<ResourceDictionary Source="Save.xaml"/>
+		<ResourceDictionary Source="Play.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>
