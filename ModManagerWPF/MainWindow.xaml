@@ -135,7 +135,6 @@
 					</Grid>
 
 
-
 					<!--This Grid manages the Mods List Up/Down Buttons.-->
 					<Grid HorizontalAlignment="Right">
 						<Grid.ColumnDefinitions>

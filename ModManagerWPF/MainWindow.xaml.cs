@@ -39,18 +39,18 @@ namespace ModManagerWPF
 		public static string modDirectory = string.Empty;
 		public static string loaderinipath = "mods/SADXModLoader.ini";
 		private string sadxIni = "sonicDX.ini";
-		string datadllorigpath = "system\\CHRMODELS_orig.dll";
-		string loaderdllpath = "mods\\SADXModLoader.dll";
-		public string datadllpath = "system\\CHRMODELS.dll";
+		string datadllorigpath = "system/CHRMODELS_orig.dll";
+		string loaderdllpath = "mods/SADXModLoader.dll";
+		public string datadllpath = "system/CHRMODELS.dll";
 		const string exeName = "sonic.exe";
 
 		string gamePath = string.Empty;
 		SADXLoaderInfo loaderini;
 		Dictionary<string, SADXModInfo> mods = null;
-		string codelstpath = "mods\\Codes.lst";
-		string codexmlpath = "mods\\Codes.xml";
-		string codedatpath = "mods\\Codes.dat";
-		string patchdatpath = "mods\\Patches.dat";
+		string codelstpath = "mods/Codes.lst";
+		string codexmlpath = "mods/Codes.xml";
+		string codedatpath = "mods/Codes.dat";
+		string patchdatpath = "mods/Patches.dat";
 		CodeList mainCodes = null;
 		List<Code> codes = null;
 		bool installed = false;
@@ -171,16 +171,16 @@ namespace ModManagerWPF
 			if (!string.IsNullOrEmpty(gamePath) && File.Exists(Path.Combine(gamePath, exeName)))
 			{
 				modDirectory = Path.Combine(gamePath, "mods");
-				loaderinipath = Path.Combine(gamePath, "mods\\SADXModLoader.ini");
-				datadllorigpath = Path.Combine(gamePath, "system\\CHRMODELS_orig.dll");
-				loaderdllpath = Path.Combine(gamePath, "mods\\SADXModLoader.dll");
-				datadllpath = Path.Combine(gamePath, "system\\CHRMODELS.dll");
+				loaderinipath = Path.Combine(gamePath, "mods/SADXModLoader.ini");
+				datadllorigpath = Path.Combine(gamePath, "system/CHRMODELS_orig.dll");
+				loaderdllpath = Path.Combine(gamePath, "mods/SADXModLoader.dll");
+				datadllpath = Path.Combine(gamePath, "system/CHRMODELS.dll");
 				sadxIni = Path.Combine(gamePath, "sonicDX.ini");
 
-				codelstpath = Path.Combine(gamePath, "mods\\Codes.lst");
-				codexmlpath = Path.Combine(gamePath, "mods\\Codes.xml");
-				codedatpath = Path.Combine(gamePath, "mods\\Codes.dat");
-				patchdatpath = Path.Combine(gamePath, "mods\\Patches.dat");
+				codelstpath = Path.Combine(gamePath, "mods/Codes.lst");
+				codexmlpath = Path.Combine(gamePath, "mods/Codes.xml");
+				codedatpath = Path.Combine(gamePath, "mods/Codes.dat");
+				patchdatpath = Path.Combine(gamePath, "mods/Patches.dat");
 			}
 			else
 			{
@@ -546,27 +546,15 @@ namespace ModManagerWPF
 			if (mod is not null)
 			{
 				SADXModInfo modInfo = mods[mod.Tag];
-				Common.ModConfig config = new(modInfo);
+				string fullPath = Path.Combine(modDirectory, mod.Tag);
+				Common.ModConfig config = new(modInfo, fullPath);
 				config.Show();
 			}
 		}
 
-		private void ModContextConfigureMod_Click(object sender, RoutedEventArgs e)
-		{
-			InitModConfig();
-		}
-
 		private void ModContextEditMod_Click(object sender, RoutedEventArgs e)
 		{
-			var mod = (ModData)listMods.SelectedItem;
-
-			if (mod is not null)
-			{
-				SADXModInfo modInfo = mods[mod.Tag];
-				EditMod Edit = new(modInfo);
-				Edit.Show();
-				Edit.Closed += EditMod_FormClosing;
-			}
+			InitModConfig();
 		}
 
 		private void ModContextDeleteMod_Click(object sender, RoutedEventArgs e)
@@ -578,7 +566,7 @@ namespace ModManagerWPF
 				var msg = MessageBox.Show(Lang.GetString("DeleteModWarning") + " " + item.Name + "?", Lang.GetString("SadxManagerTitle"), MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 				if (msg == MessageBoxResult.Yes)
 				{
-					string fullPath = Path.Combine(modDirectory, item.Name);
+					string fullPath = Path.Combine(modDirectory, item.Tag);
 
 					if (Directory.Exists(fullPath))
 					{
@@ -1004,7 +992,7 @@ namespace ModManagerWPF
 
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
-				string GamePath = dialog.SelectedPath.Replace("/", "\\");
+				string GamePath = dialog.SelectedPath;
 				string path = Path.Combine(GamePath, exeName);
 
 				if (File.Exists(path))
@@ -1145,6 +1133,11 @@ namespace ModManagerWPF
 		}
 
 		private void ConfigureModBtn_Click(object sender, RoutedEventArgs e)
+		{
+			InitModConfig();
+		}
+
+		private void ModContextConfigureMod_Click(object sender, RoutedEventArgs e)
 		{
 			InitModConfig();
 		}
