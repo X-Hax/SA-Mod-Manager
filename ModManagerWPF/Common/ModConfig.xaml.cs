@@ -32,11 +32,15 @@ namespace ModManagerWPF.Common
 			pathXML = path;
 			Title = Lang.GetString("TitleConfigureMod") + " " + Mod.Name;
 			settings = new ConfigSettings(pathXML);
-			var panel = FormBuilder.ConfigBuild(settings.schema);
+			var panel = FormBuilder.ConfigBuild(settings.schema, OnItemHover);
 			panel.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
 			panel.VerticalAlignment = VerticalAlignment.Stretch;
 			ItemsHost.Children.Add(panel);
+		}
 
+		private void OnItemHover(string des)
+		{
+			DescBox.Text = des;
 		}
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)

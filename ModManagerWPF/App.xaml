@@ -778,18 +778,18 @@
 				</Setter>
 			</Style>
 			<!--#endregion-->
-			
-			<!--#region Button Styles-->
-			<SolidColorBrush x:Key="Button.Static.Background" Color="{DynamicResource BtnBackgroundColor}"/>
-			<SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
-			<SolidColorBrush x:Key="Button.MouseOver.Background" Color="{DynamicResource BtnHoverColor}"/>
-			<SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
-			<SolidColorBrush x:Key="Button.Pressed.Background" Color="{DynamicResource BtnClickColor}"/>
-			<SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
-			<SolidColorBrush x:Key="Button.Disabled.Background" Color="{DynamicResource BtnDisabledColor}"/>
-			<SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
-			<SolidColorBrush x:Key="Button.Disabled.Foreground" Color="{DynamicResource BtnDisabledTextColor}"/>
-			<Style TargetType="{x:Type Button}">
+
+            <!--#region Button Styles-->
+            <SolidColorBrush x:Key="Button.Static.Background" Color="{DynamicResource BtnBackgroundColor}"/>
+            <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+            <SolidColorBrush x:Key="Button.MouseOver.Background" Color="{DynamicResource BtnHoverColor}"/>
+            <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+            <SolidColorBrush x:Key="Button.Pressed.Background" Color="{DynamicResource BtnClickColor}"/>
+            <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+            <SolidColorBrush x:Key="Button.Disabled.Background" Color="{DynamicResource BtnDisabledColor}"/>
+            <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+            <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="{DynamicResource BtnDisabledTextColor}"/>
+            <Style TargetType="{x:Type Button}">
 				<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
 				<Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
 				<Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>

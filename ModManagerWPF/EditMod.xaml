@@ -10,6 +10,7 @@
 		MinHeight="550" MinWidth="450" Height="560" Width="560"
 		Style="{StaticResource SAWindow}"
 		ResizeMode="NoResize">
+ 
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="40"/>
