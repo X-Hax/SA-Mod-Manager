@@ -10,5 +10,11 @@
 		<ResourceDictionary Source="Refresh.xaml"/>
 		<ResourceDictionary Source="Save.xaml"/>
 		<ResourceDictionary Source="Play.xaml"/>
+		<ResourceDictionary Source="Open.xaml"/>
+
+		<ResourceDictionary Source="Github.xaml"/>
+		<ResourceDictionary Source="SADocs.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
+
+	<Image x:Key="ImageDelete" x:Shared="False" Source="{StaticResource IconDelete}"/>
 </ResourceDictionary>

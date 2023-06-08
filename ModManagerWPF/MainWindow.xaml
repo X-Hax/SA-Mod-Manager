@@ -21,19 +21,8 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Languages/en-EN.xaml"/>
 				<ResourceDictionary Source="Themes/DarkTheme.xaml"/>
-                <ResourceDictionary Source="Icons/Icons.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-
-			<ContextMenu x:Key="ModContextMenu">
-				<MenuItem x:Name="ModContextOpenFolder" Header="{DynamicResource ModsUIOpenFolder}" Click="ModContextOpenFolder_Click" InputGestureText="(Ctrl+O)"/>
-				<MenuItem x:Name="ModContextChkUpdate" Header="{DynamicResource ModsUIChkUpdate}" Click="ModContextChkUpdate_Click"/>
-				<MenuItem x:Name="ModContextVerifyIntegrity" Header="{DynamicResource ModsUIVerifyIntegrity}" Click="ModContextVerifyIntegrity_Click" />
-				<MenuItem x:Name="ModContextForceUpdate" Header="{DynamicResource ModsUIForceUpdate}" Click="ModContextForceUpdate_Click"/>
-				<MenuItem x:Name="ModContextConfigureMod" Header="{DynamicResource ModsUIModConfigure}" Click="ModContextConfigureMod_Click" InputGestureText="(Ctrl+U)"/>
-				<MenuItem x:Name="ModContextEditMod" Header="{DynamicResource ModsUIModEdit}" Click="ModContextEditMod_Click" InputGestureText="(Ctrl+E)"/>
-				<MenuItem x:Name="ModContextDeleteMod" Header="{DynamicResource ModsUIModDelete}" Click="ModContextDeleteMod_Click" InputGestureText="(Delete)"/>
-				<MenuItem x:Name="ModContextDev" Header="{DynamicResource ModsUIDev}" Click="ModContextDev_Click"/>
-			</ContextMenu>
+				<ResourceDictionary Source="Icons/Icons.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>
 	<!--This is the initial grid used by the entire app.-->
@@ -74,10 +63,36 @@
                                     <EventSetter Event="ContextMenuOpening" Handler="ModList_ContextMenuOpening"/>
                                     <EventSetter Event="MouseEnter" Handler="ModList_MouseEnter"/>
                                     <EventSetter Event="MouseLeave" Handler="ModList_MouseLeave"/>
-                                    <Setter Property="ContextMenu" Value="{DynamicResource ModContextMenu}"/>
-
                                 </Style>
 							</ListView.ItemContainerStyle>
+							<ListView.ContextMenu>
+								<ContextMenu>
+									<MenuItem x:Name="ModContextOpenFolder" Header="{DynamicResource ModsUIOpenFolder}" Click="ModContextOpenFolder_Click" InputGestureText="(Ctrl+O)">
+										<MenuItem.Icon>
+											<Image Source="{StaticResource IconOpen}"/>
+										</MenuItem.Icon>
+									</MenuItem>
+									<MenuItem x:Name="ModContextChkUpdate" Header="{DynamicResource ModsUIChkUpdate}" Click="ModContextChkUpdate_Click"/>
+									<MenuItem x:Name="ModContextVerifyIntegrity" Header="{DynamicResource ModsUIVerifyIntegrity}" Click="ModContextVerifyIntegrity_Click" />
+									<MenuItem x:Name="ModContextForceUpdate" Header="{DynamicResource ModsUIForceUpdate}" Click="ModContextForceUpdate_Click"/>
+									<MenuItem x:Name="ModContextConfigureMod" Header="{DynamicResource ModsUIModConfigure}" Click="ModContextConfigureMod_Click" InputGestureText="(Ctrl+U)">
+										<MenuItem.Icon>
+											<Image Source="{StaticResource IconConfig}"/>
+										</MenuItem.Icon>
+									</MenuItem>
+									<MenuItem x:Name="ModContextEditMod" Header="{DynamicResource ModsUIModEdit}" Click="ModContextEditMod_Click" InputGestureText="(Ctrl+E)">
+										<MenuItem.Icon>
+											<Image Source="{StaticResource IconEdit}"/>
+										</MenuItem.Icon>
+									</MenuItem>
+									<MenuItem x:Name="ModContextDeleteMod" Header="{DynamicResource ModsUIModDelete}" Click="ModContextDeleteMod_Click" InputGestureText="(Delete)">
+										<MenuItem.Icon>
+											<Image Source="{StaticResource IconDelete}"/>
+										</MenuItem.Icon>
+									</MenuItem>
+									<MenuItem x:Name="ModContextDev" Header="{DynamicResource ModsUIDev}" Click="ModContextDev_Click"/>
+								</ContextMenu>
+							</ListView.ContextMenu>
 							<ListView.View>
 								<GridView>
 									<GridView.Columns>
@@ -1145,9 +1160,24 @@
 								</Grid.RowDefinitions>
 
 								<Button x:Name="btnCredits" Content="{DynamicResource ManagerBtnCredits}" Grid.Column="0" Margin="5,0,5,0" Click="AboutBtn_Click"/>
-								<Button x:Name="btnDocs" Content="{DynamicResource ManagerBtnDocs}" Grid.Column="0" Grid.Row="2" Margin="5,0,5,0"/>
-								<Button x:Name="btnSource" Content="{DynamicResource ManagerBtnSource}" Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" Click="btnSource_Click"/>
-								<Button x:Name="btnReport" Content="{DynamicResource ManagerBtnReport}" Grid.Column="1" Grid.Row="2" Margin="5,0,5,0" Click="btnReport_Click" />
+								<Button x:Name="btnDocs" Grid.Column="0" Grid.Row="2" Margin="5,0,5,0">
+									<StackPanel Orientation="Horizontal">
+										<Image Source="{StaticResource IconDocs}" Width="20" Height="20" Margin="0,0,5,0"/>
+										<TextBlock Text="{DynamicResource ManagerBtnDocs}" VerticalAlignment="Center"/>
+									</StackPanel>
+								</Button>
+								<Button x:Name="btnSource" Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" Click="btnSource_Click">
+									<StackPanel Orientation="Horizontal">
+										<Image Source="{StaticResource IconGithub}" Width="20" Height="20" Margin="0,0,5,0"/>
+										<TextBlock Text="{DynamicResource ManagerBtnSource}" VerticalAlignment="Center"/>
+									</StackPanel>
+								</Button>
+								<Button x:Name="btnReport" Grid.Column="1" Grid.Row="2" Margin="5,0,5,0" Click="btnReport_Click">
+									<StackPanel Orientation="Horizontal">
+										<Image Source="{StaticResource IconGithub}" Width="20" Height="20" Margin="0,0,5,0"/>
+										<TextBlock Text="{DynamicResource ManagerBtnReport}" VerticalAlignment="Center"/>
+									</StackPanel>
+								</Button>
 							</Grid>
 						</Grid>
 					</GroupBox>

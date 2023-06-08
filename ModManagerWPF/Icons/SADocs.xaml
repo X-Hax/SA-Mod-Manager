@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<DrawingImage x:Key="IconDocs" xmlns:svg="http://sharpvectors.codeplex.com/runtime/">
+		<DrawingImage.Drawing>
+			<DrawingGroup ClipGeometry="M0,0 V62.212688 H62.97842 V0 H0 Z">
+				<DrawingGroup Opacity="1" Transform="1,0,0,1,-74.344118,-33.149608">
+					<DrawingGroup Opacity="1" Transform="1,0,0,1,3.2607633,-48.587744">
+						<DrawingGroup Opacity="1">
+							<GeometryDrawing Brush="{DynamicResource IconBrushDocs}" Geometry="F1 M62.97842,62.212688z M0,0z M75.784226,143.72545C66.45649,134.81212 76.328705,105.71146 97.801337,95.155505 60.910036,118.74819 74.248672,170.3289 122.08631,127.47248 98.201488,145.87756 80.330216,146.55575 80.036458,129.26787 91.380635,158.79133 149.93979,110.56174 129.92932,81.737352 138.89373,98.756241 124.53562,122.4386 108.10119,130.49629 154.20368,89.437316 115.42797,64.126157 83.910712,98.368303 110.81078,76.167871 125.32218,82.721423 125.39361,96.667411 112.36348,64.903316 54.361344,120.39231 75.784226,143.72545z" />
+						</DrawingGroup>
+					</DrawingGroup>
+				</DrawingGroup>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+</ResourceDictionary>

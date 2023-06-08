@@ -67,6 +67,9 @@
 	<SolidColorBrush x:Key="IconBrushSave" Color="{DynamicResource IconColorBlue}"/>
 	<SolidColorBrush x:Key="IconBrushDelete" Color="{DynamicResource IconColorRed}"/>
 	<SolidColorBrush x:Key="IconBrushPlay" Color="{DynamicResource IconColorGreen}"/>
+	<SolidColorBrush x:Key="IconBrushOpen" Color="{DynamicResource IconColorBlue}"/>
+	<SolidColorBrush x:Key="IconBrushGithub" Color="White"/>
+	<SolidColorBrush x:Key="IconBrushDocs" Color="{DynamicResource IconColorBlue}"/>
 	<!--#endregion-->
 
 </ResourceDictionary>
