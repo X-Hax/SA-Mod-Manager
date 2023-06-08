@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,12 +10,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using ModManagerWPF.Common;
+using Xceed.Wpf.Toolkit;
 
 namespace ModManagerWPF
 {
-    public class FormBuilder
-    {
+	public class FormBuilder
+	{
 		public static Thickness GroupMargin = new(0, 0, 0, 15);
+		public static Thickness ElementMargin = new(10, 5, 10, 5);
 
 		public static UIElement CreateLabel(string text)
 		{
@@ -23,28 +26,171 @@ namespace ModManagerWPF
 			return label;
 		}
 
-		public static UIElement CreateComboBox(string text)
+		public static Dictionary<string, string> EnumItems(ConfigSchemaEnum config)
 		{
-			ComboBox box = new();
-			box.Text = text;
-			return box;
+			Dictionary<string, string> members = new Dictionary<string, string>();
+
+			foreach (ConfigSchemaEnumMember member in config.Members)
+			{
+				string key = member.Name;
+				string value = member.DisplayName ?? member.Name;
+				members.Add(key, value);
+			}
+
+			return members;
 		}
 
-		public static UIElement CreateCheckBox(string text)
+		public static UIElement CreateComboBox(ConfigSchemaProperty property, List<ConfigSchemaEnum> enums)
 		{
-			CheckBox checkBox = new CheckBox();
-			checkBox.Content = text;
+			Grid panel = new Grid()
+			{
+				ColumnDefinitions =
+				{
+					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },
+					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }
+				},
+				Margin = ElementMargin
+			};
+			panel.Children.Add(new Label()
+			{
+				Content = property.DisplayName + ":",
+				VerticalAlignment = VerticalAlignment.Center,
+			});
+			Dictionary<string, string> list = EnumItems(enums.Find(x => x.Name == property.Type));
+			ComboBox box = new ComboBox() {
+				Width = 200,
+				SelectedValuePath = "Key",
+				DisplayMemberPath = "Value",
+				SelectedValue = property.DefaultValue,
+				ItemsSource = list,
+				VerticalAlignment = VerticalAlignment.Center,
+				HorizontalAlignment = HorizontalAlignment.Right,
+			};
+			panel.Children.Add(box);
+
+			Grid.SetColumn(panel.Children[0], 0);
+			Grid.SetColumn(box, 1);
+			return panel;
+		}
+
+		public static UIElement CreateIntBox(ConfigSchemaProperty property)
+		{
+			Grid panel = new Grid()
+			{
+				ColumnDefinitions =
+				{
+					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },
+					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }
+				},
+				Margin = ElementMargin
+			};
+			panel.Children.Add(new Label()
+			{
+				Content = property.DisplayName + ":",
+				VerticalAlignment = VerticalAlignment.Center
+			});
+
+			IntegerUpDown element = new IntegerUpDown()
+			{
+				MinWidth = 100,
+				Value = int.Parse(property.DefaultValue),
+				HorizontalAlignment = HorizontalAlignment.Right,
+			};
+			panel.Children.Add(element);
+
+			Grid.SetColumn(panel.Children[0], 0);
+			Grid.SetColumn(element, 1);
+
+			return panel;
+		}
+
+		public static UIElement CreateFloatBox(ConfigSchemaProperty property)
+		{
+			Grid panel = new Grid()
+			{
+				ColumnDefinitions =
+				{
+					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },
+					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }
+				},
+				Margin = ElementMargin
+			};
+			panel.Children.Add(new Label()
+			{
+				Content = property.DisplayName + ":",
+				VerticalAlignment = VerticalAlignment.Center
+			});
+
+			DecimalUpDown element = new DecimalUpDown()
+			{
+				MinWidth = 100,
+				Value = Decimal.Parse(property.DefaultValue),
+				HorizontalAlignment = HorizontalAlignment.Right
+			};
+			panel.Children.Add(element);
+
+			Grid.SetColumn(panel.Children[0], 0);
+			Grid.SetColumn(element, 1);
+
+			return panel;
+		}
+
+		public static UIElement CreateStringBox(ConfigSchemaProperty property)
+		{
+			Grid panel = new Grid()
+			{
+				ColumnDefinitions =
+				{
+					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },
+					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }
+				},
+				Margin = ElementMargin
+			};
+			panel.Children.Add(new Label()
+			{
+				Content = property.DisplayName + ":",
+				VerticalAlignment = VerticalAlignment.Center
+			});
+
+			TextBox element = new TextBox()
+			{
+				Width = 200,
+				Text = property.DefaultValue,
+				VerticalAlignment= VerticalAlignment.Center,
+				HorizontalAlignment = HorizontalAlignment.Right
+			};
+			panel.Children.Add(element);
+
+			Grid.SetColumn(panel.Children[0], 0);
+			Grid.SetColumn(element, 1);
+
+			return panel;
+		}
+
+		public static UIElement CreateCheckBox(ConfigSchemaProperty property)
+		{
+			CheckBox checkBox = new CheckBox()
+			{
+				Content = property.DisplayName,
+				Margin = ElementMargin
+			};
 			return checkBox;
 		}
 
-		private static UIElement ConfigCreateItem(ConfigSchemaProperty elem)
+		private static UIElement ConfigCreateItem(ConfigSchemaProperty elem, List<ConfigSchemaEnum> enums)
 		{
 			switch (elem.Type)
 			{
 				case "bool":
-					return CreateCheckBox(null);
+					return CreateCheckBox(elem);
+				case "int":
+					return CreateIntBox(elem);
+				case "float":
+					return CreateFloatBox(elem);
+				case "string":
+					return CreateStringBox(elem);
 				default:
-					return CreateComboBox(elem.DisplayName);
+					return CreateComboBox(elem, enums);
 			}
 		}
 
@@ -73,11 +219,11 @@ namespace ModManagerWPF
 				foreach (var element in group.Properties)
 				{
 					string PropertyName = string.IsNullOrWhiteSpace(element.DisplayName) ? element.Name : element.DisplayName;
-					var label = CreateLabel(PropertyName);	
-					panel.Children.Add(label);
-					var item = ConfigCreateItem(element);
+					//var label = CreateLabel(PropertyName);	
+					//panel.Children.Add(label);
+					var item = ConfigCreateItem(element, config.Enums);
 					panel.Children.Add(item);
-					panel.HorizontalAlignment= HorizontalAlignment.Left;
+					panel.HorizontalAlignment= HorizontalAlignment.Stretch;
 				}
 
 				box.Content = panel;
