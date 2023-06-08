@@ -23,6 +23,31 @@ namespace ModManagerWPF
 			return label;
 		}
 
+		public static UIElement CreateComboBox(string text)
+		{
+			ComboBox box = new();
+			box.Text = text;
+			return box;
+		}
+
+		public static UIElement CreateCheckBox(string text)
+		{
+			CheckBox checkBox = new CheckBox();
+			checkBox.Content = text;
+			return checkBox;
+		}
+
+		private static UIElement ConfigCreateItem(ConfigSchemaProperty elem)
+		{
+			switch (elem.Type)
+			{
+				case "bool":
+					return CreateCheckBox(null);
+				default:
+					return CreateComboBox(elem.DisplayName);
+			}
+		}
+
 
 		public static Panel ConfigBuild(ConfigSchema config, Action<string> descripHover = null)
 		{
@@ -47,12 +72,12 @@ namespace ModManagerWPF
 
 				foreach (var element in group.Properties)
 				{
-					var grid = new Grid();
-				
 					string PropertyName = string.IsNullOrWhiteSpace(element.DisplayName) ? element.Name : element.DisplayName;
-					var item = CreateLabel(PropertyName);
-					grid.Children.Add(item);
-					panel.Children.Add(grid);
+					var label = CreateLabel(PropertyName);	
+					panel.Children.Add(label);
+					var item = ConfigCreateItem(element);
+					panel.Children.Add(item);
+					panel.HorizontalAlignment= HorizontalAlignment.Left;
 				}
 
 				box.Content = panel;
