@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -24,6 +25,11 @@ namespace ModManagerWPF
 			Label label = new();
 			label.Content = text;
 			return label;
+		}
+
+		public static string GetElementName(ConfigSchemaProperty element)
+		{
+			return string.IsNullOrWhiteSpace(element.DisplayName) ? element.Name : element.DisplayName;
 		}
 
 		public static Dictionary<string, string> EnumItems(ConfigSchemaEnum config)
@@ -53,7 +59,7 @@ namespace ModManagerWPF
 			};
 			panel.Children.Add(new Label()
 			{
-				Content = property.DisplayName + ":",
+				Content = GetElementName(property) + ":",
 				VerticalAlignment = VerticalAlignment.Center,
 			});
 			Dictionary<string, string> list = EnumItems(enums.Find(x => x.Name == property.Type));
@@ -86,7 +92,7 @@ namespace ModManagerWPF
 			};
 			panel.Children.Add(new Label()
 			{
-				Content = property.DisplayName + ":",
+				Content = GetElementName(property) + ":",
 				VerticalAlignment = VerticalAlignment.Center
 			});
 
@@ -117,14 +123,16 @@ namespace ModManagerWPF
 			};
 			panel.Children.Add(new Label()
 			{
-				Content = property.DisplayName + ":",
+				Content = GetElementName(property) + ":",
 				VerticalAlignment = VerticalAlignment.Center
 			});
+
+			decimal result = decimal.Parse(property.DefaultValue.Trim(), CultureInfo.InvariantCulture);
 
 			DecimalUpDown element = new DecimalUpDown()
 			{
 				MinWidth = 100,
-				Value = Decimal.Parse(property.DefaultValue),
+				Value = result,
 				HorizontalAlignment = HorizontalAlignment.Right
 			};
 			panel.Children.Add(element);
@@ -148,7 +156,7 @@ namespace ModManagerWPF
 			};
 			panel.Children.Add(new Label()
 			{
-				Content = property.DisplayName + ":",
+				Content = GetElementName(property) + ":",
 				VerticalAlignment = VerticalAlignment.Center
 			});
 
@@ -169,11 +177,14 @@ namespace ModManagerWPF
 
 		public static UIElement CreateCheckBox(ConfigSchemaProperty property)
 		{
+			string isTrue = property.DefaultValue;
 			CheckBox checkBox = new CheckBox()
 			{
-				Content = property.DisplayName,
-				Margin = ElementMargin
+				Content = GetElementName(property),
+				Margin = ElementMargin,
+				IsChecked = isTrue.Replace(" ", "").ToLower() == "true",
 			};
+		
 			return checkBox;
 		}
 
@@ -218,9 +229,6 @@ namespace ModManagerWPF
 
 				foreach (var element in group.Properties)
 				{
-					string PropertyName = string.IsNullOrWhiteSpace(element.DisplayName) ? element.Name : element.DisplayName;
-					//var label = CreateLabel(PropertyName);	
-					//panel.Children.Add(label);
 					var item = ConfigCreateItem(element, config.Enums);
 					panel.Children.Add(item);
 					panel.HorizontalAlignment= HorizontalAlignment.Stretch;
