@@ -854,7 +854,7 @@
 			</Style>
 
 			<Style TargetType="{x:Type MenuItem}">
-
+				<Setter Property="Height" Value="30"/>
 				<Style.Triggers>
 					<Trigger Property="IsEnabled" Value="False">
 						<Setter Property="Background" Value="{DynamicResource DisabledColor}"/>
