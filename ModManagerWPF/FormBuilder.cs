@@ -285,7 +285,5 @@ namespace ModManagerWPF
 			}
 		}
 	}
-
-
 }
 
