@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<DrawingImage x:Key="IconDown">
+		<DrawingImage.Drawing>
+			<DrawingGroup ClipGeometry="M0,0 V123.47222 H70.555555 V0 H0 Z">
+				<DrawingGroup Opacity="1" Transform="1,0,0,1,-65.263889,-51.90873">
+					<DrawingGroup Opacity="1" Transform="8.8194444,0,0,8.8194444,-5.2916667,-9.8273804">
+						<GeometryDrawing Geometry="F1 M70.555555,123.47222z M0,0z M12,8L12,20 M12,20L15,17 M12,20L9,17">
+							<GeometryDrawing.Pen>
+								<Pen Brush="{DynamicResource IconBrushDown}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+							</GeometryDrawing.Pen>
+						</GeometryDrawing>
+					</DrawingGroup>
+				</DrawingGroup>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+</ResourceDictionary>

@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<DrawingImage x:Key="IconUpFloor">
+		<DrawingImage.Drawing>
+			<DrawingGroup ClipGeometry="M0,0 V158.75 H141.11111 V0 H0 Z">
+				<DrawingGroup Opacity="1" Transform="1,0,0,1,-29.986111,-16.630953">
+					<DrawingGroup Opacity="1" Transform="8.8194444,0,0,8.8194444,-5.2916667,-9.8273804">
+						<GeometryDrawing Geometry="F1 M141.11111,158.75z M0,0z M12,20L12,8 M12,8L9,11 M12,8L15,11 M19,4L5,4">
+							<GeometryDrawing.Pen>
+								<Pen Brush="{DynamicResource IconBrushUp}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+							</GeometryDrawing.Pen>
+						</GeometryDrawing>
+					</DrawingGroup>
+				</DrawingGroup>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+</ResourceDictionary>

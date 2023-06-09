@@ -3,9 +3,8 @@
     xmlns:local="clr-namespace:ModManagerWPF.Themes">
 
     <local:ThemeList x:Key="Themes">
-     <local:ThemeEntry FileName="DarkTheme" Name="Dark"/>
-    <local:ThemeEntry FileName="LightTheme" Name="Light"/>
-
-    </local:ThemeList>
+		<local:ThemeEntry FileName="DarkTheme" Name="Dark"/>
+		<local:ThemeEntry FileName="LightTheme" Name="Light"/>
+	</local:ThemeList>
 
 </ResourceDictionary>

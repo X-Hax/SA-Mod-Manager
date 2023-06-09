@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<DrawingImage x:Key="IconProfiles">
+		<DrawingImage.Drawing>
+			<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+				<GeometryDrawing Geometry="F1 M24,24z M0,0z M19,17L19,5C19,3.89543,18.1046,3,17,3L8,3C6.34315,3,5,4.34315,5,6L5,19 M19,17L7,17C5.89543,17,5,17.8954,5,19L5,19C5,20.1046,5.89543,21,7,21L19,21 19,17z M10,8L14,8">
+					<GeometryDrawing.Pen>
+						<Pen Brush="{DynamicResource IconBrushProfiles}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+					</GeometryDrawing.Pen>
+				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+</ResourceDictionary>

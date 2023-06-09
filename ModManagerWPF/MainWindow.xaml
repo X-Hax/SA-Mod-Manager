@@ -164,10 +164,18 @@
 							<RowDefinition Height="10"/>
 							<RowDefinition Height="30"/>
 						</Grid.RowDefinitions>
-						<Button x:Name="btnMoveTop" Content="⤒" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1" Click="btnMoveTop_Click"/>
-						<Button x:Name="btnMoveUp" Content="↑" HorizontalAlignment="Center" Width="30" Grid.Row="3" Click="btnMoveUp_Click"/>
-						<Button x:Name="btnMoveDown" Content="↓" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="5" Click="btnMoveDown_Click"/>
-						<Button x:Name="btnMoveBottom" Content="⤓" HorizontalAlignment="Right" Width="30" Grid.Row="7" Click="btnMoveBottom_Click"/>
+						<Button x:Name="btnMoveTop" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1" Click="btnMoveTop_Click">
+							<Image Source="{StaticResource IconUpFloor}" Margin="3"/>
+						</Button>
+						<Button x:Name="btnMoveUp" HorizontalAlignment="Center" Width="30" Grid.Row="3" Click="btnMoveUp_Click">
+							<Image Source="{StaticResource IconUp}" Margin="5"/>
+						</Button>
+						<Button x:Name="btnMoveDown" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="5" Click="btnMoveDown_Click">
+							<Image Source="{StaticResource IconDown}" Margin="5"/>
+						</Button>
+						<Button x:Name="btnMoveBottom" HorizontalAlignment="Center" Width="30" Grid.Row="7" Click="btnMoveBottom_Click">
+							<Image Source="{StaticResource IconDownFloor}" Margin="3"/>
+						</Button>
 					</Grid>
 
 					<!--This Grid manages the Refresh and Config Buttons.-->
@@ -1036,11 +1044,15 @@
 
 									<StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
 										<ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0"/>
-										<Button x:Name="btnProfileSettings" Grid.Column="2" Content="S" Height="22" Width="27"/>
+										<Button x:Name="btnProfileSettings" Grid.Column="2" Height="22" Width="27">
+											<Image Source="{StaticResource IconProfiles}" Margin="1,1,1,1"/>
+										</Button>
 									</StackPanel>
 									<StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
 										<TextBox x:Name="textGameDir" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" IsReadOnly="True"/>
-										<Button x:Name="btnBrowseGameDir" Grid.Column="2" Content="..." Height="22" Width="27" Click="btnBrowseGameDir_Click"/>
+										<Button x:Name="btnBrowseGameDir" Grid.Column="2" Height="22" Width="27" Click="btnBrowseGameDir_Click">
+											<Image Source="{StaticResource IconFolder}" Margin="1,1,1,1"/>
+										</Button>
 									</StackPanel>
                                     <ComboBox x:Name="comboThemes" ItemsSource="{Binding ThemeList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentTheme, Source={x:Static Application.Current}}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,0,5,0" Loaded="comboThemes_Loaded" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
                                     <ComboBox x:Name="comboLanguage" ItemsSource="{Binding LangList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentLang, Source={x:Static Application.Current}}"  Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Margin="5,0,5,0" Loaded="comboLanguage_Loaded" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>

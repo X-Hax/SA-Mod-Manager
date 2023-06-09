@@ -6,12 +6,19 @@
 		<ResourceDictionary Source="Close.xaml"/>
 		<ResourceDictionary Source="Config.xaml"/>
 		<ResourceDictionary Source="Delete.xaml"/>
+		<ResourceDictionary Source="Down.xaml"/>
+		<ResourceDictionary Source="DownFloor.xaml"/>
+		<ResourceDictionary Source="Download.xaml"/>
 		<ResourceDictionary Source="Edit.xaml"/>
+		<ResourceDictionary Source="Folder.xaml"/>
+		<ResourceDictionary Source="Open.xaml"/>
+		<ResourceDictionary Source="Play.xaml"/>
+		<ResourceDictionary Source="Profiles.xaml"/>
 		<ResourceDictionary Source="Refresh.xaml"/>
 		<ResourceDictionary Source="Save.xaml"/>
-		<ResourceDictionary Source="Play.xaml"/>
-		<ResourceDictionary Source="Open.xaml"/>
-
+		<ResourceDictionary Source="Up.xaml"/>
+		<ResourceDictionary Source="UpFloor.xaml"/>
+		
 		<ResourceDictionary Source="Github.xaml"/>
 		<ResourceDictionary Source="SADocs.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
