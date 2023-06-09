@@ -20,10 +20,18 @@ namespace ModManagerWPF
 		public static Thickness GroupMargin = new(0, 0, 0, 15);
 		public static Thickness ElementMargin = new(10, 5, 10, 5);
 
-		public static UIElement CreateLabel(string text)
+		public static UIElement CreateLabel(ConfigSchemaProperty property, bool addColon=true)
 		{
-			Label label = new();
-			label.Content = text;
+			string content = GetElementName(property);
+			if (addColon)
+				content = content + ":";
+
+			Label label = new()
+			{
+				Content = content,
+				VerticalAlignment = VerticalAlignment.Center,
+				Tag = property.HelpText
+			};
 			return label;
 		}
 
@@ -58,12 +66,7 @@ namespace ModManagerWPF
 				Margin = ElementMargin,
 				Tag = property.HelpText
 			};
-			panel.Children.Add(new Label()
-			{
-				Content = GetElementName(property) + ":",
-				VerticalAlignment = VerticalAlignment.Center,
-				Tag = property.HelpText
-			});
+			panel.Children.Add(CreateLabel(property));
 			Dictionary<string, string> list = EnumItems(enums.Find(x => x.Name == property.Type));
 			ComboBox box = new ComboBox()
 			{
@@ -95,12 +98,7 @@ namespace ModManagerWPF
 				Margin = ElementMargin,
 				Tag = property.HelpText
 			};
-			panel.Children.Add(new Label()
-			{
-				Content = GetElementName(property) + ":",
-				VerticalAlignment = VerticalAlignment.Center,
-				Tag = property.HelpText
-			});
+			panel.Children.Add(CreateLabel(property));
 
 			IntegerUpDown element = new IntegerUpDown()
 			{
@@ -129,12 +127,7 @@ namespace ModManagerWPF
 				Margin = ElementMargin,
 				Tag = property.HelpText
 			};
-			panel.Children.Add(new Label()
-			{
-				Content = GetElementName(property) + ":",
-				VerticalAlignment = VerticalAlignment.Center,
-				Tag = property.HelpText
-			});
+			panel.Children.Add(CreateLabel(property));
 
 			decimal result = decimal.Parse(property.DefaultValue.Trim(), CultureInfo.InvariantCulture);
 
@@ -165,12 +158,7 @@ namespace ModManagerWPF
 				Margin = ElementMargin,
 				Tag = property.HelpText
 			};
-			panel.Children.Add(new Label()
-			{
-				Content = GetElementName(property) + ":",
-				VerticalAlignment = VerticalAlignment.Center,
-				Tag = property.HelpText
-			});
+			panel.Children.Add(CreateLabel(property));
 
 			TextBox element = new TextBox()
 			{
@@ -190,16 +178,36 @@ namespace ModManagerWPF
 
 		public static UIElement CreateCheckBox(ConfigSchemaProperty property)
 		{
+			Grid grid = new Grid()
+			{
+				ColumnDefinitions =
+				{
+					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },
+					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }
+				},
+				Margin = ElementMargin,
+				Tag = property.HelpText
+			};
+			grid.Children.Add(CreateLabel(property));
+
 			string isTrue = property.DefaultValue;
 			CheckBox checkBox = new CheckBox()
 			{
-				Content = GetElementName(property),
-				Margin = ElementMargin,
 				IsChecked = isTrue.Replace(" ", "").ToLower() == "true",
-				Tag = property.HelpText
+				Tag = property.HelpText,
+				HorizontalAlignment = HorizontalAlignment.Right
 			};
+			grid.Children.Add(checkBox);
+			grid.Children.Add(new Separator()
+			{
+				VerticalAlignment = VerticalAlignment.Bottom
+			});
 
-			return checkBox;
+			Grid.SetColumn(grid.Children[0], 0);
+			Grid.SetColumn(checkBox, 1);
+			Grid.SetColumnSpan(grid.Children[2], 2);
+
+			return grid;
 		}
 
 		private static UIElement ConfigCreateItem(ConfigSchemaProperty elem, List<ConfigSchemaEnum> enums)
