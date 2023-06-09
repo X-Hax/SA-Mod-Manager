@@ -1092,7 +1092,14 @@
 				<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
 				<Style.Triggers>
 					<Trigger Property="IsMouseOver" Value="True">
-						<Setter Property="Background" Value="#90006ABC"/>
+						<Setter Property="Background" Value="{StaticResource Button.MouseOver.Background}"/>
+					</Trigger>
+					<Trigger Property="IsSelected" Value="True">
+						<Setter Property="Background" Value="{DynamicResource MainHighlightBrush}"/>
+						<Setter Property="BorderBrush" Value="{DynamicResource DataGridCellSelected}"/>
+					</Trigger>
+					<Trigger Property="IsEditing" Value="True">
+						<Setter Property="Background" Value="Transparent"/>
 					</Trigger>
 				</Style.Triggers>
 			</Style>
