@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-
 using System.Windows;
-using System.Windows.Forms;
+
 using System.Xml.Serialization;
+
 
 
 namespace ModManagerWPF.Common
@@ -19,11 +19,20 @@ namespace ModManagerWPF.Common
 	{
 		string pathXML = string.Empty;
 		ConfigSettings settings;
+		private static ModConfig _Instance;
+
+		public static ModConfig GetInstance()
+		{
+			if (_Instance == null)
+				return null;
+
+			return _Instance;
+		}
 
 		public ModConfig(SADXModInfo Mod, string path)
 		{
 			InitializeComponent();
-
+			_Instance = this;
 			if (Mod is null)
 			{
 				Close();
@@ -32,15 +41,20 @@ namespace ModManagerWPF.Common
 			pathXML = path;
 			Title = Lang.GetString("TitleConfigureMod") + " " + Mod.Name;
 			settings = new ConfigSettings(pathXML);
-			var panel = FormBuilder.ConfigBuild(settings.schema, OnItemHover);
+			var panel = FormBuilder.ConfigBuild(settings.schema);
 			panel.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
 			panel.VerticalAlignment = VerticalAlignment.Stretch;
-			ItemsHost.Children.Add(panel);
+			ItemsHost.Children.Add(panel);		
 		}
 
-		private void OnItemHover(string des)
+		public void OnItemHover(string des)
 		{
 			DescBox.Text = des;
+		}
+
+		public void OnItemLeave()
+		{
+			DescBox.Text = string.Empty;
 		}
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)

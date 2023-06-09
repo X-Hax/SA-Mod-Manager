@@ -63,7 +63,7 @@
                     <TextBlock DockPanel.Dock="Top" Text="{DynamicResource ModSelectTextDesc}" FontSize="15"/>
 
                     <TextBox x:Name="DescBox" IsReadOnly="True" Margin="0,10" TextWrapping="Wrap"
-                             HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                             HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" FontSize="14" Padding="5"/>
                 </DockPanel>
             </Border>
         </Grid>
