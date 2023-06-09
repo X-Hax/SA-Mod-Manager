@@ -36,7 +36,7 @@
 		<TabControl x:Name="tcMain" Background="Transparent" >
 
 			<!--This Tab is for Mods.-->
-			<TabItem x:Name="tabMain" Header="{DynamicResource MainTabMods}" Margin="0,0,0,0" TextBlock.TextAlignment="Center">
+			<TabItem x:Name="tabMain" Header="{DynamicResource MainTabMods}" Margin="0,0,0,0" TextBlock.TextAlignment="Center" ToolTip="{DynamicResource TipMainModsTab}">
 				<!--Main Grid for Mods Tab-->
 				<Grid x:Name="GridModList">
 
@@ -164,16 +164,16 @@
 							<RowDefinition Height="10"/>
 							<RowDefinition Height="30"/>
 						</Grid.RowDefinitions>
-						<Button x:Name="btnMoveTop" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1" Click="btnMoveTop_Click">
+						<Button x:Name="btnMoveTop" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1" Click="btnMoveTop_Click" ToolTip="{DynamicResource TipModsMoveUpMax}">
 							<Image Source="{StaticResource IconUpFloor}" Margin="3"/>
 						</Button>
-						<Button x:Name="btnMoveUp" HorizontalAlignment="Center" Width="30" Grid.Row="3" Click="btnMoveUp_Click">
+						<Button x:Name="btnMoveUp" HorizontalAlignment="Center" Width="30" Grid.Row="3" Click="btnMoveUp_Click" ToolTip="{DynamicResource TipModsMoveUp}">
 							<Image Source="{StaticResource IconUp}" Margin="5"/>
 						</Button>
-						<Button x:Name="btnMoveDown" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="5" Click="btnMoveDown_Click">
+						<Button x:Name="btnMoveDown" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="5" Click="btnMoveDown_Click" ToolTip="{DynamicResource TipModsMoveDown}">
 							<Image Source="{StaticResource IconDown}" Margin="5"/>
 						</Button>
-						<Button x:Name="btnMoveBottom" HorizontalAlignment="Center" Width="30" Grid.Row="7" Click="btnMoveBottom_Click">
+						<Button x:Name="btnMoveBottom" HorizontalAlignment="Center" Width="30" Grid.Row="7" Click="btnMoveBottom_Click" ToolTip="{DynamicResource TipModsMoveDownMax}">
 							<Image Source="{StaticResource IconDownFloor}" Margin="3"/>
 						</Button>
 					</Grid>
@@ -187,7 +187,7 @@
 							<ColumnDefinition Width="150"/>
 							<ColumnDefinition Width="10"/>
 						</Grid.ColumnDefinitions>
-						<Button x:Name="RefreshBtn" Grid.Column="1" Margin="0,10,0,10" Click="RefreshBtn_Click">
+						<Button x:Name="RefreshBtn" Grid.Column="1" Margin="0,10,0,10" Click="RefreshBtn_Click" ToolTip="{DynamicResource TipModsResfreshButton}">
 							<Grid>
 								<StackPanel Orientation="Horizontal">
 									<Image x:Name="refreshIcon" Width="20" Height="20" Source="{StaticResource IconRefresh}" Margin="0,0,5,0"/>
@@ -225,7 +225,7 @@
 			</TabItem>
 
 			<!--This Tab is for Codes.-->
-			<TabItem x:Name="tbCodes" Header="{DynamicResource MainTabCodes}" Width="Auto" Margin="0,0,0,0" TextBlock.TextAlignment="Center">
+			<TabItem x:Name="tbCodes" Header="{DynamicResource MainTabCodes}" Width="Auto" Margin="0,0,0,0" TextBlock.TextAlignment="Center" ToolTip="{DynamicResource TipMainCodesTab}">
 				<!--Main Grid for Mods Tab-->
 				<Grid x:Name="GridCodeList">
 
@@ -309,7 +309,7 @@
 			</TabItem>
 
 			<!--This Tab is for Game Configuration.-->
-			<TabItem x:Name="tabGame" Header="{DynamicResource MainTabGameConfig}" Margin="0,0,0,0" TextBlock.TextAlignment="Center">
+			<TabItem x:Name="tabGame" Header="{DynamicResource MainTabGameConfig}" Margin="0,0,0,0" TextBlock.TextAlignment="Center" ToolTip="{DynamicResource TipMainGameTab}">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="77*"/>
@@ -794,7 +794,7 @@
 			</TabItem>
 
 			<!--This Tab is for Test Spawn.-->
-			<TabItem x:Name="tabTestSpawn" Header="Test Spawn" Margin="0,0,0,0" TextBlock.TextAlignment="Center">
+			<TabItem x:Name="tabTestSpawn" Header="Test Spawn" Margin="0,0,0,0" TextBlock.TextAlignment="Center" ToolTip="{DynamicResource TipMainSpawnTab}">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="10"/>
@@ -974,7 +974,7 @@
 			</TabItem>
 
 			<!--This Tab is for Manager Configuration.-->
-			<TabItem x:Name="tabConfig" Header="{DynamicResource MainTabManagerConfig}" Margin="0,0,0,0" TextBlock.TextAlignment="Center">
+			<TabItem x:Name="tabConfig" Header="{DynamicResource MainTabManagerConfig}" Margin="0,0,0,0" TextBlock.TextAlignment="Center" ToolTip="{DynamicResource TipMainManagerTab}">
 				<!--Main Grid for the Manager Config Tab.-->
 				<Grid>
 					<Grid.ColumnDefinitions>
@@ -1209,7 +1209,7 @@
 					<ColumnDefinition Width="73*"/>
 					<ColumnDefinition Width="77*"/>
 				</Grid.ColumnDefinitions>
-				<Button x:Name="SaveAndPlayButton" MaxHeight="30" Grid.Column="1" Click="SaveAndPlayButton_Click">
+				<Button x:Name="SaveAndPlayButton" MaxHeight="30" Grid.Column="1" Click="SaveAndPlayButton_Click" ToolTip="{DynamicResource TipMainSaveAndPlay}">
 					<Grid>
                         <StackPanel Orientation="Horizontal">
                             <Image x:Name="savePlayIcon" Width="20" Height="20" Source="{StaticResource IconPlay}" Margin="0,0,5,0"/>
@@ -1217,7 +1217,7 @@
                         </StackPanel>
 					</Grid>
 				</Button>
-				<Button x:Name="SaveButton" MaxHeight="30" Grid.Column="3" Click="SaveButton_Click">
+				<Button x:Name="SaveButton" MaxHeight="30" Grid.Column="3" Click="SaveButton_Click" ToolTip="{DynamicResource TipMainSave}">
 					<StackPanel Orientation="Horizontal">
                         <Image x:Name="saveIcon" Width="20" Height="20" Source="{StaticResource IconSave}" Margin="0,0,5,0"/>
                         <TextBlock Text="{DynamicResource MainBtnSave}" VerticalAlignment="Center"/>

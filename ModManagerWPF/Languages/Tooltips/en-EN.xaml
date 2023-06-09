@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<!--#region Main Window Tool Tips-->
+	<system:String x:Key="TipMainModsTab">Select, edit, and configure your mods.</system:String>
+	<system:String x:Key="TipMainCodesTab">Select codes to use when playing.</system:String>
+	<system:String x:Key="TipMainGameTab">Configure Game Options including Graphics and Sound.</system:String>
+	<system:String x:Key="TipMainSpawnTab">Selectable options to quick boot into the game with any character in any level.</system:String>
+	<system:String x:Key="TipMainManagerTab">Configure Manager Options, including Themes and Language settings.</system:String>
+	<system:String x:Key="TipMainSaveAndPlay">Save selected settings and launch the game.</system:String>
+	<system:String x:Key="TipMainSave">Save selected settings.</system:String>
+	<!--#endregion-->
+	
+	<!--#region Mods Tab Tool Tips-->
+	<system:String x:Key="TipModsResfreshButton">Refreshes the mods list.</system:String>
+	<system:String x:Key="TipModsMoveUpMax">Moves the selected mod to the top of the list.</system:String>
+	<system:String x:Key="TipModsMoveUp">Moves the selected mod up one in the list.</system:String>
+	<system:String x:Key="TipModsMoveDown">Moves the selected mod down one in the list.</system:String>
+	<system:String x:Key="TipModsMoveDownMax">Moves the selected mod to the bottom of the list.</system:String>
+	<!--#endregion-->
+    
+</ResourceDictionary>

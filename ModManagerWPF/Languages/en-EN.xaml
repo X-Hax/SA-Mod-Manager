@@ -2,6 +2,10 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="Tooltips/en-EN.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="BtnOK">OK</system:String>

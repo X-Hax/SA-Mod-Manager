@@ -33,6 +33,14 @@
 			</Style>
 			<!--#endregion-->
 			
+			<!--#region Tooltip Styles-->
+			<Style TargetType="{x:Type ToolTip}">
+				<Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
+				<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+			</Style>
+			<!--#endregion-->
+			
 			<!--#region Text Elements Styles-->
 			<SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
 			<SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>

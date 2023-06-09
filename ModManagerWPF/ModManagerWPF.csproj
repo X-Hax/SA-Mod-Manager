@@ -12,16 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<None Remove="Icons\SADXModManager_.png"/>
-    <None Remove="Icons\Add.xaml" />
-	<None Remove="Icons\Check.xaml"/>
-    <None Remove="Icons\Close.xaml" />
-	<None Remove="Icons\Config.xaml" />
-	<None Remove="Icons\Delete.xaml"/>
-	<None Remove="Icons\Edit.xaml"/>
-	<None Remove="Icons\Play.xaml" />
-	<None Remove="Icons\Refresh.xaml" />
-    <None Remove="Icons\Save.xaml" />
+	<None Remove="Icons\SADXModManager_.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,16 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Resource Include="Icons\SADXModManager_.png"/>
-	  <Resource Include="Icons\Add.xaml" />
-	  <Resource Include="Icons\Check.xaml"/>
-	  <Resource Include="Icons\Close.xaml" />
-	  <Resource Include="Icons\Config.xaml" />
-	  <Resource Include="Icons\Delete.xaml"/>
-	  <Resource Include="Icons\Edit.xaml"/>
-	  <Resource Include="Icons\Play.xaml" />
-	  <Resource Include="Icons\Refresh.xaml" />
-	  <Resource Include="Icons\Save.xaml" />
+	  <Resource Include="Icons\SADXModManager_.png" />
   </ItemGroup>
 
   <ItemGroup>
