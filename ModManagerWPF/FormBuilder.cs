@@ -20,6 +20,8 @@ namespace ModManagerWPF
 		public static Thickness GroupMargin = new(0, 0, 0, 15);
 		public static Thickness ElementMargin = new(10, 5, 10, 5);
 
+		#region Mod Config Form Build
+
 		public static UIElement CreateLabel(ConfigSchemaProperty property, bool addColon=true)
 		{
 			string content = GetElementName(property);
@@ -255,6 +257,7 @@ namespace ModManagerWPF
 					panel.HorizontalAlignment = HorizontalAlignment.Stretch;
 					item.MouseEnter += Item_MouseEnter;
 					item.MouseLeave += Item_MouseLeave;
+					Grid.SetColumn(panel.Children[0], 0);
 				}
 
 				box.Content = panel;
@@ -264,6 +267,9 @@ namespace ModManagerWPF
 			return stack;
 		}
 
+		#endregion
+
+		#region Mod Config Description
 		private static void Item_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
 		{
 			var instance = ModConfig.GetInstance();
@@ -284,6 +290,8 @@ namespace ModManagerWPF
 				}
 			}
 		}
+#endregion
+
 	}
 }
 
