@@ -38,6 +38,7 @@
 				<Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
 				<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+				<Setter Property="StaysOpen" Value="True"/>
 			</Style>
 			<!--#endregion-->
 			
@@ -797,7 +798,7 @@
             <SolidColorBrush x:Key="Button.Disabled.Background" Color="{DynamicResource BtnDisabledColor}"/>
             <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
             <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="{DynamicResource BtnDisabledTextColor}"/>
-            <Style TargetType="{x:Type Button}">
+            <Style x:Key="MainButtonStyle" TargetType="{x:Type Button}">
 				<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
 				<Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
 				<Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
@@ -837,6 +838,8 @@
 					</Setter.Value>
 				</Setter>
 			</Style>
+
+			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MainButtonStyle}"/>
 			<!--#endregion-->
 			
 			<!--#region Context Menu Style-->
@@ -1110,6 +1113,16 @@
 						<Setter Property="Background" Value="Transparent"/>
 					</Trigger>
 				</Style.Triggers>
+			</Style>
+			<!--#endregion-->
+			
+			<!--#region TreeView Style-->
+			<Style TargetType="{x:Type TreeView}">
+				<Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
+			</Style>
+
+			<Style TargetType="{x:Type TreeViewItem}">
+				<Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
 			</Style>
 			<!--#endregion-->
 			<!--#endregion-->
