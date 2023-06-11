@@ -139,6 +139,24 @@
 
     <!--#endregion-->
 
+    <!--#region Test Spawn Tab Strings-->
+    <system:String x:Key="SpawnCheckCharacter">Personnage:</system:String>
+    <system:String x:Key="SpawnCheckLevel">Niveau:</system:String>
+    <system:String x:Key="SpawnLabelTime">Temps:</system:String>
+    <system:String x:Key="SpawnLabelAct">Act:</system:String>
+    <system:String x:Key="SpawnCheckManual">Définir Manuellement:</system:String>
+    <system:String x:Key="SpawnCheckPosition">Position:</system:String>
+    <system:String x:Key="SpawnLabelPosX">Pos X:</system:String>
+    <system:String x:Key="SpawnLabelPosY">Pos Y:</system:String>
+    <system:String x:Key="SpawnLabelPosZ">Pos Z:</system:String>
+    <system:String x:Key="SpawnLabelAngle">Angle:</system:String>
+    <system:String x:Key="SpawnCheckEvent">Cinématique:</system:String>
+    <system:String x:Key="SpawnCheckMode">Mode de Jeu:</system:String>
+    <system:String x:Key="SpawnCheckSave">Redirection de la Sauvegarde:</system:String>
+    <system:String x:Key="SpawnLabelWarning">Remplacer les niveaux ou les personnages dans les cinématiques peut provoquer un plantage.</system:String>
+    <system:String x:Key="SpawnButtonLaunch">Lancer le Jeu</system:String>
+    <!--#endregion-->
+
     <!--#region Manager Config Tab Strings-->
     <!--Options-->
     <system:String x:Key="ManagerGrpOptions">Options</system:String>
@@ -201,7 +219,7 @@
     <system:String x:Key="UpdatesGamebananaID">Mod ID:</system:String>
     <system:String x:Key="UpdatesSelf">Paramètres d'Auto-Hébergé</system:String>
     <system:String x:Key="UpdatesSelfUpdate">URL de Mise à Jour:</system:String>
-    <system:String x:Key="UpdatesSelfChangelog">URL du journal des modifications:</system:String>
+    <system:String x:Key="UpdatesSelfChangelog">URL des Logs des modifications:</system:String>
     <system:String x:Key="DependencyWarning">Le système de dépendance ne doit être utilisé que lorsque vous avez créé un mod qui dépend absolument d'un autre mod pour fonctionner correctement.</system:String>
     <system:String x:Key="DependencyAdd">Ajouter une Dépendance</system:String>
     <system:String x:Key="DependencyRemove">Supprimer une Dépendance</system:String>

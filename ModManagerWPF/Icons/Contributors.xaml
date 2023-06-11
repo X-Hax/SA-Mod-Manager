@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <DrawingImage x:Key="IconContributors">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V354.856 H354.856 V0 H0 Z">
+                <DrawingGroup Opacity="1">
+                    <GeometryDrawing Brush="#FF333E48" Geometry="F1 M354.856,354.856z M0,0z M307.943,199.173C324.514,184.089 334.922,162.341 334.922,138.165 334.922,92.615 297.997,55.691 252.448,55.691 218.534,55.691 189.403,76.167 176.735,105.428 192.276,122.962 201.727,146.01 201.727,171.228 201.727,192.377 194.923,212.882 182.638,229.752 194.244,239.992 203.816,252.369 210.807,266.102L354.856,266.102C348.867,237.946,331.568,213.976,307.943,199.173z" />
+                    <GeometryDrawing Brush="#FF61B4E4" Geometry="F1 M354.856,354.856z M0,0z M0,299.166L204.811,299.166C198.825,271.011 181.526,247.04 157.899,232.237 174.472,217.153 184.878,195.405 184.878,171.228 184.878,125.679 147.954,88.754 102.404,88.754 56.859,88.754 19.933,125.679 19.933,171.228 19.933,195.405 30.337,217.153 46.911,232.237 23.284,247.04 5.986,271.01 0,299.166z" />
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+</ResourceDictionary>

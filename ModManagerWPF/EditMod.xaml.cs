@@ -261,19 +261,20 @@ namespace ModManagerWPF
 		private void BuildModINI(string moddir)
 		{
 			//Assign variables to null if the string are empty so they won't show up at all in mod.ini.
-			SADXModInfo newMod = editMod ? Mod : new SADXModInfo();
-
-			newMod.Name = nameBox.Text;
-			newMod.Author = isStringNotEmpty(authorBox.Text) ? authorBox.Text : null;
-			newMod.AuthorURL = isStringNotEmpty(authorURLBox.Text) ? authorURLBox.Text : null;
-			newMod.Description = isStringNotEmpty(descriptionBox.Text) ? descriptionBox.Text : null;
-			newMod.Version = isStringNotEmpty(versionBox.Text) ? versionBox.Text : null;
-			newMod.Category = isStringNotEmpty(categoryBox.Text) ? categoryBox.Text : null;
-			newMod.SourceCode = isStringNotEmpty(sourceURLBox.Text) ? sourceURLBox.Text : null;
-			newMod.RedirectMainSave = (bool)mainSaveBox.IsChecked;
-			newMod.RedirectChaoSave = (bool)chaoSaveBox.IsChecked;
-			newMod.ModID = isStringNotEmpty(modIDBox.Text) ? modIDBox.Text : null;
-			newMod.DLLFile = isStringNotEmpty(dllText.Text) ? dllText.Text : null;
+			SADXModInfo newMod = editMod ? Mod : new SADXModInfo
+			{
+				Name = nameBox.Text,
+				Author = GetStringContent(authorBox.Text),
+				AuthorURL = GetStringContent(authorURLBox.Text),
+				Description = GetStringContent(descriptionBox.Text),
+				Version = GetStringContent(versionBox.Text),
+				Category = GetStringContent(categoryBox.Text),
+				SourceCode = GetStringContent(sourceURLBox.Text),
+				RedirectMainSave = mainSaveBox.IsChecked.GetValueOrDefault(),
+				RedirectChaoSave = chaoSaveBox.IsChecked.GetValueOrDefault(),
+				ModID = GetStringContent(modIDBox.Text),
+				DLLFile = GetStringContent(dllText.Text)
+			};
 
 			SaveModUpdates(newMod);
 			SaveModDependencies(newMod);
@@ -305,11 +306,9 @@ namespace ModManagerWPF
 				if (File.Exists(fullName))
 					BuildModINI(modDirectory);
 
-
 				if ((bool)openFolderChk.IsChecked)
 				{
-					var psi = new ProcessStartInfo() { FileName = Path.GetDirectoryName(fullName), UseShellExecute = true };
-					Process.Start(psi);
+					Process.Start(new ProcessStartInfo { FileName = Path.GetDirectoryName(fullName), UseShellExecute = true });
 				}
 			}
 
@@ -394,6 +393,11 @@ namespace ModManagerWPF
 		static bool isStringNotEmpty(string txt)
 		{
 			return string.IsNullOrWhiteSpace(txt) == false;
+		}
+
+		private string GetStringContent(string value)
+		{
+			return isStringNotEmpty(value) ? value : null;
 		}
 
 		static string RemoveSpecialCharacters(string str)
