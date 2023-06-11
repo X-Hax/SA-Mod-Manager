@@ -56,6 +56,8 @@ namespace ModManagerWPF
 		List<Code> codes = null;
 		bool installed = false;
 		bool suppressEvent = false;
+		private readonly double LowOpacityIcon = 0.3;
+		private readonly double LowOpacityBtn = 0.7;
 
 		private Game.GameConfigFile gameConfigFile;
 
@@ -191,6 +193,10 @@ namespace ModManagerWPF
 			installed = File.Exists(datadllorigpath);
 			UpdateBtnInstallLoader_Text();
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+			SaveAndPlayButton.IsEnabled = installed;
+			Image iconSavePlay = FindName("savePlayIcon") as Image;
+			iconSavePlay?.SetValue(Image.OpacityProperty, SaveAndPlayButton.IsEnabled ? 1 : LowOpacityIcon);
+			SaveAndPlayButton.Opacity = SaveAndPlayButton.IsEnabled ? 1 : LowOpacityBtn;
 		}
 
 		private void Save()
@@ -356,6 +362,7 @@ namespace ModManagerWPF
 
 			if (!modFolderExist && string.IsNullOrEmpty(gamePath))
 			{
+				UpdateMainButtonsState();
 				return;
 			}
 			else if (Directory.Exists(gamePath) && !modFolderExist)
@@ -428,7 +435,7 @@ namespace ModManagerWPF
 				}
 			}
 
-			ConfigureModBtn_UpdateOpacity();
+			ConfigureModBtn_UpdateState();
 		}
 
 		private void OpenAboutModWindow(ModData mod)
@@ -581,11 +588,26 @@ namespace ModManagerWPF
 			InitModConfig();
 		}
 
-		private void ConfigureModBtn_UpdateOpacity()
+		private void ConfigureModBtn_UpdateState()
 		{
 			//get the config icon image, check if it's not null, then change its oppacity depending if the button is enabled or not.
 			Image iconConfig = FindName("configIcon") as Image;
-			iconConfig?.SetValue(Image.OpacityProperty, ConfigureModBtn.IsEnabled ? 1 : 0.4);
+			iconConfig?.SetValue(Image.OpacityProperty, ConfigureModBtn.IsEnabled ? 1 : LowOpacityIcon);
+			ConfigureModBtn.Opacity = ConfigureModBtn.IsEnabled ? 1 : LowOpacityBtn;
+		}
+
+		private void AddModBtn_UpdateState()
+		{
+			Image iconConfig = FindName("newIcon") as Image;
+			iconConfig?.SetValue(Image.OpacityProperty, installed ? 1 : LowOpacityIcon);
+			NewModBtn.Opacity = installed ? 1 : LowOpacityBtn;
+			NewModBtn.IsEnabled = installed;
+		}
+
+		private void UpdateMainButtonsState()
+		{
+			ConfigureModBtn_UpdateState();
+			AddModBtn_UpdateState();
 		}
 
 		private void modListView_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
@@ -607,7 +629,7 @@ namespace ModManagerWPF
 				btnMoveBottom.IsEnabled = listMods.Items.IndexOf(mod) != listMods.Items.Count - 1;
 
 				ConfigureModBtn.IsEnabled = File.Exists(Path.Combine(modDirectory, mod.Tag, "configschema.xml"));
-				ConfigureModBtn_UpdateOpacity();
+				ConfigureModBtn_UpdateState();
 			}
 			else if (count > 1)
 			{
