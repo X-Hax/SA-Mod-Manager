@@ -280,7 +280,7 @@
 											<RowDefinition Height="Auto"/>
 											<RowDefinition Height="Auto"/>
 										</Grid.RowDefinitions>
-										<Button Style="{StaticResource StyleDeleteButton}"/>
+                                        <Button Style="{StaticResource StyleDeleteButton}"/>
 
 										<Grid Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch">
 											<Grid.ColumnDefinitions>

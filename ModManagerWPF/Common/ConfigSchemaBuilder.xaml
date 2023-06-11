@@ -6,13 +6,13 @@
 	<Image x:Key="DeleteImage" Source="{DynamicResource IconDelete}" Margin="2"/>
 	<Image x:Key="AddImage" Source="{DynamicResource IconAdd}" Margin="2"/>
 
-	<Style x:Name="StyleDeleteButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MainButtonStyle}">
-		<Setter Property="Content" Value="{StaticResource DeleteImage}"/>
-		<Setter Property="Width" Value="22"/>
-		<Setter Property="Height" Value="22"/>
-	</Style>
+    <Style x:Key="StyleDeleteButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MainButtonStyle}">
+        <Setter Property="Content" Value="{StaticResource DeleteImage}"/>
+        <Setter Property="Width" Value="22"/>
+        <Setter Property="Height" Value="22"/>
+    </Style>
 
-	<Style x:Key="StyleAddButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MainButtonStyle}">
+    <Style x:Key="StyleAddButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MainButtonStyle}">
 		<Setter Property="Content" Value="{StaticResource AddImage}"/>
 		<Setter Property="Width" Value="22"/>
 		<Setter Property="Height" Value="22"/>
