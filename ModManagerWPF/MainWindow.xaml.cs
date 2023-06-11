@@ -3,7 +3,6 @@ using ModManagerWPF.Themes;
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -22,6 +21,8 @@ using System.Windows.Threading;
 using System.Windows.Media.Animation;
 using System.Diagnostics;
 using ModManagerWPF.Properties;
+using Xceed.Wpf.AvalonDock.Controls;
+using System.Windows.Media;
 
 namespace ModManagerWPF
 {
@@ -287,7 +288,7 @@ namespace ModManagerWPF
 			comboScreen.SelectedIndex = screenNum;
 			chkBorderless.IsChecked = txtCustomResY.IsEnabled = chkMaintainRatio.IsEnabled = loaderini.CustomWindowSize;
 			txtCustomResX.IsEnabled = loaderini.CustomWindowSize && !loaderini.MaintainWindowAspectRatio;
-			Rectangle rect = graphics.GetRectangleStruct();
+			System.Drawing.Rectangle rect = graphics.GetRectangleStruct();
 
 			int CustresXMax = (int)txtCustomResX.Maximum;
 			int CustresXMin = (int)txtCustomResX.Minimum;
@@ -346,7 +347,6 @@ namespace ModManagerWPF
 		private void LoadModList()
 		{
 			btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
-			//modDescription.Text = "Description: No mod selected.";
 			listMods.Items.Clear();
 			mods = new Dictionary<string, SADXModInfo>();
 
@@ -427,6 +427,8 @@ namespace ModManagerWPF
 					listMods.Items.Add(item);
 				}
 			}
+
+			ConfigureModBtn_UpdateOpacity();
 		}
 
 		private void OpenAboutModWindow(ModData mod)
@@ -579,6 +581,13 @@ namespace ModManagerWPF
 			InitModConfig();
 		}
 
+		private void ConfigureModBtn_UpdateOpacity()
+		{
+			//get the config icon image, check if it's not null, then change its oppacity depending if the button is enabled or not.
+			Image iconConfig = FindName("configIcon") as Image;
+			iconConfig?.SetValue(Image.OpacityProperty, ConfigureModBtn.IsEnabled ? 1 : 0.4);
+		}
+
 		private void modListView_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
 		{
 			int count = listMods.SelectedItems.Count;
@@ -598,6 +607,7 @@ namespace ModManagerWPF
 				btnMoveBottom.IsEnabled = listMods.Items.IndexOf(mod) != listMods.Items.Count - 1;
 
 				ConfigureModBtn.IsEnabled = File.Exists(Path.Combine(modDirectory, mod.Tag, "configschema.xml"));
+				ConfigureModBtn_UpdateOpacity();
 			}
 			else if (count > 1)
 			{
@@ -1115,7 +1125,6 @@ namespace ModManagerWPF
 							item.IsEnabled = ConfigureModBtn.IsEnabled;
 						}
 					}
-
 				}
 			}
 		}
