@@ -10,17 +10,17 @@ using ModManagerWPF.Properties;
 
 namespace ModManagerWPF.Common
 {
-	public class ConfigSchemaGrid : ResourceDictionary
+	public partial class ConfigSchemaGrid : ResourceDictionary
 	{
 		public class ItemConfigSchemaProperty
 		{
 			List<string> TypesList = new List<string>()
-		{
-			new string("bool"),
-			new string("int"),
-			new string("float"),
-			new string("string"),
-		};
+			{
+				new string("bool"),
+				new string("int"),
+				new string("float"),
+				new string("string"),
+			};
 
 			public Button Delete;
 			public TextBox Property;
@@ -31,7 +31,7 @@ namespace ModManagerWPF.Common
 
 			public ItemConfigSchemaProperty()
 			{
-				Delete = (Button)
+				//Delete = (Button)
 			}
 		}
 
