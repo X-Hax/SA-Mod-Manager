@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModManagerWPF.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -41,7 +42,8 @@ namespace ModManagerWPF.Common
 			pathXML = path;
 			Title = Lang.GetString("TitleConfigureMod") + " " + Mod.Name;
 			settings = new ConfigSettings(pathXML);
-			var panel = FormBuilder.ConfigBuild(settings.schema);
+
+			var panel = FormBuilder.ConfigBuild(ref settings);
 			panel.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
 			panel.VerticalAlignment = VerticalAlignment.Stretch;
 			ItemsHost.Children.Add(panel);		
@@ -60,6 +62,7 @@ namespace ModManagerWPF.Common
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
 			settings.Save();
+			this.Close();
 		}
 
 		private void ResetButton_Click(object sender, RoutedEventArgs e)
@@ -71,29 +74,33 @@ namespace ModManagerWPF.Common
 		{
 			this.Close();
 		}
+
+
 	}
 
 	public class ConfigSettings : ICustomTypeDescriptor
 	{
 		public ConfigSchema schema;
-		private Dictionary<string, Dictionary<string, string>> config;
+		public Dictionary<string, Dictionary<string, string>> configINI;
 		private string configfilename;
 
 		public ConfigSettings(string path)
 		{
 			schema = ConfigSchema.Load(Path.Combine(path, "configschema.xml"));
 			configfilename = Path.Combine(path, "config.ini");
+
 			if (File.Exists(configfilename))
-				config = IniFile.IniFile.Load(configfilename);
+				configINI = IniFile.IniFile.Load(configfilename);
 			else
-				config = new Dictionary<string, Dictionary<string, string>>();
+				configINI = new Dictionary<string, Dictionary<string, string>>();
+
 			foreach (ConfigSchemaGroup group in schema.Groups)
 			{
-				if (!config.ContainsKey(group.Name))
-					config.Add(group.Name, new Dictionary<string, string>());
+				if (!configINI.ContainsKey(group.Name))
+					configINI.Add(group.Name, new Dictionary<string, string>());
 				foreach (ConfigSchemaProperty prop in group.Properties)
-					if (!config[group.Name].ContainsKey(prop.Name))
-						config[group.Name].Add(prop.Name, prop.DefaultValue);
+					if (!configINI[group.Name].ContainsKey(prop.Name))
+						configINI[group.Name].Add(prop.Name, prop.DefaultValue);
 			}
 		}
 
@@ -102,19 +109,22 @@ namespace ModManagerWPF.Common
 			foreach (ConfigSchemaGroup group in schema.Groups)
 			{
 				foreach (ConfigSchemaProperty prop in group.Properties)
-					if (!prop.AlwaysInclude && config[group.Name][prop.Name] == prop.DefaultValue)
-						config[group.Name].Remove(prop.Name);
-				if (config[group.Name].Count == 0)
-					config.Remove(group.Name);
+				{
+					if (!prop.AlwaysInclude && configINI[group.Name][prop.Name] == prop.DefaultValue)
+						configINI[group.Name].Remove(prop.Name);
+				}
+				if (configINI[group.Name].Count == 0)
+					configINI.Remove(group.Name);
 			}
-			IniFile.IniFile.Save(config, configfilename);
+
+			IniFile.IniFile.Save(configINI, configfilename);
 		}
 
 		public void ResetValues()
 		{
 			foreach (ConfigSchemaGroup group in schema.Groups)
 				foreach (ConfigSchemaProperty prop in group.Properties)
-					config[group.Name][prop.Name] = prop.DefaultValue;
+					configINI[group.Name][prop.Name] = prop.DefaultValue;
 		}
 
 		AttributeCollection ICustomTypeDescriptor.GetAttributes() { return AttributeCollection.Empty; }
@@ -160,12 +170,12 @@ namespace ModManagerWPF.Common
 
 		public string GetPropertyValue(string groupName, string propertyName)
 		{
-			return config[groupName][propertyName];
+			return configINI[groupName][propertyName];
 		}
 
 		public void SetPropertyValue(string groupName, string propertyName, string value)
 		{
-			config[groupName][propertyName] = value;
+			configINI[groupName][propertyName] = value;
 		}
 
 		public bool ShowCategories { get { return schema.Groups.Count > 1 || schema.Groups[0].Name.Length != 0; } }
