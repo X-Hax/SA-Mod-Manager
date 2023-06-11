@@ -794,7 +794,6 @@ namespace ModManagerWPF
 
 		private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
 		{
-
 			CodeAuthorGrid.Text = Lang.GetString("ModsListAuthor");
 			CodeDescGrid.Text = Lang.GetString("ModSelectTextDesc");
 			CodeCategoryGrid.Text = Lang.GetString("CodesListCategory");
@@ -879,6 +878,25 @@ namespace ModManagerWPF
 		private void radWindowed_Checked(object sender, RoutedEventArgs e)
 		{
 			
+		}
+
+		#endregion
+
+		#region Audio Settings
+
+		private void sliderMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			labelMusicLevel?.SetValue(ContentProperty, $"{(int)sliderMusic.Value}");
+		}
+
+		private void sliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			labelVoiceLevel?.SetValue(ContentProperty, $"{(int)sliderVoice.Value}");
+		}
+
+		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			labelSFXLevel?.SetValue(ContentProperty, $"{(int)sliderSFX.Value}");
 		}
 
 		#endregion
@@ -1108,51 +1126,21 @@ namespace ModManagerWPF
 
 		private void ModList_ContextMenuOpening(object sender, ContextMenuEventArgs e)
 		{
-			if (sender is ListViewItem)
+			if (sender is ListViewItem listViewItem)
 			{
-				var List = (ListViewItem)sender;
+				var contextMenu = listViewItem.ContextMenu;
 
-				var context = List.ContextMenu;
-
-				if (context is not null)
+				if (contextMenu != null)
 				{
-					for (int i = 0; i < context.Items.Count; i++)
-					{
-						MenuItem item = (MenuItem)context.Items[i];
+					var menuItem = contextMenu.Items
+						.OfType<MenuItem>()
+						.FirstOrDefault(item => item.Name == "ModContextConfigureMod");
 
-						if (item.Name == "ModContextConfigureMod")
-						{
-							item.IsEnabled = ConfigureModBtn.IsEnabled;
-						}
-					}
+					menuItem?.SetValue(MenuItem.IsEnabledProperty, ConfigureModBtn.IsEnabled);
 				}
 			}
 		}
 
 		#endregion
-
-		private void sliderMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			if (labelMusicLevel is null)
-				return;
-
-			labelMusicLevel.Content = ((int)sliderMusic.Value).ToString();
-		}
-
-		private void sliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			if (labelVoiceLevel is null)
-				return;
-
-			labelVoiceLevel.Content = ((int)sliderVoice.Value).ToString();
-		}
-
-		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			if (labelSFXLevel is null)
-                return;
-       
-			labelSFXLevel.Content = ((int)sliderVoice.Value).ToString();
-		}
 	}
 }
