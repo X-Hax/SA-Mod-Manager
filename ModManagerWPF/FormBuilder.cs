@@ -69,6 +69,8 @@ namespace ModManagerWPF
 				}
 
 				string val = config.configINI[group.Name][property.Name];
+				decimal deciValue;
+				string formatted;
 
 				switch (property.Type.ToLower())
 				{
@@ -77,7 +79,9 @@ namespace ModManagerWPF
 					case "int":
 						return int.Parse(val.Trim(), CultureInfo.InvariantCulture);
 					case "float":
-						return decimal.Parse(val.Trim(), CultureInfo.InvariantCulture);
+						deciValue = decimal.Parse(val.Trim(), CultureInfo.InvariantCulture);
+						formatted = deciValue.ToString("0.0");
+						return decimal.Parse(formatted);
 					case "string":
 						return val;
 					default:
@@ -233,7 +237,6 @@ namespace ModManagerWPF
 				HorizontalAlignment = HorizontalAlignment.Right,
 
 			};
-
 			grid.Children.Add(checkBox);
 			grid.Children.Add(new Separator()
 			{

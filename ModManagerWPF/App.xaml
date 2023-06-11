@@ -1003,8 +1003,15 @@
 				<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
 			</Style>
 			<!--#endregion-->
-			
-			<!--#region Grid Styles-->
+
+            <!--#region Decimal Box Style-->
+            <Style TargetType="{x:Type xctk:DecimalUpDown}">
+                <Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Grid Styles-->
 			<Style TargetType="{x:Type GridViewColumnHeader}">
 				<Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
 				<Setter Property="Height" Value="22"/>
