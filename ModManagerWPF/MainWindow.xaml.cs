@@ -16,6 +16,7 @@ using System.Windows.Threading;
 using System.Diagnostics;
 using ModManagerWPF.Properties;
 using System.Windows.Media;
+using System.Threading.Tasks;
 
 namespace ModManagerWPF
 {
@@ -1078,10 +1079,12 @@ namespace ModManagerWPF
 			if (btnInstallLoader is null)
 				return;
 
+			//Update Text Button of Mod Loader Installer
 			string textKey = installed ? "ManagerBtnUninstallLoader" : "ManagerBtnInstallLoader";
 			TextBlock txt = FindName("txtInstallLoader") as TextBlock;
 			txt.Text = Lang.GetString(textKey);
 
+			//update icon image depending if the Mod Loader is installed or not
 			string iconName = installed ? "IconUninstall" : "IconInstall";
 			var dic = installed ? Icons.Icons.UninstallIcon : Icons.Icons.InstallIcon;
 
@@ -1093,7 +1096,7 @@ namespace ModManagerWPF
 				imgInstall.Source  = Icon;
 		}
 
-		private void btnInstallLoader_Click(object sender, RoutedEventArgs e)
+		private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
 		{
 			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
 			{
@@ -1109,12 +1112,19 @@ namespace ModManagerWPF
 			else
 			{
 				Util.MoveFile(datadllpath, datadllorigpath);
+
 				if (File.Exists(loaderdllpath))
 					File.Copy(loaderdllpath, datadllpath);
 			}
 
 			installed = !installed;
 			UpdateBtnInstallLoader_State();
+			Button button = (Button)sender;
+			button.IsEnabled = false;
+			int delayDuration = 2000;
+			await Task.Delay(delayDuration);
+			button.IsEnabled = true;
+
 		}
 
 		private void btnSource_Click(object sender, RoutedEventArgs e)
