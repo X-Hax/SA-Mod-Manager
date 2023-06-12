@@ -15,6 +15,7 @@ using MessageBox = System.Windows.MessageBox;
 using System.Windows.Threading;
 using System.Diagnostics;
 using ModManagerWPF.Properties;
+using System.Windows.Media;
 
 namespace ModManagerWPF
 {
@@ -861,10 +862,7 @@ namespace ModManagerWPF
 
 		private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (graphics is null)
-				return;
-
-			graphics.screenNumBox_SelectChanged(comboScreen, comboDisplay);
+			graphics?.screenNumBox_SelectChanged(comboScreen, comboDisplay);
 		}
 
 		private void chkCustomWinSize_Checked(object sender, RoutedEventArgs e)
@@ -1083,6 +1081,16 @@ namespace ModManagerWPF
 			string textKey = installed ? "ManagerBtnUninstallLoader" : "ManagerBtnInstallLoader";
 			TextBlock txt = FindName("txtInstallLoader") as TextBlock;
 			txt.Text = Lang.GetString(textKey);
+
+			string iconName = installed ? "IconUninstall" : "IconInstall";
+			var dic = installed ? Icons.Icons.UninstallIcon : Icons.Icons.InstallIcon;
+
+			DrawingImage Icon = dic[iconName] as DrawingImage;
+
+			Image imgInstall = FindName("imgInstall") as Image;
+
+			if (imgInstall is not null)
+				imgInstall.Source  = Icon;
 		}
 
 		private void btnInstallLoader_Click(object sender, RoutedEventArgs e)

@@ -12,8 +12,8 @@
 				<ResourceDictionary Source="Themes/DarkTheme.xaml" />
 				<ResourceDictionary Source="Languages/Languages.xaml" />
 				<ResourceDictionary Source="Languages/en-EN.xaml" />
-				<ResourceDictionary Source="Icons/Icons.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Icons/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
 			
 			<!--#region Styles & Overwrites-->
