@@ -85,6 +85,7 @@ namespace ModManagerWPF
 			LoadSettings();
 			LoadModList();
 			InitCodes();
+			LoadAllProfiles();
 			UpdateDLLData();
 		}
 
@@ -240,6 +241,8 @@ namespace ModManagerWPF
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
 
+			SaveGameConfigIni();
+			SaveProfile();
 			Refresh();
 		}
 		private void LoadSettings()
@@ -316,7 +319,6 @@ namespace ModManagerWPF
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
 			Save();
-			SaveGameConfigIni();
 		}
 
 		private void StartGame()
@@ -339,7 +341,6 @@ namespace ModManagerWPF
 		private void SaveAndPlayButton_Click(object sender, RoutedEventArgs e)
 		{
 			Save();
-			SaveGameConfigIni();
 			StartGame();
 		}
 
@@ -1168,9 +1169,45 @@ namespace ModManagerWPF
 
 		#endregion
 
+		#region Mod Profiles
+
+		private void SaveProfile()
+		{
+			foreach (var profile in comboProfile.Items)
+			{
+				var fullPath = Path.Combine(modDirectory, profile + ".ini");
+
+				File.Copy(loaderinipath, fullPath, true);
+
+				if (!comboProfile.Items.Contains(profile))
+					comboProfile.Items.Add(profile);
+			}
+		}
+
+		private void LoadAllProfiles()
+		{
+			foreach (var item in Directory.EnumerateFiles(modDirectory, "*.ini"))
+			{
+				if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase) && !item.EndsWith("desktop.ini", StringComparison.OrdinalIgnoreCase))
+					comboProfile.Items.Add(Path.GetFileNameWithoutExtension(item));
+			}
+		}
+
+		private void comboProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			string selectedItem = (string)comboProfile.SelectedItem;
+			loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(Path.Combine(modDirectory, selectedItem + ".ini"));
+			LoadSettings();
+			Refresh();
+		}
+
+		#endregion
+
 		private void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
 		{
 
 		}
-	}
+
+
+    }
 }
