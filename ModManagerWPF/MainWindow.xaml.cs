@@ -826,6 +826,7 @@ namespace ModManagerWPF
 		{
 			App.SwitchLanguage();
 			UpdateBtnInstallLoader_State();
+			FlowDirectionHelper.UpdateFlowDirection();
 		}
 
 		#endregion
