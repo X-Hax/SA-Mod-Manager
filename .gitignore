@@ -196,3 +196,4 @@ SADXModLoader/git_version.h
 *.db-wal
 *.ide
 /.vs
+*.svg
