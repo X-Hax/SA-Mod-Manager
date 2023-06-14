@@ -6,6 +6,7 @@
 		xmlns:local="clr-namespace:ModManagerWPF"
 		xmlns:pt="http://propertytools.org/wpf"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+		xmlns:schema="clr-namespace:ModManagerWPF.Schema"
 		mc:Ignorable="d"
 		WindowStartupLocation="CenterScreen" 
 		MinHeight="550" MinWidth="450" Height="560" Width="650"
@@ -249,93 +250,18 @@
 					<TabControl>
 						<TabItem Header="Property Groups">
 							<TreeView x:Name="GroupsTree" HorizontalAlignment="Stretch">
-								<TreeViewItem>
-									<TreeViewItem.Header>
-										<Grid>
-											<Grid.ColumnDefinitions>
-												<ColumnDefinition Width="Auto"/>
-												<ColumnDefinition Width="Auto"/>
-												<ColumnDefinition Width="Auto"/>
-											</Grid.ColumnDefinitions>
-											<Button Grid.Column="0" Width="22" Height="22" Margin="5">
-												<Image Source="{DynamicResource IconDelete}" Margin="2"/>
-											</Button>
-											<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
-												<Label Content="Group Name:" VerticalAlignment="Center"/>
-												<TextBox Width="150" Margin="5"/>
-											</StackPanel>
-											<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
-												<Label Content="Display Name:" VerticalAlignment="Center"/>
-												<TextBox Width="150" Margin="5"/>
-											</StackPanel>
-										</Grid>
-									</TreeViewItem.Header>
-									<Grid Height="Auto" Width="560">
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="Auto"/>
-											<ColumnDefinition Width="*"/>
-										</Grid.ColumnDefinitions>
-										<Grid.RowDefinitions>
-											<RowDefinition Height="Auto"/>
-											<RowDefinition Height="Auto"/>
-											<RowDefinition Height="Auto"/>
-										</Grid.RowDefinitions>
-										<Button Style="{StaticResource StyleDeleteButton}"/>
-
-										<Grid Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch">
-											<Grid.ColumnDefinitions>
-												<ColumnDefinition Width="Auto"/>
-												<ColumnDefinition Width="*"/>
-												<ColumnDefinition Width="Auto"/>
-												<ColumnDefinition Width="*"/>
-												<ColumnDefinition Width="Auto"/>
-												<ColumnDefinition Width="*"/>
-											</Grid.ColumnDefinitions>
-											<Label Content="Property:" Grid.Column="0" VerticalAlignment="Center"/>
-											<TextBox Grid.Column="1" Margin="5"/>
-											<Label Content="Display Name:" Grid.Column="2" VerticalAlignment="Center"/>
-											<TextBox Grid.Column="3" Margin="5"/>
-											<Label Content="Type:" Grid.Column="4" VerticalAlignment="Center"/>
-											<ComboBox Grid.Column="5" Height="22" HorizontalAlignment="Stretch" Margin="5"/>
-										</Grid>
-
-										<Grid Grid.Column="1" Grid.Row="1">
-											<Grid.ColumnDefinitions>
-												<ColumnDefinition Width="Auto"/>
-												<ColumnDefinition Width="*"/>
-												<ColumnDefinition Width="Auto"/>
-												<ColumnDefinition Width="*"/>
-												<ColumnDefinition Width="Auto"/>
-												<ColumnDefinition Width="*"/>
-											</Grid.ColumnDefinitions>
-											<Label Content="Default Value:" Grid.Column="0" VerticalAlignment="Center"/>
-											<xctk:IntegerUpDown Grid.Column="1" Margin="5"/>
-											<Label Content="Minimum Value:" Grid.Column="2" VerticalAlignment="Center"/>
-											<xctk:IntegerUpDown Grid.Column="3" Margin="5"/>
-											<Label Content="Maximum Value:" Grid.Column="4" VerticalAlignment="Center"/>
-											<xctk:IntegerUpDown Grid.Column="5" Margin="5"/>
-										</Grid>
-
-										<Grid Grid.Column="1" Grid.Row="2">
-											<Grid.ColumnDefinitions>
-												<ColumnDefinition Width="Auto"/>
-												<ColumnDefinition Width="*"/>
-											</Grid.ColumnDefinitions>
-											<Label Content="Description:" Grid.Column="0" VerticalAlignment="Center"/>
-											<TextBox Grid.Column="1" HorizontalAlignment="Stretch" Margin="5"/>
-										</Grid>
-									</Grid>
+								<TreeView.ItemTemplate>
+									<HierarchicalDataTemplate ItemsSource="{Binding Properties}">
+										<schema:GroupGrid GroupName="{Binding Name}" DisplayName="{Binding DisplayName}"/>
 										
-									<Button Style="{StaticResource StyleAddButton}"/>
-								</TreeViewItem>
-
-								<TreeViewItem>
-									<TreeViewItem.Header>
-										<Grid>
-											<Button Content="Add Group" Width="590" Height="22" Margin="5"/>
-										</Grid>
-									</TreeViewItem.Header>
-								</TreeViewItem>
+										<HierarchicalDataTemplate.ItemTemplate>
+											<DataTemplate>
+												<schema:PropertyGrid PropertyName="{Binding Name}" DisplayName="{Binding DisplayName}" HelpText="{Binding HelpText}"/>
+											</DataTemplate>
+										</HierarchicalDataTemplate.ItemTemplate>
+									</HierarchicalDataTemplate>
+									
+								</TreeView.ItemTemplate>
 							</TreeView>
 						</TabItem>
 

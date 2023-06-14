@@ -415,6 +415,12 @@ namespace ModManagerWPF.Common
 			using (FileStream fs = File.OpenRead(filename))
 				return (ConfigSchema)xs.Deserialize(fs);
 		}
+
+		public ConfigSchema() 
+		{
+			Groups = new List<ConfigSchemaGroup>();
+			Enums = new List<ConfigSchemaEnum>();
+		}
 	}
 
 	public class ConfigSchemaGroup
@@ -425,6 +431,12 @@ namespace ModManagerWPF.Common
 		public string DisplayName { get; set; }
 		[XmlElement("Property")]
 		public List<ConfigSchemaProperty> Properties { get; set; }
+
+		public ConfigSchemaGroup()
+		{
+			Name = string.Empty;
+			DisplayName = string.Empty;
+		}
 
 		public ConfigSchemaProperty GetProperty(string name)
 		{
@@ -450,6 +462,18 @@ namespace ModManagerWPF.Common
 		public string MaxValue { get; set; }
 		[XmlElement]
 		public string HelpText { get; set; }
+
+		public ConfigSchemaProperty()
+		{
+			Name = string.Empty;
+			DisplayName = string.Empty;
+			Type = string.Empty;
+			DefaultValue = string.Empty;
+			AlwaysInclude = false;
+			MinValue = string.Empty;
+			MaxValue = string.Empty;
+			HelpText = string.Empty;
+		}
 	}
 
 	public class ConfigSchemaEnum
@@ -458,6 +482,12 @@ namespace ModManagerWPF.Common
 		public string Name { get; set; }
 		[XmlElement("EnumMember")]
 		public List<ConfigSchemaEnumMember> Members { get; set; }
+
+		public ConfigSchemaEnum()
+		{
+			Name = string.Empty;
+			Members = new List<ConfigSchemaEnumMember>();
+		}
 	}
 
 	public class ConfigSchemaEnumMember
@@ -466,5 +496,11 @@ namespace ModManagerWPF.Common
 		public string Name { get; set; }
 		[XmlAttribute("display")]
 		public string DisplayName { get; set; }
+
+		public ConfigSchemaEnumMember()
+		{
+			Name = string.Empty;
+			DisplayName = string.Empty;
+		}
 	}
 }

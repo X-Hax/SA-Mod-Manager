@@ -1,5 +1,6 @@
 ﻿using IniFile;
 using ModManagerCommon;
+using ModManagerWPF.Common;
 using ModManagerWPF.Properties;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Xceed.Wpf.AvalonDock.Controls;
+using static ModManagerWPF.MainWindow;
 
 namespace ModManagerWPF
 {
@@ -31,9 +35,11 @@ namespace ModManagerWPF
 		static bool editMod { get; set; } = false;
 		public static SADXModInfo Mod { get; set; }
 		static string CurrentTime = string.Empty;
+		public static ConfigSchema Schema = new ConfigSchema();
 
 		public static List<ModDependency> dependencies = new List<ModDependency>();
 		SelectDependencies selectWindow;
+		public string modFolder { get; set; }
 		#endregion
 
 		#region Initializer
@@ -70,6 +76,7 @@ namespace ModManagerWPF
 
 				LoadModUpdates(mod);
 				LoadDependencies(mod);
+				LoadConfigSchema(mod.Name);
 
 				openFolderChk.IsChecked = false;
 			}
@@ -83,6 +90,7 @@ namespace ModManagerWPF
 			DataContext = new SADXModInfo();
 
 			DependencyGrid.ItemsSource = dependencies;
+			GroupsTree.ItemsSource = Schema.Groups;
 		}
 		#endregion
 
@@ -177,7 +185,29 @@ namespace ModManagerWPF
 		#endregion
 
 		#region Config Schema Tab Functions
+		public void LoadConfigSchema(string modName)
+		{
+			string fullName = string.Empty;
+			string moddir = editMod ? MainWindow.modDirectory : Path.Combine(MainWindow.modDirectory, ValidateFilename(nameBox.Text));
 
+			if (Mod != null)
+			{
+				//browse the mods folder and get each mod name by their ini file
+				foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(moddir)))
+				{
+					SADXModInfo mod = IniSerializer.Deserialize<SADXModInfo>(filename);
+					if (mod.Name == Mod.Name)
+					{
+						fullName = filename;
+					}
+				}
+
+
+				string schema = Path.Combine(Path.GetDirectoryName(fullName), "configschema.xml");
+
+				Schema = ConfigSchema.Load(schema);
+			}
+		}
 		#endregion
 		#endregion
 
