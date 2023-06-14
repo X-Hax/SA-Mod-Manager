@@ -5,24 +5,24 @@
 			 xmlns:local="clr-namespace:ModManagerWPF"
 			 xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
 			 xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
-	<Application.Resources>
+    <Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Themes/Themes.xaml" />
 				<ResourceDictionary Source="Themes/DarkTheme.xaml" />
 				<ResourceDictionary Source="Languages/Languages.xaml" />
 				<ResourceDictionary Source="Languages/en-EN.xaml" />
-				<ResourceDictionary Source="Icons/Icons.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Icons/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-			
-			<!--#region Styles & Overwrites-->
+            
+            <!--#region Styles & Overwrites-->
 			<!--#region Main Window-->
-			<Style x:Key="SAWindow" TargetType="{x:Type Window}">
-				<Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
-				<Setter Property="WindowStyle" Value="SingleBorderWindow"/>
-			</Style>
-			<Style x:Key="FocusVisual">
+            <Style x:Key="SAWindow" TargetType="{x:Type Window}">
+                <Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
+                <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
+            </Style>
+            <Style x:Key="FocusVisual">
 				<Setter Property="Control.Template">
 					<Setter.Value>
 						<ControlTemplate>
@@ -49,6 +49,8 @@
 			<SolidColorBrush x:Key="TextBox.Static.Background" Color="#FFFFFFFF"/>
 			<Style TargetType="{x:Type TextBlock}">
 				<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                <Setter Property="FlowDirection" Value="{Binding Path=(local:FlowDirectionHelper.CurrentFlowDirection)}"/>
+                
 			</Style>
 			<Style TargetType="Control">
 				<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
@@ -63,14 +65,18 @@
 				<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
 				<Setter Property="AllowDrop" Value="true"/>
 				<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
-				<Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-				<Setter Property="Template">
+                <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                <Setter Property="FlowDirection" Value="{Binding Path=(local:FlowDirectionHelper.CurrentFlowDirection)}"/>
+
+                <Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type TextBox}">
+                            <Grid>
 							<Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True" CornerRadius="2">
-								<ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+							<ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
 							</Border>
-							<ControlTemplate.Triggers>
+                            </Grid>
+                            <ControlTemplate.Triggers>
 								<Trigger Property="IsEnabled" Value="false">
 									<Setter Property="Opacity" TargetName="border" Value="0.56"/>
 								</Trigger>
@@ -216,18 +222,16 @@
 				<Setter Property="MinHeight" Value="0"/>
 				<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
 				<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
-				<Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type TextBox}">
-							<Border CornerRadius="2">
-								<ScrollViewer x:Name="PART_ContentHost" Background="Transparent" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-							</Border>
-						</ControlTemplate>
-
-					</Setter.Value>
-
-				</Setter>
+                <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border CornerRadius="2">
+                                <ScrollViewer x:Name="PART_ContentHost" Background="Transparent" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
 			</Style>
 			<Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
 				<Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -325,11 +329,11 @@
 			</Style>
 			<ControlTemplate x:Key="ComboBoxEditableTemplate" TargetType="{x:Type ComboBox}">
 				<Grid x:Name="templateRoot" SnapsToDevicePixels="true">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
-					</Grid.ColumnDefinitions>
-					<Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                    </Grid.ColumnDefinitions>
+                    <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
 						<theme:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
 							<Border x:Name="dropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1">
 								<ScrollViewer x:Name="DropDownScrollViewer">
@@ -377,11 +381,11 @@
 			</ControlTemplate>
 			<ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
 				<Grid x:Name="templateRoot" SnapsToDevicePixels="true">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
-					</Grid.ColumnDefinitions>
-					<Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                    </Grid.ColumnDefinitions>
+                    <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
 						<theme:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
 							<Border x:Name="dropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1">
 								<ScrollViewer x:Name="DropDownScrollViewer">
@@ -431,7 +435,8 @@
 				<Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
 				<Setter Property="ScrollViewer.PanningMode" Value="Both"/>
 				<Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-				<Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
+                <Setter Property="FlowDirection" Value="{Binding Path=(local:FlowDirectionHelper.CurrentFlowDirection)}"/>
+                <Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
 
 				<Style.Triggers>
 					<Trigger Property="IsEditable" Value="true">
@@ -443,8 +448,8 @@
 			</Style>
 			<Style TargetType="{x:Type ComboBoxItem}">
 				<Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
-
-				<Setter Property="Template">
+                <Setter Property="FlowDirection" Value="{Binding Path=(local:FlowDirectionHelper.CurrentFlowDirection)}"/>
+                <Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type ComboBoxItem}">
 							<Border Background="{TemplateBinding Background}">
@@ -734,8 +739,8 @@
 				<Setter Property="ScrollViewer.PanningMode" Value="Both"/>
 				<Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
 				<Setter Property="VerticalContentAlignment" Value="Center"/>
-				<Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
-				<Setter Property="Template">
+                <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
+                <Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type ListView}">
 							<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3,3,3,3">
@@ -762,8 +767,8 @@
 			<Style TargetType="{x:Type ListViewItem}">
 				<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
 				<Setter Property="BorderThickness" Value="1" />
-				<Setter Property="Padding" Value="2,0" />
-				<Setter Property="Template">
+                <Setter Property="Padding" Value="2,0" />
+                <Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type ListViewItem}">
 							<Grid>
@@ -806,15 +811,18 @@
 				<Setter Property="BorderThickness" Value="0.5"/>
 				<Setter Property="HorizontalContentAlignment" Value="Center"/>
 				<Setter Property="VerticalContentAlignment" Value="Center"/>
-				<Setter Property="Padding" Value="1"/>
+                <Setter Property="Padding" Value="1"/>
+                <Setter Property="FlowDirection" Value="{Binding Path=(local:FlowDirectionHelper.CurrentFlowDirection)}"/>
 
-				<Setter Property="Template">
+                <Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type Button}">
-							<Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
-								<ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-							</Border>
-							<ControlTemplate.Triggers>
+                    
+                                <Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                                    <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Border>
+                         
+                            <ControlTemplate.Triggers>
 								<Trigger Property="IsDefaulted" Value="true">
 									<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
 								</Trigger>
@@ -887,9 +895,9 @@
 				<Setter Property="IsTabStop" Value="false"/>
 				<Setter Property="Template">
 					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type Thumb}">
-							<Border x:Name="rectangle" Background="{StaticResource ScrollBarStaticThumb}" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" Width="{TemplateBinding Width}" CornerRadius="2"/>
-							<ControlTemplate.Triggers>
+                        <ControlTemplate TargetType="{x:Type Thumb}">
+                            <Border x:Name="rectangle" Background="{StaticResource ScrollBarStaticThumb}" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" Width="{TemplateBinding Width}" CornerRadius="2"/>
+                            <ControlTemplate.Triggers>
 								<Trigger Property="IsMouseOver" Value="true">
 									<Setter Property="Background" TargetName="rectangle" Value="{StaticResource ScrollBarMouseOverThumb}"/>
 								</Trigger>
@@ -1003,8 +1011,15 @@
 				<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
 			</Style>
 			<!--#endregion-->
-			
-			<!--#region Grid Styles-->
+
+            <!--#region Decimal Box Style-->
+            <Style TargetType="{x:Type xctk:DecimalUpDown}">
+                <Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Grid Styles-->
 			<Style TargetType="{x:Type GridViewColumnHeader}">
 				<Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}"/>
 				<Setter Property="Height" Value="22"/>

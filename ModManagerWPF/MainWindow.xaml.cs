@@ -3,25 +3,20 @@ using ModManagerWPF.Themes;
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Xml.Linq;
 using ModManagerCommon;
-using ModManagerCommon.Forms;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
-using System.Threading;
 using IniFile;
-using Xceed.Wpf.Toolkit;
 using MessageBox = System.Windows.MessageBox;
-using System.Threading.Tasks;
 using System.Windows.Threading;
-using System.Windows.Media.Animation;
 using System.Diagnostics;
 using ModManagerWPF.Properties;
+using System.Windows.Media;
+using System.Threading.Tasks;
 
 namespace ModManagerWPF
 {
@@ -55,6 +50,8 @@ namespace ModManagerWPF
 		List<Code> codes = null;
 		bool installed = false;
 		bool suppressEvent = false;
+		private readonly double LowOpacityIcon = 0.3;
+		private readonly double LowOpacityBtn = 0.7;
 
 		private Game.GameConfigFile gameConfigFile;
 
@@ -77,17 +74,18 @@ namespace ModManagerWPF
 		#endregion
 
 		public MainWindow()
-		{	
+		{
 			git = new(this);
 			InitializeComponent();
 			git.GetRecentCommit();
-			
+
 			graphics = new Game.GameGraphics(comboScreen);
 			SetGamePath(Settings.Default.GamePath);
 			UpdatePathsStringsInfo();
 			LoadSettings();
 			LoadModList();
 			InitCodes();
+			LoadAllProfiles();
 			UpdateDLLData();
 		}
 
@@ -188,8 +186,9 @@ namespace ModManagerWPF
 			}
 
 			installed = File.Exists(datadllorigpath);
-			UpdateBtnInstallLoader_Text();
+			UpdateBtnInstallLoader_State();
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+			Update_PlayButtonsState();
 		}
 
 		private void Save()
@@ -202,12 +201,9 @@ namespace ModManagerWPF
 			//save mod list here
 			foreach (ModData mod in listMods.Items)
 			{
-				if (mod is not null)
+				if (mod?.IsChecked == true)
 				{
-					if (mod.IsChecked)
-					{
-						loaderini.Mods.Add(mod.Tag);
-					}
+					loaderini.Mods.Add(mod.Tag);
 				}
 			}
 
@@ -245,6 +241,8 @@ namespace ModManagerWPF
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
 
+			SaveGameConfigIni();
+			SaveProfile();
 			Refresh();
 		}
 		private void LoadSettings()
@@ -287,7 +285,7 @@ namespace ModManagerWPF
 			comboScreen.SelectedIndex = screenNum;
 			chkBorderless.IsChecked = txtCustomResY.IsEnabled = chkMaintainRatio.IsEnabled = loaderini.CustomWindowSize;
 			txtCustomResX.IsEnabled = loaderini.CustomWindowSize && !loaderini.MaintainWindowAspectRatio;
-			Rectangle rect = graphics.GetRectangleStruct();
+			System.Drawing.Rectangle rect = graphics.GetRectangleStruct();
 
 			int CustresXMax = (int)txtCustomResX.Maximum;
 			int CustresXMin = (int)txtCustomResX.Minimum;
@@ -321,13 +319,10 @@ namespace ModManagerWPF
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
 			Save();
-			SaveGameConfigIni();
 		}
 
-		private void SaveAndPlayButton_Click(object sender, RoutedEventArgs e)
+		private void StartGame()
 		{
-			Save();
-			SaveGameConfigIni();
 			if (string.IsNullOrEmpty(gamePath))
 			{
 				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
@@ -343,10 +338,15 @@ namespace ModManagerWPF
 				Close();
 		}
 
+		private void SaveAndPlayButton_Click(object sender, RoutedEventArgs e)
+		{
+			Save();
+			StartGame();
+		}
+
 		private void LoadModList()
 		{
 			btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
-			//modDescription.Text = "Description: No mod selected.";
 			listMods.Items.Clear();
 			mods = new Dictionary<string, SADXModInfo>();
 
@@ -356,6 +356,7 @@ namespace ModManagerWPF
 
 			if (!modFolderExist && string.IsNullOrEmpty(gamePath))
 			{
+				UpdateMainButtonsState();
 				return;
 			}
 			else if (Directory.Exists(gamePath) && !modFolderExist)
@@ -427,6 +428,8 @@ namespace ModManagerWPF
 					listMods.Items.Add(item);
 				}
 			}
+
+			ConfigureModBtn_UpdateState();
 		}
 
 		private void OpenAboutModWindow(ModData mod)
@@ -446,19 +449,15 @@ namespace ModManagerWPF
 
 		private void ModsView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			var mod = GetModFromView(sender);
-
-			if (mod == null)
+			if (!(GetModFromView(sender) is ModData mod))
 				return;
 
-			OpenAboutModWindow((ModData)mod);
+			OpenAboutModWindow(mod);
 		}
 
 		private void ModList_MouseEnter(object sender, MouseEventArgs e)
 		{
-			var mod = GetModFromView(sender);
-
-			if (mod == null)
+			if (!(GetModFromView(sender) is ModData mod))
 				return;
 
 			textModsDescription.Text = Lang.GetString("ModSelectTextDesc") + " " + mods[mod.Tag].Description;
@@ -467,26 +466,16 @@ namespace ModManagerWPF
 		private void ModList_MouseLeave(object sender, MouseEventArgs e)
 		{
 			var item = GetModFromView(sender);
-
-			if (item is not null)
-			{
-				textModsDescription.Text = Lang.GetString("ModSelectTextDesc") + " " + item.Description;
-				return;
-			}
-			
-			textModsDescription.Text = Lang.GetString("ModTextDesc");
+			textModsDescription.Text = (item is not null) ? $"{Lang.GetString("ModSelectTextDesc")} {item.Description}" : Lang.GetString("ModTextDesc");
 		}
 
-	#region ModContext
+		#region ModContext
 		private void ModContextOpenFolder_Click(object sender, RoutedEventArgs e)
 		{
-			var item = (ModData)listMods.SelectedItem;
-
-			if (item is not null)
+			if (listMods.SelectedItem is ModData item)
 			{
 				string fullPath = Path.Combine(modDirectory, item.Tag);
-				var psi = new ProcessStartInfo() { FileName = fullPath, UseShellExecute = true };
-				Process.Start(psi);
+				Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });
 			}
 		}
 
@@ -579,6 +568,38 @@ namespace ModManagerWPF
 			InitModConfig();
 		}
 
+		private void ConfigureModBtn_UpdateState()
+		{
+			//get the config icon image, check if it's not null, then change its oppacity depending if the button is enabled or not.
+			Image iconConfig = FindName("configIcon") as Image;
+			iconConfig?.SetValue(Image.OpacityProperty, ConfigureModBtn.IsEnabled ? 1 : LowOpacityIcon);
+			ConfigureModBtn.Opacity = ConfigureModBtn.IsEnabled ? 1 : LowOpacityBtn;
+		}
+
+		private void AddModBtn_UpdateState()
+		{
+			Image iconConfig = FindName("newIcon") as Image;
+			iconConfig?.SetValue(Image.OpacityProperty, installed ? 1 : LowOpacityIcon);
+			NewModBtn.Opacity = installed ? 1 : LowOpacityBtn;
+			NewModBtn.IsEnabled = installed;
+		}
+
+		private void Update_PlayButtonsState()
+		{
+			SaveAndPlayButton.IsEnabled = installed;
+			Image iconSavePlay = FindName("savePlayIcon") as Image;
+			iconSavePlay?.SetValue(Image.OpacityProperty, SaveAndPlayButton.IsEnabled ? 1 : LowOpacityIcon);
+			SaveAndPlayButton.Opacity = installed ? 1 : LowOpacityBtn;
+			btnTSLaunch.IsEnabled = installed;
+			btnTSLaunch.Opacity = installed ? 1 : LowOpacityBtn;
+		}
+
+		private void UpdateMainButtonsState()
+		{
+			ConfigureModBtn_UpdateState();
+			AddModBtn_UpdateState();
+		}
+
 		private void modListView_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
 		{
 			int count = listMods.SelectedItems.Count;
@@ -586,7 +607,6 @@ namespace ModManagerWPF
 			if (count == 0)
 			{
 				btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
-				//.Text = "Description: No mod selected.";
 			}
 			else if (count == 1)
 			{
@@ -598,12 +618,11 @@ namespace ModManagerWPF
 				btnMoveBottom.IsEnabled = listMods.Items.IndexOf(mod) != listMods.Items.Count - 1;
 
 				ConfigureModBtn.IsEnabled = File.Exists(Path.Combine(modDirectory, mod.Tag, "configschema.xml"));
+				ConfigureModBtn_UpdateState();
 			}
 			else if (count > 1)
 			{
-				//modDescription.Text = "Description: Multiple mods selected.";
 				btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = true;
-
 				ConfigureModBtn.IsEnabled = false;
 			}
 		}
@@ -615,7 +634,7 @@ namespace ModManagerWPF
 		private void LoadGameConfigIni()
 		{
 			gameConfigFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<Game.GameConfigFile>(sadxIni) : new Game.GameConfigFile();
-			
+
 			if (gameConfigFile.GameConfig == null)
 			{
 				gameConfigFile.GameConfig = new Game.GameConfig
@@ -784,7 +803,6 @@ namespace ModManagerWPF
 
 		private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
 		{
-
 			CodeAuthorGrid.Text = Lang.GetString("ModsListAuthor");
 			CodeDescGrid.Text = Lang.GetString("ModSelectTextDesc");
 			CodeCategoryGrid.Text = Lang.GetString("CodesListCategory");
@@ -807,7 +825,8 @@ namespace ModManagerWPF
 		private void comboLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			App.SwitchLanguage();
-			UpdateBtnInstallLoader_Text();
+			UpdateBtnInstallLoader_State();
+			FlowDirectionHelper.UpdateFlowDirection();
 		}
 
 		#endregion
@@ -846,29 +865,45 @@ namespace ModManagerWPF
 
 		private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (graphics is null)
-				return;
-
-			graphics.screenNumBox_SelectChanged(comboScreen, comboDisplay);
+			graphics?.screenNumBox_SelectChanged(comboScreen, comboDisplay);
 		}
 
 		private void chkCustomWinSize_Checked(object sender, RoutedEventArgs e)
 		{
-			chkMaintainRatio.IsEnabled = (bool)chkCustomWinSize.IsChecked;
-			chkResizableWin.IsEnabled = (bool)!chkCustomWinSize.IsChecked;
+			chkMaintainRatio.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault();
+			chkResizableWin.IsEnabled = !chkCustomWinSize.IsChecked.GetValueOrDefault();
 
-			txtCustomResX.IsEnabled = (bool)chkCustomWinSize.IsChecked && (bool)!chkMaintainRatio.IsChecked;
-			txtCustomResY.IsEnabled = (bool)chkCustomWinSize.IsChecked;
+			txtCustomResX.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault() && !chkMaintainRatio.IsChecked.GetValueOrDefault();
+			txtCustomResY.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault();
 		}
 
 		private void radFullscreen_Checked(object sender, RoutedEventArgs e)
 		{
-			
+
 		}
 
 		private void radWindowed_Checked(object sender, RoutedEventArgs e)
 		{
-			
+
+		}
+
+		#endregion
+
+		#region Audio Settings
+
+		private void sliderMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			labelMusicLevel?.SetValue(ContentProperty, $"{(int)sliderMusic.Value}");
+		}
+
+		private void sliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			labelVoiceLevel?.SetValue(ContentProperty, $"{(int)sliderVoice.Value}");
+		}
+
+		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			labelSFXLevel?.SetValue(ContentProperty, $"{(int)sliderSFX.Value}");
 		}
 
 		#endregion
@@ -889,6 +924,11 @@ namespace ModManagerWPF
 				return;
 
 			tcMain.Items.Remove(tabTestSpawn);
+		}
+
+		private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
+		{
+			StartGame();
 		}
 		#endregion
 
@@ -1036,22 +1076,29 @@ namespace ModManagerWPF
 			}
 		}
 
-		private void UpdateBtnInstallLoader_Text()
+		private void UpdateBtnInstallLoader_State()
 		{
 			if (btnInstallLoader is null)
 				return;
 
-			if (installed)
-			{
-				btnInstallLoader.Content = Lang.GetString("ManagerBtnUninstallLoader");
-			}
-			else
-			{
-				btnInstallLoader.Content = Lang.GetString("ManagerBtnInstallLoader");
-			}
+			//Update Text Button of Mod Loader Installer
+			string textKey = installed ? "ManagerBtnUninstallLoader" : "ManagerBtnInstallLoader";
+			TextBlock txt = FindName("txtInstallLoader") as TextBlock;
+			txt.Text = Lang.GetString(textKey);
+
+			//update icon image depending if the Mod Loader is installed or not
+			string iconName = installed ? "IconUninstall" : "IconInstall";
+			var dic = installed ? Icons.Icons.UninstallIcon : Icons.Icons.InstallIcon;
+
+			DrawingImage Icon = dic[iconName] as DrawingImage;
+
+			Image imgInstall = FindName("imgInstall") as Image;
+
+			if (imgInstall is not null)
+				imgInstall.Source  = Icon;
 		}
 
-		private void btnInstallLoader_Click(object sender, RoutedEventArgs e)
+		private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
 		{
 			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
 			{
@@ -1067,12 +1114,19 @@ namespace ModManagerWPF
 			else
 			{
 				Util.MoveFile(datadllpath, datadllorigpath);
+
 				if (File.Exists(loaderdllpath))
 					File.Copy(loaderdllpath, datadllpath);
 			}
 
 			installed = !installed;
-			UpdateBtnInstallLoader_Text();
+			UpdateBtnInstallLoader_State();
+			Button button = (Button)sender;
+			button.IsEnabled = false;
+			int delayDuration = 2000;
+			await Task.Delay(delayDuration);
+			button.IsEnabled = true;
+
 		}
 
 		private void btnSource_Click(object sender, RoutedEventArgs e)
@@ -1093,57 +1147,68 @@ namespace ModManagerWPF
 				Verb = "open"
 			};
 
-			Process.Start(ps);	
+			Process.Start(ps);
 		}
 
 		private void ModList_ContextMenuOpening(object sender, ContextMenuEventArgs e)
 		{
-			if (sender is ListViewItem)
+			if (sender is ListViewItem listViewItem)
 			{
-				var List = (ListViewItem)sender;
+				var contextMenu = listViewItem.ContextMenu;
 
-				var context = List.ContextMenu;
-
-				if (context is not null)
+				if (contextMenu != null)
 				{
-					for (int i = 0; i < context.Items.Count; i++)
-					{
-						MenuItem item = (MenuItem)context.Items[i];
+					var menuItem = contextMenu.Items
+						.OfType<MenuItem>()
+						.FirstOrDefault(item => item.Name == "ModContextConfigureMod");
 
-						if (item.Name == "ModContextConfigureMod")
-						{
-							item.IsEnabled = ConfigureModBtn.IsEnabled;
-						}
-					}
-
+					menuItem?.SetValue(MenuItem.IsEnabledProperty, ConfigureModBtn.IsEnabled);
 				}
 			}
 		}
 
+
 		#endregion
 
-		private void sliderMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			if (labelMusicLevel is null)
-				return;
+		#region Mod Profiles
 
-			labelMusicLevel.Content = ((int)sliderMusic.Value).ToString();
+		private void SaveProfile()
+		{
+			foreach (var profile in comboProfile.Items)
+			{
+				var fullPath = Path.Combine(modDirectory, profile + ".ini");
+
+				File.Copy(loaderinipath, fullPath, true);
+
+				if (!comboProfile.Items.Contains(profile))
+					comboProfile.Items.Add(profile);
+			}
 		}
 
-		private void sliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		private void LoadAllProfiles()
 		{
-			if (labelVoiceLevel is null)
-				return;
-
-			labelVoiceLevel.Content = ((int)sliderVoice.Value).ToString();
+			foreach (var item in Directory.EnumerateFiles(modDirectory, "*.ini"))
+			{
+				if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase) && !item.EndsWith("desktop.ini", StringComparison.OrdinalIgnoreCase))
+					comboProfile.Items.Add(Path.GetFileNameWithoutExtension(item));
+			}
 		}
 
-		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		private void comboProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (labelSFXLevel is null)
-                return;
-       
-			labelSFXLevel.Content = ((int)sliderVoice.Value).ToString();
+			string selectedItem = (string)comboProfile.SelectedItem;
+			loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(Path.Combine(modDirectory, selectedItem + ".ini"));
+			LoadSettings();
+			Refresh();
 		}
-	}
+
+		#endregion
+
+		private void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+
+    }
 }

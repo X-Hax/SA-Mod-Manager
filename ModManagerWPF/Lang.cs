@@ -20,5 +20,42 @@ namespace ModManagerWPF
 
 			return key;
 		}
+
+		private readonly static List<string> RTLlanguageList = new()
+		{
+			"he-IL"
+		};
+
+		public static bool IsLanguageRTL()
+		{
+			foreach (var lang in RTLlanguageList) 
+			{
+				if (lang == App.CurrentLang.FileName) 
+					return true;
+			}
+
+			return false;
+		}
+	}
+
+	public class FlowDirectionHelper
+	{
+		private static FlowDirection _currentFlowDirection;
+
+		public static FlowDirection CurrentFlowDirection
+		{
+			get { return _currentFlowDirection; }
+			set
+			{
+				if (_currentFlowDirection != value)
+				{
+					_currentFlowDirection = value;
+				}
+			}
+		}
+		public static void UpdateFlowDirection()
+		{
+			CurrentFlowDirection = Lang.IsLanguageRTL() ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+		}
 	}
 }
