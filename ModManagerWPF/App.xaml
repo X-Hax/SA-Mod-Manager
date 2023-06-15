@@ -423,7 +423,7 @@
 					</Trigger>
 				</ControlTemplate.Triggers>
 			</ControlTemplate>
-			<Style TargetType="{x:Type ComboBox}">
+			<Style x:Key="MainComboBoxStyle" TargetType="{x:Type ComboBox}">
 				<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
 				<Setter Property="Background" Value="{StaticResource ComboBox.Static.Background}"/>
 				<Setter Property="BorderBrush" Value="{StaticResource ComboBox.Static.Border}"/>
@@ -446,6 +446,8 @@
 					</Trigger>
 				</Style.Triggers>
 			</Style>
+
+			<Style TargetType="ComboBox" BasedOn="{StaticResource MainComboBoxStyle}"/>
 			<Style TargetType="{x:Type ComboBoxItem}">
 				<Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
                 <Setter Property="FlowDirection" Value="{Binding Path=(local:FlowDirectionHelper.CurrentFlowDirection)}"/>

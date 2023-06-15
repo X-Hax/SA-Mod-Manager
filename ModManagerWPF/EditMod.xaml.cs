@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using Xceed.Wpf.AvalonDock.Controls;
 using static ModManagerWPF.MainWindow;
@@ -35,11 +37,18 @@ namespace ModManagerWPF
 		static bool editMod { get; set; } = false;
 		public static SADXModInfo Mod { get; set; }
 		static string CurrentTime = string.Empty;
-		public static ConfigSchema Schema = new ConfigSchema();
 
 		public static List<ModDependency> dependencies = new List<ModDependency>();
 		SelectDependencies selectWindow;
-		public string modFolder { get; set; }
+
+		public static ConfigSchema Schema = new ConfigSchema();
+		public static List<string> PropertyTypes = new List<string>()
+		{
+			"bool",
+			"int",
+			"float",
+			"string"
+		};
 		#endregion
 
 		#region Initializer
@@ -207,6 +216,12 @@ namespace ModManagerWPF
 
 				Schema = ConfigSchema.Load(schema);
 			}
+		}
+
+		public bool DeleteGroup()
+		{
+			
+			return false;
 		}
 		#endregion
 		#endregion
@@ -474,6 +489,30 @@ namespace ModManagerWPF
 					Directory.CreateDirectory(fullSavepath);
 				}
 			}
+		}
+
+		private void DeleteGroup(object sender, RoutedEventArgs e)
+		{
+			var btn = (Button)sender;
+			var item = (ConfigSchemaGroup)btn.DataContext;
+			int index = GroupsTree.Items.IndexOf(item);
+
+			Schema.Groups.Remove(Schema.Groups[index]);
+			GroupsTree.Items.Refresh();
+		}
+
+		private void DeleteProperty(object sender, RoutedEventArgs e)
+		{
+			var btn = (Button)sender;
+			var item = (ConfigSchemaProperty)btn.DataContext;
+		
+
+			
+		}
+
+		private void PropertyTypeChanged(object sender, SelectionChangedEventArgs e)
+		{
+
 		}
 	}
 
