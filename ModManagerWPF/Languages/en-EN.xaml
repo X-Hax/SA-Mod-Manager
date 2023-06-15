@@ -11,7 +11,9 @@
     <system:String x:Key="BtnOK">OK</system:String>
     <system:String x:Key="BtnCancel">Cancel</system:String>
     <system:String x:Key="Warning">Warning</system:String>
+    <system:String x:Key="Error">Error</system:String>
     <system:String x:Key="BtnReset">Reset</system:String>
+    <system:String x:Key="BtnCreate">Create</system:String>
 
     <!--#region Main Window Strings-->
 	<system:String x:Key="MainBtnSave">Save</system:String>
@@ -247,10 +249,22 @@
 	<!--#endregion-->
     
     <!--#region Mod Config-->
-    <system:String x:Key="TitleConfigureMod">Configure Mod</system:String>
+    <system:String x:Key="TitleConfigureMod">Configure</system:String>
     <!--#endregion-->
-		
-   
+     
+    <!--#region Mod Profile-->
+    <system:String x:Key="TitleModProfile">Manage Profiles</system:String>
+    <system:String x:Key="TitleRenameModProfile">Rename Profile</system:String>
+    <system:String x:Key="TitleCreateModProfile">Create Profile</system:String>
+    <system:String x:Key="PathModProfile">File Path</system:String>
+    <system:String x:Key="ProRename">Rename</system:String>
+    <system:String x:Key="ProClone">Duplicate</system:String>
+    <system:String x:Key="ProDelete">Delete</system:String>
+    <system:String x:Key="ProfileRenameError">Unexpected error, couldn't rename profile.</system:String>
+    <system:String x:Key="ProfileDuplicateErrorTitle">Error Profile already exists</system:String>
+    <system:String x:Key="ProfileDuplicateError">A profile with this name already exists, please use a different name.</system:String>
+    <!--#endregion-->
+
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
 
@@ -279,6 +293,7 @@
 
     <system:String x:Key="WarningDelSaveRedir" xml:space="preserve">You are about to disable save redirection for this mod. If you continue, any save in this mod folder will be deleted.&#x0a;&#x0a;Are you sure you want to proceed?</system:String>
 
+    <system:String x:Key="DeleteProfileWarning">Are you sure you want to delete this profile?</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>

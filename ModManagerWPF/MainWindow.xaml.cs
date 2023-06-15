@@ -17,12 +17,14 @@ using System.Diagnostics;
 using ModManagerWPF.Properties;
 using System.Windows.Media;
 using System.Threading.Tasks;
+using ModManagerWPF.Common;
 
 namespace ModManagerWPF
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
+	
 	public partial class MainWindow : Window
 	{
 		#region Variables
@@ -71,6 +73,7 @@ namespace ModManagerWPF
 			public bool IsChecked { get; set; }
 			public string Tag { get; set; }
 		}
+
 		#endregion
 
 		public MainWindow()
@@ -191,7 +194,7 @@ namespace ModManagerWPF
 			Update_PlayButtonsState();
 		}
 
-		private void Save()
+		public void Save()
 		{
 			if (!Directory.Exists(modDirectory))
 				return;
@@ -1178,28 +1181,41 @@ namespace ModManagerWPF
 			{
 				var fullPath = Path.Combine(modDirectory, profile + ".ini");
 
-				File.Copy(loaderinipath, fullPath, true);
-
-				if (!comboProfile.Items.Contains(profile))
-					comboProfile.Items.Add(profile);
+				//SADXLoaderInfo ini = File.Exists(fullPath) ? IniSerializer.Deserialize<SADXLoaderInfo>(fullPath) : new SADXLoaderInfo();
+				
+			//	File.Copy(ini, fullPath, true);
 			}
 		}
 
 		private void LoadAllProfiles()
 		{
+			comboProfile.Items.Clear();
+
 			foreach (var item in Directory.EnumerateFiles(modDirectory, "*.ini"))
 			{
 				if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase) && !item.EndsWith("desktop.ini", StringComparison.OrdinalIgnoreCase))
-					comboProfile.Items.Add(Path.GetFileNameWithoutExtension(item));
+				{
+					Profile pro = new()
+					{
+						name = Path.GetFileNameWithoutExtension(item),
+						iniPath= item
+					};
+
+					comboProfile.Items.Add(pro);
+				}			
 			}
 		}
 
 		private void comboProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			string selectedItem = (string)comboProfile.SelectedItem;
-			loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(Path.Combine(modDirectory, selectedItem + ".ini"));
-			LoadSettings();
-			Refresh();
+			var selectedItem = comboProfile.SelectedItem as Profile;
+
+			if (selectedItem != null)
+			{
+				loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(selectedItem.iniPath);
+				LoadSettings();
+				Refresh();
+			}	
 		}
 
 		#endregion
@@ -1209,6 +1225,14 @@ namespace ModManagerWPF
 
 		}
 
+		private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
+		{
+			new ModProfile(ref comboProfile).ShowDialog();
+		}
 
-    }
+		private void ModProfile_FormClosing(object sender, EventArgs e)
+		{
+			Refresh();
+		}
+	}
 }

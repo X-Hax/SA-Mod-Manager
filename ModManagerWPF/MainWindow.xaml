@@ -1043,9 +1043,9 @@
 									</Grid.RowDefinitions>
 
 									<StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
-                                        <ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboProfile_SelectionChanged"/>
+                                        <ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboProfile_SelectionChanged" DisplayMemberPath="name"/>
 
-                                        <Button x:Name="btnProfileSettings" Grid.Column="2" Height="22" Width="27">
+                                        <Button x:Name="btnProfileSettings" Grid.Column="2" Height="22" Width="27" Click="btnProfileSettings_Click">
 											<Image Source="{StaticResource IconProfiles}" Margin="1,1,1,1"/>
 										</Button>
 									</StackPanel>

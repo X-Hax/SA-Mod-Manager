@@ -6,6 +6,9 @@
     <system:String x:Key="BtnOK">OK</system:String>
     <system:String x:Key="BtnCancel">Annuler</system:String>
     <system:String x:Key="Warning">Attention</system:String>
+    <system:String x:Key="Error">Erreur</system:String>
+    <system:String x:Key="BtnReset">Reset</system:String>
+    <system:String x:Key="BtnCreate">Crée</system:String>
 
     <!--Main Window Strings-->
     <system:String x:Key="MainBtnSave" >Sauvegarder</system:String>
@@ -230,7 +233,20 @@
     <!--#endregion-->
 
     <!--#region Mod Config-->
-    <system:String x:Key="TitleConfigureMod">"Configuration du Mod"</system:String>
+    <system:String x:Key="TitleConfigureMod">Configuration</system:String>
+    <!--#endregion-->
+
+    <!--#region Mod Profile-->
+    <system:String x:Key="TitleModProfile">Gestion des Profils</system:String>
+    <system:String x:Key="TitleRenameModProfile">Renommer un Profil</system:String>
+    <system:String x:Key="TitleCreateModProfile">Crée un Profil</system:String>
+    <system:String x:Key="PathModProfile">Chemin du Fichier</system:String>
+    <system:String x:Key="ProRename">Renommer</system:String>
+    <system:String x:Key="ProClone">Dupliquer</system:String>
+    <system:String x:Key="ProDelete">Supprimer</system:String>
+    <system:String x:Key="ProfileRenameError">Erreur inattendue, impossible de renommer le profil.</system:String>
+    <system:String x:Key="ProfileDuplicateErrorTitle">Erreur le Profil existe déjà</system:String>
+    <system:String x:Key="ProfileDuplicateError">Un profil avec le même nom existe déjà, veuillez utiliser un différent nom.</system:String>
     <!--#endregion-->
 
     <!--Message Box Strings-->
