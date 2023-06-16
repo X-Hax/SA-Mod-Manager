@@ -10,6 +10,8 @@
     <!--Region Common UI-->
     <system:String x:Key="BtnOK">OK</system:String>
     <system:String x:Key="BtnCancel">Cancel</system:String>
+	<system:String x:Key="BtnYes">Yes</system:String>
+	<system:String x:Key="BtnNo">No</system:String>
     <system:String x:Key="Warning">Warning</system:String>
     <system:String x:Key="Error">Error</system:String>
     <system:String x:Key="BtnReset">Reset</system:String>

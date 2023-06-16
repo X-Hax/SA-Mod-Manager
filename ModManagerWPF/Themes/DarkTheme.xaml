@@ -57,6 +57,7 @@
 	<Color x:Key="IconColorBlue" A="255" R="0" G="106" B="188"/>
 	<Color x:Key="IconColorRed" A="255" R="188" G="0" B="0"/>
 	<Color x:Key="IconColorGray" A="255" R="158" G="158" B="158"/>
+	<Color x:Key="IconColorYellow" A="255" R="188" G="188" B="0"/>
 
 	<SolidColorBrush x:Key="IconBrushAdd" Color="{DynamicResource IconColorGreen}"/>
 	<SolidColorBrush x:Key="IconBrushRefresh" Color="{DynamicResource IconColorBlue}"/>
@@ -79,6 +80,10 @@
 	<SolidColorBrush x:Key="IconBrushDeselectAll" Color="{DynamicResource IconColorGray}"/>
 	<SolidColorBrush x:Key="IconBrushCopy" Color="{DynamicResource IconColorGray}"/>
 	<SolidColorBrush x:Key="IconBrushRename" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushWarning" Color="{DynamicResource IconColorRed}"/>
+	<SolidColorBrush x:Key="IconBrushCaution" Color="{DynamicResource IconColorYellow}"/>
+	<SolidColorBrush x:Key="IconBrushInfo" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushError" Color="{DynamicResource IconColorRed}"/>
 	<!--#endregion-->
 
 </ResourceDictionary>

@@ -3,20 +3,23 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="Add.xaml"/>
         <ResourceDictionary Source="BugReport.xaml"/>
-        <ResourceDictionary Source="Check.xaml"/>
+		<ResourceDictionary Source="Caution.xaml"/>
+		<ResourceDictionary Source="Check.xaml"/>
 		<ResourceDictionary Source="Close.xaml"/>
 		<ResourceDictionary Source="Config.xaml"/>
         <ResourceDictionary Source="Contributors.xaml"/>
-        <ResourceDictionary Source="Delete.xaml"/>
+		<ResourceDictionary Source="Delete.xaml"/>
 		<ResourceDictionary Source="DeselectAll.xaml"/>
 		<ResourceDictionary Source="Down.xaml"/>
 		<ResourceDictionary Source="DownFloor.xaml"/>
 		<ResourceDictionary Source="Download.xaml"/>
 		<ResourceDictionary Source="Duplicate.xaml"/>
 		<ResourceDictionary Source="Edit.xaml"/>
+		<ResourceDictionary Source="Error.xaml"/>
 		<ResourceDictionary Source="Folder.xaml"/>
         <ResourceDictionary Source="GB.xaml"/>
-        <ResourceDictionary Source="Install.xaml"/>
+		<ResourceDictionary Source="Information.xaml"/>
+		<ResourceDictionary Source="Install.xaml"/>
         <ResourceDictionary Source="Open.xaml"/>
 		<ResourceDictionary Source="Play.xaml"/>
 		<ResourceDictionary Source="Profiles.xaml"/>
@@ -28,8 +31,9 @@
 		<ResourceDictionary Source="UpFloor.xaml"/>
         <ResourceDictionary Source="Update.xaml"/>
         <ResourceDictionary Source="Uninstall.xaml"/>
+		<ResourceDictionary Source="Warning.xaml"/>
 
-        <ResourceDictionary Source="Github.xaml"/>
+		<ResourceDictionary Source="Github.xaml"/>
 		<ResourceDictionary Source="SADocs.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
 
