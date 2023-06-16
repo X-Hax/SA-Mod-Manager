@@ -10,7 +10,13 @@
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource SAWindow}"
         Closed="Window_Closed">
-
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../Icons/Icons.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -45,10 +51,21 @@
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem x:Name="ProfileRename" Header="{StaticResource ProRename}" Click="ProfileRename_Click"  InputGestureText="(F2)">
-                    </MenuItem>
-                    <MenuItem x:Name="ProfileClone" Header="{StaticResource ProClone}" Click="ProfileClone_Click" InputGestureText="(CTRL + D)"/>
-                    <MenuItem x:Name="ProfileDelete" Header="{StaticResource ProDelete}" Click="ProfileDelete_Click" InputGestureText="(Del)"/>
+					<MenuItem x:Name="ProfileRename" Header="{StaticResource ProRename}" Click="ProfileRename_Click"  InputGestureText="(F2)">
+						<MenuItem.Icon>
+							<Image Source="{StaticResource IconRename}"/>
+						</MenuItem.Icon>
+					</MenuItem>
+					<MenuItem x:Name="ProfileClone" Header="{StaticResource ProClone}" Click="ProfileClone_Click" InputGestureText="(CTRL + D)">
+						<MenuItem.Icon>
+							<Image Source="{StaticResource IconDuplicate}"/>
+						</MenuItem.Icon>
+					</MenuItem>
+					<MenuItem x:Name="ProfileDelete" Header="{StaticResource ProDelete}" Click="ProfileDelete_Click" InputGestureText="(Del)">
+						<MenuItem.Icon>
+							<Image Source="{StaticResource IconDelete}"/>
+						</MenuItem.Icon>
+					</MenuItem>
            
                 </ContextMenu>
             </ListView.ContextMenu>

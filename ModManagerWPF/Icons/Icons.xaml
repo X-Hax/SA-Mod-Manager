@@ -21,6 +21,7 @@
 		<ResourceDictionary Source="Play.xaml"/>
 		<ResourceDictionary Source="Profiles.xaml"/>
 		<ResourceDictionary Source="Refresh.xaml"/>
+		<ResourceDictionary Source="Rename.xaml"/>
 		<ResourceDictionary Source="Save.xaml"/>
 		<ResourceDictionary Source="SelectAll.xaml"/>
 		<ResourceDictionary Source="Up.xaml"/>
