@@ -239,6 +239,7 @@ namespace ModManagerWPF
 			loaderini.EnableTestSpawnTab = (bool)checkEnableTestSpawn.IsChecked;
 			loaderini.InputModEnabled = (bool)radBetterInput.IsChecked;
 			loaderini.SEVolume = (int)sliderSFX.Value;
+
 			loaderini.EnableBassMusic = (bool)checkBassMusic.IsChecked;
 			loaderini.EnableBassSFX = (bool)checkBassSFX.IsChecked;
 
@@ -312,6 +313,7 @@ namespace ModManagerWPF
 			checkBassMusic.IsChecked = loaderini.EnableBassMusic;
 			checkBassSFX.IsChecked = loaderini.EnableBassSFX;
 			sliderSFX.Value = loaderini.SEVolume;
+			sliderSFX.IsEnabled = checkBassSFX.IsChecked.Value;
 
 			if ((bool)!checkEnableTestSpawn.IsChecked)
 			{
@@ -907,6 +909,15 @@ namespace ModManagerWPF
 		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
 			labelSFXLevel?.SetValue(ContentProperty, $"{(int)sliderSFX.Value}");
+		}
+		private void checkBassSFX_Checked(object sender, RoutedEventArgs e)
+		{
+			sliderSFX.IsEnabled = true;
+		}
+
+		private void checkBassSFX_Unchecked(object sender, RoutedEventArgs e)
+		{
+			sliderSFX.IsEnabled = false;
 		}
 
 		#endregion
