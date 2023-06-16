@@ -163,6 +163,10 @@
 							<RowDefinition Height="30"/>
 							<RowDefinition Height="10"/>
 							<RowDefinition Height="30"/>
+							<RowDefinition Height="10"/>
+							<RowDefinition Height="30"/>
+							<RowDefinition Height="10"/>
+							<RowDefinition Height="30"/>
 						</Grid.RowDefinitions>
 						<Button x:Name="btnMoveTop" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Grid.Row="1" Click="btnMoveTop_Click" ToolTip="{DynamicResource TipModsMoveUpMax}">
 							<Image Source="{StaticResource IconUpFloor}" Margin="3"/>
@@ -175,6 +179,13 @@
 						</Button>
 						<Button x:Name="btnMoveBottom" HorizontalAlignment="Center" Width="30" Grid.Row="7" Click="btnMoveBottom_Click" ToolTip="{DynamicResource TipModsMoveDownMax}">
 							<Image Source="{StaticResource IconDownFloor}" Margin="3"/>
+						</Button>
+						<Separator Grid.Row="8" VerticalAlignment="Center"/>
+						<Button x:Name="btnSelectAll" HorizontalAlignment="Center" Width="30" Grid.Row="9">
+							<Image Source="{StaticResource IconSelectAll}" Margin="3"/>
+						</Button>
+						<Button x:Name="btnDeselectAll" HorizontalAlignment="Center" Width="30" Grid.Row="11">
+							<Image Source="{StaticResource IconDeselectAll}" Margin="3"/>
 						</Button>
 					</Grid>
 
@@ -237,11 +248,32 @@
 							<ColumnDefinition Width="240"/>
 						</Grid.ColumnDefinitions>
 						<Grid.RowDefinitions>
-							<RowDefinition Height="10"/>
+							<RowDefinition Height="0"/>
+							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="*"/>
-							<RowDefinition Height="50"/>
+							<RowDefinition Height="40"/>
 						</Grid.RowDefinitions>
-						<ListView x:Name="CodeListView" Foreground="White" Grid.Column="1" Grid.Row="1" FontSize="13">
+
+						<Grid Grid.Column="1" Grid.Row="1" Height="40">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Button x:Name="btnSelectAllCode" Margin="0,5,5,5" Grid.Column="0">
+								<StackPanel Orientation="Horizontal">
+									<Image Width="15" Source="{StaticResource IconSelectAll}" Margin="0,0,5,0"/>
+									<TextBlock Text="Select All" VerticalAlignment="Center"/>
+								</StackPanel>
+							</Button>
+							<Button x:Name="btnDeselectAllCode" Margin="5,5,0,5" Grid.Column="1">
+								<StackPanel Orientation="Horizontal">
+									<Image Width="15" Source="{StaticResource IconDeselectAll}" Margin="0,0,5,0"/>
+									<TextBlock Text="Deselect All" VerticalAlignment="Center"/>
+								</StackPanel>
+							</Button>
+						</Grid>
+
+						<ListView x:Name="CodeListView" Foreground="White" Grid.Column="1" Grid.Row="2" FontSize="13">
 							<ListView.ItemContainerStyle>
 								<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
 									<EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
@@ -277,7 +309,7 @@
 							</ListView.View>
 						</ListView>
 
-						<Grid Grid.Column="2" Grid.Row="1" Margin="5,0,0,0">
+						<Grid Grid.Column="2" Grid.Row="2" Margin="5,0,0,0">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto" MinHeight="18"/>
@@ -294,15 +326,19 @@
 							<TextBlock x:Name="CodeDescGrid" Text="{DynamicResource ModSelectTextDesc}" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap"/>
 						</Grid>
 
-						<Grid Grid.Column="1" Grid.Row="2">
-							<Button x:Name="btnAddCode" Margin="0,10,0,10">
-								<Grid>
+						<Grid Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="240"/>
+								</Grid.ColumnDefinitions>
+								<Button x:Name="btnAddCode" Margin="0,5,0,5" Grid.Column="0">
 									<StackPanel Orientation="Horizontal">
-										<Image x:Name="newCode" Width="15" Height="16" Source="/Icons/Add.png" Margin="0,0,5,0"/>
+										<Image Width="15" Height="16" Source="{StaticResource IconAdd}" Margin="0,0,5,0"/>
 										<TextBlock Text="{DynamicResource CodesBtnAdd}"/>
 									</StackPanel>
-								</Grid>
-							</Button>
+								</Button>
+							</Grid>
 						</Grid>
 					</Grid>
 				</Grid>
@@ -747,11 +783,32 @@
 										<ColumnDefinition Width="270"/>
 									</Grid.ColumnDefinitions>
 									<Grid.RowDefinitions>
-										<RowDefinition Height="10"/>
+										<RowDefinition Height="0"/>
+										<RowDefinition Height="Auto"/>
 										<RowDefinition Height="*"/>
 										<RowDefinition Height="10"/>
 									</Grid.RowDefinitions>
-									<ListView x:Name="listPatches" Foreground="White" Grid.Column="1" Grid.Row="1" FontSize="13">
+
+									<Grid Grid.Column="1" Grid.Row="1" Height="40">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<Button x:Name="btnSelectAllPatch" Margin="0,5,5,5" Grid.Column="0">
+											<StackPanel Orientation="Horizontal">
+												<Image Width="15" Source="{StaticResource IconSelectAll}" Margin="0,0,5,0"/>
+												<TextBlock Text="Select All" VerticalAlignment="Center"/>
+											</StackPanel>
+										</Button>
+										<Button x:Name="btnDeselectAllPatch" Margin="5,5,0,5" Grid.Column="1">
+											<StackPanel Orientation="Horizontal">
+												<Image Width="15" Source="{StaticResource IconDeselectAll}" Margin="0,0,5,0"/>
+												<TextBlock Text="Deselect All" VerticalAlignment="Center"/>
+											</StackPanel>
+										</Button>
+									</Grid>
+
+									<ListView x:Name="listPatches" Foreground="White" Grid.Column="1" Grid.Row="2" FontSize="13">
 										<ListView.ItemContainerStyle>
 											<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
 												<EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
@@ -775,7 +832,7 @@
 										</ListView.View>
 									</ListView>
 
-									<Grid Grid.Column="2" Grid.Row="1">
+									<Grid Grid.Column="2" Grid.Row="2">
 										<Grid.RowDefinitions>
 											<RowDefinition Height="Auto"/>
 											<RowDefinition Height="*"/>

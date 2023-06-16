@@ -75,6 +75,10 @@
 	<SolidColorBrush x:Key="IconBrushDownload" Color="{DynamicResource IconColorGreen}"/>
 	<SolidColorBrush x:Key="IconBrushFolder" Color="{DynamicResource IconColorGray}"/>
 	<SolidColorBrush x:Key="IconBrushProfiles" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushSelectAll" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushDeselectAll" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushCopy" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushRename" Color="{DynamicResource IconColorGray}"/>
 	<!--#endregion-->
 
 </ResourceDictionary>

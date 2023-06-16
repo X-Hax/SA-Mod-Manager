@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<DrawingImage x:Key="IconDeselectAll">
+		<DrawingImage.Drawing>
+			<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+				<GeometryDrawing Geometry="F1 M24,24z M0,0z M15,9.00004L9,15 M15,15L9,9.00004 M6,20L18,20C19.1046,20,20,19.1046,20,18L20,6C20,4.89543,19.1046,4,18,4L6,4C4.89543,4,4,4.89543,4,6L4,18C4,19.1046,4.89543,20,6,20z">
+					<GeometryDrawing.Pen>
+						<Pen Brush="{StaticResource IconBrushDeselectAll}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+					</GeometryDrawing.Pen>
+				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+</ResourceDictionary>
