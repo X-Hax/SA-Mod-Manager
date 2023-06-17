@@ -18,13 +18,16 @@ using ModManagerWPF.Properties;
 using System.Windows.Media;
 using System.Threading.Tasks;
 using ModManagerWPF.Common;
+using static ModManagerWPF.MainWindow;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace ModManagerWPF
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	
+
 	public partial class MainWindow : Window
 	{
 		#region Variables
@@ -74,6 +77,12 @@ namespace ModManagerWPF
 			public string Tag { get; set; }
 		}
 
+		public class PatchesData
+		{
+			public string Name { get; set; }
+			public bool IsChecked { get; set; }
+		}
+
 		#endregion
 
 		public MainWindow()
@@ -90,6 +99,7 @@ namespace ModManagerWPF
 			InitCodes();
 			LoadAllProfiles();
 			UpdateDLLData();
+			UpdatePatches();
 		}
 
 		private void UpdateDLLData()
@@ -246,7 +256,6 @@ namespace ModManagerWPF
 			IniSerializer.Serialize(loaderini, loaderinipath);
 
 			SaveGameConfigIni();
-			SaveProfile();
 			Refresh();
 		}
 		private void LoadSettings()
@@ -832,6 +841,7 @@ namespace ModManagerWPF
 			App.SwitchLanguage();
 			UpdateBtnInstallLoader_State();
 			FlowDirectionHelper.UpdateFlowDirection();
+			UpdatePatches();
 		}
 
 		#endregion
@@ -1056,6 +1066,7 @@ namespace ModManagerWPF
 		{
 			LoadModList();
 			InitCodes();
+			RefreshPatchesList();
 		}
 
 		private void RefreshBtn_Click(object sender, RoutedEventArgs e)
@@ -1109,7 +1120,7 @@ namespace ModManagerWPF
 			Image imgInstall = FindName("imgInstall") as Image;
 
 			if (imgInstall is not null)
-				imgInstall.Source  = Icon;
+				imgInstall.Source = Icon;
 		}
 
 		private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
@@ -1186,16 +1197,14 @@ namespace ModManagerWPF
 
 		#region Mod Profiles
 
-		private void SaveProfile()
+		private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
 		{
-			foreach (var profile in comboProfile.Items)
-			{
-				var fullPath = Path.Combine(modDirectory, profile + ".ini");
+			new ModProfile(ref comboProfile).ShowDialog();
+		}
 
-				//SADXLoaderInfo ini = File.Exists(fullPath) ? IniSerializer.Deserialize<SADXLoaderInfo>(fullPath) : new SADXLoaderInfo();
-				
-			//	File.Copy(ini, fullPath, true);
-			}
+		private void ModProfile_FormClosing(object sender, EventArgs e)
+		{
+			Refresh();
 		}
 
 		private void LoadAllProfiles()
@@ -1209,11 +1218,11 @@ namespace ModManagerWPF
 					Profile pro = new()
 					{
 						name = Path.GetFileNameWithoutExtension(item),
-						iniPath= item
+						iniPath = item
 					};
 
 					comboProfile.Items.Add(pro);
-				}			
+				}
 			}
 		}
 
@@ -1226,24 +1235,78 @@ namespace ModManagerWPF
 				loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(selectedItem.iniPath);
 				LoadSettings();
 				Refresh();
-			}	
+			}
 		}
 
 		#endregion
+
+		#region Patches
+
+		private void UpdatePatches()
+		{
+			listPatches.Items.Clear();
+
+			if (loaderini is null)
+				return;
+
+			List<PatchesData> patches = new List<PatchesData>()
+			{
+				new PatchesData() { Name = Lang.GetString("Patch3DSound"), IsChecked = loaderini.HRTFSound },
+				new PatchesData() { Name = Lang.GetString("PatchCamCode"), IsChecked = loaderini.CCEF },
+				new PatchesData() { Name = Lang.GetString("PatchVerColor"), IsChecked = loaderini.PolyBuff },
+				new PatchesData() { Name = Lang.GetString("PatchMatColor"), IsChecked = loaderini.MaterialColorFix},
+				new PatchesData() { Name = Lang.GetString("PatchInterpolation"), IsChecked = loaderini.InterpolationFix},
+				new PatchesData() { Name = Lang.GetString("PatchFov"), IsChecked = loaderini.FovFix },
+				new PatchesData() { Name = Lang.GetString("PatchSC"), IsChecked = loaderini.SCFix },
+				new PatchesData() { Name = Lang.GetString("PatchChaos2Crash"), IsChecked = loaderini.Chaos2CrashFix },
+				new PatchesData() { Name = Lang.GetString("PatchChunkSpec"), IsChecked = loaderini.ChunkSpecFix},
+				new PatchesData() { Name = Lang.GetString("PatchE102Poly"), IsChecked = loaderini.E102PolyFix},
+				new PatchesData() { Name = Lang.GetString("PatchChaoPanel"), IsChecked = loaderini.ChaoPanelFix},
+				new PatchesData() { Name = Lang.GetString("PatchPixelOffset"), IsChecked = loaderini.PixelOffSetFix},
+				new PatchesData() { Name = Lang.GetString("PatchLights"), IsChecked = loaderini.LightFix},
+			};
+
+			foreach (var patch in patches)
+			{
+				listPatches.Items.Add(patch);
+			}
+		}
+
+		private void btnSelectAllPatch_Click(object sender, RoutedEventArgs e)
+		{
+			foreach (PatchesData patch in listPatches.Items)
+			{
+				patch.IsChecked = true;
+			}
+			RefreshPatchesList();
+		}
+
+		private void btnDeselectAllPatch_Click(object sender, RoutedEventArgs e)
+		{
+			foreach (PatchesData patch in listPatches.Items)
+			{
+				patch.IsChecked = false;
+			}
+			RefreshPatchesList();
+
+		}
+
+		private void RefreshPatchesList()
+		{
+			ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
+			view.Refresh();
+		}
+
+		#endregion
+
+		#region Updates
 
 		private void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
 		{
 
 		}
 
-		private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
-		{
-			new ModProfile(ref comboProfile).ShowDialog();
-		}
+		#endregion
 
-		private void ModProfile_FormClosing(object sender, EventArgs e)
-		{
-			Refresh();
-		}
 	}
 }
