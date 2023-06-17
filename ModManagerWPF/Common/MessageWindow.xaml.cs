@@ -41,6 +41,16 @@ namespace ModManagerWPF.Common
 		}
 
 		/// <summary>
+		/// Window options to if the header has a header, icon, or is just a message.
+		/// </summary>
+		public enum WindowType
+		{
+			IconHeader,
+			IconMessage,
+			Message
+		}
+
+		/// <summary>
 		/// Returns true when MessageWindow is closed. Can be used to check when the window has been closed.
 		/// </summary>
 		public bool isClosed;
@@ -59,7 +69,7 @@ namespace ModManagerWPF.Common
 		/// <param name="button"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
-		public MessageWindow(string windowName, string errorText, Icons icon=Icons.Caution, Buttons button=Buttons.OK, double width=40, double height=40)
+		public MessageWindow(string windowName, string errorText, WindowType type=WindowType.IconMessage, Icons icon=Icons.Caution, Buttons button=Buttons.OK, double width=40, double height=40, string headerText="")
 		{
 			InitializeComponent();
 
@@ -69,7 +79,7 @@ namespace ModManagerWPF.Common
 			image.Width = width;
 			image.Height = height;
 
-			InitializeMessageWindow(windowName, errorText, image, button);
+			InitializeMessageWindow(windowName, errorText, headerText, image, button, type);
 		}
 
 		/// <summary>
@@ -81,25 +91,26 @@ namespace ModManagerWPF.Common
 		/// <param name="button"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
-		public MessageWindow(string windowName, string errorText, Image image, Buttons button=Buttons.OK, double width=40, double height=40)
+		public MessageWindow(string windowName, string messageText, Image image, WindowType type = WindowType.IconMessage, Buttons button=Buttons.OK, double width=40, double height=40, string headerText="")
 		{
 			InitializeComponent();
 
 			image.Width = width;
 			image.Height = height;
 
-			InitializeMessageWindow(windowName, errorText, image, button);
+			InitializeMessageWindow(windowName, messageText, headerText, image, button, type);
 		}
 
-		private void InitializeMessageWindow(string windowName, string errorText, Image icon, Buttons button)
+		private void InitializeMessageWindow(string windowName, string messageText, string headerText, Image icon, Buttons button, WindowType type)
 		{
 			isClosed = false;
 			isYes = false;
 			Window.Title = windowName;
-			MessageIcon.Source = icon.Source;
-			MessageIcon.Width = icon.Width;
-			MessageIcon.Height = icon.Height;
-			MessageText.Text = errorText;
+			Image image = (Image)TryFindResource("MessageIcon");
+			image.Source = icon.Source;
+			image.Width = icon.Width;
+			image.Height = icon.Height;
+			SetupWindow(messageText, headerText, type, image);
 			UpdateButtons(button);
 		}
 
@@ -139,6 +150,34 @@ namespace ModManagerWPF.Common
 					ButtonsGrid.RowDefinitions[0].Height = new GridLength(0);
 					ButtonsGrid.RowDefinitions[1].Height = new GridLength(0);
 					ButtonsGrid.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Auto);
+					break;
+			}
+		}
+
+		private void SetupWindow(string messageText, string headerText, WindowType windowType, Image image)
+		{
+			switch (windowType)
+			{
+				case WindowType.IconMessage:
+					MasterGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
+					MasterGrid.RowDefinitions[1].Height = new GridLength(0);
+					MasterGrid.RowDefinitions[2].Height = new GridLength(0);
+					GridIconMessage.Children.Add(image);
+					IconMessage.Text = messageText;
+					break;
+				case WindowType.IconHeader:
+					MasterGrid.RowDefinitions[0].Height = new GridLength(0);
+					MasterGrid.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
+					MasterGrid.RowDefinitions[2].Height = new GridLength(0);
+					GridIconHeader.Children.Add(image);
+					HeaderHeader.Text = headerText;
+					HeaderMessage.Text = messageText;
+					break;
+				case WindowType.Message:
+					MasterGrid.RowDefinitions[0].Height = new GridLength(0);
+					MasterGrid.RowDefinitions[1].Height = new GridLength(0);
+					MasterGrid.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Star);
+					MessageMessage.Text = messageText;
 					break;
 			}
 		}

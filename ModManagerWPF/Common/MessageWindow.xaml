@@ -13,7 +13,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="../Icons/Icons.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
-			<MediaElement x:Key="GifTest" Source="../Icons/eggman-robotnik.gif" LoadedBehavior="Play" UnloadedBehavior="Manual" MediaEnded="LoopMedia"/>
+			<Image x:Key="MessageIcon" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 		</ResourceDictionary>
 	</Window.Resources>
 	
@@ -30,17 +30,38 @@
 			<RowDefinition Height="10"/>
 		</Grid.RowDefinitions>
 
-		<Grid Grid.Column="1" Grid.Row="1">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" MinWidth="40"/>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
+		<Grid x:Name="MasterGrid" Grid.Column="1" Grid.Row="1">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" MinHeight="40"/>
+				<RowDefinition Height="0"/>
 				<RowDefinition Height="*"/>
+				<RowDefinition Height="0"/>
 			</Grid.RowDefinitions>
-			<Image x:Name="MessageIcon" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-			<TextBlock x:Name="MessageText" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5" TextWrapping="Wrap"/>
+			<Grid x:Name="GridIconMessage" Grid.Row="0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" MinWidth="40"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" MinHeight="40"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<TextBlock x:Name="IconMessage" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5" TextWrapping="Wrap"/>
+			</Grid>
+			<Grid x:Name="GridIconHeader" Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" MinWidth="40"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" MinHeight="40"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<TextBlock x:Name="HeaderHeader" Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" FontSize="20" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
+				<TextBlock x:Name="HeaderMessage" Grid.Column="1" Grid.Row="1" Margin="5" TextWrapping="Wrap"/>
+			</Grid>
+			<Grid x:Name="GridMessage" Grid.Row="2">
+				<TextBlock x:Name="MessageMessage" Margin="5" TextWrapping="Wrap"/>
+			</Grid>
 		</Grid>
 
 		<Grid x:Name="ButtonsGrid" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right">
