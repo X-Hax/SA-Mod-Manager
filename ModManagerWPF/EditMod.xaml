@@ -6,7 +6,6 @@
 		xmlns:local="clr-namespace:ModManagerWPF"
 		xmlns:pt="http://propertytools.org/wpf"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-		xmlns:schema="clr-namespace:ModManagerWPF.Schema"
 		mc:Ignorable="d"
 		WindowStartupLocation="CenterScreen" 
 		MinHeight="550" MinWidth="450" Height="560" Width="650"
