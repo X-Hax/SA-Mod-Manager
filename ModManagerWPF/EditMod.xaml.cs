@@ -14,7 +14,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using Xceed.Wpf.AvalonDock.Controls;
-using static ModManagerWPF.MainWindow;
 
 namespace ModManagerWPF
 {
@@ -100,6 +99,7 @@ namespace ModManagerWPF
 
 			DependencyGrid.ItemsSource = dependencies;
 			GroupsTree.ItemsSource = Schema.Groups;
+			GroupsTree.Tag = PropertyTypes;
 		}
 		#endregion
 
@@ -222,6 +222,44 @@ namespace ModManagerWPF
 		{
 			
 			return false;
+		}
+
+		private void DeleteGroup(object sender, RoutedEventArgs e)
+		{
+			var btn = (Button)sender;
+			var item = (ConfigSchemaGroup)btn.DataContext;
+			int index = GroupsTree.Items.IndexOf(item);
+
+			Schema.Groups.Remove(Schema.Groups[index]);
+			GroupsTree.Items.Refresh();
+		}
+
+		private void DeleteProperty(object sender, RoutedEventArgs e)
+		{
+			var btn = (Button)sender;
+			var item = (ConfigSchemaProperty)btn.DataContext;
+
+
+
+		}
+
+		private void PropertyTypeChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = (ComboBox)sender;
+			var btn = (Button)sender;
+			var item = (ConfigSchemaGroup)btn.DataContext;
+
+			switch (comboBox.SelectedItem)
+			{
+				case "string":
+					break;
+				case "int":
+					break;
+				case "float":
+					break;
+				case "bool":
+					break;
+			}
 		}
 		#endregion
 		#endregion
@@ -490,30 +528,5 @@ namespace ModManagerWPF
 				}
 			}
 		}
-
-		private void DeleteGroup(object sender, RoutedEventArgs e)
-		{
-			var btn = (Button)sender;
-			var item = (ConfigSchemaGroup)btn.DataContext;
-			int index = GroupsTree.Items.IndexOf(item);
-
-			Schema.Groups.Remove(Schema.Groups[index]);
-			GroupsTree.Items.Refresh();
-		}
-
-		private void DeleteProperty(object sender, RoutedEventArgs e)
-		{
-			var btn = (Button)sender;
-			var item = (ConfigSchemaProperty)btn.DataContext;
-		
-
-			
-		}
-
-		private void PropertyTypeChanged(object sender, SelectionChangedEventArgs e)
-		{
-
-		}
 	}
-
 }

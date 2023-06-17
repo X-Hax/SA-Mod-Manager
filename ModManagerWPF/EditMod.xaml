@@ -6,7 +6,6 @@
 		xmlns:local="clr-namespace:ModManagerWPF"
 		xmlns:pt="http://propertytools.org/wpf"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-		xmlns:schema="clr-namespace:ModManagerWPF.Schema"
 		mc:Ignorable="d"
 		WindowStartupLocation="CenterScreen" 
 		MinHeight="550" MinWidth="450" Height="560" Width="650"
@@ -17,13 +16,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Themes/DarkTheme.xaml"/>
 				<ResourceDictionary Source="Icons/Icons.xaml"/>
-				<ResourceDictionary Source="Common/ConfigSchemaBuilder.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
-
-			<!--Custom Templates and Styles go here.-->
-			<Style x:Key="PropertyComboBox" TargetType="ComboBox" BasedOn="{StaticResource MainComboBoxStyle}">
-				<Setter Property="ItemsSource" Value="{Binding Path=PropertyTypes}"/>
-			</Style>
 		</ResourceDictionary>
 	</Window.Resources>
 
@@ -313,7 +306,7 @@
 														<Label Content="Display Name:" Grid.Column="2" VerticalAlignment="Center"/>
 														<TextBox Text="{Binding DisplayName}" Grid.Column="3" Margin="5"/>
 														<Label Content="Type:" Grid.Column="4" VerticalAlignment="Center"/>
-														<ComboBox Style="{StaticResource PropertyComboBox}" Grid.Column="5" HorizontalAlignment="Stretch" Margin="5" SelectionChanged="PropertyTypeChanged"/>
+														<ComboBox ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}, Path=Tag}" Grid.Column="5" HorizontalAlignment="Stretch" Margin="5" SelectionChanged="PropertyTypeChanged"/>
 													</Grid>
 
 													<Grid Grid.Column="1" Grid.Row="1">
