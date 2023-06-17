@@ -641,6 +641,38 @@ namespace ModManagerWPF
 			}
 		}
 
+		private async void btnSelectAll_Click(object sender, RoutedEventArgs e)
+		{
+			foreach (ModData mod in listMods.Items)
+			{
+				mod.IsChecked = true;
+			}
+
+			RefreshModList();
+			btnSelectAll.IsEnabled = false;
+			await Task.Delay(150);
+			btnSelectAll.IsEnabled = true;
+		}
+
+		private async void btnDeselectAll_Click(object sender, RoutedEventArgs e)
+		{
+			foreach (ModData mod in listMods.Items)
+			{
+				mod.IsChecked = false;
+			}
+
+			RefreshModList();
+			btnDeselectAll.IsEnabled = false;
+			await Task.Delay(150);
+			btnDeselectAll.IsEnabled = true;
+		}
+
+		private void RefreshModList()
+		{
+			ICollectionView view = CollectionViewSource.GetDefaultView(listMods.Items);
+			view.Refresh();
+		}
+
 		#endregion
 
 		#region Game Settings
@@ -1069,9 +1101,12 @@ namespace ModManagerWPF
 			RefreshPatchesList();
 		}
 
-		private void RefreshBtn_Click(object sender, RoutedEventArgs e)
+		private async void RefreshBtn_Click(object sender, RoutedEventArgs e)
 		{
 			Refresh();
+			RefreshBtn.IsEnabled = false;
+			await Task.Delay(150);
+			RefreshBtn.IsEnabled = true;
 		}
 
 		//set new game Path
@@ -1306,7 +1341,7 @@ namespace ModManagerWPF
 
 		}
 
-		#endregion
 
+		#endregion
 	}
 }

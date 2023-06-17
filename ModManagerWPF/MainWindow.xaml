@@ -181,10 +181,10 @@
 							<Image Source="{StaticResource IconDownFloor}" Margin="3"/>
 						</Button>
 						<Separator Grid.Row="8" VerticalAlignment="Center"/>
-						<Button x:Name="btnSelectAll" HorizontalAlignment="Center" Width="30" Grid.Row="9">
+						<Button x:Name="btnSelectAll" HorizontalAlignment="Center" Width="30" Grid.Row="9" Click="btnSelectAll_Click">
 							<Image Source="{StaticResource IconSelectAll}" Margin="3"/>
 						</Button>
-						<Button x:Name="btnDeselectAll" HorizontalAlignment="Center" Width="30" Grid.Row="11">
+						<Button x:Name="btnDeselectAll" HorizontalAlignment="Center" Width="30" Grid.Row="11" Click="btnDeselectAll_Click">
 							<Image Source="{StaticResource IconDeselectAll}" Margin="3"/>
 						</Button>
 					</Grid>
