@@ -181,10 +181,10 @@
 							<Image Source="{StaticResource IconDownFloor}" Margin="3"/>
 						</Button>
 						<Separator Grid.Row="8" VerticalAlignment="Center"/>
-						<Button x:Name="btnSelectAll" HorizontalAlignment="Center" Width="30" Grid.Row="9">
+						<Button x:Name="btnSelectAll" HorizontalAlignment="Center" Width="30" Grid.Row="9" Click="btnSelectAll_Click">
 							<Image Source="{StaticResource IconSelectAll}" Margin="3"/>
 						</Button>
-						<Button x:Name="btnDeselectAll" HorizontalAlignment="Center" Width="30" Grid.Row="11">
+						<Button x:Name="btnDeselectAll" HorizontalAlignment="Center" Width="30" Grid.Row="11" Click="btnDeselectAll_Click">
 							<Image Source="{StaticResource IconDeselectAll}" Margin="3"/>
 						</Button>
 					</Grid>
@@ -732,7 +732,7 @@
 										</Grid.RowDefinitions>
 
 										<CheckBox x:Name="checkBassMusic" Content="{DynamicResource GameSoundCheckBassMusic}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
-										<CheckBox x:Name="checkBassSFX" Content="{DynamicResource GameSoundCheckBassSFX}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
+										<CheckBox x:Name="checkBassSFX" Content="{DynamicResource GameSoundCheckBassSFX}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Checked="checkBassSFX_Checked" Unchecked="checkBassSFX_Unchecked"/>
 										<CheckBox x:Name="checkEnableMusic" Content="{DynamicResource GameSoundCheckMusic}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
 										<CheckBox x:Name="checkEnableSounds" Content="{DynamicResource GameSoundCheckSound}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
 										<CheckBox x:Name="checkEnable3DSound" Content="{DynamicResource GameSoundCheck3DSound}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center"/>
@@ -794,13 +794,13 @@
 											<ColumnDefinition Width="*"/>
 											<ColumnDefinition Width="*"/>
 										</Grid.ColumnDefinitions>
-										<Button x:Name="btnSelectAllPatch" Margin="0,5,5,5" Grid.Column="0">
+										<Button x:Name="btnSelectAllPatch" Margin="0,5,5,5" Grid.Column="0" Click="btnSelectAllPatch_Click">
 											<StackPanel Orientation="Horizontal">
 												<Image Width="15" Source="{StaticResource IconSelectAll}" Margin="0,0,5,0"/>
 												<TextBlock Text="Select All" VerticalAlignment="Center"/>
 											</StackPanel>
 										</Button>
-										<Button x:Name="btnDeselectAllPatch" Margin="5,5,0,5" Grid.Column="1">
+										<Button x:Name="btnDeselectAllPatch" Margin="5,5,0,5" Grid.Column="1" Click="btnDeselectAllPatch_Click">
 											<StackPanel Orientation="Horizontal">
 												<Image Width="15" Source="{StaticResource IconDeselectAll}" Margin="0,0,5,0"/>
 												<TextBlock Text="Deselect All" VerticalAlignment="Center"/>
@@ -808,10 +808,10 @@
 										</Button>
 									</Grid>
 
-									<ListView x:Name="listPatches" Foreground="White" Grid.Column="1" Grid.Row="2" FontSize="13">
+									<ListView x:Name="listPatches" Foreground="White" Grid.Column="1" Grid.Row="2" FontSize="13" DisplayMemberPath="Name">
 										<ListView.ItemContainerStyle>
 											<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
-												<EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
+											
 											</Style>
 										</ListView.ItemContainerStyle>
 										<ListView.View>
@@ -821,7 +821,7 @@
 														<GridViewColumn.CellTemplate>
 															<DataTemplate>
 																<StackPanel Orientation="Horizontal">
-																	<CheckBox IsChecked="{Binding Enabled}" Margin="0,0,5,0"/>
+																	<CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0"/>
 																	<TextBlock Text="{Binding Name}"/>
 																</StackPanel>
 															</DataTemplate>
@@ -832,7 +832,7 @@
 										</ListView.View>
 									</ListView>
 
-									<Grid Grid.Column="2" Grid.Row="2">
+									<Grid Grid.Column="2" Grid.Row="2" Margin="10,0,0,0">
 										<Grid.RowDefinitions>
 											<RowDefinition Height="Auto"/>
 											<RowDefinition Height="*"/>

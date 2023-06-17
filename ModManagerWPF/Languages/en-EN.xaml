@@ -267,6 +267,23 @@
     <system:String x:Key="ProfileDuplicateError">A profile with this name already exists, please use a different name.</system:String>
     <!--#endregion-->
 
+
+    <!--#region Patches ComboBox-->
+    <system:String x:Key="Patch3DSound">Allow HRTF 3D Sound</system:String>
+    <system:String x:Key="PatchCamCode">Camera Code Error Fixes</system:String>
+    <system:String x:Key="PatchVerColor">Vertex Color Fixes</system:String>
+    <system:String x:Key="PatchMatColor">Material Color Fixes</system:String>
+    <system:String x:Key="PatchInterpolation">Interpolation Fixes</system:String>
+    <system:String x:Key="PatchFov">Fov Fixes</system:String>
+    <system:String x:Key="PatchSC">Sky Chase Fixes</system:String>
+    <system:String x:Key="PatchChaos2Crash">Chaos 2 Crashes Fixes</system:String>
+    <system:String x:Key="PatchChunkSpec">Chunk Specular Fixes</system:String>
+    <system:String x:Key="PatchE102Poly">Gamma's Headlight Fixes</system:String>
+    <system:String x:Key="PatchChaoPanel">Chao Stat Panel Screen Dimensions Fix</system:String>
+    <system:String x:Key="PatchPixelOffset">2D Rendering Offset Fixes</system:String>
+    <system:String x:Key="PatchLights">Light fixes</system:String>
+    <!--#endregion-->
+
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
 

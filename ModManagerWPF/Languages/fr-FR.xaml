@@ -249,6 +249,23 @@
     <system:String x:Key="ProfileDuplicateError">Un profil avec le même nom existe déjà, veuillez utiliser un différent nom.</system:String>
     <!--#endregion-->
 
+    <!--#region Patches ComboBox-->
+    <system:String x:Key="Patch3DSound">Activer les Sons 3D HRTF</system:String>
+    <system:String x:Key="PatchCamCode">Correctifs du Code de la Caméra</system:String>
+    <system:String x:Key="PatchVerColor">Correctifs des Vertex Color</system:String>
+    <system:String x:Key="PatchMatColor">Correctif des Matériaux de Couleurs</system:String>
+    <system:String x:Key="PatchInterpolation">Correctifs de l'Interpolation</system:String>
+    <system:String x:Key="PatchFov">Correctifs du Fov</system:String>
+    <system:String x:Key="PatchSC">Correctifs de Sky Chase</system:String>
+    <system:String x:Key="PatchChaos2Crash">Correctifs du Crash Chaos 2</system:String>
+    <system:String x:Key="PatchChunkSpec">Correctifs Specular Chunk</system:String>
+    <system:String x:Key="PatchE102Poly">Correctifs des lumières de Gamma</system:String>
+    <system:String x:Key="PatchChaoPanel">Correctif des dimensions de l'écran des stats des Chao</system:String>
+    <system:String x:Key="PatchPixelOffset">Correctifs de décalage de rendu 2D</system:String>
+    <system:String x:Key="PatchLights">Correctif des lumières</system:String>
+    <!--#endregion-->
+
+
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
     

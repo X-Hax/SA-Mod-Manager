@@ -87,8 +87,6 @@ namespace ModManagerWPF
 		public int FmvFillMode { get; set; } = (int)FillMode.Fit;
 
 		[DefaultValue(false)]
-		public bool DisablePolyBuff { get; set; }
-		[DefaultValue(false)]
 		public bool EnableDynamicBuffer { get; set; }
 		[DefaultValue(true)]
 		public bool EnableBassMusic { get; set; }
@@ -105,10 +103,7 @@ namespace ModManagerWPF
 		[DefaultValue(true)]
 		public bool InputModEnabled { get; set; }
 
-		[DefaultValue(false)]
-		public bool DisableMaterialColorFix { get; set; }
-		[DefaultValue(false)]
-		public bool DisableInterpolationFix { get; set; }
+
 		public bool EnableTestSpawnTab { get; set; }
 
 		[DefaultValue(-1)]
@@ -145,6 +140,39 @@ namespace ModManagerWPF
 
 		[DefaultValue(-1)]
 		public int TestSpawnSaveID { get; set; } = -1;
+
+		#region Patches
+		[DefaultValue(true)]
+		public bool HRTFSound { get; set; }
+		[DefaultValue(true)]
+		public bool CCEF { get; set; }
+		[DefaultValue(true)]
+
+		public bool PolyBuff { get; set; } //vertex color 
+
+		[DefaultValue(true)]
+		public bool MaterialColorFix { get; set; }
+		[DefaultValue(true)]
+		public bool InterpolationFix { get; set; }
+		[DefaultValue(true)]
+		public bool FovFix { get; set; }
+		[DefaultValue(true)]
+		public bool SCFix { get; set; }
+		[DefaultValue(true)]
+		public bool Chaos2CrashFix { get; set; }
+		[DefaultValue(true)]
+		public bool ChunkSpecFix { get; set; }
+		[DefaultValue(true)]
+		public bool E102PolyFix { get; set; }
+		[DefaultValue(true)]
+		public bool ChaoPanelFix { get; set; }
+		[DefaultValue(true)]
+		public bool PixelOffSetFix { get; set; }
+		[DefaultValue(true)]
+		public bool LightFix { get; set; }
+
+
+		#endregion
 
 		public SADXLoaderInfo()
 		{
