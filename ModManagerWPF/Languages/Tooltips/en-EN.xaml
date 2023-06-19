@@ -10,7 +10,6 @@
 	<system:String x:Key="TipMainManagerTab">Configure Manager Options, including Themes and Language settings.</system:String>
 	<system:String x:Key="TipMainSaveAndPlay">Save selected settings and launch the game.</system:String>
 	<system:String x:Key="TipMainSave">Save selected settings.</system:String>
-	<!--#endregion-->
 	
 	<!--#region Mods Tab Tool Tips-->
 	<system:String x:Key="TipModsResfreshButton">Refreshes the mods list.</system:String>
@@ -18,6 +17,133 @@
 	<system:String x:Key="TipModsMoveUp">Moves the selected mod up one in the list.</system:String>
 	<system:String x:Key="TipModsMoveDown">Moves the selected mod down one in the list.</system:String>
 	<system:String x:Key="TipModsMoveDownMax">Moves the selected mod to the bottom of the list.</system:String>
+	<system:String x:Key="TipModsSelectAll">Selects all mods in the list. Launching the game with all mods selected may crash the game.</system:String>
+	<system:String x:Key="TipModsDeselectAll">Deselects all mods in the list.</system:String>
+	<system:String x:Key="TipsModsNewMode">Opens the New Mod Window where you can install a mod manually or begin creating one.</system:String>
+	<!--#endregion-->
+	
+	<!--#region Codes Tab Tool Tips-->
+	<system:String x:Key="TipCodesSelectAll">Selects all available codes.</system:String>
+	<system:String x:Key="TipCodesDeselectAll">Deselects all available codes.</system:String>
+	<system:String x:Key="TipCodesNewCode">Opens the Create a Code window.</system:String>
+	<!--#endregion-->
+	
+	<!--#region Game Config Tab -->
+	<system:String x:Key="TipGameGraphicsTab">Modify Graphics Options.</system:String>
+	<system:String x:Key="TipGameInputTab">Modify game input options.</system:String>
+	<system:String x:Key="TipGameSoundTab">Modify game sound settings.</system:String>
+	<system:String x:Key="TipGamePatchesTab">Enable or Disable game patches.</system:String>
+	
+	<!--#region Graphics Settings-->
+	<system:String x:Key="TipGraphicsScreen">Select the monitor that the game will load on.</system:String>
+	<system:String x:Key="TipGraphicsResolution">Set a custom resolution, or select from a list of preset resolutions.</system:String>
+	<system:String x:Key="TipGraphics43Ratio">Forces the game to a 4:3 aspect ratio despite the set resolution.</system:String>
+	<system:String x:Key="TipGraphicsVSync">Enables V-Sync.</system:String>
+	<system:String x:Key="TipGraphicsDynamicBuffers">This option fixes the alt-tab crash in fullscreen by swapping to dynamic buffer allocation. It can cause lag in-game under some circumstances or with some mods.</system:String>
+	<system:String x:Key="TipGraphicsFullscreen">Game window will boot in fullscreen.</system:String>
+	<system:String x:Key="TipGraphicsBorderless">Sets the fullscreen game window to borderless.</system:String>
+	<system:String x:Key="TipGraphicsScaleScreen">Scales UI elements in fullscreen.</system:String>
+	<system:String x:Key="TipGraphicsWindowed">Game window will boot in windowed mode.</system:String>
+	<system:String x:Key="TipGraphicsResizeWindow">Allows the game window to be resized while open.</system:String>
+	<system:String x:Key="TipGraphicsMaintainAspect">Maintains the aspect ratio from the set resolution when setting a custom window size.</system:String>
+	<system:String x:Key="TipGraphicsCustomWindow">Sets the window size separate from the resolution. E.g., it allows you to play at 4K resolution in a smaller window.</system:String>
+	<system:String x:Key="TipGraphicsFramerate">Sets the game's framerate.</system:String>
+	<system:String x:Key="TipGraphicsFog">Sets the emulation type with the renderer. Auto is recommended. Only use emulated if working with a very old graphics card/chipset.</system:String>
+	<system:String x:Key="TipGraphicsTextureFiltering">Sets the texture filter type for all model textures.</system:String>
+	<system:String x:Key="TipGraphicsUIFiltering">Sets the texture filtering type for all GUI related textures.</system:String>
+	<system:String x:Key="TipGraphicsDetailLevel">Sets the detail level for the draw distance.</system:String>
+	<system:String x:Key="TipGraphicsBackgroundFill">Sets the fill method for the borders image when playing in widescreen with a locked 4:3 render aspect ratio.</system:String>
+	<system:String x:Key="TipGraphicsFMVFill">Sets the fill method when the game is performing FMV playback.</system:String>
+	<system:String x:Key="TipGraphicsForceMipmap">Generated MipMaps for all textures that do not have them.</system:String>
+	<system:String x:Key="TipGraphicsEnableD3D8to9">Enables use of the D3D8to9 Shim, allowing the game to make use of D3D9 features. Required for some mods.</system:String>
+	<system:String x:Key="TipGraphicsUIScale">Enables the UI to scale properly depending on the game resolution.</system:String>
+	<system:String x:Key="TipGraphicsUpdateD3D8to9">Checks for, and downloads any, updates to d3d8to9.</system:String>
+	<!--#endregion-->
+	
+	<!--#region Input Settings-->
+	<system:String x:Key="TipInputVanilla">Uses the original input system built into SADX. This system is prone to problems, most commonly the spinning camera. It's recommended to not use this option.</system:String>
+	<system:String x:Key="TipInputBetter">Implements an SDL2 based system that replaces the original input system. This is the recommended Input method.</system:String>
+	<system:String x:Key="TipInputMouseHold">Sets the Mouse Movement mode to dragging and holding to move the player.</system:String>
+	<system:String x:Key="TipInputMouseAccelerate">Sets the Mouse Movement mode to where dragging will accelerate the player.</system:String>
+	<system:String x:Key="TipInputJump">This button accepts in menus or is used to jump, most commonly assigned to Cross or A.</system:String>
+	<system:String x:Key="TipInputAction">This button is the standard action button for each character, commonly assigned to Square or X.</system:String>
+	<system:String x:Key="TipInputCancel">This button cancels in menus or is another button for attacking in game, most commonly assigned to Circle or B.</system:String>
+	<system:String x:Key="TipInputStart">This button is the start button. You use it to start the game and pause the game. Most commonly assigned to the Start button.</system:String>
+	<system:String x:Key="TipInputCamLeft">This button moves the camera to the left, most commonly assigned to the left shoulder buttons. Cannot be assigned to a joystick.</system:String>
+	<system:String x:Key="TipInputCamRight">This button moves the camera to the right, most commonly assigned to the right shoulder buttons. Cannot be assigned to a joystick.</system:String>
+	<system:String x:Key="TipInputFlute">This button is used for the whistle in the Chao Garden. Most commonly assigned to Triangle or Y.</system:String>
+	<system:String x:Key="TipInputOpenLauncher">This will open the AppLauncher and allow you to configure your controls.</system:String>
+	<system:String x:Key="TipInputGetLauncher">This will open a link to where you can download the AppLauncher for configuring your controls.</system:String>
+	<!--#endregion-->
+	
+	<!--#region Sound Settings-->
+	<system:String x:Key="TipSoundUseBASS">Replaces the sound backend with vgmbass. This is recommended for the best experience, and many mods rely on it.</system:String>
+	<system:String x:Key="TipSoundEnableMusic">Enables music in-game.</system:String>
+	<system:String x:Key="TipSoundEnable3DSound">Enables the 3D Sound in-game.</system:String>
+	<system:String x:Key="TipSoundEnableBASSsfx">Uses BASS as the backend for sound effect playback.</system:String>
+	<system:String x:Key="TipSoundEnableSounds">Enables Sound Effects and Voices in game.</system:String>
+	<!--#endregion-->
+	
+	<!--#region Patches Settings-->
+	<system:String x:Key="TipPatchesSelectAll">Selects all patches in the list.</system:String>
+	<system:String x:Key="TipPatchesDeselectAll">Deselects all patches in the list.</system:String>
+	<!--#endregion-->
+	<!--#endregion-->
+		
+	<!--#region Test Spawn Tips-->
+	<system:String x:Key="TipsSpawnCharacter">Enables setting the character you spawn as.</system:String>
+	<system:String x:Key="TipsSpawnLevel">Enables setting the level you spawn into.</system:String>
+	<system:String x:Key="TipsSpawnTime">Sets the time of day for Adventure fields.</system:String>
+	<system:String x:Key="TipsSpawnAct">Sets the Act of the selected level.</system:String>
+	<system:String x:Key="TipsSpawnEvent">Enables loading into an event.</system:String>
+	<system:String x:Key="TipsSpawnGameMode">Enables setting the game mode to a specific type.</system:String>
+	<system:String x:Key="TipsSpawnSave">Enables swapping the loaded save file when booting into the game.</system:String>
+	<system:String x:Key="TipsSpawnManual">Enables manually setting the character, level, and act. Overrides settings above when enabled.</system:String>
+	<system:String x:Key="TipsSpawnPosition">Enables setting the start position and rotation.</system:String>
+	<system:String x:Key="TipsSpawnLaunch">Launches the game with the above settings applied.</system:String>
+	<!--#endregion-->
+		
+	<!--#region Manager Config Tips-->
+	<system:String x:Key="TipsManagerProfile">Select which profile is being used for mod list and settings.</system:String>
+	<system:String x:Key="TipsManagerProfileEdit">Opens the Profile Manager where you can create and delete profiles.</system:String>
+	<system:String x:Key="TipsManagerGameDirectory">Full path to the directory your game is installed in.</system:String>
+	<system:String x:Key="TipsManagerDirectoryBrowse">Opens a window where you can select your game directory.</system:String>
+	<system:String x:Key="TipsManagerTheme">Sets the theme used by the Mod Manager.</system:String>
+	<system:String x:Key="TipsManagerLanguage">Sets the language used by the Mod Manager.</system:String>
+	<system:String x:Key="TipsManagerKeepOpen">Keeps the Mod Manager open when pressing Save and Play.</system:String>
+	<system:String x:Key="TipsManagerTestSpawn">Enables the Test Spawn Tab in the Mod Manager.</system:String>
+	<system:String x:Key="TipsManagerEnableOneClick">When Enabled, clicking One Click links on GameBanana will open a download dialog for the mod.</system:String>
+	<system:String x:Key="TipsManagerInstallLoader">When enabled, the Mod Loader is installed and you can play with mods, patches, and cheats.</system:String>
+	<system:String x:Key="TipsManagerLoaderUpdates">Enables automatic checking for Mod Loader updates when opening the Mod Manager.</system:String>
+	<system:String x:Key="TipsManagerModsUpdates">Enables automatic checking for updates to Mods you have installed when opening the Mod Manager.</system:String>
+	<system:String x:Key="TipsManagerCheckUpdates">Runs a check for updates to the Mod Loader and any Mods you have installed.</system:String>
+	<system:String x:Key="TipsManagerConsoleWindow">Opens a Console Window which displays debug information from the game.</system:String>
+	<system:String x:Key="TipsManagerPrintDebug">Prints debug information within the game window.</system:String>
+	<system:String x:Key="TipsManagerLogDebug">Saves any debug information to a log file.</system:String>
+	<system:String x:Key="TipsManagerCrashDumps">Enables logging crash dumps when the game encounters and error. These are useful in researching unexpected crashes.</system:String>
+	<system:String x:Key="TipsManagerContributors">Opens the Contributors and About window.</system:String>
+	<system:String x:Key="TipsManagerSource">Opens a link to the GitHub repo for the Mod Manager.</system:String>
+	<system:String x:Key="TipsManagerSADocs">Opens a link to the SA Docs website which has various information regarding modding the Adventure games.</system:String>
+	<system:String x:Key="TipsManagerReportBug">Opens a link to the Issues on the Mod Manager's GitHub repo for reporting bugs.</system:String>
+	<!--#endregion-->
+	<!--#endregion-->
+	
+	<!--#region About Code Window-->
+	<!--#endregion-->
+	
+	<!--#region AboutManager Window-->
+	<!--#endregion-->
+	
+	<!--#region AboutMod Window-->
+	<!--#endregion-->
+	
+	<!--#region DownloadMod Window-->
+	<!--#endregion-->
+	
+	<!--#region EditMod Window-->
+	<!--#endregion-->
+	
+	<!--#region SelectDependencies Window-->
 	<!--#endregion-->
     
 </ResourceDictionary>

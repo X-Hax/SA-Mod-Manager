@@ -1343,5 +1343,15 @@ namespace ModManagerWPF
 
 
 		#endregion
-	}
+
+		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
+		{
+			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
+        }
+
+		private void tsCheckEvent_Unchecked(object sender, RoutedEventArgs e)
+		{
+			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
+		}
+    }
 }

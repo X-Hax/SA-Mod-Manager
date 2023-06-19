@@ -147,7 +147,7 @@
 							<Border BorderBrush="Transparent" Width="{TemplateBinding Width}" 
 									Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"
 									CornerRadius="2,2,0,0">
-								<TextBlock Text="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center"/>
+								<TextBlock Text="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" ToolTip="{TemplateBinding Tag}"/>
 							</Border>
 							<ControlTemplate.Triggers>
 								<Trigger Property="IsSelected" Value="True">

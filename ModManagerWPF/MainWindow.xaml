@@ -36,7 +36,7 @@
 		<TabControl x:Name="tcMain" Background="Transparent" >
 
 			<!--This Tab is for Mods.-->
-			<TabItem x:Name="tabMain" Header="{DynamicResource MainTabMods}" Margin="0,0,0,0" TextBlock.TextAlignment="Center" ToolTip="{DynamicResource TipMainModsTab}">
+			<TabItem x:Name="tabMain" Header="{DynamicResource MainTabMods}" Margin="0,0,0,0" TextBlock.TextAlignment="Center" Tag="{DynamicResource TipMainModsTab}">
 				<!--Main Grid for Mods Tab-->
 				<Grid x:Name="GridModList">
 
@@ -181,10 +181,10 @@
 							<Image Source="{StaticResource IconDownFloor}" Margin="3"/>
 						</Button>
 						<Separator Grid.Row="8" VerticalAlignment="Center"/>
-						<Button x:Name="btnSelectAll" HorizontalAlignment="Center" Width="30" Grid.Row="9" Click="btnSelectAll_Click">
+						<Button x:Name="btnSelectAll" HorizontalAlignment="Center" Width="30" Grid.Row="9" Click="btnSelectAll_Click" ToolTip="{DynamicResource TipModsSelectAll}">
 							<Image Source="{StaticResource IconSelectAll}" Margin="3"/>
 						</Button>
-						<Button x:Name="btnDeselectAll" HorizontalAlignment="Center" Width="30" Grid.Row="11" Click="btnDeselectAll_Click">
+						<Button x:Name="btnDeselectAll" HorizontalAlignment="Center" Width="30" Grid.Row="11" Click="btnDeselectAll_Click" ToolTip="{DynamicResource TipModsDeselectAll}">
 							<Image Source="{StaticResource IconDeselectAll}" Margin="3"/>
 						</Button>
 					</Grid>
@@ -223,7 +223,7 @@
 							<ColumnDefinition Width="50"/>
 						</Grid.ColumnDefinitions>
 
-						<Button x:Name="NewModBtn" Grid.Column="0" Margin="0,10,0,10" Click="NewModBtn_Click">
+						<Button x:Name="NewModBtn" Grid.Column="0" Margin="0,10,0,10" Click="NewModBtn_Click" ToolTip="{DynamicResource TipsModsNewMode}">
 							<Grid>
 								<StackPanel Orientation="Horizontal">
 									<Image x:Name="newIcon" Width="20" Height="20" Source="{StaticResource IconAdd}" Margin="0,0,5,0"/>
@@ -332,7 +332,7 @@
 									<ColumnDefinition Width="*"/>
 									<ColumnDefinition Width="240"/>
 								</Grid.ColumnDefinitions>
-								<Button x:Name="btnAddCode" Margin="0,5,0,5" Grid.Column="0">
+								<Button x:Name="btnAddCode" Margin="0,5,0,5" Grid.Column="0" ToolTip="{DynamicResource TipCodesNewCode}">
 									<StackPanel Orientation="Horizontal">
 										<Image Width="15" Height="16" Source="{StaticResource IconAdd}" Margin="0,0,5,0"/>
 										<TextBlock Text="{DynamicResource CodesBtnAdd}"/>
@@ -345,7 +345,7 @@
 			</TabItem>
 
 			<!--This Tab is for Game Configuration.-->
-			<TabItem x:Name="tabGame" Header="{DynamicResource MainTabGameConfig}" Margin="0,0,0,0" TextBlock.TextAlignment="Center" ToolTip="{DynamicResource TipMainGameTab}">
+			<TabItem x:Name="tabGame" Header="{DynamicResource MainTabGameConfig}" Margin="0,0,0,0" TextBlock.TextAlignment="Center" Tag="{DynamicResource TipMainGameTab}">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="77*"/>
@@ -355,7 +355,7 @@
 
 
 						<!--This Tab is for Game Graphics.-->
-						<TabItem x:Name="tabGraphics" Header="{DynamicResource GameTabGraphics}" Margin="0,0,0,0">
+						<TabItem x:Name="tabGraphics" Header="{DynamicResource GameTabGraphics}" Margin="0,0,0,0" Tag="{DynamicResource TipGameGraphicsTab}">
 							<Grid>
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto"/>
@@ -391,8 +391,8 @@
 												<RowDefinition Height="5"/>
 												<RowDefinition Height="30"/>
 											</Grid.RowDefinitions>
-											<Label Content="{DynamicResource GameGraphicsLabelScreen}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
-											<Label Content="{DynamicResource GameGraphicsLabelResolution}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
+											<Label Content="{DynamicResource GameGraphicsLabelScreen}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipGraphicsScreen}"/>
+											<Label Content="{DynamicResource GameGraphicsLabelResolution}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource TipGraphicsResolution}"/>
 										</Grid>
 
 										<!--Graphics Display Top Right-->
@@ -453,20 +453,20 @@
 													<RowDefinition Height="30"/>
 													<RowDefinition Height="35"/>
 												</Grid.RowDefinitions>
-												<CheckBox x:Name="chkRatio" Content="{DynamicResource GameGraphicsCheckRatio}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5"/>
-												<CheckBox x:Name="chkVSync" Content="{DynamicResource GameGraphicsCheckVSync}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="True"/>
-												<CheckBox x:Name="chkDynamicBuffers" Content="Dynamically Allocate Buffers (Advanced)" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5"/>
+												<CheckBox x:Name="chkRatio" Content="{DynamicResource GameGraphicsCheckRatio}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphics43Ratio}"/>
+												<CheckBox x:Name="chkVSync" Content="{DynamicResource GameGraphicsCheckVSync}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="True" ToolTip="{DynamicResource TipGraphicsVSync}"/>
+												<CheckBox x:Name="chkDynamicBuffers" Content="Dynamically Allocate Buffers (Advanced)" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsDynamicBuffers}"/>
 												<Separator Grid.Column="0" Grid.ColumnSpan="5" VerticalAlignment="Bottom"/>
 
-												<RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="1" VerticalAlignment="Center" Grid.Row="1" Margin="5,5,5,5" IsChecked="False" Checked="radFullscreen_Checked"/>
-												<CheckBox x:Name="chkBorderless" Content="{DynamicResource GameGraphicsCheckBorderless}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,5,5"/>
-												<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameGraphicsCheckScale}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="True"/>
+												<RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="1" VerticalAlignment="Center" Grid.Row="1" Margin="5,5,5,5" IsChecked="False" Checked="radFullscreen_Checked" ToolTip="{DynamicResource TipGraphicsFullscreen}"/>
+												<CheckBox x:Name="chkBorderless" Content="{DynamicResource GameGraphicsCheckBorderless}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsBorderless}"/>
+												<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameGraphicsCheckScale}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="True" ToolTip="{DynamicResource TipGraphicsScaleScreen}"/>
 												<Separator Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" VerticalAlignment="Bottom"/>
 
-												<RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="False" Checked="radWindowed_Checked"/>
-												<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameGraphicsCheckResize}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5"/>
-												<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource GameGraphicsCheckAspect}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5"/>
-												<CheckBox x:Name="chkCustomWinSize" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Margin="5,5,5,5" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked"/>
+												<RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="False" Checked="radWindowed_Checked" ToolTip="{DynamicResource TipGraphicsWindowed}"/>
+												<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameGraphicsCheckResize}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsResizeWindow}"/>
+												<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource GameGraphicsCheckAspect}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsMaintainAspect}"/>
+												<CheckBox x:Name="chkCustomWinSize" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Margin="5,5,5,5" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked" ToolTip="{DynamicResource TipGraphicsCustomWindow}"/>
 												<StackPanel Grid.Column="3" Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,5,5,5">
 													<xctk:IntegerUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
 													<Label Content="x"/>
@@ -500,11 +500,10 @@
 												<ColumnDefinition Width="150"/>
 											</Grid.ColumnDefinitions>
 											<Grid.RowDefinitions>
-												<RowDefinition Height="*"/>
-												<RowDefinition Height="*"/>
-												<RowDefinition Height="*"/>
-												<RowDefinition Height="*"/>
-												<RowDefinition Height="*"/>
+												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsFramerate}"/>
+												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsFog}"/>
+												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsTextureFiltering}"/>
+												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsUIFiltering}"/>
 											</Grid.RowDefinitions>
 
 											<Label Content="{DynamicResource GameGraphicsLabelFramerate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
@@ -537,9 +536,9 @@
 												<ColumnDefinition Width="150"/>
 											</Grid.ColumnDefinitions>
 											<Grid.RowDefinitions>
-												<RowDefinition Height="*"/>
-												<RowDefinition Height="*"/>
-												<RowDefinition Height="*"/>
+												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsDetailLevel}"/>
+												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsBackgroundFill}"/>
+												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsFMVFill}"/>
 												<RowDefinition Height="*"/>
 											</Grid.RowDefinitions>
 
@@ -579,10 +578,10 @@
 														<RowDefinition Height="5"/>
 													</Grid.RowDefinitions>
 
-													<CheckBox x:Name="checkMipmapping" Content="{DynamicResource GameGraphicsCheckMipmap}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="True"/>
-													<CheckBox x:Name="checkUIScale" Content="{DynamicResource GameGraphicsCheckUIScale}" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="True"/>
-													<CheckBox x:Name="checkD3D9" Content="{DynamicResource GameGraphicsCheckD3D8}" Grid.Column="0" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="True"/>
-													<Button x:Name="btnUpdateD3D9" Content="{DynamicResource GameGraphicsButtonUpdateD3D8}" Grid.Column="1" Grid.Row="3" Margin="5,0,5,0" VerticalAlignment="Center"/>
+													<CheckBox x:Name="checkMipmapping" Content="{DynamicResource GameGraphicsCheckMipmap}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="True" ToolTip="{DynamicResource TipGraphicsForceMipmap}"/>
+													<CheckBox x:Name="checkUIScale" Content="{DynamicResource GameGraphicsCheckUIScale}" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="True" ToolTip="{DynamicResource TipGraphicsUIScale}"/>
+													<CheckBox x:Name="checkD3D9" Content="{DynamicResource GameGraphicsCheckD3D8}" Grid.Column="0" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="True" ToolTip="{DynamicResource TipGraphicsEnableD3D8to9}"/>
+													<Button x:Name="btnUpdateD3D9" Content="{DynamicResource GameGraphicsButtonUpdateD3D8}" Grid.Column="1" Grid.Row="3" Margin="5,0,5,0" VerticalAlignment="Center" ToolTip="{DynamicResource TipGraphicsUpdateD3D8to9}"/>
 												</Grid>
 											</GroupBox>
 										</Grid>
@@ -592,7 +591,7 @@
 						</TabItem>
 
 						<!--This Tab is for Game Input.-->
-						<TabItem x:Name="tabInput" Header="{DynamicResource GameTabInput}" Margin="3,0,-3,0">
+						<TabItem x:Name="tabInput" Header="{DynamicResource GameTabInput}" Margin="3,0,-3,0" Tag="{DynamicResource TipGameInputTab}">
 							<Grid x:Name="tabInputGrid">
 								<Grid.RowDefinitions>
 									<RowDefinition Height="70"/>
@@ -615,8 +614,8 @@
 											<RowDefinition Height="10"/>
 										</Grid.RowDefinitions>
 
-										<RadioButton x:Name="radVanillaInput" Content="{DynamicResource GameInputCheckVanilla}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radVanillaInput_Checked"/>
-										<RadioButton x:Name="radBetterInput" Content="{DynamicResource GameInputCheckSDL2}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radBetterInput_Checked"/>
+										<RadioButton x:Name="radVanillaInput" Content="{DynamicResource GameInputCheckVanilla}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radVanillaInput_Checked" ToolTip="{DynamicResource TipInputVanilla}"/>
+										<RadioButton x:Name="radBetterInput" Content="{DynamicResource GameInputCheckSDL2}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radBetterInput_Checked" ToolTip="{DynamicResource TipInputBetter}"/>
 									</Grid>
 								</GroupBox>
 
@@ -657,29 +656,29 @@
 													<RowDefinition Height="5"/>
 												</Grid.RowDefinitions>
 
-												<RadioButton x:Name="inputMouseDragHold" Content="{DynamicResource GameInputCheckDragHold}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-												<RadioButton x:Name="inputMouseDragAccel" Content="{DynamicResource GameInputCheckDragAccel}" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+												<RadioButton x:Name="inputMouseDragHold" Content="{DynamicResource GameInputCheckDragHold}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource TipInputMouseHold}"/>
+												<RadioButton x:Name="inputMouseDragAccel" Content="{DynamicResource GameInputCheckDragAccel}" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource TipInputMouseAccelerate}"/>
 
 												<Label Content="{DynamicResource GameInputLabelJump}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-												<Button x:Name="btnInputJump" Grid.Column="2" Grid.Row="1" Margin="5,2,5,2"/>
+												<Button x:Name="btnInputJump" Grid.Column="2" Grid.Row="1" Margin="5,2,5,2" ToolTip="{DynamicResource TipInputJump}"/>
 
 												<Label Content="{DynamicResource GameInputLabelAction}" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-												<Button x:Name="btnInputAction" Grid.Column="5" Grid.Row="1" Margin="5,2,5,2"/>
+												<Button x:Name="btnInputAction" Grid.Column="5" Grid.Row="1" Margin="5,2,5,2" ToolTip="{DynamicResource TipInputAction}"/>
 
 												<Label Content="{DynamicResource GameInputLabelCancel}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-												<Button x:Name="btnInputAttack" Grid.Column="2" Grid.Row="2" Margin="5,2,5,2"/>
+												<Button x:Name="btnInputAttack" Grid.Column="2" Grid.Row="2" Margin="5,2,5,2" ToolTip="{DynamicResource TipInputCancel}"/>
 
 												<Label Content="{DynamicResource GameInputLabelStart}" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-												<Button x:Name="btnInputStart" Grid.Column="5" Grid.Row="2" Margin="5,2,5,2"/>
+												<Button x:Name="btnInputStart" Grid.Column="5" Grid.Row="2" Margin="5,2,5,2" ToolTip="{DynamicResource TipInputStart}"/>
 
 												<Label Content="{DynamicResource GameInputLabelRotateLeft}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-												<Button x:Name="btnInputCamLeft" Grid.Column="2" Grid.Row="3" Margin="5,2,5,2"/>
+												<Button x:Name="btnInputCamLeft" Grid.Column="2" Grid.Row="3" Margin="5,2,5,2" ToolTip="{DynamicResource TipInputCamLeft}"/>
 
 												<Label Content="{DynamicResource GameInputLabelRotateRight}" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-												<Button x:Name="btnInputCamRight" Grid.Column="5" Grid.Row="3" Margin="5,2,5,2"/>
+												<Button x:Name="btnInputCamRight" Grid.Column="5" Grid.Row="3" Margin="5,2,5,2" ToolTip="{DynamicResource TipInputCamRight}"/>
 
 												<Label Content="{DynamicResource GameInputLabelFlute}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-												<Button x:Name="btnInputFlute" Grid.Column="2" Grid.Row="4" Margin="5,2,5,2"/>
+												<Button x:Name="btnInputFlute" Grid.Column="2" Grid.Row="4" Margin="5,2,5,2" ToolTip="{DynamicResource TipInputFlute}"/>
 											</Grid>
 										</GroupBox>
 									</Grid>
@@ -700,15 +699,15 @@
 
 										<TextBlock Text="{DynamicResource GameInputTextSDL2}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" TextWrapping="Wrap"/>
 										<Separator Grid.ColumnSpan="3" Grid.Row="1" VerticalAlignment="Top"/>
-										<Button x:Name="btnOpenAppLauncher" Content="{DynamicResource GameInputButtonOpenApp}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5"/>
-										<Button x:Name="btnGetAppLauncher" Content="{DynamicResource GameInputButtonGetApp}" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5"/>
+										<Button x:Name="btnOpenAppLauncher" Content="{DynamicResource GameInputButtonOpenApp}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" ToolTip="{DynamicResource TipInputOpenLauncher}"/>
+										<Button x:Name="btnGetAppLauncher" Content="{DynamicResource GameInputButtonGetApp}" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" ToolTip="{DynamicResource TipInputGetLauncher}"/>
 									</Grid>
 								</GroupBox>
 							</Grid>
 						</TabItem>
 
 						<!--This Tab is for Game Sound.-->
-						<TabItem x:Name="tabSound" Header="{DynamicResource GameTabSound}" Margin="6,0,-6,0">
+						<TabItem x:Name="tabSound" Header="{DynamicResource GameTabSound}" Margin="6,0,-6,0" Tag="{DynamicResource TipGameSoundTab}">
 							<Grid>
 								<Grid.RowDefinitions>
 									<RowDefinition Height="100"/>
@@ -731,11 +730,11 @@
 											<RowDefinition Height="10"/>
 										</Grid.RowDefinitions>
 
-										<CheckBox x:Name="checkBassMusic" Content="{DynamicResource GameSoundCheckBassMusic}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
-										<CheckBox x:Name="checkBassSFX" Content="{DynamicResource GameSoundCheckBassSFX}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Checked="checkBassSFX_Checked" Unchecked="checkBassSFX_Unchecked"/>
-										<CheckBox x:Name="checkEnableMusic" Content="{DynamicResource GameSoundCheckMusic}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
-										<CheckBox x:Name="checkEnableSounds" Content="{DynamicResource GameSoundCheckSound}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
-										<CheckBox x:Name="checkEnable3DSound" Content="{DynamicResource GameSoundCheck3DSound}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center"/>
+										<CheckBox x:Name="checkBassMusic" Content="{DynamicResource GameSoundCheckBassMusic}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipSoundUseBASS}"/>
+										<CheckBox x:Name="checkBassSFX" Content="{DynamicResource GameSoundCheckBassSFX}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Checked="checkBassSFX_Checked" Unchecked="checkBassSFX_Unchecked" ToolTip="{DynamicResource TipSoundEnableBASSsfx}"/>
+										<CheckBox x:Name="checkEnableMusic" Content="{DynamicResource GameSoundCheckMusic}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipSoundEnableMusic}"/>
+										<CheckBox x:Name="checkEnableSounds" Content="{DynamicResource GameSoundCheckSound}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource TipSoundEnableSounds}"/>
+										<CheckBox x:Name="checkEnable3DSound" Content="{DynamicResource GameSoundCheck3DSound}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipSoundEnable3DSound}"/>
 									</Grid>
 								</GroupBox>
 
@@ -851,7 +850,7 @@
 			</TabItem>
 
 			<!--This Tab is for Test Spawn.-->
-			<TabItem x:Name="tabTestSpawn" Header="Test Spawn" Margin="0,0,0,0" TextBlock.TextAlignment="Center" ToolTip="{DynamicResource TipMainSpawnTab}">
+			<TabItem x:Name="tabTestSpawn" Header="Test Spawn" Margin="0,0,0,0" TextBlock.TextAlignment="Center" Tag="{DynamicResource TipMainSpawnTab}">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="10"/>
@@ -887,9 +886,9 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 
-							<CheckBox x:Name="tsCheckCharacter" Content="{DynamicResource SpawnCheckCharacter}" VerticalAlignment="Center" Margin="5,5,5,5"/>
+							<CheckBox x:Name="tsCheckCharacter" Content="{DynamicResource SpawnCheckCharacter}" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipsSpawnCharacter}"/>
 							<ComboBox x:Name="tsComboCharacter" Grid.Column="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
-							<CheckBox x:Name="tsCheckLevel" Content="{DynamicResource SpawnCheckLevel}" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,5,5"/>
+							<CheckBox x:Name="tsCheckLevel" Content="{DynamicResource SpawnCheckLevel}" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipsSpawnLevel}"/>
 							<ComboBox x:Name="tsComboLevel" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
 						</Grid>
 
@@ -904,13 +903,13 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 
-							<Label Content="{DynamicResource SpawnLabelTime}" Grid.Row="0" VerticalAlignment="Center"/>
+							<Label Content="{DynamicResource SpawnLabelTime}" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource TipsSpawnTime}"/>
 							<ComboBox x:Name="tsComboTime" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5"/>
-							<Label Content="{DynamicResource SpawnLabelAct}" Grid.Row="1" VerticalAlignment="Center"/>
+							<Label Content="{DynamicResource SpawnLabelAct}" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipsSpawnAct}"/>
 							<ComboBox x:Name="tsComboAct" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
 						</Grid>
 
-						<Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
+						<Grid x:Name="TestSpawnGrid" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto"/>
 								<ColumnDefinition Width="*"/>
@@ -919,22 +918,26 @@
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="0"/>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
 						
-							<CheckBox x:Name="tsCheckEvent" Content="{DynamicResource SpawnCheckEvent}" Grid.Column="0" Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center"/>
+							<CheckBox x:Name="tsCheckEvent" Content="{DynamicResource SpawnCheckEvent}" Grid.Column="0" Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center" Checked="tsCheckEvent_Checked" Unchecked="tsCheckEvent_Unchecked" ToolTip="{DynamicResource TipsSpawnEvent}"/>
 							<ComboBox x:Name="tsComboEvent" Grid.Column="1" Grid.Row="0" Margin="5,5,5,5"/>
 
-							<CheckBox x:Name="tsCheckGameMode" Content="{DynamicResource SpawnCheckMode}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
+							<CheckBox x:Name="tsCheckGameMode" Content="{DynamicResource SpawnCheckMode}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource TipsSpawnGameMode}"/>
 							<ComboBox x:Name="tsComboGameMode" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5"/>
 
-							<CheckBox x:Name="tsCheckSave" Content="{DynamicResource SpawnCheckSave}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" VerticalAlignment="Center"/>
+							<CheckBox x:Name="tsCheckSave" Content="{DynamicResource SpawnCheckSave}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource TipsSpawnSave}"/>
 							<ComboBox x:Name="tsComboSave" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5"/>
 
-							<TextBlock x:Name="textEventWarning" Text="{DynamicResource SpawnLabelWarning}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" FontStyle="Oblique" FontSize="18" TextWrapping="Wrap"/>
+							<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" HorizontalAlignment="Center">
+								<Image Source="{StaticResource IconCaution}" Width="30"/>
+								<TextBlock x:Name="textEventWarning" Text="{DynamicResource SpawnLabelWarning}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" FontStyle="Oblique" FontSize="18" TextWrapping="Wrap"/>
+								<Image Source="{StaticResource IconCaution}" Width="30"/>
+							</StackPanel>
 
 							<GroupBox x:Name="groupAdvanced" Header="Advanced" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4">
 								<Grid>
@@ -946,7 +949,7 @@
 										<RowDefinition Height="Auto"/>
 										<RowDefinition Height="Auto"/>
 									</Grid.RowDefinitions>
-									<CheckBox x:Name="tsCheckManual" Content="{DynamicResource SpawnCheckManual}" Grid.Column="0" Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center"/>
+									<CheckBox x:Name="tsCheckManual" Content="{DynamicResource SpawnCheckManual}" Grid.Column="0" Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource TipsSpawnManual}"/>
 									<Grid x:Name="gridTSLevelManual" Grid.Column="1" Grid.Row="0" Margin="5,5,5,5">
 										<Grid.ColumnDefinitions>
 											<ColumnDefinition Width="*"/>
@@ -980,7 +983,7 @@
 										</Grid>
 									</Grid>
 
-									<CheckBox x:Name="tsCheckPosition" Content="{DynamicResource SpawnCheckPosition}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
+									<CheckBox x:Name="tsCheckPosition" Content="{DynamicResource SpawnCheckPosition}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource TipsSpawnPosition}"/>
 									<Grid x:Name="gridTSPosition" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5">
 										<Grid.ColumnDefinitions>
 											<ColumnDefinition Width="*"/>
@@ -1024,14 +1027,14 @@
 								</Grid>
 							</GroupBox>
 							
-							<Button x:Name="btnTSLaunch" Content="{DynamicResource SpawnButtonLaunch}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Margin="5,5,5,5" Height="50" Click="btnTestSpawnLaunchGame_Click"/>
+							<Button x:Name="btnTSLaunch" Content="{DynamicResource SpawnButtonLaunch}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Margin="5,5,5,5" Height="50" Click="btnTestSpawnLaunchGame_Click" ToolTip="{DynamicResource TipsSpawnLaunch}"/>
 						</Grid>
 					</Grid>
 				</Grid>
 			</TabItem>
 
 			<!--This Tab is for Manager Configuration.-->
-			<TabItem x:Name="tabConfig" Header="{DynamicResource MainTabManagerConfig}" Margin="0,0,0,0" TextBlock.TextAlignment="Center" ToolTip="{DynamicResource TipMainManagerTab}">
+			<TabItem x:Name="tabConfig" Header="{DynamicResource MainTabManagerConfig}" Margin="0,0,0,0" TextBlock.TextAlignment="Center" Tag="{DynamicResource TipMainManagerTab}">
 				<!--Main Grid for the Manager Config Tab.-->
 				<Grid>
 					<Grid.ColumnDefinitions>
@@ -1084,10 +1087,10 @@
 										<RowDefinition Height="*"/>
 									</Grid.RowDefinitions>
 
-									<Label x:Name="lblProfile" Content="{DynamicResource ManagerLblProfile}" Grid.Row="0" VerticalAlignment="Center"/>
-									<Label x:Name="lblGameDir" Content="{DynamicResource ManagerLblGameDir}" Grid.Row="1" VerticalAlignment="Center"/>
-									<Label x:Name="lblTheme" Content="{DynamicResource ManagerLblTheme}" Grid.Row="2" VerticalAlignment="Center"/>
-									<Label x:Name="lblLanguage" Content="{DynamicResource ManagerLblLang}" Grid.Row="3" VerticalAlignment="Center"/>
+									<Label x:Name="lblProfile" Content="{DynamicResource ManagerLblProfile}" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerProfile}"/>
+									<Label x:Name="lblGameDir" Content="{DynamicResource ManagerLblGameDir}" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerGameDirectory}"/>
+									<Label x:Name="lblTheme" Content="{DynamicResource ManagerLblTheme}" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerTheme}"/>
+									<Label x:Name="lblLanguage" Content="{DynamicResource ManagerLblLang}" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerLanguage}"/>
 								</Grid>
 
 								<!--Grid for Top Right Options-->
@@ -1103,12 +1106,12 @@
                                         <ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboProfile_SelectionChanged" DisplayMemberPath="name"/>
 
                                         <Button x:Name="btnProfileSettings" Grid.Column="2" Height="22" Width="27" Click="btnProfileSettings_Click">
-											<Image Source="{StaticResource IconProfiles}" Margin="1,1,1,1"/>
+											<Image Source="{StaticResource IconProfiles}" Margin="1,1,1,1" ToolTip="{DynamicResource TipsManagerProfileEdit}"/>
 										</Button>
 									</StackPanel>
 									<StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
 										<TextBox x:Name="textGameDir" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" IsReadOnly="True"/>
-										<Button x:Name="btnBrowseGameDir" Grid.Column="2" Height="22" Width="27" Click="btnBrowseGameDir_Click">
+										<Button x:Name="btnBrowseGameDir" Grid.Column="2" Height="22" Width="27" Click="btnBrowseGameDir_Click" ToolTip="{DynamicResource TipsManagerDirectoryBrowse}">
 											<Image Source="{StaticResource IconFolder}" Margin="1,1,1,1"/>
 										</Button>
 									</StackPanel>
@@ -1129,15 +1132,15 @@
 										<RowDefinition Height="22"/>
 									</Grid.RowDefinitions>
 
-									<CheckBox x:Name="checkManagerOpen" Content="{DynamicResource ManagerCheckKeepOpen}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-									<CheckBox x:Name="checkEnableTestSpawn" Content="{DynamicResource ManagerCheckTestSpawn}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Checked="checkEnableTestSpawn_Checked" Unchecked="checkEnableTestSpawn_Unchecked"/>
-                                    <Button x:Name="btnOneClick" Grid.Column="1" Grid.Row="1" MaxWidth="280" VerticalAlignment="Center" Margin="5,0,5,0">
+									<CheckBox x:Name="checkManagerOpen" Content="{DynamicResource ManagerCheckKeepOpen}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerKeepOpen}"/>
+									<CheckBox x:Name="checkEnableTestSpawn" Content="{DynamicResource ManagerCheckTestSpawn}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Checked="checkEnableTestSpawn_Checked" Unchecked="checkEnableTestSpawn_Unchecked" ToolTip="{DynamicResource TipsManagerTestSpawn}"/>
+                                    <Button x:Name="btnOneClick" Grid.Column="1" Grid.Row="1" MaxWidth="280" VerticalAlignment="Center" Margin="5,0,5,0" ToolTip="{DynamicResource TipsManagerEnableOneClick}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="{StaticResource IconGB}" Width="20" Height="15" Margin="0,0,5,0"/>
                                             <TextBlock Text="{DynamicResource ManagerBtnEnableOneClick}" VerticalAlignment="Center"></TextBlock>
                                         </StackPanel>
                                     </Button>
-                                    <Button x:Name="btnInstallLoader" Grid.Column="1" Grid.Row="3" MaxWidth="280" VerticalAlignment="Center" Margin="5,0,5,0" Click="btnInstallLoader_Click">
+                                    <Button x:Name="btnInstallLoader" Grid.Column="1" Grid.Row="3" MaxWidth="280" VerticalAlignment="Center" Margin="5,0,5,0" Click="btnInstallLoader_Click" ToolTip="{DynamicResource TipsManagerInstallLoader}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image x:Name="imgInstall" Source="{StaticResource IconInstall}" Height="15" Width="20" Margin="0,0,5,0"/>
                                             <TextBlock x:Name="txtInstallLoader" Text="{DynamicResource ManagerBtnInstallLoader}" VerticalAlignment="Center"></TextBlock>
@@ -1173,8 +1176,8 @@
 											<RowDefinition Height="5"/>
 											<RowDefinition Height="Auto"/>
 										</Grid.RowDefinitions>
-										<CheckBox x:Name="chkUpdatesML" Content="{DynamicResource ManagerChkCheckModloader}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" IsChecked="True"/>
-										<CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource ManagerChkCheckMods}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" IsChecked="True"/>
+										<CheckBox x:Name="chkUpdatesML" Content="{DynamicResource ManagerChkCheckModloader}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" IsChecked="True" ToolTip="{DynamicResource TipsManagerLoaderUpdates}"/>
+										<CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource ManagerChkCheckMods}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" IsChecked="True" ToolTip="{DynamicResource TipsManagerModsUpdates}"/>
 									</Grid>
 
 									<!--Update Buttons-->
@@ -1182,7 +1185,7 @@
 										<Grid.ColumnDefinitions>
 											<ColumnDefinition Width="200"/>
 										</Grid.ColumnDefinitions>
-										<Button x:Name="btnCheckUpdates"  Grid.Column="0" Click="btnCheckUpdates_Click">
+										<Button x:Name="btnCheckUpdates"  Grid.Column="0" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource TipsManagerCheckUpdates}">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="{StaticResource IconUpdate}" Width="20" Height="20" Margin="0,0,5,0"/>
                                                 <TextBlock Text="{DynamicResource ManagerBtnCheckNow}"></TextBlock>
@@ -1209,10 +1212,10 @@
 										<RowDefinition Height="10"/>
 									</Grid.RowDefinitions>
 
-									<CheckBox x:Name="checkEnableLogConsole" Content="{DynamicResource ManagerCheckConsoleWindow}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
-									<CheckBox x:Name="checkEnableLogScreen" Content="{DynamicResource ManagerCheckPrintDebug}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
-									<CheckBox x:Name="checkEnableLogFile" Content="{DynamicResource ManagerCheckLogToFile}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
-									<CheckBox x:Name="checkEnableCrashDump" Content="{DynamicResource ManagerCheckCrashDumps}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center"/>
+									<CheckBox x:Name="checkEnableLogConsole" Content="{DynamicResource ManagerCheckConsoleWindow}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerConsoleWindow}"/>
+									<CheckBox x:Name="checkEnableLogScreen" Content="{DynamicResource ManagerCheckPrintDebug}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerPrintDebug}"/>
+									<CheckBox x:Name="checkEnableLogFile" Content="{DynamicResource ManagerCheckLogToFile}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerLogDebug}"/>
+									<CheckBox x:Name="checkEnableCrashDump" Content="{DynamicResource ManagerCheckCrashDumps}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerCrashDumps}"/>
 								</Grid>
 							</GroupBox>
 						</Grid>
@@ -1245,25 +1248,25 @@
 									<RowDefinition Height="30"/>
 								</Grid.RowDefinitions>
 
-                                <Button x:Name="btnCredits" Grid.Column="0" Margin="5,0,5,0" Click="AboutBtn_Click">
+                                <Button x:Name="btnCredits" Grid.Column="0" Margin="5,0,5,0" Click="AboutBtn_Click" ToolTip="{DynamicResource TipsManagerContributors}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="{StaticResource IconContributors}" Width="20" Height="20" Margin="0,0,5,0"/>
                                         <TextBlock Text="{DynamicResource ManagerBtnCredits}" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
-                                <Button x:Name="btnDocs" Grid.Column="0" Grid.Row="2" Margin="5,0,5,0">
+                                <Button x:Name="btnDocs" Grid.Column="0" Grid.Row="2" Margin="5,0,5,0" ToolTip="{DynamicResource TipsManagerSADocs}">
 									<StackPanel Orientation="Horizontal">
 										<Image Source="{StaticResource IconDocs}" Width="20" Height="20" Margin="0,0,5,0"/>
 										<TextBlock Text="{DynamicResource ManagerBtnDocs}" VerticalAlignment="Center"/>
 									</StackPanel>
 								</Button>
-								<Button x:Name="btnSource" Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" Click="btnSource_Click">
+								<Button x:Name="btnSource" Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" Click="btnSource_Click" ToolTip="{DynamicResource TipsManagerSource}">
 									<StackPanel Orientation="Horizontal">
 										<Image Source="{StaticResource IconGithub}" Width="20" Height="20" Margin="0,0,5,0"/>
 										<TextBlock Text="{DynamicResource ManagerBtnSource}" VerticalAlignment="Center"/>
 									</StackPanel>
 								</Button>
-								<Button x:Name="btnReport" Grid.Column="1" Grid.Row="2" Margin="5,0,5,0" Click="btnReport_Click">
+								<Button x:Name="btnReport" Grid.Column="1" Grid.Row="2" Margin="5,0,5,0" Click="btnReport_Click" ToolTip="{DynamicResource TipsManagerReportBug}">
 									<StackPanel Orientation="Horizontal">
 										<Image Source="{StaticResource IconBugReport}" Width="20" Height="20" Margin="0,0,5,0"/>
 										<TextBlock Text="{DynamicResource ManagerBtnReport}" VerticalAlignment="Center"/>
