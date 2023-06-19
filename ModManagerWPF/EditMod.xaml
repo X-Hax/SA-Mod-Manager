@@ -397,8 +397,64 @@
 						</TabItem>
 
 						<TabItem Header="Enums">
-							<TreeView x:Name="EnumsTree">
-								
+							<TreeView x:Name="EnumsTree" HorizontalAlignment="Stretch">
+								<TreeView.ItemTemplate>
+									<HierarchicalDataTemplate ItemsSource="{Binding Members}">
+										<Grid x:Name="HeaderGroup">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="Auto"/>
+											</Grid.ColumnDefinitions>
+											<Grid.RowDefinitions>
+												<RowDefinition Height="Auto"/>
+												<RowDefinition Height="Auto"/>
+											</Grid.RowDefinitions>
+											<Button Click="DeleteGroup">
+												<Image Source="{DynamicResource IconDelete}" Width="22" Height="22"/>
+											</Button>
+											<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+												<Label Content="Enum Name:" VerticalAlignment="Center"/>
+												<TextBox Text="{Binding Name}" Width="150" Margin="5"/>
+											</StackPanel>
+											<Grid Grid.ColumnSpan="3" Grid.Row="1">
+												<Rectangle Grid.ColumnSpan="2" Grid.Row="1" Fill="{DynamicResource BorderBrush}" Margin="0,3,0,3" Height="4"/>
+											</Grid>
+										</Grid>
+										<HierarchicalDataTemplate.ItemTemplate>
+											<DataTemplate>
+												<Grid Height="Auto" Width="560">
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="Auto"/>
+														<ColumnDefinition Width="*"/>
+													</Grid.ColumnDefinitions>
+													<Grid.RowDefinitions>
+														<RowDefinition Height="Auto"/>
+														<RowDefinition Height="10"/>
+													</Grid.RowDefinitions>
+													<Button Click="DeleteProperty">
+														<Image Source="{DynamicResource IconDelete}" Width="22" Height="22"/>
+													</Button>
+
+													<Grid x:Name="TopGrid" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch">
+														<Grid.ColumnDefinitions>
+															<ColumnDefinition Width="Auto"/>
+															<ColumnDefinition Width="*"/>
+															<ColumnDefinition Width="Auto"/>
+															<ColumnDefinition Width="*"/>
+														</Grid.ColumnDefinitions>
+														<Label Content="Enum Name:" Grid.Column="0" VerticalAlignment="Center"/>
+														<TextBox Text="{Binding Name}" Grid.Column="1" Margin="5" VerticalContentAlignment="Bottom"/>
+														<Label Content="Display Name:" Grid.Column="2" VerticalAlignment="Center"/>
+														<TextBox Text="{Binding DisplayName}" Grid.Column="3" Margin="5"/>
+													</Grid>
+
+													<Rectangle Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Fill="{DynamicResource BorderBrush}" Height="2" VerticalAlignment="Center"/>
+												</Grid>
+											</DataTemplate>
+										</HierarchicalDataTemplate.ItemTemplate>
+									</HierarchicalDataTemplate>
+
+								</TreeView.ItemTemplate>
 							</TreeView>
 						</TabItem>
 					</TabControl>

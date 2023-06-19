@@ -100,6 +100,7 @@ namespace ModManagerWPF
 			DependencyGrid.ItemsSource = dependencies;
 			GroupsTree.ItemsSource = Schema.Groups;
 			GroupsTree.Tag = PropertyTypes;
+			EnumsTree.ItemsSource = Schema.Enums;
 		}
 		#endregion
 
@@ -213,8 +214,8 @@ namespace ModManagerWPF
 
 
 				string schema = Path.Combine(Path.GetDirectoryName(fullName), "configschema.xml");
-
-				Schema = ConfigSchema.Load(schema);
+				if (File.Exists(schema))
+					Schema = ConfigSchema.Load(schema);
 			}
 		}
 
