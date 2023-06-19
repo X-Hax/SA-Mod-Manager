@@ -500,16 +500,16 @@
 												<ColumnDefinition Width="150"/>
 											</Grid.ColumnDefinitions>
 											<Grid.RowDefinitions>
-												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsFramerate}"/>
-												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsFog}"/>
-												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsTextureFiltering}"/>
-												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsUIFiltering}"/>
+												<RowDefinition Height="*" />
+												<RowDefinition Height="*" />
+												<RowDefinition Height="*" />
+												<RowDefinition Height="*" />
 											</Grid.RowDefinitions>
 
-											<Label Content="{DynamicResource GameGraphicsLabelFramerate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-											<Label Content="{DynamicResource GameGraphicsLabelFog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-											<Label Content="{DynamicResource GameGraphicsLabelTexture}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
-											<Label Content="UI Filtering" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+											<Label Content="{DynamicResource GameGraphicsLabelFramerate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource TipGraphicsFramerate}"/>
+											<Label Content="{DynamicResource GameGraphicsLabelFog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipGraphicsFog}"/>
+											<Label Content="{DynamicResource GameGraphicsLabelTexture}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource TipGraphicsTextureFiltering}"/>
+											<Label Content="{DynamicResource GameGraphicsLabelUIFilter}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource TipGraphicsUIFiltering}"/>
 
 											<ComboBox x:Name="comboFramerate" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
 												<ComboBoxItem Content="60 FPS"/>
@@ -536,15 +536,15 @@
 												<ColumnDefinition Width="150"/>
 											</Grid.ColumnDefinitions>
 											<Grid.RowDefinitions>
-												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsDetailLevel}"/>
-												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsBackgroundFill}"/>
-												<RowDefinition Height="*" ToolTip="{DynamicResource TipGraphicsFMVFill}"/>
+												<RowDefinition Height="*" />
+												<RowDefinition Height="*" />
+												<RowDefinition Height="*" />
 												<RowDefinition Height="*"/>
 											</Grid.RowDefinitions>
 
-											<Label Content="{DynamicResource GameGraphicsLabelDetail}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-											<Label Content="{DynamicResource GameGraphicsLabelBackground}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-											<Label Content="{DynamicResource GameGraphicsLabelFMV}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+											<Label Content="{DynamicResource GameGraphicsLabelDetail}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource TipGraphicsDetailLevel}"/>
+											<Label Content="{DynamicResource GameGraphicsLabelBackground}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipGraphicsBackgroundFill}"/>
+											<Label Content="{DynamicResource GameGraphicsLabelFMV}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource TipGraphicsFMVFill}"/>
 
 											<ComboBox x:Name="comboDetail" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
 												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxDetailHigh}"/>
