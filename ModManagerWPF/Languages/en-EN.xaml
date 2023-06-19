@@ -112,6 +112,7 @@
     <system:String x:Key="GameGraphicsBoxFill">Fill</system:String>
     <system:String x:Key="GameGraphicsLabelFMV">FMV Fill Mode:</system:String>
     <system:String x:Key="GameGraphicsLabelTexture">Texture Filtering:</system:String>
+	<system:String x:Key="GameGraphicsLabelUIFilter">GUI Filtering</system:String>
 
     <system:String x:Key="GameGraphicsGroupEnhancement">Enhancements</system:String>
     <system:String x:Key="GameGraphicsCheckMipmap">Force Mipmapping</system:String>
