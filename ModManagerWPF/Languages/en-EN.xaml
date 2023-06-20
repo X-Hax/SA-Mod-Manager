@@ -187,9 +187,6 @@
 	<system:String x:Key="ManagerBtnInstallLoader">Install Mod Loader</system:String>
 	<system:String x:Key="ManagerBtnUninstallLoader">Uninstall Mod Loader</system:String>
 
-	<system:String x:Key="ManagerCheckKeepOpen">Keep Mod Manager Open after launching game</system:String>
-	<system:String x:Key="ManagerCheckDevOptions">Enable Developer Options</system:String>
-	
 	<!--Updates-->
 	<system:String x:Key="ManagerGrpUpdates">Updates</system:String>
 	<system:String x:Key="ManagerChkCheckModloader">Check for Mod Loader Updates on Startup</system:String>
@@ -198,10 +195,13 @@
 
 	<!--Debug Features-->
 	<system:String x:Key="ManagerGrpAdvanced">Advanced Options</system:String>
+	<system:String x:Key="ManagerCheckKeepOpen">Keep Mod Manager Open after launching game</system:String>
+	<system:String x:Key="ManagerCheckDevOptions">Enable Developer Options</system:String>
 	<system:String x:Key="ManagerCheckConsoleWindow">Enable Console Window</system:String>
 	<system:String x:Key="ManagerCheckPrintDebug">Print Debug in Game Window</system:String>
 	<system:String x:Key="ManagerCheckLogToFile">Log Debug Info to File</system:String>
 	<system:String x:Key="ManagerCheckCrashDumps">Create Crash Dumps</system:String>
+	<system:String x:Key="ManagerButtonHealthCheck">Perform Game Health Check</system:String>
 	
 	<!--About-->
 	<system:String x:Key="ManagerGrpAbout">About</system:String>

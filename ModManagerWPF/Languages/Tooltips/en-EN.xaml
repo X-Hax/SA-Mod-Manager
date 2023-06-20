@@ -125,6 +125,7 @@
 	<system:String x:Key="TipsManagerSource">Opens a link to the GitHub repo for the Mod Manager.</system:String>
 	<system:String x:Key="TipsManagerSADocs">Opens a link to the SA Docs website which has various information regarding modding the Adventure games.</system:String>
 	<system:String x:Key="TipsManagerReportBug">Opens a link to the Issues on the Mod Manager's GitHub repo for reporting bugs.</system:String>
+	<system:String x:Key="TipsManagerHealthCheck">Runs a health check on your game install to see if you have any missing or modified files.</system:String>
 	<!--#endregion-->
 	<!--#endregion-->
 	

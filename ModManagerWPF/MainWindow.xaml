@@ -1219,10 +1219,10 @@
 									<CheckBox x:Name="checkEnableLogScreen" Content="{DynamicResource ManagerCheckPrintDebug}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerPrintDebug}"/>
 									<CheckBox x:Name="checkEnableLogFile" Content="{DynamicResource ManagerCheckLogToFile}" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerLogDebug}"/>
 									<CheckBox x:Name="checkEnableCrashDump" Content="{DynamicResource ManagerCheckCrashDumps}" Grid.Column="2" Grid.Row="5" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerCrashDumps}"/>
-									<Button x:Name="btnHealthCheck" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7">
+									<Button x:Name="btnHealthCheck" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7" ToolTip="{DynamicResource TipsManagerHealthCheck}">
 										<StackPanel Orientation="Horizontal">
 											<Image Source="{StaticResource IconHealth}" Width="20" Margin="0,0,5,0"/>
-											<TextBlock Text="Perform Game Health Check" VerticalAlignment="Center"/>
+											<TextBlock Text="{DynamicResource ManagerButtonHealthCheck}" VerticalAlignment="Center"/>
 										</StackPanel>
 									</Button>
 								</Grid>
