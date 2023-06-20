@@ -1043,7 +1043,7 @@
 						<ColumnDefinition Width="10"/>
 					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="10"/>
+						<RowDefinition Height="0"/>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
@@ -1060,6 +1060,7 @@
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="10"/>
+								<RowDefinition Height="*"/>
 								<RowDefinition Height="*"/>
 								<RowDefinition Height="*"/>
 								<RowDefinition Height="*"/>
@@ -1122,32 +1123,28 @@
 								<!--Grid for Bottoms Options-->
 								<Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
 									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="280"/>
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="280"/>
 									</Grid.ColumnDefinitions>
 									<Grid.RowDefinitions>
 										<RowDefinition Height="10"/>
-										<RowDefinition Height="22"/>
-										<RowDefinition Height="5"/>
-										<RowDefinition Height="22"/>
+										<RowDefinition Height="30"/>
 									</Grid.RowDefinitions>
 
-									<CheckBox x:Name="checkManagerOpen" Content="{DynamicResource ManagerCheckKeepOpen}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerKeepOpen}"/>
-									<CheckBox x:Name="checkEnableTestSpawn" Content="{DynamicResource ManagerCheckTestSpawn}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Checked="checkEnableTestSpawn_Checked" Unchecked="checkEnableTestSpawn_Unchecked" ToolTip="{DynamicResource TipsManagerTestSpawn}"/>
-                                    <Button x:Name="btnOneClick" Grid.Column="1" Grid.Row="1" MaxWidth="280" VerticalAlignment="Center" Margin="5,0,5,0" ToolTip="{DynamicResource TipsManagerEnableOneClick}">
+									<Button x:Name="btnOneClick" Grid.Column="0" Grid.Row="1" Margin="5,0,5,0" ToolTip="{DynamicResource TipsManagerEnableOneClick}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="{StaticResource IconGB}" Width="20" Height="15" Margin="0,0,5,0"/>
                                             <TextBlock Text="{DynamicResource ManagerBtnEnableOneClick}" VerticalAlignment="Center"></TextBlock>
                                         </StackPanel>
                                     </Button>
-                                    <Button x:Name="btnInstallLoader" Grid.Column="1" Grid.Row="3" MaxWidth="280" VerticalAlignment="Center" Margin="5,0,5,0" Click="btnInstallLoader_Click" ToolTip="{DynamicResource TipsManagerInstallLoader}">
+                                    <Button x:Name="btnInstallLoader" Grid.Column="2" Grid.Row="1" Margin="5,0,5,0" Click="btnInstallLoader_Click" ToolTip="{DynamicResource TipsManagerInstallLoader}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image x:Name="imgInstall" Source="{StaticResource IconInstall}" Height="15" Width="20" Margin="0,0,5,0"/>
-                                            <TextBlock x:Name="txtInstallLoader" Text="{DynamicResource ManagerBtnInstallLoader}" VerticalAlignment="Center"></TextBlock>
-                                        </StackPanel>
+											<TextBlock x:Name="txtInstallLoader" Text="{DynamicResource ManagerBtnInstallLoader}" VerticalAlignment="Center"/>
+										</StackPanel>
                                     </Button>
-                                    
-                                </Grid>
+									</Grid>
 							</Grid>
 
 							<!--Group Box for Update Configuration-->
@@ -1188,15 +1185,15 @@
 										<Button x:Name="btnCheckUpdates"  Grid.Column="0" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource TipsManagerCheckUpdates}">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="{StaticResource IconUpdate}" Width="20" Height="20" Margin="0,0,5,0"/>
-                                                <TextBlock Text="{DynamicResource ManagerBtnCheckNow}"></TextBlock>
-                                            </StackPanel>
+												<TextBlock Text="{DynamicResource ManagerBtnCheckNow}" VerticalAlignment="Center"/>
+											</StackPanel>
                                         </Button>
                                     </Grid>
 								</Grid>
 							</GroupBox>
 
-							<!--Group Box for Debug Features-->
-							<GroupBox x:Name="grpManDebug" Grid.Column="1" Grid.Row="3" Header="{DynamicResource ManagerGrpDebug}">
+							<!--Group Box for Advanced Features-->
+							<GroupBox x:Name="grpManAdvanced" Grid.Column="1" Grid.Row="4" Header="{DynamicResource ManagerGrpAdvanced}">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="10"/>
@@ -1209,13 +1206,25 @@
 										<RowDefinition Height="*"/>
 										<RowDefinition Height="5"/>
 										<RowDefinition Height="*"/>
+										<RowDefinition Height="5"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="5"/>
+										<RowDefinition Height="30"/>
 										<RowDefinition Height="10"/>
 									</Grid.RowDefinitions>
 
-									<CheckBox x:Name="checkEnableLogConsole" Content="{DynamicResource ManagerCheckConsoleWindow}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerConsoleWindow}"/>
-									<CheckBox x:Name="checkEnableLogScreen" Content="{DynamicResource ManagerCheckPrintDebug}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerPrintDebug}"/>
-									<CheckBox x:Name="checkEnableLogFile" Content="{DynamicResource ManagerCheckLogToFile}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerLogDebug}"/>
-									<CheckBox x:Name="checkEnableCrashDump" Content="{DynamicResource ManagerCheckCrashDumps}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerCrashDumps}"/>
+									<CheckBox x:Name="checkEnableTestSpawn" Content="{DynamicResource ManagerCheckDevOptions}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Checked="checkEnableTestSpawn_Checked" Unchecked="checkEnableTestSpawn_Unchecked" ToolTip="{DynamicResource TipsManagerTestSpawn}"/>
+									<CheckBox x:Name="checkManagerOpen" Content="{DynamicResource ManagerCheckKeepOpen}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerKeepOpen}"/>
+									<CheckBox x:Name="checkEnableLogConsole" Content="{DynamicResource ManagerCheckConsoleWindow}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerConsoleWindow}"/>
+									<CheckBox x:Name="checkEnableLogScreen" Content="{DynamicResource ManagerCheckPrintDebug}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerPrintDebug}"/>
+									<CheckBox x:Name="checkEnableLogFile" Content="{DynamicResource ManagerCheckLogToFile}" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerLogDebug}"/>
+									<CheckBox x:Name="checkEnableCrashDump" Content="{DynamicResource ManagerCheckCrashDumps}" Grid.Column="2" Grid.Row="5" VerticalAlignment="Center" ToolTip="{DynamicResource TipsManagerCrashDumps}"/>
+									<Button x:Name="btnHealthCheck" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7">
+										<StackPanel Orientation="Horizontal">
+											<Image Source="{StaticResource IconHealth}" Width="20" Margin="0,0,5,0"/>
+											<TextBlock Text="Perform Game Health Check" VerticalAlignment="Center"/>
+										</StackPanel>
+									</Button>
 								</Grid>
 							</GroupBox>
 						</Grid>

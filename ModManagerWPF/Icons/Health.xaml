@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<DrawingImage x:Key="IconHealth">
+		<DrawingImage.Drawing>
+			<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+				<GeometryDrawing Geometry="F1 M24,24z M0,0z M4,11.9998L8,11.9998 9.5,8.99976 11.5,13.9998 13,11.9998 15,11.9998 M12,6.42958C12.4844,5.46436 13.4683,4.72543 14.2187,4.35927 16.1094,3.43671 17.9832,3.91202 19.5355,5.46436 21.4881,7.41698 21.4881,10.5828 19.5355,12.5354L12.7071,19.3639C12.3166,19.7544,11.6834,19.7544,11.2929,19.3639L4.46447,12.5354C2.51184,10.5828 2.51184,7.41698 4.46447,5.46436 6.0168,3.91202 7.89056,3.43671 9.78125,4.35927 10.5317,4.72543 11.5156,5.46436 12,6.42958z">
+					<GeometryDrawing.Pen>
+						<Pen Brush="Green" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+					</GeometryDrawing.Pen>
+				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+</ResourceDictionary>

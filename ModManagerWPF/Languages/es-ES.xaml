@@ -163,7 +163,7 @@
 	<system:String x:Key="ManagerBtnCheckNow">Buscar Actualizaciones</system:String>
 
 	<!--Debug Features-->
-	<system:String x:Key="ManagerGrpDebug">Debug Features</system:String>
+	<system:String x:Key="ManagerGrpAdvanced">Debug Features</system:String>
 	<system:String x:Key="ManagerCheckConsoleWindow">Activar Consola</system:String>
 	<system:String x:Key="ManagerCheckPrintDebug">Mostrar mensajes Debug en la Ventana del Juego</system:String>
 	<system:String x:Key="ManagerCheckLogToFile">Guardar Información Debug a un Archivo</system:String>

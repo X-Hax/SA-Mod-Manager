@@ -188,7 +188,7 @@
 	<system:String x:Key="ManagerBtnUninstallLoader">Uninstall Mod Loader</system:String>
 
 	<system:String x:Key="ManagerCheckKeepOpen">Keep Mod Manager Open after launching game</system:String>
-	<system:String x:Key="ManagerCheckTestSpawn">Enable Test Spawn Tab</system:String>
+	<system:String x:Key="ManagerCheckDevOptions">Enable Developer Options</system:String>
 	
 	<!--Updates-->
 	<system:String x:Key="ManagerGrpUpdates">Updates</system:String>
@@ -197,7 +197,7 @@
 	<system:String x:Key="ManagerBtnCheckNow">Check For Updates</system:String>
 
 	<!--Debug Features-->
-	<system:String x:Key="ManagerGrpDebug">Debug Features</system:String>
+	<system:String x:Key="ManagerGrpAdvanced">Advanced Options</system:String>
 	<system:String x:Key="ManagerCheckConsoleWindow">Enable Console Window</system:String>
 	<system:String x:Key="ManagerCheckPrintDebug">Print Debug in Game Window</system:String>
 	<system:String x:Key="ManagerCheckLogToFile">Log Debug Info to File</system:String>

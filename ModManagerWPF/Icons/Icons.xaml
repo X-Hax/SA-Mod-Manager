@@ -18,6 +18,7 @@
 		<ResourceDictionary Source="Error.xaml"/>
 		<ResourceDictionary Source="Folder.xaml"/>
         <ResourceDictionary Source="GB.xaml"/>
+		<ResourceDictionary Source="Health.xaml"/>
 		<ResourceDictionary Source="Information.xaml"/>
 		<ResourceDictionary Source="Install.xaml"/>
         <ResourceDictionary Source="Open.xaml"/>
