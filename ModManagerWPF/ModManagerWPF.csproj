@@ -28,10 +28,10 @@
 
   <ItemGroup>
     <Reference Include="HtmlRenderer">
-      <HintPath>..\packages\HtmlRenderer.WPF\HtmlRenderer.dll</HintPath>
+      <HintPath>Externals\HtmlRenderer.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer.WPF">
-      <HintPath>..\packages\HtmlRenderer.WPF\HtmlRenderer.WPF.dll</HintPath>
+      <HintPath>Externals\HtmlRenderer.WPF.dll</HintPath>
     </Reference>
   </ItemGroup>
 
