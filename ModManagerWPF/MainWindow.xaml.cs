@@ -170,6 +170,7 @@ namespace ModManagerWPF
 			};
 			timer.Tick += SetModManagerVersion;
 			timer.IsEnabled = true;
+			DownloadMod dl = new();
 		}
 
 		private void MainForm_FormClosing(object sender, EventArgs e)

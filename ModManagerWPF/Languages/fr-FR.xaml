@@ -265,6 +265,11 @@
     <system:String x:Key="PatchLights">Correctif des lumières</system:String>
     <!--#endregion-->
 
+    <!--#region DL Mod-->
+    <system:String x:Key="DLCredits">Crédits</system:String>
+    <system:String x:Key="DLDownload">Télécharger</system:String>
+    <!--#endregion-->
+
 
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>

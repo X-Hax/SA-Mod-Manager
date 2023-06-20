@@ -285,6 +285,12 @@
     <system:String x:Key="PatchLights">Light fixes</system:String>
     <!--#endregion-->
 
+    <!--#region DL Mod-->
+    <system:String x:Key="DLCredits">Credits</system:String>
+    <system:String x:Key="DLDownload">Download</system:String>
+    <!--#endregion-->
+
+
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
 

@@ -2,8 +2,13 @@
 using ModManagerWPF.Languages;
 using ModManagerWPF.Themes;
 using System;
+using System.Collections.Generic;
+using System.IO.Pipes;
+using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Linq;
 
 namespace ModManagerWPF
 {
@@ -54,7 +59,7 @@ namespace ModManagerWPF
 			//if a language different than english is set, remove the previous one.
 			if (Current.Resources.MergedDictionaries.Count >= 5)
 			{
-				Current.Resources.MergedDictionaries.RemoveAt(4); 
+				Current.Resources.MergedDictionaries.RemoveAt(4);
 			}
 
 			//if we go back to english, give up the process as it's always in the list.
@@ -64,7 +69,7 @@ namespace ModManagerWPF
 			}
 
 			//add new language
-			Current.Resources.MergedDictionaries.Insert(4, dictionary);		
+			Current.Resources.MergedDictionaries.Insert(4, dictionary);
 		}
 
 		public static void SwitchTheme()
@@ -90,14 +95,69 @@ namespace ModManagerWPF
 				ThemeList = themes;
 		}
 
+		public async Task ExecuteDependenciesCheck()
+		{
+			Startup startup = new Startup();
+			await startup.StartupCheck();
+		}
+
+		private void checkUrlhandlerArg(string[] args)
+		{
+			if (args.Length > 0 && args[0] == "urlhandler")
+			{
+				using (var hkcr = Microsoft.Win32.Registry.ClassesRoot)
+				using (var key = hkcr.CreateSubKey("sadxmm"))
+				{
+					key.SetValue(null, "URL:SADX Mod Manager Protocol");
+					key.SetValue("URL Protocol", string.Empty);
+					using (var k2 = key.CreateSubKey("DefaultIcon"))
+						k2.SetValue(null, System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName + ",1");
+					using (var k3 = key.CreateSubKey("shell"))
+					using (var k4 = k3.CreateSubKey("open"))
+					using (var k5 = k4.CreateSubKey("command"))
+						k5.SetValue(null, $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName}\" \"%1\"");
+				}
+				return;
+			}
+		}
+
+		private void InitUri(string[] args)
+		{
+
+			UriQueue = new UriQueue(pipeName);
+		
+			List<string> uris = args.Where(x => x.Length > protocol.Length && x.StartsWith(protocol, StringComparison.Ordinal)).ToList();
+
+			if (uris.Count > 0)
+			{
+				using (var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.Out))
+				{
+					pipe.Connect();
+
+					var writer = new StreamWriter(pipe);
+					foreach (string s in uris)
+					{
+						writer.WriteLine(s);
+					}
+					writer.Flush();
+				}
+			}
+		}
+
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			SetupLanguages();
 			SetupThemes();
 			ShutdownMode = ShutdownMode.OnMainWindowClose;
+			ExecuteDependenciesCheck();
+			string[] args = Environment.GetCommandLineArgs();
+			checkUrlhandlerArg(args);
+			InitUri(args);
+
 			MainWindow = new MainWindow();
 			MainWindow.Show();
 			base.OnStartup(e);
+			UriQueue.Close();
 		}
 	}
 }
