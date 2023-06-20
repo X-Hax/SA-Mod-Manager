@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Linq;
+using System.Windows.Threading;
 
 namespace ModManagerWPF
 {
@@ -31,6 +32,7 @@ namespace ModManagerWPF
 		public static ThemeEntry CurrentTheme { get; set; }
 		public static ThemeList ThemeList { get; set; }
 
+		[STAThread]
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -121,10 +123,12 @@ namespace ModManagerWPF
 			}
 		}
 
-		private void InitUri(string[] args)
+		private void InitUri(string[] args, bool alreadyRunning)
 		{
-
-			UriQueue = new UriQueue(pipeName);
+			if (!alreadyRunning)
+			{
+				UriQueue = new UriQueue(pipeName);
+			}	
 		
 			List<string> uris = args.Where(x => x.Length > protocol.Length && x.StartsWith(protocol, StringComparison.Ordinal)).ToList();
 
@@ -144,17 +148,65 @@ namespace ModManagerWPF
 			}
 		}
 
+		public static void DoEvents()
+		{
+			Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
+		}
+
+		private bool DoUpdate(string[] args, bool alreadyRunning)
+		{
+			if (args.Length > 1 && args[0] == "doupdate")
+			{
+				if (alreadyRunning)
+					try { mutex.WaitOne(); }
+					catch (AbandonedMutexException) { }
+
+
+				return true;
+			}
+
+			return false;
+		}
+
+
 		protected override void OnStartup(StartupEventArgs e)
 		{
+
+			bool alreadyRunning;
+			try { alreadyRunning = !mutex.WaitOne(0, true); }
+			catch (AbandonedMutexException) { alreadyRunning = false; }
+
+			string[] args = Environment.GetCommandLineArgs();
+
+			if (DoUpdate(args, alreadyRunning))
+			{
+				return;
+			}
+
+			if (args.Length > 1 && args[0] == "cleanupdate")
+			{
+				if (alreadyRunning)
+					try { mutex.WaitOne(); }
+					catch (AbandonedMutexException) { }
+
+				alreadyRunning = false;
+			}
+
 			SetupLanguages();
 			SetupThemes();
 			ShutdownMode = ShutdownMode.OnMainWindowClose;
 			ExecuteDependenciesCheck();
-			string[] args = Environment.GetCommandLineArgs();
-			checkUrlhandlerArg(args);
-			InitUri(args);
 
-			MainWindow = new MainWindow();
+			checkUrlhandlerArg(args);
+			InitUri(args, alreadyRunning);
+
+			if (alreadyRunning)
+			{
+				Current.Shutdown();
+				return;
+			}
+
+			MainWindow = new MainWindow(args is not null ? args : null);
 			MainWindow.Show();
 			base.OnStartup(e);
 			UriQueue.Close();

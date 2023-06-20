@@ -21,6 +21,8 @@ using ModManagerWPF.Common;
 using static ModManagerWPF.MainWindow;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Security.Cryptography;
+using System.Threading;
 
 namespace ModManagerWPF
 {
@@ -85,7 +87,7 @@ namespace ModManagerWPF
 
 		#endregion
 
-		public MainWindow()
+		public MainWindow(string[] args = null)
 		{
 			git = new(this);
 			InitializeComponent();
@@ -100,6 +102,8 @@ namespace ModManagerWPF
 			LoadAllProfiles();
 			UpdateDLLData();
 			UpdatePatches();
+			if (args is not null)
+				CleanUpdate(args);
 		}
 
 		private void UpdateDLLData()
@@ -128,6 +132,29 @@ namespace ModManagerWPF
 					gamePath = Directory.GetCurrentDirectory();
 				}
 			}
+		}
+		private void CleanUpdate(string[] args)
+		{
+			try
+			{
+				File.Delete(args[1] + ".7z");
+				Directory.Delete(args[1], true);
+
+				if (File.Exists(datadllorigpath))
+				{
+					using (MD5 md5 = MD5.Create())
+					{
+						byte[] hash1 = md5.ComputeHash(File.ReadAllBytes(loaderdllpath));
+						byte[] hash2 = md5.ComputeHash(File.ReadAllBytes(datadllpath));
+
+						if (!hash1.SequenceEqual(hash2))
+						{
+							File.Copy(loaderdllpath, datadllpath, true);
+						}
+					}
+				}
+			}
+			catch { }
 		}
 
 		private void MainWindowManager_ContentRendered(object sender, EventArgs e)
@@ -1348,11 +1375,11 @@ namespace ModManagerWPF
 		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
 		{
 			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
-        }
+		}
 
 		private void tsCheckEvent_Unchecked(object sender, RoutedEventArgs e)
 		{
 			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
 		}
-    }
+	}
 }
