@@ -29,7 +29,7 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="60"/>
 		</Grid.RowDefinitions>
 
 		<!--Tab Container for the Manager's main elements.-->
@@ -1291,26 +1291,29 @@
 		<!--This Grid manages the Save, Play, and Install buttons at the bottom of the app.-->
 		<Grid Grid.Row="1"  Background="{DynamicResource MainDialogBottomBrush}">
 			<!--This Gris manages the Save and Play Buttons.-->
-			<Grid x:Name="bottomGrid" VerticalAlignment="Center" Height="60">
+			<Grid x:Name="bottomGrid">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="10"/>
 					<ColumnDefinition Width="160"/>
 					<ColumnDefinition Width="10"/>
 					<ColumnDefinition Width="160"/>
-					<ColumnDefinition Width="73*"/>
-					<ColumnDefinition Width="77*"/>
 				</Grid.ColumnDefinitions>
-				<Button x:Name="SaveAndPlayButton" MaxHeight="30" Grid.Column="1" Click="SaveAndPlayButton_Click" ToolTip="{DynamicResource TipMainSaveAndPlay}">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="10"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="10"/>
+				</Grid.RowDefinitions>
+				<Button x:Name="SaveAndPlayButton" Grid.Column="1" Grid.Row="1" Click="SaveAndPlayButton_Click" ToolTip="{DynamicResource TipMainSaveAndPlay}">
 					<Grid>
                         <StackPanel Orientation="Horizontal">
-                            <Image x:Name="savePlayIcon" Width="20" Height="20" Source="{StaticResource IconPlay}" Margin="0,0,5,0"/>
+                            <Image x:Name="savePlayIcon" Width="30" Source="{StaticResource IconPlay}" Margin="0,0,5,0"/>
                             <TextBlock Text="{DynamicResource MainBtnSaveAndPlay}" VerticalAlignment="Center"/>
                         </StackPanel>
 					</Grid>
 				</Button>
-				<Button x:Name="SaveButton" MaxHeight="30" Grid.Column="3" Click="SaveButton_Click" ToolTip="{DynamicResource TipMainSave}">
+				<Button x:Name="SaveButton" Grid.Column="3" Grid.Row="1" Click="SaveButton_Click" ToolTip="{DynamicResource TipMainSave}">
 					<StackPanel Orientation="Horizontal">
-                        <Image x:Name="saveIcon" Width="20" Height="20" Source="{StaticResource IconSave}" Margin="0,0,5,0"/>
+                        <Image x:Name="saveIcon" Width="30" Source="{StaticResource IconSave}" Margin="0,0,5,0"/>
                         <TextBlock Text="{DynamicResource MainBtnSave}" VerticalAlignment="Center"/>
 					</StackPanel>
 				</Button>
