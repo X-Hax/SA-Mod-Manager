@@ -1137,6 +1137,21 @@ namespace ModManagerWPF
 			RefreshBtn.IsEnabled = true;
 		}
 
+		private void SetLoaderFile()
+		{
+			if (!File.Exists(loaderdllpath))
+			{
+				if (File.Exists("SADXModLoader.dll"))
+				{
+					Util.MoveFile("SADXModLoader.dll", loaderdllpath);
+				}
+				else
+				{
+					MessageBox.Show(Lang.GetString("LoaderDllMissing"), Lang.GetString("SadxManagerError"));
+				}
+			}
+		}
+
 		//set new game Path
 		private void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
 		{
@@ -1156,6 +1171,7 @@ namespace ModManagerWPF
 					Properties.Settings.Default.GamePath = gamePath;
 					UpdatePathsStringsInfo();
 					Refresh();
+					SetLoaderFile();
 				}
 				else
 				{

@@ -33,8 +33,14 @@ namespace ModManagerWPF
 
 		private static async Task<bool> EnableOneClickInstall()
 		{
-			string execPath = AppDomain.CurrentDomain.BaseDirectory;
-			await Process.Start(new ProcessStartInfo(execPath, "urlhandler") { UseShellExecute = true, Verb = "runas" }).WaitForExitAsync();
+			try
+			{
+				string execPath = AppDomain.CurrentDomain.BaseDirectory;
+				await Process.Start(new ProcessStartInfo(execPath, "urlhandler") { UseShellExecute = true, Verb = "runas" }).WaitForExitAsync();
+			}
+			catch
+			{ }
+
 			return true;
 		}
 
