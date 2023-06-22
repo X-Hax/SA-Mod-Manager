@@ -3,6 +3,7 @@
 #include "uiscale.h"
 #include "hudscale.h"
 #include "SkyChaseFixes.h"
+#include "IniFile.hpp"
 
 using namespace uiscale;
 
@@ -1202,7 +1203,7 @@ static void InitializeChaoHUDs()
 	WriteData(reinterpret_cast<float*>(0x0072604B), 1.0f);
 }
 
-void hudscale::initialize()
+void hudscale::initialize(const IniGroup* settings)
 {
 	NowLoading_t                         = new Trampoline(0x0040BDA0, 0x0040BDA5, NowLoading_r);
 	NowLoading2_t                        = new Trampoline(0x005033F0, 0x005033F5, NowLoading2_r);
@@ -1250,7 +1251,8 @@ void hudscale::initialize()
 	late_exec_t                          = new Trampoline(0x004086F0, 0x004086F6, late_exec_r); // Sometimes used in a display function so we have to disable scaling temporarily
 
 	// Sky Chase reticle and score calculation
-	SkyChaseFix_Init();
+	if (settings->getBool("SCFix", true))
+		SkyChaseFix_Init();
 
 	// Big UI
 	WriteData(reinterpret_cast<const float**>(0x0047024E), &patch_dummy);
