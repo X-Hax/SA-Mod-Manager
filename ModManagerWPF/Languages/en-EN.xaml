@@ -181,8 +181,8 @@
 	<system:String x:Key="ManagerLblProfile">Profile:</system:String>
 	<system:String x:Key="ManagerLblGameDir">Game Directory:</system:String>
 	
-	<system:String x:Key="ManagerBtnEnableOneClick">Enable Gamebanana 1-Click Install</system:String>
-	<system:String x:Key="ManagerBtnDisableOneClick">Disable Gamebanana 1-Click Install</system:String>
+	<system:String x:Key="ManagerBtnEnableOneClick">Enable 1-Click Install</system:String>
+	<system:String x:Key="ManagerBtnDisableOneClick">Disable 1-Click Install</system:String>
 
 	<system:String x:Key="ManagerBtnInstallLoader">Install Mod Loader</system:String>
 	<system:String x:Key="ManagerBtnUninstallLoader">Uninstall Mod Loader</system:String>
@@ -283,6 +283,7 @@
     <system:String x:Key="PatchChaoPanel">Chao Stat Panel Screen Dimensions Fix</system:String>
     <system:String x:Key="PatchPixelOffset">2D Rendering Offset Fixes</system:String>
     <system:String x:Key="PatchLights">Light fixes</system:String>
+    <system:String x:Key="PatchGbix">Disable GBIX (Experimental)</system:String>
     <!--#endregion-->
 
     <!--#region DL Mod-->

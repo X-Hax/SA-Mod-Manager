@@ -168,8 +168,8 @@
     <system:String x:Key="ManagerLblProfile">Profil:</system:String>
     <system:String x:Key="ManagerLblGameDir">Répertoire du Jeu:</system:String>
 
-    <system:String x:Key="ManagerBtnEnableOneClick">Activer Gamebanana 1-Click Install</system:String>
-    <system:String x:Key="ManagerBtnDisableOneClick">Désactiver Gamebanana 1-Click Install</system:String>
+    <system:String x:Key="ManagerBtnEnableOneClick">Activer 1-Click Install</system:String>
+    <system:String x:Key="ManagerBtnDisableOneClick">Désactiver 1-Click Install</system:String>
 
     <system:String x:Key="ManagerBtnInstallLoader">Installer Loader</system:String>
     <system:String x:Key="ManagerBtnUninstallLoader">Désinstaller Mod Loader</system:String>

@@ -147,9 +147,7 @@ namespace ModManagerWPF
 		[DefaultValue(true)]
 		public bool CCEF { get; set; }
 		[DefaultValue(true)]
-
 		public bool PolyBuff { get; set; } //vertex color 
-
 		[DefaultValue(true)]
 		public bool MaterialColorFix { get; set; }
 		[DefaultValue(true)]
@@ -170,7 +168,8 @@ namespace ModManagerWPF
 		public bool PixelOffSetFix { get; set; }
 		[DefaultValue(true)]
 		public bool LightFix { get; set; }
-
+		[DefaultValue(false)]
+		public bool KillGbix { get; set; }
 
 		#endregion
 

@@ -280,10 +280,11 @@ namespace ModManagerWPF
 
 			loaderini.EnableBassMusic = (bool)checkBassMusic.IsChecked;
 			loaderini.EnableBassSFX = (bool)checkBassSFX.IsChecked;
+			SavePatches();
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
 
-			SaveGameConfigIni();
+			SaveGameConfigIni();		
 			Refresh();
 		}
 		private void LoadSettings()
@@ -1321,6 +1322,41 @@ namespace ModManagerWPF
 
 		#region Patches
 
+		private void SavePatches()
+		{
+			if (listPatches is null)
+				return;
+
+			PatchesData patch = (PatchesData)listPatches.Items[13];
+			loaderini.KillGbix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[12];
+			loaderini.LightFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[11];
+			loaderini.PixelOffSetFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[10];
+			loaderini.ChaoPanelFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[9];
+			loaderini.E102PolyFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[8];
+			loaderini.ChunkSpecFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[7];
+			loaderini.Chaos2CrashFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[6];
+			loaderini.SCFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[5];
+			loaderini.FovFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[4];
+			loaderini.InterpolationFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[3];
+			loaderini.MaterialColorFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[2];
+			loaderini.PolyBuff = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[1];
+			loaderini.CCEF = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[0];
+			loaderini.HRTFSound = patch.IsChecked;
+		}
+
 		private void UpdatePatches()
 		{
 			listPatches.Items.Clear();
@@ -1343,6 +1379,7 @@ namespace ModManagerWPF
 				new PatchesData() { Name = Lang.GetString("PatchChaoPanel"), IsChecked = loaderini.ChaoPanelFix},
 				new PatchesData() { Name = Lang.GetString("PatchPixelOffset"), IsChecked = loaderini.PixelOffSetFix},
 				new PatchesData() { Name = Lang.GetString("PatchLights"), IsChecked = loaderini.LightFix},
+				new PatchesData() { Name = Lang.GetString("PatchGbix"), IsChecked = loaderini.KillGbix},
 			};
 
 			foreach (var patch in patches)
