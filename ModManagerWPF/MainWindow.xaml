@@ -237,7 +237,7 @@
 			</TabItem>
 
 			<!--This Tab is for Codes.-->
-			<TabItem x:Name="tbCodes" Header="{DynamicResource MainTabCodes}" Width="Auto" Margin="0,0,0,0" TextBlock.TextAlignment="Center" ToolTip="{DynamicResource TipMainCodesTab}">
+			<TabItem x:Name="tbCodes" Header="{DynamicResource MainTabCodes}" Width="Auto" Margin="0,0,0,0" TextBlock.TextAlignment="Center" Tag="{DynamicResource TipMainCodesTab}">
 				<!--Main Grid for Mods Tab-->
 				<Grid x:Name="GridCodeList">
 
@@ -766,7 +766,7 @@
 						</TabItem>
 
 						<!--This Tab is for Game Patches.-->
-						<TabItem x:Name="tabPatches" Header="{DynamicResource GameTabPatches}" Margin="9,0,-9,0">
+						<TabItem x:Name="tabPatches" Header="{DynamicResource GameTabPatches}" Margin="9,0,-9,0" Tag="{DynamicResource TipGamePatchesTab}">
 							<Grid x:Name="gridPatchesList">
 
 								<!--This Grid manages the Codes list.-->
