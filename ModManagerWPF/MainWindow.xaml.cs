@@ -23,6 +23,8 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Security.Cryptography;
 using System.Threading;
+using ModManagerCommon.Forms;
+using System.Net;
 
 namespace ModManagerWPF
 {
@@ -39,6 +41,7 @@ namespace ModManagerWPF
 		public static string Version = "1.0.0";
 		public static string GitVersion = string.Empty;
 		public static string modDirectory = string.Empty;
+		public static string updatePath = "mods/.updates";
 		public static string loaderinipath = "mods/SADXModLoader.ini";
 		private string sadxIni = "sonicDX.ini";
 		string datadllorigpath = "system/CHRMODELS_orig.dll";
@@ -57,8 +60,14 @@ namespace ModManagerWPF
 		List<Code> codes = null;
 		bool installed = false;
 		bool suppressEvent = false;
+		BackgroundWorker updateChecker;
+		private bool manualModUpdate;
+		readonly ModUpdater modUpdater = new ModUpdater();
+		private bool checkedForUpdates = false;
+
 		private readonly double LowOpacityIcon = 0.3;
 		private readonly double LowOpacityBtn = 0.7;
+
 
 		private Game.GameConfigFile gameConfigFile;
 
@@ -214,6 +223,7 @@ namespace ModManagerWPF
 				datadllorigpath = Path.Combine(gamePath, "system/CHRMODELS_orig.dll");
 				loaderdllpath = Path.Combine(gamePath, "mods/SADXModLoader.dll");
 				datadllpath = Path.Combine(gamePath, "system/CHRMODELS.dll");
+				updatePath = Path.Combine(gamePath, "mods/.updates");
 				sadxIni = Path.Combine(gamePath, "sonicDX.ini");
 
 				codelstpath = Path.Combine(gamePath, "mods/Codes.lst");
@@ -524,7 +534,7 @@ namespace ModManagerWPF
 
 		private void ModContextChkUpdate_Click(object sender, RoutedEventArgs e)
 		{
-
+			UpdateSelectedMods();
 		}
 
 		private void ModContextVerifyIntegrity_Click(object sender, RoutedEventArgs e)
@@ -534,7 +544,13 @@ namespace ModManagerWPF
 
 		private void ModContextForceUpdate_Click(object sender, RoutedEventArgs e)
 		{
+			var result = MessageBox.Show(Lang.GetString("ForceUpdateTitle"), Lang.GetString("ForceUpdate"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
+			if (result == MessageBoxResult.Yes) 
+			{
+				modUpdater.ForceUpdate = true;
+				UpdateSelectedMods();
+			}
 		}
 
 		private void ModContextEditMod_Click(object sender, RoutedEventArgs e)
@@ -769,7 +785,7 @@ namespace ModManagerWPF
 			gameConfigFile.GameConfig.FullScreen = (bool)radFullscreen.IsChecked ? 1 : 0;
 
 			gameConfigFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
-			//gameConfigFile.GameConfig.ClipLevel = comboClip.SelectedIndex;
+			gameConfigFile.GameConfig.ClipLevel = comboDetail.SelectedIndex;
 			gameConfigFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
 
 			gameConfigFile.GameConfig.Sound3D = (bool)checkEnable3DSound.IsChecked ? 1 : 0;
@@ -1417,11 +1433,184 @@ namespace ModManagerWPF
 
 		#region Updates
 
-		private void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
+		private void UpdateSelectedMods()
 		{
+			InitializeWorker();
+			manualModUpdate = true;
+			updateChecker?.RunWorkerAsync(listMods.SelectedItems.Cast<ListViewItem>()
+				.Select(x => (string)x.Tag)
+				.Select(x => new KeyValuePair<string, ModInfo>(x, mods[x]))
+				.ToList());
+		}
+
+		private bool CheckForUpdates(bool force = false)
+		{
+			if (!force && !loaderini.UpdateCheck)
+			{
+				return false;
+			}
+			if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.UpdateTime)))
+			{ 
+				return false;
+			}
+
+			checkedForUpdates = true;
+			loaderini.UpdateTime = DateTime.UtcNow.ToFileTimeUtc();
+
+			if (!File.Exists(Path.Combine(gamePath, "sadxmlver.txt")))
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		private void UpdateChecker_DoWork(object sender, DoWorkEventArgs e)
+		{
+			if (!(sender is BackgroundWorker worker))
+			{
+				throw new Exception("what");
+			}
+
+			Dispatcher.Invoke(() =>
+			{
+				btnCheckUpdates.IsEnabled = false;
+				ModContextChkUpdate.IsEnabled = false;
+				ModContextDeleteMod.IsEnabled = false;
+				ModContextDev.IsEnabled = false;
+				ModContextForceUpdate.IsEnabled = false;
+				ModContextVerifyIntegrity.IsEnabled = false;
+			});
+
+			var updatableMods = e.Argument as List<KeyValuePair<string, ModInfo>>;
+			List<ModDownload> updates = null;
+			List<string> errors = null;
+
+			var tokenSource = new CancellationTokenSource();
+			CancellationToken token = tokenSource.Token;
+
+			using (var task = new Task(() => modUpdater.GetModUpdates(updatableMods, out updates, out errors, token), token))
+			{
+				task.Start();
+
+				while (!task.IsCompleted && !task.IsCanceled)
+				{
+					App.DoEvents();
+
+					if (worker.CancellationPending)
+					{
+						tokenSource.Cancel();
+					}
+				}
+
+				task.Wait(token);
+			}
+
+			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, errors);
 
 		}
 
+		private void InitializeWorker()
+		{
+			if (updateChecker != null)
+			{
+				return;
+			}
+
+			updateChecker = new BackgroundWorker { WorkerSupportsCancellation = true };
+			updateChecker.DoWork += UpdateChecker_DoWork;
+			updateChecker.RunWorkerCompleted += UpdateChecker_RunWorkerCompleted;
+			updateChecker.RunWorkerCompleted += UpdateChecker_EnableControls;
+		}
+
+		private void UpdateChecker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			if (modUpdater.ForceUpdate)
+			{
+				updateChecker?.Dispose();
+				updateChecker = null;
+				modUpdater.ForceUpdate = false;
+				modUpdater.Clear();
+			}
+
+			if (e.Cancelled)
+			{
+				return;
+			}
+
+			if (!(e.Result is Tuple<List<ModDownload>, List<string>> data))
+			{
+				return;
+			}
+
+			List<string> errors = data.Item2;
+			if (errors.Count != 0)
+			{
+				MessageBox.Show("The following errors occurred while checking for updates:\n\n" + string.Join("\n", errors),
+					"Update Errors", MessageBoxButton.OK, MessageBoxImage.Warning);
+			}
+
+			bool manual = manualModUpdate;
+			manualModUpdate = false;
+
+			List<ModDownload> updates = data.Item1;
+			if (updates.Count == 0)
+			{
+				if (manual)
+				{
+					MessageBox.Show("Mods are up to date.",
+						"No Updates", MessageBoxButton.OK, MessageBoxImage.Information);
+				}
+				return;
+			}
+
+
+		}
+
+		private void UpdateChecker_EnableControls(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
+		{
+			btnCheckUpdates.IsEnabled = true;
+			btnCheckUpdates.IsEnabled = true;
+			ModContextChkUpdate.IsEnabled = true;
+			ModContextDeleteMod.IsEnabled = true;
+			ModContextDev.IsEnabled = true;
+			ModContextForceUpdate.IsEnabled = true;
+			ModContextVerifyIntegrity.IsEnabled = true;
+		}
+
+		private void CheckForModUpdates(bool force = false)
+		{
+			if (!force && !loaderini.ModUpdateCheck)
+			{
+				return;
+			}
+
+			InitializeWorker();
+
+			if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.ModUpdateTime)))
+			{
+				return;
+			}
+
+			checkedForUpdates = true;
+			loaderini.ModUpdateTime = DateTime.UtcNow.ToFileTimeUtc();
+			updateChecker.RunWorkerAsync(mods.Select(x => new KeyValuePair<string, ModInfo>(x.Key, x.Value)).ToList());
+			btnCheckUpdates.IsEnabled = false;
+		}
+
+		private void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
+		{
+			btnCheckUpdates.IsEnabled = false;
+
+			if (CheckForUpdates(true))
+			{
+				Updater.UpdateHelper.DoUpdates(updatePath);
+				return;
+			}
+
+			manualModUpdate = true;
+			CheckForModUpdates(true);
+		}
 
 		#endregion
 

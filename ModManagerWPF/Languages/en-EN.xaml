@@ -323,6 +323,9 @@
     <system:String x:Key="DeleteProfileWarning">Are you sure you want to delete this profile?</system:String>
 
     <system:String x:Key="LoaderDllMissing" xml:space="preserve">The file SADXModLoader.dll couldn't be found, Mod Loader won't work.&#x0a;&#x0a;Please re download the Mod Manager.</system:String>
+
+    <system:String x:Key="ForceUpdate" xml:space="preserve">>This will force all selected mods to be completely re-downloaded.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
+    
     <!--#endregion-->
 
 </ResourceDictionary>
