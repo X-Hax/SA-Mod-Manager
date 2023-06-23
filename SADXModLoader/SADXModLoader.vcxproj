@@ -23,6 +23,7 @@
     <ClCompile Include="FileMap.cpp" />
     <ClCompile Include="FileReplacement.cpp" />
     <ClCompile Include="FixFOV.cpp" />
+    <ClCompile Include="Gbix.cpp" />
     <ClCompile Include="hudscale.cpp" />
     <ClCompile Include="InterpolationFixes.cpp" />
     <ClCompile Include="jvList.cpp" />
@@ -55,6 +56,7 @@
     <ClInclude Include="FileMap.hpp" />
     <ClInclude Include="FileReplacement.h" />
     <ClInclude Include="FixFOV.h" />
+    <ClInclude Include="Gbix.h" />
     <ClInclude Include="include\AudioFile.h" />
     <ClInclude Include="include\FunctionHook.h" />
     <ClInclude Include="git.h" />
@@ -163,6 +165,9 @@
       <AdditionalLibraryDirectories>$(ProgramFiles)\DirectX 8.1 SDK\lib;..\extlib\bass</AdditionalLibraryDirectories>
       <AdditionalDependencies>d3dx8.lib;bass.lib;bass_vgmstream.lib;$(OutDir)libmodutils.lib;$(OutDir)ModLoaderCommon.lib;shlwapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <DelayLoadDLLs>bass.dll;bass_vgmstream.dll</DelayLoadDLLs>
     </Link>
     <PreBuildEvent>
       <Command>"C:\Program Files\Git\bin\bash.exe" ../git_version.sh &gt;git_version.h</Command>
@@ -190,6 +195,9 @@
       <AdditionalDependencies>d3dx8.lib;bass.lib;bass_vgmstream.lib;$(OutDir)libmodutils.lib;$(OutDir)ModLoaderCommon.lib;shlwapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <DelayLoadDLLs>bass.dll;bass_vgmstream.dll</DelayLoadDLLs>
     </Link>
     <PreBuildEvent>
       <Command>"C:\Program Files\Git\bin\bash.exe" ../git_version.sh &gt;git_version.h</Command>

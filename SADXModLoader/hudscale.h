@@ -1,7 +1,9 @@
 #pragma once
 
+#include "IniFile.hpp"
+
 namespace hudscale
 {
 	void update();
-	void initialize();
+	void initialize(const IniGroup* settings);
 }

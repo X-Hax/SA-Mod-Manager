@@ -56,6 +56,7 @@ using std::vector;
 #include "InterpolationFixes.h"
 #include "MinorPatches.h"
 #include "jvList.h"
+#include "Gbix.h"
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -1504,6 +1505,144 @@ void ProcessVoiceDurationRegisters()
 	_JPVoiceDurationList.clear();
 }
 
+static void __cdecl InitAudio(const IniGroup* settings)
+{
+
+	if (settings->getBool("EnableBassMusic"), true)
+	{
+		//Following order of each LoadLibrary is REALLY important, NEVER touch it or BASS will FAIL to load.
+
+		string bassPath = "BASS\\bass.dll";
+		HMODULE bassDLL = LoadLibraryA(bassPath.c_str());
+
+		LoadLibraryA("BASS\\libatrac9.dll");
+		LoadLibraryA("BASS\\libcelt-0061.dll");
+		LoadLibraryA("BASS\\libcelt-0110.dll");
+		LoadLibraryA("BASS\\libg719_decode.dll");		
+		LoadLibraryA("BASS\\libg7221_decode.dll");	
+		LoadLibraryA("BASS\\libmpg123-0.dll");		
+		LoadLibraryA("BASS\\libogg.dll");	
+		LoadLibraryA("BASS\\libspeex.dll");	
+
+		LoadLibraryA("BASS\\libvorbis.dll");
+		//LoadLibraryA("BASS\\libvorbisfile.dll"); 
+
+		LoadLibraryA("BASS\\avutil-vgmstream-56.dll");
+		LoadLibraryA("BASS\\avcodec-vgmstream-58.dll");
+		LoadLibraryA("BASS\\avformat-vgmstream-58.dll");
+
+		LoadLibraryA("BASS\\jansson.dll");
+		LoadLibraryA("BASS\\swresample-vgmstream-3.dll");
+
+		string bassPath2 = "BASS\\bass_vgmstream.dll";
+		HMODULE bassDLL2 = LoadLibraryA(bassPath2.c_str());
+
+		if (bassDLL && bassDLL2)
+		{
+			WriteCall((void*)0x42544C, PlayMusicFile_r);
+			WriteCall((void*)0x4254F4, PlayVoiceFile_r);
+			WriteCall((void*)0x425569, PlayVoiceFile_r);
+			WriteCall((void*)0x513187, PlayVideoFile_r);
+			WriteCall((void*)0x425488, PlayMusicFile_CD_r);
+			WriteCall((void*)0x425591, PlayVoiceFile_CD_r);
+			WriteCall((void*)0x42551D, PlayVoiceFile_CD_r);
+			WriteJump((void*)0x40D1EA, WMPInit_r);
+			WriteJump((void*)0x40CF50, WMPRestartMusic_r);
+			WriteJump((void*)0x40D060, PauseMusic_r);
+			WriteJump((void*)0x40D0A0, ResumeMusic_r);
+			WriteJump((void*)0x40CFF0, WMPClose_r);
+			WriteJump((void*)0x40D28A, WMPRelease_r);
+			PrintDebug("Loaded Bass DLLs dependencies\n");
+		}
+		else
+		{
+			PrintDebug("Failed to load bass DLL dependencies\n");
+		}
+	}
+
+	if (settings->getBool("HRTFSound"), true)
+	{
+		// allow HRTF 3D sound
+		WriteData<uint8_t>(reinterpret_cast<uint8_t*>(0x00402773), 0xEBu);
+	}
+}
+
+void InitPatches(const IniGroup* settings)
+{
+	if (settings->getBool("PatchCamCode"), true)
+	{
+		WriteData((int16_t*)0x438330, (int16_t)0x0D81);
+		WriteData((int16_t*)0x434870, (int16_t)0x0D81);
+	}
+
+	// Fixes N-sided polygons (Gamma's headlight) by using
+	// triangle strip vertex buffer initializers.
+
+	if (settings->getBool("PatchE102Poly"), true)
+	{
+		for (size_t i = 0; i < MeshSetInitFunctions.size(); ++i)
+		{
+			auto& a = MeshSetInitFunctions[i];
+			a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
+		}
+
+		for (size_t i = 0; i < PolyBuffDraw_VertexColor.size(); ++i)
+		{
+			auto& a = PolyBuffDraw_VertexColor[i];
+			a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
+		}
+
+		for (size_t i = 0; i < PolyBuffDraw_NoVertexColor.size(); ++i)
+		{
+			auto& a = PolyBuffDraw_NoVertexColor[i];
+			a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
+		}
+	}
+
+	if (settings->getBool("PatchPixelOffset"), true)
+	{
+		// Replaces half-pixel offset addition with subtraction
+		WriteData((uint8_t*)0x0077DE1E, (uint8_t)0x25); // njDrawQuadTextureEx
+		WriteData((uint8_t*)0x0077DE33, (uint8_t)0x25); // njDrawQuadTextureEx
+		WriteData((uint8_t*)0x0078E822, (uint8_t)0x25); // DrawRect_TextureVertexTriangleStrip
+		WriteData((uint8_t*)0x0078E83C, (uint8_t)0x25); // DrawRect_TextureVertexTriangleStrip
+		WriteData((uint8_t*)0x0078E991, (uint8_t)0x25); // njDrawTriangle2D_List
+		WriteData((uint8_t*)0x0078E9AE, (uint8_t)0x25); // njDrawTriangle2D_List
+		WriteData((uint8_t*)0x0078EA41, (uint8_t)0x25); // Direct3D_DrawTriangleFan2D
+		WriteData((uint8_t*)0x0078EA5E, (uint8_t)0x25); // Direct3D_DrawTriangleFan2D
+		WriteData((uint8_t*)0x0078EAE1, (uint8_t)0x25); // njDrawTriangle2D_Strip
+		WriteData((uint8_t*)0x0078EAFE, (uint8_t)0x25); // njDrawTriangle2D_Strip
+		WriteData((uint8_t*)0x0077DBFC, (uint8_t)0x25); // njDrawPolygon
+		WriteData((uint8_t*)0x0077DC16, (uint8_t)0x25); // njDrawPolygon
+		WriteData((uint8_t*)0x0078E8F1, (uint8_t)0x25); // njDrawLine2D_Direct3D
+		WriteData((uint8_t*)0x0078E90E, (uint8_t)0x25); // njDrawLine2D_Direct3D
+	}
+
+	if (settings->getBool("PatchChaoPanel"), true)
+	{
+		// Chao stat panel screen dimensions fix
+		WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
+	}
+
+	if (settings->getBool("PatchLights"), true)
+	{
+		// Fix light incorrectly being applied on LandTables
+		WriteCall(reinterpret_cast<void*>(0x0043A6D5), FixLandTableLightType);
+
+		// Enable light type preservation in the draw queue
+		WriteCall(reinterpret_cast<void*>(0x004088B1), PreserveLightType);
+
+		// Do not reset light type for queued models
+		WriteData<2>(reinterpret_cast<void*>(0x004088A6), 0x90i8);
+	}
+
+	if (settings->getBool("PatchChunkSpec"), true)
+		ChunkSpecularFix_Init();
+
+	if (settings->getBool("KillGbix"), true)
+		Init_NOGbixHack();
+}
+
 static void __cdecl InitMods()
 {
 	// Hook present function to handle device lost/reset states
@@ -1643,6 +1782,7 @@ static void __cdecl InitMods()
 		WriteCall(reinterpret_cast<void*>(0x00401920), ResumeMusicWithSound);
 	}
 
+
 	if (settings->getBool("AutoMipmap", true))
 		mipmap::enable_auto_mipmaps();
 
@@ -1650,75 +1790,13 @@ static void __cdecl InitMods()
 	*(void**)0x38A5DB8 = (void*)0x38A5D94; // depth buffer fix
 	WriteCall((void*)0x402614, SetLanguage);
 	WriteCall((void*)0x437547, FixEKey);
-	WriteCall((void*)0x42544C, PlayMusicFile_r);
-	WriteCall((void*)0x4254F4, PlayVoiceFile_r);
-	WriteCall((void*)0x425569, PlayVoiceFile_r);
-	WriteCall((void*)0x513187, PlayVideoFile_r);
-	WriteCall((void*)0x425488, PlayMusicFile_CD_r);
-	WriteCall((void*)0x425591, PlayVoiceFile_CD_r);
-	WriteCall((void*)0x42551D, PlayVoiceFile_CD_r);
-	WriteJump((void*)0x40D1EA, WMPInit_r);
-	WriteJump((void*)0x40CF50, WMPRestartMusic_r);
-	WriteJump((void*)0x40D060, PauseMusic_r);
-	WriteJump((void*)0x40D0A0, ResumeMusic_r);
-	WriteJump((void*)0x40CFF0, WMPClose_r);
-	WriteJump((void*)0x40D28A, WMPRelease_r);
+
+	InitAudio(settings);
+
 	WriteJump(LoadSoundList, LoadSoundList_r);
 	WriteJump((void*)0x40CF20, sub_40CF20_r);
 
-	// allow HRTF 3D sound
-	WriteData<uint8_t>(reinterpret_cast<uint8_t*>(0x00402773), 0xEBu);
-
-	// Fixes N-sided polygons (Gamma's headlight) by using
-	// triangle strip vertex buffer initializers.
-
-	for (size_t i = 0; i < MeshSetInitFunctions.size(); ++i)
-	{
-		auto& a = MeshSetInitFunctions[i];
-		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
-	}
-
-	for (size_t i = 0; i < PolyBuffDraw_VertexColor.size(); ++i)
-	{
-		auto& a = PolyBuffDraw_VertexColor[i];
-		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
-	}
-
-	for (size_t i = 0; i < PolyBuffDraw_NoVertexColor.size(); ++i)
-	{
-		auto& a = PolyBuffDraw_NoVertexColor[i];
-		a[NJD_MESHSET_N >> 14] = a[NJD_MESHSET_TRIMESH >> 14];
-	}
-
-	// Replaces half-pixel offset addition with subtraction
-	WriteData((uint8_t*)0x0077DE1E, (uint8_t)0x25); // njDrawQuadTextureEx
-	WriteData((uint8_t*)0x0077DE33, (uint8_t)0x25); // njDrawQuadTextureEx
-	WriteData((uint8_t*)0x0078E822, (uint8_t)0x25); // DrawRect_TextureVertexTriangleStrip
-	WriteData((uint8_t*)0x0078E83C, (uint8_t)0x25); // DrawRect_TextureVertexTriangleStrip
-	WriteData((uint8_t*)0x0078E991, (uint8_t)0x25); // njDrawTriangle2D_List
-	WriteData((uint8_t*)0x0078E9AE, (uint8_t)0x25); // njDrawTriangle2D_List
-	WriteData((uint8_t*)0x0078EA41, (uint8_t)0x25); // Direct3D_DrawTriangleFan2D
-	WriteData((uint8_t*)0x0078EA5E, (uint8_t)0x25); // Direct3D_DrawTriangleFan2D
-	WriteData((uint8_t*)0x0078EAE1, (uint8_t)0x25); // njDrawTriangle2D_Strip
-	WriteData((uint8_t*)0x0078EAFE, (uint8_t)0x25); // njDrawTriangle2D_Strip
-	WriteData((uint8_t*)0x0077DBFC, (uint8_t)0x25); // njDrawPolygon
-	WriteData((uint8_t*)0x0077DC16, (uint8_t)0x25); // njDrawPolygon
-	WriteData((uint8_t*)0x0078E8F1, (uint8_t)0x25); // njDrawLine2D_Direct3D
-	WriteData((uint8_t*)0x0078E90E, (uint8_t)0x25); // njDrawLine2D_Direct3D
-
-	// Chao stat panel screen dimensions fix
-	WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
-
-	// Fix light incorrectly being applied on LandTables
-	WriteCall(reinterpret_cast<void*>(0x0043A6D5), FixLandTableLightType);
-
-	// Enable light type preservation in the draw queue
-	WriteCall(reinterpret_cast<void*>(0x004088B1), PreserveLightType);
-
-	// Do not reset light type for queued models
-	WriteData<2>(reinterpret_cast<void*>(0x004088A6), 0x90i8);
-
-	ChunkSpecularFix_Init();
+	InitPatches(settings);
 
 	texpack::init();
 
@@ -1743,10 +1821,10 @@ static void __cdecl InitMods()
 
 	direct3d::set_vsync(settings->getBool("EnableVsync", true));
 
-	if (settings->getBool("ScaleHud", false))
+	if (settings->getBool("ScaleHud", true))
 	{
 		uiscale::initialize();
-		hudscale::initialize();
+		hudscale::initialize(settings);
 	}
 
 	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode_Fill);
@@ -1764,26 +1842,27 @@ static void __cdecl InitMods()
 		uiscale::setup_fmv_scale();
 	}
 
-	if (!settings->getBool("DisablePolyBuff", false))
+	if (settings->getBool("PolyBuff"), true)
 		polybuff::rewrite_init();
 
 	if (settings->getBool("DebugCrashLog", true))
 		initCrashDump();
 
-	if (!settings->getBool("DisableMaterialColorFix", false))
+	if (settings->getBool("MaterialColorFix"), true)
 		MaterialColorFixes_Init();
 
 	if (settings->getBool("EnableBassSFX", false))
 		Sound_Init(settings->getInt("SEVolume", 100));
 
-	if (!settings->getBool("DisableInterpolationFix", false))
+	if (settings->getBool("InterpolationFix"), true)
 		init_interpolationAnimFixes();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_us\\wma");
 
-	MinorPatches_Init();
+	if (settings->getBool("PatchChaos2Crash"), true)
+		MinorPatches_Init();
 
 	// Map of files to replace.
 	// This is done with a second map instead of sadx_fileMap directly

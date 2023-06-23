@@ -181,8 +181,8 @@
 	<system:String x:Key="ManagerLblProfile">Profile:</system:String>
 	<system:String x:Key="ManagerLblGameDir">Game Directory:</system:String>
 	
-	<system:String x:Key="ManagerBtnEnableOneClick">Enable Gamebanana 1-Click Install</system:String>
-	<system:String x:Key="ManagerBtnDisableOneClick">Disable Gamebanana 1-Click Install</system:String>
+	<system:String x:Key="ManagerBtnEnableOneClick">Enable 1-Click Install</system:String>
+	<system:String x:Key="ManagerBtnDisableOneClick">Disable 1-Click Install</system:String>
 
 	<system:String x:Key="ManagerBtnInstallLoader">Install Mod Loader</system:String>
 	<system:String x:Key="ManagerBtnUninstallLoader">Uninstall Mod Loader</system:String>
@@ -283,6 +283,7 @@
     <system:String x:Key="PatchChaoPanel">Chao Stat Panel Screen Dimensions Fix</system:String>
     <system:String x:Key="PatchPixelOffset">2D Rendering Offset Fixes</system:String>
     <system:String x:Key="PatchLights">Light fixes</system:String>
+    <system:String x:Key="PatchGbix">Disable GBIX (Experimental)</system:String>
     <!--#endregion-->
 
     <!--#region DL Mod-->
@@ -322,6 +323,9 @@
     <system:String x:Key="DeleteProfileWarning">Are you sure you want to delete this profile?</system:String>
 
     <system:String x:Key="LoaderDllMissing" xml:space="preserve">The file SADXModLoader.dll couldn't be found, Mod Loader won't work.&#x0a;&#x0a;Please re download the Mod Manager.</system:String>
+
+    <system:String x:Key="ForceUpdate" xml:space="preserve">>This will force all selected mods to be completely re-downloaded.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
+    
     <!--#endregion-->
 
 </ResourceDictionary>

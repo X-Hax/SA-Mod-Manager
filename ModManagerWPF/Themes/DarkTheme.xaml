@@ -16,8 +16,9 @@
 	<!--#region SolidColorBrushes-->
 	<SolidColorBrush x:Key="Window.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="Window.Brushes.Highlight" Color="{DynamicResource Colors.Highlight}"/>
-		
-	<SolidColorBrush x:Key="ToolTip.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+    <SolidColorBrush x:Key="Window.HeaderAccentBrush" Color="#FF0056BC"/>
+
+    <SolidColorBrush x:Key="ToolTip.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="ToolTip.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 	<SolidColorBrush x:Key="ToolTip.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 
