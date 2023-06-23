@@ -51,7 +51,7 @@ namespace ModManagerWPF
 
 		string gamePath = string.Empty;
 		SADXLoaderInfo loaderini;
-		Dictionary<string, SADXModInfo> mods = null;
+		public Dictionary<string, SADXModInfo> mods = null;
 		string codelstpath = "mods/Codes.lst";
 		string codexmlpath = "mods/Codes.xml";
 		string codedatpath = "mods/Codes.dat";
@@ -206,7 +206,7 @@ namespace ModManagerWPF
 			};
 			timer.Tick += SetModManagerVersion;
 			timer.IsEnabled = true;
-			DownloadMod dl = new();
+			DownloadMod dl = new(updatePath, Path.Combine(gamePath, "mods"));
 		}
 
 		private void MainForm_FormClosing(object sender, EventArgs e)
@@ -539,6 +539,19 @@ namespace ModManagerWPF
 
 		private void ModContextVerifyIntegrity_Click(object sender, RoutedEventArgs e)
 		{
+			List<Tuple<string, ModInfo>> items = listMods.SelectedItems.Cast<ListViewItem>()
+				.Select(x => (string)x.Tag)
+				.Where(x => File.Exists(Path.Combine("mods", x, "mod.manifest")))
+				.Select(x => new Tuple<string, ModInfo>(x, mods[x]))
+				.ToList();
+
+			if (items.Count < 1)
+			{
+			
+				return;
+			}
+
+
 
 		}
 
@@ -1437,10 +1450,18 @@ namespace ModManagerWPF
 		{
 			InitializeWorker();
 			manualModUpdate = true;
-			updateChecker?.RunWorkerAsync(listMods.SelectedItems.Cast<ListViewItem>()
-				.Select(x => (string)x.Tag)
-				.Select(x => new KeyValuePair<string, ModInfo>(x, mods[x]))
-				.ToList());
+
+			if (listMods.SelectedItem is ModData mod)
+			{
+				var pair = new KeyValuePair<string, ModInfo>(mod.Tag, mods[mod.Tag]);
+				List<KeyValuePair<string, ModInfo>> list = new()
+				{
+					pair
+				};
+
+
+				updateChecker?.RunWorkerAsync(list);
+			}
 		}
 
 		private bool CheckForUpdates(bool force = false)
@@ -1507,7 +1528,72 @@ namespace ModManagerWPF
 			}
 
 			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, errors);
+		}
 
+		private void UpdateChecker_DoWorkForced(object sender, DoWorkEventArgs e)
+		{
+			if (!(sender is BackgroundWorker worker))
+			{
+				throw new Exception("what");
+			}
+
+			if (!(e.Argument is List<Tuple<string, ModInfo, List<ModManifestDiff>>> updatableMods) || updatableMods.Count == 0)
+			{
+				return;
+			}
+
+			var updates = new List<ModDownload>();
+			var errors = new List<string>();
+
+			using (var client = new UpdaterWebClient())
+			{
+				foreach (Tuple<string, ModInfo, List<ModManifestDiff>> info in updatableMods)
+				{
+					if (worker.CancellationPending)
+					{
+						e.Cancel = true;
+						break;
+					}
+
+					ModInfo mod = info.Item2;
+					if (!string.IsNullOrEmpty(mod.GitHubRepo))
+					{
+						if (string.IsNullOrEmpty(mod.GitHubAsset))
+						{
+							errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
+							continue;
+						}
+
+						ModDownload d = modUpdater.GetGitHubReleases(mod, info.Item1, client, errors);
+						if (d != null)
+						{
+							updates.Add(d);
+						}
+					}
+					else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
+					{
+						ModDownload d = modUpdater.GetGameBananaReleases(mod, info.Item1, errors);
+						if (d != null)
+						{
+							updates.Add(d);
+						}
+					}
+					else if (!string.IsNullOrEmpty(mod.UpdateUrl))
+					{
+						List<ModManifestEntry> localManifest = info.Item3
+							.Where(x => x.State == ModManifestState.Unchanged)
+							.Select(x => x.Current).ToList();
+
+						ModDownload d = modUpdater.CheckModularVersion(mod, info.Item1, localManifest, client, errors);
+						if (d != null)
+						{
+							updates.Add(d);
+						}
+					}
+				}
+			}
+
+			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, errors);
 		}
 
 		private void InitializeWorker()
@@ -1564,7 +1650,10 @@ namespace ModManagerWPF
 				return;
 			}
 
-
+			var progress = new Updater.ModDownloadDialogWPF(updates, updatePath);	
+			progress.Show();
+			
+			Refresh();
 		}
 
 		private void UpdateChecker_EnableControls(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)

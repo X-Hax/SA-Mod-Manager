@@ -9,6 +9,11 @@ using System.Drawing;
 using System.Windows.Media;
 using System.Linq;
 using System.Windows.Documents;
+using System.Security.Policy;
+using Octokit;
+using System.Xml.Linq;
+using System.IO;
+
 
 namespace ModManagerWPF
 {
@@ -17,7 +22,15 @@ namespace ModManagerWPF
 	/// </summary>
 	public partial class DownloadMod : Window
 	{
-		public DownloadMod()
+
+		private Uri url;
+		private GameBananaItem gbi;
+		private string author;
+		private string updatePath;
+		private string modPath;
+		private Dictionary<string, string> fields;
+
+		public DownloadMod(string updatePath, string modPath)
 		{
 			InitializeComponent();
 
@@ -29,6 +42,8 @@ namespace ModManagerWPF
 			}
 
 			App.UriQueue.UriEnqueued += UriQueueOnUriEnqueued;
+			this.updatePath = updatePath;
+			this.modPath = modPath;
 		}
 
 
@@ -53,7 +68,6 @@ namespace ModManagerWPF
 				return;
 			}
 
-			GameBananaItem gbi;
 
 			try
 			{
@@ -65,7 +79,7 @@ namespace ModManagerWPF
 				}
 
 				TextModName.Text = gbi.Name;
-				string color = GetNewColor("ForegroundBrush");
+				string color = GetNewColor("Colors.Text");
 				TextModDescription.Text = "<p style=\"color:" + color + ";\">" + gbi.Body + "</p>";
 
 				Dictionary<string, List<GameBananaCredit>> credits = gbi.Credits.Credits;
@@ -77,7 +91,7 @@ namespace ModManagerWPF
 						Text = CreditCategory.Key,
 						FontSize = 12,
 						TextWrapping = TextWrapping.WrapWithOverflow,
-						Foreground = ThemeBrush.GetThemeBrush("ForegroundBrush"),
+						Foreground = ThemeBrush.GetThemeBrush("TextBox.Brushes.Foreground"),
 						Padding = new Thickness(0, 4, 0, 5),
 					};
 
@@ -90,13 +104,15 @@ namespace ModManagerWPF
 							Text = CreditCategory.Value[i].MemberName,
 							FontSize = 14,
 							TextWrapping = TextWrapping.WrapWithOverflow,
-							Foreground = ThemeBrush.GetThemeBrush("ForegroundBrush"),
+							Foreground = ThemeBrush.GetThemeBrush("TextBox.Brushes.Foreground"),
 							FontWeight = FontWeights.Bold,
 							Padding = new Thickness(0, 4, 0, .5),
 						};
 
 						CreditsPanel.Children.Add(AuthorName);
 					}
+
+					author = CreditCategory.Value[0].MemberName;
 				}
 
 			}
@@ -122,13 +138,12 @@ namespace ModManagerWPF
 
 			Activate();
 
-			Uri url;
 
 			string[] split = uri.Substring("sadxmm:".Length).Split(',');
 
 
 			url = new Uri(split[0]);
-			Dictionary<string, string> fields = new Dictionary<string, string>(split.Length - 1);
+			fields = new Dictionary<string, string>(split.Length - 1);
 			for (int i = 1; i < split.Length; i++)
 			{
 				int ind = split[i].IndexOf(':');
@@ -193,6 +208,65 @@ namespace ModManagerWPF
 		private void OpenGB_Click(object sender, RoutedEventArgs e)
 		{
 
+		}
+
+		private void ButtonDownload_Click(object sender, RoutedEventArgs e)
+		{
+
+			//To do add support for retry with custom msg box
+
+			try
+			{
+				if (!Directory.Exists(updatePath))
+				{
+					Directory.CreateDirectory(updatePath);
+				}
+			}
+			catch (Exception ex)
+			{
+
+			}
+
+			var dummyInfo = new ModInfo
+			{
+				Name = TextModName.Text,
+				Author = author
+			};
+
+			string dummyPath = dummyInfo.Name;
+
+			if (fields is not null && fields.ContainsKey("folder"))
+				dummyPath = fields["folder"];
+
+			foreach (char c in Path.GetInvalidFileNameChars())
+			{
+				dummyPath = dummyPath.Replace(c, '_');
+			}
+
+			dummyPath = Path.Combine(modPath, dummyPath);
+
+			var updates = new List<ModDownload>
+			{
+				new ModDownload(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
+			};
+
+
+			//todo add retry
+			try
+			{
+
+				Directory.Delete(updatePath, true);
+			}
+			catch (Exception ex)
+			{
+				/*MessageBox.Show(this, "Failed to remove temporary update directory:\n" +
+										 ex.Message +
+										 "\n\nWould you like to retry? You can remove the directory manually later.",
+										 "Directory Deletion Failed",
+										 MessageBoxButton.RetryCancel);*/
+			}
+
+			((MainWindow)App.Current.MainWindow).Save();
 		}
 	}
 }
