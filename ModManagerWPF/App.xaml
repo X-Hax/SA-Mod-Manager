@@ -16,12 +16,17 @@
 			</ResourceDictionary.MergedDictionaries>
 
 			<!--#region Styles & Overwrites-->
+			
+			<!--#region Custom Title Bar-->
+			
+			<!--#endregion-->
+			
 			<!--#region Main Window-->
             <Style x:Key="SAWindow" TargetType="{x:Type Window}">
 				<Setter Property="Background" Value="{DynamicResource Window.Brushes.Background}"/>
-                <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
-            </Style>
-            <Style x:Key="FocusVisual">
+				<Setter Property="WindowStyle" Value="SingleBorderWindow"/>
+			</Style>
+			<Style x:Key="FocusVisual">
 				<Setter Property="Control.Template">
 					<Setter.Value>
 						<ControlTemplate>
@@ -41,10 +46,11 @@
 			</Style>
 			<!--#endregion-->
 			
-			<!--#region Text Elements Styles-->			
+			<!--#region Text Elements Styles-->
 			<Style TargetType="{x:Type TextBlock}">
 				<Setter Property="Foreground" Value="{DynamicResource TextBlock.Brushes.Foreground}"/>
-                <Setter Property="FlowDirection" Value="{Binding Path=(local:FlowDirectionHelper.CurrentFlowDirection)}"/>
+				<Setter Property="FontSize" Value="14"/>
+				<Setter Property="FlowDirection" Value="{Binding Path=(local:FlowDirectionHelper.CurrentFlowDirection)}"/>
 			</Style>
 			<Style TargetType="Control">
 				<Setter Property="Foreground" Value="{DynamicResource Control.Brushes.Foreground}"/>
@@ -333,11 +339,12 @@
 					</Trigger>
 				</ControlTemplate.Triggers>
 			</ControlTemplate>
+
 			<ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
 				<Grid x:Name="templateRoot" SnapsToDevicePixels="true">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
                     </Grid.ColumnDefinitions>
                     <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
 						<theme:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
@@ -1078,6 +1085,147 @@
 			<Style TargetType="{x:Type TreeViewItem}">
 				<Setter Property="Background" Value="{DynamicResource TreeViewItem.Brushes.Background}"/>
 				<Setter Property="Foreground" Value="{DynamicResource TreeViewItem.Brushes.Foreground}"/>
+			</Style>
+			<!--#endregion-->
+			
+			<!--#region Radio Button Style-->
+			<Style x:Key="OptionMarkFocusVisual">
+				<Setter Property="Control.Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<Rectangle Margin="14,0,0,0" StrokeDashArray="1 2" Stroke="{DynamicResource CheckBox.Brushes.Background}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<Style TargetType="{x:Type RadioButton}">
+				<Setter Property="Background" Value="{DynamicResource RadioButton.Brushes.Background}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource RadioButton.Brushes.Border}"/>
+				<Setter Property="VerticalContentAlignment" Value="Center"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type RadioButton}">
+							<Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Border x:Name="radioButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="100" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1,1,2,1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+									<Grid x:Name="markGrid" Margin="2">
+										<Ellipse x:Name="optionMark" Fill="{DynamicResource RadioButton.Brushes.Mark}" MinWidth="8" MinHeight="8" Opacity="0"/>
+									</Grid>
+								</Border>
+								<ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+							</Grid>
+							<ControlTemplate.Triggers>
+								<Trigger Property="HasContent" Value="true">
+									<Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}"/>
+									<Setter Property="Padding" Value="4,-1,0,0"/>
+								</Trigger>
+								<Trigger Property="IsMouseOver" Value="true">
+									<Setter Property="Background" TargetName="radioButtonBorder" Value="{DynamicResource RadioButton.Brushes.MouseOver.Background}"/>
+									<Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{DynamicResource RadioButton.Brushes.MouseOver.Border}"/>
+									<Setter Property="Fill" TargetName="optionMark" Value="{DynamicResource RadioButton.Brushes.MouseOver.Mark}"/>
+								</Trigger>
+								<Trigger Property="IsEnabled" Value="false">
+									<Setter Property="Background" TargetName="radioButtonBorder" Value="{DynamicResource RadioButton.Brushes.Disabled.Background}"/>
+									<Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{DynamicResource RadioButton.Brushes.Disabled.Border}"/>
+									<Setter Property="Fill" TargetName="optionMark" Value="{DynamicResource RadioButton.Brushes.Disabled.Mark}"/>
+								</Trigger>
+								<Trigger Property="IsPressed" Value="true">
+									<Setter Property="Background" TargetName="radioButtonBorder" Value="{DynamicResource RadioButton.Brushes.Pressed.Background}"/>
+									<Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{DynamicResource RadioButton.Brushes.Pressed.Border}"/>
+									<Setter Property="Fill" TargetName="optionMark" Value="{DynamicResource RadioButton.Brushes.Pressed.Mark}"/>
+								</Trigger>
+								<Trigger Property="IsChecked" Value="true">
+									<Setter Property="Opacity" TargetName="optionMark" Value="1"/>
+								</Trigger>
+								<Trigger Property="IsChecked" Value="{x:Null}">
+									<Setter Property="Opacity" TargetName="optionMark" Value="0.56"/>
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<!--#endregion-->
+			
+			<!--#region CheckBox Style-->
+			<Style x:Key="FocusVisual1">
+				<Setter Property="Control.Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource CheckBox.Brushes.Background}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<Style x:Key="OptionMarkFocusVisual1">
+				<Setter Property="Control.Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<Rectangle Margin="14,0,0,0" StrokeDashArray="1 2" Stroke="{DynamicResource CheckBox.Brushes.Background}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<Style TargetType="{x:Type CheckBox}">
+				<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual1}"/>
+				<Setter Property="Background" Value="{DynamicResource CheckBox.Brushes.Background}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource CheckBox.Brushes.Border}"/>
+				<Setter Property="VerticalContentAlignment" Value="Center"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type CheckBox}">
+							<Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Border x:Name="checkBoxBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+									<Grid x:Name="markGrid">
+										<Path x:Name="optionMark" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Fill="{DynamicResource CheckBox.Brushes.Mark}" Margin="1" Opacity="0" Stretch="None"/>
+										<Rectangle x:Name="indeterminateMark" Fill="{DynamicResource CheckBox.Brushes.Mark}" Margin="2" Opacity="0"/>
+									</Grid>
+								</Border>
+								<ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+							</Grid>
+							<ControlTemplate.Triggers>
+								<Trigger Property="HasContent" Value="true">
+									<Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual1}"/>
+									<Setter Property="Padding" Value="4,-1,0,0"/>
+								</Trigger>
+								<Trigger Property="IsMouseOver" Value="true">
+									<Setter Property="Background" TargetName="checkBoxBorder" Value="{DynamicResource CheckBox.Brushes.MouseOver.Background}"/>
+									<Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{DynamicResource CheckBox.Brushes.MouseOver.Border}"/>
+									<Setter Property="Fill" TargetName="optionMark" Value="{DynamicResource CheckBox.Brushes.MouseOver.Mark}"/>
+									<Setter Property="Fill" TargetName="indeterminateMark" Value="{DynamicResource CheckBox.Brushes.MouseOver.Mark}"/>
+								</Trigger>
+								<Trigger Property="IsEnabled" Value="false">
+									<Setter Property="Background" TargetName="checkBoxBorder" Value="{DynamicResource CheckBox.Brushes.Disabled.Background}"/>
+									<Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{DynamicResource CheckBox.Brushes.Disabled.Border}"/>
+									<Setter Property="Fill" TargetName="optionMark" Value="{DynamicResource CheckBox.Brushes.Disabled.Mark}"/>
+									<Setter Property="Fill" TargetName="indeterminateMark" Value="{DynamicResource CheckBox.Brushes.Disabled.Mark}"/>
+								</Trigger>
+								<Trigger Property="IsPressed" Value="true">
+									<Setter Property="Background" TargetName="checkBoxBorder" Value="{DynamicResource CheckBox.Brushes.Pressed.Background}"/>
+									<Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{DynamicResource CheckBox.Brushes.Pressed.Border}"/>
+									<Setter Property="Fill" TargetName="optionMark" Value="{DynamicResource CheckBox.Brushes.Pressed.Mark}"/>
+									<Setter Property="Fill" TargetName="indeterminateMark" Value="{DynamicResource CheckBox.Brushes.Pressed.Mark}"/>
+								</Trigger>
+								<Trigger Property="IsChecked" Value="true">
+									<Setter Property="Opacity" TargetName="optionMark" Value="1"/>
+									<Setter Property="Opacity" TargetName="indeterminateMark" Value="0"/>
+								</Trigger>
+								<Trigger Property="IsChecked" Value="{x:Null}">
+									<Setter Property="Opacity" TargetName="optionMark" Value="0"/>
+									<Setter Property="Opacity" TargetName="indeterminateMark" Value="1"/>
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
 			</Style>
 			<!--#endregion-->
 			<!--#endregion-->
