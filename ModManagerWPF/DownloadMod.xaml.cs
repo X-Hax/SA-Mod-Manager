@@ -86,6 +86,8 @@ namespace ModManagerWPF
 
 				foreach (var CreditCategory in credits)
 				{
+					author = CreditCategory.Value[0].MemberName;
+
 					TextBlock TexCreditCategory = new()
 					{
 						Text = CreditCategory.Key,
@@ -111,8 +113,6 @@ namespace ModManagerWPF
 
 						CreditsPanel.Children.Add(AuthorName);
 					}
-
-					author = CreditCategory.Value[0].MemberName;
 				}
 
 			}
