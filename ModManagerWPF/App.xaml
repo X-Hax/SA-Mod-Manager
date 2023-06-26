@@ -1382,7 +1382,7 @@
 			<!--#region Main Window-->
 			<Style x:Key="SAWindow" TargetType="{x:Type Window}">
 				<Setter Property="Background" Value="{DynamicResource Window.Brushes.Background}"/>
-				<Setter Property="WindowStyle" Value="None"/>
+				<Setter Property="WindowStyle" Value="SingleBorderWindow"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource Window.Brushes.Border}"/>
 				<Setter Property="WindowChrome.WindowChrome">
 					<Setter.Value>
