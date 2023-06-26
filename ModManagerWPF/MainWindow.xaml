@@ -9,7 +9,7 @@
 		xmlns:dd="urn:gong-wpf-dragdrop"
 		mc:Ignorable="d"
 		Title="SADX Mod Manager"
-		Style="{StaticResource SAWindow}"
+		Style="{DynamicResource SAWindow}"
 		MinHeight="550" MinWidth="590" Height="700" Width="640" WindowStartupLocation="CenterScreen"
 		Loaded="MainWindowManager_Loaded"
 		ContentRendered="MainWindowManager_ContentRendered"
@@ -26,7 +26,6 @@
 		</ResourceDictionary>
 	</Window.Resources>
 
-	<!--This is the initial grid used by the entire app.-->
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -61,10 +60,10 @@
 							<ListView.ItemContainerStyle>
 								<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
 									<EventSetter Event="MouseDoubleClick" Handler="ModsView_Item_MouseDoubleClick"/>
-                                    <EventSetter Event="ContextMenuOpening" Handler="ModList_ContextMenuOpening"/>
-                                    <EventSetter Event="MouseEnter" Handler="ModList_MouseEnter"/>
-                                    <EventSetter Event="MouseLeave" Handler="ModList_MouseLeave"/>
-                                </Style>
+									<EventSetter Event="ContextMenuOpening" Handler="ModList_ContextMenuOpening"/>
+									<EventSetter Event="MouseEnter" Handler="ModList_MouseEnter"/>
+									<EventSetter Event="MouseLeave" Handler="ModList_MouseLeave"/>
+								</Style>
 							</ListView.ItemContainerStyle>
 							<ListView.ContextMenu>
 								<ContextMenu>
@@ -144,7 +143,7 @@
 
 						<!--This Grid manages the description for mods.-->
 						<Grid Grid.Column="1" Grid.Row="2" Margin="5,10,5,0">
-                            <TextBlock x:Name="textModsDescription" Text="{DynamicResource ModTextDesc}" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+							<TextBlock x:Name="textModsDescription" Text="{DynamicResource ModTextDesc}" HorizontalAlignment="Left" TextWrapping="Wrap"/>
 						</Grid>
 					</Grid>
 
@@ -164,7 +163,7 @@
 							<RowDefinition Height="30"/>
 							<RowDefinition Height="10"/>
 							<RowDefinition Height="30"/>
-							<RowDefinition Height="10"/>
+							<RowDefinition Height="20"/>
 							<RowDefinition Height="30"/>
 							<RowDefinition Height="10"/>
 							<RowDefinition Height="30"/>
@@ -278,9 +277,9 @@
 							<ListView.ItemContainerStyle>
 								<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
 									<EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
-                                    <EventSetter Event="MouseEnter" Handler="CodesView_Item_MouseEnter"/>
-                                    <EventSetter Event="MouseLeave" Handler="CodesView_Item_MouseLeave"/>
-                                    <EventSetter Event="Selected" Handler="CodesView_Item_Selected"></EventSetter>
+									<EventSetter Event="MouseEnter" Handler="CodesView_Item_MouseEnter"/>
+									<EventSetter Event="MouseLeave" Handler="CodesView_Item_MouseLeave"/>
+									<EventSetter Event="Selected" Handler="CodesView_Item_Selected"></EventSetter>
 								</Style>
 							</ListView.ItemContainerStyle>
 							<ListView.View>
@@ -319,7 +318,7 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 
-                            <TextBlock Text="{DynamicResource Code}" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
+							<TextBlock Text="{DynamicResource Code}" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
 							<Separator Grid.Row="0" VerticalAlignment="Bottom"/>
 							<TextBlock x:Name="CodeAuthorGrid" Text="{DynamicResource ModsListAuthor}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap"/>
 							<TextBlock x:Name="CodeCategoryGrid" Text="{DynamicResource CodesListCategory}" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap"/>
@@ -335,7 +334,7 @@
 								</Grid.ColumnDefinitions>
 								<Button x:Name="btnAddCode" Height="30" Grid.Column="0" ToolTip="{DynamicResource TipCodesNewCode}">
 									<StackPanel Orientation="Horizontal">
-										<Image Width="15" Height="16" Source="{StaticResource IconAdd}" Margin="0,0,5,0"/>
+										<Image Width="20" Source="{StaticResource IconAdd}" Margin="0,0,5,0"/>
 										<TextBlock Text="{DynamicResource CodesBtnAdd}"/>
 									</StackPanel>
 								</Button>
@@ -517,10 +516,10 @@
 												<ComboBoxItem Content="{DynamicResource GameGraphicsBoxEmu}"/>
 											</ComboBox>
 											<ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center">
-												
+
 											</ComboBox>
 											<ComboBox x:Name="comboUIFilter" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" SelectedIndex="0">
-												
+
 											</ComboBox>
 										</Grid>
 
@@ -755,8 +754,8 @@
 										<Label Content="{DynamicResource GameSoundLabelVoice}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
 										<Label Content="{DynamicResource GameSoundLabelSound}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
 										<Slider x:Name="sliderMusic" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" ValueChanged="sliderMusic_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft" Value="100"/>
-                                        <Slider x:Name="sliderVoice" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" ValueChanged="sliderVoice_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft" Value="100"/>
-                                        <Slider x:Name="sliderSFX" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" ValueChanged="sliderSFX_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft" Value="100"/>
+										<Slider x:Name="sliderVoice" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" ValueChanged="sliderVoice_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft" Value="100"/>
+										<Slider x:Name="sliderSFX" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" ValueChanged="sliderSFX_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft" Value="100"/>
 										<Label x:Name="labelMusicLevel" Content="100" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center"/>
 										<Label x:Name="labelVoiceLevel" Content="100" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center"/>
 										<Label x:Name="labelSFXLevel" Content="100" Grid.Column="3" Grid.Row="3" VerticalAlignment="Center"/>
@@ -805,7 +804,7 @@
 									<ListView x:Name="listPatches" Foreground="White" Grid.Column="1" Grid.Row="2" FontSize="13" DisplayMemberPath="Name">
 										<ListView.ItemContainerStyle>
 											<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
-											
+
 											</Style>
 										</ListView.ItemContainerStyle>
 										<ListView.View>
@@ -918,7 +917,7 @@
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
-						
+
 							<CheckBox x:Name="tsCheckEvent" Content="{DynamicResource SpawnCheckEvent}" Grid.Column="0" Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center" Checked="tsCheckEvent_Checked" Unchecked="tsCheckEvent_Unchecked" ToolTip="{DynamicResource TipsSpawnEvent}"/>
 							<ComboBox x:Name="tsComboEvent" Grid.Column="1" Grid.Row="0" Margin="5,5,5,5"/>
 
@@ -1021,7 +1020,7 @@
 									</Grid>
 								</Grid>
 							</GroupBox>
-							
+
 							<Button x:Name="btnTSLaunch" Content="{DynamicResource SpawnButtonLaunch}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Margin="5,5,5,5" Height="50" Click="btnTestSpawnLaunchGame_Click" ToolTip="{DynamicResource TipsSpawnLaunch}"/>
 						</Grid>
 					</Grid>
@@ -1050,8 +1049,8 @@
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="10"/>
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="10"/>
@@ -1099,9 +1098,9 @@
 									</Grid.RowDefinitions>
 
 									<StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
-                                        <ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboProfile_SelectionChanged" DisplayMemberPath="name"/>
+										<ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboProfile_SelectionChanged" DisplayMemberPath="name"/>
 
-                                        <Button x:Name="btnProfileSettings" Grid.Column="2" Height="22" Width="27" Click="btnProfileSettings_Click">
+										<Button x:Name="btnProfileSettings" Grid.Column="2" Height="22" Width="27" Click="btnProfileSettings_Click">
 											<Image Source="{StaticResource IconProfiles}" Margin="1,1,1,1" ToolTip="{DynamicResource TipsManagerProfileEdit}"/>
 										</Button>
 									</StackPanel>
@@ -1111,8 +1110,8 @@
 											<Image Source="{StaticResource IconFolder}" Margin="1,1,1,1"/>
 										</Button>
 									</StackPanel>
-                                    <ComboBox x:Name="comboThemes" ItemsSource="{Binding ThemeList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentTheme, Source={x:Static Application.Current}}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,0,5,0" Loaded="comboThemes_Loaded" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
-                                    <ComboBox x:Name="comboLanguage" ItemsSource="{Binding LangList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentLang, Source={x:Static Application.Current}}"  Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Margin="5,0,5,0" Loaded="comboLanguage_Loaded" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
+									<ComboBox x:Name="comboThemes" ItemsSource="{Binding ThemeList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentTheme, Source={x:Static Application.Current}}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,0,5,0" Loaded="comboThemes_Loaded" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
+									<ComboBox x:Name="comboLanguage" ItemsSource="{Binding LangList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentLang, Source={x:Static Application.Current}}"  Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Margin="5,0,5,0" Loaded="comboLanguage_Loaded" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
 								</Grid>
 
 								<!--Grid for Bottoms Options-->
@@ -1128,18 +1127,18 @@
 									</Grid.RowDefinitions>
 
 									<Button x:Name="btnOneClick" Grid.Column="0" Grid.Row="1" Margin="5,0,5,0" ToolTip="{DynamicResource TipsManagerEnableOneClick}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{StaticResource IconGB}" Width="20" Height="15" Margin="0,0,5,0"/>
-                                            <TextBlock Text="{DynamicResource ManagerBtnEnableOneClick}" VerticalAlignment="Center"></TextBlock>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button x:Name="btnInstallLoader" Grid.Column="2" Grid.Row="1" Margin="5,0,5,0" Click="btnInstallLoader_Click" ToolTip="{DynamicResource TipsManagerInstallLoader}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image x:Name="imgInstall" Source="{StaticResource IconInstall}" Height="15" Width="20" Margin="0,0,5,0"/>
+										<StackPanel Orientation="Horizontal">
+											<Image Source="{StaticResource IconGB}" Width="20" Height="15" Margin="0,0,5,0"/>
+											<TextBlock Text="{DynamicResource ManagerBtnEnableOneClick}" VerticalAlignment="Center"></TextBlock>
+										</StackPanel>
+									</Button>
+									<Button x:Name="btnInstallLoader" Grid.Column="2" Grid.Row="1" Margin="5,0,5,0" Click="btnInstallLoader_Click" ToolTip="{DynamicResource TipsManagerInstallLoader}">
+										<StackPanel Orientation="Horizontal">
+											<Image x:Name="imgInstall" Source="{StaticResource IconInstall}" Height="15" Width="20" Margin="0,0,5,0"/>
 											<TextBlock x:Name="txtInstallLoader" Text="{DynamicResource ManagerBtnInstallLoader}" VerticalAlignment="Center"/>
 										</StackPanel>
-                                    </Button>
-									</Grid>
+									</Button>
+								</Grid>
 							</Grid>
 
 							<!--Group Box for Update Configuration-->
@@ -1178,12 +1177,12 @@
 											<ColumnDefinition Width="200"/>
 										</Grid.ColumnDefinitions>
 										<Button x:Name="btnCheckUpdates"  Grid.Column="0" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource TipsManagerCheckUpdates}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Source="{StaticResource IconUpdate}" Width="20" Height="20" Margin="0,0,5,0"/>
+											<StackPanel Orientation="Horizontal">
+												<Image Source="{StaticResource IconUpdate}" Width="20" Height="20" Margin="0,0,5,0"/>
 												<TextBlock Text="{DynamicResource ManagerBtnCheckNow}" VerticalAlignment="Center"/>
 											</StackPanel>
-                                        </Button>
-                                    </Grid>
+										</Button>
+									</Grid>
 								</Grid>
 							</GroupBox>
 
@@ -1252,13 +1251,13 @@
 									<RowDefinition Height="30"/>
 								</Grid.RowDefinitions>
 
-                                <Button x:Name="btnCredits" Grid.Column="0" Margin="5,0,5,0" Click="AboutBtn_Click" ToolTip="{DynamicResource TipsManagerContributors}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="{StaticResource IconContributors}" Width="20" Height="20" Margin="0,0,5,0"/>
-                                        <TextBlock Text="{DynamicResource ManagerBtnCredits}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button x:Name="btnDocs" Grid.Column="0" Grid.Row="2" Margin="5,0,5,0" ToolTip="{DynamicResource TipsManagerSADocs}">
+								<Button x:Name="btnCredits" Grid.Column="0" Margin="5,0,5,0" Click="AboutBtn_Click" ToolTip="{DynamicResource TipsManagerContributors}">
+									<StackPanel Orientation="Horizontal">
+										<Image Source="{StaticResource IconContributors}" Width="20" Height="20" Margin="0,0,5,0"/>
+										<TextBlock Text="{DynamicResource ManagerBtnCredits}" VerticalAlignment="Center"/>
+									</StackPanel>
+								</Button>
+								<Button x:Name="btnDocs" Grid.Column="0" Grid.Row="2" Margin="5,0,5,0" ToolTip="{DynamicResource TipsManagerSADocs}">
 									<StackPanel Orientation="Horizontal">
 										<Image Source="{StaticResource IconDocs}" Width="20" Height="20" Margin="0,0,5,0"/>
 										<TextBlock Text="{DynamicResource ManagerBtnDocs}" VerticalAlignment="Center"/>
@@ -1300,16 +1299,16 @@
 				</Grid.RowDefinitions>
 				<Button x:Name="SaveAndPlayButton" Grid.Column="1" Grid.Row="1" Click="SaveAndPlayButton_Click" ToolTip="{DynamicResource TipMainSaveAndPlay}">
 					<Grid>
-                        <StackPanel Orientation="Horizontal">
-                            <Image x:Name="savePlayIcon" Width="30" Source="{StaticResource IconPlay}" Margin="0,0,5,0"/>
-                            <TextBlock Text="{DynamicResource MainBtnSaveAndPlay}" VerticalAlignment="Center"/>
-                        </StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<Image x:Name="savePlayIcon" Width="20" Source="{StaticResource IconPlay}" Margin="0,0,5,0"/>
+							<TextBlock Text="{DynamicResource MainBtnSaveAndPlay}" VerticalAlignment="Center"/>
+						</StackPanel>
 					</Grid>
 				</Button>
 				<Button x:Name="SaveButton" Grid.Column="3" Grid.Row="1" Click="SaveButton_Click" ToolTip="{DynamicResource TipMainSave}">
 					<StackPanel Orientation="Horizontal">
-                        <Image x:Name="saveIcon" Width="30" Source="{StaticResource IconSave}" Margin="0,0,5,0"/>
-                        <TextBlock Text="{DynamicResource MainBtnSave}" VerticalAlignment="Center"/>
+						<Image x:Name="saveIcon" Width="20" Source="{StaticResource IconSave}" Margin="0,0,5,0"/>
+						<TextBlock Text="{DynamicResource MainBtnSave}" VerticalAlignment="Center"/>
 					</StackPanel>
 				</Button>
 			</Grid>
