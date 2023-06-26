@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Linq;
 using System.Windows.Threading;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Navigation;
 
 namespace ModManagerWPF
 {
@@ -211,6 +214,24 @@ namespace ModManagerWPF
 			base.OnStartup(e);
 			UriQueue.Close();
 		}
-	}
+
+		private void MinimizeWindow(object sender, RoutedEventArgs e)
+		{
+			Window window = Window.GetWindow((DependencyObject)sender);
+			window.WindowState = WindowState.Minimized;
+		}
+
+		private void MaximizeWindow(object sender, RoutedEventArgs e)
+		{
+			Window window = Window.GetWindow((DependencyObject)sender);
+			window.WindowState = window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+		}
+
+		private void CloseWindow(object sender, RoutedEventArgs e)
+		{
+			Window window = Window.GetWindow((DependencyObject)sender);
+			window.Close();
+		}
+    }
 }
 

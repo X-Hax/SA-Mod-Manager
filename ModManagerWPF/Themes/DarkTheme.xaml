@@ -15,10 +15,21 @@
 	
 	<!--#region SolidColorBrushes-->
 	<SolidColorBrush x:Key="Window.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
-	<SolidColorBrush x:Key="Window.Brushes.Highlight" Color="{DynamicResource Colors.Highlight}"/>
-    <SolidColorBrush x:Key="Window.HeaderAccentBrush" Color="#FF0056BC"/>
+	<SolidColorBrush x:Key="Window.Brushes.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="Window.Brushes.Inactive.Border" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="Window.HeaderAccentBrush" Color="#FF0056BC"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.Background" Color="Transparent"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.Foreground" Color="#FF9E9E9E"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.MouseOver.Foreground" Color="#FFB0B0B0"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.Pressed.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.Pressed.Foreground" Color="{DynamicResource Colors.Highlight.Bright}"/>
 
-    <SolidColorBrush x:Key="ToolTip.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="WindowCloseButton.Brushes.MouseOver.Foreground" Color="#FFFF2C2C"/>
+	<SolidColorBrush x:Key="WindowCloseButton.Brushes.Pressed.Background" Color="#FFFF2C2C"/>
+	<SolidColorBrush x:Key="WindowCloseButton.Brushes.Pressed.Foreground" Color="#FFFF7979"/>
+
+	<SolidColorBrush x:Key="ToolTip.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="ToolTip.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 	<SolidColorBrush x:Key="ToolTip.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 
