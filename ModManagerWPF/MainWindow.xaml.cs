@@ -1320,17 +1320,20 @@ namespace ModManagerWPF
 		{
 			comboProfile.Items.Clear();
 
-			foreach (var item in Directory.EnumerateFiles(modDirectory, "*.ini"))
+			if (modDirectory != string.Empty)
 			{
-				if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase) && !item.EndsWith("desktop.ini", StringComparison.OrdinalIgnoreCase))
+				foreach (var item in Directory.EnumerateFiles(modDirectory, "*.ini"))
 				{
-					Profile pro = new()
+					if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase) && !item.EndsWith("desktop.ini", StringComparison.OrdinalIgnoreCase))
 					{
-						name = Path.GetFileNameWithoutExtension(item),
-						iniPath = item
-					};
+						Profile pro = new()
+						{
+							name = Path.GetFileNameWithoutExtension(item),
+							iniPath = item
+						};
 
-					comboProfile.Items.Add(pro);
+						comboProfile.Items.Add(pro);
+					}
 				}
 			}
 		}
