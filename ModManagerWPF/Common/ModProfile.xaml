@@ -27,7 +27,7 @@
             <ColumnDefinition Width="312"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListView x:Name="ProfileListView" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{StaticResource ForegroundBrush}" 
+        <ListView x:Name="ProfileListView" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   Margin="10,10,10,15" 
                   dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
             <ListView.ItemContainerStyle>
@@ -70,11 +70,11 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="-4" Grid.Row="2" Grid.Column="0" Background="{StaticResource MainDialogBottomBrush}">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="-4" Grid.Row="2" Grid.Column="0">
             <Button Content="{StaticResource BtnCreate}" Margin="8,8,0,8" VerticalAlignment="Center" Width="117" Height="22" Click="UI_Add_Click" />
         </StackPanel>
-        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Grid.Row="2" Grid.Column="1" Background="{StaticResource MainDialogBottomBrush}">
-            <Button Content="{StaticResource BtnOK}" Margin="8,0,0,0" VerticalAlignment="Center" Width="75" Height="23" Click="UI_OK_Click" IsCancel="True"/>
+		<StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Grid.Row="2" Grid.Column="1">
+			<Button Content="{StaticResource BtnOK}" Margin="8,0,0,0" VerticalAlignment="Center" Width="75" Height="23" Click="UI_OK_Click" IsCancel="True"/>
         </StackPanel>
 
     </Grid>

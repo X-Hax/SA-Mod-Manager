@@ -14,10 +14,10 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="Header" Text="Create Profile" TextAlignment="Center" FontSize="25" Foreground="{StaticResource ForegroundBrush}"  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20,0" TextWrapping="Wrap"/>
+        <TextBlock x:Name="Header" Text="Create Profile" TextAlignment="Center" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20,0" TextWrapping="Wrap"/>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{DynamicResource ModsListName}" Margin="55,3,363.667,41" Grid.Row="1" Width="106"></TextBlock>
         <TextBox x:Name="ProfileNameTextbox" Focusable="True" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,21,0,18" Width="414"></TextBox>
-        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="-4" Grid.Row="2" Background="{StaticResource MainDialogBottomBrush}">
+        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="-4" Grid.Row="2">
             <Button Content="{StaticResource BtnCancel}" Margin="12,0,0,0" VerticalAlignment="Center" Width="75" Height="23" IsCancel="True" Click="UI_Cancel_Click" />
             <Button Content="{StaticResource BtnOK}" Margin="8,0,0,0" VerticalAlignment="Center" Width="75" Height="23" Click="UI_OK_Click" IsDefault="True" />
         </StackPanel>

@@ -32,7 +32,7 @@
 		<Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0,5,0,0"/>
 		<Rectangle Grid.Row="0" Height="1"  VerticalAlignment="Bottom"/>
         <TextBox Grid.Row="1" x:Name="DescBx" AcceptsReturn="True" Text="Desc" FontSize="20" IsReadOnly="True"
-                 Margin="5" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextBrush}"/>
+                 Margin="5" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="Transparent" BorderThickness="0"/>
 
 		<Separator Grid.Row="2" VerticalAlignment="Top" Margin="0,-5,0,0"/>
 		<Grid Grid.Row="2" Height="30">
