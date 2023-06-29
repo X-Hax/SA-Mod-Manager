@@ -11,4 +11,6 @@
 			</DrawingGroup>
 		</DrawingImage.Drawing>
 	</DrawingImage>
+
+	<Geometry x:Key="Icons.Install">F0 M16,16z M0,0z M6.08,1.28L6.08,6.08 2.72,6.08 8,11.36 13.28,6.08 9.92,6.08 9.92,1.28z M0.32,9.92L0.32,14.72 15.68,14.72 15.68,9.92 11.84,9.92 8,13.76 4.16,9.92z M12.8,10.88L14.72,10.88 14.72,12.8 12.8,12.8z</Geometry>
 </ResourceDictionary>

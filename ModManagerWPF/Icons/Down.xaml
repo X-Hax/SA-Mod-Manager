@@ -15,4 +15,6 @@
 			</DrawingGroup>
 		</DrawingImage.Drawing>
 	</DrawingImage>
+
+	<Geometry x:Key="Icons.Down">F1 M24,24z M0,0z M12,5.9999998L12,18 M12,18L15,15 M12,18L9,15</Geometry>
 </ResourceDictionary>

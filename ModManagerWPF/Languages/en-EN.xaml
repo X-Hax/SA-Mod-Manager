@@ -16,6 +16,8 @@
     <system:String x:Key="Error">Error</system:String>
     <system:String x:Key="BtnReset">Reset</system:String>
     <system:String x:Key="BtnCreate">Create</system:String>
+	<system:String x:Key="SelectAll">Select All</system:String>
+	<system:String x:Key="DeselectAll">Deselect All</system:String>
 
     <!--#region Main Window Strings-->
 	<system:String x:Key="MainBtnSave">Save</system:String>

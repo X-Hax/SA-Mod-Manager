@@ -11,4 +11,6 @@
 			</DrawingGroup>
 		</DrawingImage.Drawing>
 	</DrawingImage>
+
+	<Geometry x:Key="Icons.Refresh">F1 M24,24z M0,0z M18.5249,9.46C18.8317,10.2474 19,11.1041 19,12 19,15.866 15.866,19 12,19L9,19 M5.47507,14.54C5.16832,13.7526 5,12.8959 5,12 5,8.13401 8.13401,5 12,5L15,5 M15,5L12,2 M15,5L12,8 M9,19L12,16 M9,19L12,22</Geometry>
 </ResourceDictionary>

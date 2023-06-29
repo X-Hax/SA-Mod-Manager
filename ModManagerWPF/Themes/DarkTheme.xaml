@@ -204,6 +204,7 @@
 	<SolidColorBrush x:Key="CheckBox.Brushes.Pressed.Mark" Color="{DynamicResource Colors.Highlight.Bright}"/>
 
 	<SolidColorBrush x:Key="GroupBox.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="GroupBox.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 	<SolidColorBrush x:Key="GroupBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 
 	<SolidColorBrush x:Key="Separator.Brushes.Background" Color="{DynamicResource Colors.Border}"/>
@@ -219,6 +220,26 @@
 	<Color x:Key="IconColorRed" A="255" R="188" G="0" B="0"/>
 	<Color x:Key="IconColorGray" A="255" R="158" G="158" B="158"/>
 	<Color x:Key="IconColorYellow" A="255" R="188" G="188" B="0"/>
+
+	<SolidColorBrush x:Key="Icon.Brushes.Gray" Color="#FF9E9E9E"/>
+	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Gray" Color="#FFBCBCBC"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Gray" Color="#FF505050"/>
+
+	<SolidColorBrush x:Key="Icon.Brushes.Red" Color="#FFBC0000"/>
+	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Red" Color="#FFF54242"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Red" Color="#FF844C4C"/>
+	
+	<SolidColorBrush x:Key="Icon.Brushes.Blue" Color="#FF006ABC"/>
+	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Blue" Color="#FF2CA3FF"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Blue" Color="#FF2E5573"/>
+	
+	<SolidColorBrush x:Key="Icon.Brushes.Green" Color="#FF00BC00"/>
+	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Green" Color="#FF5BEA5B"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Green" Color="#FF396F39"/>
+	
+	<SolidColorBrush x:Key="Icon.Brushes.Yellow" Color="#FFBCBC00"/>
+	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Yellow" Color="#FFEDED5C"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Yellow" Color="#FF6D6D3A"/>
 
 	<SolidColorBrush x:Key="IconBrushAdd" Color="{DynamicResource IconColorGreen}"/>
 	<SolidColorBrush x:Key="IconBrushRefresh" Color="{DynamicResource IconColorBlue}"/>
@@ -246,8 +267,8 @@
 	<SolidColorBrush x:Key="IconBrushInfo" Color="{DynamicResource IconColorGray}"/>
 	<SolidColorBrush x:Key="IconBrushError" Color="{DynamicResource IconColorRed}"/>
 	<SolidColorBrush x:Key="IconBrushBugReport" Color="{DynamicResource IconColorRed}"/>
-	<SolidColorBrush x:Key="IconBrushInstall" Color="{DynamicResource IconColorGray}"/>
-	<SolidColorBrush x:Key="IconBrushUninstall" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushInstall" Color="{DynamicResource IconColorGreen}"/>
+	<SolidColorBrush x:Key="IconBrushUninstall" Color="{DynamicResource IconColorRed}"/>
 	<SolidColorBrush x:Key="IconBrushUpdate" Color="{DynamicResource IconColorBlue}"/>
 	<!--#endregion-->
 

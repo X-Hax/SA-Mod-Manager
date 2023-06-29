@@ -11,4 +11,6 @@
 			</DrawingGroup>
 		</DrawingImage.Drawing>
 	</DrawingImage>
+
+	<Geometry x:Key="Icons.Download">F1 M24,24z M0,0z M16,11L12,15 M12,15L8,11 M12,15L12,3 M21,15L21,17C21,18.1046,20.1046,19,19,19L5,19C3.89543,19,3,18.1046,3,17L3,15</Geometry>
 </ResourceDictionary>

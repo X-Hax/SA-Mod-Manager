@@ -11,4 +11,6 @@
 			</DrawingGroup>
 		</DrawingImage.Drawing>
 	</DrawingImage>
+
+	<Geometry x:Key="Icons.Check">F1 M24,24z M0,0z M19.5,7L9,17.5 5,13.5</Geometry>
 </ResourceDictionary>

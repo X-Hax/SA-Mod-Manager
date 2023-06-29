@@ -43,8 +43,9 @@
 			<!--#region Text Elements Styles-->
 			<Style TargetType="{x:Type TextBlock}">
 				<Setter Property="Foreground" Value="{DynamicResource TextBlock.Brushes.Foreground}"/>
-				<Setter Property="FontSize" Value="14"/>
+				<Setter Property="FontSize" Value="13"/>
 				<Setter Property="FlowDirection" Value="{Binding Path=(local:FlowDirectionHelper.CurrentFlowDirection)}"/>
+				<Setter Property="TextWrapping" Value="Wrap"/>
 			</Style>
 			<Style TargetType="Control">
 				<Setter Property="Foreground" Value="{DynamicResource Control.Brushes.Foreground}"/>
@@ -744,11 +745,10 @@
 
             <!--#region Button Styles-->
             <Style x:Key="MainButtonStyle" TargetType="{x:Type Button}">
-				<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
 				<Setter Property="Background" Value="{DynamicResource Button.Brushes.Background}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.Border}"/>
 				<Setter Property="Foreground" Value="{DynamicResource Button.Brushes.Foreground}"/>
-				<Setter Property="BorderThickness" Value="0.5"/>
+				<Setter Property="BorderThickness" Value="1"/>
 				<Setter Property="HorizontalContentAlignment" Value="Center"/>
 				<Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="Padding" Value="1"/>
@@ -760,9 +760,6 @@
 						        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             </Border>
 							<ControlTemplate.Triggers>
-								<Trigger Property="IsDefaulted" Value="true">
-									<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-								</Trigger>
 								<Trigger Property="IsMouseOver" Value="true">
 									<Setter Property="Background" TargetName="border" Value="{DynamicResource Button.Brushes.MouseOver.Background}"/>
 									<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Button.Brushes.MouseOver.Border}"/>
@@ -891,6 +888,96 @@
 								<Trigger Property="IsPressed" Value="True">
 									<Setter Property="Background" Value="{DynamicResource WindowCloseButton.Brushes.Pressed.Background}"/>
 									<Setter Property="Foreground" Value="{DynamicResource WindowCloseButton.Brushes.Pressed.Foreground}"/>
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+
+			<Style TargetType="{x:Type local:ImageButton}">
+				<Setter Property="Background" Value="{DynamicResource Button.Brushes.Background}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.Border}"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="Padding" Value="0"/>
+				<Setter Property="ImageBrush" Value="{DynamicResource Icon.Brushes.Gray}"/>
+				<Setter Property="ImageBrushHover" Value="{DynamicResource Icon.Brushes.MouseOver.Gray}"/>
+				<Setter Property="ImageBrushDisabled" Value="{DynamicResource Icon.Brushes.Disabled.Gray}"/>
+				<Setter Property="IconThickness" Value="1.5"/>
+				<Setter Property="IconFill" Value="False"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type local:ImageButton}">
+							<Border x:Name="border" CornerRadius="3" SnapsToDevicePixels="true"
+									Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+								<Path x:Name="path" Data="{TemplateBinding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"
+									  Stroke="{TemplateBinding ImageBrush}" StrokeThickness="{TemplateBinding IconThickness}" Fill="Transparent"
+									  StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeMiterLimit="1" Stretch="UniformToFill"/>
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Background" Value="{DynamicResource Button.Brushes.Disabled.Background}"/>
+									<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.Disabled.Border}"/>
+									<Setter Property="ImageBrush" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ImageBrushDisabled}"/>
+								</Trigger>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Background" Value="{DynamicResource Button.Brushes.MouseOver.Background}"/>
+									<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.MouseOver.Border}"/>
+									<Setter Property="ImageBrush" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ImageBrushHover}"/>
+								</Trigger>
+								<Trigger Property="IsPressed" Value="True">
+									<Setter Property="Background" Value="{DynamicResource Button.Brushes.Pressed.Background}"/>
+									<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.Pressed.Border}"/>
+								</Trigger>
+								<Trigger Property="IconFill" Value="True">
+									<Setter TargetName="path" Property="Stroke" Value="Transparent"/>
+									<Setter TargetName="path" Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ImageButton}}, Path=ImageBrush}"/>
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+
+			<Style x:Key="ImageTextButtonStyle" TargetType="{x:Type local:ImageButton}">
+				<Setter Property="Background" Value="{DynamicResource Button.Brushes.Background}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.Border}"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="Padding" Value="0"/>
+				<Setter Property="ImageBrush" Value="{DynamicResource Icon.Brushes.Gray}"/>
+				<Setter Property="ImageBrushHover" Value="{DynamicResource Icon.Brushes.MouseOver.Gray}"/>
+				<Setter Property="ImageBrushDisabled" Value="{DynamicResource Icon.Brushes.Disabled.Gray}"/>
+				<Setter Property="IconThickness" Value="1.5"/>
+				<Setter Property="IconFill" Value="False"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type local:ImageButton}">
+							<Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+								<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+									<Path x:Name="path" Data="{TemplateBinding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"
+									  Stroke="{TemplateBinding ImageBrush}" StrokeThickness="{TemplateBinding IconThickness}" Fill="Transparent"
+									  StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeMiterLimit="1" Stretch="UniformToFill"/>
+									<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+								</StackPanel>
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Background" Value="{DynamicResource Button.Brushes.Disabled.Background}"/>
+									<Setter Property="Foreground" Value="{DynamicResource Button.Brushes.Foreground}"/>
+									<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.Disabled.Border}"/>
+									<Setter Property="ImageBrush" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ImageBrushDisabled}"/>
+								</Trigger>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Background" Value="{DynamicResource Button.Brushes.MouseOver.Background}"/>
+									<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.MouseOver.Border}"/>
+									<Setter Property="ImageBrush" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ImageBrushHover}"/>
+								</Trigger>
+								<Trigger Property="IsPressed" Value="True">
+									<Setter Property="Background" Value="{DynamicResource Button.Brushes.Pressed.Background}"/>
+									<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.Pressed.Border}"/>
+								</Trigger>
+								<Trigger Property="IconFill" Value="True">
+									<Setter Property="ImageBrush" Value="Transparent"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
