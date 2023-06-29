@@ -10,7 +10,7 @@
 		mc:Ignorable="d"
 		Title="SADX Mod Manager"
 		Style="{DynamicResource SAWindow}"
-		MinHeight="550" MinWidth="590" Height="700" Width="700" WindowStartupLocation="CenterScreen"
+		MinHeight="550" MinWidth="590" Height="736" Width="700" WindowStartupLocation="CenterScreen"
 		Loaded="MainWindowManager_Loaded"
 		ContentRendered="MainWindowManager_ContentRendered"
         Closed="MainForm_FormClosing">
@@ -406,25 +406,30 @@
 												</Grid.ColumnDefinitions>
 												<Grid.RowDefinitions>
 													<RowDefinition Height="30"/>
+													<RowDefinition Height="5"/>
 													<RowDefinition Height="30"/>
+													<RowDefinition Height="5"/>
 													<RowDefinition Height="30"/>
 													<RowDefinition Height="35"/>
 												</Grid.RowDefinitions>
+												
 												<CheckBox x:Name="chkRatio" Content="{DynamicResource GameGraphicsCheckRatio}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphics43Ratio}"/>
 												<CheckBox x:Name="chkVSync" Content="{DynamicResource GameGraphicsCheckVSync}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="True" ToolTip="{DynamicResource TipGraphicsVSync}"/>
 												<CheckBox x:Name="chkDynamicBuffers" Content="Dynamically Allocate Buffers (Advanced)" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsDynamicBuffers}"/>
-												<Separator Grid.Column="0" Grid.ColumnSpan="5" VerticalAlignment="Bottom"/>
+												
+												<Separator Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" VerticalAlignment="Center"/>
 
-												<RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="1" VerticalAlignment="Center" Grid.Row="1" Margin="5,5,5,5" IsChecked="False" Checked="radFullscreen_Checked" ToolTip="{DynamicResource TipGraphicsFullscreen}"/>
-												<CheckBox x:Name="chkBorderless" Content="{DynamicResource GameGraphicsCheckBorderless}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsBorderless}"/>
-												<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameGraphicsCheckScale}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="True" ToolTip="{DynamicResource TipGraphicsScaleScreen}"/>
-												<Separator Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" VerticalAlignment="Bottom"/>
+												<RadioButton x:Name="radFullscreen" Content="{DynamicResource GameGraphicsRadioFullscreen}" Grid.Column="1" VerticalAlignment="Center" Grid.Row="2" Margin="5,5,5,5" IsChecked="False" Checked="radFullscreen_Checked" ToolTip="{DynamicResource TipGraphicsFullscreen}"/>
+												<CheckBox x:Name="chkBorderless" Content="{DynamicResource GameGraphicsCheckBorderless}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsBorderless}"/>
+												<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameGraphicsCheckScale}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="True" ToolTip="{DynamicResource TipGraphicsScaleScreen}"/>
+												
+												<Separator Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" VerticalAlignment="Center"/>
 
-												<RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="False" Checked="radWindowed_Checked" ToolTip="{DynamicResource TipGraphicsWindowed}"/>
-												<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameGraphicsCheckResize}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsResizeWindow}"/>
-												<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource GameGraphicsCheckAspect}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsMaintainAspect}"/>
-												<CheckBox x:Name="chkCustomWinSize" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Margin="5,5,5,5" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked" ToolTip="{DynamicResource TipGraphicsCustomWindow}"/>
-												<StackPanel Grid.Column="3" Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,5,5,5">
+												<RadioButton x:Name="radWindowed" Content="{DynamicResource GameGraphicsRadioWindowed}" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="False" Checked="radWindowed_Checked" ToolTip="{DynamicResource TipGraphicsWindowed}"/>
+												<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameGraphicsCheckResize}" Grid.Column="2" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsResizeWindow}"/>
+												<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource GameGraphicsCheckAspect}" Grid.Column="3" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource TipGraphicsMaintainAspect}"/>
+												<CheckBox x:Name="chkCustomWinSize" Content="{DynamicResource GameGraphicsCheckCustomWindow}" Grid.Column="2" Grid.Row="5" VerticalAlignment="Center" Margin="5,5,5,5" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked" ToolTip="{DynamicResource TipGraphicsCustomWindow}"/>
+												<StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,5,5,5">
 													<xctk:IntegerUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
 													<Label Content="x"/>
 													<xctk:IntegerUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480"/>
@@ -1124,12 +1129,12 @@
 											<ColumnDefinition Width="Auto"/>
 										</Grid.ColumnDefinitions>
 										<Grid.RowDefinitions>
-											<RowDefinition Height="Auto"/>
+											<RowDefinition Height="30"/>
 											<RowDefinition Height="5"/>
-											<RowDefinition Height="Auto"/>
+											<RowDefinition Height="30"/>
 										</Grid.RowDefinitions>
-										<CheckBox x:Name="chkUpdatesML" Content="{DynamicResource ManagerChkCheckModloader}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" IsChecked="True" ToolTip="{DynamicResource TipsManagerLoaderUpdates}"/>
-										<CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource ManagerChkCheckMods}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" IsChecked="True" ToolTip="{DynamicResource TipsManagerModsUpdates}"/>
+										<CheckBox x:Name="chkUpdatesML" Content="{DynamicResource ManagerChkCheckModloader}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" IsChecked="True" ToolTip="{DynamicResource TipsManagerLoaderUpdates}"/>
+										<CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource ManagerChkCheckMods}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" IsChecked="True" ToolTip="{DynamicResource TipsManagerModsUpdates}"/>
 									</Grid>
 
 									<!--Update Buttons-->
@@ -1138,9 +1143,9 @@
 											<ColumnDefinition Width="260"/>
 										</Grid.ColumnDefinitions>
 										<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnCheckUpdates"  Grid.Column="0" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource TipsManagerCheckUpdates}"
-														   Icon="{StaticResource Icons.Update}" Content="{DynamicResource ManagerBtnCheckNow}"
+														   Height="40" Icon="{StaticResource Icons.Update}" Content="{DynamicResource ManagerBtnCheckNow}"
 														   ImageBrush="{DynamicResource Icon.Brushes.Blue}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Blue}"
-														   Padding="0,0,0,0" />
+														   Padding="2" />
 									</Grid>
 								</Grid>
 							</GroupBox>
@@ -1155,7 +1160,7 @@
 										<ColumnDefinition Width="10"/>
 									</Grid.ColumnDefinitions>
 									<Grid.RowDefinitions>
-										<RowDefinition Height="10"/>
+										<RowDefinition Height="00"/>
 										<RowDefinition Height="30"/>
 										<RowDefinition Height="5"/>
 										<RowDefinition Height="30"/>
@@ -1225,12 +1230,9 @@
 										<TextBlock Text="{DynamicResource ManagerBtnSource}" VerticalAlignment="Center"/>
 									</StackPanel>
 								</Button>
-								<Button x:Name="btnReport" Grid.Column="1" Grid.Row="2" Margin="5,0,5,0" Click="btnReport_Click" ToolTip="{DynamicResource TipsManagerReportBug}">
-									<StackPanel Orientation="Horizontal">
-										<Image Source="{StaticResource IconBugReport}" Width="20" Height="20" Margin="0,0,5,0"/>
-										<TextBlock Text="{DynamicResource ManagerBtnReport}" VerticalAlignment="Center"/>
-									</StackPanel>
-								</Button>
+								<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnReport" Grid.Column="1" Grid.Row="2" Margin="5,0,5,0" Click="btnReport_Click" ToolTip="{DynamicResource TipsManagerReportBug}"
+												   Icon="{StaticResource Icons.BugReport}" Content="{DynamicResource ManagerBtnReport}"
+												   ImageBrush="{DynamicResource Icon.Brushes.Red}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Red}"/>
 							</Grid>
 						</Grid>
 					</GroupBox>

@@ -10,6 +10,10 @@
 	<system:String x:Key="TipMainManagerTab">Configure Manager Options, including Themes and Language settings.</system:String>
 	<system:String x:Key="TipMainSaveAndPlay">Save selected settings and launch the game.</system:String>
 	<system:String x:Key="TipMainSave">Save selected settings.</system:String>
+	<system:String x:Key="TipMinimizeWindow">Minimize</system:String>
+	<system:String x:Key="TipMaximizeWindow">Maximize</system:String>
+	<system:String x:Key="TipMaximizeWindowRestore">Restore window</system:String>
+	<system:String x:Key="TipCloseWindow">Close</system:String>
 	
 	<!--#region Mods Tab Tool Tips-->
 	<system:String x:Key="TipModsResfreshButton">Refreshes the mods list.</system:String>

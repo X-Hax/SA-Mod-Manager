@@ -782,6 +782,7 @@
 			<Style x:Key="WindowMinButton" TargetType="{x:Type Button}">
 				<Setter Property="Background" Value="{DynamicResource WindowButton.Brushes.Background}"/>
 				<Setter Property="Foreground" Value="{DynamicResource WindowButton.Brushes.Foreground}"/>
+				<Setter Property="ToolTip" Value="{DynamicResource TipMinimizeWindow}"/>
 				<Setter Property="Content">
 					<Setter.Value>
 						<DrawingImage>
@@ -821,6 +822,7 @@
 			<Style x:Key="WindowMaxButton" TargetType="{x:Type Button}">
 				<Setter Property="Background" Value="{DynamicResource WindowButton.Brushes.Background}"/>
 				<Setter Property="Foreground" Value="{DynamicResource WindowButton.Brushes.Foreground}"/>
+				<Setter Property="ToolTip" Value="{DynamicResource TipMaximizeWindow}"/>
 				<Setter Property="Content">
 					<Setter.Value>
 						<DrawingImage>
@@ -851,6 +853,24 @@
 									<Setter Property="Background" Value="{DynamicResource WindowButton.Brushes.Pressed.Background}"/>
 									<Setter Property="Foreground" Value="{DynamicResource WindowButton.Brushes.Pressed.Foreground}"/>
 								</Trigger>
+								<Trigger Property="Tag" Value="max">
+									<Setter Property="ToolTip" Value="{DynamicResource TipMaximizeWindowRestore}"/>
+									<Setter Property="Content">
+										<Setter.Value>
+											<DrawingImage>
+												<DrawingImage.Drawing>
+													<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+														<GeometryDrawing Geometry="F1 M24,24z M0,0z M3.8429771,8.7435C3.8429771,7.8425223,4.5733631,7.1121363,5.4743408,7.1121363L15.262523,7.1121363C16.163525,7.1121363,16.893886,7.8425223,16.893886,8.7435L16.893886,18.531681C16.893886,19.432684,16.163525,20.163045,15.262523,20.163045L5.4743408,20.163045C4.5733631,20.163045,3.8429771,19.432684,3.8429771,18.531681z M7.1061138,7.1121363L7.1061138,5.4683182C7.1061138,4.5673407,7.8364997,3.8369547,8.7374775,3.8369547L18.525659,3.8369547C19.426661,3.8369547,20.157023,4.5673407,20.157023,5.4683182L20.157023,15.256499C20.157023,16.157502,19.426661,16.887863,18.525659,16.887863L16.893886,16.887863">
+															<GeometryDrawing.Pen>
+																<Pen Brush="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}" Thickness="1.63136" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+															</GeometryDrawing.Pen>
+														</GeometryDrawing>
+													</DrawingGroup>
+												</DrawingImage.Drawing>
+											</DrawingImage>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
 					</Setter.Value>
@@ -860,6 +880,7 @@
 			<Style x:Key="WindowCloseButton" TargetType="{x:Type Button}">
 				<Setter Property="Background" Value="{DynamicResource WindowButton.Brushes.Background}"/>
 				<Setter Property="Foreground" Value="{DynamicResource WindowButton.Brushes.Foreground}"/>
+				<Setter Property="ToolTip" Value="{DynamicResource TipCloseWindow}"/>
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type Button}">
@@ -977,7 +998,8 @@
 									<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.Pressed.Border}"/>
 								</Trigger>
 								<Trigger Property="IconFill" Value="True">
-									<Setter Property="ImageBrush" Value="Transparent"/>
+									<Setter TargetName="path" Property="Stroke" Value="Transparent"/>
+									<Setter TargetName="path" Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ImageButton}}, Path=ImageBrush}"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
@@ -1504,7 +1526,7 @@
 											<TextBlock Text="{TemplateBinding Title}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 											<StackPanel Grid.Column="2" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
 												<Button Style="{StaticResource WindowMinButton}" x:Name="ButtonMinimize" Click="MinimizeWindow"/>
-												<Button Style="{StaticResource WindowMaxButton}" x:Name="ButtonMaximize" Click="MaximizeWindow"/>
+												<Button Style="{StaticResource WindowMaxButton}" x:Name="ButtonMaximize" Click="MaximizeWindow" Tag="reg"/>
 												<Button Style="{DynamicResource WindowCloseButton}" x:Name="ButtonClose" Click="CloseWindow"/>
 											</StackPanel>
 											</Grid>
@@ -1515,6 +1537,9 @@
 							<ControlTemplate.Triggers>
 								<Trigger Property="IsActive" Value="False">
 									<Setter Property="BorderBrush" Value="{DynamicResource Window.Brushes.Inactive.Border}"/>
+								</Trigger>
+								<Trigger Property="WindowState" Value="Maximized">
+									<Setter TargetName="ButtonMaximize" Property="Tag" Value="max"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
