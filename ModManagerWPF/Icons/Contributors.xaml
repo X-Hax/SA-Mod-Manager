@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <DrawingImage x:Key="IconContributors">
+    <DrawingImage x:Key="Cont">
         <DrawingImage.Drawing>
             <DrawingGroup ClipGeometry="M0,0 V354.856 H354.856 V0 H0 Z">
                 <DrawingGroup Opacity="1">
@@ -11,4 +11,14 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
+
+	<DrawingImage x:Key="IconContributors">
+		<DrawingImage.Drawing>
+			<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+				<GeometryDrawing Brush="{DynamicResource Icon.Brushes.Blue}" Geometry="F1 M24,24z M0,0z M15.691623,7.5410608A3.7216156,3.7216156,0,0,1,11.970007,11.262677A3.7216156,3.7216156,0,0,1,8.2483914,7.5410608A3.7216156,3.7216156,0,0,1,11.970007,3.8194452A3.7216156,3.7216156,0,0,1,15.691623,7.5410608z" />
+				<GeometryDrawing Brush="Red" Geometry="F1 M24,24z M0,0z M21.031636,16.458939A3.7216156,3.7216156,0,0,1,17.310021,20.180555A3.7216156,3.7216156,0,0,1,13.588405,16.458939A3.7216156,3.7216156,0,0,1,17.310021,12.737324A3.7216156,3.7216156,0,0,1,21.031636,16.458939z" />
+				<GeometryDrawing Brush="Orange" Geometry="F1 M24,24z M0,0z M10.411595,16.458939A3.7216156,3.7216156,0,0,1,6.6899795,20.180555A3.7216156,3.7216156,0,0,1,2.968364,16.458939A3.7216156,3.7216156,0,0,1,6.6899795,12.737324A3.7216156,3.7216156,0,0,1,10.411595,16.458939z" />
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
 </ResourceDictionary>
