@@ -294,7 +294,9 @@ namespace ModManagerWPF
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
 
-			SaveGameConfigIni();		
+			SaveGameConfigIni();
+			SaveCodes();
+
 			Refresh();
 		}
 		private void LoadSettings()
@@ -625,9 +627,24 @@ namespace ModManagerWPF
 
 		private void NewModBtn_Click(object sender, RoutedEventArgs e)
 		{
-			EditMod Edit = new(null);
-			Edit.Show();
-			Edit.Closed += EditMod_FormClosing;
+			var choice = new NewModOptions().Ask();
+			
+			switch (choice)
+			{
+				case (int)NewModOptions.Type.ModArchive:
+
+					break;
+				case (int)NewModOptions.Type.ModFolder:
+
+					break;
+				case (int)NewModOptions.Type.NewMod:
+					EditMod Edit = new(null);
+					Edit.Show();
+					Edit.Closed += EditMod_FormClosing;
+					
+					break;
+			}
+
 		}
 
 		private void ConfigureModBtn_Click(object sender, RoutedEventArgs e)
@@ -859,14 +876,39 @@ namespace ModManagerWPF
 
 		private void LoadCodes()
 		{
+
 			codes = new List<Code>(mainCodes.Codes);
+
+			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
+			foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
+				loaderini.EnabledCodes.Add(item.Name);
+
+			CodeListView.BeginInit();
+			CodeListView.Items.Clear();
 
 			foreach (Code item in codes)
 			{
 				CodeListView.Items.Add(item);
 			}
 
-			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
+			CodeListView.EndInit();
+		}
+
+		private void SaveCodes()
+		{
+			List<Code> selectedCodes = new List<Code>();
+			List<Code> selectedPatches = new List<Code>();
+
+			foreach (Code item in CodeListView.SelectedItems.OfType<Code>())
+			{
+				if (item.Patch)
+					selectedPatches.Add(item);
+				else
+					selectedCodes.Add(item);
+			}
+
+			CodeList.WriteDatFile(patchdatpath, selectedPatches);
+			CodeList.WriteDatFile(codedatpath, selectedCodes);
 		}
 
 		private void OpenAboutCodeWindow(Code code)

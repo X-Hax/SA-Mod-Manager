@@ -270,6 +270,13 @@
     <system:String x:Key="DLDownload">Télécharger</system:String>
     <!--#endregion-->
 
+    <!--#region Install New Mod Options-->
+    <system:String x:Key="InstallModTitle">Installer ou Créer un Nouveau Mod.</system:String>
+    <system:String x:Key="InstallModArchive">Installer à partir d'une archive</system:String>
+    <system:String x:Key="InstallModFolder">Installier à partir d'un dossier</system:String>
+    <system:String x:Key="InstallMakeMod">Nouveau Mod (Pour les Développeurs)</system:String>
+    <!--#endregion-->
+
 
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
