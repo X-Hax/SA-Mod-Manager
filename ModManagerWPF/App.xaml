@@ -211,7 +211,7 @@
 									</MultiDataTrigger.Conditions>
 									<Setter Property="Background" TargetName="templateRoot" Value="{DynamicResource ComboBox.Brushes.Editing.Background}"/>
 									<Setter Property="BorderBrush" TargetName="templateRoot" Value="{DynamicResource ComboBox.Brushes.Editing.Border}"/>
-									<Setter Property="Background" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.Editing.Button.Background}"/>
+									<Setter Property="Background" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.Editing.Background}"/>
 									<Setter Property="BorderBrush" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.Editing.Button.Border}"/>
 								</MultiDataTrigger>
 								<Trigger Property="IsMouseOver" Value="true">
@@ -232,7 +232,7 @@
 									</MultiDataTrigger.Conditions>
 									<Setter Property="Background" TargetName="templateRoot" Value="{DynamicResource ComboBox.Brushes.MouseOver.Editing.Background}"/>
 									<Setter Property="BorderBrush" TargetName="templateRoot" Value="{DynamicResource ComboBox.Brushes.MouseOver.Editing.Border}"/>
-									<Setter Property="Background" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.MouseOver.Editing.Button.Background}"/>
+									<Setter Property="Background" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.MouseOver.Editing.Background}"/>
 									<Setter Property="BorderBrush" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.MouseOver.Editing.Button.Border}"/>
 								</MultiDataTrigger>
 								<Trigger Property="IsPressed" Value="true">
@@ -253,7 +253,7 @@
 									</MultiDataTrigger.Conditions>
 									<Setter Property="Background" TargetName="templateRoot" Value="{DynamicResource ComboBox.Brushes.Pressed.Editing.Background}"/>
 									<Setter Property="BorderBrush" TargetName="templateRoot" Value="{DynamicResource ComboBox.Brushes.Pressed.Editing.Border}"/>
-									<Setter Property="Background" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.Pressed.Editing.Button.Background}"/>
+									<Setter Property="Background" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.Pressed.Editing.Background}"/>
 									<Setter Property="BorderBrush" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.Pressed.Editing.Button.Border}"/>
 								</MultiDataTrigger>
 								<Trigger Property="IsEnabled" Value="false">
@@ -274,7 +274,7 @@
 									</MultiDataTrigger.Conditions>
 									<Setter Property="Background" TargetName="templateRoot" Value="{DynamicResource ComboBox.Brushes.Disabled.Editing.Background}"/>
 									<Setter Property="BorderBrush" TargetName="templateRoot" Value="{DynamicResource ComboBox.Brushes.Disabled.Editing.Border}"/>
-									<Setter Property="Background" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.Disabled.Editing.Button.Background}"/>
+									<Setter Property="Background" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.Disabled.Editing.Background}"/>
 									<Setter Property="BorderBrush" TargetName="splitBorder" Value="{DynamicResource ComboBox.Brushes.Disabled.Editing.Button.Border}"/>
 								</MultiDataTrigger>
 							</ControlTemplate.Triggers>
@@ -383,7 +383,7 @@
 				<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
 				<Setter Property="Background" Value="{DynamicResource ComboBox.Brushes.Background}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource ComboBox.Brushes.Border}"/>
-				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+				<Setter Property="Foreground" Value="{DynamicResource ComboBox.Brushes.Foreground}"/>
 				<Setter Property="BorderThickness" Value="1"/>
 				<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
 				<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>

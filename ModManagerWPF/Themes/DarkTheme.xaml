@@ -138,44 +138,42 @@
 	<SolidColorBrush x:Key="ScrollBar.Brushes.Border" Color="Transparent"/>
 
 	<SolidColorBrush x:Key="ComboBox.Brushes.Background" Color="Transparent"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Border" Color="#FFACACAC"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Button.Image" Color="#FF606060"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Button.Image" Color="#FF9E9E9E"/>
 
-	<SolidColorBrush x:Key="ComboBox.Brushes.Editing.Background" Color="#FFFFFFFF"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Editing.Border" Color="#FFABADB3"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Editing.Button.Background" Color="Transparent"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Editing.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Editing.Border" Color="{DynamicResource Colors.Highlight}"/>
 	<SolidColorBrush x:Key="ComboBox.Brushes.Editing.Button.Border" Color="Transparent"/>
 
 	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Border" Color="#FF7EB4EA"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Button.Image" Color="#FF000000"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Button.Image" Color="#FFBCBCBC"/>
 
-	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Editing.Background" Color="#FFFFFFFF"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Editing.Border" Color="#FF7EB4EA"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Editing.Button.Background" Color="#FFEBF4FC"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Editing.Button.Border" Color="#FF7EB4EA"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Editing.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Editing.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Editing.Button.Border" Color="{DynamicResource Colors.Highlight}"/>
 
-	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Background" Color="#FFDAECFC"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Border" Color="#FF569DE5"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Button.Image" Color="#FF000000"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Button.Image" Color="{DynamicResource Colors.Highlight.Bright}"/>
 
-	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Editing.Background" Color="#FFFFFFFF"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Editing.Border" Color="#FF569DE5"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Editing.Button.Background" Color="#FFDAEBFC"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Editing.Button.Border" Color="#FF569DE5"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Editing.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Editing.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Editing.Button.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
 
-	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Background" Color="#FFF0F0F0"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Border" Color="#FFD9D9D9"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Button.Image" Color="#FFBFBFBF"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Button.Image" Color="{DynamicResource Colors.Text.Disabled}"/>
 
-	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Background" Color="#FFFFFFFF"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Border" Color="#FFBFBFBF"/>
-	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Button.Background" Color="Transparent"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Foreground" Color="{DynamicResource Colors.Text.Disabled}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Border" Color="{DynamicResource Colors.Border}"/>
 	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Button.Border" Color="Transparent"/>
 
 	<SolidColorBrush x:Key="ComboBoxItem.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="ComboBoxItem.Brushes.Highlighted.Background" Color="{DynamicResource Colors.Hover}"/>
-	<SolidColorBrush x:Key="ComboBoxItem.Brushes.Selected.Background" Color="#FF2D2D2F"/>
+	<SolidColorBrush x:Key="ComboBoxItem.Brushes.Selected.Background" Color="{DynamicResource Colors.Highlight}"/>
 
 	<SolidColorBrush x:Key="RadioButton.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="RadioButton.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
