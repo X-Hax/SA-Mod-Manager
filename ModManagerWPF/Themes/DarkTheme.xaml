@@ -1,15 +1,26 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<!--#region Misc Variables-->
+	<CornerRadius x:Key="Button.CornerRadius">3</CornerRadius>
+	<CornerRadius x:Key="ProgressBar.CornerRadius">2</CornerRadius>
+	<CornerRadius x:Key="ComboBox.CornerRadius">2</CornerRadius>
+	<CornerRadius x:Key="ListView.CornerRadius">3</CornerRadius>
+	<CornerRadius x:Key="ContextMenu.CornerRadius">4</CornerRadius>
+	<CornerRadius x:Key="Scrollbar.CornerRadius">2</CornerRadius>
+	<CornerRadius x:Key="TabItem.CornerRadius">2,2,0,0</CornerRadius>
+	<!--#endregion-->
 	
 	<!--#region Shared Colors-->
 	<Color x:Key="Colors.Background" A="255" R="25" G="25" B="25"/>
 	<Color x:Key="Colors.Background.Disabled" A="255" R="50" G="50" B="50"/>
 	<Color x:Key="Colors.Highlight" A="255" R="0" G="106" B="188"/>
 	<Color x:Key="Colors.Highlight.Bright" A="255" R="44" G="163" B="255"/>
-	<Color x:Key="Colors.Border" A="255" R="63" G="63" B="66"/>
+	<Color x:Key="Colors.Border" A="255" R="63" G="63" B="63"/>
 	<Color x:Key="Colors.Text" A="255" R="255" G="255" B="255"/>
 	<Color x:Key="Colors.Text.Disabled" A="255" R="201" G="201" B="201"/>
-	<Color x:Key="Colors.Hover" A="255" R="45" G="45" B="47"/>
+	<Color x:Key="Colors.Hover" A="255" R="45" G="45" B="45"/>
 	<Color x:Key="Colors.Button" A="255" R="32" G="32" B="32"/>
 	<!--#endregion-->
 	
@@ -108,9 +119,10 @@
 	<SolidColorBrush x:Key="DataGridCell.Brushes.Editing.Background" Color="Transparent"/>
 
 	<SolidColorBrush x:Key="TreeView.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
-	
+
 	<SolidColorBrush x:Key="TreeViewItem.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="TreeViewItem.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="TreeViewItem.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 
 	<SolidColorBrush x:Key="RepeatButton.Brushes.Background" Color="Transparent"/>
 
@@ -204,8 +216,13 @@
 	<SolidColorBrush x:Key="GroupBox.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="GroupBox.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 	<SolidColorBrush x:Key="GroupBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="GroupBox.Brushes.MouseOver.Border" Color="#FF505050"/>
 
 	<SolidColorBrush x:Key="Separator.Brushes.Background" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="ProgressBar.Brushes.Progress" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ProgressBar.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="ProgressBar.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 	<!--#endregion-->
 	
 	<!--#region LinearGradientBrushes-->

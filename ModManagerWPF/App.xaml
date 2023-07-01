@@ -30,6 +30,12 @@
 					</Setter.Value>
 				</Setter>
 			</Style>
+			
+			<!--#region Separator Styles-->
+			<Style TargetType="{x:Type Separator}">
+				<Setter Property="Background" Value="{DynamicResource Separator.Brushes.Background}"/>
+			</Style>
+			<!--#endregion-->
 
 			<!--#region Tooltip Styles-->
 			<Style TargetType="{x:Type ToolTip}">
@@ -138,7 +144,7 @@
 						<ControlTemplate TargetType="{x:Type TabItem}">
 							<Border BorderBrush="Transparent" Width="{TemplateBinding Width}" 
 									Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"
-									CornerRadius="2,2,0,0">
+									CornerRadius="{DynamicResource TabItem.CornerRadius}">
 								<TextBlock Text="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" ToolTip="{TemplateBinding Tag}"/>
 							</Border>
 							<ControlTemplate.Triggers>
@@ -181,7 +187,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TextBox}">
-                            <Border CornerRadius="2">
+                            <Border CornerRadius="{DynamicResource ComboBox.CornerRadius}">
                                 <ScrollViewer x:Name="PART_ContentHost" Background="Transparent" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
                             </Border>
                         </ControlTemplate>
@@ -693,7 +699,7 @@
                 <Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type ListView}">
-							<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3,3,3,3">
+							<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{DynamicResource ListView.CornerRadius}">
 								<Border.OpacityMask>
 									<VisualBrush Stretch="Fill">
 										<VisualBrush.Visual>
@@ -756,7 +762,7 @@
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type Button}">
-                            <Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <Border x:Name="border" CornerRadius="{DynamicResource Button.CornerRadius}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
 						        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             </Border>
 							<ControlTemplate.Triggers>
@@ -929,7 +935,7 @@
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type local:ImageButton}">
-							<Border x:Name="border" CornerRadius="3" SnapsToDevicePixels="true"
+							<Border x:Name="border" CornerRadius="{DynamicResource Button.CornerRadius}" SnapsToDevicePixels="true"
 									Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
 								<Path x:Name="path" Data="{TemplateBinding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"
 									  Stroke="{TemplateBinding ImageBrush}" StrokeThickness="{TemplateBinding IconThickness}" Fill="Transparent"
@@ -973,7 +979,7 @@
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type local:ImageButton}">
-							<Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+							<Border x:Name="border" CornerRadius="{DynamicResource Button.CornerRadius}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
 								<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 									<Path x:Name="path" Data="{TemplateBinding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"
 									  Stroke="{TemplateBinding ImageBrush}" StrokeThickness="{TemplateBinding IconThickness}" Fill="Transparent"
@@ -1019,7 +1025,7 @@
 						<ControlTemplate TargetType="{x:Type ContextMenu}">
 							<Border
 								Background="{DynamicResource ContextMenu.Brushes.Background}"
-								CornerRadius="4" 
+								CornerRadius="{DynamicResource ContextMenu.CornerRadius}" 
 								BorderThickness="2"
 								Padding="0,5,0,5">
 								<Border.Effect>
@@ -1056,7 +1062,7 @@
 				<Setter Property="Template">
 					<Setter.Value>
                         <ControlTemplate TargetType="{x:Type Thumb}">
-                            <Border x:Name="rectangle" Background="{StaticResource ScrollBarThumb.Brushes.Background}" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" Width="{TemplateBinding Width}" CornerRadius="2"/>
+                            <Border x:Name="rectangle" Background="{StaticResource ScrollBarThumb.Brushes.Background}" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" Width="{TemplateBinding Width}" CornerRadius="{DynamicResource Scrollbar.CornerRadius}"/>
                             <ControlTemplate.Triggers>
 								<Trigger Property="IsMouseOver" Value="true">
 									<Setter Property="Background" TargetName="rectangle" Value="{DynamicResource ScrollBarThumb.Brushes.MouseOver.Background}"/>
@@ -1077,7 +1083,7 @@
 						<ControlTemplate TargetType="{x:Type Thumb}">
 							<Border x:Name="rectangle" Background="{DynamicResource ScrollBarThumb.Brushes.Background}" 
 									Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" 
-									SnapsToDevicePixels="True" CornerRadius="4"/>
+									SnapsToDevicePixels="True" CornerRadius="{DynamicResource Scrollbar.CornerRadius}"/>
 							<ControlTemplate.Triggers>
 								<Trigger Property="IsMouseOver" Value="true">
 									<Setter Property="Background" TargetName="rectangle" Value="{DynamicResource ScrollBarThumb.Brushes.MouseOver.Background}"/>
@@ -1482,6 +1488,74 @@
 								</Border>
 								<ContentPresenter Grid.Column="1" Grid.ColumnSpan="2" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 							</Grid>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="BorderBrush" Value="{DynamicResource GroupBox.Brushes.MouseOver.Border}"/>
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<!--#endregion-->
+			
+			<!--#region Progress Bar-->
+			<Style TargetType="{x:Type ProgressBar}">
+				<Setter Property="Foreground" Value="{DynamicResource ProgressBar.Brushes.Progress}"/>
+				<Setter Property="Background" Value="{DynamicResource ProgressBar.Brushes.Background}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource ProgressBar.Brushes.Border}"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type ProgressBar}">
+							<Grid x:Name="TemplateRoot">
+								<VisualStateManager.VisualStateGroups>
+									<VisualStateGroup x:Name="CommonStates">
+										<VisualState x:Name="Determinate"/>
+										<VisualState x:Name="Indeterminate">
+											<Storyboard RepeatBehavior="Forever">
+												<DoubleAnimationUsingKeyFrames Storyboard.TargetName="Animation" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+													<EasingDoubleKeyFrame KeyTime="0" Value="0.25"/>
+													<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.25"/>
+													<EasingDoubleKeyFrame KeyTime="0:0:2" Value="0.25"/>
+												</DoubleAnimationUsingKeyFrames>
+												<PointAnimationUsingKeyFrames Storyboard.TargetName="Animation" Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)">
+													<EasingPointKeyFrame KeyTime="0" Value="-0.5,0.5"/>
+													<EasingPointKeyFrame KeyTime="0:0:1" Value="0.5,0.5"/>
+													<EasingPointKeyFrame KeyTime="0:0:2" Value="1.5,0.5"/>
+												</PointAnimationUsingKeyFrames>
+											</Storyboard>
+										</VisualState>
+									</VisualStateGroup>
+								</VisualStateManager.VisualStateGroups>
+								<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{DynamicResource ProgressBar.CornerRadius}"/>
+								<Rectangle x:Name="PART_Track"/>
+								<Grid x:Name="PART_Indicator" ClipToBounds="true" HorizontalAlignment="Left">
+									<Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}"/>
+									<Rectangle x:Name="Animation" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5">
+										<Rectangle.RenderTransform>
+											<TransformGroup>
+												<ScaleTransform/>
+												<SkewTransform/>
+												<RotateTransform/>
+												<TranslateTransform/>
+											</TransformGroup>
+										</Rectangle.RenderTransform>
+									</Rectangle>
+								</Grid>
+							</Grid>
+							<ControlTemplate.Triggers>
+								<Trigger Property="Orientation" Value="Vertical">
+									<Setter Property="LayoutTransform" TargetName="TemplateRoot">
+										<Setter.Value>
+											<RotateTransform Angle="-90"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+								<Trigger Property="IsIndeterminate" Value="true">
+									<Setter Property="Visibility" TargetName="Indicator" Value="Collapsed"/>
+								</Trigger>
+							</ControlTemplate.Triggers>
 						</ControlTemplate>
 					</Setter.Value>
 				</Setter>
