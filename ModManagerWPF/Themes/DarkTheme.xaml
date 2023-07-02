@@ -24,7 +24,7 @@
 	<Color x:Key="Colors.Button" A="255" R="32" G="32" B="32"/>
 	<!--#endregion-->
 	
-	<!--#region SolidColorBrushes-->
+	<!--#region SolidColorBrushes-->	
 	<SolidColorBrush x:Key="Window.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="Window.Brushes.Border" Color="{DynamicResource Colors.Highlight}"/>
 	<SolidColorBrush x:Key="Window.Brushes.Inactive.Border" Color="{DynamicResource Colors.Background.Disabled}"/>
@@ -43,6 +43,8 @@
 	<SolidColorBrush x:Key="ToolTip.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="ToolTip.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 	<SolidColorBrush x:Key="ToolTip.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="Borders.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 
 	<SolidColorBrush x:Key="TextBlock.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 
