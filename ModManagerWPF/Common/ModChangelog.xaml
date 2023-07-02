@@ -19,7 +19,7 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 
-			<ListView x:Name="ModsList" Grid.Column="0" Margin="5" BorderThickness="2">
+			<ListView x:Name="ModsList" Grid.Column="0" Margin="5">
 				<ListView.View>
 					<GridView>
 						<GridView.ColumnHeaderContainerStyle>
@@ -44,8 +44,8 @@
 			<GridSplitter Grid.Column="0"/>
 
 			<Grid Grid.Column="1" Margin="5">
-				<Border BorderBrush="{DynamicResource Borders.Brushes.Border}" BorderThickness="2"
-						CornerRadius="{DynamicResource ListView.CornerRadius}">
+				<Border BorderBrush="{DynamicResource Borders.Brushes.Border}"
+						CornerRadius="{DynamicResource ListView.CornerRadius}" BorderThickness="1">
 					<TabControl>
 						<TabItem Header="{DynamicResource ModChangelogTabUpdateNotes}">
 							<Grid x:Name="UpdateNotes" Margin="3">
