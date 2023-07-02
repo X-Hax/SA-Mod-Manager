@@ -788,7 +788,7 @@
 			<Style x:Key="WindowMinButton" TargetType="{x:Type Button}">
 				<Setter Property="Background" Value="{DynamicResource WindowButton.Brushes.Background}"/>
 				<Setter Property="Foreground" Value="{DynamicResource WindowButton.Brushes.Foreground}"/>
-				<Setter Property="ToolTip" Value="{DynamicResource TipMinimizeWindow}"/>
+				<Setter Property="ToolTip" Value="{DynamicResource Window.Tips.Minimize}"/>
 				<Setter Property="Content">
 					<Setter.Value>
 						<DrawingImage>
@@ -828,7 +828,7 @@
 			<Style x:Key="WindowMaxButton" TargetType="{x:Type Button}">
 				<Setter Property="Background" Value="{DynamicResource WindowButton.Brushes.Background}"/>
 				<Setter Property="Foreground" Value="{DynamicResource WindowButton.Brushes.Foreground}"/>
-				<Setter Property="ToolTip" Value="{DynamicResource TipMaximizeWindow}"/>
+				<Setter Property="ToolTip" Value="{DynamicResource Window.Tips.Maximize}"/>
 				<Setter Property="Content">
 					<Setter.Value>
 						<DrawingImage>
@@ -860,7 +860,7 @@
 									<Setter Property="Foreground" Value="{DynamicResource WindowButton.Brushes.Pressed.Foreground}"/>
 								</Trigger>
 								<Trigger Property="Tag" Value="max">
-									<Setter Property="ToolTip" Value="{DynamicResource TipMaximizeWindowRestore}"/>
+									<Setter Property="ToolTip" Value="{DynamicResource Window.Tips.Restore}"/>
 									<Setter Property="Content">
 										<Setter.Value>
 											<DrawingImage>
