@@ -1,6 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<!--#region Style Tool Tips-->
+	<system:String x:Key="Window.Tips.Minimize">Minimize</system:String>
+	<system:String x:Key="Window.Tips.Maximize">Maximize</system:String>
+	<system:String x:Key="Window.Tips.Restore">Restore window</system:String>
+	<system:String x:Key="Window.Tips.Close">Close</system:String>
+	<!--#endregion-->
 
 	<!--#region Main Window Tool Tips-->
 	<system:String x:Key="MainWindow.Tips.Tab.Mods">Select, edit, and configure your mods.</system:String>
@@ -10,11 +17,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options">Configure Manager Options, including Themes and Language settings.</system:String>
 	<system:String x:Key="MainWindow.Tips.SaveAndPlay">Save selected settings and launch the game.</system:String>
 	<system:String x:Key="MainWindow.Tips.Save">Save selected settings.</system:String>
-	<system:String x:Key="Window.Tips.Minimize">Minimize</system:String>
-	<system:String x:Key="Window.Tips.Maximize">Maximize</system:String>
-	<system:String x:Key="Window.Tips.Restore">Restore window</system:String>
-	<system:String x:Key="Window.Tips.Close">Close</system:String>
-	
+
 	<!--#region Mods Tab Tool Tips-->
 	<system:String x:Key="MainWindow.Tips.Tab.Mods.Refresh">Refreshes the mods list.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveCeiling">Moves the selected mod to the top of the list.</system:String>
