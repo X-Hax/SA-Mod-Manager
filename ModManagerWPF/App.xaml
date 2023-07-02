@@ -886,7 +886,7 @@
 			<Style x:Key="WindowCloseButton" TargetType="{x:Type Button}">
 				<Setter Property="Background" Value="{DynamicResource WindowButton.Brushes.Background}"/>
 				<Setter Property="Foreground" Value="{DynamicResource WindowButton.Brushes.Foreground}"/>
-				<Setter Property="ToolTip" Value="{DynamicResource TipCloseWindow}"/>
+				<Setter Property="ToolTip" Value="{DynamicResource Window.Tips.Close}"/>
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type Button}">

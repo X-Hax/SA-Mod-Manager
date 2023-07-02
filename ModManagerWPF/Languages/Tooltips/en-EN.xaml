@@ -13,7 +13,7 @@
 	<system:String x:Key="Window.Tips.Minimize">Minimize</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Maximize</system:String>
 	<system:String x:Key="Window.Tips.Restore">Restore window</system:String>
-	<system:String x:Key="TipCloseWindow">Close</system:String>
+	<system:String x:Key="Window.Tips.Close">Close</system:String>
 	
 	<!--#region Mods Tab Tool Tips-->
 	<system:String x:Key="MainWindow.Tips.Tab.Mods.Refresh">Refreshes the mods list.</system:String>
