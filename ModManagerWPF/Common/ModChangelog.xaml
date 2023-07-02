@@ -1,0 +1,136 @@
+﻿<Window x:Class="ModManagerWPF.Common.ModChangelog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModManagerWPF.Common"
+		xmlns:wpf="clr-namespace:ModManagerWPF"
+        mc:Ignorable="d" Style="{StaticResource SAWindow}"
+        Title="{DynamicResource ModChangelogTitle}" Height="450" Width="800">
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="50"/>
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="250"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<ListView x:Name="ModsList" Grid.Column="0" Margin="5" BorderThickness="2">
+				<ListView.View>
+					<GridView>
+						<GridView.ColumnHeaderContainerStyle>
+							<Style TargetType="{x:Type GridViewColumnHeader}">
+								<Setter Property="Height" Value="0"/>
+							</Style>
+						</GridView.ColumnHeaderContainerStyle>
+						<GridViewColumn>
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal">
+										<CheckBox/>
+										<TextBlock/>
+									</StackPanel>
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+					</GridView>
+				</ListView.View>
+			</ListView>
+
+			<GridSplitter Grid.Column="0"/>
+
+			<Grid Grid.Column="1" Margin="5">
+				<Border BorderBrush="{DynamicResource Borders.Brushes.Border}" BorderThickness="2"
+						CornerRadius="{DynamicResource ListView.CornerRadius}">
+					<TabControl>
+						<TabItem Header="{DynamicResource ModChangelogTabUpdateNotes}">
+							<Grid x:Name="UpdateNotes" Margin="3">
+								
+							</Grid>
+						</TabItem>
+						<TabItem Header="{DynamicResource ModChangelogTabUpdateDetails}">
+							<Grid Margin="3">
+								<GroupBox Header="{DynamicResource ModChangelogTabUpdateDetails.DownloadDetails}" Margin="5,0,5,5">
+									<Grid x:Name="UpdateDetails">
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto" MinHeight="30"/>
+											<RowDefinition Height="Auto" MinHeight="30"/>
+											<RowDefinition Height="Auto" MinHeight="30"/>
+											<RowDefinition Height="Auto" MinHeight="30"/>
+											<RowDefinition Height="Auto" MinHeight="30"/>
+											<RowDefinition Height="Auto" MinHeight="40"/>
+										</Grid.RowDefinitions>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+
+										<Label Content="{DynamicResource ModChangelogTabUpdateDetails.PublishedDate}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+										<Label Content="{DynamicResource ModChangelogTabUpdateDetails.FileSize}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+										<Label Content="{DynamicResource ModChangelogTabUpdateDetails.FileCount}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+										<Label Content="{DynamicResource ModChangelogTabUpdateDetails.UpdateName}" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+										<Label Content="{DynamicResource ModChangelogTabUpdateDetails.Tag}" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+										<wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="BtnOpenUpdate" 
+														 Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
+														 Content="{DynamicResource ModChangelogTabUpdateDetails.OpenBrowser}"
+														 Icon="{StaticResource Icons.Open}"/>
+
+										<TextBlock x:Name="PublishedDate" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+										<TextBlock x:Name="FileSize" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+										<TextBlock x:Name="FileCount" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+										<TextBlock x:Name="UpdateName" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+										<TextBlock x:Name="UpdateTag" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+									</Grid>
+								</GroupBox>
+							</Grid>
+						</TabItem>
+						<TabItem Header="{DynamicResource ModChangelogTabFileChanges}">
+							<Grid x:Name="UpdateFiles" Margin="3">
+								<ListView x:Name="FilesList" Margin="5">
+									<ListView.View>
+										<GridView>
+											<GridView.Columns>
+												<GridViewColumn Header="{DynamicResource ModChangelogTabFileChanges.Filename}" Width="350" >
+													<GridViewColumn.CellTemplate>
+														<DataTemplate>
+															<TextBlock/>
+														</DataTemplate>
+													</GridViewColumn.CellTemplate>
+												</GridViewColumn>
+												<GridViewColumn Header="{DynamicResource ModChangelogTabFileChanges.Status}" Width="150">
+													<GridViewColumn.CellTemplate>
+														<DataTemplate>
+															<TextBlock/>
+														</DataTemplate>
+													</GridViewColumn.CellTemplate>
+												</GridViewColumn>
+											</GridView.Columns>
+										</GridView>
+									</ListView.View>
+								</ListView>
+							</Grid>
+						</TabItem>
+					</TabControl>
+				</Border>
+			</Grid>
+		</Grid>
+
+		<Grid Grid.Row="1" HorizontalAlignment="Right">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="200"/>
+				<ColumnDefinition Width="200"/>
+			</Grid.ColumnDefinitions>
+			<wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" Margin="5"
+							 Icon="{StaticResource Icons.Download}" Padding="5"
+							 Content="{DynamicResource ModChangelog.DownloadNow}"/>
+			<wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" 
+							 Margin="5" Grid.Column="1"
+							 Icon="{StaticResource Icons.Update}" Padding="5"
+							 Content="{DynamicResource ModChangelog.DownloadLater}"/>
+		</Grid>
+	</Grid>
+</Window>

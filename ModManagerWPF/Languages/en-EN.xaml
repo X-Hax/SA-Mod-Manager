@@ -299,6 +299,24 @@
     <system:String x:Key="InstallModFolder">Installing from a folder</system:String>
     <system:String x:Key="InstallMakeMod">New Mod (For Developers)</system:String>
     <!--#endregion-->
+	
+	<!--#region ModChangelog Window-->
+	<system:String x:Key="ModChangelogTitle">Mod Updates</system:String>
+	<system:String x:Key="ModChangelogTabUpdateNotes">Update Notes</system:String>
+	<system:String x:Key="ModChangelogTabUpdateDetails">Update Details</system:String>
+	<system:String x:Key="ModChangelogTabUpdateDetails.DownloadDetails">Download Details</system:String>
+	<system:String x:Key="ModChangelogTabUpdateDetails.PublishedDate">Published Date:</system:String>
+	<system:String x:Key="ModChangelogTabUpdateDetails.FileSize">File Size:</system:String>
+	<system:String x:Key="ModChangelogTabUpdateDetails.FileCount">File Count:</system:String>
+	<system:String x:Key="ModChangelogTabUpdateDetails.UpdateName">Update Title:</system:String>
+	<system:String x:Key="ModChangelogTabUpdateDetails.Tag">Tag:</system:String>
+	<system:String x:Key="ModChangelogTabUpdateDetails.OpenBrowser">Open Update in Browser</system:String>
+	<system:String x:Key="ModChangelogTabFileChanges">File Changes</system:String>
+	<system:String x:Key="ModChangelogTabFileChanges.Filename">Filename</system:String>
+	<system:String x:Key="ModChangelogTabFileChanges.Status">Status</system:String>
+	<system:String x:Key="ModChangelog.DownloadNow">Download Now</system:String>
+	<system:String x:Key="ModChangelog.DownloadLater">Download Later</system:String>
+	<!--#endregion-->
 
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
