@@ -28,7 +28,6 @@
 	<SolidColorBrush x:Key="Window.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="Window.Brushes.Border" Color="{DynamicResource Colors.Highlight}"/>
 	<SolidColorBrush x:Key="Window.Brushes.Inactive.Border" Color="{DynamicResource Colors.Background.Disabled}"/>
-	<SolidColorBrush x:Key="Window.HeaderAccentBrush" Color="#FF0056BC"/>
 	<SolidColorBrush x:Key="WindowButton.Brushes.Background" Color="Transparent"/>
 	<SolidColorBrush x:Key="WindowButton.Brushes.Foreground" Color="#FF9E9E9E"/>
 	<SolidColorBrush x:Key="WindowButton.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
