@@ -3,12 +3,24 @@
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+
+
+
+
     <!--Region Common UI-->
     <system:String x:Key="BtnOK">OK</system:String>
-    <system:String x:Key="BtnCancel">Cancel</system:String>
+    <system:String x:Key="BtnCancel">Cancelar</system:String>
+	<system:String x:Key="BtnYes">Sí</system:String>
+	<system:String x:Key="BtnNo">No</system:String>
+    <system:String x:Key="Warning">Aviso</system:String>
+    <system:String x:Key="Error">Error</system:String>
+    <system:String x:Key="BtnReset">Reiniciar</system:String>
+    <system:String x:Key="BtnCreate">Crear</system:String>
+	<system:String x:Key="SelectAll">Seleccionar Todo</system:String>
+	<system:String x:Key="DeselectAll">Deseleccionar Todo</system:String>
     
     <!--#region Main Window Strings-->
-	<system:String x:Key="MainBtnSave" >Guardar</system:String>
+	<system:String x:Key="MainBtnSave">Guardar</system:String>
 	<system:String x:Key="MainBtnSaveAndPlay" >Guardar y Jugar</system:String>
 	<system:String x:Key="MainTabMods">Mods</system:String>
 	<system:String x:Key="MainTabCodes">Códigos</system:String>
@@ -39,6 +51,10 @@
     <system:String x:Key="ModsUIModDelete">Borrar Mod</system:String>
     <system:String x:Key="ModsUIDev">Desarrollador</system:String>
 
+    <!--Mod About Window-->
+    <system:String x:Key="AuthorSite">Web del Autor</system:String>
+    <system:String x:Key="ModSourceCode">Código Fuente del Mod</system:String>
+
     <!--#endregion-->
 	
 	<!--#region Codes Tab Strings-->
@@ -49,8 +65,9 @@
 	<system:String x:Key="CodesListCategory">Categoría</system:String>
 	<system:String x:Key="CodesListInfo"> Haz doble clic en este código para obtener más información.</system:String>
 	<system:String x:Key="CodesListHint">Selecciona un código para obtener más información.</system:String>
+    <system:String x:Key="Code">Código</system:String>
 
-	<system:String x:Key="CodeAbout">Acerca de {0}</system:String>
+    <system:String x:Key="CodeAbout">Acerca de {0}</system:String>
 	<system:String x:Key="CodeAuthor">Creado por</system:String>
 
 
@@ -97,6 +114,7 @@
     <system:String x:Key="GameGraphicsBoxFill">Rellenar</system:String>
     <system:String x:Key="GameGraphicsLabelFMV">Modo de Relleno de las FMV:</system:String>
     <system:String x:Key="GameGraphicsLabelTexture">Filtrado de Texturas:</system:String>
+    <system:String x:Key="GameGraphicsLabelUIFilter">Filtrado de Interfaz</system:String>
 
     <system:String x:Key="GameGraphicsGroupEnhancement">Mejoras</system:String>
     <system:String x:Key="GameGraphicsCheckMipmap">Forzar Mipmapping</system:String>
@@ -104,10 +122,28 @@
     <system:String x:Key="GameGraphicsCheckD3D8">Activar D3D8to9</system:String>
     
     <system:String x:Key="GameGraphicsButtonUpdateD3D8">Actualizar D3D8to9</system:String>
-        
+
     <!--Input Tab Strings-->
-	
-	<!--Sound Input Strings-->
+    <system:String x:Key="GameInputGroupOptions">Opciones de Entrada</system:String>
+    <system:String x:Key="GameInputCheckVanilla">Entrada Estándar (DInput)</system:String>
+    <system:String x:Key="GameInputCheckSDL2">Entrada Mejorada (SDL2)</system:String>
+    <system:String x:Key="GameInputGroupVanilla">Configuración de Entrada Estándar</system:String>
+    <system:String x:Key="GameInputGroupMK">Teclado y Ratón</system:String>
+    <system:String x:Key="GameInputCheckDragHold">Arrastar y Mantener</system:String>
+    <system:String x:Key="GameInputCheckDragAccel">Arrastar para Acelerar</system:String>
+    <system:String x:Key="GameInputLabelJump">Saltar:</system:String>
+    <system:String x:Key="GameInputLabelAction">Acción:</system:String>
+    <system:String x:Key="GameInputLabelCancel">Cancelar/Atacar:</system:String>
+    <system:String x:Key="GameInputLabelStart">Start/Set:</system:String>
+    <system:String x:Key="GameInputLabelRotateLeft">Girar Cámara - Izquierda:</system:String>
+    <system:String x:Key="GameInputLabelRotateRight">Girar Cámara - Derecha:</system:String>
+    <system:String x:Key="GameInputLabelFlute">Silbar:</system:String>
+    <system:String x:Key="GameInputGroupSDL2">Configuración de Entrada Mejorada</system:String>
+    <system:String x:Key="GameInputButtonOpenApp">Abrir AppLauncher</system:String>
+    <system:String x:Key="GameInputButtonGetApp">Descargar AppLauncher</system:String>
+    <system:String x:Key="GameInputTextSDL2">La Entrada Mejorada es una implementación de SDL2 en SADX. Es recomendable utilizarla para jugar ya que arregla errores del sistema DInput original, tales como la cámara girando sobre sí misma.</system:String>
+
+    <!--Sound Input Strings-->
 	<system:String x:Key="GameSoundGroupSettings">Configuración de Sonido</system:String>
 	<system:String x:Key="GameSoundGroupVolume">Control de Volumen</system:String>
 	<system:String x:Key="GameSoundCheckBassMusic">Utilizar BASS para la Música</system:String>
@@ -151,27 +187,27 @@
 	<system:String x:Key="ManagerBtnDisableOneClick">Desactivar Instalador 1-Clic de GameBanana</system:String>
 
 	<system:String x:Key="ManagerBtnInstallLoader">Instalar Mod Loader</system:String>
-	<system:String x:Key="ManagerBtnUninstallLoader">Desinstalar Mod Loader</system:String>
+    <system:String x:Key="ManagerBtnUninstallLoader">Desinstalar Mod Loader</system:String>
 
-	<system:String x:Key="ManagerCheckKeepOpen">Mantener el Mod Manager abierto después de iniciar el juego</system:String>
-	<system:String x:Key="ManagerCheckTestSpawn">Enable Test Spawn Tab</system:String>
-	
-	<!--Updates-->
+    <!--Updates-->
 	<system:String x:Key="ManagerGrpUpdates">Actualizaciones</system:String>
 	<system:String x:Key="ManagerChkCheckModloader">Buscar Actualizaciones del Mod Loader al Iniciar</system:String>
 	<system:String x:Key="ManagerChkCheckMods">Buscar Actualizaciones de Mods al Iniciar</system:String>
 	<system:String x:Key="ManagerBtnCheckNow">Buscar Actualizaciones</system:String>
 
 	<!--Debug Features-->
-	<system:String x:Key="ManagerGrpAdvanced">Debug Features</system:String>
-	<system:String x:Key="ManagerCheckConsoleWindow">Activar Consola</system:String>
+	<system:String x:Key="ManagerGrpAdvanced">Opciones Avanzandas</system:String>
+    <system:String x:Key="ManagerCheckKeepOpen">Mantener el Mod Manager abierto después de iniciar el juego</system:String>
+    <system:String x:Key="ManagerCheckDevOptions">Activar Opciones de Desarrollador</system:String>
+    <system:String x:Key="ManagerCheckConsoleWindow">Activar Consola</system:String>
 	<system:String x:Key="ManagerCheckPrintDebug">Mostrar mensajes Debug en la Ventana del Juego</system:String>
 	<system:String x:Key="ManagerCheckLogToFile">Guardar Información Debug a un Archivo</system:String>
 	<system:String x:Key="ManagerCheckCrashDumps">Generar un Informe de Bloqueo</system:String>
-	
-	<!--About-->
+    <system:String x:Key="ManagerButtonHealthCheck">Verificar Archivos del Juego</system:String>
+
+    <!--About-->
 	<system:String x:Key="ManagerGrpAbout">Acerca de</system:String>
-	<system:String x:Key="ManagerTextAbout">The SADX Mod Manager is a long standing piece of crap.</system:String>
+    <system:String x:Key="ManagerTextAbout">El SADX Mod Manager es un programa que te permite gestionar fácilmente mods en Sonic Adventure DX.</system:String>
 	<system:String x:Key="ManagerBtnCredits">Colaboradores</system:String>
 	<system:String x:Key="ManagerBtnSource">Código Fuente</system:String>
 	<system:String x:Key="ManagerBtnReport">Reportar un Error (Solo en Inglés)</system:String>
@@ -180,15 +216,116 @@
 
 	<!--#region Manager About Window-->
     
-    
+    <!--#region New / Edit Mod  Window-->
+    <system:String x:Key="NewModDescp">Por favor, rellena la información sobre tu mod.</system:String>
+    <system:String x:Key="EditModTitle">Editar</system:String>
+    <system:String x:Key="NewModTitle">Nuevo Mod</system:String>
+    <system:String x:Key="PropertiesTab">Mod Info</system:String>
+    <system:String x:Key="UpdateTab">Actualizar Info</system:String>
+    <system:String x:Key="DepdenciesTab">Dependencias</system:String>
+    <system:String x:Key="EAuthorURL">URL del Autor:</system:String>    
+    <system:String x:Key="EModID">Mod ID:</system:String>
+    <system:String x:Key="EDLL">DLL:</system:String>
+    <system:String x:Key="ESourceCodeURL">URL del Código Fuente:</system:String>
+    <system:String x:Key="ESaveRedirect">Redireccionar Archivo de Guardado:</system:String>
+    <system:String x:Key="SaveRedirectMainTxt">Archivo de Guardado Principal:</system:String>
+    <system:String x:Key="SaveRedirectChaoTxt">Archivo de Guardado Chao</system:String>
+    <system:String x:Key="OpenFolder">Abrir Carpeta</system:String>
+    <system:String x:Key="UpdatesMethod">Método de Actualización</system:String>
+	<system:String x:Key="UpdatesMethodSelf">Auto-Hospedado</system:String>
+	<system:String x:Key="UpdatesGithub">Configuración de Actualizaciones GitHub</system:String>
+	<system:String x:Key="UpdatesGithubAuthor">Autor y Repositorio:</system:String>
+	<system:String x:Key="UpdatesGithubAsset">Recursos de Versión:</system:String>
+    <system:String x:Key="UpdatesGamebanana">Configuración de Actualizaciones GitHub</system:String>
+	<system:String x:Key="UpdatesGamebananaID">Mod ID:</system:String>
+	<system:String x:Key="UpdatesSelf">Configuración de Actualizaciones Auto-Hospedadas</system:String>
+	<system:String x:Key="UpdatesSelfUpdate">URL de Actualización::</system:String>
+	<system:String x:Key="UpdatesSelfChangelog">URL de Notas de Actualización:</system:String>
+    <system:String x:Key="DependencyWarning">Es recomendable utilizar el sistema de Dependencias unicamente en el caso de que tu mod requiera completamente de otro mod para funcionar correctamente.</system:String>
+	<system:String x:Key="DependencyAdd">Añadir Dependencias</system:String>
+	<system:String x:Key="DependencyRemove">Eliminar Dependencias</system:String>
+	<system:String x:Key="DependencyNameColumn">Nombre</system:String>
+	<system:String x:Key="DependencyIDColumn">ID</system:String>
+	<system:String x:Key="DependencyFolderColumn">Carpeta</system:String>
+	<system:String x:Key="DependencyDownloadColumn">Enlace de Descarga</system:String>
+	
+	<!--#region Select Dependencies Window-->
+	<system:String x:Key="SelectDependenciesHeader">Seleccionar Dependencias</system:String>
+	<!--#endregion-->
+
+    <!--#region Mod Config-->
+    <system:String x:Key="TitleConfigureMod">Configurar</system:String>
+    <!--#endregion-->
+
+    <!--#region Mod Profile-->
+    <system:String x:Key="TitleModProfile">Gestionar Perfiles</system:String>
+    <system:String x:Key="TitleRenameModProfile">Renombrar Perfil</system:String>
+    <system:String x:Key="TitleCreateModProfile">Crear Perfil</system:String>
+    <system:String x:Key="PathModProfile">Directorio del Archivo</system:String>
+    <system:String x:Key="ProRename">Renombrar</system:String>
+    <system:String x:Key="ProClone">Duplicar</system:String>
+    <system:String x:Key="ProDelete">Eliminar</system:String>
+    <system:String x:Key="ProfileRenameError">Error inesperado, no se pudo renombrar el perfil.</system:String>
+    <system:String x:Key="ProfileDuplicateErrorTitle">Error, el perfil ya existe</system:String>
+    <system:String x:Key="ProfileDuplicateError">Un perfil con este nombre ya existe. Por favor, utiliza un nombre distinto.</system:String>
+    <!--#endregion-->
+
+
+    <!--#region Patches ComboBox-->
+    <system:String x:Key="Patch3DSound">Activar Audio 3D HRTF</system:String>
+    <system:String x:Key="PatchCamCode">Correciones del Código de la Cámara</system:String>
+    <system:String x:Key="PatchVerColor">Correciones de Color de Vértice</system:String>
+    <system:String x:Key="PatchMatColor">Correciones de Color de Material</system:String>
+    <system:String x:Key="PatchInterpolation">Correciones de Interpolación</system:String>
+    <system:String x:Key="PatchFov">Correciones de Campo Visual</system:String>
+    <system:String x:Key="PatchSC">Correciones de Sky Chase</system:String>
+    <system:String x:Key="PatchChaos2Crash">Correciones de Chaos 2</system:String>
+    <system:String x:Key="PatchChunkSpec">Correciones de la Iluminación Especular de modelos Chunk</system:String>
+    <system:String x:Key="PatchE102Poly">Correciones de Luces de Gamma</system:String>
+    <system:String x:Key="PatchChaoPanel">Correción de Dimensiones del Panel de Estadísticas Chao</system:String>
+    <system:String x:Key="PatchPixelOffset">2D Rendering Offset Fixes</system:String>
+    <system:String x:Key="PatchLights">Correciones de Luces</system:String>
+    <system:String x:Key="PatchGbix">Desactivar GBIX (Experimental)</system:String>
+    <!--#endregion-->
+
+    <!--#region DL Mod-->
+    <system:String x:Key="DLCredits">Créditos</system:String>
+    <system:String x:Key="DLDownload">Descargar</system:String>
+    <!--#endregion-->
+
+    <!--#region Install New Mod Options-->
+    <system:String x:Key="InstallModTitle">Instalar o crear un nuevo mod.</system:String>
+    <system:String x:Key="InstallModArchive">Instalar desde un archivo</system:String>
+    <system:String x:Key="InstallModFolder">Instalar desde una carpeta</system:String>
+    <system:String x:Key="InstallMakeMod">Nuevo Mod (Para desarrolladores)</system:String>
+    <!--#endregion-->
+
+    <!--#region ModChangelog Window-->
+    <system:String x:Key="ModChangelogTitle">Actualizaciones de Mod</system:String>
+    <system:String x:Key="ModChangelogTabUpdateNotes">Notas de Actualización</system:String>
+    <system:String x:Key="ModChangelogTabUpdateDetails">Detalles de Actualización</system:String>
+    <system:String x:Key="ModChangelogTabUpdateDetails.DownloadDetails">Detalles de Descarga</system:String>
+    <system:String x:Key="ModChangelogTabUpdateDetails.PublishedDate">Fecha Publicada:</system:String>
+    <system:String x:Key="ModChangelogTabUpdateDetails.FileSize">Tamaño del Archivo:</system:String>
+    <system:String x:Key="ModChangelogTabUpdateDetails.FileCount">Número de Archivo/s:</system:String>
+    <system:String x:Key="ModChangelogTabUpdateDetails.UpdateName">Título de la Actualización:</system:String>
+    <system:String x:Key="ModChangelogTabUpdateDetails.Tag">Etiqueta:</system:String>
+    <system:String x:Key="ModChangelogTabUpdateDetails.OpenBrowser">Abrir Actualización en el Navegador</system:String>
+    <system:String x:Key="ModChangelogTabFileChanges">Cambios de Archivo/s</system:String>
+    <system:String x:Key="ModChangelogTabFileChanges.Filename">Nombre del Archivo</system:String>
+    <system:String x:Key="ModChangelogTabFileChanges.Status">Estado</system:String>
+    <system:String x:Key="ModChangelog.DownloadNow">Descargar Ahora</system:String>
+    <system:String x:Key="ModChangelog.DownloadLater">Descargar Más Tarde</system:String>
+    <!--#endregion-->
+
     <!--Message Box Strings-->
     <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
 
     <system:String x:Key="SadxManagerError">SADX Mod Manager Error</system:String>
     
-    <system:String x:Key="ModIniError0">Hay un "mod.ini" en la carpeta mods.</system:String>
+    <system:String x:Key="ModIniError0">Hay un mod.ini en la carpeta mods.</system:String>
     <system:String x:Key="ModIniError1" xml:space="preserve">&#x0a;&#x0a;Cada mod tiene que ser colocado en una subcarpeta dentro de la carpeta mods. No extraigas mods en la carpeta mods.</system:String>
-    <system:String x:Key="ModIniError2" xml:space="preserve">&#x0a;&#x0a;Mueve o elimina el "mod.ini" en la carpeta mods y reinicia el Mod Manager.</system:String>
+    <system:String x:Key="ModIniError2" xml:space="preserve">&#x0a;&#x0a;Mueve o elimina el mod.ini en la carpeta mods y reinicia el Mod Manager.</system:String>
 
     <system:String x:Key="ModRemovedList" xml:space="preserve">no se ha podido encontrar.&#x0a;&#x0a;Este mod será eliminado de la lista.</system:String>
 
@@ -198,8 +335,23 @@
     <system:String x:Key="FailedDetectGamePathTitle">Error al detectar el Directorio del Juego</system:String>
     <system:String x:Key="FailedDetectGamePath">Error al detectar el Directorio del Juego. Por favor, configura el directorio en la Configuración del Manager y asegúrate de seleccionar la carpeta donde sonic.exe está instalado.</system:String>
 
-    <system:String x:Key="DeleteModWarning">¿Estás seguro de que quieres eliminar</system:String>
-    <!--#endregion-->
+    <system:String x:Key="DeleteModWarning">¿Seguro que quieres eliminar</system:String>
 
+    <system:String x:Key="ErrorModDuplicate" xml:space="preserve">Ya existe un mod con ese nombre.&#x0a;Por favor, selecciona otro nombre o renombra el existente.</system:String>
+    <system:String x:Key="ErrorModDuplicateTitle">"Mod ya existe"</system:String>
+    <system:String x:Key="ErrorModCreation">"Error al crear el Mod"</system:String>
+
+    <system:String x:Key="ErrorNoNameSet">No puedes tener un mod sin un nombre.</system:String>
+    <system:String x:Key="ErrorNoNameSetTitle">Nombre de mod inválido</system:String>
+
+    <system:String x:Key="WarningDelSaveRedir" xml:space="preserve">Estás a punto de desactivar la redirección de archivo de guardado para este mod. Si continúas, cualquier archivo de guardado en este mod será eliminado.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
+
+    <system:String x:Key="DeleteProfileWarning">¿Seguro que quieres eliminar este perfil?</system:String>
+
+    <system:String x:Key="LoaderDllMissing" xml:space="preserve">No se ha podido encontrar el archivo SADXModLoader.dll, el Mod Loader no funcionará.&#x0a;&#x0a;Por favor, vuelve a descargar el Mod Manager.</system:String>
+
+    <system:String x:Key="ForceUpdate" xml:space="preserve">Esto hará que todos los mods se vuelvan a descargar.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
+
+    <!--#endregion-->
 
 </ResourceDictionary>
