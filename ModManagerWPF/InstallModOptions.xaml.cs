@@ -1,8 +1,10 @@
 ﻿using ModManagerCommon;
 using ModManagerWPF.Common;
+using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,8 +37,8 @@ namespace ModManagerWPF
 		{
 			InitializeComponent();
 			Header.Text = Lang.GetString("InstallModTitle");
-	
-			CheckStack.Children.Add(new RadioButton() { IsChecked = true, Content = Lang.GetString("InstallMakeMod"), Margin = new Thickness(2) });;
+
+			CheckStack.Children.Add(new RadioButton() { IsChecked = true, Content = Lang.GetString("InstallMakeMod"), Margin = new Thickness(2) }); ;
 			CheckStack.Children.Add(new RadioButton() { Content = Lang.GetString("InstallModArchive"), Margin = new Thickness(2) });
 			CheckStack.Children.Add(new RadioButton() { Content = Lang.GetString("InstallModFolder"), Margin = new Thickness(2) });
 		}
@@ -50,7 +52,7 @@ namespace ModManagerWPF
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{
 			this.Close();
-        }
+		}
 
 		public int Ask()
 		{
@@ -82,18 +84,35 @@ namespace ModManagerWPF
 			DialogResult = true;
 		}
 
+
+
 		//to do add extension support
-		public void InstallModArchive(string path, string root)
+		public void InstallModArchive(string[] path, string root)
 		{
+			foreach (string file in path)
+			{
+				try
+				{
+					using (ArchiveFile archiveFile = new(file))
+					{
+						archiveFile.Extract(root);
+					}
+				}
+				catch
+				{
+					throw new Exception("Failed to install one mod.");
+				}
+			}
+
 			((MainWindow)App.Current.MainWindow).Save();
 		}
 
-		public void InstallMod(string path, string root)
+		public void InstallMod(string[] path, string root)
 		{
-			if (File.Exists(path))
+			if (File.Exists(path[0]))
 				InstallModArchive(path, root);
-			else if (Directory.Exists(path))
-				InstallModDirectory(path, root);
+			else if (Directory.Exists(path[0]))
+				InstallModDirectory(path[0], root);
 		}
 
 		public static void InstallModDirectory(string path, string root)

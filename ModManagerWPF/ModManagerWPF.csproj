@@ -20,8 +20,7 @@
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.1" />
-    <PackageReference Include="Octokit" Version="6.0.0" />
-    <PackageReference Include="SharpCompress" Version="0.33.0" />
+    <PackageReference Include="Octokit" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +33,9 @@
     </Reference>
     <Reference Include="HtmlRenderer.WPF">
       <HintPath>Externals\HtmlRenderer.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="SevenZipExtractor">
+      <HintPath>Externals\SevenZipExtractor.dll</HintPath>
     </Reference>
   </ItemGroup>
 

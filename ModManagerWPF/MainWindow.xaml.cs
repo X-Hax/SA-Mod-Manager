@@ -633,14 +633,15 @@ namespace ModManagerWPF
 			switch (choice)
 			{
 				case (int)InstallModOptions.Type.ModArchive:
-					var archiveFIle = new System.Windows.Forms.OpenFileDialog();
+					var archiveFile = new System.Windows.Forms.OpenFileDialog();
+					archiveFile.Multiselect = true;
 
-					archiveFIle.Filter = "archive files|*.zip;*.7z;*.rar;*.tar";
-					System.Windows.Forms.DialogResult result_ = archiveFIle.ShowDialog();
+					archiveFile.Filter = "archive files|*.zip;*.7z;*.rar;*.tar";
+					System.Windows.Forms.DialogResult result_ = archiveFile.ShowDialog();
 
 					if (result_ == System.Windows.Forms.DialogResult.OK)
 					{
-						string sFileName = archiveFIle.FileName;
+						string[] sFileName = archiveFile.FileNames;
 						form.InstallMod(sFileName, modDirectory);
 				
 					}
@@ -652,7 +653,9 @@ namespace ModManagerWPF
 
 					if (result == System.Windows.Forms.DialogResult.OK)
 					{
-						form.InstallMod(newModFolder.SelectedPath, modDirectory);
+						string[] FileName = { newModFolder.SelectedPath };
+	
+						form.InstallMod(FileName, modDirectory);
 					}
 					break;
 				case (int)InstallModOptions.Type.NewMod: //create mod
