@@ -627,17 +627,35 @@ namespace ModManagerWPF
 
 		private void NewModBtn_Click(object sender, RoutedEventArgs e)
 		{
-			var choice = new NewModOptions().Ask();
+			var form = new InstallModOptions();
+			var choice = form.Ask();
 			
 			switch (choice)
 			{
-				case (int)NewModOptions.Type.ModArchive:
+				case (int)InstallModOptions.Type.ModArchive:
+					var archiveFIle = new System.Windows.Forms.OpenFileDialog();
 
-					break;
-				case (int)NewModOptions.Type.ModFolder:
+					archiveFIle.Filter = "archive files|*.zip;*.7z;*.rar;*.tar";
+					System.Windows.Forms.DialogResult result_ = archiveFIle.ShowDialog();
 
+					if (result_ == System.Windows.Forms.DialogResult.OK)
+					{
+						string sFileName = archiveFIle.FileName;
+						form.InstallMod(sFileName, modDirectory);
+				
+					}
 					break;
-				case (int)NewModOptions.Type.NewMod:
+				case (int)InstallModOptions.Type.ModFolder:
+					var newModFolder = new System.Windows.Forms.FolderBrowserDialog();
+
+					System.Windows.Forms.DialogResult result = newModFolder.ShowDialog();
+
+					if (result == System.Windows.Forms.DialogResult.OK)
+					{
+						form.InstallMod(newModFolder.SelectedPath, modDirectory);
+					}
+					break;
+				case (int)InstallModOptions.Type.NewMod: //create mod
 					EditMod Edit = new(null);
 					Edit.Show();
 					Edit.Closed += EditMod_FormClosing;
