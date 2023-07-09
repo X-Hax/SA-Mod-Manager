@@ -561,7 +561,7 @@ namespace ModManagerWPF
 		private void ModContextForceUpdate_Click(object sender, RoutedEventArgs e)
 		{
 			var result = new MessageWindow(Lang.GetString("ForceUpdateTitle"), Lang.GetString("ForceUpdate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-
+			result.ShowDialog();
 			if (result.isYes) 
 			{
 				modUpdater.ForceUpdate = true;
