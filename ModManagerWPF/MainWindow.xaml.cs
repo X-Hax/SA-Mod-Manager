@@ -627,7 +627,7 @@ namespace ModManagerWPF
 			{
 				SADXModInfo modInfo = mods[mod.Tag];
 				string fullPath = Path.Combine(modDirectory, mod.Tag);
-				Common.ModConfig config = new(modInfo, fullPath);
+				Common.ModConfig config = new(modInfo.Name, fullPath);
 				config.Show();
 			}
 		}

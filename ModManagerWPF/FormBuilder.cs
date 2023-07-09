@@ -254,7 +254,6 @@ namespace ModManagerWPF
 			settings = config;
 			var stack = new StackPanel();
 			
-
 			foreach (ConfigSchemaGroup group in settings.schema.Groups)
 			{
 				string name = group.Name;
@@ -374,11 +373,6 @@ namespace ModManagerWPF
 		}
 
 		#endregion
-
-
-
-
-
 	}
 }
 
