@@ -335,7 +335,7 @@
     <system:String x:Key="FailedDetectGamePathTitle">Error al detectar el Directorio del Juego</system:String>
     <system:String x:Key="FailedDetectGamePath">Error al detectar el Directorio del Juego. Por favor, configura el directorio en la Configuración del Manager y asegúrate de seleccionar la carpeta donde sonic.exe está instalado.</system:String>
 
-    <system:String x:Key="DeleteModWarning">¿Seguro que quieres eliminar</system:String>
+    <system:String x:Key="DeleteModWarning" xml:space="preserve">¿Seguro que quieres eliminar</system:String>
 
     <system:String x:Key="ErrorModDuplicate" xml:space="preserve">Ya existe un mod con ese nombre.&#x0a;Por favor, selecciona otro nombre o renombra el existente.</system:String>
     <system:String x:Key="ErrorModDuplicateTitle">"Mod ya existe"</system:String>

@@ -292,7 +292,8 @@
     <system:String x:Key="FailedDetectGamePathTitle">Echec détection du chemin d'accès</system:String>
     <system:String x:Key="FailedDetectGamePath">Impossible de trouver le chemin d'accès du répertoire du jeu. Veuillez sélectionner le chemin dans les paramètres et assurez vous de prendre le dossier qui contient sonic.exe.</system:String>
 
-    <system:String x:Key="DeleteModWarning">Etes vous sur de vouloir supprimer</system:String>
+
+    <system:String x:Key="DeleteModWarning" xml:space="preserve">Cette action désinstallera tous les mods sélectionnés. Voulez-vous vraiment continuer ?</system:String>
     <system:String x:Key="ErrorModDuplicate" xml:space="preserve">Un mod avec ce nom existe déjà.&#x0a;Veuillez choisir un nom différent ou renommer le mod existant.</system:String>
     <system:String x:Key="ErrorModDuplicateTitle">"Mod existe déjà"</system:String>
     <system:String x:Key="ErrorModCreation">"Erreur création du Mod"</system:String>

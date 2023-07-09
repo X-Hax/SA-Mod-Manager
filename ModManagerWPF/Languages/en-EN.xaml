@@ -336,7 +336,7 @@
     <system:String x:Key="FailedDetectGamePathTitle">Failed to detect Game Path</system:String>
     <system:String x:Key="FailedDetectGamePath">Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.</system:String>
 
-    <system:String x:Key="DeleteModWarning">Are you sure you want to delete</system:String>
+    <system:String x:Key="DeleteModWarning" xml:space="preserve">This will uninstall all the selected mods.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
 
     <system:String x:Key="ErrorModDuplicate" xml:space="preserve">A mod with that name already exists.&#x0a;Please choose a different name or rename the existing one.</system:String>
     <system:String x:Key="ErrorModDuplicateTitle">"Mod already exists"</system:String>
@@ -352,7 +352,8 @@
     <system:String x:Key="LoaderDllMissing" xml:space="preserve">The file SADXModLoader.dll couldn't be found, Mod Loader won't work.&#x0a;&#x0a;Please re download the Mod Manager.</system:String>
 
     <system:String x:Key="ForceUpdate" xml:space="preserve">>This will force all selected mods to be completely re-downloaded.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
-    
+
+    <system:String x:Key="ErrorDontWantTo">Hm... no, you don't want to do that. :)</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>

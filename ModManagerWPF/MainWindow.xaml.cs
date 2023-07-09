@@ -583,24 +583,34 @@ namespace ModManagerWPF
 
 		private void ModContextDeleteMod_Click(object sender, RoutedEventArgs e)
 		{
-			var item = (ModData)listMods.SelectedItem;
+			var selectedItems = listMods.SelectedItems;
+			var count = selectedItems.Count > 0;
 
-			if (item is not null)
+			if (count)
 			{
-				var msg = MessageBox.Show(Lang.GetString("DeleteModWarning") + " " + item.Name + "?", Lang.GetString("SadxManagerTitle"), MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-				if (msg == MessageBoxResult.Yes)
-				{
-					string fullPath = Path.Combine(modDirectory, item.Tag);
+				var confirmMessage = Lang.GetString("DeleteModWarning") + " ";
+				var deleteConfirmation = new MessageWindow(Lang.GetString("SadxManagerTitle"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 
-					if (Directory.Exists(fullPath))
+				deleteConfirmation.Show();
+				if (deleteConfirmation.isYes)
+				{
+					foreach (var selectedItem in selectedItems)
 					{
-						Directory.Delete(fullPath, true);
+						var item = (ModData)selectedItem;
+
+						string fullPath = Path.Combine(modDirectory, item.Tag);
+
+						if (Directory.Exists(fullPath))
+						{
+							Directory.Delete(fullPath, true);
+						}
 					}
 
 					LoadModList();
 				}
 			}
 		}
+
 
 		private void ModContextDev_Click(object sender, RoutedEventArgs e)
 		{
@@ -627,17 +637,38 @@ namespace ModManagerWPF
 
 		private void NewModBtn_Click(object sender, RoutedEventArgs e)
 		{
-			var choice = new NewModOptions().Ask();
+			var form = new InstallModOptions();
+			var choice = form.Ask();
 			
 			switch (choice)
 			{
-				case (int)NewModOptions.Type.ModArchive:
+				case (int)InstallModOptions.Type.ModArchive:
+					var archiveFile = new System.Windows.Forms.OpenFileDialog();
+					archiveFile.Multiselect = true;
 
-					break;
-				case (int)NewModOptions.Type.ModFolder:
+					archiveFile.Filter = "archive files|*.zip;*.7z;*.rar;*.tar";
+					System.Windows.Forms.DialogResult result_ = archiveFile.ShowDialog();
 
+					if (result_ == System.Windows.Forms.DialogResult.OK)
+					{
+						string[] sFileName = archiveFile.FileNames;
+						form.InstallMod(sFileName, modDirectory);
+				
+					}
 					break;
-				case (int)NewModOptions.Type.NewMod:
+				case (int)InstallModOptions.Type.ModFolder:
+					var newModFolder = new System.Windows.Forms.FolderBrowserDialog();
+
+					System.Windows.Forms.DialogResult result = newModFolder.ShowDialog();
+
+					if (result == System.Windows.Forms.DialogResult.OK)
+					{
+						string[] FileName = { newModFolder.SelectedPath };
+	
+						form.InstallMod(FileName, modDirectory);
+					}
+					break;
+				case (int)InstallModOptions.Type.NewMod: //create mod
 					EditMod Edit = new(null);
 					Edit.Show();
 					Edit.Closed += EditMod_FormClosing;
