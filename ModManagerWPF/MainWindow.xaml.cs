@@ -380,7 +380,7 @@ namespace ModManagerWPF
 		{
 			if (string.IsNullOrEmpty(gamePath))
 			{
-				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+				new MessageWindow(Lang.GetString("FailedDetectGamePathTitle"), Lang.GetString("FailedDetectGamePath"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
@@ -421,9 +421,10 @@ namespace ModManagerWPF
 
 			if (File.Exists(Path.Combine(modDirectory, "mod.ini")))
 			{
-				MessageBox.Show(this, Lang.GetString("ModIniError0")
-							+ Lang.GetString("ModIniError1") +
-							Lang.GetString("ModIniError2"), Lang.GetString("SadxManagerError"), MessageBoxButton.OK, MessageBoxImage.Error);
+				new MessageWindow(Lang.GetString("SadxManagerError"), Lang.GetString("ModIniError0") + Lang.GetString("ModIniError1") +
+							Lang.GetString("ModIniError2"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, 
+							MessageWindow.Buttons.OK).ShowDialog();
+
 				Close();
 				return;
 			}
@@ -458,7 +459,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					MessageBox.Show(this, "Mod \"" + mod + "\"" + Lang.GetString("ModRemovedList"));
+					new MessageWindow(Lang.GetString("SadxManagerTitle"), "Mod \"" + mod + "\"" + Lang.GetString("ModRemovedList"), MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 					loaderini.Mods.Remove(mod);
 				}
 			}
@@ -559,9 +560,9 @@ namespace ModManagerWPF
 
 		private void ModContextForceUpdate_Click(object sender, RoutedEventArgs e)
 		{
-			var result = MessageBox.Show(Lang.GetString("ForceUpdateTitle"), Lang.GetString("ForceUpdate"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
+			var result = new MessageWindow(Lang.GetString("ForceUpdateTitle"), Lang.GetString("ForceUpdate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 
-			if (result == MessageBoxResult.Yes) 
+			if (result.isYes) 
 			{
 				modUpdater.ForceUpdate = true;
 				UpdateSelectedMods();
@@ -813,7 +814,7 @@ namespace ModManagerWPF
 			// Framerate
 			if (gameConfigFile.GameConfig.FrameRate == (int)Game.FrameRate.Invalid || gameConfigFile.GameConfig.FrameRate > (int)Game.FrameRate.Low)
 			{
-				MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButton.OK, MessageBoxImage.Error);
+				new MessageWindow(Lang.GetString("InvalidSettingFrameTitle"),Lang.GetString("InvalidSettingFrameTitle"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				comboFramerate.SelectedIndex = (int)Game.FrameRate.High - 1;
 			}
 			else
@@ -899,8 +900,8 @@ namespace ModManagerWPF
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(this, $"Error loading code list: {ex.Message}", "Error Loading Code", MessageBoxButton.OK, MessageBoxImage.Error);
-
+				string msg = " " + ex.Message;
+				new MessageWindow(Lang.GetString("ErrorLoadingCodeTitle"), Lang.GetString("ErrorLoadingCode") + msg, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				mainCodes = new CodeList();
 			}
 		}
@@ -1250,7 +1251,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					MessageBox.Show(Lang.GetString("LoaderDllMissing"), Lang.GetString("SadxManagerError"));
+					new MessageWindow(Lang.GetString("SadxManagerError"), Lang.GetString("LoaderDllMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				}
 			}
 		}
@@ -1278,7 +1279,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					MessageBox.Show(Lang.GetString("FaildSetGamePath"), Lang.GetString("FaildSetGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+					new MessageWindow(Lang.GetString("FaildSetGamePathTitle"), Lang.GetString("FaildSetGamePath"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				}
 			}
 		}
@@ -1309,7 +1310,7 @@ namespace ModManagerWPF
 		{
 			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
 			{
-				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+				new MessageWindow(Lang.GetString("FailedDetectGamePathTitle"), Lang.GetString("FailedDetectGamePath"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
@@ -1708,8 +1709,7 @@ namespace ModManagerWPF
 			List<string> errors = data.Item2;
 			if (errors.Count != 0)
 			{
-				MessageBox.Show("The following errors occurred while checking for updates:\n\n" + string.Join("\n", errors),
-					"Update Errors", MessageBoxButton.OK, MessageBoxImage.Warning);
+				new MessageWindow(Lang.GetString("ErrorCheckForUpdateTitle"), Lang.GetString("ErrorCheckForUpdate") + "`\n" + errors, MessageWindow.WindowType.Message, MessageWindow.Icons.Warning, MessageWindow.Buttons.OK).ShowDialog();
 			}
 
 			bool manual = manualModUpdate;
@@ -1720,8 +1720,7 @@ namespace ModManagerWPF
 			{
 				if (manual)
 				{
-					MessageBox.Show("Mods are up to date.",
-						"No Updates", MessageBoxButton.OK, MessageBoxImage.Information);
+					new MessageWindow(Lang.GetString("InfoModUpToDateTitle"), Lang.GetString("InfoModUpToDate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 				}
 				return;
 			}

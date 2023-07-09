@@ -113,7 +113,7 @@ namespace ModManagerWPF
 
 			if (nameBox.Text.Length <= 0)
 			{
-				MessageBox.Show(Lang.GetString("ErrorNoNameSet"), Lang.GetString("ErrorNoNameSetTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+				new MessageWindow(Lang.GetString("ErrorNoNameSetTitle"), Lang.GetString("ErrorNoNameSet"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
@@ -405,7 +405,7 @@ namespace ModManagerWPF
 			{
 				if (Directory.Exists(moddir))
 				{
-					MessageBox.Show(Lang.GetString("ErrorModDuplicate"), Lang.GetString("ErrorModDuplicateTitle"), MessageBoxButton.OK, MessageBoxImage.Asterisk);
+					new MessageWindow(Lang.GetString("ErrorModDuplicateTitle"), Lang.GetString("ErrorModDuplicate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 					return;
 				}
 
@@ -448,7 +448,7 @@ namespace ModManagerWPF
 			}
 			catch (Exception error)
 			{
-				MessageBox.Show(this, error.Message, Lang.GetString("ErrorModCreation"), MessageBoxButton.OK, MessageBoxImage.Error);
+				new MessageWindow(Lang.GetString("ErrorModCreation"), error.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 			}
 
 		}
@@ -509,9 +509,9 @@ namespace ModManagerWPF
 					//if user unchecked save redirect and the mod has existing save files, throw warning
 					if (Directory.GetFiles(fullSavepath, "*.snc").Length > 0)
 					{
-						var dialogue = MessageBox.Show(Lang.GetString("WarningDelSaveRedir"), Lang.GetString("Warning"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-						if (dialogue != MessageBoxResult.Yes)
+						var dialogue = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("WarningDelSaveRedir"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+						dialogue.ShowDialog();
+						if (dialogue.isYes != true)
 						{
 							return;
 						}

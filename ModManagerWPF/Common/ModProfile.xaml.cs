@@ -50,8 +50,10 @@ namespace ModManagerWPF.Common
 
 			if (profile != null)
 			{
-				EditProfile edit = new EditProfile(profile.name, (char)ProfileListView.SelectedIndex);
-				edit.Owner = this;
+				EditProfile edit = new(profile.name, (char)ProfileListView.SelectedIndex)
+				{
+					Owner = this
+				};
 				bool? dialogResult = edit.ShowDialog();
 
 				if (dialogResult == true) 
@@ -71,7 +73,7 @@ namespace ModManagerWPF.Common
 						}
 						catch
 						{
-							MessageBox.Show(Lang.GetString("ProfileRenameError"), Lang.GetString("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+							new MessageWindow(Lang.GetString("Error"), Lang.GetString("ProfileRenameError"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 						}
 					}
 				}		
@@ -164,9 +166,10 @@ namespace ModManagerWPF.Common
 			if (profile == null)
 				return;
 
-			var msg = MessageBox.Show(Lang.GetString("DeleteProfileWarning"), Lang.GetString("Warning"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
-			
-			if (msg == MessageBoxResult.Yes)
+			var msg = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("DeleteProfileWarning"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+			msg.ShowDialog();
+
+			if (msg.isYes)
 			{
 				if (File.Exists(profile.iniPath))
 				{

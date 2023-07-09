@@ -85,7 +85,7 @@ namespace ModManagerWPF.Common
 
 				if (File.Exists(fullPath)) 
 				{
-					MessageBox.Show(Lang.GetString("ProfileDuplicateError"), Lang.GetString("ProfileDuplicateErrorTitle"), MessageBoxButton.OK, MessageBoxImage.Error);			
+					new MessageWindow(Lang.GetString("ProfileDuplicateErrorTitle"), Lang.GetString("ProfileDuplicateError"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();		
 					return;
 				}
 
