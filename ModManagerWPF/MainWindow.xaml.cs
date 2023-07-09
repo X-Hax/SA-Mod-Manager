@@ -583,24 +583,34 @@ namespace ModManagerWPF
 
 		private void ModContextDeleteMod_Click(object sender, RoutedEventArgs e)
 		{
-			var item = (ModData)listMods.SelectedItem;
+			var selectedItems = listMods.SelectedItems;
+			var count = selectedItems.Count > 0;
 
-			if (item is not null)
+			if (count)
 			{
-				var msg = MessageBox.Show(Lang.GetString("DeleteModWarning") + " " + item.Name + "?", Lang.GetString("SadxManagerTitle"), MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-				if (msg == MessageBoxResult.Yes)
-				{
-					string fullPath = Path.Combine(modDirectory, item.Tag);
+				var confirmMessage = Lang.GetString("DeleteModWarning") + " ";
+				var deleteConfirmation = new MessageWindow(Lang.GetString("SadxManagerTitle"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 
-					if (Directory.Exists(fullPath))
+				deleteConfirmation.Show();
+				if (deleteConfirmation.isYes)
+				{
+					foreach (var selectedItem in selectedItems)
 					{
-						Directory.Delete(fullPath, true);
+						var item = (ModData)selectedItem;
+
+						string fullPath = Path.Combine(modDirectory, item.Tag);
+
+						if (Directory.Exists(fullPath))
+						{
+							Directory.Delete(fullPath, true);
+						}
 					}
 
 					LoadModList();
 				}
 			}
 		}
+
 
 		private void ModContextDev_Click(object sender, RoutedEventArgs e)
 		{
