@@ -38,6 +38,7 @@ namespace ModManagerWPF.Common
 			OK,
 			OKCancel,
 			YesNo,
+			RetryCancel,
 		}
 
 		/// <summary>
@@ -50,15 +51,28 @@ namespace ModManagerWPF.Common
 			Message
 		}
 
+		private static bool Accepted { get; set; }
+
 		/// <summary>
 		/// Returns true when MessageWindow is closed. Can be used to check when the window has been closed.
 		/// </summary>
 		public bool isClosed;
 
 		/// <summary>
-		/// Returns true when OK or Yes buttons are pressed. Can be used to check when those buttons have been pressed.
+		/// Returns true Yes has been pressed.
 		/// </summary>
-		public bool isYes;
+		public bool isYes { get { return Accepted; } }
+
+		/// <summary>
+		/// Returns true when Retry has been pressed.
+		/// </summary>
+		public bool isRetry { get { return Accepted; } }
+
+		/// <summary>
+		/// Returns true when OK has been pressed.
+		/// </summary>
+		public bool isOK { get { return Accepted; } }
+		
 
 		/// <summary>
 		/// Constructs a MessageWindow using preset Icons.
@@ -104,7 +118,7 @@ namespace ModManagerWPF.Common
 		private void InitializeMessageWindow(string windowName, string messageText, string headerText, Image icon, Buttons button, WindowType type)
 		{
 			isClosed = false;
-			isYes = false;
+			Accepted = false;
 			Window.Title = windowName;
 			Image image = (Image)TryFindResource("MessageIcon");
 			image.Source = icon.Source;
@@ -137,19 +151,20 @@ namespace ModManagerWPF.Common
 			switch (buttons)
 			{
 				case Buttons.OK:
-					ButtonsGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Auto);
-					ButtonsGrid.RowDefinitions[1].Height = new GridLength(0);
-					ButtonsGrid.RowDefinitions[2].Height = new GridLength(0);
+					ButtonLeft.Visibility = Visibility.Hidden;
+					ButtonRight.Content = Lang.GetString("BtnOK");
 					break;
 				case Buttons.OKCancel:
-					ButtonsGrid.RowDefinitions[0].Height = new GridLength(0);
-					ButtonsGrid.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Auto);
-					ButtonsGrid.RowDefinitions[2].Height = new GridLength(0);
+					ButtonLeft.Content = Lang.GetString("BtnOK");
+					ButtonRight.Content = Lang.GetString("BtnCancel");
 					break;
 				case Buttons.YesNo:
-					ButtonsGrid.RowDefinitions[0].Height = new GridLength(0);
-					ButtonsGrid.RowDefinitions[1].Height = new GridLength(0);
-					ButtonsGrid.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Auto);
+					ButtonLeft.Content = Lang.GetString("BtnYes");
+					ButtonRight.Content = Lang.GetString("BtnNo");
+					break;
+				case Buttons.RetryCancel:
+					ButtonLeft.Content = Lang.GetString("BtnRetry");
+					ButtonRight.Content = Lang.GetString("BtnCancel");
 					break;
 			}
 		}
@@ -194,7 +209,7 @@ namespace ModManagerWPF.Common
 
 		private void ButtonYes_Click(object sender, RoutedEventArgs e)
 		{
-			isYes = true;
+			Accepted = true;
 			this.Close();
 		}
 

@@ -72,17 +72,10 @@
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="0"/>
-				<RowDefinition Height="0"/>
 			</Grid.RowDefinitions>
 
-			<Button Content="{DynamicResource BtnOK}" Margin="0,5,0,5" Grid.Row="0" Grid.Column="2" Click="ButtonYes_Click"/>
-
-			<Button x:Name="ButtonOK" Content="{DynamicResource BtnOK}" Grid.Row="1" Margin="0,5,0,5" Click="ButtonYes_Click"/>
-			<Button x:Name="ButtonCancel" Content="{DynamicResource BtnCancel}" Grid.Row="1" Grid.Column="2" Margin="0,5,0,5" Click="ButtonClick"/>
-			
-			<Button x:Name="ButtonYes" Content="{DynamicResource BtnYes}" Grid.Row="2" Margin="0,5,0,5" Click="ButtonYes_Click"/>
-			<Button x:Name="ButtonNo" Content="{DynamicResource BtnNo}" Grid.Row="2" Grid.Column="2" Margin="0,5,0,5" Click="ButtonClick"/>
+			<Button x:Name="ButtonRight" Margin="0,5,0,5" Grid.Row="0" Grid.Column="2" Click="ButtonYes_Click"/>
+			<Button x:Name="ButtonLeft" Grid.Row="1" Margin="0,5,0,5" Click="ButtonClick"/>
 		</Grid>
     </Grid>
 </Window>
