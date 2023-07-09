@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using GongSolutions.Wpf.DragDrop.Utilities;
 using ModManagerWPF.Common;
 using ModManagerWPF.Properties;
 using Xceed.Wpf.Toolkit;
+using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
 namespace ModManagerWPF
 {
@@ -92,9 +94,9 @@ namespace ModManagerWPF
 			return 0;
 		}
 
-		public static UIElement CreateComboBox(ConfigSchemaProperty property, ConfigSettings config, List<ConfigSchemaEnum> enums)
+		public static UIElement CreateComboBox(ConfigSchemaProperty property, ConfigSettings config, List<ConfigSchemaEnum> enums, CustomPropertyStore storeInfo)
 		{
-			Grid panel = new Grid()
+			Grid panel = new()
 			{
 				ColumnDefinitions =
 				{
@@ -106,7 +108,7 @@ namespace ModManagerWPF
 			};
 			panel.Children.Add(CreateLabel(property));
 			Dictionary<string, string> list = EnumItems(enums.Find(x => x.Name == property.Type));
-			ComboBox box = new ComboBox()
+			ComboBox box = new()
 			{
 				Width = 200,
 				SelectedValuePath = "Key",
@@ -115,9 +117,10 @@ namespace ModManagerWPF
 				ItemsSource = list,
 				VerticalAlignment = VerticalAlignment.Center,
 				HorizontalAlignment = HorizontalAlignment.Right,
-				Tag = property.HelpText
+				Tag = storeInfo
 			};
 
+			box.SelectionChanged += ComboBox_ModConfigSelectionChanged;
 			panel.Children.Add(box);
 
 			Grid.SetColumn(panel.Children[0], 0);
@@ -126,9 +129,9 @@ namespace ModManagerWPF
 		}
 
 
-		public static UIElement CreateIntBox(ConfigSchemaProperty property, ConfigSettings config)
+		public static UIElement CreateIntBox(ConfigSchemaProperty property, ConfigSettings config, CustomPropertyStore storeInfo)
 		{
-			Grid panel = new Grid()
+			Grid panel = new()
 			{
 				ColumnDefinitions =
 				{
@@ -140,13 +143,15 @@ namespace ModManagerWPF
 			};
 			panel.Children.Add(CreateLabel(property));
 
-			IntegerUpDown element = new IntegerUpDown()
+			IntegerUpDown element = new()
 			{
 				MinWidth = 100,
 				Value = (int)GetConfigValue(property, config),
 				HorizontalAlignment = HorizontalAlignment.Right,
-				Tag = property.HelpText
+				Tag = storeInfo
 			};
+
+			element.ValueChanged += ModSetting_intElementChanged;
 			panel.Children.Add(element);
 
 			Grid.SetColumn(panel.Children[0], 0);
@@ -155,9 +160,9 @@ namespace ModManagerWPF
 			return panel;
 		}
 
-		public static UIElement CreateFloatBox(ConfigSchemaProperty property, ConfigSettings config)
+		public static UIElement CreateFloatBox(ConfigSchemaProperty property, ConfigSettings config, CustomPropertyStore storeInfo)
 		{
-			Grid panel = new Grid()
+			Grid panel = new()
 			{
 				ColumnDefinitions =
 				{
@@ -171,13 +176,15 @@ namespace ModManagerWPF
 
 			decimal result = (decimal)GetConfigValue(property, config);
 
-			DecimalUpDown element = new DecimalUpDown()
+			DecimalUpDown element = new()
 			{
 				MinWidth = 100,
 				Value = result,
 				HorizontalAlignment = HorizontalAlignment.Right,
-				Tag = property.HelpText
+				Tag = storeInfo
 			};
+
+			element.ValueChanged += ModSetting_floatElementChanged;
 			panel.Children.Add(element);
 
 			Grid.SetColumn(panel.Children[0], 0);
@@ -186,9 +193,9 @@ namespace ModManagerWPF
 			return panel;
 		}
 
-		public static UIElement CreateStringBox(ConfigSchemaProperty property, ConfigSettings config)
+		public static UIElement CreateStringBox(ConfigSchemaProperty property, ConfigSettings config, CustomPropertyStore storeInfo)
 		{
-			Grid panel = new Grid()
+			Grid panel = new()
 			{
 				ColumnDefinitions =
 				{
@@ -200,14 +207,16 @@ namespace ModManagerWPF
 			};
 			panel.Children.Add(CreateLabel(property));
 
-			TextBox element = new TextBox()
+			TextBox element = new()
 			{
 				Width = 200,
 				Text = (string)GetConfigValue(property, config),
 				VerticalAlignment = VerticalAlignment.Center,
 				HorizontalAlignment = HorizontalAlignment.Right,
-				Tag = property.HelpText,
+				Tag = storeInfo,
 			};
+
+			element.TextChanged += ModSetting_stringElementChanged;
 			panel.Children.Add(element);
 
 			Grid.SetColumn(panel.Children[0], 0);
@@ -216,9 +225,9 @@ namespace ModManagerWPF
 			return panel;
 		}
 
-		public static UIElement CreateCheckBox(ConfigSchemaProperty property, ConfigSettings config)
+		public static UIElement CreateCheckBox(ConfigSchemaProperty property, ConfigSettings config, CustomPropertyStore settingInfo)
 		{
-			Grid grid = new Grid()
+			Grid grid = new()
 			{
 				ColumnDefinitions =
 				{
@@ -230,13 +239,16 @@ namespace ModManagerWPF
 			};
 			grid.Children.Add(CreateLabel(property));
 
-			CheckBox checkBox = new CheckBox()
+			CheckBox checkBox = new()
 			{
 				IsChecked = (bool)GetConfigValue(property, config),
-				Tag = property.HelpText,
+				Tag = settingInfo,
 				HorizontalAlignment = HorizontalAlignment.Right,
-
+			
 			};
+
+			checkBox.Checked += CheckBox_ModConfigSelectionChanged;
+			checkBox.Unchecked += CheckBox_ModConfigSelectionChanged;
 			grid.Children.Add(checkBox);
 			grid.Children.Add(new Separator()
 			{
@@ -250,20 +262,20 @@ namespace ModManagerWPF
 			return grid;
 		}
 
-		private static UIElement ConfigCreateItem(ConfigSchemaProperty elem, ConfigSettings config)
+		private static UIElement ConfigCreateItem(ConfigSchemaProperty elem, ConfigSettings config, CustomPropertyStore storeInfo)
 		{
 			switch (elem.Type.ToLower())
 			{
 				case "bool":
-					return CreateCheckBox(elem, config);
+					return CreateCheckBox(elem, config, storeInfo);
 				case "int":
-					return CreateIntBox(elem, config);
+					return CreateIntBox(elem, config, storeInfo);
 				case "float":
-					return CreateFloatBox(elem, config);
+					return CreateFloatBox(elem, config, storeInfo);
 				case "string":
-					return CreateStringBox(elem, config);
+					return CreateStringBox(elem, config, storeInfo);
 				default:
-					return CreateComboBox(elem, config, config.schema.Enums);
+					return CreateComboBox(elem, config, config.schema.Enums, storeInfo);
 			}
 		}
 
@@ -273,7 +285,7 @@ namespace ModManagerWPF
 			var stack = new StackPanel();
 			
 
-			foreach (ConfigSchemaGroup group in config.schema.Groups)
+			foreach (ConfigSchemaGroup group in settings.schema.Groups)
 			{
 				string name = group.Name;
 				string HeaderName = string.IsNullOrWhiteSpace(group.DisplayName) ? group.Name : group.DisplayName;
@@ -289,10 +301,11 @@ namespace ModManagerWPF
 
 				box.Header = headerTex;
 				var panel = new StackPanel();
-
+	
 				foreach (var property in group.Properties)
 				{
-					var item = ConfigCreateItem(property, config);
+					var settingInfo = new CustomPropertyStore(group.Name, property.Name, property.HelpText, property.Type);
+					var item = ConfigCreateItem(property, settings, settingInfo);
 					panel.Children.Add(item);
 					panel.HorizontalAlignment = HorizontalAlignment.Stretch;
 					item.MouseEnter += Item_MouseEnter;
@@ -330,6 +343,72 @@ namespace ModManagerWPF
 				}
 			}
 		}
+		#endregion
+
+		#region Mod Config Save
+
+		private static void ComboBox_ModConfigSelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = (ComboBox)sender;
+			// Handle the selection change here
+			var info = comboBox.Tag as CustomPropertyStore;
+			if (info != null)
+			{
+				var txt = comboBox.SelectedValue;
+				bool isenum = false;
+				if (txt is string)
+				{
+					txt = info.GetEnumIndex((string)txt);
+					isenum = true;
+				}		
+
+				settings.SetPropertyValue(info.groupName, info.propertyName, txt.ToString(), isenum);
+			}
+		}
+
+		private static void CheckBox_ModConfigSelectionChanged(object sender, RoutedEventArgs e)
+		{
+			CheckBox chk = (CheckBox)sender;
+			var info = chk.Tag as CustomPropertyStore;
+			if (info != null) 
+			{
+				settings.SetPropertyValue(info.groupName, info.propertyName, chk.IsChecked.Value.ToString());
+			}
+		}
+
+		private static void ModSetting_intElementChanged(object sender, RoutedEventArgs e)
+		{
+			IntegerUpDown number = (IntegerUpDown)sender;
+
+			var info = number.Tag as CustomPropertyStore;
+			if (info != null)
+			{
+				settings.SetPropertyValue(info.groupName, info.propertyName, number.Value.ToString());
+			}
+		}
+
+		private static void ModSetting_floatElementChanged(object sender, RoutedEventArgs e)
+		{
+			DecimalUpDown number = (DecimalUpDown)sender;
+
+			var info = number.Tag as CustomPropertyStore;
+			if (info != null)
+			{
+				settings.SetPropertyValue(info.groupName, info.propertyName, number.Value.ToString());
+			}
+		}
+
+		private static void ModSetting_stringElementChanged(object sender, RoutedEventArgs e)
+		{
+			TextBox text = (TextBox)sender;
+
+			var info = text.Tag as CustomPropertyStore;
+			if (info != null)
+			{
+				settings.SetPropertyValue(info.groupName, info.propertyName, text.Text);
+			}
+		}
+
 		#endregion
 
 

@@ -13,7 +13,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using Xceed.Wpf.AvalonDock.Controls;
 
 namespace ModManagerWPF
 {
@@ -519,7 +518,7 @@ namespace ModManagerWPF
 
 					//delete existing savedata folder in mod directory
 					Directory.Delete(fullSavepath, true);
-				}
+				}	
 			}
 			else
 			{

@@ -117,7 +117,8 @@ namespace ModManagerWPF.Common
 					configINI.Remove(group.Name);
 			}
 
-			IniFile.IniFile.Save(configINI, configfilename);
+			if (configINI.Count > 0) //don't save an empty config.ini file
+				IniFile.IniFile.Save(configINI, configfilename);
 		}
 
 		public void ResetValues()
@@ -173,12 +174,40 @@ namespace ModManagerWPF.Common
 			return configINI[groupName][propertyName];
 		}
 
-		public void SetPropertyValue(string groupName, string propertyName, string value)
+		public void SetPropertyValue(string groupName, string propertyName, string value, bool enum_ = false)
 		{
 			configINI[groupName][propertyName] = value;
 		}
 
+
 		public bool ShowCategories { get { return schema.Groups.Count > 1 || schema.Groups[0].Name.Length != 0; } }
+	}
+
+	public class CustomPropertyStore
+	{
+		public string groupName { get; set; }
+		public string propertyName { get; set; }
+		public string helpText { get; set; }
+		public string type { get; set; }
+
+		List<ConfigSchemaEnumMember> @enum;
+
+		public CustomPropertyStore(string groupName, string propertyName, string helpText, string type)
+		{
+			this.groupName = groupName;
+			this.propertyName = propertyName;
+			this.helpText = helpText;
+			this.type = type;
+		}
+
+		public int GetEnumIndex(string disp)
+		{
+			for (int i = 0; i < @enum.Count; i++)
+				if (@enum[i].DisplayName == disp || @enum[i].Name == disp)
+					return i;
+			return 0;
+		}
+
 	}
 
 	class CustomPropertyDescriptor : PropertyDescriptor
