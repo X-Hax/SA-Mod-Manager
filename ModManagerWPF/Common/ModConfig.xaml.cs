@@ -46,7 +46,7 @@ namespace ModManagerWPF.Common
 			var panel = FormBuilder.ConfigBuild(ref settings);
 			panel.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
 			panel.VerticalAlignment = VerticalAlignment.Stretch;
-			ItemsHost.Children.Add(panel);		
+			ItemsHost.Children.Add(panel);
 		}
 
 		public void OnItemHover(string des)
@@ -174,7 +174,7 @@ namespace ModManagerWPF.Common
 			return configINI[groupName][propertyName];
 		}
 
-		public void SetPropertyValue(string groupName, string propertyName, string value, bool enum_ = false)
+		public void SetPropertyValue(string groupName, string propertyName, string value)
 		{
 			configINI[groupName][propertyName] = value;
 		}
@@ -192,12 +192,56 @@ namespace ModManagerWPF.Common
 
 		List<ConfigSchemaEnumMember> @enum;
 
-		public CustomPropertyStore(string groupName, string propertyName, string helpText, string type)
+		private ConfigSettings settings;
+
+		public CustomPropertyStore(string groupName, string propertyName, string helpText, string type, ref ConfigSettings settings)
 		{
 			this.groupName = groupName;
 			this.propertyName = propertyName;
 			this.helpText = helpText;
 			this.type = type;
+			this.settings = settings;
+
+			switch (type)
+			{
+				case "string":
+				case "bool":
+				case "int":
+				case "float":
+					break;
+				default:
+					@enum = settings.GetEnum(type).Members;
+					break;
+			}
+		}
+
+		public object GetConfigValue()
+		{
+			var val = settings.GetPropertyValue(groupName, propertyName);
+
+			decimal deciValue;
+			string formatted;
+
+			switch (type.ToLower())
+			{
+				case "bool":
+					return bool.Parse(val);
+				case "int":
+					return int.Parse(val.Trim(), CultureInfo.InvariantCulture);
+				case "float":
+					deciValue = decimal.Parse(val.Trim(), CultureInfo.InvariantCulture);
+					formatted = deciValue.ToString("0.0");
+					return decimal.Parse(formatted);
+				case "string":
+					return val;
+				default:
+					for (int i = 0; i < @enum.Count; i++)
+						if (@enum[i].Name == val)
+							return i;
+
+					return 0;
+
+			}
 		}
 
 		public int GetEnumIndex(string disp)
@@ -207,6 +251,28 @@ namespace ModManagerWPF.Common
 					return i;
 			return 0;
 		}
+
+		public void SetValue(object value)
+		{
+			switch (type)
+			{
+				case "bool":
+				case "string":
+				case "int":
+				case "float":
+					settings.SetPropertyValue(groupName, propertyName, value.ToString());
+					break;
+				default:
+					if (value is string)
+					{
+						value = GetEnumIndex((string)value);
+					}
+
+					settings.SetPropertyValue(groupName, propertyName, @enum[(int)value].Name);
+					break;
+			}
+		}
+
 
 	}
 
@@ -455,7 +521,7 @@ namespace ModManagerWPF.Common
 				return (ConfigSchema)xs.Deserialize(fs);
 		}
 
-		public ConfigSchema() 
+		public ConfigSchema()
 		{
 			Groups = new List<ConfigSchemaGroup>();
 			Enums = new List<ConfigSchemaEnum>();
