@@ -234,9 +234,9 @@
 								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
 							<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnSelectAllCode" Margin="0,5,5,5" Grid.Column="0"
-											   Icon="{StaticResource Icons.Select}" Content="{DynamicResource SelectAll}"/>
+											   Icon="{StaticResource Icons.Select}" Content="{DynamicResource SelectAll}" Click="btnSelectAllCode_Click"/>
 							<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnDeselectAllCode" Margin="5,5,0,5" Grid.Column="1"
-											   Icon="{StaticResource Icons.Deselect}" Content="{DynamicResource DeselectAll}"/>
+											   Icon="{StaticResource Icons.Deselect}" Content="{DynamicResource DeselectAll}" Click="btnDeselectAllCode_Click"/>
 						</Grid>
 
 						<ListView x:Name="CodeListView" Foreground="White" Grid.Column="1" Grid.Row="2" FontSize="13">

@@ -1816,5 +1816,25 @@ namespace ModManagerWPF
 		{
 			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
 		}
+
+		private void btnSelectAllCode_Click(object sender, RoutedEventArgs e)
+		{
+			CodeListView.BeginInit();
+			foreach (CodeData code in CodeListView.Items)
+			{
+				code.IsChecked = true;
+			}
+			CodeListView.EndInit();
+		}
+
+		private void btnDeselectAllCode_Click(object sender, RoutedEventArgs e)
+		{
+			CodeListView.BeginInit();
+			foreach (CodeData code in CodeListView.Items)
+			{
+				code.IsChecked = false;
+			}
+			CodeListView.EndInit();
+		}
 	}
 }
