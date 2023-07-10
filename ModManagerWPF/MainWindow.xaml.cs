@@ -88,6 +88,12 @@ namespace ModManagerWPF
 			public string Tag { get; set; }
 		}
 
+		public class CodeData
+		{
+			public Code codes { get; set; }
+			public bool IsChecked { get; set; }
+		}
+
 		public class PatchesData
 		{
 			public string Name { get; set; }
@@ -242,7 +248,7 @@ namespace ModManagerWPF
 			Update_PlayButtonsState();
 		}
 
-		public void Save()
+		public async void Save()
 		{
 			if (!Directory.Exists(modDirectory))
 				return;
@@ -291,11 +297,12 @@ namespace ModManagerWPF
 			loaderini.EnableBassMusic = (bool)checkBassMusic.IsChecked;
 			loaderini.EnableBassSFX = (bool)checkBassSFX.IsChecked;
 			SavePatches();
-
+			SaveCodes();
+	
 			IniSerializer.Serialize(loaderini, loaderinipath);
 
 			SaveGameConfigIni();
-			SaveCodes();
+			await Task.Delay(200);
 
 			Refresh();
 		}
@@ -912,17 +919,24 @@ namespace ModManagerWPF
 			codes = new List<Code>(mainCodes.Codes);
 
 			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
-			foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
-				loaderini.EnabledCodes.Add(item.Name);
 
 			CodeListView.BeginInit();
 			CodeListView.Items.Clear();
 
+			foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
+				loaderini.EnabledCodes.Add(item.Name);
+
 			foreach (Code item in codes)
 			{
-				CodeListView.Items.Add(item);
-			}
+				CodeData extraItem = new()
+				{
+					codes = item,
+					IsChecked = loaderini.EnabledCodes.Contains(item.Name),
+				};
 
+				CodeListView.Items.Add(extraItem);
+			}
+			
 			CodeListView.EndInit();
 		}
 
@@ -931,16 +945,31 @@ namespace ModManagerWPF
 			List<Code> selectedCodes = new List<Code>();
 			List<Code> selectedPatches = new List<Code>();
 
-			foreach (Code item in CodeListView.SelectedItems.OfType<Code>())
+			foreach (CodeData code in CodeListView.Items)
 			{
-				if (item.Patch)
-					selectedPatches.Add(item);
+				var Code = code.codes;
+
+				if (code?.IsChecked == true)
+				{
+					
+					if (Code.Patch)
+						selectedPatches.Add(Code);
+					else
+						selectedCodes.Add(Code);
+
+					if (!loaderini.EnabledCodes.Contains(Code.Name))
+						loaderini.EnabledCodes.Add(Code.Name);
+				}
 				else
-					selectedCodes.Add(item);
+				{
+					if (loaderini.EnabledCodes.Contains(Code.Name))
+						loaderini.EnabledCodes.Remove(Code.Name);
+				}
 			}
 
 			CodeList.WriteDatFile(patchdatpath, selectedPatches);
 			CodeList.WriteDatFile(codedatpath, selectedCodes);
+
 		}
 
 		private void OpenAboutCodeWindow(Code code)

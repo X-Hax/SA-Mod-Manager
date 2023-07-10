@@ -255,9 +255,9 @@
 											<GridViewColumn.CellTemplate>
 												<DataTemplate>
 													<StackPanel Orientation="Horizontal">
-														<CheckBox IsChecked="{Binding Enabled}" Margin="0,0,5,0"/>
-														<TextBlock Text="{Binding Name}"/>
-													</StackPanel>
+														<CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding codes.Name}"/>
+                                                    </StackPanel>
 												</DataTemplate>
 											</GridViewColumn.CellTemplate>
 										</GridViewColumn>
@@ -265,7 +265,7 @@
 											<GridViewColumn.CellTemplate>
 												<DataTemplate>
 													<StackPanel Orientation="Horizontal">
-														<TextBlock Text="{Binding Author}"/>
+														<TextBlock Text="{Binding codes.Author}"/>
 													</StackPanel>
 												</DataTemplate>
 											</GridViewColumn.CellTemplate>
