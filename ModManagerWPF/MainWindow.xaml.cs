@@ -88,6 +88,12 @@ namespace ModManagerWPF
 			public string Tag { get; set; }
 		}
 
+		public class CodeData
+		{
+			public Code codes { get; set; }
+			public bool IsChecked { get; set; }
+		}
+
 		public class PatchesData
 		{
 			public string Name { get; set; }
@@ -111,6 +117,8 @@ namespace ModManagerWPF
 			LoadAllProfiles();
 			UpdateDLLData();
 			UpdatePatches();
+			setupTestSpawn();
+
 			if (args is not null)
 				CleanUpdate(args);
 		}
@@ -242,7 +250,7 @@ namespace ModManagerWPF
 			Update_PlayButtonsState();
 		}
 
-		public void Save()
+		public async void Save()
 		{
 			if (!Directory.Exists(modDirectory))
 				return;
@@ -290,12 +298,29 @@ namespace ModManagerWPF
 
 			loaderini.EnableBassMusic = (bool)checkBassMusic.IsChecked;
 			loaderini.EnableBassSFX = (bool)checkBassSFX.IsChecked;
-			SavePatches();
 
+			//test spaw nstuff
+			loaderini.TestSpawnCharacter = (bool)tsCheckCharacter.IsChecked ? tsComboCharacter.SelectedIndex : -1;
+
+			loaderini.TestSpawnLevel = (bool)tsCheckLevel.IsChecked ? tsComboLevel.SelectedIndex : -1;
+			loaderini.TestSpawnAct = tsComboAct.SelectedIndex;
+
+			loaderini.TestSpawnGameMode = (bool)tsCheckGameMode.IsChecked ? tsComboGameMode.SelectedIndex : -1;
+
+			loaderini.TestSpawnEvent = (bool)tsCheckEvent.IsChecked ? tsComboEvent.SelectedIndex : -1;
+
+			loaderini.TestSpawnPositionEnabled = (bool)tsCheckPosition.IsChecked;
+			loaderini.TestSpawnX = (int)tsNumPosX.Value;
+			loaderini.TestSpawnY = (int)tsNumPosY.Value;
+			loaderini.TestSpawnZ = (int)tsNumPosZ.Value;
+
+			SavePatches();
+			SaveCodes();
+	
 			IniSerializer.Serialize(loaderini, loaderinipath);
 
 			SaveGameConfigIni();
-			SaveCodes();
+			await Task.Delay(200);
 
 			Refresh();
 		}
@@ -365,10 +390,25 @@ namespace ModManagerWPF
 			sliderSFX.Value = loaderini.SEVolume;
 			sliderSFX.IsEnabled = checkBassSFX.IsChecked.Value;
 
+			tsCheckCharacter.IsChecked = loaderini.TestSpawnCharacter > -1;
+			tsComboCharacter.SelectedIndex = loaderini.TestSpawnCharacter;
+			tsCheckLevel.IsChecked = loaderini.TestSpawnLevel > -1;
+			tsComboLevel.SelectedIndex = loaderini.TestSpawnLevel;
+			
+			tsComboAct.SelectedIndex = loaderini.TestSpawnAct;
+			tsComboGameMode.SelectedIndex = loaderini.TestSpawnGameMode;
+			tsCheckEvent.IsChecked = loaderini.TestSpawnEvent > -1;
+			tsComboEvent.SelectedIndex = loaderini.TestSpawnEvent;
+			tsCheckPosition.IsChecked = loaderini.TestSpawnPositionEnabled;
+			tsNumPosX.Value = loaderini.TestSpawnX;
+			tsNumPosY.Value = loaderini.TestSpawnY;
+			tsNumPosZ.Value = loaderini.TestSpawnZ;
+
 			if ((bool)!checkEnableTestSpawn.IsChecked)
 			{
 				tcMain.Items.Remove(tabTestSpawn);
 			}
+
 		}
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -380,7 +420,7 @@ namespace ModManagerWPF
 		{
 			if (string.IsNullOrEmpty(gamePath))
 			{
-				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+				new MessageWindow(Lang.GetString("FailedDetectGamePathTitle"), Lang.GetString("FailedDetectGamePath"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
@@ -421,9 +461,10 @@ namespace ModManagerWPF
 
 			if (File.Exists(Path.Combine(modDirectory, "mod.ini")))
 			{
-				MessageBox.Show(this, Lang.GetString("ModIniError0")
-							+ Lang.GetString("ModIniError1") +
-							Lang.GetString("ModIniError2"), Lang.GetString("SadxManagerError"), MessageBoxButton.OK, MessageBoxImage.Error);
+				new MessageWindow(Lang.GetString("SadxManagerError"), Lang.GetString("ModIniError0") + Lang.GetString("ModIniError1") +
+							Lang.GetString("ModIniError2"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, 
+							MessageWindow.Buttons.OK).ShowDialog();
+
 				Close();
 				return;
 			}
@@ -458,7 +499,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					MessageBox.Show(this, "Mod \"" + mod + "\"" + Lang.GetString("ModRemovedList"));
+					new MessageWindow(Lang.GetString("SadxManagerTitle"), "Mod \"" + mod + "\"" + Lang.GetString("ModRemovedList"), MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 					loaderini.Mods.Remove(mod);
 				}
 			}
@@ -559,9 +600,9 @@ namespace ModManagerWPF
 
 		private void ModContextForceUpdate_Click(object sender, RoutedEventArgs e)
 		{
-			var result = MessageBox.Show(Lang.GetString("ForceUpdateTitle"), Lang.GetString("ForceUpdate"), MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-			if (result == MessageBoxResult.Yes) 
+			var result = new MessageWindow(Lang.GetString("ForceUpdateTitle"), Lang.GetString("ForceUpdate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+			result.ShowDialog();
+			if (result.isYes) 
 			{
 				modUpdater.ForceUpdate = true;
 				UpdateSelectedMods();
@@ -588,7 +629,7 @@ namespace ModManagerWPF
 
 			if (count)
 			{
-				var confirmMessage = Lang.GetString("DeleteModWarning") + " ";
+				var confirmMessage = Lang.GetString("DeleteModWarning");
 				var deleteConfirmation = new MessageWindow(Lang.GetString("SadxManagerTitle"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 
 				deleteConfirmation.Show();
@@ -626,7 +667,7 @@ namespace ModManagerWPF
 			{
 				SADXModInfo modInfo = mods[mod.Tag];
 				string fullPath = Path.Combine(modDirectory, mod.Tag);
-				Common.ModConfig config = new(modInfo, fullPath);
+				Common.ModConfig config = new(modInfo.Name, fullPath);
 				config.Show();
 			}
 		}
@@ -813,7 +854,7 @@ namespace ModManagerWPF
 			// Framerate
 			if (gameConfigFile.GameConfig.FrameRate == (int)Game.FrameRate.Invalid || gameConfigFile.GameConfig.FrameRate > (int)Game.FrameRate.Low)
 			{
-				MessageBox.Show("Invalid framerate setting detected.\nDefaulting to \"High\".", "Invalid setting", MessageBoxButton.OK, MessageBoxImage.Error);
+				new MessageWindow(Lang.GetString("InvalidSettingFrameTitle"),Lang.GetString("InvalidSettingFrameTitle"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				comboFramerate.SelectedIndex = (int)Game.FrameRate.High - 1;
 			}
 			else
@@ -899,8 +940,8 @@ namespace ModManagerWPF
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(this, $"Error loading code list: {ex.Message}", "Error Loading Code", MessageBoxButton.OK, MessageBoxImage.Error);
-
+				string msg = " " + ex.Message;
+				new MessageWindow(Lang.GetString("ErrorLoadingCodeTitle"), Lang.GetString("ErrorLoadingCode") + msg, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				mainCodes = new CodeList();
 			}
 		}
@@ -911,17 +952,24 @@ namespace ModManagerWPF
 			codes = new List<Code>(mainCodes.Codes);
 
 			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
-			foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
-				loaderini.EnabledCodes.Add(item.Name);
 
 			CodeListView.BeginInit();
 			CodeListView.Items.Clear();
 
+			foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
+				loaderini.EnabledCodes.Add(item.Name);
+
 			foreach (Code item in codes)
 			{
-				CodeListView.Items.Add(item);
-			}
+				CodeData extraItem = new()
+				{
+					codes = item,
+					IsChecked = loaderini.EnabledCodes.Contains(item.Name),
+				};
 
+				CodeListView.Items.Add(extraItem);
+			}
+			
 			CodeListView.EndInit();
 		}
 
@@ -930,16 +978,31 @@ namespace ModManagerWPF
 			List<Code> selectedCodes = new List<Code>();
 			List<Code> selectedPatches = new List<Code>();
 
-			foreach (Code item in CodeListView.SelectedItems.OfType<Code>())
+			foreach (CodeData code in CodeListView.Items)
 			{
-				if (item.Patch)
-					selectedPatches.Add(item);
+				var Code = code.codes;
+
+				if (code?.IsChecked == true)
+				{
+					
+					if (Code.Patch)
+						selectedPatches.Add(Code);
+					else
+						selectedCodes.Add(Code);
+
+					if (!loaderini.EnabledCodes.Contains(Code.Name))
+						loaderini.EnabledCodes.Add(Code.Name);
+				}
 				else
-					selectedCodes.Add(item);
+				{
+					if (loaderini.EnabledCodes.Contains(Code.Name))
+						loaderini.EnabledCodes.Remove(Code.Name);
+				}
 			}
 
 			CodeList.WriteDatFile(patchdatpath, selectedPatches);
 			CodeList.WriteDatFile(codedatpath, selectedCodes);
+
 		}
 
 		private void OpenAboutCodeWindow(Code code)
@@ -1117,6 +1180,94 @@ namespace ModManagerWPF
 		{
 			StartGame();
 		}
+
+		private void tsComboLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox t = sender as ComboBox;
+
+			var list = TestSpawn.GetNewAct(t.SelectedIndex);
+
+			tsComboAct.BeginInit();
+			tsComboAct.Items.Clear();
+
+			foreach (var item in list)
+			{
+				tsComboAct.Items.Add(item);
+			}
+
+			tsComboAct.EndInit();
+			tsComboAct.SelectedIndex = 0;
+
+		}
+
+		private void TS_GetSave()
+		{
+			if (installed)
+			{
+				string fullPath = Path.Combine(gamePath, "SAVEDATA");
+
+				//if savedata exists
+				if (Directory.Exists(fullPath))
+				{
+					string targetExtension = ".snc"; 
+
+					string[] files = Directory.GetFiles(fullPath, "*" + targetExtension, SearchOption.TopDirectoryOnly);
+
+					tsComboSave.BeginInit();
+					tsComboSave.Items.Clear();
+
+					List<string> list = new List<string>();
+					
+					//browse each save file of the user
+					foreach (string file in files)
+					{
+						string name = Path.GetFileNameWithoutExtension(file);
+						string nameDup = name.ToLower();
+
+						if (nameDup.Contains("sonicdx")) //skip chao garden save
+							list.Add(name);
+					}	
+
+					//sort just in case the order is wrong
+					list.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
+
+					//finally, add all the saves in the comboBox
+					foreach (string file in list)
+					{
+						tsComboSave.Items.Add(file);
+					}
+
+					tsComboSave.EndInit();
+				}
+			}		
+		}
+
+		private void setupTestSpawn()
+		{
+			var testSpawn = new TestSpawn(ref tsComboLevel, ref tsComboGameMode,  ref tsComboEvent, ref tsComboCharacter);
+
+			testSpawn.InitCutsceneList();
+			testSpawn.InitGameModeList();
+			testSpawn.InitCharactersList();
+			testSpawn.InitLevels();
+
+			tsComboAct.BeginInit();
+			tsComboAct.Items.Clear();
+
+			var list = TestSpawn.GetNewAct(0);
+
+			foreach (var item in list)
+			{
+				tsComboAct.Items.Add(item);
+			}
+
+			tsComboAct.EndInit();
+
+			TS_GetSave();
+
+		}
+
+
 		#endregion
 
 		#region Inputs
@@ -1250,7 +1401,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					MessageBox.Show(Lang.GetString("LoaderDllMissing"), Lang.GetString("SadxManagerError"));
+					new MessageWindow(Lang.GetString("SadxManagerError"), Lang.GetString("LoaderDllMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				}
 			}
 		}
@@ -1278,7 +1429,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					MessageBox.Show(Lang.GetString("FaildSetGamePath"), Lang.GetString("FaildSetGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+					new MessageWindow(Lang.GetString("FaildSetGamePathTitle"), Lang.GetString("FaildSetGamePath"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				}
 			}
 		}
@@ -1309,7 +1460,7 @@ namespace ModManagerWPF
 		{
 			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
 			{
-				MessageBox.Show(Lang.GetString("FailedDetectGamePath"), Lang.GetString("FailedDetectGamePathTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
+				new MessageWindow(Lang.GetString("FailedDetectGamePathTitle"), Lang.GetString("FailedDetectGamePath"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
@@ -1708,8 +1859,7 @@ namespace ModManagerWPF
 			List<string> errors = data.Item2;
 			if (errors.Count != 0)
 			{
-				MessageBox.Show("The following errors occurred while checking for updates:\n\n" + string.Join("\n", errors),
-					"Update Errors", MessageBoxButton.OK, MessageBoxImage.Warning);
+				new MessageWindow(Lang.GetString("ErrorCheckForUpdateTitle"), Lang.GetString("ErrorCheckForUpdate") + "`\n" + errors, MessageWindow.WindowType.Message, MessageWindow.Icons.Warning, MessageWindow.Buttons.OK).ShowDialog();
 			}
 
 			bool manual = manualModUpdate;
@@ -1720,8 +1870,7 @@ namespace ModManagerWPF
 			{
 				if (manual)
 				{
-					MessageBox.Show("Mods are up to date.",
-						"No Updates", MessageBoxButton.OK, MessageBoxImage.Information);
+					new MessageWindow(Lang.GetString("InfoModUpToDateTitle"), Lang.GetString("InfoModUpToDate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 				}
 				return;
 			}
@@ -1781,12 +1930,40 @@ namespace ModManagerWPF
 
 		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
 		{
+			tsCheckCharacter.IsChecked = true;
+			tsCheckLevel.IsChecked = true;
 			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
 		}
 
 		private void tsCheckEvent_Unchecked(object sender, RoutedEventArgs e)
 		{
 			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
+		}
+
+		private void btnSelectAllCode_Click(object sender, RoutedEventArgs e)
+		{
+			CodeListView.BeginInit();
+			foreach (CodeData code in CodeListView.Items)
+			{
+				code.IsChecked = true;
+			}
+			CodeListView.EndInit();
+		}
+
+		private void btnDeselectAllCode_Click(object sender, RoutedEventArgs e)
+		{
+			CodeListView.BeginInit();
+			foreach (CodeData code in CodeListView.Items)
+			{
+				code.IsChecked = false;
+			}
+			CodeListView.EndInit();
+		}
+
+		private void tsCheckCharacter_Click(object sender, RoutedEventArgs e)
+		{
+			if ((bool)tsCheckCharacter.IsChecked)
+				tsCheckLevel.IsChecked = true;
 		}
 	}
 }

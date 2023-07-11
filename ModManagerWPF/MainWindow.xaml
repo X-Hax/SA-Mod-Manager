@@ -234,9 +234,9 @@
 								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
 							<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnSelectAllCode" Margin="0,5,5,5" Grid.Column="0"
-											   Icon="{StaticResource Icons.Select}" Content="{DynamicResource SelectAll}"/>
+											   Icon="{StaticResource Icons.Select}" Content="{DynamicResource SelectAll}" Click="btnSelectAllCode_Click"/>
 							<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnDeselectAllCode" Margin="5,5,0,5" Grid.Column="1"
-											   Icon="{StaticResource Icons.Deselect}" Content="{DynamicResource DeselectAll}"/>
+											   Icon="{StaticResource Icons.Deselect}" Content="{DynamicResource DeselectAll}" Click="btnDeselectAllCode_Click"/>
 						</Grid>
 
 						<ListView x:Name="CodeListView" Foreground="White" Grid.Column="1" Grid.Row="2" FontSize="13">
@@ -255,9 +255,9 @@
 											<GridViewColumn.CellTemplate>
 												<DataTemplate>
 													<StackPanel Orientation="Horizontal">
-														<CheckBox IsChecked="{Binding Enabled}" Margin="0,0,5,0"/>
-														<TextBlock Text="{Binding Name}"/>
-													</StackPanel>
+														<CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding codes.Name}"/>
+                                                    </StackPanel>
 												</DataTemplate>
 											</GridViewColumn.CellTemplate>
 										</GridViewColumn>
@@ -265,7 +265,7 @@
 											<GridViewColumn.CellTemplate>
 												<DataTemplate>
 													<StackPanel Orientation="Horizontal">
-														<TextBlock Text="{Binding Author}"/>
+														<TextBlock Text="{Binding codes.Author}"/>
 													</StackPanel>
 												</DataTemplate>
 											</GridViewColumn.CellTemplate>
@@ -848,10 +848,10 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 
-							<CheckBox x:Name="tsCheckCharacter" Content="{DynamicResource SpawnCheckCharacter}" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.TestSpawn.Character}"/>
-							<ComboBox x:Name="tsComboCharacter" Grid.Column="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
+							<CheckBox x:Name="tsCheckCharacter" Content="{DynamicResource SpawnCheckCharacter}" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.TestSpawn.Character}" Click="tsCheckCharacter_Click"/>
+							<ComboBox x:Name="tsComboCharacter" Grid.Column="1" Margin="5,5,5,5" VerticalAlignment="Center" SelectedIndex="0"/>
 							<CheckBox x:Name="tsCheckLevel" Content="{DynamicResource SpawnCheckLevel}" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.TestSpawn.Level}"/>
-							<ComboBox x:Name="tsComboLevel" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="tsComboLevel" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="tsComboLevel_SelectionChanged"/>
 						</Grid>
 
 						<Grid Grid.Column="1" Grid.Row="0">
@@ -868,7 +868,7 @@
 							<Label Content="{DynamicResource SpawnLabelTime}" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.TestSpawn.Time}"/>
 							<ComboBox x:Name="tsComboTime" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,5,5"/>
 							<Label Content="{DynamicResource SpawnLabelAct}" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.TestSpawn.Act}"/>
-							<ComboBox x:Name="tsComboAct" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="tsComboAct" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" SelectedIndex="0"/>
 						</Grid>
 
 						<Grid x:Name="TestSpawnGrid" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
@@ -890,10 +890,10 @@
 							<ComboBox x:Name="tsComboEvent" Grid.Column="1" Grid.Row="0" Margin="5,5,5,5"/>
 
 							<CheckBox x:Name="tsCheckGameMode" Content="{DynamicResource SpawnCheckMode}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.TestSpawn.GameMode}"/>
-							<ComboBox x:Name="tsComboGameMode" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5"/>
+							<ComboBox x:Name="tsComboGameMode" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" SelectedIndex="2"/>
 
 							<CheckBox x:Name="tsCheckSave" Content="{DynamicResource SpawnCheckSave}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.TestSpawn.Save}"/>
-							<ComboBox x:Name="tsComboSave" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5"/>
+							<ComboBox x:Name="tsComboSave" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" SelectedIndex="0"/>
 
 							<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" HorizontalAlignment="Center">
 								<Image Source="{StaticResource IconCaution}" Width="30"/>

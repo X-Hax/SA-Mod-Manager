@@ -5,7 +5,8 @@
 
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="Tooltips/en-EN.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="TestSpawn/en-EN.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="BtnOK">OK</system:String>
@@ -354,6 +355,20 @@
     <system:String x:Key="ForceUpdate" xml:space="preserve">>This will force all selected mods to be completely re-downloaded.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
 
     <system:String x:Key="ErrorDontWantTo">Hm... no, you don't want to do that. :)</system:String>
+
+    <system:String x:Key="InvalidSettingFrameTitle">Invalid Setting</system:String>
+    <system:String x:Key="InvalidSettingFrame">Invalid framerate setting detected.</system:String>
+    
+    <system:String x:Key="ErrorLoadingCode">Error loading code list</system:String>
+    <system:String x:Key="ErrorLoadingCodeTitle">Error Loading Code</system:String>
+
+    <system:String x:Key="InfoModUpToDateTitle">No Updates</system:String>
+    <system:String x:Key="InfoModUpToDate">Mods are up to date.</system:String>
+
+    <system:String x:Key="ErrorCheckForUpdate" xml:space="preserve">The following errors occurred while checking for updates:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="ErrorCheckForUpdateTitle">Update Errors</system:String>
+
+
     <!--#endregion-->
 
 </ResourceDictionary>
