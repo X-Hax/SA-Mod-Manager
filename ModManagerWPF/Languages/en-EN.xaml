@@ -175,6 +175,7 @@
 	<system:String x:Key="SpawnCheckSave">Redirect Save File:</system:String>
 	<system:String x:Key="SpawnLabelWarning">Overriding levels or characters in events may cause a crash.</system:String>
 	<system:String x:Key="SpawnButtonLaunch">Launch Game</system:String>
+	<system:String x:Key="SpawnAdvanced">Advanced Options</system:String>
 	<!--#endregion-->
 	
 	<!--#region Manager Config Tab Strings-->
