@@ -23,7 +23,7 @@ namespace ModManagerWPF
 	public partial class EditMod : Window
 	{
 		#region Enums
-		enum UpdateType
+		public enum UpdateType
 		{
 			Github = 0,
 			Gamebanana = 1,
