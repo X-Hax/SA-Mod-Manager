@@ -5,7 +5,8 @@
 
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="Tooltips/en-EN.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="TestSpawn/en-EN.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="BtnOK">OK</system:String>

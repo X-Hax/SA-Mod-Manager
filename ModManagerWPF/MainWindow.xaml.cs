@@ -117,6 +117,8 @@ namespace ModManagerWPF
 			LoadAllProfiles();
 			UpdateDLLData();
 			UpdatePatches();
+			setupTestSpawn();
+
 			if (args is not null)
 				CleanUpdate(args);
 		}
@@ -296,6 +298,22 @@ namespace ModManagerWPF
 
 			loaderini.EnableBassMusic = (bool)checkBassMusic.IsChecked;
 			loaderini.EnableBassSFX = (bool)checkBassSFX.IsChecked;
+
+			//test spaw nstuff
+			loaderini.TestSpawnCharacter = (bool)tsCheckCharacter.IsChecked ? tsComboCharacter.SelectedIndex : -1;
+
+			loaderini.TestSpawnLevel = (bool)tsCheckLevel.IsChecked ? tsComboLevel.SelectedIndex : -1;
+			loaderini.TestSpawnAct = tsComboAct.SelectedIndex;
+
+			loaderini.TestSpawnGameMode = (bool)tsCheckGameMode.IsChecked ? tsComboGameMode.SelectedIndex : -1;
+
+			loaderini.TestSpawnEvent = (bool)tsCheckEvent.IsChecked ? tsComboEvent.SelectedIndex : -1;
+
+			loaderini.TestSpawnPositionEnabled = (bool)tsCheckPosition.IsChecked;
+			loaderini.TestSpawnX = (int)tsNumPosX.Value;
+			loaderini.TestSpawnY = (int)tsNumPosY.Value;
+			loaderini.TestSpawnZ = (int)tsNumPosZ.Value;
+
 			SavePatches();
 			SaveCodes();
 	
@@ -372,10 +390,25 @@ namespace ModManagerWPF
 			sliderSFX.Value = loaderini.SEVolume;
 			sliderSFX.IsEnabled = checkBassSFX.IsChecked.Value;
 
+			tsCheckCharacter.IsChecked = loaderini.TestSpawnCharacter > -1;
+			tsComboCharacter.SelectedIndex = loaderini.TestSpawnCharacter;
+			tsCheckLevel.IsChecked = loaderini.TestSpawnLevel > -1;
+			tsComboLevel.SelectedIndex = loaderini.TestSpawnLevel;
+			
+			tsComboAct.SelectedIndex = loaderini.TestSpawnAct;
+			tsComboGameMode.SelectedIndex = loaderini.TestSpawnGameMode;
+			tsCheckEvent.IsChecked = loaderini.TestSpawnEvent > -1;
+			tsComboEvent.SelectedIndex = loaderini.TestSpawnEvent;
+			tsCheckPosition.IsChecked = loaderini.TestSpawnPositionEnabled;
+			tsNumPosX.Value = loaderini.TestSpawnX;
+			tsNumPosY.Value = loaderini.TestSpawnY;
+			tsNumPosZ.Value = loaderini.TestSpawnZ;
+
 			if ((bool)!checkEnableTestSpawn.IsChecked)
 			{
 				tcMain.Items.Remove(tabTestSpawn);
 			}
+
 		}
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -1147,6 +1180,94 @@ namespace ModManagerWPF
 		{
 			StartGame();
 		}
+
+		private void tsComboLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox t = sender as ComboBox;
+
+			var list = TestSpawn.GetNewAct(t.SelectedIndex);
+
+			tsComboAct.BeginInit();
+			tsComboAct.Items.Clear();
+
+			foreach (var item in list)
+			{
+				tsComboAct.Items.Add(item);
+			}
+
+			tsComboAct.EndInit();
+			tsComboAct.SelectedIndex = 0;
+
+		}
+
+		private void TS_GetSave()
+		{
+			if (installed)
+			{
+				string fullPath = Path.Combine(gamePath, "SAVEDATA");
+
+				//if savedata exists
+				if (Directory.Exists(fullPath))
+				{
+					string targetExtension = ".snc"; 
+
+					string[] files = Directory.GetFiles(fullPath, "*" + targetExtension, SearchOption.TopDirectoryOnly);
+
+					tsComboSave.BeginInit();
+					tsComboSave.Items.Clear();
+
+					List<string> list = new List<string>();
+					
+					//browse each save file of the user
+					foreach (string file in files)
+					{
+						string name = Path.GetFileNameWithoutExtension(file);
+						string nameDup = name.ToLower();
+
+						if (nameDup.Contains("sonicdx")) //skip chao garden save
+							list.Add(name);
+					}	
+
+					//sort just in case the order is wrong
+					list.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
+
+					//finally, add all the saves in the comboBox
+					foreach (string file in list)
+					{
+						tsComboSave.Items.Add(file);
+					}
+
+					tsComboSave.EndInit();
+				}
+			}		
+		}
+
+		private void setupTestSpawn()
+		{
+			var testSpawn = new TestSpawn(ref tsComboLevel, ref tsComboGameMode,  ref tsComboEvent, ref tsComboCharacter);
+
+			testSpawn.InitCutsceneList();
+			testSpawn.InitGameModeList();
+			testSpawn.InitCharactersList();
+			testSpawn.InitLevels();
+
+			tsComboAct.BeginInit();
+			tsComboAct.Items.Clear();
+
+			var list = TestSpawn.GetNewAct(0);
+
+			foreach (var item in list)
+			{
+				tsComboAct.Items.Add(item);
+			}
+
+			tsComboAct.EndInit();
+
+			TS_GetSave();
+
+		}
+
+
 		#endregion
 
 		#region Inputs
@@ -1809,6 +1930,8 @@ namespace ModManagerWPF
 
 		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
 		{
+			tsCheckCharacter.IsChecked = true;
+			tsCheckLevel.IsChecked = true;
 			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
 		}
 
@@ -1835,6 +1958,12 @@ namespace ModManagerWPF
 				code.IsChecked = false;
 			}
 			CodeListView.EndInit();
+		}
+
+		private void tsCheckCharacter_Click(object sender, RoutedEventArgs e)
+		{
+			if ((bool)tsCheckCharacter.IsChecked)
+				tsCheckLevel.IsChecked = true;
 		}
 	}
 }
