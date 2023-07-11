@@ -1059,6 +1059,7 @@
 			
 			<!--#region Scrollbar Style-->
 			<Style x:Key="ScrollBarThumbVertical" TargetType="{x:Type Thumb}">
+				<Setter Property="Width" Value="8"/>
 				<Setter Property="OverridesDefaultStyle" Value="true"/>
 				<Setter Property="IsTabStop" Value="false"/>
 				<Setter Property="Template">

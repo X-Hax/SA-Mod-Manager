@@ -8,7 +8,7 @@
 	<CornerRadius x:Key="ComboBox.CornerRadius">2</CornerRadius>
 	<CornerRadius x:Key="ListView.CornerRadius">3</CornerRadius>
 	<CornerRadius x:Key="ContextMenu.CornerRadius">4</CornerRadius>
-	<CornerRadius x:Key="Scrollbar.CornerRadius">2</CornerRadius>
+	<CornerRadius x:Key="Scrollbar.CornerRadius">4</CornerRadius>
 	<CornerRadius x:Key="TabItem.CornerRadius">2,2,0,0</CornerRadius>
 	<!--#endregion-->
 	
@@ -143,9 +143,9 @@
 	<SolidColorBrush x:Key="Slider.Brushes.Foreground" Color="Transparent"/>
 	<SolidColorBrush x:Key="Slider.Brushes.Border" Color="#FFE5E5E5"/>
 
-	<SolidColorBrush x:Key="ScrollBarThumb.Brushes.Background" Color="#787878"/>
-	<SolidColorBrush x:Key="ScrollBarThumb.Brushes.MouseOver.Background" Color="#696968"/>
-	<SolidColorBrush x:Key="ScrollBarThumb.Brushes.Dragging.Background" Color="#787878"/>
+	<SolidColorBrush x:Key="ScrollBarThumb.Brushes.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="ScrollBarThumb.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ScrollBarThumb.Brushes.Dragging.Background" Color="{DynamicResource Colors.Highlight.Bright}"/>
 
 	<SolidColorBrush x:Key="ScrollBar.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="ScrollBar.Brushes.Border" Color="Transparent"/>
