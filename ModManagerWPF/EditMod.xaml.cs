@@ -100,6 +100,19 @@ namespace ModManagerWPF
 			GroupsTree.ItemsSource = Schema.Groups;
 			GroupsTree.Tag = PropertyTypes;
 			EnumsTree.ItemsSource = Schema.Enums;
+
+			if (dependencies.Count > 0 || Schema.Groups.Count > 0)
+			{
+				checkAdvancedOptions.IsChecked = true;
+				tabDepdencies.Visibility = Visibility.Visible;
+				tabSchema.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				tabDepdencies.Visibility = Visibility.Hidden;
+				tabSchema.Visibility = Visibility.Hidden;
+			}
+				
 		}
 		#endregion
 
@@ -132,7 +145,11 @@ namespace ModManagerWPF
 			this.Close();
 		}
 
-
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			Schema = new ConfigSchema();
+			dependencies.Clear();
+		}
 		#endregion
 
 		#region Properties Tab Functions
@@ -526,6 +543,20 @@ namespace ModManagerWPF
 				{
 					Directory.CreateDirectory(fullSavepath);
 				}
+			}
+		}
+
+		private void checkAdvancedOptions_Click(object sender, RoutedEventArgs e)
+		{
+			if ((bool)checkAdvancedOptions.IsChecked)
+			{
+				tabDepdencies.Visibility = Visibility.Visible;
+				tabSchema.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				tabDepdencies.Visibility = Visibility.Hidden;
+				tabSchema.Visibility = Visibility.Hidden;
 			}
 		}
 	}
