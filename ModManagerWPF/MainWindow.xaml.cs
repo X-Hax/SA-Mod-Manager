@@ -1010,14 +1010,15 @@ namespace ModManagerWPF
 			new AboutCode(code).ShowDialog();
 		}
 
-		private Code GetCodeFromView(object sender)
+		private CodeData GetCodeFromView(object sender)
 		{
 			if (sender is ListViewItem lvItem)
-				return lvItem.Content as Code;
+				return lvItem.Content as CodeData;
 			else if (sender is ListView lv)
-				return lv.SelectedItem as Code;
+				return lv.SelectedItem as CodeData;
 
-			return codes[CodeListView.SelectedIndex];
+
+			return CodeListView.Items[CodeListView.SelectedIndex] as CodeData;
 		}
 		private void CodesView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
@@ -1026,15 +1027,17 @@ namespace ModManagerWPF
 			if (code == null)
 				return;
 
-			OpenAboutCodeWindow(code);
+			OpenAboutCodeWindow(code.codes);
 		}
 
 		private void CodesView_Item_MouseEnter(object sender, MouseEventArgs e)
 		{
-			var code = GetCodeFromView(sender);
+			var codes = GetCodeFromView(sender);
 
-			if (code == null)
+			if (codes == null)
 				return;
+
+			var code = codes.codes;
 
 			CodeAuthorGrid.Text += " " + code.Author;
 			CodeDescGrid.Text += " " + code.Description;
