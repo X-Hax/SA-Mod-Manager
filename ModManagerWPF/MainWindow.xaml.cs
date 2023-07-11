@@ -1965,5 +1965,38 @@ namespace ModManagerWPF
 			if ((bool)tsCheckCharacter.IsChecked)
 				tsCheckLevel.IsChecked = true;
 		}
-	}
+
+		private void tsCheckManual_Clicked(object sender, RoutedEventArgs e)
+		{
+			if ((bool)tsCheckManual.IsChecked)
+			{
+				tsCheckCharacter.IsEnabled = false;
+				tsCheckLevel.IsEnabled = false;
+				tsComboCharacter.IsEnabled = false;
+				tsComboLevel.IsEnabled = false;
+				tsComboAct.IsEnabled = false;
+				tsComboTime.IsEnabled = false;
+
+				tsNumCharacter.Value = 0;
+				tsNumLevel.Value = tsComboLevel.SelectedIndex;
+				tsNumAct.Value = tsComboAct.SelectedIndex;
+			}
+			else
+			{
+				tsCheckCharacter.IsEnabled = true;
+				tsCheckLevel.IsEnabled = true;
+				Binding bindCharacter = new Binding();
+				bindCharacter.Path = new PropertyPath("IsChecked");
+				bindCharacter.Source = tsCheckCharacter;
+				Binding bindLevel = new Binding();
+				bindLevel.Path = new PropertyPath("IsChecked");
+				bindLevel.Source = tsCheckLevel;
+
+				BindingOperations.SetBinding(tsComboCharacter, IsEnabledProperty, bindCharacter);
+				BindingOperations.SetBinding(tsComboLevel, IsEnabledProperty, bindLevel);
+				BindingOperations.SetBinding(tsComboAct, IsEnabledProperty, bindLevel);
+				BindingOperations.SetBinding(tsComboTime, IsEnabledProperty, bindLevel);
+			}
+        }
+    }
 }
