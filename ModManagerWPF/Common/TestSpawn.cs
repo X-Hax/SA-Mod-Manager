@@ -16,7 +16,7 @@ namespace ModManagerWPF.Common
 		private Dictionary<int, string> TestSpawnCutsceneList;
 		private Dictionary<ushort, string> TestSpawnGameModeList;
 
-		public static List<string> TimeDay = new List<string>
+		public static readonly List<string> TimeDay = new()
 		{
 			"Unset",
 			"Day",
@@ -24,7 +24,7 @@ namespace ModManagerWPF.Common
 			"Night"
 		};
 
-		private static List<string> actsRegular = new List<string>
+		public static readonly List<string> actsRegular = new()
 		{
 			"Act 1",
 			"Act 2",
@@ -36,7 +36,7 @@ namespace ModManagerWPF.Common
 			"Act 8",
 		};
 
-		private static List<string> acts1only = new List<string>
+		public static readonly List<string> acts1only = new()
 		{
 			"Act 1",
 			"Act 2 (Unused)",
@@ -48,7 +48,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsEC = new List<string>
+		public static readonly List<string> actsEC = new()
 		{
 			"Act 1 - Azure Blue World",
 			"Act 2 - Windy and Ripply",
@@ -60,7 +60,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsWV = new List<string>
+		public static readonly List<string> actsWV = new()
 		{
 			"Act 1 - Windy Hill",
 			"Act 2 - Tornado",
@@ -72,7 +72,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsTP = new List<string>
+		public static readonly List<string> actsTP = new()
 		{
 			"Act 1 - Twinkle Cart",
 			"Act 2 - Pleasure Castle",
@@ -84,7 +84,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsSH = new List<string>
+		public static readonly List<string> actsSH = new()
 		{
 			"Act 1 - Run Through the Speed Highway",
 			"Act 2 - Goin' Down",
@@ -96,7 +96,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsRM = new List<string>
+		public static readonly List<string> actsRM = new()
 		{
 			"Act 1 - Mt Red a Symbol of Thrill",
 			"Act 2 - Red Hot Skull",
@@ -108,7 +108,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsSD = new List<string>
+		private static readonly List<string> actsSD = new()
 		{
 			"Act 1 - Skydeck A Go Go",
 			"Act 2 - In the sky",
@@ -120,7 +120,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsLW = new List<string>
+		private static readonly List<string> actsLW = new()
 		{
 			"Act 1 - Tricky Maze",
 			"Act 2 - Danger Chased by Rock",
@@ -132,7 +132,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsIC = new List<string>
+		private static readonly List<string> actsIC = new()
 		{
 			"Act 1 - Snowy Mountain",
 			"Act 2 - Limestone Cave",
@@ -144,7 +144,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsCas = new List<string>
+		private static readonly List<string> actsCas = new()
 		{
 			"Act 1 - The Dreamy Stage",
 			"Act 2 - Dilapidated Way",
@@ -156,7 +156,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsFE = new List<string>
+		private static readonly List<string> actsFE = new()
 		{
 			"Act 1 - Mechanical Resonance",
 			"Act 2 - Crank the Heat Up",
@@ -169,7 +169,7 @@ namespace ModManagerWPF.Common
 		};
 
 
-		private static List<string> actsHS = new List<string>
+		private static readonly List<string> actsHS = new()
 		{
 			"Act 1 - Bad Taste Aquarium",
 			"Act 2 - Red Barrage Area",
@@ -182,7 +182,7 @@ namespace ModManagerWPF.Common
 		};		
 		
 		
-		private static List<string> actsChaos = new List<string>
+		private static readonly List<string> actsChaos = new()
 		{
 			"Act 1 - Boss CHAOS",
 			"Act 2 (Unused)",
@@ -194,7 +194,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsChaos6 = new List<string>
+		private static readonly List<string> actsChaos6 = new()
 		{
 			"Act 1 - Boss CHAOS ver.6",
 			"Act 2 (Knuckles)",
@@ -205,9 +205,9 @@ namespace ModManagerWPF.Common
 			"Act 7 (Unused)",
 			"Act 8 (Unused)",
 		};
-				
-		
-		private static List<string> actsEH = new List<string>
+
+
+		private static readonly List<string> actsEH = new()
 		{
 			"Act 1 - Egg Mobile ...Boss",
 			"Act 2 (Unused)",
@@ -217,10 +217,10 @@ namespace ModManagerWPF.Common
 			"Act 6 (Unused)",
 			"Act 7 (Unused)",
 			"Act 8 (Unused)",
-		};		
-		
-		
-		private static List<string> actsEW = new List<string>
+		};
+
+
+		private static readonly List<string> actsEW = new()
 		{
 			"Act 1 - Militant Missionary Boss Egg Walker",
 			"Act 2 (Unused)",
@@ -232,7 +232,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsEV = new List<string>
+		private static readonly List<string> actsEV = new()
 		{
 			"Act 1 - Militant Missionary Boss Egg Viper",
 			"Act 2 (Unused)",
@@ -244,7 +244,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsZero = new List<string>
+		private static readonly List<string> actsZero = new()
 		{
 			"Act 1 - ZERO The Chase-master",
 			"Act 2 (Unused)",
@@ -256,7 +256,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsSS = new List<string>
+		private static readonly List<string> actsSS = new()
 		{
 			"Act 1 - Hall",
 			"Act 2 - Station",
@@ -268,7 +268,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsECOut = new List<string>
+		private static readonly List<string> actsECOut = new()
 		{
 			"Act 1 - landing runway (UnTransformed)",
 			"Act 2 - Main (Transformed)",
@@ -280,7 +280,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsECIn = new List<string>
+		private static readonly List<string> actsECIn = new()
 		{
 			"Act 1 - landing runway (UnTransformed)",
 			"Act 2 - Main (Transformed)",
@@ -292,7 +292,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsMR = new List<string>
+		private static readonly List<string> actsMR = new()
 		{
 			"Act 1 - Main",
 			"Act 2 - Angel Island",
@@ -304,7 +304,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<string> actsPast = new List<string>
+		private static readonly List<string> actsPast = new()
 		{
 			"Act 1 - Main",
 			"Act 2 - Altar",
@@ -316,7 +316,7 @@ namespace ModManagerWPF.Common
 			"Act 8 (Unused)",
 		};
 
-		private static List<List<string>> acts = new List<List<string>>
+		private static readonly List<List<string>> acts = new()
 		{
 			actsRegular,
 			actsEC,
