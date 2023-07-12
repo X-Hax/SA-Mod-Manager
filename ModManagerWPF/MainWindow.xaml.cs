@@ -1553,6 +1553,7 @@ namespace ModManagerWPF
 				{
 					if (ModContextDev is null)
 					{
+						/*
 						ModContextDev = new();
 						MenuItem manifest = new();
 						ModContextDev.Name = "menuDev";
@@ -1561,7 +1562,7 @@ namespace ModManagerWPF
 						manifest.Header = Lang.GetString("ModsUISubDevManifest");
 						ModContextDev.Items.Add(manifest);
 						ModContextMenu.Items.Add(ModContextDev);
-
+						*/
 					}
 				}
 				else
