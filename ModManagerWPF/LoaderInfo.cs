@@ -168,7 +168,7 @@ namespace ModManagerWPF
 		public bool PixelOffSetFix { get; set; }
 		[DefaultValue(true)]
 		public bool LightFix { get; set; }
-		[DefaultValue(false)]
+		[DefaultValue(true)]
 		public bool KillGbix { get; set; }
 
 		#endregion

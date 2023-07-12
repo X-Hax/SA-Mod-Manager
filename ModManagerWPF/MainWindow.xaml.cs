@@ -1638,7 +1638,10 @@ namespace ModManagerWPF
 			if (listPatches is null)
 				return;
 
-			PatchesData patch = (PatchesData)listPatches.Items[13];
+
+			PatchesData patch = (PatchesData)listPatches.Items[14];
+			loaderini.DisableCDCheck = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[13];
 			loaderini.KillGbix = patch.IsChecked;
 			patch = (PatchesData)listPatches.Items[12];
 			loaderini.LightFix = patch.IsChecked;
@@ -1691,6 +1694,7 @@ namespace ModManagerWPF
 				new PatchesData() { Name = Lang.GetString("PatchPixelOffset"), IsChecked = loaderini.PixelOffSetFix},
 				new PatchesData() { Name = Lang.GetString("PatchLights"), IsChecked = loaderini.LightFix},
 				new PatchesData() { Name = Lang.GetString("PatchGbix"), IsChecked = loaderini.KillGbix},
+				new PatchesData() { Name = Lang.GetString("PatchDisableCD"), IsChecked = loaderini.DisableCDCheck},
 			};
 
 			foreach (var patch in patches)

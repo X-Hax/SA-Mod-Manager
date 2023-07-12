@@ -264,6 +264,8 @@
     <system:String x:Key="PatchChaoPanel">Correctif des dimensions de l'écran des stats des Chao</system:String>
     <system:String x:Key="PatchPixelOffset">Correctifs de décalage de rendu 2D</system:String>
     <system:String x:Key="PatchLights">Correctif des lumières</system:String>
+    <system:String x:Key="PatchGbix">Désactiver GBIX (Expérimental)</system:String>
+    <system:String x:Key="PatchDisableCD">Désactiver la vérification du CD</system:String>
     <!--#endregion-->
 
     <!--#region DL Mod-->

@@ -288,8 +288,9 @@
     <system:String x:Key="PatchE102Poly">Gamma's Headlight Fixes</system:String>
     <system:String x:Key="PatchChaoPanel">Chao Stat Panel Screen Dimensions Fix</system:String>
     <system:String x:Key="PatchPixelOffset">2D Rendering Offset Fixes</system:String>
-    <system:String x:Key="PatchLights">Light fixes</system:String>
+    <system:String x:Key="PatchLights">Light Fixes</system:String>
     <system:String x:Key="PatchGbix">Disable GBIX (Experimental)</system:String>
+    <system:String x:Key="PatchDisableCD">Disable CD Check</system:String>
     <!--#endregion-->
 
     <!--#region DL Mod-->
