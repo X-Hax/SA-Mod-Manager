@@ -16,6 +16,14 @@ namespace ModManagerWPF.Common
 		private Dictionary<int, string> TestSpawnCutsceneList;
 		private Dictionary<ushort, string> TestSpawnGameModeList;
 
+		public static List<string> TimeDay = new List<string>
+		{
+			"Unset",
+			"Day",
+			"Evening",
+			"Night"
+		};
+
 		private static List<string> actsRegular = new List<string>
 		{
 			"Act 1",
@@ -374,8 +382,6 @@ namespace ModManagerWPF.Common
 
 		}
 
-
-
 		public void InitCharactersList()
 		{
 			boxCharacters.Items.Add("Sonic");
@@ -444,6 +450,11 @@ namespace ModManagerWPF.Common
 		
 		}
 
+		public Dictionary<int, string> GetCutsceneList()
+		{
+			return TestSpawnCutsceneList;
+		}
+
 		public void InitCutsceneList()
 		{
 			TestSpawnCutsceneList = new Dictionary<int, string>();
@@ -467,7 +478,10 @@ namespace ModManagerWPF.Common
 
 		}
 
-
+		public Dictionary<ushort, string> GetTestSpawnGameModeList()
+		{
+			return TestSpawnGameModeList;
+		}
 		public void InitGameModeList()
 		{
 			TestSpawnGameModeList = new Dictionary<ushort, string>

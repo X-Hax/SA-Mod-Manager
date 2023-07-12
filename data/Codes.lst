@@ -1,10 +1,8 @@
-Patch "Free Camera Fix"
-write16 00438330 0x0D81
-write16 00434870 0x0D81
-
 Patch "Allow Dynamic Light Direction Globally"
 writenop 00412536 6
 writenop 00412544 6
+Author SF94
+Description Originally, Casinopolis allowed the light to dynamically move. This enables that effect to be applied in any stage.
 
 Code "Egg Carrier Ocean Music"
 ifmask32 03C62394 0x1
@@ -12,31 +10,42 @@ ifmask32 03C62394 0x1
 else
 	write8 0051BE03 31
 endif
+Author PkR
+Description Plays The Ocean music in the outside areas of the Egg Carrier when it's sunk.
 
 Code "Infinite Rings"
 write16 03B0F0E4 999
+Author MainMemory
 
 Code "Infinite Lives"
 write8 03B0EF34 99
+Author MainMemory
 
 Patch "Disable Lives Bonus"
 writenop 00425C28 5
+Author Kell
+Description Disable Life reward every 100 rings.
 
 Code "Low Time"
 write8 03B0EF48 0
 write8 03B0F128 0
 write8 03B0EF35 0
+Author MainMemory
 
 Code "High Time (Gamma)"
 write8 03B0EF48 99
 write8 03B0F128 59
 write8 03B0EF35 59
+Author MainMemory
 
 Code "Infinite Rod Tension"
 writefloat 3C5252C 0
+Author PkR
+Description Prevent Big from breaking his rod.
 
 Code "Max Enemy Bonus"
 write32 03B0F104 99999999
+Author MainMemory
 
 Code "Hold Y for Super Turbo"
 ifmask32 03B0E9D0 0x200
@@ -44,6 +53,7 @@ ifmask32 03B0E9D0 0x200
 		writefloat p03B42E30|20|C0|38 10
 	endif
 endif
+Author MainMemory
 
 Code "Hold A for Super Jump"
 ifmask32 03B0E9D0 0x4
@@ -51,93 +61,119 @@ ifmask32 03B0E9D0 0x4
 		writefloat p03B42E30|20|C0|3C 1
 	endif
 endif
+Author MainMemory
 
 Patch "Don't Lose Rings When Hit"
 writenop 0045072D 5
 write16 00450734 0xE990
+Author Kell
+Description Don't lose your rings when hit.
 
 Code "Player can't Get Hurt"
 write8 00418E62 0
+Author PkR
 
 Code "Have Invincibility"
 or16 p03B42E30|20|C0|6 0x8000
+Author MainMemory
 
 Code "Have Magnetic Barrier"
 or16 p03B42E30|20|C0|6 0x2
+Author MainMemory
 
 Code "Have All Upgrades"
 or16 p03B42E30|20|C0|4 0x7FFF
+Author MainMemory
 
 Patch "Disable Music"
 write8 0091268C 0
+Author MainMemory
 
 Code "Disable Subtitles (Events)"
 write8 03ABE134 0
+Author MainMemory
 
 Patch "Disable Voices"
 write8 00425710 0xC3
+Author MainMemory
 
 Patch "Disable Videos"
 write32 005130A0 0x33EC8B55 ; return (n > 0 ? 0 : -1);
 write32 005130A4 0x084539C0 
 write32 005130A8 0x48C09F0F
 write32 005130AC 0xCCCCC35D
+Author PkR
 
 Code "Infinite Underwater Time"
 write16 p03B42E30|20|C0|C 0
+Author MainMemory
 
 Code "Always Underwater"
 ifne8 03ABDC7C 12
 	or32 p03B42E30|20|C0|1E4 2
 endif
+Author MainMemory
 
 Code "Have All Emblems"
 write8 03B2B5E8 0xFF x16
 write8 03B2B5F8 0x3
+Author MainMemory
 
 Code "All Characters Unlocked in Adventure Mode"
 write8 03B18849 1 x7
+Author MainMemory
 
 Code "All Characters Unlocked in Mission Mode"
 write8 03B18850 1 x7
+Author MainMemory
 
 Code "Always Daytime in Fields"
 write8 p03B0EF4C 0
+Author MainMemory
 
 Code "Always Evening in Fields"
 write8 p03B0EF4C 1
+Author MainMemory
 
 Code "Always Night in Fields"
 write8 p03B0EF4C 2
+Author MainMemory
 
 Code "Always Metal Sonic"
 write8 03B18DB5 1
+Author MainMemory
 
 Code "D-Pad Up to Increase Gravity"
 ifmask32 03B0E9D0 0x10
 	mulfloat 03B0F0FC 1.05
 endif
+Author MainMemory
 
 Code "D-Pad Right to Reset Gravity"
 ifmask32 03B0E9D0 0x80
 	writefloat 03B0F0FC -1
 endif
+Author MainMemory
 
 Code "D-Pad Left to Reverse Gravity"
 ifmask32 03B0E9D0 0x40
 	writefloat 03B0F0FC 1
 endif
+Author MainMemory
 
 Code "D-Pad Down to Decrease Gravity"
 ifmask32 03B0E9D0 0x20
 	divfloat 03B0F0FC 1.05
 endif
+Author MainMemory
 
 Patch "Walk on Water"
 writenop 004496E1 6
+Author MainMemory
 
 Patch "Skip Intro"
 write32 0040C10C 11
+Author MainMemory
 
 Patch "Disable Debug Spam"
 writenop 00415236 5
@@ -213,13 +249,16 @@ writenop 0072A826 5
 writenop 0072A8A5 5
 writenop 0072A8B6 5
 writenop 0072A935 5
+Author MainMemory
 
 Patch "Infinite Tails Flight"
 writenop 0045D86B 6
+Author MainMemory
 
 Patch "Longer Title Card Display"
 write8 0047E01A 0xEB
 write16 0047E018 120
+Author MainMemory
 
 Code "Use Tornado 2 Health Bar in Sky Chase Act 2"
 ifeq16 03B22DCC 36
@@ -243,6 +282,7 @@ else
 		write16 02938462 192
 	endif
 endif
+Author MainMemory
 
 Patch "Hide HUD"
 write8 00425F90 0xC3 ; Ring/Time/Life
@@ -275,43 +315,55 @@ write8 0047C480 0xC3 ; Tails Win/Lose
 write8 0047C260 0xC3 ; Tails Race Bar
 write8 00457D30 0xC3 ; Demo Press Start
 write8 0071B210 0xC3 ; Chao Player Action
+Author MainMemory
 
 Patch "Skip All Cutscenes"
 writenop 00431521 2
+Author MainMemory
 
 Patch "Can Always Skip Credits"
 writenop 00641232 2
+Author MainMemory
 
 Patch "60FPS Cutscenes (Double Speed)"
 write8 0042F8B7 1
 write8 0042F8B9 1
 write8 00431488 1
+Author MainMemory
 
 Patch "Disable Saving"
 writenop 00422161 5
 writenop 00422175 5
 writenop 004221B0 5
+Author MainMemory
 
 Patch "Reduce Light Speed Dash Charge Time"
 write16 00495086 68
 write16 00495097 120
+Author MainMemory
 
 Patch "Chao Stat Multiplier"
 muls16 008895C8 5 x402
+Author MainMemory
 
 Patch "Disable CPU Partner Tails"
 write8 0041592D 0xEB
+Author MainMemory
 
 Patch "Make Metal Sonic Stand Normally"
 writenop 004916A5 2
+Author MainMemory
 
 Patch "Metal Sonic Hovers At Top Speed"
 write8 00495B10 12
 write8 00495B3A 12
 write8 00495BEB 146
+Author MainMemory
 
 Patch "Metal Sonic Always Hovers"
 write8 00495BEB 146
+Author MainMemory
+Description Make Metal Sonic always using his hover animation.
 
 Patch "'?' Ring Box Always Gives 40 Rings"
 write8 007E6FE4 40
@@ -319,9 +371,13 @@ write8 007E6FE6 40
 write8 007E6FE8 40
 write8 007E6FEA 40
 write8 007E6FEC 40
+Author Speeps
+Description Random ring box will always count as 40 Rings.
 
 Patch "Disable Auto Hints"
 write8 007A1BE0 0xC3
+Author Kell
+Description Disable Tikal Hints.
 
 Patch "Increase Rivals Fight HP"
 write8 004B663C 0x7
@@ -334,10 +390,16 @@ write8 004D5FD8 0x8
 write8 004D601A 0x7
 write8 004D5F24 0x8
 write8 004B6399 0x8
+Author Sora
+Description Increase Sonic, Knuckles and Gamma's fight HP to 8.
 
 Patch "More Cars in Speed Highway 3"
 write8 00612148 0x12
 write32 0061214D 0x0026AA93C
+Author Speeps
+Description Add more cars in Speed Highway Act 3.
 
 Patch "Disable Attract Player"
 write8 00442120 0xC3
+Author Sora
+Description Disable the gravity effect that attract the player, such as Item Box and the Twinkle Park platforms.

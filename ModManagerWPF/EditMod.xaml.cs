@@ -548,6 +548,7 @@ namespace ModManagerWPF
 
 		private void checkAdvancedOptions_Click(object sender, RoutedEventArgs e)
 		{
+		
 			if ((bool)checkAdvancedOptions.IsChecked)
 			{
 				tabDepdencies.Visibility = Visibility.Visible;
@@ -555,6 +556,13 @@ namespace ModManagerWPF
 			}
 			else
 			{
+				if (tabDepdencies.IsSelected || tabSchema.IsSelected)
+				{
+					tabSchema.IsSelected = false;
+					tabDepdencies.IsSelected = false;
+					tabProperties.IsSelected = true;
+				}
+
 				tabDepdencies.Visibility = Visibility.Hidden;
 				tabSchema.Visibility = Visibility.Hidden;
 			}

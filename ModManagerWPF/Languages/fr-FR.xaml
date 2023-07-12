@@ -40,6 +40,7 @@
     <system:String x:Key="ModsUIModEdit">Modifier le Mod</system:String>
     <system:String x:Key="ModsUIModDelete">Supprimer le Mod</system:String>
     <system:String x:Key="ModsUIDev">Développeur</system:String>
+    <system:String x:Key="ModsUISubDevManifest">Générer un Manifest</system:String>
 
     <!--Mod About Window-->
     <system:String x:Key="AuthorSite">Site de l'Auteur</system:String>

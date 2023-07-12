@@ -51,7 +51,8 @@
     <system:String x:Key="ModsUIModConfigure">Configure Mod</system:String>
     <system:String x:Key="ModsUIModEdit">Edit Mod</system:String>
     <system:String x:Key="ModsUIModDelete">Delete Mod</system:String>
-    <system:String x:Key="ModsUIDev">Developer</system:String>
+    <system:String x:Key="ModsUIDev">Developer</system:String>    
+    <system:String x:Key="ModsUISubDevManifest">Generate Manifest</system:String>
     
     <!--Mod About Window-->
     <system:String x:Key="AuthorSite">Author's Site</system:String>
