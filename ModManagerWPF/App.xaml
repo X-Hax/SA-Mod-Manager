@@ -1192,7 +1192,7 @@
 							<ColumnDefinition Width="20"/>
 						</Grid.ColumnDefinitions>
 						<ContentPresenter x:Name="Icon" ContentSource="Icon" HorizontalAlignment="Center" Height="16" Margin="3" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" Width="16"/>
-						<Border x:Name="GlyphPanel" Background="{StaticResource MenuItem.Selected.Background}" BorderBrush="{StaticResource MenuItem.Selected.Border}" BorderThickness="0" ClipToBounds="False" HorizontalAlignment="Center" Height="22"  VerticalAlignment="Center" Visibility="Hidden" Width="22">
+						<Border x:Name="GlyphPanel" Background="{StaticResource MenuItem.Selected.Background}" BorderBrush="{StaticResource MenuItem.Selected.Border}" BorderThickness="0" ClipToBounds="False" HorizontalAlignment="Center" Height="22" Margin="-1,0,0,0" VerticalAlignment="Center" Visibility="Hidden" Width="22">
 							<Path x:Name="Glyph" Data="{StaticResource Checkmark}" FlowDirection="LeftToRight" Fill="{StaticResource Menu.Static.Foreground}" Height="11" Width="10"/>
 						</Border>
 						<ContentPresenter x:Name="menuHeaderContainer" ContentSource="Header" Grid.Column="2" HorizontalAlignment="Left" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
@@ -1243,8 +1243,8 @@
 						<ContentPresenter ContentSource="Header" Grid.Column="2" HorizontalAlignment="Left" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
 						<TextBlock Grid.Column="4" Margin="{TemplateBinding Padding}" Opacity="0.7" Text="{TemplateBinding InputGestureText}" VerticalAlignment="Center"/>
 						<Path x:Name="RightArrow" Grid.Column="5" Data="{StaticResource RightArrow}" Fill="{StaticResource Menu.Static.Border}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center"/>
-						<Popup x:Name="PART_Popup" AllowsTransparency="true" Focusable="false" HorizontalOffset="-2" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Right" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" VerticalOffset="-3">
-							<Border x:Name="SubMenuBorder" Background="{StaticResource Menu.Static.Background}" BorderBrush="{StaticResource Menu.Static.Border}" BorderThickness="1" Padding="2">
+						<Popup x:Name="PART_Popup" AllowsTransparency="true" Focusable="false" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Right" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}">
+							<Border x:Name="SubMenuBorder" Background="{StaticResource Menu.Static.Background}" BorderBrush="{StaticResource Menu.Static.Border}" BorderThickness="0" Padding="0">
 								<ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
 									<Grid RenderOptions.ClearTypeHint="Enabled">
 										<Canvas HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
