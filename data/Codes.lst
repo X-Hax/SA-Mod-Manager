@@ -45,6 +45,7 @@ Description Prevent Big from breaking his rod.
 
 Code "Max Enemy Bonus"
 write32 03B0F104 99999999
+Author MainMemory
 
 Code "Hold Y for Super Turbo"
 ifmask32 03B0E9D0 0x200
