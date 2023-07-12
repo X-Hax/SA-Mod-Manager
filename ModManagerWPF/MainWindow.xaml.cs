@@ -632,7 +632,7 @@ namespace ModManagerWPF
 				var confirmMessage = Lang.GetString("DeleteModWarning");
 				var deleteConfirmation = new MessageWindow(Lang.GetString("SadxManagerTitle"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 
-				deleteConfirmation.Show();
+				deleteConfirmation.ShowDialog();
 				if (deleteConfirmation.isYes)
 				{
 					foreach (var selectedItem in selectedItems)
