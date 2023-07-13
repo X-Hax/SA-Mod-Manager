@@ -84,10 +84,17 @@
 	<SolidColorBrush x:Key="ContextMenu.Brushes.Background" Color="{DynamicResource Colors.Button}"/>
 	<SolidColorBrush x:Key="ContextMenu.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 
-	<SolidColorBrush x:Key="MenuItem.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
-	<SolidColorBrush x:Key="MenuItem.Brushes.Disabled.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
-	<SolidColorBrush x:Key="MenuItem.Brushes.Disabled.Foreground" Color="{DynamicResource Colors.Text.Disabled}"/>
-	<SolidColorBrush x:Key="MenuItem.Brushes.Highlighted.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="Menu.Brushes.Background" Color="{DynamicResource Colors.Button}"/>
+	<SolidColorBrush x:Key="Menu.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="Menu.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="Menu.Brushes.Separator" Color="Transparent"/>
+	<SolidColorBrush x:Key="Menu.Brushes.Disabled.Foreground" Color="{DynamicResource Colors.Text.Disabled}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Selected.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Selected.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Highlight.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Highlight.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Highlight.Disabled.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Highlight.Disabled.Border" Color="{DynamicResource Colors.Text.Disabled}"/>
 
 	<SolidColorBrush x:Key="NumericBox.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="NumericBox.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
@@ -150,7 +157,7 @@
 	<SolidColorBrush x:Key="ScrollBar.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="ScrollBar.Brushes.Border" Color="Transparent"/>
 
-	<SolidColorBrush x:Key="ComboBox.Brushes.Background" Color="Transparent"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="ComboBox.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 	<SolidColorBrush x:Key="ComboBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 	<SolidColorBrush x:Key="ComboBox.Brushes.Button.Image" Color="#FF9E9E9E"/>
