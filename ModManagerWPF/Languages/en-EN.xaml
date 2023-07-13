@@ -90,6 +90,8 @@
     <system:String x:Key="GameGraphicsLabelResolution">Resolution:</system:String>
     <system:String x:Key="GameGraphicsCheckRatio">Force 4:3 Aspect Ratio</system:String>
     <system:String x:Key="GameGraphicsCheckVSync">Enable V-Sync</system:String>
+	<system:String x:Key="GameGraphicsCheckPause">Pause When Inactive</system:String>
+	<system:String x:Key="GameGraphicsCheckBuffers">Dynamically Allocate Buffers</system:String>
     <system:String x:Key="GameGraphicsRadioFullscreen">Fullscreen</system:String>
     <system:String x:Key="GameGraphicsRadioWindowed">Windowed</system:String>
 
