@@ -213,11 +213,9 @@ namespace ModManagerWPF.Common
 			this.Close();
 		}
 
-		private void LoopMedia(object sender, RoutedEventArgs e)
+		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			MediaElement gif = (MediaElement)TryFindResource("GifTest");
-			gif.Position = new TimeSpan(0, 0, 1);
-			gif.Play();
+			Window.SizeToContent = SizeToContent.WidthAndHeight;
 		}
 	}
 }

@@ -4,9 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF.Common"
-        mc:Ignorable="d" x:Name="Window"
-        Height="250" Width="400"
-		Style="{StaticResource SAWindow}"
+        mc:Ignorable="d" x:Name="Window" Loaded="Window_Loaded"
+        Style="{StaticResource SAWindow}" Width="400" Height="250"
 		Closing="Window_Closing" WindowStartupLocation="CenterScreen">
 	<Window.Resources>
 		<ResourceDictionary>
@@ -20,20 +19,20 @@
     <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="10"/>
-			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition Width="10"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="10"/>
-			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="30"/>
 			<RowDefinition Height="10"/>
 		</Grid.RowDefinitions>
 
 		<Grid x:Name="MasterGrid" Grid.Column="1" Grid.Row="1">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="0"/>
 				<RowDefinition Height="*"/>
+				<RowDefinition Height="0"/>
 				<RowDefinition Height="0"/>
 			</Grid.RowDefinitions>
 			<Grid x:Name="GridIconMessage" Grid.Row="0">
@@ -45,7 +44,8 @@
 					<RowDefinition Height="Auto" MinHeight="40"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
-				<TextBlock x:Name="IconMessage" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5" TextWrapping="Wrap"/>
+				<TextBlock x:Name="IconMessage" Text="This is a Message used with just an Icon." Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5" TextWrapping="Wrap"
+						   HorizontalAlignment="Left" VerticalAlignment="Center"/>
 			</Grid>
 			<Grid x:Name="GridIconHeader" Grid.Row="1">
 				<Grid.ColumnDefinitions>
@@ -56,11 +56,12 @@
 					<RowDefinition Height="Auto" MinHeight="40"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
-				<TextBlock x:Name="HeaderHeader" Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" FontSize="20" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
-				<TextBlock x:Name="HeaderMessage" Grid.Column="1" Grid.Row="1" Margin="5" TextWrapping="Wrap"/>
+				<TextBlock x:Name="HeaderHeader" Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" FontSize="20" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+				<TextBlock x:Name="HeaderMessage" Grid.Column="1" Grid.Row="1" Margin="5" TextWrapping="Wrap"
+						   HorizontalAlignment="Left" VerticalAlignment="Center"/>
 			</Grid>
 			<Grid x:Name="GridMessage" Grid.Row="2">
-				<TextBlock x:Name="MessageMessage" Margin="5" TextWrapping="Wrap"/>
+				<TextBlock x:Name="MessageMessage" Margin="5" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 			</Grid>
 		</Grid>
 
@@ -71,11 +72,11 @@
 				<ColumnDefinition Width="100"/>
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="30"/>
 			</Grid.RowDefinitions>
 
-			<Button x:Name="ButtonRight" Margin="0,5,0,5" Grid.Row="0" Grid.Column="2" Click="ButtonClick"/>
-			<Button x:Name="ButtonLeft" Grid.Row="1" Margin="0,5,0,5" Click="ButtonYes_Click"/>
+			<Button x:Name="ButtonRight" Content="Cancel" Margin="0,5,0,5" Grid.Row="0" Grid.Column="2" Click="ButtonClick"/>
+			<Button x:Name="ButtonLeft" Content="OK" Grid.Row="1" Margin="0,5,0,5" Click="ButtonYes_Click"/>
 		</Grid>
     </Grid>
 </Window>
