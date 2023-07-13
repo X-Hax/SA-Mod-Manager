@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace ModManagerWPF.Common
 {
 	/// <summary>
@@ -115,6 +116,43 @@ namespace ModManagerWPF.Common
 			InitializeMessageWindow(windowName, messageText, headerText, image, button, type);
 		}
 
+		//add line break to avoid having a width way too big for the Message Window
+		private static string FixMessageFormatting(string s)
+		{
+			const int max = 60; //look for 60 characters
+
+			StringBuilder result = new();
+			int index = 0;
+
+			while (index < s.Length) //browse the string content
+			{
+				int remainingLength = s.Length - index;
+				int substringLength = Math.Min(max, remainingLength);
+				string substring = s.Substring(index, substringLength);
+
+				if (substringLength == max) 
+				{
+					int breakIndex = substring.LastIndexOfAny(new[] { ' ', '\n' }); //look for the next whitespace / line break
+
+					if (breakIndex != -1)
+					{
+						substringLength = breakIndex + 1; // Adjust the substring length
+						substring = substring[..substringLength];
+					}
+				}
+
+				//If the string already has a line break from the user; don't add an extra one.
+				if (substring.Contains('\n'))
+					result.Append(substring);
+				else
+					result.AppendLine(substring); //add new line break
+
+				index += substringLength;
+			}
+
+			return result.ToString();
+		}
+
 		private void InitializeMessageWindow(string windowName, string messageText, string headerText, Image icon, Buttons button, WindowType type)
 		{
 			isClosed = false;
@@ -124,6 +162,7 @@ namespace ModManagerWPF.Common
 			image.Source = icon.Source;
 			image.Width = icon.Width;
 			image.Height = icon.Height;
+			messageText = FixMessageFormatting(messageText);
 			SetupWindow(messageText, headerText, type, image);
 			UpdateButtons(button);
 		}
