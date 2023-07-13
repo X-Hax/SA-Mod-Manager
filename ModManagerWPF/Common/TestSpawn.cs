@@ -365,7 +365,7 @@ namespace ModManagerWPF.Common
 
 		public static List<string> GetNewAct(int index)
 		{
-			if (index > acts.Count)
+			if (index > acts.Count || index < 0)
 			{
 				return actsRegular;
 			}
