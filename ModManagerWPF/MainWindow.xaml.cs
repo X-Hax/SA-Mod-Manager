@@ -23,8 +23,6 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Security.Cryptography;
 using System.Threading;
-using ModManagerCommon.Forms;
-using System.Net;
 
 namespace ModManagerWPF
 {
@@ -76,6 +74,7 @@ namespace ModManagerWPF
 		static private uint count = 0;
 		MenuItem ModContextDev { get; set; }
 		TestSpawn TS { get; set; }
+		private bool displayedManifestWarning;
 
 		public class ModData
 		{
@@ -216,7 +215,7 @@ namespace ModManagerWPF
 			};
 			timer.Tick += SetModManagerVersion;
 			timer.IsEnabled = true;
-			DownloadMod dl = new(updatePath, Path.Combine(gamePath, "mods"));
+			DownloadMod dl = new(updatePath, modDirectory);
 		}
 
 		private void MainForm_FormClosing(object sender, EventArgs e)
@@ -586,26 +585,44 @@ namespace ModManagerWPF
 
 		private void ModContextVerifyIntegrity_Click(object sender, RoutedEventArgs e)
 		{
-			List<Tuple<string, ModInfo>> items = listMods.SelectedItems.Cast<ListViewItem>()
+
+			List<Tuple<string, ModInfo>> items = listMods.SelectedItems.Cast<ModData>()
 				.Select(x => (string)x.Tag)
-				.Where(x => File.Exists(Path.Combine("mods", x, "mod.manifest")))
+				.Where(x => File.Exists(Path.Combine(modDirectory, x, "mod.manifest")))
 				.Select(x => new Tuple<string, ModInfo>(x, mods[x]))
 				.ToList();
 
 			if (items.Count < 1)
 			{
-
+				new MessageWindow("Missing mod.manifest", "None of the selected mods have manifests, so they cannot be verified.",
+			MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information).ShowDialog();
 				return;
 			}
 
+			List<Tuple<string, ModInfo, List<ModManifestDiff>>> failed;
+			/*if (failed.Count < 1)
+			{
+				new MessageWindow("Integrity Pass", "All selected mods passed verification.",
+					MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information).ShowDialog();
+			}
 
+			InitializeWorker();
+
+			updateChecker.DoWork -= UpdateChecker_DoWork;
+			updateChecker.DoWork += UpdateChecker_DoWorkForced;
+
+			updateChecker.RunWorkerAsync(failed);
+
+			modUpdater.ForceUpdate = true;
+			btnCheckUpdates.IsEnabled = false;*/
 
 		}
 
 		private void ModContextForceUpdate_Click(object sender, RoutedEventArgs e)
 		{
-			var result = new MessageWindow(Lang.GetString("ForceUpdateTitle"), Lang.GetString("ForceUpdate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+			var result = new MessageWindow(Lang.GetString("ForceUpdateTitle"), Lang.GetString("ForceUpdate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Caution, MessageWindow.Buttons.YesNo);
 			result.ShowDialog();
+
 			if (result.isYes)
 			{
 				modUpdater.ForceUpdate = true;
@@ -1283,7 +1300,7 @@ namespace ModManagerWPF
 
 			var TimeDay = TestSpawn.TimeDay;
 
-			foreach (var item in TimeDay) 
+			foreach (var item in TimeDay)
 			{
 				tsComboTime.Items.Add(item);
 			}
@@ -1737,17 +1754,12 @@ namespace ModManagerWPF
 			InitializeWorker();
 			manualModUpdate = true;
 
-			if (listMods.SelectedItem is ModData mod)
-			{
-				var pair = new KeyValuePair<string, ModInfo>(mod.Tag, mods[mod.Tag]);
-				List<KeyValuePair<string, ModInfo>> list = new()
-				{
-					pair
-				};
+			List<KeyValuePair<string, ModInfo>> list = listMods.SelectedItems
+			.OfType<ModData>()
+			.Select(mod => new KeyValuePair<string, ModInfo>(mod.Tag, mods[mod.Tag]))
+			.ToList();
 
-
-				updateChecker?.RunWorkerAsync(list);
-			}
+			updateChecker?.RunWorkerAsync(list);
 		}
 
 		private bool CheckForUpdates(bool force = false)
@@ -1935,8 +1947,38 @@ namespace ModManagerWPF
 				return;
 			}
 
-			var progress = new Updater.ModDownloadDialogWPF(updates, updatePath);
-			progress.Show();
+			var dialog = new ModChangelog(updates);
+			dialog.ShowDialog();
+
+			bool? res = dialog.DialogResult;
+			if (res != true)
+			{
+				return;
+			}
+
+			updates = dialog.SelectedMods;
+
+
+			if (updates.Count == 0)
+			{
+				return;
+			}
+
+			try
+			{
+				if (!Directory.Exists(updatePath))
+				{
+					Directory.CreateDirectory(updatePath);
+				}
+			}
+			catch (Exception ex)
+			{
+
+			}
+
+
+			new Updater.ModDownloadDialogWPF(updates, updatePath).ShowDialog();
+
 
 			Refresh();
 		}
@@ -1947,8 +1989,11 @@ namespace ModManagerWPF
 			btnCheckUpdates.IsEnabled = true;
 			ModContextChkUpdate.IsEnabled = true;
 			if (ModContextDev is not null)
-				ModContextDeleteMod.IsEnabled = true;
-			ModContextDev.IsEnabled = true;
+			{
+				ModContextDev.IsEnabled = true;
+			}
+
+			ModContextDeleteMod.IsEnabled = true;
 			ModContextForceUpdate.IsEnabled = true;
 			ModContextVerifyIntegrity.IsEnabled = true;
 		}
@@ -2067,7 +2112,7 @@ namespace ModManagerWPF
 
 			if (tsCheckLevel.IsChecked.GetValueOrDefault())
 				cmdline.Add("-l " + tsComboLevel.SelectedIndex.ToString() + " -a " + tsComboAct.SelectedIndex.ToString());
-			
+
 			if (tsCheckCharacter.IsChecked == true)
 				cmdline.Add("-c " + tsComboCharacter.SelectedIndex.ToString());
 
@@ -2117,9 +2162,71 @@ namespace ModManagerWPF
 				string save = tsComboSave.SelectedValue.ToString();
 				save = Util.GetSaveNumber(save);
 				cmdline.Add("-s " + save);
-			}		
+			}
 
 			return string.Join(" ", cmdline);
 		}
+
+		private void ModsContextDeveloperManifest_Click(object sender, RoutedEventArgs e)
+		{
+			if (!displayedManifestWarning)
+			{
+				var result = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("GenerateManifestWarning"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+				result.ShowDialog();
+				if (result.isYes != true)
+				{
+					return;
+				}
+
+				displayedManifestWarning = true;
+			}
+
+			foreach (ModData item in listMods.SelectedItems)
+			{
+
+				var modPath = Path.Combine(modDirectory, (string)item.Tag);
+				var manifestPath = Path.Combine(modPath, "mod.manifest");
+
+				List<ModManifestEntry> manifest;
+				List<ModManifestDiff> diff;
+
+				var progress = new Updater.ManifestDialog(modPath, $"Generating manifest: {(string)item.Tag}", true);
+				progress.ShowDialog();
+
+				bool? result = progress.DialogResult;
+
+				//progress.SetTask("Generating file index...");
+				if (result != true)
+				{
+					continue;
+				}
+
+				diff = progress.Diff;
+
+				if (diff == null)
+				{
+					continue;
+				}
+
+				if (diff.Count(x => x.State != ModManifestState.Unchanged) <= 0)
+				{
+					continue;
+				}
+
+				/*var dialog = new ManifestDiffDialog(diff))
+				{
+					if (dialog.ShowDialog(this) == DialogResult.Cancel)
+					{
+						continue;
+					}
+
+					manifest = dialog.MakeNewManifest();
+				}
+
+				ModManifest.ToFile(manifest, manifestPath); */
+			}
+		}
 	}
 }
+
+

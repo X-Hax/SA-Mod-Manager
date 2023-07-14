@@ -6,7 +6,17 @@
         xmlns:local="clr-namespace:ModManagerWPF.Common"
 		xmlns:wpf="clr-namespace:ModManagerWPF"
         mc:Ignorable="d" Style="{StaticResource SAWindow}"
-        Title="{DynamicResource ModChangelogTitle}" Height="450" Width="800">
+        Title="{DynamicResource ModChangelogTitle}" Height="450" Width="800"
+        Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Icons/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -19,7 +29,7 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 
-			<ListView x:Name="ModsList" Grid.Column="0" Margin="5">
+			<ListView x:Name="ModsList" Grid.Column="0" Margin="5" SelectionChanged="ModsList_SelectionChanged">
 				<ListView.View>
 					<GridView>
 						<GridView.ColumnHeaderContainerStyle>
@@ -31,9 +41,9 @@
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
 									<StackPanel Orientation="Horizontal">
-										<CheckBox/>
-										<TextBlock/>
-									</StackPanel>
+                                        <CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0" Checked="CheckBox_Checked"/>
+                                        <TextBlock Text="{Binding Info.Name}" />
+                                    </StackPanel>
 								</DataTemplate>
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>
@@ -49,7 +59,7 @@
 					<TabControl>
 						<TabItem Header="{DynamicResource ModChangelogTabUpdateNotes}">
 							<Grid x:Name="UpdateNotes" Margin="3">
-								
+                                <TextBlock x:Name="textChangeLog"></TextBlock>
 							</Grid>
 						</TabItem>
 						<TabItem Header="{DynamicResource ModChangelogTabUpdateDetails}">
@@ -88,7 +98,7 @@
 								</GroupBox>
 							</Grid>
 						</TabItem>
-						<TabItem Header="{DynamicResource ModChangelogTabFileChanges}">
+                        <TabItem x:Name="tabPageFiles" Header="{DynamicResource ModChangelogTabFileChanges}">
 							<Grid x:Name="UpdateFiles" Margin="3">
 								<ListView x:Name="FilesList" Margin="5">
 									<ListView.View>
@@ -124,13 +134,13 @@
 				<ColumnDefinition Width="200"/>
 				<ColumnDefinition Width="200"/>
 			</Grid.ColumnDefinitions>
-			<wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" Margin="5"
+			<wpf:ImageButton x:Name="btnInstallNow" Style="{StaticResource ImageTextButtonStyle}" Margin="5"
 							 Icon="{StaticResource Icons.Download}" Padding="5"
-							 Content="{DynamicResource ModChangelog.DownloadNow}"/>
+							 Content="{DynamicResource ModChangelog.DownloadNow}" Click="ImageButton_Click"/>
 			<wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" 
 							 Margin="5" Grid.Column="1"
 							 Icon="{StaticResource Icons.Update}" Padding="5"
-							 Content="{DynamicResource ModChangelog.DownloadLater}"/>
+							 Content="{DynamicResource ModChangelog.DownloadLater}" Click="ImageButton_Click_1" IsCancel="True"/>
 		</Grid>
 	</Grid>
 </Window>

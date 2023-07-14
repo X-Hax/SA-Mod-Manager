@@ -1,11 +1,11 @@
 ﻿using ModManagerCommon;
+using ModManagerCommon.Forms;
 using System;
 using System.Collections.Generic;
-
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Shell;
 
 namespace ModManagerWPF.Updater
@@ -19,6 +19,13 @@ namespace ModManagerWPF.Updater
 		private readonly string updatePath;
 		private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 		private IProgress<double?> _progress;
+
+		public enum DLType
+		{
+			modDL,
+			manifest,
+
+		}
 
 		public ModDownloadDialogWPF(List<ModDownload> updates, string updatePath)
 		{
@@ -48,7 +55,6 @@ namespace ModManagerWPF.Updater
 
 		private async void OnLoaded(object sender, RoutedEventArgs e)
 		{
-
 			using (var client = new UpdaterWebClient())
 			{
 				CancellationToken token = tokenSource.Token;
@@ -56,37 +62,17 @@ namespace ModManagerWPF.Updater
 				int modIndex = 0;
 				foreach (ModDownload update in updates)
 				{
-
 					Title = update.Info.Name;
 					HeaderTxt.Text = $"Updating mod {++modIndex} of {updates.Count}: {update.Info.Name}";
 
-					/*result = CustomMessageBox.Show(this, $"Failed to update mod {update.Info.Name}:\r\n{ex.Message}"
-						+ "\r\n\r\nPress Retry to try again, or Cancel to skip this mod.",
-						"Update Failed", MessageBoxButton.RetryCancel, MessageBoxImage.Error);*/
 					try
 					{
-						// poor man's await Task.Run (not available in .net 4.0)
-						using (var task = new Task(() => update.Download(client, updatePath), token))
-						{
-							task.Start();
-
-							while (!task.IsCompleted && !task.IsCanceled)
-							{
-								App.DoEvents();
-							}
-
-							task.Wait(token);
-						}
+						await Task.Run(() => update.Download(client, updatePath), token);
 					}
-					catch (AggregateException ae)
+					catch (Exception ex)
 					{
-						ae.Handle(ex =>
-						{
-							return true;
-						});
+						// Handle the exception
 					}
-
-
 				}
 			}
 		}
@@ -96,5 +82,7 @@ namespace ModManagerWPF.Updater
 
 		}
 	}
+
+
 }
 

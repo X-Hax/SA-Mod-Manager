@@ -91,8 +91,8 @@
                                         </MenuItem.Icon>
                                     </MenuItem>
 									<MenuItem x:Name="ModContextDeveloper" Header="{DynamicResource ModsUIDev}">
-										<MenuItem x:Name="ModsContextDeveloperManifest" Header="{DynamicResource ModsUISubDevManifest}"/>
-									</MenuItem>
+                                        <MenuItem x:Name="ModsContextDeveloperManifest" Header="{DynamicResource ModsUISubDevManifest}" Click="ModsContextDeveloperManifest_Click"/>
+                                    </MenuItem>
                                 </ContextMenu>
 							</ListView.ContextMenu>
 							<ListView.View>

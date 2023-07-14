@@ -357,7 +357,7 @@
 
     <system:String x:Key="LoaderDllMissing" xml:space="preserve">The file SADXModLoader.dll couldn't be found, Mod Loader won't work.&#x0a;&#x0a;Please re download the Mod Manager.</system:String>
 
-    <system:String x:Key="ForceUpdate" xml:space="preserve">>This will force all selected mods to be completely re-downloaded.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
+    <system:String x:Key="ForceUpdate" xml:space="preserve">This will force all selected mods to be completely re-downloaded.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
 
     <system:String x:Key="ErrorDontWantTo">Hm... no, you don't want to do that. :)</system:String>
 
@@ -372,6 +372,7 @@
 
     <system:String x:Key="ErrorCheckForUpdate" xml:space="preserve">The following errors occurred while checking for updates:&#x0a;&#x0a;</system:String>
     <system:String x:Key="ErrorCheckForUpdateTitle">Update Errors</system:String>
+    <system:String x:Key="GenerateManifestWarning" xml:space="preserve">This can cause MOD USER DATA (SAVE FILES, CONFIG FILES) TO BE LOST upon next update! To prevent this, you should never run this on mods you did not develop.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
 
 
     <!--#endregion-->
