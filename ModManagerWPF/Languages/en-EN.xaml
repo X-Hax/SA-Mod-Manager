@@ -327,7 +327,7 @@
 	
 	<!--#region Manifest Generator-->
 	<system:String x:Key="ManifestGen.WindowTitle">Manifest Generator</system:String>
-	<system:String x:Key="ManifestGen.Header">Please select all files that will be added to the manifest.</system:String>
+	<system:String x:Key="ManifestGen.Header">Please check all files you want added to the manifest.</system:String>
 	<!--#endregion-->
 
     <!--Message Box Strings-->
