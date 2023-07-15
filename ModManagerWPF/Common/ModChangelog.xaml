@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ModManagerWPF.Common"
 		xmlns:wpf="clr-namespace:ModManagerWPF"
         mc:Ignorable="d" Style="{StaticResource SAWindow}"
-        Title="{DynamicResource ModChangelogTitle}" Height="450" Width="800"
+        Title="{DynamicResource ModChangelogTitle}" Height="450" Width="800" WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
 
     <Window.Resources>

@@ -7,8 +7,7 @@
         mc:Ignorable="d"
         Style="{StaticResource SAWindow}"
         Title="ModDownloadDialog" Height="250" Width="600"
-        WindowStartupLocation="CenterScreen"
-        >
+        WindowStartupLocation="CenterScreen">
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="Normal"/>
     </Window.TaskbarItemInfo>
@@ -21,7 +20,7 @@
         </Grid.RowDefinitions>
         <TextBlock x:Name="HeaderTxt" Text="Header" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Margin="20,0,20,0" Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
         <TextBlock x:Name="ProgressTxt" Text="Header" FontSize="17"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Margin="20,0,20,0" Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
-        <ProgressBar x:Name="Progress" Grid.Row="2" Maximum="1" Margin="20"/>
+        <ProgressBar x:Name="Progress" Grid.Row="2" Margin="20"/>
         <Button Grid.Row="3" Content="{StaticResource BtnCancel}" Margin="0,0,15,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Height="23" IsCancel="True" Click="ButtonCancel_Click" />
     </Grid>
 </Window>

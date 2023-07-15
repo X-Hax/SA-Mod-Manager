@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF.Common"
         mc:Ignorable="d" Style="{DynamicResource SAWindow}"
-        Title="{DynamicResource ManifestGen.WindowTitle}" Height="350" Width="500">
+        Title="{DynamicResource ManifestGen.WindowTitle}" Height="350" Width="500"
+         WindowStartupLocation="CenterScreen">
     <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="10"/>

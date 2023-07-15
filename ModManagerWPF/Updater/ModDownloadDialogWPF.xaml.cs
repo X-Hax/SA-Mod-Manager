@@ -19,8 +19,6 @@ namespace ModManagerWPF.Updater
 		private readonly List<Common.ModDownloadWPF> updates;
 		private readonly string updatePath;
 		private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
-		private IProgress<double?> _progress;
-
 
 		public ModDownloadDialogWPF(List<Common.ModDownloadWPF> updates, string updatePath)
 		{
@@ -29,23 +27,6 @@ namespace ModManagerWPF.Updater
 			this.updatePath = updatePath;
 
 			Loaded += OnLoaded;
-
-			_progress = new Progress<double?>((v) =>
-			{
-				if (v.HasValue)
-				{
-					TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
-					Progress.IsIndeterminate = false;
-					TaskbarItemInfo.ProgressValue = v.Value;
-					Progress.Value = v.Value;
-				}
-				else
-				{
-					Progress.IsIndeterminate = true;
-					TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;
-				}
-			});
-
 		}
 
 		private async void OnLoaded(object sender, RoutedEventArgs e)
@@ -53,7 +34,6 @@ namespace ModManagerWPF.Updater
 			using (var client = new UpdaterWebClient())
 			{
 				CancellationToken token = tokenSource.Token;
-
 
 				void OnExtracting(object o, CancelEventArgs args)
 				{
@@ -84,26 +64,34 @@ namespace ModManagerWPF.Updater
 				{
 					Application.Current.Dispatcher.Invoke(() =>
 					{
-						//SetProgress(args.BytesReceived / (double)args.TotalBytesToReceive);
-						//SetTaskAndStep($"Downloading file {args.FileDownloading} of {args.FilesToDownload}:",
-						//$"({SizeSuffix.GetSizeSuffix(args.BytesReceived)} / {SizeSuffix.GetSizeSuffix(args.TotalBytesToReceive)})");
+						Progress.Value = Util.SetProgress(args.BytesReceived / (double)args.TotalBytesToReceive);
 						ProgressTxt.Text = $"Downloading file {args.FileDownloading} of {args.FilesToDownload}";
 					});
 					args.Cancel = token.IsCancellationRequested;
 				}
 				void OnDownloadCompleted(object o, CancelEventArgs args)
 				{
-					//NextTask();
 					args.Cancel = token.IsCancellationRequested;
-				}
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						Progress.Value = Progress.Maximum;
+						ProgressTxt.Text = $"Download complete.";
+						tokenSource.Dispose();
 
+						this.Close();
+					});
+				
+				}
 
 				int modIndex = 0;
 				foreach (Common.ModDownloadWPF update in updates)
 				{
-					Title = update.Info.Name;
-					HeaderTxt.Text = $"Updating mod {++modIndex} of {updates.Count}: {update.Info.Name}";
-					ProgressTxt.Text = "Starting Download...";
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						Title = update.Info.Name;
+						HeaderTxt.Text = $"Updating mod {++modIndex} of {updates.Count}: {update.Info.Name}";
+						ProgressTxt.Text = "Starting Download...";
+					});
 
 					update.Extracting += OnExtracting;
 					update.ParsingManifest += OnParsingManifest;
@@ -137,11 +125,10 @@ namespace ModManagerWPF.Updater
 		}
 
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
-		{
+		{		
 			this.Close();
 		}
 	}
-
 
 }
 

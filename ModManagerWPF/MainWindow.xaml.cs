@@ -621,10 +621,9 @@ namespace ModManagerWPF
 			else
 			{
 
-				var result = new MessageWindow("The following mods failed verification:\n"
+				var result = new MessageWindow("Integrity Fail", "The following mods failed verification:\n"
 	+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: {x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged)} file(s)"))
-	+ "\n\nWould you like to attempt repairs?",
-	"Integrity Fail", MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
+	+ "\n\nWould you like to attempt repairs?", MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
 				result.ShowDialog();
 
 				if (result.isYes != true)
@@ -1814,7 +1813,7 @@ namespace ModManagerWPF
 
 		private void UpdateChecker_DoWork(object sender, DoWorkEventArgs e)
 		{
-			if (!(sender is BackgroundWorker worker))
+			if (sender is not BackgroundWorker worker)
 			{
 				throw new Exception("what");
 			}
@@ -1837,29 +1836,27 @@ namespace ModManagerWPF
 			var tokenSource = new CancellationTokenSource();
 			CancellationToken token = tokenSource.Token;
 
-			using (var task = new Task(() => modUpdater.GetModUpdates(updatableMods, out updates, out errors, token), token))
+			var task = Task.Run(() => modUpdater.GetModUpdates(modDirectory, updatableMods, out updates, out errors, token), token);
+
+			while (!task.IsCompleted && !task.IsCanceled)
 			{
-				task.Start();
+				// Process pending UI events
+				Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
 
-				while (!task.IsCompleted && !task.IsCanceled)
+				if (worker.CancellationPending)
 				{
-					App.DoEvents();
-
-					if (worker.CancellationPending)
-					{
-						tokenSource.Cancel();
-					}
+					tokenSource.Cancel();
 				}
-
-				task.Wait(token);
 			}
+
+			task.Wait(token);
 
 			e.Result = new Tuple<List<ModDownloadWPF>, List<string>>(updates, errors);
 		}
 
 		private void UpdateChecker_DoWorkForced(object sender, DoWorkEventArgs e)
 		{
-			if (!(sender is BackgroundWorker worker))
+			if (sender is not BackgroundWorker worker)
 			{
 				throw new Exception("what");
 			}
@@ -1891,7 +1888,7 @@ namespace ModManagerWPF
 							continue;
 						}
 
-						ModDownloadWPF d = modUpdater.GetGitHubReleases(mod, info.Item1, client, errors);
+						ModDownloadWPF d = modUpdater.GetGitHubReleases(mod, modDirectory, info.Item1, client, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1899,7 +1896,7 @@ namespace ModManagerWPF
 					}
 					else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
 					{
-						ModDownloadWPF d = modUpdater.GetGameBananaReleases(mod, info.Item1, errors);
+						ModDownloadWPF d = modUpdater.GetGameBananaReleases(mod, modDirectory, info.Item1, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1909,9 +1906,10 @@ namespace ModManagerWPF
 					{
 						List<Updater.ModManifestEntry> localManifest = info.Item3
 							.Where(x => x.State == Updater.ModManifestState.Unchanged)
-							.Select(x => x.Current).ToList();
+							.Select(x => x.Current)
+							.ToList();
 
-						ModDownloadWPF d = modUpdater.CheckModularVersion(mod, info.Item1, localManifest, client, errors);
+						ModDownloadWPF d = modUpdater.CheckModularVersion(mod, modDirectory, info.Item1, localManifest, client, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1951,7 +1949,7 @@ namespace ModManagerWPF
 				return;
 			}
 
-			if (!(e.Result is Tuple<List<ModDownloadWPF>, List<string>> data))
+			if (e.Result is not Tuple<List<ModDownloadWPF>, List<string>> data)
 			{
 				return;
 			}

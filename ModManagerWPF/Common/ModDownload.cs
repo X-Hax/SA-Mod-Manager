@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ModManagerCommon;
 using System.Net;
 using System.Diagnostics;
+using SevenZipExtractor;
 
 namespace ModManagerWPF.Common
 {
@@ -221,20 +222,16 @@ namespace ModManagerWPF.Common
 							return;
 						}
 
-						Process process = Process.Start(
-							new ProcessStartInfo("7z.exe", $"x -aoa -o\"{dataDir}\" \"{filePath}\"")
+						try
+						{
+							using (ArchiveFile archiveFile = new(filePath))
 							{
-								UseShellExecute = false,
-								CreateNoWindow = true
-							});
-
-						if (process != null)
-						{
-							process.WaitForExit();
+								archiveFile.Extract(dataDir);
+							}
 						}
-						else
+						catch
 						{
-							throw new NullReferenceException("Failed to create 7z process");
+							throw new Exception("Failed to extract one mod.");
 						}
 
 						string workDir = Path.GetDirectoryName(ModInfo.GetModFiles(new DirectoryInfo(dataDir)).FirstOrDefault());

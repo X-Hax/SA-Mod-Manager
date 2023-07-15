@@ -17,9 +17,9 @@ namespace ModManagerWPF.Common
 		private readonly Dictionary<string, List<GitHubRelease>> gitHubCache = new Dictionary<string, List<GitHubRelease>>();
 		public bool ForceUpdate;
 
-		private static DateTime? GetLocalVersion(string folder, string basePath = null)
+		private static DateTime? GetLocalVersion(string folder, string modsFolder, string basePath = null)
 		{
-			string versionPath = Path.Combine("mods", folder, "mod.version");
+			string versionPath = Path.Combine(modsFolder, folder, "mod.version");
 			if (basePath != null)
 				versionPath = Path.Combine(basePath, versionPath);
 			DateTime? localVersion = null;
@@ -37,7 +37,7 @@ namespace ModManagerWPF.Common
 
 			if (!localVersion.HasValue)
 			{
-				var info = new FileInfo(basePath == null ? Path.Combine("mods", folder, "mod.manifest") : Path.Combine(basePath, "mods", folder, "mod.manifest"));
+				var info = new FileInfo(basePath == null ? Path.Combine(modsFolder, folder, "mod.manifest") : Path.Combine(basePath, modsFolder, folder, "mod.manifest"));
 				if (info.Exists)
 				{
 					localVersion = info.LastWriteTimeUtc;
@@ -47,7 +47,7 @@ namespace ModManagerWPF.Common
 			return localVersion;
 		}
 
-		public ModDownloadWPF GetGitHubReleases(ModInfo mod, string folder, UpdaterWebClient client, List<string> errors, string basePath = null)
+		public ModDownloadWPF GetGitHubReleases(ModInfo mod, string modsFolder, string folder, UpdaterWebClient client, List<string> errors, string basePath = null)
 		{
 			List<GitHubRelease> releases;
 			string url = "https://api.github.com/repos/" + mod.GitHubRepo + "/releases";
@@ -83,7 +83,7 @@ namespace ModManagerWPF.Common
 				return null;
 			}
 
-			DateTime? localVersion = GetLocalVersion(folder, basePath);
+			DateTime? localVersion = GetLocalVersion(folder, modsFolder, basePath);
 
 			GitHubRelease latestRelease = null;
 			GitHubAsset latestAsset = null;
@@ -128,7 +128,7 @@ namespace ModManagerWPF.Common
 
 			string body = Regex.Replace(latestRelease.Body, "(?<!\r)\n", "\r\n");
 
-			return new ModDownloadWPF(mod, basePath == null ? Path.Combine("mods", folder) : Path.Combine(basePath, "mods", folder), latestAsset.DownloadUrl, body, latestAsset.Size)
+			return new ModDownloadWPF(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), latestAsset.DownloadUrl, body, latestAsset.Size)
 			{
 				HomePage = "https://github.com/" + mod.GitHubRepo,
 				Name = latestRelease.Name,
@@ -139,7 +139,7 @@ namespace ModManagerWPF.Common
 			};
 		}
 
-		public ModDownloadWPF GetGameBananaReleases(ModInfo mod, string folder, List<string> errors, string basePath = null)
+		public ModDownloadWPF GetGameBananaReleases(ModInfo mod, string modsFolder, string folder, List<string> errors, string basePath = null)
 		{
 			GameBananaItem gbi;
 			try
@@ -159,7 +159,7 @@ namespace ModManagerWPF.Common
 			}
 
 			GameBananaItemUpdate latestUpdate = gbi.Updates[0];
-			DateTime? localVersion = GetLocalVersion(folder, basePath);
+			DateTime? localVersion = GetLocalVersion(folder, modsFolder, basePath);
 
 			if (!ForceUpdate && localVersion.HasValue)
 			{
@@ -174,7 +174,7 @@ namespace ModManagerWPF.Common
 
 			GameBananaItemFile dl = gbi.Files.First().Value;
 
-			return new ModDownloadWPF(mod, basePath == null ? Path.Combine("mods", folder) : Path.Combine(basePath, "mods", folder), dl.DownloadUrl, body, dl.Filesize)
+			return new ModDownloadWPF(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), dl.DownloadUrl, body, dl.Filesize)
 			{
 				HomePage = gbi.ProfileUrl,
 				Name = latestUpdate.Title,
@@ -185,7 +185,7 @@ namespace ModManagerWPF.Common
 			};
 		}
 
-		public ModDownloadWPF CheckModularVersion(ModInfo mod, string folder, List<Updater.ModManifestEntry> localManifest,
+		public ModDownloadWPF CheckModularVersion(ModInfo mod, string modsFolder, string folder, List<Updater.ModManifestEntry> localManifest,
 											   UpdaterWebClient client, List<string> errors, string basePath = null)
 		{
 			if (!mod.UpdateUrl.StartsWith("http://", StringComparison.InvariantCulture)
@@ -282,7 +282,7 @@ namespace ModManagerWPF.Common
 				changes = System.Text.RegularExpressions.Regex.Replace(changes, "(?<!\r)\n", "\r\n");
 			}
 
-			return new ModDownloadWPF(mod, basePath == null ? Path.Combine("mods", folder) : Path.Combine(basePath, "mods", folder), mod.UpdateUrl, changes, diff);
+			return new ModDownloadWPF(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), mod.UpdateUrl, changes, diff);
 		}
 
 		// TODO: cancel
@@ -293,7 +293,7 @@ namespace ModManagerWPF.Common
 		/// <param name="updates">Output list of mods with available updates.</param>
 		/// <param name="errors">Output list of errors encountered during the update process.</param>
 		/// <param name="cancellationToken"><see cref="CancellationToken"/> for cancelling the operation. Currently unused.</param>
-		public void GetModUpdates(List<KeyValuePair<string, ModInfo>> updatableMods,
+		public void GetModUpdates(string modsFolder, List<KeyValuePair<string, ModInfo>> updatableMods,
 								  out List<ModDownloadWPF> updates, out List<string> errors, CancellationToken cancellationToken, string baseFolder = null)
 		{
 			updates = new List<ModDownloadWPF>();
@@ -323,7 +323,7 @@ namespace ModManagerWPF.Common
 							continue;
 						}
 
-						ModDownloadWPF d = GetGitHubReleases(mod, info.Key, client, errors, baseFolder);
+						ModDownloadWPF d = GetGitHubReleases(mod, modsFolder, info.Key, client, errors, baseFolder);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -331,7 +331,7 @@ namespace ModManagerWPF.Common
 					}
 					else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
 					{
-						ModDownloadWPF d = GetGameBananaReleases(mod, info.Key, errors, baseFolder);
+						ModDownloadWPF d = GetGameBananaReleases(mod, modsFolder, info.Key, errors, baseFolder);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -340,7 +340,7 @@ namespace ModManagerWPF.Common
 					else if (!string.IsNullOrEmpty(mod.UpdateUrl))
 					{
 						List<Updater.ModManifestEntry> localManifest = null;
-						string manPath = Path.Combine("mods", info.Key, "mod.manifest");
+						string manPath = Path.Combine(modsFolder, info.Key, "mod.manifest");
 						if (baseFolder != null)
 							manPath = Path.Combine(baseFolder, manPath);
 
@@ -357,7 +357,7 @@ namespace ModManagerWPF.Common
 							}
 						}
 
-						ModDownloadWPF d = CheckModularVersion(mod, info.Key, localManifest, client, errors, baseFolder);
+						ModDownloadWPF d = CheckModularVersion(mod, modsFolder, info.Key, localManifest, client, errors, baseFolder);
 						if (d != null)
 						{
 							updates.Add(d);
