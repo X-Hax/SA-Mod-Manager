@@ -613,7 +613,7 @@ namespace ModManagerWPF
 
 			List<Tuple<string, ModInfo, List<Updater.ModManifestDiff>>> failed = progress.Failed;
 
-			if (failed is not null && failed.Count < 1)
+			if (failed.Count < 1)
 			{
 				new MessageWindow("Integrity Pass", "All selected mods passed verification.",
 					MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information).ShowDialog();

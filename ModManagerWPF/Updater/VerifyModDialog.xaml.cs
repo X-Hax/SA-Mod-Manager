@@ -25,6 +25,7 @@ namespace ModManagerWPF.Updater
 		public VerifyModDialog(List<Tuple<string, ModInfo>> mods, string modDirectory)
 		{
 			InitializeComponent();
+			Failed = new List<Tuple<string, ModInfo, List<ModManifestDiff>>>();
 			this.mods = mods;
 			this.ModDirectory = modDirectory;
 			Loaded += OnLoaded;
@@ -73,6 +74,13 @@ namespace ModManagerWPF.Updater
 					string path = Path.Combine(ModDirectory, i.Item1);
 					ModInfo info = i.Item2;
 					string manifPath = Path.Combine(path, "mod.manifest");
+				
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						Title = info.Name;
+						HeaderTxt.Text = info.Name;
+						TxtProgress.Text = $"Verifying mod {++modIndex}/{modCount}: {info.Name}";
+					});
 
 					List<ModManifestEntry> local = ModManifest.FromFile(manifPath);
 					List<ModManifestDiff> diff = generator.Verify(path, local);
