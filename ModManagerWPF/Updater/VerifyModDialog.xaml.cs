@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -16,7 +17,7 @@ namespace ModManagerWPF.Updater
 	/// </summary>
 	public partial class VerifyModDialog : Window
 	{
-		private string ModDirectory;
+		private readonly string ModDirectory;
 		private readonly List<Tuple<string, ModInfo>> mods;
 		private readonly CancellationTokenSource tokenSource = new();
 
@@ -39,23 +40,24 @@ namespace ModManagerWPF.Updater
 
 		private async void OnLoaded(object sender, EventArgs e)
 		{
-			//
 
 			int modCount = mods.Count;
 			int modIndex = 0;
+			Util.SetTaskCount(modCount, Progress.Maximum);
 
 			CancellationToken token = tokenSource.Token;
 			var generator = new Updater.ModManifestGenerator();
 
 			void hashStart(object o, FileHashEventArgs args)
 			{
+				args.Cancel = token.IsCancellationRequested;
+
 				Application.Current.Dispatcher.Invoke(() =>
 				{
-					//SetStep($"Checking file {args.FileIndex}/{args.FileCount}: {args.FileName}");
 					TxtProgress.Text = $"Checking file { args.FileIndex}/{ args.FileCount}: { args.FileName}";
+					double value = Util.SetProgress(args.FileIndex / (double)args.FileCount);
+					Progress.Value = value;
 				});
-					//SetProgress(args.FileIndex / (double)args.FileCount);
-				args.Cancel = token.IsCancellationRequested;
 			}
 
 			void hashEnd(object o, FileHashEventArgs args)
@@ -92,8 +94,6 @@ namespace ModManagerWPF.Updater
 							Failed.Add(new Tuple<string, ModInfo, List<ModManifestDiff>>(i.Item1, info, diff));
 						});
 					}
-
-					//Application.Current.Dispatcher.Invoke(NextTask);
 				}
 			});
 
