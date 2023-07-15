@@ -1,4 +1,4 @@
-﻿using ModManagerCommon.Forms;
+﻿
 using ModManagerCommon;
 using System;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace ModManagerWPF.Updater
 		public static bool DoUpdates(string updatePath)
 		{
 
-			/*using (var wc = new WebClient())
+			using (var wc = new WebClient())
 			{
 				try
 				{
@@ -49,13 +49,14 @@ namespace ModManagerWPF.Updater
 
 					if (msg.Length > 0)
 					{
-						using (var dlg = new UpdateMessageDialog("SADX", msg.Replace("\n", "\r\n")))
-						{
-							if (dlg.ShowDialog(this) == DialogResult.Yes)
+						/*var dlg = new UpdateMessageDialog("SADX", msg.Replace("\n", "\r\n"));
+						dlg.ShowDialog();
+						bool? dlgRes = dlg.DialogResult;
+						
+							if (dlgRes == true)
 							{
-								DialogResult result = DialogResult.OK;
-								do
-								{
+				
+								
 									try
 									{
 										if (!Directory.Exists(updatePath))
@@ -65,27 +66,29 @@ namespace ModManagerWPF.Updater
 									}
 									catch (Exception ex)
 									{
-										result = MessageBox.Show(this, "Failed to create temporary update directory:\n" + ex.Message
+										//result = MessageBox.Show(this, "Failed to create temporary update directory:\n" + ex.Message
 																	   + "\n\nWould you like to retry?", "Directory Creation Failed", MessageBoxButtons.RetryCancel);
-										if (result == DialogResult.Cancel) return false;
+										if (result == DialogResult != true) 
+											return false;
 									}
-								} while (result == DialogResult.Retry);
 
-								using (var dlg2 = new LoaderDownloadDialog("http://mm.reimuhakurei.net/sadxmods/SADXModLoader.7z", updatePath))
-									if (dlg2.ShowDialog(this) == DialogResult.OK)
+
+							var dlg2 = new LoaderDownloadDialog("http://mm.reimuhakurei.net/sadxmods/SADXModLoader.7z", updatePath);
+							dgl2.show();		
+							if (dlg2.ShowDialog(this) == DialogResult.OK)
 									{
 										Close();
 										return true;
 									}
-							}
-						}
+						}*/
+
 					}
 				}
 				catch
 				{
-					MessageBox.Show(this, "Unable to retrieve update information.", "SADX Mod Manager");
+					//MessageBox.Show(this, "Unable to retrieve update information.", "SADX Mod Manager");
 				}
-			}*/
+			}
 
 			return false;
 		}
