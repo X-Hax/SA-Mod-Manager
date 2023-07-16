@@ -2,6 +2,7 @@
 using ModManagerCommon.Forms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,42 +16,17 @@ namespace ModManagerWPF.Updater
 	/// </summary>
 	public partial class ModDownloadDialogWPF : Window
 	{
-		private readonly List<ModDownload> updates;
+		private readonly List<Common.ModDownloadWPF> updates;
 		private readonly string updatePath;
 		private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
-		private IProgress<double?> _progress;
 
-		public enum DLType
-		{
-			modDL,
-			manifest,
-
-		}
-
-		public ModDownloadDialogWPF(List<ModDownload> updates, string updatePath)
+		public ModDownloadDialogWPF(List<Common.ModDownloadWPF> updates, string updatePath)
 		{
 			InitializeComponent();
 			this.updates = updates;
 			this.updatePath = updatePath;
 
 			Loaded += OnLoaded;
-
-			_progress = new Progress<double?>((v) =>
-			{
-				if (v.HasValue)
-				{
-					TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
-					Progress.IsIndeterminate = false;
-					TaskbarItemInfo.ProgressValue = v.Value;
-					Progress.Value = v.Value;
-				}
-				else
-				{
-					Progress.IsIndeterminate = true;
-					TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;
-				}
-			});
-
 		}
 
 		private async void OnLoaded(object sender, RoutedEventArgs e)
@@ -59,30 +35,100 @@ namespace ModManagerWPF.Updater
 			{
 				CancellationToken token = tokenSource.Token;
 
-				int modIndex = 0;
-				foreach (ModDownload update in updates)
+				void OnExtracting(object o, CancelEventArgs args)
 				{
-					Title = update.Info.Name;
-					HeaderTxt.Text = $"Updating mod {++modIndex} of {updates.Count}: {update.Info.Name}";
+					//SetTaskAndStep("Extracting...");
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						ProgressTxt.Text = "Extracting...";
+					});
+					args.Cancel = token.IsCancellationRequested;
+				}
+				void OnParsingManifest(object o, CancelEventArgs args)
+				{
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						ProgressTxt.Text = "Parsing manifest...";
+					});
+					args.Cancel = token.IsCancellationRequested;
+				}
+				void OnApplyingManifest(object o, CancelEventArgs args)
+				{
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						ProgressTxt.Text = "Applying manifest...";
+					});
+					args.Cancel = token.IsCancellationRequested;
+				}
+				void OnDownloadProgress(object o, Common.DownloadProgressEventArgs args)
+				{
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						Progress.Value = Util.SetProgress(args.BytesReceived / (double)args.TotalBytesToReceive);
+						ProgressTxt.Text = $"Downloading file {args.FileDownloading} of {args.FilesToDownload}";
+					});
+					args.Cancel = token.IsCancellationRequested;
+				}
+				void OnDownloadCompleted(object o, CancelEventArgs args)
+				{
+					args.Cancel = token.IsCancellationRequested;
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						Progress.Value = Progress.Maximum;
+						ProgressTxt.Text = $"Download complete.";
+						tokenSource.Dispose();
+
+						this.Close();
+					});
+				
+				}
+
+				int modIndex = 0;
+				foreach (Common.ModDownloadWPF update in updates)
+				{
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						Title = update.Info.Name;
+						HeaderTxt.Text = $"Updating mod {++modIndex} of {updates.Count}: {update.Info.Name}";
+						ProgressTxt.Text = "Starting Download...";
+					});
+
+					update.Extracting += OnExtracting;
+					update.ParsingManifest += OnParsingManifest;
+					update.ApplyingManifest += OnApplyingManifest;
+					update.DownloadProgress += OnDownloadProgress;
+					update.DownloadCompleted += OnDownloadCompleted;
 
 					try
 					{
 						await Task.Run(() => update.Download(client, updatePath), token);
 					}
-					catch (Exception ex)
+					catch (AggregateException ae)
 					{
 						// Handle the exception
+						ae.Handle(ex =>
+						{
+							/*MessageBox.Show(this, $"Failed to update mod {update.Info.Name}:\r\n{ex.Message}"
+								+ "\r\n\r\nPress Retry to try again, or Cancel to skip this mod.",
+								"Update Failed", MessageBoxButton.YesNo, MessageBoxIcon.Error);*/
+							return true;
+						});
 					}
+
+					update.Extracting -= OnExtracting;
+					update.ParsingManifest -= OnParsingManifest;
+					update.ApplyingManifest -= OnApplyingManifest;
+					update.DownloadProgress -= OnDownloadProgress;
+					update.DownloadCompleted -= OnDownloadCompleted;
 				}
 			}
 		}
 
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
-		{
-
+		{		
+			this.Close();
 		}
 	}
-
 
 }
 

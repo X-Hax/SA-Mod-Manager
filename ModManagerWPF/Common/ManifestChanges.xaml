@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF.Common"
         mc:Ignorable="d" Style="{DynamicResource SAWindow}"
-        Title="{DynamicResource ManifestGen.WindowTitle}" Height="350" Width="500">
+        Title="{DynamicResource ManifestGen.WindowTitle}" Height="350" Width="500"
+         WindowStartupLocation="CenterScreen">
     <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="10"/>
@@ -37,7 +38,7 @@
 									<DataTemplate>
 										<StackPanel Orientation="Horizontal">
 											<CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0"/>
-											<TextBlock Text="{Binding Name}"/>
+                                            <TextBlock Text="{Binding FilePath}"/>
 										</StackPanel>
 									</DataTemplate>
 								</GridViewColumn.CellTemplate>
@@ -46,7 +47,7 @@
 							<GridViewColumn x:Name="COLUMN_Status" Header="Status" Width="130">
 								<GridViewColumn.CellTemplate>
 									<DataTemplate>
-										<TextBlock Text="{Binding Status}"/>
+										<TextBlock Text="{Binding State}"/>
 									</DataTemplate>
 								</GridViewColumn.CellTemplate>
 							</GridViewColumn>

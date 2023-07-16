@@ -24,6 +24,7 @@ using System.Windows.Data;
 using System.Security.Cryptography;
 using System.Threading;
 
+
 namespace ModManagerWPF
 {
 	/// <summary>
@@ -60,7 +61,7 @@ namespace ModManagerWPF
 		bool suppressEvent = false;
 		BackgroundWorker updateChecker;
 		private bool manualModUpdate;
-		readonly ModUpdater modUpdater = new ModUpdater();
+		readonly Common.ModUpdater modUpdater = new();
 		private bool checkedForUpdates = false;
 
 		private readonly double LowOpacityIcon = 0.3;
@@ -599,22 +600,48 @@ namespace ModManagerWPF
 				return;
 			}
 
-			List<Tuple<string, ModInfo, List<ModManifestDiff>>> failed;
-			/*if (failed.Count < 1)
+			var progress = new Updater.VerifyModDialog(items, modDirectory);
+
+			progress.ShowDialog();
+
+			bool? res = progress.DialogResult;
+
+			if (res == false)
+			{
+				return;
+			}
+
+			List<Tuple<string, ModInfo, List<Updater.ModManifestDiff>>> failed = progress.Failed;
+
+			if (failed.Count < 1)
 			{
 				new MessageWindow("Integrity Pass", "All selected mods passed verification.",
 					MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information).ShowDialog();
 			}
+			else
+			{
 
-			InitializeWorker();
+				var result = new MessageWindow("Integrity Fail", "The following mods failed verification:\n"
+	+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: {x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged)} file(s)"))
+	+ "\n\nWould you like to attempt repairs?", MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
+				result.ShowDialog();
 
-			updateChecker.DoWork -= UpdateChecker_DoWork;
-			updateChecker.DoWork += UpdateChecker_DoWorkForced;
+				if (result.isYes != true)
+				{
+					return;
+				}
 
-			updateChecker.RunWorkerAsync(failed);
 
-			modUpdater.MessageWindow.Warnings.ForceModUpdate = true;
-			btnCheckUpdates.IsEnabled = false;*/
+				InitializeWorker();
+
+				updateChecker.DoWork -= UpdateChecker_DoWork;
+				updateChecker.DoWork += UpdateChecker_DoWorkForced;
+
+				updateChecker.RunWorkerAsync(failed);
+
+				modUpdater.ForceUpdate = true;
+				btnCheckUpdates.IsEnabled = false;
+			}
 
 		}
 
@@ -1786,7 +1813,7 @@ namespace ModManagerWPF
 
 		private void UpdateChecker_DoWork(object sender, DoWorkEventArgs e)
 		{
-			if (!(sender is BackgroundWorker worker))
+			if (sender is not BackgroundWorker worker)
 			{
 				throw new Exception("what");
 			}
@@ -1803,50 +1830,48 @@ namespace ModManagerWPF
 			});
 
 			var updatableMods = e.Argument as List<KeyValuePair<string, ModInfo>>;
-			List<ModDownload> updates = null;
-			List<string> Errors = null;
+			List<ModDownloadWPF> updates = null;
+			List<string> errors = null;
 
 			var tokenSource = new CancellationTokenSource();
 			CancellationToken token = tokenSource.Token;
 
-			using (var task = new Task(() => modUpdater.GetModUpdates(updatableMods, out updates, out Errors, token), token))
+			var task = Task.Run(() => modUpdater.GetModUpdates(modDirectory, updatableMods, out updates, out errors, token), token);
+
+			while (!task.IsCompleted && !task.IsCanceled)
 			{
-				task.Start();
+				// Process pending UI events
+				Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
 
-				while (!task.IsCompleted && !task.IsCanceled)
+				if (worker.CancellationPending)
 				{
-					App.DoEvents();
-
-					if (worker.CancellationPending)
-					{
-						tokenSource.Cancel();
-					}
+					tokenSource.Cancel();
 				}
-
-				task.Wait(token);
 			}
 
-			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, Errors);
+			task.Wait(token);
+
+			e.Result = new Tuple<List<ModDownloadWPF>, List<string>>(updates, errors);
 		}
 
 		private void UpdateChecker_DoWorkForced(object sender, DoWorkEventArgs e)
 		{
-			if (!(sender is BackgroundWorker worker))
+			if (sender is not BackgroundWorker worker)
 			{
 				throw new Exception("what");
 			}
 
-			if (!(e.Argument is List<Tuple<string, ModInfo, List<ModManifestDiff>>> updatableMods) || updatableMods.Count == 0)
+			if (!(e.Argument is List<Tuple<string, ModInfo, List<Updater.ModManifestDiff>>> updatableMods) || updatableMods.Count == 0)
 			{
 				return;
 			}
 
-			var updates = new List<ModDownload>();
-			var Errors = new List<string>();
+			var updates = new List<ModDownloadWPF>();
+			var errors = new List<string>();
 
 			using (var client = new UpdaterWebClient())
 			{
-				foreach (Tuple<string, ModInfo, List<ModManifestDiff>> info in updatableMods)
+				foreach (Tuple<string, ModInfo, List<Updater.ModManifestDiff>> info in updatableMods)
 				{
 					if (worker.CancellationPending)
 					{
@@ -1863,7 +1888,7 @@ namespace ModManagerWPF
 							continue;
 						}
 
-						ModDownload d = modUpdater.GetGitHubReleases(mod, info.Item1, client, Errors);
+						ModDownloadWPF d = modUpdater.GetGitHubReleases(mod, modDirectory, info.Item1, client, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1871,7 +1896,7 @@ namespace ModManagerWPF
 					}
 					else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
 					{
-						ModDownload d = modUpdater.GetGameBananaReleases(mod, info.Item1, Errors);
+						ModDownloadWPF d = modUpdater.GetGameBananaReleases(mod, modDirectory, info.Item1, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1879,11 +1904,12 @@ namespace ModManagerWPF
 					}
 					else if (!string.IsNullOrEmpty(mod.UpdateUrl))
 					{
-						List<ModManifestEntry> localManifest = info.Item3
-							.Where(x => x.State == ModManifestState.Unchanged)
-							.Select(x => x.Current).ToList();
+						List<Updater.ModManifestEntry> localManifest = info.Item3
+							.Where(x => x.State == Updater.ModManifestState.Unchanged)
+							.Select(x => x.Current)
+							.ToList();
 
-						ModDownload d = modUpdater.CheckModularVersion(mod, info.Item1, localManifest, client, Errors);
+						ModDownloadWPF d = modUpdater.CheckModularVersion(mod, modDirectory, info.Item1, localManifest, client, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1892,7 +1918,7 @@ namespace ModManagerWPF
 				}
 			}
 
-			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, Errors);
+			e.Result = new Tuple<List<ModDownloadWPF>, List<string>>(updates, errors);
 		}
 
 		private void InitializeWorker()
@@ -1923,7 +1949,7 @@ namespace ModManagerWPF
 				return;
 			}
 
-			if (!(e.Result is Tuple<List<ModDownload>, List<string>> data))
+			if (e.Result is not Tuple<List<ModDownloadWPF>, List<string>> data)
 			{
 				return;
 			}
@@ -1937,7 +1963,7 @@ namespace ModManagerWPF
 			bool manual = manualModUpdate;
 			manualModUpdate = false;
 
-			List<ModDownload> updates = data.Item1;
+			List<ModDownloadWPF> updates = data.Item1;
 			if (updates.Count == 0)
 			{
 				if (manual)
@@ -2187,16 +2213,16 @@ namespace ModManagerWPF
 				var modPath = Path.Combine(modDirectory, (string)item.Tag);
 				var manifestPath = Path.Combine(modPath, "mod.manifest");
 
-				List<ModManifestEntry> manifest;
-				List<ModManifestDiff> diff;
+				List<Updater.ModManifestEntry> manifest;
+				List<Updater.ModManifestDiff> diff;
 
 				var progress = new Updater.ManifestDialog(modPath, $"Generating manifest: {(string)item.Tag}", true);
 				progress.ShowDialog();
 
-				bool? result = progress.DialogResult;
+				bool? ManifDialog = progress.DialogResult;
 
 				//progress.SetTask("Generating file index...");
-				if (result != true)
+				if (ManifDialog != true)
 				{
 					continue;
 				}
@@ -2208,22 +2234,23 @@ namespace ModManagerWPF
 					continue;
 				}
 
-				if (diff.Count(x => x.State != ModManifestState.Unchanged) <= 0)
+				if (diff.Count(x => x.State != Updater.ModManifestState.Unchanged) <= 0)
 				{
 					continue;
 				}
 
-				/*var dialog = new ManifestDiffDialog(diff))
-				{
-					if (dialog.ShowDialog(this) == DialogResult.Cancel)
-					{
-						continue;
-					}
+				var dialog = new ManifestChanges(diff);
+				dialog.ShowDialog();
+				bool? resultManifChange = dialog.DialogResult;
 
-					manifest = dialog.MakeNewManifest();
+				if (resultManifChange != true)
+				{
+					continue;
 				}
 
-				ModManifest.ToFile(manifest, manifestPath); */
+				manifest = dialog.MakeNewManifest();
+
+				Updater.ModManifest.ToFile(manifest, manifestPath);
 			}
 		}
 	}

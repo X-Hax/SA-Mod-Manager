@@ -21,7 +21,7 @@ namespace ModManagerWPF.Updater
 		private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
 		private List<ModManifestEntry> manifest;
-		public List<ModManifestDiff> Diff { get; private set; }
+		public List<Updater.ModManifestDiff> Diff { get; private set; }
 
 		public ManifestDialog(string path, string title, bool allowCancel)
 		{

@@ -6,11 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Input;
 
 namespace ModManagerWPF
 {
     class Util
-    {
+	{
+		private static double multiplier;
+
 		public static void MoveFile(string origin, string dest)
 		{
 			try
@@ -38,6 +41,16 @@ namespace ModManagerWPF
 			}
 
 			return number;
+		}
+
+		public static void SetTaskCount(int count, double max)
+		{
+			multiplier = max / (double)count;
+		}
+
+		public static double SetProgress(double value)
+		{
+			return (int)(value * 100);
 		}
 
 
