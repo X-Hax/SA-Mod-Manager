@@ -32,7 +32,7 @@
 				<ListView.View>
 					<GridView>
 						<GridView.Columns>
-							<GridViewColumn x:Name="COLUMN_Name" Header="{DynamicResource ModsListName}" Width="350">
+							<GridViewColumn x:Name="COLUMN_Name" Header="{DynamicResource CommonStrings.Name}" Width="350">
 								<GridViewColumn.CellTemplate>
 									<DataTemplate>
 										<StackPanel Orientation="Horizontal">
@@ -64,8 +64,8 @@
 				<ColumnDefinition Width="5"/>
 				<ColumnDefinition Width="100"/>
 			</Grid.ColumnDefinitions>
-			<Button Content="{DynamicResource BtnOK}" Grid.Column="0"/>
-			<Button Content="{DynamicResource BtnCancel}" Grid.Column="2"/>
+			<Button Content="{DynamicResource CommonStrings.OK}" Grid.Column="0"/>
+			<Button Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="2"/>
 		</Grid>
     </Grid>
 </Window>

@@ -49,7 +49,7 @@ namespace ModManagerWPF.Common
 		public EditProfile(string item, char index)
 		{
 			InitializeComponent();
-			Title = Lang.GetString("TitleRenameModProfile");
+			Title = Lang.GetString("ManagerProfile.Buttons.Rename");
 			Header.Text = Title;
 			ProfileNameTextbox.Text = item;
 			ProfileNameTextbox.Focusable = true;
@@ -66,7 +66,7 @@ namespace ModManagerWPF.Common
 		public EditProfile()
 		{
 			InitializeComponent();
-			Title = Lang.GetString("TitleCreateModProfile");
+			Title = Lang.GetString("ManagerProfile.Buttons.Create");
 			Header.Text = Title;
 			ProfileNameTextbox.Focusable = true;
 			Keyboard.Focus(ProfileNameTextbox);
@@ -85,7 +85,7 @@ namespace ModManagerWPF.Common
 
 				if (File.Exists(fullPath)) 
 				{
-					new MessageWindow(Lang.GetString("ProfileDuplicateErrorTitle"), Lang.GetString("ProfileDuplicateError"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();		
+					new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();		
 					return;
 				}
 

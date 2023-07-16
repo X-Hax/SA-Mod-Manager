@@ -29,14 +29,14 @@
 		</Grid.RowDefinitions>
 
 		<Grid Margin="5,5,5,5">
-			<TextBlock Text="{StaticResource NewModDescp}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+			<TextBlock Text="{StaticResource EditMod.Description}" VerticalAlignment="Center" HorizontalAlignment="Center" />
 		</Grid>
 
 		<!--Tab Container for the Mod New / Edit elements.-->
 		<Border Margin="5,5,5,5" Grid.Row="1" BorderBrush="{DynamicResource Borders.Brushes.Border}" BorderThickness="2" CornerRadius="2">
 			<TabControl x:Name="tcEdit" Background="Transparent" Grid.Row="1" Margin="2">
 				<!--This Tab is for Properties.-->
-				<TabItem x:Name="tabProperties" Header="{StaticResource PropertiesTab}" Margin="0,0,0,0">
+				<TabItem x:Name="tabProperties" Header="{StaticResource EditMod.Tabs.Info}" Margin="0,0,0,0">
                     <Grid x:Name="GridModInfo" HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -63,16 +63,16 @@
 								<RowDefinition Height="30"/>
 							</Grid.RowDefinitions>
 
-                            <Label x:Name="modName" Content="{DynamicResource ModsListName}" Grid.Row="0" VerticalAlignment="Center"/>
-                            <Label x:Name="modAuthor" Content="{DynamicResource ModsListAuthor}" Grid.Row="1" VerticalAlignment="Center"/>
-                            <Label x:Name="modDescription" Content="{DynamicResource ModSelectTextDesc}" Grid.Row="2" VerticalAlignment="Center"/>
-                            <Label x:Name="modVersion" Content="{DynamicResource ModsListVersion}" Grid.Row="3" VerticalAlignment="Center"/>
-                            <Label x:Name="modDLL" Content="{DynamicResource EDLL}" Grid.Row="4" VerticalAlignment="Center"/>
-                            <Label x:Name="modCategory" Content="{DynamicResource ModsListCategory}" Grid.Row="5" VerticalAlignment="Center"/>
-                            <Label x:Name="modID" Content="{DynamicResource EModID}" Grid.Row="6" VerticalAlignment="Center"/>
-                            <Label x:Name="modAuthorURL" Content="{DynamicResource EAuthorURL}" Grid.Row="7" VerticalAlignment="Center"/>
-                            <Label x:Name="modSourceURL" Content="{DynamicResource ESourceCodeURL}" Grid.Row="8" VerticalAlignment="Center"/>
-							<Label x:Name="modSaveRedirect" Content="{DynamicResource ESaveRedirect}" Grid.Row="9" VerticalAlignment="Center"/>
+                            <Label x:Name="modName" Content="{DynamicResource CommonStrings.Name}" Grid.Row="0" VerticalAlignment="Center"/>
+                            <Label x:Name="modAuthor" Content="{DynamicResource CommonStrings.Author}" Grid.Row="1" VerticalAlignment="Center"/>
+                            <Label x:Name="modDescription" Content="{DynamicResource CommonStrings.Description}" Grid.Row="2" VerticalAlignment="Center"/>
+                            <Label x:Name="modVersion" Content="{DynamicResource CommonStrings.Version}" Grid.Row="3" VerticalAlignment="Center"/>
+                            <Label x:Name="modDLL" Content="{DynamicResource EditMod.Tabs.Info.DLL}" Grid.Row="4" VerticalAlignment="Center"/>
+                            <Label x:Name="modCategory" Content="{DynamicResource CommonStrings.Category}" Grid.Row="5" VerticalAlignment="Center"/>
+                            <Label x:Name="modID" Content="{DynamicResource EditMod.Tabs.Info.ModID}" Grid.Row="6" VerticalAlignment="Center"/>
+                            <Label x:Name="modAuthorURL" Content="{DynamicResource EditMod.Tabs.Info.AuthorURL}" Grid.Row="7" VerticalAlignment="Center"/>
+                            <Label x:Name="modSourceURL" Content="{DynamicResource EditMod.Tabs.Info.Source}" Grid.Row="8" VerticalAlignment="Center"/>
+							<Label x:Name="modSaveRedirect" Content="{DynamicResource EditMod.Tabs.Info.SaveRedirect}" Grid.Row="9" VerticalAlignment="Center"/>
 						</Grid>
 
                         <Grid Grid.Column="2" Grid.Row="0" Margin="0,0,10,0">
@@ -99,15 +99,15 @@
                             <TextBox x:Name="authorURLBox"  Grid.Row="7" VerticalAlignment="Center" Height="22"/>
                             <TextBox x:Name="sourceURLBox" Grid.Row="8" VerticalAlignment="Center" Height="22"/>
 
-                            <CheckBox x:Name="mainSaveBox" Content="{DynamicResource SaveRedirectMainTxt}" Grid.Row="9" VerticalAlignment="Center"></CheckBox>
-                            <CheckBox x:Name="chaoSaveBox" Content="{DynamicResource SaveRedirectChaoTxt}" Grid.Row="10" VerticalAlignment="Center"></CheckBox>
+                            <CheckBox x:Name="mainSaveBox" Content="{DynamicResource EditMod.Tabs.Info.Check.RedirectMainSave}" Grid.Row="9" VerticalAlignment="Center"></CheckBox>
+                            <CheckBox x:Name="chaoSaveBox" Content="{DynamicResource EditMod.Tabs.Info.Check.RedirectChaoSave}" Grid.Row="10" VerticalAlignment="Center"></CheckBox>
 
                         </Grid>
                     </Grid>
                 </TabItem>
 
 				<!--This Tab is for Updates.-->
-				<TabItem x:Name="tabUpdates" Header="{StaticResource UpdateTab}" Width="Auto" Margin="0,0,0,0" TextBlock.TextAlignment="Center">
+				<TabItem x:Name="tabUpdates" Header="{StaticResource EditMod.Tabs.Updates}" Width="Auto" Margin="0,0,0,0" TextBlock.TextAlignment="Center">
 					<Grid x:Name="GridModUpdate">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="5"/>
@@ -128,7 +128,7 @@
 							</Grid.RowDefinitions>
 
 							<!--GroupBox for Update Selection-->
-							<GroupBox Header="{DynamicResource UpdatesMethod}">
+							<GroupBox Header="{DynamicResource EditMod.Tabs.Updates.Method}">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>
@@ -138,12 +138,12 @@
 
 									<RadioButton x:Name="radGithub" Content="GitHub" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radGithub_Checked"/>
 									<RadioButton x:Name="radGamebanana" Content="GameBanana" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radGamebanana_Checked"/>
-									<RadioButton x:Name="radSelf" Content="{DynamicResource UpdatesMethodSelf}" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radSelf_Checked"/>
+									<RadioButton x:Name="radSelf" Content="{DynamicResource EditMod.Tabs.Updates.SelfHosted}" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radSelf_Checked"/>
 								</Grid>
 							</GroupBox>
 
 							<!--GroupBox for GitHub Updates-->
-							<GroupBox x:Name="grpGithubUpdate" Header="{DynamicResource UpdatesGithub}" Grid.Row="1">
+							<GroupBox x:Name="grpGithubUpdate" Header="{DynamicResource EditMod.Tabs.Updates.GitHub}" Grid.Row="1">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
@@ -155,15 +155,15 @@
 										<RowDefinition Height="30"/>
 									</Grid.RowDefinitions>
 
-									<Label Content="{DynamicResource UpdatesGithubAuthor}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-									<Label Content="{DynamicResource UpdatesGithubAsset}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+									<Label Content="{DynamicResource EditMod.Tabs.Updates.GitHub.Author}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+									<Label Content="{DynamicResource EditMod.Tabs.Updates.GitHub.Asset}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
 									<TextBox x:Name="boxGitURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 									<TextBox x:Name="boxGitAsset" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 								</Grid>
 							</GroupBox>
 
 							<!--GroupBox for GameBanana Updates-->
-							<GroupBox x:Name="grpGamebananaUpdate" Header="{DynamicResource UpdatesGamebanana}" Grid.Row="2">
+							<GroupBox x:Name="grpGamebananaUpdate" Header="{DynamicResource EditMod.Tabs.Updates.GB}" Grid.Row="2">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
@@ -175,13 +175,13 @@
 										<RowDefinition Height="30"/>
 									</Grid.RowDefinitions>
 
-									<Label Content="{DynamicResource UpdatesGamebananaID}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+									<Label Content="{DynamicResource EditMod.Tabs.Updates.GB.ModID}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
 									<TextBox x:Name="boxGBURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 								</Grid>
 							</GroupBox>
 
 							<!--GroupBox for Self-Hosted Updates-->
-							<GroupBox x:Name="grpSelfUpdate" Header="{DynamicResource UpdatesSelf}" Grid.Row="3">
+							<GroupBox x:Name="grpSelfUpdate" Header="{DynamicResource EditMod.Tabs.Updates.Self}" Grid.Row="3">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
@@ -193,8 +193,8 @@
 										<RowDefinition Height="30"/>
 									</Grid.RowDefinitions>
 
-									<Label Content="{DynamicResource UpdatesSelfUpdate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-									<Label Content="{DynamicResource UpdatesSelfChangelog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+									<Label Content="{DynamicResource EditMod.Tabs.Updates.Self.URL}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+									<Label Content="{DynamicResource EditMod.Tabs.Updates.Self.Changelog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
 									<TextBox x:Name="boxSelfURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 									<TextBox x:Name="boxChangeURL" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
 								</Grid>
@@ -203,7 +203,7 @@
 					</Grid>
 				</TabItem>
 
-                <TabItem x:Name="tabDepdencies" Header="{DynamicResource DepdenciesTab}">
+                <TabItem x:Name="tabDepdencies" Header="{DynamicResource EditMod.Tabs.Dependencies}">
 					<Grid>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
@@ -214,17 +214,17 @@
 							<RowDefinition Height="40"/>
 						</Grid.RowDefinitions>
 
-						<TextBlock Text="{DynamicResource DependencyWarning}" TextWrapping="Wrap" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" TextBlock.TextAlignment="Center"/>
+						<TextBlock Text="{DynamicResource EditMod.Tabs.Dependencies.Warning}" TextWrapping="Wrap" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" TextBlock.TextAlignment="Center"/>
 
 						<Border Grid.Row="1" Margin="5,5,5,5" BorderBrush="{DynamicResource Borders.Brushes.Border}" BorderThickness="2" CornerRadius="10">
 							<Grid>
 								<Border x:Name="BorderMask" Background="White" BorderThickness="1" CornerRadius="8"/>
 								<DataGrid x:Name="DependencyGrid" AutoGenerateColumns="False">
 									<DataGrid.Columns>
-										<DataGridTextColumn Header="{DynamicResource DependencyNameColumn}" Binding="{Binding Name}" Width="Auto"/>
-										<DataGridTextColumn Header="{DynamicResource DependencyIDColumn}" Binding="{Binding ID}" Width="Auto"/>
-										<DataGridTextColumn Header="{DynamicResource DependencyFolderColumn}" Binding="{Binding Folder}" Width="Auto"/>
-										<DataGridTextColumn Header="{DynamicResource DependencyDownloadColumn}" Binding="{Binding Link}" Width="*"/>
+										<DataGridTextColumn Header="{DynamicResource CommonStrings.Name}" Binding="{Binding Name}" Width="Auto"/>
+										<DataGridTextColumn Header="{DynamicResource EditMod.Tabs.Dependencies.Grid.ID}" Binding="{Binding ID}" Width="Auto"/>
+										<DataGridTextColumn Header="{DynamicResource EditMod.Tabs.Dependencies.Grid.Folder}" Binding="{Binding Folder}" Width="Auto"/>
+										<DataGridTextColumn Header="{DynamicResource EditMod.Tabs.Dependencies.Grid.Column}" Binding="{Binding Link}" Width="*"/>
 									</DataGrid.Columns>
 									<DataGrid.OpacityMask>
 										<VisualBrush Visual="{Binding ElementName=BorderMask}"/>
@@ -239,8 +239,8 @@
 								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
 
-							<Button x:Name="btnAddDependency" Content="{DynamicResource DependencyAdd}" Grid.Column="0" Margin="5,5,5,5" Click="btnAddDependency_Click"/>
-							<Button x:Name="btnRemDependency" Content="{DynamicResource DependencyRemove}" Grid.Column="1" Margin="5,5,5,5" Click="btnRemDependency_Click"/>
+							<Button x:Name="btnAddDependency" Content="{DynamicResource EditMod.Tabs.Dependencies.Buttons.Add}" Grid.Column="0" Margin="5,5,5,5" Click="btnAddDependency_Click"/>
+							<Button x:Name="btnRemDependency" Content="{DynamicResource EditMod.Tabs.Dependencies.Buttons.Remove}" Grid.Column="1" Margin="5,5,5,5" Click="btnRemDependency_Click"/>
 						</Grid>
 					</Grid>
 				</TabItem>
@@ -470,8 +470,8 @@
 				<ColumnDefinition Width="10"/>
 				<ColumnDefinition Width="Auto"/>
 			</Grid.ColumnDefinitions>
-            <CheckBox x:Name="openFolderChk" Content="{DynamicResource OpenFolder}" Grid.Column="1" VerticalAlignment="Center" IsChecked="True"></CheckBox>
-			<CheckBox x:Name="checkAdvancedOptions" Content="{DynamicResource SpawnAdvanced}" Grid.Column="3" VerticalAlignment="Center" Click="checkAdvancedOptions_Click"/>
+            <CheckBox x:Name="openFolderChk" Content="{DynamicResource CommonStrings.OpenFolder}" Grid.Column="1" VerticalAlignment="Center" IsChecked="True"></CheckBox>
+			<CheckBox x:Name="checkAdvancedOptions" Content="{DynamicResource Manager.Tabs.TestSpawn.Group.Advanced}" Grid.Column="3" VerticalAlignment="Center" Click="checkAdvancedOptions_Click"/>
 		</Grid>
 
 		<Grid Grid.Row="2" HorizontalAlignment="Right">
@@ -486,8 +486,8 @@
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="10"/>
 			</Grid.RowDefinitions>
-			<Button x:Name="okBtn" Content="{DynamicResource BtnOK}" Grid.Column="0" Grid.Row="1" Height="30" Click="okBtn_Click"/>
-			<Button x:Name="cancelBtn" Content="{DynamicResource BtnCancel}" Grid.Column="2" Grid.Row="1" Height="30" Click="cancelBtn_Click"/>
+			<Button x:Name="okBtn" Content="{DynamicResource CommonStrings.OK}" Grid.Column="0" Grid.Row="1" Height="30" Click="okBtn_Click"/>
+			<Button x:Name="cancelBtn" Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="2" Grid.Row="1" Height="30" Click="cancelBtn_Click"/>
 
 		</Grid>
 	</Grid>

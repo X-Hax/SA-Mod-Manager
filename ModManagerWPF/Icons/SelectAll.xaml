@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	<DrawingImage x:Key="IconSelectAll">
+	<DrawingImage x:Key="Icon.SelectAll">
 		<DrawingImage.Drawing>
 			<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
 				<DrawingGroup Transform="1,0,0,1,0.01698924,0.10565753">

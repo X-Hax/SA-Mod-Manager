@@ -42,7 +42,7 @@ namespace ModManagerWPF.Common
 
 			this.reset = reset;
 			pathXML = path;
-			Title = Lang.GetString("TitleConfigureMod") + " " + modName;
+			Title = Lang.GetString("ModConfig.Title") + " " + modName;
 			settings = new ConfigSettings(pathXML);
 			DelayResetBtn(reset);
 			var panel = FormBuilder.ConfigBuild(ref settings);

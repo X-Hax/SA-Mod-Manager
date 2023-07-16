@@ -148,7 +148,7 @@ namespace ModManagerWPF.Updater
 				if (Directory.Exists(dir))
 				{
 					// Note that this is very intentionally not recursive. If there are
-					// any files left over somehow, this SHOULD be considered an error,
+					// any files left over somehow, this SHOULD be considered an Error,
 					// as the goal is to exclusively remove empty directories.
 					// - SF94
 					Directory.Delete(dir);

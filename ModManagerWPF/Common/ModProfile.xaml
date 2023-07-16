@@ -37,7 +37,7 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="{StaticResource ModsListName}" Width="300">
+                    <GridViewColumn Header="{StaticResource CommonStrings.Name}" Width="300">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -46,22 +46,22 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="{StaticResource PathModProfile}" Width="300" DisplayMemberBinding="{Binding iniPath }"/>
+                    <GridViewColumn Header="{StaticResource ManagerProfile.Path}" Width="300" DisplayMemberBinding="{Binding iniPath }"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-					<MenuItem x:Name="ProfileRename" Header="{StaticResource ProRename}" Click="ProfileRename_Click"  InputGestureText="(F2)">
+					<MenuItem x:Name="ProfileRename" Header="{StaticResource ManagerProfile.ContextMenu.Rename}" Click="ProfileRename_Click"  InputGestureText="(F2)">
 						<MenuItem.Icon>
 							<Image Source="{StaticResource IconRename}"/>
 						</MenuItem.Icon>
 					</MenuItem>
-					<MenuItem x:Name="ProfileClone" Header="{StaticResource ProClone}" Click="ProfileClone_Click" InputGestureText="(CTRL + D)">
+					<MenuItem x:Name="ProfileClone" Header="{StaticResource ManagerProfile.ContextMenu.Duplicate}" Click="ProfileClone_Click" InputGestureText="(CTRL + D)">
 						<MenuItem.Icon>
 							<Image Source="{StaticResource IconDuplicate}"/>
 						</MenuItem.Icon>
 					</MenuItem>
-					<MenuItem x:Name="ProfileDelete" Header="{StaticResource ProDelete}" Click="ProfileDelete_Click" InputGestureText="(Del)">
+					<MenuItem x:Name="ProfileDelete" Header="{StaticResource ManagerProfile.ContextMenu.Delete}" Click="ProfileDelete_Click" InputGestureText="(Del)">
 						<MenuItem.Icon>
 							<Image Source="{StaticResource IconDelete}"/>
 						</MenuItem.Icon>
@@ -71,10 +71,10 @@
             </ListView.ContextMenu>
         </ListView>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="-4" Grid.Row="2" Grid.Column="0">
-            <Button Content="{StaticResource BtnCreate}" Margin="8,8,0,8" VerticalAlignment="Center" Width="117" Height="22" Click="UI_Add_Click" />
+            <Button Content="{StaticResource CommonStrings.Create}" Margin="8,8,0,8" VerticalAlignment="Center" Width="117" Height="22" Click="UI_Add_Click" />
         </StackPanel>
 		<StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Grid.Row="2" Grid.Column="1">
-			<Button Content="{StaticResource BtnOK}" Margin="8,0,0,0" VerticalAlignment="Center" Width="75" Height="23" Click="UI_OK_Click" IsCancel="True"/>
+			<Button Content="{StaticResource CommonStrings.OK}" Margin="8,0,0,0" VerticalAlignment="Center" Width="75" Height="23" Click="UI_OK_Click" IsCancel="True"/>
         </StackPanel>
 
     </Grid>

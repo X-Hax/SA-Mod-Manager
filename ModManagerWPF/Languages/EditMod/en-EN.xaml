@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<system:String x:Key="EditMod.Description">Please fill in the information about your mod.</system:String>
+	<system:String x:Key="EditMod.Header.EditMod">Edit</system:String>
+	<system:String x:Key="EditMod.Header.NewMod">New Mod</system:String>
+
+	<system:String x:Key="EditMod.Tabs.Info">Mod Info</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.AuthorURL">Author URL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.ModID">Mod ID:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.DLL">DLL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Source">Source Code URL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Save Redirect:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Main Save</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Chao Save</system:String>
+
+	<system:String x:Key="EditMod.Tabs.Updates">Update Info</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Method">Update Method</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub">Github Update Settings</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Author and Repo:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Release Asset:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GB">Gamebanana Update Settings</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">Mod ID:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self">Self Hosted Update Settings</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">Update URL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">Changelog URL:</system:String>
+
+	<system:String x:Key="EditMod.Tabs.Dependencies">Dependencies</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Warning">The Dependency system is only to be used when you have created a mod that absolutely relies on another mod to function properly.</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Add">Add Dependencies</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Remove">Remove Dependencies</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.ID">ID</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Folder">Folder</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Column">Download Link</system:String>
+</ResourceDictionary>

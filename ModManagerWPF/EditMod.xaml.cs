@@ -65,7 +65,7 @@ namespace ModManagerWPF
 			if (editMod)
 			{
 				Mod = mod;
-				Title = Lang.GetString("EditModTitle") + " " + mod.Name;
+				Title = Lang.GetString("EditMod.Header.EditMod") + " " + mod.Name;
 
 				//get and assign mod Information
 				nameBox.Text = mod.Name;
@@ -89,7 +89,7 @@ namespace ModManagerWPF
 			}
 			else
 			{
-				Title = Lang.GetString("NewModTitle");
+				Title = Lang.GetString("EditMod.Header.NewMod");
 				authorBox.Text = Settings.Default.ModAuthor;
 				versionBox.Text = "0.1";
 			}
@@ -125,7 +125,7 @@ namespace ModManagerWPF
 
 			if (nameBox.Text.Length <= 0)
 			{
-				new MessageWindow(Lang.GetString("ErrorNoNameSetTitle"), Lang.GetString("ErrorNoNameSet"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.NoModName.Title"), Lang.GetString("MessageWindow.Errors.NoModName"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
@@ -421,7 +421,7 @@ namespace ModManagerWPF
 			{
 				if (Directory.Exists(moddir))
 				{
-					new MessageWindow(Lang.GetString("ErrorModDuplicateTitle"), Lang.GetString("ErrorModDuplicate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+					new MessageWindow(Lang.GetString("MessageWindow.Errors.ModAlreadyExists.Title"), Lang.GetString("MessageWindow.Errors.ModAlreadyExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 					return;
 				}
 
@@ -462,9 +462,9 @@ namespace ModManagerWPF
 
 				Close();
 			}
-			catch (Exception error)
+			catch (Exception Error)
 			{
-				new MessageWindow(Lang.GetString("ErrorModCreation"), error.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.ModCreationFailed.Title"), Error.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 			}
 
 		}
@@ -522,10 +522,10 @@ namespace ModManagerWPF
 			{
 				if (saveDirExist)
 				{
-					//if user unchecked save redirect and the mod has existing save files, throw warning
+					//if user unchecked save redirect and the mod has existing save files, throw Warning
 					if (Directory.GetFiles(fullSavepath, "*.snc").Length > 0)
 					{
-						var dialogue = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("WarningDelSaveRedir"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+						var dialogue = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DisableSaveRedirect"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 						dialogue.ShowDialog();
 						if (dialogue.isYes != true)
 						{

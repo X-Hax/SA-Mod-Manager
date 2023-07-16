@@ -30,7 +30,7 @@
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
 					<StackPanel VerticalAlignment="Bottom">
-                        <TextBlock x:Name="TextModName" Text="{StaticResource ModsListName}" FontSize="24" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="TextModName" Text="{StaticResource CommonStrings.Name}" FontSize="24" TextWrapping="Wrap"/>
 						<Separator/>
 					</StackPanel>
 					<wpf:HtmlPanel x:Name="TextModDescription"  Grid.Row="1" Background="Transparent" Foreground="White"/>
@@ -47,7 +47,7 @@
 					</Grid.RowDefinitions>
 
 					<StackPanel VerticalAlignment="Bottom" Grid.Row="0" Orientation="Vertical">
-                        <TextBlock x:Name="TextModAuthor" Text="{StaticResource DLCredits}" FontSize="24" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="TextModAuthor" Text="{StaticResource CommonStrings.Credits}" FontSize="24" TextWrapping="Wrap"/>
 						<Separator/>
                         <ScrollViewer Grid.Row="1" Margin="10,0, 5, 40">
                             <StackPanel x:Name="CreditsPanel" Orientation="Vertical"/>
@@ -69,9 +69,9 @@
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>
 			</Grid.RowDefinitions>
-            <Button x:Name="ButtonDownload" Content="{StaticResource DLDownload}" Grid.Column="0" Margin="5,5,5,5" Click="ButtonDownload_Click"/>
+            <Button x:Name="ButtonDownload" Content="{StaticResource CommonStrings.Download}" Grid.Column="0" Margin="5,5,5,5" Click="ButtonDownload_Click"/>
 			<Button x:Name="OpenGB" Content="Open on Gamebanana" Grid.Column="2" Margin="5,5,5,5" Click="OpenGB_Click"/>
-			<Button x:Name="ButtonCancel" Content="{DynamicResource BtnCancel}" Grid.Column="4" Margin="5,5,5,5" Click="ButtonCancel_Click" IsCancel="True"/>
+			<Button x:Name="ButtonCancel" Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="4" Margin="5,5,5,5" Click="ButtonCancel_Click" IsCancel="True"/>
 		</Grid>
 	</Grid>
 </Window>

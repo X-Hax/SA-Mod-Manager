@@ -18,8 +18,8 @@
         <TextBlock x:Name="Header" FontSize="30" Foreground="{DynamicResource Button.Brushes.Foreground}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <StackPanel x:Name="CheckStack" Grid.Row="1" VerticalAlignment="Center" Margin="20,0,5,0" Width="Auto" Height="Auto"/>
         <StackPanel x:Name="Stack" Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Stretch">
-            <Button Width="80" Height="25" Margin="5" Content="{StaticResource BtnOK}" Click="OK_Click" IsDefault="True"/>
-            <Button Width="80" Height="25" Margin="5" Content="{StaticResource BtnCancel}" IsCancel="True" Click="ButtonCancel_Click"/>
+            <Button Width="80" Height="25" Margin="5" Content="{StaticResource CommonStrings.OK}" Click="OK_Click" IsDefault="True"/>
+            <Button Width="80" Height="25" Margin="5" Content="{StaticResource CommonStrings.Cancel}" IsCancel="True" Click="ButtonCancel_Click"/>
         </StackPanel>
     </Grid>
 </Window>

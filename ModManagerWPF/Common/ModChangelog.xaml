@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ModManagerWPF.Common"
 		xmlns:wpf="clr-namespace:ModManagerWPF"
         mc:Ignorable="d" Style="{StaticResource SAWindow}"
-        Title="{DynamicResource ModChangelogTitle}" Height="450" Width="800"
+        Title="{DynamicResource ModChangelog.Title}" Height="450" Width="800"
         Loaded="Window_Loaded">
 
     <Window.Resources>
@@ -57,14 +57,14 @@
 				<Border BorderBrush="{DynamicResource Borders.Brushes.Border}"
 						CornerRadius="{DynamicResource ListView.CornerRadius}" BorderThickness="1">
 					<TabControl>
-						<TabItem Header="{DynamicResource ModChangelogTabUpdateNotes}">
+						<TabItem Header="{DynamicResource ModChangelog.Tabs.Notes}">
 							<Grid x:Name="UpdateNotes" Margin="3">
                                 <TextBlock x:Name="textChangeLog"></TextBlock>
 							</Grid>
 						</TabItem>
-						<TabItem Header="{DynamicResource ModChangelogTabUpdateDetails}">
+						<TabItem Header="{DynamicResource ModChangelog.Tabs.Details}">
 							<Grid Margin="3">
-								<GroupBox Header="{DynamicResource ModChangelogTabUpdateDetails.DownloadDetails}" Margin="5,0,5,5">
+								<GroupBox Header="{DynamicResource ModChangelog.Tabs.Details.DownloadDetails}" Margin="5,0,5,5">
 									<Grid x:Name="UpdateDetails">
 										<Grid.RowDefinitions>
 											<RowDefinition Height="Auto" MinHeight="30"/>
@@ -79,14 +79,14 @@
 											<ColumnDefinition Width="*"/>
 										</Grid.ColumnDefinitions>
 
-										<Label Content="{DynamicResource ModChangelogTabUpdateDetails.PublishedDate}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-										<Label Content="{DynamicResource ModChangelogTabUpdateDetails.FileSize}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-										<Label Content="{DynamicResource ModChangelogTabUpdateDetails.FileCount}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-										<Label Content="{DynamicResource ModChangelogTabUpdateDetails.UpdateName}" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-										<Label Content="{DynamicResource ModChangelogTabUpdateDetails.Tag}" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+										<Label Content="{DynamicResource ModChangelog.Tabs.Details.PublishedDate}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+										<Label Content="{DynamicResource ModChangelog.Tabs.Details.FileSize}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+										<Label Content="{DynamicResource ModChangelog.Tabs.Details.FileCount}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+										<Label Content="{DynamicResource ModChangelog.Tabs.Details.UpdateName}" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+										<Label Content="{DynamicResource ModChangelog.Tabs.Details.Tag}" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
 										<wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="BtnOpenUpdate" 
 														 Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
-														 Content="{DynamicResource ModChangelogTabUpdateDetails.OpenBrowser}"
+														 Content="{DynamicResource ModChangelog.Tabs.Details.Buttons.OpenBrowser}"
 														 Icon="{StaticResource Icons.Open}"/>
 
 										<TextBlock x:Name="PublishedDate" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
@@ -98,20 +98,20 @@
 								</GroupBox>
 							</Grid>
 						</TabItem>
-                        <TabItem x:Name="tabPageFiles" Header="{DynamicResource ModChangelogTabFileChanges}">
+                        <TabItem x:Name="tabPageFiles" Header="{DynamicResource ModChangelog.Tabs.Files}">
 							<Grid x:Name="UpdateFiles" Margin="3">
 								<ListView x:Name="FilesList" Margin="5">
 									<ListView.View>
 										<GridView>
 											<GridView.Columns>
-												<GridViewColumn Header="{DynamicResource ModChangelogTabFileChanges.Filename}" Width="350" >
+												<GridViewColumn Header="{DynamicResource ModChangelog.Tabs.Files.Filename}" Width="350" >
 													<GridViewColumn.CellTemplate>
 														<DataTemplate>
 															<TextBlock/>
 														</DataTemplate>
 													</GridViewColumn.CellTemplate>
 												</GridViewColumn>
-												<GridViewColumn Header="{DynamicResource ModChangelogTabFileChanges.Status}" Width="150">
+												<GridViewColumn Header="{DynamicResource ModChangelog.Tabs.Files.Status}" Width="150">
 													<GridViewColumn.CellTemplate>
 														<DataTemplate>
 															<TextBlock/>
@@ -136,11 +136,11 @@
 			</Grid.ColumnDefinitions>
 			<wpf:ImageButton x:Name="btnInstallNow" Style="{StaticResource ImageTextButtonStyle}" Margin="5"
 							 Icon="{StaticResource Icons.Download}" Padding="5"
-							 Content="{DynamicResource ModChangelog.DownloadNow}" Click="ImageButton_Click"/>
+							 Content="{DynamicResource ModChangelog.Buttons.DownloadNow}" Click="ImageButton_Click"/>
 			<wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" 
 							 Margin="5" Grid.Column="1"
 							 Icon="{StaticResource Icons.Update}" Padding="5"
-							 Content="{DynamicResource ModChangelog.DownloadLater}" Click="ImageButton_Click_1" IsCancel="True"/>
+							 Content="{DynamicResource ModChangelog.Buttons.DownloadLater}" Click="ImageButton_Click_1" IsCancel="True"/>
 		</Grid>
 	</Grid>
 </Window>

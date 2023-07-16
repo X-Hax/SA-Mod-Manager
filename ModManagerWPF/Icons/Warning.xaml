@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	<DrawingImage x:Key="IconWarning">
+	<DrawingImage x:Key="Icon.Warning">
 		<DrawingImage.Drawing>
 			<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
 				<GeometryDrawing Geometry="F1 M24,24z M0,0z M15,9.00004L9,15 M15,15L9,9.00004 M12,21C16.9706,21 21,16.9706 21,12 21,7.02944 16.9706,3 12,3 7.02944,3 3,7.02944 3,12 3,16.9706 7.02944,21 12,21z">

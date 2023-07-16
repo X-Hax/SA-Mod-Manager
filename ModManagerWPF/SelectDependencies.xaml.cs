@@ -168,14 +168,14 @@ namespace ModManagerWPF
 			}
 		}
 
-		private void btnOK_Click(object sender, RoutedEventArgs e)
+		private void OK_Click(object sender, RoutedEventArgs e)
 		{
 			GenerateDependencies();
 			NeedRefresh = true;
 			this.Close();
 		}
 
-		private void btnCancel_Click(object sender, RoutedEventArgs e)
+		private void Cancel_Click(object sender, RoutedEventArgs e)
 		{
 			this.Close();
 		}

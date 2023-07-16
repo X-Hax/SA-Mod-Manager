@@ -79,12 +79,12 @@ namespace ModManagerWPF.Common
 		/// Constructs a MessageWindow using preset Icons.
 		/// </summary>
 		/// <param name="windowName"></param>
-		/// <param name="errorText"></param>
+		/// <param name="ErrorText"></param>
 		/// <param name="icon"></param>
 		/// <param name="button"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
-		public MessageWindow(string windowName, string errorText, WindowType type=WindowType.IconMessage, Icons icon=Icons.Caution, Buttons button=Buttons.OK, double width=40, double height=40, string headerText="")
+		public MessageWindow(string windowName, string ErrorText, WindowType type=WindowType.IconMessage, Icons icon=Icons.Caution, Buttons button=Buttons.OK, double width=40, double height=40, string headerText="")
 		{
 			InitializeComponent();
 
@@ -94,14 +94,14 @@ namespace ModManagerWPF.Common
 			image.Width = width;
 			image.Height = height;
 
-			InitializeMessageWindow(windowName, errorText, headerText, image, button, type);
+			InitializeMessageWindow(windowName, ErrorText, headerText, image, button, type);
 		}
 
 		/// <summary>
 		/// Constructs a MessageWindow with a custom image.
 		/// </summary>
 		/// <param name="windowName"></param>
-		/// <param name="errorText"></param>
+		/// <param name="ErrorText"></param>
 		/// <param name="image"></param>
 		/// <param name="button"></param>
 		/// <param name="width"></param>
@@ -172,13 +172,13 @@ namespace ModManagerWPF.Common
 			switch (icon)
 			{
 				case Icons.Warning:
-					return (DrawingImage)TryFindResource("IconWarning");
+					return (DrawingImage)TryFindResource("Icon.Warning");
 				case Icons.Information:
 					return (DrawingImage)TryFindResource("IconInfo");
 				case Icons.Caution:
 					return (DrawingImage)TryFindResource("IconCaution");
 				case Icons.Error:
-					return (DrawingImage)TryFindResource("IconError");
+					return (DrawingImage)TryFindResource("Icon.Error");
 
 			}
 
@@ -191,19 +191,19 @@ namespace ModManagerWPF.Common
 			{
 				case Buttons.OK:
 					ButtonLeft.Visibility = Visibility.Hidden;
-					ButtonRight.Content = Lang.GetString("BtnOK");
+					ButtonRight.Content = Lang.GetString("CommonStrings.OK");
 					break;
 				case Buttons.OKCancel:
-					ButtonLeft.Content = Lang.GetString("BtnOK");
-					ButtonRight.Content = Lang.GetString("BtnCancel");
+					ButtonLeft.Content = Lang.GetString("CommonStrings.OK");
+					ButtonRight.Content = Lang.GetString("CommonStrings.Cancel");
 					break;
 				case Buttons.YesNo:
-					ButtonLeft.Content = Lang.GetString("BtnYes");
-					ButtonRight.Content = Lang.GetString("BtnNo");
+					ButtonLeft.Content = Lang.GetString("CommonStrings.Yes");
+					ButtonRight.Content = Lang.GetString("CommonStrings.No");
 					break;
 				case Buttons.RetryCancel:
-					ButtonLeft.Content = Lang.GetString("BtnRetry");
-					ButtonRight.Content = Lang.GetString("BtnCancel");
+					ButtonLeft.Content = Lang.GetString("CommonStrings.Retry");
+					ButtonRight.Content = Lang.GetString("CommonStrings.Cancel");
 					break;
 			}
 		}

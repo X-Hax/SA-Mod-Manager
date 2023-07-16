@@ -1516,7 +1516,7 @@
 					</Trigger>
 				</Style.Triggers>
 			</Style>
-			<Style x:Key="{ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}"
+			<Style x:Key="{ComponentResourceKey ResourceId=DataGridCommonStrings.SelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}"
 				TargetType="{x:Type Button}">
 				<Setter Property="Background" Value="{DynamicResource DataGridRowHeader.Brushes.Background}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource DataGrid.Brushes.Border}"/>

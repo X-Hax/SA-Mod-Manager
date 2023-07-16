@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF"
         mc:Ignorable="d"
-        Title="{StaticResource ManagerGrpAbout}" Height="480" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="{StaticResource Manager.Tabs.ManagerConfig.Group.About}" Height="480" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         Style="{StaticResource SAWindow}">
     <Grid>
         <Grid.RowDefinitions>
@@ -24,7 +24,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" Grid.ColumnSpan="2">
 
-            <Label Content="{DynamicResource ManagerTextAbout}"/>
+            <Label Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.About.Description}"/>
         </StackPanel>
         <Label Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1"/>
         <Label Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Grid.Row="1"/>

@@ -1,385 +1,52 @@
 ﻿<ResourceDictionary 
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-   xmlns:system="clr-namespace:System;assembly=mscorlib">
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
 
 	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="Tooltips/en-EN.xaml"/>
-        <ResourceDictionary Source="TestSpawn/en-EN.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="AboutMod/en-EN.xaml"/>
+		<ResourceDictionary Source="EditMod/en-EN.xaml"/>
+		<ResourceDictionary Source="InstallModOptions/en-EN.xaml"/>
+		<ResourceDictionary Source="MainWindow/en-EN.xaml"/>
+		<ResourceDictionary Source="MainWindow/Patches/en-EN.xaml"/>
+		<ResourceDictionary Source="MainWindow/TestSpawn/en-EN.xaml"/>
+		<ResourceDictionary Source="ManifestChanges/en-EN.xaml"/>
+		<ResourceDictionary Source="MessageWindow/en-EN.xaml"/>
+		<ResourceDictionary Source="ModChangelog/en-EN.xaml"/>
+		<ResourceDictionary Source="ModConfig/en-EN.xaml"/>
+		<ResourceDictionary Source="ModProfile/en-EN.xaml"/>
+		<ResourceDictionary Source="SelectDependencies/en-EN.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
-    <system:String x:Key="BtnOK">OK</system:String>
-    <system:String x:Key="BtnCancel">Cancel</system:String>
-	<system:String x:Key="BtnYes">Yes</system:String>
-	<system:String x:Key="BtnNo">No</system:String>
-	<system:String x:Key="BtnRetry">Retry</system:String>
-    <system:String x:Key="Warning">Warning</system:String>
-    <system:String x:Key="Error">Error</system:String>
-    <system:String x:Key="BtnReset">Reset</system:String>
-    <system:String x:Key="BtnCreate">Create</system:String>
-	<system:String x:Key="SelectAll">Select All</system:String>
-	<system:String x:Key="DeselectAll">Deselect All</system:String>
-
-    <!--#region Main Window Strings-->
-	<system:String x:Key="MainBtnSave">Save</system:String>
-	<system:String x:Key="MainBtnSaveAndPlay" >Save &amp; Play</system:String>
-	<system:String x:Key="MainTabMods">Mods</system:String>
-	<system:String x:Key="MainTabCodes">Codes</system:String>
-	<system:String x:Key="MainTabGameConfig">Game Config</system:String>
-	<system:String x:Key="MainTabManagerConfig">Manager Config</system:String>
-	<!--#endregion-->
+    <system:String x:Key="CommonStrings.OK">OK</system:String>
+    <system:String x:Key="CommonStrings.Cancel">Cancel</system:String>
+	<system:String x:Key="CommonStrings.Yes">Yes</system:String>
+	<system:String x:Key="CommonStrings.No">No</system:String>
+	<system:String x:Key="CommonStrings.Retry">Retry</system:String>
+	<system:String x:Key="CommonStrings.Warning">Warning</system:String>
+	<system:String x:Key="CommonStrings.Error">Error</system:String>
+    <system:String x:Key="CommonStrings.Reset">Reset</system:String>
+    <system:String x:Key="CommonStrings.Create">Create</system:String>
+	<system:String x:Key="CommonStrings.SelectAll">Select All</system:String>
+	<system:String x:Key="CommonStrings.DeselectAll">Deselect All</system:String>
+	<system:String x:Key="CommonStrings.Name">Name</system:String>
+	<system:String x:Key="CommonStrings.Status">Status</system:String>
+	<system:String x:Key="CommonStrings.Save">Save</system:String>
+	<system:String x:Key="CommonStrings.Author">Author</system:String>
+	<system:String x:Key="CommonStrings.Version">Version</system:String>
+	<system:String x:Key="CommonStrings.Category">Category</system:String>
+	<system:String x:Key="CommonStrings.Description">Description:</system:String>
+	<system:String x:Key="CommonStrings.Search">Search</system:String>
+	<system:String x:Key="CommonStrings.Credits">Credits</system:String>
+	<system:String x:Key="CommonStrings.Download">Download</system:String>
+	<system:String x:Key="CommonStrings.OpenFolder">Open Folder</system:String>
 	
-	<!--#region Mods Tab Strings-->
-	<system:String x:Key="ModsListName">Name</system:String>
-	<system:String x:Key="ModsListAuthor">Author</system:String>
-	<system:String x:Key="ModsListVersion">Version</system:String>
-	<system:String x:Key="ModsListCategory">Category</system:String>
-
-	<system:String x:Key="ModsBtnRefresh">Refresh</system:String>
-	<system:String x:Key="ModsBtnConfigure">Configure Mod</system:String>
-	<system:String x:Key="ModsBtnNew">Add Mod</system:String>
-    <system:String x:Key="ModTextDesc">Description: No Mod Selected.</system:String>    
-    <system:String x:Key="ModSelectTextDesc">Description:</system:String>
-	<system:String x:Key="ModsTextBoxSearch">Search...</system:String>
-
-    <!--Mods Items right click Menu-->
-    <system:String x:Key="ModsUIOpenFolder">Open Folder</system:String>
-    <system:String x:Key="ModsUIChkUpdate">Check For Updates</system:String>
-    <system:String x:Key="ModsUIVerifyIntegrity">Verify Integrity</system:String>
-    <system:String x:Key="ModsUIForceUpdate">Force Update</system:String>
-    <system:String x:Key="ModsUIModConfigure">Configure Mod</system:String>
-    <system:String x:Key="ModsUIModEdit">Edit Mod</system:String>
-    <system:String x:Key="ModsUIModDelete">Delete Mod</system:String>
-    <system:String x:Key="ModsUIDev">Developer</system:String>    
-    <system:String x:Key="ModsUISubDevManifest">Generate Manifest</system:String>
-    
-    <!--Mod About Window-->
-    <system:String x:Key="AuthorSite">Author's Site</system:String>
-    <system:String x:Key="ModSourceCode">Mod Source Code</system:String>
-
-    <!--#endregion-->
-	
-	<!--#region Codes Tab Strings-->
-	<system:String x:Key="CodesBtnAdd">New Code</system:String>
-
-	<!-- Codes UI Strings -->
-	<system:String x:Key="CodesListName">Name</system:String>
-	<system:String x:Key="CodesListCategory">Category</system:String>
-	<system:String x:Key="CodesListInfo"> Double click this code for more information.</system:String>
-	<system:String x:Key="CodesListHint">Select a code for more information.</system:String>
-    <system:String x:Key="Code">Code</system:String>
-
-	<system:String x:Key="CodeAbout">About {0}</system:String>
-	<system:String x:Key="CodeAuthor">Made by</system:String>
-
-
-	<!--#endregion-->
-	
-	<!--#region Game Config Tab Strings-->
-	<!--Game Tabs Strings-->
-	<system:String x:Key="GameTabGraphics">Graphics</system:String>
-	<system:String x:Key="GameTabInput">Input</system:String>
-	<system:String x:Key="GameTabSound">Sound</system:String>
-	<system:String x:Key="GameTabPatches">Patches</system:String>
-	<system:String x:Key="GameTabDebug">Debug</system:String>
-	
-	<!--Graphics Tab Strings-->
-    <system:String x:Key="GameGraphicsGroupDisplay">Display Options</system:String>
-    <system:String x:Key="GameGraphicsLabelScreen">Screen:</system:String>
-    <system:String x:Key="GameGraphicsLabelResolution">Resolution:</system:String>
-    <system:String x:Key="GameGraphicsCheckRatio">Force 4:3 Aspect Ratio</system:String>
-    <system:String x:Key="GameGraphicsCheckVSync">Enable V-Sync</system:String>
-	<system:String x:Key="GameGraphicsCheckPause">Pause When Inactive</system:String>
-	<system:String x:Key="GameGraphicsCheckBuffers">Dynamically Allocate Buffers</system:String>
-    <system:String x:Key="GameGraphicsRadioFullscreen">Fullscreen</system:String>
-    <system:String x:Key="GameGraphicsRadioWindowed">Windowed</system:String>
-
-    <system:String x:Key="GameGraphicsGroupWindow">Window Options</system:String>
-    <system:String x:Key="GameGraphicsCheckResize">Resizable Window</system:String>
-    <system:String x:Key="GameGraphicsCheckAspect">Maintain Aspect Ratio</system:String>
-    <system:String x:Key="GameGraphicsCheckCustomWindow">Custom Window Size:</system:String>
-
-    <system:String x:Key="GameGraphicsGroupFullscreen">Fullscreen Options</system:String>
-    <system:String x:Key="GameGraphicsCheckBorderless">Borderless</system:String>
-    <system:String x:Key="GameGraphicsCheckScale">Scale to Screen</system:String>
-
-    <system:String x:Key="GameGraphicsGroupVisuals">Other Graphics Options</system:String>
-    <system:String x:Key="GameGraphicsLabelFramerate">Framerate:</system:String>
-    <system:String x:Key="GameGraphicsLabelDetail">Detail Level:</system:String>
-    <system:String x:Key="GameGraphicsBoxDetailHigh">High (best)</system:String>
-    <system:String x:Key="GameGraphicsBoxDetailLow">Low</system:String>
-    <system:String x:Key="GameGraphicsBoxDetailLowest">Lowest</system:String>
-    <system:String x:Key="GameGraphicsLabelFog">Fog Emulation:</system:String>
-    <system:String x:Key="GameGraphicsBoxAuto">Auto</system:String>
-    <system:String x:Key="GameGraphicsBoxEmu">Emulation</system:String>
-    <system:String x:Key="GameGraphicsLabelBackground">Background Fill Mode:</system:String>
-    <system:String x:Key="GameGraphicsBoxStretch">Stretch [Default]</system:String>
-    <system:String x:Key="GameGraphicsBoxFit">Fit</system:String>
-    <system:String x:Key="GameGraphicsBoxFill">Fill</system:String>
-    <system:String x:Key="GameGraphicsLabelFMV">FMV Fill Mode:</system:String>
-    <system:String x:Key="GameGraphicsLabelTexture">Texture Filtering:</system:String>
-	<system:String x:Key="GameGraphicsLabelUIFilter">GUI Filtering</system:String>
-
-    <system:String x:Key="GameGraphicsGroupEnhancement">Enhancements</system:String>
-    <system:String x:Key="GameGraphicsCheckMipmap">Force Mipmapping</system:String>
-    <system:String x:Key="GameGraphicsCheckUIScale">Enable UI Scaling</system:String>
-    <system:String x:Key="GameGraphicsCheckD3D8">Enable D3D8to9</system:String>
-    
-    <system:String x:Key="GameGraphicsButtonUpdateD3D8">Update D3D8to9</system:String>
-        
-    <!--Input Tab Strings-->
-	<system:String x:Key="GameInputGroupOptions">Input Options</system:String>
-	<system:String x:Key="GameInputCheckVanilla">Vanilla Input (DInput)</system:String>
-	<system:String x:Key="GameInputCheckSDL2">Better Input (SDL2)</system:String>
-	<system:String x:Key="GameInputGroupVanilla">Vanilla Input Configuration</system:String>
-	<system:String x:Key="GameInputGroupMK">Mouse and Keyboard</system:String>
-	<system:String x:Key="GameInputCheckDragHold">Drag and Hold</system:String>
-	<system:String x:Key="GameInputCheckDragAccel">Drag to Accelerate</system:String>
-	<system:String x:Key="GameInputLabelJump">Jump:</system:String>
-	<system:String x:Key="GameInputLabelAction">Action:</system:String>
-	<system:String x:Key="GameInputLabelCancel">Cancel/Attack:</system:String>
-	<system:String x:Key="GameInputLabelStart">Start/Set:</system:String>
-	<system:String x:Key="GameInputLabelRotateLeft">Rotate Camera Left:</system:String>
-	<system:String x:Key="GameInputLabelRotateRight">Rotate Camera Right:</system:String>
-	<system:String x:Key="GameInputLabelFlute">Flute:</system:String>
-	<system:String x:Key="GameInputGroupSDL2">Better Input Configuration</system:String>
-	<system:String x:Key="GameInputButtonOpenApp">Open AppLauncher</system:String>
-	<system:String x:Key="GameInputButtonGetApp">Get AppLauncher</system:String>
-	<system:String x:Key="GameInputTextSDL2">The Better Input system is an implementation of SDL2 into SADX. It's recommended for playing as it fixes issues with the original DInput system.</system:String>
-	
-	<!--Sound Input Strings-->
-	<system:String x:Key="GameSoundGroupSettings">Sound Settings</system:String>
-	<system:String x:Key="GameSoundGroupVolume">Volume Control</system:String>
-	<system:String x:Key="GameSoundCheckBassMusic">Use BASS for Music</system:String>
-	<system:String x:Key="GameSoundCheckBassSFX">Use BASS for SFX</system:String>
-	<system:String x:Key="GameSoundCheckMusic">Enable Music</system:String>
-	<system:String x:Key="GameSoundCheckSound">Enable Sounds</system:String>
-	<system:String x:Key="GameSoundCheck3DSound">Enable 3D Sound</system:String>
-	<system:String x:Key="GameSoundLabelMusic">Music Volume:</system:String>
-	<system:String x:Key="GameSoundLabelVoice">Voices Volume:</system:String>
-	<system:String x:Key="GameSoundLabelSound">SFX Volume:</system:String>
-	
-    <!--#endregion-->
-	
-	<!--#region Test Spawn Tab Strings-->
-	<system:String x:Key="SpawnCheckCharacter">Character:</system:String>
-	<system:String x:Key="SpawnCheckLevel">Level:</system:String>
-	<system:String x:Key="SpawnLabelTime">Time:</system:String>
-	<system:String x:Key="SpawnLabelAct">Act:</system:String>
-	<system:String x:Key="SpawnCheckManual">Manually Set:</system:String>
-	<system:String x:Key="SpawnCheckPosition">Position:</system:String>
-	<system:String x:Key="SpawnLabelPosX">Pos X:</system:String>
-	<system:String x:Key="SpawnLabelPosY">Pos Y:</system:String>
-	<system:String x:Key="SpawnLabelPosZ">Pos Z:</system:String>
-	<system:String x:Key="SpawnLabelAngle">Angle:</system:String>
-	<system:String x:Key="SpawnCheckEvent">Event:</system:String>
-	<system:String x:Key="SpawnCheckMode">Game Mode:</system:String>
-	<system:String x:Key="SpawnCheckSave">Redirect Save File:</system:String>
-	<system:String x:Key="SpawnLabelWarning">Overriding levels or characters in events may cause a crash.</system:String>
-	<system:String x:Key="SpawnButtonLaunch">Launch Game</system:String>
-	<system:String x:Key="SpawnAdvanced">Advanced Options</system:String>
-	<!--#endregion-->
-	
-	<!--#region Manager Config Tab Strings-->
-	<!--Options-->
-	<system:String x:Key="ManagerGrpOptions">Options</system:String>
-	<system:String x:Key="ManagerLblTheme">Themes:</system:String>
-	<system:String x:Key="ManagerLblLang">Language:</system:String>
-	<system:String x:Key="ManagerLblProfile">Profile:</system:String>
-	<system:String x:Key="ManagerLblGameDir">Game Directory:</system:String>
-	
-	<system:String x:Key="ManagerBtnEnableOneClick">Enable 1-Click Install</system:String>
-	<system:String x:Key="ManagerBtnDisableOneClick">Disable 1-Click Install</system:String>
-
-	<system:String x:Key="ManagerBtnInstallLoader">Install Mod Loader</system:String>
-	<system:String x:Key="ManagerBtnUninstallLoader">Uninstall Mod Loader</system:String>
-
-	<!--Updates-->
-	<system:String x:Key="ManagerGrpUpdates">Updates</system:String>
-	<system:String x:Key="ManagerChkCheckModloader">Check for Mod Loader Updates on Startup</system:String>
-	<system:String x:Key="ManagerChkCheckMods">Check for Mod Updates on Startup</system:String>
-	<system:String x:Key="ManagerBtnCheckNow">Check For Updates</system:String>
-
-	<!--Debug Features-->
-	<system:String x:Key="ManagerGrpAdvanced">Advanced Options</system:String>
-	<system:String x:Key="ManagerCheckKeepOpen">Keep Mod Manager Open after launching game</system:String>
-	<system:String x:Key="ManagerCheckDevOptions">Enable Developer Options</system:String>
-	<system:String x:Key="ManagerCheckConsoleWindow">Enable Console Window</system:String>
-	<system:String x:Key="ManagerCheckPrintDebug">Print Debug in Game Window</system:String>
-	<system:String x:Key="ManagerCheckLogToFile">Log Debug Info to File</system:String>
-	<system:String x:Key="ManagerCheckCrashDumps">Create Crash Dumps</system:String>
-	<system:String x:Key="ManagerButtonHealthCheck">Perform Game Health Check</system:String>
-	
-	<!--About-->
-	<system:String x:Key="ManagerGrpAbout">About</system:String>
-	<system:String x:Key="ManagerTextAbout">The SADX Mod Manager is a program that allows you to easily manage mods in Sonic Adventure DX.</system:String>
-	<system:String x:Key="ManagerBtnCredits">Contributors</system:String>
-	<system:String x:Key="ManagerBtnSource">Source Code</system:String>
-	<system:String x:Key="ManagerBtnReport">Report a Bug (English only)</system:String>
-	<system:String x:Key="ManagerBtnDocs">Open SA Docs (English only)</system:String>
-	<!--#endregion-->
-
-	<!--#region Manager About Window-->
-    
-    <!--#region New / Edit Mod  Window-->
-    <system:String x:Key="NewModDescp">Please fill in the information about your mod.</system:String>
-    <system:String x:Key="EditModTitle">Edit </system:String>
-    <system:String x:Key="NewModTitle">New Mod</system:String>
-    <system:String x:Key="PropertiesTab">Mod Info</system:String>
-    <system:String x:Key="UpdateTab">Update Info</system:String>
-    <system:String x:Key="DepdenciesTab">Dependencies</system:String>
-    <system:String x:Key="EAuthorURL">Author URL:</system:String>    
-    <system:String x:Key="EModID">Mod ID:</system:String>
-    <system:String x:Key="EDLL">DLL:</system:String>
-    <system:String x:Key="ESourceCodeURL">Source Code URL:</system:String>
-    <system:String x:Key="ESaveRedirect">Save Redirect:</system:String>
-    <system:String x:Key="SaveRedirectMainTxt">Main Save</system:String>
-    <system:String x:Key="SaveRedirectChaoTxt">Chao Save</system:String>
-	<system:String x:Key="OpenFolder">Open Folder</system:String>
-	<system:String x:Key="UpdatesMethod">Update Method</system:String>
-	<system:String x:Key="UpdatesMethodSelf">Self Hosted</system:String>
-	<system:String x:Key="UpdatesGithub">Github Update Settings</system:String>
-	<system:String x:Key="UpdatesGithubAuthor">Author and Repo:</system:String>
-	<system:String x:Key="UpdatesGithubAsset">Release Asset:</system:String>
-	<system:String x:Key="UpdatesGamebanana">Gamebanana Update Settings</system:String>
-	<system:String x:Key="UpdatesGamebananaID">Mod ID:</system:String>
-	<system:String x:Key="UpdatesSelf">Self Hosted Update Settings</system:String>
-	<system:String x:Key="UpdatesSelfUpdate">Update URL:</system:String>
-	<system:String x:Key="UpdatesSelfChangelog">Changelog URL:</system:String>
-	<system:String x:Key="DependencyWarning">The Dependency system is only to be used when you have created a mod that absolutely relies on another mod to function properly.</system:String>
-	<system:String x:Key="DependencyAdd">Add Dependencies</system:String>
-	<system:String x:Key="DependencyRemove">Remove Dependencies</system:String>
-	<system:String x:Key="DependencyNameColumn">Name</system:String>
-	<system:String x:Key="DependencyIDColumn">ID</system:String>
-	<system:String x:Key="DependencyFolderColumn">Folder</system:String>
-	<system:String x:Key="DependencyDownloadColumn">Download Link</system:String>
-	
-	<!--#region Select Dependencies Window-->
-	<system:String x:Key="SelectDependenciesHeader">Select Dependencies</system:String>
-	<!--#endregion-->
-    
-    <!--#region Mod Config-->
-    <system:String x:Key="TitleConfigureMod">Configure</system:String>
-    <!--#endregion-->
-     
-    <!--#region Mod Profile-->
-    <system:String x:Key="TitleModProfile">Manage Profiles</system:String>
-    <system:String x:Key="TitleRenameModProfile">Rename Profile</system:String>
-    <system:String x:Key="TitleCreateModProfile">Create Profile</system:String>
-    <system:String x:Key="PathModProfile">File Path</system:String>
-    <system:String x:Key="ProRename">Rename</system:String>
-    <system:String x:Key="ProClone">Duplicate</system:String>
-    <system:String x:Key="ProDelete">Delete</system:String>
-    <system:String x:Key="ProfileRenameError">Unexpected error, couldn't rename profile.</system:String>
-    <system:String x:Key="ProfileDuplicateErrorTitle">Error Profile already exists</system:String>
-    <system:String x:Key="ProfileDuplicateError">A profile with this name already exists, please use a different name.</system:String>
-    <!--#endregion-->
-
-
-    <!--#region Patches ComboBox-->
-    <system:String x:Key="Patch3DSound">Allow HRTF 3D Sound</system:String>
-    <system:String x:Key="PatchCamCode">Camera Code Error Fixes</system:String>
-    <system:String x:Key="PatchVerColor">Vertex Color Fixes</system:String>
-    <system:String x:Key="PatchMatColor">Material Color Fixes</system:String>
-    <system:String x:Key="PatchInterpolation">Interpolation Fixes</system:String>
-    <system:String x:Key="PatchFov">Fov Fixes</system:String>
-    <system:String x:Key="PatchSC">Sky Chase Fixes</system:String>
-    <system:String x:Key="PatchChaos2Crash">Chaos 2 Crashes Fixes</system:String>
-    <system:String x:Key="PatchChunkSpec">Chunk Specular Fixes</system:String>
-    <system:String x:Key="PatchE102Poly">Gamma's Headlight Fixes</system:String>
-    <system:String x:Key="PatchChaoPanel">Chao Stat Panel Screen Dimensions Fix</system:String>
-    <system:String x:Key="PatchPixelOffset">2D Rendering Offset Fixes</system:String>
-    <system:String x:Key="PatchLights">Light Fixes</system:String>
-    <system:String x:Key="PatchGbix">Disable GBIX (Experimental)</system:String>
-    <system:String x:Key="PatchDisableCD">Disable CD Check</system:String>
-    <!--#endregion-->
-
-    <!--#region DL Mod-->
-    <system:String x:Key="DLCredits">Credits</system:String>
-    <system:String x:Key="DLDownload">Download</system:String>
-    <!--#endregion-->
-
-    <!--#region Install New Mod Options-->
-    <system:String x:Key="InstallModTitle">Install or Make a New Mod.</system:String>
-    <system:String x:Key="InstallModArchive">Installing from an archive</system:String>
-    <system:String x:Key="InstallModFolder">Installing from a folder</system:String>
-    <system:String x:Key="InstallMakeMod">New Mod (For Developers)</system:String>
-    <!--#endregion-->
-	
-	<!--#region ModChangelog Window-->
-	<system:String x:Key="ModChangelogTitle">Mod Updates</system:String>
-	<system:String x:Key="ModChangelogTabUpdateNotes">Update Notes</system:String>
-	<system:String x:Key="ModChangelogTabUpdateDetails">Update Details</system:String>
-	<system:String x:Key="ModChangelogTabUpdateDetails.DownloadDetails">Download Details</system:String>
-	<system:String x:Key="ModChangelogTabUpdateDetails.PublishedDate">Published Date:</system:String>
-	<system:String x:Key="ModChangelogTabUpdateDetails.FileSize">File Size:</system:String>
-	<system:String x:Key="ModChangelogTabUpdateDetails.FileCount">File Count:</system:String>
-	<system:String x:Key="ModChangelogTabUpdateDetails.UpdateName">Update Title:</system:String>
-	<system:String x:Key="ModChangelogTabUpdateDetails.Tag">Tag:</system:String>
-	<system:String x:Key="ModChangelogTabUpdateDetails.OpenBrowser">Open Update in Browser</system:String>
-	<system:String x:Key="ModChangelogTabFileChanges">File Changes</system:String>
-	<system:String x:Key="ModChangelogTabFileChanges.Filename">Filename</system:String>
-	<system:String x:Key="ModChangelogTabFileChanges.Status">Status</system:String>
-	<system:String x:Key="ModChangelog.DownloadNow">Download Now</system:String>
-	<system:String x:Key="ModChangelog.DownloadLater">Download Later</system:String>
-	<!--#endregion-->
-	
-	<!--#region Manifest Generator-->
-	<system:String x:Key="ManifestGen.WindowTitle">Manifest Generator</system:String>
-	<system:String x:Key="ManifestGen.Header">Please check all files you want added to the manifest.</system:String>
-	<!--#endregion-->
-
-    <!--Message Box Strings-->
-    <system:String x:Key="SadxManagerTitle">SADX Mod Manager</system:String>
-
-    <system:String x:Key="SadxManagerError">SADX Mod Manager Error</system:String>
-    
-    <system:String x:Key="ModIniError0">There is a mod.ini in the mods folder.</system:String>
-    <system:String x:Key="ModIniError1" xml:space="preserve">&#x0a;&#x0a;Each mod must be placed in a subfolder in the mods folder. Do not extract mods directly to the mods folder.</system:String>
-    <system:String x:Key="ModIniError2" xml:space="preserve">&#x0a;&#x0a;Move or delete mod.ini in the mods folder and run the Mod Manager again.</system:String>
-
-    <system:String x:Key="ModRemovedList" xml:space="preserve">could not be found.&#x0a;&#x0a;This mod will be removed from the list.</system:String>
-
-    <system:String x:Key="FaildSetGamePathTitle">Failed to set Game Path</system:String>
-    <system:String x:Key="FaildSetGamePath">Failed to detect sonic.exe, make sure to select a folder where SADX is installed.</system:String>
-
-    <system:String x:Key="FailedDetectGamePathTitle">Failed to detect Game Path</system:String>
-    <system:String x:Key="FailedDetectGamePath">Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.</system:String>
-
-    <system:String x:Key="DeleteModWarning" xml:space="preserve">This will uninstall all the selected mods.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
-
-    <system:String x:Key="ErrorModDuplicate" xml:space="preserve">A mod with that name already exists.&#x0a;Please choose a different name or rename the existing one.</system:String>
-    <system:String x:Key="ErrorModDuplicateTitle">"Mod already exists"</system:String>
-    <system:String x:Key="ErrorModCreation">"Mod Creation Error"</system:String>
-
-    <system:String x:Key="ErrorNoNameSet">You cannot have a mod without a name.</system:String>
-    <system:String x:Key="ErrorNoNameSetTitle">Invalid mod name</system:String>
-
-    <system:String x:Key="WarningDelSaveRedir" xml:space="preserve">You are about to disable save redirection for this mod. If you continue, any save in this mod folder will be deleted.&#x0a;&#x0a;Are you sure you want to proceed?</system:String>
-
-    <system:String x:Key="DeleteProfileWarning">Are you sure you want to delete this profile?</system:String>
-
-    <system:String x:Key="LoaderDllMissing" xml:space="preserve">The file SADXModLoader.dll couldn't be found, Mod Loader won't work.&#x0a;&#x0a;Please re download the Mod Manager.</system:String>
-
-    <system:String x:Key="ForceUpdate" xml:space="preserve">This will force all selected mods to be completely re-downloaded.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
-
-    <system:String x:Key="ErrorDontWantTo">Hm... no, you don't want to do that. :)</system:String>
-
-    <system:String x:Key="InvalidSettingFrameTitle">Invalid Setting</system:String>
-    <system:String x:Key="InvalidSettingFrame">Invalid framerate setting detected.</system:String>
-    
-    <system:String x:Key="ErrorLoadingCode">Error loading code list</system:String>
-    <system:String x:Key="ErrorLoadingCodeTitle">Error Loading Code</system:String>
-
-    <system:String x:Key="InfoModUpToDateTitle">No Updates</system:String>
-    <system:String x:Key="InfoModUpToDate">Mods are up to date.</system:String>
-
-    <system:String x:Key="ErrorCheckForUpdate" xml:space="preserve">The following errors occurred while checking for updates:&#x0a;&#x0a;</system:String>
-    <system:String x:Key="ErrorCheckForUpdateTitle">Update Errors</system:String>
-    <system:String x:Key="GenerateManifestWarning" xml:space="preserve">This can cause MOD USER DATA (SAVE FILES, CONFIG FILES) TO BE LOST upon next update! To prevent this, you should never run this on mods you did not develop.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
-
-
-    <!--#endregion-->
+	<!--Window Tips-->
+	<system:String x:Key="Window.Tips.Minimize">Minimize</system:String>
+	<system:String x:Key="Window.Tips.Maximize">Maximize</system:String>
+	<system:String x:Key="Window.Tips.Restore">Restore window</system:String>
+	<system:String x:Key="Window.Tips.Close">Close</system:String>
 
 </ResourceDictionary>

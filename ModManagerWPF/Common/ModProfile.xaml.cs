@@ -30,7 +30,7 @@ namespace ModManagerWPF.Common
 		{
 			InitializeComponent();
 			_modProfile = modProfile; 
-			Title = Lang.GetString("TitleModProfile");
+			Title = Lang.GetString("ManagerProfile.Title");
 
 			foreach (Profile profile in modProfile.Items)
 			{
@@ -73,7 +73,7 @@ namespace ModManagerWPF.Common
 						}
 						catch
 						{
-							new MessageWindow(Lang.GetString("Error"), Lang.GetString("ProfileRenameError"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+							new MessageWindow(Lang.GetString("Error"), Lang.GetString("ManagerProfile.Errors.Unexpected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 						}
 					}
 				}		
@@ -166,7 +166,7 @@ namespace ModManagerWPF.Common
 			if (profile == null)
 				return;
 
-			var msg = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("DeleteProfileWarning"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+			var msg = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DeleteProfile"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 			msg.ShowDialog();
 
 			if (msg.isYes)

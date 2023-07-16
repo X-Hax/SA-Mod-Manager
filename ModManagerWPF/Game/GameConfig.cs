@@ -38,7 +38,7 @@ namespace ModManagerWPF.Game
 		public int FrameRate { get; set; }
 		[IniAlwaysInclude]
 		[IniName("fogemulation")]
-		public int FogEmulation { get; set; }
+		public int Foglation { get; set; }
 		[IniAlwaysInclude]
 		[IniName("sound3d")]
 		public int Sound3D { get; set; }

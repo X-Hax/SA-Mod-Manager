@@ -421,7 +421,7 @@ namespace ModManagerWPF
 		{
 			if (string.IsNullOrEmpty(gamePath))
 			{
-				new MessageWindow(Lang.GetString("FailedDetectGamePathTitle"), Lang.GetString("FailedDetectGamePath"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
@@ -464,8 +464,8 @@ namespace ModManagerWPF
 
 			if (File.Exists(Path.Combine(modDirectory, "mod.ini")))
 			{
-				new MessageWindow(Lang.GetString("SadxManagerError"), Lang.GetString("ModIniError0") + Lang.GetString("ModIniError1") +
-							Lang.GetString("ModIniError2"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error,
+				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ModWithoutFolder0") + Lang.GetString("MessageWindow.Errors.ModWithoutFolder1") +
+							Lang.GetString("MessageWindow.Errors.ModWithoutFolder2"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error,
 							MessageWindow.Buttons.OK).ShowDialog();
 
 				Close();
@@ -502,7 +502,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					new MessageWindow(Lang.GetString("SadxManagerTitle"), "Mod \"" + mod + "\"" + Lang.GetString("ModRemovedList"), MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
+					new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), "Mod \"" + mod + "\"" + Lang.GetString("MessageWindow.Errors.ModNotFound"), MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 					loaderini.Mods.Remove(mod);
 				}
 			}
@@ -559,13 +559,13 @@ namespace ModManagerWPF
 			if (!(GetModFromView(sender) is ModData mod))
 				return;
 
-			textModsDescription.Text = Lang.GetString("ModSelectTextDesc") + " " + mods[mod.Tag].Description;
+			textModsDescription.Text = Lang.GetString("CommonStrings.Description") + " " + mods[mod.Tag].Description;
 		}
 
 		private void ModList_MouseLeave(object sender, MouseEventArgs e)
 		{
 			var item = GetModFromView(sender);
-			textModsDescription.Text = (item is not null) ? $"{Lang.GetString("ModSelectTextDesc")} {item.Description}" : Lang.GetString("ModTextDesc");
+			textModsDescription.Text = (item is not null) ? $"{Lang.GetString("CommonStrings.Description")} {item.Description}" : Lang.GetString("Manager.Tabs.Mods.Text.NoModSelected");
 		}
 
 		#region ModContext
@@ -613,14 +613,14 @@ namespace ModManagerWPF
 
 			updateChecker.RunWorkerAsync(failed);
 
-			modUpdater.ForceUpdate = true;
+			modUpdater.MessageWindow.Warnings.ForceModUpdate = true;
 			btnCheckUpdates.IsEnabled = false;*/
 
 		}
 
-		private void ModContextForceUpdate_Click(object sender, RoutedEventArgs e)
+		private void ForceModUpdate_Click(object sender, RoutedEventArgs e)
 		{
-			var result = new MessageWindow(Lang.GetString("ForceUpdateTitle"), Lang.GetString("ForceUpdate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Caution, MessageWindow.Buttons.YesNo);
+			var result = new MessageWindow(Lang.GetString("MessageWindow.Warnings.ForceModUpdateTitle"), Lang.GetString("MessageWindow.Warnings.ForceModUpdate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Caution, MessageWindow.Buttons.YesNo);
 			result.ShowDialog();
 
 			if (result.isYes)
@@ -650,8 +650,8 @@ namespace ModManagerWPF
 
 			if (count)
 			{
-				var confirmMessage = Lang.GetString("DeleteModWarning");
-				var deleteConfirmation = new MessageWindow(Lang.GetString("SadxManagerTitle"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+				var confirmMessage = Lang.GetString("MessageWindow.Warnings.DeleteMod");
+				var deleteConfirmation = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 
 				deleteConfirmation.ShowDialog();
 				if (deleteConfirmation.isYes)
@@ -870,7 +870,7 @@ namespace ModManagerWPF
 			// Framerate
 			if (gameConfigFile.GameConfig.FrameRate == (int)Game.FrameRate.Invalid || gameConfigFile.GameConfig.FrameRate > (int)Game.FrameRate.Low)
 			{
-				new MessageWindow(Lang.GetString("InvalidSettingFrameTitle"), Lang.GetString("InvalidSettingFrameTitle"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.InvalidFramerate.Title"), Lang.GetString("MessageWindow.Errors.InvalidFramerate.Title"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				comboFramerate.SelectedIndex = (int)Game.FrameRate.High - 1;
 			}
 			else
@@ -882,7 +882,7 @@ namespace ModManagerWPF
 			comboDetail.SelectedIndex = (int)gameConfigFile.GameConfig.ClipLevel;
 
 			// Fog mode
-			comboFog.SelectedIndex = gameConfigFile.GameConfig.FogEmulation;
+			comboFog.SelectedIndex = gameConfigFile.GameConfig.Foglation;
 
 			sliderMusic.Value = gameConfigFile.GameConfig.BGMVolume;
 			sliderVoice.Value = gameConfigFile.GameConfig.VoiceVolume;
@@ -904,7 +904,7 @@ namespace ModManagerWPF
 
 			gameConfigFile.GameConfig.FrameRate = comboFramerate.SelectedIndex + 1;
 			gameConfigFile.GameConfig.ClipLevel = comboDetail.SelectedIndex;
-			gameConfigFile.GameConfig.FogEmulation = comboFog.SelectedIndex;
+			gameConfigFile.GameConfig.Foglation = comboFog.SelectedIndex;
 
 			gameConfigFile.GameConfig.Sound3D = (bool)checkEnable3DSound.IsChecked ? 1 : 0;
 			gameConfigFile.GameConfig.SEVoice = (bool)checkEnableSounds.IsChecked ? 1 : 0;
@@ -957,7 +957,7 @@ namespace ModManagerWPF
 			catch (Exception ex)
 			{
 				string msg = " " + ex.Message;
-				new MessageWindow(Lang.GetString("ErrorLoadingCodeTitle"), Lang.GetString("ErrorLoadingCode") + msg, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.CodesListFailed.Title"), Lang.GetString("MessageWindow.Errors.CodesListFailed") + msg, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				mainCodes = new CodeList();
 			}
 		}
@@ -1062,8 +1062,8 @@ namespace ModManagerWPF
 
 		private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
 		{
-			CodeAuthorGrid.Text = Lang.GetString("ModsListAuthor");
-			CodeDescGrid.Text = Lang.GetString("ModSelectTextDesc");
+			CodeAuthorGrid.Text = Lang.GetString("CommonStrings.Author");
+			CodeDescGrid.Text = Lang.GetString("CommonStrings.Description");
 			CodeCategoryGrid.Text = Lang.GetString("CodesListCategory");
 		}
 
@@ -1199,7 +1199,7 @@ namespace ModManagerWPF
 		{
 			if (string.IsNullOrEmpty(gamePath))
 			{
-				new MessageWindow(Lang.GetString("FailedDetectGamePathTitle"), Lang.GetString("FailedDetectGamePath"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
@@ -1443,7 +1443,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					new MessageWindow(Lang.GetString("SadxManagerError"), Lang.GetString("LoaderDllMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+					new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.MissingLoaderDLL"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				}
 			}
 		}
@@ -1471,7 +1471,7 @@ namespace ModManagerWPF
 				}
 				else
 				{
-					new MessageWindow(Lang.GetString("FaildSetGamePathTitle"), Lang.GetString("FaildSetGamePath"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+					new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				}
 			}
 		}
@@ -1482,7 +1482,7 @@ namespace ModManagerWPF
 				return;
 
 			//Update Text Button of Mod Loader Installer
-			string textKey = installed ? "ManagerBtnUninstallLoader" : "ManagerBtnInstallLoader";
+			string textKey = installed ? "Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader" : "Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader";
 			TextBlock txt = FindName("txtInstallLoader") as TextBlock;
 			txt.Text = Lang.GetString(textKey);
 
@@ -1502,7 +1502,7 @@ namespace ModManagerWPF
 		{
 			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
 			{
-				new MessageWindow(Lang.GetString("FailedDetectGamePathTitle"), Lang.GetString("FailedDetectGamePath"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
@@ -1697,21 +1697,21 @@ namespace ModManagerWPF
 
 			List<PatchesData> patches = new List<PatchesData>()
 			{
-				new PatchesData() { Name = Lang.GetString("Patch3DSound"), IsChecked = loaderini.HRTFSound },
-				new PatchesData() { Name = Lang.GetString("PatchCamCode"), IsChecked = loaderini.CCEF },
-				new PatchesData() { Name = Lang.GetString("PatchVerColor"), IsChecked = loaderini.PolyBuff },
-				new PatchesData() { Name = Lang.GetString("PatchMatColor"), IsChecked = loaderini.MaterialColorFix},
-				new PatchesData() { Name = Lang.GetString("PatchInterpolation"), IsChecked = loaderini.InterpolationFix},
-				new PatchesData() { Name = Lang.GetString("PatchFov"), IsChecked = loaderini.FovFix },
-				new PatchesData() { Name = Lang.GetString("PatchSC"), IsChecked = loaderini.SCFix },
-				new PatchesData() { Name = Lang.GetString("PatchChaos2Crash"), IsChecked = loaderini.Chaos2CrashFix },
-				new PatchesData() { Name = Lang.GetString("PatchChunkSpec"), IsChecked = loaderini.ChunkSpecFix},
-				new PatchesData() { Name = Lang.GetString("PatchE102Poly"), IsChecked = loaderini.E102PolyFix},
-				new PatchesData() { Name = Lang.GetString("PatchChaoPanel"), IsChecked = loaderini.ChaoPanelFix},
-				new PatchesData() { Name = Lang.GetString("PatchPixelOffset"), IsChecked = loaderini.PixelOffSetFix},
-				new PatchesData() { Name = Lang.GetString("PatchLights"), IsChecked = loaderini.LightFix},
-				new PatchesData() { Name = Lang.GetString("PatchGbix"), IsChecked = loaderini.KillGbix},
-				new PatchesData() { Name = Lang.GetString("PatchDisableCD"), IsChecked = loaderini.DisableCDCheck},
+				new PatchesData() { Name = Lang.GetString("GamePatches.3DSound"), IsChecked = loaderini.HRTFSound },
+				new PatchesData() { Name = Lang.GetString("GamePatches.CamCode"), IsChecked = loaderini.CCEF },
+				new PatchesData() { Name = Lang.GetString("GamePatches.VertexColor"), IsChecked = loaderini.PolyBuff },
+				new PatchesData() { Name = Lang.GetString("GamePatches.MaterialColor"), IsChecked = loaderini.MaterialColorFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.Interpolation"), IsChecked = loaderini.InterpolationFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.FixFOV"), IsChecked = loaderini.FovFix },
+				new PatchesData() { Name = Lang.GetString("GamePatches.Skychase"), IsChecked = loaderini.SCFix },
+				new PatchesData() { Name = Lang.GetString("GamePatches.Chaos2"), IsChecked = loaderini.Chaos2CrashFix },
+				new PatchesData() { Name = Lang.GetString("GamePatches.ChunkRendering"), IsChecked = loaderini.ChunkSpecFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.E102Lamp"), IsChecked = loaderini.E102PolyFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.ChaoStats"), IsChecked = loaderini.ChaoPanelFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.PixelOffset"), IsChecked = loaderini.PixelOffSetFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.Lights"), IsChecked = loaderini.LightFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.DisableGBIX"), IsChecked = loaderini.KillGbix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.DisableCDCheck"), IsChecked = loaderini.DisableCDCheck},
 			};
 
 			foreach (var patch in patches)
@@ -1798,18 +1798,18 @@ namespace ModManagerWPF
 				ModContextDeleteMod.IsEnabled = false;
 				if (ModContextDev is not null)
 					ModContextDev.IsEnabled = false;
-				ModContextForceUpdate.IsEnabled = false;
+				ModContextForceModUpdate.IsEnabled = false;
 				ModContextVerifyIntegrity.IsEnabled = false;
 			});
 
 			var updatableMods = e.Argument as List<KeyValuePair<string, ModInfo>>;
 			List<ModDownload> updates = null;
-			List<string> errors = null;
+			List<string> Errors = null;
 
 			var tokenSource = new CancellationTokenSource();
 			CancellationToken token = tokenSource.Token;
 
-			using (var task = new Task(() => modUpdater.GetModUpdates(updatableMods, out updates, out errors, token), token))
+			using (var task = new Task(() => modUpdater.GetModUpdates(updatableMods, out updates, out Errors, token), token))
 			{
 				task.Start();
 
@@ -1826,7 +1826,7 @@ namespace ModManagerWPF
 				task.Wait(token);
 			}
 
-			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, errors);
+			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, Errors);
 		}
 
 		private void UpdateChecker_DoWorkForced(object sender, DoWorkEventArgs e)
@@ -1842,7 +1842,7 @@ namespace ModManagerWPF
 			}
 
 			var updates = new List<ModDownload>();
-			var errors = new List<string>();
+			var Errors = new List<string>();
 
 			using (var client = new UpdaterWebClient())
 			{
@@ -1859,11 +1859,11 @@ namespace ModManagerWPF
 					{
 						if (string.IsNullOrEmpty(mod.GitHubAsset))
 						{
-							errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
+							Errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
 							continue;
 						}
 
-						ModDownload d = modUpdater.GetGitHubReleases(mod, info.Item1, client, errors);
+						ModDownload d = modUpdater.GetGitHubReleases(mod, info.Item1, client, Errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1871,7 +1871,7 @@ namespace ModManagerWPF
 					}
 					else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
 					{
-						ModDownload d = modUpdater.GetGameBananaReleases(mod, info.Item1, errors);
+						ModDownload d = modUpdater.GetGameBananaReleases(mod, info.Item1, Errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1883,7 +1883,7 @@ namespace ModManagerWPF
 							.Where(x => x.State == ModManifestState.Unchanged)
 							.Select(x => x.Current).ToList();
 
-						ModDownload d = modUpdater.CheckModularVersion(mod, info.Item1, localManifest, client, errors);
+						ModDownload d = modUpdater.CheckModularVersion(mod, info.Item1, localManifest, client, Errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1892,7 +1892,7 @@ namespace ModManagerWPF
 				}
 			}
 
-			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, errors);
+			e.Result = new Tuple<List<ModDownload>, List<string>>(updates, Errors);
 		}
 
 		private void InitializeWorker()
@@ -1928,10 +1928,10 @@ namespace ModManagerWPF
 				return;
 			}
 
-			List<string> errors = data.Item2;
-			if (errors.Count != 0)
+			List<string> Errors = data.Item2;
+			if (Errors.Count != 0)
 			{
-				new MessageWindow(Lang.GetString("ErrorCheckForUpdateTitle"), Lang.GetString("ErrorCheckForUpdate") + "`\n" + errors, MessageWindow.WindowType.Message, MessageWindow.Icons.Warning, MessageWindow.Buttons.OK).ShowDialog();
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.CheckUpdateError.Title"), Lang.GetString("MessageWindow.Errors.CheckUpdateError") + "`\n" + Errors, MessageWindow.WindowType.Message, MessageWindow.Icons.Warning, MessageWindow.Buttons.OK).ShowDialog();
 			}
 
 			bool manual = manualModUpdate;
@@ -1942,7 +1942,7 @@ namespace ModManagerWPF
 			{
 				if (manual)
 				{
-					new MessageWindow(Lang.GetString("InfoModUpToDateTitle"), Lang.GetString("InfoModUpToDate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
+					new MessageWindow(Lang.GetString("MessageWindow.Information.NoAvailableUpdates.Title"), Lang.GetString("MessageWindow.Information.NoAvailableUpdates"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 				}
 				return;
 			}
@@ -1994,7 +1994,7 @@ namespace ModManagerWPF
 			}
 
 			ModContextDeleteMod.IsEnabled = true;
-			ModContextForceUpdate.IsEnabled = true;
+			ModContextForceModUpdate.IsEnabled = true;
 			ModContextVerifyIntegrity.IsEnabled = true;
 		}
 
@@ -2171,7 +2171,7 @@ namespace ModManagerWPF
 		{
 			if (!displayedManifestWarning)
 			{
-				var result = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("GenerateManifestWarning"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+				var result = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.GenerateManifest"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 				result.ShowDialog();
 				if (result.isYes != true)
 				{

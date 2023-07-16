@@ -36,11 +36,11 @@ namespace ModManagerWPF
 		public InstallModOptions()
 		{
 			InitializeComponent();
-			Header.Text = Lang.GetString("InstallModTitle");
+			Header.Text = Lang.GetString("InstallModOptions.Title");
 
-			CheckStack.Children.Add(new RadioButton() { IsChecked = true, Content = Lang.GetString("InstallMakeMod"), Margin = new Thickness(2) }); ;
-			CheckStack.Children.Add(new RadioButton() { Content = Lang.GetString("InstallModArchive"), Margin = new Thickness(2) });
-			CheckStack.Children.Add(new RadioButton() { Content = Lang.GetString("InstallModFolder"), Margin = new Thickness(2) });
+			CheckStack.Children.Add(new RadioButton() { IsChecked = true, Content = Lang.GetString("InstallModOptions.Radio.New"), Margin = new Thickness(2) }); ;
+			CheckStack.Children.Add(new RadioButton() { Content = Lang.GetString("InstallModOptions.Radio.Archive"), Margin = new Thickness(2) });
+			CheckStack.Children.Add(new RadioButton() { Content = Lang.GetString("InstallModOptions.Radio.Folder"), Margin = new Thickness(2) });
 		}
 
 
@@ -87,7 +87,7 @@ namespace ModManagerWPF
 
 
 		//to do add extension support
-		public void InstallModArchive(string[] path, string root)
+		public void InstallModOptionsArchive(string[] path, string root)
 		{
 			foreach (string file in path)
 			{
@@ -110,7 +110,7 @@ namespace ModManagerWPF
 		public void InstallMod(string[] path, string root)
 		{
 			if (File.Exists(path[0]))
-				InstallModArchive(path, root);
+				InstallModOptionsArchive(path, root);
 			else if (Directory.Exists(path[0]))
 				InstallModDirectory(path[0], root);
 		}
@@ -119,7 +119,7 @@ namespace ModManagerWPF
 		{
 			if (path == root || path.Contains(root)) //prevent user from trying to install a mod that is already installed.
 			{
-				MessageWindow msg = new(Lang.GetString("SadxManagerError"), Lang.GetString("ErrorDontWantTo"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning);
+				MessageWindow msg = new(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.DontDoThat"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning);
 				msg.Show();
 				return;
 			}

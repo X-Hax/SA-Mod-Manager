@@ -441,7 +441,7 @@ namespace ModManagerWPF.Common
 						{
 							ModManifestEntry old = i.Last;
 
-							// This would be considered an error...
+							// This would be considered an Error...
 							if (old == null)
 							{
 								continue;
@@ -536,7 +536,7 @@ namespace ModManagerWPF.Common
 				if (Directory.Exists(dir))
 				{
 					// Note that this is very intentionally not recursive. If there are
-					// any files left over somehow, this SHOULD be considered an error,
+					// any files left over somehow, this SHOULD be considered an Error,
 					// as the goal is to exclusively remove empty directories.
 					// - SF94
 					Directory.Delete(dir);
