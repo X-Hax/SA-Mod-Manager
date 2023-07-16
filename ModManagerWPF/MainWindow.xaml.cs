@@ -1884,7 +1884,7 @@ namespace ModManagerWPF
 					{
 						if (string.IsNullOrEmpty(mod.GitHubAsset))
 						{
-							Errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
+							errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
 							continue;
 						}
 

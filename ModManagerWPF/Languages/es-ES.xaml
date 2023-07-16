@@ -244,7 +244,6 @@
     <system:String x:Key="EditMod.Tabs.Dependencies.Warning">Es recomendable utilizar el sistema de Dependencias unicamente en el caso de que tu mod requiera completamente de otro mod para funcionar correctamente.</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Add">Añadir Dependencias</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Remove">Eliminar Dependencias</system:String>
-	<system:String x:Key="CommonStrings.Name">Nombre</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.ID">ID</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Folder">Carpeta</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Column">Enlace de Descarga</system:String>
