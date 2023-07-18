@@ -59,12 +59,6 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Languages\AboutCode\" />
-    <Folder Include="Languages\AboutManager\" />
-    <Folder Include="Languages\DownloadMod\" />
-  </ItemGroup>
-
 
 
 </Project>
