@@ -1103,6 +1103,26 @@ namespace ModManagerWPF
 
 		}
 
+		private void btnSelectAllCode_Click(object sender, RoutedEventArgs e)
+		{
+			CodeListView.BeginInit();
+			foreach (CodeData code in CodeListView.Items)
+			{
+				code.IsChecked = true;
+			}
+			CodeListView.EndInit();
+		}
+
+		private void btnDeselectAllCode_Click(object sender, RoutedEventArgs e)
+		{
+			CodeListView.BeginInit();
+			foreach (CodeData code in CodeListView.Items)
+			{
+				code.IsChecked = false;
+			}
+			CodeListView.EndInit();
+		}
+
 		#endregion
 
 		#region Languages
@@ -1339,6 +1359,120 @@ namespace ModManagerWPF
 			TS_GetSave();
 
 		}
+
+		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
+		{
+			tsCheckCharacter.IsChecked = true;
+			tsCheckLevel.IsChecked = true;
+			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
+		}
+
+		private void tsCheckEvent_Unchecked(object sender, RoutedEventArgs e)
+		{
+			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
+		}
+
+		private void tsCheckCharacter_Click(object sender, RoutedEventArgs e)
+		{
+			if ((bool)tsCheckCharacter.IsChecked)
+				tsCheckLevel.IsChecked = true;
+		}
+
+		private void tsCheckManual_Clicked(object sender, RoutedEventArgs e)
+		{
+			if ((bool)tsCheckManual.IsChecked)
+			{
+				tsCheckCharacter.IsEnabled = false;
+				tsCheckLevel.IsEnabled = false;
+				tsComboCharacter.IsEnabled = false;
+				tsComboLevel.IsEnabled = false;
+				tsComboAct.IsEnabled = false;
+				tsComboTime.IsEnabled = false;
+
+				tsNumCharacter.Value = 0;
+				tsNumLevel.Value = tsComboLevel.SelectedIndex;
+				tsNumAct.Value = tsComboAct.SelectedIndex;
+			}
+			else
+			{
+				tsCheckCharacter.IsEnabled = true;
+				tsCheckLevel.IsEnabled = true;
+				Binding bindCharacter = new Binding();
+				bindCharacter.Path = new PropertyPath("IsChecked");
+				bindCharacter.Source = tsCheckCharacter;
+				Binding bindLevel = new Binding();
+				bindLevel.Path = new PropertyPath("IsChecked");
+				bindLevel.Source = tsCheckLevel;
+
+				BindingOperations.SetBinding(tsComboCharacter, IsEnabledProperty, bindCharacter);
+				BindingOperations.SetBinding(tsComboLevel, IsEnabledProperty, bindLevel);
+				BindingOperations.SetBinding(tsComboAct, IsEnabledProperty, bindLevel);
+				BindingOperations.SetBinding(tsComboTime, IsEnabledProperty, bindLevel);
+			}
+
+		}
+
+		private string GetTestSpawnCommandLine()
+		{
+			List<string> cmdline = new List<string>();
+
+			if (tsCheckLevel.IsChecked.GetValueOrDefault())
+				cmdline.Add("-l " + tsComboLevel.SelectedIndex.ToString() + " -a " + tsComboAct.SelectedIndex.ToString());
+
+			if (tsCheckCharacter.IsChecked == true)
+				cmdline.Add("-c " + tsComboCharacter.SelectedIndex.ToString());
+
+			if (tsCheckPosition.IsChecked == true)
+				cmdline.Add("-p " + tsNumPosX.Value.ToString() + " " +
+					tsNumPosY.Value.ToString() + " " +
+					tsNumPosZ.Value.ToString() + " -r " +
+					tsNumAngle.Value.ToString());
+
+			if (tsCheckEvent.IsChecked == true)
+			{
+				int ev = 0;
+				int ev_result = 0;
+
+				foreach (var item in TS.GetCutsceneList())
+				{
+					if (ev == tsComboEvent.SelectedIndex)
+					{
+						ev_result = item.Key;
+						break;
+					}
+					ev++;
+				}
+				cmdline.Add("-e " + ev_result.ToString());
+			}
+			if (tsComboTime.SelectedIndex > 0)
+				cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
+
+			if (tsCheckGameMode.IsChecked == true)
+			{
+				uint gm = 0;
+				uint gm_result = 0;
+				foreach (var item in TS.GetTestSpawnGameModeList())
+				{
+					if (gm == tsComboGameMode.SelectedIndex)
+					{
+						gm_result = item.Key;
+						break;
+					}
+					gm++;
+				}
+				cmdline.Add("-g " + gm_result.ToString());
+			}
+
+			if (tsCheckSave.IsChecked == true)
+			{
+				string save = tsComboSave.SelectedValue.ToString();
+				save = Util.GetSaveNumber(save);
+				cmdline.Add("-s " + save);
+			}
+
+			return string.Join(" ", cmdline);
+		}
+
 
 
 		#endregion
@@ -1625,6 +1759,67 @@ namespace ModManagerWPF
 
 				}
 
+			}
+		}
+
+		private void ModsContextDeveloperManifest_Click(object sender, RoutedEventArgs e)
+		{
+			if (!displayedManifestWarning)
+			{
+				var result = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.GenerateManifest"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+				result.ShowDialog();
+				if (result.isYes != true)
+				{
+					return;
+				}
+
+				displayedManifestWarning = true;
+			}
+
+			foreach (ModData item in listMods.SelectedItems)
+			{
+
+				var modPath = Path.Combine(modDirectory, (string)item.Tag);
+				var manifestPath = Path.Combine(modPath, "mod.manifest");
+
+				List<Updater.ModManifestEntry> manifest;
+				List<Updater.ModManifestDiff> diff;
+
+				var progress = new Updater.ManifestDialog(modPath, $"Generating manifest: {(string)item.Tag}", true);
+				progress.ShowDialog();
+
+				bool? ManifDialog = progress.DialogResult;
+
+				//progress.SetTask("Generating file index...");
+				if (ManifDialog != true)
+				{
+					continue;
+				}
+
+				diff = progress.Diff;
+
+				if (diff == null)
+				{
+					continue;
+				}
+
+				if (diff.Count(x => x.State != Updater.ModManifestState.Unchanged) <= 0)
+				{
+					continue;
+				}
+
+				var dialog = new ManifestChanges(diff);
+				dialog.ShowDialog();
+				bool? resultManifChange = dialog.DialogResult;
+
+				if (resultManifChange != true)
+				{
+					continue;
+				}
+
+				manifest = dialog.MakeNewManifest();
+
+				Updater.ModManifest.ToFile(manifest, manifestPath);
 			}
 		}
 
@@ -2064,199 +2259,11 @@ namespace ModManagerWPF
 
 		#endregion
 
-		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
-		{
-			tsCheckCharacter.IsChecked = true;
-			tsCheckLevel.IsChecked = true;
-			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
-		}
 
-		private void tsCheckEvent_Unchecked(object sender, RoutedEventArgs e)
-		{
-			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
-		}
 
-		private void btnSelectAllCode_Click(object sender, RoutedEventArgs e)
-		{
-			CodeListView.BeginInit();
-			foreach (CodeData code in CodeListView.Items)
-			{
-				code.IsChecked = true;
-			}
-			CodeListView.EndInit();
-		}
 
-		private void btnDeselectAllCode_Click(object sender, RoutedEventArgs e)
-		{
-			CodeListView.BeginInit();
-			foreach (CodeData code in CodeListView.Items)
-			{
-				code.IsChecked = false;
-			}
-			CodeListView.EndInit();
-		}
 
-		private void tsCheckCharacter_Click(object sender, RoutedEventArgs e)
-		{
-			if ((bool)tsCheckCharacter.IsChecked)
-				tsCheckLevel.IsChecked = true;
-		}
-
-		private void tsCheckManual_Clicked(object sender, RoutedEventArgs e)
-		{
-			if ((bool)tsCheckManual.IsChecked)
-			{
-				tsCheckCharacter.IsEnabled = false;
-				tsCheckLevel.IsEnabled = false;
-				tsComboCharacter.IsEnabled = false;
-				tsComboLevel.IsEnabled = false;
-				tsComboAct.IsEnabled = false;
-				tsComboTime.IsEnabled = false;
-
-				tsNumCharacter.Value = 0;
-				tsNumLevel.Value = tsComboLevel.SelectedIndex;
-				tsNumAct.Value = tsComboAct.SelectedIndex;
-			}
-			else
-			{
-				tsCheckCharacter.IsEnabled = true;
-				tsCheckLevel.IsEnabled = true;
-				Binding bindCharacter = new Binding();
-				bindCharacter.Path = new PropertyPath("IsChecked");
-				bindCharacter.Source = tsCheckCharacter;
-				Binding bindLevel = new Binding();
-				bindLevel.Path = new PropertyPath("IsChecked");
-				bindLevel.Source = tsCheckLevel;
-
-				BindingOperations.SetBinding(tsComboCharacter, IsEnabledProperty, bindCharacter);
-				BindingOperations.SetBinding(tsComboLevel, IsEnabledProperty, bindLevel);
-				BindingOperations.SetBinding(tsComboAct, IsEnabledProperty, bindLevel);
-				BindingOperations.SetBinding(tsComboTime, IsEnabledProperty, bindLevel);
-			}
-
-		}
-
-		private string GetTestSpawnCommandLine()
-		{
-			List<string> cmdline = new List<string>();
-
-			if (tsCheckLevel.IsChecked.GetValueOrDefault())
-				cmdline.Add("-l " + tsComboLevel.SelectedIndex.ToString() + " -a " + tsComboAct.SelectedIndex.ToString());
-
-			if (tsCheckCharacter.IsChecked == true)
-				cmdline.Add("-c " + tsComboCharacter.SelectedIndex.ToString());
-
-			if (tsCheckPosition.IsChecked == true)
-				cmdline.Add("-p " + tsNumPosX.Value.ToString() + " " +
-					tsNumPosY.Value.ToString() + " " +
-					tsNumPosZ.Value.ToString() + " -r " +
-					tsNumAngle.Value.ToString());
-
-			if (tsCheckEvent.IsChecked == true)
-			{
-				int ev = 0;
-				int ev_result = 0;
-
-				foreach (var item in TS.GetCutsceneList())
-				{
-					if (ev == tsComboEvent.SelectedIndex)
-					{
-						ev_result = item.Key;
-						break;
-					}
-					ev++;
-				}
-				cmdline.Add("-e " + ev_result.ToString());
-			}
-			if (tsComboTime.SelectedIndex > 0)
-				cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
-
-			if (tsCheckGameMode.IsChecked == true)
-			{
-				uint gm = 0;
-				uint gm_result = 0;
-				foreach (var item in TS.GetTestSpawnGameModeList())
-				{
-					if (gm == tsComboGameMode.SelectedIndex)
-					{
-						gm_result = item.Key;
-						break;
-					}
-					gm++;
-				}
-				cmdline.Add("-g " + gm_result.ToString());
-			}
-
-			if (tsCheckSave.IsChecked == true)
-			{
-				string save = tsComboSave.SelectedValue.ToString();
-				save = Util.GetSaveNumber(save);
-				cmdline.Add("-s " + save);
-			}
-
-			return string.Join(" ", cmdline);
-		}
-
-		private void ModsContextDeveloperManifest_Click(object sender, RoutedEventArgs e)
-		{
-			if (!displayedManifestWarning)
-			{
-				var result = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.GenerateManifest"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-				result.ShowDialog();
-				if (result.isYes != true)
-				{
-					return;
-				}
-
-				displayedManifestWarning = true;
-			}
-
-			foreach (ModData item in listMods.SelectedItems)
-			{
-
-				var modPath = Path.Combine(modDirectory, (string)item.Tag);
-				var manifestPath = Path.Combine(modPath, "mod.manifest");
-
-				List<Updater.ModManifestEntry> manifest;
-				List<Updater.ModManifestDiff> diff;
-
-				var progress = new Updater.ManifestDialog(modPath, $"Generating manifest: {(string)item.Tag}", true);
-				progress.ShowDialog();
-
-				bool? ManifDialog = progress.DialogResult;
-
-				//progress.SetTask("Generating file index...");
-				if (ManifDialog != true)
-				{
-					continue;
-				}
-
-				diff = progress.Diff;
-
-				if (diff == null)
-				{
-					continue;
-				}
-
-				if (diff.Count(x => x.State != Updater.ModManifestState.Unchanged) <= 0)
-				{
-					continue;
-				}
-
-				var dialog = new ManifestChanges(diff);
-				dialog.ShowDialog();
-				bool? resultManifChange = dialog.DialogResult;
-
-				if (resultManifChange != true)
-				{
-					continue;
-				}
-
-				manifest = dialog.MakeNewManifest();
-
-				Updater.ModManifest.ToFile(manifest, manifestPath);
-			}
-		}
+		
 
 		#region Direct3D wrapper
 
