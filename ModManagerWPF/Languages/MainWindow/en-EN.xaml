@@ -289,7 +289,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Opens a Console Window which displays debug information from the game.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Prints debug information within the game window.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Saves any debug information to a log file.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Enables logging crash dumps when the game encounters and Error. These are useful in researching unexpected crashes.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Enables logging crash dumps when the game encounters an error. These are useful in researching unexpected crashes.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Opens the Contributors and About window.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Opens a link to the GitHub repo for the Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Opens a link to the SA Docs website which has various information regarding modding the Adventure games.</system:String>
