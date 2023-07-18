@@ -39,7 +39,48 @@
 	
 	<system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Update Errors</system:String>
 	<system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">The following Errors occurred while checking for updates:&#x0a;&#x0a;</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MessageWindow.Errors.D3D8Update">Unable to update d3d8.dll</system:String>
+    <system:String x:Key="MessageWindow.Errors.D3D8UpdateCheck">Unable to check d3d8to9 version</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.MissingManifest.Title">Missing mod.manifest</system:String>
+    <system:String x:Key="MessageWindow.Errors.MissingManifest">None of the selected mods have manifests, so they cannot be verified.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif.Title">Integrity Fail</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif0" xml:space="preserve">The following mods failed verification:&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif1">files(s)</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif2" xml:space="preserve">&#x0a;&#x0a;Would you like to attempt repairs?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.URIParseFail.Title">URI Parse Failure</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail0">Malformed One-Click Install URI</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail1" xml:space="preserve">caused parse failure:&#x0a;</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GBAPIFail.Title">GameBanana API Failure</system:String>
+    <system:String x:Key="MessageWindow.Errors.GBAPIFail">GameBanana API query failed:</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields0">One-Click Install URI</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields1">did not contain required fields.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail.Title">Directory Deletion Failed</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail0">Failed to remove temporary update directory</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail1">Would you like to retry? You can remove the directory manually later.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail.Title">Directory Creation Failed</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail0">Failed to create temporary update directory</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail1">Would you like to retry?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Update Failed"</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed">Failed to update:"</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Failed to update mod"</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">Press Retry to try again, or Cancel to skip this mod."</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Unable to retrieve update information."</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">SADX Mod Manager cannot run without .NET 7.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Missing VC++</system:String>
+    <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">It looks like you're missing some Visual C++ Redistributables, some mods won't work without them.&#x0a;&#x0a;Would you like to download and install them now?</system:String>
+    <!--#endregion-->
 	
 	<!--#region Warnings-->
 	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">This will uninstall all the selected mods.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
@@ -51,11 +92,18 @@
 	<system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">This will force all selected mods to be completely re-downloaded.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
 	
 	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">This can cause MOD USER DATA (SAVE FILES, CONFIG FILES) TO BE LOST upon next update! To prevent this, you should never run this on mods you did not develop.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
-	<!--#endregion-->
+
+    <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime is not installed!&#x0a;&#x0a;Would you like to install it now?</system:String>
+    <!--#endregion-->
 	
 	<!--#region Information-->
 	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">No Mod Updates Found</system:String>
 	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Mods are up to date.</system:String>
-	<!--#endregion-->
+
+    <system:String x:Key="MessageWindow.Information.D3D8Update">The version of d3d8.dll in SADX folder differs from the one included with the Mod Loader. Would you like to update the installed copy?</system:String>
+
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Integrity Pass</system:String>
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif">All selected mods passed verification.</system:String>
+    <!--#endregion-->
 	
 </ResourceDictionary>

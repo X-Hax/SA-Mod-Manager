@@ -1,5 +1,6 @@
 ﻿using ModManagerCommon;
 using ModManagerCommon.Forms;
+using ModManagerWPF.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -80,7 +81,7 @@ namespace ModManagerWPF.Updater
 
 						this.Close();
 					});
-				
+
 				}
 
 				int modIndex = 0;
@@ -99,21 +100,28 @@ namespace ModManagerWPF.Updater
 					update.DownloadProgress += OnDownloadProgress;
 					update.DownloadCompleted += OnDownloadCompleted;
 
-					try
+					bool retry = false;
+					do
 					{
-						await Task.Run(() => update.Download(client, updatePath), token);
-					}
-					catch (AggregateException ae)
-					{
-						// Handle the exception
-						ae.Handle(ex =>
+						try
 						{
-							/*MessageBox.Show(this, $"Failed to update mod {update.Info.Name}:\r\n{ex.Message}"
-								+ "\r\n\r\nPress Retry to try again, or Cancel to skip this mod.",
-								"Update Failed", MessageBoxButton.YesNo, MessageBoxIcon.Error);*/
-							return true;
-						});
-					}
+							await Task.Run(() => update.Download(client, updatePath), token);
+						}
+						catch (AggregateException ae)
+						{
+							// Handle the exception
+							ae.Handle(ex =>
+							{
+
+								string error = Lang.GetString("MessageWindow.Errors.ModUpdateFailed0") + $"{update.Info.Name}" + $":\r\n{ex.Message}" + "\r\n\r\n" + Lang.GetString("MessageWindow.Errors.ModUpdateFailed1");
+								var res = new MessageWindow(Lang.GetString("MessageWindow.Errors.UpdateFailed.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.RetryCancel);
+								retry = res.isRetry;
+								res.ShowDialog();
+
+								return true;
+							});
+						}
+					} while (retry == true);
 
 					update.Extracting -= OnExtracting;
 					update.ParsingManifest -= OnParsingManifest;
@@ -125,7 +133,7 @@ namespace ModManagerWPF.Updater
 		}
 
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
-		{		
+		{
 			this.Close();
 		}
 	}

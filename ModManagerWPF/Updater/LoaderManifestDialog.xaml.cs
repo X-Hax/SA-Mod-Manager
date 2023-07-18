@@ -1,4 +1,5 @@
 ﻿using ModManagerCommon;
+using ModManagerWPF.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -127,8 +128,8 @@ namespace ModManagerWPF.Updater
 			{
 				ae.Handle(ex =>
 				{
-					/*result = MessageBox.Show(this, $"Failed to update:\r\n{ex.Message}",
-						"Update Failed", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);*/
+					string error = Lang.GetString("MessageWindow.Errors.UpdateFailed") + $"\r\n{ex.Message}";
+					new MessageWindow(Lang.GetString("MessageWindow.Errors.UpdateFailed.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
 					return true;
 				});
 			}

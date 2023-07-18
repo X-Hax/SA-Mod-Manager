@@ -1,4 +1,5 @@
-﻿using ModManagerWPF.Updater;
+﻿using ModManagerWPF.Common;
+using ModManagerWPF.Updater;
 using NetCoreInstallChecker;
 using NetCoreInstallChecker.Structs.Config;
 using NetCoreInstallChecker.Structs.Config.Enum;
@@ -84,6 +85,8 @@ namespace ModManagerWPF
 				}
 				else
 				{
+
+					MessageWindow(Lang.GetString(), Lang.GetString("MessageWindow.Errors.Net7Missing).
 					MessageBox.Show("SADX Mod Manager cannot run without .NET 7.", "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					return false;
 				}
@@ -101,10 +104,10 @@ namespace ModManagerWPF
 			{
 				if (!File.Exists(dll))
 				{
-
-					DialogResult dg = MessageBox.Show("It looks like you're missing some Visual C++ Redistributables, some mods won't work without them. Would you like to download and install them now?", "Missing VC++", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-					if (dg == DialogResult.Yes)
+					var dialog = new MessageWindow(Lang.GetString("MessageWindow.Errors.VCMissing.Title"), Lang.GetString("MessageWindow.Errors.VCMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+					dialog.ShowDialog();
+			
+					if (dialog.isYes)
 					{
 						//Process.Start("https://aka.ms/vs/17/release/vc_redist.x86.exe");
 						return false;
