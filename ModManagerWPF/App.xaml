@@ -4,7 +4,8 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:local="clr-namespace:ModManagerWPF"
 			 xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
-			 xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+			 xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+			 xmlns:xctp="clr-namespace:Xceed.Wpf.Toolkit.Themes;assembly=Xceed.Wpf.Toolkit.NET5">
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -1443,6 +1444,14 @@
 			<!--#endregion-->
 			
 			<!--#region Numeric Box Style-->
+			<Style x:Key="{x:Static xctp:ResourceKeys.SpinnerButtonStyleKey}" TargetType="{x:Type RepeatButton}">
+				<Style.Resources>
+					<SolidColorBrush x:Key="{x:Static xctp:ResourceKeys.GlyphNormalForegroundKey}" Color="{DynamicResource Colors.Border}"/>
+				</Style.Resources>
+				<Setter Property="Background" Value="{DynamicResource Button.Brushes.Background}"/>
+				<Setter Property="BorderThickness" Value="0"/>
+			</Style>
+
 			<Style TargetType="{x:Type xctk:IntegerUpDown}">
 				<Setter Property="Background" Value="{DynamicResource NumericBox.Brushes.Background}"/>
 				<Setter Property="Foreground" Value="{DynamicResource NumericBox.Brushes.Foreground}"/>
