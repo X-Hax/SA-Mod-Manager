@@ -26,7 +26,7 @@ namespace ModManagerWPF
 			InitializeComponent();
 			Title += " " + code.Name;
 			TitleText.Text = code.Name;
-			AuthorText.Text = code.Author != null ? Lang.GetString("CodeAuthor") + " " + code.Author : null;
+			AuthorText.Text = code.Author != null ? Lang.GetString("CommonStrings.Author") + " " + code.Author : null;
 			DescBx.Text = code.Description;
 		}
 	}
