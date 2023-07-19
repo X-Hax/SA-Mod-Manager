@@ -1101,7 +1101,7 @@ namespace ModManagerWPF
 		{
 			CodeAuthorGrid.Text = Lang.GetString("CommonStrings.Author");
 			CodeDescGrid.Text = Lang.GetString("CommonStrings.Description");
-			CodeCategoryGrid.Text = Lang.GetString("CodesListCategory");
+			CodeCategoryGrid.Text = Lang.GetString("CommonStrings.Category");
 		}
 
 
