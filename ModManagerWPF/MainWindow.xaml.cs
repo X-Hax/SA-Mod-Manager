@@ -30,12 +30,12 @@ namespace ModManagerWPF
 	{
 		#region Variables
 
-		private const string pipeName = "sadx-mod-manager";
 		public readonly string titleName = "SADX Mod Manager";
-		public static string Version = "1.0.0";
-		public static string GitVersion = string.Empty;
+		private const string V = "1.0.0";
+		private static string Version = V;
+		private static string GitVersion = string.Empty;
 		public static string modDirectory = string.Empty;
-		public static string updatePath = "mods/.updates";
+		private static string updatePath = "mods/.updates";
 		public static string loaderinipath = "mods/SADXModLoader.ini";
 		private string sadxIni = "sonicDX.ini";
 		string datadllorigpath = "system/CHRMODELS_orig.dll";
@@ -56,6 +56,7 @@ namespace ModManagerWPF
 		private string d3d8to9StoredDLLName = "d3d8m.dll";
 		CodeList mainCodes = null;
 		List<Code> codes = null;
+		public List<CodeData> codesSearch { get; set; }
 		bool installed = false;
 		bool suppressEvent = false;
 		BackgroundWorker updateChecker;
@@ -1000,8 +1001,8 @@ namespace ModManagerWPF
 
 		private void LoadCodes()
 		{
-
 			codes = new List<Code>(mainCodes.Codes);
+			codesSearch = new();
 
 			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
 
@@ -1018,7 +1019,7 @@ namespace ModManagerWPF
 					codes = item,
 					IsChecked = loaderini.EnabledCodes.Contains(item.Name),
 				};
-
+				codesSearch.Add(extraItem);
 				CodeListView.Items.Add(extraItem);
 			}
 
@@ -2299,7 +2300,6 @@ namespace ModManagerWPF
 			}
 		}
 
-
 		private bool CheckD3D8to9Update()
 		{
 			if (!File.Exists(d3d8to9StoredDLLName) || !File.Exists(d3d8to9InstalledDLLName))
@@ -2461,9 +2461,8 @@ namespace ModManagerWPF
 			}
 			else if (ctrlkey)
 			{
-				if (Keyboard.IsKeyDown(Key.F))
+				if (Keyboard.IsKeyDown(Key.F)) //enable or disable search feature
 				{
-
 					if (tcMain.SelectedItem == tabMain)
 					{
 						if (ModsFind.Visibility == Visibility.Visible)
@@ -2481,7 +2480,18 @@ namespace ModManagerWPF
 					}
 					else if (tcMain.SelectedItem == tbCodes)
 					{
-
+						if (CodesFind.Visibility == Visibility.Visible)
+						{
+							CodesFind.Visibility = Visibility.Collapsed;
+							FilterCodes("");
+						}
+						else
+						{
+	
+							CodesFind.Visibility = Visibility.Visible;
+							FilterCodes(TextBox_CodesSearch.Text.ToLowerInvariant());
+							TextBox_CodesSearch.Focus();
+						}
 					}
 				}
 			}
@@ -2494,7 +2504,7 @@ namespace ModManagerWPF
 				}
 				else if (tcMain.SelectedItem == tbCodes)
 				{
-		
+					
 				}
 			}
 
@@ -2504,6 +2514,7 @@ namespace ModManagerWPF
 
 		#region SearchBar
 
+		//more info in the keyboard shortcut functions above.
 		private void TextBox_ModsSearch_LostFocus(object sender, RoutedEventArgs e)
 		{
 			// Close if focus is lost with no text
@@ -2518,6 +2529,35 @@ namespace ModManagerWPF
 		}
 
 		#endregion
+
+		public void FilterCodes(string text)
+		{
+			CodeListView.Items.Clear();
+
+			int enabledIndex = 0;
+
+			foreach (CodeData item in codesSearch)
+			{
+				if (item.codes.Name.ToLowerInvariant().Contains(text) || (item.codes.Author != null && item.codes.Author.ToLowerInvariant().Contains(text)))
+				{
+					if (item.IsChecked)
+						CodeListView.Items.Insert(enabledIndex++, item);
+					else
+						CodeListView.Items.Add(item);
+				}
+			}
+		}
+
+		private void TextBox_CodesSearch_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			FilterCodes(TextBox_CodesSearch.Text.ToLowerInvariant());
+		}
+
+		private void TextBox_CodesSearch_LostFocus(object sender, RoutedEventArgs e)
+		{
+			if (TextBox_CodesSearch.Text.Length == 0)
+				CodesFind.Visibility = Visibility.Collapsed;
+		}
 	}
 
 }
