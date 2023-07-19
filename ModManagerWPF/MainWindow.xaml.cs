@@ -2344,6 +2344,12 @@ namespace ModManagerWPF
 				File.Delete(d3d8to9InstalledDLLName);
 
 		}
+
+		private void btnAddCode_Click(object sender, RoutedEventArgs e)
+		{
+			Common.NewCode newcodewindow = new Common.NewCode();
+			newcodewindow.ShowDialog();
+		}
 	}
 
 }

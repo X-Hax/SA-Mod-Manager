@@ -7,6 +7,7 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="AboutMod/en-EN.xaml"/>
 		<ResourceDictionary Source="EditMod/en-EN.xaml"/>
+		<ResourceDictionary Source="InfoManagerUpdate/en-EN.xaml"/>
 		<ResourceDictionary Source="InstallModOptions/en-EN.xaml"/>
 		<ResourceDictionary Source="MainWindow/en-EN.xaml"/>
 		<ResourceDictionary Source="MainWindow/Patches/en-EN.xaml"/>
@@ -16,6 +17,7 @@
 		<ResourceDictionary Source="ModChangelog/en-EN.xaml"/>
 		<ResourceDictionary Source="ModConfig/en-EN.xaml"/>
 		<ResourceDictionary Source="ModProfile/en-EN.xaml"/>
+		<ResourceDictionary Source="NewCode/en-EN.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/en-EN.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
     
@@ -42,7 +44,7 @@
 	<system:String x:Key="CommonStrings.Credits">Credits</system:String>
 	<system:String x:Key="CommonStrings.Download">Download</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">Open Folder</system:String>
-	
+
 	<!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Minimize</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Maximize</system:String>

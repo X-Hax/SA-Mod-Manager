@@ -248,6 +248,11 @@
 	<SolidColorBrush x:Key="Expander.Disabled.Circle.Stroke" Color="{DynamicResource Colors.Border}"/>
 	<SolidColorBrush x:Key="Expander.Disabled.Circle.Fill" Color="{DynamicResource Colors.Background.Disabled}"/>
 	<SolidColorBrush x:Key="Expander.Disabled.Arrow.Stroke" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="TextEditor.Brushes.Background" Color="#FF282828"/>
+	<SolidColorBrush x:Key="TextEditor.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="TextEditor.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="TextEditor.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
 	<!--#endregion-->
 	
 	<!--#region LinearGradientBrushes-->

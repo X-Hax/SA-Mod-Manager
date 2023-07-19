@@ -1,0 +1,105 @@
+﻿<Window x:Class="ModManagerWPF.Common.NewCode"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModManagerWPF"
+		xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
+        mc:Ignorable="d" Style="{StaticResource SAWindow}" WindowStartupLocation="CenterScreen"
+        Title="{DynamicResource NewCode.Title}" Height="350" Width="500">
+	<Window.Resources>
+		<ResourceDictionary Source="../Icons/Icons.xaml"/>
+	</Window.Resources>
+	
+    <Grid Margin="5">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="30"/>
+		</Grid.RowDefinitions>
+
+		<Grid x:Name="CodeInfo">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+			</Grid.RowDefinitions>
+
+			<Grid x:Name="CodeInfoTop" Grid.Row="0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid Grid.Column="0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Label x:Name="LabelName" Content="{DynamicResource CommonStrings.Name}" Margin="0"/>
+					<TextBox x:Name="CodeName" Grid.Column="1" Margin="5"/>
+				</Grid>
+				<Grid Grid.Column="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Label x:Name="LabelAuthor" Content="{DynamicResource CommonStrings.Author}" VerticalAlignment="Center"/>
+					<TextBox x:Name="CodeAuthor" Grid.Column="1" Margin="5"/>
+				</Grid>
+				<Grid Grid.Column="2">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Label x:Name="LabelCategory" Content="{DynamicResource CommonStrings.Category}" VerticalAlignment="Center"/>
+					<ComboBox x:Name="CodeCategory" Grid.Column="1" Margin="5"/>
+				</Grid>
+			</Grid>
+
+			<Grid x:Name="CodeInfoMiddle" Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Label Content="{DynamicResource CommonStrings.Description}" VerticalAlignment="Center"/>
+				<TextBox x:Name="CodeDescription" Grid.Column="1" Margin="5"/>
+			</Grid>
+
+			<Grid x:Name="CodeInfoBottom" Grid.Row="2">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<CheckBox x:Name="CheckSaveToMod" Content="{DynamicResource NewCode.Check.SaveToMod}" Margin="5" Checked="CheckSaveToMod_Checked" Unchecked="CheckSaveToMod_Checked"/>
+				<Grid Grid.Column="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="5"/>
+					</Grid.ColumnDefinitions>
+					<TextBox x:Name="CodeModFolder" Margin="5" IsEnabled="{Binding ElementName=CheckSaveToMod, Path=IsChecked}"/>
+					<local:ImageButton x:Name="btnBrowseGameDir" Grid.Column="1" Height="20" Width="25" Icon="{StaticResource Icons.Folder}"
+									   IsEnabled="{Binding ElementName=CheckSaveToMod, Path=IsChecked}"/>
+				</Grid>
+			</Grid>
+		</Grid>
+
+		<Grid x:Name="CodeData" Grid.Row="1" Margin="5">
+			<avalon:TextEditor x:Name="Code" Margin="5"
+							   ShowLineNumbers="True" VerticalScrollBarVisibility="Auto"/>
+		</Grid>
+
+		<Grid x:Name="WindowButons" Grid.Row="2" HorizontalAlignment="Right">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="100"/>
+				<ColumnDefinition Width="10"/>
+				<ColumnDefinition Width="100"/>
+				<ColumnDefinition Width="5"/>
+			</Grid.ColumnDefinitions>
+
+			<Button x:Name="SaveButton" Content="{DynamicResource CommonStrings.Save}" Grid.Column="0" Click="SaveButton_Click"/>
+			<Button x:Name="CancelButton" Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="2" Click="CancelButton_Click"/>
+		</Grid>
+    </Grid>
+</Window>
