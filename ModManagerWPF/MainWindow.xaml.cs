@@ -18,7 +18,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Security.Cryptography;
 using System.Threading;
-
+using System.Collections.ObjectModel;
 
 namespace ModManagerWPF
 {
@@ -46,6 +46,8 @@ namespace ModManagerWPF
 		string gamePath = string.Empty;
 		SADXLoaderInfo loaderini;
 		public Dictionary<string, SADXModInfo> mods = null;
+		public ObservableCollection<ModData> Modsdata { get; set; } = new();
+		public ObservableCollection<ModData> ModsSearch { get; set; } = new();
 		string codelstpath = "mods/Codes.lst";
 		string codexmlpath = "mods/Codes.xml";
 		string codedatpath = "mods/Codes.dat";
@@ -447,7 +449,7 @@ namespace ModManagerWPF
 		private void LoadModList()
 		{
 			btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
-			listMods.Items.Clear();
+			Modsdata.Clear();
 			mods = new Dictionary<string, SADXModInfo>();
 
 			bool modFolderExist = Directory.Exists(modDirectory);
@@ -481,6 +483,7 @@ namespace ModManagerWPF
 				mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(modDirectory.Length + 1), mod);
 			}
 
+
 			foreach (string mod in new List<string>(loaderini.Mods))
 			{
 				if (mods.ContainsKey(mod))
@@ -499,7 +502,8 @@ namespace ModManagerWPF
 						IsChecked = true,
 						Tag = mod
 					};
-					listMods.Items.Add(item);
+
+					Modsdata.Add(item);
 					suppressEvent = false;
 				}
 				else
@@ -526,10 +530,11 @@ namespace ModManagerWPF
 						Tag = inf.Key,
 					};
 
-					listMods.Items.Add(item);
+					Modsdata.Add(item);
 				}
 			}
 
+			DataContext = this;
 			ConfigureModBtn_UpdateState();
 		}
 
@@ -1098,10 +1103,7 @@ namespace ModManagerWPF
 			CodeCategoryGrid.Text = Lang.GetString("CodesListCategory");
 		}
 
-		private void CodesView_Item_Selected(object sender, RoutedEventArgs e)
-		{
 
-		}
 
 		private void btnSelectAllCode_Click(object sender, RoutedEventArgs e)
 		{
@@ -1121,6 +1123,12 @@ namespace ModManagerWPF
 				code.IsChecked = false;
 			}
 			CodeListView.EndInit();
+		}
+
+		private void btnAddCode_Click(object sender, RoutedEventArgs e)
+		{
+			Common.NewCode newcodewindow = new Common.NewCode();
+			newcodewindow.ShowDialog();
 		}
 
 		#endregion
@@ -1532,9 +1540,9 @@ namespace ModManagerWPF
 
 			if (index > 0)
 			{
-				var item = listMods.Items.GetItemAt(index);
-				listMods.Items.Remove(item);
-				listMods.Items.Insert(0, item);
+				var item = Modsdata[index];
+				Modsdata.Remove(item);
+				Modsdata.Insert(0, item);
 			}
 		}
 
@@ -1544,12 +1552,12 @@ namespace ModManagerWPF
 				return;
 
 			int index = listMods.SelectedIndex;
-
+			
 			if (index > 0)
-			{
-				var item = listMods.Items.GetItemAt(index);
-				listMods.Items.Remove(item);
-				listMods.Items.Insert(index - 1, item);
+			{	
+				var item = Modsdata[index];
+				Modsdata.Remove(item);
+				Modsdata.Insert(index - 1, item);
 			}
 		}
 
@@ -1562,9 +1570,9 @@ namespace ModManagerWPF
 
 			if (index != listMods.Items.Count - 1)
 			{
-				var item = listMods.Items.GetItemAt(index);
-				listMods.Items.Remove(item);
-				listMods.Items.Insert(listMods.Items.Count, item);
+				var item = Modsdata[index];
+				Modsdata.Remove(item);
+				Modsdata.Insert(listMods.Items.Count, item);
 			}
 		}
 
@@ -1577,9 +1585,9 @@ namespace ModManagerWPF
 
 			if (index < listMods.Items.Count)
 			{
-				var item = listMods.Items.GetItemAt(index);
-				listMods.Items.Remove(item);
-				listMods.Items.Insert(index + 1, item);
+				var item = Modsdata[index];
+				Modsdata.Remove(item);
+				Modsdata.Insert(index + 1, item);
 			}
 		}
 
@@ -1588,6 +1596,10 @@ namespace ModManagerWPF
 			LoadModList();
 			InitCodes();
 			RefreshPatchesList();
+			if (ModsFind.Visibility == Visibility.Visible)
+			{
+				FilterMods(TextBox_ModsSearch.Text.ToLowerInvariant());
+			}
 		}
 
 		private async void RefreshBtn_Click(object sender, RoutedEventArgs e)
@@ -2263,7 +2275,7 @@ namespace ModManagerWPF
 
 
 
-		
+
 
 		#region Direct3D wrapper
 
@@ -2314,7 +2326,7 @@ namespace ModManagerWPF
 			catch (Exception ex)
 			{
 				string error = Lang.GetString("MessageWindow.Errors.D3D8UpdateCheck") + "\n" + ex.Message;
-				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog(); 
+				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
 				return false;
 			}
 		}
@@ -2332,8 +2344,6 @@ namespace ModManagerWPF
 			}
 		}
 
-		#endregion
-
 		private void checkD3D9_Click(object sender, RoutedEventArgs e)
 		{
 			if (checkD3D9.IsChecked == true)
@@ -2345,11 +2355,169 @@ namespace ModManagerWPF
 
 		}
 
-		private void btnAddCode_Click(object sender, RoutedEventArgs e)
+		#endregion
+
+		public void FilterMods(string text)
 		{
-			Common.NewCode newcodewindow = new Common.NewCode();
-			newcodewindow.ShowDialog();
+			ModsSearch.Clear();
+
+			foreach (var mod in Modsdata)
+			{
+				if (mod.Name.ToLowerInvariant().Contains(text) || mod.Author.ToLowerInvariant().Contains(text))
+				{
+					ModsSearch.Add(mod); // Add filtered items to the ModsSearch collection.
+				}
+			}
+
+			string path = BindingOperations.GetBinding(listMods, ListView.ItemsSourceProperty).Path.Path;
+			string newPath = text.Length == 0 ? "Modsdata" : "ModsSearch";
+
+			if (path != newPath)
+			{
+				Binding binding = new Binding
+				{
+					Path = new PropertyPath(newPath)
+				};
+				listMods.SetBinding(ListView.ItemsSourceProperty, binding);
+				listMods.SetValue(GongSolutions.Wpf.DragDrop.DragDrop.IsDragSourceProperty, text.Length == 0 ? true : false);
+				listMods.SetValue(GongSolutions.Wpf.DragDrop.DragDrop.IsDropTargetProperty, text.Length == 0 ? true : false);
+			}
 		}
+
+		#region Keyboard Shortcut
+
+		private void ModsList_OnPreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (listMods == null)
+				return;
+
+			ModData mod = (ModData)listMods.SelectedItem;
+			var ctrlKey = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+			if (Keyboard.IsKeyDown(Key.Space))
+			{
+				listMods.BeginInit();
+				mod.IsChecked = !mod.IsChecked;
+				listMods.EndInit();
+			}
+			else if (ctrlKey)
+			{
+
+				if (Keyboard.IsKeyDown(Key.E))
+					ModContextEditMod_Click(null, null);
+				else if (Keyboard.IsKeyDown(Key.O))
+					ModContextOpenFolder_Click(null, null);
+				else if (Keyboard.IsKeyDown(Key.C))
+					ModContextConfigureMod_Click(null, null);
+				else if (Keyboard.IsKeyDown(Key.U))
+					ModContextChkUpdate_Click(null, null);
+				else if (Keyboard.IsKeyDown(Key.Enter))
+					AboutBtn_Click(null, null);
+
+				e.Handled = true;
+			}
+			else if (Keyboard.IsKeyDown(Key.Enter))
+			{
+				OpenAboutModWindow(mod);
+				e.Handled = true;
+			}
+
+
+			if (Keyboard.IsKeyDown(Key.Delete))
+			{
+				ModContextDeleteMod_Click(null, null);
+				e.Handled = true;
+			}
+
+		}
+
+		private void CodesList_OnPreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			var code = GetCodeFromView(sender);
+
+			if (code == null)
+				return;
+
+			if (Keyboard.IsKeyDown(Key.Space))
+			{
+				CodeListView.BeginInit();
+				code.IsChecked = !code.IsChecked;
+				CodeListView.EndInit();
+			}
+
+
+			if (Keyboard.IsKeyDown(Key.Enter))
+				OpenAboutCodeWindow(code.codes);
+		}
+
+		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+		{
+
+			var ctrlkey = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+			if (Keyboard.IsKeyDown(Key.F5))
+			{
+				Refresh();
+			}
+			else if (ctrlkey)
+			{
+				if (Keyboard.IsKeyDown(Key.F))
+				{
+
+					if (tcMain.SelectedItem == tabMain)
+					{
+						if (ModsFind.Visibility == Visibility.Visible)
+						{
+							ModsFind.Visibility = Visibility.Collapsed;
+							FilterMods("");
+						}
+						else
+						{
+							ModsFind.Visibility = Visibility.Visible;
+							FilterMods(TextBox_ModsSearch.Text.ToLowerInvariant());
+							TextBox_ModsSearch.Focus();
+						}
+
+					}
+					else if (tcMain.SelectedItem == tbCodes)
+					{
+
+					}
+				}
+			}
+			if (Keyboard.IsKeyDown(Key.Escape))
+			{
+				if (tcMain.SelectedItem == tabMain)
+				{
+					ModsFind.Visibility = Visibility.Collapsed;
+					FilterMods("");
+				}
+				else if (tcMain.SelectedItem == tbCodes)
+				{
+		
+				}
+			}
+
+		}
+
+		#endregion
+
+		#region SearchBar
+
+		private void TextBox_ModsSearch_LostFocus(object sender, RoutedEventArgs e)
+		{
+			// Close if focus is lost with no text
+			if (TextBox_ModsSearch.Text.Length == 0)
+				ModsFind.Visibility = Visibility.Collapsed;
+		}
+
+
+		private void TextBox_ModsSearch_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			FilterMods(TextBox_ModsSearch.Text.ToLowerInvariant());
+		}
+
+		#endregion
 	}
 
 }

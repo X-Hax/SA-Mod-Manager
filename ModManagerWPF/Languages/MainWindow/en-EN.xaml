@@ -15,9 +15,9 @@
 	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">Refresh</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">Configure Mod</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">Add Mod</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">No Mod Selected.</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">No Mod Selected.</system:String>
 
-	<!--Mods Context Menu-->
+    <!--Mods Context Menu-->
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Check For Updates</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Verify Integrity</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Force Update</system:String>
