@@ -5,7 +5,8 @@
 			 xmlns:local="clr-namespace:ModManagerWPF"
 			 xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
 			 xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-			 xmlns:xctp="clr-namespace:Xceed.Wpf.Toolkit.Themes;assembly=Xceed.Wpf.Toolkit.NET5">
+			 xmlns:xctp="clr-namespace:Xceed.Wpf.Toolkit.Themes;assembly=Xceed.Wpf.Toolkit.NET5"
+			 xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit">
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -102,7 +103,22 @@
 				</Style.Triggers>
 			</Style>
 			<!--#endregion-->
-			
+
+			<!--#region TextEditor-->
+			<Style TargetType="{x:Type avalon:TextEditor}">
+				<Setter Property="Background" Value="{DynamicResource TextEditor.Brushes.Background}"/>
+				<Setter Property="Foreground" Value="{DynamicResource TextEditor.Brushes.Foreground}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource TextEditor.Brushes.Border}"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="FontSize" Value="14"/>
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver" Value="True">
+						<Setter Property="BorderBrush" Value="{DynamicResource TextEditor.Brushes.MouseOver.Border}"/>
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+			<!--#endregion-->
+
 			<!--#region Tab Style-->
 			<Style TargetType="{x:Type TabControl}">
 				<Setter Property="BorderBrush" Value="{DynamicResource TabControl.Brushes.Background}" />

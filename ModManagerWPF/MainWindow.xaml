@@ -301,7 +301,7 @@
 									<ColumnDefinition Width="240"/>
 								</Grid.ColumnDefinitions>
 								<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnAddCode" Height="30" Grid.Column="0" ToolTip="{DynamicResource MainWindow.Tips.Tab.Codes.NewCode}"
-												   Icon="{StaticResource Icons.Add}" Content="{DynamicResource Manager.Tabs.Codes.Buttons.NewCode}"
+												   Icon="{StaticResource Icons.Add}" Content="{DynamicResource Manager.Tabs.Codes.Buttons.NewCode}" Click="btnAddCode_Click"
 												   ImageBrush="{DynamicResource Icon.Brushes.Green}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Green}"/>
 							</Grid>
 						</Grid>
