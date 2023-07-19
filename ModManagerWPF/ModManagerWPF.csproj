@@ -12,6 +12,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Languages\AboutCode\**" />
+    <Compile Remove="Languages\AboutManager\**" />
+    <Compile Remove="Languages\DownloadMod\**" />
+    <EmbeddedResource Remove="Languages\AboutCode\**" />
+    <EmbeddedResource Remove="Languages\AboutManager\**" />
+    <EmbeddedResource Remove="Languages\DownloadMod\**" />
+    <None Remove="Languages\AboutCode\**" />
+    <None Remove="Languages\AboutManager\**" />
+    <None Remove="Languages\DownloadMod\**" />
+    <Page Remove="Languages\AboutCode\**" />
+    <Page Remove="Languages\AboutManager\**" />
+    <Page Remove="Languages\DownloadMod\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<None Remove="Icons\SADXModManager_.png" />
 	<None Remove="Updater\ModDownloadDialog.xaml.cs~RF2e7deabf.TMP" />
   </ItemGroup>

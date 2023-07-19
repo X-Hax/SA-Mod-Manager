@@ -13,7 +13,8 @@ using System.Security.Policy;
 using Octokit;
 using System.Xml.Linq;
 using System.IO;
-
+using ModManagerWPF.Common;
+using System.Windows.Interop;
 
 namespace ModManagerWPF
 {
@@ -59,11 +60,10 @@ namespace ModManagerWPF
 			}
 			catch (Exception ex)
 			{
-				/*MessageBox.Show(this,
-								$"Malformed One-Click Install URI \"{uri}\" caused parse failure:\n{ex.Message}",
-								"URI Parse Failure",
-								MessageBoxButton.OK,
-								MessageBoxIcon.Error);*/
+				string msg = Lang.GetString($"MessageWindow.Errors.URIParseFail0") + "\"{uri}\"" + Lang.GetString("MessageWindow.Errors.URIParseFail1");
+
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.URIParseFail.Title"), msg, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+
 
 				return;
 			}
@@ -118,11 +118,7 @@ namespace ModManagerWPF
 			}
 			catch (Exception ex)
 			{
-				/*MessageBox.Show(this,
-								$"GameBanana API query failed:\n{ex.Message}",
-								"GameBanana API Failure",
-								MessageBoxButtons.OK,
-								MessageBoxIcon.Error);*/
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.GBAPIFail.Title"), Lang.GetString("MessageWindow.Errors.GBAPIFail"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
 
 				return;
 
@@ -164,11 +160,8 @@ namespace ModManagerWPF
 			}
 			else
 			{
-				/*MessageBox.Show(this,
-								$"One-Click Install URI \"{uri}\" did not contain required fields.",
-								"URI Parse Failure",
-								MessageBoxButtons.OK,
-								MessageBoxIcon.Error);*/
+				string error = Lang.GetString("MessageWindow.Errors.URIParseFail0 ") + "\"{uri}\" " + Lang.GetString("MessageWindow.Errors.URIParseFailFields1");
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.URIParseFail.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 
 				return;
 			}
@@ -259,11 +252,9 @@ namespace ModManagerWPF
 			}
 			catch (Exception ex)
 			{
-				/*MessageBox.Show(this, "Failed to remove temporary update directory:\n" +
-										 ex.Message +
-										 "\n\nWould you like to retry? You can remove the directory manually later.",
-										 "Directory Deletion Failed",
-										 MessageBoxButton.RetryCancel);*/
+				string error = "MessageWindow.Errors.DirectoryDeleteFail0" + "\n" + ex.Message + "\n\n" + Lang.GetString("MessageWindow.Errors.DirectoryDeleteFail1");
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.DirectoryDeleteFail.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+
 			}
 
 			((MainWindow)App.Current.MainWindow).Save();

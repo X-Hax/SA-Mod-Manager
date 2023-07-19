@@ -1,13 +1,8 @@
-﻿
-using ModManagerCommon;
+﻿using ModManagerCommon;
+using ModManagerWPF.Common;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace ModManagerWPF.Updater
@@ -86,7 +81,7 @@ namespace ModManagerWPF.Updater
 				}
 				catch
 				{
-					//MessageBox.Show(this, "Unable to retrieve update information.", "SADX Mod Manager");
+					new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Errors.ManagerUpdateFail"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
 				}
 			}
 

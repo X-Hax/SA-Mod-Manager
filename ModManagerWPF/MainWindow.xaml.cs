@@ -1,8 +1,5 @@
-﻿using ModManagerWPF.Languages;
-using ModManagerWPF.Themes;
-using System;
+﻿using System;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using ModManagerCommon;
@@ -11,14 +8,12 @@ using System.IO;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using IniFile;
-using MessageBox = System.Windows.MessageBox;
 using System.Windows.Threading;
 using System.Diagnostics;
 using ModManagerWPF.Properties;
 using System.Windows.Media;
 using System.Threading.Tasks;
 using ModManagerWPF.Common;
-using static ModManagerWPF.MainWindow;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Security.Cryptography;
@@ -55,6 +50,8 @@ namespace ModManagerWPF
 		string codexmlpath = "mods/Codes.xml";
 		string codedatpath = "mods/Codes.dat";
 		string patchdatpath = "mods/Patches.dat";
+		private string d3d8to9InstalledDLLName = "d3d8.dll";
+		private string d3d8to9StoredDLLName = "d3d8m.dll";
 		CodeList mainCodes = null;
 		List<Code> codes = null;
 		bool installed = false;
@@ -120,6 +117,7 @@ namespace ModManagerWPF
 			UpdateDLLData();
 			UpdatePatches();
 			setupTestSpawn();
+			SetUp_UpdateD3D9();
 
 			if (args is not null)
 				CleanUpdate(args);
@@ -240,6 +238,8 @@ namespace ModManagerWPF
 				codexmlpath = Path.Combine(gamePath, "mods/Codes.xml");
 				codedatpath = Path.Combine(gamePath, "mods/Codes.dat");
 				patchdatpath = Path.Combine(gamePath, "mods/Patches.dat");
+
+				d3d8to9InstalledDLLName = Path.Combine(gamePath, "d3d8.dll");
 			}
 			else
 			{
@@ -428,9 +428,10 @@ namespace ModManagerWPF
 
 			string executablePath = loaderini.Mods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(gamePath, "sonic.exe");
 
-			Process.Start(new ProcessStartInfo(Path.Combine(gamePath, "sonic.exe"))
+			string folderPath = Path.GetDirectoryName(executablePath);
+			Process.Start(new ProcessStartInfo(executablePath)
 			{
-				WorkingDirectory = executablePath
+				WorkingDirectory = folderPath
 			});
 
 			if ((bool)!checkManagerOpen.IsChecked)
@@ -595,7 +596,7 @@ namespace ModManagerWPF
 
 			if (items.Count < 1)
 			{
-				new MessageWindow("Missing mod.manifest", "None of the selected mods have manifests, so they cannot be verified.",
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.MissingManifest.Title"), Lang.GetString("MessageWindow.Errors.MissingManifest"),
 			MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information).ShowDialog();
 				return;
 			}
@@ -615,15 +616,18 @@ namespace ModManagerWPF
 
 			if (failed.Count < 1)
 			{
-				new MessageWindow("Integrity Pass", "All selected mods passed verification.",
+				new MessageWindow(Lang.GetString("MessageWindow.Information.ModPassedVerif.Title"), Lang.GetString("MessageWindow.Information.ModPassedVerif"),
 					MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information).ShowDialog();
 			}
 			else
 			{
 
-				var result = new MessageWindow("Integrity Fail", "The following mods failed verification:\n"
-	+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: {x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged)} file(s)"))
-	+ "\n\nWould you like to attempt repairs?", MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
+				var error0 = Lang.GetString("MessageWindow.Errors.ModFailedVerif")
+	+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: {x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged)}" + Lang.GetString("MessageWindow.Errors.ModFailedVerif1"))
+	+ Lang.GetString("MessageWindow.Errors.ModFailedVerif2"));
+
+
+				var result = new MessageWindow(Lang.GetString("MessageWindow.Errors.ModFailedVerif.Title"), error0, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
 				result.ShowDialog();
 
 				if (result.isYes != true)
@@ -2253,7 +2257,88 @@ namespace ModManagerWPF
 				Updater.ModManifest.ToFile(manifest, manifestPath);
 			}
 		}
+
+		#region Direct3D wrapper
+
+		private void SetUp_UpdateD3D9()
+		{
+			btnUpdateD3D9.IsEnabled = CheckD3D8to9Update();
+			checkD3D9.IsEnabled = File.Exists(d3d8to9StoredDLLName);
+			checkD3D9.IsChecked = File.Exists(d3d8to9InstalledDLLName);
+		}
+
+		private void CopyD3D9Dll()
+		{
+			try
+			{
+				File.Copy(d3d8to9StoredDLLName, d3d8to9InstalledDLLName, true);
+			}
+			catch (Exception ex)
+			{
+				string error = Lang.GetString("MessageWindow.Errors.D3D8Update") + "\n" + ex.Message;
+				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+			}
+		}
+
+
+		private bool CheckD3D8to9Update()
+		{
+			if (!File.Exists(d3d8to9StoredDLLName) || !File.Exists(d3d8to9InstalledDLLName))
+				return false;
+
+			try
+			{
+				long length1 = new FileInfo(d3d8to9InstalledDLLName).Length;
+				long length2 = new FileInfo(d3d8to9StoredDLLName).Length;
+				if (length1 != length2)
+					return true;
+				else
+				{
+					byte[] file1 = File.ReadAllBytes(d3d8to9InstalledDLLName);
+					byte[] file2 = File.ReadAllBytes(d3d8to9StoredDLLName);
+					for (int i = 0; i < file1.Length; i++)
+					{
+						if (file1[i] != file2[i])
+							return true;
+					}
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				string error = Lang.GetString("MessageWindow.Errors.D3D8UpdateCheck") + "\n" + ex.Message;
+				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog(); 
+				return false;
+			}
+		}
+
+		private void btnUpdateD3D9_Click(object sender, RoutedEventArgs e)
+		{
+			string info = Lang.GetString("MessageWindow.Information.D3D8Update");
+			var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString(info), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
+			msg.ShowDialog();
+
+			if (msg.isYes)
+			{
+				CopyD3D9Dll();
+				btnUpdateD3D9.IsEnabled = CheckD3D8to9Update();
+			}
+		}
+
+		#endregion
+
+		private void checkD3D9_Click(object sender, RoutedEventArgs e)
+		{
+			if (checkD3D9.IsChecked == true)
+			{
+				CopyD3D9Dll();
+			}
+			else if (checkD3D9.IsChecked == false && File.Exists(d3d8to9InstalledDLLName))
+				File.Delete(d3d8to9InstalledDLLName);
+
+		}
 	}
+
 }
 
 

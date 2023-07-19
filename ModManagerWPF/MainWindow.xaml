@@ -558,8 +558,8 @@
 
 													<CheckBox x:Name="checkMipmapping" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap}"/>
 													<CheckBox x:Name="checkUIScale" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale}" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale}"/>
-													<CheckBox x:Name="checkD3D9" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9}" Grid.Column="0" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9}"/>
-													<Button x:Name="btnUpdateD3D9" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9}" Grid.Column="1" Margin="5,0,5,0" Grid.Row="3" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9}"/>
+													<CheckBox x:Name="checkD3D9" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9}" Grid.Column="0" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Center" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9}" Click="checkD3D9_Click"/>
+													<Button x:Name="btnUpdateD3D9" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9}" Grid.Column="1" Margin="5,0,5,0" Grid.Row="3" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9}" Click="btnUpdateD3D9_Click"/>
 												</Grid>
 											</GroupBox>
 										</Grid>
