@@ -7,7 +7,8 @@
         <local:LangEntry FileName="fr-FR" Name="Français (France)"/>
         <local:LangEntry FileName="es-ES" Name="Español (España)"/>
         <local:LangEntry FileName="he-IL" Name="עברית"/>
-        
+        <local:LangEntry FileName="pt-PT" Name="Português (Portugal)"/>
+
 
     </local:LanguageList>
 

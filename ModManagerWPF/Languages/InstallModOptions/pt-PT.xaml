@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="InstallModOptions.Title">Instalar ou Criar um novo Mod.</system:String>
+	<system:String x:Key="InstallModOptions.Radio.Archive">Instalar por um arquivo</system:String>
+	<system:String x:Key="InstallModOptions.Radio.Folder">Instalar por uma pasta</system:String>
+	<system:String x:Key="InstallModOptions.Radio.New">Novo Mod (Para Desenvolvedores)</system:String>
+</ResourceDictionary>

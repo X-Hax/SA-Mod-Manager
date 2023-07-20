@@ -1,0 +1,52 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="AboutMod/pt-PT.xaml"/>
+		<ResourceDictionary Source="EditMod/pt-PT.xaml"/>
+		<ResourceDictionary Source="InstallModOptions/pt-PT.xaml"/>
+		<ResourceDictionary Source="MainWindow/pt-PT.xaml"/>
+		<ResourceDictionary Source="MainWindow/Patches/pt-PT.xaml"/>
+		<ResourceDictionary Source="MainWindow/TestSpawn/pt-PT.xaml"/>
+		<ResourceDictionary Source="ManifestChanges/pt-PT.xaml"/>
+		<ResourceDictionary Source="MessageWindow/pt-PT.xaml"/>
+		<ResourceDictionary Source="ModChangelog/pt-PT.xaml"/>
+		<ResourceDictionary Source="ModConfig/pt-PT.xaml"/>
+		<ResourceDictionary Source="ModProfile/pt-PT.xaml"/>
+		<ResourceDictionary Source="SelectDependencies/pt-PT.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+    
+    <!--Region Common UI-->
+    <system:String x:Key="CommonStrings.OK">OK</system:String>
+    <system:String x:Key="CommonStrings.Cancel">Cancelar</system:String>
+	<system:String x:Key="CommonStrings.Yes">Sim</system:String>
+	<system:String x:Key="CommonStrings.No">Não</system:String>
+	<system:String x:Key="CommonStrings.Retry">Tentar Novamente</system:String>
+	<system:String x:Key="CommonStrings.Warning">Aviso</system:String>
+	<system:String x:Key="CommonStrings.Error">Erro</system:String>
+    <system:String x:Key="CommonStrings.Reset">Reiniciar</system:String>
+    <system:String x:Key="CommonStrings.Create">Criar</system:String>
+	<system:String x:Key="CommonStrings.SelectAll">Selecionar Tudo</system:String>
+	<system:String x:Key="CommonStrings.DeselectAll">Desselecionar Tudo</system:String>
+	<system:String x:Key="CommonStrings.Name">Nome</system:String>
+	<system:String x:Key="CommonStrings.Status">Estado</system:String>
+	<system:String x:Key="CommonStrings.Save">Salvar</system:String>
+	<system:String x:Key="CommonStrings.Author">Autor</system:String>
+	<system:String x:Key="CommonStrings.Version">Versão</system:String>
+	<system:String x:Key="CommonStrings.Category">Categoria</system:String>
+	<system:String x:Key="CommonStrings.Description">Descrição:</system:String>
+	<system:String x:Key="CommonStrings.Search">Procurar</system:String>
+	<system:String x:Key="CommonStrings.Credits">Creditos</system:String>
+	<system:String x:Key="CommonStrings.Download">Download</system:String>
+	<system:String x:Key="CommonStrings.OpenFolder">Abrir Pasta</system:String>
+	
+	<!--Window Tips-->
+	<system:String x:Key="Window.Tips.Minimize">Minimizar</system:String>
+	<system:String x:Key="Window.Tips.Maximize">Maximizar</system:String>
+	<system:String x:Key="Window.Tips.Restore">Restaurar</system:String>
+	<system:String x:Key="Window.Tips.Close">Fechar</system:String>
+
+</ResourceDictionary>

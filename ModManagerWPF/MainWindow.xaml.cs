@@ -1929,6 +1929,7 @@ namespace ModManagerWPF
 
 		private void UpdatePatches()
 		{
+			test();
 			listPatches.Items.Clear();
 
 			if (loaderini is null)
@@ -2272,12 +2273,6 @@ namespace ModManagerWPF
 
 		#endregion
 
-
-
-
-
-
-
 		#region Direct3D wrapper
 
 		private void SetUp_UpdateD3D9()
@@ -2392,6 +2387,10 @@ namespace ModManagerWPF
 				return;
 
 			ModData mod = (ModData)listMods.SelectedItem;
+
+			if (mod == null) 
+				return;
+
 			var ctrlKey = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
 			if (Keyboard.IsKeyDown(Key.Space))

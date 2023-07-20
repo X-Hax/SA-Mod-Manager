@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="ManagerProfile.Title">Gerir Perfis</system:String>
+	<system:String x:Key="ManagerProfile.Buttons.Rename">Mudar o nome do Perfil</system:String>
+	<system:String x:Key="ManagerProfile.Buttons.Create">Criar Perfil</system:String>
+	<system:String x:Key="ManagerProfile.Path">Destino do Ficheiro</system:String>
+	<system:String x:Key="ManagerProfile.ContextMenu.Rename">Mudar o nome</system:String>
+	<system:String x:Key="ManagerProfile.ContextMenu.Duplicate">Duplicar</system:String>
+	<system:String x:Key="ManagerProfile.ContextMenu.Delete">Apagar</system:String>
+	<system:String x:Key="ManagerProfile.Errors.Unexpected">Erro inesperado, não foi possível mudar o nome do perfil.</system:String>
+	<system:String x:Key="ManagerProfile.Errors.ProfileExists.Title">Erro, Perfil já existente</system:String>
+	<system:String x:Key="ManagerProfile.Errors.ProfileExists">Um perfil com este nome já existe, por favor, use um nome diferente.</system:String>
+</ResourceDictionary>
