@@ -37,6 +37,7 @@ namespace ModManagerWPF
 		{
 			InitializeComponent();
 			Header.Text = Lang.GetString("InstallModOptions.Title");
+			Title = Lang.GetString("EditMod.Header.NewMod");
 
 			CheckStack.Children.Add(new RadioButton() { IsChecked = true, Content = Lang.GetString("InstallModOptions.Radio.New"), Margin = new Thickness(2) }); ;
 			CheckStack.Children.Add(new RadioButton() { Content = Lang.GetString("InstallModOptions.Radio.Archive"), Margin = new Thickness(2) });
