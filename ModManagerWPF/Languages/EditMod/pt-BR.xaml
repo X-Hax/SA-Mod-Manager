@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<system:String x:Key="EditMod.Description">Por favor preencha as informações do seu mod.</system:String>
+	<system:String x:Key="EditMod.Header.EditMod">Editar</system:String>
+	<system:String x:Key="EditMod.Header.NewMod">Novo Mod</system:String>
+
+	<system:String x:Key="EditMod.Tabs.Info">Informações do Mod</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.AuthorURL">URL do Autor:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.ModID">ID do Mod:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.DLL">DLL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Source">URL do Código Fonte:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Redirecionar Save:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Save Principal</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Save de Chao</system:String>
+
+	<system:String x:Key="EditMod.Tabs.Updates">Informações de Atualizações</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Method">Método de Atualização</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub">Opções de Atualização por Github</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Autor e Repositório:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Asset do Release:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GB">Opções de Atualização por Gamebanana</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">ID do Mod:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self">Opções de Atualização Auto-Hospedada</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL de Atualizações:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL de Changelogs:</system:String>
+
+	<system:String x:Key="EditMod.Tabs.Dependencies">Dependências</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Warning">O sistema de depêndencia só deve ser usado quando você estiver criando um mod que absolutamente necessita de outro mod para funcionar corretamente.</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Add">Adicionar Depêndencias</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Remove">Remover Depêndencias</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.ID">ID</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Folder">Pasta</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Column">Link para Download</system:String>
+</ResourceDictionary>

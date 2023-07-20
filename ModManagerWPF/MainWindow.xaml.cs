@@ -1929,7 +1929,6 @@ namespace ModManagerWPF
 
 		private void UpdatePatches()
 		{
-			test();
 			listPatches.Items.Clear();
 
 			if (loaderini is null)
