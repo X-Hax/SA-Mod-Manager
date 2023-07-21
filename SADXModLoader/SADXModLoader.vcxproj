@@ -24,6 +24,7 @@
     <ClCompile Include="FileReplacement.cpp" />
     <ClCompile Include="FixFOV.cpp" />
     <ClCompile Include="Gbix.cpp" />
+    <ClCompile Include="HelperFunctions.cpp" />
     <ClCompile Include="hudscale.cpp" />
     <ClCompile Include="InterpolationFixes.cpp" />
     <ClCompile Include="jvList.cpp" />
