@@ -24,9 +24,15 @@ namespace ModManagerWPF.Common
     /// </summary>
     public partial class NewCode : Window
     {
-        public NewCode()
+		private string CodesPath = string.Empty;
+
+		/// <summary>
+		/// Initialize NewCode Window. Constructor can take a path to store for saving mods to the correct location.
+		/// </summary>
+        public NewCode(string codepath = "", string codefile = "codes.lst")
         {
             InitializeComponent();
+			CodesPath = codepath + codefile;
 			/*
 			using (Stream s = File.OpenRead(""))
 			{

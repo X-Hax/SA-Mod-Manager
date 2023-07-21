@@ -223,7 +223,7 @@
 								<RowDefinition Height="30"/>
 							</Grid.RowDefinitions>
 
-							<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" Grid.Row="1"
+							<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" Grid.Row="1" IconThickness="2"
 											   Icon="{StaticResource Icons.Add}" Content="{DynamicResource Manager.Tabs.Codes.Buttons.NewCode}"
 											   ImageBrush="{DynamicResource Icon.Brushes.Green}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Green}"/>
 							<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" Grid.Row="3"

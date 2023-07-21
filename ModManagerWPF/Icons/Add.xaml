@@ -12,5 +12,5 @@
 		</DrawingImage.Drawing>
 	</DrawingImage>
 
-	<Geometry x:Key="Icons.Add">F1 M24,24z M0,0z M12,6L12,18 M18,12L6,12</Geometry>
+	<Geometry x:Key="Icons.Add">F1 M24.242424,24.242424z M0,0z M12.121212,2.8081171L12.121212,21.434307 M21.434307,12.121212L2.8081171,12.121212</Geometry>
 </ResourceDictionary>
