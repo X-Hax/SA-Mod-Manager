@@ -133,7 +133,7 @@ namespace ModManagerWPF
 				File.Copy("SADXModLoader.dll", loaderdllpath, true);
 			}
 
-			if (File.Exists(loaderdllpath))
+			if (File.Exists(loaderdllpath) && File.Exists(datadllorigpath))
 			{
 				File.Copy(loaderdllpath, datadllpath, true);
 			}
@@ -1691,7 +1691,7 @@ namespace ModManagerWPF
 			}
 			else
 			{
-				Util.MoveFile(datadllpath, datadllorigpath);
+				File.Move(datadllpath, datadllorigpath);
 
 				if (File.Exists(loaderdllpath))
 					File.Copy(loaderdllpath, datadllpath);
@@ -1699,11 +1699,14 @@ namespace ModManagerWPF
 
 			installed = !installed;
 			UpdateBtnInstallLoader_State();
+			Update_PlayButtonsState();
 			Button button = (Button)sender;
 			button.IsEnabled = false;
 			int delayDuration = 2000;
 			await Task.Delay(delayDuration);
+
 			button.IsEnabled = true;
+
 
 		}
 
