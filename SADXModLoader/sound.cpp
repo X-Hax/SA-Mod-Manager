@@ -138,7 +138,7 @@ static void __declspec(naked) makesndfilename_asm()
 
 static void __cdecl Set3DPositionPCM_r(int ch, float x, float y, float z)
 {
-	auto& channel = bass_channels[ch];
+	auto channel = bass_channels[ch];
 	if (channel)
 	{
 		BASS_ChannelSet3DPosition(channel, &BASS_3DVECTOR(x, y, z), nullptr, nullptr);
@@ -171,10 +171,9 @@ static void dsDolbySound()
 
 	for (int i = 0; i < MAX_SOUND; ++i)
 	{
-		auto& entry = sebuf[i];
-		auto& dolbytwp = gpDolbyTask[i];
+		auto dolbytwp = gpDolbyTask[i];
 
-		if (entry.mode && (entry.mode & MD_SOUND_DOLBY) && dolbytwp)
+		if (sebuf[i].mode && (sebuf[i].mode & MD_SOUND_DOLBY) && dolbytwp)
 		{
 			Set3DPositionPCM_r(i, dolbytwp->pos.x, dolbytwp->pos.y, dolbytwp->pos.z);
 		}
@@ -194,31 +193,41 @@ static void InitOverlapSE(uint8_t ini)
 	}
 }
 
-static void LoadBASS(int ch, void* wavememory, int wavesize, bool dolby)
+static void StopBASS(int ch)
 {
-	auto& channel = bass_channels[ch];
+	auto channel = bass_channels[ch];
 	if (channel)
 	{
 		BASS_ChannelStop(channel);
 		BASS_StreamFree(channel);
+		bass_channels[ch] = NULL;
 	}
-
-	channel = BASS_VGMSTREAM_StreamCreateFromMemory((unsigned char*)wavememory, wavesize, sndname, dolby ? BASS_SAMPLE_3D : NULL);
 }
 
-static void __cdecl LoadPCM_r(int ch, void* wavememory, int wavesize, int loopflag)
+static BOOL LoadBASS(int ch, void* wavememory, int wavesize, bool dolby)
+{
+	if (ch >= 0 && ch < MAX_SOUND)
+	{
+		StopBASS(ch);
+		bass_channels[ch] = BASS_VGMSTREAM_StreamCreateFromMemory((unsigned char*)wavememory, wavesize, sndname, dolby ? BASS_SAMPLE_3D : NULL);
+		return bass_channels[ch] != NULL;
+	}
+	return FALSE;
+}
+
+static BOOL __cdecl LoadPCM_r(int ch, void* wavememory, int wavesize, int loopflag)
 {
 	return LoadBASS(ch, wavememory, wavesize, false);
 }
 
-static void __cdecl Load3DPCM_r(int ch, void* wavememory, int wavesize, int loopflag)
+static BOOL __cdecl Load3DPCM_r(int ch, void* wavememory, int wavesize, int loopflag)
 {
 	return LoadBASS(ch, wavememory, wavesize, true);
 }
 
 static void __cdecl Set3DMinMaxPCM_r(int ch, float min, float max)
 {
-	auto& channel = bass_channels[ch];
+	auto channel = bass_channels[ch];
 	if (channel)
 	{
 		BASS_ChannelSet3DAttributes(channel, BASS_3DMODE_NORMAL, min, max, 0, 0, SEVolume / 100.0f);
@@ -228,7 +237,7 @@ static void __cdecl Set3DMinMaxPCM_r(int ch, float min, float max)
 
 static void __cdecl PlayPCM_r(int ch)
 {
-	auto& channel = bass_channels[ch];
+	auto channel = bass_channels[ch];
 	if (channel)
 	{
 		if (EmulateReverb)
@@ -242,19 +251,22 @@ static void __cdecl PlayPCM_r(int ch)
 
 static void __cdecl StopPCM_r(int ch)
 {
-	auto& channel = bass_channels[ch];
-	if (channel)
+	if (ch == -1)
 	{
-		BASS_ChannelStop(channel);
-		BASS_StreamFree(channel);
-
-		channel = NULL;
+		for (int i = 0; i < MAX_SOUND; ++i)
+		{
+			StopBASS(i);
+		}
+	}
+	else if (ch >= 0 && ch < MAX_SOUND)
+	{
+		StopBASS(ch);
 	}
 }
 
 static void __cdecl IsndVolume_r(int vol, int handleno)
 {
-	auto& channel = bass_channels[handleno];
+	auto channel = bass_channels[handleno];
 	if (channel)
 	{
 		BASS_ChannelSetAttribute(channel, BASS_ATTRIB_VOL, SEVolume / 100.0f * ((float)(min(127, vol) + 127) / 254.0f));
@@ -263,7 +275,7 @@ static void __cdecl IsndVolume_r(int vol, int handleno)
 
 static void __cdecl IsndPan_r(int pan, int handleno)
 {
-	auto& channel = bass_channels[handleno];
+	auto channel = bass_channels[handleno];
 	if (channel)
 	{
 		BASS_ChannelSetAttribute(channel, BASS_ATTRIB_PAN, min(1.0f, max(-1.0f, (float)(79 * pan) / 1000.0f)));
@@ -272,7 +284,7 @@ static void __cdecl IsndPan_r(int pan, int handleno)
 
 static void __cdecl IsndPitch_r(int pitch, int handleno)
 {
-	auto& channel = bass_channels[handleno];
+	auto channel = bass_channels[handleno];
 	if (channel)
 	{
 		BASS_CHANNELINFO info;
@@ -294,74 +306,72 @@ static void __cdecl dsSoundServer_r()
 
 	for (int i = 0; i < MAX_SOUND; ++i)
 	{
-		auto& entry = sebuf[i];
-		auto& dolbytwp = gpDolbyTask[i];
-		auto& current_vol = vol_save[i];
+		auto* entry = &sebuf[i];
 
-		if (!(entry.mode & MD_SOUND_INIT))
+		if (!(entry->mode & MD_SOUND_INIT))
 		{
-			if (entry.timer > 0)
+			if (entry->timer > 0)
 			{
-				if (!(entry.mode & MD_SOUND_DOLBY))
+				if (!(entry->mode & MD_SOUND_DOLBY))
 				{
-					if (entry.mode & (MD_SOUND_20 | MD_SOUND_2))
+					if (entry->mode & (MD_SOUND_20 | MD_SOUND_2))
 					{
-						if (entry.mode & MD_SOUND_VOL_DIST)
+						if (entry->mode & MD_SOUND_VOL_DIST)
 						{
 							auto vol = dsGetVolume(i);
-							if (current_vol != vol)
+							if (vol_save[i] != vol)
 							{
 								IsndVolume_r(vol, i);
-								current_vol = vol;
+								vol_save[i] = vol;
 							}
 
-							entry.mode &= ~MD_SOUND_2;
+							entry->mode &= ~MD_SOUND_2;
 						}
 					}
 
-					if (entry.mode & MD_SOUND_VOL_CUSTOM)
+					if (entry->mode & MD_SOUND_VOL_CUSTOM)
 					{
-						auto vol = entry.vol;
-						if (current_vol != vol)
+						auto vol = entry->vol;
+						if (vol_save[i] != vol)
 						{
 							IsndVolume_r(vol, i);
-							current_vol = vol;
+							vol_save[i] = vol;
 						}
 					}
 				}
 
-				if (entry.mode & MD_SOUND_PAN)
+				if (entry->mode & MD_SOUND_PAN)
 				{
-					IsndPan_r(entry.angle, i);
-					entry.mode &= ~MD_SOUND_PAN;
+					IsndPan_r(entry->angle, i);
+					entry->mode &= ~MD_SOUND_PAN;
 				}
 
-				if (entry.mode & MD_SOUND_PITCH)
+				if (entry->mode & MD_SOUND_PITCH)
 				{
-					IsndPitch_r(entry.pitch, i);
-					entry.mode &= ~MD_SOUND_PITCH;
+					IsndPitch_r(entry->pitch, i);
+					entry->mode &= ~MD_SOUND_PITCH;
 				}
 
-				--entry.timer;
+				--entry->timer;
 			}
 
-			if (!entry.timer)
+			if (!entry->timer)
 			{
-				if (entry.mode & MD_SOUND_AUTOSTOP)
+				if (entry->mode & MD_SOUND_AUTOSTOP)
 				{
 					StopPCM_r(i);
 				}
 
-				entry.timer = 0;
-				entry.id = 0;
-				entry.mode = 0;
-				entry.tone = -1;
-				dolbytwp = nullptr;
+				entry->timer = 0;
+				entry->id = 0;
+				entry->mode = 0;
+				entry->tone = -1;
+				gpDolbyTask[i] = NULL;
 			}
 		}
 		else
 		{
-			if (entry.tone <= SE_BANK_ADX)
+			if (entry->tone <= SE_BANK_ADX)
 			{
 				int startid = 0;
 				int bank = 0;
@@ -369,7 +379,7 @@ static void __cdecl dsSoundServer_r()
 				// Find which bank the sound belongs to (likely inlined function)
 				for (int* test = &banktbl[0]; *test >= 0; test += 2)
 				{
-					if (entry.tone > *test)
+					if (entry->tone > *test)
 					{
 						startid = *test;
 						bank = test[1];
@@ -378,17 +388,17 @@ static void __cdecl dsSoundServer_r()
 				}
 
 				// If the sound comes from an opponent in character fights (ie. Sonic v Knuckles), do something
-				if (dsEVboss(entry.tone))
+				if (dsEVboss(entry->tone))
 				{
 					bank = (bank == 6) + 4 * (bank == 3);
 				}
 
-				if (IsPlayOk(entry.tone))
+				if (IsPlayOk(entry->tone))
 				{
-					makesndfilename_r(bank, startid ? entry.tone - startid - 1 : entry.tone);
-					entry.banknum = bank;
+					makesndfilename_r(bank, startid ? entry->tone - startid - 1 : entry->tone);
+					entry->banknum = bank;
 
-					if (entry.mode & MD_SOUND_DOLBY)
+					if (entry->mode & MD_SOUND_DOLBY)
 					{
 						Load3DPCM_r(i, sndmemory, *(int*)0x3B29AE0, 2);
 						Set3DMinMaxPCM(i, 10.0f, 500.0f);
@@ -399,44 +409,44 @@ static void __cdecl dsSoundServer_r()
 					}
 
 					// Likely inlined function since in vanilla code it rechecks MD_SOUND_3D
-					if (!(entry.mode & MD_SOUND_DOLBY))
+					if (!(entry->mode & MD_SOUND_DOLBY))
 					{
-						if (entry.mode & MD_SOUND_VOL_DIST)
+						if (entry->mode & MD_SOUND_VOL_DIST)
 						{
-							current_vol = dsGetVolume(i);
+							vol_save[i] = dsGetVolume(i);
 						}
-						else if (entry.mode & MD_SOUND_VOL_CUSTOM)
+						else if (entry->mode & MD_SOUND_VOL_CUSTOM)
 						{
-							current_vol = entry.vol;
+							vol_save[i] = entry->vol;
 						}
 						else
 						{
-							current_vol = 0;
+							vol_save[i] = 0;
 						}
 
-						IsndVolume_r(current_vol, i);
+						IsndVolume_r(vol_save[i], i);
 					}
 
-					if (entry.mode & MD_SOUND_PAN)
+					if (entry->mode & MD_SOUND_PAN)
 					{
-						IsndPan_r(entry.angle, i);
+						IsndPan_r(entry->angle, i);
 					}
 
-					if (entry.mode & MD_SOUND_PITCH)
+					if (entry->mode & MD_SOUND_PITCH)
 					{
-						IsndPitch_r(entry.pitch, i);
+						IsndPitch_r(entry->pitch, i);
 					}
 
 					PlayPCM_r(i);
 				}
 
-				entry.mode &= ~MD_SOUND_INIT;
+				entry->mode &= ~MD_SOUND_INIT;
 			}
 			else
 			{
-				PlayVoice(entry.tone + 345);
-				entry.mode &= ~(MD_SOUND_INIT | MD_SOUND_AUTOSTOP);
-				entry.timer = 0;
+				PlayVoice(entry->tone + 345);
+				entry->mode &= ~(MD_SOUND_INIT | MD_SOUND_AUTOSTOP);
+				entry->timer = 0;
 			}
 		}
 	}
@@ -453,7 +463,7 @@ static int __cdecl dsPauseAll_r()
 	snd_pause = -1;
 	snd_pause_dolby = -1;
 
-	for (auto& channel : bass_channels)
+	for (auto channel : bass_channels)
 	{
 		if (channel)
 		{
@@ -470,7 +480,7 @@ static int __cdecl dsReleaseAll_r()
 	snd_pause = 0;
 	snd_pause_dolby = 0;
 
-	for (auto& channel : bass_channels)
+	for (auto channel : bass_channels)
 	{
 		if (channel)
 		{
@@ -493,7 +503,7 @@ static int __cdecl dsPauseSndOnly_r()
 
 		if (tone != SE_PAUSE && tone != SE_CURSOR && tone != SE_DECIDE)
 		{
-			auto& channel = bass_channels[i];
+			auto channel = bass_channels[i];
 			if (channel)
 			{
 				BASS_ChannelPause(channel);
