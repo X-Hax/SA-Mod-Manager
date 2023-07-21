@@ -1,6 +1,6 @@
 ﻿<SyntaxDefinition name="OpCode" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
 	<RuleSet>
-		<Keywords fontSize="14" foreground="Yellow">
+		<Keywords fontSize="14" foreground="{DynamicResource TextEditor.Syntax.ReadWrite">
 			<Word>write8</Word>
 			<Word>write16</Word>
 			<Word>write32</Word>
@@ -14,6 +14,8 @@
 			<Word>readreg8</Word>
 			<Word>readreg16</Word>
 			<Word>readreg32</Word>
+
+			<Word>newregs</Word>
 		</Keywords>
 
 		<Keywords fontSize="14" foreground="CornflowerBlue">
@@ -187,6 +189,39 @@
 			<Word>rorreg8</Word>
 			<Word>rorreg16</Word>
 			<Word>rorreg32</Word>
+
+			<Word>modu8</Word>
+			<Word>modu16</Word>
+			<Word>modu32</Word>
+			<Word>mods8</Word>
+			<Word>mods16</Word>
+			<Word>mods32</Word>
+			<Word>modregu8</Word>
+			<Word>modregu16</Word>
+			<Word>modregu32</Word>
+			<Word>modregs8</Word>
+			<Word>modregs16</Word>
+			<Word>modregs32</Word>
+
+			<Word>shl8</Word>
+			<Word>shl16</Word>
+			<Word>shl32</Word>
+			<Word>shlreg8</Word>
+			<Word>shlreg16</Word>
+			<Word>shlreg32</Word>
+
+			<Word>shru8</Word>
+			<Word>shru16</Word>
+			<Word>shru32</Word>
+			<Word>shrs8</Word>
+			<Word>shrs16</Word>
+			<Word>shrs32</Word>
+			<Word>shrregu8</Word>
+			<Word>shrregu16</Word>
+			<Word>shrregu32</Word>
+			<Word>shrregs8</Word>
+			<Word>shrregs16</Word>
+			<Word>shrregs32</Word>
 		</Keywords>
 
 		<Span fontSize="14" foreground="Green">
@@ -200,10 +235,14 @@
 
 		<Rule fontSize="14" foreground="Pink">
 			\b[p][0-9a-fA-F]+
-			
 		</Rule>
 
-		<Rule fontSize="14" foreground="Gray">
+		<Rule fontSize="14" foreground="Cyan">
+			\|+
+			[0-9a-fA-F]+
+		</Rule>
+
+		<Rule fontSize="14" foreground="AliceBlue">
 			\b0[xX][0-9a-fA-F]+  # hex number
 			|    \b
 			(    \d+(\.[0-9]+)?   #number with optional floating point
