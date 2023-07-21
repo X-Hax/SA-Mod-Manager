@@ -8,7 +8,11 @@
         mc:Ignorable="d" Style="{StaticResource SAWindow}" WindowStartupLocation="CenterScreen"
         Title="{DynamicResource NewCode.Title}" Height="350" Width="500">
 	<Window.Resources>
-		<ResourceDictionary Source="../Icons/Icons.xaml"/>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../Icons/Icons.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
 	</Window.Resources>
 	
     <Grid Margin="5">
