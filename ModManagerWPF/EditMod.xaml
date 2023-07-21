@@ -203,6 +203,38 @@
 					</Grid>
 				</TabItem>
 
+				<TabItem x:Name="tabCodes" Header="{DynamicResource Manager.Tabs.Codes}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<ListView Grid.Column="0" Margin="5">
+							
+						</ListView>
+
+						<Grid Grid.Column="1">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="5"/>
+								<RowDefinition Height="30"/>
+								<RowDefinition Height="5"/>
+								<RowDefinition Height="30"/>
+								<RowDefinition Height="5"/>
+								<RowDefinition Height="30"/>
+							</Grid.RowDefinitions>
+
+							<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" Grid.Row="1"
+											   Icon="{StaticResource Icons.Add}" Content="{DynamicResource Manager.Tabs.Codes.Buttons.NewCode}"
+											   ImageBrush="{DynamicResource Icon.Brushes.Green}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Green}"/>
+							<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" Grid.Row="3"
+											   Icon="{StaticResource Icons.Delete}" Content="Delete Code"
+											   ImageBrush="{DynamicResource Icon.Brushes.Red}" ImageBrushDisabled="{DynamicResource Icon.Brushes.MouseOver.Red}"/>
+							<local:ImageButton Style="{StaticResource ImageTextButtonStyle}" Grid.Row="5"
+											   Icon="{StaticResource Icons.Config}" Content="Edit Code"/>
+						</Grid>
+					</Grid>
+				</TabItem>
+				
                 <TabItem x:Name="tabDepdencies" Header="{DynamicResource EditMod.Tabs.Dependencies}">
 					<Grid>
 						<Grid.ColumnDefinitions>

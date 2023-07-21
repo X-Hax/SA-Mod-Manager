@@ -1,9 +1,13 @@
-﻿using System;
+﻿using ICSharpCode.AvalonEdit.Highlighting;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -11,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
 namespace ModManagerWPF.Common
 {
@@ -22,7 +27,16 @@ namespace ModManagerWPF.Common
         public NewCode()
         {
             InitializeComponent();
-        }
+			/*
+			using (Stream s = File.OpenRead(""))
+			{
+				using (XmlTextReader reader = new XmlTextReader(s))
+				{
+					CodeWriter.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+				}
+			}
+			*/
+		}
 
 		private bool SaveCodeToFile()
 		{
@@ -41,7 +55,7 @@ namespace ModManagerWPF.Common
 				this.Close();
 		}
 
-				private void CheckSaveToMod_Checked(object sender, RoutedEventArgs e)
+		private void CheckSaveToMod_Checked(object sender, RoutedEventArgs e)
 		{
 			if ((bool)CheckSaveToMod.IsChecked)
 				CodeCategory.IsEnabled = false;

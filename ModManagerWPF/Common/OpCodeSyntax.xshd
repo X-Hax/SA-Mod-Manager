@@ -1,0 +1,215 @@
+﻿<SyntaxDefinition name="OpCode" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+	<RuleSet>
+		<Keywords fontSize="14" foreground="Yellow">
+			<Word>write8</Word>
+			<Word>write16</Word>
+			<Word>write32</Word>
+			<Word>writefloat</Word>
+			<Word>writenop</Word>
+			<Word>writereg8</Word>
+			<Word>writereg16</Word>
+			<Word>writereg32</Word>
+			<Word>writenopreg</Word>
+
+			<Word>readreg8</Word>
+			<Word>readreg16</Word>
+			<Word>readreg32</Word>
+		</Keywords>
+
+		<Keywords fontSize="14" foreground="CornflowerBlue">
+			<Word>add8</Word>
+			<Word>add16</Word>
+			<Word>add32</Word>
+			<Word>addfloat</Word>
+			<Word>addreg8</Word>
+			<Word>addreg16</Word>
+			<Word>addreg32</Word>
+			<Word>addregfloat</Word>
+
+			<Word>sub8</Word>
+			<Word>sub16</Word>
+			<Word>sub32</Word>
+			<Word>subfloat</Word>
+			<Word>subreg8</Word>
+			<Word>subreg16</Word>
+			<Word>subreg32</Word>
+			<Word>subregfloat</Word>
+
+			<Word>mulu8</Word>
+			<Word>mulu16</Word>
+			<Word>mulu32</Word>
+			<Word>mulfloat</Word>
+			<Word>muls8</Word>
+			<Word>muls16</Word>
+			<Word>muls32</Word>
+			<Word>mulregu8</Word>
+			<Word>mulregu16</Word>
+			<Word>mulregu32</Word>
+			<Word>mulregfloat</Word>
+			<Word>mulregs8</Word>
+			<Word>mulregs16</Word>
+			<Word>mulregs32</Word>
+
+			<Word>divu8</Word>
+			<Word>divu16</Word>
+			<Word>divu32</Word>
+			<Word>divfloat</Word>
+			<Word>divs8</Word>
+			<Word>divs16</Word>
+			<Word>divs32</Word>
+			<Word>divregu8</Word>
+			<Word>divregu16</Word>
+			<Word>divregu32</Word>
+			<Word>divregfloat</Word>
+			<Word>divregs8</Word>
+			<Word>divregs16</Word>
+			<Word>divregs32</Word>
+		</Keywords>
+		
+		<Keywords fontSize="14" foreground="MediumPurple">
+			<Word>ifeq8</Word>
+			<Word>ifeq16</Word>
+			<Word>ifeq32</Word>
+			<Word>ifeqfloat</Word>
+			<Word>ifne8</Word>
+			<Word>ifne16</Word>
+			<Word>ifne32</Word>
+			<Word>ifnefloat</Word>
+			<Word>ifltu8</Word>
+			<Word>ifltu16</Word>
+			<Word>ifltu32</Word>
+			<Word>ifltfloat</Word>
+			<Word>iflts8</Word>
+			<Word>iflts16</Word>
+			<Word>iflts32</Word>
+			<Word>ifltequ8</Word>
+			<Word>ifltequ16</Word>
+			<Word>ifltequ32</Word>
+			<Word>iflteqfloat</Word>
+			<Word>iflteqs8</Word>
+			<Word>iflteqs16</Word>
+			<Word>iflteqs32</Word>
+			<Word>ifgtu8</Word>
+			<Word>ifgtu16</Word>
+			<Word>ifgtu32</Word>
+			<Word>ifgtfloat</Word>
+			<Word>ifgts8</Word>
+			<Word>ifgts16</Word>
+			<Word>ifgts32</Word>
+			<Word>ifgtequ8</Word>
+			<Word>ifgtequ16</Word>
+			<Word>ifgtequ32</Word>
+			<Word>ifgteqfloat</Word>
+			<Word>ifgteqs8</Word>
+			<Word>ifgteqs16</Word>
+			<Word>ifgteqs32</Word>
+			<Word>ifmask8</Word>
+			<Word>ifmask16</Word>
+			<Word>ifmask32</Word>
+			<Word>ifkbkey</Word>
+			<Word>ifeqreg8</Word>
+			<Word>ifeqreg16</Word>
+			<Word>ifeqreg32</Word>
+			<Word>ifeqregfloat</Word>
+			<Word>ifnereg8</Word>
+			<Word>ifnereg16</Word>
+			<Word>ifnereg32</Word>
+			<Word>ifneregfloat</Word>
+			<Word>ifltregu8</Word>
+			<Word>ifltregu16</Word>
+			<Word>ifltregu32</Word>
+			<Word>ifltregfloat</Word>
+			<Word>ifltregs8</Word>
+			<Word>ifltregs16</Word>
+			<Word>ifltregs32</Word>
+			<Word>iflteqregu8</Word>
+			<Word>iflteqregu16</Word>
+			<Word>iflteqregu32</Word>
+			<Word>iflteqregfloat</Word>
+			<Word>iflteqregs8</Word>
+			<Word>iflteqregs16</Word>
+			<Word>iflteqregs32</Word>
+			<Word>ifgtregu8</Word>
+			<Word>ifgtregu16</Word>
+			<Word>ifgtregu32</Word>
+			<Word>ifgtregfloat</Word>
+			<Word>ifgtregs8</Word>
+			<Word>ifgtregs16</Word>
+			<Word>ifgtregs32</Word>
+			<Word>ifgteqregu8</Word>
+			<Word>ifgteqregu16</Word>
+			<Word>ifgteqregu32</Word>
+			<Word>ifgteqregfloat</Word>
+			<Word>ifgteqregs8</Word>
+			<Word>ifgteqregs16</Word>
+			<Word>ifgteqregs32</Word>
+			<Word>ifmaskreg8</Word>
+			<Word>ifmaskreg16</Word>
+			<Word>ifmaskreg32</Word>
+			<Word>else</Word>
+			<Word>endif</Word>
+		</Keywords>
+
+		<Keywords fontSize="14" foreground="LawnGreen">
+			<Word>and8</Word>
+			<Word>and16</Word>
+			<Word>and32</Word>
+			<Word>andreg8</Word>
+			<Word>andreg16</Word>
+			<Word>andreg32</Word>
+
+			<Word>or8</Word>
+			<Word>or16</Word>
+			<Word>or32</Word>
+			<Word>orreg8</Word>
+			<Word>orreg16</Word>
+			<Word>orreg32</Word>
+
+			<Word>xor8</Word>
+			<Word>xor16</Word>
+			<Word>xor32</Word>
+			<Word>xorreg8</Word>
+			<Word>xorreg16</Word>
+			<Word>xorreg32</Word>
+		</Keywords>
+
+		<Keywords fontSize="14" foreground="Khaki">
+			<Word>rol8</Word>
+			<Word>rol16</Word>
+			<Word>rol32</Word>
+			<Word>rolreg8</Word>
+			<Word>rolreg16</Word>
+			<Word>rolreg32</Word>
+
+			<Word>ror8</Word>
+			<Word>ror16</Word>
+			<Word>ror32</Word>
+			<Word>rorreg8</Word>
+			<Word>rorreg16</Word>
+			<Word>rorreg32</Word>
+		</Keywords>
+
+		<Span fontSize="14" foreground="Green">
+			<Begin>;</Begin>
+			<End>;</End>
+		</Span>
+
+		<Rule fontSize="14" foreground="LightGray">
+			\b0[0-9a-fA-F]+
+		</Rule>
+
+		<Rule fontSize="14" foreground="Pink">
+			\b[p][0-9a-fA-F]+
+			
+		</Rule>
+
+		<Rule fontSize="14" foreground="Gray">
+			\b0[xX][0-9a-fA-F]+  # hex number
+			|    \b
+			(    \d+(\.[0-9]+)?   #number with optional floating point
+			|    \.[0-9]+         #or just starting with floating point
+			)
+			([eE][+-]?[0-9]+)? # optional exponent
+		</Rule>
+	</RuleSet>
+</SyntaxDefinition>

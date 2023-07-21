@@ -86,8 +86,9 @@
 		</Grid>
 
 		<Grid x:Name="CodeData" Grid.Row="1" Margin="5">
-			<avalon:TextEditor x:Name="Code" Margin="5"
-							   ShowLineNumbers="True" VerticalScrollBarVisibility="Auto"/>
+			<avalon:TextEditor x:Name="CodeWriter" Margin="5"
+							   ShowLineNumbers="True" VerticalScrollBarVisibility="Auto"
+							   SyntaxHighlighting="OpCodeSyntax.xshd"/>
 		</Grid>
 
 		<Grid x:Name="WindowButons" Grid.Row="2" HorizontalAlignment="Right">
