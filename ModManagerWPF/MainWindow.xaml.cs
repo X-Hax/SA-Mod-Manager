@@ -579,10 +579,13 @@ namespace ModManagerWPF
 		#region ModContext
 		private void ModContextOpenFolder_Click(object sender, RoutedEventArgs e)
 		{
-			if (listMods.SelectedItem is ModData item)
+			var selectedMods = listMods.SelectedItems.OfType<ModData>();
+
+			foreach (var mod in selectedMods.Where(mod => !string.IsNullOrEmpty(mod.Tag)))
 			{
-				string fullPath = Path.Combine(modDirectory, item.Tag);
-				Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });
+				string fullPath = Path.Combine(modDirectory, mod.Tag);
+				if (Directory.Exists(fullPath))
+					Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });		
 			}
 		}
 
