@@ -1620,8 +1620,8 @@ namespace ModManagerWPF
 
 		private void Refresh()
 		{
-			LoadModList();
 			InitCodes();
+			LoadModList();
 			RefreshPatchesList();
 			if (ModsFind.Visibility == Visibility.Visible)
 			{
