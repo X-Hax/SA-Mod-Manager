@@ -114,8 +114,9 @@ namespace ModManagerWPF
 			SetGamePath(Settings.Default.GamePath);
 			UpdatePathsStringsInfo();
 			LoadSettings();
-			LoadModList();
 			InitCodes();
+			LoadModList();
+
 			LoadAllProfiles();
 			UpdateDLLData();
 			UpdatePatches();
@@ -505,6 +506,27 @@ namespace ModManagerWPF
 					};
 
 					Modsdata.Add(item);
+
+					//if a mod has a code, add it to the list
+					if (!string.IsNullOrEmpty(inf.Codes))
+					{
+						var t = CodeList.Load(Path.Combine(Path.Combine(modDirectory, mod), inf.Codes));
+						codes.AddRange(t.Codes);
+
+						foreach (var code in t.Codes)
+						{
+							CodeData extraItem = new()
+							{
+								codes = code,
+								IsChecked = loaderini.EnabledCodes.Contains(item.Name),
+							};
+
+							extraItem.codes.Category = "Codes From " + inf.Name;
+							codesSearch.Add(extraItem);
+							CodeListView.Items.Add(extraItem);
+						}
+					}
+
 					suppressEvent = false;
 				}
 				else
@@ -585,7 +607,7 @@ namespace ModManagerWPF
 			{
 				string fullPath = Path.Combine(modDirectory, mod.Tag);
 				if (Directory.Exists(fullPath))
-					Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });		
+					Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });
 			}
 		}
 
@@ -1022,6 +1044,7 @@ namespace ModManagerWPF
 					codes = item,
 					IsChecked = loaderini.EnabledCodes.Contains(item.Name),
 				};
+
 				codesSearch.Add(extraItem);
 				CodeListView.Items.Add(extraItem);
 			}
@@ -1556,9 +1579,9 @@ namespace ModManagerWPF
 				return;
 
 			int index = listMods.SelectedIndex;
-			
+
 			if (index > 0)
-			{	
+			{
 				var item = Modsdata[index];
 				Modsdata.Remove(item);
 				Modsdata.Insert(index - 1, item);
@@ -2393,7 +2416,7 @@ namespace ModManagerWPF
 
 			ModData mod = (ModData)listMods.SelectedItem;
 
-			if (mod == null) 
+			if (mod == null)
 				return;
 
 			var ctrlKey = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
@@ -2491,7 +2514,7 @@ namespace ModManagerWPF
 						}
 						else
 						{
-	
+
 							CodesFind.Visibility = Visibility.Visible;
 							FilterCodes(TextBox_CodesSearch.Text.ToLowerInvariant());
 							TextBox_CodesSearch.Focus();
@@ -2508,7 +2531,7 @@ namespace ModManagerWPF
 				}
 				else if (tcMain.SelectedItem == tbCodes)
 				{
-					
+
 				}
 			}
 
