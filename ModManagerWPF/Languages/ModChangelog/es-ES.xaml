@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="ModChangelog.Title">Actualizaciones de Mod</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Notes">Notas de Actualización</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Details">Detalles de Actualización</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Details.DownloadDetails">Detalles de Descarga</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Details.PublishedDate">Fecha Publicada:</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Details.FileSize">Tamaño del Archivo:</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Details.FileCount">Número de Archivo(s):</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Details.UpdateName">Título de la Actualización:</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Details.Tag">Etiqueta:</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Details.Buttons.OpenBrowser">Abrir Actualización en el Navegador</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Files">Cambios del Archivo</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Files.Filename">Nombre del Archivo</system:String>
+    <system:String x:Key="ModChangelog.Tabs.Files.Status">Estado</system:String>
+    <system:String x:Key="ModChangelog.Buttons.DownloadNow">Descargar Ahora</system:String>
+    <system:String x:Key="ModChangelog.Buttons.DownloadLater">Descargar Más Tarde</system:String>
+</ResourceDictionary>

@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="GamePatches.3DSound">Activar Audio 3D HRTF</system:String>
+    <system:String x:Key="GamePatches.CamCode">Correciones del Código de la Cámara</system:String>
+    <system:String x:Key="GamePatches.VertexColor">Correciones de Color de Vértice</system:String>
+    <system:String x:Key="GamePatches.MaterialColor">Correciones de Color de Material</system:String>
+    <system:String x:Key="GamePatches.Interpolation">Correciones de Interpolación</system:String>
+    <system:String x:Key="GamePatches.FixFOV">Correciones de Campo Visual</system:String>
+    <system:String x:Key="GamePatches.Skychase">Correciones de Sky Chase</system:String>
+    <system:String x:Key="GamePatches.Chaos2">Correciones de Chaos 2</system:String>
+    <system:String x:Key="GamePatches.ChunkRendering">Correciones de la Iluminación Especular de modelos Chunk</system:String>
+    <system:String x:Key="GamePatches.E102Lamp">Correciones de Luces de Gamma</system:String>
+    <system:String x:Key="GamePatches.ChaoStats">Correción de Dimensiones del Panel de Estadísticas Chao</system:String>
+    <system:String x:Key="GamePatches.PixelOffset">2D Rendering Offset Fixes</system:String>
+    <system:String x:Key="GamePatches.Lights">Correciones de Luces</system:String>
+    <system:String x:Key="GamePatches.DisableGBIX">Desactivar GBIX (Experimental)</system:String>
+    <system:String x:Key="GamePatches.DisableCDCheck">Desactivar Comprobación del CD</system:String>
+</ResourceDictionary>

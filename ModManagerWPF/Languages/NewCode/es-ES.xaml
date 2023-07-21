@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	<system:String x:Key="NewCode.Title">Crea un código</system:String>
+	<system:String x:Key="NewCode.Check.SaveToMod">Guardar Código a una Carpeta de Mod</system:String>
+</ResourceDictionary>

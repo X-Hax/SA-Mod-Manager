@@ -1,0 +1,109 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<system:String x:Key="MessageWindow.DefaultTitle">SADX Mod Manager</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle.Error">Error</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Warning</system:String>
+	
+	<!--#region Errors-->
+    <system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">Hay un mod.ini en la carpeta mods.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Cada mod tiene que ser colocado en una subcarpeta dentro de la carpeta mods. No extraigas mods en la carpeta mods.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Mueve o elimina el mod.ini en la carpeta mods y reinicia el Mod Manager.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">no se ha podido encontrar.&#x0a;&#x0a;Este mod será eliminado de la lista.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Error al establecer el Directorio del Juego</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Error al detectar sonic.exe, asegúrate de seleccionar la carpeta donde SADX está instalado.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Error al detectar el Directorio del Juego</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathNotFound">Error al detectar el directorio del juego. Por favor, configura el directorio en la configuración del manager y asegúrate de seleccionar la carpeta donde sonic.exe está instalado.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Mod ya existe"</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Ya existe un mod con ese nombre.&#x0a;Por favor, selecciona otro nombre o renombra el existente.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModCreationFailed.Title">"Error al crear el Mod"</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.NoModName.Title">Nombre de mod inválido</system:String>
+    <system:String x:Key="MessageWindow.Errors.NoModName">No puedes tener un mod sin un nombre.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.MissingLoaderDLL" xml:space="preserve">No se ha podido encontrar el archivo SADXModLoader.dll, el Mod Loader no funcionará.&#x0a;&#x0a;Por favor, vuelve a descargar el Mod Manager.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.DontDoThat">Hmmm... Nah... Es mejor que no hagas eso miarma ;)</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.InvalidFramerate.Title">Configuración Inválida</system:String>
+	<system:String x:Key="MessageWindow.Errors.InvalidFramerate">Se ha detectado una configuración inválida de la frecuencia de imagen.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Error al cargar el Código</system:String>
+	<system:String x:Key="MessageWindow.Errors.CodesListFailed">Error al cargar la lista de códigos</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Error al actualizar</system:String>
+    <system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Los siguientes errores han ocurrido mientras se buscaban las actualizaciones:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.D3D8Update">No se pudo actualizar d3d8.dll</system:String>
+    <system:String x:Key="MessageWindow.Errors.D3D8UpdateCheck">No se pudo comprobar la versión de d3d8to9</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.MissingManifest.Title">No se ha encontrado un mod.manifest</system:String>
+    <system:String x:Key="MessageWindow.Errors.MissingManifest">Ninguno de los mods seleccionados tienen manifiestos, así que no se pudieron verificar.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif.Title">Error de Integridad</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif0" xml:space="preserve">Los siguientes mods han fallado la verificación:&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif1">archivo(s)</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif2" xml:space="preserve">&#x0a;&#x0a;¿Quieres intentar repararlos?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.URIParseFail.Title">URI Parse Failure</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail0">Malformed One-Click Install URI</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail1" xml:space="preserve">caused parse failure:&#x0a;</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GBAPIFail.Title">Error de la API de GameBanana</system:String>
+    <system:String x:Key="MessageWindow.Errors.GBAPIFail">Error de consulta de la API de GameBanana:</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields0">El URI del Instalador 1-Clic</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields1">no contenia los campos requeridos.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail.Title">No se pudo Eliminar el Directorio</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail0">Error al eliminar el directorio temporal de la actualización</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail1">¿Quieres volver a intentarlo? Puedes eliminar el directorio manualmente más tarde.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail.Title">No se pudo Crear el Directorio</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail0">Error al crear el directorio temporal de la actualización</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail1">¿Quieres volver a intentarlo?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">No se pudo Actualizar"</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed">Error al actualizar:"</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Error al actualizar el mod"</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">Pulsa Reintentar para volver a intentar, o Cancelar para omitir este mod."</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">No se pudo recuperar la información de la actualización."</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">SADX Mod Manager no puede iniciarse sin .NET 7.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Faltan dependencias VC++</system:String>
+    <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Parece que te faltan algunos Visual C++ Redistributables, algunos mods no funcionarán correctamente sin estas dependencias.&#x0a;&#x0a;¿Quieres descargar e instalar estas dependencias?</system:String>
+    <!--#endregion-->
+	
+	<!--#region Warnings-->
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Esto eliminará todos los mods seleccionados.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Estás a punto de desactivar la redirección de archivo de guardado para este mod. Si continúas, cualquier archivo de guardado en este mod será eliminado.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.DeleteProfile">¿Seguro que quieres eliminar este perfil?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Esto hará que todos los mods se vuelvan a descargar.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">¡Esto puede causar que los DATOS DE USUARIO (ARCHIVOS DE GUARDADO Y CONFIGURACIÓN) SE PIERDAN en la siguiente actualización! Para prevenir esto, nunca uses esta opción en mods que no hayas desarrollado.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">¡.NET 7.0 Desktop Runtime no está instalado!&#x0a;&#x0a;¿Te gustaría instalarlo ahora?</system:String>
+    <!--#endregion-->
+	
+	<!--#region Information-->
+	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">No se han encontrado actualizaciones.</system:String>
+	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Los mods están actualizados.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.D3D8Update">La versión de d3d8.dll en la carpeta de SADX es distinta de la versión incluida en el Mod Loader. ¿Quieres actualizar la version instalada?</system:String>
+
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Verificación de Integridad</system:String>
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif">Todos los mods han pasado la verificación.</system:String>
+    <!--#endregion-->
+	
+</ResourceDictionary>

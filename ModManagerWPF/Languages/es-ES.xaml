@@ -1,352 +1,54 @@
 ﻿<ResourceDictionary 
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-   xmlns:system="clr-namespace:System;assembly=mscorlib">
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="AboutMod/es-ES.xaml"/>
+        <ResourceDictionary Source="EditMod/es-ES.xaml"/>
+        <ResourceDictionary Source="InfoManagerUpdate/es-ES.xaml"/>
+        <ResourceDictionary Source="InstallModOptions/es-ES.xaml"/>
+        <ResourceDictionary Source="MainWindow/es-ES.xaml"/>
+        <ResourceDictionary Source="MainWindow/Patches/es-ES.xaml"/>
+        <ResourceDictionary Source="MainWindow/TestSpawn/es-ES.xaml"/>
+        <ResourceDictionary Source="ManifestChanges/es-ES.xaml"/>
+        <ResourceDictionary Source="MessageWindow/es-ES.xaml"/>
+        <ResourceDictionary Source="ModChangelog/es-ES.xaml"/>
+        <ResourceDictionary Source="ModConfig/es-ES.xaml"/>
+        <ResourceDictionary Source="ModProfile/es-ES.xaml"/>
+        <ResourceDictionary Source="NewCode/es-ES.xaml"/>
+        <ResourceDictionary Source="SelectDependencies/es-ES.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+    
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">OK</system:String>
     <system:String x:Key="CommonStrings.Cancel">Cancelar</system:String>
 	<system:String x:Key="CommonStrings.Yes">Sí</system:String>
 	<system:String x:Key="CommonStrings.No">No</system:String>
-    <system:String x:Key="Warning">Aviso</system:String>
-    <system:String x:Key="Error">Error</system:String>
+	<system:String x:Key="CommonStrings.Retry">Reintentar</system:String>
+	<system:String x:Key="CommonStrings.Warning">Aviso</system:String>
+	<system:String x:Key="CommonStrings.Error">Error</system:String>
     <system:String x:Key="CommonStrings.Reset">Reiniciar</system:String>
     <system:String x:Key="CommonStrings.Create">Crear</system:String>
 	<system:String x:Key="CommonStrings.SelectAll">Seleccionar Todo</system:String>
-	<system:String x:Key="CommonStrings.DeselectAll">Deseleccionar Todo</system:String>
-    
-    <!--#region Main Window Strings-->
-	<system:String x:Key="CommonStrings.Save">Guardar</system:String>
-	<system:String x:Key="Manager.Button.SaveAndPlay" >Guardar y Jugar</system:String>
-	<system:String x:Key="Manager.Tabs.Mods">Mods</system:String>
-	<system:String x:Key="Manager.Tabs.Codes">Códigos</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig">Configuración del Juego</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig">Configuración del Manager</system:String>
-	<!--#endregion-->
-	
-	<!--#region Mods Tab Strings-->
+    <system:String x:Key="CommonStrings.DeselectAll">Deseleccionar Todo</system:String>
 	<system:String x:Key="CommonStrings.Name">Nombre</system:String>
+	<system:String x:Key="CommonStrings.Status">Estado</system:String>
+	<system:String x:Key="CommonStrings.Save">Guardar</system:String>
 	<system:String x:Key="CommonStrings.Author">Autor</system:String>
 	<system:String x:Key="CommonStrings.Version">Versión</system:String>
 	<system:String x:Key="CommonStrings.Category">Categoría</system:String>
+	<system:String x:Key="CommonStrings.Description">Descripción:</system:String>
+	<system:String x:Key="CommonStrings.Search">Buscar</system:String>
+	<system:String x:Key="CommonStrings.Credits">Créditos</system:String>
+	<system:String x:Key="CommonStrings.Download">Descargar</system:String>
+	<system:String x:Key="CommonStrings.OpenFolder">Abrir Carpeta</system:String>
 
-	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">Recargar</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">Configurar Mod</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">Añadir Mod</system:String>
-    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">Descripción: Ningún Mod Seleccionado</system:String>
-    <system:String x:Key="CommonStrings.Description">Descripción:</system:String>
-    <system:String x:Key="ModsTextBoxSearch">Buscar...</system:String>
-
-    <!--Mods Items right click Menu-->
-    <system:String x:Key="ModsUICommonStrings.OpenFolder">Abrir Carpeta</system:String>
-    <system:String x:Key="ModsUIChkUpdate">Buscar Actualizaciones</system:String>
-    <system:String x:Key="ModsUIVerifyIntegrity">Verificar Integridad</system:String>
-    <system:String x:Key="ModsUIMessageWindow.Warnings.ForceModUpdate">Forzar Actualización</system:String>
-    <system:String x:Key="ModsUIModConfigure">Configurar Mod</system:String>
-    <system:String x:Key="ModsUIModEdit">Editar Mod</system:String>
-    <system:String x:Key="ModsUIModDelete">Borrar Mod</system:String>
-    <system:String x:Key="ModsUIDev">Desarrollador</system:String>
-
-    <!--Mod About Window-->
-    <system:String x:Key="AuthorSite">Web del Autor</system:String>
-    <system:String x:Key="ModSourceCode">Código Fuente del Mod</system:String>
-
-    <!--#endregion-->
-	
-	<!--#region Codes Tab Strings-->
-	<system:String x:Key="CodesBtnAdd">Nuevo Código</system:String>
-
-	<!-- Codes UI Strings -->
-	<system:String x:Key="CodesListName">Nombre</system:String>
-	<system:String x:Key="CodesListCategory">Categoría</system:String>
-	<system:String x:Key="CodesListInfo"> Haz doble clic en este código para obtener más información.</system:String>
-	<system:String x:Key="CodesListHint">Selecciona un código para obtener más información.</system:String>
-    <system:String x:Key="Code">Código</system:String>
-
-    <system:String x:Key="CodeAbout">Acerca de {0}</system:String>
-	<system:String x:Key="CodeAuthor">Creado por</system:String>
-
-
-	<!--#endregion-->
-	
-	<!--#region Game Config Tab Strings-->
-	<!--Game Tabs Strings-->
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics">Gráficos</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input">Input</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound">Sonido</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Patches">Parches</system:String>
-	<system:String x:Key="GameTabDebug">Debug</system:String>
-	
-	<!--Graphics Tab Strings-->
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display">Opciones de Pantalla</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Screen">Pantalla:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolución:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forzar Relación de Aspecto 4:3</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Activar V-Sync</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Pantalla Completa</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">Ventana</system:String>
-
-    <system:String x:Key="GameGraphicsGroupWindow">Opciones de Ventana</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Ventana Ajustable</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Mantener Relación de Aspecto</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamaño de Ventana Personalizado:</system:String>
-
-    <system:String x:Key="GameGraphicsGroupFullscreen">Opciones de Pantalla Completa</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Sin Bordes</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Escalar a la Pantalla</system:String>
-
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other">Otras Opciones Gráficas</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Framerate">Frequencia de Imagen:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Nivel de Detalle:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High">Alto (mejor)</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low">Bajo</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest">Más Bajo</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog">Emulación de Niebla:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Auto">Automática</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation">Emulación</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill">Modo de Relleno del Fondo:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Estiración [Por Defecto]</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit">Adaptar</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Rellenar</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.FMVFill">Modo de Relleno de las FMV:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.TexFilter">Filtrado de Texturas:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.UIFilter">Filtrado de Interfaz</system:String>
-
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Mejoras</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap">Forzar Mipmapping</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Activar Escalado de UI</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Activar D3D8to9</system:String>
-    
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Actualizar D3D8to9</system:String>
-
-    <!--Input Tab Strings-->
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input">Opciones de Entrada</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Entrada Estándar (DInput)</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.SDL2">Entrada Mejorada (SDL2)</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Configuración de Entrada Estándar</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Teclado y Ratón</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Arrastar y Mantener</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Arrastar para Acelerar</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Saltar:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Acción:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Cancelar/Atacar:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Start/Set:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Girar Cámara - Izquierda:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Girar Cámara - Derecha:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Silbar:</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2">Configuración de Entrada Mejorada</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Abrir AppLauncher</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Descargar AppLauncher</system:String>
-    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">La Entrada Mejorada es una implementación de SDL2 en SADX. Es recomendable utilizarla para jugar ya que arregla Errores del sistema DInput original, tales como la cámara girando sobre sí misma.</system:String>
-
-    <!--Sound Input Strings-->
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings">Configuración de Sonido</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume">Control de Volumen</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Utilizar BASS para la Música</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Utilizar BASS para los Efectos</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.Music">Activar Música</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Activar Sonidos</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Activar Sonido 3D</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Music">Volumen de la Música:</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Voices">Volumen de Diálogos:</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Sound">Volumen de Efectos:</system:String>
-	
-    <!--#endregion-->
-	
-	<!--#region Test Spawn Tab Strings-->
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Character">Personaje:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Level">Nivel:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Time">Hora:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Act">Acto:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Check.Manual">Configuración Manual:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Position">Posición:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosX">Pos X:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Angle">Ángulo:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Event">Evento:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Mode">Modo de Juego:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Save">Redireccionar Archivo de Guardado:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Warning">Sobrescribir niveles o personajes en los eventos podría bloquear el juego.</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Buttons.Launch">Iniciar Juego</system:String>
-	<!--#endregion-->
-	
-	<!--#region Manager Config Tab Strings-->
-	<!--Options-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Opciones</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Temas:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Idioma:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Perfil:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Directorio del Juego:</system:String>
-	
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Activar Instalador 1-Clic de GameBanana</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Desactivar Instalador 1-Clic de GameBanana</system:String>
-
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Instalar Mod Loader</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Desinstalar Mod Loader</system:String>
-
-    <!--Updates-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Actualizaciones</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Buscar Actualizaciones del Mod Loader al Iniciar</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Buscar Actualizaciones de Mods al Iniciar</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Buscar Actualizaciones</system:String>
-
-	<!--Debug Features-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Opciones Avanzandas</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Mantener el Mod Manager abierto después de iniciar el juego</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Activar Opciones de Desarrollador</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Activar Consola</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Mostrar mensajes Debug en la Ventana del Juego</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Guardar Información Debug a un Archivo</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Generar un Informe de Bloqueo</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Verificar Archivos del Juego</system:String>
-
-    <!--About-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Acerca de</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">El SADX Mod Manager es un programa que te permite gestionar fácilmente mods en Sonic Adventure DX.</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Colaboradores</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Código Fuente</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Reportar un Error (Solo en Inglés)</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Abrir SA Docs (Solo en Inglés)</system:String>
-	<!--#endregion-->
-
-	<!--#region Manager About Window-->
-    
-    <!--#region New / Edit Mod  Window-->
-    <system:String x:Key="EditMod.Description">Por favor, rellena la información sobre tu mod.</system:String>
-    <system:String x:Key="EditMod.Header.EditMod">Editar</system:String>
-    <system:String x:Key="EditMod.Header.NewMod">Nuevo Mod</system:String>
-    <system:String x:Key="EditMod.Tabs.Info">Mod Info</system:String>
-    <system:String x:Key="EditMod.Tabs.Updates">Actualizar Info</system:String>
-    <system:String x:Key="EditMod.Tabs.Dependencies">Dependencias</system:String>
-    <system:String x:Key="EditMod.Tabs.Info.AuthorURL">URL del Autor:</system:String>    
-    <system:String x:Key="EditMod.Tabs.Info.ModID">Mod ID:</system:String>
-    <system:String x:Key="EditMod.Tabs.Info.DLL">DLL:</system:String>
-    <system:String x:Key="EditMod.Tabs.Info.Source">URL del Código Fuente:</system:String>
-    <system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Redireccionar Archivo de Guardado:</system:String>
-    <system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Archivo de Guardado Principal:</system:String>
-    <system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Archivo de Guardado Chao</system:String>
-    <system:String x:Key="CommonStrings.OpenFolder">Abrir Carpeta</system:String>
-    <system:String x:Key="EditMod.Tabs.Updates.Method">Método de Actualización</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.SelfHosted">Auto-Hospedado</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.GitHub">Configuración de Actualizaciones GitHub</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Autor y Repositorio:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Recursos de Versión:</system:String>
-    <system:String x:Key="EditMod.Tabs.Updates.GB">Configuración de Actualizaciones GitHub</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">Mod ID:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self">Configuración de Actualizaciones Auto-Hospedadas</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL de Actualización::</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL de Notas de Actualización:</system:String>
-    <system:String x:Key="EditMod.Tabs.Dependencies.Warning">Es recomendable utilizar el sistema de Dependencias unicamente en el caso de que tu mod requiera completamente de otro mod para funcionar correctamente.</system:String>
-	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Add">Añadir Dependencias</system:String>
-	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Remove">Eliminar Dependencias</system:String>
-	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.ID">ID</system:String>
-	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Folder">Carpeta</system:String>
-	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Column">Enlace de Descarga</system:String>
-	
-	<!--#region Select Dependencies Window-->
-	<system:String x:Key="SelectDependencies.Title">Seleccionar Dependencias</system:String>
-	<!--#endregion-->
-
-    <!--#region Mod Config-->
-    <system:String x:Key="ModConfig.Title">Configurar</system:String>
-    <!--#endregion-->
-
-    <!--#region Mod Profile-->
-    <system:String x:Key="ManagerProfile.Title">Gestionar Perfiles</system:String>
-    <system:String x:Key="ManagerProfile.Buttons.Rename">Renombrar Perfil</system:String>
-    <system:String x:Key="ManagerProfile.Buttons.Create">Crear Perfil</system:String>
-    <system:String x:Key="ManagerProfile.Path">Directorio del Archivo</system:String>
-    <system:String x:Key="ManagerProfile.ContextMenu.Rename">Renombrar</system:String>
-    <system:String x:Key="ManagerProfile.ContextMenu.Duplicate">Duplicar</system:String>
-    <system:String x:Key="ManagerProfile.ContextMenu.Delete">Eliminar</system:String>
-    <system:String x:Key="ManagerProfile.Errors.Unexpected">Error inesperado, no se pudo renombrar el perfil.</system:String>
-    <system:String x:Key="ManagerProfile.Errors.ProfileExists.Title">Error, el perfil ya existe</system:String>
-    <system:String x:Key="ManagerProfile.Errors.ProfileExists">Un perfil con este nombre ya existe. Por favor, utiliza un nombre distinto.</system:String>
-    <!--#endregion-->
-
-
-    <!--#region Patches ComboBox-->
-    <system:String x:Key="GamePatches.3DSound">Activar Audio 3D HRTF</system:String>
-    <system:String x:Key="GamePatches.CamCode">Correciones del Código de la Cámara</system:String>
-    <system:String x:Key="GamePatches.VertexColor">Correciones de Color de Vértice</system:String>
-    <system:String x:Key="GamePatches.MaterialColor">Correciones de Color de Material</system:String>
-    <system:String x:Key="GamePatches.Interpolation">Correciones de Interpolación</system:String>
-    <system:String x:Key="GamePatches.FixFOV">Correciones de Campo Visual</system:String>
-    <system:String x:Key="GamePatches.Skychase">Correciones de Sky Chase</system:String>
-    <system:String x:Key="GamePatches.Chaos2">Correciones de Chaos 2</system:String>
-    <system:String x:Key="GamePatches.ChunkRendering">Correciones de la Iluminación Especular de modelos Chunk</system:String>
-    <system:String x:Key="GamePatches.E102Lamp">Correciones de Luces de Gamma</system:String>
-    <system:String x:Key="GamePatches.ChaoStats">Correción de Dimensiones del Panel de Estadísticas Chao</system:String>
-    <system:String x:Key="GamePatches.PixelOffset">2D Rendering Offset Fixes</system:String>
-    <system:String x:Key="GamePatches.Lights">Correciones de Luces</system:String>
-    <system:String x:Key="GamePatches.DisableGBIX">Desactivar GBIX (Experimental)</system:String>
-    <!--#endregion-->
-
-    <!--#region DL Mod-->
-    <system:String x:Key="CommonStrings.Credits">Créditos</system:String>
-    <system:String x:Key="CommonStrings.Download">Descargar</system:String>
-    <!--#endregion-->
-
-    <!--#region Install New Mod Options-->
-    <system:String x:Key="InstallModOptions.Title">Instalar o crear un nuevo mod.</system:String>
-    <system:String x:Key="InstallModOptions.Radio.Archive">Instalar desde un archivo</system:String>
-    <system:String x:Key="InstallModOptions.Radio.Folder">Instalar desde una carpeta</system:String>
-    <system:String x:Key="InstallModOptions.Radio.New">Nuevo Mod (Para desarrolladores)</system:String>
-    <!--#endregion-->
-
-    <!--#region ModChangelog Window-->
-    <system:String x:Key="ModChangelog.Title">Actualizaciones de Mod</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Notes">Notas de Actualización</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Details">Detalles de Actualización</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Details.DownloadDetails">Detalles de Descarga</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Details.PublishedDate">Fecha Publicada:</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Details.FileSize">Tamaño del Archivo:</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Details.FileCount">Número de Archivo/s:</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Details.UpdateName">Título de la Actualización:</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Details.Tag">Etiqueta:</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Details.Buttons.OpenBrowser">Abrir Actualización en el Navegador</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Files">Cambios de Archivo/s</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Files.Filename">Nombre del Archivo</system:String>
-    <system:String x:Key="ModChangelog.Tabs.Files.Status">Estado</system:String>
-    <system:String x:Key="ModChangelog.Buttons.DownloadNow">Descargar Ahora</system:String>
-    <system:String x:Key="ModChangelog.Buttons.DownloadLater">Descargar Más Tarde</system:String>
-    <!--#endregion-->
-
-    <!--Message Box Strings-->
-    <system:String x:Key="MessageWindow.DefaultTitle">SADX Mod Manager</system:String>
-
-    <system:String x:Key="MessageWindow.DefaultTitle.Error">SADX Mod Manager Error</system:String>
-    
-    <system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">Hay un mod.ini en la carpeta mods.</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Cada mod tiene que ser colocado en una subcarpeta dentro de la carpeta mods. No extraigas mods en la carpeta mods.</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Mueve o elimina el mod.ini en la carpeta mods y reinicia el Mod Manager.</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">no se ha podido encontrar.&#x0a;&#x0a;Este mod será eliminado de la lista.</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Error al establecer el Directorio del Juego</system:String>
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Error al detectar CHRMODELS.dll, asegúrate de seleccionar la carpeta donde "sonic.exe" está instalado.</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Error al detectar el Directorio del Juego</system:String>
-    <system:String x:Key="MessageWindow.Errors.GamePathNotFound">Error al detectar el Directorio del Juego. Por favor, configura el directorio en la Configuración del Manager y asegúrate de seleccionar la carpeta donde sonic.exe está instalado.</system:String>
-
-    <system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">¿Seguro que quieres eliminar</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Ya existe un mod con ese nombre.&#x0a;Por favor, selecciona otro nombre o renombra el existente.</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Mod ya existe"</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModCreationFailed.Title">"Error al crear el Mod"</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.NoModName">No puedes tener un mod sin un nombre.</system:String>
-    <system:String x:Key="MessageWindow.Errors.NoModName.Title">Nombre de mod inválido</system:String>
-
-    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Estás a punto de desactivar la redirección de archivo de guardado para este mod. Si continúas, cualquier archivo de guardado en este mod será eliminado.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
-
-    <system:String x:Key="MessageWindow.Warnings.DeleteProfile">¿Seguro que quieres eliminar este perfil?</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.MissingLoaderDLL" xml:space="preserve">No se ha podido encontrar el archivo SADXModLoader.dll, el Mod Loader no funcionará.&#x0a;&#x0a;Por favor, vuelve a descargar el Mod Manager.</system:String>
-
-    <system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Esto hará que todos los mods se vuelvan a descargar.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
-
-    <!--#endregion-->
+	<!--Window Tips-->
+	<system:String x:Key="Window.Tips.Minimize">Minimizar</system:String>
+	<system:String x:Key="Window.Tips.Maximize">Maximizar</system:String>
+	<system:String x:Key="Window.Tips.Restore">Restablecer Ventana</system:String>
+	<system:String x:Key="Window.Tips.Close">Cerrar</system:String>
 
 </ResourceDictionary>

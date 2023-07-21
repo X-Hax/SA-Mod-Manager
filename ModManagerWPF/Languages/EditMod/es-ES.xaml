@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<system:String x:Key="EditMod.Description">Por favor, rellena la información sobre tu mod.</system:String>
+	<system:String x:Key="EditMod.Header.EditMod">Editar</system:String>
+	<system:String x:Key="EditMod.Header.NewMod">Nuevo Mod</system:String>
+
+	<system:String x:Key="EditMod.Tabs.Info">Mod Info</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.AuthorURL">URL del Autor:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.ModID">Mod ID:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.DLL">DLL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Source">URL del Código Fuente:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Redireccionar Archivo de Guardado:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Archivo de Guardado Principal</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Archivo de Guardado Chao</system:String>
+
+    <system:String x:Key="EditMod.Tabs.Updates">Información de Actualizaciones</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Method">Método de Actualización</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub">Configuración de Actualizaciones GitHub</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Autor y Repositorio:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Recursos de Versión:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GB">Configuración de Actualizaciones GameBanana</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">Mod ID:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self">Configuración de Actualizaciones Auto-Hospedadas</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL de Actualización:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL de Notas de Actualización:</system:String>
+
+	<system:String x:Key="EditMod.Tabs.Dependencies">Dependencias</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Warning">Es recomendable utilizar el sistema de Dependencias unicamente en el caso de que tu mod requiera completamente de otro mod para funcionar correctamente.</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Add">Add Dependencies</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Remove">Eliminar Dependencias</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.ID">ID</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Folder">Carpeta</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Column">Enlace de Descarga</system:String>
+</ResourceDictionary>
