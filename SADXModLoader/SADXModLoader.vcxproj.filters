@@ -99,7 +99,7 @@
     <ClCompile Include="jvList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Gbix.cpp">
+    <ClCompile Include="HelperFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -249,9 +249,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="jvList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Gbix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
