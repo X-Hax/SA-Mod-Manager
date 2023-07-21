@@ -6,9 +6,9 @@
         <local:LangEntry FileName="en-EN" Name="English"/>
         <local:LangEntry FileName="fr-FR" Name="Français (France)"/>
         <local:LangEntry FileName="es-ES" Name="Español (España)"/>
-        <local:LangEntry FileName="he-IL" Name="עברית"/>
         <local:LangEntry FileName="pt-PT" Name="Português (Portugal)"/>
         <local:LangEntry FileName="pt-BR" Name="Português (Brasil)"/>
+        <!--<local:LangEntry FileName="he-IL" Name="עברית"/>-->
     </local:LanguageList>
 
 

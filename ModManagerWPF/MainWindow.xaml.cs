@@ -133,7 +133,7 @@ namespace ModManagerWPF
 				File.Copy("SADXModLoader.dll", loaderdllpath, true);
 			}
 
-			if (File.Exists(loaderdllpath))
+			if (File.Exists(loaderdllpath) && File.Exists(datadllorigpath))
 			{
 				File.Copy(loaderdllpath, datadllpath, true);
 			}
@@ -579,10 +579,13 @@ namespace ModManagerWPF
 		#region ModContext
 		private void ModContextOpenFolder_Click(object sender, RoutedEventArgs e)
 		{
-			if (listMods.SelectedItem is ModData item)
+			var selectedMods = listMods.SelectedItems.OfType<ModData>();
+
+			foreach (var mod in selectedMods.Where(mod => !string.IsNullOrEmpty(mod.Tag)))
 			{
-				string fullPath = Path.Combine(modDirectory, item.Tag);
-				Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });
+				string fullPath = Path.Combine(modDirectory, mod.Tag);
+				if (Directory.Exists(fullPath))
+					Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });		
 			}
 		}
 
@@ -1691,7 +1694,7 @@ namespace ModManagerWPF
 			}
 			else
 			{
-				Util.MoveFile(datadllpath, datadllorigpath);
+				File.Move(datadllpath, datadllorigpath);
 
 				if (File.Exists(loaderdllpath))
 					File.Copy(loaderdllpath, datadllpath);
@@ -1699,11 +1702,14 @@ namespace ModManagerWPF
 
 			installed = !installed;
 			UpdateBtnInstallLoader_State();
+			Update_PlayButtonsState();
 			Button button = (Button)sender;
 			button.IsEnabled = false;
 			int delayDuration = 2000;
 			await Task.Delay(delayDuration);
+
 			button.IsEnabled = true;
+
 
 		}
 

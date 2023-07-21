@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
+using System.Threading;
 
 namespace ModManagerWPF
 {
@@ -22,7 +23,20 @@ namespace ModManagerWPF
 			}
 			catch //File.Move doesn't work if hard drive destination is different from source, copy doesn't have this problem
 			{
+				int failSafe = 0;
 				File.Copy(origin, dest);
+
+				do
+				{
+					if (failSafe == 10)
+					{
+						return;
+					}
+					Thread.Sleep(1000);
+					failSafe++;
+				} while(!File.Exists(dest));
+
+
 				File.Delete(origin);
 			}
 		}

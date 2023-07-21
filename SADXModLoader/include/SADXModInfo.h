@@ -11,7 +11,7 @@
 #include "ScaleInfo.h"
 
  // SADX Mod Loader API version.
-static const int ModLoaderVer = 15;
+static const int ModLoaderVer = 16;
 struct PatchInfo
 {
 	void* address;
@@ -35,6 +35,196 @@ struct PointerList
 {
 	const PointerInfo* Pointers;
 	int Count;
+};
+
+struct LoaderSettings
+{
+	bool DebugConsole;
+	bool DebugScreen;
+	bool DebugFile;
+	bool DebugCrashLog;
+	bool DisableCDCheck;
+	int HorizontalResolution;
+	int VerticalResolution;
+	bool ForceAspectRatio;
+	bool WindowedFullscreen;
+	bool EnableVsync;
+	bool AutoMipmap;
+	bool TextureFilter;
+	bool PauseWhenInactive;
+	bool StretchFullscreen;
+	int ScreenNum;
+	int VoiceLanguage;
+	int TextLanguage;
+	bool CustomWindowSize;
+	int WindowWidth;
+	int WindowHeight;
+	bool MaintainWindowAspectRatio;
+	bool ResizableWindow;
+	bool ScaleHud;
+	int BackgroundFillMode;
+	int FmvFillMode;
+	bool DisablePolyBuff;
+	bool EnableBassSFX;
+	int SEVolume;
+	bool DisableMaterialColorFix;
+	bool DisableInterpolationFix;
+	int TestSpawnLevel;
+	int TestSpawnAct;
+	int TestSpawnCharacter;
+	bool TestSpawnPositionEnabled;
+	int TestSpawnX;
+	int TestSpawnY;
+	int TestSpawnZ;
+	int TestSpawnRotation;
+	int TestSpawnEvent;
+	int TestSpawnGameMode;
+	int TestSpawnSaveID;
+};
+
+struct ModDependency
+{
+	const char* ID;
+	const char* Folder;
+	const char* Name;
+	const char* Link;
+};
+
+struct ModDepsList
+{
+	typedef ModDependency value_type;
+	typedef int size_type;
+	typedef const value_type& reference;
+	typedef const value_type* pointer;
+	typedef pointer iterator;
+
+	pointer data;
+	size_type size;
+
+	// Retrieves an iterator to the start of the list (enables range-based for).
+	iterator begin()
+	{
+		return data;
+	}
+
+	// Retrieves an iterator to the end of the list (enables range-based for).
+	iterator end()
+	{
+		return data + size;
+	}
+
+	reference operator [](size_type pos)
+	{
+		return data[pos];
+	}
+};
+
+struct Mod
+{
+	const char* Name;
+	const char* Author;
+	const char* Description;
+	const char* Version;
+	const char* Folder;
+	const char* ID;
+	HMODULE DLLHandle;
+	bool MainSaveRedirect;
+	bool ChaoSaveRedirect;
+	const ModDepsList Dependencies;
+};
+
+struct ModList
+{
+	typedef Mod value_type;
+	typedef int size_type;
+	typedef const value_type& reference;
+	typedef const value_type* pointer;
+	typedef pointer iterator;
+
+	// Retrieves an iterator to the start of the list (enables range-based for).
+	iterator (*begin)();
+	// Retrieves an iterator to the end of the list (enables range-based for).
+	iterator (*end)();
+	// Retrieves the item at position pos.
+	reference (*at)(size_type pos);
+	// Retrieves a pointer to the start of the list.
+	pointer (*data)();
+	// Retrieves the number of items in the list.
+	size_type (*size)();
+	// Find a mod by its ID.
+	iterator (*find)(const char* id);
+	// Find a mod by its name.
+	iterator (*find_by_name)(const char* name);
+	// Find a mod by its folder.
+	iterator (*find_by_folder)(const char* folder);
+	// Find a mod by its DLL handle.
+	iterator (*find_by_dll)(HMODULE handle);
+
+	reference operator [](size_type pos)
+	{
+		return at(pos);
+	}
+};
+
+struct StartPosList
+{
+	typedef StartPosition value_type;
+	typedef size_t size_type;
+	typedef value_type& reference;
+	typedef const value_type& const_reference;
+	typedef value_type* pointer;
+	typedef const value_type* const_pointer;
+	typedef pointer iterator;
+	typedef const_pointer const_iterator;
+
+	// The character ID this list is associated with.
+	unsigned char key;
+	// Retrieves an iterator to the start of the list (enables range-based for).
+	virtual const_iterator begin() = 0;
+	// Retrieves an iterator to the end of the list (enables range-based for).
+	virtual const_iterator end() = 0;
+	// Retrieves the item at position pos.
+	virtual const_reference operator [](size_t pos) = 0;
+	// Retrieves a pointer to the start of the list.
+	virtual const_pointer data() = 0;
+	// Retrieves the number of items in the list.
+	virtual size_type size() = 0;
+	// Find the start position for a specific level (use the levelact macro).
+	virtual const_iterator find(int id) = 0;
+};
+
+struct StartPosManager
+{
+	typedef unsigned char key_type;
+	typedef StartPosition item_type;
+	typedef StartPosList value_type;
+	typedef size_t size_type;
+	typedef ptrdiff_t difference_type;
+	typedef value_type& reference;
+	typedef const value_type& const_reference;
+	typedef value_type* pointer;
+	typedef const value_type* const_pointer;
+	typedef pointer iterator;
+	typedef const_pointer const_iterator;
+
+	// Retrieves an iterator to the start of the list (enables range-based for).
+	virtual const_iterator begin() = 0;
+	// Retrieves an iterator to the end of the list (enables range-based for).
+	virtual const_iterator end() = 0;
+	// Retrieves the item at position pos.
+	virtual const_reference operator [](size_t pos) = 0;
+	// Retrieves a pointer to the start of the list.
+	virtual const_pointer data() = 0;
+	// Retrieves the number of items in the list.
+	virtual size_type size() = 0;
+	// Find a mod by its ID.
+	virtual const_iterator find(const char* id) = 0;
+	// Find a mod by its name.
+	virtual const_iterator find_by_name(const char* name) = 0;
+	// Find a mod by its folder.
+	virtual const_iterator find_by_folder(const char* folder) = 0;
+	// Find a mod by its DLL handle.
+	virtual const_iterator find_by_dll(HMODULE handle) = 0;
 };
 
 #undef ReplaceFile // Windows function macro
@@ -168,7 +358,17 @@ struct HelperFunctions
 	*
 	*/
 	void(__cdecl* RegisterCharacterWelds)(const uint8_t character, const char* iniPath);
+
+	// The settings that the mod loader was initialized with.
+	// Requires version >= 16.
+	const LoaderSettings* LoaderSettings;
+
+	// API for listing information on loaded mods.
+	// Requires version >= 16.
+	const ModList* Mods;
 };
+
+//static_assert(std::is_standard_layout<HelperFunctions>::value);
 
 typedef void(__cdecl* ModInitFunc)(const char* path, const HelperFunctions& helperFunctions);
 
