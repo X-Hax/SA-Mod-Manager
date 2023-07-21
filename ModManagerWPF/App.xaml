@@ -807,26 +807,25 @@
 				<Setter Property="Background" Value="{DynamicResource WindowButton.Brushes.Background}"/>
 				<Setter Property="Foreground" Value="{DynamicResource WindowButton.Brushes.Foreground}"/>
 				<Setter Property="ToolTip" Value="{DynamicResource Window.Tips.Minimize}"/>
-				<Setter Property="Content">
-					<Setter.Value>
-						<DrawingImage>
-							<DrawingImage.Drawing>
-								<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
-									<GeometryDrawing Geometry="F1 M24,24z M0,0z M18,12L6.0000003,12">
-										<GeometryDrawing.Pen>
-											<Pen Brush="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
-										</GeometryDrawing.Pen>
-									</GeometryDrawing>
-								</DrawingGroup>
-							</DrawingImage.Drawing>
-						</DrawingImage>
-					</Setter.Value>
-				</Setter>
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type Button}">
 							<Grid Background="{TemplateBinding Background}" Height="32" Width="32" SnapsToDevicePixels="True">
-								<Image Margin="10" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Source="{TemplateBinding Property=Content}"/>
+								<Image Margin="10" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+									<Image.Source>
+										<DrawingImage>
+											<DrawingImage.Drawing>
+												<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+													<GeometryDrawing Geometry="F1 M24,24z M0,0z M18,12L6.0000003,12">
+														<GeometryDrawing.Pen>
+															<Pen Brush="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+														</GeometryDrawing.Pen>
+													</GeometryDrawing>
+												</DrawingGroup>
+											</DrawingImage.Drawing>
+										</DrawingImage>
+									</Image.Source>
+								</Image>
 							</Grid>
 							<ControlTemplate.Triggers>
 								<Trigger Property="IsMouseOver" Value="True">
@@ -847,26 +846,25 @@
 				<Setter Property="Background" Value="{DynamicResource WindowButton.Brushes.Background}"/>
 				<Setter Property="Foreground" Value="{DynamicResource WindowButton.Brushes.Foreground}"/>
 				<Setter Property="ToolTip" Value="{DynamicResource Window.Tips.Maximize}"/>
-				<Setter Property="Content">
-					<Setter.Value>
-						<DrawingImage>
-							<DrawingImage.Drawing>
-								<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
-									<GeometryDrawing Geometry="F1 M24,24z M0,0z M4,6C4,4.89543,4.89543,4,6,4L18,4C19.1046,4,20,4.89543,20,6L20,18C20,19.1046,19.1046,20,18,20L6,20C4.89543,20,4,19.1046,4,18L4,6z">
-										<GeometryDrawing.Pen>
-											<Pen Brush="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
-										</GeometryDrawing.Pen>
-									</GeometryDrawing>
-								</DrawingGroup>
-							</DrawingImage.Drawing>
-						</DrawingImage>
-					</Setter.Value>
-				</Setter>
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type Button}">
 							<Grid Background="{TemplateBinding Background}" Height="32" Width="32" SnapsToDevicePixels="True">
-								<Image x:Name="image" Margin="10" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Source="{TemplateBinding Property=Content}"/>
+								<Image x:Name="image" Margin="10" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+									<Image.Source>
+										<DrawingImage>
+											<DrawingImage.Drawing>
+												<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+													<GeometryDrawing Geometry="F1 M24,24z M0,0z M4,6C4,4.89543,4.89543,4,6,4L18,4C19.1046,4,20,4.89543,20,6L20,18C20,19.1046,19.1046,20,18,20L6,20C4.89543,20,4,19.1046,4,18L4,6z">
+														<GeometryDrawing.Pen>
+															<Pen Brush="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+														</GeometryDrawing.Pen>
+													</GeometryDrawing>
+												</DrawingGroup>
+											</DrawingImage.Drawing>
+										</DrawingImage>
+									</Image.Source>
+								</Image>
 							</Grid>
 							<ControlTemplate.Triggers>
 								<Trigger Property="IsMouseOver" Value="True">
@@ -879,7 +877,7 @@
 								</Trigger>
 								<Trigger Property="Tag" Value="max">
 									<Setter Property="ToolTip" Value="{DynamicResource Window.Tips.Restore}"/>
-									<Setter Property="Content">
+									<Setter TargetName="image" Property="Source">
 										<Setter.Value>
 											<DrawingImage>
 												<DrawingImage.Drawing>
