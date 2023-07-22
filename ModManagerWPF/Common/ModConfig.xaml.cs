@@ -85,7 +85,7 @@ namespace ModManagerWPF.Common
 			await Task.Delay(10);
 			settings.Save();
 			await Task.Delay(30);
-			new ModConfig(modName, pathXML, true).Show();
+			new ModConfig(modName, pathXML, true).ShowDialog();
 			this.Close();
 		}
 

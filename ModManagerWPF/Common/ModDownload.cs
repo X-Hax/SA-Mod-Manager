@@ -12,6 +12,7 @@ using System.Net;
 using System.Diagnostics;
 using SevenZipExtractor;
 
+
 namespace ModManagerWPF.Common
 {
 	public enum ModDownloadType
@@ -504,6 +505,8 @@ namespace ModManagerWPF.Common
 
 						// And last but not least, copy over the new manifest.
 						File.Copy(newManPath, oldManPath, true);
+						Thread.Sleep(10000);
+						((MainWindow)App.Current.MainWindow).Refresh();
 						break;
 					}
 

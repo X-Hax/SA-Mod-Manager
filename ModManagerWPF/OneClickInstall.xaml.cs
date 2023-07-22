@@ -15,13 +15,17 @@ using System.Xml.Linq;
 using System.IO;
 using ModManagerWPF.Common;
 using System.Windows.Interop;
+using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ModManagerWPF
 {
 	/// <summary>
-	/// Interaction logic for DownloadMod.xaml
+	/// Interaction logic for OneClickInstall.xaml
 	/// </summary>
-	public partial class DownloadMod : Window
+	public partial class OneClickInstall : Window
 	{
 
 		private Uri url;
@@ -31,8 +35,10 @@ namespace ModManagerWPF
 		private string modPath;
 		private Dictionary<string, string> fields;
 
-		public DownloadMod(string updatePath, string modPath)
+		public OneClickInstall(string updatePath, string modPath)
 		{
+			this.updatePath = updatePath;
+			this.modPath = modPath;
 			InitializeComponent();
 
 			List<string> uris = App.UriQueue.GetUris();
@@ -43,8 +49,7 @@ namespace ModManagerWPF
 			}
 
 			App.UriQueue.UriEnqueued += UriQueueOnUriEnqueued;
-			this.updatePath = updatePath;
-			this.modPath = modPath;
+
 		}
 
 
@@ -118,7 +123,7 @@ namespace ModManagerWPF
 			}
 			catch (Exception ex)
 			{
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.GBAPIFail.Title"), Lang.GetString("MessageWindow.Errors.GBAPIFail"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.GBAPIFail.Title"), Lang.GetString("MessageWindow.Errors.GBAPIFail"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 
 				return;
 
@@ -168,7 +173,7 @@ namespace ModManagerWPF
 
 
 
-			this.Show();
+			this.ShowDialog();
 		}
 
 
@@ -200,25 +205,39 @@ namespace ModManagerWPF
 
 		private void OpenGB_Click(object sender, RoutedEventArgs e)
 		{
-
+			var ps = new ProcessStartInfo("https://github.com/X-Hax/sadx-mod-loader")
+			{
+				UseShellExecute = true,
+				Verb = "open"
+			};
+			Process.Start(ps);
 		}
 
-		private void ButtonDownload_Click(object sender, RoutedEventArgs e)
+		private async void ButtonDownload_Click(object sender, RoutedEventArgs e)
 		{
 
 			//To do add support for retry with custom msg box
 
-			try
-			{
-				if (!Directory.Exists(updatePath))
-				{
-					Directory.CreateDirectory(updatePath);
-				}
-			}
-			catch (Exception ex)
-			{
+			bool retry = false;
 
-			}
+			do
+			{
+				try
+				{
+					if (!Directory.Exists(updatePath))
+					{
+						Directory.CreateDirectory(updatePath);
+					}
+				}
+				catch (Exception ex)
+				{
+					var s = Lang.GetString("MessageWindow.Errors.DirectoryCreateFail0") + ":\n" + ex.Message + "\n\n" + Lang.GetString("MessageWindow.Errors.DirectoryCreateFail1");
+					var msg = new MessageWindow(Lang.GetString("MessageWindow.Errors.DirectoryCreateFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.RetryCancel);
+					msg.ShowDialog();
+					retry = msg.isRetry;
+
+				}
+			} while (retry == true);
 
 			var dummyInfo = new ModInfo
 			{
@@ -238,26 +257,31 @@ namespace ModManagerWPF
 
 			dummyPath = Path.Combine(modPath, dummyPath);
 
-			var updates = new List<ModDownload>
+
+			var updates = new List<ModDownloadWPF>
 			{
-				new ModDownload(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
+				new ModDownloadWPF(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
 			};
 
+			new Updater.ModDownloadDialogWPF(updates, updatePath).ShowDialog();
 
-			//todo add retry
-			try
+
+			await Task.Delay(2000);
+			this.Hide();
+			await Task.Delay(1000);
+			if (Directory.Exists(updatePath))
 			{
-
-				Directory.Delete(updatePath, true);
-			}
-			catch (Exception ex)
-			{
-				string error = "MessageWindow.Errors.DirectoryDeleteFail0" + "\n" + ex.Message + "\n\n" + Lang.GetString("MessageWindow.Errors.DirectoryDeleteFail1");
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.DirectoryDeleteFail.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
-
+				try
+				{
+					Directory.Delete(updatePath, true);
+				}
+				catch
+				{}
 			}
 
-			((MainWindow)App.Current.MainWindow).Save();
+
+			((MainWindow)App.Current.MainWindow).Refresh();
+			this.Close();
 		}
 	}
 }
