@@ -1,4 +1,4 @@
-﻿<Window x:Class="ModManagerWPF.DownloadMod"
+﻿<Window x:Class="ModManagerWPF.OneClickInstall"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +8,8 @@
 
         mc:Ignorable="d"
 		Style="{StaticResource SAWindow}"
-		Title="Download Mod" Height="600" Width="850">
+		Title="Download Mod" Height="600" Width="850"
+        WindowStartupLocation="CenterScreen">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -70,7 +71,7 @@
 				<RowDefinition Height="40"/>
 			</Grid.RowDefinitions>
             <Button x:Name="ButtonDownload" Content="{StaticResource CommonStrings.Download}" Grid.Column="0" Margin="5,5,5,5" Click="ButtonDownload_Click"/>
-			<Button x:Name="OpenGB" Content="Open on Gamebanana" Grid.Column="2" Margin="5,5,5,5" Click="OpenGB_Click"/>
+			<Button x:Name="OpenGB" Content="Open Link" Grid.Column="2" Margin="5,5,5,5" Click="OpenGB_Click"/>
 			<Button x:Name="ButtonCancel" Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="4" Margin="5,5,5,5" Click="ButtonCancel_Click" IsCancel="True"/>
 		</Grid>
 	</Grid>

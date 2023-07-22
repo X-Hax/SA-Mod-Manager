@@ -121,7 +121,7 @@ namespace ModManagerWPF
 			if (path == root || path.Contains(root)) //prevent user from trying to install a mod that is already installed.
 			{
 				MessageWindow msg = new(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.DontDoThat"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning);
-				msg.Show();
+				msg.ShowDialog();
 				return;
 			}
 

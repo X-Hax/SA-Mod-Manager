@@ -218,7 +218,7 @@ namespace ModManagerWPF
 			};
 			timer.Tick += SetModManagerVersion;
 			timer.IsEnabled = true;
-			DownloadMod dl = new(updatePath, modDirectory);
+			new OneClickInstall(updatePath, modDirectory);
 		}
 
 		private void MainForm_FormClosing(object sender, EventArgs e)
@@ -701,7 +701,7 @@ namespace ModManagerWPF
 
 			SADXModInfo modInfo = mods[mod.Tag];
 			EditMod Edit = new(modInfo);
-			Edit.Show();
+			Edit.ShowDialog();
 			Edit.Closed += EditMod_FormClosing;
 		}
 
@@ -745,7 +745,7 @@ namespace ModManagerWPF
 				SADXModInfo modInfo = mods[mod.Tag];
 				string fullPath = Path.Combine(modDirectory, mod.Tag);
 				Common.ModConfig config = new(modInfo.Name, fullPath);
-				config.Show();
+				config.ShowDialog();
 			}
 		}
 		private void EditMod_FormClosing(object sender, EventArgs e)
@@ -788,7 +788,7 @@ namespace ModManagerWPF
 					break;
 				case (int)InstallModOptions.Type.NewMod: //create mod
 					EditMod Edit = new(null);
-					Edit.Show();
+					Edit.ShowDialog();
 					Edit.Closed += EditMod_FormClosing;
 
 					break;
@@ -1618,7 +1618,7 @@ namespace ModManagerWPF
 			}
 		}
 
-		private void Refresh()
+		public void Refresh()
 		{
 			InitCodes();
 			LoadModList();
