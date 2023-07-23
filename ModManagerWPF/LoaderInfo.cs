@@ -178,6 +178,7 @@ namespace ModManagerWPF
 			Mods = new List<string>();
 			EnabledCodes = new List<string>();
 		}
+
 	}
 
 }

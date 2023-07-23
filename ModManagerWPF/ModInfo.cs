@@ -74,4 +74,30 @@ namespace ModManagerWPF
 			return AllVariables.ToArray();
 		}
 	}
+
+	public class ModData
+	{
+		public string Name { get; set; }
+		public string Author { get; set; }
+		public string AuthorURL { get; set; }
+		public string Version { get; set; }
+		public string Category { get; set; }
+		public string Description { get; set; }
+		public string SourceCode { get; set; }
+		public bool IsChecked { get; set; }
+		public string Tag { get; set; }
+	}
+	public class CodeData
+	{
+		public Code codes { get; set; }
+		public bool IsChecked { get; set; }
+	}
+
+	public class PatchesData
+	{
+		public string Name { get; set; }
+		public string Description { get; set; }
+		public bool IsChecked { get; set; }
+
+	}
 }

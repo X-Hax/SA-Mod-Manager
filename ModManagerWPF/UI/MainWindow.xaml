@@ -19,9 +19,9 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Languages/en-EN.xaml"/>
-                <ResourceDictionary Source="Themes/DarkTheme.xaml"/>
-                <ResourceDictionary Source="Icons/Icons.xaml"/>
+                <ResourceDictionary Source="../Languages/en-EN.xaml"/>
+                <ResourceDictionary Source="../Themes/DarkTheme.xaml"/>
+                <ResourceDictionary Source="../Icons/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -53,9 +53,11 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
-                        <ListView x:Name="listMods" Foreground="White" Grid.Column="1" Grid.Row="1" FontSize="13" ItemsSource="{Binding Modsdata}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
-									  dd:DragDrop.UseDefaultDragAdorner="True" dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
-									  dd:DragDrop.DropHandler="{Binding}" SelectionChanged="modListView_SelectedIndexChanged" PreviewKeyDown="ModsList_OnPreviewKeyDown">
+                        <ListView x:Name="listMods" Foreground="White" Grid.Column="1" Grid.Row="1" PreviewKeyDown="ModsList_OnPreviewKeyDown" 
+                                  FontSize="13" ItemsSource="{Binding Modsdata}"  
+                                      dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                                      dd:DragDrop.UseDefaultDragAdorner="True" dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
+                                      dd:DragDrop.DropHandler="{Binding}"  SelectionChanged="modListView_SelectedIndexChanged" AllowDrop="True">
 
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
@@ -63,7 +65,9 @@
                                     <EventSetter Event="ContextMenuOpening" Handler="ModList_ContextMenuOpening"/>
                                     <EventSetter Event="MouseEnter" Handler="ModList_MouseEnter"/>
                                     <EventSetter Event="MouseLeave" Handler="ModList_MouseLeave"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 </Style>
+                                
                             </ListView.ItemContainerStyle>
                             <ListView.ContextMenu>
                                 <ContextMenu x:Name="ModContextMenu">

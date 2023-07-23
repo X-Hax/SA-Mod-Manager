@@ -21,6 +21,7 @@ using System.Threading;
 using System.Collections.ObjectModel;
 using Keyboard = System.Windows.Input.Keyboard;
 using Key = System.Windows.Input.Key;
+using ModManagerWPF.UI;
 
 namespace ModManagerWPF
 {
@@ -48,8 +49,7 @@ namespace ModManagerWPF
 		string gamePath = string.Empty;
 		SADXLoaderInfo loaderini;
 		public Dictionary<string, SADXModInfo> mods = null;
-		public ObservableCollection<ModData> Modsdata { get; set; } = new();
-		public ObservableCollection<ModData> ModsSearch { get; set; } = new();
+
 		string codelstpath = "mods/Codes.lst";
 		string codexmlpath = "mods/Codes.xml";
 		string codedatpath = "mods/Codes.dat";
@@ -79,32 +79,8 @@ namespace ModManagerWPF
 		TestSpawn TS { get; set; }
 		private bool displayedManifestWarning;
 
-		public class ModData
-		{
-			public string Name { get; set; }
-			public string Author { get; set; }
-			public string AuthorURL { get; set; }
-			public string Version { get; set; }
-			public string Category { get; set; }
-			public string Description { get; set; }
-			public string SourceCode { get; set; }
-			public bool IsChecked { get; set; }
-			public string Tag { get; set; }
-		}
+		public MainWindowViewModel ViewModel = new();
 
-		public class CodeData
-		{
-			public Code codes { get; set; }
-			public bool IsChecked { get; set; }
-		}
-
-		public class PatchesData
-		{
-			public string Name { get; set; }
-			public string Description { get; set; }
-			public bool IsChecked { get; set; }
-
-		}
 
 		#endregion
 
@@ -457,7 +433,7 @@ namespace ModManagerWPF
 		private void LoadModList()
 		{
 			btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
-			Modsdata.Clear();
+			ViewModel.Modsdata.Clear();
 			mods = new Dictionary<string, SADXModInfo>();
 
 			bool modFolderExist = Directory.Exists(modDirectory);
@@ -511,7 +487,7 @@ namespace ModManagerWPF
 						Tag = mod
 					};
 
-					Modsdata.Add(item);
+					ViewModel.Modsdata.Add(item);
 
 					//if a mod has a code, add it to the list
 					if (!string.IsNullOrEmpty(inf.Codes))
@@ -559,11 +535,12 @@ namespace ModManagerWPF
 						Tag = inf.Key,
 					};
 
-					Modsdata.Add(item);
+					ViewModel.Modsdata.Add(item);
 				}
 			}
 
-			DataContext = this;
+
+			DataContext = ViewModel;
 			ConfigureModBtn_UpdateState();
 		}
 
@@ -1324,7 +1301,7 @@ namespace ModManagerWPF
 			ComboBox t = sender as ComboBox;
 
 			tsComboAct.BeginInit();
-		
+
 			tsComboAct.ItemsSource = TestSpawn.GetNewAct(t.SelectedIndex);
 
 			tsComboAct.EndInit();
@@ -1363,9 +1340,9 @@ namespace ModManagerWPF
 					list.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
 
 					//finally, add all the saves in the comboBox
-		
-					tsComboSave.ItemsSource = list; 
-			
+
+					tsComboSave.ItemsSource = list;
+
 					tsComboSave.EndInit();
 				}
 			}
@@ -1380,11 +1357,11 @@ namespace ModManagerWPF
 			TS.InitCharactersList();
 			TS.InitLevels();
 
-	
+
 			tsComboAct.ItemsSource = TestSpawn.GetNewAct(0);
-		
+
 			tsComboTime.ItemsSource = TestSpawn.TimeDay;
-	
+
 			TS_GetSave();
 
 		}
@@ -1532,7 +1509,7 @@ namespace ModManagerWPF
 				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn"),
 				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn"),
 			};
-			
+
 			mouseBtnAssign.ItemsSource = mouseBtnAssignList;
 		}
 
@@ -1590,9 +1567,9 @@ namespace ModManagerWPF
 
 			if (index > 0)
 			{
-				var item = Modsdata[index];
-				Modsdata.Remove(item);
-				Modsdata.Insert(0, item);
+				var item = ViewModel.Modsdata[index];
+				ViewModel.Modsdata.Remove(item);
+				ViewModel.Modsdata.Insert(0, item);
 			}
 		}
 
@@ -1605,9 +1582,9 @@ namespace ModManagerWPF
 
 			if (index > 0)
 			{
-				var item = Modsdata[index];
-				Modsdata.Remove(item);
-				Modsdata.Insert(index - 1, item);
+				var item = ViewModel.Modsdata[index];
+				ViewModel.Modsdata.Remove(item);
+				ViewModel.Modsdata.Insert(index - 1, item);
 			}
 		}
 
@@ -1620,9 +1597,9 @@ namespace ModManagerWPF
 
 			if (index != listMods.Items.Count - 1)
 			{
-				var item = Modsdata[index];
-				Modsdata.Remove(item);
-				Modsdata.Insert(listMods.Items.Count, item);
+				var item = ViewModel.Modsdata[index];
+				ViewModel.Modsdata.Remove(item);
+				ViewModel.Modsdata.Insert(listMods.Items.Count, item);
 			}
 		}
 
@@ -1635,9 +1612,9 @@ namespace ModManagerWPF
 
 			if (index < listMods.Items.Count)
 			{
-				var item = Modsdata[index];
-				Modsdata.Remove(item);
-				Modsdata.Insert(index + 1, item);
+				var item = ViewModel.Modsdata[index];
+				ViewModel.Modsdata.Remove(item);
+				ViewModel.Modsdata.Insert(index + 1, item);
 			}
 		}
 
@@ -1988,7 +1965,7 @@ namespace ModManagerWPF
 
 			List<PatchesData> patches = new List<PatchesData>()
 			{
-				new PatchesData() { Name = Lang.GetString("GamePatches.3DSound"), 
+				new PatchesData() { Name = Lang.GetString("GamePatches.3DSound"),
 					Description = Lang.GetString("GamePatches.3DSoundDesc"), IsChecked = loaderini.HRTFSound },
 				new PatchesData() { Name = Lang.GetString("GamePatches.CamCode"),
 					Description = Lang.GetString("GamePatches.CamCodeDesc"),IsChecked = loaderini.CCEF },
@@ -2418,18 +2395,18 @@ namespace ModManagerWPF
 
 		public void FilterMods(string text)
 		{
-			ModsSearch.Clear();
+			ViewModel.ModsSearch.Clear();
 
-			foreach (var mod in Modsdata)
+			foreach (var mod in ViewModel.Modsdata)
 			{
 				if (mod.Name.ToLowerInvariant().Contains(text) || mod.Author.ToLowerInvariant().Contains(text))
 				{
-					ModsSearch.Add(mod); // Add filtered items to the ModsSearch collection.
+					ViewModel.ModsSearch.Add(mod); // Add filtered items to the ModsSearch collection.
 				}
 			}
 
 			string path = BindingOperations.GetBinding(listMods, ListView.ItemsSourceProperty).Path.Path;
-			string newPath = text.Length == 0 ? "Modsdata" : "ModsSearch";
+			string newPath = text.Length == 0 ? "ViewModel.Modsdata" : "ModsSearch";
 
 			if (path != newPath)
 			{
@@ -2567,7 +2544,8 @@ namespace ModManagerWPF
 				}
 				else if (tcMain.SelectedItem == tbCodes)
 				{
-
+					CodesFind.Visibility = Visibility.Collapsed;
+					FilterCodes("");
 				}
 			}
 
@@ -2636,7 +2614,7 @@ namespace ModManagerWPF
 
 		private void PatchViewItem_MouseEnter(object sender, MouseEventArgs e)
 		{
-	
+
 			var patch = GetPatchFromView(sender);
 
 			if (patch is null)
@@ -2652,7 +2630,7 @@ namespace ModManagerWPF
 
 		private void modChecked_Click(object sender, RoutedEventArgs e)
 		{
-			if (suppressEvent) 
+			if (suppressEvent)
 				return;
 
 			codes = new List<Code>(mainCodes.Codes);
