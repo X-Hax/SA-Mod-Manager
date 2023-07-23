@@ -1,6 +1,6 @@
 ﻿using IniFile;
 using System;
-
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 
@@ -9,6 +9,7 @@ using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using Xceed.Wpf.Toolkit.Primitives;
 using static ModManagerWPF.MainWindow;
 
 namespace ModManagerWPF.Common
@@ -161,21 +162,30 @@ namespace ModManagerWPF.Common
 
 		private void ProfileDelete_Click(object sender, RoutedEventArgs e)
 		{
-			var profile = ProfileListView.SelectedItem as Profile;
+			var selectedItems = ProfileListView.SelectedItems;
+			var count = selectedItems.Count > 0;
 
-			if (profile == null)
-				return;
-
-			var msg = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DeleteProfile"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-			msg.ShowDialog();
-
-			if (msg.isYes)
+			if (count)
 			{
-				if (File.Exists(profile.iniPath))
+				var msg = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DeleteProfile"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+				msg.ShowDialog();
+
+				if (msg.isYes)
 				{
-					File.Delete(profile.iniPath);
-					ProfileListView.Items.Remove(profile);		
+					ProfileListView.BeginInit();
+					foreach (var sel in selectedItems)
+					{
+						var item = (Profile)sel;
+
+						if (File.Exists(item.iniPath))
+						{
+							File.Delete(item.iniPath);
+							ProfileListView.Items.Remove(item);
+						}
+					}
+
 					RefreshList();
+					ProfileListView.EndInit();
 				}
 			}
 		}
@@ -183,6 +193,42 @@ namespace ModManagerWPF.Common
 		private void Window_Closed(object sender, EventArgs e)
 		{
 			UpdateModProfile();
+		}
+
+		private void ProfileList_OnPreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (ProfileListView == null)
+				return;
+
+			var profile = (Profile)ProfileListView.SelectedItem;
+
+			if (profile == null)
+				return;
+
+			var ctrlKey = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+
+			if (ctrlKey)
+			{
+				if (Keyboard.IsKeyDown(Key.D))
+					ProfileClone_Click(null, null);
+
+				e.Handled = true;
+			}
+			
+			if (Keyboard.IsKeyDown(Key.F2))
+			{
+				ProfileRename_Click(null, null); 
+				e.Handled = true;
+			}
+
+
+			if (Keyboard.IsKeyDown(Key.Delete))
+			{
+				ProfileDelete_Click(null, null);
+				e.Handled = true;
+			}
+
 		}
 	}
 

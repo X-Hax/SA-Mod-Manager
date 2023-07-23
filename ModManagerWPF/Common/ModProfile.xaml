@@ -28,7 +28,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <ListView x:Name="ProfileListView" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  Margin="10,10,10,15" 
+                  Margin="10,10,10,15"  PreviewKeyDown="ProfileList_OnPreviewKeyDown"
                   dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" AllowDrop="True">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
