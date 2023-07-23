@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ModManagerWPF.Game.Inputs;
 
 namespace ModManagerWPF.Game
 {
@@ -74,7 +73,6 @@ namespace ModManagerWPF.Game
 	{
 		[IniName("sonicDX")]
 		public GameConfig GameConfig { get; set; }
-		[IniCollection(IniCollectionMode.IndexOnly)]
-		public Dictionary<string, ControllerConfig> Controllers { get; set; }
+
 	}
 }

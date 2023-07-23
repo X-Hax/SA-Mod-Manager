@@ -19,7 +19,6 @@ using System.Windows.Data;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Collections.ObjectModel;
-using SharpDX.DirectInput;
 using Keyboard = System.Windows.Input.Keyboard;
 using Key = System.Windows.Input.Key;
 
@@ -66,8 +65,6 @@ namespace ModManagerWPF
 		private bool manualModUpdate;
 		readonly Common.ModUpdater modUpdater = new();
 		private bool checkedForUpdates = false;
-		DirectInput directInput;
-		Joystick inputDevice;
 
 		private readonly double LowOpacityIcon = 0.3;
 		private readonly double LowOpacityBtn = 0.7;
@@ -128,6 +125,7 @@ namespace ModManagerWPF
 			UpdateDLLData();
 			UpdatePatches();
 			setupTestSpawn();
+			InitMouseList();
 			SetUp_UpdateD3D9();
 
 			if (args is not null)
@@ -395,6 +393,7 @@ namespace ModManagerWPF
 			chkResizableWin.IsChecked = loaderini.ResizableWindow;
 
 			checkDevEnabled.IsChecked = loaderini.EnableTestSpawnTab;
+
 			radBetterInput.IsChecked = loaderini.InputModEnabled;
 			radVanillaInput.IsChecked = !radBetterInput.IsChecked;
 
@@ -926,9 +925,6 @@ namespace ModManagerWPF
 				};
 			}
 
-			if (gameConfigFile.Controllers == null)
-				gameConfigFile.Controllers = new Dictionary<string, Game.Inputs.ControllerConfig>();
-
 			// Video
 			// Display mode
 			if (gameConfigFile.GameConfig.FullScreen == 1)
@@ -965,11 +961,10 @@ namespace ModManagerWPF
 			sliderVoice.Value = gameConfigFile.GameConfig.VoiceVolume;
 
 
-			//controller mouse vanilla stuff go here
-
-
-			LoadControllersSettings();
-
+			if (gameConfigFile.GameConfig.MouseMode == 0)
+				inputMouseDragHold.IsChecked = true;
+			else
+				inputMouseDragAccel.IsChecked = true;
 
 		}
 
@@ -991,27 +986,7 @@ namespace ModManagerWPF
 			gameConfigFile.GameConfig.VoiceVolume = (int)sliderVoice.Value;
 			gameConfigFile.GameConfig.BGMVolume = (int)sliderMusic.Value;
 
-			/*gameConfigFile.GameConfig.MouseMode = radioMouseModeHold.Checked ? 0 : 1;
-
-			if (inputDevice != null)
-			{
-				gameConfigFile.GameConfig.PadConfig = controllerConfigSelect.SelectedIndex == -1 ? null : controllerConfig[controllerConfigSelect.SelectedIndex].Name;
-
-				gameConfigFile.Controllers.Clear();
-				foreach (ControllerConfigInternal item in controllerConfig)
-				{
-					ControllerConfig config = new ControllerConfig { ButtonCount = item.Buttons.Max() + 1 };
-					config.ButtonSettings = Enumerable.Repeat(-1, config.ButtonCount).ToArray();
-					for (int i = 0; i < buttonIDs.Length; i++)
-					{
-						if (item.Buttons[i] != -1)
-						{
-							config.ButtonSettings[item.Buttons[i]] = buttonIDs[i];
-						}
-					}
-					gameConfigFile.Controllers.Add(item.Name, config);
-				}
-			}*/
+			gameConfigFile.GameConfig.MouseMode = (bool)inputMouseDragHold.IsChecked ? 0 : 1;
 
 			IniSerializer.Serialize(gameConfigFile, sadxIni);
 		}
@@ -1556,24 +1531,32 @@ namespace ModManagerWPF
 
 		#region Inputs
 
-		private void LoadControllersSettings()
+		private void InitMouseList()
 		{
-			if (gameConfigFile.GameConfig.MouseMode == 0)
-				inputMouseDragHold.IsChecked = true;
-			else
-				inputMouseDragAccel.IsChecked = true;
+			List<string> mouseActionList = new()
+			{
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute"),
 
-			// Load controller settings
-			directInput = new DirectInput();
-			var list = directInput.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly);
-			if (list.Count > 0)
+			};
+
+			mouseAction.ItemsSource = mouseActionList;
+
+			List<string> mouseBtnAssignList = new()
 			{
-				inputDevice = new Joystick(directInput, list.First().InstanceGuid);
-			}
-			else
-			{
-				groupBoxController.Visibility = Visibility.Hidden; 
-			}
+				Lang.GetString("CommonStrings.None"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn"),
+			};
+			
+			mouseBtnAssign.ItemsSource = mouseBtnAssignList;
 		}
 
 

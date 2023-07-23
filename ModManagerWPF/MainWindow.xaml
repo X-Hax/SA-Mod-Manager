@@ -649,27 +649,11 @@
 
                                                 <RadioButton x:Name="inputMouseDragHold" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold}"/>
                                                 <RadioButton x:Name="inputMouseDragAccel" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel}" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate}"/>
+                                                <Label x:Name="mouseActionLabel" Content="Action:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                <ComboBox x:Name="mouseAction" Grid.Row="2" Grid.Column="2" SelectedIndex="0"/>
+                                                <Label x:Name="mouseBtnAssignLabel" Content="Button Assignment:" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="4"/>
+                                                <ComboBox x:Name="mouseBtnAssign" Grid.Row="2" Grid.Column="4" SelectedIndex="0"/>
 
-                                                <Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-                                                <Button x:Name="btnInputJump" Grid.Column="2" Grid.Row="1" Margin="5,2,5,2" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Jump}"/>
-
-                                                <Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action}" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                <Button x:Name="btnInputAction" Grid.Column="5" Grid.Row="1" Margin="5,2,5,2" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Action}"/>
-
-                                                <Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                <Button x:Name="btnInputAttack" Grid.Column="2" Grid.Row="2" Margin="5,2,5,2" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Cancel}"/>
-
-                                                <Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start}" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                <Button x:Name="btnInputStart" Grid.Column="5" Grid.Row="2" Margin="5,2,5,2" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Start}"/>
-
-                                                <Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                <Button x:Name="btnInputCamLeft" Grid.Column="2" Grid.Row="3" Margin="5,2,5,2" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.CamLeft}"/>
-
-                                                <Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight}" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                <Button x:Name="btnInputCamRight" Grid.Column="5" Grid.Row="3" Margin="5,2,5,2" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.CamRight}"/>
-
-                                                <Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                <Button x:Name="btnInputFlute" Grid.Column="2" Grid.Row="4" Margin="5,2,5,2" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Flute}"/>
                                             </Grid>
                                         </GroupBox>
                                     </Grid>
