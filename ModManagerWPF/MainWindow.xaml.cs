@@ -71,7 +71,7 @@ namespace ModManagerWPF
 
 		private Game.GameConfigFile gameConfigFile;
 
-		public Game.GameGraphics graphics;
+		public Game.Graphics graphics;
 		public GitHub git;
 		static private uint count = 0;
 		MenuItem ModContextDev { get; set; }
@@ -113,7 +113,7 @@ namespace ModManagerWPF
 			InitializeComponent();
 			git.GetRecentCommit();
 
-			graphics = new Game.GameGraphics(comboScreen);
+			graphics = new Game.Graphics(ref comboScreen);
 			SetGamePath(Settings.Default.GamePath);
 			UpdatePathsStringsInfo();
 			LoadSettings();
@@ -1197,24 +1197,9 @@ namespace ModManagerWPF
 
 		#region Graphics Settings
 
-		private void comboResolutionPreset_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (comboDisplay.SelectedIndex == -1)
-				return;
-
-			suppressEvent = true;
-
-			txtResY.Text = graphics.resolutionPresets[comboDisplay.SelectedIndex].Height.ToString();
-
-			if (chkRatio.IsChecked == false)
-				txtResX.Text = graphics.resolutionPresets[comboDisplay.SelectedIndex].Width.ToString();
-
-			suppressEvent = false;
-		}
-
 		private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			graphics?.screenNumBox_SelectChanged(comboScreen, comboDisplay);
+			graphics?.screenNumBox_SelectChanged(ref comboScreen, ref comboDisplay);
 		}
 
 		private void chkCustomWinSize_Checked(object sender, RoutedEventArgs e)
@@ -1226,14 +1211,55 @@ namespace ModManagerWPF
 			txtCustomResY.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault();
 		}
 
-		private void radFullscreen_Checked(object sender, RoutedEventArgs e)
+		private void chkRatio_Click(object sender, RoutedEventArgs e)
 		{
-
+			if (chkRatio.IsChecked == true)
+			{
+				txtResX.IsEnabled = false;
+				decimal resYDecimal = (decimal)txtResY.Value;
+				decimal roundedValue = Math.Round(resYDecimal * Game.Graphics.ratio);
+				txtResX.Value = (int?)roundedValue;
+			}
+			else if (!suppressEvent)
+			{
+				txtResX.IsEnabled = true;
+			}
 		}
 
-		private void radWindowed_Checked(object sender, RoutedEventArgs e)
+		private void comboResolutionPreset_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
 		{
+			if (comboDisplay.SelectedIndex == -1)
+				return;
 
+			int index = comboDisplay.SelectedIndex;
+
+			suppressEvent = true;
+			txtResY.Value = graphics.resolutionPresets[index].Height;
+
+			if (chkRatio.IsChecked == false)
+				txtResX.Value = graphics.resolutionPresets[index].Width;
+
+			suppressEvent = false;
+		}
+
+		private void chkMaintainRatio_Click(object sender, RoutedEventArgs e)
+		{
+			if (chkMaintainRatio.IsChecked == true)
+			{
+				txtCustomResX.IsEnabled = true;
+				decimal value = Math.Round((decimal)txtCustomResX.Value * (decimal)(txtResX.Value / txtResY.Value));
+				txtCustomResX.Value = (int?)value;
+			}
+			else if (!suppressEvent)
+			{
+				txtCustomResX.IsEnabled = true;
+			}
+		}
+
+		private void txtCustomResY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		{
+			if (chkRatio.IsChecked == true)
+				txtCustomResX.Value = (int)Math.Round((decimal)txtCustomResX.Value * (decimal)(txtResX.Value / txtResY.Value));
 		}
 
 		#endregion

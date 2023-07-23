@@ -439,7 +439,7 @@
                                                         <RowDefinition Height="5"/>
                                                         <RowDefinition Height="30"/>
                                                     </Grid.RowDefinitions>
-                                                    <CheckBox x:Name="chkRatio" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio}"/>
+                                                    <CheckBox x:Name="chkRatio" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio}" Click="chkRatio_Click" />
                                                     <CheckBox x:Name="chkVSync" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
                                                     <CheckBox x:Name="chkPause" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
                                                     <CheckBox x:Name="chkDynamicBuffers" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.Buffers}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers}"/>
@@ -448,20 +448,20 @@
 
                                                 <Separator Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" VerticalAlignment="Center"/>
 
-                                                <RadioButton x:Name="radFullscreen" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen}" Grid.Column="1" VerticalAlignment="Center" Grid.Row="2" Margin="5,5,5,5" IsChecked="False" Checked="radFullscreen_Checked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen}"/>
+                                                <RadioButton x:Name="radFullscreen" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen}" Grid.Column="1" VerticalAlignment="Center" Grid.Row="2" Margin="5,5,5,5" IsChecked="False" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen}"/>
                                                 <CheckBox x:Name="chkBorderless" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless}"/>
                                                 <CheckBox x:Name="chkScaleScreen" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ScaleScreen}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen}"/>
 
                                                 <Separator Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" VerticalAlignment="Center"/>
 
-                                                <RadioButton x:Name="radWindowed" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed}" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="False" Checked="radWindowed_Checked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed}"/>
+                                                <RadioButton x:Name="radWindowed" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed}" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" IsChecked="False" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed}"/>
                                                 <CheckBox x:Name="chkResizableWin" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="2" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
-                                                <CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.AspectRatio}" Grid.Column="3" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect}"/>
+                                                <CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.AspectRatio}" Grid.Column="3" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect}" Click="chkMaintainRatio_Click"/>
                                                 <CheckBox x:Name="chkCustomWinSize" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.CustomWindow}" Grid.Column="2" Grid.Row="5" VerticalAlignment="Center" Margin="5,5,5,5" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow}"/>
                                                 <StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,5,5,5">
                                                     <xctk:IntegerUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
                                                     <Label Content="x"/>
-                                                    <xctk:IntegerUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480"/>
+                                                    <xctk:IntegerUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480" ValueChanged="txtCustomResY_ValueChanged"/>
                                                 </StackPanel>
                                             </Grid>
                                         </GroupBox>

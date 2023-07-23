@@ -1,21 +1,17 @@
-﻿using ModManagerCommon;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Forms;
 using Size = System.Drawing.Size;
 
 namespace ModManagerWPF.Game
 {
-	public class GameGraphics
+	public class Graphics
 	{
-		public GameGraphics(System.Windows.Controls.ComboBox screenNumComboBox)
+		public const decimal ratio = 4 / 3m;
+
+		public Graphics(ref System.Windows.Controls.ComboBox screenNumComboBox)
 		{
-			SetAllScreens(screenNumComboBox);
+			SetAllScreens(ref screenNumComboBox);
 		}
 
 		public readonly Size[] resolutionPresets =
@@ -34,7 +30,7 @@ namespace ModManagerWPF.Game
 			new Size(3840, 2160), // 4K
 		};
 
-		public void SetAllScreens(System.Windows.Controls.ComboBox screenNumComboBox)
+		public void SetAllScreens(ref System.Windows.Controls.ComboBox screenNumComboBox)
 		{
 			for (int i = 0; i < Screen.AllScreens.Length; i++)
 			{
@@ -44,7 +40,7 @@ namespace ModManagerWPF.Game
 			}
 		}
 
-		public void screenNumBox_SelectChanged(System.Windows.Controls.ComboBox screenNumComboBox, System.Windows.Controls.ComboBox comboResolutionPreset)
+		public void screenNumBox_SelectChanged(ref System.Windows.Controls.ComboBox screenNumComboBox, ref System.Windows.Controls.ComboBox comboResolutionPreset)
 		{
 			Size oldsize = resolutionPresets[6];
 			Rectangle rect = Screen.PrimaryScreen.Bounds;
