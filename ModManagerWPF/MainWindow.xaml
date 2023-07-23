@@ -59,7 +59,7 @@
 
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
-                                    <EventSetter Event="MouseDoubleClick" Handler="ModsView_Item_MouseDoubleClick"/>
+                                     <EventSetter Event="MouseDoubleClick" Handler="ModsView_Item_MouseDoubleClick"/>
                                     <EventSetter Event="ContextMenuOpening" Handler="ModList_ContextMenuOpening"/>
                                     <EventSetter Event="MouseEnter" Handler="ModList_MouseEnter"/>
                                     <EventSetter Event="MouseLeave" Handler="ModList_MouseLeave"/>
@@ -102,7 +102,7 @@
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
-                                                        <CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0"/>
+                                                        <CheckBox x:Name="modChecked" IsChecked="{Binding IsChecked}" Margin="0,0,5,0" Click="modChecked_Click"/>
                                                         <TextBlock Text="{Binding Name}"/>
                                                     </StackPanel>
                                                 </DataTemplate>

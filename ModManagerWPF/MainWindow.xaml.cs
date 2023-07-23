@@ -2689,6 +2689,71 @@ namespace ModManagerWPF
 		{
 			PatchDescription.Text = Lang.GetString("CommonStrings.Description");
 		}
+
+		private void modChecked_Click(object sender, RoutedEventArgs e)
+		{
+			if (suppressEvent) 
+				return;
+
+			codes = new List<Code>(mainCodes.Codes);
+			codesSearch = new();
+			string modDir = Path.Combine(gamePath, "mods");
+			List<string> modlistCopy = new();
+
+			//backup mod list here
+			foreach (ModData mod in listMods.Items)
+			{
+				if (mod?.IsChecked == true)
+				{
+					modlistCopy.Add(mod.Tag);
+				}
+			}
+
+			if (sender is CheckBox check)
+			{
+				var curItem = check.DataContext as ModData;
+				var index = listMods.Items.IndexOf(curItem);
+
+				var curModCopy = listMods.Items[index] as ModData;
+				if (check.IsChecked == false)
+				{
+					modlistCopy.Remove((string)curModCopy.Tag);
+				}
+			}
+
+			foreach (string mod in modlistCopy)
+			{
+				if (mods.TryGetValue(mod, out SADXModInfo value))
+				{
+					SADXModInfo inf = value;
+					if (!string.IsNullOrEmpty(inf.Codes))
+						codes.AddRange(CodeList.Load(Path.Combine(Path.Combine(modDir, mod), inf.Codes)).Codes);
+				}
+			}
+
+
+			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
+
+			foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
+				loaderini.EnabledCodes.Add(item.Name);
+
+			CodeListView.BeginInit();
+			CodeListView.Items.Clear();
+
+			foreach (Code item in codes)
+			{
+				CodeData extraItem = new()
+				{
+					codes = item,
+					IsChecked = loaderini.EnabledCodes.Contains(item.Name),
+				};
+
+				CodeListView.Items.Add(extraItem);
+				codesSearch.Add(extraItem);
+			}
+
+			CodeListView.EndInit();
+		}
 	}
 
 }
