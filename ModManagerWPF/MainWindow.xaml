@@ -801,7 +801,8 @@
                                     <ListView x:Name="listPatches" Foreground="White" Grid.Column="1" Grid.Row="2" FontSize="13" DisplayMemberPath="Name">
                                         <ListView.ItemContainerStyle>
                                             <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
-
+                                                <EventSetter Event="MouseEnter" Handler="PatchViewItem_MouseEnter"/>
+                                                <EventSetter Event="MouseLeave" Handler="PatchViewItem_MouseLeave"/>
                                             </Style>
                                         </ListView.ItemContainerStyle>
                                         <ListView.View>
@@ -830,7 +831,7 @@
 
                                         <TextBlock Text="Patch" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
                                         <Separator Grid.Row="0" VerticalAlignment="Bottom"/>
-                                        <TextBlock Text="Description" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+                                        <TextBlock x:Name="PatchDescription" Text="{DynamicResource CommonStrings.Description}" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="14" Margin="0,0,5,0"/>
                                     </Grid>
                                 </Grid>
                             </Grid>

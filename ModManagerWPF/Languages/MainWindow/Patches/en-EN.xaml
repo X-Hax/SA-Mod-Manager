@@ -4,8 +4,8 @@
 	
 	<system:String x:Key="GamePatches.3DSound">Allow HRTF 3D Sound</system:String>
 	<system:String x:Key="GamePatches.CamCode">Camera Code Error Fixes</system:String>
-	<system:String x:Key="GamePatches.VertexColor">Vertex Color Fixes</system:String>
-	<system:String x:Key="GamePatches.MaterialColor">Material Color Fixes</system:String>
+    <system:String x:Key="GamePatches.VertexColor">Vertex Color Fixes</system:String>
+    <system:String x:Key="GamePatches.MaterialColor">Material Color Fixes</system:String>
 	<system:String x:Key="GamePatches.Interpolation">Interpolation Fixes</system:String>
 	<system:String x:Key="GamePatches.FixFOV">Fov Fixes</system:String>
 	<system:String x:Key="GamePatches.Skychase">Sky Chase Fixes</system:String>
@@ -17,4 +17,22 @@
 	<system:String x:Key="GamePatches.Lights">Light Fixes</system:String>
 	<system:String x:Key="GamePatches.DisableGBIX">Disable GBIX (Experimental)</system:String>
 	<system:String x:Key="GamePatches.DisableCDCheck">Disable CD Check</system:String>
+
+    <system:String x:Key="GamePatches.3DSoundDesc">Allows HRTF 3D Sound.</system:String>
+    <system:String x:Key="GamePatches.CamCodeDesc">Fixes a vanilla bug that prevents Free Cam Settings from being saved properly when dying or loading a zone/act.</system:String>
+    <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">Vanilla SADX deliberately ignores the mesh-provided vertex color and instead uses a global vertex color even when it shouldn't.&#x0a;&#x0a;This patch re-implements the functions to handle the case CORRECTLY and use the mesh-provided vertex colors.</system:String>
+    <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">This loops through all models in the game and replaces their material colors with white.&#x0a;&#x0a;This fixes various inconsistencies and makes the models look more like they do in the Gamecube and Dreamcast versions of the game.</system:String>
+    <system:String x:Key="GamePatches.InterpolationDesc">Fixes rotation issues of some animations by using quaternions instead of euler angles.</system:String>
+    <system:String x:Key="GamePatches.FixFOVDesc">Improves the FOV and allows for vertical/portrait resolutions/dimensions.</system:String>
+    <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Fixes Sky Chase reticle and multiplier, restoring how the stage originally played on 640x480 resolution.&#x0a;&#x0a;This decreases the difficulty to meet the score requirement in 16:9 resolutions.</system:String>
+    <system:String x:Key="GamePatches.Chaos2Desc">Fixes a vanilla bug where beating Chaos 2 and restarting the boss was crashing the game.</system:String>
+    <system:String x:Key="GamePatches.ChunkRenderingDesc">Fixes Specular on Chunk Models.</system:String>
+    <system:String x:Key="GamePatches.E102LampDesc">Fixes N-sided polygons (Gamma's Headlight) by using a triangle strip vertex buffer.</system:String>
+    <system:String x:Key="GamePatches.PixelOffsetDesc">Fixes subpixel misplacement of most 2D elements that can be noticed at higher resolutions.</system:String>
+    <system:String x:Key="GamePatches.LightsDesc">Fixes light incorrectly being applied on LandTables and enables light type preservation for queued models.</system:String>
+    <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">Global Index (GBIX) is a value used in the game's texture caching system. Each texture in SADX has one.&#x0a;Before the game loads a new texture, it compares the new texture's GBIX value with indices of other textures that are already loaded.&#x0a;If a match is found, the game reuses the already loaded texture instead of loading the new one.&#x0a;&#x0a;This patch disables most of the GBIX system in the game to reduce texture errors/conflicts. (A few exceptions like HUD elements apply.)</system:String>
+
+
+
+
 </ResourceDictionary>

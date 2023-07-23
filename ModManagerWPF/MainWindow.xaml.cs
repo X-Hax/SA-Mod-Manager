@@ -19,6 +19,7 @@ using System.Windows.Data;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Collections.ObjectModel;
+using NetCoreInstallChecker.Structs;
 
 namespace ModManagerWPF
 {
@@ -99,7 +100,9 @@ namespace ModManagerWPF
 		public class PatchesData
 		{
 			public string Name { get; set; }
+			public string Description { get; set; }
 			public bool IsChecked { get; set; }
+
 		}
 
 		#endregion
@@ -1965,20 +1968,33 @@ namespace ModManagerWPF
 
 			List<PatchesData> patches = new List<PatchesData>()
 			{
-				new PatchesData() { Name = Lang.GetString("GamePatches.3DSound"), IsChecked = loaderini.HRTFSound },
-				new PatchesData() { Name = Lang.GetString("GamePatches.CamCode"), IsChecked = loaderini.CCEF },
-				new PatchesData() { Name = Lang.GetString("GamePatches.VertexColor"), IsChecked = loaderini.PolyBuff },
-				new PatchesData() { Name = Lang.GetString("GamePatches.MaterialColor"), IsChecked = loaderini.MaterialColorFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.Interpolation"), IsChecked = loaderini.InterpolationFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.FixFOV"), IsChecked = loaderini.FovFix },
-				new PatchesData() { Name = Lang.GetString("GamePatches.Skychase"), IsChecked = loaderini.SCFix },
-				new PatchesData() { Name = Lang.GetString("GamePatches.Chaos2"), IsChecked = loaderini.Chaos2CrashFix },
-				new PatchesData() { Name = Lang.GetString("GamePatches.ChunkRendering"), IsChecked = loaderini.ChunkSpecFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.E102Lamp"), IsChecked = loaderini.E102PolyFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.3DSound"), 
+					Description = Lang.GetString("GamePatches.3DSoundDesc"), IsChecked = loaderini.HRTFSound },
+				new PatchesData() { Name = Lang.GetString("GamePatches.CamCode"),
+					Description = Lang.GetString("GamePatches.CamCodeDesc"),IsChecked = loaderini.CCEF },
+				new PatchesData() { Name = Lang.GetString("GamePatches.VertexColor"),
+					Description = Lang.GetString("GamePatches.VertexColorDesc"),IsChecked = loaderini.PolyBuff },
+				new PatchesData() { Name = Lang.GetString("GamePatches.MaterialColor"),
+					Description = Lang.GetString("GamePatches.MaterialColorDesc"),IsChecked = loaderini.MaterialColorFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.Interpolation"),
+					Description = Lang.GetString("GamePatches.InterpolationDesc"),IsChecked = loaderini.InterpolationFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.FixFOV"),
+					Description = Lang.GetString("GamePatches.FixFOVDesc"),IsChecked = loaderini.FovFix },
+				new PatchesData() { Name = Lang.GetString("GamePatches.Skychase"),
+					Description = Lang.GetString("GamePatches.SkychaseDesc"),IsChecked = loaderini.SCFix },
+				new PatchesData() { Name = Lang.GetString("GamePatches.Chaos2"),
+					Description = Lang.GetString("GamePatches.Chaos2Desc"),IsChecked = loaderini.Chaos2CrashFix },
+				new PatchesData() { Name = Lang.GetString("GamePatches.ChunkRendering"),
+					Description = Lang.GetString("GamePatches.ChunkRenderingDesc"),IsChecked = loaderini.ChunkSpecFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.E102Lamp"),
+					Description = Lang.GetString("GamePatches.E102LampDesc"),IsChecked = loaderini.E102PolyFix},
 				new PatchesData() { Name = Lang.GetString("GamePatches.ChaoStats"), IsChecked = loaderini.ChaoPanelFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.PixelOffset"), IsChecked = loaderini.PixelOffSetFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.Lights"), IsChecked = loaderini.LightFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.DisableGBIX"), IsChecked = loaderini.KillGbix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.PixelOffset"),
+					Description = Lang.GetString("GamePatches.PixelOffsetDesc"),IsChecked = loaderini.PixelOffSetFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.Lights"),
+					Description = Lang.GetString("GamePatches.LightsDesc"),IsChecked = loaderini.LightFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.DisableGBIX"),
+					Description = Lang.GetString("GamePatches.DisableGBIXDesc"),IsChecked = loaderini.KillGbix},
 				new PatchesData() { Name = Lang.GetString("GamePatches.DisableCDCheck"), IsChecked = loaderini.DisableCDCheck},
 			};
 
@@ -2584,6 +2600,34 @@ namespace ModManagerWPF
 		{
 			if (TextBox_CodesSearch.Text.Length == 0)
 				CodesFind.Visibility = Visibility.Collapsed;
+		}
+
+
+		private PatchesData GetPatchFromView(object sender)
+		{
+			if (sender is ListViewItem lvItem)
+				return lvItem.Content as PatchesData;
+			else if (sender is ListView lv)
+				return lv.SelectedItem as PatchesData;
+
+
+			return listPatches.Items[listPatches.SelectedIndex] as PatchesData;
+		}
+
+		private void PatchViewItem_MouseEnter(object sender, MouseEventArgs e)
+		{
+	
+			var patch = GetPatchFromView(sender);
+
+			if (patch is null)
+				return;
+
+			PatchDescription.Text += " " + patch.Description;
+		}
+
+		private void PatchViewItem_MouseLeave(object sender, MouseEventArgs e)
+		{
+			PatchDescription.Text = Lang.GetString("CommonStrings.Description");
 		}
 	}
 
