@@ -1323,15 +1323,9 @@ namespace ModManagerWPF
 		{
 			ComboBox t = sender as ComboBox;
 
-			var list = TestSpawn.GetNewAct(t.SelectedIndex);
-
 			tsComboAct.BeginInit();
-			tsComboAct.Items.Clear();
-
-			foreach (var item in list)
-			{
-				tsComboAct.Items.Add(item);
-			}
+		
+			tsComboAct.ItemsSource = TestSpawn.GetNewAct(t.SelectedIndex);
 
 			tsComboAct.EndInit();
 			tsComboAct.SelectedIndex = 0;
@@ -1352,7 +1346,6 @@ namespace ModManagerWPF
 					string[] files = Directory.GetFiles(fullPath, "*" + targetExtension, SearchOption.TopDirectoryOnly);
 
 					tsComboSave.BeginInit();
-					tsComboSave.Items.Clear();
 
 					List<string> list = new List<string>();
 
@@ -1370,11 +1363,9 @@ namespace ModManagerWPF
 					list.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
 
 					//finally, add all the saves in the comboBox
-					foreach (string file in list)
-					{
-						tsComboSave.Items.Add(file);
-					}
-
+		
+					tsComboSave.ItemsSource = list; 
+			
 					tsComboSave.EndInit();
 				}
 			}
@@ -1389,25 +1380,11 @@ namespace ModManagerWPF
 			TS.InitCharactersList();
 			TS.InitLevels();
 
-			tsComboAct.BeginInit();
-			tsComboAct.Items.Clear();
-
-			var list = TestSpawn.GetNewAct(0);
-
-			foreach (var item in list)
-			{
-				tsComboAct.Items.Add(item);
-			}
-
-			tsComboAct.EndInit();
-
-			var TimeDay = TestSpawn.TimeDay;
-
-			foreach (var item in TimeDay)
-			{
-				tsComboTime.Items.Add(item);
-			}
-
+	
+			tsComboAct.ItemsSource = TestSpawn.GetNewAct(0);
+		
+			tsComboTime.ItemsSource = TestSpawn.TimeDay;
+	
 			TS_GetSave();
 
 		}
