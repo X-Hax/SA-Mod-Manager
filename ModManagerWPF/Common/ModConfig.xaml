@@ -19,21 +19,19 @@
 			<Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type GroupBox}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
 							<Border Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Grid.RowSpan="2" Grid.Row="0"/>
 							<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6,6,0,0" Grid.Row="0">
 								<ContentPresenter Margin="8,4,0,4" ContentSource="Header" RecognizesAccessKey="True" />
 							</Border>
-
 							<Border Grid.Row="1" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0,0,6,6" Margin="0,-2,0,0">
-                                <ContentPresenter Margin="4" />
-                            </Border>
-                        </Grid>
-
+								<ContentPresenter Margin="4" />
+							</Border>
+						</Grid>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsMouseOver" Value="True">
 								<Setter Property="BorderBrush" Value="{DynamicResource GroupBox.Brushes.MouseOver.Border}"/>
