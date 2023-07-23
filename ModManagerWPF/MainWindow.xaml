@@ -627,7 +627,7 @@
                                         </Grid.RowDefinitions>
 
                                         <!--Group for Mouse and Keyboard Input Configuration-->
-                                        <GroupBox Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+                                        <GroupBox x:Name="groupBoxController" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>

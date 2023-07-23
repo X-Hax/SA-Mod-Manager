@@ -19,7 +19,9 @@ using System.Windows.Data;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Collections.ObjectModel;
-using NetCoreInstallChecker.Structs;
+using SharpDX.DirectInput;
+using Keyboard = System.Windows.Input.Keyboard;
+using Key = System.Windows.Input.Key;
 
 namespace ModManagerWPF
 {
@@ -64,6 +66,8 @@ namespace ModManagerWPF
 		private bool manualModUpdate;
 		readonly Common.ModUpdater modUpdater = new();
 		private bool checkedForUpdates = false;
+		DirectInput directInput;
+		Joystick inputDevice;
 
 		private readonly double LowOpacityIcon = 0.3;
 		private readonly double LowOpacityBtn = 0.7;
@@ -911,7 +915,7 @@ namespace ModManagerWPF
 
 			if (gameConfigFile.GameConfig == null)
 			{
-				gameConfigFile.GameConfig = new Game.GameConfig
+				gameConfigFile.GameConfig = new()
 				{
 					FrameRate = (int)Game.FrameRate.High,
 					Sound3D = 1,
@@ -923,7 +927,7 @@ namespace ModManagerWPF
 			}
 
 			if (gameConfigFile.Controllers == null)
-				gameConfigFile.Controllers = new Dictionary<string, Game.ControllerConfig>();
+				gameConfigFile.Controllers = new Dictionary<string, Game.Inputs.ControllerConfig>();
 
 			// Video
 			// Display mode
@@ -949,14 +953,23 @@ namespace ModManagerWPF
 			// Fog mode
 			comboFog.SelectedIndex = gameConfigFile.GameConfig.Foglation;
 
-			sliderMusic.Value = gameConfigFile.GameConfig.BGMVolume;
-			sliderVoice.Value = gameConfigFile.GameConfig.VoiceVolume;
 
+			// Sound
+			// Toggles
 			checkEnableMusic.IsChecked = gameConfigFile.GameConfig.BGM > 0;
 			checkEnableSounds.IsChecked = gameConfigFile.GameConfig.SEVoice > 0;
 			checkEnable3DSound.IsChecked = gameConfigFile.GameConfig.Sound3D > 0;
 
+			//volume
+			sliderMusic.Value = gameConfigFile.GameConfig.BGMVolume;
+			sliderVoice.Value = gameConfigFile.GameConfig.VoiceVolume;
+
+
 			//controller mouse vanilla stuff go here
+
+
+			LoadControllersSettings();
+
 
 		}
 
@@ -1542,6 +1555,27 @@ namespace ModManagerWPF
 		#endregion
 
 		#region Inputs
+
+		private void LoadControllersSettings()
+		{
+			if (gameConfigFile.GameConfig.MouseMode == 0)
+				inputMouseDragHold.IsChecked = true;
+			else
+				inputMouseDragAccel.IsChecked = true;
+
+			// Load controller settings
+			directInput = new DirectInput();
+			var list = directInput.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly);
+			if (list.Count > 0)
+			{
+				inputDevice = new Joystick(directInput, list.First().InstanceGuid);
+			}
+			else
+			{
+				groupBoxController.Visibility = Visibility.Hidden; 
+			}
+		}
+
 
 		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
 		{

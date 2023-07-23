@@ -38,6 +38,8 @@
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Octokit" Version="7.0.1" />
+    <PackageReference Include="SharpDX" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,18 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ModManagerWPF.Game.Inputs;
 
 namespace ModManagerWPF.Game
 {
 	//System.Threading.Thread controllerThread;
-	public class ControllerConfig
-	{
-		[IniName("buttons")]
-		public int ButtonCount { get; set; }
-		[IniName("pad")]
-		[IniCollection(IniCollectionMode.NoSquareBrackets)]
-		public int[] ButtonSettings { get; set; }
-	}
+
 	enum FrameRate
 	{
 		Invalid,
@@ -24,13 +18,6 @@ namespace ModManagerWPF.Game
 		Low
 	}
 
-	public class GameConfigFile
-	{
-		[IniName("sonicDX")]
-		public GameConfig GameConfig { get; set; }
-		[IniCollection(IniCollectionMode.IndexOnly)]
-		public Dictionary<string, ControllerConfig> Controllers { get; set; }
-	}
 
 	public class GameConfig
 	{
@@ -81,5 +68,13 @@ namespace ModManagerWPF.Game
 		public ushort MouseAction { get; set; }
 		[IniName("cmd4")]
 		public ushort MouseFlute { get; set; }
+	}
+
+	public class GameConfigFile
+	{
+		[IniName("sonicDX")]
+		public GameConfig GameConfig { get; set; }
+		[IniCollection(IniCollectionMode.IndexOnly)]
+		public Dictionary<string, ControllerConfig> Controllers { get; set; }
 	}
 }
