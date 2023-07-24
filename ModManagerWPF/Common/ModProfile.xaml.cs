@@ -138,7 +138,7 @@ namespace ModManagerWPF.Common
 					iniPath = profile.iniPath,
 				};
 
-				Random rng = new Random();
+				Random rng = new();
 				string cloneID = rng.Next().ToString();
 				string newName = clonedProfile.iniPath.Replace(".ini", "");
 				clonedProfile.name += "_" + cloneID;

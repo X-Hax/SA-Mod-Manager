@@ -57,6 +57,7 @@ using std::vector;
 #include "MinorPatches.h"
 #include "jvList.h"
 #include "Gbix.h"
+#include "input.h"
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -2025,6 +2026,9 @@ static void __cdecl InitMods()
 
 		codes_str.close();
 	}
+
+	if (settings->getBool("InputModEnabled"), true)
+		SDL2_Init();
 
 	// Sets up code/event handling
 	WriteJump((void*)0x00426063, (void*)ProcessCodes);

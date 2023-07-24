@@ -16,6 +16,18 @@
     <Filter Include="Header Files\include">
       <UniqueIdentifier>{a284e71f-d76d-4365-a8f7-4f7701515669}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Patches">
+      <UniqueIdentifier>{f9b475e4-b200-43dd-b3c1-fb773a2a9dbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SDL2">
+      <UniqueIdentifier>{681e09f3-7236-4bbd-bc33-78a31fd9f650}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Patches">
+      <UniqueIdentifier>{a64cf49c-77d7-42c0-8139-77573a2bbfc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SDL2">
+      <UniqueIdentifier>{faf3768b-bfe9-4622-b771-43b5d78edfd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextureReplacement.cpp">
@@ -39,9 +51,6 @@
     <ClCompile Include="FileReplacement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FixFOV.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AutoMipmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,50 +69,68 @@
     <ClCompile Include="prs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChunkSpecularFix.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="polybuff.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="uiscale.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hudscale.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bgscale.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="testspawn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CrashDump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SkyChaseFixes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MaterialColorFixes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sound.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InterpolationFixes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MinorPatches.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="jvList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Gbix.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HelperFunctions.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bgscale.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="FixFOV.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialColorFixes.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="InterpolationFixes.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="MinorPatches.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="polybuff.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyChaseFixes.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="uiscale.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="ChunkSpecularFix.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="Gbix.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="hudscale.cpp">
+      <Filter>Source Files\Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>Source Files\SDL2</Filter>
+    </ClCompile>
+    <ClCompile Include="DreamPad.cpp">
+      <Filter>Source Files\SDL2</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardMouse.cpp">
+      <Filter>Source Files\SDL2</Filter>
+    </ClCompile>
+    <ClCompile Include="rumble.cpp">
+      <Filter>Source Files\SDL2</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL2.cpp">
+      <Filter>Source Files\SDL2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,9 +159,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileReplacement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FixFOV.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AutoMipmap.h">
@@ -182,23 +206,8 @@
     <ClInclude Include="prs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChunkSpecularFix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="polybuff.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\UsercallFunctionHandler.h">
       <Filter>Header Files\include</Filter>
-    </ClInclude>
-    <ClInclude Include="uiscale.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bgscale.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hudscale.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\SADXStructsNew.h">
       <Filter>Header Files\include</Filter>
@@ -221,12 +230,6 @@
     <ClInclude Include="CrashDump.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SkyChaseFixes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialColorFixes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\SADXModelsNew.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
@@ -236,14 +239,8 @@
     <ClInclude Include="sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InterpolationFixes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\FunctionHook.h">
       <Filter>Header Files\include</Filter>
-    </ClInclude>
-    <ClInclude Include="MinorPatches.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\AudioFile.h">
       <Filter>Header Files\include</Filter>
@@ -254,8 +251,59 @@
     <ClInclude Include="jvList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InterpolationFixes.h">
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="hudscale.h">
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
     <ClInclude Include="Gbix.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="FixFOV.h">
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="bgscale.h">
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkSpecularFix.h">
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyChaseFixes.h">
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="uiscale.h">
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialColorFixes.h">
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="polybuff.h">
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="MinorPatches.h">
+      <Filter>Header Files\Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>Header Files\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardMouse.h">
+      <Filter>Header Files\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="minmax.h">
+      <Filter>Header Files\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="rumble.h">
+      <Filter>Header Files\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL.h">
+      <Filter>Header Files\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="DreamPad.h">
+      <Filter>Header Files\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="typedefs.h">
+      <Filter>Header Files\SDL2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
