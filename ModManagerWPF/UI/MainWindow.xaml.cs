@@ -259,6 +259,7 @@ namespace ModManagerWPF
 			loaderini.HorizontalResolution = (int)txtResX.Value;
 			loaderini.VerticalResolution = (int)txtResY.Value;
 			loaderini.ForceAspectRatio = (bool)chkRatio.IsChecked;
+			loaderini.PauseWhenInactive = (bool)chkPause.IsChecked;
 
 			loaderini.BackgroundFillMode = comboBGFill.SelectedIndex;
 			loaderini.FmvFillMode = comboFMVFill.SelectedIndex;
@@ -280,7 +281,8 @@ namespace ModManagerWPF
 			loaderini.ModUpdateCheck = (bool)chkUpdatesMods.IsChecked;
 			loaderini.Language = comboLanguage.SelectedIndex;
 			loaderini.Theme = comboThemes.SelectedIndex;
-			loaderini.EnableTestSpawnTab = (bool)checkDevEnabled.IsChecked;
+			loaderini.managerOpen = (bool)checkManagerOpen.IsChecked;
+			loaderini.devMode = (bool)checkDevEnabled.IsChecked;
 			loaderini.InputModEnabled = (bool)radBetterInput.IsChecked;
 			loaderini.SEVolume = (int)sliderSFX.Value;
 
@@ -368,11 +370,12 @@ namespace ModManagerWPF
 			suppressEvent = false;
 
 			chkResizableWin.IsChecked = loaderini.ResizableWindow;
-
-			checkDevEnabled.IsChecked = loaderini.EnableTestSpawnTab;
+			chkPause.IsChecked = loaderini.PauseWhenInactive;
 
 			radBetterInput.IsChecked = loaderini.InputModEnabled;
 			radVanillaInput.IsChecked = !radBetterInput.IsChecked;
+			checkManagerOpen.IsChecked = loaderini.managerOpen;
+			checkDevEnabled.IsChecked = loaderini.devMode;
 
 			checkBassMusic.IsChecked = loaderini.EnableBassMusic;
 			checkBassSFX.IsChecked = loaderini.EnableBassSFX;

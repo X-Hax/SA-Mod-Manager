@@ -97,14 +97,21 @@ namespace ModManagerWPF
 		[DefaultValue(100)]
 		public int SEVolume { get; set; } = 100;
 		[DefaultValue(0)]
+
+	#region Manager Settings
 		public int Theme { get; set; } = 0;
 		[DefaultValue(0)]
 		public int Language { get; set; } = 0;
 		[DefaultValue(true)]
 		public bool InputModEnabled { get; set; }
+		[DefaultValue(false)]
+		public bool managerOpen { get; set; }
+		[DefaultValue(false)]
+		public bool devMode { get; set; }
 
+		#endregion
 
-		public bool EnableTestSpawnTab { get; set; }
+		#region TestSpawn
 
 		[DefaultValue(-1)]
 		public int TestSpawnLevel { get; set; } = -1;
@@ -140,8 +147,9 @@ namespace ModManagerWPF
 
 		[DefaultValue(-1)]
 		public int TestSpawnSaveID { get; set; } = -1;
+	#endregion
 
-		#region Patches
+	#region Patches
 		[DefaultValue(true)]
 		public bool HRTFSound { get; set; }
 		[DefaultValue(true)]
@@ -171,7 +179,7 @@ namespace ModManagerWPF
 		[DefaultValue(true)]
 		public bool KillGbix { get; set; }
 
-		#endregion
+	#endregion
 
 		public SADXLoaderInfo()
 		{
