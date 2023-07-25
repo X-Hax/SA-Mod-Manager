@@ -17,11 +17,11 @@ namespace ModManagerWPF.Updater
 	/// </summary>
 	public partial class ModDownloadDialogWPF : Window
 	{
-		private readonly List<Common.ModDownloadWPF> updates;
+		private readonly List<ModDownloadWPF> updates;
 		private readonly string updatePath;
 		private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
-		public ModDownloadDialogWPF(List<Common.ModDownloadWPF> updates, string updatePath)
+		public ModDownloadDialogWPF(List<ModDownloadWPF> updates, string updatePath)
 		{
 			InitializeComponent();
 			this.updates = updates;
@@ -61,7 +61,7 @@ namespace ModManagerWPF.Updater
 					});
 					args.Cancel = token.IsCancellationRequested;
 				}
-				void OnDownloadProgress(object o, Common.DownloadProgressEventArgs args)
+				void OnDownloadProgress(object o, DownloadProgressEventArgs args)
 				{
 					Application.Current.Dispatcher.Invoke(() =>
 					{
@@ -85,7 +85,7 @@ namespace ModManagerWPF.Updater
 				}
 
 				int modIndex = 0;
-				foreach (Common.ModDownloadWPF update in updates)
+				foreach (ModDownloadWPF update in updates)
 				{
 					Application.Current.Dispatcher.Invoke(() =>
 					{

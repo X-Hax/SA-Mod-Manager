@@ -13,7 +13,7 @@ using System.Diagnostics;
 using SevenZipExtractor;
 
 
-namespace ModManagerWPF.Common
+namespace ModManagerWPF.Updater
 {
 	public enum ModDownloadType
 	{
@@ -59,7 +59,7 @@ namespace ModManagerWPF.Common
 		public readonly string Changes;
 		public long Size { get; }
 		public int FilesToDownload { get; }
-		public List<Updater.ModManifestDiff> ChangedFiles { get; }
+		public List<ModManifestDiff> ChangedFiles { get; }
 
 		public string HomePage = string.Empty;
 		public string Name = string.Empty;
@@ -104,18 +104,18 @@ namespace ModManagerWPF.Common
 		/// <param name="changes">List of changes for this update.</param>
 		/// <param name="diff">A diff of the remote and local manifests.</param>
 		/// <seealso cref="ModDownloadType"/>
-		public ModDownloadWPF(ModInfo info, string folder, string url, string changes, List<Updater.ModManifestDiff> diff)
+		public ModDownloadWPF(ModInfo info, string folder, string url, string changes, List<ModManifestDiff> diff)
 		{
 			Info = info;
 			Type = ModDownloadType.Modular;
 			Url = url;
 			Folder = folder;
 
-			ChangedFiles = diff?.Where(x => x.State != Updater.ModManifestState.Unchanged).ToList()
+			ChangedFiles = diff?.Where(x => x.State != ModManifestState.Unchanged).ToList()
 				?? throw new ArgumentNullException(nameof(diff));
 
-			List<Updater.ModManifestDiff> toDownload = ChangedFiles
-				.Where(x => x.State == Updater.ModManifestState.Added || x.State == Updater.ModManifestState.Changed)
+			List<ModManifestDiff> toDownload = ChangedFiles
+				.Where(x => x.State == ModManifestState.Added || x.State == ModManifestState.Changed)
 				.ToList();
 
 			FilesToDownload = toDownload.Count;
@@ -269,14 +269,14 @@ namespace ModManagerWPF.Common
 							return;
 						}
 
-						List<Updater.ModManifestEntry> newManifest = Updater.ModManifest.FromFile(newManPath);
+						List<ModManifestEntry> newManifest = ModManifest.FromFile(newManPath);
 
 						if (OnApplyingManifest(cancelArgs))
 						{
 							return;
 						}
 
-						List<Updater.ModManifestEntry> oldManifest = Updater.ModManifest.FromFile(oldManPath);
+						List<ModManifestEntry> oldManifest = ModManifest.FromFile(oldManPath);
 						List<string> oldFiles = oldManifest.Except(newManifest)
 							.Select(x => Path.Combine(Folder, x.FilePath))
 							.ToList();
@@ -291,7 +291,7 @@ namespace ModManagerWPF.Common
 
 						RemoveEmptyDirectories(oldManifest, newManifest);
 
-						foreach (Updater.ModManifestEntry file in newManifest)
+						foreach (ModManifestEntry file in newManifest)
 						{
 							string dir = Path.GetDirectoryName(file.FilePath);
 							if (!string.IsNullOrEmpty(dir))
@@ -341,8 +341,8 @@ namespace ModManagerWPF.Common
 
 				case ModDownloadType.Modular:
 					{
-						List<Updater.ModManifestDiff> newEntries = ChangedFiles
-							.Where(x => x.State == Updater.ModManifestState.Added || x.State == Updater.ModManifestState.Changed)
+						List<ModManifestDiff> newEntries = ChangedFiles
+							.Where(x => x.State == ModManifestState.Added || x.State == ModManifestState.Changed)
 							.ToList();
 
 						var uri = new Uri(Url);
@@ -355,7 +355,7 @@ namespace ModManagerWPF.Common
 
 						var sync = new object();
 
-						foreach (Updater.ModManifestDiff i in newEntries)
+						foreach (ModManifestDiff i in newEntries)
 						{
 							string filePath = Path.Combine(tempDir, i.Current.FilePath);
 							string dir = Path.GetDirectoryName(filePath);
@@ -374,7 +374,7 @@ namespace ModManagerWPF.Common
 							++fileDownloading;
 
 							if (!info.Exists || info.Length != i.Current.FileSize ||
-								!i.Current.Checksum.Equals(Updater.ModManifestGenerator.GetFileHash(filePath), StringComparison.OrdinalIgnoreCase))
+								!i.Current.Checksum.Equals(ModManifestGenerator.GetFileHash(filePath), StringComparison.OrdinalIgnoreCase))
 							{
 								client.DownloadFileCompleted += downloadComplete;
 								client.DownloadProgressChanged += downloadProgressChanged;
@@ -396,7 +396,7 @@ namespace ModManagerWPF.Common
 										i.Current.FilePath, SizeSuffix.GetSizeSuffix(info.Length), SizeSuffix.GetSizeSuffix(i.Current.FileSize)));
 								}
 
-								string hash = Updater.ModManifestGenerator.GetFileHash(filePath);
+								string hash = ModManifestGenerator.GetFileHash(filePath);
 								if (!i.Current.Checksum.Equals(hash, StringComparison.OrdinalIgnoreCase))
 								{
 									throw new Exception(string.Format("Checksum of downloaded file \"{0}\" ({1}) differs from manifest ({2}).",
@@ -425,8 +425,8 @@ namespace ModManagerWPF.Common
 						client.DownloadFileCompleted -= downloadComplete;
 
 						// Handle all non-removal file operations (move, rename)
-						List<Updater.ModManifestDiff> movedEntries = ChangedFiles.Except(newEntries)
-							.Where(x => x.State == Updater.ModManifestState.Moved)
+						List<ModManifestDiff> movedEntries = ChangedFiles.Except(newEntries)
+							.Where(x => x.State == ModManifestState.Moved)
 							.ToList();
 
 						if (OnApplyingManifest(cancelArgs))
@@ -435,9 +435,9 @@ namespace ModManagerWPF.Common
 						}
 
 						// Handle existing entries marked as moved.
-						foreach (Updater.ModManifestDiff i in movedEntries)
+						foreach (ModManifestDiff i in movedEntries)
 						{
-							Updater.ModManifestEntry old = i.Last;
+							ModManifestEntry old = i.Last;
 
 							// This would be considered an Error...
 							if (old == null)
@@ -459,7 +459,7 @@ namespace ModManagerWPF.Common
 						}
 
 						// Now move the stuff from the temporary folder over to the working directory.
-						foreach (Updater.ModManifestDiff i in newEntries.Concat(movedEntries))
+						foreach (ModManifestDiff i in newEntries.Concat(movedEntries))
 						{
 							string tempPath = Path.Combine(tempDir, i.Current.FilePath);
 							string workPath = Path.Combine(Folder, i.Current.FilePath);
@@ -474,8 +474,8 @@ namespace ModManagerWPF.Common
 						}
 
 						// Once that has succeeded we can safely delete files that have been marked for removal.
-						List<Updater.ModManifestDiff> removedEntries = ChangedFiles
-							.Where(x => x.State == Updater.ModManifestState.Removed)
+						List<ModManifestDiff> removedEntries = ChangedFiles
+							.Where(x => x.State == ModManifestState.Removed)
 							.ToList();
 
 						foreach (string path in removedEntries.Select(i => Path.Combine(Folder, i.Current.FilePath)).Where(File.Exists))
@@ -496,8 +496,8 @@ namespace ModManagerWPF.Common
 
 						if (File.Exists(oldManPath))
 						{
-							List<Updater.ModManifestEntry> oldManifest = Updater.ModManifest.FromFile(oldManPath);
-							List<Updater.ModManifestEntry> newManifest = Updater.ModManifest.FromFile(newManPath);
+							List<ModManifestEntry> oldManifest = ModManifest.FromFile(oldManPath);
+							List<ModManifestEntry> newManifest = ModManifest.FromFile(newManPath);
 
 							// Remove directories that are now empty.
 							RemoveEmptyDirectories(oldManifest, newManifest);
@@ -506,7 +506,7 @@ namespace ModManagerWPF.Common
 						// And last but not least, copy over the new manifest.
 						File.Copy(newManPath, oldManPath, true);
 						Thread.Sleep(10000);
-						((MainWindow)App.Current.MainWindow).Refresh();
+						((MainWindow)System.Windows.Application.Current.MainWindow).Refresh();
 						break;
 					}
 
@@ -528,9 +528,9 @@ namespace ModManagerWPF.Common
 			}
 		}
 
-		private void RemoveEmptyDirectories(IEnumerable<Updater.ModManifestEntry> oldManifest, IEnumerable<Updater.ModManifestEntry> newManifest)
+		private void RemoveEmptyDirectories(IEnumerable<ModManifestEntry> oldManifest, IEnumerable<ModManifestEntry> newManifest)
 		{
-			foreach (string dir in Updater.ModManifest.GetOldDirectories(oldManifest, newManifest)
+			foreach (string dir in ModManifest.GetOldDirectories(oldManifest, newManifest)
 											  .Select(x => Path.Combine(Folder, x)))
 			{
 				if (Directory.Exists(dir))

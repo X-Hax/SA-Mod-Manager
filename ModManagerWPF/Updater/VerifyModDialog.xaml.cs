@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Threading;
 using ModManagerCommon;
 
-
 namespace ModManagerWPF.Updater
 {
 	/// <summary>
@@ -21,7 +20,7 @@ namespace ModManagerWPF.Updater
 		private readonly List<Tuple<string, ModInfo>> mods;
 		private readonly CancellationTokenSource tokenSource = new();
 
-		public List<Tuple<string, ModInfo, List<Updater.ModManifestDiff>>> Failed { get; }
+		public List<Tuple<string, ModInfo, List<ModManifestDiff>>> Failed { get; }
 		
 		public VerifyModDialog(List<Tuple<string, ModInfo>> mods, string modDirectory)
 		{

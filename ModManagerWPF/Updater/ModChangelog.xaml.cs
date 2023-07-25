@@ -1,4 +1,5 @@
 ﻿using ModManagerCommon.Controls;
+using ModManagerWPF.Updater;
 using Octokit;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace ModManagerWPF.Common
 	/// <summary>
 	/// Interaction logic for ModChangelog.xaml
 	/// </summary>
-	
+
 
 	public partial class ModChangelog : Window
 	{ 
@@ -43,9 +44,9 @@ namespace ModManagerWPF.Common
 			{
 				tabPageFiles.IsEnabled = true;
 
-				foreach (Updater.ModManifestDiff i in entry.ChangedFiles)
+				foreach (ModManifestDiff i in entry.ChangedFiles)
 				{
-					string file = i.State == Updater.ModManifestState.Moved ? $"{i.Last.FilePath} -> {i.Current.FilePath}" : i.Current.FilePath;
+					string file = i.State == ModManifestState.Moved ? $"{i.Last.FilePath} -> {i.Current.FilePath}" : i.Current.FilePath;
 					FilesList.Items.Add(new { State = i.State.ToString(), File = file });
 				}
 

@@ -10,7 +10,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using IniFile;
 
-namespace ModManagerWPF.Common
+namespace ModManagerWPF.Updater
 {
 	public class ModUpdater
 	{
@@ -185,7 +185,7 @@ namespace ModManagerWPF.Common
 			};
 		}
 
-		public ModDownloadWPF CheckModularVersion(ModInfo mod, string modsFolder, string folder, List<Updater.ModManifestEntry> localManifest,
+		public ModDownloadWPF CheckModularVersion(ModInfo mod, string modsFolder, string folder, List<ModManifestEntry> localManifest,
 											   UpdaterWebClient client, List<string> errors, string basePath = null)
 		{
 			if (!mod.UpdateUrl.StartsWith("http://", StringComparison.InvariantCulture)
@@ -232,11 +232,11 @@ namespace ModManagerWPF.Common
 				return null;
 			}
 
-			List<Updater.ModManifestEntry> remoteManifest;
+			List<ModManifestEntry> remoteManifest;
 
 			try
 			{
-				remoteManifest = Updater.ModManifest.FromString(manString);
+				remoteManifest = ModManifest.FromString(manString);
 			}
 			catch (Exception ex)
 			{
@@ -244,9 +244,9 @@ namespace ModManagerWPF.Common
 				return null;
 			}
 
-			List<Updater.ModManifestDiff> diff = Updater.ModManifestGenerator.Diff(remoteManifest, localManifest);
+			List<ModManifestDiff> diff = ModManifestGenerator.Diff(remoteManifest, localManifest);
 
-			if (diff.Count < 1 || diff.All(x => x.State == Updater.ModManifestState.Unchanged))
+			if (diff.Count < 1 || diff.All(x => x.State == ModManifestState.Unchanged))
 			{
 				return null;
 			}
@@ -279,7 +279,7 @@ namespace ModManagerWPF.Common
 
 			if (!string.IsNullOrEmpty(changes))
 			{
-				changes = System.Text.RegularExpressions.Regex.Replace(changes, "(?<!\r)\n", "\r\n");
+				changes = Regex.Replace(changes, "(?<!\r)\n", "\r\n");
 			}
 
 			return new ModDownloadWPF(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), mod.UpdateUrl, changes, diff);
@@ -339,7 +339,7 @@ namespace ModManagerWPF.Common
 					}
 					else if (!string.IsNullOrEmpty(mod.UpdateUrl))
 					{
-						List<Updater.ModManifestEntry> localManifest = null;
+						List<ModManifestEntry> localManifest = null;
 						string manPath = Path.Combine(modsFolder, info.Key, "mod.manifest");
 						if (baseFolder != null)
 							manPath = Path.Combine(baseFolder, manPath);
@@ -348,7 +348,7 @@ namespace ModManagerWPF.Common
 						{
 							try
 							{
-								localManifest = Updater.ModManifest.FromFile(manPath);
+								localManifest = ModManifest.FromFile(manPath);
 							}
 							catch (Exception ex)
 							{

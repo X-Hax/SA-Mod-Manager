@@ -22,6 +22,7 @@ using System.Collections.ObjectModel;
 using Keyboard = System.Windows.Input.Keyboard;
 using Key = System.Windows.Input.Key;
 using ModManagerWPF.UI;
+using ModManagerWPF.Updater;
 
 namespace ModManagerWPF
 {
@@ -63,7 +64,7 @@ namespace ModManagerWPF
 		bool suppressEvent = false;
 		BackgroundWorker updateChecker;
 		private bool manualModUpdate;
-		readonly Common.ModUpdater modUpdater = new();
+		readonly Updater.ModUpdater modUpdater = new();
 		private bool checkedForUpdates = false;
 
 		private readonly double LowOpacityIcon = 0.3;

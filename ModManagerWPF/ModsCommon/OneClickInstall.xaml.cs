@@ -19,6 +19,7 @@ using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Threading;
 using System.Threading.Tasks;
+using ModManagerWPF.Updater;
 
 namespace ModManagerWPF
 {

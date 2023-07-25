@@ -11,17 +11,18 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ModManagerWPF.Updater;
 
 namespace ModManagerWPF.Common
 {
-    /// <summary>
-    /// Interaction logic for ManifestChanges.xaml
-    /// </summary>
-    public partial class ManifestChanges : Window
+	/// <summary>
+	/// Interaction logic for ManifestChanges.xaml
+	/// </summary>
+	public partial class ManifestChanges : Window
     {
-		private readonly List<Updater.ModManifestDiff> diff;
+		private readonly List<ModManifestDiff> diff;
 
-		public ManifestChanges(List<Updater.ModManifestDiff> diff)
+		public ManifestChanges(List<ModManifestDiff> diff)
         {
 			this.diff = diff;
 			InitializeComponent();
@@ -32,9 +33,9 @@ namespace ModManagerWPF.Common
 		public class ManifestDiffItem
 		{
 			public string FilePath { get; set; }
-			public Updater.ModManifestState State { get; set; }
+			public ModManifestState State { get; set; }
 			public bool IsChecked { get; set; }
-			public Updater.ModManifestDiff Entry { get; set; }
+			public ModManifestDiff Entry { get; set; }
 		}
 
 		private void ManifestDiff_Load(object sender, EventArgs e)
@@ -42,12 +43,12 @@ namespace ModManagerWPF.Common
 			ManifestList.BeginInit();
 
 			List<ManifestDiffItem> items = diff
-				.Where(x => x.State != Updater.ModManifestState.Unchanged)
+				.Where(x => x.State != ModManifestState.Unchanged)
 				.Select(entry => new ManifestDiffItem
 				{
 					FilePath = entry.Current.FilePath,
 					State = entry.State,
-					IsChecked = entry.State != Updater.ModManifestState.Removed,
+					IsChecked = entry.State != ModManifestState.Removed,
 					Entry = entry
 				}).ToList();
 
@@ -56,9 +57,9 @@ namespace ModManagerWPF.Common
 			ManifestList.EndInit();
 		}
 
-		public List<Updater.ModManifestEntry> MakeNewManifest()
+		public List<ModManifestEntry> MakeNewManifest()
 		{
-			var result = new List<Updater.ModManifestEntry>();
+			var result = new List<ModManifestEntry>();
 
 			foreach (ManifestDiffItem item in ManifestList.Items)
 			{
@@ -68,7 +69,7 @@ namespace ModManagerWPF.Common
 				}
 			}
 
-			result.AddRange(diff.Where(x => x.State == Updater.ModManifestState.Unchanged).Select(x => x.Current));
+			result.AddRange(diff.Where(x => x.State == ModManifestState.Unchanged).Select(x => x.Current));
 
 			return result;
 		}
