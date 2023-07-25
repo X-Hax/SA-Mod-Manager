@@ -41,6 +41,35 @@ namespace ModManagerWPF
 			}
 		}
 
+		public static void CopyFolder(string origin, string dest, bool dllCheck = false)
+		{
+			DirectoryInfo sourceDirectory = new(origin);
+			DirectoryInfo destinationDirectory = new(dest);
+
+			if (!destinationDirectory.Exists)
+			{
+				destinationDirectory.Create();
+			}
+
+			foreach (FileInfo file in sourceDirectory.GetFiles())
+			{
+				string destinationFilePath = Path.Combine(dest, file.Name);
+				if (dllCheck) 
+				{
+					string ext = Path.GetExtension(destinationFilePath);
+					if (ext.ToLower() == ".dll")
+						file.CopyTo(destinationFilePath, true);
+				}
+				
+			}
+
+			foreach (DirectoryInfo subDir in sourceDirectory.GetDirectories())
+			{
+				string destinationSubDir = Path.Combine(dest, subDir.Name);
+				CopyFolder(subDir.FullName, destinationSubDir);
+			}
+		}
+
 		public static string GetSaveNumber(string s)
 		{
 			string number = s[^2..];

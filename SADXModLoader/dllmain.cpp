@@ -58,6 +58,7 @@ using std::vector;
 #include "jvList.h"
 #include "Gbix.h"
 #include "input.h"
+#include <ShlObj.h>
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -238,6 +239,22 @@ static void __cdecl ProcessCodes()
 	}
 }
 
+//used to get external lib location and extra config
+std::string appPath = "";
+std::string extLibPath = "";
+
+void SetAppPathConfig()
+{
+	TCHAR appDataLocalPath[MAX_PATH];
+
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, appDataLocalPath)))
+	{
+		std::wstring wStr = appDataLocalPath;
+		appPath = std::string(wStr.begin(), wStr.end());
+		appPath += "/SAManager/";
+		extLibPath = appPath + "extlib/";
+	}
+}
 
 static bool dbgConsole, dbgScreen;
 static bool pauseWhenInactive;
@@ -1020,6 +1037,26 @@ void ProcessVoiceDurationRegisters()
 	_JPVoiceDurationList.clear();
 }
 
+const std::string bassDLLs[] =
+{
+	"bass.dll",
+	"libatrac9.dll",
+	"libcelt-0061.dll",
+	"libcelt-0110.dll",
+	"libg719_decode.dll",
+	"libg7221_decode.dll",
+	"libmpg123-0.dll",
+	"libogg.dll",
+	"libspeex.dll",
+	"libvorbis.dll",
+	"avutil-vgmstream-56.dll",
+	"avcodec-vgmstream-58.dll",
+	"avformat-vgmstream-58.dll",
+	"jansson.dll",
+	"swresample-vgmstream-3.dll",
+	"bass_vgmstream.dll",
+};
+
 static void __cdecl InitAudio(const IniGroup* settings)
 {
 
@@ -1027,32 +1064,20 @@ static void __cdecl InitAudio(const IniGroup* settings)
 	{
 		//Following order of each LoadLibrary is REALLY important, NEVER touch it or BASS will FAIL to load.
 
-		string bassPath = "BASS\\bass.dll";
-		HMODULE bassDLL = LoadLibraryA(bassPath.c_str());
+		string bassFolder = extLibPath + "BASS/";
 
-		LoadLibraryA("BASS\\libatrac9.dll");
-		LoadLibraryA("BASS\\libcelt-0061.dll");
-		LoadLibraryA("BASS\\libcelt-0110.dll");
-		LoadLibraryA("BASS\\libg719_decode.dll");
-		LoadLibraryA("BASS\\libg7221_decode.dll");
-		LoadLibraryA("BASS\\libmpg123-0.dll");
-		LoadLibraryA("BASS\\libogg.dll");
-		LoadLibraryA("BASS\\libspeex.dll");
+		if (!FileExists(bassFolder + "bass.dll"))
+			bassFolder = "BASS/";
 
-		LoadLibraryA("BASS\\libvorbis.dll");
-		//LoadLibraryA("BASS\\libvorbisfile.dll"); 
+		bool bassDLL = false;
 
-		LoadLibraryA("BASS\\avutil-vgmstream-56.dll");
-		LoadLibraryA("BASS\\avcodec-vgmstream-58.dll");
-		LoadLibraryA("BASS\\avformat-vgmstream-58.dll");
+		for (uint8_t i = 0; i < LengthOfArray(bassDLLs); i++)
+		{
+			string fullPath = bassFolder + bassDLLs[i];
+			bassDLL = LoadLibraryA(fullPath.c_str());
+		}
 
-		LoadLibraryA("BASS\\jansson.dll");
-		LoadLibraryA("BASS\\swresample-vgmstream-3.dll");
-
-		string bassPath2 = "BASS\\bass_vgmstream.dll";
-		HMODULE bassDLL2 = LoadLibraryA(bassPath2.c_str());
-
-		if (bassDLL && bassDLL2)
+		if (bassDLL)
 		{
 			WriteCall((void*)0x42544C, PlayMusicFile_r);
 			WriteCall((void*)0x4254F4, PlayVoiceFile_r);
@@ -1194,6 +1219,8 @@ static void __cdecl InitMods()
 	}
 	unique_ptr<IniFile> ini(new IniFile(f_ini));
 	fclose(f_ini);
+
+	SetAppPathConfig();
 
 	// Get sonic.exe's path and filename.
 	wchar_t pathbuf[MAX_PATH];

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <Windows.h>
+#include "util.h"
 #include <direct.h>	// for _getcwd
 
 #include <string>
@@ -36,16 +37,6 @@ PointerInfo jumps[] = {
 	// This has no effect on the OnInput hook.
 	{ UpdateControllers_ptr, reinterpret_cast<void*>(0x0040FDB3) }
 };
-
-static std::string build_mod_path(const char* modpath, const char* path)
-{
-	std::stringstream result;
-	char workingdir[FILENAME_MAX]{};
-
-	result << _getcwd(workingdir, FILENAME_MAX) << "\\" << modpath << "\\" << path;
-
-	return result.str();
-}
 
 int GetEKey(int index)
 {
@@ -118,24 +109,28 @@ void SDL2_OnInput()
 			input::raw_input[0].ReleasedButtons = 0;
 		}
 	}
-
 }
 
 void SDL2_Init()
 {
-	const char* path = "SDL2\\";
-
 	if (GetModuleHandleA("sadx-input-mod") != nullptr)
 	{
 		return;
 	}
 
-	std::string dll = build_mod_path(path, "SDL2.dll");
+	std::string sdlFolderPath = appPath + "extlib/SDL2/";
+
+	//if path doesn't exist, assume the dll is in the game folder directly
+	if (!FileExists(sdlFolderPath + "SDL2.dll"))
+		sdlFolderPath = "extlib/SDL2/";
+
+	std::string dll = sdlFolderPath + "SDL2.dll";
 
 	const auto handle = LoadLibraryA(dll.c_str());
 
 	if (handle == nullptr)
 	{
+
 		PrintDebug("[Input] Unable to load SDL2.dll.\n");
 
 		MessageBoxA(nullptr, "Error loading SDL. See debug message for details.",
@@ -185,7 +180,7 @@ void SDL2_Init()
 	input::controller_enabled[0] = true;
 	input::controller_enabled[1] = true;
 
-	std::string dbpath = build_mod_path(path, "gamecontrollerdb.txt");
+	std::string dbpath = sdlFolderPath + "gamecontrollerdb.txt";
 
 	if (FileExists(dbpath))
 	{
@@ -201,7 +196,7 @@ void SDL2_Init()
 		}
 	}
 
-	const std::string config_path = build_mod_path(path, "config.ini");
+	const std::string config_path = sdlFolderPath + "SDLconfig.ini";
 
 #ifdef _DEBUG
 	const bool debug_default = true;
