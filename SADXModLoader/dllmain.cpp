@@ -1407,26 +1407,26 @@ static void __cdecl InitMods()
 		uiscale::setup_fmv_scale();
 	}
 
-	if (settings->getBool("PolyBuff"), true)
+	if (settings->getBool("PolyBuff", true))
 		polybuff::rewrite_init();
 
 	if (settings->getBool("DebugCrashLog", true))
 		initCrashDump();
 
-	if (settings->getBool("MaterialColorFix"), true)
+	if (settings->getBool("MaterialColorFix", true))
 		MaterialColorFixes_Init();
 
 	if (settings->getBool("EnableBassSFX", false))
 		Sound_Init(settings->getInt("SEVolume", 100));
 
-	if (settings->getBool("InterpolationFix"), true)
+	if (settings->getBool("InterpolationFix", true))
 		init_interpolationAnimFixes();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_us\\wma");
 
-	if (settings->getBool("PatchChaos2Crash"), true)
+	if (settings->getBool("PatchChaos2Crash", true))
 		MinorPatches_Init();
 
 	// Map of files to replace.
@@ -2054,7 +2054,7 @@ static void __cdecl InitMods()
 		codes_str.close();
 	}
 
-	if (settings->getBool("InputModEnabled"), true)
+	if (settings->getBool("InputModEnabled", true))
 		SDL2_Init();
 
 	// Sets up code/event handling
