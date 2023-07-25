@@ -1037,6 +1037,7 @@ void ProcessVoiceDurationRegisters()
 	_JPVoiceDurationList.clear();
 }
 
+//Following order for the BASS dlls is REALLY important, NEVER touch it or BASS will FAIL to load.
 const std::string bassDLLs[] =
 {
 	"bass.dll",
@@ -1062,8 +1063,6 @@ static void __cdecl InitAudio(const IniGroup* settings)
 
 	if (settings->getBool("EnableBassMusic"), true)
 	{
-		//Following order of each LoadLibrary is REALLY important, NEVER touch it or BASS will FAIL to load.
-
 		string bassFolder = extLibPath + "BASS/";
 
 		if (!FileExists(bassFolder + "bass.dll"))
@@ -1109,7 +1108,7 @@ static void __cdecl InitAudio(const IniGroup* settings)
 
 void InitPatches(const IniGroup* settings)
 {
-	if (settings->getBool("PatchCamCode"), true)
+	if (settings->getBool("PatchCamCode", true))
 	{
 		WriteData((int16_t*)0x438330, (int16_t)0x0D81);
 		WriteData((int16_t*)0x434870, (int16_t)0x0D81);
@@ -1118,7 +1117,7 @@ void InitPatches(const IniGroup* settings)
 	// Fixes N-sided polygons (Gamma's headlight) by using
 	// triangle strip vertex buffer initializers.
 
-	if (settings->getBool("PatchE102Poly"), true)
+	if (settings->getBool("PatchE102Poly", true))
 	{
 		for (size_t i = 0; i < MeshSetInitFunctions.size(); ++i)
 		{
@@ -1139,7 +1138,7 @@ void InitPatches(const IniGroup* settings)
 		}
 	}
 
-	if (settings->getBool("PatchPixelOffset"), true)
+	if (settings->getBool("PatchPixelOffset", true))
 	{
 		// Replaces half-pixel offset addition with subtraction
 		WriteData((uint8_t*)0x0077DE1E, (uint8_t)0x25); // njDrawQuadTextureEx
@@ -1158,13 +1157,13 @@ void InitPatches(const IniGroup* settings)
 		WriteData((uint8_t*)0x0078E90E, (uint8_t)0x25); // njDrawLine2D_Direct3D
 	}
 
-	if (settings->getBool("PatchChaoPanel"), true)
+	if (settings->getBool("PatchChaoPanel", true))
 	{
 		// Chao stat panel screen dimensions fix
 		WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
 	}
 
-	if (settings->getBool("PatchLights"), true)
+	if (settings->getBool("PatchLights", true))
 	{
 		// Fix light incorrectly being applied on LandTables
 		WriteCall(reinterpret_cast<void*>(0x0043A6D5), FixLandTableLightType);
@@ -1176,10 +1175,10 @@ void InitPatches(const IniGroup* settings)
 		WriteData<2>(reinterpret_cast<void*>(0x004088A6), 0x90i8);
 	}
 
-	if (settings->getBool("PatchChunkSpec"), true)
+	if (settings->getBool("PatchChunkSpec", true))
 		ChunkSpecularFix_Init();
 
-	if (settings->getBool("KillGbix"), true)
+	if (settings->getBool("KillGbix", true))
 		Init_NOGbixHack();
 }
 
