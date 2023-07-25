@@ -16,6 +16,7 @@
 #include "rumble.h"
 #include "minmax.h"
 
+bool isInputMod = false;
 static void* RumbleA_ptr = reinterpret_cast<void*>(0x004BCBC0);
 static void* RumbleB_ptr = reinterpret_cast<void*>(0x004BCC10);
 static void* UpdateControllers_ptr = reinterpret_cast<void*>(0x0040F460);
@@ -55,6 +56,9 @@ void CreateSADXKeyboard(KeyboardInput* ptr, int length)
 
 void SDL2_OnInput()
 {
+	if (isInputMod)
+		return;
+
 	input::poll_controllers();
 
 	// Soft reset
@@ -115,6 +119,7 @@ void SDL2_Init()
 {
 	if (GetModuleHandleA("sadx-input-mod") != nullptr)
 	{
+		isInputMod = true;
 		return;
 	}
 
@@ -272,6 +277,9 @@ void SDL2_Init()
 
 void SDL2_OnExit()
 {
+	if (isInputMod)
+		return;
+
 	for (auto& i : DreamPad::controllers)
 	{
 		i.close();

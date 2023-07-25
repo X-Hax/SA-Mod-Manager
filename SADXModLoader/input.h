@@ -21,3 +21,5 @@ namespace input
 void SDL2_Init();
 void SDL2_OnExit();
 void SDL2_OnInput();
+
+extern bool isInputMod;
