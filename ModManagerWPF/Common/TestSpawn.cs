@@ -382,6 +382,8 @@ namespace ModManagerWPF.Common
 			{
 				comboBoxTestSpawnGameMode.Items.Add(item.Value);
 			}
+
+			comboBoxTestSpawnGameMode.SelectedIndex = 0;
 		}
 	}
 }

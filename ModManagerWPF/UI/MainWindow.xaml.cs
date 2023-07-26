@@ -289,7 +289,7 @@ namespace ModManagerWPF
 			loaderini.EnableBassMusic = (bool)checkBassMusic.IsChecked;
 			loaderini.EnableBassSFX = (bool)checkBassSFX.IsChecked;
 
-			//test spaw nstuff
+			//test spawn stuff
 			loaderini.TestSpawnCharacter = (bool)tsCheckCharacter.IsChecked ? tsComboCharacter.SelectedIndex : -1;
 
 			loaderini.TestSpawnLevel = (bool)tsCheckLevel.IsChecked ? tsComboLevel.SelectedIndex : -1;
@@ -1261,7 +1261,7 @@ namespace ModManagerWPF
 
 		#endregion
 
-		#region TestSpawn Settings
+		#region Test Spawn Settings
 		private void checkEnableTestSpawn_Checked(object sender, RoutedEventArgs e)
 		{
 			if (tcMain.Items.Contains(tabTestSpawn))
@@ -1310,6 +1310,15 @@ namespace ModManagerWPF
 
 			tsComboAct.EndInit();
 			tsComboAct.SelectedIndex = 0;
+		}
+
+		private void tsCheckLevel_Checked(object sender, RoutedEventArgs e)
+		{
+			if (tsComboAct.SelectedIndex < 0)
+				tsComboAct.SelectedIndex = 0;
+
+			if (tsComboLevel.SelectedIndex < 0)
+				tsComboLevel.SelectedIndex = 0;
 
 		}
 
@@ -1361,7 +1370,6 @@ namespace ModManagerWPF
 			TS.InitCharactersList();
 			TS.InitLevels();
 
-
 			tsComboAct.ItemsSource = TestSpawn.GetNewAct(0);
 
 			tsComboTime.ItemsSource = TestSpawn.TimeDay;
@@ -1374,6 +1382,16 @@ namespace ModManagerWPF
 		{
 			tsCheckCharacter.IsChecked = true;
 			tsCheckLevel.IsChecked = true;
+
+			if (tsComboCharacter.SelectedIndex < 0)
+				tsComboCharacter.SelectedIndex = 0;
+
+			if (tsComboLevel.SelectedIndex < 0)
+				tsComboLevel.SelectedIndex = 0;
+
+			if (tsComboEvent.SelectedIndex < 0)
+				tsComboEvent.SelectedIndex = 0;
+
 			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
 		}
 
@@ -1385,7 +1403,13 @@ namespace ModManagerWPF
 		private void tsCheckCharacter_Click(object sender, RoutedEventArgs e)
 		{
 			if ((bool)tsCheckCharacter.IsChecked)
+			{
 				tsCheckLevel.IsChecked = true;
+
+				if (tsComboCharacter.SelectedIndex < 0)
+					tsComboCharacter.SelectedIndex = 0;
+			}
+				
 		}
 
 		private void tsCheckManual_Clicked(object sender, RoutedEventArgs e)
@@ -1426,10 +1450,10 @@ namespace ModManagerWPF
 		{
 			List<string> cmdline = new List<string>();
 
-			if (tsCheckLevel.IsChecked.GetValueOrDefault())
+			if (tsCheckLevel.IsChecked.GetValueOrDefault() && tsComboLevel.SelectedIndex > -1)
 				cmdline.Add("-l " + tsComboLevel.SelectedIndex.ToString() + " -a " + tsComboAct.SelectedIndex.ToString());
 
-			if (tsCheckCharacter.IsChecked == true)
+			if (tsCheckCharacter.IsChecked == true && tsComboCharacter.SelectedIndex > -1)
 				cmdline.Add("-c " + tsComboCharacter.SelectedIndex.ToString());
 
 			if (tsCheckPosition.IsChecked == true)
@@ -1438,7 +1462,7 @@ namespace ModManagerWPF
 					tsNumPosZ.Value.ToString() + " -r " +
 					tsNumAngle.Value.ToString());
 
-			if (tsCheckEvent.IsChecked == true)
+			if (tsCheckEvent.IsChecked == true && tsComboEvent.SelectedIndex > -1)
 			{
 				int ev = 0;
 				int ev_result = 0;
@@ -1457,7 +1481,7 @@ namespace ModManagerWPF
 			if (tsComboTime.SelectedIndex > 0)
 				cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
 
-			if (tsCheckGameMode.IsChecked == true)
+			if (tsCheckGameMode.IsChecked == true && tsComboGameMode.SelectedIndex > -1)
 			{
 				uint gm = 0;
 				uint gm_result = 0;
