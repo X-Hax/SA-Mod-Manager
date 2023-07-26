@@ -1754,6 +1754,10 @@ static void __cdecl InitMods()
 		modlist.push_back(modinf);
 	}
 
+
+	if (settings->getBool("InputModEnabled", true))
+		SDL2_Init();
+
 	if (!errors.empty())
 	{
 		std::wstringstream message;
@@ -2053,8 +2057,6 @@ static void __cdecl InitMods()
 		codes_str.close();
 	}
 
-	if (settings->getBool("InputModEnabled", true))
-		SDL2_Init();
 
 	// Sets up code/event handling
 	WriteJump((void*)0x00426063, (void*)ProcessCodes);

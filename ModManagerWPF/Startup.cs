@@ -169,9 +169,9 @@ namespace ModManagerWPF
 
 			if (net7)
 			{
-				bool OneClick = await EnableOneClickInstall();
-				bool VC = await VC_DependenciesCheck();
 				bool extLib = await UpdateDependenciesFolder();
+				bool VC = await VC_DependenciesCheck();
+				bool OneClick = await EnableOneClickInstall();
 
 				return true;
 			}

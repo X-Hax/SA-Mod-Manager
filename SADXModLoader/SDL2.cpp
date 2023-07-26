@@ -25,7 +25,7 @@ static void* InitRawControllers_ptr = reinterpret_cast<void*>(0x0040F451); // En
 
 KeyboardInput SADXKeyboard = { 0, 0, { 0, 0, 0, 0, 0, 0 }, nullptr };
 
-PointerInfo jumps[] = {
+PointerInfo SDL2jumps[] = {
 	{ rumble::pdVibMxStop, rumble::pdVibMxStop_r },
 	{ RumbleA_ptr, rumble::RumbleA_r },
 	{ RumbleB_ptr, rumble::RumbleB_r },
@@ -38,6 +38,14 @@ PointerInfo jumps[] = {
 	// This has no effect on the OnInput hook.
 	{ UpdateControllers_ptr, reinterpret_cast<void*>(0x0040FDB3) }
 };
+
+void InitSDL2_Hacks()
+{
+	for (uint8_t i = 0; i < LengthOfArray(SDL2jumps); i++)
+	{
+		WriteJump(SDL2jumps[i].address, SDL2jumps[i].data);
+	}
+}
 
 int GetEKey(int index)
 {
@@ -152,6 +160,8 @@ void SDL2_Init()
 			"SDL Init Error", MB_OK | MB_ICONERROR);
 		return;
 	}
+
+	InitSDL2_Hacks();
 
 	// Replace function to get the E key for centering camera on character
 	WriteCall(reinterpret_cast<void*>(0x00437547), GetEKey);
