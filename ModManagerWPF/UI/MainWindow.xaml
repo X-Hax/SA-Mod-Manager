@@ -1238,9 +1238,9 @@
                                         <TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits}" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
-                                <Button x:Name="btnDocs" Grid.Column="0" Grid.Row="2" Margin="5,0,5,0" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.SADocs}">
+                                <Button x:Name="btnDocs" Grid.Column="0" Grid.Row="2" Margin="5,0,5,0" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.SADocs}" IsEnabled="False" Opacity="0.2">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="{StaticResource IconDocs}" Width="20" Height="20" Margin="0,0,5,0"/>
+                                        <Image Source="{StaticResource IconDocs}" Width="20" Height="20" Margin="0,0,5,0" Opacity="0.2"/>
                                         <TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs}" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
