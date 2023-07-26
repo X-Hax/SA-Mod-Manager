@@ -1375,7 +1375,6 @@ namespace ModManagerWPF
 			tsComboTime.ItemsSource = TestSpawn.TimeDay;
 
 			TS_GetSave();
-
 		}
 
 		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
@@ -1383,13 +1382,13 @@ namespace ModManagerWPF
 			tsCheckCharacter.IsChecked = true;
 			tsCheckLevel.IsChecked = true;
 
-			if (tsComboCharacter.SelectedIndex < 0)
+			if (tsComboCharacter.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
 				tsComboCharacter.SelectedIndex = 0;
 
-			if (tsComboLevel.SelectedIndex < 0)
+			if (tsComboLevel.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
 				tsComboLevel.SelectedIndex = 0;
 
-			if (tsComboEvent.SelectedIndex < 0)
+			if (tsComboEvent.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
 				tsComboEvent.SelectedIndex = 0;
 
 			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
@@ -1406,7 +1405,7 @@ namespace ModManagerWPF
 			{
 				tsCheckLevel.IsChecked = true;
 
-				if (tsComboCharacter.SelectedIndex < 0)
+				if (tsComboCharacter.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
 					tsComboCharacter.SelectedIndex = 0;
 			}
 				
@@ -1424,37 +1423,42 @@ namespace ModManagerWPF
 				tsComboTime.IsEnabled = false;
 
 				tsNumCharacter.Value = 0;
-				tsNumLevel.Value = tsComboLevel.SelectedIndex;
+				tsNumLevel.Value = 0;
 				tsNumAct.Value = tsComboAct.SelectedIndex;
 			}
 			else
 			{
 				tsCheckCharacter.IsEnabled = true;
 				tsCheckLevel.IsEnabled = true;
-				Binding bindCharacter = new Binding();
-				bindCharacter.Path = new PropertyPath("IsChecked");
-				bindCharacter.Source = tsCheckCharacter;
-				Binding bindLevel = new Binding();
-				bindLevel.Path = new PropertyPath("IsChecked");
-				bindLevel.Source = tsCheckLevel;
+				Binding bindCharacter = new Binding
+				{
+					Path = new PropertyPath("IsChecked"),
+					Source = tsCheckCharacter
+				};
+				Binding bindLevel = new Binding
+				{
+					Path = new PropertyPath("IsChecked"),
+					Source = tsCheckLevel
+				};
 
 				BindingOperations.SetBinding(tsComboCharacter, IsEnabledProperty, bindCharacter);
 				BindingOperations.SetBinding(tsComboLevel, IsEnabledProperty, bindLevel);
 				BindingOperations.SetBinding(tsComboAct, IsEnabledProperty, bindLevel);
 				BindingOperations.SetBinding(tsComboTime, IsEnabledProperty, bindLevel);
 			}
-
 		}
 
 		private string GetTestSpawnCommandLine()
 		{
 			List<string> cmdline = new List<string>();
 
+			bool advanced = tsCheckManual.IsChecked == true;
+
 			if (tsCheckLevel.IsChecked.GetValueOrDefault() && tsComboLevel.SelectedIndex > -1)
-				cmdline.Add("-l " + tsComboLevel.SelectedIndex.ToString() + " -a " + tsComboAct.SelectedIndex.ToString());
+				cmdline.Add("-l " + (advanced ? tsNumLevel.Value.ToString() : tsComboLevel.SelectedIndex.ToString()) + " -a " + (advanced ? tsNumAct.Value.ToString() : tsComboAct.SelectedIndex.ToString()));
 
 			if (tsCheckCharacter.IsChecked == true && tsComboCharacter.SelectedIndex > -1)
-				cmdline.Add("-c " + tsComboCharacter.SelectedIndex.ToString());
+				cmdline.Add("-c " + (advanced ? tsNumCharacter.Value.ToString() : tsComboCharacter.SelectedIndex.ToString()));
 
 			if (tsCheckPosition.IsChecked == true)
 				cmdline.Add("-p " + tsNumPosX.Value.ToString() + " " +
