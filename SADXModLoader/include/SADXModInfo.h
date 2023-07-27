@@ -131,6 +131,14 @@ struct Mod
 	bool MainSaveRedirect;
 	bool ChaoSaveRedirect;
 	const ModDepsList Dependencies;
+
+	template <typename T>
+	T* GetDllExport(const char* name)
+	{
+		if (!DLLHandle)
+			return nullptr;
+		return reinterpret_cast<T*>(GetProcAddress(DLLHandle, name));
+	}
 };
 
 struct ModList
