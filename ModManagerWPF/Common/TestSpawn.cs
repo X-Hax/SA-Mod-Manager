@@ -39,13 +39,6 @@ namespace ModManagerWPF.Common
 		public static readonly List<string> acts1only = new()
 		{
 			"Act 1",
-			"Act 2 (Unused)",
-			"Act 3 (Unused)",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		public static readonly List<string> actsEC = new()
@@ -53,11 +46,6 @@ namespace ModManagerWPF.Common
 			"Act 1 - Azure Blue World",
 			"Act 2 - Windy and Ripply",
 			"Act 3 - BIG fishes",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		public static readonly List<string> actsWV = new()
@@ -65,11 +53,6 @@ namespace ModManagerWPF.Common
 			"Act 1 - Windy Hill",
 			"Act 2 - Tornado",
 			"Act 3 - The Air",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		public static readonly List<string> actsTP = new()
@@ -77,11 +60,6 @@ namespace ModManagerWPF.Common
 			"Act 1 - Twinkle Cart",
 			"Act 2 - Pleasure Castle",
 			"Act 3 - Fakery Way",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		public static readonly List<string> actsSH = new()
@@ -89,11 +67,6 @@ namespace ModManagerWPF.Common
 			"Act 1 - Run Through the Speed Highway",
 			"Act 2 - Goin' Down",
 			"Act 3 - At Dawn",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		public static readonly List<string> actsRM = new()
@@ -101,11 +74,6 @@ namespace ModManagerWPF.Common
 			"Act 1 - Mt Red a Symbol of Thrill",
 			"Act 2 - Red Hot Skull",
 			"Act 3 - (Knuckles)",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsSD = new()
@@ -113,11 +81,6 @@ namespace ModManagerWPF.Common
 			"Act 1 - Skydeck A Go Go",
 			"Act 2 - In the sky",
 			"Act 3 - General Offensive",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsLW = new()
@@ -125,11 +88,6 @@ namespace ModManagerWPF.Common
 			"Act 1 - Tricky Maze",
 			"Act 2 - Danger Chased by Rock",
 			"Act 3 - Leading Lights",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsIC = new()
@@ -138,10 +96,6 @@ namespace ModManagerWPF.Common
 			"Act 2 - Limestone Cave",
 			"Act 3 - Be Cool, Be Wild and Be Groovy",
 			"Act 4 - Limestone Cave (Big)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsCas = new()
@@ -150,10 +104,6 @@ namespace ModManagerWPF.Common
 			"Act 2 - Dilapidated Way",
 			"Act 3 - Blue Star",
 			"Act 4 - Message from Nightopia",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsFE = new()
@@ -161,11 +111,6 @@ namespace ModManagerWPF.Common
 			"Act 1 - Mechanical Resonance",
 			"Act 2 - Crank the Heat Up",
 			"Act 3 - Mechanical Resonance 2",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 
@@ -174,86 +119,40 @@ namespace ModManagerWPF.Common
 			"Act 1 - Bad Taste Aquarium",
 			"Act 2 - Red Barrage Area",
 			"Act 3 - (Gamma)",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};		
 		
 		
 		private static readonly List<string> actsChaos = new()
 		{
 			"Act 1 - Boss CHAOS",
-			"Act 2 (Unused)",
-			"Act 3 (Unused)",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsChaos6 = new()
 		{
 			"Act 1 - Boss CHAOS ver.6",
 			"Act 2 (Knuckles)",
-			"Act 3 (Unused)",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 
 		private static readonly List<string> actsEH = new()
 		{
 			"Act 1 - Egg Mobile ...Boss",
-			"Act 2 (Unused)",
-			"Act 3 (Unused)",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 
 		private static readonly List<string> actsEW = new()
 		{
 			"Act 1 - Militant Missionary Boss Egg Walker",
-			"Act 2 (Unused)",
-			"Act 3 (Unused)",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsEV = new()
 		{
 			"Act 1 - Militant Missionary Boss Egg Viper",
-			"Act 2 (Unused)",
-			"Act 3 (Unused)",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsZero = new()
 		{
 			"Act 1 - ZERO The Chase-master",
-			"Act 2 (Unused)",
-			"Act 3 (Unused)",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsSS = new()
@@ -264,8 +163,6 @@ namespace ModManagerWPF.Common
 			"Act 4 - Main",
 			"Act 5 - Hostel (Pool)",
 			"Act 6 - Twinkle Park Area",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsECOut = new()
@@ -276,8 +173,6 @@ namespace ModManagerWPF.Common
 			"Act 4 - Captain Headquarters Room",
 			"Act 5 - Hall",
 			"Act 6 - Pool",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsECIn = new()
@@ -288,8 +183,6 @@ namespace ModManagerWPF.Common
 			"Act 4 - Captain Headquarters Room",
 			"Act 5 - Hall",
 			"Act 6 - Pool",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsMR = new()
@@ -298,10 +191,6 @@ namespace ModManagerWPF.Common
 			"Act 2 - Angel Island",
 			"Act 3 - Jungle",
 			"Act 4 - Final Egg",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<string> actsPast = new()
@@ -309,11 +198,6 @@ namespace ModManagerWPF.Common
 			"Act 1 - Main",
 			"Act 2 - Altar",
 			"Act 3 - Altar (Fire)",
-			"Act 4 (Unused)",
-			"Act 5 (Unused)",
-			"Act 6 (Unused)",
-			"Act 7 (Unused)",
-			"Act 8 (Unused)",
 		};
 
 		private static readonly List<List<string>> acts = new()
@@ -498,6 +382,8 @@ namespace ModManagerWPF.Common
 			{
 				comboBoxTestSpawnGameMode.Items.Add(item.Value);
 			}
+
+			comboBoxTestSpawnGameMode.SelectedIndex = 0;
 		}
 	}
 }

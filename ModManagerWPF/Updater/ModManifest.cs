@@ -573,8 +573,8 @@ namespace ModManagerWPF.Updater
 			unchecked
 			{
 				int hashCode = FilePath?.GetHashCode() ?? 0;
-				hashCode = (hashCode * 397) ^ FileSize.GetHashCode();
-				hashCode = (hashCode * 397) ^ (Checksum?.GetHashCode() ?? 0);
+				hashCode = hashCode * 397 ^ FileSize.GetHashCode();
+				hashCode = hashCode * 397 ^ (Checksum?.GetHashCode() ?? 0);
 				return hashCode;
 			}
 		}

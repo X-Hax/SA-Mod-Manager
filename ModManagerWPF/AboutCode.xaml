@@ -34,6 +34,6 @@
         </StackPanel>
             <Rectangle Grid.Row="0" Height="1"  VerticalAlignment="Bottom"/>
         <TextBox  Grid.Row="1" x:Name="DescBx" AcceptsReturn="True" Text="Desc" IsReadOnly="True"
-                 Margin="5" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="Transparent" BorderThickness="0"/>
+                 Margin="5" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="Transparent" BorderThickness="0" FontSize="14"/>
         </Grid>
 </Window>

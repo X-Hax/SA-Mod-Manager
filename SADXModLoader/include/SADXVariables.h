@@ -2685,5 +2685,12 @@ DataPointer(D3DMATRIX, ProjectionMatrix, 0x3D129C0);
 DataPointer(float*, OtherFogTableA, 0x3D12A00);
 DataPointer(float*, OtherFogTableB, 0x3D12C00);
 DataArray(Float, _nj_current_matrix_no_view_, 0x3D12E00, 16);
+DataPointer(HWND, hWnd, 0x3D0FD30);
+DataPointer(KeyboardInput*, KeyboardInputPointer, 0x3B0E340);
+DataPointer(char, SoftResetByte, 0x3B0EAA0);
+DataPointer(int, Demo_Enabled, 0x3B2C470);
+DataPointer(int, Demo_ControlMode, 0x3B2C474);
+DataPointer(__int16, Demo_Frame, 0x3B2C464);
+DataPointer(__int16, Demo_MaxFrame, 0x3B2C460);
 
 #endif /* SADXMODLOADER_SADXVARS_H */

@@ -57,6 +57,8 @@ using std::vector;
 #include "MinorPatches.h"
 #include "jvList.h"
 #include "Gbix.h"
+#include "input.h"
+#include <ShlObj.h>
 
 static HINSTANCE g_hinstDll = nullptr;
 
@@ -237,6 +239,22 @@ static void __cdecl ProcessCodes()
 	}
 }
 
+//used to get external lib location and extra config
+std::string appPath = "";
+std::string extLibPath = "";
+
+void SetAppPathConfig()
+{
+	TCHAR appDataLocalPath[MAX_PATH];
+
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, appDataLocalPath)))
+	{
+		std::wstring wStr = appDataLocalPath;
+		appPath = std::string(wStr.begin(), wStr.end());
+		appPath += "/SAManager/";
+		extLibPath = appPath + "extlib/";
+	}
+}
 
 static bool dbgConsole, dbgScreen;
 static bool pauseWhenInactive;
@@ -1019,39 +1037,46 @@ void ProcessVoiceDurationRegisters()
 	_JPVoiceDurationList.clear();
 }
 
+//Following order for the BASS dlls is REALLY important, NEVER touch it or BASS will FAIL to load.
+const std::string bassDLLs[] =
+{
+	"bass.dll",
+	"libatrac9.dll",
+	"libcelt-0061.dll",
+	"libcelt-0110.dll",
+	"libg719_decode.dll",
+	"libg7221_decode.dll",
+	"libmpg123-0.dll",
+	"libogg.dll",
+	"libspeex.dll",
+	"libvorbis.dll",
+	"avutil-vgmstream-56.dll",
+	"avcodec-vgmstream-58.dll",
+	"avformat-vgmstream-58.dll",
+	"jansson.dll",
+	"swresample-vgmstream-3.dll",
+	"bass_vgmstream.dll",
+};
+
 static void __cdecl InitAudio(const IniGroup* settings)
 {
 
 	if (settings->getBool("EnableBassMusic"), true)
 	{
-		//Following order of each LoadLibrary is REALLY important, NEVER touch it or BASS will FAIL to load.
+		string bassFolder = extLibPath + "BASS/";
 
-		string bassPath = "BASS\\bass.dll";
-		HMODULE bassDLL = LoadLibraryA(bassPath.c_str());
+		if (!FileExists(bassFolder + "bass.dll"))
+			bassFolder = "BASS/";
 
-		LoadLibraryA("BASS\\libatrac9.dll");
-		LoadLibraryA("BASS\\libcelt-0061.dll");
-		LoadLibraryA("BASS\\libcelt-0110.dll");
-		LoadLibraryA("BASS\\libg719_decode.dll");
-		LoadLibraryA("BASS\\libg7221_decode.dll");
-		LoadLibraryA("BASS\\libmpg123-0.dll");
-		LoadLibraryA("BASS\\libogg.dll");
-		LoadLibraryA("BASS\\libspeex.dll");
+		bool bassDLL = false;
 
-		LoadLibraryA("BASS\\libvorbis.dll");
-		//LoadLibraryA("BASS\\libvorbisfile.dll"); 
+		for (uint8_t i = 0; i < LengthOfArray(bassDLLs); i++)
+		{
+			string fullPath = bassFolder + bassDLLs[i];
+			bassDLL = LoadLibraryA(fullPath.c_str());
+		}
 
-		LoadLibraryA("BASS\\avutil-vgmstream-56.dll");
-		LoadLibraryA("BASS\\avcodec-vgmstream-58.dll");
-		LoadLibraryA("BASS\\avformat-vgmstream-58.dll");
-
-		LoadLibraryA("BASS\\jansson.dll");
-		LoadLibraryA("BASS\\swresample-vgmstream-3.dll");
-
-		string bassPath2 = "BASS\\bass_vgmstream.dll";
-		HMODULE bassDLL2 = LoadLibraryA(bassPath2.c_str());
-
-		if (bassDLL && bassDLL2)
+		if (bassDLL)
 		{
 			WriteCall((void*)0x42544C, PlayMusicFile_r);
 			WriteCall((void*)0x4254F4, PlayVoiceFile_r);
@@ -1083,7 +1108,7 @@ static void __cdecl InitAudio(const IniGroup* settings)
 
 void InitPatches(const IniGroup* settings)
 {
-	if (settings->getBool("PatchCamCode"), true)
+	if (settings->getBool("PatchCamCode", true))
 	{
 		WriteData((int16_t*)0x438330, (int16_t)0x0D81);
 		WriteData((int16_t*)0x434870, (int16_t)0x0D81);
@@ -1092,7 +1117,7 @@ void InitPatches(const IniGroup* settings)
 	// Fixes N-sided polygons (Gamma's headlight) by using
 	// triangle strip vertex buffer initializers.
 
-	if (settings->getBool("PatchE102Poly"), true)
+	if (settings->getBool("PatchE102Poly", true))
 	{
 		for (size_t i = 0; i < MeshSetInitFunctions.size(); ++i)
 		{
@@ -1113,7 +1138,7 @@ void InitPatches(const IniGroup* settings)
 		}
 	}
 
-	if (settings->getBool("PatchPixelOffset"), true)
+	if (settings->getBool("PatchPixelOffset", true))
 	{
 		// Replaces half-pixel offset addition with subtraction
 		WriteData((uint8_t*)0x0077DE1E, (uint8_t)0x25); // njDrawQuadTextureEx
@@ -1132,13 +1157,13 @@ void InitPatches(const IniGroup* settings)
 		WriteData((uint8_t*)0x0078E90E, (uint8_t)0x25); // njDrawLine2D_Direct3D
 	}
 
-	if (settings->getBool("PatchChaoPanel"), true)
+	if (settings->getBool("PatchChaoPanel", true))
 	{
 		// Chao stat panel screen dimensions fix
 		WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
 	}
 
-	if (settings->getBool("PatchLights"), true)
+	if (settings->getBool("PatchLights", true))
 	{
 		// Fix light incorrectly being applied on LandTables
 		WriteCall(reinterpret_cast<void*>(0x0043A6D5), FixLandTableLightType);
@@ -1150,10 +1175,10 @@ void InitPatches(const IniGroup* settings)
 		WriteData<2>(reinterpret_cast<void*>(0x004088A6), 0x90i8);
 	}
 
-	if (settings->getBool("PatchChunkSpec"), true)
+	if (settings->getBool("PatchChunkSpec", true))
 		ChunkSpecularFix_Init();
 
-	if (settings->getBool("KillGbix"), true)
+	if (settings->getBool("KillGbix", true))
 		Init_NOGbixHack();
 }
 
@@ -1193,6 +1218,8 @@ static void __cdecl InitMods()
 	}
 	unique_ptr<IniFile> ini(new IniFile(f_ini));
 	fclose(f_ini);
+
+	SetAppPathConfig();
 
 	// Get sonic.exe's path and filename.
 	wchar_t pathbuf[MAX_PATH];
@@ -1379,26 +1406,26 @@ static void __cdecl InitMods()
 		uiscale::setup_fmv_scale();
 	}
 
-	if (settings->getBool("PolyBuff"), true)
+	if (settings->getBool("PolyBuff", true))
 		polybuff::rewrite_init();
 
 	if (settings->getBool("DebugCrashLog", true))
 		initCrashDump();
 
-	if (settings->getBool("MaterialColorFix"), true)
+	if (settings->getBool("MaterialColorFix", true))
 		MaterialColorFixes_Init();
 
 	if (settings->getBool("EnableBassSFX", false))
 		Sound_Init(settings->getInt("SEVolume", 100));
 
-	if (settings->getBool("InterpolationFix"), true)
+	if (settings->getBool("InterpolationFix", true))
 		init_interpolationAnimFixes();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_us\\wma");
 
-	if (settings->getBool("PatchChaos2Crash"), true)
+	if (settings->getBool("PatchChaos2Crash", true))
 		MinorPatches_Init();
 
 	// Map of files to replace.
@@ -1727,6 +1754,10 @@ static void __cdecl InitMods()
 		modlist.push_back(modinf);
 	}
 
+
+	if (settings->getBool("InputModEnabled", true))
+		SDL2_Init();
+
 	if (!errors.empty())
 	{
 		std::wstringstream message;
@@ -2025,6 +2056,7 @@ static void __cdecl InitMods()
 
 		codes_str.close();
 	}
+
 
 	// Sets up code/event handling
 	WriteJump((void*)0x00426063, (void*)ProcessCodes);

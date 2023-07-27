@@ -106,7 +106,7 @@ namespace ModManagerWPF
 				{
 					var dialog = new MessageWindow(Lang.GetString("MessageWindow.Errors.VCMissing.Title"), Lang.GetString("MessageWindow.Errors.VCMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 					dialog.ShowDialog();
-			
+
 					if (dialog.isYes)
 					{
 						//Process.Start("https://aka.ms/vs/17/release/vc_redist.x86.exe");
@@ -120,6 +120,47 @@ namespace ModManagerWPF
 			return false;
 		}
 
+		private static async Task<bool> UpdateDependenciesFolder()
+		{
+			string appDataLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+			string managerConfigPath = Path.Combine(appDataLocalPath, "SAManager");
+			string extLibPath = Path.Combine(managerConfigPath, "extlib");
+			string bassFullPath = Path.Combine(managerConfigPath, Path.Combine(extLibPath, "BASS"));
+			string SDLFullPath = Path.Combine(managerConfigPath, Path.Combine(extLibPath, "SDL2"));
+
+			try
+			{
+				//look if dependencies are already in appData folder
+				if (Directory.Exists(bassFullPath) && Directory.Exists(SDLFullPath))
+				{
+					return true;
+				}
+
+				//if not, look if they aren't in the Mod Manager folder...
+				if (!Directory.Exists("extlib/BASS"))
+				{
+					//throw error that they are missing
+					return false;
+				}
+
+				if (!Directory.Exists("extlib/SDL2"))
+				{
+					//throw error that they are missing
+					return false;
+				}
+
+				Util.CopyFolder("extlib/BASS", bassFullPath, true);
+				Util.CopyFolder("extlib/SDL2/lib/x86", SDLFullPath, true);
+
+			}
+			catch
+			{
+				
+			}
+
+			return true;
+		}
+
 		public async Task<bool> StartupCheck()
 		{
 			Console.WriteLine("Checking dependencies...");
@@ -128,12 +169,13 @@ namespace ModManagerWPF
 
 			if (net7)
 			{
-				bool OneClick = await EnableOneClickInstall();
+				bool extLib = await UpdateDependenciesFolder();
 				bool VC = await VC_DependenciesCheck();
+				bool OneClick = await EnableOneClickInstall();
 
 				return true;
 			}
-	
+
 			App.Current.Shutdown();
 			return false;
 		}

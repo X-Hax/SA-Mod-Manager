@@ -18,6 +18,7 @@
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="DLLData.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="DreamPad.cpp" />
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="EXEData.cpp" />
     <ClCompile Include="FileMap.cpp" />
@@ -26,14 +27,18 @@
     <ClCompile Include="Gbix.cpp" />
     <ClCompile Include="HelperFunctions.cpp" />
     <ClCompile Include="hudscale.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="InterpolationFixes.cpp" />
     <ClCompile Include="jvList.cpp" />
+    <ClCompile Include="KeyboardMouse.cpp" />
     <ClCompile Include="MaterialColorFixes.cpp" />
     <ClCompile Include="MinorPatches.cpp" />
     <ClCompile Include="polybuff.cpp" />
     <ClCompile Include="prs.cpp" />
     <ClCompile Include="MediaFns.cpp" />
     <ClCompile Include="pvmx.cpp" />
+    <ClCompile Include="rumble.cpp" />
+    <ClCompile Include="SDL2.cpp" />
     <ClCompile Include="SkyChaseFixes.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -52,6 +57,7 @@
     <ClInclude Include="DDS.h" />
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="DLLData.h" />
+    <ClInclude Include="DreamPad.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="EXEData.h" />
     <ClInclude Include="FileMap.hpp" />
@@ -70,9 +76,12 @@
     <ClInclude Include="include\SADXStructsNew.h" />
     <ClInclude Include="include\SADXVariablesNew.h" />
     <ClInclude Include="include\ScaleInfo.h" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="InterpolationFixes.h" />
     <ClInclude Include="jvList.h" />
+    <ClInclude Include="KeyboardMouse.h" />
     <ClInclude Include="MaterialColorFixes.h" />
+    <ClInclude Include="minmax.h" />
     <ClInclude Include="MinorPatches.h" />
     <ClInclude Include="polybuff.h" />
     <ClInclude Include="prs.h" />
@@ -86,13 +95,17 @@
     <ClInclude Include="include\SADXVariables.h" />
     <ClInclude Include="MediaFns.hpp" />
     <ClInclude Include="pvmx.h" />
+    <ClInclude Include="rumble.h" />
+    <ClInclude Include="SDL.h" />
     <ClInclude Include="SkyChaseFixes.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="testspawn.h" />
     <ClInclude Include="TextureReplacement.h" />
     <ClInclude Include="include\UsercallFunctionHandler.h" />
+    <ClInclude Include="typedefs.h" />
     <ClInclude Include="uiscale.h" />
+    <ClInclude Include="util.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="VoiceDuration.h" />
   </ItemGroup>
@@ -154,21 +167,21 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_DEBUG;_WINDOWS;_USRDLL;SADXMODLOADER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EXTENDED_BUTTONS;WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_DEBUG;_WINDOWS;_USRDLL;SADXMODLOADER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\include;..\extlib\bass;..\libmodutils;..\mod-loader-common\ModLoaderCommon</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\extlib\SDL2\include;.\include;..\extlib\bass;..\libmodutils;..\mod-loader-common\ModLoaderCommon</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:threadSafeInit- %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProgramFiles)\DirectX 8.1 SDK\lib;..\extlib\bass</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3dx8.lib;bass.lib;bass_vgmstream.lib;$(OutDir)libmodutils.lib;$(OutDir)ModLoaderCommon.lib;shlwapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProgramFiles)\DirectX 8.1 SDK\lib;..\extlib\bass;..\extlib\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3dx8.lib;bass.lib;bass_vgmstream.lib;notelemetry.obj;SDL2.lib;$(OutDir)libmodutils.lib;$(OutDir)ModLoaderCommon.lib;shlwapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
-      <DelayLoadDLLs>bass.dll;bass_vgmstream.dll</DelayLoadDLLs>
+      <DelayLoadDLLs>SDL2.dll;bass.dll;bass_vgmstream.dll</DelayLoadDLLs>
     </Link>
     <PreBuildEvent>
       <Command>"C:\Program Files\Git\bin\bash.exe" ../git_version.sh &gt;git_version.h</Command>
@@ -181,9 +194,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;SADXMODLOADER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EXTENDED_BUTTONS;WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;SADXMODLOADER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\include;..\extlib\bass;..\libmodutils;..\mod-loader-common\ModLoaderCommon</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\extlib\SDL2\include;.\include;..\extlib\bass;..\libmodutils;..\mod-loader-common\ModLoaderCommon</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:threadSafeInit- %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -192,13 +205,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProgramFiles)\DirectX 8.1 SDK\lib;..\extlib\bass</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3dx8.lib;bass.lib;bass_vgmstream.lib;$(OutDir)libmodutils.lib;$(OutDir)ModLoaderCommon.lib;shlwapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProgramFiles)\DirectX 8.1 SDK\lib;..\extlib\bass;..\extlib\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3dx8.lib;bass.lib;bass_vgmstream.lib;notelemetry.obj;SDL2.lib;$(OutDir)libmodutils.lib;$(OutDir)ModLoaderCommon.lib;shlwapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
-      <DelayLoadDLLs>bass.dll;bass_vgmstream.dll</DelayLoadDLLs>
+      <DelayLoadDLLs>SDL2.dll;bass.dll;bass_vgmstream.dll</DelayLoadDLLs>
     </Link>
     <PreBuildEvent>
       <Command>"C:\Program Files\Git\bin\bash.exe" ../git_version.sh &gt;git_version.h</Command>

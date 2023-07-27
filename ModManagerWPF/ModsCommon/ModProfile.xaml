@@ -1,0 +1,81 @@
+﻿<Window x:Class="ModManagerWPF.Common.ModProfile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModManagerWPF.Common"
+        xmlns:dd="urn:gong-wpf-dragdrop"
+        mc:Ignorable="d"
+        Title="ModProfile" Height="450" Width="700"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource SAWindow}"
+        Closed="Window_Closed">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../Icons/Icons.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="312"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ListView x:Name="ProfileListView" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                  Margin="10,10,10,15"  PreviewKeyDown="ProfileList_OnPreviewKeyDown"
+                  dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" AllowDrop="True">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="UI_MouseDoubleClick"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="{StaticResource CommonStrings.Name}" Width="300">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding name}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{StaticResource ManagerProfile.Path}" Width="300" DisplayMemberBinding="{Binding iniPath }"/>
+                </GridView>
+            </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+					<MenuItem x:Name="ProfileRename" Header="{StaticResource ManagerProfile.ContextMenu.Rename}" Click="ProfileRename_Click"  InputGestureText="(F2)">
+						<MenuItem.Icon>
+							<Image Source="{StaticResource IconRename}"/>
+						</MenuItem.Icon>
+					</MenuItem>
+					<MenuItem x:Name="ProfileClone" Header="{StaticResource ManagerProfile.ContextMenu.Duplicate}" Click="ProfileClone_Click" InputGestureText="(CTRL + D)">
+						<MenuItem.Icon>
+							<Image Source="{StaticResource IconDuplicate}"/>
+						</MenuItem.Icon>
+					</MenuItem>
+					<MenuItem x:Name="ProfileDelete" Header="{StaticResource ManagerProfile.ContextMenu.Delete}" Click="ProfileDelete_Click" InputGestureText="(Del)">
+						<MenuItem.Icon>
+							<Image Source="{StaticResource IconDelete}"/>
+						</MenuItem.Icon>
+					</MenuItem>
+           
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="-4" Grid.Row="2" Grid.Column="0">
+            <Button Content="{StaticResource CommonStrings.Create}" Margin="8,8,0,8" VerticalAlignment="Center" Width="117" Height="22" Click="UI_Add_Click" />
+        </StackPanel>
+		<StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Grid.Row="2" Grid.Column="1">
+			<Button Content="{StaticResource CommonStrings.OK}" Margin="8,0,0,0" VerticalAlignment="Center" Width="75" Height="23" Click="UI_OK_Click" IsCancel="True"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

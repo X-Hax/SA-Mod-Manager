@@ -44,8 +44,9 @@
 	<system:String x:Key="CommonStrings.Credits">Credits</system:String>
 	<system:String x:Key="CommonStrings.Download">Download</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">Open Folder</system:String>
+    <system:String x:Key="CommonStrings.None">None</system:String>
 
-	<!--Window Tips-->
+    <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Minimize</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Maximize</system:String>
 	<system:String x:Key="Window.Tips.Restore">Restore window</system:String>
