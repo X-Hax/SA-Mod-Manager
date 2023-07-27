@@ -14,6 +14,11 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using System.Runtime.InteropServices.ComTypes;
+using System.Text.RegularExpressions;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Globalization;
 
 namespace ModManagerWPF
 {
@@ -233,7 +238,9 @@ namespace ModManagerWPF
 			Window window = Window.GetWindow((DependencyObject)sender);
 			window.Close();
 		}
-    }
+
+		
+	}
 
 	public partial class ImageButton : Button
 	{
