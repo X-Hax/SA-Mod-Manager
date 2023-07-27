@@ -79,6 +79,13 @@ namespace ModManagerWPF.Common
 			DialogResult = false;
 			this.Close();
 		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			DialogResult = true;
+			this.Close();
+		}
+
 	}
 
 }

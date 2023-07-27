@@ -65,8 +65,8 @@
 				<ColumnDefinition Width="5"/>
 				<ColumnDefinition Width="100"/>
 			</Grid.ColumnDefinitions>
-			<Button Content="{DynamicResource CommonStrings.OK}" Grid.Column="0"/>
-			<Button Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="2"/>
+			<Button Content="{DynamicResource CommonStrings.OK}" Grid.Column="0" Click="Button_Click"/>
+            <Button x:Name="cancelBtn" Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="2" Click="CancelBtn_Click"/>
 		</Grid>
     </Grid>
 </Window>
