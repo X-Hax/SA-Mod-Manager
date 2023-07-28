@@ -60,14 +60,6 @@ namespace ModManagerWPF.Common
 			if (SaveCodeToFile())
 				this.Close();
 		}
-
-		private void CheckSaveToMod_Checked(object sender, RoutedEventArgs e)
-		{
-			if ((bool)CheckSaveToMod.IsChecked)
-				CodeCategory.IsEnabled = false;
-			else
-				CodeCategory.IsEnabled = true;
-		}
 		#endregion
 	}
 }

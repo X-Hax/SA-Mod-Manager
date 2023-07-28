@@ -26,7 +26,7 @@
 			<Grid.RowDefinitions>
 				<RowDefinition Height="30"/>
 				<RowDefinition Height="30"/>
-				<RowDefinition Height="30"/>
+				<RowDefinition Height="0"/>
 			</Grid.RowDefinitions>
 
 			<Grid x:Name="CodeInfoTop" Grid.Row="0">
@@ -63,28 +63,26 @@
 
 			<Grid x:Name="CodeInfoMiddle" Grid.Row="1">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"/>
 					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="163"/>
 				</Grid.ColumnDefinitions>
-				<Label Content="{DynamicResource CommonStrings.Description}" VerticalAlignment="Center"/>
-				<TextBox x:Name="CodeDescription" Grid.Column="1" Margin="5"/>
-			</Grid>
-
-			<Grid x:Name="CodeInfoBottom" Grid.Row="2">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-				<CheckBox x:Name="CheckSaveToMod" Content="{DynamicResource NewCode.Check.SaveToMod}" Margin="5" Checked="CheckSaveToMod_Checked" Unchecked="CheckSaveToMod_Checked"/>
-				<Grid Grid.Column="1">
+				<Grid>
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition Width="5"/>
+						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
-					<TextBox x:Name="CodeModFolder" Margin="5" IsEnabled="{Binding ElementName=CheckSaveToMod, Path=IsChecked}"/>
-					<local:ImageButton x:Name="btnBrowseGameDir" Grid.Column="1" Height="20" Width="25" Icon="{StaticResource Icons.Folder}"
-									   IsEnabled="{Binding ElementName=CheckSaveToMod, Path=IsChecked}"/>
+					<Label Content="{DynamicResource CommonStrings.Description}" VerticalAlignment="Center"/>
+					<TextBox x:Name="CodeDescription" Grid.Column="1" Margin="5"/>
+				</Grid>
+				<Grid Grid.Column="1" Width="157" HorizontalAlignment="Right">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<TextBlock Text="Type:" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,5,0"/>
+					<RadioButton x:Name="radCode" Content="Code" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,5,0" Grid.Column="1"/>
+					<RadioButton x:Name="radPatch" Content="Patch" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,5,0" Grid.Column="2"/>
 				</Grid>
 			</Grid>
 		</Grid>
