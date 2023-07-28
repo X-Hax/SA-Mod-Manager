@@ -1537,10 +1537,11 @@
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="20"/>
 									</Grid.ColumnDefinitions>
-									<Border Background="Transparent" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" CornerRadius="{Binding ElementName=border, Path=CornerRadius}"/>
-									<TextBox x:Name="NumValue" FontSize="14" TextAlignment="Right"
-											 Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}" CaretBrush="AliceBlue" IsReadOnlyCaretVisible="True"
-											 BorderThickness="0"/>
+									<Border Background="Transparent" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+											CornerRadius="{Binding ElementName=border, Path=CornerRadius}"/>
+									<TextBox x:Name="NumValue" FontSize="14" TextAlignment="Right" IsReadOnlyCaretVisible="True"
+											 Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}" 
+											 CaretBrush="{DynamicResource Caret.Brushes}" BorderThickness="0"/>
 									<Rectangle Grid.Column="1" Width="1" Fill="{TemplateBinding BorderBrush}"/>
 									<Grid Grid.Column="2">
 										<Grid.RowDefinitions>

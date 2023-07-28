@@ -44,7 +44,7 @@
 	<SolidColorBrush x:Key="ToolTip.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 
 	<SolidColorBrush x:Key="Borders.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
-
+	<SolidColorBrush x:Key="Caret.Brushes" Color="{DynamicResource Colors.Text}"/>
 	<SolidColorBrush x:Key="TextBlock.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 
 	<SolidColorBrush x:Key="TextBox.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
