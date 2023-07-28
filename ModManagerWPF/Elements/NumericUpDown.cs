@@ -138,9 +138,7 @@ namespace ModManagerWPF.Elements
 		{
 			if (e.Key == Key.Enter)
 			{
-				var parent = this.Parent as UIElement;
-				parent?.Focus();
-				e.Handled = true;
+				MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
 			}
 
 			// Allow only numeric keys and some control keys (e.g., Backspace, Delete, Enter)
