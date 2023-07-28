@@ -1460,26 +1460,6 @@
 			<!--#endregion-->
 			
 			<!--#region Numeric Box Style-->
-			<Style x:Key="{x:Static xctp:ResourceKeys.SpinnerButtonStyleKey}" TargetType="{x:Type RepeatButton}">
-				<Style.Resources>
-					<SolidColorBrush x:Key="{x:Static xctp:ResourceKeys.GlyphNormalForegroundKey}" Color="{DynamicResource Colors.Border}"/>
-				</Style.Resources>
-				<Setter Property="Background" Value="{DynamicResource Button.Brushes.Background}"/>
-				<Setter Property="BorderThickness" Value="0"/>
-			</Style>
-
-			<Style TargetType="{x:Type xctk:IntegerUpDown}">
-				<Setter Property="Background" Value="{DynamicResource NumericBox.Brushes.Background}"/>
-				<Setter Property="Foreground" Value="{DynamicResource NumericBox.Brushes.Foreground}"/>
-				<Setter Property="BorderBrush" Value="{DynamicResource NumericBox.Brushes.Border}"/>
-			</Style>
-
-			<Style TargetType="{x:Type xctk:DecimalUpDown}">
-				<Setter Property="Background" Value="{DynamicResource NumericBox.Brushes.Background}"/>
-				<Setter Property="Foreground" Value="{DynamicResource NumericBox.Brushes.Foreground}"/>
-				<Setter Property="BorderBrush" Value="{DynamicResource NumericBox.Brushes.Border}"/>
-			</Style>
-
 			<Style TargetType="{x:Type elements:NumericUpDown}">
 				<Style.Resources>
 					<Style x:Key="UpSpinner" TargetType="{x:Type RepeatButton}">
@@ -1503,6 +1483,9 @@
 										</Trigger>
 										<Trigger Property="IsPressed" Value="True">
 											<Setter Property="Background" Value="{DynamicResource Button.Brushes.Pressed.Background}"/>
+										</Trigger>
+										<Trigger Property="IsEnabled" Value="False">
+											<Setter Property="Background" Value="{DynamicResource Button.Brushes.Disabled.Background}"/>
 										</Trigger>
 									</ControlTemplate.Triggers>
 								</ControlTemplate>
@@ -1531,6 +1514,9 @@
 										<Trigger Property="IsPressed" Value="True">
 											<Setter Property="Background" Value="{DynamicResource Button.Brushes.Pressed.Background}"/>
 										</Trigger>
+										<Trigger Property="IsEnabled" Value="False">
+											<Setter Property="Background" Value="{DynamicResource Button.Brushes.Disabled.Background}"/>
+										</Trigger>
 									</ControlTemplate.Triggers>
 								</ControlTemplate>
 							</Setter.Value>
@@ -1552,8 +1538,7 @@
 										<ColumnDefinition Width="20"/>
 									</Grid.ColumnDefinitions>
 									<Border Background="Transparent" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" CornerRadius="{Binding ElementName=border, Path=CornerRadius}"/>
-									<ScrollBar x:Name="scroll" Visibility="Hidden"/>
-									<TextBox x:Name="NumValue" Text="{TemplateBinding Text}" FontSize="14" TextAlignment="Right"
+									<TextBox x:Name="NumValue" FontSize="14" TextAlignment="Right"
 											 Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}" CaretBrush="AliceBlue" IsReadOnlyCaretVisible="True"
 											 BorderThickness="0"/>
 									<Rectangle Grid.Column="1" Width="1" Fill="{TemplateBinding BorderBrush}"/>
@@ -1573,6 +1558,9 @@
 							<ControlTemplate.Triggers>
 								<Trigger Property="IsMouseOver" Value="True">
 									<Setter Property="BorderBrush" Value="{DynamicResource NumericBox.Brushes.MouseOver.Border}"/>
+								</Trigger>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Background" Value="{DynamicResource NumericBox.Brushes.Disabled.Background}"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>

@@ -4,6 +4,10 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows;
 using System.Windows.Controls;
+using System.Text.RegularExpressions;
+using System;
+using Gu.Wpf.NumericInput;
+using ModManagerCommon;
 
 namespace ModManagerWPF.Elements
 {
@@ -12,6 +16,7 @@ namespace ModManagerWPF.Elements
 		#region Internal Elements
 		private RepeatButton incrementButton;
 		private RepeatButton decrementButton;
+		private TextBox textBox;
 		#endregion
 
 		public enum DataType
@@ -22,8 +27,6 @@ namespace ModManagerWPF.Elements
 		}
 
 		#region Extended Variables
-		private bool numericKeyPressedHandled = false;
-
 		public DataType ValueType
 		{
 			get { return (DataType)GetValue(ValueTypeProperty); }
@@ -67,18 +70,15 @@ namespace ModManagerWPF.Elements
 			Loaded += NumericUpDown_Loaded;
 			PreviewTextInput += NumValue_PreviewTextInput;
 			PreviewMouseWheel += NumValue_PreviewMouseWheel;
+			KeyDown += NumericUpDown_KeyDown;
 		}
 
-		private void NumValue_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-		{
-			Value += (e.Delta > 0) ? 1 : -1;
-			e.Handled = true;
-		}
-
+		#region Invernal Functions
 		private void NumericUpDown_Loaded(object sender, RoutedEventArgs e)
 		{
 			incrementButton = Template.FindName("IncrementUp", this) as RepeatButton;
 			decrementButton = Template.FindName("IncrementDown", this) as RepeatButton;
+			textBox = Template.FindName("NumValue", this) as TextBox;
 
 			if (incrementButton != null)
 				incrementButton.Click += IncrementUp_Click;
@@ -88,17 +88,14 @@ namespace ModManagerWPF.Elements
 
 			Binding textBinding = new Binding("Value")
 			{
-				Source = this,
+				RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent),
 				Mode = BindingMode.TwoWay,
-				BindsDirectlyToSource = true,
 			};
 
-			if (ValueType == DataType.Integer)
-				textBinding.StringFormat = "{0:}";
-			else
-				textBinding.StringFormat = "{0:F2}";
+			textBinding.StringFormat = ValueType == DataType.Integer ? "{0}" : "{0:F2}";
 
-			SetBinding(TextProperty, textBinding);
+			if (textBox != null)
+				textBox.SetBinding(TextProperty, textBinding);
 		}
 
 		private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -109,28 +106,53 @@ namespace ModManagerWPF.Elements
 			double min = textBox.MinValue;
 			double max = textBox.MaxValue;
 
-			// Restrict the value to the specified bounds.
-			if (newValue < min)
-				textBox.Value = min;
-			else if (newValue > max)
-				textBox.Value = max;
+			if (newValue > min && newValue < max)
+				textBox.Value = newValue;
+			else
+			{
+				if (newValue < min)
+					textBox.Value = min;
+				else if (newValue > max)
+					textBox.Value = max;
+			}
 		}
 
-		public int GetInt()
+		private void NumValue_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
 		{
-			return (int)Value;
+			Value += (e.Delta > 0) ? 1 : -1;
+			e.Handled = true;
 		}
 
-		public float GetFloat()
+		private void NumValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
-			return (float)Value;
+			var regex = ValueType == DataType.Integer ? new Regex("[^0-9]+") : new Regex("[^0-9.-]+");
+			
+			if (regex.IsMatch(e.Text))
+			{
+				Value = double.Parse(e.Text);
+				e.Handled = true;
+			}
 		}
 
-		public double GetDouble()
+		private void NumericUpDown_KeyDown(object sender, KeyEventArgs e)
 		{
-			return (double)Value;
+			if (e.Key == Key.Enter)
+			{
+				var parent = this.Parent as UIElement;
+				parent?.Focus();
+				e.Handled = true;
+			}
+
+			// Allow only numeric keys and some control keys (e.g., Backspace, Delete, Enter)
+			if (!(e.Key >= Key.D0 && e.Key <= Key.D9) &&
+				!(e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) &&
+				!(e.Key == Key.Decimal || e.Key == Key.OemPeriod || e.Key == Key.OemComma || e.Key == Key.Back || e.Key == Key.Delete))
+			{
+				e.Handled = true;
+			}
 		}
 
+		#region Buttons
 		private void IncrementUp_Click(object sender, RoutedEventArgs e)
 		{
 			if (ValueType == DataType.Integer)
@@ -146,20 +168,24 @@ namespace ModManagerWPF.Elements
 			else
 				Value -= 0.1;
 		}
+		#endregion
+		#endregion
 
-		private void NumValue_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+		#region Public Functions
+		public int GetInt()
 		{
-			var textBox = sender as TextBox;
-			// Use SelectionStart property to find the caret position.
-			// Insert the previewed text into the existing text in the textbox.
-			var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-
-			double val;
-			// If parsing is successful, set Handled to false
-			e.Handled = !double.TryParse(fullText,
-										 NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign,
-										 CultureInfo.InvariantCulture,
-										 out val);
+			return (int)Value;
 		}
+
+		public float GetFloat()
+		{
+			return (float)Value;
+		}
+
+		public double GetDouble()
+		{
+			return (double)Value;
+		}
+		#endregion
 	}
 }

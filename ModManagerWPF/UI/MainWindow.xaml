@@ -5,6 +5,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:ModManagerWPF"
+		xmlns:elements="clr-namespace:ModManagerWPF.Elements"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:dd="urn:gong-wpf-dragdrop"
 		mc:Ignorable="d"
@@ -390,12 +391,10 @@
                                             <ComboBox x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
                                                 <ComboBoxItem Content="All Screens"></ComboBoxItem>
                                             </ComboBox>
-                                            <StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
-
-                                                <xctk:IntegerUpDown x:Name="txtResX" Height="22" Width="75" Value="640" PreviewTextInput="NumberValidationTextBox"/>
-
-                                                <Label Content="x"/>
-                                                <xctk:IntegerUpDown x:Name="txtResY" Height="22" Width="75" Value="480" PreviewTextInput="NumberValidationTextBox"/>
+											<StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
+												<elements:NumericUpDown x:Name="txtResX" Height="22" Width="75" Value="640"/>
+												<Label Content="x" VerticalContentAlignment="Center"/>
+												<elements:NumericUpDown x:Name="txtResY" Height="22" Width="75" Value="480"/>
                                             </StackPanel>
                                             <ComboBox x:Name="comboDisplay" Grid.Column="5" Grid.Row="3" Height="22" SelectionChanged="comboResolutionPreset_SelectedIndexChanged">
                                                 <ComboBoxItem Content="640x480"/>
@@ -462,10 +461,10 @@
                                                 <CheckBox x:Name="chkResizableWin" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="2" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
                                                 <CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.AspectRatio}" Grid.Column="3" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect}" Click="chkMaintainRatio_Click"/>
                                                 <CheckBox x:Name="chkCustomWinSize" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.CustomWindow}" Grid.Column="2" Grid.Row="5" VerticalAlignment="Center" Margin="5,5,5,5" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow}"/>
-                                                <StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,5,5,5">
-                                                    <xctk:IntegerUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
-                                                    <Label Content="x"/>
-                                                    <xctk:IntegerUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480" ValueChanged="txtCustomResY_ValueChanged"/>
+                                                <StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal" Margin="5,0,5,0">
+													<elements:NumericUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
+                                                    <Label Content="x" VerticalContentAlignment="Center"/>
+													<elements:NumericUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480" TextChanged="txtCustomResY_TextChanged"/>
                                                 </StackPanel>
                                             </Grid>
                                         </GroupBox>
@@ -944,7 +943,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="{DynamicResource Manager.Tabs.TestSpawn.Check.Character}" VerticalAlignment="Center"/>
-                                                <xctk:IntegerUpDown x:Name="tsNumCharacter" Grid.Column="1" Height="22" Minimum="0" Value="0" MinWidth="50" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
+												<elements:NumericUpDown x:Name="tsNumCharacter" Grid.Column="1" Height="22" MinValue="0" Value="0" MinWidth="50" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
                                             </Grid>
                                             <Grid Grid.Column="1" HorizontalAlignment="Right">
                                                 <Grid.ColumnDefinitions>
@@ -952,7 +951,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="{DynamicResource Manager.Tabs.TestSpawn.Check.Level}" VerticalAlignment="Center"/>
-                                                <xctk:IntegerUpDown x:Name="tsNumLevel" Grid.Column="1" Height="22" MinWidth="65" Minimum="0" Value="0" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
+												<elements:NumericUpDown x:Name="tsNumLevel" Grid.Column="1" Height="22" MinWidth="65" MinValue="0" Value="0" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
                                             </Grid>
                                             <Grid Grid.Column="2" HorizontalAlignment="Right">
                                                 <Grid.ColumnDefinitions>
@@ -960,7 +959,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="{DynamicResource Manager.Tabs.TestSpawn.Act}" VerticalAlignment="Center"/>
-                                                <xctk:IntegerUpDown x:Name="tsNumAct" Grid.Column="2" Height="22" MinWidth="65" Minimum="0" Value="0" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
+												<elements:NumericUpDown x:Name="tsNumAct" Grid.Column="2" Height="22" MinWidth="65" MinValue="0" Value="0" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
                                             </Grid>
                                         </Grid>
 
@@ -978,7 +977,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="{DynamicResource Manager.Tabs.TestSpawn.Group.Advanced.PosX}" VerticalAlignment="Center"/>
-                                                <xctk:DecimalUpDown x:Name="tsNumPosX" Grid.Column="1" Height="22" MinWidth="65" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}"/>
+												<elements:NumericUpDown x:Name="tsNumPosX" Grid.Column="1" Height="22" MinWidth="65" ValueType="Float" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}"/>
                                             </Grid>
                                             <Grid Grid.Column="1" HorizontalAlignment="Right">
                                                 <Grid.ColumnDefinitions>
@@ -986,7 +985,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="{DynamicResource Manager.Tabs.TestSpawn.Group.Advanced.PosY}" VerticalAlignment="Center"/>
-                                                <xctk:DecimalUpDown x:Name="tsNumPosY" Grid.Column="1" Height="22" MinWidth="65" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}"/>
+												<elements:NumericUpDown x:Name="tsNumPosY" Grid.Column="1" Height="22" MinWidth="65" ValueType="Float" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}"/>
                                             </Grid>
                                             <Grid Grid.Column="2" HorizontalAlignment="Right">
                                                 <Grid.ColumnDefinitions>
@@ -994,7 +993,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="{DynamicResource Manager.Tabs.TestSpawn.Group.Advanced.PosZ}" VerticalAlignment="Center"/>
-                                                <xctk:DecimalUpDown x:Name="tsNumPosZ" Grid.Column="1" Height="22" MinWidth="65" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}"/>
+												<elements:NumericUpDown x:Name="tsNumPosZ" Grid.Column="1" Height="22" MinWidth="65" ValueType="Float" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}"/>
                                             </Grid>
                                             <Grid Grid.Column="3" HorizontalAlignment="Right">
                                                 <Grid.ColumnDefinitions>
@@ -1002,7 +1001,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="{DynamicResource Manager.Tabs.TestSpawn.Group.Advanced.Angle}" VerticalAlignment="Center"/>
-                                                <xctk:DecimalUpDown x:Name="tsNumAngle" Grid.Column="1" Height="22" MinWidth="65" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}"/>
+												<elements:NumericUpDown x:Name="tsNumAngle" Grid.Column="1" Height="22" MinWidth="65" ValueType="Float" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}"/>
                                             </Grid>
                                         </Grid>
                                     </Grid>

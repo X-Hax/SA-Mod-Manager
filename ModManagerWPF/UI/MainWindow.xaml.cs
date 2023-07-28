@@ -23,6 +23,8 @@ using Keyboard = System.Windows.Input.Keyboard;
 using Key = System.Windows.Input.Key;
 using ModManagerWPF.UI;
 using ModManagerWPF.Updater;
+using ModManagerWPF.Elements;
+using Newtonsoft.Json.Linq;
 
 namespace ModManagerWPF
 {
@@ -256,8 +258,8 @@ namespace ModManagerWPF
 
 			Properties.Settings.Default.GamePath = gamePath;
 			loaderini.DebugConsole = (bool)checkEnableLogConsole.IsChecked;
-			loaderini.HorizontalResolution = (int)txtResX.Value;
-			loaderini.VerticalResolution = (int)txtResY.Value;
+			loaderini.HorizontalResolution = txtResX.GetInt();
+			loaderini.VerticalResolution = txtResY.GetInt();
 			loaderini.ForceAspectRatio = (bool)chkRatio.IsChecked;
 			loaderini.PauseWhenInactive = (bool)chkPause.IsChecked;
 
@@ -272,8 +274,8 @@ namespace ModManagerWPF
 			loaderini.StretchFullscreen = (bool)chkScaleScreen.IsChecked;
 			loaderini.ScreenNum = comboScreen.SelectedIndex;
 			loaderini.CustomWindowSize = (bool)chkCustomWinSize.IsChecked;
-			loaderini.WindowWidth = (int)txtCustomResX.Value;
-			loaderini.WindowHeight = (int)txtCustomResY.Value;
+			loaderini.WindowWidth = txtCustomResX.GetInt();
+			loaderini.WindowHeight = txtCustomResY.GetInt();
 			loaderini.MaintainWindowAspectRatio = (bool)chkMaintainRatio.IsChecked;
 			loaderini.EnableDynamicBuffer = (bool)chkDynamicBuffers.IsChecked;
 			loaderini.ResizableWindow = (bool)chkResizableWin.IsChecked;
@@ -325,14 +327,8 @@ namespace ModManagerWPF
 			chkVSync.IsChecked = loaderini.EnableVsync;
 			txtResX.IsEnabled = !loaderini.ForceAspectRatio;
 
-			int resXMin = (int)txtResX.Minimum;
-			int resXMax = (int)txtResX.Maximum;
-
-			int resYMin = (int)txtResY.Minimum;
-			int resYMax = (int)txtResY.Maximum;
-
-			txtResX.Value = Math.Max(resXMin, Math.Min(resXMax, loaderini.HorizontalResolution));
-			txtResY.Value = Math.Max(resYMin, Math.Min(resYMax, loaderini.VerticalResolution));
+			txtResX.Value = loaderini.HorizontalResolution;
+			txtResY.Value = loaderini.VerticalResolution;
 			chkUpdatesML.IsChecked = loaderini.UpdateCheck;
 			chkUpdatesMods.IsChecked = loaderini.ModUpdateCheck;
 
@@ -356,14 +352,14 @@ namespace ModManagerWPF
 			txtCustomResX.IsEnabled = loaderini.CustomWindowSize && !loaderini.MaintainWindowAspectRatio;
 			System.Drawing.Rectangle rect = graphics.GetRectangleStruct();
 
-			int CustresXMax = (int)txtCustomResX.Maximum;
-			int CustresXMin = (int)txtCustomResX.Minimum;
-			int CustresYMin = (int)txtCustomResY.Minimum;
-			int CustresYMax = (int)txtCustomResY.Maximum;
-			txtCustomResX.Maximum = rect.Width;
-			txtCustomResX.Value = Math.Max(CustresXMin, Math.Min(CustresXMax, loaderini.WindowWidth));
-			txtCustomResY.Value = Math.Max(CustresYMin, Math.Min(CustresYMax, loaderini.WindowHeight));
-			txtCustomResY.Maximum = rect.Height;
+			int CustresXMax = (int)txtCustomResX.MaxValue;
+			int CustresXMin = (int)txtCustomResX.MinValue;
+			int CustresYMin = (int)txtCustomResY.MinValue;
+			int CustresYMax = (int)txtCustomResY.MaxValue;
+			txtCustomResX.MaxValue = rect.Width;
+			txtCustomResX.Value = loaderini.WindowWidth;
+			txtCustomResY.Value = loaderini.WindowHeight;
+			txtCustomResY.MaxValue = rect.Height;
 
 			suppressEvent = true;
 			chkBorderless.IsChecked = loaderini.MaintainWindowAspectRatio;
@@ -1187,7 +1183,7 @@ namespace ModManagerWPF
 				txtResX.IsEnabled = false;
 				decimal resYDecimal = (decimal)txtResY.Value;
 				decimal roundedValue = Math.Round(resYDecimal * Game.Graphics.ratio);
-				txtResX.Value = (int?)roundedValue;
+				txtResX.Value = (double)roundedValue;
 			}
 			else if (!suppressEvent)
 			{
@@ -1215,20 +1211,14 @@ namespace ModManagerWPF
 		{
 			if (chkMaintainRatio.IsChecked == true)
 			{
-				txtCustomResX.IsEnabled = true;
-				decimal value = Math.Round((decimal)txtCustomResX.Value * (decimal)(txtResX.Value / txtResY.Value));
-				txtCustomResX.Value = (int?)value;
+				txtCustomResX.IsEnabled = false;
+				double ratio = txtResX.Value / txtResY.Value;
+				txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
 			}
 			else if (!suppressEvent)
 			{
 				txtCustomResX.IsEnabled = true;
 			}
-		}
-
-		private void txtCustomResY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-		{
-			if (chkRatio.IsChecked == true)
-				txtCustomResX.Value = (int)Math.Round((decimal)txtCustomResX.Value * (decimal)(txtResX.Value / txtResY.Value));
 		}
 
 		#endregion
@@ -2723,6 +2713,19 @@ namespace ModManagerWPF
 			}
 
 			CodeListView.EndInit();
+		}
+
+		private void txtCustomResY_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			NumericUpDown textBox = (NumericUpDown)sender;
+
+			if ((bool)chkMaintainRatio.IsChecked)
+			{
+				double ratio = txtResX.Value / txtResY.Value;
+				txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
+			}
+
+			e.Handled = true;
 		}
 	}
 
