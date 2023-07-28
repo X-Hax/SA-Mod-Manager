@@ -80,6 +80,10 @@
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Missing VC++</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">It looks like you're missing some Visual C++ Redistributables, some mods won't work without them.&#x0a;&#x0a;Would you like to download and install them now?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Download Error</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail0">Failed to download</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Would you like to try again?</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -104,6 +108,7 @@
 
     <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Integrity Pass</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">All selected mods passed verification.</system:String>
+   
     <!--#endregion-->
 	
 </ResourceDictionary>
