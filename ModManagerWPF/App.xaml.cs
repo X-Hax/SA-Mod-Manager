@@ -106,12 +106,6 @@ namespace ModManagerWPF
 				ThemeList = themes;
 		}
 
-		public async Task ExecuteDependenciesCheck()
-		{
-			Startup startup = new Startup();
-			await startup.StartupCheck();
-		}
-
 		private void checkUrlhandlerArg(string[] args)
 		{
 			if (args.Length > 0 && args[0] == "urlhandler")
@@ -137,8 +131,8 @@ namespace ModManagerWPF
 			if (!alreadyRunning)
 			{
 				UriQueue = new UriQueue(pipeName);
-			}	
-		
+			}
+
 			List<string> uris = args.Where(x => x.Length > protocol.Length && x.StartsWith(protocol, StringComparison.Ordinal)).ToList();
 
 			if (uris.Count > 0)
@@ -177,10 +171,16 @@ namespace ModManagerWPF
 			return false;
 		}
 
-
-		protected override void OnStartup(StartupEventArgs e)
+		public async Task<bool> ExecuteDependenciesCheck()
 		{
+			Startup startup = new();
+			return await startup.StartupCheck();
+		}
 
+		protected override async void OnStartup(StartupEventArgs e)
+		{
+			
+			Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 			bool alreadyRunning;
 			try { alreadyRunning = !mutex.WaitOne(0, true); }
 			catch (AbandonedMutexException) { alreadyRunning = false; }
@@ -203,8 +203,11 @@ namespace ModManagerWPF
 
 			SetupLanguages();
 			SetupThemes();
-			ShutdownMode = ShutdownMode.OnMainWindowClose;
-			ExecuteDependenciesCheck();
+		
+			if (await ExecuteDependenciesCheck() == false)
+			{
+				return;
+			}
 
 			checkUrlhandlerArg(args);
 			InitUri(args, alreadyRunning);
@@ -215,6 +218,7 @@ namespace ModManagerWPF
 				return;
 			}
 
+			ShutdownMode = ShutdownMode.OnMainWindowClose;
 			MainWindow = new MainWindow(args is not null ? args : null);
 			MainWindow.Show();
 			base.OnStartup(e);

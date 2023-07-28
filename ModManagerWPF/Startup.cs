@@ -1,4 +1,5 @@
-﻿using ModManagerWPF.Common;
+﻿using ModManagerCommon;
+using ModManagerWPF.Common;
 using ModManagerWPF.Updater;
 using NetCoreInstallChecker;
 using NetCoreInstallChecker.Structs.Config;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,6 +19,7 @@ namespace ModManagerWPF
 
 	public class Startup
 	{
+
 
 		static private readonly List<string> VCPaths = new()
 		{
@@ -49,50 +52,50 @@ namespace ModManagerWPF
 		{
 			var finder = new FrameworkFinder(Environment.Is64BitOperatingSystem);
 			var resolver = new DependencyResolver(finder);
-			var framework = new Framework("Microsoft.WindowsDesktop.App", "7.0.3");
+			var framework = new Framework("Microsoft.WindowsDesktop.App", "7.0.9");
 			var options = new RuntimeOptions("net7.0", framework, RollForwardPolicy.Minor);
 			var result = resolver.Resolve(options);
 
-			/*if (!result.Available)
+			if (!result.Available)
 			{
-				if (MessageBox.Show(".NET 7.0 Desktop Runtime is not installed! Would you like to install it now?", "SADX Mod Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+				var res = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Warning"), Lang.GetString("MessageWindow.Warnings.Net7Missing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.YesNo);
+				res.ShowDialog();
+
+				if (res.isYes != true)
 				{
-					MessageBox.Show("SADX Mod Manager cannot run without .NET 7.", "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.Net7Missing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 					return false;
 				}
 
-				//FrameworkDownloader frameworkDownloader = new FrameworkDownloader(framework.NuGetVersion, framework.FrameworkName);
-				//string t = await frameworkDownloader.GetDownloadUrlAsync(Environment.Is64BitOperatingSystem ? Architecture.Amd64 : Architecture.x86);
-		
-				var url = new Uri("https://download.visualstudio.microsoft.com/download/pr/342ba160-3776-4ffa-91dd-e3cd9dc0f817/ba649d6b80b27ca164d80bd488cdb51f/windowsdesktop-runtime-7.0.7-win-x64.exe\r\n");
+				FrameworkDownloader frameworkDownloader = new(framework.NuGetVersion, framework.FrameworkName);
+				var url = await frameworkDownloader.GetDownloadUrlAsync(Architecture.x86);
+				Uri uri = new(url + "\r\n");
 
-				var dialog = new FolderBrowserDialog();
-
-				DialogResult filePath = dialog.ShowDialog();
-
-				if (filePath == DialogResult.OK)
+				if (url != null)
 				{
-					// Create a FileStream to save the file
-					await using var fileStream = new FileStream(dialog.SelectedPath, FileMode.Create);
-
-					await HttpClientHelper.DownloadFileAsync(url, fileStream, CancellationToken.None, (bytesDownloaded, totalBytes) =>
-					{
-						var progress = (int)((bytesDownloaded / (double)totalBytes) * 100);
-						Console.WriteLine($"Download progress: {progress}%");
-					});
-
-					Process.Start(new ProcessStartInfo("NET7Install.exe", "/install /passive /norestart") { UseShellExecute = true, Verb = "runas" }).WaitForExit();
-				}
-				else
-				{
-
-					MessageWindow(Lang.GetString(), Lang.GetString("MessageWindow.Errors.Net7Missing).
-					MessageBox.Show("SADX Mod Manager cannot run without .NET 7.", "SADX Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					await DownloadAndInstallAsync(uri);
 					return false;
 				}
-			}*/
+
+				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.Net7Missing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				return false;
+			}
 
 			return true;
+		}
+
+		private static async Task DownloadAndInstallAsync(Uri uri)
+		{
+			var DL = new GenericDownloadDialog(uri, "Net Core 7.0", "NET7Install.exe");
+			DL.StartDL();
+			DL.ShowDialog();
+
+			// Asynchronous operation using async/await
+			await Process.Start(new ProcessStartInfo(Path.Combine("SATemp", "NET7Install.exe"), "/install /passive /norestart")
+			{
+				UseShellExecute = true,
+				Verb = "runas"
+			}).WaitForExitAsync();
 		}
 
 		private static async Task<bool> VC_DependenciesCheck()
@@ -100,16 +103,29 @@ namespace ModManagerWPF
 			if (Environment.OSVersion.Platform >= PlatformID.Unix)
 				return true;
 
-			foreach (string dll in VCPaths)
+			for (int i = 0; i < VCPaths.Count; i++)
 			{
-				if (!File.Exists(dll))
+				if (!File.Exists(VCPaths[i]))
 				{
 					var dialog = new MessageWindow(Lang.GetString("MessageWindow.Errors.VCMissing.Title"), Lang.GetString("MessageWindow.Errors.VCMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 					dialog.ShowDialog();
 
 					if (dialog.isYes)
 					{
-						//Process.Start("https://aka.ms/vs/17/release/vc_redist.x86.exe");
+		
+						Uri uri = new(VCURLs[i] + "\r\n");
+						var DL = new GenericDownloadDialog(uri, "Visual C++", "vc_redist.x86.exe");
+						DL.StartDL();
+						DL.ShowDialog();
+
+						// Asynchronous operation using async/await
+						await Process.Start(new ProcessStartInfo(Path.Combine("SATemp", "vc_redist.x86.exe"), "/install /passive /norestart")
+						{
+							UseShellExecute = true,
+							Verb = "runas"
+						}).WaitForExitAsync();
+
+						
 						return false;
 					}
 
@@ -117,7 +133,7 @@ namespace ModManagerWPF
 			}
 
 
-			return false;
+			return true;
 		}
 
 		private static async Task<bool> UpdateDependenciesFolder()
@@ -136,6 +152,11 @@ namespace ModManagerWPF
 					return true;
 				}
 
+				if (!Directory.Exists(managerConfigPath))
+				{
+					Directory.CreateDirectory(managerConfigPath);
+				}
+
 				//if not, look if they aren't in the Mod Manager folder...
 				if (!Directory.Exists("extlib/BASS"))
 				{
@@ -151,14 +172,26 @@ namespace ModManagerWPF
 
 				Util.CopyFolder("extlib/BASS", bassFullPath, true);
 				Util.CopyFolder("extlib/SDL2/lib/x86", SDLFullPath, true);
-
+				await Task.Delay(500);
 			}
 			catch
 			{
-				
+				return false;
 			}
 
 			return true;
+		}
+
+		private void ClearTempFolder()
+		{
+			try
+			{
+				if (Directory.Exists("SATemp"))
+				{
+					Directory.Delete("SATemp", true);
+				}
+			}
+			catch { }
 		}
 
 		public async Task<bool> StartupCheck()
@@ -169,9 +202,13 @@ namespace ModManagerWPF
 
 			if (net7)
 			{
-				bool extLib = await UpdateDependenciesFolder();
-				bool VC = await VC_DependenciesCheck();
-				bool OneClick = await EnableOneClickInstall();
+				await UpdateDependenciesFolder();
+
+				if (await VC_DependenciesCheck() == false)
+					return false;
+
+				await EnableOneClickInstall();
+				ClearTempFolder();
 
 				return true;
 			}
@@ -179,8 +216,5 @@ namespace ModManagerWPF
 			App.Current.Shutdown();
 			return false;
 		}
-
-
-
 	}
 }

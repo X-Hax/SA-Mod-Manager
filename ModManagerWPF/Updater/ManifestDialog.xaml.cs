@@ -29,6 +29,8 @@ namespace ModManagerWPF.Updater
 			modPath = path;
 			manifestPath = Path.Combine(path, "mod.manifest");
 			Loaded += OnLoaded;
+			HeaderTxt.Text = title;
+			Title = title;
 		}
 
 		private async void OnLoaded(object sender, RoutedEventArgs e)
@@ -44,6 +46,12 @@ namespace ModManagerWPF.Updater
 
 			generator.FileHashStart += (o, args) =>
 			{
+				Application.Current.Dispatcher.Invoke(() =>
+				{
+					Progress.Value = Util.SetProgress(args.FileIndex / (double)args.FileCount);
+					HeaderTxt.Text = $"Hashing file: {args.FileIndex}/{args.FileCount} " + args.FileName;
+			
+				});
 				args.Cancel = token.IsCancellationRequested;
 				//SetTaskAndStep($"Hashing file: {args.FileIndex}/{args.FileCount}", args.FileName);
 				//SetProgress(args.FileIndex / (double)args.FileCount);
