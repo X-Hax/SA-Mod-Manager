@@ -14,8 +14,11 @@ using System.Xml.Linq;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using ModManagerWPF.Common;
 using ModManagerWPF.Properties;
+using ModManagerWPF.Elements;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
+using System.Windows.Media;
+using System.Windows.Data;
 
 namespace ModManagerWPF
 {
@@ -76,6 +79,16 @@ namespace ModManagerWPF
 				Tag = property.HelpText
 			};
 			panel.Children.Add(CreateLabel(property));
+
+			Border backing = new Border()
+			{
+				Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
+				HorizontalAlignment = HorizontalAlignment.Stretch,
+				VerticalAlignment = VerticalAlignment.Stretch,
+				Margin = new Thickness(0)
+			};
+			panel.Children.Add(backing);
+
 			Dictionary<string, string> list = EnumItems(enums.Find(x => x.Name == property.Type));
 			ComboBox box = new()
 			{
@@ -94,12 +107,20 @@ namespace ModManagerWPF
 			panel.Children.Add(box);
 
 			Grid.SetColumn(panel.Children[0], 0);
+			Grid.SetColumn(backing, 0);
+			Grid.SetColumnSpan(backing, 2);
 			Grid.SetColumn(box, 1);
+
+			panel.Children.Add(new Separator()
+			{
+				Margin = new Thickness(0, 2, 0, 0),
+				VerticalAlignment = VerticalAlignment.Bottom
+			});
+			Grid.SetColumnSpan(panel.Children[3], 2);
 			return panel;
 		}
 
-
-		public static UIElement CreateIntBox(ConfigSchemaProperty property, CustomPropertyStore storeInfo)
+		public static UIElement CreateNumericBox(ConfigSchemaProperty property, CustomPropertyStore storeInfo, NumericUpDown.DataType dataType)
 		{
 			Grid panel = new()
 			{
@@ -113,52 +134,40 @@ namespace ModManagerWPF
 			};
 			panel.Children.Add(CreateLabel(property));
 
-			IntegerUpDown element = new()
+			Border backing = new Border()
+			{
+				Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
+				HorizontalAlignment = HorizontalAlignment.Stretch,
+				VerticalAlignment = VerticalAlignment.Stretch,
+				Margin = new Thickness(0)
+			};
+			panel.Children.Add(backing);
+
+			NumericUpDown element = new()
 			{
 				MinWidth = 100,
-				Value = (int)storeInfo.GetConfigValue(),
+				Height = 22,
+				ValueType = dataType,
+				Value = double.Parse(storeInfo.GetConfigValue().ToString()),
 				HorizontalAlignment = HorizontalAlignment.Right,
-				Tag = storeInfo
+				//MinValue = (double)storeInfo.GetConfigMinValue(),
+				//MaxValue = (double)storeInfo.GetConfigMaxValue(),
 			};
 
-			element.ValueChanged += ModSetting_intElementChanged;
+			//element.ValueChanged += ModSetting_intElementChanged;
 			panel.Children.Add(element);
 
 			Grid.SetColumn(panel.Children[0], 0);
+			Grid.SetColumn(backing, 0);
+			Grid.SetColumnSpan(backing, 2);
 			Grid.SetColumn(element, 1);
 
-			return panel;
-		}
-
-		public static UIElement CreateFloatBox(ConfigSchemaProperty property, CustomPropertyStore storeInfo)
-		{
-			Grid panel = new()
+			panel.Children.Add(new Separator()
 			{
-				ColumnDefinitions =
-				{
-					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },
-					new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }
-				},
-				Margin = ElementMargin,
-				Tag = property.HelpText
-			};
-			panel.Children.Add(CreateLabel(property));
-
-			decimal result = (decimal)storeInfo.GetConfigValue();
-
-			DecimalUpDown element = new()
-			{
-				MinWidth = 100,
-				Value = result,
-				HorizontalAlignment = HorizontalAlignment.Right,
-				Tag = storeInfo
-			};
-
-			element.ValueChanged += ModSetting_floatElementChanged;
-			panel.Children.Add(element);
-
-			Grid.SetColumn(panel.Children[0], 0);
-			Grid.SetColumn(element, 1);
+				Margin = new Thickness(0, 2, 0, 0),
+				VerticalAlignment = VerticalAlignment.Bottom
+			});
+			Grid.SetColumnSpan(panel.Children[3], 2);
 
 			return panel;
 		}
@@ -177,6 +186,15 @@ namespace ModManagerWPF
 			};
 			panel.Children.Add(CreateLabel(property));
 
+			Border backing = new Border()
+			{
+				Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
+				HorizontalAlignment = HorizontalAlignment.Stretch,
+				VerticalAlignment = VerticalAlignment.Stretch,
+				Margin = new Thickness(0)
+			};
+			panel.Children.Add(backing);
+
 			TextBox element = new()
 			{
 				Width = 200,
@@ -190,14 +208,23 @@ namespace ModManagerWPF
 			panel.Children.Add(element);
 
 			Grid.SetColumn(panel.Children[0], 0);
+			Grid.SetColumn(backing, 0);
+			Grid.SetColumnSpan(backing, 2);
 			Grid.SetColumn(element, 1);
+
+			panel.Children.Add(new Separator()
+			{
+				Margin = new Thickness(0, 2, 0, 0),
+				VerticalAlignment = VerticalAlignment.Bottom
+			});
+			Grid.SetColumnSpan(panel.Children[3], 2);
 
 			return panel;
 		}
 
 		public static UIElement CreateCheckBox(ConfigSchemaProperty property, CustomPropertyStore storeInfo)
 		{
-			Grid grid = new()
+			Grid panel = new()
 			{
 				ColumnDefinitions =
 				{
@@ -207,7 +234,16 @@ namespace ModManagerWPF
 				Margin = ElementMargin,
 				Tag = property.HelpText
 			};
-			grid.Children.Add(CreateLabel(property));
+			panel.Children.Add(CreateLabel(property));
+
+			Border backing = new Border()
+			{
+				Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
+				HorizontalAlignment = HorizontalAlignment.Stretch,
+				VerticalAlignment = VerticalAlignment.Stretch,
+				Margin = new Thickness(0)
+			};
+			panel.Children.Add(backing);
 
 			CheckBox checkBox = new()
 			{
@@ -219,17 +255,22 @@ namespace ModManagerWPF
 
 			checkBox.Checked += CheckBox_ModConfigSelectionChanged;
 			checkBox.Unchecked += CheckBox_ModConfigSelectionChanged;
-			grid.Children.Add(checkBox);
-			grid.Children.Add(new Separator()
+			panel.Children.Add(checkBox);
+
+
+			Grid.SetColumn(panel.Children[0], 0);
+			Grid.SetColumn(backing, 0);
+			Grid.SetColumnSpan(backing, 2);
+			Grid.SetColumn(checkBox, 1);
+
+			panel.Children.Add(new Separator()
 			{
+				Margin = new Thickness(0, 2, 0, 0),
 				VerticalAlignment = VerticalAlignment.Bottom
 			});
+			Grid.SetColumnSpan(panel.Children[3], 2);
 
-			Grid.SetColumn(grid.Children[0], 0);
-			Grid.SetColumn(checkBox, 1);
-			Grid.SetColumnSpan(grid.Children[2], 2);
-
-			return grid;
+			return panel;
 		}
 
 		private static UIElement ConfigCreateItem(ConfigSchemaProperty elem, ConfigSettings config, CustomPropertyStore storeInfo)
@@ -239,9 +280,9 @@ namespace ModManagerWPF
 				case "bool":
 					return CreateCheckBox(elem, storeInfo);
 				case "int":
-					return CreateIntBox(elem, storeInfo);
+					return CreateNumericBox(elem, storeInfo, NumericUpDown.DataType.Integer);
 				case "float":
-					return CreateFloatBox(elem, storeInfo);
+					return CreateNumericBox(elem, storeInfo, NumericUpDown.DataType.Float);
 				case "string":
 					return CreateStringBox(elem, storeInfo);
 				default:
