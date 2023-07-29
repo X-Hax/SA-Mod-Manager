@@ -575,5 +575,20 @@ namespace ModManagerWPF
 				tabSchema.Visibility = Visibility.Hidden;
 			}
 		}
+
+		private void btnNewCode_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void btnDelCode_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void btnEditCode_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }
