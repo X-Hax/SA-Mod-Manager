@@ -2800,7 +2800,7 @@ namespace ModManagerWPF
 			try
 			{
 				using var hkcr = Microsoft.Win32.Registry.ClassesRoot;
-				var sammKey = hkcr.OpenSubKey("samm");
+				var sammKey = hkcr.OpenSubKey("sadxmm");
 
 				if (sammKey != null)
 				{
