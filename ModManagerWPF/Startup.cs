@@ -38,7 +38,7 @@ namespace ModManagerWPF
 		{
 			try
 			{
-				string execPath = Process.GetCurrentProcess().MainModule.FileName;
+				string execPath = Environment.ProcessPath;
 				await Process.Start(new ProcessStartInfo(execPath, "urlhandler") { UseShellExecute = true, Verb = "runas" }).WaitForExitAsync();
 			}
 			catch

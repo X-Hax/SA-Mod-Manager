@@ -298,7 +298,6 @@ namespace ModManagerWPF
 
 			loaderini.TestSpawnLevel = (bool)tsCheckLevel.IsChecked ? tsComboLevel.SelectedIndex : -1;
 			loaderini.TestSpawnAct = tsComboAct.SelectedIndex;
-
 			loaderini.TestSpawnGameMode = (bool)tsCheckGameMode.IsChecked ? tsComboGameMode.SelectedIndex : -1;
 
 			loaderini.TestSpawnEvent = (bool)tsCheckEvent.IsChecked ? tsComboEvent.SelectedIndex : -1;
@@ -1362,8 +1361,10 @@ namespace ModManagerWPF
 			TS.InitCharactersList();
 			TS.InitLevels();
 
-			tsComboAct.ItemsSource = TestSpawn.GetNewAct(0);
-
+			int index = loaderini?.TestSpawnLevel != -1 ? loaderini.TestSpawnLevel : 0;
+			tsComboAct.ItemsSource = TestSpawn.GetNewAct(index);
+			if (tsCheckLevel.IsChecked == true)
+				tsComboAct.SelectedIndex = loaderini?.TestSpawnAct != -1 ? loaderini.TestSpawnAct : 0;
 			tsComboTime.ItemsSource = TestSpawn.TimeDay;
 
 			TS_GetSave();
@@ -2235,7 +2236,20 @@ namespace ModManagerWPF
 			List<string> Errors = data.Item2;
 			if (Errors.Count != 0)
 			{
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.CheckUpdateError.Title"), Lang.GetString("MessageWindow.Errors.CheckUpdateError") + "`\n" + Errors, MessageWindow.WindowType.Message, MessageWindow.Icons.Warning, MessageWindow.Buttons.OK).ShowDialog();
+				string msgError = Lang.GetString("MessageWindow.Errors.CheckUpdateError");
+				string title = Lang.GetString("MessageWindow.Errors.CheckUpdateError.Title");
+
+				if (Errors.Contains("403"))
+				{
+					title = "GitHub Rate Limit Exceeded";
+				}
+
+				foreach (var error in Errors) 
+				{
+					msgError += "\n" + error;
+				}
+				
+				new MessageWindow(title, msgError, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 			}
 
 			bool manual = manualModUpdate;
@@ -2804,11 +2818,19 @@ namespace ModManagerWPF
 
 				if (sammKey != null)
 				{
-					btnOneClick.IsEnabled = false;
-					Image iconConfig = FindName("GB") as Image;
-					iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
-					btnOneClick.Opacity = LowOpacityBtn;
-
+					var pathManagerKey = sammKey.OpenSubKey("DefaultIcon");
+					if (pathManagerKey != null)
+					{
+						var managerPath = pathManagerKey.GetValue("").ToString();
+						
+						if (managerPath.ToLower().Contains(Environment.ProcessPath.ToLower()))
+						{
+							btnOneClick.IsEnabled = false;
+							Image iconConfig = FindName("GB") as Image;
+							iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
+							btnOneClick.Opacity = LowOpacityBtn;
+						}
+					}
 				}
 			}
 			catch { }
@@ -2818,7 +2840,7 @@ namespace ModManagerWPF
 		{
 			try
 			{
-				string execPath = Process.GetCurrentProcess().MainModule.FileName;
+				string execPath = Environment.ProcessPath;
 
 				await Process.Start(new ProcessStartInfo(execPath, "urlhandler")
 				{
@@ -2827,6 +2849,8 @@ namespace ModManagerWPF
 				}).WaitForExitAsync();
 
 				btnOneClick.IsEnabled = false;
+				Image iconConfig = FindName("GB") as Image;
+				iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
 				btnOneClick.Opacity = LowOpacityBtn;
 
 			}
