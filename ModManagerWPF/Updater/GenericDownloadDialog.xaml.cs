@@ -30,25 +30,30 @@ namespace ModManagerWPF.Updater
 		private readonly Uri uri;
 		private readonly string fileName;
 		private readonly string dest = "SATemp";
-
+		private bool defaultFolder = false;
 		private readonly CancellationTokenSource tokenSource = new();
 
-		public GenericDownloadDialog(Uri uri, string title, string fileName)
+		public GenericDownloadDialog(Uri uri, string title, string fileName, bool defaultFolder = false)
 		{
 			InitializeComponent();
 
 			Title = "Download - " + title;
+			DLInfo.Text += " " + title + "...";
 			this.fileName = fileName;
 			this.uri = uri;
+			this.defaultFolder = defaultFolder;
 
-			try
+			if (!defaultFolder)
 			{
-				if (!Directory.Exists(dest))
+				try
 				{
-					Directory.CreateDirectory(dest);
+					if (!Directory.Exists(dest))
+					{
+						Directory.CreateDirectory(dest);
+					}
 				}
+				catch { }
 			}
-			catch { }
 
 		}
 
@@ -69,7 +74,7 @@ namespace ModManagerWPF.Updater
 			});
 
 			await Task.Delay(500);
-			if (File.Exists(fileName)) 
+			if (File.Exists(fileName) && !defaultFolder) 
 			{ 
 				Util.MoveFile(fileName, Path.Combine(dest, fileName));
 			}
@@ -77,18 +82,20 @@ namespace ModManagerWPF.Updater
 			await Task.Delay(1000);
 			Application.Current.Dispatcher.Invoke(() =>
 			{
+				DialogResult = true;
 				this.Close();
 			});
 		}
 
 		public async void StartDL()
 		{
+			
 			using (var client = new UpdaterWebClient())
 			{
 				CancellationToken token = tokenSource.Token;
 				client.DownloadProgressChanged += WebClient_DownloadProgressChanged;
 				client.DownloadFileCompleted += WebClient_DownloadFileCompleted;
-
+	
 				bool retry = false;
 
 				do
@@ -112,8 +119,8 @@ namespace ModManagerWPF.Updater
 					}
 				} while (retry == true);
 
+
 			}
 		}
-
 	}
 }

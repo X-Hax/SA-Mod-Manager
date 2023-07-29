@@ -25,6 +25,7 @@ using ModManagerWPF.UI;
 using ModManagerWPF.Updater;
 using ModManagerWPF.Elements;
 using Newtonsoft.Json.Linq;
+using SevenZipExtractor;
 
 namespace ModManagerWPF
 {
@@ -84,7 +85,6 @@ namespace ModManagerWPF
 
 		public MainWindowViewModel ViewModel = new();
 
-
 		#endregion
 
 		public MainWindow(string[] args = null)
@@ -106,6 +106,7 @@ namespace ModManagerWPF
 			setupTestSpawn();
 			InitMouseList();
 			SetUp_UpdateD3D9();
+			UpdateAppLauncherBtn();
 
 			if (args is not null)
 				CleanUpdate(args);
@@ -2727,6 +2728,69 @@ namespace ModManagerWPF
 
 			e.Handled = true;
 		}
+
+		#region App Launcher
+		private async void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
+		{
+			Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
+			var DL = new GenericDownloadDialog(uri, "App Launcher", "AppLauncher.7z", true);
+			DL.StartDL();
+			DL.ShowDialog();
+
+			if (DL.DialogResult == true)
+			{
+				try
+				{
+					using (ArchiveFile archiveFile = new("AppLauncher.7z"))
+					{
+						archiveFile.Extract(Environment.CurrentDirectory);
+						btnOpenAppLauncher.IsEnabled = true;
+						btnOpenAppLauncher.Opacity = 1;	
+						btnGetAppLauncher.Opacity = LowOpacityBtn;
+						btnGetAppLauncher.IsEnabled = false;
+					}
+				}
+				catch
+				{
+					throw new Exception("Failed to extract one mod.");
+				}
+			}
+
+		}
+
+		private void btnOpenAppLauncher_Click(object sender, RoutedEventArgs e)
+		{
+			if (File.Exists("AppLauncher.exe"))
+			{
+				Process.Start(new ProcessStartInfo { FileName = "AppLauncher.exe", UseShellExecute = true });
+			}
+        }
+
+		private void UpdateAppLauncherBtn()
+		{
+			if (File.Exists("AppLauncher.7z") && File.Exists("AppLauncher.exe"))
+			{
+				try
+				{
+					File.Delete("AppLauncher.7z");
+				}
+				catch
+				{ }
+			}
+
+			if (File.Exists("AppLauncher.exe"))
+			{
+				btnGetAppLauncher.IsEnabled = false;
+				btnGetAppLauncher.Opacity = LowOpacityBtn;
+			}
+			else
+			{
+				btnOpenAppLauncher.IsEnabled = false;
+				btnOpenAppLauncher.Opacity = LowOpacityBtn;
+			}
+		}
+
+		#endregion
 	}
 
 }

@@ -677,8 +677,8 @@
 
                                         <TextBlock Text="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" TextWrapping="Wrap"/>
                                         <Separator Grid.ColumnSpan="3" Grid.Row="1" VerticalAlignment="Top"/>
-                                        <Button x:Name="btnOpenAppLauncher" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher}"/>
-                                        <Button x:Name="btnGetAppLauncher" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp}" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher}"/>
+                                        <Button x:Name="btnOpenAppLauncher" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher}" Click="btnOpenAppLauncher_Click"/>
+                                        <Button x:Name="btnGetAppLauncher" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp}" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher}" Click="btnGetAppLauncher_Click"/>
                                     </Grid>
                                 </GroupBox>
                             </Grid>
