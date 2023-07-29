@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,8 +20,6 @@ namespace ModManagerWPF
 
 	public class Startup
 	{
-
-
 		static private readonly List<string> VCPaths = new()
 		{
 			Environment.SystemDirectory + "/vcruntime140.dll",
@@ -39,11 +38,13 @@ namespace ModManagerWPF
 		{
 			try
 			{
-				string execPath = AppDomain.CurrentDomain.BaseDirectory;
+				string execPath = Process.GetCurrentProcess().MainModule.FileName;
 				await Process.Start(new ProcessStartInfo(execPath, "urlhandler") { UseShellExecute = true, Verb = "runas" }).WaitForExitAsync();
 			}
 			catch
-			{ }
+			{
+				return false;
+			}
 
 			return true;
 		}
@@ -139,22 +140,33 @@ namespace ModManagerWPF
 		private static async Task<bool> UpdateDependenciesFolder()
 		{
 			string appDataLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-			string managerConfigPath = Path.Combine(appDataLocalPath, "SAManager");
-			string extLibPath = Path.Combine(managerConfigPath, "extlib");
-			string bassFullPath = Path.Combine(managerConfigPath, Path.Combine(extLibPath, "BASS"));
-			string SDLFullPath = Path.Combine(managerConfigPath, Path.Combine(extLibPath, "SDL2"));
+			string managerConfigFolderPath = Path.Combine(appDataLocalPath, "SAManager");
+			string configPath = Path.Combine(managerConfigFolderPath, "config.ini");
+			string extLibPath = Path.Combine(managerConfigFolderPath, "extlib");
+			string bassFullPath = Path.Combine(managerConfigFolderPath, Path.Combine(extLibPath, "BASS"));
+			string SDLFullPath = Path.Combine(managerConfigFolderPath, Path.Combine(extLibPath, "SDL2"));
+			bool bassAndSDL = (Directory.Exists(bassFullPath) && Directory.Exists(SDLFullPath));
 
 			try
 			{
 				//look if dependencies are already in appData folder
-				if (Directory.Exists(bassFullPath) && Directory.Exists(SDLFullPath))
+				if (bassAndSDL && File.Exists(configPath))
 				{
 					return true;
 				}
 
-				if (!Directory.Exists(managerConfigPath))
+				if (!Directory.Exists(managerConfigFolderPath))
 				{
-					Directory.CreateDirectory(managerConfigPath);
+					Directory.CreateDirectory(managerConfigFolderPath);
+				}
+
+				if (!File.Exists(configPath)) //it's the first time the Mod Manager is launched, implement one click install.
+				{
+					await EnableOneClickInstall();
+					File.Create(configPath);
+
+					if (bassAndSDL)
+						return true;
 				}
 
 				//if not, look if they aren't in the Mod Manager folder...
@@ -172,6 +184,7 @@ namespace ModManagerWPF
 
 				Util.CopyFolder("extlib/BASS", bassFullPath, true);
 				Util.CopyFolder("extlib/SDL2/lib/x86", SDLFullPath, true);
+
 				await Task.Delay(500);
 			}
 			catch
@@ -182,7 +195,7 @@ namespace ModManagerWPF
 			return true;
 		}
 
-		private void ClearTempFolder()
+		private static void ClearTempFolder()
 		{
 			try
 			{
@@ -194,7 +207,7 @@ namespace ModManagerWPF
 			catch { }
 		}
 
-		public async Task<bool> StartupCheck()
+		public static async Task<bool> StartupCheck()
 		{
 			Console.WriteLine("Checking dependencies...");
 
@@ -207,7 +220,6 @@ namespace ModManagerWPF
 				if (await VC_DependenciesCheck() == false)
 					return false;
 
-				await EnableOneClickInstall();
 				ClearTempFolder();
 
 				return true;

@@ -19,6 +19,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace ModManagerWPF
 {
@@ -29,10 +30,10 @@ namespace ModManagerWPF
 
 	public partial class App : Application
 	{
-		private const string pipeName = "sadx-mod-manager";
+		private const string pipeName = "sa-mod-manager";
 		private const string protocol = "sadxmm:";
 
-		private static readonly Mutex mutex = new Mutex(true, pipeName);
+		private static readonly Mutex mutex = new(true, pipeName);
 		public static UriQueue UriQueue;
 
 		public static LangEntry CurrentLang { get; set; }
@@ -106,24 +107,27 @@ namespace ModManagerWPF
 				ThemeList = themes;
 		}
 
-		private void checkUrlhandlerArg(string[] args)
+		private static bool CheckinstallURLHandler(string[] args)
 		{
-			if (args.Length > 0 && args[0] == "urlhandler")
+			foreach (var arg in args)
 			{
-				using (var hkcr = Microsoft.Win32.Registry.ClassesRoot)
-				using (var key = hkcr.CreateSubKey("sadxmm"))
+				if (arg == "urlhandler")
 				{
+					using var hkcr = Microsoft.Win32.Registry.ClassesRoot;
+					using var key = hkcr.CreateSubKey("sadxmm");
 					key.SetValue(null, "URL:SADX Mod Manager Protocol");
 					key.SetValue("URL Protocol", string.Empty);
 					using (var k2 = key.CreateSubKey("DefaultIcon"))
-						k2.SetValue(null, System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName + ",1");
-					using (var k3 = key.CreateSubKey("shell"))
-					using (var k4 = k3.CreateSubKey("open"))
-					using (var k5 = k4.CreateSubKey("command"))
-						k5.SetValue(null, $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName}\" \"%1\"");
+						k2.SetValue(null, Environment.ProcessPath + ",1");
+					using var k3 = key.CreateSubKey("shell");
+					using var k4 = k3.CreateSubKey("open");
+					using var k5 = k4.CreateSubKey("command");
+					k5.SetValue(null, $"\"{Environment.ProcessPath}\" \"%1\"");
+					return true;
 				}
-				return;
 			}
+
+			return false;
 		}
 
 		private void InitUri(string[] args, bool alreadyRunning)
@@ -173,19 +177,23 @@ namespace ModManagerWPF
 
 		public async Task<bool> ExecuteDependenciesCheck()
 		{
-			Startup startup = new();
-			return await startup.StartupCheck();
+			return await ModManagerWPF.Startup.StartupCheck();
 		}
 
 		protected override async void OnStartup(StartupEventArgs e)
 		{
-			
 			Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+			string[] args = Environment.GetCommandLineArgs();
+			if (CheckinstallURLHandler(args))
+			{
+				Application.Current.Shutdown();
+				return;
+			}
+
 			bool alreadyRunning;
 			try { alreadyRunning = !mutex.WaitOne(0, true); }
 			catch (AbandonedMutexException) { alreadyRunning = false; }
-
-			string[] args = Environment.GetCommandLineArgs();
 
 			if (DoUpdate(args, alreadyRunning))
 			{
@@ -203,13 +211,12 @@ namespace ModManagerWPF
 
 			SetupLanguages();
 			SetupThemes();
-		
+
 			if (await ExecuteDependenciesCheck() == false)
 			{
 				return;
 			}
 
-			checkUrlhandlerArg(args);
 			InitUri(args, alreadyRunning);
 
 			if (alreadyRunning)
@@ -243,7 +250,7 @@ namespace ModManagerWPF
 			window.Close();
 		}
 
-		
+
 	}
 
 	public partial class ImageButton : Button
@@ -281,7 +288,7 @@ namespace ModManagerWPF
 			}
 		}
 
-		public static readonly DependencyProperty ImageBrushProperty = 
+		public static readonly DependencyProperty ImageBrushProperty =
 			DependencyProperty.Register("ImageBrush", typeof(Brush), typeof(ImageButton));
 
 		public Brush ImageBrushDisabled
@@ -296,7 +303,7 @@ namespace ModManagerWPF
 			}
 		}
 
-		public static readonly DependencyProperty ImageBrushDisabledProperty = 
+		public static readonly DependencyProperty ImageBrushDisabledProperty =
 			DependencyProperty.Register("ImageBrushDisabled", typeof(Brush), typeof(ImageButton));
 
 		public Brush ImageBrushHover
@@ -311,7 +318,7 @@ namespace ModManagerWPF
 			}
 		}
 
-		public static readonly DependencyProperty ImageBrushHoverProperty = 
+		public static readonly DependencyProperty ImageBrushHoverProperty =
 			DependencyProperty.Register("ImageBrushHover", typeof(Brush), typeof(ImageButton));
 
 		public double IconThickness
@@ -329,7 +336,7 @@ namespace ModManagerWPF
 			set { SetValue(IconFillProperty, value); }
 		}
 
-		public static readonly DependencyProperty IconFillProperty = 
+		public static readonly DependencyProperty IconFillProperty =
 			DependencyProperty.Register("IconFill", typeof(bool), typeof(ImageButton));
 	}
 }

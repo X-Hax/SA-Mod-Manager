@@ -107,6 +107,7 @@ namespace ModManagerWPF
 			InitMouseList();
 			SetUp_UpdateD3D9();
 			UpdateAppLauncherBtn();
+			SetOneClickBtnState();
 
 			if (args is not null)
 				CleanUpdate(args);
@@ -1399,7 +1400,7 @@ namespace ModManagerWPF
 				if (tsComboCharacter.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
 					tsComboCharacter.SelectedIndex = 0;
 			}
-				
+
 		}
 
 		private void tsCheckManual_Clicked(object sender, RoutedEventArgs e)
@@ -2745,7 +2746,7 @@ namespace ModManagerWPF
 					{
 						archiveFile.Extract(Environment.CurrentDirectory);
 						btnOpenAppLauncher.IsEnabled = true;
-						btnOpenAppLauncher.Opacity = 1;	
+						btnOpenAppLauncher.Opacity = 1;
 						btnGetAppLauncher.Opacity = LowOpacityBtn;
 						btnGetAppLauncher.IsEnabled = false;
 					}
@@ -2764,7 +2765,7 @@ namespace ModManagerWPF
 			{
 				Process.Start(new ProcessStartInfo { FileName = "AppLauncher.exe", UseShellExecute = true });
 			}
-        }
+		}
 
 		private void UpdateAppLauncherBtn()
 		{
@@ -2787,6 +2788,51 @@ namespace ModManagerWPF
 			{
 				btnOpenAppLauncher.IsEnabled = false;
 				btnOpenAppLauncher.Opacity = LowOpacityBtn;
+			}
+		}
+
+		#endregion
+
+		#region One Click Install
+
+		private void SetOneClickBtnState()
+		{
+			try
+			{
+				using var hkcr = Microsoft.Win32.Registry.ClassesRoot;
+				var sammKey = hkcr.OpenSubKey("samm");
+
+				if (sammKey != null)
+				{
+					btnOneClick.IsEnabled = false;
+					Image iconConfig = FindName("GB") as Image;
+					iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
+					btnOneClick.Opacity = LowOpacityBtn;
+
+				}
+			}
+			catch { }
+		}
+
+		private async void btnOneClick_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				string execPath = Process.GetCurrentProcess().MainModule.FileName;
+
+				await Process.Start(new ProcessStartInfo(execPath, "urlhandler")
+				{
+					UseShellExecute = true,
+					Verb = "runas"
+				}).WaitForExitAsync();
+
+				btnOneClick.IsEnabled = false;
+				btnOneClick.Opacity = LowOpacityBtn;
+
+			}
+			catch
+			{
+
 			}
 		}
 

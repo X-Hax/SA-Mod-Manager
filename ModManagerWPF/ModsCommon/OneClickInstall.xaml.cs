@@ -217,8 +217,6 @@ namespace ModManagerWPF
 		private async void ButtonDownload_Click(object sender, RoutedEventArgs e)
 		{
 
-			//To do add support for retry with custom msg box
-
 			bool retry = false;
 
 			do
