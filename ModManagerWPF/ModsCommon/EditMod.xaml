@@ -495,7 +495,7 @@
 			</TabControl>
 		</Border>
 
-		<Grid Grid.Row="2" HorizontalAlignment="Left">
+		<Grid x:Name="bottomGrid" Grid.Row="2" HorizontalAlignment="Left">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="10"/>
 				<ColumnDefinition Width="Auto"/>

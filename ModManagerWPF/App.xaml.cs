@@ -160,7 +160,7 @@ namespace ModManagerWPF
 			Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
 		}
 
-		private bool DoUpdate(string[] args, bool alreadyRunning)
+		private static bool DoUpdate(string[] args, bool alreadyRunning)
 		{
 			if (args.Length > 1 && args[0] == "doupdate")
 			{
@@ -175,7 +175,7 @@ namespace ModManagerWPF
 			return false;
 		}
 
-		public async Task<bool> ExecuteDependenciesCheck()
+		public static async Task<bool> ExecuteDependenciesCheck()
 		{
 			return await ModManagerWPF.Startup.StartupCheck();
 		}
@@ -185,9 +185,9 @@ namespace ModManagerWPF
 			Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
 			string[] args = Environment.GetCommandLineArgs();
-			if (CheckinstallURLHandler(args))
+			if (CheckinstallURLHandler(args)) //we check if the program has been launched just to enable One Click Install
 			{
-				Application.Current.Shutdown();
+				Application.Current.Shutdown(); //we don't want to continue if so
 				return;
 			}
 
