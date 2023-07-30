@@ -1,6 +1,6 @@
 ﻿<SyntaxDefinition name="OpCode" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
 	<RuleSet>
-		<Keywords fontSize="14" foreground="{DynamicResource TextEditor.Syntax.ReadWrite">
+		<Keywords fontSize="14" foreground="Yellow">
 			<Word>write8</Word>
 			<Word>write16</Word>
 			<Word>write32</Word>
@@ -148,6 +148,7 @@
 			<Word>ifmaskreg8</Word>
 			<Word>ifmaskreg16</Word>
 			<Word>ifmaskreg32</Word>
+			<Word>if</Word>
 			<Word>else</Word>
 			<Word>endif</Word>
 		</Keywords>
