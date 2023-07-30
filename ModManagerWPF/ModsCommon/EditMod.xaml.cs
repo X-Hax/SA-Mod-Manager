@@ -92,6 +92,7 @@ namespace ModManagerWPF
 				Title = Lang.GetString("EditMod.Header.NewMod");
 				authorBox.Text = Settings.Default.ModAuthor;
 				versionBox.Text = "0.1";
+				bottomGrid.Children.Remove(checkAdvancedOptions);
 			}
 
 			DataContext = new SADXModInfo();
@@ -100,6 +101,7 @@ namespace ModManagerWPF
 			GroupsTree.ItemsSource = Schema.Groups;
 			GroupsTree.Tag = PropertyTypes;
 			EnumsTree.ItemsSource = Schema.Enums;
+
 
 			if (dependencies.Count > 0 || Schema.Groups.Count > 0)
 			{
@@ -192,21 +194,27 @@ namespace ModManagerWPF
 		#region Dependency Tab Functions
 		private void btnAddDependency_Click(object sender, RoutedEventArgs e)
 		{
-			selectWindow = new SelectDependencies();
-			selectWindow.ShowDialog();
-			if (selectWindow.IsClosed)
-				if (selectWindow.NeedRefresh)
-					DependencyGrid.Items.Refresh();
+			if (editMod)
+			{
+				selectWindow = new SelectDependencies();
+				selectWindow.ShowDialog();
+				if (selectWindow.IsClosed)
+					if (selectWindow.NeedRefresh)
+						DependencyGrid.Items.Refresh();
+			}
 		}
 
 		private void btnRemDependency_Click(object sender, RoutedEventArgs e)
 		{
-			List<ModDependency> selected = DependencyGrid.SelectedItems.Cast<ModDependency>().ToList();
-			foreach (ModDependency dep in selected)
+			if (editMod)
 			{
-				dependencies.Remove(dep);
+				List<ModDependency> selected = DependencyGrid.SelectedItems.Cast<ModDependency>().ToList();
+				foreach (ModDependency dep in selected)
+				{
+					dependencies.Remove(dep);
+				}
+				DependencyGrid.Items.Refresh();
 			}
-			DependencyGrid.Items.Refresh();
 		}
 		#endregion
 
@@ -566,6 +574,21 @@ namespace ModManagerWPF
 				tabDepdencies.Visibility = Visibility.Hidden;
 				tabSchema.Visibility = Visibility.Hidden;
 			}
+		}
+
+		private void btnNewCode_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void btnDelCode_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void btnEditCode_Click(object sender, RoutedEventArgs e)
+		{
+
 		}
 	}
 }

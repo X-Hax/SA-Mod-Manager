@@ -89,10 +89,12 @@ namespace ModManagerWPF.Common
 			InitializeComponent();
 
 			DrawingImage drawing = GetIcon(icon);
-			Image image = new Image();
-			image.Source = drawing;
-			image.Width = width;
-			image.Height = height;
+			Image image = new()
+			{
+				Source = drawing,
+				Width = width,
+				Height = height
+			};
 
 			InitializeMessageWindow(windowName, ErrorText, headerText, image, button, type);
 		}
@@ -117,9 +119,9 @@ namespace ModManagerWPF.Common
 		}
 
 		//add line break to avoid having a width way too big for the Message Window
-		private static string FixMessageFormatting(string s)
+		private string FixMessageFormatting(string s)
 		{
-			const int max = 60; //look for 60 characters
+			const int max = 80; //look for 80 characters
 
 			StringBuilder result = new();
 			int index = 0;
@@ -148,6 +150,7 @@ namespace ModManagerWPF.Common
 					result.AppendLine(substring); //add new line break
 
 				index += substringLength;
+				Width++;
 			}
 
 			return result.ToString();

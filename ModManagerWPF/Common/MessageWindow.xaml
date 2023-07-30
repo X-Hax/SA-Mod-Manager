@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModManagerWPF.Common"
         mc:Ignorable="d" x:Name="Window" Loaded="Window_Loaded"
-        Style="{StaticResource SAWindow}" Width="400" Height="250" MaxWidth="600" MinWidth="400"
+        Style="{StaticResource SAWindow}" Width="400" Height="250" MinWidth="400" MaxWidth="700"
 		Closing="Window_Closing" WindowStartupLocation="CenterScreen">
 	<Window.Resources>
 		<ResourceDictionary>
