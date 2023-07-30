@@ -11,6 +11,7 @@
 #include "SADXStructsNew.h"
 
 // General
+DataPointer(NES_LIB_PARAM, nesparam, 0x892944); // Contains startup info (game title, paths, vertex buffers...)
 DataPointer(LANGUAGE, Language, 0x03B0F0E8); // Current text language
 DataPointer(float, ScreenRaitoX, 0x8928C0); // Horizontal stretch (X res / 640)
 DataPointer(float, ScreenRaitoY, 0x8928C4); // Vertical stretch (Y res / 480)
@@ -42,8 +43,10 @@ DataPointer(___stcClip, gClipMap, 0x3ABDC70);
 DataPointer(___stcClip, gClipSky, 0x3ABDCA0);
 DataPointer(NJS_POINT3, gSkyScale, 0x3ABDC94);
 DataPointer(int, GameTimer, 0x3B0F108);
-DataPointer(__int16, ssStageNumber, 0x3B22DCC); // CurrentLevel
-DataPointer(int, ssActNumber, 0x3B22DEC); // CurrentAct
+DataPointer(Sint16, ssStageNumber, 0x3B22DCC); // CurrentLevel
+DataPointer(Sint16, ssActNumber, 0x3B22DEC); // CurrentAct
+DataPointer(Sint16, ssNextStageNumber, 0x3B22DF0);
+DataPointer(Sint16, ssNextActNumber, 0x3B22E18);
 DataPointer(int, BlockMask, 0x3B36D48); // Mask to show/hide level geometry with blockbit
 DataPointer(char, scNumPlayer, 0x3B0EF34); // Number of lives
 DataPointer(Sint16, ssNumRing, 0x3B0F0E4);
@@ -65,6 +68,7 @@ DataPointer(int, pause_flg, 0x03B28114);
 DataPointer(bool, PvrAlphaFlag, 0x03B2C650); // Global transparency flag for UI textures
 DataPointer(NJS_ARGB, default_argb, 0x038CD514);
 DataPointer(int, IsChaoGarden, 0x03B22E80);
+DataArray(SAVE_DATA, SaveData, 0x3B2B3A8, 3);
 
 // Event
 DataPointer(EVINFO2, evInfo, 0x03B2C568); // Current cutscene struct
@@ -72,7 +76,8 @@ DataPointer(int, current_event, 0x00914788); // Current cutscene ID (-1 if not i
 DataPointer(EV_CAMERA_W, evCameraW, 0x03B2C490); // Cutscene camera
 
 // Player
-DataPointer(unsigned __int8, gu8flgPlayingMetalSonic, 0x3B18DB5); // Metal Sonic flag
+DataPointer(Uint8, flgPlayingSuperSonic, 0x3B18DB4); // Super Sonic flag
+DataPointer(Uint8, gu8flgPlayingMetalSonic, 0x3B18DB5); // Metal Sonic flag
 DataArray(player_parameter, playerwk_default, 0x9154E8, 8);
 DataArray(task*, playertp, 0x3B42E30, 8);
 DataArray(taskwk*, playertwp, 0x3B42E10, 8);
@@ -82,6 +87,14 @@ DataPointer(taskwk*, gpCharTwp, 0x3ABDF60); // Contains a player's taskwk when i
 DataPointer(playerwk*, gpCharPwp, 0x3ABDF64); // Contains a player's playerwk when its exec function is running
 DataPointer(Angle, angGx, 0x3B0F10C); // Gravity X angle
 DataPointer(Angle, angGz, 0x3B0F0F4); // Gravity Z angle
+DataArray(colaround, around_ring_list_p0, 0x3B27470, 257);
+DataArray(colaround, around_enemy_list_p0, 0x3B259C0, 657);
+DataArray(colaround, around_ring_list_p1, 0x3B23298, 257);
+DataArray(colaround, around_enemy_list_p1, 0x3B242F8, 657);
+DataPointer(Uint16, arl_num0, 0x3B27048);
+DataPointer(Uint16, ael_num0, 0x3B23288);
+DataPointer(Uint16, arl_num1, 0x3B27C7C);
+DataPointer(Uint16, ael_num1, 0x3B240A8);
 
 // Sonic
 DataPointer(sParabola, SonicPaboBuff, 0x3C53A68);
@@ -95,7 +108,9 @@ DataArray(sMRacePath*, PPT_MRaceEachStage, 0x91C0B8, 10); // Race path list (son
 DataArray(PL_ACTION, miles_action, 0x03C49D90, 136);
 
 // Knuckles
+DataPointer(Bool, ke_ongame_flg, 0x3C52AD8);
 DataArray(KnFragmSetStr, fragmset_tbl, 0x3C52B20, 3); // current emerald set information
+DataPointer(Sint32, found_feme_nmb, 0x3C52C04);
 DataArray(KnFragmNmbStr, fragmnmb_tbl, 0x7E0CD8, 6);
 DataArray(PL_ACTION, knuckles_action, 0x03C532A0, 114);
 
@@ -193,6 +208,7 @@ DataArray(pathtag*, pathdata_0A01, 0x1A57700, 3);  // Final Egg Act 2 paths
 DataArray(pathtag*, pathdata_0A02, 0x1A57720, 5);  // Final Egg Act 3 paths
 DataArray(pathtag*, pathdata_1A00, 0x2BBC468, 4);  // Station Square Act 1 paths
 DataArray(pathtag*, pathdata_1300, 0x21422140, 4); // Perfect Chaos paths
+DataArray(PATHCAMERA1WORK*, pathcamera1works, 0x97EC40, 11);
 
 // Enemy
 DataPointer(int, ComboTimer, 0x3B29D48);
@@ -263,6 +279,7 @@ DataArray(CART_LOAD_DATA, cart_load, 0x38C7FF0, 18);
 DataPointer(task*, RaceManageTask_p, 0x3C5D554); // Pointer to race manager task
 DataPointer(BOOL, CartGoalFlag, 0x3D08E00);
 DataPointer(ENEMY_CART_DATA*, cart_data, 0x3D08E0C); // Pointer to player's cart data
+DataArray(strCamCartData, camCartData, 0x91B670, 3); // Camera path for Twinkle Circuit intro camera
 
 // Boss
 DataPointer(char, bossmtn_flag, 0x3C5A7EF);
@@ -296,10 +313,35 @@ DataPointer(_OBJ_ADJUSTPARAM*, pObjAdjustParam, 0x7DFF98);            // Pointer
 DataPointer(Sint32, default_camera_mode, 0x3B2CBAC);                  // Default camera mode (no camera active, or when returning from event camera)
 DataPointer(Sint32, default_camera_adjust, 0x3B2CAC4);                // Default adjust mode (no camera active, or when returning from event camera)
 DataPointer(Sint32, start_camera_mode, 0x3B2CAA8);                    // The camera mode set when the camera is initialized
+DataArray(freeboxdat, fbd6660, 0x9150AC, 2);
+DataArray(freeboxdat, fbd7429, 0x9150DC, 1);
+DataArray(freeboxdat, fbd8448, 0x9150F4, 1);
+DataArray(freeboxdat, fbd6659, 0x915110, 4);
+DataArray(freeboxdat, fbd6658, 0x915170, 1);
+DataArray(freeboxdat, fbd6657, 0x915188, 3);
+DataArray(freeboxdat, fbd3073, 0x9151D0, 1);
+DataArray(freeboxdat, fbd6656, 0x9151E8, 6);
+DataArray(freeboxdat, fbd2561, 0x915278, 1);
+DataArray(freeboxdat, fbd1536, 0x915290, 2);
+DataArray(freeboxdat, fbd1793, 0x9152C0, 4);
+DataArray(freeboxdat, fbd2560, 0x915320, 4);
+DataArray(freeboxdat, fbd1281, 0x915380, 1);
+DataArray(freeboxdat, fbd1026, 0x915398, 3);
+DataArray(freeboxdat, fbd0769, 0x9153E0, 2);
+DataArray(freeboxdat, fbd0257, 0x915410, 1);
+DataArray(freeboxdat, fbd0514, 0x915428, 1);
 
 // Sound
+DataPointer(Bool, s_3DFlag, 0x3B0EF28);
 DataArray(_SEcallbuf, sebuf, 0x3B292F8, 36); // SoundQueue (length 20 in xbox version)
 DataArray(taskwk*, gpDolbyTask, 0x3B29B90, 36); // SoundQueueOriginEntities (length 20 in xbox version)
+DataPointer(void*, sndmemory, 0x3B291C0);
+DataArray(MDHANDLE*, bankhandle, 0x3B291C8, 16); // Sound banks
+DataArray(Uint8, gu8overlap_se, 0x3B292A8, 36 * 2);
+DataArray(Sint32, vol_save, 0x3B29C28, 36);
+DataPointer(Bool, snd_pause, 0x3B29CE0);
+DataPointer(Bool, snd_pause_dolby, 0x3B29CE4);
+DataArray(Sint32, banktbl, 0x910090, 64 * 2); // Table to get bank from sound id
 
 // Lighting
 DataArray(NJS_COLOR[256][2], LSPAL_0, 0x3B12210, 10); // Palette data; first index is palette ID, second index is color ID, third index is diffuse (0) or specular (1)
@@ -325,11 +367,11 @@ DataArray(void*, CreateModeFncPtrs, 0x10D7B4C, 14); // Init functions for main m
 DataArray(void*, FreeModeFncPtrs, 0x10D7B84, 14); // Free functions for main menus
 DataArray(PVMEntry*, MenuTexlists, 0x10D7CB0, 5); // Table of main menu texlists arrays (one per language)
 DataArray(int*, AvaTexLdLists, 0x10D7CC4, 14); // Which texlist a menu should pick from MenuTexlists (enum AvaTexLdEnum does not match sadx pc)
-DataPointer(ADVERTISE_WORK, AdvertiseWork, 0x3B2A2FA); // General menu information
+DataPointer(ADVERTISE_WORK, AdvertiseWork, 0x3B2A2F0); // General menu information
 DataPointer(task*, DialogTp, 0x3B2C588); // Pointer to dialog manager task
 DataPointer(task*, SeqTp, 0x3C5E8D0); // Pointer to menu manager task
 DataPointer(BOOL, TldFlg, 0x3C5E8E0); // Menu ready flag
-DataPointer(AvaStgActT, AvaCmnPrm, 0x3C5FED0);
+DataPointer(AvaCmnPrmT, AvaCmnPrm, 0x3C5FED0);
 DataPointer(task*, TrialActStelTp, 0x3C5FEE0);
 DataPointer(task*, TitleNewTp, 0x3C5FF00);
 DataPointer(STAFFROLL_DATA, StaffRollData, 0x2BC2FD0); // Credits list
@@ -347,6 +389,10 @@ DataArray(AvaTexLdPrmT, AvaTexLdPrmE, 0x007EEDE0, 36); // GUI textures (English)
 DataArray(AvaTexLdPrmT, AvaTexLdPrmF, 0x007EEED0, 36); // GUI textures (French)
 DataArray(AvaTexLdPrmT, AvaTexLdPrmS, 0x007EEFC0, 36); // GUI textures (Spanish)
 DataArray(AvaTexLdPrmT, AvaTexLdPrmG, 0x007EF0B0, 36); // GUI textures (German)
+DataPointer(Uint32, gu32loop_count, 0x3B1118C);
+DataPointer(Uint32, adva_loop_count, 0x3B11184);
+DataArray(SeqDataType, BackToChSelSeqFlowData, 0x7EEB58, 14);
+DataArray(SeqDataType*, AllSeqDataPtr, 0x10D7B40, 3);
 
 // TGS menus
 DataPointer(char, scSelectedStage, 0x3B2C424);
