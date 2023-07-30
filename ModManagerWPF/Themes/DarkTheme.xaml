@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	
 	<!--#region Misc Variables-->
 	<CornerRadius x:Key="Button.CornerRadius">3</CornerRadius>
@@ -266,23 +265,23 @@
 	<Color x:Key="IconColorGray" A="255" R="158" G="158" B="158"/>
 	<Color x:Key="IconColorYellow" A="255" R="188" G="188" B="0"/>
 
-	<SolidColorBrush x:Key="Icon.Brushes.Gray" Color="#FF9E9E9E"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Gray" Color="{DynamicResource IconColorGray}"/>
 	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Gray" Color="#FFBCBCBC"/>
 	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Gray" Color="#FF505050"/>
 
-	<SolidColorBrush x:Key="Icon.Brushes.Red" Color="#FFBC0000"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Red" Color="{DynamicResource IconColorRed}"/>
 	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Red" Color="#FFF54242"/>
 	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Red" Color="#FF844C4C"/>
 	
-	<SolidColorBrush x:Key="Icon.Brushes.Blue" Color="#FF006ABC"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Blue" Color="{DynamicResource IconColorBlue}"/>
 	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Blue" Color="#FF2CA3FF"/>
 	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Blue" Color="#FF2E5573"/>
 	
-	<SolidColorBrush x:Key="Icon.Brushes.Green" Color="#FF00BC00"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Green" Color="{DynamicResource IconColorGreen}"/>
 	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Green" Color="#FF5BEA5B"/>
 	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Green" Color="#FF396F39"/>
 	
-	<SolidColorBrush x:Key="Icon.Brushes.Yellow" Color="#FFBCBC00"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Yellow" Color="{DynamicResource IconColorYellow}"/>
 	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Yellow" Color="#FFEDED5C"/>
 	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Yellow" Color="#FF6D6D3A"/>
 

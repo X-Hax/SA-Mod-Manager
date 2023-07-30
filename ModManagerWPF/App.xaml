@@ -85,10 +85,10 @@
 									<Setter Property="Opacity" TargetName="border" Value="0.56"/>
 								</Trigger>
 								<Trigger Property="IsMouseOver" Value="true">
-									<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Brushes.MouseOver.Border}"/>
+									<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource TextBox.Brushes.MouseOver.Border}"/>
 								</Trigger>
 								<Trigger Property="IsKeyboardFocused" Value="true">
-									<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Brushes.Focus.Border}"/>
+									<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource TextBox.Brushes.Focus.Border}"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
@@ -1350,7 +1350,7 @@
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type Thumb}">
-							<Border x:Name="rectangle" Background="{StaticResource ScrollBarThumb.Brushes.Background}" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" Width="{TemplateBinding Width}" CornerRadius="{DynamicResource Scrollbar.CornerRadius}"/>
+							<Border x:Name="rectangle" Background="{DynamicResource ScrollBarThumb.Brushes.Background}" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" Width="{TemplateBinding Width}" CornerRadius="{DynamicResource Scrollbar.CornerRadius}"/>
 							<ControlTemplate.Triggers>
 								<Trigger Property="IsMouseOver" Value="true">
 									<Setter Property="Background" TargetName="rectangle" Value="{DynamicResource ScrollBarThumb.Brushes.MouseOver.Background}"/>
@@ -1364,6 +1364,7 @@
 				</Setter>
 			</Style>
 			<Style x:Key="ScrollBarThumbHorizontal" TargetType="{x:Type Thumb}">
+				<Setter Property="Background" Value="AliceBlue"/>
 				<Setter Property="OverridesDefaultStyle" Value="true"/>
 				<Setter Property="IsTabStop" Value="false"/>
 				<Setter Property="Template">
@@ -1984,8 +1985,8 @@
 											<Image Grid.Column="0" Source="Icons/SADXModManager_.png" Margin="0,0,5,5"/>
 											<TextBlock Text="{TemplateBinding Title}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 											<StackPanel Grid.Column="2" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
-												<Button Style="{StaticResource WindowMinButton}" x:Name="ButtonMinimize" Click="MinimizeWindow"/>
-												<Button Style="{StaticResource WindowMaxButton}" x:Name="ButtonMaximize" Click="MaximizeWindow" Tag="reg"/>
+												<Button Style="{DynamicResource WindowMinButton}" x:Name="ButtonMinimize" Click="MinimizeWindow"/>
+												<Button Style="{DynamicResource WindowMaxButton}" x:Name="ButtonMaximize" Click="MaximizeWindow" Tag="reg"/>
 												<Button Style="{DynamicResource WindowCloseButton}" x:Name="ButtonClose" Click="CloseWindow"/>
 											</StackPanel>
 											</Grid>
@@ -2033,8 +2034,8 @@
 										<ColumnDefinition Width="19"/>
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
-									<Ellipse x:Name="circle" Fill="{StaticResource Expander.Static.Circle.Fill}" HorizontalAlignment="Center" Height="19" Stroke="{StaticResource Expander.Static.Circle.Stroke}" VerticalAlignment="Center" Width="19"/>
-									<Path x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" HorizontalAlignment="Center" Stroke="{StaticResource Expander.Static.Arrow.Stroke}" SnapsToDevicePixels="false" StrokeThickness="2" VerticalAlignment="Center"/>
+									<Ellipse x:Name="circle" Fill="{DynamicResource Expander.Static.Circle.Fill}" HorizontalAlignment="Center" Height="19" Stroke="{DynamicResource Expander.Static.Circle.Stroke}" VerticalAlignment="Center" Width="19"/>
+									<Path x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" HorizontalAlignment="Center" Stroke="{DynamicResource Expander.Static.Arrow.Stroke}" SnapsToDevicePixels="false" StrokeThickness="2" VerticalAlignment="Center"/>
 									<ContentPresenter Grid.Column="1" HorizontalAlignment="Left" Margin="4,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
 								</Grid>
 							</Border>
@@ -2043,20 +2044,20 @@
 									<Setter Property="Data" TargetName="arrow" Value="M 1,4.5  L 4.5,1  L 8,4.5"/>
 								</Trigger>
 								<Trigger Property="IsMouseOver" Value="true">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.MouseOver.Circle.Stroke}"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.MouseOver.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.MouseOver.Arrow.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.MouseOver.Circle.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.MouseOver.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.MouseOver.Arrow.Stroke}"/>
 								</Trigger>
 								<Trigger Property="IsPressed" Value="true">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.Pressed.Circle.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.Pressed.Circle.Stroke}"/>
 									<Setter Property="StrokeThickness" TargetName="circle" Value="1.5"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.Pressed.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.Pressed.Arrow.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.Pressed.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.Pressed.Arrow.Stroke}"/>
 								</Trigger>
 								<Trigger Property="IsEnabled" Value="false">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.Disabled.Circle.Stroke}"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.Disabled.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.Disabled.Arrow.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.Disabled.Circle.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.Disabled.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.Disabled.Arrow.Stroke}"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
@@ -2083,8 +2084,8 @@
 												</TransformGroup.Children>
 											</TransformGroup>
 										</Grid.LayoutTransform>
-										<Ellipse x:Name="circle" Fill="{StaticResource Expander.Static.Circle.Fill}" HorizontalAlignment="Center" Height="19" Stroke="{StaticResource Expander.Static.Circle.Stroke}" VerticalAlignment="Center" Width="19"/>
-										<Path x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" HorizontalAlignment="Center" Stroke="{StaticResource Expander.Static.Arrow.Stroke}" SnapsToDevicePixels="false" StrokeThickness="2" VerticalAlignment="Center"/>
+										<Ellipse x:Name="circle" Fill="{DynamicResource Expander.Static.Circle.Fill}" HorizontalAlignment="Center" Height="19" Stroke="{DynamicResource Expander.Static.Circle.Stroke}" VerticalAlignment="Center" Width="19"/>
+										<Path x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" HorizontalAlignment="Center" Stroke="{DynamicResource Expander.Static.Arrow.Stroke}" SnapsToDevicePixels="false" StrokeThickness="2" VerticalAlignment="Center"/>
 									</Grid>
 									<ContentPresenter Grid.Column="1" HorizontalAlignment="Left" Margin="4,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
 								</Grid>
@@ -2094,20 +2095,20 @@
 									<Setter Property="Data" TargetName="arrow" Value="M 1,4.5  L 4.5,1  L 8,4.5"/>
 								</Trigger>
 								<Trigger Property="IsMouseOver" Value="true">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.MouseOver.Circle.Stroke}"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.MouseOver.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.MouseOver.Arrow.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.MouseOver.Circle.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.MouseOver.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.MouseOver.Arrow.Stroke}"/>
 								</Trigger>
 								<Trigger Property="IsPressed" Value="true">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.Pressed.Circle.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.Pressed.Circle.Stroke}"/>
 									<Setter Property="StrokeThickness" TargetName="circle" Value="1.5"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.Pressed.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.Pressed.Arrow.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.Pressed.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.Pressed.Arrow.Stroke}"/>
 								</Trigger>
 								<Trigger Property="IsEnabled" Value="false">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.Disabled.Circle.Stroke}"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.Disabled.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.Disabled.Arrow.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.Disabled.Circle.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.Disabled.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.Disabled.Arrow.Stroke}"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
@@ -2134,8 +2135,8 @@
 												</TransformGroup.Children>
 											</TransformGroup>
 										</Grid.LayoutTransform>
-										<Ellipse x:Name="circle" Fill="{StaticResource Expander.Static.Circle.Fill}" HorizontalAlignment="Center" Height="19" Stroke="{StaticResource Expander.Static.Circle.Stroke}" VerticalAlignment="Center" Width="19"/>
-										<Path x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" HorizontalAlignment="Center" Stroke="{StaticResource Expander.Static.Arrow.Stroke}" SnapsToDevicePixels="false" StrokeThickness="2" VerticalAlignment="Center"/>
+										<Ellipse x:Name="circle" Fill="{DynamicResource Expander.Static.Circle.Fill}" HorizontalAlignment="Center" Height="19" Stroke="{DynamicResource Expander.Static.Circle.Stroke}" VerticalAlignment="Center" Width="19"/>
+										<Path x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" HorizontalAlignment="Center" Stroke="{DynamicResource Expander.Static.Arrow.Stroke}" SnapsToDevicePixels="false" StrokeThickness="2" VerticalAlignment="Center"/>
 									</Grid>
 									<ContentPresenter HorizontalAlignment="Center" Margin="0,4,0,0" RecognizesAccessKey="True" Grid.Row="1" SnapsToDevicePixels="True" VerticalAlignment="Top"/>
 								</Grid>
@@ -2145,20 +2146,20 @@
 									<Setter Property="Data" TargetName="arrow" Value="M 1,4.5  L 4.5,1  L 8,4.5"/>
 								</Trigger>
 								<Trigger Property="IsMouseOver" Value="true">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.MouseOver.Circle.Stroke}"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.MouseOver.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.MouseOver.Arrow.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.MouseOver.Circle.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.MouseOver.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.MouseOver.Arrow.Stroke}"/>
 								</Trigger>
 								<Trigger Property="IsPressed" Value="true">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.Pressed.Circle.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.Pressed.Circle.Stroke}"/>
 									<Setter Property="StrokeThickness" TargetName="circle" Value="1.5"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.Pressed.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.Pressed.Arrow.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.Pressed.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.Pressed.Arrow.Stroke}"/>
 								</Trigger>
 								<Trigger Property="IsEnabled" Value="false">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.Disabled.Circle.Stroke}"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.Disabled.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.Disabled.Arrow.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.Disabled.Circle.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.Disabled.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.Disabled.Arrow.Stroke}"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
@@ -2185,8 +2186,8 @@
 												</TransformGroup.Children>
 											</TransformGroup>
 										</Grid.LayoutTransform>
-										<Ellipse x:Name="circle" Fill="{StaticResource Expander.Static.Circle.Fill}" HorizontalAlignment="Center" Height="19" Stroke="{StaticResource Expander.Static.Circle.Stroke}" VerticalAlignment="Center" Width="19"/>
-										<Path x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" HorizontalAlignment="Center" Stroke="{StaticResource Expander.Static.Arrow.Stroke}" SnapsToDevicePixels="false" StrokeThickness="2" VerticalAlignment="Center"/>
+										<Ellipse x:Name="circle" Fill="{DynamicResource Expander.Static.Circle.Fill}" HorizontalAlignment="Center" Height="19" Stroke="{DynamicResource Expander.Static.Circle.Stroke}" VerticalAlignment="Center" Width="19"/>
+										<Path x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" HorizontalAlignment="Center" Stroke="{DynamicResource Expander.Static.Arrow.Stroke}" SnapsToDevicePixels="false" StrokeThickness="2" VerticalAlignment="Center"/>
 									</Grid>
 									<ContentPresenter HorizontalAlignment="Center" Margin="0,4,0,0" RecognizesAccessKey="True" Grid.Row="1" SnapsToDevicePixels="True" VerticalAlignment="Top"/>
 								</Grid>
@@ -2196,20 +2197,20 @@
 									<Setter Property="Data" TargetName="arrow" Value="M 1,4.5  L 4.5,1  L 8,4.5"/>
 								</Trigger>
 								<Trigger Property="IsMouseOver" Value="true">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.MouseOver.Circle.Stroke}"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.MouseOver.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.MouseOver.Arrow.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.MouseOver.Circle.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.MouseOver.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.MouseOver.Arrow.Stroke}"/>
 								</Trigger>
 								<Trigger Property="IsPressed" Value="true">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.Pressed.Circle.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.Pressed.Circle.Stroke}"/>
 									<Setter Property="StrokeThickness" TargetName="circle" Value="1.5"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.Pressed.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.Pressed.Arrow.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.Pressed.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.Pressed.Arrow.Stroke}"/>
 								</Trigger>
 								<Trigger Property="IsEnabled" Value="false">
-									<Setter Property="Stroke" TargetName="circle" Value="{StaticResource Expander.Disabled.Circle.Stroke}"/>
-									<Setter Property="Fill" TargetName="circle" Value="{StaticResource Expander.Disabled.Circle.Fill}"/>
-									<Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.Disabled.Arrow.Stroke}"/>
+									<Setter Property="Stroke" TargetName="circle" Value="{DynamicResource Expander.Disabled.Circle.Stroke}"/>
+									<Setter Property="Fill" TargetName="circle" Value="{DynamicResource Expander.Disabled.Circle.Fill}"/>
+									<Setter Property="Stroke" TargetName="arrow" Value="{DynamicResource Expander.Disabled.Arrow.Stroke}"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
