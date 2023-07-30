@@ -1,0 +1,109 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<system:String x:Key="MessageWindow.DefaultTitle">Загрузчик модов SADX</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle.Error">Ошибка</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Внимание</system:String>
+	
+	<!--#region Errors-->
+	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">Обнаружен файл mod.ini в папке с модами.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Не помещайте моды напрямую в папку Mods! Каждый мод должен находиться в своей подпапке.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Переместите или удалите файл mod.ini в папке Mods и запустите Менеджер модов снова.</system:String>
+
+	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">не найден.&#x0a;&#x0a;Мод будет удалён из списка.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Ошибка при установке пути к игре</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Файл sonic.exe не найден. Убедитесь, что выбрали папку с установленной игрой SADX.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Ошибка при обнаружении пути к игре</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Не удалось найти путь к игре. Настройте путь в настройках Менеджера и проверьте, чтобы была выбрана папка с файлом sonic.exe.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Мод уже существует"</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Мод с таким именем уже существует.&#x0a;Введите другое имя или переименуйте существующий файл.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.ModCreationFailed.Title">"Ошибка при создании мода"</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.NoModName.Title">Недопустимое название мода</system:String>
+	<system:String x:Key="MessageWindow.Errors.NoModName">У мода должно быть название.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.MissingLoaderDLL" xml:space="preserve">Не найден файл SADXModLoader.dll, Загрузчик модов работать не будет.&#x0a;&#x0a;Перекачайте Менеджер модов заново.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.DontDoThat">Ну... Не, тебе это точно не нужно :)</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.InvalidFramerate.Title">Некорректное значение</system:String>
+	<system:String x:Key="MessageWindow.Errors.InvalidFramerate">Обнаружено неккоректное значение частоты кадров.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Ошибка загрузки читов</system:String>
+	<system:String x:Key="MessageWindow.Errors.CodesListFailed">В процессе загрузки списка читов возникла ошибка</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Ошибка обновления</system:String>
+	<system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Возникли следующие ошибки в процессе проверки обновлений:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.D3D8Update">Не удалось обновить d3d8.dll</system:String>
+    <system:String x:Key="MessageWindow.Errors.D3D8UpdateCheck">Не удалось проверить версию d3d8to9</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.MissingManifest.Title">Не найден mod.manifest</system:String>
+    <system:String x:Key="MessageWindow.Errors.MissingManifest">Ни один из выбранных модов не содержит манифест-файл. Они не могут быть верифицированы.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif.Title">Ошибка верификации</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif0" xml:space="preserve">Указанные моды не прошли верификацию:&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif1">файл(-ов)</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif2" xml:space="preserve">&#x0a;&#x0a;Желаете попробовать восстановить их?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.URIParseFail.Title">URI Parse Failure</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail0">Неверная ссылка 1-Click Install</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail1" xml:space="preserve">привела к ошибке:&#x0a;</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GBAPIFail.Title">Cбой GameBanana API</system:String>
+    <system:String x:Key="MessageWindow.Errors.GBAPIFail">В ходе запроса к GameBanana API произошёл сбой:</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields0">Ссылка 1-Click Install</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields1">не содержит необходимые поля.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail.Title">Ошибка удаления директории</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail0">Не удалось удалить временную папку для обновлений</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail1">Желаете повторить? Вы сможете удалить папку позже.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail.Title">Ошибка создания директории</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail0">Не удалось создать временную папку для обновлений</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail1">Желаете повторить?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Ошибка обноления"</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed">Не удалось обновить:"</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Не удалось обновить мод"</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">"Нажмите "Повторить" или "Отмена", чтобы пропустить этот мод".</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Не удалось получить информацию об обновлении."</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">Менеджер модов SADX не может быть запущен без .NET 7.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Компонент VC++ не найден</system:String>
+    <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">У вас отсутствуют пакеты Visual C++ Redistributables. Некоторые моды не будут работать без них.&#x0a;&#x0a;Желаете скачать и установить их сейчас?</system:String>
+    <!--#endregion-->
+	
+	<!--#region Warnings-->
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Это действие удалит все ваши моды.&#x0a;&#x0a;Желаете продолжить??</system:String>
+
+	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Вы собираетесь отключить перенаправление сохранений для этого мода. Если вы продолжите, все сохранения в этой папке мода будут удалены.&#x0a;&#x0a;Желаете продолжить?</system:String>
+	
+	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">Уверены, что хотите удалить этот профиль?</system:String>
+	
+	<system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Выбранные моды будут принудительно перезакачаны.&#x0a;&#x0a;Желаете продолжить?</system:String>
+	
+	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">Это может привести К ПОТЕРЕ ПОЛЬЗОВАТЕЛЬСКИХ ДАННЫХ МОДОВ (СОХРАНЕНИЯ, КОНФИГИ) при следующем обновлении! Чтобы этого не произошло, никогда не запускайте это для модов, которые разрабатывали не вы.&#x0a;&#x0a;Желаете продолжить?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">Не установлен компонент .NET 7.0 Desktop Runtime!&#x0a;&#x0a;Установить его сейчас?</system:String>
+    <!--#endregion-->
+	
+	<!--#region Information-->
+	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">Не найдены обновления модов</system:String>
+	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Все моды уже обновлены.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.D3D8Update">Версия модуля d3d8.dll в папке SADX отличается от той, что входит в состав Загрузчика модов. Желаете обновить?</system:String>
+
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Проверка целостности пройдена</system:String>
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif">Все выбранные моды прошли верификацию.</system:String>
+    <!--#endregion-->
+	
+</ResourceDictionary>

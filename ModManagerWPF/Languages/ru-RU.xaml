@@ -1,0 +1,54 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="AboutMod/ru-RU.xaml"/>
+		<ResourceDictionary Source="EditMod/ru-RU.xaml"/>
+		<ResourceDictionary Source="InfoManagerUpdate/ru-RU.xaml"/>
+		<ResourceDictionary Source="InstallModOptions/ru-RU.xaml"/>
+		<ResourceDictionary Source="MainWindow/ru-RU.xaml"/>
+		<ResourceDictionary Source="MainWindow/Patches/ru-RU.xaml"/>
+		<ResourceDictionary Source="MainWindow/TestSpawn/ru-RU.xaml"/>
+		<ResourceDictionary Source="ManifestChanges/ru-RU.xaml"/>
+		<ResourceDictionary Source="MessageWindow/ru-RU.xaml"/>
+		<ResourceDictionary Source="ModChangelog/ru-RU.xaml"/>
+		<ResourceDictionary Source="ModConfig/ru-RU.xaml"/>
+		<ResourceDictionary Source="ModProfile/ru-RU.xaml"/>
+		<ResourceDictionary Source="NewCode/ru-RU.xaml"/>
+		<ResourceDictionary Source="SelectDependencies/ru-RU.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+    
+    <!--Region Common UI-->
+    <system:String x:Key="CommonStrings.OK">ОК</system:String>
+    <system:String x:Key="CommonStrings.Cancel">Отмена</system:String>
+	<system:String x:Key="CommonStrings.Yes">Да</system:String>
+	<system:String x:Key="CommonStrings.No">Нет</system:String>
+	<system:String x:Key="CommonStrings.Retry">Повторить</system:String>
+	<system:String x:Key="CommonStrings.Warning">Внимание</system:String>
+	<system:String x:Key="CommonStrings.Error">Ошибка</system:String>
+    <system:String x:Key="CommonStrings.Reset">Сбросить</system:String>
+    <system:String x:Key="CommonStrings.Create">Создать</system:String>
+	<system:String x:Key="CommonStrings.SelectAll">Выбрать всё</system:String>
+	<system:String x:Key="CommonStrings.DeselectAll">Сбросить выбор</system:String>
+	<system:String x:Key="CommonStrings.Status">Статус</system:String>
+	<system:String x:Key="CommonStrings.Name">Название</system:String>
+	<system:String x:Key="CommonStrings.Save">Сохранить</system:String>
+	<system:String x:Key="CommonStrings.Author">Автор</system:String>
+	<system:String x:Key="CommonStrings.Version">Версия</system:String>
+	<system:String x:Key="CommonStrings.Category">Категория</system:String>
+	<system:String x:Key="CommonStrings.Description">Описание:</system:String>
+	<system:String x:Key="CommonStrings.Search">Поиск</system:String>
+	<system:String x:Key="CommonStrings.Credits">Авторы</system:String>
+	<system:String x:Key="CommonStrings.Download">Скачать</system:String>
+	<system:String x:Key="CommonStrings.OpenFolder">Открыть папку</system:String>
+
+	<!--Window Tips-->
+	<system:String x:Key="Window.Tips.Minimize">Свернуть</system:String>
+	<system:String x:Key="Window.Tips.Maximize">Развернуть</system:String>
+	<system:String x:Key="Window.Tips.Restore">Восстановить окно</system:String>
+	<system:String x:Key="Window.Tips.Close">Закрыть</system:String>
+
+</ResourceDictionary>

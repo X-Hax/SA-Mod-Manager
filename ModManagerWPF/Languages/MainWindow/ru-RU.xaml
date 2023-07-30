@@ -1,0 +1,300 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<!--#region Main Window Strings-->
+	<system:String x:Key="Manager.Buttons.SaveAndPlay">Сохранить и играть</system:String>
+	<system:String x:Key="Manager.Tabs.Mods">Моды</system:String>
+	<system:String x:Key="Manager.Tabs.Codes">Читы</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig">Настройки игры</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig">Настройки Менеджера</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn">Тестовая загрузка</system:String>
+	<!--#endregion-->
+
+	<!--#region Mods Tab Strings-->
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">Обновить</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">Настроить мод</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">Добавить мод</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">Моды не выбраны.</system:String>
+
+    <!--Mods Context Menu-->
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Проверить обновления</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Проверить целостность</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Принудительное обновление</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">Настроить мод</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Редактировать мод</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Удалить мод</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Разработка</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Сгенерировать манифест</system:String>
+	<!--#endregion-->
+
+	<!--#region Codes Tab Strings-->
+	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Новый чит</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.CodeHeader">Чит</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Создан</system:String>
+	<!--#endregion-->
+
+	<!--#region Game Config Tab Strings-->
+	<!--Game Tabs Strings-->
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics">Графика</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input">Управление</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound">Звук</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Patches">Патчи</system:String>
+
+	<!--Graphics Tab Strings-->
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display">Настройки экрана</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Screen">Монитор:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Resolution">Разрешение:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Принудительно включить 4:3</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Включить вертикальную синхронизацию</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Пауза, когда окно неактивно</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамическое распределение памяти</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Полный экран</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">В окне</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Изменяемое окно</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Сохранять пропорции</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Пользовательский размер окна:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Окно без рамки</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Подогнать под экран</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other">Прочие настройки графики</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Framerate">Частота кадров:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Детализация:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High">Высокая (лучшая)</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low">Низкая</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest">Худшая</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog">Режим работы тумана:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Auto">Авто</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation">Эмуляция</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill">Способ заполнения фона:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Растянуть [по умолчанию]</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit">Подогнать по ширине</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Заполнить</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.FMVFill">Способ заполнения видео:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.TexFilter">Фильтрация текстур:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.UIFilter">Фильтрация интерфейса</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Улучшения</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap">Принудительный мипмаппинг</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Включить масштабирование интерфейса</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Включить D3D8to9</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Обновить D3D8to9</system:String>
+
+	<!--Input Tab Strings-->
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input">Настройки управления</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Стандартное управление (DInput)</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.SDL2">Улучшенное управление (SDL2)</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Настройки стандартного управления</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Мышь и клавиатура</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Тянуть и удерживать</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Тянуть для ускорения</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Прыжок:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Действие:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Отмена/Атака:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Старт/Назначить:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Поворот камеры влево:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Поворот камеры вправо:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Свистеть:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2">Настройка улучшенного управления</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Открыть AppLauncher</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Скачать AppLauncher</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Улучшенная система управления добавляет прослойку SDL2 в SADX. Рекомендуется при игре, так как исправляет проблемы оригинальной системы с DInput.</system:String>
+
+	<!--Sound Tab Strings-->
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings">Настройки звука</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume">Управление громкостью</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Использовать библиотеку BASS (музыка)</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Использовать библиотеку BASS (эффекты)</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.Music">Включить музыку</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Включить звукиs</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Включить пространственные звуки</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Music">Громкость музыки:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Voices">Громкость голосов:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Sound">Громкость звуков:</system:String>
+	<!--#endregion-->
+
+	<!--#region Test Spawn Tab Strings-->
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Character">Персонаж:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Level">Уровень:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Time">Время суток:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Act">Акт:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Mode">Режим игры:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Save">Использовать файл сохранения:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Event">Катсцена:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Warning">Изменение уровней иои персонажей в катсценах может привести к вылету игры.</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Buttons.Launch">Запустить игру</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced">Дополнительно</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Check.Manual">Задать вручную:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Check.Position">Позиция:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosX">Позиция X:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosY">Позиция Y:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosZ">Позиция Z:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Angle">Угол:</system:String>
+	<!--#endregion-->
+
+	<!--#region Manager Config Tab Strings-->
+	<!--Options-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Настройки</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Темы:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Язык:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Профиль:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Директория игры:</system:String>
+
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Включить "1-Click Install" (GameBanana)</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Выключить "1-Click Install"</system:String>
+
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Включить Загрузчик модов</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Отключить Загрузчик модов</system:String>
+
+	<!--Updates-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Обновления</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Проверять обновления Загрузчика при запуске</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Проверять обновления модов при запуске</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Проверить обновления</system:String>
+
+	<!--Debug Features-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Дополнительные настройки</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Не закрывать Менеджер при запуске игры</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Включить опции разработчика</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Включить консоль</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Вывод отладочных сообщений в игре</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Писать данные отладки в файл</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Создавать дамп-файл вылетов</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Проверить состояние игры</system:String>
+
+	<!--About-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">О Менеджере модов SADX</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">Менеджер модов SADX – программа, позволяющая управлять модами для Sonic Adventure DX без особых трудностей.</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Разработчики</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Исходники</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Сообщить о багах (English only)</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Открыть SA Docs (English only)</system:String>
+	<!--#endregion-->
+	
+	<!--#region Tooltips-->
+	<!--#region Main Window Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Mods">Выбор, изменение и настройка ваших модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes">Выбор читов, активных во время игры.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig">Настройки игры, видео и звука.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn">Опции быстрого запуска игры нужными персонажами на нужных уровнях.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options">Настройка Менеджера (в т.ч. темы и языка).</system:String>
+	<system:String x:Key="MainWindow.Tips.SaveAndPlay">Сохранить изменения и запустить игру.</system:String>
+	<system:String x:Key="MainWindow.Tips.Save">Сохранить изменения.</system:String>
+
+	<!--#region Mods Tab Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.Refresh">Обновить список модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveCeiling">Переместить выбранный мод в начало списка.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveUp">Переместить выбранный мод на одну позицию вверх.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveDown">Переместить выбранный мод в конец списка.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveFloor">Переместить выбранный мод на одну позицию вниз.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.SelectAll">Включить все имеющиеся моды. Это действие может привести к вылету игры.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.DeselectAll">Отключить все моды.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.NewMod">Откроется окно создания нового мода, в котором можно будет установить мод вручную или создать новый.</system:String>
+	<!--#endregion-->
+
+	<!--#region Codes Tab Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.SelectAll">Включить все читы.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.DeselectAll">Отключить все читы.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.NewCode">Откроется окно создания нового чита.</system:String>
+	<!--#endregion-->
+
+	<!--#region Game Config Tab -->
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">Изменение настроек графики.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">Изменение настроек управления.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">Изменение настроек звука.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">Включение и отключение патчей.</system:String>
+
+	<!--#region Graphics Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen">Выбор монитора, на котором будет отображаться игра.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Выбор кастомного или предустановленного разрешения экрана.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Принудительно выставить соотношение сторон 4:3, игнорируя выбранное разрешение.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Включение вертикальной синхронизации.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Когда выключено, игра будет ставиться на паузу, если окно не в фокусе.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers">Исправление вылета при смене окна с помощью Alt+Tab в полном экране, включая динамическое распределение памяти. В некоторых случаях игра может лагать (в том числе из-за некоторых модов).</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Разворачивать игру на весь экран.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Разворачивать игру в окне без рамки.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Масштабировать интерфейс на весь экран.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Игра будет запускаться в окне.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Позволяет изменять размер окна во время игры.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Зафиксировать соотношение сторон при выборе кастомного разрешения.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Выставить размер окна вне зависимости от разрешения. Так, например, можно играть в разрешении 4К в небольшом окне.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Настроить частоту смены кадров.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">Включить режим эмуляции тумана. Использовать только со слабым видеоядром. В остальных случаях рекомендуется включить автоматический режим.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Включить фильтрацию текстур для всех моделей.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Включить фильтрацию текстур для всех текстур интерфейса.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Настроить уровень детализации для дальности отрисовки.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">Установить режим заполнения фона по краям при игре в широкоформате, но с зафиксированным соотношением рендера 4:3.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Установить режим заполнения видеороликов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Генерация мипмапов для всех текстур, даже если они не требуются.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Включает программную прослойку D3D8to9, позволяющую игре задействовать особенности D3D9-рендеринга. Требуется для работы некоторых модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Включает масштабирование интерфейса в соответствии с ращрешением игры.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Проверка, загрузка и обновление прослойки d3d8to9.</system:String>
+	<!--#endregion-->
+
+	<!--#region Input Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">Использовать изначальную систему управления. Она имеет ряд проблем, в первую очередь вращающуюся камеру. Не рекомендуется использовать.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput">Реализует основанную на SDL2 систему управления, заменяя собой орегинальную. Рекомендуется при использовании xinput-геймпадов (совместимых с Xbox).</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold">Выставляет режим управления мышью, при котором игрок перемещается, если, зажав ЛКМ, оттянуть указатель в нужном направлении.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate">Выставляет режим управления мышью, при котором игрок перемещается, если зажать ЛКМ, оттянуть указатель в нужном направлении, затем отпустить. Персонаж продолжит движение, пока игрок не повторит действие.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Jump">Кнопка подтверждения в меню или прыжка, обычно назначается на А или Крест.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Action">Кнопка действия у всех персонажей, обычно назначается на Х или Квадрат.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Cancel">Кнопка отмены в меню или атаки, обычно назначается на В или Кружок.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Start">Кнопка Start, используется для начала игры и паузы. Обычно назначается на кнопку Start.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamLeft">Кнопка поворачивает камеру влево, обычно назначается на левый бампер. Нельзя назначить на аналоговый стик.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamRight">Кнопка поворачивает камеру вправо, обычно назначается на правый бампер. Нельзя назначить на аналоговый стик.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Flute">Кнопка, позволяющая свистнуть в садах Чао. Обычно назначается на Y или Треугольник.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher">Откроет AppLauncher и позволит настроить управление.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher">Откроет ссылку, по которой можно будет скачать AppLauncher.</system:String>
+	<!--#endregion-->
+
+	<!--#region Sound Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">Активирует подсистему звука vgmbass. Рекомендуется для лучшего пользовательского опыта. Необходимо для некоторых модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">Включает музыку в игре.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">Включает 3D-звук в игре.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">Включает подсистему BASS для воспроизведения звуковых эффектов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">Включает звуковые эффекты и озвучку в игре.</system:String>
+	<!--#endregion-->
+
+	<!--#region Patches Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">Включить все патчи из списка.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">Отключить все патчи из списка.</system:String>
+	<!--#endregion-->
+	<!--#endregion-->
+
+	<!--#region Test Spawn Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Character">Включить выбор персонажа для спавна.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Level">Включить выбор уровня для спавна.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Time">Установить время суток для полей приключений.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Act">Установить акт для выбранного уровня.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Event">Включить загрузку в катсцену.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.GameMode">Включить выбор необходимого режима игры.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Save">Переключить файл сохранения во время загрузки игры.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Включить ручную настройку параметров персонажа, уровня и акта. Перезаписывает настройки выше, когда включено.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Включить настройку начального положения.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Запустить игру с принятыми выше параметрами.</system:String>
+	<!--#endregion-->
+
+	<!--#region Manager Config Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Выбор профиля со списком активных модов и настроек.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Открыть менеджер профилей, где можно создать или удалить профили.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Полный путь до директории с установленной игрой.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Открыть окно с выбором директории игры.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Выбор используемой темы Менеджера модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Выбор языка интерфейса Менеджера модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Оставлять Менеджер модов включённым при нажатии "Сохранить и играть".</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Включить вкладку "Тестовая загрузка" в Менеджере модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Если включено, при нажатии на кнопку "1-Click Install" на GameBanana будет открываться окно загрузки мода.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Когда включено, активируется Загрузчик модов, благодаря чему можно играть с модами, патчами и читами.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Включить автоматическую проверку обновлений Загрузчика модов при запуске Менеджера модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Включить автоматическую проверку обновлений модов при запуске Менеджера модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Запустить проверку обновлений Загрузчика модов и установленных модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Открывать консоль с отладочной информации по игре.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Выводить отладочную информацию поверх игрового окна.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Сохранять отладочную информацию в log-файл.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Включить запись дампов вылетов при возникновении ошибок игры. Может быть полезно для выяснения причин вылетов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Открыть окно со списком разработчиков и информацией о менеджере.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Откроет страницу с репозиторием Загрузчика модов на GitHub.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Откроет страницу с SA Docs, где будет доступна различная информация о создании модов для SA1 и SA2.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Откроет страницу обратной связи на GitHub для приёма  сообщений о проблемах и ошибках Загрузчика модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Запуск проверки состояния игры для выявления отсутствующих или изменённых файлов.</system:String>
+	<!--#endregion-->
+
+</ResourceDictionary>

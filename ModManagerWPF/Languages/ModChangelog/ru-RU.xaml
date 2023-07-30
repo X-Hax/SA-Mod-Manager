@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="ModChangelog.Title">Обновления</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Notes">Список изменений</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details">Данные обновления</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.DownloadDetails">Об обновлении</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.PublishedDate">Дата выхода:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.FileSize">Размер файла:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.FileCount">Кол-во файлов:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.UpdateName">Название:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.Tag">Тег:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.Buttons.OpenBrowser">Открыть в браузере</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Files">Изменения файлов</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Files.Filename">Имя файла</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Files.Status">Статус</system:String>
+	<system:String x:Key="ModChangelog.Buttons.DownloadNow">Загрузить сейчас</system:String>
+	<system:String x:Key="ModChangelog.Buttons.DownloadLater">Загрузить позже</system:String>
+</ResourceDictionary>
