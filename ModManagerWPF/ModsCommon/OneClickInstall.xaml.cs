@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using ModManagerWPF.Themes;
+using SAModManager.Themes;
 using System.Drawing;
 using System.Windows.Media;
 using System.Linq;
@@ -13,15 +13,15 @@ using System.Security.Policy;
 using Octokit;
 using System.Xml.Linq;
 using System.IO;
-using ModManagerWPF.Common;
+using SAModManager.Common;
 using System.Windows.Interop;
 using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Threading;
 using System.Threading.Tasks;
-using ModManagerWPF.Updater;
+using SAModManager.Updater;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 	/// <summary>
 	/// Interaction logic for OneClickInstall.xaml

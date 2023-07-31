@@ -13,7 +13,7 @@ using System.Diagnostics;
 using SevenZipExtractor;
 
 
-namespace ModManagerWPF.Updater
+namespace SAModManager.Updater
 {
 	public enum ModDownloadType
 	{

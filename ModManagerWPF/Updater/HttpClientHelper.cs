@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ModManagerWPF.Updater
+namespace SAModManager.Updater
 {
 	public class HttpClientHelper
 	{

@@ -12,15 +12,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using GongSolutions.Wpf.DragDrop.Utilities;
-using ModManagerWPF.Common;
-using ModManagerWPF.Properties;
-using ModManagerWPF.Elements;
+using SAModManager.Common;
+using SAModManager.Properties;
+using SAModManager.Elements;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 using System.Windows.Media;
 using System.Windows.Data;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 	public class FormBuilder
 	{

@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Threading;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
     class Util
 	{

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ModManagerWPF.Icons
+namespace SAModManager.Icons
 {
 	public static class Icons
 	{

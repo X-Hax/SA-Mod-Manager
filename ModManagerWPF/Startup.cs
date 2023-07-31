@@ -1,6 +1,6 @@
 ﻿using ModManagerCommon;
-using ModManagerWPF.Common;
-using ModManagerWPF.Updater;
+using SAModManager.Common;
+using SAModManager.Updater;
 using NetCoreInstallChecker;
 using NetCoreInstallChecker.Structs.Config;
 using NetCoreInstallChecker.Structs.Config.Enum;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 
 	public class Startup

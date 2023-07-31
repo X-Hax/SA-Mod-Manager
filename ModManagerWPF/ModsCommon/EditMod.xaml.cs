@@ -1,7 +1,7 @@
 ﻿using IniFile;
 using ModManagerCommon;
-using ModManagerWPF.Common;
-using ModManagerWPF.Properties;
+using SAModManager.Common;
+using SAModManager.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,7 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 	/// <summary>
 	/// Interaction logic for EditMod.xaml

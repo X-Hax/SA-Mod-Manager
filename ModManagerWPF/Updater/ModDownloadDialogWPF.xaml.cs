@@ -1,6 +1,6 @@
 ﻿using ModManagerCommon;
 using ModManagerCommon.Forms;
-using ModManagerWPF.Common;
+using SAModManager.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Shell;
 
-namespace ModManagerWPF.Updater
+namespace SAModManager.Updater
 {
 	/// <summary>
 	/// Interaction logic for ModDownloadDialogWPF.xaml

@@ -1,5 +1,5 @@
 ﻿using ModManagerCommon;
-using ModManagerWPF.Common;
+using SAModManager.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,7 +19,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace ModManagerWPF.Updater
+namespace SAModManager.Updater
 {
 
 	/// <summary>

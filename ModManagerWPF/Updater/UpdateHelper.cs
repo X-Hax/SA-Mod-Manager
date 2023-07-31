@@ -1,11 +1,11 @@
 ﻿using ModManagerCommon;
-using ModManagerWPF.Common;
+using SAModManager.Common;
 using System;
 using System.IO;
 using System.Net;
 
 
-namespace ModManagerWPF.Updater
+namespace SAModManager.Updater
 {
 	public class UpdateHelper
 	{

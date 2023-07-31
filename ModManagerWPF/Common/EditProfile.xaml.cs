@@ -1,5 +1,5 @@
 ﻿using IniFile;
-using ModManagerWPF.Game;
+using SAModManager.Game;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,9 +11,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using static ModManagerWPF.MainWindow;
+using static SAModManager.MainWindow;
 
-namespace ModManagerWPF.Common
+namespace SAModManager.Common
 {
 	/// <summary>
 	/// Interaction logic for EditProfile.xaml

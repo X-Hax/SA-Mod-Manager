@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace ModManagerWPF.Updater
+namespace SAModManager.Updater
 {
 	/// <summary>
 	/// Represents the difference between two <see cref="ModManifestEntry"/>s.

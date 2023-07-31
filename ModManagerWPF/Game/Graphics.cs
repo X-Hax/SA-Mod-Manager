@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Size = System.Drawing.Size;
 
-namespace ModManagerWPF.Game
+namespace SAModManager.Game
 {
 	public class Graphics
 	{

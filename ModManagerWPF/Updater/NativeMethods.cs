@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 
-namespace ModManagerWPF.Updater
+namespace SAModManager.Updater
 {
 	public static class NativeMethods
 	{

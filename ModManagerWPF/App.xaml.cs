@@ -1,6 +1,6 @@
 ﻿using ModManagerCommon;
-using ModManagerWPF.Languages;
-using ModManagerWPF.Themes;
+using SAModManager.Languages;
+using SAModManager.Themes;
 using System;
 using System.Collections.Generic;
 using System.IO.Pipes;
@@ -21,7 +21,7 @@ using System.Windows.Input;
 using System.Globalization;
 using System.Diagnostics;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
@@ -177,7 +177,7 @@ namespace ModManagerWPF
 
 		public static async Task<bool> ExecuteDependenciesCheck()
 		{
-			return await ModManagerWPF.Startup.StartupCheck();
+			return await SAModManager.Startup.StartupCheck();
 		}
 
 		protected override async void OnStartup(StartupEventArgs e)

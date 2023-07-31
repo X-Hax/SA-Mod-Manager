@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ModManagerWPF.Common
+namespace SAModManager.Common
 {
     /// <summary>
     /// Interaction logic for InfoManagerUpdate.xaml

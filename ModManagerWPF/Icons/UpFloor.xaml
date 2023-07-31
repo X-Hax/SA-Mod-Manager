@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:local="clr-namespace:ModManagerWPF">
+					xmlns:local="clr-namespace:SAModManager">
 	<DrawingImage x:Key="IconUpFloor">
 		<DrawingImage.Drawing>
 			<DrawingGroup ClipGeometry="M0,0 V158.75 H141.11111 V0 H0 Z">

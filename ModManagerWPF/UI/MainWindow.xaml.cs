@@ -10,10 +10,10 @@ using System.Text.RegularExpressions;
 using IniFile;
 using System.Windows.Threading;
 using System.Diagnostics;
-using ModManagerWPF.Properties;
+using SAModManager.Properties;
 using System.Windows.Media;
 using System.Threading.Tasks;
-using ModManagerWPF.Common;
+using SAModManager.Common;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Security.Cryptography;
@@ -21,13 +21,13 @@ using System.Threading;
 using System.Collections.ObjectModel;
 using Keyboard = System.Windows.Input.Keyboard;
 using Key = System.Windows.Input.Key;
-using ModManagerWPF.UI;
-using ModManagerWPF.Updater;
-using ModManagerWPF.Elements;
+using SAModManager.UI;
+using SAModManager.Updater;
+using SAModManager.Elements;
 using Newtonsoft.Json.Linq;
 using SevenZipExtractor;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

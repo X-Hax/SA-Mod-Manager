@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using IniFile;
 using ModManagerCommon;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 	class SADXLoaderInfo : LoaderInfo
 	{

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 	public static class Lang
 	{

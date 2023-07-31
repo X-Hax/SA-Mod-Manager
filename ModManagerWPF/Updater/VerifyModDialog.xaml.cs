@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Threading;
 using ModManagerCommon;
 
-namespace ModManagerWPF.Updater
+namespace SAModManager.Updater
 {
 	/// <summary>
 	/// Interaction logic for VerifyModDialog.xaml

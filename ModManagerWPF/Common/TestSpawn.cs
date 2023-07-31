@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace ModManagerWPF.Common
+namespace SAModManager.Common
 {
 	public class TestSpawn
 	{

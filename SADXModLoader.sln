@@ -16,7 +16,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModLoaderCommon", "mod-load
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModManagerCommon", "mod-loader-common\ModManagerCommon\ModManagerCommon.csproj", "{4A480502-79B5-4E1E-8D67-16C514BB13CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModManagerWPF", "ModManagerWPF\ModManagerWPF.csproj", "{FF0EF90D-1AD8-4882-BA75-FBBB3EB222C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SAModManager", "ModManagerWPF\SAModManager.csproj", "{FF0EF90D-1AD8-4882-BA75-FBBB3EB222C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

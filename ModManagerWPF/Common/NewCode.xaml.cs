@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
-namespace ModManagerWPF.Common
+namespace SAModManager.Common
 {
     /// <summary>
     /// Interaction logic for NewCode.xaml

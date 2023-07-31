@@ -1,15 +1,15 @@
 ﻿using System.Windows;
 using System.Collections.Generic;
 using System.IO;
-using ModManagerWPF.Properties;
+using SAModManager.Properties;
 using IniFile;
-using ModManagerWPF;
+using SAModManager;
 using System.Runtime.CompilerServices;
 using ModManagerCommon;
 using System.Text;
 using System.Security.Permissions;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 	/// <summary>
 	/// Interaction logic for SelectDependencies.xaml

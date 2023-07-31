@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModManagerWPF.Models
+namespace SAModManager.Models
 {
     public class CodesViewModel
     {

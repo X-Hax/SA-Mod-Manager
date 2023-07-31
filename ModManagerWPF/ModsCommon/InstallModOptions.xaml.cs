@@ -1,5 +1,5 @@
 ﻿using ModManagerCommon;
-using ModManagerWPF.Common;
+using SAModManager.Common;
 using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ using System.Windows.Media.Imaging;
 
 
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 	/// <summary>
 	/// Interaction logic for NewModOptions.xaml

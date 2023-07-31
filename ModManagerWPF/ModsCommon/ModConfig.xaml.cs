@@ -1,4 +1,4 @@
-﻿using ModManagerWPF.Properties;
+﻿using SAModManager.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
 
-namespace ModManagerWPF.Common
+namespace SAModManager.Common
 {
 	/// <summary>
 	/// Interaction logic for ModConfig.xaml

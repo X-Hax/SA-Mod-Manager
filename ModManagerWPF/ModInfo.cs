@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Automation;
 
-namespace ModManagerWPF
+namespace SAModManager
 {
 	public class SADXModInfo : ModInfo
 	{

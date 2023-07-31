@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ModManagerWPF.Languages
+namespace SAModManager.Languages
 {
 	public class LangEntry
 	{

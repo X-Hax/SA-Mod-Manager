@@ -10,7 +10,7 @@ using Gu.Wpf.NumericInput;
 using ModManagerCommon;
 using System.Reflection;
 
-namespace ModManagerWPF.Elements
+namespace SAModManager.Elements
 {
 	public partial class NumericUpDown : TextBox
 	{

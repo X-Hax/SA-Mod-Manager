@@ -10,9 +10,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Xceed.Wpf.Toolkit.Primitives;
-using static ModManagerWPF.MainWindow;
+using static SAModManager.MainWindow;
 
-namespace ModManagerWPF.Common
+namespace SAModManager.Common
 {
 	/// <summary>
 	/// Interaction logic for ModProfile.xaml

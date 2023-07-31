@@ -10,7 +10,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using IniFile;
 
-namespace ModManagerWPF.Updater
+namespace SAModManager.Updater
 {
 	public class ModUpdater
 	{
