@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System;
 using Gu.Wpf.NumericInput;
 using ModManagerCommon;
+using System.Reflection;
 
 namespace ModManagerWPF.Elements
 {
@@ -17,6 +18,8 @@ namespace ModManagerWPF.Elements
 		private RepeatButton incrementButton;
 		private RepeatButton decrementButton;
 		private TextBox textBox;
+		private bool incrementLoaded = false;
+		private bool decrementLoaded = false;
 		#endregion
 
 		public enum DataType
@@ -78,13 +81,22 @@ namespace ModManagerWPF.Elements
 		{
 			incrementButton = Template.FindName("IncrementUp", this) as RepeatButton;
 			decrementButton = Template.FindName("IncrementDown", this) as RepeatButton;
-			textBox = Template.FindName("NumValue", this) as TextBox;
 
 			if (incrementButton != null)
-				incrementButton.Click += IncrementUp_Click;
+				if (!incrementLoaded)
+				{
+					incrementButton.Click += IncrementUp_Click;
+					incrementLoaded = true;
+				}
 
 			if (decrementButton != null)
-				decrementButton.Click += IncrementDown_Click;
+				if (!decrementLoaded)
+				{
+					decrementButton.Click += IncrementDown_Click;
+					decrementLoaded = true;
+				}
+
+			textBox = Template.FindName("NumValue", this) as TextBox;
 
 			Binding textBinding = new Binding("Value")
 			{
