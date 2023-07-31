@@ -133,11 +133,11 @@ struct Mod
 	const ModDepsList Dependencies;
 
 	template <typename T>
-	T* GetDllExport(const char* name)
+	T GetDllExport(const char* name) const
 	{
 		if (!DLLHandle)
 			return nullptr;
-		return reinterpret_cast<T*>(GetProcAddress(DLLHandle, name));
+		return reinterpret_cast<T>(GetProcAddress(DLLHandle, name));
 	}
 };
 
