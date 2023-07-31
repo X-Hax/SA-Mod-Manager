@@ -2459,21 +2459,22 @@ namespace SAModManager
 
 			foreach (var mod in ViewModel.Modsdata)
 			{
-				if (mod.Name.ToLowerInvariant().Contains(text) || mod.Author.ToLowerInvariant().Contains(text))
+				if (mod.Name.ToLowerInvariant().Contains(text) || mod.Author is not null && mod.Author.ToLowerInvariant().Contains(text))
 				{
 					ViewModel.ModsSearch.Add(mod); // Add filtered items to the ModsSearch collection.
 				}
 			}
 
 			string path = BindingOperations.GetBinding(listMods, ListView.ItemsSourceProperty).Path.Path;
-			string newPath = text.Length == 0 ? "ViewModel.Modsdata" : "ModsSearch";
+			string newPath = text.Length == 0 ? "Modsdata" : "ModsSearch";
 
 			if (path != newPath)
 			{
-				Binding binding = new Binding
+				Binding binding = new()
 				{
 					Path = new PropertyPath(newPath)
 				};
+
 				listMods.SetBinding(ListView.ItemsSourceProperty, binding);
 				listMods.SetValue(GongSolutions.Wpf.DragDrop.DragDrop.IsDragSourceProperty, text.Length == 0 ? true : false);
 				listMods.SetValue(GongSolutions.Wpf.DragDrop.DragDrop.IsDropTargetProperty, text.Length == 0 ? true : false);
