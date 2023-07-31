@@ -387,24 +387,6 @@ namespace SAModManager
 				settings.SetPropertyValue(info.groupName, info.propertyName, box.Value.ToString());
 		}
 
-		private static void ModSetting_intElementChanged(object sender, RoutedEventArgs e)
-		{
-			IntegerUpDown number = (IntegerUpDown)sender;
-
-			var info = number.Tag as CustomPropertyStore;
-			if (info != null)
-				settings.SetPropertyValue(info.groupName, info.propertyName, number.Value.ToString());
-		}
-
-		private static void ModSetting_floatElementChanged(object sender, RoutedEventArgs e)
-		{
-			DecimalUpDown number = (DecimalUpDown)sender;
-
-			var info = number.Tag as CustomPropertyStore;
-			if (info != null)
-				settings.SetPropertyValue(info.groupName, info.propertyName, number.Value.ToString());
-		}
-
 		private static void ModSetting_stringElementChanged(object sender, RoutedEventArgs e)
 		{
 			TextBox text = (TextBox)sender;
