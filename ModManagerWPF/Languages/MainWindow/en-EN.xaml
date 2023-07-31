@@ -44,7 +44,8 @@
 	<!--Graphics Tab Strings-->
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display">Display Options</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Screen">Screen:</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolution:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolution:</system:String>	
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Settings">Settings</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Force 4:3 Aspect Ratio</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Enable V-Sync</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pause When Inactive</system:String>
