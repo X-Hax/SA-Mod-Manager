@@ -8,10 +8,16 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
 using System.Threading;
+using Microsoft.Win32;
+using System.Text.RegularExpressions;
+using SAModManager.Common;
+using SAModManager.Updater;
+using System.Diagnostics;
+using SevenZipExtractor;
 
 namespace SAModManager
 {
-    class Util
+	class Util
 	{
 		private static double multiplier;
 
@@ -34,7 +40,7 @@ namespace SAModManager
 					}
 					Thread.Sleep(1000);
 					failSafe++;
-				} while(!File.Exists(dest));
+				} while (!File.Exists(dest));
 
 
 				File.Delete(origin);
@@ -54,13 +60,13 @@ namespace SAModManager
 			foreach (FileInfo file in sourceDirectory.GetFiles())
 			{
 				string destinationFilePath = Path.Combine(dest, file.Name);
-				if (dllCheck) 
+				if (dllCheck)
 				{
 					string ext = Path.GetExtension(destinationFilePath);
 					if (ext.ToLower() == ".dll")
 						file.CopyTo(destinationFilePath, true);
 				}
-				
+
 			}
 
 			foreach (DirectoryInfo subDir in sourceDirectory.GetDirectories())
@@ -96,6 +102,30 @@ namespace SAModManager
 			return (int)(value * 100);
 		}
 
+		public async static Task<string> GetSADXGamePath()
+		{
+			//Look for the steam version..
+			var fullPath = Steam.GetGamePath(GamesInstall.SonicAdventure, true);
 
+			if (Directory.Exists(fullPath))
+			{
+				//if steam version is found, but not converted to 2004, ask the user to convert it.
+				if (File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[1])) && !File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[0])))
+				{
+					var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+					msg.ShowDialog();
+
+					if (msg.isYes)
+					{
+						await GamesInstall.GetSADXModInstaller();
+
+					}
+
+					return null;
+				}
+			}
+
+			return fullPath;
+		}
 	}
 }

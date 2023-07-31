@@ -126,7 +126,7 @@ namespace SAModManager
 			}
 		}
 
-		private void SetGamePath(string path)
+		private async void SetGamePath(string path)
 		{
 			if (Directory.Exists(path))
 			{
@@ -137,6 +137,15 @@ namespace SAModManager
 				if (File.Exists(exeName)) //if current game path is wrong, check if the Mod Manager didn't get put in the game folder just in case.
 				{
 					gamePath = Directory.GetCurrentDirectory();
+				}
+				else
+				{
+					//if none of the conditions are respected, try to look for sadx folder
+					var fullPath = await Util.GetSADXGamePath();
+					if (fullPath is not null)
+					{
+						gamePath = fullPath;
+					}
 				}
 			}
 		}
@@ -1697,6 +1706,7 @@ namespace SAModManager
 					UpdatePathsStringsInfo();
 					Refresh();
 					SetLoaderFile();
+					InstallLoader(true);
 				}
 				else
 				{
@@ -1727,12 +1737,14 @@ namespace SAModManager
 				imgInstall.Source = Icon;
 		}
 
-		private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
+		private void InstallLoader(bool force = false)
 		{
-			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
+			if (installed && force)
 			{
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-				return;
+				File.Delete(datadllpath);
+				Util.MoveFile(datadllorigpath, datadllpath);
+
+				installed = false;
 			}
 
 			if (installed)
@@ -1751,14 +1763,21 @@ namespace SAModManager
 			installed = !installed;
 			UpdateBtnInstallLoader_State();
 			Update_PlayButtonsState();
-			Button button = (Button)sender;
-			button.IsEnabled = false;
-			int delayDuration = 2000;
-			await Task.Delay(delayDuration);
+		}
 
-			button.IsEnabled = true;
+		private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
+		{
+			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
+			{
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				return;
+			}
 
-
+			InstallLoader();
+			btnBrowseGameDir.IsEnabled = false;
+			Save();
+			await Task.Delay(2000);
+			btnBrowseGameDir.IsEnabled = true;
 		}
 
 		private void btnSource_Click(object sender, RoutedEventArgs e)
@@ -1897,6 +1916,9 @@ namespace SAModManager
 
 		private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
 		{
+			if (!installed)
+				return;
+
 			new ModProfile(ref comboProfile).ShowDialog();
 		}
 
@@ -2745,7 +2767,7 @@ namespace SAModManager
 		}
 
 		#region App Launcher
-		private async void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
+		private void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
 		{
 			Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
 			var DL = new GenericDownloadDialog(uri, "App Launcher", "AppLauncher.7z", true);
@@ -2756,14 +2778,12 @@ namespace SAModManager
 			{
 				try
 				{
-					using (ArchiveFile archiveFile = new("AppLauncher.7z"))
-					{
-						archiveFile.Extract(Environment.CurrentDirectory);
-						btnOpenAppLauncher.IsEnabled = true;
-						btnOpenAppLauncher.Opacity = 1;
-						btnGetAppLauncher.Opacity = LowOpacityBtn;
-						btnGetAppLauncher.IsEnabled = false;
-					}
+					using ArchiveFile archiveFile = new("AppLauncher.7z");
+					archiveFile.Extract(Environment.CurrentDirectory);
+					btnOpenAppLauncher.IsEnabled = true;
+					btnOpenAppLauncher.Opacity = 1;
+					btnGetAppLauncher.Opacity = LowOpacityBtn;
+					btnGetAppLauncher.IsEnabled = false;
 				}
 				catch
 				{
@@ -2830,6 +2850,9 @@ namespace SAModManager
 							iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
 							btnOneClick.Opacity = LowOpacityBtn;
 						}
+
+						pathManagerKey.Close();
+						sammKey.Close();
 					}
 				}
 			}
@@ -2854,10 +2877,7 @@ namespace SAModManager
 				btnOneClick.Opacity = LowOpacityBtn;
 
 			}
-			catch
-			{
-
-			}
+			catch { }
 		}
 
 		#endregion

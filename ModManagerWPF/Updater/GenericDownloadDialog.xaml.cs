@@ -54,7 +54,6 @@ namespace SAModManager.Updater
 				}
 				catch { }
 			}
-
 		}
 
 		private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -73,13 +72,13 @@ namespace SAModManager.Updater
 
 			});
 
-			await Task.Delay(500);
+
 			if (File.Exists(fileName) && !defaultFolder) 
 			{ 
-				Util.MoveFile(fileName, Path.Combine(dest, fileName));
+				File.Move(fileName, Path.Combine(dest, fileName));
 			}
 
-			await Task.Delay(1000);
+			await Task.Delay(3000);
 			Application.Current.Dispatcher.Invoke(() =>
 			{
 				DialogResult = true;
