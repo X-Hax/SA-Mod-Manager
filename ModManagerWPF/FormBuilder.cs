@@ -19,6 +19,7 @@ using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 using System.Windows.Media;
 using System.Windows.Data;
+using System.Windows.Media.Animation;
 
 namespace SAModManager
 {
@@ -64,7 +65,6 @@ namespace SAModManager
 
 			return members;
 		}
-
 
 		public static UIElement CreateComboBox(ConfigSchemaProperty property, List<ConfigSchemaEnum> enums, CustomPropertyStore storeInfo)
 		{
@@ -152,9 +152,10 @@ namespace SAModManager
 				HorizontalAlignment = HorizontalAlignment.Right,
 				//MinValue = (double)storeInfo.GetConfigMinValue(),
 				//MaxValue = (double)storeInfo.GetConfigMaxValue(),
+				Tag = storeInfo
 			};
 
-			//element.ValueChanged += ModSetting_intElementChanged;
+			element.ValueChanged += ModSetting_NumericElementChanged;
 			panel.Children.Add(element);
 
 			Grid.SetColumn(panel.Children[0], 0);
@@ -329,7 +330,6 @@ namespace SAModManager
 
 			return stack;
 		}
-
 		#endregion
 
 		#region Mod Config Description
@@ -374,10 +374,17 @@ namespace SAModManager
 		{
 			CheckBox chk = (CheckBox)sender;
 			var info = chk.Tag as CustomPropertyStore;
-			if (info != null) 
-			{
+			if (info != null)
 				settings.SetPropertyValue(info.groupName, info.propertyName, chk.IsChecked.Value.ToString());
-			}
+		}
+
+		private static void ModSetting_NumericElementChanged(object sender, RoutedEventArgs e)
+		{
+			NumericUpDown box = (NumericUpDown)sender;
+
+			var info = box.Tag as CustomPropertyStore;
+			if ( info != null )
+				settings.SetPropertyValue(info.groupName, info.propertyName, box.Value.ToString());
 		}
 
 		private static void ModSetting_intElementChanged(object sender, RoutedEventArgs e)
@@ -386,9 +393,7 @@ namespace SAModManager
 
 			var info = number.Tag as CustomPropertyStore;
 			if (info != null)
-			{
 				settings.SetPropertyValue(info.groupName, info.propertyName, number.Value.ToString());
-			}
 		}
 
 		private static void ModSetting_floatElementChanged(object sender, RoutedEventArgs e)
@@ -397,9 +402,7 @@ namespace SAModManager
 
 			var info = number.Tag as CustomPropertyStore;
 			if (info != null)
-			{
 				settings.SetPropertyValue(info.groupName, info.propertyName, number.Value.ToString());
-			}
 		}
 
 		private static void ModSetting_stringElementChanged(object sender, RoutedEventArgs e)
@@ -408,9 +411,7 @@ namespace SAModManager
 
 			var info = text.Tag as CustomPropertyStore;
 			if (info != null)
-			{
 				settings.SetPropertyValue(info.groupName, info.propertyName, text.Text);
-			}
 		}
 
 		#endregion

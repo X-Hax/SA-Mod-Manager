@@ -66,6 +66,15 @@ namespace SAModManager.Elements
 		public static readonly DependencyProperty MinValueProperty =
 			DependencyProperty.Register("MinValue", typeof(double), typeof(NumericUpDown), new PropertyMetadata(double.NegativeInfinity));
 
+		public RoutedEventHandler ValueChanged
+		{
+			get { return (RoutedEventHandler)GetValue(ValueChangedProperty); }
+			set { SetValue(ValueChangedProperty, value); }
+		}
+
+		public static readonly DependencyProperty ValueChangedProperty =
+			DependencyProperty.Register("ValueChanged", typeof(RoutedEventHandler), typeof(NumericUpDown));
+
 		#endregion
 
 		public NumericUpDown()
@@ -127,6 +136,8 @@ namespace SAModManager.Elements
 				else if (newValue > max)
 					textBox.Value = max;
 			}
+
+			textBox.ValueChanged?.Invoke(textBox, new RoutedEventArgs());
 		}
 
 		private void NumValue_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
