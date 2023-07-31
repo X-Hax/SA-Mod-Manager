@@ -18,7 +18,7 @@ namespace ModManagerWPF.Updater
 	{
 		private readonly string modPath;
 		private readonly string manifestPath;
-		private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
+		private readonly CancellationTokenSource tokenSource = new();
 
 		private List<ModManifestEntry> manifest;
 		public List<ModManifestDiff> Diff { get; private set; }

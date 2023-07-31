@@ -142,7 +142,7 @@ namespace ModManagerWPF.Updater
 			Close();
 		}
 
-		private void RemoveEmptyDirectories(IEnumerable<ModManifestEntry> oldManifest, IEnumerable<ModManifestEntry> newManifest)
+		private static void RemoveEmptyDirectories(IEnumerable<ModManifestEntry> oldManifest, IEnumerable<ModManifestEntry> newManifest)
 		{
 			foreach (string dir in ModManifest.GetOldDirectories(oldManifest, newManifest))
 			{

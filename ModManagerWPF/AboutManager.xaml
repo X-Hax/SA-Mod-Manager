@@ -69,6 +69,7 @@
                     <Label Content="Jesus__PK" Foreground="White"/>
                     <Label Content="Raphael Drew Boltman"/>
                     <Label Content="Henrykado"/>
+                    <Label Content="TimTH"/>
 
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="5,0,0,0">
@@ -78,6 +79,7 @@
  
                     <Label Content="Portuguese (Portugal) translation"/>
                     <Label Content="Portuguese (Brazil) translation"/>
+                    <Label Content="Russian translation"/>
 
                 </StackPanel>
             </Grid>
