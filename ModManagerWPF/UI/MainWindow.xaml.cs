@@ -333,10 +333,8 @@ namespace SAModManager
 			chkUpdatesML.IsChecked = loaderini.UpdateCheck;
 			chkUpdatesMods.IsChecked = loaderini.ModUpdateCheck;
 
-			suppressEvent = true;
 			chkRatio.IsChecked = loaderini.ForceAspectRatio;
 			checkUIScale.IsChecked = loaderini.ScaleHud;
-			suppressEvent = false;
 
 			comboBGFill.SelectedIndex = loaderini.BackgroundFillMode;
 			comboFMVFill.SelectedIndex = loaderini.FmvFillMode;
@@ -350,6 +348,8 @@ namespace SAModManager
 
 			comboScreen.SelectedIndex = screenNum;
 			chkBorderless.IsChecked = txtCustomResY.IsEnabled = chkMaintainRatio.IsEnabled = loaderini.CustomWindowSize;
+			chkCustomWinSize.IsChecked = loaderini.CustomWindowSize;
+			chkMaintainRatio.IsChecked = loaderini.MaintainWindowAspectRatio;
 			txtCustomResX.IsEnabled = loaderini.CustomWindowSize && !loaderini.MaintainWindowAspectRatio;
 			System.Drawing.Rectangle rect = graphics.GetRectangleStruct();
 
