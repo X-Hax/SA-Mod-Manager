@@ -102,8 +102,6 @@ ThiscallFunctionPointer(unsigned int, WMPInfo__Open, (WMPInfo *, const wchar_t *
 ThiscallFunctionPointer(WMPInfo *, WMPInfo__WMPInfo, (WMPInfo *), 0x411970);
 FunctionPointer(int, sub_40FF10, (), 0x40FF10);
 FunctionPointer(void, sub_423890, (int), 0x423890);
-FunctionPointer(struc_64 *, MDHeaderOpen, (LPCSTR, int), 0x4B4D10);
-FunctionPointer(void, MDHeaderClose, (struc_64* bank), 0x4B4F50);
 FunctionPointer(void *, _alloc, (int), 0x4D41C0);
 
 /**

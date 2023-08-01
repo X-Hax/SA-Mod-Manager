@@ -531,7 +531,7 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 	const char* path2 = sadx_fileMap.replaceFile(bankpath);
 
 	// Load the original soundbank.
-	struc_64* originalbank = MDHeaderOpen(path2, 1);
+	struc_64* originalbank = (struc_64*)MDHeaderOpen(path2, 1);
 	if (!originalbank)
 		return NULL;
 	// Sound ID in the soundbank
@@ -617,7 +617,7 @@ struc_64* LoadSoundPackFromFile(const char* bankpath, int bank)
 		ptr += ent.DataLength;
 	}
 
-	MDHeaderClose(originalbank);
+	MDHeaderClose((MDHANDLE*)originalbank);
 	return result;
 }
 
@@ -665,7 +665,7 @@ void __cdecl LoadSoundList_r(signed int soundlist)
 								continue;
 							}
 							sub_423890(v2->Bank);
-							MDHeaderClose(dword_3B291C8[v2->Bank]);
+							MDHeaderClose((MDHANDLE*)dword_3B291C8[v2->Bank]);
 							dword_3B291C8[v2->Bank] = nullptr;
 						}
 						snprintf(String1, sizeof(String1), "SYSTEM\\SoundData\\SE\\%s.dat", v2->Filename);
