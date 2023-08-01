@@ -657,12 +657,12 @@ namespace SAModManager
 			else
 			{
 
-				var error0 = Lang.GetString("MessageWindow.Errors.ModFailedVerif")
-	+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: {x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged)}" + Lang.GetString("MessageWindow.Errors.ModFailedVerif1"))
-	+ Lang.GetString("MessageWindow.Errors.ModFailedVerif2"));
+				var error = Lang.GetString("MessageWindow.Errors.ModFailedVerif0")
+	+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: " + Util.GetFileCountString(x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged), "MessageWindow.Errors.ModFailedVerif1")))
+						+ Lang.GetString("MessageWindow.Errors.ModFailedVerif2");
 
 
-				var result = new MessageWindow(Lang.GetString("MessageWindow.Errors.ModFailedVerif.Title"), error0, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
+				var result = new MessageWindow(Lang.GetString("MessageWindow.Errors.ModFailedVerif.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
 				result.ShowDialog();
 
 				if (result.isYes != true)

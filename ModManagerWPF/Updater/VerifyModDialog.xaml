@@ -22,6 +22,6 @@
         <TextBlock x:Name="HeaderTxt" Text="Header" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Margin="20,0,20,0" Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
         <TextBlock x:Name="TxtProgress" Text="Progress.." FontSize="17"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Margin="20,0,20,0" Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
         <ProgressBar x:Name="Progress" Grid.Row="2"  Margin="20"/>
-        <Button Grid.Row="3" Content="{StaticResource BtnCancel}" Margin="0,0,15,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Height="23" IsCancel="True" Click="CancelButton_Click" />
+        <Button Grid.Row="3" Content="{StaticResource CommonStrings.Cancel}" Margin="0,0,15,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Height="23" IsCancel="True" Click="CancelButton_Click" />
     </Grid>
 </Window>

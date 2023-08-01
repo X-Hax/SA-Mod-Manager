@@ -102,6 +102,12 @@ namespace SAModManager
 			return (int)(value * 100);
 		}
 
+		public static string GetFileCountString(int fileCount, string s)
+		{
+			string fileString = Lang.GetString(s);
+			return $"{fileCount} {fileString}";
+		}
+
 		public async static Task<string> GetSADXGamePath()
 		{
 			//Look for the steam version..
