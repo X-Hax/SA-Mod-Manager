@@ -214,6 +214,17 @@ namespace SAModManager
 			timer.Tick += SetModManagerVersion;
 			timer.IsEnabled = true;
 			new OneClickInstall(updatePath, modDirectory);
+
+			CheckForModUpdates();
+
+			// If we've checked for updates, save the modified
+			// last update times without requiring the user to
+			// click the save button.
+			if (checkedForUpdates)
+			{
+				IniSerializer.Serialize(loaderini, loaderinipath);
+			}
+
 		}
 
 		private void MainForm_FormClosing(object sender, EventArgs e)
@@ -2364,8 +2375,8 @@ namespace SAModManager
 
 			if (CheckForUpdates(true))
 			{
-				Updater.UpdateHelper.DoUpdates(updatePath);
-				return;
+				//UpdateHelper.DoModManagerUpdate(updatePath);
+				//return;
 			}
 
 			manualModUpdate = true;
