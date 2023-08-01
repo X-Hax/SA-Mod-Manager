@@ -1,23 +1,11 @@
-﻿using ModManagerCommon.Forms;
-using ModManagerCommon;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using SAModManager.Themes;
-using System.Drawing;
-using System.Windows.Media;
-using System.Linq;
-using System.Windows.Documents;
-using System.Security.Policy;
-using Octokit;
-using System.Xml.Linq;
 using System.IO;
 using SAModManager.Common;
-using System.Windows.Interop;
 using System.Diagnostics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Threading;
 using System.Threading.Tasks;
 using SAModManager.Updater;
 

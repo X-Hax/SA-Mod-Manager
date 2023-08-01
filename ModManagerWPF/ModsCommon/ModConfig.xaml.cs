@@ -109,7 +109,7 @@ namespace SAModManager.Common
 			configfilename = Path.Combine(path, "config.ini");
 
 			if (File.Exists(configfilename))
-				configINI = IniFile.IniFile.Load(configfilename);
+				configINI = Ini.IniFile.Load(configfilename);
 			else
 				configINI = new Dictionary<string, Dictionary<string, string>>();
 
@@ -136,7 +136,7 @@ namespace SAModManager.Common
 					configINI.Remove(group.Name);
 			}
 
-			IniFile.IniFile.Save(configINI, configfilename);
+			Ini.IniFile.Save(configINI, configfilename);
 		}
 
 		public void ResetValues()

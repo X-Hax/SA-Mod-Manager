@@ -1,9 +1,7 @@
-﻿using ModManagerCommon;
-using SAModManager.Common;
+﻿using SAModManager.Common;
 using System;
 using System.IO;
 using System.Net;
-
 
 namespace SAModManager.Updater
 {

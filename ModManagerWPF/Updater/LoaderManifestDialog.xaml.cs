@@ -1,5 +1,4 @@
-﻿using ModManagerCommon;
-using SAModManager.Common;
+﻿using SAModManager.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

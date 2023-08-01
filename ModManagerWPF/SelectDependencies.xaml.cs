@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using SAModManager.Properties;
-using IniFile;
-using SAModManager;
-using System.Runtime.CompilerServices;
-using ModManagerCommon;
 using System.Text;
-using System.Security.Permissions;
+using SAModManager.Ini;
+using SAModManager.ModsCommon;
 
 namespace SAModManager
 {

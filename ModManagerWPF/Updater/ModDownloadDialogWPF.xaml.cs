@@ -1,14 +1,10 @@
-﻿using ModManagerCommon;
-using ModManagerCommon.Forms;
-using SAModManager.Common;
+﻿using SAModManager.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Shell;
 
 namespace SAModManager.Updater
 {

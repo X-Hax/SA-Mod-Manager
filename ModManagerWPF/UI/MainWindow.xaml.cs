@@ -2,12 +2,10 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ModManagerCommon;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
-using IniFile;
 using System.Windows.Threading;
 using System.Diagnostics;
 using SAModManager.Properties;
@@ -18,14 +16,13 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Security.Cryptography;
 using System.Threading;
-using System.Collections.ObjectModel;
 using Keyboard = System.Windows.Input.Keyboard;
 using Key = System.Windows.Input.Key;
 using SAModManager.UI;
 using SAModManager.Updater;
 using SAModManager.Elements;
-using Newtonsoft.Json.Linq;
 using SevenZipExtractor;
+using SAModManager.Ini;
 
 namespace SAModManager
 {
