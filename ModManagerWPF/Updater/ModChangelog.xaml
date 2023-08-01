@@ -80,17 +80,19 @@
 											<ColumnDefinition Width="*"/>
 										</Grid.ColumnDefinitions>
 
-										<Label Content="{DynamicResource ModChangelog.Tabs.Details.PublishedDate}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+                                    
+                                        <Label Content="{DynamicResource ModChangelog.Tabs.Details.PublishedDate}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
 										<Label Content="{DynamicResource ModChangelog.Tabs.Details.FileSize}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
 										<Label Content="{DynamicResource ModChangelog.Tabs.Details.FileCount}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
 										<Label Content="{DynamicResource ModChangelog.Tabs.Details.UpdateName}" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
 										<Label Content="{DynamicResource ModChangelog.Tabs.Details.Tag}" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-										<wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="BtnOpenUpdate" 
+                                    
+                                        <wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="BtnOpenUpdate" 
 														 Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
 														 Content="{DynamicResource ModChangelog.Tabs.Details.Buttons.OpenBrowser}"
-														 Icon="{StaticResource Icons.Open}"/>
-
-										<TextBlock x:Name="PublishedDate" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+														 Icon="{StaticResource Icons.Open}" Click="BtnOpenUpdate_Click" />
+                                      
+                                        <TextBlock x:Name="PublishedDate" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
 										<TextBlock x:Name="FileSize" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
 										<TextBlock x:Name="FileCount" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
 										<TextBlock x:Name="UpdateName" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
@@ -101,21 +103,21 @@
 						</TabItem>
                         <TabItem x:Name="tabPageFiles" Header="{DynamicResource ModChangelog.Tabs.Files}">
 							<Grid x:Name="UpdateFiles" Margin="3">
-								<ListView x:Name="FilesList" Margin="5">
+                                <ListView x:Name="FilesList" Margin="5" ItemsSource="{Binding modchangeData}">
 									<ListView.View>
 										<GridView>
 											<GridView.Columns>
 												<GridViewColumn Header="{DynamicResource ModChangelog.Tabs.Files.Filename}" Width="350" >
 													<GridViewColumn.CellTemplate>
 														<DataTemplate>
-															<TextBlock/>
-														</DataTemplate>
+                                                            <TextBlock x:Name="fileNameText" Text="{Binding filename}" />
+                                                        </DataTemplate>
 													</GridViewColumn.CellTemplate>
 												</GridViewColumn>
 												<GridViewColumn Header="{DynamicResource ModChangelog.Tabs.Files.Status}" Width="150">
 													<GridViewColumn.CellTemplate>
 														<DataTemplate>
-															<TextBlock/>
+                                                            <TextBlock x:Name="statusText" Text="{Binding status}" />
 														</DataTemplate>
 													</GridViewColumn.CellTemplate>
 												</GridViewColumn>
