@@ -8,6 +8,7 @@ If you need any help, check the [SADX Modding wiki.](https://github.com/X-Hax/SA
 To use SADX Mod Loader, you must have:
 * Sonic Adventure DX PC, 2004 version (US release)
 * Windows 7 or later
+* .NET Desktop Runtime 7.0
 
 ## License
 
