@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SAModManager.Common"
         mc:Ignorable="d" Style="{StaticResource SAWindow}"
         WindowStartupLocation="CenterScreen"
-        Title="{DynamicResource InfoManagerUpdate.Title}" Height="350" Width="300">
+        Title="{DynamicResource InfoManagerUpdate.Title}" Height="350" Width="400">
     <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -41,7 +41,7 @@
 				<ColumnDefinition Width="10"/>
 			</Grid.ColumnDefinitions>
 			<Button x:Name="DownloadUpdate" Content="{DynamicResource CommonStrings.Download}"/>
-			<Button x:Name="CancelUpdate" Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="2"/>
+			<Button x:Name="CancelUpdate" IsCancel="True" Click="CancelUpdate_Click" Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="2"/>
 		</Grid>
     </Grid>
 </Window>
