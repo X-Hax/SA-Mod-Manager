@@ -75,18 +75,31 @@ namespace SAModManager
 			DialogResult = true;
 		}
 
-
-
-		//to do add extension support
 		public void InstallModOptionsArchive(string[] path, string root)
 		{
+			var tempFolder = Path.Combine(root, ".SATemp");
+			if (!Directory.Exists(tempFolder))
+			{
+				Directory.CreateDirectory(tempFolder);
+			}
+
 			foreach (string file in path)
 			{
 				try
 				{
 					using (ArchiveFile archiveFile = new(file))
 					{
-						archiveFile.Extract(root);
+						archiveFile.Extract(tempFolder);
+					}
+
+					//if the mod archive doesn't have a folder as a container, create one and move the files inside.
+					if (File.Exists(Path.Combine(tempFolder, "mod.ini"))) 
+					{ 
+						var newModPath = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(file));
+						Directory.CreateDirectory(newModPath);
+
+						if (Util.MoveAllFilesAndSubfolders(tempFolder, newModPath, newModPath))
+							Directory.Move(newModPath, Path.Combine(root, Path.GetFileNameWithoutExtension(file)));
 					}
 				}
 				catch
@@ -94,6 +107,9 @@ namespace SAModManager
 					throw new Exception("Failed to install one mod.");
 				}
 			}
+
+			if (Directory.Exists(tempFolder))
+				Directory.Delete(tempFolder, true);
 
 			((MainWindow)App.Current.MainWindow).Save();
 		}

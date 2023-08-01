@@ -108,30 +108,63 @@ namespace SAModManager
 			return $"{fileCount} {fileString}";
 		}
 
-		public async static Task<string> GetSADXGamePath()
+		public static bool MoveAllFilesAndSubfolders(string sourceFolderPath, string destinationFolderPath, string exception = null)
 		{
-			//Look for the steam version..
-			var fullPath = Steam.GetGamePath(GamesInstall.SonicAdventure, true);
-
-			if (Directory.Exists(fullPath))
+			// Move all files in the current folder to the destination subfolder
+			string[] files = Directory.GetFiles(sourceFolderPath);
+			foreach (string file in files)
 			{
-				//if steam version is found, but not converted to 2004, ask the user to convert it.
-				if (File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[1])) && !File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[0])))
-				{
-					var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-					msg.ShowDialog();
+				if (exception.ToLower().Contains(file.ToLower()))
+					continue;
 
-					if (msg.isYes)
-					{
-						await GamesInstall.GetSADXModInstaller();
+				string fileName = Path.GetFileName(file);
+				string destinationFilePath = Path.Combine(destinationFolderPath, fileName);
 
-					}
-
-					return null;
-				}
+				File.Move(file, destinationFilePath);
 			}
 
-			return fullPath;
+			// Move all subfolders in the current folder to the destination subfolder
+			string[] subfolders = Directory.GetDirectories(sourceFolderPath);
+			foreach (string subfolder in subfolders)
+			{
+				if (exception.ToLower().Contains(subfolder.ToLower()))
+					continue;
+
+				string subfolderName = Path.GetFileName(subfolder);
+				string destinationSubfolderPath = Path.Combine(destinationFolderPath, subfolderName);
+
+				// Recursively move the subfolder and its contents to the destination subfolder
+				Directory.Move(subfolder, destinationSubfolderPath);
+			}
+
+			return true;
 		}
+	
+
+	public async static Task<string> GetSADXGamePath()
+	{
+		//Look for the steam version..
+		var fullPath = Steam.GetGamePath(GamesInstall.SonicAdventure, true);
+
+		if (Directory.Exists(fullPath))
+		{
+			//if steam version is found, but not converted to 2004, ask the user to convert it.
+			if (File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[1])) && !File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[0])))
+			{
+				var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+				msg.ShowDialog();
+
+				if (msg.isYes)
+				{
+					await GamesInstall.GetSADXModInstaller();
+
+				}
+
+				return null;
+			}
+		}
+
+		return fullPath;
 	}
+}
 }

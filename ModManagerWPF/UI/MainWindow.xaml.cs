@@ -762,10 +762,12 @@ namespace SAModManager
 			switch (choice)
 			{
 				case (int)InstallModOptions.Type.ModArchive:
-					var archiveFile = new System.Windows.Forms.OpenFileDialog();
-					archiveFile.Multiselect = true;
+					var archiveFile = new System.Windows.Forms.OpenFileDialog
+					{
+						Multiselect = true,
 
-					archiveFile.Filter = "archive files|*.zip;*.7z;*.rar;*.tar";
+						Filter = "archive files|*.zip;*.7z;*.rar;*.tar"
+					};
 					System.Windows.Forms.DialogResult result_ = archiveFile.ShowDialog();
 
 					if (result_ == System.Windows.Forms.DialogResult.OK)
