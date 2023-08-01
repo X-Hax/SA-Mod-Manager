@@ -808,7 +808,7 @@ static void GetReplaceTextures(const char* filename, unordered_map<string, TexRe
 			for (const auto& iter2 : *repiter->second)
 			{
 				const auto& iter3 = replacements.find(iter2.first);
-				if (iter3 == replacements.end() || iter3->second.mod_index <= iter2.second.mod_index)
+				if (iter3 == replacements.end() || iter3->second.mod_index < iter2.second.mod_index)
 					replacements[iter2.first] = iter2.second;
 			}
 	}
