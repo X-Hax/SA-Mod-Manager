@@ -1434,7 +1434,7 @@ static void __cdecl InitMods()
 
 		if (!f_mod_ini)
 		{
-			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", mod_dirA.c_str());
+			PrintDebug("Could not open file mod.ini in \"%s\".\n", mod_dirA.c_str());
 			errors.emplace_back(mod_dir, L"mod.ini missing");
 			continue;
 		}
@@ -1517,7 +1517,7 @@ static void __cdecl InitMods()
 			const IniGroup* group = ini_mod->getGroup("CharacterWelds");
 			auto data = group->data();
 			for (const auto& iter : *data)
-				RegisterCharacterWelds(ParseCharacter(iter.first), iter.second.c_str());
+				RegisterCharacterWelds(ParseCharacter(iter.first), (mod_dirA + "\\" + iter.second).c_str());
 		}
 
 		// Check for SYSTEM replacements.
