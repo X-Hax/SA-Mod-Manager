@@ -1,6 +1,7 @@
-﻿using IniFile;
-using ModManagerCommon;
+﻿
 using SAModManager.Common;
+using SAModManager.Ini;
+using SAModManager.ModsCommon;
 using SAModManager.Properties;
 using System;
 using System.Collections.Generic;

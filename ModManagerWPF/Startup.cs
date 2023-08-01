@@ -1,5 +1,4 @@
-﻿using ModManagerCommon;
-using SAModManager.Common;
+﻿using SAModManager.Common;
 using SAModManager.Updater;
 using NetCoreInstallChecker;
 using NetCoreInstallChecker.Structs.Config;
@@ -8,12 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
-using System.Security.Policy;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace SAModManager
 {

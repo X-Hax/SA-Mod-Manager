@@ -1,15 +1,10 @@
-﻿using IniFile;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.IO;
-
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using Xceed.Wpf.Toolkit.Primitives;
 using static SAModManager.MainWindow;
 
 namespace SAModManager.Common

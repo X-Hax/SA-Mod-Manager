@@ -71,10 +71,10 @@
     <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Update Failed"</system:String>
     <system:String x:Key="MessageWindow.Errors.UpdateFailed">Failed to update:"</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Failed to update mod"</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">Press Retry to try again, or Cancel to skip this mod."</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Failed to update mod</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">Press Retry to try again, or Cancel to skip this mod.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Unable to retrieve update information."</system:String>
+    <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Unable to retrieve update information.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.Net7Missing">SADX Mod Manager cannot run without .NET 7.</system:String>
 

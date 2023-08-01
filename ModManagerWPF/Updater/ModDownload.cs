@@ -4,13 +4,10 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using ModManagerCommon;
 using System.Net;
-using System.Diagnostics;
 using SevenZipExtractor;
+using SAModManager.Common;
 
 
 namespace SAModManager.Updater

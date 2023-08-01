@@ -1,9 +1,7 @@
-﻿using ModManagerCommon;
-using SAModManager.Common;
+﻿using SAModManager.Common;
 using System;
 using System.IO;
 using System.Net;
-
 
 namespace SAModManager.Updater
 {
@@ -33,7 +31,9 @@ namespace SAModManager.Updater
 					throw new ArgumentOutOfRangeException(nameof(unit), unit, null);
 			}
 		}
-		public static bool DoUpdates(string updatePath)
+
+		//to do change with new method
+		public static bool DoModManagerUpdate(string updatePath)
 		{
 
 			using (var wc = new WebClient())

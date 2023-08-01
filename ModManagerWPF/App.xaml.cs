@@ -1,5 +1,4 @@
-﻿using ModManagerCommon;
-using SAModManager.Languages;
+﻿using SAModManager.Languages;
 using SAModManager.Themes;
 using System;
 using System.Collections.Generic;
@@ -12,15 +11,8 @@ using System.Linq;
 using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Navigation;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text.RegularExpressions;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Globalization;
-using System.Diagnostics;
 using SAModManager.Common;
+using SAModManager.Updater;
 
 namespace SAModManager
 {
@@ -35,7 +27,7 @@ namespace SAModManager
 		private const string protocol = "sadxmm:";
 
 		private static readonly Mutex mutex = new(true, pipeName);
-		public static UriQueue UriQueue;
+		public static Updater.UriQueue UriQueue;
 
 		public static LangEntry CurrentLang { get; set; }
 		public static LanguageList LangList { get; set; }

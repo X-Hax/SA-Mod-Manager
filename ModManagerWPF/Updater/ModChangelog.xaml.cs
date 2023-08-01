@@ -1,21 +1,10 @@
-﻿using ModManagerCommon.Controls;
-using SAModManager.Updater;
-using Octokit;
-using System;
+﻿using SAModManager.Updater;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace SAModManager.Common
 {
@@ -23,22 +12,51 @@ namespace SAModManager.Common
 	/// Interaction logic for ModChangelog.xaml
 	/// </summary>
 
-
 	public partial class ModChangelog : Window
-	{ 
-		ModUpdateDetails modUpdateDetails;
+	{
+		public class ModChangeLogData
+		{
+			public string filename { get; set; }
+			public string status { get; set; }
+		}
+
+		ObservableCollection<ModChangeLogData> modchangeData { get; set; } = new();
 		private readonly List<ModDownloadWPF> mods;
 
 		public List<ModDownloadWPF> SelectedMods { get; } = new();
 
+		public void SetData(ModDownloadWPF entry)
+		{
+			if (entry == null)
+			{
+				// Download details
+				FileSize.Text = null;
+				FileCount.Text = null;
+				// Release details	
+				UpdateName.Text = null;
+				UpdateTag.Text = null;
+
+			}
+			else
+			{
+				// Download details
+				PublishedDate.Text = entry.Updated.ToString(CultureInfo.CurrentCulture);
+				FileSize.Text = SizeSuffix.GetSizeSuffix(entry.Size);
+				FileCount.Text = entry.FilesToDownload.ToString();
+
+				UpdateName.Text = entry.Name;
+				UpdateTag.Text = entry.Version;
+			}
+
+			BtnOpenUpdate.IsEnabled = !string.IsNullOrEmpty(entry.ReleaseUrl);
+		}
+
 		private void SetModDetails(ModDownloadWPF entry)
 		{
-			modUpdateDetails = new();
 			textChangeLog.Text = entry?.Changes.Trim();
-			modUpdateDetails.SetData(entry);
+			SetData(entry);
 
 			FilesList.BeginInit();
-			FilesList.Items.Clear();
 
 			if (entry?.Type.Equals(ModDownloadType.Modular) == true)
 			{
@@ -47,7 +65,14 @@ namespace SAModManager.Common
 				foreach (ModManifestDiff i in entry.ChangedFiles)
 				{
 					string file = i.State == ModManifestState.Moved ? $"{i.Last.FilePath} -> {i.Current.FilePath}" : i.Current.FilePath;
-					FilesList.Items.Add(new { State = i.State.ToString(), File = file });
+
+					ModChangeLogData data = new()
+					{
+						filename = file,
+						 status = i.State.ToString(),
+					};
+
+					modchangeData.Add(data);
 				}
 
 				// Auto-resize columns based on content
@@ -65,7 +90,10 @@ namespace SAModManager.Common
 				tabPageFiles.IsEnabled = false;
 			}
 
+			FilesList.ItemsSource = modchangeData;
 			FilesList.EndInit();
+
+			DataContext = modchangeData;
 		}
 
 		private void AdjustDetailsDisplay(ModDownloadWPF mod)
@@ -145,52 +173,9 @@ namespace SAModManager.Common
 			this.Close();
 		}
 
-		public partial class ModUpdateDetails : UserControl
+		private void BtnOpenUpdate_Click(object sender, RoutedEventArgs e)
 		{
-			public ModUpdateDetails()
-			{
-				SetData(null);
-			}
 
-			public void SetData(ModDownloadWPF entry)
-			{
-				if (entry == null)
-				{
-					// Download details
-					/*PublishedDate.Text = null;
-					FileSize.Text = null;
-					FileCount.Text = null;
-
-					// Release details
-					labelReleasePublished.Text = null;
-					linkRelease.Text = null;
-					UpdateName.Text = null;
-					UpdateTag.Text = null;*/
-				}
-				else
-				{
-					// Download details
-					/*PublishedDate.Text = entry.Updated.ToString(CultureInfo.CurrentCulture);
-					FileSize.Text = SizeSuffix.GetSizeSuffix(entry.Size);
-					FileCount.Text = entry.FilesToDownload.ToString();
-
-					// Release details
-					//labelReleasePublished.Text = entry.Published.ToString(CultureInfo.CurrentCulture);
-					//linkRelease.Text = entry.ReleaseUrl;
-					UpdateName.Text = entry.Name;
-					UpdateTag.Text = entry.Version;*/
-				}
-
-			//	linkRelease.Enabled = !string.IsNullOrEmpty(linkRelease.Text);
-				//Enabled = entry != null;
-			}
-
-			/*private void linkRelease_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-			{
-				Process.Start(linkRelease.Text);
-			}*/
 		}
-	}
-
-	
+	}	
 }

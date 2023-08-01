@@ -1202,6 +1202,48 @@ static vector<string> split(const string& s, char delim)
 	return elems;
 }
 
+static string trim(const string& s)
+{
+	auto st = s.find_first_not_of(' ');
+
+	if (st == string::npos)
+	{
+		st = 0;
+	}
+
+	auto ed = s.find_last_not_of(' ');
+
+	if (ed == string::npos)
+	{
+		ed = s.size() - 1;
+	}
+
+	return s.substr(st, (ed + 1) - st);
+}
+
+static const unordered_map<string, uint8_t> charnamemap = {
+	{ "sonic",    Characters_Sonic },
+	{ "eggman",   Characters_Eggman },
+	{ "tails",    Characters_Tails },
+	{ "knuckles", Characters_Knuckles },
+	{ "tikal",    Characters_Tikal },
+	{ "amy",      Characters_Amy },
+	{ "gamma",    Characters_Gamma },
+	{ "big",      Characters_Big }
+};
+
+static uint8_t ParseCharacter(const string& str)
+{
+	string str2 = trim(str);
+	transform(str2.begin(), str2.end(), str2.begin(), ::tolower);
+	auto ch = charnamemap.find(str2);
+	if (ch != charnamemap.end())
+		return ch->second;
+	else
+		return (uint8_t)strtol(str.c_str(), nullptr, 10);
+}
+extern void RegisterCharacterWelds(const uint8_t character, const char* iniPath);
+
 LoaderSettings loaderSettings = {};
 std::vector<Mod> modlist;
 
@@ -1456,7 +1498,7 @@ static void __cdecl InitMods()
 
 		if (!f_mod_ini)
 		{
-			PrintDebug("Could not open file mod.ini in \"mods\\%s\".\n", mod_dirA.c_str());
+			PrintDebug("Could not open file mod.ini in \"%s\".\n", mod_dirA.c_str());
 			errors.emplace_back(mod_dir, L"mod.ini missing");
 			continue;
 		}
@@ -1497,7 +1539,7 @@ static void __cdecl InitMods()
 			modinfo->getBool("RedirectChaoSave"),
 			{
 				deparr,
-				moddeps.size()
+				(int)moddeps.size()
 			}
 		};
 
@@ -1532,6 +1574,14 @@ static void __cdecl InitMods()
 				fileswaps.emplace_back(FileMap::normalizePath(iter.first),
 					FileMap::normalizePath(iter.second));
 			}
+		}
+
+		if (ini_mod->hasGroup("CharacterWelds"))
+		{
+			const IniGroup* group = ini_mod->getGroup("CharacterWelds");
+			auto data = group->data();
+			for (const auto& iter : *data)
+				RegisterCharacterWelds(ParseCharacter(iter.first), (mod_dirA + "\\" + iter.second).c_str());
 		}
 
 		// Check for SYSTEM replacements.

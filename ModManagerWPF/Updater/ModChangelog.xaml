@@ -17,131 +17,137 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
+
     <Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="50"/>
-		</Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
 
-		<Grid Grid.Row="0">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="250"/>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-			<ListView x:Name="ModsList" Grid.Column="0" Margin="5" SelectionChanged="ModsList_SelectionChanged">
-				<ListView.View>
-					<GridView>
-						<GridView.ColumnHeaderContainerStyle>
-							<Style TargetType="{x:Type GridViewColumnHeader}">
-								<Setter Property="Height" Value="0"/>
-							</Style>
-						</GridView.ColumnHeaderContainerStyle>
-						<GridViewColumn>
-							<GridViewColumn.CellTemplate>
-								<DataTemplate>
-									<StackPanel Orientation="Horizontal">
+            <ListView x:Name="ModsList" Grid.Column="0" Margin="5" SelectionChanged="ModsList_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridView.ColumnHeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Height" Value="0"/>
+                            </Style>
+                        </GridView.ColumnHeaderContainerStyle>
+                        <GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
                                         <CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0" Checked="CheckBox_Checked"/>
                                         <TextBlock Text="{Binding Info.Name}" />
                                     </StackPanel>
-								</DataTemplate>
-							</GridViewColumn.CellTemplate>
-						</GridViewColumn>
-					</GridView>
-				</ListView.View>
-			</ListView>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
 
-			<GridSplitter Grid.Column="0"/>
+            <GridSplitter Grid.Column="0"/>
 
-			<Grid Grid.Column="1" Margin="5">
-				<Border BorderBrush="{DynamicResource Borders.Brushes.Border}"
+            <Grid Grid.Column="1" Margin="5">
+                <Border BorderBrush="{DynamicResource Borders.Brushes.Border}"
 						CornerRadius="{DynamicResource ListView.CornerRadius}" BorderThickness="1">
-					<TabControl>
-						<TabItem Header="{DynamicResource ModChangelog.Tabs.Notes}">
-							<Grid x:Name="UpdateNotes" Margin="3">
-                                <TextBlock x:Name="textChangeLog"></TextBlock>
-							</Grid>
-						</TabItem>
-						<TabItem Header="{DynamicResource ModChangelog.Tabs.Details}">
-							<Grid Margin="3">
-								<GroupBox Header="{DynamicResource ModChangelog.Tabs.Details.DownloadDetails}" Margin="5,0,5,5">
-									<Grid x:Name="UpdateDetails">
-										<Grid.RowDefinitions>
-											<RowDefinition Height="Auto" MinHeight="30"/>
-											<RowDefinition Height="Auto" MinHeight="30"/>
-											<RowDefinition Height="Auto" MinHeight="30"/>
-											<RowDefinition Height="Auto" MinHeight="30"/>
-											<RowDefinition Height="Auto" MinHeight="30"/>
-											<RowDefinition Height="Auto" MinHeight="40"/>
-										</Grid.RowDefinitions>
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="Auto"/>
-											<ColumnDefinition Width="*"/>
-										</Grid.ColumnDefinitions>
+                    <TabControl>
+                        <TabItem Header="{DynamicResource ModChangelog.Tabs.Notes}">
+                            <Grid x:Name="UpdateNotes" Margin="3">
+                                <TextBox x:Name="textChangeLog" FontSize="14" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"></TextBox>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="{DynamicResource ModChangelog.Tabs.Details}">
+                            <Grid Margin="3">
+                                <GroupBox Header="{DynamicResource ModChangelog.Tabs.Details.DownloadDetails}" Margin="5,0,5,5">
+                                    <Grid x:Name="UpdateDetails">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" MinHeight="30"/>
+                                            <RowDefinition Height="Auto" MinHeight="30"/>
+                                            <RowDefinition Height="Auto" MinHeight="30"/>
+                                            <RowDefinition Height="Auto" MinHeight="30"/>
+                                            <RowDefinition Height="Auto" MinHeight="30"/>
+                                            <RowDefinition Height="Auto" MinHeight="40"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
 
-										<Label Content="{DynamicResource ModChangelog.Tabs.Details.PublishedDate}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-										<Label Content="{DynamicResource ModChangelog.Tabs.Details.FileSize}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-										<Label Content="{DynamicResource ModChangelog.Tabs.Details.FileCount}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-										<Label Content="{DynamicResource ModChangelog.Tabs.Details.UpdateName}" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-										<Label Content="{DynamicResource ModChangelog.Tabs.Details.Tag}" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
-										<wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="BtnOpenUpdate" 
+
+                                        <Label Content="{DynamicResource ModChangelog.Tabs.Details.PublishedDate}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+                                        <Label Content="{DynamicResource ModChangelog.Tabs.Details.FileSize}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+                                        <Label Content="{DynamicResource ModChangelog.Tabs.Details.FileCount}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+                                        <Label Content="{DynamicResource ModChangelog.Tabs.Details.UpdateName}" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+                                        <Label Content="{DynamicResource ModChangelog.Tabs.Details.Tag}" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+
+                                        <wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="BtnOpenUpdate" 
 														 Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
 														 Content="{DynamicResource ModChangelog.Tabs.Details.Buttons.OpenBrowser}"
-														 Icon="{StaticResource Icons.Open}"/>
+														 Icon="{StaticResource Icons.Open}" Click="BtnOpenUpdate_Click" />
 
-										<TextBlock x:Name="PublishedDate" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
-										<TextBlock x:Name="FileSize" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
-										<TextBlock x:Name="FileCount" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
-										<TextBlock x:Name="UpdateName" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
-										<TextBlock x:Name="UpdateTag" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
-									</Grid>
-								</GroupBox>
-							</Grid>
-						</TabItem>
+                                        <TextBlock x:Name="PublishedDate" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+                                        <TextBlock x:Name="FileSize" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+                                        <TextBlock x:Name="FileCount" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+                                        <TextBlock x:Name="UpdateName" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+                                        <TextBlock x:Name="UpdateTag" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </TabItem>
                         <TabItem x:Name="tabPageFiles" Header="{DynamicResource ModChangelog.Tabs.Files}">
-							<Grid x:Name="UpdateFiles" Margin="3">
-								<ListView x:Name="FilesList" Margin="5">
-									<ListView.View>
-										<GridView>
-											<GridView.Columns>
-												<GridViewColumn Header="{DynamicResource ModChangelog.Tabs.Files.Filename}" Width="350" >
-													<GridViewColumn.CellTemplate>
-														<DataTemplate>
-															<TextBlock/>
-														</DataTemplate>
-													</GridViewColumn.CellTemplate>
-												</GridViewColumn>
-												<GridViewColumn Header="{DynamicResource ModChangelog.Tabs.Files.Status}" Width="150">
-													<GridViewColumn.CellTemplate>
-														<DataTemplate>
-															<TextBlock/>
-														</DataTemplate>
-													</GridViewColumn.CellTemplate>
-												</GridViewColumn>
-											</GridView.Columns>
-										</GridView>
-									</ListView.View>
-								</ListView>
-							</Grid>
-						</TabItem>
-					</TabControl>
-				</Border>
-			</Grid>
-		</Grid>
+                            <Grid x:Name="UpdateFiles" Margin="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="23*"/>
+                                    <ColumnDefinition Width="243*"/>
+                                </Grid.ColumnDefinitions>
+                                <ListView x:Name="FilesList" Margin="5,5,5,5" ItemsSource="{Binding modchangeData}" Grid.ColumnSpan="2">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridView.Columns>
+                                                <GridViewColumn Header="{DynamicResource ModChangelog.Tabs.Files.Filename}" Width="350" >
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock x:Name="fileNameText" Text="{Binding filename}" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="{DynamicResource ModChangelog.Tabs.Files.Status}" Width="150">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock x:Name="statusText" Text="{Binding status}" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView.Columns>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Border>
+            </Grid>
+        </Grid>
 
-		<Grid Grid.Row="1" HorizontalAlignment="Right">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="200"/>
-				<ColumnDefinition Width="200"/>
-			</Grid.ColumnDefinitions>
-			<wpf:ImageButton x:Name="btnInstallNow" Style="{StaticResource ImageTextButtonStyle}" Margin="5"
+        <Grid Grid.Row="1" HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <wpf:ImageButton x:Name="btnInstallNow" Style="{StaticResource ImageTextButtonStyle}" Margin="5"
 							 Icon="{StaticResource Icons.Download}" Padding="5"
 							 Content="{DynamicResource ModChangelog.Buttons.DownloadNow}" Click="ImageButton_Click"/>
-			<wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" 
+            <wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" 
 							 Margin="5" Grid.Column="1"
 							 Icon="{StaticResource Icons.Update}" Padding="5"
 							 Content="{DynamicResource ModChangelog.Buttons.DownloadLater}" Click="ImageButton_Click_1" IsCancel="True"/>
-		</Grid>
-	</Grid>
+        </Grid>
+    </Grid>
 </Window>

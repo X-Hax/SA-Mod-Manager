@@ -76,6 +76,25 @@ enum tasklevel
 	LEV_M = 0x8,
 };
 
+enum ID_NO // For twp->id
+{
+	ID_NO_DEFINE = 0x0,
+	ID_P_PLAYABLE = 0x1,
+	ID_P_NOPLAYABLE = 0x2,
+	ID_P_BOSS = 0x3,
+	ID_O_MOVE_S = 0x4,
+	ID_O_MOVE_M = 0x5,
+	ID_O_MOVE_L = 0x6,
+	ID_O_SWING = 0x7,
+	ID_O_JUMPPANEL = 0x8,
+	ID_O_SNOWJUMP = 0x9,
+	ID_E_CART = 0xA,
+	ID_I_RING = 0xB,
+	ID_C_OTTOTTO = 0xC,
+	ID_C_BIGWJUMP = 0xD,
+	ID_END = 0xE,
+};
+
 enum PL_JOIN
 {
 	PL_JOIN_NO_JOIN = 0x0,

@@ -23,54 +23,11 @@ enum MD_SOUND
 	MD_SOUND_DOLBY = 0x4000
 };
 
-struct MDHEADER
-{
-	unsigned int nofs;
-	unsigned int fofs;
-	unsigned int fsize;
-};
-
-typedef struct MDHANDLE
-{
-	char header[16];
-	char* mdname;
-	void* data;
-	int mdnum;
-	struct MDHEADER md[1];
-} MDHANDLE;
-
 static constexpr int MAX_SOUND = 36;
 
 UsercallFunc(int, dsGetVolume, (int ii), (ii), 0x4244A0, rEAX, rEAX);
 UsercallFunc(BOOL, IsPlayOk, (int tone), (tone), 0x424590, rEAX, rEDX);
-
-VoidFunc(dsSoundServer, 0x4250D0);
-VoidFunc(wmapause, 0x40D060);
-VoidFunc(wmaresume, 0x40D0A0);
-FunctionPointer(void, dsPauseAll, (), 0x424320);
-FunctionPointer(void, dsReleaseAll, (), 0x424380);
-FunctionPointer(BOOL, PlayPCM, (int ch), 0x410050);
-FunctionPointer(BOOL, Set3DMinMaxPCM, (int ch, float _min, float _max), 0x4103B0);
-FunctionPointer(BOOL, Load3DPCM, (int ch, void* wavememory, int wavesize, int loopflag), 0x410970);
-FunctionPointer(BOOL, LoadPCM, (int ch, void* wavememory, int wavesize, int loopflag), 0x4106F0);
-FunctionPointer(BOOL, dsEVboss, (int tone), 0x4246C0);
-FunctionPointer(void, SetVolumePCM, (int ch, int volume), 0x4101A0);
-FunctionPointer(void, Set3DPositionPCM, (int ch, float x, float y, float z), 0x4102C0);
-FunctionPointer(void, IsndVolume, (int vol, int handleno), 0x423C20);
-FunctionPointer(void, SetPanPCM, (int ch, int pan), 0x410260);
-FunctionPointer(void, IsndPan, (int pan, int handleno), 0x423C80);
-FunctionPointer(void, IsndPitch, (int pitch, int handleno), 0x423CC0);
-FunctionPointer(void, SetFreqencyPCM, (int ch, float freqency), 0x410200);
-FunctionPointer(void, StopPCM, (int ch), 0x410100);
-DataArray(int, vol_save, 0x3B29C28, MAX_SOUND);
-DataArray(int, banktbl, 0x910090, 64 * 2);
-DataPointer(void*, sndmemory, 0x3B291C0);
-DataPointer(BOOL, snd_pause, 0x3B29CE0);
-DataPointer(BOOL, snd_pause_dolby, 0x3B29CE4);
-DataPointer(BOOL, s_3DFlag, 0x3B0EF28);
-DataPointer(uint8_t, n, 0x3B29CE8);
-DataArray(uint8_t, gu8overlap_se, 0x3B292A8, MAX_SOUND * 2);
-DataArray(MDHANDLE*, bankhandle, 0x3B291C8, 16);
+DataPointer(Uint8, n, 0x3B29CE8);
 
 HSTREAM bass_channels[MAX_SOUND]{};
 LPCSTR sndname = nullptr;
@@ -458,7 +415,7 @@ static void __cdecl dsSoundServer_r()
 	}
 }
 
-static int __cdecl dsPauseAll_r()
+static int __cdecl dsPause_all_r()
 {
 	snd_pause = -1;
 	snd_pause_dolby = -1;
@@ -475,7 +432,7 @@ static int __cdecl dsPauseAll_r()
 	return 0;
 }
 
-static int __cdecl dsReleaseAll_r()
+static int __cdecl dsRelease_all_r()
 {
 	snd_pause = 0;
 	snd_pause_dolby = 0;
@@ -530,8 +487,8 @@ void Sound_Init(int sevolume)
 	WriteJump(Load3DPCM, Load3DPCM_r);
 	WriteJump(LoadPCM, LoadPCM_r);
 	WriteJump(Set3DPositionPCM, Set3DPositionPCM_r);
-	WriteJump(dsPauseAll, dsPauseAll_r);
-	WriteJump(dsReleaseAll, dsReleaseAll_r);
+	WriteJump(dsPause_all, dsPause_all_r);
+	WriteJump(dsRelease_all, dsRelease_all_r);
 	WriteJump(dsPauseSndOnly, dsPauseSndOnly_r);
 	WriteJump((void*)0x423B20, makesndfilename_asm);
 }

@@ -717,6 +717,27 @@ struct FCWRK
 	NJS_POINT3 _vec;
 };
 
+struct CAM_ANYPARAM
+{
+	NJS_POINT3 camAnyParamPos;
+	NJS_POINT3 camAnyParamTgt;
+	Angle3 camAnyParamAng;
+	Sint32 camAnyTmpSint32[2];
+	Float camAnyTmpFloat[2];
+};
+
+struct strCamCartData
+{
+	NJS_POINT3 transCam;
+	NJS_POINT3 transTgt;
+};
+
+struct freeboxdat
+{
+	NJS_POINT3 p0;
+	NJS_POINT3 p1;
+};
+
 struct sSplineData
 {
 	unsigned __int16 InitPoint;
@@ -1630,6 +1651,51 @@ struct pathwk
 	int mAngle;
 };
 
+struct PATHCAMERAWORK
+{
+	Sint32 modeflag;
+	Float fForwardPathDist;
+	Float fBackPathDist;
+	Float fForwardPathMul;
+	Float fBackPathMul;
+	Float fSonicSize;
+	Float fCamRotMul;
+	Float fCamMovMul;
+	Sint16 nChangeFrame;
+	Uint8 ucAdjustType;
+	Uint8 ucAdjustTypeAfter;
+	Float fPathCameraRangeIn;
+	Float fPathCameraRangeOut;
+	Sint32 nTopPathGap;
+	Sint32 nBottomPathGap;
+};
+
+struct PATHCAMERA1WORK
+{
+	Sint32 modeflag;
+	pathtag* pPathTag;
+	Float fForwardPathDist;
+	Float fBackPathDist;
+	Float fForwardPathMul;
+	Float fBackPathMul;
+	Float fMaxSonicDist;
+	Float fMinSonicDist;
+	Float fSonicSize;
+	Float fCameraSize;
+	Float fMaxCameraAcc;
+	Float fCameraAccMul;
+	Float fPathCameraRangeOut;
+	Sint32 nPlayer;
+	Sint32 nTopPathGap;
+	Sint32 nBottomPathGap;
+	Sint32 nChangeFrame;
+	NJS_POINT3 vecCamOfs;
+	NJS_POINT3 vecPathOfs;
+	Angle3 angCamRot;
+	Angle angMaxCamSpd;
+	Float angCamSpdMul;
+};
+
 struct SEQ_SECTION
 {
 	void(__cdecl* init)();
@@ -2187,11 +2253,61 @@ struct AvaStgActPrmT
 	unsigned __int8 Num;
 };
 
+struct AvaCmnPrmT
+{
+	AvaStgActT StgAct;
+};
+
 struct ModeSelPrmType
 {
 	AdvaModeEnum PrevMode;
 	AdvaModeEnum NextMode;
 	AdvaModeEnum NextModeSub;
+};
+
+struct SeqDataType
+{
+	AdvaModeEnum BornMode;
+	ModeSelPrmType SeqData;
+};
+
+struct SeqWk
+{
+	SeqDataType* SeqDataPtr;
+	AdvaModeEnum Mode;
+	AdvaModeEnum OldMode;
+	AdvaModeEnum FixMode;
+	AdvaRetEnum AdvanceFlg;
+	Sint32 RetVal;
+	AdvaModeEnum WMode;
+	Sint16 Cnt;
+	Uint8 WFlg;
+	Uint8 FadeEndFlg;
+	Uint8 FadeOutFlg;
+	Uint8 FadeOutFlg2;
+};
+
+// Title screen worker
+struct TitleNewWk
+{
+	AdvaStatEnum Stat;
+	AdvaModeEnum PrevMode;
+	AdvaModeEnum NextMode;
+	Float BaseZ;
+	Float T;
+	Uint32 BaseCol;
+	TitleNewSbMdEnum SubMode;
+	task* AlertTsk;
+	Sint8 VMStatAll;
+	Sint32 titletimer;
+	Uint32 titleblinktimer;
+	task* CamTskPtr;
+	Uint32 wavetimer;
+	Uint32 logotimer;
+	Sint32 bBgmEnabled;
+	Uint32 movetimer;
+	Float kumotimer;
+	Sint8 kumoindex;
 };
 
 struct FileSelWk
@@ -2479,29 +2595,6 @@ struct bubble_data
 	float yuragi_max;
 	float y_spd_min;
 	float y_spd_max;
-};
-
-// Title screen worker
-struct TitleNewWk
-{
-	AdvaStatEnum Stat;
-	AdvaModeEnum PrevMode;
-	AdvaModeEnum NextMode;
-	float BaseZ;
-	float T;
-	unsigned int BaseCol;
-	TitleNewSbMdEnum SubMode;
-	ObjectMaster* AlertTsk;
-	char VMStatAll;
-	int titletimer;
-	unsigned int titleblinktimer;
-	ObjectMaster* CamTskPtr;
-	unsigned int wavetimer;
-	unsigned int logotimer;
-	int bBgmEnabled;
-	unsigned int movetimer;
-	float kumotimer;
-	char kumoindex;
 };
 
 struct ObjectInfo
@@ -3992,4 +4085,227 @@ struct bbl_small_taskwk
 	colliwk* cwp;
 	eventwk* ewp;
 };
+
+struct Mass
+{
+	NJS_POINT3 trans[12];
+	NJS_POINT3 velocity[12];
+	NJS_POINT3 acceleration[12];
+};
+
+struct String
+{
+	Mass mass;
+	Uint32 flag;
+};
+
+struct erctrlstr
+{
+	Sint32 command;
+	NJS_POINT3 pos0;
+	NJS_POINT3 pos1;
+};
+
+struct colaround
+{
+	taskwk* twp;
+	Float dist;
+};
+
+struct OCMDATA
+{
+	taskwk* twp;
+	Bool(__cdecl* breakfunc)(NJS_POINT3*, NJS_POINT3*, taskwk*);
+	Sint8 num;
+	Sint8 flag;
+	Sint8 type;
+	Sint8 sflag;
+};
+
+struct NES_LIB_PARAM
+{
+	const char* Company;
+	const char* AppName;
+	const char* DVDRoot;
+	Bool Windowed;
+	Sint32 GraphMode;
+	Sint32 Frame;
+	Sint32 Count;
+	Float AspectX;
+	Float AspectY;
+	Uint32 PolyBuff_QUAD;
+	Uint32 PolyBuff_CS;
+	Uint32 PolyBuff_CS_N;
+	Uint32 PolyBuff_CS_UVN;
+	Uint32 PolyBuff_CS_UVN_N;
+	Uint32 PolyBuff_CS_D8;
+	Uint32 PolyBuff_CS_N_D8;
+	Uint32 PolyBuff_CS_UVN_D8;
+	Uint32 PolyBuff_CS_UVN_N_D8;
+	Sint32 ZSearchMode;
+	Uint32 Width;
+	Uint32 Height;
+};
+
+struct MDHEADER
+{
+	Uint32 nofs;
+	Uint32 fofs;
+	Uint32 fsize;
+};
+
+struct MDHANDLE
+{
+	Sint8 header[16];
+	const char* mdname;
+	void* data;
+	Sint32 mdnum;
+	MDHEADER md[1];
+};
+
+struct FlickyData
+{
+	Uint16 color;
+	Uint16 baseangle;
+	Angle rotate;
+	Float scale;
+	Float framespeed;
+	NJS_TEXLIST* texlist;
+};
+
+struct Flicky
+{
+	Sint8 id;
+	Sint8 rand;
+	Sint8 wallcnt;
+	Sint8 tmp00;
+	Float frame;
+	NJS_POINT3 transvelocity;
+	NJS_POINT3 transaccel;
+	NJS_POINT3 bscl;
+	NJS_POINT3 bsclv;
+	Angle targetangle;
+	Float targetradius;
+	Angle shadowangx;
+	Angle shadowangz;
+	NJS_POINT3 aim;
+	NJS_POINT3 oldtrans;
+	void(__cdecl* movefunc)(Flicky*, taskwk*);
+	void(__cdecl* delfunc)(task*);
+	FlickyData* flickydata;
+};
+
+struct RaceWk
+{
+	Sint8 mode;
+	Sint8 currentLap;
+	Sint8 displayLap;
+	Sint8 dialState;
+	Sint8 lastChekPoint;
+	Sint16 timer;
+	Sint32 totalIntrpt;
+	Sint32 lapIntrpt_a[3];
+	Sint32 subTotal_a[3];
+	Sint32 bestTotalTime;
+	Sint32 bestSubTotal_a[3];
+	Sint32 bestLapTime_a[3];
+};
+
+struct CUSTUM_PRINT_NUMBER
+{
+	Float loc_x;
+	Float loc_y;
+	Float scale_x;
+	Float scale_y;
+	Float add_x;
+	Float add_y;
+};
+
+struct CLEAR_TIME
+{
+	Sint8 m;
+	Sint8 s;
+	Sint8 f;
+};
+
+struct BEST3_WEIGHT
+{
+	Sint16 weight[3];
+};
+
+struct BEST3_SCORE
+{
+	Sint32 score[3];
+};
+
+struct BEST3_CART
+{
+	CLEAR_TIME time[3];
+	CLEAR_TIME lap[2];
+};
+
+struct BEST3_TIME
+{
+	CLEAR_TIME time[3];
+};
+
+struct SEQ_DATA
+{
+	Sint8 time;
+	Sint8 s8pad;
+	Sint16 seqno;
+	Sint16 sec;
+	Sint16 nextsec;
+	Uint16 stage;
+	Uint16 destination;
+};
+
+struct BIGGEST_WEIGHT
+{
+	Sint16 weight;
+	Sint16 type;
+};
+
+struct SAVE_DATA
+{
+	Sint32 code;
+	Sint32 totalTime;
+	Sint32 bestScore[32];
+	CLEAR_TIME bestTime[28];
+	BEST3_WEIGHT bestWeight[4];
+	BIGGEST_WEIGHT biggestWeight[4];
+	Sint16 bestRing[32];
+	BEST3_SCORE miniShooting[2];
+	BEST3_SCORE miniShooting2[2];
+	BEST3_SCORE miniSnowBoard[2];
+	BEST3_SCORE miniSandBoard[2];
+	BEST3_SCORE miniMole;
+	BEST3_CART miniCart[6];
+	BEST3_TIME bossGame[6];
+	Sint8 emblem[17];
+	Sint8 option;
+	Sint8 charenge[7];
+	Uint8 lastPlayer;
+	Uint8 vibration;
+	Sint8 dummy;
+	Uint16 lastStage;
+	Uint16 lastAction;
+	Sint8 seqVars[64];
+	Sint8 evExecFlag[64];
+	Sint8 scPlayableFlag[8];
+	SEQ_DATA seqTable[8];
+	Sint8 flgCompletedActionStage[8][43];
+	Uint8 MissionData[60];
+	Uint32 u32TotalRing;
+	Sint32 M_bestScore[10];
+	CLEAR_TIME M_bestTime[10];
+	Sint16 M_bestRing[10];
+	Sint8 Align[2];
+	BEST3_SCORE M_miniSnowBoard;
+	BEST3_SCORE M_miniSandBoard;
+	BEST3_CART M_miniCart;
+	BEST3_TIME M_bossGame;
+	Sint32 M_emblem;
+};
+
 #endif /* SADXMODLOADER_SADXSTRUCTSNEW_H */

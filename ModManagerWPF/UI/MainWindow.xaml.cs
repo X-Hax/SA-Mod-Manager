@@ -2,12 +2,10 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ModManagerCommon;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
-using IniFile;
 using System.Windows.Threading;
 using System.Diagnostics;
 using SAModManager.Properties;
@@ -18,14 +16,13 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Security.Cryptography;
 using System.Threading;
-using System.Collections.ObjectModel;
 using Keyboard = System.Windows.Input.Keyboard;
 using Key = System.Windows.Input.Key;
 using SAModManager.UI;
 using SAModManager.Updater;
 using SAModManager.Elements;
-using Newtonsoft.Json.Linq;
 using SevenZipExtractor;
+using SAModManager.Ini;
 
 namespace SAModManager
 {
@@ -213,7 +210,22 @@ namespace SAModManager
 			};
 			timer.Tick += SetModManagerVersion;
 			timer.IsEnabled = true;
+
+			if (!Directory.Exists(modDirectory) || !installed)
+				return;
+
 			new OneClickInstall(updatePath, modDirectory);
+
+			CheckForModUpdates();
+
+			// If we've checked for updates, save the modified
+			// last update times without requiring the user to
+			// click the save button.
+			if (checkedForUpdates)
+			{
+				IniSerializer.Serialize(loaderini, loaderinipath);
+			}
+
 		}
 
 		private void MainForm_FormClosing(object sender, EventArgs e)
@@ -646,12 +658,12 @@ namespace SAModManager
 			else
 			{
 
-				var error0 = Lang.GetString("MessageWindow.Errors.ModFailedVerif")
-	+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: {x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged)}" + Lang.GetString("MessageWindow.Errors.ModFailedVerif1"))
-	+ Lang.GetString("MessageWindow.Errors.ModFailedVerif2"));
+				var error = Lang.GetString("MessageWindow.Errors.ModFailedVerif0")
+	+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: " + Util.GetFileCountString(x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged), "MessageWindow.Errors.ModFailedVerif1")))
+						+ Lang.GetString("MessageWindow.Errors.ModFailedVerif2");
 
 
-				var result = new MessageWindow(Lang.GetString("MessageWindow.Errors.ModFailedVerif.Title"), error0, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
+				var result = new MessageWindow(Lang.GetString("MessageWindow.Errors.ModFailedVerif.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
 				result.ShowDialog();
 
 				if (result.isYes != true)
@@ -754,10 +766,12 @@ namespace SAModManager
 			switch (choice)
 			{
 				case (int)InstallModOptions.Type.ModArchive:
-					var archiveFile = new System.Windows.Forms.OpenFileDialog();
-					archiveFile.Multiselect = true;
+					var archiveFile = new System.Windows.Forms.OpenFileDialog
+					{
+						Multiselect = true,
 
-					archiveFile.Filter = "archive files|*.zip;*.7z;*.rar;*.tar";
+						Filter = "archive files|*.zip;*.7z;*.rar;*.tar"
+					};
 					System.Windows.Forms.DialogResult result_ = archiveFile.ShowDialog();
 
 					if (result_ == System.Windows.Forms.DialogResult.OK)
@@ -2364,8 +2378,8 @@ namespace SAModManager
 
 			if (CheckForUpdates(true))
 			{
-				Updater.UpdateHelper.DoUpdates(updatePath);
-				return;
+				//UpdateHelper.DoModManagerUpdate(updatePath);
+				//return;
 			}
 
 			manualModUpdate = true;

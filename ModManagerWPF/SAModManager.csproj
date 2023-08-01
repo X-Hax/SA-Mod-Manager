@@ -9,6 +9,8 @@
     <ApplicationIcon>Icons\SADXModManager.ico</ApplicationIcon>
 	  <Nullable>disable</Nullable>
 	  <BaseOutputPath>..\bin\</BaseOutputPath>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <RepositoryUrl>https://github.com/X-Hax/sadx-mod-loader</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,17 +34,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
     <PackageReference Include="Gu.Wpf.NumericInput" Version="0.5.5" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Octokit" Version="7.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\mod-loader-common\ModManagerCommon\ModManagerCommon.csproj" />
+    <PackageReference Include="Octokit" Version="7.1.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -30,6 +30,7 @@ typedef bool _BOOL1;
 // General
 FunctionPointer(int, InitGame, (), 0x413C00);
 FunctionPointer(bool, ChkPause, (), 0x414D70); // Check if the game is paused
+FunctionPointer(Bool, ChkGameMode, (), 0x414D90); // Check if in game
 FunctionPointer(void*, CAlloc, (int count, int size), 0x0040B2D0); // Allocate memory
 VoidFunc(Clear, 0x0040BF30);
 VoidFunc(Reset, 0x0040BF40);
@@ -71,6 +72,8 @@ FunctionPointer(int, CheckCollisionCylinderP, (NJS_POINT3* vp, float r, float h)
 FunctionPointer(void, AddSetStage, (char Gap), 0x46BF70); // Release objects and request act change
 FunctionPointer(BOOL, GetZxShadowOnFDPolygon, (zxsdwstr* carry, NJS_OBJECT* object), 0x456510); // Get vertical intersectio(s) of a point with a model, used for deathzones
 FunctionPointer(void, SetChangeGameMode, (__int16 mode), 0x413C90);
+FunctionPointer(void, SetPlayerNumber, (Uint16 pno), 0x4144D0);
+FunctionPointer(void, SetStageNumber, (Sint8 level, Sint8 act), 0x414570);
 FunctionPointer(void, AddNumPlayer, (__int16 lives), 0x425B60); // AddLives
 FunctionPointer(void, AddNumRing, (__int16 amount), 0x425BE0);
 FunctionPointer(__int16, GetNumRing, (), 0x425CC0);
@@ -108,6 +111,14 @@ FunctionPointer(void, TH_Wait, (), 0x004014B0); // Thread-related, Called in MSG
 FunctionPointer(playerwk*, GetPlayerWorkPtr, (char pno), 0x441B00);
 FunctionPointer(void, SetTableBg_mr, (int clipLevel), 0x52F400);
 FunctionPointer(void, SetTableBg_chaos7, (int c_level), 0x55D690);
+FunctionPointer(void, String_IniEasy, (String* ___this, const NJS_POINT3* v0, const NJS_POINT3* vN), 0x4BF860);
+FunctionPointer(void, String_Exe, (String* ___this, const NJS_POINT3* v0, const NJS_POINT3* vN, Sint32 mode), 0x4BFCA0);
+FunctionPointer(void, String_Dsp, (String* ___this), 0x4BFD40);
+FunctionPointer(void, ERobStart, (erctrlstr* cmd), 0x4B3EB0);
+FunctionPointer(OCMDATA*, OCMRegister, (taskwk* otwp), 0x5FE2F0);
+FunctionPointer(Bool, OCMunregister, (OCMDATA* ocmdata), 0x5FE360);
+FunctionPointer(OCMDATA*, OCMsearchRideobj, (taskwk* otwp), 0x5FE380);
+VoidFunc(calcvsyncsyoriochi, 0x413920);
 
 // Debug
 FunctionPointer(void, njPrintColor, (int color), 0x007808E0); // Sets debug font color
@@ -199,20 +210,33 @@ FunctionPointer(void, LoadPlayerMotionData, (int curChar), 0x422680);
 FunctionPointer(void, SetPlayerInitialPosition, (taskwk* twp), 0x414810);
 FunctionPointer(void, PConvertVector_G2P, (taskwk* a1, NJS_POINT3* a2), 0x43EC00);
 FunctionPointer(void, PConvertVector_P2G, (taskwk* a1, NJS_POINT3* a2), 0x43EC90);
+FunctionPointer(void, PResetPosition, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x43EE70);
 FunctionPointer(void, PJoinVertexes, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x43FA90);
 FunctionPointer(void, PSetCrashEffect, (taskwk* a1), 0x440790);
+FunctionPointer(void, PSetSplashEffect, (taskwk* a1), 0x440890); // Creates a water splash
 FunctionPointer(void, KillHimP, (int pno), 0x440CD0); // Kill player (for damage)
-FunctionPointer(void, CancelAutoPilotP, (unsigned __int8 pno), 0x440FA0);
+FunctionPointer(void, RunAlongPathP, (Uint8 pno, pathtag* pp), 0x440E20);
+FunctionPointer(void, HangDownFromPathP, (Uint8 pno, pathtag* pp, Sint32 point), 0x440E90);
+FunctionPointer(void, SetAutoPilotForBreak, (Sint8 pno), 0x440F70);
+FunctionPointer(void, CancelAutoPilotP, (Sint8 pno), 0x440FA0);
+FunctionPointer(void, SetLookingAngleP, (Sint8 pno, Angle3* ang), 0x441040);
+FunctionPointer(void, CancelLookingAtP, (Sint8 pno), 0x441080);
+FunctionPointer(void, HoldOnPillarP, (Sint8 pno, task* ttp), 0x4411D0);
+FunctionPointer(void, HoldOnIcicleP, (Sint8 pno, task* ttp), 0x441210);
 FunctionPointer(void, SetInputP, (uint8_t pno, int8_t mode), 0x441260);
 FunctionPointer(void, SetVelocityP, (uint8_t pno, float x, float y, float z), 0x441280);
+FunctionPointer(void, SetSpringVelocityP, (Uint8 pnum, Float x, Float y, Float z), 0x441370);
+FunctionPointer(void, SetTrampolineVelocityP, (Sint8 pno, Sint8 time, Float x, Float y, Float z), 0x441390);
 FunctionPointer(void, SetVelocityAndRotationAndNoconTimeP, (int pno, NJS_POINT3* v, Angle3* ang, int tm), 0x441490);
 FunctionPointer(void, SetVelocityAndRotationAndNoconTimeWithSpinDashP, (unsigned __int8 pno, NJS_POINT3* v, Angle3* ang, __int16 tm), 0x441540);
 FunctionPointer(void, SetRotationP, (uint8_t pno, Angle angx, Angle angy, Angle angz), 0x4415F0);
 FunctionPointer(void, SetAccelerationP, (unsigned __int8 pno, float x, float y, float z), 0x441750);
 FunctionPointer(void, SetPositionP, (uint8_t pno, float x, float y, float z), 0x441780);
+FunctionPointer(void, ChangeModePlaceWithTrampolineP, (Sint8 pno, Sint8 time), 0x4417F0);
 FunctionPointer(void, GetOutOfCartP, (int pno, float x, float y, float z), 0x441820);
 FunctionPointer(Bool, GetPlayerPosition, (unsigned __int8 pno, __int8 frame, NJS_POINT3* pos, Angle3* ang), 0x4419C0); // Get player position and/or angle a number of frames ago
 FunctionPointer(Bool, SetPlayerPosition, (unsigned __int8 pno, __int8 frame, NJS_POINT3* pos, Angle3* ang), 0x441A40); // Set player position and/or angle a number of frames ago
+FunctionPointer(task*, GetPlayerTaskPointer, (Sint8 pno), 0x441AC0);
 FunctionPointer(void, GetThunderBarrierP, (char character), 0x441E30);
 FunctionPointer(void, GetBarrierP, (char character), 0x441EA0);
 FunctionPointer(void, GetInvincibleBodyP, (int character), 0x441F10);
@@ -223,7 +247,10 @@ FunctionPointer(void, PGetFriction, (taskwk* twp, motionwk2* mwp, playerwk* pwp)
 FunctionPointer(void, PGetInertia, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443650);
 FunctionPointer(void, PGetGravity, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443800);
 FunctionPointer(void, PResetAngle, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443AD0);
+FunctionPointer(void, SetUserGravityXZ, (Angle angx, Angle angz), 0x43B4C0);
+FunctionPointer(signed int, PCheckHoldObject, (taskwk* a1), 0x43B9C0);
 FunctionPointer(void, PClearSpeed, (motionwk2* mwp, playerwk* pwp), 0x43C550);
+FunctionPointer(void, PSetPosition1D, (taskwk* data1, motionwk2* data2, playerwk* co2), 0x43E100);
 FunctionPointer(void, PGetSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x443F50);
 FunctionPointer(void, PGetPushSpeed, (taskwk* twp, motionwk2* mwp, playerwk* pwp), 0x4442C0);
 FunctionPointer(void, KillHimByFallingDownP, (int pno), 0x446AD0);
@@ -241,11 +268,7 @@ FunctionPointer(void, MakeParabolaInitSpeed, (sParabola* para), 0x4BD2D0); // In
 FunctionPointer(Bool, ChkParabolaEnd, (sParabola* para), 0x4BD380); // Run parabola (set movement in para->speed), returns true if finished
 FunctionPointer(void, PGetAcceleration1D, (taskwk* data1, motionwk2* data2, playerwk* co2), 0x442A50);
 FunctionPointer(void, PGetSpeed1D, (taskwk* data1, motionwk2* data2, playerwk* co2), 0x4441B0);
-FunctionPointer(void, PSetPosition1D, (taskwk* data1, motionwk2* data2, playerwk* co2), 0x43E100);
-FunctionPointer(signed int, PCheckHoldObject, (taskwk* a1), 0x43B9C0);
 FunctionPointer(int, PResetAccelerationAir, (taskwk* a1, motionwk2* a2, playerwk* a3), 0x44BD70);
-FunctionPointer(int, PSetSplashEffect, (taskwk* a1), 0x00440890); // Creates a water splash
-TaskFunc(ObjectSkydeck_wings_End, 0x004FB290); // Common delete object function
 
 // Characters
 TaskFunc(SonicTheHedgehog, 0x49A9B0);
@@ -341,17 +364,22 @@ FunctionPointer(taskwk*, CCL_IsHitKindWithNum, (taskwk* twp, uint8_t kind), 0x41
 FunctionPointer(taskwk*, CCL_IsHitKindWithNum2, (taskwk* twp, uint8_t kind), 0x41C930); // Same as CCL_IsHitKindWithNum2 but with unnecessary safe checks.
 FunctionPointer(taskwk*, CCL_IsHitPlayer, (taskwk* twp), 0x41CBC0); // Check if a player collides with twp, returns the player's taskwk or 0
 FunctionPointer(taskwk*, CCL_IsHitBullet, (taskwk* twp), 0x41CBE0); // Check if a projectile collides with twp, returns the projectile's taskwk or 0
+FunctionPointer(taskwk*, CCL_IsHitPlayerWithNum, (taskwk* twp, Sint32 info_num), 0x41CC60);
 FastcallFunctionPointer(BOOL, njCollisionCheckSS, (float* p1, float* p2), 0x789360); // Check if two spheres collide, arguments are two array of 4 floats for x, y, z and radius
 
 // Geometry collision
-FunctionPointer(NJS_OBJECT*, SetModelCollision, (obj* OriginalObj, task* tp, int Flag), 0x49D6C0); // Creates dynamic collision from Task
-FunctionPointer(bool, CheckPlayerRideOnMobileLandObjectP, (int pno, task* ttp), 0x441C30);
+FunctionPointer(void, ListGroundForCollision, (Float xPosition, Float yPosition, Float zPosition, Float fRadius), 0x43ACD0);
 FunctionPointer(void, RegisterCollisionEntry, (int slAttribute, task* pTask, NJS_OBJECT* pObject), 0x43B2E0);
 FunctionPointer(void, WithdrawCollisionEntry, (task* pTask, NJS_OBJECT* pObject), 0x43B380);
 FunctionPointer(void, ReleaseMobileLandObject, (NJS_OBJECT* pObjLandObject), 0x43B450);
 FunctionPointer(NJS_OBJECT*, GetMobileLandObject, (), 0x43B400);
 FunctionPointer(void, SetMleriRangeRad, (float range), 0x43B6E0); // Set minimum collision lookup radius
+FunctionPointer(bool, CheckPlayerRideOnMobileLandObjectP, (int pno, task* ttp), 0x441C30);
+FunctionPointer(NJS_OBJECT*, SetModelCollision, (NJS_OBJECT* OriginalObj, task* tp, Sint32 Flag), 0x49D6C0); // Creates dynamic collision from Task
 VoidFunc(ResetMleriRangeRad, 0x43B6F0); // Reset minimum collision lookup radius
+VoidFunc(MakeLandCollLandEntryRangeIn, 0x43AEF0);
+VoidFunc(MakeLandCollLandEntryALL, 0x43B580);
+VoidFunc(CL_ColPolListUpModeSetAll, 0x4511C0); // Process all collisions instead of only those near the player, used for chao gardens.
 
 // Path
 FunctionPointer(int, CheckPlayerRideOnPath, (pathtag* pathtagp), 0x440ED0); // Check if P1 or P2 is on the specified path; returns bitfield.
@@ -522,6 +550,7 @@ FunctionPointer(BOOL, dsCheckViewV, (NJS_POINT3* ft, float radius), 0x403330); /
 FunctionPointer(BOOL, SetRegularTexture, (), 0x420F90); // Set regular object texlist
 FunctionPointer(BOOL, CheckObjectTexture, (), 0x420FB0); // Check if the first level object texlist exists
 FunctionPointer(BOOL, SetObjectTexture, (), 0x420FC0); // Set first level object texlist
+FunctionPointer(Bool, CheckEditMode, (), 0x4258F0);
 FunctionPointer(int, GetTheNearestPlayerNumber, (NJS_POINT3* pos), 0x441B70);
 FunctionPointer(BOOL, CheckRangeWithR, (task* tp, Float fRange), 0x46BFA0);
 FunctionPointer(BOOL, CheckRangeOutWithR, (task* tp, float fRange), 0x46C010);
@@ -559,9 +588,10 @@ FunctionPointer(void, CreateFlash2, (float x, float y, float z, float scl), 0x4C
 TaskFunc(E102KillCursor, 0x4CEFE0); // Remove gamma target on task
 FunctionPointer(BOOL, Knuckles_KakeraGame_Set_PutEme, (uint8_t emeid, NJS_POINT3* emepos), 0x477D90); // Give emerald
 FunctionPointer(BOOL, Knuckles_KakeraGame_Set_CheckEme, (uint8_t emeid, NJS_POINT3* emepos), 0x476660); // Check if emerald exists and signal position to radar
-FunctionPointer(void, CreateSmoke, (NJS_POINT3* pos, NJS_POINT3* velo, float scl), 0x4B9820); // Create smoke effect
+FunctionPointer(void, CreateSmoke, (NJS_POINT3* pos, NJS_POINT3* velo, Float scl), 0x4B9820); // Create smoke effect
 FunctionPointer(void, CreateSmoke2, (particle_info* effect), 0x4B98E0); // Create smoke effect with custom data
-FunctionPointer(void, CreateBomb, (NJS_POINT3* pos, float scl), 0x4CACF0); // Create bomb effect
+FunctionPointer(void, CreateSnow, (NJS_POINT3* pos, NJS_POINT3* velo, Float scl), 0x4B9B10);
+FunctionPointer(void, CreateBomb, (NJS_POINT3* pos, Float scl), 0x4CACF0); // Create bomb effect
 FunctionPointer(void, ef_speed, (taskwk* twp), 0x4D6BF0);
 FunctionPointer(void, ef_5ring, (taskwk* twp), 0x4D6C50);
 FunctionPointer(void, ef_10ring, (taskwk* twp), 0x4D6C90);
@@ -577,6 +607,7 @@ TaskFunc(Draw, 0x004D6810); // Draws the item box
 TaskFunc(DrawInWater, 0x004D6990); // Draws the underwater item box
 TaskFunc(Draw_Break, 0x004D6B20); // Draws the destroyed item box
 TaskFunc(Dead_ItemBox, 0x004D6BA0); // Deletes the item box
+TaskFunc(ObjectSkydeck_wings_End, 0x004FB290);
 
 // Object task functions
 TaskFunc(CameraDisplay, 0x4370F0);
@@ -771,6 +802,7 @@ VoidFunc(dsPause_all, 0x424320);
 VoidFunc(dsRelease_all, 0x424380);
 VoidFunc(dsPauseSndOnly, 0x424400);
 VoidFunc(dsStop_all, 0x424460);
+VoidFunc(TempEraseSound, 0x424830);
 FunctionPointer(void, dsPlay_oneshot_Dolby, (int tone, int id, int pri, int volofs, int time, taskwk* pTaskwk), 0x424880);
 FunctionPointer(void, dsPlay_Dolby_time, (int tone, int id, int pri, int volofs, int time, taskwk* pTaskwk), 0x424920);
 FunctionPointer(void, dsPlay_Dolby_timer_vq, (int tone, int id, int pri, int volofs, int timer, float rad, taskwk* pTaskwk), 0x4249E0);
@@ -778,6 +810,24 @@ FunctionPointer(int, dsPlay_oneshot_v, (int tone, int id, int pri, int volofs, f
 VoidFunc(voicevolresume, 0x40CD10);
 FunctionPointer(void, SetBankDir, (signed int soundlist), 0x4238E0);
 VoidFunc(BGM_Stop, 0x4256B0); //Stop BGM
+FunctionPointer(MDHANDLE*, MDHeaderOpen, (const char* fname, Sint32 flag), 0x4B4D10); // Open sound bank
+FunctionPointer(void, MDHeaderClose, (MDHANDLE* mdh), 0x4B4F50); // Close sound bank
+FunctionPointer(BOOL, PlayPCM, (int ch), 0x410050);
+FunctionPointer(void, StopPCM, (int ch), 0x410100);
+FunctionPointer(void, SetVolumePCM, (int ch, int volume), 0x4101A0);
+FunctionPointer(void, SetFreqencyPCM, (int ch, float freqency), 0x410200);
+FunctionPointer(void, SetPanPCM, (int ch, int pan), 0x410260);
+FunctionPointer(void, Set3DPositionPCM, (int ch, float x, float y, float z), 0x4102C0);
+FunctionPointer(BOOL, Set3DMinMaxPCM, (int ch, float _min, float _max), 0x4103B0);
+FunctionPointer(BOOL, LoadPCM, (int ch, void* wavememory, int wavesize, int loopflag), 0x4106F0);
+FunctionPointer(BOOL, Load3DPCM, (int ch, void* wavememory, int wavesize, int loopflag), 0x410970);
+FunctionPointer(void, IsndPan, (int pan, int handleno), 0x423C80);
+FunctionPointer(void, IsndVolume, (int vol, int handleno), 0x423C20);
+FunctionPointer(void, IsndPitch, (int pitch, int handleno), 0x423CC0);
+FunctionPointer(BOOL, dsEVboss, (int tone), 0x4246C0);
+VoidFunc(wmapause, 0x40D060);
+VoidFunc(wmaresume, 0x40D0A0);
+VoidFunc(dsSoundServer, 0x4250D0);
 
 // Camera
 FunctionPointer(void, CameraSetEventCameraFunc, (CamFuncPtr func, Sint8 ucAdjustType, Sint8 scCameraDirect), 0x437D20); // Creates an event camera with custom script, see CDM enum for direct mode
@@ -828,6 +878,9 @@ CamFunc(CameraE103, 0x467990);
 CamFunc(CameraEgm3, 0x57D6B0);
 CamFunc(CameraFollowG, 0x467740);
 CamFunc(CameraLR, 0x4627B0);
+CamFunc(CameraEventPoint, 0x464A00);
+CamFunc(PathCamera1, 0x4653E0);
+CamFunc(PathCamera2Core, 0x465E20);
 CamFunc(CameraRuinWaka1, 0x4676C0);
 CamFunc(CameraSnowboard, 0x468A20);
 CamFunc(CameraSurvey, 0x465F50);
@@ -899,7 +952,8 @@ FunctionPointer(void, njDrawSprite3D, (NJS_SPRITE* sp, int n, NJD_SPRITE attr), 
 FunctionPointer(void, njDrawLine3D, (NJS_POINT3COL* p, int n, NJD_DRAW attr), 0x77E820);
 FunctionPointer(void, njDrawLine2D, (NJS_POINT2COL* p, int n, float pri, NJD_DRAW attr), 0x77DF40);
 FunctionPointer(void, njDrawTriangle3D, (NJS_POINT3COL* p, int n, NJD_DRAW atr), 0x77EBA0);
-FunctionPointer(void, njDrawTexture, (NJS_TEXTURE_VTX* a1, Int count, Uint32 gbix, Int flag), 0x77DC70);
+FunctionPointer(void, njDrawTexture, (NJS_TEXTURE_VTX* p, Int count, Uint32 gbix, Int flag), 0x77DC70);
+FunctionPointer(void, njDrawQuadTextureEx, (NJS_QUAD_TEXTURE_EX* p), 0x77DE10);
 
 // Direct draw functions
 FunctionPointer(void, njDrawModel, (NJS_MODEL_SADX* mdl), 0x77EF70);
@@ -1488,6 +1542,8 @@ VoidFunc(AvaReleaseTexForEachMode, 0x506040); // Release textures from current m
 FunctionPointer(BOOL, GetEnableTrialActNumAll, (), 0x5061F0);
 FunctionPointer(BOOL, GetEnableMiniGameNumAll, (), 0x506210);
 FunctionPointer(BOOL, AvaGetMissionEnable, (), 0x506410);
+FunctionPointer(BOOL, GetEachCharEnable, (Sint32 chnum), 0x506630);
+FunctionPointer(BOOL, GetEachCharEnableForTrial, (Sint32 chnum), 0x506700);
 FunctionPointer(BOOL, AvaGetTrialEnable, (), 0x506780);
 FunctionPointer(int, GetFadeOutColFromT, (float t), 0x506E10); // Return fade out colour from 0-1 range float
 FunctionPointer(int, GetFadeInColFromT, (float t), 0x506E40); // Return fade in colour from 0-1 range float
@@ -1501,6 +1557,8 @@ FunctionPointer(void, DisplayTitleNew_3, (float baseZ), 0x0050BA90); // Main men
 FunctionPointer(int, BetweenCol, (unsigned int src, unsigned int dst, float avg), 0x004319D0); // Blends two colors together
 FunctionPointer(void, ghFontPuts, (const char* text, float x, float y, float scale), 0x00420C50); // Draws a string with Ascii16x16FontInfo
 FunctionPointer(AvaCharEnum, GetAdvertisePlayerNumber, (), 0x0042CDE0); // Get current character in menus
+FunctionPointer(void, DrawSquareC, (Uint32 col, Float x, Float y, Float z, Float magx, Float magy), 0x431CB0);
+FunctionPointer(void, DrawDlgCsrSqr, (Uint8 col_alpha, Float x, Float y, Float z, Float magx, Float magy), 0x431BB0);
 
 // TGS Menus
 VoidFunc(DisplaySelectingStage_ss, 0x0042DE70);
