@@ -2882,8 +2882,27 @@ namespace SAModManager
 		}
 
 		#endregion
-	}
 
+		#region Mods Tab
+
+		#endregion
+
+		#region Codes Tab
+
+		#endregion
+
+		#region Game Config
+
+		#endregion
+
+		#region Test Spawn
+
+		#endregion
+
+		#region Manager Config
+
+		#endregion
+	}
 }
 
 
