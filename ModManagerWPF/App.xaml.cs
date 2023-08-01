@@ -20,6 +20,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Globalization;
 using System.Diagnostics;
+using SAModManager.Common;
 
 namespace SAModManager
 {
@@ -123,6 +124,7 @@ namespace SAModManager
 					using var k4 = k3.CreateSubKey("open");
 					using var k5 = k4.CreateSubKey("command");
 					k5.SetValue(null, $"\"{Environment.ProcessPath}\" \"%1\"");
+					key.Close();
 					return true;
 				}
 			}
@@ -225,6 +227,7 @@ namespace SAModManager
 				return;
 			}
 
+			Steam.Init();
 			ShutdownMode = ShutdownMode.OnMainWindowClose;
 			MainWindow = new MainWindow(args is not null ? args : null);
 			MainWindow.Show();

@@ -221,7 +221,7 @@ namespace SAModManager
 					return false;
 
 				ClearTempFolder();
-
+	
 				return true;
 			}
 
