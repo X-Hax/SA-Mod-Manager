@@ -210,6 +210,10 @@ namespace SAModManager
 			};
 			timer.Tick += SetModManagerVersion;
 			timer.IsEnabled = true;
+
+			if (!Directory.Exists(modDirectory) || !installed)
+				return;
+
 			new OneClickInstall(updatePath, modDirectory);
 
 			CheckForModUpdates();
