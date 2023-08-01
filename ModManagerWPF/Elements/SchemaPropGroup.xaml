@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="SAModManager.Elements.SchemaPropGroup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SAModManager.Elements"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="525">
+	<Grid x:Name="PropGroup">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="Auto"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Button x:Name="PropGroupDelete" Height="26">
+			<Image Source="{DynamicResource IconDelete}" Width="22" Height="22"/>
+		</Button>
+		<Button x:Name="PropGroupAdd" Height="26">
+			<Image Source="{DynamicResource IconAdd}" Width="22" Height="22"/>
+		</Button>
+		
+		<StackPanel x:Name="PropGroupName" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+			<Label Content="Group Name:" VerticalAlignment="Center"/>
+			<TextBox Text="{Binding Name}" Width="150" Margin="5"/>
+		</StackPanel>
+		<StackPanel x:Name="PropGroupDisplay" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
+			<Label Content="Display Name:" VerticalAlignment="Center"/>
+			<TextBox Text="{Binding DisplayName}" Width="150" Margin="5"/>
+		</StackPanel>
+		<Grid x:Name="PropGroupBorder" Grid.ColumnSpan="3" Grid.Row="1">
+			<Rectangle Grid.ColumnSpan="3" Grid.Row="1" Fill="{DynamicResource Borders.Brushes.Border}" Margin="0,3,0,3" Height="4"/>
+		</Grid>
+	</Grid>
+</UserControl>

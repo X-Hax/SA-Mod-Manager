@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="SAModManager.Elements.SchemaProperties"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SAModManager.Elements"
+             mc:Ignorable="d" 
+             d:DesignHeight="120" d:DesignWidth="560">
+	<Grid Height="Auto" Width="560">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Button x:Name="PropDelete" Height="26">
+			<Image Source="{DynamicResource IconDelete}" Width="22" Height="22"/>
+		</Button>
+		<Button x:Name="PropAdd" Height="26">
+			<Image Source="{DynamicResource IconAdd}" Width="22" Height="22"/>
+		</Button>
+
+		<Grid x:Name="PropName" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Label Content="Property:" Grid.Column="0" VerticalAlignment="Center"/>
+			<TextBox Text="{Binding Name}" Grid.Column="1" Margin="5" VerticalContentAlignment="Bottom"/>
+			<Label Content="Display Name:" Grid.Column="2" VerticalAlignment="Center"/>
+			<TextBox Text="{Binding DisplayName}" Grid.Column="3" Margin="5"/>
+			<Label Content="Type:" Grid.Column="4" VerticalAlignment="Center"/>
+			<ComboBox ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}, Path=Tag}" Grid.Column="5" HorizontalAlignment="Stretch" Margin="5"/>
+		</Grid>
+
+		<Grid x:Name="PropValues" Grid.Column="1" Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="35"/>
+			</Grid.RowDefinitions>
+
+			<!--Combo Box Property (Bools/Enums)-->
+			<Grid x:Name="PropCombo">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Label Content="Default Value:" Grid.Column="0" VerticalAlignment="Center"/>
+				<ComboBox x:Name="PropDefaultCombo" Grid.Column="1" Margin="5"/>
+			</Grid>
+
+			<!--Number Property-->
+			<Grid x:Name="PropValue">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Label Content="Default:" Grid.Column="0" VerticalAlignment="Center"/>
+				<local:NumericUpDown x:Name="PropDefaultValue" Grid.Column="1" VerticalAlignment="Center" Margin="5"/>
+				<Label Content="Minimum:" Grid.Column="2" VerticalAlignment="Center"/>
+				<local:NumericUpDown x:Name="PropMinValue" Grid.Column="3" VerticalAlignment="Center" Margin="5"/>
+				<Label Content="Maximum:" Grid.Column="4" VerticalAlignment="Center"/>
+				<local:NumericUpDown x:Name="PropMaxValue" Grid.Column="5" VerticalAlignment="Center" Margin="5"/>
+			</Grid>
+
+			<!--String Property-->
+			<Grid x:Name="PropString">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Label Content="Default Value:" Grid.Column="0" VerticalAlignment="Center"/>
+				<TextBox x:Name="PropDefaultString" Grid.Column="1" Margin="5"/>
+			</Grid>
+		</Grid>
+
+		<Grid x:Name="PropDescription" Grid.Column="1" Grid.Row="2" MinWidth="500" HorizontalAlignment="Left">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Content="Description:" Grid.Column="0" VerticalAlignment="Center"/>
+			<TextBox Text="{Binding HelpText}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5"/>
+			<CheckBox Content="Always Include" Grid.Column="2" VerticalAlignment="Center"/>
+		</Grid>
+
+		<Rectangle Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"  Fill="{DynamicResource Borders.Brushes.Border}" Width="2" HorizontalAlignment="Center" Margin="0,7,0,5"/>
+		<Rectangle Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Fill="{DynamicResource Borders.Brushes.Border}" Height="2" VerticalAlignment="Center" Margin="12,5,5,5"/>
+	</Grid>
+</UserControl>
