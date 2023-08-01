@@ -80,8 +80,8 @@ namespace SAModManager.Common
 
 					ModChangeLogData data = new()
 					{
-						filename = i.State.ToString(),
-						 status = file
+						filename = file,
+						 status = i.State.ToString(),
 					};
 
 					modchangeData.Add(data);
