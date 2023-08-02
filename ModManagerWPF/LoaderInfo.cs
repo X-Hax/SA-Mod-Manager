@@ -44,7 +44,7 @@ namespace SAModManager
 		}
 	}
 
-	class SADXLoaderInfo : LoaderInfo
+	public class SADXLoaderInfo : LoaderInfo
 	{
 		enum FillMode
 		{
