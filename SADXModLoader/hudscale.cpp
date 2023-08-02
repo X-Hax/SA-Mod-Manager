@@ -3,20 +3,20 @@
 #include "uiscale.h"
 #include "hudscale.h"
 #include "SkyChaseFixes.h"
-#include "IniFile.hpp"
+#include "util.h"
 
 using namespace uiscale;
 
 static const float patch_dummy = 1.0f;
-static const float float640    = 640.0f;
-static const int int640        = 640;
+static const float float640 = 640.0f;
+static const int int640 = 640;
 
 // Chao patches
-static float aspect_scale             = 1.0f;
-static float preview_egg              = -34.0f;
+static float aspect_scale = 1.0f;
+static float preview_egg = -34.0f;
 static float preview_animal_hat_shell = -26.0f;
-static float preview_fruit            = -22.0f;
-static float preview_pacifier         = -13.0f;
+static float preview_fruit = -22.0f;
+static float preview_pacifier = -13.0f;
 
 #pragma region Trampolines
 
@@ -250,8 +250,8 @@ static void __declspec(naked) TwinkleCircuit_DrawLapTimes_asm()
 {
 	__asm
 	{
-		push [esp + 08h]
-		push [esp + 08h]
+		push[esp + 08h]
+		push[esp + 08h]
 		movzx eax, al
 		push eax
 		call TwinkleCircuit_DrawLapTimes_r
@@ -991,7 +991,7 @@ static void __cdecl DrawTitleScreen_r(void* a1)
 	const auto ratio_width = is_tall ? width : height * ratio_4_3;
 	const auto ratio_height = is_tall ? width / ratio_4_3 : height;
 
-	NJS_POINT2COL rect {};
+	NJS_POINT2COL rect{};
 
 	// all vertex colors black
 	Uint32 colors[4] = {
@@ -1068,12 +1068,12 @@ void hudscale::update()
 {
 	float vertscale = static_cast<float>(VerticalResolution) / 480.0f;
 
-	aspect_scale             = static_cast<float>(HorizontalResolution) / (640.0f * vertscale);
-	aspect_scale             = max(aspect_scale, 1.0f);
-	preview_egg              = -34.0f * vertscale;
+	aspect_scale = static_cast<float>(HorizontalResolution) / (640.0f * vertscale);
+	aspect_scale = max(aspect_scale, 1.0f);
+	preview_egg = -34.0f * vertscale;
 	preview_animal_hat_shell = -26.0f * vertscale;
-	preview_fruit            = -22.0f * vertscale;
-	preview_pacifier         = -13.0f * vertscale;
+	preview_fruit = -22.0f * vertscale;
+	preview_pacifier = -13.0f * vertscale;
 
 	// Black Martket Item List
 	WriteData(reinterpret_cast<float*>(0x0072773B), -68.0f * vertscale); // Egg
@@ -1096,9 +1096,9 @@ static void InitializeChaoHUDs()
 	WriteData(reinterpret_cast<const float**>(0x0071AF00), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x0071B03C), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x0071B093), &patch_dummy);
-	ChaoDX_Message_PlayerAction_Load_t    = new Trampoline(0x0071B3B0, 0x0071B3B7, ChaoDX_Message_PlayerAction_Load_r);
+	ChaoDX_Message_PlayerAction_Load_t = new Trampoline(0x0071B3B0, 0x0071B3B7, ChaoDX_Message_PlayerAction_Load_r);
 	ChaoDX_Message_PlayerAction_Display_t = new Trampoline(0x0071B210, 0x0071B215, ChaoDX_Message_PlayerAction_Display_r);
-	HeldChaoParamWindowDisplayer_t        = new Trampoline(0x00737BD0, 0x00737BD5, HeldChaoParamWindowDisplayer_asm);
+	HeldChaoParamWindowDisplayer_t = new Trampoline(0x00737BD0, 0x00737BD5, HeldChaoParamWindowDisplayer_asm);
 
 	// Black Market
 	WriteData(reinterpret_cast<const float**>(0x00725831), &patch_dummy); // Ring box vertical position
@@ -1109,8 +1109,8 @@ static void InitializeChaoHUDs()
 	WriteData(reinterpret_cast<const float**>(0x0072564F), &patch_dummy); // Text position H
 	WriteData(reinterpret_cast<const float**>(0x0072599C), &patch_dummy); // Description text position V
 	WriteData(reinterpret_cast<const float**>(0x007259BD), &patch_dummy); // Description text position H
-	AlgKinderBlDisp__t               = new Trampoline(0x007283B0, 0x007283B8, AlgKinderBlDisp__asm);
-	AL_BlackmarketMenuCreate_t       = new Trampoline(0x00728A40, 0x00728A49, AL_BlackmarketMenuCreate_r);
+	AlgKinderBlDisp__t = new Trampoline(0x007283B0, 0x007283B8, AlgKinderBlDisp__asm);
+	AL_BlackmarketMenuCreate_t = new Trampoline(0x00728A40, 0x00728A49, AL_BlackmarketMenuCreate_r);
 	AL_BlackmarketRingWinDisplayer_t = new Trampoline(0x00744990, 0x00744995, AL_BlackmarketRingWinDisplayer_r);
 
 	// Race
@@ -1124,59 +1124,59 @@ static void InitializeChaoHUDs()
 	WriteData(reinterpret_cast<const float**>(0x007691CC), &float640); // Chao select 3D placement patch
 	WriteData(reinterpret_cast<const float**>(0x00747115), &float640); // Chao reccord 3D placement patch
 	WriteData(reinterpret_cast<const float**>(0x00767CF1), &float640); // Chao param 3D placement patch
-	AL_CreateChaoSelectMenu_t                   = new Trampoline(0x007491D0, 0x007491D5, AL_CreateChaoSelectMenu_r);
-	AL_EntranceMenuBackGroundDisplayer_t        = new Trampoline(0x0074AB40, 0x0074AB47, AL_EntranceMenuBackGroundDisplayer_r);
-	AL_EntranceMenuLargeTitleBarDisplayer_t     = new Trampoline(0x00749830, 0x00749835, AL_EntranceMenuLargeTitleBarDisplayer_r);
-	AL_EntranceMenuSmallTitleBarDisplayer_t     = new Trampoline(0x00749EB0, 0x00749EB5, AL_EntranceMenuSmallTitleBarDisplayer_r);
+	AL_CreateChaoSelectMenu_t = new Trampoline(0x007491D0, 0x007491D5, AL_CreateChaoSelectMenu_r);
+	AL_EntranceMenuBackGroundDisplayer_t = new Trampoline(0x0074AB40, 0x0074AB47, AL_EntranceMenuBackGroundDisplayer_r);
+	AL_EntranceMenuLargeTitleBarDisplayer_t = new Trampoline(0x00749830, 0x00749835, AL_EntranceMenuLargeTitleBarDisplayer_r);
+	AL_EntranceMenuSmallTitleBarDisplayer_t = new Trampoline(0x00749EB0, 0x00749EB5, AL_EntranceMenuSmallTitleBarDisplayer_r);
 	AL_EntranceMenuLargeTitleBarDisplayerPost_t = new Trampoline(0x00749820, 0x00749829, AL_EntranceMenuLargeTitleBarDisplayerPost_r);
 	AL_EntranceMenuSmallTitleBarDisplayerPost_t = new Trampoline(0x00749E90, 0x00749E95, AL_EntranceMenuSmallTitleBarDisplayerPost_r);
-	AL_EntranceMenuRaceTitleBarDisplayer_t      = new Trampoline(0x0074A1D0, 0x0074A1D7, AL_EntranceMenuRaceTitleBarDisplayer_r);
-	ChaoSelectWindowTDisplayer_t                = new Trampoline(0x00769320, 0x00769327, ChaoSelectWindowTDisplayer_r);
-	AL_ChaoParamWindowDisplayer_t               = new Trampoline(0x00768080, 0x00768087, AL_ChaoParamWindowDisplayer_r);
-	CourseNameBarJewelDisplayer_t               = new Trampoline(0x00768AE0, 0x00768AE7, CourseNameBarJewelDisplayer_r);
-	BlueButtonDisplayer_t                       = new Trampoline(0x00747C00, 0x00747C07, BlueButtonDisplayer_r);
-	InfoBaseWindowDisplayer_t                   = new Trampoline(0x00747810, 0x00747817, InfoBaseWindowDisplayer_r);
-	PersonalRecordWindowExecutor_t              = new Trampoline(0x00747080, 0x00747085, PersonalRecordWindowExecutor_r);
-	PersonalRecordWindowDisplayer_t             = new Trampoline(0x007472E0, 0x007472E8, PersonalRecordWindowDisplayer_r);
-	BlueButtonDisplayerCS_t                     = new Trampoline(0x007480B0, 0x007480B7, BlueButtonDisplayerCS_r);
-	ChaoSelectWindowExecutor_t                  = new Trampoline(0x00768E10, 0x00768E16, ChaoSelectWindowExecutor_r);
-	AL_ChaoParamWindowExecutor_t                = new Trampoline(0x00767D40, 0x00767D47, AL_ChaoParamWindowExecutor_r);
+	AL_EntranceMenuRaceTitleBarDisplayer_t = new Trampoline(0x0074A1D0, 0x0074A1D7, AL_EntranceMenuRaceTitleBarDisplayer_r);
+	ChaoSelectWindowTDisplayer_t = new Trampoline(0x00769320, 0x00769327, ChaoSelectWindowTDisplayer_r);
+	AL_ChaoParamWindowDisplayer_t = new Trampoline(0x00768080, 0x00768087, AL_ChaoParamWindowDisplayer_r);
+	CourseNameBarJewelDisplayer_t = new Trampoline(0x00768AE0, 0x00768AE7, CourseNameBarJewelDisplayer_r);
+	BlueButtonDisplayer_t = new Trampoline(0x00747C00, 0x00747C07, BlueButtonDisplayer_r);
+	InfoBaseWindowDisplayer_t = new Trampoline(0x00747810, 0x00747817, InfoBaseWindowDisplayer_r);
+	PersonalRecordWindowExecutor_t = new Trampoline(0x00747080, 0x00747085, PersonalRecordWindowExecutor_r);
+	PersonalRecordWindowDisplayer_t = new Trampoline(0x007472E0, 0x007472E8, PersonalRecordWindowDisplayer_r);
+	BlueButtonDisplayerCS_t = new Trampoline(0x007480B0, 0x007480B7, BlueButtonDisplayerCS_r);
+	ChaoSelectWindowExecutor_t = new Trampoline(0x00768E10, 0x00768E16, ChaoSelectWindowExecutor_r);
+	AL_ChaoParamWindowExecutor_t = new Trampoline(0x00767D40, 0x00767D47, AL_ChaoParamWindowExecutor_r);
 
 	// Name Machine
 	WriteData(reinterpret_cast<float**>(0x0074DAF5), &scale_v);
 	WriteData(reinterpret_cast<float**>(0x0074DBD3), &scale_v);
 	WriteData(reinterpret_cast<float**>(0x0074DB22), &scale_h);
 	WriteData(reinterpret_cast<float**>(0x0074DBA2), &scale_h);
-	OdeBGDisplayer_t              = new Trampoline(0x0074DC20, 0x0074DC25, OdeBGDisplayer_r);
-	AlMsgWarnDisp_t               = new Trampoline(0x0072D450, 0x0072D455, AlMsgWarnDisp_r);
-	AlMsgSelectDisp_t             = new Trampoline(0x0072CDA0, 0x0072CDA5, AlMsgSelectDisp_r);
-	OdeLargeTitleBarDisplayer_t   = new Trampoline(0x0076B5E0, 0x0076B5E7, OdeLargeTitleBarDisplayer_r);
-	CreateMainMenuBar_t           = new Trampoline(0x0076D3D0, 0x0076D3D5, CreateMainMenuBar_r);
-	MainMenuBarDisplayer_t        = new Trampoline(0x0076D0E0, 0x0076D0E7, MainMenuBarDisplayer_r);
+	OdeBGDisplayer_t = new Trampoline(0x0074DC20, 0x0074DC25, OdeBGDisplayer_r);
+	AlMsgWarnDisp_t = new Trampoline(0x0072D450, 0x0072D455, AlMsgWarnDisp_r);
+	AlMsgSelectDisp_t = new Trampoline(0x0072CDA0, 0x0072CDA5, AlMsgSelectDisp_r);
+	OdeLargeTitleBarDisplayer_t = new Trampoline(0x0076B5E0, 0x0076B5E7, OdeLargeTitleBarDisplayer_r);
+	CreateMainMenuBar_t = new Trampoline(0x0076D3D0, 0x0076D3D5, CreateMainMenuBar_r);
+	MainMenuBarDisplayer_t = new Trampoline(0x0076D0E0, 0x0076D0E7, MainMenuBarDisplayer_r);
 	AL_OdekakeMenuStageNazukeya_t = new Trampoline(0x0074BC60, 0x0074BC67, AL_OdekakeMenuStageNazukeya_r);
-	CreateChaoParamWindow_t       = new Trampoline(0x0076B360, 0x0076B365, CreateChaoParamWindow_r);
-	ChaoParamWindowDisplayer_t    = new Trampoline(0x0076AD40, 0x0076AD47, ChaoParamWindowDisplayer_r);
-	CreateSayounaraWindow_t       = new Trampoline(0x0076A9D0, 0x0076A9D5, CreateSayounaraWindow_r);
-	SayounaraWindowDisplayer_t    = new Trampoline(0x0076A640, 0x0076A647, SayounaraWindowDisplayer_r);
-	CreateKetteiButton_t          = new Trampoline(0x0076A2F0, 0x0076A2F5, CreateKetteiButton_r);
-	GuideButtonDisplayer_t        = new Trampoline(0x0076A1D0, 0x0076A1D5, GuideButtonDisplayer_r);
-	CreateCancelButton_t          = new Trampoline(0x0076A390, 0x0076A395, CreateCancelButton_r);
-	CreateDecideButton_t          = new Trampoline(0x0076A030, 0x0076A035, CreateDecideButton_r);
-	DecideButtonDisplayer_t       = new Trampoline(0x00769E40, 0x00769E47, DecideButtonDisplayer_r);
-	ChaoParamWindowExecutor_t     = new Trampoline(0x0076AA60, 0x0076AA66, ChaoParamWindowExecutor_r);
+	CreateChaoParamWindow_t = new Trampoline(0x0076B360, 0x0076B365, CreateChaoParamWindow_r);
+	ChaoParamWindowDisplayer_t = new Trampoline(0x0076AD40, 0x0076AD47, ChaoParamWindowDisplayer_r);
+	CreateSayounaraWindow_t = new Trampoline(0x0076A9D0, 0x0076A9D5, CreateSayounaraWindow_r);
+	SayounaraWindowDisplayer_t = new Trampoline(0x0076A640, 0x0076A647, SayounaraWindowDisplayer_r);
+	CreateKetteiButton_t = new Trampoline(0x0076A2F0, 0x0076A2F5, CreateKetteiButton_r);
+	GuideButtonDisplayer_t = new Trampoline(0x0076A1D0, 0x0076A1D5, GuideButtonDisplayer_r);
+	CreateCancelButton_t = new Trampoline(0x0076A390, 0x0076A395, CreateCancelButton_r);
+	CreateDecideButton_t = new Trampoline(0x0076A030, 0x0076A035, CreateDecideButton_r);
+	DecideButtonDisplayer_t = new Trampoline(0x00769E40, 0x00769E47, DecideButtonDisplayer_r);
+	ChaoParamWindowExecutor_t = new Trampoline(0x0076AA60, 0x0076AA66, ChaoParamWindowExecutor_r);
 
 	// MessageBar
 	WriteData(reinterpret_cast<float**>(0x0076CE07), &aspect_scale);
 	WriteData(reinterpret_cast<float**>(0x0076CCE0), &aspect_scale);
 	WriteData(reinterpret_cast<float**>(0x00749437), &aspect_scale);
 	WriteData(reinterpret_cast<float**>(0x0074935A), &aspect_scale);
-	AL_OdeTelopCreate_t  = new Trampoline(0x0076CD60, 0x0076CD66, AL_OdeTelopCreate_r);
-	AL_OdeTelopDisp_t    = new Trampoline(0x0076CC80, 0x0076CC85, AL_OdeTelopDisp_r);
-	MessageBarCreate_t   = new Trampoline(0x007493B0, 0x007493B5, MessageBarCreate_r);
+	AL_OdeTelopCreate_t = new Trampoline(0x0076CD60, 0x0076CD66, AL_OdeTelopCreate_r);
+	AL_OdeTelopDisp_t = new Trampoline(0x0076CC80, 0x0076CC85, AL_OdeTelopDisp_r);
+	MessageBarCreate_t = new Trampoline(0x007493B0, 0x007493B5, MessageBarCreate_r);
 	MessageBar_Display_t = new Trampoline(0x00749300, 0x00749306, MessageBar_Display_r);
 
 	// Monitor
-	AloG00Hintmenu_t  = new Trampoline(0x00746800, 0x00746806, AloG00Hintmenu_r);
+	AloG00Hintmenu_t = new Trampoline(0x00746800, 0x00746806, AloG00Hintmenu_r);
 	AlgKinderPrDisp_t = new Trampoline(0x00746710, 0x00746715, AlgKinderPrDisp_r);
 
 	// Black Market item list
@@ -1203,55 +1203,55 @@ static void InitializeChaoHUDs()
 	WriteData(reinterpret_cast<float*>(0x0072604B), 1.0f);
 }
 
-void hudscale::initialize(const IniGroup* settings)
+void hudscale::initialize()
 {
-	NowLoading_t                         = new Trampoline(0x0040BDA0, 0x0040BDA5, NowLoading_r);
-	NowLoading2_t                        = new Trampoline(0x005033F0, 0x005033F5, NowLoading2_r);
-	NowLoading3_t                        = new Trampoline(0x00503450, 0x00503457, NowLoading3_r);
-	MissionCompleteScreen_Draw_t         = new Trampoline(0x00590690, 0x00590695, MissionCompleteScreen_Draw_r);
-	CharSelBg_Display_t                  = new Trampoline(0x00512450, 0x00512455, CharSelBg_Display_r);
-	TrialLevelList_Display_t             = new Trampoline(0x0050B410, 0x0050B415, TrialLevelList_Display_r);
-	SubGameLevelList_Display_t           = new Trampoline(0x0050A640, 0x0050A645, SubGameLevelList_Display_r);
-	EmblemResultMenu_Display_t           = new Trampoline(0x0050DFD0, 0x0050DFD5, EmblemResultMenu_Display_r);
-	FileSelect_Display_t                 = new Trampoline(0x00505550, 0x00505555, FileSelect_Display_r);
-	MenuObj_Display_t                    = new Trampoline(0x00432480, 0x00432487, MenuObj_Display_r);
-	InetDemo_Display_t                   = new Trampoline(0x0050D430, 0x0050D435, InetDemo_Display_r);
-	OptionsMenu_Display_t                = new Trampoline(0x00509810, 0x00509815, OptionsMenu_Display_r);
-	SoundTest_Display_t                  = new Trampoline(0x00511390, 0x00511395, SoundTest_Display_r);
-	GreenMenuRect_Draw_t                 = new Trampoline(0x004334F0, 0x004334F5, GreenMenuRect_Draw_r);
+	NowLoading_t = new Trampoline(0x0040BDA0, 0x0040BDA5, NowLoading_r);
+	NowLoading2_t = new Trampoline(0x005033F0, 0x005033F5, NowLoading2_r);
+	NowLoading3_t = new Trampoline(0x00503450, 0x00503457, NowLoading3_r);
+	MissionCompleteScreen_Draw_t = new Trampoline(0x00590690, 0x00590695, MissionCompleteScreen_Draw_r);
+	CharSelBg_Display_t = new Trampoline(0x00512450, 0x00512455, CharSelBg_Display_r);
+	TrialLevelList_Display_t = new Trampoline(0x0050B410, 0x0050B415, TrialLevelList_Display_r);
+	SubGameLevelList_Display_t = new Trampoline(0x0050A640, 0x0050A645, SubGameLevelList_Display_r);
+	EmblemResultMenu_Display_t = new Trampoline(0x0050DFD0, 0x0050DFD5, EmblemResultMenu_Display_r);
+	FileSelect_Display_t = new Trampoline(0x00505550, 0x00505555, FileSelect_Display_r);
+	MenuObj_Display_t = new Trampoline(0x00432480, 0x00432487, MenuObj_Display_r);
+	InetDemo_Display_t = new Trampoline(0x0050D430, 0x0050D435, InetDemo_Display_r);
+	OptionsMenu_Display_t = new Trampoline(0x00509810, 0x00509815, OptionsMenu_Display_r);
+	SoundTest_Display_t = new Trampoline(0x00511390, 0x00511395, SoundTest_Display_r);
+	GreenMenuRect_Draw_t = new Trampoline(0x004334F0, 0x004334F5, GreenMenuRect_Draw_r);
 	TutorialInstructionOverlay_Display_t = new Trampoline(0x006430F0, 0x006430F7, TutorialInstructionOverlay_Display_r);
-	DisplayTitleCard_t                   = new Trampoline(0x0047E170, 0x0047E175, DisplayTitleCard_r);
-	Credits_Main_t                       = new Trampoline(0x006411A0, 0x006411A5, Credits_Main_r);
-	PauseMenu_Map_Display_t              = new Trampoline(0x00458B00, 0x00458B06, PauseMenu_Map_Display_r);
-	EmblemCollected_Init_t               = new Trampoline(0x004B4860, 0x004B4867, EmblemCollected_Init_r);
-	EmblemCollected_Main_t               = new Trampoline(0x004B46A0, 0x004B46A6, EmblemCollected_Main_r);
-	DrawTitleScreen_t                    = new Trampoline(0x0050E470, 0x0050E476, DrawTitleScreen_asm);
-	HudDisplayRingTimeLife_Check_t       = new Trampoline(0x00425F90, 0x00425F95, HudDisplayRingTimeLife_Check_r);
-	HudDisplayScoreOrTimer_t             = new Trampoline(0x00427F50, 0x00427F55, HudDisplayScoreOrTimer_r);
-	DrawStageMissionImage_t              = new Trampoline(0x00457120, 0x00457126, DrawStageMissionImage_r);
-	DisplayPauseMenu_t                   = new Trampoline(0x00415420, 0x00415425, DisplayPauseMenu_r);
-	LifeGauge_Main_t                     = new Trampoline(0x004B3830, 0x004B3837, LifeGauge_Main_r);
-	scaleScoreA                          = new Trampoline(0x00628330, 0x00628335, ScaleScoreA);
-	scaleAnimalPickup                    = new Trampoline(0x0046B330, 0x0046B335, ScaleAnimalPickup);
-	scaleItemBoxSprite                   = new Trampoline(0x004C0790, 0x004C0795, ScaleItemBoxSprite);
-	scaleBalls                           = new Trampoline(0x005C0B70, 0x005C0B75, ScaleBalls);
-	scaleEmeraldRadarA                   = new Trampoline(0x00475A70, 0x00475A75, ScaleEmeraldRadarA);
-	scaleEmeraldRadarB                   = new Trampoline(0x00475E50, 0x00475E55, ScaleEmeraldRadarB);
-	scaleEmeraldRadar_Grab               = new Trampoline(0x00475D50, 0x00475D55, ScaleEmeraldRadar_Grab);
-	scaleSandHillMultiplier              = new Trampoline(0x005991A0, 0x005991A6, ScaleSandHillMultiplier);
-	scaleIceCapMultiplier                = new Trampoline(0x004EC120, 0x004EC125, ScaleIceCapMultiplier);
-	scaleBossName                        = new Trampoline(0x004B33D0, 0x004B33D5, ScaleBossName);
-	scaleMissionStartClear               = new Trampoline(0x00591260, 0x00591268, ScaleMissionStartClear);
-	scaleMissionTimer                    = new Trampoline(0x00592D50, 0x00592D59, ScaleMissionTimer);
-	scaleMissionCounter                  = new Trampoline(0x00592A60, 0x00592A68, ScaleMissionCounter);
-	scaleTailsWinLose                    = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
-	scaleTailsRaceBar                    = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsRaceBar);
-	scaleDemoPressStart                  = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
-	scaleTGSPressStart                   = new Trampoline(0x0042DB40, 0x0042DB47, ScaleTGSPressStart);
-	late_exec_t                          = new Trampoline(0x004086F0, 0x004086F6, late_exec_r); // Sometimes used in a display function so we have to disable scaling temporarily
+	DisplayTitleCard_t = new Trampoline(0x0047E170, 0x0047E175, DisplayTitleCard_r);
+	Credits_Main_t = new Trampoline(0x006411A0, 0x006411A5, Credits_Main_r);
+	PauseMenu_Map_Display_t = new Trampoline(0x00458B00, 0x00458B06, PauseMenu_Map_Display_r);
+	EmblemCollected_Init_t = new Trampoline(0x004B4860, 0x004B4867, EmblemCollected_Init_r);
+	EmblemCollected_Main_t = new Trampoline(0x004B46A0, 0x004B46A6, EmblemCollected_Main_r);
+	DrawTitleScreen_t = new Trampoline(0x0050E470, 0x0050E476, DrawTitleScreen_asm);
+	HudDisplayRingTimeLife_Check_t = new Trampoline(0x00425F90, 0x00425F95, HudDisplayRingTimeLife_Check_r);
+	HudDisplayScoreOrTimer_t = new Trampoline(0x00427F50, 0x00427F55, HudDisplayScoreOrTimer_r);
+	DrawStageMissionImage_t = new Trampoline(0x00457120, 0x00457126, DrawStageMissionImage_r);
+	DisplayPauseMenu_t = new Trampoline(0x00415420, 0x00415425, DisplayPauseMenu_r);
+	LifeGauge_Main_t = new Trampoline(0x004B3830, 0x004B3837, LifeGauge_Main_r);
+	scaleScoreA = new Trampoline(0x00628330, 0x00628335, ScaleScoreA);
+	scaleAnimalPickup = new Trampoline(0x0046B330, 0x0046B335, ScaleAnimalPickup);
+	scaleItemBoxSprite = new Trampoline(0x004C0790, 0x004C0795, ScaleItemBoxSprite);
+	scaleBalls = new Trampoline(0x005C0B70, 0x005C0B75, ScaleBalls);
+	scaleEmeraldRadarA = new Trampoline(0x00475A70, 0x00475A75, ScaleEmeraldRadarA);
+	scaleEmeraldRadarB = new Trampoline(0x00475E50, 0x00475E55, ScaleEmeraldRadarB);
+	scaleEmeraldRadar_Grab = new Trampoline(0x00475D50, 0x00475D55, ScaleEmeraldRadar_Grab);
+	scaleSandHillMultiplier = new Trampoline(0x005991A0, 0x005991A6, ScaleSandHillMultiplier);
+	scaleIceCapMultiplier = new Trampoline(0x004EC120, 0x004EC125, ScaleIceCapMultiplier);
+	scaleBossName = new Trampoline(0x004B33D0, 0x004B33D5, ScaleBossName);
+	scaleMissionStartClear = new Trampoline(0x00591260, 0x00591268, ScaleMissionStartClear);
+	scaleMissionTimer = new Trampoline(0x00592D50, 0x00592D59, ScaleMissionTimer);
+	scaleMissionCounter = new Trampoline(0x00592A60, 0x00592A68, ScaleMissionCounter);
+	scaleTailsWinLose = new Trampoline(0x0047C480, 0x0047C485, ScaleTailsWinLose);
+	scaleTailsRaceBar = new Trampoline(0x0047C260, 0x0047C267, ScaleTailsRaceBar);
+	scaleDemoPressStart = new Trampoline(0x00457D30, 0x00457D36, ScaleDemoPressStart);
+	scaleTGSPressStart = new Trampoline(0x0042DB40, 0x0042DB47, ScaleTGSPressStart);
+	late_exec_t = new Trampoline(0x004086F0, 0x004086F6, late_exec_r); // Sometimes used in a display function so we have to disable scaling temporarily
 
 	// Sky Chase reticle and score calculation
-	if (settings->getBool("SCFix", true))
+	if (loaderSettings.SCFix)
 		SkyChaseFix_Init();
 
 	// Big UI
@@ -1259,12 +1259,12 @@ void hudscale::initialize(const IniGroup* settings)
 	WriteData(reinterpret_cast<const float**>(0x004702E5), &patch_dummy);
 	WriteData(reinterpret_cast<float**>(0x0047022F), &aspect_scale);
 	WriteData(reinterpret_cast<float**>(0x004702D6), &aspect_scale);
-	FishingHud_DrawReel_t      = new Trampoline(0x0046C9F0, 0x0046C9F5, FishingHud_DrawReel_r);
-	FishingHud_DrawRod_t       = new Trampoline(0x0046CAB0, 0x0046CAB9, FishingHud_DrawRod_r);
-	FishingHud_DrawMeters_t    = new Trampoline(0x0046CC70, 0x0046CC75, FishingHud_DrawMeters_r);
-	FishingHud_DrawHIT_t       = new Trampoline(0x0046C920, 0x0046C926, FishingHud_DrawHIT_r);
+	FishingHud_DrawReel_t = new Trampoline(0x0046C9F0, 0x0046C9F5, FishingHud_DrawReel_r);
+	FishingHud_DrawRod_t = new Trampoline(0x0046CAB0, 0x0046CAB9, FishingHud_DrawRod_r);
+	FishingHud_DrawMeters_t = new Trampoline(0x0046CC70, 0x0046CC75, FishingHud_DrawMeters_r);
+	FishingHud_DrawHIT_t = new Trampoline(0x0046C920, 0x0046C926, FishingHud_DrawHIT_r);
 	BigHud_DrawWeightAndLife_t = new Trampoline(0x0046FB00, 0x0046FB05, BigHud_DrawWeightAndLife_r);
-	BigWeightBonus_Display_t   = new Trampoline(0x0046F580, 0x0046F585, BigWeightBonus_Display_r);
+	BigWeightBonus_Display_t = new Trampoline(0x0046F580, 0x0046F585, BigWeightBonus_Display_r);
 
 	DrawSubtitles_t = new Trampoline(0x0040D4D0, 0x0040D4D9, DrawSubtitles_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(DrawSubtitles_t->Target()) + 4), reinterpret_cast<void*>(0x00402F00));
@@ -1289,9 +1289,9 @@ void hudscale::initialize(const IniGroup* settings)
 	TwinkleCircuit_DrawTime_t = new Trampoline(0x004DC7A0, 0x004DC7A9, TwinkleCircuit_DrawTime_r);
 	WriteCall(reinterpret_cast<void*>(reinterpret_cast<size_t>(TwinkleCircuit_DrawTime_t->Target()) + 4), njColorBlendingMode);
 	TwinkleCircuit_DrawTimerCheckpoint_t = new Trampoline(0x004DCDD0, 0x004DCDD5, TwinkleCircuit_DrawTimerCheckpoint_r);
-	TwinkleCircuit_DrawTimer_t           = new Trampoline(0x004DCC50, 0x004DCC57, TwinkleCircuit_DrawTimer_r);
-	TwinkleCircuit_DrawLapTimes_t        = new Trampoline(0x004DC9B0, 0x004DC9B5, TwinkleCircuit_DrawLapTimes_asm);
-	TwinkleCircuit_DrawLapInfo_t         = new Trampoline(0x004DCBC0, 0x004DCBC5, TwinkleCircuit_DrawLapInfo_r);
+	TwinkleCircuit_DrawTimer_t = new Trampoline(0x004DCC50, 0x004DCC57, TwinkleCircuit_DrawTimer_r);
+	TwinkleCircuit_DrawLapTimes_t = new Trampoline(0x004DC9B0, 0x004DC9B5, TwinkleCircuit_DrawLapTimes_asm);
+	TwinkleCircuit_DrawLapInfo_t = new Trampoline(0x004DCBC0, 0x004DCBC5, TwinkleCircuit_DrawLapInfo_r);
 
 	// Checkpoint
 	scaleCheckpointTime = new Trampoline(0x004BABE0, 0x004BABE5, ScaleCheckpointTime);
@@ -1312,7 +1312,7 @@ void hudscale::initialize(const IniGroup* settings)
 	WriteData(reinterpret_cast<const float**>(0x0049FF70), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x004A005B), &patch_dummy);
 	WriteData(reinterpret_cast<const float**>(0x004A0067), &patch_dummy);
-	scaleGammaTimeAddHud    = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
+	scaleGammaTimeAddHud = new Trampoline(0x0049FDA0, 0x0049FDA5, ScaleGammaTimeAddHud);
 	scaleGammaTimeRemaining = new Trampoline(0x004C51D0, 0x004C51D7, ScaleGammaTimeRemaining);
 
 	// Emblem screen
@@ -1322,7 +1322,7 @@ void hudscale::initialize(const IniGroup* settings)
 
 	// Nights
 	WriteData(reinterpret_cast<float**>(0x005D701B), &scale_h);
-	scaleNightsCards   = new Trampoline(0x005D73F0, 0x005D73F5, ScaleNightsCards);
+	scaleNightsCards = new Trampoline(0x005D73F0, 0x005D73F5, ScaleNightsCards);
 	scaleNightsJackpot = new Trampoline(0x005D6E60, 0x005D6E67, ScaleNightsJackpot);
 
 	// GameGear
@@ -1343,7 +1343,7 @@ void hudscale::initialize(const IniGroup* settings)
 	WriteData(reinterpret_cast<float**>(0x00625ED6), &scale_v);
 	WriteData(reinterpret_cast<float**>(0x00625EF6), &scale_h);
 	WriteCall(reinterpret_cast<void*>(0x00625F05), DrawRect_DrawNowMaybe_GameOverHH);
-	DrawGameOver_t   = new Trampoline(0x0042BFD0, 0x0042BFD8, DrawGameOver_asm);   // Normal
+	DrawGameOver_t = new Trampoline(0x0042BFD0, 0x0042BFD8, DrawGameOver_asm);   // Normal
 	DrawGameOverTC_t = new Trampoline(0x004DACC0, 0x004DACC5, DrawGameOverTC_asm); // Twinkle Circuit
 	DrawGameOverHH_t = new Trampoline(0x00625D00, 0x00625D09, DrawGameOverHH_asm); // Hedgehog Hammer
 

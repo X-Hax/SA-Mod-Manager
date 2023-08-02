@@ -929,6 +929,7 @@ vector<MusicInfo> _MusicList;
 vector<__int16> _USVoiceDurationList;
 vector<__int16> _JPVoiceDurationList;
 extern HelperFunctions helperFunctions;
+LoaderSettings loaderSettings = {};
 
 static const char* const dlldatakeys[] = {
 	"CHRMODELSData",
@@ -1058,10 +1059,10 @@ const std::string bassDLLs[] =
 	"bass_vgmstream.dll",
 };
 
-static void __cdecl InitAudio(const IniGroup* settings)
+static void __cdecl InitAudio()
 {
 
-	if (settings->getBool("EnableBassMusic"), true)
+	if (loaderSettings.EnableBassMusic)
 	{
 		string bassFolder = extLibPath + "BASS/";
 
@@ -1091,6 +1092,7 @@ static void __cdecl InitAudio(const IniGroup* settings)
 			WriteJump((void*)0x40D0A0, ResumeMusic_r);
 			WriteJump((void*)0x40CFF0, WMPClose_r);
 			WriteJump((void*)0x40D28A, WMPRelease_r);
+			WriteJump((void*)0x40CF20, sub_40CF20_r);
 			PrintDebug("Loaded Bass DLLs dependencies\n");
 		}
 		else
@@ -1099,16 +1101,17 @@ static void __cdecl InitAudio(const IniGroup* settings)
 		}
 	}
 
-	if (settings->getBool("HRTFSound"), true)
+	if (loaderSettings.HRTFSound)
 	{
 		// allow HRTF 3D sound
 		WriteData<uint8_t>(reinterpret_cast<uint8_t*>(0x00402773), 0xEBu);
 	}
 }
 
-void InitPatches(const IniGroup* settings)
+void InitPatches()
 {
-	if (settings->getBool("PatchCamCode", true))
+	//Fix the game not saving camera setting properly 
+	if (loaderSettings.CCEF)
 	{
 		WriteData((int16_t*)0x438330, (int16_t)0x0D81);
 		WriteData((int16_t*)0x434870, (int16_t)0x0D81);
@@ -1117,7 +1120,7 @@ void InitPatches(const IniGroup* settings)
 	// Fixes N-sided polygons (Gamma's headlight) by using
 	// triangle strip vertex buffer initializers.
 
-	if (settings->getBool("PatchE102Poly", true))
+	if (loaderSettings.E102PolyFix)
 	{
 		for (size_t i = 0; i < MeshSetInitFunctions.size(); ++i)
 		{
@@ -1138,7 +1141,7 @@ void InitPatches(const IniGroup* settings)
 		}
 	}
 
-	if (settings->getBool("PatchPixelOffset", true))
+	if (loaderSettings.PixelOffsetFix)
 	{
 		// Replaces half-pixel offset addition with subtraction
 		WriteData((uint8_t*)0x0077DE1E, (uint8_t)0x25); // njDrawQuadTextureEx
@@ -1157,13 +1160,13 @@ void InitPatches(const IniGroup* settings)
 		WriteData((uint8_t*)0x0078E90E, (uint8_t)0x25); // njDrawLine2D_Direct3D
 	}
 
-	if (settings->getBool("PatchChaoPanel", true))
+	if (loaderSettings.ChaoPanelFix)
 	{
 		// Chao stat panel screen dimensions fix
 		WriteData((float**)0x007377FE, (float*)&_nj_screen_.w);
 	}
 
-	if (settings->getBool("PatchLights", true))
+	if (loaderSettings.LightFix)
 	{
 		// Fix light incorrectly being applied on LandTables
 		WriteCall(reinterpret_cast<void*>(0x0043A6D5), FixLandTableLightType);
@@ -1175,12 +1178,14 @@ void InitPatches(const IniGroup* settings)
 		WriteData<2>(reinterpret_cast<void*>(0x004088A6), 0x90i8);
 	}
 
-	if (settings->getBool("PatchChunkSpec", true))
+	if (loaderSettings.ChunkSpecFix)
 		ChunkSpecularFix_Init();
 
-	if (settings->getBool("KillGbix", true))
+
+	if (loaderSettings.KillGbix)
 		Init_NOGbixHack();
 }
+
 
 static vector<string>& split(const string& s, char delim, vector<string>& elems)
 {
@@ -1194,6 +1199,7 @@ static vector<string>& split(const string& s, char delim, vector<string>& elems)
 
 	return elems;
 }
+
 
 static vector<string> split(const string& s, char delim)
 {
@@ -1244,9 +1250,8 @@ static uint8_t ParseCharacter(const string& str)
 }
 extern void RegisterCharacterWelds(const uint8_t character, const char* iniPath);
 
-LoaderSettings loaderSettings = {};
-std::vector<Mod> modlist;
 
+std::vector<Mod> modlist;
 static void __cdecl InitMods()
 {
 	// Hook present function to handle device lost/reset states
@@ -1280,9 +1285,67 @@ static void __cdecl InitMods()
 	transform(exefilename.begin(), exefilename.end(), exefilename.begin(), ::towlower);
 
 	// Process the main Mod Loader settings.
-	const IniGroup* settings = ini->getGroup("");
+	const IniGroup* setgrp = ini->getGroup("");
 
-	if (settings->getBool("DebugConsole"))
+	loaderSettings.DebugConsole = setgrp->getBool("DebugConsole");
+	loaderSettings.DebugScreen = setgrp->getBool("DebugScreen");
+	loaderSettings.DebugFile = setgrp->getBool("DebugFile");
+	loaderSettings.DebugCrashLog = setgrp->getBool("DebugCrashLog", true);
+	loaderSettings.HorizontalResolution = setgrp->getInt("HorizontalResolution", 640);
+	loaderSettings.VerticalResolution = setgrp->getInt("VerticalResolution", 480);
+	loaderSettings.ForceAspectRatio = setgrp->getBool("ForceAspectRatio");
+	loaderSettings.WindowedFullscreen = setgrp->getBool("Borderless");
+	loaderSettings.EnableVsync = setgrp->getBool("EnableVsync", true);
+	loaderSettings.AutoMipmap = setgrp->getBool("AutoMipmap", true);
+	loaderSettings.TextureFilter = setgrp->getBool("TextureFilter", true);
+	loaderSettings.PauseWhenInactive = setgrp->getBool("PauseWhenInactive", true);
+	loaderSettings.StretchFullscreen = setgrp->getBool("StretchFullscreen", true);
+	loaderSettings.ScreenNum = setgrp->getInt("ScreenNum", 1);
+	loaderSettings.VoiceLanguage = setgrp->getInt("VoiceLanguage", 1);
+	loaderSettings.TextLanguage = setgrp->getInt("TextLanguage", 1);
+	loaderSettings.CustomWindowSize = setgrp->getBool("CustomWindowSize");
+	loaderSettings.WindowWidth = setgrp->getInt("WindowWidth", 640);
+	loaderSettings.WindowHeight = setgrp->getInt("WindowHeight", 480);
+	loaderSettings.MaintainWindowAspectRatio = setgrp->getBool("MaintainWindowAspectRatio");
+	loaderSettings.ResizableWindow = setgrp->getBool("ResizableWindow");
+	loaderSettings.ScaleHud = setgrp->getBool("ScaleHud", true);
+	loaderSettings.BackgroundFillMode = setgrp->getInt("BackgroundFillMode", uiscale::FillMode_Fill);
+	loaderSettings.FmvFillMode = setgrp->getInt("FmvFillMode", uiscale::FillMode_Fit);
+	loaderSettings.EnableBassMusic = setgrp->getBool("EnableBassMusic", true);
+	loaderSettings.EnableBassSFX = setgrp->getBool("EnableBassSFX", false);
+	loaderSettings.EnableDynamicBuffer = setgrp->getBool("EnableDynamicBuffer", false);
+	loaderSettings.SEVolume = setgrp->getInt("SEVolume", 100);
+
+	loaderSettings.TestSpawnLevel = setgrp->getInt("TestSpawnLevel");
+	loaderSettings.TestSpawnAct = setgrp->getInt("TestSpawnAct");
+	loaderSettings.TestSpawnCharacter = setgrp->getInt("TestSpawnCharacter");
+	loaderSettings.TestSpawnPositionEnabled = setgrp->getBool("TestSpawnPositionEnabled");
+	loaderSettings.TestSpawnX = setgrp->getInt("TestSpawnX");
+	loaderSettings.TestSpawnY = setgrp->getInt("TestSpawnY");
+	loaderSettings.TestSpawnZ = setgrp->getInt("TestSpawnZ");
+	loaderSettings.TestSpawnRotation = setgrp->getInt("TestSpawnRotation");
+	loaderSettings.TestSpawnEvent = setgrp->getInt("TestSpawnEvent");
+	loaderSettings.TestSpawnGameMode = setgrp->getInt("TestSpawnGameMode");
+	loaderSettings.TestSpawnSaveID = setgrp->getInt("TestSpawnSaveID");
+
+	//Patches
+	loaderSettings.HRTFSound = setgrp->getBool("HRTFSound", true);
+	loaderSettings.CCEF  = setgrp->getBool("CCEF", true);
+	loaderSettings.PolyBuff  = setgrp->getBool("PolyBuff", true);
+	loaderSettings.MaterialColorFix = setgrp->getBool("MaterialColorFix", true);
+	loaderSettings.InterpolationFix = setgrp->getBool("InterpolationFix", true);
+	loaderSettings.FovFix = setgrp->getBool("FovFix", true);
+	loaderSettings.SCFix = setgrp->getBool("SCFix", true);
+	loaderSettings.Chaos2CrashFix = setgrp->getBool("Chaos2CrashFix", true);
+	loaderSettings.ChunkSpecFix = setgrp->getBool("ChunkSpecFix", true);
+	loaderSettings.E102PolyFix = setgrp->getBool("E102PolyFix", true);
+	loaderSettings.ChaoPanelFix = setgrp->getBool("ChaoPanelFix ", true);
+	loaderSettings.PixelOffsetFix = setgrp->getBool("PixelOffsetFix ", true);
+	loaderSettings.LightFix = setgrp->getBool("LightFix", true);
+	loaderSettings.KillGbix = setgrp->getBool("KillGbix", true);
+	loaderSettings.DisableCDCheck = setgrp->getBool("DisableCDCheck", false);
+
+	if (loaderSettings.DebugConsole)
 	{
 		// Enable the debug console.
 		// TODO: setvbuf()?
@@ -1292,8 +1355,8 @@ static void __cdecl InitMods()
 		dbgConsole = true;
 	}
 
-	dbgScreen = settings->getBool("DebugScreen");
-	if (settings->getBool("DebugFile"))
+	dbgScreen = loaderSettings.DebugScreen;
+	if (loaderSettings.DebugFile)
 	{
 		// Enable debug logging to a file.
 		// dbgFile will be nullptr if the file couldn't be opened.
@@ -1319,38 +1382,39 @@ static void __cdecl InitMods()
 
 	WriteJump((void*)0x789E50, CreateSADXWindow_asm); // override window creation function
 	// Other various settings.
-	if (settings->getBool("DisableCDCheck"))
+	if (loaderSettings.DisableCDCheck)
 		WriteJump((void*)0x402621, (void*)0x402664);
 
 	// Custom resolution.
 	WriteJump((void*)0x40297A, (void*)0x402A90);
 
-	int hres = settings->getInt("HorizontalResolution", 640);
+	int hres = loaderSettings.HorizontalResolution;
 	if (hres > 0)
 	{
 		HorizontalResolution = hres;
 		HorizontalStretch = static_cast<float>(HorizontalResolution) / 640.0f;
 	}
 
-	int vres = settings->getInt("VerticalResolution", 480);
+	int vres = loaderSettings.VerticalResolution;
 	if (vres > 0)
 	{
 		VerticalResolution = vres;
 		VerticalStretch = static_cast<float>(VerticalResolution) / 480.0f;
 	}
 
-	fov::initialize();
+	if (loaderSettings.FovFix)
+		fov::initialize();
 
-	voiceLanguage = settings->getInt("VoiceLanguage", 1);
-	textLanguage = settings->getInt("TextLanguage", 1);
-	borderlessWindow = settings->getBool("WindowedFullscreen");
-	scaleScreen = settings->getBool("StretchFullscreen", true);
-	screenNum = settings->getInt("ScreenNum", 1);
-	customWindowSize = settings->getBool("CustomWindowSize");
-	customWindowWidth = settings->getInt("WindowWidth", 640);
-	customWindowHeight = settings->getInt("WindowHeight", 480);
-	windowResize = settings->getBool("ResizableWindow") && !customWindowSize;
-	textureFilter = settings->getBool("TextureFilter", true);
+	voiceLanguage = loaderSettings.VoiceLanguage;
+	textLanguage = loaderSettings.TextLanguage;
+	borderlessWindow = loaderSettings.WindowedFullscreen;
+	scaleScreen = loaderSettings.StretchFullscreen;
+	screenNum = loaderSettings.ScreenNum;
+	customWindowSize = loaderSettings.CustomWindowSize;
+	customWindowWidth = loaderSettings.WindowWidth;
+	customWindowHeight = loaderSettings.WindowHeight;
+	windowResize = loaderSettings.ResizableWindow && !customWindowSize;
+	textureFilter = loaderSettings.TextureFilter;
 
 	if (!borderlessWindow)
 	{
@@ -1373,7 +1437,7 @@ static void __cdecl InitMods()
 		WriteJump((void*)0x0079455F, PolyBuff_Init_FixVBuffParams);
 	}
 
-	pauseWhenInactive = settings->getBool("PauseWhenInactive", true);
+	pauseWhenInactive = loaderSettings.PauseWhenInactive;
 	if (!pauseWhenInactive)
 	{
 		WriteData((uint8_t*)0x00401914, (uint8_t)0xEBu);
@@ -1388,8 +1452,7 @@ static void __cdecl InitMods()
 		WriteCall(reinterpret_cast<void*>(0x00401920), ResumeMusicWithSound);
 	}
 
-
-	if (settings->getBool("AutoMipmap", true))
+	if (loaderSettings.AutoMipmap)
 		mipmap::enable_auto_mipmaps();
 
 	// Hijack a ton of functions in SADX.
@@ -1397,12 +1460,11 @@ static void __cdecl InitMods()
 	WriteCall((void*)0x402614, SetLanguage);
 	WriteCall((void*)0x437547, FixEKey);
 
-	InitAudio(settings);
+	InitAudio();
 
 	WriteJump(LoadSoundList, LoadSoundList_r);
-	WriteJump((void*)0x40CF20, sub_40CF20_r);
 
-	InitPatches(settings);
+	InitPatches();
 
 	texpack::init();
 
@@ -1425,15 +1487,15 @@ static void __cdecl InitMods()
 		WriteCall(reinterpret_cast<void*>(0x6FE9F8), njDrawTextureMemList_NoFilter); // Emulator plane shouldn't be filtered
 	}
 
-	direct3d::set_vsync(settings->getBool("EnableVsync", true));
+	direct3d::set_vsync(loaderSettings.EnableVsync);
 
-	if (settings->getBool("ScaleHud", true))
+	if (loaderSettings.ScaleHud)
 	{
 		uiscale::initialize();
-		hudscale::initialize(settings);
+		hudscale::initialize();
 	}
 
-	int bgFill = settings->getInt("BackgroundFillMode", uiscale::FillMode_Fill);
+	int bgFill = loaderSettings.BackgroundFillMode;
 	if (bgFill >= 0 && bgFill <= 3)
 	{
 		uiscale::bg_fill = static_cast<uiscale::FillMode>(bgFill);
@@ -1441,33 +1503,33 @@ static void __cdecl InitMods()
 		bgscale::initialize();
 	}
 
-	int fmvFill = settings->getInt("FmvFillMode", uiscale::FillMode_Fit);
+	int fmvFill = loaderSettings.FmvFillMode;
 	if (fmvFill >= 0 && fmvFill <= 3)
 	{
 		uiscale::fmv_fill = static_cast<uiscale::FillMode>(fmvFill);
 		uiscale::setup_fmv_scale();
 	}
 
-	if (settings->getBool("PolyBuff", true))
+	if (loaderSettings.PolyBuff)
 		polybuff::rewrite_init();
 
-	if (settings->getBool("DebugCrashLog", true))
+	if (loaderSettings.DebugCrashLog)
 		initCrashDump();
 
-	if (settings->getBool("MaterialColorFix", true))
+	if (loaderSettings.MaterialColorFix)
 		MaterialColorFixes_Init();
 
-	if (settings->getBool("EnableBassSFX", false))
-		Sound_Init(settings->getInt("SEVolume", 100));
+	if (loaderSettings.EnableBassSFX)
+		Sound_Init(loaderSettings.SEVolume);
 
-	if (settings->getBool("InterpolationFix", true))
+	if (loaderSettings.InterpolationFix)
 		init_interpolationAnimFixes();
 
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\bgm\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_jp\\wma");
 	sadx_fileMap.scanSoundFolder("system\\sounddata\\voice_us\\wma");
 
-	if (settings->getBool("PatchChaos2Crash", true))
+	if (loaderSettings.Chaos2CrashFix)
 		MinorPatches_Init();
 
 	// Map of files to replace.
@@ -1487,11 +1549,11 @@ static void __cdecl InitMods()
 	{
 		char key[8];
 		snprintf(key, sizeof(key), "Mod%u", i);
-		if (!settings->hasKey(key))
+		if (!setgrp->hasKey(key))
 			break;
 
-		const string mod_dirA = "mods\\" + settings->getString(key);
-		const wstring mod_dir = L"mods\\" + settings->getWString(key);
+		const string mod_dirA = "mods\\" + setgrp->getString(key);
+		const wstring mod_dir = L"mods\\" + setgrp->getWString(key);
 		const wstring mod_inifile = mod_dir + L"\\mod.ini";
 
 		FILE* f_mod_ini = _wfopen(mod_inifile.c_str(), L"r");
@@ -1800,12 +1862,10 @@ static void __cdecl InitMods()
 
 		if (modinfo->hasKeyNonEmpty("BorderImage"))
 			borderimg = mod_dir + L'\\' + modinfo->getWString("BorderImage");
-
 		modlist.push_back(modinf);
 	}
 
-
-	if (settings->getBool("InputModEnabled", true))
+	if (setgrp->getBool("InputModEnabled", true))
 		SDL2_Init();
 
 	if (!errors.empty())
@@ -2063,6 +2123,7 @@ static void __cdecl InitMods()
 		patches_str.close();
 	}
 
+
 	// Check for codes.
 	ifstream codes_str("mods\\Codes.dat", ifstream::binary);
 
@@ -2106,7 +2167,6 @@ static void __cdecl InitMods()
 
 		codes_str.close();
 	}
-
 
 	// Sets up code/event handling
 	WriteJump((void*)0x00426063, (void*)ProcessCodes);

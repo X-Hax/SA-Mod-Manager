@@ -70,7 +70,6 @@ namespace SAModManager
 
 		public bool? ShowConsole { get { return null; } set { if (value.HasValue) DebugConsole = value.Value; } }
 
-		public bool DisableCDCheck { get; set; }
 
 		[DefaultValue(640)]
 		public int HorizontalResolution { get; set; } = 640;
@@ -219,8 +218,9 @@ namespace SAModManager
 		public bool LightFix { get; set; }
 		[DefaultValue(true)]
 		public bool KillGbix { get; set; }
+		public bool DisableCDCheck { get; set; }
 
-	#endregion
+		#endregion
 
 		public SADXLoaderInfo()
 		{
