@@ -6,7 +6,6 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:SAModManager"
 		xmlns:elements="clr-namespace:SAModManager.Elements"
-		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:dd="urn:gong-wpf-dragdrop"
 		mc:Ignorable="d"
 		Title="SADX Mod Manager"
