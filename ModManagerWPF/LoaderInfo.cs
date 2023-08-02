@@ -4,6 +4,12 @@ using SAModManager.Ini;
 
 namespace SAModManager
 {
+	public enum GameType
+	{
+		SADX,
+		SA2
+	}
+
 	public enum UpdateUnit
 	{
 		Always,
