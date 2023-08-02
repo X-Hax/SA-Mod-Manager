@@ -328,6 +328,8 @@ namespace SAModManager
 			loaderini.TestSpawnY = (int)tsNumPosY.Value;
 			loaderini.TestSpawnZ = (int)tsNumPosZ.Value;
 
+			loaderini.TestSpawnSaveID = (bool)tsCheckSave.IsChecked ? tsComboSave.SelectedIndex : -1;
+
 			SavePatches();
 			SaveCodes();
 
@@ -1391,6 +1393,12 @@ namespace SAModManager
 			tsComboTime.ItemsSource = TestSpawn.TimeDay;
 
 			TS_GetSave();
+
+			if (loaderini.TestSpawnSaveID < tsComboSave.Items.Count && loaderini.TestSpawnSaveID > -1)
+			{
+				tsComboSave.SelectedIndex = loaderini.TestSpawnSaveID;
+				tsCheckSave.IsChecked = true;
+			}
 		}
 
 		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
