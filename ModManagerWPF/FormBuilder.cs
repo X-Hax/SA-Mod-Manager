@@ -15,8 +15,6 @@ using GongSolutions.Wpf.DragDrop.Utilities;
 using SAModManager.Common;
 using SAModManager.Properties;
 using SAModManager.Elements;
-using Xceed.Wpf.Toolkit;
-using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 using System.Windows.Media;
 using System.Windows.Data;
 using System.Windows.Media.Animation;

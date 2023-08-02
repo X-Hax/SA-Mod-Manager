@@ -5,8 +5,6 @@
 			 xmlns:local="clr-namespace:SAModManager"
 			 xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
 			 xmlns:elements="clr-namespace:SAModManager.Elements"
-			 xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-			 xmlns:xctp="clr-namespace:Xceed.Wpf.Toolkit.Themes;assembly=Xceed.Wpf.Toolkit.NET5"
 			 xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit">
 	<Application.Resources>
 		<ResourceDictionary>
