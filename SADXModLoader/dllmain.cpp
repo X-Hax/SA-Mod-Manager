@@ -1427,7 +1427,7 @@ static void __cdecl InitMods()
 	}
 
 	// Causes significant performance drop on some systems.
-	if (windowResize)
+	if (windowResize && loaderSettings.EnableDynamicBuffer)
 	{
 		// MeshSetBuffer_CreateVertexBuffer: Change D3DPOOL_DEFAULT to D3DPOOL_MANAGED
 		WriteData((char*)0x007853F3, (char)D3DPOOL_MANAGED);

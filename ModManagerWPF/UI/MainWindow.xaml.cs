@@ -1247,6 +1247,11 @@ namespace SAModManager
 			}
 		}
 
+		private void chkBorderless_Checked(object sender, RoutedEventArgs e)
+		{
+			chkDynamicBuffers.IsChecked = chkBorderless.IsChecked;
+		}
+
 		#endregion
 
 		#region Audio Settings
@@ -2924,6 +2929,8 @@ namespace SAModManager
 		#region Manager Config
 
 		#endregion
+
+
 	}
 }
 
