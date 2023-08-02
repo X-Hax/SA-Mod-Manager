@@ -143,7 +143,7 @@
             </Grid.ColumnDefinitions>
             <wpf:ImageButton x:Name="btnInstallNow" Style="{StaticResource ImageTextButtonStyle}" Margin="5"
 							 Icon="{StaticResource Icons.Download}" Padding="5"
-							 Content="{DynamicResource ModChangelog.Buttons.DownloadNow}" Click="ImageButton_Click"/>
+							 Content="{DynamicResource ModChangelog.Buttons.DownloadNow}" Click="DLButton_Click"/>
             <wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" 
 							 Margin="5" Grid.Column="1"
 							 Icon="{StaticResource Icons.Update}" Padding="5"

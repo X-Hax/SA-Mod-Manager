@@ -257,7 +257,7 @@ namespace SAModManager
 				new ModDownloadWPF(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
 			};
 
-			new Updater.ModDownloadDialogWPF(updates, updatePath).ShowDialog();
+			new ModDownloadDialogWPF(updates, updatePath).ShowDialog();
 
 
 			await Task.Delay(2000);
