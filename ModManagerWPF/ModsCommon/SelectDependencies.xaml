@@ -1,0 +1,64 @@
+﻿<Window x:Class="SAModManager.ModsCommon.SelectDependencies"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SAModManager.ModsCommon"
+        mc:Ignorable="d"
+		Style="{StaticResource SAWindow}"
+        Title="{DynamicResource SelectDependencies.Title}" Height="450" Width="400" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0" Margin="10,10,10,0">
+			<ListView x:Name="lstModSelect">
+				<ListView.ItemContainerStyle>
+					<Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}"/>
+				</ListView.ItemContainerStyle>
+				<ListView.View>
+					<GridView>
+						<GridView.Columns>
+							<GridViewColumn Header="{DynamicResource CommonStrings.Name}" Width="190">
+								<GridViewColumn.CellTemplate>
+									<DataTemplate>
+										<StackPanel Orientation="Horizontal">
+											<CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0"/>
+											<TextBlock Text="{Binding Name}"/>
+										</StackPanel>
+									</DataTemplate>
+								</GridViewColumn.CellTemplate>
+							</GridViewColumn>
+							<GridViewColumn Header="{DynamicResource CommonStrings.Author}" Width="190">
+								<GridViewColumn.CellTemplate>
+									<DataTemplate>
+										<StackPanel Orientation="Horizontal">
+											<TextBlock Text="{Binding Author}"/>
+										</StackPanel>
+									</DataTemplate>
+								</GridViewColumn.CellTemplate>
+							</GridViewColumn>
+						</GridView.Columns>
+					</GridView>
+				</ListView.View>
+			</ListView>
+		</Grid>
+
+		<Grid Grid.Row="1" HorizontalAlignment="Right">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="130"/>
+				<ColumnDefinition Width="5"/>
+				<ColumnDefinition Width="130"/>
+				<ColumnDefinition Width="5"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="40"/>
+			</Grid.RowDefinitions>
+
+			<Button x:Name="OK" Content="{DynamicResource CommonStrings.OK}" Grid.Column="0" Margin="5,5,5,5" Click="OK_Click"/>
+			<Button x:Name="Cancel" Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="2" Margin="5,5,5,5" Click="Cancel_Click"/>
+		</Grid>
+    </Grid>
+</Window>

@@ -338,9 +338,9 @@ namespace SAModManager
 		#region Dependency Functions
 		private void SaveModDependencies(SADXModInfo mod)
 		{
+			mod.Dependencies.Clear();
 			if (DependencyGrid.Items.Count > 0)
 			{
-				mod.Dependencies.Clear();
 				foreach (ModDependency dep in DependencyGrid.Items)
 				{
 					StringBuilder sb = new StringBuilder();
