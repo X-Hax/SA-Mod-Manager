@@ -59,5 +59,35 @@ namespace SAModManager.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] bass {
+            get {
+                object obj = ResourceManager.GetObject("bass", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] d3d8 {
+            get {
+                object obj = ResourceManager.GetObject("d3d8", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] SDL2 {
+            get {
+                object obj = ResourceManager.GetObject("SDL2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

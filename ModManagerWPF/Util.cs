@@ -47,6 +47,24 @@ namespace SAModManager
 			}
 		}
 
+		public static void ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
+		{
+			// Get the resource stream from Properties.Resources
+			using (Stream resourceStream = new MemoryStream(resource))
+			{
+				byte[] buffer = new byte[resourceStream.Length];
+				resourceStream.Read(buffer, 0, buffer.Length);
+
+				string outputFilePath = Path.Combine(outputDirectory, resourceName + ".dll");
+
+				// Write the DLL data to the output file
+				using (FileStream fileStream = new(outputFilePath, FileMode.Create, FileAccess.Write))
+				{
+					fileStream.Write(buffer, 0, buffer.Length);
+				}
+			}
+		}
+
 		public static void CopyFolder(string origin, string dest, bool dllCheck = false)
 		{
 			DirectoryInfo sourceDirectory = new(origin);
