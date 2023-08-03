@@ -23,6 +23,7 @@ using SAModManager.Updater;
 using SAModManager.Elements;
 using SevenZipExtractor;
 using SAModManager.Ini;
+using ICSharpCode.AvalonEdit.Editing;
 
 namespace SAModManager
 {
@@ -33,7 +34,7 @@ namespace SAModManager
 	public partial class MainWindow : Window
 	{
 		#region Variables
-
+		public GameType setGame = GameType.SADX;
 		public readonly string titleName = "SADX Mod Manager";
 		private const string V = "1.0.0";
 		private static string Version = V;
@@ -146,6 +147,7 @@ namespace SAModManager
 				}
 			}
 		}
+
 		private void CleanUpdate(string[] args)
 		{
 			try
@@ -226,6 +228,44 @@ namespace SAModManager
 				IniSerializer.Serialize(loaderini, loaderinipath);
 			}
 
+
+			Grid stackPanel;
+			switch (setGame)
+			{
+				case GameType.SADX:
+					tabGame.Visibility = Visibility.Visible;
+					stackPanel = (Grid)tabGame.Content;
+					//stackPanel.Children[0].Visibility = Visibility.Collapsed;
+					//stackPanel.Children.Add(new Elements.SADX.GameConfig(loaderini, gamePath));
+					break;
+				case GameType.SA2:
+				default:
+					tabGame.Visibility = Visibility.Collapsed;
+					break;
+			}
+		}
+
+		private void ResolutionChanged(object sender, RoutedEventArgs e)
+		{
+			NumericUpDown box = sender as NumericUpDown;
+
+			switch (box.Name)
+			{
+				case "txtResY":
+					if (chkRatio.IsChecked == true)
+					{
+						double ratio = (4.0 / 3.0);
+						txtResX.Value = Math.Ceiling(txtResY.Value * ratio);
+					}
+					break;
+				case "txtCustomResY":
+					if (chkMaintainRatio.IsChecked == true)
+					{
+						double ratio = txtResX.Value / txtResY.Value;
+						txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
+					}
+					break;
+			}
 		}
 
 		private void MainForm_FormClosing(object sender, EventArgs e)
@@ -338,6 +378,7 @@ namespace SAModManager
 
 			Refresh();
 		}
+
 		private void LoadSettings()
 		{
 			comboLanguage.SelectedIndex = loaderini.Language;
@@ -659,7 +700,8 @@ namespace SAModManager
 			{
 
 				var error = Lang.GetString("MessageWindow.Errors.ModFailedVerif0")
-	+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: " + Util.GetFileCountString(x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged), "MessageWindow.Errors.ModFailedVerif1")))
+						+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: " 
+						+ Util.GetFileCountString(x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged), "MessageWindow.Errors.ModFailedVerif1")))
 						+ Lang.GetString("MessageWindow.Errors.ModFailedVerif2");
 
 
@@ -753,6 +795,7 @@ namespace SAModManager
 				config.ShowDialog();
 			}
 		}
+
 		private void EditMod_FormClosing(object sender, EventArgs e)
 		{
 			Refresh();
@@ -994,697 +1037,6 @@ namespace SAModManager
 
 		#endregion
 
-		#region Cheat Codes
-		private void InitCodes()
-		{
-			try
-			{
-				if (File.Exists(codelstpath))
-					mainCodes = CodeList.Load(codelstpath);
-				else if (File.Exists(codexmlpath))
-					mainCodes = CodeList.Load(codexmlpath);
-				else
-					mainCodes = new CodeList();
-
-				LoadCodes();
-			}
-			catch (Exception ex)
-			{
-				string msg = " " + ex.Message;
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.CodesListFailed.Title"), Lang.GetString("MessageWindow.Errors.CodesListFailed") + msg, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-				mainCodes = new CodeList();
-			}
-		}
-
-		private void LoadCodes()
-		{
-			codes = new List<Code>(mainCodes.Codes);
-			codesSearch = new();
-
-			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
-
-			CodeListView.BeginInit();
-			CodeListView.Items.Clear();
-
-			foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
-				loaderini.EnabledCodes.Add(item.Name);
-
-			foreach (Code item in codes)
-			{
-				CodeData extraItem = new()
-				{
-					codes = item,
-					IsChecked = loaderini.EnabledCodes.Contains(item.Name),
-				};
-
-				codesSearch.Add(extraItem);
-				CodeListView.Items.Add(extraItem);
-			}
-
-			CodeListView.EndInit();
-		}
-
-		private void SaveCodes()
-		{
-			List<Code> selectedCodes = new List<Code>();
-			List<Code> selectedPatches = new List<Code>();
-
-			foreach (CodeData code in CodeListView.Items)
-			{
-				var Code = code.codes;
-
-				if (code?.IsChecked == true)
-				{
-
-					if (Code.Patch)
-						selectedPatches.Add(Code);
-					else
-						selectedCodes.Add(Code);
-
-					if (!loaderini.EnabledCodes.Contains(Code.Name))
-						loaderini.EnabledCodes.Add(Code.Name);
-				}
-				else
-				{
-					if (loaderini.EnabledCodes.Contains(Code.Name))
-						loaderini.EnabledCodes.Remove(Code.Name);
-				}
-			}
-
-			CodeList.WriteDatFile(patchdatpath, selectedPatches);
-			CodeList.WriteDatFile(codedatpath, selectedCodes);
-
-		}
-
-		private void OpenAboutCodeWindow(Code code)
-		{
-			new AboutCode(code).ShowDialog();
-		}
-
-		private CodeData GetCodeFromView(object sender)
-		{
-			if (sender is ListViewItem lvItem)
-				return lvItem.Content as CodeData;
-			else if (sender is ListView lv)
-				return lv.SelectedItem as CodeData;
-
-
-			return CodeListView.Items[CodeListView.SelectedIndex] as CodeData;
-		}
-		private void CodesView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-			var code = GetCodeFromView(sender);
-
-			if (code == null)
-				return;
-
-			OpenAboutCodeWindow(code.codes);
-		}
-
-		private void CodesView_Item_MouseEnter(object sender, MouseEventArgs e)
-		{
-			var codes = GetCodeFromView(sender);
-
-			if (codes == null)
-				return;
-
-			var code = codes.codes;
-
-			CodeAuthorGrid.Text += " " + code.Author;
-			CodeDescGrid.Text += " " + code.Description;
-			CodeCategoryGrid.Text += " " + code.Category;
-		}
-
-		private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
-		{
-			CodeAuthorGrid.Text = Lang.GetString("CommonStrings.Author");
-			CodeDescGrid.Text = Lang.GetString("CommonStrings.Description");
-			CodeCategoryGrid.Text = Lang.GetString("CommonStrings.Category");
-		}
-
-
-
-		private void btnSelectAllCode_Click(object sender, RoutedEventArgs e)
-		{
-			CodeListView.BeginInit();
-			foreach (CodeData code in CodeListView.Items)
-			{
-				code.IsChecked = true;
-			}
-			CodeListView.EndInit();
-		}
-
-		private void btnDeselectAllCode_Click(object sender, RoutedEventArgs e)
-		{
-			CodeListView.BeginInit();
-			foreach (CodeData code in CodeListView.Items)
-			{
-				code.IsChecked = false;
-			}
-			CodeListView.EndInit();
-		}
-
-		private void btnAddCode_Click(object sender, RoutedEventArgs e)
-		{
-			Common.NewCode newcodewindow = new Common.NewCode();
-			newcodewindow.ShowDialog();
-		}
-
-		#endregion
-
-		#region Languages
-
-		private void comboLanguage_Loaded(object sender, RoutedEventArgs e)
-		{
-			comboLanguage.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
-			comboLanguage.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
-		}
-		private void comboLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			App.SwitchLanguage();
-			UpdateBtnInstallLoader_State();
-			FlowDirectionHelper.UpdateFlowDirection();
-			UpdatePatches();
-		}
-
-		#endregion
-
-		#region Themes
-
-		private void comboThemes_Loaded(object sender, RoutedEventArgs e)
-		{
-			comboThemes.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
-			comboThemes.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
-		}
-
-		private void comboThemes_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			App.SwitchTheme();
-		}
-
-		#endregion
-
-		#region Graphics Settings
-
-		private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			graphics?.screenNumBox_SelectChanged(ref comboScreen, ref comboDisplay);
-		}
-
-		private void chkCustomWinSize_Checked(object sender, RoutedEventArgs e)
-		{
-			chkMaintainRatio.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault();
-			chkResizableWin.IsEnabled = !chkCustomWinSize.IsChecked.GetValueOrDefault();
-
-			txtCustomResX.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault() && !chkMaintainRatio.IsChecked.GetValueOrDefault();
-			txtCustomResY.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault();
-		}
-
-		private void chkRatio_Click(object sender, RoutedEventArgs e)
-		{
-			if (chkRatio.IsChecked == true)
-			{
-				txtResX.IsEnabled = false;
-				decimal resYDecimal = (decimal)txtResY.Value;
-				decimal roundedValue = Math.Round(resYDecimal * Game.Graphics.ratio);
-				txtResX.Value = (double)roundedValue;
-			}
-			else if (!suppressEvent)
-			{
-				txtResX.IsEnabled = true;
-			}
-		}
-
-		private void comboResolutionPreset_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (comboDisplay.SelectedIndex == -1)
-				return;
-
-			int index = comboDisplay.SelectedIndex;
-
-			suppressEvent = true;
-			txtResY.Value = graphics.resolutionPresets[index].Height;
-
-			if (chkRatio.IsChecked == false)
-				txtResX.Value = graphics.resolutionPresets[index].Width;
-
-			suppressEvent = false;
-		}
-
-		private void chkMaintainRatio_Click(object sender, RoutedEventArgs e)
-		{
-			if (chkMaintainRatio.IsChecked == true)
-			{
-				txtCustomResX.IsEnabled = false;
-				double ratio = txtResX.Value / txtResY.Value;
-				txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
-			}
-			else if (!suppressEvent)
-			{
-				txtCustomResX.IsEnabled = true;
-			}
-		}
-
-		#endregion
-
-		#region Audio Settings
-
-		private void sliderMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			labelMusicLevel?.SetValue(ContentProperty, $"{(int)sliderMusic.Value}");
-		}
-
-		private void sliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			labelVoiceLevel?.SetValue(ContentProperty, $"{(int)sliderVoice.Value}");
-		}
-
-		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			labelSFXLevel?.SetValue(ContentProperty, $"{(int)sliderSFX.Value}");
-		}
-		private void checkBassSFX_Checked(object sender, RoutedEventArgs e)
-		{
-			sliderSFX.IsEnabled = true;
-		}
-
-		private void checkBassSFX_Unchecked(object sender, RoutedEventArgs e)
-		{
-			sliderSFX.IsEnabled = false;
-		}
-
-		#endregion
-
-		#region Test Spawn Settings
-		private void checkEnableTestSpawn_Checked(object sender, RoutedEventArgs e)
-		{
-			if (tcMain.Items.Contains(tabTestSpawn))
-				return;
-
-			int index = tcMain.Items.IndexOf(tabConfig);
-			tcMain.Items.Insert(index, tabTestSpawn);
-		}
-
-		private void checkEnableTestSpawn_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!tcMain.Items.Contains(tabTestSpawn))
-				return;
-
-			tcMain.Items.Remove(tabTestSpawn);
-		}
-
-		private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
-		{
-			if (string.IsNullOrEmpty(gamePath))
-			{
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-				return;
-			}
-
-			string executablePath = loaderini.Mods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(gamePath, "sonic.exe");
-
-			string commandLine = GetTestSpawnCommandLine();
-
-			ProcessStartInfo startInfo = new ProcessStartInfo(executablePath)
-			{
-				WorkingDirectory = gamePath,
-				Arguments = commandLine
-			};
-
-			Process.Start(startInfo);
-		}
-
-		private void tsComboLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			ComboBox t = sender as ComboBox;
-
-			tsComboAct.BeginInit();
-
-			tsComboAct.ItemsSource = TestSpawn.GetNewAct(t.SelectedIndex);
-
-			tsComboAct.EndInit();
-			tsComboAct.SelectedIndex = 0;
-		}
-
-		private void tsCheckLevel_Checked(object sender, RoutedEventArgs e)
-		{
-			if (tsComboAct.SelectedIndex < 0)
-				tsComboAct.SelectedIndex = 0;
-
-			if (tsComboLevel.SelectedIndex < 0)
-				tsComboLevel.SelectedIndex = 0;
-
-		}
-
-		private void TS_GetSave()
-		{
-			if (installed)
-			{
-				string fullPath = Path.Combine(gamePath, "SAVEDATA");
-
-				//if savedata exists
-				if (Directory.Exists(fullPath))
-				{
-					string targetExtension = ".snc";
-
-					string[] files = Directory.GetFiles(fullPath, "*" + targetExtension, SearchOption.TopDirectoryOnly);
-
-					tsComboSave.BeginInit();
-
-					List<string> list = new List<string>();
-
-					//browse each save file of the user
-					foreach (string file in files)
-					{
-						string name = Path.GetFileNameWithoutExtension(file);
-						string nameDup = name.ToLower();
-
-						if (nameDup.Contains("sonicdx")) //skip chao garden save
-							list.Add(name);
-					}
-
-					//sort just in case the order is wrong
-					list.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
-
-					//finally, add all the saves in the comboBox
-
-					tsComboSave.ItemsSource = list;
-
-					tsComboSave.EndInit();
-				}
-			}
-		}
-
-		private void setupTestSpawn()
-		{
-			TS = new TestSpawn(ref tsComboLevel, ref tsComboGameMode, ref tsComboEvent, ref tsComboCharacter);
-
-			TS.InitCutsceneList();
-			TS.InitGameModeList();
-			TS.InitCharactersList();
-			TS.InitLevels();
-
-			int index = loaderini?.TestSpawnLevel != -1 ? loaderini.TestSpawnLevel : 0;
-			tsComboAct.ItemsSource = TestSpawn.GetNewAct(index);
-			if (tsCheckLevel.IsChecked == true)
-				tsComboAct.SelectedIndex = loaderini?.TestSpawnAct != -1 ? loaderini.TestSpawnAct : 0;
-			tsComboTime.ItemsSource = TestSpawn.TimeDay;
-
-			TS_GetSave();
-		}
-
-		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
-		{
-			tsCheckCharacter.IsChecked = true;
-			tsCheckLevel.IsChecked = true;
-
-			if (tsComboCharacter.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
-				tsComboCharacter.SelectedIndex = 0;
-
-			if (tsComboLevel.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
-				tsComboLevel.SelectedIndex = 0;
-
-			if (tsComboEvent.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
-				tsComboEvent.SelectedIndex = 0;
-
-			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
-		}
-
-		private void tsCheckEvent_Unchecked(object sender, RoutedEventArgs e)
-		{
-			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
-		}
-
-		private void tsCheckCharacter_Click(object sender, RoutedEventArgs e)
-		{
-			if ((bool)tsCheckCharacter.IsChecked)
-			{
-				tsCheckLevel.IsChecked = true;
-
-				if (tsComboCharacter.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
-					tsComboCharacter.SelectedIndex = 0;
-			}
-
-		}
-
-		private void tsCheckManual_Clicked(object sender, RoutedEventArgs e)
-		{
-			if ((bool)tsCheckManual.IsChecked)
-			{
-				tsCheckCharacter.IsEnabled = false;
-				tsCheckLevel.IsEnabled = false;
-				tsComboCharacter.IsEnabled = false;
-				tsComboLevel.IsEnabled = false;
-				tsComboAct.IsEnabled = false;
-				tsComboTime.IsEnabled = false;
-
-				tsNumCharacter.Value = 0;
-				tsNumLevel.Value = 0;
-				tsNumAct.Value = tsComboAct.SelectedIndex;
-			}
-			else
-			{
-				tsCheckCharacter.IsEnabled = true;
-				tsCheckLevel.IsEnabled = true;
-				Binding bindCharacter = new Binding
-				{
-					Path = new PropertyPath("IsChecked"),
-					Source = tsCheckCharacter
-				};
-				Binding bindLevel = new Binding
-				{
-					Path = new PropertyPath("IsChecked"),
-					Source = tsCheckLevel
-				};
-
-				BindingOperations.SetBinding(tsComboCharacter, IsEnabledProperty, bindCharacter);
-				BindingOperations.SetBinding(tsComboLevel, IsEnabledProperty, bindLevel);
-				BindingOperations.SetBinding(tsComboAct, IsEnabledProperty, bindLevel);
-				BindingOperations.SetBinding(tsComboTime, IsEnabledProperty, bindLevel);
-			}
-		}
-
-		private string GetTestSpawnCommandLine()
-		{
-			List<string> cmdline = new List<string>();
-
-			bool advanced = tsCheckManual.IsChecked == true;
-
-			if (tsCheckLevel.IsChecked.GetValueOrDefault() && tsComboLevel.SelectedIndex > -1)
-				cmdline.Add("-l " + (advanced ? tsNumLevel.Value.ToString() : tsComboLevel.SelectedIndex.ToString()) + " -a " + (advanced ? tsNumAct.Value.ToString() : tsComboAct.SelectedIndex.ToString()));
-
-			if (tsCheckCharacter.IsChecked == true && tsComboCharacter.SelectedIndex > -1)
-				cmdline.Add("-c " + (advanced ? tsNumCharacter.Value.ToString() : tsComboCharacter.SelectedIndex.ToString()));
-
-			if (tsCheckPosition.IsChecked == true)
-				cmdline.Add("-p " + tsNumPosX.Value.ToString() + " " +
-					tsNumPosY.Value.ToString() + " " +
-					tsNumPosZ.Value.ToString() + " -r " +
-					tsNumAngle.Value.ToString());
-
-			if (tsCheckEvent.IsChecked == true && tsComboEvent.SelectedIndex > -1)
-			{
-				int ev = 0;
-				int ev_result = 0;
-
-				foreach (var item in TS.GetCutsceneList())
-				{
-					if (ev == tsComboEvent.SelectedIndex)
-					{
-						ev_result = item.Key;
-						break;
-					}
-					ev++;
-				}
-				cmdline.Add("-e " + ev_result.ToString());
-			}
-			if (tsComboTime.SelectedIndex > 0)
-				cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
-
-			if (tsCheckGameMode.IsChecked == true && tsComboGameMode.SelectedIndex > -1)
-			{
-				uint gm = 0;
-				uint gm_result = 0;
-				foreach (var item in TS.GetTestSpawnGameModeList())
-				{
-					if (gm == tsComboGameMode.SelectedIndex)
-					{
-						gm_result = item.Key;
-						break;
-					}
-					gm++;
-				}
-				cmdline.Add("-g " + gm_result.ToString());
-			}
-
-			if (tsCheckSave.IsChecked == true)
-			{
-				string save = tsComboSave.SelectedValue.ToString();
-				save = Util.GetSaveNumber(save);
-				cmdline.Add("-s " + save);
-			}
-
-			return string.Join(" ", cmdline);
-		}
-
-
-
-		#endregion
-
-		#region Inputs
-
-		private void InitMouseList()
-		{
-			List<string> mouseActionList = new()
-			{
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute"),
-
-			};
-
-			mouseAction.ItemsSource = mouseActionList;
-
-			List<string> mouseBtnAssignList = new()
-			{
-				Lang.GetString("CommonStrings.None"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn"),
-			};
-
-			mouseBtnAssign.ItemsSource = mouseBtnAssignList;
-		}
-
-
-		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
-		{
-			if (grpVanillaInput is null)
-				return;
-
-			int index = tabInputGrid.Children.IndexOf(grpSDLInput); //Graphic Window setting is a children of the graphic grid 
-
-			tabInputGrid.Children.RemoveAt(index); //we remove it so we can only display the full screen options
-
-			if (!tabInputGrid.Children.Contains(grpVanillaInput)) //if the fullscreen grid doesn't exist, add it back
-			{
-				tabInputGrid.Children.Add(grpVanillaInput);
-			}
-		}
-
-		private void radBetterInput_Checked(object sender, RoutedEventArgs e)
-		{
-			if (grpSDLInput is null)
-				return;
-
-			int index = tabInputGrid.Children.IndexOf(grpVanillaInput);
-			tabInputGrid.Children.RemoveAt(index);
-
-			if (!tabInputGrid.Children.Contains(grpSDLInput))
-			{
-				tabInputGrid.Children.Add(grpSDLInput);
-			}
-		}
-
-		#endregion
-
-		#region Others
-
-		private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
-		{
-			Regex regex = new("[^0-9]+");
-			e.Handled = regex.IsMatch(e.Text);
-		}
-
-		private void AboutBtn_Click(object sender, RoutedEventArgs e)
-		{
-			new AboutManager().ShowDialog();
-		}
-
-		private void btnMoveTop_Click(object sender, RoutedEventArgs e)
-		{
-			if (listMods.SelectedItems.Count < 1)
-				return;
-
-			int index = listMods.SelectedIndex;
-
-			if (index > 0)
-			{
-				var item = ViewModel.Modsdata[index];
-				ViewModel.Modsdata.Remove(item);
-				ViewModel.Modsdata.Insert(0, item);
-			}
-		}
-
-		private void btnMoveUp_Click(object sender, RoutedEventArgs e)
-		{
-			if (listMods.SelectedItems.Count < 1)
-				return;
-
-			int index = listMods.SelectedIndex;
-
-			if (index > 0)
-			{
-				var item = ViewModel.Modsdata[index];
-				ViewModel.Modsdata.Remove(item);
-				ViewModel.Modsdata.Insert(index - 1, item);
-			}
-		}
-
-		private void btnMoveBottom_Click(object sender, RoutedEventArgs e)
-		{
-			if (listMods.SelectedItems.Count < 1)
-				return;
-
-			int index = listMods.SelectedIndex;
-
-			if (index != listMods.Items.Count - 1)
-			{
-				var item = ViewModel.Modsdata[index];
-				ViewModel.Modsdata.Remove(item);
-				ViewModel.Modsdata.Insert(listMods.Items.Count, item);
-			}
-		}
-
-		private void btnMoveDown_Click(object sender, RoutedEventArgs e)
-		{
-			if (listMods.SelectedItems.Count < 1)
-				return;
-
-			int index = listMods.SelectedIndex;
-
-			if (index < listMods.Items.Count)
-			{
-				var item = ViewModel.Modsdata[index];
-				ViewModel.Modsdata.Remove(item);
-				ViewModel.Modsdata.Insert(index + 1, item);
-			}
-		}
-
-		public void Refresh()
-		{
-			InitCodes();
-			LoadModList();
-			RefreshPatchesList();
-			if (ModsFind.Visibility == Visibility.Visible)
-			{
-				FilterMods(TextBox_ModsSearch.Text.ToLowerInvariant());
-			}
-		}
-
-		private async void RefreshBtn_Click(object sender, RoutedEventArgs e)
-		{
-			Refresh();
-			RefreshBtn.IsEnabled = false;
-			await Task.Delay(150);
-			RefreshBtn.IsEnabled = true;
-		}
-
 		private void SetLoaderFile()
 		{
 			if (!File.Exists(loaderdllpath))
@@ -1700,397 +1052,7 @@ namespace SAModManager
 			}
 		}
 
-		//set new game Path
-		private void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
-		{
-			var dialog = new System.Windows.Forms.FolderBrowserDialog();
-
-			System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-
-			if (result == System.Windows.Forms.DialogResult.OK)
-			{
-				string GamePath = dialog.SelectedPath;
-				string path = Path.Combine(GamePath, exeName);
-
-				if (File.Exists(path))
-				{
-					textGameDir.Text = GamePath;
-					SetGamePath(GamePath);
-					Properties.Settings.Default.GamePath = gamePath;
-					UpdatePathsStringsInfo();
-					Refresh();
-					SetLoaderFile();
-					InstallLoader(true);
-				}
-				else
-				{
-					new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-				}
-			}
-		}
-
-		private void UpdateBtnInstallLoader_State()
-		{
-			if (btnInstallLoader is null)
-				return;
-
-			//Update Text Button of Mod Loader Installer
-			string textKey = installed ? "Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader" : "Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader";
-			TextBlock txt = FindName("txtInstallLoader") as TextBlock;
-			txt.Text = Lang.GetString(textKey);
-
-			//update icon image depending if the Mod Loader is installed or not
-			string iconName = installed ? "IconUninstall" : "IconInstall";
-			var dic = installed ? Icons.Icons.UninstallIcon : Icons.Icons.InstallIcon;
-
-			DrawingImage Icon = dic[iconName] as DrawingImage;
-
-			Image imgInstall = FindName("imgInstall") as Image;
-
-			if (imgInstall is not null)
-				imgInstall.Source = Icon;
-		}
-
-		private void InstallLoader(bool force = false)
-		{
-			if (installed && force)
-			{
-				File.Delete(datadllpath);
-				Util.MoveFile(datadllorigpath, datadllpath);
-
-				installed = false;
-			}
-
-			if (installed)
-			{
-				File.Delete(datadllpath);
-				Util.MoveFile(datadllorigpath, datadllpath);
-			}
-			else
-			{
-				File.Move(datadllpath, datadllorigpath);
-
-				if (File.Exists(loaderdllpath))
-					File.Copy(loaderdllpath, datadllpath);
-			}
-
-			installed = !installed;
-			UpdateBtnInstallLoader_State();
-			Update_PlayButtonsState();
-		}
-
-		private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
-		{
-			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
-			{
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-				return;
-			}
-
-			InstallLoader();
-			btnBrowseGameDir.IsEnabled = false;
-			Save();
-			await Task.Delay(2000);
-			btnBrowseGameDir.IsEnabled = true;
-		}
-
-		private void btnSource_Click(object sender, RoutedEventArgs e)
-		{
-			var ps = new ProcessStartInfo("https://github.com/X-Hax/sadx-mod-loader")
-			{
-				UseShellExecute = true,
-				Verb = "open"
-			};
-			Process.Start(ps);
-		}
-
-		private void btnReport_Click(object sender, RoutedEventArgs e)
-		{
-			var ps = new ProcessStartInfo("https://github.com/X-Hax/sadx-mod-loader/issues/new")
-			{
-				UseShellExecute = true,
-				Verb = "open"
-			};
-
-			Process.Start(ps);
-		}
-
-		private void ModList_ContextMenuOpening(object sender, ContextMenuEventArgs e)
-		{
-			bool isEnabled = ConfigureModBtn.IsEnabled;
-
-			if (ModContextMenu is not null)
-			{
-				var item = ModContextMenu.Items.OfType<MenuItem>().FirstOrDefault(item => item.Name == "ModContextConfigureMod");
-
-				if (item is not null)
-				{
-					item.IsEnabled = isEnabled;
-					item.Opacity = IsEnabled ? 1 : LowOpacityBtn;
-					Image iconConfig = FindName("menuIconConfig") as Image;
-					iconConfig?.SetValue(Image.OpacityProperty, isEnabled ? 1 : LowOpacityIcon);
-				}
-
-				if (checkDevEnabled.IsChecked == true)
-				{
-					if (ModContextDev is null)
-					{
-						/*
-						ModContextDev = new();
-						MenuItem manifest = new();
-						ModContextDev.Name = "menuDev";
-						ModContextDev.Header = Lang.GetString("ModsUIDev");
-						manifest.Name = "menuManif";
-						manifest.Header = Lang.GetString("ModsUISubDevManifest");
-						ModContextDev.Items.Add(manifest);
-						ModContextMenu.Items.Add(ModContextDev);
-						*/
-					}
-				}
-				else
-				{
-					if (ModContextDev is not null)
-					{
-						var modDev = ModContextMenu.Items.OfType<MenuItem>().FirstOrDefault(item => item.Name == "menuDev");
-
-						if (modDev is not null)
-							ModContextMenu.Items.Remove(modDev);
-					}
-
-				}
-
-			}
-		}
-
-		private void ModsContextDeveloperManifest_Click(object sender, RoutedEventArgs e)
-		{
-			if (!displayedManifestWarning)
-			{
-				var result = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.GenerateManifest"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-				result.ShowDialog();
-				if (result.isYes != true)
-				{
-					return;
-				}
-
-				displayedManifestWarning = true;
-			}
-
-			foreach (ModData item in listMods.SelectedItems)
-			{
-
-				var modPath = Path.Combine(modDirectory, (string)item.Tag);
-				var manifestPath = Path.Combine(modPath, "mod.manifest");
-
-				List<Updater.ModManifestEntry> manifest;
-				List<Updater.ModManifestDiff> diff;
-
-				var progress = new Updater.ManifestDialog(modPath, $"Generating manifest: {(string)item.Tag}", true);
-				progress.ShowDialog();
-
-				bool? ManifDialog = progress.DialogResult;
-
-				//progress.SetTask("Generating file index...");
-				if (ManifDialog != true)
-				{
-					continue;
-				}
-
-				diff = progress.Diff;
-
-				if (diff == null)
-				{
-					continue;
-				}
-
-				if (diff.Count(x => x.State != Updater.ModManifestState.Unchanged) <= 0)
-				{
-					continue;
-				}
-
-				var dialog = new ManifestChanges(diff);
-				dialog.ShowDialog();
-				bool? resultManifChange = dialog.DialogResult;
-
-				if (resultManifChange != true)
-				{
-					continue;
-				}
-
-				manifest = dialog.MakeNewManifest();
-
-				Updater.ModManifest.ToFile(manifest, manifestPath);
-			}
-		}
-
-
-		#endregion
-
-		#region Mod Profiles
-
-		private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
-		{
-			if (!installed)
-				return;
-
-			new ModProfile(ref comboProfile).ShowDialog();
-		}
-
-		private void ModProfile_FormClosing(object sender, EventArgs e)
-		{
-			Refresh();
-		}
-
-		private void LoadAllProfiles()
-		{
-			comboProfile.Items.Clear();
-
-			if (modDirectory != string.Empty)
-			{
-				foreach (var item in Directory.EnumerateFiles(modDirectory, "*.ini"))
-				{
-					if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase) && !item.EndsWith("desktop.ini", StringComparison.OrdinalIgnoreCase))
-					{
-						Profile pro = new()
-						{
-							name = Path.GetFileNameWithoutExtension(item),
-							iniPath = item
-						};
-
-						comboProfile.Items.Add(pro);
-					}
-				}
-			}
-		}
-
-		private void comboProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			var selectedItem = comboProfile.SelectedItem as Profile;
-
-			if (selectedItem != null)
-			{
-				loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(selectedItem.iniPath);
-				LoadSettings();
-				Refresh();
-			}
-		}
-
-		#endregion
-
-		#region Patches
-
-		private void SavePatches()
-		{
-			if (listPatches is null)
-				return;
-
-
-			PatchesData patch = (PatchesData)listPatches.Items[14];
-			loaderini.DisableCDCheck = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[13];
-			loaderini.KillGbix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[12];
-			loaderini.LightFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[11];
-			loaderini.PixelOffSetFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[10];
-			loaderini.ChaoPanelFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[9];
-			loaderini.E102PolyFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[8];
-			loaderini.ChunkSpecFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[7];
-			loaderini.Chaos2CrashFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[6];
-			loaderini.SCFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[5];
-			loaderini.FovFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[4];
-			loaderini.InterpolationFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[3];
-			loaderini.MaterialColorFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[2];
-			loaderini.PolyBuff = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[1];
-			loaderini.CCEF = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[0];
-			loaderini.HRTFSound = patch.IsChecked;
-		}
-
-		private void UpdatePatches()
-		{
-			listPatches.Items.Clear();
-
-			if (loaderini is null)
-				return;
-
-			List<PatchesData> patches = new List<PatchesData>()
-			{
-				new PatchesData() { Name = Lang.GetString("GamePatches.3DSound"),
-					Description = Lang.GetString("GamePatches.3DSoundDesc"), IsChecked = loaderini.HRTFSound },
-				new PatchesData() { Name = Lang.GetString("GamePatches.CamCode"),
-					Description = Lang.GetString("GamePatches.CamCodeDesc"),IsChecked = loaderini.CCEF },
-				new PatchesData() { Name = Lang.GetString("GamePatches.VertexColor"),
-					Description = Lang.GetString("GamePatches.VertexColorDesc"),IsChecked = loaderini.PolyBuff },
-				new PatchesData() { Name = Lang.GetString("GamePatches.MaterialColor"),
-					Description = Lang.GetString("GamePatches.MaterialColorDesc"),IsChecked = loaderini.MaterialColorFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.Interpolation"),
-					Description = Lang.GetString("GamePatches.InterpolationDesc"),IsChecked = loaderini.InterpolationFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.FixFOV"),
-					Description = Lang.GetString("GamePatches.FixFOVDesc"),IsChecked = loaderini.FovFix },
-				new PatchesData() { Name = Lang.GetString("GamePatches.Skychase"),
-					Description = Lang.GetString("GamePatches.SkychaseDesc"),IsChecked = loaderini.SCFix },
-				new PatchesData() { Name = Lang.GetString("GamePatches.Chaos2"),
-					Description = Lang.GetString("GamePatches.Chaos2Desc"),IsChecked = loaderini.Chaos2CrashFix },
-				new PatchesData() { Name = Lang.GetString("GamePatches.ChunkRendering"),
-					Description = Lang.GetString("GamePatches.ChunkRenderingDesc"),IsChecked = loaderini.ChunkSpecFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.E102Lamp"),
-					Description = Lang.GetString("GamePatches.E102LampDesc"),IsChecked = loaderini.E102PolyFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.ChaoStats"), IsChecked = loaderini.ChaoPanelFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.PixelOffset"),
-					Description = Lang.GetString("GamePatches.PixelOffsetDesc"),IsChecked = loaderini.PixelOffSetFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.Lights"),
-					Description = Lang.GetString("GamePatches.LightsDesc"),IsChecked = loaderini.LightFix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.DisableGBIX"),
-					Description = Lang.GetString("GamePatches.DisableGBIXDesc"),IsChecked = loaderini.KillGbix},
-				new PatchesData() { Name = Lang.GetString("GamePatches.DisableCDCheck"), IsChecked = loaderini.DisableCDCheck},
-			};
-
-			foreach (var patch in patches)
-			{
-				listPatches.Items.Add(patch);
-			}
-		}
-
-		private void btnSelectAllPatch_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (PatchesData patch in listPatches.Items)
-			{
-				patch.IsChecked = true;
-			}
-			RefreshPatchesList();
-		}
-
-		private void btnDeselectAllPatch_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (PatchesData patch in listPatches.Items)
-			{
-				patch.IsChecked = false;
-			}
-			RefreshPatchesList();
-
-		}
-
-		private void RefreshPatchesList()
-		{
-			ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
-			view.Refresh();
-		}
-
-		#endregion
-
 		#region Updates
-
 		private void UpdateSelectedMods()
 		{
 			InitializeWorker();
@@ -2371,102 +1333,129 @@ namespace SAModManager
 			updateChecker.RunWorkerAsync(mods.Select(x => new KeyValuePair<string, ModInfo>(x.Key, x.Value)).ToList());
 			btnCheckUpdates.IsEnabled = false;
 		}
-
-		private void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
-		{
-			btnCheckUpdates.IsEnabled = false;
-
-			if (CheckForUpdates(true))
-			{
-				//UpdateHelper.DoModManagerUpdate(updatePath);
-				//return;
-			}
-
-			manualModUpdate = true;
-			CheckForModUpdates(true);
-		}
-
 		#endregion
 
-		#region Direct3D wrapper
-
-		private void SetUp_UpdateD3D9()
+		private void modChecked_Click(object sender, RoutedEventArgs e)
 		{
-			btnUpdateD3D9.IsEnabled = CheckD3D8to9Update();
-			checkD3D9.IsEnabled = File.Exists(d3d8to9StoredDLLName);
-			checkD3D9.IsChecked = File.Exists(d3d8to9InstalledDLLName);
-		}
+			if (suppressEvent)
+				return;
 
-		private void CopyD3D9Dll()
-		{
-			try
-			{
-				File.Copy(d3d8to9StoredDLLName, d3d8to9InstalledDLLName, true);
-			}
-			catch (Exception ex)
-			{
-				string error = Lang.GetString("MessageWindow.Errors.D3D8Update") + "\n" + ex.Message;
-				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-			}
-		}
+			codes = new List<Code>(mainCodes.Codes);
+			codesSearch = new();
+			string modDir = Path.Combine(gamePath, "mods");
+			List<string> modlistCopy = new();
 
-		private bool CheckD3D8to9Update()
-		{
-			if (!File.Exists(d3d8to9StoredDLLName) || !File.Exists(d3d8to9InstalledDLLName))
-				return false;
-
-			try
+			//backup mod list here
+			foreach (ModData mod in listMods.Items)
 			{
-				long length1 = new FileInfo(d3d8to9InstalledDLLName).Length;
-				long length2 = new FileInfo(d3d8to9StoredDLLName).Length;
-				if (length1 != length2)
-					return true;
-				else
+				if (mod?.IsChecked == true)
 				{
-					byte[] file1 = File.ReadAllBytes(d3d8to9InstalledDLLName);
-					byte[] file2 = File.ReadAllBytes(d3d8to9StoredDLLName);
-					for (int i = 0; i < file1.Length; i++)
-					{
-						if (file1[i] != file2[i])
-							return true;
-					}
-					return false;
+					modlistCopy.Add(mod.Tag);
 				}
 			}
-			catch (Exception ex)
+
+			if (sender is CheckBox check)
 			{
-				string error = Lang.GetString("MessageWindow.Errors.D3D8UpdateCheck") + "\n" + ex.Message;
-				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
-				return false;
+				var curItem = check.DataContext as ModData;
+				var index = listMods.Items.IndexOf(curItem);
+
+				var curModCopy = listMods.Items[index] as ModData;
+				if (check.IsChecked == false)
+				{
+					modlistCopy.Remove((string)curModCopy.Tag);
+				}
 			}
+
+			foreach (string mod in modlistCopy)
+			{
+				if (mods.TryGetValue(mod, out SADXModInfo value))
+				{
+					SADXModInfo inf = value;
+					if (!string.IsNullOrEmpty(inf.Codes))
+						codes.AddRange(CodeList.Load(Path.Combine(Path.Combine(modDir, mod), inf.Codes)).Codes);
+				}
+			}
+
+
+			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
+
+			foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
+				loaderini.EnabledCodes.Add(item.Name);
+
+			CodeListView.BeginInit();
+			CodeListView.Items.Clear();
+
+			foreach (Code item in codes)
+			{
+				CodeData extraItem = new()
+				{
+					codes = item,
+					IsChecked = loaderini.EnabledCodes.Contains(item.Name),
+				};
+
+				CodeListView.Items.Add(extraItem);
+				codesSearch.Add(extraItem);
+			}
+
+			CodeListView.EndInit();
 		}
 
-		private void btnUpdateD3D9_Click(object sender, RoutedEventArgs e)
-		{
-			string info = Lang.GetString("MessageWindow.Information.D3D8Update");
-			var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString(info), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
-			msg.ShowDialog();
+		#region One Click Install
 
-			if (msg.isYes)
+		private void SetOneClickBtnState()
+		{
+			try
 			{
-				CopyD3D9Dll();
-				btnUpdateD3D9.IsEnabled = CheckD3D8to9Update();
+				using var hkcr = Microsoft.Win32.Registry.ClassesRoot;
+				var sammKey = hkcr.OpenSubKey("sadxmm");
+
+				if (sammKey != null)
+				{
+					var pathManagerKey = sammKey.OpenSubKey("DefaultIcon");
+					if (pathManagerKey != null)
+					{
+						var managerPath = pathManagerKey.GetValue("").ToString();
+						
+						if (managerPath.ToLower().Contains(Environment.ProcessPath.ToLower()))
+						{
+							btnOneClick.IsEnabled = false;
+							Image iconConfig = FindName("GB") as Image;
+							iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
+							btnOneClick.Opacity = LowOpacityBtn;
+						}
+
+						pathManagerKey.Close();
+						sammKey.Close();
+					}
+				}
 			}
+			catch { }
 		}
 
-		private void checkD3D9_Click(object sender, RoutedEventArgs e)
+		private async void btnOneClick_Click(object sender, RoutedEventArgs e)
 		{
-			if (checkD3D9.IsChecked == true)
+			try
 			{
-				CopyD3D9Dll();
-			}
-			else if (checkD3D9.IsChecked == false && File.Exists(d3d8to9InstalledDLLName))
-				File.Delete(d3d8to9InstalledDLLName);
+				string execPath = Environment.ProcessPath;
 
+				await Process.Start(new ProcessStartInfo(execPath, "urlhandler")
+				{
+					UseShellExecute = true,
+					Verb = "runas"
+				}).WaitForExitAsync();
+
+				btnOneClick.IsEnabled = false;
+				Image iconConfig = FindName("GB") as Image;
+				iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
+				btnOneClick.Opacity = LowOpacityBtn;
+
+			}
+			catch { }
 		}
 
 		#endregion
 
+		#region Mods Tab
 		public void FilterMods(string text)
 		{
 			ViewModel.ModsSearch.Clear();
@@ -2495,8 +1484,196 @@ namespace SAModManager
 			}
 		}
 
-		#region Keyboard Shortcut
+		private void btnMoveTop_Click(object sender, RoutedEventArgs e)
+		{
+			if (listMods.SelectedItems.Count < 1)
+				return;
 
+			int index = listMods.SelectedIndex;
+
+			if (index > 0)
+			{
+				var item = ViewModel.Modsdata[index];
+				ViewModel.Modsdata.Remove(item);
+				ViewModel.Modsdata.Insert(0, item);
+			}
+		}
+
+		private void btnMoveUp_Click(object sender, RoutedEventArgs e)
+		{
+			if (listMods.SelectedItems.Count < 1)
+				return;
+
+			int index = listMods.SelectedIndex;
+
+			if (index > 0)
+			{
+				var item = ViewModel.Modsdata[index];
+				ViewModel.Modsdata.Remove(item);
+				ViewModel.Modsdata.Insert(index - 1, item);
+			}
+		}
+
+		private void btnMoveBottom_Click(object sender, RoutedEventArgs e)
+		{
+			if (listMods.SelectedItems.Count < 1)
+				return;
+
+			int index = listMods.SelectedIndex;
+
+			if (index != listMods.Items.Count - 1)
+			{
+				var item = ViewModel.Modsdata[index];
+				ViewModel.Modsdata.Remove(item);
+				ViewModel.Modsdata.Insert(listMods.Items.Count, item);
+			}
+		}
+
+		private void btnMoveDown_Click(object sender, RoutedEventArgs e)
+		{
+			if (listMods.SelectedItems.Count < 1)
+				return;
+
+			int index = listMods.SelectedIndex;
+
+			if (index < listMods.Items.Count)
+			{
+				var item = ViewModel.Modsdata[index];
+				ViewModel.Modsdata.Remove(item);
+				ViewModel.Modsdata.Insert(index + 1, item);
+			}
+		}
+
+		public void Refresh()
+		{
+			InitCodes();
+			LoadModList();
+			RefreshPatchesList();
+			if (ModsFind.Visibility == Visibility.Visible)
+			{
+				FilterMods(TextBox_ModsSearch.Text.ToLowerInvariant());
+			}
+		}
+
+		private async void RefreshBtn_Click(object sender, RoutedEventArgs e)
+		{
+			Refresh();
+			RefreshBtn.IsEnabled = false;
+			await Task.Delay(150);
+			RefreshBtn.IsEnabled = true;
+		}
+
+		#region Context Menu
+		private void ModList_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+		{
+			bool isEnabled = ConfigureModBtn.IsEnabled;
+
+			if (ModContextMenu is not null)
+			{
+				var item = ModContextMenu.Items.OfType<MenuItem>().FirstOrDefault(item => item.Name == "ModContextConfigureMod");
+
+				if (item is not null)
+				{
+					item.IsEnabled = isEnabled;
+					item.Opacity = IsEnabled ? 1 : LowOpacityBtn;
+					Image iconConfig = FindName("menuIconConfig") as Image;
+					iconConfig?.SetValue(Image.OpacityProperty, isEnabled ? 1 : LowOpacityIcon);
+				}
+
+				if (checkDevEnabled.IsChecked == true)
+				{
+					if (ModContextDev is null)
+					{
+						/*
+						ModContextDev = new();
+						MenuItem manifest = new();
+						ModContextDev.Name = "menuDev";
+						ModContextDev.Header = Lang.GetString("ModsUIDev");
+						manifest.Name = "menuManif";
+						manifest.Header = Lang.GetString("ModsUISubDevManifest");
+						ModContextDev.Items.Add(manifest);
+						ModContextMenu.Items.Add(ModContextDev);
+						*/
+					}
+				}
+				else
+				{
+					if (ModContextDev is not null)
+					{
+						var modDev = ModContextMenu.Items.OfType<MenuItem>().FirstOrDefault(item => item.Name == "menuDev");
+
+						if (modDev is not null)
+							ModContextMenu.Items.Remove(modDev);
+					}
+
+				}
+
+			}
+		}
+
+		private void ModsContextDeveloperManifest_Click(object sender, RoutedEventArgs e)
+		{
+			if (!displayedManifestWarning)
+			{
+				var result = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.GenerateManifest"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+				result.ShowDialog();
+				if (result.isYes != true)
+				{
+					return;
+				}
+
+				displayedManifestWarning = true;
+			}
+
+			foreach (ModData item in listMods.SelectedItems)
+			{
+
+				var modPath = Path.Combine(modDirectory, (string)item.Tag);
+				var manifestPath = Path.Combine(modPath, "mod.manifest");
+
+				List<Updater.ModManifestEntry> manifest;
+				List<Updater.ModManifestDiff> diff;
+
+				var progress = new Updater.ManifestDialog(modPath, $"Generating manifest: {(string)item.Tag}", true);
+				progress.ShowDialog();
+
+				bool? ManifDialog = progress.DialogResult;
+
+				//progress.SetTask("Generating file index...");
+				if (ManifDialog != true)
+				{
+					continue;
+				}
+
+				diff = progress.Diff;
+
+				if (diff == null)
+				{
+					continue;
+				}
+
+				if (diff.Count(x => x.State != Updater.ModManifestState.Unchanged) <= 0)
+				{
+					continue;
+				}
+
+				var dialog = new ManifestChanges(diff);
+				dialog.ShowDialog();
+				bool? resultManifChange = dialog.DialogResult;
+
+				if (resultManifChange != true)
+				{
+					continue;
+				}
+
+				manifest = dialog.MakeNewManifest();
+
+				Updater.ModManifest.ToFile(manifest, manifestPath);
+			}
+		}
+		#endregion
+
+		#region Keyboard Shortcut
 		private void ModsList_OnPreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (listMods == null)
@@ -2625,11 +1802,9 @@ namespace SAModManager
 			}
 
 		}
-
 		#endregion
 
 		#region SearchBar
-
 		//more info in the keyboard shortcut functions above.
 		private void TextBox_ModsSearch_LostFocus(object sender, RoutedEventArgs e)
 		{
@@ -2638,13 +1813,167 @@ namespace SAModManager
 				ModsFind.Visibility = Visibility.Collapsed;
 		}
 
-
 		private void TextBox_ModsSearch_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			FilterMods(TextBox_ModsSearch.Text.ToLowerInvariant());
 		}
-
 		#endregion
+		#endregion
+
+		#region Codes Tab
+		private void InitCodes()
+		{
+			try
+			{
+				if (File.Exists(codelstpath))
+					mainCodes = CodeList.Load(codelstpath);
+				else if (File.Exists(codexmlpath))
+					mainCodes = CodeList.Load(codexmlpath);
+				else
+					mainCodes = new CodeList();
+
+				LoadCodes();
+			}
+			catch (Exception ex)
+			{
+				string msg = " " + ex.Message;
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.CodesListFailed.Title"), Lang.GetString("MessageWindow.Errors.CodesListFailed") + msg, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				mainCodes = new CodeList();
+			}
+		}
+
+		private void LoadCodes()
+		{
+			codes = new List<Code>(mainCodes.Codes);
+			codesSearch = new();
+
+			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
+
+			CodeListView.BeginInit();
+			CodeListView.Items.Clear();
+
+			foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
+				loaderini.EnabledCodes.Add(item.Name);
+
+			foreach (Code item in codes)
+			{
+				CodeData extraItem = new()
+				{
+					codes = item,
+					IsChecked = loaderini.EnabledCodes.Contains(item.Name),
+				};
+
+				codesSearch.Add(extraItem);
+				CodeListView.Items.Add(extraItem);
+			}
+
+			CodeListView.EndInit();
+		}
+
+		private void SaveCodes()
+		{
+			List<Code> selectedCodes = new List<Code>();
+			List<Code> selectedPatches = new List<Code>();
+
+			foreach (CodeData code in CodeListView.Items)
+			{
+				var Code = code.codes;
+
+				if (code?.IsChecked == true)
+				{
+
+					if (Code.Patch)
+						selectedPatches.Add(Code);
+					else
+						selectedCodes.Add(Code);
+
+					if (!loaderini.EnabledCodes.Contains(Code.Name))
+						loaderini.EnabledCodes.Add(Code.Name);
+				}
+				else
+				{
+					if (loaderini.EnabledCodes.Contains(Code.Name))
+						loaderini.EnabledCodes.Remove(Code.Name);
+				}
+			}
+
+			CodeList.WriteDatFile(patchdatpath, selectedPatches);
+			CodeList.WriteDatFile(codedatpath, selectedCodes);
+
+		}
+
+		private void OpenAboutCodeWindow(Code code)
+		{
+			new AboutCode(code).ShowDialog();
+		}
+
+		private CodeData GetCodeFromView(object sender)
+		{
+			if (sender is ListViewItem lvItem)
+				return lvItem.Content as CodeData;
+			else if (sender is ListView lv)
+				return lv.SelectedItem as CodeData;
+
+
+			return CodeListView.Items[CodeListView.SelectedIndex] as CodeData;
+		}
+
+		private void CodesView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			var code = GetCodeFromView(sender);
+
+			if (code == null)
+				return;
+
+			OpenAboutCodeWindow(code.codes);
+		}
+
+		private void CodesView_Item_MouseEnter(object sender, MouseEventArgs e)
+		{
+			var codes = GetCodeFromView(sender);
+
+			if (codes == null)
+				return;
+
+			var code = codes.codes;
+
+			CodeAuthorGrid.Text += " " + code.Author;
+			CodeDescGrid.Text += " " + code.Description;
+			CodeCategoryGrid.Text += " " + code.Category;
+		}
+
+		private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
+		{
+			CodeAuthorGrid.Text = Lang.GetString("CommonStrings.Author");
+			CodeDescGrid.Text = Lang.GetString("CommonStrings.Description");
+			CodeCategoryGrid.Text = Lang.GetString("CommonStrings.Category");
+		}
+
+		private void btnSelectAllCode_Click(object sender, RoutedEventArgs e)
+		{
+			CodeListView.BeginInit();
+			foreach (CodeData code in CodeListView.Items)
+			{
+				code.IsChecked = true;
+			}
+			CodeListView.EndInit();
+		}
+
+		private void btnDeselectAllCode_Click(object sender, RoutedEventArgs e)
+		{
+			CodeListView.BeginInit();
+			foreach (CodeData code in CodeListView.Items)
+			{
+				code.IsChecked = false;
+			}
+			CodeListView.EndInit();
+		}
+
+		private void btnAddCode_Click(object sender, RoutedEventArgs e)
+		{
+			Common.NewCode newcodewindow = new Common.NewCode();
+			newcodewindow.ShowDialog();
+		}
 
 		public void FilterCodes(string text)
 		{
@@ -2674,111 +2003,202 @@ namespace SAModManager
 			if (TextBox_CodesSearch.Text.Length == 0)
 				CodesFind.Visibility = Visibility.Collapsed;
 		}
+		#endregion
 
-
-		private PatchesData GetPatchFromView(object sender)
+		#region Game Config
+		#region Graphics Tab
+		private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (sender is ListViewItem lvItem)
-				return lvItem.Content as PatchesData;
-			else if (sender is ListView lv)
-				return lv.SelectedItem as PatchesData;
-
-
-			return listPatches.Items[listPatches.SelectedIndex] as PatchesData;
+			graphics?.screenNumBox_SelectChanged(ref comboScreen, ref comboDisplay);
 		}
 
-		private void PatchViewItem_MouseEnter(object sender, MouseEventArgs e)
+		private void chkCustomWinSize_Checked(object sender, RoutedEventArgs e)
 		{
+			chkMaintainRatio.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault();
+			chkResizableWin.IsEnabled = !chkCustomWinSize.IsChecked.GetValueOrDefault();
 
-			var patch = GetPatchFromView(sender);
+			txtCustomResX.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault() && !chkMaintainRatio.IsChecked.GetValueOrDefault();
+			txtCustomResY.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault();
+		}
 
-			if (patch is null)
+		private void chkRatio_Click(object sender, RoutedEventArgs e)
+		{
+			if (chkRatio.IsChecked == true)
+			{
+				txtResX.IsEnabled = false;
+				decimal resYDecimal = (decimal)txtResY.Value;
+				decimal roundedValue = Math.Round(resYDecimal * Game.Graphics.ratio);
+				txtResX.Value = (double)roundedValue;
+			}
+			else if (!suppressEvent)
+			{
+				txtResX.IsEnabled = true;
+			}
+		}
+
+		private void comboResolutionPreset_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (comboDisplay.SelectedIndex == -1)
 				return;
 
-			PatchDescription.Text += " " + patch.Description;
+			int index = comboDisplay.SelectedIndex;
+
+			suppressEvent = true;
+			txtResY.Value = graphics.resolutionPresets[index].Height;
+
+			if (chkRatio.IsChecked == false)
+				txtResX.Value = graphics.resolutionPresets[index].Width;
+
+			suppressEvent = false;
 		}
 
-		private void PatchViewItem_MouseLeave(object sender, MouseEventArgs e)
+		private void chkMaintainRatio_Click(object sender, RoutedEventArgs e)
 		{
-			PatchDescription.Text = Lang.GetString("CommonStrings.Description");
-		}
-
-		private void modChecked_Click(object sender, RoutedEventArgs e)
-		{
-			if (suppressEvent)
-				return;
-
-			codes = new List<Code>(mainCodes.Codes);
-			codesSearch = new();
-			string modDir = Path.Combine(gamePath, "mods");
-			List<string> modlistCopy = new();
-
-			//backup mod list here
-			foreach (ModData mod in listMods.Items)
+			if (chkMaintainRatio.IsChecked == true)
 			{
-				if (mod?.IsChecked == true)
-				{
-					modlistCopy.Add(mod.Tag);
-				}
-			}
-
-			if (sender is CheckBox check)
-			{
-				var curItem = check.DataContext as ModData;
-				var index = listMods.Items.IndexOf(curItem);
-
-				var curModCopy = listMods.Items[index] as ModData;
-				if (check.IsChecked == false)
-				{
-					modlistCopy.Remove((string)curModCopy.Tag);
-				}
-			}
-
-			foreach (string mod in modlistCopy)
-			{
-				if (mods.TryGetValue(mod, out SADXModInfo value))
-				{
-					SADXModInfo inf = value;
-					if (!string.IsNullOrEmpty(inf.Codes))
-						codes.AddRange(CodeList.Load(Path.Combine(Path.Combine(modDir, mod), inf.Codes)).Codes);
-				}
-			}
-
-
-			loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
-
-			foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
-				loaderini.EnabledCodes.Add(item.Name);
-
-			CodeListView.BeginInit();
-			CodeListView.Items.Clear();
-
-			foreach (Code item in codes)
-			{
-				CodeData extraItem = new()
-				{
-					codes = item,
-					IsChecked = loaderini.EnabledCodes.Contains(item.Name),
-				};
-
-				CodeListView.Items.Add(extraItem);
-				codesSearch.Add(extraItem);
-			}
-
-			CodeListView.EndInit();
-		}
-
-		private void txtCustomResY_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			NumericUpDown textBox = (NumericUpDown)sender;
-
-			if ((bool)chkMaintainRatio.IsChecked)
-			{
+				txtCustomResX.IsEnabled = false;
 				double ratio = txtResX.Value / txtResY.Value;
 				txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
 			}
+			else if (!suppressEvent)
+			{
+				txtCustomResX.IsEnabled = true;
+			}
+		}
 
-			e.Handled = true;
+		private void SetUp_UpdateD3D9()
+		{
+			btnUpdateD3D9.IsEnabled = CheckD3D8to9Update();
+			checkD3D9.IsEnabled = File.Exists(d3d8to9StoredDLLName);
+			checkD3D9.IsChecked = File.Exists(d3d8to9InstalledDLLName);
+		}
+
+		private void CopyD3D9Dll()
+		{
+			try
+			{
+				File.Copy(d3d8to9StoredDLLName, d3d8to9InstalledDLLName, true);
+			}
+			catch (Exception ex)
+			{
+				string error = Lang.GetString("MessageWindow.Errors.D3D8Update") + "\n" + ex.Message;
+				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+			}
+		}
+
+		private bool CheckD3D8to9Update()
+		{
+			if (!File.Exists(d3d8to9StoredDLLName) || !File.Exists(d3d8to9InstalledDLLName))
+				return false;
+
+			try
+			{
+				long length1 = new FileInfo(d3d8to9InstalledDLLName).Length;
+				long length2 = new FileInfo(d3d8to9StoredDLLName).Length;
+				if (length1 != length2)
+					return true;
+				else
+				{
+					byte[] file1 = File.ReadAllBytes(d3d8to9InstalledDLLName);
+					byte[] file2 = File.ReadAllBytes(d3d8to9StoredDLLName);
+					for (int i = 0; i < file1.Length; i++)
+					{
+						if (file1[i] != file2[i])
+							return true;
+					}
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				string error = Lang.GetString("MessageWindow.Errors.D3D8UpdateCheck") + "\n" + ex.Message;
+				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+				return false;
+			}
+		}
+
+		private void btnUpdateD3D9_Click(object sender, RoutedEventArgs e)
+		{
+			string info = Lang.GetString("MessageWindow.Information.D3D8Update");
+			var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString(info), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
+			msg.ShowDialog();
+
+			if (msg.isYes)
+			{
+				CopyD3D9Dll();
+				btnUpdateD3D9.IsEnabled = CheckD3D8to9Update();
+			}
+		}
+
+		private void checkD3D9_Click(object sender, RoutedEventArgs e)
+		{
+			if (checkD3D9.IsChecked == true)
+			{
+				CopyD3D9Dll();
+			}
+			else if (checkD3D9.IsChecked == false && File.Exists(d3d8to9InstalledDLLName))
+				File.Delete(d3d8to9InstalledDLLName);
+
+		}
+		#endregion
+
+		#region Input Tab
+		private void InitMouseList()
+		{
+			List<string> mouseActionList = new()
+			{
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute"),
+
+			};
+
+			mouseAction.ItemsSource = mouseActionList;
+
+			List<string> mouseBtnAssignList = new()
+			{
+				Lang.GetString("CommonStrings.None"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn"),
+				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn"),
+			};
+
+			mouseBtnAssign.ItemsSource = mouseBtnAssignList;
+		}
+
+
+		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
+		{
+			if (grpVanillaInput is null)
+				return;
+
+			int index = tabInputGrid.Children.IndexOf(grpSDLInput); //Graphic Window setting is a children of the graphic grid 
+
+			tabInputGrid.Children.RemoveAt(index); //we remove it so we can only display the full screen options
+
+			if (!tabInputGrid.Children.Contains(grpVanillaInput)) //if the fullscreen grid doesn't exist, add it back
+			{
+				tabInputGrid.Children.Add(grpVanillaInput);
+			}
+		}
+
+		private void radBetterInput_Checked(object sender, RoutedEventArgs e)
+		{
+			if (grpSDLInput is null)
+				return;
+
+			int index = tabInputGrid.Children.IndexOf(grpVanillaInput);
+			tabInputGrid.Children.RemoveAt(index);
+
+			if (!tabInputGrid.Children.Contains(grpSDLInput))
+			{
+				tabInputGrid.Children.Add(grpSDLInput);
+			}
 		}
 
 		#region App Launcher
@@ -2839,82 +2259,636 @@ namespace SAModManager
 				btnOpenAppLauncher.Opacity = LowOpacityBtn;
 			}
 		}
-
+		#endregion
 		#endregion
 
-		#region One Click Install
-
-		private void SetOneClickBtnState()
+		#region Sound Tab
+		private void sliderMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
-			try
-			{
-				using var hkcr = Microsoft.Win32.Registry.ClassesRoot;
-				var sammKey = hkcr.OpenSubKey("sadxmm");
-
-				if (sammKey != null)
-				{
-					var pathManagerKey = sammKey.OpenSubKey("DefaultIcon");
-					if (pathManagerKey != null)
-					{
-						var managerPath = pathManagerKey.GetValue("").ToString();
-						
-						if (managerPath.ToLower().Contains(Environment.ProcessPath.ToLower()))
-						{
-							btnOneClick.IsEnabled = false;
-							Image iconConfig = FindName("GB") as Image;
-							iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
-							btnOneClick.Opacity = LowOpacityBtn;
-						}
-
-						pathManagerKey.Close();
-						sammKey.Close();
-					}
-				}
-			}
-			catch { }
+			labelMusicLevel?.SetValue(ContentProperty, $"{(int)sliderMusic.Value}");
 		}
 
-		private async void btnOneClick_Click(object sender, RoutedEventArgs e)
+		private void sliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
-			try
-			{
-				string execPath = Environment.ProcessPath;
-
-				await Process.Start(new ProcessStartInfo(execPath, "urlhandler")
-				{
-					UseShellExecute = true,
-					Verb = "runas"
-				}).WaitForExitAsync();
-
-				btnOneClick.IsEnabled = false;
-				Image iconConfig = FindName("GB") as Image;
-				iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
-				btnOneClick.Opacity = LowOpacityBtn;
-
-			}
-			catch { }
+			labelVoiceLevel?.SetValue(ContentProperty, $"{(int)sliderVoice.Value}");
 		}
 
+		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			labelSFXLevel?.SetValue(ContentProperty, $"{(int)sliderSFX.Value}");
+		}
+		private void checkBassSFX_Checked(object sender, RoutedEventArgs e)
+		{
+			sliderSFX.IsEnabled = true;
+		}
+
+		private void checkBassSFX_Unchecked(object sender, RoutedEventArgs e)
+		{
+			sliderSFX.IsEnabled = false;
+		}
 		#endregion
 
-		#region Mods Tab
+		#region Patches Tab
+		private PatchesData GetPatchFromView(object sender)
+		{
+			if (sender is ListViewItem lvItem)
+				return lvItem.Content as PatchesData;
+			else if (sender is ListView lv)
+				return lv.SelectedItem as PatchesData;
 
+
+			return listPatches.Items[listPatches.SelectedIndex] as PatchesData;
+		}
+
+		private void PatchViewItem_MouseEnter(object sender, MouseEventArgs e)
+		{
+
+			var patch = GetPatchFromView(sender);
+
+			if (patch is null)
+				return;
+
+			PatchDescription.Text += " " + patch.Description;
+		}
+
+		private void PatchViewItem_MouseLeave(object sender, MouseEventArgs e)
+		{
+			PatchDescription.Text = Lang.GetString("CommonStrings.Description");
+		}
+
+		private void SavePatches()
+		{
+			if (listPatches is null)
+				return;
+
+
+			PatchesData patch = (PatchesData)listPatches.Items[14];
+			loaderini.DisableCDCheck = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[13];
+			loaderini.KillGbix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[12];
+			loaderini.LightFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[11];
+			loaderini.PixelOffSetFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[10];
+			loaderini.ChaoPanelFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[9];
+			loaderini.E102PolyFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[8];
+			loaderini.ChunkSpecFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[7];
+			loaderini.Chaos2CrashFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[6];
+			loaderini.SCFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[5];
+			loaderini.FovFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[4];
+			loaderini.InterpolationFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[3];
+			loaderini.MaterialColorFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[2];
+			loaderini.PolyBuff = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[1];
+			loaderini.CCEF = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[0];
+			loaderini.HRTFSound = patch.IsChecked;
+		}
+
+		private void UpdatePatches()
+		{
+			listPatches.Items.Clear();
+
+			if (loaderini is null)
+				return;
+
+			List<PatchesData> patches = new List<PatchesData>()
+			{
+				new PatchesData() { Name = Lang.GetString("GamePatches.3DSound"),
+					Description = Lang.GetString("GamePatches.3DSoundDesc"), IsChecked = loaderini.HRTFSound },
+				new PatchesData() { Name = Lang.GetString("GamePatches.CamCode"),
+					Description = Lang.GetString("GamePatches.CamCodeDesc"),IsChecked = loaderini.CCEF },
+				new PatchesData() { Name = Lang.GetString("GamePatches.VertexColor"),
+					Description = Lang.GetString("GamePatches.VertexColorDesc"),IsChecked = loaderini.PolyBuff },
+				new PatchesData() { Name = Lang.GetString("GamePatches.MaterialColor"),
+					Description = Lang.GetString("GamePatches.MaterialColorDesc"),IsChecked = loaderini.MaterialColorFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.Interpolation"),
+					Description = Lang.GetString("GamePatches.InterpolationDesc"),IsChecked = loaderini.InterpolationFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.FixFOV"),
+					Description = Lang.GetString("GamePatches.FixFOVDesc"),IsChecked = loaderini.FovFix },
+				new PatchesData() { Name = Lang.GetString("GamePatches.Skychase"),
+					Description = Lang.GetString("GamePatches.SkychaseDesc"),IsChecked = loaderini.SCFix },
+				new PatchesData() { Name = Lang.GetString("GamePatches.Chaos2"),
+					Description = Lang.GetString("GamePatches.Chaos2Desc"),IsChecked = loaderini.Chaos2CrashFix },
+				new PatchesData() { Name = Lang.GetString("GamePatches.ChunkRendering"),
+					Description = Lang.GetString("GamePatches.ChunkRenderingDesc"),IsChecked = loaderini.ChunkSpecFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.E102Lamp"),
+					Description = Lang.GetString("GamePatches.E102LampDesc"),IsChecked = loaderini.E102PolyFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.ChaoStats"), IsChecked = loaderini.ChaoPanelFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.PixelOffset"),
+					Description = Lang.GetString("GamePatches.PixelOffsetDesc"),IsChecked = loaderini.PixelOffSetFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.Lights"),
+					Description = Lang.GetString("GamePatches.LightsDesc"),IsChecked = loaderini.LightFix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.DisableGBIX"),
+					Description = Lang.GetString("GamePatches.DisableGBIXDesc"),IsChecked = loaderini.KillGbix},
+				new PatchesData() { Name = Lang.GetString("GamePatches.DisableCDCheck"), IsChecked = loaderini.DisableCDCheck},
+			};
+
+			foreach (var patch in patches)
+			{
+				listPatches.Items.Add(patch);
+			}
+		}
+
+		private void btnSelectAllPatch_Click(object sender, RoutedEventArgs e)
+		{
+			foreach (PatchesData patch in listPatches.Items)
+			{
+				patch.IsChecked = true;
+			}
+			RefreshPatchesList();
+		}
+
+		private void btnDeselectAllPatch_Click(object sender, RoutedEventArgs e)
+		{
+			foreach (PatchesData patch in listPatches.Items)
+			{
+				patch.IsChecked = false;
+			}
+			RefreshPatchesList();
+
+		}
+
+		private void RefreshPatchesList()
+		{
+			ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
+			view.Refresh();
+		}
 		#endregion
-
-		#region Codes Tab
-
-		#endregion
-
-		#region Game Config
-
 		#endregion
 
 		#region Test Spawn
+		private void checkEnableTestSpawn_Checked(object sender, RoutedEventArgs e)
+		{
+			if (tcMain.Items.Contains(tabTestSpawn))
+				return;
 
+			int index = tcMain.Items.IndexOf(tabConfig);
+			tcMain.Items.Insert(index, tabTestSpawn);
+		}
+
+		private void checkEnableTestSpawn_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!tcMain.Items.Contains(tabTestSpawn))
+				return;
+
+			tcMain.Items.Remove(tabTestSpawn);
+		}
+
+		private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
+		{
+			if (string.IsNullOrEmpty(gamePath))
+			{
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				return;
+			}
+
+			string executablePath = loaderini.Mods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(gamePath, "sonic.exe");
+
+			string commandLine = GetTestSpawnCommandLine();
+
+			ProcessStartInfo startInfo = new ProcessStartInfo(executablePath)
+			{
+				WorkingDirectory = gamePath,
+				Arguments = commandLine
+			};
+
+			Process.Start(startInfo);
+		}
+
+		private void tsComboLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox t = sender as ComboBox;
+
+			tsComboAct.BeginInit();
+
+			tsComboAct.ItemsSource = TestSpawn.GetNewAct(t.SelectedIndex);
+
+			tsComboAct.EndInit();
+			tsComboAct.SelectedIndex = 0;
+		}
+
+		private void tsCheckLevel_Checked(object sender, RoutedEventArgs e)
+		{
+			if (tsComboAct.SelectedIndex < 0)
+				tsComboAct.SelectedIndex = 0;
+
+			if (tsComboLevel.SelectedIndex < 0)
+				tsComboLevel.SelectedIndex = 0;
+
+		}
+
+		private void TS_GetSave()
+		{
+			if (installed)
+			{
+				string fullPath = Path.Combine(gamePath, "SAVEDATA");
+
+				//if savedata exists
+				if (Directory.Exists(fullPath))
+				{
+					string targetExtension = ".snc";
+
+					string[] files = Directory.GetFiles(fullPath, "*" + targetExtension, SearchOption.TopDirectoryOnly);
+
+					tsComboSave.BeginInit();
+
+					List<string> list = new List<string>();
+
+					//browse each save file of the user
+					foreach (string file in files)
+					{
+						string name = Path.GetFileNameWithoutExtension(file);
+						string nameDup = name.ToLower();
+
+						if (nameDup.Contains("sonicdx")) //skip chao garden save
+							list.Add(name);
+					}
+
+					//sort just in case the order is wrong
+					list.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
+
+					//finally, add all the saves in the comboBox
+
+					tsComboSave.ItemsSource = list;
+
+					tsComboSave.EndInit();
+				}
+			}
+		}
+
+		private void setupTestSpawn()
+		{
+			TS = new TestSpawn(ref tsComboLevel, ref tsComboGameMode, ref tsComboEvent, ref tsComboCharacter);
+
+			TS.InitCutsceneList();
+			TS.InitGameModeList();
+			TS.InitCharactersList();
+			TS.InitLevels();
+
+			int index = loaderini?.TestSpawnLevel != -1 ? loaderini.TestSpawnLevel : 0;
+			tsComboAct.ItemsSource = TestSpawn.GetNewAct(index);
+			if (tsCheckLevel.IsChecked == true)
+				tsComboAct.SelectedIndex = loaderini?.TestSpawnAct != -1 ? loaderini.TestSpawnAct : 0;
+			tsComboTime.ItemsSource = TestSpawn.TimeDay;
+
+			TS_GetSave();
+		}
+
+		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
+		{
+			tsCheckCharacter.IsChecked = true;
+			tsCheckLevel.IsChecked = true;
+
+			if (tsComboCharacter.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
+				tsComboCharacter.SelectedIndex = 0;
+
+			if (tsComboLevel.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
+				tsComboLevel.SelectedIndex = 0;
+
+			if (tsComboEvent.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
+				tsComboEvent.SelectedIndex = 0;
+
+			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
+		}
+
+		private void tsCheckEvent_Unchecked(object sender, RoutedEventArgs e)
+		{
+			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
+		}
+
+		private void tsCheckCharacter_Click(object sender, RoutedEventArgs e)
+		{
+			if ((bool)tsCheckCharacter.IsChecked)
+			{
+				tsCheckLevel.IsChecked = true;
+
+				if (tsComboCharacter.SelectedIndex < 0 && tsCheckManual.IsChecked == false)
+					tsComboCharacter.SelectedIndex = 0;
+			}
+
+		}
+
+		private void tsCheckManual_Clicked(object sender, RoutedEventArgs e)
+		{
+			if ((bool)tsCheckManual.IsChecked)
+			{
+				tsCheckCharacter.IsEnabled = false;
+				tsCheckLevel.IsEnabled = false;
+				tsComboCharacter.IsEnabled = false;
+				tsComboLevel.IsEnabled = false;
+				tsComboAct.IsEnabled = false;
+				tsComboTime.IsEnabled = false;
+
+				tsNumCharacter.Value = 0;
+				tsNumLevel.Value = 0;
+				tsNumAct.Value = tsComboAct.SelectedIndex;
+			}
+			else
+			{
+				tsCheckCharacter.IsEnabled = true;
+				tsCheckLevel.IsEnabled = true;
+				Binding bindCharacter = new Binding
+				{
+					Path = new PropertyPath("IsChecked"),
+					Source = tsCheckCharacter
+				};
+				Binding bindLevel = new Binding
+				{
+					Path = new PropertyPath("IsChecked"),
+					Source = tsCheckLevel
+				};
+
+				BindingOperations.SetBinding(tsComboCharacter, IsEnabledProperty, bindCharacter);
+				BindingOperations.SetBinding(tsComboLevel, IsEnabledProperty, bindLevel);
+				BindingOperations.SetBinding(tsComboAct, IsEnabledProperty, bindLevel);
+				BindingOperations.SetBinding(tsComboTime, IsEnabledProperty, bindLevel);
+			}
+		}
+
+		private string GetTestSpawnCommandLine()
+		{
+			List<string> cmdline = new List<string>();
+
+			bool advanced = tsCheckManual.IsChecked == true;
+
+			if (tsCheckLevel.IsChecked.GetValueOrDefault() && tsComboLevel.SelectedIndex > -1)
+				cmdline.Add("-l " + (advanced ? tsNumLevel.Value.ToString() : tsComboLevel.SelectedIndex.ToString()) + " -a " + (advanced ? tsNumAct.Value.ToString() : tsComboAct.SelectedIndex.ToString()));
+
+			if (tsCheckCharacter.IsChecked == true && tsComboCharacter.SelectedIndex > -1)
+				cmdline.Add("-c " + (advanced ? tsNumCharacter.Value.ToString() : tsComboCharacter.SelectedIndex.ToString()));
+
+			if (tsCheckPosition.IsChecked == true)
+				cmdline.Add("-p " + tsNumPosX.Value.ToString() + " " +
+					tsNumPosY.Value.ToString() + " " +
+					tsNumPosZ.Value.ToString() + " -r " +
+					tsNumAngle.Value.ToString());
+
+			if (tsCheckEvent.IsChecked == true && tsComboEvent.SelectedIndex > -1)
+			{
+				int ev = 0;
+				int ev_result = 0;
+
+				foreach (var item in TS.GetCutsceneList())
+				{
+					if (ev == tsComboEvent.SelectedIndex)
+					{
+						ev_result = item.Key;
+						break;
+					}
+					ev++;
+				}
+				cmdline.Add("-e " + ev_result.ToString());
+			}
+			if (tsComboTime.SelectedIndex > 0)
+				cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
+
+			if (tsCheckGameMode.IsChecked == true && tsComboGameMode.SelectedIndex > -1)
+			{
+				uint gm = 0;
+				uint gm_result = 0;
+				foreach (var item in TS.GetTestSpawnGameModeList())
+				{
+					if (gm == tsComboGameMode.SelectedIndex)
+					{
+						gm_result = item.Key;
+						break;
+					}
+					gm++;
+				}
+				cmdline.Add("-g " + gm_result.ToString());
+			}
+
+			if (tsCheckSave.IsChecked == true)
+			{
+				string save = tsComboSave.SelectedValue.ToString();
+				save = Util.GetSaveNumber(save);
+				cmdline.Add("-s " + save);
+			}
+
+			return string.Join(" ", cmdline);
+		}
 		#endregion
 
 		#region Manager Config
+		private void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
+		{
+			var dialog = new System.Windows.Forms.FolderBrowserDialog();
 
+			System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+			if (result == System.Windows.Forms.DialogResult.OK)
+			{
+				string GamePath = dialog.SelectedPath;
+				string path = Path.Combine(GamePath, exeName);
+
+				if (File.Exists(path))
+				{
+					textGameDir.Text = GamePath;
+					SetGamePath(GamePath);
+					Properties.Settings.Default.GamePath = gamePath;
+					UpdatePathsStringsInfo();
+					Refresh();
+					SetLoaderFile();
+					InstallLoader(true);
+				}
+				else
+				{
+					new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				}
+			}
+		}
+
+		private void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
+		{
+			btnCheckUpdates.IsEnabled = false;
+
+			if (CheckForUpdates(true))
+			{
+				//UpdateHelper.DoModManagerUpdate(updatePath);
+				//return;
+			}
+
+			manualModUpdate = true;
+			CheckForModUpdates(true);
+		}
+
+		private void AboutBtn_Click(object sender, RoutedEventArgs e)
+		{
+			new AboutManager().ShowDialog();
+		}
+
+		private void UpdateBtnInstallLoader_State()
+		{
+			if (btnInstallLoader is null)
+				return;
+
+			//Update Text Button of Mod Loader Installer
+			string textKey = installed ? "Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader" : "Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader";
+			TextBlock txt = FindName("txtInstallLoader") as TextBlock;
+			txt.Text = Lang.GetString(textKey);
+
+			//update icon image depending if the Mod Loader is installed or not
+			string iconName = installed ? "IconUninstall" : "IconInstall";
+			var dic = installed ? Icons.Icons.UninstallIcon : Icons.Icons.InstallIcon;
+
+			DrawingImage Icon = dic[iconName] as DrawingImage;
+
+			Image imgInstall = FindName("imgInstall") as Image;
+
+			if (imgInstall is not null)
+				imgInstall.Source = Icon;
+		}
+
+		private void InstallLoader(bool force = false)
+		{
+			if (installed && force)
+			{
+				File.Delete(datadllpath);
+				Util.MoveFile(datadllorigpath, datadllpath);
+
+				installed = false;
+			}
+
+			if (installed)
+			{
+				File.Delete(datadllpath);
+				Util.MoveFile(datadllorigpath, datadllpath);
+			}
+			else
+			{
+				File.Move(datadllpath, datadllorigpath);
+
+				if (File.Exists(loaderdllpath))
+					File.Copy(loaderdllpath, datadllpath);
+			}
+
+			installed = !installed;
+			UpdateBtnInstallLoader_State();
+			Update_PlayButtonsState();
+		}
+
+		private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
+		{
+			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
+			{
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				return;
+			}
+
+			InstallLoader();
+			btnBrowseGameDir.IsEnabled = false;
+			Save();
+			await Task.Delay(2000);
+			btnBrowseGameDir.IsEnabled = true;
+		}
+
+		private void btnSource_Click(object sender, RoutedEventArgs e)
+		{
+			var ps = new ProcessStartInfo("https://github.com/X-Hax/sadx-mod-loader")
+			{
+				UseShellExecute = true,
+				Verb = "open"
+			};
+			Process.Start(ps);
+		}
+
+		private void btnReport_Click(object sender, RoutedEventArgs e)
+		{
+			var ps = new ProcessStartInfo("https://github.com/X-Hax/sadx-mod-loader/issues/new")
+			{
+				UseShellExecute = true,
+				Verb = "open"
+			};
+
+			Process.Start(ps);
+		}
+
+		#region Themes
+		private void comboThemes_Loaded(object sender, RoutedEventArgs e)
+		{
+			comboThemes.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
+			comboThemes.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
+		}
+
+		private void comboThemes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			App.SwitchTheme();
+		}
+		#endregion
+
+		#region Languages
+		private void comboLanguage_Loaded(object sender, RoutedEventArgs e)
+		{
+			comboLanguage.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
+			comboLanguage.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
+		}
+		private void comboLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			App.SwitchLanguage();
+			UpdateBtnInstallLoader_State();
+			FlowDirectionHelper.UpdateFlowDirection();
+			UpdatePatches();
+		}
+		#endregion
+
+		#region Mod Profiles
+		private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
+		{
+			if (!installed)
+				return;
+
+			new ModProfile(ref comboProfile).ShowDialog();
+		}
+
+		private void ModProfile_FormClosing(object sender, EventArgs e)
+		{
+			Refresh();
+		}
+
+		private void LoadAllProfiles()
+		{
+			comboProfile.Items.Clear();
+
+			if (modDirectory != string.Empty)
+			{
+				foreach (var item in Directory.EnumerateFiles(modDirectory, "*.ini"))
+				{
+					if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase) && !item.EndsWith("desktop.ini", StringComparison.OrdinalIgnoreCase))
+					{
+						Profile pro = new()
+						{
+							name = Path.GetFileNameWithoutExtension(item),
+							iniPath = item
+						};
+
+						comboProfile.Items.Add(pro);
+					}
+				}
+			}
+		}
+
+		private void comboProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var selectedItem = comboProfile.SelectedItem as Profile;
+
+			if (selectedItem != null)
+			{
+				loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(selectedItem.iniPath);
+				LoadSettings();
+				Refresh();
+			}
+		}
+		#endregion
 		#endregion
 	}
 }

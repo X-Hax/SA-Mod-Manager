@@ -393,7 +393,7 @@
 											<StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
 												<elements:NumericUpDown x:Name="txtResX" Height="22" Width="75" Value="640"/>
 												<Label Content="x" VerticalContentAlignment="Center"/>
-												<elements:NumericUpDown x:Name="txtResY" Height="22" Width="75" Value="480"/>
+												<elements:NumericUpDown x:Name="txtResY" Height="22" Width="75" Value="480" ValueChanged="ResolutionChanged"/>
                                             </StackPanel>
                                             <ComboBox x:Name="comboDisplay" Grid.Column="5" Grid.Row="3" Height="22" SelectionChanged="comboResolutionPreset_SelectedIndexChanged">
                                                 <ComboBoxItem Content="640x480"/>
@@ -463,7 +463,7 @@
                                                 <StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal" Margin="5,0,5,0">
 													<elements:NumericUpDown x:Name="txtCustomResX" Height="22" Width="75" Value="640"/>
                                                     <Label Content="x" VerticalContentAlignment="Center"/>
-													<elements:NumericUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480" TextChanged="txtCustomResY_TextChanged"/>
+													<elements:NumericUpDown x:Name="txtCustomResY" Height="22" Width="75" Value="480" ValueChanged="ResolutionChanged"/>
                                                 </StackPanel>
                                             </Grid>
                                         </GroupBox>
