@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using System.Reflection;
 
 
 namespace SAModManager
@@ -64,7 +65,7 @@ namespace SAModManager
 				}
 
 				FrameworkDownloader frameworkDownloader = new(framework.NuGetVersion, framework.FrameworkName);
-				var url = await frameworkDownloader.GetDownloadUrlAsync(Architecture.x86);
+				var url = await frameworkDownloader.GetDownloadUrlAsync(Environment.Is64BitOperatingSystem ? Architecture.Amd64 : Architecture.x86);
 				Uri uri = new(url + "\r\n");
 
 				if (url != null)
@@ -167,7 +168,7 @@ namespace SAModManager
 				//if not, look if they aren't in the Mod Manager folder...
 				if (!Directory.Exists("extlib/BASS"))
 				{
-					//throw error that they are missing
+
 					return false;
 				}
 
