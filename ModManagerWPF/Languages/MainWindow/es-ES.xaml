@@ -45,6 +45,7 @@
     <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display">Opciones de Pantalla</system:String>
     <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Screen">Pantalla:</system:String>
     <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolución:</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Settings">Configuración</system:String>
     <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forzar Relación de Aspecto 4:3</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Activar Sincronización Vertical</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausar cuando el juego esté inactivo</system:String>
@@ -86,7 +87,13 @@
     <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Ratón</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Arrastar y Mantener</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Arrastar para Acelerar</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Saltar</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn">Botón Izquierdo del Ratón</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn">Botón Derecho del Ratón</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn">Botón Central del Ratón</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Otro Botón Izquierdo</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn">Botón Izquierdo + Derecho del Ratón</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Botón Derecho + Izquierdo del Ratón</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Saltar</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Acción</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Cancelar/Atacar</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Start/Set</system:String>

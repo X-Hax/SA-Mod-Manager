@@ -17,7 +17,8 @@
 
     <system:String x:Key="EditMod.Tabs.Updates">Información de Actualizaciones</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Method">Método de Actualización</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.GitHub">Configuración de Actualizaciones GitHub</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.SelfHosted">Auto-Hospedada</system:String>	
+    <system:String x:Key="EditMod.Tabs.Updates.GitHub">Configuración de Actualizaciones GitHub</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Autor y Repositorio:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Recursos de Versión:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB">Configuración de Actualizaciones GameBanana</system:String>
