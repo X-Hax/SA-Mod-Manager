@@ -944,6 +944,11 @@ namespace SAModManager
 			btnDeselectAll.IsEnabled = true;
 		}
 
+		private void chkBorderless_Checked(object sender, RoutedEventArgs e)
+		{
+			chkDynamicBuffers.IsChecked = chkBorderless.IsChecked;
+		}
+
 		private void RefreshModList()
 		{
 			ICollectionView view = CollectionViewSource.GetDefaultView(listMods.Items);
