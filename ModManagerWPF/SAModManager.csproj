@@ -11,6 +11,7 @@
 	  <BaseOutputPath>..\bin\</BaseOutputPath>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <RepositoryUrl>https://github.com/X-Hax/sadx-mod-loader</RepositoryUrl>
+	  <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

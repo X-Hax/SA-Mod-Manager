@@ -25,6 +25,7 @@ namespace SAModManager
 	{
 		private const string pipeName = "sa-mod-manager";
 		private const string protocol = "sadxmm:";
+		public static string gitVersion { get; set; }	
 
 		private static readonly Mutex mutex = new(true, pipeName);
 		public static Updater.UriQueue UriQueue;
@@ -211,6 +212,7 @@ namespace SAModManager
 				return;
 			}
 
+	
 			InitUri(args, alreadyRunning);
 
 			if (alreadyRunning)
@@ -221,8 +223,10 @@ namespace SAModManager
 
 			Steam.Init();
 			ShutdownMode = ShutdownMode.OnMainWindowClose;
+
 			MainWindow = new MainWindow(args is not null ? args : null);
 			MainWindow.Show();
+	
 			base.OnStartup(e);
 			UriQueue.Close();
 		}

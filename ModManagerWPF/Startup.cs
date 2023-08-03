@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-
+using System.Reflection;
+using SevenZipExtractor;
 
 namespace SAModManager
 {
@@ -64,7 +65,7 @@ namespace SAModManager
 				}
 
 				FrameworkDownloader frameworkDownloader = new(framework.NuGetVersion, framework.FrameworkName);
-				var url = await frameworkDownloader.GetDownloadUrlAsync(Architecture.x86);
+				var url = await frameworkDownloader.GetDownloadUrlAsync(Environment.Is64BitOperatingSystem ? Architecture.Amd64 : Architecture.x86);
 				Uri uri = new(url + "\r\n");
 
 				if (url != null)
@@ -164,21 +165,28 @@ namespace SAModManager
 						return true;
 				}
 
-				//if not, look if they aren't in the Mod Manager folder...
-				if (!Directory.Exists("extlib/BASS"))
-				{
-					//throw error that they are missing
-					return false;
+				if (!File.Exists(Path.Combine(bassFullPath + "bass.dll")))
+				{ 
+					//extract BASS files if it doesn't exist, pull them from resources
+					using (Stream resourceStream = new MemoryStream(Properties.Resources.bass))
+					{
+						using (ArchiveFile archiveFile = new(resourceStream))
+						{
+							archiveFile.Extract(bassFullPath, true);
+						}
+					}
 				}
 
-				if (!Directory.Exists("extlib/SDL2"))
+				if (!Directory.Exists(SDLFullPath))
 				{
-					//throw error that they are missing
-					return false;
+					Directory.CreateDirectory(SDLFullPath);
 				}
 
-				Util.CopyFolder("extlib/BASS", bassFullPath, true);
-				Util.CopyFolder("extlib/SDL2/lib/x86", SDLFullPath, true);
+				//extract SDL2 dll if it doesn't exist, pull it from resource
+				if (!File.Exists(Path.Combine(SDLFullPath + "SDL2.dll")))
+				{
+					Util.ExtractEmbeddedDLL(Properties.Resources.SDL2, "SDL2", SDLFullPath);
+				}
 
 				await Task.Delay(500);
 			}

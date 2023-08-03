@@ -46,22 +46,19 @@ namespace SAModManager
 		[JsonProperty("body")]
 		public string Body { get; set; }
 	}
-	public class GitHub
-	{
-		MainWindow Window { get; set; }
-		public GitHub(MainWindow window)
-		{
-			Window = window;
-		}
-		public GitHubClient client = new GitHubClient(new ProductHeaderValue("sadx-mod-loader"));
 
-		public string LastCommit = "";
-		public async Task<Repository> GetRepo()
+	public static class GitHub
+	{
+
+		public static GitHubClient client = new(new ProductHeaderValue("sadx-mod-loader"));
+
+		public static string LastCommit = "";
+		public static async Task<Repository> GetRepo()
 		{
 			return await client.Repository.Get("x-hax", "sadx-mod-loader");
 		}
 
-		private async Task<GitHubCommit> GetLastCommit(long repoID, string branchName)
+		private static async Task<GitHubCommit> GetLastCommit(long repoID, string branchName)
 		{
 			return await client.Repository.Commit.Get(repoID, branchName);
 		}
@@ -70,35 +67,34 @@ namespace SAModManager
 		/// Gets the most recent commit to the repo.
 		/// </summary>
 		/// <returns>Most Recent Commit as a string</returns>
-		public async Task GetRecentCommit()
+		public static async Task<string> GetRecentCommit()
 		{
 
 			if (client is null)
-				return;
+				return null;
 
 			try
 			{
 				var Repo = await client.Repository.Get("x-hax", "sadx-mod-loader");
 
 				if (Repo is null)
-					return;
+					return null;
 
 				var id = Repo.Id;
 				var lastCommit = await GetLastCommit(id, "wpf"); //todo swap to "master"
 
 				if (lastCommit is not null)
 				{
-					LastCommit = lastCommit.Sha[..7];
-					Window.SetModManagerVersion();	
-					return;
+				
+					return LastCommit = lastCommit.Sha[..7];
 				}
 			}
 			catch
 			{
-
-				LastCommit = Settings.Default.LastCommit;
-				Window.SetModManagerVersion();
+				return LastCommit = Settings.Default.LastCommit;	
 			}
+
+			return LastCommit = Settings.Default.LastCommit;
 		}
 	}
 }

@@ -75,8 +75,6 @@ namespace SAModManager
 		private Game.GameConfigFile gameConfigFile;
 
 		public Game.Graphics graphics;
-		public GitHub git;
-		static private uint count = 0;
 		MenuItem ModContextDev { get; set; }
 		TestSpawn TS { get; set; }
 		private bool displayedManifestWarning;
@@ -87,10 +85,8 @@ namespace SAModManager
 
 		public MainWindow(string[] args = null)
 		{
-			git = new(this);
 			InitializeComponent();
-			git.GetRecentCommit();
-
+	
 			graphics = new Game.Graphics(ref comboScreen);
 			SetGamePath(Settings.Default.GamePath);
 			UpdatePathsStringsInfo();
@@ -185,33 +181,16 @@ namespace SAModManager
 
 		#region Main
 
-		private async void SetModManagerVersion(object sender, EventArgs e)
-		{
-			if (count >= 3 || Title.Length > titleName.Length + 1)
-			{
-				(sender as DispatcherTimer).Stop();
-				return;
-			}
-
-			await git.GetRecentCommit();
-			count++;
-		}
-
 		public void SetModManagerVersion()
 		{
-			GitVersion = git.LastCommit;
 			Title = titleName + " " + "(" + Version + "-" + GitVersion + ")";
-			Settings.Default.LastCommit = git.LastCommit;
+			Settings.Default.LastCommit = GitVersion;
 		}
 
-		private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
+		private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
 		{
-			DispatcherTimer timer = new()
-			{
-				Interval = TimeSpan.FromMilliseconds(10000)
-			};
-			timer.Tick += SetModManagerVersion;
-			timer.IsEnabled = true;
+			GitVersion = await GitHub.GetRecentCommit();
+			SetModManagerVersion();
 
 			if (!Directory.Exists(modDirectory) || !installed)
 				return;
