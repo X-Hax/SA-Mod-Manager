@@ -1,5 +1,4 @@
-﻿
-using SAModManager.Common;
+﻿using SAModManager.Common;
 using SAModManager.Ini;
 using SAModManager.ModsCommon;
 using SAModManager.Properties;
@@ -12,8 +11,6 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
 
 namespace SAModManager
 {
@@ -115,7 +112,7 @@ namespace SAModManager
 				tabDepdencies.Visibility = Visibility.Hidden;
 				tabSchema.Visibility = Visibility.Hidden;
 			}
-				
+
 		}
 		#endregion
 
@@ -140,6 +137,8 @@ namespace SAModManager
 			{
 				CreateNewMod(moddir);
 			}
+
+			((MainWindow)Application.Current.MainWindow).Save();
 
 		}
 
@@ -246,7 +245,7 @@ namespace SAModManager
 
 		public bool DeleteGroup()
 		{
-			
+
 			return false;
 		}
 
@@ -369,21 +368,20 @@ namespace SAModManager
 		#region Build Functions
 		private void BuildModINI(string moddir)
 		{
+
 			//Assign variables to null if the string are empty so they won't show up at all in mod.ini.
-			SADXModInfo newMod = editMod ? Mod : new SADXModInfo
-			{
-				Name = nameBox.Text,
-				Author = GetStringContent(authorBox.Text),
-				AuthorURL = GetStringContent(authorURLBox.Text),
-				Description = GetStringContent(descriptionBox.Text),
-				Version = GetStringContent(versionBox.Text),
-				Category = GetStringContent(categoryBox.Text),
-				SourceCode = GetStringContent(sourceURLBox.Text),
-				RedirectMainSave = mainSaveBox.IsChecked.GetValueOrDefault(),
-				RedirectChaoSave = chaoSaveBox.IsChecked.GetValueOrDefault(),
-				ModID = GetStringContent(modIDBox.Text),
-				DLLFile = GetStringContent(dllText.Text)
-			};
+			SADXModInfo newMod = editMod ? Mod : new SADXModInfo();
+			newMod.Name = nameBox.Text;
+			newMod.Author = GetStringContent(authorBox.Text);
+			newMod.AuthorURL = GetStringContent(authorURLBox.Text);
+			newMod.Description = GetStringContent(descriptionBox.Text);
+			newMod.Version = GetStringContent(versionBox.Text);
+			newMod.Category = GetStringContent(categoryBox.Text);
+			newMod.SourceCode = GetStringContent(sourceURLBox.Text);
+			newMod.RedirectMainSave = mainSaveBox.IsChecked.GetValueOrDefault();
+			newMod.RedirectChaoSave = chaoSaveBox.IsChecked.GetValueOrDefault();
+			newMod.ModID = GetStringContent(modIDBox.Text);
+			newMod.DLLFile = GetStringContent(dllText.Text);
 
 			SaveModUpdates(newMod);
 			SaveModDependencies(newMod);
@@ -544,7 +542,7 @@ namespace SAModManager
 
 					//delete existing savedata folder in mod directory
 					Directory.Delete(fullSavepath, true);
-				}	
+				}
 			}
 			else
 			{
@@ -557,7 +555,7 @@ namespace SAModManager
 
 		private void checkAdvancedOptions_Click(object sender, RoutedEventArgs e)
 		{
-		
+
 			if ((bool)checkAdvancedOptions.IsChecked)
 			{
 				tabDepdencies.Visibility = Visibility.Visible;

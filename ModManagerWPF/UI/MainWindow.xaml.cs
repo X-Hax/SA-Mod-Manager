@@ -311,7 +311,7 @@ namespace SAModManager
 			loaderini.Mods.Clear();
 
 			//save mod list here
-			foreach (ModData mod in listMods.Items)
+			foreach (ModData mod in ViewModel.Modsdata)
 			{
 				if (mod?.IsChecked == true)
 				{
@@ -367,6 +367,8 @@ namespace SAModManager
 			loaderini.TestSpawnX = (int)tsNumPosX.Value;
 			loaderini.TestSpawnY = (int)tsNumPosY.Value;
 			loaderini.TestSpawnZ = (int)tsNumPosZ.Value;
+
+			loaderini.TestSpawnSaveID = (bool)tsCheckSave.IsChecked ? tsComboSave.SelectedIndex : -1;
 
 			SavePatches();
 			SaveCodes();
@@ -2890,6 +2892,8 @@ namespace SAModManager
 		}
 		#endregion
 		#endregion
+
+
 	}
 }
 

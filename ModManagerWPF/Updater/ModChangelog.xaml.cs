@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace SAModManager.Common
 {
@@ -135,7 +136,7 @@ namespace SAModManager.Common
 			ModsList.EndInit();
 		}
 
-		private void ImageButton_Click(object sender, RoutedEventArgs e)
+		private void DLButton_Click(object sender, RoutedEventArgs e)
 		{
 			foreach (ModDownloadWPF item in mods)
 			{
@@ -175,7 +176,19 @@ namespace SAModManager.Common
 
 		private void BtnOpenUpdate_Click(object sender, RoutedEventArgs e)
 		{
+			var item = ModsList.SelectedItem;
 
+			var entry = item as ModDownloadWPF;
+
+			if (entry != null)
+			{
+				var ps = new ProcessStartInfo(entry.ReleaseUrl)
+				{
+					UseShellExecute = true,
+					Verb = "open"
+				};
+				Process.Start(ps);
+			}
 		}
 	}	
 }

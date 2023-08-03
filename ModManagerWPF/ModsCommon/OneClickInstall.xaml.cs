@@ -17,6 +17,7 @@ namespace SAModManager
 	public partial class OneClickInstall : Window
 	{
 
+		private string urlPage;
 		private Uri url;
 		private GameBananaItem gbi;
 		private string author;
@@ -49,6 +50,7 @@ namespace SAModManager
 
 			try
 			{
+
 				itemType = fields["gb_itemtype"];
 				itemId = long.Parse(fields["gb_itemid"]);
 			}
@@ -65,6 +67,7 @@ namespace SAModManager
 
 			try
 			{
+				urlPage = "https://gamebanana.com/mods/" + itemId.ToString();
 				gbi = GameBananaItem.Load(itemType, itemId);
 
 				if (gbi is null)
@@ -73,6 +76,7 @@ namespace SAModManager
 				}
 
 				TextModName.Text = gbi.Name;
+
 				string color = GetNewColor("Colors.Text");
 				TextModDescription.Text = "<p style=\"color:" + color + ";\">" + gbi.Body + "</p>";
 
@@ -194,7 +198,10 @@ namespace SAModManager
 
 		private void OpenGB_Click(object sender, RoutedEventArgs e)
 		{
-			var ps = new ProcessStartInfo("https://github.com/X-Hax/sadx-mod-loader")
+			if (string.IsNullOrEmpty(urlPage))
+				return;
+
+			var ps = new ProcessStartInfo(urlPage)
 			{
 				UseShellExecute = true,
 				Verb = "open"
@@ -250,7 +257,7 @@ namespace SAModManager
 				new ModDownloadWPF(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
 			};
 
-			new Updater.ModDownloadDialogWPF(updates, updatePath).ShowDialog();
+			new ModDownloadDialogWPF(updates, updatePath).ShowDialog();
 
 
 			await Task.Delay(2000);
