@@ -840,7 +840,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
-                    <Border Margin="4,4,4,4" Grid.ColumnSpan="3" Grid.RowSpan="3" BorderThickness="4"/>
+                    <Border Margin="4,4,4,4" CornerRadius="2" Grid.ColumnSpan="3" Grid.RowSpan="3" BorderThickness="4" BorderBrush="{DynamicResource Borders.Brushes.Border}"/>
 
                     <Grid Grid.Column="1" Grid.Row="1">
                         <Grid.ColumnDefinitions>
