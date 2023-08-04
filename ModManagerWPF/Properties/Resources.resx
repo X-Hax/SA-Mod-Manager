@@ -119,10 +119,13 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="bass" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bass.7z;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\bass.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="d3d8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\d3d8.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SADXModLoader" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SADXModLoader.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="SDL2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SDL2.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

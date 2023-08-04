@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Reflection;
 using SevenZipExtractor;
+using System.IO.Compression;
 
 namespace SAModManager
 {
@@ -109,7 +110,7 @@ namespace SAModManager
 
 					if (dialog.isYes)
 					{
-		
+
 						Uri uri = new(VCURLs[i] + "\r\n");
 						var DL = new GenericDownloadDialog(uri, "Visual C++", "vc_redist.x86.exe");
 						DL.StartDL();
@@ -122,7 +123,7 @@ namespace SAModManager
 							Verb = "runas"
 						}).WaitForExitAsync();
 
-						
+
 						return false;
 					}
 
@@ -165,18 +166,6 @@ namespace SAModManager
 						return true;
 				}
 
-				if (!File.Exists(Path.Combine(bassFullPath + "bass.dll")))
-				{ 
-					//extract BASS files if it doesn't exist, pull them from resources
-					using (Stream resourceStream = new MemoryStream(Properties.Resources.bass))
-					{
-						using (ArchiveFile archiveFile = new(resourceStream))
-						{
-							archiveFile.Extract(bassFullPath, true);
-						}
-					}
-				}
-
 				if (!Directory.Exists(SDLFullPath))
 				{
 					Directory.CreateDirectory(SDLFullPath);
@@ -187,6 +176,21 @@ namespace SAModManager
 				{
 					Util.ExtractEmbeddedDLL(Properties.Resources.SDL2, "SDL2", SDLFullPath);
 				}
+
+
+				if (!File.Exists(Path.Combine(bassFullPath + "bass.dll")))
+				{
+					//extract BASS files if it doesn't exist, pull them from resources
+
+					using (MemoryStream zipStream = new(Properties.Resources.bass))
+					{
+						using (ZipArchive archive = new(zipStream, ZipArchiveMode.Read))
+						{
+							archive.ExtractToDirectory(bassFullPath);
+						}
+					}
+				}
+
 
 				await Task.Delay(500);
 			}
@@ -224,7 +228,7 @@ namespace SAModManager
 					return false;
 
 				ClearTempFolder();
-	
+
 				return true;
 			}
 
