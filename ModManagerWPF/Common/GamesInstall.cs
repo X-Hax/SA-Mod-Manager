@@ -6,12 +6,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 
 namespace SAModManager.Common
 {
@@ -123,7 +120,7 @@ namespace SAModManager.Common
 				await dl.StartDL();
 				dl.ShowDialog();
 
-				if (dl.DialogResult == false)
+				if (dl.done == false)
 				{
 					await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
 				}
@@ -144,32 +141,39 @@ namespace SAModManager.Common
 			foreach (var dependency in game.Dependencies)
 			{
 				if (!DependencyInstalled(dependency))
-				{
+				{					
 					try
 					{
 						Uri uri = new(dependency.URL + "\r\n");
 						var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), false, dependency.path, true);
+						dl.Show();
 						await dl.StartDL();
-						dl.ShowDialog();
 
-						if (dl.DialogResult == false)
+						if (dl.done == false)
+						{
+							await Task.Delay(500);
+						}
+
+						if (dl.done == false)
 						{
 							await InstallDependenciesOffline(dependency);
 						}
 						else
-						{
+						{			
 							string dest = Path.Combine(dependency.path, dependency.name);
+							string fullPath = dest + ".zip";
 							if (dependency.format == Format.zip)
 							{
-								using (ArchiveFile archiveFile = new(dest))
+								using (ArchiveFile archiveFile = new(fullPath))
 								{
 									archiveFile.Extract(dependency.path);
 								}
 
-								File.Delete(dest);
+								File.Delete(fullPath);
 							}
 
 						}
+						dl.Close();
 					}
 					catch
 					{
@@ -240,7 +244,7 @@ namespace SAModManager.Common
 				await DL.StartDL();
 				DL.ShowDialog();
 
-				if (DL.DialogResult == true)
+				if (DL.done == true)
 				{
 					using (ArchiveFile archiveFile = new(zipPath))
 					{

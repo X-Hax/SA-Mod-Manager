@@ -22,29 +22,46 @@ namespace SAModManager
 	{
 		private static double multiplier;
 
-		public static void MoveFile(string origin, string dest, bool override_ = false)
+		public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
 		{
 			try
 			{
-				File.Move(origin, dest, override_);
+				await Task.Run(() => File.Move(sourceFile, destinationFile, overwrite));
+				return true; // File move completed successfully
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"File move failed: {ex.Message}");
+				return false; // File move failed
+			}
+		}
+
+		public static async Task<bool> CopyFileAsync(string sourceFile, string destinationFile, bool overwrite)
+		{
+			try
+			{
+				await Task.Run(() => File.Copy(sourceFile, destinationFile, overwrite));
+				return true; // File copy completed successfully
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"File copy failed: {ex.Message}");
+				return false; // File copy failed
+			}
+		}
+
+		public static async Task MoveFile(string origin, string dest, bool overwrite = false)
+		{
+			try
+			{
+				await MoveFileAsync(origin, dest, overwrite);
 			}
 			catch //File.Move doesn't work if hard drive destination is different from source, copy doesn't have this problem
 			{
-				int failSafe = 0;
-				File.Copy(origin, dest, override_);
-
-				do
+				if (await CopyFileAsync(origin, dest, overwrite))
 				{
-					if (failSafe == 10)
-					{
-						return;
-					}
-					Thread.Sleep(1000);
-					failSafe++;
-				} while (!File.Exists(dest));
-
-
-				File.Delete(origin);
+					File.Delete(origin);
+				}
 			}
 		}
 
@@ -173,32 +190,32 @@ namespace SAModManager
 
 			return true;
 		}
-	
 
-	public async static Task<string> GetSADXGamePath()
-	{
-		//Look for the steam version..
-		var fullPath = Steam.GetGamePath(GamesInstall.SonicAdventure, true);
 
-		if (Directory.Exists(fullPath))
+		public async static Task<string> GetSADXGamePath()
 		{
-			//if steam version is found, but not converted to 2004, ask the user to convert it.
-			if (File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[1])) && !File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[0])))
+			//Look for the steam version..
+			var fullPath = Steam.GetGamePath(GamesInstall.SonicAdventure, true);
+
+			if (Directory.Exists(fullPath))
 			{
-				var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-				msg.ShowDialog();
-
-				if (msg.isYes)
+				//if steam version is found, but not converted to 2004, ask the user to convert it.
+				if (File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[1])) && !File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[0])))
 				{
-					await GamesInstall.GetSADXModInstaller();
+					var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+					msg.ShowDialog();
 
+					if (msg.isYes)
+					{
+						await GamesInstall.GetSADXModInstaller();
+
+					}
+
+					return null;
 				}
-
-				return null;
 			}
-		}
 
-		return fullPath;
+			return fullPath;
+		}
 	}
-}
 }

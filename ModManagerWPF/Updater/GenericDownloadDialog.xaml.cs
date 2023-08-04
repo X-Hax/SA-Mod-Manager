@@ -16,10 +16,11 @@ namespace SAModManager.Updater
 	{
 		private readonly Uri uri;
 		private readonly string fileName;
-		private string dest = "SATemp";
+		private string dest = ".SATemp";
 		private bool defaultFolder = false;
 		private readonly CancellationTokenSource tokenSource = new();
 		private bool install = false;
+		public bool done = false;
 		private bool silent = false;
 
 		public GenericDownloadDialog(Uri uri, string title, string fileName, bool defaultFolder = false, string dest = null, bool silent = false, bool install = false)
@@ -40,6 +41,10 @@ namespace SAModManager.Updater
 			if (!string.IsNullOrEmpty(dest))
 			{
 				this.dest = dest;
+			}
+			else if (!defaultFolder)
+			{
+				Directory.CreateDirectory(dest);
 			}
 
 			if (!defaultFolder)
@@ -67,32 +72,31 @@ namespace SAModManager.Updater
 		{
 			Application.Current.Dispatcher.Invoke(() =>
 			{
-				DLInfo.Text = install ? "Install Completed" : "Download completed.";
+				DLInfo.Text = install ? "Install Completed" : "Download completed." +"\n Copying files...";
 
 			});
 
-			await Task.Delay(1500);
 
-			Application.Current.Dispatcher.Invoke(() =>
+			await Task.Delay(200);
+
+			await Application.Current.Dispatcher.Invoke(async () =>
 			{
 				if (File.Exists(fileName) && !defaultFolder && dest is not null)
 				{
-					Util.MoveFile(fileName, Path.Combine(dest, fileName), true);
+					await Util.MoveFile(fileName, Path.Combine(dest, fileName), true);
 				}
 
-				this.DialogResult = true;
+				done = true;
 			});
-
-			await Task.Delay(1500);
 
 
 			Application.Current.Dispatcher.Invoke(() =>
 			{
-
-				if (dest is not null)
+				if (dest is not null && File.Exists(fileName) && !defaultFolder)
 					File.Delete(fileName);
 
-				this.Close();
+				if (!silent)
+					this.Close();
 			});
 		}
 
@@ -107,11 +111,14 @@ namespace SAModManager.Updater
 
 				bool retry = false;
 
+				if (silent)
+					Hide();
+
 				do
 				{
 					try
 					{
-						await Task.Run(() => client.DownloadFileAsync(this.uri, fileName));
+						await Task.Run(() => client.DownloadFileTaskAsync(this.uri, fileName));
 					}
 					catch (AggregateException ae)
 					{
@@ -127,7 +134,6 @@ namespace SAModManager.Updater
 						});
 					}
 				} while (retry == true);
-
 
 			}
 		}

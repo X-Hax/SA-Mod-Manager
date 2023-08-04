@@ -43,9 +43,9 @@ namespace SAModManager
 		private static string updatePath = "mods/.updates";
 		public static string loaderinipath = "mods/SADXModLoader.ini";
 		private string sadxIni = "sonicDX.ini";
-		string datadllorigpath = "system/CHRMODELS_orig.dll";
+		string chrmdllorigpath = "system/CHRMODELS_orig.dll";
 		string loaderdllpath = "mods/SADXModLoader.dll";
-		public string datadllpath = "system/CHRMODELS.dll";
+		public string chrmdllpath = "system/CHRMODELS.dll";
 		const string exeName = "sonic.exe";
 
 		string gamePath = string.Empty;
@@ -86,7 +86,7 @@ namespace SAModManager
 		public MainWindow(string[] args = null)
 		{
 			InitializeComponent();
-	
+
 			graphics = new Game.Graphics(ref comboScreen);
 			SetGamePath(Settings.Default.GamePath);
 			UpdatePathsStringsInfo();
@@ -109,14 +109,9 @@ namespace SAModManager
 
 		private void UpdateDLLData()
 		{
-			if (File.Exists("SADXModLoader.dll") && Directory.Exists(GamesInstall.SonicAdventure.modDirectory))
+			if (File.Exists(loaderdllpath) && File.Exists(chrmdllorigpath))
 			{
-				File.Copy("SADXModLoader.dll", GamesInstall.SonicAdventure.modDirectory, true);
-			}
-
-			if (File.Exists(loaderdllpath) && File.Exists(datadllorigpath))
-			{
-				File.Copy(loaderdllpath, datadllpath, true);
+				File.Copy(loaderdllpath, chrmdllpath, true);
 			}
 		}
 
@@ -151,16 +146,16 @@ namespace SAModManager
 				File.Delete(args[1] + ".7z");
 				Directory.Delete(args[1], true);
 
-				if (File.Exists(datadllorigpath))
+				if (File.Exists(chrmdllorigpath))
 				{
 					using (MD5 md5 = MD5.Create())
 					{
 						byte[] hash1 = md5.ComputeHash(File.ReadAllBytes(loaderdllpath));
-						byte[] hash2 = md5.ComputeHash(File.ReadAllBytes(datadllpath));
+						byte[] hash2 = md5.ComputeHash(File.ReadAllBytes(chrmdllpath));
 
 						if (!hash1.SequenceEqual(hash2))
 						{
-							File.Copy(loaderdllpath, datadllpath, true);
+							File.Copy(loaderdllpath, chrmdllpath, true);
 						}
 					}
 				}
@@ -259,9 +254,9 @@ namespace SAModManager
 
 				modDirectory = Path.Combine(gamePath, "mods");
 				loaderinipath = Path.Combine(gamePath, "mods/SADXModLoader.ini");
-				datadllorigpath = Path.Combine(gamePath, "system/CHRMODELS_orig.dll");
+				chrmdllorigpath = Path.Combine(gamePath, "system/CHRMODELS_orig.dll");
 				loaderdllpath = Path.Combine(gamePath, "mods/SADXModLoader.dll");
-				datadllpath = Path.Combine(gamePath, "system/CHRMODELS.dll");
+				chrmdllpath = Path.Combine(gamePath, "system/CHRMODELS.dll");
 				updatePath = Path.Combine(gamePath, "mods/.updates");
 				sadxIni = Path.Combine(gamePath, "sonicDX.ini");
 
@@ -281,7 +276,7 @@ namespace SAModManager
 				gamePath = string.Empty;
 			}
 
-			installed = File.Exists(datadllorigpath);
+			installed = File.Exists(chrmdllorigpath);
 			UpdateBtnInstallLoader_State();
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
 			Update_PlayButtonsState();
@@ -686,7 +681,7 @@ namespace SAModManager
 			{
 
 				var error = Lang.GetString("MessageWindow.Errors.ModFailedVerif0")
-						+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: " 
+						+ string.Join("\n", failed.Select(x => $"{x.Item2.Name}: "
 						+ Util.GetFileCountString(x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged), "MessageWindow.Errors.ModFailedVerif1")))
 						+ Lang.GetString("MessageWindow.Errors.ModFailedVerif2");
 
@@ -1034,7 +1029,7 @@ namespace SAModManager
 			{
 				if (File.Exists("SADXModLoader.dll"))
 				{
-					Util.MoveFile("SADXModLoader.dll", loaderdllpath);
+					await Util.MoveFile("SADXModLoader.dll", loaderdllpath);
 				}
 				else
 				{
@@ -1233,11 +1228,11 @@ namespace SAModManager
 					title = "GitHub Rate Limit Exceeded";
 				}
 
-				foreach (var error in Errors) 
+				foreach (var error in Errors)
 				{
 					msgError += "\n" + error;
 				}
-				
+
 				new MessageWindow(title, msgError, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 			}
 
@@ -1406,7 +1401,7 @@ namespace SAModManager
 					if (pathManagerKey != null)
 					{
 						var managerPath = pathManagerKey.GetValue("").ToString();
-						
+
 						if (managerPath.ToLower().Contains(Environment.ProcessPath.ToLower()))
 						{
 							btnOneClick.IsEnabled = false;
@@ -2200,7 +2195,7 @@ namespace SAModManager
 			await DL.StartDL();
 			DL.ShowDialog();
 
-			if (DL.DialogResult == true)
+			if (DL.done == true)
 			{
 				try
 				{
@@ -2699,6 +2694,8 @@ namespace SAModManager
 				{
 					new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				}
+
+				Update_PlayButtonsState();
 			}
 		}
 
@@ -2745,30 +2742,39 @@ namespace SAModManager
 
 		private async Task InstallLoader(bool force = false)
 		{
-			if (installed && force)
-			{
-				File.Delete(datadllpath);
-				Util.MoveFile(datadllorigpath, datadllpath);
 
+			if (force)
 				installed = false;
+
+			if (!File.Exists(loaderdllpath))
+			{
+				await GamesInstall.InstallLoader(GamesInstall.SonicAdventure);
+
+				if (File.Exists(chrmdllorigpath) && installed)
+				{
+					File.Copy(loaderdllpath, chrmdllpath, true);
+					UpdateBtnInstallLoader_State();
+					return;
+				}		
 			}
 
-			if (installed)
+			SaveAndPlayButton.IsEnabled = false;
+			btnTSLaunch.IsEnabled = false;
+
+			if (installed && File.Exists(chrmdllorigpath))
 			{
-				File.Delete(datadllpath);
-				Util.MoveFile(datadllorigpath, datadllpath);
+				File.Delete(chrmdllpath);
+				await Util.MoveFile(chrmdllorigpath, chrmdllpath);
+
 			}
 			else
 			{
-				File.Move(datadllpath, datadllorigpath);
-
-				if (File.Exists(loaderdllpath))
-					File.Copy(loaderdllpath, datadllpath);
+				File.Move(chrmdllpath, chrmdllorigpath);
+				File.Copy(loaderdllpath, chrmdllpath);
 			}
 
 			installed = !installed;
 			UpdateBtnInstallLoader_State();
-			Update_PlayButtonsState();
 		}
 
 		private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
@@ -2781,13 +2787,14 @@ namespace SAModManager
 
 			await InstallLoader();
 			btnBrowseGameDir.IsEnabled = false;
+
 			if (installed)
 			{
 				await GamesInstall.InstallLoader(GamesInstall.SonicAdventure);
 				await GamesInstall.CheckAndInstallDependencies(GamesInstall.SonicAdventure);
 			}
-				
-			await Task.Delay(250);
+
+			Update_PlayButtonsState();
 			btnBrowseGameDir.IsEnabled = true;
 			Save();
 		}

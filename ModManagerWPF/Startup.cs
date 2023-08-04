@@ -89,12 +89,15 @@ namespace SAModManager
 			await DL.StartDL();
 			DL.ShowDialog();
 
-			// Asynchronous operation using async/await
-			await Process.Start(new ProcessStartInfo(Path.Combine("SATemp", "NET7Install.exe"), "/install /passive /norestart")
+			if (DL.done)
 			{
-				UseShellExecute = true,
-				Verb = "runas"
-			}).WaitForExitAsync();
+				// Asynchronous operation using async/await
+				await Process.Start(new ProcessStartInfo(Path.Combine("SATemp", "NET7Install.exe"), "/install /passive /norestart")
+				{
+					UseShellExecute = true,
+					Verb = "runas"
+				}).WaitForExitAsync();
+			}
 		}
 
 		private static async Task<bool> VC_DependenciesCheck()
@@ -118,12 +121,15 @@ namespace SAModManager
 						await DL.StartDL();
 						DL.ShowDialog();
 
-						// Asynchronous operation using async/await
-						await Process.Start(new ProcessStartInfo(Path.Combine("SATemp", "vc_redist.x86.exe"), "/install /passive /norestart")
+						if (DL.done)
 						{
-							UseShellExecute = true,
-							Verb = "runas"
-						}).WaitForExitAsync();
+							// Asynchronous operation using async/await
+							await Process.Start(new ProcessStartInfo(Path.Combine("SATemp", "vc_redist.x86.exe"), "/install /passive /norestart")
+							{
+								UseShellExecute = true,
+								Verb = "runas"
+							}).WaitForExitAsync();
+						}
 
 
 						return false;
@@ -167,9 +173,9 @@ namespace SAModManager
 		{
 			try
 			{
-				if (Directory.Exists("SATemp"))
+				if (Directory.Exists(".SATemp"))
 				{
-					Directory.Delete("SATemp", true);
+					Directory.Delete(".SATemp", true);
 				}
 			}
 			catch { }
