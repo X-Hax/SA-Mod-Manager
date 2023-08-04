@@ -109,9 +109,9 @@ namespace SAModManager
 
 		private void UpdateDLLData()
 		{
-			if (File.Exists("SADXModLoader.dll"))
+			if (File.Exists("SADXModLoader.dll") && Directory.Exists(GamesInstall.SonicAdventure.modDirectory))
 			{
-				File.Copy("SADXModLoader.dll", loaderdllpath, true);
+				File.Copy("SADXModLoader.dll", GamesInstall.SonicAdventure.modDirectory, true);
 			}
 
 			if (File.Exists(loaderdllpath) && File.Exists(datadllorigpath))
@@ -256,6 +256,7 @@ namespace SAModManager
 		{
 			if (!string.IsNullOrEmpty(gamePath) && File.Exists(Path.Combine(gamePath, exeName)))
 			{
+
 				modDirectory = Path.Combine(gamePath, "mods");
 				loaderinipath = Path.Combine(gamePath, "mods/SADXModLoader.ini");
 				datadllorigpath = Path.Combine(gamePath, "system/CHRMODELS_orig.dll");
@@ -270,6 +271,10 @@ namespace SAModManager
 				patchdatpath = Path.Combine(gamePath, "mods/Patches.dat");
 
 				d3d8to9InstalledDLLName = Path.Combine(gamePath, "d3d8.dll");
+				d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
+
+				GamesInstall.SonicAdventure.gameDirectory = gamePath;
+				GamesInstall.SonicAdventure.modDirectory = Path.Combine(gamePath, "mods");
 			}
 			else
 			{
@@ -1023,7 +1028,7 @@ namespace SAModManager
 
 		#endregion
 
-		private void SetLoaderFile()
+		private async Task SetLoaderFile()
 		{
 			if (!File.Exists(loaderdllpath))
 			{
@@ -1033,7 +1038,7 @@ namespace SAModManager
 				}
 				else
 				{
-					new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.MissingLoaderDLL"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+					await GamesInstall.InstallLoader(GamesInstall.SonicAdventure);
 				}
 			}
 		}
@@ -2188,11 +2193,11 @@ namespace SAModManager
 		}
 
 		#region App Launcher
-		private void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
+		private async void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
 		{
 			Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
 			var DL = new GenericDownloadDialog(uri, "App Launcher", "AppLauncher.7z", true);
-			DL.StartDL();
+			await DL.StartDL();
 			DL.ShowDialog();
 
 			if (DL.DialogResult == true)
@@ -2666,7 +2671,7 @@ namespace SAModManager
 		#endregion
 
 		#region Manager Config
-		private void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
+		private async void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
 		{
 			var dialog = new System.Windows.Forms.FolderBrowserDialog();
 
@@ -2683,9 +2688,12 @@ namespace SAModManager
 					SetGamePath(GamePath);
 					Properties.Settings.Default.GamePath = gamePath;
 					UpdatePathsStringsInfo();
+					if (File.Exists(loaderinipath))
+						loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath);
 					Refresh();
-					SetLoaderFile();
-					InstallLoader(true);
+					await SetLoaderFile();
+					await InstallLoader(true);
+					await GamesInstall.CheckAndInstallDependencies(GamesInstall.SonicAdventure);
 				}
 				else
 				{
@@ -2735,7 +2743,7 @@ namespace SAModManager
 				imgInstall.Source = Icon;
 		}
 
-		private void InstallLoader(bool force = false)
+		private async Task InstallLoader(bool force = false)
 		{
 			if (installed && force)
 			{
@@ -2771,11 +2779,17 @@ namespace SAModManager
 				return;
 			}
 
-			InstallLoader();
+			await InstallLoader();
 			btnBrowseGameDir.IsEnabled = false;
-			Save();
-			await Task.Delay(2000);
+			if (installed)
+			{
+				await GamesInstall.InstallLoader(GamesInstall.SonicAdventure);
+				await GamesInstall.CheckAndInstallDependencies(GamesInstall.SonicAdventure);
+			}
+				
+			await Task.Delay(250);
 			btnBrowseGameDir.IsEnabled = true;
+			Save();
 		}
 
 		private void btnSource_Click(object sender, RoutedEventArgs e)

@@ -6,10 +6,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
 namespace SAModManager.Common
 {
@@ -19,15 +21,204 @@ namespace SAModManager.Common
 		public List<string> exeList { get; set; } //only because SADX has multiple exe names due to different versions
 		public string exeName;
 		public string gameDirectory;
+		public string modDirectory;
+		public List<Dependencies> Dependencies { get; set; }
+		public Loader loader { get; set; }
+	}
+
+	public enum Format
+	{
+		zip,
+		dll
+	}
+
+	public class Dependencies
+	{
+		public string name;
+		public byte[] data;
+		public Format format;
+		public string path;
+		public string URL;
+	}
+
+	public class DependenciesInstall
+	{
+		public bool isDependencyInstalled(Game game)
+		{
+			if (game is null)
+				return false;
+
+			foreach (var dependency in game.Dependencies)
+			{
+				if (!Directory.Exists(dependency.path))
+					return false;
+			}
+
+			return true;
+		}
+	}
+
+	public class Loader
+	{
+		public string name;
+		public byte[] data;
+		public string URL;
 	}
 
 	public static class GamesInstall
 	{
+		private static bool DependencyInstalled(Dependencies dependency)
+		{
+			return File.Exists(Path.Combine(dependency.path, dependency.name + ".dll"));
+		}
+
+		public static async Task<bool> AllDependenciesInstalled(Game game)
+		{
+			foreach (var dependency in game.Dependencies)
+			{
+				if (!DependencyInstalled(dependency))
+					return false;
+			}
+
+			return true;
+		}
+
+		public static void SetDependencyPath()
+		{
+			foreach (var game in GetSupportedGames())
+			{
+				if (game is null)
+					continue;
+
+				foreach (var dependency in game.Dependencies)
+				{
+					dependency.path = Path.Combine(App.extLibPath, dependency.name);
+				}
+			}
+		}
+
+		private static async Task InstallDependenciesOffline(Dependencies dependency)
+		{
+			switch (dependency.format)
+			{
+				case Format.zip:
+					await Util.ExtractZipFromResource(dependency.data, dependency.path);
+					break;
+				case Format.dll:
+					await Util.ExtractEmbeddedDLL(dependency.data, dependency.name, dependency.path);
+					break;
+			}
+		}
+
+		public static async Task InstallLoader(Game game)
+		{
+			if (game is null)
+				return;
+
+			try
+			{
+				Uri uri = new(game.loader.URL + "\r\n");
+				var dl = new GenericDownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), false, game.modDirectory, false, true);
+			
+				await dl.StartDL();
+				dl.ShowDialog();
+
+				if (dl.DialogResult == false)
+				{
+					await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
+				}
+
+			}
+			catch
+			{
+				await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
+			}
+
+		}
+
+		public static async Task CheckAndInstallDependencies(Game game)
+		{
+			if (game is null)
+				return;
+
+			foreach (var dependency in game.Dependencies)
+			{
+				if (!DependencyInstalled(dependency))
+				{
+					try
+					{
+						Uri uri = new(dependency.URL + "\r\n");
+						var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), false, dependency.path, true);
+						await dl.StartDL();
+						dl.ShowDialog();
+
+						if (dl.DialogResult == false)
+						{
+							await InstallDependenciesOffline(dependency);
+						}
+						else
+						{
+							string dest = Path.Combine(dependency.path, dependency.name);
+							if (dependency.format == Format.zip)
+							{
+								using (ArchiveFile archiveFile = new(dest))
+								{
+									archiveFile.Extract(dependency.path);
+								}
+
+								File.Delete(dest);
+							}
+
+						}
+					}
+					catch
+					{
+						await InstallDependenciesOffline(dependency);
+					}
+				}
+			}
+		}
+
 		public static Game SonicAdventure = new()
 		{
 			gameName = "Sonic Adventure DX",
 			exeList = new() { "sonic.exe", "Sonic Adventure DX.exe" },
-			exeName = "sonic.exe"
+			exeName = "sonic.exe",
+
+			loader = new()
+			{
+				name = "SADXModLoader",
+				data = Properties.Resources.SADXModLoader,
+				URL = Properties.Resources.URL_SADX_DL
+			},
+
+			Dependencies = new()
+			{
+				new Dependencies()
+				{
+					name = "BASS",
+					data = Properties.Resources.bass,
+					format = Format.zip,
+					URL = Properties.Resources.URL_BASS,
+				},
+
+				new Dependencies()
+				{
+					name = "SDL2",
+					data = Properties.Resources.SDL2,
+					format = Format.dll,
+					URL = Properties.Resources.URL_SDL
+
+				},
+
+				new Dependencies()
+				{
+					name = "D3D8M",
+					data = Properties.Resources.SDL2,
+					format = Format.dll,
+					URL = Properties.Resources.URL_D3D8M,
+				},
+			},
 		};
 
 		public static IEnumerable<Game> GetSupportedGames()
@@ -45,7 +236,8 @@ namespace SAModManager.Common
 				Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/offline/sadx_setup_full.zip" + "\r\n");
 
 				var DL = new GenericDownloadDialog(uri, "SADX Mod Installer (Steam to 2004)", "sadx_setup_full.zip");
-				DL.StartDL();
+			
+				await DL.StartDL();
 				DL.ShowDialog();
 
 				if (DL.DialogResult == true)
