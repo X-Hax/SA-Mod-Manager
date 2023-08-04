@@ -12,7 +12,6 @@ namespace SAModManager.Game
 		Low
 	}
 
-
 	public class GameConfig
 	{
 		[IniName("framerate")]
