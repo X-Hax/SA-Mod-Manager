@@ -25,7 +25,8 @@ namespace SAModManager
 	{
 		private const string pipeName = "sa-mod-manager";
 		private const string protocol = "sadxmm:";
-		public static string gitVersion { get; set; }	
+		public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
+		public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
 
 		private static readonly Mutex mutex = new(true, pipeName);
 		public static Updater.UriQueue UriQueue;

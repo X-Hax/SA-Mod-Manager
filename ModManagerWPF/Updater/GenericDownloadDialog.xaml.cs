@@ -16,19 +16,31 @@ namespace SAModManager.Updater
 	{
 		private readonly Uri uri;
 		private readonly string fileName;
-		private readonly string dest = "SATemp";
+		private string dest = "SATemp";
 		private bool defaultFolder = false;
 		private readonly CancellationTokenSource tokenSource = new();
+		private bool install = false;
+		private bool silent = false;
 
-		public GenericDownloadDialog(Uri uri, string title, string fileName, bool defaultFolder = false)
+		public GenericDownloadDialog(Uri uri, string title, string fileName, bool defaultFolder = false, string dest = null, bool silent = false, bool install = false)
 		{
 			InitializeComponent();
 
-			Title = "Download - " + title;
+			if (silent)
+				Hide();
+
+			Title = (!install ? "Download - " : "Install - ") + title;
 			DLInfo.Text += " " + title + "...";
 			this.fileName = fileName;
 			this.uri = uri;
 			this.defaultFolder = defaultFolder;
+			this.install = install;
+			this.silent = silent;
+
+			if (!string.IsNullOrEmpty(dest))
+			{
+				this.dest = dest;
+			}
 
 			if (!defaultFolder)
 			{
@@ -55,33 +67,44 @@ namespace SAModManager.Updater
 		{
 			Application.Current.Dispatcher.Invoke(() =>
 			{
-				DLInfo.Text = "Download completed.";
+				DLInfo.Text = install ? "Install Completed" : "Download completed.";
 
 			});
 
+			await Task.Delay(1500);
 
-			if (File.Exists(fileName) && !defaultFolder) 
-			{ 
-				File.Move(fileName, Path.Combine(dest, fileName));
-			}
-
-			await Task.Delay(3000);
 			Application.Current.Dispatcher.Invoke(() =>
 			{
-				DialogResult = true;
+				if (File.Exists(fileName) && !defaultFolder && dest is not null)
+				{
+					Util.MoveFile(fileName, Path.Combine(dest, fileName), true);
+				}
+
+				this.DialogResult = true;
+			});
+
+			await Task.Delay(1500);
+
+
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+
+				if (dest is not null)
+					File.Delete(fileName);
+
 				this.Close();
 			});
 		}
 
-		public async void StartDL()
+		public async Task StartDL()
 		{
-			
+
 			using (var client = new UpdaterWebClient())
 			{
 				CancellationToken token = tokenSource.Token;
 				client.DownloadProgressChanged += WebClient_DownloadProgressChanged;
 				client.DownloadFileCompleted += WebClient_DownloadFileCompleted;
-	
+
 				bool retry = false;
 
 				do

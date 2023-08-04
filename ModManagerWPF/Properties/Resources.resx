@@ -121,13 +121,25 @@
   <data name="bass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bass.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="d3d8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\d3d8.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="d3d8m" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\d3d8m.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="SADXModLoader" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SADXModLoader.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="SDL2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SDL2.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="URL_BASS" xml:space="preserve">
+    <value>https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/bass.zip</value>
+  </data>
+  <data name="URL_D3D8M" xml:space="preserve">
+    <value>https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/d3d8m.dll</value>
+  </data>
+  <data name="URL_SADX_DL" xml:space="preserve">
+    <value>https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/SADXModLoader.dll</value>
+  </data>
+  <data name="URL_SDL" xml:space="preserve">
+    <value>https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/SDL2.dll</value>
   </data>
 </root>

@@ -85,7 +85,8 @@ namespace SAModManager
 		private static async Task DownloadAndInstallAsync(Uri uri)
 		{
 			var DL = new GenericDownloadDialog(uri, "Net Core 7.0", "NET7Install.exe");
-			DL.StartDL();
+
+			await DL.StartDL();
 			DL.ShowDialog();
 
 			// Asynchronous operation using async/await
@@ -113,7 +114,8 @@ namespace SAModManager
 
 						Uri uri = new(VCURLs[i] + "\r\n");
 						var DL = new GenericDownloadDialog(uri, "Visual C++", "vc_redist.x86.exe");
-						DL.StartDL();
+
+						await DL.StartDL();
 						DL.ShowDialog();
 
 						// Asynchronous operation using async/await
@@ -136,63 +138,22 @@ namespace SAModManager
 
 		private static async Task<bool> UpdateDependenciesFolder()
 		{
-			string appDataLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-			string managerConfigFolderPath = Path.Combine(appDataLocalPath, "SAManager");
-			string configPath = Path.Combine(managerConfigFolderPath, "config.ini");
-			string extLibPath = Path.Combine(managerConfigFolderPath, "extlib");
-			string bassFullPath = Path.Combine(managerConfigFolderPath, Path.Combine(extLibPath, "BASS"));
-			string SDLFullPath = Path.Combine(managerConfigFolderPath, Path.Combine(extLibPath, "SDL2"));
-			bool bassAndSDL = (Directory.Exists(bassFullPath) && Directory.Exists(SDLFullPath));
+			string configPath = Path.Combine(App.ConfigFolder, "config.ini");
 
 			try
 			{
-				//look if dependencies are already in appData folder
-				if (bassAndSDL && File.Exists(configPath))
-				{
-					return true;
-				}
+				GamesInstall.SetDependencyPath();
 
-				if (!Directory.Exists(managerConfigFolderPath))
+				if (!Directory.Exists(App.ConfigFolder))
 				{
-					Directory.CreateDirectory(managerConfigFolderPath);
+					Directory.CreateDirectory(App.ConfigFolder);
 				}
 
 				if (!File.Exists(configPath)) //it's the first time the Mod Manager is launched, implement one click install.
 				{
 					await EnableOneClickInstall();
 					File.Create(configPath);
-
-					if (bassAndSDL)
-						return true;
 				}
-
-				if (!Directory.Exists(SDLFullPath))
-				{
-					Directory.CreateDirectory(SDLFullPath);
-				}
-
-				//extract SDL2 dll if it doesn't exist, pull it from resource
-				if (!File.Exists(Path.Combine(SDLFullPath + "SDL2.dll")))
-				{
-					Util.ExtractEmbeddedDLL(Properties.Resources.SDL2, "SDL2", SDLFullPath);
-				}
-
-
-				if (!File.Exists(Path.Combine(bassFullPath + "bass.dll")))
-				{
-					//extract BASS files if it doesn't exist, pull them from resources
-
-					using (MemoryStream zipStream = new(Properties.Resources.bass))
-					{
-						using (ZipArchive archive = new(zipStream, ZipArchiveMode.Read))
-						{
-							archive.ExtractToDirectory(bassFullPath);
-						}
-					}
-				}
-
-
-				await Task.Delay(500);
 			}
 			catch
 			{

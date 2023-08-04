@@ -14,6 +14,7 @@ using SAModManager.Common;
 using SAModManager.Updater;
 using System.Diagnostics;
 using SevenZipExtractor;
+using System.IO.Compression;
 
 namespace SAModManager
 {
@@ -21,16 +22,16 @@ namespace SAModManager
 	{
 		private static double multiplier;
 
-		public static void MoveFile(string origin, string dest)
+		public static void MoveFile(string origin, string dest, bool override_ = false)
 		{
 			try
 			{
-				File.Move(origin, dest);
+				File.Move(origin, dest, override_);
 			}
 			catch //File.Move doesn't work if hard drive destination is different from source, copy doesn't have this problem
 			{
 				int failSafe = 0;
-				File.Copy(origin, dest);
+				File.Copy(origin, dest, override_);
 
 				do
 				{
@@ -47,7 +48,7 @@ namespace SAModManager
 			}
 		}
 
-		public static void ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
+		public static async Task ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
 		{
 			// Get the resource stream from Properties.Resources
 			using (Stream resourceStream = new MemoryStream(resource))
@@ -63,6 +64,21 @@ namespace SAModManager
 					fileStream.Write(buffer, 0, buffer.Length);
 				}
 			}
+
+			await Task.Delay(100);
+		}
+
+		public static async Task ExtractZipFromResource(byte[] resource, string outputDirectory)
+		{
+			using (MemoryStream zipStream = new(resource))
+			{
+				using (ZipArchive archive = new(zipStream, ZipArchiveMode.Read))
+				{
+					archive.ExtractToDirectory(outputDirectory);
+				}
+			}
+
+			await Task.Delay(100);
 		}
 
 		public static void CopyFolder(string origin, string dest, bool dllCheck = false)
