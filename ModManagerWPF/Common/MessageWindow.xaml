@@ -76,8 +76,8 @@
 				<RowDefinition Height="30"/>
 			</Grid.RowDefinitions>
 
-			<Button x:Name="ButtonRight" Content="Cancel" Margin="0,5,0,5" Grid.Row="0" Grid.Column="2" Click="ButtonClick"/>
-			<Button x:Name="ButtonLeft" Content="OK" Grid.Row="1" Margin="0,5,0,5" Click="ButtonYes_Click"/>
+			<Button x:Name="ButtonRight" Content="Cancel" Margin="0,5,0,5" Grid.Row="0" Grid.Column="2"/>
+			<Button x:Name="ButtonLeft" Content="OK" Grid.Row="1" Margin="0,5,0,5"/>
 		</Grid>
     </Grid>
 </Window>

@@ -195,20 +195,32 @@ namespace SAModManager.Common
 				case Buttons.OK:
 					ButtonLeft.Visibility = Visibility.Hidden;
 					ButtonRight.Content = Lang.GetString("CommonStrings.OK");
+					ButtonRight.Click += ButtonYes_Click;
 					break;
 				case Buttons.OKCancel:
 					ButtonLeft.Content = Lang.GetString("CommonStrings.OK");
+					ButtonLeft.Click += ButtonYes_Click;
 					ButtonRight.Content = Lang.GetString("CommonStrings.Cancel");
+					ButtonRight.Click += ButtonClick;
 					break;
 				case Buttons.YesNo:
 					ButtonLeft.Content = Lang.GetString("CommonStrings.Yes");
+					ButtonLeft.Click += ButtonYes_Click;
 					ButtonRight.Content = Lang.GetString("CommonStrings.No");
+					ButtonRight.Click += ButtonClick;
 					break;
 				case Buttons.RetryCancel:
 					ButtonLeft.Content = Lang.GetString("CommonStrings.Retry");
+					ButtonLeft.Click += ButtonLeft_Click;
 					ButtonRight.Content = Lang.GetString("CommonStrings.Cancel");
+					ButtonRight.Click += ButtonClick;
 					break;
 			}
+		}
+
+		private void ButtonLeft_Click(object sender, RoutedEventArgs e)
+		{
+			throw new NotImplementedException();
 		}
 
 		private void SetupWindow(string messageText, string headerText, WindowType windowType, Image image)
