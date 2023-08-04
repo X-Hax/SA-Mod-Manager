@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using System.Reflection;
 using SevenZipExtractor;
 using System.IO.Compression;
+using System.Windows.Controls;
+using System.Windows.Data;
+using Octokit;
 
 namespace SAModManager
 {
@@ -100,6 +103,41 @@ namespace SAModManager
 			}
 		}
 
+		private static async Task SetLanguageFirstBoot()
+		{
+			ComboBox comboLanguage = new()
+			{
+				Name = "comboLanguageS",
+				DisplayMemberPath = ".",
+				SelectedIndex = 0,
+				SelectedItem = 0,
+				VerticalAlignment = System.Windows.VerticalAlignment.Center,
+				HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+				Margin = new(5, 0, 5, 0),
+			};
+
+			Binding itemsSourceBinding = new("LangList")
+			{
+				Source = App.Current
+			};
+			BindingOperations.SetBinding(comboLanguage, ComboBox.ItemsSourceProperty, itemsSourceBinding);
+			Binding selectedItemBinding = new("CurrentLang")
+			{
+				Source = App.Current
+			};
+			BindingOperations.SetBinding(comboLanguage, ComboBox.SelectedItemProperty, selectedItemBinding);
+			comboLanguage.SelectedIndex = 0;
+
+			var langMsg = new MessageWindow("Select a Language", "Please select a language to use.", comboLanguage, MessageWindow.Buttons.OK);
+			langMsg.ShowDialog();
+
+			if (langMsg.isOK == true)
+			{
+				App.SwitchLanguage();
+			}
+			await Task.Delay(20);
+		}
+
 		private static async Task<bool> VC_DependenciesCheck()
 		{
 			if (Environment.OSVersion.Platform >= PlatformID.Unix)
@@ -131,13 +169,11 @@ namespace SAModManager
 							}).WaitForExitAsync();
 						}
 
-
 						return false;
 					}
 
 				}
 			}
-
 
 			return true;
 		}
@@ -155,10 +191,12 @@ namespace SAModManager
 					Directory.CreateDirectory(App.ConfigFolder);
 				}
 
-				if (!File.Exists(configPath)) //it's the first time the Mod Manager is launched, implement one click install.
+				if (!File.Exists(configPath)) //If config page isn't found, assume this is the first boot.
 				{
-					await EnableOneClickInstall();
+					await EnableOneClickInstall(); 
 					File.Create(configPath);
+					await SetLanguageFirstBoot();
+				
 				}
 			}
 			catch
@@ -183,14 +221,14 @@ namespace SAModManager
 
 		public static async Task<bool> StartupCheck()
 		{
+			await UpdateDependenciesFolder();
+
 			Console.WriteLine("Checking dependencies...");
 
 			bool net7 = await Net7Check();
 
 			if (net7)
 			{
-				await UpdateDependenciesFolder();
-
 				if (await VC_DependenciesCheck() == false)
 					return false;
 

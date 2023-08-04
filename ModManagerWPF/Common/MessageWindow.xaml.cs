@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 
 namespace SAModManager.Common
@@ -73,7 +66,7 @@ namespace SAModManager.Common
 		/// Returns true when OK has been pressed.
 		/// </summary>
 		public bool isOK { get { return Accepted; } }
-		
+
 
 		/// <summary>
 		/// Constructs a MessageWindow using preset Icons.
@@ -84,7 +77,7 @@ namespace SAModManager.Common
 		/// <param name="button"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
-		public MessageWindow(string windowName, string ErrorText, WindowType type=WindowType.IconMessage, Icons icon=Icons.Caution, Buttons button=Buttons.OK, double width=40, double height=40, string headerText="")
+		public MessageWindow(string windowName, string ErrorText, WindowType type = WindowType.IconMessage, Icons icon = Icons.Caution, Buttons button = Buttons.OK, double width = 40, double height = 40, string headerText = "")
 		{
 			InitializeComponent();
 
@@ -108,7 +101,7 @@ namespace SAModManager.Common
 		/// <param name="button"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
-		public MessageWindow(string windowName, string messageText, Image image, WindowType type = WindowType.IconMessage, Buttons button=Buttons.OK, double width=40, double height=40, string headerText="")
+		public MessageWindow(string windowName, string messageText, Image image, WindowType type = WindowType.IconMessage, Buttons button = Buttons.OK, double width = 40, double height = 40, string headerText = "")
 		{
 			InitializeComponent();
 
@@ -116,6 +109,24 @@ namespace SAModManager.Common
 			image.Height = height;
 
 			InitializeMessageWindow(windowName, messageText, headerText, image, button, type);
+		}
+
+		public MessageWindow(string windowName, string messageText, UIElement list, Buttons button = Buttons.OK, double width = 40, double height = 40, string headerText = "")
+		{
+			InitializeComponent();
+
+			DrawingImage drawing = GetIcon(Icons.Information);
+			Image image = new()
+			{
+				Source = drawing,
+				Width = width,
+				Height = height
+			};
+
+			image.Width = width;
+			image.Height = height;
+			ExtraUIGrid.Children.Add(list);
+			InitializeMessageWindow(windowName, messageText, headerText, image, button, WindowType.IconMessage);
 		}
 
 		//add line break to avoid having a width way too big for the Message Window
@@ -132,7 +143,7 @@ namespace SAModManager.Common
 				int substringLength = Math.Min(max, remainingLength);
 				string substring = s.Substring(index, substringLength);
 
-				if (substringLength == max) 
+				if (substringLength == max)
 				{
 					int breakIndex = substring.LastIndexOfAny(new[] { ' ', '\n' }); //look for the next whitespace / line break
 
