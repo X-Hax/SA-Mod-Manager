@@ -178,7 +178,7 @@ namespace SAModManager
             if (string.IsNullOrEmpty(GitVersion)) //dev
                 Title = titleName + " " + "(Dev Build - " + Version + ")";
             else
-                Title = titleName + " " + "(" + Version + "- " +  GitVersion + ")";
+                Title = titleName + " " + "(" + Version + " - " +  GitVersion[..7] + ")";
         }
 
         private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
