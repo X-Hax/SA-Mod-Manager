@@ -42,7 +42,7 @@ jobs:
 
     - name: Publish WPF application
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: dotnet publish -c Release -f net7.0-windows
+      run: dotnet publish -p:PublishSingleFile=true -r win-x64 -c Release --self-contained false
       
     - uses: actions/upload-artifact@v3.1.2
       with:
