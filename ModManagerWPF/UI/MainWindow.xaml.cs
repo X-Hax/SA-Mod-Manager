@@ -38,7 +38,7 @@ namespace SAModManager
         public readonly string titleName = "SADX Mod Manager";
         private const string V = "1.0.0";
         private static string Version = V;
-        private static string GitVersion = string.Empty;
+        private static string GitVersion = Properties.Resources.Version.Trim();
         private static string updatePath = "mods/.updates";
         public static string loaderinipath = "mods/SADXModLoader.ini";
         private string sadxIni = "sonicDX.ini";
@@ -175,13 +175,15 @@ namespace SAModManager
 
         public void SetModManagerVersion()
         {
-            Title = titleName + " " + "(" + Version + "-" + GitVersion + ")";
-            Settings.Default.LastCommit = GitVersion;
+            if (string.IsNullOrEmpty(GitVersion)) //dev
+                Title = titleName + " " + "(Dev Build - " + Version + ")";
+            else
+                Title = titleName + " " + "(" + Version + "- " +  GitVersion + ")";
         }
 
-        private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
+        private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
         {
-            GitVersion = await GitHub.GetRecentCommit();
+
             SetModManagerVersion();
 
             if (!Directory.Exists(App.CurrentGame.modDirectory) || !installed)

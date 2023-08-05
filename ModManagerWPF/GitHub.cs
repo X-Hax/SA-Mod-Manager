@@ -52,7 +52,7 @@ namespace SAModManager
 
 		public static GitHubClient client = new(new ProductHeaderValue("sadx-mod-loader"));
 
-		public static string LastCommit = "";
+		public static string LastCommit = string.Empty;
 		public static async Task<Repository> GetRepo()
 		{
 			return await client.Repository.Get("x-hax", "sadx-mod-loader");
@@ -90,11 +90,10 @@ namespace SAModManager
 				}
 			}
 			catch
-			{
-				return LastCommit = Settings.Default.LastCommit;	
+			{	
 			}
 
-			return LastCommit = Settings.Default.LastCommit;
+			return LastCommit = string.Empty;
 		}
 	}
 }
