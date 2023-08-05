@@ -1,14 +1,22 @@
-# Sonic Adventure DX PC Mod Loader
-Version 3.7
+<h1>
+	<a href="#-------------------sa-mod-manager">
+	<img width="48" align="left" src="https://github.com/X-Hax/SA-Mod-Manager/blob/553a3d65d609fb7625f2abc0e6e1309c8776c32d/ModManagerWPF/Icons/SADXModManager_.png">
+	</a>
+	Sonic Adventure Mod Manager
+</h1>
 
-If you need any help, check the [SADX Modding wiki.](https://github.com/X-Hax/SADXModdingGuide/wiki/SADX-Troubleshooting-Guide)
+Version 1.0.0
+
 
 ## System Requirements
 
-To use SADX Mod Loader, you must have:
-* Sonic Adventure DX PC, 2004 version (US release)
+To use SA Mod Manager, you must have:
 * Windows 7 or later
-* .NET Desktop Runtime 7.0
+* [.NET Desktop Runtime 7.0](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.9-windows-x64-installer)
+
+## Supported Games
+* Sonic Adventure DX PC, 2004 version (US release, but If you have the Steam version, or a different region, you can convert it to 2004 US.)
+* Sonic Adventure 2 (Battle) PC (Support coming soon.)
 
 ## License
 
