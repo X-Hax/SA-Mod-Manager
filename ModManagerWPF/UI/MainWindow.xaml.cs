@@ -39,16 +39,13 @@ namespace SAModManager
 		private const string V = "1.0.0";
 		private static string Version = V;
 		private static string GitVersion = string.Empty;
-		public static string modDirectory = string.Empty;
 		private static string updatePath = "mods/.updates";
 		public static string loaderinipath = "mods/SADXModLoader.ini";
 		private string sadxIni = "sonicDX.ini";
 		string chrmdllorigpath = "system/CHRMODELS_orig.dll";
 		string loaderdllpath = "mods/SADXModLoader.dll";
 		public string chrmdllpath = "system/CHRMODELS.dll";
-		const string exeName = "sonic.exe";
 
-		string gamePath = string.Empty;
 		SADXLoaderInfo loaderini;
 		public Dictionary<string, SADXModInfo> mods = null;
 
@@ -119,13 +116,13 @@ namespace SAModManager
 		{
 			if (Directory.Exists(path))
 			{
-				gamePath = path;
+				App.CurrentGame.gameDirectory = path;
 			}
 			else
 			{
-				if (File.Exists(exeName)) //if current game path is wrong, check if the Mod Manager didn't get put in the game folder just in case.
+				if (File.Exists(App.CurrentGame.exeName)) //if current game path is wrong, check if the Mod Manager didn't get put in the game folder just in case.
 				{
-					gamePath = Directory.GetCurrentDirectory();
+                    App.CurrentGame.gameDirectory = Directory.GetCurrentDirectory();
 				}
 				else
 				{
@@ -133,7 +130,7 @@ namespace SAModManager
 					var fullPath = await Util.GetSADXGamePath();
 					if (fullPath is not null)
 					{
-						gamePath = fullPath;
+                        App.CurrentGame.gameDirectory = fullPath;
 					}
 				}
 			}
@@ -187,10 +184,10 @@ namespace SAModManager
 			GitVersion = await GitHub.GetRecentCommit();
 			SetModManagerVersion();
 
-			if (!Directory.Exists(modDirectory) || !installed)
+			if (!Directory.Exists(App.CurrentGame.modDirectory) || !installed)
 				return;
 
-			new OneClickInstall(updatePath, modDirectory);
+			new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
 
 			CheckForModUpdates();
 
@@ -249,31 +246,31 @@ namespace SAModManager
 
 		private void UpdatePathsStringsInfo()
 		{
-			if (!string.IsNullOrEmpty(gamePath) && File.Exists(Path.Combine(gamePath, exeName)))
+			if (!string.IsNullOrEmpty(App.CurrentGame.gameDirectory) && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
 			{
 
-				modDirectory = Path.Combine(gamePath, "mods");
-				loaderinipath = Path.Combine(gamePath, "mods/SADXModLoader.ini");
-				chrmdllorigpath = Path.Combine(gamePath, "system/CHRMODELS_orig.dll");
-				loaderdllpath = Path.Combine(gamePath, "mods/SADXModLoader.dll");
-				chrmdllpath = Path.Combine(gamePath, "system/CHRMODELS.dll");
-				updatePath = Path.Combine(gamePath, "mods/.updates");
-				sadxIni = Path.Combine(gamePath, "sonicDX.ini");
+                App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");
 
-				codelstpath = Path.Combine(gamePath, "mods/Codes.lst");
-				codexmlpath = Path.Combine(gamePath, "mods/Codes.xml");
-				codedatpath = Path.Combine(gamePath, "mods/Codes.dat");
-				patchdatpath = Path.Combine(gamePath, "mods/Patches.dat");
+				loaderinipath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.ini");
+				chrmdllorigpath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS_orig.dll");
+				loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.dll");
+				chrmdllpath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS.dll");
+				updatePath = Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates");
+				sadxIni = Path.Combine(App.CurrentGame.gameDirectory, "sonicDX.ini");
 
-				d3d8to9InstalledDLLName = Path.Combine(gamePath, "d3d8.dll");
+				codelstpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst");
+				codexmlpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.xml");
+				codedatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat");
+				patchdatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat");
+
+				d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
 				d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
 
-				GamesInstall.SonicAdventure.gameDirectory = gamePath;
-				GamesInstall.SonicAdventure.modDirectory = Path.Combine(gamePath, "mods");
+            
 			}
 			else
 			{
-				gamePath = string.Empty;
+				App.CurrentGame.gameDirectory = string.Empty;
 			}
 
 			installed = File.Exists(chrmdllorigpath);
@@ -284,7 +281,7 @@ namespace SAModManager
 
 		public async void Save()
 		{
-			if (!Directory.Exists(modDirectory))
+			if (!Directory.Exists(App.CurrentGame.modDirectory))
 				return;
 
 			loaderini.Mods.Clear();
@@ -298,7 +295,7 @@ namespace SAModManager
 				}
 			}
 
-			Properties.Settings.Default.GamePath = gamePath;
+			Properties.Settings.Default.GamePath = App.CurrentGame.gameDirectory;
 			loaderini.DebugConsole = (bool)checkEnableLogConsole.IsChecked;
 			loaderini.HorizontalResolution = txtResX.GetInt();
 			loaderini.VerticalResolution = txtResY.GetInt();
@@ -364,7 +361,7 @@ namespace SAModManager
 		{
 			comboLanguage.SelectedIndex = loaderini.Language;
 			comboThemes.SelectedIndex = loaderini.Theme;
-			textGameDir.Text = gamePath;
+			textGameDir.Text = App.CurrentGame.gameDirectory;
 
 			checkEnableLogConsole.IsChecked = loaderini.DebugConsole;
 
@@ -450,13 +447,13 @@ namespace SAModManager
 
 		private void StartGame()
 		{
-			if (string.IsNullOrEmpty(gamePath))
+			if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
 			{
 				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
-			string executablePath = loaderini.Mods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(gamePath, "sonic.exe");
+			string executablePath = loaderini.Mods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
 
 			string folderPath = Path.GetDirectoryName(executablePath);
 			Process.Start(new ProcessStartInfo(executablePath)
@@ -480,21 +477,21 @@ namespace SAModManager
 			ViewModel.Modsdata.Clear();
 			mods = new Dictionary<string, SADXModInfo>();
 
-			bool modFolderExist = Directory.Exists(modDirectory);
+			bool modFolderExist = Directory.Exists(App.CurrentGame.modDirectory);
 
 			//if mod folder doesn't exist and game path hasn't been set, give up the process of loading mods.
 
-			if (!modFolderExist && string.IsNullOrEmpty(gamePath))
+			if (!modFolderExist && string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
 			{
 				UpdateMainButtonsState();
 				return;
 			}
-			else if (Directory.Exists(gamePath) && !modFolderExist)
+			else if (Directory.Exists(App.CurrentGame.gameDirectory) && !modFolderExist)
 			{
-				Directory.CreateDirectory(modDirectory);
+				Directory.CreateDirectory(App.CurrentGame.modDirectory);
 			}
 
-			if (File.Exists(Path.Combine(modDirectory, "mod.ini")))
+			if (File.Exists(Path.Combine(App.CurrentGame.modDirectory, "mod.ini")))
 			{
 				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ModWithoutFolder0") + Lang.GetString("MessageWindow.Errors.ModWithoutFolder1") +
 							Lang.GetString("MessageWindow.Errors.ModWithoutFolder2"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error,
@@ -505,10 +502,10 @@ namespace SAModManager
 			}
 
 			//browse the mods folder and get each mod name by their ini file
-			foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modDirectory)))
+			foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(App.CurrentGame.modDirectory)))
 			{
 				SADXModInfo mod = IniSerializer.Deserialize<SADXModInfo>(filename);
-				mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(modDirectory.Length + 1), mod);
+				mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(App.CurrentGame.modDirectory.Length + 1), mod);
 			}
 
 
@@ -536,7 +533,7 @@ namespace SAModManager
 					//if a mod has a code, add it to the list
 					if (!string.IsNullOrEmpty(inf.Codes))
 					{
-						var t = CodeList.Load(Path.Combine(Path.Combine(modDirectory, mod), inf.Codes));
+						var t = CodeList.Load(Path.Combine(Path.Combine(App.CurrentGame.modDirectory, mod), inf.Codes));
 						codes.AddRange(t.Codes);
 
 						foreach (var code in t.Codes)
@@ -632,7 +629,7 @@ namespace SAModManager
 
 			foreach (var mod in selectedMods.Where(mod => !string.IsNullOrEmpty(mod.Tag)))
 			{
-				string fullPath = Path.Combine(modDirectory, mod.Tag);
+				string fullPath = Path.Combine(App.CurrentGame.modDirectory, mod.Tag);
 				if (Directory.Exists(fullPath))
 					Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });
 			}
@@ -648,7 +645,7 @@ namespace SAModManager
 
 			List<Tuple<string, ModInfo>> items = listMods.SelectedItems.Cast<ModData>()
 				.Select(x => (string)x.Tag)
-				.Where(x => File.Exists(Path.Combine(modDirectory, x, "mod.manifest")))
+				.Where(x => File.Exists(Path.Combine(App.CurrentGame.modDirectory, x, "mod.manifest")))
 				.Select(x => new Tuple<string, ModInfo>(x, mods[x]))
 				.ToList();
 
@@ -659,7 +656,7 @@ namespace SAModManager
 				return;
 			}
 
-			var progress = new Updater.VerifyModDialog(items, modDirectory);
+			var progress = new Updater.VerifyModDialog(items, App.CurrentGame.modDirectory);
 
 			progress.ShowDialog();
 
@@ -750,7 +747,7 @@ namespace SAModManager
 					{
 						var item = (ModData)selectedItem;
 
-						string fullPath = Path.Combine(modDirectory, item.Tag);
+						string fullPath = Path.Combine(App.CurrentGame.modDirectory, item.Tag);
 
 						if (Directory.Exists(fullPath))
 						{
@@ -771,7 +768,7 @@ namespace SAModManager
 			if (mod is not null)
 			{
 				SADXModInfo modInfo = mods[mod.Tag];
-				string fullPath = Path.Combine(modDirectory, mod.Tag);
+				string fullPath = Path.Combine(App.CurrentGame.modDirectory, mod.Tag);
 				Common.ModConfig config = new(modInfo.Name, fullPath);
 				config.ShowDialog();
 			}
@@ -801,7 +798,7 @@ namespace SAModManager
 					if (result_ == System.Windows.Forms.DialogResult.OK)
 					{
 						string[] sFileName = archiveFile.FileNames;
-						form.InstallMod(sFileName, modDirectory);
+						form.InstallMod(sFileName, App.CurrentGame.modDirectory);
 
 					}
 					break;
@@ -814,7 +811,7 @@ namespace SAModManager
 					{
 						string[] FileName = { newModFolder.SelectedPath };
 
-						form.InstallMod(FileName, modDirectory);
+						form.InstallMod(FileName, App.CurrentGame.modDirectory);
 					}
 					break;
 				case (int)InstallModOptions.Type.NewMod: //create mod
@@ -887,7 +884,7 @@ namespace SAModManager
 				btnMoveDown.IsEnabled = listMods.Items.IndexOf(mod) < listMods.Items.Count - 1;
 				btnMoveBottom.IsEnabled = listMods.Items.IndexOf(mod) != listMods.Items.Count - 1;
 
-				ConfigureModBtn.IsEnabled = File.Exists(Path.Combine(modDirectory, mod.Tag, "configschema.xml"));
+				ConfigureModBtn.IsEnabled = File.Exists(Path.Combine(App.CurrentGame.modDirectory, mod.Tag, "configschema.xml"));
 				ConfigureModBtn_UpdateState();
 			}
 			else if (count > 1)
@@ -1033,7 +1030,7 @@ namespace SAModManager
 				}
 				else
 				{
-					await GamesInstall.InstallLoader(GamesInstall.SonicAdventure);
+					await GamesInstall.InstallLoader(App.CurrentGame);
 				}
 			}
 		}
@@ -1066,7 +1063,7 @@ namespace SAModManager
 			checkedForUpdates = true;
 			loaderini.UpdateTime = DateTime.UtcNow.ToFileTimeUtc();
 
-			if (!File.Exists(Path.Combine(gamePath, "sadxmlver.txt")))
+			if (!File.Exists(Path.Combine(App.CurrentGame.gameDirectory, "sadxmlver.txt")))
 			{
 				return false;
 			}
@@ -1099,7 +1096,7 @@ namespace SAModManager
 			var tokenSource = new CancellationTokenSource();
 			CancellationToken token = tokenSource.Token;
 
-			var task = Task.Run(() => modUpdater.GetModUpdates(modDirectory, updatableMods, out updates, out errors, token), token);
+			var task = Task.Run(() => modUpdater.GetModUpdates(App.CurrentGame.modDirectory, updatableMods, out updates, out errors, token), token);
 
 			while (!task.IsCompleted && !task.IsCanceled)
 			{
@@ -1151,7 +1148,7 @@ namespace SAModManager
 							continue;
 						}
 
-						ModDownloadWPF d = modUpdater.GetGitHubReleases(mod, modDirectory, info.Item1, client, errors);
+						ModDownloadWPF d = modUpdater.GetGitHubReleases(mod, App.CurrentGame.modDirectory, info.Item1, client, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1159,7 +1156,7 @@ namespace SAModManager
 					}
 					else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
 					{
-						ModDownloadWPF d = modUpdater.GetGameBananaReleases(mod, modDirectory, info.Item1, errors);
+						ModDownloadWPF d = modUpdater.GetGameBananaReleases(mod, App.CurrentGame.modDirectory, info.Item1, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1172,7 +1169,7 @@ namespace SAModManager
 							.Select(x => x.Current)
 							.ToList();
 
-						ModDownloadWPF d = modUpdater.CheckModularVersion(mod, modDirectory, info.Item1, localManifest, client, errors);
+						ModDownloadWPF d = modUpdater.CheckModularVersion(mod, App.CurrentGame.modDirectory, info.Item1, localManifest, client, errors);
 						if (d != null)
 						{
 							updates.Add(d);
@@ -1328,7 +1325,7 @@ namespace SAModManager
 
 			codes = new List<Code>(mainCodes.Codes);
 			codesSearch = new();
-			string modDir = Path.Combine(gamePath, "mods");
+			string modDir = Path.Combine(App.CurrentGame.gameDirectory, "mods");
 			List<string> modlistCopy = new();
 
 			//backup mod list here
@@ -1614,7 +1611,7 @@ namespace SAModManager
 			foreach (ModData item in listMods.SelectedItems)
 			{
 
-				var modPath = Path.Combine(modDirectory, (string)item.Tag);
+				var modPath = Path.Combine(App.CurrentGame.modDirectory, (string)item.Tag);
 				var manifestPath = Path.Combine(modPath, "mod.manifest");
 
 				List<Updater.ModManifestEntry> manifest;
@@ -2432,19 +2429,19 @@ namespace SAModManager
 
 		private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(gamePath))
+			if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
 			{
 				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
 			}
 
-			string executablePath = loaderini.Mods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(gamePath, "sonic.exe");
+			string executablePath = loaderini.Mods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
 
 			string commandLine = GetTestSpawnCommandLine();
 
 			ProcessStartInfo startInfo = new ProcessStartInfo(executablePath)
 			{
-				WorkingDirectory = gamePath,
+				WorkingDirectory = App.CurrentGame.gameDirectory,
 				Arguments = commandLine
 			};
 
@@ -2477,7 +2474,7 @@ namespace SAModManager
 		{
 			if (installed)
 			{
-				string fullPath = Path.Combine(gamePath, "SAVEDATA");
+				string fullPath = Path.Combine(App.CurrentGame.gameDirectory, "SAVEDATA");
 
 				//if savedata exists
 				if (Directory.Exists(fullPath))
@@ -2675,13 +2672,13 @@ namespace SAModManager
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
 				string GamePath = dialog.SelectedPath;
-				string path = Path.Combine(GamePath, exeName);
+				string path = Path.Combine(GamePath, App.CurrentGame.exeName);
 
 				if (File.Exists(path))
 				{
 					textGameDir.Text = GamePath;
 					SetGamePath(GamePath);
-					Properties.Settings.Default.GamePath = gamePath;
+					Properties.Settings.Default.GamePath = App.CurrentGame.gameDirectory;
 					UpdatePathsStringsInfo();
 					if (File.Exists(loaderinipath))
 						loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath);
@@ -2779,7 +2776,7 @@ namespace SAModManager
 
 		private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(gamePath) || !File.Exists(Path.Combine(gamePath, exeName)))
+			if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) || !File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
 			{
 				new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 				return;
@@ -2790,8 +2787,8 @@ namespace SAModManager
 
 			if (installed)
 			{
-				await GamesInstall.InstallLoader(GamesInstall.SonicAdventure);
-				await GamesInstall.CheckAndInstallDependencies(GamesInstall.SonicAdventure);
+				await GamesInstall.InstallLoader(App.CurrentGame);
+				await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
 			}
 
 			Update_PlayButtonsState();
@@ -2866,9 +2863,9 @@ namespace SAModManager
 		{
 			comboProfile.Items.Clear();
 
-			if (modDirectory != string.Empty)
+			if (App.CurrentGame.modDirectory != string.Empty)
 			{
-				foreach (var item in Directory.EnumerateFiles(modDirectory, "*.ini"))
+				foreach (var item in Directory.EnumerateFiles(App.CurrentGame.modDirectory, "*.ini"))
 				{
 					if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase) && !item.EndsWith("desktop.ini", StringComparison.OrdinalIgnoreCase))
 					{

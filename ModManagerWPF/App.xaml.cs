@@ -13,6 +13,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using SAModManager.Common;
 using SAModManager.Updater;
+using SAModManager.ManagerSettings;
+using SAModManager.Ini;
 
 namespace SAModManager
 {
@@ -27,17 +29,21 @@ namespace SAModManager
 		private const string protocol = "sadxmm:";
 		public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
 		public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
+		public static readonly string ConfigPath = Path.Combine(ConfigFolder, "config.ini");
+        public static ManagerSettings.ManagerSettings configIni { get; set; }
 
-		private static readonly Mutex mutex = new(true, pipeName);
+        private static readonly Mutex mutex = new(true, pipeName);
 		public static Updater.UriQueue UriQueue;
 
-		public static LangEntry CurrentLang { get; set; }
+
+        public static LangEntry CurrentLang { get; set; }
 		public static LanguageList LangList { get; set; }
 
 		public static ThemeEntry CurrentTheme { get; set; }
 		public static ThemeList ThemeList { get; set; }
+        public static Common.Game CurrentGame = new();
 
-		[STAThread]
+        [STAThread]
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -181,6 +187,7 @@ namespace SAModManager
 			Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
 			string[] args = Environment.GetCommandLineArgs();
+
 			if (CheckinstallURLHandler(args)) //we check if the program has been launched just to enable One Click Install
 			{
 				Application.Current.Shutdown(); //we don't want to continue if so
@@ -208,7 +215,11 @@ namespace SAModManager
 			SetupLanguages();
 			SetupThemes();
 
-			if (await ExecuteDependenciesCheck() == false)
+            configIni = File.Exists(ConfigPath) ? IniSerializer.Deserialize<ManagerSettings.ManagerSettings>(ConfigPath) : new ManagerSettings.ManagerSettings();
+			App.CurrentGame = GamesInstall.SonicAdventure; //To do; make it get the game from game config.
+
+
+            if (await ExecuteDependenciesCheck() == false)
 			{
 				return;
 			}
@@ -249,8 +260,6 @@ namespace SAModManager
 			Window window = Window.GetWindow((DependencyObject)sender);
 			window.Close();
 		}
-
-
 	}
 
 	public partial class ImageButton : Button

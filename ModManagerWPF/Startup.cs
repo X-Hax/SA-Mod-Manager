@@ -14,6 +14,7 @@ using System.IO.Compression;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Octokit;
+using SAModManager.Ini;
 
 namespace SAModManager
 {
@@ -135,7 +136,11 @@ namespace SAModManager
 			{
 				App.SwitchLanguage();
 			}
-			await Task.Delay(20);
+
+			App.configIni.Language = 0;
+
+            IniSerializer.Serialize(App.configIni, App.ConfigPath);
+            await Task.Delay(20);
 		}
 
 		private static async Task<bool> VC_DependenciesCheck()
@@ -194,8 +199,8 @@ namespace SAModManager
 				if (!File.Exists(configPath)) //If config page isn't found, assume this is the first boot.
 				{
 					await EnableOneClickInstall(); 
-					File.Create(configPath);
 					await SetLanguageFirstBoot();
+
 				
 				}
 			}
