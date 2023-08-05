@@ -28,7 +28,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.3.1
 
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '7.x' # Use a valid .NET SDK version here
 
@@ -47,4 +47,4 @@ jobs:
     - uses: actions/upload-artifact@v3.1.2
       with:
         name: ModManagerWPF-${{matrix.configuration}}
-        path: ${{github.workspace}}/publish
+        path: ${{github.workspace}}\SA-Mod-Manager\bin\Release\net7.0-windows\publish
