@@ -47,4 +47,4 @@ jobs:
     - uses: actions/upload-artifact@v3.1.2
       with:
         name: ModManagerWPF-${{matrix.configuration}}
-        path: ${{github.workspace}}\bin\Release\net7.0-windows\publish
+        path: ${{github.workspace}}\bin\Release\net7.0-windows\win-x64\publish

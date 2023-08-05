@@ -3,6 +3,7 @@
 	<img width="48" align="left" src="https://github.com/X-Hax/SA-Mod-Manager/blob/553a3d65d609fb7625f2abc0e6e1309c8776c32d/ModManagerWPF/Icons/SADXModManager_.png">
 	</a>
 	Sonic Adventure Mod Manager
+	<img src="https://github.com/X-Hax/SA-Mod-Manager/actions/workflows/build.yml/badge.svg">
 </h1>
 
 Version 1.0.0
