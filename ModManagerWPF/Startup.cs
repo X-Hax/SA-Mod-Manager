@@ -135,9 +135,10 @@ namespace SAModManager
 			if (langMsg.isOK == true)
 			{
 				App.SwitchLanguage();
-			}
+				if (langMsg.genericValue > 0)
+					App.configIni.Language = langMsg.genericValue;
 
-			App.configIni.Language = 0;
+            }
 
             IniSerializer.Serialize(App.configIni, App.ConfigPath);
             await Task.Delay(20);

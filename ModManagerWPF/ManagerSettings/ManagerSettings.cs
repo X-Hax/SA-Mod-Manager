@@ -93,13 +93,13 @@ namespace SAModManager.ManagerSettings
 		/// Update Settings for the Manager.
 		/// </summary>
 		[IniAlwaysInclude]
-		public UpdateSettings UpdateSettings { get; set; }
+		public UpdateSettings UpdateSettings { get; set; } = new();
 
 		/// <summary>
 		/// Advanced Settings for the Manager.
 		/// </summary>
 		[IniAlwaysInclude]
-		public AdvancedSettings AdvancedSettings { get; set; }
+		public AdvancedSettings AdvancedSettings { get; set; } = new();
 
 		/// <summary>
 		/// The set Theme for the Manager.

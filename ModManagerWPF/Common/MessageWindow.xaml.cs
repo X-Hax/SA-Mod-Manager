@@ -66,6 +66,10 @@ namespace SAModManager.Common
 		/// Returns true when OK has been pressed.
 		/// </summary>
 		public bool isOK { get { return Accepted; } }
+        /// <summary>
+        /// Used to store and get a value for convenience.
+        /// </summary>
+        public int genericValue { get; set; }
 
 
 		/// <summary>
@@ -111,7 +115,7 @@ namespace SAModManager.Common
 			InitializeMessageWindow(windowName, messageText, headerText, image, button, type);
 		}
 
-		public MessageWindow(string windowName, string messageText, UIElement list, Buttons button = Buttons.OK, double width = 40, double height = 40, string headerText = "")
+		public MessageWindow(string windowName, string messageText, UIElement elem, Buttons button = Buttons.OK, double width = 40, double height = 40, string headerText = "")
 		{
 			InitializeComponent();
 
@@ -125,7 +129,9 @@ namespace SAModManager.Common
 
 			image.Width = width;
 			image.Height = height;
-			ExtraUIGrid.Children.Add(list);
+
+			SetComboBoxEvent(elem);
+            ExtraUIGrid.Children.Add(elem);
 			InitializeMessageWindow(windowName, messageText, headerText, image, button, WindowType.IconMessage);
 		}
 
@@ -260,6 +266,19 @@ namespace SAModManager.Common
 					MessageMessage.Text = messageText;
 					break;
 			}
+		}
+
+		private void ComboBox_ChangeIndex(object sender, EventArgs e)
+		{
+			var combo = sender as ComboBox;
+			genericValue = combo.SelectedIndex;
+        }
+		private void SetComboBoxEvent(UIElement elem)
+		{
+			ComboBox combo = elem as ComboBox;
+
+			if (combo != null)
+				combo.SelectionChanged += ComboBox_ChangeIndex;
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
