@@ -110,16 +110,6 @@
     <ClInclude Include="VoiceDuration.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libmodutils\libmodutils.vcxproj">
-      <Project>{90cf4ad9-6603-458f-8e3f-e99c0818e43d}</Project>
-      <Private>false</Private>
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="SADXModLoader.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -114,12 +114,6 @@
   <ItemGroup>
     <Content Include="SADXModManager.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\mod-loader-common\ModManagerCommon\ModManagerCommon.csproj">
-      <Project>{4a480502-79b5-4e1e-8d67-16c514bb13cd}</Project>
-      <Name>ModManagerCommon</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
