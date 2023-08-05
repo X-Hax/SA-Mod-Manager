@@ -350,8 +350,9 @@ namespace SAModManager
 			SaveCodes();
 
 			IniSerializer.Serialize(loaderini, loaderinipath);
-
-			SaveGameConfigIni();
+            IniSerializer.Serialize(App.configIni, App.ConfigPath);
+            SaveGameConfigIni();
+		
 			await Task.Delay(200);
 
 			Refresh();
@@ -2863,7 +2864,8 @@ namespace SAModManager
 		{
 			comboProfile.Items.Clear();
 
-			if (App.CurrentGame.modDirectory != string.Empty)
+
+            if (!String.IsNullOrEmpty(App.CurrentGame.modDirectory))
 			{
 				foreach (var item in Directory.EnumerateFiles(App.CurrentGame.modDirectory, "*.ini"))
 				{

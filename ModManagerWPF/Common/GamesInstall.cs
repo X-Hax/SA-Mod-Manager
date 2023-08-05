@@ -84,7 +84,7 @@ namespace SAModManager.Common
 		{
 			foreach (var game in GetSupportedGames())
 			{
-				if (game is null)
+				if (game is null || game.Dependencies is null)
 					continue;
 
 				foreach (var dependency in game.Dependencies)
