@@ -19,6 +19,7 @@ namespace SAModManager.Common
 		public string exeName;
 		public string gameDirectory;
 		public string modDirectory;
+		public string ProfilesDirectory { get; set; }
 		public List<Dependencies> Dependencies { get; set; }
 		public Loader loader { get; set; }
 	}
@@ -223,6 +224,8 @@ namespace SAModManager.Common
 					URL = Properties.Resources.URL_D3D8M,
 				},
 			},
+
+			ProfilesDirectory = "SADX",
 		};
 
 		public static Game SonicAdventure2 = new()
@@ -234,8 +237,9 @@ namespace SAModManager.Common
 			{
 				name = "SA2ModLoader",
 			},
-		};
 
+			ProfilesDirectory = "SA2",
+		};
 
         public static IEnumerable<Game> GetSupportedGames()
 		{

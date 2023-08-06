@@ -240,6 +240,7 @@ namespace SAModManager
 					CurrentGame = GamesInstall.SonicAdventure2;
 					break;
 			}
+			CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigPath, CurrentGame.ProfilesDirectory);
 
 			return settings;
         }
