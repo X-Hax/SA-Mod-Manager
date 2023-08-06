@@ -68,6 +68,10 @@ namespace SAModManager.Common
 		/// Returns true when OK has been pressed.
 		/// </summary>
 		public bool isOK { get { return Accepted; } }
+        /// <summary>
+        /// Used to store and get a value for convenience.
+        /// </summary>
+        public int genericValue { get; set; }
 
 		/// <summary>
 		/// Accessible list for setting the entries to be used by the combo box entries.

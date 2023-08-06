@@ -73,7 +73,7 @@ namespace SAModManager.Common
 			else
 			{
 				string name = ProfileNameTextbox.Text;
-				string fullPath = Path.Combine(modDirectory, name + ".ini");
+				string fullPath = Path.Combine(App.CurrentGame.modDirectory, name + ".ini");
 
 				if (File.Exists(fullPath)) 
 				{

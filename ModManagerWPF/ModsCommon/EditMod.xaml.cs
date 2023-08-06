@@ -121,7 +121,7 @@ namespace SAModManager
 		#region Main Window Functions
 		private void okBtn_Click(object sender, RoutedEventArgs e)
 		{
-			string moddir = editMod ? MainWindow.modDirectory : Path.Combine(MainWindow.modDirectory, ValidateFilename(nameBox.Text));
+			string moddir = editMod ? App.CurrentGame.modDirectory : Path.Combine(App.CurrentGame.modDirectory, ValidateFilename(nameBox.Text));
 
 			if (nameBox.Text.Length <= 0)
 			{
@@ -222,7 +222,7 @@ namespace SAModManager
 		public void LoadConfigSchema(string modName)
 		{
 			string fullName = string.Empty;
-			string moddir = editMod ? MainWindow.modDirectory : Path.Combine(MainWindow.modDirectory, ValidateFilename(nameBox.Text));
+			string moddir = editMod ? App.CurrentGame.modDirectory : Path.Combine(App.CurrentGame.modDirectory, ValidateFilename(nameBox.Text));
 
 			if (Mod != null)
 			{

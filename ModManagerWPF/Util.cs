@@ -217,5 +217,10 @@ namespace SAModManager
 
 			return fullPath;
 		}
-	}
+
+        private static string CombinePathURL(params string[] paths)
+        {
+            return string.Join("/", paths);
+        }
+    }
 }

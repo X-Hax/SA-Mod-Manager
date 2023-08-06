@@ -84,7 +84,7 @@ namespace SAModManager.Common
 		{
 			foreach (var game in GetSupportedGames())
 			{
-				if (game is null)
+				if (game is null || game.Dependencies is null)
 					continue;
 
 				foreach (var dependency in game.Dependencies)
@@ -225,10 +225,23 @@ namespace SAModManager.Common
 			},
 		};
 
-		public static IEnumerable<Game> GetSupportedGames()
+		public static Game SonicAdventure2 = new()
+		{
+			gameName = "Sonic Adventure 2",
+			exeName = "sonic2app.exe",
+
+			loader = new()
+			{
+				name = "SA2ModLoader",
+			},
+		};
+
+
+        public static IEnumerable<Game> GetSupportedGames()
 		{
 			yield return SonicAdventure;
-		}
+            yield return SonicAdventure2;
+        }
 
 		public static async Task GetSADXModInstaller()
 		{

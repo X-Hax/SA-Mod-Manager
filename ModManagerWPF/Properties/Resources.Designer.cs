@@ -135,5 +135,14 @@ namespace SAModManager.Properties {
                 return ResourceManager.GetString("URL_SDL", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
     }
 }

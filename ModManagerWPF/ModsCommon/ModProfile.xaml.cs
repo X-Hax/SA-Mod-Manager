@@ -58,7 +58,7 @@ namespace SAModManager.Common
 					Profile item = (Profile)ProfileListView.Items[result.Index];	
 					if (File.Exists(item.iniPath))
 					{
-						string newName = Path.Combine(modDirectory, result.Name + ".ini");
+						string newName = Path.Combine(App.CurrentGame.modDirectory, result.Name + ".ini");
 
 						try
 						{

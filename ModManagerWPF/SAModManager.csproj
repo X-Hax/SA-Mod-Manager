@@ -50,7 +50,6 @@
     <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Octokit" Version="7.1.0" />
   </ItemGroup>
 
   <ItemGroup>

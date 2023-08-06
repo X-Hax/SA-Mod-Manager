@@ -19,9 +19,10 @@ namespace SAModManager.Common
     /// </summary>
     public partial class InfoManagerUpdate : Window
     {
-        public InfoManagerUpdate()
+        public InfoManagerUpdate(WorkflowRunInfo workflow, GitHubArtifact artifact, string changelog)
         {
             InitializeComponent();
+            UpdateInfoText.Text = changelog;
         }
 
 		private void CancelUpdate_Click(object sender, RoutedEventArgs e)
