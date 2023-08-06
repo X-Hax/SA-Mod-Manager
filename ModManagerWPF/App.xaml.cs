@@ -51,6 +51,56 @@ namespace SAModManager
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// 
+        protected override async void OnStartup(StartupEventArgs e)
+        {
+            Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            string[] args = Environment.GetCommandLineArgs();
+
+            if (CheckinstallURLHandler(args)) //we check if the program has been launched just to enable One Click Install
+            {
+                Application.Current.Shutdown(); //we don't want to continue if so
+                return;
+            }
+
+            bool alreadyRunning;
+            try { alreadyRunning = !mutex.WaitOne(0, true); }
+            catch (AbandonedMutexException) { alreadyRunning = false; }
+
+            if (await DoUpdate(args, alreadyRunning))
+            {
+                return;
+            }
+
+
+            SetupLanguages();
+            SetupThemes();
+
+            configIni = LoadManagerConfig();
+            if (await ExecuteDependenciesCheck() == false)
+            {
+                return;
+            }
+
+
+            InitUri(args, alreadyRunning);
+
+            if (alreadyRunning)
+            {
+                Current.Shutdown();
+                return;
+            }
+
+            Steam.Init();
+            ShutdownMode = ShutdownMode.OnMainWindowClose;
+
+            MainWindow = new MainWindow(args is not null ? args : null);
+            MainWindow.Show();
+
+            base.OnStartup(e);
+            UriQueue.Close();
+        }
 
         public static void SetupLanguages()
         {
@@ -215,12 +265,10 @@ namespace SAModManager
             Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
         }
 
-        private static bool DoUpdate(string[] args, bool alreadyRunning)
+        private static async Task<bool> DoUpdate(string[] args, bool alreadyRunning)
         {
-      
             foreach (var arg in args)
             {
-                File.Create(arg + ".txt");
                 if (arg == "doupdate")
                 {
                     File.Create("DoUpdatePassed.txt");
@@ -229,11 +277,23 @@ namespace SAModManager
                         try { mutex.WaitOne(); }
                         catch (AbandonedMutexException) { }
 
+       
+                    var dialog = new InstallManagerUpdate(args[1], args[2]);
+                    await dialog.InstallUpdate();
 
-                    App app = new();
-                    app.InitializeComponent();
-                    app.Run(new LoaderManifestDialog(args[1]));
+                    Application.Current.Shutdown();
+
+
                     return true;
+                }
+
+                if (arg == "cleanupdate")
+                {
+                    if (alreadyRunning)
+                        try { mutex.WaitOne(); }
+                        catch (AbandonedMutexException) { }
+
+                    alreadyRunning = false;
                 }
             }
 
@@ -263,63 +323,7 @@ namespace SAModManager
             return settings;
         }
 
-        protected override async void OnStartup(StartupEventArgs e)
-        {
-            Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
- 
-            string[] args = Environment.GetCommandLineArgs();
 
-            if (CheckinstallURLHandler(args)) //we check if the program has been launched just to enable One Click Install
-            {
-                Application.Current.Shutdown(); //we don't want to continue if so
-                return;
-            }
-
-            bool alreadyRunning;
-            try { alreadyRunning = !mutex.WaitOne(0, true); }
-            catch (AbandonedMutexException) { alreadyRunning = false; }
-
-            if (DoUpdate(args, alreadyRunning))
-            {
-                return;
-            }
-
-            if (args.Length > 1 && args[0] == "cleanupdate")
-            {
-                if (alreadyRunning)
-                    try { mutex.WaitOne(); }
-                    catch (AbandonedMutexException) { }
-
-                alreadyRunning = false;
-            }
-
-            SetupLanguages();
-            SetupThemes();
-
-            configIni = LoadManagerConfig();
-            if (await ExecuteDependenciesCheck() == false)
-            {
-                return;
-            }
-
-
-            InitUri(args, alreadyRunning);
-
-            if (alreadyRunning)
-            {
-                Current.Shutdown();
-                return;
-            }
-
-            Steam.Init();
-            ShutdownMode = ShutdownMode.OnMainWindowClose;
-
-            MainWindow = new MainWindow(args is not null ? args : null);
-            MainWindow.Show();
-
-            base.OnStartup(e);
-            UriQueue.Close();
-        }
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {

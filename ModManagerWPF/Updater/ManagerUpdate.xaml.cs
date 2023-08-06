@@ -41,7 +41,7 @@ namespace SAModManager.Common
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                UpdateInfo.Text = "Download completed." + "\n Copying files...";
+                UpdateInfo.Text = "Download completed." + "\n Installing New Version...";
 
             });
 
@@ -65,14 +65,11 @@ namespace SAModManager.Common
                     File.Delete(dest);
 
                     string newExec = Path.Combine(tempFolderPath, Path.GetFileName(Environment.ProcessPath));
-
-                    await Process.Start(new ProcessStartInfo(Path.Combine(tempFolderPath, Path.GetFileName(Environment.ProcessPath)), $"doupdate \"{tempFolderPath}\"")
+                    DialogResult = true;
+                    Process.Start(new ProcessStartInfo(Path.Combine(tempFolderPath, Path.GetFileName(Environment.ProcessPath)), $"doupdate \"{tempFolderPath}\"")
                     {
                         UseShellExecute = true,
-
-                    }).WaitForExitAsync();
-
-                    DialogResult = true;
+                    });
                 }
             });
 

@@ -68,8 +68,8 @@
     <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail0">Failed to create temporary update directory</system:String>
     <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail1">Would you like to retry?</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Update Failed"</system:String>
-    <system:String x:Key="MessageWindow.Errors.UpdateFailed">Failed to update:"</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Update Failed</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed">Failed to update:</system:String>
 
     <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Failed to update mod</system:String>
     <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">Press Retry to try again, or Cancel to skip this mod.</system:String>
