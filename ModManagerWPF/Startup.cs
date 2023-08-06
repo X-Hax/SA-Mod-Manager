@@ -111,9 +111,9 @@ namespace SAModManager
 				DisplayMemberPath = ".",
 				SelectedIndex = 0,
 				SelectedItem = 0,
-				VerticalAlignment = System.Windows.VerticalAlignment.Center,
-				HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-				Margin = new(5, 0, 5, 0),
+				VerticalAlignment = System.Windows.VerticalAlignment.Top,
+				HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
+				Margin = new(5),
 			};
 
 			Binding itemsSourceBinding = new("LangList")
@@ -126,9 +126,10 @@ namespace SAModManager
 				Source = App.Current
 			};
 			BindingOperations.SetBinding(comboLanguage, ComboBox.SelectedItemProperty, selectedItemBinding);
-			comboLanguage.SelectedIndex = 0;
 
-			var langMsg = new MessageWindow("Select a Language", "Please select a language to use.", comboLanguage, MessageWindow.Buttons.OK);
+			var langMsg = new MessageWindow("Select a Language", "Please select a language to use.",
+											type: MessageWindow.WindowType.hasCustom, button: MessageWindow.Buttons.OK,
+											customElement: comboLanguage);
 			langMsg.ShowDialog();
 
 			if (langMsg.isOK == true)

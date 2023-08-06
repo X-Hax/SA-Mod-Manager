@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-
+using SAModManager.Elements;
 
 namespace SAModManager.Common
 {
@@ -42,7 +43,8 @@ namespace SAModManager.Common
 		{
 			IconHeader,
 			IconMessage,
-			Message
+			Message,
+			IconCombo,
 		}
 
 		private static bool Accepted { get; set; }
@@ -67,6 +69,12 @@ namespace SAModManager.Common
 		/// </summary>
 		public bool isOK { get { return Accepted; } }
 
+		/// <summary>
+		/// Accessible list for setting the entries to be used by the combo box entries.
+		/// </summary>
+		public List<object> ComboBoxEntries { get; set; }
+
+		public MessageElement MessageElement { get; set; }
 
 		/// <summary>
 		/// Constructs a MessageWindow using preset Icons.
@@ -77,7 +85,9 @@ namespace SAModManager.Common
 		/// <param name="button"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
-		public MessageWindow(string windowName, string ErrorText, WindowType type = WindowType.IconMessage, Icons icon = Icons.Caution, Buttons button = Buttons.OK, double width = 40, double height = 40, string headerText = "")
+		public MessageWindow(string windowName, string ErrorText, 
+							WindowType type = WindowType.IconMessage, Icons icon = Icons.Caution, Buttons button = Buttons.OK, 
+							double width = 40, double height = 40, string headerText = "", UIElement customElement = null)
 		{
 			InitializeComponent();
 
@@ -89,7 +99,7 @@ namespace SAModManager.Common
 				Height = height
 			};
 
-			InitializeMessageWindow(windowName, ErrorText, headerText, image, button, type);
+			InitializeMessageWindow(windowName, ErrorText, headerText, image, button, type, customElement);
 		}
 
 		/// <summary>
@@ -101,86 +111,19 @@ namespace SAModManager.Common
 		/// <param name="button"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
-		public MessageWindow(string windowName, string messageText, Image image, WindowType type = WindowType.IconMessage, Buttons button = Buttons.OK, double width = 40, double height = 40, string headerText = "")
+		public MessageWindow(string windowName, string messageText, Image image, 
+							WindowType type = WindowType.IconMessage, Buttons button = Buttons.OK, 
+							double width = 40, double height = 40, string headerText = "", UIElement customElement = null)
 		{
 			InitializeComponent();
 
 			image.Width = width;
 			image.Height = height;
 
-			InitializeMessageWindow(windowName, messageText, headerText, image, button, type);
+			InitializeMessageWindow(windowName, messageText, headerText, image, button, type, customElement);
 		}
 
-		public MessageWindow(string windowName, string messageText, UIElement list, Buttons button = Buttons.OK, double width = 40, double height = 40, string headerText = "")
-		{
-			InitializeComponent();
-
-			DrawingImage drawing = GetIcon(Icons.Information);
-			Image image = new()
-			{
-				Source = drawing,
-				Width = width,
-				Height = height
-			};
-
-			image.Width = width;
-			image.Height = height;
-			ExtraUIGrid.Children.Add(list);
-			InitializeMessageWindow(windowName, messageText, headerText, image, button, WindowType.IconMessage);
-		}
-
-		//add line break to avoid having a width way too big for the Message Window
-		private string FixMessageFormatting(string s)
-		{
-			const int max = 80; //look for 80 characters
-
-			StringBuilder result = new();
-			int index = 0;
-
-			while (index < s.Length) //browse the string content
-			{
-				int remainingLength = s.Length - index;
-				int substringLength = Math.Min(max, remainingLength);
-				string substring = s.Substring(index, substringLength);
-
-				if (substringLength == max)
-				{
-					int breakIndex = substring.LastIndexOfAny(new[] { ' ', '\n' }); //look for the next whitespace / line break
-
-					if (breakIndex != -1)
-					{
-						substringLength = breakIndex + 1; // Adjust the substring length
-						substring = substring[..substringLength];
-					}
-				}
-
-				//If the string already has a line break from the user; don't add an extra one.
-				if (substring.Contains('\n'))
-					result.Append(substring);
-				else
-					result.AppendLine(substring); //add new line break
-
-				index += substringLength;
-				Width++;
-			}
-
-			return result.ToString();
-		}
-
-		private void InitializeMessageWindow(string windowName, string messageText, string headerText, Image icon, Buttons button, WindowType type)
-		{
-			isClosed = false;
-			Accepted = false;
-			Window.Title = windowName;
-			Image image = (Image)TryFindResource("MessageIcon");
-			image.Source = icon.Source;
-			image.Width = icon.Width;
-			image.Height = icon.Height;
-			messageText = FixMessageFormatting(messageText);
-			SetupWindow(messageText, headerText, type, image);
-			UpdateButtons(button);
-		}
-
+		#region Message 
 		private DrawingImage GetIcon(Icons icon)
 		{
 			switch (icon)
@@ -199,6 +142,48 @@ namespace SAModManager.Common
 			return new DrawingImage();
 		}
 
+		private void AddMessageElement(WindowType type, string message = "", Image icon = null, string header = "", UIElement customElement = null)
+		{
+			bool hasHeader = false;
+			bool hasIcon = false;
+			bool hasCombo = false;
+
+			switch (type)
+			{
+				case WindowType.IconMessage:
+					hasIcon = true;
+					break;
+				case WindowType.IconHeader:
+					hasHeader = true;
+					hasIcon = true;
+					break;
+				case WindowType.hasCustom:
+					hasIcon = true;
+					hasCombo = true;
+					break;
+			}
+
+			MessageElement = new MessageElement(message, icon: icon, header: header,
+												hasIcon: hasIcon, hasHeader: hasHeader, hasCustom: hasCombo,
+												customElement: customElement);
+			MessageGrid.Children.Add(MessageElement);
+		}
+
+		private void InitializeMessageWindow(string windowName, string messageText, string headerText, Image icon, Buttons button, WindowType type, UIElement customElement)
+		{
+			isClosed = false;
+			Accepted = false;
+			Window.Title = windowName;
+			Image image = (Image)TryFindResource("MessageIcon");
+			image.Source = icon.Source;
+			image.Width = icon.Width;
+			image.Height = icon.Height;
+			AddMessageElement(type, message: messageText, icon: icon, header: headerText, customElement: customElement);
+			UpdateButtons(button);
+		}
+		#endregion
+
+		#region Window Functions
 		private void UpdateButtons(Buttons buttons)
 		{
 			switch (buttons)
@@ -222,42 +207,9 @@ namespace SAModManager.Common
 					break;
 				case Buttons.RetryCancel:
 					ButtonLeft.Content = Lang.GetString("CommonStrings.Retry");
-					ButtonLeft.Click += ButtonLeft_Click;
+					ButtonLeft.Click += ButtonYes_Click;
 					ButtonRight.Content = Lang.GetString("CommonStrings.Cancel");
 					ButtonRight.Click += ButtonClick;
-					break;
-			}
-		}
-
-		private void ButtonLeft_Click(object sender, RoutedEventArgs e)
-		{
-			throw new NotImplementedException();
-		}
-
-		private void SetupWindow(string messageText, string headerText, WindowType windowType, Image image)
-		{
-			switch (windowType)
-			{
-				case WindowType.IconMessage:
-					MasterGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
-					MasterGrid.RowDefinitions[1].Height = new GridLength(0);
-					MasterGrid.RowDefinitions[2].Height = new GridLength(0);
-					GridIconMessage.Children.Add(image);
-					IconMessage.Text = messageText;
-					break;
-				case WindowType.IconHeader:
-					MasterGrid.RowDefinitions[0].Height = new GridLength(0);
-					MasterGrid.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
-					MasterGrid.RowDefinitions[2].Height = new GridLength(0);
-					GridIconHeader.Children.Add(image);
-					HeaderHeader.Text = headerText;
-					HeaderMessage.Text = messageText;
-					break;
-				case WindowType.Message:
-					MasterGrid.RowDefinitions[0].Height = new GridLength(0);
-					MasterGrid.RowDefinitions[1].Height = new GridLength(0);
-					MasterGrid.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Star);
-					MessageMessage.Text = messageText;
 					break;
 			}
 		}
@@ -267,6 +219,13 @@ namespace SAModManager.Common
 			isClosed = true;
 		}
 
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			Window.SizeToContent = SizeToContent.WidthAndHeight;
+		}
+		#endregion
+
+		#region Button Functions
 		private void ButtonClick(object sender, RoutedEventArgs e)
 		{
 			this.Close();
@@ -277,10 +236,6 @@ namespace SAModManager.Common
 			Accepted = true;
 			this.Close();
 		}
-
-		private void Window_Loaded(object sender, RoutedEventArgs e)
-		{
-			Window.SizeToContent = SizeToContent.WidthAndHeight;
-		}
+		#endregion
 	}
 }
