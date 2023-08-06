@@ -124,6 +124,9 @@
   <data name="d3d8m" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\d3d8m.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="OpCodeSyntaxDark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Common\OpCodeSyntaxDark.xshd;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="SADXModLoader" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SADXModLoader.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
