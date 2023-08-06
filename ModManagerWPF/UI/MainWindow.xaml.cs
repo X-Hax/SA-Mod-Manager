@@ -36,9 +36,8 @@ namespace SAModManager
         #region Variables
         public GameType setGame = GameType.SADX;
         public readonly string titleName = "SADX Mod Manager";
-        private const string V = "1.0.0";
-        private static string Version = V;
-        private static string GitVersion = Properties.Resources.Version.Trim();
+
+        private readonly string Version = App.VersionString;
         private static string updatePath = "mods/.updates";
         public static string loaderinipath = "mods/SADXModLoader.ini";
         private string sadxIni = "sonicDX.ini";
@@ -175,10 +174,10 @@ namespace SAModManager
 
         public void SetModManagerVersion()
         {
-            if (string.IsNullOrEmpty(GitVersion)) //dev
+            if (string.IsNullOrEmpty(App.RepoCommit)) //dev
                 Title = titleName + " " + "(Dev Build - " + Version + ")";
             else
-                Title = titleName + " " + "(" + Version + " - " +  GitVersion[..7] + ")";
+                Title = titleName + " " + "(" + Version + " - " +  App.RepoCommit[..7] + ")";
         }
 
         private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
@@ -186,7 +185,7 @@ namespace SAModManager
 
             SetModManagerVersion();
 
-            if (!Directory.Exists(App.CurrentGame.modDirectory) || !installed)
+            if (!Directory.Exists(App.CurrentGame.modDirectory) || App.CurrentGame != null)
                 return;
 
             new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
@@ -1083,27 +1082,7 @@ namespace SAModManager
             updateChecker?.RunWorkerAsync(list);
         }
 
-        private bool CheckForUpdates(bool force = false)
-        {
-            if (!force && !loaderini.UpdateCheck)
-            {
-                return false;
-            }
-            if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.UpdateTime)))
-            {
-                return false;
-            }
 
-            checkedForUpdates = true;
-            loaderini.UpdateTime = DateTime.UtcNow.ToFileTimeUtc();
-
-            if (!File.Exists(Path.Combine(App.CurrentGame.gameDirectory, "sadxmlver.txt")))
-            {
-                return false;
-            }
-
-            return true;
-        }
 
         private void UpdateChecker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -2730,16 +2709,12 @@ namespace SAModManager
             }
         }
 
-        private void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
+        private async void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
             btnCheckUpdates.IsEnabled = false;
 
-            if (CheckForUpdates(true))
-            {
-                //UpdateHelper.DoModManagerUpdate(updatePath);
-                //return;
-            }
-
+            await App.PerformUpdateManagerCheck();
+  
             manualModUpdate = true;
             CheckForModUpdates(true);
         }

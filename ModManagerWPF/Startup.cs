@@ -13,7 +13,6 @@ using SevenZipExtractor;
 using System.IO.Compression;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Octokit;
 using SAModManager.Ini;
 
 namespace SAModManager

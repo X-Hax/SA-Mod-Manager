@@ -12,7 +12,7 @@ using SAModManager.Ini;
 
 namespace SAModManager.Updater
 {
-	public class ModUpdater
+    public class ModUpdater
 	{
 		private readonly Dictionary<string, List<GitHubRelease>> gitHubCache = new Dictionary<string, List<GitHubRelease>>();
 		public bool ForceUpdate;
