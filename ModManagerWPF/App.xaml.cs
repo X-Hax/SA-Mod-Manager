@@ -267,22 +267,22 @@ namespace SAModManager
 
         private static async Task<bool> DoUpdate(string[] args, bool alreadyRunning)
         {
-            foreach (var arg in args)
+            var argument = args.ToList();
+
+            foreach (var arg in argument)
             {
-                if (arg == "doupdate")
+                if (arg == "doupdate" && argument.Count > 2)
                 {
-                    File.Create("DoUpdatePassed.txt");
 
                     if (alreadyRunning)
                         try { mutex.WaitOne(); }
                         catch (AbandonedMutexException) { }
 
-       
-                    var dialog = new InstallManagerUpdate(args[1], args[2]);
+
+                    var dialog = new InstallManagerUpdate(args[2], args[3]);
                     await dialog.InstallUpdate();
 
                     Application.Current.Shutdown();
-
 
                     return true;
                 }
