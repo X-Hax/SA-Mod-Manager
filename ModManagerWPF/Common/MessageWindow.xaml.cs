@@ -44,7 +44,7 @@ namespace SAModManager.Common
 			IconHeader,
 			IconMessage,
 			Message,
-			IconCombo,
+			IconCustom,
 		}
 
 		private static bool Accepted { get; set; }
@@ -161,7 +161,7 @@ namespace SAModManager.Common
 					hasHeader = true;
 					hasIcon = true;
 					break;
-				case WindowType.hasCustom:
+				case WindowType.IconCustom:
 					hasIcon = true;
 					hasCombo = true;
 					break;

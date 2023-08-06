@@ -128,7 +128,7 @@ namespace SAModManager
 			BindingOperations.SetBinding(comboLanguage, ComboBox.SelectedItemProperty, selectedItemBinding);
 
 			var langMsg = new MessageWindow("Select a Language", "Please select a language to use.",
-											type: MessageWindow.WindowType.hasCustom, button: MessageWindow.Buttons.OK,
+											type: MessageWindow.WindowType.IconCustom, button: MessageWindow.Buttons.OK,
 											customElement: comboLanguage);
 			langMsg.ShowDialog();
 
