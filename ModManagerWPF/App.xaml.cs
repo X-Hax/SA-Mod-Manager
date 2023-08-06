@@ -32,7 +32,7 @@ namespace SAModManager
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
         public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
-		public static readonly string ConfigPath = Path.Combine(ConfigFolder, "manager_settings.ini");
+		public static readonly string ConfigPath = Path.Combine(ConfigFolder, "config.ini");
         public static ManagerSettings configIni { get; set; }
 
         private static readonly Mutex mutex = new(true, pipeName);
