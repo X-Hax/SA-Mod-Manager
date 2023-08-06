@@ -33,15 +33,11 @@ namespace SAModManager.Common
         {
             InitializeComponent();
 			CodesPath = codepath + codefile;
-			/*
-			using (Stream s = File.OpenRead(""))
+
+			using (XmlTextReader reader = new XmlTextReader(new StringReader(Properties.Resources.OpCodeSyntaxDark)))
 			{
-				using (XmlTextReader reader = new XmlTextReader(s))
-				{
-					CodeWriter.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
-				}
+				CodeWriter.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
 			}
-			*/
 		}
 
 		private bool SaveCodeToFile()
