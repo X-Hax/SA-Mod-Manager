@@ -2005,8 +2005,52 @@
 				</Setter>
 			</Style>
 
-			<Style x:Key="MessageWindow" TargetType="{x:Type Window}" BasedOn="{StaticResource SAWindow}">
-				<Setter Property="SizeToContent" Value="WidthAndHeight"/>
+			<Style x:Key="SAWindowUtil" TargetType="{x:Type Window}">
+				<Setter Property="Background" Value="{DynamicResource Window.Brushes.Background}"/>
+				<Setter Property="WindowStyle" Value="SingleBorderWindow"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource Window.Brushes.Border}"/>
+				<Setter Property="WindowChrome.WindowChrome">
+					<Setter.Value>
+						<WindowChrome 
+							CaptionHeight="22"
+							CornerRadius="8"
+							GlassFrameThickness="0,0,0,1"
+							NonClientFrameEdges="None"
+							UseAeroCaptionButtons="False"
+							ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"/>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type Window}">
+							<Grid>
+								<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2">
+									<Grid Background="{TemplateBinding Background}">
+										<Grid.RowDefinitions>
+											<RowDefinition Height="32"/>
+											<RowDefinition Height="*"/>
+										</Grid.RowDefinitions>
+
+										<Grid Grid.Row="0">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="*"/>
+												<ColumnDefinition Width="Auto"/>
+											</Grid.ColumnDefinitions>
+
+											<Image Grid.Column="0" Source="Icons/SADXModManager_.png" Margin="0,0,5,5"/>
+											<TextBlock Text="{TemplateBinding Title}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+											<StackPanel Grid.Column="2" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
+												<Button Style="{DynamicResource WindowCloseButton}" x:Name="ButtonClose" Click="CloseWindow"/>
+											</StackPanel>
+										</Grid>
+										<ContentPresenter Grid.Row="1"/>
+									</Grid>
+								</Border>
+							</Grid>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
 			</Style>
 			<!--#endregion-->
 			

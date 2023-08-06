@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SAModManager.Common"
         mc:Ignorable="d" x:Name="Window" Loaded="Window_Loaded"
-        Style="{StaticResource SAWindow}" MinWidth="250" MinHeight="100" MaxWidth="500"
-		Closing="Window_Closing" WindowStartupLocation="CenterOwner">
+        Style="{StaticResource SAWindowUtil}" MinWidth="250" MinHeight="100" MaxWidth="500" MaxHeight="400"
+		Closing="Window_Closing" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -16,23 +16,20 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="MessageGrid" Margin="5,0,5,0">
+    <Grid x:Name="MessageGrid">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="30"/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
-        <Grid x:Name="ButtonsGrid" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-            </Grid.RowDefinitions>
+        <Grid x:Name="ButtonsGrid" Margin="5" Height="30" Grid.Row="2" HorizontalAlignment="Right">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="100"/>
+				<ColumnDefinition Width="10"/>
+				<ColumnDefinition Width="100"/>
+			</Grid.ColumnDefinitions>
 
-            <Button x:Name="ButtonRight" Content="Cancel" Margin="0,5,0,5" Grid.Row="0" Grid.Column="2"/>
-            <Button x:Name="ButtonLeft" Content="OK" Grid.Row="1" Margin="0,5,0,5"/>
+			<Button x:Name="ButtonRight" Content="Cancel" Grid.Column="2"/>
+            <Button x:Name="ButtonLeft" Content="OK"/>
         </Grid>
     </Grid>
 </Window>
