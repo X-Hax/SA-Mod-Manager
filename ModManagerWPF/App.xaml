@@ -938,7 +938,7 @@
 				</Setter>
 			</Style>
 
-			<Style TargetType="{x:Type local:ImageButton}">
+			<Style TargetType="{x:Type elements:ImageButton}">
 				<Setter Property="Background" Value="{DynamicResource Button.Brushes.Background}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.Border}"/>
 				<Setter Property="BorderThickness" Value="1"/>
@@ -950,7 +950,7 @@
 				<Setter Property="IconFill" Value="False"/>
 				<Setter Property="Template">
 					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type local:ImageButton}">
+						<ControlTemplate TargetType="{x:Type elements:ImageButton}">
 							<Border x:Name="border" CornerRadius="{DynamicResource Button.CornerRadius}" SnapsToDevicePixels="true"
 									Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
 								<Path x:Name="path" Data="{TemplateBinding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"
@@ -974,7 +974,7 @@
 								</Trigger>
 								<Trigger Property="IconFill" Value="True">
 									<Setter TargetName="path" Property="Stroke" Value="Transparent"/>
-									<Setter TargetName="path" Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ImageButton}}, Path=ImageBrush}"/>
+									<Setter TargetName="path" Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type elements:ImageButton}}, Path=ImageBrush}"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
@@ -982,7 +982,7 @@
 				</Setter>
 			</Style>
 
-			<Style x:Key="ImageTextButtonStyle" TargetType="{x:Type local:ImageButton}">
+			<Style x:Key="ImageTextButtonStyle" TargetType="{x:Type elements:ImageButton}">
 				<Setter Property="Background" Value="{DynamicResource Button.Brushes.Background}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource Button.Brushes.Border}"/>
 				<Setter Property="BorderThickness" Value="1"/>
@@ -994,7 +994,7 @@
 				<Setter Property="IconFill" Value="False"/>
 				<Setter Property="Template">
 					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type local:ImageButton}">
+						<ControlTemplate TargetType="{x:Type elements:ImageButton}">
 							<Border x:Name="border" CornerRadius="{DynamicResource Button.CornerRadius}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
 								<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 									<Path x:Name="path" Data="{TemplateBinding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"
@@ -1021,7 +1021,7 @@
 								</Trigger>
 								<Trigger Property="IconFill" Value="True">
 									<Setter TargetName="path" Property="Stroke" Value="Transparent"/>
-									<Setter TargetName="path" Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ImageButton}}, Path=ImageBrush}"/>
+									<Setter TargetName="path" Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type elements:ImageButton}}, Path=ImageBrush}"/>
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>

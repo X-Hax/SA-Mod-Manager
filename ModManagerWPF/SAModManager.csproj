@@ -30,8 +30,13 @@
   </ItemGroup>
 
   <ItemGroup>
+	<None Remove="Common\OpCodeSyntaxDark.xshd" />
 	<None Remove="Icons\SADXModManager_.png" />
 	<None Remove="Updater\ModDownloadDialog.xaml.cs~RF2e7deabf.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Common\OpCodeSyntaxDark.xshd" />
   </ItemGroup>
 
   <ItemGroup>

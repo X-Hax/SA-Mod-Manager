@@ -4,6 +4,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:SAModManager"
+		xmlns:elements="clr-namespace:SAModManager.Elements"
 		mc:Ignorable="d"
 		WindowStartupLocation="CenterScreen" 
 		MinHeight="550" MinWidth="450" Height="560" Width="650"
@@ -221,13 +222,13 @@
 								<RowDefinition Height="30"/>
 							</Grid.RowDefinitions>
 
-							<local:ImageButton x:Name="btnNewCode" Style="{StaticResource ImageTextButtonStyle}" Grid.Row="1" IconThickness="2"
+							<elements:ImageButton x:Name="btnNewCode" Style="{StaticResource ImageTextButtonStyle}" Grid.Row="1" IconThickness="2"
 											   Icon="{StaticResource Icons.Add}" Content="{DynamicResource Manager.Tabs.Codes.Buttons.NewCode}"
 											   ImageBrush="{DynamicResource Icon.Brushes.Green}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Green}" Click="btnNewCode_Click"/>
-                            <local:ImageButton x:Name="btnDelCode" Style="{StaticResource ImageTextButtonStyle}" Grid.Row="3"
+                            <elements:ImageButton x:Name="btnDelCode" Style="{StaticResource ImageTextButtonStyle}" Grid.Row="3"
 											   Icon="{StaticResource Icons.Delete}" Content="Delete Code"
 											   ImageBrush="{DynamicResource Icon.Brushes.Red}" ImageBrushDisabled="{DynamicResource Icon.Brushes.MouseOver.Red}" Click="btnDelCode_Click"/>
-                            <local:ImageButton x:Name="btnEditCode" Style="{StaticResource ImageTextButtonStyle}" Grid.Row="5"
+                            <elements:ImageButton x:Name="btnEditCode" Style="{StaticResource ImageTextButtonStyle}" Grid.Row="5"
 											   Icon="{StaticResource Icons.Config}" Content="Edit Code" Click="btnEditCode_Click"/>
 						</Grid>
 					</Grid>

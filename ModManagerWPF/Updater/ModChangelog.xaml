@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SAModManager.Common"
-		xmlns:wpf="clr-namespace:SAModManager"
+		xmlns:elements="clr-namespace:SAModManager.Elements"
         mc:Ignorable="d" Style="{StaticResource SAWindow}"
         Title="{DynamicResource ModChangelog.Title}" Height="450" Width="800"
          WindowStartupLocation="CenterScreen"
@@ -87,7 +87,7 @@
                                         <Label Content="{DynamicResource ModChangelog.Tabs.Details.UpdateName}" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
                                         <Label Content="{DynamicResource ModChangelog.Tabs.Details.Tag}" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
 
-                                        <wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="BtnOpenUpdate" 
+										<elements:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="BtnOpenUpdate" 
 														 Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
 														 Content="{DynamicResource ModChangelog.Tabs.Details.Buttons.OpenBrowser}"
 														 Icon="{StaticResource Icons.Open}" Click="BtnOpenUpdate_Click" />
@@ -141,10 +141,10 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
-            <wpf:ImageButton x:Name="btnInstallNow" Style="{StaticResource ImageTextButtonStyle}" Margin="5"
+			<elements:ImageButton x:Name="btnInstallNow" Style="{StaticResource ImageTextButtonStyle}" Margin="5"
 							 Icon="{StaticResource Icons.Download}" Padding="5"
 							 Content="{DynamicResource ModChangelog.Buttons.DownloadNow}" Click="DLButton_Click"/>
-            <wpf:ImageButton Style="{StaticResource ImageTextButtonStyle}" 
+			<elements:ImageButton Style="{StaticResource ImageTextButtonStyle}" 
 							 Margin="5" Grid.Column="1"
 							 Icon="{StaticResource Icons.Update}" Padding="5"
 							 Content="{DynamicResource ModChangelog.Buttons.DownloadLater}" Click="ImageButton_Click_1" IsCancel="True"/>
