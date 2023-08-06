@@ -15,6 +15,7 @@ using SAModManager.Common;
 using SAModManager.Updater;
 using SAModManager.Ini;
 using System.Reflection;
+using SAModManager.IniSettings;
 
 namespace SAModManager
 {
@@ -31,9 +32,8 @@ namespace SAModManager
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
         public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
-        public static readonly string ConfigPath = Path.Combine(ConfigFolder, "config.ini");
-		public static readonly string AltConfigPath = Path.Combine(ConfigFolder, "manager_settings.ini");
-        public static ManagerSettings.ManagerSettings configIni { get; set; }
+		public static readonly string ConfigPath = Path.Combine(ConfigFolder, "manager_settings.ini");
+        public static ManagerSettings configIni { get; set; }
 
         private static readonly Mutex mutex = new(true, pipeName);
         public static Updater.UriQueue UriQueue;
@@ -44,6 +44,7 @@ namespace SAModManager
 
         public static ThemeEntry CurrentTheme { get; set; }
         public static ThemeList ThemeList { get; set; }
+
         public static Common.Game CurrentGame = new();
 
         [STAThread]
@@ -225,6 +226,24 @@ namespace SAModManager
             return await SAModManager.Startup.StartupCheck();
         }
 
+		private ManagerSettings LoadManagerConfig()
+		{
+			ManagerSettings settings = File.Exists(ConfigPath) ? IniSerializer.Deserialize<ManagerSettings>(ConfigPath) : new ManagerSettings();
+
+			switch(settings.GameManagement.CurrentSetGame)
+			{
+				default:
+				case (int)SetGame.SADX:
+					CurrentGame = GamesInstall.SonicAdventure;
+					break;
+				case (int)SetGame.SA2:
+					CurrentGame = GamesInstall.SonicAdventure2;
+					break;
+			}
+
+			return settings;
+        }
+
         protected override async void OnStartup(StartupEventArgs e)
         {
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
@@ -258,9 +277,7 @@ namespace SAModManager
             SetupLanguages();
             SetupThemes();
 
-            configIni = File.Exists(ConfigPath) ? IniSerializer.Deserialize<ManagerSettings.ManagerSettings>(ConfigPath) : new ManagerSettings.ManagerSettings();
-            App.CurrentGame = GamesInstall.SonicAdventure; //To do; make it get the game from game config.
-
+			configIni = LoadManagerConfig();
 
             if (await ExecuteDependenciesCheck() == false)
             {

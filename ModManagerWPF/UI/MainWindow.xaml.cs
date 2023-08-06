@@ -23,6 +23,7 @@ using SAModManager.Updater;
 using SAModManager.Elements;
 using SevenZipExtractor;
 using SAModManager.Ini;
+using SAModManager.IniSettings;
 using ICSharpCode.AvalonEdit.Editing;
 
 namespace SAModManager
@@ -34,7 +35,7 @@ namespace SAModManager
     public partial class MainWindow : Window
     {
         #region Variables
-        public GameType setGame = GameType.SADX;
+        public SetGame setGame = SetGame.SADX;
         public readonly string titleName = "SADX Mod Manager";
 
         private readonly string Version = App.VersionString;
@@ -46,6 +47,11 @@ namespace SAModManager
         public string chrmdllpath = "system/CHRMODELS.dll";
 
         SADXLoaderInfo loaderini;
+		private string SADXSettingsPath;
+		IniSettings.SADX.GameSettings SADXSettings;
+		private string SA2SettingsPath;
+		IniSettings.SA2.GameSettings SA2Settings;
+
         public Dictionary<string, SADXModInfo> mods = null;
 
         string codelstpath = "mods/Codes.lst";
@@ -170,6 +176,38 @@ namespace SAModManager
             Settings.Default.Save();
         }
 
+		private void LoadGameProfile()
+		{
+			switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
+			{
+				case SetGame.SADX:
+					if (App.configIni.GameManagement.SADXProfile == string.Empty)
+					{
+						if (File.Exists(Path.Combine(App.CurrentGame.gameDirectory, loaderinipath)))
+						{
+							SADXLoaderInfo oldSettings = IniSerializer.Deserialize<SADXLoaderInfo>(Path.Combine(App.CurrentGame.gameDirectory, loaderinipath));
+							SADXSettings.ConvertFromV0(oldSettings);
+						}
+						else
+							SADXSettings = new();
+					}
+					else
+						SADXSettings = File.Exists(Path.Combine(App.ConfigFolder, App.CurrentGame.gameName, App.configIni.GameManagement.SADXProfile)) ?
+							IniSerializer.Deserialize<IniSettings.SADX.GameSettings>(
+								Path.Combine(App.ConfigFolder, App.CurrentGame.gameName, App.configIni.GameManagement.SADXProfile)
+								) : new();
+					break;
+				case SetGame.SA2:
+					if (App.configIni.GameManagement.SA2Profile == string.Empty)
+					{
+						// SA2 Converter
+					}
+					else
+						SA2Settings = new();
+					break;
+			}
+		}
+
         #region Main
 
         public void SetModManagerVersion()
@@ -204,13 +242,13 @@ namespace SAModManager
             Grid stackPanel;
             switch (setGame)
             {
-                case GameType.SADX:
+                case SetGame.SADX:
                     tabGame.Visibility = Visibility.Visible;
                     stackPanel = (Grid)tabGame.Content;
                     //stackPanel.Children[0].Visibility = Visibility.Collapsed;
                     //stackPanel.Children.Add(new Elements.SADX.GameConfig(loaderini, gamePath));
                     break;
-                case GameType.SA2:
+                case SetGame.SA2:
                 default:
                     tabGame.Visibility = Visibility.Collapsed;
                     break;
@@ -266,8 +304,6 @@ namespace SAModManager
 
                 d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
                 d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
-
-
             }
             else
             {
@@ -285,13 +321,12 @@ namespace SAModManager
             //main
             comboLanguage.SelectedIndex = App.configIni.Language;
             comboThemes.SelectedIndex = App.configIni.Theme;
+            checkDevEnabled.IsChecked = App.configIni.EnableDeveloperMode;
+            checkManagerOpen.IsChecked = App.configIni.KeepManagerOpen;
 
-            //advanced
-            checkDevEnabled.IsChecked = App.configIni.AdvancedSettings.EnableDeveloperMode;
-            checkManagerOpen.IsChecked = App.configIni.AdvancedSettings.KeepManagerOpen;
-            checkEnableLogConsole.IsChecked = App.configIni.AdvancedSettings.EnableDebugConsole;
-            checkEnableLogFile.IsChecked = App.configIni.AdvancedSettings.EnableDebugFile;
-            checkEnableCrashDump.IsChecked = App.configIni.AdvancedSettings.EnableDebugCrashLog;
+			SADXSettingsPath = App.configIni.GameManagement.SADXProfile;
+			SA2SettingsPath = App.configIni.GameManagement.SA2Profile;
+			setGame = (SetGame)App.configIni.GameManagement.CurrentSetGame;
 
             //updates
             chkUpdatesML.IsChecked = App.configIni.UpdateSettings.EnableManagerBootCheck;
@@ -303,18 +338,15 @@ namespace SAModManager
             //main
             App.configIni.Language = comboLanguage.SelectedIndex;
             App.configIni.Theme = comboThemes.SelectedIndex;
+			App.configIni.EnableDeveloperMode = checkDevEnabled.IsChecked.GetValueOrDefault();
+			App.configIni.KeepManagerOpen = checkManagerOpen.IsChecked.GetValueOrDefault();
 
-            //advanced
-            App.configIni.AdvancedSettings.EnableDeveloperMode = (bool)checkDevEnabled.IsChecked;
-            App.configIni.AdvancedSettings.KeepManagerOpen = (bool)checkManagerOpen.IsChecked;
-            App.configIni.AdvancedSettings.EnableDebugConsole = (bool)checkEnableLogConsole.IsChecked;
-            App.configIni.AdvancedSettings.EnableDebugFile = (bool)checkEnableLogFile.IsChecked;
-            App.configIni.AdvancedSettings.EnableDebugCrashLog = (bool)checkEnableCrashDump.IsChecked;
-
-            //updates
-            App.configIni.UpdateSettings.EnableManagerBootCheck = chkUpdatesML.IsChecked.GetValueOrDefault();
+			App.configIni.GameManagement.CurrentSetGame = (int)setGame;
+			App.configIni.GameManagement.SADXProfile = SADXSettingsPath;
+			App.configIni.GameManagement.SA2Profile = SA2SettingsPath;
+            
+			App.configIni.UpdateSettings.EnableManagerBootCheck = chkUpdatesML.IsChecked.GetValueOrDefault();
             App.configIni.UpdateSettings.EnableModsBootCheck = chkUpdatesMods.IsChecked.GetValueOrDefault();
-
 
             IniSerializer.Serialize(App.configIni, App.ConfigPath);
         }
@@ -970,6 +1002,7 @@ namespace SAModManager
 
         private void LoadGameConfigIni()
         {
+
             gameConfigFile = File.Exists(sadxIni) ? IniSerializer.Deserialize<Game.GameConfigFile>(sadxIni) : new Game.GameConfigFile();
 
             if (gameConfigFile.GameConfig == null)
@@ -2904,8 +2937,6 @@ namespace SAModManager
         }
         #endregion
         #endregion
-
-
     }
 }
 

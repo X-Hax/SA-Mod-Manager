@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using SAModManager.Ini;
 
-namespace SAModManager.ManagerSettings.SADX
+namespace SAModManager.IniSettings.SADX
 {
 	public class GraphicsSettings
 	{
@@ -442,42 +442,48 @@ namespace SAModManager.ManagerSettings.SADX
 		/// </summary>
 		[IniAlwaysInclude]
 		[DefaultValue((int)SADXSettingsVersions.v1)]
-		public int SettingsVersion { get; set; }
+		public int SettingsVersion { get; set; } = (int)SADXSettingsVersions.v1;
 
 		/// <summary>
 		/// Graphics Settings for SADX.
 		/// </summary>
 		[IniAlwaysInclude]
-		public GraphicsSettings Graphics { get; set; }
+		public GraphicsSettings Graphics { get; set; } = new();
 
 		/// <summary>
 		/// Controller Settings for SADX.
 		/// </summary>
 		[IniAlwaysInclude]
-		public ControllerSettings Controller { get; set; }
+		public ControllerSettings Controller { get; set; } = new();
 
 		/// <summary>
 		/// Sound Settings for SADX.
 		/// </summary>
 		[IniAlwaysInclude]
-		public SoundSettings Sound { get; set; }
+		public SoundSettings Sound { get; set; } = new();
 
 		/// <summary>
 		/// TestSpawn Settings for SADX.
 		/// </summary>
-		public TestSpawnSettings TestSpawn { get; set; }
+		public TestSpawnSettings TestSpawn { get; set; } = new();
 
 		/// <summary>
 		/// Patches for SADX.
 		/// </summary>
 		[IniAlwaysInclude]
-		public GamePatches Patches { get; set; }
+		public GamePatches Patches { get; set; } = new();
+
+		/// <summary>
+		/// Debug Settings.
+		/// </summary>
+		[IniAlwaysInclude]
+		public DebugSettings DebugSettings { get; set; } = new();
 
 		/// <summary>
 		/// Path to the game install saved with this configuration.
 		/// </summary>
 		[IniAlwaysInclude]
-		public string GamePath { get; set; }
+		public string GamePath { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Enabled Mods for SADX.
@@ -504,8 +510,10 @@ namespace SAModManager.ManagerSettings.SADX
 			Sound.ConvertFromV0(oldSettings);
 			TestSpawn.ConvertFromV0(oldSettings);
 			Patches.ConvertFromV0(oldSettings);
+			DebugSettings.ConvertFromV0(oldSettings);
 
 			SettingsVersion = (int)SADXSettingsVersions.v1;
+			GamePath = App.CurrentGame.gameDirectory;
 			EnabledMods = oldSettings.Mods;
 			EnabledCodes = oldSettings.EnabledCodes;
 		}

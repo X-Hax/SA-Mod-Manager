@@ -6,8 +6,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SAModManager.ManagerSettings
+namespace SAModManager.IniSettings
 {
+	public enum ManagerSettingsVersions
+	{
+		v0 = 0,
+		v1 = 1,
+	}
+
+	public enum SetGame
+	{
+		None = 0,
+		SADX = 1,
+		SA2 = 2,
+	}
+
 	public class UpdateSettings
 	{
 		/// <summary>
@@ -27,22 +40,17 @@ namespace SAModManager.ManagerSettings
 		/// </summary>
 		[DefaultValue(true)]
 		public bool EnableLoaderBootCheck { get; set; } = true;
+
+		public void ConvertFromV0(SADXLoaderInfo oldSettings)
+		{
+			EnableManagerBootCheck = oldSettings.UpdateCheck;
+			EnableModsBootCheck = oldSettings.ModUpdateCheck;
+			EnableLoaderBootCheck = true;
+		}
 	}
 
-	public class AdvancedSettings
+	public class DebugSettings
 	{
-		/// <summary>
-		/// Enables Developer Options in the Manager.
-		/// </summary>
-		[DefaultValue(false)]
-		public bool EnableDeveloperMode { get; set; }           // SADXLoaderInfo.devMode
-
-		/// <summary>
-		/// Keeps the Manager open when launching the game.
-		/// </summary>
-		[DefaultValue(false)]
-		public bool KeepManagerOpen { get; set; }       // SADXLoaderInfo.managerOpen
-
 		/// <summary>
 		/// Enables debug printing to the console window.
 		/// </summary>
@@ -72,16 +80,40 @@ namespace SAModManager.ManagerSettings
 		/// </summary>
 		[DefaultValue(false)]
 		public bool? EnableShowConsole { get { return null; } set { if (value.HasValue) EnableDebugConsole = value.Value; } }   // SADXLoaderInfo.ShowConsole
+
+		public void ConvertFromV0(SADXLoaderInfo oldSettings)
+		{
+			EnableDebugConsole = oldSettings.DebugConsole;
+			EnableDebugScreen = oldSettings.DebugScreen;
+			EnableDebugFile = oldSettings.DebugFile;
+			EnableDebugCrashLog = oldSettings.DebugCrashLog;
+			EnableShowConsole = oldSettings.ShowConsole;
+		}
+	}
+
+	public class GameManagement
+	{
+		/// <summary>
+		/// Currently Set game, defaults to None. Should only Reset to None if no GameConfigs can be found.
+		/// </summary>
+		[DefaultValue((int)SetGame.SADX)]
+		public int CurrentSetGame { get; set; } = (int)SetGame.SADX;
+
+		/// <summary>
+		/// Most recently loaded SADX Game Profile.
+		/// </summary>
+		[DefaultValue("")]
+		public string SADXProfile { get; set; } = string.Empty;
+
+		/// <summary>
+		/// Most recently loaded SA2 Game Profile.
+		/// </summary>
+		[DefaultValue("")]
+		public string SA2Profile { get; set; } = string.Empty;
 	}
 
 	public class ManagerSettings
 	{
-		public enum ManagerSettingsVersions
-		{
-			v0 = 0,
-			v1 = 1
-		}
-
 		/// <summary>
 		/// Versioning for the Manager Settings file.
 		/// </summary>
@@ -96,10 +128,22 @@ namespace SAModManager.ManagerSettings
 		public UpdateSettings UpdateSettings { get; set; } = new();
 
 		/// <summary>
-		/// Advanced Settings for the Manager.
+		/// Enables Developer Options in the Manager.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool EnableDeveloperMode { get; set; }           // SADXLoaderInfo.devMode
+
+		/// <summary>
+		/// Keeps the Manager open when launching the game.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool KeepManagerOpen { get; set; }       // SADXLoaderInfo.managerOpen
+
+		/// <summary>
+		/// Game Management so the loader can always use last loaded settings.
 		/// </summary>
 		[IniAlwaysInclude]
-		public AdvancedSettings AdvancedSettings { get; set; } = new();
+		public GameManagement GameManagement { get; set; } = new();
 
 		/// <summary>
 		/// The set Theme for the Manager.
@@ -112,5 +156,16 @@ namespace SAModManager.ManagerSettings
 		/// </summary>
 		[DefaultValue(0)]
 		public int Language { get; set; } = 0;      // SADXLoaderInfo.Language
+
+		public void ConvertFromV0(SADXLoaderInfo oldSettings)
+		{
+			SettingsVersion = (int)ManagerSettingsVersions.v1;
+			UpdateSettings.ConvertFromV0(oldSettings);
+			EnableDeveloperMode = oldSettings.devMode;
+			KeepManagerOpen = oldSettings.managerOpen;
+			GameManagement = new();
+			Theme = oldSettings.Theme;
+			Language = oldSettings.Language;
+		}
 	}
 }
