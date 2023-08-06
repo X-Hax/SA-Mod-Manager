@@ -240,12 +240,11 @@ namespace SAModManager
 
     public static class GitHub
     {
-        public static readonly string owner = "X-Hax";
-        public static readonly string repo = "SA-Mod-Manager";
-        public static readonly string workflowWindows = "build";
+        private static readonly string owner = "X-Hax";
+        private static readonly string repo = "SA-Mod-Manager";
         private static readonly string AppName = "SA Mod Manager";
 
-        public static async Task<GitHubAction> GetLatestAction(string owner, string repo)
+        public static async Task<GitHubAction> GetLatestAction()
         {
             using (var httpClient = new HttpClient())
             {
@@ -274,7 +273,7 @@ namespace SAModManager
         }
 
 
-        public static async Task<List<GitHubArtifact>> GetArtifactsForAction(string owner, string repo, long actionId)
+        public static async Task<List<GitHubArtifact>> GetArtifactsForAction(long actionId)
         {
             using (var httpClient = new HttpClient())
             {
@@ -300,7 +299,7 @@ namespace SAModManager
             }
         }
 
-        public static async Task<WorkflowRunInfo> GetLatestWorkflowRun(string owner, string repo)
+        public static async Task<WorkflowRunInfo> GetLatestWorkflowRun()
         {
             using (var httpClient = new HttpClient())
             {

@@ -16,6 +16,7 @@ using SAModManager.Updater;
 using SAModManager.Ini;
 using System.Reflection;
 using SAModManager.IniSettings;
+using System.Diagnostics;
 
 namespace SAModManager
 {
@@ -32,7 +33,7 @@ namespace SAModManager
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
         public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
-		public static readonly string ConfigPath = Path.Combine(ConfigFolder, "config.ini");
+        public static readonly string ConfigPath = Path.Combine(ConfigFolder, "config.ini");
         public static ManagerSettings configIni { get; set; }
 
         private static readonly Mutex mutex = new(true, pipeName);
@@ -44,7 +45,6 @@ namespace SAModManager
 
         public static ThemeEntry CurrentTheme { get; set; }
         public static ThemeList ThemeList { get; set; }
-
         public static Common.Game CurrentGame = new();
 
         [STAThread]
@@ -163,19 +163,19 @@ namespace SAModManager
 
         private static async Task<(bool, WorkflowRunInfo, GitHubArtifact)> CheckManagerUpdate()
         {
-            var workflowRun = await GitHub.GetLatestWorkflowRun(GitHub.owner, GitHub.repo);
+            var workflowRun = await GitHub.GetLatestWorkflowRun();
 
             if (workflowRun is null)
                 return (false, null, null);
 
             bool hasUpdate = RepoCommit != workflowRun.HeadSHA;
 
-            GitHubAction latestAction = await GitHub.GetLatestAction(GitHub.owner, GitHub.repo);
+            GitHubAction latestAction = await GitHub.GetLatestAction();
             GitHubArtifact info = null;
 
             if (latestAction != null)
             {
-                List<GitHubArtifact> artifacts = await GitHub.GetArtifactsForAction(GitHub.owner, GitHub.repo, latestAction.Id);
+                List<GitHubArtifact> artifacts = await GitHub.GetArtifactsForAction(latestAction.Id);
 
                 if (artifacts != null)
                 {
@@ -186,19 +186,28 @@ namespace SAModManager
             return (hasUpdate, workflowRun, info);
         }
 
-        public static async Task PerformUpdateManagerCheck()
+        public static async Task<bool> PerformUpdateManagerCheck()
         {
             var update = await CheckManagerUpdate();
 
             if (update.Item1 == false)
             {
-                return;
+                return false;
             }
 
             string changelog = await GitHub.GetGitChangeLog(update.Item2.HeadSHA);
-            var manager = new InfoManagerUpdate(update.Item2, update.Item3, changelog).ShowDialog();
-         
+            var manager = new InfoManagerUpdate(update.Item2, update.Item3, changelog);
+            manager.ShowDialog();
 
+            if (manager.DialogResult != true)
+                return false;
+
+            string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
+            var dl = new ManagerUpdate(dlLink, ".SATemp", update.Item3.Name + ".zip");
+            await dl.StartManagerDL();
+            dl.ShowDialog();
+
+            return true;
         }
 
         public static void DoEvents()
@@ -208,14 +217,24 @@ namespace SAModManager
 
         private static bool DoUpdate(string[] args, bool alreadyRunning)
         {
-            if (args.Length > 1 && args[0] == "doupdate")
+      
+            foreach (var arg in args)
             {
-                if (alreadyRunning)
-                    try { mutex.WaitOne(); }
-                    catch (AbandonedMutexException) { }
+                File.Create(arg + ".txt");
+                if (arg == "doupdate")
+                {
+                    File.Create("DoUpdatePassed.txt");
+
+                    if (alreadyRunning)
+                        try { mutex.WaitOne(); }
+                        catch (AbandonedMutexException) { }
 
 
-                return true;
+                    App app = new();
+                    app.InitializeComponent();
+                    app.Run(new LoaderManifestDialog(args[1]));
+                    return true;
+                }
             }
 
             return false;
@@ -226,28 +245,28 @@ namespace SAModManager
             return await SAModManager.Startup.StartupCheck();
         }
 
-		private ManagerSettings LoadManagerConfig()
-		{
-			ManagerSettings settings = File.Exists(ConfigPath) ? IniSerializer.Deserialize<ManagerSettings>(ConfigPath) : new ManagerSettings();
+        private ManagerSettings LoadManagerConfig()
+        {
+            ManagerSettings settings = File.Exists(ConfigPath) ? IniSerializer.Deserialize<ManagerSettings>(ConfigPath) : new ManagerSettings();
 
-			switch(settings.GameManagement.CurrentSetGame)
-			{
-				default:
-				case (int)SetGame.SADX:
-					CurrentGame = GamesInstall.SonicAdventure;
-					break;
-				case (int)SetGame.SA2:
-					CurrentGame = GamesInstall.SonicAdventure2;
-					break;
-			}
+            switch (settings.GameManagement.CurrentSetGame)
+            {
+                default:
+                case (int)SetGame.SADX:
+                    CurrentGame = GamesInstall.SonicAdventure;
+                    break;
+                case (int)SetGame.SA2:
+                    CurrentGame = GamesInstall.SonicAdventure2;
+                    break;
+            }
 
-			return settings;
+            return settings;
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-
+ 
             string[] args = Environment.GetCommandLineArgs();
 
             if (CheckinstallURLHandler(args)) //we check if the program has been launched just to enable One Click Install
@@ -277,8 +296,7 @@ namespace SAModManager
             SetupLanguages();
             SetupThemes();
 
-			configIni = LoadManagerConfig();
-
+            configIni = LoadManagerConfig();
             if (await ExecuteDependenciesCheck() == false)
             {
                 return;

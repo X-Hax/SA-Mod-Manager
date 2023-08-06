@@ -41,8 +41,8 @@ namespace SAModManager.Updater
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{
 			DialogResult = true;
-
-			CancellationToken token = tokenSource.Token;
+            File.Create("LoaderManifestDIalogFired.txt");
+            CancellationToken token = tokenSource.Token;
 			// Window is shown and loaded, perform your logic here
 
 			try
@@ -109,8 +109,8 @@ namespace SAModManager.Updater
 
 					File.Copy(newManPath, oldManPath, true);
 
-					string executablePath = Assembly.GetEntryAssembly().Location;
-					Process.Start(Path.GetFileName(executablePath), $"cleanupdate \"{updatePath}\"");
+					string executablePath = Environment.ProcessPath;
+                    Process.Start(Path.GetFileName(executablePath), $"cleanupdate \"{updatePath}\"");
 				}, token))
 				{
 					task.Start();

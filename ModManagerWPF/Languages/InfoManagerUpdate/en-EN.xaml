@@ -4,4 +4,5 @@
 
 	<system:String x:Key="InfoManagerUpdate.Title">Manager Updates</system:String>
 	<system:String x:Key="InfoManagerUpdate.Changelog">Changelog:</system:String>
+    <system:String x:Key="InfoManagerUpdate.DLQuestion">Do you want to download the update(s)?</system:String>
 </ResourceDictionary>

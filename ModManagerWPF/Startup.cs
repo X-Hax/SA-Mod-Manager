@@ -95,7 +95,7 @@ namespace SAModManager
 			if (DL.done)
 			{
 				// Asynchronous operation using async/await
-				await Process.Start(new ProcessStartInfo(Path.Combine("SATemp", "NET7Install.exe"), "/install /passive /norestart")
+				await Process.Start(new ProcessStartInfo(Path.Combine(".SATemp", "NET7Install.exe"), "/install /passive /norestart")
 				{
 					UseShellExecute = true,
 					Verb = "runas"
@@ -168,7 +168,7 @@ namespace SAModManager
 						if (DL.done)
 						{
 							// Asynchronous operation using async/await
-							await Process.Start(new ProcessStartInfo(Path.Combine("SATemp", "vc_redist.x86.exe"), "/install /passive /norestart")
+							await Process.Start(new ProcessStartInfo(Path.Combine(".SATemp", "vc_redist.x86.exe"), "/install /passive /norestart")
 							{
 								UseShellExecute = true,
 								Verb = "runas"

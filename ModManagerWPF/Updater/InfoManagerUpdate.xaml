@@ -40,7 +40,7 @@
 				<ColumnDefinition Width="100"/>
 				<ColumnDefinition Width="10"/>
 			</Grid.ColumnDefinitions>
-			<Button x:Name="DownloadUpdate" Content="{DynamicResource CommonStrings.Download}"/>
+			<Button x:Name="DownloadUpdate" Content="{DynamicResource CommonStrings.Download}" Click="DownloadUpdate_Click"/>
 			<Button x:Name="CancelUpdate" IsCancel="True" Click="CancelUpdate_Click" Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="2"/>
 		</Grid>
     </Grid>

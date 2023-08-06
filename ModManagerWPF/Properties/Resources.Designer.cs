@@ -155,6 +155,15 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://nightly.link/X-Hax/SA-Mod-Manager/suites/{0}/artifacts/{1}.
+        /// </summary>
+        internal static string URL_SAMM_UPDATE {
+            get {
+                return ResourceManager.GetString("URL_SAMM_UPDATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/SDL2.dll.
         /// </summary>
         internal static string URL_SDL {
