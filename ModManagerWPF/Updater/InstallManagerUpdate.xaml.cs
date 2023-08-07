@@ -26,7 +26,6 @@ namespace SAModManager.Updater
             InitializeComponent();
             this.updatePath = updatePath;
             this.managerExePath = managerPath;
-            File.Create("ManagerUpdate Fired.txt");
         }
 
         public async Task InstallUpdate()
@@ -39,7 +38,6 @@ namespace SAModManager.Updater
                 {    
                     await Util.MoveFile(Path.Combine(updatePath, executablePath), managerExePath, true);
                     Process.Start(managerExePath, $"cleanupdate \"{updatePath}\"");
-                    File.Create("ManagerUpdate did copy the file.txt");
                     done = true;
 
                 }

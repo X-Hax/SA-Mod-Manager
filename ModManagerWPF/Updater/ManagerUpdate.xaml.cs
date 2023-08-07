@@ -75,8 +75,6 @@ namespace SAModManager.Common
                 }
             });
 
-
-
         }
 
         public async Task StartManagerDL()

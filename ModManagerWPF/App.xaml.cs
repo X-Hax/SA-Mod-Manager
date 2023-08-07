@@ -269,8 +269,6 @@ namespace SAModManager
 
         private static async Task<bool> DoUpdate(string[] args, bool alreadyRunning)
         {
-            File.AppendAllLines("recap.txt", args);
-
             foreach (var arg in args)
             {
                 if (arg == "doupdate")
@@ -281,7 +279,6 @@ namespace SAModManager
                         catch (AbandonedMutexException) { }
 
 
-                    File.Create("InDoUpdate.txt");
                     var dialog = new InstallManagerUpdate(args[2], args[3]);
                     await dialog.InstallUpdate();
 
@@ -292,8 +289,6 @@ namespace SAModManager
 
                 if (arg == "cleanupdate")
                 {
-                    File.Create("ManagerUpdate fired cleanup update.txt");
-
                     if (alreadyRunning)
                         try { mutex.WaitOne(); }
                         catch (AbandonedMutexException) { }
