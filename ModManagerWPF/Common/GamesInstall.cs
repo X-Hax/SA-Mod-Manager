@@ -39,28 +39,12 @@ namespace SAModManager.Common
 		public string URL;
 	}
 
-	public class DependenciesInstall
-	{
-		public bool isDependencyInstalled(Game game)
-		{
-			if (game is null)
-				return false;
-
-			foreach (var dependency in game.Dependencies)
-			{
-				if (!Directory.Exists(dependency.path))
-					return false;
-			}
-
-			return true;
-		}
-	}
-
 	public class Loader
 	{
 		public string name;
 		public byte[] data;
 		public string URL;
+		public bool installed = false;
 	}
 
 	public static class GamesInstall
@@ -68,17 +52,6 @@ namespace SAModManager.Common
 		private static bool DependencyInstalled(Dependencies dependency)
 		{
 			return File.Exists(Path.Combine(dependency.path, dependency.name + ".dll"));
-		}
-
-		public static async Task<bool> AllDependenciesInstalled(Game game)
-		{
-			foreach (var dependency in game.Dependencies)
-			{
-				if (!DependencyInstalled(dependency))
-					return false;
-			}
-
-			return true;
 		}
 
 		public static void SetDependencyPath()
@@ -225,7 +198,7 @@ namespace SAModManager.Common
 				},
 			},
 
-			ProfilesDirectory = "SADX",
+			ProfilesDirectory = Path.Combine(App.ConfigFolder, "SADX"),
 		};
 
 		public static Game SonicAdventure2 = new()
@@ -238,7 +211,7 @@ namespace SAModManager.Common
 				name = "SA2ModLoader",
 			},
 
-			ProfilesDirectory = "SA2",
+			ProfilesDirectory = Path.Combine(App.ConfigFolder, "SA2"),
 		};
 
         public static IEnumerable<Game> GetSupportedGames()

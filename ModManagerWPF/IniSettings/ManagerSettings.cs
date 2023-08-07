@@ -119,12 +119,12 @@ namespace SAModManager.IniSettings
 		/// </summary>
 		[IniAlwaysInclude]
 		[DefaultValue((int)ManagerSettingsVersions.v1)]
-		public int SettingsVersion { get; set; }
+		public int SettingsVersion { get; set; } = (int)ManagerSettingsVersions.v1;
 
-		/// <summary>
-		/// Update Settings for the Manager.
-		/// </summary>
-		[IniAlwaysInclude]
+        /// <summary>
+        /// Update Settings for the Manager.
+        /// </summary>
+        [IniAlwaysInclude]
 		public UpdateSettings UpdateSettings { get; set; } = new();
 
 		/// <summary>

@@ -62,7 +62,6 @@ namespace SAModManager
         CodeList mainCodes = null;
         List<Code> codes = null;
         public List<CodeData> codesSearch { get; set; }
-        bool installed = false;
         bool suppressEvent = false;
         BackgroundWorker updateChecker;
         private bool manualModUpdate;
@@ -309,7 +308,7 @@ namespace SAModManager
                 App.CurrentGame.gameDirectory = string.Empty;
             }
 
-            installed = File.Exists(chrmdllorigpath);
+            App.CurrentGame.loader.installed = File.Exists(chrmdllorigpath);
             UpdateBtnInstallLoader_State();
             loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
             Update_PlayButtonsState();
@@ -910,19 +909,19 @@ namespace SAModManager
         private void AddModBtn_UpdateState()
         {
             Image iconConfig = FindName("newIcon") as Image;
-            iconConfig?.SetValue(Image.OpacityProperty, installed ? 1 : LowOpacityIcon);
-            NewModBtn.Opacity = installed ? 1 : LowOpacityBtn;
-            NewModBtn.IsEnabled = installed;
+            iconConfig?.SetValue(Image.OpacityProperty, App.CurrentGame.loader.installed ? 1 : LowOpacityIcon);
+            NewModBtn.Opacity = App.CurrentGame.loader.installed ? 1 : LowOpacityBtn;
+            NewModBtn.IsEnabled = App.CurrentGame.loader.installed;
         }
 
         private void Update_PlayButtonsState()
         {
-            SaveAndPlayButton.IsEnabled = installed;
+            SaveAndPlayButton.IsEnabled = App.CurrentGame.loader.installed;
             Image iconSavePlay = FindName("savePlayIcon") as Image;
             iconSavePlay?.SetValue(Image.OpacityProperty, SaveAndPlayButton.IsEnabled ? 1 : LowOpacityIcon);
-            SaveAndPlayButton.Opacity = installed ? 1 : LowOpacityBtn;
-            btnTSLaunch.IsEnabled = installed;
-            btnTSLaunch.Opacity = installed ? 1 : LowOpacityBtn;
+            SaveAndPlayButton.Opacity = App.CurrentGame.loader.installed ? 1 : LowOpacityBtn;
+            btnTSLaunch.IsEnabled = App.CurrentGame.loader.installed;
+            btnTSLaunch.Opacity = App.CurrentGame.loader.installed ? 1 : LowOpacityBtn;
         }
 
         private void UpdateMainButtonsState()
@@ -2517,7 +2516,7 @@ namespace SAModManager
 
         private void TS_GetSave()
         {
-            if (installed)
+            if (App.CurrentGame.loader.installed)
             {
                 string fullPath = Path.Combine(App.CurrentGame.gameDirectory, "SAVEDATA");
 
@@ -2765,13 +2764,13 @@ namespace SAModManager
                 return;
 
             //Update Text Button of Mod Loader Installer
-            string textKey = installed ? "Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader" : "Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader";
+            string textKey = App.CurrentGame.loader.installed ? "Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader" : "Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader";
             TextBlock txt = FindName("txtInstallLoader") as TextBlock;
             txt.Text = Lang.GetString(textKey);
 
             //update icon image depending if the Mod Loader is installed or not
-            string iconName = installed ? "IconUninstall" : "IconInstall";
-            var dic = installed ? Icons.Icons.UninstallIcon : Icons.Icons.InstallIcon;
+            string iconName = App.CurrentGame.loader.installed ? "IconUninstall" : "IconInstall";
+            var dic = App.CurrentGame.loader.installed ? Icons.Icons.UninstallIcon : Icons.Icons.InstallIcon;
 
             DrawingImage Icon = dic[iconName] as DrawingImage;
 
@@ -2785,13 +2784,13 @@ namespace SAModManager
         {
 
             if (force)
-                installed = false;
+                App.CurrentGame.loader.installed = false;
 
             if (!File.Exists(loaderdllpath))
             {
-                await GamesInstall.InstallLoader(GamesInstall.SonicAdventure);
+                await GamesInstall.InstallLoader(App.CurrentGame);
 
-                if (File.Exists(chrmdllorigpath) && installed)
+                if (File.Exists(chrmdllorigpath) && App.CurrentGame.loader.installed)
                 {
                     File.Copy(loaderdllpath, chrmdllpath, true);
                     UpdateBtnInstallLoader_State();
@@ -2802,11 +2801,10 @@ namespace SAModManager
             SaveAndPlayButton.IsEnabled = false;
             btnTSLaunch.IsEnabled = false;
 
-            if (installed && File.Exists(chrmdllorigpath))
+            if (App.CurrentGame.loader.installed && File.Exists(chrmdllorigpath))
             {
                 File.Delete(chrmdllpath);
                 await Util.MoveFile(chrmdllorigpath, chrmdllpath);
-
             }
             else
             {
@@ -2814,7 +2812,8 @@ namespace SAModManager
                 File.Copy(loaderdllpath, chrmdllpath);
             }
 
-            installed = !installed;
+            await VanillaTransition.HandleVanillaManagerFiles(App.CurrentGame.loader.installed, App.CurrentGame.gameDirectory);
+            App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
             UpdateBtnInstallLoader_State();
         }
 
@@ -2826,14 +2825,16 @@ namespace SAModManager
                 return;
             }
 
-            await InstallLoader();
+            await InstallLoader(); //ToDo update to be less a mess
             btnBrowseGameDir.IsEnabled = false;
 
-            if (installed)
+            if (App.CurrentGame.loader.installed)
             {
                 await GamesInstall.InstallLoader(App.CurrentGame);
                 await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
+                Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
             }
+
 
             Update_PlayButtonsState();
             btnBrowseGameDir.IsEnabled = true;
@@ -2892,7 +2893,7 @@ namespace SAModManager
         #region Mod Profiles
         private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
         {
-            if (!installed)
+            if (!App.CurrentGame.loader.installed)
                 return;
 
             new ModProfile(ref comboProfile).ShowDialog();
