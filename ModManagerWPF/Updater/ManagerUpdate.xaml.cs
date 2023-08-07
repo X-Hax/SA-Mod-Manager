@@ -19,6 +19,7 @@ namespace SAModManager.Common
         private string URL;
         private string tempFolderPath;
         private string fileName;
+        public bool done = false;
         private readonly CancellationTokenSource tokenSource = new();
 
         public ManagerUpdate(string url, string updatePath, string fileName)
@@ -66,12 +67,15 @@ namespace SAModManager.Common
 
                     string newExec = Path.Combine(tempFolderPath, Path.GetFileName(Environment.ProcessPath));
                     DialogResult = true;
-                    Process.Start(new ProcessStartInfo(Path.Combine(tempFolderPath, Path.GetFileName(Environment.ProcessPath)), $"doupdate \"{tempFolderPath}\"")
+                    Process.Start(new ProcessStartInfo(newExec, $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"")
                     {
                         UseShellExecute = true,
                     });
+                    done = true;
                 }
             });
+
+
 
         }
 

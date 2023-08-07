@@ -253,9 +253,11 @@ namespace SAModManager
                 return false;
 
             string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
+            Directory.CreateDirectory(".SATemp");
             var dl = new ManagerUpdate(dlLink, ".SATemp", update.Item3.Name + ".zip");
             await dl.StartManagerDL();
             dl.ShowDialog();
+            ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
 
             return true;
         }
@@ -267,11 +269,11 @@ namespace SAModManager
 
         private static async Task<bool> DoUpdate(string[] args, bool alreadyRunning)
         {
-            var argument = args.ToList();
+            File.AppendAllLines("recap.txt", args);
 
-            foreach (var arg in argument)
+            foreach (var arg in args)
             {
-                if (arg == "doupdate" && argument.Count > 2)
+                if (arg == "doupdate")
                 {
 
                     if (alreadyRunning)
@@ -279,6 +281,7 @@ namespace SAModManager
                         catch (AbandonedMutexException) { }
 
 
+                    File.Create("InDoUpdate.txt");
                     var dialog = new InstallManagerUpdate(args[2], args[3]);
                     await dialog.InstallUpdate();
 
@@ -289,6 +292,8 @@ namespace SAModManager
 
                 if (arg == "cleanupdate")
                 {
+                    File.Create("ManagerUpdate fired cleanup update.txt");
+
                     if (alreadyRunning)
                         try { mutex.WaitOne(); }
                         catch (AbandonedMutexException) { }

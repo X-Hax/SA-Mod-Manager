@@ -4,19 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace SAModManager.Updater
 {
@@ -26,7 +16,7 @@ namespace SAModManager.Updater
     public partial class InstallManagerUpdate : Window
     {
         private readonly string updatePath;
-        private readonly string managerPath;
+        private readonly string managerExePath;
         private readonly CancellationTokenSource tokenSource = new();
         public event EventHandler CancelEvent;
         public bool done = false;
@@ -35,18 +25,21 @@ namespace SAModManager.Updater
         {
             InitializeComponent();
             this.updatePath = updatePath;
-            this.managerPath = managerPath;
+            this.managerExePath = managerPath;
+            File.Create("ManagerUpdate Fired.txt");
         }
 
         public async Task InstallUpdate()
         {
+            string executablePath = Environment.ProcessPath;;
+
             await Application.Current.Dispatcher.Invoke(async () =>
             {
                 try
-                {
-                    string executablePath = Environment.ProcessPath;
-                    await Util.MoveFile(Path.Combine(updatePath, executablePath), managerPath, true);
-                    Process.Start(Path.GetFileName(executablePath), $"cleanupdate \"{updatePath}\"");
+                {    
+                    await Util.MoveFile(Path.Combine(updatePath, executablePath), managerExePath, true);
+                    Process.Start(managerExePath, $"cleanupdate \"{updatePath}\"");
+                    File.Create("ManagerUpdate did copy the file.txt");
                     done = true;
 
                 }
