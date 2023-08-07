@@ -5,92 +5,59 @@ using System.Net;
 
 namespace SAModManager.Updater
 {
-	public class UpdateHelper
-	{
-		public static bool UpdateTimeElapsed(UpdateUnit unit, int amount, DateTime start)
-		{
-			if (unit == UpdateUnit.Always)
-			{
-				return true;
-			}
+    public class UpdateHelper
+    {
+        private const int CD = 59;
+        private const int CDAmount = 2;
+        public static bool UpdateTimeElapsed(int amount, long previous)
+        {
+            if (previous <= 0 && amount < CDAmount)
+                return true;
 
-			TimeSpan span = DateTime.UtcNow - start;
+            DateTime previousTime = DateTime.FromFileTimeUtc(previous);
 
-			switch (unit)
-			{
-				case UpdateUnit.Hours:
-					return span.TotalHours >= amount;
+            // Get the current time
+            DateTime currentTime = DateTime.UtcNow;
 
-				case UpdateUnit.Days:
-					return span.TotalDays >= amount;
+            // Calculate the time difference
+            TimeSpan timeDifference = currentTime - previousTime;
 
-				case UpdateUnit.Weeks:
-					return span.TotalDays / 7.0 >= amount;
+            // Check if ~60 minutes have passed
+            if (timeDifference.TotalMinutes >= CD)
+            {
+                return true;
+            }
 
-				default:
-					throw new ArgumentOutOfRangeException(nameof(unit), unit, null);
-			}
-		}
+            return false;
+        }
 
-		//to do change with new method
-		public static bool DoModManagerUpdate(string updatePath)
-		{
+        public static void HandleRefreshUpdateCD()
+        {
+            long currentTime = DateTime.UtcNow.ToFileTimeUtc();
 
-			using (var wc = new WebClient())
-			{
-				try
-				{
-					string msg = wc.DownloadString("http://mm.reimuhakurei.net/toolchangelog.php?tool=sadxml&rev=" + File.ReadAllText("sadxmlver.txt"));
+            if (App.configIni.UpdateSettings.UpdateCheckCount >= CDAmount && App.configIni.UpdateSettings.UpdateTimeOutCD <= 0)
+            {
+                App.configIni.UpdateSettings.UpdateTimeOutCD = currentTime;
+                return;
+            }
 
-					if (msg.Length > 0)
-					{
-						/*var dlg = new UpdateMessageDialog("SADX", msg.Replace("\n", "\r\n"));
-						dlg.ShowDialog();
-						bool? dlgRes = dlg.DialogResult;
-						
-							if (dlgRes == true)
-							{
-				
-								
-									try
-									{
-										if (!Directory.Exists(updatePath))
-										{
-											Directory.CreateDirectory(updatePath);
-										}
-									}
-									catch (Exception ex)
-									{
-										//result = MessageBox.Show(this, "Failed to create temporary update directory:\n" + ex.Message
-																	   + "\n\nWould you like to retry?", "Directory Creation Failed", MessageBoxButtons.RetryCancel);
-										if (result == DialogResult != true) 
-											return false;
-									}
+            if (App.configIni.UpdateSettings.UpdateTimeOutCD <= 0)
+                return;
 
 
-							var dlg2 = new LoaderDownloadDialog("http://mm.reimuhakurei.net/sadxmods/SADXModLoader.7z", updatePath);
-							dgl2.show();		
-							if (dlg2.ShowDialog(this) == DialogResult.OK)
-									{
-										Close();
-										return true;
-									}
-						}*/
+            DateTime previousTime = DateTime.FromFileTimeUtc(App.configIni.UpdateSettings.UpdateTimeOutCD);
 
-					}
-				}
-				catch
-				{
-					new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Errors.ManagerUpdateFail"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
-				}
-			}
+            // Get the current time
+            DateTime curTime = DateTime.UtcNow;
 
-			return false;
-		}
+            // Calculate the time difference
+            TimeSpan timeDifference = curTime - previousTime;
 
-
-
-
-
-	}
+            if (timeDifference.TotalMinutes > CD && App.configIni.UpdateSettings.UpdateTimeOutCD > 0 && App.configIni.UpdateSettings.UpdateCheckCount >= CDAmount)
+            {
+                App.configIni.UpdateSettings.UpdateCheckCount = 0;
+                App.configIni.UpdateSettings.UpdateTimeOutCD = 0;
+            }
+        }
+    }
 }

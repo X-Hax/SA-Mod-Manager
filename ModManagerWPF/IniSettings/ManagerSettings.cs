@@ -40,8 +40,11 @@ namespace SAModManager.IniSettings
 		/// </summary>
 		[DefaultValue(true)]
 		public bool EnableLoaderBootCheck { get; set; } = true;
+		public long UpdateTimeOutCD { get; set; } = 0;
+		public int UpdateCheckCount { get; set; } = 0;
 
-		public void ConvertFromV0(SADXLoaderInfo oldSettings)
+
+        public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{
 			EnableManagerBootCheck = oldSettings.UpdateCheck;
 			EnableModsBootCheck = oldSettings.ModUpdateCheck;

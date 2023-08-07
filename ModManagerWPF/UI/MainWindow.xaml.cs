@@ -66,7 +66,6 @@ namespace SAModManager
         BackgroundWorker updateChecker;
         private bool manualModUpdate;
         readonly Updater.ModUpdater modUpdater = new();
-        private bool checkedForUpdates = false;
 
         private readonly double LowOpacityIcon = 0.3;
         private readonly double LowOpacityBtn = 0.7;
@@ -221,21 +220,12 @@ namespace SAModManager
 
             SetModManagerVersion();
 
-            if (!Directory.Exists(App.CurrentGame.modDirectory) || App.CurrentGame != null)
+            if (!Directory.Exists(App.CurrentGame.modDirectory) || App.CurrentGame == null)
                 return;
 
             new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
 
             CheckForModUpdates();
-
-            // If we've checked for updates, save the modified
-            // last update times without requiring the user to
-            // click the save button.
-            if (checkedForUpdates)
-            {
-                IniSerializer.Serialize(loaderini, loaderinipath);
-            }
-
 
             Grid stackPanel;
             switch (setGame)
@@ -1328,7 +1318,7 @@ namespace SAModManager
         private void UpdateChecker_EnableControls(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
         {
             btnCheckUpdates.IsEnabled = true;
-            btnCheckUpdates.IsEnabled = true;
+
             ModContextChkUpdate.IsEnabled = true;
             if (ModContextDev is not null)
             {
@@ -1342,23 +1332,30 @@ namespace SAModManager
 
         private void CheckForModUpdates(bool force = false)
         {
-            return; //disabled to avoid github rate api limit for testing purpose
-            if (!force && !loaderini.ModUpdateCheck)
+            if (!force && !App.configIni.UpdateSettings.EnableModsBootCheck)
             {
+                return;
+            }
+
+            if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(App.configIni.UpdateSettings.UpdateCheckCount, App.configIni.UpdateSettings.UpdateTimeOutCD))
+            {
+                UpdateHelper.HandleRefreshUpdateCD();
+                IniSerializer.Serialize(App.configIni, App.ConfigPath);
                 return;
             }
 
             InitializeWorker();
 
-            if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.ModUpdateTime)))
-            {
-                return;
+            if (!force)
+            {           
+                App.configIni.UpdateSettings.UpdateCheckCount++;
+                UpdateHelper.HandleRefreshUpdateCD();
+                IniSerializer.Serialize(App.configIni, App.ConfigPath);
             }
-
-            checkedForUpdates = true;
-            loaderini.ModUpdateTime = DateTime.UtcNow.ToFileTimeUtc();
+  
             updateChecker.RunWorkerAsync(mods.Select(x => new KeyValuePair<string, ModInfo>(x.Key, x.Value)).ToList());
             btnCheckUpdates.IsEnabled = false;
+         
         }
         #endregion
 
