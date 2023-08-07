@@ -27,9 +27,11 @@
 
 			<TextBlock Grid.Column="1" Grid.Row="0" Text="{DynamicResource InfoManagerUpdate.Changelog}"/>
 			<Border Grid.Column="1" Grid.Row="1" BorderBrush="{DynamicResource Borders.Brushes.Border}" BorderThickness="2" CornerRadius="2">
-				<Grid>
-					<TextBlock x:Name="UpdateInfoText"/>
-				</Grid>
+				<Grid >
+                    <ScrollViewer>
+						<TextBlock x:Name="UpdateInfoText"/>
+                    </ScrollViewer>
+                </Grid>
 			</Border>
 		</Grid>
 
