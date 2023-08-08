@@ -22,6 +22,7 @@ namespace SAModManager.Common
 	public partial class ModProfile : Window
 	{
 		private ComboBox _modProfile { get; set; }
+
 		public ModProfile(ref ComboBox modProfile)
 		{
 			InitializeComponent();
@@ -34,6 +35,7 @@ namespace SAModManager.Common
 			}
 		}
 
+		#region Private Functions
 		private void RefreshList()
 		{
 			ICollectionView view = CollectionViewSource.GetDefaultView(ProfileListView.Items);
@@ -52,10 +54,10 @@ namespace SAModManager.Common
 				};
 				bool? dialogResult = edit.ShowDialog();
 
-				if (dialogResult == true) 
+				if (dialogResult == true)
 				{
 					EditProfileResult result = edit.GetEditProfileResult(); // Get the result from EditProfile
-					Profile item = (Profile)ProfileListView.Items[result.Index];	
+					Profile item = (Profile)ProfileListView.Items[result.Index];
 					if (File.Exists(item.iniPath))
 					{
 						string newName = Path.Combine(App.CurrentGame.modDirectory, result.Name + ".ini");
@@ -72,33 +74,8 @@ namespace SAModManager.Common
 							new MessageWindow(Lang.GetString("Error"), Lang.GetString("ManagerProfile.Errors.Unexpected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 						}
 					}
-				}		
+				}
 			}
-		}
-
-		private void UI_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-			RenameProfileStart();
-		}
-
-		private void UI_Add_Click(object sender, RoutedEventArgs e)
-		{
-			var newProfile = new EditProfile();
-
-			newProfile.Owner = this;
-			bool? dialogResult = newProfile.ShowDialog();
-
-			if (dialogResult == true)
-			{
-				Profile result = newProfile.GetNewProfileResult();
-				ProfileListView.Items.Add(result);
-				RefreshList();
-			}
-		}
-
-		private void NewProfile_Closed(object sender, EventArgs e)
-		{
-			RefreshList();
 		}
 
 		private void UpdateModProfile()
@@ -110,10 +87,61 @@ namespace SAModManager.Common
 				_modProfile.Items.Add(profile);
 			}
 		}
+		#endregion
 
-		private void UI_OK_Click(object sender, RoutedEventArgs e)
+		#region Window
+		private void NewProfile_Closed(object sender, EventArgs e)
 		{
-			this.Close();
+			RefreshList();
+		}
+
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			UpdateModProfile();
+		}
+		#endregion
+
+		#region Mouse Controls
+		private void UI_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			RenameProfileStart();
+		}
+
+		#region Context Menu
+		private void ProfileList_OnPreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (ProfileListView == null)
+				return;
+
+			var profile = (Profile)ProfileListView.SelectedItem;
+
+			if (profile == null)
+				return;
+
+			var ctrlKey = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+
+			if (ctrlKey)
+			{
+				if (Keyboard.IsKeyDown(Key.D))
+					ProfileClone_Click(null, null);
+
+				e.Handled = true;
+			}
+
+			if (Keyboard.IsKeyDown(Key.F2))
+			{
+				ProfileRename_Click(null, null);
+				e.Handled = true;
+			}
+
+
+			if (Keyboard.IsKeyDown(Key.Delete))
+			{
+				ProfileDelete_Click(null, null);
+				e.Handled = true;
+			}
+
 		}
 
 		private void ProfileRename_Click(object sender, RoutedEventArgs e)
@@ -144,13 +172,13 @@ namespace SAModManager.Common
 				{
 					ProfileListView.Items.Remove(clonedProfile);
 				}
-		
+
 				ProfileListView.Items.Add(clonedProfile);
 				RefreshList();
 
 				if (File.Exists(profile.iniPath))
 				{
-					File.Copy(profile.iniPath, clonedProfile.iniPath, true);	
+					File.Copy(profile.iniPath, clonedProfile.iniPath, true);
 				}
 			}
 		}
@@ -184,47 +212,31 @@ namespace SAModManager.Common
 				}
 			}
 		}
+		#endregion
+		#endregion
 
-		private void Window_Closed(object sender, EventArgs e)
+		#region Buttons
+		private void UI_Add_Click(object sender, RoutedEventArgs e)
 		{
-			UpdateModProfile();
+			var newProfile = new EditProfile();
+
+			newProfile.Owner = this;
+			bool? dialogResult = newProfile.ShowDialog();
+
+			if (dialogResult == true)
+			{
+				Profile result = newProfile.GetNewProfileResult();
+				ProfileListView.Items.Add(result);
+				RefreshList();
+			}
 		}
 
-		private void ProfileList_OnPreviewKeyDown(object sender, KeyEventArgs e)
+		private void UI_OK_Click(object sender, RoutedEventArgs e)
 		{
-			if (ProfileListView == null)
-				return;
-
-			var profile = (Profile)ProfileListView.SelectedItem;
-
-			if (profile == null)
-				return;
-
-			var ctrlKey = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-
-
-			if (ctrlKey)
-			{
-				if (Keyboard.IsKeyDown(Key.D))
-					ProfileClone_Click(null, null);
-
-				e.Handled = true;
-			}
-			
-			if (Keyboard.IsKeyDown(Key.F2))
-			{
-				ProfileRename_Click(null, null); 
-				e.Handled = true;
-			}
-
-
-			if (Keyboard.IsKeyDown(Key.Delete))
-			{
-				ProfileDelete_Click(null, null);
-				e.Handled = true;
-			}
-
+			this.Close();
 		}
+
+
+		#endregion
 	}
-
 }
