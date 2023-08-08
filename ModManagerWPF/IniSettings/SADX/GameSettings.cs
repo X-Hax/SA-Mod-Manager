@@ -22,120 +22,140 @@ namespace SAModManager.IniSettings.SADX
 		/// Index for the screen the game will boot on.
 		/// </summary>
 		[DefaultValue(1)]
+		[IniAlwaysInclude]
 		public int SelectedScreen { get; set; } = 1;                 // SADXLoaderInfo.ScreenNum
 
 		/// <summary>
 		/// Rendering Horizontal Resolution.
 		/// </summary>
 		[DefaultValue(640)]
+		[IniAlwaysInclude]
 		public int HorizontalResolution { get; set; } = 640;    // SADXLoaderInfo.HorizontalResolution
 
 		/// <summary>
 		/// Rendering Vertical Resolution.
 		/// </summary>
 		[DefaultValue(480)]
+		[IniAlwaysInclude]
 		public int VerticalResolution { get; set; } = 480;      // SADXLoaderInfo.VerticalResolution
 
 		/// <summary>
 		/// Locks the Resolution to 4:3 Ratio
 		/// </summary>
 		[DefaultValue(false)]
+		[IniAlwaysInclude]
 		public bool Enable43ResolutionRatio { get; set; }              // SADXLoaderInfo.ForseAspectRatio
 
 		/// <summary>
 		/// V-Sync.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool EnableVsync { get; set; } = true;           // SADXLoaderInfo.EnableVSync
 
 		/// <summary>
 		/// Enables the window to be paused when not focused.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool EnablePauseOnInactive { get; set; } = true;     // SADXLoaderInfo.PauseWhenInactive
 
 		/// <summary>
 		/// Changes from static to dynamic buffers for fullscreen. Fixes Alt-Tab but sacrifices some performance.
 		/// </summary>
 		[DefaultValue(false)]
+		[IniAlwaysInclude]
 		public bool EnableDynamicBuffer { get; set; }           // SADXLoaderInfo.EnableDynamicBuffer
 
 		/// <summary>
 		/// Makes the fullscreen window borderless.
 		/// </summary>
 		[DefaultValue(false)]
+		[IniAlwaysInclude]
 		public bool EnableBorderless { get; set; }                    // SADXLoaderInfo.Borderless
 
 		/// <summary>
 		/// Scales the screen to window edges in fullscreen.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool EnableScreenScaling { get; set; } = true;     // SADXLoaderInfo.StretchFullscreen
 
 		/// <summary>
 		/// Enables a custom window size that can be smaller than the resolution is set.
 		/// </summary>
 		[DefaultValue(false)]
+		[IniAlwaysInclude]
 		public bool EnableCustomWindow { get; set; }              // SADXLoaderInfo.CustomWindowSize
 
 		/// <summary>
 		/// Sets the Width of the Custom Window Size.
 		/// </summary>
 		[DefaultValue(640)]
+		[IniAlwaysInclude]
 		public int CustomWindowWidth { get; set; } = 640;             // SADXLoaderInfo.WindowWidth
 
 		/// <summary>
 		/// Sets the Height of the Custom Window Size.
 		/// </summary>
 		[DefaultValue(480)]
+		[IniAlwaysInclude]
 		public int CustomWindowHeight { get; set; } = 480;            // SADXLoaderInfo.WindowHeight
 
 		/// <summary>
 		/// Keeps the Resolution's ratio for the Custom Window size.
 		/// </summary>
 		[DefaultValue(false)]
+		[IniAlwaysInclude]
 		public bool EnableKeepResolutionRatio { get; set; }     // SADXLoaderInfo.MaintainWindowAspectRatio
 
 		/// <summary>
 		/// Enables resizing of the game window.
 		/// </summary>
 		[DefaultValue(false)]
+		[IniAlwaysInclude]
 		public bool EnableResizableWindow { get; set; }               // SADXLoaderInfo.ResizableWindow
 
 		/// <summary>
 		/// Method in which the BG's fill the game window.
 		/// </summary>
 		[DefaultValue((int)FillMode.Fill)]
+		[IniAlwaysInclude]
 		public int FillModeBackground { get; set; } = (int)FillMode.Fill;   // SADXLoaderInfo.BackgroundFillMode
 
 		/// <summary>
 		/// Method in which FMV's fill the game window.
 		/// </summary>
 		[DefaultValue((int)FillMode.Fit)]
+		[IniAlwaysInclude]
 		public int FillModeFMV { get; set; } = (int)FillMode.Fit;           // SADXLoaderInfo.FmvFillMode
 
 		/// <summary>
 		/// Texture filtering for non-UI textures.
 		/// </summary>
 		[DefaultValue(TextureFilter.temp)]
+		[IniAlwaysInclude]
 		public TextureFilter ModeTextureFiltering { get; set; }
 
 		/// <summary>
 		/// Texture filtering for UI textures only.
 		/// </summary>
 		[DefaultValue(TextureFilter.temp)]
+		[IniAlwaysInclude]
 		public TextureFilter ModeUIFiltering { get; set; }
 
 		/// <summary>
 		/// Enables UI Scaling to match the window properly.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool EnableUIScaling { get; set; } = true;              // SADXLoaderInfo.ScaleHud
 
 		/// <summary>
 		/// Enables mipmapping on all textures being rendered.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool EnableForcedMipmapping { get; set; } = true;            // SADXLoaderInfo.AutoMipmap
 
 		/// <summary>
@@ -174,6 +194,7 @@ namespace SAModManager.IniSettings.SADX
 		/// SDL2 Input Enabled
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool EnabledInputMod { get; set; }   // SADXLoaderInfo.InputModEnabled
 
 		/// <summary>
@@ -192,18 +213,21 @@ namespace SAModManager.IniSettings.SADX
 		/// Enables BASS as the music backend.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool EnableBassMusic { get; set; }               // SADXLoaderInfo.EnableBassMusic
 
 		/// <summary>
 		/// Enables the use of BASS for Sound Effects in game.
 		/// </summary>
 		[DefaultValue(false)]
+		[IniAlwaysInclude]
 		public bool EnableBassSFX { get; set; }                 // SADXLoaderInfo.EnableBassSFX
 
 		/// <summary>
 		/// Sound Effect Volume when using BASS for Sound Effects.
 		/// </summary>
 		[DefaultValue(100)]
+		[IniAlwaysInclude]
 		public int SEVolume { get; set; } = 100;                // SADXLoaderInfo.SEVolume
 
 		/// <summary>
@@ -224,71 +248,84 @@ namespace SAModManager.IniSettings.SADX
 		/// Selected index for the level used by test spawn.
 		/// </summary>
 		[DefaultValue(-1)]
+		[IniAlwaysInclude]
 		public int LevelIndex { get; set; } = -1;       // SADXLoaderInfo.TestSpawnLevel
 
 		/// <summary>
 		/// Selected index for the act used by test spawn.
 		/// </summary>
 		[DefaultValue(0)]
+		[IniAlwaysInclude]
 		public int ActIndex { get; set; } = 0;          // SADXLoaderInfo.TestSpawnAct
 
 		/// <summary>
 		/// Selected index for the character used by test spawn.
 		/// </summary>
 		[DefaultValue(-1)]
+		[IniAlwaysInclude]
 		public int CharacterIndex { get; set; } = -1;   // SADXLoaderInfo.TestSpawnCharacter
 
 		/// <summary>
 		/// Selected index of an event used by test spawn.
 		/// </summary>
 		[DefaultValue(-1)]
+		[IniAlwaysInclude]
 		public int EventIndex { get; set; } = -1;       // SADXLoaderInfo.TestSpawnEvent
 
 		/// <summary>
 		/// Selected index for the GameMode used by test spawn.
 		/// </summary>
 		[DefaultValue(-1)]
+		[IniAlwaysInclude]
 		public int GameModeIndex { get; set; } = -1;    // SADXLoaderInfo.TestSpawnGameMode
 
 		/// <summary>
 		/// Selected save file index used by test spawn.
 		/// </summary>
 		[DefaultValue(-1)]
+		[IniAlwaysInclude]
 		public int SaveIndex { get; set; } = -1;      // SADXLoaderInfo.TestSpawnSaveID
 
 		/// <summary>
 		/// Enables the Manual settings for Character, Level, and Act.
 		/// </summary>
+		[DefaultValue(false)]
+		[IniAlwaysInclude]
 		public bool UseManual { get; set; } = false;
 
 		/// <summary>
 		/// Enables manually modifying the start position when using test spawn.
 		/// </summary>
 		[DefaultValue(false)]
+		[IniAlwaysInclude]
 		public bool UsePosition { get; set; } = false; // SADXLoaderInfo.TestSpawnPositionEnabled
 
 		/// <summary>
 		/// X Position where the player will spawn using test spawn.
 		/// </summary>
-		[DefaultValue(0)]
-		public float XPosition { get; set; } = 0;            // SADXLoaderInfo.TestSpawnX
+		[DefaultValue(0f)]
+		[IniAlwaysInclude]
+		public float XPosition { get; set; } = 0f;            // SADXLoaderInfo.TestSpawnX
 
 		/// <summary>
 		/// Y Position where the player will spawn using test spawn.
 		/// </summary>
-		[DefaultValue(0)]
-		public float YPosition { get; set; } = 0;            // SADXLoaderInfo.TestSpawnY
+		[DefaultValue(0f)]
+		[IniAlwaysInclude]
+		public float YPosition { get; set; } = 0f;            // SADXLoaderInfo.TestSpawnY
 
 		/// <summary>
 		/// Z Position where the player will spawn using test spawn.
 		/// </summary>
-		[DefaultValue(0)]
-		public float ZPosition { get; set; } = 0;            // SADXLoaderInfo.TestSpawnZ
+		[DefaultValue(0f)]
+		[IniAlwaysInclude]
+		public float ZPosition { get; set; } = 0f;            // SADXLoaderInfo.TestSpawnZ
 
 		/// <summary>
 		/// Initial Y Rotation for the player when using test spawn.
 		/// </summary>
 		[DefaultValue(0)]
+		[IniAlwaysInclude]
 		public int Rotation { get; set; } = 0;     // SADXLoaderInfo.TestSpawnRotation
 
 		/// <summary>
@@ -319,90 +356,105 @@ namespace SAModManager.IniSettings.SADX
 		/// Modifies the sound system. Only SF94 knows why.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool HRTFSound { get; set; }         // SADXLoaderInfo.HRTFSound
 
 		/// <summary>
 		/// Fixes the game turning off free cam when dying if it was previously set.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool KeepCamSettings { get; set; }              // SADXLoaderInfo.CCEF
 
 		/// <summary>
 		/// Fixes the game's rendering to properly allow mesh's with vertex colors to be rendered with those vertex colors.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool FixVertexColorRendering { get; set; } //vertex color	// SADXLoaderInfo.PolyBuff
 
 		/// <summary>
 		/// Fixes the material colors so they render properly.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool MaterialColorFix { get; set; }      // SADXLoaderInfo.MaterialColorFix
 
 		/// <summary>
 		/// Fixes an issue where rotations don't always follow the shortest path.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool InterpolationFix { get; set; }      // SADXLoaderInfo.InterpolationFix
 
 		/// <summary>
 		/// Fixes the game's FOV.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool FOVFix { get; set; }                // SADXLoaderInfo.FovFix
 
 		/// <summary>
 		/// Fixes Skychase to properly render.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool SkyChaseResolutionFix { get; set; }                 // SADXLoaderInfo.SCFix
 
 		/// <summary>
 		/// Fixes a bug that will cause the game to crash when fighting Chaos 2.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool Chaos2CrashFix { get; set; }        // SADXLoaderInfo.Chaos2CrashFix
 
 		/// <summary>
 		/// Fixes specular rendering on Chunk models.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool ChunkSpecularFix { get; set; }          // SADXLoaderInfo.ChunkSpecFix
 
 		/// <summary>
 		/// Fixes rendering on E-102's gun which uses an N-Gon.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool E102NGonFix { get; set; }           // SADXLoaderInfo.E102PolyFix
 
 		/// <summary>
 		/// Fixes Chao Panel rendering.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool ChaoPanelFix { get; set; }          // SADXLoaderInfo.ChaoPanelFix
 
 		/// <summary>
 		/// Fixes a slight pixel offset in the window.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool PixelOffSetFix { get; set; }        // SADXLoaderInfo.PixelOffsetFix
 
 		/// <summary>
 		/// Fixes lights
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool LightFix { get; set; }              // SADXLoaderInfo.LightFix
 
 		/// <summary>
 		/// Removes GBIX processing for most textures. UI is excluded.
 		/// </summary>
 		[DefaultValue(true)]
+		[IniAlwaysInclude]
 		public bool KillGBIX { get; set; }              // SADXLoaderInfo.KillGbix
 
 		/// <summary>
 		/// Disables the built in CD Check.
 		/// </summary>
-		[DefaultValue(true)]
+		[DefaultValue(false)]
+		[IniAlwaysInclude]
 		public bool DisableCDCheck { get; set; }        // SADXLoaderInfo.DisableCDCheck
 
 		/// <summary>
