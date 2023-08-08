@@ -28,10 +28,11 @@
     <system:String x:Key="GamePatches.Chaos2Desc">Fixes a vanilla bug where beating Chaos 2 and restarting the boss was crashing the game.</system:String>
     <system:String x:Key="GamePatches.ChunkRenderingDesc">Fixes Specular on Chunk Models.</system:String>
     <system:String x:Key="GamePatches.E102LampDesc">Fixes N-sided polygons (Gamma's Headlight) by using a triangle strip vertex buffer.</system:String>
+	<system:String x:Key="GamePatches.ChaoStatsDesc">Fixes the UI Panel for Chao Stats to display properly.</system:String>
     <system:String x:Key="GamePatches.PixelOffsetDesc">Fixes subpixel misplacement of most 2D elements that can be noticed at higher resolutions.</system:String>
     <system:String x:Key="GamePatches.LightsDesc">Fixes light incorrectly being applied on LandTables and enables light type preservation for queued models.</system:String>
     <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">Global Index (GBIX) is a value used in the game's texture caching system. Each texture in SADX has one.&#x0a;Before the game loads a new texture, it compares the new texture's GBIX value with indices of other textures that are already loaded.&#x0a;If a match is found, the game reuses the already loaded texture instead of loading the new one.&#x0a;&#x0a;This patch disables most of the GBIX system in the game to reduce texture errors/conflicts. (A few exceptions like HUD elements apply.)</system:String>
-
+	<system:String x:Key="GamePatches.DisableCDCheckDesc">Disables the game's CD check.</system:String>
 
 
 
