@@ -7,14 +7,27 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SAModManager.Ini;
 
 namespace SAModManager.Updater
 {
+
+	public class ModUpdateAndErrors
+	{
+		public List<ModDownloadWPF> updates = new();
+		public List<string> errors = new();
+	};
+
     public class ModUpdater
 	{
-		private readonly Dictionary<string, List<GitHubRelease>> gitHubCache = new Dictionary<string, List<GitHubRelease>>();
+		public ModUpdateAndErrors modUpdateHelper { get; set; }  = new();
+		public Tuple<List<ModDownloadWPF>, List<string>> modUpdatesTuple = null;
+        public List<Tuple<string, ModInfo, List<Updater.ModManifestDiff>>> modManifestTuple = null;
+		public List<KeyValuePair<string, ModInfo>> updatableMods = null;
+
+        private readonly Dictionary<string, List<GitHubRelease>> gitHubCache = new Dictionary<string, List<GitHubRelease>>();
 		public bool ForceUpdate;
 
 		private static DateTime? GetLocalVersion(string folder, string modsFolder, string basePath = null)
@@ -47,7 +60,7 @@ namespace SAModManager.Updater
 			return localVersion;
 		}
 
-		public ModDownloadWPF GetGitHubReleases(ModInfo mod, string modsFolder, string folder, UpdaterWebClient client, List<string> errors, string basePath = null)
+		public async Task<ModDownloadWPF> GetGitHubReleases(ModInfo mod, string modsFolder, string folder, UpdaterWebClient client, List<string> errors, string basePath = null)
 		{
 			List<GitHubRelease> releases;
 			string url = "https://api.github.com/repos/" + mod.GitHubRepo + "/releases";
@@ -56,7 +69,7 @@ namespace SAModManager.Updater
 			{
 				try
 				{
-					string text = client.DownloadString(url);
+					string text = await client.DownloadStringTaskAsync(url);
 					releases = JsonConvert.DeserializeObject<List<GitHubRelease>>(text)
 						.Where(x => !x.Draft && !x.PreRelease)
 						.ToList();
@@ -139,12 +152,12 @@ namespace SAModManager.Updater
 			};
 		}
 
-		public ModDownloadWPF GetGameBananaReleases(ModInfo mod, string modsFolder, string folder, List<string> errors, string basePath = null)
+		public async Task<ModDownloadWPF> GetGameBananaReleases(ModInfo mod, string modsFolder, string folder, List<string> errors, string basePath = null)
 		{
 			GameBananaItem gbi;
 			try
 			{
-				gbi = GameBananaItem.Load(mod.GameBananaItemType, mod.GameBananaItemId.Value);
+				gbi = await GameBananaItem.Load(mod.GameBananaItemType, mod.GameBananaItemId.Value);
 			}
 			catch (Exception ex)
 			{
@@ -185,7 +198,7 @@ namespace SAModManager.Updater
 			};
 		}
 
-		public ModDownloadWPF CheckModularVersion(ModInfo mod, string modsFolder, string folder, List<ModManifestEntry> localManifest,
+		public async Task<ModDownloadWPF> CheckModularVersion(ModInfo mod, string modsFolder, string folder, List<ModManifestEntry> localManifest,
 											   UpdaterWebClient client, List<string> errors, string basePath = null)
 		{
 			if (!mod.UpdateUrl.StartsWith("http://", StringComparison.InvariantCulture)
@@ -224,7 +237,7 @@ namespace SAModManager.Updater
 
 			try
 			{
-				manString = client.DownloadString(new Uri(new Uri(mod.UpdateUrl), "mod.manifest"));
+				manString = await client.DownloadStringTaskAsync(new Uri(new Uri(mod.UpdateUrl), "mod.manifest"));
 			}
 			catch (Exception ex)
 			{
@@ -257,7 +270,7 @@ namespace SAModManager.Updater
 			{
 				try
 				{
-					changes = client.DownloadString(new Uri(mod.ChangelogUrl));
+					changes = await client.DownloadStringTaskAsync(new Uri(mod.ChangelogUrl));
 				}
 				catch (Exception ex)
 				{
@@ -268,7 +281,7 @@ namespace SAModManager.Updater
 			{
 				try
 				{
-					changes = client.DownloadString(new Uri(new Uri(mod.UpdateUrl), "changelog.txt"));
+					changes = await client.DownloadStringTaskAsync(new Uri(new Uri(mod.UpdateUrl), "changelog.txt"));
 				}
 				catch
 				{
@@ -285,92 +298,93 @@ namespace SAModManager.Updater
 			return new ModDownloadWPF(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), mod.UpdateUrl, changes, diff);
 		}
 
-		// TODO: cancel
-		/// <summary>
-		/// Get mod update metadata for the provided mods.
-		/// </summary>
-		/// <param name="updatableMods">Key-value pairs of mods to be checked, where the key is the mod path and the value is the mod metadata.</param>
-		/// <param name="updates">Output list of mods with available updates.</param>
-		/// <param name="errors">Output list of errors encountered during the update process.</param>
-		/// <param name="cancellationToken"><see cref="CancellationToken"/> for cancelling the operation. Currently unused.</param>
-		public void GetModUpdates(string modsFolder, List<KeyValuePair<string, ModInfo>> updatableMods,
-								  out List<ModDownloadWPF> updates, out List<string> errors, CancellationToken cancellationToken, string baseFolder = null)
-		{
-			updates = new List<ModDownloadWPF>();
-			errors = new List<string>();
+        // TODO: cancel
 
-			if (updatableMods == null || updatableMods.Count == 0)
-			{
-				return;
-			}
+        /// <summary>
+        /// Get mod update metadata for the provided mods.
+        /// </summary>
+        /// <param name="updatableMods">Key-value pairs of mods to be checked, where the key is the mod path and the value is the mod metadata.</param>
+        /// <param name="updates">Output list of mods with available updates.</param>
+        /// <param name="errors">Output list of errors encountered during the update process.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> for cancelling the operation. Currently unused.</param>
+        public async Task GetModUpdates(string modsFolder, CancellationToken cancellationToken, string baseFolder = null)
+        {
+			modUpdateHelper.updates.Clear();
+            modUpdateHelper.errors.Clear();
 
-			using (var client = new UpdaterWebClient())
-			{
-				foreach (KeyValuePair<string, ModInfo> info in updatableMods)
-				{
-					ModInfo mod = info.Value;
+            if (updatableMods == null || updatableMods.Count == 0)
+            {
+                return;
+            }
 
-					if (mod.DisableUpdate == true)
-					{
-						continue;
-					}
+            using (var client = new UpdaterWebClient())
+            {
+                foreach (KeyValuePair<string, ModInfo> info in updatableMods)
+                {
+                    ModInfo mod = info.Value;
 
-					if (!string.IsNullOrEmpty(mod.GitHubRepo))
-					{
-						if (string.IsNullOrEmpty(mod.GitHubAsset))
-						{
-							errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
-							continue;
-						}
+                    if (mod.DisableUpdate == true)
+                    {
+                        continue;
+                    }
 
-						ModDownloadWPF d = GetGitHubReleases(mod, modsFolder, info.Key, client, errors, baseFolder);
-						if (d != null)
-						{
-							updates.Add(d);
-						}
-					}
-					else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
-					{
-						ModDownloadWPF d = GetGameBananaReleases(mod, modsFolder, info.Key, errors, baseFolder);
-						if (d != null)
-						{
-							updates.Add(d);
-						}
-					}
-					else if (!string.IsNullOrEmpty(mod.UpdateUrl))
-					{
-						List<ModManifestEntry> localManifest = null;
-						string manPath = Path.Combine(modsFolder, info.Key, "mod.manifest");
-						if (baseFolder != null)
-							manPath = Path.Combine(baseFolder, manPath);
+                    if (!string.IsNullOrEmpty(mod.GitHubRepo))
+                    {
+                        if (string.IsNullOrEmpty(mod.GitHubAsset))
+                        {
+                            modUpdateHelper.errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
+                            continue;
+                        }
 
-						if (!ForceUpdate && File.Exists(manPath))
-						{
-							try
-							{
-								localManifest = ModManifest.FromFile(manPath);
-							}
-							catch (Exception ex)
-							{
-								errors.Add($"[{mod.Name}] Error parsing local manifest: {ex.Message}");
-								continue;
-							}
-						}
+                        ModDownloadWPF d = await GetGitHubReleases(mod, modsFolder, info.Key, client, modUpdateHelper.errors, baseFolder);
+                        if (d != null)
+                        {
+                            modUpdateHelper.updates.Add(d);
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
+                    {
+                        ModDownloadWPF d = await GetGameBananaReleases(mod, modsFolder, info.Key, modUpdateHelper.errors, baseFolder);
+                        if (d != null)
+                        {
+                            modUpdateHelper.updates.Add(d);
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(mod.UpdateUrl))
+                    {
+                        List<ModManifestEntry> localManifest = null;
+                        string manPath = Path.Combine(modsFolder, info.Key, "mod.manifest");
+                        if (baseFolder != null)
+                            manPath = Path.Combine(baseFolder, manPath);
 
-						ModDownloadWPF d = CheckModularVersion(mod, modsFolder, info.Key, localManifest, client, errors, baseFolder);
-						if (d != null)
-						{
-							updates.Add(d);
-						}
-					}
-				}
-			}
-		}
+                        if (!ForceUpdate && File.Exists(manPath))
+                        {
+                            try
+                            {
+                                localManifest = ModManifest.FromFile(manPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                modUpdateHelper.errors.Add($"[{mod.Name}] Error parsing local manifest: {ex.Message}");
+                                continue;
+                            }
+                        }
 
-		/// <summary>
-		/// Clears update metadata cache.
-		/// </summary>
-		public void Clear()
+                        ModDownloadWPF d = await CheckModularVersion(mod, modsFolder, info.Key, localManifest, client, modUpdateHelper.errors, baseFolder);
+                        if (d != null)
+                        {
+                            modUpdateHelper.updates.Add(d);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Clears update metadata cache.
+        /// </summary>
+        public void Clear()
 		{
 			gitHubCache.Clear();
 		}

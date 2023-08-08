@@ -43,7 +43,7 @@ namespace SAModManager
 		}
 
 
-		private void HandleGBMod(Dictionary<string, string> fields)
+		private async void HandleGBMod(Dictionary<string, string> fields)
 		{
 			string itemType;
 			long itemId;
@@ -68,7 +68,7 @@ namespace SAModManager
 			try
 			{
 				urlPage = "https://gamebanana.com/mods/" + itemId.ToString();
-				gbi = GameBananaItem.Load(itemType, itemId);
+				gbi = await GameBananaItem.Load(itemType, itemId);
 
 				if (gbi is null)
 				{

@@ -62,12 +62,11 @@ namespace SAModManager
         List<Code> codes = null;
         public List<CodeData> codesSearch { get; set; }
         bool suppressEvent = false;
-        BackgroundWorker updateChecker;
+ 
         private bool manualModUpdate;
         readonly Updater.ModUpdater modUpdater = new();
 
-        private readonly double LowOpacityIcon = 0.3;
-        private readonly double LowOpacityBtn = 0.7;
+
 
 
         private Game.GameConfigFile gameConfigFile;
@@ -209,7 +208,7 @@ namespace SAModManager
                 Title = titleName + " " + "(" + Version + " - " + App.RepoCommit[..7] + ")";
         }
 
-        private void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
+        private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
         {
 
             SetModManagerVersion();
@@ -219,8 +218,7 @@ namespace SAModManager
 
             new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
 
-            CheckForModUpdates();
-
+        
             Grid stackPanel;
             switch (setGame)
             {
@@ -234,6 +232,8 @@ namespace SAModManager
                     tabGame.Visibility = Visibility.Collapsed;
                     break;
             }
+
+            await CheckForModUpdates();
         }
 
         private void MainForm_FormClosing(object sender, EventArgs e)
@@ -582,12 +582,12 @@ namespace SAModManager
             }
         }
 
-        private void ModContextChkUpdate_Click(object sender, RoutedEventArgs e)
+        private async void ModContextChkUpdate_Click(object sender, RoutedEventArgs e)
         {
-            UpdateSelectedMods();
+            await UpdateSelectedMods();
         }
 
-        private void ModContextVerifyIntegrity_Click(object sender, RoutedEventArgs e)
+        private async void ModContextVerifyIntegrity_Click(object sender, RoutedEventArgs e)
         {
 
             List<Tuple<string, ModInfo>> items = listMods.SelectedItems.Cast<ModData>()
@@ -639,20 +639,15 @@ namespace SAModManager
                 }
 
 
-                InitializeWorker();
-
-                updateChecker.DoWork -= UpdateChecker_DoWork;
-                updateChecker.DoWork += UpdateChecker_DoWorkForced;
-
-                updateChecker.RunWorkerAsync(failed);
-
+                await ExecuteModsUpdateCheck();
+                await UpdateChecker_DoWorkForced();
                 modUpdater.ForceUpdate = true;
                 btnCheckUpdates.IsEnabled = false;
             }
 
         }
 
-        private void ForceModUpdate_Click(object sender, RoutedEventArgs e)
+        private async void ForceModUpdate_Click(object sender, RoutedEventArgs e)
         {
             var result = new MessageWindow(Lang.GetString("MessageWindow.Warnings.ForceModUpdateTitle"), Lang.GetString("MessageWindow.Warnings.ForceModUpdate"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Caution, MessageWindow.Buttons.YesNo);
             result.ShowDialog();
@@ -660,7 +655,7 @@ namespace SAModManager
             if (result.isYes)
             {
                 modUpdater.ForceUpdate = true;
-                UpdateSelectedMods();
+                await UpdateSelectedMods();
             }
         }
 
@@ -784,28 +779,28 @@ namespace SAModManager
 
         private void ConfigureModBtn_UpdateState()
         {
+            bool configMod = ConfigureModBtn.IsEnabled;
             //get the config icon image, check if it's not null, then change its oppacity depending if the button is enabled or not.
             Image iconConfig = FindName("configIcon") as Image;
-            iconConfig?.SetValue(Image.OpacityProperty, ConfigureModBtn.IsEnabled ? 1 : LowOpacityIcon);
-            ConfigureModBtn.Opacity = ConfigureModBtn.IsEnabled ? 1 : LowOpacityBtn;
+            UIHelper.ToggleImage(ref iconConfig, configMod);
+            ConfigureModBtn.Opacity = ConfigureModBtn.IsEnabled ? 1 : 0.3;
         }
 
         private void AddModBtn_UpdateState()
         {
+            bool isInstalled = App.CurrentGame.loader.installed;
             Image iconConfig = FindName("newIcon") as Image;
-            iconConfig?.SetValue(Image.OpacityProperty, App.CurrentGame.loader.installed ? 1 : LowOpacityIcon);
-            NewModBtn.Opacity = App.CurrentGame.loader.installed ? 1 : LowOpacityBtn;
-            NewModBtn.IsEnabled = App.CurrentGame.loader.installed;
+            UIHelper.ToggleImage(ref iconConfig, isInstalled);
+            UIHelper.ToggleImgButton(ref NewModBtn, isInstalled);
         }
 
         private void Update_PlayButtonsState()
         {
-            SaveAndPlayButton.IsEnabled = App.CurrentGame.loader.installed;
+            bool isInstalled = App.CurrentGame.loader.installed;
+            UIHelper.ToggleButton(ref btnTSLaunch, isInstalled);
+            UIHelper.ToggleButton(ref SaveAndPlayButton, isInstalled);
             Image iconSavePlay = FindName("savePlayIcon") as Image;
-            iconSavePlay?.SetValue(Image.OpacityProperty, SaveAndPlayButton.IsEnabled ? 1 : LowOpacityIcon);
-            SaveAndPlayButton.Opacity = App.CurrentGame.loader.installed ? 1 : LowOpacityBtn;
-            btnTSLaunch.IsEnabled = App.CurrentGame.loader.installed;
-            btnTSLaunch.Opacity = App.CurrentGame.loader.installed ? 1 : LowOpacityBtn;
+            UIHelper.ToggleImage(ref iconSavePlay, isInstalled);
         }
 
         private void UpdateMainButtonsState()
@@ -891,25 +886,19 @@ namespace SAModManager
         }
 
         #region Updates
-        private void UpdateSelectedMods()
+        private async Task UpdateSelectedMods()
         {
-            InitializeWorker();
             manualModUpdate = true;
-
-            List<KeyValuePair<string, ModInfo>> list = listMods.SelectedItems
+            modUpdater.updatableMods = listMods.SelectedItems
             .OfType<ModData>()
             .Select(mod => new KeyValuePair<string, ModInfo>(mod.Tag, mods[mod.Tag]))
             .ToList();
 
-            updateChecker?.RunWorkerAsync(list);
+            await ExecuteModsUpdateCheck();
         }
 
-        private void UpdateChecker_DoWork(object sender, DoWorkEventArgs e)
+        private async Task UpdateChecker_DoWork()
         {
-            if (sender is not BackgroundWorker worker)
-            {
-                throw new Exception("what");
-            }
 
             Dispatcher.Invoke(() =>
             {
@@ -922,42 +911,33 @@ namespace SAModManager
                 ModContextVerifyIntegrity.IsEnabled = false;
             });
 
-            var updatableMods = e.Argument as List<KeyValuePair<string, ModInfo>>;
-            List<ModDownloadWPF> updates = null;
-            List<string> errors = null;
-
             var tokenSource = new CancellationTokenSource();
             CancellationToken token = tokenSource.Token;
+           // out updates, out errors,
 
-            var task = Task.Run(() => modUpdater.GetModUpdates(App.CurrentGame.modDirectory, updatableMods, out updates, out errors, token), token);
-
-            while (!task.IsCompleted && !task.IsCanceled)
+            try
             {
-                // Process pending UI events
-                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
-
-                if (worker.CancellationPending)
-                {
-                    tokenSource.Cancel();
-                }
+               await Task.Run(() => modUpdater.GetModUpdates(App.CurrentGame.modDirectory, token), token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Handle cancellation if needed
             }
 
-            task.Wait(token);
 
-            e.Result = new Tuple<List<ModDownloadWPF>, List<string>>(updates, errors);
+            modUpdater.modUpdatesTuple = new(modUpdater.modUpdateHelper.updates, modUpdater.modUpdateHelper.errors);
         }
 
-        private void UpdateChecker_DoWorkForced(object sender, DoWorkEventArgs e)
-        {
-            if (sender is not BackgroundWorker worker)
-            {
-                throw new Exception("what");
-            }
 
-            if (!(e.Argument is List<Tuple<string, ModInfo, List<Updater.ModManifestDiff>>> updatableMods) || updatableMods.Count == 0)
+        private async Task UpdateChecker_DoWorkForced()
+        {
+
+            if (modUpdater.modUpdatesTuple is null)
             {
                 return;
             }
+
+            var updatableMods = modUpdater.modManifestTuple;
 
             var updates = new List<ModDownloadWPF>();
             var errors = new List<string>();
@@ -966,11 +946,11 @@ namespace SAModManager
             {
                 foreach (Tuple<string, ModInfo, List<Updater.ModManifestDiff>> info in updatableMods)
                 {
-                    if (worker.CancellationPending)
+                    /*if (worker.CancellationPending)
                     {
                         e.Cancel = true;
                         break;
-                    }
+                    }*/
 
                     ModInfo mod = info.Item2;
                     if (!string.IsNullOrEmpty(mod.GitHubRepo))
@@ -981,7 +961,7 @@ namespace SAModManager
                             continue;
                         }
 
-                        ModDownloadWPF d = modUpdater.GetGitHubReleases(mod, App.CurrentGame.modDirectory, info.Item1, client, errors);
+                        ModDownloadWPF d = await modUpdater.GetGitHubReleases(mod, App.CurrentGame.modDirectory, info.Item1, client, errors);
                         if (d != null)
                         {
                             updates.Add(d);
@@ -989,7 +969,7 @@ namespace SAModManager
                     }
                     else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
                     {
-                        ModDownloadWPF d = modUpdater.GetGameBananaReleases(mod, App.CurrentGame.modDirectory, info.Item1, errors);
+                        ModDownloadWPF d = await modUpdater.GetGameBananaReleases(mod, App.CurrentGame.modDirectory, info.Item1, errors);
                         if (d != null)
                         {
                             updates.Add(d);
@@ -1002,7 +982,7 @@ namespace SAModManager
                             .Select(x => x.Current)
                             .ToList();
 
-                        ModDownloadWPF d = modUpdater.CheckModularVersion(mod, App.CurrentGame.modDirectory, info.Item1, localManifest, client, errors);
+                        ModDownloadWPF d = await modUpdater.CheckModularVersion(mod, App.CurrentGame.modDirectory, info.Item1, localManifest, client, errors);
                         if (d != null)
                         {
                             updates.Add(d);
@@ -1011,38 +991,30 @@ namespace SAModManager
                 }
             }
 
-            e.Result = new Tuple<List<ModDownloadWPF>, List<string>>(updates, errors);
+            modUpdater.modUpdatesTuple = new Tuple<List<ModDownloadWPF>, List<string>>(updates, errors);
         }
 
-        private void InitializeWorker()
+        private async Task ExecuteModsUpdateCheck()
         {
-            if (updateChecker != null)
-            {
-                return;
-            }
-
-            updateChecker = new BackgroundWorker { WorkerSupportsCancellation = true };
-            updateChecker.DoWork += UpdateChecker_DoWork;
-            updateChecker.RunWorkerCompleted += UpdateChecker_RunWorkerCompleted;
-            updateChecker.RunWorkerCompleted += UpdateChecker_EnableControls;
+            await UpdateChecker_DoWork();
+            await UpdateChecker_RunWorkerCompleted();
+            UpdateChecker_EnableControls();
         }
 
-        private void UpdateChecker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private async Task UpdateChecker_RunWorkerCompleted()
         {
             if (modUpdater.ForceUpdate)
             {
-                updateChecker?.Dispose();
-                updateChecker = null;
                 modUpdater.ForceUpdate = false;
                 modUpdater.Clear();
             }
 
-            if (e.Cancelled)
+           /* if (e.Cancelled)
             {
                 return;
-            }
+            }*/
 
-            if (e.Result is not Tuple<List<ModDownloadWPF>, List<string>> data)
+            if (modUpdater.modUpdatesTuple is not Tuple<List<ModDownloadWPF>, List<string>> data)
             {
                 return;
             }
@@ -1115,7 +1087,7 @@ namespace SAModManager
             Refresh();
         }
 
-        private void UpdateChecker_EnableControls(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
+        private void UpdateChecker_EnableControls()
         {
             btnCheckUpdates.IsEnabled = true;
 
@@ -1130,7 +1102,7 @@ namespace SAModManager
             ModContextVerifyIntegrity.IsEnabled = true;
         }
 
-        private void CheckForModUpdates(bool force = false)
+        private async Task CheckForModUpdates(bool force = false)
         {
             if (!force && !App.configIni.UpdateSettings.EnableModsBootCheck)
             {
@@ -1144,7 +1116,7 @@ namespace SAModManager
                 return;
             }
 
-            InitializeWorker();
+            await ExecuteModsUpdateCheck();
 
             if (!force)
             {           
@@ -1152,10 +1124,9 @@ namespace SAModManager
                 UpdateHelper.HandleRefreshUpdateCD();
                 IniSerializer.Serialize(App.configIni, App.ConfigPath);
             }
-  
-            updateChecker.RunWorkerAsync(mods.Select(x => new KeyValuePair<string, ModInfo>(x.Key, x.Value)).ToList());
-            btnCheckUpdates.IsEnabled = false;
-         
+
+            modUpdater.updatableMods = mods.Select(x => new KeyValuePair<string, ModInfo>(x.Key, x.Value)).ToList();
+            btnCheckUpdates.IsEnabled = false;    
         }
         #endregion
 
@@ -1241,11 +1212,10 @@ namespace SAModManager
                         var managerPath = pathManagerKey.GetValue("").ToString();
 
                         if (managerPath.ToLower().Contains(Environment.ProcessPath.ToLower()))
-                        {
-                            btnOneClick.IsEnabled = false;
+                        {  
                             Image iconConfig = FindName("GB") as Image;
-                            iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
-                            btnOneClick.Opacity = LowOpacityBtn;
+                            UIHelper.ToggleImage(ref menuIconConfig, false);
+                            UIHelper.ToggleButton(ref btnOneClick, false);
                         }
 
                         pathManagerKey.Close();
@@ -1268,10 +1238,9 @@ namespace SAModManager
                     Verb = "runas"
                 }).WaitForExitAsync();
 
-                btnOneClick.IsEnabled = false;
                 Image iconConfig = FindName("GB") as Image;
-                iconConfig?.SetValue(Image.OpacityProperty, LowOpacityIcon);
-                btnOneClick.Opacity = LowOpacityBtn;
+                UIHelper.ToggleImage(ref iconConfig, false);
+                UIHelper.ToggleButton(ref btnOneClick, false);
 
             }
             catch { }
@@ -1397,10 +1366,9 @@ namespace SAModManager
 
                 if (item is not null)
                 {
-                    item.IsEnabled = isEnabled;
-                    item.Opacity = IsEnabled ? 1 : LowOpacityBtn;
+                    UIHelper.ToggleMenuItem(ref item, isEnabled);
                     Image iconConfig = FindName("menuIconConfig") as Image;
-                    iconConfig?.SetValue(Image.OpacityProperty, isEnabled ? 1 : LowOpacityIcon);
+                    UIHelper.ToggleImage(ref menuIconConfig, isEnabled);
                 }
 
                 if (checkDevEnabled.IsChecked == true)
@@ -2125,7 +2093,7 @@ namespace SAModManager
             }
 
             manualModUpdate = true;
-            CheckForModUpdates(true);
+            await CheckForModUpdates(true);
         }
 
         private void AboutBtn_Click(object sender, RoutedEventArgs e)
