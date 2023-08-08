@@ -159,6 +159,7 @@ namespace SAModManager.IniSettings
 		/// </summary>
 		[DefaultValue(0)]
 		public int Language { get; set; } = 0;      // SADXLoaderInfo.Language
+		public string ModAuthor { get; set; } //From mod creation: Save the Mod Author from user input, so they don't have to re type it.
 
 		public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{
