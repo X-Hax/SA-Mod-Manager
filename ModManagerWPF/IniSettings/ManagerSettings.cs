@@ -40,8 +40,11 @@ namespace SAModManager.IniSettings
 		/// </summary>
 		[DefaultValue(true)]
 		public bool EnableLoaderBootCheck { get; set; } = true;
+		public long UpdateTimeOutCD { get; set; } = 0;
+		public int UpdateCheckCount { get; set; } = 0;
 
-		public void ConvertFromV0(SADXLoaderInfo oldSettings)
+
+        public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{
 			EnableManagerBootCheck = oldSettings.UpdateCheck;
 			EnableModsBootCheck = oldSettings.ModUpdateCheck;
@@ -156,6 +159,7 @@ namespace SAModManager.IniSettings
 		/// </summary>
 		[DefaultValue(0)]
 		public int Language { get; set; } = 0;      // SADXLoaderInfo.Language
+		public string ModAuthor { get; set; } //From mod creation: Save the Mod Author from user input, so they don't have to re type it.
 
 		public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{

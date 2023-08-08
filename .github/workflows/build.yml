@@ -34,7 +34,7 @@ jobs:
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.WPF_PROJECT_FILE}}
+      run: dotnet restore ${{env.WPF_PROJECT_FILE}}
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}

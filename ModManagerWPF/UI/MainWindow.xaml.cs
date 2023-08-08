@@ -25,6 +25,7 @@ using SevenZipExtractor;
 using SAModManager.Ini;
 using SAModManager.IniSettings;
 using ICSharpCode.AvalonEdit.Editing;
+using SAModManager.IniSettings.SA2;
 
 namespace SAModManager
 {
@@ -48,9 +49,9 @@ namespace SAModManager
 
         SADXLoaderInfo loaderini;
         private string SADXSettingsPath;
-        IniSettings.SADX.GameSettings SADXSettings;
+        public IniSettings.SADX.GameSettings SADXSettings;
         private string SA2SettingsPath;
-        IniSettings.SA2.GameSettings SA2Settings;
+        public IniSettings.SA2.GameSettings SA2Settings;
         public Dictionary<string, SADXModInfo> mods = null;
 
         string codelstpath = "mods/Codes.lst";
@@ -66,7 +67,6 @@ namespace SAModManager
         BackgroundWorker updateChecker;
         private bool manualModUpdate;
         readonly Updater.ModUpdater modUpdater = new();
-        private bool checkedForUpdates = false;
 
         private readonly double LowOpacityIcon = 0.3;
         private readonly double LowOpacityBtn = 0.7;
@@ -87,8 +87,10 @@ namespace SAModManager
         {
             InitializeComponent();
 
+            LoadGameProfile();
             graphics = new Game.Graphics(ref comboScreen);
-            SetGamePath(Settings.Default.GamePath);
+        
+            SetGamePath(SADXSettings.GamePath);
             UpdatePathsStringsInfo();
             LoadSettings();
             InitCodes();
@@ -174,34 +176,33 @@ namespace SAModManager
             Settings.Default.Save();
         }
 
-        private void LoadGameProfile()
+        private void SaveGameProfile()
         {
             switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
             {
                 case SetGame.SADX:
-                    if (App.configIni.GameManagement.SADXProfile == string.Empty)
-                    {
-                        if (File.Exists(Path.Combine(App.CurrentGame.gameDirectory, loaderinipath)))
-                        {
-                            SADXLoaderInfo oldSettings = IniSerializer.Deserialize<SADXLoaderInfo>(Path.Combine(App.CurrentGame.gameDirectory, loaderinipath));
-                            SADXSettings.ConvertFromV0(oldSettings);
-                        }
-                        else
-                            SADXSettings = new();
-                    }
-                    else
-                        SADXSettings = File.Exists(Path.Combine(App.ConfigFolder, App.CurrentGame.gameName, App.configIni.GameManagement.SADXProfile)) ?
-                            IniSerializer.Deserialize<IniSettings.SADX.GameSettings>(
-                                Path.Combine(App.ConfigFolder, App.CurrentGame.gameName, App.configIni.GameManagement.SADXProfile)
-                                ) : new();
+                    IniSerializer.Serialize(SADXSettings, Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini"));
                     break;
                 case SetGame.SA2:
-                    if (App.configIni.GameManagement.SA2Profile == string.Empty)
-                    {
-                        // SA2 Converter
-                    }
-                    else
-                        SA2Settings = new();
+                    IniSerializer.Serialize(SA2Settings, Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini"));
+                    break;
+
+            }
+        }
+
+        private void LoadGameProfile()
+        {
+            string defaultProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini");
+            switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
+            {
+                case SetGame.SADX:
+                    SADXSettings = File.Exists(defaultProfile) ?
+                   IniSerializer.Deserialize<IniSettings.SADX.GameSettings>(defaultProfile) : new();
+
+                    break;
+                case SetGame.SA2:
+                    SA2Settings = File.Exists(defaultProfile) ?
+                   IniSerializer.Deserialize<IniSettings.SA2.GameSettings>(defaultProfile) : new();
                     break;
             }
         }
@@ -221,21 +222,12 @@ namespace SAModManager
 
             SetModManagerVersion();
 
-            if (!Directory.Exists(App.CurrentGame.modDirectory) || App.CurrentGame != null)
+            if (!Directory.Exists(App.CurrentGame.modDirectory) || App.CurrentGame == null)
                 return;
 
             new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
 
             CheckForModUpdates();
-
-            // If we've checked for updates, save the modified
-            // last update times without requiring the user to
-            // click the save button.
-            if (checkedForUpdates)
-            {
-                IniSerializer.Serialize(loaderini, loaderinipath);
-            }
-
 
             Grid stackPanel;
             switch (setGame)
@@ -367,7 +359,7 @@ namespace SAModManager
                 }
             }
 
-            Properties.Settings.Default.GamePath = App.CurrentGame.gameDirectory;
+            SADXSettings.GamePath = App.CurrentGame.gameDirectory;
             loaderini.DebugConsole = (bool)checkEnableLogConsole.IsChecked;
             loaderini.HorizontalResolution = txtResX.GetInt();
             loaderini.VerticalResolution = txtResY.GetInt();
@@ -419,6 +411,7 @@ namespace SAModManager
             IniSerializer.Serialize(loaderini, loaderinipath);
 
             SaveGameConfigIni();
+            SaveGameProfile();
 
 
             await Task.Delay(200);
@@ -1328,7 +1321,7 @@ namespace SAModManager
         private void UpdateChecker_EnableControls(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
         {
             btnCheckUpdates.IsEnabled = true;
-            btnCheckUpdates.IsEnabled = true;
+
             ModContextChkUpdate.IsEnabled = true;
             if (ModContextDev is not null)
             {
@@ -1342,23 +1335,30 @@ namespace SAModManager
 
         private void CheckForModUpdates(bool force = false)
         {
-            return; //disabled to avoid github rate api limit for testing purpose
-            if (!force && !loaderini.ModUpdateCheck)
+            if (!force && !App.configIni.UpdateSettings.EnableModsBootCheck)
             {
+                return;
+            }
+
+            if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(App.configIni.UpdateSettings.UpdateCheckCount, App.configIni.UpdateSettings.UpdateTimeOutCD))
+            {
+                UpdateHelper.HandleRefreshUpdateCD();
+                IniSerializer.Serialize(App.configIni, App.ConfigPath);
                 return;
             }
 
             InitializeWorker();
 
-            if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(loaderini.UpdateUnit, loaderini.UpdateFrequency, DateTime.FromFileTimeUtc(loaderini.ModUpdateTime)))
-            {
-                return;
+            if (!force)
+            {           
+                App.configIni.UpdateSettings.UpdateCheckCount++;
+                UpdateHelper.HandleRefreshUpdateCD();
+                IniSerializer.Serialize(App.configIni, App.ConfigPath);
             }
-
-            checkedForUpdates = true;
-            loaderini.ModUpdateTime = DateTime.UtcNow.ToFileTimeUtc();
+  
             updateChecker.RunWorkerAsync(mods.Select(x => new KeyValuePair<string, ModInfo>(x.Key, x.Value)).ToList());
             btnCheckUpdates.IsEnabled = false;
+         
         }
         #endregion
 
@@ -2722,7 +2722,7 @@ namespace SAModManager
                 {
                     textGameDir.Text = GamePath;
                     SetGamePath(GamePath);
-                    Properties.Settings.Default.GamePath = App.CurrentGame.gameDirectory;
+                   SADXSettings.GamePath = App.CurrentGame.gameDirectory;
                     UpdatePathsStringsInfo();
                     if (File.Exists(loaderinipath))
                         loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath);
@@ -2911,9 +2911,9 @@ namespace SAModManager
 
             if (!String.IsNullOrEmpty(App.CurrentGame.modDirectory))
             {
-                foreach (var item in Directory.EnumerateFiles(App.CurrentGame.modDirectory, "*.ini"))
+                foreach (var item in Directory.EnumerateFiles(App.CurrentGame.ProfilesDirectory, "*.ini"))
                 {
-                    if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase) && !item.EndsWith("desktop.ini", StringComparison.OrdinalIgnoreCase))
+                    if (!item.EndsWith("default.ini", StringComparison.OrdinalIgnoreCase))
                     {
                         Profile pro = new()
                         {
