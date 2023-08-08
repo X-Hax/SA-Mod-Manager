@@ -1,91 +1,105 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-	<UseWindowsForms>true</UseWindowsForms>
-    <ApplicationIcon>Icons\SADXModManager.ico</ApplicationIcon>
-	  <Nullable>disable</Nullable>
-	  <BaseOutputPath>..\bin\</BaseOutputPath>
-	  <PackageReadmeFile>README.md</PackageReadmeFile>
-	  <RepositoryUrl>https://github.com/X-Hax/sadx-mod-loader</RepositoryUrl>
-	  <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ApplicationIcon>Icons\SADXModManager.ico</ApplicationIcon>
+		<Nullable>disable</Nullable>
+		<BaseOutputPath>..\bin\</BaseOutputPath>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/X-Hax/sadx-mod-loader</RepositoryUrl>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Languages\AboutCode\**" />
-    <Compile Remove="Languages\AboutManager\**" />
-    <Compile Remove="Languages\DownloadMod\**" />
-    <EmbeddedResource Remove="Languages\AboutCode\**" />
-    <EmbeddedResource Remove="Languages\AboutManager\**" />
-    <EmbeddedResource Remove="Languages\DownloadMod\**" />
-    <None Remove="Languages\AboutCode\**" />
-    <None Remove="Languages\AboutManager\**" />
-    <None Remove="Languages\DownloadMod\**" />
-    <Page Remove="Languages\AboutCode\**" />
-    <Page Remove="Languages\AboutManager\**" />
-    <Page Remove="Languages\DownloadMod\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Languages\AboutCode\**" />
+		<Compile Remove="Languages\AboutManager\**" />
+		<Compile Remove="Languages\DownloadMod\**" />
+		<EmbeddedResource Remove="Languages\AboutCode\**" />
+		<EmbeddedResource Remove="Languages\AboutManager\**" />
+		<EmbeddedResource Remove="Languages\DownloadMod\**" />
+		<None Remove="Languages\AboutCode\**" />
+		<None Remove="Languages\AboutManager\**" />
+		<None Remove="Languages\DownloadMod\**" />
+		<Page Remove="Languages\AboutCode\**" />
+		<Page Remove="Languages\AboutManager\**" />
+		<Page Remove="Languages\DownloadMod\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-	<None Remove="Common\OpCodeSyntaxDark.xshd" />
-	<None Remove="Icons\SADXModManager_.png" />
-	<None Remove="Updater\ModDownloadDialog.xaml.cs~RF2e7deabf.TMP" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Common\OpCodeSyntaxDark.xshd" />
+		<None Remove="Icons\SADXModManager_.png" />
+		<None Remove="Updater\ModDownloadDialog.xaml.cs~RF2e7deabf.TMP" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Common\OpCodeSyntaxDark.xshd" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Common\OpCodeSyntaxDark.xshd" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
-    <PackageReference Include="NetCoreInstallChecker" Version="3.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AvalonEdit" Version="6.3.0.90" />
+		<PackageReference Include="Costura.Fody" Version="5.7.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
+		<PackageReference Include="NetCoreInstallChecker" Version="3.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="HtmlRenderer">
-      <HintPath>Externals\HtmlRenderer.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlRenderer.WPF">
-      <HintPath>Externals\HtmlRenderer.WPF.dll</HintPath>
-    </Reference>
-    <Reference Include="SevenZipExtractor">
-      <HintPath>Externals\SevenZipExtractor.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="HtmlRenderer">
+			<HintPath>Externals\HtmlRenderer.dll</HintPath>
+		</Reference>
+		<Reference Include="HtmlRenderer.WPF">
+			<HintPath>Externals\HtmlRenderer.WPF.dll</HintPath>
+		</Reference>
+		<Reference Include="SevenZipExtractor">
+			<HintPath>Externals\SevenZipExtractor.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-	  <Resource Include="Icons\SADXModManager_.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Icons\SADXModManager_.png" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
+
 
 </Project>
