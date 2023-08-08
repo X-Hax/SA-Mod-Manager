@@ -30,9 +30,9 @@ namespace SAModManager.Elements.SADX
 		SADXLoaderInfo loaderini;
 		public GameSettings GameProfile;
 
-		private string d3d8to9InstalledDLLName = "d3d8.dll";
-		private string d3d8to9StoredDLLName = "d3d8m.dll";
-		bool suppressEvent = false;
+		private static string d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
+		private static string d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
+        bool suppressEvent = false;
 
 		private readonly double LowOpacityBtn = 0.7;
 
@@ -59,6 +59,12 @@ namespace SAModManager.Elements.SADX
 			SetupBindings();
 			SetUp_UpdateD3D9();
 		}
+
+		public static void UpdateD3D8Paths()
+		{
+            d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
+            d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
+        }
 
 		private void LoadGameConfigIni()
 		{
@@ -402,8 +408,11 @@ namespace SAModManager.Elements.SADX
 
 		private void SetUp_UpdateD3D9()
 		{
-			btnUpdateD3D9.IsEnabled = CheckD3D8to9Update();
-			checkD3D9.IsEnabled = File.Exists(d3d8to9StoredDLLName);
+			bool isUpdateAvailable = CheckD3D8to9Update();
+		
+            btnUpdateD3D9.Visibility = isUpdateAvailable ?  Visibility.Visible : Visibility.Hidden;
+            btnUpdateD3D9.IsEnabled = !isUpdateAvailable;
+            checkD3D9.IsEnabled = File.Exists(d3d8to9StoredDLLName);
 			checkD3D9.IsChecked = File.Exists(d3d8to9InstalledDLLName);
 		}
 

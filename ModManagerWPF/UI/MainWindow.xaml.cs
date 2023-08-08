@@ -58,8 +58,6 @@ namespace SAModManager
         string codexmlpath = "mods/Codes.xml";
         string codedatpath = "mods/Codes.dat";
         string patchdatpath = "mods/Patches.dat";
-        private string d3d8to9InstalledDLLName = "d3d8.dll";
-        private string d3d8to9StoredDLLName = "d3d8m.dll";
         CodeList mainCodes = null;
         List<Code> codes = null;
         public List<CodeData> codesSearch { get; set; }
@@ -262,8 +260,8 @@ namespace SAModManager
                 codedatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat");
                 patchdatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat");
 
-                d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
-                d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
+                Elements.SADX.GameConfig.UpdateD3D8Paths();
+
             }
             else
             {
