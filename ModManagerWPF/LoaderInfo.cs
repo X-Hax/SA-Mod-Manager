@@ -228,6 +228,86 @@ namespace SAModManager
 			EnabledCodes = new List<string>();
 		}
 
+		/// <summary>
+		/// Converts Manager and Profile settings to this old format, here for debugging purposes.
+		/// </summary>
+		/// <param name="managerSettings"></param>
+		/// <param name="gameSettings"></param>
+		public void ConvertFromV1(IniSettings.ManagerSettings managerSettings, IniSettings.SADX.GameSettings gameSettings)
+		{
+			// Manager Settings
+			devMode = managerSettings.EnableDeveloperMode;
+			managerOpen = managerSettings.KeepManagerOpen;
+			Theme = managerSettings.Theme;
+			Language = managerSettings.Language;
+			UpdateCheck = managerSettings.UpdateSettings.EnableManagerBootCheck;
+			ModUpdateCheck = managerSettings.UpdateSettings.EnableModsBootCheck;
+
+			// Graphics
+			ScreenNum = gameSettings.Graphics.SelectedScreen;
+			HorizontalResolution = gameSettings.Graphics.HorizontalResolution;
+			VerticalResolution = gameSettings.Graphics.VerticalResolution;
+			ForceAspectRatio = gameSettings.Graphics.Enable43ResolutionRatio;
+			EnableVsync = gameSettings.Graphics.EnableVsync;
+			PauseWhenInactive = gameSettings.Graphics.EnablePauseOnInactive;
+			EnableDynamicBuffer = gameSettings.Graphics.EnableDynamicBuffer;
+			Borderless = gameSettings.Graphics.EnableBorderless;
+			StretchFullscreen = gameSettings.Graphics.EnableScreenScaling;
+			CustomWindowSize = gameSettings.Graphics.EnableCustomWindow;
+			WindowWidth = gameSettings.Graphics.CustomWindowWidth; 
+			WindowHeight = gameSettings.Graphics.CustomWindowHeight;
+			MaintainWindowAspectRatio = gameSettings.Graphics.EnableKeepResolutionRatio;
+			ResizableWindow = gameSettings.Graphics.EnableResizableWindow;
+			BackgroundFillMode = gameSettings.Graphics.FillModeBackground;
+			FmvFillMode = gameSettings.Graphics.FillModeFMV;
+			ScaleHud = gameSettings.Graphics.EnableUIScaling;
+			AutoMipmap = gameSettings.Graphics.EnableForcedMipmapping;
+
+			// Input
+			InputModEnabled = gameSettings.Controller.EnabledInputMod;
+
+			// Sound
+			EnableBassMusic = gameSettings.Sound.EnableBassMusic;
+			EnableBassSFX = gameSettings.Sound.EnableBassSFX;
+			SEVolume = gameSettings.Sound.SEVolume;
+
+			// Patches
+			HRTFSound = gameSettings.Patches.HRTFSound;
+			CCEF = gameSettings.Patches.KeepCamSettings;
+			PolyBuff = gameSettings.Patches.FixVertexColorRendering;
+			MaterialColorFix = gameSettings.Patches.MaterialColorFix;
+			InterpolationFix = gameSettings.Patches.InterpolationFix;
+			FovFix = gameSettings.Patches.FOVFix;
+			SCFix = gameSettings.Patches.SkyChaseResolutionFix;
+			Chaos2CrashFix = gameSettings.Patches.Chaos2CrashFix;
+			ChunkSpecFix = gameSettings.Patches.ChunkSpecularFix;
+			E102PolyFix = gameSettings.Patches.E102NGonFix;
+			ChaoPanelFix = gameSettings.Patches.ChaoPanelFix;
+			PixelOffSetFix = gameSettings.Patches.PixelOffSetFix;
+			LightFix = gameSettings.Patches.LightFix;
+			KillGbix = gameSettings.Patches.KillGBIX;
+			DisableCDCheck = gameSettings.Patches.DisableCDCheck;
+
+			// Debug
+			DebugConsole = gameSettings.DebugSettings.EnableDebugConsole;
+			DebugScreen = gameSettings.DebugSettings.EnableDebugScreen;
+			DebugFile = gameSettings.DebugSettings.EnableDebugFile;
+			DebugCrashLog = gameSettings.DebugSettings.EnableDebugCrashLog;
+
+			// Test Spawn
+			TestSpawnLevel = gameSettings.TestSpawn.LevelIndex;
+			TestSpawnAct = gameSettings.TestSpawn.ActIndex;
+			TestSpawnCharacter = gameSettings.TestSpawn.CharacterIndex;
+			TestSpawnEvent = gameSettings.TestSpawn.EventIndex;
+			TestSpawnGameMode = gameSettings.TestSpawn.GameModeIndex;
+			TestSpawnSaveID = gameSettings.TestSpawn.SaveIndex;
+			TestSpawnPositionEnabled = gameSettings.TestSpawn.UsePosition;
+			TestSpawnX = (int)gameSettings.TestSpawn.XPosition;
+			TestSpawnY = (int)gameSettings.TestSpawn.YPosition;
+			TestSpawnZ = (int)gameSettings.TestSpawn.ZPosition;
+			TestSpawnRotation = gameSettings.TestSpawn.Rotation;
+			TestSpawnRotationHex = (TestSpawnRotation > 0) ? true : false;
+		}
 	}
 
 }
