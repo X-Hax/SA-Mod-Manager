@@ -39,7 +39,6 @@ namespace SAModManager
 			}
 
 			App.UriQueue.UriEnqueued += UriQueueOnUriEnqueued;
-
 		}
 
 
@@ -163,8 +162,6 @@ namespace SAModManager
 
 				return;
 			}
-
-
 
 			this.ShowDialog();
 		}

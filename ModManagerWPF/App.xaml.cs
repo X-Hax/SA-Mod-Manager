@@ -84,7 +84,7 @@ namespace SAModManager
             }
 
 
-            InitUri(args, alreadyRunning);
+            await InitUriAsync(args, alreadyRunning);
 
             if (alreadyRunning)
             {
@@ -96,10 +96,10 @@ namespace SAModManager
             ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             MainWindow = new MainWindow(args is not null ? args : null);
+            base.OnStartup(e);
             MainWindow.Show();
 
-            base.OnStartup(e);
-            UriQueue.Close();
+
         }
 
         public static void SetupLanguages()
@@ -186,27 +186,39 @@ namespace SAModManager
             return false;
         }
 
-        private void InitUri(string[] args, bool alreadyRunning)
+        private async Task InitUriAsync(string[] args, bool alreadyRunning)
         {
             if (!alreadyRunning)
             {
                 UriQueue = new UriQueue(pipeName);
             }
 
-            List<string> uris = args.Where(x => x.Length > protocol.Length && x.StartsWith(protocol, StringComparison.Ordinal)).ToList();
+            List<string> uris = args
+                .Where(x => x.Length > protocol.Length && x.StartsWith(protocol, StringComparison.Ordinal))
+                .ToList();
 
             if (uris.Count > 0)
             {
                 using (var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.Out))
                 {
-                    pipe.Connect();
-
-                    var writer = new StreamWriter(pipe);
-                    foreach (string s in uris)
+                    try
                     {
-                        writer.WriteLine(s);
+                        await pipe.ConnectAsync();
+
+                        using (var writer = new StreamWriter(pipe))
+                        {
+                            foreach (string s in uris)
+                            {
+                                await writer.WriteLineAsync(s);
+                            }
+                            await writer.FlushAsync();
+                        }
                     }
-                    writer.Flush();
+                    catch (Exception ex)
+                    {
+                        // Handle connection or writing errors here
+                        Console.WriteLine($"Error sending URIs: {ex.Message}");
+                    }
                 }
             }
         }

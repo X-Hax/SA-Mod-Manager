@@ -62,11 +62,8 @@ namespace SAModManager
         List<Code> codes = null;
         public List<CodeData> codesSearch { get; set; }
         bool suppressEvent = false;
- 
         private bool manualModUpdate;
         readonly Updater.ModUpdater modUpdater = new();
-
-
 
 
         private Game.GameConfigFile gameConfigFile;
@@ -216,6 +213,7 @@ namespace SAModManager
             if (!Directory.Exists(App.CurrentGame.modDirectory) || App.CurrentGame == null)
                 return;
 
+
             new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
 
         
@@ -238,6 +236,7 @@ namespace SAModManager
 
         private void MainForm_FormClosing(object sender, EventArgs e)
         {
+            App.UriQueue.Close();
             Save_AppUserSettings();
         }
 
