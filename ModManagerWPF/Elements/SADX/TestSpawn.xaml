@@ -128,7 +128,7 @@
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 									<Label Content="{DynamicResource Manager.Tabs.TestSpawn.Check.Character}" VerticalAlignment="Center"/>
-									<elements:NumericUpDown x:Name="tsNumCharacter" Grid.Column="1" Height="22" MinWidth="50" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
+									<elements:NumericUpDown x:Name="tsNumCharacter" Grid.Column="1" Height="22" MinWidth="50" MinValue="-1" MaxValue="7" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
 								</Grid>
 								<Grid Grid.Column="1" HorizontalAlignment="Right">
 									<Grid.ColumnDefinitions>
@@ -136,7 +136,7 @@
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 									<Label Content="{DynamicResource Manager.Tabs.TestSpawn.Check.Level}" VerticalAlignment="Center"/>
-									<elements:NumericUpDown x:Name="tsNumLevel" Grid.Column="1" Height="22" MinWidth="65" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
+									<elements:NumericUpDown x:Name="tsNumLevel" Grid.Column="1" Height="22" MinWidth="65" MinValue="-1" MaxValue="42" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
 								</Grid>
 								<Grid Grid.Column="2" HorizontalAlignment="Right">
 									<Grid.ColumnDefinitions>
@@ -144,7 +144,7 @@
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 									<Label Content="{DynamicResource Manager.Tabs.TestSpawn.Act}" VerticalAlignment="Center"/>
-									<elements:NumericUpDown x:Name="tsNumAct" Grid.Column="2" Height="22" MinWidth="65" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
+									<elements:NumericUpDown x:Name="tsNumAct" Grid.Column="2" Height="22" MinWidth="65" MinValue="-1" MaxValue="7" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}"/>
 								</Grid>
 							</Grid>
 

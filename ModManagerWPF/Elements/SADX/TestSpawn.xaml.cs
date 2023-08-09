@@ -69,6 +69,7 @@ namespace SAModManager.Elements.SADX
 		private TestSpawnSettings SpawnSettings;
 		private Dictionary<string, SADXModInfo> GameMods;
 		private List<string> SelectedMods;
+		private Dictionary<int, string> EventNames;
 
 		#region ComboBox Sources
 		public static readonly List<string> CharacterNames = new()
@@ -421,13 +422,11 @@ namespace SAModManager.Elements.SADX
 		private void TestSpawn_Loaded(object sender, RoutedEventArgs e)
 		{
 			// Setup Item Sources
-			tsComboCharacter.ItemsSource = CharacterNames;
-			tsComboLevel.ItemsSource = LevelNames;
-			tsComboGameMode.ItemsSource = GameModeNames;
-			tsComboGameMode.DisplayMemberPath = "Value";
-
+			InitCutsceneList();
 			GetSaves();
 
+			tsComboTime.ItemsSource = TimeDay;
+			tsComboTime.SelectedIndex = 0;
 			SetBindings();
 		}
 
@@ -457,7 +456,7 @@ namespace SAModManager.Elements.SADX
 			ComboBox t = sender as ComboBox;
 
 			tsComboAct.ItemsSource = GetNewAct(t.SelectedIndex);
-			SpawnSettings.ActIndex = 0;
+			tsComboAct.SelectedIndex = 0;
 		}
 
 		private void tsCheckCharacter_Checked(object sender, RoutedEventArgs e)
@@ -480,8 +479,6 @@ namespace SAModManager.Elements.SADX
 		{
 			if (IsEventChecked)
 			{
-				//IsCharacterChecked = true;
-
 				TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
 			}
 		}
@@ -513,71 +510,40 @@ namespace SAModManager.Elements.SADX
 
 		private string GetTestSpawnCommandLine()
 		{
-			/*
 			List<string> cmdline = new List<string>();
 
-			bool advanced = tsCheckManual.IsChecked == true;
+			if (IsCharacterChecked && SpawnSettings.CharacterIndex > -1)
+				cmdline.Add("-c " + SpawnSettings.CharacterIndex.ToString());
 
-			if (IsLevelChecked)
-				cmdline.Add("-l " + (advanced ? GameSettings.TestSpawn.LevelIndex.ToString()))
+			if (IsLevelChecked && SpawnSettings.LevelIndex > -1)
+				cmdline.Add("-l " + SpawnSettings.LevelIndex.ToString());
 
-			if (tsCheckLevel.IsChecked.GetValueOrDefault() && tsComboLevel.SelectedIndex > -1)
-				cmdline.Add("-l " + (advanced ? tsNumLevel.Value.ToString() : tsComboLevel.SelectedIndex.ToString()) + " -a " + (advanced ? tsNumAct.Value.ToString() : tsComboAct.SelectedIndex.ToString()));
+			if (IsLevelChecked && SpawnSettings.ActIndex > -1)
+				cmdline.Add("-a " + SpawnSettings.ActIndex.ToString());
 
-			if (tsCheckCharacter.IsChecked == true && tsComboCharacter.SelectedIndex > -1)
-				cmdline.Add("-c " + (advanced ? tsNumCharacter.Value.ToString() : tsComboCharacter.SelectedIndex.ToString()));
+			if (SpawnSettings.UsePosition)
+				cmdline.Add("-p " + 
+					SpawnSettings.XPosition.ToString() + " " +
+					SpawnSettings.YPosition.ToString() + " " +
+					SpawnSettings.ZPosition.ToString() + " -r " +
+					SpawnSettings.Rotation.ToString());
 
-			if (tsCheckPosition.IsChecked == true)
-				cmdline.Add("-p " + tsNumPosX.Value.ToString() + " " +
-					tsNumPosY.Value.ToString() + " " +
-					tsNumPosZ.Value.ToString() + " -r " +
-					tsNumAngle.Value.ToString());
+			if (IsEventChecked && SpawnSettings.EventIndex > -1)
+				cmdline.Add("-e " + SpawnSettings.EventIndex.ToString());
 
-			if (tsCheckEvent.IsChecked == true && tsComboEvent.SelectedIndex > -1)
-			{
-				int ev = 0;
-				int ev_result = 0;
-
-				foreach (var item in TS.GetCutsceneList())
-				{
-					if (ev == tsComboEvent.SelectedIndex)
-					{
-						ev_result = item.Key;
-						break;
-					}
-					ev++;
-				}
-				cmdline.Add("-e " + ev_result.ToString());
-			}
-			if (tsComboTime.SelectedIndex > 0)
+			if (IsLevelChecked && tsComboTime.SelectedIndex > 0)
 				cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
 
-			if (tsCheckGameMode.IsChecked == true && tsComboGameMode.SelectedIndex > -1)
-			{
-				uint gm = 0;
-				uint gm_result = 0;
-				foreach (var item in TS.GetTestSpawnGameModeList())
-				{
-					if (gm == tsComboGameMode.SelectedIndex)
-					{
-						gm_result = item.Key;
-						break;
-					}
-					gm++;
-				}
-				cmdline.Add("-g " + gm_result.ToString());
-			}
+			if (IsGameModeChecked && SpawnSettings.GameModeIndex > -1)
+				cmdline.Add("-g " + SpawnSettings.GameModeIndex.ToString());
 
-			if (tsCheckSave.IsChecked == true)
+			if (IsSaveChecked && SpawnSettings.SaveIndex > -1)
 			{
-				string save = tsComboSave.SelectedValue.ToString();
-				save = Util.GetSaveNumber(save);
+				string save = Util.GetSaveNumber(SpawnSettings.SaveIndex.ToString());
 				cmdline.Add("-s " + save);
 			}
-
-			return string.Join(" ", cmdline);
-			*/
-			return "";
+			
+			return string.Join(" ", cmdline);	
 		}
 		#endregion
 
@@ -595,7 +561,8 @@ namespace SAModManager.Elements.SADX
 				Source = SpawnSettings,
 				Mode = BindingMode.TwoWay
 			});
-			IsLevelChecked = (SpawnSettings.CharacterIndex > -1) ? true : false;
+			tsComboCharacter.ItemsSource = CharacterNames;
+			IsLevelChecked = (SpawnSettings.LevelIndex > -1) ? true : false;
 			tsCheckLevel.SetBinding(CheckBox.IsCheckedProperty, new Binding("IsLevelChecked")
 			{
 				Source = this,
@@ -606,6 +573,7 @@ namespace SAModManager.Elements.SADX
 				Source = SpawnSettings,
 				Mode = BindingMode.TwoWay
 			});
+			tsComboLevel.ItemsSource = LevelNames;
 			tsComboAct.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ActIndex")
 			{
 				Source = SpawnSettings,
@@ -635,6 +603,8 @@ namespace SAModManager.Elements.SADX
 				ConverterParameter = GameModeNames,
 				Mode = BindingMode.TwoWay
 			});
+			tsComboGameMode.ItemsSource = GameModeNames;
+			tsComboGameMode.DisplayMemberPath = "Value";
 			IsSaveChecked = (SpawnSettings.SaveIndex > -1) ? true : false;
 			tsCheckSave.SetBinding(CheckBox.IsCheckedProperty, new Binding("IsSaveChecked")
 			{
@@ -646,15 +616,28 @@ namespace SAModManager.Elements.SADX
 				Source = SpawnSettings,
 				Mode = BindingMode.TwoWay
 			});
-
+			tsComboEvent.ItemsSource = EventNames;
+			tsComboEvent.DisplayMemberPath = "Value";
 			tsCheckManual.SetBinding(CheckBox.IsCheckedProperty, new Binding("UseManual")
 			{
 				Source = SpawnSettings,
 				Mode = BindingMode.TwoWay
 			});
-			tsNumCharacter.Value = SpawnSettings.CharacterIndex;
-			tsNumLevel.Value = SpawnSettings.LevelIndex;
-			tsNumAct.Value = SpawnSettings.ActIndex;
+			tsNumCharacter.SetBinding(NumericUpDown.ValueProperty, new Binding("CharacterIndex")
+			{
+				Source = SpawnSettings,
+				Mode = BindingMode.TwoWay
+			});
+			tsNumLevel.SetBinding(NumericUpDown.ValueProperty, new Binding("LevelIndex")
+			{
+				Source = SpawnSettings,
+				Mode = BindingMode.TwoWay
+			});
+			tsNumAct.SetBinding(NumericUpDown.ValueProperty, new Binding("ActIndex")
+			{
+				Source = SpawnSettings,
+				Mode = BindingMode.TwoWay
+			});
 			tsNumPosX.SetBinding(NumericUpDown.ValueProperty, new Binding("XPosition")
 			{
 				Source = SpawnSettings,
@@ -715,6 +698,23 @@ namespace SAModManager.Elements.SADX
 				}
 			}
 		}
+
+		public void InitCutsceneList()
+		{
+			EventNames = new Dictionary<int, string>();
+
+			for (int i = 0; i < 385; i++)
+			{
+				string cutsceneName = Lang.GetString("TSCutscene" + i.ToString());
+
+				if (cutsceneName.Contains("TSCutscene") || string.IsNullOrEmpty(cutsceneName))
+					continue;
+
+				string displayName = "EV" + i.ToString("X4") + ": " + cutsceneName;
+
+				EventNames.Add(i, displayName);
+			}
+		}
 		#endregion
 
 		#region Public Functions
@@ -722,6 +722,7 @@ namespace SAModManager.Elements.SADX
 		{
 			if (index > acts.Count || index < 0)
 			{
+				
 				return actsRegular;
 			}
 
@@ -736,7 +737,7 @@ namespace SAModManager.Elements.SADX
 			{
 				tsComboLevel.SelectedIndex = -1;
 				tsComboAct.SelectedIndex = -1;
-				tsComboTime.SelectedIndex = -1;
+				tsComboTime.SelectedIndex = 0;
 			}
 			if (!IsEventChecked)
 				tsComboEvent.SelectedIndex = -1;
