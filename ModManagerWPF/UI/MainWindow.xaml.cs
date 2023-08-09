@@ -95,7 +95,7 @@ namespace SAModManager
 
             LoadAllProfiles();
             UpdateDLLData();
-            setupTestSpawn();
+            //setupTestSpawn();
             SetOneClickBtnState();
 
             if (args is not null)
@@ -222,12 +222,15 @@ namespace SAModManager
             CheckForModUpdates();
 
             Grid stackPanel;
+			Grid tsPanel;
             switch (setGame)
             {
                 case SetGame.SADX:
                     tabGame.Visibility = Visibility.Visible;
                     stackPanel = (Grid)tabGame.Content;
                     stackPanel.Children.Add(new Elements.SADX.GameConfig(SADXSettings, App.CurrentGame.gameDirectory));
+					tsPanel = (Grid)tabTestSpawn.Content;
+					tsPanel.Children.Add(new Elements.SADX.TestSpawn(SADXSettings, mods));
                     break;
                 case SetGame.SA2:
                 default:
@@ -330,23 +333,25 @@ namespace SAModManager
             SADXSettings.GamePath = App.CurrentGame.gameDirectory;
 			Elements.SADX.GameConfig sadxConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
 			sadxConfig.Save(SADXSettings);
+			Elements.SADX.TestSpawn sadxTestSpawn = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
+			sadxTestSpawn.Save(SADXSettings);
             loaderini.DebugConsole = (bool)checkEnableLogConsole.IsChecked;
 
             //test spawn stuff
-            loaderini.TestSpawnCharacter = (bool)tsCheckCharacter.IsChecked ? tsComboCharacter.SelectedIndex : -1;
+            //loaderini.TestSpawnCharacter = (bool)tsCheckCharacter.IsChecked ? tsComboCharacter.SelectedIndex : -1;
 
-            loaderini.TestSpawnLevel = (bool)tsCheckLevel.IsChecked ? tsComboLevel.SelectedIndex : -1;
-            loaderini.TestSpawnAct = tsComboAct.SelectedIndex;
-            loaderini.TestSpawnGameMode = (bool)tsCheckGameMode.IsChecked ? tsComboGameMode.SelectedIndex : -1;
+            //loaderini.TestSpawnLevel = (bool)tsCheckLevel.IsChecked ? tsComboLevel.SelectedIndex : -1;
+            //loaderini.TestSpawnAct = tsComboAct.SelectedIndex;
+            //loaderini.TestSpawnGameMode = (bool)tsCheckGameMode.IsChecked ? tsComboGameMode.SelectedIndex : -1;
 
-            loaderini.TestSpawnEvent = (bool)tsCheckEvent.IsChecked ? tsComboEvent.SelectedIndex : -1;
+            //loaderini.TestSpawnEvent = (bool)tsCheckEvent.IsChecked ? tsComboEvent.SelectedIndex : -1;
 
-            loaderini.TestSpawnPositionEnabled = (bool)tsCheckPosition.IsChecked;
-            loaderini.TestSpawnX = (int)tsNumPosX.Value;
-            loaderini.TestSpawnY = (int)tsNumPosY.Value;
-            loaderini.TestSpawnZ = (int)tsNumPosZ.Value;
+            //loaderini.TestSpawnPositionEnabled = (bool)tsCheckPosition.IsChecked;
+            //loaderini.TestSpawnX = (int)tsNumPosX.Value;
+            //loaderini.TestSpawnY = (int)tsNumPosY.Value;
+            //loaderini.TestSpawnZ = (int)tsNumPosZ.Value;
 
-            loaderini.TestSpawnSaveID = (bool)tsCheckSave.IsChecked ? tsComboSave.SelectedIndex : -1;
+            //loaderini.TestSpawnSaveID = (bool)tsCheckSave.IsChecked ? tsComboSave.SelectedIndex : -1;
 
             SaveCodes();
 
@@ -366,19 +371,19 @@ namespace SAModManager
 
             textGameDir.Text = App.CurrentGame.gameDirectory;
 
-            tsCheckCharacter.IsChecked = loaderini.TestSpawnCharacter > -1;
-            tsComboCharacter.SelectedIndex = loaderini.TestSpawnCharacter;
-            tsCheckLevel.IsChecked = loaderini.TestSpawnLevel > -1;
-            tsComboLevel.SelectedIndex = loaderini.TestSpawnLevel;
+            //tsCheckCharacter.IsChecked = loaderini.TestSpawnCharacter > -1;
+            //tsComboCharacter.SelectedIndex = loaderini.TestSpawnCharacter;
+            //tsCheckLevel.IsChecked = loaderini.TestSpawnLevel > -1;
+            //tsComboLevel.SelectedIndex = loaderini.TestSpawnLevel;
 
-            tsComboAct.SelectedIndex = loaderini.TestSpawnAct;
-            tsComboGameMode.SelectedIndex = loaderini.TestSpawnGameMode;
-            tsCheckEvent.IsChecked = loaderini.TestSpawnEvent > -1;
-            tsComboEvent.SelectedIndex = loaderini.TestSpawnEvent;
-            tsCheckPosition.IsChecked = loaderini.TestSpawnPositionEnabled;
-            tsNumPosX.Value = loaderini.TestSpawnX;
-            tsNumPosY.Value = loaderini.TestSpawnY;
-            tsNumPosZ.Value = loaderini.TestSpawnZ;
+            //tsComboAct.SelectedIndex = loaderini.TestSpawnAct;
+            //tsComboGameMode.SelectedIndex = loaderini.TestSpawnGameMode;
+            //tsCheckEvent.IsChecked = loaderini.TestSpawnEvent > -1;
+            //tsComboEvent.SelectedIndex = loaderini.TestSpawnEvent;
+            //tsCheckPosition.IsChecked = loaderini.TestSpawnPositionEnabled;
+            //tsNumPosX.Value = loaderini.TestSpawnX;
+            //tsNumPosY.Value = loaderini.TestSpawnY;
+            //tsNumPosZ.Value = loaderini.TestSpawnZ;
 
             if ((bool)!checkDevEnabled.IsChecked)
             {
@@ -804,8 +809,8 @@ namespace SAModManager
             Image iconSavePlay = FindName("savePlayIcon") as Image;
             iconSavePlay?.SetValue(Image.OpacityProperty, SaveAndPlayButton.IsEnabled ? 1 : LowOpacityIcon);
             SaveAndPlayButton.Opacity = App.CurrentGame.loader.installed ? 1 : LowOpacityBtn;
-            btnTSLaunch.IsEnabled = App.CurrentGame.loader.installed;
-            btnTSLaunch.Opacity = App.CurrentGame.loader.installed ? 1 : LowOpacityBtn;
+            //btnTSLaunch.IsEnabled = App.CurrentGame.loader.installed;
+            //btnTSLaunch.Opacity = App.CurrentGame.loader.installed ? 1 : LowOpacityBtn;
         }
 
         private void UpdateMainButtonsState()
@@ -1829,6 +1834,7 @@ namespace SAModManager
         #endregion
 
         #region Test Spawn
+
         private void checkEnableTestSpawn_Checked(object sender, RoutedEventArgs e)
         {
             if (tcMain.Items.Contains(tabTestSpawn))
@@ -1845,7 +1851,7 @@ namespace SAModManager
 
             tcMain.Items.Remove(tabTestSpawn);
         }
-
+		/*
         private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
@@ -2079,6 +2085,7 @@ namespace SAModManager
 
             return string.Join(" ", cmdline);
         }
+		*/
         #endregion
 
         #region Manager Config
@@ -2174,7 +2181,7 @@ namespace SAModManager
             }
 
             SaveAndPlayButton.IsEnabled = false;
-            btnTSLaunch.IsEnabled = false;
+            //btnTSLaunch.IsEnabled = false;
 
             if (App.CurrentGame.loader.installed && File.Exists(chrmdllorigpath))
             {
