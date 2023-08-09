@@ -28,7 +28,7 @@ namespace SAModManager.Elements.SADX
 
 		string gamePath = string.Empty;
 		SADXLoaderInfo loaderini;
-		public GameSettings GameProfile;
+		private GameSettings GameProfile;
 
 		private static string d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
 		private static string d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
@@ -173,7 +173,6 @@ namespace SAModManager.Elements.SADX
 			radFullscreen.SetBinding(RadioButton.IsCheckedProperty, new Binding("FullScreen")
 			{
 				Source = GameSettings.GameConfig,
-				Converter = new BoolIntConverter(),
 				Mode = BindingMode.TwoWay
 			});
 			comboFramerate.SetBinding(ComboBox.SelectedIndexProperty, new Binding("FrameRate")
