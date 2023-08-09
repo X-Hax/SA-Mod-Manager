@@ -68,6 +68,7 @@ namespace SAModManager.Elements.SADX
 
 		private TestSpawnSettings SpawnSettings;
 		private Dictionary<string, SADXModInfo> GameMods;
+		private List<string> SelectedMods;
 
 		#region ComboBox Sources
 		public static readonly List<string> CharacterNames = new()
@@ -409,6 +410,7 @@ namespace SAModManager.Elements.SADX
 		public TestSpawn(GameSettings gameSettings, Dictionary<string, SADXModInfo> mods)
 		{
 			SpawnSettings = gameSettings.TestSpawn;
+			SelectedMods = gameSettings.EnabledMods;
 			GameMods = mods;
 			InitializeComponent();
 
@@ -437,7 +439,7 @@ namespace SAModManager.Elements.SADX
 				return;
 			}
 
-			string executablePath = GameSettings.EnabledMods.Select(item => GameMods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+			string executablePath = SelectedMods.Select(item => GameMods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
 
 			string commandLine = GetTestSpawnCommandLine();
 
@@ -728,7 +730,22 @@ namespace SAModManager.Elements.SADX
 
 		public void Save(GameSettings settings)
 		{
-			settings.TestSpawn = SpawnSettings;
+			if (!IsCharacterChecked)
+				tsComboCharacter.SelectedIndex = -1;
+			if (!IsLevelChecked)
+			{
+				tsComboLevel.SelectedIndex = -1;
+				tsComboAct.SelectedIndex = -1;
+				tsComboTime.SelectedIndex = -1;
+			}
+			if (!IsEventChecked)
+				tsComboEvent.SelectedIndex = -1;
+			if (!IsGameModeChecked)
+				tsComboGameMode.SelectedIndex = -1;
+			if (!IsSaveChecked)
+				tsComboSave.SelectedIndex = -1;
+
+            settings.TestSpawn = SpawnSettings;
 		}
 		#endregion
 	}
