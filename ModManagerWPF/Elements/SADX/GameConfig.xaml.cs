@@ -42,11 +42,11 @@ namespace SAModManager.Elements.SADX
 		public List<PatchesData> Patches;
 		#endregion
 
-		public GameConfig(ref GameSettings gameSettings, string gamePath)
+		public GameConfig(ref GameSettings gameSettings, ref object gameConfig)
 		{
 			InitializeComponent();
 			GameProfile = gameSettings;
-			this.gamePath = gamePath;
+			GameSettings = (GameConfigFile)gameConfig;
 			graphics = new Game.Graphics(ref comboScreen);
 			SetPatches();
             Loaded += GameConfig_Loaded;
@@ -54,7 +54,7 @@ namespace SAModManager.Elements.SADX
 
 		private void GameConfig_Loaded(object sender, RoutedEventArgs e)
 		{
-			LoadGameConfigIni();
+			//LoadGameConfigIni();
 			SetupBindings();
 			SetUp_UpdateD3D9();
 		}
@@ -64,24 +64,6 @@ namespace SAModManager.Elements.SADX
             d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
             d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
         }
-
-		private void LoadGameConfigIni()
-		{
-			GameSettings = IniSerializer.Deserialize<Game.GameConfigFile>(Path.Combine(gamePath, "sonicDX.ini"));
-
-			if (GameSettings.GameConfig == null)
-			{
-				GameSettings.GameConfig = new()
-				{
-					FrameRate = (int)FrameRate.High,
-					Sound3D = 1,
-					SEVoice = 1,
-					BGM = 1,
-					BGMVolume = 100,
-					VoiceVolume = 100
-				};
-			}
-		}
 
 		#region Private Functions
 		private void SetupBindings()
@@ -305,7 +287,7 @@ namespace SAModManager.Elements.SADX
 		public void Save(ref GameSettings settings)
 		{
 			SaveGameProfile(ref settings);
-			SaveGameConfigIni();
+			//SaveGameConfigIni();
 			SavePatches(ref settings);
 		}
 		#endregion

@@ -66,7 +66,7 @@ namespace SAModManager
         readonly Updater.ModUpdater modUpdater = new();
 
 
-        private Game.GameConfigFile gameConfigFile;
+        private object gameConfigFile;
 
         public Game.Graphics graphics;
         MenuItem ModContextDev { get; set; }
@@ -86,7 +86,6 @@ namespace SAModManager
             LoadModList();
 
             UpdateDLLData();
-            //setupTestSpawn();
             SetOneClickBtnState();
 
             if (args is not null)
@@ -212,7 +211,7 @@ namespace SAModManager
                 case SetGame.SADX:
                     tabGame.Visibility = Visibility.Visible;
                     stackPanel = (Grid)tabGame.Content;
-                    stackPanel.Children.Add(new Elements.SADX.GameConfig(ref SADXSettings, App.CurrentGame.gameDirectory));
+                    stackPanel.Children.Add(new Elements.SADX.GameConfig(ref SADXSettings, ref gameConfigFile));
 					tsPanel = (Grid)tabTestSpawn.Content;
 					tsPanel.Children.Add(new Elements.SADX.TestSpawn(SADXSettings, mods));
                     break;
@@ -320,7 +319,15 @@ namespace SAModManager
             IniSerializer.Serialize(App.configIni, App.ConfigPath);
         }
 
-        public async void Save()
+		private void SaveGameConfigIni()
+		{
+			if (!File.Exists(Path.Combine(SADXSettings.GamePath, "sonicDX.ini")))
+				return;
+
+			IniSerializer.Serialize(gameConfigFile, Path.Combine(SADXSettings.GamePath, "sonicDX.ini"));
+		}
+
+		public async void Save()
         {
             SaveManagerSettings();
 
@@ -339,34 +346,18 @@ namespace SAModManager
             }
 
             SADXSettings.GamePath = App.CurrentGame.gameDirectory;
-			Elements.SADX.GameConfig sadxConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
-			sadxConfig.Save(SADXSettings);
+			//Elements.SADX.GameConfig sadxConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
+			//sadxConfig.Save(ref SADXSettings);
             loaderini.DebugConsole = (bool)checkEnableLogConsole.IsChecked;
-
-            //test spawn stuff
-            //loaderini.TestSpawnCharacter = (bool)tsCheckCharacter.IsChecked ? tsComboCharacter.SelectedIndex : -1;
-
-            //loaderini.TestSpawnLevel = (bool)tsCheckLevel.IsChecked ? tsComboLevel.SelectedIndex : -1;
-            //loaderini.TestSpawnAct = tsComboAct.SelectedIndex;
-            //loaderini.TestSpawnGameMode = (bool)tsCheckGameMode.IsChecked ? tsComboGameMode.SelectedIndex : -1;
-
-            //loaderini.TestSpawnEvent = (bool)tsCheckEvent.IsChecked ? tsComboEvent.SelectedIndex : -1;
-
-            //loaderini.TestSpawnPositionEnabled = (bool)tsCheckPosition.IsChecked;
-            //loaderini.TestSpawnX = (int)tsNumPosX.Value;
-            //loaderini.TestSpawnY = (int)tsNumPosY.Value;
-            //loaderini.TestSpawnZ = (int)tsNumPosZ.Value;
-
-            //loaderini.TestSpawnSaveID = (bool)tsCheckSave.IsChecked ? tsComboSave.SelectedIndex : -1;
 
             SaveCodes();
 
             IniSerializer.Serialize(loaderini, loaderinipath);
 
             SaveGameProfile();
+			SaveGameConfigIni();
 
-
-            await Task.Delay(200);
+			await Task.Delay(200);
 
             Refresh();
         }
@@ -380,21 +371,17 @@ namespace SAModManager
             SetGamePath(SADXSettings.GamePath);
             UpdatePathsStringsInfo();
 
+			switch (setGame)
+			{
+				case SetGame.SADX:
+					gameConfigFile = IniSerializer.Deserialize<Game.GameConfigFile>(Path.Combine(SADXSettings.GamePath, "sonicDX.ini"));
+					break;
+				case SetGame.SA2:
+					// TODO: Implement SA2 Game Config Loading
+					break;
+			}
+
             textGameDir.Text = App.CurrentGame.gameDirectory;
-
-            //tsCheckCharacter.IsChecked = loaderini.TestSpawnCharacter > -1;
-            //tsComboCharacter.SelectedIndex = loaderini.TestSpawnCharacter;
-            //tsCheckLevel.IsChecked = loaderini.TestSpawnLevel > -1;
-            //tsComboLevel.SelectedIndex = loaderini.TestSpawnLevel;
-
-            //tsComboAct.SelectedIndex = loaderini.TestSpawnAct;
-            //tsComboGameMode.SelectedIndex = loaderini.TestSpawnGameMode;
-            //tsCheckEvent.IsChecked = loaderini.TestSpawnEvent > -1;
-            //tsComboEvent.SelectedIndex = loaderini.TestSpawnEvent;
-            //tsCheckPosition.IsChecked = loaderini.TestSpawnPositionEnabled;
-            //tsNumPosX.Value = loaderini.TestSpawnX;
-            //tsNumPosY.Value = loaderini.TestSpawnY;
-            //tsNumPosZ.Value = loaderini.TestSpawnZ;
 
             if ((bool)!checkDevEnabled.IsChecked)
             {
@@ -943,7 +930,6 @@ namespace SAModManager
 
             modUpdater.modUpdatesTuple = new(modUpdater.modUpdateHelper.updates, modUpdater.modUpdateHelper.errors);
         }
-
 
         private async Task UpdateChecker_DoWorkForced()
         {
