@@ -22,7 +22,9 @@ namespace SAModManager
 	{
 		private static double multiplier;
 
-		public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
+
+
+        public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
 		{
 			try
 			{

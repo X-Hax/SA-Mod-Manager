@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
 namespace SAModManager.Updater
 {
@@ -29,11 +30,14 @@ namespace SAModManager.Updater
 		[JsonProperty("Files().aFiles()")]
 		public Dictionary<string, GameBananaItemFile> Files { get; set; }
 
-		public static GameBananaItem Load(string itemType, long itemId)
+		public static async Task<GameBananaItem> Load(string itemType, long itemId)
 		{
+			Uri uri= new($"https://api.gamebanana.com/Core/Item/Data?itemtype={itemType}&itemid={itemId}&fields=name%2COwner().name%2Ctext%2Cdescription%2CCredits().aAuthorsAndGroups()%2CUrl().sGetProfileUrl()%2CUpdates().bSubmissionHasUpdates()%2CUpdates().aGetLatestUpdates()%2CFiles().aFiles()&return_keys=1");
+
 			string response;
 			using (var client = new UpdaterWebClient())
-				response = client.DownloadString($"https://api.gamebanana.com/Core/Item/Data?itemtype={itemType}&itemid={itemId}&fields=name%2COwner().name%2Ctext%2Cdescription%2CCredits().aAuthorsAndGroups()%2CUrl().sGetProfileUrl()%2CUpdates().bSubmissionHasUpdates()%2CUpdates().aGetLatestUpdates()%2CFiles().aFiles()&return_keys=1");
+				response = await client.DownloadStringTaskAsync(uri);
+
 			return JsonConvert.DeserializeObject<GameBananaItem>(response);
 		}
 	}
