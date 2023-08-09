@@ -801,7 +801,7 @@ namespace SAModManager
         private void Update_PlayButtonsState()
         {
             bool isInstalled = App.CurrentGame.loader.installed;
-            UIHelper.ToggleButton(ref btnTSLaunch, isInstalled);
+            //UIHelper.ToggleButton(ref btnTSLaunch, isInstalled);
             UIHelper.ToggleButton(ref SaveAndPlayButton, isInstalled);
             Image iconSavePlay = FindName("savePlayIcon") as Image;
             UIHelper.ToggleImage(ref iconSavePlay, isInstalled);
