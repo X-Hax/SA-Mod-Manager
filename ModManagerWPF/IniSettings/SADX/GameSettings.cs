@@ -356,106 +356,106 @@ namespace SAModManager.IniSettings.SADX
 		/// Modifies the sound system. Only SF94 knows why.
 		/// </summary>
 		[DefaultValue(true)]
-		[IniAlwaysInclude]
-		public bool HRTFSound { get; set; }         // SADXLoaderInfo.HRTFSound
+        [IniAlwaysInclude]
+        public bool HRTFSound { get; set; } = true;        // SADXLoaderInfo.HRTFSound
 
 		/// <summary>
 		/// Fixes the game turning off free cam when dying if it was previously set.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool KeepCamSettings { get; set; }              // SADXLoaderInfo.CCEF
+		public bool KeepCamSettings { get; set; } = true;           // SADXLoaderInfo.CCEF
 
 		/// <summary>
 		/// Fixes the game's rendering to properly allow mesh's with vertex colors to be rendered with those vertex colors.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool FixVertexColorRendering { get; set; } //vertex color	// SADXLoaderInfo.PolyBuff
+		public bool FixVertexColorRendering { get; set; } = true; //vertex color	// SADXLoaderInfo.PolyBuff
 
 		/// <summary>
 		/// Fixes the material colors so they render properly.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool MaterialColorFix { get; set; }      // SADXLoaderInfo.MaterialColorFix
+		public bool MaterialColorFix { get; set; } = true;      // SADXLoaderInfo.MaterialColorFix
 
 		/// <summary>
 		/// Fixes an issue where rotations don't always follow the shortest path.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool InterpolationFix { get; set; }      // SADXLoaderInfo.InterpolationFix
+		public bool InterpolationFix { get; set; } = true;      // SADXLoaderInfo.InterpolationFix
 
 		/// <summary>
 		/// Fixes the game's FOV.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool FOVFix { get; set; }                // SADXLoaderInfo.FovFix
+		public bool FOVFix { get; set; } = true;     // SADXLoaderInfo.FovFix
 
 		/// <summary>
 		/// Fixes Skychase to properly render.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool SkyChaseResolutionFix { get; set; }                 // SADXLoaderInfo.SCFix
+		public bool SkyChaseResolutionFix { get; set; } = true; // SADXLoaderInfo.SCFix
 
 		/// <summary>
 		/// Fixes a bug that will cause the game to crash when fighting Chaos 2.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool Chaos2CrashFix { get; set; }        // SADXLoaderInfo.Chaos2CrashFix
+		public bool Chaos2CrashFix { get; set; } = true;        // SADXLoaderInfo.Chaos2CrashFix
 
 		/// <summary>
 		/// Fixes specular rendering on Chunk models.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool ChunkSpecularFix { get; set; }          // SADXLoaderInfo.ChunkSpecFix
+		public bool ChunkSpecularFix { get; set; } = true;         // SADXLoaderInfo.ChunkSpecFix
 
 		/// <summary>
 		/// Fixes rendering on E-102's gun which uses an N-Gon.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool E102NGonFix { get; set; }           // SADXLoaderInfo.E102PolyFix
+		public bool E102NGonFix { get; set; } = true;           // SADXLoaderInfo.E102PolyFix
 
 		/// <summary>
 		/// Fixes Chao Panel rendering.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool ChaoPanelFix { get; set; }          // SADXLoaderInfo.ChaoPanelFix
+		public bool ChaoPanelFix { get; set; } = true;          // SADXLoaderInfo.ChaoPanelFix
 
 		/// <summary>
 		/// Fixes a slight pixel offset in the window.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool PixelOffSetFix { get; set; }        // SADXLoaderInfo.PixelOffsetFix
+		public bool PixelOffSetFix { get; set; } = true;        // SADXLoaderInfo.PixelOffsetFix
 
 		/// <summary>
 		/// Fixes lights
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool LightFix { get; set; }              // SADXLoaderInfo.LightFix
+		public bool LightFix { get; set; } = true;           // SADXLoaderInfo.LightFix
 
 		/// <summary>
 		/// Removes GBIX processing for most textures. UI is excluded.
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool KillGBIX { get; set; }              // SADXLoaderInfo.KillGbix
+		public bool KillGBIX { get; set; } = true;            // SADXLoaderInfo.KillGbix
 
 		/// <summary>
 		/// Disables the built in CD Check.
 		/// </summary>
 		[DefaultValue(false)]
 		[IniAlwaysInclude]
-		public bool DisableCDCheck { get; set; }        // SADXLoaderInfo.DisableCDCheck
+		public bool DisableCDCheck { get; set; } = false;       // SADXLoaderInfo.DisableCDCheck
 
 		/// <summary>
 		/// Converts from original settings file.

@@ -81,15 +81,10 @@ namespace SAModManager
         {
             InitializeComponent();
 
-            LoadGameProfile();
-        
-            SetGamePath(SADXSettings.GamePath);
-            UpdatePathsStringsInfo();
             LoadSettings();
             InitCodes();
             LoadModList();
 
-            LoadAllProfiles();
             UpdateDLLData();
             //setupTestSpawn();
             SetOneClickBtnState();
@@ -193,6 +188,9 @@ namespace SAModManager
                    IniSerializer.Deserialize<IniSettings.SA2.GameSettings>(defaultProfile) : new();
                     break;
             }
+
+
+            SetProfileInComboBox();
         }
 
         #region Main
@@ -205,18 +203,8 @@ namespace SAModManager
                 Title = titleName + " " + "(" + Version + " - " + App.RepoCommit[..7] + ")";
         }
 
-        private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
+        private void SetGameUI()
         {
-
-            SetModManagerVersion();
-
-            if (!Directory.Exists(App.CurrentGame.modDirectory) || App.CurrentGame == null)
-                return;
-
-
-            new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
-
-        
             Grid stackPanel;
 			Grid tsPanel;
             switch (setGame)
@@ -224,7 +212,7 @@ namespace SAModManager
                 case SetGame.SADX:
                     tabGame.Visibility = Visibility.Visible;
                     stackPanel = (Grid)tabGame.Content;
-                    stackPanel.Children.Add(new Elements.SADX.GameConfig(SADXSettings, App.CurrentGame.gameDirectory));
+                    stackPanel.Children.Add(new Elements.SADX.GameConfig(ref SADXSettings, App.CurrentGame.gameDirectory));
 					tsPanel = (Grid)tabTestSpawn.Content;
 					tsPanel.Children.Add(new Elements.SADX.TestSpawn(SADXSettings, mods));
                     break;
@@ -233,6 +221,27 @@ namespace SAModManager
                     tabGame.Visibility = Visibility.Collapsed;
                     break;
             }
+        }
+
+        private void UI_ToggleGameConfig(bool value)
+        {
+            tabGame.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            SetModManagerVersion();
+
+            if (!Directory.Exists(App.CurrentGame.modDirectory) || App.CurrentGame == null)
+            {
+                UI_ToggleGameConfig(false);
+                return;
+            }
+
+            new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
+
+            SetGameUI();
 
             await CheckForModUpdates();
         }
@@ -332,8 +341,6 @@ namespace SAModManager
             SADXSettings.GamePath = App.CurrentGame.gameDirectory;
 			Elements.SADX.GameConfig sadxConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
 			sadxConfig.Save(SADXSettings);
-			Elements.SADX.TestSpawn sadxTestSpawn = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
-			sadxTestSpawn.Save(SADXSettings);
             loaderini.DebugConsole = (bool)checkEnableLogConsole.IsChecked;
 
             //test spawn stuff
@@ -367,6 +374,11 @@ namespace SAModManager
         private void LoadSettings()
         {
             LoadManagerSettings();
+
+            LoadGameProfile();
+
+            SetGamePath(SADXSettings.GamePath);
+            UpdatePathsStringsInfo();
 
             textGameDir.Text = App.CurrentGame.gameDirectory;
 
@@ -917,11 +929,11 @@ namespace SAModManager
 
             var tokenSource = new CancellationTokenSource();
             CancellationToken token = tokenSource.Token;
-           // out updates, out errors,
+            // out updates, out errors,
 
             try
             {
-               await Task.Run(() => modUpdater.GetModUpdates(App.CurrentGame.modDirectory, token), token);
+                await Task.Run(() => modUpdater.GetModUpdates(App.CurrentGame.modDirectory, token), token);
             }
             catch (OperationCanceledException)
             {
@@ -1013,10 +1025,10 @@ namespace SAModManager
                 modUpdater.Clear();
             }
 
-           /* if (e.Cancelled)
-            {
-                return;
-            }*/
+            /* if (e.Cancelled)
+             {
+                 return;
+             }*/
 
             if (modUpdater.modUpdatesTuple is not Tuple<List<ModDownloadWPF>, List<string>> data)
             {
@@ -1123,14 +1135,14 @@ namespace SAModManager
             await ExecuteModsUpdateCheck();
 
             if (!force)
-            {           
+            {
                 App.configIni.UpdateSettings.UpdateCheckCount++;
                 UpdateHelper.HandleRefreshUpdateCD();
                 IniSerializer.Serialize(App.configIni, App.ConfigPath);
             }
 
             modUpdater.updatableMods = mods.Select(x => new KeyValuePair<string, ModInfo>(x.Key, x.Value)).ToList();
-            btnCheckUpdates.IsEnabled = false;    
+            btnCheckUpdates.IsEnabled = false;
         }
         #endregion
 
@@ -1216,7 +1228,7 @@ namespace SAModManager
                         var managerPath = pathManagerKey.GetValue("").ToString();
 
                         if (managerPath.ToLower().Contains(Environment.ProcessPath.ToLower()))
-                        {  
+                        {
                             Image iconConfig = FindName("GB") as Image;
                             UIHelper.ToggleImage(ref menuIconConfig, false);
                             UIHelper.ToggleButton(ref btnOneClick, false);
@@ -2056,6 +2068,8 @@ namespace SAModManager
         #endregion
 
         #region Manager Config
+
+        //To do, rework this mess to handle multiple games and clean everything.
         private async void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -2067,18 +2081,21 @@ namespace SAModManager
                 string GamePath = dialog.SelectedPath;
                 string path = Path.Combine(GamePath, App.CurrentGame.exeName);
 
-                if (File.Exists(path))
+                if (File.Exists(path)) //game Path valid 
                 {
                     textGameDir.Text = GamePath;
                     SetGamePath(GamePath);
-                   SADXSettings.GamePath = App.CurrentGame.gameDirectory;
+                    SADXSettings.GamePath = App.CurrentGame.gameDirectory;
                     UpdatePathsStringsInfo();
+
                     if (File.Exists(loaderinipath))
                         loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath);
-                    Refresh();
+
                     await SetLoaderFile();
                     await InstallLoader(true);
-                    await GamesInstall.CheckAndInstallDependencies(GamesInstall.SonicAdventure);
+                    await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
+                    UpdateGameConfig(SetGame.SADX);
+                    Save();
                 }
                 else
                 {
@@ -2166,6 +2183,14 @@ namespace SAModManager
             UpdateBtnInstallLoader_State();
         }
 
+        private void UpdateGameConfig(SetGame game)
+        {
+            Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+            setGame = game; //TO DO get current game somehow
+            LoadGameProfile();
+            SetGameUI();
+        }
+
         private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) || !File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
@@ -2181,7 +2206,7 @@ namespace SAModManager
             {
                 await GamesInstall.InstallLoader(App.CurrentGame);
                 await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
-                Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+                UpdateGameConfig(SetGame.SADX); //To do change with "current selected game" when it's available
             }
 
 
@@ -2238,6 +2263,8 @@ namespace SAModManager
         }
         #endregion
 
+
+
         #region Mod Profiles
         private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -2252,7 +2279,7 @@ namespace SAModManager
             Refresh();
         }
 
-        private void LoadAllProfiles()
+        private void SetProfileInComboBox()
         {
             comboProfile.Items.Clear();
 
