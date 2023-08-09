@@ -80,6 +80,10 @@
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Faltan dependencias VC++</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Parece que te faltan algunos Visual C++ Redistributables, algunos mods no funcionarán correctamente sin estas dependencias.&#x0a;&#x0a;¿Quieres descargar e instalar estas dependencias?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Error de descarga</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail0">Error al descargar</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Would you like to try again?</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -104,6 +108,9 @@
 
     <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Verificación de Integridad</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">Todos los mods han pasado la verificación.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">Se ha encontrado la carpeta de SADX, pero parece ser la versión de Steam.&#x0a;El Mod Loader solamente funciona con la version de PC de 2004.&#x0a;&#x0a;¿Te gustaría descargar e installar el Mod Installer para convertir tu juego a la version de 2004? (Tus archivos de guardados también serán convertidos).</system:String>
+
     <!--#endregion-->
 	
 </ResourceDictionary>
