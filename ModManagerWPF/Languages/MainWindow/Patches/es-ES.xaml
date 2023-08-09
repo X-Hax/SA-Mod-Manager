@@ -11,10 +11,28 @@
     <system:String x:Key="GamePatches.Skychase">Correciones de Sky Chase</system:String>
     <system:String x:Key="GamePatches.Chaos2">Correciones de Chaos 2</system:String>
     <system:String x:Key="GamePatches.ChunkRendering">Correciones de la Iluminación Especular de modelos Chunk</system:String>
-    <system:String x:Key="GamePatches.E102Lamp">Correciones de Luces de Gamma</system:String>
+    <system:String x:Key="GamePatches.E102Lamp">Correciones del Faro de Gamma</system:String>
     <system:String x:Key="GamePatches.ChaoStats">Correción de Dimensiones del Panel de Estadísticas Chao</system:String>
     <system:String x:Key="GamePatches.PixelOffset">2D Rendering Offset Fixes</system:String>
     <system:String x:Key="GamePatches.Lights">Correciones de Luces</system:String>
     <system:String x:Key="GamePatches.DisableGBIX">Desactivar GBIX (Experimental)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Desactivar Comprobación del CD</system:String>
+
+    <system:String x:Key="GamePatches.3DSoundDesc">Este parche permite Audio 3D HRTF.</system:String>
+    <system:String x:Key="GamePatches.CamCodeDesc">Este parche arregla un error del juego base que impide que la configuración de Cámara Libre se guarde debidamente al morir o cargar otro nivel/acto.</system:String>
+    <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">El juego base ignora a propósito los colores de vértice proporcionados por los modelos y en su lugar utiliza un color de vértice global incluso cuando no se tendría que usar.&#x0a;&#x0a;Este parche reimplementa las funciones para controlar el uso de los colores de vértice CORRECTAMENTE por caso y así utilizar los colores de vertice proporcionados por los modelos.</system:String>
+    <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">Este parche revisa todos los modelos del juego para reemplazar sus colores materiales por blanco.&#x0a;&#x0a;Esto arregla varias inconsistencias y hace que los modelos se vean más parecidos a como lo hacían en las versiones de Dreamcast y GameCube.</system:String>
+    <system:String x:Key="GamePatches.InterpolationDesc">Este parche arregla ciertos errores de rotación de algunas animaciones mediante el uso de cuaternios en vez de ángulos de euler.</system:String>
+    <system:String x:Key="GamePatches.FixFOVDesc">Este parche mejora campo de visión (FOV) y permite el uso de resoluciones/dimensiones verticales.</system:String>
+    <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Este parche arregla la retícula y el multiplicador en Sky Chase, restaurando como se jugaba el nivel originalmente en resolución 640x480.&#x0a;&#x0a;Esto baja la dificultad para conseguir la puntuación requerida en resoluciones 16:9.</system:String>
+    <system:String x:Key="GamePatches.Chaos2Desc">Este parche arregla un error del juego base que bloquea el juego cuando derrotas a Chaos 2 y reinicias la pelea.</system:String>
+    <system:String x:Key="GamePatches.ChunkRenderingDesc">Este parche arregla la iluminación especular en modelos Chunk.</system:String>
+    <system:String x:Key="GamePatches.E102LampDesc">Fixes N-sided polygons (Gamma's Headlight) by using a triangle strip vertex buffer.</system:String>
+    <system:String x:Key="GamePatches.PixelOffsetDesc">Este parche arregla la posición incorrecta de la mayoría de elementos 2D que se pueden notar en altas resoluciones.</system:String>
+    <system:String x:Key="GamePatches.LightsDesc">Este parche arregla la luz aplicada incorrectamente en los niveles y activa la conservación del tipo de luz para los modelos en la cola.</system:String>
+    <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">El Índice Global (GBIX) es un valor numérico utilizado en el sistema de cacheo de las texturas del juego. Todas las texturas de SADX tienen uno.&#x0a;Antes de que el juego cargue una textura, este compara el valor GBIX de la nueva textura con los índices de las texturas que ya han sido cargadas.&#x0a;En el caso de encontrar una coincidencia, el juego reutiliza la textura que ya ha sido cargada en vez de utilizar una nueva.&#x0a;&#x0a;Este parche deshabilita la mayoría del sistema GBIX en el juego para reducir errores/conflictos de texturas. (Con algunas excepciones como por ejemplo los elementos de la interfaz.)</system:String>
+
+
+
+
 </ResourceDictionary>
