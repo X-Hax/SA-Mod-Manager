@@ -346,8 +346,8 @@ namespace SAModManager
             }
 
             SADXSettings.GamePath = App.CurrentGame.gameDirectory;
-			//Elements.SADX.GameConfig sadxConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
-			//sadxConfig.Save(ref SADXSettings);
+			Elements.SADX.TestSpawn spawnConfig = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
+			spawnConfig.Save();
             loaderini.DebugConsole = (bool)checkEnableLogConsole.IsChecked;
 
             SaveCodes();

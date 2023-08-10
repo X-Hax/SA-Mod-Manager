@@ -69,7 +69,7 @@ namespace SAModManager.Elements.SADX
 		private TestSpawnSettings SpawnSettings;
 		private Dictionary<string, SADXModInfo> GameMods;
 		private List<string> SelectedMods;
-		private Dictionary<int, string> EventNames;
+		public static Dictionary<int, string> EventNames;
 
 		#region ComboBox Sources
 		public static readonly List<string> CharacterNames = new()
@@ -378,10 +378,7 @@ namespace SAModManager.Elements.SADX
 				if (value is int key)
 				{
 					if (GameModeNames.ContainsKey(key))
-					{
-						List<int> keys = GameModeNames.Keys.ToList();
-						return keys.IndexOf(key);
-					}
+						return GameModeNames.Keys.ToList().IndexOf(key);
 					else
 						return -1;
 				}
@@ -394,13 +391,40 @@ namespace SAModManager.Elements.SADX
 				if (value is int key)
 				{
 					if (key > -1)
-					{
-						List<int> keys = GameModeNames.Keys.ToList();
-						return keys[key];
-					}
+						return GameModeNames.Keys.ToList()[key];
 					else
 						return -1;
 					
+				}
+
+				return Binding.DoNothing;
+			}
+		}
+
+		public class EventIndexConverter : IValueConverter
+		{
+			public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+			{
+				if (value is int key)
+				{
+					if (EventNames.ContainsKey(key))
+						return EventNames.Keys.ToList().IndexOf(key);
+					else
+						return -1;
+				}
+
+				return Binding.DoNothing;
+			}
+
+			public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+			{
+				if (value is int key)
+				{
+					if (key > -1)
+						return EventNames.Keys.ToList()[key];
+					else
+						return -1;
+
 				}
 
 				return Binding.DoNothing;
@@ -413,6 +437,8 @@ namespace SAModManager.Elements.SADX
 			SpawnSettings = gameSettings.TestSpawn;
 			SelectedMods = gameSettings.EnabledMods;
 			GameMods = mods;
+			InitCutsceneList();
+
 			InitializeComponent();
 
 			Loaded += TestSpawn_Loaded;
@@ -422,12 +448,13 @@ namespace SAModManager.Elements.SADX
 		private void TestSpawn_Loaded(object sender, RoutedEventArgs e)
 		{
 			// Setup Item Sources
-			InitCutsceneList();
 			GetSaves();
 
 			tsComboTime.ItemsSource = TimeDay;
 			tsComboTime.SelectedIndex = 0;
 			SetBindings();
+
+			tsComboEvent.SelectedIndex = EventNames.Keys.ToList<int>().IndexOf(SpawnSettings.EventIndex);
 		}
 
 		private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
@@ -473,19 +500,31 @@ namespace SAModManager.Elements.SADX
 				tsComboAct.SelectedIndex = 0;
 			if (tsComboTime.SelectedIndex < 0)
 				tsComboTime.SelectedIndex = 0;
+
+			IsCharacterChecked = true;
 		}
 
 		private void tsCheckEvent_Click(object sender, RoutedEventArgs e)
 		{
 			if (IsEventChecked)
-			{
 				TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
-			}
+			else
+				TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
 		}
 
-		private void tsCheckEvent_Unchecked(object sender, RoutedEventArgs e)
+		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
 		{
-			TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
+			tsComboEvent.SelectedIndex = 0;
+		}
+
+		private void tsCheckGameMode_Checked(object sender, RoutedEventArgs e)
+		{
+			tsComboGameMode.SelectedIndex = 0;
+		}
+
+		private void tsCheckSave_Checked(object sender, RoutedEventArgs e)
+		{
+			tsComboSave.SelectedIndex = 0;
 		}
 
 		private void tsCheckManual_Clicked(object sender, RoutedEventArgs e)
@@ -512,13 +551,13 @@ namespace SAModManager.Elements.SADX
 		{
 			List<string> cmdline = new List<string>();
 
-			if (IsCharacterChecked && SpawnSettings.CharacterIndex > -1)
+			if (SpawnSettings.CharacterIndex > -1)
 				cmdline.Add("-c " + SpawnSettings.CharacterIndex.ToString());
 
-			if (IsLevelChecked && SpawnSettings.LevelIndex > -1)
+			if (SpawnSettings.LevelIndex > -1)
 				cmdline.Add("-l " + SpawnSettings.LevelIndex.ToString());
 
-			if (IsLevelChecked && SpawnSettings.ActIndex > -1)
+			if (SpawnSettings.ActIndex > -1)
 				cmdline.Add("-a " + SpawnSettings.ActIndex.ToString());
 
 			if (SpawnSettings.UsePosition)
@@ -539,8 +578,8 @@ namespace SAModManager.Elements.SADX
 
 			if (IsSaveChecked && SpawnSettings.SaveIndex > -1)
 			{
-				string save = Util.GetSaveNumber(SpawnSettings.SaveIndex.ToString());
-				cmdline.Add("-s " + save);
+				//string save = Util.GetSaveNumber();
+				cmdline.Add("-s " + SpawnSettings.SaveIndex.ToString());
 			}
 			
 			return string.Join(" ", cmdline);	
@@ -588,6 +627,7 @@ namespace SAModManager.Elements.SADX
 			tsComboEvent.SetBinding(ComboBox.SelectedIndexProperty, new Binding("EventIndex")
 			{
 				Source = SpawnSettings,
+				Converter = new EventIndexConverter(),
 				Mode = BindingMode.TwoWay
 			});
 			IsGameModeChecked = (SpawnSettings.GameModeIndex > -1) ? true : false;
@@ -605,7 +645,7 @@ namespace SAModManager.Elements.SADX
 			});
 			tsComboGameMode.ItemsSource = GameModeNames;
 			tsComboGameMode.DisplayMemberPath = "Value";
-			IsSaveChecked = (SpawnSettings.SaveIndex > -1) ? true : false;
+			IsSaveChecked = (SpawnSettings.SaveIndex > 0) ? true : false;
 			tsCheckSave.SetBinding(CheckBox.IsCheckedProperty, new Binding("IsSaveChecked")
 			{
 				Source = this,
@@ -614,6 +654,7 @@ namespace SAModManager.Elements.SADX
 			tsComboSave.SetBinding(ComboBox.SelectedIndexProperty, new Binding("SaveIndex")
 			{
 				Source = SpawnSettings,
+				Converter = new IndexOffsetConverter(),
 				Mode = BindingMode.TwoWay
 			});
 			tsComboEvent.ItemsSource = EventNames;
@@ -699,7 +740,7 @@ namespace SAModManager.Elements.SADX
 			}
 		}
 
-		public void InitCutsceneList()
+		private void InitCutsceneList()
 		{
 			EventNames = new Dictionary<int, string>();
 
@@ -715,21 +756,22 @@ namespace SAModManager.Elements.SADX
 				EventNames.Add(i, displayName);
 			}
 		}
-		#endregion
 
-		#region Public Functions
-		public static List<string> GetNewAct(int index)
+		private static List<string> GetNewAct(int index)
 		{
 			if (index > acts.Count || index < 0)
 			{
-				
+
 				return actsRegular;
 			}
 
 			return acts[index];
 		}
 
-		public void Save(GameSettings settings)
+		#endregion
+
+		#region Public Functions
+		public void Save()
 		{
 			if (!IsCharacterChecked)
 				tsComboCharacter.SelectedIndex = -1;
@@ -745,8 +787,6 @@ namespace SAModManager.Elements.SADX
 				tsComboGameMode.SelectedIndex = -1;
 			if (!IsSaveChecked)
 				tsComboSave.SelectedIndex = -1;
-
-            settings.TestSpawn = SpawnSettings;
 		}
 		#endregion
 	}

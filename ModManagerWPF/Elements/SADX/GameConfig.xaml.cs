@@ -159,7 +159,7 @@ namespace SAModManager.Elements.SADX
 			comboFramerate.SetBinding(ComboBox.SelectedIndexProperty, new Binding("FrameRate")
 			{
 				Source = GameSettings.GameConfig,
-				Converter = new FrameRateConverter(),
+				Converter = new IndexOffsetConverter(),
 				Mode = BindingMode.TwoWay,
 			});
 			comboDetail.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ClipLevel")
