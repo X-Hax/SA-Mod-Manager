@@ -486,22 +486,38 @@ namespace SAModManager.Elements.SADX
 			tsComboAct.SelectedIndex = 0;
 		}
 
-		private void tsCheckCharacter_Checked(object sender, RoutedEventArgs e)
+		private void CheckBox_Checked(object sender, RoutedEventArgs e)
 		{
-			if (tsComboCharacter.SelectedIndex < 0)
-				tsComboCharacter.SelectedIndex = 0;
-		}
+			CheckBox box = sender as CheckBox;
+			switch (box.Name)
+			{
+				case "tsCheckCharacter":
+					if (tsComboCharacter.SelectedIndex < 0)
+						tsComboCharacter.SelectedIndex = 0;
+					break;
+				case "tsCheckLevel":
+					if (tsComboLevel.SelectedIndex < 0)
+						tsComboLevel.SelectedIndex = 0;
+					if (tsComboAct.SelectedIndex < 0)
+						tsComboAct.SelectedIndex = 0;
+					if (tsComboTime.SelectedIndex < 0)
+						tsComboTime.SelectedIndex = 0;
 
-		private void tsCheckLevel_Checked(object sender, RoutedEventArgs e)
-		{
-			if (tsComboLevel.SelectedIndex < 0)
-				tsComboLevel.SelectedIndex = 0;
-			if (tsComboAct.SelectedIndex < 0)
-				tsComboAct.SelectedIndex = 0;
-			if (tsComboTime.SelectedIndex < 0)
-				tsComboTime.SelectedIndex = 0;
-
-			IsCharacterChecked = true;
+					IsCharacterChecked = true;
+					break;
+				case "tsCheckEvent":
+					if (tsComboEvent.SelectedIndex < 0)
+						tsComboEvent.SelectedIndex = 0;
+					break;
+				case "tsCheckGameMode":
+					if (tsComboGameMode.SelectedIndex < 0)
+						tsComboGameMode.SelectedIndex = 0;
+					break;
+				case "tsCheckSave":
+					if (tsComboSave.SelectedIndex < 0)
+						tsComboSave.SelectedIndex = 0;
+					break;
+			}
 		}
 
 		private void tsCheckEvent_Click(object sender, RoutedEventArgs e)
@@ -510,21 +526,6 @@ namespace SAModManager.Elements.SADX
 				TestSpawnGrid.RowDefinitions[3].Height = new GridLength(1, GridUnitType.Auto);
 			else
 				TestSpawnGrid.RowDefinitions[3].Height = new GridLength(0);
-		}
-
-		private void tsCheckEvent_Checked(object sender, RoutedEventArgs e)
-		{
-			tsComboEvent.SelectedIndex = 0;
-		}
-
-		private void tsCheckGameMode_Checked(object sender, RoutedEventArgs e)
-		{
-			tsComboGameMode.SelectedIndex = 0;
-		}
-
-		private void tsCheckSave_Checked(object sender, RoutedEventArgs e)
-		{
-			tsComboSave.SelectedIndex = 0;
 		}
 
 		private void tsCheckManual_Clicked(object sender, RoutedEventArgs e)
