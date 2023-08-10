@@ -1,4 +1,5 @@
 ﻿using SAModManager.Ini;
+using System.ComponentModel;
 
 namespace SAModManager.Game
 {
@@ -21,7 +22,8 @@ namespace SAModManager.Game
 		public int Foglation { get; set; }
 		[IniAlwaysInclude]
 		[IniName("sound3d")]
-		public int Sound3D { get; set; }
+		[DefaultValue(1)]
+		public int Sound3D { get; set; } = 1;
 		[IniAlwaysInclude]
 		[IniName("screensize")]
 		public int ScreenSize { get; set; }
@@ -30,10 +32,12 @@ namespace SAModManager.Game
 		public int ClipLevel { get; set; }
 		[IniAlwaysInclude]
 		[IniName("sevoice")]
-		public int SEVoice { get; set; }
+        [DefaultValue(1)]
+        public int SEVoice { get; set; } = 1;
 		[IniAlwaysInclude]
 		[IniName("bgm")]
-		public int BGM { get; set; }
+        [DefaultValue(1)]
+        public int BGM { get; set; } = 1;
 		[IniAlwaysInclude]
 		[IniName("screen")]
 		public int FullScreen { get; set; }
@@ -42,10 +46,12 @@ namespace SAModManager.Game
 		public int MouseMode { get; set; }
 		[IniAlwaysInclude]
 		[IniName("bgmv")]
-		public int BGMVolume { get; set; }
+		[DefaultValue(100)]
+		public int BGMVolume { get; set; } = 100;
 		[IniAlwaysInclude]
 		[IniName("voicev")]
-		public int VoiceVolume { get; set; }
+        [DefaultValue(100)]
+        public int VoiceVolume { get; set; } = 100;
 		[IniName("language")]
 		public int Language { get; set; }
 		[IniName("padconfig")]

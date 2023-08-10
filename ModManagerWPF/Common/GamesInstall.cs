@@ -22,7 +22,8 @@ namespace SAModManager.Common
 		public string ProfilesDirectory { get; set; }
 		public List<Dependencies> Dependencies { get; set; }
 		public Loader loader { get; set; }
-	}
+        public string defaultIniProfile;
+    }
 
 	public enum Format
 	{
@@ -162,6 +163,7 @@ namespace SAModManager.Common
 			gameName = "Sonic Adventure DX",
 			exeList = new() { "sonic.exe", "Sonic Adventure DX.exe" },
 			exeName = "sonic.exe",
+			defaultIniProfile = "SADXModLoader.ini",
 
 			loader = new()
 			{
@@ -205,8 +207,9 @@ namespace SAModManager.Common
 		{
 			gameName = "Sonic Adventure 2",
 			exeName = "sonic2app.exe",
+            defaultIniProfile = "SA2ModLoader.ini",
 
-			loader = new()
+            loader = new()
 			{
 				name = "SA2ModLoader",
 			},
