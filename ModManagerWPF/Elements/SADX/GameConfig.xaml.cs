@@ -13,6 +13,7 @@ using System.Windows.Input;
 using SAModManager.IniSettings.SADX;
 using System.Windows.Controls.Primitives;
 using SAModManager.Game;
+using System.Security.RightsManagement;
 
 namespace SAModManager.Elements.SADX
 {
@@ -397,44 +398,6 @@ namespace SAModManager.Elements.SADX
 			PatchDescription.Text = Lang.GetString("CommonStrings.Description");
 		}
 
-		private void SavePatches(ref GameSettings settings)
-		{
-			if (listPatches is null)
-				return;
-
-			PatchesData patch = (PatchesData)listPatches.Items[14];
-
-			settings.Patches.DisableCDCheck = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[13];
-			settings.Patches.KillGBIX = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[12];
-			settings.Patches.LightFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[11];
-			settings.Patches.PixelOffSetFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[10];
-			settings.Patches.ChaoPanelFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[9];
-			settings.Patches.E102NGonFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[8];
-			settings.Patches.ChunkSpecularFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[7];
-			settings.Patches.Chaos2CrashFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[6];
-			settings.Patches.SkyChaseResolutionFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[5];
-			settings.Patches.FOVFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[4];
-			settings.Patches.InterpolationFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[3];
-			settings.Patches.MaterialColorFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[2];
-			settings.Patches.FixVertexColorRendering = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[1];
-			settings.Patches.KeepCamSettings = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[0];
-			settings.Patches.HRTFSound = patch.IsChecked;
-		}
-
 		private static List<PatchesData> GetPatches(ref ListView list, GameSettings set)
 		{
 			list.Items.Clear();
@@ -594,6 +557,44 @@ namespace SAModManager.Elements.SADX
             d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
             d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
         }
+
+		public void SavePatches(ref GameSettings settings)
+		{
+			if (listPatches is null)
+				return;
+
+			PatchesData patch = (PatchesData)listPatches.Items[14];
+
+			settings.Patches.DisableCDCheck = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[13];
+			settings.Patches.KillGBIX = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[12];
+			settings.Patches.LightFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[11];
+			settings.Patches.PixelOffSetFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[10];
+			settings.Patches.ChaoPanelFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[9];
+			settings.Patches.E102NGonFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[8];
+			settings.Patches.ChunkSpecularFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[7];
+			settings.Patches.Chaos2CrashFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[6];
+			settings.Patches.SkyChaseResolutionFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[5];
+			settings.Patches.FOVFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[4];
+			settings.Patches.InterpolationFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[3];
+			settings.Patches.MaterialColorFix = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[2];
+			settings.Patches.FixVertexColorRendering = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[1];
+			settings.Patches.KeepCamSettings = patch.IsChecked;
+			patch = (PatchesData)listPatches.Items[0];
+			settings.Patches.HRTFSound = patch.IsChecked;
+		}
 
 		#region Private Functions
 		private void SetupBindings()
