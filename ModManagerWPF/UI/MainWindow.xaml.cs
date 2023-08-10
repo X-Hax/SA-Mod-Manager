@@ -188,8 +188,8 @@ namespace SAModManager
                     break;
             }
 
-
-            SetProfileInComboBox();
+            if (File.Exists(defaultProfile))
+                SetProfileInComboBox();
         }
 
         #region Main
@@ -205,15 +205,15 @@ namespace SAModManager
         private void SetGameUI()
         {
             Grid stackPanel;
-			Grid tsPanel;
+            Grid tsPanel;
             switch (setGame)
             {
                 case SetGame.SADX:
                     tabGame.Visibility = Visibility.Visible;
                     stackPanel = (Grid)tabGame.Content;
                     stackPanel.Children.Add(new Elements.SADX.GameConfig(ref SADXSettings, ref gameConfigFile));
-					tsPanel = (Grid)tabTestSpawn.Content;
-					tsPanel.Children.Add(new Elements.SADX.TestSpawn(SADXSettings, mods));
+                    tsPanel = (Grid)tabTestSpawn.Content;
+                    tsPanel.Children.Add(new Elements.SADX.TestSpawn(SADXSettings, mods));
                     break;
                 case SetGame.SA2:
                 default:
@@ -318,16 +318,14 @@ namespace SAModManager
 
             IniSerializer.Serialize(App.configIni, App.ConfigPath);
         }
+        private void SaveGameConfigIni()
+        {
+            if (!File.Exists(Path.Combine(SADXSettings.GamePath, "sonicDX.ini")))
+                return;
 
-		private void SaveGameConfigIni()
-		{
-			if (!File.Exists(Path.Combine(SADXSettings.GamePath, "sonicDX.ini")))
-				return;
-
-			IniSerializer.Serialize(gameConfigFile, Path.Combine(SADXSettings.GamePath, "sonicDX.ini"));
-		}
-
-		public async void Save()
+            IniSerializer.Serialize(gameConfigFile, Path.Combine(SADXSettings.GamePath, "sonicDX.ini"));
+        }
+        public async void Save()
         {
             SaveManagerSettings();
 
@@ -346,10 +344,10 @@ namespace SAModManager
             }
 
             SADXSettings.GamePath = App.CurrentGame.gameDirectory;
-			Elements.SADX.GameConfig gameConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
-			gameConfig.SavePatches(ref SADXSettings);
-			Elements.SADX.TestSpawn spawnConfig = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
-			spawnConfig.Save();
+            Elements.SADX.GameConfig gameConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
+            gameConfig.SavePatches(ref SADXSettings);
+            Elements.SADX.TestSpawn spawnConfig = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
+            spawnConfig.Save();
             loaderini.DebugConsole = (bool)checkEnableLogConsole.IsChecked;
 
             SaveCodes();
@@ -357,31 +355,37 @@ namespace SAModManager
             IniSerializer.Serialize(loaderini, loaderinipath);
 
             SaveGameProfile();
-			SaveGameConfigIni();
+            SaveGameConfigIni();
 
-			await Task.Delay(200);
+            await Task.Delay(200);
 
             Refresh();
+        }
+
+        private void LoadGameConfigFile()
+        {
+            string configSADX = Path.Combine(App.CurrentGame.gameDirectory, "sonicDX.ini");
+
+            switch (setGame)
+            {
+                case SetGame.SADX:
+                    gameConfigFile = File.Exists(configSADX) ? IniSerializer.Deserialize<Game.GameConfigFile>(configSADX) : new();
+                    break;
+                case SetGame.SA2:
+                    // TODO: Implement SA2 Game Config Loading
+                    break;
+            }
+
         }
 
         private void LoadSettings()
         {
             LoadManagerSettings();
-
             LoadGameProfile();
-
             SetGamePath(SADXSettings.GamePath);
             UpdatePathsStringsInfo();
-
-			switch (setGame)
-			{
-				case SetGame.SADX:
-					gameConfigFile = IniSerializer.Deserialize<Game.GameConfigFile>(Path.Combine(SADXSettings.GamePath, "sonicDX.ini"));
-					break;
-				case SetGame.SA2:
-					// TODO: Implement SA2 Game Config Loading
-					break;
-			}
+        
+            LoadGameConfigFile();
 
             textGameDir.Text = App.CurrentGame.gameDirectory;
 
@@ -391,7 +395,6 @@ namespace SAModManager
             }
 
         }
-
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Save();
@@ -1917,7 +1920,7 @@ namespace SAModManager
             }
 
             SaveAndPlayButton.IsEnabled = false;
-            //btnTSLaunch.IsEnabled = false;
+           // btnTSLaunch.IsEnabled = false;
 
             if (App.CurrentGame.loader.installed && File.Exists(chrmdllorigpath))
             {
@@ -1926,8 +1929,11 @@ namespace SAModManager
             }
             else
             {
-                File.Move(chrmdllpath, chrmdllorigpath);
-                File.Copy(loaderdllpath, chrmdllpath);
+                if (!File.Exists(chrmdllorigpath))
+                {
+                    File.Move(chrmdllpath, chrmdllorigpath);
+                    await Util.CopyFileAsync(loaderdllpath, chrmdllpath, false);
+                }
             }
 
             await VanillaTransition.HandleVanillaManagerFiles(App.CurrentGame.loader.installed, App.CurrentGame.gameDirectory);
@@ -1940,7 +1946,9 @@ namespace SAModManager
             Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
             setGame = game; //TO DO get current game somehow
             LoadGameProfile();
+            LoadGameConfigFile();
             SetGameUI();
+            
         }
 
         private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
@@ -2035,21 +2043,17 @@ namespace SAModManager
         {
             comboProfile.Items.Clear();
 
-
-            if (!String.IsNullOrEmpty(App.CurrentGame.modDirectory))
+            foreach (var item in Directory.EnumerateFiles(App.CurrentGame.ProfilesDirectory, "*.ini"))
             {
-                foreach (var item in Directory.EnumerateFiles(App.CurrentGame.ProfilesDirectory, "*.ini"))
+                if (!item.EndsWith("default.ini", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!item.EndsWith("default.ini", StringComparison.OrdinalIgnoreCase))
+                    Profile pro = new()
                     {
-                        Profile pro = new()
-                        {
-                            name = Path.GetFileNameWithoutExtension(item),
-                            iniPath = item
-                        };
+                        name = Path.GetFileNameWithoutExtension(item),
+                        iniPath = item
+                    };
 
-                        comboProfile.Items.Add(pro);
-                    }
+                    comboProfile.Items.Add(pro);
                 }
             }
         }

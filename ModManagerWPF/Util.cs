@@ -204,14 +204,16 @@ namespace SAModManager
 				//if steam version is found, but not converted to 2004, ask the user to convert it.
 				if (File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[1])) && !File.Exists(Path.Combine(fullPath, GamesInstall.SonicAdventure.exeList[0])))
 				{
-					var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+					//Disabled for now, ToDo rewrite Mod Installer
+
+					/*var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 					msg.ShowDialog();
 
 					if (msg.isYes)
 					{
 						await GamesInstall.GetSADXModInstaller();
 
-					}
+					}*/
 
 					return null;
 				}

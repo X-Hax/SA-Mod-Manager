@@ -195,7 +195,7 @@ namespace SAModManager.IniSettings.SADX
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool EnabledInputMod { get; set; }   // SADXLoaderInfo.InputModEnabled
+		public bool EnabledInputMod { get; set; } = true;   // SADXLoaderInfo.InputModEnabled
 
 		/// <summary>
 		/// Converts from original settings file.
@@ -214,14 +214,14 @@ namespace SAModManager.IniSettings.SADX
 		/// </summary>
 		[DefaultValue(true)]
 		[IniAlwaysInclude]
-		public bool EnableBassMusic { get; set; }               // SADXLoaderInfo.EnableBassMusic
+		public bool EnableBassMusic { get; set; } = true;             // SADXLoaderInfo.EnableBassMusic
 
 		/// <summary>
 		/// Enables the use of BASS for Sound Effects in game.
 		/// </summary>
 		[DefaultValue(false)]
 		[IniAlwaysInclude]
-		public bool EnableBassSFX { get; set; }                 // SADXLoaderInfo.EnableBassSFX
+		public bool EnableBassSFX { get; set; } = false;              // SADXLoaderInfo.EnableBassSFX
 
 		/// <summary>
 		/// Sound Effect Volume when using BASS for Sound Effects.
