@@ -1,20 +1,11 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.DirectoryServices.ActiveDirectory;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using SAModManager.Common;
 using SAModManager.IniSettings.SADX;
 
@@ -547,44 +538,6 @@ namespace SAModManager.Elements.SADX
 					IsLevelChecked = true;
 			}
 		}
-
-		private string GetTestSpawnCommandLine()
-		{
-			List<string> cmdline = new List<string>();
-
-			if (SpawnSettings.CharacterIndex > -1)
-				cmdline.Add("-c " + SpawnSettings.CharacterIndex.ToString());
-
-			if (SpawnSettings.LevelIndex > -1)
-				cmdline.Add("-l " + SpawnSettings.LevelIndex.ToString());
-
-			if (SpawnSettings.ActIndex > -1)
-				cmdline.Add("-a " + SpawnSettings.ActIndex.ToString());
-
-			if (SpawnSettings.UsePosition)
-				cmdline.Add("-p " + 
-					SpawnSettings.XPosition.ToString() + " " +
-					SpawnSettings.YPosition.ToString() + " " +
-					SpawnSettings.ZPosition.ToString() + " -r " +
-					SpawnSettings.Rotation.ToString());
-
-			if (IsEventChecked && SpawnSettings.EventIndex > -1)
-				cmdline.Add("-e " + SpawnSettings.EventIndex.ToString());
-
-			if (IsLevelChecked && tsComboTime.SelectedIndex > 0)
-				cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
-
-			if (IsGameModeChecked && SpawnSettings.GameModeIndex > -1)
-				cmdline.Add("-g " + SpawnSettings.GameModeIndex.ToString());
-
-			if (IsSaveChecked && SpawnSettings.SaveIndex > -1)
-			{
-				//string save = Util.GetSaveNumber();
-				cmdline.Add("-s " + SpawnSettings.SaveIndex.ToString());
-			}
-			
-			return string.Join(" ", cmdline);	
-		}
 		#endregion
 
 		#region Private Functions
@@ -767,6 +720,44 @@ namespace SAModManager.Elements.SADX
 			}
 
 			return acts[index];
+		}
+
+		private string GetTestSpawnCommandLine()
+		{
+			List<string> cmdline = new List<string>();
+
+			if (SpawnSettings.CharacterIndex > -1)
+				cmdline.Add("-c " + SpawnSettings.CharacterIndex.ToString());
+
+			if (SpawnSettings.LevelIndex > -1)
+				cmdline.Add("-l " + SpawnSettings.LevelIndex.ToString());
+
+			if (SpawnSettings.ActIndex > -1)
+				cmdline.Add("-a " + SpawnSettings.ActIndex.ToString());
+
+			if (SpawnSettings.UsePosition)
+				cmdline.Add("-p " +
+					SpawnSettings.XPosition.ToString() + " " +
+					SpawnSettings.YPosition.ToString() + " " +
+					SpawnSettings.ZPosition.ToString() + " -r " +
+					SpawnSettings.Rotation.ToString());
+
+			if (IsEventChecked && SpawnSettings.EventIndex > -1)
+				cmdline.Add("-e " + SpawnSettings.EventIndex.ToString());
+
+			if (IsLevelChecked && tsComboTime.SelectedIndex > 0)
+				cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
+
+			if (IsGameModeChecked && SpawnSettings.GameModeIndex > -1)
+				cmdline.Add("-g " + SpawnSettings.GameModeIndex.ToString());
+
+			if (IsSaveChecked && SpawnSettings.SaveIndex > -1)
+			{
+				//string save = Util.GetSaveNumber();
+				cmdline.Add("-s " + SpawnSettings.SaveIndex.ToString());
+			}
+
+			return string.Join(" ", cmdline);
 		}
 
 		#endregion
