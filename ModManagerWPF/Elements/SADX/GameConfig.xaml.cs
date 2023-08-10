@@ -13,7 +13,6 @@ using System.Windows.Input;
 using SAModManager.IniSettings.SADX;
 using System.Windows.Controls.Primitives;
 using SAModManager.Game;
-using System.Security.RightsManagement;
 
 namespace SAModManager.Elements.SADX
 {
@@ -23,21 +22,15 @@ namespace SAModManager.Elements.SADX
 	public partial class GameConfig : UserControl
 	{
 		#region Variables
-
-		string gamePath = string.Empty;
 		public GameSettings GameProfile;
+		public Graphics graphics;
+		public List<PatchesData> Patches;
 
+		bool suppressEvent = false;
 		private static string d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
 		private static string d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
-        bool suppressEvent = false;
-
 		private readonly double LowOpacityBtn = 0.7;
-
 		private GameConfigFile GameSettings;
-
-		public Graphics graphics;
-
-		public List<PatchesData> Patches;
 		#endregion
 
 		public GameConfig(ref GameSettings gameSettings, ref object gameConfig)
@@ -687,6 +680,8 @@ namespace SAModManager.Elements.SADX
 				Source = GameSettings.GameConfig,
 				Mode = BindingMode.TwoWay
 			});
+			if (GameSettings.GameConfig.FrameRate == 0)
+				GameSettings.GameConfig.FrameRate = 1;
 			comboFramerate.SetBinding(ComboBox.SelectedIndexProperty, new Binding("FrameRate")
 			{
 				Source = GameSettings.GameConfig,
