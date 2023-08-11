@@ -321,13 +321,12 @@ namespace SAModManager
 
             IniSerializer.Serialize(App.configIni, App.ConfigPath);
         }
-        private void SaveGameConfigIni()
-        {
-            if (!File.Exists(Path.Combine(SADXSettings.GamePath, "sonicDX.ini")))
-                return;
 
-            IniSerializer.Serialize(gameConfigFile, Path.Combine(SADXSettings.GamePath, "sonicDX.ini"));
+        private void SaveGameConfig(string gamePath)
+        {
+            IniSerializer.Serialize(gameConfigFile, Path.Combine(App.CurrentGame.gameDirectory, "sonicDX.ini"));
         }
+        
         public async void Save()
         {
             SaveManagerSettings();
