@@ -163,7 +163,7 @@ namespace SAModManager
 			if (!Directory.Exists(App.CurrentGame.ProfilesDirectory))
 				Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
 
-            switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
+			switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
             {
                 case SetGame.SADX:
                     IniSerializer.Serialize(SADXSettings, Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini"));
@@ -327,7 +327,7 @@ namespace SAModManager
             IniSerializer.Serialize(gameConfigFile, Path.Combine(App.CurrentGame.gameDirectory, "sonicDX.ini"));
         }
         
-        public async void Save()
+		public async void Save()
         {
             SaveManagerSettings();
 
@@ -354,10 +354,11 @@ namespace SAModManager
 
             SaveCodes();
 
+			loaderini.ConvertFromV1(App.configIni, SADXSettings);
             IniSerializer.Serialize(loaderini, loaderinipath);
 
             SaveGameProfile();
-            SaveGameConfigIni();
+            SaveGameConfig(SADXSettings.GamePath);
 
             await Task.Delay(200);
 
@@ -371,13 +372,12 @@ namespace SAModManager
             switch (setGame)
             {
                 case SetGame.SADX:
-                    gameConfigFile = File.Exists(configSADX) ? IniSerializer.Deserialize<Game.GameConfigFile>(configSADX) : new();
+                    gameConfigFile = File.Exists(configSADX) ? IniSerializer.Deserialize<Game.GameConfigFile>(configSADX) : new Game.GameConfigFile();
                     break;
                 case SetGame.SA2:
                     // TODO: Implement SA2 Game Config Loading
                     break;
             }
-
         }
 
         private void LoadSettings()
