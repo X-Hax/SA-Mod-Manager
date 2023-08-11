@@ -160,6 +160,9 @@ namespace SAModManager
 
         private void SaveGameProfile()
         {
+			if (!Directory.Exists(App.CurrentGame.ProfilesDirectory))
+				Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+
             switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
             {
                 case SetGame.SADX:
