@@ -16,20 +16,20 @@ namespace SAModManager.Game
 	public class GameConfig
 	{
 		[IniName("framerate")]
-		public int FrameRate { get; set; }
+		public int FrameRate { get; set; } = 1;
 		[IniAlwaysInclude]
 		[IniName("fogemulation")]
-		public int Foglation { get; set; }
+		public int Foglation { get; set; } = 0;
 		[IniAlwaysInclude]
 		[IniName("sound3d")]
 		[DefaultValue(1)]
 		public int Sound3D { get; set; } = 1;
 		[IniAlwaysInclude]
 		[IniName("screensize")]
-		public int ScreenSize { get; set; }
+		public int ScreenSize { get; set; } = 2;
 		[IniAlwaysInclude]
 		[IniName("cliplevel")]
-		public int ClipLevel { get; set; }
+		public int ClipLevel { get; set; } = 0;
 		[IniAlwaysInclude]
 		[IniName("sevoice")]
         [DefaultValue(1)]
@@ -40,7 +40,7 @@ namespace SAModManager.Game
         public int BGM { get; set; } = 1;
 		[IniAlwaysInclude]
 		[IniName("screen")]
-		public int FullScreen { get; set; }
+		public int FullScreen { get; set; } = 0;
 		[IniAlwaysInclude]
 		[IniName("mousemode")]
 		public int MouseMode { get; set; }
@@ -72,7 +72,6 @@ namespace SAModManager.Game
 	public class GameConfigFile
 	{
 		[IniName("sonicDX")]
-		public GameConfig GameConfig { get; set; }
-
+		public GameConfig GameConfig { get; set; } = new();
 	}
 }
