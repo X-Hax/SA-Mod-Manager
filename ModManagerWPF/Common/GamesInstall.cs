@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -23,6 +25,8 @@ namespace SAModManager.Common
 		public List<Dependencies> Dependencies { get; set; }
 		public Loader loader { get; set; }
         public string defaultIniProfile;
+		public string LastLoadedProfile { get; set; }
+		public List<string> GameConfigFile { get; set; } // Strings due to SA2 having multiple config files.
     }
 
 	public enum Format
@@ -201,6 +205,11 @@ namespace SAModManager.Common
 			},
 
 			ProfilesDirectory = Path.Combine(App.ConfigFolder, "SADX"),
+
+			GameConfigFile = new()
+			{
+				"sonicDX.ini"
+			},
 		};
 
 		public static Game SonicAdventure2 = new()
@@ -215,6 +224,12 @@ namespace SAModManager.Common
 			},
 
 			ProfilesDirectory = Path.Combine(App.ConfigFolder, "SA2"),
+
+			GameConfigFile = new()
+			{
+				"Config/Keyboard.cfg",
+				"Config/UserConfig.cfg"
+			},
 		};
 
         public static IEnumerable<Game> GetSupportedGames()
