@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Size = System.Drawing.Size;
 
-namespace SAModManager.Game
+namespace SAModManager.GameConfigs
 {
 	public class Graphics
 	{
@@ -73,6 +73,4 @@ namespace SAModManager.Game
 			return rect;
 		}
 	}
-
-
 }

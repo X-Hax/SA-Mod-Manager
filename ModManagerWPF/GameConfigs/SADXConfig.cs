@@ -1,10 +1,8 @@
 ﻿using SAModManager.Ini;
 using System.ComponentModel;
 
-namespace SAModManager.Game
+namespace SAModManager.GameConfigs
 {
-	//System.Threading.Thread controllerThread;
-
 	enum FrameRate
 	{
 		Invalid,
@@ -13,7 +11,7 @@ namespace SAModManager.Game
 		Low
 	}
 
-	public class GameConfig
+	public class SADXConfig
 	{
 		[IniName("framerate")]
 		public int FrameRate { get; set; } = 1;
@@ -69,9 +67,9 @@ namespace SAModManager.Game
 		public ushort MouseFlute { get; set; }
 	}
 
-	public class GameConfigFile
+	public class SADXConfigFile
 	{
 		[IniName("sonicDX")]
-		public GameConfig GameConfig { get; set; } = new();
+		public SADXConfig GameConfig { get; set; } = new();
 	}
 }

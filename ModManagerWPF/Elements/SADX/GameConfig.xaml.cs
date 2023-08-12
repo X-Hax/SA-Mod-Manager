@@ -12,7 +12,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using SAModManager.IniSettings.SADX;
 using System.Windows.Controls.Primitives;
-using SAModManager.Game;
+using SAModManager.GameConfigs;
 
 namespace SAModManager.Elements.SADX
 {
@@ -30,14 +30,14 @@ namespace SAModManager.Elements.SADX
 		private static string d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
 		private static string d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
 		private readonly double LowOpacityBtn = 0.7;
-		private GameConfigFile GameSettings;
+		private SADXConfigFile GameSettings;
 		#endregion
 
 		public GameConfig(ref GameSettings gameSettings, ref object gameConfig)
 		{
 			InitializeComponent();
 			GameProfile = gameSettings;
-			GameSettings = (GameConfigFile)gameConfig;
+			GameSettings = (SADXConfigFile)gameConfig;
 			graphics = new Graphics(ref comboScreen);
 			SetPatches();
             Loaded += GameConfig_Loaded;
@@ -94,7 +94,7 @@ namespace SAModManager.Elements.SADX
 			{
 				txtResX.IsEnabled = false;
 				decimal resYDecimal = (decimal)txtResY.Value;
-				decimal roundedValue = Math.Round(resYDecimal * Game.Graphics.ratio);
+				decimal roundedValue = Math.Round(resYDecimal * Graphics.ratio);
 				txtResX.Value = (double)roundedValue;
 			}
 			else if (!suppressEvent)
