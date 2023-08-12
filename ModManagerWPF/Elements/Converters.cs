@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace SAModManager.Elements
@@ -72,6 +73,27 @@ namespace SAModManager.Elements
 					return 0;
 			}
 
+			return Binding.DoNothing;
+		}
+	}
+
+	public class VisibilityConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			if (value is bool boolValue)
+			{
+				if (boolValue)
+					return Visibility.Visible;
+				else
+					return Visibility.Collapsed;
+			}
+
+			return Binding.DoNothing;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
 			return Binding.DoNothing;
 		}
 	}
