@@ -1747,10 +1747,10 @@ namespace SAModManager
 
 		private void SetManagerBindings()
 		{
-			comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
-			{
-				Source = GameProfile,
-			});
+			//comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
+			//{
+				//Source = App.configIni,
+			//});
 			comboLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Language")
 			{
 				Source = App.configIni

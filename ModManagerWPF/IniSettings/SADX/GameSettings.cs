@@ -496,10 +496,6 @@ namespace SAModManager.IniSettings.SADX
 		[DefaultValue((int)SADXSettingsVersions.v1)]
 		public int SettingsVersion { get; set; } = (int)SADXSettingsVersions.v1;
 
-		[IniAlwaysInclude]
-		[DefaultValue(0)]
-		public int ProfileIndex { get; set; } = 0;
-
 		/// <summary>
 		/// Graphics Settings for SADX.
 		/// </summary>
