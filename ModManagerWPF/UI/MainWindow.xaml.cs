@@ -27,6 +27,7 @@ using SAModManager.IniSettings;
 using ICSharpCode.AvalonEdit.Editing;
 using SAModManager.IniSettings.SA2;
 using SAModManager.GameConfigs;
+using System.Reflection;
 
 namespace SAModManager
 {
@@ -2115,7 +2116,12 @@ namespace SAModManager
 
 		private string GetSelectedProfile()
 		{
-			return GameProfiles.Values.ToList()[comboProfile.SelectedIndex];
+			if (comboProfile.SelectedIndex > -1 && comboProfile.Items.Count > 0)
+			{
+                return GameProfiles.Values.ToList()[comboProfile.SelectedIndex];
+            }
+
+			return Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini");    
 		}
 		#endregion
 		#endregion
