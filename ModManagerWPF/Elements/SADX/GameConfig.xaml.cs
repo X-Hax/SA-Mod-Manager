@@ -33,10 +33,10 @@ namespace SAModManager.Elements.SADX
 		private SADXConfigFile GameSettings;
 		#endregion
 
-		public GameConfig(ref GameSettings gameSettings, ref object gameConfig)
+		public GameConfig(ref object gameSettings, ref object gameConfig)
 		{
 			InitializeComponent();
-			GameProfile = gameSettings;
+			GameProfile = (GameSettings)gameSettings;
 			GameSettings = (SADXConfigFile)gameConfig;
 			graphics = new Graphics(ref comboScreen);
 			SetPatches();
@@ -551,8 +551,10 @@ namespace SAModManager.Elements.SADX
             d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
         }
 
-		public void SavePatches(ref GameSettings settings)
+		public void SavePatches(ref object input)
 		{
+			GameSettings settings = input as GameSettings;
+
 			if (listPatches is null)
 				return;
 

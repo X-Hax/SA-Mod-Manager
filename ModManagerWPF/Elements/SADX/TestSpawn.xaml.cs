@@ -423,10 +423,10 @@ namespace SAModManager.Elements.SADX
 		}
 		#endregion
 
-		public TestSpawn(GameSettings gameSettings, Dictionary<string, SADXModInfo> mods)
+		public TestSpawn(object gameSettings, Dictionary<string, SADXModInfo> mods)
 		{
-			SpawnSettings = gameSettings.TestSpawn;
-			SelectedMods = gameSettings.EnabledMods;
+			SpawnSettings = (gameSettings as GameSettings).TestSpawn;
+			SelectedMods = (gameSettings as GameSettings).EnabledMods;
 			GameMods = mods;
 			InitCutsceneList();
 

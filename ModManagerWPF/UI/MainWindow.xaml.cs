@@ -59,6 +59,8 @@ namespace SAModManager
 		MenuItem ModContextDev { get; set; }
 		private bool displayedManifestWarning;
 		public MainWindowViewModel ViewModel = new();
+		Dictionary<string, string> GameProfiles = new();
+		object GameProfile;
 
 		// TODO: Cleanup the Game Variables and turn type'd variables to objects and cast as needed. Additionally, move anything we can to Game class.
 
@@ -898,8 +900,8 @@ namespace SAModManager
 				if (File.Exists(path)) //game Path valid 
 				{
 					textGameDir.Text = GamePath;
-					SetGamePath(GamePath);
-					SADXSettings.GamePath = App.CurrentGame.gameDirectory;
+					SetGamePath();
+					(GameProfile as IniSettings.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
 					UpdatePathsStringsInfo();
 
 					if (File.Exists(loaderinipath))
@@ -1075,9 +1077,9 @@ namespace SAModManager
 				case SetGame.SADX:
 					tabGame.Visibility = Visibility.Visible;
 					stackPanel = (Grid)tabGame.Content;
-					stackPanel.Children.Add(new Elements.SADX.GameConfig(ref SADXSettings, ref gameConfigFile));
+					stackPanel.Children.Add(new Elements.SADX.GameConfig(ref GameProfile, ref gameConfigFile));
 					tsPanel = (Grid)tabTestSpawn.Content;
-					tsPanel.Children.Add(new Elements.SADX.TestSpawn(SADXSettings, mods));
+					tsPanel.Children.Add(new Elements.SADX.TestSpawn(GameProfile, mods));
 					break;
 				case SetGame.SA2:
 				default:
@@ -1130,13 +1132,10 @@ namespace SAModManager
 			switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
 			{
 				case SetGame.SADX:
-					SADXSettings = File.Exists(defaultProfile) ?
-				   IniSerializer.Deserialize<IniSettings.SADX.GameSettings>(defaultProfile) : new();
-
+					GameProfile = File.Exists(defaultProfile) ? IniSerializer.Deserialize<IniSettings.SADX.GameSettings>(defaultProfile) : new();
 					break;
 				case SetGame.SA2:
-					SA2Settings = File.Exists(defaultProfile) ?
-				   IniSerializer.Deserialize<IniSettings.SA2.GameSettings>(defaultProfile) : new();
+					GameProfile = File.Exists(defaultProfile) ? IniSerializer.Deserialize<IniSettings.SA2.GameSettings>(defaultProfile) : new();
 					break;
 			}
 
@@ -1152,10 +1151,10 @@ namespace SAModManager
 			switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
 			{
 				case SetGame.SADX:
-					IniSerializer.Serialize(SADXSettings, Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini"));
+					IniSerializer.Serialize(GameProfile, GetSelectedProfile());
 					break;
 				case SetGame.SA2:
-					IniSerializer.Serialize(SA2Settings, Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini"));
+					IniSerializer.Serialize(GameProfile, GetSelectedProfile());
 					break;
 
 			}
@@ -1262,7 +1261,7 @@ namespace SAModManager
 		private void LoadSettings()
 		{
 			LoadGameProfile();
-			SetGamePath(SADXSettings.GamePath);
+			SetGamePath();
 			UpdatePathsStringsInfo();
 
 			LoadGameConfigFile();
@@ -1289,21 +1288,26 @@ namespace SAModManager
 			}
 
 			// Save Non-Bound Game Settings
-			SADXSettings.GamePath = App.CurrentGame.gameDirectory;
-			Elements.SADX.GameConfig gameConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
-			gameConfig.SavePatches(ref SADXSettings);
-			Elements.SADX.TestSpawn spawnConfig = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
-			spawnConfig.Save();
+			switch (setGame)
+			{
+				case SetGame.SADX:
+					(GameProfile as IniSettings.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
+					Elements.SADX.GameConfig gameConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
+					gameConfig.SavePatches(ref GameProfile);
+					Elements.SADX.TestSpawn spawnConfig = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
+					spawnConfig.Save();
+					break;
+			}
 
 			SaveCodes();
 
 			// TODO: Proper function for saving to the original location. Regardless of updating the Loaders to use the new settings,
 			// saving to this location is useful for the Loaders.
-			loaderini.ConvertFromV1(App.configIni, SADXSettings);
+			loaderini.ConvertFromV1(App.configIni, GameProfile as IniSettings.SADX.GameSettings);
 			IniSerializer.Serialize(loaderini, loaderinipath);
 
 			// Save Game Config file (Game used settings file)
-			SaveGameConfig(SADXSettings.GamePath);
+			SaveGameConfig(App.CurrentGame.gameDirectory);
 
 			// Save the Game Profile.
 			SaveGameProfile();
@@ -1742,6 +1746,10 @@ namespace SAModManager
 
 		private void SetManagerBindings()
 		{
+			comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
+			{
+				Source = GameProfile,
+			});
 			comboLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Language")
 			{
 				Source = App.configIni
@@ -1996,21 +2004,15 @@ namespace SAModManager
 
 		private void SetProfileInComboBox()
 		{
-			comboProfile.Items.Clear();
+			GameProfiles.Clear();
 
+			GameProfiles.Add("Default", Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini"));
 			foreach (var item in Directory.EnumerateFiles(App.CurrentGame.ProfilesDirectory, "*.ini"))
-			{
 				if (!item.EndsWith("default.ini", StringComparison.OrdinalIgnoreCase))
-				{
-					Profile pro = new()
-					{
-						name = Path.GetFileNameWithoutExtension(item),
-						iniPath = item
-					};
+					GameProfiles.Add(Path.GetFileNameWithoutExtension(item), item);
 
-					comboProfile.Items.Add(pro);
-				}
-			}
+			comboProfile.ItemsSource = GameProfiles;
+			comboProfile.DisplayMemberPath = "Key";
 		}
 
 		private void UpdateDLLData()
@@ -2061,8 +2063,18 @@ namespace SAModManager
 			UpdateBtnInstallLoader_State();
 		}
 
-		private async void SetGamePath(string path)
+		private async void SetGamePath()
 		{
+			string path = string.Empty;
+			switch (setGame)
+			{
+				case SetGame.SADX:
+					path = (GameProfile as IniSettings.SADX.GameSettings).GamePath;
+					break;
+				case SetGame.SA2:
+					//path = (GameProfile as IniSettings.SA2.GameSettings).GamePath;
+					break;
+			}
 			if (Directory.Exists(path))
 			{
 				App.CurrentGame.gameDirectory = path;
@@ -2098,6 +2110,11 @@ namespace SAModManager
 					await GamesInstall.InstallLoader(App.CurrentGame);
 				}
 			}
+		}
+
+		private string GetSelectedProfile()
+		{
+			return GameProfiles.Values.ToList()[comboProfile.SelectedIndex];
 		}
 		#endregion
 		#endregion
