@@ -1076,6 +1076,7 @@ namespace SAModManager
 			{
 				case SetGame.SADX:
 					tabGame.Visibility = Visibility.Visible;
+					gameDebugSettings = (GameProfile as IniSettings.SADX.GameSettings).DebugSettings;
 					stackPanel = (Grid)tabGame.Content;
 					stackPanel.Children.Add(new Elements.SADX.GameConfig(ref GameProfile, ref gameConfigFile));
 					tsPanel = (Grid)tabTestSpawn.Content;
