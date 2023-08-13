@@ -73,9 +73,8 @@ namespace SAModManager.Common
                 {
                     if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase))
                     {
-                        //copy old profile in appData
-                        await Util.CopyFileAsync(item, Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item)), true);
-                        //add code to convert them to new format here
+						// Deserializes old profiles and converts to new profile format, then saves to Profiles folder.
+						await Util.ConvertProfiles(item, Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item)));
                         //move old profiles in a backup folder
                         await Util.MoveFileAsync(item, Path.Combine(backupFolder, Path.GetFileName(item)), true);
                     }

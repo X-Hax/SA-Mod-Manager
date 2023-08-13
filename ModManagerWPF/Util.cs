@@ -15,14 +15,13 @@ using SAModManager.Updater;
 using System.Diagnostics;
 using SevenZipExtractor;
 using System.IO.Compression;
+using SAModManager.Ini;
 
 namespace SAModManager
 {
 	class Util
 	{
 		private static double multiplier;
-
-
 
         public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
 		{
@@ -49,6 +48,22 @@ namespace SAModManager
 			{
 				Console.WriteLine($"File copy failed: {ex.Message}");
 				return false; // File copy failed
+			}
+		}
+
+		public static async Task<bool> ConvertProfiles(string sourceFile, string destinationFile)
+		{
+			try
+			{
+				IniSettings.SADX.GameSettings newProfile = new();
+				newProfile.ConvertFromV0(IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile));
+				IniSerializer.Serialize(newProfile, destinationFile);
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Profile Conversion Failed: {ex.Message}");
+				return false;
 			}
 		}
 
@@ -192,7 +207,6 @@ namespace SAModManager
 
 			return true;
 		}
-
 
 		public async static Task<string> GetSADXGamePath()
 		{
