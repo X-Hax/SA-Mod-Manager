@@ -900,8 +900,8 @@ namespace SAModManager
 				if (File.Exists(path)) //game Path valid 
 				{
 					textGameDir.Text = GamePath;
+					(GameProfile as IniSettings.SADX.GameSettings).GamePath = GamePath;
 					SetGamePath();
-					(GameProfile as IniSettings.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
 					UpdatePathsStringsInfo();
 
 					if (File.Exists(loaderinipath))
@@ -1096,7 +1096,7 @@ namespace SAModManager
 
 		private void UpdatePathsStringsInfo()
 		{
-			if (!string.IsNullOrEmpty(App.CurrentGame.gameDirectory) && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
+            if (!string.IsNullOrEmpty(App.CurrentGame.gameDirectory) && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
 			{
 
 				App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");

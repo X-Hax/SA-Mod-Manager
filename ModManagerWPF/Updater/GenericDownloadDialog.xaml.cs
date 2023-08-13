@@ -36,7 +36,7 @@ namespace SAModManager.Updater
 			this.uri = uri;
 			this.defaultFolder = defaultFolder;
 			this.install = install;
-			this.silent = silent;
+			 this.silent = silent;
 
 			if (!string.IsNullOrEmpty(dest))
 			{
