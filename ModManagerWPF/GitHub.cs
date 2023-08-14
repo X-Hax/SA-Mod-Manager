@@ -304,7 +304,7 @@ namespace SAModManager
         {
             using (var httpClient = new HttpClient())
             {
-                httpClient.DefaultRequestHeaders.Add("User-Agent", AppName); // Replace 'AwesomeApp' with your app name
+                httpClient.DefaultRequestHeaders.Add("User-Agent", AppName);
 
                 string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs";
 
@@ -317,7 +317,13 @@ namespace SAModManager
 
                     if (apiResponse != null && apiResponse.Runs.Count > 0)
                     {
-                        return apiResponse.Runs[0]; // The first workflow run in the list is the most recent one
+                        for (int i = 0; i < apiResponse.Runs.Count; i++)
+                        {
+                            if (apiResponse.Runs[i].HeadBranch.ToLower() == branch.ToLower()) //only get builds from the current branch.
+                            {
+                                return apiResponse.Runs[i]; //return the first build that contains the right branch, this should be the last update every time.
+                            }
+                        }
                     }
                 }
 
@@ -330,18 +336,17 @@ namespace SAModManager
         {
             var httpClient = new HttpClient();
 
-            httpClient.DefaultRequestHeaders.Add("User-Agent", AppName); // Replace 'AwesomeApp' with your app name
-            string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/commits?sha" + hash;
+            httpClient.DefaultRequestHeaders.Add("User-Agent", AppName);
+            string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/commits?sha={hash}&per_page=100&sha={branch}";
 
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
             string text = "";
 
             if (response.IsSuccessStatusCode)
             {
-
                 string jsonResult = await response.Content.ReadAsStringAsync();
                 var info = JsonConvert.DeserializeObject<GHCommitInfo[]>(jsonResult);
-              
+
                 int limit = info.ToList().FindIndex(t => t.SHA == App.RepoCommit);
                 if (limit == -1)
                     limit = info.Length;
@@ -353,9 +358,9 @@ namespace SAModManager
 
                     string message = info[i].Commit.Message.Replace("\r", "");
                     if (message.Contains("\n"))
-                        message = message.Substring(0, message.IndexOf("\n", StringComparison.Ordinal));
+                        message = message[..message.IndexOf("\n", StringComparison.Ordinal)];
 
-                    text += $" - {info[i].SHA.Substring(0, 7)} - {message}\n";
+                    text += $" - {info[i].SHA[..7]} - {message}\n";
                 }
 
 
@@ -363,6 +368,5 @@ namespace SAModManager
 
             return text;
         }
-
     }
 }
