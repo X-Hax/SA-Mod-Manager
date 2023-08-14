@@ -300,6 +300,9 @@ namespace SAModManager
 
         public static async Task<bool> PerformUpdateLoaderCodesCheck()
         {
+            if (!App.CurrentGame.loader.installed)
+                return false;
+
             var update = await CheckLoaderCodesUpdate();
 
             if (update.Item1 == false) //no update found

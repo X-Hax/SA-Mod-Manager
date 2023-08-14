@@ -902,7 +902,7 @@ namespace SAModManager
 					textGameDir.Text = GamePath;
 					(GameProfile as IniSettings.SADX.GameSettings).GamePath = GamePath;
 					SetGamePath();
-					UpdatePathsStringsInfo();
+					UpdateManagerInfo();
 
 					if (File.Exists(loaderinipath))
 						loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath);
@@ -961,8 +961,8 @@ namespace SAModManager
 			}
 
 
-			Update_PlayButtonsState();
-			btnBrowseGameDir.IsEnabled = true;
+			UpdateButtonsState();
+            btnBrowseGameDir.IsEnabled = true;
 			Save();
 		}
 
@@ -1095,7 +1095,7 @@ namespace SAModManager
 			tabGame.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
 		}
 
-		private void UpdatePathsStringsInfo()
+		private void UpdateManagerInfo()
 		{
             if (!string.IsNullOrEmpty(App.CurrentGame.gameDirectory) && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
 			{
@@ -1122,9 +1122,9 @@ namespace SAModManager
 			}
 
 			App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath);
-			UpdateBtnInstallLoader_State();
-			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
-			Update_PlayButtonsState();
+			UpdateButtonsState();
+            loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+		
 		}
 
 		#region Private: Load & Save
@@ -1259,12 +1259,21 @@ namespace SAModManager
 			CodeList.WriteDatFile(codedatpath, selectedCodes);
 
 		}
+		
+		private void UpdateButtonsState()
+		{
+            bool installed = App.CurrentGame != null ? App.CurrentGame.loader.installed : false;
+            UIHelper.ToggleButton(ref btnInstallLoader, installed);
+			UIHelper.ToggleImgButton(ref btnCheckUpdates, installed);
+            UpdateBtnInstallLoader_State();
+            Update_PlayButtonsState();
+        }
 
 		private void LoadSettings()
 		{
 			LoadGameProfile();
 			SetGamePath();
-			UpdatePathsStringsInfo();
+			UpdateManagerInfo();
 
 			LoadGameConfigFile();
 
