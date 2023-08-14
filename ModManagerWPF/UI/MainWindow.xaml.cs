@@ -1616,10 +1616,6 @@ namespace SAModManager
 				modUpdater.Clear();
 			}
 
-			/* if (e.Cancelled)
-			 {
-				 return;
-			 }*/
 
 			if (modUpdater.modUpdatesTuple is not Tuple<List<ModDownloadWPF>, List<string>> data)
 			{
@@ -1632,17 +1628,17 @@ namespace SAModManager
 				string msgError = Lang.GetString("MessageWindow.Errors.CheckUpdateError");
 				string title = Lang.GetString("MessageWindow.Errors.CheckUpdateError.Title");
 
-				if (msgError.Contains("403"))
-				{
-					title = "GitHub Rate Limit Exceeded";
-				}
-
 				foreach (var error in Errors)
 				{
 					msgError += "\n\n" + error;
 				}
 
-				new MessageWindow(title, msgError, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+                if (msgError.Contains("403"))
+                {
+                    title = "GitHub Rate Limit Exceeded";
+                }
+
+                new MessageWindow(title, msgError, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 			}
 
 			bool manual = manualModUpdate;
