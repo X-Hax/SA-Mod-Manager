@@ -102,6 +102,7 @@ namespace SAModManager.Common
 
                 await dl.StartDL();
                 dl.ShowDialog();
+                await UpdateCodes(App.CurrentGame); //update codes
 
                 if (dl.done == false)
                 {
