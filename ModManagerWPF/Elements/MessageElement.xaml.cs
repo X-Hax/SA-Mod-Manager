@@ -99,9 +99,11 @@ namespace SAModManager.Elements
 
 		private void MessageElement_Loaded(object sender, RoutedEventArgs e)
 		{
-			GridMessage.Children.Add(MessageText);
-			Grid.SetColumn(MessageText, 1);
-			Grid.SetRow(MessageText, 1);
+			ScrollViewer scrollViewer = new ScrollViewer();
+			scrollViewer.Content = MessageText;
+			GridMessage.Children.Add(scrollViewer);
+			Grid.SetColumn(scrollViewer, 1);
+			Grid.SetRow(scrollViewer, 1);
 
 			if (HasIcon)
 				AddIcon();
