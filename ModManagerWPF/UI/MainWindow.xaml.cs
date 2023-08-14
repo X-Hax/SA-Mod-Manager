@@ -934,6 +934,7 @@ namespace SAModManager
 
 			manualModUpdate = true;
 			await CheckForModUpdates(true);
+			Refresh();
 		}
 
 		private void AboutBtn_Click(object sender, RoutedEventArgs e)
@@ -1631,14 +1632,14 @@ namespace SAModManager
 				string msgError = Lang.GetString("MessageWindow.Errors.CheckUpdateError");
 				string title = Lang.GetString("MessageWindow.Errors.CheckUpdateError.Title");
 
-				if (Errors.Contains("403"))
+				if (msgError.Contains("403"))
 				{
 					title = "GitHub Rate Limit Exceeded";
 				}
 
 				foreach (var error in Errors)
 				{
-					msgError += "\n" + error;
+					msgError += "\n\n" + error;
 				}
 
 				new MessageWindow(title, msgError, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
@@ -1707,17 +1708,16 @@ namespace SAModManager
 				return;
 			}
 
-			await ExecuteModsUpdateCheck();
-
-			if (!force)
-			{
-				App.configIni.UpdateSettings.UpdateCheckCount++;
-				UpdateHelper.HandleRefreshUpdateCD();
-				IniSerializer.Serialize(App.configIni, App.ConfigPath);
-			}
-
 			modUpdater.updatableMods = mods.Select(x => new KeyValuePair<string, ModInfo>(x.Key, x.Value)).ToList();
-			btnCheckUpdates.IsEnabled = false;
+
+            await ExecuteModsUpdateCheck();
+
+            if (!force)
+            {
+                App.configIni.UpdateSettings.UpdateCheckCount++;
+                UpdateHelper.HandleRefreshUpdateCD();
+                IniSerializer.Serialize(App.configIni, App.ConfigPath);
+            }
 		}
 		#endregion
 
