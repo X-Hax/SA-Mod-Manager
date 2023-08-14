@@ -146,6 +146,15 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/wpf/data/Codes.lst.
+        /// </summary>
+        internal static string URL_SADX_CODE {
+            get {
+                return ResourceManager.GetString("URL_SADX_CODE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/SADXModLoader.dll.
         /// </summary>
         internal static string URL_SADX_DL {

@@ -139,6 +139,9 @@
   <data name="URL_D3D8M" xml:space="preserve">
     <value>https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/d3d8m.dll</value>
   </data>
+  <data name="URL_SADX_CODE" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/wpf/data/Codes.lst</value>
+  </data>
   <data name="URL_SADX_DL" xml:space="preserve">
     <value>https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/SADXModLoader.dll</value>
   </data>

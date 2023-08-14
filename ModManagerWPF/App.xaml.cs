@@ -288,7 +288,7 @@ namespace SAModManager
                 return (false, null);
 
             string loaderVersion = string.Empty;
-            string loaderversionPath = Path.Combine(App.CurrentGame.ProfilesDirectory, "loader.ini");
+            string loaderversionPath = App.CurrentGame.loader.loaderVersionpath;
             if (File.Exists(loaderversionPath))
             {
                 loaderVersion = File.ReadAllText(loaderversionPath);
@@ -296,6 +296,7 @@ namespace SAModManager
 
             return (loaderVersion != lastCommit, lastCommit);
         }
+
 
         public static async Task<bool> PerformUpdateLoaderCodesCheck()
         {
@@ -306,9 +307,9 @@ namespace SAModManager
                 return false;
             }
 
-            string changelog = await GitHub.GetGitChangeLog(update.Item2); //item2 is commit hash
+            string changelog = await GitHub.GetGitLoaderChangeLog(update.Item2); //item2 is commit hash
 
-            if (string.IsNullOrEmpty(changelog)) //if string is null, we got error so the DL can't continue
+            if (string.IsNullOrEmpty(changelog)) //if string is null, we got error(s) so the DL can't continue
             {
                 return false;
             }
@@ -321,8 +322,9 @@ namespace SAModManager
 
             if (await GamesInstall.UpdateLoader(App.CurrentGame))
             {
-                File.WriteAllText(Path.Combine(App.CurrentGame.ProfilesDirectory, "loader.ini"), update.Item2);
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
+                File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
+                await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
+
                 return true;
             }
 

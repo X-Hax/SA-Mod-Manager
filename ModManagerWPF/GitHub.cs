@@ -371,6 +371,42 @@ namespace SAModManager
             return text;
         }
 
+        public static async Task<string> GetGitLoaderChangeLog(string hash)
+        {
+            var httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("User-Agent", AppName); //To do update with master when it's ready
+            string apiUrl = $"https://api.github.com/repos/{owner}/{App.CurrentGame.loader.repoName}/commits?sha={hash}&per_page=100&sha=wpf";
+
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+            string text = "";
+
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonResult = await response.Content.ReadAsStringAsync();
+                var info = JsonConvert.DeserializeObject<GHCommitInfo[]>(jsonResult);
+
+                int limit = info.ToList().FindIndex(t => t.SHA == App.RepoCommit);
+                if (limit == -1)
+                    limit = info.Length;
+
+                for (int i = 0; i < limit; ++i)
+                {
+                    if (info[i].Commit.IsSkipCI())
+                        continue;
+
+                    string message = info[i].Commit.Message.Replace("\r", "");
+                    if (message.Contains("\n"))
+                        message = message[..message.IndexOf("\n", StringComparison.Ordinal)];
+
+                    text += $" - {info[i].SHA[..7]} - {message}\n";
+                }
+            }
+
+            return text;
+        }
+
+
         private static async Task<string> GetLastCommitHash(string repo, string branch)
             {
                 using (HttpClient client = new())
