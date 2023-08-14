@@ -914,12 +914,14 @@ namespace SAModManager
                     UpdateManagerInfo();
 
                     if (File.Exists(loaderinipath))
+                    {
                         loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath);
-
+                   
+                    }
+                  
                     await SetLoaderFile();
                     await InstallLoader(true);
                     await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
-                    await UpdateGameConfig(SetGame.SADX);
                     Save();
                 }
                 else
@@ -1137,21 +1139,38 @@ namespace SAModManager
         }
 
         #region Private: Load & Save
-        private void LoadGameProfile()
+        private async Task<bool> LoadGameProfile()
         {
             string defaultProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini");
+            bool exist = File.Exists(defaultProfile);
+            if (!exist)
+            {
+                if (!String.IsNullOrEmpty(App.CurrentGame.modDirectory))
+                {
+                    string oldProfile = Path.Combine(App.CurrentGame.modDirectory, "SADXModLoader.ini");
+
+                    if (File.Exists(oldProfile))
+                    {
+                        await Util.CopyFileAsync(oldProfile, Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini"), true);
+                        exist = true;
+                    }
+                }
+        
+            }
             switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
             {
                 case SetGame.SADX:
-                    GameProfile = File.Exists(defaultProfile) ? IniSerializer.Deserialize<IniSettings.SADX.GameSettings>(defaultProfile) : new();
+                    GameProfile = exist ? IniSerializer.Deserialize<IniSettings.SADX.GameSettings>(defaultProfile) : new();
                     break;
                 case SetGame.SA2:
-                    GameProfile = File.Exists(defaultProfile) ? IniSerializer.Deserialize<IniSettings.SA2.GameSettings>(defaultProfile) : new();
+                    GameProfile = exist ? IniSerializer.Deserialize<IniSettings.SA2.GameSettings>(defaultProfile) : new();
                     break;
             }
 
             if (File.Exists(defaultProfile))
                 SetProfileInComboBox();
+
+            return true;
         }
 
         private void SaveGameProfile()
@@ -1272,15 +1291,14 @@ namespace SAModManager
         private void UpdateButtonsState()
         {
             bool installed = App.CurrentGame != null ? App.CurrentGame.loader.installed : false;
-            UIHelper.ToggleButton(ref btnInstallLoader, installed);
             UIHelper.ToggleImgButton(ref btnCheckUpdates, installed);
             UpdateBtnInstallLoader_State();
             Update_PlayButtonsState();
         }
 
-        private void LoadSettings()
+        private async void LoadSettings()
         {
-            LoadGameProfile();
+            await LoadGameProfile();
             SetGamePath();
             UpdateManagerInfo();
 
@@ -1323,6 +1341,7 @@ namespace SAModManager
 
             // TODO: Proper function for saving to the original location. Regardless of updating the Loaders to use the new settings,
             // saving to this location is useful for the Loaders.
+
             loaderini.ConvertFromV1(App.configIni, GameProfile as IniSettings.SADX.GameSettings);
             IniSerializer.Serialize(loaderini, loaderinipath);
 
@@ -1984,15 +2003,16 @@ namespace SAModManager
                 imgInstall.Source = Icon;
         }
 
-        private async Task UpdateGameConfig(SetGame game)
+        private async Task<bool> UpdateGameConfig(SetGame game)
         {
-            Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
             setGame = game; //TO DO get current game somehow
-            LoadGameProfile();
+            Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+            await LoadGameProfile();
             LoadGameConfigFile();
             SetGameUI();
             SetBindings();
-            await Task.Delay(0);
+
+            return true;
         }
 
         private void SetProfileInComboBox()
