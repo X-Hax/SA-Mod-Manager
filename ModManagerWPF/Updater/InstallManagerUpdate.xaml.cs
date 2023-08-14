@@ -37,7 +37,7 @@ namespace SAModManager.Updater
                 try
                 {    
                     await Util.MoveFile(Path.Combine(updatePath, executablePath), managerExePath, true);
-                    Process.Start(managerExePath, $"cleanupdate \"{updatePath}\"");
+                    Process.Start(managerExePath);
                     done = true;
 
                 }

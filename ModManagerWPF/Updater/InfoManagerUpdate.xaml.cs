@@ -16,7 +16,13 @@ namespace SAModManager.Common
             UpdateInfoText.Text = changelog;
         }
 
-		private void CancelUpdate_Click(object sender, RoutedEventArgs e)
+        public InfoManagerUpdate(string changelog)
+        {
+            InitializeComponent();
+            UpdateInfoText.Text = changelog;
+        }
+
+        private void CancelUpdate_Click(object sender, RoutedEventArgs e)
 		{
 			this.Close();
         }

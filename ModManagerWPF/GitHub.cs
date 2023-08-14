@@ -9,6 +9,7 @@ using static SAModManager.WorkflowRunInfo;
 using static SAModManager.GitHubAction;
 using NetCoreInstallChecker.Misc;
 using static SAModManager.GitHubArtifact;
+using System.Linq.Expressions;
 
 namespace SAModManager
 {
@@ -125,7 +126,8 @@ namespace SAModManager
         {
             foreach (string noCiString in noCIStrings)
             {
-                if (Message.Contains(noCiString)) return true;
+                if (Message.Contains(noCiString))
+                    return true;
             }
             return false;
         }
@@ -245,6 +247,7 @@ namespace SAModManager
         private static readonly string AppName = "SA Mod Manager";
         private static readonly string branch = "Master";
 
+
         public static async Task<GitHubAction> GetLatestAction()
         {
             using (var httpClient = new HttpClient())
@@ -342,6 +345,7 @@ namespace SAModManager
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
             string text = "";
 
+
             if (response.IsSuccessStatusCode)
             {
                 string jsonResult = await response.Content.ReadAsStringAsync();
@@ -362,11 +366,39 @@ namespace SAModManager
 
                     text += $" - {info[i].SHA[..7]} - {message}\n";
                 }
-
-
             }
 
             return text;
         }
+
+        private static async Task<string> GetLastCommitHash(string repo, string branch)
+            {
+                using (HttpClient client = new())
+                {
+                    client.BaseAddress = new Uri("https://api.github.com");
+                    client.DefaultRequestHeaders.Add("User-Agent", AppName);
+
+                    HttpResponseMessage response = await client.GetAsync($"repos/{owner}/{repo}/commits/{branch}");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string content = await response.Content.ReadAsStringAsync();
+                        // Parse the JSON response to get the commit hash
+                        int startIndex = content.IndexOf("\"sha\":\"") + 7;
+                        int endIndex = content.IndexOf("\"", startIndex);
+                        return content[startIndex..endIndex];
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error: {response.StatusCode}");
+                        return null;
+                    }
+                }
+            }
+
+            public static async Task<string> GetLoaderHashCommit()
+            {
+                return await GetLastCommitHash(App.CurrentGame.loader.repoName, "wpf");
+            }
+        }
     }
-}

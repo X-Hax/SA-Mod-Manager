@@ -17,6 +17,7 @@ using SAModManager.Ini;
 using System.Reflection;
 using SAModManager.IniSettings;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace SAModManager
 {
@@ -95,10 +96,9 @@ namespace SAModManager
             Steam.Init();
             ShutdownMode = ShutdownMode.OnMainWindowClose;
 
-            MainWindow = new MainWindow(args is not null ? args : null);
+            MainWindow = new MainWindow();
             base.OnStartup(e);
             MainWindow.Show();
-
 
         }
 
@@ -258,6 +258,12 @@ namespace SAModManager
             }
 
             string changelog = await GitHub.GetGitChangeLog(update.Item2.HeadSHA);
+
+            if (string.IsNullOrEmpty(changelog))
+            {
+                return false;
+            }
+
             var manager = new InfoManagerUpdate(update.Item2, update.Item3, changelog);
             manager.ShowDialog();
 
@@ -274,10 +280,55 @@ namespace SAModManager
             return true;
         }
 
-        public static void DoEvents()
+        private static async Task<(bool, string)> CheckLoaderCodesUpdate()
         {
-            Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
+            var lastCommit = await GitHub.GetLoaderHashCommit();
+
+            if (lastCommit is null)
+                return (false, null);
+
+            string loaderVersion = string.Empty;
+            string loaderversionPath = Path.Combine(App.CurrentGame.ProfilesDirectory, "loader.ini");
+            if (File.Exists(loaderversionPath))
+            {
+                loaderVersion = File.ReadAllText(loaderversionPath);
+            }
+
+            return (loaderVersion != lastCommit, lastCommit);
         }
+
+        public static async Task<bool> PerformUpdateLoaderCodesCheck()
+        {
+            var update = await CheckLoaderCodesUpdate();
+
+            if (update.Item1 == false) //no update found
+            {
+                return false;
+            }
+
+            string changelog = await GitHub.GetGitChangeLog(update.Item2); //item2 is commit hash
+
+            if (string.IsNullOrEmpty(changelog)) //if string is null, we got error so the DL can't continue
+            {
+                return false;
+            }
+
+            var manager = new InfoManagerUpdate(changelog);
+            manager.ShowDialog();
+
+            if (manager.DialogResult != true)
+                return false;
+
+            if (await GamesInstall.UpdateLoader(App.CurrentGame))
+            {
+                File.WriteAllText(Path.Combine(App.CurrentGame.ProfilesDirectory, "loader.ini"), update.Item2);
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
+                return true;
+            }
+
+            return false;
+        }
+
 
         private static async Task<bool> DoUpdate(string[] args, bool alreadyRunning)
         {
@@ -299,14 +350,6 @@ namespace SAModManager
                     return true;
                 }
 
-                if (arg == "cleanupdate")
-                {
-                    if (alreadyRunning)
-                        try { mutex.WaitOne(); }
-                        catch (AbandonedMutexException) { }
-
-                    alreadyRunning = false;
-                }
             }
 
             return false;
@@ -334,8 +377,6 @@ namespace SAModManager
 
             return settings;
         }
-
-
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {

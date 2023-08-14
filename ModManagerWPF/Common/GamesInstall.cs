@@ -6,9 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -50,7 +48,11 @@ namespace SAModManager.Common
 		public byte[] data;
 		public string URL;
 		public bool installed = false;
-	}
+		public string repoName;
+		public string dataDllOriginPath;
+		public string dataDllPath;
+		public string loaderdllpath;
+    }
 
 	public static class GamesInstall
 	{
@@ -109,10 +111,40 @@ namespace SAModManager.Common
 			{
 				await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
 			}
-
 		}
 
-		public static async Task CheckAndInstallDependencies(Game game)
+        public static async Task<bool> UpdateLoader(Game game)
+        {
+            if (game is null)
+                return false;
+
+            try
+            {
+                Uri uri = new(game.loader.URL + "\r\n");
+                var dl = new GenericDownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), false, game.modDirectory, false, true);
+
+                await dl.StartDL();
+                dl.ShowDialog();
+				if (dl.done == true)
+				{
+                    if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+                    {
+                       File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);   
+                    }
+
+                    return true;
+				}
+				return false;
+            }
+            catch
+            {
+				Console.WriteLine("Failed to update mod loader\n");
+            }
+
+			return false;
+        }
+
+        public static async Task CheckAndInstallDependencies(Game game)
 		{
 			if (game is null)
 				return;
@@ -173,8 +205,9 @@ namespace SAModManager.Common
 			{
 				name = "SADXModLoader",
 				data = Properties.Resources.SADXModLoader,
-				URL = Properties.Resources.URL_SADX_DL
-			},
+				URL = Properties.Resources.URL_SADX_DL,
+				repoName = "sadx-mod-loader",
+            },
 
 			Dependencies = new()
 			{
@@ -221,7 +254,8 @@ namespace SAModManager.Common
             loader = new()
 			{
 				name = "SA2ModLoader",
-			},
+                repoName = "sa2-mod-loader",
+            },
 
 			ProfilesDirectory = Path.Combine(App.ConfigFolder, "SA2"),
 

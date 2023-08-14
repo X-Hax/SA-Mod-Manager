@@ -67,9 +67,6 @@ namespace SAModManager
 
 		// SADX Related Variables
 		public static string loaderinipath = "mods/SADXModLoader.ini";
-		string chrmdllorigpath = "system/CHRMODELS_orig.dll";
-		string loaderdllpath = "mods/SADXModLoader.dll";
-		public string chrmdllpath = "system/CHRMODELS.dll";
 		public IniSettings.SADX.GameSettings SADXSettings;
 		public Dictionary<string, SADXModInfo> mods = null;
 		SADXLoaderInfo loaderini;
@@ -79,7 +76,7 @@ namespace SAModManager
 		public IniSettings.SA2.GameSettings SA2Settings;
 		#endregion
 
-		public MainWindow(string[] args = null)
+		public MainWindow()
 		{
 			InitializeComponent();
 
@@ -89,9 +86,6 @@ namespace SAModManager
 
 			UpdateDLLData();
 			SetOneClickBtnState();
-
-			if (args is not null)
-				CleanUpdate(args);
 		}
 
 		#region Form: Functions
@@ -116,7 +110,12 @@ namespace SAModManager
 			SetGameUI();
 			SetBindings();
 
-			await CheckForModUpdates();
+            if (await App.PerformUpdateManagerCheck() || await App.PerformUpdateLoaderCodesCheck())
+            {
+                return;
+            }
+
+            await CheckForModUpdates();
 		}
 
 		private void MainForm_FormClosing(object sender, EventArgs e)
@@ -927,7 +926,7 @@ namespace SAModManager
 		{
 			btnCheckUpdates.IsEnabled = false;
 
-			if (await App.PerformUpdateManagerCheck())
+			if (await App.PerformUpdateManagerCheck() || await App.PerformUpdateLoaderCodesCheck())
 			{
 				return;
 			}
@@ -1104,9 +1103,9 @@ namespace SAModManager
 				App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");
 
 				loaderinipath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.ini");
-				chrmdllorigpath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS_orig.dll");
-				loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.dll");
-				chrmdllpath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS.dll");
+                App.CurrentGame.loader.dataDllOriginPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS_orig.dll");
+                App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.dll");
+                App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS.dll");
 				updatePath = Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates");
 
 				codelstpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst");
@@ -1122,7 +1121,7 @@ namespace SAModManager
 				App.CurrentGame.gameDirectory = string.Empty;
 			}
 
-			App.CurrentGame.loader.installed = File.Exists(chrmdllorigpath);
+			App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath);
 			UpdateBtnInstallLoader_State();
 			loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
 			Update_PlayButtonsState();
@@ -1441,29 +1440,6 @@ namespace SAModManager
 		#endregion
 
 		#region Private: Update
-		private void CleanUpdate(string[] args)
-		{
-			try
-			{
-				File.Delete(args[1] + ".7z");
-				Directory.Delete(args[1], true);
-
-				if (File.Exists(chrmdllorigpath))
-				{
-					using (MD5 md5 = MD5.Create())
-					{
-						byte[] hash1 = md5.ComputeHash(File.ReadAllBytes(loaderdllpath));
-						byte[] hash2 = md5.ComputeHash(File.ReadAllBytes(chrmdllpath));
-
-						if (!hash1.SequenceEqual(hash2))
-						{
-							File.Copy(loaderdllpath, chrmdllpath, true);
-						}
-					}
-				}
-			}
-			catch { }
-		}
 
 		private void Update_PlayButtonsState()
 		{
@@ -2015,9 +1991,9 @@ namespace SAModManager
 
 		private void UpdateDLLData()
 		{
-			if (File.Exists(loaderdllpath) && File.Exists(chrmdllorigpath))
+			if (File.Exists(App.CurrentGame.loader.loaderdllpath) && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
 			{
-				File.Copy(loaderdllpath, chrmdllpath, true);
+				File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
 			}
 		}
 
@@ -2027,13 +2003,13 @@ namespace SAModManager
 			if (force)
 				App.CurrentGame.loader.installed = false;
 
-			if (!File.Exists(loaderdllpath))
+			if (!File.Exists(App.CurrentGame.loader.loaderdllpath))
 			{
 				await GamesInstall.InstallLoader(App.CurrentGame);
 
-				if (File.Exists(chrmdllorigpath) && App.CurrentGame.loader.installed)
+				if (File.Exists(App.CurrentGame.loader.dataDllOriginPath) && App.CurrentGame.loader.installed)
 				{
-					File.Copy(loaderdllpath, chrmdllpath, true);
+					File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
 					UpdateBtnInstallLoader_State();
 					return;
 				}
@@ -2042,17 +2018,17 @@ namespace SAModManager
 			SaveAndPlayButton.IsEnabled = false;
 			// btnTSLaunch.IsEnabled = false;
 
-			if (App.CurrentGame.loader.installed && File.Exists(chrmdllorigpath))
+			if (App.CurrentGame.loader.installed && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
 			{
-				File.Delete(chrmdllpath);
-				await Util.MoveFile(chrmdllorigpath, chrmdllpath);
+				File.Delete(App.CurrentGame.loader.dataDllPath);
+				await Util.MoveFile(App.CurrentGame.loader.dataDllOriginPath, App.CurrentGame.loader.dataDllPath);
 			}
 			else
 			{
-				if (!File.Exists(chrmdllorigpath))
+				if (!File.Exists(App.CurrentGame.loader.dataDllOriginPath))
 				{
-					File.Move(chrmdllpath, chrmdllorigpath);
-					await Util.CopyFileAsync(loaderdllpath, chrmdllpath, false);
+					File.Move(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath);
+					await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
 				}
 			}
 
@@ -2097,11 +2073,11 @@ namespace SAModManager
 
 		private async Task SetLoaderFile()
 		{
-			if (!File.Exists(loaderdllpath))
+			if (!File.Exists(App.CurrentGame.loader.loaderdllpath))
 			{
 				if (File.Exists("SADXModLoader.dll"))
 				{
-					await Util.MoveFile("SADXModLoader.dll", loaderdllpath);
+					await Util.MoveFile("SADXModLoader.dll", App.CurrentGame.loader.loaderdllpath);
 				}
 				else
 				{
