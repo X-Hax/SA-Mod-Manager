@@ -39,9 +39,8 @@ namespace SAModManager.Updater
 
 			generator.FilesIndexed += (o, args) =>
 			{
-				//SetTask("Manifest generation complete!");
-				//SetTaskCount(args.FileCount);
-			};
+				HeaderTxt.Text = "Manifest generation complete!";
+            };
 
 			generator.FileHashStart += (o, args) =>
 			{
@@ -52,8 +51,7 @@ namespace SAModManager.Updater
 			
 				});
 				args.Cancel = token.IsCancellationRequested;
-				//SetTaskAndStep($"Hashing file: {args.FileIndex}/{args.FileCount}", args.FileName);
-				//SetProgress(args.FileIndex / (double)args.FileCount);
+
 			};
 
 			generator.FileHashEnd += (o, args) =>
