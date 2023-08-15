@@ -49,12 +49,11 @@ namespace SAModManager.Common
         {
             string modFolder = Path.Combine(gamePath, "mods");
             string backupFolder = Path.Combine(gamePath, "BackupOldManagerFiles", "profiles");
+			Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
 
-            //if user is about to uninstall the loader restore vanilla saved profiles
-            if (installed && Directory.Exists(backupFolder))
+			//if user is about to uninstall the loader restore vanilla saved profiles
+			if (installed && Directory.Exists(backupFolder))
             {
-                Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
-
                 foreach (var item in Directory.EnumerateFiles(backupFolder, "*.ini"))
                 {
                     if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase))
@@ -69,7 +68,7 @@ namespace SAModManager.Common
             {
                 Directory.CreateDirectory(backupFolder);
 
-                foreach (var item in Directory.EnumerateFiles(App.CurrentGame.modDirectory, "*.ini"))
+				foreach (var item in Directory.EnumerateFiles(App.CurrentGame.modDirectory, "*.ini"))
                 {
                     if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase))
                     {
