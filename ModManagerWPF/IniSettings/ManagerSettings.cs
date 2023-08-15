@@ -99,8 +99,8 @@ namespace SAModManager.IniSettings
 		/// <summary>
 		/// Currently Set game, defaults to None. Should only Reset to None if no GameConfigs can be found.
 		/// </summary>
-		[DefaultValue((int)SetGame.SADX)]
-		public int CurrentSetGame { get; set; } = (int)SetGame.SADX;
+		[DefaultValue((int)SetGame.None)]
+		public int CurrentSetGame { get; set; } = (int)SetGame.None;
 
 		/// <summary>
 		/// Most recently loaded SADX Game Profile.
