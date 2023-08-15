@@ -1138,8 +1138,62 @@ namespace SAModManager
 
         }
 
-        #region Private: Load & Save
-        private async Task<bool> LoadGameProfile()
+		private void LoadGameInfo()
+		{
+			if (App.CurrentGame != null)
+			{
+				// Any general changes that are specific to each game that don't need to be in a function.
+				// We could change this to just switch to specific functions for running all of the stuff per game.
+				switch (setGame)
+				{
+					case SetGame.SADX:
+						loaderinipath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.ini");
+						App.CurrentGame.loader.dataDllOriginPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS_orig.dll");
+						App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.dll");
+						App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS.dll");
+						loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+
+						if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini")))
+						{
+							IniSettings.SADX.GameSettings settings = new();
+							settings.ConvertFromV0(loaderini);
+							GameProfile = settings;
+						}
+
+						App.CurrentGame = GamesInstall.SonicAdventure;
+						break;
+					case SetGame.SA2:
+						new MessageWindow(windowName: "Game Setup", ErrorText: "Game not implemented.").ShowDialog();
+						break;
+				}
+
+				// Generic string updates based on the currently loaded game.
+				App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");
+				App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath);
+				updatePath = Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates");
+				codelstpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst");
+				codexmlpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.xml");
+				codedatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat");
+				patchdatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat");
+
+				// Run any functions that update other aspects.
+				SetGameUI();
+				UpdateButtonsState();
+			}
+		}
+
+		private void UpdateManagerStatusText(string message)
+		{
+			WhatTheManagerDoin.Text = message;
+		}
+
+		private void ClearManagerStatusText()
+		{
+			WhatTheManagerDoin.Text = string.Empty;
+		}
+
+		#region Private: Load & Save
+		private async Task<bool> LoadGameProfile()
         {
             string defaultProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini");
             bool exist = File.Exists(defaultProfile);
