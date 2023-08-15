@@ -55,9 +55,10 @@ namespace SAModManager
 		{
 			try
 			{
+				// TODO: Add switch case to properly do the new config for either game.
 				IniSettings.SADX.GameSettings newProfile = new();
 				newProfile.ConvertFromV0(IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile));
-				IniSerializer.Serialize(newProfile, destinationFile);
+				await Task.Run(() => IniSerializer.Serialize(newProfile, destinationFile));
 				return true;
 			}
 			catch (Exception ex)
