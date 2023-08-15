@@ -86,6 +86,7 @@ namespace SAModManager
 
             UpdateDLLData();
             SetOneClickBtnState();
+			UpdateManagerStatusText("All loaded!");
         }
 
         #region Form: Functions
@@ -918,10 +919,15 @@ namespace SAModManager
                         loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath);
                    
                     }
+
+					IniSettings.SADX.GameSettings sadxSettings = new();
+					sadxSettings.ConvertFromV0(loaderini);
+					GameProfile = sadxSettings;
                   
                     await SetLoaderFile();
                     await InstallLoader(true);
                     await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
+					SetGameUI();
                     Save();
                 }
                 else
@@ -2000,8 +2006,6 @@ namespace SAModManager
 
             return CodeListView.Items[CodeListView.SelectedIndex] as CodeData;
         }
-
-
         #endregion
 
         #region Private: Manager Config Tab
