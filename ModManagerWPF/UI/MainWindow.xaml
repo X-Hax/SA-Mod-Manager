@@ -586,8 +586,8 @@
         </TabControl>
 
 		<!--Manager Current Message-->
-		<Grid Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,10,0" Height="30" Width="Auto" MaxWidth="290">
-			<TextBlock x:Name="WhatTheManagerDoin" VerticalAlignment="Center"/>
+		<Grid Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,10,0" Height="30" Width="Auto" MaxWidth="325">
+			<TextBlock x:Name="WhatTheManagerDoin" VerticalAlignment="Center" TextWrapping="NoWrap"/>
 		</Grid>
 		
         <!--This Grid manages the Save, Play, and Install buttons at the bottom of the app.-->
