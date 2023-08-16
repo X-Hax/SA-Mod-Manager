@@ -99,6 +99,7 @@ namespace SAModManager.Elements
 
 		private void MessageElement_Loaded(object sender, RoutedEventArgs e)
 		{
+			// TODO: This was supposed to actually make a scrollbar show up. It does not.
 			ScrollViewer scrollViewer = new ScrollViewer();
 			scrollViewer.Content = MessageText;
 			GridMessage.Children.Add(scrollViewer);
