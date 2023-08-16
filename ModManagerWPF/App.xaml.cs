@@ -250,6 +250,8 @@ namespace SAModManager
 
         public static async Task<bool> PerformUpdateManagerCheck()
         {
+            ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
+
             var update = await CheckManagerUpdate();
 
             if (update.Item1 == false)
@@ -303,6 +305,7 @@ namespace SAModManager
             if (!App.CurrentGame.loader.installed)
                 return false;
 
+            ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkLoaderUpdate"));
             var update = await CheckLoaderCodesUpdate();
 
             if (update.Item1 == false) //no update found

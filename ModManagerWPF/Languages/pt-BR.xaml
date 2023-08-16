@@ -17,7 +17,8 @@
 		<ResourceDictionary Source="ModConfig/pt-BR.xaml"/>
 		<ResourceDictionary Source="ModProfile/pt-BR.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/pt-BR.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="MainWindow/UpdateStatus/pt-BR.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">OK</system:String>

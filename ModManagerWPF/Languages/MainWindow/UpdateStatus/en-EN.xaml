@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="UpdateStatus.ChkUpdate">Checking for Updates...</system:String>
+    <system:String x:Key="UpdateStatus.ChkManagerUpdate">Checking for SA Mod Manager Update...</system:String>
+    <system:String x:Key="UpdateStatus.ChkLoaderUpdate">Checking for Mod Loader Update...</system:String>
+    <system:String x:Key="UpdateStatus.ChkModsUpdates">Checking for Mods Updates...</system:String>
+    <!-- '{0}' will be used to display the name of the mod, ex: "Checking for Super Sonic Mod Update..."-->
+    <system:String x:Key="UpdateStatus.ChkCurModUpdate">Checking for {0} Mod Update...</system:String>
+    <system:String x:Key="UpdateStatus.ModUpdateFail">Failed to update {0} Mod</system:String>
+    <system:String x:Key="UpdateStatus.NoUpdateFound">No Mod Updates found</system:String>
+    <system:String x:Key="UpdateStatus.InstallLoader">Installing Mod Loader, please wait...</system:String>
+    <system:String x:Key="UpdateStatus.UninstallLoader">Uninstalling Mod Loader, please wait...</system:String>
+
+
+
+
+</ResourceDictionary>

@@ -21,7 +21,7 @@ namespace SAModManager
 			return key;
 		}
 
-		private readonly static List<string> RTLlanguageList = new()
+        private readonly static List<string> RTLlanguageList = new()
 		{
 			"he-IL"
 		};

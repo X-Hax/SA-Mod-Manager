@@ -19,7 +19,8 @@
 		<ResourceDictionary Source="ModProfile/ru-RU.xaml"/>
 		<ResourceDictionary Source="NewCode/ru-RU.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/ru-RU.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="MainWindow/UpdateStatus/ru-RU.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">ОК</system:String>
