@@ -74,6 +74,7 @@ namespace SAModManager
         // SA2 Related Variables
         private string SA2SettingsPath;
         public IniSettings.SA2.GameSettings SA2Settings;
+        protected Timer StatusTimer;
         #endregion
 
         public MainWindow()
@@ -86,7 +87,6 @@ namespace SAModManager
 
             UpdateDLLData();
             SetOneClickBtnState();
-			UpdateManagerStatusText("All loaded!");
         }
 
         #region Form: Functions
@@ -97,6 +97,7 @@ namespace SAModManager
 
         private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
         {
+            StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
 
             SetModManagerVersion();
 
@@ -112,7 +113,7 @@ namespace SAModManager
             SetGameUI();
             SetBindings();
 
-
+            UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
             bool managerUpdate = await App.PerformUpdateManagerCheck();
             if (managerUpdate || await App.PerformUpdateLoaderCodesCheck())
@@ -1188,9 +1189,10 @@ namespace SAModManager
 			}
 		}
 
-		private void UpdateManagerStatusText(string message)
+		public void UpdateManagerStatusText(string message, int timer = 3000)
 		{
-			WhatTheManagerDoin.Text = message;
+            Dispatcher?.Invoke(() => WhatTheManagerDoin.Text = message);
+            StatusTimer?.Change(timer, Timeout.Infinite);
 		}
 
 		private void ClearManagerStatusText()
@@ -1555,6 +1557,7 @@ namespace SAModManager
 
         private void UpdateChecker_EnableControls()
         {
+            UpdateManagerStatusText(Lang.GetString("UpdateStatus.NoUpdateFound"));
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
 
             ModContextChkUpdate.IsEnabled = true;
@@ -1566,6 +1569,7 @@ namespace SAModManager
             ModContextDeleteMod.IsEnabled = true;
             ModContextForceModUpdate.IsEnabled = true;
             ModContextVerifyIntegrity.IsEnabled = true;
+
         }
 
         private async Task UpdateSelectedMods()
@@ -1680,6 +1684,7 @@ namespace SAModManager
             await UpdateChecker_DoWork();
             await UpdateChecker_RunWorkerCompleted();
             UpdateChecker_EnableControls();
+
         }
 
         private async Task UpdateChecker_RunWorkerCompleted()
@@ -1723,6 +1728,7 @@ namespace SAModManager
             {
                 if (manual)
                 {
+                    UpdateManagerStatusText(Lang.GetString("UpdateStatus.NoUpdateFound"));
                     new MessageWindow(Lang.GetString("MessageWindow.Information.NoAvailableUpdates.Title"), Lang.GetString("MessageWindow.Information.NoAvailableUpdates"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
                 }
                 return;
@@ -1778,6 +1784,7 @@ namespace SAModManager
                 return;
             }
 
+            UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkModsUpdates"));
             modUpdater.updatableMods = mods.Select(x => new KeyValuePair<string, ModInfo>(x.Key, x.Value)).ToList();
 
             await ExecuteModsUpdateCheck();
