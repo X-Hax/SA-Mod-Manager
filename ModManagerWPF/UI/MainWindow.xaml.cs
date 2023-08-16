@@ -1211,8 +1211,9 @@ namespace SAModManager
 
                     if (File.Exists(oldProfile))
                     {
-                        await Util.CopyFileAsync(oldProfile, Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini"), true);
-                        exist = true;
+						//await Util.CopyFileAsync(oldProfile, Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini"), true);
+						await Util.ConvertProfiles(oldProfile, defaultProfile);
+						exist = true;
                     }
                 }
         
