@@ -340,8 +340,11 @@ namespace SAModManager.Updater
                     {
                         if (string.IsNullOrEmpty(mod.GitHubAsset))
                         {
-                           
-							((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
+
+							App.Current.Dispatcher.Invoke(() =>
+							{
+								((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
+							});
 
                             modUpdateHelper.errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
                             continue;
@@ -376,7 +379,10 @@ namespace SAModManager.Updater
                             }
                             catch (Exception ex)
                             {
-                                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
+								App.Current.Dispatcher.Invoke(() =>
+								{
+									((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
+								});
                                 modUpdateHelper.errors.Add($"[{mod.Name}] Error parsing local manifest: {ex.Message}");
                                 continue;
                             }
