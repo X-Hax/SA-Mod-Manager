@@ -22,15 +22,17 @@ namespace SAModManager.UI
 				dropInfo.Effects = DragDropEffects.Move;
 		}
 
-		public void Drop(IDropInfo dropInfo)
-		{
+        public void Drop(IDropInfo dropInfo)
+        {
             GongSolutions.Wpf.DragDrop.DragDrop.DefaultDropHandler.Drop(dropInfo);
 
+            var mainWindow = (MainWindow)App.Current.MainWindow;
             var selectedItems = dropInfo.Data as List<object>;
+
             if (selectedItems != null)
             {
-                var mainWindow = (MainWindow)App.Current.MainWindow;
                 mainWindow.listMods.SelectedItems.Clear();
+
                 foreach (var selectedItem in selectedItems)
                 {
                     if (selectedItem is ModData modData)
@@ -39,7 +41,13 @@ namespace SAModManager.UI
                     }
                 }
             }
+            else if (dropInfo.Data is ModData modData)
+            {
+                int index = mainWindow.listMods.Items.IndexOf(modData);
+                mainWindow.listMods.SelectedItems.Clear();
+                mainWindow.listMods.SelectedIndex = index;
+                mainWindow.listMods.SelectedItem = modData;
+            }
         }
-
-	}
+    }
 }
