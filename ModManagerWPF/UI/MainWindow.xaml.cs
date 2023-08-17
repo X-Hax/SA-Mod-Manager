@@ -567,9 +567,12 @@ namespace SAModManager
                 return;
             }
 
-            List<Tuple<string, ModInfo, List<Updater.ModManifestDiff>>> failed = progress.Failed;
+            modUpdater.modManifestTuple = progress.Failed;
 
-            if (failed.Count < 1)
+            if (modUpdater.modManifestTuple is null)
+                return;
+
+            if (modUpdater.modManifestTuple.Count < 1)
             {
                 new MessageWindow(Lang.GetString("MessageWindow.Information.ModPassedVerif.Title"), Lang.GetString("MessageWindow.Information.ModPassedVerif"),
                     MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information).ShowDialog();
@@ -578,7 +581,7 @@ namespace SAModManager
             {
 
                 var error = Lang.GetString("MessageWindow.Errors.ModFailedVerif0")
-                        + string.Join("\n", failed.Select(x => $"{x.Item2.Name}: "
+                        + string.Join("\n", modUpdater.modManifestTuple.Select(x => $"{x.Item2.Name}: "
                         + Util.GetFileCountString(x.Item3.Count(y => y.State != Updater.ModManifestState.Unchanged), "MessageWindow.Errors.ModFailedVerif1")))
                         + Lang.GetString("MessageWindow.Errors.ModFailedVerif2");
 
@@ -1618,7 +1621,7 @@ namespace SAModManager
         private async Task UpdateChecker_DoWorkForced()
         {
 
-            if (modUpdater.modUpdatesTuple is null)
+            if (modUpdater.modUpdatesTuple is null || modUpdater.modManifestTuple.Count == 0)
             {
                 return;
             }
@@ -1719,6 +1722,7 @@ namespace SAModManager
                 }
 
                 new MessageWindow(title, msgError, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+                await Task.Delay(0);
             }
 
             bool manual = manualModUpdate;
