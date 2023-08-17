@@ -855,12 +855,6 @@ namespace SAModManager
             CodeListView.EndInit();
         }
 
-        private void btnAddCode_Click(object sender, RoutedEventArgs e)
-        {
-            Common.NewCode newcodewindow = new Common.NewCode();
-            newcodewindow.ShowDialog();
-        }
-
         private void TextBox_CodesSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             FilterCodes(TextBox_CodesSearch.Text.ToLowerInvariant());

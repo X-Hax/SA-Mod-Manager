@@ -238,8 +238,8 @@
                             <RowDefinition Height="0"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="40"/>
-                        </Grid.RowDefinitions>
+							<RowDefinition Height="5"/>
+						</Grid.RowDefinitions>
 
                         <Grid Grid.Column="1" Grid.Row="1" Height="40">
                             <Grid.ColumnDefinitions>
@@ -294,35 +294,23 @@
                             </StackPanel>
                         </Border>
 
-                        <Grid Grid.Column="2" Grid.Row="2" Margin="5,0,0,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto" MinHeight="18"/>
-                                <RowDefinition Height="Auto" MinHeight="18"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
+						<Grid Grid.Column="2" Grid.Row="2" Margin="5,0,0,0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto" MinHeight="18"/>
+								<RowDefinition Height="Auto" MinHeight="18"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
 
-                            <TextBlock Text="{DynamicResource Manager.Tabs.Codes.CodeHeader}" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
-                            <Separator Grid.Row="0" VerticalAlignment="Bottom"/>
-                            <TextBlock x:Name="CodeAuthorGrid" Text="{DynamicResource CommonStrings.Author}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap" FontSize="14"/>
-                            <TextBlock x:Name="CodeCategoryGrid" Text="{DynamicResource CommonStrings.Category}" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap" FontSize="14"/>
-                            <Separator Grid.Row="3" VerticalAlignment="Bottom"/>
-                            <TextBlock x:Name="CodeDescGrid" Text="{DynamicResource CommonStrings.Description}" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="14"/>
-                        </Grid>
-
-                        <Grid Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="240"/>
-                                </Grid.ColumnDefinitions>
-								<elements:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnAddCode" Height="30" Grid.Column="0" ToolTip="{DynamicResource MainWindow.Tips.Tab.Codes.NewCode}"
-												   Icon="{StaticResource Icons.Add}" Content="{DynamicResource Manager.Tabs.Codes.Buttons.NewCode}" Click="btnAddCode_Click"
-												   ImageBrush="{DynamicResource Icon.Brushes.Green}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Green}"/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
+							<TextBlock Text="{DynamicResource Manager.Tabs.Codes.CodeHeader}" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
+							<Separator Grid.Row="0" VerticalAlignment="Bottom"/>
+							<TextBlock x:Name="CodeAuthorGrid" Text="{DynamicResource CommonStrings.Author}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap" FontSize="14"/>
+							<TextBlock x:Name="CodeCategoryGrid" Text="{DynamicResource CommonStrings.Category}" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap" FontSize="14"/>
+							<Separator Grid.Row="3" VerticalAlignment="Bottom"/>
+							<TextBlock x:Name="CodeDescGrid" Text="{DynamicResource CommonStrings.Description}" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="14"/>
+						</Grid>
+					</Grid>
                 </Grid>
             </TabItem>
 
