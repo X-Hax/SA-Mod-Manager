@@ -476,7 +476,7 @@ namespace SAModManager
                 displayedManifestWarning = true;
             }
 
-            foreach (ModData item in listMods.SelectedItems)
+            foreach (ModData item in listMods.SelectedItems.Cast<ModData>().ToList())
             {
 
                 var modPath = Path.Combine(App.CurrentGame.modDirectory, (string)item.Tag);

@@ -39,14 +39,17 @@ namespace SAModManager.Updater
 
 			generator.FilesIndexed += (o, args) =>
 			{
-				HeaderTxt.Text = "Manifest generation complete!";
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    HeaderTxt.Text = "Manifest generation complete!";
+                });
             };
 
 			generator.FileHashStart += (o, args) =>
 			{
 				Application.Current.Dispatcher.Invoke(() =>
 				{
-					Progress.Value = Util.SetProgress(args.FileIndex / (double)args.FileCount);
+					Progress.Value = (args.FileIndex / (double)args.FileCount);
 					HeaderTxt.Text = $"Hashing file: {args.FileIndex}/{args.FileCount} " + args.FileName;
 			
 				});
