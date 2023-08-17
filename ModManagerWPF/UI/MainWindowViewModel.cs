@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using GongSolutions.Wpf.DragDrop;
@@ -22,9 +23,23 @@ namespace SAModManager.UI
 		}
 
 		public void Drop(IDropInfo dropInfo)
-		{		
-			GongSolutions.Wpf.DragDrop.DragDrop.DefaultDropHandler.Drop(dropInfo);		
-		}
+		{
+            GongSolutions.Wpf.DragDrop.DragDrop.DefaultDropHandler.Drop(dropInfo);
+
+            var selectedItems = dropInfo.Data as List<object>;
+            if (selectedItems != null)
+            {
+                var mainWindow = (MainWindow)App.Current.MainWindow;
+                mainWindow.listMods.SelectedItems.Clear();
+                foreach (var selectedItem in selectedItems)
+                {
+                    if (selectedItem is ModData modData)
+                    {
+                        mainWindow.listMods.SelectedItems.Add(modData);
+                    }
+                }
+            }
+        }
 
 	}
 }
