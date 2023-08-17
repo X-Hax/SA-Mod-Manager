@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SAModManager.IniSettings.SA2
+namespace SAModManager.Configuration
 {
-	public class GameSettings
-	{
-	}
+    class SA2GameConfig
+    {
+    }
 }

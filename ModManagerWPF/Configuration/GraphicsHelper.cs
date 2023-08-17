@@ -1,22 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Size = System.Drawing.Size;
 
-// TODO: Moved to Configuration.GraphicsHelper, remove when able.
-namespace SAModManager.GameConfigs
+namespace SAModManager.Configuration
 {
-	public class Graphics
+    public class GraphicsHelper
 	{
 		public const decimal ratio = 4 / 3m;
 
-		public Graphics(ref System.Windows.Controls.ComboBox screenNumComboBox)
+		public GraphicsHelper(ref System.Windows.Controls.ComboBox screenNumComboBox)
 		{
 			SetAllScreens(ref screenNumComboBox);
 		}
 
 		public readonly Size[] resolutionPresets =
-{
+		{
 			new Size(640, 480), // 640x480
 			new Size(800, 600), // 800x600
 			new Size(1024, 768), // 1024x768

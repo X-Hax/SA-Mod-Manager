@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using SAModManager.Ini;
 
+// TODO: Delete this file and its folder when all migration to the Configuration.SADXGameSettings class has been completed.
 namespace SAModManager.IniSettings.SADX
 {
 	public class GraphicsSettings
