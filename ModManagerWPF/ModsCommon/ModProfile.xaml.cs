@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using static SAModManager.MainWindow;
 
 namespace SAModManager.Common
 {
@@ -29,11 +30,17 @@ namespace SAModManager.Common
 			_modProfile = modProfile; 
 			Title = Lang.GetString("ManagerProfile.Title");
 
-			foreach (Profile profile in modProfile.Items)
-			{
-				ProfileListView.Items.Add(profile);
-			}
-		}
+            foreach (var kvp in modProfile.Items.Cast<KeyValuePair<string, string>>())
+            {
+                Profile instance = new()
+                {
+                    name = kvp.Key,
+                    iniPath = kvp.Value
+                };
+
+                ProfileListView.Items.Add(instance);
+            }
+        }
 
 		#region Private Functions
 		private void RefreshList()
@@ -80,12 +87,7 @@ namespace SAModManager.Common
 
 		private void UpdateModProfile()
 		{
-			_modProfile.Items.Clear();
-
-			foreach (Profile profile in ProfileListView.Items)
-			{
-				_modProfile.Items.Add(profile);
-			}
+			_modProfile.ItemsSource = ProfileListView.Items;
 		}
 		#endregion
 

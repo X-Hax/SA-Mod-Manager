@@ -21,8 +21,6 @@ namespace SAModManager
 {
 	class Util
 	{
-		private static double multiplier;
-
         public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
 		{
 			try
@@ -143,27 +141,6 @@ namespace SAModManager
 				string destinationSubDir = Path.Combine(dest, subDir.Name);
 				CopyFolder(subDir.FullName, destinationSubDir);
 			}
-		}
-
-		public static string GetSaveNumber(string s)
-		{
-			string number = s[^2..];
-
-			if (int.TryParse(number, out int result))
-			{
-				// The last two characters are numbers
-				if (number[0] == '0')
-				{
-					number = number.Substring(1);
-				}
-			}
-
-			return number;
-		}
-
-		public static void SetTaskCount(int count, double max)
-		{
-			multiplier = max / (double)count;
 		}
 
 		public static double SetProgress(double value)

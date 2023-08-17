@@ -39,7 +39,6 @@ namespace SAModManager.Updater
 
 			int modCount = mods.Count;
 			int modIndex = 0;
-			Util.SetTaskCount(modCount, Progress.Maximum);
 
 			CancellationToken token = tokenSource.Token;
 			var generator = new Updater.ModManifestGenerator();
