@@ -66,7 +66,6 @@ namespace SAModManager
         // TODO: Cleanup the Game Variables and turn type'd variables to objects and cast as needed. Additionally, move anything we can to Game class.
 
         // SADX Related Variables
-        public static string loaderinipath = "mods/SADXModLoader.ini";
         public IniSettings.SADX.GameSettings SADXSettings;
         public Dictionary<string, SADXModInfo> mods = null;
         SADXLoaderInfo loaderini;
@@ -898,45 +897,58 @@ namespace SAModManager
         //To do, rework this mess to handle multiple games and clean everything.
         private async void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Rework to handle any game directory being input.
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
 
             System.Windows.Forms.DialogResult result = dialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                string GamePath = dialog.SelectedPath;
-                string path = Path.Combine(GamePath, App.CurrentGame.exeName);
+                bool pathValid = false;
 
-                if (File.Exists(path)) //game Path valid 
+                foreach (var game in GamesInstall.GetSupportedGames())
                 {
-                    textGameDir.Text = GamePath;
-                    (GameProfile as IniSettings.SADX.GameSettings).GamePath = GamePath;
-                    SetGamePath();
-                    UpdateManagerInfo();
+                    string GamePath = dialog.SelectedPath;
+                    string path = Path.Combine(GamePath, game.exeName);
 
-                    if (File.Exists(loaderinipath))
+                    if (File.Exists(path)) //game Path valid 
                     {
-                        loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath);
-                   
+                        pathValid = true;
+                        textGameDir.Text = GamePath;
+                        (GameProfile as IniSettings.SADX.GameSettings).GamePath = GamePath;
+                        SetGamePath();
+                        break;
                     }
-
-					IniSettings.SADX.GameSettings sadxSettings = new();
-					sadxSettings.ConvertFromV0(loaderini);
-					GameProfile = sadxSettings;
-                  
-                    await SetLoaderFile();
-                    await InstallLoader(true);
-                    await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
-					SetGameUI();
-                    Save();
                 }
-                else
+
+                if (!pathValid)
                 {
                     new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                 }
+                else
+                {
+                    await UpdateManagerInfo();
 
-                Update_PlayButtonsState();
+                    if (File.Exists(App.CurrentGame.loader.loaderinipath)) //need to be updated to support multiple games
+                    {
+                        loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(App.CurrentGame.loader.loaderinipath);
+                    }
+
+                    IniSettings.SADX.GameSettings sadxSettings = new();
+                    sadxSettings.ConvertFromV0(loaderini);
+                    GameProfile = sadxSettings;
+
+                    if (!File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+                    {
+                        UIHelper.DisableButton(ref btnInstallLoader);
+                        await InstallLoader();
+                        UIHelper.EnableButton(ref btnInstallLoader);
+                    }
+
+
+                    SetGameUI();
+                    Save();
+                    Update_PlayButtonsState();
+                }
             }
         }
 
@@ -968,17 +980,8 @@ namespace SAModManager
                 return;
             }
 
-            await InstallLoader(); //ToDo update to be less a mess
             btnBrowseGameDir.IsEnabled = false;
-
-            if (App.CurrentGame.loader.installed)
-            {
-                await GamesInstall.InstallLoader(App.CurrentGame);
-                await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
-                await UpdateGameConfig(SetGame.SADX); //To do change with "current selected game" when it's available
-            }
-
-
+            await InstallLoader();
             UpdateButtonsState();
             btnBrowseGameDir.IsEnabled = true;
             Save();
@@ -1113,95 +1116,99 @@ namespace SAModManager
             tabGame.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void UpdateManagerInfo()
+        //update all the games information such as loader and mods path
+        private async Task UpdateManagerInfo()
         {
             if (!string.IsNullOrEmpty(App.CurrentGame.gameDirectory) && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
             {
 
                 App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");
 
-                loaderinipath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.ini");
-                App.CurrentGame.loader.dataDllOriginPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS_orig.dll");
-                App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.dll");
-                App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS.dll");
-                updatePath = Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates");
+                App.CurrentGame.loader.loaderinipath = Path.Combine(App.CurrentGame.gameDirectory, Path.Combine("mods", App.CurrentGame.defaultIniProfile));
+                App.CurrentGame.loader.dataDllOriginPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.loader.originPath.defaultDataDllOriginPath);
+                App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, Path.Combine(App.CurrentGame.modDirectory, App.CurrentGame.loader.name + ".dll"));
+                App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.loader.originPath.defaultDataDllPath);
 
+                updatePath = Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates");
                 codelstpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst");
                 codexmlpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.xml");
                 codedatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat");
                 patchdatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat");
 
+
                 Elements.SADX.GameConfig.UpdateD3D8Paths();
 
+                //this is a failsafe in case the User deleted the Loader file manually without restoring the original files
+                if (!File.Exists(App.CurrentGame.loader.loaderdllpath) && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+                {
+                    await GamesInstall.InstallDLL_Loader(App.CurrentGame); //re install the loader to avoid corrupted install
+                    File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+                }
             }
             else
             {
                 App.CurrentGame.gameDirectory = string.Empty;
             }
 
-            App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath);
+            App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath) && File.Exists(App.CurrentGame.loader.loaderdllpath);
             UpdateButtonsState();
+            string loaderinipath = App.CurrentGame.loader.loaderinipath;
             loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
-
         }
 
-		private void LoadGameInfo()
-		{
-			if (App.CurrentGame != null)
-			{
-				// Any general changes that are specific to each game that don't need to be in a function.
-				// We could change this to just switch to specific functions for running all of the stuff per game.
-				switch (setGame)
-				{
-					case SetGame.SADX:
-						loaderinipath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.ini");
-						App.CurrentGame.loader.dataDllOriginPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS_orig.dll");
-						App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.dll");
-						App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS.dll");
-						loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
+        private void LoadGameInfo()
+        {
+            if (App.CurrentGame != null)
+            {
+                // Any general changes that are specific to each game that don't need to be in a function.
+                // We could change this to just switch to specific functions for running all of the stuff per game.
+                switch (setGame)
+                {
+                    case SetGame.SADX:
+                        App.CurrentGame.loader.loaderinipath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.ini");
+                        string loaderinipath = App.CurrentGame.loader.loaderinipath;
+                        App.CurrentGame.loader.dataDllOriginPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS_orig.dll");
+                        App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.dll");
+                        App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS.dll");
+                        loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
 
-						if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini")))
-						{
-							IniSettings.SADX.GameSettings settings = new();
-							settings.ConvertFromV0(loaderini);
-							GameProfile = settings;
-						}
+                        if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini")))
+                        {
+                            IniSettings.SADX.GameSettings settings = new();
+                            settings.ConvertFromV0(loaderini);
+                            GameProfile = settings;
+                        }
 
-						App.CurrentGame = GamesInstall.SonicAdventure;
-						break;
-					case SetGame.SA2:
-						new MessageWindow(windowName: "Game Setup", ErrorText: "Game not implemented.").ShowDialog();
-						break;
-				}
+                        App.CurrentGame = GamesInstall.SonicAdventure;
+                        break;
+                    case SetGame.SA2:
+                        new MessageWindow(windowName: "Game Setup", ErrorText: "Game not implemented.").ShowDialog();
+                        break;
+                }
 
-				// Generic string updates based on the currently loaded game.
-				App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");
-				App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath);
-				updatePath = Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates");
-				codelstpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst");
-				codexmlpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.xml");
-				codedatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat");
-				patchdatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat");
+                // Generic string updates based on the currently loaded game.
+                App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");
+                App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath);
+                updatePath = Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates");
+                codelstpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst");
+                codexmlpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.xml");
+                codedatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat");
+                patchdatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat");
 
-				// Run any functions that update other aspects.
-				SetGameUI();
-				UpdateButtonsState();
-			}
-		}
+                // Run any functions that update other aspects.
+                SetGameUI();
+                UpdateButtonsState();
+            }
+        }
 
-		public void UpdateManagerStatusText(string message, int timer = 3000)
-		{
+        public void UpdateManagerStatusText(string message, int timer = 3000)
+        {
             Dispatcher?.Invoke(() => WhatTheManagerDoin.Text = message);
             StatusTimer?.Change(timer, Timeout.Infinite);
-		}
+        }
 
-		private void ClearManagerStatusText()
-		{
-			WhatTheManagerDoin.Text = string.Empty;
-		}
-
-		#region Private: Load & Save
-		private async Task<bool> LoadGameProfile()
+        #region Private: Load & Save
+        private async Task<bool> LoadGameProfile()
         {
             string defaultProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini");
             bool exist = File.Exists(defaultProfile);
@@ -1213,12 +1220,12 @@ namespace SAModManager
 
                     if (File.Exists(oldProfile))
                     {
-						//await Util.CopyFileAsync(oldProfile, Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini"), true);
-						await Util.ConvertProfiles(oldProfile, defaultProfile);
-						exist = true;
+                        //await Util.CopyFileAsync(oldProfile, Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini"), true);
+                        await Util.ConvertProfiles(oldProfile, defaultProfile);
+                        exist = true;
                     }
                 }
-        
+
             }
             switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
             {
@@ -1363,7 +1370,7 @@ namespace SAModManager
         {
             await LoadGameProfile();
             SetGamePath();
-            UpdateManagerInfo();
+            await UpdateManagerInfo();
 
             LoadGameConfigFile();
 
@@ -1406,7 +1413,7 @@ namespace SAModManager
             // saving to this location is useful for the Loaders.
 
             loaderini.ConvertFromV1(App.configIni, GameProfile as IniSettings.SADX.GameSettings);
-            IniSerializer.Serialize(loaderini, loaderinipath);
+            IniSerializer.Serialize(loaderini, App.CurrentGame.loader.loaderinipath);
 
             // Save Game Config file (Game used settings file)
             SaveGameConfig(App.CurrentGame.gameDirectory);
@@ -2102,42 +2109,45 @@ namespace SAModManager
             }
         }
 
-        private async Task InstallLoader(bool force = false)
+        private async Task InstallLoader()
         {
 
-            if (force)
-                App.CurrentGame.loader.installed = false;
-
-            if (!File.Exists(App.CurrentGame.loader.loaderdllpath))
-            {
-                await GamesInstall.InstallLoader(App.CurrentGame);
-
-                if (File.Exists(App.CurrentGame.loader.dataDllOriginPath) && App.CurrentGame.loader.installed)
-                {
-                    File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
-                    UpdateBtnInstallLoader_State();
-                    return;
-                }
-            }
-
-            SaveAndPlayButton.IsEnabled = false;
-            // btnTSLaunch.IsEnabled = false;
-
+            //if user requested to uninstall the loader...
             if (App.CurrentGame.loader.installed && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
             {
+                UIHelper.DisableButton(ref SaveAndPlayButton);
+                UpdateManagerStatusText(Lang.GetString("UpdateStatus.UninstallLoader"));
+
                 File.Delete(App.CurrentGame.loader.dataDllPath);
                 await Util.MoveFile(App.CurrentGame.loader.dataDllOriginPath, App.CurrentGame.loader.dataDllPath);
+                UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderUninstalled"));
+                UIHelper.EnableButton(ref SaveAndPlayButton);
             }
-            else
-            {
+            else //if user asked to install the loader
+            {       
                 if (!File.Exists(App.CurrentGame.loader.dataDllOriginPath))
                 {
-                    File.Move(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath);
+                    UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
+                    UIHelper.DisableButton(ref SaveAndPlayButton);
+
+                    await GamesInstall.InstallDLL_Loader(App.CurrentGame); //first, we download and extract the loader DLL in the mods folder
+                    await GamesInstall.CheckAndInstallDependencies(App.CurrentGame); //we check if some libraries are missing (BASS, D3D9...)
+
+                    UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
+                    //now we can move the loader files to the accurate folders.
+                    await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                     await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
+                    await UpdateGameConfig(SetGame.SADX); //To do change with "current selected game" when it's available
+                    UIHelper.EnableButton(ref SaveAndPlayButton);
+
+
+                    UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
                 }
             }
 
+            //todo, delete when official release
             await VanillaTransition.HandleVanillaManagerFiles(App.CurrentGame.loader.installed, App.CurrentGame.gameDirectory);
+
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
             UpdateBtnInstallLoader_State();
         }
@@ -2176,20 +2186,6 @@ namespace SAModManager
             }
         }
 
-        private async Task SetLoaderFile()
-        {
-            if (!File.Exists(App.CurrentGame.loader.loaderdllpath))
-            {
-                if (File.Exists("SADXModLoader.dll"))
-                {
-                    await Util.MoveFile("SADXModLoader.dll", App.CurrentGame.loader.loaderdllpath);
-                }
-                else
-                {
-                    await GamesInstall.InstallLoader(App.CurrentGame);
-                }
-            }
-        }
 
         private string GetSelectedProfile()
         {

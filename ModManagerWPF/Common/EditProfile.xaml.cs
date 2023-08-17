@@ -83,7 +83,7 @@ namespace SAModManager.Common
 
 				((MainWindow)Application.Current.MainWindow).Save();
 				await Task.Delay(30);
-				File.Copy(loaderinipath, fullPath);
+				File.Copy(App.CurrentGame.loader.loaderinipath, fullPath);
 				await Task.Delay(100);
 
 				NewProResult = new()

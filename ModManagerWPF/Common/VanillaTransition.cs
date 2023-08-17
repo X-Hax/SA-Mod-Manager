@@ -43,6 +43,7 @@ namespace SAModManager.Common
             "SADXModManager.exe.config",
             "SharpDX.DirectInput.dll",
             "SharpDX.dll",
+            "/mods/SADXModLoader.dll"
         };
 
         private static async Task HandleProfiles(bool installed, string gamePath)

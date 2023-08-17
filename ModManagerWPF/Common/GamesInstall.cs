@@ -3,10 +3,10 @@ using SAModManager.Updater;
 using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -43,6 +43,13 @@ namespace SAModManager.Common
         public string URL;
     }
 
+    public class defaultLoaderPath
+    {
+        public string defaultDataDllOriginPath; //ex 'System/CHRMODELS_orig.dll'
+        public string defaultDataDllPath; //ex 'System/CHRMODELS.dll'
+        public string defaultLoaderinipath; //ex mods/SADXModLoader.ini"
+    }
+
     public class Loader
     {
         public string name;
@@ -54,6 +61,8 @@ namespace SAModManager.Common
         public string dataDllPath;
         public string loaderdllpath;
         public string loaderVersionpath; //used to check version
+        public string loaderinipath;
+        public defaultLoaderPath originPath;
     }
 
     public static class GamesInstall
@@ -87,10 +96,12 @@ namespace SAModManager.Common
                 case Format.dll:
                     await Util.ExtractEmbeddedDLL(dependency.data, dependency.name, dependency.path);
                     break;
+                default:
+                    throw new Exception("What");
             }
         }
 
-        public static async Task InstallLoader(Game game)
+        public static async Task InstallDLL_Loader(Game game)
         {
             if (game is null)
                 return;
@@ -98,22 +109,22 @@ namespace SAModManager.Common
             try
             {
                 Uri uri = new(game.loader.URL + "\r\n");
-                var dl = new GenericDownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), false, game.modDirectory, false, true);
+                var dl = new GenericDownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, false, true);
 
                 await dl.StartDL();
                 dl.ShowDialog();
-                await UpdateCodes(App.CurrentGame); //update codes
 
                 if (dl.done == false)
                 {
-                    await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
+                    await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);        
                 }
-
             }
             catch
             {
                 await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
             }
+
+            await UpdateCodes(App.CurrentGame); //update codes
         }
 
         public static async Task<bool> UpdateLoader(Game game)
@@ -124,7 +135,7 @@ namespace SAModManager.Common
             try
             {
                 Uri uri = new(game.loader.URL + "\r\n");
-                var dl = new GenericDownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), false, game.modDirectory, false, true);
+                var dl = new GenericDownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, false, true);
 
                 await dl.StartDL();
                 dl.ShowDialog();
@@ -153,9 +164,10 @@ namespace SAModManager.Common
 
             try
             {
+                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.UpdateCodes"));
                 string codePath = Path.Combine(game.modDirectory, "Codes.lst");
                 Uri uri = new(game.codeURL + "\r\n");
-                var dl = new GenericDownloadDialog(uri, "Updating Codes", "Codes.lst", false, game.modDirectory, false, true);
+                var dl = new GenericDownloadDialog(uri, "Updating Codes", "Codes.lst", game.modDirectory, false, true);
 
                 await dl.StartDL();
                 dl.ShowDialog();
@@ -164,6 +176,7 @@ namespace SAModManager.Common
             catch
             {
                 Console.WriteLine("Failed to update mod loader\n");
+                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateCodes"));
             }
 
             return false;
@@ -178,10 +191,12 @@ namespace SAModManager.Common
             {
                 if (!DependencyInstalled(dependency))
                 {
+                    ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallDependencies"));
+
                     try
                     {
                         Uri uri = new(dependency.URL + "\r\n");
-                        var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), false, dependency.path, true);
+                        var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, true);
                         dl.Show();
                         await dl.StartDL();
 
@@ -219,6 +234,7 @@ namespace SAModManager.Common
             }
         }
 
+
         public static Game SonicAdventure = new()
         {
             gameName = "Sonic Adventure DX",
@@ -234,6 +250,13 @@ namespace SAModManager.Common
                 URL = Properties.Resources.URL_SADX_DL,
                 repoName = "sadx-mod-loader",
                 loaderVersionpath = Path.Combine(App.ConfigFolder, "SADXLoaderVersion.ini"),
+
+                originPath = new()
+                {
+                    defaultDataDllOriginPath = "System/CHRMODELS_orig.dll",
+                    defaultDataDllPath = "System/CHRMODELS.dll",
+                    defaultLoaderinipath = "mods/SADXModLoader.ini"
+                }
             },
 
             Dependencies = new()
@@ -283,6 +306,7 @@ namespace SAModManager.Common
                 name = "SA2ModLoader",
                 repoName = "sa2-mod-loader",
                 loaderVersionpath = Path.Combine(App.ConfigFolder, "SA2LoaderVersion.ini"),
+                loaderinipath = "mods/SA2ModLoader.ini"
             },
 
             ProfilesDirectory = Path.Combine(App.ConfigFolder, "SA2"),
@@ -297,13 +321,14 @@ namespace SAModManager.Common
         public static IEnumerable<Game> GetSupportedGames()
         {
             yield return SonicAdventure;
-            yield return SonicAdventure2;
+           // yield return SonicAdventure2;
         }
 
+        //will probably end making our own installer ig
         public static async Task GetSADXModInstaller()
         {
-            var destFolder = Path.Combine(Environment.CurrentDirectory, "SATemp");
-            var zipPath = Path.Combine(Environment.CurrentDirectory, "SATemp", "sadx_setup_full.zip");
+            var destFolder = Path.Combine(Environment.CurrentDirectory, ".SATemp");
+            var zipPath = Path.Combine(Environment.CurrentDirectory, ".SATemp", "sadx_setup_full.zip");
 
             try
             {

@@ -280,7 +280,7 @@ namespace SAModManager.Elements.SADX
 		private void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
 		{
 			Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
-			var DL = new GenericDownloadDialog(uri, "App Launcher", "AppLauncher.7z", true);
+			var DL = new GenericDownloadDialog(uri, "App Launcher", "AppLauncher.7z", null, true);
 			DL.StartDL();
 			DL.ShowDialog();
 
