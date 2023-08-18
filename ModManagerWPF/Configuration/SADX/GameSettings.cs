@@ -6,7 +6,6 @@ using System.IO;
 using SAModManager.Common;
 using System.Text.Json;
 
-// TODO: Delete this file and its folder when all migration to the Configuration.SADXGameSettings class has been completed.
 namespace SAModManager.Configuration.SADX
 {
 	public class GraphicsSettings
@@ -437,6 +436,9 @@ namespace SAModManager.Configuration.SADX
 
 	public class GameSettings
 	{
+		/// <summary>
+		/// Versioning.
+		/// </summary>
 		public enum SADXSettingsVersions
 		{
 			v0 = 0,
@@ -629,6 +631,11 @@ namespace SAModManager.Configuration.SADX
 			}
 		}
 
+		/// <summary>
+		/// Deserializes an SADX GameSettings JSON File and returns a populated class.
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
 		public static GameSettings Deserialize(string path)
 		{
 			if (File.Exists(path))
@@ -641,6 +648,10 @@ namespace SAModManager.Configuration.SADX
 				return new();
 		}
 
+		/// <summary>
+		/// Serializes an SADX GameSettings JSON File.
+		/// </summary>
+		/// <param name="path"></param>
 		public void Serialize(string path)
 		{
 			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
