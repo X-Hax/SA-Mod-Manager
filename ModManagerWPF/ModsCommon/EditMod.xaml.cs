@@ -575,9 +575,17 @@ namespace SAModManager
 			}
 		}
 
+		private Dictionary<int, Code> GetSelectedCodes()
+		{
+			Dictionary<int, Code> codeListEntry = new();
+
+			return codeListEntry;
+		}
+
 		private void btnNewCode_Click(object sender, RoutedEventArgs e)
 		{
-
+			NewCode newCodeWindow = new NewCode();
+			newCodeWindow.ShowDialog();
 		}
 
 		private void btnDelCode_Click(object sender, RoutedEventArgs e)
@@ -587,7 +595,9 @@ namespace SAModManager
 
 		private void btnEditCode_Click(object sender, RoutedEventArgs e)
 		{
-
+			Code editCode = GetSelectedCodes().FirstOrDefault().Value;
+			NewCode codeWindow = new NewCode(code: editCode);
+			codeWindow.ShowDialog();
 		}
 	}
 }
