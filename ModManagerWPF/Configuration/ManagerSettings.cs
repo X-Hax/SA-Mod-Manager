@@ -29,7 +29,7 @@ namespace SAModManager.Configuration
 		/// Checks for Manager Updates on Boot.
 		/// </summary>
 		[DefaultValue(true)]
-		public bool EnableManagerBootCheck { get; set; } = true;	// LoaderInfo.UpdateCheck
+		public bool EnableManagerBootCheck { get; set; } = true;    // LoaderInfo.UpdateCheck
 
 		/// <summary>
 		/// Checks for Mod Updates on Boot.
@@ -46,7 +46,7 @@ namespace SAModManager.Configuration
 		public int UpdateCheckCount { get; set; } = 0;
 
 
-        public void ConvertFromV0(SADXLoaderInfo oldSettings)
+		public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{
 			EnableManagerBootCheck = oldSettings.UpdateCheck;
 			EnableModsBootCheck = oldSettings.ModUpdateCheck;
@@ -71,7 +71,7 @@ namespace SAModManager.Configuration
 		/// <summary>
 		/// Enables debug printing to a file.
 		/// </summary>
-		[DefaultValue (false)]
+		[DefaultValue(false)]
 		public bool EnableDebugFile { get; set; }         // SADXLoaderInfo.DebugFile
 
 		/// <summary>
@@ -109,14 +109,6 @@ namespace SAModManager.Configuration
 		/// </summary>
 		[DefaultValue("Default")]
 		public string LoadedProfile { get; set; } = "Default";
-
-		/// <summary>
-		/// List of Profile options.
-		/// </summary>
-		public Dictionary<string, string> Profiles { get; set; } = new()
-		{
-			{ "Default", "Default.json" }
-		};
 	}
 
 	public class ManagerSettings
@@ -164,27 +156,16 @@ namespace SAModManager.Configuration
 		public UpdateSettings UpdateSettings { get; set; } = new();
 
 		/// <summary>
-		/// Debug Settings for the Manager, shared between profiles.
-		/// </summary>
-		public DebugSettings DebugSettings { get; set; } = new();
-
-		/// <summary>
 		/// Game Management so the loader can always use last loaded settings.
 		/// </summary>
 		[IniAlwaysInclude]
 		public GameManagement GameManagement { get; set; } = new();
 
-		public void ConvertFromV0(SADXLoaderInfo oldSettings)
-		{
-			SettingsVersion = (int)ManagerSettingsVersions.v1;
-			UpdateSettings.ConvertFromV0(oldSettings);
-			EnableDeveloperMode = oldSettings.devMode;
-			KeepManagerOpen = oldSettings.managerOpen;
-			GameManagement = new();
-			Theme = oldSettings.Theme;
-			Language = oldSettings.Language;
-		}
-
+		/// <summary>
+		/// Deserializes a Manager Settings CFG (JSON) file and returns a populated class.
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
 		public static ManagerSettings Deserialize(string path)
 		{
 			if (File.Exists(path))
@@ -197,6 +178,10 @@ namespace SAModManager.Configuration
 				return new();
 		}
 
+		/// <summary>
+		/// Serializes a Manager Setting CFG (JSON) file.
+		/// </summary>
+		/// <param name="path"></param>
 		public void Serialize(string path)
 		{
 			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
@@ -204,12 +189,29 @@ namespace SAModManager.Configuration
 			File.WriteAllText(path, jsonContent);
 		}
 
-		public string GetProfileFilename()
+		/// <summary>
+		/// Returns the Profile to load using the Manager's settings and the Profiles.json file for the specified game.
+		/// </summary>
+		/// <param name="profiles"></param>
+		/// <returns></returns>
+		public string GetProfileFilename(Dictionary<string, string> profiles)
 		{
-			if (GameManagement.Profiles.ContainsKey(GameManagement.LoadedProfile))
-				return GameManagement.Profiles[GameManagement.LoadedProfile];
+			if (profiles.ContainsKey(GameManagement.LoadedProfile))
+				return profiles[GameManagement.LoadedProfile];
 			else
 				return "Default.json";
 		}
 	}
+
+	public class Profiles
+	{
+		/// <summary>
+		/// List of Profile options.
+		/// </summary>
+		public Dictionary<string, string> ProfilesList { get; set; } = new()
+		{
+			{ "Default", "Default.json" }
+		};
+	}
 }
+
