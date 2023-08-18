@@ -19,6 +19,9 @@
     <system:String x:Key="UpdateStatus.LoaderUpdate">Updating Mod Loader...</system:String>
     <system:String x:Key="UpdateStatus.LoaderInstalled">Successfully Installed Mod Loader</system:String>
     <system:String x:Key="UpdateStatus.LoaderUninstalled">Successfully Uninstalled Mod Loader</system:String>
+    <system:String x:Key="UpdateStatus.TotalMods">Loaded {0} Mods</system:String>
+    <system:String x:Key="UpdateStatus.TotalCodes">Loaded {0} Codes</system:String>
+
 
 
 </ResourceDictionary>
