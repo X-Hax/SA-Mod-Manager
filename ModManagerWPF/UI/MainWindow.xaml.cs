@@ -23,7 +23,7 @@ using SAModManager.Updater;
 using SAModManager.Elements;
 using SevenZipExtractor;
 using SAModManager.Ini;
-using SAModManager.IniSettings;
+using SAModManager.Configuration;
 using ICSharpCode.AvalonEdit.Editing;
 using SAModManager.IniSettings.SA2;
 using SAModManager.GameConfigs;
@@ -51,7 +51,8 @@ namespace SAModManager
         public SetGame setGame = SetGame.SADX;
         CodeList mainCodes = null;
         List<Code> codes = null;
-        public List<CodeData> codesSearch { get; set; }
+		protected Timer StatusTimer;
+		public List<CodeData> codesSearch { get; set; }
         bool suppressEvent = false;
         private bool manualModUpdate;
         readonly Updater.ModUpdater modUpdater = new();
@@ -63,17 +64,13 @@ namespace SAModManager
         Dictionary<string, string> GameProfiles = new();
         object GameProfile;
 
-        // TODO: Cleanup the Game Variables and turn type'd variables to objects and cast as needed. Additionally, move anything we can to Game class.
+		// TODO: Make this generic for handling both games. Maybe do it with a custom class for easier management.
+		public Dictionary<string, SADXModInfo> mods = null;
 
-        // SADX Related Variables
-        public IniSettings.SADX.GameSettings SADXSettings;
-        public Dictionary<string, SADXModInfo> mods = null;
-        SADXLoaderInfo loaderini;
+		// SADX Related Variables
+		SADXLoaderInfo loaderini;
 
         // SA2 Related Variables
-        private string SA2SettingsPath;
-        public IniSettings.SA2.GameSettings SA2Settings;
-        protected Timer StatusTimer;
         #endregion
 
         public MainWindow()
@@ -975,7 +972,7 @@ namespace SAModManager
                     {
                         pathValid = true;
                         textGameDir.Text = GamePath;
-                        (GameProfile as IniSettings.SADX.GameSettings).GamePath = GamePath;
+                        (GameProfile as Configuration.SADX.GameSettings).GamePath = GamePath;
                         SetGamePath();
                         break;
                     }
@@ -994,7 +991,7 @@ namespace SAModManager
                         loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(App.CurrentGame.loader.loaderinipath);
                     }
 
-                    IniSettings.SADX.GameSettings sadxSettings = new();
+                    Configuration.SADX.GameSettings sadxSettings = new();
                     sadxSettings.ConvertFromV0(loaderini);
                     GameProfile = sadxSettings;
 
@@ -1122,7 +1119,7 @@ namespace SAModManager
 #endregion
 #endregion
 
-#region Private Functions
+		#region Private Functions
         private void StartGame()
         {
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
@@ -1159,7 +1156,7 @@ namespace SAModManager
             {
                 case SetGame.SADX:
                     tabGame.Visibility = Visibility.Visible;
-                    gameDebugSettings = (GameProfile as IniSettings.SADX.GameSettings).DebugSettings;
+                    gameDebugSettings = (GameProfile as Configuration.SADX.GameSettings).DebugSettings;
                     stackPanel = (Grid)tabGame.Content;
                     stackPanel.Children.Add(new Elements.SADX.GameConfig(ref GameProfile, ref gameConfigFile));
                     tsPanel = (Grid)tabTestSpawn.Content;
@@ -1217,58 +1214,13 @@ namespace SAModManager
             loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
         }
 
-        private void LoadGameInfo()
-        {
-            if (App.CurrentGame != null)
-            {
-                // Any general changes that are specific to each game that don't need to be in a function.
-                // We could change this to just switch to specific functions for running all of the stuff per game.
-                switch (setGame)
-                {
-                    case SetGame.SADX:
-                        App.CurrentGame.loader.loaderinipath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.ini");
-                        string loaderinipath = App.CurrentGame.loader.loaderinipath;
-                        App.CurrentGame.loader.dataDllOriginPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS_orig.dll");
-                        App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.dll");
-                        App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, "system/CHRMODELS.dll");
-                        loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
-
-                        if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini")))
-                        {
-                            IniSettings.SADX.GameSettings settings = new();
-                            settings.ConvertFromV0(loaderini);
-                            GameProfile = settings;
-                        }
-
-                        App.CurrentGame = GamesInstall.SonicAdventure;
-                        break;
-                    case SetGame.SA2:
-                        new MessageWindow(windowName: "Game Setup", ErrorText: "Game not implemented.").ShowDialog();
-                        break;
-                }
-
-                // Generic string updates based on the currently loaded game.
-                App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");
-                App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath);
-                updatePath = Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates");
-                codelstpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst");
-                codexmlpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.xml");
-                codedatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat");
-                patchdatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat");
-
-                // Run any functions that update other aspects.
-                SetGameUI();
-                UpdateButtonsState();
-            }
-        }
-
         public void UpdateManagerStatusText(string message, int timer = 3000)
         {
             Dispatcher?.Invoke(() => WhatTheManagerDoin.Text = message);
             StatusTimer?.Change(timer, Timeout.Infinite);
         }
 
-#region Private: Load & Save
+		#region Private: Load & Save
         private async Task<bool> LoadGameProfile()
         {
             string defaultProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini");
@@ -1291,7 +1243,7 @@ namespace SAModManager
             switch ((SetGame)App.configIni.GameManagement.CurrentSetGame)
             {
                 case SetGame.SADX:
-                    GameProfile = exist ? IniSerializer.Deserialize<IniSettings.SADX.GameSettings>(defaultProfile) : new();
+                    GameProfile = exist ? IniSerializer.Deserialize<Configuration.SADX.GameSettings>(defaultProfile) : new();
                     break;
                 case SetGame.SA2:
                     GameProfile = exist ? IniSerializer.Deserialize<IniSettings.SA2.GameSettings>(defaultProfile) : new();
@@ -1333,7 +1285,7 @@ namespace SAModManager
             switch (setGame)
             {
                 case SetGame.SADX:
-                    gameConfigFile = File.Exists(gameConfig[0]) ? IniSerializer.Deserialize<GameConfigs.SADXConfigFile>(gameConfig[0]) : new SADXConfigFile();
+                    gameConfigFile = File.Exists(gameConfig[0]) ? IniSerializer.Deserialize<SADXConfigFile>(gameConfig[0]) : new SADXConfigFile();
                     break;
                 case SetGame.SA2:
                     break;
@@ -1460,11 +1412,14 @@ namespace SAModManager
             switch (setGame)
             {
                 case SetGame.SADX:
-                    (GameProfile as IniSettings.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
+                    (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
                     Elements.SADX.GameConfig gameConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
                     gameConfig.SavePatches(ref GameProfile);
                     Elements.SADX.TestSpawn spawnConfig = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
                     spawnConfig.Save();
+
+					Configuration.SADX.GameSettings sadxSettings = GameProfile as Configuration.SADX.GameSettings;
+					sadxSettings.WriteToLoaderInfo(App.CurrentGame.modDirectory, App.configIni);
                     break;
             }
 
@@ -1472,9 +1427,6 @@ namespace SAModManager
 
             // TODO: Proper function for saving to the original location. Regardless of updating the Loaders to use the new settings,
             // saving to this location is useful for the Loaders.
-
-            loaderini.ConvertFromV1(App.configIni, GameProfile as IniSettings.SADX.GameSettings);
-            IniSerializer.Serialize(loaderini, App.CurrentGame.loader.loaderinipath);
 
             // Save Game Config file (Game used settings file)
             SaveGameConfig(App.CurrentGame.gameDirectory);
@@ -1605,9 +1557,9 @@ namespace SAModManager
         {
             Settings.Default.Save();
         }
-#endregion
+		#endregion
 
-#region Private: Update
+		#region Private: Update
 
         private void Update_PlayButtonsState()
         {
@@ -1865,9 +1817,9 @@ namespace SAModManager
                 IniSerializer.Serialize(App.configIni, App.ConfigPath);
             }
         }
-#endregion
+		#endregion
 
-#region Setup Bindings
+		#region Setup Bindings
         private void SetGameDebugBindings()
         {
             checkEnableLogConsole.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableDebugConsole")
@@ -1935,9 +1887,9 @@ namespace SAModManager
             SetGameDebugBindings();
             SetManagerBindings();
         }
-#endregion
+		#endregion
 
-#region Private: Mods Tab
+		#region Private: Mods Tab
         public void FilterMods(string text)
         {
             ViewModel.ModsSearch.Clear();
@@ -2026,9 +1978,9 @@ namespace SAModManager
             UIHelper.ToggleImage(ref iconConfig, isInstalled);
             UIHelper.ToggleImgButton(ref NewModBtn, isInstalled);
         }
-#endregion
+		#endregion
 
-#region Private: Codes Tab
+		#region Private: Codes Tab
         public void FilterCodes(string text)
         {
             CodeListView.Items.Clear();
@@ -2083,9 +2035,9 @@ namespace SAModManager
 
             return CodeListView.Items[CodeListView.SelectedIndex] as CodeData;
         }
-#endregion
+		#endregion
 
-#region Private: Manager Config Tab
+		#region Private: Manager Config Tab
 
         private void SetOneClickBtnState()
         {
@@ -2220,7 +2172,7 @@ namespace SAModManager
             switch (setGame)
             {
                 case SetGame.SADX:
-                    path = (GameProfile as IniSettings.SADX.GameSettings).GamePath;
+                    path = (GameProfile as Configuration.SADX.GameSettings).GamePath;
                     break;
                 case SetGame.SA2:
                     //path = (GameProfile as IniSettings.SA2.GameSettings).GamePath;
@@ -2258,7 +2210,7 @@ namespace SAModManager
 
             return Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini");
         }
-#endregion
-#endregion
+		#endregion
+		#endregion
     }
 }

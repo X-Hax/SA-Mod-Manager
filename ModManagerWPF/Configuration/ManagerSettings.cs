@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace SAModManager.IniSettings
+namespace SAModManager.Configuration
 {
 	public enum ManagerSettingsVersions
 	{

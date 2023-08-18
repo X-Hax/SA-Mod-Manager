@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using SAModManager.Ini;
+using SAModManager.Configuration;
 
 namespace SAModManager
 {
@@ -233,7 +234,7 @@ namespace SAModManager
 		/// </summary>
 		/// <param name="managerSettings"></param>
 		/// <param name="gameSettings"></param>
-		public void ConvertFromV1(IniSettings.ManagerSettings managerSettings, IniSettings.SADX.GameSettings gameSettings)
+		public void ConvertFromV1(ManagerSettings managerSettings, Configuration.SADX.GameSettings gameSettings)
 		{
 			// Manager Settings
 			devMode = managerSettings.EnableDeveloperMode;

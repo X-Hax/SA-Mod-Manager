@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using SAModManager.Common;
-using SAModManager.IniSettings.SADX;
+using SAModManager.Configuration.SADX;
 
 namespace SAModManager.Elements.SADX
 {

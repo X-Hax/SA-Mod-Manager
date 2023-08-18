@@ -10,9 +10,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using SAModManager.IniSettings.SADX;
 using System.Windows.Controls.Primitives;
-using SAModManager.GameConfigs;
+using SAModManager.Configuration;
+using SAModManager.Configuration.SADX;
 
 namespace SAModManager.Elements.SADX
 {
@@ -23,7 +23,7 @@ namespace SAModManager.Elements.SADX
 	{
 		#region Variables
 		public GameSettings GameProfile;
-		public Graphics graphics;
+		public GraphicsHelper graphics;
 		public List<PatchesData> Patches;
 
 		bool suppressEvent = false;
@@ -38,7 +38,7 @@ namespace SAModManager.Elements.SADX
 			InitializeComponent();
 			GameProfile = (GameSettings)gameSettings;
 			GameSettings = (SADXConfigFile)gameConfig;
-			graphics = new Graphics(ref comboScreen);
+			graphics = new GraphicsHelper(ref comboScreen);
 			SetPatches();
             Loaded += GameConfig_Loaded;
 		}
@@ -94,7 +94,7 @@ namespace SAModManager.Elements.SADX
 			{
 				txtResX.IsEnabled = false;
 				decimal resYDecimal = (decimal)txtResY.Value;
-				decimal roundedValue = Math.Round(resYDecimal * Graphics.ratio);
+				decimal roundedValue = Math.Round(resYDecimal * GraphicsHelper.ratio);
 				txtResX.Value = (double)roundedValue;
 			}
 			else if (!suppressEvent)

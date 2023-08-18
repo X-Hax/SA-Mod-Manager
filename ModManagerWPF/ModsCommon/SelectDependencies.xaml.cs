@@ -86,7 +86,7 @@ namespace SAModManager.ModsCommon
 		private bool LoadMods()
 		{
 			bool success = false;
-			string modDir = Path.Combine(((MainWindow)Application.Current.MainWindow).SADXSettings.GamePath, "mods");
+			string modDir = Path.Combine(App.CurrentGame.gameDirectory, "mods");
 
 			if (Directory.Exists(modDir))
 			{

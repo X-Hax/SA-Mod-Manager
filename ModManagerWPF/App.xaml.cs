@@ -15,7 +15,7 @@ using SAModManager.Common;
 using SAModManager.Updater;
 using SAModManager.Ini;
 using System.Reflection;
-using SAModManager.IniSettings;
+using SAModManager.Configuration;
 using System.Diagnostics;
 using System.Security.Cryptography;
 
