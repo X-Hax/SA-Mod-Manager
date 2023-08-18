@@ -26,7 +26,6 @@ using SAModManager.Ini;
 using SAModManager.Configuration;
 using ICSharpCode.AvalonEdit.Editing;
 using SAModManager.IniSettings.SA2;
-using SAModManager.GameConfigs;
 using System.Reflection;
 
 namespace SAModManager
