@@ -50,8 +50,8 @@ namespace SAModManager
         public SetGame setGame = SetGame.SADX;
         CodeList mainCodes = null;
         List<Code> codes = null;
-		protected Timer StatusTimer;
-		public List<CodeData> codesSearch { get; set; }
+        protected Timer StatusTimer;
+        public List<CodeData> codesSearch { get; set; }
         bool suppressEvent = false;
         private bool manualModUpdate;
         readonly Updater.ModUpdater modUpdater = new();
@@ -60,16 +60,16 @@ namespace SAModManager
         MenuItem ModContextDev { get; set; }
         private bool displayedManifestWarning;
         public MainWindowViewModel ViewModel = new();
-		Dictionary<string, string> GameProfiles = new();
+        Dictionary<string, string> GameProfiles = new();
         object GameProfile;
 
-		// TODO: Make this generic for handling both games. Maybe do it with a custom class for easier management.
-		public Dictionary<string, SADXModInfo> mods = null;
-		private List<string> EnabledMods = new();
-		private List<string> EnabledCodes = new();
+        // TODO: Make this generic for handling both games. Maybe do it with a custom class for easier management.
+        public Dictionary<string, SADXModInfo> mods = null;
+        private List<string> EnabledMods = new();
+        private List<string> EnabledCodes = new();
 
-		// SADX Related Variables
-		SADXLoaderInfo loaderini;
+        // SADX Related Variables
+        SADXLoaderInfo loaderini;
 
         // SA2 Related Variables
         #endregion
@@ -78,7 +78,7 @@ namespace SAModManager
         {
             InitializeComponent();
 
-			Load();
+            Load();
 
             UpdateDLLData();
             SetOneClickBtnState();
@@ -143,7 +143,7 @@ namespace SAModManager
             StartGame();
         }
 
-		#region Form: Mods Tab Functions
+        #region Form: Mods Tab Functions
         private void btnMoveTop_Click(object sender, RoutedEventArgs e)
         {
             if (listMods.SelectedItems.Count < 1)
@@ -381,7 +381,7 @@ namespace SAModManager
             Refresh();
         }
 
-		#region Form: Mods Tab: Context Menu
+        #region Form: Mods Tab: Context Menu
         private void ModsView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (!(GetModFromView(sender) is ModData mod))
@@ -672,9 +672,9 @@ namespace SAModManager
                 }
             }
         }
-		#endregion
+        #endregion
 
-		#region Form: Mods Tab: Shortcuts
+        #region Form: Mods Tab: Shortcuts
 
         private void SelectModByFirstLetter(string letter)
         {
@@ -848,9 +848,9 @@ namespace SAModManager
             }
 
         }
-		#endregion
+        #endregion
 
-		#region Form: Mods Tab: Searchbar
+        #region Form: Mods Tab: Searchbar
         //more info in the keyboard shortcut functions above.
         private void TextBox_ModsSearch_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -863,10 +863,10 @@ namespace SAModManager
         {
             FilterMods(TextBox_ModsSearch.Text.ToLowerInvariant());
         }
-		#endregion
-		#endregion
+        #endregion
+        #endregion
 
-		#region Form: Codes Tab Functions
+        #region Form: Codes Tab Functions
         private void CodesView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var code = GetCodeFromView(sender);
@@ -928,9 +928,9 @@ namespace SAModManager
             if (TextBox_CodesSearch.Text.Length == 0)
                 CodesFind.Visibility = Visibility.Collapsed;
         }
-		#endregion
+        #endregion
 
-		#region Form: Manager Tab: Functions
+        #region Form: Manager Tab: Functions
         private async void btnOneClick_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -993,6 +993,7 @@ namespace SAModManager
                     Configuration.SADX.GameSettings sadxSettings = new();
                     sadxSettings.ConvertFromV0(loaderini);
                     GameProfile = sadxSettings;
+                    LoadGameSettings();
 
                     if (!File.Exists(App.CurrentGame.loader.dataDllOriginPath))
                     {
@@ -1115,10 +1116,10 @@ namespace SAModManager
                 Refresh();
             }
         }
-		#endregion
-		#endregion
+        #endregion
+        #endregion
 
-		#region Private Functions
+        #region Private Functions
         private void StartGame()
         {
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
@@ -1218,12 +1219,12 @@ namespace SAModManager
             StatusTimer?.Change(timer, Timeout.Infinite);
         }
 
-		public string GetCurrentProfileName()
-		{
-			return "Default.json";
-		}
+        public string GetCurrentProfileName()
+        {
+            return "Default.json";
+        }
 
-		#region Private: Load & Save
+        #region Private: Load & Save
         private async Task<bool> LoadGameProfile()
         {
             string defaultProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini");
@@ -1308,22 +1309,22 @@ namespace SAModManager
 
         private void BuildCodeFiles(List<string> Codes)
         {
-			Dictionary<string, Code> codelist = new();
-			foreach (Code code in codes)
-				codelist.Add(code.Name, code);
+            Dictionary<string, Code> codelist = new();
+            foreach (Code code in codes)
+                codelist.Add(code.Name, code);
             List<Code> selectedCodes = new List<Code>();
             List<Code> selectedPatches = new List<Code>();
 
             foreach (string name in Codes)
             {
-				if (codelist.ContainsKey(name))
-				{
-					Code code = codelist[name];
-					if (code.Patch)
-						selectedPatches.Add(code);
-					else
-						selectedCodes.Add(code);
-				}
+                if (codelist.ContainsKey(name))
+                {
+                    Code code = codelist[name];
+                    if (code.Patch)
+                        selectedPatches.Add(code);
+                    else
+                        selectedCodes.Add(code);
+                }
             }
 
             CodeList.WriteDatFile(patchdatpath, selectedPatches);
@@ -1350,92 +1351,99 @@ namespace SAModManager
             textGameDir.Text = App.CurrentGame.gameDirectory;
         }
 
-		private async void LoadSADXSettings()
-		{
-			string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, App.ManagerSettings.GetProfileFilename());
-			Configuration.SADX.GameSettings sadxSettings = File.Exists(profilePath) ? Configuration.SADX.GameSettings.Deserialize(profilePath) : new();
-			GameProfile = sadxSettings;
+        private void LoadGameSettings()
+        {
+            // Set the existing profiles to the ones from the loaded Manager Settings.
+            GameProfiles = App.ManagerSettings.GameManagement.Profiles;
 
-			App.CurrentGame.gameDirectory = sadxSettings.GamePath;
-			App.CurrentGame.modDirectory = Path.Combine(sadxSettings.GamePath, "mods");
+            switch (setGame)
+            {
+                case SetGame.SADX:
+                    LoadSADXSettings();
+                    break;
+                case SetGame.SA2:
+                    break;
+            }
 
-			string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
-			gameConfigFile = File.Exists(configPath) ? IniSerializer.Deserialize<SADXConfigFile>(configPath) : new SADXConfigFile();
+        }
 
-			EnabledMods = sadxSettings.EnabledMods;
-			EnabledCodes = sadxSettings.EnabledCodes;
-		}
+        private async void LoadSADXSettings()
+        {
+            string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, App.ManagerSettings.GetProfileFilename());
+            Configuration.SADX.GameSettings sadxSettings = File.Exists(profilePath) ? Configuration.SADX.GameSettings.Deserialize(profilePath) : new();
+            GameProfile = sadxSettings;
 
-		private async void SaveSADXSettings()
-		{
-			// Update any GameSettings Info first.
-			(GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
-			Elements.SADX.GameConfig gameConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
-			gameConfig.SavePatches(ref GameProfile);
-			Elements.SADX.TestSpawn spawnConfig = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
-			spawnConfig.Save();
+            App.CurrentGame.gameDirectory = sadxSettings.GamePath;
+            App.CurrentGame.modDirectory = Path.Combine(sadxSettings.GamePath, "mods");
 
-			Configuration.SADX.GameSettings sadxSettings = GameProfile as Configuration.SADX.GameSettings;
+            string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
+            gameConfigFile = File.Exists(configPath) ? IniSerializer.Deserialize<SADXConfigFile>(configPath) : new SADXConfigFile();
 
-			// Save Selected Mods
-			sadxSettings.EnabledMods.Clear();
-			foreach (ModData mod in ViewModel.Modsdata)
-				if (mod?.IsChecked == true)
-					sadxSettings.EnabledMods.Add(mod.Tag);
+            EnabledMods = sadxSettings.EnabledMods;
+            EnabledCodes = sadxSettings.EnabledCodes;
+        }
 
-			// Save Selected Codes
-			sadxSettings.EnabledCodes.Clear();
-			foreach (CodeData code in CodeListView.Items)
-				if (code?.IsChecked == true)
-					sadxSettings.EnabledCodes.Add(code.codes.Name);
+        private async void SaveSADXSettings()
+        {
+            // Update any GameSettings Info first.
+            (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
+            Elements.SADX.GameConfig gameConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
+            gameConfig.SavePatches(ref GameProfile);
+            Elements.SADX.TestSpawn spawnConfig = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
+            spawnConfig.Save();
 
-			if (sadxSettings.EnabledCodes.Count > 0)
-				BuildCodeFiles(sadxSettings.EnabledCodes);
+            Configuration.SADX.GameSettings sadxSettings = GameProfile as Configuration.SADX.GameSettings;
 
-			// Save Game Settings to Current Profile
-			string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GetCurrentProfileName());
-			await Task.Run(() => sadxSettings.Serialize(profilePath));
+            // Save Selected Mods
+            sadxSettings.EnabledMods.Clear();
+            foreach (ModData mod in ViewModel.Modsdata)
+                if (mod?.IsChecked == true)
+                    sadxSettings.EnabledMods.Add(mod.Tag);
 
-			// Save Game Config File
-			string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
-			IniSerializer.Serialize(gameConfigFile, configPath);
+            // Save Selected Codes
+            sadxSettings.EnabledCodes.Clear();
+            foreach (CodeData code in CodeListView.Items)
+                if (code?.IsChecked == true)
+                    sadxSettings.EnabledCodes.Add(code.codes.Name);
 
-			// Save to Loader Info
-			await Task.Run(() => sadxSettings.WriteToLoaderInfo(App.CurrentGame.modDirectory, App.ManagerSettings));
-		}
+            if (sadxSettings.EnabledCodes.Count > 0)
+                BuildCodeFiles(sadxSettings.EnabledCodes);
 
-		private async void SaveSA2Settings()
-		{
-			// TODO: Nothing to do, it's not implemented yet.
-		}
+            // Save Game Settings to Current Profile
+            string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GetCurrentProfileName());
+            await Task.Run(() => sadxSettings.Serialize(profilePath));
 
-		public async void Load()
-		{
-			// Set the existing profiles to the ones from the loaded Manager Settings.
-			GameProfiles = App.ManagerSettings.GameManagement.Profiles;
+            // Save Game Config File
+            string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
+            IniSerializer.Serialize(gameConfigFile, configPath);
 
-			switch (setGame)
-			{
-				case SetGame.SADX:
-					LoadSADXSettings();
-					break;
-				case SetGame.SA2:
-					break;
-			}
+            // Save to Loader Info
+            await Task.Run(() => sadxSettings.WriteToLoaderInfo(App.CurrentGame.modDirectory, App.ManagerSettings));
+        }
 
-			await UpdateManagerInfo();
+        private async void SaveSA2Settings()
+        {
+            // TODO: Nothing to do, it's not implemented yet.
+        }
 
-			LoadModList();
+        public async void Load()
+        {
+            // Set the existing profiles to the ones from the loaded Manager Settings.
+            LoadGameSettings();
 
-			InitCodes();
+            await UpdateManagerInfo();
 
-			// Update the UI based on the loaded game.
-			SetGameUI();
+            LoadModList();
 
-			await Task.Delay(200);
+            InitCodes();
 
-			Refresh();
-		}
+            // Update the UI based on the loaded game.
+            SetGameUI();
+
+            await Task.Delay(200);
+
+            Refresh();
+        }
 
         public async void Save()
         {
@@ -1445,20 +1453,21 @@ namespace SAModManager
             if (!Directory.Exists(App.CurrentGame.modDirectory))
                 return;
 
-			// Save Manager Settings
-			string managerSettingsPath = Path.Combine(App.CurrentGame.ProfilesDirectory, "manager.cfg");
-			App.ManagerSettings.GameManagement.Profiles = GameProfiles;
-			await Task.Run(() => App.ManagerSettings.Serialize(managerSettingsPath));
+            // Save Manager Settings
+            string managerSettingsPath = Path.Combine(App.CurrentGame.ProfilesDirectory, "manager.cfg");
+            App.ManagerSettings.GameManagement.Profiles = GameProfiles;
+            Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+            await Task.Run(() => App.ManagerSettings.Serialize(managerSettingsPath));
 
-			switch (setGame)
+            switch (setGame)
             {
                 case SetGame.SADX:
-					SaveSADXSettings();
+                    SaveSADXSettings();
                     break;
             }
 
-			// Make sure to save the App Settings so the current game selection is saved.
-			Settings.Default.Save();
+            // Make sure to save the App Settings so the current game selection is saved.
+            Settings.Default.Save();
 
             await Task.Delay(200);
 
@@ -1501,7 +1510,6 @@ namespace SAModManager
                 SADXModInfo mod = IniSerializer.Deserialize<SADXModInfo>(filename);
                 mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(App.CurrentGame.modDirectory.Length + 1), mod);
             }
-
 
             foreach (string mod in EnabledMods)
             {
@@ -1583,9 +1591,9 @@ namespace SAModManager
         {
             Settings.Default.Save();
         }
-		#endregion
+        #endregion
 
-		#region Private: Update
+        #region Private: Update
 
         private void Update_PlayButtonsState()
         {
@@ -1843,9 +1851,9 @@ namespace SAModManager
                 IniSerializer.Serialize(App.ManagerSettings, App.ConfigPath);
             }
         }
-		#endregion
+        #endregion
 
-		#region Setup Bindings
+        #region Setup Bindings
         private void SetGameDebugBindings()
         {
             checkEnableLogConsole.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableDebugConsole")
@@ -1913,9 +1921,9 @@ namespace SAModManager
             SetGameDebugBindings();
             SetManagerBindings();
         }
-		#endregion
+        #endregion
 
-		#region Private: Mods Tab
+        #region Private: Mods Tab
         public void FilterMods(string text)
         {
             ViewModel.ModsSearch.Clear();
@@ -2004,9 +2012,9 @@ namespace SAModManager
             UIHelper.ToggleImage(ref iconConfig, isInstalled);
             UIHelper.ToggleImgButton(ref NewModBtn, isInstalled);
         }
-		#endregion
+        #endregion
 
-		#region Private: Codes Tab
+        #region Private: Codes Tab
         public void FilterCodes(string text)
         {
             CodeListView.Items.Clear();
@@ -2061,9 +2069,9 @@ namespace SAModManager
 
             return CodeListView.Items[CodeListView.SelectedIndex] as CodeData;
         }
-		#endregion
+        #endregion
 
-		#region Private: Manager Config Tab
+        #region Private: Manager Config Tab
 
         private void SetOneClickBtnState()
         {
@@ -2164,7 +2172,7 @@ namespace SAModManager
                 UIHelper.EnableButton(ref SaveAndPlayButton);
             }
             else //if user asked to install the loader
-            {       
+            {
                 if (!File.Exists(App.CurrentGame.loader.dataDllOriginPath))
                 {
                     UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
@@ -2235,7 +2243,7 @@ namespace SAModManager
 
             return Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini");
         }
-		#endregion
-		#endregion
+        #endregion
+        #endregion
     }
 }
