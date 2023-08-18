@@ -2,6 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="MainWindow/UpdateStatus/fr-FR.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">OK</system:String>
     <system:String x:Key="CommonStrings.Cancel">Annuler</system:String>
