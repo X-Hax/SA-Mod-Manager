@@ -112,6 +112,7 @@ namespace SAModManager
             SetGameUI();
             SetBindings();
 
+#if !DEBUG
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
             bool managerUpdate = await App.PerformUpdateManagerCheck();
@@ -124,6 +125,7 @@ namespace SAModManager
             }
 
             await CheckForModUpdates();
+#endif
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             Refresh();
         }
@@ -145,7 +147,7 @@ namespace SAModManager
             StartGame();
         }
 
-        #region Form: Mods Tab Functions
+#region Form: Mods Tab Functions
         private void btnMoveTop_Click(object sender, RoutedEventArgs e)
         {
             if (listMods.SelectedItems.Count < 1)
@@ -158,6 +160,9 @@ namespace SAModManager
                 var item = ViewModel.Modsdata[index];
                 ViewModel.Modsdata.Remove(item);
                 ViewModel.Modsdata.Insert(0, item);
+                listMods.SelectedIndex = 0;
+                listMods.SelectedItem = item;
+                listMods.ScrollIntoView(item);
             }
         }
 
@@ -173,6 +178,9 @@ namespace SAModManager
                 var item = ViewModel.Modsdata[index];
                 ViewModel.Modsdata.Remove(item);
                 ViewModel.Modsdata.Insert(index - 1, item);
+                listMods.SelectedIndex = index - 1;
+                listMods.SelectedItem = item;
+                listMods.ScrollIntoView(item);
             }
         }
 
@@ -188,6 +196,9 @@ namespace SAModManager
                 var item = ViewModel.Modsdata[index];
                 ViewModel.Modsdata.Remove(item);
                 ViewModel.Modsdata.Insert(listMods.Items.Count, item);
+                listMods.SelectedIndex = listMods.Items.Count;
+                listMods.SelectedItem = item;
+                listMods.ScrollIntoView(item);
             }
         }
 
@@ -196,13 +207,21 @@ namespace SAModManager
             if (listMods.SelectedItems.Count < 1)
                 return;
 
-            int index = listMods.SelectedIndex;
+            var list = new List<ModData>(listMods.SelectedItems.Cast<ModData>());
 
-            if (index < listMods.Items.Count)
+            foreach (var mod in list)
             {
-                var item = ViewModel.Modsdata[index];
-                ViewModel.Modsdata.Remove(item);
-                ViewModel.Modsdata.Insert(index + 1, item);
+                int index = listMods.Items.IndexOf(mod);
+
+                if (index < listMods.Items.Count)
+                {
+                    var item = ViewModel.Modsdata[index];
+                    ViewModel.Modsdata.Remove(item);
+                    ViewModel.Modsdata.Insert(index + 1, item);
+                    listMods.SelectedIndex = index + 1;
+                    listMods.SelectedItem = item;
+                    listMods.ScrollIntoView(item);
+                }
             }
         }
 
@@ -366,7 +385,7 @@ namespace SAModManager
             Refresh();
         }
 
-        #region Form: Mods Tab: Context Menu
+#region Form: Mods Tab: Context Menu
         private void ModsView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (!(GetModFromView(sender) is ModData mod))
@@ -657,9 +676,47 @@ namespace SAModManager
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region Form: Mods Tab: Shortcuts
+#region Form: Mods Tab: Shortcuts
+
+        private void SelectModByFirstLetter(string letter)
+        {
+            if (listMods.Items.Count == 0)
+                return;
+
+            int index = listMods.SelectedIndex + 1;
+
+            if (index < 0)
+                index = 0;
+
+            for (int i = index; i < listMods.Items.Count; i++)
+            {
+                var item = (ModData)listMods.Items[i];
+
+                if (!string.IsNullOrEmpty(item.Name) && letter[0] == item.Name[0])
+                {
+                    listMods.SelectedIndex = i;
+                    listMods.SelectedItem = item;
+                    listMods.ScrollIntoView(item);
+                    return;
+                }
+            }
+
+            for (int i = 0; i < listMods.Items.Count; i++)
+            {
+                var item = (ModData)listMods.Items[i];
+
+                if (!string.IsNullOrEmpty(item.Name) && letter[0] == item.Name[0])
+                {
+                    listMods.SelectedIndex = i;
+                    listMods.SelectedItem = item;
+                    listMods.ScrollIntoView(item);
+                    return;
+                }
+            }
+        }
+
         private void ModsList_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (listMods == null)
@@ -705,6 +762,13 @@ namespace SAModManager
             {
                 ModContextDeleteMod_Click(null, null);
                 e.Handled = true;
+            }
+
+            if (e.Key >= Key.A && e.Key <= Key.Z)
+            {
+                KeyConverter converter = new();
+                string keyString = (string)converter.ConvertTo(e.Key, typeof(string));
+                SelectModByFirstLetter(keyString);
             }
 
         }
@@ -788,9 +852,9 @@ namespace SAModManager
             }
 
         }
-        #endregion
+#endregion
 
-        #region Form: Mods Tab: Searchbar
+#region Form: Mods Tab: Searchbar
         //more info in the keyboard shortcut functions above.
         private void TextBox_ModsSearch_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -803,10 +867,10 @@ namespace SAModManager
         {
             FilterMods(TextBox_ModsSearch.Text.ToLowerInvariant());
         }
-        #endregion
-        #endregion
+#endregion
+#endregion
 
-        #region Form: Codes Tab Functions
+#region Form: Codes Tab Functions
         private void CodesView_Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var code = GetCodeFromView(sender);
@@ -868,9 +932,9 @@ namespace SAModManager
             if (TextBox_CodesSearch.Text.Length == 0)
                 CodesFind.Visibility = Visibility.Collapsed;
         }
-        #endregion
+#endregion
 
-        #region Form: Manager Tab: Functions
+#region Form: Manager Tab: Functions
         private async void btnOneClick_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1055,10 +1119,10 @@ namespace SAModManager
                 Refresh();
             }
         }
-        #endregion
-        #endregion
+#endregion
+#endregion
 
-        #region Private Functions
+#region Private Functions
         private void StartGame()
         {
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
@@ -1204,7 +1268,7 @@ namespace SAModManager
             StatusTimer?.Change(timer, Timeout.Infinite);
         }
 
-        #region Private: Load & Save
+#region Private: Load & Save
         private async Task<bool> LoadGameProfile()
         {
             string defaultProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini");
@@ -1541,9 +1605,9 @@ namespace SAModManager
         {
             Settings.Default.Save();
         }
-        #endregion
+#endregion
 
-        #region Private: Update
+#region Private: Update
 
         private void Update_PlayButtonsState()
         {
@@ -1801,9 +1865,9 @@ namespace SAModManager
                 IniSerializer.Serialize(App.configIni, App.ConfigPath);
             }
         }
-        #endregion
+#endregion
 
-        #region Setup Bindings
+#region Setup Bindings
         private void SetGameDebugBindings()
         {
             checkEnableLogConsole.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableDebugConsole")
@@ -1871,9 +1935,9 @@ namespace SAModManager
             SetGameDebugBindings();
             SetManagerBindings();
         }
-        #endregion
+#endregion
 
-        #region Private: Mods Tab
+#region Private: Mods Tab
         public void FilterMods(string text)
         {
             ViewModel.ModsSearch.Clear();
@@ -1962,9 +2026,9 @@ namespace SAModManager
             UIHelper.ToggleImage(ref iconConfig, isInstalled);
             UIHelper.ToggleImgButton(ref NewModBtn, isInstalled);
         }
-        #endregion
+#endregion
 
-        #region Private: Codes Tab
+#region Private: Codes Tab
         public void FilterCodes(string text)
         {
             CodeListView.Items.Clear();
@@ -2019,9 +2083,9 @@ namespace SAModManager
 
             return CodeListView.Items[CodeListView.SelectedIndex] as CodeData;
         }
-        #endregion
+#endregion
 
-        #region Private: Manager Config Tab
+#region Private: Manager Config Tab
 
         private void SetOneClickBtnState()
         {
@@ -2194,7 +2258,7 @@ namespace SAModManager
 
             return Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini");
         }
-        #endregion
-        #endregion
+#endregion
+#endregion
     }
 }
