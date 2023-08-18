@@ -88,7 +88,7 @@ namespace SAModManager
 			else
 			{
 				Title = Lang.GetString("EditMod.Header.NewMod");
-				authorBox.Text = App.configIni.ModAuthor;
+				authorBox.Text = App.ManagerSettings.ModAuthor;
 				versionBox.Text = "0.1";
 				bottomGrid.Children.Remove(checkAdvancedOptions);
 			}
@@ -456,7 +456,7 @@ namespace SAModManager
 
 				if (isStringNotEmpty(authorBox.Text)) //save mod author
 				{
-					App.configIni.ModAuthor = authorBox.Text;
+					App.ManagerSettings.ModAuthor = authorBox.Text;
 				}
 
 				BuildModINI(moddir);

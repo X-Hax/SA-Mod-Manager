@@ -3,6 +3,8 @@ using System.ComponentModel;
 using SAModManager.Ini;
 using SAModManager.Configuration;
 using System.IO;
+using SAModManager.Common;
+using System.Text.Json;
 
 // TODO: Delete this file and its folder when all migration to the Configuration.SADXGameSettings class has been completed.
 namespace SAModManager.Configuration.SADX
@@ -532,6 +534,10 @@ namespace SAModManager.Configuration.SADX
 			loaderInfo.UpdateCheck = managerSettings.UpdateSettings.EnableManagerBootCheck;
 			loaderInfo.ModUpdateCheck = managerSettings.UpdateSettings.EnableModsBootCheck;
 
+			// Mods & Codes
+			loaderInfo.Mods = EnabledMods;
+			loaderInfo.EnabledCodes = EnabledCodes;
+
 			// Graphics
 			loaderInfo.ScreenNum = Graphics.SelectedScreen;
 			loaderInfo.HorizontalResolution = Graphics.HorizontalResolution;
@@ -604,7 +610,7 @@ namespace SAModManager.Configuration.SADX
 		/// Writes to the Loader's necessary ini file. Path is to the Mod's Directory.
 		/// </summary>
 		/// <param name="path"></param>
-		public bool WriteToLoaderInfo(string path, ManagerSettings managerSettings)
+		public void WriteToLoaderInfo(string path, ManagerSettings managerSettings)
 		{
 			if (Directory.Exists(path))
 			{
@@ -612,11 +618,34 @@ namespace SAModManager.Configuration.SADX
 				string loaderInfoPath = Path.Combine(path, "SADXModLoader.ini");
 
 				IniSerializer.Serialize(loaderInfo, loaderInfoPath);
-
-				return true;
 			}
 			else
-				return false;
+			{
+				// TODO: Make this error better and move it to Language files.
+				MessageWindow message = new MessageWindow("Failed to Save Loader File", "The Mods directory does not appear to be a valid path, please ensure it is a valid path." +
+					"Your current settings were not saved for the ModLoader to use.",
+					icon: MessageWindow.Icons.Error);
+				message.ShowDialog();
+			}
+		}
+
+		public static GameSettings Deserialize(string path)
+		{
+			if (File.Exists(path))
+			{
+				string jsonContent = File.ReadAllText(path);
+
+				return JsonSerializer.Deserialize<GameSettings>(jsonContent);
+			}
+			else
+				return new();
+		}
+
+		public void Serialize(string path)
+		{
+			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+
+			File.WriteAllText(path, jsonContent);
 		}
 	}
 }

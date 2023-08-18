@@ -105,27 +105,18 @@ namespace SAModManager.Configuration
 		public int CurrentSetGame { get; set; } = (int)SetGame.SADX;
 
 		/// <summary>
-		/// Deprecated, not removing until able to.
-		/// </summary>
-		[DefaultValue("")]
-		public string SADXProfile { get; set; } = string.Empty;
-
-		/// <summary>
-		/// Deprecated, not removing until able to.
-		/// </summary>
-		[DefaultValue("")]
-		public string SA2Profile { get; set; } = string.Empty;
-
-		/// <summary>
 		/// The Name/Key of the last loaded profile.
 		/// </summary>
-		[DefaultValue("")]
-		public string LoadedProfile { get; set; } = string.Empty;
+		[DefaultValue("Default")]
+		public string LoadedProfile { get; set; } = "Default";
 
 		/// <summary>
 		/// List of Profile options.
 		/// </summary>
-		public Dictionary<string, string> Profiles { get; set; } = new();
+		public Dictionary<string, string> Profiles { get; set; } = new()
+		{
+			{ "Default", "Default.json" }
+		};
 	}
 
 	public class ManagerSettings
@@ -194,7 +185,7 @@ namespace SAModManager.Configuration
 			Language = oldSettings.Language;
 		}
 
-		public ManagerSettings Deserialize(string path)
+		public static ManagerSettings Deserialize(string path)
 		{
 			if (File.Exists(path))
 			{
@@ -211,6 +202,14 @@ namespace SAModManager.Configuration
 			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
 
 			File.WriteAllText(path, jsonContent);
+		}
+
+		public string GetProfileFilename()
+		{
+			if (GameManagement.Profiles.ContainsKey(GameManagement.LoadedProfile))
+				return GameManagement.Profiles[GameManagement.LoadedProfile];
+			else
+				return "Default.json";
 		}
 	}
 }

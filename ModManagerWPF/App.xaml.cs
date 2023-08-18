@@ -18,6 +18,7 @@ using System.Reflection;
 using SAModManager.Configuration;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using SAModManager.Properties;
 
 namespace SAModManager
 {
@@ -35,7 +36,9 @@ namespace SAModManager
         public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
         public static readonly string ConfigPath = Path.Combine(ConfigFolder, "config.ini");
-        public static ManagerSettings configIni { get; set; }
+
+		public static string ManagerConfigFile = "manager.cfg";
+        public static ManagerSettings ManagerSettings { get; set; }
 
         private static readonly Mutex mutex = new(true, pipeName);
         public static Updater.UriQueue UriQueue;
@@ -78,7 +81,7 @@ namespace SAModManager
             SetupLanguages();
             SetupThemes();
 
-            configIni = LoadManagerConfig();
+            ManagerSettings = LoadManagerConfig();
             if (await ExecuteDependenciesCheck() == false)
             {
                 return;
@@ -370,9 +373,9 @@ namespace SAModManager
 
         private ManagerSettings LoadManagerConfig()
         {
-            ManagerSettings settings = File.Exists(ConfigPath) ? IniSerializer.Deserialize<ManagerSettings>(ConfigPath) : new ManagerSettings();
+			Settings.Default.GameValue = 1;
 
-            switch (settings.GameManagement.CurrentSetGame)
+            switch (Settings.Default.GameValue)
             {
                 default:
                 case (int)SetGame.SADX:
@@ -383,7 +386,7 @@ namespace SAModManager
                     break;
             }
 
-            return settings;
+            return ManagerSettings.Deserialize(Path.Combine(CurrentGame.ProfilesDirectory, "manager.cfg"));
         }
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)
