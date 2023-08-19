@@ -1370,23 +1370,20 @@ namespace SAModManager
 
 		private void LoadGameSettings(bool newSetup = false)
         {
-			if (setGame != SetGame.None)
-			{
-				GameProfiles = Profiles.Deserialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
-				string profilePath = string.Empty;
-				if (GameProfiles.GetProfileFilename() != string.Empty)
-					profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GameProfiles.GetProfileFilename());
-				else
-					GameProfiles.ProfilesList.Add("Default", "Default.json");
+			GameProfiles = Profiles.Deserialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
+			string profilePath = string.Empty;
+			if (GameProfiles.GetProfileFilename() != string.Empty)
+				profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GameProfiles.GetProfileFilename());
+			else
+				GameProfiles.ProfilesList.Add("Default", "Default.json");
 
-				switch (setGame)
-				{
-					case SetGame.SADX:
-						LoadSADXSettings(profilePath, newSetup);
-						break;
-					case SetGame.SA2:
-						break;
-				}
+			switch (setGame)
+			{
+				case SetGame.SADX:
+					LoadSADXSettings(profilePath, newSetup);
+					break;
+				case SetGame.SA2:
+					break;
 			}
         }
 
@@ -1425,21 +1422,24 @@ namespace SAModManager
 
         public async void Load(bool newSetup = false)
         {
-            // Set the existing profiles to the ones from the loaded Manager Settings.
-            LoadGameSettings(newSetup);
+			if (setGame != SetGame.None)
+			{
+				// Set the existing profiles to the ones from the loaded Manager Settings.
+				LoadGameSettings(newSetup);
 
-            await UpdateManagerInfo();
+				await UpdateManagerInfo();
 
-            LoadModList();
+				LoadModList();
 
-            InitCodes();
+				InitCodes();
 
-            // Update the UI based on the loaded game.
-            SetGameUI();
+				// Update the UI based on the loaded game.
+				SetGameUI();
 
-            await Task.Delay(200);
+				await Task.Delay(200);
 
-            Refresh();
+				Refresh();
+			}
         }
 
         public async void Save()

@@ -108,8 +108,8 @@ namespace SAModManager.Configuration
 		/// <summary>
 		/// Last Loaded Game
 		/// </summary>
-		[DefaultValue((int)SetGame.SADX)]
-		public int CurrentSetGame { get; set; } = (int)SetGame.SADX;
+		[DefaultValue((int)SetGame.None)]
+		public int CurrentSetGame { get; set; } = (int)SetGame.None;
 
 		/// <summary>
 		/// The set Theme for the Manager.
