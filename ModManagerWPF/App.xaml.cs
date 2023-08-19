@@ -96,7 +96,7 @@ namespace SAModManager
                 return;
             }
 
-            Steam.Init();
+            //Steam.Init();
             ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             MainWindow = new MainWindow();
@@ -373,9 +373,9 @@ namespace SAModManager
 
         private ManagerSettings LoadManagerConfig()
         {
-			Settings.Default.GameValue = 1;
+			ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, "Manager.cfg"));
 
-            switch (Settings.Default.GameValue)
+			switch (settings.CurrentSetGame)
             {
                 default:
                 case (int)SetGame.SADX:
@@ -386,7 +386,7 @@ namespace SAModManager
                     break;
             }
 
-            return ManagerSettings.Deserialize(Path.Combine(CurrentGame.ProfilesDirectory, "manager.cfg"));
+			return settings;
         }
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)

@@ -399,7 +399,7 @@
                                     </Grid.RowDefinitions>
 
                                     <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
-                                        <ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboProfile_SelectionChanged" DisplayMemberPath="name"/>
+                                        <ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboProfile_SelectionChanged"/>
 
 										<elements:ImageButton x:Name="btnProfileSettings" Grid.Column="2" Height="22" Width="27" Click="btnProfileSettings_Click"
 														   Icon="{StaticResource Icons.Profile}" Padding="2"/>

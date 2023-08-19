@@ -491,14 +491,14 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		[IniName("Mod")]
 		[IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
-		public List<string> EnabledMods { get; set; }       // SADXLoaderInfo.Mods
+		public List<string> EnabledMods { get; set; } = new();       // SADXLoaderInfo.Mods
 
 		/// <summary>
 		/// Enabled Codes for SADX.
 		/// </summary>
 		[IniName("Code")]
 		[IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
-		public List<string> EnabledCodes { get; set; }      // SADXLoaderInfo.EnabledCodes
+		public List<string> EnabledCodes { get; set; } = new();      // SADXLoaderInfo.EnabledCodes
 
 		/// <summary>
 		/// Converts from original settings file.

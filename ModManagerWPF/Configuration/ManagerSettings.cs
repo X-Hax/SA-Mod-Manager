@@ -77,8 +77,8 @@ namespace SAModManager.Configuration
 		/// <summary>
 		/// Enables crash log mini dump creation.
 		/// </summary>
-		[DefaultValue(true)]
-		public bool EnableDebugCrashLog { get; set; } = true;     // SADXLoaderInfo.DebugCrashLog
+		[DefaultValue(false)]
+		public bool EnableDebugCrashLog { get; set; }     // SADXLoaderInfo.DebugCrashLog
 
 		/// <summary>
 		/// Enables the console window to render. Print
@@ -96,21 +96,6 @@ namespace SAModManager.Configuration
 		}
 	}
 
-	public class GameManagement
-	{
-		/// <summary>
-		/// Deprecated, not removing until able to.
-		/// </summary>
-		[DefaultValue((int)SetGame.SADX)]
-		public int CurrentSetGame { get; set; } = (int)SetGame.SADX;
-
-		/// <summary>
-		/// The Name/Key of the last loaded profile.
-		/// </summary>
-		[DefaultValue("Default")]
-		public string LoadedProfile { get; set; } = "Default";
-	}
-
 	public class ManagerSettings
 	{
 		/// <summary>
@@ -119,6 +104,12 @@ namespace SAModManager.Configuration
 		[IniAlwaysInclude]
 		[DefaultValue((int)ManagerSettingsVersions.v1)]
 		public int SettingsVersion { get; set; } = (int)ManagerSettingsVersions.v1;
+
+		/// <summary>
+		/// Last Loaded Game
+		/// </summary>
+		[DefaultValue((int)SetGame.SADX)]
+		public int CurrentSetGame { get; set; } = (int)SetGame.SADX;
 
 		/// <summary>
 		/// The set Theme for the Manager.
@@ -156,12 +147,6 @@ namespace SAModManager.Configuration
 		public UpdateSettings UpdateSettings { get; set; } = new();
 
 		/// <summary>
-		/// Game Management so the loader can always use last loaded settings.
-		/// </summary>
-		[IniAlwaysInclude]
-		public GameManagement GameManagement { get; set; } = new();
-
-		/// <summary>
 		/// Deserializes a Manager Settings CFG (JSON) file and returns a populated class.
 		/// </summary>
 		/// <param name="path"></param>
@@ -188,30 +173,66 @@ namespace SAModManager.Configuration
 
 			File.WriteAllText(path, jsonContent);
 		}
+	}
+
+	public class Profiles
+	{
+		/// <summary>
+		/// Index of the current/last selected profile.
+		/// </summary>
+		public int ProfileIndex { get; set; }
+
+		/// <summary>
+		/// List of Profile options.
+		/// </summary>
+		public Dictionary<string, string> ProfilesList { get; set; } = new();
 
 		/// <summary>
 		/// Returns the Profile to load using the Manager's settings and the Profiles.json file for the specified game.
 		/// </summary>
 		/// <param name="profiles"></param>
 		/// <returns></returns>
-		public string GetProfileFilename(Dictionary<string, string> profiles)
+		public string GetProfileFilename()
 		{
-			if (profiles.ContainsKey(GameManagement.LoadedProfile))
-				return profiles[GameManagement.LoadedProfile];
+			if (ProfilesList.Count > 0)
+				return ProfilesList.ElementAt(ProfileIndex).Value;
 			else
-				return "Default.json";
+				return string.Empty;
 		}
-	}
 
-	public class Profiles
-	{
 		/// <summary>
-		/// List of Profile options.
+		/// Deserializes a file and returns a populated Profiles class, returns new if file doesn't exist.
 		/// </summary>
-		public Dictionary<string, string> ProfilesList { get; set; } = new()
+		/// <param name="path"></param>
+		/// <returns></returns>
+		public static Profiles Deserialize(string path)
 		{
-			{ "Default", "Default.json" }
-		};
+			if (File.Exists(path))
+			{
+				string jsonContent = File.ReadAllText(path);
+
+				return JsonSerializer.Deserialize<Profiles>(jsonContent);
+			}
+			else
+				return new()
+				{
+					ProfilesList = new Dictionary<string, string>()
+					{
+						{ "Default", "Default.json" }
+					}
+				};
+		}
+
+		/// <summary>
+		/// Serializes Profiles to JSON.
+		/// </summary>
+		/// <param name="path"></param>
+		public void Serialize(string path)
+		{
+			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+
+			File.WriteAllText(path, jsonContent);
+		}
 	}
 }
 
