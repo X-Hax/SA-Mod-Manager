@@ -35,9 +35,8 @@ namespace SAModManager
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
         public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
-        public static readonly string ConfigPath = Path.Combine(ConfigFolder, "config.ini");
 
-		public static string ManagerConfigFile = "manager.cfg";
+		public static string ManagerConfigFile = "Manager.json";
         public static ManagerSettings ManagerSettings { get; set; }
 
         private static readonly Mutex mutex = new(true, pipeName);
@@ -373,7 +372,7 @@ namespace SAModManager
 
         private ManagerSettings LoadManagerConfig()
         {
-			ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, "Manager.cfg"));
+			ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
 
 			switch (settings.CurrentSetGame)
             {

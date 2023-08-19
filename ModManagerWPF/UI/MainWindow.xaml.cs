@@ -1370,12 +1370,10 @@ namespace SAModManager
 
 		private void LoadGameSettings(bool newSetup = false)
         {
-			GameProfiles = Profiles.Deserialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
-			string profilePath = string.Empty;
-			if (GameProfiles.GetProfileFilename() != string.Empty)
-				profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GameProfiles.GetProfileFilename());
-			else
-				GameProfiles.ProfilesList.Add("Default", "Default.json");
+			string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
+			GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
+
+			string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GameProfiles.GetProfileFilename());
 
 			switch (setGame)
 			{
@@ -1435,6 +1433,9 @@ namespace SAModManager
 
 				// Update the UI based on the loaded game.
 				SetGameUI();
+
+				if (newSetup)
+					Save();
 
 				await Task.Delay(200);
 
@@ -1845,7 +1846,7 @@ namespace SAModManager
             if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(App.ManagerSettings.UpdateSettings.UpdateCheckCount, App.ManagerSettings.UpdateSettings.UpdateTimeOutCD))
             {
                 UpdateHelper.HandleRefreshUpdateCD();
-                IniSerializer.Serialize(App.ManagerSettings, App.ConfigPath);
+				App.ManagerSettings.Serialize(App.ManagerConfigFile);
                 return;
             }
 
@@ -1858,7 +1859,7 @@ namespace SAModManager
             {
                 App.ManagerSettings.UpdateSettings.UpdateCheckCount++;
                 UpdateHelper.HandleRefreshUpdateCD();
-                IniSerializer.Serialize(App.ManagerSettings, App.ConfigPath);
+				App.ManagerSettings.Serialize(App.ManagerConfigFile);
             }
         }
         #endregion

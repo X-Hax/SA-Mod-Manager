@@ -233,6 +233,11 @@ namespace SAModManager.Configuration
 
 			File.WriteAllText(path, jsonContent);
 		}
+
+		public static Profiles MakeDefaultProfileFile()
+		{
+			return new() { ProfileIndex = 0, ProfilesList = new() { { "Default", "Default.json" } } };
+		}
 	}
 }
 

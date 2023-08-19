@@ -140,7 +140,7 @@ namespace SAModManager
 
             }
 
-            IniSerializer.Serialize(App.ManagerSettings, App.ConfigPath);
+			App.ManagerSettings.Serialize(App.ManagerConfigFile);
             await Task.Delay(20);
         }
 
@@ -186,7 +186,7 @@ namespace SAModManager
 
         private static async Task<bool> UpdateDependenciesFolder()
         {
-            string configPath = Path.Combine(App.ConfigFolder, "config.ini");
+            string configPath = Path.Combine(App.ConfigFolder, App.ManagerConfigFile);
 
             try
             {
