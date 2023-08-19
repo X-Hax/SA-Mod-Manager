@@ -137,7 +137,18 @@ namespace SAModManager.Common
 			}
 
 			Ini.IniFile.Save(configINI, configfilename);
-		}
+
+            FileInfo fileInfo = new(configfilename);
+
+            if (fileInfo is not null)
+			{
+                if (fileInfo.Length == 0)
+				{
+                    fileInfo.Delete();
+                    File.Delete(configfilename);
+                }
+            }
+        }
 
 		public void ResetValues()
 		{
