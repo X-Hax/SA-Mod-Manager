@@ -73,9 +73,10 @@ namespace SAModManager.Common
 			else
 			{
 				string name = ProfileNameTextbox.Text;
-				string fullPath = Path.Combine(App.CurrentGame.modDirectory, name + ".ini");
+				string fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, name + ".json");
+                string defaultPath = Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json");
 
-				if (File.Exists(fullPath)) 
+                if (File.Exists(fullPath)) 
 				{
 					new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();		
 					return;
@@ -83,12 +84,12 @@ namespace SAModManager.Common
 
 				((MainWindow)Application.Current.MainWindow).Save();
 				await Task.Delay(30);
-				File.Copy(App.CurrentGame.loader.loaderinipath, fullPath);
+				File.Copy(defaultPath, fullPath);
 				await Task.Delay(100);
 
 				NewProResult = new()
 				{
-					iniPath = fullPath,
+					jsonPath = fullPath,
 					name = name
 				};
 				CloseNewProfile();

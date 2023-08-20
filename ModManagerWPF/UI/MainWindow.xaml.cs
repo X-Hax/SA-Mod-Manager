@@ -1079,7 +1079,12 @@ namespace SAModManager
             if (!App.CurrentGame.loader.installed)
                 return;
 
-            new ModProfile(ref GameProfiles).ShowDialog();
+            new ProfileDialog(ref GameProfiles).ShowDialog();
+            // Save the Profiles file.
+            GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
+            //refresh comboBox
+            ICollectionView view = CollectionViewSource.GetDefaultView(comboProfile.Items);
+            view.Refresh();
         }
 
         private void ModProfile_FormClosing(object sender, EventArgs e)
@@ -1089,11 +1094,12 @@ namespace SAModManager
 
         private void comboProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedItem = comboProfile.SelectedItem as Profile;
+            var selectedItem = (KeyValuePair<string, string>)comboProfile.SelectedItem;
 
-            if (selectedItem != null)
+            if (selectedItem.Key != null)
             {
-                // TODO: Update to allow for Profile updating.
+                GameProfiles.ProfileIndex = comboProfile.SelectedIndex;
+                LoadGameSettings();
                 Refresh();
             }
         }

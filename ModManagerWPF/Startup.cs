@@ -191,8 +191,6 @@ namespace SAModManager
             try
             {
                 GamesInstall.SetDependencyPath();
-
-  
                 Directory.CreateDirectory(App.ConfigFolder);
                 
 
