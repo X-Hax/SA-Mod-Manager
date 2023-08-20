@@ -1,4 +1,27 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="UpdateStatus.ChkUpdate">Vérification des Mises à jour...</system:String>
+    <system:String x:Key="UpdateStatus.ChkManagerUpdate">Vérification des Mises à jour pour SA Mod Manager...</system:String>
+    <system:String x:Key="UpdateStatus.ChkLoaderUpdate">Vérification des Mises à jour pour le Mod Loader...</system:String>
+    <system:String x:Key="UpdateStatus.ChkModsUpdates">Vérification des Mises à jour pour les Mods...</system:String>
+    <!-- '{0}' will be used to display the name of the mod, ex: "Checking for Super Sonic Mod Update..."-->
+    <system:String x:Key="UpdateStatus.ChkCurModUpdate">Vérification des Mises à jours pour le Mod {0}...</system:String>
+    <system:String x:Key="UpdateStatus.ModUpdateFail">Echec de la mise à jour du Mod {0}</system:String>
+    <system:String x:Key="UpdateStatus.NoUpdateFound">Pas de Mises à jour trouvées</system:String>
+    <system:String x:Key="UpdateStatus.InstallLoader">Installation du Mod Loader, merci de patienter...</system:String>
+    <system:String x:Key="UpdateStatus.UninstallLoader">Désinstallation du Mod Loader, merci de patienter...</system:String>
+    <system:String x:Key="UpdateStatus.InstallDependencies">Installation des Dépendences,  merci de patienter...</system:String>
+    <system:String x:Key="UpdateStatus.UpdateCodes">Mise à jour des Codes, merci de patienter...</system:String>
+    <system:String x:Key="UpdateStatus.FailedUpdateCodes">Echec de la mise à jour des Codes</system:String>
+    <system:String x:Key="UpdateStatus.ManagerUpdate">Mise à jour de SA Mod Manager...</system:String>
+    <system:String x:Key="UpdateStatus.LoaderUpdate">Mise à jour du Mod Loader...</system:String>
+    <system:String x:Key="UpdateStatus.LoaderInstalled">Installation du Mod Loader avec succès</system:String>
+    <system:String x:Key="UpdateStatus.LoaderUninstalled">Désinstallation du Mod Loader avec succès</system:String>
+    <system:String x:Key="UpdateStatus.TotalMods">{0} Mods Chargés</system:String>
+    <system:String x:Key="UpdateStatus.TotalCodes">{0} Codes Chargés</system:String>
+
+
+
 </ResourceDictionary>

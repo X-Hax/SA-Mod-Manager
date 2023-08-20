@@ -54,6 +54,7 @@ namespace SAModManager
         public List<CodeData> codesSearch { get; set; }
         bool suppressEvent = false;
         private bool manualModUpdate;
+        private bool checkForUpdate = false;
         readonly Updater.ModUpdater modUpdater = new();
         private object gameConfigFile;
         private DebugSettings gameDebugSettings;
@@ -122,6 +123,7 @@ namespace SAModManager
             SetBindings();
 
 #if !DEBUG
+            checkForUpdate = true;
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
             bool managerUpdate = await App.PerformUpdateManagerCheck();
@@ -134,6 +136,7 @@ namespace SAModManager
             }
 
             await CheckForModUpdates();
+            checkForUpdate = false;
 #endif
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             Refresh();
@@ -1004,7 +1007,7 @@ namespace SAModManager
         private async void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
-
+            checkForUpdate = true;
             if (await App.PerformUpdateManagerCheck() || await App.PerformUpdateLoaderCodesCheck())
             {
                 return;
@@ -1012,6 +1015,7 @@ namespace SAModManager
 
             manualModUpdate = true;
             await CheckForModUpdates(true);
+            checkForUpdate = false;
             Refresh();
         }
 
@@ -1963,7 +1967,7 @@ namespace SAModManager
             }
         }
 
-        public void Refresh()
+        public async void Refresh()
         {
             InitCodes();
             LoadModList();
@@ -1971,6 +1975,13 @@ namespace SAModManager
             {
                 FilterMods(TextBox_ModsSearch.Text.ToLowerInvariant());
             }
+
+            if (!checkForUpdate)
+            {
+                UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalMods"), listMods.Items.Count), 2000);
+                await Task.Delay(2200);
+                UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalCodes"), CodeListView.Items.Count), 2000);
+            }   
         }
 
         private void OpenAboutModWindow(ModData mod)
@@ -2176,7 +2187,7 @@ namespace SAModManager
             {
                 UIHelper.DisableButton(ref SaveAndPlayButton);
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.UninstallLoader"));
-
+    
                 File.Delete(App.CurrentGame.loader.dataDllPath);
                 await Util.MoveFile(App.CurrentGame.loader.dataDllOriginPath, App.CurrentGame.loader.dataDllPath);
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderUninstalled"));
