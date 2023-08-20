@@ -11,7 +11,7 @@
 		<elements:BoolFlipConverter x:Key="FlipBool"/>
 	</UserControl.Resources>
 	<Grid>
-		<TabControl x:Name="tcGame" Grid.Column="0" Grid.ColumnSpan="2">
+		<TabControl x:Name="tcGame">
 			<!--This Tab is for Game Graphics.-->
 			<TabItem x:Name="tabGraphics" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics}" Margin="0,0,0,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics}">
 				<Grid Margin="5,0,5,0">
