@@ -68,11 +68,6 @@ namespace SAModManager
         public Dictionary<string, SADXModInfo> mods = null;
         private List<string> EnabledMods = new();
         private List<string> EnabledCodes = new();
-
-        // SADX Related Variables
-        SADXLoaderInfo loaderini;
-
-        // SA2 Related Variables
         #endregion
 
         public MainWindow()
@@ -92,8 +87,6 @@ namespace SAModManager
 				}
 			}
 
-            Load();
-
             UpdateDLLData();
             SetOneClickBtnState();
         }
@@ -110,16 +103,10 @@ namespace SAModManager
 
             SetModManagerVersion();
 
-            if (!Directory.Exists(App.CurrentGame.modDirectory) || App.CurrentGame == null)
-            {
-                UI_ToggleGameConfig(false);
-                tabTestSpawn.Visibility = Visibility.Collapsed;
-                return;
-            }
+			Load();
 
-            new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
+			new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
 
-            SetGameUI();
             SetBindings();
 
 #if !DEBUG
@@ -369,10 +356,10 @@ namespace SAModManager
             }
 
 
-            loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
+            EnabledCodes = new List<string>(EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
 
-            foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
-                loaderini.EnabledCodes.Add(item.Name);
+            foreach (Code item in codes.Where(a => a.Required && !EnabledCodes.Contains(a.Name)))
+                EnabledCodes.Add(item.Name);
 
             CodeListView.BeginInit();
             CodeListView.Items.Clear();
@@ -382,7 +369,7 @@ namespace SAModManager
                 CodeData extraItem = new()
                 {
                     codes = item,
-                    IsChecked = loaderini.EnabledCodes.Contains(item.Name),
+                    IsChecked = EnabledCodes.Contains(item.Name),
                 };
 
                 CodeListView.Items.Add(extraItem);
@@ -1106,8 +1093,7 @@ namespace SAModManager
 
             if (selectedItem != null)
             {
-                loaderini = IniSerializer.Deserialize<SADXLoaderInfo>(selectedItem.iniPath);
-                LoadSettings();
+                // TODO: Update to allow for Profile updating.
                 Refresh();
             }
         }
@@ -1123,7 +1109,7 @@ namespace SAModManager
                 return;
             }
 
-            string executablePath = loaderini.Mods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+            string executablePath = EnabledMods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
 
             string folderPath = Path.GetDirectoryName(executablePath);
             Process.Start(new ProcessStartInfo(executablePath)
@@ -1143,6 +1129,42 @@ namespace SAModManager
                 Title = titleName + " " + "(" + Version + " - " + App.RepoCommit[..7] + ")";
         }
 
+		private void EnableUI(bool enable)
+		{
+			if (enable)
+			{
+				tabGame.Visibility = Visibility.Visible;
+				comboProfile.IsEnabled = true;
+				grpManAdvanced.IsEnabled = true;
+				grpManUpdates.IsEnabled = true;
+				btnInstallLoader.IsEnabled = true;
+				RefreshBtn.IsEnabled = true;
+				btnSelectAll.IsEnabled = true;
+				btnDeselectAll.IsEnabled = true;
+				SaveButton.IsEnabled = true;
+				SaveAndPlayButton.IsEnabled = true;
+				btnSelectAllCode.IsEnabled = true;
+				btnDeselectAllCode.IsEnabled = true;
+				btnProfileSettings.IsEnabled = true;
+			}
+			else
+			{
+				tabGame.Visibility = Visibility.Collapsed;
+				comboProfile.IsEnabled = false;
+				grpManAdvanced.IsEnabled = false;
+				grpManUpdates.IsEnabled = false;
+				btnInstallLoader.IsEnabled = false;
+				RefreshBtn.IsEnabled = false;
+				btnSelectAll.IsEnabled = false;
+				btnDeselectAll.IsEnabled = false;
+				SaveButton.IsEnabled = false;
+				SaveAndPlayButton.IsEnabled = false;
+				btnSelectAllCode.IsEnabled = false;
+				btnDeselectAllCode.IsEnabled = false;
+				btnProfileSettings.IsEnabled = false;
+			}
+		}
+
         private void SetGameUI()
         {
             Grid stackPanel;
@@ -1150,22 +1172,18 @@ namespace SAModManager
             switch (setGame)
             {
                 case SetGame.SADX:
-                    tabGame.Visibility = Visibility.Visible;
+					EnableUI(true);
                     stackPanel = (Grid)tabGame.Content;
                     stackPanel.Children.Add(new Elements.SADX.GameConfig(ref GameProfile, ref gameConfigFile));
                     tsPanel = (Grid)tabTestSpawn.Content;
                     tsPanel.Children.Add(new Elements.SADX.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.SA2:
+				case SetGame.None:
                 default:
-                    tabGame.Visibility = Visibility.Collapsed;
+					EnableUI(false);
                     break;
             }
-        }
-
-        private void UI_ToggleGameConfig(bool value)
-        {
-            tabGame.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
 
         //update all the games information such as loader and mods path
@@ -1204,8 +1222,6 @@ namespace SAModManager
 
             App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath) && File.Exists(App.CurrentGame.loader.loaderdllpath);
             UpdateButtonsState();
-            string loaderinipath = App.CurrentGame.loader.loaderinipath;
-            loaderini = File.Exists(loaderinipath) ? IniSerializer.Deserialize<SADXLoaderInfo>(loaderinipath) : new SADXLoaderInfo();
         }
 
         public void UpdateManagerStatusText(string message, int timer = 3000)
@@ -1279,20 +1295,20 @@ namespace SAModManager
             codes = new List<Code>(mainCodes.Codes);
             codesSearch = new();
 
-            loaderini.EnabledCodes = new List<string>(loaderini.EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
+            EnabledCodes = new List<string>(EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
 
             CodeListView.BeginInit();
             CodeListView.Items.Clear();
 
-            foreach (Code item in codes.Where(a => a.Required && !loaderini.EnabledCodes.Contains(a.Name)))
-                loaderini.EnabledCodes.Add(item.Name);
+            foreach (Code item in codes.Where(a => a.Required && !EnabledCodes.Contains(a.Name)))
+                EnabledCodes.Add(item.Name);
 
             foreach (Code item in codes)
             {
                 CodeData extraItem = new()
                 {
                     codes = item,
-                    IsChecked = loaderini.EnabledCodes.Contains(item.Name),
+                    IsChecked = EnabledCodes.Contains(item.Name),
                 };
 
                 codesSearch.Add(extraItem);
@@ -1435,17 +1451,25 @@ namespace SAModManager
 
 				InitCodes();
 
-				// Update the UI based on the loaded game.
-				SetGameUI();
-
-				if (newSetup)
-					Save();
-
-				await Task.Delay(200);
-
-				Refresh();
+				// Setup the Profiles List Bindings here, easiest way to ensure it gets setup properly.
+				comboProfile.ItemsSource = GameProfiles.ProfilesList;
+				comboProfile.DisplayMemberPath = "Key";
+				comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
+				{
+					Source = GameProfiles,
+				});
 			}
-        }
+
+			// Update the UI based on the loaded game.
+			SetGameUI();
+
+			if (newSetup)
+				Save();
+
+			await Task.Delay(200);
+
+			Refresh();
+		}
 
         public async void Save()
         {
@@ -1897,15 +1921,9 @@ namespace SAModManager
         }
 
         private void SetManagerBindings()
-        {
-			comboProfile.ItemsSource = GameProfiles.ProfilesList;
-			comboProfile.DisplayMemberPath = "Key";
-			textGameDir.Text = App.CurrentGame.gameDirectory;
+        {	
+			//textGameDir.Text = App.CurrentGame.gameDirectory;
 			
-			comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
-			{
-				Source = GameProfiles,
-			});
             comboLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Language")
             {
                 Source = App.ManagerSettings
