@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAModManager.Configuration;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -23,24 +24,21 @@ namespace SAModManager.Common
 	public partial class ModProfile : Window
 	{
 		private ComboBox _modProfile { get; set; }
+		private Profiles Profiles { get; set; }
 
-		public ModProfile(ref ComboBox modProfile)
+		public ModProfile(ref Profiles profiles)
 		{
 			InitializeComponent();
-			_modProfile = modProfile; 
+			Profiles = profiles;
 			Title = Lang.GetString("ManagerProfile.Title");
 
-            foreach (var kvp in modProfile.Items.Cast<KeyValuePair<string, string>>())
-            {
-                Profile instance = new()
-                {
-                    name = kvp.Key,
-                    iniPath = kvp.Value
-                };
-
-                ProfileListView.Items.Add(instance);
-            }
+			Loaded += ModProfile_Loaded;
         }
+
+		private void ModProfile_Loaded(object sender, RoutedEventArgs e)
+		{
+			ProfileListView.ItemsSource = Profiles.ProfilesList;
+		}
 
 		#region Private Functions
 		private void RefreshList()
@@ -84,22 +82,12 @@ namespace SAModManager.Common
 				}
 			}
 		}
-
-		private void UpdateModProfile()
-		{
-			_modProfile.ItemsSource = ProfileListView.Items;
-		}
 		#endregion
 
 		#region Window
 		private void NewProfile_Closed(object sender, EventArgs e)
 		{
 			RefreshList();
-		}
-
-		private void Window_Closed(object sender, EventArgs e)
-		{
-			UpdateModProfile();
 		}
 		#endregion
 
@@ -228,7 +216,7 @@ namespace SAModManager.Common
 			if (dialogResult == true)
 			{
 				Profile result = newProfile.GetNewProfileResult();
-				ProfileListView.Items.Add(result);
+				
 				RefreshList();
 			}
 		}
@@ -237,8 +225,6 @@ namespace SAModManager.Common
 		{
 			this.Close();
 		}
-
-
 		#endregion
 	}
 }

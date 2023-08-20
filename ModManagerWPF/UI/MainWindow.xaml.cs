@@ -1079,7 +1079,7 @@ namespace SAModManager
             if (!App.CurrentGame.loader.installed)
                 return;
 
-            new ModProfile(ref comboProfile).ShowDialog();
+            new ModProfile(ref GameProfiles).ShowDialog();
         }
 
         private void ModProfile_FormClosing(object sender, EventArgs e)
@@ -1265,9 +1265,6 @@ namespace SAModManager
                     break;
             }
 
-            if (File.Exists(defaultProfile))
-                SetProfileInComboBox();
-
             return true;
         }
 
@@ -1349,17 +1346,6 @@ namespace SAModManager
             UIHelper.ToggleImgButton(ref btnCheckUpdates, installed);
             UpdateBtnInstallLoader_State();
             Update_PlayButtonsState();
-        }
-
-        private async void LoadSettings()
-        {
-            await LoadGameProfile();
-            SetGamePath();
-            await UpdateManagerInfo();
-
-            LoadGameConfigFile();
-
-            textGameDir.Text = App.CurrentGame.gameDirectory;
         }
 
 		private async void LoadSADXSettings(string profilePath, bool newSetup = false)
@@ -2183,19 +2169,6 @@ namespace SAModManager
             return true;
         }
 
-        private void SetProfileInComboBox()
-        {
-            //GameProfiles.Clear();
-
-            //GameProfiles.Add("Default", Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini"));
-            //foreach (var item in Directory.EnumerateFiles(App.CurrentGame.ProfilesDirectory, "*.ini"))
-            //    if (!item.EndsWith("default.ini", StringComparison.OrdinalIgnoreCase))
-            //        GameProfiles.Add(Path.GetFileNameWithoutExtension(item), item);
-
-            //comboProfile.ItemsSource = GameProfiles;
-            //comboProfile.DisplayMemberPath = "Key";
-        }
-
         private void UpdateDLLData()
         {
             if (File.Exists(App.CurrentGame.loader.loaderdllpath) && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
@@ -2245,40 +2218,6 @@ namespace SAModManager
 
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
             UpdateBtnInstallLoader_State();
-        }
-
-        private async void SetGamePath()
-        {
-            string path = string.Empty;
-            switch (setGame)
-            {
-                case SetGame.SADX:
-                    path = (GameProfile as Configuration.SADX.GameSettings).GamePath;
-                    break;
-                case SetGame.SA2:
-                    //path = (GameProfile as IniSettings.SA2.GameSettings).GamePath;
-                    break;
-            }
-            if (Directory.Exists(path))
-            {
-                App.CurrentGame.gameDirectory = path;
-            }
-            else
-            {
-                if (File.Exists(App.CurrentGame.exeName)) //if current game path is wrong, check if the Mod Manager didn't get put in the game folder just in case.
-                {
-                    App.CurrentGame.gameDirectory = Directory.GetCurrentDirectory();
-                }
-                else
-                {
-                    //if none of the conditions are respected, try to look for sadx folder
-                    var fullPath = await Util.GetSADXGamePath();
-                    if (fullPath is not null)
-                    {
-                        App.CurrentGame.gameDirectory = fullPath;
-                    }
-                }
-            }
         }
         #endregion
         #endregion
