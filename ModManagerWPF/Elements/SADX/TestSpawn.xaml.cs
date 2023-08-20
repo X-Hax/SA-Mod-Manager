@@ -57,7 +57,7 @@ namespace SAModManager.Elements.SADX
 		public static readonly DependencyProperty IsGameModeCheckedProperty =
 			DependencyProperty.Register("IsGameModeChecked", typeof(bool), typeof(TestSpawn));
 
-		private TestSpawnSettings SpawnSettings;
+		private GameSettings GameProfile;
 		private Dictionary<string, SADXModInfo> GameMods;
 		private List<string> SelectedMods;
 		public static Dictionary<int, string> EventNames;
@@ -423,11 +423,11 @@ namespace SAModManager.Elements.SADX
 		}
 		#endregion
 
-		public TestSpawn(object gameSettings, Dictionary<string, SADXModInfo> mods)
+		public TestSpawn(ref object gameSettings, Dictionary<string, SADXModInfo> modList, List<string> enabledMods)
 		{
-			SpawnSettings = (gameSettings as GameSettings).TestSpawn;
+			GameProfile = (gameSettings as GameSettings);
 			SelectedMods = (gameSettings as GameSettings).EnabledMods;
-			GameMods = mods;
+			GameMods = modList;
 			InitCutsceneList();
 
 			InitializeComponent();
@@ -445,7 +445,7 @@ namespace SAModManager.Elements.SADX
 			tsComboTime.SelectedIndex = 0;
 			SetBindings();
 
-			tsComboEvent.SelectedIndex = EventNames.Keys.ToList<int>().IndexOf(SpawnSettings.EventIndex);
+			tsComboEvent.SelectedIndex = EventNames.Keys.ToList<int>().IndexOf(GameProfile.TestSpawn.EventIndex);
 		}
 
 		private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
@@ -521,20 +521,20 @@ namespace SAModManager.Elements.SADX
 
 		private void tsCheckManual_Clicked(object sender, RoutedEventArgs e)
 		{
-			if (SpawnSettings.UseManual)
+			if (GameProfile.TestSpawn.UseManual)
 			{
-				tsNumCharacter.Value = SpawnSettings.CharacterIndex;
-				tsNumLevel.Value = SpawnSettings.LevelIndex;
-				tsNumAct.Value = SpawnSettings.ActIndex;
+				tsNumCharacter.Value = GameProfile.TestSpawn.CharacterIndex;
+				tsNumLevel.Value = GameProfile.TestSpawn.LevelIndex;
+				tsNumAct.Value = GameProfile.TestSpawn.ActIndex;
 
 				IsCharacterChecked = false;
 				IsLevelChecked = false;
 			}
 			else
 			{
-				if (SpawnSettings.CharacterIndex > -1)
+				if (GameProfile.TestSpawn.CharacterIndex > -1)
 					IsCharacterChecked = true;
-				if (SpawnSettings.LevelIndex > -1)
+				if (GameProfile.TestSpawn.LevelIndex > -1)
 					IsLevelChecked = true;
 			}
 		}
@@ -543,7 +543,7 @@ namespace SAModManager.Elements.SADX
 		#region Private Functions
 		private void SetBindings()
 		{
-			IsCharacterChecked = (SpawnSettings.CharacterIndex > -1) ? true : false;
+			IsCharacterChecked = (GameProfile.TestSpawn.CharacterIndex > -1) ? true : false;
 			tsCheckCharacter.SetBinding(CheckBox.IsCheckedProperty, new Binding("IsCharacterChecked")
 			{
 				Source = this,
@@ -551,11 +551,11 @@ namespace SAModManager.Elements.SADX
 			});
 			tsComboCharacter.SetBinding(ComboBox.SelectedIndexProperty, new Binding("CharacterIndex")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
 			tsComboCharacter.ItemsSource = CharacterNames;
-			IsLevelChecked = (SpawnSettings.LevelIndex > -1) ? true : false;
+			IsLevelChecked = (GameProfile.TestSpawn.LevelIndex > -1) ? true : false;
 			tsCheckLevel.SetBinding(CheckBox.IsCheckedProperty, new Binding("IsLevelChecked")
 			{
 				Source = this,
@@ -563,16 +563,16 @@ namespace SAModManager.Elements.SADX
 			});
 			tsComboLevel.SetBinding(ComboBox.SelectedIndexProperty, new Binding("LevelIndex")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
 			tsComboLevel.ItemsSource = LevelNames;
 			tsComboAct.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ActIndex")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
-			IsEventChecked = (SpawnSettings.EventIndex > -1) ? true : false;
+			IsEventChecked = (GameProfile.TestSpawn.EventIndex > -1) ? true : false;
 			tsCheckEvent.SetBinding(CheckBox.IsCheckedProperty, new Binding("IsEventChecked")
 			{
 				Source = this,
@@ -580,11 +580,11 @@ namespace SAModManager.Elements.SADX
 			});
 			tsComboEvent.SetBinding(ComboBox.SelectedIndexProperty, new Binding("EventIndex")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Converter = new EventIndexConverter(),
 				Mode = BindingMode.TwoWay
 			});
-			IsGameModeChecked = (SpawnSettings.GameModeIndex > -1) ? true : false;
+			IsGameModeChecked = (GameProfile.TestSpawn.GameModeIndex > -1) ? true : false;
 			tsCheckGameMode.SetBinding(CheckBox.IsCheckedProperty, new Binding("IsGameModeChecked")
 			{
 				Source = this,
@@ -592,14 +592,14 @@ namespace SAModManager.Elements.SADX
 			});
 			tsComboGameMode.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameModeIndex")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Converter = new GameModeConverter(),
 				ConverterParameter = GameModeNames,
 				Mode = BindingMode.TwoWay
 			});
 			tsComboGameMode.ItemsSource = GameModeNames;
 			tsComboGameMode.DisplayMemberPath = "Value";
-			IsSaveChecked = (SpawnSettings.SaveIndex > 0) ? true : false;
+			IsSaveChecked = (GameProfile.TestSpawn.SaveIndex > 0) ? true : false;
 			tsCheckSave.SetBinding(CheckBox.IsCheckedProperty, new Binding("IsSaveChecked")
 			{
 				Source = this,
@@ -607,7 +607,7 @@ namespace SAModManager.Elements.SADX
 			});
 			tsComboSave.SetBinding(ComboBox.SelectedIndexProperty, new Binding("SaveIndex")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Converter = new IndexOffsetConverter(),
 				Mode = BindingMode.TwoWay
 			});
@@ -615,42 +615,42 @@ namespace SAModManager.Elements.SADX
 			tsComboEvent.DisplayMemberPath = "Value";
 			tsCheckManual.SetBinding(CheckBox.IsCheckedProperty, new Binding("UseManual")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
 			tsNumCharacter.SetBinding(NumericUpDown.ValueProperty, new Binding("CharacterIndex")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
 			tsNumLevel.SetBinding(NumericUpDown.ValueProperty, new Binding("LevelIndex")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
 			tsNumAct.SetBinding(NumericUpDown.ValueProperty, new Binding("ActIndex")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
 			tsNumPosX.SetBinding(NumericUpDown.ValueProperty, new Binding("XPosition")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
 			tsNumPosY.SetBinding(NumericUpDown.ValueProperty, new Binding("YPosition")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
 			tsNumPosZ.SetBinding(NumericUpDown.ValueProperty, new Binding("ZPosition")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
 			tsNumAngle.SetBinding(NumericUpDown.ValueProperty, new Binding("Rotation")
 			{
-				Source = SpawnSettings,
+				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
 		}
@@ -726,35 +726,35 @@ namespace SAModManager.Elements.SADX
 		{
 			List<string> cmdline = new List<string>();
 
-			if (SpawnSettings.CharacterIndex > -1)
-				cmdline.Add("-c " + SpawnSettings.CharacterIndex.ToString());
+			if (GameProfile.TestSpawn.CharacterIndex > -1)
+				cmdline.Add("-c " + GameProfile.TestSpawn.CharacterIndex.ToString());
 
-			if (SpawnSettings.LevelIndex > -1)
-				cmdline.Add("-l " + SpawnSettings.LevelIndex.ToString());
+			if (GameProfile.TestSpawn.LevelIndex > -1)
+				cmdline.Add("-l " + GameProfile.TestSpawn.LevelIndex.ToString());
 
-			if (SpawnSettings.ActIndex > -1)
-				cmdline.Add("-a " + SpawnSettings.ActIndex.ToString());
+			if (GameProfile.TestSpawn.ActIndex > -1)
+				cmdline.Add("-a " + GameProfile.TestSpawn.ActIndex.ToString());
 
-			if (SpawnSettings.UsePosition)
+			if (GameProfile.TestSpawn.UsePosition)
 				cmdline.Add("-p " +
-					SpawnSettings.XPosition.ToString() + " " +
-					SpawnSettings.YPosition.ToString() + " " +
-					SpawnSettings.ZPosition.ToString() + " -r " +
-					SpawnSettings.Rotation.ToString());
+					GameProfile.TestSpawn.XPosition.ToString() + " " +
+					GameProfile.TestSpawn.YPosition.ToString() + " " +
+					GameProfile.TestSpawn.ZPosition.ToString() + " -r " +
+					GameProfile.TestSpawn.Rotation.ToString());
 
-			if (IsEventChecked && SpawnSettings.EventIndex > -1)
-				cmdline.Add("-e " + SpawnSettings.EventIndex.ToString());
+			if (IsEventChecked && GameProfile.TestSpawn.EventIndex > -1)
+				cmdline.Add("-e " + GameProfile.TestSpawn.EventIndex.ToString());
 
 			if (IsLevelChecked && tsComboTime.SelectedIndex > 0)
 				cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
 
-			if (IsGameModeChecked && SpawnSettings.GameModeIndex > -1)
-				cmdline.Add("-g " + SpawnSettings.GameModeIndex.ToString());
+			if (IsGameModeChecked && GameProfile.TestSpawn.GameModeIndex > -1)
+				cmdline.Add("-g " + GameProfile.TestSpawn.GameModeIndex.ToString());
 
-			if (IsSaveChecked && SpawnSettings.SaveIndex > -1)
+			if (IsSaveChecked && GameProfile.TestSpawn.SaveIndex > -1)
 			{
 				//string save = Util.GetSaveNumber();
-				cmdline.Add("-s " + SpawnSettings.SaveIndex.ToString());
+				cmdline.Add("-s " + GameProfile.TestSpawn.SaveIndex.ToString());
 			}
 
 			return string.Join(" ", cmdline);

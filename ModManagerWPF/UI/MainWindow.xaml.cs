@@ -57,7 +57,7 @@ namespace SAModManager
         private bool checkForUpdate = false;
         readonly Updater.ModUpdater modUpdater = new();
         private object gameConfigFile;
-        private DebugSettings gameDebugSettings;
+        private DebugSettings gameDebugSettings = new();
         MenuItem ModContextDev { get; set; }
         private bool displayedManifestWarning;
         public MainWindowViewModel ViewModel = new();
@@ -1154,7 +1154,7 @@ namespace SAModManager
                     stackPanel = (Grid)tabGame.Content;
                     stackPanel.Children.Add(new Elements.SADX.GameConfig(ref GameProfile, ref gameConfigFile));
                     tsPanel = (Grid)tabTestSpawn.Content;
-                    tsPanel.Children.Add(new Elements.SADX.TestSpawn(GameProfile, mods));
+                    tsPanel.Children.Add(new Elements.SADX.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.SA2:
                 default:
@@ -1449,32 +1449,37 @@ namespace SAModManager
 
         public async void Save()
         {
+			// If the mods folder doesn't exist, don't save anything.
 			if (!Directory.Exists(App.CurrentGame.modDirectory))
                 return;
 
             // Save Manager Settings
-            string managerSettingsPath = Path.Combine(App.ConfigFolder, "Manager.json");
+            string managerSettingsPath = Path.Combine(App.ConfigFolder, App.ManagerConfigFile);
+			
 			// Save Last Loaded Profile String and Last Game here.
 			App.ManagerSettings.CurrentSetGame = (int)setGame;
-			// Below line is commented for now, needs to be updated.
-			//App.ManagerSettings.GameManagement.LoadedProfile
             App.ManagerSettings.Serialize(managerSettingsPath);
 
+			// Update EnabledMods for saving.
 			EnabledMods.Clear();
 			foreach (ModData mod in ViewModel.Modsdata)
 				if (mod?.IsChecked == true)
 					EnabledMods.Add(mod.Tag);
 
+			// Update EnabledCodes for saving.
 			EnabledCodes.Clear();
 			foreach (CodeData code in CodeListView.Items)
 				if (code?.IsChecked == true)
 					EnabledCodes.Add(code.codes.Name);
 
+			// Build the Code Files.
 			BuildCodeFiles();
 
+			// Create the Profiles Directory if it doesn't exist.
 			if (!Directory.Exists(App.CurrentGame.ProfilesDirectory))
 				Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
 
+			// Save Game Settings here.
 			switch (setGame)
             {
                 case SetGame.SADX:
@@ -1482,10 +1487,12 @@ namespace SAModManager
                     break;
             }
 
+			// Save the Profiles file.
 			GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
 
             await Task.Delay(10);
 
+			// Refresh thing so everything updates as intended.
             Refresh();
         }
 
