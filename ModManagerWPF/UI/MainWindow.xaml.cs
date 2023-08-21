@@ -980,7 +980,7 @@ namespace SAModManager
 
                         pathValid = true;
                         textGameDir.Text = GamePath;
-                        UIHelper.ToggleButton(ref btnOpenGameDir);
+                        UIHelper.ToggleButton(ref btnOpenGameDir, true);
                         Load(true);
                         break;
                     }
