@@ -89,7 +89,6 @@ namespace SAModManager
 			}
 
             UpdateDLLData();
-            SetOneClickBtnState();
         }
 
         #region Form: Functions
@@ -935,7 +934,8 @@ namespace SAModManager
         #endregion
 
         #region Form: Manager Tab: Functions
-        private async void btnOneClick_Click(object sender, RoutedEventArgs e)
+
+        private async Task EnableOneClickInstall()
         {
             try
             {
@@ -949,10 +949,11 @@ namespace SAModManager
 
                 Image iconConfig = FindName("GB") as Image;
                 UIHelper.ToggleImage(ref iconConfig, false);
-                UIHelper.ToggleButton(ref btnOneClick, false);
 
             }
             catch { }
+
+            await Task.Delay(10);
         }
 
         //To do, rework this mess to handle multiple games and clean everything.
@@ -980,6 +981,7 @@ namespace SAModManager
 
                         pathValid = true;
                         tempPath = GamePath;
+						UIHelper.ToggleButton(ref btnOpenGameDir, true);
 						Load(true);
 						break;
                     }
@@ -988,6 +990,10 @@ namespace SAModManager
                 if (!pathValid)
                 {
                     new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+                }
+                else
+                {
+                    await InstallLoader();
                 }
             }
         }
@@ -1446,10 +1452,14 @@ namespace SAModManager
 
 				await UpdateManagerInfo();
 
-				LoadModList();
+                LoadModList();
 
 				InitCodes();
 			}
+            else
+            {
+                UIHelper.ToggleButton(ref btnOpenGameDir, false);
+            }
 
 			// Update the UI based on the loaded game.
 			SetGameUI();
@@ -2107,33 +2117,12 @@ namespace SAModManager
 
         #region Private: Manager Config Tab
 
-        private void SetOneClickBtnState()
+        private void btnOpenGameDir_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                using var hkcr = Microsoft.Win32.Registry.ClassesRoot;
-                var sammKey = hkcr.OpenSubKey("sadxmm");
+            string fullPath = App.CurrentGame.gameDirectory;
 
-                if (sammKey != null)
-                {
-                    var pathManagerKey = sammKey.OpenSubKey("DefaultIcon");
-                    if (pathManagerKey != null)
-                    {
-                        var managerPath = pathManagerKey.GetValue("").ToString();
-
-                        if (managerPath.ToLower().Contains(Environment.ProcessPath.ToLower()))
-                        {
-                            Image iconConfig = FindName("GB") as Image;
-                            UIHelper.ToggleImage(ref menuIconConfig, false);
-                            UIHelper.ToggleButton(ref btnOneClick, false);
-                        }
-
-                        pathManagerKey.Close();
-                        sammKey.Close();
-                    }
-                }
-            }
-            catch { }
+            if (Directory.Exists(fullPath))
+                Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });
         }
 
         private void UpdateBtnInstallLoader_State()
@@ -2207,6 +2196,7 @@ namespace SAModManager
                     await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                     await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
                     await UpdateGameConfig(SetGame.SADX); //To do change with "current selected game" when it's available
+                    await EnableOneClickInstall();
                     UIHelper.EnableButton(ref SaveAndPlayButton);
 
 
@@ -2221,6 +2211,7 @@ namespace SAModManager
             UpdateBtnInstallLoader_State();
         }
         #endregion
+
         #endregion
     }
 }

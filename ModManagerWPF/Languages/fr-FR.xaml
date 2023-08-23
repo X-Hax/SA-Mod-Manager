@@ -178,6 +178,7 @@
 
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Installer Loader</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Désinstaller Mod Loader</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Ouvrir le répertoire du Jeu</system:String>
 
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Laisser le Mod Manager Ouvert après démarrage du jeu</system:String>
     <system:String x:Key="ManagerCheckTestSpawn">Activer l'onglet Test Spawn</system:String>

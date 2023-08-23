@@ -140,6 +140,7 @@
 
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Ativar 1-Click Install</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Desativar 1-Click Install</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Abrir Diretório do Jogo</system:String>
 
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Instalar Mod Loader</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Desinstalar Mod Loader</system:String>

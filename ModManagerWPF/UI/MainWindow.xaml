@@ -425,10 +425,10 @@
                                         <RowDefinition Height="30"/>
                                     </Grid.RowDefinitions>
 
-                                    <Button x:Name="btnOneClick" Grid.Column="0" Grid.Row="1" Margin="5,0,5,0" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.EnableOneClick}" Click="btnOneClick_Click">
+                                    <Button x:Name="btnOpenGameDir" Grid.Column="0" Grid.Row="1" Margin="5,0,5,0" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.EnableOneClick}" Click="btnOpenGameDir_Click">
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Source="{StaticResource IconGB}" Width="20" Height="15" Margin="0,0,5,0"/>
-                                            <TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick}" VerticalAlignment="Center"></TextBlock>
+                                            <Image Source="{StaticResource IconFolder2}" Width="20" Height="15" Margin="0,0,5,0"/>
+                                            <TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir}" VerticalAlignment="Center"></TextBlock>
                                         </StackPanel>
                                     </Button>
                                     <Button x:Name="btnInstallLoader" Grid.Column="2" Grid.Row="1" Margin="5,0,5,0" Click="btnInstallLoader_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.InstallLoader}">

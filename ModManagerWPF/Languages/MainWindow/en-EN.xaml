@@ -147,8 +147,9 @@
 
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Enable 1-Click Install</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Disable 1-Click Install</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Open Game Directory</system:String>
 
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Install Mod Loader</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Install Mod Loader</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Uninstall Mod Loader</system:String>
 
 	<!--Updates-->

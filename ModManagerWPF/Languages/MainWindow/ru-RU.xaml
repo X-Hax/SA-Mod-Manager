@@ -140,6 +140,7 @@
 
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Включить "1-Click Install" (GameBanana)</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Выключить "1-Click Install"</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Открыть папку игры</system:String>
 
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Включить Загрузчик модов</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Отключить Загрузчик модов</system:String>

@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="IconFolder2">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V256 H256 V0 H0 Z">
+                <DrawingGroup Opacity="1" Transform="2.81,0,0,2.81,1.4065934065934,1.4065934065934">
+                    <GeometryDrawing Brush="#FFE0AD31" Geometry="F1 M256,256z M0,0z M73.538,35.162L20.99,37.114C19.251,37.114,18.237,37.765,17.758,39.437L6.85,76.754C6.399,78.34,4.237,79.082,2.733,79.082L2.733,79.082C1.23,79.082,0,77.852,0,76.349L0,65.891 0,23.046 0,20.999 0,14.726C0,12.623,1.705,10.918,3.808,10.918L30.864,10.918C31.874,10.918,32.842,11.319,33.556,12.033L41.406,19.883C42.12,20.597,43.089,20.998,44.098,20.998L69.73,20.998C71.833,20.998,73.538,22.703,73.538,24.806L73.538,26.107C73.538,26.106,73.538,35.162,73.538,35.162z" />
+                    <GeometryDrawing Brush="#FFFFC843" Geometry="F1 M256,256z M0,0z M2.733,79.082L2.733,79.082C4.236,79.082,5.015,77.935,5.466,76.349L16.462,37.987C16.941,36.315,18.47,35.163,20.21,35.163L87.589,35.163C89.198,35.163,90.354,36.709,89.9,38.253L79.004,75.279C78.512,77.03 77.433,79.097 75.201,79.082 75.201,79.082 2.733,79.082 2.733,79.082z" />
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+</ResourceDictionary>
