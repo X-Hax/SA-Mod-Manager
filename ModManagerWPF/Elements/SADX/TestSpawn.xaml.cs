@@ -446,6 +446,8 @@ namespace SAModManager.Elements.SADX
 			SetBindings();
 
 			tsComboEvent.SelectedIndex = EventNames.Keys.ToList<int>().IndexOf(GameProfile.TestSpawn.EventIndex);
+			if (GameProfile.TestSpawn.UseManual || GameProfile.TestSpawn.UsePosition)
+				expandAdvanced.IsExpanded = true;
 		}
 
 		private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)

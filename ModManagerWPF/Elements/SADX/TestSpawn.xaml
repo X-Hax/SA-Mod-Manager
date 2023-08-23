@@ -102,7 +102,7 @@
 					<Image Source="{DynamicResource IconCaution}" Width="30"/>
 				</StackPanel>
 
-				<Expander Header="{DynamicResource Manager.Tabs.TestSpawn.Group.Advanced}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" HorizontalAlignment="Stretch" Margin="5">
+				<Expander x:Name="expandAdvanced" Header="{DynamicResource Manager.Tabs.TestSpawn.Group.Advanced}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" HorizontalAlignment="Stretch" Margin="5">
 					<Border x:Name="groupAdvanced" BorderBrush="{DynamicResource Borders.Brushes.Border}" BorderThickness="2" CornerRadius="3">
 						<Grid>
 							<Grid.ColumnDefinitions>
