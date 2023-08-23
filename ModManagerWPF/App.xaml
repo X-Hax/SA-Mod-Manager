@@ -1124,6 +1124,7 @@
 					</Trigger>
 					<Trigger Property="IsEnabled" Value="False">
 						<Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource Menu.Brushes.Disabled.Foreground}"/>
+						<Setter Property="Opacity" Value="0.5"/>
 						<Setter Property="Fill" TargetName="GlyphPanel" Value="{DynamicResource Menu.Brushes.Disabled.Foreground}"/>
 					</Trigger>
 					<MultiTrigger>
@@ -1178,6 +1179,7 @@
 					</Trigger>
 					<Trigger Property="IsEnabled" Value="False">
 						<Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource Menu.Brushes.Disabled.Foreground}"/>
+						<Setter Property="Opacity" Value="0.5"/>
 						<Setter Property="Fill" TargetName="GlyphPanel" Value="{DynamicResource Menu.Brushes.Disabled.Foreground}"/>
 					</Trigger>
 					<Trigger Property="ScrollViewer.CanContentScroll" SourceName="SubMenuScrollViewer" Value="false">
@@ -1219,6 +1221,7 @@
 					</Trigger>
 					<Trigger Property="IsEnabled" Value="False">
 						<Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource Menu.Brushes.Disabled.Foreground}"/>
+						<Setter Property="Opacity" Value="0.5"/>
 						<Setter Property="Fill" TargetName="Glyph" Value="{DynamicResource Menu.Brushes.Disabled.Foreground}"/>
 					</Trigger>
 					<MultiTrigger>
@@ -1281,6 +1284,7 @@
 					</Trigger>
 					<Trigger Property="IsEnabled" Value="False">
 						<Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource Menu.Brushes.Disabled.Foreground}"/>
+						<Setter Property="Opacity" Value="0.5"/>
 						<Setter Property="Fill" TargetName="Glyph" Value="{DynamicResource Menu.Brushes.Disabled.Foreground}"/>
 						<Setter Property="Fill" TargetName="RightArrow" Value="{DynamicResource Menu.Brushes.Disabled.Foreground}"/>
 					</Trigger>

@@ -23,13 +23,13 @@ namespace SAModManager.Common
 
     public partial class ProfileDialog : Window
     {
-        private ComboBox _modProfile { get; set; }
+		public int SelectedIndex = 0;
         private Profiles Profiles { get; set; }
 
-
-        public ProfileDialog(ref Profiles profiles)
+        public ProfileDialog(ref Profiles profiles, int index)
         {
             InitializeComponent();
+			SelectedIndex = index;
             Profiles = profiles;
             Title = Lang.GetString("ManagerProfile.Title");
 
@@ -44,48 +44,22 @@ namespace SAModManager.Common
         #region Private Functions
         private void RefreshList()
         {
-            ICollectionView view = CollectionViewSource.GetDefaultView(ProfileListView.Items);
-            view.Refresh();
+			ProfileListView.Items.Refresh();
         }
 
         private void RenameProfileStart()
         {
-            var profile = (KeyValuePair<string, string>)ProfileListView.SelectedItem;
+			ProfileEntry entry = ProfileListView.SelectedItem as ProfileEntry;
 
-            if (profile.Key.ToLower() == "default")
-            {
+			EditProfile editProfile = new EditProfile(entry);
 
-                return;
-            }
+			bool? result = editProfile.ShowDialog();
 
-            EditProfile edit = new(profile.Key, (char)ProfileListView.SelectedIndex)
-            {
-                Owner = this
-            };
-            bool? dialogResult = edit.ShowDialog();
-
-            if (dialogResult == true)
-            {
-                EditProfileResult result = edit.GetEditProfileResult(); // Get the result from EditProfile
-                Profile item = (Profile)ProfileListView.Items[result.Index];
-                if (File.Exists(item.jsonPath))
-                {
-                    string newName = Path.Combine(App.CurrentGame.ProfilesDirectory, result.Name + ".json");
-
-                    try
-                    {
-                        File.Move(item.jsonPath, newName);
-                        item.name = result.Name;
-                        item.jsonPath = newName;
-                        RefreshList();
-                    }
-                    catch
-                    {
-                        new MessageWindow(Lang.GetString("Error"), Lang.GetString("ManagerProfile.Errors.Unexpected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-                    }
-                }
-            }
-
+			if (result == true)
+			{
+				Profiles.ProfilesList[ProfileListView.SelectedIndex] = editProfile.Result;
+			}
+			RefreshList();
         }
         #endregion
 
@@ -108,9 +82,10 @@ namespace SAModManager.Common
             if (ProfileListView == null)
                 return;
 
-            var profile = (KeyValuePair<string, string>)ProfileListView.SelectedItem;
+			var currentProfile = ProfileListView.Items[SelectedIndex];
+			var profile = (ProfileEntry)ProfileListView.SelectedItem;
 
-            if (string.IsNullOrEmpty(profile.Key))
+            if (string.IsNullOrEmpty(profile.Name))
                 return;
 
             var ctrlKey = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
@@ -126,90 +101,112 @@ namespace SAModManager.Common
 
             if (Keyboard.IsKeyDown(Key.F2))
             {
-                ProfileRename_Click(null, null);
-                e.Handled = true;
+				if (ProfileListView.SelectedItems.Count > 0 && ProfileListView.SelectedItems.Count < 2)
+				{
+					ProfileRename_Click(null, null);
+					e.Handled = true;
+				}
             }
 
 
             if (Keyboard.IsKeyDown(Key.Delete))
             {
-                ProfileDelete_Click(null, null);
-                e.Handled = true;
+				if (!ProfileListView.SelectedItems.Contains(currentProfile))
+				{
+					ProfileDelete_Click(null, null);
+					e.Handled = true;
+				}
             }
-
         }
 
-        private void ProfileRename_Click(object sender, RoutedEventArgs e)
+		private void ContextMenu_Opened(object sender, RoutedEventArgs e)
+		{
+			var currentProfile = ProfileListView.Items[SelectedIndex];
+
+			// Delete Available Checks
+			if (ProfileListView.SelectedItems.Contains(currentProfile))
+				ProfileDelete.IsEnabled = false;
+			else
+				ProfileDelete.IsEnabled = true;
+
+			if (ProfileListView.SelectedItems.Count > 1)
+				ProfileRename.IsEnabled = false;
+			else
+				ProfileRename.IsEnabled = true;
+		}
+
+		private void ProfileRename_Click(object sender, RoutedEventArgs e)
         {
             RenameProfileStart();
         }
 
-        private void ProfileClone_Click(object sender, RoutedEventArgs e)
+		private string CopyFileWithAutoRename(string sourceFilePath)
+		{
+			int count = 1;
+
+			string fileNameOnly = Path.GetFileNameWithoutExtension(sourceFilePath);
+			string extension = Path.GetExtension(sourceFilePath);
+			string path = Path.GetDirectoryName(sourceFilePath);
+			string newFullPath = sourceFilePath;
+
+			string tempFileName = "";
+			while (File.Exists(newFullPath))
+			{
+				tempFileName = string.Format("{0}_Copy ({1})", fileNameOnly, count++);
+				newFullPath = Path.Combine(path, tempFileName + extension);
+			}
+
+			return tempFileName;
+		}
+
+		private void ProfileClone_Click(object sender, RoutedEventArgs e)
         {
-            var list = ProfileListView.SelectedItems;
-            var listView = ProfileListView.Items.Cast<KeyValuePair<string, string>>().ToList();
+            List<ProfileEntry> selection = ProfileListView.SelectedItems.Cast<ProfileEntry>().ToList();
 
-            if (list != null && list.Count > 0)
+            if (selection.Count > 0)
             {
-                foreach ( var item in list) 
+                foreach (ProfileEntry profile in selection) 
                 {
-                    var profile = (KeyValuePair<string, string>)item;
-                    string fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, profile.Value);
+                    string fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, profile.Filename);
 
-                    Profile clonedProfile = new()
-                    {
-                        name = profile.Key,
-                        jsonPath = profile.Value,
-                    };
-
-                    Random rng = new();
-                    string cloneID = rng.Next().ToString();
-                    string newName = clonedProfile.jsonPath.Replace(".json", "");
-                    clonedProfile.name += "_" + cloneID;
-                    clonedProfile.jsonPath = newName + "_" + cloneID + ".json";
-
-                    KeyValuePair<string, string> clonedConvert = new(clonedProfile.name, clonedProfile.jsonPath);
-                    listView.Add(clonedConvert);
+					string clonedName = CopyFileWithAutoRename(Path.Combine(App.CurrentGame.ProfilesDirectory, profile.Filename));
+					ProfileEntry clonedProfile = new(clonedName, clonedName + ".json");
 
                     if (File.Exists(fullPath))
-                    {
-                        File.Copy(fullPath, Path.Combine(App.CurrentGame.ProfilesDirectory, clonedProfile.jsonPath), true);
-                    }
+                        File.Copy(fullPath, Path.Combine(App.CurrentGame.ProfilesDirectory, clonedProfile.Filename), true);
+
+					Profiles.ProfilesList.Add(clonedProfile);
                 }
             }
 
-            ProfileListView.ItemsSource = listView;
             RefreshList();
         }
 
         private void ProfileDelete_Click(object sender, RoutedEventArgs e)
         {
-            var selectedItems = ProfileListView.SelectedItems;
-            var count = selectedItems.Count > 0;
+            List<ProfileEntry> selectedItems = ProfileListView.SelectedItems.Cast<ProfileEntry>().ToList();
+			var profile = Profiles.ProfilesList[SelectedIndex];
 
-            if (count)
+			if (selectedItems.Count > 0)
             {
                 var msg = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DeleteProfile"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
                 msg.ShowDialog();
 
                 if (msg.isYes)
                 {
-                    var listView = ProfileListView.Items.Cast<KeyValuePair<string, string>>().ToList();
-
-                    foreach (var sel in selectedItems)
+                    foreach (ProfileEntry item in selectedItems)
                     {
-                        var converted = (KeyValuePair<string, string>)sel;
-                        var fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, converted.Value);
+                        var fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, item.Filename);
                         if (File.Exists(fullPath))
                         {
                             File.Delete(fullPath);
+							Profiles.ProfilesList.Remove(item);
                         }
-                        listView.Remove(converted);
                     }
 
-                    ProfileListView.ItemsSource = listView;
+					SelectedIndex = Profiles.ProfilesList.FindIndex(item => item.Name == profile.Name);
+
                     RefreshList();
-                 
                 }
             }
         }
@@ -224,32 +221,24 @@ namespace SAModManager.Common
                 Owner = this
             };
             bool? dialogResult = newProfile.ShowDialog();
-
           
             if (dialogResult == true)
             {
-                var listView = ProfileListView.Items.Cast<KeyValuePair<string, string>>().ToList();
-               var profile = newProfile.GetNewProfileResult();
-
-                KeyValuePair<string, string> profileConvert = new(profile.name, profile.jsonPath);
-                listView.Add(profileConvert);
-                ProfileListView.ItemsSource = listView;
-                RefreshList();
+				Profiles.ProfilesList.Add(newProfile.Result);
             }
+
+			RefreshList();
         }
 
-        private void UI_OK_Click(object sender, RoutedEventArgs e)
+		private void Migrate_Click(object sender, RoutedEventArgs e)
+		{
+			// TODO: Implement Migration Feature
+		}
+
+		private void UI_OK_Click(object sender, RoutedEventArgs e)
         {
-            Profiles.ProfilesList.Clear();
-
-            foreach (var profile in ProfileListView.Items) 
-            {
-                KeyValuePair<string, string> profileConvert = (KeyValuePair<string, string>)profile;
-                Profiles.ProfilesList.Add(profileConvert.Key, Path.GetFileName(profileConvert.Value));
-            }
-        
-            this.Close();
+			this.Close();
         }
-        #endregion
-    }
+		#endregion
+	}
 }

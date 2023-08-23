@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using SAModManager.Configuration;
+using System.Collections.Generic;
+using System.IO;
 
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,49 +13,13 @@ namespace SAModManager.Common
 	/// Interaction logic for EditProfile.xaml
 	/// </summary>
 	/// 
-	public class EditProfileResult
-	{
-		public char Index { get; set; }
-		public string Name { get; set; }
-	}
-
 	public partial class EditProfile : Window
 	{
 		private char index { get; set; }
 		private bool isEditing { get; set; } = false;
+		private string origProfile = string.Empty;
 
-		public EditProfileResult Result { get; private set; }
-
-		private void CloseEditProfile()
-		{
-			Result = new EditProfileResult
-			{
-				Index = index, 
-				Name = ProfileNameTextbox.Text
-			};
-
-			DialogResult = true; // Set the dialog result to true to indicate success
-		}
-
-	
-		public Profile NewProResult { get; private set; }
-
-		public EditProfile(string item, char index)
-		{
-			InitializeComponent();
-			Title = Lang.GetString("ManagerProfile.Buttons.Rename");
-			Header.Text = Title;
-			ProfileNameTextbox.Text = item;
-			ProfileNameTextbox.Focusable = true;
-			this.index = index;
-			Keyboard.Focus(ProfileNameTextbox);
-			isEditing = true;
-		}
-
-		private void CloseNewProfile()
-		{
-		    DialogResult = true; // Set the dialog result to true to indicate success
-		}
+		public ProfileEntry Result { get; set; }
 
 		public EditProfile()
 		{
@@ -64,46 +30,98 @@ namespace SAModManager.Common
 			Keyboard.Focus(ProfileNameTextbox);
 		}
 
-		private async void UI_OK_Click(object sender, RoutedEventArgs e)
+		public EditProfile(ProfileEntry profile)
 		{
-			if (isEditing)
-			{
-				CloseEditProfile();
-			}
-			else
-			{
-				string name = ProfileNameTextbox.Text;
-				string fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, name + ".json");
-                string defaultPath = Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json");
+			InitializeComponent();
+			Title = Lang.GetString("ManagerProfile.Buttons.Rename");
+			Header.Text = Title;
+			ProfileNameTextbox.Text = profile.Name;
+			origProfile = profile.Filename;
+			ProfileNameTextbox.Focusable = true;
+			Keyboard.Focus(ProfileNameTextbox);
+			isEditing = true;
+		}
 
-                if (File.Exists(fullPath)) 
+		private async void SaveNewProfile()
+		{
+			string profileName = ProfileNameTextbox.Text;
+			string profileFilename = profileName + ".json";
+
+			if (profileName != string.Empty)
+			{
+				if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename)))
 				{
-					new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();		
+					new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 					return;
 				}
 
-				((MainWindow)Application.Current.MainWindow).Save();
-				await Task.Delay(30);
-				File.Copy(defaultPath, fullPath);
-				await Task.Delay(100);
-
-				NewProResult = new()
+				switch (App.CurrentGame.gameName)
 				{
-					jsonPath = fullPath,
-					name = name
-				};
-				CloseNewProfile();
+					case "Sonic Adventure DX":
+						Configuration.SADX.GameSettings sadxSettings = new Configuration.SADX.GameSettings();
+						sadxSettings.GamePath = App.CurrentGame.gameDirectory;
+						sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
+						break;
+					case "Sonic Adventure 2":
+						Configuration.SADX.GameSettings sa2Settings = new Configuration.SADX.GameSettings();
+						sa2Settings.GamePath = App.CurrentGame.gameDirectory;
+						sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
+						break;
+				}
+
+				Result = new(profileName, profileFilename);
 			}
 		}
 
-		public EditProfileResult GetEditProfileResult()
+		private async void SaveEditedProfile()
 		{
-			return Result;
+			string profileName = ProfileNameTextbox.Text;
+			string profileFilename = profileName + ".json";
+
+			if (profileFilename == origProfile)
+			{
+				Result = new ProfileEntry(profileName, profileFilename);
+				return;
+			}
+
+			if (profileName != string.Empty)
+			{
+				string originalProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, origProfile);
+
+				if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename)))
+				{
+					new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+					return;
+				}
+
+
+				switch (App.CurrentGame.gameName)
+				{
+					case "Sonic Adventure DX":
+						Configuration.SADX.GameSettings sadxSettings =	Configuration.SADX.GameSettings.Deserialize(originalProfile);
+						sadxSettings.GamePath = App.CurrentGame.gameDirectory;
+						sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
+						break;
+					case "Sonic Adventure 2":
+						Configuration.SADX.GameSettings sa2Settings = new Configuration.SADX.GameSettings();
+						sa2Settings.GamePath = App.CurrentGame.gameDirectory;
+						sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
+						break;
+				}
+				File.Delete(originalProfile);
+
+				Result = new(profileName, profileFilename);
+			}
 		}
 
-		public Profile GetNewProfileResult()
+		private async void UI_OK_Click(object sender, RoutedEventArgs e)
 		{
-			return NewProResult;
+			if (isEditing)
+				SaveEditedProfile();
+			else
+				SaveNewProfile();
+
+			DialogResult = true;
 		}
 
 		private void UI_Cancel_Click(object sender, RoutedEventArgs e)

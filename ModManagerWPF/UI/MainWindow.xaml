@@ -405,7 +405,7 @@
 														   Icon="{StaticResource Icons.Profile}" Padding="2"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
-                                        <TextBox x:Name="textGameDir" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" IsReadOnly="True"/>
+                                        <TextBox x:Name="textGameDir" Width="238" VerticalAlignment="Center" Margin="5,0,5,0"/>
 										<elements:ImageButton x:Name="btnBrowseGameDir" Grid.Column="2" Height="22" Width="27" Click="btnBrowseGameDir_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.DirectoryBrowse}"
 														   Icon="{StaticResource Icons.Folder}"/>
                                     </StackPanel>

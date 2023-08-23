@@ -63,6 +63,7 @@ namespace SAModManager
         public MainWindowViewModel ViewModel = new();
 		Profiles GameProfiles = new();
         object GameProfile;
+		private string tempPath = "";
 
         // TODO: Make this generic for handling both games. Maybe do it with a custom class for easier management.
         public Dictionary<string, SADXModInfo> mods = null;
@@ -978,7 +979,7 @@ namespace SAModManager
 							setGame = SetGame.SA2;
 
                         pathValid = true;
-                        textGameDir.Text = GamePath;
+                        tempPath = GamePath;
 						Load(true);
 						break;
                     }
@@ -1079,12 +1080,15 @@ namespace SAModManager
             if (!App.CurrentGame.loader.installed)
                 return;
 
-            new ProfileDialog(ref GameProfiles).ShowDialog();
+			int index = comboProfile.SelectedIndex;
+			ProfileDialog dialog = new ProfileDialog(ref GameProfiles, index);
+			dialog.ShowDialog();
+
             // Save the Profiles file.
             GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
-            //refresh comboBox
-            ICollectionView view = CollectionViewSource.GetDefaultView(comboProfile.Items);
-            view.Refresh();
+			comboProfile.ItemsSource = GameProfiles.ProfilesList;
+			comboProfile.SelectedIndex = dialog.SelectedIndex;
+			comboProfile.Items.Refresh();
         }
 
         private void ModProfile_FormClosing(object sender, EventArgs e)
@@ -1094,12 +1098,12 @@ namespace SAModManager
 
         private void comboProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedItem = (KeyValuePair<string, string>)comboProfile.SelectedItem;
+            var selectedItem = comboProfile.SelectedItem;
 
-            if (selectedItem.Key != null)
+            if (selectedItem != null)
             {
-                GameProfiles.ProfileIndex = comboProfile.SelectedIndex;
-                LoadGameSettings();
+				GameProfiles.ProfileIndex = comboProfile.SelectedIndex;
+				LoadGameSettings();
                 Refresh();
             }
         }
@@ -1238,7 +1242,7 @@ namespace SAModManager
 
         public string GetCurrentProfileName()
         {
-            return "Default.json";
+            return GameProfiles.ProfilesList[comboProfile.SelectedIndex].Filename;
         }
 
         #region Private: Load & Save
@@ -1360,10 +1364,9 @@ namespace SAModManager
 			GameProfile = sadxSettings;
 
 			if (newSetup)
-				sadxSettings.GamePath = textGameDir.Text;
-			else
-				textGameDir.Text = sadxSettings.GamePath;
+				sadxSettings.GamePath = tempPath;
 
+			textGameDir.Text = sadxSettings.GamePath;
 			App.CurrentGame.gameDirectory = sadxSettings.GamePath;
 			App.CurrentGame.modDirectory = Path.Combine(sadxSettings.GamePath, "mods");
 
@@ -1382,9 +1385,6 @@ namespace SAModManager
 
 		private void LoadGameSettings(bool newSetup = false)
         {
-			string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
-			GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
-
 			string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GameProfiles.GetProfileFilename());
 
 			switch (setGame)
@@ -1434,6 +1434,13 @@ namespace SAModManager
         {
 			if (setGame != SetGame.None)
 			{
+				// Load Profiles before doing anything.
+				string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
+				GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
+				comboProfile.ItemsSource = GameProfiles.ProfilesList;
+				comboProfile.DisplayMemberPath = "Name";
+				comboProfile.SelectedIndex = GameProfiles.ProfileIndex;
+
 				// Set the existing profiles to the ones from the loaded Manager Settings.
 				LoadGameSettings(newSetup);
 
@@ -1442,14 +1449,6 @@ namespace SAModManager
 				LoadModList();
 
 				InitCodes();
-
-				// Setup the Profiles List Bindings here, easiest way to ensure it gets setup properly.
-				comboProfile.ItemsSource = GameProfiles.ProfilesList;
-				comboProfile.DisplayMemberPath = "Key";
-				comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
-				{
-					Source = GameProfiles,
-				});
 			}
 
 			// Update the UI based on the loaded game.
@@ -1471,8 +1470,6 @@ namespace SAModManager
 
             // Save Manager Settings
             string managerSettingsPath = Path.Combine(App.ConfigFolder, App.ManagerConfigFile);
-			
-			// Save Last Loaded Profile String and Last Game here.
 			App.ManagerSettings.CurrentSetGame = (int)setGame;
             App.ManagerSettings.Serialize(managerSettingsPath);
 
@@ -1914,8 +1911,6 @@ namespace SAModManager
 
         private void SetManagerBindings()
         {	
-			//textGameDir.Text = App.CurrentGame.gameDirectory;
-			
             comboLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Language")
             {
                 Source = App.ManagerSettings

@@ -36,16 +36,16 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Key}"/>
+                                    <TextBlock Text="{Binding Name}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="{StaticResource ManagerProfile.Path}" Width="250" DisplayMemberBinding="{Binding Value}"/>
+                    <GridViewColumn Header="{StaticResource ManagerProfile.Path}" Width="250" DisplayMemberBinding="{Binding Filename}"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
-                <ContextMenu>
+                <ContextMenu Opened="ContextMenu_Opened">
 					<MenuItem x:Name="ProfileRename" Header="{StaticResource ManagerProfile.ContextMenu.Rename}" Click="ProfileRename_Click"  InputGestureText="(F2)">
 						<MenuItem.Icon>
 							<Image Source="{StaticResource IconRename}"/>
@@ -61,19 +61,20 @@
 							<Image Source="{StaticResource IconDelete}"/>
 						</MenuItem.Icon>
 					</MenuItem>
-           
-                </ContextMenu>
+				</ContextMenu>
             </ListView.ContextMenu>
         </ListView>
 
 		<Grid x:Name="GridButtons" Grid.Row="1">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="130"/>
+				<ColumnDefinition Width="130"/>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="130"/>
 			</Grid.ColumnDefinitions>
-			<Button Content="{StaticResource CommonStrings.Create}" Grid.Column="0" Margin="5" VerticalAlignment="Stretch" Height="30" Click="UI_Add_Click" />
-			<Button Content="{StaticResource CommonStrings.OK}" Grid.Column="2" Margin="5" VerticalAlignment="Stretch" Height="30" Click="UI_OK_Click" IsCancel="True"/>
+			<Button Content="{StaticResource CommonStrings.Create}" Grid.Column="0" Margin="5" VerticalAlignment="Stretch" Height="30" Click="UI_Add_Click" ToolTip="{StaticResource ManagerProfile.ToolTip.Create}"/>
+			<Button Content="{StaticResource ManagerProfile.Buttons.Migrate}" Grid.Column="1" Margin="5" VerticalAlignment="Stretch" Height="30" Click="Migrate_Click" ToolTip="{StaticResource ManagerProfile.ToolTip.Migrate}"/>
+			<Button Content="{StaticResource CommonStrings.OK}" Grid.Column="3" Margin="5" VerticalAlignment="Stretch" Height="30" Click="UI_OK_Click" IsCancel="True"/>
 		</Grid>
 	</Grid>
 </Window>

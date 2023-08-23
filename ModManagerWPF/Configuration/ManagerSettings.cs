@@ -175,6 +175,19 @@ namespace SAModManager.Configuration
 		}
 	}
 
+	public class ProfileEntry
+	{
+		public string Name { get; set; } = string.Empty;
+
+		public string Filename { get; set; } = string.Empty;
+
+		public ProfileEntry(string name, string filename)
+		{
+			Name = name;
+			Filename = filename;
+		}
+	}
+
 	public class Profiles
 	{
 		/// <summary>
@@ -185,7 +198,7 @@ namespace SAModManager.Configuration
 		/// <summary>
 		/// List of Profile options.
 		/// </summary>
-		public Dictionary<string, string> ProfilesList { get; set; } = new();
+		public List<ProfileEntry> ProfilesList { get; set; } = new();
 
 		/// <summary>
 		/// Returns the Profile to load using the Manager's settings and the Profiles.json file for the specified game.
@@ -195,7 +208,7 @@ namespace SAModManager.Configuration
 		public string GetProfileFilename()
 		{
 			if (ProfilesList.Count > 0)
-				return ProfilesList.ElementAt(ProfileIndex).Value;
+				return ProfilesList.ElementAt(ProfileIndex).Filename;
 			else
 				return string.Empty;
 		}
@@ -216,10 +229,7 @@ namespace SAModManager.Configuration
 			else
 				return new()
 				{
-					ProfilesList = new Dictionary<string, string>()
-					{
-						{ "Default", "Default.json" }
-					}
+					ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
 				};
 		}
 
@@ -236,7 +246,11 @@ namespace SAModManager.Configuration
 
 		public static Profiles MakeDefaultProfileFile()
 		{
-			return new() { ProfileIndex = 0, ProfilesList = new() { { "Default", "Default.json" } } };
+			return new()
+			{
+				ProfileIndex = 0,
+				ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
+			};
 		}
 	}
 }
