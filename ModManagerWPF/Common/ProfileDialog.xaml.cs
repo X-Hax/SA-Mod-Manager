@@ -152,7 +152,7 @@ namespace SAModManager.Common
 			string tempFileName = "";
 			while (File.Exists(newFullPath))
 			{
-				tempFileName = string.Format("{0}_Copy ({1})", fileNameOnly, count++);
+				tempFileName = string.Format("{0} - Copy ({1})", fileNameOnly, count++);
 				newFullPath = Path.Combine(path, tempFileName + extension);
 			}
 
