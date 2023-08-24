@@ -140,7 +140,10 @@ namespace SAModManager
 
             }
 
-			App.ManagerSettings.Serialize(App.ManagerConfigFile);
+			if (!Directory.Exists(App.ConfigFolder))
+				Directory.CreateDirectory(App.ConfigFolder);
+
+			App.ManagerSettings.Serialize(Path.Combine(App.ConfigFolder, App.ManagerConfigFile));
             await Task.Delay(20);
         }
 
