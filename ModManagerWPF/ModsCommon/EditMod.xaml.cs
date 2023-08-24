@@ -596,6 +596,9 @@ namespace SAModManager
 		private void btnEditCode_Click(object sender, RoutedEventArgs e)
 		{
 			Code editCode = GetSelectedCodes().FirstOrDefault().Value;
+			if (editCode is null)
+				return;
+
 			NewCode codeWindow = new NewCode(code: editCode);
 			codeWindow.ShowDialog();
 		}
