@@ -46,41 +46,36 @@ namespace SAModManager.Common
             "/mods/SADXModLoader.dll"
         };
 
-        private static async Task HandleProfiles(bool installed, string gamePath)
+        private static async Task<bool> HandleProfiles(bool installed, string gamePath)
         {
             string modFolder = Path.Combine(gamePath, "mods");
-            string backupFolder = Path.Combine(gamePath, "BackupOldManagerFiles", "profiles");
-			Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
 
-			//if user is about to uninstall the loader restore vanilla saved profiles
-			if (installed && Directory.Exists(backupFolder))
-            {
-                foreach (var item in Directory.EnumerateFiles(backupFolder, "*.ini"))
-                {
-                    if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase))
-                    { 
-                        await Util.MoveFileAsync(item, Path.Combine(modFolder, Path.GetFileName(item)), true);
-                    }
-                }
-            }
-
+            Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+            string defaultJson = Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json");
             //if user is about to install the loader backup vanilla profiles
             if (!installed)
             {
-                Directory.CreateDirectory(backupFolder);
-
-				foreach (var item in Directory.EnumerateFiles(App.CurrentGame.modDirectory, "*.ini"))
+                foreach (var item in Directory.EnumerateFiles(modFolder, "*.ini"))
                 {
-                    if (!item.EndsWith("SADXModLoader.ini", StringComparison.OrdinalIgnoreCase))
-                    {
-						// Deserializes old profiles and converts to new profile format, then saves to Profiles folder.
-						await Util.ConvertProfiles(item, Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item)));
-                        //move old profiles in a backup folder
-                        await Util.MoveFileAsync(item, Path.Combine(backupFolder, Path.GetFileName(item)), true);
-                    }
+                    string destinationPath = Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item));
+                    await Util.CopyFileAsync(item, destinationPath, true);
+                    // Deserializes old profiles and converts to new profile format, then saves to Profiles folder.
                 }
 
+                string originFile = Path.Combine(App.CurrentGame.ProfilesDirectory, App.CurrentGame.defaultIniProfile);
+                if (File.Exists(originFile))
+                {
+                    if (File.Exists(defaultJson))
+                    {
+                        File.Delete(defaultJson);
+                    }
+
+                    await Util.ConvertProfiles(originFile, defaultJson);
+                    return true;
+                }
             }
+
+            return false;
         }
 
         private static async Task BackupAndRestoreManagerFiles(bool installed, string gamePath)
@@ -119,8 +114,13 @@ namespace SAModManager.Common
 
         public async static Task HandleVanillaManagerFiles(bool installed, string gamePath)
         {
-           await BackupAndRestoreManagerFiles(installed, gamePath);
-           await HandleProfiles(installed, gamePath);
+            await BackupAndRestoreManagerFiles(installed, gamePath);
+
+        }
+
+        public async static Task<bool> ConvertOldProfile(bool installed, string gamePath)
+        {
+            return await HandleProfiles(installed, gamePath);
         }
     }
 }

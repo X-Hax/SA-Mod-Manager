@@ -982,6 +982,7 @@ namespace SAModManager
                         pathValid = true;
                         tempPath = GamePath;
 						UIHelper.ToggleButton(ref btnOpenGameDir, true);
+                        await VanillaTransition.ConvertOldProfile(false, GamePath);
 						Load(true);
 						break;
                     }
@@ -994,6 +995,7 @@ namespace SAModManager
                 else
                 {
                     await InstallLoader();
+                    Save();
                 }
             }
         }
@@ -1250,41 +1252,11 @@ namespace SAModManager
 
         public string GetCurrentProfileName()
         {
-            return GameProfiles.ProfilesList[comboProfile.SelectedIndex].Filename;
+            int index = comboProfile.SelectedIndex >= 0 ? comboProfile.SelectedIndex : 0;   
+            return GameProfiles.ProfilesList[index].Filename;
         }
 
         #region Private: Load & Save
-        private async Task<bool> LoadGameProfile()
-        {
-            string defaultProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, "default.ini");
-            bool exist = File.Exists(defaultProfile);
-            if (!exist)
-            {
-                if (!String.IsNullOrEmpty(App.CurrentGame.modDirectory))
-                {
-                    string oldProfile = Path.Combine(App.CurrentGame.modDirectory, "SADXModLoader.ini");
-
-                    if (File.Exists(oldProfile))
-                    {
-                        //await Util.CopyFileAsync(oldProfile, Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.ini"), true);
-                        await Util.ConvertProfiles(oldProfile, defaultProfile);
-                        exist = true;
-                    }
-                }
-
-            }
-            switch ((SetGame)App.ManagerSettings.CurrentSetGame)
-            {
-                case SetGame.SADX:
-                    GameProfile = exist ? IniSerializer.Deserialize<Configuration.SADX.GameSettings>(defaultProfile) : new();
-                    break;
-                case SetGame.SA2:
-                    GameProfile = exist ? IniSerializer.Deserialize<IniSettings.SA2.GameSettings>(defaultProfile) : new();
-                    break;
-            }
-
-            return true;
-        }
 
         private void LoadGameConfigFile()
         {
@@ -1366,13 +1338,13 @@ namespace SAModManager
             Update_PlayButtonsState();
         }
 
-		private async void LoadSADXSettings(string profilePath, bool newSetup = false)
+		private void LoadSADXSettings(string profilePath, bool newSetup = false)
 		{
 			Configuration.SADX.GameSettings sadxSettings = File.Exists(profilePath) ? Configuration.SADX.GameSettings.Deserialize(profilePath) : new();
 			GameProfile = sadxSettings;
 
-			if (newSetup)
-				sadxSettings.GamePath = tempPath;
+			if (newSetup || sadxSettings.GamePath is null)
+                sadxSettings.GamePath = tempPath;
 
 			textGameDir.Text = sadxSettings.GamePath;
 			App.CurrentGame.gameDirectory = sadxSettings.GamePath;
@@ -1447,7 +1419,6 @@ namespace SAModManager
 				GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
 				comboProfile.ItemsSource = GameProfiles.ProfilesList;
 				comboProfile.DisplayMemberPath = "Name";
-				comboProfile.SelectedIndex = GameProfiles.ProfileIndex;
 
 				// Set the existing profiles to the ones from the loaded Manager Settings.
 				LoadGameSettings(newSetup);
@@ -1465,9 +1436,6 @@ namespace SAModManager
 
 			// Update the UI based on the loaded game.
 			SetGameUI();
-
-			if (newSetup)
-				Save();
 
 			await Task.Delay(200);
 
@@ -1557,7 +1525,7 @@ namespace SAModManager
                 mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(App.CurrentGame.modDirectory.Length + 1), mod);
             }
 
-            foreach (string mod in EnabledMods)
+            foreach (string mod in EnabledMods.ToList())
             {
                 if (mods.ContainsKey(mod))
                 {
@@ -2155,11 +2123,10 @@ namespace SAModManager
         {
             setGame = game; //TO DO get current game somehow
             Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
-            await LoadGameProfile();
             LoadGameConfigFile();
             SetGameUI();
             SetBindings();
-
+            await Task.Delay(0);
             return true;
         }
 
