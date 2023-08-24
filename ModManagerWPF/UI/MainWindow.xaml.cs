@@ -1184,14 +1184,16 @@ namespace SAModManager
         private void SetGameUI()
         {
             Grid stackPanel;
-            Grid tsPanel;
-            switch (setGame)
+			stackPanel = (Grid)tabGame.Content;
+			stackPanel.Children.Clear();
+			Grid tsPanel;
+			tsPanel = (Grid)tabTestSpawn.Content;
+			tsPanel.Children.Clear();
+			switch (setGame)
             {
                 case SetGame.SADX:
 					EnableUI(true);
-                    stackPanel = (Grid)tabGame.Content;
                     stackPanel.Children.Add(new Elements.SADX.GameConfig(ref GameProfile, ref gameConfigFile));
-                    tsPanel = (Grid)tabTestSpawn.Content;
                     tsPanel.Children.Add(new Elements.SADX.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.SA2:
