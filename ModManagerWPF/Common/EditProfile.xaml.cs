@@ -51,7 +51,7 @@ namespace SAModManager.Common
 			ProfileNameTextbox.Focus();
 		}
 
-		private async void SaveNewProfile()
+		private void SaveNewProfile()
 		{
 			string profileName = ProfileNameTextbox.Text;
 			string profileFilename = profileName + ".json";
@@ -67,14 +67,18 @@ namespace SAModManager.Common
 				switch (App.CurrentGame.gameName)
 				{
 					case "Sonic Adventure DX":
-						Configuration.SADX.GameSettings sadxSettings = new Configuration.SADX.GameSettings();
-						sadxSettings.GamePath = App.CurrentGame.gameDirectory;
-						sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
+                        Configuration.SADX.GameSettings sadxSettings = new()
+                        {
+                            GamePath = App.CurrentGame.gameDirectory
+                        };
+                        sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
 						break;
 					case "Sonic Adventure 2":
-						Configuration.SADX.GameSettings sa2Settings = new Configuration.SADX.GameSettings();
-						sa2Settings.GamePath = App.CurrentGame.gameDirectory;
-						sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
+                        Configuration.SADX.GameSettings sa2Settings = new()
+                        {
+                            GamePath = App.CurrentGame.gameDirectory
+                        };
+                        sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
 						break;
 				}
 
@@ -82,7 +86,7 @@ namespace SAModManager.Common
 			}
 		}
 
-		private async void SaveEditedProfile()
+		private void SaveEditedProfile()
 		{
 			string profileName = ProfileNameTextbox.Text;
 			string profileFilename = profileName + ".json";
@@ -133,7 +137,7 @@ namespace SAModManager.Common
 			DialogResult = true;
 		}
 
-		private async void UI_OK_Click(object sender, RoutedEventArgs e)
+		private void UI_OK_Click(object sender, RoutedEventArgs e)
 		{
 			SaveProfile();
 		}
