@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SAModManager.Common"
         xmlns:dd="urn:gong-wpf-dragdrop"
         mc:Ignorable="d"
-        Title="ModProfile" Height="300" Width="500"
+        Title="{StaticResource ManagerProfile.Title}" Height="300" Width="500"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource SAWindow}">
 	<Window.Resources>

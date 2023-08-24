@@ -16,4 +16,7 @@
 	
 	<system:String x:Key="ManagerProfile.ToolTip.Create">Create a new Profile.</system:String>
 	<system:String x:Key="ManagerProfile.ToolTip.Migrate">Migrates old profiles to the new format. Some settings may be lost.</system:String>
+
+	<system:String x:Key="NewProfile.Title">Create a Profile</system:String>
+	<system:String x:Key="NewProfile.Text.NewProfile">New Profile</system:String>
 </ResourceDictionary>

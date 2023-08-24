@@ -15,7 +15,6 @@ namespace SAModManager.Common
 	/// 
 	public partial class EditProfile : Window
 	{
-		private char index { get; set; }
 		private bool isEditing { get; set; } = false;
 		private string origProfile = string.Empty;
 
@@ -26,8 +25,6 @@ namespace SAModManager.Common
 			InitializeComponent();
 			Title = Lang.GetString("ManagerProfile.Buttons.Create");
 			Header.Text = Title;
-			ProfileNameTextbox.Focusable = true;
-			Keyboard.Focus(ProfileNameTextbox);
 		}
 
 		public EditProfile(ProfileEntry profile)
@@ -37,9 +34,21 @@ namespace SAModManager.Common
 			Header.Text = Title;
 			ProfileNameTextbox.Text = profile.Name;
 			origProfile = profile.Filename;
-			ProfileNameTextbox.Focusable = true;
-			Keyboard.Focus(ProfileNameTextbox);
 			isEditing = true;
+		}
+
+		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Enter)
+			{
+				SaveProfile();
+				e.Handled = true;
+			}
+		}
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			ProfileNameTextbox.Focus();
 		}
 
 		private async void SaveNewProfile()
@@ -114,7 +123,7 @@ namespace SAModManager.Common
 			}
 		}
 
-		private async void UI_OK_Click(object sender, RoutedEventArgs e)
+		private void SaveProfile()
 		{
 			if (isEditing)
 				SaveEditedProfile();
@@ -122,6 +131,11 @@ namespace SAModManager.Common
 				SaveNewProfile();
 
 			DialogResult = true;
+		}
+
+		private async void UI_OK_Click(object sender, RoutedEventArgs e)
+		{
+			SaveProfile();
 		}
 
 		private void UI_Cancel_Click(object sender, RoutedEventArgs e)

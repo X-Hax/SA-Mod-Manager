@@ -15,12 +15,6 @@ namespace SAModManager.Common
     /// Interaction logic for Profile.xaml
     /// </summary>
     /// 
-    public class Profile
-    {
-        public string name { get; set; }
-        public string jsonPath { get; set; }
-    }
-
     public partial class ProfileDialog : Window
     {
 		public int SelectedIndex = 0;
