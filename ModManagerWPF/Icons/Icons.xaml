@@ -17,6 +17,7 @@
 		<ResourceDictionary Source="Edit.xaml"/>
 		<ResourceDictionary Source="Error.xaml"/>
 		<ResourceDictionary Source="Folder.xaml"/>
+        <ResourceDictionary Source="Folder2.xaml"/>
         <ResourceDictionary Source="GB.xaml"/>
 		<ResourceDictionary Source="Health.xaml"/>
 		<ResourceDictionary Source="Information.xaml"/>

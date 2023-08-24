@@ -19,6 +19,7 @@ namespace SAModManager.Common
 		/// The Name of the Game.
 		/// </summary>
         public string gameName;
+
 		/// <summary>
 		/// Executables list, necessary due to SADX.
 		/// </summary>

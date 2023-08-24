@@ -136,11 +136,14 @@ namespace SAModManager
             {
                 App.SwitchLanguage();
                 if (langMsg.genericValue > 0)
-                    App.configIni.Language = langMsg.genericValue;
+                    App.ManagerSettings.Language = langMsg.genericValue;
 
             }
 
-            IniSerializer.Serialize(App.configIni, App.ConfigPath);
+			if (!Directory.Exists(App.ConfigFolder))
+				Directory.CreateDirectory(App.ConfigFolder);
+
+			App.ManagerSettings.Serialize(App.ManagerConfigFile);
             await Task.Delay(20);
         }
 
@@ -186,17 +189,13 @@ namespace SAModManager
 
         private static async Task<bool> UpdateDependenciesFolder()
         {
-            string configPath = Path.Combine(App.ConfigFolder, "config.ini");
-
             try
             {
                 GamesInstall.SetDependencyPath();
-
-  
                 Directory.CreateDirectory(App.ConfigFolder);
                 
 
-                if (!File.Exists(configPath)) //If config page isn't found, assume this is the first boot.
+                if (!File.Exists(App.ManagerConfigFile)) //If config page isn't found, assume this is the first boot.
                 {
                     await EnableOneClickInstall();
                     await SetLanguageFirstBoot();

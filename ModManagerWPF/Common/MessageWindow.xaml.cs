@@ -196,22 +196,26 @@ namespace SAModManager.Common
 					ButtonLeft.Visibility = Visibility.Hidden;
 					ButtonRight.Content = Lang.GetString("CommonStrings.OK");
 					ButtonRight.Click += ButtonYes_Click;
+					ButtonRight.Focus();
 					break;
 				case Buttons.OKCancel:
 					ButtonLeft.Content = Lang.GetString("CommonStrings.OK");
 					ButtonLeft.Click += ButtonYes_Click;
+					ButtonLeft.Focus();
 					ButtonRight.Content = Lang.GetString("CommonStrings.Cancel");
 					ButtonRight.Click += ButtonClick;
 					break;
 				case Buttons.YesNo:
 					ButtonLeft.Content = Lang.GetString("CommonStrings.Yes");
 					ButtonLeft.Click += ButtonYes_Click;
+					ButtonLeft.Focus();
 					ButtonRight.Content = Lang.GetString("CommonStrings.No");
 					ButtonRight.Click += ButtonClick;
 					break;
 				case Buttons.RetryCancel:
 					ButtonLeft.Content = Lang.GetString("CommonStrings.Retry");
 					ButtonLeft.Click += ButtonYes_Click;
+					ButtonLeft.Focus();
 					ButtonRight.Content = Lang.GetString("CommonStrings.Cancel");
 					ButtonRight.Click += ButtonClick;
 					break;

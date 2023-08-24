@@ -18,6 +18,7 @@ using System.Reflection;
 using SAModManager.Configuration;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using SAModManager.Properties;
 
 namespace SAModManager
 {
@@ -34,8 +35,9 @@ namespace SAModManager
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
         public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
-        public static readonly string ConfigPath = Path.Combine(ConfigFolder, "config.ini");
-        public static ManagerSettings configIni { get; set; }
+
+		public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
+        public static ManagerSettings ManagerSettings { get; set; }
 
         private static readonly Mutex mutex = new(true, pipeName);
         public static Updater.UriQueue UriQueue;
@@ -78,7 +80,7 @@ namespace SAModManager
             SetupLanguages();
             SetupThemes();
 
-            configIni = LoadManagerConfig();
+            ManagerSettings = LoadManagerConfig();
             if (await ExecuteDependenciesCheck() == false)
             {
                 return;
@@ -93,7 +95,7 @@ namespace SAModManager
                 return;
             }
 
-            Steam.Init();
+            //Steam.Init();
             ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             MainWindow = new MainWindow();
@@ -370,9 +372,9 @@ namespace SAModManager
 
         private ManagerSettings LoadManagerConfig()
         {
-            ManagerSettings settings = File.Exists(ConfigPath) ? IniSerializer.Deserialize<ManagerSettings>(ConfigPath) : new ManagerSettings();
+			ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
 
-            switch (settings.GameManagement.CurrentSetGame)
+			switch (settings.CurrentSetGame)
             {
                 default:
                 case (int)SetGame.SADX:
@@ -383,7 +385,7 @@ namespace SAModManager
                     break;
             }
 
-            return settings;
+			return settings;
         }
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)

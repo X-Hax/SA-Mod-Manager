@@ -35,17 +35,17 @@ namespace SAModManager.Updater
         {
             long currentTime = DateTime.UtcNow.ToFileTimeUtc();
 
-            if (App.configIni.UpdateSettings.UpdateCheckCount >= CDAmount && App.configIni.UpdateSettings.UpdateTimeOutCD <= 0)
+            if (App.ManagerSettings.UpdateSettings.UpdateCheckCount >= CDAmount && App.ManagerSettings.UpdateSettings.UpdateTimeOutCD <= 0)
             {
-                App.configIni.UpdateSettings.UpdateTimeOutCD = currentTime;
+                App.ManagerSettings.UpdateSettings.UpdateTimeOutCD = currentTime;
                 return;
             }
 
-            if (App.configIni.UpdateSettings.UpdateTimeOutCD <= 0)
+            if (App.ManagerSettings.UpdateSettings.UpdateTimeOutCD <= 0)
                 return;
 
 
-            DateTime previousTime = DateTime.FromFileTimeUtc(App.configIni.UpdateSettings.UpdateTimeOutCD);
+            DateTime previousTime = DateTime.FromFileTimeUtc(App.ManagerSettings.UpdateSettings.UpdateTimeOutCD);
 
             // Get the current time
             DateTime curTime = DateTime.UtcNow;
@@ -53,10 +53,10 @@ namespace SAModManager.Updater
             // Calculate the time difference
             TimeSpan timeDifference = curTime - previousTime;
 
-            if (timeDifference.TotalMinutes > CD && App.configIni.UpdateSettings.UpdateTimeOutCD > 0 && App.configIni.UpdateSettings.UpdateCheckCount >= CDAmount)
+            if (timeDifference.TotalMinutes > CD && App.ManagerSettings.UpdateSettings.UpdateTimeOutCD > 0 && App.ManagerSettings.UpdateSettings.UpdateCheckCount >= CDAmount)
             {
-                App.configIni.UpdateSettings.UpdateCheckCount = 0;
-                App.configIni.UpdateSettings.UpdateTimeOutCD = 0;
+                App.ManagerSettings.UpdateSettings.UpdateCheckCount = 0;
+                App.ManagerSettings.UpdateSettings.UpdateTimeOutCD = 0;
             }
         }
     }

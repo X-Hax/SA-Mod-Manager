@@ -5,6 +5,7 @@
 	<system:String x:Key="ManagerProfile.Title">Manage Profiles</system:String>
 	<system:String x:Key="ManagerProfile.Buttons.Rename">Rename Profile</system:String>
 	<system:String x:Key="ManagerProfile.Buttons.Create">Create Profile</system:String>
+	<system:String x:Key="ManagerProfile.Buttons.Migrate">Migrate</system:String>
 	<system:String x:Key="ManagerProfile.Path">File Path</system:String>
 	<system:String x:Key="ManagerProfile.ContextMenu.Rename">Rename</system:String>
 	<system:String x:Key="ManagerProfile.ContextMenu.Duplicate">Duplicate</system:String>
@@ -12,4 +13,10 @@
 	<system:String x:Key="ManagerProfile.Errors.Unexpected">Unexpected Error, couldn't rename profile.</system:String>
 	<system:String x:Key="ManagerProfile.Errors.ProfileExists.Title">Error Profile already exists</system:String>
 	<system:String x:Key="ManagerProfile.Errors.ProfileExists">A profile with this name already exists, please use a different name.</system:String>
+	
+	<system:String x:Key="ManagerProfile.ToolTip.Create">Create a new Profile.</system:String>
+	<system:String x:Key="ManagerProfile.ToolTip.Migrate">Migrates old profiles to the new format. Some settings may be lost.</system:String>
+
+	<system:String x:Key="NewProfile.Title">Create a Profile</system:String>
+	<system:String x:Key="NewProfile.Text.NewProfile">New Profile</system:String>
 </ResourceDictionary>

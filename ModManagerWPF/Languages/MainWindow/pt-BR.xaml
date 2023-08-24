@@ -140,8 +140,9 @@
 
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Habilitar 1-Click Install</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Desabilitar 1-Click Install</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Abrir Diretoria do Jogo</system:String>
 
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Instalar Carregador de Mods</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Instalar Carregador de Mods</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Desinstalar Carregador de Mods</system:String>
 
 	<!--Updates-->

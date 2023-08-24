@@ -399,13 +399,13 @@
                                     </Grid.RowDefinitions>
 
                                     <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
-                                        <ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboProfile_SelectionChanged" DisplayMemberPath="name"/>
+                                        <ComboBox x:Name="comboProfile" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" SelectionChanged="comboProfile_SelectionChanged"/>
 
 										<elements:ImageButton x:Name="btnProfileSettings" Grid.Column="2" Height="22" Width="27" Click="btnProfileSettings_Click"
 														   Icon="{StaticResource Icons.Profile}" Padding="2"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
-                                        <TextBox x:Name="textGameDir" Width="238" VerticalAlignment="Center" Margin="5,0,5,0" IsReadOnly="True"/>
+                                        <TextBox x:Name="textGameDir" Width="238" VerticalAlignment="Center" Margin="5,0,5,0"/>
 										<elements:ImageButton x:Name="btnBrowseGameDir" Grid.Column="2" Height="22" Width="27" Click="btnBrowseGameDir_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.DirectoryBrowse}"
 														   Icon="{StaticResource Icons.Folder}"/>
                                     </StackPanel>
@@ -425,10 +425,10 @@
                                         <RowDefinition Height="30"/>
                                     </Grid.RowDefinitions>
 
-                                    <Button x:Name="btnOneClick" Grid.Column="0" Grid.Row="1" Margin="5,0,5,0" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.EnableOneClick}" Click="btnOneClick_Click">
+                                    <Button x:Name="btnOpenGameDir" Grid.Column="0" Grid.Row="1" Margin="5,0,5,0" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.EnableOneClick}" Click="btnOpenGameDir_Click">
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Source="{StaticResource IconGB}" Width="20" Height="15" Margin="0,0,5,0"/>
-                                            <TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick}" VerticalAlignment="Center"></TextBlock>
+                                            <Image Source="{StaticResource IconFolder2}" Width="20" Height="15" Margin="0,0,5,0"/>
+                                            <TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir}" VerticalAlignment="Center"></TextBlock>
                                         </StackPanel>
                                     </Button>
                                     <Button x:Name="btnInstallLoader" Grid.Column="2" Grid.Row="1" Margin="5,0,5,0" Click="btnInstallLoader_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.InstallLoader}">
