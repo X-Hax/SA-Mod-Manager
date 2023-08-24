@@ -36,7 +36,7 @@ namespace SAModManager
         public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
 
-		public static string ManagerConfigFile = "Manager.json";
+		public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
         public static ManagerSettings ManagerSettings { get; set; }
 
         private static readonly Mutex mutex = new(true, pipeName);

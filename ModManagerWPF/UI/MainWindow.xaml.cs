@@ -1481,9 +1481,8 @@ namespace SAModManager
                 return;
 
             // Save Manager Settings
-            string managerSettingsPath = Path.Combine(App.ConfigFolder, App.ManagerConfigFile);
 			App.ManagerSettings.CurrentSetGame = (int)setGame;
-            App.ManagerSettings.Serialize(managerSettingsPath);
+            App.ManagerSettings.Serialize(App.ManagerConfigFile);
 
 			// Update EnabledMods for saving.
 			EnabledMods.Clear();

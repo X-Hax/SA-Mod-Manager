@@ -143,7 +143,7 @@ namespace SAModManager
 			if (!Directory.Exists(App.ConfigFolder))
 				Directory.CreateDirectory(App.ConfigFolder);
 
-			App.ManagerSettings.Serialize(Path.Combine(App.ConfigFolder, App.ManagerConfigFile));
+			App.ManagerSettings.Serialize(App.ManagerConfigFile);
             await Task.Delay(20);
         }
 
@@ -189,15 +189,13 @@ namespace SAModManager
 
         private static async Task<bool> UpdateDependenciesFolder()
         {
-            string configPath = Path.Combine(App.ConfigFolder, App.ManagerConfigFile);
-
             try
             {
                 GamesInstall.SetDependencyPath();
                 Directory.CreateDirectory(App.ConfigFolder);
                 
 
-                if (!File.Exists(configPath)) //If config page isn't found, assume this is the first boot.
+                if (!File.Exists(App.ManagerConfigFile)) //If config page isn't found, assume this is the first boot.
                 {
                     await EnableOneClickInstall();
                     await SetLanguageFirstBoot();
