@@ -2001,9 +2001,12 @@ namespace SAModManager
 
             if (!checkForUpdate)
             {
-                UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalMods"), listMods.Items.Count), 2000);
+                if (listMods.Items.Count > 0)
+                    UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalMods"), listMods.Items.Count), 2000);
                 await Task.Delay(2200);
-                UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalCodes"), CodeListView.Items.Count), 2000);
+
+                if (CodeListView.Items.Count > 0)
+                    UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalCodes"), CodeListView.Items.Count), 2000);
             }   
         }
 
