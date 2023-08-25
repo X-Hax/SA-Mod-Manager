@@ -139,7 +139,7 @@
 
 	<!--#region Manager Config Tab Strings-->
 	<!--Options-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Options</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Game Settings</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Themes:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Language:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profile:</system:String>
@@ -154,6 +154,7 @@
 
 	<!--Updates-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Updates</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Check for Mod Manager Updates on Startup</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Check for Mod Loader Updates on Startup</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Check for Mod Updates on Startup</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Check For Updates</system:String>
@@ -169,10 +170,11 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Perform Game Health Check</system:String>
 
 	<!--About-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">About</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">The SADX Mod Manager is a program that allows you to easily manage mods in Sonic Adventure DX.</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Manager Settings</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">The SA Mod Manager is a program that allows you to easily manage mods in the Sonic Adventure titles.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contributors</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Source Code</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Mod Manager Source Code</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Mod Loader Source Code</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Report a Bug (English only)</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Open SA Docs (English only)</system:String>
 	<!--#endregion-->
@@ -291,7 +293,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Enables the Test Spawn Tab in the Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">When Enabled, clicking One Click links on GameBanana will open a download dialog for the mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">When enabled, the Mod Loader is installed and you can play with mods, patches, and cheats.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Enables automatic checking for Mod Loader updates when opening the Mod Manager.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Enables automatic checking for updates to the Mod Manager on Startup.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Enables automatic checking for updates to the Mod Loader on Startup.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Enables automatic checking for updates to Mods you have installed when opening the Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Runs a check for updates to the Mod Loader and any Mods you have installed.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Opens a Console Window which displays debug information from the game.</system:String>

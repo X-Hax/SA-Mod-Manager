@@ -1153,8 +1153,7 @@ namespace SAModManager
 			{
 				tabGame.Visibility = Visibility.Visible;
 				comboProfile.IsEnabled = true;
-				grpManAdvanced.IsEnabled = true;
-				grpManUpdates.IsEnabled = true;
+				grpManagerSettings.IsEnabled = true;
 				btnInstallLoader.IsEnabled = true;
 				RefreshBtn.IsEnabled = true;
 				btnSelectAll.IsEnabled = true;
@@ -1169,8 +1168,7 @@ namespace SAModManager
 			{
 				tabGame.Visibility = Visibility.Collapsed;
 				comboProfile.IsEnabled = false;
-				grpManAdvanced.IsEnabled = false;
-				grpManUpdates.IsEnabled = false;
+				grpManagerSettings.IsEnabled = false;
 				btnInstallLoader.IsEnabled = false;
 				RefreshBtn.IsEnabled = false;
 				btnSelectAll.IsEnabled = false;
@@ -2181,8 +2179,13 @@ namespace SAModManager
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
             UpdateBtnInstallLoader_State();
         }
-        #endregion
+		#endregion
 
-        #endregion
-    }
+		#endregion
+
+		private void btnSourceLoader_Click(object sender, RoutedEventArgs e)
+		{
+			// TODO: Implement Loader Source Code Open
+		}
+	}
 }
