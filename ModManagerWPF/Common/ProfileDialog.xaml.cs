@@ -1,4 +1,5 @@
 ﻿using SAModManager.Configuration;
+using SAModManager.Ini;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -227,6 +228,59 @@ namespace SAModManager.Common
 		private void Migrate_Click(object sender, RoutedEventArgs e)
 		{
 			// TODO: Implement Migration Feature
+			var dialog = new System.Windows.Forms.OpenFileDialog();
+			dialog.Filter = "INI Files|*.ini|All Files|*.*";
+			dialog.Multiselect = true;
+
+			System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+			List<string> failedFiles = new();
+
+			if (result == System.Windows.Forms.DialogResult.OK)
+			{
+				foreach (string file in dialog.FileNames)
+				{
+					if (File.Exists(file))
+					{
+						try
+						{
+							switch (App.CurrentGame.gameName)
+							{
+								case "Sonic Adventure DX":
+									SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(file);
+									Configuration.SADX.GameSettings settings = new();
+									settings.ConvertFromV0(info);
+
+									string newFileName = Path.GetFileNameWithoutExtension(file);
+									string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
+
+									settings.Serialize(newFilePath);
+
+									Profiles.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
+									break;
+								case "Sonic Adventure 2":
+									break;
+							}
+						}
+						catch
+						{
+							failedFiles.Add(Path.GetFileName(file));
+						}
+					}
+				}
+
+				RefreshList();
+			}
+
+			if (failedFiles.Count > 0)
+			{
+				string failedFilesList = string.Join(Environment.NewLine, failedFiles);
+				string failedMessage = "The following files failed to be migrated:\n" +
+					failedFilesList;
+
+				MessageWindow message = new MessageWindow("Migration Failed", failedMessage, icon: MessageWindow.Icons.Warning);
+				message.ShowDialog();
+			}
 		}
 
 		private void UI_OK_Click(object sender, RoutedEventArgs e)
