@@ -423,7 +423,7 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 
-							<Grid>
+							<Grid Margin="5">
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="*"/>
