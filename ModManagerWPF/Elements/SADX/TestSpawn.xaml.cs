@@ -767,9 +767,9 @@ namespace SAModManager.Elements.SADX
 		#region Public Functions
 		public void Save()
 		{
-			if (!IsCharacterChecked)
+			if (!IsCharacterChecked && tsNumCharacter.Value < 0)
 				tsComboCharacter.SelectedIndex = -1;
-			if (!IsLevelChecked)
+			if (!IsLevelChecked && tsNumLevel.Value < 0)
 			{
 				tsComboLevel.SelectedIndex = -1;
 				tsComboAct.SelectedIndex = -1;
