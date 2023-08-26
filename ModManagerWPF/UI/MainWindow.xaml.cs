@@ -1106,6 +1106,9 @@ namespace SAModManager
 
         private void comboProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+			if (suppressEvent)
+				return;
+
             var selectedItem = comboProfile.SelectedItem;
 
             if (selectedItem != null)
@@ -1417,6 +1420,9 @@ namespace SAModManager
 				GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
 				comboProfile.ItemsSource = GameProfiles.ProfilesList;
 				comboProfile.DisplayMemberPath = "Name";
+				suppressEvent = true;
+				comboProfile.SelectedIndex = GameProfiles.ProfileIndex;
+				suppressEvent = false;
 
 				// Set the existing profiles to the ones from the loaded Manager Settings.
 				LoadGameSettings(newSetup);
@@ -2182,7 +2188,6 @@ namespace SAModManager
 		#endregion
 
 		#endregion
-
 		private void btnSourceLoader_Click(object sender, RoutedEventArgs e)
 		{
 			// TODO: Implement Loader Source Code Open
