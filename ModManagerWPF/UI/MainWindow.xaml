@@ -535,7 +535,7 @@
 					</StackPanel>
 				</Button>
 
-				<ComboBox x:Name="ComboGameSelection" Grid.Row="1" Grid.Column="5"/>
+				<ComboBox x:Name="ComboGameSelection" Grid.Row="1" Grid.Column="5" IsEnabled="False"/>
 			</Grid>
         </Grid>
     </Grid>
