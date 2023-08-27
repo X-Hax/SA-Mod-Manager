@@ -623,9 +623,7 @@ namespace SAModManager.Configuration.SADX
 			}
 			else
 			{
-				// TODO: Make this error better and move it to Language files.
-				MessageWindow message = new MessageWindow("Failed to Save Loader File", "The Mods directory does not appear to be a valid path, please ensure it is a valid path." +
-					"Your current settings were not saved for the ModLoader to use.",
+				MessageWindow message = new MessageWindow(Lang.GetString("MessageWindow.Errors.LoaderFailedToSave.Title"), Lang.GetString("MessageWindow.Errors.LoaderFailedToSave"),
 					icon: MessageWindow.Icons.Error);
 				message.ShowDialog();
 			}
