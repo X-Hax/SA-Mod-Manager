@@ -810,6 +810,7 @@ namespace SAModManager
                         {
                             ModsFind.Visibility = Visibility.Collapsed;
                             FilterMods("");
+                            TextBox_ModsSearch.Text = "";
                         }
                         else
                         {
@@ -825,6 +826,7 @@ namespace SAModManager
                         {
                             CodesFind.Visibility = Visibility.Collapsed;
                             FilterCodes("");
+                            TextBox_CodesSearch.Text = "";
                         }
                         else
                         {
