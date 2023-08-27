@@ -18,13 +18,19 @@ namespace SAModManager.Common
 		private bool isEditing { get; set; } = false;
 		private string origProfile = string.Empty;
 
+		private List<string> Mods;
+		private List<string> Codes;
+
 		public ProfileEntry Result { get; set; }
 
-		public EditProfile()
+		public EditProfile(List<string> mods = null, List<string> codes = null)
 		{
 			InitializeComponent();
 			Title = Lang.GetString("ManagerProfile.Buttons.Create");
 			Header.Text = Title;
+
+			Mods = mods ?? new List<string>();
+			Codes = codes ?? new List<string>();
 		}
 
 		public EditProfile(ProfileEntry profile)
@@ -67,17 +73,21 @@ namespace SAModManager.Common
 				switch (App.CurrentGame.gameName)
 				{
 					case "Sonic Adventure DX":
-                        Configuration.SADX.GameSettings sadxSettings = new()
-                        {
-                            GamePath = App.CurrentGame.gameDirectory
+						Configuration.SADX.GameSettings sadxSettings = new()
+						{
+							GamePath = App.CurrentGame.gameDirectory,
+							EnabledMods = Mods,
+							EnabledCodes = Codes,
                         };
                         sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
 						break;
 					case "Sonic Adventure 2":
                         Configuration.SADX.GameSettings sa2Settings = new()
                         {
-                            GamePath = App.CurrentGame.gameDirectory
-                        };
+                            GamePath = App.CurrentGame.gameDirectory,
+							EnabledMods = Mods,
+							EnabledCodes = Codes,
+						};
                         sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
 						break;
 				}

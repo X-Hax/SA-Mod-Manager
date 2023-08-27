@@ -211,9 +211,9 @@ namespace SAModManager.Common
         #region Buttons
         private void UI_Add_Click(object sender, RoutedEventArgs e)
         {
-            var newProfile = new EditProfile
+            var newProfile = new EditProfile((Owner as MainWindow).EnabledMods, (Owner as MainWindow).EnabledCodes)
             {
-                Owner = this
+                Owner = this,
             };
             bool? dialogResult = newProfile.ShowDialog();
           
@@ -227,7 +227,6 @@ namespace SAModManager.Common
 
 		private void Migrate_Click(object sender, RoutedEventArgs e)
 		{
-			// TODO: Implement Migration Feature
 			var dialog = new System.Windows.Forms.OpenFileDialog();
 			dialog.Filter = "INI Files|*.ini|All Files|*.*";
 			dialog.Multiselect = true;
