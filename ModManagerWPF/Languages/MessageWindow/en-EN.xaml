@@ -84,6 +84,9 @@
     <system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Download Error</system:String>
     <system:String x:Key="MessageWindow.Errors.GenericDLFail0">Failed to download</system:String>
     <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Would you like to try again?</system:String>
+
+	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave.Title">Loader Info Not Saved.</system:String>
+	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">"The Mods directory does not appear to be a valid path, please ensure it is a valid path. Your current settings were not saved for the ModLoader to use."</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
