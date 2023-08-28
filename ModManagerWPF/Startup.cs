@@ -225,7 +225,7 @@ namespace SAModManager
 
         public static async Task<bool> StartupCheck()
         {
-            await UpdateDependenciesFolder();
+
 
             Console.WriteLine("Checking dependencies...");
 
@@ -236,6 +236,7 @@ namespace SAModManager
                 if (await VC_DependenciesCheck() == false)
                     return false;
 
+                await UpdateDependenciesFolder();
                 ClearTempFolder();
 
                 return true;
