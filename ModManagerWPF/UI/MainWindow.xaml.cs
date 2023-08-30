@@ -1036,8 +1036,6 @@ namespace SAModManager
             Save();
         }
 
-        // TODO: Both of these now point to the Manager's Repo, but we could make options to open/report Loader related issues.
-        // Something to discuss.
         private void btnSource_Click(object sender, RoutedEventArgs e)
         {
             var ps = new ProcessStartInfo("https://github.com/X-Hax/sa-mod-manager")
@@ -2187,7 +2185,7 @@ namespace SAModManager
                 }
             }
 
-            //todo, delete when official release
+            //TODO: delete when official release
             await VanillaTransition.HandleVanillaManagerFiles(App.CurrentGame.loader.installed, App.CurrentGame.gameDirectory);
 
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
@@ -2196,9 +2194,5 @@ namespace SAModManager
 		#endregion
 
 		#endregion
-		private void btnSourceLoader_Click(object sender, RoutedEventArgs e)
-		{
-			// TODO: Implement Loader Source Code Open
-		}
 	}
 }
