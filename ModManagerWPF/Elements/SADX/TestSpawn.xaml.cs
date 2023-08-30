@@ -728,13 +728,13 @@ namespace SAModManager.Elements.SADX
 		{
 			List<string> cmdline = new List<string>();
 
-			if (GameProfile.TestSpawn.CharacterIndex > -1)
+			if (GameProfile.TestSpawn.CharacterIndex > -1 && tsCheckCharacter.IsChecked == true)
 				cmdline.Add("-c " + GameProfile.TestSpawn.CharacterIndex.ToString());
 
-			if (GameProfile.TestSpawn.LevelIndex > -1)
+			if (GameProfile.TestSpawn.LevelIndex > -1 && IsLevelChecked)
 				cmdline.Add("-l " + GameProfile.TestSpawn.LevelIndex.ToString());
 
-			if (GameProfile.TestSpawn.ActIndex > -1)
+			if (GameProfile.TestSpawn.ActIndex > -1 && IsLevelChecked)
 				cmdline.Add("-a " + GameProfile.TestSpawn.ActIndex.ToString());
 
 			if (GameProfile.TestSpawn.UsePosition)
