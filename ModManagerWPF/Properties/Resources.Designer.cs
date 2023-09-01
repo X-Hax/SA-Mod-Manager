@@ -155,7 +155,7 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/SADXModLoader.dll.
+        ///   Looks up a localized string similar to https://github.com/X-Hax/sadx-mod-loader/raw/wpf/extlib/ModLoaders/SADXModLoader.dll.
         /// </summary>
         internal static string URL_SADX_DL {
             get {

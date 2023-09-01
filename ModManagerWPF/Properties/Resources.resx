@@ -143,7 +143,7 @@
     <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/wpf/data/Codes.lst</value>
   </data>
   <data name="URL_SADX_DL" xml:space="preserve">
-    <value>https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/SADXModLoader.dll</value>
+    <value>https://github.com/X-Hax/sadx-mod-loader/raw/wpf/extlib/ModLoaders/SADXModLoader.dll</value>
   </data>
   <data name="URL_SAMM_UPDATE" xml:space="preserve">
     <value>https://nightly.link/X-Hax/SA-Mod-Manager/suites/{0}/artifacts/{1}</value>
