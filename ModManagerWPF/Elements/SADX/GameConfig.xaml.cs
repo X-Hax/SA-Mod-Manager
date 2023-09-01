@@ -40,6 +40,7 @@ namespace SAModManager.Elements.SADX
 			GameSettings = (SADXConfigFile)gameConfig;
 			graphics = new GraphicsHelper(ref comboScreen);
 			SetPatches();
+			UpdateAppLauncherBtn();
             Loaded += GameConfig_Loaded;
 		}
 
@@ -277,53 +278,57 @@ namespace SAModManager.Elements.SADX
 		}
 
 		#region App Launcher
-		private void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
+		private async void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
 		{
-			Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
-			var DL = new GenericDownloadDialog(uri, "App Launcher", "AppLauncher.7z", null, true);
-			DL.StartDL();
+			string fullName = "AppLauncher.7z";
+			string destName = "App Launcher";
+			string fullPath = Path.Combine(destName, fullName);
+
+            Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
+			var DL = new GenericDownloadDialog(uri, "App Launcher", fullName, destName);
+			await DL.StartDL();
 			DL.ShowDialog();
 
-			if (DL.DialogResult == true)
+			if (DL.done == true)
 			{
 				try
 				{
-					using ArchiveFile archiveFile = new("AppLauncher.7z");
-					archiveFile.Extract(Environment.CurrentDirectory);
+					using ArchiveFile archiveFile = new(fullPath);
+					archiveFile.Extract("App Launcher");
 					btnOpenAppLauncher.IsEnabled = true;
 					btnOpenAppLauncher.Opacity = 1;
 					btnGetAppLauncher.Opacity = LowOpacityBtn;
 					btnGetAppLauncher.IsEnabled = false;
+
 				}
 				catch
 				{
-					throw new Exception("Failed to extract one mod.");
+					throw new Exception("Failed to extract AppLauncher.");
 				}
+
+				if (File.Exists(fullPath))
+				{
+					File.Delete(fullPath);
+                }
 			}
 
 		}
 
 		private void btnOpenAppLauncher_Click(object sender, RoutedEventArgs e)
 		{
-			if (File.Exists("AppLauncher.exe"))
+			string fullPath = Path.Combine("App Launcher", "AppLauncher.exe");
+
+            if (File.Exists(fullPath))
 			{
-				Process.Start(new ProcessStartInfo { FileName = "AppLauncher.exe", UseShellExecute = true });
+				Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });
 			}
 		}
 
 		private void UpdateAppLauncherBtn()
 		{
-			if (File.Exists("AppLauncher.7z") && File.Exists("AppLauncher.exe"))
-			{
-				try
-				{
-					File.Delete("AppLauncher.7z");
-				}
-				catch
-				{ }
-			}
+            string fullPath = Path.Combine("App Launcher", "AppLauncher.exe");
 
-			if (File.Exists("AppLauncher.exe"))
+            if (File.Exists(fullPath))
 			{
 				btnGetAppLauncher.IsEnabled = false;
 				btnGetAppLauncher.Opacity = LowOpacityBtn;

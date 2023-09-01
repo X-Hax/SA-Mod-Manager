@@ -41,16 +41,15 @@ namespace SAModManager.Updater
             if (!string.IsNullOrEmpty(dest))
             {
                 this.dest = dest;
-
-                try
-                {
-                    if (!Directory.Exists(dest))
-                    {
-                        Directory.CreateDirectory(dest);
-                    }
-                }
-                catch { }
             }
+
+            try
+            {
+               Directory.CreateDirectory(this.dest);
+
+            }
+            catch { }
+
         }
 
         private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -69,7 +68,7 @@ namespace SAModManager.Updater
 
                 await Task.Delay(200);
 
-                if (File.Exists(fileName) && dest is not null)
+                if (File.Exists(fileName) && Directory.Exists(dest))
                 {
                     FileInfo fileInfo = new FileInfo(fileName);
 
@@ -81,7 +80,7 @@ namespace SAModManager.Updater
 
                 await Task.Delay(200);
 
-                if (dest is not null && File.Exists(fileName))
+                if (!string.IsNullOrEmpty(dest) && File.Exists(fileName))
                     File.Delete(fileName);
 
                 if (!silent)

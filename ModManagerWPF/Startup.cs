@@ -226,7 +226,6 @@ namespace SAModManager
         public static async Task<bool> StartupCheck()
         {
 
-
             Console.WriteLine("Checking dependencies...");
 
             bool net7 = await Net7Check();
