@@ -767,14 +767,18 @@ namespace SAModManager.Elements.SADX
 		#region Public Functions
 		public void Save()
 		{
-			if (!IsCharacterChecked && tsNumCharacter.Value < 0)
-				tsComboCharacter.SelectedIndex = -1;
-			if (!IsLevelChecked && tsNumLevel.Value < 0)
+			if (!GameProfile.TestSpawn.UseManual)
 			{
-				tsComboLevel.SelectedIndex = -1;
-				tsComboAct.SelectedIndex = -1;
-				tsComboTime.SelectedIndex = 0;
+				if (!IsCharacterChecked)
+					tsComboCharacter.SelectedIndex = -1;
+				if (!IsLevelChecked)
+				{
+					tsComboLevel.SelectedIndex = -1;
+					tsComboAct.SelectedIndex = -1;
+					tsComboTime.SelectedIndex = 0;
+				}
 			}
+
 			if (!IsEventChecked)
 				tsComboEvent.SelectedIndex = -1;
 			if (!IsGameModeChecked)
