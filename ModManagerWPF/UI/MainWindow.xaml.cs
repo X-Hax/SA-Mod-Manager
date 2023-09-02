@@ -27,6 +27,8 @@ using SAModManager.Configuration;
 using ICSharpCode.AvalonEdit.Editing;
 using SAModManager.IniSettings.SA2;
 using System.Reflection;
+using System.Windows.Media.Animation;
+using NetCoreInstallChecker.Structs;
 
 namespace SAModManager
 {
@@ -126,7 +128,6 @@ namespace SAModManager
             checkForUpdate = false;
 #endif
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
-            Refresh();
         }
 
         private void MainForm_FormClosing(object sender, EventArgs e)
@@ -369,6 +370,7 @@ namespace SAModManager
                 {
                     codes = item,
                     IsChecked = EnabledCodes.Contains(item.Name),
+                    IsEnabled = !item.Required,
                 };
 
                 CodeListView.Items.Add(extraItem);
@@ -762,13 +764,15 @@ namespace SAModManager
                 e.Handled = true;
             }
 
-            if (e.Key >= Key.A && e.Key <= Key.Z)
+            if (!ctrlKey)
             {
-                KeyConverter converter = new();
-                string keyString = (string)converter.ConvertTo(e.Key, typeof(string));
-                SelectModByFirstLetter(keyString);
+                if (e.Key >= Key.A && e.Key <= Key.Z)
+                {
+                    KeyConverter converter = new();
+                    string keyString = (string)converter.ConvertTo(e.Key, typeof(string));
+                    SelectModByFirstLetter(keyString);
+                }
             }
-
         }
 
         private void CodesList_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -778,7 +782,7 @@ namespace SAModManager
             if (code == null)
                 return;
 
-            if (Keyboard.IsKeyDown(Key.Space))
+            if (Keyboard.IsKeyDown(Key.Space) && !code.codes.Required)
             {
                 CodeListView.BeginInit();
                 code.IsChecked = !code.IsChecked;
@@ -1310,6 +1314,7 @@ namespace SAModManager
                 {
                     codes = item,
                     IsChecked = EnabledCodes.Contains(item.Name),
+                    IsEnabled = !item.Required,
                 };
 
                 codesSearch.Add(extraItem);
@@ -1561,16 +1566,18 @@ namespace SAModManager
                     {
                         var t = CodeList.Load(Path.Combine(Path.Combine(App.CurrentGame.modDirectory, mod), inf.Codes));
                         codes.AddRange(t.Codes);
-
+                 
                         foreach (var code in t.Codes)
                         {
                             CodeData extraItem = new()
                             {
                                 codes = code,
                                 IsChecked = EnabledCodes.Contains(item.Name),
+                                IsEnabled = !code.Required,
                             };
 
                             extraItem.codes.Category = "Codes From " + inf.Name;
+                           
                             codesSearch.Add(extraItem);
                             CodeListView.Items.Add(extraItem);
                         }

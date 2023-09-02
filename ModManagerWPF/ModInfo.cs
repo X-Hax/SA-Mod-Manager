@@ -138,7 +138,8 @@ namespace SAModManager
 	{
 		public Code codes { get; set; }
 		public bool IsChecked { get; set; }
-	}
+		public bool IsEnabled { get; set; }
+    }
 
 	public class PatchesData
 	{
