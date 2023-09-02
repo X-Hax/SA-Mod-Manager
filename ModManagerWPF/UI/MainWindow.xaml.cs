@@ -362,7 +362,6 @@ namespace SAModManager
                 EnabledCodes.Add(item.Name);
 
             CodeListView.BeginInit();
-            CodeListView.Items.Clear();
 
             foreach (Code item in codes)
             {
@@ -1297,9 +1296,6 @@ namespace SAModManager
 
         private void LoadCodes()
         {
-            codes = new List<Code>(mainCodes.Codes);
-            codesSearch = new();
-
             EnabledCodes = new List<string>(EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
 
             CodeListView.BeginInit();
@@ -1446,10 +1442,10 @@ namespace SAModManager
 
 				await UpdateManagerInfo();
 
+                InitCodes();
                 LoadModList();
 
-				InitCodes();
-			}
+            }
             else
             {
                 UIHelper.ToggleButton(ref btnOpenGameDir, false);
@@ -1505,6 +1501,8 @@ namespace SAModManager
             btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
             ViewModel.Modsdata.Clear();
             mods = new Dictionary<string, SADXModInfo>();
+            codes = new List<Code>(mainCodes.Codes);
+            codesSearch = new();
 
             bool modFolderExist = Directory.Exists(App.CurrentGame.modDirectory);
 
@@ -1608,7 +1606,7 @@ namespace SAModManager
                 }
             }
 
-
+            LoadCodes();
             DataContext = ViewModel;
             ConfigureModBtn_UpdateState();
         }
@@ -2071,8 +2069,6 @@ namespace SAModManager
                     mainCodes = CodeList.Load(codexmlpath);
                 else
                     mainCodes = new CodeList();
-
-                LoadCodes();
             }
             catch (Exception ex)
             {
