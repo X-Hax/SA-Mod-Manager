@@ -170,7 +170,7 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Perform Game Health Check</system:String>
 
 	<!--About-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Manager Settings</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">About</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">The SA Mod Manager is a program that allows you to easily manage mods in the Sonic Adventure titles.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contributors</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Mod Manager Source Code</system:String>
