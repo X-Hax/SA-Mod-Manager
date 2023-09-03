@@ -101,6 +101,8 @@
 	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">This can cause MOD USER DATA (SAVE FILES, CONFIG FILES) TO BE LOST upon next update! To prevent this, you should never run this on mods you did not develop.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime is not installed!&#x0a;&#x0a;Would you like to install it now?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">This will delete all the codes of this mod.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->
