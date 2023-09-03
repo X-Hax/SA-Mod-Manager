@@ -715,31 +715,5 @@ namespace SAModManager.Elements.SADX
 		}
 
 		#endregion
-
-		#region Public Functions
-		public void Save()
-		{
-			/*
-			if (!GameProfile.TestSpawn.UseManual)
-			{
-				if (!GameProfile.TestSpawn.UseCharacter)
-					tsComboCharacter.SelectedIndex = -1;
-				if (!GameProfile.TestSpawn.UseLevel)
-				{
-					tsComboLevel.SelectedIndex = -1;
-					tsComboAct.SelectedIndex = -1;
-					tsComboTime.SelectedIndex = 0;
-				}
-			}
-
-			if (!GameProfile.TestSpawn.UseEvent)
-				tsComboEvent.SelectedIndex = -1;
-			if (!GameProfile.TestSpawn.UseGameMode)
-				tsComboGameMode.SelectedIndex = -1;
-			if (!GameProfile.TestSpawn.UseSave)
-				tsComboSave.SelectedIndex = -1;
-			*/
-		}
-		#endregion
 	}
 }
