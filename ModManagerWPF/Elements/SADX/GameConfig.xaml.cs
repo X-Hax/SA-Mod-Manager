@@ -49,7 +49,25 @@ namespace SAModManager.Elements.SADX
 		{
 			SetupBindings();
 			SetUp_UpdateD3D9();
-		}
+			SetTextureFilterList();
+        }
+		//Temporary, TO DO: Implement proper texture filter list
+		private void SetTextureFilterList()
+		{
+			comboTextureFilter.Items.Add("Enabled");
+            comboTextureFilter.Items.Add("Disabled");
+
+			if (GameProfile.Graphics.EnableForcedTextureFilter == true)
+			{
+                comboTextureFilter.SelectedIndex = 0;
+                comboTextureFilter.SelectedItem = 0;
+            }
+			else
+			{
+				comboTextureFilter.SelectedIndex = 1;
+				comboTextureFilter.SelectedItem = 1 ;
+            }
+        }
 
 		#region Graphics Tab
 		private void ResolutionChanged(object sender, RoutedEventArgs e)
@@ -804,6 +822,18 @@ namespace SAModManager.Elements.SADX
 
 			// Patches
 		}
-		#endregion
-	}
+        #endregion
+
+        private void comboTextureFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (comboTextureFilter.SelectedIndex == 0)
+            {
+				GameProfile.Graphics.EnableForcedTextureFilter = true;
+            }
+            else
+            {
+                GameProfile.Graphics.EnableForcedTextureFilter = false;
+            }
+        }
+    }
 }

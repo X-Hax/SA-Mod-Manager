@@ -183,10 +183,11 @@
 
 								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Framerate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate}"/>
 								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog}"/>
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.TexFilter}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering}"/>
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.UIFilter}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering}"/>
+                                <Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.TexFilter}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering}"/>
 
-								<ComboBox x:Name="comboFramerate" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
+                                <Label Opacity="0.3" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.UIFilter}"  Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering}"/>
+
+                                <ComboBox x:Name="comboFramerate" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
 									<ComboBoxItem Content="60 FPS"/>
 									<ComboBoxItem Content="30 FPS"/>
 									<ComboBoxItem Content="15 FPS"/>
@@ -196,13 +197,14 @@
 									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Auto}"/>
 									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation}"/>
 								</ComboBox>
-								<ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center">
+                                <ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" SelectionChanged="comboTextureFilter_SelectionChanged">
+                                 
+                                </ComboBox>
+                                <ComboBox x:Name="comboUIFilter" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" SelectedIndex="0" IsEnabled="False">
 
 								</ComboBox>
-								<ComboBox x:Name="comboUIFilter" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" SelectedIndex="0">
-
-								</ComboBox>
-							</Grid>
+                        
+                            </Grid>
 
 							<!--Visuals Group Right Side.-->
 							<Grid Grid.Column="2" Grid.Row="1">

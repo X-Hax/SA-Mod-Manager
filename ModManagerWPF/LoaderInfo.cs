@@ -263,6 +263,7 @@ namespace SAModManager
 			FmvFillMode = gameSettings.Graphics.FillModeFMV;
 			ScaleHud = gameSettings.Graphics.EnableUIScaling;
 			AutoMipmap = gameSettings.Graphics.EnableForcedMipmapping;
+            TextureFilter = gameSettings.Graphics.EnableForcedTextureFilter;
 
 			// Input
 			InputModEnabled = gameSettings.Controller.EnabledInputMod;

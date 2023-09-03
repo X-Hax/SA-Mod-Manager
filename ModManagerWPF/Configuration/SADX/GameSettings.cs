@@ -142,11 +142,14 @@ namespace SAModManager.Configuration.SADX
 		[DefaultValue(true)]
 		public bool EnableForcedMipmapping { get; set; } = true;            // SADXLoaderInfo.AutoMipmap
 
-		/// <summary>
-		/// Converts from original settings file.
-		/// </summary>
-		/// <param name="oldSettings"></param>
-		public void ConvertFromV0(SADXLoaderInfo oldSettings)
+		//To DO change with ComboBox for different settings
+        [DefaultValue(true)]
+        public bool EnableForcedTextureFilter { get; set; } = true; // SADXLoaderInfo.TextureFilter
+        /// <summary>
+        /// Converts from original settings file.
+        /// </summary>
+        /// <param name="oldSettings"></param>
+        public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{
 			SelectedScreen = oldSettings.ScreenNum;
 			HorizontalResolution = oldSettings.HorizontalResolution;
@@ -169,6 +172,7 @@ namespace SAModManager.Configuration.SADX
 			FillModeFMV = oldSettings.FmvFillMode;
 			EnableUIScaling = oldSettings.ScaleHud;
 			EnableForcedMipmapping = oldSettings.AutoMipmap;
+			EnableForcedTextureFilter = oldSettings.TextureFilter;
 		}
 	}
 
@@ -559,9 +563,10 @@ namespace SAModManager.Configuration.SADX
 			loaderInfo.FmvFillMode = Graphics.FillModeFMV;
 			loaderInfo.ScaleHud = Graphics.EnableUIScaling;
 			loaderInfo.AutoMipmap = Graphics.EnableForcedMipmapping;
+			loaderInfo.TextureFilter = Graphics.EnableForcedTextureFilter;
 
-			// Input
-			loaderInfo.InputModEnabled = Controller.EnabledInputMod;
+            // Input
+            loaderInfo.InputModEnabled = Controller.EnabledInputMod;
 
 			// Sound
 			loaderInfo.EnableBassMusic = Sound.EnableBassMusic;
