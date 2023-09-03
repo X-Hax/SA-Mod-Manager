@@ -18,9 +18,9 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Image Width="65" Height="60" Source="/Icons/SADXModManager_.png"/>
-            <Label Content="SADX Mod Manager" Height="56" Width="341" FontSize="36"/>
+            <Label Content="SA Mod Manager" FontWeight="Bold" Height="56" Width="341" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" Grid.ColumnSpan="2">
 
@@ -71,6 +71,7 @@
                     <Label Content="Raphael Drew Boltman"/>
                     <Label Content="Henrykado"/>
                     <Label Content="TimTH"/>
+                    <Label Content="Birb"/>
 
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="5,0,0,0">
@@ -81,6 +82,7 @@
                     <Label Content="Portuguese (Portugal) translation"/>
                     <Label Content="Portuguese (Brazil) translation"/>
                     <Label Content="Russian translation"/>
+                    <Label Content="Italian translation"/>
 
                 </StackPanel>
             </Grid>

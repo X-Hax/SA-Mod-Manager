@@ -10,6 +10,7 @@
         <local:LangEntry FileName="pt-PT" Name="Português (Portugal)"/>
         <local:LangEntry FileName="pt-BR" Name="Português (Brasil)"/>
         <local:LangEntry FileName="ru-RU" Name="Русский (Россия)"/>
+        <local:LangEntry FileName="it-IT" Name="Italiano (Italia)"/>
         <!--<local:LangEntry FileName="he-IL" Name="עברית"/>-->
     </local:LanguageList>
 

@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="GamePatches.3DSound">Abilita suono 3D HRTF</system:String>
+	<system:String x:Key="GamePatches.CamCode">Fix Errori Codice Telecamera</system:String>
+	<system:String x:Key="GamePatches.VertexColor">Fix Colori Vertex</system:String>
+	<system:String x:Key="GamePatches.MaterialColor">Fix Colori Materiali</system:String>
+	<system:String x:Key="GamePatches.Interpolation">Fix Interpolazione</system:String>
+	<system:String x:Key="GamePatches.FixFOV">Fix FoV</system:String>
+	<system:String x:Key="GamePatches.Skychase">Fix Sky Chase</system:String>
+	<system:String x:Key="GamePatches.Chaos2">Fix Chaos 2 Crash</system:String>
+	<system:String x:Key="GamePatches.ChunkRendering">Fix Luce Speculare Chunk</system:String>
+	<system:String x:Key="GamePatches.E102Lamp">Fix Luce Visore di Gamma</system:String>
+	<system:String x:Key="GamePatches.ChaoStats">Fix Dimensioni Pannello delle Statistiche dei Chao</system:String>
+	<system:String x:Key="GamePatches.PixelOffset">Fix Offset di Rendering 2D</system:String>
+	<system:String x:Key="GamePatches.Lights">Fix Illuminazione</system:String>
+	<system:String x:Key="GamePatches.DisableGBIX">Disabilita GBIX (Sperimentale)</system:String>
+	<system:String x:Key="GamePatches.DisableCDCheck">Disabilita Controllo CD</system:String>
+</ResourceDictionary>
