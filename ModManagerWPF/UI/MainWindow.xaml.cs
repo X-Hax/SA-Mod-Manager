@@ -1852,9 +1852,8 @@ namespace SAModManager
 
             }
 
-
             new Updater.ModDownloadDialogWPF(updates, updatePath).ShowDialog();
-            await Task.Delay(3000);
+            await Task.Delay(500);
             Refresh();
         }
 

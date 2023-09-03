@@ -66,6 +66,7 @@ namespace SAModManager.Updater
 					});
 					args.Cancel = token.IsCancellationRequested;
 				}
+
 				void OnDownloadCompleted(object o, CancelEventArgs args)
 				{
 					args.Cancel = token.IsCancellationRequested;
@@ -74,10 +75,7 @@ namespace SAModManager.Updater
 						Progress.Value = Progress.Maximum;
 						ProgressTxt.Text = $"Download complete.";
 						tokenSource.Dispose();
-
-						this.Close();
 					});
-
 				}
 
 				int modIndex = 0;
@@ -126,6 +124,8 @@ namespace SAModManager.Updater
 					update.DownloadCompleted -= OnDownloadCompleted;
 				}
 			}
+
+			this.Close();
 		}
 
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
