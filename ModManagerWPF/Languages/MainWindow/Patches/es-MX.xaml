@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="GamePatches.3DSound">Permitir Audio 3D por HRTF</system:String>
+	<system:String x:Key="GamePatches.CamCode">Corrección de errores de código de la cámara</system:String>
+    <system:String x:Key="GamePatches.VertexColor">Corrección de color vectorial</system:String>
+    <system:String x:Key="GamePatches.MaterialColor">Corrección de color de los materiales</system:String>
+	<system:String x:Key="GamePatches.Interpolation">Correcciones en la interpolación</system:String>
+	<system:String x:Key="GamePatches.FixFOV">Correcciones del campo de visión</system:String>
+	<system:String x:Key="GamePatches.Skychase">Correcciones para Sky Chase</system:String>
+	<system:String x:Key="GamePatches.Chaos2">Corrección de fallos de Chaos 2</system:String>
+	<system:String x:Key="GamePatches.ChunkRendering">Correcciones especulares de los modelos particionados</system:String>
+	<system:String x:Key="GamePatches.E102Lamp">Correcciones del faro de Gamma</system:String>
+	<system:String x:Key="GamePatches.ChaoStats">Corrección del tamaño del panel de estadísticas de los Chao</system:String>
+	<system:String x:Key="GamePatches.PixelOffset">Correcciones del desfase de renderizado 2D</system:String>
+	<system:String x:Key="GamePatches.Lights">Correcciones de iluminación</system:String>
+	<system:String x:Key="GamePatches.DisableGBIX">Deshabilitar GBIX (Experimental)</system:String>
+	<system:String x:Key="GamePatches.DisableCDCheck">Deshabilitar Revisión de CD</system:String>
+
+    <system:String x:Key="GamePatches.3DSoundDesc">Permite la reproducción de sonidos 3D por HRTF.</system:String>
+    <system:String x:Key="GamePatches.CamCodeDesc">Corrige un error que impide que los ajustes de la cámara libre se guarden correctamente al morir o al cargar una zona/acto.</system:String>
+    <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">SADX ignora deliberadamente el color de los vértices de los modelos y en su lugar utiliza un color de vértice global incluso cuando no debería.&#x0a;&#x0a;Este parche re-implementa las funciones para manejar el asunto CORRECTAMENTE y usar los colores de vértices proporcionados por el modelo.</system:String>
+    <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">Esta función repasa todos los modelos del juego y sustituye el color de sus materiales por el blanco.&#x0a;&#x0a;Esto corrige varias inconsistencias y hace que los modelos se parezcan más a los de las versiones del juego para Gamecube y Dreamcast.</system:String>
+    <system:String x:Key="GamePatches.InterpolationDesc">Se corrigen los problemas de rotación de algunas animaciones mediante el uso de cuaterniones en lugar de ángulos de Euler.</system:String>
+    <system:String x:Key="GamePatches.FixFOVDesc">Mejora el campo de visión y permite resoluciones verticales/de retrato.</system:String>
+    <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Arregla la retícula y el multiplicador de Sky Chase, restaurando como se jugaba originalmente el nivel en resolución 640x480.&#x0a;&#x0a;Esto disminuye la dificultad para cumplir el requisito de puntuación en resoluciones 16:9.</system:String>
+    <system:String x:Key="GamePatches.Chaos2Desc">Corrige un error en el que vencer a Chaos 2 y reiniciar el jefe bloqueaba el juego.</system:String>
+    <system:String x:Key="GamePatches.ChunkRenderingDesc">Corrige la especularidad en los modelos particionados.</system:String>
+    <system:String x:Key="GamePatches.E102LampDesc">Corrige los polígonos rotados a N (faro de Gamma) utilizando un buffer de vértices de tira triangular.</system:String>
+	<system:String x:Key="GamePatches.ChaoStatsDesc">Corrige la interfaz del panel de las estadísticas de los Chao para que se muestre adecuadamente.</system:String>
+    <system:String x:Key="GamePatches.PixelOffsetDesc">Corrige el desplazamiento de subpíxeles de la mayoría de los elementos 2D que puede notarse a resoluciones más altas.</system:String>
+    <system:String x:Key="GamePatches.LightsDesc">Corrige la aplicación incorrecta de la luz en los LandTables y permite la conservación del tipo de luz para los modelos en cola.</system:String>
+    <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">Un índice global (GBIX, por sus siglas en inglés) es un valor usado en el sistema de caché de texturas del juego. Cada textura del juego tiene asignado uno.&#x0a;Antes de que el juego cargue una nueva textura, compara el GBIX de esta con el de otras texturas que ya fueron cargadas.&#x0a;Si encuentra una coincidencia, el juego reutiliza la textura ya cargada en lugar de cargar una nueva.&#x0a;&#x0a;Este parche deshabilita la mayor parte del sistema GBIX para evitar errores/conflictos (con pequeñas excepciones, como en la interfaz).</system:String>
+	<system:String x:Key="GamePatches.DisableCDCheckDesc">Deshabilita la Revisión de CD por parte del juego.</system:String>
+
+
+
+
+</ResourceDictionary>

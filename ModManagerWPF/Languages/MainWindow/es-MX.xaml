@@ -1,0 +1,311 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<!--#region Main Window Strings-->
+	<system:String x:Key="Manager.Buttons.SaveAndPlay">Guardar y jugar</system:String>
+	<system:String x:Key="Manager.Tabs.Mods">Mods</system:String>
+	<system:String x:Key="Manager.Tabs.Codes">Códigos</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig">Configuración del juego</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig">Gestor de configuración</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn">Generar prueba</system:String>
+	<!--#endregion-->
+
+	<!--#region Mods Tab Strings-->
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">Actualizar</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">Configurar mod</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">Agregar mod</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">No hay mods seleccionados.</system:String>
+
+    <!--Mods Context Menu-->
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Buscar actualizaciones</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Verificar integridad</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Forzar actualización</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">Configurar mod</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Editar mod</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Borrar mod</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Desarrollador</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Crear manifiesto</system:String>
+	<!--#endregion-->
+
+	<!--#region Codes Tab Strings-->
+	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Nuevo código</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.CodeHeader">Código</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Creado por</system:String>
+	<!--#endregion-->
+
+	<!--#region Game Config Tab Strings-->
+	<!--Game Tabs Strings-->
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics">Gráficos</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input">Entrada</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound">Sónido</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Patches">Parches</system:String>
+
+	<!--Graphics Tab Strings-->
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display">Opciones de visualización</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Screen">Pantalla:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolución:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Settings">Ajustes</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forzar relación de aspecto 4:3</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Habilitar sincronización vertical</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausar al estar inactivo</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Asignar búferes dinámicamente</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Pantalla completa</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">Con ventana</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Ventana redimensionable</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Mantener relación de aspecto</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamaño de ventana personalizado:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Pantalla completa sin bordes</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Ajustar a la pantalla</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other">Otras opciones de gráficos</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Framerate">Velocidad de fotogramas:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Nivel de detalle:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High">Alto (mejor)</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low">Bajo</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest">El más bajo</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog">Emulación de niebla:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Auto">Automática</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation">Emulada</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill">Modo de relleno del fondo:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Estirar [por defecto]</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit">Ajustar</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Rellenar</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.FMVFill">Modo de relleno de vídeos:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.TexFilter">Filtrado de texturas:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.UIFilter">Filtrado de la interfaz</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Mejoras</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap">Forzar mipmaps</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Habilitar escalado de la interfaz</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Habilitar D3D8to9</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Actualizar D3D8to9</system:String>
+
+	<!--Input Tab Strings-->
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input">Opciones de entrada</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Vainilla (DInput)</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.SDL2">Entrada mejorada (SDL2)</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Configuración vainilla</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Mouse</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Arrastrar y mantener</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Arrastrar para acelerar</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn">Botón izquierdo del mouse</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn">Botón derecho del mouse</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn">Botón central del mouse</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Botón 1 del mouse</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn">Botones izquierdo + derecho del mouse</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Botones derecho + izquierdo del mouse</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Saltar</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Acción</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Cancelar/Atacar</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Iniciar/Fijar</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Rotar cámara a la izquierda</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Rotar cámara a la derecha</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Flauta</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2">Configuración de entrada mejorada</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Abrir AppLauncher</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Obtener AppLauncher</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">El sistema de entrada mejorada es una implementación de SDL2 en SADX. Se recomienda para jugar, ya que soluciona los problemas del sistema DInput original.</system:String>
+
+	<!--Sound Tab Strings-->
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings">Ajustes de sónido</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume">Control del volumen</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Usar BASS para la música</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Usar BASS para los efectos</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.Music">Habilitar música</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Habilitar sonidos</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Habilitar sonido 3D</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Music">Volumen de la música:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Voices">Volumen de las voces:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Sound">Volumen de los efectos:</system:String>
+	<!--#endregion-->
+
+	<!--#region Test Spawn Tab Strings-->
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Character">Personaje:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Level">Nivel:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Time">Tiempo:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Act">Acto:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Mode">Modo de juego:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Save">Redirigir archivo de guardado:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Event">Evento:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Warning">Reemplazar niveles o personajes en los eventos puede provocar un fallo.</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Buttons.Launch">Iniciar juego</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced">Opciones avanzadas</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Check.Manual">Fijar manualmente:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Check.Position">Posición:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosX">Pos X:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Angle">Ángulo:</system:String>
+	<!--#endregion-->
+
+	<!--#region Manager Config Tab Strings-->
+	<!--Options-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Ajustes del juego</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Temas:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Idioma:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Perfil:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Directorio del juego:</system:String>
+
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Activar la instalación con 1 click</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Desactivar la instalación con 1 click</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Abrir directorio del juego</system:String>
+
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Instalar Cargador de mods</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Desinstalar Cargador de mods</system:String>
+
+	<!--Updates-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Actualizaciones</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Buscar actualizaciones del Gestor de mods al iniciar</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Buscar actualizaciones del Cargador de mods al iniciar</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Buscar actualizaciones de los mods al iniciar</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Buscar actualizaciones</system:String>
+
+	<!--Debug Features-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Opciones avanzadas</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Mantener el gestor de mods abierto tras iniciar el juego</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Activar las opciones de desarrollador</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Habilitar la ventana de la consola</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Mostrar depuración en la ventana de juego</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Registrar información de depuración en un archivo</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Crear volcados de memoria</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Comprobación de la salud del juego</system:String>
+
+	<!--About-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Ajustes del Gestor</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">El Gestor de mods de SA es un programa que permite administrar fácilmente mods de los juegos Sonic Adventure.</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contribuidores</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Código fuente del Gestor de mods</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Código fuente del Cargador de mods</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Reportar fallos (sólo en inglés)</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Abrir SA Docs (sólo en inglés)</system:String>
+	<!--#endregion-->
+	
+	<!--#region Tooltips-->
+	<!--#region Main Window Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Mods">Selecciona, edita y configura tus mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes">Selecciona los códigos que vas a utilizar al jugar.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig">Configura las opciones del juego, incluidos los gráficos y el sonido.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn">Opciones seleccionables para iniciar rápidamente el juego con cualquier personaje en cualquier nivel.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options">Configurar las opciones del gestor, incluidos los temas y el idioma.</system:String>
+	<system:String x:Key="MainWindow.Tips.SaveAndPlay">Guarda los ajustes seleccionados e inicia el juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Save">Guarda los ajustes seleccionados.</system:String>
+
+	<!--#region Mods Tab Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.Refresh">Actualiza la lista de mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveCeiling">Mueve el mod seleccionado al principio de la lista.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveUp">Mueve el mod seleccionado un lugar hacia arriba.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveDown">Mueve el mod seleccionado un lugar hacia abajo.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveFloor">Mueve el mod seleccionado al final de la lista.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.SelectAll">Selecciona todos los mods de la lista. Iniciar el juego con todos los mods seleccionados puede bloquear el juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.DeselectAll">Deselecciona todos los mods de la lista.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.NewMod">Abre la ventana Nuevo mod, donde puedes instalar un mod manualmente o empezar a crearlo.</system:String>
+	<!--#endregion-->
+
+	<!--#region Codes Tab Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.SelectAll">Selecciona todos los códigos disponibles.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.DeselectAll">Deselecciona todos los códigos disponibles.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.NewCode">Abre la ventana Crear un código.</system:String>
+	<!--#endregion-->
+
+	<!--#region Game Config Tab -->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">Modificar las opciones de gráficos.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">Modificar las opciones de entrada del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">Modificar los ajustes de sonido del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">Activar o desactivar los parches de juego.</system:String>
+
+	<!--#region Graphics Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen">Selecciona el monitor en el que se cargará el juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Establece una resolución personalizada o selecciona una de las resoluciones preestablecidas.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Fuerza el juego a una relación de aspecto 4:3 a pesar de la resolución establecida.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Habilita la sincronización vertical.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Si se activa, cuando la ventana del juego no esté enfocada, el juego se pausará.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers">Esta opción corrige el fallo de Alt-Tab en pantalla completa al cambiar a la asignación dinámica de búfer. Puede causar lag en el juego en algunas circunstancias o con algunos mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">La ventana del juego se iniciará en pantalla completa.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Establece la ventana de juego a pantalla completa sin bordes.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Escala los elementos de la interfaz de usuario a pantalla completa.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">La ventana del juego arrancará en modo ventana.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Permite cambiar el tamaño de la ventana del juego mientras está abierta.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Mantiene la relación de aspecto de la resolución ajustada al establecer un tamaño de ventana personalizado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Establece el tamaño de la ventana independientemente de la resolución. Por ejemplo, permite jugar a 4K en una ventana más pequeña.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Ajusta la velocidad de fotogramas del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">Ajusta el tipo de emulación con el renderizador. Se recomienda Automática. Solo usa Emulada si usas una tarjeta gráfica/chipset muy antiguo(a).</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Ajusta el tipo de filtro de textura para todas las texturas de los modelos.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Ajusta el tipo de filtrado de texturas para todas las texturas relacionadas con la interfaz gráfica de usuario.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Ajusta el nivel de detalle para la distancia de dibujado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">Establece el método de relleno para la imagen de los bordes cuando se reproduce en pantalla panorámica con una relación de aspecto 4:3.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Establece el método de relleno cuando el juego reproduce los videos prerenderizados.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Genera mipmaps para todas las texturas que no los tienen.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Habilita el uso de D3D8to9 Shim, permitiendo que el juego use características de D3D9. Se necesita para algunos mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Permite escalar correctamente la interfaz de usuario en función de la resolución del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Comprueba si hay actualizaciones de d3d8to9 y las descarga.</system:String>
+	<!--#endregion-->
+
+	<!--#region Input Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">Utiliza el sistema de entrada original integrado en SADX. Este sistema es propenso a problemas, usualmente al girar la cámara. Se recomienda no usar esta opción.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput">Implementa un sistema basado en SDL2 que sustituye al sistema de entrada original. Este es el método de entrada recomendado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold">Establece el modo de movimiento del mouse a arrastrar y mantener para mover al jugador.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate">Establece el modo de movimiento del ratón en el que arrastrar acelerará al jugador.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Jump">Este botón acepta en los menús o se utiliza para saltar. Se suele asignar a X (PS) o A.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Action">Este botón es el botón de acción estándar para cada personaje. Se suele asignar a Cuadrado o X (DC, Nintendo, Xbox).</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Cancel">Este botón cancela en los menús o es otro botón para atacar en el juego. Se suele asignar a Círculo o B.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Start">Este botón es Start. Se utiliza para iniciar el juego y pausarlo. Se suele asignar al botón Start.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamLeft">Este botón mueve la cámara hacia la izquierda. Se suele asignar al gatillo izquierdo. No se puede asignar a un joystick.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamRight">Este botón mueve la cámara hacia la derecha. Se suele asignar al gatillo derecho. No se puede asignar a un joystick.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Flute">Este botón se utiliza para silbar en el Jardín Chao. Se suele asignar a Triángulo o Y.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher">Esto abrirá AppLauncher y te permitirá configurar tus controles.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher">Se abrirá un enlace desde el que podrás descargar AppLauncher para configurar tus controles.</system:String>
+	<!--#endregion-->
+
+	<!--#region Sound Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">Sustituye el sistema de sonido por vgmbass. Esto se recomienda para la mejor experiencia, y muchos mods dependen de él.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">Habilita la música en el juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">Habilita el sonido 3D en el juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">Utiliza BASS como sistema de reproducción de los efectos de sonido.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">Habilita los efectos de sonido y las voces en el juego.</system:String>
+	<!--#endregion-->
+
+	<!--#region Patches Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">Selecciona todos los parches de la lista.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">Deselecciona todos los parches de la lista.</system:String>
+	<!--#endregion-->
+	<!--#endregion-->
+
+	<!--#region Test Spawn Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Character">Permite elegir el personaje con el que aparecerás.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Level">Permite elegir el nivel en el que aparecerás.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Time">Permite fijar la hora del día en los Campos de aventura.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Act">Fija el acto del nivel seleccionado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Event">Permite cargar un evento.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.GameMode">Permite fijar el modo de juego a un tipo específico.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Save">Permite intercambiar el archivo de guardado cargado al iniciar el juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Permite configurar manualmente el personaje, el nivel y el acto. Anula la configuración anterior cuando está activada.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Permite fijar la posición inicial y la rotación.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Inicia el juego con los ajustes que elegiste.</system:String>
+	<!--#endregion-->
+
+	<!--#region Manager Config Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Selecciona qué perfil se utiliza para la lista de mods y los ajustes.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Abre el Gestor de perfiles, donde puedes crear y eliminar perfiles.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Ruta completa al directorio en el que está instalado el juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Abre una ventana en la que puedes seleccionar el directorio del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Establece el tema utilizado por el gestor de mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Establece el idioma utilizado por el gestor de mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantiene abierto el gestor de gods al presionar Guardar y jugar.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Habilita la pestaña Generar prueba en el gestor de mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Cuando está Activado, al usar los enlaces de 1 click en GameBanana se abrirá un cuadro de diálogo para descargar el mod.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Cuando está activado, se instala el Cargador de mods y puedes jugar con mods, parches y trucos.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Activa la revisión automática de actualizaciones para el Gestor de mods al iniciar el programa.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Activa la revisión automática de actualizaciones para el Cargador de mods al iniciar el programa.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Activa la comprobación automática de las actualizaciones de los mods instalados al abrir el Gestor de mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Comprueba si hay actualizaciones del cargador de mods y de los mods que tengas instalados.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Abre una ventana de consola que muestra información de depuración del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Muestra información de depuración en la ventana del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Guarda cualquier información de depuración en un archivo de registro.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Activa el registro de fallos cuando el juego encuentra un error. Son útiles para investigar fallos inesperados.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Abre la ventana Contribuidores y Acerca de.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Abre un enlace al repositorio de GitHub del Gestor de mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Abre un enlace al sitio web SA Docs, que contiene mucha información sobre la creación de mods para los juegos Adventure.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Abre un enlace a las incidencias en el repositorio GitHub del Gestor de mods para informar de errores.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Realiza una comprobación de la instalación del juego para ver si falta algún archivo o si se ha modificado alguno.</system:String>
+	<!--#endregion-->
+
+</ResourceDictionary>

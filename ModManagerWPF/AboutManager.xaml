@@ -67,6 +67,7 @@
                 <StackPanel Grid.Column="0">
                     <Label Content="Sora"/>
                     <Label Content="Jesus__PK" Foreground="White"/>
+                    <Label Content="Kawaiikaorichan" Foreground="White"/>
                     <Label Content="Raphael Drew Boltman"/>
                     <Label Content="Henrykado"/>
                     <Label Content="TimTH"/>
@@ -75,8 +76,8 @@
                 <StackPanel Grid.Column="1" Margin="5,0,0,0">
 
                     <Label Content="French translation"/>
-                    <Label Content="Spanish translation"/>
- 
+                    <Label Content="Spanish (Spain) translation"/>
+                    <Label Content="Spanish (Mexico) translation"/>
                     <Label Content="Portuguese (Portugal) translation"/>
                     <Label Content="Portuguese (Brazil) translation"/>
                     <Label Content="Russian translation"/>
