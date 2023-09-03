@@ -310,7 +310,7 @@ namespace SAModManager.Updater
                             sourceFile.MoveTo(destFile.FullName);
                         }
 
-                        File.Copy(newManPath, oldManPath, true);
+                        await Util.CopyFileAsync(newManPath, oldManPath, true);
 
                         void removeReadOnly(DirectoryInfo dir)
                         {
@@ -445,7 +445,7 @@ namespace SAModManager.Updater
                                 Directory.CreateDirectory(dir);
                             }
 
-                            File.Copy(oldPath, newPath, true);
+                            await Util.CopyFileAsync(oldPath, newPath, true);
                         }
 
                         // Now move the stuff from the temporary folder over to the working directory.
@@ -460,7 +460,7 @@ namespace SAModManager.Updater
                                 Directory.CreateDirectory(dir);
                             }
 
-                            File.Copy(tempPath, workPath, true);
+                            await Util.CopyFileAsync(tempPath, workPath, true);
                         }
 
                         // Once that has succeeded we can safely delete files that have been marked for removal.
@@ -494,9 +494,7 @@ namespace SAModManager.Updater
                         }
 
                         // And last but not least, copy over the new manifest.
-                        File.Copy(newManPath, oldManPath, true);
-                        Thread.Sleep(10000);
-                        ((MainWindow)System.Windows.Application.Current.MainWindow).Refresh();
+                        await Util.CopyFileAsync(newManPath, oldManPath, true);
                         break;
                     }
 

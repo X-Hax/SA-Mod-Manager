@@ -1,19 +1,12 @@
 ﻿using SAModManager.Common;
 using SAModManager.Updater;
-using NetCoreInstallChecker;
-using NetCoreInstallChecker.Structs.Config;
-using NetCoreInstallChecker.Structs.Config.Enum;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using System.Reflection;
-using SevenZipExtractor;
-using System.IO.Compression;
 using System.Windows.Controls;
 using System.Windows.Data;
-using SAModManager.Ini;
 
 namespace SAModManager
 {
@@ -21,9 +14,9 @@ namespace SAModManager
     {
         static private readonly List<string> VCPaths = new()
         {
-            Environment.SystemDirectory + "/vcruntime140.dll",
-            Environment.SystemDirectory + "/msvcr120.dll",
-            Environment.SystemDirectory + "/msvcr110.dll"
+            Path.Combine(Environment.SystemDirectory, "vcruntime140.dll"),
+            Path.Combine(Environment.SystemDirectory, "msvcr120.dll"),
+            Path.Combine(Environment.SystemDirectory, "msvcr110.dll")
         };
 
         static private readonly List<string> VCURLs = new()
@@ -49,59 +42,6 @@ namespace SAModManager
             return true;
         }
 
-        private static async Task<bool> Net7Check()
-        {
-            var finder = new FrameworkFinder(Environment.Is64BitOperatingSystem);
-            var resolver = new DependencyResolver(finder);
-            var framework = new Framework("Microsoft.WindowsDesktop.App", "7.0.9");
-            var options = new RuntimeOptions("net7.0", framework, RollForwardPolicy.Minor);
-            var result = resolver.Resolve(options);
-
-            if (!result.Available)
-            {
-                var res = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Warning"), Lang.GetString("MessageWindow.Warnings.Net7Missing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.YesNo);
-                res.ShowDialog();
-
-                if (res.isYes != true)
-                {
-                    new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.Net7Missing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-                    return false;
-                }
-
-                FrameworkDownloader frameworkDownloader = new(framework.NuGetVersion, framework.FrameworkName);
-                var url = await frameworkDownloader.GetDownloadUrlAsync(Environment.Is64BitOperatingSystem ? Architecture.Amd64 : Architecture.x86);
-                Uri uri = new(url + "\r\n");
-
-                if (url != null)
-                {
-                    await DownloadAndInstallAsync(uri);
-                    return false;
-                }
-
-                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.Net7Missing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-                return false;
-            }
-
-            return true;
-        }
-
-        private static async Task DownloadAndInstallAsync(Uri uri)
-        {
-            var DL = new GenericDownloadDialog(uri, "Net Core 7.0", "NET7Install.exe");
-
-            await DL.StartDL();
-            DL.ShowDialog();
-
-            if (DL.done)
-            {
-                // Asynchronous operation using async/await
-                await Process.Start(new ProcessStartInfo(Path.Combine(".SATemp", "NET7Install.exe"), "/install /passive /norestart")
-                {
-                    UseShellExecute = true,
-                    Verb = "runas"
-                }).WaitForExitAsync();
-            }
-        }
 
         private static async Task SetLanguageFirstBoot()
         {
@@ -140,10 +80,10 @@ namespace SAModManager
 
             }
 
-			if (!Directory.Exists(App.ConfigFolder))
-				Directory.CreateDirectory(App.ConfigFolder);
+            if (!Directory.Exists(App.ConfigFolder))
+                Directory.CreateDirectory(App.ConfigFolder);
 
-			App.ManagerSettings.Serialize(App.ManagerConfigFile);
+            App.ManagerSettings.Serialize(App.ManagerConfigFile);
             await Task.Delay(20);
         }
 
@@ -193,7 +133,7 @@ namespace SAModManager
             {
                 GamesInstall.SetDependencyPath();
                 Directory.CreateDirectory(App.ConfigFolder);
-                
+
 
                 if (!File.Exists(App.ManagerConfigFile)) //If config page isn't found, assume this is the first boot.
                 {
@@ -225,24 +165,15 @@ namespace SAModManager
 
         public static async Task<bool> StartupCheck()
         {
-
             Console.WriteLine("Checking dependencies...");
 
-            bool net7 = await Net7Check();
+            if (await VC_DependenciesCheck() == false)
+                return false;
 
-            if (net7)
-            {
-                if (await VC_DependenciesCheck() == false)
-                    return false;
+            await UpdateDependenciesFolder();
+            ClearTempFolder();
 
-                await UpdateDependenciesFolder();
-                ClearTempFolder();
-
-                return true;
-            }
-
-            App.Current.Shutdown();
-            return false;
+            return true;
         }
     }
 }
