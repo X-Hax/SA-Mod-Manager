@@ -1326,27 +1326,26 @@ namespace SAModManager
 
         private void BuildCodeFiles()
         {
-            Dictionary<string, Code> codelist = new();
-            foreach (Code code in codes)
-                codelist.Add(code.Name, code);
-            List<Code> selectedCodes = new List<Code>();
+            List<Code> selectedCodes = new();
             List<Code> selectedPatches = new List<Code>();
 
-            foreach (string name in EnabledCodes)
+            foreach (CodeData code in CodeListView.Items)
             {
-                if (codelist.ContainsKey(name))
+                if (code?.IsChecked == true)
                 {
-                    Code code = codelist[name];
-                    if (code.Patch)
-                        selectedPatches.Add(code);
+                    if (code.codes.Patch)
+                    {
+                        selectedPatches.Add(code.codes);
+                    }
                     else
-                        selectedCodes.Add(code);
+                    {
+                        selectedCodes.Add(code.codes);
+                    }
                 }
             }
-
+        
             CodeList.WriteDatFile(patchdatpath, selectedPatches);
             CodeList.WriteDatFile(codedatpath, selectedCodes);
-
         }
 
         private void UpdateButtonsState()

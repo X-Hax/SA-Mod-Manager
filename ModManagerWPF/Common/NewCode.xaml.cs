@@ -28,29 +28,14 @@ namespace SAModManager.Common
     public partial class NewCode : Window
     {
 		private string CodesPath = string.Empty;
-		public Code Code = new();
-
-        public static readonly List<string> ignoreCodeKeys = new()
-		{
-			"Patch",
-			"Code",
-			"Author",
-			"Description",
-			"Category"
-		};
 
 		/// <summary>
 		/// Initialize NewCode Window. Constructor can take a path to store for saving mods to the correct location.
 		/// </summary>
-        public NewCode(string codepath = "", string codefile = "codes.lst", Code code = null)
+        public NewCode(string codepath = "", string codefile = "codes.lst")
         {
             InitializeComponent();
 			CodesPath = Path.Combine(codepath, codefile);
-
-			if (code != null)
-				Code = code;
-
-
 			using (XmlTextReader reader = new XmlTextReader(new StringReader(Properties.Resources.OpCodeSyntaxDark)))
 			{
 				CodeWriter.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
@@ -64,78 +49,24 @@ namespace SAModManager.Common
 			SetBindings();
 		}
 
-		static bool isLineAllowed(string line)
-		{
-			foreach (var word in ignoreCodeKeys)
-			{
-                if (line.Contains(word))
-				{
-					return false;
-				}
-            }
-
-			return true;
-		}
-
-        static string FilterLogicLines(string filePath, string name)
-        {
-            StringBuilder filteredLines = new();
-
-			int currentLine = 0;
-			int startLine = 0;
-			bool lineFound = false;
-
-            using (StreamReader reader = new(filePath))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-					if (line.Contains(name) && !lineFound)
-					{
-						startLine = currentLine;
-						lineFound = true;
-					}
-
-					if (lineFound)
-					{
-                        // Check if the line starts with "Author," "Description," or "Code"
-                        if (isLineAllowed(line))
-                        {
-                            if (currentLine >= startLine)
-							{
-                                filteredLines.AppendLine(line);
-                            }      
-                        }
-                        else if (currentLine > startLine)
-                        {
-                            break;
-                        }
-                    }
-
-					currentLine++;
-                }
-            }
-
-            return filteredLines.ToString();
-        }
 
         private void SetCodeWriterText()
 		{
 			if (File.Exists(CodesPath))
 			{
-                CodeWriter.Text = FilterLogicLines(CodesPath, this.Code.Name);
-            }
-				
+				CodeWriter.Text += File.ReadAllText(CodesPath);
+            }		
 		}
 
 		private void SaveCodeWriterLines()
 		{
-            File.WriteAllText(CodesPath, CodeWriter.Text);
+			if (!string.IsNullOrWhiteSpace(CodeWriter.Text))
+				File.WriteAllText(CodesPath, CodeWriter.Text);
         }
 
 		private void SetBindings()
 		{
-			CodeName.SetBinding(TextBox.TextProperty, new Binding("Name")
+			/*CodeName.SetBinding(TextBox.TextProperty, new Binding("Name")
 			{
 				Source = Code,
 			});
@@ -155,7 +86,7 @@ namespace SAModManager.Common
 			{
 				Source = radPatch,
 				Converter = new BoolFlipConverter()
-			});
+			});*/
 			SetCodeWriterText();
 		}
 

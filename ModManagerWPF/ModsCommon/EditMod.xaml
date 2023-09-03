@@ -208,28 +208,10 @@
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-                        <ListView Grid.Column="0" Margin="5" x:Name="CodeListViewEdit">
-                            <ListView.View>
-                                <GridView>
-                                    <GridView.Columns>
-                                        <GridViewColumn x:Name="codeNameColumn" Header="{DynamicResource Manager.Tabs.Codes.CodeHeader}" Width="245">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="{Binding IsEnabled}" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="{Binding codes.Name}"/>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                       
-                                    </GridView.Columns>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
+                        <TextBlock x:Name="CodeName" Margin="5,5,5,5" FontSize="15"/>
 
 
-						<Grid Grid.Column="1">
+                        <Grid Grid.Column="1">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="5"/>
 								<RowDefinition Height="30"/>
