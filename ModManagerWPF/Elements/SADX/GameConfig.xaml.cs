@@ -52,21 +52,29 @@ namespace SAModManager.Elements.SADX
 			SetTextureFilterList();
         }
 		//Temporary, TO DO: Implement proper texture filter list
-		private void SetTextureFilterList()
-		{
-			comboTextureFilter.Items.Add("Enabled");
-            comboTextureFilter.Items.Add("Disabled");
 
-			if (GameProfile.Graphics.EnableForcedTextureFilter == true)
-			{
+		private void SetTextureFilterSettings()
+		{
+            if (GameProfile.Graphics.EnableForcedTextureFilter == true)
+            {
                 comboTextureFilter.SelectedIndex = 0;
                 comboTextureFilter.SelectedItem = 0;
             }
-			else
-			{
-				comboTextureFilter.SelectedIndex = 1;
-				comboTextureFilter.SelectedItem = 1 ;
+            else
+            {
+                comboTextureFilter.SelectedIndex = 1;
+                comboTextureFilter.SelectedItem = 1;
             }
+        }
+
+		private void SetTextureFilterList()
+		{
+			comboTextureFilter.Items.Clear();
+
+            comboTextureFilter.Items.Add("Enabled");
+            comboTextureFilter.Items.Add("Disabled");
+
+			SetTextureFilterSettings();
         }
 
 		#region Graphics Tab
@@ -744,8 +752,8 @@ namespace SAModManager.Elements.SADX
 			comboTextureFilter.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ModeTextureFiltering")
 			{
 				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
+				Mode = BindingMode.TwoWay,
+			});;
 			comboUIFilter.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ModeUIFiltering")
 			{
 				Source = GameProfile.Graphics,
@@ -830,7 +838,7 @@ namespace SAModManager.Elements.SADX
             {
 				GameProfile.Graphics.EnableForcedTextureFilter = true;
             }
-            else
+            else if (comboTextureFilter.SelectedIndex == 1)
             {
                 GameProfile.Graphics.EnableForcedTextureFilter = false;
             }
