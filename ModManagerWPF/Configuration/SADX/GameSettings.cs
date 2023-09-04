@@ -229,6 +229,36 @@ namespace SAModManager.Configuration.SADX
 	public class TestSpawnSettings
 	{
 		/// <summary>
+		/// Enables Character options when launching.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool UseCharacter { get; set; } = false;
+
+		/// <summary>
+		/// Enables the Level, Act, and Time of Day options when launching.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool UseLevel { get; set; } = false;
+
+		/// <summary>
+		/// Enables the Event options when launching.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool UseEvent { get; set; } = false;
+
+		/// <summary>
+		/// Enables the GameMode options when launching.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool UseGameMode { get; set; } = false;
+
+		/// <summary>
+		/// Enables the Save options when launching.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool UseSave { get; set; } = false;
+
+		/// <summary>
 		/// Selected index for the level used by test spawn.
 		/// </summary>
 		[DefaultValue(-1)]
