@@ -197,7 +197,7 @@
 									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Auto}"/>
 									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation}"/>
 								</ComboBox>
-                                <ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" SelectionChanged="comboTextureFilter_SelectionChanged">
+                                <ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" SelectedIndex="0" VerticalAlignment="Center" SelectionChanged="comboTextureFilter_SelectionChanged">
                                  
                                 </ComboBox>
                                 <ComboBox x:Name="comboUIFilter" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" SelectedIndex="0" IsEnabled="False">
