@@ -87,7 +87,11 @@
 
 	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave.Title">Loader Info Not Saved.</system:String>
 	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">"The Mods directory does not appear to be a valid path, please ensure it is a valid path. Your current settings were not saved for the ModLoader to use."</system:String>
-    <!--#endregion-->
+
+	<system:String x:Key="MessageWindow.Errors.CodeFail.Title">Invalid Code Line</system:String>
+	<system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">There is an empty line within the code writer lines.&#x0a;&#x0a;Please remove the empty line and resave.</system:String>
+	<system:String x:Key="Messagewindow.Errors.CodeFailInvalid">The written code is invalid.&#x0a;&#x0a;Please correct the error and resave.</system:String>
+	<!--#endregion-->
 	
 	<!--#region Warnings-->
 	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">This will uninstall all the selected mods.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
@@ -102,7 +106,7 @@
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime is not installed!&#x0a;&#x0a;Would you like to install it now?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">This will delete all the codes of this mod.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">This will delete all selected codes.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->
