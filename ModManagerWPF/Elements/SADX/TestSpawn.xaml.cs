@@ -29,10 +29,11 @@ namespace SAModManager.Elements.SADX
 			"Eggman (unused)",
 			"Tails",
 			"Knuckles",
-			"Tikal",
+			"Tikal (unused)",
 			"Amy",
 			"E-102 Gamma",
-			"Big"
+			"Big",
+			"Metal Sonic"
 		};
 
 		public static readonly List<string> LevelNames = new()
