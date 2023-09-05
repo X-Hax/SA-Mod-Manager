@@ -1,9 +1,14 @@
-﻿using System;
+﻿using NetCoreInstallChecker.Structs;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SAModManager.Common
 {
@@ -11,6 +16,7 @@ namespace SAModManager.Common
 	public class CodeList
 	{
 		static readonly XmlSerializer serializer = new XmlSerializer(typeof(CodeList));
+
 		public static CodeList Load(string filename)
 		{
 			if (Path.GetExtension(filename).Equals(".xml", StringComparison.OrdinalIgnoreCase))
@@ -458,6 +464,335 @@ namespace SAModManager.Common
 				if (Type >= CodeType.readreg8 && Type <= CodeType.ifmaskreg32)
 					return true;
 				return false;
+			}
+		}
+	}
+
+	public class EditCodeError
+	{
+		public bool Validated { get; set; }
+
+		public string Error { get; set; }
+	}
+
+	public class EditCode
+	{
+		public string Name { get; set; }
+
+		public List<string> CodeLines { get; set; }
+
+		public string Author { get; set; }
+
+		public string Description { get; set; }
+
+		public string Category { get; set; }
+
+		public bool Required { get; set; }
+
+		public bool IsPatch { get; set; }
+
+		public EditCode(string name, List<string> codeLines, string author, string description, string category, bool required, bool isPatch)
+		{
+			Name = name;
+			CodeLines = codeLines;
+			Author = author;
+			Description = description;
+			Category = category;
+			Required = required;
+			IsPatch = isPatch;
+		}
+
+		public EditCode()
+		{
+			Name = string.Empty; 
+			CodeLines = new List<string>();
+			Author = string.Empty; 
+			Description = string.Empty;
+			Category = string.Empty;
+			Required = false;
+			IsPatch = false;
+		}
+	}
+
+	public class EditCodeList
+	{
+		public List<EditCode> Codes { get; set; } = new List<EditCode>();
+
+		private enum Linetype
+		{
+			Author,
+			Description,
+			Category,
+		}
+
+		private static void ProcessName(string[] split, EditCode code)
+		{
+			var sb = new System.Text.StringBuilder(split[1].TrimStart('"'));
+			int i = 2;
+			if (!split[1].EndsWith("\""))
+				for (; i < split.Length; i++)
+				{
+					sb.AppendFormat(" {0}", split[i]);
+					if (split[i].EndsWith("\"")) { ++i; break; }
+				}
+			code.Name = sb.ToString().TrimEnd('"');
+			if (i < split.Length)
+				for (; i < split.Length; i++)
+				{
+					if (split[i].StartsWith(";")) break;
+					switch (split[i])
+					{
+						case "Required":
+							code.Required = true;
+							break;
+					}
+				}
+		}
+
+		private string WriteName(string name, bool patch, bool required)
+		{
+			StringBuilder sb = new StringBuilder();
+			if (patch)
+				sb.Append("Patch \"" + name + "\"");
+			else
+				sb.Append("Code \"" + name + "\"");
+
+			if (required)
+				sb.Append(" Required");
+
+			return sb.ToString();
+		}
+
+		private string WriteCodeLines(List<string> codelines)
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (string line in codelines)
+			{
+				sb.AppendLine(line);
+			}
+			return sb.ToString();
+		}
+
+		private string WriteCodeElement(Linetype type, string text)
+		{
+			switch(type)
+			{
+				default:
+				case Linetype.Author:
+					return "Author " + text;
+				case Linetype.Description:
+					return "Description " + text;
+				case Linetype.Category:
+					return "Category " + text;
+			}
+		}
+
+		public static EditCodeList Load(string filename)
+		{
+			if (!File.Exists(filename)) return new();
+
+			Dictionary<int, List<string>> codeData = new();
+
+			using (StreamReader sr = File.OpenText(filename))
+			{
+				int index = 0;
+				List<string> lines = new();
+				while (!sr.EndOfStream)
+				{
+					string line = sr.ReadLine().Trim(' ');
+
+					if (line.Length > 0)
+					{
+						lines.Add(line);
+					}
+					else
+					{
+						codeData.Add(index, new List<string>(lines));
+						lines.Clear();
+						++index;
+					}
+				}
+			}
+
+			EditCodeList result = new EditCodeList();
+			foreach (KeyValuePair<int, List<string>> data in codeData)
+			{
+				EditCode code = new EditCode();
+
+				foreach (string line in data.Value)
+				{
+					string[] split = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+					switch (split[0])
+					{
+						case "Code":
+							ProcessName(split, code);
+							break;
+						case "Patch":
+							ProcessName(split, code);
+							code.IsPatch = true;
+							break;
+						case "Author":
+							code.Author = split[1];
+							break;
+						case "Description":
+							StringBuilder sb = new StringBuilder();
+							for (int i = 1; i < split.Length; i++)
+							{
+								if (i < (split.Length - 1))
+									sb.Append(split[i] + " ");
+								else
+									sb.Append(split[i]);
+							}
+							code.Description = sb.ToString();
+							break;
+						case "Category":
+							code.Category = split[1];
+							break;
+						default:
+							if (split[0] != "\n")
+								code.CodeLines.Add(line);
+							break;
+					}
+				}
+				result.Codes.Add(code);
+			}
+			return result;
+		}
+
+		public static EditCodeError ValidateCodeLines(string codelines)
+		{
+			StringReader reader = new StringReader(codelines);
+
+			Stack<Tuple<List<CodeLine>, List<CodeLine>>> stack = new Stack<Tuple<List<CodeLine>, List<CodeLine>>>();
+			int linenum = 0;
+			EditCodeError validation = new()
+			{
+				Validated = true,
+				Error = "Unknown Error"
+			};
+			string line;
+
+			Code code = new();
+			stack.Push(new Tuple<List<CodeLine>, List<CodeLine>>(code.Lines, null));
+			while ((line = reader.ReadLine()) != null)
+			{
+				++linenum;
+				line = line.Trim('\t', ' ');
+				if (line.Length == 0 || line.StartsWith(";"))
+					continue;
+
+				string[] split = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+				if (Enum.TryParse(split[0], out CodeType type))
+				{
+					switch (type)
+					{
+						case CodeType.@else:
+							if (stack.Peek().Item2 == null)
+							{
+								validation.Validated = false;
+								validation.Error = ($"Invalid code line \"{line}\".:line {linenum}");
+								return validation;
+							}
+							stack.Push(new Tuple<List<CodeLine>, List<CodeLine>>(stack.Pop().Item2, null));
+							continue;
+						case CodeType.endif:
+							if (stack.Count < 2)
+							{
+								validation.Validated = false;
+								validation.Error = ($"Invalid code line \"{line}\". line: {linenum}");
+								return validation;
+							}
+							stack.Pop();
+							continue;
+						case CodeType.newregs:
+							validation.Validated = false;
+							validation.Error = ($"Invalid code line \"{line}\". line: {linenum}");
+							return validation;
+						default:
+							break;
+					}
+					CodeLine cl = new CodeLine() { Type = type };
+					if (split.Length < 2)
+					{
+						validation.Validated = false;
+						validation.Error = ($"Invalid code line \"{line}\". line: {linenum}");
+						return validation;
+					}
+					string address = split[1];
+					if (address.StartsWith("p"))
+					{
+						cl.Pointer = true;
+						string[] offs = address.Split('|');
+						cl.Address = offs[0].Substring(1);
+						if (offs.Length > 1)
+						{
+							cl.Offsets = new List<int>();
+							for (int i = 1; i < offs.Length; i++)
+								cl.Offsets.Add(int.Parse(offs[i], System.Globalization.NumberStyles.HexNumber));
+						}
+					}
+					else
+						cl.Address = address;
+					int it = 2;
+					switch (type)
+					{
+						case CodeType.s8tos32:
+						case CodeType.s16tos32:
+						case CodeType.s32tofloat:
+						case CodeType.u32tofloat:
+						case CodeType.floattos32:
+						case CodeType.floattou32:
+							cl.Value = "0";
+							break;
+						default:
+							cl.Value = split[it++];
+							break;
+					}
+					if (it < split.Length && !split[it].StartsWith(";"))
+						cl.RepeatCount = uint.Parse(split[it++].Substring(1));
+					stack.Peek().Item1.Add(cl);
+					if (cl.IsIf)
+						stack.Push(new Tuple<List<CodeLine>, List<CodeLine>>(cl.TrueLines, cl.FalseLines));
+				}
+				else
+				{
+					validation.Validated = false;
+					validation.Error = ($"Invalid code line \"{line}\".:line {linenum}");
+					return validation;
+				}
+			}
+
+			return validation;
+		}
+
+		public EditCode GetCode(int index)
+		{
+			return Codes[index];
+		}
+
+		public void Save(string path)
+		{
+			using (StreamWriter writer = new StreamWriter(path))
+			{
+				foreach (EditCode code in Codes)
+				{
+					writer.WriteLine(WriteName(code.Name, code.IsPatch, code.Required));
+
+					writer.Write(WriteCodeLines(code.CodeLines));
+
+					if (code.Author != "")
+						writer.WriteLine(WriteCodeElement(Linetype.Author, code.Author));
+
+					if (code.Description != "")
+						writer.WriteLine(WriteCodeElement(Linetype.Description, code.Description));
+
+					if (code.Category != "")
+						writer.WriteLine(WriteCodeElement(Linetype.Category, code.Category));
+
+					writer.WriteLine();
+				}
 			}
 		}
 	}

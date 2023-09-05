@@ -18,24 +18,27 @@ using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using System.CodeDom;
 using ICSharpCode.AvalonEdit;
 using SAModManager.Elements;
-using static System.Windows.Forms.LinkLabel;
 
 namespace SAModManager.Common
 {
-    /// <summary>
-    /// Interaction logic for NewCode.xaml
-    /// </summary>
-    public partial class NewCode : Window
-    {
+	/// <summary>
+	/// Interaction logic for NewCode.xaml
+	/// </summary>
+	public partial class NewCode : Window
+	{
 		private string CodesPath = string.Empty;
+		public EditCode Code = new();
+		private EditCodeList codes = new EditCodeList();
 
 		/// <summary>
 		/// Initialize NewCode Window. Constructor can take a path to store for saving mods to the correct location.
 		/// </summary>
-        public NewCode(string codepath = "", string codefile = "codes.lst")
-        {
-            InitializeComponent();
-			CodesPath = Path.Combine(codepath, codefile);
+		public NewCode(EditCode code = null)
+		{
+			InitializeComponent();
+			if (code != null)
+				Code = code;
+
 			using (XmlTextReader reader = new XmlTextReader(new StringReader(Properties.Resources.OpCodeSyntaxDark)))
 			{
 				CodeWriter.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
@@ -49,24 +52,23 @@ namespace SAModManager.Common
 			SetBindings();
 		}
 
-
-        private void SetCodeWriterText()
+		private void SetCodeWriterText(List<string> codeLines)
 		{
-			if (File.Exists(CodesPath))
+			StringBuilder sb = new StringBuilder();
+			foreach (string line in codeLines)
 			{
-				CodeWriter.Text += File.ReadAllText(CodesPath);
-            }		
-		}
+				if (line != codeLines.Last())
+					sb.AppendLine(line.ToString());
+				else
+					sb.Append(line);
+			}
 
-		private void SaveCodeWriterLines()
-		{
-			if (!string.IsNullOrWhiteSpace(CodeWriter.Text))
-				File.WriteAllText(CodesPath, CodeWriter.Text);
-        }
+			CodeWriter.Text = sb.ToString();
+		}
 
 		private void SetBindings()
 		{
-			/*CodeName.SetBinding(TextBox.TextProperty, new Binding("Name")
+			CodeName.SetBinding(TextBox.TextProperty, new Binding("Name")
 			{
 				Source = Code,
 			});
@@ -78,7 +80,11 @@ namespace SAModManager.Common
 			{
 				Source = Code,
 			});
-			radPatch.SetBinding(RadioButton.IsCheckedProperty, new Binding("Patch")
+			IsRequired.SetBinding(CheckBox.IsCheckedProperty, new Binding("Required")
+			{
+				Source = Code,
+			});
+			radPatch.SetBinding(RadioButton.IsCheckedProperty, new Binding("IsPatch")
 			{
 				Source = Code
 			});
@@ -86,26 +92,61 @@ namespace SAModManager.Common
 			{
 				Source = radPatch,
 				Converter = new BoolFlipConverter()
-			});*/
-			SetCodeWriterText();
+			});
+			SetCodeWriterText(Code.CodeLines);
 		}
 
-		private bool SaveCodeToFile()
+		private EditCodeError ValidateCodeLine()
 		{
-			SaveCodeWriterLines();
-            return true;
+			return EditCodeList.ValidateCodeLines(CodeWriter.Text);
+		}
+
+		private bool VerifyCodeWriterText()
+		{
+			foreach (string line in CodeWriter.Text.Split("\r\n"))
+				if (line.Trim(' ').Length <= 0)
+				{
+					new MessageWindow(Lang.GetString("MessageWindow.Errors.CodeFail.Title"), 
+						Lang.GetString("MessageWindow.Errors.CodeFailEmptyLine"),
+						icon: MessageWindow.Icons.Error).ShowDialog();
+
+					return false;
+				}
+				else if (line.StartsWith(';'))
+					return true;
+				else
+				{
+					EditCodeError validation = ValidateCodeLine();
+					if (!validation.Validated)
+					{
+						new MessageWindow(Lang.GetString("MessageWindow.Errors.CodeFail.Title"), 
+							(Lang.GetString("Messagewindow.Errors.CodeFailInvalid") + "\n\n" + validation.Error),
+						icon: MessageWindow.Icons.Error).ShowDialog();
+						
+						return false;
+					}
+				}
+
+			return true;
 		}
 
 		#region Window Functions
 		private void CancelButton_Click(object sender, RoutedEventArgs e)
 		{
+			Code = null;
 			this.Close();
 		}
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (SaveCodeToFile())
+			if (VerifyCodeWriterText())
+			{
+				Code.CodeLines.Clear();
+				foreach (string line in CodeWriter.Text.Split("\r\n"))
+					Code.CodeLines.Add(line);
+
 				this.Close();
+			}
 		}
 		#endregion
 	}

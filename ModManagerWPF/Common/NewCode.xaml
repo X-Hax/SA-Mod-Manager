@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SAModManager"
 		xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d" Style="{StaticResource SAWindow}" WindowStartupLocation="CenterScreen"
-        Title="{DynamicResource NewCode.Title}" Height="350" Width="500">
+        Title="{DynamicResource NewCode.Title}" Height="400" Width="500">
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -14,8 +14,8 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>
-	
-    <Grid Margin="5">
+
+	<Grid Margin="5">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
@@ -26,12 +26,11 @@
 			<Grid.RowDefinitions>
 				<RowDefinition Height="30"/>
 				<RowDefinition Height="30"/>
-				<RowDefinition Height="0"/>
+				<RowDefinition Height="30"/>
 			</Grid.RowDefinitions>
 
 			<Grid x:Name="CodeInfoTop" Grid.Row="0">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
@@ -40,52 +39,54 @@
 						<ColumnDefinition Width="Auto"/>
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
-                    <!--
 					<Label x:Name="LabelName" Content="{DynamicResource CommonStrings.Name}" Margin="0"/>
-					<TextBox x:Name="CodeName" Grid.Column="1" Margin="5"/>-->
+					<TextBox x:Name="CodeName" Grid.Column="1" Margin="5"/>
 				</Grid>
 				<Grid Grid.Column="1">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto"/>
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
-                    <!--<Label x:Name="LabelAuthor" Content="{DynamicResource CommonStrings.Author}" VerticalAlignment="Center"/>
-					<TextBox x:Name="CodeAuthor" Grid.Column="1" Margin="5"/>-->
+					<Label x:Name="LabelAuthor" Content="{DynamicResource CommonStrings.Author}" VerticalAlignment="Center"/>
+					<TextBox x:Name="CodeAuthor" Grid.Column="1" Margin="5"/>
 				</Grid>
+			</Grid>
+
+			<Grid x:Name="CodeInfoMiddle" Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid Grid.Column="0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<TextBlock Text="Type:" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,5,0"/>
+					<RadioButton x:Name="radCode" Content="Code" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,5,0" Grid.Column="1"/>
+					<RadioButton x:Name="radPatch" Content="Patch" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,5,0" Grid.Column="2"/>
+				</Grid>
+				<CheckBox x:Name="IsRequired" Content="Is Required" Grid.Column="1" Margin="5"/>
 				<Grid Grid.Column="2">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto"/>
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
-                    <!--<Label x:Name="LabelCategory" Content="{DynamicResource CommonStrings.Category}" VerticalAlignment="Center"/>
-					<ComboBox x:Name="CodeCategory" Grid.Column="1" Margin="5"/>-->
+					<Label x:Name="LabelCategory" Content="{DynamicResource CommonStrings.Category}" VerticalAlignment="Center"/>
+					<ComboBox x:Name="CodeCategory" Grid.Column="1" Margin="5"/>
 				</Grid>
 			</Grid>
 
-            <!--<Grid x:Name="CodeInfoMiddle" Grid.Row="1">
+			<Grid x:Name="CodeInfoBottom" Grid.Row="2">
 				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
 					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="163"/>
 				</Grid.ColumnDefinitions>
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-					<Label Content="{DynamicResource CommonStrings.Description}" VerticalAlignment="Center"/>
-					<TextBox x:Name="CodeDescription" Grid.Column="1" Margin="5"/>
-				</Grid>
-				<Grid Grid.Column="1" Width="157" HorizontalAlignment="Right">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-					<TextBlock Text="Type:" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,5,0"/>
-					<RadioButton x:Name="radCode" Content="Code" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,5,0" Grid.Column="1"/>
-					<RadioButton x:Name="radPatch" Content="Patch" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,5,0" Grid.Column="2"/>
-				</Grid>
-			</Grid>-->
+				<Label Content="{DynamicResource CommonStrings.Description}" VerticalAlignment="Center"/>
+				<TextBox x:Name="CodeDescription" Grid.Column="1" Margin="5"/>
+			</Grid>
 		</Grid>
 
 		<Grid x:Name="CodeData" Grid.Row="1" Margin="5">
@@ -104,5 +105,5 @@
 			<Button x:Name="SaveButton" Content="{DynamicResource CommonStrings.Save}" Grid.Column="0" Click="SaveButton_Click"/>
 			<Button x:Name="CancelButton" Content="{DynamicResource CommonStrings.Cancel}" Grid.Column="2" Click="CancelButton_Click"/>
 		</Grid>
-    </Grid>
+	</Grid>
 </Window>

@@ -208,10 +208,19 @@
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-                        <TextBlock x:Name="CodeName" Margin="5,5,5,5" FontSize="15"/>
+						<ListView x:Name="CodeListView" Grid.Column="0" Margin="5">
+							<ListView.View>
+								<GridView>
+									<GridView.Columns>
+										<GridViewColumn Header="Code Name" Width="Auto" DisplayMemberBinding="{Binding Path=Name}"/>
+										<GridViewColumn Header="Code Author" Width="Auto" DisplayMemberBinding="{Binding Path=Author}"/>
+									</GridView.Columns>
+								</GridView>
+							</ListView.View>
+						</ListView>
 
 
-                        <Grid Grid.Column="1">
+						<Grid Grid.Column="1">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="5"/>
 								<RowDefinition Height="30"/>

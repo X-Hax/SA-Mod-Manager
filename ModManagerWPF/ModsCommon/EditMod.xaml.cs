@@ -32,8 +32,10 @@ namespace SAModManager
 		#region Variables
 		static bool editMod { get; set; } = false;
 		private string folderName;
-		public static SADXModInfo Mod { get; set; }
+		public static SADXModInfo Mod { get; set; } = new();
 		static string CurrentTime = string.Empty;
+
+		public static EditCodeList CodeList { get; set; } = new EditCodeList();
 
 		public static List<ModDependency> dependencies = new List<ModDependency>();
 		SelectDependencies selectWindow;
@@ -102,7 +104,7 @@ namespace SAModManager
 			GroupsTree.ItemsSource = Schema.Groups;
 			GroupsTree.Tag = PropertyTypes;
 			EnumsTree.ItemsSource = Schema.Enums;
-
+			CodeListView.ItemsSource = CodeList.Codes;
 
 			if (dependencies.Count > 0 || Schema.Groups.Count > 0)
 			{
@@ -124,7 +126,7 @@ namespace SAModManager
 		#region Main Window Functions
 		private void okBtn_Click(object sender, RoutedEventArgs e)
 		{
-			string moddir = editMod ? App.CurrentGame.modDirectory : Path.Combine(App.CurrentGame.modDirectory, ValidateFilename(nameBox.Text));
+			string moddir = editMod ? Path.Combine(App.CurrentGame.modDirectory, folderName) : Path.Combine(App.CurrentGame.modDirectory, ValidateFilename(nameBox.Text));
 
 			if (nameBox.Text.Length <= 0)
 			{
@@ -132,14 +134,7 @@ namespace SAModManager
 				return;
 			}
 
-			if (editMod)
-			{
-				ModifyMod(moddir);
-			}
-			else
-			{
-				CreateNewMod(moddir);
-			}
+			SaveMod(moddir);
 
 			((MainWindow)Application.Current.MainWindow).Save();
 
@@ -358,33 +353,83 @@ namespace SAModManager
 			}
 		}
 
+		private void SaveCodes(string path)
+		{
+			if (CodeListView.Items.Count > 0)
+			{
+				if (Mod.Codes is null)
+					Mod.Codes = "codes.lst";
+
+				string fullPath = Path.Combine(Path.Combine(path, Mod.Codes));
+
+				CodeList.Save(fullPath);
+			}
+			else
+			{
+				if (Mod.Codes is not null)
+				{
+					string codesfile = Path.Combine(path, Mod.Codes);
+					if (File.Exists(codesfile))
+						File.Delete(codesfile);
+					Mod.Codes = null;
+				}
+			}
+		}
+
 		private void LoadCodes(SADXModInfo mod)
 		{
-			CodeName.Text = "";
-
 			if (mod.Codes is null)
-				return;
+				CodeList = new();
+			else
+			{
+				string fullPath = Path.Combine(Path.Combine(App.CurrentGame.modDirectory, folderName), mod.Codes);
+				if (File.Exists(fullPath))
+					CodeList = EditCodeList.Load(Path.Combine(fullPath));
+				else
+					CodeList = new();
+			}
+		}
 
-            string fullPath = Path.Combine(Path.Combine(App.CurrentGame.modDirectory, folderName), mod.Codes);
-            //if a mod has a code, add it to the list
-            if (File.Exists(fullPath))
-            {
-				btnNewCode.IsEnabled = false;
-                CodeName.Text = Path.GetFileName(fullPath);  
-            }
-
-        }
 		private void LoadDependencies(SADXModInfo mod)
 		{
 			dependencies.Clear();
 			foreach (string dep in mod.Dependencies)
-			{
 				dependencies.Add(new ModDependency(dep));
-			}
 		}
 		#endregion
 
 		#region Build Functions
+		private void NewModSetup(string moddir)
+		{
+			if (Directory.Exists(moddir))
+			{
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.ModAlreadyExists.Title"), Lang.GetString("MessageWindow.Errors.ModAlreadyExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				return;
+			}
+
+			Directory.CreateDirectory(moddir);
+
+			if (categoryBox.Text == "Music")
+			{
+				Directory.CreateDirectory(@Path.Combine(moddir, "system/SoundData/bgm/wma"));
+			}
+
+			if (categoryBox.Text == "Sound")
+			{
+				Directory.CreateDirectory(@Path.Combine(moddir, "system/SoundData/SE"));
+			}
+
+			if (categoryBox.Text == "Textures")
+			{
+				Directory.CreateDirectory(Path.Combine(moddir, "textures"));
+			}
+
+			if (isStringNotEmpty(authorBox.Text)) //save mod author
+			{
+				App.ManagerSettings.ModAuthor = authorBox.Text;
+			}
+		}
+
 		private void BuildModINI(string moddir)
 		{
 
@@ -402,109 +447,27 @@ namespace SAModManager
 			newMod.ModID = GetStringContent(modIDBox.Text);
 			newMod.DLLFile = GetStringContent(dllText.Text);
 
-			string codeName = "Codes.lst";
-
-			if (Mod is not null && Mod.Codes is not null)
-				codeName = Mod.Codes;
-
-            string codePath = Path.Combine(moddir, codeName);
-
-            if (File.Exists(codePath))
-                newMod.Codes = Path.GetFileName(codePath);
-			else
-				newMod.Codes = null;
-
             SaveModUpdates(newMod);
-			SaveModDependencies(newMod);
+			if (editMod)
+				SaveModDependencies(newMod);
 
 			var modIniPath = Path.Combine(moddir, "mod.ini");
 			IniSerializer.Serialize(newMod, modIniPath);
 		}
 
-		private void ModifyMod(string modPath)
+		private void SaveMod(string modPath)
 		{
-			string fullName = string.Empty;
+			if (!editMod)
+				NewModSetup(modPath);
 
-			if (Mod is not null)
-			{
-				//browse the mods folder and get each mod name by their ini file
-				foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modPath)))
-				{
-					SADXModInfo mod = IniSerializer.Deserialize<SADXModInfo>(filename);
-					if (mod.Name == Mod.Name)
-					{
-						fullName = filename;
-					}
-				}
+			HandleSaveRedirection(modPath);
+			SaveCodes(modPath);
+			BuildModINI(modPath);
 
-				var modDirectory = Path.GetDirectoryName(fullName);
-
-				HandleSaveRedirection(modDirectory);
-
-				if (File.Exists(fullName))
-					BuildModINI(modDirectory);
-
-				if ((bool)openFolderChk.IsChecked)
-				{
-					Process.Start(new ProcessStartInfo { FileName = Path.GetDirectoryName(fullName), UseShellExecute = true });
-				}
-			}
+			if ((bool)openFolderChk.IsChecked)
+				Process.Start(new ProcessStartInfo { FileName = modPath, UseShellExecute = true });
 
 			Close();
-		}
-
-		private void CreateNewMod(string moddir)
-		{
-			try
-			{
-				if (Directory.Exists(moddir))
-				{
-					new MessageWindow(Lang.GetString("MessageWindow.Errors.ModAlreadyExists.Title"), Lang.GetString("MessageWindow.Errors.ModAlreadyExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-					return;
-				}
-
-				Directory.CreateDirectory(moddir);
-
-				if ((bool)mainSaveBox.IsChecked || (bool)chaoSaveBox.IsChecked)
-				{
-					Directory.CreateDirectory(Path.Combine(moddir, "SAVEDATA"));
-				}
-
-				if (categoryBox.Text == "Music")
-				{
-					Directory.CreateDirectory(@Path.Combine(moddir, "system/SoundData/bgm/wma"));
-				}
-
-				if (categoryBox.Text == "Sound")
-				{
-					Directory.CreateDirectory(@Path.Combine(moddir, "system/SoundData/SE"));
-				}
-
-				if (categoryBox.Text == "Textures")
-				{
-					Directory.CreateDirectory(Path.Combine(moddir, "textures"));
-				}
-
-				if (isStringNotEmpty(authorBox.Text)) //save mod author
-				{
-					App.ManagerSettings.ModAuthor = authorBox.Text;
-				}
-
-				BuildModINI(moddir);
-
-				if ((bool)openFolderChk.IsChecked)
-				{
-					var psi = new ProcessStartInfo() { FileName = moddir, UseShellExecute = true };
-					Process.Start(psi);
-				}
-
-				Close();
-			}
-			catch (Exception Error)
-			{
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.ModCreationFailed.Title"), Error.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-			}
-
 		}
 		#endregion
 
@@ -536,19 +499,6 @@ namespace SAModManager
 		private string GetStringContent(string value)
 		{
 			return isStringNotEmpty(value) ? value : null;
-		}
-
-		static string RemoveSpecialCharacters(string str)
-		{
-			StringBuilder sb = new StringBuilder();
-			foreach (char c in str)
-			{
-				if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == '-')
-				{
-					sb.Append(c);
-				}
-			}
-			return sb.ToString().ToLowerInvariant();
 		}
 
 		private void HandleSaveRedirection(string modDirectory)
@@ -608,51 +558,55 @@ namespace SAModManager
 
 		private void btnNewCode_Click(object sender, RoutedEventArgs e)
 		{
-            string path = Path.Combine(App.CurrentGame.modDirectory, folderName);
-			string fullPath = Path.Combine(path, "Codes.lst");
+			NewCode newCodeWindow = new();
+			newCodeWindow.ShowDialog();
 
-            if (!File.Exists(fullPath))
+			if (newCodeWindow.Code != null)
 			{
-				NewCode newCodeWindow = new(path);
-                newCodeWindow.ShowDialog();
+				CodeList.Codes.Add(newCodeWindow.Code);
+			}
 
-                if (File.Exists(fullPath))
-                {
-                    CodeName.Text = Path.GetFileName(fullPath);
-                }
-            }
+			SaveCodes(Path.Combine(App.CurrentGame.modDirectory, folderName));
+
+			CodeListView.Items.Refresh();
 		}
 
 		private void btnDelCode_Click(object sender, RoutedEventArgs e)
 		{
-			if (Mod is null || Mod.Codes is null)
+			if (CodeListView.SelectedItems.Count < 1)
 				return;
 
-            string path = Path.Combine(App.CurrentGame.modDirectory, folderName, Mod.Codes);
+			var error = new MessageWindow(Lang.GetString("CommonStrings.Warning"), Lang.GetString("MessageWindow.Warnings.NewCodeDelete"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+			error.ShowDialog();
 
-            if (File.Exists(path))
+			if (error.isYes)
 			{
-				var error = new MessageWindow(Lang.GetString("CommonStrings.Warning"), Lang.GetString("MessageWindow.Warnings.NewCodeDelete"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-				error.ShowDialog();
-
-				if (error.isYes == true)
+				foreach (EditCode code in CodeListView.SelectedItems)
 				{
-                    File.Delete(path);
-					CodeName.Text = "";
-                }
-					
+					if (CodeList.Codes.Contains(code))
+						CodeList.Codes.Remove(code);
+				}
 			}
+
+			SaveCodes(Path.Combine(App.CurrentGame.modDirectory, folderName));
+
+			CodeListView.Items.Refresh();
         }
 
 		private void btnEditCode_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(CodeName.Text) || Mod is null)
+			if (CodeListView.SelectedItems.Count < 1)
 				return;
 
-			string path = Path.Combine(App.CurrentGame.modDirectory, folderName);
+			NewCode editCodeWindow = new((EditCode)CodeListView.SelectedItems[0]);
+			editCodeWindow.ShowDialog();
 
-            NewCode codeWindow = new(path, CodeName.Text);
-			codeWindow.ShowDialog();
+			if (editCodeWindow.Code != null)
+				CodeListView.SelectedItems[0] = editCodeWindow.Code;
+
+			SaveCodes(Path.Combine(App.CurrentGame.modDirectory, folderName));
+
+			CodeListView.Items.Refresh();
 		}
 	}
 }
