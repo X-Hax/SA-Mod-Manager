@@ -18,7 +18,6 @@ using SAModManager.Elements;
 using System.Windows.Media;
 using System.Windows.Data;
 using System.Windows.Media.Animation;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace SAModManager
 {
@@ -317,27 +316,6 @@ namespace SAModManager
 					var settingInfo = new CustomPropertyStore(group.Name, property.Name, property.HelpText, property.Type, ref settings);
 					var item = ConfigCreateItem(property, settings, settingInfo);
 					panel.Children.Add(item);
-					if (property.ChildProperties.Count > 0)
-					{
-						var childGrid = new Grid();
-						childGrid.ColumnDefinitions.Add(new ColumnDefinition());
-						childGrid.ColumnDefinitions.Add(new ColumnDefinition());
-						childGrid.ColumnDefinitions[0].Width = new GridLength(10);
-						childGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
-
-						var childProps = new StackPanel();
-						foreach (var subProperties in property.ChildProperties)
-						{
-							var subSettingInfo = new CustomPropertyStore(group.Name, subProperties.Name, subProperties.HelpText, subProperties.Type, ref settings);
-							Grid subItem = (Grid)ConfigCreateItem(subProperties, settings, subSettingInfo);
-							childProps.Children.Add(subItem);
-						}
-
-						childGrid.Children.Add(childProps);
-						Grid.SetColumn(childProps, 1);
-
-						panel.Children.Add(childGrid);
-					}
 					panel.HorizontalAlignment = HorizontalAlignment.Stretch;
 					item.MouseEnter += Item_MouseEnter;
 					item.MouseLeave += Item_MouseLeave;
@@ -419,3 +397,4 @@ namespace SAModManager
 		#endregion
 	}
 }
+
