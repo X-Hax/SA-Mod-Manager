@@ -490,15 +490,15 @@ namespace SAModManager.Elements.SADX
 				tsNumLevel.Value = GameProfile.TestSpawn.LevelIndex;
 				tsNumAct.Value = GameProfile.TestSpawn.ActIndex;
 
-				GameProfile.TestSpawn.UseCharacter = false;
-				GameProfile.TestSpawn.UseLevel = false;
+				tsCheckCharacter.IsChecked = false;
+				tsCheckLevel.IsChecked = false;
 			}
 			else
 			{
 				if (GameProfile.TestSpawn.CharacterIndex > -1)
-					GameProfile.TestSpawn.UseCharacter = true;
+					tsCheckCharacter.IsChecked = true;
 				if (GameProfile.TestSpawn.LevelIndex > -1)
-					GameProfile.TestSpawn.UseLevel = true;
+					tsCheckLevel.IsChecked = true;
 			}
 		}
 		#endregion
@@ -684,14 +684,17 @@ namespace SAModManager.Elements.SADX
 		{
 			List<string> cmdline = new List<string>();
 
-			if (GameProfile.TestSpawn.UseCharacter && GameProfile.TestSpawn.CharacterIndex > -1)
-				cmdline.Add("-c " + GameProfile.TestSpawn.CharacterIndex.ToString());
+			if (GameProfile.TestSpawn.CharacterIndex > -1)
+				if (GameProfile.TestSpawn.UseCharacter || GameProfile.TestSpawn.UseManual)
+					cmdline.Add("-c " + GameProfile.TestSpawn.CharacterIndex.ToString());
 
-			if (GameProfile.TestSpawn.UseLevel && GameProfile.TestSpawn.LevelIndex > -1)
-				cmdline.Add("-l " + GameProfile.TestSpawn.LevelIndex.ToString());
+			if (GameProfile.TestSpawn.LevelIndex > -1)
+				if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
+					cmdline.Add("-l " + GameProfile.TestSpawn.LevelIndex.ToString());
 
-			if (GameProfile.TestSpawn.UseLevel && GameProfile.TestSpawn.ActIndex > -1)
-				cmdline.Add("-a " + GameProfile.TestSpawn.ActIndex.ToString());
+			if (GameProfile.TestSpawn.ActIndex > -1)
+				if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
+					cmdline.Add("-a " + GameProfile.TestSpawn.ActIndex.ToString());
 
 			if (GameProfile.TestSpawn.UseLevel && tsComboTime.SelectedIndex > 0)
 				cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
