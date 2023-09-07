@@ -87,10 +87,11 @@ namespace SAModManager
 			{
 				try
 				{
+
 					using (ArchiveFile archiveFile = new(file))
 					{
 						archiveFile.Extract(tempFolder);
-					}
+                    }
 
 					//if the mod archive doesn't have a folder as a container, create one and move the files inside.
 					if (File.Exists(Path.Combine(tempFolder, "mod.ini"))) 
@@ -101,6 +102,17 @@ namespace SAModManager
 						if (Util.MoveAllFilesAndSubfolders(tempFolder, newModPath, newModPath))
 							Directory.Move(newModPath, Path.Combine(root, Path.GetFileNameWithoutExtension(file)));
 					}
+					else
+					{
+                        string[] subfolders = Directory.GetDirectories(tempFolder);
+
+                        //technically it should always be one folder
+                        if (subfolders.Length > 0) 
+						{
+							Directory.Move(subfolders[0], Path.Combine(App.CurrentGame.modDirectory, Path.GetFileNameWithoutExtension(subfolders[0])));
+                        }
+                    }
+
 				}
 				catch
 				{
