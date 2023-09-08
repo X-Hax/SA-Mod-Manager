@@ -106,16 +106,21 @@ namespace SAModManager
 			EnumsTree.ItemsSource = Schema.Enums;
 			CodeListView.ItemsSource = CodeList.Codes;
 
+			// TODO: Remove when schema builder is fully implemented.
+			tabSchema.Visibility = Visibility.Collapsed;
+
 			if (dependencies.Count > 0 || Schema.Groups.Count > 0)
 			{
 				checkAdvancedOptions.IsChecked = true;
 				tabDepdencies.Visibility = Visibility.Visible;
-				tabSchema.Visibility = Visibility.Visible;
+				// TODO: Uncomment once schema builder is implemented.
+				//tabSchema.Visibility = Visibility.Visible;
 			}
 			else
 			{
 				tabDepdencies.Visibility = Visibility.Hidden;
-				tabSchema.Visibility = Visibility.Hidden;
+				// TODO: Uncomment once the schema builder is implemented.
+				//tabSchema.Visibility = Visibility.Hidden;
 			}
 
 		}
@@ -540,7 +545,8 @@ namespace SAModManager
 			if ((bool)checkAdvancedOptions.IsChecked)
 			{
 				tabDepdencies.Visibility = Visibility.Visible;
-				tabSchema.Visibility = Visibility.Visible;
+				// TODO: Once the schema builder is properly implemented, this can be restored.
+				//tabSchema.Visibility = Visibility.Visible;
 			}
 			else
 			{
@@ -552,7 +558,8 @@ namespace SAModManager
 				}
 
 				tabDepdencies.Visibility = Visibility.Hidden;
-				tabSchema.Visibility = Visibility.Hidden;
+				// TODO: Also remove this comment once schema builder is finished.
+				//tabSchema.Visibility = Visibility.Hidden;
 			}
 		}
 
