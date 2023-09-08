@@ -317,9 +317,9 @@
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="200"/>
 										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="200"/>
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 									<Grid.RowDefinitions>
@@ -331,13 +331,12 @@
 										<RowDefinition Height="5"/>
 									</Grid.RowDefinitions>
 
-									<RadioButton x:Name="inputMouseDragHold" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold}"/>
-									<RadioButton x:Name="inputMouseDragAccel" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel}" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate}"/>
+									<RadioButton x:Name="inputMouseDragHold" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold}"/>
+									<RadioButton x:Name="inputMouseDragAccel" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel}" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate}"/>
 									<Label x:Name="mouseActionLabel" Content="Action:" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 									<ComboBox x:Name="mouseAction" Grid.Row="2" Grid.Column="1" SelectedIndex="0"/>
 									<Label x:Name="mouseBtnAssignLabel" Content="Button Assignment:" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="3"/>
 									<ComboBox x:Name="mouseBtnAssign" Grid.Row="2" Grid.Column="3" SelectedIndex="0"/>
-
 								</Grid>
 							</GroupBox>
 						</Grid>

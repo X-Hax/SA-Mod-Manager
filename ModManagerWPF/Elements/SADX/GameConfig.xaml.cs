@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using SAModManager.Configuration;
 using SAModManager.Configuration.SADX;
+using SAModManager.Ini;
 
 namespace SAModManager.Elements.SADX
 {
@@ -50,7 +51,11 @@ namespace SAModManager.Elements.SADX
 			SetupBindings();
 			SetUp_UpdateD3D9();
 			SetTextureFilterList();
-        }
+
+			mouseAction.SelectionChanged += mouseAction_SelectionChanged;
+			mouseBtnAssign.SelectionChanged += mouseBtnAssign_SelectionChanged;
+		}
+
 		//Temporary, TO DO: Implement proper texture filter list
 
 		private void SetTextureFilterSettings()
@@ -622,6 +627,51 @@ namespace SAModManager.Elements.SADX
 			settings.Patches.HRTFSound = patch.IsChecked;
 		}
 
+		private void SetItemFromPad(int action)
+		{
+			switch (action)
+			{
+				case 0:
+					mouseBtnAssign.SelectedIndex = GameSettings.GameConfig.MouseStart;
+					break;
+				case 1:
+					mouseBtnAssign.SelectedIndex = GameSettings.GameConfig.MouseAttack;
+					break;
+				case 2:
+					mouseBtnAssign.SelectedIndex = GameSettings.GameConfig.MouseJump;
+					break;
+				case 3:
+					mouseBtnAssign.SelectedIndex = GameSettings.GameConfig.MouseAction;
+					break;
+				case 4:
+					mouseBtnAssign.SelectedIndex = GameSettings.GameConfig.MouseFlute;
+					break;
+			}
+		}
+
+		private void SetItemToPad(int value)
+		{
+			int action = mouseAction.SelectedIndex;
+			switch (action)
+			{
+				case 0:
+					GameSettings.GameConfig.MouseStart = (ushort)value;
+					break;
+				case 1:
+					GameSettings.GameConfig.MouseAttack = (ushort)value;
+					break;
+				case 2:
+					GameSettings.GameConfig.MouseJump = (ushort)value;
+					break;
+				case 3:
+					GameSettings.GameConfig.MouseAction = (ushort)value;
+					break;
+				case 4:
+					GameSettings.GameConfig.MouseFlute = (ushort)value;
+					break;
+			}
+		}
+
 		#region Private Functions
 		private void SetupBindings()
 		{
@@ -777,6 +827,11 @@ namespace SAModManager.Elements.SADX
 				Mode = BindingMode.TwoWay
 			});
 
+			// Input Game Config Settings
+			mouseAction.ItemsSource = SADXConfigMouseControl.MouseActionsList();
+			mouseBtnAssign.ItemsSource = SADXConfigMouseControl.MouseControls();
+			mouseBtnAssign.DisplayMemberPath = "DisplayName";
+
 			// Audio Settings
 			checkEnableMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("BGM")
 			{
@@ -843,5 +898,17 @@ namespace SAModManager.Elements.SADX
                 GameProfile.Graphics.EnableForcedTextureFilter = false;
             }
         }
-    }
+
+		private void mouseAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = sender as ComboBox;
+			SetItemFromPad(comboBox.SelectedIndex);
+		}
+
+		private void mouseBtnAssign_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = sender as ComboBox;
+			SetItemToPad((int)(comboBox.SelectedItem as SADXConfigMouseControl).Index);
+		}
+	}
 }
