@@ -52,6 +52,8 @@ namespace SAModManager.Elements.SADX
 			SetUp_UpdateD3D9();
 			SetTextureFilterList();
 
+			InitMouseList();
+
 			mouseAction.SelectionChanged += mouseAction_SelectionChanged;
 			mouseBtnAssign.SelectionChanged += mouseBtnAssign_SelectionChanged;
 		}
@@ -278,34 +280,31 @@ namespace SAModManager.Elements.SADX
 			mouseBtnAssign.ItemsSource = mouseBtnAssignList;
 		}
 
-
-		private void radVanillaInput_Checked(object sender, RoutedEventArgs e)
+		private void DisplayInputGroup(int type)
 		{
-			if (grpVanillaInput is null)
-				return;
-
-			int index = tabInputGrid.Children.IndexOf(grpSDLInput); //Graphic Window setting is a children of the graphic grid 
-
-			tabInputGrid.Children.RemoveAt(index); //we remove it so we can only display the full screen options
-
-			if (!tabInputGrid.Children.Contains(grpVanillaInput)) //if the fullscreen grid doesn't exist, add it back
+			switch (type)
 			{
-				tabInputGrid.Children.Add(grpVanillaInput);
+				default:
+					grpSDLInput.Visibility = Visibility.Visible;
+					grpVanillaInput.Visibility = Visibility.Collapsed;
+					break;
+				case 1:
+					grpSDLInput.Visibility = Visibility.Collapsed;
+					grpVanillaInput.Visibility = Visibility.Visible;
+					break;
 			}
 		}
 
-		private void radBetterInput_Checked(object sender, RoutedEventArgs e)
+		private void InputRadioButtonCheck(object sender, RoutedEventArgs e)
 		{
-			if (grpSDLInput is null)
+			if (grpVanillaInput is null || grpSDLInput is null)
 				return;
 
-			int index = tabInputGrid.Children.IndexOf(grpVanillaInput);
-			tabInputGrid.Children.RemoveAt(index);
+			if ((bool)radBetterInput.IsChecked)
+				DisplayInputGroup(0);
 
-			if (!tabInputGrid.Children.Contains(grpSDLInput))
-			{
-				tabInputGrid.Children.Add(grpSDLInput);
-			}
+			if ((bool)radVanillaInput.IsChecked)
+				DisplayInputGroup(1);
 		}
 
 		#region App Launcher
@@ -827,11 +826,6 @@ namespace SAModManager.Elements.SADX
 				Mode = BindingMode.TwoWay
 			});
 
-			// Input Game Config Settings
-			mouseAction.ItemsSource = SADXConfigMouseControl.MouseActionsList();
-			mouseBtnAssign.ItemsSource = SADXConfigMouseControl.MouseControls();
-			mouseBtnAssign.DisplayMemberPath = "DisplayName";
-
 			// Audio Settings
 			checkEnableMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("BGM")
 			{
@@ -908,7 +902,7 @@ namespace SAModManager.Elements.SADX
 		private void mouseBtnAssign_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			ComboBox comboBox = sender as ComboBox;
-			SetItemToPad((int)(comboBox.SelectedItem as SADXConfigMouseControl).Index);
+			SetItemToPad(comboBox.SelectedIndex);
 		}
 	}
 }

@@ -291,8 +291,8 @@
 								<RowDefinition Height="10"/>
 							</Grid.RowDefinitions>
 
-							<RadioButton x:Name="radVanillaInput" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.Vanilla}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radVanillaInput_Checked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla}" IsChecked="{Binding ElementName=radBetterInput, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
-							<RadioButton x:Name="radBetterInput" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.SDL2}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="radBetterInput_Checked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput}"/>
+							<RadioButton x:Name="radVanillaInput" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.Vanilla}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="InputRadioButtonCheck" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla}" IsChecked="{Binding ElementName=radBetterInput, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
+							<RadioButton x:Name="radBetterInput" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.SDL2}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="InputRadioButtonCheck" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput}"/>
 						</Grid>
 					</GroupBox>
 
