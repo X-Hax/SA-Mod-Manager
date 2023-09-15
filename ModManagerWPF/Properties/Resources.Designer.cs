@@ -110,6 +110,16 @@ namespace SAModManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] SADXFileHashes {
+            get {
+                object obj = ResourceManager.GetObject("SADXFileHashes", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] SADXModLoader {
             get {
                 object obj = ResourceManager.GetObject("SADXModLoader", resourceCulture);

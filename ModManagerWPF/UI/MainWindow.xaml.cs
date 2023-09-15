@@ -2202,8 +2202,13 @@ namespace SAModManager
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
             UpdateBtnInstallLoader_State();
         }
-        #endregion
+		#endregion
 
-        #endregion
-    }
+		#endregion
+
+		private void btnHealthCheck_Click(object sender, RoutedEventArgs e)
+		{
+			HealthChecker.PerformHealthCheck(setGame);
+		}
+	}
 }
