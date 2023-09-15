@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="ModChangelog.Title">모드 업데이트</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Notes">업데이트 기록</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details">업데이트 세부 정보</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.DownloadDetails">다운로드 세부 정보</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.PublishedDate">게시된 날짜:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.FileSize">파일 크기:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.FileCount">파일 수:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.UpdateName">업데이트 타이틀:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.Tag">태그:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.Buttons.OpenBrowser">브라우저에서 업데이트 열기</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Files">파일 변경</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Files.Filename">파일 이름</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Files.Status">상태</system:String>
+	<system:String x:Key="ModChangelog.Buttons.DownloadNow">지금 다운로드</system:String>
+	<system:String x:Key="ModChangelog.Buttons.DownloadLater">나중에 다운로드</system:String>
+</ResourceDictionary>

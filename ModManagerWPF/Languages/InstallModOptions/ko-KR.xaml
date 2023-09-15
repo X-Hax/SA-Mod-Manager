@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="InstallModOptions.Title">새 모드를 생성하거나 설치.</system:String>
+	<system:String x:Key="InstallModOptions.Radio.Archive">아카이브에서 설치 중</system:String>
+	<system:String x:Key="InstallModOptions.Radio.Folder">폴더에서 설치 중</system:String>
+	<system:String x:Key="InstallModOptions.Radio.New">새 모드(개발자 전용)</system:String>
+</ResourceDictionary>
