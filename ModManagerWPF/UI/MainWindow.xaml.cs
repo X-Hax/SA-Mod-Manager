@@ -614,10 +614,13 @@ namespace SAModManager
                 }
 
 
-                await ExecuteModsUpdateCheck();
-                await UpdateChecker_DoWorkForced();
-                modUpdater.ForceUpdate = true;
                 UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
+                await UpdateChecker_DoWork();
+                modUpdater.ForceUpdate = true;
+                await UpdateChecker_DoWorkForced();
+                modUpdater.ForceUpdate = false;
+                await UpdateChecker_RunWorkerCompleted();
+                UpdateChecker_EnableControls();
             }
 
         }
@@ -1796,7 +1799,7 @@ namespace SAModManager
 
                 foreach (var error in Errors)
                 {
-                    msgError += "\n\n" + error;
+                    msgError += "\n" + error;
                 }
 
                 if (msgError.Contains("403"))
