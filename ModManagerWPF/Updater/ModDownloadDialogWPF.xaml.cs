@@ -72,8 +72,6 @@ namespace SAModManager.Updater
 					args.Cancel = token.IsCancellationRequested;
 					Application.Current.Dispatcher.Invoke(() =>
 					{
-						Progress.Value = Progress.Maximum;
-						ProgressTxt.Text = $"Download complete.";
 						tokenSource.Dispose();
 					});
 				}
@@ -122,7 +120,15 @@ namespace SAModManager.Updater
 					update.ApplyingManifest -= OnApplyingManifest;
 					update.DownloadProgress -= OnDownloadProgress;
 					update.DownloadCompleted -= OnDownloadCompleted;
-				}
+
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						Progress.Value = Progress.Maximum;
+						ProgressTxt.Text = $"Download complete.";
+					});
+
+					await Task.Delay(1000);
+                    }
 			}
 
 			this.Close();
