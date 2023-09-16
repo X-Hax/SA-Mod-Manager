@@ -12,7 +12,7 @@
 	<!--#endregion-->
 
 	<!--#region Shared Colors-->
-	<Color x:Key="Colors.Background" A="255" R="240" G="240" B="240"/>
+	<Color x:Key="Colors.Background" A="255" R="250" G="250" B="250"/>
 	<Color x:Key="Colors.Background.Disabled" A="255" R="180" G="180" B="180"/>
 	<Color x:Key="Colors.Highlight" A="255" R="0" G="102" B="204"/>
 	<Color x:Key="Colors.Highlight.Bright" A="255" R="0" G="102" B="250"/>
