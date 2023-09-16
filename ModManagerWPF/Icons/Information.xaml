@@ -12,4 +12,15 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
+
+	<DrawingImage x:Key="Icon.Info">
+		<DrawingImage.Drawing>
+			<DrawingGroup ClipGeometry="M-1,0 V19 H18 V-1 H0 Z">
+				<DrawingGroup.Transform>
+					<TranslateTransform X="1" Y="0" />
+				</DrawingGroup.Transform>
+				<GeometryDrawing Brush="{DynamicResource Icon.Brushes.Blue}" Geometry="F1 M19,19z M0,0z M16.417,9.583A7.917,7.917,0,1,1,8.5,1.666A7.917,7.917,0,0,1,16.417,9.583z M5.85,3.309A6.833,6.833,0,1,0,8.5,2.775A6.787,6.787,0,0,0,5.85,3.309z M8.504,4.645A1.136,1.136,0,1,1,7.37,5.78A1.136,1.136,0,0,1,8.505,4.644z M9.296,13.868L9.296,8.665A0.792,0.792,0,1,0,7.713,8.665L7.713,13.868A0.792,0.792,0,0,0,9.296,13.868z" />
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
 </ResourceDictionary>
