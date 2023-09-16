@@ -49,7 +49,7 @@ namespace SAModManager.Updater
 			{
 				Application.Current.Dispatcher.Invoke(() =>
 				{
-					Progress.Value = (args.FileIndex / (double)args.FileCount);
+					Progress.Value = Util.SetProgress(args.FileIndex / (double)args.FileCount);
 					HeaderTxt.Text = $"Hashing file: {args.FileIndex}/{args.FileCount} " + args.FileName;
 			
 				});
