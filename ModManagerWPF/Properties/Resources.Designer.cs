@@ -63,9 +63,9 @@ namespace SAModManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] BASS {
+        internal static byte[] bass {
             get {
-                object obj = ResourceManager.GetObject("BASS", resourceCulture);
+                object obj = ResourceManager.GetObject("bass", resourceCulture);
                 return ((byte[])(obj));
             }
         }
