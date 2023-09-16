@@ -1343,7 +1343,7 @@ namespace SAModManager
                     }
                 }
             }
-        
+
             CodeList.WriteDatFile(patchdatpath, selectedPatches);
             CodeList.WriteDatFile(codedatpath, selectedCodes);
         }
@@ -2202,13 +2202,23 @@ namespace SAModManager
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
             UpdateBtnInstallLoader_State();
         }
-		#endregion
+        #endregion
 
-		#endregion
+        #endregion
 
-		private void btnHealthCheck_Click(object sender, RoutedEventArgs e)
-		{
-			HealthChecker.PerformHealthCheck(setGame);
-		}
-	}
+        private void btnHealthCheck_Click(object sender, RoutedEventArgs e)
+        {
+            MessageWindow message = new MessageWindow("Health Check", "You are about to run the Game HEalth check. This will verify all game files except audio files." +
+       "\n\nDo you wish to continue?", type: MessageWindow.WindowType.Message, button: MessageWindow.Buttons.YesNo);
+
+            message.ShowDialog();
+
+            if (message.isYes != true)
+                return;
+
+            var progress = new HealthChecker(setGame);
+            progress.ShowDialog();
+
+        }
+    }
 }
