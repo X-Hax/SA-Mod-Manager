@@ -26,9 +26,7 @@ namespace SAModManager.Common
 	/// </summary>
 	public partial class NewCode : Window
 	{
-		private string CodesPath = string.Empty;
 		public EditCode Code = new();
-		private EditCodeList codes = new EditCodeList();
 
 		/// <summary>
 		/// Initialize NewCode Window. Constructor can take a path to store for saving mods to the correct location.
@@ -36,10 +34,13 @@ namespace SAModManager.Common
 		public NewCode(EditCode code = null)
 		{
 			InitializeComponent();
+
 			if (code != null)
 				Code = code;
 
-			using (XmlTextReader reader = new XmlTextReader(new StringReader(Properties.Resources.OpCodeSyntaxDark)))
+            LabelCategory.Visibility = Visibility.Collapsed;
+            CodeCategory.Visibility = Visibility.Collapsed;
+            using (XmlTextReader reader = new XmlTextReader(new StringReader(Properties.Resources.OpCodeSyntaxDark)))
 			{
 				CodeWriter.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
 			}
