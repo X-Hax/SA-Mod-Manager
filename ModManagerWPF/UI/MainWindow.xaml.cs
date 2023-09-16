@@ -27,8 +27,7 @@ using SAModManager.Configuration;
 using ICSharpCode.AvalonEdit.Editing;
 using SAModManager.IniSettings.SA2;
 using System.Reflection;
-using System.Windows.Media.Animation;
-using NetCoreInstallChecker.Structs;
+
 
 namespace SAModManager
 {
@@ -1430,6 +1429,19 @@ namespace SAModManager
             // TODO: Nothing to do, it's not implemented yet.
         }
 
+        private void ManualLoaderUpdateCheck()
+        {
+            if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+            {
+                byte[] hash1 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.loaderdllpath));
+                byte[] hash2 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.dataDllPath));
+
+                if (!hash1.SequenceEqual(hash2))
+                {
+                    File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+                }
+            }
+        }
         public async void Load(bool newSetup = false)
         {
             if (setGame != SetGame.None)
@@ -1447,7 +1459,7 @@ namespace SAModManager
                 LoadGameSettings(newSetup);
 
                 await UpdateManagerInfo();
-
+                ManualLoaderUpdateCheck();
                 InitCodes();
                 LoadModList();
 
