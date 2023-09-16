@@ -2208,8 +2208,7 @@ namespace SAModManager
 
         private void btnHealthCheck_Click(object sender, RoutedEventArgs e)
         {
-            MessageWindow message = new MessageWindow("Health Check", "You are about to run the Game HEalth check. This will verify all game files except audio files." +
-       "\n\nDo you wish to continue?", type: MessageWindow.WindowType.Message, button: MessageWindow.Buttons.YesNo);
+            MessageWindow message = new(Lang.GetString("MessageWindow.Warnings.HealthCheckTitle"), Lang.GetString("MessageWindow.Warnings.HealthCheck"), type: MessageWindow.WindowType.Message, button: MessageWindow.Buttons.YesNo);
 
             message.ShowDialog();
 

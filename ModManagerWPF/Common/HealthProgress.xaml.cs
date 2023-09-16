@@ -171,7 +171,6 @@ namespace SAModManager.Common
                 try
                 {
 
-                    int i = 0;
                     foreach (KeyValuePair<int, HealthInfo> file in Files)
                     {
                         Application.Current.Dispatcher.Invoke(() =>
@@ -197,8 +196,6 @@ namespace SAModManager.Common
 
                         if (status.Status != FileStatus.StatusValue.Good)
                             Fails.Add(status);
-
-                        i++;
                     }
                 }
                 catch (Exception ex)
@@ -224,7 +221,7 @@ namespace SAModManager.Common
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        MessageWindow failedFiles = new MessageWindow("Unmatched Files", "The following files are not verified:" +
+                        MessageWindow failedFiles = new("Unmatched Files", "The following files are not verified:" +
                         sb.ToString(), type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
 
                         failedFiles.ShowDialog();
@@ -234,7 +231,7 @@ namespace SAModManager.Common
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        MessageWindow success = new MessageWindow("Verified", "All checked files match.",
+                        MessageWindow success = new(Lang.GetString("MessageWindow.Warnings.HealthCheckOKTitle"), Lang.GetString("MessageWindow.Warnings.HealthCheckOK"),
                         type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
 
                         success.ShowDialog();
