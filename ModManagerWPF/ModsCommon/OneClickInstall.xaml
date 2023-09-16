@@ -9,8 +9,9 @@
         mc:Ignorable="d"
 		Style="{StaticResource SAWindow}"
 		Title="Download Mod" Height="600" Width="850"
-        WindowStartupLocation="CenterScreen">
-	<Grid>
+        WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing">
+    <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>

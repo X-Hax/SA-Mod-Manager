@@ -42,14 +42,13 @@ namespace SAModManager
 		}
 
 
-		private async void HandleGBMod(Dictionary<string, string> fields)
+		private async Task HandleGBMod(Dictionary<string, string> fields)
 		{
 			string itemType;
 			long itemId;
 
 			try
 			{
-
 				itemType = fields["gb_itemtype"];
 				itemId = long.Parse(fields["gb_itemid"]);
 			}
@@ -59,8 +58,7 @@ namespace SAModManager
 
 				new MessageWindow(Lang.GetString("MessageWindow.Errors.URIParseFail.Title"), msg, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 
-
-				return;
+                return;
 			}
 
 
@@ -116,13 +114,11 @@ namespace SAModManager
 			catch (Exception ex)
 			{
 				new MessageWindow(Lang.GetString("MessageWindow.Errors.GBAPIFail.Title"), Lang.GetString("MessageWindow.Errors.GBAPIFail"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-
-				return;
-
-			}
+                return;
+            }
 		}
 
-		private void HandleUri(string uri)
+		private async Task HandleUri(string uri)
 		{
 			if (WindowState == WindowState.Minimized)
 			{
@@ -133,9 +129,10 @@ namespace SAModManager
 
 
 			string[] split = uri.Substring("sadxmm:".Length).Split(',');
+			OpenGB.IsEnabled = false;
+			ButtonDownload.IsEnabled = false;
 
-
-			url = new Uri(split[0]);
+            url = new Uri(split[0]);
 			fields = new Dictionary<string, string>(split.Length - 1);
 			for (int i = 1; i < split.Length; i++)
 			{
@@ -145,7 +142,7 @@ namespace SAModManager
 
 			if (fields.ContainsKey("gb_itemtype") && fields.ContainsKey("gb_itemid"))
 			{
-				HandleGBMod(fields);
+				await HandleGBMod(fields);
 			}
 			else if (fields.ContainsKey("name") && fields.ContainsKey("author"))
 			{
@@ -159,15 +156,16 @@ namespace SAModManager
 			{
 				string error = Lang.GetString("MessageWindow.Errors.URIParseFail0 ") + "\"{uri}\" " + Lang.GetString("MessageWindow.Errors.URIParseFailFields1");
 				new MessageWindow(Lang.GetString("MessageWindow.Errors.URIParseFail.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-
-				return;
+                return;
 			}
 
+            OpenGB.IsEnabled = true;
+            ButtonDownload.IsEnabled = true;
 			this.ShowDialog();
 		}
 
 
-		private void UriQueueOnUriEnqueued(object sender, OnUriEnqueuedArgs args)
+		private async void UriQueueOnUriEnqueued(object sender, OnUriEnqueuedArgs args)
 		{
 			args.Handled = true;
 
@@ -177,11 +175,11 @@ namespace SAModManager
 				return;
 			}
 
-			HandleUri(args.Uri);
+			await HandleUri(args.Uri);
 		}
 
 
-		public static string GetNewColor(string brushname)
+        public static string GetNewColor(string brushname)
 		{
 			var fgBrush = ThemeBrush.GetThemeColor(brushname);
 			string hexColor = $"#{fgBrush.R:X2}{fgBrush.G:X2}{fgBrush.B:X2}";
@@ -190,8 +188,8 @@ namespace SAModManager
 
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{
-			this.Close();
-		}
+            this.Visibility = Visibility.Hidden; // Hide the window when the button is clicked
+        }
 
 		private void OpenGB_Click(object sender, RoutedEventArgs e)
 		{
@@ -256,10 +254,9 @@ namespace SAModManager
 
 			new ModDownloadDialogWPF(updates, updatePath).ShowDialog();
 
-
-			await Task.Delay(2000);
-			this.Hide();
 			await Task.Delay(1000);
+			this.Hide();
+			await Task.Delay(500);
 			if (Directory.Exists(updatePath))
 			{
 				try
@@ -272,7 +269,14 @@ namespace SAModManager
 
 
 			((MainWindow)App.Current.MainWindow).Refresh();
-			this.Close();
 		}
-	}
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true; // Prevent the window from closing
+            this.Visibility = Visibility.Hidden; // Hide the window
+        }
+
+
+    }
 }
