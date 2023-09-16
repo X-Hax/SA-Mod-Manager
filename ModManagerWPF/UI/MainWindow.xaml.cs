@@ -2208,7 +2208,7 @@ namespace SAModManager
 
         private void btnHealthCheck_Click(object sender, RoutedEventArgs e)
         {
-            MessageWindow message = new(Lang.GetString("MessageWindow.Warnings.HealthCheckTitle"), Lang.GetString("MessageWindow.Warnings.HealthCheck"), type: MessageWindow.WindowType.Message, button: MessageWindow.Buttons.YesNo);
+            MessageWindow message = new(Lang.GetString("MessageWindow.Warnings.HealthCheckTitle"), Lang.GetString("MessageWindow.Warnings.HealthCheck"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Caution, button: MessageWindow.Buttons.YesNo);
 
             message.ShowDialog();
 

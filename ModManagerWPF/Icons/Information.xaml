@@ -1,14 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	<DrawingImage x:Key="IconInfo">
-		<DrawingImage.Drawing>
-			<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
-				<GeometryDrawing Geometry="F1 M24,24z M0,0z M12,17L12.01,17 M12,14C12.8906,12.0938 15,12.2344 15,10 15,8.5 14,7 12,7 10.4521,7 9.50325,7.89844 9.15332,9 M12,21C16.9706,21 21,16.9706 21,12 21,7.02944 16.9706,3 12,3 7.02944,3 3,7.02944 3,12 3,16.9706 7.02944,21 12,21z">
-					<GeometryDrawing.Pen>
-						<Pen Brush="{DynamicResource IconBrushInfo}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
-					</GeometryDrawing.Pen>
-				</GeometryDrawing>
-			</DrawingGroup>
-		</DrawingImage.Drawing>
-	</DrawingImage>
+    <DrawingImage x:Key="IconInfo">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V80 H80 V0 H0 Z">
+                <GeometryDrawing Brush="#FF8BB7F0" Geometry="F1 M80,80z M0,0z M40,77.5C19.322,77.5 2.5,60.678 2.5,40 2.5,19.322 19.322,2.5 40,2.5 60.678,2.5 77.5,19.322 77.5,40 77.5,60.678 60.678,77.5 40,77.5z" />
+                <GeometryDrawing Brush="#FF4E7AB5" Geometry="F1 M80,80z M0,0z M40,3C60.402,3 77,19.598 77,40 77,60.402 60.402,77 40,77 19.598,77 3,60.402 3,40 3,19.598 19.598,3 40,3 M40,2C19.013,2 2,19.013 2,40 2,60.987 19.013,78 40,78 60.987,78 78,60.987 78,40 78,19.013 60.987,2 40,2L40,2z" />
+                <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M80,80z M0,0z M40,21A3,3,0,1,0,40,27A3,3,0,1,0,40,21z" />
+                <DrawingGroup Opacity="1">
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M80,80z M0,0z M43,56L43,31 35,31 35,33 37,33 37,56 35,56 35,58 45,58 45,56z" />
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
 </ResourceDictionary>
