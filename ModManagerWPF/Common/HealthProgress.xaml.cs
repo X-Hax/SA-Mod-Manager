@@ -20,7 +20,11 @@ namespace SAModManager.Common
     /// 
     public partial class HealthChecker : Window
     {
-        public bool Failed = false;
+		public static Dictionary<int, HealthInfo> Files { get; set; } = new();
+
+		public static List<FileStatus> Fails { get; set; } = new();
+
+		public bool Failed = false;
         SetGame game = SetGame.SADX;
 
         public HealthChecker(SetGame game)
@@ -28,7 +32,7 @@ namespace SAModManager.Common
             InitializeComponent();
             this.game = game;
             Loaded += OnLoaded;
-            string title = "Health Check";
+            string title = Lang.GetString("HealthProgress.Title");
             HealthText.Text = title;
             Title = title;
         }
@@ -84,11 +88,6 @@ namespace SAModManager.Common
                 Status = status;
             }
         }
-
-
-        public static Dictionary<int, HealthInfo> Files { get; set; } = new();
-
-        public static List<FileStatus> Fails { get; set; } = new();
 
         public static void RecheckStatus(string newfile, FileStatus status, HealthInfo file)
         {
@@ -146,9 +145,6 @@ namespace SAModManager.Common
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-
-            bool failed = false;
-
             using (var task = new Task(() =>
             {
                 switch (game)
@@ -186,10 +182,10 @@ namespace SAModManager.Common
                             switch (game)
                             {
                                 case SetGame.SADX:
-                                    HealthChecker.SADXRecheck(status, file.Value);
+                                    SADXRecheck(status, file.Value);
                                     break;
                                 case SetGame.SA2:
-                                    HealthChecker.SA2Recheck(status, file.Value);
+                                    SA2Recheck(status, file.Value);
                                     break;
                             }
                         }
@@ -200,10 +196,13 @@ namespace SAModManager.Common
                 }
                 catch (Exception ex)
                 {
-                    failed = true;
-                }
+					MessageWindow exception = new(Lang.GetString("MessageWindow.Errors.HealthCheck.UnknownError.Title"), Lang.GetString("MessageWindow.Errors.HealthCheck.UnknownError"),
+						type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Error, button: MessageWindow.Buttons.OK);
 
-                if (failed)
+					exception.ShowDialog();
+				}
+
+                if (Fails.Count > 0)
                 {
                     StringBuilder sb = new StringBuilder();
                     foreach (FileStatus file in Fails)
@@ -211,17 +210,18 @@ namespace SAModManager.Common
                         switch (file.Status)
                         {
                             case FileStatus.StatusValue.Modified:
-                                sb.AppendLine(file.Filename + " is modified.");
+                                sb.AppendLine(file.Filename + " " + Lang.GetString("HealthProgress.Files.Modified"));
                                 break;
                             case FileStatus.StatusValue.NotFound:
-                                sb.AppendLine(file.Filename + " was not found.");
+                                sb.AppendLine(file.Filename +  " " + Lang.GetString("HealthProgress.Files.Missing"));
                                 break;
                         }
                     }
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        MessageWindow failedFiles = new("Unmatched Files", "The following files are not verified:" +
+                        MessageWindow failedFiles = new(Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles.Title"), 
+							Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles") + "\n\n" +
                         sb.ToString(), type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
 
                         failedFiles.ShowDialog();
@@ -231,7 +231,7 @@ namespace SAModManager.Common
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        MessageWindow success = new(Lang.GetString("MessageWindow.Warnings.HealthCheckOKTitle"), Lang.GetString("MessageWindow.Warnings.HealthCheckOK"),
+                        MessageWindow success = new(Lang.GetString("MessageWindow.Information.HealthCheck.Verified.Title"), Lang.GetString("MessageWindow.Information.HealthCheck.Verified"),
                         type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
 
                         success.ShowDialog();

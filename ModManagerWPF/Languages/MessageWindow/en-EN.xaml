@@ -91,6 +91,9 @@
 	<system:String x:Key="MessageWindow.Errors.CodeFail.Title">Invalid Code Line</system:String>
 	<system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">There is an empty line within the code writer lines.&#x0a;&#x0a;Please remove the empty line and resave.</system:String>
 	<system:String x:Key="Messagewindow.Errors.CodeFailInvalid">The written code is invalid.&#x0a;&#x0a;Please correct the error and resave.</system:String>
+
+	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Unknown Error</system:String>
+	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">An unknown error has occurred.</system:String>
 	<!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -106,12 +109,9 @@
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime is not installed!&#x0a;&#x0a;Would you like to install it now?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">This will delete all selected codes.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
-    <system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Health Check</system:String>
-    <system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">You are about to run the Game Health check. This will verify all game files except audio files.&#x0a;&#x0a;Do you wish to continue?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">This will delete all selected codes.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.HealthCheckOKTitle">Verified</system:String>
-    <system:String x:Key="MessageWindow.Warnings.HealthCheckOK">All checked files match.</system:String>
+
     <!--#endregion-->
 	
 	<!--#region Information-->
@@ -125,6 +125,14 @@
 
     <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">SADX game folder has been found, but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Would you like to download and install the Mod Installer to convert your game to the 2004 version? (Your saves will be converted as well).</system:String>
 
-    <!--#endregion-->
+	<system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Health Check</system:String>
+	<system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">You are about to run the Game Health check. This will verify all game files except audio files.&#x0a;&#x0a;Do you wish to continue?</system:String>
+
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">File Issues Found</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles">The following issues were found with your game files:</system:String>
+
+	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Verification Complete</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified">All checked files have been verified.</system:String>
+	<!--#endregion-->
 	
 </ResourceDictionary>
