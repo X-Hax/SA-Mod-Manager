@@ -10,7 +10,9 @@
 	<UserControl.Resources>
 		<ResourceDictionary>
 			<elements:BoolFlipConverter x:Key="FlipBool"/>
-			<ResourceDictionary x:Key="images" Source="../../Icons/Icons.xaml"/>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../../Icons/Icons.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</UserControl.Resources>
     <Grid>
@@ -97,9 +99,9 @@
 				<ComboBox x:Name="tsComboSave" Grid.Column="1" Grid.Row="2" Margin="5" IsEnabled="{Binding ElementName=tsCheckSave, Path=IsChecked}"/>
 
 				<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" HorizontalAlignment="Center">
-					<Image Source="{DynamicResource IconCaution}" Width="30"/>
-					<TextBlock x:Name="textEventWarning" Text="{DynamicResource Manager.Tabs.TestSpawn.Warning}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" FontStyle="Oblique" FontSize="18" TextWrapping="Wrap"/>
-					<Image Source="{DynamicResource IconCaution}" Width="30"/>
+					<Image Source="{StaticResource Icon.Warning}" Width="30"/>
+					<TextBlock x:Name="textEventWarning" Text="{DynamicResource Manager.Tabs.TestSpawn.Warning}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,5" FontStyle="Normal" FontSize="18" TextWrapping="Wrap"/>
+					<Image Source="{StaticResource Icon.Warning}" Width="30"/>
 				</StackPanel>
 
 				<Expander x:Name="expandAdvanced" Header="{DynamicResource Manager.Tabs.TestSpawn.Group.Advanced}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" HorizontalAlignment="Stretch" Margin="5">

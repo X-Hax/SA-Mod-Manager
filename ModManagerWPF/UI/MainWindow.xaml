@@ -402,7 +402,7 @@
 									</Button>
 									<Button x:Name="btnOpenGameDir" Height="30" Margin="0,5,0,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.EnableOneClick}" Click="btnOpenGameDir_Click">
 										<StackPanel Orientation="Horizontal">
-											<Image Source="{StaticResource IconFolder2}" Width="20" Height="15" Margin="0,0,5,0"/>
+											<Image Source="{StaticResource Icon.OpenFolder}" Width="20" Margin="0,0,5,0"/>
 											<TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir}" VerticalAlignment="Center"/>
 										</StackPanel>
 									</Button>

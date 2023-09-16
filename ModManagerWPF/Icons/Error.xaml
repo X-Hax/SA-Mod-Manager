@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	<DrawingImage x:Key="Icon.Error">
+	<DrawingImage x:Key="IE">
 		<DrawingImage.Drawing>
 			<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
 				<GeometryDrawing Geometry="F1 M24,24z M0,0z M18.364,5.63604C19.9926,7.26472 21,9.51472 21,12 21,16.9706 16.9706,21 12,21 9.51472,21 7.26472,19.9926 5.63604,18.364 M18.364,5.63604C16.7353,4.00736 14.4853,3 12,3 7.02944,3 3,7.02944 3,12 3,14.4853 4.00736,16.7353 5.63604,18.364 M18.364,5.63604L5.63604,18.364">
@@ -8,6 +8,18 @@
 						<Pen Brush="{DynamicResource IconBrushError}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
 					</GeometryDrawing.Pen>
 				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+
+	<DrawingImage x:Key="Icon.Error">
+		<DrawingImage.Drawing>
+			<DrawingGroup ClipGeometry="M-1,0 V19 H18 V-1 H0 Z">
+				<DrawingGroup.Transform>
+					<TranslateTransform X="1" Y="0" />
+				</DrawingGroup.Transform>
+				<GeometryDrawing Brush="{DynamicResource Icon.Brushes.Red}" Geometry="F1 M19,19z M0,0z M16.417,9.583C16.417,16.636784 7.8892941,20.168054 2.90212,15.18088 -2.0850541,10.193706 1.4462158,1.666 8.5,1.666 12.872438,1.666 16.417,5.2105616 16.417,9.583z M5.85,3.309C-1.7696217,6.5123027 1.7826882,17.926986 9.8470049,16.30195 13.288324,15.608491 15.644894,12.422373 15.297213,8.9299433 14.949523,5.4374194 12.010741,2.7759706 8.5,2.775 7.5897958,2.7735033 6.6885894,2.9551049 5.85,3.309z" />
+				<GeometryDrawing Brush="{DynamicResource Icon.Brushes.Red}" Geometry="F1 M19,19z M0,0z M5.6783881,5.5582442C5.05409,5.5617649,4.6982746,6.3258755,5.4349042,7.1433248L7.4569477,9.4992135 5.37706,11.922502C4.4283697,13.083419,5.5746504,14.067248,6.5782905,12.953493L8.4999994,10.714499 10.421708,12.953493C11.425348,14.067248,12.571629,13.083419,11.622939,11.922502L9.5430512,9.4992135 11.565094,7.1433248C12.642678,5.9475133,11.382495,4.8658842,10.36391,6.1123336L8.4999994,8.2839742 6.6360883,6.1123336C6.3138017,5.7179492,5.967349,5.5566146,5.6783881,5.5582442z" />
 			</DrawingGroup>
 		</DrawingImage.Drawing>
 	</DrawingImage>
