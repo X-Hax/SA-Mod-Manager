@@ -238,7 +238,16 @@ namespace SAModManager
 
                 if (artifacts != null)
                 {
-                    info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
+                    bool is64BitSystem = Environment.Is64BitOperatingSystem;
+                    string targetArchitecture = is64BitSystem ? "x64" : "x86";
+
+                    info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release-" + targetArchitecture));
+
+                    // If there's no specific architecture match, try to get a generic "Release" artifact
+                    if (info == null)
+                    {
+                        info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
+                    }
                 }
             }
 
