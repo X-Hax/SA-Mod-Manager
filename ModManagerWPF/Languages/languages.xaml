@@ -12,6 +12,7 @@
         <local:LangEntry FileName="ru-RU" Name="Русский (Россия)"/>
         <local:LangEntry FileName="it-IT" Name="Italiano (Italia)"/>
         <local:LangEntry FileName="ko-KR" Name="한국어(한국)"/>
+        <local:LangEntry FileName="UK-UA" Name="Українська (Україна)"/>
         <!--<local:LangEntry FileName="he-IL" Name="עברית"/>-->
     </local:LanguageList>
 
