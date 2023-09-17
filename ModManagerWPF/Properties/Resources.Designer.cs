@@ -138,7 +138,7 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/bass.zip.
+        ///   Looks up a localized string similar to https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/bass.zip.
         /// </summary>
         internal static string URL_BASS {
             get {
@@ -147,7 +147,7 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/d3d8m.dll.
+        ///   Looks up a localized string similar to https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/d3d8m.dll.
         /// </summary>
         internal static string URL_D3D8M {
             get {
@@ -183,7 +183,7 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/X-Hax/sadx-mod-loader/raw/wpf/ModManagerWPF/Resources/SDL2.dll.
+        ///   Looks up a localized string similar to https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/SDL2.dll.
         /// </summary>
         internal static string URL_SDL {
             get {
