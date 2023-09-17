@@ -13,8 +13,8 @@
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="../Themes/DarkTheme.xaml"/>
-				<ResourceDictionary Source="../Icons/Icons.xaml"/>
+                <ResourceDictionary Source="../Themes/Themes.xaml"/>
+                <ResourceDictionary Source="../Icons/Icons.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 
 		</ResourceDictionary>
