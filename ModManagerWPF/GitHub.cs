@@ -245,7 +245,7 @@ namespace SAModManager
         private static readonly string owner = "X-Hax";
         private static readonly string repo = "SA-Mod-Manager";
         private static readonly string AppName = "SA Mod Manager";
-        private static readonly string branch = "Master";
+        private static readonly string branch = "master"; //case-sensitive
 
 
         public static async Task<GitHubAction> GetLatestAction()
