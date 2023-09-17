@@ -2198,6 +2198,7 @@ namespace SAModManager
         {
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
             UIHelper.DisableButton(ref SaveAndPlayButton);
+            UIHelper.DisableButton(ref btnInstallLoader);
 
             if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
             {
@@ -2223,15 +2224,17 @@ namespace SAModManager
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
             App.CurrentGame.loader.installed = true;
             UpdateBtnInstallLoader_State();
+            UIHelper.EnableButton(ref btnInstallLoader);
         }
 
         private async Task HandleLoaderInstall()
         {
-
+            UIHelper.DisableButton(ref btnInstallLoader);
             //if user requested to uninstall the loader...
             if (App.CurrentGame.loader.installed && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
             {
                 UIHelper.DisableButton(ref SaveAndPlayButton);
+    
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.UninstallLoader"));
 
                 File.Delete(App.CurrentGame.loader.dataDllPath);
@@ -2248,6 +2251,7 @@ namespace SAModManager
             //await VanillaTransition.HandleVanillaManagerFiles(App.CurrentGame.loader.installed, App.CurrentGame.gameDirectory);
 
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
+            UIHelper.EnableButton(ref btnInstallLoader);
             UpdateBtnInstallLoader_State();
         }
         #endregion
