@@ -15,59 +15,59 @@ namespace SAModManager.Common
 {
     public class Game
     {
-		/// <summary>
-		/// The Name of the Game.
-		/// </summary>
+        /// <summary>
+        /// The Name of the Game.
+        /// </summary>
         public string gameName;
 
-		/// <summary>
-		/// Executables list, necessary due to SADX.
-		/// </summary>
+        /// <summary>
+        /// Executables list, necessary due to SADX.
+        /// </summary>
         public List<string> exeList { get; set; } //only because SADX has multiple exe names due to different versions
 
-		/// <summary>
-		/// This is the executable expected for launching the game.
-		/// </summary>
+        /// <summary>
+        /// This is the executable expected for launching the game.
+        /// </summary>
         public string exeName;
 
-		/// <summary>
-		/// Current game's main directory.
-		/// </summary>
+        /// <summary>
+        /// Current game's main directory.
+        /// </summary>
         public string gameDirectory;
 
-		/// <summary>
-		/// Current game's mods directory.
-		/// </summary>
+        /// <summary>
+        /// Current game's mods directory.
+        /// </summary>
         public string modDirectory;
 
-		/// <summary>
-		/// Profiles Directory where Manager, Game Profiles, and other settings are stored.
-		/// </summary>
+        /// <summary>
+        /// Profiles Directory where Manager, Game Profiles, and other settings are stored.
+        /// </summary>
         public string ProfilesDirectory { get; set; }
 
-		/// <summary>
-		/// List of Dependencies for the game that the manager will get.
-		/// </summary>
+        /// <summary>
+        /// List of Dependencies for the game that the manager will get.
+        /// </summary>
         public List<Dependencies> Dependencies { get; set; }
 
-		/// <summary>
-		/// Information on the Loader for the game.
-		/// </summary>
+        /// <summary>
+        /// Information on the Loader for the game.
+        /// </summary>
         public Loader loader { get; set; }
 
-		/// <summary>
-		/// URL to the Codes.lst file.
-		/// </summary>
+        /// <summary>
+        /// URL to the Codes.lst file.
+        /// </summary>
         public string codeURL { get; set; }
 
-		/// <summary>
-		/// Default Profile, used?
-		/// </summary>
+        /// <summary>
+        /// Default Profile, used?
+        /// </summary>
         public string defaultIniProfile;
 
-		/// <summary>
-		/// List of the game's expected configuration files. Is a List due to SA2.
-		/// </summary>
+        /// <summary>
+        /// List of the game's expected configuration files. Is a List due to SA2.
+        /// </summary>
         public List<string> GameConfigFile { get; set; }
     }
 
@@ -144,7 +144,7 @@ namespace SAModManager.Common
             }
         }
 
-        public static async Task InstallDLL_Loader(Game game)
+        public static async Task InstallDLL_Loader(Game game, bool force = false)
         {
             if (game is null)
                 return;
@@ -157,14 +157,15 @@ namespace SAModManager.Common
                 await dl.StartDL();
                 dl.ShowDialog();
 
-                if (dl.done == false)
+                if (dl.done == false && !force)
                 {
-                    await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);        
+                    await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
                 }
             }
             catch
             {
-                await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
+                if (!force)
+                    await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
             }
 
             await UpdateCodes(App.CurrentGame); //update codes
@@ -225,6 +226,66 @@ namespace SAModManager.Common
             return false;
         }
 
+        public static async Task<bool> UpdateDependencies(Game game)
+        {
+            if (game is null)
+                return false;
+
+            try
+            {
+                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.UpdateDependencies"));
+                
+                foreach (var dependency in game.Dependencies)
+                {
+                    bool success = false;
+                    try
+                    {
+                        Uri uri = new(dependency.URL + "\r\n");
+                        var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, true);
+                        dl.Show();
+                        await dl.StartDL();
+
+                        if (dl.done == false)
+                        {
+                            await Task.Delay(500);
+                        }
+
+                        if (dl.done != false)
+                        {
+                            string dest = Path.Combine(dependency.path, dependency.name);
+                            string fullPath = dest + ".zip";
+                            if (dependency.format == Format.zip)
+                            {
+                                using (ArchiveFile archiveFile = new(fullPath))
+                                {
+                                    archiveFile.Extract(dependency.path, true);
+                                }
+
+                                File.Delete(fullPath);
+                            }
+                            success = true;
+                        }
+
+                        dl.Close();
+                        return success;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            catch
+            {
+                Console.WriteLine("Failed to update Dependencies\n");
+                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateDependencies"));
+            }
+
+            return false;
+        }
+
         public static async Task CheckAndInstallDependencies(Game game)
         {
             if (game is null)
@@ -260,7 +321,7 @@ namespace SAModManager.Common
                             {
                                 using (ArchiveFile archiveFile = new(fullPath))
                                 {
-                                    archiveFile.Extract(dependency.path);
+                                    archiveFile.Extract(dependency.path, true);
                                 }
 
                                 File.Delete(fullPath);
@@ -271,71 +332,71 @@ namespace SAModManager.Common
                     }
                     catch
                     {
-                        await InstallDependenciesOffline(dependency);
+                      await InstallDependenciesOffline(dependency);
                     }
                 }
             }
         }
 
 
-		public static Game SonicAdventure = new()
-		{
-			gameName = "Sonic Adventure DX",
-			exeList = new() { "sonic.exe", "Sonic Adventure DX.exe" },
-			exeName = "sonic.exe",
-			defaultIniProfile = "SADXModLoader.ini",
-			codeURL = Properties.Resources.URL_SADX_CODE,
+        public static Game SonicAdventure = new()
+        {
+            gameName = "Sonic Adventure DX",
+            exeList = new() { "sonic.exe", "Sonic Adventure DX.exe" },
+            exeName = "sonic.exe",
+            defaultIniProfile = "SADXModLoader.ini",
+            codeURL = Properties.Resources.URL_SADX_CODE,
 
-			loader = new()
-			{
-				name = "SADXModLoader",
-				data = Properties.Resources.SADXModLoader,
-				URL = Properties.Resources.URL_SADX_DL,
-				repoName = "sadx-mod-loader",
-				loaderVersionpath = Path.Combine(App.ConfigFolder, "SADXLoaderVersion.ini"),
+            loader = new()
+            {
+                name = "SADXModLoader",
+                data = Properties.Resources.SADXModLoader,
+                URL = Properties.Resources.URL_SADX_DL,
+                repoName = "sadx-mod-loader",
+                loaderVersionpath = Path.Combine(App.ConfigFolder, "SADXLoaderVersion.ini"),
 
-				originPath = new()
-				{
-					defaultDataDllOriginPath = "System/CHRMODELS_orig.dll",
-					defaultDataDllPath = "System/CHRMODELS.dll",
-					defaultLoaderinipath = "mods/SADXModLoader.ini"
-				}
-			},
+                originPath = new()
+                {
+                    defaultDataDllOriginPath = "System/CHRMODELS_orig.dll",
+                    defaultDataDllPath = "System/CHRMODELS.dll",
+                    defaultLoaderinipath = "mods/SADXModLoader.ini"
+                }
+            },
 
-			Dependencies = new()
-			{
-				new Dependencies()
-				{
-					name = "BASS",
-					data = Properties.Resources.bass,
-					format = Format.zip,
-					URL = Properties.Resources.URL_BASS,
-				},
+            Dependencies = new()
+            {
+                new Dependencies()
+                {
+                    name = "BASS",
+                    data = Properties.Resources.bass,
+                    format = Format.zip,
+                    URL = Properties.Resources.URL_BASS,
+                },
 
-				new Dependencies()
-				{
-					name = "SDL2",
-					data = Properties.Resources.SDL2,
-					format = Format.dll,
-					URL = Properties.Resources.URL_SDL
+                new Dependencies()
+                {
+                    name = "SDL2",
+                    data = Properties.Resources.SDL2,
+                    format = Format.dll,
+                    URL = Properties.Resources.URL_SDL
 
-				},
+                },
 
-				new Dependencies()
-				{
-					name = "D3D8M",
-					data = Properties.Resources.SDL2,
-					format = Format.dll,
-					URL = Properties.Resources.URL_D3D8M,
-				},
-			},
+                new Dependencies()
+                {
+                    name = "D3D8M",
+                    data = Properties.Resources.SDL2,
+                    format = Format.dll,
+                    URL = Properties.Resources.URL_D3D8M,
+                },
+            },
 
-			ProfilesDirectory = Path.Combine(App.ConfigFolder, "SADX"),
+            ProfilesDirectory = Path.Combine(App.ConfigFolder, "SADX"),
 
-			GameConfigFile = new()
-			{
-				"sonicDX.ini"
-			},
+            GameConfigFile = new()
+            {
+                "sonicDX.ini"
+            },
         };
 
         public static Game SonicAdventure2 = new()
@@ -364,7 +425,7 @@ namespace SAModManager.Common
         public static IEnumerable<Game> GetSupportedGames()
         {
             yield return SonicAdventure;
-           // yield return SonicAdventure2;
+            // yield return SonicAdventure2;
         }
 
         //will probably end making our own installer ig

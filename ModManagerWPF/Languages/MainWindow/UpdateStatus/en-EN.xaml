@@ -15,6 +15,8 @@
     <system:String x:Key="UpdateStatus.InstallDependencies">Installing Dependencies, please wait...</system:String>
     <system:String x:Key="UpdateStatus.UpdateCodes">Updating Codes, please wait...</system:String>
     <system:String x:Key="UpdateStatus.FailedUpdateCodes">Failed to update Codes</system:String>
+    <system:String x:Key="UpdateStatus.UpdateDependencies">Updating Dependencies, please wait...</system:String>
+    <system:String x:Key="UpdateStatus.FailedUpdateDependencies">Failed to update Dependencies</system:String>
     <system:String x:Key="UpdateStatus.ManagerUpdate">Updating SA Mod Manager...</system:String>
     <system:String x:Key="UpdateStatus.LoaderUpdate">Updating Mod Loader...</system:String>
     <system:String x:Key="UpdateStatus.LoaderInstalled">Successfully Installed Mod Loader</system:String>

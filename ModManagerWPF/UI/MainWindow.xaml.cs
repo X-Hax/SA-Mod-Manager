@@ -1001,7 +1001,8 @@ namespace SAModManager
                 }
                 else
                 {
-                    await HandleLoaderInstall();
+                    await ForceInstallLoader();
+                    UpdateButtonsState();
                     Save();
                 }
             }
@@ -1354,6 +1355,7 @@ namespace SAModManager
         {
             bool installed = App.CurrentGame != null ? App.CurrentGame.loader.installed : false;
             UIHelper.ToggleImgButton(ref btnCheckUpdates, installed);
+            UIHelper.ToggleImgButton(ref btnHealthCheck, installed);
             UpdateBtnInstallLoader_State();
             Update_PlayButtonsState();
         }
@@ -1466,6 +1468,7 @@ namespace SAModManager
             }
             else
             {
+                UpdateButtonsState();
                 UIHelper.ToggleButton(ref btnOpenGameDir, false);
             }
 
@@ -2187,9 +2190,39 @@ namespace SAModManager
                 await EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
-
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
             }
+        }
+
+        private async Task ForceInstallLoader()
+        {
+            UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
+            UIHelper.DisableButton(ref SaveAndPlayButton);
+
+            if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+            {
+                await GamesInstall.InstallDLL_Loader(App.CurrentGame, true);
+                await GamesInstall.UpdateDependencies(App.CurrentGame);
+                await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+            }
+            else
+            {
+                await GamesInstall.InstallDLL_Loader(App.CurrentGame); 
+                await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
+                UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
+                //now we can move the loader files to the accurate folders.
+                await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
+                await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
+
+            }
+
+            await UpdateGameConfig(SetGame.SADX); //To do change with "current selected game" when it's available
+            await EnableOneClickInstall();
+
+            UIHelper.EnableButton(ref SaveAndPlayButton);
+            UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
+            App.CurrentGame.loader.installed = true;
+            UpdateBtnInstallLoader_State();
         }
 
         private async Task HandleLoaderInstall()
@@ -2212,7 +2245,7 @@ namespace SAModManager
             }
 
             //TODO: delete when official release
-            await VanillaTransition.HandleVanillaManagerFiles(App.CurrentGame.loader.installed, App.CurrentGame.gameDirectory);
+            //await VanillaTransition.HandleVanillaManagerFiles(App.CurrentGame.loader.installed, App.CurrentGame.gameDirectory);
 
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
             UpdateBtnInstallLoader_State();

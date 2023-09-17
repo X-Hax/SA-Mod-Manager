@@ -76,16 +76,11 @@ namespace SAModManager
                 return;
             }
 
-
             SetupLanguages();
             SetupThemes();
 
             ManagerSettings = LoadManagerConfig();
-            if (await ExecuteDependenciesCheck() == false)
-            {
-                return;
-            }
-
+            await ExecuteDependenciesCheck();
 
             await InitUriAsync(args, alreadyRunning);
 
@@ -332,6 +327,7 @@ namespace SAModManager
             {
                 File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
                 await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
+                await GamesInstall.UpdateDependencies(App.CurrentGame);
 
                 return true;
             }

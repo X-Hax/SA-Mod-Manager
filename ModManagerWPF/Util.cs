@@ -107,7 +107,7 @@ namespace SAModManager
 			{
 				using (ZipArchive archive = new(zipStream, ZipArchiveMode.Read))
 				{
-					archive.ExtractToDirectory(outputDirectory);
+					archive.ExtractToDirectory(outputDirectory, true);
 				}
 			}
 
