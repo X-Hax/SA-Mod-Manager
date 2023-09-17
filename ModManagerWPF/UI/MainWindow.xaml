@@ -156,7 +156,7 @@
 
                         <!--This Grid manages the description for mods.-->
                         <Grid Grid.Column="1" Grid.Row="2" Margin="5,10,5,0">
-                            <TextBlock x:Name="textModsDescription" Text="{DynamicResource Manager.Tabs.Mods.Text.NoModSelected}" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+                            <TextBlock x:Name="textModsDescription" Text="{DynamicResource Manager.Tabs.Mods.Text.NoModSelected}" HorizontalAlignment="Left" TextAlignment="Left" TextWrapping="Wrap"/>
                         </Grid>
                     </Grid>
 
@@ -305,10 +305,10 @@
 
 							<TextBlock Text="{DynamicResource Manager.Tabs.Codes.CodeHeader}" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
 							<Separator Grid.Row="0" VerticalAlignment="Bottom"/>
-							<TextBlock x:Name="CodeAuthorGrid" Text="{DynamicResource CommonStrings.Author}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap" FontSize="14"/>
-							<TextBlock x:Name="CodeCategoryGrid" Text="{DynamicResource CommonStrings.Category}" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap" FontSize="14"/>
+							<TextBlock x:Name="CodeAuthorGrid" Text="{DynamicResource CommonStrings.Author}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap" TextAlignment="Left" FontSize="14"/>
+                            <TextBlock x:Name="CodeCategoryGrid" Text="{DynamicResource CommonStrings.Category}" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" FontStyle="Italic" TextWrapping="Wrap"  TextAlignment="Left" FontSize="14"/>
 							<Separator Grid.Row="3" VerticalAlignment="Bottom"/>
-							<TextBlock x:Name="CodeDescGrid" Text="{DynamicResource CommonStrings.Description}" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="14"/>
+                            <TextBlock x:Name="CodeDescGrid" Text="{DynamicResource CommonStrings.Description}" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Left" FontSize="14"/>
 						</Grid>
 					</Grid>
                 </Grid>
