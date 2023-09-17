@@ -40,7 +40,10 @@ namespace SAModManager.Common
 
             LabelCategory.Visibility = Visibility.Collapsed;
             CodeCategory.Visibility = Visibility.Collapsed;
-            using (XmlTextReader reader = new XmlTextReader(new StringReader(Properties.Resources.OpCodeSyntaxDark)))
+
+			string optheme = App.IsLightTheme ? Properties.Resources.OpCodeSyntaxLight : Properties.Resources.OpCodeSyntaxDark;
+
+            using (XmlTextReader reader = new XmlTextReader(new StringReader(optheme)))
 			{
 				CodeWriter.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
 			}

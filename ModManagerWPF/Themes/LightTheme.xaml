@@ -105,8 +105,8 @@
 	<SolidColorBrush x:Key="GridViewColumnHeader.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 	<SolidColorBrush x:Key="GridViewColumnHeader.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
 
-	<SolidColorBrush x:Key="DataGrid.Brushes.Background" Color="#FF202020"/>
-	<SolidColorBrush x:Key="DataGrid.Brushes.Border" Color="#FFD2D2D2"/>
+	<SolidColorBrush x:Key="DataGrid.Brushes.Background" Color="#FFF0F0F0"/>
+	<SolidColorBrush x:Key="DataGrid.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 
 	<SolidColorBrush x:Key="DataGridColumnsHeader.Brushes.Background" Color="Transparent"/>
 	<SolidColorBrush x:Key="DataGridColumnHeader.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
@@ -248,7 +248,7 @@
 	<SolidColorBrush x:Key="Expander.Disabled.Circle.Fill" Color="{DynamicResource Colors.Background.Disabled}"/>
 	<SolidColorBrush x:Key="Expander.Disabled.Arrow.Stroke" Color="{DynamicResource Colors.Border}"/>
 
-	<SolidColorBrush x:Key="TextEditor.Brushes.Background" Color="#FF282828"/>
+	<SolidColorBrush x:Key="TextEditor.Brushes.Background" Color="#FFEFEFEF"/>
 	<SolidColorBrush x:Key="TextEditor.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 	<SolidColorBrush x:Key="TextEditor.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 	<SolidColorBrush x:Key="TextEditor.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>

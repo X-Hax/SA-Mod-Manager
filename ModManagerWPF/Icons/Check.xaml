@@ -5,7 +5,7 @@
 			<DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
 				<GeometryDrawing Geometry="F1 M24,24z M0,0z M19.5,7L9,17.5 5,13.5">
 					<GeometryDrawing.Pen>
-						<Pen Brush="{StaticResource IconBrushCheck}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+						<Pen Brush="{DynamicResource IconBrushCheck}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
 					</GeometryDrawing.Pen>
 				</GeometryDrawing>
 			</DrawingGroup>

@@ -47,6 +47,7 @@ namespace SAModManager
         public static LanguageList LangList { get; set; }
 
         public static ThemeEntry CurrentTheme { get; set; }
+		public static bool IsLightTheme = false;
         public static ThemeList ThemeList { get; set; }
         public static Common.Game CurrentGame = new();
 
@@ -136,6 +137,19 @@ namespace SAModManager
             Current.Resources.MergedDictionaries.Insert(4, dictionary);
         }
 
+		public static void SetLightBool()
+		{
+			switch (CurrentTheme.FileName)
+			{
+				case "LightTheme":
+					IsLightTheme = true;
+					break;
+				case "DarkTheme":
+					IsLightTheme = false;
+					break;
+			}
+		}
+
         public static void SwitchTheme()
         {
             if (ThemeList is null)
@@ -149,6 +163,8 @@ namespace SAModManager
 
             Current.Resources.MergedDictionaries.RemoveAt(1);
             Current.Resources.MergedDictionaries.Insert(1, dictionary);
+
+			SetLightBool();
         }
 
         public static void SetupThemes()
