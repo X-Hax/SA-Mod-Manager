@@ -12,11 +12,11 @@
 	<!--#endregion-->
 
 	<!--#region Shared Colors-->
-	<Color x:Key="Colors.Background" A="255" R="250" G="250" B="250"/>
+	<Color x:Key="Colors.Background" A="255" R="255" G="255" B="255"/>
 	<Color x:Key="Colors.Background.Disabled" A="255" R="180" G="180" B="180"/>
-	<Color x:Key="Colors.Highlight" A="255" R="0" G="102" B="204"/>
-	<Color x:Key="Colors.Highlight.Bright" A="255" R="0" G="102" B="250"/>
-	<Color x:Key="Colors.Border" A="255" R="170" G="170" B="170"/>
+	<Color x:Key="Colors.Highlight" A="255" R="0" G="130" B="250"/>
+	<Color x:Key="Colors.Highlight.Bright" A="255" R="0" G="140" B="250"/>
+	<Color x:Key="Colors.Border" A="255" R="175" G="175" B="175"/>
 	<Color x:Key="Colors.Text" A="255" R="0" G="0" B="0"/>
 	<Color x:Key="Colors.Text.Disabled" A="255" R="85" G="85" B="85"/>
 	<Color x:Key="Colors.Hover" A="255" R="210" G="210" B="210"/>
@@ -105,8 +105,8 @@
 	<SolidColorBrush x:Key="GridViewColumnHeader.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 	<SolidColorBrush x:Key="GridViewColumnHeader.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
 
-	<SolidColorBrush x:Key="DataGrid.Brushes.Background" Color="#FF202020"/>
-	<SolidColorBrush x:Key="DataGrid.Brushes.Border" Color="#FFD2D2D2"/>
+	<SolidColorBrush x:Key="DataGrid.Brushes.Background" Color="#FFF0F0F0"/>
+	<SolidColorBrush x:Key="DataGrid.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 
 	<SolidColorBrush x:Key="DataGridColumnsHeader.Brushes.Background" Color="Transparent"/>
 	<SolidColorBrush x:Key="DataGridColumnHeader.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
@@ -248,7 +248,7 @@
 	<SolidColorBrush x:Key="Expander.Disabled.Circle.Fill" Color="{DynamicResource Colors.Background.Disabled}"/>
 	<SolidColorBrush x:Key="Expander.Disabled.Arrow.Stroke" Color="{DynamicResource Colors.Border}"/>
 
-	<SolidColorBrush x:Key="TextEditor.Brushes.Background" Color="#FF282828"/>
+	<SolidColorBrush x:Key="TextEditor.Brushes.Background" Color="#FFEFEFEF"/>
 	<SolidColorBrush x:Key="TextEditor.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 	<SolidColorBrush x:Key="TextEditor.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 	<SolidColorBrush x:Key="TextEditor.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
@@ -259,11 +259,11 @@
 	<!--#region -->
 
 	<!--#region Icon SolidColorBrushes-->
-	<Color x:Key="IconColorGreen" A="255" R="0" G="139" B="0"/>
-	<Color x:Key="IconColorBlue" A="255" R="0" G="102" B="204"/>
-	<Color x:Key="IconColorRed" A="255" R="224" G="0" B="0"/>
+	<Color x:Key="IconColorGreen" A="255" R="0" G="180" B="0"/>
+	<Color x:Key="IconColorBlue" A="255" R="0" G="130" B="240"/>
+	<Color x:Key="IconColorRed" A="255" R="250" G="0" B="0"/>
 	<Color x:Key="IconColorGray" A="255" R="53" G="53" B="53"/>
-	<Color x:Key="IconColorYellow" A="255" R="150" G="150" B="0"/>
+	<Color x:Key="IconColorYellow" A="255" R="220" G="220" B="0"/>
 
 	<SolidColorBrush x:Key="Icon.Brushes.Gray" Color="{DynamicResource IconColorGray}"/>
 	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Gray" Color="#FF606060"/>

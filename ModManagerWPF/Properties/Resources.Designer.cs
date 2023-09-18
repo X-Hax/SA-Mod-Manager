@@ -108,6 +108,32 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;SyntaxDefinition name=&quot;OpCode&quot; xmlns=&quot;http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008&quot;&gt;
+        ///	&lt;RuleSet&gt;
+        ///		&lt;Keywords fontSize=&quot;14&quot; foreground=&quot;DarkGoldenrod&quot;&gt;
+        ///			&lt;Word&gt;write8&lt;/Word&gt;
+        ///			&lt;Word&gt;write16&lt;/Word&gt;
+        ///			&lt;Word&gt;write32&lt;/Word&gt;
+        ///			&lt;Word&gt;writefloat&lt;/Word&gt;
+        ///			&lt;Word&gt;writenop&lt;/Word&gt;
+        ///			&lt;Word&gt;writereg8&lt;/Word&gt;
+        ///			&lt;Word&gt;writereg16&lt;/Word&gt;
+        ///			&lt;Word&gt;writereg32&lt;/Word&gt;
+        ///			&lt;Word&gt;writenopreg&lt;/Word&gt;
+        ///
+        ///			&lt;Word&gt;readreg8&lt;/Word&gt;
+        ///			&lt;Word&gt;readreg16&lt;/Word&gt;
+        ///			&lt;Word&gt;readreg32&lt;/Word&gt;
+        ///
+        ///			&lt;Word&gt;newregs&lt;/Wor [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OpCodeSyntaxLight {
+            get {
+                return ResourceManager.GetString("OpCodeSyntaxLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] SADXFileHashes {
