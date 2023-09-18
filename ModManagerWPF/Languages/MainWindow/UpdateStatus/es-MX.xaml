@@ -15,6 +15,8 @@
     <system:String x:Key="UpdateStatus.InstallDependencies">Instalando dependencias. Espera, por favor...</system:String>
     <system:String x:Key="UpdateStatus.UpdateCodes">Actualizando códigos. Espera, por favor...</system:String>
     <system:String x:Key="UpdateStatus.FailedUpdateCodes">No se pudieron actualizar los códigos</system:String>
+	<system:String x:Key="UpdateStatus.UpdateDependencies">Actualizando dependencias, por favor espera...</system:String>
+    <system:String x:Key="UpdateStatus.FailedUpdateDependencies">Error al actualizar las dependencias</system:String>
     <system:String x:Key="UpdateStatus.ManagerUpdate">Actualizando el Gestor de mods de SA...</system:String>
     <system:String x:Key="UpdateStatus.LoaderUpdate">Actualizando el Cargador de mods...</system:String>
     <system:String x:Key="UpdateStatus.LoaderInstalled">El Cargador de mods se instaló exitosamente</system:String>

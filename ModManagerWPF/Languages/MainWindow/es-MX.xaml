@@ -7,7 +7,7 @@
 	<system:String x:Key="Manager.Tabs.Mods">Mods</system:String>
 	<system:String x:Key="Manager.Tabs.Codes">Códigos</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig">Configuración del juego</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig">Gestor de configuración</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig">Configuración del gestor</system:String>
 	<system:String x:Key="Manager.Tabs.TestSpawn">Generar prueba</system:String>
 	<!--#endregion-->
 
@@ -121,7 +121,7 @@
 	<!--#region Test Spawn Tab Strings-->
 	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Character">Personaje:</system:String>
 	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Level">Nivel:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Time">Tiempo:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Time">Hora:</system:String>
 	<system:String x:Key="Manager.Tabs.TestSpawn.Act">Acto:</system:String>
 	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Mode">Modo de juego:</system:String>
 	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Save">Redirigir archivo de guardado:</system:String>
@@ -170,7 +170,7 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Comprobación de la salud del juego</system:String>
 
 	<!--About-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Ajustes del Gestor</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Acerca de</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">El Gestor de mods de SA es un programa que permite administrar fácilmente mods de los juegos Sonic Adventure.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contribuidores</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Código fuente del Gestor de mods</system:String>

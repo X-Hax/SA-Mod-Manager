@@ -7,6 +7,7 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="AboutMod/es-MX.xaml"/>
 		<ResourceDictionary Source="EditMod/es-MX.xaml"/>
+		<ResourceDictionary Source="HealthProgress/es-MX.xaml"/>
 		<ResourceDictionary Source="InfoManagerUpdate/es-MX.xaml"/>
 		<ResourceDictionary Source="InstallModOptions/es-MX.xaml"/>
 		<ResourceDictionary Source="MainWindow/es-MX.xaml"/>
