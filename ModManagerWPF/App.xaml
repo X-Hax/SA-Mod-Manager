@@ -408,6 +408,8 @@
 				<Setter Property="Background" Value="{DynamicResource ComboBox.Brushes.Background}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource ComboBox.Brushes.Border}"/>
 				<Setter Property="Foreground" Value="{DynamicResource ComboBox.Brushes.Foreground}"/>
+				<Setter Property="VerticalContentAlignment" Value="Center"/>
+				<Setter Property="HorizontalContentAlignment" Value="Left"/>
 				<Setter Property="BorderThickness" Value="1"/>
 				<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
 				<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>

@@ -26,75 +26,62 @@
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="10"/>
 								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="10"/>
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="10"/>
-								<RowDefinition Height="*"/>
-								<RowDefinition Height="*"/>
+								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="*"/>
 								<RowDefinition Height="10"/>
 							</Grid.RowDefinitions>
 
-							<!--Graphics Display Top Left.-->
+							<!--Graphics Display Top-->
 							<Grid Grid.Column="1" Grid.Row="1">
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="0"/>
-									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="250"/>
+									<ColumnDefinition Width="*"/>
 								</Grid.ColumnDefinitions>
 								<Grid.RowDefinitions>
-									<RowDefinition Height="0"/>
-									<RowDefinition Height="30"/>
-									<RowDefinition Height="5"/>
-									<RowDefinition Height="30"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="*"/>
 								</Grid.RowDefinitions>
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Screen}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen}"/>
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Resolution}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution}"/>
-							</Grid>
 
-							<!--Graphics Display Top Right-->
-							<Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Right">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="75"/>
-									<ColumnDefinition Width="10"/>
-									<ColumnDefinition Width="75"/>
-									<ColumnDefinition Width="10"/>
-									<ColumnDefinition Width="230"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="0"/>
-									<RowDefinition Height="30"/>
-									<RowDefinition Height="5"/>
-									<RowDefinition Height="30"/>
-									<RowDefinition Height="0"/>
-								</Grid.RowDefinitions>
-								<ComboBox x:Name="comboScreen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
-									<ComboBoxItem Content="All Screens"></ComboBoxItem>
+								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Screen}" Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen}"/>
+								<ComboBox x:Name="comboScreen" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
+									<ComboBoxItem Content="All Screens"/>
 								</ComboBox>
-								<StackPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Orientation="Horizontal">
-									<elements:NumericUpDown x:Name="txtResX" Height="22" Width="75" IsEnabled="{Binding ElementName=chkRatio, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
-									<Label Content="x" VerticalContentAlignment="Center"/>
-									<elements:NumericUpDown x:Name="txtResY" Height="22" Width="75" ValueChanged="ResolutionChanged"/>
-								</StackPanel>
-								<ComboBox x:Name="comboDisplay" Grid.Column="5" Grid.Row="3" Height="22" SelectionChanged="comboResolutionPreset_SelectedIndexChanged">
-									<ComboBoxItem Content="640x480"/>
-									<ComboBoxItem Content="800x600"/>
-									<ComboBoxItem Content="1024x768"/>
-									<ComboBoxItem Content="1152x864"/>
-									<ComboBoxItem Content="1280x960"/>
-									<ComboBoxItem Content="1280x1024"/>
-									<ComboBoxItem Content="Native"/>
-									<ComboBoxItem Content="1/2x Native"/>
-									<ComboBoxItem Content="2x Native"/>
-									<ComboBoxItem Content="720p"/>
-									<ComboBoxItem Content="1080p"/>
-									<ComboBoxItem Content="4k"/>
-								</ComboBox>
+
+								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Resolution}" Margin="5" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution}"/>
+								<Grid Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<StackPanel Orientation="Horizontal" Margin="5" Grid.Column="0">
+										<elements:NumericUpDown x:Name="txtResX" Height="22" Width="75" IsEnabled="{Binding ElementName=chkRatio, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
+										<Label Content="x" VerticalContentAlignment="Center"/>
+										<elements:NumericUpDown x:Name="txtResY" Height="22" Width="75" ValueChanged="ResolutionChanged"/>
+									</StackPanel>
+
+									<ComboBox x:Name="comboDisplay" Grid.Column="1" Margin="5" SelectionChanged="comboResolutionPreset_SelectedIndexChanged">
+										<ComboBoxItem Content="640x480"/>
+										<ComboBoxItem Content="800x600"/>
+										<ComboBoxItem Content="1024x768"/>
+										<ComboBoxItem Content="1152x864"/>
+										<ComboBoxItem Content="1280x960"/>
+										<ComboBoxItem Content="1280x1024"/>
+										<ComboBoxItem Content="Native"/>
+										<ComboBoxItem Content="1/2x Native"/>
+										<ComboBoxItem Content="2x Native"/>
+										<ComboBoxItem Content="720p"/>
+										<ComboBoxItem Content="1080p"/>
+										<ComboBoxItem Content="4k"/>
+									</ComboBox>
+								</Grid>
 							</Grid>
 
 							<!--Graphics Display Middle-->
-							<GroupBox Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Settings}" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3">
+							<GroupBox Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Settings}" Grid.Column="1" Grid.Row="2">
 								<Grid Margin="5,5,5,5">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="25"/>
@@ -158,7 +145,6 @@
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="10"/>
 								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="10"/>
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
@@ -168,79 +154,92 @@
 								<RowDefinition Height="10"/>
 							</Grid.RowDefinitions>
 
-							<!--Visuals Group Left Side.-->
 							<Grid Grid.Column="1" Grid.Row="1">
 								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="164"/>
 									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="150"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="*" />
-									<RowDefinition Height="*" />
-									<RowDefinition Height="*" />
-									<RowDefinition Height="*" />
-								</Grid.RowDefinitions>
-
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Framerate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate}"/>
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog}"/>
-                                <Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.TexFilter}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering}"/>
-
-                                <Label Opacity="0.3" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.UIFilter}"  Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering}"/>
-
-                                <ComboBox x:Name="comboFramerate" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
-									<ComboBoxItem Content="60 FPS"/>
-									<ComboBoxItem Content="30 FPS"/>
-									<ComboBoxItem Content="15 FPS"/>
-								</ComboBox>
-
-								<ComboBox x:Name="comboFog" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" SelectedIndex="0">
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Auto}"/>
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation}"/>
-								</ComboBox>
-                                <ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" SelectedIndex="0" VerticalAlignment="Center" SelectionChanged="comboTextureFilter_SelectionChanged">
-                                 
-                                </ComboBox>
-                                <ComboBox x:Name="comboUIFilter" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" SelectedIndex="0" IsEnabled="False">
-
-								</ComboBox>
-                        
-                            </Grid>
-
-							<!--Visuals Group Right Side.-->
-							<Grid Grid.Column="2" Grid.Row="1">
-								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="164"/>
 									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="150"/>
 								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="*" />
-									<RowDefinition Height="*" />
-									<RowDefinition Height="*" />
-									<RowDefinition Height="*"/>
-								</Grid.RowDefinitions>
 
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel}"/>
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill}"/>
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.FMVFill}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill}"/>
+								<Grid Grid.Column="0">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+									</Grid.RowDefinitions>
+									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Framerate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate}"/>
+									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog}"/>
+									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.TexFilter}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering}"/>
+									<Label Opacity="0.3" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.UIFilter}"  Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering}"/>
+								</Grid>
 
-								<ComboBox x:Name="comboDetail" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" SelectedIndex="0">
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High}"/>
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low}"/>
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest}"/>
-								</ComboBox>
-								<ComboBox x:Name="comboBGFill" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" SelectedIndex="0">
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch}"/>
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit}"/>
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill}"/>
-								</ComboBox>
-								<ComboBox x:Name="comboFMVFill" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" SelectedIndex="0">
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch}"/>
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit}"/>
-									<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill}"/>
-								</ComboBox>
+								<Grid Grid.Column="1" HorizontalAlignment="Stretch">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+									</Grid.RowDefinitions>
+
+									<ComboBox x:Name="comboFramerate" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0">
+										<ComboBoxItem Content="60 FPS"/>
+										<ComboBoxItem Content="30 FPS"/>
+										<ComboBoxItem Content="15 FPS"/>
+									</ComboBox>
+									<ComboBox x:Name="comboFog" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0">
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Auto}"/>
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation}"/>
+									</ComboBox>
+									<ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" SelectedIndex="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectionChanged="comboTextureFilter_SelectionChanged">
+
+									</ComboBox>
+									<ComboBox x:Name="comboUIFilter" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0" IsEnabled="False">
+
+									</ComboBox>
+								</Grid>
+
+								<Grid Grid.Column="2">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+									</Grid.RowDefinitions>
+									
+									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel}"/>
+									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill}"/>
+									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.FMVFill}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill}"/>
+								</Grid>
+
+								<Grid Grid.Column="3" HorizontalAlignment="Stretch">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+									</Grid.RowDefinitions>
+									
+									<ComboBox x:Name="comboDetail" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0">
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High}"/>
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low}"/>
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest}"/>
+									</ComboBox>
+									<ComboBox x:Name="comboBGFill" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0">
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch}"/>
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit}"/>
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill}"/>
+									</ComboBox>
+									<ComboBox x:Name="comboFMVFill" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0">
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch}"/>
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit}"/>
+										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill}"/>
+									</ComboBox>
+								</Grid>
 							</Grid>
 
-							<Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2">
+							<Grid Grid.Column="1" Grid.Row="2">
 								<GroupBox Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements}">
 									<Grid>
 										<Grid.ColumnDefinitions>
