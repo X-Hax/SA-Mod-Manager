@@ -311,7 +311,7 @@ namespace SAModManager.Elements.SADX
 		private async void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
 		{
 			string fullName = "AppLauncher.7z";
-			string destName = "App Launcher";
+			string destName = App.CurrentGame.gameDirectory;
 			string fullPath = Path.Combine(destName, fullName);
 
             Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
@@ -324,7 +324,7 @@ namespace SAModManager.Elements.SADX
 				try
 				{
 					using ArchiveFile archiveFile = new(fullPath);
-					archiveFile.Extract("App Launcher");
+					archiveFile.Extract(destName, true);
 					btnOpenAppLauncher.IsEnabled = true;
 					btnOpenAppLauncher.Opacity = 1;
 					btnGetAppLauncher.Opacity = LowOpacityBtn;
@@ -341,12 +341,11 @@ namespace SAModManager.Elements.SADX
 					File.Delete(fullPath);
                 }
 			}
-
 		}
 
 		private void btnOpenAppLauncher_Click(object sender, RoutedEventArgs e)
 		{
-			string fullPath = Path.Combine("App Launcher", "AppLauncher.exe");
+			string fullPath = Path.Combine(App.CurrentGame.gameDirectory, "AppLauncher.exe");
 
             if (File.Exists(fullPath))
 			{
@@ -356,7 +355,7 @@ namespace SAModManager.Elements.SADX
 
 		private void UpdateAppLauncherBtn()
 		{
-            string fullPath = Path.Combine("App Launcher", "AppLauncher.exe");
+            string fullPath = Path.Combine(App.CurrentGame.gameDirectory, "AppLauncher.exe");
 
             if (File.Exists(fullPath))
 			{

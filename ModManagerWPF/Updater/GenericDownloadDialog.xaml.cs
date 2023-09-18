@@ -70,7 +70,7 @@ namespace SAModManager.Updater
 
                 if (File.Exists(fileName) && Directory.Exists(dest))
                 {
-                    FileInfo fileInfo = new FileInfo(fileName);
+                    FileInfo fileInfo = new(fileName);
 
                     if (fileInfo is not null && fileInfo.Length > 0)
                         await Util.MoveFile(fileName, Path.Combine(dest, fileName), true);
