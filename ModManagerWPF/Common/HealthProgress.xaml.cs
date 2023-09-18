@@ -68,18 +68,19 @@ namespace SAModManager.Common
                 if (File.Exists(filename))
                 {
                     string currenthash = ModManifestGenerator.GetFileHash(filename);
+ 
                     foreach (string hash in file.Hashes)
                     {
                         if (hash == currenthash)
+                        {
                             return StatusValue.Good;
-                        else
-                            return StatusValue.Modified;
+                        } 
                     }
+
+                    return StatusValue.Modified;
                 }
                 else
                     return StatusValue.NotFound;
-
-                return StatusValue.NotInList;
             }
 
             public FileStatus(string name, StatusValue status)
