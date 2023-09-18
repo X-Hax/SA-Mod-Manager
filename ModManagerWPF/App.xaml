@@ -707,7 +707,7 @@
 				<Setter Property="BorderBrush" Value="{DynamicResource ListView.Brushes.Border}"/>
 				<Setter Property="BorderThickness" Value="1"/>
 				<Setter Property="Foreground" Value="#FF042271"/>
-				<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+				<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/> <!--TODO: Try to properly fix the horizontal scrollbar.-->
 				<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
 				<Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
 				<Setter Property="ScrollViewer.PanningMode" Value="Both"/>
