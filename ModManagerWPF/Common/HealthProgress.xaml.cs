@@ -248,7 +248,7 @@ namespace SAModManager.Common
                     await Dispatcher.Yield(DispatcherPriority.Background);
                 }
 
-
+                Fails.Clear();
                 DialogResult = true;
             }
         }
