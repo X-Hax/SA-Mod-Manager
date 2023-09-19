@@ -18,13 +18,13 @@
 	<system:String x:Key="GamePatches.DisableGBIX">Disable GBIX (Experimental)</system:String>
 	<system:String x:Key="GamePatches.DisableCDCheck">Disable CD Check</system:String>
 
-    <system:String x:Key="GamePatches.3DSoundDesc">Allows HRTF 3D Sound.</system:String>
+    <system:String x:Key="GamePatches.3DSoundDesc">Sets DirectSound to use more advanced algorithms to process 3D sounds. This patch is unnecessary when BASS for SFX is enabled.</system:String>
     <system:String x:Key="GamePatches.CamCodeDesc">Fixes a vanilla bug that prevents Free Cam Settings from being saved properly when dying or loading a zone/act.</system:String>
     <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">Vanilla SADX deliberately ignores the mesh-provided vertex color and instead uses a global vertex color even when it shouldn't.&#x0a;&#x0a;This patch re-implements the functions to handle the case CORRECTLY and use the mesh-provided vertex colors.</system:String>
     <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">This loops through all models in the game and replaces their material colors with white.&#x0a;&#x0a;This fixes various inconsistencies and makes the models look more like they do in the Gamecube and Dreamcast versions of the game.</system:String>
     <system:String x:Key="GamePatches.InterpolationDesc">Fixes rotation issues of some animations by using quaternions instead of euler angles.</system:String>
     <system:String x:Key="GamePatches.FixFOVDesc">Improves the FOV and allows for vertical/portrait resolutions/dimensions.</system:String>
-    <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Fixes Sky Chase reticle and multiplier, restoring how the stage originally played on 640x480 resolution.&#x0a;&#x0a;This decreases the difficulty to meet the score requirement in 16:9 resolutions.</system:String>
+    <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Makes Sky Chase work the same way at all screen resolutions. This fixes Tornado and reticle movement, as well as enemy fire rate.&#x0a;&#x0a;Obtaining score for emblems at resolutions higher than 640x480 is easier with this patch than in the vanilla game.</system:String>
     <system:String x:Key="GamePatches.Chaos2Desc">Fixes a vanilla bug where beating Chaos 2 and restarting the boss was crashing the game.</system:String>
     <system:String x:Key="GamePatches.ChunkRenderingDesc">Fixes Specular on Chunk Models.</system:String>
     <system:String x:Key="GamePatches.E102LampDesc">Fixes N-sided polygons (Gamma's Headlight) by using a triangle strip vertex buffer.</system:String>
