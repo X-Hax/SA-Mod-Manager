@@ -1,5 +1,6 @@
 ﻿using SAModManager.Common;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -67,7 +68,6 @@ namespace SAModManager.Updater
                 DLInfo.Text = install ? "Install Completed" : "Download completed." + "\n Copying files...";
 
                 await Task.Delay(200);
-
                 if (File.Exists(fileName) && Directory.Exists(dest))
                 {
                     FileInfo fileInfo = new(fileName);
@@ -80,7 +80,7 @@ namespace SAModManager.Updater
 
                 await Task.Delay(200);
 
-                if (!string.IsNullOrEmpty(dest) && File.Exists(fileName))
+                if (!string.IsNullOrEmpty(dest) && File.Exists(fileName) && dest != Path.GetDirectoryName(Environment.ProcessPath))
                     File.Delete(fileName);
 
                 if (!silent)
