@@ -11,10 +11,10 @@ using System.Diagnostics;
 
 namespace SAModManager.Common
 {
-	/// <summary>
-	/// Interaction logic for ManagerUpdate.xaml
-	/// </summary>
-	public partial class ManagerUpdate : Window
+    /// <summary>
+    /// Interaction logic for ManagerUpdate.xaml
+    /// </summary>
+    public partial class ManagerUpdate : Window
     {
         private string URL;
         private string tempFolderPath;
@@ -77,9 +77,16 @@ namespace SAModManager.Common
 
         }
 
-        public async Task StartManagerDL()
+        public void StartManagerDL()
         {
+            _ = Task.Run(() => DoManagerDownload());
 
+            BringIntoView();
+            ShowDialog();
+        }
+
+        public async Task DoManagerDownload()
+        {
             using (var client = new UpdaterWebClient())
             {
                 CancellationToken token = tokenSource.Token;
@@ -88,27 +95,23 @@ namespace SAModManager.Common
 
                 bool retry = false;
 
-                do
+                try
                 {
-                    try
+                    await Task.Run(() => client.DownloadFileTaskAsync(URL, fileName));
+                }
+                catch (AggregateException ae)
+                {
+                    // Handle the exception
+                    ae.Handle(ex =>
                     {
-                        await Task.Run(() => client.DownloadFileTaskAsync(URL, fileName));
-                    }
-                    catch (AggregateException ae)
-                    {
-                        // Handle the exception
-                        ae.Handle(ex =>
-                        {
-                            string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + this.fileName + "\n" + ex.Message + "\n\n" + Lang.GetString("Lang.GetString(\"MessageWindow.Errors.GenericDLFail1");
+                        string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + this.fileName + "\n" + ex.Message + "\n\n" + Lang.GetString("Lang.GetString(\"MessageWindow.Errors.GenericDLFail1");
 
-                            var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.RetryCancel);
-                            error.ShowDialog();
-                            retry = error.isRetry;
-                            return true;
-                        });
-                    }
-                } while (retry == true);
-
+                        var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.RetryCancel);
+                        error.ShowDialog();
+                        retry = error.isRetry;
+                        return true;
+                    });
+                }
             }
         }
     }

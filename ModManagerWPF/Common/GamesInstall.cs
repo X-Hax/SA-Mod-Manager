@@ -154,8 +154,7 @@ namespace SAModManager.Common
                 Uri uri = new(game.loader.URL + "\r\n");
                 var dl = new GenericDownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, false, true);
 
-                await dl.StartDL();
-                dl.ShowDialog();
+                dl.StartDL();
 
                 if (dl.done == false && !force)
                 {
@@ -181,8 +180,8 @@ namespace SAModManager.Common
                 Uri uri = new(game.loader.URL + "\r\n");
                 var dl = new GenericDownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, false, true);
 
-                await dl.StartDL();
-                dl.ShowDialog();
+                dl.StartDL();
+
                 if (dl.done == true)
                 {
                     if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
@@ -213,8 +212,9 @@ namespace SAModManager.Common
                 Uri uri = new(game.codeURL + "\r\n");
                 var dl = new GenericDownloadDialog(uri, "Updating Codes", "Codes.lst", game.modDirectory, false, true);
 
-                await dl.StartDL();
-                dl.ShowDialog();
+                dl.StartDL();
+
+                await Task.Delay(1);
                 return dl.done == true;
             }
             catch
@@ -241,9 +241,9 @@ namespace SAModManager.Common
                     try
                     {
                         Uri uri = new(dependency.URL + "\r\n");
-                        var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, true);
-                        dl.Show();
-                        await dl.StartDL();
+                        var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, false, true);
+         
+                        dl.StartDL();
 
                         if (dl.done == false)
                         {
@@ -300,9 +300,9 @@ namespace SAModManager.Common
                     try
                     {
                         Uri uri = new(dependency.URL + "\r\n");
-                        var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, true);
-                        dl.Show();
-                        await dl.StartDL();
+                        var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, false, true);
+         
+                        dl.StartDL();
 
                         if (dl.done == false)
                         {
@@ -440,8 +440,7 @@ namespace SAModManager.Common
 
                 var DL = new GenericDownloadDialog(uri, "SADX Mod Installer (Steam to 2004)", "sadx_setup_full.zip");
 
-                await DL.StartDL();
-                DL.ShowDialog();
+                DL.StartDL();
 
                 if (DL.done == true)
                 {

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SAModManager.Common"
         mc:Ignorable="d" Style="{StaticResource SAWindow}"
-        Title="Manager Updates" Height="200" Width="500"
+        Title="Manager Update" Height="200" Width="500"
          WindowStartupLocation="CenterScreen">
     <Grid>
 		<Grid.RowDefinitions>

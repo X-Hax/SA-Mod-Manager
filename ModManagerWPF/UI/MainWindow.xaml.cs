@@ -1255,8 +1255,13 @@ namespace SAModManager
 
         public void UpdateManagerStatusText(string message, int timer = 3000)
         {
-            Dispatcher?.Invoke(() => WhatTheManagerDoin.Text = message);
-            StatusTimer?.Change(timer, Timeout.Infinite);
+            try
+            {
+                Dispatcher?.Invoke(() => WhatTheManagerDoin.Text = message);
+                StatusTimer?.Change(timer, Timeout.Infinite);
+            }
+            catch
+            { }
         }
 
         public string GetCurrentProfileName()
