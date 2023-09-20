@@ -127,8 +127,6 @@ namespace SAModManager
 		[DefaultValue((int)FillMode.Fit)]
 		public int FmvFillMode { get; set; } = (int)FillMode.Fit;
 
-		[DefaultValue(false)]
-		public bool EnableDynamicBuffer { get; set; }
 		[DefaultValue(true)]
 		public bool EnableBassMusic { get; set; }
 
@@ -251,7 +249,6 @@ namespace SAModManager
 			ForceAspectRatio = gameSettings.Graphics.Enable43ResolutionRatio;
 			EnableVsync = gameSettings.Graphics.EnableVsync;
 			PauseWhenInactive = gameSettings.Graphics.EnablePauseOnInactive;
-			EnableDynamicBuffer = gameSettings.Graphics.EnableDynamicBuffer;
 			Borderless = gameSettings.Graphics.EnableBorderless;
 			StretchFullscreen = gameSettings.Graphics.EnableScreenScaling;
 			CustomWindowSize = gameSettings.Graphics.EnableCustomWindow;

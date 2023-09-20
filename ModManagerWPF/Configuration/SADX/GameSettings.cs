@@ -59,12 +59,6 @@ namespace SAModManager.Configuration.SADX
 		public bool EnablePauseOnInactive { get; set; } = true;     // SADXLoaderInfo.PauseWhenInactive
 
 		/// <summary>
-		/// Changes from static to dynamic buffers for fullscreen. Fixes Alt-Tab but sacrifices some performance.
-		/// </summary>
-		[DefaultValue(false)]
-		public bool EnableDynamicBuffer { get; set; }           // SADXLoaderInfo.EnableDynamicBuffer
-
-		/// <summary>
 		/// Makes the fullscreen window borderless.
 		/// </summary>
 		[DefaultValue(false)]
@@ -158,7 +152,6 @@ namespace SAModManager.Configuration.SADX
 			Enable43ResolutionRatio = oldSettings.ForceAspectRatio;
 			EnableVsync = oldSettings.EnableVsync;
 			EnablePauseOnInactive = oldSettings.PauseWhenInactive;
-			EnableDynamicBuffer = oldSettings.EnableDynamicBuffer;
 
 			EnableBorderless = oldSettings.Borderless;
 			EnableScreenScaling = oldSettings.StretchFullscreen;
@@ -581,7 +574,6 @@ namespace SAModManager.Configuration.SADX
 			loaderInfo.ForceAspectRatio = Graphics.Enable43ResolutionRatio;
 			loaderInfo.EnableVsync = Graphics.EnableVsync;
 			loaderInfo.PauseWhenInactive = Graphics.EnablePauseOnInactive;
-			loaderInfo.EnableDynamicBuffer = Graphics.EnableDynamicBuffer;
 			loaderInfo.Borderless = Graphics.EnableBorderless;
 			loaderInfo.StretchFullscreen = Graphics.EnableScreenScaling;
 			loaderInfo.CustomWindowSize = Graphics.EnableCustomWindow;

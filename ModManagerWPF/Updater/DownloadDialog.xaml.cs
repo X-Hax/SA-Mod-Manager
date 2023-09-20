@@ -13,31 +13,51 @@ namespace SAModManager.Updater
     /// <summary>
     /// Interaction logic for GenericUpdateDialog.xaml
     /// </summary>
-    public partial class GenericDownloadDialog : Window
+    public partial class DownloadDialog : Window
     {
         private readonly Uri uri;
         private readonly string fileName;
         private string dest = ".SATemp";
         private readonly CancellationTokenSource tokenSource = new();
-        private bool install = false;
         public bool done = false;
-        private bool silent = false;
+        private DLType Type = DLType.Download;
 
-        public GenericDownloadDialog(Uri uri, string title, string fileName, string dest = null, bool silent = false, bool install = false)
+        public enum DLType
+        {
+            Download,
+            Install,
+            Update
+        }
+
+        public DownloadDialog(Uri uri, string title, string fileName, string dest = null, DLType type = DLType.Download)
         {
             InitializeComponent();
 
-            if (silent)
+
+            switch (type)
             {
-                Hide();
+                case DLType.Download:
+                default:
+                    Title = "Download - ";
+                    break;
+                case DLType.Install:
+                    Title = "Install - ";
+                    DLInfo.Text = "Installing";
+                    break;
+                case DLType.Update:
+                    Title = "Update - ";
+                    DLInfo.Text = "Updating";
+                    break;
             }
 
-            Title = !install ? "Download - " : "Install - " + title;
+
+            this.Type = type;
+
+
+            Title += title;
             DLInfo.Text += " " + title + "...";
             this.fileName = fileName;
             this.uri = uri;
-            this.install = install;
-            this.silent = silent;
 
             if (!string.IsNullOrEmpty(dest))
             {
@@ -65,7 +85,21 @@ namespace SAModManager.Updater
         {
             await Application.Current.Dispatcher.Invoke(async () =>
             {
-                DLInfo.Text = install ? "Install Completed" : "Download completed." + "\n Copying files...";
+                switch (Type)
+                {
+                    case DLType.Download:
+                    default:
+                        DLInfo.Text = "Download ";
+                        break;
+                    case DLType.Install:
+                        DLInfo.Text = "Install ";
+                        break;
+                    case DLType.Update:
+                        DLInfo.Text = "Update ";
+                        break;
+                }
+
+                DLInfo.Text += "Completed." + "\n Copying files...";
 
                 await Task.Delay(200);
                 if (File.Exists(fileName) && Directory.Exists(dest))
@@ -83,8 +117,8 @@ namespace SAModManager.Updater
                 if (!string.IsNullOrEmpty(dest) && File.Exists(fileName) && dest != Path.GetDirectoryName(Environment.ProcessPath))
                     File.Delete(fileName);
 
-                if (!silent)
-                    this.Close();
+     
+                  this.Close();
             });
         }
         private async Task DoDownloadAsync()
@@ -97,8 +131,6 @@ namespace SAModManager.Updater
 
                 bool retry = false;
 
-                if (silent)
-                    Hide();
 
                 try
                 {

@@ -152,7 +152,7 @@ namespace SAModManager.Common
             try
             {
                 Uri uri = new(game.loader.URL + "\r\n");
-                var dl = new GenericDownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, false, true);
+                var dl = new DownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, DownloadDialog.DLType.Install);
 
                 dl.StartDL();
 
@@ -178,10 +178,10 @@ namespace SAModManager.Common
             try
             {
                 Uri uri = new(game.loader.URL + "\r\n");
-                var dl = new GenericDownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, false, true);
+                var dl = new DownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, DownloadDialog.DLType.Update);
 
                 dl.StartDL();
-
+                await Task.Delay(10);
                 if (dl.done == true)
                 {
                     if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
@@ -210,7 +210,7 @@ namespace SAModManager.Common
                 ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.UpdateCodes"));
                 string codePath = Path.Combine(game.modDirectory, "Codes.lst");
                 Uri uri = new(game.codeURL + "\r\n");
-                var dl = new GenericDownloadDialog(uri, "Updating Codes", "Codes.lst", game.modDirectory, false, true);
+                var dl = new DownloadDialog(uri, "Codes", "Codes.lst", game.modDirectory, DownloadDialog.DLType.Update);
 
                 dl.StartDL();
 
@@ -234,15 +234,17 @@ namespace SAModManager.Common
             try
             {
                 ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.UpdateDependencies"));
-                
+
+                bool success = false;
+
                 foreach (var dependency in game.Dependencies)
                 {
-                    bool success = false;
                     try
                     {
+                        success = false;
                         Uri uri = new(dependency.URL + "\r\n");
-                        var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, false, true);
-         
+                        var dl = new DownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, DownloadDialog.DLType.Update);
+
                         dl.StartDL();
 
                         if (dl.done == false)
@@ -267,7 +269,6 @@ namespace SAModManager.Common
                         }
 
                         dl.Close();
-                        return success;
                     }
                     catch
                     {
@@ -275,7 +276,7 @@ namespace SAModManager.Common
                     }
                 }
 
-                return true;
+                return success;
             }
             catch
             {
@@ -300,7 +301,7 @@ namespace SAModManager.Common
                     try
                     {
                         Uri uri = new(dependency.URL + "\r\n");
-                        var dl = new GenericDownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, false, true);
+                        var dl = new DownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, DownloadDialog.DLType.Update);
          
                         dl.StartDL();
 
@@ -438,7 +439,7 @@ namespace SAModManager.Common
             {
                 Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/offline/sadx_setup_full.zip" + "\r\n");
 
-                var DL = new GenericDownloadDialog(uri, "SADX Mod Installer (Steam to 2004)", "sadx_setup_full.zip");
+                var DL = new DownloadDialog(uri, "SADX Mod Installer (Steam to 2004)", "sadx_setup_full.zip");
 
                 DL.StartDL();
 

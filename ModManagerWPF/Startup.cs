@@ -103,7 +103,7 @@ namespace SAModManager
                     {
 
                         Uri uri = new(VCURLs[i] + "\r\n");
-                        var DL = new GenericDownloadDialog(uri, "Visual C++", "vc_redist.x86.exe");
+                        var DL = new DownloadDialog(uri, "Visual C++", "vc_redist.x86.exe");
 
                         DL.StartDL();
                         DL.ShowDialog();

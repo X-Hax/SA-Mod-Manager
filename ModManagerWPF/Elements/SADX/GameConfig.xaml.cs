@@ -138,10 +138,6 @@ namespace SAModManager.Elements.SADX
 			}
 		}
 
-		private void chkBorderless_Checked(object sender, RoutedEventArgs e)
-		{
-			chkDynamicBuffers.IsChecked = chkBorderless.IsChecked;
-		}
 
 		private void comboResolutionPreset_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
 		{
@@ -319,7 +315,7 @@ namespace SAModManager.Elements.SADX
             btnGetAppLauncher.Opacity = LowOpacityBtn;
 
             Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
-			var DL = new GenericDownloadDialog(uri, "App Launcher", fullName, destName);
+			var DL = new DownloadDialog(uri, "App Launcher", fullName, destName);
 			DL.StartDL();
 
 			await Task.Delay(10);
@@ -716,11 +712,6 @@ namespace SAModManager.Elements.SADX
 				Mode = BindingMode.TwoWay
 			});
 			chkPause.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnablePauseOnInactive")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkDynamicBuffers.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableDynamicBuffer")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay

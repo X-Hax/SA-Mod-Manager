@@ -138,10 +138,10 @@ namespace SAModManager.Common
 
         public static void SA2Recheck(FileStatus status, HealthInfo file)
         {
-            switch (Path.GetFileName(status.Filename))
+           /* switch (Path.GetFileName(status.Filename))
             {
 
-            }
+            }*/
         }
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
@@ -195,7 +195,7 @@ namespace SAModManager.Common
                             Fails.Add(status);
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
 					MessageWindow exception = new(Lang.GetString("MessageWindow.Errors.HealthCheck.UnknownError.Title"), Lang.GetString("MessageWindow.Errors.HealthCheck.UnknownError"),
 						type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Error, button: MessageWindow.Buttons.OK);

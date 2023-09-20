@@ -1882,10 +1882,7 @@ namespace SAModManager
                     Directory.CreateDirectory(updatePath);
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch {}
 
             new Updater.ModDownloadDialogWPF(updates, updatePath).ShowDialog();
             await Task.Delay(500);
