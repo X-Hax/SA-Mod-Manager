@@ -452,34 +452,7 @@ namespace SAModManager
                     UIHelper.ToggleImage(ref menuIconConfig, isEnabled);
                 }
 
-                if (checkDevEnabled.IsChecked == true)
-                {
-                    if (ModContextDev is null)
-                    {
-                        /*
-						ModContextDev = new();
-						MenuItem manifest = new();
-						ModContextDev.Name = "menuDev";
-						ModContextDev.Header = Lang.GetString("ModsUIDev");
-						manifest.Name = "menuManif";
-						manifest.Header = Lang.GetString("ModsUISubDevManifest");
-						ModContextDev.Items.Add(manifest);
-						ModContextMenu.Items.Add(ModContextDev);
-						*/
-                    }
-                }
-                else
-                {
-                    if (ModContextDev is not null)
-                    {
-                        var modDev = ModContextMenu.Items.OfType<MenuItem>().FirstOrDefault(item => item.Name == "menuDev");
-
-                        if (modDev is not null)
-                            ModContextMenu.Items.Remove(modDev);
-                    }
-
-                }
-
+                ModContextDeveloper.Visibility = (bool)checkDevEnabled.IsChecked ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
