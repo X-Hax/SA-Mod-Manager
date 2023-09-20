@@ -27,6 +27,7 @@ using SAModManager.Configuration;
 using ICSharpCode.AvalonEdit.Editing;
 using SAModManager.IniSettings.SA2;
 using System.Reflection;
+using NetCoreInstallChecker.Structs;
 
 
 namespace SAModManager
@@ -426,6 +427,8 @@ namespace SAModManager
 
                 ConfigureModBtn.IsEnabled = File.Exists(Path.Combine(App.CurrentGame.modDirectory, mod.Tag, "configschema.xml"));
                 ConfigureModBtn_UpdateState();
+
+                textModsDescription.Text = Lang.GetString("CommonStrings.Description") + " " + mods[mod.Tag].Description;
             }
             else if (count > 1)
             {
@@ -731,6 +734,7 @@ namespace SAModManager
 
             var ctrlKey = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
+
             if (Keyboard.IsKeyDown(Key.Space))
             {
                 listMods.BeginInit();
@@ -758,7 +762,6 @@ namespace SAModManager
                 OpenAboutModWindow(mod);
                 e.Handled = true;
             }
-
 
             if (Keyboard.IsKeyDown(Key.Delete))
             {
@@ -843,6 +846,7 @@ namespace SAModManager
                     }
                 }
             }
+
             if (Keyboard.IsKeyDown(Key.Escape))
             {
                 if (tcMain.SelectedItem == tabMain)
@@ -906,6 +910,12 @@ namespace SAModManager
             CodeAuthorGrid.Text = Lang.GetString("CommonStrings.Author");
             CodeDescGrid.Text = Lang.GetString("CommonStrings.Description");
             CodeCategoryGrid.Text = Lang.GetString("CommonStrings.Category");
+        }
+
+        private void CodeListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CodesView_Item_MouseLeave(null, null);
+            CodesView_Item_MouseEnter(sender, null);
         }
 
         private void btnSelectAllCode_Click(object sender, RoutedEventArgs e)
@@ -2035,6 +2045,8 @@ namespace SAModManager
                 return lvItem.Content as ModData;
             else if (sender is ListView lv)
                 return lv.SelectedItem as ModData;
+            else if (sender is ModData)
+                return sender as ModData;
 
             return null;
         }
@@ -2119,6 +2131,8 @@ namespace SAModManager
                 return lvItem.Content as CodeData;
             else if (sender is ListView lv)
                 return lv.SelectedItem as CodeData;
+            else if (sender is CodeData)
+                return sender as CodeData;
 
 
             return CodeListView.Items[CodeListView.SelectedIndex] as CodeData;
@@ -2213,7 +2227,7 @@ namespace SAModManager
             }
             else
             {
-                await GamesInstall.InstallDLL_Loader(App.CurrentGame); 
+                await GamesInstall.InstallDLL_Loader(App.CurrentGame);
                 await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                 //now we can move the loader files to the accurate folders.
@@ -2239,7 +2253,7 @@ namespace SAModManager
             if (App.CurrentGame.loader.installed && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
             {
                 UIHelper.DisableButton(ref SaveAndPlayButton);
-    
+
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.UninstallLoader"));
 
                 File.Delete(App.CurrentGame.loader.dataDllPath);

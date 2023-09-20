@@ -32,7 +32,7 @@ namespace SAModManager.Updater
                 Hide();
             }
 
-            Title = (!install ? "Download - " : "Install - ") + title;
+            Title = !install ? "Download - " : "Install - " + title;
             DLInfo.Text += " " + title + "...";
             this.fileName = fileName;
             this.uri = uri;
