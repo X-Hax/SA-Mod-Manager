@@ -96,6 +96,7 @@
                                     </MenuItem>
                                     <MenuItem x:Name="ModContextDeveloper" Header="{DynamicResource Manager.Tabs.Mods.ContextMenu.Developer}">
                                         <MenuItem x:Name="ModsContextDeveloperManifest" Header="{DynamicResource Manager.Tabs.Mods.ContextMenu.Developer.Manifest}" Click="ModsContextDeveloperManifest_Click"/>
+                                        <MenuItem x:Name="ModsContextDeveloperIgnoreUpdate" Header="{DynamicResource Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate}" Click="ModsContextDeveloperIgnoreUpdate_Click"/>
                                     </MenuItem>
                                 </ContextMenu>
                             </ListView.ContextMenu>

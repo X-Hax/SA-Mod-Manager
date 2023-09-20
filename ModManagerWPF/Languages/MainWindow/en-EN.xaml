@@ -25,8 +25,10 @@
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Edit Mod</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Delete Mod</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Developer</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Generate Manifest</system:String>
-	<!--#endregion-->
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Generate Manifest</system:String>	
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Disable Updates</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Enable Updates</system:String>
+    <!--#endregion-->
 
 	<!--#region Codes Tab Strings-->
 	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">New Code</system:String>

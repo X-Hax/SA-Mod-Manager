@@ -111,6 +111,7 @@
 
 	<system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">This will delete all selected codes.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
 
+    <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">You are about to disable updates for this mod. If you continue, the Manager will NEVER check update for this mod.&#x0a;Are you sure you want to proceed?</system:String>
 
     <!--#endregion-->
 	
