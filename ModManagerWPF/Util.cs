@@ -160,27 +160,34 @@ namespace SAModManager
 			string[] files = Directory.GetFiles(sourceFolderPath);
 			foreach (string file in files)
 			{
-				if (exception.ToLower().Contains(file.ToLower()))
+				if (exception is not null && exception.ToLower().Contains(file.ToLower()))
 					continue;
 
 				string fileName = Path.GetFileName(file);
 				string destinationFilePath = Path.Combine(destinationFolderPath, fileName);
 
-				File.Move(file, destinationFilePath);
+				File.Move(file, destinationFilePath, true);
 			}
 
 			// Move all subfolders in the current folder to the destination subfolder
 			string[] subfolders = Directory.GetDirectories(sourceFolderPath);
 			foreach (string subfolder in subfolders)
 			{
-				if (exception.ToLower().Contains(subfolder.ToLower()))
+				if (exception is not null && exception.ToLower().Contains(subfolder.ToLower()))
 					continue;
 
 				string subfolderName = Path.GetFileName(subfolder);
 				string destinationSubfolderPath = Path.Combine(destinationFolderPath, subfolderName);
 
 				// Recursively move the subfolder and its contents to the destination subfolder
+				if (Directory.Exists(destinationSubfolderPath))
+				{
+					MoveAllFilesAndSubfolders(subfolder, destinationSubfolderPath, destinationSubfolderPath);
+                }
+				else
+				{
 				Directory.Move(subfolder, destinationSubfolderPath);
+			}
 			}
 
 			return true;
