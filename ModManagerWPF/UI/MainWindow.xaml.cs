@@ -483,6 +483,15 @@ namespace SAModManager
                 var modPath = Path.Combine(App.CurrentGame.modDirectory, (string)item.Tag);
                 var manifestPath = Path.Combine(modPath, "mod.manifest");
 
+                var SADXMod = mods[item.Tag];
+
+                if (SADXMod is not null)
+                {
+                    SADXMod.DisableUpdate = false;
+                    string fullPath = Path.Combine(App.CurrentGame.modDirectory, item.Tag, "mod.ini");
+                    IniSerializer.Serialize(SADXMod, fullPath);
+                }
+         
                 List<Updater.ModManifestEntry> manifest;
                 List<Updater.ModManifestDiff> diff;
 

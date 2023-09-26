@@ -262,7 +262,6 @@ namespace SAModManager.Common
                                 await Util.Extract(fullPath, dependency.path, true);
                                 File.Delete(fullPath);
                             }
-
                             success = true;
                         }
 
