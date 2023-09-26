@@ -113,6 +113,8 @@
 
     <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">You are about to disable updates for this mod. If you continue, the Manager will NEVER check update for this mod.&#x0a;Are you sure you want to proceed?</system:String>
 
+    <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">The Mod Manager needs 7-zip to extract mods and handle updates.&#x0a;&#x0a;Would you like to install it now?</system:String>
+
     <!--#endregion-->
 	
 	<!--#region Information-->

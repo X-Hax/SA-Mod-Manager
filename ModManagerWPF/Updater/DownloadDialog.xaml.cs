@@ -131,7 +131,6 @@ namespace SAModManager.Updater
 
                 bool retry = false;
 
-
                 try
                 {
                     await Task.Run(() => client.DownloadFileTaskAsync(this.uri, fileName)).ConfigureAwait(false);

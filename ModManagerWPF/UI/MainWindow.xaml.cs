@@ -21,13 +21,11 @@ using Key = System.Windows.Input.Key;
 using SAModManager.UI;
 using SAModManager.Updater;
 using SAModManager.Elements;
-using SevenZipExtractor;
 using SAModManager.Ini;
 using SAModManager.Configuration;
 using ICSharpCode.AvalonEdit.Editing;
 using SAModManager.IniSettings.SA2;
-using System.Reflection;
-using NetCoreInstallChecker.Structs;
+
 
 namespace SAModManager
 {

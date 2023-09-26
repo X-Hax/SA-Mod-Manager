@@ -134,14 +134,13 @@ namespace SAModManager
                 GamesInstall.SetDependencyPath();
                 Directory.CreateDirectory(App.ConfigFolder);
 
-
                 if (!File.Exists(App.ManagerConfigFile)) //If config page isn't found, assume this is the first boot.
                 {
                     await EnableOneClickInstall();
                     await SetLanguageFirstBoot();
-
-
+                    await Util.Install7Zip();
                 }
+
             }
             catch
             {

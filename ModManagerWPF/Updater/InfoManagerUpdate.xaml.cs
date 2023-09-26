@@ -39,12 +39,7 @@ namespace SAModManager.Common
                         Directory.CreateDirectory(".SATemp");
                     }
                 }
-                catch (Exception ex)
-                {
-
-
-                    //Lang.GetString("MessageWindow.Errors.DirectoryCreateFail.Title");
-                }
+                catch {}
             } while (retry == true);
 
             DialogResult = true;

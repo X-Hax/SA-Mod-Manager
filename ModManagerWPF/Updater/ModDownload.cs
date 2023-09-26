@@ -220,10 +220,8 @@ namespace SAModManager.Updater
 
                         try
                         {
-                            using (ArchiveFile archiveFile = new(filePath))
-                            {
-                                archiveFile.Extract(dataDir);
-                            }
+                            await Util.Extract(filePath, dataDir);
+        
                         }
                         catch
                         {

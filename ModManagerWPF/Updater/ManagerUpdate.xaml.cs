@@ -57,11 +57,7 @@ namespace SAModManager.Common
 
                     await Task.Delay(100);
                     //extract Manager zip
-                    using (ArchiveFile archiveFile = new(dest))
-                    {
-                        archiveFile.Extract(tempFolderPath);
-                    }
-
+                    await Util.Extract(dest, tempFolderPath);
                     //delete zip
                     File.Delete(dest);
 

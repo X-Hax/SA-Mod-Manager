@@ -164,6 +164,24 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/7zx64.dll.
+        /// </summary>
+        internal static string URL_7Z_x64 {
+            get {
+                return ResourceManager.GetString("URL_7Z_x64", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/7zx86.dll.
+        /// </summary>
+        internal static string URL_7Z_x86 {
+            get {
+                return ResourceManager.GetString("URL_7Z_x86", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/bass.zip.
         /// </summary>
         internal static string URL_BASS {

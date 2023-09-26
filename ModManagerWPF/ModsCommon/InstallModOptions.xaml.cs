@@ -88,10 +88,7 @@ namespace SAModManager
 				try
 				{
 
-					using (ArchiveFile archiveFile = new(file))
-					{
-						archiveFile.Extract(tempFolder, true);
-                    }
+					Util.Extract(file, tempFolder, true);
 
 					//if the mod archive doesn't have a folder as a container, create one and move the files inside.
 					if (File.Exists(Path.Combine(tempFolder, "mod.ini"))) 

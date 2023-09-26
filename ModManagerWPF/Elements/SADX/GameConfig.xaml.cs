@@ -323,8 +323,7 @@ namespace SAModManager.Elements.SADX
 			{
 				try
 				{
-					using ArchiveFile archiveFile = new(fullPath);
-					archiveFile.Extract(destName, true);
+                    await Util.Extract(fullPath, destName, true);
 					btnOpenAppLauncher.IsEnabled = true;
 					btnOpenAppLauncher.Opacity = 1;
 					btnGetAppLauncher.Opacity = LowOpacityBtn;

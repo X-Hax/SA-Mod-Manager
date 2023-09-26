@@ -256,15 +256,13 @@ namespace SAModManager.Common
                         {
                             string dest = Path.Combine(dependency.path, dependency.name);
                             string fullPath = dest + ".zip";
+
                             if (dependency.format == Format.zip)
                             {
-                                using (ArchiveFile archiveFile = new(fullPath))
-                                {
-                                    archiveFile.Extract(dependency.path, true);
-                                }
-
+                                await Util.Extract(fullPath, dependency.path, true);
                                 File.Delete(fullPath);
                             }
+
                             success = true;
                         }
 
@@ -320,11 +318,7 @@ namespace SAModManager.Common
                             string fullPath = dest + ".zip";
                             if (dependency.format == Format.zip)
                             {
-                                using (ArchiveFile archiveFile = new(fullPath))
-                                {
-                                    archiveFile.Extract(dependency.path, true);
-                                }
-
+                                await Util.Extract(fullPath, dependency.path, true);
                                 File.Delete(fullPath);
                             }
 
@@ -445,10 +439,7 @@ namespace SAModManager.Common
 
                 if (DL.done == true)
                 {
-                    using (ArchiveFile archiveFile = new(zipPath))
-                    {
-                        archiveFile.Extract(destFolder);
-                    }
+                    await Util.Extract(zipPath, destFolder);
 
                     await Process.Start(new ProcessStartInfo(Path.Combine(destFolder, "sadx_setup.exe"), "/install /passive /norestart")
                     {

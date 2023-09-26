@@ -101,7 +101,101 @@ namespace SAModManager
 			await Task.Delay(100);
 		}
 
-		public static async Task ExtractZipFromResource(byte[] resource, string outputDirectory)
+        public static async Task Install7Zip()
+		{
+			try
+			{
+				string path = Path.Combine(App.extLibPath, "7z");
+
+				if (File.Exists(Path.Combine(path, "7z.dll"))) 
+				{
+					return;
+				}
+			
+				bool is64Bit = Environment.Is64BitOperatingSystem;
+                Directory.CreateDirectory(path);
+
+				await Exec7zipInstall();
+              //string DllPath = is64Bit ? Path.Combine(path, "7zx64.dll") : Path.Combine(path, "7zx86.dll");
+              //File.Move(DllPath, Path.Combine(path, "7z.dll"), true);
+            }
+			catch
+			{
+                throw new Exception("What");
+            }
+        }
+
+		public static bool is7ZipInstalled()
+		{
+
+            if (File.Exists(App.ziplibPath))
+            {
+                return true;
+            }
+
+            string currentArchitecture = IntPtr.Size == 4 ? "x86" : "x64"; // magic check
+
+            if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7z-" + currentArchitecture + ".dll")))
+            {
+                return true;
+            }
+            else if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "7z-" + currentArchitecture + ".dll")))
+            {
+                return true;
+            }
+            else if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", currentArchitecture, "7z.dll")))
+            {
+                return true;
+            }
+            else if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, currentArchitecture, "7z.dll")))
+            {
+                return true;
+            }
+            else if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "7-Zip", "7z.dll")))
+            {
+                return true;
+            }      
+
+            return false;
+		}
+
+        public static async Task<bool> Exec7zipInstall()
+		{
+			var msg = new MessageWindow(Lang.GetString("CommonStrings.Warning"), Lang.GetString("MessageWindow.Warnings.7zMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+			msg.ShowDialog();
+
+			if (msg.isYes)
+			{
+				bool is64Bits = Environment.Is64BitOperatingSystem;
+                Uri uri = new(is64Bits ? Properties.Resources.URL_7Z_x64 : Properties.Resources.URL_7Z_x86 + "\r\n");
+
+                var dl = new DownloadDialog(uri, "7-zip", "7z.dll", Path.Combine(App.extLibPath, "7z"), DownloadDialog.DLType.Download);
+
+                dl.StartDL();
+                await Task.Delay(10);
+
+				return dl.done;
+            }
+
+			return false;
+        }
+
+		public static async Task Extract(string zipPath, string destFolder, bool overwright = false)
+		{
+			if (!is7ZipInstalled())
+			{
+				if (await Exec7zipInstall() == false)
+					return;
+            }
+
+			string libPath = File.Exists(App.ziplibPath) ? App.ziplibPath : null;
+            using (ArchiveFile archiveFile = new(zipPath, libPath))
+            {
+                archiveFile.Extract(destFolder, overwright);
+            }
+        }
+
+        public static async Task ExtractZipFromResource(byte[] resource, string outputDirectory)
 		{
 			using (MemoryStream zipStream = new(resource))
 			{
@@ -186,8 +280,8 @@ namespace SAModManager
                 }
 				else
 				{
-				Directory.Move(subfolder, destinationSubfolderPath);
-			}
+                    Directory.Move(subfolder, destinationSubfolderPath);
+                }	
 			}
 
 			return true;

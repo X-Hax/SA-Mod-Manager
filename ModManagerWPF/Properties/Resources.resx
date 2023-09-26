@@ -139,6 +139,12 @@
   <data name="SDL2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SDL2.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="URL_7Z_x64" xml:space="preserve">
+    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/7zx64.dll</value>
+  </data>
+  <data name="URL_7Z_x86" xml:space="preserve">
+    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/7zx86.dll</value>
+  </data>
   <data name="URL_BASS" xml:space="preserve">
     <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/bass.zip</value>
   </data>
