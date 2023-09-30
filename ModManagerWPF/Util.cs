@@ -16,6 +16,8 @@ using System.Diagnostics;
 using SevenZipExtractor;
 using System.IO.Compression;
 using SAModManager.Ini;
+using System.Net.Http;
+using System.Buffers;
 
 namespace SAModManager
 {
