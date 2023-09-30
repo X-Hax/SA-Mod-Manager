@@ -132,7 +132,8 @@
 	<system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">You are about to run the Game Health check. This will verify all game files except audio files.&#x0a;&#x0a;Do you wish to continue?</system:String>
 
 	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">File Issues Found</system:String>
-	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles">The following issues were found with your game files:</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">The following issues were found with your game files:</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles2">Please be aware that if your game is working as intended, the above issues are not affecting your game.</system:String>
 
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Verification Complete</system:String>
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified">All checked files have been verified.</system:String>

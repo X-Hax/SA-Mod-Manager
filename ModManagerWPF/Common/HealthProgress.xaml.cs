@@ -11,6 +11,9 @@ using System.Text;
 using System.Data;
 using Newtonsoft.Json.Linq;
 using System.Windows.Threading;
+using System.Linq;
+using System.Security.Cryptography;
+using static SAModManager.Common.HealthChecker.FileStatus;
 
 namespace SAModManager.Common
 {
@@ -40,7 +43,8 @@ namespace SAModManager.Common
         public class HealthInfo
         {
             [IniName("name")]
-            public string Filename { get; set; }
+			[IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
+			public string Filename { get; set; }
 
             [IniName("hash")]
             [IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
@@ -96,6 +100,41 @@ namespace SAModManager.Common
             status.Status = FileStatus.GetFileStatus(App.CurrentGame.gameDirectory, file);
         }
 
+		public static FileStatus SADXExecutableCheck(KeyValuePair<int, HealthInfo> file)
+		{
+			string filename = Path.Combine(App.CurrentGame.gameDirectory, file.Value.Filename);
+			StatusValue statusValue = StatusValue.Modified;
+
+			if (File.Exists(filename))
+			{
+				byte[] hash;
+				using (SHA256 sha = SHA256.Create())
+				{
+					using (FileStream stream = File.OpenRead(filename))
+					{
+						using (BinaryReader binr = new BinaryReader(stream))
+						{
+							byte[] checkrange = new byte[50445648];
+							stream.Read(checkrange, 0x004DB2A0, 50445648);
+							hash = sha.ComputeHash(checkrange);
+						}
+					}
+				}
+
+				string hashed = string.Concat(hash.Select(x => x.ToString("x2")));
+
+				foreach (string filehash in file.Value.Hashes)
+				{
+					if (hashed == filehash)
+						statusValue = StatusValue.Good; break;
+				}
+			}
+			else
+				statusValue = StatusValue.NotFound;
+
+			return new(Path.GetFileName(file.Value.Filename), statusValue);
+		}
+
         public static void SADXRecheck(FileStatus status, HealthInfo file)
         {
             switch (Path.GetFileName(status.Filename))
@@ -104,34 +143,44 @@ namespace SAModManager.Common
                     RecheckStatus("system/chrmodels_orig.dll", status, file);
                     break;
                 case "re-jp.mpg":
-                    RecheckStatus("system/re-jp.sfd", status, file);
+					if (status.Status == FileStatus.StatusValue.NotFound)
+						RecheckStatus("system/re-jp.sfd", status, file);
                     break;
                 case "re-us.mpg":
-                    RecheckStatus("system/re-us.sfd", status, file);
+					if (status.Status == FileStatus.StatusValue.NotFound)
+						RecheckStatus("system/re-us.sfd", status, file);
                     break;
                 case "sa1.mpg":
-                    RecheckStatus("system/sa1.sfd", status, file);
+					if (status.Status == FileStatus.StatusValue.NotFound)
+						RecheckStatus("system/sa1.sfd", status, file);
                     break;
                 case "sa2.mpg":
-                    RecheckStatus("system/sa2.sfd", status, file);
+					if (status.Status == FileStatus.StatusValue.NotFound)
+						RecheckStatus("system/sa2.sfd", status, file);
                     break;
                 case "sa3.mpg":
-                    RecheckStatus("system/sa3.sfd", status, file);
+					if (status.Status == FileStatus.StatusValue.NotFound)
+						RecheckStatus("system/sa3.sfd", status, file);
                     break;
                 case "sa4.mpg":
-                    RecheckStatus("system/sa4.sfd", status, file);
+					if (status.Status == FileStatus.StatusValue.NotFound)
+						RecheckStatus("system/sa4.sfd", status, file);
                     break;
                 case "sa5.mpg":
-                    RecheckStatus("system/sa5.sfd", status, file);
+					if (status.Status == FileStatus.StatusValue.NotFound)
+						RecheckStatus("system/sa5.sfd", status, file);
                     break;
                 case "sa6.mpg":
-                    RecheckStatus("system/sa6.sfd", status, file);
+					if (status.Status == FileStatus.StatusValue.NotFound)
+						RecheckStatus("system/sa6.sfd", status, file);
                     break;
                 case "sa7.mpg":
-                    RecheckStatus("system/sa7.sfd", status, file);
+					if (status.Status == FileStatus.StatusValue.NotFound)
+						RecheckStatus("system/sa7.sfd", status, file);
                     break;
                 case "sa8.mpg":
-                    RecheckStatus("system/sa8.sfd", status, file);
+					if (status.Status == FileStatus.StatusValue.NotFound)
+						RecheckStatus("system/sa8.sfd", status, file);
                     break;
             }
         }
@@ -176,7 +225,12 @@ namespace SAModManager.Common
                             UpdateStatus(file.Value.Filename);
                         });
 
-                        FileStatus status = new(Path.GetFileName(file.Value.Filename), FileStatus.GetFileStatus(App.CurrentGame.gameDirectory, file.Value));
+						FileStatus status;
+
+						if (game == SetGame.SADX && file.Value.Filename == "sonic.exe")
+							status = SADXExecutableCheck(file);
+						else
+							status = new(Path.GetFileName(file.Value.Filename), FileStatus.GetFileStatus(App.CurrentGame.gameDirectory, file.Value));
 
                         if (status.Status != FileStatus.StatusValue.Good)
                         {
@@ -202,43 +256,6 @@ namespace SAModManager.Common
 
 					exception.ShowDialog();
 				}
-
-                if (Fails.Count > 0)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (FileStatus file in Fails)
-                    {
-                        switch (file.Status)
-                        {
-                            case FileStatus.StatusValue.Modified:
-                                sb.AppendLine(file.Filename + " " + Lang.GetString("HealthProgress.Files.Modified"));
-                                break;
-                            case FileStatus.StatusValue.NotFound:
-                                sb.AppendLine(file.Filename +  " " + Lang.GetString("HealthProgress.Files.Missing"));
-                                break;
-                        }
-                    }
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        MessageWindow failedFiles = new(Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles.Title"), 
-							Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles") + "\n\n" +
-                        sb.ToString(), type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
-
-                        failedFiles.ShowDialog();
-                    });
-                }
-                else
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        MessageWindow success = new(Lang.GetString("MessageWindow.Information.HealthCheck.Verified.Title"), Lang.GetString("MessageWindow.Information.HealthCheck.Verified"),
-                        type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
-
-                        success.ShowDialog();
-                    });
-
-                }
             }))
             {
                 task.Start();
@@ -248,7 +265,45 @@ namespace SAModManager.Common
                     await Dispatcher.Yield(DispatcherPriority.Background);
                 }
 
-                Fails.Clear();
+				if (Fails.Count > 0)
+				{
+					StringBuilder sb = new StringBuilder();
+					foreach (FileStatus file in Fails)
+					{
+						switch (file.Status)
+						{
+							case FileStatus.StatusValue.Modified:
+								sb.AppendLine(file.Filename + " " + Lang.GetString("HealthProgress.Files.Modified"));
+								break;
+							case FileStatus.StatusValue.NotFound:
+								sb.AppendLine(file.Filename + " " + Lang.GetString("HealthProgress.Files.Missing"));
+								break;
+						}
+					}
+
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						MessageWindow failedFiles = new(Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles.Title"),
+							Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles1") + "\n\n" +
+							sb.ToString() + "\n\n" + Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles2"),
+							type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
+
+						failedFiles.ShowDialog();
+					});
+				}
+				else
+				{
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						MessageWindow success = new(Lang.GetString("MessageWindow.Information.HealthCheck.Verified.Title"), Lang.GetString("MessageWindow.Information.HealthCheck.Verified"),
+						type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
+
+						success.ShowDialog();
+					});
+
+				}
+
+				Fails.Clear();
                 DialogResult = true;
             }
         }
