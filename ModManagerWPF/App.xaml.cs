@@ -264,10 +264,7 @@ namespace SAModManager
                     info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release-" + targetArchitecture));
 
                     // If there's no specific architecture match, try to get a generic "Release" artifact
-                    if (info == null)
-                    {
-                        info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
-                    }
+                    info ??= artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
                 }
             }
 
@@ -276,7 +273,12 @@ namespace SAModManager
 
         public static async Task<bool> PerformUpdateManagerCheck()
         {
-            ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
+            var mainWindow = ((MainWindow)Application.Current.MainWindow);
+
+            if (mainWindow.chkUpdateManager.IsChecked != true)
+                return false;
+
+             mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
 
             try
             {
@@ -311,7 +313,7 @@ namespace SAModManager
             }
             catch
             {
-                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdateFail"));
+                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdateFail"));
                 return false;
             }
         }
@@ -333,50 +335,20 @@ namespace SAModManager
             return (loaderVersion != lastCommit, lastCommit);
         }
 
-        public static async Task<bool> PerformUpdateCodesCheck()
-        {
-            try
-            {
-                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkCodesUpdates"));
-
-                var codesPath = Path.Combine(App.CurrentGame.modDirectory, "Codes.lst");
-
-                if (!File.Exists(codesPath))
-                    return false;
-
-                string localCodes = File.ReadAllText(codesPath);
-                var httpClient = new HttpClient();
-
-                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "SA-Mod-Manager");
-                string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.codeURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
-
-                if (localCodes == repoCodes)
-                {
-                    return false;
-                }
-
-                await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
-                return true;
-            }
-            catch
-            {
-               
-              ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateCodes"));
-
-            }
-
-            return false;
-        }
-
         public static async Task<bool> PerformUpdateLoaderCheck()
         {
             if (!App.CurrentGame.loader.installed)
                 return false;
 
+            var mainWindow = ((MainWindow)Application.Current.MainWindow);
+
+            if (mainWindow.chkUpdatesML.IsChecked != true)
+                return false;
+
             try
             {
 
-                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkLoaderUpdate"));
+                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkLoaderUpdate"));
                 var update = await CheckLoaderUpdate();
 
                 if (update.Item1 == false) //no update found
@@ -410,6 +382,40 @@ namespace SAModManager
             return false;
         }
 
+        public static async Task<bool> PerformUpdateCodesCheck()
+        {
+            try
+            {
+                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkCodesUpdates"));
+
+                var codesPath = Path.Combine(App.CurrentGame.modDirectory, "Codes.lst");
+
+                if (!File.Exists(codesPath))
+                    return false;
+
+                string localCodes = File.ReadAllText(codesPath);
+                var httpClient = new HttpClient();
+
+                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "SA-Mod-Manager");
+                string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.codeURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
+
+                if (localCodes == repoCodes)
+                {
+                    return false;
+                }
+
+                await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
+                return true;
+            }
+            catch
+            {
+
+                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateCodes"));
+
+            }
+
+            return false;
+        }
 
         private static async Task<bool> DoUpdate(string[] args, bool alreadyRunning)
         {
@@ -417,7 +423,6 @@ namespace SAModManager
             {
                 if (arg == "doupdate")
                 {
-
                     if (alreadyRunning)
                         try { mutex.WaitOne(); }
                         catch (AbandonedMutexException) { }
