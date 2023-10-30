@@ -330,6 +330,10 @@ namespace SAModManager.Updater
                         continue;
 					}
 
+					if (App.Current == null)
+					{
+						break;
+					}
 
 					App.Current.Dispatcher.Invoke(() =>
 					{

@@ -19,6 +19,9 @@ using SAModManager.Configuration;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using SAModManager.Properties;
+using System.Data;
+using System.Net.Http;
+using System.Net;
 
 namespace SAModManager
 {
@@ -275,37 +278,45 @@ namespace SAModManager
         {
             ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
 
-            var update = await CheckManagerUpdate();
-
-            if (update.Item1 == false)
+            try
             {
-                return false;
-            }
+                var update = await CheckManagerUpdate();
 
-            string changelog = await GitHub.GetGitChangeLog(update.Item2.HeadSHA);
+                if (update.Item1 == false)
+                {
+                    return false;
+                }
 
-            if (string.IsNullOrEmpty(changelog))
-            {
-                return false;
-            }
+                string changelog = await GitHub.GetGitChangeLog(update.Item2.HeadSHA);
 
-            var manager = new InfoManagerUpdate(changelog);
-            manager.ShowDialog();
+                if (string.IsNullOrEmpty(changelog))
+                {
+                    return false;
+                }
 
-            if (manager.DialogResult != true)
-                return false;
+                var manager = new InfoManagerUpdate(changelog);
+                manager.ShowDialog();
 
-            string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
-            Directory.CreateDirectory(".SATemp");
-            var dl = new ManagerUpdate(dlLink, ".SATemp", update.Item3.Name + ".zip");
-            dl.StartManagerDL();
+                if (manager.DialogResult != true)
+                    return false;
+
+                string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
+                Directory.CreateDirectory(".SATemp");
+                var dl = new ManagerUpdate(dlLink, ".SATemp", update.Item3.Name + ".zip");
+                dl.StartManagerDL();
   
-            ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
 
-            return true;
+                return true;
+            }
+            catch
+            {
+                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdateFail"));
+                return false;
+            }
         }
 
-        private static async Task<(bool, string)> CheckLoaderCodesUpdate()
+        private static async Task<(bool, string)> CheckLoaderUpdate()
         {
             var lastCommit = await GitHub.GetLoaderHashCommit();
 
@@ -322,41 +333,79 @@ namespace SAModManager
             return (loaderVersion != lastCommit, lastCommit);
         }
 
+        public static async Task<bool> PerformUpdateCodesCheck()
+        {
+            try
+            {
+                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkCodesUpdates"));
 
-        public static async Task<bool> PerformUpdateLoaderCodesCheck()
+                var codesPath = Path.Combine(App.CurrentGame.modDirectory, "Codes.lst");
+
+                if (!File.Exists(codesPath))
+                    return false;
+
+                string localCodes = File.ReadAllText(codesPath);
+                var httpClient = new HttpClient();
+
+                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "SA-Mod-Manager");
+                string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.codeURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
+
+                if (localCodes == repoCodes)
+                {
+                    return false;
+                }
+
+                await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
+                return true;
+            }
+            catch
+            {
+               
+              ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateCodes"));
+
+            }
+
+            return false;
+        }
+
+        public static async Task<bool> PerformUpdateLoaderCheck()
         {
             if (!App.CurrentGame.loader.installed)
                 return false;
 
-            ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkLoaderUpdate"));
-            var update = await CheckLoaderCodesUpdate();
-
-            if (update.Item1 == false) //no update found
+            try
             {
-                return false;
+
+                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkLoaderUpdate"));
+                var update = await CheckLoaderUpdate();
+
+                if (update.Item1 == false) //no update found
+                {
+                    return false;
+                }
+
+                string changelog = await GitHub.GetGitLoaderChangeLog(update.Item2); //item2 is commit hash
+
+                if (string.IsNullOrEmpty(changelog)) //if string is null, we got error(s) so the DL can't continue
+                {
+                    return false;
+                }
+
+                var manager = new InfoManagerUpdate(changelog, App.CurrentGame.loader.name);
+                manager.ShowDialog();
+
+                if (manager.DialogResult != true)
+                    return false;
+
+                if (await GamesInstall.UpdateLoader(App.CurrentGame))
+                {
+                    File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
+                    await GamesInstall.UpdateDependencies(App.CurrentGame);
+                    return true;
+                }
             }
-
-            string changelog = await GitHub.GetGitLoaderChangeLog(update.Item2); //item2 is commit hash
-
-            if (string.IsNullOrEmpty(changelog)) //if string is null, we got error(s) so the DL can't continue
-            {
-                return false;
-            }
-
-            var manager = new InfoManagerUpdate(changelog, App.CurrentGame.loader.name);
-            manager.ShowDialog();
-
-            if (manager.DialogResult != true)
-                return false;
-
-            if (await GamesInstall.UpdateLoader(App.CurrentGame))
-            {
-                File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
-                await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
-                await GamesInstall.UpdateDependencies(App.CurrentGame);
-
-                return true;
-            }
+            catch
+            { }
 
             return false;
         }
