@@ -1186,8 +1186,12 @@ namespace SAModManager
             {
                 tabGame.Visibility = Visibility.Visible;
                 comboProfile.IsEnabled = true;
-                grpManagerSettings.IsEnabled = true;
-                btnInstallLoader.IsEnabled = true;
+
+				checkDevEnabled.IsEnabled = true;
+				checkManagerOpen.IsEnabled = true;
+				grpManUpdates.IsEnabled = true;
+
+				btnInstallLoader.IsEnabled = true;
                 RefreshBtn.IsEnabled = true;
                 btnSelectAll.IsEnabled = true;
                 btnDeselectAll.IsEnabled = true;
@@ -1201,8 +1205,12 @@ namespace SAModManager
             {
                 tabGame.Visibility = Visibility.Collapsed;
                 comboProfile.IsEnabled = false;
-                grpManagerSettings.IsEnabled = false;
-                btnInstallLoader.IsEnabled = false;
+
+				checkDevEnabled.IsEnabled = false;
+				checkManagerOpen.IsEnabled = false;
+				grpManUpdates.IsEnabled = false;
+
+				btnInstallLoader.IsEnabled = false;
                 RefreshBtn.IsEnabled = false;
                 btnSelectAll.IsEnabled = false;
                 btnDeselectAll.IsEnabled = false;
