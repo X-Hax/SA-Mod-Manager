@@ -4,7 +4,7 @@
 
 	<system:String x:Key="MessageWindow.DefaultTitle">SADX Mod Manager</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Error">Error</system:String>
-	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Warning</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Aviso</system:String>
 	
 	<!--#region Errors-->
     <system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">Hay un mod.ini en la carpeta mods.</system:String>
@@ -83,7 +83,17 @@
 
     <system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Error de descarga</system:String>
     <system:String x:Key="MessageWindow.Errors.GenericDLFail0">Error al descargar</system:String>
-    <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Would you like to try again?</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail1">¿Quieres volver a intentarlo?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.LoaderFailedToSave.Title">No se pudo guardar la Información del Loader.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">"La carpeta Mods no parece estar en un directorio válido. Por favor, asegúrate de que está en un directorio válido. Tu configuración actual no se ha guardado."</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.CodeFail.Title">Línea de Código Inválida</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">Hay una línea vacía entre las líneas del código.&#x0a;&#x0a;Por favor, elimina la línea vacía y vuelve a guardar.</system:String>
+    <system:String x:Key="Messagewindow.Errors.CodeFailInvalid">El código escrito es inválido.&#x0a;&#x0a;Por favor, arregla el error y vuelve a guardar.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Error Desconocido</system:String>
+    <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Se ha producido un error desconocido.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -98,10 +108,17 @@
     <system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">¡Esto puede causar que los DATOS DE USUARIO (ARCHIVOS DE GUARDADO Y CONFIGURACIÓN) SE PIERDAN en la siguiente actualización! Para prevenir esto, nunca uses esta opción en mods que no hayas desarrollado.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">¡.NET 7.0 Desktop Runtime no está instalado!&#x0a;&#x0a;¿Te gustaría instalarlo ahora?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Esto eliminará todos los códigos seleccionados.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">Estas a punto de desactivar las actualizaciones para este mod. Si continúas, el Manager NUNCA buscará actualizaciones para este mod.&#x0a;¿Seguro que quieres continuar?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">El Mod Manager necesita 7-Zip para extraer mods y gestionar las actualizaciones.&#x0a;&#x0a;¿Quieres instalarlo ahora?</system:String>
+
     <!--#endregion-->
 	
 	<!--#region Information-->
-	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">No se han encontrado actualizaciones.</system:String>
+	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">No se han encontrado actualizaciones de mods.</system:String>
 	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Los mods están actualizados.</system:String>
 
     <system:String x:Key="MessageWindow.Information.D3D8Update">La versión de d3d8.dll en la carpeta de SADX es distinta de la versión incluida en el Mod Loader. ¿Quieres actualizar la version instalada?</system:String>
@@ -111,6 +128,15 @@
 
     <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">Se ha encontrado la carpeta de SADX, pero parece ser la versión de Steam.&#x0a;El Mod Loader solamente funciona con la version de PC de 2004.&#x0a;&#x0a;¿Te gustaría descargar e installar el Mod Installer para convertir tu juego a la version de 2004? (Tus archivos de guardados también serán convertidos).</system:String>
 
+    <system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Verificación de Archivos</system:String>
+    <system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Estás a punto de empezar la Verificación de Archivos. Esto verificará todos los archivos del juego excepto los archivos de audio.&#x0a;&#x0a;¿Quieres continuar?</system:String>
+
+    <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">Problemas de Archivos</system:String>
+    <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">Se han encontrado los siguientes problemas con los archivos del juego:</system:String>
+    <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles2">Por favor, ten en cuenta que si tu juego esta funcionando como es debido, los siguientes problemas no están afectando a tu juego.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Verificación Completada</system:String>
+    <system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Todos los archivos han sido verificados.</system:String>
     <!--#endregion-->
 	
 </ResourceDictionary>

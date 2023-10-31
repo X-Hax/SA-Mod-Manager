@@ -28,10 +28,11 @@
     <system:String x:Key="GamePatches.Chaos2Desc">Este parche arregla un error del juego base que bloquea el juego cuando derrotas a Chaos 2 y reinicias la pelea.</system:String>
     <system:String x:Key="GamePatches.ChunkRenderingDesc">Este parche arregla la iluminación especular en modelos Chunk.</system:String>
     <system:String x:Key="GamePatches.E102LampDesc">Fixes N-sided polygons (Gamma's Headlight) by using a triangle strip vertex buffer.</system:String>
+    <system:String x:Key="GamePatches.ChaoStatsDesc">Este parche arregla el Panel de Estadísticas Chao para que se muestre correctamente.</system:String>
     <system:String x:Key="GamePatches.PixelOffsetDesc">Este parche arregla la posición incorrecta de la mayoría de elementos 2D que se pueden notar en altas resoluciones.</system:String>
     <system:String x:Key="GamePatches.LightsDesc">Este parche arregla la luz aplicada incorrectamente en los niveles y activa la conservación del tipo de luz para los modelos en la cola.</system:String>
     <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">El Índice Global (GBIX) es un valor numérico utilizado en el sistema de cacheo de las texturas del juego. Todas las texturas de SADX tienen uno.&#x0a;Antes de que el juego cargue una textura, este compara el valor GBIX de la nueva textura con los índices de las texturas que ya han sido cargadas.&#x0a;En el caso de encontrar una coincidencia, el juego reutiliza la textura que ya ha sido cargada en vez de utilizar una nueva.&#x0a;&#x0a;Este parche deshabilita la mayoría del sistema GBIX en el juego para reducir errores/conflictos de texturas. (Con algunas excepciones como por ejemplo los elementos de la interfaz.)</system:String>
-
+    <system:String x:Key="GamePatches.DisableCDCheckDesc">Desactiva la comprobación del CD.</system:String>
 
 
 

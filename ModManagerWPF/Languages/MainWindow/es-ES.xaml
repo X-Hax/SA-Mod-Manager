@@ -26,7 +26,9 @@
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Borrar Mod</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Desarrollador</system:String>
     <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Generar Manifiesto</system:String>
-	<!--#endregion-->
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Desactivar Actualizaciones</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Activar Actualizaciones</system:String>
+    <!--#endregion-->
 
 	<!--#region Codes Tab Strings-->
 	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Nuevo Código</system:String>
@@ -147,12 +149,14 @@
 
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Activar Instalador 1-Clic de GameBanana</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Desactivar Instalador 1-Clic de GameBanana</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Abrir el Directorio del Juego</system:String>
 
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Instalar Mod Loader</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Desinstalar Mod Loader</system:String>
 
 	<!--Updates-->
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Actualizaciones</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Check for Mod Manager Updates on Startup</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Buscar Actualizaciones del Mod Loader al Iniciar</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Buscar Actualizaciones de Mods al Iniciar</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Buscar Actualizaciones</system:String>
@@ -172,6 +176,7 @@
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">El SADX Mod Manager es un programa que te permite gestionar fácilmente mods en Sonic Adventure DX.</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Colaboradores</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Código Fuente</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Código Fuente del Mod Loader</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Reportar un Error (Solo en Inglés)</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Abrir SA Docs (Solo en Inglés)</system:String>
 	<!--#endregion-->
@@ -253,55 +258,56 @@
 	<!--#endregion-->
 
 	<!--#region Sound Settings-->
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">Replaces the sound backend with vgmbass. This is recommended for the best experience, and many mods rely on it.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">Enables music in-game.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">Enables the 3D Sound in-game.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">Uses BASS as the backend for sound effect playback.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">Enables Sound Effects and Voices in game.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">Reemplaza el sistema de sonido por vgmbass. Es recomendable utilizar esta opción para la mejor experiencia ya que varios mods dependen de esta opción.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">Activa la música dentro del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">Activa el sonido 3D dentro del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">Utiliza el sistema de sonido BASS para la reproducción de efectos de sonido.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">Activa los efectos de sonido y voces dentro del juego.</system:String>
 	<!--#endregion-->
 
 	<!--#region Patches Settings-->
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">Selects all patches in the list.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">Deselects all patches in the list.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">Selecciona todos los parches en la lista.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">Deselecciona todos los parches en la lista.</system:String>
 	<!--#endregion-->
 	<!--#endregion-->
 
 	<!--#region Test Spawn Tips-->
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Character">Enables setting the character you spawn as.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Level">Enables setting the level you spawn into.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Time">Sets the time of day for Adventure fields.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Act">Sets the Act of the selected level.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Event">Enables loading into an event.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.GameMode">Enables setting the game mode to a specific type.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Save">Enables swapping the loaded save file when booting into the game.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Enables manually setting the character, level, and act. Overrides settings above when enabled.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Enables setting the start position and rotation.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Launches the game with the above settings applied.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Character">Permite jugar con el personaje seleccionado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Level">Permite jugar en el nivel seleccionado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Time">Ajusta la hora del día en el mundo abierto.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Act">Ajusta el acto del nivel seleccionado.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Event">Permite reproducir el evento seleccionado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.GameMode">Permite forzar el modo de juego seleccionado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Save">Permite forzar el uso del archivo de guardado seleccionado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Permite jugar con las opciones seleccionadas (Personaje, Nivel, Acto). Esta opción anulará las anteriores al ser activada.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Permite la selección de una posición y rotación de comienzo personalizadas.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Inicia el juego con todas las opciones seleccionadas.</system:String>
 	<!--#endregion-->
 
 	<!--#region Manager Config Tips-->
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Select which profile is being used for mod list and settings.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Opens the Profile Manager where you can create and delete profiles.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Full path to the directory your game is installed in.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Opens a window where you can select your game directory.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Sets the theme used by the Mod Manager.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Sets the language used by the Mod Manager.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Keeps the Mod Manager open when pressing Save and Play.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Enables the Test Spawn Tab in the Mod Manager.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">When Enabled, clicking One Click links on GameBanana will open a download dialog for the mod.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">When enabled, the Mod Loader is installed and you can play with mods, patches, and cheats.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Enables automatic checking for Mod Loader updates when opening the Mod Manager.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Enables automatic checking for updates to Mods you have installed when opening the Mod Manager.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Runs a check for updates to the Mod Loader and any Mods you have installed.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Opens a Console Window which displays debug information from the game.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Prints debug information within the game window.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Saves any debug information to a log file.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Enables logging crash dumps when the game encounters an error. These are useful in researching unexpected crashes.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Opens the Contributors and About window.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Opens a link to the GitHub repo for the Mod Manager.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Opens a link to the SA Docs website which has various information regarding modding the Adventure games.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Opens a link to the Issues on the Mod Manager's GitHub repo for reporting bugs.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Runs a health check on your game install to see if you have any missing or modified files.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Selecciona que perfil se usará para la lista de mods y configuración.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Abre el Gestor de Perfiles en donde puedes crear y eliminar perfiles.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Directorio completo en donde tu juego está instalado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Abre una ventana en donde puedes seleccionar el directorio del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Ajusta el tema del Mod Manager.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Ajust el idioma del Mod Manager.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantiene el Mod Manager abierto al pulsa Guardar y Jugar.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Activa la pestaña Test Spawn en el Mod Manager.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Al activarlo, al hacer clic en enlaces 1-Clic en GameBanana abrirá una ventana de descarga para el mod.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Al activarlo, el Mod Loader será instalado y podrás jugar con mods, parches y códigos.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Activa la búsqueda automática de actualizaciones del Mod Manager al iniciarlo.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Activa la búsqueda automática de actualizaciones del Mod Loader al iniciar el Mod Manager.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Activa la búsqueda automática de actualizaciones de los Mods instalados al iniciar el Mod Manager.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Buscar actualizaciones del Mod Loader, Manager y de los Mods instalados.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Abre una consola en otra ventana, mostrando información de depuración del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Muestra los mensajes de depuración dentro de la ventana del juego.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Guarda los mensajes de depuración en un archivo de registro.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Permite generar un archivo de volcado de memoria cuando el juego se bloqueé debido a un error. Estos archivos son útiles para averiguar el motivo del error.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Abre la ventana de Colaboradores y Acerca De.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Abre un enlace al repositorio del Mod Manager en GitHub.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Abre un enlace a la página web SA Docs, la cual contiene diversa información sobre Sonic Adventure modding.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Abre un enlace a la sección para reportar errores en el repositorio del Mod Manager en GitHub.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Verifica los archivos del juego para comprobar si faltan archivos o si alguno ha sido modificado.</system:String>
 	<!--#endregion-->
 
 </ResourceDictionary>
