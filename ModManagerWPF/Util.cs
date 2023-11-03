@@ -23,6 +23,48 @@ namespace SAModManager
 {
 	class Util
 	{
+		public static List<string> SADXManagerFiles = new()
+		{
+			"SADXModManager.exe",
+			"7z.dll",
+			"7z.exe",
+			"ModManagerCommon.dll",
+			"ModManagerCommon.pdb",
+			"d3d8m.dll",
+			"SADXModManager.exe.config",
+			"SADXModManager.pdb",
+			"sadxmlver.txt",
+			"loader.manifest",
+			"SharpDX.dll",
+			"SharpDX.DirectInput.dll",
+			"COPYING_D3D8TO9",
+			"Newtonsoft.Json.dll",
+		};
+
+        public static List<string> BASSFiles = new()
+        {
+            "libogg.dll",
+            "libvorbisfile.dll",
+            "avcodec-vgmstream-58.dll",
+            "avformat-vgmstream-58.dll",
+            "avutil-vgmstream-56.dll",
+            "libatrac9.dll",
+            "libcelt-0061.dll",
+            "libcelt-0110.dll",
+			"libg719_decode.dll",
+			"libmpg123-0.dll",
+            "libvorbis.dll",
+            "bass.dll",
+            "jansson.dll",
+            "libg7221_decode.dll",
+            "libspeex.dll",
+            "swresample-vgmstream-3.dll",
+			"bass_vgmstream.dll",
+            "COPYING_BASS_VGMSTREAM",
+            "COPYING_VGMSTREAM",
+
+        };
+
         public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
 		{
 			try

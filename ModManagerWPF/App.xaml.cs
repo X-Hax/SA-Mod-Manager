@@ -79,7 +79,9 @@ namespace SAModManager
             if (await DoUpdate(args, alreadyRunning))
             {
                 return;
-            }
+            }        
+            
+            HandleVanillaTransition(args);
 
             SetupLanguages();
             SetupThemes();
@@ -439,6 +441,35 @@ namespace SAModManager
             }
 
             return false;
+        }
+
+        
+        private static void HandleVanillaTransition(string[] args)
+        {
+            foreach (var arg in args)
+            {
+                if (arg == "vanillaUpdate")
+                {
+                    //todo add SA2 support
+                    if (File.Exists("SADXModManager.exe") || File.Exists("SA2ModManager.exe"))
+                    {
+                        string archive = "Archive_Old_Manager";
+                        Directory.CreateDirectory(archive);
+
+                        foreach (var file in Util.SADXManagerFiles)
+                        {
+                            if (File.Exists(file))
+                                File.Move(file, Path.Combine(archive, file), true);
+                        }
+
+                        foreach (var file in Util.BASSFiles)
+                        {
+                            if (File.Exists(file))
+                                File.Move(file, Path.Combine(archive, file), true);
+                        }
+                    }
+                }
+            }
         }
 
         public static async Task<bool> ExecuteDependenciesCheck()

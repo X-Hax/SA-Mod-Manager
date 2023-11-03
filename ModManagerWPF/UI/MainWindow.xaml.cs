@@ -2281,9 +2281,6 @@ namespace SAModManager
                 await InstallLoader();
             }
 
-            //TODO: delete when official release
-            //await VanillaTransition.HandleVanillaManagerFiles(App.CurrentGame.loader.installed, App.CurrentGame.gameDirectory);
-
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
             UIHelper.EnableButton(ref btnInstallLoader);
             UpdateBtnInstallLoader_State();
