@@ -26,6 +26,8 @@
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Borrar mod</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Desarrollador</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Crear manifiesto</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Deshabilitar actualizaciones</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Habilitar actualizaciones</system:String>
 	<!--#endregion-->
 
 	<!--#region Codes Tab Strings-->
@@ -289,7 +291,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Abre una ventana en la que puedes seleccionar el directorio del juego.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Establece el tema utilizado por el gestor de mods.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Establece el idioma utilizado por el gestor de mods.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantiene abierto el gestor de gods al presionar Guardar y jugar.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantiene abierto el gestor de mods al presionar Guardar y jugar.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Habilita la pestaña Generar prueba en el gestor de mods.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Cuando está Activado, al usar los enlaces de 1 click en GameBanana se abrirá un cuadro de diálogo para descargar el mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Cuando está activado, se instala el Cargador de mods y puedes jugar con mods, parches y trucos.</system:String>

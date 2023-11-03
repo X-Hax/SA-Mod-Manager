@@ -111,6 +111,9 @@
 	
 	<system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Esto borrará todos los códigos seleccionados.&#x0a;&#x0a;¿Seguro(a) que quieres continuar?</system:String>
 
+	<system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">Estás a punto de desactivar las actualizaciones de este mod. Si continúas, el Gestor NUNCA revisará si existen actualizaciones de este mod.&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
+
+	<system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">El Gestor de mods necesita 7-zip para extraer mods y poder actualizarse.&#x0a;&#x0a;¿Quieres instalarlo ahora?</system:String>
     
     <!--#endregion-->
 	
@@ -129,7 +132,8 @@
 	<system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Estás por ejecutar la verificación de salud del juego. Esto verificará todos los archivos del juego, excepto los archivos de audio.&#x0a;&#x0a;¿Deseas continuar?</system:String>
 
 	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">Se encontraron problemas con los archivos</system:String>
-	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles">Se encontraron los siguientes problemas con tus archivos del juego:</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">Se encontraron los siguientes problemas con tus archivos del juego:</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles2">Ten en cuenta que si tu juego funciona como se espera, entonces los problemas mencionados no están afectándolo.</system:String>
 
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Verificación completada</system:String>
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Todos los archivos revisados fueron verificados.</system:String>

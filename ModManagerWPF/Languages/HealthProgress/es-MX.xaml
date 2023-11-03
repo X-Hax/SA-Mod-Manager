@@ -5,4 +5,5 @@
 	<system:String x:Key="HealthProgress.Title">Realizando revisión de salud</system:String>
 	<system:String x:Key="HealthProgress.Files.Modified">está modificado.</system:String>
 	<system:String x:Key="HealthProgress.Files.Missing">no se encontró.</system:String>
+	<system:String x:Key="HealthProgress.Check">Verificando</system:String>
 </ResourceDictionary>
