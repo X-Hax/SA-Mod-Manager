@@ -5,6 +5,7 @@
     <system:String x:Key="ManagerProfile.Title">Gestionar Perfiles</system:String>
     <system:String x:Key="ManagerProfile.Buttons.Rename">Renombrar Perfil</system:String>
     <system:String x:Key="ManagerProfile.Buttons.Create">Crear Perfil</system:String>
+    <system:String x:Key="ManagerProfile.Buttons.Migrate">Migrar</system:String>
     <system:String x:Key="ManagerProfile.Path">Ruta del Archivo</system:String>
     <system:String x:Key="ManagerProfile.ContextMenu.Rename">Renombrar</system:String>
     <system:String x:Key="ManagerProfile.ContextMenu.Duplicate">Duplicar</system:String>
@@ -12,4 +13,10 @@
     <system:String x:Key="ManagerProfile.Errors.Unexpected">Error inesperado, no se pudo renombrar el perfil.</system:String>
     <system:String x:Key="ManagerProfile.Errors.ProfileExists.Title">Error, el perfil ya existe</system:String>
     <system:String x:Key="ManagerProfile.Errors.ProfileExists">Un perfil con este nombre ya existe. Por favor, utiliza un nombre distinto.</system:String>
+
+    <system:String x:Key="ManagerProfile.ToolTip.Create">Crea un nuevo perfil.</system:String>
+    <system:String x:Key="ManagerProfile.ToolTip.Migrate">Migra perfiles antiguos al nuevo formato. Algunos ajustes podrían perderse en la migración.</system:String>
+
+    <system:String x:Key="NewProfile.Title">Crea Perfil</system:String>
+    <system:String x:Key="NewProfile.Text.NewProfile">Nuevo Perfil</system:String>
 </ResourceDictionary>
