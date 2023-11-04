@@ -51,7 +51,7 @@ jobs:
     - name: CleanUp Misc Files (32-bit)
       working-directory: ${{github.workspace}}\bin\Release\net7.0-windows\win-x86\publish
       run: del SAModManager.dll.config, SAModManager.pdb
-           
+          
     - uses: actions/upload-artifact@v3.1.2
       with:
         name: ModManagerWPF-Release-x64
@@ -67,8 +67,8 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          ${{github.workspace}}\bin\Release\net7.0-windows\win-x64\publish\*
-          ${{github.workspace}}\bin\Release\net7.0-windows\win-x86\publish\*
+         ${{github.workspace}}\ModManagerWPF-Release-x64\*
+         ${{github.workspace}}\ModManagerWPF-Release-x86\*
         token: ${{ secrets.GITHUB_TOKEN }}
         release_name: Release ${{ github.ref_name }}
         draft: false
