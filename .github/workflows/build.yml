@@ -53,6 +53,6 @@ jobs:
       uses: softprops/action-gh-release@v0.1.15
       with:
         files: |
-         SA-Mod-Manager/bin/Release/net7.0-windows/win-x64/publish/*
-         SA-Mod-Manager/bin/Release/net7.0-windows/win-x86/publish/*
+         bin/Release/net7.0-windows/win-x64/publish/*
+         bin/Release/net7.0-windows/win-x86/publish/*
         token: ${{ secrets.GITHUB_TOKEN }}
