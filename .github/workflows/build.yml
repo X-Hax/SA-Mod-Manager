@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - '*'
 
 env:
   # Path to the WPF project file relative to the root of the project.
@@ -60,12 +62,14 @@ jobs:
       working-directory: ${{github.workspace}}\bin\Release\net7.0-windows\win-x86\publish
       run: del SAModManager.dll.config, SAModManager.pdb
 
-    - uses: actions/upload-artifact@v3.1.2
+    - name: Create GitHub Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
       with:
-        name: ModManagerWPF-Release-x64
-        path: ${{github.workspace}}\bin\Release\net7.0-windows\win-x64\publish
-
-    - uses: actions/upload-artifact@v3.1.2
-      with:
-        name: ModManagerWPF-Release-x86
-        path: ${{github.workspace}}\bin\Release\net7.0-windows\win-x86\publish
+        files: |
+            ${{github.workspace}}/bin/Release/net7.0-windows/win-x64/publish/*
+            ${{github.workspace}}/bin/Release/net7.0-windows/win-x86/publish/*
+        token: ${{ secrets.GITHUB_TOKEN }}
+        release_name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
