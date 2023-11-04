@@ -140,16 +140,16 @@
     <value>..\Resources\SDL2.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="URL_7Z_x64" xml:space="preserve">
-    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/7zx64.dll</value>
+    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/7zx64.dll</value>
   </data>
   <data name="URL_7Z_x86" xml:space="preserve">
-    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/7zx86.dll</value>
+    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/7zx86.dll</value>
   </data>
   <data name="URL_BASS" xml:space="preserve">
-    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/bass.zip</value>
+    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/bass.zip</value>
   </data>
   <data name="URL_D3D8M" xml:space="preserve">
-    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/d3d8m.dll</value>
+    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/d3d8m.dll</value>
   </data>
   <data name="URL_SADX_CODE" xml:space="preserve">
     <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/wpf/data/Codes.lst</value>
@@ -161,7 +161,7 @@
     <value>https://nightly.link/X-Hax/SA-Mod-Manager/suites/{0}/artifacts/{1}</value>
   </data>
   <data name="URL_SDL" xml:space="preserve">
-    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/ModManagerWPF/Resources/SDL2.dll</value>
+    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/SDL2.dll</value>
   </data>
   <data name="Version" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Version.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
