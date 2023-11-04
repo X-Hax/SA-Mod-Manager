@@ -7,7 +7,7 @@ on:
 
 env:
   # Path to the WPF project file relative to the root of the project.
-  WPF_PROJECT_FILE: ./ModManagerWPF/SAModManager.csproj
+  WPF_PROJECT_FILE: ./SA-Mod-Manager/SAModManager.csproj
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
 
     - name: Add Git hash to resources
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: echo ${{github.sha}} > ModManagerWPF/Resources/Version.txt
+      run: echo ${{github.sha}} > SA-Mod-Manager/Resources/Version.txt
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
