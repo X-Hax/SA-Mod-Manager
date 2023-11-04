@@ -149,19 +149,12 @@ namespace SAModManager
 		{
 			try
 			{
-				string path = Path.Combine(App.extLibPath, "7z");
-
-				if (File.Exists(Path.Combine(path, "7z.dll"))) 
+				if (!is7ZipInstalled())
 				{
-					return;
+                    string path = Path.Combine(App.extLibPath, "7z");
+                    Directory.CreateDirectory(path);
+					await Exec7zipInstall();
 				}
-			
-				bool is64Bit = Environment.Is64BitOperatingSystem;
-                Directory.CreateDirectory(path);
-
-				await Exec7zipInstall();
-              //string DllPath = is64Bit ? Path.Combine(path, "7zx64.dll") : Path.Combine(path, "7zx86.dll");
-              //File.Move(DllPath, Path.Combine(path, "7z.dll"), true);
             }
 			catch
 			{
@@ -229,7 +222,9 @@ namespace SAModManager
 			if (!is7ZipInstalled())
 			{
 				if (await Exec7zipInstall() == false)
-					return;
+				{
+                    return;
+                }	
             }
 
 			string libPath = File.Exists(App.ziplibPath) ? App.ziplibPath : null;
