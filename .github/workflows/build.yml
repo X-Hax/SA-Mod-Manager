@@ -24,9 +24,6 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: echo ${{github.sha}} > ModManagerWPF/Resources/Version.txt
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.3.1
-
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
@@ -52,23 +49,14 @@ jobs:
       working-directory: ${{github.workspace}}\bin\Release\net7.0-windows\win-x86\publish
       run: del SAModManager.dll.config, SAModManager.pdb
           
-    - uses: actions/upload-artifact@v3.1.2
-      with:
-        name: ModManagerWPF-Release-x64
-        path: ${{github.workspace}}\bin\Release\net7.0-windows\win-x64\publish
-
-    - uses: actions/upload-artifact@v3.1.2
-      with:
-        name: ModManagerWPF-Release-x86
-        path: ${{github.workspace}}\bin\Release\net7.0-windows\win-x86\publish
 
     - name: Create GitHub Release
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-         ${{github.workspace}}\ModManagerWPF-Release-x64\*
-         ${{github.workspace}}\ModManagerWPF-Release-x86\*
+         ModManagerWPF/bin/Release/net7.0-windows/win-x64/publish/*
+         ModManagerWPF/bin/Release/net7.0-windows/win-x86/publish/*
         token: ${{ secrets.GITHUB_TOKEN }}
         release_name: Release ${{ github.ref_name }}
         draft: false
