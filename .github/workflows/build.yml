@@ -38,7 +38,7 @@ jobs:
       run: dotnet publish -p:PublishSingleFile=true -r win-x64 -c Release --self-contained false
 
     - name: CleanUp Misc Files (64-bit)
-      working-directory: ModManagerWPF/bin/Release/net7.0-windows/win-x86/publish
+      working-directory: bin/Release/net7.0-windows/win-x86/publish
       run: del SAModManager.dll.config, SAModManager.pdb
 
     - name: Publish 32-bit WPF application
@@ -46,13 +46,13 @@ jobs:
       run: dotnet publish -p:PublishSingleFile=true -r win-x86 -c Release --self-contained false
       
     - name: CleanUp Misc Files (32-bit)
-      working-directory: ModManagerWPF/bin/Release/net7.0-windows/win-x86/publish
+      working-directory: bin/Release/net7.0-windows/win-x86/publish
       run: del SAModManager.dll.config, SAModManager.pdb
       
     - name: Create Release
       uses: softprops/action-gh-release@v0.1.15
       with:
         files: |
-         ModManagerWPF/bin/Release/net7.0-windows/win-x64/publish/*
-         ModManagerWPF/bin/Release/net7.0-windows/win-x86/publish/*
+         SA-Mod-Manager/bin/Release/net7.0-windows/win-x64/publish/*
+         SA-Mod-Manager/bin/Release/net7.0-windows/win-x86/publish/*
         token: ${{ secrets.GITHUB_TOKEN }}
