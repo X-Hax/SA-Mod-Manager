@@ -242,7 +242,33 @@ namespace SAModManager
             }
         }
 
-        private static async Task<(bool, WorkflowRunInfo, GitHubArtifact)> CheckManagerUpdate()
+        //left over from previous method to update, maybe will be re used for a dev purpose.
+        /* private async static void GetArtifact()
+         {
+             GitHubAction latestAction = await GitHub.GetLatestAction();
+             GitHubArtifact info = null;
+
+             if (latestAction != null)
+             {
+                 List<GitHubArtifact> artifacts = await GitHub.GetArtifactsForAction(latestAction.Id);
+
+                 if (artifacts != null)
+                 {
+                     bool is64BitSystem = Environment.Is64BitOperatingSystem;
+                     string targetArchitecture = is64BitSystem ? "x64" : "x86";
+
+                     info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release-" + targetArchitecture));
+
+                     // If there's no specific architecture match, try to get a generic "Release" artifact
+                     info ??= artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
+                 }
+             }
+         }*/
+
+
+
+
+        private static async Task<(bool, WorkflowRunInfo, GitHubAsset)> CheckManagerUpdate()
         {
             var workflowRun = await GitHub.GetLatestWorkflowRun();
 
@@ -251,26 +277,9 @@ namespace SAModManager
 
             bool hasUpdate = RepoCommit != workflowRun.HeadSHA;
 
-            GitHubAction latestAction = await GitHub.GetLatestAction();
-            GitHubArtifact info = null;
+           var latestRelease = await GitHub.GetLatestRelease();
 
-            if (latestAction != null)
-            {
-                List<GitHubArtifact> artifacts = await GitHub.GetArtifactsForAction(latestAction.Id);
-
-                if (artifacts != null)
-                {
-                    bool is64BitSystem = Environment.Is64BitOperatingSystem;
-                    string targetArchitecture = is64BitSystem ? "x64" : "x86";
-
-                    info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release-" + targetArchitecture));
-
-                    // If there's no specific architecture match, try to get a generic "Release" artifact
-                    info ??= artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
-                }
-            }
-
-            return (hasUpdate, workflowRun, info);
+            return (hasUpdate, workflowRun, latestRelease);
         }
 
         public static async Task<bool> PerformUpdateManagerCheck()
@@ -304,7 +313,8 @@ namespace SAModManager
                 if (manager.DialogResult != true)
                     return false;
 
-                string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
+                // string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
+                string dlLink = update.Item3.DownloadUrl;
                 Directory.CreateDirectory(".SATemp");
                 var dl = new ManagerUpdate(dlLink, ".SATemp", update.Item3.Name + ".zip");
                 dl.StartManagerDL();

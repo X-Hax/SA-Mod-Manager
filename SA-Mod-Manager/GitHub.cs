@@ -10,6 +10,7 @@ using static SAModManager.GitHubAction;
 using NetCoreInstallChecker.Misc;
 using static SAModManager.GitHubArtifact;
 using System.Linq.Expressions;
+using System.Security.Policy;
 
 namespace SAModManager
 {
@@ -335,6 +336,40 @@ namespace SAModManager
             }
         }
 
+        public static async Task<GitHubAsset> GetLatestRelease()
+        {
+            try
+            {
+                var httpClient = new HttpClient();
+
+                httpClient.DefaultRequestHeaders.Add("User-Agent", AppName);
+                string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
+
+                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var release = JsonConvert.DeserializeObject<GitHubRelease>(responseBody);
+                    if (release != null && release.Assets != null)
+                    {
+                        var targetAsset = release.Assets.FirstOrDefault(asset => asset.Name.Contains(Environment.Is64BitOperatingSystem ? "x64" : "x86"));
+
+                        if (targetAsset != null)
+                        {
+                            return targetAsset;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error fetching latest release: " + ex.Message);
+            }
+
+            return null;
+        }
+
         public static async Task<string> GetGitChangeLog(string hash)
         {
             var httpClient = new HttpClient();
@@ -408,33 +443,33 @@ namespace SAModManager
 
 
         private static async Task<string> GetLastCommitHash(string repo, string branch)
+        {
+            using (HttpClient client = new())
             {
-                using (HttpClient client = new())
+                client.BaseAddress = new Uri("https://api.github.com");
+                client.DefaultRequestHeaders.Add("User-Agent", AppName);
+
+                HttpResponseMessage response = await client.GetAsync($"repos/{owner}/{repo}/commits/{branch}");
+
+                if (response.IsSuccessStatusCode)
                 {
-                    client.BaseAddress = new Uri("https://api.github.com");
-                    client.DefaultRequestHeaders.Add("User-Agent", AppName);
-
-                    HttpResponseMessage response = await client.GetAsync($"repos/{owner}/{repo}/commits/{branch}");
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string content = await response.Content.ReadAsStringAsync();
-                        // Parse the JSON response to get the commit hash
-                        int startIndex = content.IndexOf("\"sha\":\"") + 7;
-                        int endIndex = content.IndexOf("\"", startIndex);
-                        return content[startIndex..endIndex];
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Error: {response.StatusCode}");
-                        return null;
-                    }
+                    string content = await response.Content.ReadAsStringAsync();
+                    // Parse the JSON response to get the commit hash
+                    int startIndex = content.IndexOf("\"sha\":\"") + 7;
+                    int endIndex = content.IndexOf("\"", startIndex);
+                    return content[startIndex..endIndex];
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {response.StatusCode}");
+                    return null;
                 }
             }
+        }
 
-            public static async Task<string> GetLoaderHashCommit()
-            {
-                return await GetLastCommitHash(App.CurrentGame.loader.repoName, "wpf");
-            }
+        public static async Task<string> GetLoaderHashCommit()
+        {
+            return await GetLastCommitHash(App.CurrentGame.loader.repoName, "wpf");
         }
     }
+}
