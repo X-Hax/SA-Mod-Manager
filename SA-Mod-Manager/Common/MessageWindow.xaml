@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SAModManager.Common"
-        mc:Ignorable="d" x:Name="Window" Loaded="Window_Loaded"
-        Style="{StaticResource SAWindowUtil}" MinWidth="250" MinHeight="100" MaxWidth="500" MaxHeight="400"
-		Closing="Window_Closing" WindowStartupLocation="CenterScreen">
-    <Window.Resources>
+        mc:Ignorable="d" x:Name="Window" Style="{StaticResource SAWindowUtil}" 
+		MinWidth="250" MinHeight="150" MaxWidth="500" MaxHeight="400" 
+		SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+		Closing="Window_Closing" ContentRendered="Window_ContentRendered">
+	<Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Icons/Icons.xaml"/>
@@ -16,20 +17,22 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="MessageGrid">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-        <Grid x:Name="ButtonsGrid" Margin="5" Height="30" Grid.Row="2" HorizontalAlignment="Right">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="100"/>
-				<ColumnDefinition Width="10"/>
-				<ColumnDefinition Width="100"/>
-			</Grid.ColumnDefinitions>
+	<Border>
+		<Grid x:Name="MessageGrid" Width="Auto" Height="Auto">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid x:Name="ButtonsGrid" Margin="5" Height="30" Grid.Row="2" HorizontalAlignment="Right">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="100"/>
+					<ColumnDefinition Width="10"/>
+					<ColumnDefinition Width="100"/>
+				</Grid.ColumnDefinitions>
 
-			<Button x:Name="ButtonRight" Content="Cancel" Grid.Column="2"/>
-            <Button x:Name="ButtonLeft" Content="OK"/>
-        </Grid>
-    </Grid>
+				<Button x:Name="ButtonRight" Content="Cancel" Grid.Column="2"/>
+				<Button x:Name="ButtonLeft" Content="OK"/>
+			</Grid>
+		</Grid>
+	</Border>
 </Window>

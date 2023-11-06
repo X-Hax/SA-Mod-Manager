@@ -177,7 +177,7 @@ namespace SAModManager.Common
 		{
 			isClosed = false;
 			Accepted = false;
-			Window.Title = windowName;
+			this.Title = windowName;
 			Image image = (Image)TryFindResource("MessageIcon");
 			image.Source = icon.Source;
 			image.Width = icon.Width;
@@ -226,11 +226,6 @@ namespace SAModManager.Common
 		{
 			isClosed = true;
 		}
-
-		private void Window_Loaded(object sender, RoutedEventArgs e)
-		{
-			Window.SizeToContent = SizeToContent.WidthAndHeight;
-		}
 		#endregion
 
 		#region Button Functions
@@ -245,5 +240,10 @@ namespace SAModManager.Common
 			this.Close();
 		}
 		#endregion
+
+		private void Window_ContentRendered(object sender, EventArgs e)
+		{
+			InvalidateMeasure();
+		}
 	}
 }
