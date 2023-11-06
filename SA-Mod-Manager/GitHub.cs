@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using SAModManager.Properties;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -7,10 +6,7 @@ using System;
 using System.Linq;
 using static SAModManager.WorkflowRunInfo;
 using static SAModManager.GitHubAction;
-using NetCoreInstallChecker.Misc;
 using static SAModManager.GitHubArtifact;
-using System.Linq.Expressions;
-using System.Security.Policy;
 
 namespace SAModManager
 {
@@ -239,6 +235,18 @@ namespace SAModManager
             [JsonProperty("workflow_runs")]
             public List<WorkflowRunInfo> Runs { get; set; }
         }
+
+        public class GitHubTag
+        {
+            [JsonProperty("object")]
+            public GitHubTagObject Object { get; set; }
+        }
+
+        public class GitHubTagObject
+        {
+            [JsonProperty("sha")]
+            public string Sha { get; set; }
+        }
     }
 
     public static class GitHub
@@ -304,6 +312,7 @@ namespace SAModManager
             }
         }
 
+        //left over from previous update system
         public static async Task<WorkflowRunInfo> GetLatestWorkflowRun()
         {
             using (var httpClient = new HttpClient())
@@ -336,8 +345,27 @@ namespace SAModManager
             }
         }
 
-        public static async Task<GitHubAsset> GetLatestRelease()
+        private static async Task<string> GetSHAFromLastTag(GitHubRelease release, HttpClient httpClient)
         {
+            string lastTagName = release.TagName;
+            string urlTag = $"https://api.github.com/repos/{owner}/{repo}/git/ref/tags/{lastTagName}";
+            var responseTag = await httpClient.GetAsync(urlTag);
+
+            if (responseTag.IsSuccessStatusCode)
+            {
+                string tagResponse = await responseTag.Content.ReadAsStringAsync();
+                var tagInfo = JsonConvert.DeserializeObject<GitHubTag>(tagResponse);
+                return tagInfo?.Object.Sha;
+            }
+
+            return null;    
+        }
+
+
+        public static async Task<(bool, string, GitHubAsset)> GetLatestRelease()
+        {
+            bool hasUpdate = false;
+
             try
             {
                 var httpClient = new HttpClient();
@@ -346,7 +374,7 @@ namespace SAModManager
                 string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
 
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
+       
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
@@ -357,7 +385,9 @@ namespace SAModManager
 
                         if (targetAsset != null)
                         {
-                            return targetAsset;
+                            string sha = await GetSHAFromLastTag(release, httpClient);
+                            hasUpdate = App.RepoCommit != sha;
+                            return (hasUpdate, sha, targetAsset);
                         }
                     }
                 }
@@ -367,7 +397,7 @@ namespace SAModManager
                 Console.WriteLine("Error fetching latest release: " + ex.Message);
             }
 
-            return null;
+            return (false, null, null);
         }
 
         public static async Task<string> GetGitChangeLog(string hash)
@@ -379,7 +409,6 @@ namespace SAModManager
 
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
             string text = "";
-
 
             if (response.IsSuccessStatusCode)
             {

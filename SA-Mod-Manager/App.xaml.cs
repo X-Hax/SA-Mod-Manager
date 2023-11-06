@@ -266,20 +266,10 @@ namespace SAModManager
          }*/
 
 
-
-
-        private static async Task<(bool, WorkflowRunInfo, GitHubAsset)> CheckManagerUpdate()
+        private static async Task<(bool, string, GitHubAsset)> CheckManagerUpdate()
         {
-            var workflowRun = await GitHub.GetLatestWorkflowRun();
-
-            if (workflowRun is null)
-                return (false, null, null);
-
-            bool hasUpdate = RepoCommit != workflowRun.HeadSHA;
-
-           var latestRelease = await GitHub.GetLatestRelease();
-
-            return (hasUpdate, workflowRun, latestRelease);
+            var latestRelease = await GitHub.GetLatestRelease();
+            return (latestRelease.Item1, latestRelease.Item2, latestRelease.Item3);
         }
 
         public static async Task<bool> PerformUpdateManagerCheck()
@@ -300,7 +290,7 @@ namespace SAModManager
                     return false;
                 }
 
-                string changelog = await GitHub.GetGitChangeLog(update.Item2.HeadSHA);
+                string changelog = await GitHub.GetGitChangeLog(update.Item2);
 
                 if (string.IsNullOrEmpty(changelog))
                 {
