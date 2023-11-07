@@ -7,6 +7,8 @@ using System.Linq;
 using static SAModManager.WorkflowRunInfo;
 using static SAModManager.GitHubAction;
 using static SAModManager.GitHubArtifact;
+using static SAModManager.WorkflowRunInfo.GitHubTagInfo;
+using System.Text.RegularExpressions;
 
 namespace SAModManager
 {
@@ -247,6 +249,21 @@ namespace SAModManager
             [JsonProperty("sha")]
             public string Sha { get; set; }
         }
+
+        public class GitHubTagInfo
+        {
+            [JsonProperty("name")]
+            public string TagName { get; set; }
+
+            [JsonProperty("commit")]
+            public GitHubCommit Commit { get; set; }
+        }
+
+        public class GitHubCommit
+        {
+            [JsonProperty("sha")]
+            public string Sha { get; set; }
+        }
     }
 
     public static class GitHub
@@ -353,14 +370,32 @@ namespace SAModManager
 
             if (responseTag.IsSuccessStatusCode)
             {
+
                 string tagResponse = await responseTag.Content.ReadAsStringAsync();
                 var tagInfo = JsonConvert.DeserializeObject<GitHubTag>(tagResponse);
-                return tagInfo?.Object.Sha;
+                return tagInfo?.Object?.Sha;
+
+                /*string urlTag2 = $"https://api.github.com/repos/{owner}/{repo}/tags";
+                var responseTag2 = await httpClient.GetAsync(urlTag2);
+                if (responseTag2.IsSuccessStatusCode)
+                {
+                    string tagResponse = await responseTag2.Content.ReadAsStringAsync();
+                    var tagInfo = JsonConvert.DeserializeObject<List<GitHubTagInfo>>(tagResponse);
+                   
+                    if (tagInfo is not null && tagInfo.Count > 0) 
+                    {
+                        var lastTag = tagInfo.FirstOrDefault(hash => hash.TagName.Contains(lastTagName));
+                        if (lastTag != null) 
+                        {
+                            return lastTag.Commit.Sha;
+                        }
+                    }
+                }*/
+
             }
 
             return null;    
         }
-
 
         public static async Task<(bool, string, GitHubAsset)> GetLatestRelease()
         {
@@ -386,7 +421,21 @@ namespace SAModManager
                         if (targetAsset != null)
                         {
                             string sha = await GetSHAFromLastTag(release, httpClient);
-                            hasUpdate = App.RepoCommit != sha;
+                            string version = release.TagName;
+
+                            try
+                            {
+                                string pattern = @"^\w+\s+"; // This regular expression matches any word followed by one or more spaces at the beginning of the string.
+                                string result = Regex.Replace(version, pattern, "").Trim();
+                                Version commitVersion = new(result);
+                                int comparison = commitVersion.CompareTo(App.Version);
+                                hasUpdate = comparison > 0;
+                            }
+                            catch
+                            {
+                                throw new Exception("Couldn't check version difference, update won't work.");
+                            }
+
                             return (hasUpdate, sha, targetAsset);
                         }
                     }
@@ -434,6 +483,7 @@ namespace SAModManager
 
             return text;
         }
+
 
         public static async Task<string> GetGitLoaderChangeLog(string hash)
         {
