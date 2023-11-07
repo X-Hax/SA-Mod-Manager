@@ -8,6 +8,9 @@ on:
 env:
   # Path to the WPF project file relative to the root of the project.
   WPF_PROJECT_FILE: ./SA-Mod-Manager/SAModManager.csproj
+  PUBLISH_PATH: ./source/Publish
+  PUBLISH_CHANGELOG_PATH: ./source/Publish/Changelog.md
+  RELEASE_TAG: ${{ github.ref_name }}
 
 jobs:
   build:
@@ -18,20 +21,23 @@ jobs:
         configuration: [Release]
 
     steps:
-    - uses: actions/checkout@v3.3.0
-
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        submodules: 'recursive'      
+    
     - name: Add Git hash to resources
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: echo ${{github.sha}} > SA-Mod-Manager/Resources/Version.txt
 
+    - name: Setup AutoChangelog
+      run: npm install -g auto-changelog
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '7.0' 
-
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: dotnet restore ${{env.WPF_PROJECT_FILE}}
+        dotnet-version: '7.0.x' 
 
     - name: Publish 64-bit WPF application
       working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -48,6 +54,11 @@ jobs:
     - name: CleanUp Misc Files (32-bit)
       working-directory: ${{github.workspace}}\bin\Release\net7.0-windows\win-x86\publish
       run: del SAModManager.dll.config, SAModManager.pdb
+
+    - name: Create Changelog (on Tag)
+      run: |
+        [System.IO.Directory]::CreateDirectory("$env:PUBLISH_PATH")
+        auto-changelog --sort-commits date --hide-credit --template changelog-template.hbs --commit-limit 30 --starting-version "$env:RELEASE_TAG" --output "$env:PUBLISH_CHANGELOG_PATH"
       
     - name: Archive 64-bit
       uses: thedoctor0/zip-release@0.7.5
@@ -64,10 +75,12 @@ jobs:
         filename: 'release_x86.zip'
         directory: bin/Release/net7.0-windows/win-x86/publish
         exclusions: '*.git* /*node_modules/* .editorconfig'
+        
       
     - name: Create Release
       uses: softprops/action-gh-release@v0.1.15
       with:
+        body_path: ${{ env.PUBLISH_CHANGELOG_PATH }}
         files: |
          bin/Release/net7.0-windows/win-x64/publish/*.zip
          bin/Release/net7.0-windows/win-x86/publish/*.zip
