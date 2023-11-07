@@ -497,7 +497,6 @@ namespace SAModManager
                         text += " - " + commit.commit.message + "\n";
                     }
                 }
-
             }
 
             return text;
