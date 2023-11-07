@@ -1036,6 +1036,7 @@ namespace SAModManager
             checkForUpdate = true;
             if (await App.PerformUpdateManagerCheck() || await App.PerformUpdateLoaderCheck() || await App.PerformUpdateCodesCheck())
             {
+                UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
                 return;
             }
 
