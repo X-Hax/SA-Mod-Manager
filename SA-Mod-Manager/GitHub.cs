@@ -519,6 +519,7 @@ namespace SAModManager
                 var info = JsonConvert.DeserializeObject<GHCommitInfo[]>(jsonResult);
 
                 int limit = info.ToList().FindIndex(t => t.SHA == App.RepoCommit);
+
                 if (limit == -1)
                     limit = info.Length;
 
@@ -531,7 +532,7 @@ namespace SAModManager
                     if (message.Contains("\n"))
                         message = message[..message.IndexOf("\n", StringComparison.Ordinal)];
 
-                    text += $" - {info[i].SHA[..7]} - {message}\n";
+                    text += $" - {message}\n";
                 }
             }
 
