@@ -5,6 +5,7 @@ using SAModManager.Configuration;
 using System.IO;
 using SAModManager.Common;
 using System.Text.Json;
+using System.CodeDom.Compiler;
 
 namespace SAModManager.Configuration.SADX
 {
@@ -221,6 +222,15 @@ namespace SAModManager.Configuration.SADX
 
 	public class TestSpawnSettings
 	{
+		public enum GameLanguage
+		{
+			Japanese = 0,
+			English = 1,
+			French = 2,
+			Spanish = 3,
+			German = 4
+		}
+
 		/// <summary>
 		/// Enables Character options when launching.
 		/// </summary>
@@ -288,6 +298,18 @@ namespace SAModManager.Configuration.SADX
 		public int SaveIndex { get; set; } = -1;      // SADXLoaderInfo.TestSpawnSaveID
 
 		/// <summary>
+		/// Sets the game's Text Language.
+		/// </summary>
+		[DefaultValue((int)GameLanguage.English)]
+		public int GameTextLanguage { get; set; } = 1;      // SADXLoaderInfo.TextLanguage
+
+		/// <summary>
+		/// Sets the game's Voice Language.
+		/// </summary>
+		[DefaultValue((int)GameLanguage.English)]
+		public int GameVoiceLanguage { get; set; } = 1;     // SADXLoaderInfo.VoiceLanguage
+
+		/// <summary>
 		/// Enables the Manual settings for Character, Level, and Act.
 		/// </summary>
 		[DefaultValue(false)]
@@ -335,6 +357,9 @@ namespace SAModManager.Configuration.SADX
 			EventIndex = oldSettings.TestSpawnEvent;
 			GameModeIndex = oldSettings.TestSpawnGameMode;
 			SaveIndex = oldSettings.TestSpawnEvent;
+
+			GameTextLanguage = oldSettings.TextLanguage;
+			GameVoiceLanguage = oldSettings.VoiceLanguage;
 
 			UsePosition = oldSettings.TestSpawnPositionEnabled;
 
@@ -625,6 +650,8 @@ namespace SAModManager.Configuration.SADX
 			loaderInfo.TestSpawnEvent = TestSpawn.EventIndex;
 			loaderInfo.TestSpawnGameMode = TestSpawn.GameModeIndex;
 			loaderInfo.TestSpawnSaveID = TestSpawn.SaveIndex;
+			loaderInfo.TextLanguage = TestSpawn.GameTextLanguage;
+			loaderInfo.VoiceLanguage = TestSpawn.GameVoiceLanguage;
 			loaderInfo.TestSpawnPositionEnabled = TestSpawn.UsePosition;
 			loaderInfo.TestSpawnX = (int)TestSpawn.XPosition;
 			loaderInfo.TestSpawnY = (int)TestSpawn.YPosition;

@@ -7,11 +7,12 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="AboutMod/uk-UA.xaml"/>
 		<ResourceDictionary Source="EditMod/uk-UA.xaml"/>
-        <ResourceDictionary Source="InstallModOptions/uk-UA.xaml"/>
-        <ResourceDictionary Source="MainWindow/uk-UA.xaml"/>
-        <ResourceDictionary Source="MainWindow/Patches/uk-UA.xaml"/>
-        <ResourceDictionary Source="MainWindow/TestSpawn/uk-UA.xaml"/>
-        <ResourceDictionary Source="ManifestChanges/uk-UA.xaml"/>
+		<ResourceDictionary Source="GameConfig/uk-UA.xaml"/>
+		<ResourceDictionary Source="GameConfig/Patches/uk-UA.xaml"/>
+		<ResourceDictionary Source="GameConfig/TestSpawn/uk-UA.xaml"/>
+		<ResourceDictionary Source="InstallModOptions/uk-UA.xaml"/>
+		<ResourceDictionary Source="MainWindow/uk-UA.xaml"/>
+		<ResourceDictionary Source="ManifestChanges/uk-UA.xaml"/>
         <ResourceDictionary Source="MessageWindow/uk-UA.xaml"/>
         <ResourceDictionary Source="ModChangelog/uk-UA.xaml"/>
         <ResourceDictionary Source="ModConfig/uk-UA.xaml"/>

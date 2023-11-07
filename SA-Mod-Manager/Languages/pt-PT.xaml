@@ -7,6 +7,9 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="AboutMod/pt-PT.xaml"/>
 		<ResourceDictionary Source="EditMod/pt-PT.xaml"/>
+		<ResourceDictionary Source="GameConfig/pt-PT.xaml"/>
+		<ResourceDictionary Source="GameConfig/Patches/pt-PT.xaml"/>
+		<ResourceDictionary Source="GameConfig/TestSpawn/pt-PT.xaml"/>
 		<ResourceDictionary Source="InstallModOptions/pt-PT.xaml"/>
 		<ResourceDictionary Source="MainWindow/pt-PT.xaml"/>
 		<ResourceDictionary Source="MainWindow/Patches/pt-PT.xaml"/>

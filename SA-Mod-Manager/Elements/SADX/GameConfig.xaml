@@ -13,7 +13,7 @@
 	<Grid>
 		<TabControl x:Name="tcGame">
 			<!--This Tab is for Game Graphics.-->
-			<TabItem x:Name="tabGraphics" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics}" Margin="0,0,0,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics}">
+			<TabItem x:Name="tabGraphics" Header="{DynamicResource GameConfig.Tabs.Graphics}" Margin="0,0,0,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics}">
 				<Grid Margin="5,0,5,0">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
@@ -21,7 +21,7 @@
 					</Grid.RowDefinitions>
 
 					<!--Graphics Display Section-->
-					<GroupBox x:Name="grpGraphicsDisplay" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display}" Grid.Row="0">
+					<GroupBox x:Name="grpGraphicsDisplay" Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Display}" Grid.Row="0">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="10"/>
@@ -46,12 +46,12 @@
 									<RowDefinition Height="*"/>
 								</Grid.RowDefinitions>
 
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Screen}" Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen}"/>
+								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Screen}" Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen}"/>
 								<ComboBox x:Name="comboScreen" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
 									<ComboBoxItem Content="All Screens"/>
 								</ComboBox>
 
-								<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Resolution}" Margin="5" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution}"/>
+								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution}" Margin="5" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution}"/>
 								<Grid Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
@@ -81,7 +81,7 @@
 							</Grid>
 
 							<!--Graphics Display Middle-->
-							<GroupBox Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Settings}" Grid.Column="1" Grid.Row="2">
+							<GroupBox Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Settings}" Grid.Column="1" Grid.Row="2">
 								<Grid Margin="5,5,5,5">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="25"/>
@@ -110,24 +110,24 @@
 											<RowDefinition Height="5"/>
 											<RowDefinition Height="30"/>
 										</Grid.RowDefinitions>
-										<CheckBox x:Name="chkRatio" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio}" Click="chkRatio_Click" />
-										<CheckBox x:Name="chkVSync" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
-                                        <CheckBox x:Name="chkPause" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
+										<CheckBox x:Name="chkRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio}" Click="chkRatio_Click" />
+										<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
+                                        <CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
                                     </Grid>
 
 
 									<Separator Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" VerticalAlignment="Center"/>
 
-									<RadioButton x:Name="radFullscreen" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen}" Grid.Column="1" VerticalAlignment="Center" Grid.Row="2" Margin="5,5,5,5" IsChecked="False" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen}"/>
-									<CheckBox x:Name="chkBorderless" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless}"/>
-									<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ScaleScreen}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen}"/>
+									<RadioButton x:Name="radFullscreen" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen}" Grid.Column="1" VerticalAlignment="Center" Grid.Row="2" Margin="5,5,5,5" IsChecked="False" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen}"/>
+									<CheckBox x:Name="chkBorderless" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless}"/>
+									<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ScaleScreen}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen}"/>
 
 									<Separator Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" VerticalAlignment="Center"/>
 
-									<RadioButton x:Name="radWindowed" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed}" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed}" IsChecked="{Binding ElementName=radFullscreen, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
-									<CheckBox x:Name="chkResizableWin" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="2" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
-									<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.AspectRatio}" Grid.Column="3" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect}" Click="chkMaintainRatio_Click" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}"/>
-									<CheckBox x:Name="chkCustomWinSize" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Check.CustomWindow}" Grid.Column="2" Grid.Row="5" VerticalAlignment="Center" Margin="5,5,5,5" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow}"/>
+									<RadioButton x:Name="radWindowed" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed}" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed}" IsChecked="{Binding ElementName=radFullscreen, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
+									<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="2" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
+									<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.AspectRatio}" Grid.Column="3" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect}" Click="chkMaintainRatio_Click" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}"/>
+									<CheckBox x:Name="chkCustomWinSize" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.CustomWindow}" Grid.Column="2" Grid.Row="5" VerticalAlignment="Center" Margin="5,5,5,5" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow}"/>
 									<StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal" Margin="5,0,5,0">
 										<elements:NumericUpDown x:Name="txtCustomResX" Height="22" Width="75" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}"/>
 										<Label Content="x" VerticalContentAlignment="Center"/>
@@ -139,7 +139,7 @@
 					</GroupBox>
 
 					<!--Graphics Other Section-->
-					<GroupBox x:Name="grpGraphicsVisuals" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other}" Grid.Row="1">
+					<GroupBox x:Name="grpGraphicsVisuals" Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Other}" Grid.Row="1">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="10"/>
@@ -168,10 +168,10 @@
 										<RowDefinition Height="*"/>
 										<RowDefinition Height="*"/>
 									</Grid.RowDefinitions>
-									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Framerate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate}"/>
-									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog}"/>
-									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.TexFilter}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering}"/>
-									<Label Opacity="0.3" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.UIFilter}"  Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering}"/>
+									<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Framerate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate}"/>
+									<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Fog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog}"/>
+									<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.TexFilter}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering}"/>
+									<Label Opacity="0.3" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.UIFilter}"  Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering}"/>
 								</Grid>
 
 								<Grid Grid.Column="1" HorizontalAlignment="Stretch">
@@ -188,8 +188,8 @@
 										<ComboBoxItem Content="15 FPS"/>
 									</ComboBox>
 									<ComboBox x:Name="comboFog" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0">
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Auto}"/>
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Fog.Auto}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation}"/>
 									</ComboBox>
 									<ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" SelectedIndex="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectionChanged="comboTextureFilter_SelectionChanged">
 
@@ -207,9 +207,9 @@
 										<RowDefinition Height="*"/>
 									</Grid.RowDefinitions>
 									
-									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel}"/>
-									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill}"/>
-									<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.FMVFill}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill}"/>
+									<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.DetailLevel}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel}"/>
+									<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.BGFill}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill}"/>
+									<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.FMVFill}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill}"/>
 								</Grid>
 
 								<Grid Grid.Column="3" HorizontalAlignment="Stretch">
@@ -221,25 +221,25 @@
 									</Grid.RowDefinitions>
 									
 									<ComboBox x:Name="comboDetail" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0">
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High}"/>
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low}"/>
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest}"/>
 									</ComboBox>
 									<ComboBox x:Name="comboBGFill" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0">
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch}"/>
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit}"/>
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill}"/>
 									</ComboBox>
 									<ComboBox x:Name="comboFMVFill" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0">
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch}"/>
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit}"/>
-										<ComboBoxItem Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill}"/>
 									</ComboBox>
 								</Grid>
 							</Grid>
 
 							<Grid Grid.Column="1" Grid.Row="2">
-								<GroupBox Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements}">
+								<GroupBox Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements}">
 									<Grid>
 										<Grid.ColumnDefinitions>
 											<ColumnDefinition Width="*"/>
@@ -253,10 +253,10 @@
 											<RowDefinition Height="5"/>
 										</Grid.RowDefinitions>
 
-										<CheckBox x:Name="checkMipmapping" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap}"/>
-										<CheckBox x:Name="checkUIScale" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale}" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale}"/>
-										<CheckBox x:Name="checkD3D9" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9}" Grid.Column="0" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9}" Click="checkD3D9_Click"/>
-										<Button x:Name="btnUpdateD3D9" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9}" Grid.Column="1" Margin="5,0,5,0" Grid.Row="3" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9}" Click="btnUpdateD3D9_Click"/>
+										<CheckBox x:Name="checkMipmapping" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap}"/>
+										<CheckBox x:Name="checkUIScale" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale}" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale}"/>
+										<CheckBox x:Name="checkD3D9" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9}" Grid.Column="0" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9}" Click="checkD3D9_Click"/>
+										<Button x:Name="btnUpdateD3D9" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9}" Grid.Column="1" Margin="5,0,5,0" Grid.Row="3" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9}" Click="btnUpdateD3D9_Click"/>
 									</Grid>
 								</GroupBox>
 							</Grid>
@@ -266,7 +266,7 @@
 			</TabItem>
 
 			<!--This Tab is for Game Input.-->
-			<TabItem x:Name="tabInput" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input}" Margin="3,0,-3,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input}">
+			<TabItem x:Name="tabInput" Header="{DynamicResource GameConfig.Tabs.Input}" Margin="3,0,-3,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input}">
 				<Grid x:Name="tabInputGrid" Margin="5,0,5,0">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="70"/>
@@ -275,7 +275,7 @@
 					</Grid.RowDefinitions>
 
 					<!--Group for Input Selection.-->
-					<GroupBox Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input}">
+					<GroupBox Header="{DynamicResource GameConfig.Tabs.Input.Group.Input}">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="10"/>
@@ -289,13 +289,13 @@
 								<RowDefinition Height="10"/>
 							</Grid.RowDefinitions>
 
-							<RadioButton x:Name="radVanillaInput" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.Vanilla}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="InputRadioButtonCheck" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla}" IsChecked="{Binding ElementName=radBetterInput, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
-							<RadioButton x:Name="radBetterInput" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.SDL2}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="InputRadioButtonCheck" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput}"/>
+							<RadioButton x:Name="radVanillaInput" Content="{DynamicResource GameConfig.Tabs.Input.Group.Input.Check.Vanilla}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="InputRadioButtonCheck" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla}" IsChecked="{Binding ElementName=radBetterInput, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
+							<RadioButton x:Name="radBetterInput" Content="{DynamicResource GameConfig.Tabs.Input.Group.Input.Check.SDL2}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="InputRadioButtonCheck" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput}"/>
 						</Grid>
 					</GroupBox>
 
 					<!--Group for Vanilla Input Configuration-->
-					<GroupBox x:Name="grpVanillaInput" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla}" Grid.Row="1">
+					<GroupBox x:Name="grpVanillaInput" Header="{DynamicResource GameConfig.Tabs.Input.Group.Input.Group.Vanilla}" Grid.Row="1">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="10"/>
@@ -311,7 +311,7 @@
 							</Grid.RowDefinitions>
 
 							<!--Group for Mouse and Keyboard Input Configuration-->
-							<GroupBox x:Name="groupBoxController" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+							<GroupBox x:Name="groupBoxController" Header="{DynamicResource GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>
@@ -329,8 +329,8 @@
 										<RowDefinition Height="5"/>
 									</Grid.RowDefinitions>
 
-									<RadioButton x:Name="inputMouseDragHold" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold}"/>
-									<RadioButton x:Name="inputMouseDragAccel" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel}" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate}"/>
+									<RadioButton x:Name="inputMouseDragHold" Content="{DynamicResource GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold}"/>
+									<RadioButton x:Name="inputMouseDragAccel" Content="{DynamicResource GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel}" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate}"/>
 									<Label x:Name="mouseActionLabel" Content="Action:" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 									<ComboBox x:Name="mouseAction" Grid.Row="2" Grid.Column="1" SelectedIndex="0"/>
 									<Label x:Name="mouseBtnAssignLabel" Content="Button Assignment:" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="3"/>
@@ -341,7 +341,7 @@
 					</GroupBox>
 
 					<!--Group for Input Mod Configuration-->
-					<GroupBox x:Name="grpSDLInput" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2}" Grid.Row="2">
+					<GroupBox x:Name="grpSDLInput" Header="{DynamicResource GameConfig.Tabs.Input.Group.Input.Group.SDL2}" Grid.Row="2">
 						<Grid Margin="10,10,10,10">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*"/>
@@ -353,24 +353,24 @@
 								<RowDefinition Height="50"/>
 							</Grid.RowDefinitions>
 
-							<TextBlock Text="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" TextWrapping="Wrap"/>
+							<TextBlock Text="{DynamicResource GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" TextWrapping="Wrap"/>
 							<Separator Grid.ColumnSpan="3" Grid.Row="1" VerticalAlignment="Top"/>
-							<Button x:Name="btnOpenAppLauncher" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher}" Click="btnOpenAppLauncher_Click"/>
-							<Button x:Name="btnGetAppLauncher" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp}" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher}" Click="btnGetAppLauncher_Click"/>
+							<Button x:Name="btnOpenAppLauncher" Content="{DynamicResource GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp}" Grid.Column="0" Grid.Row="2" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher}" Click="btnOpenAppLauncher_Click"/>
+							<Button x:Name="btnGetAppLauncher" Content="{DynamicResource GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp}" Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher}" Click="btnGetAppLauncher_Click"/>
 						</Grid>
 					</GroupBox>
 				</Grid>
 			</TabItem>
 
 			<!--This Tab is for Game Sound.-->
-			<TabItem x:Name="tabSound" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound}" Margin="6,0,-6,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound}">
+			<TabItem x:Name="tabSound" Header="{DynamicResource GameConfig.Tabs.Sound}" Margin="6,0,-6,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound}">
 				<Grid Margin="5,0,5,0">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="100"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
 
-					<GroupBox Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings}" Grid.Row="0">
+					<GroupBox Header="{DynamicResource GameConfig.Tabs.Sound.Group.Settings}" Grid.Row="0">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="10"/>
@@ -386,15 +386,15 @@
 								<RowDefinition Height="10"/>
 							</Grid.RowDefinitions>
 
-							<CheckBox x:Name="checkBassMusic" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS}"/>
-							<CheckBox x:Name="checkBassSFX" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Checked="checkBassSFX_Checked" Unchecked="checkBassSFX_Unchecked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX}"/>
-							<CheckBox x:Name="checkEnableMusic" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.Music}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic}"/>
-							<CheckBox x:Name="checkEnableSounds" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.Sound}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds}"/>
-							<CheckBox x:Name="checkEnable3DSound" Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.3DSound}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound}"/>
+							<CheckBox x:Name="checkBassMusic" Content="{DynamicResource GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS}"/>
+							<CheckBox x:Name="checkBassSFX" Content="{DynamicResource GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Checked="checkBassSFX_Checked" Unchecked="checkBassSFX_Unchecked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX}"/>
+							<CheckBox x:Name="checkEnableMusic" Content="{DynamicResource GameConfig.Tabs.Sound.Group.Settings.Check.Music}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic}"/>
+							<CheckBox x:Name="checkEnableSounds" Content="{DynamicResource GameConfig.Tabs.Sound.Group.Settings.Check.Sound}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds}"/>
+							<CheckBox x:Name="checkEnable3DSound" Content="{DynamicResource GameConfig.Tabs.Sound.Group.Settings.Check.3DSound}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound}"/>
 						</Grid>
 					</GroupBox>
 
-					<GroupBox Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume}" Grid.Row="1">
+					<GroupBox Header="{DynamicResource GameConfig.Tabs.Sound.Group.Volume}" Grid.Row="1">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="10"/>
@@ -412,9 +412,9 @@
 								<RowDefinition Height="10"/>
 							</Grid.RowDefinitions>
 
-							<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Music}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
-							<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Voices}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
-							<Label Content="{DynamicResource Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Sound}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
+							<Label Content="{DynamicResource GameConfig.Tabs.Sound.Group.Volume.Music}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
+							<Label Content="{DynamicResource GameConfig.Tabs.Sound.Group.Volume.Voices}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"/>
+							<Label Content="{DynamicResource GameConfig.Tabs.Sound.Group.Volume.Sound}" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"/>
 							<Slider x:Name="sliderMusic" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" ValueChanged="sliderMusic_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft" Value="100"/>
 							<Slider x:Name="sliderVoice" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" ValueChanged="sliderVoice_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft" Value="100"/>
 							<Slider x:Name="sliderSFX" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" ValueChanged="sliderSFX_ValueChanged" Maximum="100" SmallChange="1" TickFrequency="10" TickPlacement="TopLeft" Value="100"/>
@@ -427,7 +427,7 @@
 			</TabItem>
 
 			<!--This Tab is for Game Patches.-->
-			<TabItem x:Name="tabPatches" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Patches}" Margin="9,0,-9,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Patches}">
+			<TabItem x:Name="tabPatches" Header="{DynamicResource GameConfig.Tabs.Patches}" Margin="9,0,-9,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Patches}">
 				<Grid x:Name="gridPatchesList">
 
 					<!--This Grid manages the Codes list.-->
@@ -473,7 +473,7 @@
 							<ListView.View>
 								<GridView>
 									<GridView.Columns>
-										<GridViewColumn x:Name="columnPatchName" Header="{DynamicResource Manager.Tabs.GameConfig.Tabs.Patches}" Width="355">
+										<GridViewColumn x:Name="columnPatchName" Header="{DynamicResource GameConfig.Tabs.Patches}" Width="355">
 											<GridViewColumn.CellTemplate>
 												<DataTemplate>
 													<StackPanel Orientation="Horizontal">

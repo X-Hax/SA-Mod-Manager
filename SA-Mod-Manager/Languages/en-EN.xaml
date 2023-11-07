@@ -7,12 +7,13 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="AboutMod/en-EN.xaml"/>
 		<ResourceDictionary Source="EditMod/en-EN.xaml"/>
+		<ResourceDictionary Source="GameConfig/en-EN.xaml"/>
+		<ResourceDictionary Source="GameConfig/Patches/en-EN.xaml"/>
+		<ResourceDictionary Source="GameConfig/TestSpawn/en-EN.xaml"/>
 		<ResourceDictionary Source="HealthProgress/en-EN.xaml"/>
 		<ResourceDictionary Source="InfoManagerUpdate/en-EN.xaml"/>
 		<ResourceDictionary Source="InstallModOptions/en-EN.xaml"/>
 		<ResourceDictionary Source="MainWindow/en-EN.xaml"/>
-		<ResourceDictionary Source="MainWindow/Patches/en-EN.xaml"/>
-		<ResourceDictionary Source="MainWindow/TestSpawn/en-EN.xaml"/>
 		<ResourceDictionary Source="ManifestChanges/en-EN.xaml"/>
 		<ResourceDictionary Source="MessageWindow/en-EN.xaml"/>
 		<ResourceDictionary Source="ModChangelog/en-EN.xaml"/>

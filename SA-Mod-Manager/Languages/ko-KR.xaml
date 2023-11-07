@@ -7,10 +7,11 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="AboutMod/ko-KR.xaml"/>
 		<ResourceDictionary Source="EditMod/ko-KR.xaml"/>
+		<ResourceDictionary Source="GameConfig/ko-KR.xaml"/>
+		<ResourceDictionary Source="GameConfig/Patches/ko-KR.xaml"/>
+		<ResourceDictionary Source="GameConfig/TestSpawn/ko-KR.xaml"/>
 		<ResourceDictionary Source="InstallModOptions/ko-KR.xaml"/>
 		<ResourceDictionary Source="MainWindow/ko-KR.xaml"/>
-		<ResourceDictionary Source="MainWindow/Patches/ko-KR.xaml"/>
-		<ResourceDictionary Source="MainWindow/TestSpawn/ko-KR.xaml"/>
 		<ResourceDictionary Source="ManifestChanges/ko-KR.xaml"/>
 		<ResourceDictionary Source="MessageWindow/ko-KR.xaml"/>
 		<ResourceDictionary Source="ModChangelog/ko-KR.xaml"/>

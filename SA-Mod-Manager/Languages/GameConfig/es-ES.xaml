@@ -1,0 +1,98 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+    
+	<!--#region Shared-->
+	<!--Game Tabs Strings-->
+	<system:String x:Key="GameConfig.Tabs.Graphics">Gráficos</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input">Entrada</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound">Sonido</system:String>
+	<system:String x:Key="GameConfig.Tabs.Patches">Parches</system:String>
+
+	<!--Graphics Tab Strings-->
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Opciones de Pantalla</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Pantalla:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolución:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Configuración</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forzar Relación de Aspecto 4:3</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Activar Sincronización Vertical</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausar cuando el juego esté inactivo</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Dynamically Allocate Buffers</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Pantalla Completa</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">Ventana</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Ventana Ajustable</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Mantener Relación de Aspecto</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamaño de Ventana Personalizado:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Pantalla Completa Sin Bordes</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Escalar a la Pantalla</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Otras Opciones Gráficas</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Frecuencia de Imagen:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Nivel de Detalle:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High">Alto (mejor)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low">Bajo</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest">Más Bajo</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog">Emulación de Niebla:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Auto">Automática</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation">Emulación</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill">Modo de Relleno de los Bordes:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Estirar [Por Defecto]</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit">Adaptar</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Rellenar</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">Modo de Relleno de las FMV:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.TexFilter">Filtrado de Texturas:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.UIFilter">Filtrado de Interfaz</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Mejoras</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap">Forzar Mipmapping</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Activar Escalado de UI</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Activar D3D8to9</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Actualizar D3D8to9</system:String>
+
+	<!--Input Tab Strings-->
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input">Opciones de Entrada</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Entrada Estándar (DInput)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Entrada Mejorada (SDL2)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Configuración de Entrada Estándar</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Ratón</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Arrastar y Mantener</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Arrastar para Acelerar</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn">Botón Izquierdo del Ratón</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn">Botón Derecho del Ratón</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn">Botón Central del Ratón</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Otro Botón Izquierdo</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn">Botón Izquierdo + Derecho del Ratón</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Botón Derecho + Izquierdo del Ratón</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Saltar</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Acción</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Cancelar/Atacar</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Start/Set</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Girar Cámara - Izquierda:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Girar Cámara - Derecha:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Silbar:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2">Configuración de Entrada Mejorada</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Abrir AppLauncher</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Descargar AppLauncher</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">La Entrada Mejorada es una implementación de SDL2 en SADX. Es recomendable utilizarla para jugar ya que arregla Errores del sistema DInput original.</system:String>
+
+	<!--Sound Tab Strings-->
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Ajustes de Sonido</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">Control de Volumen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Utilizar BASS para la Música</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Utilizar BASS para los Efectos</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">Activar Música</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Activar Sonidos</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Activar Sonido 3D</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Volumen de la Música:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Volumen de Diálogos:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Volumen de Efectos:</system:String>
+	<!--#endregion-->
+
+	<!--#region SADX-->
+	
+	<!--#endregion-->
+	
+	<!--#region SA2-->
+	
+	<!--#endregion-->
+	
+</ResourceDictionary>

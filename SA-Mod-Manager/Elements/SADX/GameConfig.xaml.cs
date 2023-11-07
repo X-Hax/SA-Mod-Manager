@@ -253,11 +253,11 @@ namespace SAModManager.Elements.SADX
 		{
 			List<string> mouseActionList = new()
 			{
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute"),
 
 			};
 
@@ -266,12 +266,12 @@ namespace SAModManager.Elements.SADX
 			List<string> mouseBtnAssignList = new()
 			{
 				Lang.GetString("CommonStrings.None"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn"),
-				Lang.GetString("Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn"),
+				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn"),
 			};
 
 			mouseBtnAssign.ItemsSource = mouseBtnAssignList;

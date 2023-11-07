@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using SAModManager.Common;
 using SAModManager.Configuration.SADX;
+using SAModManager.Ini;
 
 namespace SAModManager.Elements.SADX
 {
@@ -411,7 +413,7 @@ namespace SAModManager.Elements.SADX
                 expandAdvanced.IsExpanded = true;
         }
 
-        private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
+        private async void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
             {
@@ -419,7 +421,9 @@ namespace SAModManager.Elements.SADX
                 return;
             }
 
-            string executablePath = SelectedMods?.Select(item => GameMods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+			await Task.Run(() => GameProfile.WriteToLoaderInfo(App.CurrentGame.modDirectory, App.ManagerSettings));
+
+			string executablePath = SelectedMods?.Select(item => GameMods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
 
             string commandLine = GetTestSpawnCommandLine();
 
@@ -571,6 +575,16 @@ namespace SAModManager.Elements.SADX
             });
             tsComboEvent.ItemsSource = EventNames;
             tsComboEvent.DisplayMemberPath = "Value";
+			tsVoiceLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameVoiceLanguage")
+			{
+				Source = GameProfile.TestSpawn,
+				Mode = BindingMode.TwoWay
+			});
+			tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
+			{
+				Source = GameProfile.TestSpawn,
+				Mode = BindingMode.TwoWay
+			});
             tsCheckManual.SetBinding(CheckBox.IsCheckedProperty, new Binding("UseManual")
             {
                 Source = GameProfile.TestSpawn,

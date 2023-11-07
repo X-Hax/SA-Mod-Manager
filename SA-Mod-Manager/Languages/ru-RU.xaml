@@ -7,11 +7,12 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="AboutMod/ru-RU.xaml"/>
 		<ResourceDictionary Source="EditMod/ru-RU.xaml"/>
+		<ResourceDictionary Source="GameConfig/ru-RU.xaml"/>
+		<ResourceDictionary Source="GameConfig/Patches/ru-RU.xaml"/>
+		<ResourceDictionary Source="GameConfig/TestSpawn/ru-RU.xaml"/>
 		<ResourceDictionary Source="InfoManagerUpdate/ru-RU.xaml"/>
 		<ResourceDictionary Source="InstallModOptions/ru-RU.xaml"/>
 		<ResourceDictionary Source="MainWindow/ru-RU.xaml"/>
-		<ResourceDictionary Source="MainWindow/Patches/ru-RU.xaml"/>
-		<ResourceDictionary Source="MainWindow/TestSpawn/ru-RU.xaml"/>
 		<ResourceDictionary Source="ManifestChanges/ru-RU.xaml"/>
 		<ResourceDictionary Source="MessageWindow/ru-RU.xaml"/>
 		<ResourceDictionary Source="ModChangelog/ru-RU.xaml"/>
