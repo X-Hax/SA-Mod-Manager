@@ -266,11 +266,6 @@ namespace SAModManager
          }*/
 
 
-        private static async Task<(bool, string, GitHubAsset)> CheckManagerUpdate()
-        {
-            var latestRelease = await GitHub.GetLatestRelease();
-            return (latestRelease.Item1, latestRelease.Item2, latestRelease.Item3);
-        }
 
         public static async Task<bool> PerformUpdateManagerCheck()
         {
@@ -283,16 +278,16 @@ namespace SAModManager
 
             try
             {
-                var update = await CheckManagerUpdate();
+                var update = await GitHub.GetLatestManagerRelease();
 
-                if (update.Item1 == false)
+                if (update.Item1 == false) //no update found
                 {
                     return false;
                 }
 
                 string changelog = await GitHub.GetGitChangeLog(update.Item2);
 
-                if (string.IsNullOrEmpty(changelog))
+                if (string.IsNullOrEmpty(changelog)) //update found but no changelog (?)
                 {
                     return false;
                 }
