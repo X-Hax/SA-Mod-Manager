@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SAModManager.Common"
         mc:Ignorable="d" Style="{StaticResource SAWindow}"
         WindowStartupLocation="CenterScreen"
-        Title="{DynamicResource InfoManagerUpdate.Title}" Height="350" Width="400">
+        Title="{DynamicResource InfoManagerUpdate.Title}" Height="450" Width="600">
     <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -25,11 +25,11 @@
 				<RowDefinition Height="5"/>
 			</Grid.RowDefinitions>
 
-			<TextBlock Grid.Column="1" Grid.Row="0" Text="{DynamicResource InfoManagerUpdate.Changelog}"/>
-			<Border Grid.Column="1" Grid.Row="1" BorderBrush="{DynamicResource Borders.Brushes.Border}" BorderThickness="2" CornerRadius="2">
-				<Grid >
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{DynamicResource InfoManagerUpdate.Changelog}" FontSize="16"  Margin="0, -2, 0, 0"/>
+            <Border Grid.Column="1" Grid.Row="1" BorderBrush="{DynamicResource Borders.Brushes.Border}" BorderThickness="2" CornerRadius="2">
+                <Grid>
                     <ScrollViewer>
-						<TextBlock x:Name="UpdateInfoText"/>
+                            <TextBlock x:Name="UpdateInfoText" FontSize="14"/>
                     </ScrollViewer>
                 </Grid>
 			</Border>

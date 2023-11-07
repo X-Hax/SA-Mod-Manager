@@ -7,6 +7,8 @@ using System.Linq;
 using static SAModManager.WorkflowRunInfo;
 using static SAModManager.GitHubAction;
 using static SAModManager.GitHubArtifact;
+using static SAModManager.WorkflowRunInfo.GitHubTagInfo;
+using System.Text.RegularExpressions;
 
 namespace SAModManager
 {
@@ -154,6 +156,22 @@ namespace SAModManager
         // ...
     }
 
+    public class Commit
+    {
+        public string sha { get; set; }
+        public CommitDetails commit { get; set; }
+    }
+
+    public class CommitDetails
+    {
+        public string message { get; set; }
+    }
+
+    public class CommitComparisonResponse
+    {
+        public List<Commit> commits { get; set; }
+    }
+
     public class AuthorInfo
     {
         [JsonProperty("name")]
@@ -243,6 +261,21 @@ namespace SAModManager
         }
 
         public class GitHubTagObject
+        {
+            [JsonProperty("sha")]
+            public string Sha { get; set; }
+        }
+
+        public class GitHubTagInfo
+        {
+            [JsonProperty("name")]
+            public string TagName { get; set; }
+
+            [JsonProperty("commit")]
+            public GitHubCommit Commit { get; set; }
+        }
+
+        public class GitHubCommit
         {
             [JsonProperty("sha")]
             public string Sha { get; set; }
@@ -348,21 +381,21 @@ namespace SAModManager
         private static async Task<string> GetSHAFromLastTag(GitHubRelease release, HttpClient httpClient)
         {
             string lastTagName = release.TagName;
-            string urlTag = $"https://api.github.com/repos/{owner}/{repo}/git/ref/tags/{lastTagName}";
-            var responseTag = await httpClient.GetAsync(urlTag);
+            string urlTag = $"https://api.github.com/repos/{owner}/{repo}/tags";
+            using var responseHtmlTAG = await httpClient.GetAsync(urlTag);
 
-            if (responseTag.IsSuccessStatusCode)
-            {
-                string tagResponse = await responseTag.Content.ReadAsStringAsync();
-                var tagInfo = JsonConvert.DeserializeObject<GitHubTag>(tagResponse);
-                return tagInfo?.Object.Sha;
-            }
+            if (!responseHtmlTAG.IsSuccessStatusCode)
+                return null;
 
-            return null;    
+            var tagResponse = await responseHtmlTAG.Content.ReadAsStringAsync();
+            var tagInfo = JsonConvert.DeserializeObject<List<GitHubTagInfo>>(tagResponse);
+            var lastTag = tagInfo?.FirstOrDefault(hash => hash.TagName.Contains(lastTagName));
+
+            return lastTag?.Commit.Sha;
         }
 
 
-        public static async Task<(bool, string, GitHubAsset)> GetLatestRelease()
+        public static async Task<(bool, string, GitHubAsset)> GetLatestManagerRelease()
         {
             bool hasUpdate = false;
 
@@ -374,7 +407,7 @@ namespace SAModManager
                 string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
 
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-       
+
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
@@ -382,11 +415,24 @@ namespace SAModManager
                     if (release != null && release.Assets != null)
                     {
                         var targetAsset = release.Assets.FirstOrDefault(asset => asset.Name.Contains(Environment.Is64BitOperatingSystem ? "x64" : "x86"));
-
                         if (targetAsset != null)
                         {
                             string sha = await GetSHAFromLastTag(release, httpClient);
-                            hasUpdate = App.RepoCommit != sha;
+                            string version = release.TagName;
+
+                            try
+                            {
+                                string pattern = @"^\w+\s+"; // This regular expression matches any word followed by one or more spaces at the beginning of the string.
+                                string result = Regex.Replace(version, pattern, "").Trim();
+                                Version commitVersion = new(result);
+                                int comparison = commitVersion.CompareTo(App.Version);
+                                hasUpdate = comparison > 0;
+                            }
+                            catch
+                            {
+                                throw new Exception("Couldn't check version difference, update won't work.");
+                            }
+
                             return (hasUpdate, sha, targetAsset);
                         }
                     }
@@ -405,7 +451,11 @@ namespace SAModManager
             var httpClient = new HttpClient();
 
             httpClient.DefaultRequestHeaders.Add("User-Agent", AppName);
-            string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/commits?sha={hash}&per_page=100&sha={branch}";
+
+            // string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/commits?sha={hash}&per_page=100&sha={branch}";
+
+            bool isEmpty = string.IsNullOrEmpty(App.RepoCommit); //empty means we are on dev version
+            string apiUrl = isEmpty == false ? $"https://api.github.com/repos/{owner}/{repo}/compare/{App.RepoCommit}...{hash[..7]}" : $"https://api.github.com/repos/{owner}/{repo}/commits?sha={hash}&per_page=100&sha={branch}"; 
 
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
             string text = "";
@@ -413,27 +463,45 @@ namespace SAModManager
             if (response.IsSuccessStatusCode)
             {
                 string jsonResult = await response.Content.ReadAsStringAsync();
-                var info = JsonConvert.DeserializeObject<GHCommitInfo[]>(jsonResult);
-
-                int limit = info.ToList().FindIndex(t => t.SHA == App.RepoCommit);
-                if (limit == -1)
-                    limit = info.Length;
-
-                for (int i = 0; i < limit; ++i)
+          
+                if (isEmpty) //if we are on dev version get the last 100 commits
                 {
-                    if (info[i].Commit.IsSkipCI())
-                        continue;
+                    var info = JsonConvert.DeserializeObject<GHCommitInfo[]>(jsonResult);
 
-                    string message = info[i].Commit.Message.Replace("\r", "");
-                    if (message.Contains("\n"))
-                        message = message[..message.IndexOf("\n", StringComparison.Ordinal)];
+                    int limit = info.ToList().FindIndex(t => t.SHA == App.RepoCommit);
+                    if (limit == -1)
+                        limit = info.Length;
 
-                    text += $" - {info[i].SHA[..7]} - {message}\n";
+                    for (int i = 0; i < limit; ++i)
+                    {
+                        if (info[i].Commit.IsSkipCI())
+                            continue;
+
+                        string message = info[i].Commit.Message.Replace("\r", "");
+                        if (message.Contains("\n"))
+                            message = message[..message.IndexOf("\n", StringComparison.Ordinal)];
+
+                        text += " - " + message + "\n";
+                    }
+                }
+                else //get all the commits between new version and current version
+                {
+                    var info = JsonConvert.DeserializeObject<CommitComparisonResponse>(jsonResult);
+                    
+                    foreach (var commit in info.commits)
+                    {
+                        //we skip the message "merge branch master" thing as the end user wouldn't understand
+                        if (commit.commit.message.Contains("Merge branch") && text.Length > 5)
+                            continue;
+
+                        text += " - " + commit.commit.message + "\n";
+                    }
                 }
             }
 
             return text;
         }
+
 
         public static async Task<string> GetGitLoaderChangeLog(string hash)
         {
