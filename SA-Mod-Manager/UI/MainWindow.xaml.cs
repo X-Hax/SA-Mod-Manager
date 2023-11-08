@@ -23,8 +23,6 @@ using SAModManager.Updater;
 using SAModManager.Elements;
 using SAModManager.Ini;
 using SAModManager.Configuration;
-using ICSharpCode.AvalonEdit.Editing;
-using SAModManager.IniSettings.SA2;
 
 
 namespace SAModManager
@@ -96,6 +94,37 @@ namespace SAModManager
             this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
         }
 
+        private async Task VanillaUpdate_CheckGame()
+        {
+            bool isValid = false;
+            foreach (var game in GamesInstall.GetSupportedGames())
+            {
+                if (File.Exists(game.exeName))
+                {
+                    if (game == GamesInstall.SonicAdventure)
+                        setGame = SetGame.SADX;
+                    if (game == GamesInstall.SonicAdventure2)
+                        setGame = SetGame.SA2;
+
+                    string currentPath = Environment.CurrentDirectory;
+                    tempPath = currentPath;
+                    UIHelper.ToggleButton(ref btnOpenGameDir, true);
+                    await VanillaTransition.ConvertOldProfile(false, currentPath);
+                    Load(true);
+                    isValid = true;
+                    break;
+                }
+            }
+            if (isValid)
+            {
+                await ForceInstallLoader();
+                UpdateButtonsState();
+                Save();
+                App.isVanillaTransition = false;
+            }
+               
+        }
+
         private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
         {
             StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
@@ -125,6 +154,9 @@ namespace SAModManager
             checkForUpdate = false;
 #endif
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
+
+            if (App.isVanillaTransition && (App.CurrentGame is null || App.CurrentGame.gameDirectory is null))
+                await VanillaUpdate_CheckGame();
         }
 
         private void MainForm_FormClosing(object sender, EventArgs e)
@@ -491,7 +523,7 @@ namespace SAModManager
                     string fullPath = Path.Combine(App.CurrentGame.modDirectory, item.Tag, "mod.ini");
                     IniSerializer.Serialize(SADXMod, fullPath);
                 }
-         
+
                 List<Updater.ModManifestEntry> manifest;
                 List<Updater.ModManifestDiff> diff;
 
@@ -1188,11 +1220,11 @@ namespace SAModManager
                 tabGame.Visibility = Visibility.Visible;
                 comboProfile.IsEnabled = true;
 
-				checkDevEnabled.IsEnabled = true;
-				checkManagerOpen.IsEnabled = true;
-				grpManUpdates.IsEnabled = true;
+                checkDevEnabled.IsEnabled = true;
+                checkManagerOpen.IsEnabled = true;
+                grpManUpdates.IsEnabled = true;
 
-				btnInstallLoader.IsEnabled = true;
+                btnInstallLoader.IsEnabled = true;
                 RefreshBtn.IsEnabled = true;
                 btnSelectAll.IsEnabled = true;
                 btnDeselectAll.IsEnabled = true;
@@ -1207,11 +1239,11 @@ namespace SAModManager
                 tabGame.Visibility = Visibility.Collapsed;
                 comboProfile.IsEnabled = false;
 
-				checkDevEnabled.IsEnabled = false;
-				checkManagerOpen.IsEnabled = false;
-				grpManUpdates.IsEnabled = false;
+                checkDevEnabled.IsEnabled = false;
+                checkManagerOpen.IsEnabled = false;
+                grpManUpdates.IsEnabled = false;
 
-				btnInstallLoader.IsEnabled = false;
+                btnInstallLoader.IsEnabled = false;
                 RefreshBtn.IsEnabled = false;
                 btnSelectAll.IsEnabled = false;
                 btnDeselectAll.IsEnabled = false;
@@ -1898,7 +1930,7 @@ namespace SAModManager
                     Directory.CreateDirectory(updatePath);
                 }
             }
-            catch {}
+            catch { }
 
             new Updater.ModDownloadDialogWPF(updates, updatePath).ShowDialog();
             await Task.Delay(500);
