@@ -1,0 +1,180 @@
+﻿<Window x:Class="SAModManager.UI.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SAModManager.UI"
+        mc:Ignorable="d" Style="{StaticResource SAWindowUtil}"
+        Title="Welcome" Height="500" Width="700" ResizeMode="NoResize">
+	<Window.Resources>
+		<ResourceDictionary>
+			<BitmapImage x:Key="icon" UriSource="../Icons/SADXModManager_.png"/>
+		</ResourceDictionary>
+	</Window.Resources>
+	
+    <Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<Grid x:Name="SplashMain" Grid.Row="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<Grid x:Name="SplashTitle" Grid.Row="0" Height="100">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Image Source="{StaticResource icon}" HorizontalAlignment="Left"/>
+				<TextBlock Text="{DynamicResource SplashScreen.Welcome}" Grid.Column="1" FontSize="35" VerticalAlignment="Center"/>
+			</Grid>
+
+			<Grid x:Name="SplashInfo" Grid.Row="1" Margin="0,5,0,0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="40"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock Text="{DynamicResource SplashScreen.Intro}" Grid.Row="0"/>
+				<Separator Grid.Row="1" VerticalAlignment="Center"/>
+
+				<Grid Grid.Row="2" Margin="5">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<TextBlock Text="{DynamicResource SplashScreen.QOL}" Grid.Row="0" FontSize="18" FontStyle="Italic"/>
+
+					<StackPanel Orientation="Vertical" Margin="10,10,5,5" Grid.Row="1">
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.QOL.Themes}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.QOL.Languages}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.QOL.Manager}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.QOL.Profiles}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.QOL.Config}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.QOL.KeepOpen}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+					</StackPanel>
+				</Grid>
+
+				<Separator Grid.Row="2" VerticalAlignment="Bottom"/>
+
+				<Grid Grid.Row="3" Margin="5">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<TextBlock Text="{DynamicResource SplashScreen.Features}" Grid.Row="0" FontSize="18" FontStyle="Italic"/>
+
+					<StackPanel Orientation="Vertical" Margin="10,10,5,5" Grid.Row="1">
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.Features.Search}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.Features.About}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.Features.CodeDesc}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.Features.NewMod}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.Features.AddMod}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.Features.Codes}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.Features.HealthCheck}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+					</StackPanel>
+				</Grid>
+
+				<Separator Grid.Row="3" VerticalAlignment="Bottom"/>
+
+				<Grid Grid.Row="4" Margin="5">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<TextBlock Text="{DynamicResource SplashScreen.ML}" Grid.Row="0" FontSize="18" FontStyle="Italic"/>
+
+					<StackPanel Orientation="Vertical" Margin="10,10,5,5" Grid.Row="1">
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.ML.SDL2}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+						<BulletDecorator Margin="0,0,0,10">
+							<BulletDecorator.Bullet>
+								<Ellipse Width="10" Height="10" Fill="Transparent" StrokeThickness="2" Stroke="{DynamicResource Borders.Brushes.Border}"/>
+							</BulletDecorator.Bullet>
+							<TextBlock Text="{DynamicResource SplashScreen.ML.Patches}" Margin="5,0,0,0"/>
+						</BulletDecorator>
+					</StackPanel>
+				</Grid>
+			</Grid>
+		</Grid>
+
+		<Grid x:Name="SplashButtons" Grid.Row="1" Height="50">
+			<Button x:Name="SplashButtonOK" Content="{DynamicResource CommonStrings.OK}" Height="30" VerticalAlignment="Center" Click="SplashButtonOK_Click"/>
+		</Grid>
+    </Grid>
+</Window>
