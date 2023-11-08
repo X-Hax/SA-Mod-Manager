@@ -88,7 +88,7 @@
 	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave.Title">No se guardó la información del Cargador.</system:String>
 	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">El directorio para los mods no parece ser una ruta válida, por favor asegúrate de que lo sea. La configuración actual del Cargador de mods no se ha guardado.</system:String>
 	
-		<system:String x:Key="MessageWindow.Errors.CodeFail.Title">Línea de código inválida</system:String>
+	<system:String x:Key="MessageWindow.Errors.CodeFail.Title">Línea de código inválida</system:String>
 	<system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">Hay una línea vacía dentro de las líneas del escritor de código.&#x0a;&#x0a;Por favor, elimina la línea vacía y vuelve a guardar.</system:String>
 	<system:String x:Key="Messagewindow.Errors.CodeFailInvalid">El código escrito es inválido.&#x0a;&#x0a;Por favor, corrige el error y vuelve a guardar.</system:String>
 	
