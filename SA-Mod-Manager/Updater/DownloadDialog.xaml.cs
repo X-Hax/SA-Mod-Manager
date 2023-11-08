@@ -176,8 +176,18 @@ namespace SAModManager.Updater
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "SA-Mod-Manager");
 
                 CancellationToken token = tokenSource.Token;
-     
-                await DownloadFileAsync(httpClient, uri.AbsoluteUri, Path.Combine(dest, fileName)).ConfigureAwait(false);
+
+                string destination = Path.Combine(dest, fileName);
+                try
+                {
+                    if (File.Exists(destination))
+                    {
+                        File.Delete(destination);
+                    }
+                }
+                catch { }
+   
+                await DownloadFileAsync(httpClient, uri.AbsoluteUri, destination).ConfigureAwait(false);
                 await Dispatcher.InvokeAsync(() =>
                 {
                     DownloadCompleted = async () => await DownloadFileCompleted();
