@@ -23,5 +23,10 @@ namespace SAModManager.UI
 		{
 			InitializeComponent();
 		}
-	}
+
+		private void SplashButtonOK_Click(object sender, RoutedEventArgs e)
+		{
+			this.Close();
+        }
+    }
 }

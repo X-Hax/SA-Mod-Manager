@@ -174,7 +174,7 @@
 		</Grid>
 
 		<Grid x:Name="SplashButtons" Grid.Row="1" Height="50">
-			<Button x:Name="SplashButtonOK" Content="{DynamicResource CommonStrings.OK}" Height="30" VerticalAlignment="Center"/>
+			<Button x:Name="SplashButtonOK" Content="{DynamicResource CommonStrings.OK}" Height="30" VerticalAlignment="Center" Click="SplashButtonOK_Click"/>
 		</Grid>
     </Grid>
 </Window>
