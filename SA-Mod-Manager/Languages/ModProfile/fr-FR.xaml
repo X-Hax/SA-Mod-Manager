@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!--#region Mod Profile-->
+    <system:String x:Key="ManagerProfile.Title">Gestion des Profils</system:String>
+    <system:String x:Key="ManagerProfile.Buttons.Rename">Renommer un Profil</system:String>
+    <system:String x:Key="ManagerProfile.Buttons.Create">Créer un Profil</system:String>
+    <system:String x:Key="ManagerProfile.Buttons.Migrate">Migrer</system:String>
+    <system:String x:Key="ManagerProfile.Path">Chemin du Fichier</system:String>
+    <system:String x:Key="ManagerProfile.ContextMenu.Rename">Renommer</system:String>
+    <system:String x:Key="ManagerProfile.ContextMenu.Duplicate">Dupliquer</system:String>
+    <system:String x:Key="ManagerProfile.ContextMenu.Delete">Supprimer</system:String>
+    <system:String x:Key="ManagerProfile.Errors.Unexpected">Erreur inattendue, impossible de renommer le profil.</system:String>
+    <system:String x:Key="ManagerProfile.Errors.ProfileExists.Title">Erreur le Profil existe déjà</system:String>
+    <system:String x:Key="ManagerProfile.Errors.ProfileExists">Un profil avec le même nom existe déjà, veuillez utiliser un différent nom.</system:String>
+    <!--#endregion-->
+
+
+    <system:String x:Key="ManagerProfile.ToolTip.Create">Créer un nouveau Profil.</system:String>
+    <system:String x:Key="ManagerProfile.ToolTip.Migrate">Migre les anciens profils vers le nouveau format. Certains paramètres peuvent être perdus.</system:String>
+
+    <system:String x:Key="NewProfile.Title">Créer un Profil</system:String>
+    <system:String x:Key="NewProfile.Text.NewProfile">Nouveau Profil</system:String>
+</ResourceDictionary>

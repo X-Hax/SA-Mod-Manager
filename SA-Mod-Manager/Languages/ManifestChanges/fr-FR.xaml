@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="ManifestGen.WindowTitle">Générateur de Manifest</system:String>
+    <system:String x:Key="ManifestGen.Header">Veuillez cocher tous les fichiers que vous souhaitez ajouter au manifeste.</system:String>
+</ResourceDictionary>

@@ -18,6 +18,8 @@
     <system:String x:Key="UpdateStatus.InstallDependencies">Installation des Dépendences,  merci de patienter...</system:String>
     <system:String x:Key="UpdateStatus.UpdateCodes">Mise à jour des Codes, merci de patienter...</system:String>
     <system:String x:Key="UpdateStatus.FailedUpdateCodes">Echec de la mise à jour des Codes</system:String>
+    <system:String x:Key="UpdateStatus.UpdateDependencies">Mise à jour des Dépendences patienter...</system:String>
+    <system:String x:Key="UpdateStatus.FailedUpdateDependencies">Echec de la mise à jour des Dépendences</system:String>
     <system:String x:Key="UpdateStatus.ManagerUpdate">Mise à jour de SA Mod Manager...</system:String>
     <system:String x:Key="UpdateStatus.LoaderUpdate">Mise à jour du Mod Loader...</system:String>
     <system:String x:Key="UpdateStatus.LoaderInstalled">Installation du Mod Loader avec succès</system:String>
