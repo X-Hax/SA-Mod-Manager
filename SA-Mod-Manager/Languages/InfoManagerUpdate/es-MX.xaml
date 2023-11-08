@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<system:String x:Key="InfoManagerUpdate.Title">Actualizaciones del gestor</system:String>
+	<system:String x:Key="InfoManagerUpdate.Title">Nueva(s) actualización(es) del gestor</system:String>
 	<system:String x:Key="InfoManagerUpdate.Changelog">Registro de cambios:</system:String>
 	<system:String x:Key="InfoManagerUpdate.DLQuestion">¿Quieres descargar la(s) actualización(es)?</system:String>
 </ResourceDictionary>

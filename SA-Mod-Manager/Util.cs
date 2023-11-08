@@ -25,7 +25,6 @@ namespace SAModManager
 	{
 		public static List<string> SADXManagerFiles = new()
 		{
-			"SADXModManager.exe",
 			"7z.dll",
 			"7z.exe",
 			"ModManagerCommon.dll",
@@ -39,7 +38,8 @@ namespace SAModManager
 			"SharpDX.DirectInput.dll",
 			"COPYING_D3D8TO9",
 			"Newtonsoft.Json.dll",
-		};
+            "SADXModManager.exe",
+        };
 
         public static List<string> BASSFiles = new()
         {
