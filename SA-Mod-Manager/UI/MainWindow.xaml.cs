@@ -1529,7 +1529,8 @@ namespace SAModManager
                 LoadGameSettings(newSetup);
 
                 await UpdateManagerInfo();
-                ManualLoaderUpdateCheck();
+                if (!App.isVanillaTransition)
+                    ManualLoaderUpdateCheck();
                 InitCodes();
                 LoadModList();
 
