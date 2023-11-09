@@ -14,8 +14,9 @@
 	<system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Save Redirect:</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Main Save</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Chao Save</system:String>
+    <system:String x:Key="EditMod.Tabs.Btn.Advanced">Advanced</system:String>
 
-	<system:String x:Key="EditMod.Tabs.Updates">Update Info</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates">Update Info</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Method">Update Method</system:String>
     <system:String x:Key="EditMod.Tabs.Updates.SelfHosted">Self-Hosted</system:String>
     <system:String x:Key="EditMod.Tabs.Updates.GitHub">Github Update Settings</system:String>
