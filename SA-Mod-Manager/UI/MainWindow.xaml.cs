@@ -522,6 +522,15 @@ namespace SAModManager
                 var modPath = Path.Combine(App.CurrentGame.modDirectory, (string)item.Tag);
                 var manifestPath = Path.Combine(modPath, "mod.manifest");
 
+                foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modPath)))
+                {
+                    if (filename.Contains("mod.ini")) //reload mod ini in case the user edited it
+                    {
+                        mods[item.Tag] = IniSerializer.Deserialize<SADXModInfo>(filename);
+                        break;
+                    }
+                }
+                   
                 var SADXMod = mods[item.Tag];
 
                 if (SADXMod is not null)
@@ -552,7 +561,7 @@ namespace SAModManager
                     continue;
                 }
 
-                if (diff.Count(x => x.State != Updater.ModManifestState.Unchanged) <= 0)
+                if (!diff.Any(x => x.State != Updater.ModManifestState.Unchanged))
                 {
                     continue;
                 }
@@ -569,6 +578,7 @@ namespace SAModManager
                 manifest = dialog.MakeNewManifest();
 
                 Updater.ModManifest.ToFile(manifest, manifestPath);
+                Refresh();
             }
         }
 
