@@ -26,38 +26,36 @@ namespace SAModManager.Elements.SADX
 		#region Variables
 		public GameSettings GameProfile;
 		public GraphicsHelper graphics;
-		public List<PatchesData> Patches;
 
 		bool suppressEvent = false;
 		private static string d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
 		private static string d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
 		private readonly double LowOpacityBtn = 0.7;
 		private SADXConfigFile GameSettings;
-		#endregion
+        #endregion
 
-		public GameConfig(ref object gameSettings, ref object gameConfig)
+        public GameConfig(ref object gameSettings, ref object gameConfig)
 		{
 			InitializeComponent();
 			GameProfile = (GameSettings)gameSettings;
 			GameSettings = (SADXConfigFile)gameConfig;
 			graphics = new GraphicsHelper(ref comboScreen);
-			SetPatches();
 			UpdateAppLauncherBtn();
             Loaded += GameConfig_Loaded;
-		}
+        }
 
-		#region Internal Functions
-		private void GameConfig_Loaded(object sender, RoutedEventArgs e)
+        #region Internal Functions
+        private void GameConfig_Loaded(object sender, RoutedEventArgs e)
 		{
 			SetupBindings();
-			SetUp_UpdateD3D9();
+            SetPatches();
+            SetUp_UpdateD3D9();
 			SetTextureFilterList();
-
 			InitMouseList();
 
 			mouseAction.SelectionChanged += mouseAction_SelectionChanged;
 			mouseBtnAssign.SelectionChanged += mouseBtnAssign_SelectionChanged;
-		}
+        }
 
 		//Temporary, TO DO: Implement proper texture filter list
 
@@ -435,7 +433,7 @@ namespace SAModManager.Elements.SADX
 		{
 			list.Items.Clear();
 
-			List<PatchesData> patches = new List<PatchesData>()
+			List<PatchesData> patches = new()
 			{
 				new PatchesData()
 				{
@@ -577,15 +575,15 @@ namespace SAModManager.Elements.SADX
 
 		}
 
-		private void RefreshPatchesList()
+        private void RefreshPatchesList()
 		{
 			ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
 			view.Refresh();
 		}
-		#endregion
-		#endregion
+        #endregion
+        #endregion
 
-		public static void UpdateD3D8Paths()
+        public static void UpdateD3D8Paths()
 		{
             d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
             d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
