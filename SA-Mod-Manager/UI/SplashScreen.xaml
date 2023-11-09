@@ -6,6 +6,12 @@
         xmlns:local="clr-namespace:SAModManager.UI"
         mc:Ignorable="d" Style="{StaticResource SAWindowUtil}"
         Title="Welcome" Height="500" Width="700" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+	<Window.Resources>
+		<ResourceDictionary>
+			<BitmapImage x:Key="icon" UriSource="../Icons/SADXModManager_.png"/>
+		</ResourceDictionary>
+	</Window.Resources>
+	
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -23,7 +29,7 @@
 					<ColumnDefinition Width="Auto"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
-				<Image Source="{StaticResource ManagerIcon}" HorizontalAlignment="Left"/>
+				<Image Source="{StaticResource icon}" HorizontalAlignment="Left"/>
 				<TextBlock Text="{DynamicResource SplashScreen.Welcome}" Grid.Column="1" FontSize="35" VerticalAlignment="Center"/>
 			</Grid>
 
