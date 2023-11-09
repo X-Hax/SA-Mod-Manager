@@ -11,10 +11,8 @@
 		<ResourceDictionary Source="GameConfig/Patches/it-IT.xaml"/>
 		<ResourceDictionary Source="GameConfig/TestSpawn/it-IT.xaml"/>
 		<ResourceDictionary Source="InstallModOptions/it-IT.xaml"/>
-		<ResourceDictionary Source="MainWindow/it-IT.xaml"/>
-		<ResourceDictionary Source="MainWindow/Patches/it-IT.xaml"/>
-		<ResourceDictionary Source="MainWindow/TestSpawn/it-IT.xaml"/>
-		<ResourceDictionary Source="ManifestChanges/it-IT.xaml"/>
+        <ResourceDictionary Source="MainWindow/it-IT.xaml"/>
+        <ResourceDictionary Source="ManifestChanges/it-IT.xaml"/>
 		<ResourceDictionary Source="MessageWindow/it-IT.xaml"/>
 		<ResourceDictionary Source="ModChangelog/it-IT.xaml"/>
 		<ResourceDictionary Source="ModConfig/it-IT.xaml"/>

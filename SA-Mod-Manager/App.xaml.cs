@@ -39,7 +39,8 @@ namespace SAModManager
         public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
         public static readonly string ziplibPath = Path.Combine(extLibPath, "7z/7z.dll");
-        public static bool isVanillaTransition = false;
+        public static bool isVanillaTransition = false; //used when installing the manager from an update
+        public static bool isFirstBoot = false; //used when installing the new manager manually
 
         public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
         public static ManagerSettings ManagerSettings { get; set; }
@@ -447,6 +448,7 @@ namespace SAModManager
                 if (arg == "vanillaUpdate")
                 {
                     isVanillaTransition = true;
+                    isFirstBoot = true;
                     //todo add SA2 support
                     if (File.Exists("SADXModManager.exe") || File.Exists("SA2ModManager.exe"))
                     {

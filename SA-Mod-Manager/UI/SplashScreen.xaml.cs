@@ -17,9 +17,9 @@ namespace SAModManager.UI
 	/// <summary>
 	/// Interaction logic for Window1.xaml
 	/// </summary>
-	public partial class Window1 : Window
+	public partial class SplashScreenDialog : Window
 	{
-		public Window1()
+		public SplashScreenDialog()
 		{
 			InitializeComponent();
 		}

@@ -19,6 +19,7 @@
         <ResourceDictionary Source="ModProfile/fr-FR.xaml"/>
         <ResourceDictionary Source="NewCode/fr-FR.xaml"/>
         <ResourceDictionary Source="SelectDependencies/fr-FR.xaml"/>
+        <ResourceDictionary Source="SplashScreen/fr-FR.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/fr-FR.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
@@ -40,7 +41,7 @@
     <system:String x:Key="CommonStrings.Author">Auteur</system:String>
     <system:String x:Key="CommonStrings.Version">Version</system:String>
     <system:String x:Key="CommonStrings.Category">Catégorie</system:String>
-    <system:String x:Key="CommonStrings.Description">Déscription:</system:String>
+    <system:String x:Key="CommonStrings.Description">Description:</system:String>
     <system:String x:Key="CommonStrings.Search">Rechercher</system:String>
     <system:String x:Key="CommonStrings.Credits">Crédits</system:String>
     <system:String x:Key="CommonStrings.Download">Télécharger</system:String>
