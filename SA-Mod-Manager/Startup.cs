@@ -76,8 +76,9 @@ namespace SAModManager
             {
                 App.SwitchLanguage();
                 if (langMsg.genericValue > 0)
+                {
                     App.ManagerSettings.Language = langMsg.genericValue;
-
+                }
             }
 
             if (!Directory.Exists(App.ConfigFolder))
