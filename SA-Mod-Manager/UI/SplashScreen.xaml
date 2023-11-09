@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:SAModManager.UI"
         mc:Ignorable="d" Style="{StaticResource SAWindowUtil}"
         Title="Welcome" Height="500" Width="700" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Window.Resources>
-        <ResourceDictionary>
-            <BitmapImage x:Key="icon" UriSource="../Icons/SADXModManager_.png"/>
-        </ResourceDictionary>
-    </Window.Resources>
-    
-    <Grid Margin="10">
+	<Window.Resources>
+		<ResourceDictionary>
+			<BitmapImage x:Key="icon" UriSource="../Icons/SADXModManager_.png"/>
+		</ResourceDictionary>
+	</Window.Resources>
+	
+	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>

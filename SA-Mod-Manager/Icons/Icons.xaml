@@ -39,5 +39,6 @@
 		<ResourceDictionary Source="SADocs.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
 
+	<BitmapImage x:Key="ManagerIcon" UriSource="SADXModManager_.png"/>
 	<Image x:Key="ImageDelete" x:Shared="False" Source="{StaticResource IconDelete}"/>
 </ResourceDictionary>
