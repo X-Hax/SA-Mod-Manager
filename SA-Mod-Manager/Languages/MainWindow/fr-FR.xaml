@@ -1,0 +1,96 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!--Main Window Strings-->
+    <system:String x:Key="Manager.Button.SaveAndPlay" xml:space="preserve">Sauvegarder &amp; Jouer</system:String>
+    <system:String x:Key="Manager.Tabs.Mods">Mods</system:String>
+    <system:String x:Key="Manager.Tabs.Codes">Codes</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig">Config Jeu</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig">Config Manager</system:String>
+    <system:String x:Key="Manager.Tabs.TestSpawn">Test Spawn</system:String>
+    <!--#endregion-->
+
+    <!--#region Mods Tab Strings-->
+    <system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh" >Actualiser</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Buttons.Configure" >Configurer Mod</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Buttons.Add" >Nouveau Mod...</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">Aucun mod sélectionné.</system:String>
+
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Vérifier les Mises à jour</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Vérifier l'intrégalité</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Forcer la mise à jour</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">Configurer le Mod</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Modifier le Mod</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Supprimer le Mod</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Développeur</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Générer un Manifest</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Désactiver les Mises à Jour</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Activer les Mises à Jour</system:String>
+    <!--#endregion-->
+
+    <!--#region Codes Tab Strings-->
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Nouveau Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.MadeBy">Créer par</system:String>
+    <!--#endregion-->
+
+    <!--Mod About Window-->
+    <system:String x:Key="AuthorSite">Site de l'Auteur</system:String>
+    <system:String x:Key="ModSourceCode">Code Source du Mod</system:String>
+    <!--#endregion-->
+
+    <!--#region Codes Tab Strings-->
+    <system:String x:Key="CodesBtnAdd">New Code</system:String>
+    <!--#endregion-->
+
+    <!-- Codes UI Strings -->
+    <system:String x:Key="CodesListName">Nom</system:String>
+    <system:String x:Key="CodesListCategory">Catégorie</system:String>
+    <system:String x:Key="CodesUIInfo">Double cliquer sur un code pour plus d'information.</system:String>
+    <system:String x:Key="CodesUIInfoHint">Selectioner un code pour plus d'information.</system:String>
+    <system:String x:Key="Code">Code</system:String>
+
+    <!--#region Manager Config Tab Strings-->
+    <!--Options-->
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Options du jeu</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Thèmes:</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Langue:</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profil:</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Répertoire du Jeu:</system:String>
+
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Activer 1-Click Install</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Désactiver 1-Click Install</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Ouvrir le répertoire du Jeu</system:String>
+
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Installer Mod Loader</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Désinstaller Mod Loader</system:String>
+    <!--#endregion-->
+    <!--Updates-->
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Mises à jour</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Vérifier les mises à jour du Mod Manager au démarrage</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Vérifier les mises à jour du Mod Loader au démarrage</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Vérifier les mises à jour des Mods au démarrage</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Vérifier les mises à jour</system:String>
+    <!--#endregion-->
+    <!--Debug Features-->
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Laisser le Mod Manager Ouvert après démarrage du jeu</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Activer les options de Développeur</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Activer la Fenêtre Console</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Afficher le debug dans la fenêtre du jeu</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Logger les infos de Debug dans un fichier</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Créer des Crash Dumps</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Bilan de santé du jeu</system:String>
+    <!--#endregion-->
+
+    <!--About-->
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">À Propos</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SADX Mod Manager est un programme qui vous permet de gérer facilement les mods dans Sonic Adventure DX.</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contributeurs</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Code Source</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Mod Loader Code Source</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Signlar un Bug (Anglais uniquement)</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Ouvrir la SA Docs (Anglais uniquement)</system:String>
+    <!--#endregion-->
+    
+</ResourceDictionary>

@@ -49,6 +49,8 @@
 	<system:String x:Key="CommonStrings.Download">Download</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">Open Folder</system:String>
     <system:String x:Key="CommonStrings.None">None</system:String>
+    <system:String x:Key="CommonStrings.Enabled">Enabled</system:String>
+    <system:String x:Key="CommonStrings.Disabled">Disabled</system:String>
 
     <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Minimize</system:String>

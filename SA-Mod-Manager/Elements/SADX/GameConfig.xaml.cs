@@ -79,10 +79,10 @@ namespace SAModManager.Elements.SADX
 		{
 			comboTextureFilter.Items.Clear();
 
-            comboTextureFilter.Items.Add("Enabled");
-            comboTextureFilter.Items.Add("Disabled");
+            comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Enabled"));
+            comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Disabled"));
 
-			SetTextureFilterSettings();
+            SetTextureFilterSettings();
         }
 
 		#region Graphics Tab
