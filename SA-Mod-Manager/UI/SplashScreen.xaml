@@ -1,17 +1,17 @@
-﻿<Window x:Class="SAModManager.UI.Window1"
+﻿<Window x:Class="SAModManager.UI.SplashScreenDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SAModManager.UI"
         mc:Ignorable="d" Style="{StaticResource SAWindowUtil}"
-        Title="Welcome" Height="500" Width="700" ResizeMode="NoResize">
-	<Window.Resources>
-		<ResourceDictionary>
-			<BitmapImage x:Key="icon" UriSource="../Icons/SADXModManager_.png"/>
-		</ResourceDictionary>
-	</Window.Resources>
-	
+        Title="Welcome" Height="500" Width="700" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="icon" UriSource="../Icons/SADXModManager_.png"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>

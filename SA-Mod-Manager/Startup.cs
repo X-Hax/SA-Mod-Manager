@@ -136,6 +136,7 @@ namespace SAModManager
 
                 if (!File.Exists(App.ManagerConfigFile)) //If config page isn't found, assume this is the first boot.
                 {
+                    App.isFirstBoot = true;
                     await EnableOneClickInstall();
                     await SetLanguageFirstBoot();
                     await Util.Install7Zip();
