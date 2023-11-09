@@ -5,14 +5,14 @@
 
     <system:String x:Key="SplashScreen.Welcome">Bienvenue dans SA Mod Manager</system:String>
 
-    <system:String x:Key="SplashScreen.Intro" xml:space="preserve">Vous avez été mis à niveau vers SA Mod Manager !&#x0a;&#x0a;Ce nouveau Manager est livré avec des améliorations, de nouvelles fonctionnalités et quelques mises à jour mineures du Mod Loader. Tous les mods existants continueront à fonctionner comme prévu. Vous trouverez ci-dessous une liste relativement complète de tous les changements majeurs.</system:String>
+    <system:String x:Key="SplashScreen.Intro" xml:space="preserve">Vous avez mis à niveau vers SA Mod Manager !&#x0a;&#x0a;Ce nouveau Manager est livré avec des améliorations, de nouvelles fonctionnalités et quelques mises à jour mineures du Mod Loader. Tous les mods existants continueront à fonctionner comme prévu. Vous trouverez ci-dessous une liste relativement complète de tous les changements majeurs.</system:String>
 
     <system:String x:Key="SplashScreen.QOL">Améliorations</system:String>
-    <system:String x:Key="SplashScreen.QOL.Themes">Le Manager prend désormais en charge les thèmes ! Ceux-ci peuvent être modifiés dans l’onglet Manager Config.</system:String>
-    <system:String x:Key="SplashScreen.QOL.Languages">Le Manager prend désormais en charge différentes langues ! Ceux-ci peuvent être modifiés dans l’onglet Manager Config.</system:String>
-    <system:String x:Key="SplashScreen.QOL.Manager">l'exécutable du Manager n'a plus besoin d'être placé dans le dossier du jeu ! Si vous voyez cet écran après la mise à jour de l'ancien Mod Manager, l'exécutable se trouve actuellement dans le dossier de votre jeu. Vous êtes libre de le déplacer où vous le souhaitez !</system:String>
-    <system:String x:Key="SplashScreen.QOL.Profiles">Les profils ont été migrés vers un nouveau système et disposent d'un outil de gestion dédié dans l'onglet Manager Config. Il existe également un bouton pour migrer les anciens profils vers le nouveau système si vous avez des profils plus anciens que vous souhaitez continuer à utiliser.</system:String>
-    <system:String x:Key="SplashScreen.QOL.Config">Les paramètres du jeu et les paramètres du Manager ont été séparés en deux onglets. Les options de debug (impression de console, fichiers de logs, crash dump, etc.) se trouvent dans l'onglet Configuration du Manager. Toutes les options liées au jeu se trouvent dans l'onglet Config du jeu.</system:String>
+    <system:String x:Key="SplashScreen.QOL.Themes">Le Manager prend désormais en charge les thèmes ! Ceux-ci peuvent être modifiés dans l’onglet "Config Manager".</system:String>
+    <system:String x:Key="SplashScreen.QOL.Languages">Le Manager prend désormais en charge différentes langues ! Celles-ci peuvent être modifiés dans l’onglet "Config Manager".</system:String>
+    <system:String x:Key="SplashScreen.QOL.Manager">L'exécutable du Manager n'a plus besoin d'être placé dans le dossier du jeu ! Si vous voyez cet écran après la mise à jour de l'ancien Mod Manager, l'exécutable se trouve actuellement dans le dossier de votre jeu. Vous êtes libre de le déplacer où vous le souhaitez !</system:String>
+    <system:String x:Key="SplashScreen.QOL.Profiles">Les profils ont été migrés vers un nouveau système et disposent d'un outil de gestion dédié dans l'onglet "Config Manager".  Il existe également un bouton pour migrer les anciens profils vers le nouveau système si vous avez des profils plus anciens que vous souhaitez continuer à utiliser.</system:String>
+    <system:String x:Key="SplashScreen.QOL.Config">Les paramètres du jeu et les paramètres du Manager ont été séparés en deux onglets. Les options de debug (impression de console, fichiers de logs, crash dump, etc.) se trouvent dans l'onglet "Config Manager". Toutes les options liées au jeu se trouvent dans l'onglet Config du jeu.</system:String>
     <system:String x:Key="SplashScreen.QOL.KeepOpen">Une nouvelle option a été ajoutée pour permettre au Manager de rester ouvert lorsque vous jouer. C'est activé par défault.</system:String>
 
     <system:String x:Key="SplashScreen.Features">Nouvelles Fonctionnalités</system:String>
