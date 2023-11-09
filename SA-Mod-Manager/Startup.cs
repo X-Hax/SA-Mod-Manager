@@ -75,9 +75,9 @@ namespace SAModManager
             if (langMsg.isOK == true)
             {
                 App.SwitchLanguage();
-                if (langMsg.genericValue > 0)
+                if (comboLanguage.SelectedIndex > 0)
                 {
-                    App.ManagerSettings.Language = langMsg.genericValue;
+                    App.ManagerSettings.Language = comboLanguage.SelectedIndex;
                 }
             }
 

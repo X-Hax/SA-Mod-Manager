@@ -1996,13 +1996,10 @@ namespace SAModManager
 
         private void SetManagerBindings()
         {
-            if (App.isFirstBoot == false)
+            comboLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Language")
             {
-                comboLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Language")
-                {
-                    Source = App.ManagerSettings
-                });
-            }
+				Source = App.ManagerSettings
+            });
             comboThemes.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Theme")
             {
                 Source = App.ManagerSettings
