@@ -122,13 +122,6 @@ namespace SAModManager
                 Save();
                 App.isVanillaTransition = false;
             }
-
-            if (App.isFirstBoot)
-            {
-                new SplashScreenDialog().ShowDialog();
-                App.isFirstBoot = false;
-            }
-
         }
 
         private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
@@ -163,6 +156,12 @@ namespace SAModManager
 
             if (App.isVanillaTransition && (App.CurrentGame is null || App.CurrentGame.gameDirectory is null))
                 await VanillaUpdate_CheckGame();
+
+            if (App.isFirstBoot)
+            {
+                new SplashScreenDialog().ShowDialog();
+                App.isFirstBoot = false;
+            }
         }
 
         private void MainForm_FormClosing(object sender, EventArgs e)
