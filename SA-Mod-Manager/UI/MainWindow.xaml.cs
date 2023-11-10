@@ -1081,15 +1081,18 @@ namespace SAModManager
         {
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
             checkForUpdate = true;
-            if (await App.PerformUpdateManagerCheck() || await App.PerformUpdateLoaderCheck() || await App.PerformUpdateCodesCheck())
+            if (await App.PerformUpdateManagerCheck())
             {
-                UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
                 return;
             }
 
+            await App.PerformUpdateLoaderCheck();
+            await App.PerformUpdateCodesCheck();
+        
             manualModUpdate = true;
             await CheckForModUpdates(true);
             checkForUpdate = false;
+            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             Refresh();
         }
 
@@ -2283,6 +2286,8 @@ namespace SAModManager
             UIHelper.DisableButton(ref SaveAndPlayButton);
             UIHelper.DisableButton(ref btnInstallLoader);
 
+
+            //File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
             if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
             {
                 await GamesInstall.InstallDLL_Loader(App.CurrentGame, true);
@@ -2297,7 +2302,6 @@ namespace SAModManager
                 //now we can move the loader files to the accurate folders.
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
-
             }
 
             await UpdateGameConfig(SetGame.SADX); //To do change with "current selected game" when it's available
