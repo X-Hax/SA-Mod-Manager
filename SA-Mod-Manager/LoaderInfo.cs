@@ -118,8 +118,9 @@ namespace SAModManager
 
 		public bool ResizableWindow { get; set; }
 
-		[DefaultValue(true)]
-		public bool ScaleHud { get; set; } = true;
+		[IniAlwaysInclude]
+		[DefaultValue(false)]
+		public bool ScaleHud { get; set; } = false;
 
 		[DefaultValue((int)FillMode.Fill)]
 		public int BackgroundFillMode { get; set; } = (int)FillMode.Fill;
