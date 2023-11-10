@@ -41,6 +41,7 @@ namespace SAModManager.Elements.SADX
 			GameSettings = (SADXConfigFile)gameConfig;
 			graphics = new GraphicsHelper(ref comboScreen);
 			UpdateAppLauncherBtn();
+            SetPatches();
             Loaded += GameConfig_Loaded;
         }
 

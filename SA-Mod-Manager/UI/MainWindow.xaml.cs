@@ -92,13 +92,6 @@ namespace SAModManager
         private void MainWindowManager_ContentRendered(object sender, EventArgs e)
         {
             this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
-
-
-            if (App.isFirstBoot)
-            {
-                new SplashScreenDialog().ShowDialog();
-                App.isFirstBoot = false;
-            }
         }
 
         private async Task VanillaUpdate_CheckGame()
@@ -129,7 +122,13 @@ namespace SAModManager
                 Save();
                 App.isVanillaTransition = false;
             }
-               
+
+            if (App.isFirstBoot)
+            {
+                new SplashScreenDialog().ShowDialog();
+                App.isFirstBoot = false;
+            }
+
         }
 
         private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
