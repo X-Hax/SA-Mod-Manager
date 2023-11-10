@@ -43,15 +43,15 @@ namespace SAModManager.Updater
             {
                 case DLType.Download:
                 default:
-                    Title = "Download - ";
+                    Title =  Lang.GetString("Updater.DL.Download") + " - ";
                     break;
                 case DLType.Install:
-                    Title = "Install - ";
-                    DLInfo.Text = "Installing";
+                    Title = Lang.GetString("Updater.DL.Install") + " - ";
+                    DLInfo.Text = Lang.GetString("Updater.DL.Installing");
                     break;
                 case DLType.Update:
-                    Title = "Update - ";
-                    DLInfo.Text = "Updating";
+                    Title = Lang.GetString("Updater.DL.Update") + " - ";
+                    DLInfo.Text = Lang.GetString("Updater.DL.Updating");
                     break;
             }
 
@@ -94,17 +94,17 @@ namespace SAModManager.Updater
                 {
                     case DLType.Download:
                     default:
-                        DLInfo.Text = "Download ";
+                        DLInfo.Text = Lang.GetString("Updater.DL.Download") + " ";
                         break;
                     case DLType.Install:
-                        DLInfo.Text = "Install ";
+                        DLInfo.Text = Lang.GetString("Updater.DL.Install") + " ";
                         break;
                     case DLType.Update:
-                        DLInfo.Text = "Update ";
+                        DLInfo.Text = Lang.GetString("Updater.DL.Update") + " ";
                         break;
                 }
 
-                DLInfo.Text += "Completed." + "\n Copying files...";
+                DLInfo.Text += Lang.GetString("Updater.DL.Completed") + "\n" + Lang.GetString("Updater.DL.Copying");
 
                 await Task.Delay(200);
                 if (File.Exists(fileName) && Directory.Exists(dest))
@@ -134,17 +134,17 @@ namespace SAModManager.Updater
             {
                 case DLType.Download:
                 default:
-                    DLInfo.Text = "Download ";
+                    DLInfo.Text = Lang.GetString("Updater.DL.Download") + " ";
                     break;
                 case DLType.Install:
-                    DLInfo.Text = "Install ";
+                    DLInfo.Text = Lang.GetString("Updater.DL.Install") + " ";
                     break;
                 case DLType.Update:
-                    DLInfo.Text = "Update ";
+                    DLInfo.Text = Lang.GetString("Updater.DL.Update") + " ";
                     break;
             }
 
-            DLInfo.Text += "Completed." + "\n Copying files...";
+            DLInfo.Text += Lang.GetString("Updater.DL.Completed") + "\n" + Lang.GetString("Updater.DL.Copying");
             DLProgress.Value = DLProgress.Maximum;
             await Task.Delay(1000);
             if (File.Exists(fileName) && Directory.Exists(dest))

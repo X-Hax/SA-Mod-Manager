@@ -22,7 +22,8 @@
 		<ResourceDictionary Source="NewCode/en-EN.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/en-EN.xaml"/>
 		<ResourceDictionary Source="SplashScreen/en-EN.xaml"/>
-		<ResourceDictionary Source="MainWindow/UpdateStatus/en-EN.xaml"/>
+        <ResourceDictionary Source="Updater/en-EN.xaml"/>
+        <ResourceDictionary Source="MainWindow/UpdateStatus/en-EN.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->

@@ -20,6 +20,7 @@
         <ResourceDictionary Source="NewCode/fr-FR.xaml"/>
         <ResourceDictionary Source="SelectDependencies/fr-FR.xaml"/>
         <ResourceDictionary Source="SplashScreen/fr-FR.xaml"/>
+        <ResourceDictionary Source="Updater/fr-FR.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/fr-FR.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 

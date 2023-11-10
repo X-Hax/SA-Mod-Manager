@@ -14,7 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="DLInfo" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Downloading" FontSize="24" Margin="10,0,10,0" TextWrapping="Wrap"/>
+        <TextBlock x:Name="DLInfo" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{DynamicResource Updater.DL.Downloading}" FontSize="24" Margin="10,0,10,0" TextWrapping="Wrap"/>
 
         <ProgressBar x:Name="DLProgress" Grid.Row="1" Maximum="100" VerticalAlignment="Center" Height="50" Margin="10,0,10,0"/>
     </Grid>
