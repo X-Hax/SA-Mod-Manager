@@ -560,7 +560,7 @@ namespace SAModManager
                 else
                 {
                     Console.WriteLine($"Error: {response.StatusCode}");
-                    return null;
+                    return await GetLastCommitHash(repo, "master");
                 }
             }
         }
