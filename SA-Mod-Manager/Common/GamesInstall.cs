@@ -160,6 +160,14 @@ namespace SAModManager.Common
                 {
                     await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
                 }
+                else
+                {
+                    var lastCommit = await GitHub.GetLoaderHashCommit();
+                    if (lastCommit is not null)
+                    {
+                        File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, lastCommit);
+                    }
+                }
             }
             catch
             {

@@ -43,4 +43,15 @@
 
     <system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Les erreurs suivantes se sont produites lors de la recherche de mises à jour :&#x0a;&#x0a;</system:String>
     <system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Erreurs de mise à jour</system:String>
+
+
+    <system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Bilan de Santé</system:String>
+    <system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Vous êtes sur le point d'exécuter le bilan de santé du jeu. Cette action vérifiera tous les fichiers du jeu, à l'exception des fichiers audio.&#x0a;&#x0a;Souhaitez-vous continuer?</system:String>
+
+    <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">Problèmes de fichiers détectés</system:String>
+    <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">Les problèmes suivants ont été détectés avec les fichiers de votre jeu :</system:String>
+    <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles2">Veuillez noter que si votre jeu fonctionne normalement, les problèmes ci-dessus n'affectent pas votre jeu.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Vérification Terminée</system:String>
+    <system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Tous les fichiers vérifiés ont été vérifiés.</system:String>
 </ResourceDictionary>
