@@ -81,7 +81,7 @@
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Компонент VC++ не найден</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">У вас отсутствуют пакеты Visual C++ Redistributables. Некоторые моды не будут работать без них.&#x0a;&#x0a;Желаете скачать и установить их сейчас?</system:String>
     
-    <system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Ошибка загркзки</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Ошибка загрузки</system:String>
     <system:String x:Key="MessageWindow.Errors.GenericDLFail0">Не удалось загрузить</system:String>
     <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Желаете попробовать снова?</system:String>
 
