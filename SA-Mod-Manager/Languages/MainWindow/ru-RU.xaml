@@ -25,8 +25,10 @@
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Редактировать мод</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Удалить мод</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Разработка</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Сгенерировать манифест</system:String>
-	<!--#endregion-->
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Сгенерировать манифест</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Отключить обновления</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Включить обновления</system:String>
+    <!--#endregion-->
 
 	<!--#region Codes Tab Strings-->
 	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Новый чит</system:String>
@@ -51,7 +53,8 @@
 
 	<!--Updates-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Обновления</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Проверять обновления Загрузчика при запуске</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Проверять обновления Менеджера при запуске</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Проверять обновления Загрузчика при запуске</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Проверять обновления модов при запуске</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Проверить обновления</system:String>
 
@@ -66,11 +69,12 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Проверить состояние игры</system:String>
 
 	<!--About-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">О Менеджере модов SADX</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">Менеджер модов SADX – программа, позволяющая управлять модами для Sonic Adventure DX без особых трудностей.</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">О программе</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">Менеджер модов SA – программа, позволяющая управлять модами для Sonic Adventure DX без особых трудностей.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Разработчики</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Исходники</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Сообщить о багах (English only)</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Исходники загрузчика</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Сообщить о багах (English only)</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Открыть SA Docs (English only)</system:String>
 	<!--#endregion-->
 	
@@ -186,9 +190,10 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Выбор языка интерфейса Менеджера модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Оставлять Менеджер модов включённым при нажатии "Сохранить и играть".</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Включить вкладку "Тестовая загрузка" в Менеджере модов.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Если включено, при нажатии на кнопку "1-Click Install" на GameBanana будет открываться окно загрузки мода.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Когда включено, при нажатии на кнопку "1-Click Install" на GameBanana будет открываться окно загрузки мода.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Когда включено, активируется Загрузчик модов, благодаря чему можно играть с модами, патчами и читами.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Включить автоматическую проверку обновлений Загрузчика модов при запуске Менеджера модов.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Включить автоматическую проверку Менеджера модов при запуске.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Включить автоматическую проверку обновлений Загрузчика модов при запуске Менеджера модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Включить автоматическую проверку обновлений модов при запуске Менеджера модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Запустить проверку обновлений Загрузчика модов и установленных модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Открывать консоль с отладочной информации по игре.</system:String>
@@ -196,9 +201,9 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Сохранять отладочную информацию в log-файл.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Включить запись дампов вылетов при возникновении ошибок игры. Может быть полезно для выяснения причин вылетов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Открыть окно со списком разработчиков и информацией о менеджере.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Откроет страницу с репозиторием Загрузчика модов на GitHub.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Откроет страницу с SA Docs, где будет доступна различная информация о создании модов для SA1 и SA2.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Откроет страницу обратной связи на GitHub для приёма  сообщений о проблемах и ошибках Загрузчика модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Открыть страницу с репозиторием Загрузчика модов на GitHub.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Открыть страницу с SA Docs, где будет доступна различная информация о создании модов для SA1 и SA2.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Открыть страницу обратной связи на GitHub для приёма  сообщений о проблемах и ошибках Загрузчика модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Запуск проверки состояния игры для выявления отсутствующих или изменённых файлов.</system:String>
 	<!--#endregion-->
 

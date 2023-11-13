@@ -14,15 +14,16 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Настройки экрана</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Монитор:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Разрешение:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Принудительно включить 4:3</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Включить вертикальную синхронизацию</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Пауза, когда окно неактивно</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Настройки</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Принудительно вкл. 4:3</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Вкл. верт. синхронизацию</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Пауза, когда неактивно</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамическое распределение памяти</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Полный экран</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">В окне</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Изменяемое окно</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Сохранять пропорции</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Пользовательский размер окна:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Свой размер окна:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Окно без рамки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Подогнать под экран</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Прочие настройки графики</system:String>
@@ -34,11 +35,11 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog">Режим работы тумана:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Auto">Авто</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation">Эмуляция</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill">Способ заполнения фона:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill">Как заполнить фон:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Растянуть [по умолчанию]</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit">Подогнать по ширине</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Заполнить</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">Способ заполнения видео:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Заполнение</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">Как заполнить видео:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.TexFilter">Фильтрация текстур:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.UIFilter">Фильтрация интерфейса</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Улучшения</system:String>
@@ -55,7 +56,13 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Мышь и клавиатура</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Тянуть и удерживать</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Тянуть для ускорения</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Прыжок:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn">Левая кнопка мыши</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn">Правая кнопка мыши</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn">Средняя кнопка мыши</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Другая кнопка мыши 1</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn">Левая и правая кнопки мыши</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Правая и левая кнопки мыши</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Прыжок:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Действие:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Отмена/Атака:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Старт/Назначить:</system:String>
@@ -70,11 +77,11 @@
 	<!--Sound Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Настройки звука</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">Управление громкостью</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Использовать библиотеку BASS (музыка)</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Использовать библиотеку BASS (эффекты)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Исп. библиотеку BASS (музыка)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Исп. библиотеку BASS (эффекты)</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">Включить музыку</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Включить звукиs</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Включить пространственные звуки</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Включить звуки</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Вкл. пространственные звуки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Громкость музыки:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Громкость голосов:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Громкость звуков:</system:String>
@@ -97,7 +104,15 @@
 	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Позиция Y:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">Позиция Z:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Angle">Угол:</system:String>
-	<!--#endregion-->
+
+    <system:String x:Key="TestSpawn.Language.Voice">Язык озвучки:</system:String>
+    <system:String x:Key="TestSpawn.Language.Text">Язык текста:</system:String>
+    <system:String x:Key="TestSpawn.Language.Japanese">Японский</system:String>
+    <system:String x:Key="TestSpawn.Language.English">Английский</system:String>
+    <system:String x:Key="TestSpawn.Language.French">Французский</system:String>
+    <system:String x:Key="TestSpawn.Language.Spanish">Испанский</system:String>
+    <system:String x:Key="TestSpawn.Language.German">Немецкий</system:String>
+    <!--#endregion-->
 	
 	<!--#region SADX-->
 	

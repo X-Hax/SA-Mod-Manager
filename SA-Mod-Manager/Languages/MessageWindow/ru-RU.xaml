@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<system:String x:Key="MessageWindow.DefaultTitle">Загрузчик модов SADX</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle">Загрузчик модов SA</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Error">Ошибка</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Внимание</system:String>
 	
@@ -80,6 +80,20 @@
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Компонент VC++ не найден</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">У вас отсутствуют пакеты Visual C++ Redistributables. Некоторые моды не будут работать без них.&#x0a;&#x0a;Желаете скачать и установить их сейчас?</system:String>
+    
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Ошибка загркзки</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail0">Не удалось загрузить</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Желаете попробовать снова?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.LoaderFailedToSave.Title">Информация о Загрузчике не сохранена.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">"The Mods directory does not appear to be a valid path, please ensure it is a valid path. Your current settings were not saved for the ModLoader to use."</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.CodeFail.Title">Invalid Code Line</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">There is an empty line within the code writer lines.&#x0a;&#x0a;Please remove the empty line and resave.</system:String>
+    <system:String x:Key="Messagewindow.Errors.CodeFailInvalid">The written code is invalid.&#x0a;&#x0a;Please correct the error and resave.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Unknown Error</system:String>
+    <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">An unknown error has occurred.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -94,6 +108,13 @@
 	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">Это может привести К ПОТЕРЕ ПОЛЬЗОВАТЕЛЬСКИХ ДАННЫХ МОДОВ (СОХРАНЕНИЯ, КОНФИГИ) при следующем обновлении! Чтобы этого не произошло, никогда не запускайте это для модов, которые разрабатывали не вы.&#x0a;&#x0a;Желаете продолжить?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">Не установлен компонент .NET 7.0 Desktop Runtime!&#x0a;&#x0a;Установить его сейчас?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Вы удалите все выбранные читы.&#x0a;&#x0a;Желаете продолжить?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">You are about to disable updates for this mod. If you continue, the Manager will NEVER check update for this mod.&#x0a;Are you sure you want to proceed?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">The Mod Manager needs 7-zip to extract mods and handle updates.&#x0a;&#x0a;Would you like to install it now?</system:String>
+
     <!--#endregion-->
 	
 	<!--#region Information-->
@@ -104,6 +125,18 @@
 
     <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Проверка целостности пройдена</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">Все выбранные моды прошли верификацию.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">Была найдена папка Steam-версии SADX.&#x0a;Загрузчик модов работает только с версией игры 2004 года.&#x0a;&#x0a;Желаете скачать и установить Установщик модов, чтобы сконвертировать игру в версию 2004 года (сохранения также будут сконвертированы)?.</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Проверка состояния</system:String>
+    <system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Вы запустили проверку состояния игры.&#x0a;Будут проверены все файлы игры (кроме аудио-файлов).&#x0a;&#x0a;Желаете продолжить?</system:String>
+
+    <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">Найдены проблемы с файлами</system:String>
+    <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">Данные файлы игры содержат проблемы:</system:String>
+    <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles2">Если игра работает должным образом, вышеуказанные проблемы не влияют на её работу.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Проверка завершена</system:String>
+    <system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Все файлы были успешно проверены.</system:String>
     <!--#endregion-->
 	
 </ResourceDictionary>
