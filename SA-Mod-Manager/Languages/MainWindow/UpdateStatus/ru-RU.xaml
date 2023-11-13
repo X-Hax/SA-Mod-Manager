@@ -13,8 +13,8 @@
     <system:String x:Key="UpdateStatus.ChkCurModUpdate">Проверка обновлений мода {0}...</system:String>
     <system:String x:Key="UpdateStatus.ModUpdateFail">Ошибка обновления мода {0}</system:String>
     <system:String x:Key="UpdateStatus.NoUpdateFound">Не найдено обновлений модов</system:String>
-    <system:String x:Key="UpdateStatus.InstallLoader">Установка Загрузчика модов, подождите...</system:String>
-    <system:String x:Key="UpdateStatus.UninstallLoader">Удаление Загрузчика модов, подождите...</system:String>
+    <system:String x:Key="UpdateStatus.InstallLoader">Загрузчик модов включается, подождите...</system:String>
+    <system:String x:Key="UpdateStatus.UninstallLoader">Загрузчик модов отключается, подождите...</system:String>
     <system:String x:Key="UpdateStatus.InstallDependencies">Установка зависимостей, подождите...</system:String>
     <system:String x:Key="UpdateStatus.UpdateCodes">Обновление читов, подождите...</system:String>
     <system:String x:Key="UpdateStatus.FailedUpdateCodes">Ошибка обновления читов</system:String>

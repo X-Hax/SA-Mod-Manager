@@ -11,7 +11,7 @@
 	<system:String x:Key="ManagerProfile.ContextMenu.Duplicate">Создать копию</system:String>
 	<system:String x:Key="ManagerProfile.ContextMenu.Delete">Удалить</system:String>
 	<system:String x:Key="ManagerProfile.Errors.Unexpected">Непредвиденная ошибка, невозможно переименовать профиль.</system:String>
-	<system:String x:Key="ManagerProfile.Errors.ProfileExists.Title">Ошибка Профиль уже существует</system:String>
+	<system:String x:Key="ManagerProfile.Errors.ProfileExists.Title">Ошибка. Профиль уже существует</system:String>
 	<system:String x:Key="ManagerProfile.Errors.ProfileExists">Профиль с таким именем уже существует. Придумайте другое имя.</system:String>
 
     <system:String x:Key="ManagerProfile.ToolTip.Create">Создать новый профиль.</system:String>
