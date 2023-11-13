@@ -11,8 +11,8 @@
     <system:String x:Key="SplashScreen.QOL.Languages">Теперь Менеджер поддерживает разные языки! Язык можно сменить во вкладке "Настройки Менеджера".</system:String>
     <system:String x:Key="SplashScreen.QOL.Manager">Больше не требуется помещать Менеджер в папку с игрой! Если вы видите этот экран после обновления старого Менеджера модов, новый Менеджер будет находиться в папке с игрой. Но вы сможете переместить его куда угодно!</system:String>
     <system:String x:Key="SplashScreen.QOL.Profiles">Профили были обновлены до новой системы, а их можно настроить с помощью нового инструмента во вкладке "Настройки Менеджера". Там же будет кнопка для преобразования старых профилей в новый формат, если желаете использовать их.</system:String>
-    <system:String x:Key="SplashScreen.QOL.Config">Game Settings and Manager settings have been separated into two tabs. Debug options (Console Printing, Log Files, Crash Dumps, etc) are found in the Manager's "Config" tab. All game related options are found in the "Game's Config" Tab.</system:String>
-    <system:String x:Key="SplashScreen.QOL.KeepOpen">A new checkbox has been added that allows the manager to stay open when pressing the Play. This is enabled by default.</system:String>
+    <system:String x:Key="SplashScreen.QOL.Config">Настройки игры и Менеджера были разнесены по разным вкладкам. Опции отладки (вывод в консоль, логирование, создание дампов и т.д.) находятся во вкладке "Настройки Менеджера". Все настройки, связанные с игрой, находятся во вкладке "Настройки игры".</system:String>
+    <system:String x:Key="SplashScreen.QOL.KeepOpen">Был добавлен новый чекбокс, отвечающий за то, чтобы Менеджер не закрывался при запуске игры. Он включён по умолчанию.</system:String>
 
     <system:String x:Key="SplashScreen.Features">New Features</system:String>
     <system:String x:Key="SplashScreen.Features.AddMod">The New Mod button has changed to the Add Mod button. It now allows for both mod creation and manual mod installation. Installation works from folders and archives.</system:String>
