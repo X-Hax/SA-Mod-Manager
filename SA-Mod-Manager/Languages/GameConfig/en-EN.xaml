@@ -62,7 +62,9 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Other Mouse Button 1</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn">Left + Right Mouse Button</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Right + Left Mouse Button</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Jump</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Action">Action:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.BtnAssignment">Button Assignment:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Jump</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Action</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Cancel/Attack</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Start/Set</system:String>
