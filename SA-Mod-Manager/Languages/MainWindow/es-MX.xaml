@@ -32,7 +32,9 @@
 
 	<!--#region Codes Tab Strings-->
 	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Nuevo código</system:String>
-	<system:String x:Key="Manager.Tabs.Codes.CodeHeader">Código</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Edit Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Delete Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Código</system:String>
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Creado por</system:String>
 	<!--#endregion-->
 

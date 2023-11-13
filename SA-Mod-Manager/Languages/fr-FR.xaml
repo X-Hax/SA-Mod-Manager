@@ -35,7 +35,7 @@
     <system:String x:Key="CommonStrings.Reset">Reset</system:String>
     <system:String x:Key="CommonStrings.Create">Créer</system:String>
     <system:String x:Key="CommonStrings.SelectAll">Tout sélectionner</system:String>
-    <system:String x:Key="CommonStrings.DeselectAll">Tout déselectionnerl</system:String>
+    <system:String x:Key="CommonStrings.DeselectAll">Tout déselectionner</system:String>
     <system:String x:Key="CommonStrings.Name">Nom</system:String>
     <system:String x:Key="CommonStrings.Status">Statut</system:String>
     <system:String x:Key="CommonStrings.Save">Sauvegarder</system:String>
