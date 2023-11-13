@@ -470,7 +470,7 @@
 								</UniformGrid>
 							</GroupBox>
 
-							<GroupBox Grid.Row="2" Header="About" Margin="5">
+                            <GroupBox Grid.Row="2" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.About}"  Margin="5">
 								<UniformGrid Rows="2" Columns="2" Margin="5">
 									<Button x:Name="btnCredits" Margin="5" Grid.Column="0" Click="AboutBtn_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.Contributors}">
 										<StackPanel Orientation="Horizontal">
