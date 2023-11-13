@@ -417,7 +417,7 @@
 					</GroupBox>
 
 					<!--Group Box for About Section-->
-					<GroupBox x:Name="grpManagerSettings" Grid.Row="1" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.About}">
+					<GroupBox x:Name="grpManagerSettings" Grid.Row="1" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced}">
 						<Grid Margin="5">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
