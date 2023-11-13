@@ -31,6 +31,8 @@
 
     <!--#region Codes Tab Strings-->
     <system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Nouveau Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Editer le Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Supprimer le Code</system:String>
     <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Code</system:String>
     <system:String x:Key="Manager.Tabs.Codes.MadeBy">Créer par</system:String>
     <!--#endregion-->
@@ -74,6 +76,7 @@
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Vérifier les mises à jour</system:String>
     <!--#endregion-->
     <!--Debug Features-->
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Options Avancées</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Laisser le Mod Manager Ouvert après démarrage du jeu</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Activer les options de Développeur</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Activer la Fenêtre Console</system:String>

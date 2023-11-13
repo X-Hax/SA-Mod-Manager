@@ -30,7 +30,9 @@
 
 	<!--#region Codes Tab Strings-->
 	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Новый чит</system:String>
-	<system:String x:Key="Manager.Tabs.Codes.CodeHeader">Чит</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Edit Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Delete Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Чит</system:String>
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Создан</system:String>
 	<!--#endregion-->
 

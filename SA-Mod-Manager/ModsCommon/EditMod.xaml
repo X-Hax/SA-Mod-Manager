@@ -234,10 +234,10 @@
 											   Icon="{StaticResource Icons.Add}" Content="{DynamicResource Manager.Tabs.Codes.Buttons.NewCode}"
 											   ImageBrush="{DynamicResource Icon.Brushes.Green}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Green}" Click="btnNewCode_Click"/>
                             <elements:ImageButton x:Name="btnDelCode" Style="{StaticResource ImageTextButtonStyle}" Grid.Row="3"
-											   Icon="{StaticResource Icons.Delete}" Content="Delete Code"
+											   Icon="{StaticResource Icons.Delete}" Content="{DynamicResource Manager.Tabs.Codes.Buttons.DeleteCode}"
 											   ImageBrush="{DynamicResource Icon.Brushes.Red}" ImageBrushDisabled="{DynamicResource Icon.Brushes.MouseOver.Red}" Click="btnDelCode_Click"/>
                             <elements:ImageButton x:Name="btnEditCode" Style="{StaticResource ImageTextButtonStyle}" Grid.Row="5"
-											   Icon="{StaticResource Icons.Config}" Content="Edit Code" Click="btnEditCode_Click"/>
+											   Icon="{StaticResource Icons.Config}" Content="{DynamicResource Manager.Tabs.Codes.Buttons.EditCode}" Click="btnEditCode_Click"/>
 						</Grid>
 					</Grid>
 				</TabItem>
