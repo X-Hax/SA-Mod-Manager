@@ -401,7 +401,7 @@
 											<TextBlock x:Name="txtInstallLoader" Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader}" VerticalAlignment="Center"/>
 										</StackPanel>
 									</Button>
-									<Button x:Name="btnOpenGameDir" Height="30" Margin="0,5,0,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.EnableOneClick}" Click="btnOpenGameDir_Click">
+									<Button x:Name="btnOpenGameDir" Height="30" Margin="0,5,0,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.GameDirectory}" Click="btnOpenGameDir_Click">
 										<StackPanel Orientation="Horizontal">
 											<Image Source="{StaticResource Icon.OpenFolder}" Width="20" Margin="0,0,5,0"/>
 											<TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir}" VerticalAlignment="Center"/>
@@ -447,8 +447,8 @@
 										<RowDefinition Height="Auto"/>
 									</Grid.RowDefinitions>
 
-									<Label Content="{StaticResource Manager.Tabs.ManagerConfig.Group.Options.Lang}" Grid.Row="0"/>
-									<Label Content="{StaticResource Manager.Tabs.ManagerConfig.Group.Options.Theme}" Grid.Row="2"/>
+									<Label Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Lang}" Grid.Row="0"/>
+									<Label Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Theme}" Grid.Row="2"/>
 
 									<ComboBox x:Name="comboLanguage" Grid.Column="1" ItemsSource="{Binding LangList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentLang, Source={x:Static Application.Current}}" 
 											  Height="24" Width="335" VerticalAlignment="Center" HorizontalAlignment="Right" Loaded="comboLanguage_Loaded" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
@@ -461,7 +461,7 @@
 
 							<GroupBox x:Name="grpManUpdates" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates}" Grid.Row="1">
 								<UniformGrid Rows="2" Columns="2" Margin="5">
-									<CheckBox x:Name="chkUpdateManager" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager}" IsChecked="True" ToolTip="{StaticResource MainWindow.Tips.Tab.Options.ManagerUpdates}"/>
+									<CheckBox x:Name="chkUpdateManager" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ManagerUpdates}"/>
 									<CheckBox x:Name="chkUpdatesML" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.LoaderUpdates}"/>
 									<CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ModUpdates}"/>
 									<elements:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnCheckUpdates" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.CheckUpdates}"
