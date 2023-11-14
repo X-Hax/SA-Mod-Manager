@@ -6,7 +6,7 @@
     <system:String x:Key="Updater.DL.Download">Загрузка</system:String>
     <system:String x:Key="Updater.DL.Install">Установка</system:String>
     <system:String x:Key="Updater.DL.Update">Обновление</system:String>
-    <system:String x:Key="Updater.DL.Downloading">Downloading</system:String>
+    <system:String x:Key="Updater.DL.Downloading">Загрузка</system:String>
     <system:String x:Key="Updater.DL.Installing">Установка</system:String>
     <system:String x:Key="Updater.DL.Updating">Обновление</system:String>
     <system:String x:Key="Updater.DL.Completed">завершено.</system:String>

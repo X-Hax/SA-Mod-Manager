@@ -50,7 +50,7 @@
     <system:String x:Key="MessageWindow.Errors.ModFailedVerif1">файл(-ов)</system:String>
     <system:String x:Key="MessageWindow.Errors.ModFailedVerif2" xml:space="preserve">&#x0a;&#x0a;Желаете попробовать восстановить их?</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.URIParseFail.Title">URI Parse Failure</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail.Title">Не удалось считать URL</system:String>
     <system:String x:Key="MessageWindow.Errors.URIParseFail0">Неверная ссылка 1-Click Install</system:String>
     <system:String x:Key="MessageWindow.Errors.URIParseFail1" xml:space="preserve">привела к ошибке:&#x0a;</system:String>
 
@@ -68,13 +68,13 @@
     <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail0">Не удалось создать временную папку для обновлений</system:String>
     <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail1">Желаете повторить?</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Ошибка обноления"</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Ошибка обноления</system:String>
     <system:String x:Key="MessageWindow.Errors.UpdateFailed">Не удалось обновить:"</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Не удалось обновить мод"</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Не удалось обновить мод</system:String>
     <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">"Нажмите "Повторить" или "Отмена", чтобы пропустить этот мод".</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Не удалось получить информацию об обновлении."</system:String>
+    <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Не удалось получить информацию об обновлении.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.Net7Missing">Менеджер модов SADX не может быть запущен без .NET 7.</system:String>
 
@@ -86,14 +86,14 @@
     <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Желаете попробовать снова?</system:String>
 
     <system:String x:Key="MessageWindow.Errors.LoaderFailedToSave.Title">Информация о Загрузчике не сохранена.</system:String>
-    <system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">"The Mods directory does not appear to be a valid path, please ensure it is a valid path. Your current settings were not saved for the ModLoader to use."</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">"Папка "Mods" расположена по недопустимому пути. Убедитесь, что указали путь правильно. Текущие настройки Загрузчика модов не были сохранены."</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.CodeFail.Title">Invalid Code Line</system:String>
-    <system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">There is an empty line within the code writer lines.&#x0a;&#x0a;Please remove the empty line and resave.</system:String>
-    <system:String x:Key="Messagewindow.Errors.CodeFailInvalid">The written code is invalid.&#x0a;&#x0a;Please correct the error and resave.</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodeFail.Title">Некорректная строчка чита</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">Среди строк средства записи кода есть пустая строка.&#x0a;&#x0a;Уберите её и пересохраните код.</system:String>
+    <system:String x:Key="Messagewindow.Errors.CodeFailInvalid">Некорректно написан код.&#x0a;&#x0a;Исправьте ошибки и пересохраните его.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Unknown Error</system:String>
-    <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">An unknown error has occurred.</system:String>
+    <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Неизвестная ошибка</system:String>
+    <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Произошла неизвестная ошибка.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -109,11 +109,11 @@
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">Не установлен компонент .NET 7.0 Desktop Runtime!&#x0a;&#x0a;Установить его сейчас?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Вы удалите все выбранные читы.&#x0a;&#x0a;Желаете продолжить?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Вы удалите все выбранные коды.&#x0a;&#x0a;Желаете продолжить?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">You are about to disable updates for this mod. If you continue, the Manager will NEVER check update for this mod.&#x0a;Are you sure you want to proceed?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">Вы выключите обновления этого мода. Если продолжите, Менеджер больше не будет проверять обновления для этого мода.&#x0a;Желаете продолжить?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">The Mod Manager needs 7-zip to extract mods and handle updates.&#x0a;&#x0a;Would you like to install it now?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">Для работы Менеджера необходим 7-zip, чтобы можно было извлекать моды и обновления.&#x0a;&#x0a;Желаете установить его сейчас?</system:String>
 
     <!--#endregion-->
 	
