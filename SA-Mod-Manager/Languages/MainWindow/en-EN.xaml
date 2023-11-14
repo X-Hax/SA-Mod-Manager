@@ -188,6 +188,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Opens the Profile Manager where you can create and delete profiles.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Full path to the directory your game is installed in.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Opens a window where you can select your game directory.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Opens the directory your game is installed in.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Sets the theme used by the Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Sets the language used by the Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Keeps the Mod Manager open when pressing Save and Play.</system:String>
