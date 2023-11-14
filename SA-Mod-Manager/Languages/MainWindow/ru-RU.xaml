@@ -7,8 +7,8 @@
 	<system:String x:Key="Manager.Tabs.Mods">Моды</system:String>
 	<system:String x:Key="Manager.Tabs.Codes">Читы</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig">Настройки игры</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig">Настройки Менеджера</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn">Тестовая загрузка</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig">Настройки</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn">Дебаг</system:String>
 	<!--#endregion-->
 
 	<!--#region Mods Tab Strings-->
@@ -32,8 +32,8 @@
 
 	<!--#region Codes Tab Strings-->
 	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Новый чит</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Edit Code</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Delete Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Изменить чит</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Удалить чит</system:String>
     <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Чит</system:String>
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Создан</system:String>
 	<!--#endregion-->
@@ -64,7 +64,7 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Дополнительные настройки</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Не закрывать Менеджер при запуске игры</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Включить опции разработчика</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Включить консоль</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Писать в консоль</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Вывод отладочных сообщений в игре</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Писать данные отладки в файл</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Создавать дамп-файл вылетов</system:String>
@@ -191,7 +191,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Выбор используемой темы Менеджера модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Выбор языка интерфейса Менеджера модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Оставлять Менеджер модов включённым при нажатии "Сохранить и играть".</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Включить вкладку "Тестовая загрузка" в Менеджере модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Включить вкладку "Дебаг" в Менеджере модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Когда включено, при нажатии на кнопку "1-Click Install" на GameBanana будет открываться окно загрузки мода.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Когда включено, активируется Загрузчик модов, благодаря чему можно играть с модами, патчами и читами.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Включить автоматическую проверку Менеджера модов при запуске.</system:String>

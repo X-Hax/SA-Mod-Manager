@@ -45,13 +45,19 @@
 	<system:String x:Key="CommonStrings.Version">Версия</system:String>
 	<system:String x:Key="CommonStrings.Category">Категория</system:String>
 	<system:String x:Key="CommonStrings.Description">Описание:</system:String>
-	<system:String x:Key="CommonStrings.Search">Поиск</system:String>
+	<system:String x:Key="CommonStrings.Search">Поиск:</system:String>
 	<system:String x:Key="CommonStrings.Credits">Авторы</system:String>
 	<system:String x:Key="CommonStrings.Download">Скачать</system:String>
     <system:String x:Key="CommonStrings.OpenFolder">Открыть папку</system:String>
     <system:String x:Key="CommonStrings.None">Пусто</system:String>
     <system:String x:Key="CommonStrings.Enabled">Включено</system:String>
     <system:String x:Key="CommonStrings.Disabled">Выключено</system:String>
+    
+    <!--Region Create Code-->
+    <system:String x:Key="CommonStrings.Type">Тим</system:String>
+    <system:String x:Key="CommonStrings.TypeCode">Чит</system:String>
+    <system:String x:Key="CommonStrings.Typepatch">Патч</system:String>
+    <system:String x:Key="CommonStrings.IsRequired"> Обязателен</system:String>
 
     <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Свернуть</system:String>

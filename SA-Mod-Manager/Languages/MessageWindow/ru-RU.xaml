@@ -118,7 +118,7 @@
     <!--#endregion-->
 	
 	<!--#region Information-->
-	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">Не найдены обновления модов</system:String>
+	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">Не найдено обновлений модов</system:String>
 	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Все моды уже обновлены.</system:String>
 
     <system:String x:Key="MessageWindow.Information.D3D8Update">Версия модуля d3d8.dll в папке SADX отличается от той, что входит в состав Загрузчика модов. Желаете обновить?</system:String>
