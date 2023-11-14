@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SAModManager.UI"
         mc:Ignorable="d" Style="{StaticResource SAWindowUtil}"
-        Title="Welcome" Height="500" Width="700" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="{DynamicResource SplashScreen.Title}" Height="500" Width="700" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 	<Window.Resources>
 		<ResourceDictionary>
 			<BitmapImage x:Key="icon" UriSource="../Icons/SADXModManager_.png"/>
