@@ -54,8 +54,8 @@
     <system:String x:Key="CommonStrings.Disabled">Выключено</system:String>
     
     <!--Region Create Code-->
-    <system:String x:Key="CommonStrings.Type">Тим</system:String>
-    <system:String x:Key="CommonStrings.TypeCode">Чит</system:String>
+    <system:String x:Key="CommonStrings.Type">Тип</system:String>
+    <system:String x:Key="CommonStrings.TypeCode">Код</system:String>
     <system:String x:Key="CommonStrings.Typepatch">Патч</system:String>
     <system:String x:Key="CommonStrings.IsRequired"> Обязателен</system:String>
 

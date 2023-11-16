@@ -4,7 +4,7 @@
 	
 	<system:String x:Key="GamePatches.3DSound">Включение HRTF-пространственного звука</system:String>
 	<system:String x:Key="GamePatches.CamCode">Исправления ошибок кода камеры</system:String>
-	<system:String x:Key="GamePatches.VertexColor">Исправления вертексных цветов</system:String>
+	<system:String x:Key="GamePatches.VertexColor">Исправления вертексной покраски моделей</system:String>
 	<system:String x:Key="GamePatches.MaterialColor">Исправления цветов материалов</system:String>
 	<system:String x:Key="GamePatches.Interpolation">Исправления интерполяции</system:String>
 	<system:String x:Key="GamePatches.FixFOV">Исправления области обзора</system:String>
@@ -20,7 +20,7 @@
 
     <system:String x:Key="GamePatches.3DSoundDesc">Настраивает DirectSound на использование более продвинутых алгоритмов для обработки 3D-звуков. Этот патч не нужен, если включен BASS для звуков.</system:String>
     <system:String x:Key="GamePatches.CamCodeDesc">Исправляет ошибку, из-за которой настройки свободной камеры не сохраняются после смерти или загрузки зоны/акта.</system:String>
-    <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">Vanilla SADX deliberately ignores the mesh-provided vertex color and instead uses a global vertex color even when it shouldn't.&#x0a;&#x0a;This patch re-implements the functions to handle the case CORRECTLY and use the mesh-provided vertex colors.</system:String>
+    <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">Ванильная SADX игнорирует вертексную покраску моделей, используя вместо неё глобальное значение, даже если это не нужно.&#x0a;&#x0a;Этот патч переопределяет функции, связанные с корректным нанесением вертексных цветов.</system:String>
     <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">Игра циклически проходит по всем моделям, заменяя цвета материалов на белый.&#x0a;&#x0a; Этот патч исправляет несоответствия цветов , деляя модели более похожими на их аналоги из версий игры с Dreamcast и Gamecube.</system:String>
     <system:String x:Key="GamePatches.InterpolationDesc">Устраняет проблемы вращения некоторых анимаций за счёт использования кватернионов вместо углов Эйлера.</system:String>
     <system:String x:Key="GamePatches.FixFOVDesc">Улучшает область обзора и позволяет играть с портретным соотношением сторон экрана.</system:String>
