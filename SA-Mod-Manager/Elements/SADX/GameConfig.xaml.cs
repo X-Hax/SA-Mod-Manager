@@ -466,9 +466,9 @@ namespace SAModManager.Elements.SADX
 
 				new PatchesData()
 				{
-					Name = Lang.GetString("GamePatches.Interpolation"),
-					Description = Lang.GetString("GamePatches.InterpolationDesc"),
-					IsChecked = set.Patches.InterpolationFix
+					Name = Lang.GetString("GamePatches.NodeLimit"),
+					Description = Lang.GetString("GamePatches.NodeDesc"),
+					IsChecked = set.Patches.NodeLimit
 				},
 
 				new PatchesData()
@@ -619,7 +619,7 @@ namespace SAModManager.Elements.SADX
 			patch = (PatchesData)listPatches.Items[5];
 			settings.Patches.FOVFix = patch.IsChecked;
 			patch = (PatchesData)listPatches.Items[4];
-			settings.Patches.InterpolationFix = patch.IsChecked;
+			settings.Patches.NodeLimit = patch.IsChecked;
 			patch = (PatchesData)listPatches.Items[3];
 			settings.Patches.MaterialColorFix = patch.IsChecked;
 			patch = (PatchesData)listPatches.Items[2];

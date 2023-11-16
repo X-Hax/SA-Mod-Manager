@@ -6,7 +6,7 @@
 	<system:String x:Key="GamePatches.CamCode">Fix Errori Codice Telecamera</system:String>
 	<system:String x:Key="GamePatches.VertexColor">Fix Colori Vertex</system:String>
 	<system:String x:Key="GamePatches.MaterialColor">Fix Colori Materiali</system:String>
-	<system:String x:Key="GamePatches.Interpolation">Fix Interpolazione</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Increase Node Limit</system:String>
 	<system:String x:Key="GamePatches.FixFOV">Fix FoV</system:String>
 	<system:String x:Key="GamePatches.Skychase">Fix Sky Chase</system:String>
 	<system:String x:Key="GamePatches.Chaos2">Fix Chaos 2 Crash</system:String>

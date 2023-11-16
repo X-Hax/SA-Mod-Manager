@@ -7,7 +7,7 @@
     <system:String x:Key="GamePatches.CamCode">Correctifs du Code de la Caméra</system:String>
     <system:String x:Key="GamePatches.VertexColor">Correctifs des Vertex Color</system:String>
     <system:String x:Key="GamePatches.MaterialColor">Correctif des Matériaux de Couleurs</system:String>
-    <system:String x:Key="GamePatches.Interpolation">Correctifs de l'Interpolation</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Améliore la limitation des Nodes</system:String>
     <system:String x:Key="GamePatches.FixFOV">Correctifs du Fov</system:String>
     <system:String x:Key="GamePatches.Skychase">Correctifs de Sky Chase</system:String>
     <system:String x:Key="GamePatches.Chaos2">Correctifs du Crash Chaos 2</system:String>
@@ -23,7 +23,7 @@
     <system:String x:Key="GamePatches.CamCodeDesc">Corrige un bug du jeu qui empêche la sauvegarde des paramètres "Free Cam" lors d'une mort ou du chargement d'une zone ou d'un acte.</system:String>
     <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">Le jeu de base ignore délibérément les couleurs de sommet fournies par les modèles et utilise à la place une "couleur de sommet globale", même lorsqu'elle ne devrait pas être utilisée.&#x0a;&#x0a;Ce patch réimplémente les fonctions permettant de contrôler CORRECTEMENT l’utilisation des couleurs de sommet au cas par cas pour utiliser les couleurs de sommet fournies par les modèles.</system:String>
     <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">Révise tous les modèles du jeu pour remplacer leurs couleurs matérielles par du blanc.&#x0a;&#x0a;Ceci corrige plusieurs incohérences et rend les modèles plus proches de ce qu'ils étaient dans les versions Dreamcast et GameCube.</system:String>
-    <system:String x:Key="GamePatches.InterpolationDesc">Corrige les problèmes de rotation de certaines animations en utilisant des quaternions au lieu des angles d'Euler.</system:String>
+    <system:String x:Key="GamePatches.NodeDesc" xml:space="preserve">SADX possède normalement une limite de 111 "nodes" par personnage pour les modèles et les animations.&#x0a;&#x0a;Ce patch augmente cette limite à 254, permettant l'intégration de modèles plus modernes dans le jeu.</system:String>
     <system:String x:Key="GamePatches.FixFOVDesc">Améliore le champ de vision et permet des résolutions/dimensions verticales/portraits.</system:String>
     <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Permet à Sky Chase de fonctionner de la même manière dans toutes les résolutions d'écran. Ce patch corrige les mouvements du Tornado et du réticule, ainsi que la cadence de tir de l'ennemi.&#x0a;&#x0a;Il est plus facile d'obtenir le score pour les emblèmes à des résolutions supérieures à 640x480 avec ce patch que dans le jeu de base.</system:String>
     <system:String x:Key="GamePatches.Chaos2Desc">Corrige un bug du jeu où battre Chaos 2 et redémarrer le boss faisait planter le jeu.</system:String>

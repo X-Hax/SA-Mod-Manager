@@ -6,7 +6,7 @@
 	<system:String x:Key="GamePatches.CamCode">Correções do Erro do Código da Camera</system:String>
 	<system:String x:Key="GamePatches.VertexColor">Correções na Cor do(s) Vértice(s)</system:String>
 	<system:String x:Key="GamePatches.MaterialColor">Correções na Cor do Material</system:String>
-	<system:String x:Key="GamePatches.Interpolation">Correções na Interpolação</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Increase Node Limit</system:String>
 	<system:String x:Key="GamePatches.FixFOV">Correções no FOV</system:String>
 	<system:String x:Key="GamePatches.Skychase">Correções no Sky Chase</system:String>
 	<system:String x:Key="GamePatches.Chaos2">Correções onde Chaos 2 Travava</system:String>

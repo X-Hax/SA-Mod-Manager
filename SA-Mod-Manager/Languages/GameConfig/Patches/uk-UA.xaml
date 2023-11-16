@@ -6,7 +6,7 @@
 	<system:String x:Key="GamePatches.CamCode">Полагодження Camera Code Error</system:String>
 	<system:String x:Key="GamePatches.VertexColor">Полагодження Кольорів Вершиин</system:String>
 	<system:String x:Key="GamePatches.MaterialColor">Полагодження Кольору Матеріалів</system:String>
-	<system:String x:Key="GamePatches.Interpolation">Полагодження інтерполяції анімацій</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Increase Node Limit</system:String>
 	<system:String x:Key="GamePatches.FixFOV">Полагодження Fov</system:String>
 	<system:String x:Key="GamePatches.Skychase">Полагодження Sky Chase</system:String>
 	<system:String x:Key="GamePatches.Chaos2">Полагодження аварій Chaos 2</system:String>

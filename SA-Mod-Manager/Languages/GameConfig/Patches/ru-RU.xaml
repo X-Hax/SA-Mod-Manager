@@ -6,7 +6,7 @@
 	<system:String x:Key="GamePatches.CamCode">Исправления ошибок кода камеры</system:String>
 	<system:String x:Key="GamePatches.VertexColor">Исправления вертексных цветов</system:String>
 	<system:String x:Key="GamePatches.MaterialColor">Исправления цветов материалов</system:String>
-	<system:String x:Key="GamePatches.Interpolation">Исправления интерполяции</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Исправления интерполяции</system:String>
 	<system:String x:Key="GamePatches.FixFOV">Исправления области обзора</system:String>
 	<system:String x:Key="GamePatches.Skychase">Исправления на Sky Chase</system:String>
 	<system:String x:Key="GamePatches.Chaos2">Исправления вылетов на Хаосе 2</system:String>
