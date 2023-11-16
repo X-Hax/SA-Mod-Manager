@@ -10,6 +10,7 @@
 		<ResourceDictionary Source="GameConfig/ru-RU.xaml"/>
 		<ResourceDictionary Source="GameConfig/Patches/ru-RU.xaml"/>
 		<ResourceDictionary Source="GameConfig/TestSpawn/ru-RU.xaml"/>
+        <ResourceDictionary Source="HealthProgress/ru-RU.xaml"/>
 		<ResourceDictionary Source="InfoManagerUpdate/ru-RU.xaml"/>
 		<ResourceDictionary Source="InstallModOptions/ru-RU.xaml"/>
 		<ResourceDictionary Source="MainWindow/ru-RU.xaml"/>
@@ -20,6 +21,8 @@
 		<ResourceDictionary Source="ModProfile/ru-RU.xaml"/>
 		<ResourceDictionary Source="NewCode/ru-RU.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/ru-RU.xaml"/>
+        <ResourceDictionary Source="SplashScreen/ru-RU.xaml"/>
+        <ResourceDictionary Source="Updater/ru-RU.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/ru-RU.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
@@ -42,12 +45,21 @@
 	<system:String x:Key="CommonStrings.Version">Версия</system:String>
 	<system:String x:Key="CommonStrings.Category">Категория</system:String>
 	<system:String x:Key="CommonStrings.Description">Описание:</system:String>
-	<system:String x:Key="CommonStrings.Search">Поиск</system:String>
+	<system:String x:Key="CommonStrings.Search">Поиск:</system:String>
 	<system:String x:Key="CommonStrings.Credits">Авторы</system:String>
 	<system:String x:Key="CommonStrings.Download">Скачать</system:String>
-	<system:String x:Key="CommonStrings.OpenFolder">Открыть папку</system:String>
+    <system:String x:Key="CommonStrings.OpenFolder">Открыть папку</system:String>
+    <system:String x:Key="CommonStrings.None">Пусто</system:String>
+    <system:String x:Key="CommonStrings.Enabled">Включено</system:String>
+    <system:String x:Key="CommonStrings.Disabled">Выключено</system:String>
+    
+    <!--Region Create Code-->
+    <system:String x:Key="CommonStrings.Type">Тип</system:String>
+    <system:String x:Key="CommonStrings.TypeCode">Код</system:String>
+    <system:String x:Key="CommonStrings.Typepatch">Патч</system:String>
+    <system:String x:Key="CommonStrings.IsRequired"> Обязателен</system:String>
 
-	<!--Window Tips-->
+    <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Свернуть</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Развернуть</system:String>
 	<system:String x:Key="Window.Tips.Restore">Восстановить окно</system:String>

@@ -197,3 +197,4 @@ SADXModLoader/git_version.h
 *.ide
 /.vs
 *.svg
+SA-Mod-Manager/UI/MainWindow.xaml

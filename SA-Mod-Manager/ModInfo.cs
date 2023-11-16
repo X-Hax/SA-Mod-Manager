@@ -83,6 +83,7 @@ namespace SAModManager
 			"Skin",
 			"Sound",
 			"Textures",
+			"Translation",
 			"UI"
 		};
 
