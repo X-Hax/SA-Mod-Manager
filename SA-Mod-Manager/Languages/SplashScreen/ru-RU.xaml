@@ -1,0 +1,31 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="SplashScreen.Title">Приветствуем!</system:String>
+    <system:String x:Key="SplashScreen.Welcome">Приветствуем в обновлённом Менеджере модов SA!</system:String>
+
+    <system:String x:Key="SplashScreen.Intro" xml:space="preserve">Перед вами обновлённый Менеджер модов SA!&#x0a;&#x0a;Он привносит улучшения пользовательского опыта, новые особенности и минорные обновления Загрузчика модов. Все существующие моды продолжат с ним работать. Ниже приведён сравнительно список основных изменений.</system:String>
+    <system:String x:Key="SplashScreen.QOL">Список улучшений:</system:String>
+    <system:String x:Key="SplashScreen.QOL.Themes">Теперь Менеджер поддерживает темы! Тему можно сменить во вкладке "Настройки".</system:String>
+    <system:String x:Key="SplashScreen.QOL.Languages">Теперь Менеджер поддерживает разные языки! Язык можно сменить во вкладке "Настройки".</system:String>
+    <system:String x:Key="SplashScreen.QOL.Manager">Больше не требуется помещать Менеджер в папку с игрой! Если вы видите этот экран после обновления старого Менеджера модов, новый Менеджер будет находиться в папке с игрой. Но вы сможете переместить его куда угодно!</system:String>
+    <system:String x:Key="SplashScreen.QOL.Profiles">Профили были обновлены до новой системы, а их можно настроить с помощью нового инструмента во вкладке "Настройки". Там же будет кнопка для преобразования старых профилей в новый формат, если желаете использовать их.</system:String>
+    <system:String x:Key="SplashScreen.QOL.Config">Настройки игры и Менеджера были разнесены по разным вкладкам. Опции отладки (вывод в консоль, логирование, создание дампов и т.д.) находятся во вкладке "Настройки". Все настройки, связанные с игрой, находятся во вкладке "Настройки игры".</system:String>
+    <system:String x:Key="SplashScreen.QOL.KeepOpen">Был добавлен новый чекбокс, отвечающий за то, чтобы Менеджер не закрывался при запуске игры. Он включён по умолчанию.</system:String>
+
+    <system:String x:Key="SplashScreen.Features">Новые особенности:</system:String>
+    <system:String x:Key="SplashScreen.Features.AddMod">Кнопка "New Mod" заменена на "Добавить мод", совмещающая в себе создание нового мода и установку существующих. Установить можно из папки или из архива.</system:String>
+    <system:String x:Key="SplashScreen.Features.About">Для модов и кодов доступно окно с информацией о них при двойном клике мыши по ним. Также для модов можно прописать ссылку на автора и исходники мода. Если их прописать, то в окне информации о моде появятся соответствующие кнопки.</system:String>
+    <system:String x:Key="SplashScreen.Features.HealthCheck">Была встроена проверка состояния игры. С её помощью можно обнаружить изменённые или потерянные файлы. Если игра работает должным образом, эти проблемы не влияют на её работу.</system:String>
+    <system:String x:Key="SplashScreen.Features.Search">Появился поиск среди модов и кодов. Находясь во вкладке "Моды" или "Коды", нажмите Ctrl+F.</system:String>
+    <system:String x:Key="SplashScreen.Features.Codes">Добавлен специальный редактор кодов. При создании нового мода или изменении существующего можно добавить специфичные коды. Для упрощения их написания была добавлена подсветка синтаксиса для нашей системы OpCodes. Это позволит убедиться в правильности написания кода.</system:String>
+    <system:String x:Key="SplashScreen.Features.NewMod">Создание новых модов было упрощено. Можно добавить информацию о том, откуда брать обновления, а также о зависимостях прямо в окне создания мода. Для существующих модов необходимо выбрать пункт контекстного меню "Изменить мод" и заполнить соответствующие поля.</system:String>
+    <system:String x:Key="SplashScreen.Features.CodeDesc">Теперь у кодов есть описание. Это необходимо для кодов, по названию которых может быть тяжело понять, для чего они нужны. Также описание можно добавить и для пользовательских кодов.</system:String>
+
+    <system:String x:Key="SplashScreen.ML">Изменения Загрузчика модов SADX</system:String>
+    <system:String x:Key="SplashScreen.ML.Patches">Можно включать или отключать патчи, которые раньше просто шли с Загрузчиком. Большинство из них включено по умолчанию, а найти их можно по вкладке "Опции игры" -> "Патчи"</system:String>
+    <system:String x:Key="SplashScreen.ML.SDL2">The Input Mod (SDL2) был встроен непосредственно в Загрузчик модов. Он включён по умолчанию. Можно переключаться между SDL2 и стандартной системой управления во вкладке "Опции игры" -> "Управление".</system:String>
+    
+</ResourceDictionary>

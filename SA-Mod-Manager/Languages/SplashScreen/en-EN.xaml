@@ -3,6 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <system:String x:Key="SplashScreen.Title">Welcome</system:String>
 	<system:String x:Key="SplashScreen.Welcome">Welcome to the SA Mod Manager</system:String>
 
 	<system:String x:Key="SplashScreen.Intro" xml:space="preserve">You have been upgraded to the SA Mod Manager!&#x0a;&#x0a;This new Manager comes with quality of life improvements, new features, and some minor updates to the Mod Loader. All existing mods will continue to work as intended. Below you'll find a relatively complete list of all the major changes.</system:String>

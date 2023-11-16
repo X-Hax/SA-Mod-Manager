@@ -51,6 +51,12 @@
     <system:String x:Key="CommonStrings.Enabled">Activer</system:String>
     <system:String x:Key="CommonStrings.Disabled">Désactiver</system:String>
 
+    <!--Region Create Code-->
+    <system:String x:Key="CommonStrings.Type">Type</system:String>
+    <system:String x:Key="CommonStrings.TypeCode">Code</system:String>
+    <system:String x:Key="CommonStrings.Typepatch">Patch</system:String>
+    <system:String x:Key="CommonStrings.IsRequired">Is Required</system:String>
+
     <!--Window Tips-->
     <system:String x:Key="Window.Tips.Minimize">Minimiser</system:String>
     <system:String x:Key="Window.Tips.Maximize">Maximiser</system:String>
