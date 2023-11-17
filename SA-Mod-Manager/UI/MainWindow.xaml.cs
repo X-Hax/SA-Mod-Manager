@@ -1871,10 +1871,10 @@ namespace SAModManager
 
         private async Task ExecuteModsUpdateCheck()
         {
+            ClearUpdateFolder();
             await UpdateChecker_DoWork();
             await UpdateChecker_RunWorkerCompleted();
             UpdateChecker_EnableControls();
-
         }
 
         private async Task UpdateChecker_RunWorkerCompleted()
@@ -1954,6 +1954,23 @@ namespace SAModManager
             new Updater.ModDownloadDialogWPF(updates, updatePath).ShowDialog();
             await Task.Delay(500);
             Refresh();
+        }
+
+        private static void ClearUpdateFolder()
+        {
+            try
+            {
+                if (App.CurrentGame is not null)
+                {
+                    string fullPath = Path.Combine(App.CurrentGame.modDirectory, ".updates");
+                    if (Directory.Exists(fullPath))
+                    {
+                        Directory.Delete(fullPath, true);
+                    }
+                }
+       
+            }
+            catch { }
         }
 
         private async Task CheckForModUpdates(bool force = false)

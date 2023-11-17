@@ -43,15 +43,15 @@ namespace SAModManager.Updater
             {
                 case DLType.Download:
                 default:
-                    Title =  Lang.GetString("Updater.DL.Download") + " - ";
+                    Title =  Lang.GetString("Updater.DL.Dep.Download") + " - ";
                     break;
                 case DLType.Install:
-                    Title = Lang.GetString("Updater.DL.Install") + " - ";
-                    DLInfo.Text = Lang.GetString("Updater.DL.Installing");
+                    Title = Lang.GetString("Updater.DL.Dep.Install") + " - ";
+                    DLInfo.Text = Lang.GetString("Updater.DL.Dep.Installing");
                     break;
                 case DLType.Update:
-                    Title = Lang.GetString("Updater.DL.Update") + " - ";
-                    DLInfo.Text = Lang.GetString("Updater.DL.Updating");
+                    Title = Lang.GetString("Updater.DL.Dep.Update") + " - ";
+                    DLInfo.Text = Lang.GetString("Updater.DL.Dep.Updating");
                     break;
             }
 
@@ -94,17 +94,17 @@ namespace SAModManager.Updater
                 {
                     case DLType.Download:
                     default:
-                        DLInfo.Text = Lang.GetString("Updater.DL.Download") + " ";
+                        DLInfo.Text = Lang.GetString("Updater.DL.Dep.Download") + " ";
                         break;
                     case DLType.Install:
-                        DLInfo.Text = Lang.GetString("Updater.DL.Install") + " ";
+                        DLInfo.Text = Lang.GetString("Updater.DL.Dep.Install") + " ";
                         break;
                     case DLType.Update:
-                        DLInfo.Text = Lang.GetString("Updater.DL.Update") + " ";
+                        DLInfo.Text = Lang.GetString("Updater.DL.Dep.Update") + " ";
                         break;
                 }
 
-                DLInfo.Text += Lang.GetString("Updater.DL.Completed") + "\n" + Lang.GetString("Updater.DL.Copying");
+                DLInfo.Text += Lang.GetString("Updater.DL.Dep.Completed") + "\n" + Lang.GetString("Updater.DL.Dep.Copying");
 
                 await Task.Delay(200);
                 if (File.Exists(fileName) && Directory.Exists(dest))
@@ -134,17 +134,17 @@ namespace SAModManager.Updater
             {
                 case DLType.Download:
                 default:
-                    DLInfo.Text = Lang.GetString("Updater.DL.Download") + " ";
+                    DLInfo.Text = Lang.GetString("Updater.DL.Dep.Download") + " ";
                     break;
                 case DLType.Install:
-                    DLInfo.Text = Lang.GetString("Updater.DL.Install") + " ";
+                    DLInfo.Text = Lang.GetString("Updater.DL.Dep.Install") + " ";
                     break;
                 case DLType.Update:
-                    DLInfo.Text = Lang.GetString("Updater.DL.Update") + " ";
+                    DLInfo.Text = Lang.GetString("Updater.DL.Dep.Update") + " ";
                     break;
             }
 
-            DLInfo.Text += Lang.GetString("Updater.DL.Completed") + "\n" + Lang.GetString("Updater.DL.Copying");
+            DLInfo.Text += Lang.GetString("Updater.DL.Dep.Completed") + "\n" + Lang.GetString("Updater.DL.Dep.Copying");
             DLProgress.Value = DLProgress.Maximum;
             await Task.Delay(1000);
             if (File.Exists(fileName) && Directory.Exists(dest))

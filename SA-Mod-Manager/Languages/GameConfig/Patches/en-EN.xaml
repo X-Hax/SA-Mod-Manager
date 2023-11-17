@@ -1,12 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
-	
-	<system:String x:Key="GamePatches.3DSound">Allow HRTF 3D Sound</system:String>
+
+
+    <system:String x:Key="GamePatches.Title">Patch</system:String>
+    <system:String x:Key="GamePatches.3DSound">Allow HRTF 3D Sound</system:String>
 	<system:String x:Key="GamePatches.CamCode">Camera Code Error Fixes</system:String>
     <system:String x:Key="GamePatches.VertexColor">Vertex Color Fixes</system:String>
     <system:String x:Key="GamePatches.MaterialColor">Material Color Fixes</system:String>
-	<system:String x:Key="GamePatches.Interpolation">Interpolation Fixes</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Increase Node Limit</system:String>
 	<system:String x:Key="GamePatches.FixFOV">Fov Fixes</system:String>
 	<system:String x:Key="GamePatches.Skychase">Sky Chase Fixes</system:String>
 	<system:String x:Key="GamePatches.Chaos2">Chaos 2 Crashes Fixes</system:String>
@@ -22,7 +24,7 @@
     <system:String x:Key="GamePatches.CamCodeDesc">Fixes a vanilla bug that prevents Free Cam Settings from being saved properly when dying or loading a zone/act.</system:String>
     <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">Vanilla SADX deliberately ignores the mesh-provided vertex color and instead uses a global vertex color even when it shouldn't.&#x0a;&#x0a;This patch re-implements the functions to handle the case CORRECTLY and use the mesh-provided vertex colors.</system:String>
     <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">This loops through all models in the game and replaces their material colors with white.&#x0a;&#x0a;This fixes various inconsistencies and makes the models look more like they do in the Gamecube and Dreamcast versions of the game.</system:String>
-    <system:String x:Key="GamePatches.InterpolationDesc">Fixes rotation issues of some animations by using quaternions instead of euler angles.</system:String>
+    <system:String x:Key="GamePatches.NodeDesc" xml:space="preserve">SADX originally has a limit of 111 nodes per character for models and animations.&#x0a;&#x0a;This patch increases the limit to 254, enabling the integration of more modern and complex models into the game.</system:String>
     <system:String x:Key="GamePatches.FixFOVDesc">Improves the FOV and allows for vertical/portrait resolutions/dimensions.</system:String>
     <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Makes Sky Chase work the same way at all screen resolutions. This fixes Tornado and reticle movement, as well as enemy fire rate.&#x0a;&#x0a;Obtaining score for emblems at resolutions higher than 640x480 is easier with this patch than in the vanilla game.</system:String>
     <system:String x:Key="GamePatches.Chaos2Desc">Fixes a vanilla bug where beating Chaos 2 and restarting the boss was crashing the game.</system:String>

@@ -6,4 +6,8 @@
 	<system:String x:Key="InstallModOptions.Radio.Archive">Установить из архива</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Folder">Установить из папки</system:String>
 	<system:String x:Key="InstallModOptions.Radio.New">Новый мод (для разработчиков)</system:String>
+
+    <!--Mod Download-->
+    <system:String x:Key="ModDL.DLMod">Download Mod</system:String>
+    <system:String x:Key="ModDL.OpenLink">Open Link</system:String>
 </ResourceDictionary>

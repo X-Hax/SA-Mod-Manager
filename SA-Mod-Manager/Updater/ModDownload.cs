@@ -9,6 +9,7 @@ using System.Net;
 using SevenZipExtractor;
 using SAModManager.Common;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace SAModManager.Updater
 {

@@ -8,6 +8,12 @@
     <system:String x:Key="InstallModOptions.Radio.Archive">Installer à partir d'une archive</system:String>
     <system:String x:Key="InstallModOptions.Radio.Folder">Installier à partir d'un dossier</system:String>
     <system:String x:Key="InstallModOptions.Radio.New">Nouveau Mod (Pour les Développeurs)</system:String>
+
+    <!--Mod Download-->
+    <system:String x:Key="ModDL.DLMod">Téléchargement Mod</system:String>
+    <system:String x:Key="ModDL.OpenLink">Ouvrir le Lien</system:String>
+    <system:String x:Key="ModDL.NoDescript">Aucune description trouvée.</system:String>
+
     <!--#endregion-->
 
 </ResourceDictionary>

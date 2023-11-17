@@ -452,13 +452,13 @@
 							<Button x:Name="btnSelectAllPatch" Margin="0,5,5,5" Grid.Column="0" Click="btnSelectAllPatch_Click">
 								<StackPanel Orientation="Horizontal">
 									<Image Width="15" Source="{DynamicResource Icon.SelectAll}" Margin="0,0,5,0"/>
-									<TextBlock Text="Select All" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{DynamicResource CommonStrings.SelectAll}" VerticalAlignment="Center"/>
 								</StackPanel>
 							</Button>
 							<Button x:Name="btnDeselectAllPatch" Margin="5,5,0,5" Grid.Column="1" Click="btnDeselectAllPatch_Click">
 								<StackPanel Orientation="Horizontal">
 									<Image Width="15" Source="{DynamicResource Icon.DeselectAll}" Margin="0,0,5,0"/>
-									<TextBlock Text="Deselect All" VerticalAlignment="Center"/>
+									<TextBlock Text="{DynamicResource CommonStrings.DeselectAll}" VerticalAlignment="Center"/>
 								</StackPanel>
 							</Button>
 						</Grid>
@@ -494,7 +494,7 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 
-							<TextBlock Text="Patch" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
+							<TextBlock Text="{DynamicResource GamePatches.Title}" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
 							<Separator Grid.Row="0" VerticalAlignment="Bottom"/>
                             <TextBlock x:Name="PatchDescription" Text="{DynamicResource CommonStrings.Description}" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Left" FontSize="14" Margin="0,0,5,0"/>
 						</Grid>

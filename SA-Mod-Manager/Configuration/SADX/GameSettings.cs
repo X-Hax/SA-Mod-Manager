@@ -397,10 +397,10 @@ namespace SAModManager.Configuration.SADX
 		public bool MaterialColorFix { get; set; } = true;      // SADXLoaderInfo.MaterialColorFix
 
 		/// <summary>
-		/// Fixes an issue where rotations don't always follow the shortest path.
+		/// Increases nodes limits to 254 (originally 111 for characters)
 		/// </summary>
 		[DefaultValue(true)]
-		public bool InterpolationFix { get; set; } = true;      // SADXLoaderInfo.InterpolationFix
+		public bool NodeLimit { get; set; } = true;      // New Feature, doesn't originally exist
 
 		/// <summary>
 		/// Fixes the game's FOV.
@@ -472,7 +472,7 @@ namespace SAModManager.Configuration.SADX
 			KeepCamSettings = oldSettings.CCEF;
 			FixVertexColorRendering = oldSettings.PolyBuff;
 			MaterialColorFix = oldSettings.MaterialColorFix;
-			InterpolationFix = oldSettings.InterpolationFix;
+			NodeLimit = oldSettings.NodeLimit;
 			FOVFix = oldSettings.FovFix;
 			SkyChaseResolutionFix = oldSettings.SCFix;
 			Chaos2CrashFix = oldSettings.Chaos2CrashFix;
@@ -625,7 +625,7 @@ namespace SAModManager.Configuration.SADX
 			loaderInfo.CCEF = Patches.KeepCamSettings;
 			loaderInfo.PolyBuff = Patches.FixVertexColorRendering;
 			loaderInfo.MaterialColorFix = Patches.MaterialColorFix;
-			loaderInfo.InterpolationFix = Patches.InterpolationFix;
+			loaderInfo.NodeLimit = Patches.NodeLimit;
 			loaderInfo.FovFix = Patches.FOVFix;
 			loaderInfo.SCFix = Patches.SkyChaseResolutionFix;
 			loaderInfo.Chaos2CrashFix = Patches.Chaos2CrashFix;

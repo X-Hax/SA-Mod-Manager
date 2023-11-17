@@ -1,12 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
-	
-	<system:String x:Key="GamePatches.3DSound">Abilita suono 3D HRTF</system:String>
+
+    <system:String x:Key="GamePatches.Title">Patch</system:String>
+    <system:String x:Key="GamePatches.3DSound">Abilita suono 3D HRTF</system:String>
 	<system:String x:Key="GamePatches.CamCode">Fix Errori Codice Telecamera</system:String>
 	<system:String x:Key="GamePatches.VertexColor">Fix Colori Vertex</system:String>
 	<system:String x:Key="GamePatches.MaterialColor">Fix Colori Materiali</system:String>
-	<system:String x:Key="GamePatches.Interpolation">Fix Interpolazione</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Increase Node Limit</system:String>
 	<system:String x:Key="GamePatches.FixFOV">Fix FoV</system:String>
 	<system:String x:Key="GamePatches.Skychase">Fix Sky Chase</system:String>
 	<system:String x:Key="GamePatches.Chaos2">Fix Chaos 2 Crash</system:String>

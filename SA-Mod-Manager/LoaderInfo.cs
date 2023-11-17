@@ -199,7 +199,7 @@ namespace SAModManager
 		[DefaultValue(true)]
 		public bool MaterialColorFix { get; set; }
 		[DefaultValue(true)]
-		public bool InterpolationFix { get; set; }
+		public bool NodeLimit { get; set; }
 		[DefaultValue(true)]
 		public bool FovFix { get; set; }
 		[DefaultValue(true)]
@@ -276,7 +276,7 @@ namespace SAModManager
 			CCEF = gameSettings.Patches.KeepCamSettings;
 			PolyBuff = gameSettings.Patches.FixVertexColorRendering;
 			MaterialColorFix = gameSettings.Patches.MaterialColorFix;
-			InterpolationFix = gameSettings.Patches.InterpolationFix;
+			NodeLimit = gameSettings.Patches.NodeLimit;
 			FovFix = gameSettings.Patches.FOVFix;
 			SCFix = gameSettings.Patches.SkyChaseResolutionFix;
 			Chaos2CrashFix = gameSettings.Patches.Chaos2CrashFix;

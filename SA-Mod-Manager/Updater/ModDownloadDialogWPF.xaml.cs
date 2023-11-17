@@ -26,7 +26,15 @@ namespace SAModManager.Updater
 			Loaded += OnLoaded;
 		}
 
-		private async void OnLoaded(object sender, RoutedEventArgs e)
+        private static string GenerateHeaderText(int modIndex, int totalCount, string name)
+        {
+            string updatingText = Lang.GetString("Updater.DL.Mod.UpdatingMod");
+			string ofText = Lang.GetString("Updater.DL.Mod.of");
+
+            return $"{updatingText} {modIndex} {ofText} {totalCount}: {name}";
+        }
+
+        private async void OnLoaded(object sender, RoutedEventArgs e)
 		{
 			using (var client = new UpdaterWebClient())
 			{
@@ -37,7 +45,7 @@ namespace SAModManager.Updater
 					//SetTaskAndStep("Extracting...");
 					Application.Current.Dispatcher.Invoke(() =>
 					{
-						ProgressTxt.Text = "Extracting...";
+						ProgressTxt.Text = Lang.GetString("Updater.DL.Mod.Extracting");
 					});
 					args.Cancel = token.IsCancellationRequested;
 				}
@@ -45,16 +53,16 @@ namespace SAModManager.Updater
 				{
 					Application.Current.Dispatcher.Invoke(() =>
 					{
-						ProgressTxt.Text = "Parsing manifest...";
-					});
+						ProgressTxt.Text = Lang.GetString("Updater.DL.Mod.ParsingManifest");
+                    });
 					args.Cancel = token.IsCancellationRequested;
 				}
 				void OnApplyingManifest(object o, CancelEventArgs args)
 				{
 					Application.Current.Dispatcher.Invoke(() =>
 					{
-						ProgressTxt.Text = "Applying manifest...";
-					});
+						ProgressTxt.Text = Lang.GetString("Updater.DL.Mod.ApplyingManifest");
+                    });
 					args.Cancel = token.IsCancellationRequested;
 				}
 				void OnDownloadProgress(object o, DownloadProgressEventArgs args)
@@ -62,7 +70,7 @@ namespace SAModManager.Updater
 					Application.Current.Dispatcher.Invoke(() =>
 					{
 						Progress.Value = Util.SetProgress(args.BytesReceived / (double)args.TotalBytesToReceive);
-						ProgressTxt.Text = $"Downloading file {args.FileDownloading} of {args.FilesToDownload}";
+						ProgressTxt.Text = Lang.GetString("Updater.DL.Mod.DownloadingFile") + " " + args.FileDownloading + " / " + args.FilesToDownload;
 					});
 					args.Cancel = token.IsCancellationRequested;
 				}
@@ -82,8 +90,8 @@ namespace SAModManager.Updater
 					Application.Current.Dispatcher.Invoke(() =>
 					{
 						Title = update.Info.Name;
-						HeaderTxt.Text = $"Updating mod {++modIndex} of {updates.Count}: {update.Info.Name}";
-						ProgressTxt.Text = "Starting Download...";
+						HeaderTxt.Text = GenerateHeaderText(++modIndex, updates.Count, update.Info.Name);
+						ProgressTxt.Text = Lang.GetString("Updater.DL.Mod.StartingDownload");
 					});
 
 					update.Extracting += OnExtracting;
@@ -124,7 +132,7 @@ namespace SAModManager.Updater
 					Application.Current.Dispatcher.Invoke(() =>
 					{
 						Progress.Value = Progress.Maximum;
-						ProgressTxt.Text = $"Download complete.";
+						ProgressTxt.Text = Lang.GetString($"Updater.DL.Mod.DownloadComplete");
 					});
 
 					await Task.Delay(1000);
