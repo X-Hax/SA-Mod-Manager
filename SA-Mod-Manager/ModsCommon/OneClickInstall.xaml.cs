@@ -8,6 +8,8 @@ using SAModManager.Common;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using SAModManager.Updater;
+using Microsoft.VisualBasic.ApplicationServices;
+using TheArtOfDev.HtmlRenderer.WPF;
 
 namespace SAModManager
 {
@@ -39,10 +41,26 @@ namespace SAModManager
 			}
 
 			App.UriQueue.UriEnqueued += UriQueueOnUriEnqueued;
-		}
+            IsVisibleChanged += MainWindow_Hide;
+        }
 
+		private void CleanUp()
+		{
+            TextModDescription.ClearSelection();
+            TextModDescription.Text = string.Empty;
+			CreditsPanel.Children.Clear();
+        }
 
-		private async Task HandleGBMod(Dictionary<string, string> fields)
+        private void MainWindow_Hide(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            bool isVisible = (bool)e.NewValue;
+            if (!isVisible)
+			{
+				CleanUp();
+            }
+        }
+
+        private async Task HandleGBMod(Dictionary<string, string> fields)
 		{
 			string itemType;
 			long itemId;
@@ -120,13 +138,12 @@ namespace SAModManager
 
 		private async Task HandleUri(string uri)
 		{
-			if (WindowState == WindowState.Minimized)
-			{
-				WindowState = WindowState.Normal;
-			}
 
-			Activate();
+			WindowStartupLocation = WindowStartupLocation.CenterScreen; 
+			WindowState = WindowState.Normal;
+			
 
+            Activate();
 
 			string[] split = uri.Substring("sadxmm:".Length).Split(',');
 			OpenGB.IsEnabled = false;
@@ -142,15 +159,31 @@ namespace SAModManager
 
 			if (fields.ContainsKey("gb_itemtype") && fields.ContainsKey("gb_itemid"))
 			{
-				await HandleGBMod(fields);
+                OpenGB.IsEnabled = true;
+                await HandleGBMod(fields);
 			}
 			else if (fields.ContainsKey("name") && fields.ContainsKey("author"))
 			{
-				string name = Uri.UnescapeDataString(fields["name"]);
+				OpenGB.Opacity = 0.2;
+				OpenGB.IsEnabled = false;
+                string name = Uri.UnescapeDataString(fields["name"]);
 				string author = Uri.UnescapeDataString(fields["author"]);
 
 				TextModName.Text = name;
-				TextModAuthor.Text = author;
+
+                TextBlock TexCreditCategory = new()
+                {
+                    Text = author,
+                    FontSize = 16,
+                    TextWrapping = TextWrapping.WrapWithOverflow,
+                    Foreground = ThemeBrush.GetThemeBrush("TextBox.Brushes.Foreground"),
+                    Padding = new Thickness(0, 4, 0, 5),
+                };
+
+                CreditsPanel.Children.Add(TexCreditCategory);
+				TextModDescription.FontSize = 22;
+                TextModDescription.Text = "<p style=\"color:" + "#FFFFFF" + ";\">" + Lang.GetString("ModDL.NoDescript") + "</p>";
+
 			}
 			else
 			{
@@ -159,7 +192,6 @@ namespace SAModManager
                 return;
 			}
 
-            OpenGB.IsEnabled = true;
             ButtonDownload.IsEnabled = true;
 			this.ShowDialog();
 		}
@@ -188,6 +220,15 @@ namespace SAModManager
 
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{
+
+			urlPage = null;
+			url = null;
+			gbi = null;
+			author = null;
+			updatePath = null;
+			modPath = null;
+
+			fields.Clear();
             this.Visibility = Visibility.Hidden; // Hide the window when the button is clicked
         }
 

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:wpf="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
         xmlns:local="clr-namespace:SAModManager"
+        
 
         mc:Ignorable="d"
 		Style="{StaticResource SAWindow}"
@@ -53,7 +54,7 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel VerticalAlignment="Bottom" Grid.Row="0" Orientation="Vertical">
-                        <TextBlock x:Name="TextModAuthor" Text="{StaticResource CommonStrings.Credits}" FontSize="24" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="CreditsText" Text="{StaticResource CommonStrings.Credits}" FontSize="24" TextWrapping="Wrap"/>
                         <Separator/>
                         <ScrollViewer Grid.Row="1" Margin="10,0, 5, 40">
                             <StackPanel x:Name="CreditsPanel" Orientation="Vertical"/>
