@@ -16,14 +16,12 @@ namespace SAModManager
         {
             Path.Combine(Environment.SystemDirectory, "vcruntime140.dll"),
             Path.Combine(Environment.SystemDirectory, "msvcr120.dll"),
-            Path.Combine(Environment.SystemDirectory, "msvcr110.dll")
         };
 
         static private readonly List<string> VCURLs = new()
         {
             "https://aka.ms/vs/17/release/vc_redist.x86.exe",
             "https://aka.ms/highdpimfc2013x86enu",
-            "https://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x86.exe"
         };
 
 
