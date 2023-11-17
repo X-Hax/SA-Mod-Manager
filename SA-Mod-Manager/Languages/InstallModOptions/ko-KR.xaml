@@ -6,4 +6,8 @@
 	<system:String x:Key="InstallModOptions.Radio.Archive">아카이브에서 설치 중</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Folder">폴더에서 설치 중</system:String>
 	<system:String x:Key="InstallModOptions.Radio.New">새 모드(개발자 전용)</system:String>
+
+    <!--Mod Download-->
+    <system:String x:Key="ModDL.DLMod">Download Mod</system:String>
+    <system:String x:Key="ModDL.OpenLink">Open Link</system:String>
 </ResourceDictionary>

@@ -3,14 +3,27 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="Updater.DL.Download">Download</system:String>
-    <system:String x:Key="Updater.DL.Install">Install</system:String>
-    <system:String x:Key="Updater.DL.Update">Update</system:String>
-    <system:String x:Key="Updater.DL.Downloading">Downloading</system:String>
-    <system:String x:Key="Updater.DL.Installing">Installing</system:String>
-    <system:String x:Key="Updater.DL.Updating">Updating</system:String>
-    <system:String x:Key="Updater.DL.Completed">Completed.</system:String>
-    <system:String x:Key="Updater.DL.Copying">Copying files...</system:String>
+    <!--Dependencies-->
+    <system:String x:Key="Updater.DL.Dep.Download">Download</system:String>
+    <system:String x:Key="Updater.DL.Dep.Install">Install</system:String>
+    <system:String x:Key="Updater.DL.Dep.Update">Update</system:String>
+    <system:String x:Key="Updater.DL.Dep.Downloading">Downloading</system:String>
+    <system:String x:Key="Updater.DL.Dep.Installing">Installing</system:String>
+    <system:String x:Key="Updater.DL.Dep.Updating">Updating</system:String>
+    <system:String x:Key="Updater.DL.Dep.Completed">Completed.</system:String>
+    <system:String x:Key="Updater.DL.Dep.Copying">Copying files...</system:String>
+
+    <!--Mod Update-->
+    <system:String x:Key="Updater.DL.Mod.Extracting">Extracting...</system:String>
+    <system:String x:Key="Updater.DL.Mod.ParsingManifest">Parsing manifest...</system:String>
+    <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Applying manifest...</system:String>
+    <system:String x:Key="Updater.DL.Mod.DownloadingFile">Downloading file</system:String>
+    <system:String x:Key="Updater.DL.Mod.of">of</system:String> <!-- "of" files to download-->
+    <system:String x:Key="Updater.DL.Mod.UpdatingMod">Updating mod</system:String>
+    <system:String x:Key="Updater.DL.Mod.StartingDownload">Starting Download...</system:String>
+    <system:String x:Key="Updater.DL.Mod.DownloadComplete">Download complete.</system:String>
+
+
 
 
 </ResourceDictionary>

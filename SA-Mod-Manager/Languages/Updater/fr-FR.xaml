@@ -3,14 +3,26 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="Updater.DL.Download">Télécharger</system:String>
-    <system:String x:Key="Updater.DL.Install">Installer</system:String>
-    <system:String x:Key="Updater.DL.Update">Mise à jour</system:String>
-    <system:String x:Key="Updater.DL.Downloading">Téléchargement</system:String>
-    <system:String x:Key="Updater.DL.Installing">Installation</system:String>
-    <system:String x:Key="Updater.DL.Updating">Mise à jour en cours</system:String>
-    <system:String x:Key="Updater.DL.Completed">Terminé.</system:String>
-    <system:String x:Key="Updater.DL.Copying">Copie des fichiers...</system:String>
+    <!--Dependencies-->
+    <system:String x:Key="Updater.DL.Dep.Download">Télécharger</system:String>
+    <system:String x:Key="Updater.DL.Dep.Install">Installer</system:String>
+    <system:String x:Key="Updater.DL.Dep.Update">Mise à jour</system:String>
+    <system:String x:Key="Updater.DL.Dep.Downloading">Téléchargement</system:String>
+    <system:String x:Key="Updater.DL.Dep.Installing">Installation</system:String>
+    <system:String x:Key="Updater.DL.Dep.Updating">Mise à jour en cours</system:String>
+    <system:String x:Key="Updater.DL.Dep.Completed">Terminé.</system:String>
+    <system:String x:Key="Updater.DL.Dep.Copying">Copie des fichiers...</system:String>
 
+
+    <!--Mod Update-->
+    <system:String x:Key="Updater.DL.Mod.Extracting">Extraction...</system:String>
+    <system:String x:Key="Updater.DL.Mod.ParsingManifest">Analyse du manifeste...</system:String>
+    <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Application du manifeste...</system:String>
+    <system:String x:Key="Updater.DL.Mod.DownloadingFile">Téléchargement du fichier</system:String>
+    <system:String x:Key="Updater.DL.Mod.of">de</system:String>
+
+    <system:String x:Key="Updater.DL.Mod.UpdatingMod">Mise à jour du mod</system:String>
+    <system:String x:Key="Updater.DL.Mod.StartingDownload">Démarrage du téléchargement...</system:String>
+    <system:String x:Key="Updater.DL.Mod.DownloadComplete">Téléchargement terminé.</system:String>
 
 </ResourceDictionary>

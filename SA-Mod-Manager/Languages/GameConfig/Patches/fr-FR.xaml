@@ -3,6 +3,7 @@
                      xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <!--#region Patches ComboBox-->
+    <system:String x:Key="GamePatches.Title">Patch</system:String>
     <system:String x:Key="GamePatches.3DSound">Activer les Sons 3D HRTF</system:String>
     <system:String x:Key="GamePatches.CamCode">Correctifs du Code de la Caméra</system:String>
     <system:String x:Key="GamePatches.VertexColor">Correctifs des Vertex Color</system:String>

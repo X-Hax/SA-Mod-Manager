@@ -3,14 +3,15 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="Updater.DL.Download">Загрузка</system:String>
-    <system:String x:Key="Updater.DL.Install">Установка</system:String>
-    <system:String x:Key="Updater.DL.Update">Обновление</system:String>
-    <system:String x:Key="Updater.DL.Downloading">Загрузка</system:String>
-    <system:String x:Key="Updater.DL.Installing">Установка</system:String>
-    <system:String x:Key="Updater.DL.Updating">Обновление</system:String>
-    <system:String x:Key="Updater.DL.Completed">завершено.</system:String>
-    <system:String x:Key="Updater.DL.Copying">Копирование файлов...</system:String>
+    <!--Dependencies-->
+    <system:String x:Key="Updater.DL.Dep.Download">Загрузка</system:String>
+    <system:String x:Key="Updater.DL.Dep.Install">Установка</system:String>
+    <system:String x:Key="Updater.DL.Dep.Update">Обновление</system:String>
+    <system:String x:Key="Updater.DL.Dep.Downloading">Загрузка</system:String>
+    <system:String x:Key="Updater.DL.Dep.Installing">Установка</system:String>
+    <system:String x:Key="Updater.DL.Dep.Updating">Обновление</system:String>
+    <system:String x:Key="Updater.DL.Dep.Completed">завершено.</system:String>
+    <system:String x:Key="Updater.DL.Dep.Copying">Копирование файлов...</system:String>
 
 
 </ResourceDictionary>
