@@ -1960,6 +1960,7 @@
 				<Setter Property="Background" Value="{DynamicResource Window.Brushes.Background}"/>
 				<Setter Property="WindowStyle" Value="SingleBorderWindow"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource Window.Brushes.Border}"/>
+				<Setter Property="Topmost" Value="True"/>
 				<Setter Property="WindowChrome.WindowChrome">
 					<Setter.Value>
 						<WindowChrome 
@@ -2018,6 +2019,7 @@
 				<Setter Property="Background" Value="{DynamicResource Window.Brushes.Background}"/>
 				<Setter Property="WindowStyle" Value="SingleBorderWindow"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource Window.Brushes.Border}"/>
+				<Setter Property="Topmost" Value="True"/>
 				<Setter Property="WindowChrome.WindowChrome">
 					<Setter.Value>
 						<WindowChrome 
