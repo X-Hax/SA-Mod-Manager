@@ -61,6 +61,7 @@ namespace SAModManager
         Profiles GameProfiles = new();
         object GameProfile;
         private string tempPath = "";
+        public static bool cancelUpdate { get; set; }
 
         // TODO: Make this generic for handling both games. Maybe do it with a custom class for easier management.
         public Dictionary<string, SADXModInfo> mods = null;
@@ -166,6 +167,7 @@ namespace SAModManager
 
         private void MainForm_FormClosing(object sender, EventArgs e)
         {
+            cancelUpdate = true;
             App.UriQueue.Close();
             Save_AppUserSettings();
         }
@@ -1211,6 +1213,7 @@ namespace SAModManager
                 return;
             }
 
+            cancelUpdate = true;
             string executablePath = EnabledMods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
 
             string folderPath = Path.GetDirectoryName(executablePath);
@@ -1917,13 +1920,15 @@ namespace SAModManager
             List<ModDownloadWPF> updates = data.Item1;
             if (updates.Count == 0)
             {
-                if (manual)
+                if (manual && !MainWindow.cancelUpdate)
                 {
                     UpdateManagerStatusText(Lang.GetString("UpdateStatus.NoUpdateFound"));
                     new MessageWindow(Lang.GetString("MessageWindow.Information.NoAvailableUpdates.Title"), Lang.GetString("MessageWindow.Information.NoAvailableUpdates"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
                 }
+                MainWindow.cancelUpdate = false;
                 return;
             }
+
 
             var dialog = new ModChangelog(updates);
             dialog.ShowDialog();
@@ -1979,6 +1984,8 @@ namespace SAModManager
             {
                 return;
             }
+
+            MainWindow.cancelUpdate = false;
 
             if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(App.ManagerSettings.UpdateSettings.UpdateCheckCount, App.ManagerSettings.UpdateSettings.UpdateTimeOutCD))
             {
