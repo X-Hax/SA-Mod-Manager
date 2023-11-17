@@ -137,8 +137,8 @@ namespace SAModManager.Configuration
 		/// <summary>
 		/// Keeps the Manager open when launching the game.
 		/// </summary>
-		[DefaultValue(false)]
-		public bool KeepManagerOpen { get; set; }       // SADXLoaderInfo.managerOpen
+		[DefaultValue(true)]
+		public bool KeepManagerOpen { get; set; } = true;   // SADXLoaderInfo.managerOpen
 
 		/// <summary>
 		/// Update Settings for the Manager.

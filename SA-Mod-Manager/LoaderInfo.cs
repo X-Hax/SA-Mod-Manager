@@ -144,7 +144,7 @@ namespace SAModManager
 		public int Language { get; set; } = 0;
 		[DefaultValue(true)]
 		public bool InputModEnabled { get; set; }
-		[DefaultValue(false)]
+		[DefaultValue(true)]
 		public bool managerOpen { get; set; }
 		[DefaultValue(false)]
 		public bool devMode { get; set; }
