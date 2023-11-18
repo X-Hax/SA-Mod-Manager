@@ -6,7 +6,7 @@
     <system:String x:Key="SplashScreen.Title">Приветствуем!</system:String>
     <system:String x:Key="SplashScreen.Welcome">Приветствуем в обновлённом Менеджере модов SA!</system:String>
 
-    <system:String x:Key="SplashScreen.Intro" xml:space="preserve">Перед вами обновлённый Менеджер модов SA!&#x0a;&#x0a;Он привносит улучшения пользовательского опыта, новые особенности и минорные обновления Загрузчика модов. Все существующие моды продолжат с ним работать. Ниже приведён сравнительно список основных изменений.</system:String>
+    <system:String x:Key="SplashScreen.Intro" xml:space="preserve">Перед вами обновлённый Менеджер модов SA!&#x0a;&#x0a;Он привносит улучшения пользовательского опыта, новые особенности и минорные обновления Загрузчика модов. Все существующие моды продолжат с ним работать. Ниже приведён список основных изменений.</system:String>
     <system:String x:Key="SplashScreen.QOL">Список улучшений:</system:String>
     <system:String x:Key="SplashScreen.QOL.Themes">Теперь Менеджер поддерживает темы! Тему можно сменить во вкладке "Настройки".</system:String>
     <system:String x:Key="SplashScreen.QOL.Languages">Теперь Менеджер поддерживает разные языки! Язык можно сменить во вкладке "Настройки".</system:String>
