@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="GamePatches.Title">Патчи</system:String>
+    <system:String x:Key="GamePatches.Title">Патч</system:String>
     <system:String x:Key="GamePatches.3DSound">Включение HRTF-пространственного звука</system:String>
 	<system:String x:Key="GamePatches.CamCode">Исправления ошибок кода камеры</system:String>
 	<system:String x:Key="GamePatches.VertexColor">Исправления вертексной покраски моделей</system:String>
