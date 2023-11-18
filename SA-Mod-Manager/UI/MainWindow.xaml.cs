@@ -1200,6 +1200,7 @@ namespace SAModManager
                 GameProfiles.ProfileIndex = comboProfile.SelectedIndex;
                 LoadGameSettings();
                 Refresh();
+				Save();
             }
         }
         #endregion

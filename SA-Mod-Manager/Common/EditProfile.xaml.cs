@@ -40,6 +40,7 @@ namespace SAModManager.Common
 			Header.Text = Title;
 			ProfileNameTextbox.Text = profile.Name;
 			origProfile = profile.Filename;
+			KeepMods.Visibility = Visibility.Collapsed;
 			isEditing = true;
 		}
 

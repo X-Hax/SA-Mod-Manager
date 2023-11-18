@@ -17,8 +17,8 @@
         </Grid.RowDefinitions>
 		<TextBlock x:Name="Header" Text="{DynamicResource NewProfile.Text.NewProfile}" TextAlignment="Center" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20,0" TextWrapping="Wrap"/>
 
-		<Grid Grid.Row="1" Margin="20" VerticalAlignment="Stretch">
-			<StackPanel>
+		<Grid Grid.Row="1" VerticalAlignment="Stretch">
+			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 				<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{DynamicResource CommonStrings.Name}" Margin="5,0,0,5"/>
 				<TextBox x:Name="ProfileNameTextbox" Height="22"/>
 				<CheckBox x:Name="KeepMods" Content="{DynamicResource NewProfile.CheckBox.ModsAndCodes}" Margin="0,5,0,0" IsChecked="True"/>
