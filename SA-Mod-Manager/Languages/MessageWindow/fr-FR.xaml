@@ -26,7 +26,7 @@
     <system:String x:Key="MessageWindow.Errors.NoModName.Title">Nom du mod Invalide</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Vous êtes sur le point de désactiver la redirection de sauvegarde pour ce mod. Si vous continuez, toutes les sauvegardes présentent dans le dossier du mod seront supprimées.&#x0a;&#x0a;Êtes-vous sûr de vouloir continuer?</system:String>
-
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">Le dossier du jeu SADX a été trouvé, mais il semble qu'il s'agisse de la version Steam.&#x0a;Le Mod Loader ne peut fonctionner qu'avec la version PC 2004.&#x0a;&#x0a;Veuillez télécharger et installer "SADX Mod Installer" pour convertir votre jeu en version 2004. (Vos sauvegardes seront également converties).</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Cette action forcera tous les mods sélectionnés à être complètement retéléchargés.&#x0a;&#x0a;Êtes-vous sur de vouloir continuer?</system:String>
 

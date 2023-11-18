@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="GamePatches.Title">Patch</system:String>
+    <system:String x:Key="GamePatches.Title">Патч</system:String>
     <system:String x:Key="GamePatches.3DSound">Включение HRTF-пространственного звука</system:String>
 	<system:String x:Key="GamePatches.CamCode">Исправления ошибок кода камеры</system:String>
 	<system:String x:Key="GamePatches.VertexColor">Исправления вертексной покраски моделей</system:String>
 	<system:String x:Key="GamePatches.MaterialColor">Исправления цветов материалов</system:String>
-    <system:String x:Key="GamePatches.NodeLimit">Исправления интерполяции</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Увеличение числа узлов  моделей</system:String>
 	<system:String x:Key="GamePatches.FixFOV">Исправления области обзора</system:String>
 	<system:String x:Key="GamePatches.Skychase">Исправления на Sky Chase</system:String>
 	<system:String x:Key="GamePatches.Chaos2">Исправления вылетов на Хаосе 2</system:String>
@@ -23,7 +23,7 @@
     <system:String x:Key="GamePatches.CamCodeDesc">Исправляет ошибку, из-за которой настройки свободной камеры не сохраняются после смерти или загрузки зоны/акта.</system:String>
     <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">Ванильная SADX игнорирует вертексную покраску моделей, используя вместо неё глобальное значение, даже если это не нужно.&#x0a;&#x0a;Этот патч переопределяет функции, связанные с корректным нанесением вертексных цветов.</system:String>
     <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">Игра циклически проходит по всем моделям, заменяя цвета материалов на белый.&#x0a;&#x0a; Этот патч исправляет несоответствия цветов , деляя модели более похожими на их аналоги из версий игры с Dreamcast и Gamecube.</system:String>
-    <system:String x:Key="GamePatches.InterpolationDesc">Устраняет проблемы вращения некоторых анимаций за счёт использования кватернионов вместо углов Эйлера.</system:String>
+    <system:String x:Key="GamePatches.NodeDesc" xml:space="preserve">В изначальной игре есть ограничение в 111 узлов на персонажа для модели и анимаций.&#x0a;&#x0a;Патч увеличивает их число до 254, что позволяет добавлять в игру более сложные и комплексные модели.</system:String>
     <system:String x:Key="GamePatches.FixFOVDesc">Улучшает область обзора и позволяет играть с портретным соотношением сторон экрана.</system:String>
     <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Позволяет Sky Chase работать одинаково при всех разрешениях экрана. Патч исправляет движение Торнадо и прицела, а также скорострельность противников.&#x0a;&#x0a;Набрать очки для получения эмблемы в разрешении выше 640x480 с этим патчем проще, чем в ванильной игре.</system:String>
     <system:String x:Key="GamePatches.Chaos2Desc">Исправляет ошибку, из-за которой прохождение Chaos 2 и перезапуск босса приводили к сбою игры.</system:String>

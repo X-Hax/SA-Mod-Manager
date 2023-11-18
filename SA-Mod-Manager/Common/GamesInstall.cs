@@ -550,6 +550,27 @@ namespace SAModManager.Common
             }
         }
 
+        public static bool isSADXGamePath(string path)
+        {
+            string fullPath = Path.Combine(path, GamesInstall.SonicAdventure.exeList[1]);
+            return File.Exists(fullPath) && !File.Exists(Path.Combine(path, GamesInstall.SonicAdventure.exeList[0]));
+        }
+
+        public async static Task InstallSADXModInstaller()
+        {
+            var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetectedTemp"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.OK);
+            msg.ShowDialog();
+
+         
+            /*var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+            msg.ShowDialog();
+
+            if (msg.isYes)
+            {
+                await GamesInstall.GetSADXModInstaller();
+            }*/
+        }
+
         public static string GetGamePath(Game game, bool multipleExes = false)
         {
             if (steamAppsPaths is null || game is null)

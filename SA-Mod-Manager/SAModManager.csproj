@@ -103,6 +103,15 @@
 		</None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Page Update="Languages\SplashScreen\es-MX.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	  </Page>
+	  <Page Update="Languages\Updater\es-MX.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	  </Page>
+	</ItemGroup>
+
 
 
 </Project>

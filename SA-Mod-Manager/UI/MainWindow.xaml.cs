@@ -1065,17 +1065,23 @@ namespace SAModManager
                         Load(true);
                         break;
                     }
-                }
+                    else if (Steam.isSADXGamePath(GamePath))
+                    {
+                        //To do add installer support
+                       await Steam.InstallSADXModInstaller();
+                        return;
+                    }
 
-                if (!pathValid)
-                {
-                    new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-                }
-                else
-                {
-                    await ForceInstallLoader();
-                    UpdateButtonsState();
-                    Save();
+                    if (!pathValid)
+                    {
+                        new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+                    }
+                    else
+                    {
+                        await ForceInstallLoader();
+                        UpdateButtonsState();
+                        Save();
+                    }
                 }
             }
         }
