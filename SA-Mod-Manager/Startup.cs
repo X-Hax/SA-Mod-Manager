@@ -105,7 +105,6 @@ namespace SAModManager
                         var DL = new DownloadDialog(uri, "Visual C++", "vc_redist.x86.exe");
 
                         DL.StartDL();
-                        DL.ShowDialog();
 
                         if (DL.done)
                         {
