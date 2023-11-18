@@ -10,5 +10,6 @@
     <!--Mod Download-->
     <system:String x:Key="ModDL.DLMod">Download Mod</system:String>
     <system:String x:Key="ModDL.OpenLink">Open Link</system:String>
+    <system:String x:Key="ModDL.NoDescript">No se encontró una descripción.</system:String>
 
 </ResourceDictionary>
