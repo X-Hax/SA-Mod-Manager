@@ -21,6 +21,7 @@
 			<StackPanel>
 				<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{StaticResource CommonStrings.Name}" Margin="5,0,0,5"/>
 				<TextBox x:Name="ProfileNameTextbox" Height="22"/>
+				<CheckBox x:Name="KeepMods" Content="{DynamicResource NewProfile.CheckBox.ModsAndCodes}" Margin="0,5,0,0" IsChecked="True"/>
 			</StackPanel>
 		</Grid>
 
