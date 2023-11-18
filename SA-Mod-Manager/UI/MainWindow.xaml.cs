@@ -1060,7 +1060,8 @@ namespace SAModManager
                         pathValid = true;
                         tempPath = GamePath;
                         UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                        await VanillaTransition.ConvertOldProfile(false, GamePath);
+						if (Path.Exists(Path.Combine(GamePath, "mods")))
+							await VanillaTransition.ConvertOldProfile(false, GamePath);
                         Load(true);
                         break;
                     }
