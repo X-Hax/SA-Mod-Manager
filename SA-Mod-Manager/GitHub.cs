@@ -508,7 +508,7 @@ namespace SAModManager
             var httpClient = new HttpClient();
 
             httpClient.DefaultRequestHeaders.Add("User-Agent", AppName); //To do update with master when it's ready
-            string apiUrl = $"https://api.github.com/repos/{owner}/{App.CurrentGame.loader.repoName}/commits?sha={hash}&per_page=100&sha=wpf";
+            string apiUrl = $"https://api.github.com/repos/{owner}/{App.CurrentGame.loader.repoName}/commits?sha={hash}&per_page=100&sha=master";
 
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
             string text = "";
@@ -557,17 +557,14 @@ namespace SAModManager
                     int endIndex = content.IndexOf("\"", startIndex);
                     return content[startIndex..endIndex];
                 }
-                else
-                {
-                    Console.WriteLine($"Error: {response.StatusCode}");
-                    return await GetLastCommitHash(repo, "master");
-                }
             }
+
+            return null;
         }
 
         public static async Task<string> GetLoaderHashCommit()
         {
-            return await GetLastCommitHash(App.CurrentGame.loader.repoName, "wpf");
+            return await GetLastCommitHash(App.CurrentGame.loader.repoName, "master");
         }
     }
 }
