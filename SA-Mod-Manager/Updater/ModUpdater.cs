@@ -330,7 +330,7 @@ namespace SAModManager.Updater
                         continue;
 					}
 
-					if (App.Current == null)
+					if (App.Current == null || MainWindow.cancelUpdate)
 					{
 						break;
 					}

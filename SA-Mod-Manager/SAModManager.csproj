@@ -12,6 +12,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/X-Hax/sadx-mod-loader</RepositoryUrl>
 		<PlatformTarget>AnyCPU</PlatformTarget>
+		<AssemblyVersion>1.0.1.1</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
