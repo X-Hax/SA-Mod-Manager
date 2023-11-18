@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<system:String x:Key="HealthProgress.Title">Йде перевірка цілісності</system:String>
+		<system:String x:Key="HealthProgress.Check">Перевірка</system:String>
+	<system:String x:Key="HealthProgress.Files.Modified">модифіковано.</system:String>
+	<system:String x:Key="HealthProgress.Files.Missing">не знайдено.</system:String>
+</ResourceDictionary>
