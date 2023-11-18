@@ -188,6 +188,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Abre el Gestor de perfiles, donde puedes crear y eliminar perfiles.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Ruta completa al directorio en el que está instalado el juego.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Abre una ventana en la que puedes seleccionar el directorio del juego.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Abre el directorio en el que está instalado tu juego.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Establece el tema utilizado por el gestor de mods.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Establece el idioma utilizado por el gestor de mods.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantiene abierto el gestor de mods al presionar Guardar y jugar.</system:String>
