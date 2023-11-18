@@ -76,8 +76,8 @@ namespace SAModManager.Common
 						Configuration.SADX.GameSettings sadxSettings = new()
 						{
 							GamePath = App.CurrentGame.gameDirectory,
-							EnabledMods = Mods,
-							EnabledCodes = Codes,
+							//EnabledMods = Mods,
+							//EnabledCodes = Codes,
                         };
                         sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
 						break;
@@ -85,8 +85,8 @@ namespace SAModManager.Common
                         Configuration.SADX.GameSettings sa2Settings = new()
                         {
                             GamePath = App.CurrentGame.gameDirectory,
-							EnabledMods = Mods,
-							EnabledCodes = Codes,
+							//EnabledMods = Mods,
+							//EnabledCodes = Codes,
 						};
                         sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
 						break;

@@ -20,7 +20,7 @@
 		<Grid Grid.Row="1" Margin="20" VerticalAlignment="Stretch">
 			<StackPanel>
 				<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{StaticResource CommonStrings.Name}" Margin="5,0,0,5"/>
-				<TextBox x:Name="ProfileNameTextbox"/>
+				<TextBox x:Name="ProfileNameTextbox" Height="22"/>
 			</StackPanel>
 		</Grid>
 
