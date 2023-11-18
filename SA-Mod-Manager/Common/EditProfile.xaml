@@ -20,7 +20,7 @@
 		<Grid Grid.Row="1" VerticalAlignment="Stretch">
 			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 				<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{DynamicResource CommonStrings.Name}" Margin="5,0,0,5"/>
-				<TextBox x:Name="ProfileNameTextbox" Height="22"/>
+				<TextBox x:Name="ProfileNameTextbox" Height="22" HorizontalAlignment="Stretch"/>
 				<CheckBox x:Name="KeepMods" Content="{DynamicResource NewProfile.CheckBox.ModsAndCodes}" Margin="0,5,0,0" IsChecked="True"/>
 			</StackPanel>
 		</Grid>

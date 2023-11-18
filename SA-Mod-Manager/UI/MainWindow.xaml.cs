@@ -1198,8 +1198,11 @@ namespace SAModManager
             if (selectedItem != null)
             {
                 GameProfiles.ProfileIndex = comboProfile.SelectedIndex;
-                LoadGameSettings();
-                Refresh();
+                
+				LoadGameSettings();
+				SetBindings();
+				SetGameUI();
+				Refresh();
 				Save();
             }
         }
