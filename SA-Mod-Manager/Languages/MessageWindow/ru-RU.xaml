@@ -97,7 +97,7 @@
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Это действие удалит все ваши моды.&#x0a;&#x0a;Желаете продолжить??</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Это действие удалит выбранные моды.&#x0a;&#x0a;Желаете продолжить?</system:String>
 
 	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Вы собираетесь отключить перенаправление сохранений для этого мода. Если вы продолжите, все сохранения в этой папке мода будут удалены.&#x0a;&#x0a;Желаете продолжить?</system:String>
 	
