@@ -41,7 +41,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Заполнение</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">Как заполнить видео:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.TexFilter">Фильтрация текстур:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.UIFilter">Фильтрация интерфейса</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.UIFilter">Фильтрация интерфейса:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Улучшения</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap">Принудительный мипмаппинг</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Включить масштабирование интерфейса</system:String>
