@@ -219,18 +219,25 @@ namespace SAModManager
 
         public static async Task Extract(string zipPath, string destFolder, bool overwright = false)
         {
-            if (!is7ZipInstalled())
+            try
             {
-                if (await Exec7zipInstall() == false)
+                if (!is7ZipInstalled())
                 {
-                    return;
+                    if (await Exec7zipInstall() == false)
+                    {
+                        return;
+                    }
+                }
+
+                string libPath = File.Exists(App.ziplibPath) ? App.ziplibPath : null;
+                using (ArchiveFile archiveFile = new(zipPath, libPath))
+                {
+                    archiveFile.Extract(destFolder, overwright);
                 }
             }
-
-            string libPath = File.Exists(App.ziplibPath) ? App.ziplibPath : null;
-            using (ArchiveFile archiveFile = new(zipPath, libPath))
+            catch (Exception ex)
             {
-                archiveFile.Extract(destFolder, overwright);
+                throw new Exception(ex.Message);
             }
         }
 

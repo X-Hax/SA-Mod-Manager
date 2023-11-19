@@ -53,24 +53,37 @@ namespace SAModManager.Common
                 //once dl is finished, move manager zip in .SATemp folder
                 if (File.Exists(fileName) && tempFolderPath is not null)
                 {
-                    await Util.MoveFile(fileName, dest, true);
 
+                    await Util.MoveFile(fileName, dest, true);
                     await Task.Delay(100);
                     //extract Manager zip
                     await Util.Extract(dest, tempFolderPath);
                     //delete zip
                     File.Delete(dest);
 
+                    await Task.Delay(50);
                     string newExec = Path.Combine(tempFolderPath, Path.GetFileName(Environment.ProcessPath));
-                    DialogResult = true;
-                    Process.Start(new ProcessStartInfo(newExec, $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"")
-                    {
-                        UseShellExecute = true,
-                    });
-                    done = true;
-                }
-            });
 
+                    if (File.Exists(newExec))
+                    {
+                        Process.Start(new ProcessStartInfo(newExec, $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"")
+                        {
+                            UseShellExecute = true,
+                        });
+                    }
+                    else
+                    {
+                        throw new Exception("Failed to Extract or Open Manager Update.");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Failed to Extract or Open Manager Update. File not found");
+                }
+
+                done = true;
+                DialogResult = true;
+            });
         }
 
         public void StartManagerDL()
