@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-Please Make sure to check the troubleshooting guide before opening an issue.
+Please Make sure to check the [troubleshooting guide](https://github.com/X-Hax/SA-Mod-Manager/wiki/Troubleshooting-Guide) before opening an issue.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
