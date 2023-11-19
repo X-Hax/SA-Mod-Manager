@@ -2050,7 +2050,11 @@ namespace SAModManager
             {
                 Source = App.ManagerSettings
             });
-            chkUpdatesML.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableManagerBootCheck")
+            chkUpdateManager.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableManagerBootCheck")
+            {
+                Source = App.ManagerSettings.UpdateSettings,
+            });
+            chkUpdatesML.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableLoaderBootCheck")
             {
                 Source = App.ManagerSettings.UpdateSettings,
             });
