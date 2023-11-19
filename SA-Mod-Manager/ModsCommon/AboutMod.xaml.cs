@@ -54,7 +54,7 @@ namespace SAModManager
 		{
 			var mod = (ModData)DataContext;
 
-			if (mod is null || mod is not ModData)
+            if (mod is null || mod is not ModData)
 				return;
 
 			try

@@ -40,8 +40,8 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-            <Button x:Name="btnAuthSite" Content="{DynamicResource AuthorSite}" Grid.Column="0" Margin="5,0,5,0" Click="btnAuthSite_Click"/>
-            <Button x:Name="btnModSource" Content="{DynamicResource ModSourceCode}" Grid.Column="1" Margin="5,0,5,0" Click="btnModSource_Click"/>
+            <Button x:Name="btnAuthSite" Content="{DynamicResource About.Mod.Buttons.AuthorSite}" Grid.Column="0" Margin="5,0,5,0" Click="btnAuthSite_Click"/>
+            <Button x:Name="btnModSource" Content="{DynamicResource About.Mod.Buttons.SourceCode}" Grid.Column="1" Margin="5,0,5,0" Click="btnModSource_Click"/>
 		</Grid>
     </Grid>
 </Window>
