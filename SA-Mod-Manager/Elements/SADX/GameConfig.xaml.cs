@@ -113,15 +113,6 @@ namespace SAModManager.Elements.SADX
 			graphics?.screenNumBox_SelectChanged(ref comboScreen, ref comboDisplay);
 		}
 
-		private void chkCustomWinSize_Checked(object sender, RoutedEventArgs e)
-		{
-			chkMaintainRatio.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault();
-			chkResizableWin.IsEnabled = !chkCustomWinSize.IsChecked.GetValueOrDefault();
-
-			txtCustomResX.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault() && !chkMaintainRatio.IsChecked.GetValueOrDefault();
-			txtCustomResY.IsEnabled = chkCustomWinSize.IsChecked.GetValueOrDefault();
-		}
-
 		private void chkRatio_Click(object sender, RoutedEventArgs e)
 		{
 			if (chkRatio.IsChecked == true)
@@ -136,7 +127,6 @@ namespace SAModManager.Elements.SADX
 				txtResX.IsEnabled = true;
 			}
 		}
-
 
 		private void comboResolutionPreset_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
 		{
@@ -679,7 +669,6 @@ namespace SAModManager.Elements.SADX
 		private void SetupBindings()
 		{
 			// Graphics Tab Bindings
-			// Screen Settings
 			comboScreen.SetBinding(ComboBox.SelectedIndexProperty, new Binding("SelectedScreen")
 			{
 				Source = GameProfile.Graphics,
@@ -697,8 +686,6 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-
-			// Window Settings
 			chkRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("Enable43ResolutionRatio")
 			{
 				Source = GameProfile.Graphics,
@@ -714,22 +701,12 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			chkBorderless.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableBorderless")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
 			chkScaleScreen.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableScreenScaling")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
 			chkResizableWin.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableResizableWindow")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkCustomWinSize.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableCustomWindow")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
@@ -749,44 +726,38 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
+			txtCustomResX.SetBinding(NumericUpDown.IsEnabledProperty, new Binding("ScreenMode")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay,
+				Converter = new CustomWindowEnabledConverter()
+			});
 			txtCustomResY.SetBinding(NumericUpDown.ValueProperty, new Binding("CustomWindowHeight")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-
-			// Game Config Settings
-			radFullscreen.SetBinding(RadioButton.IsCheckedProperty, new Binding("FullScreen")
+			txtCustomResY.SetBinding(NumericUpDown.IsEnabledProperty, new Binding("ScreenMode")
 			{
-				Source = GameSettings.GameConfig,
-				Mode = BindingMode.TwoWay
-			});
-			if (GameSettings.GameConfig.FrameRate == 0)
-				GameSettings.GameConfig.FrameRate = 1;
-			comboFramerate.SetBinding(ComboBox.SelectedIndexProperty, new Binding("FrameRate")
-			{
-				Source = GameSettings.GameConfig,
-				Converter = new IndexOffsetConverter(),
+				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay,
+				Converter = new CustomWindowEnabledConverter()
 			});
-			comboDetail.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ClipLevel")
+			comboFramerate.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameFrameRate")
 			{
-				Source = GameSettings.GameConfig,
+				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			comboFog.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Foglation")
+			comboDetail.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameClipLevel")
 			{
-				Source = GameSettings.GameConfig,
+				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			inputMouseDragAccel.SetBinding(RadioButton.IsCheckedProperty, new Binding("MouseMode")
+			comboFog.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameFogMode")
 			{
-				Source = GameSettings.GameConfig,
+				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			inputMouseDragHold.IsChecked = (GameSettings.GameConfig.MouseMode == 0) ? true : false;
-
-			// Enhancement Settings
 			comboBGFill.SetBinding(ComboBox.SelectedIndexProperty, new Binding("FillModeBackground")
 			{
 				Source = GameProfile.Graphics,
@@ -801,7 +772,7 @@ namespace SAModManager.Elements.SADX
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay,
-			});;
+			}); ;
 			comboUIFilter.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ModeUIFiltering")
 			{
 				Source = GameProfile.Graphics,
@@ -824,6 +795,12 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Controller,
 				Mode = BindingMode.TwoWay
 			});
+			inputMouseDragAccel.SetBinding(RadioButton.IsCheckedProperty, new Binding("MouseMode")
+			{
+				Source = GameSettings.GameConfig,
+				Mode = BindingMode.TwoWay
+			});
+			inputMouseDragHold.IsChecked = (GameSettings.GameConfig.MouseMode == 0) ? true : false;
 
 			// Audio Settings
 			checkEnableMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("BGM")
@@ -903,5 +880,23 @@ namespace SAModManager.Elements.SADX
 			ComboBox comboBox = sender as ComboBox;
 			SetItemToPad(comboBox.SelectedIndex);
 		}
-	}
+
+		private void comboScreenMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox box = sender as ComboBox;
+
+			switch ((GraphicsSettings.DisplayMode)box.SelectedIndex)
+			{
+				case GraphicsSettings.DisplayMode.Fullscreen:
+					System.Drawing.Rectangle rect = graphics.GetRectangleStruct();
+					txtResX.MaxValue = rect.Width;
+					txtResY.MaxValue = rect.Height;
+					break;
+				default:
+					//txtResX.MaxValue = double.PositiveInfinity;
+					//txtResY.MaxValue = double.PositiveInfinity;
+					break;
+			}
+        }
+    }
 }
