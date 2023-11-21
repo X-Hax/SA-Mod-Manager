@@ -91,12 +91,12 @@
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 									<StackPanel Margin="5" Grid.Column="0" Orientation="Horizontal">
-										<elements:NumericUpDown x:Name="txtCustomResX" Height="22" Width="75" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}"/>
+										<elements:NumericUpDown x:Name="txtCustomResX" Height="22" Width="75"/>
 										<Label Content="x" VerticalContentAlignment="Center"/>
-										<elements:NumericUpDown x:Name="txtCustomResY" Height="22" Width="75" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}" ValueChanged="ResolutionChanged"/>
+										<elements:NumericUpDown x:Name="txtCustomResY" Height="22" Width="75" ValueChanged="ResolutionChanged"/>
 									</StackPanel>
 
-									<ComboBox x:Name="comboCustom" Grid.Column="1" Margin="5">
+									<ComboBox x:Name="comboCustomWindow" Grid.Column="1" Margin="5">
 										<ComboBoxItem Content="640x480"/>
 										<ComboBoxItem Content="800x600"/>
 										<ComboBoxItem Content="1024x768"/>
@@ -124,15 +124,16 @@
 								</Grid.ColumnDefinitions>
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="10"/>
 									<RowDefinition Height="*"/>
 								</Grid.RowDefinitions>
 
 								<Separator Grid.ColumnSpan="4" Grid.Row="0" Margin="5"/>
 
-								<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
-								<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
-								<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ScaleScreen}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen}"/>
-								<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
+								<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
+								<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
+								<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ScaleScreen}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen}"/>
+								<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
 							</Grid>
 						</Grid>
 					</GroupBox>

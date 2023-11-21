@@ -668,7 +668,9 @@ namespace SAModManager.Elements.SADX
 		#region Private Functions
 		private void SetupBindings()
 		{
-			// Graphics Tab Bindings
+			// Graphics Bindings
+
+			// Display Options
 			comboScreen.SetBinding(ComboBox.SelectedIndexProperty, new Binding("SelectedScreen")
 			{
 				Source = GameProfile.Graphics,
@@ -691,27 +693,7 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			chkVSync.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableVsync")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkPause.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnablePauseOnInactive")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkScaleScreen.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableScreenScaling")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkResizableWin.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableResizableWindow")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkMaintainRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableKeepResolutionRatio")
+			comboScreenMode.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ScreenMode")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
@@ -743,6 +725,47 @@ namespace SAModManager.Elements.SADX
 				Mode = BindingMode.TwoWay,
 				Converter = new CustomWindowEnabledConverter()
 			});
+			comboCustomWindow.SetBinding(ComboBox.IsEnabledProperty, new Binding("ScreenMode")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay,
+				Converter = new CustomWindowEnabledConverter()
+			});
+			chkMaintainRatio.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay,
+				Converter = new CustomWindowEnabledConverter()
+			});
+			chkMaintainRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableKeepResolutionRatio")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
+
+			// Settings
+			chkVSync.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableVsync")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
+			chkPause.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnablePauseOnInactive")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
+			chkScaleScreen.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableScreenScaling")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
+			chkResizableWin.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableResizableWindow")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
+
+			// Other Visual Settings
 			comboFramerate.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameFrameRate")
 			{
 				Source = GameProfile.Graphics,
@@ -852,8 +875,6 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay
 			});
-
-			// Patches
 		}
         #endregion
 
@@ -888,13 +909,16 @@ namespace SAModManager.Elements.SADX
 			switch ((GraphicsSettings.DisplayMode)box.SelectedIndex)
 			{
 				case GraphicsSettings.DisplayMode.Fullscreen:
-					System.Drawing.Rectangle rect = graphics.GetRectangleStruct();
+					System.Drawing.Rectangle rect = graphics.GetScreenSize();
 					txtResX.MaxValue = rect.Width;
 					txtResY.MaxValue = rect.Height;
 					break;
 				default:
-					//txtResX.MaxValue = double.PositiveInfinity;
-					//txtResY.MaxValue = double.PositiveInfinity;
+					if (txtResX != null)
+					{
+						txtResX.MaxValue = double.PositiveInfinity;
+						txtResY.MaxValue = double.PositiveInfinity;
+					}
 					break;
 			}
         }
