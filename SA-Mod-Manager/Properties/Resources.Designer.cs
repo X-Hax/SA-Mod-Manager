@@ -200,7 +200,7 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/wpf/data/Codes.lst.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Codes.lst.
         /// </summary>
         internal static string URL_SADX_CODE {
             get {
@@ -209,7 +209,7 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/X-Hax/sadx-mod-loader/raw/wpf/extlib/ModLoaders/SADXModLoader.dll.
+        ///   Looks up a localized string similar to https://github.com/X-Hax/sadx-mod-loader/raw/master/extlib/ModLoaders/SADXModLoader.dll.
         /// </summary>
         internal static string URL_SADX_DL {
             get {

@@ -62,8 +62,8 @@ namespace SAModManager.Configuration.SADX
 		/// <summary>
 		/// Makes the fullscreen window borderless.
 		/// </summary>
-		[DefaultValue(false)]
-		public bool EnableBorderless { get; set; }                    // SADXLoaderInfo.Borderless
+		[DefaultValue(true)]
+		public bool EnableBorderless { get; set; } = true;          // SADXLoaderInfo.Borderless
 
 		/// <summary>
 		/// Scales the screen to window edges in fullscreen.

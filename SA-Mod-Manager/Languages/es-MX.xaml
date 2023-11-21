@@ -21,6 +21,8 @@
 		<ResourceDictionary Source="ModProfile/es-MX.xaml"/>
 		<ResourceDictionary Source="NewCode/es-MX.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/es-MX.xaml"/>
+        <ResourceDictionary Source="SplashScreen/es-MX.xaml"/>
+        <ResourceDictionary Source="Updater/es-MX.xaml"/>
 		<ResourceDictionary Source="MainWindow/UpdateStatus/es-MX.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
     
@@ -48,6 +50,14 @@
 	<system:String x:Key="CommonStrings.Download">Descargar</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">Abrir carpeta</system:String>
     <system:String x:Key="CommonStrings.None">Ninguno</system:String>
+    <system:String x:Key="CommonStrings.Enabled">Habilitado</system:String>
+    <system:String x:Key="CommonStrings.Disabled">Deshabilitado</system:String>
+
+    <!--Region Create Code-->
+    <system:String x:Key="CommonStrings.Type">Tipo</system:String>
+    <system:String x:Key="CommonStrings.TypeCode">Código</system:String>
+    <system:String x:Key="CommonStrings.Typepatch">Parche</system:String>
+    <system:String x:Key="CommonStrings.IsRequired">Se requiere</system:String>
 
     <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Minimizar</system:String>

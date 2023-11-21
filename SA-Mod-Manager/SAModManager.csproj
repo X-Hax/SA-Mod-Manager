@@ -12,7 +12,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/X-Hax/sadx-mod-loader</RepositoryUrl>
 		<PlatformTarget>AnyCPU</PlatformTarget>
-		<AssemblyVersion>1.0.1.1</AssemblyVersion>
+		<AssemblyVersion>1.0.0.3</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -101,6 +101,15 @@
 			<Generator>SettingsSingleFileGenerator</Generator>
 			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Languages\SplashScreen\es-MX.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	  </Page>
+	  <Page Update="Languages\Updater\es-MX.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	  </Page>
 	</ItemGroup>
 
 

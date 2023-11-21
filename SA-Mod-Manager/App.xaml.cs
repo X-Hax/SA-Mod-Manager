@@ -305,7 +305,7 @@ namespace SAModManager
                 Directory.CreateDirectory(".SATemp");
                 var dl = new ManagerUpdate(dlLink, ".SATemp", update.Item3.Name + ".zip");
                 dl.StartManagerDL();
-  
+                
                 ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
 
                 return true;

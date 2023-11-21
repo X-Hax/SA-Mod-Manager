@@ -2,12 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    
     <system:String x:Key="GamePatches.Title">Patch</system:String>
     <system:String x:Key="GamePatches.3DSound">Permitir Audio 3D por HRTF</system:String>
 	<system:String x:Key="GamePatches.CamCode">Corrección de errores de código de la cámara</system:String>
     <system:String x:Key="GamePatches.VertexColor">Corrección de color vectorial</system:String>
     <system:String x:Key="GamePatches.MaterialColor">Corrección de color de los materiales</system:String>
-    <system:String x:Key="GamePatches.NodeLimit">Increase Node Limit</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Aumentar límite de nodos</system:String>
 	<system:String x:Key="GamePatches.FixFOV">Correcciones del campo de visión</system:String>
 	<system:String x:Key="GamePatches.Skychase">Correcciones para Sky Chase</system:String>
 	<system:String x:Key="GamePatches.Chaos2">Corrección de fallos de Chaos 2</system:String>
@@ -23,7 +24,7 @@
     <system:String x:Key="GamePatches.CamCodeDesc">Corrige un error que impide que los ajustes de la cámara libre se guarden correctamente al morir o al cargar una zona/acto.</system:String>
     <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">SADX ignora deliberadamente el color de los vértices de los modelos y en su lugar utiliza un color de vértice global incluso cuando no debería.&#x0a;&#x0a;Este parche re-implementa las funciones para manejar el asunto CORRECTAMENTE y usar los colores de vértices proporcionados por el modelo.</system:String>
     <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">Esta función repasa todos los modelos del juego y sustituye el color de sus materiales por el blanco.&#x0a;&#x0a;Esto corrige varias inconsistencias y hace que los modelos se parezcan más a los de las versiones del juego para Gamecube y Dreamcast.</system:String>
-    <system:String x:Key="GamePatches.NodeDesc" xml:space="preserve">SADX originally has a limit of 111 nodes per character for models and animations.&#x0a;&#x0a;This patch increases the limit to 254, enabling the integration of more modern and complex models into the game.</system:String>
+    <system:String x:Key="GamePatches.NodeDesc" xml:space="preserve">SADX originalmente tiene un límite de 111 nodos por personaje para modelos y animaciones.&#x0a;&#x0a;Este parche aumenta el límite a 254, permitiendo la integración de modelos más modernos y complejos al juego.</system:String>
     <system:String x:Key="GamePatches.FixFOVDesc">Mejora el campo de visión y permite resoluciones verticales/de retrato.</system:String>
     <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Arregla la retícula y el multiplicador de Sky Chase, restaurando como se jugaba originalmente el nivel en resolución 640x480.&#x0a;&#x0a;Esto disminuye la dificultad para cumplir el requisito de puntuación en resoluciones 16:9.</system:String>
     <system:String x:Key="GamePatches.Chaos2Desc">Corrige un error en el que vencer a Chaos 2 y reiniciar el jefe bloqueaba el juego.</system:String>

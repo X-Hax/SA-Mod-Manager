@@ -40,6 +40,7 @@ namespace SAModManager.Common
 			Header.Text = Title;
 			ProfileNameTextbox.Text = profile.Name;
 			origProfile = profile.Filename;
+			KeepMods.Visibility = Visibility.Collapsed;
 			isEditing = true;
 		}
 
@@ -76,18 +77,24 @@ namespace SAModManager.Common
 						Configuration.SADX.GameSettings sadxSettings = new()
 						{
 							GamePath = App.CurrentGame.gameDirectory,
-							EnabledMods = Mods,
-							EnabledCodes = Codes,
                         };
+						if ((bool)KeepMods.IsChecked)
+						{
+							sadxSettings.EnabledMods = Mods;
+							sadxSettings.EnabledCodes = Codes;
+						}
                         sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
 						break;
 					case "Sonic Adventure 2":
                         Configuration.SADX.GameSettings sa2Settings = new()
                         {
                             GamePath = App.CurrentGame.gameDirectory,
-							EnabledMods = Mods,
-							EnabledCodes = Codes,
 						};
+                        if ((bool)KeepMods.IsChecked)
+                        {
+							sa2Settings.EnabledMods = Mods;
+							sa2Settings.EnabledCodes = Codes;
+                        }
                         sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
 						break;
 				}

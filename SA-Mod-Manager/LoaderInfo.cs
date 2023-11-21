@@ -80,7 +80,7 @@ namespace SAModManager
 
 		public bool ForceAspectRatio { get; set; }
 
-		public bool Borderless { get; set; }
+		public bool Borderless { get; set; } = true;
 
 		[DefaultValue(true)]
 		public bool EnableVsync { get; set; } = true;
@@ -119,8 +119,8 @@ namespace SAModManager
 		public bool ResizableWindow { get; set; }
 
 		[IniAlwaysInclude]
-		[DefaultValue(false)]
-		public bool ScaleHud { get; set; } = false;
+		[DefaultValue(true)]
+		public bool ScaleHud { get; set; } = true;
 
 		[DefaultValue((int)FillMode.Fill)]
 		public int BackgroundFillMode { get; set; } = (int)FillMode.Fill;

@@ -165,10 +165,13 @@ namespace SAModManager
         {
             Console.WriteLine("Checking dependencies...");
 
-            if (await VC_DependenciesCheck() == false)
-                return false;
-
             await UpdateDependenciesFolder();
+            if (App.isFirstBoot == true && App.isVanillaTransition == false)
+            {
+                if (await VC_DependenciesCheck() == false)
+                    return false;
+            }
+    
             ClearTempFolder();
 
             return true;

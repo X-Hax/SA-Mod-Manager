@@ -6,7 +6,7 @@
 	<img src="https://github.com/X-Hax/SA-Mod-Manager/actions/workflows/build.yml/badge.svg">
 </h1>
 
-Version 1.0.0
+Version 1.0.2
 
 
 ## System Requirements
@@ -18,6 +18,16 @@ To use SA Mod Manager, you must have:
 ## Supported Games
 * Sonic Adventure DX PC, 2004 version (US release, but If you have the Steam version, or a different region, you can convert it to 2004 US.)
 * Sonic Adventure 2 (Battle) PC (Support coming soon.)
+
+## How To Use
+- Download the [latest version from GitHub](https://github.com/X-Hax/SA-Mod-Manager/releases/latest) then extract the zip anywhere.
+- Run SAModManager.exe
+- In the "Manager Config" tab, set your Game location and it will automatically install the Mod Loader.
+- Enjoy!
+
+## Troubleshooting Guide
+- If you are experimenting issues with the new Manager, please [check this guide](https://github.com/X-Hax/SA-Mod-Manager/wiki/Troubleshooting-Guide)
+
 
 ## License
 

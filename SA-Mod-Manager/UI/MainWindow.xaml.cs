@@ -1060,10 +1060,18 @@ namespace SAModManager
                         pathValid = true;
                         tempPath = GamePath;
                         UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                        await VanillaTransition.ConvertOldProfile(false, GamePath);
+						if (Path.Exists(Path.Combine(GamePath, "mods")))
+							await VanillaTransition.ConvertOldProfile(false, GamePath);
                         Load(true);
                         break;
                     }
+                    else if (Steam.isSADXGamePath(GamePath))
+                    {
+                        //To do add installer support
+                       await Steam.InstallSADXModInstaller();
+                        return;
+                    }
+
                 }
 
                 if (!pathValid)
@@ -1197,8 +1205,12 @@ namespace SAModManager
             if (selectedItem != null)
             {
                 GameProfiles.ProfileIndex = comboProfile.SelectedIndex;
-                LoadGameSettings();
-                Refresh();
+                
+				LoadGameSettings();
+				SetBindings();
+				SetGameUI();
+				Refresh();
+				Save();
             }
         }
         #endregion
@@ -2039,7 +2051,11 @@ namespace SAModManager
             {
                 Source = App.ManagerSettings
             });
-            chkUpdatesML.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableManagerBootCheck")
+            chkUpdateManager.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableManagerBootCheck")
+            {
+                Source = App.ManagerSettings.UpdateSettings,
+            });
+            chkUpdatesML.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableLoaderBootCheck")
             {
                 Source = App.ManagerSettings.UpdateSettings,
             });
