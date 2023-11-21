@@ -18,8 +18,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">V-Sync 허용</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">비활성화 시 일시중지</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">버퍼를 동적으로 할당</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">전체화면</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">창</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">전체화면</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">창</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">창 크기 조절</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">종횡비 유지</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">사용자 정의 창 크기:</system:String>

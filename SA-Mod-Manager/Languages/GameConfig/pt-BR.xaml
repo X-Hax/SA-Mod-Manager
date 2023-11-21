@@ -18,8 +18,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Habilitar V-Sync</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausar Quando Inativo</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Alocar Buffers Dinamicamente</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Tela Cheia</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">Modo Janela</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Tela Cheia</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Modo Janela</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Janela Redimensionável</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Manter Proporção de Tela</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamanho de Janela Específico:</system:String>

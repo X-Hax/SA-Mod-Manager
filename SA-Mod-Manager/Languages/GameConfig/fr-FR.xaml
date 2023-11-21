@@ -18,8 +18,8 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Activer Synchronisation Verticale</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pause si inactif</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Allouage dynamique des Tampons</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Plein Écran</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">Fenêtré</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Plein Écran</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Fenêtré</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Fenêtre Redimensionnable</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Maintenir le Ratio d'Aspect</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Taille de fenêtre Personnalisée:</system:String>

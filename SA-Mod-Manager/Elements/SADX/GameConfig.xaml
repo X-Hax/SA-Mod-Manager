@@ -38,21 +38,32 @@
 							<!--Graphics Display Top-->
 							<Grid Grid.Column="1" Grid.Row="1">
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="250"/>
+									<ColumnDefinition Width="Auto"/>
 									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="*"/>
 								</Grid.RowDefinitions>
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Screen}" Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen}"/>
-								<ComboBox x:Name="comboScreen" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
-									<ComboBoxItem Content="All Screens"/>
+								<ComboBox x:Name="comboScreen" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
+									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Screen.All}"/>
 								</ComboBox>
 
-								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution}" Margin="5" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution}"/>
-								<Grid Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch">
+								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption}" Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Center"/>
+								<ComboBox x:Name="comboScreenMode" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0">
+									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed}"/>
+									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen}"/>
+									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless}"/>
+									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom}"/>
+								</ComboBox>
+
+								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution}" Margin="5" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution}"/>
+								<Grid Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="*"/>
@@ -78,63 +89,58 @@
 										<ComboBoxItem Content="4k"/>
 									</ComboBox>
 								</Grid>
-							</Grid>
+								<CheckBox x:Name="chkRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio}" Click="chkRatio_Click" />
 
-							<!--Graphics Display Middle-->
-							<GroupBox Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Settings}" Grid.Column="1" Grid.Row="2">
-								<Grid Margin="5,5,5,5">
+								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.CustomSize}" Margin="5" Grid.Column="0" Grid.Row="3"/>
+								<Grid Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="25"/>
+										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="25"/>
 									</Grid.ColumnDefinitions>
-									<Grid.RowDefinitions>
-										<RowDefinition Height="35"/>
-										<RowDefinition Height="5"/>
-										<RowDefinition Height="30"/>
-										<RowDefinition Height="5"/>
-										<RowDefinition Height="30"/>
-										<RowDefinition Height="35"/>
-									</Grid.RowDefinitions>
-
-									<Grid Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3">
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="*"/>
-											<ColumnDefinition Width="*"/>
-											<ColumnDefinition Width="*"/>
-										</Grid.ColumnDefinitions>
-										<Grid.RowDefinitions>
-											<RowDefinition Height="30"/>
-											<RowDefinition Height="5"/>
-											<RowDefinition Height="30"/>
-										</Grid.RowDefinitions>
-										<CheckBox x:Name="chkRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio}" Click="chkRatio_Click" />
-										<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
-                                        <CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
-                                    </Grid>
-
-
-									<Separator Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" VerticalAlignment="Center"/>
-
-									<RadioButton x:Name="radFullscreen" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen}" Grid.Column="1" VerticalAlignment="Center" Grid.Row="2" Margin="5,5,5,5" IsChecked="False" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen}"/>
-									<CheckBox x:Name="chkBorderless" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless}"/>
-									<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ScaleScreen}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen}"/>
-
-									<Separator Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" VerticalAlignment="Center"/>
-
-									<RadioButton x:Name="radWindowed" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed}" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed}" IsChecked="{Binding ElementName=radFullscreen, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
-									<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="2" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
-									<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.AspectRatio}" Grid.Column="3" Grid.Row="4" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect}" Click="chkMaintainRatio_Click" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}"/>
-									<CheckBox x:Name="chkCustomWinSize" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.CustomWindow}" Grid.Column="2" Grid.Row="5" VerticalAlignment="Center" Margin="5,5,5,5" Checked="chkCustomWinSize_Checked" Unchecked="chkCustomWinSize_Checked" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow}"/>
-									<StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal" Margin="5,0,5,0">
+									<StackPanel Margin="5" Grid.Column="0" Orientation="Horizontal">
 										<elements:NumericUpDown x:Name="txtCustomResX" Height="22" Width="75" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}"/>
 										<Label Content="x" VerticalContentAlignment="Center"/>
 										<elements:NumericUpDown x:Name="txtCustomResY" Height="22" Width="75" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}" ValueChanged="ResolutionChanged"/>
 									</StackPanel>
+
+									<ComboBox x:Name="comboCustom" Grid.Column="1" Margin="5">
+										<ComboBoxItem Content="640x480"/>
+										<ComboBoxItem Content="800x600"/>
+										<ComboBoxItem Content="1024x768"/>
+										<ComboBoxItem Content="1152x864"/>
+										<ComboBoxItem Content="1280x960"/>
+										<ComboBoxItem Content="1280x1024"/>
+										<ComboBoxItem Content="Native"/>
+										<ComboBoxItem Content="1/2x Native"/>
+										<ComboBoxItem Content="2x Native"/>
+										<ComboBoxItem Content="720p"/>
+										<ComboBoxItem Content="1080p"/>
+										<ComboBoxItem Content="4k"/>
+									</ComboBox>
 								</Grid>
-							</GroupBox>
+								<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.AspectRatio}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect}" Click="chkMaintainRatio_Click" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}"/>
+							</Grid>
+
+							<!--Graphics Display Middle-->
+							<Grid Grid.Column="1" Grid.Row="2">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
+
+								<Separator Grid.ColumnSpan="4" Grid.Row="0" Margin="5"/>
+
+								<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="0,5,0,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
+								<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="0,5,0,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
+								<CheckBox x:Name="chkScaleScreen" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ScaleScreen}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Margin="0,5,0,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen}"/>
+								<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Margin="0,5,0,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
+							</Grid>
 						</Grid>
 					</GroupBox>
 
