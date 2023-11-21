@@ -75,5 +75,10 @@ namespace SAModManager.Configuration
 
 			return rect;
 		}
+
+		public Rectangle GetScreenSize()
+		{
+			return Screen.PrimaryScreen.Bounds;
+		}
 	}
 }
