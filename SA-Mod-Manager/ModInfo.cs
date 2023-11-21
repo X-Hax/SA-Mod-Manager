@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using PropertyChanged;
 using SAModManager.Common;
 using SAModManager.Ini;
 
@@ -122,7 +124,7 @@ namespace SAModManager
 		}
 	}
 
-	public class ModData
+    public class ModData : INotifyPropertyChanged
 	{
 		public string Name { get; set; }
 		public string Author { get; set; }
@@ -131,14 +133,20 @@ namespace SAModManager
 		public string Category { get; set; }
 		public string Description { get; set; }
 		public string SourceCode { get; set; }
-		public bool IsChecked { get; set; }
+
+        public bool IsChecked { get; set; }
 		public string Tag { get; set; }
-	}
-	public class CodeData
+
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
+
+    public class CodeData : INotifyPropertyChanged
 	{
 		public Code codes { get; set; }
 		public bool IsChecked { get; set; }
 		public bool IsEnabled { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
 	public class PatchesData

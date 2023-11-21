@@ -23,6 +23,7 @@ using SAModManager.Updater;
 using SAModManager.Elements;
 using SAModManager.Ini;
 using SAModManager.Configuration;
+using ICSharpCode.AvalonEdit.Document;
 
 
 namespace SAModManager
@@ -751,14 +752,14 @@ namespace SAModManager
             if (listMods.Items.Count == 0)
                 return;
 
-            int index = listMods.SelectedIndex + 1;
+            int index = ViewModel.Modsdata.IndexOf(ViewModel.SelectedMod) + 1;
 
             if (index < 0)
                 index = 0;
 
-            for (int i = index; i < listMods.Items.Count; i++)
+            for (int i = index; i < ViewModel.Modsdata.Count; i++)
             {
-                var item = (ModData)listMods.Items[i];
+                var item = ViewModel.Modsdata[i];
 
                 if (!string.IsNullOrEmpty(item.Name) && letter[0] == item.Name[0])
                 {
@@ -788,23 +789,20 @@ namespace SAModManager
             if (listMods == null)
                 return;
 
-            ModData mod = (ModData)listMods.SelectedItem;
+            ModData mod = ViewModel.SelectedMod;
 
             if (mod == null)
                 return;
 
             var ctrlKey = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
-
             if (Keyboard.IsKeyDown(Key.Space))
             {
-                listMods.BeginInit();
                 mod.IsChecked = !mod.IsChecked;
-                listMods.EndInit();
             }
             else if (ctrlKey)
             {
-
+                
                 if (Keyboard.IsKeyDown(Key.E))
                     ModContextEditMod_Click(null, null);
                 else if (Keyboard.IsKeyDown(Key.O))
@@ -843,18 +841,15 @@ namespace SAModManager
 
         private void CodesList_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var code = GetCodeFromView(sender);
+            var code = ViewModel.SelectedCode;
 
             if (code == null)
                 return;
 
             if (Keyboard.IsKeyDown(Key.Space) && !code.codes.Required)
             {
-                CodeListView.BeginInit();
                 code.IsChecked = !code.IsChecked;
-                CodeListView.EndInit();
             }
-
 
             if (Keyboard.IsKeyDown(Key.Enter))
                 OpenAboutCodeWindow(code.codes);
