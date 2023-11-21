@@ -23,6 +23,14 @@ namespace SAModManager.Configuration.SADX
 			temp = 0,
 		}
 
+		public enum DisplayMode
+		{
+			Windowed,
+			Fullscreen,
+			Borderless,
+			CustomWindow
+		}
+
 		/// <summary>
 		/// Index for the screen the game will boot on.
 		/// </summary>
@@ -60,22 +68,10 @@ namespace SAModManager.Configuration.SADX
 		public bool EnablePauseOnInactive { get; set; } = true;     // SADXLoaderInfo.PauseWhenInactive
 
 		/// <summary>
-		/// Makes the fullscreen window borderless.
-		/// </summary>
-		[DefaultValue(true)]
-		public bool EnableBorderless { get; set; } = true;          // SADXLoaderInfo.Borderless
-
-		/// <summary>
 		/// Scales the screen to window edges in fullscreen.
 		/// </summary>
 		[DefaultValue(true)]
 		public bool EnableScreenScaling { get; set; } = true;     // SADXLoaderInfo.StretchFullscreen
-
-		/// <summary>
-		/// Enables a custom window size that can be smaller than the resolution is set.
-		/// </summary>
-		[DefaultValue(false)]
-		public bool EnableCustomWindow { get; set; }              // SADXLoaderInfo.CustomWindowSize
 
 		/// <summary>
 		/// Sets the Width of the Custom Window Size.
@@ -140,11 +136,47 @@ namespace SAModManager.Configuration.SADX
 		//To DO change with ComboBox for different settings
         [DefaultValue(true)]
         public bool EnableForcedTextureFilter { get; set; } = true; // SADXLoaderInfo.TextureFilter
-        /// <summary>
-        /// Converts from original settings file.
-        /// </summary>
-        /// <param name="oldSettings"></param>
-        public void ConvertFromV0(SADXLoaderInfo oldSettings)
+
+		/// <summary>
+		/// Sets the Screen Mode (Windowed, Fullscreen, Borderless, or Custom Window)
+		/// </summary>
+		[DefaultValue(0)]
+		public int ScreenMode { get; set; }
+
+		/// <summary>
+		/// Sets the Game's Framerate
+		/// </summary>
+		[DefaultValue(1)]
+		public int GameFrameRate { get; set; }  // SADXGameConfig.FrameRate
+
+		/// <summary>
+		/// Sets the game's method of FogEmulation
+		/// </summary>
+		[DefaultValue(0)]
+		public int GameFogMode { get; set; }    // SADXGameConfig.Foglation
+
+		[DefaultValue(0)]
+		public int GameClipLevel { get; set; }	// SADXGameConfig.ClipLevel
+
+		#region Deprecated
+		/// <summary>
+		/// Deprecated, see <see cref="ScreenMode"/>
+		/// </summary>
+		[DefaultValue(false)]
+		public bool EnableCustomWindow { get; set; }              // SADXLoaderInfo.CustomWindowSize
+
+		/// <summary>
+		/// Deprecated, see <see cref="ScreenMode"/>
+		/// </summary>
+		[DefaultValue(true)]
+		public bool EnableBorderless { get; set; } = true;          // SADXLoaderInfo.Borderless
+		#endregion
+
+		/// <summary>
+		/// Converts from original settings file.
+		/// </summary>
+		/// <param name="oldSettings"></param>
+		public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{
 			SelectedScreen = oldSettings.ScreenNum;
 			HorizontalResolution = oldSettings.HorizontalResolution;
@@ -156,6 +188,7 @@ namespace SAModManager.Configuration.SADX
 
 			EnableBorderless = oldSettings.Borderless;
 			EnableScreenScaling = oldSettings.StretchFullscreen;
+
 			EnableCustomWindow = oldSettings.CustomWindowSize;
 			CustomWindowWidth = oldSettings.WindowWidth;
 			CustomWindowHeight = oldSettings.WindowHeight;
@@ -167,6 +200,62 @@ namespace SAModManager.Configuration.SADX
 			EnableUIScaling = oldSettings.ScaleHud;
 			EnableForcedMipmapping = oldSettings.AutoMipmap;
 			EnableForcedTextureFilter = oldSettings.TextureFilter;
+		}
+
+		private void ToLoaderInfo(ref SADXLoaderInfo info)
+		{
+			info.ScreenNum = SelectedScreen;
+			info.HorizontalResolution = HorizontalResolution;
+			info.VerticalResolution = VerticalResolution;
+
+			switch ((DisplayMode)ScreenMode)
+			{
+				case DisplayMode.Borderless:
+					info.Borderless = true;
+					break;
+				case DisplayMode.CustomWindow:
+					info.CustomWindowSize = true;
+					break;
+			}
+
+			info.ForceAspectRatio = Enable43ResolutionRatio;
+			info.MaintainWindowAspectRatio = EnableKeepResolutionRatio;
+			info.WindowWidth = CustomWindowWidth;
+			info.WindowHeight = CustomWindowHeight;
+
+			info.EnableVsync = EnableVsync;
+			info.PauseWhenInactive = EnablePauseOnInactive;
+			info.StretchFullscreen = EnableScreenScaling;
+			info.ResizableWindow = EnableResizableWindow;
+
+			info.BackgroundFillMode = FillModeBackground;
+			info.FmvFillMode = FillModeFMV;
+			info.ScaleHud = EnableUIScaling;
+			info.AutoMipmap = EnableForcedMipmapping;
+			info.TextureFilter = EnableForcedTextureFilter;
+		}
+
+		private void ToGameConfig(ref SADXConfigFile config)
+		{
+			config.GameConfig.FrameRate = GameFrameRate + 1;
+			config.GameConfig.Foglation = GameFogMode;
+			config.GameConfig.ClipLevel = GameClipLevel;
+
+			switch ((DisplayMode)ScreenMode)
+			{
+				case DisplayMode.Fullscreen:
+					config.GameConfig.FullScreen = 1;
+					break;
+				default:
+					config.GameConfig.FullScreen = 0;
+					break;
+			}
+		}
+
+		public void ToConfigs(ref SADXLoaderInfo info, ref SADXConfigFile config)
+		{
+			ToLoaderInfo(ref info);
+			ToGameConfig(ref config);
 		}
 	}
 
