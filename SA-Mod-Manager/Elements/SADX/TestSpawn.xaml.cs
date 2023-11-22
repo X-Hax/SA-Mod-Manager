@@ -391,7 +391,6 @@ namespace SAModManager.Elements.SADX
             GameProfile = (gameSettings as GameSettings);
             SelectedMods = (gameSettings as GameSettings).EnabledMods;
             GameMods = modList;
-            InitCutsceneList();
 
             InitializeComponent();
 
@@ -403,7 +402,7 @@ namespace SAModManager.Elements.SADX
         {
             // Setup Item Sources
             GetSaves();
-
+            InitCutsceneList();
             tsComboTime.ItemsSource = TimeDay;
             tsComboTime.SelectedIndex = 0;
             SetBindings();
@@ -684,6 +683,7 @@ namespace SAModManager.Elements.SADX
 
         private void InitCutsceneList()
         {
+
             EventNames = new Dictionary<int, string>();
 
             for (int i = 0; i < 385; i++)
