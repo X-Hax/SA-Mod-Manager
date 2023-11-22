@@ -149,7 +149,7 @@ namespace SAModManager
             return true;
         }
 
-        private static void ClearTempFolder()
+        public static void ClearTempFolder()
         {
             try
             {
