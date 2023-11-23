@@ -67,7 +67,7 @@
 										<elements:NumericUpDown x:Name="txtResY" Height="22" Width="75" ValueChanged="ResolutionChanged"/>
 									</StackPanel>
 
-									<ComboBox x:Name="comboDisplay" Grid.Column="1" Margin="5" SelectionChanged="comboResolutionPreset_SelectedIndexChanged">
+									<ComboBox x:Name="comboDisplay" Grid.Column="1" Margin="5" SelectionChanged="DisplaySize_SelectionChanged">
 										<ComboBoxItem Content="640x480"/>
 										<ComboBoxItem Content="800x600"/>
 										<ComboBoxItem Content="1024x768"/>
@@ -96,7 +96,7 @@
 										<elements:NumericUpDown x:Name="txtCustomResY" Height="22" Width="75" ValueChanged="ResolutionChanged"/>
 									</StackPanel>
 
-									<ComboBox x:Name="comboCustomWindow" Grid.Column="1" Margin="5">
+									<ComboBox x:Name="comboCustomWindow" Grid.Column="1" Margin="5" SelectionChanged="DisplaySize_SelectionChanged">
 										<ComboBoxItem Content="640x480"/>
 										<ComboBoxItem Content="800x600"/>
 										<ComboBoxItem Content="1024x768"/>

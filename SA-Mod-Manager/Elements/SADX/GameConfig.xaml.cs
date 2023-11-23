@@ -15,6 +15,7 @@ using SAModManager.Configuration;
 using SAModManager.Configuration.SADX;
 using SAModManager.Ini;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 
 namespace SAModManager.Elements.SADX
 {
@@ -31,14 +32,12 @@ namespace SAModManager.Elements.SADX
 		private static string d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
 		private static string d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
 		private readonly double LowOpacityBtn = 0.7;
-		private SADXConfigFile GameSettings;
         #endregion
 
         public GameConfig(ref object gameSettings, ref object gameConfig)
 		{
 			InitializeComponent();
 			GameProfile = (GameSettings)gameSettings;
-			GameSettings = (SADXConfigFile)gameConfig;
 			graphics = new GraphicsHelper(ref comboScreen);
 			UpdateAppLauncherBtn();
             SetPatches();
@@ -128,18 +127,33 @@ namespace SAModManager.Elements.SADX
 			}
 		}
 
-		private void comboResolutionPreset_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
+		private void DisplaySize_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (comboDisplay.SelectedIndex == -1)
+			ComboBox box = (ComboBox)sender;
+
+			if (box.SelectedIndex == -1)
 				return;
 
-			int index = comboDisplay.SelectedIndex;
+			int index = box.SelectedIndex;
 
 			suppressEvent = true;
-			txtResY.Value = graphics.resolutionPresets[index].Height;
 
-			if (chkRatio.IsChecked == false)
-				txtResX.Value = graphics.resolutionPresets[index].Width;
+			switch (box.Name)
+			{
+				case "comboDisplay":
+					txtResY.Value = graphics.resolutionPresets[index].Height;
+
+					if (chkRatio.IsChecked == false)
+						txtResX.Value = graphics.resolutionPresets[index].Width;
+					break;
+
+				case "comboCustomWindow":
+					txtCustomResY.Value = graphics.resolutionPresets[index].Height;
+
+					if (chkRatio.IsChecked == false)
+						txtCustomResX.Value = graphics.resolutionPresets[index].Width;
+					break;
+			}
 
 			suppressEvent = false;
 		}
@@ -625,19 +639,19 @@ namespace SAModManager.Elements.SADX
 			switch (action)
 			{
 				case 0:
-					mouseBtnAssign.SelectedIndex = GameSettings.GameConfig.MouseStart;
+					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseStart;
 					break;
 				case 1:
-					mouseBtnAssign.SelectedIndex = GameSettings.GameConfig.MouseAttack;
+					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseAttack;
 					break;
 				case 2:
-					mouseBtnAssign.SelectedIndex = GameSettings.GameConfig.MouseJump;
+					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseJump;
 					break;
 				case 3:
-					mouseBtnAssign.SelectedIndex = GameSettings.GameConfig.MouseAction;
+					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseAction;
 					break;
 				case 4:
-					mouseBtnAssign.SelectedIndex = GameSettings.GameConfig.MouseFlute;
+					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseFlute;
 					break;
 			}
 		}
@@ -648,19 +662,19 @@ namespace SAModManager.Elements.SADX
 			switch (action)
 			{
 				case 0:
-					GameSettings.GameConfig.MouseStart = (ushort)value;
+					GameProfile.Controller.VanillaMouseStart = value;
 					break;
 				case 1:
-					GameSettings.GameConfig.MouseAttack = (ushort)value;
+					GameProfile.Controller.VanillaMouseAttack = value;
 					break;
 				case 2:
-					GameSettings.GameConfig.MouseJump = (ushort)value;
+					GameProfile.Controller.VanillaMouseJump = value;
 					break;
 				case 3:
-					GameSettings.GameConfig.MouseAction = (ushort)value;
+					GameProfile.Controller.VanillaMouseAction = value;
 					break;
 				case 4:
-					GameSettings.GameConfig.MouseFlute = (ushort)value;
+					GameProfile.Controller.VanillaMouseFlute = value;
 					break;
 			}
 		}
@@ -818,24 +832,22 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Controller,
 				Mode = BindingMode.TwoWay
 			});
-			inputMouseDragAccel.SetBinding(RadioButton.IsCheckedProperty, new Binding("MouseMode")
+			inputMouseDragAccel.SetBinding(RadioButton.IsCheckedProperty, new Binding("VanillaMouseUseDrag")
 			{
-				Source = GameSettings.GameConfig,
+				Source = GameProfile.Controller,
 				Mode = BindingMode.TwoWay
 			});
-			inputMouseDragHold.IsChecked = (GameSettings.GameConfig.MouseMode == 0) ? true : false;
+			//inputMouseDragHold.IsChecked = (GameSettings.GameConfig.MouseMode == 0) ? true : false;
 
 			// Audio Settings
 			checkEnableMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("BGM")
 			{
-				Source = GameSettings.GameConfig,
-				Converter = new BoolIntConverter(),
+				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay
 			});
-			checkEnableSounds.SetBinding(CheckBox.IsCheckedProperty, new Binding("SEVoice")
+			checkEnableSounds.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableGameSound")
 			{
-				Source = GameSettings.GameConfig,
-				Converter = new BoolIntConverter(),
+				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay
 			});
 			checkBassMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableBassMusic")
@@ -848,24 +860,23 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay
 			});
-			checkEnable3DSound.SetBinding(CheckBox.IsCheckedProperty, new Binding("Sound3D")
+			checkEnable3DSound.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableGameSound3D")
 			{
-				Source = GameSettings.GameConfig,
-				Converter = new BoolIntConverter(),
+				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay
 			});
 			sliderMusic.Minimum = 0;
 			sliderMusic.Maximum = 100;
-			sliderMusic.SetBinding(ScrollBar.ValueProperty, new Binding("BGMVolume")
+			sliderMusic.SetBinding(ScrollBar.ValueProperty, new Binding("GameMusicVolume")
 			{
-				Source = GameSettings.GameConfig,
+				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay
 			});
 			sliderVoice.Minimum = 0;
 			sliderVoice.Maximum = 100;
-			sliderVoice.SetBinding(ScrollBar.ValueProperty, new Binding("VoiceVolume")
+			sliderVoice.SetBinding(ScrollBar.ValueProperty, new Binding("GameSoundVolume")
 			{
-				Source = GameSettings.GameConfig,
+				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay
 			});
 			sliderSFX.Minimum = 0;
