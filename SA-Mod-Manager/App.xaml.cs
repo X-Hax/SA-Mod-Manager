@@ -429,9 +429,9 @@ namespace SAModManager
 
                     var dialog = new InstallManagerUpdate(args[2], args[3]);
                     await dialog.InstallUpdate();
-
+                    SAModManager.Startup.ClearTempFolder();
                     Application.Current.Shutdown();
-
+                    
                     return true;
                 }
 
