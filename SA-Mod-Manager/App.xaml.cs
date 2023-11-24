@@ -152,7 +152,7 @@ namespace SAModManager
 				case "LightTheme":
 					IsLightTheme = true;
 					break;
-				case "DarkTheme":
+                default:
 					IsLightTheme = false;
 					break;
 			}
@@ -336,17 +336,9 @@ namespace SAModManager
 
         public static async Task<bool> PerformUpdateLoaderCheck()
         {
-            if (!App.CurrentGame.loader.installed)
-                return false;
-
-            var mainWindow = ((MainWindow)Application.Current.MainWindow);
-
-            if (mainWindow.chkUpdatesML.IsChecked != true)
-                return false;
-
             try
             {
-
+                var mainWindow = ((MainWindow)Application.Current.MainWindow);
                 mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkLoaderUpdate"));
                 var update = await CheckLoaderUpdate();
 

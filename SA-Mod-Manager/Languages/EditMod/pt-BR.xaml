@@ -14,7 +14,9 @@
 	<system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Redirecionar Save:</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Save Principal</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Save de Chao</system:String>
-
+	
+	<system:String x:Key="EditMod.Tabs.Btn.Advanced">Avançado</system:String>
+	
 	<system:String x:Key="EditMod.Tabs.Updates">Informações de Atualizações</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Method">Método de Atualização</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub">Opções de Atualização por Github</system:String>
@@ -24,7 +26,7 @@
 	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">ID do Mod:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self">Opções de Atualização Auto-Hospedada</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL de Atualizações:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL de Changelogs:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL de Changelog:</system:String>
 
 	<system:String x:Key="EditMod.Tabs.Dependencies">Dependências</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Warning">O sistema de depêndencia só deve ser usado quando você estiver criando um mod que absolutamente necessita de outro mod para funcionar corretamente.</system:String>

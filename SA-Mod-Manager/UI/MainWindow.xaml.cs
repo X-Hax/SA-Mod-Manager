@@ -1091,9 +1091,12 @@ namespace SAModManager
                 return;
             }
 
-            await App.PerformUpdateLoaderCheck();
-            await App.PerformUpdateCodesCheck();
-        
+            if (App.CurrentGame.loader.installed && chkUpdatesML.IsChecked == true)
+            {
+                await App.PerformUpdateLoaderCheck();
+                await App.PerformUpdateCodesCheck();
+            }
+
             manualModUpdate = true;
             await CheckForModUpdates(true);
             checkForUpdate = false;
@@ -1370,6 +1373,9 @@ namespace SAModManager
                     EnabledMods.Add(mod.Tag);
 
             // Update EnabledCodes for saving.
+            CodesFind.Visibility = Visibility.Collapsed;
+            FilterCodes("");
+            TextBox_CodesSearch.Text = "";
             EnabledCodes.Clear();
             foreach (CodeData code in CodeListView.Items)
                 if (code?.IsChecked == true)
@@ -1987,7 +1993,7 @@ namespace SAModManager
 
         private async Task CheckForModUpdates(bool force = false)
         {
-            if (!force && !App.ManagerSettings.UpdateSettings.EnableModsBootCheck)
+            if (!force && !App.ManagerSettings.UpdateSettings.EnableModsBootCheck || mods is null || mods.Count == 0)
             {
                 return;
             }

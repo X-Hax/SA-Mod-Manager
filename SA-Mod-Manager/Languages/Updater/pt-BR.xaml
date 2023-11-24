@@ -1,0 +1,25 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!--Dependencies-->
+    <system:String x:Key="Updater.DL.Dep.Download">Baixar</system:String>
+    <system:String x:Key="Updater.DL.Dep.Install">Instalar</system:String>
+    <system:String x:Key="Updater.DL.Dep.Update">Atualizar</system:String>
+    <system:String x:Key="Updater.DL.Dep.Downloading">Baixando</system:String>
+    <system:String x:Key="Updater.DL.Dep.Installing">Instalando</system:String>
+    <system:String x:Key="Updater.DL.Dep.Updating">Atualizando</system:String>
+    <system:String x:Key="Updater.DL.Dep.Completed">Concluído.</system:String>
+    <system:String x:Key="Updater.DL.Dep.Copying">Copiando arquivos...</system:String>
+
+    <!--Mod Update-->
+    <system:String x:Key="Updater.DL.Mod.Extracting">Extraindo...</system:String>
+    <system:String x:Key="Updater.DL.Mod.ParsingManifest">Analisando manifesto...</system:String>
+    <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Aplicando manifesto...</system:String>
+    <system:String x:Key="Updater.DL.Mod.DownloadingFile">Baixando arquivo</system:String>
+    <system:String x:Key="Updater.DL.Mod.of">de</system:String> <!-- "of" files to download-->
+    <system:String x:Key="Updater.DL.Mod.UpdatingMod">Atualizando mod</system:String>
+    <system:String x:Key="Updater.DL.Mod.StartingDownload">Iniciando Download...</system:String>
+    <system:String x:Key="Updater.DL.Mod.DownloadComplete">Download completo.</system:String>
+</ResourceDictionary>
