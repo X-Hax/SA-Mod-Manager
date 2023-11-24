@@ -30,9 +30,9 @@
 
 	<!--#region Codes Tab Strings-->
 	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Novo Código</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Edit Code</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Delete Code</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Código</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Editar Código</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Deletar Código</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.CodeHeader">Código</system:String>
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Feito por</system:String>
 	<!--#endregion-->
 
@@ -46,20 +46,21 @@
 
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Habilitar 1-Click Install</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Desabilitar 1-Click Install</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Abrir Diretoria do Jogo</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Abrir Pasta do Jogo</system:String>
 
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Instalar Carregador de Mods</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Desinstalar Carregador de Mods</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Instalar Carregador de Mod</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Desinstalar Carregador de Mod</system:String>
 
 	<!--Updates-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Atualizações</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Buscar Atualizações do Carregador de Mods na Inicialização.</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Buscar Atualizações do Gerenciador de Mod na Inicialização</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Buscar Atualizações do Carregador de Mod na Inicialização</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Buscar Atualizações de Mod na Inicialização</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Procurar Atualizações</system:String>
 
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Opções Avançadas</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Manter Gerenciador de Mods Aberto após iniciar o jogo</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Manter Gerenciador de Mod Aberto após iniciar o jogo</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Habilitar Opções de Desenvolvedor</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Habilitar Janela de Console</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Mostrar Texto de Depuração na Janela do Jogo</system:String>
@@ -104,10 +105,10 @@
 	<!--#endregion-->
 
 	<!--#region Game Config Tab -->
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">Modifique as Opções de Gráficos.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">Modifique as opções de gráficos.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">Modifique as opções de entrada do jogo.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">Modifique as configuraçãos de aúdio do jogo.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">Habilite ou Desabilite remendos do jogo.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">Habilite ou Desabilite correções do jogo.</system:String>
 
 	<!--#region Graphics Settings-->
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen">Selecione o monitor em que o jogo vai iniciar.</system:String>
@@ -161,8 +162,8 @@
 	<!--#endregion-->
 
 	<!--#region Patches Settings-->
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">Marca todas os remendos da lista.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">Desmarca todas os remendos da lista.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">Marca todas as correções da lista.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">Desmarca todas as correções da lista.</system:String>
 	<!--#endregion-->
 	<!--#endregion-->
 
@@ -184,23 +185,24 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Abre o Gerenciador de Perfil, onde você pode criar e deletar perfis.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">O caminho completo para a pasta onde seu jogo está instalado.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Abre uma janela onde você pode selecionar a pasta do seu jogo.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Define o tema usado pelo Gerenciador de Mods.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Define o idioma usado pelo Gerenciador de Mods.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantém o Gerenciador de Mods aberto após pressionar Salvar e Jogar.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Habilita a Aba de Spawn de Teste no Gerenciador de Mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Define o tema usado pelo Gerenciador de Mod.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Define o idioma usado pelo Gerenciador de Mod.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantém o Gerenciador de Mod aberto após pressionar Salvar e Jogar.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Habilita a Aba de Spawn de Teste no Gerenciador de Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Quando habilitado, clicar em um link de One Click no GameBanana irá abrir um diálogo de download para o mod.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Quando habilitado, o Carregador de Mods é instalado e você pode jogar com mods, remendos, e trapaças.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Habilita a verificação automática por atualizações do Carregador de Mods quando o Gerenciador de Mods for aberto.</system:String> 
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Habilita a verificação automática por atualizações de Mods instalados quando o Gerenciador de Mods for aberto.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Executa uma busca por atualizações para o Carregador de Mods e aos mods que você tem instalado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Quando habilitado, o Carregador de Mod é instalado e você pode jogar com mods, correções, e trapaças.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Habilita a verificação automática por atualizações do Gerenciador de Mod quando este programa for aberto.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Habilita a verificação automática por atualizações do Carregador de Mod quando este programa for aberto.</system:String> 
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Habilita a verificação automática por atualizações de Mods instalados quando este programa for aberto.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Executa uma busca por atualizações para o Carregador de Mod e aos mods que você tem instalado.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Habilita uma Janela de Console que exibe informação de depuração do jogo.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Mostra texto com informação de depuração na Janela do Jogo.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Registra toda informação de depuração em um arquivo de texto.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Habilita a criação de despejos de memória quando o jogo encontra um Erro. Eles são úteis para investigar a origem de crashes inesperados.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Abre a janela de Sobre e Contribuidores.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Abre um link para o repositório de Github do Gerenciador de Mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Abre um link para o repositório de Github do Gerenciador de Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Abre um link para o website das SA Docs que contém informações sobre como modificar a duologia Adventure.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Abre um link para os Issues do repositório de Github do Gerenciador de Mods, para o reporte de bugs.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Abre um link para os Issues do repositório de Github do Gerenciador de Mod, para o reporte de bugs.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Verifica a saúde do seu jogo para ver se há algum arquivo que está faltando ou algum que foi modficado.</system:String>
 	<!--#endregion-->
 
