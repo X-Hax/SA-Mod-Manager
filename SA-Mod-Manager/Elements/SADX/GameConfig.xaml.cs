@@ -539,6 +539,13 @@ namespace SAModManager.Elements.SADX
 					Name = Lang.GetString("GamePatches.DisableCDCheck"),
 					Description = Lang.GetString("GamePatches.DisableCDCheckDesc"),
 					IsChecked = set.Patches.DisableCDCheck
+				},			
+				
+				new PatchesData()
+				{
+					Name = Lang.GetString("GamePatches.ExtendedSaveSupport"),
+					Description = Lang.GetString("GamePatches.ExtendedSaveDesc"),
+					IsChecked = set.Patches.ExtendedSaveSupport
 				},
 			};
 
@@ -590,6 +597,7 @@ namespace SAModManager.Elements.SADX
             d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
         }
 
+		//Todo rework because this is absolutely disgusting
 		public void SavePatches(ref object input)
 		{
 			GameSettings settings = input as GameSettings;
@@ -597,8 +605,9 @@ namespace SAModManager.Elements.SADX
 			if (listPatches is null)
 				return;
 
-			PatchesData patch = (PatchesData)listPatches.Items[14];
-
+            PatchesData patch = (PatchesData)listPatches.Items[15];
+            settings.Patches.ExtendedSaveSupport = patch.IsChecked;
+             patch = (PatchesData)listPatches.Items[14];
 			settings.Patches.DisableCDCheck = patch.IsChecked;
 			patch = (PatchesData)listPatches.Items[13];
 			settings.Patches.KillGBIX = patch.IsChecked;

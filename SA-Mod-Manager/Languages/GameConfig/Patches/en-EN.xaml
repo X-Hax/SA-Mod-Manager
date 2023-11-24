@@ -19,6 +19,7 @@
 	<system:String x:Key="GamePatches.Lights">Light Fixes</system:String>
 	<system:String x:Key="GamePatches.DisableGBIX">Disable GBIX (Experimental)</system:String>
 	<system:String x:Key="GamePatches.DisableCDCheck">Disable CD Check</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupport">Extended Save Support</system:String>
 
     <system:String x:Key="GamePatches.3DSoundDesc">Sets DirectSound to use more advanced algorithms to process 3D sounds. This patch is unnecessary when BASS for SFX is enabled.</system:String>
     <system:String x:Key="GamePatches.CamCodeDesc">Fixes a vanilla bug that prevents Free Cam Settings from being saved properly when dying or loading a zone/act.</system:String>
@@ -35,6 +36,7 @@
     <system:String x:Key="GamePatches.LightsDesc">Fixes light incorrectly being applied on LandTables and enables light type preservation for queued models.</system:String>
     <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">Global Index (GBIX) is a value used in the game's texture caching system. Each texture in SADX has one.&#x0a;Before the game loads a new texture, it compares the new texture's GBIX value with indices of other textures that are already loaded.&#x0a;If a match is found, the game reuses the already loaded texture instead of loading the new one.&#x0a;&#x0a;This patch disables most of the GBIX system in the game to reduce texture errors/conflicts. (A few exceptions like HUD elements apply.)</system:String>
 	<system:String x:Key="GamePatches.DisableCDCheckDesc">Disables the game's CD check.</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveDesc">Enables support for saved games from the Steam version and allows custom save names (up to 48 characters).</system:String>
 
 
 
