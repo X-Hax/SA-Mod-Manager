@@ -1118,6 +1118,9 @@ namespace SAModManager.Configuration.SADX
 			SADXLoaderInfo info = new SADXLoaderInfo();
 			SADXConfigFile config = new SADXConfigFile();
 
+			info.Mods = EnabledMods;
+			info.EnabledCodes = EnabledCodes;
+
 			Graphics.ToConfigs(ref info, ref config);
 			Controller.ToConfigs(ref info, ref config);
 			Sound.ToConfigs(ref info, ref config);
