@@ -917,20 +917,25 @@ namespace SAModManager.Elements.SADX
 		{
 			ComboBox box = sender as ComboBox;
 
-			switch ((GraphicsSettings.DisplayMode)box.SelectedIndex)
+			if (this.IsLoaded)
 			{
-				case GraphicsSettings.DisplayMode.Fullscreen:
-					System.Drawing.Rectangle rect = graphics.GetScreenSize();
-					txtResX.MaxValue = rect.Width;
-					txtResY.MaxValue = rect.Height;
-					break;
-				default:
-					if (txtResX != null)
-					{
+				switch ((GraphicsSettings.DisplayMode)box.SelectedIndex)
+				{
+					case GraphicsSettings.DisplayMode.Fullscreen:
+						System.Drawing.Rectangle rect = graphics.GetScreenSize();
+						txtResX.MaxValue = rect.Width;
+						txtResY.MaxValue = rect.Height;
+						GameProfile.Graphics.EnableBorderless = false;
+						break;
+					case GraphicsSettings.DisplayMode.Borderless:
+						GameProfile.Graphics.EnableBorderless = true;
+						break;
+					default:
 						txtResX.MaxValue = double.PositiveInfinity;
 						txtResY.MaxValue = double.PositiveInfinity;
-					}
-					break;
+						GameProfile.Graphics.EnableBorderless = false;
+						break;
+				}
 			}
         }
     }
