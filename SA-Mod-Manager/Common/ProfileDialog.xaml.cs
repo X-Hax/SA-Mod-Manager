@@ -248,7 +248,7 @@ namespace SAModManager.Common
 								case "Sonic Adventure DX":
 									SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(file);
 									Configuration.SADX.GameSettings settings = new();
-									settings.ConvertFromV0(info);
+									settings.LoadConfigs();
 
 									string newFileName = Path.GetFileNameWithoutExtension(file);
 									string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");

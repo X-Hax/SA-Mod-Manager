@@ -950,7 +950,7 @@ namespace SAModManager.Configuration.SADX
 		public List<string> EnabledCodes { get; set; } = new();      // SADXLoaderInfo.EnabledCodes
 
 		/// <summary>
-		/// Deprecated in v2, see <see cref="LoadConfigs"/>
+		/// Used for Profiles Migration, for initial boot, see <see cref="LoadConfigs"/>
 		/// </summary>
 		/// <param name="oldSettings"></param>
 		public void ConvertFromV0(SADXLoaderInfo oldSettings)
