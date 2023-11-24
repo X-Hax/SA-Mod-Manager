@@ -10,7 +10,7 @@
     <system:String x:Key="Updater.DL.Dep.Downloading">Загрузка</system:String>
     <system:String x:Key="Updater.DL.Dep.Installing">Установка</system:String>
     <system:String x:Key="Updater.DL.Dep.Updating">Обновление</system:String>
-    <system:String x:Key="Updater.DL.Dep.Completed">завершено.</system:String>
+    <system:String x:Key="Updater.DL.Dep.Completed">завершено(-а).</system:String>
     <system:String x:Key="Updater.DL.Dep.Copying">Копирование файлов...</system:String>
 
 

@@ -11,8 +11,10 @@ namespace SAModManager.UI
 	{
 		public ObservableCollection<ModData> Modsdata { get; set; } = new();
 		public ObservableCollection<ModData> ModsSearch { get; set; } = new();
+        public ModData SelectedMod { get; set; }
+        public CodeData SelectedCode { get; set; }
 
-		public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
 		public void DragOver(IDropInfo dropInfo)
 		{

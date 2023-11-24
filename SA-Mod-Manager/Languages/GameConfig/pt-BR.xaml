@@ -1,14 +1,14 @@
-﻿<ResourceDictionary 
+<ResourceDictionary 
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
-    
+
 	<!--#region Shared-->
 	<!--Game Tabs Strings-->
-	<system:String x:Key="GameConfig.Tabs.Graphics">Gráficos</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input">Entrada</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound">Áudio</system:String>
-	<system:String x:Key="GameConfig.Tabs.Patches">Remendos</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Graphics">Gráficos</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input">Entrada</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound">Áudio</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Patches">Correções</system:String>
 
 	<!--Graphics Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Opções de Exibição</system:String>
@@ -48,57 +48,57 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Atualizar D3D8to9</system:String>
 
 	<!--Input Tab Strings-->
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input">Opções de Entrada</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Entrada Padrão (DInput)</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Entrada Melhor (SDL2)</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Configuração de Entrada Padrão</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Mouse</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Arrastar e Segurar</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Arrastar para Acelerar</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Pular</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Ação</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Cancelar/Atacar</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Inciar/Definir</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Girar Câmera para Esquerda:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Girar Câmera para Direita:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Flauta:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2">Configuração de Entrada Melhor</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Abrir AppLauncher</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Obter AppLauncher</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">O Sistema de Entrada Melhor é uma implementação de SDL2 para SADX. Seu uso é recomendado pois conserta problemas do sistema original de DInput.</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input">Opções de Entrada</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Entrada Padrão (DInput)</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Check.SDL2">Entrada Melhor (SDL2)</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Configuração de Entrada Padrão</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Mouse e Teclado</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Arrastar e Segurar</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Arrastar para Acelerar</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Pular:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Ação:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Cancelar/Atacar:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Inciar/Definir:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Girar Câmera para Esquerda:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Girar Câmera para Direita:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Flauta:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2">Configuração de Entrada Melhor</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Abrir AppLauncher</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Obter AppLauncher</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">O Sistema de Entrada Melhor é uma implementação de SDL2 para SADX. Seu uso é recomendado pois conserta problemas do sistema original de DInput.</system:String>
 
 	<!--Sound Tab Strings-->
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Configurações de Áudio</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">Controle de Volume</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Usar BASS para Música</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Usar BASS para Efeitos Sonoros</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">Habilitar Música</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Habilitar Sons</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Habilitar Áudio 3D</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Volume da Música:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Volume das Vozes:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Volume dos Efeitos Sonoros:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings">Configurações de Áudio</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume">Controle de Volume</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Usar BASS para Música</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Usar BASS para Efeitos Sonoros</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.Music">Habilitar Música</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Habilitar Sons</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Habilitar Áudio 3D</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Music">Volume Música:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Voices">Volume Vozes:</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig.Tabs.Sound.Group.Volume.Sound">Volume Sons:</system:String>
 	<!--#endregion-->
 
 	<!--#region Test Spawn Tab Strings-->
-	<system:String x:Key="TestSpawn.Check.Character">Personagem:</system:String>
-	<system:String x:Key="TestSpawn.Check.Level">Nível:</system:String>
-	<system:String x:Key="TestSpawn.Time">Tempo:</system:String>
-	<system:String x:Key="TestSpawn.Act">Ato:</system:String>
-	<system:String x:Key="TestSpawn.Check.Mode">Modo de Jogo:</system:String>
-	<system:String x:Key="TestSpawn.Check.Save">Redirecionar Save:</system:String>
-	<system:String x:Key="TestSpawn.Check.Event">Evento:</system:String>
-	<system:String x:Key="TestSpawn.Warning">Substituir níveis ou personagens em eventos pode crashar o jogo.</system:String>
-	<system:String x:Key="TestSpawn.Buttons.Launch">Iniciar Jogo</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced">Opções Avançadas</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.Check.Manual">Definir Manualmente:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.Check.Position">Posição:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.PosX">Pos X:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.Angle">Ângulo:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Character">Personagem:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Level">Nível:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Time">Tempo:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Act">Ato:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Mode">Modo de Jogo:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Save">Redirecionar Save:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Event">Evento:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Warning">Substituir níveis ou personagens em eventos pode crashar o jogo.</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Buttons.Launch">Iniciar Jogo</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced">Opções Avançadas</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Check.Manual">Definir Manualmente:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Check.Position">Posição:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosX">Pos X:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Angle">Ângulo:</system:String>
 	<!--#endregion-->
-
+	
 	<!--#region SADX-->
 	
 	<!--#endregion-->
