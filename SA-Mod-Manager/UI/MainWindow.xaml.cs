@@ -1091,9 +1091,12 @@ namespace SAModManager
                 return;
             }
 
-            await App.PerformUpdateLoaderCheck();
-            await App.PerformUpdateCodesCheck();
-        
+            if (App.CurrentGame.loader.installed && chkUpdatesML.IsChecked == true)
+            {
+                await App.PerformUpdateLoaderCheck();
+                await App.PerformUpdateCodesCheck();
+            }
+
             manualModUpdate = true;
             await CheckForModUpdates(true);
             checkForUpdate = false;
@@ -1987,7 +1990,7 @@ namespace SAModManager
 
         private async Task CheckForModUpdates(bool force = false)
         {
-            if (!force && !App.ManagerSettings.UpdateSettings.EnableModsBootCheck)
+            if (!force && !App.ManagerSettings.UpdateSettings.EnableModsBootCheck || mods is null || mods.Count == 0)
             {
                 return;
             }
