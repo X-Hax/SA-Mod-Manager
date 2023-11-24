@@ -152,7 +152,7 @@ namespace SAModManager
 				case "LightTheme":
 					IsLightTheme = true;
 					break;
-				case "DarkTheme":
+                default:
 					IsLightTheme = false;
 					break;
 			}
