@@ -1373,6 +1373,9 @@ namespace SAModManager
                     EnabledMods.Add(mod.Tag);
 
             // Update EnabledCodes for saving.
+            CodesFind.Visibility = Visibility.Collapsed;
+            FilterCodes("");
+            TextBox_CodesSearch.Text = "";
             EnabledCodes.Clear();
             foreach (CodeData code in CodeListView.Items)
                 if (code?.IsChecked == true)
