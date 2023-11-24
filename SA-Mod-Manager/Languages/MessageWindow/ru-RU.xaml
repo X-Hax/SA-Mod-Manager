@@ -97,7 +97,7 @@
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Это действие удалит все ваши моды.&#x0a;&#x0a;Желаете продолжить??</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Это действие удалит выбранные моды.&#x0a;&#x0a;Желаете продолжить?</system:String>
 
 	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Вы собираетесь отключить перенаправление сохранений для этого мода. Если вы продолжите, все сохранения в этой папке мода будут удалены.&#x0a;&#x0a;Желаете продолжить?</system:String>
 	
@@ -127,7 +127,8 @@
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">Все выбранные моды прошли верификацию.</system:String>
 
     <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">Была найдена папка Steam-версии SADX.&#x0a;Загрузчик модов работает только с версией игры 2004 года.&#x0a;&#x0a;Желаете скачать и установить Установщик модов, чтобы сконвертировать игру в версию 2004 года (сохранения также будут сконвертированы)?.</system:String>
-
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">Была найдена папка Steam-версии SADX.&#x0a;Загрузчик модов работает только с версией игры 2004 года.&#x0a;&#x0a;Скачайте и установите Установщик модов (SADX Mod Installer), чтобы сконвертировать игру в версию 2004 года. (сохранения также будут сконвертированы).</system:String>
+        
     <system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Проверка состояния</system:String>
     <system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Вы запустили проверку состояния игры.&#x0a;Будут проверены все файлы игры (кроме аудио-файлов).&#x0a;&#x0a;Желаете продолжить?</system:String>
 
