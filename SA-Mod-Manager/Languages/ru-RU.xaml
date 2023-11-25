@@ -52,7 +52,9 @@
     <system:String x:Key="CommonStrings.None">Пусто</system:String>
     <system:String x:Key="CommonStrings.Enabled">Включено</system:String>
     <system:String x:Key="CommonStrings.Disabled">Выключено</system:String>
-    
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+
     <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Тип</system:String>
     <system:String x:Key="CommonStrings.TypeCode">Код</system:String>

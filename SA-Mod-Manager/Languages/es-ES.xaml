@@ -48,8 +48,10 @@
 	<system:String x:Key="CommonStrings.Download">Descargar</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">Abrir Carpeta</system:String>
     <system:String x:Key="CommonStrings.None">Ninguno</system:String>
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
 
-	<!--Window Tips-->
+    <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Minimizar</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Maximizar</system:String>
 	<system:String x:Key="Window.Tips.Restore">Restablecer Ventana</system:String>

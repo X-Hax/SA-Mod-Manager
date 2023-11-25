@@ -52,6 +52,8 @@
     <system:String x:Key="CommonStrings.None">None</system:String>
     <system:String x:Key="CommonStrings.Enabled">Enabled</system:String>
     <system:String x:Key="CommonStrings.Disabled">Disabled</system:String>
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
 
     <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Type</system:String>

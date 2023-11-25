@@ -13,6 +13,10 @@
     <system:String x:Key="Updater.DL.Dep.Completed">Terminé.</system:String>
     <system:String x:Key="Updater.DL.Dep.Copying">Copie des fichiers...</system:String>
 
+    <!--Offline Installation-->
+    <system:String x:Key="Updater.DL.Offline.Title">Installation Hors-Ligne</system:String>
+    <system:String x:Key="Updater.DL.Offline.Failed">Echec du téléchargement de {0}</system:String>
+    <system:String x:Key="Updater.DL.Offline.InstallAttempt">Tentative d'installation hors-ligne, merci de patienter...</system:String>
 
     <!--Mod Update-->
     <system:String x:Key="Updater.DL.Mod.Extracting">Extraction...</system:String>

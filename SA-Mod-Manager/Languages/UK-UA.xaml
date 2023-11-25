@@ -43,8 +43,10 @@
 	<system:String x:Key="CommonStrings.Credits">Титри</system:String>
 	<system:String x:Key="CommonStrings.Download">Завантажити</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">Відкрити Папку</system:String>
-	
-	<!--Window Tips-->
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+
+    <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Зменшити</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Збільшити</system:String>
 	<system:String x:Key="Window.Tips.Restore">Відновити Вікно</system:String>

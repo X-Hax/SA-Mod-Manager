@@ -52,8 +52,10 @@
 	<system:String x:Key="CommonStrings.None">Nenhum</system:String>
     <system:String x:Key="CommonStrings.Enabled">Habilitado</system:String>
     <system:String x:Key="CommonStrings.Disabled">Desabilitado</system:String>
-	
-	<!--Region Create Code-->
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+
+    <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Tipo</system:String>
     <system:String x:Key="CommonStrings.TypeCode">Código</system:String>
     <system:String x:Key="CommonStrings.Typepatch">Correção</system:String>
