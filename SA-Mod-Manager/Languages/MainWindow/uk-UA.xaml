@@ -19,14 +19,16 @@
 
 	<!--Mods Context Menu-->
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Перевірити Оновлення</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Перевірити Цілісність</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Примусово Оновити</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Перевірити цілісність</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Насильно Оновити</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">Налаштувати Мод</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Редагувати Мод</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Видалити Мод</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Розробник</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Згенерувати Manifest</system:String>
-	<!--#endregion-->
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Згенерувати Manifest</system:String>	
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Вимкнути Оновлення</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Увімкнути Оновлення</system:String>
+    <!--#endregion-->
 
 	<!--#region Codes Tab Strings-->
 	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Новий Код</system:String>
@@ -46,14 +48,16 @@
 
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Встановити 1-Click Install</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Вимкнути 1-Click Install</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Відкрити Папку Гри</system:String>
 
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Встановити Завантажувач Модів</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Видалити Завантажувач Модів</system:String>
 
 	<!--Updates-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Оновлення</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Перевіряти оновлення Завантажувачу на старті</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Перевіряти оновлення Модифікацій на старті</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Перевіряти Оновлення Мод Менеджеру на Запуску</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Перевіряти Оновлення Завантажувачу Модів на Запуску</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Перевіряти Оновлення Модів на Запуску</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Перевірити Оновлення</system:String>
 
 	<!--Debug Features-->
@@ -67,11 +71,12 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Перевірити Цілісність Гри</system:String>
 
 	<!--About-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Про нас</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SADX Mod Manager це програма яка дозволяє легко керувати модифікаціями Sonic Adventure DX.</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Учасники</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Вихідний Код</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Повідомити про глюк (Тільки Англійська)</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Про Нас</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SA Mod Manager це програма яка легко дозволяє керувати модифікаціями для ігор Sonic Adventure.</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Співробітники</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Вихідний Код Мод Менеджеру</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Вихідний Код Завантажувачу Модів</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Повідомити про Глюк (Тільки Англійська)</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Відкрити SA Docs (Тільки Англійська)</system:String>
 	<!--#endregion-->
 	
@@ -179,28 +184,30 @@
 	<!--#endregion-->
 
 	<!--#region Manager Config Tips-->
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Вибирає профіль для модів та налаштувань.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Відкриває Менеджер Профілів, де можна створити, або видалити профіль.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Повний шлях до місця встановлення гри.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Відкриває вікно де можна встановити розташування гри.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Вибирає тему для Завантажувача модів.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Встановлює мову для Завантажувача Модів.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Залишає Завантажувачвідкритим після натискання кнопки Зберегти та Грати.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Вмикає вікно Test Spawn у Завантажувачі.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Коли увімкнено, натискання на посилання One Click на GameBanana відкриє вікно завантаження для моду.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Коли увімкнено, Завантажувач встановлено і можна грати з модами, патчами і кодами.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Автоматично перевіряє оновлення Завантажувача при відкритті.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Автоматично перевіряє оновлення модів при відкритті.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Перевіряє оновлення Модифікацій та Завантажувача.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Відкриває Консоль куди виводиться debug інформація під час гри.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Печатає debug інформацію у головне вікно гри.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Записує будь-яку debug інформацію у файл-журнал.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Вмикає запис помилок гри. Це корисно для досліджень неочікуваних аварій.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Вдкриває вкіно Contributors and About.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Відкриває посилання до GitHub repo Завантажувача Модів.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Відкриває посилання до сайту SA Docs який має ріноманітну інформацію по модифії ігор серії Adventure.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Відкриває посилання до сторінки Issues на GitHub repo Завантажувачу Модів щоб сповістити про помилки (тільки англійська).</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Перевіряє стан гри щоб побачити пошкоджені/загублені/модифіковані файли.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Виберіть Профіль який буде використаний для Списку Модів та Налаштувань.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Відкриває Менеджер Профілів де можна Створити та Видалити Профілі.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Повний шлях до папки де встановлена гра.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Відкриває вікно де можна вибрати папку гри.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Відкриває папку де встановлена гра.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Вибирає тему для Мод Менеджера.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Вибирає мову яка встановлюється Мод Менеджером.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Залишає вікно Мод Менеджера відкритим після натискання Зберегти та Грати.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Вмикає сорінку Тестового Завантаження у Мод Менеджері.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Коли увімкнено, натискаючи на посилання "One Click" на GameBanana відкриє вікно завантаження моду.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Коли увімкнено, Завантажувач Модів встановлено і можна грати з модами, патчами і чітами.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Автоматично перевіряє оновлення Мод Менеджеру при запуску.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Автоматично перевіряє оновлення Завантажувачу Модів при запуску.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Автоматично перевіряє оновлення встановлених модів при запуску.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Перевіряє оновлення усіх компонентів (окрім гри).</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Вмикає Косноль куди гра виводить Debug інформацію.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Печатає Debug інформацію у вікні гри.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Зберігає інформацію Debug у файл.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Автоматично зберігає звіт аварії при помилці. Це корисно коли досліджуєш незрозумілі аварії.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Відкриває вікна "Про Нас" та "Співробітники".</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Відкриває посилання на Репозиторій GitHub Мод Менеджеру.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Відкриває посилання на Вебсайт SA Docs де є купа різноманітної інформації як модифікувати ігри Sonic Adventure.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Відкриває посилання на сторінку Помилок у Репозиторії GitHub Мод Менеджеру щоб сповістити про глюк.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Перевіряє цілісність гри щоб повідомити про пропавші/модифіковані файли.</system:String>
 	<!--#endregion-->
 
 </ResourceDictionary>
