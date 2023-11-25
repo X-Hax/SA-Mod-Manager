@@ -219,10 +219,12 @@ namespace SAModManager
 		[DefaultValue(true)]
 		public bool KillGbix { get; set; }
 		public bool DisableCDCheck { get; set; }
+        [DefaultValue(true)]
+        public bool ExtendedSaveSupport { get; set; }
 
-		#endregion
+        #endregion
 
-		public SADXLoaderInfo()
+        public SADXLoaderInfo()
 		{
 			Mods = new List<string>();
 			EnabledCodes = new List<string>();
@@ -287,6 +289,7 @@ namespace SAModManager
 			LightFix = gameSettings.Patches.LightFix;
 			KillGbix = gameSettings.Patches.KillGBIX;
 			DisableCDCheck = gameSettings.Patches.DisableCDCheck;
+			ExtendedSaveSupport = gameSettings.Patches.ExtendedSaveSupport;
 
 			// Debug
 			DebugConsole = gameSettings.DebugSettings.EnableDebugConsole;

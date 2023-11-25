@@ -19,6 +19,7 @@
     <system:String x:Key="GamePatches.Lights">Correctif des lumières</system:String>
     <system:String x:Key="GamePatches.DisableGBIX">Désactiver GBIX (Expérimental)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Désactiver la vérification du CD</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupport">Suport de Sauvegarde étendue</system:String>
 
     <system:String x:Key="GamePatches.3DSoundDesc">Configure DirectSound pour qu'il utilise des algorithmes plus avancés pour traiter les sons 3D. Ce patch n'est pas nécessaire lorsque l'option "BASS SFX" est activé.</system:String>
     <system:String x:Key="GamePatches.CamCodeDesc">Corrige un bug du jeu qui empêche la sauvegarde des paramètres "Free Cam" lors d'une mort ou du chargement d'une zone ou d'un acte.</system:String>
@@ -35,6 +36,7 @@
     <system:String x:Key="GamePatches.LightsDesc">Corrige la lumière appliquée de manière incorrecte sur les LandTables et permet la préservation du type de lumière pour les modèles en file d'attente.</system:String>
     <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">Global Index (GBIX) est une valeur utilisée par le système de mise en cache des textures du jeu. Chaque texture dans SADX en a une.&#x0a;Avant que le jeu ne charge une nouvelle texture, il compare la valeur GBIX de la nouvelle texture avec les indices d'autres textures déjà chargées.&#x0a;Si une correspondance est trouvée, le jeu réutilise la texture déjà chargée au lieu de charger la nouvelle.&#x0a;&#x0a;Ce patch désactive la plupart du système GBIX du jeu pour réduire les erreurs/conflits de textures.(Quelques exceptions comme les éléments HUD s'appliquent.)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheckDesc">Désactive la vérification du CD du jeu.</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveDesc">Active la prise en charge des sauvegardes de la version Steam et permet des noms de sauvegarde personnalisés (jusqu'à 48 caractères).</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>

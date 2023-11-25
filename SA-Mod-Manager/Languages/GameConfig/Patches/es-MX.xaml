@@ -19,6 +19,7 @@
 	<system:String x:Key="GamePatches.Lights">Correcciones de iluminación</system:String>
 	<system:String x:Key="GamePatches.DisableGBIX">Deshabilitar GBIX (Experimental)</system:String>
 	<system:String x:Key="GamePatches.DisableCDCheck">Deshabilitar Revisión de CD</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupport">Extended Save Support</system:String>
 
     <system:String x:Key="GamePatches.3DSoundDesc">Ajusta DirectSound para que utilice algoritmos más avanzados para procesar sonidos 3D. Este parche no es necesario cuando BASS para efectos de sonido está activado.</system:String>
     <system:String x:Key="GamePatches.CamCodeDesc">Corrige un error que impide que los ajustes de la cámara libre se guarden correctamente al morir o al cargar una zona/acto.</system:String>
@@ -35,6 +36,7 @@
     <system:String x:Key="GamePatches.LightsDesc">Corrige la aplicación incorrecta de la luz en los LandTables y permite la conservación del tipo de luz para los modelos en cola.</system:String>
     <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">Un índice global (GBIX, por sus siglas en inglés) es un valor usado en el sistema de caché de texturas del juego. Cada textura del juego tiene asignado uno.&#x0a;Antes de que el juego cargue una nueva textura, compara el GBIX de esta con el de otras texturas que ya fueron cargadas.&#x0a;Si encuentra una coincidencia, el juego reutiliza la textura ya cargada en lugar de cargar una nueva.&#x0a;&#x0a;Este parche deshabilita la mayor parte del sistema GBIX para evitar errores/conflictos (con pequeñas excepciones, como en la interfaz).</system:String>
 	<system:String x:Key="GamePatches.DisableCDCheckDesc">Deshabilita la Revisión de CD por parte del juego.</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveDesc">Enables support for saved games from the Steam version and allows custom save names (up to 48 characters).</system:String>
 
 
 
