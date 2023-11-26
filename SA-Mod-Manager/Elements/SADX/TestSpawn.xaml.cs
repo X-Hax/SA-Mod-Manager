@@ -629,17 +629,18 @@ namespace SAModManager.Elements.SADX
         public static string GetSaveNumber(string s)
         {
             string number = s[^2..];
-
+        
             if (int.TryParse(number, out int result))
             {
                 // The last two characters are numbers
                 if (number[0] == '0')
                 {
-                    number = number.Substring(1);
+                    number = number[1..];
                 }
+  
             }
 
-            return number;
+            return result > 0 ? number : s;
         }
 
         private void GetSaves()
@@ -665,7 +666,7 @@ namespace SAModManager.Elements.SADX
                         string name = Path.GetFileNameWithoutExtension(file);
                         string nameDup = name.ToLower();
 
-                        if (nameDup.Contains("sonicdx")) //skip chao garden save
+                        if (!nameDup.Contains("chao")) //skip chao garden save
                             list.Add(name);
                     }
 
