@@ -395,15 +395,6 @@ namespace SAModManager.Elements.SADX
 		{
 			labelSFXLevel?.SetValue(ContentProperty, $"{(int)sliderSFX.Value}");
 		}
-		private void checkBassSFX_Checked(object sender, RoutedEventArgs e)
-		{
-			sliderSFX.IsEnabled = true;
-		}
-
-		private void checkBassSFX_Unchecked(object sender, RoutedEventArgs e)
-		{
-			sliderSFX.IsEnabled = false;
-		}
 		#endregion
 
 		#region Patches Tab
