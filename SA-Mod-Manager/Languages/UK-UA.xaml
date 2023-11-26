@@ -10,6 +10,8 @@
 		<ResourceDictionary Source="GameConfig/uk-UA.xaml"/>
 		<ResourceDictionary Source="GameConfig/Patches/uk-UA.xaml"/>
 		<ResourceDictionary Source="GameConfig/TestSpawn/uk-UA.xaml"/>
+		<ResourceDictionary Source="HealthProggress/uk-UA.xaml"/>
+		<ResourceDictionary Source="InfoManagerUpdate/uk-UA.xaml"/>
 		<ResourceDictionary Source="InstallModOptions/uk-UA.xaml"/>
 		<ResourceDictionary Source="MainWindow/uk-UA.xaml"/>
 		<ResourceDictionary Source="ManifestChanges/uk-UA.xaml"/>
@@ -17,7 +19,11 @@
         <ResourceDictionary Source="ModChangelog/uk-UA.xaml"/>
         <ResourceDictionary Source="ModConfig/uk-UA.xaml"/>
         <ResourceDictionary Source="ModProfile/uk-UA.xaml"/>
+		<ResourceDictionary Source="NewCode/uk-UA.xaml"/>
         <ResourceDictionary Source="SelectDependencies/uk-UA.xaml"/>
+		<ResourceDictionary Source="SplashScreen/uk-UA.xaml"/>
+        <ResourceDictionary Source="Updater/uk-UA.xaml"/>
+        <ResourceDictionary Source="MainWindow/UpdateStatus/uk-UA.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
@@ -31,7 +37,7 @@
     <system:String x:Key="CommonStrings.Reset">Скинути</system:String>
     <system:String x:Key="CommonStrings.Create">Створити</system:String>
 	<system:String x:Key="CommonStrings.SelectAll">Вибрати Все</system:String>
-	<system:String x:Key="CommonStrings.DeselectAll">Не Вибрати Все</system:String>
+	<system:String x:Key="CommonStrings.DeselectAll">Прибрати Вибір</system:String>
 	<system:String x:Key="CommonStrings.Name">Назва</system:String>
 	<system:String x:Key="CommonStrings.Status">Статус</system:String>
 	<system:String x:Key="CommonStrings.Save">Зберегти</system:String>
@@ -42,11 +48,20 @@
 	<system:String x:Key="CommonStrings.Search">Шукати</system:String>
 	<system:String x:Key="CommonStrings.Credits">Титри</system:String>
 	<system:String x:Key="CommonStrings.Download">Завантажити</system:String>
-	<system:String x:Key="CommonStrings.OpenFolder">Відкрити Папку</system:String>
+    <system:String x:Key="CommonStrings.OpenFolder">Відкрити Папку</system:String>
+    <system:String x:Key="CommonStrings.None">Жоден</system:String>
+    <system:String x:Key="CommonStrings.Enabled">Увімкнено</system:String>
+    <system:String x:Key="CommonStrings.Disabled">Вимкнено</system:String>
     <system:String x:Key="CommonStrings.Success">Success!</system:String>
     <system:String x:Key="CommonStrings.Failed">Failed</system:String>
 
-    <!--Window Tips-->
+    <!--Region Create Code-->
+    <system:String x:Key="CommonStrings.Type">Тип</system:String>
+    <system:String x:Key="CommonStrings.TypeCode">Код</system:String>
+    <system:String x:Key="CommonStrings.Typepatch">Патч</system:String>
+    <system:String x:Key="CommonStrings.IsRequired">Необхідно</system:String>
+
+	<!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Зменшити</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Збільшити</system:String>
 	<system:String x:Key="Window.Tips.Restore">Відновити Вікно</system:String>
