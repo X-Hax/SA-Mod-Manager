@@ -8,6 +8,8 @@
 	<system:String x:Key="InstallModOptions.Radio.New">Новий Мод (Для Розробників)</system:String>
 
     <!--Mod Download-->
-    <system:String x:Key="ModDL.DLMod">Download Mod</system:String>
-    <system:String x:Key="ModDL.OpenLink">Open Link</system:String>
+    <system:String x:Key="ModDL.DLMod">Завантажити Мод</system:String>
+    <system:String x:Key="ModDL.OpenLink">Відкрити Посилання</system:String>
+	<system:String x:Key="ModDL.NoDescript">Не знайдено опису.</system:String>
+
 </ResourceDictionary>
