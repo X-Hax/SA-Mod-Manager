@@ -10,21 +10,21 @@
 		<ResourceDictionary Source="GameConfig/uk-UA.xaml"/>
 		<ResourceDictionary Source="GameConfig/Patches/uk-UA.xaml"/>
 		<ResourceDictionary Source="GameConfig/TestSpawn/uk-UA.xaml"/>
-		<ResourceDictionary Source="HealthProggress/uk-UA.xaml"/>
+		<ResourceDictionary Source="HealthProgress/uk-UA.xaml"/>
 		<ResourceDictionary Source="InfoManagerUpdate/uk-UA.xaml"/>
 		<ResourceDictionary Source="InstallModOptions/uk-UA.xaml"/>
 		<ResourceDictionary Source="MainWindow/uk-UA.xaml"/>
 		<ResourceDictionary Source="ManifestChanges/uk-UA.xaml"/>
-        <ResourceDictionary Source="MessageWindow/uk-UA.xaml"/>
-        <ResourceDictionary Source="ModChangelog/uk-UA.xaml"/>
-        <ResourceDictionary Source="ModConfig/uk-UA.xaml"/>
-        <ResourceDictionary Source="ModProfile/uk-UA.xaml"/>
+		<ResourceDictionary Source="MessageWindow/uk-UA.xaml"/>
+		<ResourceDictionary Source="ModChangelog/uk-UA.xaml"/>
+		<ResourceDictionary Source="ModConfig/uk-UA.xaml"/>
+		<ResourceDictionary Source="ModProfile/uk-UA.xaml"/>
 		<ResourceDictionary Source="NewCode/uk-UA.xaml"/>
-        <ResourceDictionary Source="SelectDependencies/uk-UA.xaml"/>
+		<ResourceDictionary Source="SelectDependencies/uk-UA.xaml"/>
 		<ResourceDictionary Source="SplashScreen/uk-UA.xaml"/>
         <ResourceDictionary Source="Updater/uk-UA.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/uk-UA.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">Ок</system:String>
