@@ -48,10 +48,12 @@
 	<system:String x:Key="CommonStrings.Search">Шукати</system:String>
 	<system:String x:Key="CommonStrings.Credits">Титри</system:String>
 	<system:String x:Key="CommonStrings.Download">Завантажити</system:String>
-	<system:String x:Key="CommonStrings.OpenFolder">Відкрити Папку</system:String>
-	system:String x:Key="CommonStrings.None">Жоден</system:String>
+    <system:String x:Key="CommonStrings.OpenFolder">Відкрити Папку</system:String>
+    <system:String x:Key="CommonStrings.None">Жоден</system:String>
     <system:String x:Key="CommonStrings.Enabled">Увімкнено</system:String>
     <system:String x:Key="CommonStrings.Disabled">Вимкнено</system:String>
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
 
     <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Тип</system:String>
