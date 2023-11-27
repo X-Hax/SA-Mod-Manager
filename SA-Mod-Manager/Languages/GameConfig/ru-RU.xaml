@@ -79,14 +79,14 @@
 	<!--Sound Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Настройки звука</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">Управление громкостью</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Исп. библиотеку BASS (музыка)</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Исп. библиотеку BASS (эффекты)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Вкл. библиотеку BASS (музыка)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Вкл. библиотеку BASS (эффекты)</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">Включить музыку</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Включить звуки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Вкл. пространственные звуки</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Громкость музыки:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Громкость голосов:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Громкость звуков:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Музыка:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Голоса:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Звуки:</system:String>
 	<!--#endregion-->
 
 	<!--#region Test Spawn Tab Strings-->
