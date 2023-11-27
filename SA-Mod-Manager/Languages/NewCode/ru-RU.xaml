@@ -3,7 +3,4 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 	<system:String x:Key="NewCode.Title">Создать код</system:String>
 	<system:String x:Key="NewCode.Check.SaveToMod">Сохранить код в папку Mods</system:String>
-
-    <system:String x:Key="NewCode.CodeList.CodeName">Название</system:String>
-    <system:String x:Key="NewCode.CodeList.CodeAuthor">Автор</system:String>
 </ResourceDictionary>

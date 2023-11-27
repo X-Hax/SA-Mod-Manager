@@ -212,8 +212,8 @@
 							<ListView.View>
 								<GridView>
 									<GridView.Columns>
-                                        <GridViewColumn Header="{DynamicResource NewCode.CodeList.CodeName}" Width="Auto" DisplayMemberBinding="{Binding Path=Name}"/>
-                                        <GridViewColumn Header="{DynamicResource NewCode.CodeList.CodeAuthor}" Width="Auto" DisplayMemberBinding="{Binding Path=Author}"/>
+										<GridViewColumn Header="Code Name" Width="Auto" DisplayMemberBinding="{Binding Path=Name}"/>
+										<GridViewColumn Header="Code Author" Width="Auto" DisplayMemberBinding="{Binding Path=Author}"/>
 									</GridView.Columns>
 								</GridView>
 							</ListView.View>
