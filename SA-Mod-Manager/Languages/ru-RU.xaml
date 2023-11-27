@@ -39,7 +39,7 @@
 	<system:String x:Key="CommonStrings.SelectAll">Выбрать всё</system:String>
 	<system:String x:Key="CommonStrings.DeselectAll">Сбросить выбор</system:String>
 	<system:String x:Key="CommonStrings.Status">Статус</system:String>
-	<system:String x:Key="CommonStrings.Name">Название</system:String>
+	<system:String x:Key="CommonStrings.Name">Имя</system:String>
 	<system:String x:Key="CommonStrings.Save">Сохранить</system:String>
 	<system:String x:Key="CommonStrings.Author">Автор</system:String>
 	<system:String x:Key="CommonStrings.Version">Версия</system:String>
@@ -52,13 +52,13 @@
     <system:String x:Key="CommonStrings.None">Пусто</system:String>
     <system:String x:Key="CommonStrings.Enabled">Включено</system:String>
     <system:String x:Key="CommonStrings.Disabled">Выключено</system:String>
-    <system:String x:Key="CommonStrings.Success">Success!</system:String>
-    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+    <system:String x:Key="CommonStrings.Success">Успешно!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Не удалось</system:String>
 
     <!--Region Create Code-->
-    <system:String x:Key="CommonStrings.Type">Тип</system:String>
+    <system:String x:Key="CommonStrings.Type">Тип:</system:String>
     <system:String x:Key="CommonStrings.TypeCode">Код</system:String>
-    <system:String x:Key="CommonStrings.Typepatch">Патч</system:String>
+    <system:String x:Key="CommonStrings.TypePatch">Патч</system:String>
     <system:String x:Key="CommonStrings.IsRequired"> Обязателен</system:String>
 
     <!--Window Tips-->

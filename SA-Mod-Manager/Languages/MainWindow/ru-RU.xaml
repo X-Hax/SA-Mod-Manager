@@ -72,6 +72,7 @@
 
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">О программе</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">О моде</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">Менеджер модов SA – программа, позволяющая управлять модами для Sonic Adventure DX без особых трудностей.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Разработчики</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Исходники</system:String>
