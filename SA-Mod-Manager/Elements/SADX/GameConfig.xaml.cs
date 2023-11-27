@@ -87,7 +87,8 @@ namespace SAModManager.Elements.SADX
 		#region Graphics Tab
 		private void ResolutionChanged(object sender, RoutedEventArgs e)
 		{
-			NumericUpDown box = sender as NumericUpDown;
+
+            NumericUpDown box = sender as NumericUpDown;
 
 			switch (box.Name)
 			{
@@ -106,9 +107,20 @@ namespace SAModManager.Elements.SADX
 					}
 					break;
 			}
-		}
 
-		private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            if (!suppressEvent)
+                comboDisplay.SelectedIndex = -1;
+
+        }
+
+        private void HorizontalRes_Changed(object sender, RoutedEventArgs e)
+        {
+			if (!suppressEvent)
+				comboDisplay.SelectedIndex = -1;
+        }
+
+
+        private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			graphics?.screenNumBox_SelectChanged(ref comboScreen, ref comboDisplay);
 		}
@@ -687,14 +699,18 @@ namespace SAModManager.Elements.SADX
 		#region Private Functions
 		private void SetupBindings()
 		{
-			// Graphics Tab Bindings
-			// Screen Settings
-			comboScreen.SetBinding(ComboBox.SelectedIndexProperty, new Binding("SelectedScreen")
+            // Graphics Tab Bindings
+            // Screen Settings
+          
+
+            comboScreen.SetBinding(ComboBox.SelectedIndexProperty, new Binding("SelectedScreen")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay,
 			});
-			txtResX.MinValue = 0;
+			int screenNum = GraphicsHelper.GetScreenNum(comboScreen.SelectedIndex);
+			comboScreen.SelectedIndex = screenNum;
+            txtResX.MinValue = 0;
 			txtResY.MinValue = 0;
 			txtResX.SetBinding(NumericUpDown.ValueProperty, new Binding("HorizontalResolution")
 			{
@@ -706,14 +722,20 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-
+			suppressEvent = true;
 			// Window Settings
 			chkRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("Enable43ResolutionRatio")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			chkVSync.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableVsync")
+            checkUIScale.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableUIScaling")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+			suppressEvent = false;
+            chkVSync.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableVsync")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
@@ -743,12 +765,14 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
+			suppressEvent = true;
 			chkMaintainRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableKeepResolutionRatio")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			System.Drawing.Rectangle rect = graphics.GetRectangleStruct();
+            suppressEvent = false;
+            System.Drawing.Rectangle rect = graphics.GetRectangleStruct();
 			txtCustomResX.MinValue = 0;
 			txtCustomResY.MinValue = 0;
 			txtCustomResX.MaxValue = rect.Width;
@@ -758,14 +782,17 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			txtCustomResY.SetBinding(NumericUpDown.ValueProperty, new Binding("CustomWindowHeight")
+			txtCustomResX.Value = Math.Max(txtCustomResX.MinValue, Math.Min(rect.Width, txtCustomResX.Value));
+
+            txtCustomResY.SetBinding(NumericUpDown.ValueProperty, new Binding("CustomWindowHeight")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
 
-			// Game Config Settings
-			radFullscreen.SetBinding(RadioButton.IsCheckedProperty, new Binding("FullScreen")
+            txtCustomResY.Value = Math.Max(txtCustomResY.MinValue, Math.Min(rect.Height, txtCustomResY.Value));
+            // Game Config Settings
+            radFullscreen.SetBinding(RadioButton.IsCheckedProperty, new Binding("FullScreen")
 			{
 				Source = GameSettings.GameConfig,
 				Mode = BindingMode.TwoWay
@@ -821,11 +848,7 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			checkUIScale.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableUIScaling")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
+
 
 			// Input Settings
 			radBetterInput.SetBinding(RadioButton.IsCheckedProperty, new Binding("EnabledInputMod")

@@ -58,7 +58,7 @@
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 									<StackPanel Orientation="Horizontal" Margin="5" Grid.Column="0">
-										<elements:NumericUpDown x:Name="txtResX" Height="22" Width="75" IsEnabled="{Binding ElementName=chkRatio, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
+                                        <elements:NumericUpDown x:Name="txtResX" Height="22" Width="75" IsEnabled="{Binding ElementName=chkRatio, Path=IsChecked, Converter={StaticResource FlipBool}}" ValueChanged="HorizontalRes_Changed"/>
 										<Label Content="x" VerticalContentAlignment="Center"/>
 										<elements:NumericUpDown x:Name="txtResY" Height="22" Width="75" ValueChanged="ResolutionChanged"/>
 									</StackPanel>

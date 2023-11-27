@@ -50,6 +50,8 @@
     <system:String x:Key="CommonStrings.None">Aucun</system:String>
     <system:String x:Key="CommonStrings.Enabled">Activer</system:String>
     <system:String x:Key="CommonStrings.Disabled">Désactiver</system:String>
+    <system:String x:Key="CommonStrings.Success">Succès!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Echec</system:String>
 
     <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Type</system:String>

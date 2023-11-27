@@ -1,0 +1,23 @@
+﻿<Window x:Class="SAModManager.Updater.OfflineInstall"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SAModManager.Updater"
+        mc:Ignorable="d"
+        Title="{DynamicResource Updater.DL.Offline.Title}" Height="310" Width="800"
+        Style="{DynamicResource SAWindow}" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="FailedText" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{DynamicResource Updater.DL.Offline.Failed}" FontSize="24" Margin="10,0,10,0" TextWrapping="Wrap"/>
+        <TextBlock x:Name="OfflineText" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{DynamicResource Updater.DL.Offline.InstallAttempt}" FontSize="24" Margin="10,0,10,0" TextWrapping="Wrap"/>
+        <TextBlock x:Name="StatusText" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="" FontSize="24" Margin="10,0,10,0" TextWrapping="Wrap"/>
+        <ProgressBar x:Name="InstallProgress" Grid.Row="3" Maximum="100" VerticalAlignment="Center" Height="50" Margin="10,0,10,0"/>
+    </Grid>
+</Window>

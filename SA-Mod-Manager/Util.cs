@@ -62,7 +62,6 @@ namespace SAModManager
             "bass_vgmstream.dll",
             "COPYING_BASS_VGMSTREAM",
             "COPYING_VGMSTREAM",
-
         };
 
         public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
@@ -125,15 +124,16 @@ namespace SAModManager
             }
         }
 
-        public static async Task ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
+        public static async Task<bool> ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
         {
+            string outputFilePath = null;
             // Get the resource stream from Properties.Resources
             using (Stream resourceStream = new MemoryStream(resource))
             {
                 byte[] buffer = new byte[resourceStream.Length];
                 resourceStream.Read(buffer, 0, buffer.Length);
 
-                string outputFilePath = Path.Combine(outputDirectory, resourceName + ".dll");
+                outputFilePath = Path.Combine(outputDirectory, resourceName + ".dll");
 
                 // Write the DLL data to the output file
                 using (FileStream fileStream = new(outputFilePath, FileMode.Create, FileAccess.Write))
@@ -143,6 +143,8 @@ namespace SAModManager
             }
 
             await Task.Delay(100);
+            FileInfo fileInfo = new(outputFilePath);
+            return fileInfo is not null && fileInfo.Length > 0;
         }
 
         public static async Task Install7Zip()
@@ -241,17 +243,25 @@ namespace SAModManager
             }
         }
 
-        public static async Task ExtractZipFromResource(byte[] resource, string outputDirectory)
+        public static async Task<bool> ExtractZipFromResource(byte[] resource, string outputDirectory)
         {
-            using (MemoryStream zipStream = new(resource))
+            try
             {
-                using (ZipArchive archive = new(zipStream, ZipArchiveMode.Read))
+                using (MemoryStream zipStream = new(resource))
                 {
-                    archive.ExtractToDirectory(outputDirectory, true);
+                    using (ZipArchive archive = new(zipStream, ZipArchiveMode.Read))
+                    {
+                        archive.ExtractToDirectory(outputDirectory, true);
+                    }
                 }
-            }
+                await Task.Delay(100);
+                return true;
 
-            await Task.Delay(100);
+            }
+            catch
+            { }
+
+            return false;
         }
 
         public static void CopyFolder(string origin, string dest, bool dllCheck = false)

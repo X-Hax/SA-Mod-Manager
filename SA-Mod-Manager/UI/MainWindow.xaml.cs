@@ -1535,7 +1535,7 @@ namespace SAModManager
 
         private void ManualLoaderUpdateCheck()
         {
-            if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+            if (File.Exists(App.CurrentGame.loader.dataDllOriginPath) && File.Exists(App.CurrentGame.loader.dataDllPath))
             {
                 byte[] hash1 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.loaderdllpath));
                 byte[] hash2 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.dataDllPath));

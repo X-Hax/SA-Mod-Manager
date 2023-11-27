@@ -43,8 +43,13 @@
 	<system:String x:Key="CommonStrings.Credits">Crediti</system:String>
 	<system:String x:Key="CommonStrings.Download">Download</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">Apri Cartella</system:String>
-	
-	<!--Window Tips-->
+    <system:String x:Key="CommonStrings.None">None</system:String>
+    <system:String x:Key="CommonStrings.Enabled">Enabled</system:String>
+    <system:String x:Key="CommonStrings.Disabled">Disabled</system:String>
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+
+    <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Riduci a Icona</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Ingrandisci</system:String>
 	<system:String x:Key="Window.Tips.Restore">Ripristina Finestra</system:String>

@@ -2,20 +2,40 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="GamePatches.Title">Patch</system:String>
+
+    <system:String x:Key="GamePatches.Title">Патч</system:String>
     <system:String x:Key="GamePatches.3DSound">Дозволити HRTF 3D Звук</system:String>
-	<system:String x:Key="GamePatches.CamCode">Полагодження Camera Code Error</system:String>
-	<system:String x:Key="GamePatches.VertexColor">Полагодження Кольорів Вершиин</system:String>
-	<system:String x:Key="GamePatches.MaterialColor">Полагодження Кольору Матеріалів</system:String>
-    <system:String x:Key="GamePatches.NodeLimit">Increase Node Limit</system:String>
-	<system:String x:Key="GamePatches.FixFOV">Полагодження Fov</system:String>
+	<system:String x:Key="GamePatches.CamCode">Полагодження Помилок Коду Камери</system:String>
+    <system:String x:Key="GamePatches.VertexColor">Полагодження Кольорів Вершин</system:String>
+    <system:String x:Key="GamePatches.MaterialColor">Полагодження Кольорів Матеріалів</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Збільшити Ліміт Нодів</system:String>
+	<system:String x:Key="GamePatches.FixFOV">Полагодження FOV</system:String>
 	<system:String x:Key="GamePatches.Skychase">Полагодження Sky Chase</system:String>
-	<system:String x:Key="GamePatches.Chaos2">Полагодження аварій Chaos 2</system:String>
-	<system:String x:Key="GamePatches.ChunkRendering">Chunk Specular Fixes</system:String>
-	<system:String x:Key="GamePatches.E102Lamp">Полагодження ліхтарю Гамми</system:String>
-	<system:String x:Key="GamePatches.ChaoStats">Полагодження розміру екрана статистики Чао</system:String>
-	<system:String x:Key="GamePatches.PixelOffset">Полагодження оффсету 2D рендеру</system:String>
+	<system:String x:Key="GamePatches.Chaos2">Полагодження аварій під час Chaos 2</system:String>
+	<system:String x:Key="GamePatches.ChunkRendering">Chunk Полагодження Відображень</system:String>
+	<system:String x:Key="GamePatches.E102Lamp">Полагодження Лазеру Гамми</system:String>
+	<system:String x:Key="GamePatches.ChaoStats">Полагодження Розмірів Екрану Статистики Чао</system:String>
+	<system:String x:Key="GamePatches.PixelOffset">Полагодження Оффсету 2D Малювання</system:String>
 	<system:String x:Key="GamePatches.Lights">Полагодження Освітлення</system:String>
-	<system:String x:Key="GamePatches.DisableGBIX">Disable GBIX (Experimental)</system:String>
-	<system:String x:Key="GamePatches.DisableCDCheck">Прибрати перевірку CD</system:String>
+	<system:String x:Key="GamePatches.DisableGBIX">Вимкнути GBIX (Експериментально)</system:String>
+	<system:String x:Key="GamePatches.DisableCDCheck">Вимкнути Перевірку CD</system:String>
+
+    <system:String x:Key="GamePatches.3DSoundDesc">Налаштовує DirectSound для використання більш розвинених алгоритмів обробки 3D звуку. Цей патч не є обов'язковим якщо BASS для SFX увімкнено.</system:String>
+    <system:String x:Key="GamePatches.CamCodeDesc">Лагодить глюк який не дозволяє налаштуванням Вільної Камери правильно зберегтися після (пере)завантаження мапи.</system:String>
+    <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">Зазвичай SADX повністю ігнорує надані кольори вершин і використовує глобальні кольори коли не має.&#x0a;&#x0a;Цей патч відновлює функції щоб усе було ПРАВИЛЬНО і кольори надані моделькою використовувалися.</system:String>
+    <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">Це стосується усіх моделей у грі і замінює кольори матеріалів на білий.&#x0a;&#x0a;Це лагодить різні невідповідності і робить модельки більш схожими на версії Gamecube та Dreamcast.</system:String>
+    <system:String x:Key="GamePatches.NodeDesc" xml:space="preserve">SADX зазвичай має ліміт у 111 нодів на персонажа для модельок та анімацій.&#x0a;&#x0a;Цей патч збільшує ліміт до 254, даючи можливість вставити більш сучасні та складні модельки у гру.</system:String>
+    <system:String x:Key="GamePatches.FixFOVDesc">Покращує FOV і дозволяє вертикальні/портретні роздільні здатності/розміри.</system:String>
+    <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Дозволяє Sky Chase працювати однаково на всіх роздільних здатностях. Це лагодить рух Торнадо і Прицелу, а також швидкість атаки ворогів.&#x0a;&#x0a;Рахунок гри при роздільних здатностях вищіх за 640x480 з цим патчем легше ніж зазвичай.</system:String>
+    <system:String x:Key="GamePatches.Chaos2Desc">Лагодить глюк де якщо виграти над Chaos 2 та перезапустити босса, гра вилетить.</system:String>
+    <system:String x:Key="GamePatches.ChunkRenderingDesc">Лагодить відображення на моделях Chunk.</system:String>
+    <system:String x:Key="GamePatches.E102LampDesc">Лагодить N-сторонні полігони (Ліхтар Гамми) використовуючи буфер вершин трикутної смуги.</system:String>
+	<system:String x:Key="GamePatches.ChaoStatsDesc">Лагодить віконце відображення статистики Чао.</system:String>
+    <system:String x:Key="GamePatches.PixelOffsetDesc">Лагодить суб-піксельне розташування 2D елементів де можна помітити при вищій роздільній здатності.</system:String>
+    <system:String x:Key="GamePatches.LightsDesc">Лагодить місця де світло не правильно застосоване на LandTables і зберігає тип світла для моделей у черзі.</system:String>
+    <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">Глобальний Індекс (GBIX) це значення яке використовується системою кешування гри. Кожна текстура у SADX має таке.&#x0a;перед тим як гра завантажить нову текстуру, вона перевіряє значення GBIX нової текстури зі старими.&#x0a;Якщо знайшлося таке, гра перевикористовує завантажену текстуру замість нової.&#x0a;&#x0a;Цей патч по більшості вимикає систему GBIX щоб знизити помилки/конфлікти текстур. (Є деякі виключення як елементи HUD.)</system:String>
+	<system:String x:Key="GamePatches.DisableCDCheckDesc">Вимикає перевірку диску.</system:String>
+
+
+
 </ResourceDictionary>

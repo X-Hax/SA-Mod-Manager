@@ -6,7 +6,7 @@
 	<img src="https://github.com/X-Hax/SA-Mod-Manager/actions/workflows/build.yml/badge.svg">
 </h1>
 
-Version 1.0.2
+Version 1.0
 
 
 ## System Requirements

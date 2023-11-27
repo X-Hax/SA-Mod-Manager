@@ -147,6 +147,7 @@ namespace SAModManager.Configuration.SADX
         public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{
 			SelectedScreen = oldSettings.ScreenNum;
+
 			HorizontalResolution = oldSettings.HorizontalResolution;
 			VerticalResolution = oldSettings.VerticalResolution;
 

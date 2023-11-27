@@ -129,19 +129,20 @@ namespace SAModManager.Common
             }
         }
 
-        private static async Task InstallDependenciesOffline(Dependencies dependency)
+        private static async Task<bool> InstallDependenciesOffline(Dependencies dependency)
         {
+            bool success = false;
             switch (dependency.format)
             {
                 case Format.zip:
-                    await Util.ExtractZipFromResource(dependency.data, dependency.path);
+                    success = await Util.ExtractZipFromResource(dependency.data, dependency.path);
                     break;
                 case Format.dll:
-                    await Util.ExtractEmbeddedDLL(dependency.data, dependency.name, dependency.path);
+                     success = await Util.ExtractEmbeddedDLL(dependency.data, dependency.name, dependency.path);
                     break;
-                default:
-                    throw new Exception("What");
             }
+
+            return success;
         }
 
         public static async Task InstallDLL_Loader(Game game, bool force = false)
@@ -152,13 +153,19 @@ namespace SAModManager.Common
             try
             {
                 Uri uri = new(game.loader.URL + "\r\n");
-                var dl = new DownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, DownloadDialog.DLType.Install);
+                var dl = new DownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, DownloadDialog.DLType.Install, true);
 
                 dl.StartDL();
 
                 if (dl.done == false && !force)
                 {
-                    await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
+                    var offline = new OfflineInstall(game.loader.name);
+                    offline.Show();
+                    await Task.Delay(2000);
+                    bool success = await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
+                    offline.CheckSuccess(success);
+                    await Task.Delay(1000);
+                    offline.Close();
                 }
                 else
                 {
@@ -306,7 +313,7 @@ namespace SAModManager.Common
                     try
                     {
                         Uri uri = new(dependency.URL + "\r\n");
-                        var dl = new DownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, DownloadDialog.DLType.Update);
+                        var dl = new DownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, DownloadDialog.DLType.Download, true);
          
                         dl.StartDL();
 
@@ -317,7 +324,13 @@ namespace SAModManager.Common
 
                         if (dl.done == false)
                         {
-                            await InstallDependenciesOffline(dependency);
+                            var offline = new OfflineInstall(dependency.name);
+                            offline.Show();
+                            await Task.Delay(2000);
+                            bool success = await InstallDependenciesOffline(dependency);
+                            offline.CheckSuccess(success);
+                            await Task.Delay(1000);
+                            offline.Close();
                         }
                         else
                         {
@@ -334,7 +347,7 @@ namespace SAModManager.Common
                     }
                     catch
                     {
-                      await InstallDependenciesOffline(dependency);
+                        await InstallDependenciesOffline(dependency);
                     }
                 }
             }
