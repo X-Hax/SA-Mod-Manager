@@ -21,7 +21,7 @@
     <system:String x:Key="Updater.DL.Mod.ParsingManifest">Чтение манифеста...</system:String>
     <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Применение манифеста...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadingFile">Загрузка файла</system:String>
-    <system:String x:Key="Updater.DL.Mod.of">:</system:String>
+    <system:String x:Key="Updater.DL.Mod.of">/</system:String>
     <!-- "of" files to download-->
     <system:String x:Key="Updater.DL.Mod.UpdatingMod">Обновление мода</system:String>
     <system:String x:Key="Updater.DL.Mod.StartingDownload">Начало загрузки...</system:String>
