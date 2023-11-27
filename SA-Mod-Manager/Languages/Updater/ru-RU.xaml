@@ -25,6 +25,6 @@
     <!-- "of" files to download-->
     <system:String x:Key="Updater.DL.Mod.UpdatingMod">Обновление мода</system:String>
     <system:String x:Key="Updater.DL.Mod.StartingDownload">Начало загрузки...</system:String>
-    <system:String x:Key="Updater.DL.Mod.DownloadComplete">Загрузка завернеша.</system:String>
+    <system:String x:Key="Updater.DL.Mod.DownloadComplete">Загрузка завершена.</system:String>
 
 </ResourceDictionary>
