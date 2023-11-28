@@ -68,18 +68,18 @@
 									</StackPanel>
 
 									<ComboBox x:Name="comboDisplay" Grid.Column="1" Margin="5" SelectionChanged="DisplaySize_SelectionChanged">
-										<ComboBoxItem Content="640x480"/>
-										<ComboBoxItem Content="800x600"/>
-										<ComboBoxItem Content="1024x768"/>
-										<ComboBoxItem Content="1152x864"/>
-										<ComboBoxItem Content="1280x960"/>
-										<ComboBoxItem Content="1280x1024"/>
-										<ComboBoxItem Content="Native"/>
-										<ComboBoxItem Content="1/2x Native"/>
-										<ComboBoxItem Content="2x Native"/>
-										<ComboBoxItem Content="720p"/>
-										<ComboBoxItem Content="1080p"/>
-										<ComboBoxItem Content="4k"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r480}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r600}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r768}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r864}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r960}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r1024}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.Native}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r720}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r1080}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r4K}"/>
 									</ComboBox>
 								</Grid>
 								<CheckBox x:Name="chkRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio}" Click="chkRatio_Click" />
@@ -97,18 +97,18 @@
 									</StackPanel>
 
 									<ComboBox x:Name="comboCustomWindow" Grid.Column="1" Margin="5" SelectionChanged="DisplaySize_SelectionChanged">
-										<ComboBoxItem Content="640x480"/>
-										<ComboBoxItem Content="800x600"/>
-										<ComboBoxItem Content="1024x768"/>
-										<ComboBoxItem Content="1152x864"/>
-										<ComboBoxItem Content="1280x960"/>
-										<ComboBoxItem Content="1280x1024"/>
-										<ComboBoxItem Content="Native"/>
-										<ComboBoxItem Content="1/2x Native"/>
-										<ComboBoxItem Content="2x Native"/>
-										<ComboBoxItem Content="720p"/>
-										<ComboBoxItem Content="1080p"/>
-										<ComboBoxItem Content="4k"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r480}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r600}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r768}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r864}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r960}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r1024}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.Native}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r720}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r1080}"/>
+										<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution.r4K}"/>
 									</ComboBox>
 								</Grid>
 								<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.AspectRatio}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect}" Click="chkMaintainRatio_Click" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}"/>
