@@ -81,8 +81,9 @@ namespace SAModManager
             if (await DoUpdate(args, alreadyRunning))
             {
                 return;
-            }        
-            
+            }
+
+            UpdateHelper.InitHttpClient();
             HandleVanillaTransition(args);
 
             SetupLanguages();
@@ -267,8 +268,6 @@ namespace SAModManager
              }
          }*/
 
-
-
         public static async Task<bool> PerformUpdateManagerCheck()
         {
             var mainWindow = ((MainWindow)Application.Current.MainWindow);
@@ -302,12 +301,16 @@ namespace SAModManager
 
                 // string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
                 string dlLink = update.Item3.DownloadUrl;
-                Directory.CreateDirectory(".SATemp");
-                var dl = new ManagerUpdate(dlLink, ".SATemp", update.Item3.Name + ".zip");
-                dl.StartManagerDL();
-                
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
+                string fileName = update.Item3.Name;
+                string destFolder = ".SATemp";
+                Directory.CreateDirectory(destFolder);
 
+                var dl = new ManagerUpdate(dlLink, destFolder, fileName)
+                {
+                    DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName) 
+                };
+
+                dl.StartManagerDL();
                 return true;
             }
             catch
@@ -385,9 +388,8 @@ namespace SAModManager
                     return false;
 
                 string localCodes = File.ReadAllText(codesPath);
-                var httpClient = new HttpClient();
+                var httpClient = UpdateHelper.HttpClient;
 
-                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "SA-Mod-Manager");
                 string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.codeURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
 
                 if (localCodes == repoCodes)

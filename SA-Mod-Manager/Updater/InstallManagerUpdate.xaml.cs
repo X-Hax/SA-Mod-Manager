@@ -30,7 +30,7 @@ namespace SAModManager.Updater
 
         public async Task InstallUpdate()
         {
-            string executablePath = Environment.ProcessPath;;
+            string executablePath = Environment.ProcessPath;
 
             await Application.Current.Dispatcher.Invoke(async () =>
             {

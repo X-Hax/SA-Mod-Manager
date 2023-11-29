@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -62,7 +63,7 @@ namespace SAModManager.Updater
 			return localVersion;
 		}
 
-		public async Task<ModDownloadWPF> GetGitHubReleases(ModInfo mod, string modsFolder, string folder, UpdaterWebClient client, List<string> errors, string basePath = null)
+		public async Task<ModDownloadWPF> GetGitHubReleases(ModInfo mod, string modsFolder, string folder, HttpClient client, List<string> errors, string basePath = null)
 		{
 			List<GitHubRelease> releases;
 			string url = "https://api.github.com/repos/" + mod.GitHubRepo + "/releases";
@@ -71,7 +72,7 @@ namespace SAModManager.Updater
 			{
 				try
 				{
-					string text = await client.DownloadStringTaskAsync(url);
+					string text = await client.GetStringAsync(url);
 					releases = JsonConvert.DeserializeObject<List<GitHubRelease>>(text)
 						.Where(x => !x.Draft && !x.PreRelease)
 						.ToList();
@@ -201,7 +202,7 @@ namespace SAModManager.Updater
 		}
 
 		public async Task<ModDownloadWPF> CheckModularVersion(ModInfo mod, string modsFolder, string folder, List<ModManifestEntry> localManifest,
-											   UpdaterWebClient client, List<string> errors, string basePath = null)
+											   HttpClient client, List<string> errors, string basePath = null)
 		{
 			if (!mod.UpdateUrl.StartsWith("http://", StringComparison.InvariantCulture)
 				&& !mod.UpdateUrl.StartsWith("https://", StringComparison.InvariantCulture))
@@ -221,7 +222,7 @@ namespace SAModManager.Updater
 
 			try
 			{
-				Dictionary<string, Dictionary<string, string>> dict = IniFile.Load(client.OpenRead(url));
+				Dictionary<string, Dictionary<string, string>> dict = IniFile.Load(await client.GetStreamAsync(url));
 				remoteInfo = IniSerializer.Deserialize<ModInfo>(dict);
 			}
 			catch (Exception ex)
@@ -239,7 +240,7 @@ namespace SAModManager.Updater
 
 			try
 			{
-				manString = await client.DownloadStringTaskAsync(new Uri(new Uri(mod.UpdateUrl), "mod.manifest"));
+				manString = await client.GetStringAsync(new Uri(new Uri(mod.UpdateUrl), "mod.manifest"));
 			}
 			catch (Exception ex)
 			{
@@ -272,7 +273,7 @@ namespace SAModManager.Updater
 			{
 				try
 				{
-					changes = await client.DownloadStringTaskAsync(new Uri(mod.ChangelogUrl));
+					changes = await client.GetStringAsync(new Uri(mod.ChangelogUrl));
 				}
 				catch (Exception ex)
 				{
@@ -283,7 +284,7 @@ namespace SAModManager.Updater
 			{
 				try
 				{
-					changes = await client.DownloadStringTaskAsync(new Uri(new Uri(mod.UpdateUrl), "changelog.txt"));
+					changes = await client.GetStringAsync(new Uri(new Uri(mod.UpdateUrl), "changelog.txt"));
 				}
 				catch
 				{
@@ -319,7 +320,7 @@ namespace SAModManager.Updater
                 return;
             }
 
-            using (var client = new UpdaterWebClient())
+            using (var client = UpdateHelper.HttpClient)
             {
                 foreach (KeyValuePair<string, ModInfo> info in updatableMods)
                 {

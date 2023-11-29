@@ -22,12 +22,11 @@ namespace SAModManager.Updater
         private readonly string fileName;
         private string dest = ".SATemp";
         private readonly CancellationTokenSource tokenSource = new();
-        public Action<Exception> DownloadFailed;
         public bool done = false;
         private DLType Type = DLType.Download;
+        public Action<Exception> DownloadFailed;
         public Action DownloadCompleted;
-        public bool failsafe = false;
-
+        private IProgress<double?> _progress;
 
         public enum DLType
         {
@@ -59,11 +58,27 @@ namespace SAModManager.Updater
 
             this.Type = type;
 
-            this.failsafe = failsafe;
             Title += title;
             DLInfo.Text += " " + title + "...";
             this.fileName = fileName;
             this.uri = uri;
+
+
+            _progress = new Progress<double?>((v) =>
+            {
+                if (v.HasValue)
+                {
+                    TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                    DLProgress.IsIndeterminate = false;
+                    TaskbarItemInfo.ProgressValue = v.Value;
+                    DLProgress.Value = v.Value;
+                }
+                else
+                {
+                    DLProgress.IsIndeterminate = true;
+                    TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;
+                }
+            });
 
             if (!string.IsNullOrEmpty(dest))
             {
@@ -76,6 +91,7 @@ namespace SAModManager.Updater
 
             }
             catch { }
+
 
         }
 
@@ -97,7 +113,6 @@ namespace SAModManager.Updater
             }
 
             DLInfo.Text += Lang.GetString("Updater.DL.Dep.Completed") + "\n" + Lang.GetString("Updater.DL.Dep.Copying");
-            DLProgress.Value = DLProgress.Maximum;
             await Task.Delay(1000);
             if (File.Exists(fileName) && Directory.Exists(dest))
             {
@@ -119,15 +134,9 @@ namespace SAModManager.Updater
 
         private async Task DoDownloadAsync()
         {
-            bool retry = false;
-
             try
             {
-                var httpClient = new HttpClient();
-
-                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "SA-Mod-Manager");
-
-                CancellationToken token = tokenSource.Token;
+                var httpClient = UpdateHelper.HttpClient;
 
                 string destination = Path.Combine(dest, fileName);
                 try
@@ -139,7 +148,7 @@ namespace SAModManager.Updater
                 }
                 catch { }
 
-                await DownloadFileAsync(httpClient, uri.AbsoluteUri, destination).ConfigureAwait(false);
+                await httpClient.DownloadFileAsync(uri.AbsoluteUri, destination, _progress).ConfigureAwait(false);
                 await Dispatcher.InvokeAsync(() =>
                 {
                     DownloadCompleted = async () => await DownloadFileCompleted();
@@ -148,48 +157,14 @@ namespace SAModManager.Updater
             }
             catch (Exception ex)
             {
-
                 await Dispatcher.InvokeAsync(() =>
                 {
+                    string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + " " + this.fileName + "\n" + ex.Message + "\n\n";
+                    var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+                    error.ShowDialog();
                     DownloadFailed?.Invoke(ex);
-                    Close();
                 });
-
-
-                /*string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + this.fileName + "\n" + ex.Message + "\n\n" + Lang.GetString("Lang.GetString(\"MessageWindow.Errors.GenericDLFail1");
-                var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.RetryCancel);
-                error.ShowDialog();
-                retry = error.isRetry;*/
             }
-
-        }
-
-        public async Task DownloadFileAsync(HttpClient httpClient, string url, string destinationFilePath, CancellationToken cancellationToken = default)
-        {
-            using HttpResponseMessage response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-
-            using Stream contentStream = await response.Content.ReadAsStreamAsync();
-            using Stream fileStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            long totalBytesRead = 0;
-            long totalBytes = response.Content.Headers.ContentLength ?? -1;
-
-            while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-            {
-                await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead));
-                totalBytesRead += bytesRead;
-
-                if (totalBytes != -1)
-                {
-                    int percentage = (int)((totalBytesRead * 100) / totalBytes);
-
-                    // Use Dispatcher to update the ProgressBar on the UI thread
-                    Dispatcher.Invoke(() => DLProgress.Value = percentage);
-                }
-            }
-
         }
 
         public void StartDL()

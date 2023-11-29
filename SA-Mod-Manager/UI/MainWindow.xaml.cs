@@ -1096,7 +1096,7 @@ namespace SAModManager
                 await App.PerformUpdateLoaderCheck();
                 await App.PerformUpdateCodesCheck();
             }
-
+            return;
             manualModUpdate = true;
             await CheckForModUpdates(true);
             checkForUpdate = false;
@@ -1833,7 +1833,7 @@ namespace SAModManager
             var updates = new List<ModDownloadWPF>();
             var errors = new List<string>();
 
-            using (var client = new UpdaterWebClient())
+            using (var client = UpdateHelper.HttpClient)
             {
                 foreach (Tuple<string, ModInfo, List<Updater.ModManifestDiff>> info in updatableMods)
                 {
