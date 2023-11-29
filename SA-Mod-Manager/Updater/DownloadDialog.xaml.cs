@@ -28,7 +28,6 @@ namespace SAModManager.Updater
         public Action DownloadCompleted;
         private IProgress<double?> _progress;
 
-
         public enum DLType
         {
             Download,
@@ -64,17 +63,6 @@ namespace SAModManager.Updater
             this.fileName = fileName;
             this.uri = uri;
 
-            if (!string.IsNullOrEmpty(dest))
-            {
-                this.dest = dest;
-            }
-
-            try
-            {
-                Directory.CreateDirectory(this.dest);
-
-            }
-            catch { }
 
             _progress = new Progress<double?>((v) =>
             {
@@ -91,6 +79,19 @@ namespace SAModManager.Updater
                     TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;
                 }
             });
+
+            if (!string.IsNullOrEmpty(dest))
+            {
+                this.dest = dest;
+            }
+
+            try
+            {
+                Directory.CreateDirectory(this.dest);
+
+            }
+            catch { }
+
 
         }
 
@@ -112,7 +113,6 @@ namespace SAModManager.Updater
             }
 
             DLInfo.Text += Lang.GetString("Updater.DL.Dep.Completed") + "\n" + Lang.GetString("Updater.DL.Dep.Copying");
-            DLProgress.Value = DLProgress.Maximum;
             await Task.Delay(1000);
             if (File.Exists(fileName) && Directory.Exists(dest))
             {
@@ -148,7 +148,7 @@ namespace SAModManager.Updater
                 }
                 catch { }
 
-                await httpClient.DownloadFileAsync(uri.AbsoluteUri, destination).ConfigureAwait(false);
+                await httpClient.DownloadFileAsync(uri.AbsoluteUri, destination, _progress).ConfigureAwait(false);
                 await Dispatcher.InvokeAsync(() =>
                 {
                     DownloadCompleted = async () => await DownloadFileCompleted();

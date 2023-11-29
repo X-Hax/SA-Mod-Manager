@@ -96,7 +96,7 @@ namespace SAModManager.Common
 
                 try
                 {
-                    await UpdateHelper.HttpClient.DownloadFileAsync(URL, destPath, _progress).ConfigureAwait(false);
+                    await client.DownloadFileAsync(URL, destPath, _progress).ConfigureAwait(false);
                     await Dispatcher.InvokeAsync(() =>
                     {
                         Close();
