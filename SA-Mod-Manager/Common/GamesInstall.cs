@@ -259,7 +259,7 @@ namespace SAModManager.Common
                         success = false;
                         Uri uri = new(dependency.URL + "\r\n");
       
-                        var dl = new DownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, File.Exists(dependency.path) ? DownloadDialog.DLType.Update : DownloadDialog.DLType.Download);
+                        var dl = new DownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, DependencyInstalled(dependency) ? DownloadDialog.DLType.Update : DownloadDialog.DLType.Download);
 
                         dl.StartDL();
 
