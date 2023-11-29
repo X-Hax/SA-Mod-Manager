@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="GenericUpdateDialog" Height="310" Width="800"
         Style="{DynamicResource SAWindow}" WindowStartupLocation="CenterScreen">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="Normal"/>
+    </Window.TaskbarItemInfo>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -16,6 +19,6 @@
 
         <TextBlock x:Name="DLInfo" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{DynamicResource Updater.DL.Downloading}" FontSize="24" Margin="10,0,10,0" TextWrapping="Wrap"/>
 
-        <ProgressBar x:Name="DLProgress" Grid.Row="1" Maximum="100" VerticalAlignment="Center" Height="50" Margin="10,0,10,0"/>
+        <ProgressBar x:Name="DLProgress" Grid.Row="1" Maximum="1" VerticalAlignment="Center" Height="50" Margin="10,0,10,0"/>
     </Grid>
 </Window>

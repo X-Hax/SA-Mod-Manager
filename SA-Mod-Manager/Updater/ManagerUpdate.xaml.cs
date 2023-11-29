@@ -8,6 +8,7 @@ using System.Net;
 using System.IO;
 using SevenZipExtractor;
 using System.Diagnostics;
+using System.Windows.Shell;
 
 namespace SAModManager.Common
 {
@@ -16,74 +17,68 @@ namespace SAModManager.Common
     /// </summary>
     public partial class ManagerUpdate : Window
     {
-        private string URL;
-        private string tempFolderPath;
-        private string fileName;
-        public bool done = false;
-        private readonly CancellationTokenSource tokenSource = new();
+        private readonly string URL;
+        private readonly string destPath;
+        private readonly string fileName;
+        public Action DownloadCompleted;
+        public Action<Exception> DownloadFailed;
+        private IProgress<double?> _progress;
+
 
         public ManagerUpdate(string url, string updatePath, string fileName)
         {
             InitializeComponent();
             this.URL = url;
             this.fileName = fileName;
-            this.tempFolderPath = updatePath;
-        }
+            this.destPath = Path.Combine(updatePath, fileName);
 
-        private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
+            _progress = new Progress<double?>((v) =>
             {
-                UpdateProgress.Value = e.ProgressPercentage;
-            });
-        }
-
-        private async void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                UpdateInfo.Text = "Download completed." + "\n Installing New Version...";
-
-            });
-
-            await Application.Current.Dispatcher.Invoke(async () =>
-            {
-                string dest = Path.Combine(tempFolderPath, fileName);
-
-                //once dl is finished, move manager zip in .SATemp folder
-                if (File.Exists(fileName) && tempFolderPath is not null)
+                if (v.HasValue)
                 {
-
-                    await Util.MoveFile(fileName, dest, true);
-                    await Task.Delay(100);
-                    //extract Manager zip
-                    await Util.Extract(dest, tempFolderPath);
-                    //delete zip
-                    File.Delete(dest);
-
-                    await Task.Delay(50);
-                    string newExec = Path.Combine(tempFolderPath, Path.GetFileName(Environment.ProcessPath));
-
-                    if (File.Exists(newExec))
-                    {
-                        Process.Start(new ProcessStartInfo(newExec, $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"")
-                        {
-                            UseShellExecute = true,
-                        });
-                    }
-                    else
-                    {
-                        throw new Exception("Failed to Extract or Open Manager Update.");
-                    }
+                    TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                    UpdateProgress.IsIndeterminate = false;
+                    TaskbarItemInfo.ProgressValue = v.Value;
+                    UpdateProgress.Value = v.Value;
                 }
                 else
                 {
-                    throw new Exception("Failed to Extract or Open Manager Update. File not found");
+                    UpdateProgress.IsIndeterminate = true;
+                    TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;
                 }
-
-                done = true;
-                DialogResult = true;
             });
+        }
+
+        public static async Task DownloadManagerCompleted(string tempFolderPath, string fileName)
+        {
+            string dest = Path.Combine(tempFolderPath, fileName);
+
+            //once dl is finished, move manager zip in .SATemp folder
+            if (File.Exists(dest) && tempFolderPath is not null)
+            {
+                await Task.Delay(100);
+                //extract Manager zip
+                await Util.Extract(dest, tempFolderPath);
+                //delete zip
+                File.Delete(dest);
+
+                await Task.Delay(50);
+                string newExec = Path.Combine(tempFolderPath, Path.GetFileName(Environment.ProcessPath));
+
+                if (File.Exists(newExec))
+                {
+                    Process.Start(newExec, $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"");
+                    App.Current.Shutdown();
+                }
+                else
+                {
+                    throw new Exception("Failed to Extract or Open Manager Update.");
+                }
+            }
+            else
+            {
+                throw new Exception("Failed to Extract or Open Manager Update. File not found");
+            }
         }
 
         public void StartManagerDL()
@@ -96,29 +91,29 @@ namespace SAModManager.Common
 
         public async Task DoManagerDownload()
         {
-            using (var client = new UpdaterWebClient())
+            using (var client = UpdateHelper.HttpClient)
             {
-                CancellationToken token = tokenSource.Token;
-                client.DownloadProgressChanged += WebClient_DownloadProgressChanged;
-                client.DownloadFileCompleted += WebClient_DownloadFileCompleted;
-
-                bool retry = false;
 
                 try
                 {
-                    await Task.Run(() => client.DownloadFileTaskAsync(URL, fileName));
-                }
-                catch (AggregateException ae)
-                {
-                    // Handle the exception
-                    ae.Handle(ex =>
+                    await UpdateHelper.HttpClient.DownloadFileAsync(URL, destPath, _progress).ConfigureAwait(false);
+                    await Dispatcher.InvokeAsync(() =>
                     {
-                        string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + this.fileName + "\n" + ex.Message + "\n\n" + Lang.GetString("Lang.GetString(\"MessageWindow.Errors.GenericDLFail1");
-
-                        var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.RetryCancel);
+                        Close();
+                        DownloadCompleted?.Invoke();
+                    });
+                }
+                catch (Exception ex)
+                {
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        // Handle the exception
+                        string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + " " + this.fileName + "\n" + ex.Message + "\n\n";
+                        var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
                         error.ShowDialog();
-                        retry = error.isRetry;
-                        return true;
+                        Close();
+                        DownloadFailed?.Invoke(ex);
+
                     });
                 }
             }

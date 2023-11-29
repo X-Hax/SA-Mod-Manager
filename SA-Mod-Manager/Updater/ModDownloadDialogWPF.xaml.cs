@@ -36,8 +36,8 @@ namespace SAModManager.Updater
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
 		{
-			using (var client = new UpdaterWebClient())
-			{
+            using (var client = new UpdaterWebClient())
+            {
 				CancellationToken token = tokenSource.Token;
 
 				void OnExtracting(object o, CancelEventArgs args)

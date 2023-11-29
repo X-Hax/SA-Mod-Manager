@@ -9,6 +9,7 @@ using static SAModManager.GitHubAction;
 using static SAModManager.GitHubArtifact;
 using static SAModManager.WorkflowRunInfo.GitHubTagInfo;
 using System.Text.RegularExpressions;
+using SAModManager.Updater;
 
 namespace SAModManager
 {
@@ -292,10 +293,8 @@ namespace SAModManager
 
         public static async Task<GitHubAction> GetLatestAction()
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = UpdateHelper.HttpClient)
             {
-                httpClient.DefaultRequestHeaders.Add("User-Agent", AppName);
-
                 string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs?branch={branch}&per_page=1";
 
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
@@ -321,10 +320,8 @@ namespace SAModManager
 
         public static async Task<List<GitHubArtifact>> GetArtifactsForAction(long actionId)
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = UpdateHelper.HttpClient)
             {
-                httpClient.DefaultRequestHeaders.Add("User-Agent", AppName);
-
                 string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs/{actionId}/artifacts";
 
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
@@ -348,10 +345,8 @@ namespace SAModManager
         //left over from previous update system
         public static async Task<WorkflowRunInfo> GetLatestWorkflowRun()
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = UpdateHelper.HttpClient)
             {
-                httpClient.DefaultRequestHeaders.Add("User-Agent", AppName);
-
                 string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs";
 
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
@@ -401,9 +396,8 @@ namespace SAModManager
 
             try
             {
-                var httpClient = new HttpClient();
+                var httpClient = UpdateHelper.HttpClient;
 
-                httpClient.DefaultRequestHeaders.Add("User-Agent", AppName);
                 string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
 
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
@@ -448,14 +442,12 @@ namespace SAModManager
 
         public static async Task<string> GetGitChangeLog(string hash)
         {
-            var httpClient = new HttpClient();
-
-            httpClient.DefaultRequestHeaders.Add("User-Agent", AppName);
+            var httpClient = UpdateHelper.HttpClient;
 
             // string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/commits?sha={hash}&per_page=100&sha={branch}";
 
             bool isEmpty = string.IsNullOrEmpty(App.RepoCommit); //empty means we are on dev version
-            string apiUrl = isEmpty == false ? $"https://api.github.com/repos/{owner}/{repo}/compare/{App.RepoCommit}...{hash[..7]}" : $"https://api.github.com/repos/{owner}/{repo}/commits?sha={hash}&per_page=100&sha={branch}"; 
+            string apiUrl = isEmpty == false ? $"https://api.github.com/repos/{owner}/{repo}/compare/{App.RepoCommit}...{hash[..7]}" : $"https://api.github.com/repos/{owner}/{repo}/commits?sha={hash}&per_page=100&sha={branch}";
 
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
             string text = "";
@@ -463,7 +455,7 @@ namespace SAModManager
             if (response.IsSuccessStatusCode)
             {
                 string jsonResult = await response.Content.ReadAsStringAsync();
-          
+
                 if (isEmpty) //if we are on dev version get the last 100 commits
                 {
                     var info = JsonConvert.DeserializeObject<GHCommitInfo[]>(jsonResult);
@@ -487,7 +479,7 @@ namespace SAModManager
                 else //get all the commits between new version and current version
                 {
                     var info = JsonConvert.DeserializeObject<CommitComparisonResponse>(jsonResult);
-                    
+
                     foreach (var commit in info.commits)
                     {
                         //we skip the message "merge branch master" thing as the end user wouldn't understand
@@ -505,9 +497,7 @@ namespace SAModManager
 
         public static async Task<string> GetGitLoaderChangeLog(string hash)
         {
-            var httpClient = new HttpClient();
-
-            httpClient.DefaultRequestHeaders.Add("User-Agent", AppName); //To do update with master when it's ready
+            var httpClient = UpdateHelper.HttpClient;
             string apiUrl = $"https://api.github.com/repos/{owner}/{App.CurrentGame.loader.repoName}/commits?sha={hash}&per_page=100&sha=master";
 
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
@@ -542,12 +532,10 @@ namespace SAModManager
 
         private static async Task<string> GetLastCommitHash(string repo, string branch)
         {
-            using (HttpClient client = new())
+            try
             {
-                client.BaseAddress = new Uri("https://api.github.com");
-                client.DefaultRequestHeaders.Add("User-Agent", AppName);
-
-                HttpResponseMessage response = await client.GetAsync($"repos/{owner}/{repo}/commits/{branch}");
+                HttpClient client = UpdateHelper.HttpClient;
+                HttpResponseMessage response = await client.GetAsync($"https://api.github.com/repos/{owner}/{repo}/commits/{branch}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -558,13 +546,16 @@ namespace SAModManager
                     return content[startIndex..endIndex];
                 }
             }
+            catch
+            {
+            }
 
             return null;
         }
 
         public static async Task<string> GetLoaderHashCommit()
         {
-            return await GetLastCommitHash(App.CurrentGame.loader.repoName, "master");
+            return await GetLastCommitHash(App.CurrentGame.loader.repoName, branch);
         }
     }
 }

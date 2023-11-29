@@ -2,13 +2,16 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 
 namespace SAModManager.Updater
 {
     public class UpdateHelper
     {
+        public static HttpClient HttpClient { get; set; }
         private const int CD = 59;
         private const int CDAmount = 2;
+
         public static bool UpdateTimeElapsed(int amount, long previous)
         {
             if (previous <= 0 && amount < CDAmount)
@@ -59,5 +62,12 @@ namespace SAModManager.Updater
                 App.ManagerSettings.UpdateSettings.UpdateTimeOutCD = 0;
             }
         }
+
+        public static void InitHttpClient()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            HttpClient = new();
+            HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "SA-Mod-Manager");
+        }  
     }
 }
