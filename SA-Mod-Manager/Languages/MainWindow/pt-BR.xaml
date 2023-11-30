@@ -185,6 +185,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Abre o Gerenciador de Perfil, onde você pode criar e deletar perfis.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">O caminho completo para a pasta onde seu jogo está instalado.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Abre uma janela onde você pode selecionar a pasta do seu jogo.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Abre o diretório onde seu jogo está instalado.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Define o tema usado pelo Gerenciador de Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Define o idioma usado pelo Gerenciador de Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantém o Gerenciador de Mod aberto após pressionar Salvar e Jogar.</system:String>
