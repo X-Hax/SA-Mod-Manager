@@ -749,40 +749,35 @@ namespace SAModManager
 
         private void SelectModByFirstLetter(string letter)
         {
-            if (listMods.Items.Count == 0)
+            if (listMods.Items.Count == 0) 
                 return;
 
-            int index = ViewModel.Modsdata.IndexOf(ViewModel.SelectedMod) + 1;
+            int selectedIndex = listMods.SelectedIndex;
+            int startIndex = selectedIndex >= 0 ? selectedIndex + 1 : 0;
+            bool letterFound = false;
 
-            if (index < 0)
-                index = 0;
-
-            for (int i = index; i < ViewModel.Modsdata.Count; i++)
+            void SearchAndUpdate(int index)
             {
-                var item = ViewModel.Modsdata[i];
-
+                var item = ViewModel.Modsdata[index];
                 if (!string.IsNullOrEmpty(item.Name) && letter[0] == item.Name[0])
                 {
-                    listMods.SelectedIndex = i;
-                    listMods.SelectedItem = item;
+                    listMods.SelectedIndex = index;
                     listMods.ScrollIntoView(item);
-                    return;
+                    letterFound = true;
                 }
             }
 
-            for (int i = 0; i < listMods.Items.Count; i++)
-            {
-                var item = (ModData)listMods.Items[i];
+            for (int i = startIndex; i < ViewModel.Modsdata.Count && !letterFound; i++)
+                SearchAndUpdate(i);
 
-                if (!string.IsNullOrEmpty(item.Name) && letter[0] == item.Name[0])
-                {
-                    listMods.SelectedIndex = i;
-                    listMods.SelectedItem = item;
-                    listMods.ScrollIntoView(item);
-                    return;
-                }
-            }
+            if (!letterFound)
+                for (int i = 0; i < startIndex && !letterFound; i++)
+                    SearchAndUpdate(i);
+
+            if (!letterFound && selectedIndex >= 0)
+                listMods.ScrollIntoView(ViewModel.Modsdata[selectedIndex]);
         }
+
 
         private void ModsList_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -832,6 +827,7 @@ namespace SAModManager
             {
                 if (e.Key >= Key.A && e.Key <= Key.Z)
                 {
+                    e.Handled = true;
                     KeyConverter converter = new();
                     string keyString = (string)converter.ConvertTo(e.Key, typeof(string));
                     SelectModByFirstLetter(keyString);
