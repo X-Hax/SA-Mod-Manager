@@ -23,14 +23,14 @@ namespace SAModManager.Updater
         public List<string> errors = new();
     };
 
-    public class ModUpdater
+    public partial class ModUpdater
     {
         public ModUpdateAndErrors modUpdateHelper { get; set; } = new();
         public Tuple<List<ModDownloadWPF>, List<string>> modUpdatesTuple = null;
-        public List<Tuple<string, ModInfo, List<Updater.ModManifestDiff>>> modManifestTuple = null;
+        public List<Tuple<string, ModInfo, List<ModManifestDiff>>> modManifestTuple = null;
         public List<KeyValuePair<string, ModInfo>> updatableMods = null;
 
-        private readonly Dictionary<string, List<GitHubRelease>> gitHubCache = new Dictionary<string, List<GitHubRelease>>();
+        private readonly Dictionary<string, List<GitHubRelease>> gitHubCache = new();
         public bool ForceUpdate;
 
         private static DateTime? GetLocalVersion(string folder, string modsFolder, string basePath = null)
@@ -68,7 +68,7 @@ namespace SAModManager.Updater
             List<GitHubRelease> releases;
             string url = "https://api.github.com/repos/" + mod.GitHubRepo + "/releases";
 
-            if (!gitHubCache.ContainsKey(url))
+            if (!gitHubCache.TryGetValue(url, out List<GitHubRelease> value))
             {
                 try
                 {
@@ -90,7 +90,7 @@ namespace SAModManager.Updater
             }
             else
             {
-                releases = gitHubCache[url];
+                releases = value;
             }
 
             if (releases == null || releases.Count == 0)
@@ -331,14 +331,14 @@ namespace SAModManager.Updater
                     continue;
                 }
 
-                if (App.Current == null || MainWindow.cancelUpdate)
+                if (System.Windows.Application.Current == null || MainWindow.cancelUpdate)
                 {
                     break;
                 }
 
-                App.Current.Dispatcher.Invoke(() =>
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
                 {
-                    ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ChkCurModUpdate"), mod.Name));
+                    ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ChkCurModUpdate"), mod.Name));
                 });
 
                 if (!string.IsNullOrEmpty(mod.GitHubRepo))
@@ -346,9 +346,9 @@ namespace SAModManager.Updater
                     if (string.IsNullOrEmpty(mod.GitHubAsset))
                     {
 
-                        App.Current.Dispatcher.Invoke(() =>
+                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
                         {
-                            ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
+                            ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
                         });
 
                         modUpdateHelper.errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
@@ -384,9 +384,9 @@ namespace SAModManager.Updater
                         }
                         catch (Exception ex)
                         {
-                            App.Current.Dispatcher.Invoke(() =>
+                            System.Windows.Application.Current.Dispatcher.Invoke(() =>
                             {
-                                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
                             });
                             modUpdateHelper.errors.Add($"[{mod.Name}] Error parsing local manifest: {ex.Message}");
                             continue;
@@ -411,5 +411,8 @@ namespace SAModManager.Updater
         {
             gitHubCache.Clear();
         }
+
+        [GeneratedRegex("(?<!\r)\n")]
+        private static partial Regex MyRegex();
     }
 }
