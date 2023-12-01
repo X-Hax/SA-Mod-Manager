@@ -36,7 +36,7 @@ namespace SAModManager
         private const string protocol = "sadxmm:";
         public static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
-        public static readonly string ConfigFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
+        public static readonly string ConfigFolder = Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SAManager")) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
         public static readonly string ziplibPath = Path.Combine(extLibPath, "7z/7z.dll");
         public static bool isVanillaTransition = false; //used when installing the manager from an update
