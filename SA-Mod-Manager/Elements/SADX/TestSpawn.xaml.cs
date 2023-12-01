@@ -747,7 +747,7 @@ namespace SAModManager.Elements.SADX
             {
                 string save = tsComboSave.SelectedValue.ToString();
                 save = GetSaveNumber(save);
-                cmdline.Add("-s " + save);
+                cmdline.Add("-s " + "\"" + save + "\"");
             }
 
 
