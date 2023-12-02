@@ -77,8 +77,8 @@ namespace SAModManager.Configuration
 		/// <summary>
 		/// Enables crash log mini dump creation.
 		/// </summary>
-		[DefaultValue(false)]
-		public bool EnableDebugCrashLog { get; set; }     // SADXLoaderInfo.DebugCrashLog
+		[DefaultValue(true)]
+		public bool EnableDebugCrashLog { get; set; } = true;    // SADXLoaderInfo.DebugCrashLog
 
 		/// <summary>
 		/// Enables the console window to render. Print
