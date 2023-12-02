@@ -1520,9 +1520,6 @@ namespace SAModManager
             // Save Game Config File
             string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
             IniSerializer.Serialize(gameConfigFile, configPath);
-
-            // Save to Loader Info
-            await Task.Run(() => sadxSettings.WriteToLoaderInfo(App.CurrentGame.modDirectory, App.ManagerSettings));
         }
 
         private async void SaveSA2Settings()
