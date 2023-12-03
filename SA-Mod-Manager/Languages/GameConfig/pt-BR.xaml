@@ -55,6 +55,14 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Mouse e Teclado</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Arrastar e Segurar</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Arrastar para Acelerar</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn">Botão Esquerdo do Mouse</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn">Botão Direito do Mouse</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn">Botão do Meio do Mouse</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Outro Botão do Mouse 1</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn">Botão Esquerdo + Direito do Mouse</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Botão Direito + Esquerdo do Mouse</system:String>
+  	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Action">Ação:</system:String>
+    	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.BtnAssignment">Atribuição de Botão:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Pular:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Ação:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Cancelar/Atacar:</system:String>
