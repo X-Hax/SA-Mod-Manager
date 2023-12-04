@@ -91,32 +91,30 @@ namespace SAModManager.Common
 
         public async Task DoManagerDownload()
         {
-            using (var client = UpdateHelper.HttpClient)
+            var client = UpdateHelper.HttpClient;
+            try
             {
-
-                try
+                await client.DownloadFileAsync(URL, destPath, _progress).ConfigureAwait(false);
+                await Dispatcher.InvokeAsync(() =>
                 {
-                    await client.DownloadFileAsync(URL, destPath, _progress).ConfigureAwait(false);
-                    await Dispatcher.InvokeAsync(() =>
-                    {
-                        Close();
-                        DownloadCompleted?.Invoke();
-                    });
-                }
-                catch (Exception ex)
-                {
-                    await Dispatcher.InvokeAsync(() =>
-                    {
-                        // Handle the exception
-                        string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + " " + this.fileName + "\n" + ex.Message + "\n\n";
-                        var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
-                        error.ShowDialog();
-                        Close();
-                        DownloadFailed?.Invoke(ex);
-
-                    });
-                }
+                    Close();
+                    DownloadCompleted?.Invoke();
+                });
             }
+            catch (Exception ex)
+            {
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    // Handle the exception
+                    string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + " " + this.fileName + "\n" + ex.Message + "\n\n";
+                    var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+                    error.ShowDialog();
+                    Close();
+                    DownloadFailed?.Invoke(ex);
+
+                });
+            }
+
         }
     }
 }

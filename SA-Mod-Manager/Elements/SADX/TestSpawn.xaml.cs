@@ -412,15 +412,13 @@ namespace SAModManager.Elements.SADX
                 expandAdvanced.IsExpanded = true;
         }
 
-        private async void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
+        private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
             {
                 new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                 return;
             }
-
-			await Task.Run(() => GameProfile.WriteToLoaderInfo(App.CurrentGame.modDirectory, App.ManagerSettings));
 
 			string executablePath = SelectedMods?.Select(item => GameMods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
 
@@ -747,7 +745,7 @@ namespace SAModManager.Elements.SADX
             {
                 string save = tsComboSave.SelectedValue.ToString();
                 save = GetSaveNumber(save);
-                cmdline.Add("-s " + save);
+                cmdline.Add("-s " + "\"" + save + "\"");
             }
 
 
