@@ -108,6 +108,11 @@
 
 	<system:String x:Key="TestSpawn.Language.Voice">Idioma de Voz:</system:String>
 	<system:String x:Key="TestSpawn.Language.Text">Idioma da Dublagem:</system:String>
+  	<system:String x:Key="TestSpawn.Language.Japanese">日本語</system:String>
+	<system:String x:Key="TestSpawn.Language.English">English</system:String>
+	<system:String x:Key="TestSpawn.Language.French">Français</system:String>
+	<system:String x:Key="TestSpawn.Language.Spanish">Español</system:String>
+	<system:String x:Key="TestSpawn.Language.German">Deutsch</system:String>
 	<!--#endregion-->
 	
 	<!--#region SADX-->
