@@ -82,7 +82,7 @@
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Isto irá desinstalar todos os mods selecionados.&#x0a;&#x0a;Tem certeze que deseja continuar?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Isto irá desinstalar todos os mods selecionados.&#x0a;&#x0a;Tem certeza que deseja continuar?</system:String>
 
 	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Você está prestes a desabilitar redirecionamento de save para este mod. Se continuar, qualquer save (jogo salvo) na pasta deste mod será excluído.&#x0a;&#x0a;Você tem certeza que deseja continuar?</system:String>
 	
@@ -90,7 +90,7 @@
 	
 	<system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Isto irá forçar todos os mods selecionados a serem completamente reinstalados.&#x0a;&#x0a;Você tem certeza que deseja continuar?</system:String>
 	
-	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">Isto pode fazer com que DADOS DE USÚARIO DO MOD (ARQUIVOS DE SAVE (JOGO SALVO), ARQUIVOS DE CONFIGURAÇÃO) SEJAM PERDIDOS na próxima atualização! Para prevenir isto, nunca execute isto em mods que você não desenvolveu.&#x0a;&#x0a;Você tem certeza que deseja continuar?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">Isto pode fazer com que DADOS DE USÚARIO DO MOD (ARQUIVOS DE SAVE [JOGO SALVO], ARQUIVOS DE CONFIGURAÇÃO) SEJAM PERDIDOS na próxima atualização! Para prevenir isto, nunca execute isto em mods que você não desenvolveu.&#x0a;&#x0a;Você tem certeza que deseja continuar?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">O Runtime do .NET 7.0 Desktop não está instalado!&#x0a;&#x0a;Você deseja instalar ele agora?</system:String>
     
@@ -101,8 +101,8 @@
 	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Mods estão atualizados.</system:String>
 
 
-    <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Passou Integridade</system:String>
-    <system:String x:Key="MessageWindow.Information.ModPassedVerif">Todos os mods selecionados passaram a verificação.</system:String>
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Passou em Integridade</system:String>
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif">Todos os mods selecionados passaram na verificação.</system:String>
 
     <!--#endregion-->
 	
