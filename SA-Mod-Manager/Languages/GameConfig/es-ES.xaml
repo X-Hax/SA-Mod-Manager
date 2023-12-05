@@ -62,6 +62,8 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Otro Botón Izquierdo</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn">Botón Izquierdo + Derecho del Ratón</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Botón Derecho + Izquierdo del Ratón</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Action">Acción:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.BtnAssignment">Asignación de botones:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Saltar</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Acción</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Cancelar/Atacar</system:String>
@@ -87,7 +89,34 @@
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Volumen de Efectos:</system:String>
 	<!--#endregion-->
 
-	<!--#region SADX-->
+    <!--#region Test Spawn Tab Strings-->
+    <system:String x:Key="TestSpawn.Check.Character">Personaje:</system:String>
+    <system:String x:Key="TestSpawn.Check.Level">Nivel:</system:String>
+    <system:String x:Key="TestSpawn.Time">Hora:</system:String>
+    <system:String x:Key="TestSpawn.Act">Acto:</system:String>
+    <system:String x:Key="TestSpawn.Check.Mode">Modo de Juego:</system:String>
+    <system:String x:Key="TestSpawn.Check.Save">Redireccionar Archivo de Guardado:</system:String>
+    <system:String x:Key="TestSpawn.Check.Event">Evento:</system:String>
+    <system:String x:Key="TestSpawn.Warning">Sobrescribir niveles o personajes en los eventos podría bloquear el juego.</system:String>
+    <system:String x:Key="TestSpawn.Buttons.Launch">Iniciar Juego</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced">Opciones Avanzadas</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.Check.Manual">Configuración Manual:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.Check.Position">Posición:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.PosX">Pos X:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.Angle">Ángulo:</system:String>
+
+    <system:String x:Key="TestSpawn.Language.Voice">Idioma de voces:</system:String>
+    <system:String x:Key="TestSpawn.Language.Text">Idioma de texto:</system:String>
+    <system:String x:Key="TestSpawn.Language.Japanese">日本語</system:String>
+    <system:String x:Key="TestSpawn.Language.English">English</system:String>
+    <system:String x:Key="TestSpawn.Language.French">Français</system:String>
+    <system:String x:Key="TestSpawn.Language.Spanish">Español</system:String>
+    <system:String x:Key="TestSpawn.Language.German">Deutsch</system:String>
+    <!--#endregion-->
+
+    <!--#region SADX-->
 	
 	<!--#endregion-->
 	

@@ -21,6 +21,8 @@
         <ResourceDictionary Source="ModProfile/es-ES.xaml"/>
         <ResourceDictionary Source="NewCode/es-ES.xaml"/>
         <ResourceDictionary Source="SelectDependencies/es-ES.xaml"/>
+        <ResourceDictionary Source="SplashScreen/es-ES.xaml"/>
+        <ResourceDictionary Source="Updater/es-ES.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/es-ES.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
@@ -48,8 +50,16 @@
 	<system:String x:Key="CommonStrings.Download">Descargar</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">Abrir Carpeta</system:String>
     <system:String x:Key="CommonStrings.None">Ninguno</system:String>
-    <system:String x:Key="CommonStrings.Success">Success!</system:String>
-    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+    <system:String x:Key="CommonStrings.Enabled">Enabled</system:String>
+    <system:String x:Key="CommonStrings.Disabled">Disabled</system:String>
+    <system:String x:Key="CommonStrings.Success">¡Éxito!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Falló</system:String>
+
+    <!--Region Create Code-->
+    <system:String x:Key="CommonStrings.Type">Tipo</system:String>
+    <system:String x:Key="CommonStrings.TypeCode">Código</system:String>
+    <system:String x:Key="CommonStrings.TypePatch">Parche</system:String>
+    <system:String x:Key="CommonStrings.IsRequired">Es Necesario</system:String>
 
     <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Minimizar</system:String>

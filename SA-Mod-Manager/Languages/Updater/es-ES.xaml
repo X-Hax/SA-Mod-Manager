@@ -1,0 +1,33 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!--Dependencies-->
+    <system:String x:Key="Updater.DL.Dep.Download">Descargar</system:String>
+    <system:String x:Key="Updater.DL.Dep.Install">Instalar</system:String>
+    <system:String x:Key="Updater.DL.Dep.Update">Actualizar</system:String>
+    <system:String x:Key="Updater.DL.Dep.Downloading">Descargando</system:String>
+    <system:String x:Key="Updater.DL.Dep.Installing">Instalando</system:String>
+    <system:String x:Key="Updater.DL.Dep.Updating">Actualizando</system:String>
+    <system:String x:Key="Updater.DL.Dep.Completed">Completado.</system:String>
+    <system:String x:Key="Updater.DL.Dep.Copying">Copiando archivos...</system:String>
+
+    <system:String x:Key="Updater.DL.Offline.Title">Instalación sin conexión</system:String>
+    <system:String x:Key="Updater.DL.Offline.Failed">Error al descargar {0}</system:String>
+    <system:String x:Key="Updater.DL.Offline.InstallAttempt">Intentando instalación sin conexión. Por favor, espera...</system:String>
+
+    <!--Mod Update-->
+    <system:String x:Key="Updater.DL.Mod.Extracting">Extrayendo...</system:String>
+    <system:String x:Key="Updater.DL.Mod.ParsingManifest">Analizando manifesto...</system:String>
+    <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Aplicando manifesto...</system:String>
+    <system:String x:Key="Updater.DL.Mod.DownloadingFile">Descargando archivo</system:String>
+    <system:String x:Key="Updater.DL.Mod.of">de</system:String> <!-- "of" files to download-->
+    <system:String x:Key="Updater.DL.Mod.UpdatingMod">Actualizando mod</system:String>
+    <system:String x:Key="Updater.DL.Mod.StartingDownload">Comenzando descarga...</system:String>
+    <system:String x:Key="Updater.DL.Mod.DownloadComplete">Descarga completada.</system:String>
+
+
+
+
+</ResourceDictionary>
