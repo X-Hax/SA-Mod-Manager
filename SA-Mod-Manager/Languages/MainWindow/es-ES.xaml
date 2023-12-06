@@ -38,30 +38,9 @@
     <system:String x:Key="Manager.Tabs.Codes.MadeBy">Creado por</system:String>
 	<!--#endregion-->
 
-
-
-	<!--#region Test Spawn Tab Strings-->
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Character">Personaje:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Level">Nivel:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Time">Hora:</system:String>
-    <system:String x:Key="Manager.Tabs.TestSpawn.Act">Acto:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Mode">Modo de Juego:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Save">Redireccionar Archivo de Guardado:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Check.Event">Evento:</system:String>
-    <system:String x:Key="Manager.Tabs.TestSpawn.Warning">Sobrescribir niveles o personajes en los eventos podría bloquear el juego.</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Buttons.Launch">Iniciar Juego</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced">Opciones Avanzadas</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Check.Manual">Configuración Manual:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Check.Position">Position:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosX">Pos X:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn.Group.Advanced.Angle">Ángulo:</system:String>
-	<!--#endregion-->
-
 	<!--#region Manager Config Tab Strings-->
 	<!--Options-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Opciones</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Opciones del Juego:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Temas:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Idioma:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Perfil:</system:String>
@@ -93,6 +72,7 @@
 
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Acerca de</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">Acerca de</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">El SADX Mod Manager es un programa que te permite gestionar fácilmente mods en Sonic Adventure DX.</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Colaboradores</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Código Fuente</system:String>
@@ -209,8 +189,9 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Abre el Gestor de Perfiles en donde puedes crear y eliminar perfiles.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Directorio completo en donde tu juego está instalado.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Abre una ventana en donde puedes seleccionar el directorio del juego.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Abre el directorio en donde tu juego está instalado.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Ajusta el tema del Mod Manager.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Ajust el idioma del Mod Manager.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Ajusta el idioma del Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantiene el Mod Manager abierto al pulsa Guardar y Jugar.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Activa la pestaña Test Spawn en el Mod Manager.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Al activarlo, al hacer clic en enlaces 1-Clic en GameBanana abrirá una ventana de descarga para el mod.</system:String>
