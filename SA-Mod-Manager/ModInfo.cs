@@ -152,7 +152,8 @@ namespace SAModManager
 	public class PatchesData
 	{
 		public string Name { get; set; }
-		public string Description { get; set; }
+		public string Author { get; set; }
+        public string Description { get; set; }
 		public bool IsChecked { get; set; }
 
 	}

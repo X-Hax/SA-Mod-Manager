@@ -433,12 +433,13 @@ namespace SAModManager.Elements.SADX
 
 			if (patch is null)
 				return;
-
+			PatchAuthor.Text += ": " + patch.Author;
 			PatchDescription.Text += " " + patch.Description;
 		}
 
 		private void PatchViewItem_MouseLeave(object sender, MouseEventArgs e)
 		{
+			PatchAuthor.Text = Lang.GetString("CommonStrings.Author");
 			PatchDescription.Text = Lang.GetString("CommonStrings.Description");
 		}
 
@@ -451,6 +452,7 @@ namespace SAModManager.Elements.SADX
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.3DSound"),
+					Author = "SF94",
 					Description = Lang.GetString("GamePatches.3DSoundDesc"),
 					IsChecked = set.Patches.HRTFSound
 				},
@@ -458,105 +460,120 @@ namespace SAModManager.Elements.SADX
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.CamCode"),
-					Description = Lang.GetString("GamePatches.CamCodeDesc"),
+                    Author = "VeritasDL & SF94",
+                    Description = Lang.GetString("GamePatches.CamCodeDesc"),
 					IsChecked = set.Patches.KeepCamSettings
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.VertexColor"),
-					Description = Lang.GetString("GamePatches.VertexColorDesc"),
+                    Author = "SF94",
+                    Description = Lang.GetString("GamePatches.VertexColorDesc"),
 					IsChecked = set.Patches.FixVertexColorRendering
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.MaterialColor"),
-					Description = Lang.GetString("GamePatches.MaterialColorDesc"),
+                    Author = "PkR",
+                    Description = Lang.GetString("GamePatches.MaterialColorDesc"),
 					IsChecked = set.Patches.MaterialColorFix
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.NodeLimit"),
-					Description = Lang.GetString("GamePatches.NodeDesc"),
+                    Author = "Sora",
+                    Description = Lang.GetString("GamePatches.NodeDesc"),
 					IsChecked = set.Patches.NodeLimit
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.FixFOV"),
-					Description = Lang.GetString("GamePatches.FixFOVDesc"),
+                    Author = "SF94",
+                    Description = Lang.GetString("GamePatches.FixFOVDesc"),
 					IsChecked = set.Patches.FOVFix
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.Skychase"),
-					Description = Lang.GetString("GamePatches.SkychaseDesc"),
+                    Author = "PkR & SF94",
+                    Description = Lang.GetString("GamePatches.SkychaseDesc"),
 					IsChecked = set.Patches.SkyChaseResolutionFix
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.Chaos2"),
-					Description = Lang.GetString("GamePatches.Chaos2Desc"),
+                    Author = "Sora",
+                    Description = Lang.GetString("GamePatches.Chaos2Desc"),
 					IsChecked = set.Patches.Chaos2CrashFix
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.ChunkRendering"),
-					Description = Lang.GetString("GamePatches.ChunkRenderingDesc"),
+                    Author = "MainMemory",
+                    Description = Lang.GetString("GamePatches.ChunkRenderingDesc"),
 					IsChecked = set.Patches.ChunkSpecularFix
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.E102Lamp"),
-					Description = Lang.GetString("GamePatches.E102LampDesc"),
+                    Author = "SF94",
+                    Description = Lang.GetString("GamePatches.E102LampDesc"),
 					IsChecked = set.Patches.E102NGonFix
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.ChaoStats"),
-					Description = Lang.GetString("GamePatches.ChaoStatsDesc"),
+                    Author = "Kell",
+                    Description = Lang.GetString("GamePatches.ChaoStatsDesc"),
 					IsChecked = set.Patches.ChaoPanelFix
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.PixelOffset"),
-					Description = Lang.GetString("GamePatches.PixelOffsetDesc"),
+                    Author = "SF94",
+                    Description = Lang.GetString("GamePatches.PixelOffsetDesc"),
 					IsChecked = set.Patches.PixelOffSetFix
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.Lights"),
-					Description = Lang.GetString("GamePatches.LightsDesc"),
+                    Author = "Kell & SF94",
+                    Description = Lang.GetString("GamePatches.LightsDesc"),
 					IsChecked = set.Patches.LightFix
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.DisableGBIX"),
-					Description = Lang.GetString("GamePatches.DisableGBIXDesc"),
+                    Author = "Sora",
+                    Description = Lang.GetString("GamePatches.DisableGBIXDesc"),
 					IsChecked = set.Patches.KillGBIX
 				},
 
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.DisableCDCheck"),
-					Description = Lang.GetString("GamePatches.DisableCDCheckDesc"),
+                    Author = "MainMemory",
+                    Description = Lang.GetString("GamePatches.DisableCDCheckDesc"),
 					IsChecked = set.Patches.DisableCDCheck
 				},			
 				
 				new PatchesData()
 				{
 					Name = Lang.GetString("GamePatches.ExtendedSaveSupport"),
-					Description = Lang.GetString("GamePatches.ExtendedSaveDesc"),
+                    Author = "PkR",
+                    Description = Lang.GetString("GamePatches.ExtendedSaveDesc"),
 					IsChecked = set.Patches.ExtendedSaveSupport
 				},
 			};
