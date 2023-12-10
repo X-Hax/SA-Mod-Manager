@@ -949,9 +949,9 @@ namespace SAModManager
 
             var code = codes.codes;
 
-            CodeAuthorGrid.Text += " " + code.Author;
+            CodeAuthorGrid.Text += ": " + code.Author;
             CodeDescGrid.Text += " " + code.Description;
-            CodeCategoryGrid.Text += " " + code.Category;
+            CodeCategoryGrid.Text += ": " + code.Category;
         }
 
         private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
