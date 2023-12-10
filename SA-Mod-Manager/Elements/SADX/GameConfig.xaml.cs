@@ -489,10 +489,13 @@ namespace SAModManager.Elements.SADX
 
 			List<PatchesData> patches = GetPatches(ref listPatches, GameProfile);
 
-			foreach (var patch in patches)
+			if (patches is not null)
 			{
-				listPatches.Items.Add(patch);
-			}
+                foreach (var patch in patches)
+                {
+                    listPatches.Items.Add(patch);
+                }
+            }
 		}
 
 		private void btnSelectAllPatch_Click(object sender, RoutedEventArgs e)
