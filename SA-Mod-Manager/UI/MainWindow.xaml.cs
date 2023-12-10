@@ -123,9 +123,9 @@ namespace SAModManager
 
         private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
         {
-			this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
+            this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
 
-			StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
+            StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
 
             SetModManagerVersion();
 
@@ -136,16 +136,25 @@ namespace SAModManager
             SetBindings();
 
 #if !DEBUG
+
             checkForUpdate = true;
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
             bool managerUpdate = chkUpdateManager.IsChecked == true && await App.PerformUpdateManagerCheck();
-            if (managerUpdate || (chkUpdatesML.IsChecked == true && (await App.PerformUpdateLoaderCheck() || await App.PerformUpdateCodesCheck() || await App.PerformUpdatePatchesCheck())))
+            if (managerUpdate)
             {
-                if (!managerUpdate)
-                    Refresh();
-
+                Refresh();
                 return;
+            }
+
+            if (App.CurrentGame.loader.installed)
+            {
+                if (chkUpdatesML.IsChecked == true)
+                {
+                    await App.PerformUpdateLoaderCheck();
+                    await App.PerformUpdateCodesCheck();
+                    await App.PerformUpdatePatchesCheck();
+                }
             }
 
             await CheckForModUpdates();
@@ -746,7 +755,7 @@ namespace SAModManager
 
         private void SelectModByFirstLetter(string letter)
         {
-            if (listMods.Items.Count == 0) 
+            if (listMods.Items.Count == 0)
                 return;
 
             int selectedIndex = listMods.SelectedIndex;

@@ -381,17 +381,19 @@ namespace SAModManager
 
                 var codesPath = Path.Combine(App.CurrentGame.modDirectory, "Codes.lst");
 
-                if (!File.Exists(codesPath))
-                    return false;
+                bool CodeExist = File.Exists(codesPath);
 
-                string localCodes = File.ReadAllText(codesPath);
-                var httpClient = UpdateHelper.HttpClient;
-
-                string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.codeURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
-
-                if (localCodes == repoCodes)
+                if (CodeExist)
                 {
-                    return false;
+                    string localCodes = File.ReadAllText(codesPath);
+                    var httpClient = UpdateHelper.HttpClient;
+
+                    string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.codeURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
+
+                    if (localCodes == repoCodes)
+                    {
+                        return false;
+                    }
                 }
 
                 await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
@@ -415,17 +417,17 @@ namespace SAModManager
 
                 var jsonPath = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
 
-                if (!File.Exists(jsonPath))
-                    return false;
-
-                string localCodes = File.ReadAllText(jsonPath);
-                var httpClient = UpdateHelper.HttpClient;
-
-                string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.patchURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
-
-                if (localCodes == repoCodes)
+                if (File.Exists(jsonPath))
                 {
-                    return false;
+                    string localCodes = File.ReadAllText(jsonPath);
+                    var httpClient = UpdateHelper.HttpClient;
+
+                    string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.patchURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
+
+                    if (localCodes == repoCodes)
+                    {
+                        return false;
+                    }
                 }
 
                 await GamesInstall.UpdatePatches(App.CurrentGame); //update patch
