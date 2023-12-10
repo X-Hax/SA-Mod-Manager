@@ -473,6 +473,7 @@ namespace SAModManager.Elements.SADX
                     }
 
                     string desc = "GamePatches." + patch.Name + "Desc";
+					patch.InternalName = patch.Name;
                     patch.Name = Lang.GetString("GamePatches." + patch.Name);
                     patch.Description = Lang.GetString(desc); //need to use a variable otherwise it fails for some reason
                 }
@@ -531,7 +532,6 @@ namespace SAModManager.Elements.SADX
             d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
         }
 
-		//Todo rework because this is absolutely disgusting
 		public void SavePatches(ref object input)
 		{
 			GameSettings settings = input as GameSettings;
@@ -539,38 +539,20 @@ namespace SAModManager.Elements.SADX
 			if (listPatches is null)
 				return;
 
-            PatchesData patch = (PatchesData)listPatches.Items[15];
-            settings.Patches.ExtendedSaveSupport = patch.IsChecked;
-             patch = (PatchesData)listPatches.Items[14];
-			settings.Patches.DisableCDCheck = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[13];
-			settings.Patches.KillGBIX = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[12];
-			settings.Patches.LightFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[11];
-			settings.Patches.PixelOffSetFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[10];
-			settings.Patches.ChaoPanelFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[9];
-			settings.Patches.E102NGonFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[8];
-			settings.Patches.ChunkSpecularFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[7];
-			settings.Patches.Chaos2CrashFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[6];
-			settings.Patches.SkyChaseResolutionFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[5];
-			settings.Patches.FOVFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[4];
-			settings.Patches.NodeLimit = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[3];
-			settings.Patches.MaterialColorFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[2];
-			settings.Patches.FixVertexColorRendering = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[1];
-			settings.Patches.KeepCamSettings = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[0];
-			settings.Patches.HRTFSound = patch.IsChecked;
+			foreach (PatchesData patch in listPatches.Items)
+			{
+                string propertyName = patch.InternalName;
+                var propertyInfo = typeof(GamePatches).GetProperty(propertyName);
+
+                if (propertyInfo != null && propertyInfo.CanWrite)
+                {
+                    propertyInfo.SetValue(settings.Patches, patch.IsChecked);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Property {propertyName} not found or read-only.");
+                }
+            }
 		}
 
 		private void SetItemFromPad(int action)
@@ -829,8 +811,6 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay
 			});
-
-			// Patches
 		}
         #endregion
 

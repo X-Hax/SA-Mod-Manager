@@ -158,6 +158,7 @@ namespace SAModManager
 		public string Category { get; set; }
 		public string Description { get; set; }
 		public bool IsChecked { get; set; }
+		public string InternalName { get; set; }
 	}
 
 	public class PatchesList
