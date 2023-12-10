@@ -101,7 +101,7 @@
 	<system:String x:Key="TestSpawn.Buttons.Launch">Launch Game</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced">Advanced Options</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Check.Manual">Manually Set:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.Check.Position">Position:</system:String>
+	<system:String x:Key="TestSpawn.Group.Advanced.Check.Position">Override Start Position:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosX">Pos X:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>

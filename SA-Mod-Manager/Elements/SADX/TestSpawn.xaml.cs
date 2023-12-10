@@ -602,7 +602,12 @@ namespace SAModManager.Elements.SADX
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumPosX.SetBinding(NumericUpDown.ValueProperty, new Binding("XPosition")
+			tsCheckPosition.SetBinding(CheckBox.IsCheckedProperty, new Binding("UsePosition")
+			{
+				Source = GameProfile.TestSpawn,
+				Mode = BindingMode.TwoWay
+			});
+			tsNumPosX.SetBinding(NumericUpDown.ValueProperty, new Binding("XPosition")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
