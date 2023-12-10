@@ -218,6 +218,15 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Patches.json.
+        /// </summary>
+        internal static string URL_SADX_PATCH {
+            get {
+                return ResourceManager.GetString("URL_SADX_PATCH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://nightly.link/X-Hax/SA-Mod-Manager/suites/{0}/artifacts/{1}.
         /// </summary>
         internal static string URL_SAMM_UPDATE {

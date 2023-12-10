@@ -140,7 +140,7 @@ namespace SAModManager
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
             bool managerUpdate = chkUpdateManager.IsChecked == true && await App.PerformUpdateManagerCheck();
-            if (managerUpdate || (chkUpdatesML.IsChecked == true && (await App.PerformUpdateLoaderCheck() || await App.PerformUpdateCodesCheck())))
+            if (managerUpdate || (chkUpdatesML.IsChecked == true && (await App.PerformUpdateLoaderCheck() || await App.PerformUpdateCodesCheck() || await App.PerformUpdatePatchesCheck())))
             {
                 if (!managerUpdate)
                     Refresh();
@@ -1089,6 +1089,7 @@ namespace SAModManager
             {
                 await App.PerformUpdateLoaderCheck();
                 await App.PerformUpdateCodesCheck();
+                await App.PerformUpdatePatchesCheck();
             }
 
             manualModUpdate = true;

@@ -407,6 +407,40 @@ namespace SAModManager
             return false;
         }
 
+        public static async Task<bool> PerformUpdatePatchesCheck()
+        {
+            try
+            {
+                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkPatchesUpdates"));
+
+                var jsonPath = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
+
+                if (!File.Exists(jsonPath))
+                    return false;
+
+                string localCodes = File.ReadAllText(jsonPath);
+                var httpClient = UpdateHelper.HttpClient;
+
+                string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.patchURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
+
+                if (localCodes == repoCodes)
+                {
+                    return false;
+                }
+
+                await GamesInstall.UpdatePatches(App.CurrentGame); //update patch
+                return true;
+            }
+            catch
+            {
+
+                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdatePatches"));
+
+            }
+
+            return false;
+        }
+
         private static async Task<bool> DoUpdate(string[] args, bool alreadyRunning)
         {
             foreach (var arg in args)

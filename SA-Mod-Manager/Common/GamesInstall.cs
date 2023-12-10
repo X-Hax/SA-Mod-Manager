@@ -59,6 +59,7 @@ namespace SAModManager.Common
         /// URL to the Codes.lst file.
         /// </summary>
         public string codeURL { get; set; }
+        public string patchURL { get; set; }
 
         /// <summary>
         /// Default Profile, used?
@@ -183,6 +184,7 @@ namespace SAModManager.Common
             }
 
             await UpdateCodes(App.CurrentGame); //update codes
+            await UpdatePatches(App.CurrentGame); //update patches
         }
 
         public static async Task<bool> UpdateLoader(Game game)
@@ -234,8 +236,34 @@ namespace SAModManager.Common
             }
             catch
             {
-                Console.WriteLine("Failed to update mod loader\n");
+                Console.WriteLine("Failed to update code\n");
                 ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateCodes"));
+            }
+
+            return false;
+        }
+
+        public static async Task<bool> UpdatePatches(Game game)
+        {
+            if (game is null)
+                return false;
+
+            try
+            {
+                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.UpdatePatches"));
+                string codePath = Path.Combine(game.modDirectory, "Patches.json");
+                Uri uri = new(game.patchURL + "\r\n");
+                var dl = new DownloadDialog(uri, "Patches", "Patches.json", game.modDirectory, DownloadDialog.DLType.Update);
+
+                dl.StartDL();
+
+                await Task.Delay(1);
+                return dl.done == true;
+            }
+            catch
+            {
+                Console.WriteLine("Failed to update patches\n");
+                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdatePatches"));
             }
 
             return false;
@@ -362,6 +390,7 @@ namespace SAModManager.Common
             exeName = "sonic.exe",
             defaultIniProfile = "SADXModLoader.ini",
             codeURL = Properties.Resources.URL_SADX_CODE,
+            patchURL = Properties.Resources.URL_SADX_PATCH,
 
             loader = new()
             {

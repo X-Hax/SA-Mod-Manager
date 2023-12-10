@@ -157,6 +157,9 @@
   <data name="URL_SADX_DL" xml:space="preserve">
     <value>https://github.com/X-Hax/sadx-mod-loader/raw/master/extlib/ModLoaders/SADXModLoader.dll</value>
   </data>
+  <data name="URL_SADX_PATCH" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Patches.json</value>
+  </data>
   <data name="URL_SAMM_UPDATE" xml:space="preserve">
     <value>https://nightly.link/X-Hax/SA-Mod-Manager/suites/{0}/artifacts/{1}</value>
   </data>
