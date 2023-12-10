@@ -91,11 +91,6 @@ namespace SAModManager
         }
 
         #region Form: Functions
-        private void MainWindowManager_ContentRendered(object sender, EventArgs e)
-        {
-            this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
-        }
-
         private async Task VanillaUpdate_CheckGame()
         {
             bool isValid = false;
@@ -128,7 +123,9 @@ namespace SAModManager
 
         private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
         {
-            StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
+			this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
+
+			StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
 
             SetModManagerVersion();
 
