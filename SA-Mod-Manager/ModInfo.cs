@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Text.Json;
 using PropertyChanged;
 using SAModManager.Common;
+using SAModManager.Configuration;
 using SAModManager.Ini;
 
 namespace SAModManager
@@ -153,8 +155,23 @@ namespace SAModManager
 	{
 		public string Name { get; set; }
 		public string Author { get; set; }
-        public string Description { get; set; }
+		public string Category { get; set; }
+		public string Description { get; set; }
 		public bool IsChecked { get; set; }
-
 	}
+
+	public class PatchesList
+	{
+		public List<PatchesData> Patches { get; set; } = new();
+        public static PatchesList Deserialize(string path)
+        {
+            if (File.Exists(path))
+            {
+                string jsonContent = File.ReadAllText(path);
+                return JsonSerializer.Deserialize<PatchesList>(jsonContent);
+            }
+
+			return null;
+        }
+    }
 }

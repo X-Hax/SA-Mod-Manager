@@ -497,7 +497,8 @@
                             <TextBlock Text="{DynamicResource GamePatches.Title}" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" TextWrapping="Wrap"/>
                             <Separator Grid.Row="0" VerticalAlignment="Bottom"/>
                             <TextBlock x:Name="PatchAuthor" Text="{DynamicResource CommonStrings.Author}" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Left" FontSize="14" Margin="0,0,5,0"/>
-                            <TextBlock x:Name="PatchDescription" Text="{DynamicResource CommonStrings.Description}" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Left" FontSize="14" Margin="0,19,0,0"/>
+                            <TextBlock x:Name="PatchCategory" Text="{DynamicResource CommonStrings.Category}" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Left" FontSize="14" Margin="0,20,0,0"/>
+                            <TextBlock x:Name="PatchDescription" Text="{DynamicResource CommonStrings.Description}" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Left" FontSize="14" Margin="0,40,0,0"/>
                         </Grid>
                     </Grid>
                 </Grid>
