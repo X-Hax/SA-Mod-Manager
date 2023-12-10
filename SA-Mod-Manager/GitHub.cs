@@ -293,84 +293,84 @@ namespace SAModManager
 
         public static async Task<GitHubAction> GetLatestAction()
         {
-            using (var httpClient = UpdateHelper.HttpClient)
+            var httpClient = UpdateHelper.HttpClient;
+
+            string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs?branch={branch}&per_page=1";
+
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
             {
-                string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs?branch={branch}&per_page=1";
+                response.Content = response.Content;
+                string jsonResult = await response.Content.ReadAsStringAsync();
+                var actions = JsonConvert.DeserializeObject<GitHubActionList>(jsonResult);
 
-                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
-                if (response.IsSuccessStatusCode)
+                if (actions != null && actions.Actions.Count > 0)
                 {
-                    response.Content = response.Content;
-                    string jsonResult = await response.Content.ReadAsStringAsync();
-                    var actions = JsonConvert.DeserializeObject<GitHubActionList>(jsonResult);
-
-                    if (actions != null && actions.Actions.Count > 0)
-                    {
-                        return actions.Actions[0]; // The first workflow run in the list is the most recent one
-                    }
-
+                    return actions.Actions[0]; // The first workflow run in the list is the most recent one
                 }
 
-                Console.WriteLine($"Error: {response.StatusCode}");
-                return null;
             }
+
+            Console.WriteLine($"Error: {response.StatusCode}");
+            return null;
+
         }
 
 
         public static async Task<List<GitHubArtifact>> GetArtifactsForAction(long actionId)
         {
-            using (var httpClient = UpdateHelper.HttpClient)
+            var httpClient = UpdateHelper.HttpClient;
+
+            string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs/{actionId}/artifacts";
+
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
             {
-                string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs/{actionId}/artifacts";
+                string jsonResult = await response.Content.ReadAsStringAsync();
+                var artifacts = JsonConvert.DeserializeObject<ArtifactList>(jsonResult);
 
-                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
-                if (response.IsSuccessStatusCode)
+                if (artifacts != null && artifacts.Artifacts.Count > 0)
                 {
-                    string jsonResult = await response.Content.ReadAsStringAsync();
-                    var artifacts = JsonConvert.DeserializeObject<ArtifactList>(jsonResult);
-
-                    if (artifacts != null && artifacts.Artifacts.Count > 0)
-                    {
-                        return artifacts.Artifacts; // The first workflow run in the list is the most recent one
-                    }
+                    return artifacts.Artifacts; // The first workflow run in the list is the most recent one
                 }
-
-                Console.WriteLine($"Error: {response.StatusCode}");
-                return null;
             }
+
+            Console.WriteLine($"Error: {response.StatusCode}");
+            return null;
+
         }
 
         //left over from previous update system
         public static async Task<WorkflowRunInfo> GetLatestWorkflowRun()
         {
-            using (var httpClient = UpdateHelper.HttpClient)
+            var httpClient = UpdateHelper.HttpClient;
+
+            string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs";
+
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
             {
-                string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs";
+                string jsonResult = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<WorkflowList>(jsonResult);
 
-                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
-                if (response.IsSuccessStatusCode)
+                if (apiResponse != null && apiResponse.Runs.Count > 0)
                 {
-                    string jsonResult = await response.Content.ReadAsStringAsync();
-                    var apiResponse = JsonConvert.DeserializeObject<WorkflowList>(jsonResult);
-
-                    if (apiResponse != null && apiResponse.Runs.Count > 0)
+                    for (int i = 0; i < apiResponse.Runs.Count; i++)
                     {
-                        for (int i = 0; i < apiResponse.Runs.Count; i++)
+                        if (apiResponse.Runs[i].HeadBranch.ToLower() == branch.ToLower()) //only get builds from the current branch.
                         {
-                            if (apiResponse.Runs[i].HeadBranch.ToLower() == branch.ToLower()) //only get builds from the current branch.
-                            {
-                                return apiResponse.Runs[i]; //return the first build that contains the right branch, this should be the last update every time.
-                            }
+                            return apiResponse.Runs[i]; //return the first build that contains the right branch, this should be the last update every time.
                         }
                     }
                 }
-
-                Console.WriteLine($"Error: {response.StatusCode}");
-                return null;
             }
+
+            Console.WriteLine($"Error: {response.StatusCode}");
+            return null;
+
         }
 
         private static async Task<string> GetSHAFromLastTag(GitHubRelease release, HttpClient httpClient)

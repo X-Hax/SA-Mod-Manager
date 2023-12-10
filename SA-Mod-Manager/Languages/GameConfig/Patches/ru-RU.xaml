@@ -18,7 +18,7 @@
 	<system:String x:Key="GamePatches.Lights">Исправления освещения</system:String>
 	<system:String x:Key="GamePatches.DisableGBIX">Отключить GBIX-индексы (экспериментально)</system:String>
 	<system:String x:Key="GamePatches.DisableCDCheck">Отключить проверку диска</system:String>
-    <system:String x:Key="GamePatches.ExtendedSaveSupport">Extended Save Support</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupport">Расширенная поддержка сохранений</system:String>
 
     <system:String x:Key="GamePatches.3DSoundDesc">Настраивает DirectSound на использование более продвинутых алгоритмов для обработки 3D-звуков. Этот патч не нужен, если включен BASS для звуков.</system:String>
     <system:String x:Key="GamePatches.CamCodeDesc">Исправляет ошибку, из-за которой настройки свободной камеры не сохраняются после смерти или загрузки зоны/акта.</system:String>
@@ -35,7 +35,7 @@
     <system:String x:Key="GamePatches.LightsDesc">Исправляет неправильное применение освещения к LandTables и включает сохранение типа освещения для моделей в очереди (queued models).</system:String>
     <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">Глобальные индексы (GBIX) применяются в системе кеширования игровых текстур. Каждая текстура в  SADX уникальна .&#x0a;Перед загрузкой новой текстуры происходит её сравнение по глобальному индексу с уже загруженными текстурами.&#x0a;Если индекс был найден, игра использует ранее подгруженную текстуру вместо загрузки новой.&#x0a;&#x0a;Этот патч отключает эту систему воизбежание возможных ошибок или конфликтов (Кроме нескольких исключений, например элементы интерфейса.)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheckDesc">Отключение проверки диска.</system:String>
-    <system:String x:Key="GamePatches.ExtendedSaveDesc">Enables support for saved games from the Steam version and allows custom save names (up to 48 characters).</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveDesc">Включает поддержку стимовских сохранений и кастомных имён (с поддержкой до 48 символов).</system:String>
 
 
 

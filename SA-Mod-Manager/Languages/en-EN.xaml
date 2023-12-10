@@ -58,7 +58,7 @@
     <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Type</system:String>
     <system:String x:Key="CommonStrings.TypeCode">Code</system:String>
-    <system:String x:Key="CommonStrings.Typepatch">Patch</system:String>
+    <system:String x:Key="CommonStrings.TypePatch">Patch</system:String>
     <system:String x:Key="CommonStrings.IsRequired">Is Required</system:String>
 
     <!--Window Tips-->

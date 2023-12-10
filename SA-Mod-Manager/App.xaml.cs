@@ -272,9 +272,6 @@ namespace SAModManager
         {
             var mainWindow = ((MainWindow)Application.Current.MainWindow);
 
-            if (mainWindow.chkUpdateManager.IsChecked != true)
-                return false;
-
              mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
 
             try

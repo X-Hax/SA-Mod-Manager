@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SAModManager"
         mc:Ignorable="d"
-        Title="{StaticResource Manager.Tabs.ManagerConfig.Group.About}" Height="300" Width="Auto" MinWidth="300" MaxHeight="500" MaxWidth="450"
+        Title="{StaticResource Manager.Tabs.ManagerConfig.Group.AboutMod}" Height="300" Width="Auto" MinWidth="300" MaxHeight="500" MaxWidth="450"
         Style="{StaticResource SAWindow}"
         WindowStartupLocation="CenterScreen">
 

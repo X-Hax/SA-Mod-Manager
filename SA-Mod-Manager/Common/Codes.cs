@@ -611,6 +611,14 @@ namespace SAModManager.Common
 						lines.Clear();
 						++index;
 					}
+
+					// Edge catch for when there are no empty lines following a code.
+					if (sr.Peek() == -1 && lines.Count > 0)
+					{
+						codeData.Add(index, new List<string>(lines));
+						lines.Clear();
+						++index;
+					}
 				}
 			}
 
