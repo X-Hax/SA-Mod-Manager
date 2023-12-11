@@ -22,7 +22,7 @@ namespace SAModManager.Updater
 			InitializeComponent();
 			this.updates = updates;
 			this.updatePath = updatePath;
-
+			Activate();
 			Loaded += OnLoaded;
 		}
 
