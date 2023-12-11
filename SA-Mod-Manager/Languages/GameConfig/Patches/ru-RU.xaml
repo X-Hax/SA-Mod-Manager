@@ -3,39 +3,39 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <system:String x:Key="GamePatches.Title">Патч</system:String>
-    <system:String x:Key="GamePatches.3DSound">Включение HRTF-пространственного звука</system:String>
-	<system:String x:Key="GamePatches.CamCode">Исправления ошибок кода камеры</system:String>
-	<system:String x:Key="GamePatches.VertexColor">Исправления вертексной покраски моделей</system:String>
-	<system:String x:Key="GamePatches.MaterialColor">Исправления цветов материалов</system:String>
+    <system:String x:Key="GamePatches.HRTFSound">Включение HRTF-пространственного звука</system:String>
+    <system:String x:Key="GamePatches.KeepCamSettings">Исправления ошибок кода камеры</system:String>
+    <system:String x:Key="GamePatches.FixVertexColorRendering">Исправления вертексной покраски моделей</system:String>
+    <system:String x:Key="GamePatches.MaterialColorFix">Исправления цветов материалов</system:String>
     <system:String x:Key="GamePatches.NodeLimit">Увеличение ограничения на число частей моделей</system:String>
-	<system:String x:Key="GamePatches.FixFOV">Исправления области обзора</system:String>
-	<system:String x:Key="GamePatches.Skychase">Исправления на Sky Chase</system:String>
-	<system:String x:Key="GamePatches.Chaos2">Исправления вылетов на Хаосе 2</system:String>
-	<system:String x:Key="GamePatches.ChunkRendering">Исправления отражений чанков</system:String>
-	<system:String x:Key="GamePatches.E102Lamp">Исправления окуляров Гаммы</system:String>
-	<system:String x:Key="GamePatches.ChaoStats">Исправление положения окна способностей Чао</system:String>
-	<system:String x:Key="GamePatches.PixelOffset">Исправления положения 2д-рендеринга</system:String>
-	<system:String x:Key="GamePatches.Lights">Исправления освещения</system:String>
-	<system:String x:Key="GamePatches.DisableGBIX">Отключить GBIX-индексы (экспериментально)</system:String>
-	<system:String x:Key="GamePatches.DisableCDCheck">Отключить проверку диска</system:String>
+    <system:String x:Key="GamePatches.FOVFix">Исправления области обзора</system:String>
+    <system:String x:Key="GamePatches.SkyChaseResolutionFix">Исправления на Sky Chase</system:String>
+    <system:String x:Key="GamePatches.Chaos2CrashFix">Исправления вылетов на Хаосе 2</system:String>
+    <system:String x:Key="GamePatches.ChunkSpecularFix">Исправления отражений чанков</system:String>
+    <system:String x:Key="GamePatches.E102NGonFix">Исправления окуляров Гаммы</system:String>
+    <system:String x:Key="GamePatches.ChaoPanelFix">Исправление положения окна способностей Чао</system:String>
+    <system:String x:Key="GamePatches.PixelOffSetFix">Исправления положения 2д-рендеринга</system:String>
+    <system:String x:Key="GamePatches.LightFix">Исправления освещения</system:String>
+    <system:String x:Key="GamePatches.KillGBIX">Отключить GBIX-индексы (экспериментально)</system:String>
+    <system:String x:Key="GamePatches.DisableCDCheck">Отключить проверку диска</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Расширенная поддержка сохранений</system:String>
 
-    <system:String x:Key="GamePatches.3DSoundDesc">Настраивает DirectSound на использование более продвинутых алгоритмов для обработки 3D-звуков. Этот патч не нужен, если включен BASS для звуков.</system:String>
-    <system:String x:Key="GamePatches.CamCodeDesc">Исправляет ошибку, из-за которой настройки свободной камеры не сохраняются после смерти или загрузки зоны/акта.</system:String>
-    <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">Ванильная SADX игнорирует вертексную покраску моделей, используя вместо неё глобальное значение, даже если это не нужно.&#x0a;&#x0a;Этот патч переопределяет функции, связанные с корректным нанесением вертексных цветов.</system:String>
-    <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">Игра циклически проходит по всем моделям, заменяя цвета материалов на белый.&#x0a;&#x0a; Этот патч исправляет несоответствия цветов , деляя модели более похожими на их аналоги из версий игры с Dreamcast и Gamecube.</system:String>
-    <system:String x:Key="GamePatches.NodeDesc" xml:space="preserve">В изначальной игре есть ограничение в 111 частей моделей на персонажа для модели и анимаций.&#x0a;&#x0a;Патч увеличивает их число до 254, что позволяет добавлять в игру более сложные и комплексные модели.</system:String>
-    <system:String x:Key="GamePatches.FixFOVDesc">Улучшает область обзора и позволяет играть с портретным соотношением сторон экрана.</system:String>
-    <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Позволяет Sky Chase работать одинаково при всех разрешениях экрана. Патч исправляет движение Торнадо и прицела, а также скорострельность противников.&#x0a;&#x0a;Набрать очки для получения эмблемы в разрешении выше 640x480 с этим патчем проще, чем в ванильной игре.</system:String>
-    <system:String x:Key="GamePatches.Chaos2Desc">Исправляет ошибку, из-за которой прохождение Chaos 2 и перезапуск босса приводили к сбою игры.</system:String>
-    <system:String x:Key="GamePatches.ChunkRenderingDesc">Исправляет отражения на чанковых моделях.</system:String>
-    <system:String x:Key="GamePatches.E102LampDesc">Исправляет N-угольные полигоны (окуляры Гаммы) с использованием triangle strip vertex buffer.</system:String>
-    <system:String x:Key="GamePatches.ChaoStatsDesc">Исправляет панель статов Чао. С этим патчем панель отображается на экране корректно.</system:String>
-    <system:String x:Key="GamePatches.PixelOffsetDesc">Исправляет субпиксельное смещение большинства 2D-элементов, которое можно заметить при более высоких разрешениях.</system:String>
-    <system:String x:Key="GamePatches.LightsDesc">Исправляет неправильное применение освещения к LandTables и включает сохранение типа освещения для моделей в очереди (queued models).</system:String>
-    <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">Глобальные индексы (GBIX) применяются в системе кеширования игровых текстур. Каждая текстура в  SADX уникальна .&#x0a;Перед загрузкой новой текстуры происходит её сравнение по глобальному индексу с уже загруженными текстурами.&#x0a;Если индекс был найден, игра использует ранее подгруженную текстуру вместо загрузки новой.&#x0a;&#x0a;Этот патч отключает эту систему воизбежание возможных ошибок или конфликтов (Кроме нескольких исключений, например элементы интерфейса.)</system:String>
+    <system:String x:Key="GamePatches.HRTFSoundDesc">Настраивает DirectSound на использование более продвинутых алгоритмов для обработки 3D-звуков. Этот патч не нужен, если включен BASS для звуков.</system:String>
+    <system:String x:Key="GamePatches.KeepCamSettingsDesc">Исправляет ошибку, из-за которой настройки свободной камеры не сохраняются после смерти или загрузки зоны/акта.</system:String>
+    <system:String x:Key="GamePatches.FixVertexColorRenderingDesc" xml:space="preserve">Ванильная SADX игнорирует вертексную покраску моделей, используя вместо неё глобальное значение, даже если это не нужно.&#x0a;&#x0a;Этот патч переопределяет функции, связанные с корректным нанесением вертексных цветов.</system:String>
+    <system:String x:Key="GamePatches.MaterialColorFixrDes" xml:space="preserve">Игра циклически проходит по всем моделям, заменяя цвета материалов на белый.&#x0a;&#x0a; Этот патч исправляет несоответствия цветов , деляя модели более похожими на их аналоги из версий игры с Dreamcast и Gamecube.</system:String>
+    <system:String x:Key="GamePatches.NodeLimitDesc" xml:space="preserve">В изначальной игре есть ограничение в 111 частей моделей на персонажа для модели и анимаций.&#x0a;&#x0a;Патч увеличивает их число до 254, что позволяет добавлять в игру более сложные и комплексные модели.</system:String>
+    <system:String x:Key="GamePatches.FovFixDesc">Улучшает область обзора и позволяет играть с портретным соотношением сторон экрана.</system:String>
+    <system:String x:Key="GamePatches.SkyChaseResolutionFixDesc" xml:space="preserve">Позволяет Sky Chase работать одинаково при всех разрешениях экрана. Патч исправляет движение Торнадо и прицела, а также скорострельность противников.&#x0a;&#x0a;Набрать очки для получения эмблемы в разрешении выше 640x480 с этим патчем проще, чем в ванильной игре.</system:String>
+    <system:String x:Key="GamePatches.Chaos2CrashFixDesc">Исправляет ошибку, из-за которой прохождение Chaos 2 и перезапуск босса приводили к сбою игры.</system:String>
+    <system:String x:Key="GamePatches.ChunkSpecularFixDesc">Исправляет отражения на чанковых моделях.</system:String>
+    <system:String x:Key="GamePatches.E102NGonFixDesc">Исправляет N-угольные полигоны (окуляры Гаммы) с использованием triangle strip vertex buffer.</system:String>
+    <system:String x:Key="GamePatches.ChaoPanelFixDesc">Исправляет панель статов Чао. С этим патчем панель отображается на экране корректно.</system:String>
+    <system:String x:Key="GamePatches.PixelOffSetFixDesc">Исправляет субпиксельное смещение большинства 2D-элементов, которое можно заметить при более высоких разрешениях.</system:String>
+    <system:String x:Key="GamePatches.LightFixDesc">Исправляет неправильное применение освещения к LandTables и включает сохранение типа освещения для моделей в очереди (queued models).</system:String>
+    <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">Глобальные индексы (GBIX) применяются в системе кеширования игровых текстур. Каждая текстура в  SADX уникальна .&#x0a;Перед загрузкой новой текстуры происходит её сравнение по глобальному индексу с уже загруженными текстурами.&#x0a;Если индекс был найден, игра использует ранее подгруженную текстуру вместо загрузки новой.&#x0a;&#x0a;Этот патч отключает эту систему воизбежание возможных ошибок или конфликтов (Кроме нескольких исключений, например элементы интерфейса.)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheckDesc">Отключение проверки диска.</system:String>
-    <system:String x:Key="GamePatches.ExtendedSaveDesc">Включает поддержку стимовских сохранений и кастомных имён (с поддержкой до 48 символов).</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Включает поддержку стимовских сохранений и кастомных имён (с поддержкой до 48 символов).</system:String>
 
 
 

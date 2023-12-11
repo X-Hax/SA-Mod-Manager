@@ -7,6 +7,7 @@
     <system:String x:Key="UpdateStatus.ChkLoaderUpdate">Проверка обновлений Загрузчика модов...</system:String>
     <system:String x:Key="UpdateStatus.ChkModsUpdates">Проверка обновлений модов...</system:String>
     <system:String x:Key="UpdateStatus.ChkCodesUpdates">Проверка обновлений читов...</system:String>
+    <system:String x:Key="UpdateStatus.ChkPatchesUpdates">Checking for Patches Updates...</system:String>
     <system:String x:Key="UpdateStatus.ChkManagerUpdateFail">Ошибка обновления Менеджера модов</system:String>
     <system:String x:Key="UpdateStatus.ChkLoaderUpdateFail">Ошибка обновления Загрузчика модов</system:String>
     <!-- '{0}' will be used to display the name of the mod, ex: "Checking for Super Sonic Mod Update..."-->

@@ -139,9 +139,7 @@ namespace SAModManager
 		private async Task HandleUri(string uri)
 		{
 
-			WindowStartupLocation = WindowStartupLocation.CenterScreen; 
-			WindowState = WindowState.Normal;
-			
+			WindowStartupLocation = WindowStartupLocation.CenterScreen;			
 
             Activate();
 
@@ -293,10 +291,11 @@ namespace SAModManager
 				new ModDownloadWPF(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
 			};
 
-			new ModDownloadDialogWPF(updates, updatePath).ShowDialog();
+            this.Hide();
+            new ModDownloadDialogWPF(updates, updatePath).ShowDialog();
 
 			await Task.Delay(1000);
-			this.Hide();
+	
 			await Task.Delay(500);
 			if (Directory.Exists(updatePath))
 			{

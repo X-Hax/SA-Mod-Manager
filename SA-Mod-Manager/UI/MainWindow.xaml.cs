@@ -91,11 +91,6 @@ namespace SAModManager
         }
 
         #region Form: Functions
-        private void MainWindowManager_ContentRendered(object sender, EventArgs e)
-        {
-            this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
-        }
-
         private async Task VanillaUpdate_CheckGame()
         {
             bool isValid = false;
@@ -128,6 +123,8 @@ namespace SAModManager
 
         private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
         {
+            this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
+
             StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
 
             SetModManagerVersion();
@@ -139,16 +136,25 @@ namespace SAModManager
             SetBindings();
 
 #if !DEBUG
+
             checkForUpdate = true;
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
             bool managerUpdate = chkUpdateManager.IsChecked == true && await App.PerformUpdateManagerCheck();
-            if (managerUpdate || (chkUpdatesML.IsChecked == true && (await App.PerformUpdateLoaderCheck() || await App.PerformUpdateCodesCheck())))
+            if (managerUpdate)
             {
-                if (!managerUpdate)
-                    Refresh();
-
+                Refresh();
                 return;
+            }
+
+            if (App.CurrentGame.loader.installed)
+            {
+                if (chkUpdatesML.IsChecked == true)
+                {
+                    await App.PerformUpdateLoaderCheck();
+                    await App.PerformUpdateCodesCheck();
+                    await App.PerformUpdatePatchesCheck();
+                }
             }
 
             await CheckForModUpdates();
@@ -749,7 +755,7 @@ namespace SAModManager
 
         private void SelectModByFirstLetter(string letter)
         {
-            if (listMods.Items.Count == 0) 
+            if (listMods.Items.Count == 0)
                 return;
 
             int selectedIndex = listMods.SelectedIndex;
@@ -952,9 +958,9 @@ namespace SAModManager
 
             var code = codes.codes;
 
-            CodeAuthorGrid.Text += " " + code.Author;
+            CodeAuthorGrid.Text += ": " + code.Author;
             CodeDescGrid.Text += " " + code.Description;
-            CodeCategoryGrid.Text += " " + code.Category;
+            CodeCategoryGrid.Text += ": " + code.Category;
         }
 
         private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
@@ -1092,6 +1098,7 @@ namespace SAModManager
             {
                 await App.PerformUpdateLoaderCheck();
                 await App.PerformUpdateCodesCheck();
+                await App.PerformUpdatePatchesCheck();
             }
 
             manualModUpdate = true;
@@ -1894,7 +1901,6 @@ namespace SAModManager
                 modUpdater.Clear();
             }
 
-
             if (modUpdater.modUpdatesTuple is not Tuple<List<ModDownloadWPF>, List<string>> data)
             {
                 return;
@@ -1911,13 +1917,11 @@ namespace SAModManager
                     msgError += "\n" + error;
                 }
 
-                if (msgError.Contains("403"))
+                if (!msgError.Contains("403"))
                 {
-                    title = "GitHub Rate Limit Exceeded";
+                    new MessageWindow(title, msgError, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+                    await Task.Delay(0);
                 }
-
-                new MessageWindow(title, msgError, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-                await Task.Delay(0);
             }
 
             bool manual = manualModUpdate;

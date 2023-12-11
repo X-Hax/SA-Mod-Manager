@@ -4,39 +4,39 @@
 
 
     <system:String x:Key="GamePatches.Title">Patch</system:String>
-    <system:String x:Key="GamePatches.3DSound">Allow HRTF 3D Sound</system:String>
-	<system:String x:Key="GamePatches.CamCode">Camera Code Error Fixes</system:String>
-    <system:String x:Key="GamePatches.VertexColor">Vertex Color Fixes</system:String>
-    <system:String x:Key="GamePatches.MaterialColor">Material Color Fixes</system:String>
+    <system:String x:Key="GamePatches.HRTFSound">Allow HRTF 3D Sound</system:String>
+    <system:String x:Key="GamePatches.KeepCamSettings">Camera Code Error Fixes</system:String>
+    <system:String x:Key="GamePatches.FixVertexColorRendering">Vertex Color Fixes</system:String>
+    <system:String x:Key="GamePatches.MaterialColorFix">Material Color Fixes</system:String>
     <system:String x:Key="GamePatches.NodeLimit">Increase Node Limit</system:String>
-	<system:String x:Key="GamePatches.FixFOV">Fov Fixes</system:String>
-	<system:String x:Key="GamePatches.Skychase">Sky Chase Fixes</system:String>
-	<system:String x:Key="GamePatches.Chaos2">Chaos 2 Crashes Fixes</system:String>
-	<system:String x:Key="GamePatches.ChunkRendering">Chunk Specular Fixes</system:String>
-	<system:String x:Key="GamePatches.E102Lamp">Gamma's Headlight Fixes</system:String>
-	<system:String x:Key="GamePatches.ChaoStats">Chao Stat Panel Screen Dimensions Fix</system:String>
-	<system:String x:Key="GamePatches.PixelOffset">2D Rendering Offset Fixes</system:String>
-	<system:String x:Key="GamePatches.Lights">Light Fixes</system:String>
-	<system:String x:Key="GamePatches.DisableGBIX">Disable GBIX (Experimental)</system:String>
-	<system:String x:Key="GamePatches.DisableCDCheck">Disable CD Check</system:String>
+    <system:String x:Key="GamePatches.FOVFix">Fov Fixes</system:String>
+    <system:String x:Key="GamePatches.SkyChaseResolutionFix">Sky Chase Fixes</system:String>
+    <system:String x:Key="GamePatches.Chaos2CrashFix">Chaos 2 Crashes Fixes</system:String>
+    <system:String x:Key="GamePatches.ChunkSpecularFix">Chunk Specular Fixes</system:String>
+    <system:String x:Key="GamePatches.E102NGonFix">Gamma's Headlight Fixes</system:String>
+    <system:String x:Key="GamePatches.ChaoPanelFix">Chao Stat Panel Screen Dimensions Fix</system:String>
+    <system:String x:Key="GamePatches.PixelOffSetFix">2D Rendering Offset Fixes</system:String>
+    <system:String x:Key="GamePatches.LightFix">Light Fixes</system:String>
+    <system:String x:Key="GamePatches.KillGBIX">Disable GBIX (Experimental)</system:String>
+    <system:String x:Key="GamePatches.DisableCDCheck">Disable CD Check</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Extended Save Support</system:String>
 
-    <system:String x:Key="GamePatches.3DSoundDesc">Sets DirectSound to use more advanced algorithms to process 3D sounds. This patch is unnecessary when BASS for SFX is enabled.</system:String>
-    <system:String x:Key="GamePatches.CamCodeDesc">Fixes a vanilla bug that prevents Free Cam Settings from being saved properly when dying or loading a zone/act.</system:String>
-    <system:String x:Key="GamePatches.VertexColorDesc" xml:space="preserve">Vanilla SADX deliberately ignores the mesh-provided vertex color and instead uses a global vertex color even when it shouldn't.&#x0a;&#x0a;This patch re-implements the functions to handle the case CORRECTLY and use the mesh-provided vertex colors.</system:String>
-    <system:String x:Key="GamePatches.MaterialColorDesc" xml:space="preserve">This loops through all models in the game and replaces their material colors with white.&#x0a;&#x0a;This fixes various inconsistencies and makes the models look more like they do in the Gamecube and Dreamcast versions of the game.</system:String>
-    <system:String x:Key="GamePatches.NodeDesc" xml:space="preserve">SADX originally has a limit of 111 nodes per character for models and animations.&#x0a;&#x0a;This patch increases the limit to 254, enabling the integration of more modern and complex models into the game.</system:String>
-    <system:String x:Key="GamePatches.FixFOVDesc">Improves the FOV and allows for vertical/portrait resolutions/dimensions.</system:String>
-    <system:String x:Key="GamePatches.SkychaseDesc" xml:space="preserve">Makes Sky Chase work the same way at all screen resolutions. This fixes Tornado and reticle movement, as well as enemy fire rate.&#x0a;&#x0a;Obtaining score for emblems at resolutions higher than 640x480 is easier with this patch than in the vanilla game.</system:String>
-    <system:String x:Key="GamePatches.Chaos2Desc">Fixes a vanilla bug where beating Chaos 2 and restarting the boss was crashing the game.</system:String>
-    <system:String x:Key="GamePatches.ChunkRenderingDesc">Fixes Specular on Chunk Models.</system:String>
-    <system:String x:Key="GamePatches.E102LampDesc">Fixes N-sided polygons (Gamma's Headlight) by using a triangle strip vertex buffer.</system:String>
-	<system:String x:Key="GamePatches.ChaoStatsDesc">Fixes the UI Panel for Chao Stats to display properly.</system:String>
-    <system:String x:Key="GamePatches.PixelOffsetDesc">Fixes subpixel misplacement of most 2D elements that can be noticed at higher resolutions.</system:String>
-    <system:String x:Key="GamePatches.LightsDesc">Fixes light incorrectly being applied on LandTables and enables light type preservation for queued models.</system:String>
-    <system:String x:Key="GamePatches.DisableGBIXDesc" xml:space="preserve">Global Index (GBIX) is a value used in the game's texture caching system. Each texture in SADX has one.&#x0a;Before the game loads a new texture, it compares the new texture's GBIX value with indices of other textures that are already loaded.&#x0a;If a match is found, the game reuses the already loaded texture instead of loading the new one.&#x0a;&#x0a;This patch disables most of the GBIX system in the game to reduce texture errors/conflicts. (A few exceptions like HUD elements apply.)</system:String>
+    <system:String x:Key="GamePatches.HRTFSoundDesc">Sets DirectSound to use more advanced algorithms to process 3D sounds. This patch is unnecessary when BASS for SFX is enabled.</system:String>
+    <system:String x:Key="GamePatches.KeepCamSettingsDesc">Fixes a vanilla bug that prevents Free Cam Settings from being saved properly when dying or loading a zone/act.</system:String>
+    <system:String x:Key="GamePatches.FixVertexColorRenderingDesc" xml:space="preserve">Vanilla SADX deliberately ignores the mesh-provided vertex color and instead uses a global vertex color even when it shouldn't.&#x0a;&#x0a;This patch re-implements the functions to handle the case CORRECTLY and use the mesh-provided vertex colors.</system:String>
+    <system:String x:Key="GamePatches.MaterialColorFixDesc" xml:space="preserve">This loops through all models in the game and replaces their material colors with white.&#x0a;&#x0a;This fixes various inconsistencies and makes the models look more like they do in the Gamecube and Dreamcast versions of the game.</system:String>
+    <system:String x:Key="GamePatches.NodeLimitDesc" xml:space="preserve">SADX originally has a limit of 111 nodes per character for models and animations.&#x0a;&#x0a;This patch increases the limit to 254, enabling the integration of more modern and complex models into the game.</system:String>
+    <system:String x:Key="GamePatches.FOVFixDesc">Improves the FOV and allows for vertical/portrait resolutions/dimensions.</system:String>
+    <system:String x:Key="GamePatches.SkyChaseResolutionFixDesc" xml:space="preserve">Makes Sky Chase work the same way at all screen resolutions. This fixes Tornado and reticle movement, as well as enemy fire rate.&#x0a;&#x0a;Obtaining score for emblems at resolutions higher than 640x480 is easier with this patch than in the vanilla game.</system:String>
+    <system:String x:Key="GamePatches.Chaos2CrashFixDesc">Fixes a vanilla bug where beating Chaos 2 and restarting the boss was crashing the game.</system:String>
+    <system:String x:Key="GamePatches.ChunkSpecularFixDesc">Fixes Specular on Chunk Models.</system:String>
+    <system:String x:Key="GamePatches.E102NGonFixDesc">Fixes N-sided polygons (Gamma's Headlight) by using a triangle strip vertex buffer.</system:String>
+    <system:String x:Key="GamePatches.ChaoPanelFixDesc">Fixes the UI Panel for Chao Stats to display properly.</system:String>
+    <system:String x:Key="GamePatches.PixelOffSetFixDesc">Fixes subpixel misplacement of most 2D elements that can be noticed at higher resolutions.</system:String>
+    <system:String x:Key="GamePatches.LightFixDesc">Fixes light incorrectly being applied on LandTables and enables light type preservation for queued models.</system:String>
+    <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">Global Index (GBIX) is a value used in the game's texture caching system. Each texture in SADX has one.&#x0a;Before the game loads a new texture, it compares the new texture's GBIX value with indices of other textures that are already loaded.&#x0a;If a match is found, the game reuses the already loaded texture instead of loading the new one.&#x0a;&#x0a;This patch disables most of the GBIX system in the game to reduce texture errors/conflicts. (A few exceptions like HUD elements apply.)</system:String>
 	<system:String x:Key="GamePatches.DisableCDCheckDesc">Disables the game's CD check.</system:String>
-    <system:String x:Key="GamePatches.ExtendedSaveDesc">Enables support for saved games from the Steam version and allows custom save names (up to 48 characters).</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Enables support for saved games from the Steam version and allows custom save names (up to 48 characters).</system:String>
 
 
 

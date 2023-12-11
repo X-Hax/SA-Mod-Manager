@@ -12,7 +12,6 @@
 		Style="{DynamicResource SAWindow}"
 		MinHeight="550" MinWidth="590" Height="736" Width="700" WindowStartupLocation="CenterScreen"
 		Loaded="MainWindowManager_Loaded" PreviewKeyDown="Window_PreviewKeyDown"
-		ContentRendered="MainWindowManager_ContentRendered"
         Closed="MainForm_FormClosing">
 
     <!--We use this to have language and theme to work on the Editor. This is deleted when the program start-->

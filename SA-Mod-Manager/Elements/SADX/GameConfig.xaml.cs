@@ -32,6 +32,7 @@ namespace SAModManager.Elements.SADX
 		private static string d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
 		private readonly double LowOpacityBtn = 0.7;
 		private SADXConfigFile GameSettings;
+		private static string patchesPath = null;
         #endregion
 
         public GameConfig(ref object gameSettings, ref object gameConfig)
@@ -41,6 +42,9 @@ namespace SAModManager.Elements.SADX
 			GameSettings = (SADXConfigFile)gameConfig;
 			graphics = new GraphicsHelper(ref comboScreen);
 			UpdateAppLauncherBtn();
+			string pathDest = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
+			if (File.Exists(pathDest))
+				patchesPath = pathDest;
             SetPatches();
             Loaded += GameConfig_Loaded;
         }
@@ -48,7 +52,7 @@ namespace SAModManager.Elements.SADX
         #region Internal Functions
         private void GameConfig_Loaded(object sender, RoutedEventArgs e)
 		{
-			SetupBindings();
+            SetupBindings();
             SetPatches();
             SetUp_UpdateD3D9();
 			SetTextureFilterList();
@@ -434,134 +438,50 @@ namespace SAModManager.Elements.SADX
 			if (patch is null)
 				return;
 
-			PatchDescription.Text += " " + patch.Description;
+			PatchAuthor.Text += ": " + patch.Author;
+			PatchCategory.Text += ": " + patch.Category;
+            PatchDescription.Text += " " + patch.Description;
 		}
 
 		private void PatchViewItem_MouseLeave(object sender, MouseEventArgs e)
 		{
-			PatchDescription.Text = Lang.GetString("CommonStrings.Description");
+			PatchAuthor.Text = Lang.GetString("CommonStrings.Author");
+            PatchCategory.Text = Lang.GetString("CommonStrings.Category");
+            PatchDescription.Text = Lang.GetString("CommonStrings.Description");
 		}
 
 		private static List<PatchesData> GetPatches(ref ListView list, GameSettings set)
 		{
 			list.Items.Clear();
 
-			List<PatchesData> patches = new()
+			var patches = PatchesList.Deserialize(patchesPath);
+
+			if (patches is not null)
 			{
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.3DSound"),
-					Description = Lang.GetString("GamePatches.3DSoundDesc"),
-					IsChecked = set.Patches.HRTFSound
-				},
+				var listPatch = patches.Patches;
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.CamCode"),
-					Description = Lang.GetString("GamePatches.CamCodeDesc"),
-					IsChecked = set.Patches.KeepCamSettings
-				},
+                foreach (var patch in listPatch)
+                {
+                    // Convert patch name to the corresponding property name in GamePatches class
+                    string propertyName = patch.Name.Replace(" ", ""); // Adjust the naming convention as needed
+                    var property = typeof(GamePatches).GetProperty(propertyName);
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.VertexColor"),
-					Description = Lang.GetString("GamePatches.VertexColorDesc"),
-					IsChecked = set.Patches.FixVertexColorRendering
-				},
+                    if (property != null)
+                    {
+						// Update the IsChecked property based on the GamePatches class
+						patch.IsChecked = (bool)property.GetValue(set.Patches);
+                    }
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.MaterialColor"),
-					Description = Lang.GetString("GamePatches.MaterialColorDesc"),
-					IsChecked = set.Patches.MaterialColorFix
-				},
+                    string desc = "GamePatches." + patch.Name + "Desc";
+					patch.InternalName = patch.Name;
+                    patch.Name = Lang.GetString("GamePatches." + patch.Name);
+                    patch.Description = Lang.GetString(desc); //need to use a variable otherwise it fails for some reason
+                }
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.NodeLimit"),
-					Description = Lang.GetString("GamePatches.NodeDesc"),
-					IsChecked = set.Patches.NodeLimit
-				},
+				return listPatch;
+            }
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.FixFOV"),
-					Description = Lang.GetString("GamePatches.FixFOVDesc"),
-					IsChecked = set.Patches.FOVFix
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.Skychase"),
-					Description = Lang.GetString("GamePatches.SkychaseDesc"),
-					IsChecked = set.Patches.SkyChaseResolutionFix
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.Chaos2"),
-					Description = Lang.GetString("GamePatches.Chaos2Desc"),
-					IsChecked = set.Patches.Chaos2CrashFix
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.ChunkRendering"),
-					Description = Lang.GetString("GamePatches.ChunkRenderingDesc"),
-					IsChecked = set.Patches.ChunkSpecularFix
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.E102Lamp"),
-					Description = Lang.GetString("GamePatches.E102LampDesc"),
-					IsChecked = set.Patches.E102NGonFix
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.ChaoStats"),
-					Description = Lang.GetString("GamePatches.ChaoStatsDesc"),
-					IsChecked = set.Patches.ChaoPanelFix
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.PixelOffset"),
-					Description = Lang.GetString("GamePatches.PixelOffsetDesc"),
-					IsChecked = set.Patches.PixelOffSetFix
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.Lights"),
-					Description = Lang.GetString("GamePatches.LightsDesc"),
-					IsChecked = set.Patches.LightFix
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.DisableGBIX"),
-					Description = Lang.GetString("GamePatches.DisableGBIXDesc"),
-					IsChecked = set.Patches.KillGBIX
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.DisableCDCheck"),
-					Description = Lang.GetString("GamePatches.DisableCDCheckDesc"),
-					IsChecked = set.Patches.DisableCDCheck
-				},			
-				
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.ExtendedSaveSupport"),
-					Description = Lang.GetString("GamePatches.ExtendedSaveDesc"),
-					IsChecked = set.Patches.ExtendedSaveSupport
-				},
-			};
-
-			return patches;
+			return null;
 		}
 
 		public void SetPatches()
@@ -570,10 +490,13 @@ namespace SAModManager.Elements.SADX
 
 			List<PatchesData> patches = GetPatches(ref listPatches, GameProfile);
 
-			foreach (var patch in patches)
+			if (patches is not null)
 			{
-				listPatches.Items.Add(patch);
-			}
+                foreach (var patch in patches)
+                {
+                    listPatches.Items.Add(patch);
+                }
+            }
 		}
 
 		private void btnSelectAllPatch_Click(object sender, RoutedEventArgs e)
@@ -609,7 +532,6 @@ namespace SAModManager.Elements.SADX
             d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
         }
 
-		//Todo rework because this is absolutely disgusting
 		public void SavePatches(ref object input)
 		{
 			GameSettings settings = input as GameSettings;
@@ -617,38 +539,20 @@ namespace SAModManager.Elements.SADX
 			if (listPatches is null)
 				return;
 
-            PatchesData patch = (PatchesData)listPatches.Items[15];
-            settings.Patches.ExtendedSaveSupport = patch.IsChecked;
-             patch = (PatchesData)listPatches.Items[14];
-			settings.Patches.DisableCDCheck = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[13];
-			settings.Patches.KillGBIX = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[12];
-			settings.Patches.LightFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[11];
-			settings.Patches.PixelOffSetFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[10];
-			settings.Patches.ChaoPanelFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[9];
-			settings.Patches.E102NGonFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[8];
-			settings.Patches.ChunkSpecularFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[7];
-			settings.Patches.Chaos2CrashFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[6];
-			settings.Patches.SkyChaseResolutionFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[5];
-			settings.Patches.FOVFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[4];
-			settings.Patches.NodeLimit = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[3];
-			settings.Patches.MaterialColorFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[2];
-			settings.Patches.FixVertexColorRendering = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[1];
-			settings.Patches.KeepCamSettings = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[0];
-			settings.Patches.HRTFSound = patch.IsChecked;
+			foreach (PatchesData patch in listPatches.Items)
+			{
+                string propertyName = patch.InternalName;
+                var propertyInfo = typeof(GamePatches).GetProperty(propertyName);
+
+                if (propertyInfo != null && propertyInfo.CanWrite)
+                {
+                    propertyInfo.SetValue(settings.Patches, patch.IsChecked);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Property {propertyName} not found or read-only.");
+                }
+            }
 		}
 
 		private void SetItemFromPad(int action)
@@ -907,8 +811,6 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay
 			});
-
-			// Patches
 		}
         #endregion
 
