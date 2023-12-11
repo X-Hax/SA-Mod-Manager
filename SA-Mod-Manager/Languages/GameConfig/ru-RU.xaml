@@ -101,10 +101,10 @@
 	<system:String x:Key="TestSpawn.Buttons.Launch">Запустить игру</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced">Дополнительно</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Check.Manual">Задать вручную:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.Check.Position">Позиция:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.PosX">Позиция X:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Позиция Y:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">Позиция Z:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.Check.Position">Переписать позицию:</system:String>
+	<system:String x:Key="TestSpawn.Group.Advanced.PosX">Коорд. X:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.PosY">Коорд. Y:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.PosZ">Коорд. Z:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Angle">Угол:</system:String>
 
     <system:String x:Key="TestSpawn.Language.Voice">Язык озвучки:</system:String>
