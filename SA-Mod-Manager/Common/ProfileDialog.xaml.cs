@@ -189,19 +189,26 @@ namespace SAModManager.Common
 
                 if (msg.isYes)
                 {
-                    foreach (ProfileEntry item in selectedItems)
-                    {
-                        var fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, item.Filename);
-                        if (File.Exists(fullPath))
-                        {
-                            File.Delete(fullPath);
-							Profiles.ProfilesList.Remove(item);
-                        }
+					try
+					{
+						foreach (ProfileEntry item in selectedItems)
+						{
+							var fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, item.Filename);
+							if (File.Exists(fullPath))
+							{
+								File.Delete(fullPath);
+								Profiles.ProfilesList.Remove(item);
+							}
+						}
+
+						SelectedIndex = Profiles.ProfilesList.FindIndex(item => item.Name == profile.Name);
+
+						RefreshList();
+					}
+					catch
+					{
+                        throw new Exception("Failed to delete profile.");
                     }
-
-					SelectedIndex = Profiles.ProfilesList.FindIndex(item => item.Name == profile.Name);
-
-                    RefreshList();
                 }
             }
         }
