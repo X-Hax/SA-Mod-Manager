@@ -115,6 +115,9 @@
 
     <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">The Mod Manager needs 7-zip to extract mods and handle updates.&#x0a;&#x0a;Would you like to install it now?</system:String>
 
+	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Profiles Missing</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">The following profiles were not found:</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">They will be removed from the Profiles list and the selected profile will be defaulted to the first profile in the list.</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->

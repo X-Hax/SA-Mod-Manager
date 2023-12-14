@@ -1,4 +1,5 @@
-﻿using SAModManager.Ini;
+﻿using Newtonsoft.Json.Bson;
+using SAModManager.Ini;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -172,85 +173,6 @@ namespace SAModManager.Configuration
 			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
 
 			File.WriteAllText(path, jsonContent);
-		}
-	}
-
-	public class ProfileEntry
-	{
-		public string Name { get; set; } = string.Empty;
-
-		public string Filename { get; set; } = string.Empty;
-
-		public ProfileEntry(string name, string filename)
-		{
-			Name = name;
-			Filename = filename;
-		}
-	}
-
-	public class Profiles
-	{
-		/// <summary>
-		/// Index of the current/last selected profile.
-		/// </summary>
-		public int ProfileIndex { get; set; }
-
-		/// <summary>
-		/// List of Profile options.
-		/// </summary>
-		public List<ProfileEntry> ProfilesList { get; set; } = new();
-
-		/// <summary>
-		/// Returns the Profile to load using the Manager's settings and the Profiles.json file for the specified game.
-		/// </summary>
-		/// <param name="profiles"></param>
-		/// <returns></returns>
-		public string GetProfileFilename()
-		{
-			if (ProfilesList.Count > 0)
-				return ProfilesList.ElementAt(ProfileIndex).Filename;
-			else
-				return string.Empty;
-		}
-
-		/// <summary>
-		/// Deserializes a file and returns a populated Profiles class, returns new if file doesn't exist.
-		/// </summary>
-		/// <param name="path"></param>
-		/// <returns></returns>
-		public static Profiles Deserialize(string path)
-		{
-			if (File.Exists(path))
-			{
-				string jsonContent = File.ReadAllText(path);
-
-				return JsonSerializer.Deserialize<Profiles>(jsonContent);
-			}
-			else
-				return new()
-				{
-					ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
-				};
-		}
-
-		/// <summary>
-		/// Serializes Profiles to JSON.
-		/// </summary>
-		/// <param name="path"></param>
-		public void Serialize(string path)
-		{
-			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
-
-			File.WriteAllText(path, jsonContent);
-		}
-
-		public static Profiles MakeDefaultProfileFile()
-		{
-			return new()
-			{
-				ProfileIndex = 0,
-				ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
-			};
 		}
 	}
 }
