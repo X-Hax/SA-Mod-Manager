@@ -73,37 +73,18 @@ namespace SAModManager.Configuration
 			}
 		}
 
-		/// <summary>
-		/// Serializes Profiles to JSON.
-		/// </summary>
-		/// <param name="path"></param>
-		public void Serialize(string path)
-		{
-			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+        /// <summary>
+        /// Serializes Profiles to JSON.
+        /// </summary>
+        /// <param name="path"></param>
+        public void Serialize(string path)
+        {
+            string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
 
-			File.WriteAllText(path, jsonContent);
-		}
+            File.WriteAllText(path, jsonContent);
+        }
 
-		public void InitNewGameProfile(SetGame game)
-		{
-			switch (game)
-			{
-				case SetGame.None:
-					default:
-					break;
-				case SetGame.SADX:
-                    Configuration.SADX.GameSettings sadxProfile = new();
-                    sadxProfile.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json"));
-					break;
-				case SetGame.SA2:
-                    Configuration.SA2.GameSettings sa2Profile = new();
-                    sa2Profile.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json"));
-					break;
-
-            }
-		}
-
-		public void ValidateProfiles(SetGame game)
+        public void ValidateProfiles()
 		{
 			if (!string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory))
 			{
@@ -120,7 +101,6 @@ namespace SAModManager.Configuration
 
 				if (list.Count == 1 && count == 1) //no profile at all
 				{
-					InitNewGameProfile(game);
                     ProfileIndex = 0;
                     return;
                 }
