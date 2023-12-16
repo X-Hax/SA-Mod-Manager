@@ -79,8 +79,9 @@ namespace SAModManager
 		public int VerticalResolution { get; set; } = 480;
 
 		public bool ForceAspectRatio { get; set; }
-
-		public bool Borderless { get; set; } = true;
+        
+		[DefaultValue(true)]
+        public bool WindowedFullscreen { get; set; } = true;
 
 		[DefaultValue(true)]
 		public bool EnableVsync { get; set; } = true;
@@ -136,7 +137,6 @@ namespace SAModManager
 
 		[DefaultValue(100)]
 		public int SEVolume { get; set; } = 100;
-		[DefaultValue(0)]
 
 	#region Manager Settings
 		public int Theme { get; set; } = 0;
@@ -252,7 +252,7 @@ namespace SAModManager
 			ForceAspectRatio = gameSettings.Graphics.Enable43ResolutionRatio;
 			EnableVsync = gameSettings.Graphics.EnableVsync;
 			PauseWhenInactive = gameSettings.Graphics.EnablePauseOnInactive;
-			Borderless = gameSettings.Graphics.EnableBorderless;
+			WindowedFullscreen = gameSettings.Graphics.EnableBorderless;
 			StretchFullscreen = gameSettings.Graphics.EnableScreenScaling;
 			CustomWindowSize = gameSettings.Graphics.EnableCustomWindow;
 			WindowWidth = gameSettings.Graphics.CustomWindowWidth; 

@@ -155,7 +155,7 @@ namespace SAModManager.Configuration.SADX
 			EnableVsync = oldSettings.EnableVsync;
 			EnablePauseOnInactive = oldSettings.PauseWhenInactive;
 
-			EnableBorderless = oldSettings.Borderless;
+			EnableBorderless = oldSettings.WindowedFullscreen;
 			EnableScreenScaling = oldSettings.StretchFullscreen;
 			EnableCustomWindow = oldSettings.CustomWindowSize;
 			CustomWindowWidth = oldSettings.WindowWidth;
@@ -603,7 +603,7 @@ namespace SAModManager.Configuration.SADX
 			loaderInfo.ForceAspectRatio = Graphics.Enable43ResolutionRatio;
 			loaderInfo.EnableVsync = Graphics.EnableVsync;
 			loaderInfo.PauseWhenInactive = Graphics.EnablePauseOnInactive;
-			loaderInfo.Borderless = Graphics.EnableBorderless;
+			loaderInfo.WindowedFullscreen = Graphics.EnableBorderless;
 			loaderInfo.StretchFullscreen = Graphics.EnableScreenScaling;
 			loaderInfo.CustomWindowSize = Graphics.EnableCustomWindow;
 			loaderInfo.WindowWidth = Graphics.CustomWindowWidth;
