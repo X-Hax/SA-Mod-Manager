@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -228,7 +229,7 @@ namespace SAModManager.Common
 		private void Migrate_Click(object sender, RoutedEventArgs e)
 		{
 			var dialog = new System.Windows.Forms.OpenFileDialog();
-			dialog.Filter = "INI Files|*.ini|All Files|*.*";
+			dialog.Filter = "Profiles|*.json|Old Profiles|*.ini";
 			dialog.Multiselect = true;
 
 			System.Windows.Forms.DialogResult result = dialog.ShowDialog();
@@ -237,35 +238,79 @@ namespace SAModManager.Common
 
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
+				int i = 0;
 				foreach (string file in dialog.FileNames)
 				{
 					if (File.Exists(file))
 					{
-						try
+						bool invalid = false;
+						Configuration.SADX.GameSettings settings = new();
+						string newFileName = Path.GetFileNameWithoutExtension(file);
+						string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
+
+						switch (Path.GetExtension(file))
 						{
-							switch (App.CurrentGame.gameName)
-							{
-								case "Sonic Adventure DX":
-									SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(file);
-									Configuration.SADX.GameSettings settings = new();
-									settings.ConvertFromV0(info);
-
-									string newFileName = Path.GetFileNameWithoutExtension(file);
-									string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
-
-									settings.Serialize(newFilePath);
-
-									Profiles.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
-									break;
-								case "Sonic Adventure 2":
-									break;
-							}
+							case ".json":
+								try
+								{
+									switch (App.CurrentGame.gameName)
+									{
+										case "Sonic Adventure DX":
+											settings = Configuration.SADX.GameSettings.Deserialize(file);
+											if (settings.EnabledMods.Count == 0 && settings.EnabledCodes.Count == 0)
+											{
+												// Due to ensuring GameSettings can deserialize between versions, it allows for deserialization of any json file.
+												// We just assume if there's no mods and no codes, it's an invalid file.
+												invalid = true;
+												throw new Exception();
+											}
+											break;
+										case "Sonic Adventure 2":
+											break;
+									}
+								}
+								catch
+								{
+									failedFiles.Add(Path.GetFileName(file));
+								}
+								break;
+							case ".ini":
+								try
+								{
+									switch (App.CurrentGame.gameName)
+									{
+										case "Sonic Adventure DX":
+											SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(file);
+											settings.ConvertFromV0(info);
+											break;
+										case "Sonic Adventure 2":
+											break;
+									}
+								}
+								catch
+								{
+									failedFiles.Add(Path.GetFileName(file));
+								}
+								break;
 						}
-						catch
+
+						if (!invalid)
 						{
-							failedFiles.Add(Path.GetFileName(file));
+							foreach (ProfileEntry entry in Profiles.ProfilesList)
+							{
+								if (entry.Name == newFileName)
+								{
+									newFileName = newFileName + " (" + i.ToString() + ")";
+									newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
+								}
+							}
+
+							settings.Serialize(newFilePath);
+
+							Profiles.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
 						}
 					}
+					i++;
 				}
 
 				RefreshList();
@@ -274,10 +319,10 @@ namespace SAModManager.Common
 			if (failedFiles.Count > 0)
 			{
 				string failedFilesList = string.Join(Environment.NewLine, failedFiles);
-				string failedMessage = "The following files failed to be migrated:\n" +
-					failedFilesList;
+				string failedMessage = Lang.GetString("MessageWindow.Warnings.ProfileMigration.Message1") +
+					failedFilesList + Lang.GetString("MessageWindow.Warnings.ProfileMigration.Message2");
 
-				MessageWindow message = new MessageWindow("Migration Failed", failedMessage, icon: MessageWindow.Icons.Warning);
+				MessageWindow message = new MessageWindow(Lang.GetString("MessageWindow.Warnings.ProfileMigration.Title"), failedMessage, icon: MessageWindow.Icons.Warning);
 				message.ShowDialog();
 			}
 		}

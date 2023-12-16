@@ -118,7 +118,11 @@
 	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Profiles Missing</system:String>
 	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">The following profiles were not found:</system:String>
 	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">They will be removed from the Profiles list and the selected profile will be defaulted to the first profile in the list.</system:String>
-    <!--#endregion-->
+
+	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Import Failed</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">The following files failed to be imported as profiles:</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Please ensure you are only using Game Profile JSON files or old Loader INI files.</system:String>
+	<!--#endregion-->
 	
 	<!--#region Information-->
 	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">No Mod Updates Found</system:String>
