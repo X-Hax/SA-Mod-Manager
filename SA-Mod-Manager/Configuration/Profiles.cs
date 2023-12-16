@@ -4,10 +4,12 @@ using SAModManager.Ini;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace SAModManager.Configuration
 {
@@ -63,10 +65,12 @@ namespace SAModManager.Configuration
 				return JsonSerializer.Deserialize<Profiles>(jsonContent);
 			}
 			else
+			{
 				return new()
 				{
 					ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
 				};
+			}
 		}
 
 		/// <summary>
@@ -80,19 +84,46 @@ namespace SAModManager.Configuration
 			File.WriteAllText(path, jsonContent);
 		}
 
-		public void ValidateProfiles()
+		public void InitNewGameProfile(SetGame game)
+		{
+			switch (game)
+			{
+				case SetGame.None:
+					default:
+					break;
+				case SetGame.SADX:
+                    Configuration.SADX.GameSettings sadxProfile = new();
+                    sadxProfile.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json"));
+					break;
+				case SetGame.SA2:
+                    Configuration.SA2.GameSettings sa2Profile = new();
+                    sa2Profile.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json"));
+					break;
+
+            }
+		}
+
+		public void ValidateProfiles(SetGame game)
 		{
 			if (!string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory))
 			{
 				List<ProfileEntry> list = new();
-
+				int count = 0;
 				foreach (ProfileEntry entry in ProfilesList)
 				{
 					if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, entry.Filename)))
 					{
 						list.Add(entry);
 					}
+					count++;
 				}
+
+				if (list.Count == 1 && count == 1) //no profile at all
+				{
+					InitNewGameProfile(game);
+                    ProfileIndex = 0;
+                    return;
+                }
 
 				if (list.Count > 0)
 				{
