@@ -578,6 +578,12 @@ namespace SAModManager.Common
 
         private static void SetSteamPath()
         {
+            if (App.isLinux)
+            {
+                string home = Environment.GetEnvironmentVariable("WINEHOMEDIR").Replace("\\??\\", "");
+                SteamLocation = Path.Combine(home, ".steam/steam");
+            }
+
             string steamInstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Valve\Steam", "InstallPath", null);
 
             if (steamInstallPath == null)

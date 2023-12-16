@@ -347,5 +347,15 @@ namespace SAModManager
         {
             return string.Join("/", paths);
         }
+
+        public static void CheckLinux()
+        {
+            RegistryKey key = null;
+            if ((key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey("SOFTWARE\\Wine")) != null)
+            {
+                key.Close();
+                App.isLinux = true;
+            }
+        }
     }
 }
