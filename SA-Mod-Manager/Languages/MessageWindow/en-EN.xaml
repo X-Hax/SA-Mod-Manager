@@ -133,8 +133,10 @@
     <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Integrity Pass</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">All selected mods passed verification.</system:String>
 
-    <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">SADX game folder has been found, but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Would you like to download and install the Mod Installer to convert your game to the 2004 version? (Your saves will be converted as well).</system:String>
-    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX game folder has been found, but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Please download and install SADX Mod Installer to convert your game to 2004. (Your saves will be converted as well).</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Game found</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">{0} game has been detected at '{1}'&#x0a;&#x0a;Would you like to download and install the Mod Loader?</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Would you like to download and install the Mod Installer to convert your game to the 2004 version? (Your saves will be converted as well).</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Please download and install SADX Mod Installer to convert your game to 2004. (Your saves will be converted as well).</system:String>
 	<system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Health Check</system:String>
 	<system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">You are about to run the Game Health check. This will verify all game files except audio files.&#x0a;&#x0a;Do you wish to continue?</system:String>
 

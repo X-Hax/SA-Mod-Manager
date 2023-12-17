@@ -87,7 +87,7 @@ namespace SAModManager
             UpdateHelper.InitHttpClient();
             Util.CheckLinux();
             HandleVanillaTransition(args);
-
+            Steam.Init();
             SetupLanguages();
             SetupThemes();
 
