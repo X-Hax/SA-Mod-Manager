@@ -192,8 +192,8 @@ namespace SAModManager
             {
                 if (arg == "urlhandler")
                 {
-                    using var hkcr = Microsoft.Win32.Registry.ClassesRoot;
-                    using var key = hkcr.CreateSubKey("sadxmm");
+                    using var hkcu = Microsoft.Win32.Registry.CurrentUser;
+                    using var key = hkcu.CreateSubKey("Software\\Classes\\sadxmm");
                     key.SetValue(null, "URL:SADX Mod Manager Protocol");
                     key.SetValue("URL Protocol", string.Empty);
                     using (var k2 = key.CreateSubKey("DefaultIcon"))

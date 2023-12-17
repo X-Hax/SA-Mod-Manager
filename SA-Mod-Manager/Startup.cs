@@ -27,10 +27,11 @@ namespace SAModManager
 
         private static async Task<bool> EnableOneClickInstall()
         {
+            // Is this different from the one in MainWindow.xaml.cs?
             try
             {
                 string execPath = Environment.ProcessPath;
-                await Process.Start(new ProcessStartInfo(execPath, "urlhandler") { UseShellExecute = true, Verb = "runas" }).WaitForExitAsync();
+                await Process.Start(new ProcessStartInfo(execPath, "urlhandler") { UseShellExecute = true }).WaitForExitAsync();
             }
             catch
             {
