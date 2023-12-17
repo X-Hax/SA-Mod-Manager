@@ -115,6 +115,13 @@
 
     <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">Для работы Менеджера необходим 7-zip, чтобы можно было извлекать моды и обновления.&#x0a;&#x0a;Желаете установить его сейчас?</system:String>
 
+    <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Профили не найдены</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">Указанные профили не были найдены:</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">Они будут убраны из списка профилей, а выбранный профиль будет установлен по умолчанию на первый профиль в списке.</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Ошибка при импорте</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">Указанные файлы не были импортированы как профили:</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Убедитесь, что используете только файлы профилей в JSON или файлы в INI старого Загрузчика.</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->
@@ -126,9 +133,11 @@
     <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Проверка целостности пройдена</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">Все выбранные моды прошли верификацию.</system:String>
 
-    <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">Была найдена папка Steam-версии SADX.&#x0a;Загрузчик модов работает только с версией игры 2004 года.&#x0a;&#x0a;Желаете скачать и установить Установщик модов, чтобы сконвертировать игру в версию 2004 года (сохранения также будут сконвертированы)?.</system:String>
-    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">Была найдена папка Steam-версии SADX.&#x0a;Загрузчик модов работает только с версией игры 2004 года.&#x0a;&#x0a;Скачайте и установите Установщик модов (SADX Mod Installer), чтобы сконвертировать игру в версию 2004 года. (сохранения также будут сконвертированы).</system:String>
-        
+    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Обнаружена игра</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">Игра {0} была обнаружена по пути "{1}"&#x0a;&#x0a;Желаете скачать и включи Загрузчик модов?</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">По пути "{0}" была найдена папка с SADX, являющаяся Steam-версией.&#x0a;Загрузчик модов работает только с версией игры 2004 года.&#x0a;&#x0a;Желаете скачать и установить Установщик модов, чтобы сконвертировать игру в версию 2004 года (сохранения также будут сконвертированы)?</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">По пути "{0}" была найдена папка с SADX, являющаяся Steam-версией.&#x0a;Загрузчик модов работает только с версией игры 2004 года.&#x0a;&#x0a;Скачайте и установите Установщик модов (SADX Mod Installer), чтобы сконвертировать игру в версию 2004 года. (сохранения также будут сконвертированы).</system:String>
+
     <system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Проверка состояния</system:String>
     <system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Вы запустили проверку состояния игры.&#x0a;Будут проверены все файлы игры (кроме аудио-файлов).&#x0a;&#x0a;Желаете продолжить?</system:String>
 
