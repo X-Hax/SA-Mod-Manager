@@ -1019,7 +1019,6 @@ namespace SAModManager
                 await Process.Start(new ProcessStartInfo(execPath, "urlhandler")
                 {
                     UseShellExecute = true,
-                    Verb = "runas"
                 }).WaitForExitAsync();
 
                 Image iconConfig = FindName("GB") as Image;
