@@ -23,7 +23,6 @@ using SAModManager.Updater;
 using SAModManager.Elements;
 using SAModManager.Ini;
 using SAModManager.Configuration;
-using ICSharpCode.AvalonEdit.Document;
 
 
 namespace SAModManager
@@ -61,7 +60,7 @@ namespace SAModManager
         public MainWindowViewModel ViewModel = new();
         Profiles GameProfiles = new();
         object GameProfile;
-        private string tempPath = "";
+        public string tempPath = "";
         public static bool cancelUpdate { get; set; }
 
         // TODO: Make this generic for handling both games. Maybe do it with a custom class for easier management.
@@ -105,6 +104,7 @@ namespace SAModManager
 
                     string currentPath = Environment.CurrentDirectory;
                     tempPath = currentPath;
+                    App.CurrentGame.gameDirectory = currentPath;
                     UIHelper.ToggleButton(ref btnOpenGameDir, true);
                     await VanillaTransition.ConvertOldProfile(false, currentPath);
                     Load(true);
@@ -135,6 +135,17 @@ namespace SAModManager
 
             SetBindings();
 
+            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
+
+            if (App.isVanillaTransition && (App.CurrentGame is null || App.CurrentGame.gameDirectory is null))
+                await VanillaUpdate_CheckGame();
+
+            if (App.isFirstBoot)
+            {
+                new SplashScreenDialog().ShowDialog();
+                App.isFirstBoot = false;
+            }
+
 #if !DEBUG
 
             checkForUpdate = true;
@@ -159,17 +170,18 @@ namespace SAModManager
 
             await CheckForModUpdates();
             checkForUpdate = false;
-#endif
-            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
 
-            if (App.isVanillaTransition && (App.CurrentGame is null || App.CurrentGame.gameDirectory is null))
-                await VanillaUpdate_CheckGame();
-
-            if (App.isFirstBoot)
+            if (setGame == SetGame.None || string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
             {
-                new SplashScreenDialog().ShowDialog();
-                App.isFirstBoot = false;
+                if (await Steam.FindAndSetCurGame())
+                {
+                    Load(true);
+                    await ForceInstallLoader();
+                    UpdateButtonsState();
+                    Save();
+                }
             }
+#endif
         }
 
         private void MainForm_FormClosing(object sender, EventArgs e)
@@ -1019,7 +1031,6 @@ namespace SAModManager
                 await Process.Start(new ProcessStartInfo(execPath, "urlhandler")
                 {
                     UseShellExecute = true,
-                    Verb = "runas"
                 }).WaitForExitAsync();
 
                 Image iconConfig = FindName("GB") as Image;
@@ -1040,43 +1051,18 @@ namespace SAModManager
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                bool pathValid = false;
+                setGame = await GamesInstall.SetGameInstallManual(dialog.SelectedPath);
 
-                foreach (var game in GamesInstall.GetSupportedGames())
-                {
-                    string GamePath = dialog.SelectedPath;
-                    string path = Path.Combine(GamePath, game.exeName);
-
-                    if (File.Exists(path)) //game Path valid 
-                    {
-                        if (game == GamesInstall.SonicAdventure)
-                            setGame = SetGame.SADX;
-                        if (game == GamesInstall.SonicAdventure2)
-                            setGame = SetGame.SA2;
-
-                        pathValid = true;
-                        tempPath = GamePath;
-                        UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                        if (Path.Exists(Path.Combine(GamePath, "mods")))
-                            await VanillaTransition.ConvertOldProfile(false, GamePath);
-                        Load(true);
-                        break;
-                    }
-                    else if (Steam.isSADXGamePath(GamePath))
-                    {
-                        //To do add installer support
-                        await Steam.InstallSADXModInstaller();
-                        return;
-                    }
-
-                }
-
-                if (!pathValid)
+                if (setGame == SetGame.None)
                 {
                     new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                 }
                 else
                 {
+                    tempPath = dialog.SelectedPath;
+                    App.CurrentGame.gameDirectory = tempPath;
+                    UIHelper.ToggleButton(ref btnOpenGameDir, true);      
+                    Load(true);
                     await ForceInstallLoader();
                     UpdateButtonsState();
                     Save();
@@ -1554,6 +1540,7 @@ namespace SAModManager
                 // Load Profiles before doing anything.
                 string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
                 GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
+				GameProfiles.ValidateProfiles();
                 comboProfile.ItemsSource = GameProfiles.ProfilesList;
                 comboProfile.DisplayMemberPath = "Name";
                 suppressEvent = true;
@@ -2278,7 +2265,7 @@ namespace SAModManager
 
         private async Task<bool> UpdateGameConfig(SetGame game)
         {
-            setGame = game; //TO DO get current game somehow
+            setGame = game;
             Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
             LoadGameConfigFile();
             SetGameUI();
@@ -2310,7 +2297,7 @@ namespace SAModManager
                 //now we can move the loader files to the accurate folders.
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
-                await UpdateGameConfig(SetGame.SADX); //To do change with "current selected game" when it's available
+                await UpdateGameConfig(App.CurrentGame.id); 
                 await EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
@@ -2342,7 +2329,7 @@ namespace SAModManager
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
             }
 
-            await UpdateGameConfig(SetGame.SADX); //To do change with "current selected game" when it's available
+            await UpdateGameConfig(App.CurrentGame.id);
             await EnableOneClickInstall();
 
             UIHelper.EnableButton(ref SaveAndPlayButton);

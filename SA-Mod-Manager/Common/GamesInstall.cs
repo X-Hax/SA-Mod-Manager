@@ -1,13 +1,10 @@
 ﻿using Microsoft.Win32;
 using SAModManager.Configuration;
 using SAModManager.Updater;
-using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -70,6 +67,7 @@ namespace SAModManager.Common
         /// List of the game's expected configuration files. Is a List due to SA2.
         /// </summary>
         public List<string> GameConfigFile { get; set; }
+        public SetGame id;
     }
 
     public enum Format
@@ -139,7 +137,7 @@ namespace SAModManager.Common
                     success = await Util.ExtractZipFromResource(dependency.data, dependency.path);
                     break;
                 case Format.dll:
-                     success = await Util.ExtractEmbeddedDLL(dependency.data, dependency.name, dependency.path);
+                    success = await Util.ExtractEmbeddedDLL(dependency.data, dependency.name, dependency.path);
                     break;
             }
 
@@ -286,7 +284,7 @@ namespace SAModManager.Common
                     {
                         success = false;
                         Uri uri = new(dependency.URL + "\r\n");
-      
+
                         var dl = new DownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, DependencyInstalled(dependency) ? DownloadDialog.DLType.Update : DownloadDialog.DLType.Download);
 
                         dl.StartDL();
@@ -343,7 +341,7 @@ namespace SAModManager.Common
                     {
                         Uri uri = new(dependency.URL + "\r\n");
                         var dl = new DownloadDialog(uri, dependency.name, Path.GetFileName(dependency.URL), dependency.path, DownloadDialog.DLType.Download, true);
-         
+
                         dl.StartDL();
 
                         if (dl.done == false)
@@ -391,6 +389,7 @@ namespace SAModManager.Common
             defaultIniProfile = "SADXModLoader.ini",
             codeURL = Properties.Resources.URL_SADX_CODE,
             patchURL = Properties.Resources.URL_SADX_PATCH,
+            id = SetGame.SADX,
 
             loader = new()
             {
@@ -449,6 +448,7 @@ namespace SAModManager.Common
             gameName = "Sonic Adventure 2",
             exeName = "sonic2app.exe",
             defaultIniProfile = "SA2ModLoader.ini",
+            id = SetGame.SA2,
 
             loader = new()
             {
@@ -470,7 +470,7 @@ namespace SAModManager.Common
         public static IEnumerable<Game> GetSupportedGames()
         {
             yield return SonicAdventure;
-            // yield return SonicAdventure2;
+           // yield return SonicAdventure2;
         }
 
         //will probably end making our own installer ig
@@ -506,29 +506,62 @@ namespace SAModManager.Common
             }
         }
 
-        private static IEnumerable<string> SearchExeFiles(string folderPath, string targetExeName)
-        {
-            // Use Directory.EnumerateFiles with SearchOption.AllDirectories to search recursively
-            // The search is non-recursive by default.
-            return Directory.EnumerateFiles(folderPath, "*.exe", SearchOption.AllDirectories)
-                            .Where(filePath => Path.GetFileName(filePath).Equals(targetExeName, StringComparison.OrdinalIgnoreCase));
-        }
 
-        public static string GetExePath(string rootDirectory, string exe)
+        public static async Task<SetGame> SetGameInstallManual(string GamePath)
         {
-            var files = SearchExeFiles(rootDirectory, exe);
-
-            foreach (string file in files)
+            foreach (var game in GamesInstall.GetSupportedGames())
             {
-                string folderPath = Path.GetDirectoryName(file);
+                string path = Path.Combine(GamePath, game.exeName);
 
-                if (File.Exists(Path.Combine(folderPath, exe)))
+                if (Steam.isSADXGamePath(GamePath))
                 {
-                    return Path.GetDirectoryName(file);
+                    //To do add installer support
+                    await Steam.InstallSADXModInstaller(GamePath);
+                }
+                else if (File.Exists(path)) //game Path valid 
+                {
+                    if (Path.Exists(Path.Combine(GamePath, "mods")))
+                        await VanillaTransition.ConvertOldProfile(false, GamePath);
+
+                    return game.id;
                 }
             }
 
-            return null;
+            return SetGame.None;
+        }
+
+        public static async Task<SetGame> SetGameInstall(string GamePath, Game game, bool skipMSG = false)
+        {
+
+            string path = Path.Combine(GamePath, game.exeName);
+
+            if (Steam.isSADXGamePath(GamePath))
+            {
+                //To do add installer support
+                await Steam.InstallSADXModInstaller(GamePath);
+            }
+            else if (File.Exists(path)) //game Path valid 
+            {
+                if (skipMSG)
+                {
+                    if (Path.Exists(Path.Combine(GamePath, "mods")))
+                        await VanillaTransition.ConvertOldProfile(false, GamePath);
+                    return game.id;
+                }
+
+                var msg = new MessageWindow(Lang.GetString("MessageWindow.Information.GameDetected.Title"), string.Format(Lang.GetString("MessageWindow.Information.GameDetected"), game.gameName, path), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
+                msg.ShowDialog();
+
+                if (msg.isYes)
+                {
+                    if (Path.Exists(Path.Combine(GamePath, "mods")))
+                        await VanillaTransition.ConvertOldProfile(false, GamePath);
+                    return game.id;
+                }
+            }
+
+
+            return SetGame.None;
         }
     }
 
@@ -578,6 +611,12 @@ namespace SAModManager.Common
 
         private static void SetSteamPath()
         {
+            if (App.isLinux)
+            {
+                string home = Environment.GetEnvironmentVariable("WINEHOMEDIR").Replace("\\??\\", "");
+                SteamLocation = Path.Combine(home, ".steam/steam");
+            }
+
             string steamInstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Valve\Steam", "InstallPath", null);
 
             if (steamInstallPath == null)
@@ -599,13 +638,13 @@ namespace SAModManager.Common
             return File.Exists(fullPath) && !File.Exists(Path.Combine(path, GamesInstall.SonicAdventure.exeList[0]));
         }
 
-        public async static Task InstallSADXModInstaller()
+        public async static Task InstallSADXModInstaller(string GamePath)
         {
-            var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetectedTemp"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.OK);
+            var msg = new MessageWindow(Lang.GetString("MessageWindow.Information.GameDetected.Title"), string.Format(Lang.GetString("MessageWindow.Information.SADXSteamDetectedTemp"), GamePath), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.OK);
             msg.ShowDialog();
 
-         
-            /*var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Information.SADXSteamDetected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+
+            /*var msg = new MessageWindow(Lang.GetString("MessageWindow.Information.GameDetected.Title"), Lang.GetString("MessageWindow.Information.SADXSteamDetected"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
             msg.ShowDialog();
 
             if (msg.isYes)
@@ -614,52 +653,58 @@ namespace SAModManager.Common
             }*/
         }
 
-        public static string GetGamePath(Game game, bool multipleExes = false)
+        public static async Task<bool> FindAndSetCurGame()
         {
-            if (steamAppsPaths is null || game is null)
-                return null;
-
+            bool success = false;
             try
             {
-
-                foreach (string pathValue in steamAppsPaths)
+                foreach (var game in GamesInstall.GetSupportedGames())
                 {
-                    string gameInstallPath = Path.Combine(pathValue, "steamapps", "common", game.gameName);
-
-                    if (Directory.Exists(gameInstallPath))
+                    if (await FindAndSetGameInPaths(Environment.CurrentDirectory, game, true))
                     {
-                        if (multipleExes)
+                        success = true;
+                        break;
+                    }
+                    else
+                    {
+                        foreach (var pathValue in steamAppsPaths)
                         {
-                            foreach (var exe in game.exeList)
-                            {
-                                string exePath = GamesInstall.GetExePath(gameInstallPath, exe);
+                            string gameInstallPath = Path.Combine(pathValue, "steamapps", "common", game.gameName);
+                            success = await FindAndSetGameInPaths(gameInstallPath, game);
 
-                                if (exePath != null)
-                                {
-                                    return exePath;
-                                }
-                            }
+                            if (success)
+                                break;
                         }
-                        else
-                        {
-                            string exePath = GamesInstall.GetExePath(gameInstallPath, game.exeName);
 
-                            if (exePath != null)
-                                return exePath;
-                        }
                     }
                 }
             }
             catch { }
 
-            return null;
+            return success;
+        }
+
+        private static async Task<bool> FindAndSetGameInPaths(string pathValue, Game game, bool skipMSG = false)
+        {
+            if (Directory.Exists(pathValue))
+            {
+                ((MainWindow)App.Current.MainWindow).setGame = await GamesInstall.SetGameInstall(pathValue, game, skipMSG);
+
+                if (((MainWindow)App.Current.MainWindow).setGame != SetGame.None)
+                {
+                    ((MainWindow)App.Current.MainWindow).tempPath = pathValue;
+                    App.CurrentGame.gameDirectory = pathValue;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static void Init()
         {
             SetSteamPath();
             SetSteamAppsPaths();
-
         }
     }
 }

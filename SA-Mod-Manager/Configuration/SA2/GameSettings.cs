@@ -7,7 +7,7 @@ using SAModManager.Common;
 using System.Text.Json;
 
 // TODO: Build SA2 Game Settings
-namespace SAModManager.IniSettings.SA2
+namespace SAModManager.Configuration.SA2
 {
 	public class GraphicsSettings
 	{

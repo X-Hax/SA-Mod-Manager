@@ -41,6 +41,7 @@ namespace SAModManager
         public static readonly string ziplibPath = Path.Combine(extLibPath, "7z/7z.dll");
         public static bool isVanillaTransition = false; //used when installing the manager from an update
         public static bool isFirstBoot = false; //used when installing the new manager manually
+        public static bool isLinux = false;
 
         public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
         public static ManagerSettings ManagerSettings { get; set; }
@@ -84,8 +85,9 @@ namespace SAModManager
             }
 
             UpdateHelper.InitHttpClient();
+            Util.CheckLinux();
             HandleVanillaTransition(args);
-
+            Steam.Init();
             SetupLanguages();
             SetupThemes();
 
@@ -190,8 +192,8 @@ namespace SAModManager
             {
                 if (arg == "urlhandler")
                 {
-                    using var hkcr = Microsoft.Win32.Registry.ClassesRoot;
-                    using var key = hkcr.CreateSubKey("sadxmm");
+                    using var hkcu = Microsoft.Win32.Registry.CurrentUser;
+                    using var key = hkcu.CreateSubKey("Software\\Classes\\sadxmm");
                     key.SetValue(null, "URL:SADX Mod Manager Protocol");
                     key.SetValue("URL Protocol", string.Empty);
                     using (var k2 = key.CreateSubKey("DefaultIcon"))
