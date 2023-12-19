@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.IO.Packaging;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -16,8 +10,7 @@ using SAModManager.Common;
 using SAModManager.Properties;
 using SAModManager.Elements;
 using System.Windows.Media;
-using System.Windows.Data;
-using System.Windows.Media.Animation;
+
 
 namespace SAModManager
 {
@@ -289,16 +282,38 @@ namespace SAModManager
 			}
 		}
 
-		public static Panel ConfigBuild(ref ConfigSettings config)
+		//XAML does not support some specific symbols
+		private static string CleanupGroupName(string name)
+		{
+            // Step 1: Remove disallowed symbols
+            string noSymbols = Regex.Replace(name, @"[=\\-]", "");
+
+            // Step 2: Remove whitespace
+            string noWhitespaceString = Regex.Replace(noSymbols, @"\s", "");
+
+            // Step 3: If numbers are found, put them at the end
+            Match numberMatch = Regex.Match(noWhitespaceString, @"^(\d+)(.*)$");
+            if (numberMatch.Success)
+            {
+                string numberPart = numberMatch.Groups[1].Value;
+                string restOfString = numberMatch.Groups[2].Value;
+                noWhitespaceString = restOfString + numberPart;
+            }
+
+            return noWhitespaceString;
+        }
+
+
+        public static Panel ConfigBuild(ref ConfigSettings config)
 		{
 			settings = config;
 			var stack = new StackPanel();
 			
 			foreach (ConfigSchemaGroup group in settings.schema.Groups)
 			{
-				string name = group.Name;
-				string HeaderName = string.IsNullOrWhiteSpace(group.DisplayName) ? group.Name : group.DisplayName;
-				var box = new GroupBox() { Name = name.Replace(" ", ""), Header = HeaderName, Margin = GroupMargin };
+				string name = CleanupGroupName(group.Name);
+				string HeaderName = string.IsNullOrWhiteSpace(group.DisplayName) ? name : group.DisplayName;
+				var box = new GroupBox() { Name = name, Header = HeaderName, Margin = GroupMargin };
 				var groupBoxHeader = box.Header as string;
 
 				TextBlock headerTex = new()
@@ -394,7 +409,7 @@ namespace SAModManager
 				settings.SetPropertyValue(info.groupName, info.propertyName, text.Text);
 		}
 
-		#endregion
-	}
+        #endregion
+    }
 }
 
