@@ -102,6 +102,9 @@
 
     <system:String x:Key="MessageWindow.Information.D3D8Update">La versione di d3d8.dll nella cartella di SADX è diversa da quella inclusa nel modloader. Vuoi aggiornare la versione installata?</system:String>
 
+    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Game found</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">{0} game has been detected at '{1}'&#x0a;&#x0a;Would you like to download and install the Mod Loader?</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Please download and install SADX Mod Installer to convert your game to 2004. (Your saves will be converted as well).</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Pass di integrità</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">Tutte le mod selezionate hanno superato la verifica.</system:String>
     <!--#endregion-->

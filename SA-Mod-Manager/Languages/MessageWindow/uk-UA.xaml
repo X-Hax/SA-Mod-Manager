@@ -126,6 +126,9 @@
     <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Результати Перевірки</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">Всі вибрані моди пройшли перевірку успішно.</system:String>
 
+    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Game found</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">{0} game has been detected at '{1}'&#x0a;&#x0a;Would you like to download and install the Mod Loader?</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Please download and install SADX Mod Installer to convert your game to 2004. (Your saves will be converted as well).</system:String>
     <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">Папка гри SADX знайдена, Але схоже на те що це версія Steam.&#x0a;Завантажувач Модів працює тільки з версією 2004 року.&#x0a;&#x0a;Чи бажаєш встановити Mod Installer? Він перетворить твою версію на версію 2004 року (Збереження також будуть конвертовані).</system:String>
 
 	<system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Перевірка Цілісності</system:String>
