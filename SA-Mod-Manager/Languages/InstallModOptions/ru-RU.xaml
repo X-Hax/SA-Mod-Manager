@@ -8,6 +8,6 @@
 	<system:String x:Key="InstallModOptions.Radio.New">Новый мод (для разработчиков)</system:String>
 
     <!--Mod Download-->
-    <system:String x:Key="ModDL.DLMod">Download Mod</system:String>
-    <system:String x:Key="ModDL.OpenLink">Open Link</system:String>
+    <system:String x:Key="ModDL.DLMod">Загрузить мод</system:String>
+    <system:String x:Key="ModDL.OpenLink">Страница мода</system:String>
 </ResourceDictionary>
