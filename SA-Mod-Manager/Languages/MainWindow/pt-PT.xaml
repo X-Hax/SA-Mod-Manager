@@ -114,9 +114,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Define uma resolução personalizada, ou seleciona a partir de uma lista de presets.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Força o jogo a abrir numa proporção em 4:3 dependendo da resolução definida.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Ativa o V-Sync.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Caso ativado, se o jogo não estiver no foco, este será pausado.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers">Esta opção corrige um crash no alt-tab quando em tela cheia ao trocar para a Distribuição de Buffers Dinâmica.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">A janela do jogo irá abir em tela cheia.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Caso ativado, se o jogo não estiver no foco, este será pausado.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">A janela do jogo irá abir em tela cheia.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Define a tela cheia do jogo para uma tela cheia sem bordas.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Aumenta a escala dos elementos a interface do usuário em tela cheia.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">O jogo irá abrir em modo janela.</system:String>

@@ -57,7 +57,7 @@
     <system:String x:Key="CommonStrings.Type">Type</system:String>
     <system:String x:Key="CommonStrings.TypeCode">Code</system:String>
     <system:String x:Key="CommonStrings.Typepatch">Patch</system:String>
-    <system:String x:Key="CommonStrings.IsRequired">Is Required</system:String>
+    <system:String x:Key="CommonStrings.IsRequired">Requis</system:String>
 
     <!--Window Tips-->
     <system:String x:Key="Window.Tips.Minimize">Minimiser</system:String>

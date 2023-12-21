@@ -19,7 +19,6 @@
     <system:String x:Key="UpdateStatus.InstallDependencies">Встановлюємо Залежності, зачекайте будь ласка...</system:String>
     <system:String x:Key="UpdateStatus.UpdateCodes">Оновлюємо Коди, зачекайте будь ласка...</system:String>
     <system:String x:Key="UpdateStatus.FailedUpdateCodes">Не Вдалося оновити Коди</system:String>
-    <system:String x:Key="UpdateStatus.ChkPatchesUpdates">Checking for Patches Updates...</system:String>
     <system:String x:Key="UpdateStatus.UpdateDependencies">Оновлюємо Залежності, зачекайте будь ласка...</system:String>
     <system:String x:Key="UpdateStatus.FailedUpdateDependencies">Не Вдалося оновити Залежності</system:String>
     <system:String x:Key="UpdateStatus.ManagerUpdate">Оновлюємо SA Mod Manager...</system:String>

@@ -118,9 +118,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Самостійно встановити роздільну здатність, або вибрати зі списку.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Примушує гру до співвідношення сторін 4:3, не зважаючи на роздільну здатність.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Вмикає V-Sync.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Якщо увімкнено, і гра буде не у фокусі, вона призупиниться.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers">Ця опція лагодить alt-tab аварію у повному екрані перенаправляючи до динамічного розподілу буфера. Може спричинити підвисання у грі під різними обставинами або з деякими модами.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Вікно гри запуститься на повний екран.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Якщо увімкнено, і гра буде не у фокусі, вона призупиниться.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Вікно гри запуститься на повний екран.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Встановлює гру у повному екрані до без-рамок.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Масштабує елементи UI у повному екрані.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Гра запуститься у віконному режимі.</system:String>

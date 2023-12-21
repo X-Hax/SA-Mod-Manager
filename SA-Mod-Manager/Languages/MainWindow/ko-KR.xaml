@@ -113,9 +113,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">사용자 지정 해상도를 설정하고 프리셋 해상도의 목록을 선택합니다.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">설정한 해상도에도 게임을 4:3 종횡비로 고정합니다.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">V-Sync을 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">활성화된 경우 게임 창이 포커스를 맞추지 않으면 게임이 일시 중지됩니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers">이 옵션은 동적 버퍼 할당으로 스왑하여 전체화면에서 alt-tab 충돌을 수정합니다. 이 옵션은 일부 상황이나 일부 모드에서 인게임 중 렉을 일으킬 수 있습니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">게임 창이 전체화면에서 부팅됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">활성화된 경우 게임 창이 포커스를 맞추지 않으면 게임이 일시 중지됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">게임 창이 전체화면에서 부팅됩니다.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">전체 화면 게임 창에서 테두리 없이 설정합니다.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">전체 화면의 UI 요소를 크게 합니다.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">게임 창이 창 모드에서 부팅됩니다.</system:String>

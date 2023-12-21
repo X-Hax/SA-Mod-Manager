@@ -119,9 +119,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Выбор кастомного или предустановленного разрешения экрана.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Принудительно выставить соотношение сторон 4:3, игнорируя выбранное разрешение.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Включение вертикальной синхронизации.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Когда выключено, игра будет ставиться на паузу, если окно не в фокусе.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers">Исправление вылета при смене окна с помощью Alt+Tab в полном экране, включая динамическое распределение памяти. В некоторых случаях игра может лагать (в том числе из-за некоторых модов).</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Разворачивать игру на весь экран.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Когда выключено, игра будет ставиться на паузу, если окно не в фокусе.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Разворачивать игру на весь экран.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Разворачивать игру в окне без рамки.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Масштабировать интерфейс на весь экран.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Игра будет запускаться в окне.</system:String>

@@ -119,8 +119,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Establece una resolución personalizada, o selecciona una resolución de la lista.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Fuerza al juego a usar una relación de aspecto a 4:3, ignorando la resolución establecida.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Activa la sincronización vertical.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Si se activa, el juego se pausará cuando esté inactivo.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers">Esta opción arregla el bloqueo que ocurre al realizar Alt-Tab cuando se está jugando en pantalla completa exclusiva. Puede causar lag dentro del juego bajo algunas circunstancias o al utilizar ciertos mods.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Si se activa, el juego se pausará cuando esté inactivo.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">El juego se iniciará en pantalla completa.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Activa el modo pantalla completa sin bordes en vez de pantalla completa exclusiva.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Escala los elementos de la interfaz en pantalla completa.</system:String>
