@@ -103,10 +103,12 @@ namespace SAModManager
                 return;
             }
 
+#if !DEBUG
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
             {
                 ExceptionHandler.UnhandledExceptionEventHandler(e.ExceptionObject as Exception);
             };
+#endif
   
             ShutdownMode = ShutdownMode.OnMainWindowClose;
 
