@@ -1,0 +1,44 @@
+﻿<Window x:Class="SAModManager.UI.ExceptionHandler"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SAModManager.UI"
+        mc:Ignorable="d" Style="{StaticResource SAWindow}"
+        Title="{DynamicResource ExceptionHandler.Title}" Height="500" Width="800"
+		Loaded="Window_Loaded">
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="80"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="50"/>
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0" Margin="10">
+			<TextBlock Text="{DynamicResource ExceptionHandler.Header}" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="40"/>
+		</Grid>
+
+		<Grid Grid.Row="1" Margin="10">
+			<Border BorderThickness="5" BorderBrush="{DynamicResource Borders.Brushes.Border}" CornerRadius="5">
+				<ScrollViewer>
+					<Grid>
+						<TextBlock Text="{Binding ErrorText}"/>
+					</Grid>
+				</ScrollViewer>
+			</Border>
+		</Grid>
+
+		<Grid Grid.Row="2" Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="5"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="5"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button x:Name="CopyError" Grid.Column="0" Content="{DynamicResource ExceptionHandler.Copy}" Click="CopyError_Click" ToolTip="{DynamicResource ExceptionHandler.ToolTip.Copy}"/>
+			<Button x:Name="ReportError" Grid.Column="2" Content="{DynamicResource ExceptionHandler.Report}" Click="ReportError_Click" ToolTip="{DynamicResource ExceptionHandler.ToolTip.Report}"/>
+			<Button x:Name="IgnoreError" Grid.Column="4" Content="{DynamicResource ExceptionHandler.Ignore}" Click="IgnoreError_Click" ToolTip="{DynamicResource ExceptionHandler.ToolTip.Ignore}"/>
+		</Grid>
+    </Grid>
+</Window>

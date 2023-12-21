@@ -1,0 +1,164 @@
+﻿using SAModManager.Common;
+using SAModManager.Configuration;
+using SAModManager.Ini;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+namespace SAModManager.UI
+{
+	/// <summary>
+	/// Interaction logic for ExceptionHandler.xaml
+	/// </summary>
+	public partial class ExceptionHandler : Window, INotifyPropertyChanged
+	{
+		private Exception exception;
+		public string ErrorText { get; set; }
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		private string ExceptionReport(bool markdown = false, bool report = false, bool includeprofiles = false)
+		{
+			var error = new StringBuilder();
+
+			if (report)
+			{
+				error.AppendLine("<!-- Please provide any relevant information as to what caused this exception -->");
+				error.AppendLine("<!-- E.g. What you were doing, if this is reproducable and how, etc -->");
+				error.AppendLine();
+				error.AppendLine();
+
+				error.AppendLine("<!-- Please do not modify following -->");
+				error.AppendLine("## Exception Report");
+			}
+
+			if (markdown) error.AppendLine("```");
+			error.Append($"SAMM Information:");
+			error.AppendLine($"\tManager Version: {App.VersionString}");
+			if (App.isFirstBoot)
+				error.AppendLine($"\tFirst Boot: True");
+
+			error.AppendLine($"\tCurrent Game: {App.CurrentGame.gameName}");
+			error.AppendLine($"\tGame Directory: {App.CurrentGame.gameDirectory}");
+			if (File.Exists(App.CurrentGame.loader.loaderVersionpath))
+				 error.AppendLine($"\tMod Loader Version (Hash): {File.ReadAllText(App.CurrentGame.loader.loaderVersionpath)}");
+			if (markdown) error.AppendLine("```");
+
+			error.AppendLine("");
+
+			if (exception != null)
+			{
+				if (markdown) error.AppendLine("```");
+
+				error.AppendLine($"Exception Information:");
+
+				if (exception.GetType() != typeof(Exception))
+					error.AppendLine($"\tType: {exception.GetType().Name}");
+
+				error.AppendLine($"\tException: {exception.Message}");
+
+				if (exception.Source != null)
+					error.AppendLine($"\tSource: {exception.Source}");
+
+				if (exception.TargetSite != null)
+					error.AppendLine($"\tIn Function: {exception.TargetSite}");
+
+				if (exception.StackTrace != null)
+					error.AppendLine($"\tStackTrace: {exception.StackTrace.Replace("\n", "\n	")}");
+
+				if (exception.InnerException != null)
+					error.AppendLine($"\tInnerException: {exception.InnerException}");
+
+				if (markdown) error.AppendLine("```");
+				error.AppendLine($"");
+			}
+			else
+			{
+				if (markdown) error.AppendLine("```");
+				error.AppendLine("Exception was null. No Exception to Report. How did you even get to this point?");
+				if (markdown) error.AppendLine("```");
+			}
+
+			if (includeprofiles)
+			{
+				error.AppendLine();
+				if (File.Exists(App.ManagerConfigFile))
+				{
+					if (markdown) error.AppendLine("```");
+					error.AppendLine($"{File.ReadAllText(App.ManagerConfigFile)}");
+					if (markdown) error.AppendLine("```");
+				}
+				else
+					error.AppendLine("No Manager Settings File exists.");
+
+				if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json")))
+				{
+					Profiles profiles = Profiles.Deserialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
+					string profile = Path.Combine(App.CurrentGame.ProfilesDirectory, profiles.GetProfileFilename());
+					if (markdown) error.AppendLine("```");
+					error.AppendLine($"{File.ReadAllText(profile)}");
+					if (markdown) error.AppendLine("```");
+				}
+				else
+					error.AppendLine("No Profiles exist.");
+			}
+
+			return error.ToString();
+		}
+
+		public ExceptionHandler(Exception e)
+		{
+			InitializeComponent();
+			DataContext = this;
+			exception = e;
+		}
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			ErrorText = ExceptionReport();
+		}
+
+		private void CopyError_Click(object sender, RoutedEventArgs e)
+		{
+			Clipboard.SetText(ExceptionReport(true));
+		}
+
+		private void ReportError_Click(object sender, RoutedEventArgs e)
+		{
+			MessageWindow message = new(Lang.GetString("MessageWindow.Information.Exception.Title"), Lang.GetString("MessageWindow.Information.Exception.Message"),
+				button: MessageWindow.Buttons.YesNo, icon: MessageWindow.Icons.Information);
+
+			message.ShowDialog();
+
+			string url = "https://github.com/X-Hax/SA-Mod-Manager/issues/new";
+			url += $"?title=[Error+Report]:";  // Add Title
+			url += $"&labels=exception+report"; // Add Label
+			url += $"&body={Uri.EscapeDataString(ExceptionReport(true, true, message.isYes))}";	// Add Body
+
+			Process.Start(url);
+		}
+
+		private void IgnoreError_Click(object sender, RoutedEventArgs e)
+		{
+			this.Close();
+		}
+	}
+}
