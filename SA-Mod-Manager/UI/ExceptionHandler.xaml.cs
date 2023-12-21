@@ -153,7 +153,11 @@ namespace SAModManager.UI
 			url += $"&labels=exception+report"; // Add Label
 			url += $"&body={Uri.EscapeDataString(ExceptionReport(true, true, message.isYes))}";	// Add Body
 
-			Process.Start(url);
+        public static void UnhandledExceptionEventHandler(Exception e)
+        {
+            var window = new ExceptionHandler(e);
+            Application.Current.MainWindow = window;
+            window.ShowDialog();
 		}
 
 		private void IgnoreError_Click(object sender, RoutedEventArgs e)
