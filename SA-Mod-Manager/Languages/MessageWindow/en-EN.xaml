@@ -149,7 +149,12 @@
 
 	<system:String x:Key="MessageWindow.Information.Exception.Title">Include Settings</system:String>
 	<system:String x:Key="MessageWindow.Information.Exception.Message">Would you like to include your settings files?&#x0a;&#x0a;Including these files may help diagnose the problem you are reporting. This is not required.</system:String>
-	
+
+	<system:String x:Key="MessageWindow.Information.BugReport.Title">Report Bug</system:String>
+	<system:String x:Key="MessageWindow.Information.BugReport.Message1">Are you submitting a bug report for the Mod Manager or for the Mod Loader?</system:String>
+	<system:String x:Key="MessageWindow.Information.BugReport.Message2">If you are unsure what you are reporting for, please adhere to the following:</system:String>
+	<system:String x:Key="MessageWindow.Information.BugReport.Message3">Issues with the program you are currently using will are Mod Manager related.</system:String>
+	<system:String x:Key="MessageWindow.Information.BugReport.Message4">Issues with the game itself are for the Mod Loader.</system:String>
 	<!--#endregion-->
 	
 </ResourceDictionary>
