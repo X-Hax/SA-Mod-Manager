@@ -336,10 +336,16 @@ namespace SAModManager.Updater
                     break;
                 }
 
-                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                try
                 {
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ChkCurModUpdate"), mod.Name));
-                });
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ChkCurModUpdate"), mod.Name));
+                    });
+                } catch
+                {
+
+                }
 
                 if (!string.IsNullOrEmpty(mod.GitHubRepo))
                 {

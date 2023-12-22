@@ -1929,10 +1929,17 @@ namespace SAModManager
 
         private async Task ExecuteModsUpdateCheck()
         {
-            ClearUpdateFolder();
-            await UpdateChecker_DoWork();
-            await UpdateChecker_RunWorkerCompleted();
-            UpdateChecker_EnableControls();
+            try
+            {
+                ClearUpdateFolder();
+                await UpdateChecker_DoWork();
+                await UpdateChecker_RunWorkerCompleted();
+                UpdateChecker_EnableControls();
+            }
+            catch(Exception ex)
+            {
+                Dispatcher.Invoke(() => new ExceptionHandler(ex).ShowDialog());
+            }
         }
 
         private async Task UpdateChecker_RunWorkerCompleted()
