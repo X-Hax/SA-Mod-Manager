@@ -151,12 +151,24 @@ namespace SAModManager.UI
 			string url = "https://github.com/X-Hax/SA-Mod-Manager/issues/new";
 			url += $"?title=[Error+Report]:";  // Add Title
 			url += $"&labels=exception+report"; // Add Label
-			url += $"&body={Uri.EscapeDataString(ExceptionReport(true, true, message.isYes))}";	// Add Body
+			url += $"&body={Uri.EscapeDataString(ExceptionReport(true, true, message.isYes))}"; // Add Body
 
-			Process.Start(url);
+            var ps = new ProcessStartInfo(url)
+            {
+                UseShellExecute = true,
+                Verb = "open"
+            };
+            Process.Start(ps);
 		}
 
-		private void IgnoreError_Click(object sender, RoutedEventArgs e)
+        public static void UnhandledExceptionEventHandler(Exception e)
+        {
+            var window = new ExceptionHandler(e);
+            Application.Current.MainWindow = window;
+            window.ShowDialog();
+        }
+
+        private void IgnoreError_Click(object sender, RoutedEventArgs e)
 		{
 			this.Close();
 		}
