@@ -17,6 +17,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SAModManager.UI
 {
@@ -35,7 +36,7 @@ namespace SAModManager.UI
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		private string ExceptionReport(bool markdown = false, bool report = false, bool includeprofiles = false)
+		private string ExceptionReport(bool markdown = false, bool report = false)
 		{
 			var error = new StringBuilder();
 
@@ -97,31 +98,38 @@ namespace SAModManager.UI
 				if (markdown) error.AppendLine("```");
 			}
 
-			if (includeprofiles)
-			{
-				error.AppendLine();
-				if (File.Exists(App.ManagerConfigFile))
-				{
-					if (markdown) error.AppendLine("```");
-					error.AppendLine($"{File.ReadAllText(App.ManagerConfigFile)}");
-					if (markdown) error.AppendLine("```");
-				}
-				else
-					error.AppendLine("No Manager Settings File exists.");
-
-				if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json")))
-				{
-					Profiles profiles = Profiles.Deserialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
-					string profile = Path.Combine(App.CurrentGame.ProfilesDirectory, profiles.GetProfileFilename());
-					if (markdown) error.AppendLine("```");
-					error.AppendLine($"{File.ReadAllText(profile)}");
-					if (markdown) error.AppendLine("```");
-				}
-				else
-					error.AppendLine("No Profiles exist.");
-			}
+			error.AppendLine("<!-- If you copied your settings, please paste them below this line -->");
+			error.AppendLine();
 
 			return error.ToString();
+		}
+
+		private string SettingsReport()
+		{
+			var info = new StringBuilder();
+
+			info.AppendLine();
+			if (File.Exists(App.ManagerConfigFile))
+			{
+				info.AppendLine("```");
+				info.AppendLine($"{File.ReadAllText(App.ManagerConfigFile)}");
+				info.AppendLine("```");
+			}
+			else
+				info.AppendLine("No Manager Settings File exists.");
+
+			if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json")))
+			{
+				Profiles profiles = Profiles.Deserialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
+				string profile = Path.Combine(App.CurrentGame.ProfilesDirectory, profiles.GetProfileFilename());
+				info.AppendLine("```");
+				info.AppendLine($"{File.ReadAllText(profile)}");
+				info.AppendLine("```");
+			}
+			else
+				info.AppendLine("No Profiles exist.");
+
+			return info.ToString();
 		}
 
 		public ExceptionHandler(Exception e)
@@ -148,10 +156,13 @@ namespace SAModManager.UI
 
 			message.ShowDialog();
 
+			if (message.isYes)
+				Clipboard.SetText(SettingsReport());
+
 			string url = "https://github.com/X-Hax/SA-Mod-Manager/issues/new";
 			url += $"?title=[Error+Report]:";  // Add Title
 			url += $"&labels=exception+report"; // Add Label
-			url += $"&body={Uri.EscapeDataString(ExceptionReport(true, true, message.isYes))}"; // Add Body
+			url += $"&body={Uri.EscapeDataString(ExceptionReport(true, true))}"; // Add Body
 
             var ps = new ProcessStartInfo(url)
             {

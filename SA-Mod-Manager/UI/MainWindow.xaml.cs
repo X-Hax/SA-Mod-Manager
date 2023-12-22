@@ -1170,10 +1170,13 @@ namespace SAModManager
         {
 			var msg = new StringBuilder();
 			msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message1"));
+			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message2")}");
+			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message3")}");
+			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message4")}");
 			msg.AppendLine();
-			msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message2"));
-			msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message3"));
-			msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message4"));
+			msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message5"));
+			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message6")}");
+			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message7")}");
 
 			MessageWindow message = new(Lang.GetString("MessageWindow.Information.BugReport.Title"), msg.ToString(),"Mod Manager", "Mod Loader", 
 				icon: MessageWindow.Icons.Information);
