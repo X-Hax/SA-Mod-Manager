@@ -22,7 +22,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">Modo Janela</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Janela Redimensionável</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Manter Proporção de Tela</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamanho de Janela Específico:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamanho Específico:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Tela Cheia Sem Borda</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Redimensionar para a Tela</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Outras Opções de Gráficos</system:String>
@@ -32,7 +32,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low">Baixo</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest">Mais Baixo</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog">Emulação de Névoa:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Auto">Auto</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Auto">Automático</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation">Emulação</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill">Modo de Preenchimento de Plano de Fundo:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Esticar [Padrão]</system:String>
@@ -58,7 +58,7 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn">Botão Esquerdo do Mouse</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn">Botão Direito do Mouse</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn">Botão do Meio do Mouse</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Outro Botão do Mouse 1</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Outro Botão do Mouse</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn">Botão Esquerdo + Direito do Mouse</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Botão Direito + Esquerdo do Mouse</system:String>
   	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Action">Ação:</system:String>
@@ -66,14 +66,14 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Pular:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Ação:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Cancelar/Atacar:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Inciar/Definir:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Iniciar/Definir:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Girar Câmera para Esquerda:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Girar Câmera para Direita:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Flauta:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2">Configuração de Entrada Melhor</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Abrir AppLauncher</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Obter AppLauncher</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">O Sistema de Entrada Melhor é uma implementação de SDL2 para SADX. Seu uso é recomendado pois conserta problemas do sistema original de DInput.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">O Sistema de Entrada Melhor é uma implementação de SDL2 para SADX. Seu uso é recomendado pois conserta alguns problemas presentes no sistema original de DInput.</system:String>
 
 	<!--Sound Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Configurações de Áudio</system:String>
@@ -81,11 +81,11 @@
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Usar BASS para Música</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Usar BASS para Efeitos Sonoros</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">Habilitar Música</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Habilitar Sons</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Habilitar Efeitos Sonoros</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Habilitar Áudio 3D</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Volume Música:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Volume Vozes:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Volume Sons:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Vol. Música:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Vol. Vozes:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Vol. Sons:</system:String>
 	<!--#endregion-->
 
 	<!--#region Test Spawn Tab Strings-->
