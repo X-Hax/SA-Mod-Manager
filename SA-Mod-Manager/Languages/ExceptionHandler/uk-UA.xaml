@@ -7,9 +7,9 @@
 	<system:String x:Key="ExceptionHandler.Header">The Manager has encountered an Error</system:String>
 	<system:String x:Key="ExceptionHandler.Copy">Copy Error Log</system:String>
 	<system:String x:Key="ExceptionHandler.Ignore">Ignore and Close</system:String>
-	<system:String x:Key="ExceptionHandler.Report">Report Error (English only)</system:String>
+    <system:String x:Key="ExceptionHandler.Report">Report Error (English only)</system:String>
 
-	<system:String x:Key="ExceptionHandler.ToolTip.Copy">Copies the error log to the clipboard with markdown formatting included.</system:String>
+    <system:String x:Key="ExceptionHandler.ToolTip.Copy">Copies the error log to the clipboard with markdown formatting included.</system:String>
 	<system:String x:Key="ExceptionHandler.ToolTip.Ignore">Ignores the error and closes this window. The Manager may close.</system:String>
 	<system:String x:Key="ExceptionHandler.ToolTip.Report">Opens an Issue on the Manager's Repository on GitHub with the a template for you to provide additional info and a copy of the exception report.</system:String>
 </ResourceDictionary>

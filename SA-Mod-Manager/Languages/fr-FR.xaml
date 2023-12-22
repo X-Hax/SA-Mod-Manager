@@ -22,6 +22,7 @@
         <ResourceDictionary Source="SplashScreen/fr-FR.xaml"/>
         <ResourceDictionary Source="Updater/fr-FR.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/fr-FR.xaml"/>
+        <ResourceDictionary Source="ExceptionHandler/fr-FR.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!--Region Common UI-->

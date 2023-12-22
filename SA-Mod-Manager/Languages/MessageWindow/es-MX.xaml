@@ -140,6 +140,18 @@
 
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Verificación completada</system:String>
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Todos los archivos revisados fueron verificados.</system:String>
-	<!--#endregion-->
-	
+    
+    <system:String x:Key="MessageWindow.Information.Exception.Title">Include Settings</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Message">Would you like to copy your Manager and Profile settings to your clipboard to provide in your report?&#x0a;&#x0a;This is not necessary, but it can assist in resolving problems.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.BugReport.Title">Report Bug</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1">You are about to submit a bug report, please ensure the following:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Your Manager is up to date.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Your Mod Loader is up to date.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message4">All mods are up to date.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message5">If you have verified the above, then please follow the directions below to submit to the correct repository:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Any issues with the program you're currently using, please use the Mod Manager button.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Any issues with the game, such as freezes, game crashes, etc, please use the Mod Loader button.</system:String>
+    <!--#endregion-->
+
 </ResourceDictionary>
