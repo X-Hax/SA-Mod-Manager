@@ -169,6 +169,7 @@ namespace SAModManager
             }
 
             await CheckForModUpdates();
+            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             checkForUpdate = false;
 
             if (setGame == SetGame.None || string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
