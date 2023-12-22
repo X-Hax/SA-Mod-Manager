@@ -23,7 +23,7 @@ using SAModManager.Updater;
 using SAModManager.Elements;
 using SAModManager.Ini;
 using SAModManager.Configuration;
-
+using System.Text;
 
 namespace SAModManager
 {
@@ -1125,15 +1125,69 @@ namespace SAModManager
             Process.Start(ps);
         }
 
+		private void OpenLoaderIssue()
+		{
+			string url = "";
+			
+			switch (App.CurrentGame.id)
+			{
+				case SetGame.SADX:
+					url += "https://github.com/X-Hax/sadx-mod-loader/issues/new";
+					break;
+				case SetGame.SA2:
+					url += "https://github.com/X-Hax/sa2-mod-loader/issues/new";
+					break;
+				case SetGame.None:
+					return;
+			}
+			
+			url += "?template=bug_report.md";   // Add Template
+
+			var ps = new ProcessStartInfo(url)
+			{
+				UseShellExecute = true,
+				Verb = "open"
+			};
+
+			Process.Start(ps);
+		}
+
+		private void OpenManagerIssue()
+		{
+			string url = "https://github.com/X-Hax/SA-Mod-Manager/issues/new";
+			url += "?template=bug_report.md";   // Add Template
+
+			var ps = new ProcessStartInfo(url)
+			{
+				UseShellExecute = true,
+				Verb = "open"
+			};
+
+			Process.Start(ps);
+		}
+
         private void btnReport_Click(object sender, RoutedEventArgs e)
         {
-            var ps = new ProcessStartInfo("https://github.com/X-Hax/sa-mod-manager/issues/new")
-            {
-                UseShellExecute = true,
-                Verb = "open"
-            };
+			var msg = new StringBuilder();
+			msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message1"));
+			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message2")}");
+			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message3")}");
+			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message4")}");
+			msg.AppendLine();
+			msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message5"));
+			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message6")}");
+			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message7")}");
 
-            Process.Start(ps);
+			MessageWindow message = new(Lang.GetString("MessageWindow.Information.BugReport.Title"), msg.ToString(),"Mod Manager", "Mod Loader", 
+				icon: MessageWindow.Icons.Information);
+
+			message.ShowDialog();
+						
+			if (message.isYes)
+				OpenManagerIssue();
+			
+			if (message.isCancelled)
+				OpenLoaderIssue();
         }
 
         private void comboThemes_Loaded(object sender, RoutedEventArgs e)

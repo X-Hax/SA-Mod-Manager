@@ -34,6 +34,7 @@ namespace SAModManager.Common
 			OKCancel,
 			YesNo,
 			RetryCancel,
+			Custom
 		}
 
 		/// <summary>
@@ -47,7 +48,9 @@ namespace SAModManager.Common
 			IconCustom,
 		}
 
-		private static bool Accepted { get; set; }
+		private static bool Accepted { get; set; } = false;
+
+		private static bool Cancelled { get; set; } = false;
 
 		/// <summary>
 		/// Returns true when MessageWindow is closed. Can be used to check when the window has been closed.
@@ -68,6 +71,9 @@ namespace SAModManager.Common
 		/// Returns true when OK has been pressed.
 		/// </summary>
 		public bool isOK { get { return Accepted; } }
+
+		public bool isCancelled { get { return Cancelled; } }
+
         /// <summary>
         /// Used to store and get a value for convenience.
         /// </summary>
@@ -125,6 +131,39 @@ namespace SAModManager.Common
 			image.Height = height;
 
 			InitializeMessageWindow(windowName, messageText, headerText, image, button, type, customElement);
+		}
+
+		/// <summary>
+		/// Message Window with custom button names. Left button clicked will return isYes as True. Right Button will return isYes as False.
+		/// </summary>
+		/// <param name="windowName"></param>
+		/// <param name="messageText"></param>
+		/// <param name="leftButtonName"></param>
+		/// <param name="rightButtonName"></param>
+		/// <param name="type"></param>
+		/// <param name="icon"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="headerText"></param>
+		/// <param name="customElement"></param>
+		public MessageWindow(string windowName, string messageText, string leftButtonName, string rightButtonName,
+							WindowType type = WindowType.IconMessage, Icons icon = Icons.Caution,
+							double width = 40, double height = 40, string headerText = "", UIElement customElement = null)
+		{
+			InitializeComponent();
+
+			DrawingImage drawing = GetIcon(icon);
+			Image image = new()
+			{
+				Source = drawing,
+				Width = width,
+				Height = height
+			};
+
+			ButtonLeft.Content = leftButtonName;
+			ButtonRight.Content = rightButtonName;
+
+			InitializeMessageWindow(windowName, messageText, headerText, image, Buttons.Custom, type, customElement);
 		}
 
 		#region Message 
@@ -219,6 +258,11 @@ namespace SAModManager.Common
 					ButtonRight.Content = Lang.GetString("CommonStrings.Cancel");
 					ButtonRight.Click += ButtonClick;
 					break;
+				case Buttons.Custom:
+					ButtonLeft.Click += ButtonYes_Click;
+					ButtonLeft.Focus();
+					ButtonRight.Click += ButtonClick;
+					break;
 			}
 		}
 
@@ -231,6 +275,7 @@ namespace SAModManager.Common
 		#region Button Functions
 		private void ButtonClick(object sender, RoutedEventArgs e)
 		{
+			Cancelled = true;
 			this.Close();
 		}
 
