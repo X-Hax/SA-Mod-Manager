@@ -430,7 +430,7 @@ namespace SAModManager.Common
                 new Dependencies()
                 {
                     name = "D3D8M",
-                    data = Properties.Resources.SDL2,
+                    data = Properties.Resources.d3d8m,
                     format = Format.dll,
                     URL = Properties.Resources.URL_D3D8M,
                 },
