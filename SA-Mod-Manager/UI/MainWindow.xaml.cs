@@ -169,8 +169,10 @@ namespace SAModManager
             }
 
             await CheckForModUpdates();
+
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             checkForUpdate = false;
+            Dispatcher.Invoke(Refresh);
 
             if (setGame == SetGame.None || string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
             {
@@ -1092,7 +1094,7 @@ namespace SAModManager
             await CheckForModUpdates(true);
             checkForUpdate = false;
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
-            Refresh();
+            Dispatcher.Invoke(Refresh);
         }
 
         private void AboutBtn_Click(object sender, RoutedEventArgs e)
@@ -1818,6 +1820,7 @@ namespace SAModManager
             ModContextDeleteMod.IsEnabled = true;
             ModContextForceModUpdate.IsEnabled = true;
             ModContextVerifyIntegrity.IsEnabled = true;
+            ClearUpdateFolder();
 
         }
 
