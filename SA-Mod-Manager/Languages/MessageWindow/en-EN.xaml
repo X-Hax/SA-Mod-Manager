@@ -94,7 +94,11 @@
 
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Unknown Error</system:String>
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">An unknown error has occurred.</system:String>
-	<!--#endregion-->
+
+    <system:String x:Key="MessageWindow.Errors.ManagerUpdate.Error0">Failed to Extract or Open Manager Update.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ManagerUpdate.Error1">Failed to open Manager Update. File was not found, path was '{0}'</system:String>
+
+    <!--#endregion-->
 	
 	<!--#region Warnings-->
 	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">This will uninstall all the selected mods.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
