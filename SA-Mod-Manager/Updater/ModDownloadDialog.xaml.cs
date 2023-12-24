@@ -231,15 +231,16 @@ namespace SAModManager.Updater
 
             var uri = new Uri(file.Url);
             string tempDir = Path.Combine(updatePath, uri.Segments.Last());
+            var httpClient = UpdateHelper.HttpClient;
 
             if (!Directory.Exists(tempDir))
             {
                 Directory.CreateDirectory(tempDir);
             }
-
+  
             foreach (ModManifestDiff i in newEntries)
             {
-                string filePath = Path.Combine(tempDir, i.Current.FilePath);
+                string filePath = Path.GetFullPath(Path.Combine(tempDir, i.Current.FilePath));
                 string dir = Path.GetDirectoryName(filePath);
 
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
@@ -253,6 +254,9 @@ namespace SAModManager.Updater
                     !i.Current.Checksum.Equals(ModManifestGenerator.GetFileHash(filePath), StringComparison.OrdinalIgnoreCase))
                 {
 
+                    //dl each mod file one by one
+                    var curFile = Path.Combine(uri.AbsoluteUri, i.Current.FilePath);
+                    await httpClient.DownloadFileAsync(curFile, filePath, _progress, cancellationToken).ConfigureAwait(false);
                     info.Refresh();
 
                     if (info.Length != i.Current.FileSize)
@@ -270,7 +274,7 @@ namespace SAModManager.Updater
                 }
             }
 
-            var httpClient = UpdateHelper.HttpClient;
+
             var uriMa = new Uri(uri, "mod.manifest"); //dl mod manifest
             await httpClient.DownloadFileAsync(uriMa.AbsoluteUri, Path.Combine(tempDir, "mod.manifest"), _progress, cancellationToken).ConfigureAwait(false);
 
