@@ -19,14 +19,14 @@ namespace SAModManager.Updater
 
     public class ModUpdateAndErrors
     {
-        public List<ModDownloadWPF> updates = new();
+        public List<ModDownload> updates = new();
         public List<string> errors = new();
     };
 
     public partial class ModUpdater
     {
         public ModUpdateAndErrors modUpdateHelper { get; set; } = new();
-        public Tuple<List<ModDownloadWPF>, List<string>> modUpdatesTuple = null;
+        public Tuple<List<ModDownload>, List<string>> modUpdatesTuple = null;
         public List<Tuple<string, ModInfo, List<ModManifestDiff>>> modManifestTuple = null;
         public List<KeyValuePair<string, ModInfo>> updatableMods = null;
 
@@ -63,7 +63,7 @@ namespace SAModManager.Updater
             return localVersion;
         }
 
-        public async Task<ModDownloadWPF> GetGitHubReleases(ModInfo mod, string modsFolder, string folder, HttpClient client, List<string> errors, string basePath = null)
+        public async Task<ModDownload> GetGitHubReleases(ModInfo mod, string modsFolder, string folder, HttpClient client, List<string> errors, string basePath = null)
         {
             List<GitHubRelease> releases;
             string url = "https://api.github.com/repos/" + mod.GitHubRepo + "/releases";
@@ -144,7 +144,7 @@ namespace SAModManager.Updater
 
             string body = Regex.Replace(latestRelease.Body, "(?<!\r)\n", "\r\n");
 
-            return new ModDownloadWPF(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), latestAsset.DownloadUrl, body, latestAsset.Size)
+            return new ModDownload(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), latestAsset.DownloadUrl, body, latestAsset.Size)
             {
                 HomePage = "https://github.com/" + mod.GitHubRepo,
                 Name = latestRelease.Name,
@@ -155,7 +155,7 @@ namespace SAModManager.Updater
             };
         }
 
-        public async Task<ModDownloadWPF> GetGameBananaReleases(ModInfo mod, string modsFolder, string folder, List<string> errors, string basePath = null)
+        public async Task<ModDownload> GetGameBananaReleases(ModInfo mod, string modsFolder, string folder, List<string> errors, string basePath = null)
         {
             GameBananaItem gbi;
             try
@@ -190,7 +190,7 @@ namespace SAModManager.Updater
 
             GameBananaItemFile dl = gbi.Files.First().Value;
 
-            return new ModDownloadWPF(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), dl.DownloadUrl, body, dl.Filesize)
+            return new ModDownload(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), dl.DownloadUrl, body, dl.Filesize)
             {
                 HomePage = gbi.ProfileUrl,
                 Name = latestUpdate.Title,
@@ -201,7 +201,7 @@ namespace SAModManager.Updater
             };
         }
 
-        public async Task<ModDownloadWPF> CheckModularVersion(ModInfo mod, string modsFolder, string folder, List<ModManifestEntry> localManifest,
+        public async Task<ModDownload> CheckModularVersion(ModInfo mod, string modsFolder, string folder, List<ModManifestEntry> localManifest,
                                                HttpClient client, List<string> errors, string basePath = null)
         {
             if (!mod.UpdateUrl.StartsWith("http://", StringComparison.InvariantCulture)
@@ -298,7 +298,7 @@ namespace SAModManager.Updater
                 changes = Regex.Replace(changes, "(?<!\r)\n", "\r\n");
             }
 
-            return new ModDownloadWPF(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), mod.UpdateUrl, changes, diff);
+            return new ModDownload(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), mod.UpdateUrl, changes, diff);
         }
 
         // TODO: cancel
@@ -361,7 +361,7 @@ namespace SAModManager.Updater
                         continue;
                     }
 
-                    ModDownloadWPF d = await GetGitHubReleases(mod, modsFolder, info.Key, client, modUpdateHelper.errors, baseFolder);
+                    ModDownload d = await GetGitHubReleases(mod, modsFolder, info.Key, client, modUpdateHelper.errors, baseFolder);
                     if (d != null)
                     {
                         modUpdateHelper.updates.Add(d);
@@ -369,7 +369,7 @@ namespace SAModManager.Updater
                 }
                 else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
                 {
-                    ModDownloadWPF d = await GetGameBananaReleases(mod, modsFolder, info.Key, modUpdateHelper.errors, baseFolder);
+                    ModDownload d = await GetGameBananaReleases(mod, modsFolder, info.Key, modUpdateHelper.errors, baseFolder);
                     if (d != null)
                     {
                         modUpdateHelper.updates.Add(d);
@@ -399,7 +399,7 @@ namespace SAModManager.Updater
                         }
                     }
 
-                    ModDownloadWPF d = await CheckModularVersion(mod, modsFolder, info.Key, localManifest, client, modUpdateHelper.errors, baseFolder);
+                    ModDownload d = await CheckModularVersion(mod, modsFolder, info.Key, localManifest, client, modUpdateHelper.errors, baseFolder);
                     if (d != null)
                     {
                         modUpdateHelper.updates.Add(d);

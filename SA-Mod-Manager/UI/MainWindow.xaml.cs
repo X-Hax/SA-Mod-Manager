@@ -698,7 +698,6 @@ namespace SAModManager
                     return;
                 }
 
-
                 UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
                 await UpdateChecker_DoWork();
                 modUpdater.ForceUpdate = true;
@@ -1369,11 +1368,11 @@ namespace SAModManager
                 App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, Path.Combine(App.CurrentGame.modDirectory, App.CurrentGame.loader.name + ".dll"));
                 App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.loader.originPath.defaultDataDllPath);
 
-                updatePath = Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates");
-                codelstpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst");
-                codexmlpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.xml");
-                codedatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat");
-                patchdatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat");
+                updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates"));
+                codelstpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst"));
+                codexmlpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.xml"));
+                codedatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat"));
+                patchdatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat"));
 
 
                 Elements.SADX.GameConfig.UpdateD3D8Paths();
@@ -1876,18 +1875,13 @@ namespace SAModManager
 
             var updatableMods = modUpdater.modManifestTuple;
 
-            var updates = new List<ModDownloadWPF>();
+            var updates = new List<ModDownload>();
             var errors = new List<string>();
 
             var client = UpdateHelper.HttpClient;
 
             foreach (Tuple<string, ModInfo, List<Updater.ModManifestDiff>> info in updatableMods)
             {
-                /*if (worker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    break;
-                }*/
 
                 ModInfo mod = info.Item2;
                 if (!string.IsNullOrEmpty(mod.GitHubRepo))
@@ -1898,7 +1892,7 @@ namespace SAModManager
                         continue;
                     }
 
-                    ModDownloadWPF d = await modUpdater.GetGitHubReleases(mod, App.CurrentGame.modDirectory, info.Item1, client, errors);
+                    ModDownload d = await modUpdater.GetGitHubReleases(mod, App.CurrentGame.modDirectory, info.Item1, client, errors);
                     if (d != null)
                     {
                         updates.Add(d);
@@ -1906,7 +1900,7 @@ namespace SAModManager
                 }
                 else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
                 {
-                    ModDownloadWPF d = await modUpdater.GetGameBananaReleases(mod, App.CurrentGame.modDirectory, info.Item1, errors);
+                    ModDownload d = await modUpdater.GetGameBananaReleases(mod, App.CurrentGame.modDirectory, info.Item1, errors);
                     if (d != null)
                     {
                         updates.Add(d);
@@ -1919,7 +1913,7 @@ namespace SAModManager
                         .Select(x => x.Current)
                         .ToList();
 
-                    ModDownloadWPF d = await modUpdater.CheckModularVersion(mod, App.CurrentGame.modDirectory, info.Item1, localManifest, client, errors);
+                    ModDownload d = await modUpdater.CheckModularVersion(mod, App.CurrentGame.modDirectory, info.Item1, localManifest, client, errors);
                     if (d != null)
                     {
                         updates.Add(d);
@@ -1927,7 +1921,7 @@ namespace SAModManager
                 }
             }
 
-            modUpdater.modUpdatesTuple = new Tuple<List<ModDownloadWPF>, List<string>>(updates, errors);
+            modUpdater.modUpdatesTuple = new Tuple<List<ModDownload>, List<string>>(updates, errors);
         }
 
         private async Task ExecuteModsUpdateCheck()
@@ -1953,7 +1947,7 @@ namespace SAModManager
                 modUpdater.Clear();
             }
 
-            if (modUpdater.modUpdatesTuple is not Tuple<List<ModDownloadWPF>, List<string>> data)
+            if (modUpdater.modUpdatesTuple is not Tuple<List<ModDownload>, List<string>> data)
             {
                 return;
             }
@@ -1979,7 +1973,7 @@ namespace SAModManager
             bool manual = manualModUpdate;
             manualModUpdate = false;
 
-            List<ModDownloadWPF> updates = data.Item1;
+            List<ModDownload> updates = data.Item1;
             if (updates.Count == 0)
             {
                 if (manual && !MainWindow.cancelUpdate)
@@ -2018,7 +2012,8 @@ namespace SAModManager
             }
             catch { }
 
-            new Updater.ModDownloadDialogWPF(updates, updatePath).ShowDialog();
+            var modDL = new Updater.ModDownloadDialog(updates, updatePath);
+            modDL.StartDL();
             await Task.Delay(500);
             Refresh();
         }

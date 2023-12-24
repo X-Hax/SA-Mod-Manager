@@ -286,13 +286,14 @@ namespace SAModManager
 			dummyPath = Path.Combine(modPath, dummyPath);
 
 
-			var updates = new List<ModDownloadWPF>
+			var updates = new List<ModDownload>
 			{
-				new ModDownloadWPF(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
+				new ModDownload(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
 			};
 
             this.Hide();
-            new ModDownloadDialogWPF(updates, updatePath).ShowDialog();
+            var modDL = new ModDownloadDialog(updates, updatePath, false);
+			modDL.StartDL();
 
 			await Task.Delay(1000);
 	

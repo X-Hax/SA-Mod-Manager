@@ -1,0 +1,29 @@
+﻿<Window x:Class="SAModManager.Updater.ModDownloadDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SAModManager.Updater"
+        mc:Ignorable="d"
+        Style="{StaticResource SAWindow}"
+        Title="ModDownloadDialog" Height="280" Width="600"
+        WindowStartupLocation="CenterScreen">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="Normal"/>
+    </Window.TaskbarItemInfo>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="HeaderTxt" Text="Mod Update" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Margin="20,0,20,0" Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
+        <TextBlock x:Name="ProgressTxt" Text="0 / 0" FontSize="17"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="2" Margin="20, 0,20,0" Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
+        <ProgressBar x:Name="ProgressOverall" Grid.Row="1" Margin="22"/>
+        <ProgressBar x:Name="DLProgress" Maximum="1" Grid.Row="3" Margin="20, 22, 20, 20"/>
+        <Button Grid.Row="4" Content="{StaticResource CommonStrings.Cancel}" Margin="0,0,15,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Height="23" IsCancel="True" IsEnabled="False" />
+    </Grid>
+</Window>
+
