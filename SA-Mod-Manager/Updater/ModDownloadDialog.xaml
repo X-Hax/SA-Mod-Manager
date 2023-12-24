@@ -14,16 +14,19 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="HeaderTxt" Text="Mod Update" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Margin="20,0,20,0" Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
-        <TextBlock x:Name="ProgressTxt" Text="0 / 0" FontSize="17"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="2" Margin="20, 0,20,0" Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
-        <ProgressBar x:Name="ProgressOverall" Grid.Row="1" Margin="22"/>
-        <ProgressBar x:Name="DLProgress" Maximum="1" Grid.Row="3" Margin="20, 22, 20, 20"/>
-        <Button Grid.Row="4" Content="{StaticResource CommonStrings.Cancel}" Margin="0,0,15,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Height="23" IsCancel="True" IsEnabled="False" />
+        <TextBlock x:Name="curFile" Text="" FontSize="14"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Margin="20, 0,20,0" Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
+
+        <ProgressBar x:Name="DLProgress" Maximum="1" Grid.Row="2" Margin="23"/>
+        <TextBlock x:Name="ProgressTxt" Text="0 / 0" FontSize="16"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="3"  Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
+        <ProgressBar x:Name="ProgressOverall" Grid.Row="4" Margin="23"/>
+        <Button Grid.Row="5" Content="{StaticResource CommonStrings.Cancel}" Margin="0,0,15,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Height="23" IsCancel="True" IsEnabled="False" />
     </Grid>
 </Window>
 

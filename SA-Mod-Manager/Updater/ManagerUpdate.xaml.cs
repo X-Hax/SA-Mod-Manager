@@ -67,7 +67,7 @@ namespace SAModManager.Common
 
                 if (File.Exists(newExec))
                 {
-                    Process.Start(newExec, $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessId}\"");
+                    Process.Start(newExec, $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"");
                     App.Current.Shutdown();
                 }
                 else

@@ -76,8 +76,6 @@ namespace SAModManager.Updater
                 }
             });
 
-
-
             if (!string.IsNullOrEmpty(dest))
             {
                 this.dest = dest;
@@ -99,7 +97,7 @@ namespace SAModManager.Updater
                 Dispatcher.Invoke(() =>
                 {
                     HeaderTxt.Text = this.isUpdate ? Lang.GetString("Updater.DL.Mod.UpdatingMod") : Lang.GetString("Updater.DL.Dep.Downloading");
-                    HeaderTxt.Text += " " + txt;
+                    HeaderTxt.Text += " " + "'" + txt + "'";
                 });
             }
             catch { }
@@ -112,7 +110,20 @@ namespace SAModManager.Updater
                 // Update UI on the UI thread using Dispatcher
                 Dispatcher.Invoke(() =>
                 {
-                    ProgressTxt.Text = current + " " + "/" + count;
+                    ProgressTxt.Text = current + " " + "/" + " " + count;
+                });
+            }
+            catch { }
+        }
+
+        private void UpdateCurFileText(string filename)
+        {
+            try
+            {
+                // Update UI on the UI thread using Dispatcher
+                Dispatcher.Invoke(() =>
+                {
+                    curFile.Text = Lang.GetString("Updater.DL.Mod.DownloadingFile") + " '" + filename + "'...";
                 });
             }
             catch { }
@@ -256,6 +267,7 @@ namespace SAModManager.Updater
 
                     //dl each mod file one by one
                     var curFile = Path.Combine(uri.AbsoluteUri, i.Current.FilePath);
+                    UpdateCurFileText(i.Current.FilePath);
                     await httpClient.DownloadFileAsync(curFile, filePath, _progress, cancellationToken).ConfigureAwait(false);
                     info.Refresh();
 
@@ -403,6 +415,7 @@ namespace SAModManager.Updater
                 {
                     curName = file.Name;
                     var uri = new Uri(file.Url);
+
                     UpdateHeaderText(file.Info.Name);
 
                     switch (file.Type)
@@ -461,6 +474,7 @@ namespace SAModManager.Updater
                     var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
                     error.ShowDialog();
                     Close();
+                    DownloadFailed?.Invoke(ex);
                 });
 
             }
