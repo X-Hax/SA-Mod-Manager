@@ -38,7 +38,7 @@ namespace SAModManager.Updater
             this.updates = updates;
             this.dest = dest;
             this.isUpdate = update;
-            Title = update ? Lang.GetString("Updater.DL.Mod.UpdatingMod") : Lang.GetString("Updater.DL.Dep.Download");
+            Title = update ? Lang.GetString("Updater.DL.Mod.UpdatingMod") : Lang.GetString("Updater.DL.Dep.Downloading");
             HeaderTxt.Text = Title;
 
 
@@ -98,13 +98,13 @@ namespace SAModManager.Updater
                 // Update UI on the UI thread using Dispatcher
                 Dispatcher.Invoke(() =>
                 {
-                    HeaderTxt.Text = this.isUpdate ? Lang.GetString("Updater.DL.Mod.UpdatingMod") : Lang.GetString("Updater.DL.Dep.Download");
+                    HeaderTxt.Text = this.isUpdate ? Lang.GetString("Updater.DL.Mod.UpdatingMod") : Lang.GetString("Updater.DL.Dep.Downloading");
                     HeaderTxt.Text += " " + txt;
                 });
             }
             catch { }
-        }        
-        
+        }
+
         private void UpdateProgressText(string current, string count)
         {
             try
@@ -163,7 +163,7 @@ namespace SAModManager.Updater
                 return;
             }
 
-           await ApplyingManifest(oldManPath, newManPath, file, workDir);
+            await ApplyingManifest(oldManPath, newManPath, file, workDir);
         }
 
         async Task ApplyingManifest(string oldManPath, string newManPath, ModDownload mod, string workDir)
@@ -372,9 +372,12 @@ namespace SAModManager.Updater
                 }
             }
 
-            removeReadOnly(new DirectoryInfo(dataDir));
+            if (Directory.Exists(dataDir))
+            {
+                removeReadOnly(new DirectoryInfo(dataDir));
+                Directory.Delete(dataDir, true);
+            }
 
-            Directory.Delete(dataDir, true);
             File.WriteAllText(Path.Combine(file.Folder, "mod.version"), file.Updated.ToString(DateTimeFormatInfo.InvariantInfo));
 
             if (File.Exists(filePath))
@@ -401,7 +404,7 @@ namespace SAModManager.Updater
                     switch (file.Type)
                     {
                         case Updater.ModDownloadType.Archive:
-                         
+
                             if (!uri.Host.EndsWith("github.com", StringComparison.OrdinalIgnoreCase))
                             {
                                 var response = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, uri), cancelToken);
@@ -453,8 +456,9 @@ namespace SAModManager.Updater
                     string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + " " + curName + "\n" + ex.Message + "\n\n";
                     var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
                     error.ShowDialog();
-                    DownloadFailed?.Invoke(ex);
+                    Close();
                 });
+
             }
         }
 

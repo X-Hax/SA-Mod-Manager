@@ -131,8 +131,6 @@ namespace SAModManager
 
             Load();
 
-            new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
-
             SetBindings();
 
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
@@ -146,8 +144,15 @@ namespace SAModManager
                 App.isFirstBoot = false;
             }
 
-#if !DEBUG
+            var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
+           
+            if (oneClick.isEmpty == false)
+            {
+                return;
+            }
 
+
+#if !DEBUG
             checkForUpdate = true;
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
@@ -174,7 +179,7 @@ namespace SAModManager
             checkForUpdate = false;
             Dispatcher.Invoke(Refresh);
 
-            if (setGame == SetGame.None || string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
+           if (setGame == SetGame.None || string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
             {
                 if (await Steam.FindAndSetCurGame())
                 {

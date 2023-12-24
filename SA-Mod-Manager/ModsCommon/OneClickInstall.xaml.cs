@@ -26,6 +26,8 @@ namespace SAModManager
 		private string updatePath;
 		private string modPath;
 		private Dictionary<string, string> fields;
+		public bool isEmpty { get; private set; } = true;	
+
 
 		public OneClickInstall(string updatePath, string modPath)
 		{
@@ -34,11 +36,14 @@ namespace SAModManager
 			InitializeComponent();
 
 			List<string> uris = App.UriQueue.GetUris();
+			if (uris.Count > 0)
+				isEmpty = false;
 
-			foreach (string str in uris)
+            foreach (string str in uris)
 			{
 				HandleUri(str);
 			}
+
 
 			App.UriQueue.UriEnqueued += UriQueueOnUriEnqueued;
             IsVisibleChanged += MainWindow_Hide;
