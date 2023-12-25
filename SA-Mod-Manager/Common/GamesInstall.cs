@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -429,7 +430,7 @@ namespace SAModManager.Common
                 new Dependencies()
                 {
                     name = "D3D8M",
-                    data = Properties.Resources.SDL2,
+                    data = Properties.Resources.d3d8m,
                     format = Format.dll,
                     URL = Properties.Resources.URL_D3D8M,
                 },
@@ -470,7 +471,7 @@ namespace SAModManager.Common
         public static IEnumerable<Game> GetSupportedGames()
         {
             yield return SonicAdventure;
-           // yield return SonicAdventure2;
+            // yield return SonicAdventure2;
         }
 
         //will probably end making our own installer ig
@@ -575,18 +576,18 @@ namespace SAModManager.Common
             List<string> paths = new();
 
             // Regular expression pattern to match "path" values
-            string pattern = @"""path""\s+""([^""]+)""";
+            string pattern = @"""path""\s+""([^""]+?)""";
 
             // Use regex to find all matches of the pattern in the file content
             MatchCollection matches = Regex.Matches(fileContent, pattern);
 
             // Extract the path values from the matches and add them to the list
-            foreach (Match match in matches)
+            foreach (Match match in matches.Cast<Match>())
             {
                 if (match.Groups.Count >= 2)
                 {
                     string pathValue = match.Groups[1].Value;
-                    paths.Add(pathValue);
+                    paths.Add(Path.GetFullPath(pathValue)); //getfullpath fixes the extra backslashes, lol
                 }
             }
 
@@ -599,7 +600,6 @@ namespace SAModManager.Common
                 return;
 
             string configPath = Path.Combine(SteamLocation, "config", "libraryfolders.vdf");
-
 
             if (File.Exists(configPath))
             {

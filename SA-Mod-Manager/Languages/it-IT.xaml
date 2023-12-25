@@ -18,7 +18,8 @@
 		<ResourceDictionary Source="ModConfig/it-IT.xaml"/>
 		<ResourceDictionary Source="ModProfile/it-IT.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/it-IT.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ExceptionHandler/it-IT.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">OK</system:String>

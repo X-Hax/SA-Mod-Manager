@@ -19,6 +19,7 @@
 		<ResourceDictionary Source="ModProfile/pt-PT.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/pt-PT.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/pt-PT.xaml"/>
+        <ResourceDictionary Source="ExceptionHandler/pt-PT.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->

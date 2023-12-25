@@ -22,6 +22,7 @@ using SAModManager.Properties;
 using System.Data;
 using System.Net.Http;
 using System.Net;
+using SAModManager.UI;
 
 namespace SAModManager
 {
@@ -102,7 +103,13 @@ namespace SAModManager
                 return;
             }
 
-            //Steam.Init();
+#if !DEBUG
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                ExceptionHandler.UnhandledExceptionEventHandler(e.ExceptionObject as Exception);
+            };
+#endif
+  
             ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             MainWindow = new MainWindow();

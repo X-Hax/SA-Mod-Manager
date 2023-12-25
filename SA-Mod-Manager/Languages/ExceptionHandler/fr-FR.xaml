@@ -1,0 +1,15 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="ExceptionHandler.Title">Le Manager a planté</system:String>
+    <system:String x:Key="ExceptionHandler.Header">Le Manager a rencontré une erreur</system:String>
+    <system:String x:Key="ExceptionHandler.Copy">Copier le journal des erreurs</system:String>
+    <system:String x:Key="ExceptionHandler.Ignore">Ignorer et fermer</system:String>
+    <system:String x:Key="ExceptionHandler.Report">Signaler une erreur (Anglais uniquement)</system:String>
+
+    <system:String x:Key="ExceptionHandler.ToolTip.Copy">Copie le journal des erreurs dans le presse-papiers avec le formatage Markdown inclus.</system:String>
+    <system:String x:Key="ExceptionHandler.ToolTip.Ignore">Ignore l'erreur et ferme cette fenêtre. Le gestionnaire peut fermer.</system:String>
+    <system:String x:Key="ExceptionHandler.ToolTip.Report">Ouvre une "Issue" sur le repo du Mod Manager sur GitHub avec un template vous permettant de fournir des informations supplémentaires et une copie du rapport d'exception.</system:String>
+</ResourceDictionary>

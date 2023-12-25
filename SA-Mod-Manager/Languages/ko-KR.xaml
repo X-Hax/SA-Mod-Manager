@@ -18,7 +18,8 @@
 		<ResourceDictionary Source="ModConfig/ko-KR.xaml"/>
 		<ResourceDictionary Source="ModProfile/ko-KR.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/ko-KR.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ExceptionHandler/ko-KR.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">OK</system:String>
