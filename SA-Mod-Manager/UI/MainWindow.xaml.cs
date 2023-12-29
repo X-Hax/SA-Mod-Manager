@@ -37,11 +37,11 @@ namespace SAModManager
         // Global Window Strings
         public readonly string titleName = "SA Mod Manager";
         private readonly string Version = App.VersionString;
-        private static string updatePath = "mods/.updates";
-        string codelstpath = "mods/Codes.lst";
-        string codexmlpath = "mods/Codes.xml";
-        string codedatpath = "mods/Codes.dat";
-        string patchdatpath = "mods/Patches.dat";
+        private static string updatePath = "mods\\.updates";
+        string codelstpath = "mods\\Codes.lst";
+        string codexmlpath = "mods\\Codes.xml";
+        string codedatpath = "mods\\Codes.dat";
+        string patchdatpath = "mods\\Patches.dat";
 
         // Shared Variables
         public SetGame setGame = SetGame.None;
@@ -1373,11 +1373,11 @@ namespace SAModManager
                 App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, Path.Combine(App.CurrentGame.modDirectory, App.CurrentGame.loader.name + ".dll"));
                 App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.loader.originPath.defaultDataDllPath);
 
-                updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates"));
-                codelstpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst"));
-                codexmlpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.xml"));
-                codedatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat"));
-                patchdatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat"));
+                updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", ".updates"));
+                codelstpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Codes.lst"));
+                codexmlpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Codes.xml"));
+                codedatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Codes.dat"));
+                patchdatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Patches.dat"));
 
 
                 Elements.SADX.GameConfig.UpdateD3D8Paths();
