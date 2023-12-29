@@ -94,12 +94,14 @@
 	
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Error desconocido</system:String>
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Ocurrió un error desconocido.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Esto desinstalará todos los mods seleccionados.&#x0a;&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
-
-	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Estás a punto de desactivar la redirección de guardado de este mod. Si continúas, todos los archivos guardados en la carpeta de este mod serán eliminados.&#x0a;&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Esto desinstalará todos los mods seleccionados:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">¿Estás seguro(a) de que quieres continuar?</system:String>
+    
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Estás a punto de desactivar la redirección de guardado de este mod. Si continúas, todos los archivos guardados en la carpeta de este mod serán eliminados.&#x0a;&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
 	
 	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">¿Seguro(a) que quieres borrar el/los perfil(es) seleccionado(s)?</system:String>
 	

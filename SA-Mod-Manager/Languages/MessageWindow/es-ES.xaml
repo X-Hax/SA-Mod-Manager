@@ -94,11 +94,12 @@
 
     <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Error Desconocido</system:String>
     <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Se ha producido un error desconocido.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Esto eliminará todos los mods seleccionados.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
-
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Esto eliminará todos los mods seleccionados:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">¿Seguro que quieres continuar?</system:String>
     <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Estás a punto de desactivar la redirección de archivo de guardado para este mod. Si continúas, cualquier archivo de guardado en este mod será eliminado.&#x0a;&#x0a;¿Seguro que quieres continuar?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.DeleteProfile">¿Seguro que quieres eliminar este perfil?</system:String>

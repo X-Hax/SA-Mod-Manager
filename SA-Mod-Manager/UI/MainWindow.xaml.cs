@@ -737,10 +737,29 @@ namespace SAModManager
         {
             var selectedItems = listMods.SelectedItems;
             var count = selectedItems.Count > 0;
-
+            int index = 0;
             if (count)
             {
-                var confirmMessage = Lang.GetString("MessageWindow.Warnings.DeleteMod");
+                var confirmMessage = Lang.GetString("MessageWindow.Warnings.DeleteMod0");
+                foreach (var selectedItem in selectedItems)
+                {
+                    if (selectedItem is ModData item)
+                    {
+                        index++;
+                        confirmMessage += item.Name;
+
+                        if (index < selectedItems.Count)
+                        {
+                            confirmMessage += ", ";
+                        }
+                        else
+                        {
+                            confirmMessage += ". ";
+                        }
+                    }
+                }
+
+                confirmMessage += "\n\n" + Lang.GetString("MessageWindow.Warnings.DeleteMod1");
                 var deleteConfirmation = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 
                 deleteConfirmation.ShowDialog();
@@ -748,13 +767,21 @@ namespace SAModManager
                 {
                     foreach (var selectedItem in selectedItems)
                     {
-                        var item = (ModData)selectedItem;
-
-                        string fullPath = Path.Combine(App.CurrentGame.modDirectory, item.Tag);
-
-                        if (Directory.Exists(fullPath))
+                        if (selectedItem is ModData item)
                         {
-                            Directory.Delete(fullPath, true);
+                            try
+                            {
+                                string fullPath = Path.Combine(App.CurrentGame.modDirectory, item.Tag);
+
+                                if (Directory.Exists(fullPath))
+                                {
+                                    Directory.Delete(fullPath, true);
+                                }
+                            }
+                            catch
+                            {
+                                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.ModDelete"), item.Name), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+                            }
                         }
                     }
 
@@ -1062,7 +1089,7 @@ namespace SAModManager
                 {
                     tempPath = dialog.SelectedPath;
                     App.CurrentGame.gameDirectory = tempPath;
-                    UIHelper.ToggleButton(ref btnOpenGameDir, true);      
+                    UIHelper.ToggleButton(ref btnOpenGameDir, true);
                     Load(true);
                     await ForceInstallLoader();
                     UpdateButtonsState();
@@ -1126,69 +1153,69 @@ namespace SAModManager
             Process.Start(ps);
         }
 
-		private void OpenLoaderIssue()
-		{
-			string url = "";
-			
-			switch (App.CurrentGame.id)
-			{
-				case SetGame.SADX:
-					url += "https://github.com/X-Hax/sadx-mod-loader/issues/new";
-					break;
-				case SetGame.SA2:
-					url += "https://github.com/X-Hax/sa2-mod-loader/issues/new";
-					break;
-				case SetGame.None:
-					return;
-			}
-			
-			url += "?template=bug_report.md";   // Add Template
+        private void OpenLoaderIssue()
+        {
+            string url = "";
 
-			var ps = new ProcessStartInfo(url)
-			{
-				UseShellExecute = true,
-				Verb = "open"
-			};
+            switch (App.CurrentGame.id)
+            {
+                case SetGame.SADX:
+                    url += "https://github.com/X-Hax/sadx-mod-loader/issues/new";
+                    break;
+                case SetGame.SA2:
+                    url += "https://github.com/X-Hax/sa2-mod-loader/issues/new";
+                    break;
+                case SetGame.None:
+                    return;
+            }
 
-			Process.Start(ps);
-		}
+            url += "?template=bug_report.md";   // Add Template
 
-		private void OpenManagerIssue()
-		{
-			string url = "https://github.com/X-Hax/SA-Mod-Manager/issues/new";
-			url += "?template=bug_report.md";   // Add Template
+            var ps = new ProcessStartInfo(url)
+            {
+                UseShellExecute = true,
+                Verb = "open"
+            };
 
-			var ps = new ProcessStartInfo(url)
-			{
-				UseShellExecute = true,
-				Verb = "open"
-			};
+            Process.Start(ps);
+        }
 
-			Process.Start(ps);
-		}
+        private void OpenManagerIssue()
+        {
+            string url = "https://github.com/X-Hax/SA-Mod-Manager/issues/new";
+            url += "?template=bug_report.md";   // Add Template
+
+            var ps = new ProcessStartInfo(url)
+            {
+                UseShellExecute = true,
+                Verb = "open"
+            };
+
+            Process.Start(ps);
+        }
 
         private void btnReport_Click(object sender, RoutedEventArgs e)
         {
-			var msg = new StringBuilder();
-			msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message1"));
-			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message2")}");
-			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message3")}");
-			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message4")}");
-			msg.AppendLine();
-			msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message5"));
-			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message6")}");
-			msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message7")}");
+            var msg = new StringBuilder();
+            msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message1"));
+            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message2")}");
+            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message3")}");
+            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message4")}");
+            msg.AppendLine();
+            msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message5"));
+            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message6")}");
+            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message7")}");
 
-			MessageWindow message = new(Lang.GetString("MessageWindow.Information.BugReport.Title"), msg.ToString(),"Mod Manager", "Mod Loader", 
-				icon: MessageWindow.Icons.Information);
+            MessageWindow message = new(Lang.GetString("MessageWindow.Information.BugReport.Title"), msg.ToString(), "Mod Manager", "Mod Loader",
+                icon: MessageWindow.Icons.Information);
 
-			message.ShowDialog();
-						
-			if (message.isYes)
-				OpenManagerIssue();
-			
-			if (message.isCancelled)
-				OpenLoaderIssue();
+            message.ShowDialog();
+
+            if (message.isYes)
+                OpenManagerIssue();
+
+            if (message.isCancelled)
+                OpenLoaderIssue();
         }
 
         private void comboThemes_Loaded(object sender, RoutedEventArgs e)
@@ -1595,7 +1622,7 @@ namespace SAModManager
                 // Load Profiles before doing anything.
                 string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
                 GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
-				GameProfiles.ValidateProfiles();
+                GameProfiles.ValidateProfiles();
                 comboProfile.ItemsSource = GameProfiles.ProfilesList;
                 comboProfile.DisplayMemberPath = "Name";
                 suppressEvent = true;
@@ -1936,7 +1963,7 @@ namespace SAModManager
                 await UpdateChecker_RunWorkerCompleted();
                 UpdateChecker_EnableControls();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dispatcher.Invoke(() => new ExceptionHandler(ex).ShowDialog());
             }
@@ -2359,7 +2386,7 @@ namespace SAModManager
                 //now we can move the loader files to the accurate folders.
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
-                await UpdateGameConfig(App.CurrentGame.id); 
+                await UpdateGameConfig(App.CurrentGame.id);
                 await EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 

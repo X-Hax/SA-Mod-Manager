@@ -94,12 +94,14 @@
 
     <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Неизвестная ошибка</system:String>
     <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Произошла неизвестная ошибка.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Это действие удалит выбранные моды.&#x0a;&#x0a;Желаете продолжить?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Это действие удалит выбранные моды:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Желаете продолжить?</system:String>
 
-	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Вы собираетесь отключить перенаправление сохранений для этого мода. Если вы продолжите, все сохранения в этой папке мода будут удалены.&#x0a;&#x0a;Желаете продолжить?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Вы собираетесь отключить перенаправление сохранений для этого мода. Если вы продолжите, все сохранения в этой папке мода будут удалены.&#x0a;&#x0a;Желаете продолжить?</system:String>
 	
 	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">Уверены, что хотите удалить этот профиль?</system:String>
 	

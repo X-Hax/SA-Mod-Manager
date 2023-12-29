@@ -91,12 +91,14 @@
 	<system:String x:Key="MessageWindow.Errors.CodeFail.Title">Invalid Code Line</system:String>
 	<system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">There is an empty line within the code writer lines.&#x0a;&#x0a;Please remove the empty line and resave.</system:String>
 	<system:String x:Key="Messagewindow.Errors.CodeFailInvalid">The written code is invalid.&#x0a;&#x0a;Please correct the error and resave.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
+    <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">This will uninstall all the selected mods.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">This will uninstall all the selected mods:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Are you sure you wish to continue?</system:String>
 
-	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">You are about to disable save redirection for this mod. If you continue, any save in this mod folder will be deleted.&#x0a;&#x0a;Are you sure you want to proceed?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">You are about to disable save redirection for this mod. If you continue, any save in this mod folder will be deleted.&#x0a;&#x0a;Are you sure you want to proceed?</system:String>
 
 	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">Are you sure you want to delete the selected profile(s)?</system:String>
 	

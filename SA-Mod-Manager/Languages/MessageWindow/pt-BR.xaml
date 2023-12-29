@@ -78,11 +78,12 @@
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Faltando VC++</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Parece que você está faltando algums Pacotes Redistribuíveis do Microsoft Visual C++, certos mods não funcionarão sem eles.&#x0a;&#x0a;Você deseja baixar e instalar eles agora?</system:String>
-
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Isto irá desinstalar todos os mods selecionados.&#x0a;&#x0a;Tem certeza que deseja continuar?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Isto irá desinstalar todos os mods selecionados:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Tem certeza que deseja continuar?</system:String>
 
 	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Você está prestes a desabilitar redirecionamento de save para este mod. Se continuar, qualquer save (jogo salvo) na pasta deste mod será excluído.&#x0a;&#x0a;Você tem certeza que deseja continuar?</system:String>
 	
