@@ -3,7 +3,7 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <!--Main Window Strings-->
-    <system:String x:Key="Manager.Button.SaveAndPlay" xml:space="preserve">Sauvegarder &amp; Jouer</system:String>
+    <system:String x:Key="Manager.Buttons.SaveAndPlay" xml:space="preserve">Sauvegarder &amp; Jouer</system:String>
     <system:String x:Key="Manager.Tabs.Mods">Mods</system:String>
     <system:String x:Key="Manager.Tabs.Codes">Codes</system:String>
     <system:String x:Key="Manager.Tabs.GameConfig">Config Jeu</system:String>
