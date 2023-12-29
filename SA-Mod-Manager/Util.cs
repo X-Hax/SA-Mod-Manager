@@ -166,7 +166,6 @@ namespace SAModManager
 
         public static bool is7ZipInstalled()
         {
-
             if (File.Exists(App.ziplibPath))
             {
                 return true;
@@ -231,7 +230,8 @@ namespace SAModManager
                     }
                 }
 
-                string libPath = File.Exists(App.ziplibPath) ? App.ziplibPath : null;
+                string libPath = File.Exists(App.ziplibPath) ? Path.GetFullPath(App.ziplibPath) : null;
+
                 using (ArchiveFile archiveFile = new(zipPath, libPath))
                 {
                     archiveFile.Extract(destFolder, overwright);
