@@ -746,21 +746,13 @@ namespace SAModManager
                     if (selectedItem is ModData item)
                     {
                         index++;
-                        confirmMessage += item.Name;
-
-                        if (index < selectedItems.Count)
-                        {
-                            confirmMessage += ", ";
-                        }
-                        else
-                        {
-                            confirmMessage += ". ";
-                        }
+                        confirmMessage += "- " + item.Name;
+                        confirmMessage += "\n";
                     }
                 }
 
-                confirmMessage += "\n\n" + Lang.GetString("MessageWindow.Warnings.DeleteMod1");
-                var deleteConfirmation = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+                confirmMessage += "\n" + Lang.GetString("MessageWindow.Warnings.DeleteMod1");
+                var deleteConfirmation = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Warning"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 
                 deleteConfirmation.ShowDialog();
                 if (deleteConfirmation.isYes)
