@@ -139,13 +139,20 @@ namespace SAModManager.Updater
 
         private async Task Extracting(string dataDir, string filePath)
         {
-
-            if (!Directory.Exists(dataDir))
+            try
             {
-                Directory.CreateDirectory(dataDir);
-            }
 
-            await Util.Extract(filePath, dataDir);
+                if (!Directory.Exists(dataDir))
+                {
+                    Directory.CreateDirectory(dataDir);
+                }
+
+                await Util.Extract(filePath, dataDir);
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception("failed to extract '" + filePath +"'\n\n", ex);
+            }
         }
 
         private async Task ParsingManifest(ModDownload file, string filePath, string dataDir)
@@ -459,7 +466,6 @@ namespace SAModManager.Updater
                     catch { }
                 }
 
-                //need to be updated
                 await Dispatcher.InvokeAsync(() =>
                 {
                     DownloadCompleted = async () => await ModsUpdateComplete();

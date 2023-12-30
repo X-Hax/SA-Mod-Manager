@@ -75,7 +75,7 @@ namespace SAModManager
 			DialogResult = true;
 		}
 
-		public void InstallModOptionsArchive(string[] path, string root)
+		public async void InstallModOptionsArchive(string[] path, string root)
 		{
 			var tempFolder = Path.Combine(root, ".SATemp");
 			if (!Directory.Exists(tempFolder))
@@ -88,7 +88,7 @@ namespace SAModManager
 				try
 				{
 
-					Util.Extract(file, tempFolder, true);
+					await Util.Extract(file, tempFolder, true);
 
 					//if the mod archive doesn't have a folder as a container, create one and move the files inside.
 					if (File.Exists(Path.Combine(tempFolder, "mod.ini"))) 

@@ -16,8 +16,6 @@ using System.Diagnostics;
 using SevenZipExtractor;
 using System.IO.Compression;
 using SAModManager.Ini;
-using System.Net.Http;
-using System.Buffers;
 
 namespace SAModManager
 {
@@ -166,6 +164,8 @@ namespace SAModManager
 
         public static bool is7ZipInstalled()
         {
+            App.ziplibPath = Path.GetFullPath(Path.Combine(App.extLibPath, "7z", "7z.dll"));
+
             if (File.Exists(App.ziplibPath))
             {
                 return true;
@@ -224,22 +224,22 @@ namespace SAModManager
             {
                 if (!is7ZipInstalled())
                 {
-                    if (await Exec7zipInstall() == false)
-                    {
-                        return;
-                    }
+                    await Application.Current.Dispatcher.InvokeAsync(Exec7zipInstall);
                 }
 
                 string libPath = File.Exists(App.ziplibPath) ? Path.GetFullPath(App.ziplibPath) : null;
 
-                using (ArchiveFile archiveFile = new(zipPath, libPath))
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    archiveFile.Extract(destFolder, overwright);
-                }
+                    using (ArchiveFile archiveFile = new(zipPath, libPath))
+                    {
+                        archiveFile.Extract(destFolder, overwright);
+                    }
+                });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
             }
         }
 
