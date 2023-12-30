@@ -94,12 +94,14 @@
 
     <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Неизвестная ошибка</system:String>
     <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Произошла неизвестная ошибка.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Это действие удалит выбранные моды.&#x0a;&#x0a;Желаете продолжить?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Это действие удалит выбранные моды:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Желаете продолжить?</system:String>
 
-	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Вы собираетесь отключить перенаправление сохранений для этого мода. Если вы продолжите, все сохранения в этой папке мода будут удалены.&#x0a;&#x0a;Желаете продолжить?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Вы собираетесь отключить перенаправление сохранений для этого мода. Если вы продолжите, все сохранения в этой папке мода будут удалены.&#x0a;&#x0a;Желаете продолжить?</system:String>
 	
 	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">Уверены, что хотите удалить этот профиль?</system:String>
 	
@@ -148,17 +150,17 @@
     <system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Проверка завершена</system:String>
     <system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Все файлы были успешно проверены.</system:String>
     
-    <system:String x:Key="MessageWindow.Information.Exception.Title">Include Settings</system:String>
-    <system:String x:Key="MessageWindow.Information.Exception.Message">Would you like to copy your Manager and Profile settings to your clipboard to provide in your report?&#x0a;&#x0a;This is not necessary, but it can assist in resolving problems.</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Title">Добавление настроек</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Message">Желаете скопировать настройки Менеджера и профилей в отсчёт?&#x0a;&#x0a;Это необязательно, но может помочь в решении проблемы.</system:String>
 
-    <system:String x:Key="MessageWindow.Information.BugReport.Title">Report Bug</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message1">You are about to submit a bug report, please ensure the following:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Your Manager is up to date.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Your Mod Loader is up to date.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message4">All mods are up to date.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message5">If you have verified the above, then please follow the directions below to submit to the correct repository:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Any issues with the program you're currently using, please use the Mod Manager button.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Any issues with the game, such as freezes, game crashes, etc, please use the Mod Loader button.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Title">Отчёт об ошибке</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1">Вы собираетесь отправить отчёт об ошибке. Пожалуйста, убедитесь в следующем:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2">У вас обновлён Менеджер.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3">У вас обновлён Загрузчик.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message4">Все моды обновлены.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message5">Если вы убедились в вышеуказанном, следуйте приведенным ниже инструкциям для отправки в правильный репозиторий:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message6">При возникновении проблем с программой, которую вы используете в данный момент, пожалуйста, воспользуйтесь кнопкой "Mod Manager".</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message7">При возникновении проблем с игрой, таких как зависания, сбои и т.д., пожалуйста, воспользуйтесь кнопкой "Mod Loader".</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>

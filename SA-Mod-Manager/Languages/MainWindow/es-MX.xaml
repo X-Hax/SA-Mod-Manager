@@ -72,6 +72,7 @@
 
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Acerca de</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">Acerca de</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">El Gestor de mods de SA es un programa que permite administrar fácilmente mods de los juegos Sonic Adventure.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contribuidores</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Código fuente del Gestor de mods</system:String>
@@ -119,8 +120,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Fuerza el juego a una relación de aspecto 4:3 a pesar de la resolución establecida.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Habilita la sincronización vertical.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Si se activa, cuando la ventana del juego no esté enfocada, el juego se pausará.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">La ventana del juego se iniciará en pantalla completa.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Establece la ventana de juego a pantalla completa sin bordes.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Establece la ventana de juego a pantalla completa sin bordes.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Escala los elementos de la interfaz de usuario a pantalla completa.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">La ventana del juego arrancará en modo ventana.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Permite cambiar el tamaño de la ventana del juego mientras está abierta.</system:String>

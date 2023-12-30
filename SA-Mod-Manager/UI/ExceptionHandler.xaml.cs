@@ -98,7 +98,12 @@ namespace SAModManager.UI
 				if (markdown) error.AppendLine("```");
 			}
 
-			error.AppendLine("<!-- If you copied your settings, please paste them below this line -->");
+			if (report)
+			{
+				error.AppendLine("<!-- If you copied your settings, please paste them below this line -->");
+				error.AppendLine();
+			}
+
 			error.AppendLine();
 
 			return error.ToString();
