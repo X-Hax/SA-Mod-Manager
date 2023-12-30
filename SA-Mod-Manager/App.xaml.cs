@@ -280,7 +280,6 @@ namespace SAModManager
 
         public static async Task<bool> PerformUpdateManagerCheck()
         {
-            return false;
             var mainWindow = ((MainWindow)Application.Current.MainWindow);
 
              mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
