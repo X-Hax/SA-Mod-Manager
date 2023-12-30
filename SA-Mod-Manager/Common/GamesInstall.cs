@@ -249,7 +249,7 @@ namespace SAModManager.Common
 
             try
             {
-                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.UpdatePatches"));
+                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkPatchesUpdates"));
                 string codePath = Path.Combine(game.modDirectory, "Patches.json");
                 Uri uri = new(game.patchURL + "\r\n");
                 var dl = new DownloadDialog(uri, "Patches", "Patches.json", game.modDirectory, DownloadDialog.DLType.Update);
