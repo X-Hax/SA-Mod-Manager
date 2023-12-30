@@ -69,9 +69,6 @@
 		<Reference Include="HtmlRenderer.WPF">
 			<HintPath>Externals\HtmlRenderer.WPF.dll</HintPath>
 		</Reference>
-		<Reference Include="SevenZipExtractor">
-		  <HintPath>Externals\SevenZipExtractor.dll</HintPath>
-		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>

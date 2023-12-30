@@ -141,7 +141,6 @@ namespace SAModManager.Updater
         {
             try
             {
-
                 if (!Directory.Exists(dataDir))
                 {
                     Directory.CreateDirectory(dataDir);

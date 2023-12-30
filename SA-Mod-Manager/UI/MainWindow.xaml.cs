@@ -322,7 +322,7 @@ namespace SAModManager
             RefreshBtn.IsEnabled = true;
         }
 
-        private void NewModBtn_Click(object sender, RoutedEventArgs e)
+        private async void NewModBtn_Click(object sender, RoutedEventArgs e)
         {
             var form = new InstallModOptions();
             var choice = form.Ask();
@@ -341,7 +341,7 @@ namespace SAModManager
                     if (result_ == System.Windows.Forms.DialogResult.OK)
                     {
                         string[] sFileName = archiveFile.FileNames;
-                        form.InstallMod(sFileName, App.CurrentGame.modDirectory);
+                        await form.InstallMod(sFileName, App.CurrentGame.modDirectory);
 
                     }
                     break;
@@ -1825,6 +1825,7 @@ namespace SAModManager
             ModContextForceModUpdate.IsEnabled = true;
             ModContextVerifyIntegrity.IsEnabled = true;
             ClearUpdateFolder();
+            Util.ClearTempFolder();
 
         }
 
@@ -2025,15 +2026,13 @@ namespace SAModManager
 
         private static void ClearUpdateFolder()
         {
+
             try
             {
                 if (App.CurrentGame is not null)
                 {
                     string fullPath = Path.Combine(App.CurrentGame.modDirectory, ".updates");
-                    if (Directory.Exists(fullPath))
-                    {
-                        Directory.Delete(fullPath, true);
-                    }
+                    Util.DeleteReadOnlyDirectory(fullPath);
                 }
 
             }

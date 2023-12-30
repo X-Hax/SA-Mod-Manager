@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Net;
-using SevenZipExtractor;
 using SAModManager.Common;
 using System.Threading.Tasks;
 using System.Net.Http;

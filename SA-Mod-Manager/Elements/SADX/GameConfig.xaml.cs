@@ -1,6 +1,5 @@
 ﻿using SAModManager.Common;
 using SAModManager.Updater;
-using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

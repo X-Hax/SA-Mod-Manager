@@ -6,7 +6,6 @@ using System.Windows;
 using System.Security.Policy;
 using System.Net;
 using System.IO;
-using SevenZipExtractor;
 using System.Diagnostics;
 using System.Windows.Shell;
 
