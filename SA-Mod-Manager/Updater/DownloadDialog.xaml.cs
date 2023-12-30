@@ -20,7 +20,7 @@ namespace SAModManager.Updater
     {
         private readonly Uri uri;
         private readonly string fileName;
-        private string dest = ".SATemp";
+        private string dest = App.tempFolder;
         private readonly CancellationTokenSource tokenSource = new();
         public bool done = false;
         private DLType Type = DLType.Download;

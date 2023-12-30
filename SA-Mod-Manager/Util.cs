@@ -6,18 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Input;
-using System.Threading;
-using Microsoft.Win32;
-using System.Text.RegularExpressions;
 using SAModManager.Common;
 using SAModManager.Updater;
 using System.Diagnostics;
-using SevenZipExtractor;
 using System.IO.Compression;
 using SAModManager.Ini;
-using System.Net.Http;
-using System.Buffers;
+using Microsoft.Win32;
 
 namespace SAModManager
 {
@@ -151,10 +145,8 @@ namespace SAModManager
         {
             try
             {
-                if (!is7ZipInstalled())
+                if (!IsZipToolInstalled())
                 {
-                    string path = Path.Combine(App.extLibPath, "7z");
-                    Directory.CreateDirectory(path);
                     await Exec7zipInstall();
                 }
             }
@@ -164,33 +156,28 @@ namespace SAModManager
             }
         }
 
-        public static bool is7ZipInstalled()
+        public static bool IsZipToolInstalled()
         {
+            string exePath = FindExePath("7z.exe");
 
-            if (File.Exists(App.ziplibPath))
-            {
+            if (exePath != null)
                 return true;
-            }
 
-            string currentArchitecture = IntPtr.Size == 4 ? "x86" : "x64"; // magic check
+            exePath = FindExePathFromRegistry("SOFTWARE\\7-Zip");
 
-            if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7z-" + currentArchitecture + ".dll")))
-            {
+            if (exePath != null)
                 return true;
-            }
-            else if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "7z-" + currentArchitecture + ".dll")))
-            {
+
+            exePath = Environment.GetEnvironmentVariable("PATH")
+                .Split(';')
+                .Select(s => Path.Combine(s, "7z.exe"))
+                .FirstOrDefault(File.Exists);
+
+            if (exePath != null)
                 return true;
-            }
-            else if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", currentArchitecture, "7z.dll")))
-            {
-                return true;
-            }
-            else if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, currentArchitecture, "7z.dll")))
-            {
-                return true;
-            }
-            else if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "7-Zip", "7z.dll")))
+
+            if (Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR") != null ||
+                RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("SOFTWARE\\WinRAR") != null)
             {
                 return true;
             }
@@ -198,24 +185,152 @@ namespace SAModManager
             return false;
         }
 
-        public static async Task<bool> Exec7zipInstall()
+        private static string FindExePath(string exeName)
         {
-            var msg = new MessageWindow(Lang.GetString("CommonStrings.Warning"), Lang.GetString("MessageWindow.Warnings.7zMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-            msg.ShowDialog();
+            string path = Path.Combine(App.StartDirectory, exeName);
+            return File.Exists(path) ? path : null;
+        }
 
-            if (msg.isYes)
+        private static string FindExePathFromRegistry(string registryKeyPath)
+        {
+            var key = Registry.LocalMachine.OpenSubKey(registryKeyPath);
+
+            if (key == null)
+                key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+                    .OpenSubKey(registryKeyPath);
+
+            return key?.GetValue("Path") as string;
+        }
+
+
+        public static async Task Exec7zipInstall()
+        {
+
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+             {
+                 var msg = new MessageWindow(Lang.GetString("CommonStrings.Warning"), Lang.GetString("MessageWindow.Warnings.7zMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+                 msg.ShowDialog();
+
+                 if (msg.isYes)
+                 {
+                     bool is64Bits = Environment.Is64BitOperatingSystem;
+                     Uri uri = new(is64Bits ? "https://www.7-zip.org/a/7z2301-x64.exe" : "https://www.7-zip.org/a/7z2301.exe" + "\r\n");
+
+                     var dl = new DownloadDialog(uri, "7-zip", "7z.exe", App.tempFolder, DownloadDialog.DLType.Download);
+                     dl.StartDL();
+                 }
+             });
+
+            await Process.Start(new ProcessStartInfo(Path.Combine(App.tempFolder, "7z.exe"), "/S")
             {
-                bool is64Bits = Environment.Is64BitOperatingSystem;
-                Uri uri = new(is64Bits ? Properties.Resources.URL_7Z_x64 : Properties.Resources.URL_7Z_x86 + "\r\n");
+                UseShellExecute = true,
+                Verb = "runas"
+            }).WaitForExitAsync();
+            await Task.Delay(100);
+        }
 
-                var dl = new DownloadDialog(uri, "7-zip", "7z.dll", Path.Combine(App.extLibPath, "7z"), DownloadDialog.DLType.Download);
+        public static void ClearTempFolder()
+        {
+            Util.DeleteReadOnlyDirectory(App.tempFolder);
+        }
 
-                dl.StartDL();
-                await Task.Delay(10);
+        public static void DeleteReadOnlyDirectory(string dir)
+        {
+            if (Directory.Exists(dir))
+                DeleteReadOnlyDirectory(new DirectoryInfo(dir));
+        }
 
-                return dl.done;
+        public static void DeleteReadOnlyDirectory(DirectoryInfo dir)
+        {
+            // Recursively perform this function 
+            foreach (var subDir in dir.GetDirectories())
+                DeleteReadOnlyDirectory(subDir);
+
+            // Delete all files in the directory and remove readonly
+            foreach (var file in dir.GetFiles())
+            {
+                try
+                {
+                    file.Attributes = FileAttributes.Normal;
+                    file.Delete();
+                }
+                catch { }
             }
 
+            try
+            {
+                // remove readonly from the directory
+                dir.Attributes = FileAttributes.Normal;
+                // Delete the directory
+                dir.Delete();
+            }
+            catch { }
+        }
+
+
+        public static async Task ExtractArchive(string zipPath, string destFolder, bool overwright = false)
+        {
+            Directory.CreateDirectory(destFolder);
+
+            if (Path.GetExtension(zipPath) == ".zip")
+            {
+                ZipFile.ExtractToDirectory(zipPath, destFolder, overwright);
+                return;
+            }
+
+            if (!ExtractArchiveUsing7Zip(zipPath, destFolder))
+            {
+                if (!ExtractArchiveUsingWinRAR(zipPath, destFolder))
+                {
+                    await Exec7zipInstall();
+                    ExtractArchiveUsing7Zip(zipPath, destFolder);
+                }
+            }
+
+            await Task.Delay(1000);
+        }
+
+        public static bool ExtractArchiveUsing7Zip(string path, string dest)
+        {
+            // Check if file exists in the root folder of the Manager
+            string exePath = FindExePath("7z.exe");
+
+            //If it fails, Find the path from the registry
+            exePath ??= FindExePathFromRegistry("SOFTWARE\\7-Zip");
+
+            // If still not found, try with the PATH variable
+            exePath ??= Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
+                .Where(s => File.Exists(Path.Combine(s, "7z.exe"))).FirstOrDefault();
+
+            if (exePath != null)
+            {
+                string exe = Path.Combine(exePath, "7z.exe");
+                // Extracts the archive to the temp directory
+                var psi = new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y");
+                Process.Start(psi).WaitForExit(1000 * 60 * 5);
+                return true;
+            }
+            return false;
+        }
+
+        public static bool ExtractArchiveUsingWinRAR(string path, string dest)
+        {
+            // Gets WinRAR's Registry Key
+            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR");
+
+            key ??= RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+                    .OpenSubKey("SOFTWARE\\WinRAR");
+            // Checks if WinRAR is installed by checking if the key and path value exists
+            if (key != null && key.GetValue("exe64") is string exePath)
+            {
+                // Extracts the archive to the temp directory
+                var psi = new ProcessStartInfo(exePath, $"x \"{path}\" -IBCK \"{dest}\"");
+                Process.Start(psi).WaitForExit(1000 * 60 * 5);
+
+                key.Close();
+                return true;
+            }
+            // WinRAR is not installed
             return false;
         }
 
@@ -223,24 +338,14 @@ namespace SAModManager
         {
             try
             {
-                if (!is7ZipInstalled())
-                {
-                    if (await Exec7zipInstall() == false)
-                    {
-                        return;
-                    }
-                }
-
-                string libPath = File.Exists(App.ziplibPath) ? App.ziplibPath : null;
-                using (ArchiveFile archiveFile = new(zipPath, libPath))
-                {
-                    archiveFile.Extract(destFolder, overwright);
-                }
+                await ExtractArchive(zipPath, destFolder, overwright);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
             }
+
+            await Task.Delay(1000);
         }
 
         public static async Task<bool> ExtractZipFromResource(byte[] resource, string outputDirectory)
@@ -304,6 +409,28 @@ namespace SAModManager
             return $"{fileCount} {fileString}";
         }
 
+        public static void MoveDirectory(string sourcePath, string destinationPath)
+        {
+            if (!Directory.Exists(destinationPath))
+            {
+                Directory.CreateDirectory(destinationPath);
+            }
+
+            foreach (string file in Directory.GetFiles(sourcePath))
+            {
+                string destFile = Path.Combine(destinationPath, Path.GetFileName(file));
+                File.Copy(file, destFile, true); // Set overwrite to true to allow overwriting if the file already exists
+            }
+
+            foreach (string subDirectory in Directory.GetDirectories(sourcePath))
+            {
+                string destDirectory = Path.Combine(destinationPath, Path.GetFileName(subDirectory));
+                MoveDirectory(subDirectory, destDirectory);
+            }
+
+            Directory.Delete(sourcePath, true);
+        }
+
         public static bool MoveAllFilesAndSubfolders(string sourceFolderPath, string destinationFolderPath, string exception = null)
         {
             // Move all files in the current folder to the destination subfolder
@@ -336,7 +463,7 @@ namespace SAModManager
                 }
                 else
                 {
-                    Directory.Move(subfolder, destinationSubfolderPath);
+                    MoveDirectory(subfolder, destinationSubfolderPath);
                 }
             }
 

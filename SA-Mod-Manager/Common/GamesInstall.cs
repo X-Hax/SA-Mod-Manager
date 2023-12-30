@@ -477,8 +477,8 @@ namespace SAModManager.Common
         //will probably end making our own installer ig
         public static async Task GetSADXModInstaller()
         {
-            var destFolder = Path.Combine(Environment.CurrentDirectory, ".SATemp");
-            var zipPath = Path.Combine(Environment.CurrentDirectory, ".SATemp", "sadx_setup_full.zip");
+            var destFolder = Path.Combine(Environment.CurrentDirectory, App.tempFolder);
+            var zipPath = Path.Combine(Environment.CurrentDirectory, App.tempFolder, "sadx_setup_full.zip");
 
             try
             {

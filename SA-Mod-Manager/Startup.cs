@@ -110,7 +110,7 @@ namespace SAModManager
                         if (DL.done)
                         {
                             // Asynchronous operation using async/await
-                            await Process.Start(new ProcessStartInfo(Path.Combine(".SATemp", "vc_redist.x86.exe"), "/install /passive /norestart")
+                            await Process.Start(new ProcessStartInfo(Path.Combine(App.tempFolder, "vc_redist.x86.exe"), "/install /passive /norestart")
                             {
                                 UseShellExecute = true,
                                 Verb = "runas"
@@ -150,18 +150,6 @@ namespace SAModManager
             return true;
         }
 
-        public static void ClearTempFolder()
-        {
-            try
-            {
-                if (Directory.Exists(".SATemp"))
-                {
-                    Directory.Delete(".SATemp", true);
-                }
-            }
-            catch { }
-        }
-
         public static async Task<bool> StartupCheck()
         {
             Console.WriteLine("Checking dependencies...");
@@ -173,7 +161,7 @@ namespace SAModManager
                     return false;
             }
     
-            ClearTempFolder();
+            Util.ClearTempFolder();
 
             return true;
         }

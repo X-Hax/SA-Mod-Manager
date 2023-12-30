@@ -26,6 +26,8 @@ namespace SAModManager
 		private string updatePath;
 		private string modPath;
 		private Dictionary<string, string> fields;
+		public bool isEmpty { get; private set; } = true;	
+
 
 		public OneClickInstall(string updatePath, string modPath)
 		{
@@ -34,11 +36,14 @@ namespace SAModManager
 			InitializeComponent();
 
 			List<string> uris = App.UriQueue.GetUris();
+			if (uris.Count > 0)
+				isEmpty = false;
 
-			foreach (string str in uris)
+            foreach (string str in uris)
 			{
 				HandleUri(str);
 			}
+
 
 			App.UriQueue.UriEnqueued += UriQueueOnUriEnqueued;
             IsVisibleChanged += MainWindow_Hide;
@@ -286,13 +291,14 @@ namespace SAModManager
 			dummyPath = Path.Combine(modPath, dummyPath);
 
 
-			var updates = new List<ModDownloadWPF>
+			var updates = new List<ModDownload>
 			{
-				new ModDownloadWPF(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
+				new ModDownload(dummyInfo, dummyPath, url.AbsoluteUri, null, 0)
 			};
 
             this.Hide();
-            new ModDownloadDialogWPF(updates, updatePath).ShowDialog();
+            var modDL = new ModDownloadDialog(updates, updatePath, false);
+			modDL.StartDL();
 
 			await Task.Delay(1000);
 	

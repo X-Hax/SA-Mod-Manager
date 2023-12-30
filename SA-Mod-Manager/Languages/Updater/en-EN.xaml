@@ -23,7 +23,7 @@
     <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Applying manifest...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadingFile">Downloading file</system:String>
     <system:String x:Key="Updater.DL.Mod.of">of</system:String> <!-- "of" files to download-->
-    <system:String x:Key="Updater.DL.Mod.UpdatingMod">Updating mod</system:String>
+    <system:String x:Key="Updater.DL.Mod.UpdatingMod">Updating Mod</system:String>
     <system:String x:Key="Updater.DL.Mod.StartingDownload">Starting Download...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadComplete">Download complete.</system:String>
 
