@@ -6,7 +6,6 @@ using System.Windows;
 using System.Security.Policy;
 using System.Net;
 using System.IO;
-using SevenZipExtractor;
 using System.Diagnostics;
 using System.Windows.Shell;
 
@@ -72,12 +71,12 @@ namespace SAModManager.Common
                 }
                 else
                 {
-                    throw new Exception("Failed to Extract or Open Manager Update.");
+                    new MessageWindow(Lang.GetString("MessageWindow.Errors.UpdateFailed.Title"), Lang.GetString("MessageWindow.Errors.ManagerUpdate.Error0"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                 }
             }
             else
             {
-                throw new Exception("Failed to Extract or Open Manager Update. File not found");
+                new MessageWindow(Lang.GetString("MessageWindow.Errors.UpdateFailed.Title"), string.Format(Lang.GetString("MessageWindow.Errors.ManagerUpdate.Error1"), dest), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
             }
         }
 

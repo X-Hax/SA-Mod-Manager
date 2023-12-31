@@ -94,12 +94,14 @@
 	
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Error desconocido</system:String>
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Ocurrió un error desconocido.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">No se pudo borrar el mod {0}.&#x0a;Por favor, asegúrate de que los archivos existen y de que no están siendo usados por otro programa, luego vuélvelo a intentar.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Esto desinstalará todos los mods seleccionados.&#x0a;&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
-
-	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Estás a punto de desactivar la redirección de guardado de este mod. Si continúas, todos los archivos guardados en la carpeta de este mod serán eliminados.&#x0a;&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Esto desinstalará todos los mods seleccionados:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">¿Estás seguro(a) de que quieres continuar?</system:String>
+    
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Estás a punto de desactivar la redirección de guardado de este mod. Si continúas, todos los archivos guardados en la carpeta de este mod serán eliminados.&#x0a;&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
 	
 	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">¿Seguro(a) que quieres borrar el/los perfil(es) seleccionado(s)?</system:String>
 	
@@ -114,7 +116,14 @@
 	<system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">Estás a punto de desactivar las actualizaciones de este mod. Si continúas, el Gestor NUNCA revisará si existen actualizaciones de este mod.&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
 
 	<system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">El Gestor de mods necesita 7-zip para extraer mods y poder actualizarse.&#x0a;&#x0a;¿Quieres instalarlo ahora?</system:String>
-    
+
+    <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Perfiles faltantes</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">No se encontraron los siguientes perfiles:</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">Se eliminarán de la lista de Perfiles y el perfil seleccionado se convertirá en el primero de la lista.</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Error al importar</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">No se pudieron importar los siguientes archivos como perfiles:</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Por favor, asegúrate de que sólo utilizas archivos JSON de perfil de juego o archivos INI del antiguo cargador.</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->
@@ -126,9 +135,8 @@
     <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Integridad verficada</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">Todos los mods seleccionados pasaron la verificación.</system:String>
 
-    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Game found</system:String>
-    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">{0} game has been detected at '{1}'&#x0a;&#x0a;Would you like to download and install the Mod Loader?</system:String>
-
+    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Juego encontrado</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">El juego {0} se encontró en '{1}'&#x0a;&#x0a;¿Quieres descargar e instalar el Cargador de Mods?</system:String>
     <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">Se encontró la carpeta del juego SADX, pero parece ser la versión de Steam.&#x0a;El Gestor de mods sólo funciona con la versión para PC de 2004.&#x0a;&#x0a;¿Quieres descargar e instalar el instalador de mods para convertir tu juego a la versión de 2004? (Tus partidas guardadas también se convertirán).</system:String>
     <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">Se encontró la carpeta del juego SADX, pero parece ser la versión de Steam.&#x0a;El Gestor de mods sólo funciona con la versión para PC de 2004.&#x0a;&#x0a;Por favor, descarga e instala el Instalador de Mods de SADX para convertir tu juego a la versión de 2004. (Tus partidas guardadas también se convertirán).</system:String>
     <system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Revisión de salud</system:String>
@@ -141,17 +149,17 @@
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Verificación completada</system:String>
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Todos los archivos revisados fueron verificados.</system:String>
     
-    <system:String x:Key="MessageWindow.Information.Exception.Title">Include Settings</system:String>
-    <system:String x:Key="MessageWindow.Information.Exception.Message">Would you like to copy your Manager and Profile settings to your clipboard to provide in your report?&#x0a;&#x0a;This is not necessary, but it can assist in resolving problems.</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Title">Incluir ajustes</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Message">¿Quieres copiar la configuración de tu Gestor y del Perfil en el portapapeles para incluirla en tu informe?&#x0a;&#x0a;No es necesario, pero puede ayudar a resolver problemas.</system:String>
 
-    <system:String x:Key="MessageWindow.Information.BugReport.Title">Report Bug</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message1">You are about to submit a bug report, please ensure the following:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Your Manager is up to date.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Your Mod Loader is up to date.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message4">All mods are up to date.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message5">If you have verified the above, then please follow the directions below to submit to the correct repository:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Any issues with the program you're currently using, please use the Mod Manager button.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Any issues with the game, such as freezes, game crashes, etc, please use the Mod Loader button.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Title">Reportar error</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1">Estás por reportar un error, asegúrate de que:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Tu Gestor esté actualizado.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Tu Cargador de mods esté actualizado.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message4">Todos los mods estén actualizados.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message5">Si ya comprobaste todo lo anterior, sigue las siguientes instrucciones para enviarlo al repositorio correcto:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Si tienes algún problema con el programa que utilizas actualmente, utiliza el botón Gestor de mods.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Para cualquier problema con el juego, como congelaciones, bloqueos, etc., utiliza el botón Cargador de mods.</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>

@@ -249,7 +249,7 @@ namespace SAModManager.Common
 
             try
             {
-                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.UpdatePatches"));
+                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkPatchesUpdates"));
                 string codePath = Path.Combine(game.modDirectory, "Patches.json");
                 Uri uri = new(game.patchURL + "\r\n");
                 var dl = new DownloadDialog(uri, "Patches", "Patches.json", game.modDirectory, DownloadDialog.DLType.Update);
@@ -477,8 +477,8 @@ namespace SAModManager.Common
         //will probably end making our own installer ig
         public static async Task GetSADXModInstaller()
         {
-            var destFolder = Path.Combine(Environment.CurrentDirectory, ".SATemp");
-            var zipPath = Path.Combine(Environment.CurrentDirectory, ".SATemp", "sadx_setup_full.zip");
+            var destFolder = Path.Combine(Environment.CurrentDirectory, App.tempFolder);
+            var zipPath = Path.Combine(Environment.CurrentDirectory, App.tempFolder, "sadx_setup_full.zip");
 
             try
             {

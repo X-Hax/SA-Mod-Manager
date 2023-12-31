@@ -37,9 +37,10 @@ namespace SAModManager
         private const string protocol = "sadxmm:";
         public static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
-        public static readonly string ConfigFolder = Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SAManager")) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
+        public static string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        public static readonly string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
-        public static readonly string ziplibPath = Path.Combine(extLibPath, "7z/7z.dll");
+        public static readonly string tempFolder = Path.Combine(StartDirectory, ".SATemp");
         public static bool isVanillaTransition = false; //used when installing the manager from an update
         public static bool isFirstBoot = false; //used when installing the new manager manually
         public static bool isLinux = false;
@@ -308,7 +309,7 @@ namespace SAModManager
                 // string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
                 string dlLink = update.Item3.DownloadUrl;
                 string fileName = update.Item3.Name;
-                string destFolder = ".SATemp";
+                string destFolder = App.tempFolder;
                 Directory.CreateDirectory(destFolder);
 
                 var dl = new ManagerUpdate(dlLink, destFolder, fileName)
@@ -465,7 +466,7 @@ namespace SAModManager
 
                     var dialog = new InstallManagerUpdate(args[2], args[3]);
                     await dialog.InstallUpdate();
-                    SAModManager.Startup.ClearTempFolder();
+                    Util.ClearTempFolder();
                     Application.Current.Shutdown();
                     
                     return true;

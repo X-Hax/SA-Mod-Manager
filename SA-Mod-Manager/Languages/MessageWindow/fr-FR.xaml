@@ -5,6 +5,8 @@
     <system:String x:Key="MessageWindow.DefaultTitle">SADX Mod Manager</system:String>
     <system:String x:Key="MessageWindow.DefaultTitle.Error">SADX Mod Manager Erreur</system:String>
     <system:String x:Key="MessageWindow.DefaultTitle.Warning">Attention</system:String>
+
+    <!--#region Errors-->
     
     <system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">Il y a un fichier mod.ini dans le dossier mods.</system:String>
     <system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Chaque mod doit être placé dans un sous dossier dans le dossier des mods. Veuillez ne pas extraire des mods directement dans le dossier mods.</system:String>
@@ -16,8 +18,6 @@
     <system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Echec détection du chemin d'accès</system:String>
     <system:String x:Key="MessageWindow.Errors.GamePathNotFound">Impossible de trouver le chemin d'accès du répertoire du jeu. Veuillez sélectionner le chemin dans les paramètres et assurez vous de prendre le dossier qui contient sonic.exe.</system:String>
 
-
-    <system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Cette action désinstallera tous les mods sélectionnés. Voulez-vous vraiment continuer ?</system:String>
     <system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Un mod avec ce nom existe déjà.&#x0a;Veuillez choisir un nom différent ou renommer le mod existant.</system:String>
     <system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Mod existe déjà"</system:String>
     <system:String x:Key="MessageWindow.Errors.ModCreationFailed.Title">"Erreur création du Mod"</system:String>
@@ -25,32 +25,36 @@
     <system:String x:Key="MessageWindow.Errors.NoModName">Vous ne pouvez pas avoir un mod sans nom.</system:String>
     <system:String x:Key="MessageWindow.Errors.NoModName.Title">Nom du mod Invalide</system:String>
 
+    <system:String x:Key="MessageWindow.Errors.DontDoThat">Hum... non, tu ne veux pas faire ça. :)</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.InvalidFramerate.Title">Paramètre Invalide</system:String>
+    <system:String x:Key="MessageWindow.Errors.InvalidFramerate">Paramètre de fréquence d'images non valide.</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodesListFailed">Erreur lors du chargement de la liste de codes</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Erreur lors du chargement du code</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Échec de la suppression du mod {0}.&#x0a;Veuillez vous assurer que les fichiers existent et ne sont pas utilisés par un autre programme, puis réessayez.</system:String>
+    <system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Les erreurs suivantes se sont produites lors de la recherche de mises à jour :&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Erreurs de mise à jour</system:String>
+
+    <!--#endregion-->
+    
+    <!--#region Warnings-->
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Cette action désinstallera tous les mods sélectionnés:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Voulez-vous vraiment continuer ?</system:String>
     <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Vous êtes sur le point de désactiver la redirection de sauvegarde pour ce mod. Si vous continuez, toutes les sauvegardes présentent dans le dossier du mod seront supprimées.&#x0a;&#x0a;Êtes-vous sûr de vouloir continuer?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Cette action forcera tous les mods sélectionnés à être complètement retéléchargés.&#x0a;&#x0a;Êtes-vous sur de vouloir continuer?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Bilan de Santé</system:String>
+    <system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Vous êtes sur le point d'exécuter le bilan de santé du jeu. Cette action vérifiera tous les fichiers du jeu, à l'exception des fichiers audio.&#x0a;&#x0a;Souhaitez-vous continuer?</system:String>
+
+    <!--#endregion-->
+
+    <!--#region Information-->
     <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">Le dossier du jeu SADX a été trouvé, mais il semble qu'il s'agisse de la version Steam.&#x0a;Le Mod Loader ne peut fonctionner qu'avec la version PC 2004.&#x0a;&#x0a;Veuillez télécharger et installer "SADX Mod Installer" pour convertir votre jeu en version 2004. (Vos sauvegardes seront également converties).</system:String>
     <system:String x:Key="MessageWindow.Information.GameDetected.Title">Jeu trouvé</system:String>
     <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">Le jeu {0} a été trouvé dans '{1}'&#x0a;&#x0a;Voulez-vous télécharger et installer le Mod Loader?</system:String>
     <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Would you like to download and install the Mod Installer to convert your game to the 2004 version? (Your saves will be converted as well).</system:String>
 
-    
-    <system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Cette action forcera tous les mods sélectionnés à être complètement retéléchargés.&#x0a;&#x0a;Êtes-vous sur de vouloir continuer?</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.DontDoThat">Hum... non, tu ne veux pas faire ça. :)</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.InvalidFramerate.Title">Paramètre Invalide</system:String>
-    <system:String x:Key="MessageWindow.Errors.InvalidFramerate">Paramètre de fréquence d'images non valide.</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.CodesListFailed">Erreur lors du chargement de la liste de codes</system:String>
-    <system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Erreur lors du chargement du code</system:String>
-
     <system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">Aucune mise à jour</system:String>
     <system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Les mods sont à jour.</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Les erreurs suivantes se sont produites lors de la recherche de mises à jour :&#x0a;&#x0a;</system:String>
-    <system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Erreurs de mise à jour</system:String>
-
-
-    <system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Bilan de Santé</system:String>
-    <system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Vous êtes sur le point d'exécuter le bilan de santé du jeu. Cette action vérifiera tous les fichiers du jeu, à l'exception des fichiers audio.&#x0a;&#x0a;Souhaitez-vous continuer?</system:String>
 
     <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">Problèmes de fichiers détectés</system:String>
     <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">Les problèmes suivants ont été détectés avec les fichiers de votre jeu :</system:String>

@@ -94,12 +94,14 @@
 
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Невідома Помилка</system:String>
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Сталася невідома нам помилка.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
+    <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Це видалить вибрані моди.&#x0a;&#x0a;Чи бажаєш продовжити? (Дію не звернути)</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Це видалить вибрані моди:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Чи бажаєш продовжити? (Дію не звернути)</system:String>
 
-	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Ти зараз вимкнеш Перенапрям Збереження для цього моду. Якщо продовжиш, будь-який сейв у папці моду буде видалено.&#x0a;&#x0a;Чи бажаєш продовжити?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Ти зараз вимкнеш Перенапрям Збереження для цього моду. Якщо продовжиш, будь-який сейв у папці моду буде видалено.&#x0a;&#x0a;Чи бажаєш продовжити?</system:String>
 
 	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">Певен що хочеш видалити вибрані профілі?</system:String>
 	

@@ -7,7 +7,7 @@
     <system:String x:Key="UpdateStatus.ChkLoaderUpdate">Buscando actualización del Cargador de mods...</system:String>
     <system:String x:Key="UpdateStatus.ChkModsUpdates">Buscando actualizaciones de los mods...</system:String>
 	<system:String x:Key="UpdateStatus.ChkCodesUpdates">Buscando actualizaciones de los códigos...</system:String>
-    <system:String x:Key="UpdateStatus.ChkPatchesUpdates">Checking for Patches Updates...</system:String>
+    <system:String x:Key="UpdateStatus.ChkPatchesUpdates">Buscando actualizaciones de los parches...</system:String>
     <system:String x:Key="UpdateStatus.ChkManagerUpdateFail">No se pudo actualizar el Gestor de mods de SA</system:String>
 	<system:String x:Key="UpdateStatus.ChkLoaderUpdateFail">No se pudo actualizar el Cargador de mods</system:String>
     <!-- '{0}' will be used to display the name of the mod, ex: "Checking for Super Sonic Mod Update..."-->
@@ -19,7 +19,7 @@
     <system:String x:Key="UpdateStatus.InstallDependencies">Instalando dependencias. Espera, por favor...</system:String>
     <system:String x:Key="UpdateStatus.UpdateCodes">Actualizando códigos. Espera, por favor...</system:String>
     <system:String x:Key="UpdateStatus.FailedUpdateCodes">No se pudieron actualizar los códigos</system:String>
-    <system:String x:Key="UpdateStatus.FailedUpdatePatches">Failed to update Patches</system:String>
+    <system:String x:Key="UpdateStatus.FailedUpdatePatches">No se pudieron actualizar los parches</system:String>
     <system:String x:Key="UpdateStatus.UpdateDependencies">Actualizando dependencias, por favor espera...</system:String>
     <system:String x:Key="UpdateStatus.FailedUpdateDependencies">Error al actualizar las dependencias</system:String>
     <system:String x:Key="UpdateStatus.ManagerUpdate">Actualizando el Gestor de mods de SA...</system:String>
