@@ -24,8 +24,8 @@ namespace SAModManager.Updater
         private readonly CancellationTokenSource tokenSource = new();
         public bool done = false;
         private DLType Type = DLType.Download;
-        public Action<Exception> DownloadFailed;
         public Action DownloadCompleted;
+        public event Action<Exception> DownloadFailed;
         private IProgress<double?> _progress;
 
         public enum DLType
@@ -97,23 +97,27 @@ namespace SAModManager.Updater
 
         private async Task DownloadFileCompleted()
         {
-
-            switch (Type)
+            await Dispatcher.InvokeAsync(() =>
             {
-                case DLType.Download:
-                default:
-                    DLInfo.Text = Lang.GetString("Updater.DL.Dep.Download") + " ";
-                    break;
-                case DLType.Install:
-                    DLInfo.Text = Lang.GetString("Updater.DL.Dep.Install") + " ";
-                    break;
-                case DLType.Update:
-                    DLInfo.Text = Lang.GetString("Updater.DL.Dep.Update") + " ";
-                    break;
-            }
+                switch (Type)
+                {
+                    case DLType.Download:
+                    default:
+                        DLInfo.Text = Lang.GetString("Updater.DL.Dep.Download") + " ";
+                        break;
+                    case DLType.Install:
+                        DLInfo.Text = Lang.GetString("Updater.DL.Dep.Install") + " ";
+                        break;
+                    case DLType.Update:
+                        DLInfo.Text = Lang.GetString("Updater.DL.Dep.Update") + " ";
+                        break;
+                }
 
-            DLInfo.Text += Lang.GetString("Updater.DL.Dep.Completed") + "\n" + Lang.GetString("Updater.DL.Dep.Copying");
+                DLInfo.Text += Lang.GetString("Updater.DL.Dep.Completed") + "\n" + Lang.GetString("Updater.DL.Dep.Copying");
+            });
+
             await Task.Delay(1000);
+
             if (File.Exists(fileName) && Directory.Exists(dest))
             {
                 FileInfo fileInfo = new(fileName);
@@ -129,7 +133,20 @@ namespace SAModManager.Updater
             if (!string.IsNullOrEmpty(dest) && File.Exists(fileName) && dest != Path.GetDirectoryName(Environment.ProcessPath))
                 File.Delete(fileName);
 
-            Close();
+        }
+
+        public void DisplayDownloadFailedMSG(Exception ex)
+        {
+            string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + " " + this.fileName + "\n" + ex?.Message + "\n\n";
+            var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+            error.ShowDialog();
+        }
+
+        public static void DisplayGenericDownloadFailedMSG(Exception ex)
+        {
+            string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + "\n" + ex?.Message + "\n\n";
+            var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+            error.ShowDialog();
         }
 
         private async Task DoDownloadAsync()
@@ -137,8 +154,8 @@ namespace SAModManager.Updater
             try
             {
                 var httpClient = UpdateHelper.HttpClient;
-
                 string destination = Path.Combine(dest, fileName);
+
                 try
                 {
                     if (File.Exists(destination))
@@ -149,9 +166,10 @@ namespace SAModManager.Updater
                 catch { }
 
                 await httpClient.DownloadFileAsync(uri.AbsoluteUri, destination, _progress).ConfigureAwait(false);
+                await DownloadFileCompleted();
                 await Dispatcher.InvokeAsync(() =>
                 {
-                    DownloadCompleted = async () => await DownloadFileCompleted();
+                    Close();
                     DownloadCompleted?.Invoke();
                 });
             }
@@ -159,9 +177,8 @@ namespace SAModManager.Updater
             {
                 await Dispatcher.InvokeAsync(() =>
                 {
-                    string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + " " + this.fileName + "\n" + ex.Message + "\n\n";
-                    var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
-                    error.ShowDialog();
+                    done = false;
+                    Close();
                     DownloadFailed?.Invoke(ex);
                 });
             }
