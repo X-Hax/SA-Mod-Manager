@@ -145,27 +145,35 @@ namespace SAModManager.Common
             return success;
         }
 
-        public static async Task InstallDLL_Loader(Game game, bool force = false)
+        public static async Task InstallDLL_Loader(Game game)
         {
             if (game is null)
                 return;
+
+            string loaderPath = Path.Combine(game.modDirectory, game.loader.name + ".dll");
 
             try
             {
                 Uri uri = new(game.loader.URL + "\r\n");
                 var dl = new DownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, DownloadDialog.DLType.Install, true);
-
                 dl.StartDL();
 
-                if (dl.done == false && !force)
+                if (dl.done == false)
                 {
-                    var offline = new OfflineInstall(game.loader.name);
-                    offline.Show();
-                    await Task.Delay(2000);
-                    bool success = await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
-                    offline.CheckSuccess(success);
-                    await Task.Delay(1000);
-                    offline.Close();
+                    if (!File.Exists(loaderPath))
+                    {
+                        var offline = new OfflineInstall(game.loader.name);
+                        offline.Show();
+                        await Task.Delay(2000);
+                        bool success = await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
+                        offline.CheckSuccess(success);
+                        await Task.Delay(1000);
+                        offline.Close();
+                    }
+                    else
+                    {
+                        dl.DisplayDownloadFailedMSG(null);
+                    }
                 }
                 else
                 {
@@ -176,10 +184,9 @@ namespace SAModManager.Common
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                if (!force)
-                    await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
+                DownloadDialog.DisplayGenericDownloadFailedMSG(ex);
             }
 
             await UpdateCodes(App.CurrentGame); //update codes
@@ -196,17 +203,25 @@ namespace SAModManager.Common
                 Uri uri = new(game.loader.URL + "\r\n");
                 var dl = new DownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, DownloadDialog.DLType.Update);
 
-                dl.StartDL();
                 await Task.Delay(10);
-                if (dl.done == true)
+                bool success = false;
+
+                dl.DownloadFailed += (ex) =>
+                {
+                    dl.DisplayDownloadFailedMSG(ex);
+                };
+
+                dl.DownloadCompleted += () =>
                 {
                     if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
                     {
                         File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
-                        return true;
+                        success = true;
                     }
-                }
-                return false;
+                };
+
+                dl.StartDL();
+                return success;
             }
             catch
             {
@@ -237,9 +252,23 @@ namespace SAModManager.Common
             {
                 Console.WriteLine("Failed to update code\n");
                 ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateCodes"));
+
+
             }
 
             return false;
+        }
+
+        private static async Task<bool> PerformOfflineInstall(Dependencies dependency)
+        {
+            var offline = new OfflineInstall(dependency.name);
+            offline.Show();
+            await Task.Delay(2000);
+            bool success = await InstallDependenciesOffline(dependency);
+            offline.CheckSuccess(success);
+            await Task.Delay(1000);
+            offline.Close();
+            return success;
         }
 
         public static async Task<bool> UpdatePatches(Game game)
@@ -292,10 +321,17 @@ namespace SAModManager.Common
 
                         if (dl.done == false)
                         {
-                            await Task.Delay(500);
-                        }
+                            if (!GamesInstall.DependencyInstalled(dependency))
+                            {
+                               success = await PerformOfflineInstall(dependency);
+                            }
+                            else
+                            {
 
-                        if (dl.done != false)
+                                dl.DisplayDownloadFailedMSG(null);
+                            }
+                        }
+                        else
                         {
                             string dest = Path.Combine(dependency.path, dependency.name);
                             string fullPath = dest + ".zip";
@@ -308,11 +344,13 @@ namespace SAModManager.Common
                             success = true;
                         }
 
-                        dl.Close();
                     }
                     catch
                     {
-                        return false;
+                        if (!File.Exists(dependency.path))
+                            success = await InstallDependenciesOffline(dependency);
+
+                        return success;
                     }
                 }
 
@@ -347,18 +385,7 @@ namespace SAModManager.Common
 
                         if (dl.done == false)
                         {
-                            await Task.Delay(500);
-                        }
-
-                        if (dl.done == false)
-                        {
-                            var offline = new OfflineInstall(dependency.name);
-                            offline.Show();
-                            await Task.Delay(2000);
-                            bool success = await InstallDependenciesOffline(dependency);
-                            offline.CheckSuccess(success);
-                            await Task.Delay(1000);
-                            offline.Close();
+                            await PerformOfflineInstall(dependency);
                         }
                         else
                         {
@@ -369,9 +396,7 @@ namespace SAModManager.Common
                                 await Util.Extract(fullPath, dependency.path, true);
                                 File.Delete(fullPath);
                             }
-
                         }
-                        dl.Close();
                     }
                     catch
                     {

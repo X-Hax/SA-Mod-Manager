@@ -2398,7 +2398,7 @@ namespace SAModManager
             //File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
             if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
             {
-                await GamesInstall.InstallDLL_Loader(App.CurrentGame, true);
+                await GamesInstall.InstallDLL_Loader(App.CurrentGame);
                 await GamesInstall.UpdateDependencies(App.CurrentGame);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
             }

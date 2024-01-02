@@ -101,22 +101,26 @@ namespace SAModManager
 
                     if (dialog.isYes)
                     {
-
                         Uri uri = new(VCURLs[i] + "\r\n");
                         var DL = new DownloadDialog(uri, "Visual C++", "vc_redist.x86.exe");
+                        DL.DownloadFailed += (ex) =>
+                        {
+                            DL.DisplayDownloadFailedMSG(ex);
+                        };
 
                         DL.StartDL();
 
                         if (DL.done)
                         {
                             // Asynchronous operation using async/await
-                            await Process.Start(new ProcessStartInfo(Path.Combine(App.tempFolder, "vc_redist.x86.exe"), "/install /passive /norestart")
+                            await Process.Start(new ProcessStartInfo(Path.Combine(App.tempFolder, "vc_redist.x86.exe"), "/Q /install /quiet /norestart")
                             {
                                 UseShellExecute = true,
                                 Verb = "runas"
                             }).WaitForExitAsync();
-                        }
-
+                        };
+                        
+              
                         return false;
                     }
 
