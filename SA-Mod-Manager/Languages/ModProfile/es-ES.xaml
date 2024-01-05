@@ -19,4 +19,5 @@
 
     <system:String x:Key="NewProfile.Title">Crea Perfil</system:String>
     <system:String x:Key="NewProfile.Text.NewProfile">Nuevo Perfil</system:String>
+    <system:String x:Key="NewProfile.CheckBox.ModsAndCodes">Mantener los Mods y Códigos seleccionados.</system:String>
 </ResourceDictionary>

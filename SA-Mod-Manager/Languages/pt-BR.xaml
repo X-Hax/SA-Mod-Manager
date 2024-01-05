@@ -4,21 +4,29 @@
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 
-	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="AboutMod/pt-PT.xaml"/>
-		<ResourceDictionary Source="EditMod/pt-PT.xaml"/>
-		<ResourceDictionary Source="InstallModOptions/pt-PT.xaml"/>
-		<ResourceDictionary Source="MainWindow/pt-PT.xaml"/>
-		<ResourceDictionary Source="MainWindow/Patches/pt-PT.xaml"/>
-		<ResourceDictionary Source="MainWindow/TestSpawn/pt-PT.xaml"/>
-		<ResourceDictionary Source="ManifestChanges/pt-PT.xaml"/>
-		<ResourceDictionary Source="MessageWindow/pt-PT.xaml"/>
-		<ResourceDictionary Source="ModChangelog/pt-PT.xaml"/>
-		<ResourceDictionary Source="ModConfig/pt-PT.xaml"/>
-		<ResourceDictionary Source="ModProfile/pt-PT.xaml"/>
-		<ResourceDictionary Source="SelectDependencies/pt-PT.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
-    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="AboutMod/pt-BR.xaml"/>
+        <ResourceDictionary Source="EditMod/pt-BR.xaml"/>
+        <ResourceDictionary Source="GameConfig/pt-BR.xaml"/>
+        <ResourceDictionary Source="GameConfig/Patches/pt-BR.xaml"/>
+        <ResourceDictionary Source="GameConfig/TestSpawn/pt-BR.xaml"/>
+        <ResourceDictionary Source="HealthProgress/pt-BR.xaml"/>
+        <ResourceDictionary Source="InfoManagerUpdate/pt-BR.xaml"/>
+        <ResourceDictionary Source="InstallModOptions/pt-BR.xaml"/>
+        <ResourceDictionary Source="MainWindow/pt-BR.xaml"/>
+        <ResourceDictionary Source="ManifestChanges/pt-BR.xaml"/>
+        <ResourceDictionary Source="MessageWindow/pt-BR.xaml"/>
+        <ResourceDictionary Source="ModChangelog/pt-BR.xaml"/>
+        <ResourceDictionary Source="ModConfig/pt-BR.xaml"/>
+        <ResourceDictionary Source="ModProfile/pt-BR.xaml"/>
+        <ResourceDictionary Source="NewCode/pt-BR.xaml"/>
+        <ResourceDictionary Source="SelectDependencies/pt-BR.xaml"/>
+        <ResourceDictionary Source="SplashScreen/pt-BR.xaml"/>
+        <ResourceDictionary Source="Updater/pt-BR.xaml"/>
+        <ResourceDictionary Source="MainWindow/UpdateStatus/pt-BR.xaml"/>
+        <ResourceDictionary Source="ExceptionHandler/pt-BR.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">OK</system:String>
     <system:String x:Key="CommonStrings.Cancel">Cancelar</system:String>
@@ -45,8 +53,10 @@
 	<system:String x:Key="CommonStrings.None">Nenhum</system:String>
     <system:String x:Key="CommonStrings.Enabled">Habilitado</system:String>
     <system:String x:Key="CommonStrings.Disabled">Desabilitado</system:String>
-	
-	<!--Region Create Code-->
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+
+    <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Tipo</system:String>
     <system:String x:Key="CommonStrings.TypeCode">Código</system:String>
     <system:String x:Key="CommonStrings.Typepatch">Correção</system:String>

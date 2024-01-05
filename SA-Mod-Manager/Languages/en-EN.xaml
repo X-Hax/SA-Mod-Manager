@@ -24,7 +24,8 @@
 		<ResourceDictionary Source="SplashScreen/en-EN.xaml"/>
         <ResourceDictionary Source="Updater/en-EN.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/en-EN.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="ExceptionHandler/en-EN.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">OK</system:String>
@@ -52,11 +53,13 @@
     <system:String x:Key="CommonStrings.None">None</system:String>
     <system:String x:Key="CommonStrings.Enabled">Enabled</system:String>
     <system:String x:Key="CommonStrings.Disabled">Disabled</system:String>
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
 
     <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Type</system:String>
     <system:String x:Key="CommonStrings.TypeCode">Code</system:String>
-    <system:String x:Key="CommonStrings.Typepatch">Patch</system:String>
+    <system:String x:Key="CommonStrings.TypePatch">Patch</system:String>
     <system:String x:Key="CommonStrings.IsRequired">Is Required</system:String>
 
     <!--Window Tips-->

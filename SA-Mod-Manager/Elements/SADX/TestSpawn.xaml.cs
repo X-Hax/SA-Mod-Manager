@@ -412,15 +412,13 @@ namespace SAModManager.Elements.SADX
                 expandAdvanced.IsExpanded = true;
         }
 
-        private async void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
+        private void btnTestSpawnLaunchGame_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
             {
                 new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                 return;
             }
-
-			await Task.Run(() => GameProfile.WriteToLoaderInfo(App.CurrentGame.modDirectory, App.ManagerSettings));
 
 			string executablePath = SelectedMods?.Select(item => GameMods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
 
@@ -604,7 +602,12 @@ namespace SAModManager.Elements.SADX
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumPosX.SetBinding(NumericUpDown.ValueProperty, new Binding("XPosition")
+			tsCheckPosition.SetBinding(CheckBox.IsCheckedProperty, new Binding("UsePosition")
+			{
+				Source = GameProfile.TestSpawn,
+				Mode = BindingMode.TwoWay
+			});
+			tsNumPosX.SetBinding(NumericUpDown.ValueProperty, new Binding("XPosition")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
@@ -629,17 +632,18 @@ namespace SAModManager.Elements.SADX
         public static string GetSaveNumber(string s)
         {
             string number = s[^2..];
-
+        
             if (int.TryParse(number, out int result))
             {
                 // The last two characters are numbers
                 if (number[0] == '0')
                 {
-                    number = number.Substring(1);
+                    number = number[1..];
                 }
+  
             }
 
-            return number;
+            return result > 0 ? number : s;
         }
 
         private void GetSaves()
@@ -665,7 +669,7 @@ namespace SAModManager.Elements.SADX
                         string name = Path.GetFileNameWithoutExtension(file);
                         string nameDup = name.ToLower();
 
-                        if (nameDup.Contains("sonicdx")) //skip chao garden save
+                        if (!nameDup.Contains("chao")) //skip chao garden save
                             list.Add(name);
                     }
 
@@ -746,7 +750,7 @@ namespace SAModManager.Elements.SADX
             {
                 string save = tsComboSave.SelectedValue.ToString();
                 save = GetSaveNumber(save);
-                cmdline.Add("-s " + save);
+                cmdline.Add("-s " + "\"" + save + "\"");
             }
 
 

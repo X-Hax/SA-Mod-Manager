@@ -72,6 +72,7 @@
 
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">About</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">About</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">The SA Mod Manager is a program that allows you to easily manage mods in the Sonic Adventure titles.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contributors</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Mod Manager Source Code</system:String>
@@ -118,9 +119,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Set a custom resolution, or select from a list of preset resolutions.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Forces the game to a 4:3 aspect ratio despite the set resolution.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Enables V-Sync.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">If enabled, when the game window is not focused, the game will be paused.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers">This option fixes the alt-tab crash in fullscreen by swapping to dynamic buffer allocation. It can cause lag in-game under some circumstances or with some mods.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Game window will boot in fullscreen.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">If enabled, when the game window is not focused, the game will be paused.</system:String> 
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Sets the fullscreen game window to borderless.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Scales the game window in Fullscreen to render to the selected display's size.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Game window will boot in windowed mode.</system:String>

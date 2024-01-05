@@ -184,6 +184,7 @@ namespace SAModManager.Configuration.SADX
 		public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{
 			SelectedScreen = oldSettings.ScreenNum;
+
 			HorizontalResolution = oldSettings.HorizontalResolution;
 			VerticalResolution = oldSettings.VerticalResolution;
 
@@ -191,7 +192,7 @@ namespace SAModManager.Configuration.SADX
 			EnableVsync = oldSettings.EnableVsync;
 			EnablePauseOnInactive = oldSettings.PauseWhenInactive;
 
-			EnableBorderless = oldSettings.Borderless;
+			EnableBorderless = oldSettings.WindowedFullscreen;
 			EnableScreenScaling = oldSettings.StretchFullscreen;
 
 			EnableCustomWindow = oldSettings.CustomWindowSize;
@@ -216,7 +217,7 @@ namespace SAModManager.Configuration.SADX
 			switch ((DisplayMode)ScreenMode)
 			{
 				case DisplayMode.Borderless:
-					info.Borderless = true;
+					info.WindowedFullscreen = true;
 					break;
 				case DisplayMode.CustomWindow:
 					info.CustomWindowSize = true;
@@ -272,7 +273,7 @@ namespace SAModManager.Configuration.SADX
 			switch ((DisplayMode)ScreenMode)
 			{
 				case DisplayMode.Borderless:
-					info.Borderless = true;
+					info.WindowedFullscreen = true;
 					break;
 				case DisplayMode.CustomWindow:
 					info.CustomWindowSize = true;
@@ -810,12 +811,14 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		[DefaultValue(false)]
 		public bool DisableCDCheck { get; set; } = false;       // SADXLoaderInfo.DisableCDCheck
+        [DefaultValue(true)]
+        public bool ExtendedSaveSupport { get; set; } = true;
 
-		/// <summary>
-		/// Converts from original settings file.
-		/// </summary>
-		/// <param name="oldSettings"></param>
-		public void ConvertFromV0(SADXLoaderInfo oldSettings)
+        /// <summary>
+        /// Converts from original settings file.
+        /// </summary>
+        /// <param name="oldSettings"></param>
+        public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{
 			HRTFSound = oldSettings.HRTFSound;
 			KeepCamSettings = oldSettings.CCEF;
@@ -832,6 +835,7 @@ namespace SAModManager.Configuration.SADX
 			LightFix = oldSettings.LightFix;
 			KillGBIX = oldSettings.KillGbix;
 			DisableCDCheck = oldSettings.DisableCDCheck;
+			ExtendedSaveSupport = oldSettings.ExtendedSaveSupport;
 		}
 
 		public void LoadLoaderInfo(ref SADXLoaderInfo info)
@@ -997,7 +1001,7 @@ namespace SAModManager.Configuration.SADX
 			loaderInfo.ForceAspectRatio = Graphics.Enable43ResolutionRatio;
 			loaderInfo.EnableVsync = Graphics.EnableVsync;
 			loaderInfo.PauseWhenInactive = Graphics.EnablePauseOnInactive;
-			loaderInfo.Borderless = Graphics.EnableBorderless;
+			loaderInfo.WindowedFullscreen = Graphics.EnableBorderless;
 			loaderInfo.StretchFullscreen = Graphics.EnableScreenScaling;
 			loaderInfo.CustomWindowSize = Graphics.EnableCustomWindow;
 			loaderInfo.WindowWidth = Graphics.CustomWindowWidth;
@@ -1034,9 +1038,11 @@ namespace SAModManager.Configuration.SADX
 			loaderInfo.LightFix = Patches.LightFix;
 			loaderInfo.KillGbix = Patches.KillGBIX;
 			loaderInfo.DisableCDCheck = Patches.DisableCDCheck;
+			loaderInfo.ExtendedSaveSupport = Patches.ExtendedSaveSupport;
 
-			// Debug
-			loaderInfo.DebugConsole = DebugSettings.EnableDebugConsole;
+
+            // Debug
+            loaderInfo.DebugConsole = DebugSettings.EnableDebugConsole;
 			loaderInfo.DebugScreen = DebugSettings.EnableDebugScreen;
 			loaderInfo.DebugFile = DebugSettings.EnableDebugFile;
 			loaderInfo.DebugCrashLog = DebugSettings.EnableDebugCrashLog;

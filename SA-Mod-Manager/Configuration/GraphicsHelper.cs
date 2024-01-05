@@ -61,7 +61,7 @@ namespace SAModManager.Configuration
 				comboResolutionPreset.SelectedIndex = -1;
 		}
 
-		public int GetScreenNum(int screenNum)
+		public static int GetScreenNum(int screenNum)
 		{
 			return Math.Min(Screen.AllScreens.Length, screenNum);
 		}

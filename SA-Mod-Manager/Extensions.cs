@@ -58,6 +58,15 @@ namespace SAModManager
             }
         }
 
+        public static async Task DownloadFileAsync(this HttpClient client, string url, string filePath, IProgress<double?> progress = null, CancellationToken cancellationToken = default)
+        {
+            using var httpResponse = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+            httpResponse.EnsureSuccessStatusCode();
+
+            using var outputFile = File.Create(filePath, 8192, FileOptions.Asynchronous);
+            await httpResponse.Content.CopyToAsync(outputFile, progress, cancellationToken).ConfigureAwait(false);
+        }
+
 
     }
 

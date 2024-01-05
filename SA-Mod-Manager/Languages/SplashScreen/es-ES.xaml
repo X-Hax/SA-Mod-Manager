@@ -1,0 +1,32 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="SplashScreen.Title">Hola!</system:String>
+	<system:String x:Key="SplashScreen.Welcome">Te damos la bienvenida al SA Mod Manager</system:String>
+
+	<system:String x:Key="SplashScreen.Intro" xml:space="preserve">¡Has actualizado al SA Mod Manager!&#x0a;&#x0a;Este nuevo Manager trae muchas mejoras, funciones y algunas actualizaciones al Mod Loader. Los mods existentes seguirán funcionando correctamente. A continuación encontrarás una lista con los cambios más importantes.</system:String>
+
+	<system:String x:Key="SplashScreen.QOL">Mejoras de calidad</system:String>
+    <system:String x:Key="SplashScreen.QOL.Themes">¡El Manager ahora permite el uso de temas! Puedes cambiar tu tema actual en la pestaña "Configuración del Manager".</system:String>
+    <system:String x:Key="SplashScreen.QOL.Languages">¡El Manager ahora permite el uso de varios idiomas! Puedes cambiar tu idioma en la pestaña "Configuración del Manager"</system:String>
+    <system:String x:Key="SplashScreen.QOL.Manager">¡Ya no es necesario dejar el ejecutable del Manager en la misma carpeta del juego! Si estás viendo esto después de actualizar desde el manager antiguo, el ejecutable del manager se encuentra ahora mismo en la carpeta del juego. ¡Ahora puedes mover este ejecutable donde quieras!</system:String>
+    <system:String x:Key="SplashScreen.QOL.Profiles">Los Perfiles han sido migrados a un nuevo sistema y ahora tienen una herramienta dedicada en la pestaña Configuración del Manager para gestionarlos. También hay un botón para migrar perfiles antiguos al nuevo sistema, en caso de que tengas perfiles antiguos que quieras seguir utilizando.</system:String>
+    <system:String x:Key="SplashScreen.QOL.Config">La Configuración del Juego y Manager han sido separadas en dos pestañas. Las opciones Debug (Activar Consola, Generar un Informe de Bloqueo...) ahora se encuentran en la pestaña "Configuración del Manager". Todas las opciones relacionadas con el juego se encuentran en la pestaña "Configuración del Juego".</system:String>
+    <system:String x:Key="SplashScreen.QOL.KeepOpen">Se ha añadido una opción que permite al manager seguir abierto después de pulsar "Guardar y Jugar". Esta opción esta activada por defecto.</system:String>
+
+	<system:String x:Key="SplashScreen.Features">Nuevas Funciones</system:String>
+    <system:String x:Key="SplashScreen.Features.AddMod">El botón Nuevo Mod ha sido sustituido por el botón Añadir Mod. Esta función permite tanto la creación de mods como la instalación manual de mods. La instalación funciona desde directorios y archivos.</system:String>
+    <system:String x:Key="SplashScreen.Features.About">Los Mods y Códigos ahora tienen una nueva ventana "Acerca de" que puedes acceder al hacer doble clic en ellos. Los mods ahora permiten enlaces para la web del autor y el código fuente del mod. Estos serán visibles en la ventana "Acerca de" del mod si existen para ese mod.</system:String>
+    <system:String x:Key="SplashScreen.Features.HealthCheck">Se ha añadido la función "Verificar Archivos del Juego". Esto puede detectar si faltan archivos del juego o si estos han sido modificados. Por favor, ten en cuenta que los archivos modificados no suelen ser un problema y que el Manager no reparará tu instalación del juego.</system:String>
+    <system:String x:Key="SplashScreen.Features.Search">Los Mods y Códigos ahora tienen una función de búsqueda. Cuando estés en las ventanas de Mods o Códigos, puedes abrir la búsqueda pulsando Ctrl+F.</system:String>
+    <system:String x:Key="SplashScreen.Features.Codes">Se ha añadido un escritor de códigos dedicado. Ahora puedes añadir códigos específicos para mods al crear un nuevo mod o mientras editas uno existente. Ahora es más fácil añadir códigos con una ventana que permite resaltado de sintaxis para nuestro sistema OpCodes. Esta ventana también verificará si el código que has escrito es correcto.</system:String>
+    <system:String x:Key="SplashScreen.Features.NewMod">Se ha simplificado la creación de mods. Ahora puedes añadir Actualizaciones y Dependencias directamente en el diálogo. Puedes acceder a esta función en cualquier momento mediante la función "Editar Mod" al hacer click derecho en el.</system:String>
+    <system:String x:Key="SplashScreen.Features.CodeDesc">Los códigos ahora incluyen descripciones. Por ahora, solo se han añadido descripciones a los códigos que no eran suficientemente claros con el nombre solo. Los códigos creados por el usuario pueden incluir descripciones.</system:String>
+
+	<system:String x:Key="SplashScreen.ML">Cambios en el SADX Mod Loader</system:String>
+    <system:String x:Key="SplashScreen.ML.Patches">Los arreglos silenciosos (Parches) que el Loader aplicaba forzadamente ahora pueden ser activados o desactivados. La gran mayoría de estos están activados por defecto. Puedes encontrarlos en "Configuración del Juego > Parches".</system:String>
+    <system:String x:Key="SplashScreen.ML.SDL2">El "Input Mod" (SDL2) ha sido implementado de forma nativa en el SADX Loader (ya no necesitas usar el Mod para esto). Está activado por defecto. Puedes cambiar entre SDL2 y Estándar en "Configuración del Juego > Entrada".</system:String>
+	
+</ResourceDictionary>

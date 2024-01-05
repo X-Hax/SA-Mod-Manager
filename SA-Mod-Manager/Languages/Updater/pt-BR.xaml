@@ -13,6 +13,10 @@
     <system:String x:Key="Updater.DL.Dep.Completed">Concluído.</system:String>
     <system:String x:Key="Updater.DL.Dep.Copying">Copiando arquivos...</system:String>
 
+    <system:String x:Key="Updater.DL.Offline.Title">Offline Installation</system:String>
+    <system:String x:Key="Updater.DL.Offline.Failed">Failed to download {0}</system:String>
+    <system:String x:Key="Updater.DL.Offline.InstallAttempt">Trying offline installation, please wait...</system:String>
+
     <!--Mod Update-->
     <system:String x:Key="Updater.DL.Mod.Extracting">Extraindo...</system:String>
     <system:String x:Key="Updater.DL.Mod.ParsingManifest">Analisando manifesto...</system:String>

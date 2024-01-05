@@ -1,0 +1,15 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="ExceptionHandler.Title">El gestor se bloqueó</system:String>
+	<system:String x:Key="ExceptionHandler.Header">El gestor encontró un error</system:String>
+    <system:String x:Key="ExceptionHandler.Copy">Copiar el registro de errores</system:String>
+	<system:String x:Key="ExceptionHandler.Ignore">Ignorar y cerrar</system:String>
+    <system:String x:Key="ExceptionHandler.Report">Reportar error (sólo en inglés)</system:String>
+
+    <system:String x:Key="ExceptionHandler.ToolTip.Copy">Copia el registro de errores al portapapeles con el formato de revisión incluido.</system:String>
+    <system:String x:Key="ExceptionHandler.ToolTip.Ignore">Ignora el error y cierra esta ventana. El Gestor podría cerrarse.</system:String>
+    <system:String x:Key="ExceptionHandler.ToolTip.Report">Abre una incidencia en el repositorio del Gestor en GitHub con una plantilla para que proporciones información adicional y una copia del informe de excepciones.</system:String>
+</ResourceDictionary>

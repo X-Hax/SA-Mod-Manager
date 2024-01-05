@@ -167,6 +167,11 @@ namespace SAModManager.Elements
 			{
 				e.Handled = true;
 			}
+
+			if (e.Key == Key.Subtract || e.Key == Key.OemMinus)
+			{
+				Value *= -1.0f;
+			}
 		}
 
 		#region Buttons

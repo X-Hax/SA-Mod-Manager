@@ -22,11 +22,11 @@ namespace SAModManager.Common
 		}
 
 		ObservableCollection<ModChangeLogData> modchangeData { get; set; } = new();
-		private readonly List<ModDownloadWPF> mods;
+		private readonly List<ModDownload> mods;
 
-		public List<ModDownloadWPF> SelectedMods { get; } = new();
+		public List<ModDownload> SelectedMods { get; } = new();
 
-		public void SetData(ModDownloadWPF entry)
+		public void SetData(ModDownload entry)
 		{
 			if (entry == null)
 			{
@@ -52,7 +52,7 @@ namespace SAModManager.Common
 			BtnOpenUpdate.IsEnabled = !string.IsNullOrEmpty(entry.ReleaseUrl);
 		}
 
-		private void SetModDetails(ModDownloadWPF entry)
+		private void SetModDetails(ModDownload entry)
 		{
 			textChangeLog.Text = entry?.Changes.Trim();
 			SetData(entry);
@@ -97,7 +97,7 @@ namespace SAModManager.Common
 			DataContext = modchangeData;
 		}
 
-		private void AdjustDetailsDisplay(ModDownloadWPF mod)
+		private void AdjustDetailsDisplay(ModDownload mod)
 		{
 			bool IsSelfHosted = string.IsNullOrEmpty(mod.Info.UpdateUrl);
 
@@ -115,7 +115,7 @@ namespace SAModManager.Common
 			}
 		}
 
-		public ModChangelog(List<ModDownloadWPF> mods)
+		public ModChangelog(List<ModDownload> mods)
         {
 			InitializeComponent();
 			this.mods = mods;
@@ -125,7 +125,7 @@ namespace SAModManager.Common
 		{
 			ModsList.BeginInit();
 
-			foreach (ModDownloadWPF download in mods)
+			foreach (ModDownload download in mods)
 			{
 				download.IsChecked = true;
 				ModsList.Items.Add(download);
@@ -138,7 +138,7 @@ namespace SAModManager.Common
 
 		private void DLButton_Click(object sender, RoutedEventArgs e)
 		{
-			foreach (ModDownloadWPF item in mods)
+			foreach (ModDownload item in mods)
 			{
 				if (item.IsChecked == true)
 					SelectedMods.Add(item);
@@ -149,7 +149,7 @@ namespace SAModManager.Common
 
 		private void CheckBox_Checked(object sender, RoutedEventArgs e)
 		{
-			btnInstallNow.IsEnabled = ModsList.Items.Cast<ModDownloadWPF>().Any(x => x.IsChecked);
+			btnInstallNow.IsEnabled = ModsList.Items.Cast<ModDownload>().Any(x => x.IsChecked);
 		}
 
 		private void ModsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -162,7 +162,7 @@ namespace SAModManager.Common
 			}
 			else
 			{
-				var entry = items[0] as ModDownloadWPF;
+				var entry = items[0] as ModDownload;
 				SetModDetails(entry);
 				AdjustDetailsDisplay(entry);
 			}
@@ -178,7 +178,7 @@ namespace SAModManager.Common
 		{
 			var item = ModsList.SelectedItem;
 
-			var entry = item as ModDownloadWPF;
+			var entry = item as ModDownload;
 
 			if (entry != null)
 			{

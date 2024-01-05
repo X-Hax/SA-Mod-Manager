@@ -23,8 +23,7 @@ using SAModManager.Updater;
 using SAModManager.Elements;
 using SAModManager.Ini;
 using SAModManager.Configuration;
-using ICSharpCode.AvalonEdit.Document;
-
+using System.Text;
 
 namespace SAModManager
 {
@@ -38,11 +37,11 @@ namespace SAModManager
         // Global Window Strings
         public readonly string titleName = "SA Mod Manager";
         private readonly string Version = App.VersionString;
-        private static string updatePath = "mods/.updates";
-        string codelstpath = "mods/Codes.lst";
-        string codexmlpath = "mods/Codes.xml";
-        string codedatpath = "mods/Codes.dat";
-        string patchdatpath = "mods/Patches.dat";
+        private static string updatePath = "mods\\.updates";
+        string codelstpath = "mods\\Codes.lst";
+        string codexmlpath = "mods\\Codes.xml";
+        string codedatpath = "mods\\Codes.dat";
+        string patchdatpath = "mods\\Patches.dat";
 
         // Shared Variables
         public SetGame setGame = SetGame.None;
@@ -61,7 +60,7 @@ namespace SAModManager
         public MainWindowViewModel ViewModel = new();
         Profiles GameProfiles = new();
         object GameProfile;
-        private string tempPath = "";
+        public string tempPath = "";
         public static bool cancelUpdate { get; set; }
 
         // TODO: Make this generic for handling both games. Maybe do it with a custom class for easier management.
@@ -91,11 +90,6 @@ namespace SAModManager
         }
 
         #region Form: Functions
-        private void MainWindowManager_ContentRendered(object sender, EventArgs e)
-        {
-            this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
-        }
-
         private async Task VanillaUpdate_CheckGame()
         {
             bool isValid = false;
@@ -110,6 +104,7 @@ namespace SAModManager
 
                     string currentPath = Environment.CurrentDirectory;
                     tempPath = currentPath;
+                    App.CurrentGame.gameDirectory = currentPath;
                     UIHelper.ToggleButton(ref btnOpenGameDir, true);
                     await VanillaTransition.ConvertOldProfile(false, currentPath);
                     Load(true);
@@ -128,32 +123,16 @@ namespace SAModManager
 
         private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
         {
+            this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
+
             StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
 
             SetModManagerVersion();
 
             Load();
 
-            new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
-
             SetBindings();
 
-#if !DEBUG
-            checkForUpdate = true;
-            UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
-            UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
-            bool managerUpdate = await App.PerformUpdateManagerCheck();
-            if (managerUpdate || await App.PerformUpdateLoaderCheck() || await App.PerformUpdateCodesCheck())
-            {
-                if (!managerUpdate)
-                    Refresh();
-
-                return;
-            }
-
-            await CheckForModUpdates();
-            checkForUpdate = false;
-#endif
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
 
             if (App.isVanillaTransition && (App.CurrentGame is null || App.CurrentGame.gameDirectory is null))
@@ -164,6 +143,53 @@ namespace SAModManager
                 new SplashScreenDialog().ShowDialog();
                 App.isFirstBoot = false;
             }
+
+            var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
+           
+            if (oneClick.isEmpty == false)
+            {
+                return;
+            }
+
+
+#if !DEBUG
+            checkForUpdate = true;
+            UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
+            UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
+            bool managerUpdate = chkUpdateManager.IsChecked == true && await App.PerformUpdateManagerCheck();
+            if (managerUpdate)
+            {
+                Refresh();
+                return;
+            }
+
+            if (App.CurrentGame.loader.installed)
+            {
+                if (chkUpdatesML.IsChecked == true)
+                {
+                    await App.PerformUpdateLoaderCheck();
+                    await App.PerformUpdateCodesCheck();
+                    await App.PerformUpdatePatchesCheck();
+                }
+            }
+
+            await CheckForModUpdates();
+
+            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
+            checkForUpdate = false;
+            Dispatcher.Invoke(Refresh);
+
+           if (setGame == SetGame.None || string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
+            {
+                if (await Steam.FindAndSetCurGame())
+                {
+                    Load(true);
+                    await ForceInstallLoader();
+                    UpdateButtonsState();
+                    Save();
+                }
+            }
+#endif
         }
 
         private void MainForm_FormClosing(object sender, EventArgs e)
@@ -296,7 +322,7 @@ namespace SAModManager
             RefreshBtn.IsEnabled = true;
         }
 
-        private void NewModBtn_Click(object sender, RoutedEventArgs e)
+        private async void NewModBtn_Click(object sender, RoutedEventArgs e)
         {
             var form = new InstallModOptions();
             var choice = form.Ask();
@@ -315,7 +341,7 @@ namespace SAModManager
                     if (result_ == System.Windows.Forms.DialogResult.OK)
                     {
                         string[] sFileName = archiveFile.FileNames;
-                        form.InstallMod(sFileName, App.CurrentGame.modDirectory);
+                        await form.InstallMod(sFileName, App.CurrentGame.modDirectory);
 
                     }
                     break;
@@ -531,7 +557,7 @@ namespace SAModManager
                         break;
                     }
                 }
-                   
+
                 var SADXMod = mods[item.Tag];
 
                 if (SADXMod is not null)
@@ -677,7 +703,6 @@ namespace SAModManager
                     return;
                 }
 
-
                 UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
                 await UpdateChecker_DoWork();
                 modUpdater.ForceUpdate = true;
@@ -718,24 +743,43 @@ namespace SAModManager
         {
             var selectedItems = listMods.SelectedItems;
             var count = selectedItems.Count > 0;
-
+            int index = 0;
             if (count)
             {
-                var confirmMessage = Lang.GetString("MessageWindow.Warnings.DeleteMod");
-                var deleteConfirmation = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+                var confirmMessage = Lang.GetString("MessageWindow.Warnings.DeleteMod0");
+                foreach (var selectedItem in selectedItems)
+                {
+                    if (selectedItem is ModData item)
+                    {
+                        index++;
+                        confirmMessage += "- " + item.Name;
+                        confirmMessage += "\n";
+                    }
+                }
+
+                confirmMessage += "\n" + Lang.GetString("MessageWindow.Warnings.DeleteMod1");
+                var deleteConfirmation = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Warning"), confirmMessage, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 
                 deleteConfirmation.ShowDialog();
                 if (deleteConfirmation.isYes)
                 {
                     foreach (var selectedItem in selectedItems)
                     {
-                        var item = (ModData)selectedItem;
-
-                        string fullPath = Path.Combine(App.CurrentGame.modDirectory, item.Tag);
-
-                        if (Directory.Exists(fullPath))
+                        if (selectedItem is ModData item)
                         {
-                            Directory.Delete(fullPath, true);
+                            try
+                            {
+                                string fullPath = Path.Combine(App.CurrentGame.modDirectory, item.Tag);
+
+                                if (Directory.Exists(fullPath))
+                                {
+                                    Directory.Delete(fullPath, true);
+                                }
+                            }
+                            catch
+                            {
+                                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.ModDelete"), item.Name), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+                            }
                         }
                     }
 
@@ -752,37 +796,32 @@ namespace SAModManager
             if (listMods.Items.Count == 0)
                 return;
 
-            int index = ViewModel.Modsdata.IndexOf(ViewModel.SelectedMod) + 1;
+            int selectedIndex = listMods.SelectedIndex;
+            int startIndex = selectedIndex >= 0 ? selectedIndex + 1 : 0;
+            bool letterFound = false;
 
-            if (index < 0)
-                index = 0;
-
-            for (int i = index; i < ViewModel.Modsdata.Count; i++)
+            void SearchAndUpdate(int index)
             {
-                var item = ViewModel.Modsdata[i];
-
+                var item = ViewModel.Modsdata[index];
                 if (!string.IsNullOrEmpty(item.Name) && letter[0] == item.Name[0])
                 {
-                    listMods.SelectedIndex = i;
-                    listMods.SelectedItem = item;
+                    listMods.SelectedIndex = index;
                     listMods.ScrollIntoView(item);
-                    return;
+                    letterFound = true;
                 }
             }
 
-            for (int i = 0; i < listMods.Items.Count; i++)
-            {
-                var item = (ModData)listMods.Items[i];
+            for (int i = startIndex; i < ViewModel.Modsdata.Count && !letterFound; i++)
+                SearchAndUpdate(i);
 
-                if (!string.IsNullOrEmpty(item.Name) && letter[0] == item.Name[0])
-                {
-                    listMods.SelectedIndex = i;
-                    listMods.SelectedItem = item;
-                    listMods.ScrollIntoView(item);
-                    return;
-                }
-            }
+            if (!letterFound)
+                for (int i = 0; i < startIndex && !letterFound; i++)
+                    SearchAndUpdate(i);
+
+            if (!letterFound && selectedIndex >= 0)
+                listMods.ScrollIntoView(ViewModel.Modsdata[selectedIndex]);
         }
+
 
         private void ModsList_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -802,7 +841,7 @@ namespace SAModManager
             }
             else if (ctrlKey)
             {
-                
+
                 if (Keyboard.IsKeyDown(Key.E))
                     ModContextEditMod_Click(null, null);
                 else if (Keyboard.IsKeyDown(Key.O))
@@ -832,6 +871,7 @@ namespace SAModManager
             {
                 if (e.Key >= Key.A && e.Key <= Key.Z)
                 {
+                    e.Handled = true;
                     KeyConverter converter = new();
                     string keyString = (string)converter.ConvertTo(e.Key, typeof(string));
                     SelectModByFirstLetter(keyString);
@@ -956,9 +996,9 @@ namespace SAModManager
 
             var code = codes.codes;
 
-            CodeAuthorGrid.Text += " " + code.Author;
+            CodeAuthorGrid.Text += ": " + code.Author;
             CodeDescGrid.Text += " " + code.Description;
-            CodeCategoryGrid.Text += " " + code.Category;
+            CodeCategoryGrid.Text += ": " + code.Category;
         }
 
         private void CodesView_Item_MouseLeave(object sender, MouseEventArgs e)
@@ -1017,7 +1057,6 @@ namespace SAModManager
                 await Process.Start(new ProcessStartInfo(execPath, "urlhandler")
                 {
                     UseShellExecute = true,
-                    Verb = "runas"
                 }).WaitForExitAsync();
 
                 Image iconConfig = FindName("GB") as Image;
@@ -1038,43 +1077,18 @@ namespace SAModManager
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                bool pathValid = false;
+                setGame = await GamesInstall.SetGameInstallManual(dialog.SelectedPath);
 
-                foreach (var game in GamesInstall.GetSupportedGames())
-                {
-                    string GamePath = dialog.SelectedPath;
-                    string path = Path.Combine(GamePath, game.exeName);
-
-                    if (File.Exists(path)) //game Path valid 
-                    {
-                        if (game == GamesInstall.SonicAdventure)
-                            setGame = SetGame.SADX;
-                        if (game == GamesInstall.SonicAdventure2)
-                            setGame = SetGame.SA2;
-
-                        pathValid = true;
-                        tempPath = GamePath;
-                        UIHelper.ToggleButton(ref btnOpenGameDir, true);
-						if (Path.Exists(Path.Combine(GamePath, "mods")))
-							await VanillaTransition.ConvertOldProfile(false, GamePath);
-                        Load(true);
-                        break;
-                    }
-                    else if (Steam.isSADXGamePath(GamePath))
-                    {
-                        //To do add installer support
-                       await Steam.InstallSADXModInstaller();
-                        return;
-                    }
-
-                }
-
-                if (!pathValid)
+                if (setGame == SetGame.None)
                 {
                     new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                 }
                 else
                 {
+                    tempPath = dialog.SelectedPath;
+                    App.CurrentGame.gameDirectory = tempPath;
+                    UIHelper.ToggleButton(ref btnOpenGameDir, true);
+                    Load(true);
                     await ForceInstallLoader();
                     UpdateButtonsState();
                     Save();
@@ -1086,19 +1100,24 @@ namespace SAModManager
         {
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
             checkForUpdate = true;
+
             if (await App.PerformUpdateManagerCheck())
             {
                 return;
             }
 
-            await App.PerformUpdateLoaderCheck();
-            await App.PerformUpdateCodesCheck();
-        
+            if (App.CurrentGame.loader.installed)
+            {
+                await App.PerformUpdateLoaderCheck();
+                await App.PerformUpdateCodesCheck();
+                await App.PerformUpdatePatchesCheck();
+            }
+
             manualModUpdate = true;
             await CheckForModUpdates(true);
             checkForUpdate = false;
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
-            Refresh();
+            Dispatcher.Invoke(Refresh);
         }
 
         private void AboutBtn_Click(object sender, RoutedEventArgs e)
@@ -1132,15 +1151,69 @@ namespace SAModManager
             Process.Start(ps);
         }
 
-        private void btnReport_Click(object sender, RoutedEventArgs e)
+        private void OpenLoaderIssue()
         {
-            var ps = new ProcessStartInfo("https://github.com/X-Hax/sa-mod-manager/issues/new")
+            string url = "";
+
+            switch (App.CurrentGame.id)
+            {
+                case SetGame.SADX:
+                    url += "https://github.com/X-Hax/sadx-mod-loader/issues/new";
+                    break;
+                case SetGame.SA2:
+                    url += "https://github.com/X-Hax/sa2-mod-loader/issues/new";
+                    break;
+                case SetGame.None:
+                    return;
+            }
+
+            url += "?template=bug_report.md";   // Add Template
+
+            var ps = new ProcessStartInfo(url)
             {
                 UseShellExecute = true,
                 Verb = "open"
             };
 
             Process.Start(ps);
+        }
+
+        private void OpenManagerIssue()
+        {
+            string url = "https://github.com/X-Hax/SA-Mod-Manager/issues/new";
+            url += "?template=bug_report.md";   // Add Template
+
+            var ps = new ProcessStartInfo(url)
+            {
+                UseShellExecute = true,
+                Verb = "open"
+            };
+
+            Process.Start(ps);
+        }
+
+        private void btnReport_Click(object sender, RoutedEventArgs e)
+        {
+            var msg = new StringBuilder();
+            msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message1"));
+            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message2")}");
+            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message3")}");
+            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message4")}");
+            msg.AppendLine();
+            msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message5"));
+            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message6")}");
+            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message7")}");
+
+            MessageWindow message = new(Lang.GetString("MessageWindow.Information.BugReport.Title"), msg.ToString(), "Mod Manager", "Mod Loader",
+                icon: MessageWindow.Icons.Information);
+
+            message.ShowDialog();
+
+            if (message.isYes)
+                OpenManagerIssue();
+
+            if (message.isCancelled)
+                OpenLoaderIssue();
         }
 
         private void comboThemes_Loaded(object sender, RoutedEventArgs e)
@@ -1200,12 +1273,12 @@ namespace SAModManager
             if (selectedItem != null)
             {
                 GameProfiles.ProfileIndex = comboProfile.SelectedIndex;
-                
-				LoadGameSettings();
-				SetBindings();
-				SetGameUI();
-				Refresh();
-				Save();
+
+                LoadGameSettings();
+                SetBindings();
+                SetGameUI();
+                Refresh();
+                Save();
             }
         }
         #endregion
@@ -1319,11 +1392,11 @@ namespace SAModManager
                 App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, Path.Combine(App.CurrentGame.modDirectory, App.CurrentGame.loader.name + ".dll"));
                 App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.loader.originPath.defaultDataDllPath);
 
-                updatePath = Path.Combine(App.CurrentGame.gameDirectory, "mods/.updates");
-                codelstpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.lst");
-                codexmlpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.xml");
-                codedatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Codes.dat");
-                patchdatpath = Path.Combine(App.CurrentGame.gameDirectory, "mods/Patches.dat");
+                updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", ".updates"));
+                codelstpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Codes.lst"));
+                codexmlpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Codes.xml"));
+                codedatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Codes.dat"));
+                patchdatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Patches.dat"));
 
 
                 Elements.SADX.GameConfig.UpdateD3D8Paths();
@@ -1370,6 +1443,9 @@ namespace SAModManager
                     EnabledMods.Add(mod.Tag);
 
             // Update EnabledCodes for saving.
+            CodesFind.Visibility = Visibility.Collapsed;
+            FilterCodes("");
+            TextBox_CodesSearch.Text = "";
             EnabledCodes.Clear();
             foreach (CodeData code in CodeListView.Items)
                 if (code?.IsChecked == true)
@@ -1526,7 +1602,7 @@ namespace SAModManager
 
         private void ManualLoaderUpdateCheck()
         {
-            if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+            if (File.Exists(App.CurrentGame.loader.dataDllOriginPath) && File.Exists(App.CurrentGame.loader.dataDllPath))
             {
                 byte[] hash1 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.loaderdllpath));
                 byte[] hash2 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.dataDllPath));
@@ -1544,6 +1620,7 @@ namespace SAModManager
                 // Load Profiles before doing anything.
                 string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
                 GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
+                GameProfiles.ValidateProfiles();
                 comboProfile.ItemsSource = GameProfiles.ProfilesList;
                 comboProfile.DisplayMemberPath = "Name";
                 suppressEvent = true;
@@ -1766,6 +1843,8 @@ namespace SAModManager
             ModContextDeleteMod.IsEnabled = true;
             ModContextForceModUpdate.IsEnabled = true;
             ModContextVerifyIntegrity.IsEnabled = true;
+            ClearUpdateFolder();
+            Util.ClearTempFolder();
 
         }
 
@@ -1821,67 +1900,68 @@ namespace SAModManager
 
             var updatableMods = modUpdater.modManifestTuple;
 
-            var updates = new List<ModDownloadWPF>();
+            var updates = new List<ModDownload>();
             var errors = new List<string>();
 
-            using (var client = new UpdaterWebClient())
+            var client = UpdateHelper.HttpClient;
+
+            foreach (Tuple<string, ModInfo, List<Updater.ModManifestDiff>> info in updatableMods)
             {
-                foreach (Tuple<string, ModInfo, List<Updater.ModManifestDiff>> info in updatableMods)
+
+                ModInfo mod = info.Item2;
+                if (!string.IsNullOrEmpty(mod.GitHubRepo))
                 {
-                    /*if (worker.CancellationPending)
-					{
-						e.Cancel = true;
-						break;
-					}*/
-
-                    ModInfo mod = info.Item2;
-                    if (!string.IsNullOrEmpty(mod.GitHubRepo))
+                    if (string.IsNullOrEmpty(mod.GitHubAsset))
                     {
-                        if (string.IsNullOrEmpty(mod.GitHubAsset))
-                        {
-                            errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
-                            continue;
-                        }
-
-                        ModDownloadWPF d = await modUpdater.GetGitHubReleases(mod, App.CurrentGame.modDirectory, info.Item1, client, errors);
-                        if (d != null)
-                        {
-                            updates.Add(d);
-                        }
+                        errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
+                        continue;
                     }
-                    else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
-                    {
-                        ModDownloadWPF d = await modUpdater.GetGameBananaReleases(mod, App.CurrentGame.modDirectory, info.Item1, errors);
-                        if (d != null)
-                        {
-                            updates.Add(d);
-                        }
-                    }
-                    else if (!string.IsNullOrEmpty(mod.UpdateUrl))
-                    {
-                        List<Updater.ModManifestEntry> localManifest = info.Item3
-                            .Where(x => x.State == Updater.ModManifestState.Unchanged)
-                            .Select(x => x.Current)
-                            .ToList();
 
-                        ModDownloadWPF d = await modUpdater.CheckModularVersion(mod, App.CurrentGame.modDirectory, info.Item1, localManifest, client, errors);
-                        if (d != null)
-                        {
-                            updates.Add(d);
-                        }
+                    ModDownload d = await modUpdater.GetGitHubReleases(mod, App.CurrentGame.modDirectory, info.Item1, client, errors);
+                    if (d != null)
+                    {
+                        updates.Add(d);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
+                {
+                    ModDownload d = await modUpdater.GetGameBananaReleases(mod, App.CurrentGame.modDirectory, info.Item1, errors);
+                    if (d != null)
+                    {
+                        updates.Add(d);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(mod.UpdateUrl))
+                {
+                    List<Updater.ModManifestEntry> localManifest = info.Item3
+                        .Where(x => x.State == Updater.ModManifestState.Unchanged)
+                        .Select(x => x.Current)
+                        .ToList();
+
+                    ModDownload d = await modUpdater.CheckModularVersion(mod, App.CurrentGame.modDirectory, info.Item1, localManifest, client, errors);
+                    if (d != null)
+                    {
+                        updates.Add(d);
                     }
                 }
             }
 
-            modUpdater.modUpdatesTuple = new Tuple<List<ModDownloadWPF>, List<string>>(updates, errors);
+            modUpdater.modUpdatesTuple = new Tuple<List<ModDownload>, List<string>>(updates, errors);
         }
 
         private async Task ExecuteModsUpdateCheck()
         {
-            ClearUpdateFolder();
-            await UpdateChecker_DoWork();
-            await UpdateChecker_RunWorkerCompleted();
-            UpdateChecker_EnableControls();
+            try
+            {
+                ClearUpdateFolder();
+                await UpdateChecker_DoWork();
+                await UpdateChecker_RunWorkerCompleted();
+                UpdateChecker_EnableControls();
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.Invoke(() => new ExceptionHandler(ex).ShowDialog());
+            }
         }
 
         private async Task UpdateChecker_RunWorkerCompleted()
@@ -1892,8 +1972,7 @@ namespace SAModManager
                 modUpdater.Clear();
             }
 
-
-            if (modUpdater.modUpdatesTuple is not Tuple<List<ModDownloadWPF>, List<string>> data)
+            if (modUpdater.modUpdatesTuple is not Tuple<List<ModDownload>, List<string>> data)
             {
                 return;
             }
@@ -1909,19 +1988,17 @@ namespace SAModManager
                     msgError += "\n" + error;
                 }
 
-                if (msgError.Contains("403"))
+                if (!msgError.Contains("403"))
                 {
-                    title = "GitHub Rate Limit Exceeded";
+                    new MessageWindow(title, msgError, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+                    await Task.Delay(0);
                 }
-
-                new MessageWindow(title, msgError, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-                await Task.Delay(0);
             }
 
             bool manual = manualModUpdate;
             manualModUpdate = false;
 
-            List<ModDownloadWPF> updates = data.Item1;
+            List<ModDownload> updates = data.Item1;
             if (updates.Count == 0)
             {
                 if (manual && !MainWindow.cancelUpdate)
@@ -1960,31 +2037,30 @@ namespace SAModManager
             }
             catch { }
 
-            new Updater.ModDownloadDialogWPF(updates, updatePath).ShowDialog();
+            var modDL = new Updater.ModDownloadDialog(updates, updatePath);
+            modDL.StartDL();
             await Task.Delay(500);
             Refresh();
         }
 
         private static void ClearUpdateFolder()
         {
+
             try
             {
                 if (App.CurrentGame is not null)
                 {
                     string fullPath = Path.Combine(App.CurrentGame.modDirectory, ".updates");
-                    if (Directory.Exists(fullPath))
-                    {
-                        Directory.Delete(fullPath, true);
-                    }
+                    Util.DeleteReadOnlyDirectory(fullPath);
                 }
-       
+
             }
             catch { }
         }
 
         private async Task CheckForModUpdates(bool force = false)
         {
-            if (!force && !App.ManagerSettings.UpdateSettings.EnableModsBootCheck)
+            if (!force && !App.ManagerSettings.UpdateSettings.EnableModsBootCheck || mods is null || mods.Count == 0)
             {
                 return;
             }
@@ -2037,7 +2113,7 @@ namespace SAModManager
         {
             comboLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Language")
             {
-				Source = App.ManagerSettings
+                Source = App.ManagerSettings
             });
             comboThemes.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Theme")
             {
@@ -2272,7 +2348,7 @@ namespace SAModManager
 
         private async Task<bool> UpdateGameConfig(SetGame game)
         {
-            setGame = game; //TO DO get current game somehow
+            setGame = game;
             Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
             LoadGameConfigFile();
             SetGameUI();
@@ -2304,7 +2380,7 @@ namespace SAModManager
                 //now we can move the loader files to the accurate folders.
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
-                await UpdateGameConfig(SetGame.SADX); //To do change with "current selected game" when it's available
+                await UpdateGameConfig(App.CurrentGame.id);
                 await EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
@@ -2322,7 +2398,7 @@ namespace SAModManager
             //File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
             if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
             {
-                await GamesInstall.InstallDLL_Loader(App.CurrentGame, true);
+                await GamesInstall.InstallDLL_Loader(App.CurrentGame);
                 await GamesInstall.UpdateDependencies(App.CurrentGame);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
             }
@@ -2336,7 +2412,7 @@ namespace SAModManager
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
             }
 
-            await UpdateGameConfig(SetGame.SADX); //To do change with "current selected game" when it's available
+            await UpdateGameConfig(App.CurrentGame.id);
             await EnableOneClickInstall();
 
             UIHelper.EnableButton(ref SaveAndPlayButton);

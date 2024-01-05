@@ -113,9 +113,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Imposta una risoluzione personalizzata, o selezionane una dalla lista.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Forza il gioco in un rapporto d'aspetto 4:3 nonostante la risoluzione selezionata.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Abilita V-Sync.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Se abilitato, quando la finestra di gioco non è in primo piano, il gioco andrà in pausa.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers">Questa opzione risolve il crash con alt-tab in schermo intero attivando l'allocazione dinamica buffer. Può causare lag nel gioco sotto alcune circostanze o con alcune mod.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Il gioco partirà in modalità schermo intero.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Se abilitato, quando la finestra di gioco non è in primo piano, il gioco andrà in pausa.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Il gioco partirà in modalità schermo intero.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Imposta la finestra di gioco a schermo intero come schermo intero a finestra.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Ridimensiona gli elementi UI a schermo intero.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Il gioco partirà in modalità finestra.</system:String>

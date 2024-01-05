@@ -34,9 +34,9 @@ namespace SAModManager.Common
             {
                 try
                 {
-                    if (!Directory.Exists(".SATemp"))
+                    if (!Directory.Exists(App.tempFolder))
                     {
-                        Directory.CreateDirectory(".SATemp");
+                        Directory.CreateDirectory(App.tempFolder);
                     }
                 }
                 catch {}

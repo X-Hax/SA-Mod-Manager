@@ -78,13 +78,14 @@
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">VC++ em falta</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Parece que tem em falta alguns redistribuíveis da Visual C++ Redistributables, alguns mods não irão funcionar sem estes componentes.&#x0a;&#x0a;Gostaria de fazer download e de os instalar agora?</system:String>
-
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod" xml:space="preserve">Isto irá desinstalar todos os mods selecionados.&#x0a;&#x0a;Tem a certeza que deseja continuar?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Isto irá desinstalar todos os mods selecionados:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Tem a certeza que deseja continuar?</system:String>
 
-	<system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Está prestes a desabilitar a redireção do save deste mod. Se continuar, qualquer save neste pasta do mod será apagada.&#x0a;&#x0a;Tem a certeza que quer proseguir?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Está prestes a desabilitar a redireção do save deste mod. Se continuar, qualquer save neste pasta do mod será apagada.&#x0a;&#x0a;Tem a certeza que quer proseguir?</system:String>
 	
 	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">Tem a certeza que quer apagar este perfil?</system:String>
 	
@@ -104,6 +105,21 @@
     <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Passe na Integridade</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">Todos os mods selecionados passaram na verificação.</system:String>
 
+    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Game found</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">{0} game has been detected at '{1}'&#x0a;&#x0a;Would you like to download and install the Mod Loader?</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Please download and install SADX Mod Installer to convert your game to 2004. (Your saves will be converted as well).</system:String>
+
+    <system:String x:Key="MessageWindow.Information.Exception.Title">Include Settings</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Message">Would you like to copy your Manager and Profile settings to your clipboard to provide in your report?&#x0a;&#x0a;This is not necessary, but it can assist in resolving problems.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.BugReport.Title">Report Bug</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1">You are about to submit a bug report, please ensure the following:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Your Manager is up to date.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Your Mod Loader is up to date.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message4">All mods are up to date.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message5">If you have verified the above, then please follow the directions below to submit to the correct repository:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Any issues with the program you're currently using, please use the Mod Manager button.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Any issues with the game, such as freezes, game crashes, etc, please use the Mod Loader button.</system:String>
     <!--#endregion-->
-	
+
 </ResourceDictionary>

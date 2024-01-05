@@ -1,6 +1,5 @@
 ﻿using SAModManager.Common;
 using SAModManager.Updater;
-using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,48 +18,52 @@ using System.Windows.Media.Media3D;
 
 namespace SAModManager.Elements.SADX
 {
-	/// <summary>
-	/// Interaction logic for GameConfig.xaml
-	/// </summary>
-	public partial class GameConfig : UserControl
-	{
-		#region Variables
-		public GameSettings GameProfile;
-		public GraphicsHelper graphics;
+    /// <summary>
+    /// Interaction logic for GameConfig.xaml
+    /// </summary>
+    public partial class GameConfig : UserControl
+    {
+        #region Variables
+        public GameSettings GameProfile;
+        public GraphicsHelper graphics;
 
 		bool suppressEvent = false;
 		private static string d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
 		private static string d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
 		private readonly double LowOpacityBtn = 0.7;
-        #endregion
+		private static string patchesPath = null;
+		#endregion
 
-        public GameConfig(ref object gameSettings, ref object gameConfig)
+		public GameConfig(ref object gameSettings, ref object gameConfig)
 		{
 			InitializeComponent();
 			GameProfile = (GameSettings)gameSettings;
 			graphics = new GraphicsHelper(ref comboScreen);
 			UpdateAppLauncherBtn();
-            SetPatches();
+			string pathDest = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
+			if (File.Exists(pathDest))
+				patchesPath = pathDest;
+			SetPatches();
             Loaded += GameConfig_Loaded;
         }
 
         #region Internal Functions
         private void GameConfig_Loaded(object sender, RoutedEventArgs e)
-		{
-			SetupBindings();
+        {
+            SetupBindings();
             SetPatches();
             SetUp_UpdateD3D9();
-			SetTextureFilterList();
-			InitMouseList();
+            SetTextureFilterList();
+            InitMouseList();
 
-			mouseAction.SelectionChanged += mouseAction_SelectionChanged;
-			mouseBtnAssign.SelectionChanged += mouseBtnAssign_SelectionChanged;
+            mouseAction.SelectionChanged += mouseAction_SelectionChanged;
+            mouseBtnAssign.SelectionChanged += mouseBtnAssign_SelectionChanged;
         }
 
-		//Temporary, TO DO: Implement proper texture filter list
+        //Temporary, TO DO: Implement proper texture filter list
 
-		private void SetTextureFilterSettings()
-		{
+        private void SetTextureFilterSettings()
+        {
             if (GameProfile.Graphics.EnableForcedTextureFilter == true)
             {
                 comboTextureFilter.SelectedIndex = 0;
@@ -73,9 +76,9 @@ namespace SAModManager.Elements.SADX
             }
         }
 
-		private void SetTextureFilterList()
-		{
-			comboTextureFilter.Items.Clear();
+        private void SetTextureFilterList()
+        {
+            comboTextureFilter.Items.Clear();
 
             comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Enabled"));
             comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Disabled"));
@@ -83,34 +86,46 @@ namespace SAModManager.Elements.SADX
             SetTextureFilterSettings();
         }
 
-		#region Graphics Tab
-		private void ResolutionChanged(object sender, RoutedEventArgs e)
-		{
-			NumericUpDown box = sender as NumericUpDown;
+        #region Graphics Tab
+        private void ResolutionChanged(object sender, RoutedEventArgs e)
+        {
 
-			switch (box.Name)
-			{
-				case "txtResY":
-					if (chkRatio.IsChecked == true)
-					{
-						double ratio = (4.0 / 3.0);
-						txtResX.Value = Math.Ceiling(txtResY.Value * ratio);
-					}
-					break;
-				case "txtCustomResY":
-					if (chkMaintainRatio.IsChecked == true)
-					{
-						double ratio = txtResX.Value / txtResY.Value;
-						txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
-					}
-					break;
-			}
-		}
+            NumericUpDown box = sender as NumericUpDown;
 
-		private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			graphics?.screenNumBox_SelectChanged(ref comboScreen, ref comboDisplay);
-		}
+            switch (box.Name)
+            {
+                case "txtResY":
+                    if (chkRatio.IsChecked == true)
+                    {
+                        double ratio = (4.0 / 3.0);
+                        txtResX.Value = Math.Ceiling(txtResY.Value * ratio);
+                    }
+                    break;
+                case "txtCustomResY":
+                    if (chkMaintainRatio.IsChecked == true)
+                    {
+                        double ratio = txtResX.Value / txtResY.Value;
+                        txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
+                    }
+                    break;
+            }
+
+            if (!suppressEvent)
+                comboDisplay.SelectedIndex = -1;
+
+        }
+
+        private void HorizontalRes_Changed(object sender, RoutedEventArgs e)
+        {
+            if (!suppressEvent)
+                comboDisplay.SelectedIndex = -1;
+        }
+
+
+        private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            graphics?.screenNumBox_SelectChanged(ref comboScreen, ref comboDisplay);
+        }
 
 		private void chkRatio_Click(object sender, RoutedEventArgs e)
 		{
@@ -158,238 +173,243 @@ namespace SAModManager.Elements.SADX
 			suppressEvent = false;
 		}
 
-		private void chkMaintainRatio_Click(object sender, RoutedEventArgs e)
-		{
-			if (chkMaintainRatio.IsChecked == true)
-			{
-				txtCustomResX.IsEnabled = false;
-				double ratio = txtResX.Value / txtResY.Value;
-				txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
-			}
-			else if (!suppressEvent)
-			{
-				txtCustomResX.IsEnabled = true;
-			}
-		}
+        private void chkMaintainRatio_Click(object sender, RoutedEventArgs e)
+        {
+            if (chkMaintainRatio.IsChecked == true)
+            {
+                txtCustomResX.IsEnabled = false;
+                double ratio = txtResX.Value / txtResY.Value;
+                txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
+            }
+            else if (!suppressEvent)
+            {
+                txtCustomResX.IsEnabled = true;
+            }
+        }
 
-		private void SetUp_UpdateD3D9()
-		{
-			bool isUpdateAvailable = CheckD3D8to9Update();
+        private void SetUp_UpdateD3D9()
+        {
+            bool isUpdateAvailable = CheckD3D8to9Update();
 
-			btnUpdateD3D9.Visibility = isUpdateAvailable ? Visibility.Visible : Visibility.Hidden;
-			btnUpdateD3D9.IsEnabled = !isUpdateAvailable;
-			checkD3D9.IsEnabled = File.Exists(d3d8to9StoredDLLName);
-			checkD3D9.IsChecked = File.Exists(d3d8to9InstalledDLLName);
-		}
+            btnUpdateD3D9.Visibility = isUpdateAvailable ? Visibility.Visible : Visibility.Hidden;
+            btnUpdateD3D9.IsEnabled = !isUpdateAvailable;
+            checkD3D9.IsEnabled = File.Exists(d3d8to9StoredDLLName);
+            checkD3D9.IsChecked = File.Exists(d3d8to9InstalledDLLName);
+        }
 
-		private void CopyD3D9Dll()
-		{
-			try
-			{
-				File.Copy(d3d8to9StoredDLLName, d3d8to9InstalledDLLName, true);
-			}
-			catch (Exception ex)
-			{
-				string error = Lang.GetString("MessageWindow.Errors.D3D8Update") + "\n" + ex.Message;
-				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-			}
-		}
+        private void CopyD3D9Dll()
+        {
+            try
+            {
+                File.Copy(d3d8to9StoredDLLName, d3d8to9InstalledDLLName, true);
+            }
+            catch (Exception ex)
+            {
+                string error = Lang.GetString("MessageWindow.Errors.D3D8Update") + "\n" + ex.Message;
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+            }
+        }
 
-		private bool CheckD3D8to9Update()
-		{
-			if (!File.Exists(d3d8to9StoredDLLName) || !File.Exists(d3d8to9InstalledDLLName))
-				return false;
+        private bool CheckD3D8to9Update()
+        {
+            if (!File.Exists(d3d8to9StoredDLLName) || !File.Exists(d3d8to9InstalledDLLName))
+                return false;
 
-			try
-			{
-				long length1 = new FileInfo(d3d8to9InstalledDLLName).Length;
-				long length2 = new FileInfo(d3d8to9StoredDLLName).Length;
-				if (length1 != length2)
-					return true;
-				else
-				{
-					byte[] file1 = File.ReadAllBytes(d3d8to9InstalledDLLName);
-					byte[] file2 = File.ReadAllBytes(d3d8to9StoredDLLName);
-					for (int i = 0; i < file1.Length; i++)
-					{
-						if (file1[i] != file2[i])
-							return true;
-					}
-					return false;
-				}
-			}
-			catch (Exception ex)
-			{
-				string error = Lang.GetString("MessageWindow.Errors.D3D8UpdateCheck") + "\n" + ex.Message;
-				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
-				return false;
-			}
-		}
+            try
+            {
+                long length1 = new FileInfo(d3d8to9InstalledDLLName).Length;
+                long length2 = new FileInfo(d3d8to9StoredDLLName).Length;
+                if (length1 != length2)
+                    return true;
+                else
+                {
+                    byte[] file1 = File.ReadAllBytes(d3d8to9InstalledDLLName);
+                    byte[] file2 = File.ReadAllBytes(d3d8to9StoredDLLName);
+                    for (int i = 0; i < file1.Length; i++)
+                    {
+                        if (file1[i] != file2[i])
+                            return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                string error = Lang.GetString("MessageWindow.Errors.D3D8UpdateCheck") + "\n" + ex.Message;
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+                return false;
+            }
+        }
 
-		private void btnUpdateD3D9_Click(object sender, RoutedEventArgs e)
-		{
-			string info = Lang.GetString("MessageWindow.Information.D3D8Update");
-			var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString(info), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
-			msg.ShowDialog();
+        private void btnUpdateD3D9_Click(object sender, RoutedEventArgs e)
+        {
+            string info = Lang.GetString("MessageWindow.Information.D3D8Update");
+            var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString(info), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
+            msg.ShowDialog();
 
-			if (msg.isYes)
-			{
-				CopyD3D9Dll();
-				btnUpdateD3D9.IsEnabled = CheckD3D8to9Update();
-			}
-		}
+            if (msg.isYes)
+            {
+                CopyD3D9Dll();
+                btnUpdateD3D9.IsEnabled = CheckD3D8to9Update();
+            }
+        }
 
-		private void checkD3D9_Click(object sender, RoutedEventArgs e)
-		{
-			if (checkD3D9.IsChecked == true)
-			{
-				CopyD3D9Dll();
-			}
-			else if (checkD3D9.IsChecked == false && File.Exists(d3d8to9InstalledDLLName))
-				File.Delete(d3d8to9InstalledDLLName);
+        private void checkD3D9_Click(object sender, RoutedEventArgs e)
+        {
+            if (checkD3D9.IsChecked == true)
+            {
+                CopyD3D9Dll();
+            }
+            else if (checkD3D9.IsChecked == false && File.Exists(d3d8to9InstalledDLLName))
+                File.Delete(d3d8to9InstalledDLLName);
 
-		}
-		#endregion
+        }
+        #endregion
 
-		#region Input Tab
-		private void InitMouseList()
-		{
-			List<string> mouseActionList = new()
-			{
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start"),
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel"),
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump"),
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action"),
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute"),
+        #region Input Tab
+        private void InitMouseList()
+        {
+            List<string> mouseActionList = new()
+            {
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start"),
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel"),
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump"),
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action"),
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute"),
 
-			};
+            };
 
-			mouseAction.ItemsSource = mouseActionList;
+            mouseAction.ItemsSource = mouseActionList;
 
-			List<string> mouseBtnAssignList = new()
-			{
-				Lang.GetString("CommonStrings.None"),
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn"),
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn"),
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn"),
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn"),
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn"),
-				Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn"),
-			};
+            List<string> mouseBtnAssignList = new()
+            {
+                Lang.GetString("CommonStrings.None"),
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn"),
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn"),
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn"),
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn"),
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn"),
+                Lang.GetString("GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn"),
+            };
 
-			mouseBtnAssign.ItemsSource = mouseBtnAssignList;
-		}
+            mouseBtnAssign.ItemsSource = mouseBtnAssignList;
+        }
 
-		private void DisplayInputGroup(int type)
-		{
-			switch (type)
-			{
-				default:
-					grpSDLInput.Visibility = Visibility.Visible;
-					grpVanillaInput.Visibility = Visibility.Collapsed;
-					break;
-				case 1:
-					grpSDLInput.Visibility = Visibility.Collapsed;
-					grpVanillaInput.Visibility = Visibility.Visible;
-					break;
-			}
-		}
+        private void DisplayInputGroup(int type)
+        {
+            switch (type)
+            {
+                default:
+                    grpSDLInput.Visibility = Visibility.Visible;
+                    grpVanillaInput.Visibility = Visibility.Collapsed;
+                    break;
+                case 1:
+                    grpSDLInput.Visibility = Visibility.Collapsed;
+                    grpVanillaInput.Visibility = Visibility.Visible;
+                    break;
+            }
+        }
 
-		private void InputRadioButtonCheck(object sender, RoutedEventArgs e)
-		{
-			if (grpVanillaInput is null || grpSDLInput is null)
-				return;
+        private void InputRadioButtonCheck(object sender, RoutedEventArgs e)
+        {
+            if (grpVanillaInput is null || grpSDLInput is null)
+                return;
 
-			if ((bool)radBetterInput.IsChecked)
-				DisplayInputGroup(0);
+            if ((bool)radBetterInput.IsChecked)
+                DisplayInputGroup(0);
 
-			if ((bool)radVanillaInput.IsChecked)
-				DisplayInputGroup(1);
-		}
+            if ((bool)radVanillaInput.IsChecked)
+                DisplayInputGroup(1);
+        }
 
-		#region App Launcher
-		private async void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
-		{
-			string fullName = "AppLauncher.7z";
-			string destName = App.CurrentGame.gameDirectory;
-			string fullPath = Path.Combine(destName, fullName);
+        #region App Launcher
+        private async void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
+        {
+            string fullName = "AppLauncher.7z";
+            string destName = App.CurrentGame.gameDirectory;
+            string fullPath = Path.Combine(destName, fullName);
 
             btnGetAppLauncher.IsEnabled = false;
             btnGetAppLauncher.Opacity = LowOpacityBtn;
 
             Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
-			var DL = new DownloadDialog(uri, "App Launcher", fullName, destName);
-			DL.StartDL();
+            var DL = new DownloadDialog(uri, "App Launcher", fullName, destName);
 
-			await Task.Delay(10);
-			if (DL.done == true)
-			{
-				try
-				{
+            DL.DownloadFailed += (ex) =>
+            {
+                btnGetAppLauncher.IsEnabled = true;
+                btnGetAppLauncher.Opacity = 1;
+                DL.DisplayDownloadFailedMSG(ex);
+            };
+
+            DL.StartDL();
+
+            if (DL.done)
+            {
+                try
+                {
                     await Util.Extract(fullPath, destName, true);
-					btnOpenAppLauncher.IsEnabled = true;
-					btnOpenAppLauncher.Opacity = 1;
-					btnGetAppLauncher.Opacity = LowOpacityBtn;
-					btnGetAppLauncher.IsEnabled = false;
+                    btnOpenAppLauncher.IsEnabled = true;
+                    btnOpenAppLauncher.Opacity = 1;
+                    btnGetAppLauncher.Opacity = LowOpacityBtn;
+                    btnGetAppLauncher.IsEnabled = false;
 
-				}
-				catch
-				{
+                }
+                catch
+                {
                     btnGetAppLauncher.IsEnabled = true;
-					btnGetAppLauncher.Opacity = 1;
+                    btnGetAppLauncher.Opacity = 1;
                     throw new Exception("Failed to extract AppLauncher.");
                 }
 
-				if (File.Exists(fullPath))
-				{
-					File.Delete(fullPath);
+                if (File.Exists(fullPath))
+                {
+                    File.Delete(fullPath);
                 }
-			}
-			else
-			{
-                btnGetAppLauncher.IsEnabled = true;
-                btnGetAppLauncher.Opacity = 1;
             }
-		}
 
-		private void btnOpenAppLauncher_Click(object sender, RoutedEventArgs e)
-		{
-			string fullPath = Path.Combine(App.CurrentGame.gameDirectory, "AppLauncher.exe");
 
-            if (File.Exists(fullPath))
-			{
-                Process.Start(new ProcessStartInfo { FileName = fullPath, Arguments = "-p1", UseShellExecute = true });
-            }
-		}
+            await Task.Delay(10);
+        }
 
-		private void UpdateAppLauncherBtn()
-		{
+        private void btnOpenAppLauncher_Click(object sender, RoutedEventArgs e)
+        {
             string fullPath = Path.Combine(App.CurrentGame.gameDirectory, "AppLauncher.exe");
 
             if (File.Exists(fullPath))
-			{
-				btnGetAppLauncher.IsEnabled = false;
-				btnGetAppLauncher.Opacity = LowOpacityBtn;
-			}
-			else
-			{
-				btnOpenAppLauncher.IsEnabled = false;
-				btnOpenAppLauncher.Opacity = LowOpacityBtn;
-			}
-		}
-		#endregion
-		#endregion
+            {
+                Process.Start(new ProcessStartInfo { FileName = fullPath, Arguments = "-p1", UseShellExecute = true });
+            }
+        }
 
-		#region Sound Tab
-		private void sliderMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			labelMusicLevel?.SetValue(ContentProperty, $"{(int)sliderMusic.Value}");
-		}
+        private void UpdateAppLauncherBtn()
+        {
+            string fullPath = Path.Combine(App.CurrentGame.gameDirectory, "AppLauncher.exe");
 
-		private void sliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			labelVoiceLevel?.SetValue(ContentProperty, $"{(int)sliderVoice.Value}");
-		}
+            if (File.Exists(fullPath))
+            {
+                btnGetAppLauncher.IsEnabled = false;
+                btnGetAppLauncher.Opacity = LowOpacityBtn;
+            }
+            else
+            {
+                btnOpenAppLauncher.IsEnabled = false;
+                btnOpenAppLauncher.Opacity = LowOpacityBtn;
+            }
+        }
+        #endregion
+        #endregion
+
+        #region Sound Tab
+        private void sliderMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            labelMusicLevel?.SetValue(ContentProperty, $"{(int)sliderMusic.Value}");
+        }
+
+        private void sliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            labelVoiceLevel?.SetValue(ContentProperty, $"{(int)sliderVoice.Value}");
+        }
 
 		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
@@ -397,233 +417,142 @@ namespace SAModManager.Elements.SADX
 		}
 		#endregion
 
-		#region Patches Tab
-		private PatchesData GetPatchFromView(object sender)
-		{
-			if (sender is ListViewItem lvItem)
-				return lvItem.Content as PatchesData;
-			else if (sender is ListView lv)
-				return lv.SelectedItem as PatchesData;
+        #region Patches Tab
+        private PatchesData GetPatchFromView(object sender)
+        {
+            if (sender is ListViewItem lvItem)
+                return lvItem.Content as PatchesData;
+            else if (sender is ListView lv)
+                return lv.SelectedItem as PatchesData;
 
 
-			return listPatches.Items[listPatches.SelectedIndex] as PatchesData;
-		}
+            return listPatches.Items[listPatches.SelectedIndex] as PatchesData;
+        }
 
-		private void PatchViewItem_MouseEnter(object sender, MouseEventArgs e)
-		{
+        private void PatchViewItem_MouseEnter(object sender, MouseEventArgs e)
+        {
 
-			var patch = GetPatchFromView(sender);
+            var patch = GetPatchFromView(sender);
 
-			if (patch is null)
-				return;
+            if (patch is null)
+                return;
 
-			PatchDescription.Text += " " + patch.Description;
-		}
+            PatchAuthor.Text += ": " + patch.Author;
+            PatchCategory.Text += ": " + patch.Category;
+            PatchDescription.Text += " " + patch.Description;
+        }
 
-		private void PatchViewItem_MouseLeave(object sender, MouseEventArgs e)
-		{
-			PatchDescription.Text = Lang.GetString("CommonStrings.Description");
-		}
+        private void PatchViewItem_MouseLeave(object sender, MouseEventArgs e)
+        {
+            PatchAuthor.Text = Lang.GetString("CommonStrings.Author");
+            PatchCategory.Text = Lang.GetString("CommonStrings.Category");
+            PatchDescription.Text = Lang.GetString("CommonStrings.Description");
+        }
 
-		private static List<PatchesData> GetPatches(ref ListView list, GameSettings set)
-		{
-			list.Items.Clear();
+        private static List<PatchesData> GetPatches(ref ListView list, GameSettings set)
+        {
+            list.Items.Clear();
 
-			List<PatchesData> patches = new()
-			{
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.3DSound"),
-					Description = Lang.GetString("GamePatches.3DSoundDesc"),
-					IsChecked = set.Patches.HRTFSound
-				},
+            var patches = PatchesList.Deserialize(patchesPath);
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.CamCode"),
-					Description = Lang.GetString("GamePatches.CamCodeDesc"),
-					IsChecked = set.Patches.KeepCamSettings
-				},
+            if (patches is not null)
+            {
+                var listPatch = patches.Patches;
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.VertexColor"),
-					Description = Lang.GetString("GamePatches.VertexColorDesc"),
-					IsChecked = set.Patches.FixVertexColorRendering
-				},
+                foreach (var patch in listPatch)
+                {
+                    // Convert patch name to the corresponding property name in GamePatches class
+                    string propertyName = patch.Name.Replace(" ", ""); // Adjust the naming convention as needed
+                    var property = typeof(GamePatches).GetProperty(propertyName);
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.MaterialColor"),
-					Description = Lang.GetString("GamePatches.MaterialColorDesc"),
-					IsChecked = set.Patches.MaterialColorFix
-				},
+                    if (property != null)
+                    {
+                        // Update the IsChecked property based on the GamePatches class
+                        patch.IsChecked = (bool)property.GetValue(set.Patches);
+                    }
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.NodeLimit"),
-					Description = Lang.GetString("GamePatches.NodeDesc"),
-					IsChecked = set.Patches.NodeLimit
-				},
+                    string desc = "GamePatches." + patch.Name + "Desc";
+                    patch.InternalName = patch.Name;
+                    patch.Name = Lang.GetString("GamePatches." + patch.Name);
+                    patch.Description = Lang.GetString(desc); //need to use a variable otherwise it fails for some reason
+                }
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.FixFOV"),
-					Description = Lang.GetString("GamePatches.FixFOVDesc"),
-					IsChecked = set.Patches.FOVFix
-				},
+                return listPatch;
+            }
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.Skychase"),
-					Description = Lang.GetString("GamePatches.SkychaseDesc"),
-					IsChecked = set.Patches.SkyChaseResolutionFix
-				},
+            return null;
+        }
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.Chaos2"),
-					Description = Lang.GetString("GamePatches.Chaos2Desc"),
-					IsChecked = set.Patches.Chaos2CrashFix
-				},
+        public void SetPatches()
+        {
+            listPatches.Items.Clear();
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.ChunkRendering"),
-					Description = Lang.GetString("GamePatches.ChunkRenderingDesc"),
-					IsChecked = set.Patches.ChunkSpecularFix
-				},
+            List<PatchesData> patches = GetPatches(ref listPatches, GameProfile);
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.E102Lamp"),
-					Description = Lang.GetString("GamePatches.E102LampDesc"),
-					IsChecked = set.Patches.E102NGonFix
-				},
+            if (patches is not null)
+            {
+                foreach (var patch in patches)
+                {
+                    listPatches.Items.Add(patch);
+                }
+            }
+        }
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.ChaoStats"),
-					Description = Lang.GetString("GamePatches.ChaoStatsDesc"),
-					IsChecked = set.Patches.ChaoPanelFix
-				},
+        private void btnSelectAllPatch_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (PatchesData patch in listPatches.Items)
+            {
+                patch.IsChecked = true;
+            }
+            RefreshPatchesList();
+        }
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.PixelOffset"),
-					Description = Lang.GetString("GamePatches.PixelOffsetDesc"),
-					IsChecked = set.Patches.PixelOffSetFix
-				},
+        private void btnDeselectAllPatch_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (PatchesData patch in listPatches.Items)
+            {
+                patch.IsChecked = false;
+            }
+            RefreshPatchesList();
 
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.Lights"),
-					Description = Lang.GetString("GamePatches.LightsDesc"),
-					IsChecked = set.Patches.LightFix
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.DisableGBIX"),
-					Description = Lang.GetString("GamePatches.DisableGBIXDesc"),
-					IsChecked = set.Patches.KillGBIX
-				},
-
-				new PatchesData()
-				{
-					Name = Lang.GetString("GamePatches.DisableCDCheck"),
-					Description = Lang.GetString("GamePatches.DisableCDCheckDesc"),
-					IsChecked = set.Patches.DisableCDCheck
-				},
-			};
-
-			return patches;
-		}
-
-		public void SetPatches()
-		{
-			listPatches.Items.Clear();
-
-			List<PatchesData> patches = GetPatches(ref listPatches, GameProfile);
-
-			foreach (var patch in patches)
-			{
-				listPatches.Items.Add(patch);
-			}
-		}
-
-		private void btnSelectAllPatch_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (PatchesData patch in listPatches.Items)
-			{
-				patch.IsChecked = true;
-			}
-			RefreshPatchesList();
-		}
-
-		private void btnDeselectAllPatch_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (PatchesData patch in listPatches.Items)
-			{
-				patch.IsChecked = false;
-			}
-			RefreshPatchesList();
-
-		}
+        }
 
         private void RefreshPatchesList()
-		{
-			ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
-			view.Refresh();
-		}
+        {
+            ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
+            view.Refresh();
+        }
         #endregion
         #endregion
 
         public static void UpdateD3D8Paths()
-		{
+        {
             d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
             d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
         }
 
-		public void SavePatches(ref object input)
-		{
-			GameSettings settings = input as GameSettings;
+        public void SavePatches(ref object input)
+        {
+            GameSettings settings = input as GameSettings;
 
-			if (listPatches is null)
-				return;
+            if (listPatches is null)
+                return;
 
-			PatchesData patch = (PatchesData)listPatches.Items[14];
+            foreach (PatchesData patch in listPatches.Items)
+            {
+                string propertyName = patch.InternalName;
+                var propertyInfo = typeof(GamePatches).GetProperty(propertyName);
 
-			settings.Patches.DisableCDCheck = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[13];
-			settings.Patches.KillGBIX = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[12];
-			settings.Patches.LightFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[11];
-			settings.Patches.PixelOffSetFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[10];
-			settings.Patches.ChaoPanelFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[9];
-			settings.Patches.E102NGonFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[8];
-			settings.Patches.ChunkSpecularFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[7];
-			settings.Patches.Chaos2CrashFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[6];
-			settings.Patches.SkyChaseResolutionFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[5];
-			settings.Patches.FOVFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[4];
-			settings.Patches.NodeLimit = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[3];
-			settings.Patches.MaterialColorFix = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[2];
-			settings.Patches.FixVertexColorRendering = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[1];
-			settings.Patches.KeepCamSettings = patch.IsChecked;
-			patch = (PatchesData)listPatches.Items[0];
-			settings.Patches.HRTFSound = patch.IsChecked;
-		}
+                if (propertyInfo != null && propertyInfo.CanWrite)
+                {
+                    propertyInfo.SetValue(settings.Patches, patch.IsChecked);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Property {propertyName} not found or read-only.");
+                }
+            }
+        }
 
 		private void SetItemFromPad(int action)
 		{
@@ -884,7 +813,7 @@ namespace SAModManager.Elements.SADX
         {
             if (comboTextureFilter.SelectedIndex == 0)
             {
-				GameProfile.Graphics.EnableForcedTextureFilter = true;
+                GameProfile.Graphics.EnableForcedTextureFilter = true;
             }
             else if (comboTextureFilter.SelectedIndex == 1)
             {
@@ -892,11 +821,11 @@ namespace SAModManager.Elements.SADX
             }
         }
 
-		private void mouseAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			ComboBox comboBox = sender as ComboBox;
-			SetItemFromPad(comboBox.SelectedIndex);
-		}
+        private void mouseAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            SetItemFromPad(comboBox.SelectedIndex);
+        }
 
 		private void mouseBtnAssign_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{

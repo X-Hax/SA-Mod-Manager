@@ -3,19 +3,19 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <system:String x:Key="GamePatches.Title">Patch</system:String>
-    <system:String x:Key="GamePatches.3DSound">Permitir HRTF 3D Sound</system:String>
-	<system:String x:Key="GamePatches.CamCode">Correções do Erro do Código da Camera</system:String>
-	<system:String x:Key="GamePatches.VertexColor">Correções na Cor do(s) Vértice(s)</system:String>
-	<system:String x:Key="GamePatches.MaterialColor">Correções na Cor do Material</system:String>
+    <system:String x:Key="GamePatches.HRTFSound">Permitir HRTF 3D Sound</system:String>
+    <system:String x:Key="GamePatches.KeepCamSettings">Correções do Erro do Código da Camera</system:String>
+    <system:String x:Key="GamePatches.FixVertexColorRendering">Correções na Cor do(s) Vértice(s)</system:String>
+    <system:String x:Key="GamePatches.MaterialColorFix">Correções na Cor do Material</system:String>
     <system:String x:Key="GamePatches.NodeLimit">Increase Node Limit</system:String>
-	<system:String x:Key="GamePatches.FixFOV">Correções no FOV</system:String>
-	<system:String x:Key="GamePatches.Skychase">Correções no Sky Chase</system:String>
-	<system:String x:Key="GamePatches.Chaos2">Correções onde Chaos 2 Travava</system:String>
-	<system:String x:Key="GamePatches.ChunkRendering">Chunk Specular Fixes</system:String>
-	<system:String x:Key="GamePatches.E102Lamp">Correção no Farol do Gamma</system:String>
-	<system:String x:Key="GamePatches.ChaoStats">Correção nas Dimensões do Painel de Estado do Chao</system:String>
-	<system:String x:Key="GamePatches.PixelOffset">Correções no Desvio de Renderização 2D</system:String>
-	<system:String x:Key="GamePatches.Lights">Correção nas Luzes</system:String>
-	<system:String x:Key="GamePatches.DisableGBIX">Desselecionar GBIX (Experimental)</system:String>
-	<system:String x:Key="GamePatches.DisableCDCheck">Desselecionar "CD Check"</system:String>
+    <system:String x:Key="GamePatches.FOVFix">Correções no FOV</system:String>
+    <system:String x:Key="GamePatches.SkyChaseResolutionFix">Correções no Sky Chase</system:String>
+    <system:String x:Key="GamePatches.Chaos2CrashFix">Correções onde Chaos 2 Travava</system:String>
+    <system:String x:Key="GamePatches.ChunkSpecularFix">Chunk Specular Fixes</system:String>
+    <system:String x:Key="GamePatches.E102NGonFix">Correção no Farol do Gamma</system:String>
+    <system:String x:Key="GamePatches.ChaoPanelFix">Correção nas Dimensões do Painel de Estado do Chao</system:String>
+    <system:String x:Key="GamePatches.PixelOffSetFix">Correções no Desvio de Renderização 2D</system:String>
+    <system:String x:Key="GamePatches.LightFix">Correção nas Luzes</system:String>
+    <system:String x:Key="GamePatches.KillGBIX">Desselecionar GBIX (Experimental)</system:String>
+    <system:String x:Key="GamePatches.DisableCDCheck">Desselecionar "CD Check"</system:String>
 </ResourceDictionary>

@@ -18,7 +18,8 @@
 		<ResourceDictionary Source="ModConfig/ko-KR.xaml"/>
 		<ResourceDictionary Source="ModProfile/ko-KR.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/ko-KR.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ExceptionHandler/ko-KR.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">OK</system:String>
@@ -43,8 +44,10 @@
 	<system:String x:Key="CommonStrings.Credits">크레딧</system:String>
 	<system:String x:Key="CommonStrings.Download">다운로드</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">폴더 열기</system:String>
-	
-	<!--Window Tips-->
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+
+    <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">축소하기</system:String>
 	<system:String x:Key="Window.Tips.Maximize">확대하기</system:String>
 	<system:String x:Key="Window.Tips.Restore">창 복구하기</system:String>

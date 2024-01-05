@@ -27,10 +27,11 @@ namespace SAModManager
 
         private static async Task<bool> EnableOneClickInstall()
         {
+            // Is this different from the one in MainWindow.xaml.cs?
             try
             {
                 string execPath = Environment.ProcessPath;
-                await Process.Start(new ProcessStartInfo(execPath, "urlhandler") { UseShellExecute = true, Verb = "runas" }).WaitForExitAsync();
+                await Process.Start(new ProcessStartInfo(execPath, "urlhandler") { UseShellExecute = true }).WaitForExitAsync();
             }
             catch
             {
@@ -100,22 +101,26 @@ namespace SAModManager
 
                     if (dialog.isYes)
                     {
-
                         Uri uri = new(VCURLs[i] + "\r\n");
                         var DL = new DownloadDialog(uri, "Visual C++", "vc_redist.x86.exe");
+                        DL.DownloadFailed += (ex) =>
+                        {
+                            DL.DisplayDownloadFailedMSG(ex);
+                        };
 
                         DL.StartDL();
 
                         if (DL.done)
                         {
                             // Asynchronous operation using async/await
-                            await Process.Start(new ProcessStartInfo(Path.Combine(".SATemp", "vc_redist.x86.exe"), "/install /passive /norestart")
+                            await Process.Start(new ProcessStartInfo(Path.Combine(App.tempFolder, "vc_redist.x86.exe"), "/Q /install /quiet /norestart")
                             {
                                 UseShellExecute = true,
                                 Verb = "runas"
                             }).WaitForExitAsync();
-                        }
-
+                        };
+                        
+              
                         return false;
                     }
 
@@ -149,18 +154,6 @@ namespace SAModManager
             return true;
         }
 
-        public static void ClearTempFolder()
-        {
-            try
-            {
-                if (Directory.Exists(".SATemp"))
-                {
-                    Directory.Delete(".SATemp", true);
-                }
-            }
-            catch { }
-        }
-
         public static async Task<bool> StartupCheck()
         {
             Console.WriteLine("Checking dependencies...");
@@ -172,7 +165,7 @@ namespace SAModManager
                     return false;
             }
     
-            ClearTempFolder();
+            Util.ClearTempFolder();
 
             return true;
         }

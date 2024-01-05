@@ -164,24 +164,6 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/7zx64.dll.
-        /// </summary>
-        internal static string URL_7Z_x64 {
-            get {
-                return ResourceManager.GetString("URL_7Z_x64", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/7zx86.dll.
-        /// </summary>
-        internal static string URL_7Z_x86 {
-            get {
-                return ResourceManager.GetString("URL_7Z_x86", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/bass.zip.
         /// </summary>
         internal static string URL_BASS {
@@ -214,6 +196,15 @@ namespace SAModManager.Properties {
         internal static string URL_SADX_DL {
             get {
                 return ResourceManager.GetString("URL_SADX_DL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Patches.json.
+        /// </summary>
+        internal static string URL_SADX_PATCH {
+            get {
+                return ResourceManager.GetString("URL_SADX_PATCH", resourceCulture);
             }
         }
         

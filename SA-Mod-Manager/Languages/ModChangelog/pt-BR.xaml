@@ -3,8 +3,8 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 	
 	<system:String x:Key="ModChangelog.Title">Atualizações de Mods</system:String>
-	<system:String x:Key="ModChangelog.Tabs.Notes">Notas de Atualização</system:String>
-	<system:String x:Key="ModChangelog.Tabs.Details">Detalhes de Atualização</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Notes">Notas da Atualização</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details">Detalhes da Atualização</system:String>
 	<system:String x:Key="ModChangelog.Tabs.Details.DownloadDetails">Baixar Detalhes</system:String>
 	<system:String x:Key="ModChangelog.Tabs.Details.PublishedDate">Data de Publicação:</system:String>
 	<system:String x:Key="ModChangelog.Tabs.Details.FileSize">Tamanho de Arquivo:</system:String>

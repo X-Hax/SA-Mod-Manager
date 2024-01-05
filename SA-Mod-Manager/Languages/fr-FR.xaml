@@ -22,6 +22,7 @@
         <ResourceDictionary Source="SplashScreen/fr-FR.xaml"/>
         <ResourceDictionary Source="Updater/fr-FR.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/fr-FR.xaml"/>
+        <ResourceDictionary Source="ExceptionHandler/fr-FR.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!--Region Common UI-->
@@ -50,12 +51,14 @@
     <system:String x:Key="CommonStrings.None">Aucun</system:String>
     <system:String x:Key="CommonStrings.Enabled">Activer</system:String>
     <system:String x:Key="CommonStrings.Disabled">Désactiver</system:String>
+    <system:String x:Key="CommonStrings.Success">Succès!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Echec</system:String>
 
     <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Type</system:String>
     <system:String x:Key="CommonStrings.TypeCode">Code</system:String>
     <system:String x:Key="CommonStrings.Typepatch">Patch</system:String>
-    <system:String x:Key="CommonStrings.IsRequired">Is Required</system:String>
+    <system:String x:Key="CommonStrings.IsRequired">Requis</system:String>
 
     <!--Window Tips-->
     <system:String x:Key="Window.Tips.Minimize">Minimiser</system:String>

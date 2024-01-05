@@ -115,9 +115,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Defina uma resolução específica, ou selecione uma das predefinições.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Faz o jogo usar uma proporção de tela 4:3, independente da proporção definida.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Habilita V-Sync.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Se habilitado, quando a janela do jogo não estiver em foco, o jogo será pausado.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DynamicBuffers">Esta opção conserta um crash quando se usa alt-tab em tela cheia, pois habilita a alocação dinâmica de buffer. Pode causar lag em certas circunstâncias ou com certos mods.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">A janela do jogo inciará em tela cheia.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Se habilitado, quando a janela do jogo não estiver em foco, o jogo será pausado.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">A janela do jogo inciará em tela cheia.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Remove a borda da janela do jogo em tela cheia.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Redimensiona elementos da interface em tela cheia.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">A janela do jogo iniciará em modo janela.</system:String>
@@ -185,6 +184,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Abre o Gerenciador de Perfil, onde você pode criar e deletar perfis.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">O caminho completo para a pasta onde seu jogo está instalado.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Abre uma janela onde você pode selecionar a pasta do seu jogo.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Abre o diretório onde seu jogo está instalado.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Define o tema usado pelo Gerenciador de Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Define o idioma usado pelo Gerenciador de Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantém o Gerenciador de Mod aberto após pressionar Salvar e Jogar.</system:String>
@@ -203,7 +203,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Abre um link para o repositório de Github do Gerenciador de Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Abre um link para o website das SA Docs que contém informações sobre como modificar a duologia Adventure.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Abre um link para os Issues do repositório de Github do Gerenciador de Mod, para o reporte de bugs.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Verifica a saúde do seu jogo para ver se há algum arquivo que está faltando ou algum que foi modficado.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Verifica a saúde do seu jogo para ver se há algum arquivo que está faltando ou algum que foi modificado.</system:String>
 	<!--#endregion-->
 
 </ResourceDictionary>

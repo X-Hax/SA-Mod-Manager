@@ -19,6 +19,7 @@
 		<ResourceDictionary Source="ModProfile/pt-PT.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/pt-PT.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/pt-PT.xaml"/>
+        <ResourceDictionary Source="ExceptionHandler/pt-PT.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
@@ -44,8 +45,10 @@
 	<system:String x:Key="CommonStrings.Credits">Creditos</system:String>
 	<system:String x:Key="CommonStrings.Download">Download</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">Abrir Pasta</system:String>
-	
-	<!--Window Tips-->
+    <system:String x:Key="CommonStrings.Success">Success!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+
+    <!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Minimizar</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Maximizar</system:String>
 	<system:String x:Key="Window.Tips.Restore">Restaurar</system:String>

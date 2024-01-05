@@ -24,7 +24,8 @@
         <ResourceDictionary Source="SplashScreen/es-MX.xaml"/>
         <ResourceDictionary Source="Updater/es-MX.xaml"/>
 		<ResourceDictionary Source="MainWindow/UpdateStatus/es-MX.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ExceptionHandler/es-MX.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
     <system:String x:Key="CommonStrings.OK">OK</system:String>
@@ -52,6 +53,8 @@
     <system:String x:Key="CommonStrings.None">Ninguno</system:String>
     <system:String x:Key="CommonStrings.Enabled">Habilitado</system:String>
     <system:String x:Key="CommonStrings.Disabled">Deshabilitado</system:String>
+    <system:String x:Key="CommonStrings.Success">¡Éxito!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Algo falló</system:String>
 
     <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Tipo</system:String>

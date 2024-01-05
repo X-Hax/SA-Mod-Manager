@@ -35,8 +35,8 @@ namespace SAModManager.Updater
 			Uri uri= new($"https://api.gamebanana.com/Core/Item/Data?itemtype={itemType}&itemid={itemId}&fields=name%2COwner().name%2Ctext%2Cdescription%2CCredits().aAuthorsAndGroups()%2CUrl().sGetProfileUrl()%2CUpdates().bSubmissionHasUpdates()%2CUpdates().aGetLatestUpdates()%2CFiles().aFiles()&return_keys=1");
 
 			string response;
-			using (var client = new UpdaterWebClient())
-				response = await client.DownloadStringTaskAsync(uri);
+			var client = UpdateHelper.HttpClient;
+			response = await client.GetStringAsync(uri);
 
 			return JsonConvert.DeserializeObject<GameBananaItem>(response);
 		}
