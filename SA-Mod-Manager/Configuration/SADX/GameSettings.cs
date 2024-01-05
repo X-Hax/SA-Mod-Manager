@@ -890,7 +890,7 @@ namespace SAModManager.Configuration.SADX
 	public class GameSettings
 	{
 		/// <summary>
-		/// Versioning.
+		/// Versioning. Please comment a brief on the changes to the version.
 		/// </summary>
 		public enum SADXSettingsVersions
 		{
