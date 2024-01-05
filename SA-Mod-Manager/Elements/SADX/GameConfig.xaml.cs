@@ -831,7 +831,7 @@ namespace SAModManager.Elements.SADX
 			//inputMouseDragHold.IsChecked = (GameSettings.GameConfig.MouseMode == 0) ? true : false;
 
 			// Audio Settings
-			checkEnableMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("BGM")
+			checkEnableMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableGameMusic")
 			{
 				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay

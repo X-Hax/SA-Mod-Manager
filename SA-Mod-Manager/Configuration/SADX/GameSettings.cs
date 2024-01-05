@@ -305,6 +305,7 @@ namespace SAModManager.Configuration.SADX
 			switch ((DisplayMode)ScreenMode)
 			{
 				case DisplayMode.Fullscreen:
+				case DisplayMode.Borderless:
 					config.GameConfig.FullScreen = 1;
 					break;
 				default:
