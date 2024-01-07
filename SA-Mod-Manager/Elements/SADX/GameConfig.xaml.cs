@@ -61,7 +61,6 @@ namespace SAModManager.Elements.SADX
         }
 
         //Temporary, TO DO: Implement proper texture filter list
-
         private void SetTextureFilterSettings()
         {
             if (GameProfile.Graphics.EnableForcedTextureFilter == true)
@@ -120,7 +119,6 @@ namespace SAModManager.Elements.SADX
             if (!suppressEvent)
                 comboDisplay.SelectedIndex = -1;
         }
-
 
         private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -688,15 +686,27 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			chkScaleScreen.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableScreenScaling")
+			chkShowMouse.SetBinding(CheckBox.IsCheckedProperty, new Binding("ShowMouseInFullscreen")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
+			});
+			chkShowMouse.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay,
+				Converter = new ScreenModeConverter()
 			});
 			chkResizableWin.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableResizableWindow")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
+			});
+			chkResizableWin.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay,
+				Converter = new ResizeWindowConverter()
 			});
 
 			// Other Visual Settings

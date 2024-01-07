@@ -46,7 +46,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Match Render Ratio</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Custom Window Size:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Borderless Fullscreen</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Scale to Screen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Show Mouse in Fullscreen</system:String>
 	
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Other Graphics Options</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Framerate:</system:String>
