@@ -48,7 +48,7 @@
 								</ComboBox>
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption}" Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Center"/>
-								<ComboBox x:Name="comboScreenMode" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0" SelectionChanged="comboScreenMode_SelectionChanged">
+								<ComboBox x:Name="comboScreenMode" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0">
 									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed}"/>
 									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen}"/>
 									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless}"/>

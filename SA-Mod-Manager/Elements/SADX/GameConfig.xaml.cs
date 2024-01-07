@@ -842,31 +842,5 @@ namespace SAModManager.Elements.SADX
 			ComboBox comboBox = sender as ComboBox;
 			SetItemToPad(comboBox.SelectedIndex);
 		}
-
-		private void comboScreenMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			ComboBox box = sender as ComboBox;
-
-			if (this.IsLoaded)
-			{
-				switch ((GraphicsSettings.DisplayMode)box.SelectedIndex)
-				{
-					case GraphicsSettings.DisplayMode.Fullscreen:
-						System.Drawing.Rectangle rect = graphics.GetScreenSize();
-						txtResX.MaxValue = rect.Width;
-						txtResY.MaxValue = rect.Height;
-						GameProfile.Graphics.EnableBorderless = false;
-						break;
-					case GraphicsSettings.DisplayMode.Borderless:
-						GameProfile.Graphics.EnableBorderless = true;
-						break;
-					default:
-						txtResX.MaxValue = double.PositiveInfinity;
-						txtResY.MaxValue = double.PositiveInfinity;
-						GameProfile.Graphics.EnableBorderless = false;
-						break;
-				}
-			}
-        }
     }
 }
