@@ -70,12 +70,6 @@ namespace SAModManager.Configuration.SADX
 		public bool EnablePauseOnInactive { get; set; } = true;     // SADXLoaderInfo.PauseWhenInactive
 
 		/// <summary>
-		/// Scales the screen to window edges in fullscreen.
-		/// </summary>
-		[DefaultValue(true)]
-		public bool EnableScreenScaling { get; set; } = true;     // SADXLoaderInfo.StretchFullscreen
-
-		/// <summary>
 		/// Sets the Width of the Custom Window Size.
 		/// </summary>
 		[DefaultValue(640)]
@@ -161,7 +155,13 @@ namespace SAModManager.Configuration.SADX
 		/// Sets the game's clipping level.
 		/// </summary>
 		[DefaultValue(0)]
-		public int GameClipLevel { get; set; }	// SADXGameConfig.ClipLevel
+		public int GameClipLevel { get; set; }  // SADXGameConfig.ClipLevel
+
+		/// <summary>
+		/// Allows the cursor to show in the game window when in either Fullscreen mode.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool ShowMouseInFullscreen { get; set; }
 
 		#region Deprecated
 		/// <summary>
@@ -175,6 +175,12 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		[DefaultValue(true)]
 		public bool EnableBorderless { get; set; } = true;          // SADXLoaderInfo.Borderless
+
+		/// <summary>
+		/// Deprecated, always set to true in the mod loader now.
+		/// </summary>
+		[DefaultValue(true)]
+		public bool EnableScreenScaling { get; set; } = true;     // SADXLoaderInfo.StretchFullscreen
 		#endregion
 
 		/// <summary>
