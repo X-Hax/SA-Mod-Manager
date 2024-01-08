@@ -1620,7 +1620,11 @@ namespace SAModManager
                 // Load Profiles before doing anything.
                 string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
                 GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
-                GameProfiles.ValidateProfiles();
+                if (GameProfiles.ValidateProfiles() == false)
+                {
+                    GameProfiles.ProfileIndex = 0; //if validation fail, default to 0 and save changes
+                    GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
+                }
                 comboProfile.ItemsSource = GameProfiles.ProfilesList;
                 comboProfile.DisplayMemberPath = "Name";
                 suppressEvent = true;
