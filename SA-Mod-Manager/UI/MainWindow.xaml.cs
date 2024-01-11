@@ -1209,7 +1209,7 @@ namespace SAModManager
 
             message.ShowDialog();
 
-            if (message.isYes)
+            if (message.isOK)
                 OpenManagerIssue();
 
             if (message.isCancelled)
