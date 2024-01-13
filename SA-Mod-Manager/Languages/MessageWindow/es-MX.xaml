@@ -95,7 +95,7 @@
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Error desconocido</system:String>
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Ocurrió un error desconocido.</system:String>
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">No se pudo borrar el mod {0}.&#x0a;Por favor, asegúrate de que los archivos existen y de que no están siendo usados por otro programa, luego vuélvelo a intentar.</system:String>
-    <system:String x:Key="MessageWindow.Errors.ProfileLoad">An unexpected error occurred while loading profiles, if the problem persists, please report the issue.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ProfileLoad">Ocurrió un error inesperado al cargar los perfiles. Si el problema persiste, reporta el problema, por favor.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
