@@ -94,7 +94,7 @@
 
     <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Неизвестная ошибка</system:String>
     <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Произошла неизвестная ошибка.</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Ошибка удаления мода: {0}.&#x0a;Убедитесь, что файлы существуют и не используются другой программой, затем повторите ещё раз.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Ошибка удаления мода: {0}.&#x0a;Убедитесь, что файлы существуют и не используются другой программой. Затем попробуйте ещё раз.</system:String>
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">При загрузке профилей произошла непредвиденная ошибка. Если проблема не устранена, сообщите о ней.</system:String>
     <!--#endregion-->
 	
