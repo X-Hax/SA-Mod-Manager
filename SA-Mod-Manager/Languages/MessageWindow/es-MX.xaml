@@ -95,6 +95,7 @@
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Error desconocido</system:String>
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Ocurrió un error desconocido.</system:String>
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">No se pudo borrar el mod {0}.&#x0a;Por favor, asegúrate de que los archivos existen y de que no están siendo usados por otro programa, luego vuélvelo a intentar.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ProfileLoad">Ocurrió un error inesperado al cargar los perfiles. Si el problema persiste, reporta el problema, por favor.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -124,6 +125,7 @@
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Error al importar</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">No se pudieron importar los siguientes archivos como perfiles:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Por favor, asegúrate de que sólo utilizas archivos JSON de perfil de juego o archivos INI del antiguo cargador.</system:String>
+    
     <!--#endregion-->
 	
 	<!--#region Information-->

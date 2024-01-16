@@ -162,8 +162,8 @@ namespace SAModManager
 		{
 			if (!string.IsNullOrEmpty(nameBox.Text))
 			{
-				modIDBox.Text = GenerateModID();
-			}
+                modIDBox.Text = GenerateModID().Replace(" ", "");
+            }
 			else
 			{
 				modIDBox.Text = string.Empty;
