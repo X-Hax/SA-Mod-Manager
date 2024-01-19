@@ -101,23 +101,22 @@ namespace SAModManager
                     else
                     {
                         string[] subfolders = Directory.GetDirectories(tempFolder);
-
-                        //technically it should always be one folder
-                        if (subfolders.Length > 0)
+     
+                        //move all folders in mods folder (sometimes a zip can have multiple mods)
+                        foreach (var subfolder in subfolders)
                         {
-                            string dest = Path.Combine(App.CurrentGame.modDirectory, Path.GetFileNameWithoutExtension(subfolders[0]));
+                            string dest = Path.Combine(App.CurrentGame.modDirectory, Path.GetFileNameWithoutExtension(subfolder));
                             if (!Directory.Exists(dest))
-                                Util.MoveDirectory(subfolders[0], dest);
+                            {
+                                Util.MoveDirectory(subfolder, dest);
+                            }
                             else
                             {
-                                Util.MoveAllFilesAndSubfolders(subfolders[0], dest, dest);
+                                Util.MoveAllFilesAndSubfolders(subfolder, dest, dest);
                             }
                         }
                     }
                 }
-
-                if (Directory.Exists(tempFolder))
-                    Directory.Delete(tempFolder, true);
 
                 Util.ClearTempFolder();
                 ((MainWindow)App.Current.MainWindow).Save();
