@@ -24,6 +24,8 @@ using SAModManager.Elements;
 using SAModManager.Ini;
 using SAModManager.Configuration;
 using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Security.Policy;
 
 namespace SAModManager
 {
@@ -1048,6 +1050,25 @@ namespace SAModManager
 
         #region Form: Manager Tab: Functions
 
+        private async Task ResultPickGame(string path)
+        {
+            setGame = await GamesInstall.SetGameInstallManual(path);
+
+            if (setGame == SetGame.None)
+            {
+                new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+            }
+            else
+            {
+                tempPath = path;
+                App.CurrentGame.gameDirectory = tempPath;
+                UIHelper.ToggleButton(ref btnOpenGameDir, true);
+                Load(true);
+                await ForceInstallLoader();
+                UpdateButtonsState();
+                Save();
+            }
+        }
 
         //To do, rework this mess to handle multiple games and clean everything.
         private async void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
@@ -1058,22 +1079,7 @@ namespace SAModManager
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                setGame = await GamesInstall.SetGameInstallManual(dialog.SelectedPath);
-
-                if (setGame == SetGame.None)
-                {
-                    new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-                }
-                else
-                {
-                    tempPath = dialog.SelectedPath;
-                    App.CurrentGame.gameDirectory = tempPath;
-                    UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                    Load(true);
-                    await ForceInstallLoader();
-                    UpdateButtonsState();
-                    Save();
-                }
+                await ResultPickGame(dialog.SelectedPath);
             }
         }
 
@@ -2447,6 +2453,14 @@ namespace SAModManager
             var progress = new HealthChecker(setGame);
             progress.ShowDialog();
 
+        }
+
+        private async void textGameDir_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                await ResultPickGame(Path.GetFullPath(textGameDir.Text));
+            }
         }
     }
 }
