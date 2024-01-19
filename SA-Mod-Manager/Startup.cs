@@ -25,7 +25,7 @@ namespace SAModManager
         };
 
 
-        private static async Task<bool> EnableOneClickInstall()
+        public static async Task<bool> EnableOneClickInstall()
         {
             // Is this different from the one in MainWindow.xaml.cs?
             try

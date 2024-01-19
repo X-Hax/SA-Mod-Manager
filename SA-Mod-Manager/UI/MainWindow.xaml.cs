@@ -1048,25 +1048,6 @@ namespace SAModManager
 
         #region Form: Manager Tab: Functions
 
-        private async Task EnableOneClickInstall()
-        {
-            try
-            {
-                string execPath = Environment.ProcessPath;
-
-                await Process.Start(new ProcessStartInfo(execPath, "urlhandler")
-                {
-                    UseShellExecute = true,
-                }).WaitForExitAsync();
-
-                Image iconConfig = FindName("GB") as Image;
-                UIHelper.ToggleImage(ref iconConfig, false);
-
-            }
-            catch { }
-
-            await Task.Delay(10);
-        }
 
         //To do, rework this mess to handle multiple games and clean everything.
         private async void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
@@ -2385,7 +2366,7 @@ namespace SAModManager
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
                 await UpdateGameConfig(App.CurrentGame.id);
-                await EnableOneClickInstall();
+                await Startup.EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
@@ -2417,7 +2398,7 @@ namespace SAModManager
             }
 
             await UpdateGameConfig(App.CurrentGame.id);
-            await EnableOneClickInstall();
+            await Startup.EnableOneClickInstall();
 
             UIHelper.EnableButton(ref SaveAndPlayButton);
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
