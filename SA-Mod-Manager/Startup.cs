@@ -27,7 +27,6 @@ namespace SAModManager
 
         public static async Task<bool> EnableOneClickInstall()
         {
-            // Is this different from the one in MainWindow.xaml.cs?
             try
             {
                 string execPath = Environment.ProcessPath;
