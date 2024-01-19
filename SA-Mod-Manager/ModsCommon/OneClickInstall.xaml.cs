@@ -79,11 +79,10 @@ namespace SAModManager
 			{
 				string msg = Lang.GetString($"MessageWindow.Errors.URIParseFail0") + "\"{uri}\"" + Lang.GetString("MessageWindow.Errors.URIParseFail1");
 
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.URIParseFail.Title"), msg, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.URIParseFail.Title"), msg + "\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 
                 return;
 			}
-
 
 			try
 			{
@@ -100,45 +99,52 @@ namespace SAModManager
 				string color = GetNewColor("Colors.Text");
 				TextModDescription.Text = "<p style=\"color:" + color + ";\">" + gbi.Body + "</p>";
 
-				Dictionary<string, List<GameBananaCredit>> credits = gbi.Credits.Credits;
-
-				foreach (var CreditCategory in credits)
-				{
-					author = CreditCategory.Value[0].MemberName;
-
-					TextBlock TexCreditCategory = new()
-					{
-						Text = CreditCategory.Key,
-						FontSize = 12,
-						TextWrapping = TextWrapping.WrapWithOverflow,
-						Foreground = ThemeBrush.GetThemeBrush("TextBox.Brushes.Foreground"),
-						Padding = new Thickness(0, 4, 0, 5),
-					};
-
-					CreditsPanel.Children.Add(TexCreditCategory);
-
-					for (int i = 0; i < CreditCategory.Value.Count; i++)
-					{
-						TextBlock AuthorName = new()
-						{
-							Text = CreditCategory.Value[i].MemberName,
-							FontSize = 14,
-							TextWrapping = TextWrapping.WrapWithOverflow,
-							Foreground = ThemeBrush.GetThemeBrush("TextBox.Brushes.Foreground"),
-							FontWeight = FontWeights.Bold,
-							Padding = new Thickness(0, 4, 0, .5),
-						};
-
-						CreditsPanel.Children.Add(AuthorName);
-					}
-				}
-
 			}
 			catch (Exception ex)
 			{
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.GBAPIFail.Title"), Lang.GetString("MessageWindow.Errors.GBAPIFail"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				new MessageWindow(Lang.GetString("MessageWindow.Errors.GBAPIFail.Title"), Lang.GetString("MessageWindow.Errors.GBAPIFail") +"\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                 return;
             }
+
+			try
+			{
+                Dictionary<string, List<GameBananaCredit>> credits = gbi.Credits.Credits;
+
+                foreach (var CreditCategory in credits)
+                {
+					if (CreditCategory.Value is null || CreditCategory.Value.Count == 0)
+						continue;
+
+                    author = CreditCategory.Value[0].MemberName;
+
+                    TextBlock TexCreditCategory = new()
+                    {
+                        Text = CreditCategory.Key,
+                        FontSize = 12,
+                        TextWrapping = TextWrapping.WrapWithOverflow,
+                        Foreground = ThemeBrush.GetThemeBrush("TextBox.Brushes.Foreground"),
+                        Padding = new Thickness(0, 4, 0, 5),
+                    };
+
+                    CreditsPanel.Children.Add(TexCreditCategory);
+
+                    for (int i = 0; i < CreditCategory.Value.Count; i++)
+                    {
+                        TextBlock AuthorName = new()
+                        {
+                            Text = CreditCategory.Value[i].MemberName,
+                            FontSize = 14,
+                            TextWrapping = TextWrapping.WrapWithOverflow,
+                            Foreground = ThemeBrush.GetThemeBrush("TextBox.Brushes.Foreground"),
+                            FontWeight = FontWeights.Bold,
+                            Padding = new Thickness(0, 4, 0, .5),
+                        };
+
+                        CreditsPanel.Children.Add(AuthorName);
+                    }
+                }
+            }
+			catch { }
 		}
 
 		private async Task HandleUri(string uri)
