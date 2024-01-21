@@ -639,7 +639,7 @@ namespace SAModManager.Common
             if (App.isLinux)
             {
                 string home = Environment.GetEnvironmentVariable("WINEHOMEDIR").Replace("\\??\\", "");
-                SteamLocation = Path.Combine(home, ".steam/steam");
+                SteamLocation = Path.Combine(home, ".steam/steam"); //unused
             }
 
             string steamInstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Valve\Steam", "InstallPath", null);

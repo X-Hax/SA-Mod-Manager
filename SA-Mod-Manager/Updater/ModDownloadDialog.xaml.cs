@@ -156,31 +156,48 @@ namespace SAModManager.Updater
 
         private async Task ParsingManifest(ModDownload file, string filePath, string dataDir)
         {
-            string workDir = Path.GetDirectoryName(ModInfo.GetModFiles(new DirectoryInfo(dataDir)).FirstOrDefault());
+            string[] subfolders = Directory.GetDirectories(dataDir);
 
-            if (string.IsNullOrEmpty(workDir))
+            //move all folders in mods folder (sometimes a zip can have multiple mods)
+            foreach (var subfolder in subfolders)
             {
-                throw new DirectoryNotFoundException($"Unable to locate mod.ini in \"{dataDir}\"");
-            }
+                var subFolder = new DirectoryInfo(subfolder);
+                string subFolderName = subFolder?.Name;
+                string workDir = Path.GetDirectoryName(ModInfo.GetModFiles(subFolder).FirstOrDefault());
 
-            string newManPath = Path.Combine(workDir, "mod.manifest");
-            string oldManPath = Path.Combine(file.Folder, "mod.manifest");
-
-            if (!File.Exists(newManPath) || !File.Exists(oldManPath))
-            {
-                CopyDirectory(new DirectoryInfo(workDir), Directory.CreateDirectory(file.Folder));
-                Directory.Delete(dataDir, true);
-
-                if (File.Exists(filePath))
+                if (string.IsNullOrEmpty(workDir))
                 {
-                    File.Delete(filePath);
+                    continue;
                 }
 
-                File.WriteAllText(Path.Combine(file.Folder, "mod.version"), file.Updated.ToString(DateTimeFormatInfo.InvariantInfo));
-                return;
-            }
+                if (subfolders.Length > 1 && this.isUpdate == false) //handle packaged mods (does not support updates atm)
+                {
+                    if (subFolderName.Contains(Path.GetFileNameWithoutExtension(file.Folder)) == false)
+                    {
+                        file.Name = subFolderName;
+                        file.Folder = Path.Combine(App.CurrentGame.modDirectory, subFolderName);
+                    }
+                }
 
-            await ApplyingManifest(oldManPath, newManPath, file, workDir);
+                string newManPath = Path.Combine(workDir, "mod.manifest");
+                string oldManPath = Path.Combine(file.Folder, "mod.manifest");
+
+                if (!File.Exists(newManPath) || !File.Exists(oldManPath))
+                {                        
+                    CopyDirectory(new DirectoryInfo(workDir), Directory.CreateDirectory(file.Folder));
+                    Directory.Delete(subfolder, true);
+
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+
+                    File.WriteAllText(Path.Combine(file.Folder, "mod.version"), file.Updated.ToString(DateTimeFormatInfo.InvariantInfo));
+                    continue;
+                }
+
+                await ApplyingManifest(oldManPath, newManPath, file, workDir);
+            }
         }
 
         async Task ApplyingManifest(string oldManPath, string newManPath, ModDownload mod, string workDir)
