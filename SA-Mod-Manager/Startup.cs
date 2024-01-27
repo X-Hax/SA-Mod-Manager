@@ -134,7 +134,9 @@ namespace SAModManager
             try
             {
                 GamesInstall.SetDependencyPath();
-                Directory.CreateDirectory(App.ConfigFolder);
+
+                if (!Directory.Exists(App.ConfigFolder))
+                    Directory.CreateDirectory(App.ConfigFolder);
 
                 if (!File.Exists(App.ManagerConfigFile)) //If config page isn't found, assume this is the first boot.
                 {
