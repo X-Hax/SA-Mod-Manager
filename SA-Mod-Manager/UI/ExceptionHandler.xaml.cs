@@ -90,6 +90,7 @@ namespace SAModManager.UI
 
 				if (markdown) error.AppendLine("```");
 				error.AppendLine($"");
+				CreateCrashDump(error);
 			}
 			else
 			{
@@ -175,6 +176,25 @@ namespace SAModManager.UI
                 Verb = "open"
             };
             Process.Start(ps);
+		}
+
+		private static void CreateCrashDump(StringBuilder error)
+		{
+			try
+			{
+				Directory.CreateDirectory(App.crashFolder);
+                DateTime currentDateTime = DateTime.Now;
+				string formattedDateTime = "log_" + currentDateTime.ToString("dd.MM.yyyy_HH.mm") + ".txt";
+                error.AppendLine();
+                File.WriteAllText(Path.Combine(App.crashFolder, formattedDateTime), error.ToString());
+
+				if (File.Exists(App.ManagerConfigFile))
+				{
+					File.Copy(App.ManagerConfigFile, Path.Combine(App.crashFolder, "config_" + currentDateTime.ToString("dd.MM.yyyy_HH.mm") + ".json"));
+                }
+			}
+			catch
+			{ }
 		}
 
         public static void UnhandledExceptionEventHandler(Exception e)
