@@ -82,9 +82,9 @@
     <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">Activer la Musique</system:String>
     <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Activer les Sons</system:String>
     <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Activer les Sons 3D</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Vol. Musique:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Vol. Voix:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Vol. SFX:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Volume des Musiques:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Volume des Voix:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Volume des SFX:</system:String>
 
     <!--#endregion-->
 
