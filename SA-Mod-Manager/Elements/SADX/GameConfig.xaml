@@ -398,7 +398,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="50"/>
                                 <ColumnDefinition Width="10"/>

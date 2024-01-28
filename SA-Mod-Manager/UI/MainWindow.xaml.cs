@@ -1698,7 +1698,11 @@ namespace SAModManager
             }
             else if (Directory.Exists(App.CurrentGame.gameDirectory) && !modFolderExist)
             {
-                Directory.CreateDirectory(App.CurrentGame.modDirectory);
+                try
+                {
+                    Directory.CreateDirectory(App.CurrentGame.modDirectory);
+                }
+                catch { }
             }
 
             if (File.Exists(Path.Combine(App.CurrentGame.modDirectory, "mod.ini")))
