@@ -27,7 +27,7 @@
     <system:String x:Key="UpdateStatus.LoaderInstalled">Se ha Instalado el Mod Loader correctamente</system:String>
     <system:String x:Key="UpdateStatus.LoaderUninstalled">Se ha Desinstalado el Mod Loader correctamente</system:String>
     <system:String x:Key="UpdateStatus.TotalMods">Se han cargado {0} Mods</system:String>
-    <system:String x:Key="UpdateStatus.TotalCodes">Se han cargado {0} Codes</system:String>
+    <system:String x:Key="UpdateStatus.TotalCodes">Se han cargado {0} Códigos</system:String>
 
 
 
