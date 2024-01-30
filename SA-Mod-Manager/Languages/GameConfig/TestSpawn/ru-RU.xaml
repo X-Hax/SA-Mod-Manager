@@ -5,12 +5,12 @@
 
     <!--Region Cutscene List-->
     <system:String x:Key="TSCutscene1">Соник: начало</system:String>
-    <system:String x:Key="TSCutscene2">Соник: после победы над Хаосом 0 (Chaos 0)</system:String>
+    <system:String x:Key="TSCutscene2">Соник: после победы над Хаосом 0</system:String>
     <system:String x:Key="TSCutscene3">Соник: крушение Тейлза</system:String>
     <system:String x:Key="TSCutscene6">Соник с Тейлзом у бассейна</system:String>
     <system:String x:Key="TSCutscene7">Соник: перед Эгг-Шершнем</system:String>
     <system:String x:Key="TSCutscene8">Соник: появление Хаоса 1</system:String>
-    <system:String x:Key="TSCutscene9">Соник и Тейлз опрысканы газом</system:String>
+    <system:String x:Key="TSCutscene9">Соник и Тейлз опрысканы газом перед Казинополисом</system:String>
     <system:String x:Key="TSCutscene11">Соник: трансформация Хаоса 4</system:String>
     <system:String x:Key="TSCutscene12">Соник и Тейлз разделяются с Наклзом</system:String>
     <system:String x:Key="TSCutscene13">Соник и Тейлз садятся в Торнадо-1</system:String>
