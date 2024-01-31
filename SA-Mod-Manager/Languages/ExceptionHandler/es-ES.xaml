@@ -3,13 +3,13 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 	
-	<system:String x:Key="ExceptionHandler.Title">Manager Crashed</system:String>
-	<system:String x:Key="ExceptionHandler.Header">The Manager has encountered an Error</system:String>
-	<system:String x:Key="ExceptionHandler.Copy">Copy Error Log</system:String>
-	<system:String x:Key="ExceptionHandler.Ignore">Ignore and Close</system:String>
-    <system:String x:Key="ExceptionHandler.Report">Report Error (English only)</system:String>
+	<system:String x:Key="ExceptionHandler.Title">El Manager se ha bloqueado</system:String>
+	<system:String x:Key="ExceptionHandler.Header">El Manager ha encontrado un error</system:String>
+    <system:String x:Key="ExceptionHandler.Copy">Copiar Registro del Error</system:String>
+	<system:String x:Key="ExceptionHandler.Ignore">Ignorar y Cerrar</system:String>
+    <system:String x:Key="ExceptionHandler.Report">Reportar Error (Solo en Inglés)</system:String>
 
-    <system:String x:Key="ExceptionHandler.ToolTip.Copy">Copies the error log to the clipboard with markdown formatting included.</system:String>
-	<system:String x:Key="ExceptionHandler.ToolTip.Ignore">Ignores the error and closes this window. The Manager may close.</system:String>
-	<system:String x:Key="ExceptionHandler.ToolTip.Report">Opens an Issue on the Manager's Repository on GitHub with the a template for you to provide additional info and a copy of the exception report.</system:String>
+    <system:String x:Key="ExceptionHandler.ToolTip.Copy">Copia el registro del error al portapapeles con el formato markdown incluido.</system:String>
+	<system:String x:Key="ExceptionHandler.ToolTip.Ignore">Ignora el error y cierra esta ventana. El Manager se cerrará.</system:String>
+    <system:String x:Key="ExceptionHandler.ToolTip.Report">Abre un enlace a la sección para reportar errores en el repositorio del Mod Manager en GitHub junto a una plantilla para proporcionar más información sobre el error y una copia del informe de excepción.</system:String>
 </ResourceDictionary>
