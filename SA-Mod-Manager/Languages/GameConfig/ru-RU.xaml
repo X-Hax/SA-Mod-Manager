@@ -84,9 +84,9 @@
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">Включить музыку</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Включить звуки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Вкл. пространственные звуки</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Музыка:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Голоса:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Звуки:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Громкость музыки:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Громкость озвучки:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Громкость звуков:</system:String>
 	<!--#endregion-->
 
 	<!--#region Test Spawn Tab Strings-->
