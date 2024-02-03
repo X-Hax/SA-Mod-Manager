@@ -143,7 +143,6 @@ namespace SAModManager
             if (App.isFirstBoot)
             {
                 new SplashScreenDialog().ShowDialog();
-                App.isFirstBoot = false;
             }
 
             var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
