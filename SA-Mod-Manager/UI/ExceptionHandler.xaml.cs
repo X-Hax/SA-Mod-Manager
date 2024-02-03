@@ -51,23 +51,31 @@ namespace SAModManager.UI
 				error.AppendLine("## Exception Report");
 			}
 
-			if (markdown) error.AppendLine("```");
+			if (markdown) 
+				error.AppendLine("```");
+
 			error.Append($"SAMM Information:");
-			error.AppendLine($"\tManager Version: {App.VersionString}");
+            error.AppendLine("");
+            error.AppendLine($"\tManager Version: {App.VersionString}");
 			if (App.isFirstBoot)
 				error.AppendLine($"\tFirst Boot: True");
 
 			error.AppendLine($"\tCurrent Game: {App.CurrentGame.gameName}");
 			error.AppendLine($"\tGame Directory: {App.CurrentGame.gameDirectory}");
-			if (File.Exists(App.CurrentGame.loader.loaderVersionpath))
+            error.AppendLine($"\tManager Location: {App.StartDirectory}");
+            error.AppendLine($"\tRunning as Admin: {Util.RunningAsAdmin().ToString()}");
+
+            if (File.Exists(App.CurrentGame.loader.loaderVersionpath))
 				 error.AppendLine($"\tMod Loader Version (Hash): {File.ReadAllText(App.CurrentGame.loader.loaderVersionpath)}");
-			if (markdown) error.AppendLine("```");
+			if (markdown) 
+				error.AppendLine("```");
 
 			error.AppendLine("");
 
 			if (exception != null)
 			{
-				if (markdown) error.AppendLine("```");
+				if (markdown) 
+					error.AppendLine("```");
 
 				error.AppendLine($"Exception Information:");
 
