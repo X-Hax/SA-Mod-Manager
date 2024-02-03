@@ -58,19 +58,29 @@ namespace SAModManager.Configuration
         /// <returns></returns>
         public static Profiles Deserialize(string path)
         {
-            if (File.Exists(path))
+            try
             {
-                string jsonContent = File.ReadAllText(path);
-
-                return JsonSerializer.Deserialize<Profiles>(jsonContent);
-            }
-            else
-            {
-                return new()
+                if (File.Exists(path))
                 {
-                    ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
-                };
+                    string jsonContent = File.ReadAllText(path);
+
+                    return JsonSerializer.Deserialize<Profiles>(jsonContent);
+                }
+                else
+                {
+                    return new()
+                    {
+                        ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
+                    };
+                }
             }
+            catch (Exception ex)
+            {
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ProfileLoad") + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+
+            }
+
+            return new() { ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") } };       
         }
 
         /// <summary>
@@ -79,9 +89,29 @@ namespace SAModManager.Configuration
         /// <param name="path"></param>
         public void Serialize(string path)
         {
-            string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+            try
+            {
+                if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+                {
+                    string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+                    File.WriteAllText(path, jsonContent);
+                }
+                else
+                {
+                    App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
+                    Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+                    if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+                    {
 
-            File.WriteAllText(path, jsonContent);
+                        string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+                        File.WriteAllText(path, jsonContent);
+                    }
+                }
+            }
+            catch
+            {
+                throw new Exception("Failed to create Profile Directory.");
+            }
         }
 
         public bool ValidateProfiles()
@@ -128,25 +158,26 @@ namespace SAModManager.Configuration
                         return false;
 
                     }
-         
+
                 }
-            } catch (Exception ex) 
+            }
+            catch (Exception ex)
             {
 
-                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ProfileLoad") +"\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ProfileLoad") + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
                 return false;
             }
 
             return true;
         }
 
-    public static Profiles MakeDefaultProfileFile()
-    {
-        return new()
+        public static Profiles MakeDefaultProfileFile()
         {
-            ProfileIndex = 0,
-            ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
-        };
+            return new()
+            {
+                ProfileIndex = 0,
+                ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
+            };
+        }
     }
-}
 }
