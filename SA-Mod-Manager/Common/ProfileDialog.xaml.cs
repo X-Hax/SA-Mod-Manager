@@ -312,7 +312,7 @@ namespace SAModManager.Common
 								}
 							}
 
-							settings.Serialize(newFilePath);
+							settings.Serialize(newFilePath, newFileName + ".json");
 
 							Profiles.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
 						}

@@ -130,14 +130,21 @@ namespace SAModManager.Configuration.SA2
 
 		public static GameSettings Deserialize(string path)
 		{
-			if (File.Exists(path))
+			try
 			{
-				string jsonContent = File.ReadAllText(path);
+				if (File.Exists(path))
+				{
+					string jsonContent = File.ReadAllText(path);
 
-				return JsonSerializer.Deserialize<GameSettings>(jsonContent);
+					return JsonSerializer.Deserialize<GameSettings>(jsonContent);
+				}
+				else
+					return new();
 			}
-			else
-				return new();
+			catch
+			{
+                return new();
+            }
 		}
 
 		public void Serialize(string path)
