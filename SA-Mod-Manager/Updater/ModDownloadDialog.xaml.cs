@@ -150,7 +150,7 @@ namespace SAModManager.Updater
             }
             catch (Exception ex) 
             {
-                throw new Exception("failed to extract '" + filePath +"'\n\n", ex);
+                throw new Exception("Failed to extract '" + filePath +"'\n at " + dataDir + "\n\n", ex);
             }
         }
 
@@ -392,36 +392,54 @@ namespace SAModManager.Updater
 
         private async Task DownloadFileCompleted_Archive(ModDownload file, string filePath, string updatePath)
         {
-            string dataDir = Path.GetFileNameWithoutExtension(filePath);
+            bool extract = false;
+            bool removereadOnly = false;
+            string dataDir = null;
 
-            if (dataDir.Length > 20)
-                dataDir = dataDir.Remove(20).TrimEnd(' ');
-
-            dataDir = Path.Combine(updatePath, dataDir);
-
-            await Extracting(dataDir, filePath);
-            await ParsingManifest(file, filePath, dataDir);
-
-            void removeReadOnly(DirectoryInfo dir)
+            try
             {
-                foreach (DirectoryInfo d in dir.GetDirectories())
+                dataDir = Path.GetFileNameWithoutExtension(filePath);
+
+                if (dataDir.Length > 20)
+                    dataDir = dataDir.Remove(20).TrimEnd(' ');
+
+                dataDir = Path.Combine(updatePath, dataDir);
+
+                await Extracting(dataDir, filePath);
+                extract = true;
+          
+                await ParsingManifest(file, filePath, dataDir);
+
+                void removeReadOnly(DirectoryInfo dir)
                 {
-                    removeReadOnly(d);
-                    d.Attributes &= ~FileAttributes.ReadOnly;
+                    foreach (DirectoryInfo d in dir.GetDirectories())
+                    {
+                        removeReadOnly(d);
+                        d.Attributes &= ~FileAttributes.ReadOnly;
+                    }
+                }
+
+                if (Directory.Exists(dataDir))
+                {
+                    removeReadOnly(new DirectoryInfo(dataDir));
+                    Directory.Delete(dataDir, true);
+                }
+
+                removereadOnly = true;
+                File.WriteAllText(Path.Combine(file.Folder, "mod.version"), file.Updated.ToString(DateTimeFormatInfo.InvariantInfo));
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
                 }
             }
-
-            if (Directory.Exists(dataDir))
+            catch
             {
-                removeReadOnly(new DirectoryInfo(dataDir));
-                Directory.Delete(dataDir, true);
-            }
-
-            File.WriteAllText(Path.Combine(file.Folder, "mod.version"), file.Updated.ToString(DateTimeFormatInfo.InvariantInfo));
-
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
+                throw new Exception("Mod Update: Failed to apply post download operations:'\n" +
+                    "FilePath: " + filePath + "\n" 
+                    + "Directory out: " + dataDir + "\n"
+                    + "Extracted: " + extract.ToString() + "\n"
+                    + "Removed Read Only: " + removereadOnly.ToString() + "\n");
             }
         }
 
@@ -464,7 +482,16 @@ namespace SAModManager.Updater
 
                             await httpClient.DownloadFileAsync(uri.AbsoluteUri, destination, _progress, cancelToken).ConfigureAwait(false);
                             string filePath = Path.Combine(this.dest, uri.Segments.Last());
-                            await DownloadFileCompleted_Archive(file, filePath, dest);
+                            if (File.Exists(filePath))
+                            {
+                                await DownloadFileCompleted_Archive(file, filePath, dest);
+                            }
+                            else
+                            {
+                                string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + " " + uri.Segments.Last() +"\n'" + filePath +"'";
+                                var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+                                error.ShowDialog();
+                            }
                             break;
                         case Updater.ModDownloadType.Modular:
                             await Download_Modular(file, dest, cancelToken);
