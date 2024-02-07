@@ -94,7 +94,7 @@ namespace SAModManager
                 // TODO: Add switch case to properly do the new config for either game.
                 Configuration.SADX.GameSettings newProfile = new();
                 newProfile.LoadConfigs();
-                await Task.Run(() => newProfile.Serialize(destinationFile));
+                await Task.Run(() => newProfile.Serialize(destinationFile, "Default.json"));
                 return true;
             }
             catch (Exception ex)

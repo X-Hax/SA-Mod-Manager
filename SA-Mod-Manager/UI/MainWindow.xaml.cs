@@ -1554,7 +1554,7 @@ namespace SAModManager
             }
         }
 
-        private void SaveSADXSettings()
+        async private void SaveSADXSettings()
         {
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;

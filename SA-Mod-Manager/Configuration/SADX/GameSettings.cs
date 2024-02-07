@@ -7,6 +7,7 @@ using SAModManager.Common;
 using System.Text.Json;
 using System.CodeDom.Compiler;
 using System;
+using System.Text.Json.Serialization;
 
 namespace SAModManager.Configuration.SADX
 {
@@ -1174,29 +1175,36 @@ namespace SAModManager.Configuration.SADX
 				{
 					string jsonContent = File.ReadAllText(path);
 
-				GameSettings settings = JsonSerializer.Deserialize<GameSettings>(jsonContent);
+					GameSettings settings = JsonSerializer.Deserialize<GameSettings>(jsonContent);
 
-				// Version update changes go here.
-				switch ((SADXSettingsVersions)settings.SettingsVersion)
-				{
-					case SADXSettingsVersions.v1:
-						// Update to Version 2
-						settings.SettingsVersion = (int)SADXSettingsVersions.v2;
-						SADXConfigFile config = new();
-						string configPath = Path.Combine(settings.GamePath, App.CurrentGame.GameConfigFile[0]);
-						if (File.Exists(configPath))
-							config = IniSerializer.Deserialize<SADXConfigFile>(configPath);
+					// Version update changes go here.
+					switch ((SADXSettingsVersions)settings.SettingsVersion)
+					{
+						case SADXSettingsVersions.v1:
+							// Update to Version 2
+							settings.SettingsVersion = (int)SADXSettingsVersions.v2;
+							SADXConfigFile config = new();
+							string configPath = Path.Combine(settings.GamePath, App.CurrentGame.GameConfigFile[0]);
+							if (File.Exists(configPath))
+								config = IniSerializer.Deserialize<SADXConfigFile>(configPath);
 
-						settings.Graphics.LoadGameConfig(ref config);
-						settings.Controller.LoadGameConfig(ref config);
-						settings.Sound.LoadGameConfig(ref config);
-						break;
+							settings.Graphics.LoadGameConfig(ref config);
+							settings.Controller.LoadGameConfig(ref config);
+							settings.Sound.LoadGameConfig(ref config);
+							break;
+					}
+
+					return settings;
 				}
-
-				return settings;
+				else
+					return new();
 			}
-			else
-				return new();
+			catch (Exception ex)
+			{
+				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ProfileLoad") + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+			}
+
+			return new();
 		}
 
 		/// <summary>
@@ -1205,7 +1213,6 @@ namespace SAModManager.Configuration.SADX
 		/// <param name="path"></param>
 		public void Serialize(string path, string profileName)
 		{
-
 			try
 			{
 				if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
