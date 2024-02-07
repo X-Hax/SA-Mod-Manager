@@ -25,9 +25,8 @@ namespace SAModManager
         };
 
 
-        private static async Task<bool> EnableOneClickInstall()
+        public static async Task<bool> EnableOneClickInstall()
         {
-            // Is this different from the one in MainWindow.xaml.cs?
             try
             {
                 string execPath = Environment.ProcessPath;
@@ -80,8 +79,6 @@ namespace SAModManager
                 }
             }
 
-            if (!Directory.Exists(App.ConfigFolder))
-                Directory.CreateDirectory(App.ConfigFolder);
 
             App.ManagerSettings.Serialize(App.ManagerConfigFile);
             await Task.Delay(20);
@@ -135,7 +132,8 @@ namespace SAModManager
             try
             {
                 GamesInstall.SetDependencyPath();
-                Directory.CreateDirectory(App.ConfigFolder);
+
+                App.CreateConfigFolder();
 
                 if (!File.Exists(App.ManagerConfigFile)) //If config page isn't found, assume this is the first boot.
                 {

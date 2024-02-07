@@ -41,6 +41,7 @@ namespace SAModManager
         public static readonly string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
         public static readonly string tempFolder = Path.Combine(StartDirectory, ".SATemp");
+        public static readonly string crashFolder = Path.Combine(ConfigFolder, "CrashDump");
         public static bool isVanillaTransition = false; //used when installing the manager from an update
         public static bool isFirstBoot = false; //used when installing the new manager manually
         public static bool isLinux = false;
@@ -110,7 +111,7 @@ namespace SAModManager
                 ExceptionHandler.UnhandledExceptionEventHandler(e.ExceptionObject as Exception);
             };
 #endif
-  
+
             ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             MainWindow = new MainWindow();
@@ -477,6 +478,18 @@ namespace SAModManager
             return false;
         }
 
+        public static void CreateConfigFolder()
+        {
+            try
+            {
+                if (!Directory.Exists(App.ConfigFolder))
+                    Directory.CreateDirectory(App.ConfigFolder);
+            }
+            catch
+            {
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.CreateConfigFolder"), "'" + App.ConfigFolder + "'"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+            }
+        }
         
         private static void HandleVanillaTransition(string[] args)
         {

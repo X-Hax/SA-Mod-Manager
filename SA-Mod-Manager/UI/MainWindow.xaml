@@ -363,7 +363,7 @@
 										<ColumnDefinition Width="5"/>
 										<ColumnDefinition Width="Auto"/>
 									</Grid.ColumnDefinitions>
-									<TextBox x:Name="textGameDir" Height="24" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+									<TextBox x:Name="textGameDir" Height="24" VerticalAlignment="Center" VerticalContentAlignment="Center" KeyDown="textGameDir_KeyDown"/>
 									<elements:ImageButton x:Name="btnBrowseGameDir" Grid.Column="2" Height="24" Click="btnBrowseGameDir_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.DirectoryBrowse}"
 														   Icon="{StaticResource Icons.Folder}"/>
 								</Grid>

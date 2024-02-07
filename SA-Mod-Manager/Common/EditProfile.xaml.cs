@@ -83,7 +83,7 @@ namespace SAModManager.Common
 							sadxSettings.EnabledMods = Mods;
 							sadxSettings.EnabledCodes = Codes;
 						}
-                        sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
+                        sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
 						break;
 					case "Sonic Adventure 2":
                         Configuration.SADX.GameSettings sa2Settings = new()
@@ -95,7 +95,7 @@ namespace SAModManager.Common
 							sa2Settings.EnabledMods = Mods;
 							sa2Settings.EnabledCodes = Codes;
                         }
-                        sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
+                        sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
 						break;
 				}
 
@@ -130,12 +130,12 @@ namespace SAModManager.Common
 					case "Sonic Adventure DX":
 						Configuration.SADX.GameSettings sadxSettings =	Configuration.SADX.GameSettings.Deserialize(originalProfile);
 						sadxSettings.GamePath = App.CurrentGame.gameDirectory;
-						sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
+						sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
 						break;
 					case "Sonic Adventure 2":
 						Configuration.SADX.GameSettings sa2Settings = new Configuration.SADX.GameSettings();
 						sa2Settings.GamePath = App.CurrentGame.gameDirectory;
-						sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename));
+						sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
 						break;
 				}
 				File.Delete(originalProfile);

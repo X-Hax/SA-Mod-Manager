@@ -13,65 +13,75 @@ using System.Threading.Tasks;
 
 namespace SAModManager.Configuration
 {
-	public class ProfileEntry
-	{
-		public string Name { get; set; } = string.Empty;
+    public class ProfileEntry
+    {
+        public string Name { get; set; } = string.Empty;
 
-		public string Filename { get; set; } = string.Empty;
+        public string Filename { get; set; } = string.Empty;
 
-		public ProfileEntry(string name, string filename)
-		{
-			Name = name;
-			Filename = filename;
-		}
-	}
+        public ProfileEntry(string name, string filename)
+        {
+            Name = name;
+            Filename = filename;
+        }
+    }
 
-	public class Profiles
-	{
-		/// <summary>
-		/// Index of the current/last selected profile.
-		/// </summary>
-		public int ProfileIndex { get; set; }
+    public class Profiles
+    {
+        /// <summary>
+        /// Index of the current/last selected profile.
+        /// </summary>
+        public int ProfileIndex { get; set; }
 
-		/// <summary>
-		/// List of Profile options.
-		/// </summary>
-		public List<ProfileEntry> ProfilesList { get; set; } = new();
+        /// <summary>
+        /// List of Profile options.
+        /// </summary>
+        public List<ProfileEntry> ProfilesList { get; set; } = new();
 
-		/// <summary>
-		/// Returns the Profile to load using the Manager's settings and the Profiles.json file for the specified game.
-		/// </summary>
-		/// <param name="profiles"></param>
-		/// <returns></returns>
-		public string GetProfileFilename()
-		{
-			if (ProfilesList.Count > 0)
-				return ProfilesList.ElementAt(ProfileIndex).Filename;
-			else
-				return string.Empty;
-		}
+        /// <summary>
+        /// Returns the Profile to load using the Manager's settings and the Profiles.json file for the specified game.
+        /// </summary>
+        /// <param name="profiles"></param>
+        /// <returns></returns>
+        public string GetProfileFilename()
+        {
+            if (ProfilesList.Count > 0)
+                return ProfilesList.ElementAt(ProfileIndex).Filename;
+            else
+                return string.Empty;
+        }
 
-		/// <summary>
-		/// Deserializes a file and returns a populated Profiles class, returns new if file doesn't exist.
-		/// </summary>
-		/// <param name="path"></param>
-		/// <returns></returns>
-		public static Profiles Deserialize(string path)
-		{
-			if (File.Exists(path))
-			{
-				string jsonContent = File.ReadAllText(path);
+        /// <summary>
+        /// Deserializes a file and returns a populated Profiles class, returns new if file doesn't exist.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static Profiles Deserialize(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    string jsonContent = File.ReadAllText(path);
 
-				return JsonSerializer.Deserialize<Profiles>(jsonContent);
-			}
-			else
-			{
-				return new()
-				{
-					ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
-				};
-			}
-		}
+                    return JsonSerializer.Deserialize<Profiles>(jsonContent);
+                }
+                else
+                {
+                    return new()
+                    {
+                        ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ProfileLoad") + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+
+            }
+
+            return new() { ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") } };       
+        }
 
         /// <summary>
         /// Serializes Profiles to JSON.
@@ -79,61 +89,95 @@ namespace SAModManager.Configuration
         /// <param name="path"></param>
         public void Serialize(string path)
         {
-            string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+            try
+            {
+                if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+                {
+                    string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+                    File.WriteAllText(path, jsonContent);
+                }
+                else
+                {
+                    App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
+                    Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+                    if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+                    {
 
-            File.WriteAllText(path, jsonContent);
+                        string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+                        File.WriteAllText(path, jsonContent);
+                    }
+                }
+            }
+            catch
+            {
+                throw new Exception("Failed to create Profile Directory.");
+            }
         }
 
-        public void ValidateProfiles()
-		{
-			if (!string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory))
-			{
-				List<ProfileEntry> list = new();
-				int count = 0;
-				foreach (ProfileEntry entry in ProfilesList)
-				{
-					if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, entry.Filename)))
-					{
-						list.Add(entry);
-					}
-					count++;
-				}
+        public bool ValidateProfiles()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory))
+                {
+                    List<ProfileEntry> list = new();
+                    int count = 0;
+                    foreach (ProfileEntry entry in ProfilesList)
+                    {
+                        if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, entry.Filename)))
+                        {
+                            list.Add(entry);
+                        }
+                        count++;
+                    }
 
-				if (list.Count == 1 && count == 1) //no profile at all
-				{
-                    ProfileIndex = 0;
-                    return;
+                    if (list.Count == 1 && count == 1) //no profile at all
+                    {
+                        return false;
+                    }
+
+                    if (list.Count > 0)
+                    {
+                        StringBuilder error = new();
+                        error.AppendLine(Lang.GetString("MessageWindow.Warnings.ProfilesDeleted.Message1"));
+                        for (int i = 0; i < list.Count; i++)
+                            error.AppendLine(list[i].Name);
+                        error.AppendLine(Lang.GetString("MessageWindow.Warnings.ProfilesDeleted.Message2"));
+
+                        MessageWindow message = new(Lang.GetString("MessageWindow.Warnings.ProfilesDeleted.Title"),
+                            error.ToString(), icon: MessageWindow.Icons.Warning);
+                        message.ShowDialog();
+                        if (message.isClosed)
+                        {
+                            foreach (ProfileEntry entry in list)
+                                ProfilesList.Remove(entry);
+
+                            ProfileIndex = 0;
+                        }
+
+                        return false;
+
+                    }
+
                 }
+            }
+            catch (Exception ex)
+            {
 
-				if (list.Count > 0)
-				{
-					StringBuilder error = new();
-					error.AppendLine(Lang.GetString("MessageWindow.Warnings.ProfilesDeleted.Message1"));
-					for (int i = 0; i < list.Count; i++)
-						error.AppendLine(list[i].Name);
-					error.AppendLine(Lang.GetString("MessageWindow.Warnings.ProfilesDeleted.Message2"));
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ProfileLoad") + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+                return false;
+            }
 
-					MessageWindow message = new(Lang.GetString("MessageWindow.Warnings.ProfilesDeleted.Title"), 
-						error.ToString(), icon: MessageWindow.Icons.Warning);
-					message.ShowDialog();
-					if (message.isClosed)
-					{
-						foreach (ProfileEntry entry in list)
-							ProfilesList.Remove(entry);
+            return true;
+        }
 
-						ProfileIndex = 0;
-					}
-				}
-			}
-		}
-
-		public static Profiles MakeDefaultProfileFile()
-		{
-			return new()
-			{
-				ProfileIndex = 0,
-				ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
-			};
-		}
-	}
+        public static Profiles MakeDefaultProfileFile()
+        {
+            return new()
+            {
+                ProfileIndex = 0,
+                ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
+            };
+        }
+    }
 }

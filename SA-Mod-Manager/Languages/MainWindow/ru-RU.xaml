@@ -44,7 +44,7 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Темы:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Язык:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Профиль:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Директория игры:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Каталог игры:</system:String>
 
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Включить "1-Click Install" (GameBanana)</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Выключить "1-Click Install"</system:String>
@@ -186,9 +186,9 @@
 	<!--#region Manager Config Tips-->
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Выбор профиля со списком активных модов и настроек.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Открыть менеджер профилей, где можно создать или удалить профили.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Полный путь до директории с установленной игрой.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Полный путь до каталога с установленной игрой.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Откроется папка с игрой.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Открыть окно с выбором директории игры.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Открыть окно с выбором каталога игры.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Выбор используемой темы Менеджера модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Выбор языка интерфейса Менеджера модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Оставлять Менеджер модов включённым при нажатии "Сохранить и играть".</system:String>

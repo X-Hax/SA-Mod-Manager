@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO.Compression;
 using SAModManager.Ini;
 using Microsoft.Win32;
+using System.Security.Principal;
 
 namespace SAModManager
 {
@@ -483,6 +484,11 @@ namespace SAModManager
                 key.Close();
                 App.isLinux = true;
             }
+        }
+
+        public static bool RunningAsAdmin()
+        {
+            return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }

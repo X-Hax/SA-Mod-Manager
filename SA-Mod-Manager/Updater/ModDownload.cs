@@ -32,7 +32,7 @@ namespace SAModManager.Updater
         public bool IsChecked { get; set; }
         public readonly ModDownloadType Type;
         public readonly string Url;
-        public readonly string Folder;
+        public string Folder;
         public readonly string Changes;
         public long Size { get; }
         public int FilesToDownload { get; }

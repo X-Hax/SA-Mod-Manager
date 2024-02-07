@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -69,6 +70,7 @@ namespace SAModManager.Common
         /// </summary>
         public List<string> GameConfigFile { get; set; }
         public SetGame id;
+        public string gameAbbreviation { get; set; }
     }
 
     public enum Format
@@ -416,6 +418,7 @@ namespace SAModManager.Common
             codeURL = Properties.Resources.URL_SADX_CODE,
             patchURL = Properties.Resources.URL_SADX_PATCH,
             id = SetGame.SADX,
+            gameAbbreviation = "SADX",
 
             loader = new()
             {
@@ -475,6 +478,7 @@ namespace SAModManager.Common
             exeName = "sonic2app.exe",
             defaultIniProfile = "SA2ModLoader.ini",
             id = SetGame.SA2,
+            gameAbbreviation = "SA2",
 
             loader = new()
             {
@@ -639,7 +643,7 @@ namespace SAModManager.Common
             if (App.isLinux)
             {
                 string home = Environment.GetEnvironmentVariable("WINEHOMEDIR").Replace("\\??\\", "");
-                SteamLocation = Path.Combine(home, ".steam/steam");
+                SteamLocation = Path.Combine(home, ".steam/steam"); //unused
             }
 
             string steamInstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Valve\Steam", "InstallPath", null);

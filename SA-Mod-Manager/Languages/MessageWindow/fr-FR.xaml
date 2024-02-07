@@ -34,7 +34,8 @@
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Échec de la suppression du mod {0}.&#x0a;Veuillez vous assurer que les fichiers existent et ne sont pas utilisés par un autre programme, puis réessayez.</system:String>
     <system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Les erreurs suivantes se sont produites lors de la recherche de mises à jour :&#x0a;&#x0a;</system:String>
     <system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Erreurs de mise à jour</system:String>
-
+    <system:String x:Key="MessageWindow.Errors.ProfileLoad">Une erreur inattendue s'est produite lors du chargement des profils. Si le problème persiste, veuillez le signaler.</system:String>
+    <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Échec de la création du dossier de configuration sur {0}.&#x0a;Le Mod Manager ne pourra pas fonctionner correctement.</system:String>
     <!--#endregion-->
     
     <!--#region Warnings-->

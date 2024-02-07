@@ -231,37 +231,37 @@ namespace SAModManager.Elements.SADX
 
         private static readonly List<string> actsSS = new()
         {
-            "Act 1 - Hall",
+            "Act 1 - City Hall Area",
             "Act 2 - Station",
             "Act 3 - Sewers",
-            "Act 4 - Main",
-            "Act 5 - Hostel (Pool)",
+            "Act 4 - Station Area",
+            "Act 5 - Hotel (Pool)",
             "Act 6 - Twinkle Park Area",
         };
 
         private static readonly List<string> actsECOut = new()
         {
-            "Act 1 - landing runway (UnTransformed)",
-            "Act 2 - Main (Transformed)",
-            "Act 3 - Bridge (Transformed)",
+            "Act 1 - Landing Runway (UnTransformed)",
+            "Act 2 - Bridge (Transformed)",
+            "Act 3 - Deck (Transformed)",
             "Act 4 - Captain Headquarters Room",
-            "Act 5 - Hall",
+            "Act 5 - Private Room",
             "Act 6 - Pool",
         };
 
         private static readonly List<string> actsECIn = new()
         {
-            "Act 1 - landing runway (UnTransformed)",
-            "Act 2 - Main (Transformed)",
-            "Act 3 - Bridge (Transformed)",
-            "Act 4 - Captain Headquarters Room",
-            "Act 5 - Hall",
-            "Act 6 - Pool",
+            "Act 1 - Arsenal",
+            "Act 2 - Main",
+            "Act 3 - Hedgehog Hammer",
+            "Act 4 - Prison Hall",
+            "Act 5 - Water Tank",
+            "Act 6 - Warp Hall",
         };
 
         private static readonly List<string> actsMR = new()
         {
-            "Act 1 - Main",
+            "Act 1 - Station",
             "Act 2 - Angel Island",
             "Act 3 - Jungle",
             "Act 4 - Final Egg",
@@ -269,7 +269,7 @@ namespace SAModManager.Elements.SADX
 
         private static readonly List<string> actsPast = new()
         {
-            "Act 1 - Main",
+            "Act 1 - Shrine (Main)",
             "Act 2 - Altar",
             "Act 3 - Altar (Fire)",
         };

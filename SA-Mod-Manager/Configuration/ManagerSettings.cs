@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Bson;
+using SAModManager.Common;
 using SAModManager.Ini;
 using System;
 using System.Collections.Generic;
@@ -154,15 +155,28 @@ namespace SAModManager.Configuration
 		/// <returns></returns>
 		public static ManagerSettings Deserialize(string path)
 		{
-			if (File.Exists(path))
+			try
 			{
-				string jsonContent = File.ReadAllText(path);
+				if (File.Exists(path))
+				{
+					string jsonContent = File.ReadAllText(path);
 
-				return JsonSerializer.Deserialize<ManagerSettings>(jsonContent);
-			}
-			else
-				return new();
-		}
+					return JsonSerializer.Deserialize<ManagerSettings>(jsonContent);
+				}
+				else
+				{
+                    return new();
+                }
+
+			} 
+			catch (Exception ex)
+			{
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ProfileLoad") + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+
+            }
+
+            return new();
+        }
 
 		/// <summary>
 		/// Serializes a Manager Setting CFG (JSON) file.
@@ -170,9 +184,18 @@ namespace SAModManager.Configuration
 		/// <param name="path"></param>
 		public void Serialize(string path)
 		{
-			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+			try
+			{
+				App.CreateConfigFolder();
+				{
+					string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+					File.WriteAllText(path, jsonContent);
+				}
+			}
+			catch
+			{
 
-			File.WriteAllText(path, jsonContent);
+			}
 		}
 	}
 }

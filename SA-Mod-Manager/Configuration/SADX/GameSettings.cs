@@ -6,8 +6,7 @@ using System.IO;
 using SAModManager.Common;
 using System.Text.Json;
 using System.CodeDom.Compiler;
-using System.Drawing;
-using System.Text.Json.Serialization;
+using System;
 
 namespace SAModManager.Configuration.SADX
 {
@@ -1169,9 +1168,11 @@ namespace SAModManager.Configuration.SADX
 		/// <returns></returns>
 		public static GameSettings Deserialize(string path)
 		{
-			if (File.Exists(path))
+			try
 			{
-				string jsonContent = File.ReadAllText(path);
+				if (File.Exists(path))
+				{
+					string jsonContent = File.ReadAllText(path);
 
 				GameSettings settings = JsonSerializer.Deserialize<GameSettings>(jsonContent);
 
@@ -1202,11 +1203,34 @@ namespace SAModManager.Configuration.SADX
 		/// Serializes an SADX GameSettings JSON File.
 		/// </summary>
 		/// <param name="path"></param>
-		public void Serialize(string path)
+		public void Serialize(string path, string profileName)
 		{
-			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
 
-			File.WriteAllText(path, jsonContent);
+			try
+			{
+				if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+				{
+					string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+					File.WriteAllText(path, jsonContent);
+				}
+				else
+				{
+					App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
+					Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+					if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+					{
+						path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
+						string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+						File.WriteAllText(path, jsonContent);
+					}
+				}
+			}
+			catch
+			{
+
+			}
 		}
+
+		
 	}
 }

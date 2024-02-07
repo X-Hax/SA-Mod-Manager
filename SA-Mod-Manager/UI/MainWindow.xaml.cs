@@ -24,6 +24,8 @@ using SAModManager.Elements;
 using SAModManager.Ini;
 using SAModManager.Configuration;
 using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Security.Policy;
 
 namespace SAModManager
 {
@@ -141,7 +143,6 @@ namespace SAModManager
             if (App.isFirstBoot)
             {
                 new SplashScreenDialog().ShowDialog();
-                App.isFirstBoot = false;
             }
 
             var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
@@ -1048,24 +1049,24 @@ namespace SAModManager
 
         #region Form: Manager Tab: Functions
 
-        private async Task EnableOneClickInstall()
+        private async Task ResultPickGame(string path)
         {
-            try
+            setGame = await GamesInstall.SetGameInstallManual(path);
+
+            if (setGame == SetGame.None)
             {
-                string execPath = Environment.ProcessPath;
-
-                await Process.Start(new ProcessStartInfo(execPath, "urlhandler")
-                {
-                    UseShellExecute = true,
-                }).WaitForExitAsync();
-
-                Image iconConfig = FindName("GB") as Image;
-                UIHelper.ToggleImage(ref iconConfig, false);
-
+                new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
             }
-            catch { }
-
-            await Task.Delay(10);
+            else
+            {
+                tempPath = path;
+                App.CurrentGame.gameDirectory = tempPath;
+                UIHelper.ToggleButton(ref btnOpenGameDir, true);
+                Load(true);
+                await ForceInstallLoader();
+                UpdateButtonsState();
+                Save();
+            }
         }
 
         //To do, rework this mess to handle multiple games and clean everything.
@@ -1077,22 +1078,7 @@ namespace SAModManager
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                setGame = await GamesInstall.SetGameInstallManual(dialog.SelectedPath);
-
-                if (setGame == SetGame.None)
-                {
-                    new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-                }
-                else
-                {
-                    tempPath = dialog.SelectedPath;
-                    App.CurrentGame.gameDirectory = tempPath;
-                    UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                    Load(true);
-                    await ForceInstallLoader();
-                    UpdateButtonsState();
-                    Save();
-                }
+                await ResultPickGame(dialog.SelectedPath);
             }
         }
 
@@ -1209,7 +1195,7 @@ namespace SAModManager
 
             message.ShowDialog();
 
-            if (message.isYes)
+            if (message.isOK)
                 OpenManagerIssue();
 
             if (message.isCancelled)
@@ -1246,7 +1232,7 @@ namespace SAModManager
                 return;
 
             int index = comboProfile.SelectedIndex;
-            ProfileDialog dialog = new ProfileDialog(ref GameProfiles, index);
+            ProfileDialog dialog = new(ref GameProfiles, index);
             UpdateModsCodes();
             dialog.Owner = this;
             dialog.ShowDialog();
@@ -1568,7 +1554,7 @@ namespace SAModManager
             }
         }
 
-        private async void SaveSADXSettings()
+        private void SaveSADXSettings()
         {
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
@@ -1585,7 +1571,7 @@ namespace SAModManager
 
             // Save Game Settings to Current Profile
             string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GetCurrentProfileName());
-            await Task.Run(() => sadxSettings.Serialize(profilePath));
+            sadxSettings.Serialize(profilePath, GetCurrentProfileName());
 
             // Save Game Config File
             //string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
@@ -1620,7 +1606,11 @@ namespace SAModManager
                 // Load Profiles before doing anything.
                 string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
                 GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
-                GameProfiles.ValidateProfiles();
+                if (GameProfiles.ValidateProfiles() == false)
+                {
+                    GameProfiles.ProfileIndex = 0; //if validation fail, default to 0 and save changes
+                    GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
+                }
                 comboProfile.ItemsSource = GameProfiles.ProfilesList;
                 comboProfile.DisplayMemberPath = "Name";
                 suppressEvent = true;
@@ -1651,7 +1641,7 @@ namespace SAModManager
             Refresh();
         }
 
-        public async void Save()
+        public void Save()
         {
             // If the mods folder doesn't exist, don't save anything.
             if (!Directory.Exists(App.CurrentGame.modDirectory))
@@ -1682,8 +1672,6 @@ namespace SAModManager
             // Save the Profiles file.
             GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
 
-            await Task.Delay(10);
-
             // Refresh thing so everything updates as intended.
             Refresh();
         }
@@ -1707,7 +1695,11 @@ namespace SAModManager
             }
             else if (Directory.Exists(App.CurrentGame.gameDirectory) && !modFolderExist)
             {
-                Directory.CreateDirectory(App.CurrentGame.modDirectory);
+                try
+                {
+                    Directory.CreateDirectory(App.CurrentGame.modDirectory);
+                }
+                catch { }
             }
 
             if (File.Exists(Path.Combine(App.CurrentGame.modDirectory, "mod.ini")))
@@ -2381,7 +2373,7 @@ namespace SAModManager
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
                 await UpdateGameConfig(App.CurrentGame.id);
-                await EnableOneClickInstall();
+                await Startup.EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
@@ -2413,7 +2405,7 @@ namespace SAModManager
             }
 
             await UpdateGameConfig(App.CurrentGame.id);
-            await EnableOneClickInstall();
+            await Startup.EnableOneClickInstall();
 
             UIHelper.EnableButton(ref SaveAndPlayButton);
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
@@ -2462,6 +2454,14 @@ namespace SAModManager
             var progress = new HealthChecker(setGame);
             progress.ShowDialog();
 
+        }
+
+        private async void textGameDir_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                await ResultPickGame(Path.GetFullPath(textGameDir.Text));
+            }
         }
     }
 }
