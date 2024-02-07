@@ -351,7 +351,6 @@ namespace SAModManager.Updater
                 {
                     if (string.IsNullOrEmpty(mod.GitHubAsset))
                     {
-
                         System.Windows.Application.Current.Dispatcher.Invoke(() =>
                         {
                             ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
