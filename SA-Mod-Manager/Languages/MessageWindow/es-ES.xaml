@@ -95,9 +95,9 @@
     <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Error Desconocido</system:String>
     <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Se ha producido un error desconocido.</system:String>
     
-    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
-    <system:String x:Key="MessageWindow.Errors.ProfileLoad">An unexpected error occurred while loading profiles, if the problem persists, please report the issue.</system:String>
-    <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Failed to create config folder at {0}.&#x0a;The Mod Manager won't be able to work properly.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">No se pudo eliminar el mod {0}.&#x0a;Por favor, asegúrate de que los archivos existen y no están siendo utilizados por otro programa e inténtalo de nuevo.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ProfileLoad">Ocurrió un error inesperado al cargar los perfile. Por favor, reporta este error si el problema persiste.</system:String>
+    <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Error al crear la carpeta de configuración en {0}.&#x0a;El Mod Manager no podrá funcionar correctamente.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
