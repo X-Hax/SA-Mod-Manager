@@ -312,7 +312,6 @@ namespace SAModManager
                     await Process.Start(new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y")
                     {
                         UseShellExecute = true,
-                        Verb = "runas"
                     }).WaitForExitAsync();
 
                     return true;
@@ -339,7 +338,6 @@ namespace SAModManager
                     await Process.Start(new ProcessStartInfo(exePath, $"x \"{path}\" -IBCK \"{dest}\"")
                     {
                         UseShellExecute = true,
-                        Verb = "runas"
                     }).WaitForExitAsync();
 
                     key.Close();
