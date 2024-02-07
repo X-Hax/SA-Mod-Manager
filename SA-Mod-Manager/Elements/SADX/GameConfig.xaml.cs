@@ -341,6 +341,11 @@ namespace SAModManager.Elements.SADX
                 {
                     await Util.Extract(fullPath, destName, true);
 
+                    string SDL2Game = Path.Combine(App.CurrentGame.gameDirectory, "SDL2.dll");
+                    if (File.Exists(SDL2Game))
+                    {
+                        File.Delete(SDL2Game);
+                    }
                 }
                 catch
                 {
@@ -351,6 +356,7 @@ namespace SAModManager.Elements.SADX
                 {
                     File.Delete(fullPath);
                 }
+
             }
 
             await Task.Delay(10);
