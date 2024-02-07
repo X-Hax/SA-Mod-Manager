@@ -279,19 +279,19 @@ namespace SAModManager
                 return;
             }
 
-            if (!ExtractArchiveUsing7Zip(zipPath, destFolder))
+            if (await ExtractArchiveUsing7Zip(zipPath, destFolder) == false)
             {
-                if (!ExtractArchiveUsingWinRAR(zipPath, destFolder))
+                if (await ExtractArchiveUsingWinRAR(zipPath, destFolder) == false)
                 {
                     await Exec7zipInstall();
-                    ExtractArchiveUsing7Zip(zipPath, destFolder);
+                    await ExtractArchiveUsing7Zip(zipPath, destFolder);
                 }
             }
 
             await Task.Delay(1000);
         }
 
-        public static bool ExtractArchiveUsing7Zip(string path, string dest)
+        public static async Task<bool> ExtractArchiveUsing7Zip(string path, string dest)
         {
             // Check if file exists in the root folder of the Manager
             string exePath = FindExePath("7z.exe");
@@ -300,21 +300,29 @@ namespace SAModManager
             exePath ??= FindExePathFromRegistry("SOFTWARE\\7-Zip");
 
             // If still not found, try with the PATH variable
-            exePath ??= Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
+            exePath ??=  Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
                 .Where(s => File.Exists(Path.Combine(s, "7z.exe"))).FirstOrDefault();
 
             if (exePath != null)
             {
-                string exe = Path.Combine(exePath, "7z.exe");
-                // Extracts the archive to the temp directory
-                var psi = new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y");
-                Process.Start(psi).WaitForExit(1000 * 60 * 5);
-                return true;
+                string exe = Path.GetFullPath(Path.Combine(exePath, "7z.exe"));
+
+                if (File.Exists(exe))
+                {
+                    await Process.Start(new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y")
+                    {
+                        UseShellExecute = true,
+                        Verb = "runas"
+                    }).WaitForExitAsync();
+
+                    return true;
+                }
             }
+
             return false;
         }
 
-        public static bool ExtractArchiveUsingWinRAR(string path, string dest)
+        public static async Task<bool> ExtractArchiveUsingWinRAR(string path, string dest)
         {
             // Gets WinRAR's Registry Key
             var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR");
@@ -324,12 +332,19 @@ namespace SAModManager
             // Checks if WinRAR is installed by checking if the key and path value exists
             if (key != null && key.GetValue("exe64") is string exePath)
             {
+                exePath = Path.GetFullPath(exePath);
                 // Extracts the archive to the temp directory
-                var psi = new ProcessStartInfo(exePath, $"x \"{path}\" -IBCK \"{dest}\"");
-                Process.Start(psi).WaitForExit(1000 * 60 * 5);
+                if (File.Exists(exePath))
+                {
+                    await Process.Start(new ProcessStartInfo(exePath, $"x \"{path}\" -IBCK \"{dest}\"")
+                    {
+                        UseShellExecute = true,
+                        Verb = "runas"
+                    }).WaitForExitAsync();
 
-                key.Close();
-                return true;
+                    key.Close();
+                    return true;
+                }
             }
             // WinRAR is not installed
             return false;
