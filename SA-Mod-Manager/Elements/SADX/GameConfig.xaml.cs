@@ -628,7 +628,8 @@ namespace SAModManager.Elements.SADX
 			comboScreenMode.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ScreenMode")
 			{
 				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
+				Mode = BindingMode.TwoWay,
+				Converter = new ScreenModeConverter(),
 			});
 			System.Drawing.Rectangle rect = graphics.GetRectangleStruct();
 			txtCustomResX.MinValue = 0;
@@ -695,7 +696,7 @@ namespace SAModManager.Elements.SADX
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay,
-				Converter = new ScreenModeConverter()
+				Converter = new ShowMouseConverter()
 			});
 			chkResizableWin.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableResizableWindow")
 			{

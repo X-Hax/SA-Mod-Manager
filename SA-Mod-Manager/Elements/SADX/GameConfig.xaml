@@ -49,10 +49,10 @@
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption}" Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Center"/>
 								<ComboBox x:Name="comboScreenMode" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0">
-									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed}"/>
-									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen}"/>
-									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless}"/>
-									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom}"/>
+									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed}" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip}"/>
+									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless}" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip}"/>
+									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom}" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip}"/>
+									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen}" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip}"/>
 								</ComboBox>
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution}" Margin="5" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution}"/>
