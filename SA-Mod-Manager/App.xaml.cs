@@ -478,6 +478,18 @@ namespace SAModManager
             return false;
         }
 
+        public static void CreateConfigFolder()
+        {
+            try
+            {
+                if (!Directory.Exists(App.ConfigFolder))
+                    Directory.CreateDirectory(App.ConfigFolder);
+            }
+            catch
+            {
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.CreateConfigFolder"), "'" + App.ConfigFolder + "'"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+            }
+        }
         
         private static void HandleVanillaTransition(string[] args)
         {

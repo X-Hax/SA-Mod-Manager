@@ -143,7 +143,6 @@ namespace SAModManager
             if (App.isFirstBoot)
             {
                 new SplashScreenDialog().ShowDialog();
-                App.isFirstBoot = false;
             }
 
             var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
@@ -1233,7 +1232,7 @@ namespace SAModManager
                 return;
 
             int index = comboProfile.SelectedIndex;
-            ProfileDialog dialog = new ProfileDialog(ref GameProfiles, index);
+            ProfileDialog dialog = new(ref GameProfiles, index);
             UpdateModsCodes();
             dialog.Owner = this;
             dialog.ShowDialog();
@@ -1558,7 +1557,7 @@ namespace SAModManager
             }
         }
 
-        private async void SaveSADXSettings()
+        private void SaveSADXSettings()
         {
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
@@ -1575,7 +1574,7 @@ namespace SAModManager
 
             // Save Game Settings to Current Profile
             string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GetCurrentProfileName());
-            await Task.Run(() => sadxSettings.Serialize(profilePath));
+            sadxSettings.Serialize(profilePath, GetCurrentProfileName());
 
             // Save Game Config File
             string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
@@ -1642,7 +1641,7 @@ namespace SAModManager
             Refresh();
         }
 
-        public async void Save()
+        public void Save()
         {
             // If the mods folder doesn't exist, don't save anything.
             if (!Directory.Exists(App.CurrentGame.modDirectory))
@@ -1672,8 +1671,6 @@ namespace SAModManager
 
             // Save the Profiles file.
             GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
-
-            await Task.Delay(10);
 
             // Refresh thing so everything updates as intended.
             Refresh();
