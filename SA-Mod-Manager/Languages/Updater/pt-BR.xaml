@@ -18,6 +18,7 @@
     <system:String x:Key="Updater.DL.Offline.InstallAttempt">Trying offline installation, please wait...</system:String>
 
     <!--Mod Update-->
+    <system:String x:Key="Updater.DL.Mod.Init">Preparing Download, please wait...</system:String>
     <system:String x:Key="Updater.DL.Mod.Extracting">Extraindo...</system:String>
     <system:String x:Key="Updater.DL.Mod.ParsingManifest">Analisando manifesto...</system:String>
     <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Aplicando manifesto...</system:String>

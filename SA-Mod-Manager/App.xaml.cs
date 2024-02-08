@@ -23,6 +23,7 @@ using System.Data;
 using System.Net.Http;
 using System.Net;
 using SAModManager.UI;
+using SAModManager.Elements.SADX;
 
 namespace SAModManager
 {
@@ -449,6 +450,38 @@ namespace SAModManager
 
                 ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdatePatches"));
 
+            }
+
+            return false;
+        }
+
+        public static async Task<bool> PerformUpdateAppLauncherCheck()
+        {
+            try
+            {
+
+                var path = Path.Combine(App.CurrentGame.gameDirectory, "AppLauncher.crc");
+
+                if (File.Exists(path))
+                {
+                    string local = File.ReadAllText(path);
+                    var httpClient = UpdateHelper.HttpClient;
+
+                    string repo = await httpClient.GetStringAsync("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/AppLauncher/AppLauncher.crc");
+
+                    if (local == repo)
+                    {
+                        return false;
+                    }
+                }
+
+                await GameConfig.UpdateAppLauncher();
+                return true;
+            }
+            catch
+            {
+
+            
             }
 
             return false;

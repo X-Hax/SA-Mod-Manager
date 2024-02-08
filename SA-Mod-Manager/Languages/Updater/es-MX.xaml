@@ -18,6 +18,7 @@
     <system:String x:Key="Updater.DL.Offline.InstallAttempt">Intentando instalación fuera de línea, espera, por favor...</system:String>
 
     <!--Mod Update-->
+    <system:String x:Key="Updater.DL.Mod.Init">Preparing Download, please wait...</system:String>
     <system:String x:Key="Updater.DL.Mod.Extracting">Extrayendo...</system:String>
     <system:String x:Key="Updater.DL.Mod.ParsingManifest">Analizando manifiesto...</system:String>
     <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Aplicando manifiesto...</system:String>
@@ -26,6 +27,8 @@
     <system:String x:Key="Updater.DL.Mod.UpdatingMod">Actualizando mod</system:String>
     <system:String x:Key="Updater.DL.Mod.StartingDownload">Comenzando descarga...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadComplete">Descarga completa.</system:String>
+    <system:String x:Key="Updater.DL.Mod.ManifestFail">Failed to download manifest</system:String>
+    <system:String x:Key="Updater.DL.Mod.ManifestApplyFail">Failed to apply manifest</system:String>
 
 
 

@@ -19,6 +19,7 @@
     <system:String x:Key="Updater.DL.Offline.InstallAttempt">Tentative d'installation hors-ligne, merci de patienter...</system:String>
 
     <!--Mod Update-->
+    <system:String x:Key="Updater.DL.Mod.Init">Préparation du téléchargement merci de patienter...</system:String>
     <system:String x:Key="Updater.DL.Mod.Extracting">Extraction...</system:String>
     <system:String x:Key="Updater.DL.Mod.ParsingManifest">Analyse du manifeste...</system:String>
     <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Application du manifeste...</system:String>
@@ -28,5 +29,7 @@
     <system:String x:Key="Updater.DL.Mod.UpdatingMod">Mise à jour du mod</system:String>
     <system:String x:Key="Updater.DL.Mod.StartingDownload">Démarrage du téléchargement...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadComplete">Téléchargement terminé.</system:String>
+    <system:String x:Key="Updater.DL.Mod.ManifestFail">Échec du téléchargement du manifeste</system:String>
+    <system:String x:Key="Updater.DL.Mod.ManifestApplyFail">Échec de l'application du manifeste</system:String>
 
 </ResourceDictionary>

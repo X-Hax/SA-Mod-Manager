@@ -85,9 +85,11 @@ namespace SAModManager.Common
 			await Task.Delay(10);
 			settings.Save();
 			await Task.Delay(30);
-			new ModConfig(modName, pathXML, true).ShowDialog();
-			this.Close();
-		}
+
+            var config = new ModConfig(modName, pathXML, true);
+            this.Close();
+			config.ShowDialog();
+        }
 
 		private void CancelButton_Click(object sender, RoutedEventArgs e)
 		{
