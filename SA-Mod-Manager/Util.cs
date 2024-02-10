@@ -13,6 +13,7 @@ using System.IO.Compression;
 using SAModManager.Ini;
 using Microsoft.Win32;
 using System.Security.Principal;
+using System.Reflection;
 
 namespace SAModManager
 {
@@ -36,6 +37,7 @@ namespace SAModManager
             "SADXModManager.exe",
         };
 
+
         public static List<string> BASSFiles = new()
         {
             "libogg.dll",
@@ -58,6 +60,64 @@ namespace SAModManager
             "COPYING_BASS_VGMSTREAM",
             "COPYING_VGMSTREAM",
         };
+
+        public static List<string> SA2ManagerFiles = new()
+        {
+            "7z.dll",
+            "7z.exe",
+            "ModManagerCommon.dll",
+            "ModManagerCommon.pdb",
+            "SA2ModManager.exe.config",
+            "SA2ModManager.pdb",
+            "SA2ModLoader.exp",
+            "sa2mlver.txt",
+            "loader.manifest",
+            "Newtonsoft.Json.dll",
+            "SA2ModManager.exe",
+        };
+
+        public static List<string> OldManagersName = new()
+        {
+            "SADXModManager.exe",
+            "SA2ModManager.exe",
+            "SonicRModManager.exe"
+        };
+
+        private static void MoveFilesToArchive(string root, string archive, List<string> FilesToMove)
+        {
+            foreach (var file in FilesToMove)
+            {
+                if (File.Exists(Path.Combine(root, file)))
+                    File.Move(Path.Combine(root, file), Path.Combine(archive, file), true);
+            }
+        }
+
+        public static void DoVanillaFilesCleanup(string[] args, int index)
+        {
+            string root = null;
+
+            foreach (string exeName in Util.OldManagersName)
+            {
+                root = exeName;
+                if (!File.Exists(root) && index + 1 < args.Length)
+                {
+                    root = Path.GetFullPath(Path.Combine(args[index + 1], exeName));
+
+                    if (File.Exists(root))
+                        break;
+                }
+            }
+
+            if (File.Exists(root))
+            {
+                string archive = Path.Combine(root, "Archive_Old_Manager");
+                Directory.CreateDirectory(archive);
+                MoveFilesToArchive(root, archive, Util.SADXManagerFiles);
+                MoveFilesToArchive(root, archive, Util.SA2ManagerFiles);
+                MoveFilesToArchive(root, archive, Util.BASSFiles);
+            }
+
+        }
 
         public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
         {
@@ -300,7 +360,7 @@ namespace SAModManager
             exePath ??= FindExePathFromRegistry("SOFTWARE\\7-Zip");
 
             // If still not found, try with the PATH variable
-            exePath ??=  Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
+            exePath ??= Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
                 .Where(s => File.Exists(Path.Combine(s, "7z.exe"))).FirstOrDefault();
 
             if (exePath != null)

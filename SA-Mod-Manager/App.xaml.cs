@@ -58,7 +58,7 @@ namespace SAModManager
         public static LanguageList LangList { get; set; }
 
         public static ThemeEntry CurrentTheme { get; set; }
-		public static bool IsLightTheme = false;
+        public static bool IsLightTheme = false;
         public static ThemeList ThemeList { get; set; }
         public static Common.Game CurrentGame = new();
 
@@ -87,7 +87,7 @@ namespace SAModManager
             {
                 return;
             }
-
+            Debugger.Launch();
             UpdateHelper.InitHttpClient();
             Util.CheckLinux();
             HandleVanillaTransition(args);
@@ -158,18 +158,18 @@ namespace SAModManager
             Current.Resources.MergedDictionaries.Insert(4, dictionary);
         }
 
-		public static void SetLightBool()
-		{
-			switch (CurrentTheme.FileName)
-			{
-				case "LightTheme":
-					IsLightTheme = true;
-					break;
+        public static void SetLightBool()
+        {
+            switch (CurrentTheme.FileName)
+            {
+                case "LightTheme":
+                    IsLightTheme = true;
+                    break;
                 default:
-					IsLightTheme = false;
-					break;
-			}
-		}
+                    IsLightTheme = false;
+                    break;
+            }
+        }
 
         public static void SwitchTheme()
         {
@@ -185,7 +185,7 @@ namespace SAModManager
             Current.Resources.MergedDictionaries.RemoveAt(1);
             Current.Resources.MergedDictionaries.Insert(1, dictionary);
 
-			SetLightBool();
+            SetLightBool();
         }
 
         public static void SetupThemes()
@@ -284,7 +284,7 @@ namespace SAModManager
         {
             var mainWindow = ((MainWindow)Application.Current.MainWindow);
 
-             mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
+            mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
 
             try
             {
@@ -316,7 +316,7 @@ namespace SAModManager
 
                 var dl = new ManagerUpdate(dlLink, destFolder, fileName)
                 {
-                    DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName) 
+                    DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName)
                 };
 
                 dl.StartManagerDL();
@@ -481,7 +481,7 @@ namespace SAModManager
             catch
             {
 
-            
+
             }
 
             return false;
@@ -502,7 +502,7 @@ namespace SAModManager
                     await dialog.InstallUpdate();
                     Util.ClearTempFolder();
                     Application.Current.Shutdown();
-                    
+
                     return true;
                 }
 
@@ -523,37 +523,24 @@ namespace SAModManager
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.CreateConfigFolder"), "'" + App.ConfigFolder + "'"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
             }
         }
-        
+
         private static void HandleVanillaTransition(string[] args)
         {
+
+            int index = 0;
             foreach (var arg in args)
             {
                 if (arg == "vanillaUpdate")
                 {
                     isVanillaTransition = true;
                     isFirstBoot = true;
-                    //todo add SA2 support
-                    if (File.Exists("SADXModManager.exe") || File.Exists("SA2ModManager.exe"))
-                    {
-                    
-                        string archive = "Archive_Old_Manager";
-                        Directory.CreateDirectory(archive);
-
-                        foreach (var file in Util.SADXManagerFiles)
-                        {
-                            if (File.Exists(file))
-                                File.Move(file, Path.Combine(archive, file), true);
-                        }
-
-                        foreach (var file in Util.BASSFiles)
-                        {
-                            if (File.Exists(file))
-                                File.Move(file, Path.Combine(archive, file), true);
-                        }
-                    }
+                    Util.DoVanillaFilesCleanup(args, index);
                 }
+
+                index++;
             }
         }
+
 
         public static async Task<bool> ExecuteDependenciesCheck()
         {
@@ -562,9 +549,9 @@ namespace SAModManager
 
         private ManagerSettings LoadManagerConfig()
         {
-			ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
+            ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
 
-			switch (settings.CurrentSetGame)
+            switch (settings.CurrentSetGame)
             {
                 default:
                 case (int)SetGame.SADX:
@@ -575,7 +562,7 @@ namespace SAModManager
                     break;
             }
 
-			return settings;
+            return settings;
         }
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)
