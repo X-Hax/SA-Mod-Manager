@@ -17,7 +17,7 @@ namespace SAModManager.Common
         /// <summary>
         /// The Name of the Game.
         /// </summary>
-        public string gameName;
+        public string gameName { get; set; }
 
         /// <summary>
         /// Executables list, necessary due to SADX.
@@ -27,7 +27,7 @@ namespace SAModManager.Common
         /// <summary>
         /// This is the executable expected for launching the game.
         /// </summary>
-        public string exeName;
+        public string exeName { get; set; }
 
         /// <summary>
         /// Current game's main directory.
@@ -325,7 +325,7 @@ namespace SAModManager.Common
                         {
                             if (!GamesInstall.DependencyInstalled(dependency))
                             {
-                               success = await PerformOfflineInstall(dependency);
+                                success = await PerformOfflineInstall(dependency);
                             }
                             else
                             {
@@ -500,7 +500,7 @@ namespace SAModManager.Common
         public static IEnumerable<Game> GetSupportedGames()
         {
             yield return SonicAdventure;
-            // yield return SonicAdventure2;
+            yield return SonicAdventure2;
         }
 
         //will probably end making our own installer ig
@@ -592,6 +592,36 @@ namespace SAModManager.Common
 
 
             return SetGame.None;
+        }
+
+        public static void AddGamesInstall()
+        {
+
+            try
+            {
+
+                foreach (var game in GamesInstall.GetSupportedGames())
+                {
+                    string path = Path.Combine(Environment.CurrentDirectory, game.exeName);
+         
+                    if (File.Exists(path))
+                    {
+                        App.GamesList.Add(game);
+                    }
+                    else 
+                    {
+                        foreach (var pathValue in Steam.steamAppsPaths)
+                        {
+                            string gameInstallPath = Path.Combine(pathValue, "steamapps", "common", game.gameName);
+                           
+                            if (Directory.Exists(gameInstallPath))
+                                App.GamesList.Add(game);
+                        }
+                    }
+                }
+            }
+            catch { }
+
         }
     }
 

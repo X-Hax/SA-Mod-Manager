@@ -61,6 +61,7 @@ namespace SAModManager
         public static bool IsLightTheme = false;
         public static ThemeList ThemeList { get; set; }
         public static Common.Game CurrentGame = new();
+        public static List<Game> GamesList = new();
 
         [STAThread]
         /// <summary>

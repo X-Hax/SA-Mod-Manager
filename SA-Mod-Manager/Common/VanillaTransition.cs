@@ -72,7 +72,7 @@ namespace SAModManager.Common
                             File.Delete(defaultJson);
                         }
 
-                        await Util.ConvertProfiles(originFile, defaultJson);
+                        Util.ConvertProfiles(originFile, defaultJson);
                         return true;
                     }
                 }

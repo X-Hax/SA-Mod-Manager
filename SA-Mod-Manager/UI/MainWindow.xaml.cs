@@ -128,9 +128,10 @@ namespace SAModManager
             this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
 
             StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
-
+            GamesInstall.AddGamesInstall();
             SetModManagerVersion();
 
+            ViewModel.Games = App.GamesList;
             Load();
 
             SetBindings();
@@ -1565,6 +1566,9 @@ namespace SAModManager
                 case SetGame.SA2:
                     break;
             }
+
+            if (ComboGameSelection is not null && App.CurrentGame is not null)
+                ComboGameSelection.SelectedValue = App.CurrentGame;
         }
 
         private void SaveSADXSettings()
@@ -1611,6 +1615,8 @@ namespace SAModManager
         }
         public async void Load(bool newSetup = false)
         {
+
+
             if (setGame != SetGame.None)
             {
                 // Load Profiles before doing anything.
@@ -2471,6 +2477,14 @@ namespace SAModManager
             if (e.Key == Key.Enter)
             {
                 await ResultPickGame(Path.GetFullPath(textGameDir.Text));
+            }
+        }
+
+        private void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
+            {
+
             }
         }
     }
