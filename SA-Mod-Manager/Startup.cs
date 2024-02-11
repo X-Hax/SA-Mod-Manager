@@ -30,7 +30,8 @@ namespace SAModManager
             try
             {
                 string execPath = Environment.ProcessPath;
-                await Process.Start(new ProcessStartInfo(execPath, "urlhandler") { UseShellExecute = true }).WaitForExitAsync();
+                string clickName = App.CurrentGame?.oneClickName;
+                await Process.Start(new ProcessStartInfo(execPath, $"urlhandler \"{clickName}\"") { UseShellExecute = true }).WaitForExitAsync();
             }
             catch
             {

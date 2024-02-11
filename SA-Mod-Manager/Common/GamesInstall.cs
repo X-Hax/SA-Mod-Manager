@@ -72,6 +72,7 @@ namespace SAModManager.Common
         public List<string> GameConfigFile { get; set; }
         public SetGame id;
         public string gameAbbreviation { get; set; }
+        public string oneClickName { get; set; }
     }
 
     public enum Format
@@ -421,6 +422,7 @@ namespace SAModManager.Common
             patchURL = Properties.Resources.URL_SADX_PATCH,
             id = SetGame.SADX,
             gameAbbreviation = "SADX",
+            oneClickName = "sadxmm",
 
             loader = new()
             {
@@ -482,13 +484,41 @@ namespace SAModManager.Common
             defaultIniProfile = "SA2ModLoader.ini",
             id = SetGame.SA2,
             gameAbbreviation = "SA2",
+            oneClickName = "sa2mm",
 
             loader = new()
             {
                 name = "SA2ModLoader",
                 repoName = "sa2-mod-loader",
                 loaderVersionpath = Path.Combine(App.ConfigFolder, "SA2LoaderVersion.ini"),
-                loaderinipath = "mods/SA2ModLoader.ini"
+                loaderinipath = "mods/SA2ModLoader.ini",
+
+                originPath = new()
+                {
+                    defaultDataDllOriginPath = @"resource\gd_PC\DLL\Win32\Data_DLL_orig.dll",
+                    defaultDataDllPath = @"resource\gd_PC\DLL\Win32\Data_DLL.dll",
+                    defaultLoaderinipath = @"mods\SA2ModLoader.ini"
+                }
+            },
+
+            Dependencies = new()
+            {
+                new Dependencies()
+                {
+                    name = "BASS",
+                    data = Properties.Resources.bass,
+                    format = Format.zip,
+                    URL = Properties.Resources.URL_BASS,
+                },
+
+                new Dependencies()
+                {
+                    name = "SDL2",
+                    data = Properties.Resources.SDL2,
+                    format = Format.dll,
+                    URL = Properties.Resources.URL_SDL
+
+                },
             },
 
             ProfilesDirectory = Path.Combine(App.ConfigFolder, "SA2"),
@@ -606,17 +636,17 @@ namespace SAModManager.Common
                 foreach (var game in GamesInstall.GetSupportedGames())
                 {
                     string path = Path.Combine(Environment.CurrentDirectory, game.exeName);
-         
+
                     if (File.Exists(path))
                     {
                         App.GamesList.Add(game);
                     }
-                    else 
+                    else
                     {
                         foreach (var pathValue in Steam.steamAppsPaths)
                         {
                             string gameInstallPath = Path.Combine(pathValue, "steamapps", "common", game.gameName);
-                           
+
                             if (Directory.Exists(gameInstallPath))
                                 App.GamesList.Add(game);
                         }
@@ -625,6 +655,46 @@ namespace SAModManager.Common
             }
             catch { }
 
+        }
+
+        public static void HandleGameSwap(Game game)
+        {
+            string path = Path.Combine(Environment.CurrentDirectory, game.exeName);
+            try
+            {
+                if (File.Exists(path))
+                {
+                    ((MainWindow)App.Current.MainWindow).setGame = game.id;
+
+                    if (((MainWindow)App.Current.MainWindow).setGame != SetGame.None)
+                    {
+                        ((MainWindow)App.Current.MainWindow).tempPath = path;
+                        App.CurrentGame.gameDirectory = path;
+                        ((MainWindow)App.Current.MainWindow).textGameDir.Text = path;
+                    }
+                }
+                else
+                {
+                    foreach (var pathValue in Steam.steamAppsPaths)
+                    {
+                        path = Path.Combine(pathValue, "steamapps", "common", game.gameName);
+                        if (Directory.Exists(path))
+                        {
+                            ((MainWindow)App.Current.MainWindow).setGame = game.id;
+
+                            if (((MainWindow)App.Current.MainWindow).setGame != SetGame.None)
+                            {
+                                ((MainWindow)App.Current.MainWindow).tempPath = path;
+                                App.CurrentGame.gameDirectory = path;
+                                ((MainWindow)App.Current.MainWindow).textGameDir.Text = path;
+                            }
+                        }
+                    }
+
+                }
+
+            }
+            catch { }
         }
     }
 
@@ -715,7 +785,7 @@ namespace SAModManager.Common
             }*/
         }
 
-        public static async Task<bool> FindAndSetCurGame()
+        public static async Task<bool> FindAndSetCurGame(bool skipLoader = false)
         {
             bool success = false;
             try
@@ -732,7 +802,7 @@ namespace SAModManager.Common
                         foreach (var pathValue in steamAppsPaths)
                         {
                             string gameInstallPath = Path.Combine(pathValue, "steamapps", "common", game.gameName);
-                            success = await FindAndSetGameInPaths(gameInstallPath, game);
+                            success = await FindAndSetGameInPaths(gameInstallPath, game, skipLoader);
 
                             if (success)
                                 break;
@@ -745,6 +815,8 @@ namespace SAModManager.Common
 
             return success;
         }
+
+       
 
         private static async Task<bool> FindAndSetGameInPaths(string pathValue, Game game, bool skipMSG = false)
         {

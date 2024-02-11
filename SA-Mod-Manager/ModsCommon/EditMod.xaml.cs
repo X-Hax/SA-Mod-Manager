@@ -32,7 +32,7 @@ namespace SAModManager
 		#region Variables
 		static bool editMod { get; set; } = false;
 		private string folderName;
-		public static SADXModInfo Mod { get; set; } = new();
+		public static SAModInfo Mod { get; set; } = new();
 		static string CurrentTime = string.Empty;
 
 		public static EditCodeList CodeList { get; set; } = new EditCodeList();
@@ -51,7 +51,7 @@ namespace SAModManager
 		#endregion
 
 		#region Initializer
-		public EditMod(SADXModInfo mod, string tag)
+		public EditMod(SAModInfo mod, string tag)
 		{
 			InitializeComponent();
 
@@ -74,7 +74,7 @@ namespace SAModManager
 				authorURLBox.Text = mod.AuthorURL;
 				versionBox.Text = mod.Version;
 				descriptionBox.Text = mod.Description;
-				categoryBox.SelectedIndex = SADXModInfo.ModCategory.IndexOf(mod.Category);
+				categoryBox.SelectedIndex = SAModInfo.ModCategory.IndexOf(mod.Category);
 				modIDBox.Text = mod.ModID;
 				dllText.Text = mod.DLLFile;
 				sourceURLBox.Text = mod.SourceCode;
@@ -98,7 +98,7 @@ namespace SAModManager
 				tabCodes.Visibility = Visibility.Collapsed;
             }
 
-			DataContext = new SADXModInfo();
+			DataContext = new SAModInfo();
 
 			DependencyGrid.ItemsSource = dependencies;
 			GroupsTree.ItemsSource = Schema.Groups;
@@ -230,9 +230,9 @@ namespace SAModManager
 			if (Mod != null)
 			{
 				//browse the mods folder and get each mod name by their ini file
-				foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(moddir)))
+				foreach (string filename in SAModInfo.GetModFiles(new DirectoryInfo(moddir)))
 				{
-					SADXModInfo mod = IniSerializer.Deserialize<SADXModInfo>(filename);
+					SAModInfo mod = IniSerializer.Deserialize<SAModInfo>(filename);
 					if (mod.Name == Mod.Name)
 					{
 						fullName = filename;
@@ -293,7 +293,7 @@ namespace SAModManager
 		#endregion
 
 		#region Mod Updates Functions
-		private void LoadModUpdates(SADXModInfo mod)
+		private void LoadModUpdates(SAModInfo mod)
 		{
 			if (mod.GitHubRepo != null)
 			{
@@ -318,7 +318,7 @@ namespace SAModManager
 			}
 		}
 
-		private void SaveModUpdates(SADXModInfo mod)
+		private void SaveModUpdates(SAModInfo mod)
 		{
 			if (radGithub.IsChecked == true && isStringNotEmpty(boxGitURL.Text))
 			{
@@ -338,7 +338,7 @@ namespace SAModManager
 		#endregion
 
 		#region Dependency Functions
-		private void SaveModDependencies(SADXModInfo mod)
+		private void SaveModDependencies(SAModInfo mod)
 		{
 			mod.Dependencies.Clear();
 			if (DependencyGrid.Items.Count > 0)
@@ -381,7 +381,7 @@ namespace SAModManager
 			}
 		}
 
-		private void LoadCodes(SADXModInfo mod)
+		private void LoadCodes(SAModInfo mod)
 		{
 			if (mod.Codes is null)
 				CodeList = new();
@@ -395,7 +395,7 @@ namespace SAModManager
 			}
 		}
 
-		private void LoadDependencies(SADXModInfo mod)
+		private void LoadDependencies(SAModInfo mod)
 		{
 			dependencies.Clear();
 			foreach (string dep in mod.Dependencies)
@@ -439,7 +439,7 @@ namespace SAModManager
 		{
 
 			//Assign variables to null if the string are empty so they won't show up at all in mod.ini.
-			SADXModInfo newMod = editMod ? Mod : new SADXModInfo();
+			SAModInfo newMod = editMod ? Mod : new SAModInfo();
 			newMod.Name = nameBox.Text;
 			newMod.Author = GetStringContent(authorBox.Text);
 			newMod.AuthorURL = GetStringContent(authorURLBox.Text);

@@ -199,23 +199,30 @@ namespace SAModManager
 
         private static bool CheckinstallURLHandler(string[] args)
         {
+            int index = 0;
+
             foreach (var arg in args)
             {
                 if (arg == "urlhandler")
                 {
-                    using var hkcu = Microsoft.Win32.Registry.CurrentUser;
-                    using var key = hkcu.CreateSubKey("Software\\Classes\\sadxmm");
-                    key.SetValue(null, "URL:SADX Mod Manager Protocol");
-                    key.SetValue("URL Protocol", string.Empty);
-                    using (var k2 = key.CreateSubKey("DefaultIcon"))
-                        k2.SetValue(null, Environment.ProcessPath + ",1");
-                    using var k3 = key.CreateSubKey("shell");
-                    using var k4 = k3.CreateSubKey("open");
-                    using var k5 = k4.CreateSubKey("command");
-                    k5.SetValue(null, $"\"{Environment.ProcessPath}\" \"%1\"");
-                    key.Close();
-                    return true;
+                    if (index + 1 < args.Length)
+                    {
+                        using var hkcu = Microsoft.Win32.Registry.CurrentUser;
+
+                        using var key = hkcu.CreateSubKey("Software\\Classes\\" + args[index + 1]);
+                        key.SetValue(null, "URL:SA Mod Manager Protocol");
+                        key.SetValue("URL Protocol", string.Empty);
+                        using (var k2 = key.CreateSubKey("DefaultIcon"))
+                            k2.SetValue(null, Environment.ProcessPath + ",1");
+                        using var k3 = key.CreateSubKey("shell");
+                        using var k4 = k3.CreateSubKey("open");
+                        using var k5 = k4.CreateSubKey("command");
+                        k5.SetValue(null, $"\"{Environment.ProcessPath}\" \"%1\"");
+                        key.Close();
+                        return true;
+                    }
                 }
+                index++;
             }
 
             return false;

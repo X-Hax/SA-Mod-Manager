@@ -182,6 +182,33 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Codes.lst.
+        /// </summary>
+        internal static string URL_SA2_CODE {
+            get {
+                return ResourceManager.GetString("URL_SA2_CODE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://github.com/X-Hax/sa2-mod-loader/raw/master/extlib/ModLoaders/SA2ModLoader.dll.
+        /// </summary>
+        internal static string URL_SA2_DL {
+            get {
+                return ResourceManager.GetString("URL_SA2_DL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Patches.json.
+        /// </summary>
+        internal static string URL_SA2_PATCH {
+            get {
+                return ResourceManager.GetString("URL_SA2_PATCH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Codes.lst.
         /// </summary>
         internal static string URL_SADX_CODE {

@@ -66,7 +66,7 @@ namespace SAModManager
         public static bool cancelUpdate { get; set; }
 
         // TODO: Make this generic for handling both games. Maybe do it with a custom class for easier management.
-        public Dictionary<string, SADXModInfo> mods = null;
+        public Dictionary<string, SAModInfo> mods = null;
         public List<string> EnabledMods = new();
         public List<string> EnabledCodes = new();
         #endregion
@@ -418,9 +418,9 @@ namespace SAModManager
 
             foreach (string mod in modlistCopy)
             {
-                if (mods.TryGetValue(mod, out SADXModInfo value))
+                if (mods.TryGetValue(mod, out SAModInfo value))
                 {
-                    SADXModInfo inf = value;
+                    SAModInfo inf = value;
                     if (!string.IsNullOrEmpty(inf.Codes))
                         codes.AddRange(CodeList.Load(Path.Combine(Path.Combine(modDir, mod), inf.Codes)).Codes);
                 }
@@ -556,11 +556,11 @@ namespace SAModManager
                 var modPath = Path.Combine(App.CurrentGame.modDirectory, (string)item.Tag);
                 var manifestPath = Path.Combine(modPath, "mod.manifest");
 
-                foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modPath)))
+                foreach (string filename in SAModInfo.GetModFiles(new DirectoryInfo(modPath)))
                 {
                     if (filename.Contains("mod.ini")) //reload mod ini in case the user edited it
                     {
-                        mods[item.Tag] = IniSerializer.Deserialize<SADXModInfo>(filename);
+                        mods[item.Tag] = IniSerializer.Deserialize<SAModInfo>(filename);
                         break;
                     }
                 }
@@ -623,7 +623,7 @@ namespace SAModManager
             if (mod == null)
                 return;
 
-            SADXModInfo modInfo = mods[mod.Tag];
+            SAModInfo modInfo = mods[mod.Tag];
 
             if (modInfo.DisableUpdate != true)
             {
@@ -740,7 +740,7 @@ namespace SAModManager
             if (mod == null)
                 return;
 
-            SADXModInfo modInfo = mods[mod.Tag];
+            SAModInfo modInfo = mods[mod.Tag];
             EditMod Edit = new(modInfo, mod.Tag);
             Edit.ShowDialog();
             Edit.Closed += EditMod_FormClosing;
@@ -1696,7 +1696,7 @@ namespace SAModManager
         {
             btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
             ViewModel.Modsdata.Clear();
-            mods = new Dictionary<string, SADXModInfo>();
+            mods = new Dictionary<string, SAModInfo>();
             codes = new List<Code>(mainCodes.Codes);
             codesSearch = new();
 
@@ -1729,9 +1729,9 @@ namespace SAModManager
             }
 
             //browse the mods folder and get each mod name by their ini file
-            foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(App.CurrentGame.modDirectory)))
+            foreach (string filename in SAModInfo.GetModFiles(new DirectoryInfo(App.CurrentGame.modDirectory)))
             {
-                SADXModInfo mod = IniSerializer.Deserialize<SADXModInfo>(filename);
+                SAModInfo mod = IniSerializer.Deserialize<SAModInfo>(filename);
                 mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(App.CurrentGame.modDirectory.Length + 1), mod);
             }
 
@@ -1739,7 +1739,7 @@ namespace SAModManager
             {
                 if (mods.ContainsKey(mod))
                 {
-                    SADXModInfo inf = mods[mod];
+                    SAModInfo inf = mods[mod];
                     suppressEvent = true;
                     var item = new ModData()
                     {
@@ -1791,7 +1791,7 @@ namespace SAModManager
                 }
             }
 
-            foreach (KeyValuePair<string, SADXModInfo> inf in mods.OrderBy(x => x.Value.Name))
+            foreach (KeyValuePair<string, SAModInfo> inf in mods.OrderBy(x => x.Value.Name))
             {
                 if (!EnabledMods.Contains(inf.Key))
                 {
@@ -2209,6 +2209,8 @@ namespace SAModManager
                 if (CodeListView.Items.Count > 0)
                     UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalCodes"), CodeListView.Items.Count), 2000);
             }
+            textModsDescription.Text = string.Empty;
+
         }
 
         private void OpenAboutModWindow(ModData mod)
@@ -2240,7 +2242,7 @@ namespace SAModManager
 
             if (mod is not null)
             {
-                SADXModInfo modInfo = mods[mod.Tag];
+                SAModInfo modInfo = mods[mod.Tag];
                 string fullPath = Path.Combine(App.CurrentGame.modDirectory, mod.Tag);
                 Common.ModConfig config = new(modInfo.Name, fullPath);
                 config.ShowDialog();
@@ -2480,11 +2482,26 @@ namespace SAModManager
             }
         }
 
-        private void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
             {
+                checkForUpdate = false;
+                foreach (var game in GamesInstall.GetSupportedGames())
+                {
+                    if (game == ComboGameSelection.SelectedItem)
+                    {
+                        EnabledMods.Clear();
+                        EnabledCodes.Clear();
+                        App.CurrentGame = game;
+                        GamesInstall.HandleGameSwap(game);
+                        await UpdateManagerInfo();
+                        Load();
+                        break;
+                    }
+                }
 
+                Refresh();
             }
         }
     }

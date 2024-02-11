@@ -20,7 +20,7 @@ namespace SAModManager.Elements.SADX
     {
         #region Variables
         private GameSettings GameProfile;
-        private Dictionary<string, SADXModInfo> GameMods;
+        private Dictionary<string, SAModInfo> GameMods;
         private List<string> SelectedMods;
         public static Dictionary<int, string> EventNames;
 
@@ -386,7 +386,7 @@ namespace SAModManager.Elements.SADX
         }
         #endregion
 
-        public TestSpawn(ref object gameSettings, Dictionary<string, SADXModInfo> modList, List<string> enabledMods)
+        public TestSpawn(ref object gameSettings, Dictionary<string, SAModInfo> modList, List<string> enabledMods)
         {
             GameProfile = (gameSettings as GameSettings);
             SelectedMods = (gameSettings as GameSettings).EnabledMods;

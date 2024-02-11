@@ -32,7 +32,7 @@ namespace SAModManager.ModsCommon
 			public bool isGithub { get; set; }
 			public bool IsChecked { get; set; }
 
-			public ModToDependency(KeyValuePair<string, SADXModInfo> modInfo)
+			public ModToDependency(KeyValuePair<string, SAModInfo> modInfo)
 			{
 				Name = modInfo.Value.Name;
 				Author = modInfo.Value.Author;
@@ -66,7 +66,7 @@ namespace SAModManager.ModsCommon
 				return new ModDependency(sb.ToString());
 			}
 		}
-		Dictionary<string, SADXModInfo> mods = new Dictionary<string, SADXModInfo>();
+		Dictionary<string, SAModInfo> mods = new Dictionary<string, SAModInfo>();
 		public bool IsClosed { get; set; }
 		public bool NeedRefresh { get; set; }
 
@@ -76,7 +76,7 @@ namespace SAModManager.ModsCommon
 			IsClosed = false;
 			if (LoadMods())
 			{
-				foreach (KeyValuePair<string, SADXModInfo> mod in mods)
+				foreach (KeyValuePair<string, SAModInfo> mod in mods)
 				{
 					lstModSelect.Items.Add(new ModToDependency(mod));
 				}
@@ -92,9 +92,9 @@ namespace SAModManager.ModsCommon
 			{
 				success = true;
 
-				foreach (string filename in SADXModInfo.GetModFiles(new DirectoryInfo(modDir)))
+				foreach (string filename in SAModInfo.GetModFiles(new DirectoryInfo(modDir)))
 				{
-					SADXModInfo mod = IniSerializer.Deserialize<SADXModInfo>(filename);
+					SAModInfo mod = IniSerializer.Deserialize<SAModInfo>(filename);
 					if (mod.Name != EditMod.Mod.Name)
 						mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(modDir.Length + 1), mod);
 				}
