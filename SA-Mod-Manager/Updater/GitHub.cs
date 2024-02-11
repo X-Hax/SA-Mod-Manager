@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System;
 using System.Linq;
-using static SAModManager.WorkflowRunInfo;
-using static SAModManager.GitHubAction;
-using static SAModManager.GitHubArtifact;
-using static SAModManager.WorkflowRunInfo.GitHubTagInfo;
+using static SAModManager.Updater.WorkflowRunInfo;
+using static SAModManager.Updater.GitHubAction;
+using static SAModManager.Updater.GitHubArtifact;
+using static SAModManager.Updater.WorkflowRunInfo.GitHubTagInfo;
 using System.Text.RegularExpressions;
-using SAModManager.Updater;
 
-namespace SAModManager
+namespace SAModManager.Updater
 {
     public class GitHubUser
     {
@@ -287,7 +286,6 @@ namespace SAModManager
     {
         private static readonly string owner = "X-Hax";
         private static readonly string repo = "SA-Mod-Manager";
-        private static readonly string AppName = "SA Mod Manager";
         private static readonly string branch = "master"; //case-sensitive
 
 

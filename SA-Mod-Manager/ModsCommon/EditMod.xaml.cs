@@ -1,4 +1,5 @@
-﻿using SAModManager.Common;
+﻿using SAModManager.Codes;
+using SAModManager.Common;
 using SAModManager.Ini;
 using SAModManager.ModsCommon;
 using SAModManager.Properties;
@@ -14,10 +15,10 @@ using System.Windows.Controls;
 
 namespace SAModManager
 {
-	/// <summary>
-	/// Interaction logic for EditMod.xaml
-	/// </summary>
-	public partial class EditMod : Window
+    /// <summary>
+    /// Interaction logic for EditMod.xaml
+    /// </summary>
+    public partial class EditMod : Window
 	{
 		#region Enums
 		public enum UpdateType

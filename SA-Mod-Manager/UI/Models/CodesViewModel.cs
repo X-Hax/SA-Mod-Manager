@@ -1,4 +1,4 @@
-﻿using SAModManager.Common;
+﻿using SAModManager.Codes;
 using System.Collections.Generic;
 
 namespace SAModManager.Models

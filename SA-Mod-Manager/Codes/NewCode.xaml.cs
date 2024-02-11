@@ -18,13 +18,14 @@ using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using System.CodeDom;
 using ICSharpCode.AvalonEdit;
 using SAModManager.Elements;
+using SAModManager.Codes;
 
 namespace SAModManager.Common
 {
-	/// <summary>
-	/// Interaction logic for NewCode.xaml
-	/// </summary>
-	public partial class NewCode : Window
+    /// <summary>
+    /// Interaction logic for NewCode.xaml
+    /// </summary>
+    public partial class NewCode : Window
 	{
 		public EditCode Code = new();
 

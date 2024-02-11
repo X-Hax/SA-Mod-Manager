@@ -1,13 +1,13 @@
-﻿using SAModManager.Common;
+﻿using SAModManager.Codes;
 using System.Windows;
 
 
 namespace SAModManager
 {
-	/// <summary>
-	/// Interaction logic for AboutCode.xaml
-	/// </summary>
-	public partial class AboutCode : Window
+    /// <summary>
+    /// Interaction logic for AboutCode.xaml
+    /// </summary>
+    public partial class AboutCode : Window
 	{
 		public AboutCode(Code code)
 		{

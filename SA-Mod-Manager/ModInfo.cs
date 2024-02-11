@@ -5,13 +5,13 @@ using System.IO;
 using System.Reflection;
 using System.Text.Json;
 using PropertyChanged;
-using SAModManager.Common;
+using SAModManager.Codes;
 using SAModManager.Configuration;
 using SAModManager.Ini;
 
 namespace SAModManager
 {
-	public class ModInfo
+    public class ModInfo
 	{
 		public string Name { get; set; }
 		public string Category { get; set; }

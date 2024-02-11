@@ -26,6 +26,8 @@ using SAModManager.Configuration;
 using System.Text;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.Security.Policy;
+using SAModManager.Codes;
+using SAModManager.Models;
 
 namespace SAModManager
 {
