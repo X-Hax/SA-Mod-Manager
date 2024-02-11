@@ -10,7 +10,7 @@
 		<Nullable>disable</Nullable>
 		<BaseOutputPath>..\bin\</BaseOutputPath>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/X-Hax/sadx-mod-loader</RepositoryUrl>
+		<RepositoryUrl>https://github.com/X-Hax/SA-Mod-Manager</RepositoryUrl>
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<AssemblyVersion>1.1.1.6</AssemblyVersion>
 	</PropertyGroup>
@@ -31,10 +31,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Icons\Manager\SA2Amy.ico" />
+		<None Remove="Icons\Manager\SA2Eggman.ico" />
+		<None Remove="Icons\Manager\SA2Knux.ico" />
+		<None Remove="Icons\Manager\SA2Maria.ico" />
+		<None Remove="Icons\Manager\SA2MM.png" />
+		<None Remove="Icons\Manager\SA2Omochao.ico" />
+		<None Remove="Icons\Manager\SA2Rouge.ico" />
+		<None Remove="Icons\Manager\SA2SE.ico" />
+		<None Remove="Icons\Manager\SA2Shadow.ico" />
+		<None Remove="Icons\Manager\SA2Sonic.ico" />
+		<None Remove="Icons\Manager\SA2Tails.ico" />
 		<None Remove="Icons\SADXModManager_.png" />
 		<None Remove="Resources\Games\sa1.png" />
 		<None Remove="Resources\Games\sa2.png" />
 		<None Remove="Updater\ModDownloadDialog.xaml.cs~RF2e7deabf.TMP" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Icons\Manager\SA2Maria.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -74,7 +89,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Resource Include="Icons\SADXModManager_.png" />
+	  <Resource Include="Icons\Manager\SA2Amy.ico" />
+	  <Resource Include="Icons\Manager\SA2Eggman.ico" />
+	  <Resource Include="Icons\Manager\SA2Knux.ico" />
+	  <Resource Include="Icons\Manager\SA2MM.png" />
+	  <Resource Include="Icons\Manager\SA2Omochao.ico" />
+	  <Resource Include="Icons\Manager\SA2Rouge.ico" />
+	  <Resource Include="Icons\Manager\SA2SE.ico" />
+	  <Resource Include="Icons\Manager\SA2Shadow.ico" />
+	  <Resource Include="Icons\Manager\SA2Sonic.ico" />
+	  <Resource Include="Icons\Manager\SA2Tails.ico" />
+	  <Resource Include="Icons\SADXModManager_.png" />
 	</ItemGroup>
 
 	<ItemGroup>

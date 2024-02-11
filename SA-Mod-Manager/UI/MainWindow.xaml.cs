@@ -28,6 +28,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.Security.Policy;
 using SAModManager.Codes;
 using SAModManager.Models;
+using System.Windows.Media.Imaging;
+using System.Reflection;
+using System.Linq.Expressions;
 
 namespace SAModManager
 {
@@ -149,12 +152,12 @@ namespace SAModManager
             }
 
             var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
-           
+            await oneClick.UriInit();
+
             if (oneClick.isEmpty == false)
             {
                 return;
             }
-
 
 #if !DEBUG
             checkForUpdate = true;
@@ -2484,6 +2487,86 @@ namespace SAModManager
             }
         }
 
+        private string getSA2Icon()
+        {
+            Random rand = new Random();
+            string name = "Manager/";
+
+            switch (rand.Next(12))
+            {
+                default:
+                    name += "SA2MM.png";
+                    break;
+                case 0:
+                    name += "SA2Sonic.ico";
+                    break;
+                case 1:
+                    name += "SA2Tails.ico";
+                    break;
+                case 2:
+                    name += "SA2Knux.ico";
+                    break;
+                case 3:
+                    name += "SA2Shadow.ico";
+                    break;
+                case 4:
+                    name += "SA2Eggman.ico";
+                    break;
+                case 5:
+                    name += "SA2Rouge.ico";
+                    break;
+                case 6:
+                    name += "SA2Amy.ico";
+                    break;
+                case 7:
+                    name += "SA2Omochao.ico";
+                    break;
+                case 8:
+                    name += "SA2Maria.ico";
+                    break;
+                case 9:
+                    name += "SA2SE.ico";
+                    break;
+            }
+
+            return name;
+        }
+
+        private void SetNewIcon(string titleBarName)
+        {
+            try
+            {
+                var iconTitleBar = GetTemplateChild(titleBarName) as Image;
+                if (iconTitleBar != null)
+                {
+                    Assembly assembly = Assembly.GetExecutingAssembly();
+                    string fullResourceName = assembly.GetName().Name;
+                    string icon = null;
+                    switch (setGame)
+                    {
+                        case SetGame.SADX:
+                        default:
+                            icon = "SADXModManager_.png";
+                            break;
+                        case SetGame.SA2:
+                            icon = getSA2Icon();
+                            break;
+                    }
+
+                    var newImg = new BitmapImage(new Uri("pack://application:,,,/" + fullResourceName + ";component/Icons/" + icon));
+                    iconTitleBar.Source = newImg;
+                }
+            }
+            catch { }
+        }
+
+
+        private void UpdateManagerIcons()
+        {
+            SetNewIcon("IconTitleBar");
+            SetNewIcon("IconTitleBar2");
+        }
+
         private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
@@ -2499,6 +2582,7 @@ namespace SAModManager
                         GamesInstall.HandleGameSwap(game);
                         await UpdateManagerInfo();
                         Load();
+                        UpdateManagerIcons();
                         break;
                     }
                 }
