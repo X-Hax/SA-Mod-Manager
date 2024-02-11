@@ -3,10 +3,10 @@ using System.ComponentModel;
 using SAModManager.Ini;
 using SAModManager.Configuration;
 using System.IO;
-using SAModManager.Common;
 using System.Text.Json;
 using System.CodeDom.Compiler;
 using System;
+using SAModManager.UI;
 
 namespace SAModManager.Configuration.SADX
 {

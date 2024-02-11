@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
 
-namespace SAModManager.Common
+namespace SAModManager.ModsCommon
 {
 	/// <summary>
 	/// Interaction logic for ModConfig.xaml

@@ -1,13 +1,11 @@
 ﻿using SAModManager.Configuration;
 using System.Collections.Generic;
 using System.IO;
-
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using static SAModManager.MainWindow;
+using SAModManager.UI;
 
-namespace SAModManager.Common
+namespace SAModManager.Profile
 {
 	/// <summary>
 	/// Interaction logic for EditProfile.xaml

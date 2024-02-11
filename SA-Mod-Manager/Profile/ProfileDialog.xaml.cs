@@ -10,8 +10,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using SAModManager.UI;
 
-namespace SAModManager.Common
+namespace SAModManager.Profile
 {
     /// <summary>
     /// Interaction logic for Profile.xaml

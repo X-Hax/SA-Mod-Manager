@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using SAModManager.Common;
 using SAModManager.Configuration.SADX;
 using SAModManager.Ini;
+using SAModManager.UI;
 
 namespace SAModManager.Elements.SADX
 {

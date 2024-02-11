@@ -6,11 +6,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SAModManager.UI;
+using SAModManager.Profile;
 
-namespace SAModManager.Common
+namespace SAModManager
 {
     public class Game
     {
@@ -632,7 +633,6 @@ namespace SAModManager.Common
 
             try
             {
-
                 foreach (var game in GamesInstall.GetSupportedGames())
                 {
                     string path = Path.Combine(Environment.CurrentDirectory, game.exeName);
@@ -665,13 +665,14 @@ namespace SAModManager.Common
                 if (File.Exists(path))
                 {
                     ((MainWindow)App.Current.MainWindow).setGame = game.id;
-
+                    App.ManagerSettings.CurrentSetGame = (int)game.id;
                     if (((MainWindow)App.Current.MainWindow).setGame != SetGame.None)
                     {
                         ((MainWindow)App.Current.MainWindow).tempPath = path;
                         App.CurrentGame.gameDirectory = path;
                         ((MainWindow)App.Current.MainWindow).textGameDir.Text = path;
                     }
+
                 }
                 else
                 {
@@ -681,7 +682,7 @@ namespace SAModManager.Common
                         if (Directory.Exists(path))
                         {
                             ((MainWindow)App.Current.MainWindow).setGame = game.id;
-
+                            App.ManagerSettings.CurrentSetGame = (int)game.id;
                             if (((MainWindow)App.Current.MainWindow).setGame != SetGame.None)
                             {
                                 ((MainWindow)App.Current.MainWindow).tempPath = path;

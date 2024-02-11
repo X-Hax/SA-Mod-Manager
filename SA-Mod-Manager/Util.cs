@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
-using SAModManager.Common;
 using SAModManager.Updater;
 using System.Diagnostics;
 using System.IO.Compression;
@@ -14,6 +13,7 @@ using SAModManager.Ini;
 using Microsoft.Win32;
 using System.Security.Principal;
 using System.Reflection;
+using SAModManager.UI;
 
 namespace SAModManager
 {

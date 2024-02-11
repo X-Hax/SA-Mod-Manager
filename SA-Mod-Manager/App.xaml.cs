@@ -11,7 +11,6 @@ using System.Linq;
 using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SAModManager.Common;
 using SAModManager.Updater;
 using SAModManager.Ini;
 using System.Reflection;
@@ -60,7 +59,7 @@ namespace SAModManager
         public static ThemeEntry CurrentTheme { get; set; }
         public static bool IsLightTheme = false;
         public static ThemeList ThemeList { get; set; }
-        public static Common.Game CurrentGame = new();
+        public static Game CurrentGame = new();
         public static List<Game> GamesList = new();
 
         [STAThread]

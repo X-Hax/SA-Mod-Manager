@@ -1,6 +1,5 @@
-﻿using SAModManager.Common;
-using SAModManager.Configuration;
-using SAModManager.Ini;
+﻿using SAModManager.Configuration;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,13 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace SAModManager.UI
 {

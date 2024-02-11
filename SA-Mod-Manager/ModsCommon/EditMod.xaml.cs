@@ -1,5 +1,4 @@
 ﻿using SAModManager.Codes;
-using SAModManager.Common;
 using SAModManager.Ini;
 using SAModManager.ModsCommon;
 using SAModManager.Properties;
@@ -12,6 +11,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using SAModManager.UI;
 
 namespace SAModManager
 {

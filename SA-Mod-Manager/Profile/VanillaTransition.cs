@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SAModManager.UI;
 
-namespace SAModManager.Common
+namespace SAModManager.Profile
 {
     public static class VanillaTransition
     {

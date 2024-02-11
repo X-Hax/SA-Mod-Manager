@@ -4,12 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 using SAModManager.Themes;
 using System.IO;
-using SAModManager.Common;
+using SAModManager.UI;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using SAModManager.Updater;
-using Microsoft.VisualBasic.ApplicationServices;
-using TheArtOfDev.HtmlRenderer.WPF;
 
 namespace SAModManager
 {

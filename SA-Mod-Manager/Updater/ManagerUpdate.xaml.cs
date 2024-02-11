@@ -1,15 +1,12 @@
-﻿using SAModManager.Updater;
-using System.Threading.Tasks;
-using System.Threading;
+﻿using System.Threading.Tasks;
 using System;
 using System.Windows;
-using System.Security.Policy;
-using System.Net;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Shell;
+using SAModManager.UI;
 
-namespace SAModManager.Common
+namespace SAModManager.Updater
 {
     /// <summary>
     /// Interaction logic for ManagerUpdate.xaml

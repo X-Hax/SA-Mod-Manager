@@ -11,7 +11,6 @@ using System.Diagnostics;
 using SAModManager.Properties;
 using System.Windows.Media;
 using System.Threading.Tasks;
-using SAModManager.Common;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Security.Cryptography;
@@ -24,13 +23,10 @@ using SAModManager.Elements;
 using SAModManager.Ini;
 using SAModManager.Configuration;
 using System.Text;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using System.Security.Policy;
 using SAModManager.Codes;
-using SAModManager.Models;
 using System.Windows.Media.Imaging;
 using System.Reflection;
-using System.Linq.Expressions;
+using SAModManager.Profile;
 
 namespace SAModManager
 {
@@ -1542,9 +1538,12 @@ namespace SAModManager
             if (newSetup || sadxSettings.GamePath is null)
                 sadxSettings.GamePath = tempPath;
 
-            textGameDir.Text = sadxSettings.GamePath;
-            App.CurrentGame.gameDirectory = sadxSettings.GamePath;
-            App.CurrentGame.modDirectory = Path.Combine(sadxSettings.GamePath, "mods");
+            if (!string.IsNullOrEmpty(sadxSettings.GamePath))
+            {
+                textGameDir.Text = sadxSettings.GamePath;
+                App.CurrentGame.gameDirectory = sadxSettings.GamePath;
+                App.CurrentGame.modDirectory = Path.Combine(sadxSettings.GamePath, "mods");
+            }
 
             string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
             gameConfigFile = File.Exists(configPath) ? IniSerializer.Deserialize<SADXConfigFile>(configPath) : new SADXConfigFile();
@@ -1554,9 +1553,31 @@ namespace SAModManager
             gameDebugSettings = sadxSettings.DebugSettings;
         }
 
-        private async void LoadSA2Settings(string profilePath)
+        private void LoadSA2Settings(string profilePath, bool newSetup = false)
         {
             // TODO: Add SA2 Support
+            Configuration.SA2.GameSettings sa2 = File.Exists(profilePath) ? Configuration.SA2.GameSettings.Deserialize(profilePath) : new();
+            GameProfile = sa2;
+
+            if (newSetup || sa2.GamePath is null)
+                sa2.GamePath = tempPath;
+
+
+            if (!string.IsNullOrEmpty(sa2.GamePath))
+            {
+                textGameDir.Text = sa2.GamePath;
+                App.CurrentGame.gameDirectory = sa2.GamePath;
+                App.CurrentGame.modDirectory = Path.Combine(sa2.GamePath, "mods");
+            }
+
+            //to do add XML Config support
+
+        if (sa2.EnabledMods is not null)
+            EnabledMods = sa2.EnabledMods;
+        if (sa2.EnabledCodes is not null)
+            EnabledCodes = sa2.EnabledCodes;
+
+            gameDebugSettings = sa2.DebugSettings;
         }
 
         private void LoadGameSettings(bool newSetup = false)
@@ -1569,6 +1590,7 @@ namespace SAModManager
                     LoadSADXSettings(profilePath, newSetup);
                     break;
                 case SetGame.SA2:
+                    LoadSA2Settings(profilePath, newSetup);
                     break;
             }
 
@@ -1620,7 +1642,6 @@ namespace SAModManager
         }
         public async void Load(bool newSetup = false)
         {
-
 
             if (setGame != SetGame.None)
             {
@@ -2249,7 +2270,7 @@ namespace SAModManager
             {
                 SAModInfo modInfo = mods[mod.Tag];
                 string fullPath = Path.Combine(App.CurrentGame.modDirectory, mod.Tag);
-                Common.ModConfig config = new(modInfo.Name, fullPath);
+                ModsCommon.ModConfig config = new(modInfo.Name, fullPath);
                 config.ShowDialog();
             }
         }
@@ -2580,8 +2601,8 @@ namespace SAModManager
                         EnabledCodes.Clear();
                         App.CurrentGame = game;
                         GamesInstall.HandleGameSwap(game);
-                        await UpdateManagerInfo();
                         Load();
+                        await UpdateManagerInfo();
                         UpdateManagerIcons();
                         break;
                     }

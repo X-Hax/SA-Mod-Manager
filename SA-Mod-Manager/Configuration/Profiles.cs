@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Bson;
-using SAModManager.Common;
 using SAModManager.Ini;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using SAModManager.UI;
 
 namespace SAModManager.Configuration
 {

@@ -5,24 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace SAModManager
+
+namespace SAModManager.UI
 {
-    /// <summary>
-    /// Interaction logic for AboutManager.xaml
-    /// </summary>
-    public partial class AboutManager : Window
-    {
-        public AboutManager()
-        {
-            InitializeComponent();
+
+	/// <summary>
+	/// Interaction logic for AboutManager.xaml
+	/// </summary>
+	public partial class AboutManager : Window
+	{
+		public AboutManager()
+		{
+			InitializeComponent();
 			Title += " SADX Mod Manager";
 
 		}

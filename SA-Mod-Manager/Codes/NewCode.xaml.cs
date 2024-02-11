@@ -18,9 +18,9 @@ using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using System.CodeDom;
 using ICSharpCode.AvalonEdit;
 using SAModManager.Elements;
-using SAModManager.Codes;
+using SAModManager.UI;
 
-namespace SAModManager.Common
+namespace SAModManager.Codes
 {
     /// <summary>
     /// Interaction logic for NewCode.xaml

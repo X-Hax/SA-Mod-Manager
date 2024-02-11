@@ -1,5 +1,4 @@
-﻿using SAModManager.Common;
-using SAModManager.Updater;
+﻿using SAModManager.Updater;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +13,7 @@ using SAModManager.Configuration;
 using SAModManager.Configuration.SADX;
 using SAModManager.Ini;
 using System.Threading.Tasks;
+using SAModManager.UI;
 
 namespace SAModManager.Elements.SADX
 {

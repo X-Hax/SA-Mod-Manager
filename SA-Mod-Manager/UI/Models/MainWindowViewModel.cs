@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using GongSolutions.Wpf.DragDrop;
-using SAModManager.Common;
 
 
 namespace SAModManager.UI

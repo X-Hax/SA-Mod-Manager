@@ -3,7 +3,6 @@ using System.ComponentModel;
 using SAModManager.Ini;
 using SAModManager.Configuration;
 using System.IO;
-using SAModManager.Common;
 using System.Text.Json;
 
 // TODO: Build SA2 Game Settings

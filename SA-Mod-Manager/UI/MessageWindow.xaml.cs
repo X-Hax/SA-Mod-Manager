@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using SAModManager.Elements;
 
-namespace SAModManager.Common
+namespace SAModManager.UI
 {
 	/// <summary>
 	/// Interaction logic for MessageWindow.xaml

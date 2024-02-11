@@ -1,5 +1,4 @@
-﻿using SAModManager.Common;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -9,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Shell;
+using SAModManager.UI;
 
 namespace SAModManager.Updater
 {

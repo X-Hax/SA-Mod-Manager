@@ -6,10 +6,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using GongSolutions.Wpf.DragDrop.Utilities;
-using SAModManager.Common;
+using SAModManager.UI;
 using SAModManager.Properties;
 using SAModManager.Elements;
 using System.Windows.Media;
+using SAModManager.ModsCommon;
 
 
 namespace SAModManager

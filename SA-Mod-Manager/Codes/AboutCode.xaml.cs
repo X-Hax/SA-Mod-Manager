@@ -1,8 +1,7 @@
-﻿using SAModManager.Codes;
-using System.Windows;
+﻿using System.Windows;
 
 
-namespace SAModManager
+namespace SAModManager.Codes
 {
     /// <summary>
     /// Interaction logic for AboutCode.xaml

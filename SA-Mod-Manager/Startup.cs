@@ -1,4 +1,4 @@
-﻿using SAModManager.Common;
+﻿using SAModManager.UI;
 using SAModManager.Updater;
 using System;
 using System.Collections.Generic;
