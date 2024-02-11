@@ -18,7 +18,7 @@ namespace SAModManager.UI
 		public AboutManager()
 		{
 			InitializeComponent();
-			Title += " SADX Mod Manager";
+			Title += " SA Mod Manager";
 
 		}
 

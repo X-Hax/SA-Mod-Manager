@@ -69,7 +69,7 @@
 
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Sobre</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SADX Mod Manager é um programa que te permite manusear gerenciar mods para o jogo Sonic Adventure DX.</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SA Mod Manager é um programa que te permite manusear gerenciar mods para o jogo Sonic Adventure DX.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contribuidores</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Código-Fonte</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Reportar um Bug (apenas em Inglês)</system:String>

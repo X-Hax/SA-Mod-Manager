@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<system:String x:Key="MessageWindow.DefaultTitle">SADX Mod Manager</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle">SA Mod Manager</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Error">Error</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Warning</system:String>
 	
@@ -76,7 +76,7 @@
 
     <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Unable to retrieve update information."</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.Net7Missing">SADX Mod Manager cannot run without .NET 7.</system:String>
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">SA Mod Manager cannot run without .NET 7.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Missing VC++</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">It looks like you're missing some Visual C++ Redistributables, some mods won't work without them.&#x0a;&#x0a;Would you like to download and install them now?</system:String>

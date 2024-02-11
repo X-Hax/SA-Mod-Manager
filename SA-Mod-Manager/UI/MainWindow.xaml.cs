@@ -134,7 +134,7 @@ namespace SAModManager
 
             ViewModel.Games = App.GamesList;
             Load();
-
+            DataContext = ViewModel;
             SetBindings();
 
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);

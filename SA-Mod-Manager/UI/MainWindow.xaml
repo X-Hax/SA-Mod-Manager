@@ -8,7 +8,7 @@
 		xmlns:elements="clr-namespace:SAModManager.Elements"
 		xmlns:dd="urn:gong-wpf-dragdrop"
 		mc:Ignorable="d"
-		Title="SADX Mod Manager"
+		Title="SA Mod Manager"
 		Style="{DynamicResource SAWindow}"
 		MinHeight="550" MinWidth="590" Height="736" Width="700" WindowStartupLocation="CenterScreen"
 		Loaded="MainWindowManager_Loaded" PreviewKeyDown="Window_PreviewKeyDown"

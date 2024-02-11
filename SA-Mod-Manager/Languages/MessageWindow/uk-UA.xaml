@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<system:String x:Key="MessageWindow.DefaultTitle">SADX Mod Manager</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle">SA Mod Manager</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Error">Помилка</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Попередження</system:String>
 	
@@ -76,7 +76,7 @@
 
     <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Не вдалося отримати інформацію про оновлення."</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.Net7Missing">SADX Mod Manager не може працювати без .NET 7.</system:String>
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">SA Mod Manager не може працювати без .NET 7.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Відсутній VC++</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Схоже що у тебе немає деяких Випусків Visual C++, деякі моди не будуть працювати без них.&#x0a;&#x0a;Would you like to download and install them now?</system:String>

@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<system:String x:Key="MessageWindow.DefaultTitle">SADX Mod Manager</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle">SA Mod Manager</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Error">Erro</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Aviso</system:String>
 	
@@ -74,7 +74,7 @@
 
     <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Não foi possivel receber informações da atualização."</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.Net7Missing">SADX Mod Manager não consegue executar sem .NET 7.</system:String>
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">SA Mod Manager não consegue executar sem .NET 7.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">VC++ em falta</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Parece que tem em falta alguns redistribuíveis da Visual C++ Redistributables, alguns mods não irão funcionar sem estes componentes.&#x0a;&#x0a;Gostaria de fazer download e de os instalar agora?</system:String>
