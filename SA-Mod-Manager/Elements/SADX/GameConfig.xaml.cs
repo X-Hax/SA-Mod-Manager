@@ -692,22 +692,10 @@ namespace SAModManager.Elements.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			chkShowMouse.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay,
-				Converter = new ShowMouseConverter()
-			});
 			chkResizableWin.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableResizableWindow")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
-			});
-			chkResizableWin.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay,
-				Converter = new ResizeWindowConverter()
 			});
 
 			// Other Visual Settings
