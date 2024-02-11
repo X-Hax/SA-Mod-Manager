@@ -172,6 +172,11 @@ namespace SAModManager
                     await App.PerformUpdateCodesCheck();
                     await App.PerformUpdatePatchesCheck();
                 }
+
+                if (App.CurrentGame.id == SetGame.SADX)
+                {
+                    await App.PerformUpdateAppLauncherCheck();
+                }
             }
 
             await CheckForModUpdates();
@@ -1097,6 +1102,11 @@ namespace SAModManager
                 await App.PerformUpdateLoaderCheck();
                 await App.PerformUpdateCodesCheck();
                 await App.PerformUpdatePatchesCheck();
+
+                if (App.CurrentGame.id == SetGame.SADX)
+                {
+                    await App.PerformUpdateAppLauncherCheck();
+                }
             }
 
             manualModUpdate = true;

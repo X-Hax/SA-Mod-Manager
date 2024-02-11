@@ -321,8 +321,52 @@ namespace SAModManager.Elements.SADX
         }
 
         #region App Launcher
+        public static async Task UpdateAppLauncher()
+        {
+            string fullName = "AppLauncher.7z";
+            string destName = App.CurrentGame.gameDirectory;
+            string fullPath = Path.Combine(destName, fullName);
+
+            Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
+            var DL = new DownloadDialog(uri, "App Launcher", fullName, destName, DownloadDialog.DLType.Update);
+
+            DL.DownloadFailed += (ex) =>
+            {
+                DL.DisplayDownloadFailedMSG(ex);
+            };
+
+            DL.StartDL();
+
+            if (DL.done)
+            {
+                try
+                {
+                    await Util.Extract(fullPath, destName, true);
+
+                    string SDL2Game = Path.Combine(App.CurrentGame.gameDirectory, "SDL2.dll");
+                    if (File.Exists(SDL2Game))
+                    {
+                        File.Delete(SDL2Game);
+                    }
+                }
+                catch
+                {
+                    throw new Exception("Failed to extract AppLauncher.");
+                }
+
+                if (File.Exists(fullPath))
+                {
+                    File.Delete(fullPath);
+                }
+
+            }
+
+            await Task.Delay(10);
+        }
+
         private async void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)
         {
+
             string fullName = "AppLauncher.7z";
             string destName = App.CurrentGame.gameDirectory;
             string fullPath = Path.Combine(destName, fullName);

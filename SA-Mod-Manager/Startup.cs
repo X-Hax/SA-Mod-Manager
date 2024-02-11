@@ -116,8 +116,7 @@ namespace SAModManager
                                 Verb = "runas"
                             }).WaitForExitAsync();
                         };
-                        
-              
+
                         return false;
                     }
 

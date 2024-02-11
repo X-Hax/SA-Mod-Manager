@@ -7,7 +7,7 @@
 	<system:String x:Key="Manager.Tabs.Mods">Моды</system:String>
 	<system:String x:Key="Manager.Tabs.Codes">Коды</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig">Настройки игры</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig">Настройки</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig">Настройки Менеджера</system:String>
 	<system:String x:Key="Manager.Tabs.TestSpawn">Дебаг</system:String>
 	<!--#endregion-->
 
@@ -86,8 +86,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Mods">Выбор, изменение и настройка ваших модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Codes">Выбор кодов, активных во время игры.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig">Настройки игры, видео и звука.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn">Опции быстрого запуска игры нужными персонажами на нужных уровнях.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options">Настройка Менеджера (в т.ч. темы и языка).</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn">Опции быстрого запуска игры с нужными персонажами на нужных уровнях.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options">Настройка Менеджера (в т.ч. темы и языка интерфейса).</system:String>
 	<system:String x:Key="MainWindow.Tips.SaveAndPlay">Сохранить изменения и запустить игру.</system:String>
 	<system:String x:Key="MainWindow.Tips.Save">Сохранить изменения.</system:String>
 
