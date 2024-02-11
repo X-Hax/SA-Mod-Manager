@@ -541,8 +541,8 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Border Width="32" Height="32" CornerRadius="3" RenderOptions.BitmapScalingMode="Fant">
-                                <Border.Background>
-                                    <ImageBrush ImageSource="{Binding gameImage}"/>
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding gameImage}"/>
                                 </Border.Background>
                             </Border>
                             <Label Content="{Binding gameName}" VerticalAlignment="Center" />

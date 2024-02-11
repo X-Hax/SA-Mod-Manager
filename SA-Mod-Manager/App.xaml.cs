@@ -541,7 +541,35 @@ namespace SAModManager
                 index++;
             }
         }
+        public static Uri GetResourceUri(string resourceName)
+        {
+            // Get the assembly where the resource is located
+            Assembly assembly = Assembly.GetExecutingAssembly();
 
+            // Construct the full resource name
+            string fullResourceName = assembly.GetName().Name + ".Resources." + resourceName;
+
+            // Load the resource stream from the assembly
+            using (Stream stream = assembly.GetManifestResourceStream(fullResourceName))
+            {
+                // Check if the resource stream is found
+                if (stream == null)
+                {
+                    Console.WriteLine($"Resource not found: {fullResourceName}");
+                    return null;
+                }
+
+                // Copy the resource stream to a temporary file
+                string tempFilePath = Path.GetTempFileName();
+                using (FileStream fileStream = File.Create(tempFilePath))
+                {
+                    stream.CopyTo(fileStream);
+                }
+
+                // Return the URI to the temporary file
+                return new Uri($"file://{tempFilePath}");
+            }
+        }
 
         public static async Task<bool> ExecuteDependenciesCheck()
         {

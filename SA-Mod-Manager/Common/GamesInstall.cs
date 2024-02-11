@@ -18,6 +18,7 @@ namespace SAModManager.Common
         /// The Name of the Game.
         /// </summary>
         public string gameName { get; set; }
+        public Uri gameImage { get; set; }
 
         /// <summary>
         /// Executables list, necessary due to SADX.
@@ -412,6 +413,7 @@ namespace SAModManager.Common
         public static Game SonicAdventure = new()
         {
             gameName = "Sonic Adventure DX",
+            gameImage = App.GetResourceUri("Games.sa1.png"),
             exeList = new() { "sonic.exe", "Sonic Adventure DX.exe" },
             exeName = "sonic.exe",
             defaultIniProfile = "SADXModLoader.ini",
@@ -475,6 +477,7 @@ namespace SAModManager.Common
         public static Game SonicAdventure2 = new()
         {
             gameName = "Sonic Adventure 2",
+            gameImage = App.GetResourceUri("Games.sa2.png"),
             exeName = "sonic2app.exe",
             defaultIniProfile = "SA2ModLoader.ini",
             id = SetGame.SA2,

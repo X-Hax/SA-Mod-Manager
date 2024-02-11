@@ -34,12 +34,16 @@
 		<None Remove="Common\OpCodeSyntaxDark.xshd" />
 		<None Remove="Common\OpCodeSyntaxLight.xshd" />
 		<None Remove="Icons\SADXModManager_.png" />
+		<None Remove="Resources\Games\sa1.png" />
+		<None Remove="Resources\Games\sa2.png" />
 		<None Remove="Updater\ModDownloadDialog.xaml.cs~RF2e7deabf.TMP" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include="Common\OpCodeSyntaxLight.xshd" />
 		<EmbeddedResource Include="Common\OpCodeSyntaxDark.xshd" />
+		<EmbeddedResource Include="Resources\Games\sa1.png" />
+		<EmbeddedResource Include="Resources\Games\sa2.png" />
 	</ItemGroup>
 
 	<ItemGroup>
