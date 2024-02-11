@@ -146,11 +146,36 @@ namespace SAModManager.Configuration.SA2
             }
 		}
 
-		public void Serialize(string path)
-		{
-			string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+        /// <summary>
+        /// Serializes an SADX GameSettings JSON File.
+        /// </summary>
+        /// <param name="path"></param>
+        public void Serialize(string path, string profileName)
+        {
 
-			File.WriteAllText(path, jsonContent);
-		}
-	}
+            try
+            {
+                if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+                {
+                    string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+                    File.WriteAllText(path, jsonContent);
+                }
+                else
+                {
+                    App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
+                    Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+                    if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+                    {
+                        path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
+                        string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+                        File.WriteAllText(path, jsonContent);
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+    }
 }

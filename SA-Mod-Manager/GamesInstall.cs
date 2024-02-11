@@ -150,7 +150,7 @@ namespace SAModManager
             return success;
         }
 
-        public static async Task InstallDLL_Loader(Game game)
+        public static async Task InstallDLL_Loader(Game game, bool isupdate = false)
         {
             if (game is null)
                 return;
@@ -163,7 +163,7 @@ namespace SAModManager
                 var dl = new DownloadDialog(uri, game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, DownloadDialog.DLType.Install, true);
                 dl.StartDL();
 
-                if (dl.done == false)
+                if (dl.done == false && !isupdate)
                 {
                     if (!File.Exists(loaderPath))
                     {
@@ -490,6 +490,8 @@ namespace SAModManager
             loader = new()
             {
                 name = "SA2ModLoader",
+                data = Properties.Resources.SA2ModLoader,
+                URL = Properties.Resources.URL_SA2_DL,
                 repoName = "sa2-mod-loader",
                 loaderVersionpath = Path.Combine(App.ConfigFolder, "SA2LoaderVersion.ini"),
                 loaderinipath = "mods/SA2ModLoader.ini",

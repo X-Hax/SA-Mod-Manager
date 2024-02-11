@@ -87,7 +87,7 @@ namespace SAModManager
             {
                 return;
             }
-            Debugger.Launch();
+
             UpdateHelper.InitHttpClient();
             Util.CheckLinux();
             HandleVanillaTransition(args);

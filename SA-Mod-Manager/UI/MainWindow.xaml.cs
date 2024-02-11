@@ -1293,13 +1293,17 @@ namespace SAModManager
 
             cancelUpdate = true;
             string executablePath = EnabledMods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
-
             string folderPath = Path.GetDirectoryName(executablePath);
-            Process.Start(new ProcessStartInfo(executablePath)
-            {
-                WorkingDirectory = folderPath
-            });
 
+
+            Process process = Process.Start((new ProcessStartInfo(executablePath)
+            {
+                WorkingDirectory = folderPath,
+                UseShellExecute = true,
+            
+            }));
+
+            process?.WaitForInputIdle(10000);
             if ((bool)!checkManagerOpen.IsChecked)
                 Close();
         }
@@ -1370,6 +1374,10 @@ namespace SAModManager
                     tsPanel.Children.Add(new Elements.SADX.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.SA2:
+                    EnableUI(true);
+                    //stackPanel.Children.Add(new Elements.SA2.GameConfig(ref GameProfile, ref gameConfigFile));
+                    //tsPanel.Children.Add(new Elements.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
+                    break;
                 case SetGame.None:
                 default:
                     EnableUI(false);
@@ -1572,10 +1580,10 @@ namespace SAModManager
 
             //to do add XML Config support
 
-        if (sa2.EnabledMods is not null)
-            EnabledMods = sa2.EnabledMods;
-        if (sa2.EnabledCodes is not null)
-            EnabledCodes = sa2.EnabledCodes;
+            if (sa2.EnabledMods is not null)
+                EnabledMods = sa2.EnabledMods;
+            if (sa2.EnabledCodes is not null)
+                EnabledCodes = sa2.EnabledCodes;
 
             gameDebugSettings = sa2.DebugSettings;
         }
@@ -1622,9 +1630,28 @@ namespace SAModManager
             IniSerializer.Serialize(gameConfigFile, configPath);
         }
 
-        private async void SaveSA2Settings()
+        private void SaveSA2Settings()
         {
-            // TODO: Nothing to do, it's not implemented yet.
+            // Update any GameSettings Info first.
+            (GameProfile as Configuration.SA2.GameSettings).GamePath = App.CurrentGame.gameDirectory;
+            //Elements.SA2.GameConfig gameConfig = (Elements.SA2.GameConfig)(tabGame.Content as Grid).Children[0];
+            //gameConfig.SavePatches(ref GameProfile);
+            //Elements.SA2.TestSpawn spawnConfig = (Elements.SA2.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
+
+            Configuration.SA2.GameSettings sa2 = GameProfile as Configuration.SA2.GameSettings;
+
+            // Save Selected Mods
+            sa2.EnabledMods = EnabledMods;
+            sa2.EnabledCodes = EnabledCodes;
+            sa2.DebugSettings = gameDebugSettings;
+
+            // Save Game Settings to Current Profile
+            string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GetCurrentProfileName());
+            sa2.Serialize(profilePath, GetCurrentProfileName());
+
+            // Save Game Config File
+            string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
+            IniSerializer.Serialize(gameConfigFile, configPath);
         }
 
         private void ManualLoaderUpdateCheck()
@@ -1661,12 +1688,13 @@ namespace SAModManager
 
                 // Set the existing profiles to the ones from the loaded Manager Settings.
                 LoadGameSettings(newSetup);
-
+                UpdateManagerIcons();
                 await UpdateManagerInfo();
                 if (!App.isVanillaTransition)
                     ManualLoaderUpdateCheck();
                 InitCodes();
                 LoadModList();
+
 
             }
             else
@@ -1708,6 +1736,9 @@ namespace SAModManager
             {
                 case SetGame.SADX:
                     SaveSADXSettings();
+                    break;
+                case SetGame.SA2:
+                    SaveSA2Settings();
                     break;
             }
 
@@ -1761,6 +1792,8 @@ namespace SAModManager
                 mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(App.CurrentGame.modDirectory.Length + 1), mod);
             }
 
+            string modNotFound = string.Empty;
+
             foreach (string mod in EnabledMods.ToList())
             {
                 if (mods.ContainsKey(mod))
@@ -1812,10 +1845,15 @@ namespace SAModManager
                 }
                 else
                 {
-                    new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), "Mod \"" + mod + "\"" + Lang.GetString("MessageWindow.Errors.ModNotFound"), MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
+                    modNotFound += mod + "\n";
                     EnabledMods.Remove(mod);
                 }
+
+
             }
+
+            if (!string.IsNullOrEmpty(modNotFound))
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Errors.ModNotFound") + modNotFound, MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 
             foreach (KeyValuePair<string, SAModInfo> inf in mods.OrderBy(x => x.Value.Name))
             {
@@ -2400,7 +2438,6 @@ namespace SAModManager
                 File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
             }
         }
-
 
         private async Task InstallLoader()
         {
