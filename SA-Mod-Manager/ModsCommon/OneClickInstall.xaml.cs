@@ -34,18 +34,20 @@ namespace SAModManager
 			this.updatePath = updatePath;
 			this.modPath = modPath;
 			InitializeComponent();
+        }
 
-			List<string> uris = App.UriQueue.GetUris();
-			if (uris.Count > 0)
-				isEmpty = false;
+		public async Task UriInit()
+		{
+            List<string> uris = App.UriQueue.GetUris();
+            if (uris.Count > 0)
+                isEmpty = false;
 
             foreach (string str in uris)
-			{
-				HandleUri(str);
-			}
+            {
+                await HandleUri(str);
+            }
 
-
-			App.UriQueue.UriEnqueued += UriQueueOnUriEnqueued;
+            App.UriQueue.UriEnqueued += UriQueueOnUriEnqueued;
             IsVisibleChanged += MainWindow_Hide;
         }
 
@@ -150,7 +152,8 @@ namespace SAModManager
 		private async Task HandleUri(string uri)
 		{
 
-			WindowStartupLocation = WindowStartupLocation.CenterScreen;			
+			WindowStartupLocation = WindowStartupLocation.CenterScreen;
+			BringIntoView();
 
             Activate();
 
