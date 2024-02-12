@@ -1553,9 +1553,6 @@ namespace SAModManager
                 App.CurrentGame.modDirectory = Path.Combine(sadxSettings.GamePath, "mods");
             }
 
-            string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
-            gameConfigFile = File.Exists(configPath) ? IniSerializer.Deserialize<SADXConfigFile>(configPath) : new SADXConfigFile();
-
             EnabledMods = sadxSettings.EnabledMods;
             EnabledCodes = sadxSettings.EnabledCodes;
             gameDebugSettings = sadxSettings.DebugSettings;
@@ -1606,7 +1603,7 @@ namespace SAModManager
                 ComboGameSelection.SelectedValue = App.CurrentGame;
         }
 
-        private void SaveSADXSettings()
+        async private void SaveSADXSettings()
         {
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
@@ -1626,8 +1623,11 @@ namespace SAModManager
             sadxSettings.Serialize(profilePath, GetCurrentProfileName());
 
             // Save Game Config File
-            string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
-            IniSerializer.Serialize(gameConfigFile, configPath);
+            //string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
+            //IniSerializer.Serialize(gameConfigFile, configPath);
+
+            // Save to Loader Info
+            await Task.Run(() => sadxSettings.WriteConfigs());
         }
 
         private void SaveSA2Settings()

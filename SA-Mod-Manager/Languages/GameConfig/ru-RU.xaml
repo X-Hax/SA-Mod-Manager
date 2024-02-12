@@ -19,8 +19,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Вкл. верт. синхронизацию</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Пауза, когда неактивно</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамическое распределение памяти</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Полный экран</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">В окне</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Полный экран</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">В окне</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Изменяемое окно</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Сохранять пропорции</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Свой размер окна:</system:String>

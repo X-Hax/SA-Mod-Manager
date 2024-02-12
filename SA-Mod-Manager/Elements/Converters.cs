@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,6 +95,75 @@ namespace SAModManager.Elements
 
 		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
+			return Binding.DoNothing;
+		}
+	}
+
+	public class CustomWindowEnabledConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			if (value is int index)
+			{
+				if (index == 3)
+					return true;
+				else
+					return false;
+			}
+
+			return Binding.DoNothing;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			return Binding.DoNothing;
+		}
+	}
+
+	public class ScreenModeConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			if (value is int intValue)
+			{
+				switch (intValue)
+				{
+					default:
+					case 0:
+						return 0;
+					// fullscreen
+					case 1:
+						return 3;
+					// borderless
+					case 2:
+						return 1;
+					// custom window
+					case 3:
+						return 2;
+				}
+			}
+			
+			return Binding.DoNothing;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			if (value is int intValue)
+			{
+				switch (intValue)
+				{
+					default:
+					case 0:
+						return 0;
+					case 1:
+						return 2;
+					case 2:
+						return 3;
+					case 3:
+						return 1;
+				}
+			}
+
 			return Binding.DoNothing;
 		}
 	}

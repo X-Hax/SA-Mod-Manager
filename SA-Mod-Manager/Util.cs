@@ -6,14 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using SAModManager.UI;
 using SAModManager.Updater;
 using System.Diagnostics;
 using System.IO.Compression;
 using SAModManager.Ini;
 using Microsoft.Win32;
 using System.Security.Principal;
-using System.Reflection;
-using SAModManager.UI;
 
 namespace SAModManager
 {
@@ -147,14 +146,14 @@ namespace SAModManager
             }
         }
 
-        public static bool ConvertProfiles(string sourceFile, string destinationFile)
+        public static async Task<bool> ConvertProfiles(string sourceFile, string destinationFile)
         {
             try
             {
                 // TODO: Add switch case to properly do the new config for either game.
                 Configuration.SADX.GameSettings newProfile = new();
-                newProfile.ConvertFromV0(IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile));
-                 newProfile.Serialize(destinationFile, "Default.json");
+                newProfile.LoadConfigs();
+                await Task.Run(() => newProfile.Serialize(destinationFile, "Default.json"));
                 return true;
             }
             catch (Exception ex)
@@ -360,7 +359,7 @@ namespace SAModManager
             exePath ??= FindExePathFromRegistry("SOFTWARE\\7-Zip");
 
             // If still not found, try with the PATH variable
-            exePath ??= Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
+            exePath ??=  Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
                 .Where(s => File.Exists(Path.Combine(s, "7z.exe"))).FirstOrDefault();
 
             if (exePath != null)

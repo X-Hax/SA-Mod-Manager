@@ -12,20 +12,46 @@
 
 	<!--Graphics Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Display Options</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Screen:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolution:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Display:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">All Displays</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">Screen Mode:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Windowed</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Standard window mode.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Exclusive Fullscreen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Not Recommended. Window will update monitor resolution and is prone to crashes when the window is unfocused.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Borderless Fullscreen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Recommended Fullscreen Mode. Allows for rendering the game at different resolutions to the window and fixes the alt tab bug.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Custom Window</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Like Borderless Fullscreen but for the window and not fullscreen modes.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Render Resolution:</system:String>
+
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Window Size:</system:String>
+
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r480">640x480</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r600">800x600</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r768">1024x768</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r864">1152x864</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r960">1280x960</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1024">1280x1024</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Native</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">1/2x Native</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">2x Native</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r720">720p</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1080">1080p</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r4K">4K</system:String>
+	
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Settings</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Force 4:3 Aspect Ratio</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">4:3 Ratio</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Enable V-Sync</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pause When Inactive</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Dynamically Allocate Buffers</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Fullscreen</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">Windowed</system:String>
+
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Resizable Window</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Maintain Aspect Ratio</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Match Render Ratio</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Custom Window Size:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Borderless Fullscreen</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Scale to Screen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Show Mouse in Fullscreen</system:String>
+	
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Other Graphics Options</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Framerate:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Detail Level:</system:String>
