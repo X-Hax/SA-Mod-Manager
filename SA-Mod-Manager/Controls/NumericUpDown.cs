@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Text.RegularExpressions;
 
 
-namespace SAModManager.Elements
+namespace SAModManager.Controls
 {
 	public partial class NumericUpDown : TextBox
 	{

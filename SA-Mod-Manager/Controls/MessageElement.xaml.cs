@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
-namespace SAModManager.Elements
+namespace SAModManager.Controls
 {
 	/// <summary>
 	/// Interaction logic for MessageIconHeader.xaml

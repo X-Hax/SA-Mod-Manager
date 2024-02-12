@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SAModManager.Elements
+namespace SAModManager.Controls
 {
     /// <summary>
     /// Interaction logic for SchemaProperties.xaml

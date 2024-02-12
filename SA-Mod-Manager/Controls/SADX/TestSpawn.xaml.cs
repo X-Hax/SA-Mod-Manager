@@ -11,7 +11,7 @@ using SAModManager.Configuration.SADX;
 using SAModManager.Ini;
 using SAModManager.UI;
 
-namespace SAModManager.Elements.SADX
+namespace SAModManager.Controls.SADX
 {
     /// <summary>
     /// Interaction logic for TestSpawn.xaml

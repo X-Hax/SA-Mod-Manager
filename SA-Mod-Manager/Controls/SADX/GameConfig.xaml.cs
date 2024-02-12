@@ -16,7 +16,7 @@ using SAModManager.Ini;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 
-namespace SAModManager.Elements.SADX
+namespace SAModManager.Controls.SADX
 {
     /// <summary>
     /// Interaction logic for GameConfig.xaml

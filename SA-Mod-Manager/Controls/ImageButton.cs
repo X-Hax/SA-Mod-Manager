@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 
-namespace SAModManager.Elements
+namespace SAModManager.Controls
 {
 	public partial class ImageButton : Button
 	{

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace SAModManager.Elements
+namespace SAModManager.Controls
 {
 	public class BoolFlipConverter : IValueConverter
 	{

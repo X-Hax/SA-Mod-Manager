@@ -4,7 +4,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:SAModManager"
-		xmlns:elements="clr-namespace:SAModManager.Elements"
+		xmlns:elements="clr-namespace:SAModManager.Controls"
 		mc:Ignorable="d"
 		WindowStartupLocation="CenterScreen" 
 		MinHeight="550" MinWidth="450" Height="560" Width="650"
