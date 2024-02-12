@@ -13,6 +13,7 @@ using System.IO.Compression;
 using SAModManager.Ini;
 using Microsoft.Win32;
 using System.Security.Principal;
+using SAModManager.Configuration;
 
 namespace SAModManager
 {
@@ -146,21 +147,34 @@ namespace SAModManager
             }
         }
 
-        public static async Task<bool> ConvertProfiles(string sourceFile, string destinationFile)
+        public static bool ConvertProfiles(string sourceFile, string destinationFile)
         {
+     
             try
             {
-                // TODO: Add switch case to properly do the new config for either game.
-                Configuration.SADX.GameSettings newProfile = new();
-                newProfile.LoadConfigs();
-                await Task.Run(() => newProfile.Serialize(destinationFile, "Default.json"));
-                return true;
+                switch (App.CurrentGame.id)
+                {
+                    case Configuration.SetGame.SADX:
+                        Configuration.SADX.GameSettings newProfile = new();
+                        newProfile.LoadConfigs(sourceFile);
+                        newProfile.Serialize(destinationFile, "Default.json");
+                        return true;
+                    case Configuration.SetGame.SA2:
+                       // Configuration.SA2.GameSettings newSA2Profile = new();
+                       // newSA2Profile.LoadConfigs();
+                        //newSA2Profile.Serialize(destinationFile, "Default.json");
+                        return true;
+
+                }
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Profile Conversion Failed: {ex.Message}");
                 return false;
             }
+
+            return false;
         }
 
         public static async Task MoveFile(string origin, string dest, bool overwrite = false)

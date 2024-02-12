@@ -531,7 +531,6 @@ namespace SAModManager
             }
         }
 
-
         private static void HandleVanillaTransition(string[] args)
         {
 

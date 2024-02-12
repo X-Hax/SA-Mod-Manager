@@ -1603,7 +1603,7 @@ namespace SAModManager
                 ComboGameSelection.SelectedValue = App.CurrentGame;
         }
 
-        async private void SaveSADXSettings()
+       private void SaveSADXSettings()
         {
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
@@ -1627,7 +1627,7 @@ namespace SAModManager
             //IniSerializer.Serialize(gameConfigFile, configPath);
 
             // Save to Loader Info
-            await Task.Run(() => sadxSettings.WriteConfigs());
+            sadxSettings.WriteConfigs();
         }
 
         private void SaveSA2Settings()

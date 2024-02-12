@@ -1096,15 +1096,16 @@ namespace SAModManager.Configuration.SADX
 		/// <summary>
 		/// Loads LoaderInfo and SADXConfigFile into GameSettings. This is intended to only be used for a first boot.
 		/// </summary>
-		public void LoadConfigs()
+		public void LoadConfigs(string iniSource)
 		{
 			SADXLoaderInfo info = new();
 			SADXConfigFile config = new();
 			var JsonSerializerSettings = new JsonSerializerOptions();
 			JsonSerializerSettings.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 
-			string loaderInfoPath = Path.Combine(App.CurrentGame.gameDirectory, "mods/SADXModLoader.ini");
-			if (File.Exists(loaderInfoPath))
+			string loaderInfoPath = iniSource;
+
+            if (File.Exists(loaderInfoPath))
 				info = IniSerializer.Deserialize<SADXLoaderInfo>(loaderInfoPath);
 
             string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
