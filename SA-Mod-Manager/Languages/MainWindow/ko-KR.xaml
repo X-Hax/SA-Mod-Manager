@@ -175,7 +175,9 @@
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">캐릭터, 레벨, Act 설정을 수동으로 활성화합니다. 활성화된 경우 위의 설정을 재조정합니다.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">시작 위치 및 각도 조정을 활성화합니다.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">위 설정을 적용하여 게임을 시작합니다.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Enables setting for player 2.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Sets the Mission of the selected level.</system:String>
+    <!--#endregion-->
 
 	<!--#region Manager Config Tips-->
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">모드 목록 및 설정에 사용할 프로필을 선택합니다.</system:String>

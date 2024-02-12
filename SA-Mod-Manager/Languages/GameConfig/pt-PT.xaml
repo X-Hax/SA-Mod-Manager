@@ -97,7 +97,9 @@
 	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Angle">Ângulo:</system:String>
-	<!--#endregion-->
+    <system:String x:Key="TestSpawn.Player2">Player 2:</system:String>
+    <system:String x:Key="TestSpawn.Mission">Mission:</system:String>
+    <!--#endregion-->
 	
 	<!--#region SADX-->
 	

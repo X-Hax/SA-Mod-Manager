@@ -197,6 +197,8 @@
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Permet de définir manuellement le personnage, le niveau et l'action. Remplace les paramètres ci-dessus lorsqu'il est activé.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Permet de définir la position de départ et la rotation.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Lance le jeu avec les paramètres ci-dessus appliqués.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Permet de définir le joueur 2.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Définit la mission du niveau sélectionné.</system:String>
     <!--#endregion-->
 
     <!--#region Manager Config Tips-->

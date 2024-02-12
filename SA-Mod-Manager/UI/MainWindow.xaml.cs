@@ -1376,7 +1376,7 @@ namespace SAModManager
                 case SetGame.SA2:
                     EnableUI(true);
                     //stackPanel.Children.Add(new Elements.SA2.GameConfig(ref GameProfile, ref gameConfigFile));
-                    //tsPanel.Children.Add(new Elements.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
+                    tsPanel.Children.Add(new Elements.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.None:
                 default:

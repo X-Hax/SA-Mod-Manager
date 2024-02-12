@@ -104,6 +104,8 @@
     <system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
     <system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
     <system:String x:Key="TestSpawn.Group.Advanced.Angle">Angle:</system:String>
+    <system:String x:Key="TestSpawn.Player2">Joueur 2:</system:String>
+    <system:String x:Key="TestSpawn.Mission">Mission:</system:String>
 
     <system:String x:Key="TestSpawn.Language.Voice">Langue des voix:</system:String>
     <system:String x:Key="TestSpawn.Language.Text">Langue des textes:</system:String>

@@ -106,6 +106,8 @@
     <system:String x:Key="TestSpawn.Group.Advanced.PosY">Коорд. Y:</system:String>
     <system:String x:Key="TestSpawn.Group.Advanced.PosZ">Коорд. Z:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Angle">Угол:</system:String>
+    <system:String x:Key="TestSpawn.Player2">Player 2:</system:String>
+    <system:String x:Key="TestSpawn.Mission">Mission:</system:String>
 
     <system:String x:Key="TestSpawn.Language.Voice">Язык озвучки:</system:String>
     <system:String x:Key="TestSpawn.Language.Text">Язык текста:</system:String>
