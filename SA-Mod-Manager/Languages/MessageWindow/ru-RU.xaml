@@ -11,9 +11,9 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Не помещайте моды напрямую в папку Mods! Каждый мод должен находиться в своей подпапке.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Переместите или удалите файл mod.ini в папке Mods и запустите Менеджер модов снова.</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">не найден.&#x0a;&#x0a;Мод будет удалён из списка.</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Ошибка при установке пути к игре</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Ошибка при установке пути к игре</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Файл sonic.exe не найден. Убедитесь, что выбрали папку с установленной игрой SADX.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Ошибка при обнаружении пути к игре</system:String>

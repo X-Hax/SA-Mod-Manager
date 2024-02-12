@@ -10,10 +10,10 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">There is a mod.ini in the mods folder.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Each mod must be placed in a subfolder in the mods folder. Do not extract mods directly to the mods folder.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Move or delete mod.ini in the mods folder and run the Mod Manager again.</system:String>
+   
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">could not be found.&#x0a;&#x0a;This mod will be removed from the list.</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Failed to set Game Path</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Failed to set Game Path</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect sonic.exe, make sure to select a folder where SADX is installed.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Failed to detect Game Path</system:String>

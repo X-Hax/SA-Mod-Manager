@@ -11,9 +11,9 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Cada mod deve ser colocado em uma subpasta dentro da pasta de mods. Não extraia mods diretamente para a pasta de mods.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Mova ou exclua o mod.ini na pasta de mods e abra o Gerenciador de Mods novamente.</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">não pôde ser achado.&#x0a;&#x0a;Este mod será removido da lista.</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Falha ao definir o Caminho para o Jogo</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Falha ao definir o Caminho para o Jogo</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Falha ao tentar detectar sonic.exe, tente selecionar uma pasta onde SADX esteja instalado.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Falha ao detectar o Caminho para o Jogo</system:String>

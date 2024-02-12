@@ -11,7 +11,7 @@
     <system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Cada mod tiene que ser colocado en una subcarpeta dentro de la carpeta mods. No extraigas mods en la carpeta mods.</system:String>
     <system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Mueve o elimina el mod.ini en la carpeta mods y reinicia el Mod Manager.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">no se ha podido encontrar.&#x0a;&#x0a;Este mod será eliminado de la lista.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Error al establecer el Directorio del Juego</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Error al detectar sonic.exe, asegúrate de seleccionar la carpeta donde SADX está instalado.</system:String>

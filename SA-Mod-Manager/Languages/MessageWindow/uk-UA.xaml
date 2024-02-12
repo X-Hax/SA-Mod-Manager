@@ -11,9 +11,9 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Кожен мод має бути у підпапці папки модів. Не розпаковуйте мод прямо у папку модів.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Перемістіть або видаліть mod.ini у папці модів, та перезавантажте програму.</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Не можливо знайти.&#x0a;&#x0a;Цей мод буде видалено зі списку.</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Не вийшло встановити Шлях до Гри</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Не вийшло встановити Шлях до Гри</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Не вийшло знайти sonic.exe, виберіть папку де встановлено SADX.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Не вийшло знайти шлях до гри</system:String>
