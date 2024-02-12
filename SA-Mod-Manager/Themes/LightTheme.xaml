@@ -156,7 +156,7 @@
 	<SolidColorBrush x:Key="ScrollBar.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="ScrollBar.Brushes.Border" Color="Transparent"/>
 
-	<SolidColorBrush x:Key="ComboBox.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Background" Color="{DynamicResource Colors.Button}"/>
 	<SolidColorBrush x:Key="ComboBox.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 	<SolidColorBrush x:Key="ComboBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 	<SolidColorBrush x:Key="ComboBox.Brushes.Button.Image" Color="#FF9E9E9E"/>
