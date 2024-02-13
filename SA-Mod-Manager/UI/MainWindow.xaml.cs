@@ -19,7 +19,7 @@ using Keyboard = System.Windows.Input.Keyboard;
 using Key = System.Windows.Input.Key;
 using SAModManager.UI;
 using SAModManager.Updater;
-using SAModManager.Elements;
+using SAModManager.Controls;
 using SAModManager.Ini;
 using SAModManager.Configuration;
 using System.Text;
@@ -1370,13 +1370,13 @@ namespace SAModManager
             {
                 case SetGame.SADX:
                     EnableUI(true);
-                    stackPanel.Children.Add(new Elements.SADX.GameConfig(ref GameProfile, ref gameConfigFile));
-                    tsPanel.Children.Add(new Elements.SADX.TestSpawn(ref GameProfile, mods, EnabledMods));
+                    stackPanel.Children.Add(new Controls.SADX.GameConfig(ref GameProfile, ref gameConfigFile));
+                    tsPanel.Children.Add(new Controls.SADX.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.SA2:
                     EnableUI(true);
-                    //stackPanel.Children.Add(new Elements.SA2.GameConfig(ref GameProfile, ref gameConfigFile));
-                    tsPanel.Children.Add(new Elements.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
+					//stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile, ref gameConfigFile));
+					tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.None:
                 default:
@@ -1405,7 +1405,7 @@ namespace SAModManager
                 patchdatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Patches.dat"));
 
 
-                Elements.SADX.GameConfig.UpdateD3D8Paths();
+                Controls.SADX.GameConfig.UpdateD3D8Paths();
 
                 //this is a failsafe in case the User deleted the Loader file manually without restoring the original files
                 if (!File.Exists(App.CurrentGame.loader.loaderdllpath) && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
@@ -1607,9 +1607,9 @@ namespace SAModManager
         {
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
-            Elements.SADX.GameConfig gameConfig = (Elements.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
+			Controls.SADX.GameConfig gameConfig = (Controls.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
             gameConfig.SavePatches(ref GameProfile);
-            Elements.SADX.TestSpawn spawnConfig = (Elements.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
+			Controls.SADX.TestSpawn spawnConfig = (Controls.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
 
             Configuration.SADX.GameSettings sadxSettings = GameProfile as Configuration.SADX.GameSettings;
 

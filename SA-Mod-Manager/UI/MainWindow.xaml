@@ -5,7 +5,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:SAModManager"
-		xmlns:elements="clr-namespace:SAModManager.Elements"
+		xmlns:elements="clr-namespace:SAModManager.Controls"
 		xmlns:dd="urn:gong-wpf-dragdrop"
 		mc:Ignorable="d"
 		Title="SA Mod Manager"
@@ -469,7 +469,7 @@
 								</UniformGrid>
 							</GroupBox>
 
-                            <GroupBox Grid.Row="2" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.About}"  Margin="5">
+                            <GroupBox Grid.Row="2" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.About}" Margin="5" MaxHeight="150" VerticalAlignment="Top">
 								<UniformGrid Rows="2" Columns="2" Margin="5">
 									<Button x:Name="btnCredits" Margin="5" Grid.Column="0" Click="AboutBtn_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.Contributors}">
 										<StackPanel Orientation="Horizontal">

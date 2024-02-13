@@ -4,7 +4,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:local="clr-namespace:SAModManager"
 			 xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
-			 xmlns:elements="clr-namespace:SAModManager.Elements"
+			 xmlns:elements="clr-namespace:SAModManager.Controls"
 			 xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit">
 	<Application.Resources>
 		<ResourceDictionary>

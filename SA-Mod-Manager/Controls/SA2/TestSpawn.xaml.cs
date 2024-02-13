@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 
 
-namespace SAModManager.Elements.SA2
+namespace SAModManager.Controls.SA2
 {
     /// <summary>
     /// Interaction logic for TestSpawn.xaml

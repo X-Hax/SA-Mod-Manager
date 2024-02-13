@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SAModManager.Elements
+namespace SAModManager.Controls
 {
     /// <summary>
-    /// Interaction logic for SchemaProperties.xaml
+    /// Interaction logic for SchemaPropGroup.xaml
     /// </summary>
-    public partial class SchemaProperties : UserControl
+    public partial class SchemaPropGroup : UserControl
     {
-        public SchemaProperties()
+        public SchemaPropGroup()
         {
             InitializeComponent();
         }

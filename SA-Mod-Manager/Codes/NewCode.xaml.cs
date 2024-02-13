@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using System.CodeDom;
 using ICSharpCode.AvalonEdit;
-using SAModManager.Elements;
+using SAModManager.Controls;
 using SAModManager.UI;
 
 namespace SAModManager.Codes

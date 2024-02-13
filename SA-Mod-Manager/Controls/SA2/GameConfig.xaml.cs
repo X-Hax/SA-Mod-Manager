@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SAModManager.Elements
+namespace SAModManager.Controls.SA2
 {
-    /// <summary>
-    /// Interaction logic for SchemaPropGroup.xaml
-    /// </summary>
-    public partial class SchemaPropGroup : UserControl
-    {
-        public SchemaPropGroup()
-        {
-            InitializeComponent();
-        }
-    }
+	/// <summary>
+	/// Interaction logic for GameConfig.xaml
+	/// </summary>
+	public partial class GameConfig : UserControl
+	{
+		public GameConfig()
+		{
+			InitializeComponent();
+		}
+	}
 }

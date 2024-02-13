@@ -8,7 +8,7 @@ using System.Xml.Linq;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using SAModManager.UI;
 using SAModManager.Properties;
-using SAModManager.Elements;
+using SAModManager.Controls;
 using System.Windows.Media;
 using SAModManager.ModsCommon;
 

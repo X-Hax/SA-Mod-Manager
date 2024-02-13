@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SAModManager.Elements;
+using SAModManager.Controls;
 
 namespace SAModManager.UI
 {
