@@ -8,6 +8,7 @@
     <system:String x:Key="GameConfig.Tabs.Input">Contrôles</system:String>
     <system:String x:Key="GameConfig.Tabs.Sound">Son</system:String>
     <system:String x:Key="GameConfig.Tabs.Patches">Patches</system:String>
+    <!--#endregion-->
 
     <!--Graphics Tab Strings-->
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Options d'Affichage</system:String>
@@ -73,7 +74,8 @@
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Ouvrir l'AppLauncher</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Obtenir l'AppLauncher</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Better Input est une implémentation de SDL2 dans SADX. Il est recommandé pour jouer car il résout des bugs avec le système DInput d'origine.</system:String>
-
+    <!--#endregion-->
+    
     <!--Sound Input Strings-->
     <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Paramètres du Son</system:String>
     <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">Contrôle du Volume</system:String>

@@ -205,9 +205,9 @@ namespace SAModManager.Controls.SA2
                         patch.IsChecked = (bool)property.GetValue(set.Patches);
                     }
 
-                    string desc = "GamePatches." + patch.Name + "Desc";
+                    string desc = "GamePatchesSA2." + patch.Name + "Desc";
                     patch.InternalName = patch.Name;
-                    patch.Name = Lang.GetString("GamePatches." + patch.Name);
+                    patch.Name = Lang.GetString("GamePatchesSA2." + patch.Name);
                     patch.Description = Lang.GetString(desc); //need to use a variable otherwise it fails for some reason
                 }
 
