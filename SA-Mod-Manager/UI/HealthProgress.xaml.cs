@@ -106,32 +106,79 @@ namespace SAModManager.UI
             string filename = Path.Combine(App.CurrentGame.gameDirectory, file.Value.Filename);
             StatusValue statusValue = StatusValue.Modified;
 
-            if (File.Exists(filename))
+            try
             {
-                byte[] hash;
-                using (SHA256 sha = SHA256.Create())
+   
+                if (File.Exists(filename))
                 {
-                    using (FileStream stream = File.OpenRead(filename))
+                    byte[] hash;
+                    using (SHA256 sha = SHA256.Create())
                     {
-                        using (BinaryReader binr = new BinaryReader(stream))
+                        using (FileStream stream = File.OpenRead(filename))
                         {
-                            byte[] checkrange = new byte[50445648];
-                            stream.Read(checkrange, 0x004DB2A0, 50445648);
-                            hash = sha.ComputeHash(checkrange);
+                            using (BinaryReader binr = new BinaryReader(stream))
+                            {
+                                byte[] checkrange = new byte[50445648];
+                                stream.Read(checkrange, 0x004DB2A0, 50445648);
+                                hash = sha.ComputeHash(checkrange);
+                            }
                         }
                     }
+
+                    string hashed = string.Concat(hash.Select(x => x.ToString("x2")));
+
+                    foreach (string filehash in file.Value.Hashes)
+                    {
+                        if (hashed == filehash)
+                            statusValue = StatusValue.Good;
+                        break;
+                    }
                 }
+                else
+                    statusValue = StatusValue.NotFound;
+            } catch { }
 
-                string hashed = string.Concat(hash.Select(x => x.ToString("x2")));
+            return new(Path.GetFileName(file.Value.Filename), statusValue);
+        }
 
-                foreach (string filehash in file.Value.Hashes)
+        //to do add EXE support
+        public static FileStatus SA2ExecutableCheck(KeyValuePair<int, HealthInfo> file)
+        {
+            string filename = Path.Combine(App.CurrentGame.gameDirectory, file.Value.Filename);
+            StatusValue statusValue = StatusValue.Modified;
+
+            try
+            {
+
+                if (File.Exists(filename))
                 {
-                    if (hashed == filehash)
-                        statusValue = StatusValue.Good; break;
+                    /*byte[] hash;
+                    using (SHA256 sha = SHA256.Create())
+                    {
+                        using (FileStream stream = File.OpenRead(filename))
+                        {
+                            using (BinaryReader binr = new BinaryReader(stream))
+                            {
+                                byte[] checkrange = new byte[50445648];
+                                stream.Read(checkrange, 0x004DB2A0, 50445648);
+                                hash = sha.ComputeHash(checkrange);
+                            }
+                        }
+                    }
+
+                    string hashed = string.Concat(hash.Select(x => x.ToString("x2")));
+
+                    foreach (string filehash in file.Value.Hashes)
+                    {
+                        if (hashed == filehash)
+                            statusValue = StatusValue.Good;
+                        break;
+                    }*/
                 }
+                else
+                    statusValue = StatusValue.NotFound;
             }
-            else
-                statusValue = StatusValue.NotFound;
+            catch { }
 
             return new(Path.GetFileName(file.Value.Filename), statusValue);
         }
@@ -188,10 +235,12 @@ namespace SAModManager.UI
 
         public static void SA2Recheck(FileStatus status, HealthInfo file)
         {
-            /* switch (Path.GetFileName(status.Filename))
-             {
-
-             }*/
+            switch (Path.GetFileName(status.Filename).ToLower())
+            {
+                case "data_dll.dll":
+                    RecheckStatus("resource/gd_PC/DLL/Win32/data_DLL_orig.dll", status, file);
+                    break;
+            }
         }
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
@@ -208,10 +257,10 @@ namespace SAModManager.UI
                         }
                         break;
                     case SetGame.SA2:
-                        /*using (MemoryStream stream = new MemoryStream(Properties.Resources.SA2FileHashes))
+                        using (MemoryStream stream = new(Properties.Resources.SA2FileHashes))
                         {
                             Files = IniSerializer.Deserialize<Dictionary<int, HealthInfo>>(IniFile.Load(stream));
-                        }*/
+                        }
                         break;
                 }
 
@@ -250,12 +299,15 @@ namespace SAModManager.UI
                             Fails.Add(status);
                     }
                 }
-                catch
+                catch (Exception ex) 
                 {
-                    MessageWindow exception = new(Lang.GetString("MessageWindow.Errors.HealthCheck.UnknownError.Title"), Lang.GetString("MessageWindow.Errors.HealthCheck.UnknownError"),
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MessageWindow exception = new(Lang.GetString("MessageWindow.Errors.HealthCheck.UnknownError.Title"), Lang.GetString("MessageWindow.Errors.HealthCheck.UnknownError" + "\n\n" + ex.Message),
                     type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Error, button: MessageWindow.Buttons.OK);
 
-                    exception.ShowDialog();
+                        exception.ShowDialog();
+                    });
                 }
             }))
             {

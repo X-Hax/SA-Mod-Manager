@@ -136,6 +136,16 @@ namespace SAModManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] SA2FileHashes {
+            get {
+                object obj = ResourceManager.GetObject("SA2FileHashes", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] SA2ModLoader {
             get {
                 object obj = ResourceManager.GetObject("SA2ModLoader", resourceCulture);

@@ -31,6 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Configuration\SA2\SA2FileHashes.ini" />
 		<None Remove="Icons\Manager\SA2Amy.ico" />
 		<None Remove="Icons\Manager\SA2Eggman.ico" />
 		<None Remove="Icons\Manager\SA2Knux.ico" />
@@ -49,6 +50,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Resource Include="Configuration\SA2\SA2FileHashes.ini" />
 	  <Resource Include="Icons\Manager\SA2Maria.ico" />
 	</ItemGroup>
 

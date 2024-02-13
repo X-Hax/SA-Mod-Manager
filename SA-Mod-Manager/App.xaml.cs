@@ -23,6 +23,7 @@ using System.Net.Http;
 using System.Net;
 using SAModManager.UI;
 using SAModManager.Elements.SADX;
+using System.Text.RegularExpressions;
 
 namespace SAModManager
 {
@@ -582,8 +583,46 @@ namespace SAModManager
             return await SAModManager.Startup.StartupCheck();
         }
 
+        private void FUCKKKKKKKK()
+        {
+            string filePath = "FUCK.ini";
+
+            // Read all lines from the INI file
+            string[] lines = File.ReadAllLines(filePath);
+
+            // Regex pattern to match lines containing the pattern "[number]"
+            Regex regex = new Regex(@"^\[(\d+)\]");
+            int count = 0;
+            // Loop through each line
+            for (int i = 0; i < lines.Length; i++)
+            {
+                // Match the current line against the regex pattern
+                Match match = regex.Match(lines[i]);
+
+                // If the line matches the pattern
+                if (match.Success)
+                {
+                    // Extract the number from the matched group
+                    string numberStr = match.Groups[1].Value;
+
+                    string modifiedNumberStr = count.ToString();
+
+                    // Modify the line by replacing the number with the modified number
+                    lines[i] = regex.Replace(lines[i], $"[{modifiedNumberStr}]", 1);
+                    count++;
+                }
+            }
+
+            // Write the modified content back to the file
+            File.WriteAllLines(filePath, lines);
+
+            Console.WriteLine("INI file has been updated.");
+        }
+
+
         private ManagerSettings LoadManagerConfig()
         {
+            FUCKKKKKKKK();
             ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
 
             switch (settings.CurrentSetGame)
