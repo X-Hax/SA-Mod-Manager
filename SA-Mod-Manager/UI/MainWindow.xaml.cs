@@ -1375,7 +1375,7 @@ namespace SAModManager
                     break;
                 case SetGame.SA2:
                     EnableUI(true);
-					//stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile, ref gameConfigFile));
+					stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile, ref gameConfigFile));
 					tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.None:
@@ -1475,6 +1475,7 @@ namespace SAModManager
                     gameConfigFile = File.Exists(gameConfig[0]) ? IniSerializer.Deserialize<SADXConfigFile>(gameConfig[0]) : new SADXConfigFile();
                     break;
                 case SetGame.SA2:
+                    //gameConfigFile = File.Exists(gameConfig[0]) ? IniSerializer.Deserialize<SA2ConfigFile>(gameConfig[0]) : new SA2ConfigFile();
                     break;
             }
         }
