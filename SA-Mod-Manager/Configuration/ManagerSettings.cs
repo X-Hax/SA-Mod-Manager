@@ -91,7 +91,16 @@ namespace SAModManager.Configuration
 			EnableDebugCrashLog = oldSettings.DebugCrashLog;
 			EnableShowConsole = oldSettings.ShowConsole;
 		}
-	}
+
+        public void ConvertFromV0(SA2LoaderInfo oldSettings)
+        {
+            EnableDebugConsole = oldSettings.DebugConsole;
+            EnableDebugScreen = oldSettings.DebugScreen;
+            EnableDebugFile = oldSettings.DebugFile;
+            EnableDebugCrashLog = oldSettings.DebugCrashLog;
+            EnableShowConsole = oldSettings.ShowConsole;
+        }
+    }
 
 	public class ManagerSettings
 	{

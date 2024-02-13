@@ -1475,7 +1475,7 @@ namespace SAModManager
                     gameConfigFile = File.Exists(gameConfig[0]) ? IniSerializer.Deserialize<SADXConfigFile>(gameConfig[0]) : new SADXConfigFile();
                     break;
                 case SetGame.SA2:
-                    //gameConfigFile = File.Exists(gameConfig[0]) ? IniSerializer.Deserialize<SA2ConfigFile>(gameConfig[0]) : new SA2ConfigFile();
+                    gameConfigFile = File.Exists(gameConfig[1]) ? IniSerializer.Deserialize<SA2ConfigFile>(gameConfig[1]) : new SA2ConfigFile();
                     break;
             }
         }
@@ -1623,10 +1623,6 @@ namespace SAModManager
             string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GetCurrentProfileName());
             sadxSettings.Serialize(profilePath, GetCurrentProfileName());
 
-            // Save Game Config File
-            //string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
-            //IniSerializer.Serialize(gameConfigFile, configPath);
-
             // Save to Loader Info
             sadxSettings.WriteConfigs();
         }
@@ -1635,9 +1631,9 @@ namespace SAModManager
         {
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SA2.GameSettings).GamePath = App.CurrentGame.gameDirectory;
-            //Elements.SA2.GameConfig gameConfig = (Elements.SA2.GameConfig)(tabGame.Content as Grid).Children[0];
-            //gameConfig.SavePatches(ref GameProfile);
-            //Elements.SA2.TestSpawn spawnConfig = (Elements.SA2.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
+            Controls.SA2.GameConfig gameConfig = (Controls.SA2.GameConfig)(tabGame.Content as Grid).Children[0];
+            gameConfig.SavePatches(ref GameProfile);
+            Controls.SA2.TestSpawn spawnConfig = (Controls.SA2.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
 
             Configuration.SA2.GameSettings sa2 = GameProfile as Configuration.SA2.GameSettings;
 
@@ -1650,9 +1646,8 @@ namespace SAModManager
             string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GetCurrentProfileName());
             sa2.Serialize(profilePath, GetCurrentProfileName());
 
-            // Save Game Config File
-            string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
-            IniSerializer.Serialize(gameConfigFile, configPath);
+            // Save to Loader Info
+            sa2.WriteConfigs();
         }
 
         private void ManualLoaderUpdateCheck()

@@ -160,9 +160,9 @@ namespace SAModManager
                         newProfile.Serialize(destinationFile, "Default.json");
                         return true;
                     case Configuration.SetGame.SA2:
-                       // Configuration.SA2.GameSettings newSA2Profile = new();
-                       // newSA2Profile.LoadConfigs();
-                        //newSA2Profile.Serialize(destinationFile, "Default.json");
+                        Configuration.SA2.GameSettings newSA2Profile = new();
+                        newSA2Profile.LoadConfigs(sourceFile);
+                        newSA2Profile.Serialize(destinationFile, "Default.json");
                         return true;
 
                 }

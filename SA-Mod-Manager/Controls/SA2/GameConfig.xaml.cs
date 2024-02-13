@@ -23,7 +23,6 @@ namespace SAModManager.Controls.SA2
         public GraphicsHelper graphics;
 
         bool suppressEvent = false;
-        private readonly double LowOpacityBtn = 0.7;
         private static string patchesPath = null;
         #endregion
 

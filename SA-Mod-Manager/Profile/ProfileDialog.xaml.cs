@@ -236,11 +236,13 @@ namespace SAModManager.Profile
 
 		private void Migrate_Click(object sender, RoutedEventArgs e)
 		{
-			var dialog = new System.Windows.Forms.OpenFileDialog();
-			dialog.Filter = "Profiles|*.json|Old Profiles|*.ini";
-			dialog.Multiselect = true;
+            var dialog = new System.Windows.Forms.OpenFileDialog
+            {
+                Filter = "Profiles|*.json|Old Profiles|*.ini",
+                Multiselect = true
+            };
 
-			System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
 
 			List<string> failedFiles = new();
 
@@ -253,7 +255,8 @@ namespace SAModManager.Profile
 					{
 						bool invalid = false;
 						Configuration.SADX.GameSettings settings = new();
-						string newFileName = Path.GetFileNameWithoutExtension(file);
+                        Configuration.SA2.GameSettings settingsSA2 = new();
+                        string newFileName = Path.GetFileNameWithoutExtension(file);
 						string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
 
 						switch (Path.GetExtension(file))
@@ -274,7 +277,14 @@ namespace SAModManager.Profile
 											}
 											break;
 										case "Sonic Adventure 2":
-											break;
+                                            settingsSA2 = Configuration.SA2.GameSettings.Deserialize(file);
+                                            if (settingsSA2.EnabledMods.Count == 0 && settings.EnabledCodes.Count == 0)
+                                            {
+                                                invalid = true;
+                                                throw new Exception();
+                                            }
+                                            break;
+                         
 									}
 								}
 								catch
@@ -292,7 +302,9 @@ namespace SAModManager.Profile
 											settings.ConvertFromV0(info);
 											break;
 										case "Sonic Adventure 2":
-											break;
+                                            SA2LoaderInfo info2 = IniSerializer.Deserialize<SA2LoaderInfo>(file);
+                                            settingsSA2.ConvertFromV0(info2);
+                                            break;
 									}
 								}
 								catch

@@ -4,24 +4,208 @@ using SAModManager.Ini;
 using SAModManager.Configuration;
 using System.IO;
 using System.Text.Json;
+using SAModManager.UI;
+using System.Text.Json.Serialization;
+using static SAModManager.Configuration.SADX.GameSettings;
 
 // TODO: Build SA2 Game Settings
 namespace SAModManager.Configuration.SA2
 {
 	public class GraphicsSettings
 	{
+        public enum DisplayMode
+        {
+            Windowed,
+            Fullscreen,
+            Borderless,
+            CustomWindow
+        }
 
-	}
+        /// <summary>
+		/// Index for the screen the game will boot on.
+		/// </summary>
+		[DefaultValue(1)]
+        public int SelectedScreen { get; set; } = 1;       // SA2LoaderInfo.ScreenNum
 
-	public class ControllerSettings
-	{
+        /// <summary>
+        /// Rendering Horizontal Resolution.
+        /// </summary>
+        [DefaultValue(640)]
+        public int HorizontalResolution { get; set; } = 640;    // SA2XLoaderInfo.HorizontalResolution
 
-	}
+        /// <summary>
+        /// Rendering Vertical Resolution.
+        /// </summary>
+        [DefaultValue(480)]
+        public int VerticalResolution { get; set; } = 480;      // SADXLoaderInfo.VerticalResolution
 
-	public class SoundSettings
-	{
+        /// <summary>
+		/// Enables the window to be paused when not focused.
+		/// </summary>
+		[DefaultValue(true)]
+        public bool EnablePauseOnInactive { get; set; } = true;     // SADXLoaderInfo.PauseWhenInactive
 
-	}
+        /// <summary>
+        /// Sets the Width of the Custom Window Size.
+        /// </summary>
+        [DefaultValue(640)]
+        public int CustomWindowWidth { get; set; } = 640;             // SADXLoaderInfo.WindowWidth
+
+        /// <summary>
+        /// Sets the Height of the Custom Window Size.
+        /// </summary>
+        [DefaultValue(480)]
+        public int CustomWindowHeight { get; set; } = 480;            // SADXLoaderInfo.WindowHeight
+
+        /// <summary>
+        /// Keeps the Resolution's ratio for the Custom Window size.
+        /// </summary>
+        [DefaultValue(false)]
+        public bool EnableKeepResolutionRatio { get; set; }     // SADXLoaderInfo.MaintainWindowAspectRatio
+
+        /// <summary>
+        /// Enables resizing of the game window.
+        /// </summary>
+        [DefaultValue(false)]
+        public bool EnableResizableWindow { get; set; }               // SADXLoaderInfo.ResizableWindow
+
+        /// <summary>
+		/// Sets the Screen Mode (Windowed, Fullscreen, Borderless, or Custom Window)
+		/// </summary>
+		[DefaultValue(0)]
+        public int ScreenMode { get; set; }
+
+        #region Deprecated
+        /// <summary>
+        /// Deprecated, see <see cref="ScreenMode"/>
+        /// </summary>
+        [DefaultValue(false)]
+        public bool EnableCustomWindow { get; set; }              // SA2LoaderInfo.CustomWindowSize
+
+        /// <summary>
+        /// Deprecated, see <see cref="ScreenMode"/>
+        /// </summary>
+        [DefaultValue(true)]
+        public bool EnableBorderless { get; set; } = true;          // SA2LoaderInfo.Borderless
+        #endregion
+        public void ConvertFromV0(SA2LoaderInfo oldSettings)
+        {
+            SelectedScreen = oldSettings.ScreenNum;
+
+            HorizontalResolution = oldSettings.HorizontalResolution;
+            VerticalResolution = oldSettings.VerticalResolution;
+
+            EnablePauseOnInactive = oldSettings.PauseWhenInactive;
+
+            EnableBorderless = oldSettings.WindowedFullscreen;
+
+
+            EnableCustomWindow = oldSettings.CustomWindowSize;
+            CustomWindowWidth = oldSettings.WindowWidth;
+            CustomWindowHeight = oldSettings.WindowHeight;
+            EnableKeepResolutionRatio = oldSettings.MaintainAspectRatio;
+            EnableResizableWindow = oldSettings.ResizableWindow;
+        }
+
+        public void LoadLoaderInfo(ref SA2LoaderInfo info)
+        {
+            SelectedScreen = info.ScreenNum;
+            HorizontalResolution = info.HorizontalResolution;
+            VerticalResolution = info.VerticalResolution;
+
+            switch ((DisplayMode)ScreenMode)
+            {
+                case DisplayMode.Borderless:
+                    info.WindowedFullscreen = true;
+                    break;
+                case DisplayMode.CustomWindow:
+                    info.CustomWindowSize = true;
+                    break;
+            }
+
+
+            EnableKeepResolutionRatio = info.MaintainAspectRatio;
+            CustomWindowWidth = info.WindowWidth;
+            CustomWindowHeight = info.WindowHeight;
+
+
+            EnablePauseOnInactive = info.PauseWhenInactive;
+            EnableResizableWindow = info.ResizableWindow;
+        }
+
+        public void LoadGameConfig(ref SA2ConfigFile config)
+        {
+
+
+            switch ((DisplayMode)ScreenMode)
+            {
+                case DisplayMode.Fullscreen:
+                    config.GameConfig.FullScreen = 1;
+                    break;
+                default:
+                    config.GameConfig.FullScreen = 0;
+                    break;
+            }
+        }
+
+        public void LoadConfigs(ref SA2LoaderInfo info, ref SA2ConfigFile config)
+        {
+            LoadLoaderInfo(ref info);
+            LoadGameConfig(ref config);
+        }
+
+        public void ToLoaderInfo(ref SA2LoaderInfo info)
+        {
+            info.ScreenNum = SelectedScreen;
+            info.HorizontalResolution = HorizontalResolution;
+            info.VerticalResolution = VerticalResolution;
+
+            switch ((DisplayMode)ScreenMode)
+            {
+                case DisplayMode.Borderless:
+                    info.WindowedFullscreen = true;
+                    break;
+                case DisplayMode.CustomWindow:
+                    info.CustomWindowSize = true;
+                    break;
+            }
+
+  
+            info.MaintainAspectRatio = EnableKeepResolutionRatio;
+            info.WindowWidth = CustomWindowWidth;
+            info.WindowHeight = CustomWindowHeight;
+
+            info.PauseWhenInactive = EnablePauseOnInactive;
+            info.ResizableWindow = EnableResizableWindow;
+        }
+
+        public void ToGameConfig(ref SA2ConfigFile config)
+        {
+
+            switch ((DisplayMode)ScreenMode)
+            {
+                case DisplayMode.Fullscreen:
+                case DisplayMode.Borderless:
+                    config.GameConfig.FullScreen = 1;
+                    break;
+                default:
+                    config.GameConfig.FullScreen = 0;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Sets values for referenced SADXLoaderInfo and SADXConfigFile.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="config"></param>
+        public void ToConfigs(ref SA2LoaderInfo info, ref SA2ConfigFile config)
+        {
+            ToLoaderInfo(ref info);
+            ToGameConfig(ref config);
+        }
+    }
+
 
     public class TestSpawnSettings
     {
@@ -153,11 +337,11 @@ namespace SAModManager.Configuration.SA2
         /// Converts from original settings file.
         /// </summary>
         /// <param name="oldSettings"></param>
-        public void ConvertFromV0(SADXLoaderInfo oldSettings)
+        public void ConvertFromV0(SA2LoaderInfo oldSettings)
         {
             LevelIndex = oldSettings.TestSpawnLevel;
-            MissionIndex = oldSettings.TestSpawnAct;
             CharacterIndex = oldSettings.TestSpawnCharacter;
+            Player2Index = oldSettings.TestSpawnPlayer2;
             EventIndex = oldSettings.TestSpawnEvent;
             SaveIndex = oldSettings.TestSpawnEvent;
 
@@ -169,14 +353,112 @@ namespace SAModManager.Configuration.SA2
             XPosition = oldSettings.TestSpawnX;
             YPosition = oldSettings.TestSpawnY;
             ZPosition = oldSettings.TestSpawnZ;
-            Rotation = oldSettings.TestSpawnRotation;
         }
+
+        public void LoadLoaderInfo(ref SA2LoaderInfo info)
+        {
+            LevelIndex = info.TestSpawnLevel;
+            CharacterIndex = info.TestSpawnCharacter;
+            Player2Index = info.TestSpawnPlayer2;
+            EventIndex = info.TestSpawnEvent;
+            SaveIndex = info.TestSpawnSaveID;
+            GameTextLanguage = info.TextLanguage;
+            GameVoiceLanguage = info.VoiceLanguage;
+            UsePosition = info.TestSpawnPositionEnabled;
+            XPosition = info.TestSpawnX;
+            YPosition = info.TestSpawnY;
+            ZPosition = info.TestSpawnZ;
+  
+        }
+
+        public void LoadConfigs(ref SA2LoaderInfo info)
+        {
+            LoadLoaderInfo(ref info);
+        }
+
+        public void ToLoaderInfo(ref SA2LoaderInfo info)
+        {
+            info.TestSpawnLevel = LevelIndex;
+            info.TestSpawnCharacter = CharacterIndex;
+            info.TestSpawnPlayer2 = Player2Index;
+            info.TestSpawnEvent = EventIndex;
+    
+            info.TestSpawnSaveID = SaveIndex;
+            info.TextLanguage = GameTextLanguage;
+            info.VoiceLanguage = GameVoiceLanguage;
+            info.TestSpawnPositionEnabled = UsePosition;
+            info.TestSpawnX = (int)XPosition;
+            info.TestSpawnY = (int)YPosition;
+            info.TestSpawnZ = (int)ZPosition;
+
+        }
+
+        /// <summary>
+        /// Sets values for referenced SA2LoaderInfo.
+        /// </summary>
+        /// <param name="info"></param>
+        public void ToConfigs(ref SA2LoaderInfo info)
+        {
+            ToLoaderInfo(ref info);
+        }
+
     }
 
     public class GamePatches
 	{
+        [DefaultValue(true)]
+        public bool FramerateLimiter { get; set; } = true;
+        [DefaultValue(true)]
+        public bool DisableExitPrompt { get; set; } = true;
+        [DefaultValue(true)]
+        public bool SyncLoad { get; set; } = true; //disable Omochao loading animation (reduce crash on startup probability)
+        [DefaultValue(true)]
+        public bool ExtendVertexBuffer { get; set; } = true; //incrase the vertex limit per mesh to 32k
+        [DefaultValue(true)]
+        public bool EnvMapFix { get; set; } = true;
+        [DefaultValue(true)]
+        public bool ScreenFadeFix { get; set; } = true;
+        [DefaultValue(true)]
+        public bool CECarFix { get; set; } = true; //intel GPU issue
+        [DefaultValue(true)]
+        public bool ParticlesFix { get; set; } = true; //intel GPU issue
 
-	}
+
+        public void LoadLoaderInfo(ref SA2LoaderInfo info)
+        {
+            FramerateLimiter = info.FramerateLimiter;
+            DisableExitPrompt = info.DisableExitPrompt;
+            SyncLoad = info.SyncLoad;
+            ExtendVertexBuffer = info.ExtendVertexBuffer;
+            EnvMapFix = info.EnvMapFix;
+            ScreenFadeFix = info.ScreenFadeFix;
+            CECarFix = info. CECarFix;
+            ParticlesFix = info.ParticlesFix;
+        }
+
+        public void LoadConfigs(ref SA2LoaderInfo info)
+        {
+            LoadLoaderInfo(ref info);
+        }
+
+        public void ToLoaderInfo(ref SA2LoaderInfo info)
+        {
+            info.FramerateLimiter = FramerateLimiter;
+            info.DisableExitPrompt = DisableExitPrompt;
+            info.SyncLoad = SyncLoad;
+            info.ExtendVertexBuffer = ExtendVertexBuffer;
+            info.EnvMapFix = EnvMapFix;
+            info.ScreenFadeFix = ScreenFadeFix;
+            info. CECarFix = CECarFix;
+            info. ParticlesFix = ParticlesFix;
+        }
+
+        public void ToConfigs(ref SA2LoaderInfo info)
+        {
+            ToLoaderInfo(ref info);
+        }
+
+    }
 
 	public class GameSettings
 	{
@@ -199,16 +481,6 @@ namespace SAModManager.Configuration.SA2
 		/// Graphics Settings for SA2.
 		/// </summary>
 		public GraphicsSettings Graphics { get; set; } = new();
-
-		/// <summary>
-		/// Controller Settings for SA2.
-		/// </summary>
-		public ControllerSettings Controller { get; set; } = new();
-
-		/// <summary>
-		/// Sound Settings for SA2.
-		/// </summary>
-		public SoundSettings Sound { get; set; } = new();
 
 		/// <summary>
 		/// TestSpawn Settings for SA2.
@@ -248,20 +520,84 @@ namespace SAModManager.Configuration.SA2
 		/// Converts from original settings file.
 		/// </summary>
 		/// <param name="oldSettings"></param>
-		public void ConvertFromV0(SADXLoaderInfo oldSettings)
+		public void ConvertFromV0(SA2LoaderInfo oldSettings)
 		{
+            Graphics.ConvertFromV0(oldSettings);
+            TestSpawn.ConvertFromV0(oldSettings);
+            DebugSettings.ConvertFromV0(oldSettings);
 
-		}
+            GamePath = App.CurrentGame.gameDirectory;
+            EnabledMods = oldSettings.Mods;
+            EnabledCodes = oldSettings.EnabledCodes;
+        }
 
 		/// <summary>
 		/// Converts the current GameSettings info back to the Loader ini's required format.
 		/// </summary>
 		/// <param name="managerSettings"></param>
 		/// <returns></returns>
-		private void ConvertToLoaderInfo(ManagerSettings managerSettings)
+		private SA2LoaderInfo ConvertToLoaderInfo(ManagerSettings managerSettings)
 		{
-			// TODO: Make this return SA2LoaderInfo.
-		}
+            SA2LoaderInfo loaderInfo = new();
+
+            // Manager Settings
+            loaderInfo.devMode = managerSettings.EnableDeveloperMode;
+            loaderInfo.managerOpen = managerSettings.KeepManagerOpen;
+            loaderInfo.Theme = managerSettings.Theme;
+            loaderInfo.Language = managerSettings.Language;
+            loaderInfo.UpdateCheck = managerSettings.UpdateSettings.EnableManagerBootCheck;
+            loaderInfo.ModUpdateCheck = managerSettings.UpdateSettings.EnableModsBootCheck;
+
+            // Mods & Codes
+            loaderInfo.Mods = EnabledMods;
+            loaderInfo.EnabledCodes = EnabledCodes;
+
+            // Graphics
+            loaderInfo.ScreenNum = Graphics.SelectedScreen;
+            loaderInfo.HorizontalResolution = Graphics.HorizontalResolution;
+            loaderInfo.VerticalResolution = Graphics.VerticalResolution;
+            loaderInfo.PauseWhenInactive = Graphics.EnablePauseOnInactive;
+
+            loaderInfo.CustomWindowSize = Graphics.EnableCustomWindow;
+            loaderInfo.WindowWidth = Graphics.CustomWindowWidth;
+            loaderInfo.WindowHeight = Graphics.CustomWindowHeight;
+            loaderInfo.MaintainAspectRatio = Graphics.EnableKeepResolutionRatio;
+            loaderInfo.ResizableWindow = Graphics.EnableResizableWindow;
+
+
+            // Patches
+            loaderInfo.FramerateLimiter = Patches.FramerateLimiter;
+            loaderInfo.DisableExitPrompt = Patches.DisableExitPrompt;
+            loaderInfo.SyncLoad = Patches.SyncLoad;
+            loaderInfo.ExtendVertexBuffer = Patches.ExtendVertexBuffer;
+            loaderInfo.EnvMapFix = Patches.EnvMapFix;
+            loaderInfo.ScreenFadeFix = Patches.ScreenFadeFix;
+            loaderInfo.CECarFix = Patches.CECarFix;
+            loaderInfo.ParticlesFix = Patches.ParticlesFix;
+
+
+            // Debug
+            loaderInfo.DebugConsole = DebugSettings.EnableDebugConsole;
+            loaderInfo.DebugScreen = DebugSettings.EnableDebugScreen;
+            loaderInfo.DebugFile = DebugSettings.EnableDebugFile;
+            loaderInfo.DebugCrashLog = DebugSettings.EnableDebugCrashLog;
+
+            // Test Spawn
+            loaderInfo.TestSpawnLevel = TestSpawn.LevelIndex;
+            loaderInfo.TestSpawnCharacter = TestSpawn.CharacterIndex;
+            loaderInfo.TestSpawnEvent = TestSpawn.EventIndex;
+            loaderInfo.TestSpawnPlayer2 = TestSpawn.Player2Index;
+            loaderInfo.TestSpawnSaveID = TestSpawn.SaveIndex;
+            loaderInfo.TextLanguage = TestSpawn.GameTextLanguage;
+            loaderInfo.VoiceLanguage = TestSpawn.GameVoiceLanguage;
+            loaderInfo.TestSpawnPositionEnabled = TestSpawn.UsePosition;
+            loaderInfo.TestSpawnX = (int)TestSpawn.XPosition;
+            loaderInfo.TestSpawnY = (int)TestSpawn.YPosition;
+            loaderInfo.TestSpawnZ = (int)TestSpawn.ZPosition;
+
+
+            return loaderInfo;
+        }
 
 		/// <summary>
 		/// Writes to the Loader's necessary ini file. Path is to the Mod's Directory.
@@ -269,10 +605,86 @@ namespace SAModManager.Configuration.SA2
 		/// <param name="path"></param>
 		public void WriteToLoaderInfo(string path, ManagerSettings managerSettings)
 		{
-			
-		}
+            if (Directory.Exists(path))
+            {
+                SA2LoaderInfo loaderInfo = ConvertToLoaderInfo(managerSettings);
+                string loaderInfoPath = Path.Combine(path, "SA2ModLoader.ini");
 
-		public static GameSettings Deserialize(string path)
+                IniSerializer.Serialize(loaderInfo, loaderInfoPath);
+            }
+            else
+            {
+                MessageWindow message = new MessageWindow(Lang.GetString("MessageWindow.Errors.LoaderFailedToSave.Title"), Lang.GetString("MessageWindow.Errors.LoaderFailedToSave"),
+                    icon: MessageWindow.Icons.Error);
+                message.ShowDialog();
+            }
+        }
+
+        public void LoadConfigs(string iniSource)
+        {
+            SA2LoaderInfo info = new();
+            SA2ConfigFile config = new();
+            var JsonSerializerSettings = new JsonSerializerOptions();
+            JsonSerializerSettings.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+
+            string loaderInfoPath = iniSource;
+
+            if (File.Exists(loaderInfoPath))
+                info = IniSerializer.Deserialize<SA2LoaderInfo>(loaderInfoPath);
+
+            string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[1]);
+            if (File.Exists(configPath))
+                config = IniSerializer.Deserialize<SA2ConfigFile>(configPath);
+
+            Graphics.LoadConfigs(ref info, ref config);
+            TestSpawn.LoadConfigs(ref info);
+            Patches.LoadConfigs(ref info);
+
+            DebugSettings.EnableDebugConsole = info.DebugConsole;
+            DebugSettings.EnableDebugScreen = info.DebugScreen;
+            DebugSettings.EnableDebugFile = info.DebugFile;
+            DebugSettings.EnableDebugCrashLog = info.DebugCrashLog;
+        }
+
+        /// <summary>
+        /// Writes LoaderInfo and SADXConfig files.
+        /// </summary>
+        public void WriteConfigs()
+        {
+            SA2LoaderInfo info = new SA2LoaderInfo();
+            SA2ConfigFile config = new SA2ConfigFile();
+
+            info.Mods = EnabledMods;
+            info.EnabledCodes = EnabledCodes;
+
+            Graphics.ToConfigs(ref info, ref config);
+            TestSpawn.ToConfigs(ref info);
+            Patches.ToConfigs(ref info);
+
+            // Debug Settings
+            info.DebugConsole = DebugSettings.EnableDebugConsole;
+            info.DebugScreen = DebugSettings.EnableDebugScreen;
+            info.DebugFile = DebugSettings.EnableDebugFile;
+            info.DebugCrashLog = DebugSettings.EnableDebugCrashLog;
+
+            if (Directory.Exists(GamePath))
+            {
+                string loaderInfoPath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, "SA2ModLoader.ini"));
+                IniSerializer.Serialize(info, loaderInfoPath);
+
+                string configPath = Path.Combine(GamePath, App.CurrentGame.GameConfigFile[0]);
+                IniSerializer.Serialize(config, configPath);
+            }
+            else
+            {
+                MessageWindow message = new MessageWindow(Lang.GetString("MessageWindow.Errors.LoaderFailedToSave.Title"), Lang.GetString("MessageWindow.Errors.LoaderFailedToSave"),
+                    icon: MessageWindow.Icons.Error);
+                message.ShowDialog();
+            }
+        }
+
+
+        public static GameSettings Deserialize(string path)
 		{
 			try
 			{

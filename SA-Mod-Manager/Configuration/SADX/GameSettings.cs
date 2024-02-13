@@ -1149,8 +1149,8 @@ namespace SAModManager.Configuration.SADX
 
 			if (Directory.Exists(GamePath))
 			{
-				string loaderInfoPath = Path.Combine(GamePath, "mods/SADXModLoader.ini");
-				IniSerializer.Serialize(info, loaderInfoPath);
+                string loaderInfoPath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, "SADXModLoader.ini"));
+                IniSerializer.Serialize(info, loaderInfoPath);
 
 				string configPath = Path.Combine(GamePath, App.CurrentGame.GameConfigFile[0]);
 				IniSerializer.Serialize(config, configPath);
