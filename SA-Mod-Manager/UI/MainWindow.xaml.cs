@@ -467,10 +467,11 @@ namespace SAModManager
 
         private void ModList_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (!(GetModFromView(sender) is ModData mod))
+            if (GetModFromView(sender) is not ModData mod)
                 return;
 
-            textModsDescription.Text = Lang.GetString("CommonStrings.Description") + " " + mods[mod.Tag].Description;
+            if (mods.TryGetValue(mod.Tag, out SAModInfo value))
+                textModsDescription.Text = Lang.GetString("CommonStrings.Description") + " " + value.Description;
         }
 
         private void ModList_MouseLeave(object sender, MouseEventArgs e)
@@ -2619,6 +2620,11 @@ namespace SAModManager
         {
             SetNewIcon("IconTitleBar");
             SetNewIcon("IconTitleBar2");
+        }
+
+        public void ComboGameSelection_SetNewItem(Game game)
+        {
+            ComboGameSelection.SelectedItem = game;
         }
 
         private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)

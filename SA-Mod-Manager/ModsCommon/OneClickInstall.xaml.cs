@@ -155,7 +155,12 @@ namespace SAModManager
 
             Activate();
 
-			string[] split = uri.Substring("sadxmm:".Length).Split(',');
+			if (App.CurrentGame is null)
+				return;
+
+			string oneClickName = App.CurrentGame.oneClickName + ":";
+
+            string[] split = uri.Substring(oneClickName.Length).Split(',');
 			OpenGB.IsEnabled = false;
 			ButtonDownload.IsEnabled = false;
 

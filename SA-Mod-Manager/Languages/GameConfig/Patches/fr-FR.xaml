@@ -57,7 +57,6 @@
     <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">Corrige un bug avec le fondu lors de l'écran de résultat de victoire.</system:String>
     <system:String x:Key="GamePatchesSA2.CECarFixDesc">Corrige le célèbre glitch de la voiture à City Escape (GPU Intel).</system:String>
     <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Corrige les effets de particules (portail de la Mélodie Mystique, etc.) qui ne s'affichent pas (GPU Intel).</system:String>
-
     <!--#endregion-->
 
 </ResourceDictionary>
