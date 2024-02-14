@@ -145,15 +145,17 @@
 				</Grid>
 			</TabItem>
 
+			<!--REMINDER: When this is implemented, re-adjust margins on tabs.-->
 			<TabItem x:Name="TabInput" Header="{DynamicResource GameConfig.Tabs.Input}" Margin="3,0,-3,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input}" Visibility="Collapsed">
 				
 			</TabItem>
 
+			<!--REMINDER: If/When this is implemented, re-adjust margins on tabs.-->
 			<TabItem x:Name="TabSound" Header="{DynamicResource GameConfig.Tabs.Sound}" Margin="6,0,-6,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound}" Visibility="Collapsed">
 				
 			</TabItem>
 
-			<TabItem x:Name="TabPatches" Header="{DynamicResource GameConfig.Tabs.Patches}" Margin="9,0,-9,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Patches}">
+			<TabItem x:Name="TabPatches" Header="{DynamicResource GameConfig.Tabs.Patches}" Margin="3,0,-3,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Patches}">
 				<Grid x:Name="gridPatchesList">
 					<!--This Grid manages the Codes list.-->
 					<Grid>
