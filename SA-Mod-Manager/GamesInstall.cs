@@ -539,6 +539,17 @@ namespace SAModManager
             yield return SonicAdventure2;
         }
 
+        public static Game GetGamePerID(SetGame gameID)
+        {
+            foreach (var game in GetSupportedGames())
+            {
+                if (game.id == gameID)
+                    return game;
+            }
+
+            return null;
+        }
+
         //will probably end making our own installer ig
         public static async Task GetSADXModInstaller()
         {

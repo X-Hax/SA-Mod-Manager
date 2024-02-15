@@ -567,13 +567,13 @@ namespace SAModManager
                     }
                 }
 
-                var SADXMod = mods[item.Tag];
+                var CurMod = mods[item.Tag];
 
-                if (SADXMod is not null)
+                if (CurMod is not null)
                 {
-                    SADXMod.DisableUpdate = false;
+                    CurMod.DisableUpdate = false;
                     string fullPath = Path.Combine(App.CurrentGame.modDirectory, item.Tag, "mod.ini");
-                    IniSerializer.Serialize(SADXMod, fullPath);
+                    IniSerializer.Serialize(CurMod, fullPath);
                 }
 
                 List<Updater.ModManifestEntry> manifest;
@@ -792,6 +792,9 @@ namespace SAModManager
                         }
                     }
 
+                    ModsFind.Visibility = Visibility.Collapsed;
+                    FilterMods("");
+                    TextBox_ModsSearch.Text = "";
                     LoadModList();
                 }
             }
@@ -1067,6 +1070,11 @@ namespace SAModManager
             }
             else
             {
+                var game = GamesInstall.GetGamePerID(setGame);
+
+                if (App.GamesList.Contains(game) == false)
+                    App.GamesList.Add(game);
+
                 tempPath = path;
                 App.CurrentGame.gameDirectory = tempPath;
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
@@ -1405,8 +1413,8 @@ namespace SAModManager
                 codedatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Codes.dat"));
                 patchdatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Patches.dat"));
 
-
-                Controls.SADX.GameConfig.UpdateD3D8Paths();
+                if (setGame == SetGame.SADX)
+                    Controls.SADX.GameConfig.UpdateD3D8Paths();
 
                 //this is a failsafe in case the User deleted the Loader file manually without restoring the original files
                 if (!File.Exists(App.CurrentGame.loader.loaderdllpath) && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
@@ -2625,6 +2633,7 @@ namespace SAModManager
         public void ComboGameSelection_SetNewItem(Game game)
         {
             ComboGameSelection.SelectedItem = game;
+            ComboGameSelection_SelectionChanged(null, null);
         }
 
         private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2634,7 +2643,7 @@ namespace SAModManager
                 checkForUpdate = false;
                 foreach (var game in GamesInstall.GetSupportedGames())
                 {
-                    if (game == ComboGameSelection.SelectedItem)
+                    if (game == ComboGameSelection.SelectedItem && App.GamesList.Contains(game))
                     {
                         EnabledMods.Clear();
                         EnabledCodes.Clear();

@@ -198,7 +198,6 @@ namespace SAModManager
         private static bool CheckinstallURLHandler(string[] args)
         {
             int index = 0;
-            Debugger.Launch();
 
             foreach (var arg in args)
             {
