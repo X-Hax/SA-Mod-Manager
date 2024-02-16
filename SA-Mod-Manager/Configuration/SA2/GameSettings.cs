@@ -411,7 +411,6 @@ namespace SAModManager.Configuration.SA2
 			}
 		}
 
-
 		public static GameSettings Deserialize(string path)
 		{
 			try
