@@ -127,10 +127,12 @@
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
 									</Grid.ColumnDefinitions>
 									<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" Grid.Column="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
 									<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="1" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
 									<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" Grid.Column="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
+									<CheckBox x:Name="chkResizeAspect" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio}" Grid.Column="3" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeAspectRatio}"/>
 								</Grid>
 							</Grid>
 						</Grid>

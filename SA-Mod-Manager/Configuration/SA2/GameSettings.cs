@@ -77,6 +77,12 @@ namespace SAModManager.Configuration.SA2
 		public int ScreenMode { get; set; }
 
 		/// <summary>
+		/// Maintains the ratio when resizing the window if resizable window is enabled.
+		/// </summary>
+		[DefaultValue(true)]
+		public bool KeepAspectWhenResizing { get; set; }
+
+		/// <summary>
 		/// Converts from the original settings file.
 		/// </summary>
 		/// <param name="oldSettings"></param>
