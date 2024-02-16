@@ -127,7 +127,6 @@ namespace SAModManager.Configuration.SA2
 
 		public void ToConfigs(ref SA2GameConfig config)
 		{
-			ToLoaderInfo(ref info);
 			ToGameConfig(ref config);
 		}
 	}
