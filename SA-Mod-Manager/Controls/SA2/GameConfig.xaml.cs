@@ -358,6 +358,11 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
+			chkResizeAspect.SetBinding(CheckBox.IsCheckedProperty, new Binding("KeepAspectWhenResizing")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
 
             // Settings
             chkVSync.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableVsync")
