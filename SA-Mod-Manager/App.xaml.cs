@@ -34,7 +34,6 @@ namespace SAModManager
     public partial class App : Application
     {
         private const string pipeName = "sa-mod-manager";
-        private const string protocol = "sadxmm:";
         public static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
         public static string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -234,31 +233,40 @@ namespace SAModManager
                 UriQueue = new UriQueue(pipeName);
             }
 
-            List<string> uris = args
-                .Where(x => x.Length > protocol.Length && x.StartsWith(protocol, StringComparison.Ordinal))
+            foreach (var game in GamesInstall.GetSupportedGames())
+            {
+
+                List<string> uris = args
+                .Where(x => x.Length > game?.oneClickName.Length && x.StartsWith(game?.oneClickName + ":", StringComparison.Ordinal))
                 .ToList();
 
-            if (uris.Count > 0)
-            {
-                using (var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.Out))
+                if (uris.Count > 0)
                 {
-                    try
+                    if (game != App.CurrentGame)
                     {
-                        await pipe.ConnectAsync();
-
-                        using (var writer = new StreamWriter(pipe))
-                        {
-                            foreach (string s in uris)
-                            {
-                                await writer.WriteLineAsync(s);
-                            }
-                            await writer.FlushAsync();
-                        }
+                        App.CurrentGame = game;
                     }
-                    catch (Exception ex)
+
+                    using (var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.Out))
                     {
-                        // Handle connection or writing errors here
-                        Console.WriteLine($"Error sending URIs: {ex.Message}");
+                        try
+                        {
+                            await pipe.ConnectAsync();
+
+                            using (var writer = new StreamWriter(pipe))
+                            {
+                                foreach (string s in uris)
+                                {
+                                    await writer.WriteLineAsync(s);
+                                }
+                                await writer.FlushAsync();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle connection or writing errors here
+                            Console.WriteLine($"Error sending URIs: {ex.Message}");
+                        }
                     }
                 }
             }

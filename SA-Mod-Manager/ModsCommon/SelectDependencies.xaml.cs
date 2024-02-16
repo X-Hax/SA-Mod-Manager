@@ -146,7 +146,7 @@ namespace SAModManager.ModsCommon
 					retLink = "https://github.com/" + mod.Link;
 					break;
 				case UpdateType.Gamebanana:
-					retLink = "sadxmm:https://gamebanana.com/mmdl/0,gb_itemtype:Mod,gb_itemid:" + mod.Link;
+					retLink = App.CurrentGame?.oneClickName + ":" + "https://gamebanana.com/mmdl/0,gb_itemtype:Mod,gb_itemid:" + mod.Link;
 					break;
 			}
 

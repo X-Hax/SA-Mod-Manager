@@ -484,7 +484,7 @@ namespace SAModManager
 
 		string GenerateModID()
 		{
-			return "sadx." + nameBox.Text;
+			return App.CurrentGame?.gameAbbreviation.ToLower() + "." + nameBox.Text;
 		}
 
 		static string ValidateFilename(string filename)
@@ -509,7 +509,14 @@ namespace SAModManager
 
 		private void HandleSaveRedirection(string modDirectory)
 		{
-			var fullSavepath = Path.Combine(modDirectory, "SAVEDATA");
+			bool isSADX = App.CurrentGame?.id == Configuration.SetGame.SADX;
+			bool isSA2 = App.CurrentGame?.id == Configuration.SetGame.SA2;
+			string save = "SAVEDATA";
+
+			if (isSA2)
+				save = Path.Combine("gd_PC", "SAVEDATA");
+
+			var fullSavepath = Path.Combine(modDirectory, save);
 			bool saveDirExist = Directory.Exists(fullSavepath);
 
 			if ((bool)!mainSaveBox.IsChecked && (bool)!chaoSaveBox.IsChecked)
@@ -517,7 +524,7 @@ namespace SAModManager
 				if (saveDirExist)
 				{
 					//if user unchecked save redirect and the mod has existing save files, throw Warning
-					if (Directory.GetFiles(fullSavepath, "*.snc").Length > 0)
+					if (isSADX && Directory.GetFiles(fullSavepath, "*.snc").Length > 0 || isSA2 && Directory.GetFiles(fullSavepath).Length > 0)
 					{
 						var dialogue = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DisableSaveRedirect"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
 						dialogue.ShowDialog();

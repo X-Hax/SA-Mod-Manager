@@ -155,7 +155,31 @@ namespace SAModManager
 
             Activate();
 
-			string[] split = uri.Substring("sadxmm:".Length).Split(',');
+			if (App.CurrentGame is null)
+				return;
+
+			//force Manager to swap to the 
+			foreach (var game in GamesInstall.GetSupportedGames())
+			{
+
+                if (uri.ToLower().Contains(game.oneClickName))
+				{
+					if (game != App.CurrentGame)
+					{
+						if (Application.Current.MainWindow is not null)
+							((MainWindow)Application.Current.MainWindow).ComboGameSelection_SetNewItem(game);
+
+
+                        this.modPath = App.CurrentGame.modDirectory; //update mod directory since the game got swapped
+                        break;
+                    }
+				}
+			}
+
+
+            string oneClickName = App.CurrentGame.oneClickName + ":";
+
+            string[] split = uri[oneClickName.Length..].Split(',');
 			OpenGB.IsEnabled = false;
 			ButtonDownload.IsEnabled = false;
 

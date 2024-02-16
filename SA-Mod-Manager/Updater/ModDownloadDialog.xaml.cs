@@ -518,8 +518,11 @@ namespace SAModManager.Updater
                         dataDir = dataDir.Remove(20).TrimEnd(' ');
 
                     dataDir = Path.Combine(this.dest, dataDir);
-                    await Extracting(dataDir, filePath);
-                    await ParsingManifest(mod, filePath, dataDir);
+                    if (File.Exists(filePath))
+                    {
+                        await Extracting(dataDir, filePath);
+                        await ParsingManifest(mod, filePath, dataDir);
+                    }
                     CleanUp(mod, dataDir, filePath);
                 }
                 else if (mod.Type == ModDownloadType.Modular)
