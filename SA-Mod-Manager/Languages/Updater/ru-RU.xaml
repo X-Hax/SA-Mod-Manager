@@ -17,7 +17,7 @@
     <system:String x:Key="Updater.DL.Offline.Failed">Не удалось скачать {0}</system:String>
     <system:String x:Key="Updater.DL.Offline.InstallAttempt">Попытка оффлайн-установки, подождите...</system:String>
 
-    <system:String x:Key="Updater.DL.Mod.Init">Preparing Download, please wait...</system:String>
+    <system:String x:Key="Updater.DL.Mod.Init">Подготовка к обновление. Пожалуйста, подождите...</system:String>
     <system:String x:Key="Updater.DL.Mod.Extracting">Извлечение...</system:String>
     <system:String x:Key="Updater.DL.Mod.ParsingManifest">Чтение манифеста...</system:String>
     <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Применение манифеста...</system:String>
