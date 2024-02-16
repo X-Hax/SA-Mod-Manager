@@ -11,6 +11,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using SAModManager.UI;
+using SAModManager.Configuration.SA2;
+using SAModManager.Configuration.SADX;
 
 namespace SAModManager.Profile
 {

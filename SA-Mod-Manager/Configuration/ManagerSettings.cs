@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Text.Json;
 using SAModManager.UI;
+using SAModManager.Configuration.SA2;
+using SAModManager.Configuration.SADX;
 
 namespace SAModManager.Configuration
 {
