@@ -139,7 +139,11 @@
 					<!--Graphics Other Section-->
 					<GroupBox x:Name="grpGraphicsVisuals" Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Other}" Grid.Row="1">
 						<Grid>
-							<Button x:Name="ButtonDXVK" Content="Get DXVK"/>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="30"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Button Content="Get DXVK" Margin="5,0,5,0"/>
 						</Grid>
 					</GroupBox>
 				</Grid>
