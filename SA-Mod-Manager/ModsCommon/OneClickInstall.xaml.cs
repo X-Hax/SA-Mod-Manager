@@ -158,7 +158,7 @@ namespace SAModManager
 			if (App.CurrentGame is null)
 				return;
 
-			//force Manager to swap to the 
+			//check if the user has a different selected game than the one they are trying to download a mod for 
 			foreach (var game in GamesInstall.GetSupportedGames())
 			{
 
