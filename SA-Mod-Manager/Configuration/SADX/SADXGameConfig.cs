@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SAModManager.Configuration
+namespace SAModManager.Configuration.SADX
 {
 	enum SADXFrameRate
 	{

@@ -150,7 +150,6 @@ namespace SAModManager.Controls.SA2
      
         #endregion
 
-
         #region Patches Tab
         private PatchesData GetPatchFromView(object sender)
         {
@@ -258,7 +257,6 @@ namespace SAModManager.Controls.SA2
         }
         #endregion
 
-
         public void SavePatches(ref object input)
         {
             GameSettings settings = input as GameSettings;
@@ -281,7 +279,6 @@ namespace SAModManager.Controls.SA2
                 }
             }
         }
-
 
         #region Private Functions
         private void SetupBindings()
@@ -361,6 +358,11 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
+			chkResizeAspect.SetBinding(CheckBox.IsCheckedProperty, new Binding("KeepAspectWhenResizing")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
 
             // Settings
             chkVSync.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableVsync")

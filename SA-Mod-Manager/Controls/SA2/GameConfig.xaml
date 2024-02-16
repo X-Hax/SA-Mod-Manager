@@ -127,10 +127,12 @@
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
 									</Grid.ColumnDefinitions>
 									<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" Grid.Column="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
 									<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="1" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
 									<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" Grid.Column="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
+									<CheckBox x:Name="chkResizeAspect" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio}" Grid.Column="3" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeAspectRatio}"/>
 								</Grid>
 							</Grid>
 						</Grid>
@@ -139,21 +141,27 @@
 					<!--Graphics Other Section-->
 					<GroupBox x:Name="grpGraphicsVisuals" Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Other}" Grid.Row="1">
 						<Grid>
-							<Button x:Name="ButtonDXVK" Content="Get DXVK"/>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="30"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Button Content="Get DXVK" Margin="5,0,5,0"/>
 						</Grid>
 					</GroupBox>
 				</Grid>
 			</TabItem>
 
+			<!--REMINDER: When this is implemented, re-adjust margins on tabs.-->
 			<TabItem x:Name="TabInput" Header="{DynamicResource GameConfig.Tabs.Input}" Margin="3,0,-3,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Input}" Visibility="Collapsed">
 				
 			</TabItem>
 
+			<!--REMINDER: If/When this is implemented, re-adjust margins on tabs.-->
 			<TabItem x:Name="TabSound" Header="{DynamicResource GameConfig.Tabs.Sound}" Margin="6,0,-6,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound}" Visibility="Collapsed">
 				
 			</TabItem>
 
-			<TabItem x:Name="TabPatches" Header="{DynamicResource GameConfig.Tabs.Patches}" Margin="9,0,-9,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Patches}">
+			<TabItem x:Name="TabPatches" Header="{DynamicResource GameConfig.Tabs.Patches}" Margin="3,0,-3,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Patches}">
 				<Grid x:Name="gridPatchesList">
 					<!--This Grid manages the Codes list.-->
 					<Grid>

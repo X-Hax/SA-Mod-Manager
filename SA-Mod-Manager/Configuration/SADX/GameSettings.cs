@@ -37,7 +37,7 @@ namespace SAModManager.Configuration.SADX
 		/// Index for the screen the game will boot on.
 		/// </summary>
 		[DefaultValue(1)]
-		public int SelectedScreen { get; set; } = 1;                 // SADXLoaderInfo.ScreenNum
+		public int SelectedScreen { get; set; } = 1;             // SADXLoaderInfo.ScreenNum
 
 		/// <summary>
 		/// Rendering Horizontal Resolution.
@@ -55,13 +55,13 @@ namespace SAModManager.Configuration.SADX
 		/// Locks the Resolution to 4:3 Ratio
 		/// </summary>
 		[DefaultValue(false)]
-		public bool Enable43ResolutionRatio { get; set; }              // SADXLoaderInfo.ForseAspectRatio
+		public bool Enable43ResolutionRatio { get; set; } = false;			// SADXLoaderInfo.ForseAspectRatio
 
 		/// <summary>
 		/// V-Sync.
 		/// </summary>
 		[DefaultValue(true)]
-		public bool EnableVsync { get; set; } = true;           // SADXLoaderInfo.EnableVSync
+			public bool EnableVsync { get; set; } = true;           // SADXLoaderInfo.EnableVSync
 
 		/// <summary>
 		/// Enables the window to be paused when not focused.
@@ -214,39 +214,6 @@ namespace SAModManager.Configuration.SADX
 			EnableForcedTextureFilter = oldSettings.TextureFilter;
 		}
 
-		public void LoadLoaderInfo(ref SADXLoaderInfo info)
-		{
-			SelectedScreen = info.ScreenNum;
-			HorizontalResolution = info.HorizontalResolution;
-			VerticalResolution = info.VerticalResolution;
-
-			switch ((DisplayMode)ScreenMode)
-			{
-				case DisplayMode.Borderless:
-					info.WindowedFullscreen = true;
-					break;
-				case DisplayMode.CustomWindow:
-					info.CustomWindowSize = true;
-					break;
-			}
-
-			Enable43ResolutionRatio = info.ForceAspectRatio;
-			EnableKeepResolutionRatio = info.MaintainWindowAspectRatio;
-			CustomWindowWidth = info.WindowWidth;
-			CustomWindowHeight = info.WindowHeight;
-
-			EnableVsync = info.EnableVsync;
-			EnablePauseOnInactive = info.PauseWhenInactive;
-			EnableScreenScaling = info.StretchFullscreen;
-			EnableResizableWindow = info.ResizableWindow;
-
-			FillModeBackground = info.BackgroundFillMode;
-			FillModeFMV = info.FmvFillMode;
-			EnableUIScaling = info.ScaleHud;
-			EnableForcedMipmapping = info.AutoMipmap;
-			EnableForcedTextureFilter = info.TextureFilter;
-		}
-
 		public void LoadGameConfig(ref SADXConfigFile config)
 		{
 			config.GameConfig.FrameRate = GameFrameRate + 1;
@@ -264,43 +231,9 @@ namespace SAModManager.Configuration.SADX
 			}
 		}
 
-		public void LoadConfigs(ref SADXLoaderInfo info, ref SADXConfigFile config)
+		public void LoadConfigs(ref SADXConfigFile config)
 		{
-			LoadLoaderInfo(ref info);
 			LoadGameConfig(ref config);
-		}
-
-		public void ToLoaderInfo(ref SADXLoaderInfo info)
-		{
-			info.ScreenNum = SelectedScreen;
-			info.HorizontalResolution = HorizontalResolution;
-			info.VerticalResolution = VerticalResolution;
-
-			switch ((DisplayMode)ScreenMode)
-			{
-				case DisplayMode.Borderless:
-					info.WindowedFullscreen = true;
-					break;
-				case DisplayMode.CustomWindow:
-					info.CustomWindowSize = true;
-					break;
-			}
-
-			info.ForceAspectRatio = Enable43ResolutionRatio;
-			info.MaintainWindowAspectRatio = EnableKeepResolutionRatio;
-			info.WindowWidth = CustomWindowWidth;
-			info.WindowHeight = CustomWindowHeight;
-
-			info.EnableVsync = EnableVsync;
-			info.PauseWhenInactive = EnablePauseOnInactive;
-			info.StretchFullscreen = EnableScreenScaling;
-			info.ResizableWindow = EnableResizableWindow;
-
-			info.BackgroundFillMode = FillModeBackground;
-			info.FmvFillMode = FillModeFMV;
-			info.ScaleHud = EnableUIScaling;
-			info.AutoMipmap = EnableForcedMipmapping;
-			info.TextureFilter = EnableForcedTextureFilter;
 		}
 
 		public void ToGameConfig(ref SADXConfigFile config)
@@ -326,9 +259,8 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		/// <param name="info"></param>
 		/// <param name="config"></param>
-		public void ToConfigs(ref SADXLoaderInfo info, ref SADXConfigFile config)
+		public void ToConfigs(ref SADXConfigFile config)
 		{
-			ToLoaderInfo(ref info);
 			ToGameConfig(ref config);
 		}
 	}
@@ -363,11 +295,6 @@ namespace SAModManager.Configuration.SADX
 			EnabledInputMod = oldSettings.InputModEnabled;
 		}
 
-		public void LoadLoaderInfo(ref SADXLoaderInfo info)
-		{
-			EnabledInputMod = info.InputModEnabled;
-		}
-
 		public void LoadGameConfig(ref SADXConfigFile config)
 		{
 			VanillaMouseUseDrag = (config.GameConfig.MouseMode == 1) ? true : false;
@@ -378,15 +305,9 @@ namespace SAModManager.Configuration.SADX
 			VanillaMouseFlute = config.GameConfig.MouseFlute;
 		}
 
-		public void LoadConfigs(ref SADXLoaderInfo info, ref SADXConfigFile config)
+		public void LoadConfigs(ref SADXConfigFile config)
 		{
-			LoadLoaderInfo(ref info);
 			LoadGameConfig(ref config);
-		}
-
-		public void ToLoaderInfo(ref SADXLoaderInfo info)
-		{
-			info.InputModEnabled = EnabledInputMod;
 		}
 
 		public void ToGameConfig(ref SADXConfigFile config)
@@ -404,9 +325,8 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		/// <param name="info"></param>
 		/// <param name="config"></param>
-		public void ToConfigs(ref SADXLoaderInfo info, ref SADXConfigFile config)
+		public void ToConfigs(ref SADXConfigFile config)
 		{
-			ToLoaderInfo(ref info);
 			ToGameConfig(ref config);
 		}
 	}
@@ -472,13 +392,6 @@ namespace SAModManager.Configuration.SADX
 			SEVolume = oldSettings.SEVolume;
 		}
 
-		public void LoadLoaderInfo(ref SADXLoaderInfo info)
-		{
-			EnableBassMusic = info.EnableBassMusic;
-			EnableBassSFX = info.EnableBassSFX;
-			SEVolume = info.SEVolume;
-		}
-
 		public void LoadGameConfig(ref SADXConfigFile config)
 		{
 			EnableGameMusic = (config.GameConfig.BGM == 1) ? true : false;
@@ -493,17 +406,9 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		/// <param name="info"></param>
 		/// <param name="config"></param>
-		public void LoadConfigs(ref SADXLoaderInfo info, ref SADXConfigFile config)
+		public void LoadConfigs(ref SADXConfigFile config)
 		{
-			LoadLoaderInfo(ref info);
 			LoadGameConfig(ref config);
-		}
-
-		public void ToLoaderInfo(ref SADXLoaderInfo info)
-		{
-			info.EnableBassMusic = EnableBassMusic;
-			info.EnableBassSFX = EnableBassSFX;
-			info.SEVolume = SEVolume;
 		}
 
 		public void ToGameConfig(ref SADXConfigFile config)
@@ -520,9 +425,8 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		/// <param name="info"></param>
 		/// <param name="config"></param>
-		public void ToConfigs(ref SADXLoaderInfo info, ref SADXConfigFile config)
+		public void ToConfigs(ref SADXConfigFile config)
 		{
-			ToLoaderInfo(ref info);
 			ToGameConfig(ref config);
 		}
 	}
@@ -675,55 +579,6 @@ namespace SAModManager.Configuration.SADX
 			ZPosition = oldSettings.TestSpawnZ;
 			Rotation = oldSettings.TestSpawnRotation;
 		}
-
-		public void LoadLoaderInfo(ref SADXLoaderInfo info)
-		{
-			LevelIndex = info.TestSpawnLevel;
-			ActIndex = info.TestSpawnAct;
-			CharacterIndex = info.TestSpawnCharacter;
-			EventIndex = info.TestSpawnEvent;
-			GameModeIndex = info.TestSpawnGameMode;
-			SaveIndex = info.TestSpawnSaveID;
-			GameTextLanguage = info.TextLanguage;
-			GameVoiceLanguage = info.VoiceLanguage;
-			UsePosition = info.TestSpawnPositionEnabled;
-			XPosition = info.TestSpawnX;
-			YPosition = info.TestSpawnY;
-			ZPosition = info.TestSpawnZ;
-			Rotation = info.TestSpawnRotation;
-		}
-
-		public void LoadConfigs(ref SADXLoaderInfo info)
-		{
-			LoadLoaderInfo(ref info);
-		}
-
-		public void ToLoaderInfo(ref SADXLoaderInfo info)
-		{
-			info.TestSpawnLevel = LevelIndex;
-			info.TestSpawnAct = ActIndex;
-			info.TestSpawnCharacter = CharacterIndex;
-			info.TestSpawnEvent = EventIndex;
-			info.TestSpawnGameMode = GameModeIndex;
-			info.TestSpawnSaveID = SaveIndex;
-			info.TextLanguage = GameTextLanguage;
-			info.VoiceLanguage = GameVoiceLanguage;
-			info.TestSpawnPositionEnabled = UsePosition;
-			info.TestSpawnX = (int)XPosition;
-			info.TestSpawnY = (int)YPosition;
-			info.TestSpawnZ = (int)ZPosition;
-			info.TestSpawnRotation = Rotation;
-			info.TestSpawnRotationHex = (info.TestSpawnRotation > 0) ? true : false;
-		}
-
-		/// <summary>
-		/// Sets values for referenced SADXLoaderInfo.
-		/// </summary>
-		/// <param name="info"></param>
-		public void ToConfigs(ref SADXLoaderInfo info)
-		{
-			ToLoaderInfo(ref info);
-		}
 	}
 
 	public class GamePatches
@@ -843,54 +698,6 @@ namespace SAModManager.Configuration.SADX
 			DisableCDCheck = oldSettings.DisableCDCheck;
 			ExtendedSaveSupport = oldSettings.ExtendedSaveSupport;
 		}
-
-		public void LoadLoaderInfo(ref SADXLoaderInfo info)
-		{
-			HRTFSound = info.HRTFSound;
-			KeepCamSettings = info.CCEF;
-			FixVertexColorRendering = info.PolyBuff;
-			MaterialColorFix = info.MaterialColorFix;
-			NodeLimit = info.NodeLimit;
-			FOVFix = info.FovFix;
-			SkyChaseResolutionFix = info.SCFix;
-			Chaos2CrashFix = info.Chaos2CrashFix;
-			ChunkSpecularFix = info.ChunkSpecFix;
-			E102NGonFix = info.E102PolyFix;
-			ChaoPanelFix = info.ChaoPanelFix;
-			PixelOffSetFix = info.PixelOffSetFix;
-			LightFix = info.LightFix;
-			KillGBIX = info.KillGbix;
-			DisableCDCheck = info.DisableCDCheck;
-		}
-
-		public void LoadConfigs(ref SADXLoaderInfo info)
-		{
-			LoadLoaderInfo(ref info);
-		}
-
-		public void ToLoaderInfo(ref SADXLoaderInfo info)
-		{
-			info.HRTFSound = HRTFSound;
-			info.CCEF = KeepCamSettings;
-			info.PolyBuff = FixVertexColorRendering;
-			info.MaterialColorFix = MaterialColorFix;
-			info.NodeLimit = NodeLimit;
-			info.FovFix = FOVFix;
-			info.SCFix = SkyChaseResolutionFix;
-			info.Chaos2CrashFix = Chaos2CrashFix;
-			info.ChunkSpecFix = ChunkSpecularFix;
-			info.E102PolyFix = E102NGonFix;
-			info.ChaoPanelFix = ChaoPanelFix;
-			info.PixelOffSetFix = PixelOffSetFix;
-			info.LightFix = LightFix;
-			info.KillGbix = KillGBIX;
-			info.DisableCDCheck = DisableCDCheck;
-		}
-
-		public void ToConfigs(ref SADXLoaderInfo info)
-		{
-			ToLoaderInfo(ref info);
-		}
 	}
 
 	public class GameSettings
@@ -980,148 +787,21 @@ namespace SAModManager.Configuration.SADX
 		}
 
 		/// <summary>
-		/// Deprecated in v2, see <see cref="WriteConfigs"/>
-		/// </summary>
-		/// <param name="managerSettings"></param>
-		/// <returns></returns>
-		private SADXLoaderInfo ConvertToLoaderInfo(ManagerSettings managerSettings)
-		{
-			SADXLoaderInfo loaderInfo = new();
-
-			// Manager Settings
-			loaderInfo.devMode = managerSettings.EnableDeveloperMode;
-			loaderInfo.managerOpen = managerSettings.KeepManagerOpen;
-			loaderInfo.Theme = managerSettings.Theme;
-			loaderInfo.Language = managerSettings.Language;
-			loaderInfo.UpdateCheck = managerSettings.UpdateSettings.EnableManagerBootCheck;
-			loaderInfo.ModUpdateCheck = managerSettings.UpdateSettings.EnableModsBootCheck;
-
-			// Mods & Codes
-			loaderInfo.Mods = EnabledMods;
-			loaderInfo.EnabledCodes = EnabledCodes;
-
-			// Graphics
-			loaderInfo.ScreenNum = Graphics.SelectedScreen;
-			loaderInfo.HorizontalResolution = Graphics.HorizontalResolution;
-			loaderInfo.VerticalResolution = Graphics.VerticalResolution;
-			loaderInfo.ForceAspectRatio = Graphics.Enable43ResolutionRatio;
-			loaderInfo.EnableVsync = Graphics.EnableVsync;
-			loaderInfo.PauseWhenInactive = Graphics.EnablePauseOnInactive;
-			loaderInfo.WindowedFullscreen = Graphics.EnableBorderless;
-			loaderInfo.StretchFullscreen = Graphics.EnableScreenScaling;
-			loaderInfo.CustomWindowSize = Graphics.EnableCustomWindow;
-			loaderInfo.WindowWidth = Graphics.CustomWindowWidth;
-			loaderInfo.WindowHeight = Graphics.CustomWindowHeight;
-			loaderInfo.MaintainWindowAspectRatio = Graphics.EnableKeepResolutionRatio;
-			loaderInfo.ResizableWindow = Graphics.EnableResizableWindow;
-			loaderInfo.BackgroundFillMode = Graphics.FillModeBackground;
-			loaderInfo.FmvFillMode = Graphics.FillModeFMV;
-			loaderInfo.ScaleHud = Graphics.EnableUIScaling;
-			loaderInfo.AutoMipmap = Graphics.EnableForcedMipmapping;
-			loaderInfo.TextureFilter = Graphics.EnableForcedTextureFilter;
-
-            // Input
-            loaderInfo.InputModEnabled = Controller.EnabledInputMod;
-
-			// Sound
-			loaderInfo.EnableBassMusic = Sound.EnableBassMusic;
-			loaderInfo.EnableBassSFX = Sound.EnableBassSFX;
-			loaderInfo.SEVolume = Sound.SEVolume;
-
-			// Patches
-			loaderInfo.HRTFSound = Patches.HRTFSound;
-			loaderInfo.CCEF = Patches.KeepCamSettings;
-			loaderInfo.PolyBuff = Patches.FixVertexColorRendering;
-			loaderInfo.MaterialColorFix = Patches.MaterialColorFix;
-			loaderInfo.NodeLimit = Patches.NodeLimit;
-			loaderInfo.FovFix = Patches.FOVFix;
-			loaderInfo.SCFix = Patches.SkyChaseResolutionFix;
-			loaderInfo.Chaos2CrashFix = Patches.Chaos2CrashFix;
-			loaderInfo.ChunkSpecFix = Patches.ChunkSpecularFix;
-			loaderInfo.E102PolyFix = Patches.E102NGonFix;
-			loaderInfo.ChaoPanelFix = Patches.ChaoPanelFix;
-			loaderInfo.PixelOffSetFix = Patches.PixelOffSetFix;
-			loaderInfo.LightFix = Patches.LightFix;
-			loaderInfo.KillGbix = Patches.KillGBIX;
-			loaderInfo.DisableCDCheck = Patches.DisableCDCheck;
-			loaderInfo.ExtendedSaveSupport = Patches.ExtendedSaveSupport;
-
-
-            // Debug
-            loaderInfo.DebugConsole = DebugSettings.EnableDebugConsole;
-			loaderInfo.DebugScreen = DebugSettings.EnableDebugScreen;
-			loaderInfo.DebugFile = DebugSettings.EnableDebugFile;
-			loaderInfo.DebugCrashLog = DebugSettings.EnableDebugCrashLog;
-
-			// Test Spawn
-			loaderInfo.TestSpawnLevel = TestSpawn.LevelIndex;
-			loaderInfo.TestSpawnAct = TestSpawn.ActIndex;
-			loaderInfo.TestSpawnCharacter = TestSpawn.CharacterIndex;
-			loaderInfo.TestSpawnEvent = TestSpawn.EventIndex;
-			loaderInfo.TestSpawnGameMode = TestSpawn.GameModeIndex;
-			loaderInfo.TestSpawnSaveID = TestSpawn.SaveIndex;
-			loaderInfo.TextLanguage = TestSpawn.GameTextLanguage;
-			loaderInfo.VoiceLanguage = TestSpawn.GameVoiceLanguage;
-			loaderInfo.TestSpawnPositionEnabled = TestSpawn.UsePosition;
-			loaderInfo.TestSpawnX = (int)TestSpawn.XPosition;
-			loaderInfo.TestSpawnY = (int)TestSpawn.YPosition;
-			loaderInfo.TestSpawnZ = (int)TestSpawn.ZPosition;
-			loaderInfo.TestSpawnRotation = TestSpawn.Rotation;
-			loaderInfo.TestSpawnRotationHex = (loaderInfo.TestSpawnRotation > 0) ? true : false;
-
-			return loaderInfo;
-		}
-
-		/// <summary>
-		/// Deprecated in v2, use <see cref="WriteConfigs"/>
-		/// </summary>
-		/// <param name="path"></param>
-		public void WriteToLoaderInfo(string path, ManagerSettings managerSettings)
-		{
-			if (Directory.Exists(path))
-			{
-				SADXLoaderInfo loaderInfo = ConvertToLoaderInfo(managerSettings);
-				string loaderInfoPath = Path.Combine(path, "SADXModLoader.ini");
-
-				IniSerializer.Serialize(loaderInfo, loaderInfoPath);
-			}
-			else
-			{
-				MessageWindow message = new MessageWindow(Lang.GetString("MessageWindow.Errors.LoaderFailedToSave.Title"), Lang.GetString("MessageWindow.Errors.LoaderFailedToSave"),
-					icon: MessageWindow.Icons.Error);
-				message.ShowDialog();
-			}
-		}
-
-		/// <summary>
 		/// Loads LoaderInfo and SADXConfigFile into GameSettings. This is intended to only be used for a first boot.
 		/// </summary>
 		public void LoadConfigs(string iniSource)
 		{
-			SADXLoaderInfo info = new();
 			SADXConfigFile config = new();
 			var JsonSerializerSettings = new JsonSerializerOptions();
 			JsonSerializerSettings.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-
-			string loaderInfoPath = iniSource;
-
-            if (File.Exists(loaderInfoPath))
-				info = IniSerializer.Deserialize<SADXLoaderInfo>(loaderInfoPath);
 
             string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[0]);
 			if (File.Exists(configPath))
 				config = IniSerializer.Deserialize<SADXConfigFile>(configPath);
 
-			Graphics.LoadConfigs(ref info, ref config);
-			Controller.LoadConfigs(ref info, ref config);
-			Sound.LoadConfigs(ref info, ref config);
-			TestSpawn.LoadConfigs(ref info);
-			Patches.LoadConfigs(ref info);
-
-			DebugSettings.EnableDebugConsole = info.DebugConsole;
-			DebugSettings.EnableDebugScreen = info.DebugScreen;
-			DebugSettings.EnableDebugFile = info.DebugFile;
-			DebugSettings.EnableDebugCrashLog = info.DebugCrashLog;
+			Graphics.LoadConfigs(ref config);
+			Controller.LoadConfigs(ref config);
+			Sound.LoadConfigs(ref config);
 		}
 
 		/// <summary>
@@ -1129,29 +809,14 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		public void WriteConfigs()
 		{
-			SADXLoaderInfo info = new SADXLoaderInfo();
 			SADXConfigFile config = new SADXConfigFile();
 
-			info.Mods = EnabledMods;
-			info.EnabledCodes = EnabledCodes;
-
-			Graphics.ToConfigs(ref info, ref config);
-			Controller.ToConfigs(ref info, ref config);
-			Sound.ToConfigs(ref info, ref config);
-			TestSpawn.ToConfigs(ref info);
-			Patches.ToConfigs(ref info);
-
-			// Debug Settings
-			info.DebugConsole = DebugSettings.EnableDebugConsole;
-			info.DebugScreen = DebugSettings.EnableDebugScreen;
-			info.DebugFile = DebugSettings.EnableDebugFile;
-			info.DebugCrashLog = DebugSettings.EnableDebugCrashLog;
+			Graphics.ToConfigs(ref config);
+			Controller.ToConfigs(ref config);
+			Sound.ToConfigs(ref config);
 
 			if (Directory.Exists(GamePath))
 			{
-                string loaderInfoPath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, "SADXModLoader.ini"));
-                IniSerializer.Serialize(info, loaderInfoPath);
-
 				string configPath = Path.Combine(GamePath, App.CurrentGame.GameConfigFile[0]);
 				IniSerializer.Serialize(config, configPath);
 			}
@@ -1238,7 +903,5 @@ namespace SAModManager.Configuration.SADX
 
 			}
 		}
-
-		
 	}
 }

@@ -27,6 +27,8 @@ using SAModManager.Codes;
 using System.Windows.Media.Imaging;
 using System.Reflection;
 using SAModManager.Profile;
+using SAModManager.Configuration.SA2;
+using SAModManager.Configuration.SADX;
 
 namespace SAModManager
 {
@@ -1484,7 +1486,7 @@ namespace SAModManager
                     gameConfigFile = File.Exists(gameConfig[0]) ? IniSerializer.Deserialize<SADXConfigFile>(gameConfig[0]) : new SADXConfigFile();
                     break;
                 case SetGame.SA2:
-                    gameConfigFile = File.Exists(gameConfig[1]) ? IniSerializer.Deserialize<SA2ConfigFile>(gameConfig[1]) : new SA2ConfigFile();
+                    gameConfigFile = File.Exists(gameConfig[1]) ? SA2GameConfig.Deserialize(gameConfig[1]) : new SA2GameConfig();
                     break;
             }
         }
