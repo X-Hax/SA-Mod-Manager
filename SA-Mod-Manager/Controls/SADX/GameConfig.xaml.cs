@@ -34,16 +34,21 @@ namespace SAModManager.Controls.SADX
 		private static string patchesPath = null;
 		#endregion
 
-		public GameConfig(ref object gameSettings, ref object gameConfig)
+		public GameConfig(ref object gameSettings)
 		{
 			InitializeComponent();
 			GameProfile = (GameSettings)gameSettings;
 			graphics = new GraphicsHelper(ref comboScreen);
 			UpdateAppLauncherBtn();
-			string pathDest = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
-			if (File.Exists(pathDest))
-				patchesPath = pathDest;
-			SetPatches();
+            if (Directory.Exists(App.CurrentGame.modDirectory))
+            {
+
+                string pathDest = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
+                if (File.Exists(pathDest))
+                    patchesPath = pathDest;
+
+                SetPatches();
+            }
             Loaded += GameConfig_Loaded;
         }
 

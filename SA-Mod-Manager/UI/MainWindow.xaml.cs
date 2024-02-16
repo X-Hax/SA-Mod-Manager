@@ -171,43 +171,31 @@ namespace SAModManager
                 return;
             }
 
-            
-            if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == true)
-            {
-                return;
-            }
 
-            if (App.CurrentGame.loader.installed)
+            if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
-                if (chkUpdatesML.IsChecked == true)
+                if (App.CurrentGame.loader.installed)
                 {
-                    await App.PerformUpdateLoaderCheck();
-                    await App.PerformUpdateCodesCheck();
-                    await App.PerformUpdatePatchesCheck();
+                    if (chkUpdatesML.IsChecked == true)
+                    {
+                        await App.PerformUpdateLoaderCheck();
+                        await App.PerformUpdateCodesCheck();
+                        await App.PerformUpdatePatchesCheck();
+                    }
+
+                    if (App.CurrentGame.id == SetGame.SADX)
+                    {
+                        await App.PerformUpdateAppLauncherCheck();
+                    }
                 }
 
-                if (App.CurrentGame.id == SetGame.SADX)
-                {
-                    await App.PerformUpdateAppLauncherCheck();
-                }
+                await CheckForModUpdates();
             }
-
-            await CheckForModUpdates();
 
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             checkForUpdate = false;
-            Dispatcher.Invoke(Refresh);
 
-           if (setGame == SetGame.None || string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
-            {
-                if (await Steam.FindAndSetCurGame())
-                {
-                    Load(true);
-                    await ForceInstallLoader();
-                    UpdateButtonsState();
-                    Save();
-                }
-            }
+            Dispatcher.Invoke(Refresh);
 #endif
         }
 
@@ -1320,7 +1308,7 @@ namespace SAModManager
             {
                 WorkingDirectory = folderPath,
                 UseShellExecute = true,
-            
+
             }));
 
             process?.WaitForInputIdle(10000);
@@ -1390,13 +1378,13 @@ namespace SAModManager
             {
                 case SetGame.SADX:
                     EnableUI(true);
-                    stackPanel.Children.Add(new Controls.SADX.GameConfig(ref GameProfile, ref gameConfigFile));
+                    stackPanel.Children.Add(new Controls.SADX.GameConfig(ref GameProfile));
                     tsPanel.Children.Add(new Controls.SADX.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.SA2:
                     EnableUI(true);
-					stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile, ref gameConfigFile));
-					tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
+                    stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile));
+                    tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.None:
                 default:
@@ -1627,13 +1615,13 @@ namespace SAModManager
                 ComboGameSelection.SelectedValue = App.CurrentGame;
         }
 
-       private void SaveSADXSettings()
+        private void SaveSADXSettings()
         {
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
-			Controls.SADX.GameConfig gameConfig = (Controls.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
+            Controls.SADX.GameConfig gameConfig = (Controls.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
             gameConfig.SavePatches(ref GameProfile);
-			Controls.SADX.TestSpawn spawnConfig = (Controls.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
+            Controls.SADX.TestSpawn spawnConfig = (Controls.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
 
             Configuration.SADX.GameSettings sadxSettings = GameProfile as Configuration.SADX.GameSettings;
 
@@ -1689,7 +1677,7 @@ namespace SAModManager
         public async Task Load(bool newSetup = false)
         {
             if (setGame != SetGame.None)
-            {                    
+            {
                 // Load Profiles before doing anything.
                 string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
                 GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
@@ -2568,7 +2556,7 @@ namespace SAModManager
 
         private string getSA2Icon()
         {
-            Random rand = new Random();
+            Random rand = new();
             string name = "Manager/";
 
             switch (rand.Next(12))
@@ -2615,8 +2603,7 @@ namespace SAModManager
         {
             try
             {
-                var iconTitleBar = GetTemplateChild(titleBarName) as Image;
-                if (iconTitleBar != null)
+                if (GetTemplateChild(titleBarName) is Image iconTitleBar)
                 {
                     Assembly assembly = Assembly.GetExecutingAssembly();
                     string fullResourceName = assembly.GetName().Name;

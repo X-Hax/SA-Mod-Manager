@@ -26,7 +26,7 @@ namespace SAModManager.Controls.SA2
         private static string patchesPath = null;
         #endregion
 
-        public GameConfig(ref object gameSettings, ref object gameConfig)
+        public GameConfig(ref object gameSettings)
         {
             InitializeComponent();
             GameProfile = (GameSettings)gameSettings;
