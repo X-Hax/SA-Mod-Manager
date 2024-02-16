@@ -31,10 +31,13 @@ namespace SAModManager.Controls.SA2
             InitializeComponent();
             GameProfile = (GameSettings)gameSettings;
             graphics = new GraphicsHelper(ref comboScreen);
-            string pathDest = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
-            if (File.Exists(pathDest))
-                patchesPath = pathDest;
-            SetPatches();
+            if (App.CurrentGame?.modDirectory != null)
+            {
+                string pathDest = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
+                if (File.Exists(pathDest))
+                    patchesPath = pathDest;
+                SetPatches();
+            }
             Loaded += GameConfig_Loaded;
         }
 
