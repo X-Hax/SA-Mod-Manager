@@ -364,7 +364,7 @@ namespace SAModManager
                     {
                         string[] FileName = { newModFolder.SelectedPath };
 
-                        form.InstallMod(FileName, App.CurrentGame.modDirectory);
+                        await form.InstallMod(FileName, App.CurrentGame.modDirectory);
                     }
                     break;
                 case (int)InstallModOptions.Type.NewMod: //create mod
