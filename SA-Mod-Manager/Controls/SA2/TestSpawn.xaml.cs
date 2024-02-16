@@ -25,6 +25,7 @@ namespace SAModManager.Controls.SA2
          public static Dictionary<int, string> LevelNames { get; set; } = new();
 
         #region ComboBox Sources
+
         public static readonly List<string> CharacterNames = new()
         {
             "Sonic",
@@ -53,9 +54,6 @@ namespace SAModManager.Controls.SA2
             "Mission 5",
         };
 
-
-
-   
 
         #endregion
         #endregion
@@ -386,7 +384,7 @@ namespace SAModManager.Controls.SA2
             }
         }
 
-        private void InitTestSpawnLevelList()
+        private static void InitTestSpawnLevelList()
         {
             LevelNames = new()
             {
@@ -462,7 +460,7 @@ namespace SAModManager.Controls.SA2
             };
         }
 
-        private void InitCutsceneList()
+        private static void InitCutsceneList()
         {
 
             EventNames = new Dictionary<int, string>
@@ -535,6 +533,13 @@ namespace SAModManager.Controls.SA2
             };
         }
 
+        private static void AdjustCharIndex(ref int index)
+        {
+            if (index >= 10) //super shadow and big aren't in the list, we adjust the offset from the ComboBox
+            {
+                index += 2;
+            }
+        }
 
         private string GetTestSpawnCommandLine()
         {
@@ -542,10 +547,18 @@ namespace SAModManager.Controls.SA2
 
             if (GameProfile.TestSpawn.CharacterIndex > -1)
                 if (GameProfile.TestSpawn.UseCharacter || GameProfile.TestSpawn.UseManual)
-                    cmdline.Add("-c " + GameProfile.TestSpawn.CharacterIndex.ToString());
-
+                {
+                    int charIndex = GameProfile.TestSpawn.CharacterIndex;
+                    AdjustCharIndex(ref charIndex);
+                    cmdline.Add("-c " + charIndex.ToString());
+                }
+           
             if (GameProfile.TestSpawn.Player2Index > -1)
-                cmdline.Add("-p2 " + GameProfile.TestSpawn.Player2Index.ToString());
+            {
+                int charIndex = GameProfile.TestSpawn.Player2Index;
+                AdjustCharIndex(ref charIndex);
+                cmdline.Add("-p2 " + charIndex.ToString());
+            }
 
             if (GameProfile.TestSpawn.LevelIndex > -1)
             {
