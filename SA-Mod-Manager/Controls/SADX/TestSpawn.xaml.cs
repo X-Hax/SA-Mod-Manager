@@ -572,16 +572,6 @@ namespace SAModManager.Controls.SADX
             });
             tsComboEvent.ItemsSource = EventNames;
             tsComboEvent.DisplayMemberPath = "Value";
-			tsVoiceLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameVoiceLanguage")
-			{
-				Source = GameProfile.TestSpawn,
-				Mode = BindingMode.TwoWay
-			});
-			tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
-			{
-				Source = GameProfile.TestSpawn,
-				Mode = BindingMode.TwoWay
-			});
             tsCheckManual.SetBinding(CheckBox.IsCheckedProperty, new Binding("UseManual")
             {
                 Source = GameProfile.TestSpawn,

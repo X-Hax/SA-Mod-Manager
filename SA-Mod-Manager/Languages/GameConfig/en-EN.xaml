@@ -8,6 +8,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics">Graphics</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input">Input</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound">Sound</system:String>
+	<system:String x:Key="GameConfig.Tabs.Lang">Language</system:String>
 	<system:String x:Key="GameConfig.Tabs.Patches">Patches</system:String>
 
 	<!--Graphics Tab Strings-->
@@ -74,7 +75,12 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Enable UI Scaling</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Enable D3D8to9</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Update D3D8to9</system:String>
-    <!--#endregion-->
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Download DXVK</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Using the Download button takes you to a download for DXVK. This can improve performance and stability with SA2. It will only take you to the download for the program, it will not install it.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Once you download the archive, you only need to take the d3d9.dll from the archive and place it in the game folder where sonic2app is.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Language.SADX">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. These options are overwritten by the save file once one is loaded.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Language.SA2">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. Voice option will change depending on the loaded save file.</system:String>
+	<!--#endregion-->
     
     <!--Input Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input">Input Options</system:String>

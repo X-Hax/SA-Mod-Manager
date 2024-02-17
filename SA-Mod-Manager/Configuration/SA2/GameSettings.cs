@@ -12,6 +12,16 @@ using SAModManager.Configuration.SADX;
 // TODO: Build SA2 Game Settings
 namespace SAModManager.Configuration.SA2
 {
+	public enum SA2Lang
+	{
+		English = 0,
+		Deutsch = 1,
+		Espanol = 2,
+		Francais = 3,
+		Italiano = 4,
+		Japanese = 5,
+	}
+
 	public class GraphicsSettings
 	{
 		public enum DisplayMode
@@ -81,6 +91,19 @@ namespace SAModManager.Configuration.SA2
 		/// </summary>
 		[DefaultValue(true)]
 		public bool KeepAspectWhenResizing { get; set; }
+
+		/// <summary>
+		/// Placed here to provide parity with the launcher as it also allows a language selection. 
+		/// This will be saved and used on each boot.
+		/// </summary>
+		[DefaultValue((int)SA2Lang.English)]
+		public int Text { get; set; } = (int)SA2Lang.English;
+
+		/// <summary>
+		/// Allows skipping the intro to the game.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool SkipIntro { get; set; } = false;
 
 		/// <summary>
 		/// Converts from the original settings file.

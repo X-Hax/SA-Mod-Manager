@@ -10,7 +10,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using SAModManager.Configuration.SA2;
 
-
 namespace SAModManager.Controls.SA2
 {
 	/// <summary>
@@ -381,7 +380,27 @@ namespace SAModManager.Controls.SA2
                 Mode = BindingMode.TwoWay
             });
 
+			tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
+			{
+				Source = GameProfile.TestSpawn,
+				Mode = BindingMode.TwoWay
+			});
+			tsVoiceLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameVoiceLanguage")
+			{
+				Source = GameProfile.TestSpawn,
+				Mode = BindingMode.TwoWay
+			});
         }
-        #endregion
-    }
+		#endregion
+
+		private void DownloadDXVK_Click(object sender, RoutedEventArgs e)
+		{
+			var ps = new ProcessStartInfo("https://github.com/doitsujin/dxvk/releases")
+			{
+				UseShellExecute = true,
+				Verb = "open"
+			};
+			Process.Start(ps);
+		}
+	}
 }

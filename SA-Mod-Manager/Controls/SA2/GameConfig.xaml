@@ -142,10 +142,24 @@
 					<GroupBox x:Name="grpGraphicsVisuals" Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Other}" Grid.Row="1">
 						<Grid>
 							<Grid.RowDefinitions>
-								<RowDefinition Height="30"/>
+								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
-							<Button Content="Get DXVK" Margin="5,0,5,0"/>
+
+							<CheckBox Content="Skip Intro" Margin="5"/>
+
+							<Grid Grid.Row="1">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="30"/>
+								</Grid.RowDefinitions>
+								<Separator Margin="5"/>
+								<TextBlock Text="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel}" Grid.Row="1" TextAlignment="Center" Margin="5"/>
+								<TextBlock Text="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2}" Grid.Row="2" TextAlignment="Center" Margin="5"/>
+								<Button Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.GetDXVK}" Grid.Row="3" Margin="5,0,5,0" Click="DownloadDXVK_Click"/>
+							</Grid>
 						</Grid>
 					</GroupBox>
 				</Grid>
@@ -160,8 +174,39 @@
 			<TabItem x:Name="TabSound" Header="{DynamicResource GameConfig.Tabs.Sound}" Margin="6,0,-6,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Sound}" Visibility="Collapsed">
 				
 			</TabItem>
+			
+			<TabItem x:Name="TabLang" Header="{DynamicResource GameConfig.Tabs.Lang}" Margin="3,0,-3,0">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<TextBlock Grid.Row="0" Text="{DynamicResource GameConfig.Tabs.Language.SA2}" Margin="5" TextAlignment="Center"/>
+					<Grid Grid.Row="1" Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="132"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="132"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<Label Content="{DynamicResource TestSpawn.Language.Text}" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+						<ComboBox x:Name="tsTextLanguage" Grid.Column="1" SelectedIndex="0" Margin="5" TabIndex="11">
+							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.English}"/>
+							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.German}"/>
+							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.French}"/>
+							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.Spanish}"/>
+							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.Japanese}"/>
+						</ComboBox>
+						<Label Content="{DynamicResource TestSpawn.Language.Voice}" Grid.Column="2" VerticalAlignment="Center"/>
+						<ComboBox x:Name="tsVoiceLanguage" Grid.Column="3" SelectedIndex="1" Margin="5" TabIndex="12">
+							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.Japanese}"/>
+							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.English}"/>
+						</ComboBox>
+					</Grid>
+				</Grid>
+			</TabItem>
 
-			<TabItem x:Name="TabPatches" Header="{DynamicResource GameConfig.Tabs.Patches}" Margin="3,0,-3,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Patches}">
+			<TabItem x:Name="TabPatches" Header="{DynamicResource GameConfig.Tabs.Patches}" Margin="6,0,-6,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Patches}">
 				<Grid x:Name="gridPatchesList">
 					<!--This Grid manages the Codes list.-->
 					<Grid>

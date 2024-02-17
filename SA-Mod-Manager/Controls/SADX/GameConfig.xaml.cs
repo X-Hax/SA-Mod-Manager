@@ -849,6 +849,17 @@ namespace SAModManager.Controls.SADX
 				Source = GameProfile.Sound,
 				Mode = BindingMode.TwoWay
 			});
+
+			tsVoiceLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameVoiceLanguage")
+			{ 
+				Source = GameProfile.TestSpawn,
+				Mode = BindingMode.TwoWay
+			});
+			tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
+			{
+				Source = GameProfile.TestSpawn,
+				Mode = BindingMode.TwoWay
+			});
 		}
         #endregion
 
