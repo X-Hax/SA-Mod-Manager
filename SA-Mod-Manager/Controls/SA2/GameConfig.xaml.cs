@@ -367,11 +367,6 @@ namespace SAModManager.Controls.SA2
 			});
 
             // Settings
-            chkVSync.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableVsync")
-            {
-                Source = GameProfile.Graphics,
-                Mode = BindingMode.TwoWay
-            });
             chkPause.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnablePauseOnInactive")
             {
                 Source = GameProfile.Graphics,
