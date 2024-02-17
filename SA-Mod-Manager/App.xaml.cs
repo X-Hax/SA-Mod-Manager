@@ -590,13 +590,12 @@ namespace SAModManager
             return await SAModManager.Startup.StartupCheck();
         }
 
-        private ManagerSettings LoadManagerConfig()
+        private static ManagerSettings LoadManagerConfig()
         {
             ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
 
             switch (settings.CurrentSetGame)
             {
-                default:
                 case (int)SetGame.SADX:
                     CurrentGame = GamesInstall.SonicAdventure;
                     break;

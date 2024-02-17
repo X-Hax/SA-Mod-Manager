@@ -112,7 +112,7 @@ namespace SAModManager
                     App.CurrentGame.gameDirectory = currentPath;
                     UIHelper.ToggleButton(ref btnOpenGameDir, true);
                     await VanillaTransition.ConvertOldProfile(false, currentPath);
-                    Load(true);
+                    await Load(true);
                     isValid = true;
                     break;
                 }
@@ -135,7 +135,7 @@ namespace SAModManager
             SetModManagerVersion();
 
             ViewModel.Games = App.GamesList;
-            Load();
+            await Load();
             DataContext = ViewModel;
             SetBindings();
 
@@ -149,12 +149,15 @@ namespace SAModManager
                 new SplashScreenDialog().ShowDialog();
             }
 
-            var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
-            await oneClick.UriInit();
-
-            if (oneClick.isEmpty == false)
+            if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
-                return;
+                var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
+                await oneClick.UriInit();
+
+                if (oneClick.isEmpty == false)
+                {
+                    return;
+                }
             }
 
 #if !DEBUG
@@ -168,37 +171,31 @@ namespace SAModManager
                 return;
             }
 
-            if (App.CurrentGame.loader.installed)
+
+            if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
-                if (chkUpdatesML.IsChecked == true)
+                if (App.CurrentGame.loader.installed)
                 {
-                    await App.PerformUpdateLoaderCheck();
-                    await App.PerformUpdateCodesCheck();
-                    await App.PerformUpdatePatchesCheck();
+                    if (chkUpdatesML.IsChecked == true)
+                    {
+                        await App.PerformUpdateLoaderCheck();
+                        await App.PerformUpdateCodesCheck();
+                        await App.PerformUpdatePatchesCheck();
+                    }
+
+                    if (App.CurrentGame.id == SetGame.SADX)
+                    {
+                        await App.PerformUpdateAppLauncherCheck();
+                    }
                 }
 
-                if (App.CurrentGame.id == SetGame.SADX)
-                {
-                    await App.PerformUpdateAppLauncherCheck();
-                }
+                await CheckForModUpdates();
             }
-
-            await CheckForModUpdates();
 
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             checkForUpdate = false;
-            Dispatcher.Invoke(Refresh);
 
-           if (setGame == SetGame.None || string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
-            {
-                if (await Steam.FindAndSetCurGame())
-                {
-                    Load(true);
-                    await ForceInstallLoader();
-                    UpdateButtonsState();
-                    Save();
-                }
-            }
+            Dispatcher.Invoke(Refresh);
 #endif
         }
 
@@ -364,7 +361,7 @@ namespace SAModManager
                     {
                         string[] FileName = { newModFolder.SelectedPath };
 
-                        form.InstallMod(FileName, App.CurrentGame.modDirectory);
+                        await form.InstallMod(FileName, App.CurrentGame.modDirectory);
                     }
                     break;
                 case (int)InstallModOptions.Type.NewMod: //create mod
@@ -1080,14 +1077,14 @@ namespace SAModManager
                 tempPath = path;
                 App.CurrentGame.gameDirectory = tempPath;
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                Load(true);
+                await Load(true);
                 await ForceInstallLoader();
                 UpdateButtonsState();
                 Save();
             }
         }
 
-        //To do, rework this mess to handle multiple games and clean everything.
+
         private async void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -1311,7 +1308,7 @@ namespace SAModManager
             {
                 WorkingDirectory = folderPath,
                 UseShellExecute = true,
-            
+
             }));
 
             process?.WaitForInputIdle(10000);
@@ -1381,13 +1378,13 @@ namespace SAModManager
             {
                 case SetGame.SADX:
                     EnableUI(true);
-                    stackPanel.Children.Add(new Controls.SADX.GameConfig(ref GameProfile, ref gameConfigFile));
+                    stackPanel.Children.Add(new Controls.SADX.GameConfig(ref GameProfile));
                     tsPanel.Children.Add(new Controls.SADX.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.SA2:
                     EnableUI(true);
-					stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile, ref gameConfigFile));
-					tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
+                    stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile));
+                    tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
                     break;
                 case SetGame.None:
                 default:
@@ -1543,7 +1540,10 @@ namespace SAModManager
 
         private void UpdateButtonsState()
         {
-            bool installed = App.CurrentGame != null ? App.CurrentGame.loader.installed : false;
+            if (App.CurrentGame.loader is null)
+                return;
+
+            bool installed = App.CurrentGame != null && App.CurrentGame.loader.installed;
             UIHelper.ToggleImgButton(ref btnCheckUpdates, installed);
             UIHelper.ToggleImgButton(ref btnHealthCheck, installed);
             UpdateBtnInstallLoader_State();
@@ -1572,7 +1572,7 @@ namespace SAModManager
 
         private void LoadSA2Settings(string profilePath, bool newSetup = false)
         {
-            // TODO: Add SA2 Support
+
             Configuration.SA2.GameSettings sa2 = File.Exists(profilePath) ? Configuration.SA2.GameSettings.Deserialize(profilePath) : new();
             GameProfile = sa2;
 
@@ -1615,13 +1615,13 @@ namespace SAModManager
                 ComboGameSelection.SelectedValue = App.CurrentGame;
         }
 
-       private void SaveSADXSettings()
+        private void SaveSADXSettings()
         {
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
-			Controls.SADX.GameConfig gameConfig = (Controls.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
+            Controls.SADX.GameConfig gameConfig = (Controls.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
             gameConfig.SavePatches(ref GameProfile);
-			Controls.SADX.TestSpawn spawnConfig = (Controls.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
+            Controls.SADX.TestSpawn spawnConfig = (Controls.SADX.TestSpawn)(tabTestSpawn.Content as Grid).Children[0];
 
             Configuration.SADX.GameSettings sadxSettings = GameProfile as Configuration.SADX.GameSettings;
 
@@ -1674,9 +1674,8 @@ namespace SAModManager
                 }
             }
         }
-        public async void Load(bool newSetup = false)
+        public async Task Load(bool newSetup = false)
         {
-
             if (setGame != SetGame.None)
             {
                 // Load Profiles before doing anything.
@@ -1701,8 +1700,6 @@ namespace SAModManager
                     ManualLoaderUpdateCheck();
                 InitCodes();
                 LoadModList();
-
-
             }
             else
             {
@@ -1714,8 +1711,6 @@ namespace SAModManager
             SetGameUI();
 
             await Task.Delay(200);
-
-            Refresh();
         }
 
         public void Save()
@@ -2331,10 +2326,13 @@ namespace SAModManager
 
         private void AddModBtn_UpdateState()
         {
-            bool isInstalled = App.CurrentGame.loader.installed;
-            Image iconConfig = FindName("newIcon") as Image;
-            UIHelper.ToggleImage(ref iconConfig, isInstalled);
-            UIHelper.ToggleImgButton(ref NewModBtn, isInstalled);
+            if (App.CurrentGame.loader is not null)
+            {
+                bool isInstalled = App.CurrentGame.loader.installed;
+                Image iconConfig = FindName("newIcon") as Image;
+                UIHelper.ToggleImage(ref iconConfig, isInstalled);
+                UIHelper.ToggleImgButton(ref NewModBtn, isInstalled);
+            }
         }
         #endregion
 
@@ -2407,10 +2405,11 @@ namespace SAModManager
 
         private void UpdateBtnInstallLoader_State()
         {
-            if (btnInstallLoader is null)
+            if (btnInstallLoader is null || App.CurrentGame is null || App.CurrentGame.loader is null)
                 return;
 
             //Update Text Button of Mod Loader Installer
+
             string textKey = App.CurrentGame.loader.installed ? "Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader" : "Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader";
             TextBlock txt = FindName("txtInstallLoader") as TextBlock;
             txt.Text = Lang.GetString(textKey);
@@ -2440,6 +2439,9 @@ namespace SAModManager
 
         private void UpdateDLLData()
         {
+            if (App.CurrentGame.loader is null)
+                return;
+
             if (File.Exists(App.CurrentGame.loader.loaderdllpath) && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
             {
                 File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
@@ -2554,7 +2556,7 @@ namespace SAModManager
 
         private string getSA2Icon()
         {
-            Random rand = new Random();
+            Random rand = new();
             string name = "Manager/";
 
             switch (rand.Next(12))
@@ -2601,8 +2603,7 @@ namespace SAModManager
         {
             try
             {
-                var iconTitleBar = GetTemplateChild(titleBarName) as Image;
-                if (iconTitleBar != null)
+                if (GetTemplateChild(titleBarName) is Image iconTitleBar)
                 {
                     Assembly assembly = Assembly.GetExecutingAssembly();
                     string fullResourceName = assembly.GetName().Name;
@@ -2651,7 +2652,7 @@ namespace SAModManager
                         EnabledCodes.Clear();
                         App.CurrentGame = game;
                         GamesInstall.HandleGameSwap(game);
-                        Load();
+                        await Load();
                         await UpdateManagerInfo();
                         UpdateManagerIcons();
                         break;
