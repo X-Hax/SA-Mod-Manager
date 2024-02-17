@@ -187,7 +187,8 @@ namespace SAModManager.Updater
                 UpdateHeaderTextDirect(Lang.GetString("Updater.DL.Mod.ParsingManifest"));
                 string[] subfolders = Directory.GetDirectories(dataDir);
 
-                if (File.Exists(Path.Combine(dataDir, "mod.ini")))
+                //if the mod didn't come with any folder, create one and move all the files there
+                if (File.Exists(Path.Combine(dataDir, "mod.ini"))) 
                 {
                     string newDirectory = Path.Combine(dataDir, Path.GetFileName(filePath) + "_Dir");
                     Directory.CreateDirectory(newDirectory);
