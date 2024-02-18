@@ -148,7 +148,10 @@ namespace SAModManager.Controls
 			
 			if (regex.IsMatch(e.Text))
 			{
-				Value = double.Parse(e.Text);
+				if (double.TryParse(e.Text, out double value))
+				{
+					Value = value;
+				}
 				e.Handled = true;
 			}
 		}
