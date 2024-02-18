@@ -71,7 +71,7 @@ namespace SAModManager
         /// List of the game's expected configuration files. Is a List due to SA2.
         /// </summary>
         public List<string> GameConfigFile { get; set; }
-        public SetGame id;
+        public SetGame id = SetGame.None;
         public string gameAbbreviation { get; set; }
         public string oneClickName { get; set; }
     }
@@ -683,9 +683,9 @@ namespace SAModManager
             {
                 if (File.Exists(path))
                 {
-                    ((MainWindow)App.Current.MainWindow).setGame = game.id;
+     
                     App.ManagerSettings.CurrentSetGame = (int)game.id;
-                    if (((MainWindow)App.Current.MainWindow).setGame != SetGame.None)
+                    if (App.CurrentGame.id != SetGame.None)
                     {
                         ((MainWindow)App.Current.MainWindow).tempPath = path;
                         App.CurrentGame.gameDirectory = path;
@@ -700,9 +700,9 @@ namespace SAModManager
                         path = Path.Combine(pathValue, "steamapps", "common", game.gameName);
                         if (Directory.Exists(path))
                         {
-                            ((MainWindow)App.Current.MainWindow).setGame = game.id;
+
                             App.ManagerSettings.CurrentSetGame = (int)game.id;
-                            if (((MainWindow)App.Current.MainWindow).setGame != SetGame.None)
+                            if (App.CurrentGame.id != SetGame.None)
                             {
                                 ((MainWindow)App.Current.MainWindow).tempPath = path;
                                 App.CurrentGame.gameDirectory = path;
@@ -841,10 +841,10 @@ namespace SAModManager
         {
             if (Directory.Exists(pathValue))
             {
-                ((MainWindow)App.Current.MainWindow).setGame = await GamesInstall.SetGameInstall(pathValue, game, skipMSG);
+               var setGame = await GamesInstall.SetGameInstall(pathValue, game, skipMSG);
 
-                if (((MainWindow)App.Current.MainWindow).setGame != SetGame.None)
-                {
+                if (setGame != SetGame.None)
+                {   
                     ((MainWindow)App.Current.MainWindow).tempPath = pathValue;
                     App.CurrentGame.gameDirectory = pathValue;
                     return true;

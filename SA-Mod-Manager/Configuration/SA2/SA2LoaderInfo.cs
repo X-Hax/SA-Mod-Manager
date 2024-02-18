@@ -92,7 +92,7 @@ namespace SAModManager.Configuration.SA2
 		[DefaultValue(true)]
 		public bool SyncLoad { get; set; } = true;
 		[DefaultValue(true)]
-		public bool ExtendVertexBuffer { get; set; } = true; //incrase the vertex limit per mesh to 32k
+		public bool ExtendVertexBuffer { get; set; } = true; //increase the vertex limit per mesh to 32k
 		[DefaultValue(true)]
 		public bool EnvMapFix { get; set; } = true;
 		[DefaultValue(true)]

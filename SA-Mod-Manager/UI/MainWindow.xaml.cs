@@ -49,7 +49,6 @@ namespace SAModManager
         string patchdatpath = "mods\\Patches.dat";
 
         // Shared Variables
-        public SetGame setGame = SetGame.None;
         CodeList mainCodes = null;
         List<Code> codes = null;
         protected Timer StatusTimer;
@@ -77,20 +76,6 @@ namespace SAModManager
         public MainWindow()
         {
             InitializeComponent();
-
-            if (App.ManagerSettings.CurrentSetGame > 0)
-            {
-                switch (App.ManagerSettings.CurrentSetGame)
-                {
-                    case 1:
-                        setGame = SetGame.SADX;
-                        break;
-                    case 2:
-                        setGame = SetGame.SA2;
-                        break;
-                }
-            }
-
             UpdateDLLData();
         }
 
@@ -103,9 +88,9 @@ namespace SAModManager
                 if (File.Exists(game.exeName))
                 {
                     if (game == GamesInstall.SonicAdventure)
-                        setGame = SetGame.SADX;
+                        App.CurrentGame = GamesInstall.GetGamePerID(SetGame.SADX);
                     if (game == GamesInstall.SonicAdventure2)
-                        setGame = SetGame.SA2;
+                        App.CurrentGame = GamesInstall.GetGamePerID(SetGame.SA2);
 
                     string currentPath = Environment.CurrentDirectory;
                     tempPath = currentPath;
@@ -1061,7 +1046,7 @@ namespace SAModManager
 
         private async Task ResultPickGame(string path)
         {
-            setGame = await GamesInstall.SetGameInstallManual(path);
+            var setGame = await GamesInstall.SetGameInstallManual(path);
 
             if (setGame == SetGame.None)
             {
@@ -1311,7 +1296,12 @@ namespace SAModManager
 
             }));
 
-            process?.WaitForInputIdle(10000);
+            try
+            {
+                process?.WaitForInputIdle(10000);
+            }
+            catch { }
+
             if ((bool)!checkManagerOpen.IsChecked)
                 Close();
         }
@@ -1374,7 +1364,7 @@ namespace SAModManager
             Grid tsPanel;
             tsPanel = (Grid)tabTestSpawn.Content;
             tsPanel.Children.Clear();
-            switch (setGame)
+            switch (App.CurrentGame.id)
             {
                 case SetGame.SADX:
                     EnableUI(true);
@@ -1412,7 +1402,7 @@ namespace SAModManager
                 codedatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Codes.dat"));
                 patchdatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", "Patches.dat"));
 
-                if (setGame == SetGame.SADX)
+                if (App.CurrentGame?.id == SetGame.SADX)
                     Controls.SADX.GameConfig.UpdateD3D8Paths();
 
                 //this is a failsafe in case the User deleted the Loader file manually without restoring the original files
@@ -1477,7 +1467,7 @@ namespace SAModManager
                 gameConfig.Add(Path.Combine(App.CurrentGame.gameDirectory, file));
             }
 
-            switch (setGame)
+            switch (App.CurrentGame.id)
             {
                 case SetGame.SADX:
                     gameConfigFile = File.Exists(gameConfig[0]) ? IniSerializer.Deserialize<SADXConfigFile>(gameConfig[0]) : new SADXConfigFile();
@@ -1601,7 +1591,7 @@ namespace SAModManager
         {
             string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GameProfiles.GetProfileFilename());
 
-            switch (setGame)
+            switch (App.CurrentGame.id)
             {
                 case SetGame.SADX:
                     LoadSADXSettings(profilePath, newSetup);
@@ -1676,7 +1666,7 @@ namespace SAModManager
         }
         public async Task Load(bool newSetup = false)
         {
-            if (setGame != SetGame.None)
+            if (App.CurrentGame.id != SetGame.None)
             {
                 // Load Profiles before doing anything.
                 string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
@@ -1720,7 +1710,7 @@ namespace SAModManager
                 return;
 
             // Save Manager Settings
-            App.ManagerSettings.CurrentSetGame = (int)setGame;
+            App.ManagerSettings.CurrentSetGame = (int)App.CurrentGame.id;
             App.ManagerSettings.Serialize(App.ManagerConfigFile);
 
             // Save Mods and Codes
@@ -1734,7 +1724,7 @@ namespace SAModManager
                 Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
 
             // Save Game Settings here.
-            switch (setGame)
+            switch (App.CurrentGame.id)
             {
                 case SetGame.SADX:
                     SaveSADXSettings();
@@ -1755,6 +1745,9 @@ namespace SAModManager
         {
             btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
             ViewModel.Modsdata.Clear();
+            mods?.Clear();
+            codes?.Clear();
+
             mods = new Dictionary<string, SAModInfo>();
             codes = new List<Code>(mainCodes.Codes);
             codesSearch = new();
@@ -2359,6 +2352,9 @@ namespace SAModManager
         {
             try
             {
+                if (mainCodes is not null && mainCodes.Codes is not null)
+                    mainCodes.Codes.Clear();
+
                 if (File.Exists(codelstpath))
                     mainCodes = CodeList.Load(codelstpath);
                 else if (File.Exists(codexmlpath))
@@ -2426,15 +2422,13 @@ namespace SAModManager
                 imgInstall.Source = Icon;
         }
 
-        private async Task<bool> UpdateGameConfig(SetGame game)
+        private void UpdateGameConfig(SetGame game)
         {
-            setGame = game;
+            App.CurrentGame = GamesInstall.GetGamePerID(game);
             Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
             LoadGameConfigFile();
             SetGameUI();
             SetBindings();
-            await Task.Delay(0);
-            return true;
         }
 
         private void UpdateDLLData()
@@ -2462,7 +2456,7 @@ namespace SAModManager
                 //now we can move the loader files to the accurate folders.
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
-                await UpdateGameConfig(App.CurrentGame.id);
+                UpdateGameConfig(App.CurrentGame.id);
                 await Startup.EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
@@ -2494,7 +2488,7 @@ namespace SAModManager
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
             }
 
-            await UpdateGameConfig(App.CurrentGame.id);
+            UpdateGameConfig(App.CurrentGame.id);
             await Startup.EnableOneClickInstall();
 
             UIHelper.EnableButton(ref SaveAndPlayButton);
@@ -2541,7 +2535,7 @@ namespace SAModManager
             if (message.isYes != true)
                 return;
 
-            var progress = new HealthChecker(setGame);
+            var progress = new HealthChecker(App.CurrentGame.id);
             progress.ShowDialog();
 
         }
@@ -2608,7 +2602,7 @@ namespace SAModManager
                     Assembly assembly = Assembly.GetExecutingAssembly();
                     string fullResourceName = assembly.GetName().Name;
                     string icon = null;
-                    switch (setGame)
+                    switch (App.CurrentGame.id)
                     {
                         case SetGame.SADX:
                         default:
