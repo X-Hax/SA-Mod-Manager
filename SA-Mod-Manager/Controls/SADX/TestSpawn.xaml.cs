@@ -386,10 +386,10 @@ namespace SAModManager.Controls.SADX
         }
         #endregion
 
-        public TestSpawn(ref object gameSettings, Dictionary<string, SAModInfo> modList, List<string> enabledMods)
+        public TestSpawn(ref object gameSettings, ref Dictionary<string, SAModInfo> modList, ref List<string> enabledMods)
         {
             GameProfile = (gameSettings as GameSettings);
-            SelectedMods = (gameSettings as GameSettings).EnabledMods;
+            SelectedMods = enabledMods;
             GameMods = modList;
 
             InitializeComponent();

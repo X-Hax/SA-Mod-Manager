@@ -67,7 +67,6 @@ namespace SAModManager
         public string tempPath = "";
         public static bool cancelUpdate { get; set; }
 
-        // TODO: Make this generic for handling both games. Maybe do it with a custom class for easier management.
         public Dictionary<string, SAModInfo> mods = null;
         public List<string> EnabledMods = new();
         public List<string> EnabledCodes = new();
@@ -1369,12 +1368,12 @@ namespace SAModManager
                 case SetGame.SADX:
                     EnableUI(true);
                     stackPanel.Children.Add(new Controls.SADX.GameConfig(ref GameProfile));
-                    tsPanel.Children.Add(new Controls.SADX.TestSpawn(ref GameProfile, mods, EnabledMods));
+                    tsPanel.Children.Add(new Controls.SADX.TestSpawn(ref GameProfile, ref mods, ref EnabledMods));
                     break;
                 case SetGame.SA2:
                     EnableUI(true);
                     stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile));
-                    tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile, mods, EnabledMods));
+                    tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile, ref mods, ref EnabledMods));
                     break;
                 case SetGame.None:
                 default:
@@ -1751,8 +1750,6 @@ namespace SAModManager
         {
             btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
             ViewModel.Modsdata.Clear();
-            mods?.Clear();
-            codes?.Clear();
 
             mods = new Dictionary<string, SAModInfo>();
             codes = new List<Code>(mainCodes.Codes);
