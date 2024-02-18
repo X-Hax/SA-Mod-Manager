@@ -68,7 +68,7 @@ namespace SAModManager.Updater
                 }
                 else
                 {
-                    new MessageWindow(Lang.GetString("MessageWindow.Errors.UpdateFailed.Title"), Lang.GetString("MessageWindow.Errors.ManagerUpdate.Error0"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+                    throw new Exception("Couldn't find new version of the manager\n");
                 }
             }
             else
