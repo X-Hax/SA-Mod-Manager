@@ -37,7 +37,6 @@ namespace SAModManager.Controls.SA2
             "Mech Tails",
             "Mech Eggman",
             "Amy",
-            "Super Sonic",
             "Metal Sonic",
             "Chao Walker",
             "Dark Chao Walker",
@@ -126,16 +125,21 @@ namespace SAModManager.Controls.SA2
             }
 
             string executablePath = SelectedMods?.Select(item => GameMods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
-
             string commandLine = GetTestSpawnCommandLine();
+            string folderPath = Path.GetDirectoryName(executablePath);
 
             ProcessStartInfo startInfo = new(executablePath)
             {
-                WorkingDirectory = App.CurrentGame.gameDirectory,
-                Arguments = commandLine
+                WorkingDirectory = folderPath,
+                Arguments = commandLine,
+                UseShellExecute = true,
             };
 
-            Process.Start(startInfo);
+            Process process = Process.Start(startInfo);
+            try
+            {
+                process?.WaitForInputIdle(10000);
+            } catch { }
         }
 
         private void tsComboLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -525,9 +529,9 @@ namespace SAModManager.Controls.SA2
 
         private static void AdjustCharIndex(ref int index)
         {
-            if (index >= 10) //super shadow and big aren't in the list, we adjust the offset from the ComboBox
+            if (index >= 9) //super sonic / shadow and big aren't in the list, we adjust the offset from the ComboBox
             {
-                index += 2;
+                index += 3;
             }
         }
 

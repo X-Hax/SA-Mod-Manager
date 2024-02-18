@@ -427,10 +427,16 @@ namespace SAModManager.Controls.SADX
             ProcessStartInfo startInfo = new(executablePath)
             {
                 WorkingDirectory = App.CurrentGame.gameDirectory,
-                Arguments = commandLine
+                Arguments = commandLine,
+                UseShellExecute = true,
             };
 
-            Process.Start(startInfo);
+            Process process = Process.Start(startInfo);
+            try
+            {
+                process?.WaitForInputIdle(10000);
+            }
+            catch { }
         }
 
         private void tsComboLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
