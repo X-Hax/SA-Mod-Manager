@@ -665,12 +665,6 @@ namespace SAModManager
                         }
                     }
                 }
-
-                if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
-                {
-                    if (App.Current.MainWindow is not null)
-                        ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
-                }
             }
             catch { }
 
