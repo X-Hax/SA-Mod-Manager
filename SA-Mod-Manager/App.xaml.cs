@@ -95,7 +95,7 @@ namespace SAModManager
             SetupThemes();
 
             ManagerSettings = LoadManagerConfig();
-            await ExecuteDependenciesCheck();
+            await SAModManager.Startup.StartupCheck();
 
             await InitUriAsync(args, alreadyRunning);
 
@@ -585,10 +585,6 @@ namespace SAModManager
             }
         }
 
-        public static async Task<bool> ExecuteDependenciesCheck()
-        {
-            return await SAModManager.Startup.StartupCheck();
-        }
 
         private static ManagerSettings LoadManagerConfig()
         {
@@ -605,6 +601,22 @@ namespace SAModManager
             }
 
             return settings;
+        }
+
+
+        public static async Task EnableOneClickInstall()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(App.CurrentGame?.oneClickName) == false)
+                {
+                    string execPath = Environment.ProcessPath;
+                    string clickName = App.CurrentGame?.oneClickName;
+                    await Process.Start(new ProcessStartInfo(execPath, $"urlhandler \"{clickName}\"") { UseShellExecute = true }).WaitForExitAsync();
+                }
+            }
+            catch
+            { }
         }
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)

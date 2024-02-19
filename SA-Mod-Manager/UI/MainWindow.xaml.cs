@@ -2460,7 +2460,7 @@ namespace SAModManager
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
                 UpdateGameConfig(App.CurrentGame.id);
-                await Startup.EnableOneClickInstall();
+                await App.EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
@@ -2492,7 +2492,7 @@ namespace SAModManager
             }
 
             UpdateGameConfig(App.CurrentGame.id);
-            await Startup.EnableOneClickInstall();
+            await App.EnableOneClickInstall();
 
             UIHelper.EnableButton(ref SaveAndPlayButton);
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
@@ -2641,6 +2641,7 @@ namespace SAModManager
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
             {
                 checkForUpdate = false;
+                bool foundGame = false;
                 foreach (var game in GamesInstall.GetSupportedGames())
                 {
                     if (game == ComboGameSelection.SelectedItem && App.GamesList.Contains(game))
@@ -2652,10 +2653,18 @@ namespace SAModManager
                         await Load();
                         await UpdateManagerInfo();
                         UpdateManagerIcons();
+                        foundGame = true;
                         break;
                     }
                 }
 
+                if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
+                {
+                    await ForceInstallLoader();
+                    UpdateButtonsState();
+                }
+
+                await App.EnableOneClickInstall();
                 Refresh();
             }
         }

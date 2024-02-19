@@ -172,6 +172,7 @@ namespace SAModManager
                         await Task.Delay(2000);
                         bool success = await Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
                         offline.CheckSuccess(success);
+                        File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, "offlineVersionInstalled");
                         await Task.Delay(1000);
                         offline.Close();
                     }
