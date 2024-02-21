@@ -10,7 +10,7 @@
 		mc:Ignorable="d"
 		Title="SA Mod Manager"
 		Style="{DynamicResource SAWindow}"
-		MinHeight="550" MinWidth="590" Height="736" Width="700" WindowStartupLocation="CenterScreen"
+		MinHeight="550" MinWidth="590" Height="710" Width="660" WindowStartupLocation="CenterScreen"
 		Loaded="MainWindowManager_Loaded" PreviewKeyDown="Window_PreviewKeyDown"
         Closed="MainForm_FormClosing">
 
