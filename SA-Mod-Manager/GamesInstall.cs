@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SAModManager.UI;
 using SAModManager.Profile;
+using System.Text;
 
 namespace SAModManager
 {
@@ -74,6 +75,7 @@ namespace SAModManager
         public SetGame id = SetGame.None;
         public string gameAbbreviation { get; set; }
         public string oneClickName { get; set; }
+        public string BorderLoaderLink { get; set; }
     }
 
     public enum Format
@@ -155,6 +157,11 @@ namespace SAModManager
             if (game is null)
                 return;
 
+            if (Directory.Exists(game.modDirectory) == false)
+            {
+                Directory.CreateDirectory(game.modDirectory);
+            }
+
             string loaderPath = Path.Combine(game.modDirectory, game.loader.name + ".dll");
 
             try
@@ -197,6 +204,18 @@ namespace SAModManager
 
             await UpdateCodes(App.CurrentGame); //update codes
             await UpdatePatches(App.CurrentGame); //update patches
+
+            try
+            {
+                string border = Path.Combine(game.modDirectory, "Border_Default.png");
+
+                if (!File.Exists(border) && !string.IsNullOrEmpty(game.BorderLoaderLink))
+                {
+                    Uri uri = new(game.BorderLoaderLink);
+                    var dl = new DownloadDialog(uri, "Border Loader", "Border_Default.png", game.modDirectory, DownloadDialog.DLType.Download, true);
+                    dl.StartDL();
+                }
+            } catch { }
         }
 
         public static async Task<bool> UpdateLoader(Game game)
@@ -425,6 +444,7 @@ namespace SAModManager
             id = SetGame.SADX,
             gameAbbreviation = "SADX",
             oneClickName = "sadxmm",
+            BorderLoaderLink = Properties.Resources.URL_SADX_BORDER,
 
             loader = new()
             {
@@ -487,6 +507,7 @@ namespace SAModManager
             id = SetGame.SA2,
             gameAbbreviation = "SA2",
             oneClickName = "sa2mm",
+            BorderLoaderLink = Properties.Resources.URL_SA2_BORDER,
 
             loader = new()
             {

@@ -80,8 +80,8 @@ namespace SAModManager.Configuration.SA2
         /// <summary>
         /// Sets the Screen Mode (Windowed, Fullscreen, Borderless, or Custom Window)
         /// </summary>
-        [DefaultValue(0)]
-        public int ScreenMode { get; set; }
+        [DefaultValue(DisplayMode.Borderless)]
+        public int ScreenMode { get; set; } = (int)DisplayMode.Borderless;
 
         /// <summary>
         /// Maintains the ratio when resizing the window if resizable window is enabled.
@@ -146,7 +146,12 @@ namespace SAModManager.Configuration.SA2
                     break;
             }
 
-            config.Display = SelectedScreen;
+            int screenID = SelectedScreen;
+            if (screenID > 0) //adjust offset because the official launcher doesn't have "all screen support" which means first monitor is index 0.
+                screenID -= 1;
+
+            config.Display = screenID;
+
             config.Width = HorizontalResolution;
             config.Height = VerticalResolution;
         }

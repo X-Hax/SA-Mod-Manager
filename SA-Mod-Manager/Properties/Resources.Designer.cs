@@ -202,6 +202,15 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Border_Default.png.
+        /// </summary>
+        internal static string URL_SA2_BORDER {
+            get {
+                return ResourceManager.GetString("URL_SA2_BORDER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Codes.lst.
         /// </summary>
         internal static string URL_SA2_CODE {
@@ -225,6 +234,15 @@ namespace SAModManager.Properties {
         internal static string URL_SA2_PATCH {
             get {
                 return ResourceManager.GetString("URL_SA2_PATCH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/e3a476800b05f163a1c4bd60257552c81313e15e/data/Border_Default.png.
+        /// </summary>
+        internal static string URL_SADX_BORDER {
+            get {
+                return ResourceManager.GetString("URL_SADX_BORDER", resourceCulture);
             }
         }
         

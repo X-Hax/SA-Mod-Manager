@@ -151,6 +151,9 @@
   <data name="URL_D3D8M" xml:space="preserve">
     <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/d3d8m.dll</value>
   </data>
+  <data name="URL_SA2_BORDER" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Border_Default.png</value>
+  </data>
   <data name="URL_SA2_CODE" xml:space="preserve">
     <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Codes.lst</value>
   </data>
@@ -159,6 +162,9 @@
   </data>
   <data name="URL_SA2_PATCH" xml:space="preserve">
     <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Patches.json</value>
+  </data>
+  <data name="URL_SADX_BORDER" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/e3a476800b05f163a1c4bd60257552c81313e15e/data/Border_Default.png</value>
   </data>
   <data name="URL_SADX_CODE" xml:space="preserve">
     <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Codes.lst</value>

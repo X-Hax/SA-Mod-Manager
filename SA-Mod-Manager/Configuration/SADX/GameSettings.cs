@@ -136,13 +136,13 @@ namespace SAModManager.Configuration.SADX
 		/// <summary>
 		/// Sets the Screen Mode (Windowed, Fullscreen, Borderless, or Custom Window)
 		/// </summary>
-		[DefaultValue(0)]
-		public int ScreenMode { get; set; }
+		[DefaultValue(DisplayMode.Borderless)]
+		public int ScreenMode { get; set; } = (int)DisplayMode.Borderless;
 
-		/// <summary>
-		/// Sets the Game's Framerate
-		/// </summary>
-		[DefaultValue(1)]
+        /// <summary>
+        /// Sets the Game's Framerate
+        /// </summary>
+        [DefaultValue(1)]
 		public int GameFrameRate { get; set; }  // SADXGameConfig.FrameRate
 
 		/// <summary>
