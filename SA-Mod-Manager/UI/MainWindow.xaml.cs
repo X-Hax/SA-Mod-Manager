@@ -180,9 +180,9 @@ namespace SAModManager
 
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             checkForUpdate = false;
-
-            Dispatcher.Invoke(Refresh);
 #endif
+            // Save Manager Settings
+            Save();
         }
 
         private void MainForm_FormClosing(object sender, EventArgs e)
@@ -1717,7 +1717,7 @@ namespace SAModManager
                 return;
 
             // Save Manager Settings
-            App.ManagerSettings.CurrentSetGame = (int)App.CurrentGame.id;
+            App.ManagerSettings.CurrentSetGame = (int)App.CurrentGame?.id;
             App.ManagerSettings.Serialize(App.ManagerConfigFile);
 
             // Save Mods and Codes
@@ -2662,13 +2662,17 @@ namespace SAModManager
 
                 if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
                 {
+                #if !DEBUG
                     await ForceInstallLoader();
                     UpdateButtonsState();
+                #endif
                 }
+
 
                 await App.EnableOneClickInstall();
                 Refresh();
             }
         }
     }
+
 }
