@@ -118,7 +118,13 @@ namespace SAModManager
             GamesInstall.AddGamesInstall();
             SetModManagerVersion();
 
+            if (App.isFirstBoot)
+            {
+                new SplashScreenDialog().ShowDialog();
+            }
+
             ViewModel.Games = App.GamesList;
+
             await Load();
             DataContext = ViewModel;
             SetBindings();
@@ -128,10 +134,6 @@ namespace SAModManager
             if (App.isVanillaTransition && (App.CurrentGame is null || App.CurrentGame.gameDirectory is null))
                 await VanillaUpdate_CheckGame();
 
-            if (App.isFirstBoot)
-            {
-                new SplashScreenDialog().ShowDialog();
-            }
 
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
