@@ -19,18 +19,18 @@ namespace SAModManager.Configuration
 
 		public readonly Size[] resolutionPresets =
 		{
-			new Size(640, 480), // 640x480
-			new Size(800, 600), // 800x600
-			new Size(1024, 768), // 1024x768
-			new Size(1152, 864), // 1152x864
-			new Size(1280, 960), // 1280x960
-			new Size(1280, 1024), // 1280x1024
-			new Size(), // Native
-			new Size(), // 1/2x Native
-			new Size(), // 2x Native
-			new Size(1280, 720), // 720p
-			new Size(1920, 1080), // 1080p
-			new Size(3840, 2160), // 4K
+            new(640, 480), // 640x480
+			new(800, 600), // 800x600
+			new(1024, 768), // 1024x768
+			new(1152, 864), // 1152x864
+			new(1280, 960), // 1280x960
+			new(1280, 1024), // 1280x1024
+			new(), // Native
+			new(), // 1/2x Native
+			new(), // 2x Native
+			new(1280, 720), // 720p
+			new(1920, 1080), // 1080p
+			new(3840, 2160), // 4K
 		};
 
 		public void SetAllScreens(ref System.Windows.Controls.ComboBox screenNumComboBox)

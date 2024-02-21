@@ -453,12 +453,12 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource TestSpawn.Language.Text}" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-                                <ComboBox x:Name="tsTextLanguage" Grid.Column="1" SelectedIndex="0" Margin="5" TabIndex="11">
+                                <ComboBox x:Name="tsTextLanguage" Grid.Column="1" SelectedIndex="1" Margin="5" TabIndex="11">
+                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.Japanese}"/>
                                     <ComboBoxItem Content="{DynamicResource TestSpawn.Language.English}"/>
-                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.German}"/>
                                     <ComboBoxItem Content="{DynamicResource TestSpawn.Language.French}"/>
                                     <ComboBoxItem Content="{DynamicResource TestSpawn.Language.Spanish}"/>
-                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.Japanese}"/>
+                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.German}"/>
                                 </ComboBox>
                                 <Label Content="{DynamicResource TestSpawn.Language.Voice}" Grid.Column="2" VerticalAlignment="Center"/>
                                 <ComboBox x:Name="tsVoiceLanguage" Grid.Column="3" SelectedIndex="1" Margin="5" TabIndex="12">
