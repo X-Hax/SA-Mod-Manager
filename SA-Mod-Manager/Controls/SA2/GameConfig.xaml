@@ -145,7 +145,6 @@
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
 
-							<CheckBox Content="Skip Intro" Margin="5"/>
 
 							<Grid Grid.Row="1">
 								<Grid.RowDefinitions>
@@ -174,14 +173,25 @@
 				
 			</TabItem>
 			
-			<TabItem x:Name="TabLang" Header="{DynamicResource GameConfig.Tabs.Lang}" Margin="3,0,-3,0">
+			<TabItem x:Name="TabOptions" Header="{DynamicResource GameConfig.Tabs.Options}" Margin="3,0,-3,0">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
-					<TextBlock Grid.Row="0" Text="{DynamicResource GameConfig.Tabs.Language.SA2}" Margin="5" TextAlignment="Center"/>
-					<Grid Grid.Row="1" Margin="5">
+                    
+                    <GroupBox Header="{DynamicResource GameConfig.Tabs.Options.Title}" Grid.Row="0" Margin="5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <CheckBox x:Name="ChkSkipIntro" Content="{DynamicResource GameConfig.Tabs.Options.SA2.SkipIntro}" Margin="15" Grid.Row="0" />
+                            <TextBlock  Text="{DynamicResource GameConfig.Tabs.Options.Lang.SA2}" Margin="10" TextAlignment="Center" Grid.Row="1"/>
+					<Grid Grid.Row="2" Margin="5">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="132"/>
 							<ColumnDefinition Width="*"/>
@@ -202,6 +212,8 @@
 							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.English}"/>
 						</ComboBox>
 					</Grid>
+                        </Grid>
+                    </GroupBox>
 				</Grid>
 			</TabItem>
 

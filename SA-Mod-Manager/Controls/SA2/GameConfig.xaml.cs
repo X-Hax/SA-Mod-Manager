@@ -377,7 +377,11 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
-
+            ChkSkipIntro.SetBinding(CheckBox.IsCheckedProperty, new Binding("SkipIntro")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
 			tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
 			{
 				Source = GameProfile.TestSpawn,

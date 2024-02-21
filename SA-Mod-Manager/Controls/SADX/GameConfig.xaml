@@ -427,38 +427,50 @@
 				</Grid>
 			</TabItem>
 
-			<!--This Tab is for Game Language-->
-			<TabItem x:Name="TabLanguage" Header="{DynamicResource GameConfig.Tabs.Lang}" Margin="9,0,-9,0">
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-					</Grid.RowDefinitions>
-					<TextBlock Text="{DynamicResource GameConfig.Tabs.Language.SADX}" TextAlignment="Center" Margin="5"/>
-					<Grid Grid.Row="1" Margin="5">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="132"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="132"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<Label Content="{DynamicResource TestSpawn.Language.Text}" Grid.Column="0" VerticalAlignment="Center" Margin="22,5,5,5"/>
-						<ComboBox x:Name="tsTextLanguage" Grid.Column="1" SelectedIndex="1" Margin="5" TabIndex="11">
-							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.Japanese}"/>
-							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.English}"/>
-							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.French}"/>
-							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.Spanish}"/>
-							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.German}"/>
-						</ComboBox>
-						<Label Content="{DynamicResource TestSpawn.Language.Voice}" Grid.Column="2" VerticalAlignment="Center" Margin="22,5,5,5"/>
-						<ComboBox x:Name="tsVoiceLanguage" Grid.Column="3" SelectedIndex="1" Margin="5" TabIndex="12">
-							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.Japanese}"/>
-							<ComboBoxItem Content="{DynamicResource TestSpawn.Language.English}"/>
-						</ComboBox>
-					</Grid>
-				</Grid>
-			</TabItem>
-			
+			<!--This Tab is for Misc Options, including Language-->
+            <TabItem x:Name="TabOptions" Header="{DynamicResource GameConfig.Tabs.Options}" Margin="3,0,-3,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="{DynamicResource GameConfig.Tabs.Options.Title}" Grid.Row="0" Margin="5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+      
+                            </Grid.RowDefinitions>
+
+                            <TextBlock  Text="{DynamicResource GameConfig.Tabs.Options.Lang.SADX}" Margin="10" TextAlignment="Center" Grid.Row="0"/>
+                            <Grid Grid.Row="1" Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="132"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="132"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource TestSpawn.Language.Text}" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                                <ComboBox x:Name="tsTextLanguage" Grid.Column="1" SelectedIndex="0" Margin="5" TabIndex="11">
+                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.English}"/>
+                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.German}"/>
+                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.French}"/>
+                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.Spanish}"/>
+                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.Japanese}"/>
+                                </ComboBox>
+                                <Label Content="{DynamicResource TestSpawn.Language.Voice}" Grid.Column="2" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="tsVoiceLanguage" Grid.Column="3" SelectedIndex="1" Margin="5" TabIndex="12">
+                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.Japanese}"/>
+                                    <ComboBoxItem Content="{DynamicResource TestSpawn.Language.English}"/>
+                                </ComboBox>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
             <!--This Tab is for Game Patches.-->
             <TabItem x:Name="tabPatches" Header="{DynamicResource GameConfig.Tabs.Patches}" Margin="12,0,-12,0" Tag="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Patches}">
                 <Grid x:Name="gridPatchesList">

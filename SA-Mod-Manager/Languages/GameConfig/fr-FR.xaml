@@ -13,18 +13,29 @@
     <!--Graphics Tab Strings-->
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Options d'Affichage</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Écran:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">Tous les Écrans</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">Mode Écran :</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Fenêtré</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Mode Fenêtré Standard.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Plein Écran Exclusif</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Non recommandé. La Fenêtre mettra à jour la résolution du moniteur, ce qui peut provoquer des plantages lorsque la fenêtre n'est pas focalisée.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Plein Écran Sans Bordure</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Recommandé. Mode Plein Écran. Permet de rendre le jeu à différentes résolutions de la fenêtre et corrige le bug de alt + tab.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Fenêtre Personnalisée</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Comme le Plein Écran Sans Bordure, mais pour les modes fenêtré.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Résolution:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Paramètres</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forcer Ratio d'Aspect 4:3</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Activer Synchronisation Verticale</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Synchronisation Verticale</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pause si inactif</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Allouage dynamique des Tampons</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Plein Écran</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Fenêtré</system:String>
+    
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Fenêtre Redimensionnable</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Maintenir le Ratio d'Aspect</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Taille de fenêtre Personnalisée:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Sans bordures</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Taille de Fenêtre Personnalisée:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Sans Bordures</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Afficher la souris en Plein Écran</system:String>
+
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Mise à l'echelle de l'Écran</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Autre Options Graphiques</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Fréquence d'Images:</system:String>
@@ -49,10 +60,17 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Mettre à jour D3D8to9</system:String>
     <!--#endregion-->
 
+    <!--Options Tab Strings-->
+    <system:String x:Key="GameConfig.Tabs.Options.Title">Diverses options</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Passer l'Introduction</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">La langue du texte et des voix peut être définie pour le premier démarrage. Ces options prennent effet lors du démarrage du jeu à l'aide de Test Spawn. Ces options sont écrasées par le fichier de sauvegarde une fois celui-ci chargé.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">La langue du texte et des voix peut être définie pour le premier démarrage. Ces options prennent effet lors du démarrage à l'aide de Test Spawn. L'option des voix changera en fonction du fichier de sauvegarde chargé.</system:String>
+    <!--#endregion-->
+
     <!--Input Tab Strings-->
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input">Options Contrôles</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Contrôles Classique (DInput)</system:String>
-    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Meilleur Contrôles (SDL2)</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Better Input (SDL2)</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Configuration des Contrôles Classique</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Souris et Clavier</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Glisser et Maintenez</system:String>
