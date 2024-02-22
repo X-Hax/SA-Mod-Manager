@@ -24,9 +24,9 @@ namespace SAModManager.Configuration.SA2
         public enum DisplayMode
         {
             Windowed,
-            Fullscreen,
             Borderless,
-            CustomWindow
+            CustomWindow,
+            Fullscreen
         }
 
         /// <summary>
@@ -138,7 +138,6 @@ namespace SAModManager.Configuration.SA2
             switch ((DisplayMode)ScreenMode)
             {
                 case DisplayMode.Fullscreen:
-                case DisplayMode.Borderless:
                     config.FullScreen = 1;
                     break;
                 default:

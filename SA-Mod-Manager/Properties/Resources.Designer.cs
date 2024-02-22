@@ -220,7 +220,7 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/X-Hax/sa2-mod-loader/raw/master/extlib/ModLoaders/SA2ModLoader.dll.
+        ///   Looks up a localized string similar to https://github.com/X-Hax/sa2-mod-loader/raw/master/extlib/SA2ModLoader.dll.
         /// </summary>
         internal static string URL_SA2_DL {
             get {

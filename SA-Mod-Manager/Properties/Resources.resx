@@ -158,7 +158,7 @@
     <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Codes.lst</value>
   </data>
   <data name="URL_SA2_DL" xml:space="preserve">
-    <value>https://github.com/X-Hax/sa2-mod-loader/raw/master/extlib/ModLoaders/SA2ModLoader.dll</value>
+    <value>https://github.com/X-Hax/sa2-mod-loader/raw/master/extlib/SA2ModLoader.dll</value>
   </data>
   <data name="URL_SA2_PATCH" xml:space="preserve">
     <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Patches.json</value>
