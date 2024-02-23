@@ -620,7 +620,7 @@ namespace SAModManager
                 else if (File.Exists(path)) //game Path valid 
                 {
                     if (Path.Exists(Path.Combine(GamePath, "mods")))
-                        await VanillaTransition.ConvertOldProfile(false, GamePath);
+                        await VanillaTransition.ConvertOldProfile(GamePath);
 
                     return game.id;
                 }
@@ -644,7 +644,7 @@ namespace SAModManager
                 if (skipMSG)
                 {
                     if (Path.Exists(Path.Combine(GamePath, "mods")))
-                        await VanillaTransition.ConvertOldProfile(false, GamePath);
+                        await VanillaTransition.ConvertOldProfile(GamePath);
                     return game.id;
                 }
 
@@ -654,7 +654,7 @@ namespace SAModManager
                 if (msg.isYes)
                 {
                     if (Path.Exists(Path.Combine(GamePath, "mods")))
-                        await VanillaTransition.ConvertOldProfile(false, GamePath);
+                        await VanillaTransition.ConvertOldProfile(GamePath);
                     return game.id;
                 }
             }

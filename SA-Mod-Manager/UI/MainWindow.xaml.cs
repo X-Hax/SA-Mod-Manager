@@ -95,7 +95,7 @@ namespace SAModManager
                     tempPath = currentPath;
                     App.CurrentGame.gameDirectory = currentPath;
                     UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                    await VanillaTransition.ConvertOldProfile(false, currentPath);
+                    await VanillaTransition.ConvertOldProfile(currentPath);
                     await Load(true);
                     isValid = true;
                     break;
@@ -2662,10 +2662,11 @@ namespace SAModManager
 
                 if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
                 {
-                #if !DEBUG
+#if !DEBUG
                     await ForceInstallLoader();
                     UpdateButtonsState();
-                #endif
+                    await VanillaTransition.ConvertOldProfile(GamePath);
+#endif
                 }
 
 

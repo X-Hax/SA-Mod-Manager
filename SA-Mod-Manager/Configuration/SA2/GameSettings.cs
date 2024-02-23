@@ -397,6 +397,7 @@ namespace SAModManager.Configuration.SA2
             TestSpawn.ConvertFromV0(oldSettings);
             DebugSettings.ConvertFromV0(oldSettings);
 
+            SettingsVersion = (int)SA2SettingsVersions.v1;
             GamePath = App.CurrentGame.gameDirectory;
             EnabledMods = oldSettings.Mods;
             EnabledCodes = oldSettings.EnabledCodes;
