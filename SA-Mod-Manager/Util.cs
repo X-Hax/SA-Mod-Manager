@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows;
 using SAModManager.UI;
-using SAModManager.Updater;
-using System.Diagnostics;
 using System.IO.Compression;
-using SAModManager.Ini;
 using Microsoft.Win32;
 using System.Security.Principal;
-using SAModManager.Configuration;
+using SharpCompress.Archives;
+using SharpCompress.Common;
+using SharpCompress.Readers;
 
 namespace SAModManager
 {
@@ -215,94 +210,6 @@ namespace SAModManager
             return fileInfo is not null && fileInfo.Length > 0;
         }
 
-        public static async Task Install7Zip()
-        {
-            try
-            {
-                if (!IsZipToolInstalled())
-                {
-                    await Exec7zipInstall();
-                }
-            }
-            catch
-            {
-                throw new Exception("What");
-            }
-        }
-
-        public static bool IsZipToolInstalled()
-        {
-            string exePath = FindExePath("7z.exe");
-
-            if (exePath != null)
-                return true;
-
-            exePath = FindExePathFromRegistry("SOFTWARE\\7-Zip");
-
-            if (exePath != null)
-                return true;
-
-            exePath = Environment.GetEnvironmentVariable("PATH")
-                .Split(';')
-                .Select(s => Path.Combine(s, "7z.exe"))
-                .FirstOrDefault(File.Exists);
-
-            if (exePath != null)
-                return true;
-
-            if (Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR") != null ||
-                RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("SOFTWARE\\WinRAR") != null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private static string FindExePath(string exeName)
-        {
-            string path = Path.Combine(App.StartDirectory, exeName);
-            return File.Exists(path) ? path : null;
-        }
-
-        private static string FindExePathFromRegistry(string registryKeyPath)
-        {
-            var key = Registry.LocalMachine.OpenSubKey(registryKeyPath);
-
-            if (key == null)
-                key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
-                    .OpenSubKey(registryKeyPath);
-
-            return key?.GetValue("Path") as string;
-        }
-
-
-        public static async Task Exec7zipInstall()
-        {
-
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-             {
-                 var msg = new MessageWindow(Lang.GetString("CommonStrings.Warning"), Lang.GetString("MessageWindow.Warnings.7zMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-                 msg.ShowDialog();
-
-                 if (msg.isYes)
-                 {
-                     bool is64Bits = Environment.Is64BitOperatingSystem;
-                     Uri uri = new(is64Bits ? "https://www.7-zip.org/a/7z2301-x64.exe" : "https://www.7-zip.org/a/7z2301.exe" + "\r\n");
-
-                     var dl = new DownloadDialog(uri, "7-zip", "7z.exe", App.tempFolder, DownloadDialog.DLType.Download);
-                     dl.StartDL();
-                 }
-             });
-
-            await Process.Start(new ProcessStartInfo(Path.Combine(App.tempFolder, "7z.exe"), "/S")
-            {
-                UseShellExecute = true,
-                Verb = "runas"
-            }).WaitForExitAsync();
-            await Task.Delay(100);
-        }
-
         public static void ClearTempFolder()
         {
             Util.DeleteReadOnlyDirectory(App.tempFolder);
@@ -345,80 +252,18 @@ namespace SAModManager
         public static async Task ExtractArchive(string zipPath, string destFolder, bool overwright = false)
         {
             Directory.CreateDirectory(destFolder);
-
-            if (Path.GetExtension(zipPath) == ".zip")
+            using (var archive = ArchiveFactory.Open(zipPath))
             {
-                ZipFile.ExtractToDirectory(zipPath, destFolder, overwright);
-                return;
-            }
-
-            if (await ExtractArchiveUsing7Zip(zipPath, destFolder) == false)
-            {
-                if (await ExtractArchiveUsingWinRAR(zipPath, destFolder) == false)
+                using (var reader = archive.ExtractAllEntries())
                 {
-                    await Exec7zipInstall();
-                    await ExtractArchiveUsing7Zip(zipPath, destFolder);
-                }
-            }
-
-            await Task.Delay(1000);
-        }
-
-        public static async Task<bool> ExtractArchiveUsing7Zip(string path, string dest)
-        {
-            // Check if file exists in the root folder of the Manager
-            string exePath = FindExePath("7z.exe");
-
-            //If it fails, Find the path from the registry
-            exePath ??= FindExePathFromRegistry("SOFTWARE\\7-Zip");
-
-            // If still not found, try with the PATH variable
-            exePath ??=  Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
-                .Where(s => File.Exists(Path.Combine(s, "7z.exe"))).FirstOrDefault();
-
-            if (exePath != null)
-            {
-                string exe = Path.GetFullPath(Path.Combine(exePath, "7z.exe"));
-
-                if (File.Exists(exe))
-                {
-                    await Process.Start(new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y")
+                    reader.WriteAllToDirectory(destFolder, new ExtractionOptions()
                     {
-                        UseShellExecute = true,
-                    }).WaitForExitAsync();
-
-                    return true;
+                        ExtractFullPath = true,
+                        Overwrite = true
+                    });
                 }
             }
-
-            return false;
-        }
-
-        public static async Task<bool> ExtractArchiveUsingWinRAR(string path, string dest)
-        {
-            // Gets WinRAR's Registry Key
-            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR");
-
-            key ??= RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
-                    .OpenSubKey("SOFTWARE\\WinRAR");
-            // Checks if WinRAR is installed by checking if the key and path value exists
-            if (key != null && key.GetValue("exe64") is string exePath)
-            {
-                exePath = Path.GetFullPath(exePath);
-                // Extracts the archive to the temp directory
-                if (File.Exists(exePath))
-                {
-                    await Process.Start(new ProcessStartInfo(exePath, $"x \"{path}\" -IBCK \"{dest}\"")
-                    {
-                        UseShellExecute = true,
-                    }).WaitForExitAsync();
-
-                    key.Close();
-                    return true;
-                }
-            }
-            // WinRAR is not installed
-            return false;
+            await Task.Delay(100);
         }
 
         public static async Task Extract(string zipPath, string destFolder, bool overwright = false)
