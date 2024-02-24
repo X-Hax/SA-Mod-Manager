@@ -1508,7 +1508,7 @@ namespace SAModManager
         private void BuildCodeFiles()
         {
             List<Code> selectedCodes = new();
-            List<Code> selectedPatches = new List<Code>();
+            List<Code> selectedPatches = new();
 
             foreach (CodeData code in CodeListView.Items)
             {
@@ -2665,7 +2665,8 @@ namespace SAModManager
 #if !DEBUG
                     await ForceInstallLoader();
                     UpdateButtonsState();
-                    await VanillaTransition.ConvertOldProfile(GamePath);
+                    if (string.IsNullOrWhiteSpace(App.CurrentGame.gameDirectory))
+                        await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
 #endif
                 }
 
