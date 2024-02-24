@@ -184,9 +184,18 @@ namespace SAModManager.Updater
         {
             try
             {
+                string[] subfolders;
                 UpdateHeaderTextDirect(Lang.GetString("Updater.DL.Mod.ParsingManifest"));
-                string[] subfolders = Directory.GetDirectories(dataDir);
-
+                // If the mod is in the root of the archive, assume there is only one mod and no subfolders
+                if (File.Exists(Path.Combine(dataDir, "mod.manifest")))
+                {
+                    subfolders = new string[1];
+                    subfolders[0] = dataDir;
+                }
+                else
+                {
+                    subfolders = Directory.GetDirectories(dataDir);
+                }
                 //move all folders in mods folder (sometimes a zip can have multiple mods)
                 foreach (var subfolder in subfolders)
                 {
