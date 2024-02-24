@@ -139,7 +139,6 @@ namespace SAModManager
                     App.isFirstBoot = true;
                     await EnableOneClickInstall();
                     await SetLanguageFirstBoot();
-                    await Util.Install7Zip();
                 }
 
             }
