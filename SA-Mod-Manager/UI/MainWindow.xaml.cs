@@ -2665,7 +2665,7 @@ namespace SAModManager
 #if !DEBUG
                     await ForceInstallLoader();
                     UpdateButtonsState();
-                    if (string.IsNullOrWhiteSpace(App.CurrentGame.gameDirectory))
+                    if (string.IsNullOrWhiteSpace(App.CurrentGame.gameDirectory) == false)
                         await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
 #endif
                 }
