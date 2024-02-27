@@ -78,7 +78,7 @@ namespace SAModManager.Profile
         #region Context Menu
         private void ProfileList_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (ProfileListView == null)
+            if (ProfileListView == null || ProfileListView.SelectedItem == null)
                 return;
 
             var currentProfile = ProfileListView.Items[SelectedIndex];
