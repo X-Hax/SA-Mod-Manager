@@ -81,6 +81,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			</PackageReference>
 		<PackageReference Include="SharpCompress" Version="0.36.0" />
+		<PackageReference Include="SharpHDiffPatch.Core" Version="2.2.3" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>
 
@@ -141,6 +142,10 @@
 	  <Page Update="Languages\Updater\es-MX.xaml">
 	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
 	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <NativeLibs Remove="Configuration\SADX\SADXPatchHashes.cs" />
 	</ItemGroup>
 
 
