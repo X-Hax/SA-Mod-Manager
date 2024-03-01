@@ -329,6 +329,7 @@ namespace SAModManager.Controls.SA2
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay,
+                Converter = new SA2CustomWindowEnabledConverter()
             });
             txtCustomResY.SetBinding(NumericUpDown.ValueProperty, new Binding("CustomWindowHeight")
             {
@@ -339,16 +340,19 @@ namespace SAModManager.Controls.SA2
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay,
+                Converter = new SA2CustomWindowEnabledConverter()
             });
             comboCustomWindow.SetBinding(ComboBox.IsEnabledProperty, new Binding("ScreenMode")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay,
+                Converter = new SA2CustomWindowEnabledConverter()
             });
             chkMaintainRatio.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay,
+                Converter = new SA2CustomWindowEnabledConverter()
             });
             chkMaintainRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableKeepResolutionRatio")
             {
