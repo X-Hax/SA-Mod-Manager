@@ -240,8 +240,23 @@ namespace SAModManager
                 {
                     if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
                     {
-                        File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
-                        success = true;
+                        bool retry = false;
+                        do
+                        {
+                            try
+                            {
+                                File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+                                success = true;
+                                retry = false;
+                            }
+                            catch (Exception ex)
+                            {
+                                var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.LoaderCopy"), game.loader?.name) + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.RetryCancel);
+                                msg.ShowDialog();
+                                retry = msg.isRetry;
+                            }
+
+                        } while (retry == true);
                     }
                 };
 
