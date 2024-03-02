@@ -56,7 +56,6 @@ namespace SAModManager
         public List<CodeData> codesSearch { get; set; }
         bool suppressEvent = false;
         private bool manualModUpdate;
-        private bool checkForUpdate = false;
         readonly Updater.ModUpdater modUpdater = new();
         private object gameConfigFile;
         private DebugSettings gameDebugSettings = new();
@@ -66,7 +65,6 @@ namespace SAModManager
         public Profiles GameProfiles = new();
         object GameProfile;
         public string tempPath = "";
-        public static bool cancelUpdate { get; set; }
 
         public Dictionary<string, SAModInfo> mods = null;
         public List<string> EnabledMods = new();
@@ -77,7 +75,7 @@ namespace SAModManager
         {
             InitializeComponent();
             UpdateDLLData();
-			GraphicsManager.SetupGraphics();
+            GraphicsManager.SetupGraphics();
         }
 
         #region Form: Functions
@@ -161,40 +159,40 @@ namespace SAModManager
             }
 
 #if !DEBUG
-            checkForUpdate = true;
-            UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
-            UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
-            bool managerUpdate = chkUpdateManager.IsChecked == true && await App.PerformUpdateManagerCheck();
-            if (managerUpdate)
+            if (App.isFirstBoot == false)
             {
-                Refresh();
-                return;
-            }
-
-
-            if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
-            {
-                if (App.CurrentGame.loader.installed)
+                UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
+                UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
+                bool managerUpdate = chkUpdateManager.IsChecked == true && await App.PerformUpdateManagerCheck();
+                if (managerUpdate)
                 {
-                    if (chkUpdatesML.IsChecked == true)
-                    {
-                        await App.PerformUpdateLoaderCheck();
-                        await App.PerformUpdateCodesCheck();
-                        await App.PerformUpdatePatchesCheck();
-                    }
-
-                    if (App.CurrentGame.id == SetGame.SADX)
-                    {
-                        await App.PerformUpdateAppLauncherCheck();
-                    }
+                    Refresh();
+                    return;
                 }
 
-                await CheckForModUpdates();
+
+                if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
+                {
+                    if (App.CurrentGame.loader.installed)
+                    {
+                        if (chkUpdatesML.IsChecked == true)
+                        {
+                            await App.PerformUpdateLoaderCheck();
+                            await App.PerformUpdateCodesCheck();
+                            await App.PerformUpdatePatchesCheck();
+                        }
+
+                        if (App.CurrentGame.id == SetGame.SADX)
+                        {
+                            await App.PerformUpdateAppLauncherCheck();
+                        }
+                    }
+
+                    await CheckForModUpdates();
+                }
+
+                UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             }
-
-            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
-            checkForUpdate = false;
-
 #endif
             // Save Manager Settings
             Save();
@@ -202,7 +200,7 @@ namespace SAModManager
 
         private void MainForm_FormClosing(object sender, EventArgs e)
         {
-            cancelUpdate = true;
+            App.CancelUpdate = true;
             App.UriQueue.Close();
             Save_AppUserSettings();
         }
@@ -1095,7 +1093,7 @@ namespace SAModManager
                 }
 
                 ProfileSettings_SaveProfileFile();
-     
+
                 Save();
             }
         }
@@ -1116,8 +1114,8 @@ namespace SAModManager
         private async void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
-            checkForUpdate = true;
 
+            App.CancelUpdate = false;
             if (await App.PerformUpdateManagerCheck())
             {
                 return;
@@ -1137,7 +1135,6 @@ namespace SAModManager
 
             manualModUpdate = true;
             await CheckForModUpdates(true);
-            checkForUpdate = false;
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             Dispatcher.Invoke(Refresh);
         }
@@ -1326,7 +1323,7 @@ namespace SAModManager
                 return;
             }
 
-            cancelUpdate = true;
+            App.CancelUpdate = true;
             string executablePath = EnabledMods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
             string folderPath = Path.GetDirectoryName(executablePath);
 
@@ -2084,7 +2081,7 @@ namespace SAModManager
                 modUpdater.Clear();
             }
 
-            if (modUpdater.modUpdatesTuple is not Tuple<List<ModDownload>, List<string>> data)
+            if (modUpdater.modUpdatesTuple is not Tuple<List<ModDownload>, List<string>> data || App.CancelUpdate == true)
             {
                 return;
             }
@@ -2113,12 +2110,12 @@ namespace SAModManager
             List<ModDownload> updates = data.Item1;
             if (updates.Count == 0)
             {
-                if (manual && !MainWindow.cancelUpdate)
+                if (manual && App.CancelUpdate == false)
                 {
                     UpdateManagerStatusText(Lang.GetString("UpdateStatus.NoUpdateFound"));
                     new MessageWindow(Lang.GetString("MessageWindow.Information.NoAvailableUpdates.Title"), Lang.GetString("MessageWindow.Information.NoAvailableUpdates"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
                 }
-                MainWindow.cancelUpdate = false;
+
                 return;
             }
 
@@ -2176,8 +2173,6 @@ namespace SAModManager
             {
                 return;
             }
-
-            MainWindow.cancelUpdate = false;
 
             if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(App.ManagerSettings.UpdateSettings.UpdateCheckCount, App.ManagerSettings.UpdateSettings.UpdateTimeOutCD))
             {
@@ -2304,15 +2299,12 @@ namespace SAModManager
                 FilterMods(TextBox_ModsSearch.Text.ToLowerInvariant());
             }
 
-            if (!checkForUpdate)
-            {
-                if (listMods.Items.Count > 0)
-                    UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalMods"), listMods.Items.Count), 2000);
-                await Task.Delay(2200);
+            if (listMods.Items.Count > 0)
+                UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalMods"), listMods.Items.Count), 2000);           
+            await Task.Delay(2200);
 
-                if (CodeListView.Items.Count > 0)
-                    UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalCodes"), CodeListView.Items.Count), 2000);
-            }
+            if (CodeListView.Items.Count > 0)
+                UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalCodes"), CodeListView.Items.Count), 2000);
             textModsDescription.Text = string.Empty;
 
         }
@@ -2726,10 +2718,10 @@ namespace SAModManager
                         if (GameProfiles.ProfilesList.Contains(item))
                             continue;
 
-                        GameProfiles.ProfilesList.Add(item);  
+                        GameProfiles.ProfilesList.Add(item);
                     }
                 }
-                   
+
                 ProfileSettings_SaveProfileFile();
             }
         }
@@ -2738,7 +2730,7 @@ namespace SAModManager
         {
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
             {
-                checkForUpdate = false;
+                App.CancelUpdate = true;
                 bool foundGame = false;
                 foreach (var game in GamesInstall.GetSupportedGames())
                 {
