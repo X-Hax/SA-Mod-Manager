@@ -651,7 +651,6 @@ namespace SAModManager.Controls.SADX
 			// Graphics Bindings
 
 			// Display Options
-			comboScreen.Items.Clear();
 			comboScreen.ItemsSource = GraphicsManager.Screens;
 			comboScreen.DisplayMemberPath = "Key";
 			comboScreen.SetBinding(ComboBox.SelectedIndexProperty, new Binding("SelectedScreen")

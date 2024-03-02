@@ -84,12 +84,12 @@ namespace SAModManager.Configuration
 		{
 			Screens.Add("All Screens", null);
 
-			int index = 0;
+			int index = 1;
 			foreach (var screen in Screen.AllScreens)
 			{
 				Screens.Add(
 					$"Screen {index} " +
-					$"({screen.Bounds.Width}x{screen.Bounds.Height}) " + $"{(screen.Primary ? "(Primary)" : string.Empty)}",
+					$"({screen.Bounds.Width}x{screen.Bounds.Height}) " + $"{(screen.Primary ? "[Primary]" : string.Empty)}",
 					screen);
 
 				index++;
