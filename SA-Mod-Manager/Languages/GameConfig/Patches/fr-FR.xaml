@@ -20,6 +20,7 @@
     <system:String x:Key="GamePatches.KillGBIX">Désactiver GBIX (Expérimental)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Désactiver la vérification du CD</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Suport de Sauvegarde étendue</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Garde Anti-Crash</system:String>
 
     <system:String x:Key="GamePatches.HRTFSoundDesc">Configure DirectSound pour qu'il utilise des algorithmes plus avancés pour traiter les sons 3D. Ce patch n'est pas nécessaire lorsque l'option "BASS SFX" est activé.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Corrige un bug du jeu qui empêche la sauvegarde des paramètres "Free Cam" lors d'une mort ou du chargement d'une zone ou d'un acte.</system:String>
@@ -37,6 +38,7 @@
     <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">Global Index (GBIX) est une valeur utilisée par le système de mise en cache des textures du jeu. Chaque texture dans SADX en a une.&#x0a;Avant que le jeu ne charge une nouvelle texture, il compare la valeur GBIX de la nouvelle texture avec les indices d'autres textures déjà chargées.&#x0a;Si une correspondance est trouvée, le jeu réutilise la texture déjà chargée au lieu de charger la nouvelle.&#x0a;&#x0a;Ce patch désactive la plupart du système GBIX du jeu pour réduire les erreurs/conflits de textures.(Quelques exceptions comme les éléments HUD s'appliquent.)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheckDesc">Désactive la vérification du CD du jeu.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Active la prise en charge des sauvegardes de la version Steam et permet des noms de sauvegarde personnalisés (jusqu'à 48 caractères).</system:String>
+    <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Empêche les plantages courants dus à des textures manquantes et à des fichiers binaires manquants.&#x0a;&#x0a;Ce patch n’empêche pas le jeu de planter dans toutes les circonstances.</system:String>
     <!--#endregion-->
 
     <!--#region SA2 Patches-->
