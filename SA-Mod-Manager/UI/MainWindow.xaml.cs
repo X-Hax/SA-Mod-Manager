@@ -29,6 +29,7 @@ using System.Reflection;
 using SAModManager.Profile;
 using SAModManager.Configuration.SA2;
 using SAModManager.Configuration.SADX;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace SAModManager
 {
@@ -62,7 +63,7 @@ namespace SAModManager
 
         private bool displayedManifestWarning;
         public MainWindowViewModel ViewModel = new();
-        Profiles GameProfiles = new();
+        public Profiles GameProfiles = new();
         object GameProfile;
         public string tempPath = "";
         public static bool cancelUpdate { get; set; }
@@ -96,7 +97,19 @@ namespace SAModManager
                     tempPath = currentPath;
                     App.CurrentGame.gameDirectory = currentPath;
                     UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                    await VanillaTransition.ConvertOldProfile(currentPath);
+                    var list = await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
+                    if (list is not null)
+                    {
+                        foreach (var item in list)
+                        {
+                            if (GameProfiles.ProfilesList.Contains(item))
+                                continue;
+
+                            GameProfiles.ProfilesList.Add(item);
+                        }
+                    }
+
+                    ProfileSettings_SaveProfileFile();
                     await Load(true);
                     isValid = true;
                     break;
@@ -181,6 +194,7 @@ namespace SAModManager
 
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             checkForUpdate = false;
+
 #endif
             // Save Manager Settings
             Save();
@@ -1062,11 +1076,26 @@ namespace SAModManager
                     App.GamesList.Add(game);
 
                 tempPath = path;
+                App.CurrentGame = game;
                 App.CurrentGame.gameDirectory = tempPath;
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
                 await Load(true);
                 await ForceInstallLoader();
                 UpdateButtonsState();
+                var list = await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
+                if (list is not null)
+                {
+                    foreach (var item in list)
+                    {
+                        if (GameProfiles.ProfilesList.Contains(item))
+                            continue;
+
+                        GameProfiles.ProfilesList.Add(item);
+                    }
+                }
+
+                ProfileSettings_SaveProfileFile();
+     
                 Save();
             }
         }
@@ -1233,6 +1262,20 @@ namespace SAModManager
             FlowDirectionHelper.UpdateFlowDirection();
         }
 
+        private void ProfileSettings_SaveProfileFile(int index = -1)
+        {
+            // Save the Profiles file.
+            if (GameProfiles is not null && comboProfile is not null)
+            {
+                GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
+
+                comboProfile.ItemsSource = GameProfiles.ProfilesList;
+                if (index > -1)
+                    comboProfile.SelectedIndex = index;
+                comboProfile.Items.Refresh();
+            }
+        }
+
         private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
         {
             if (!App.CurrentGame.loader.installed)
@@ -1245,10 +1288,7 @@ namespace SAModManager
             dialog.ShowDialog();
 
             // Save the Profiles file.
-            GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
-            comboProfile.ItemsSource = GameProfiles.ProfilesList;
-            comboProfile.SelectedIndex = dialog.SelectedIndex;
-            comboProfile.Items.Refresh();
+            ProfileSettings_SaveProfileFile(dialog.SelectedIndex);
         }
 
         private void ModProfile_FormClosing(object sender, EventArgs e)
@@ -1696,7 +1736,7 @@ namespace SAModManager
             else
             {
                 UpdateButtonsState();
-                UIHelper.ToggleButton(ref btnOpenGameDir, false);
+
 
                 if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
                 {
@@ -1707,7 +1747,6 @@ namespace SAModManager
 
             // Update the UI based on the loaded game.
             SetGameUI();
-
             await Task.Delay(200);
         }
 
@@ -2673,6 +2712,28 @@ namespace SAModManager
             ComboGameSelection_SelectionChanged(null, null);
         }
 
+        private async Task FirstBootInstallLoader()
+        {
+            if (string.IsNullOrWhiteSpace(App.CurrentGame?.gameDirectory) == false)
+            {
+                await ForceInstallLoader();
+                UpdateButtonsState();
+                var list = await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
+                if (list is not null)
+                {
+                    foreach (var item in list)
+                    {
+                        if (GameProfiles.ProfilesList.Contains(item))
+                            continue;
+
+                        GameProfiles.ProfilesList.Add(item);  
+                    }
+                }
+                   
+                ProfileSettings_SaveProfileFile();
+            }
+        }
+
         private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
@@ -2698,13 +2759,9 @@ namespace SAModManager
                 if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
                 {
 #if !DEBUG
-                    await ForceInstallLoader();
-                    UpdateButtonsState();
-                    if (string.IsNullOrWhiteSpace(App.CurrentGame.gameDirectory) == false)
-                        await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
+                    await FirstBootInstallLoader();
 #endif
                 }
-
 
                 await App.EnableOneClickInstall();
                 Refresh();
