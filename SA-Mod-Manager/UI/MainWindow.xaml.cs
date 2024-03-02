@@ -76,6 +76,7 @@ namespace SAModManager
         {
             InitializeComponent();
             UpdateDLLData();
+			GraphicsManager.SetupGraphics();
         }
 
         #region Form: Functions
