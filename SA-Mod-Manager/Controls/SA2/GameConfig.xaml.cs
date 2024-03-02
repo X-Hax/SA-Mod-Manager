@@ -19,7 +19,6 @@ namespace SAModManager.Controls.SA2
 	{
         #region Variables
         public GameSettings GameProfile;
-        public GraphicsHelper graphics;
 
         bool suppressEvent = false;
         private static string patchesPath = null;
@@ -29,7 +28,6 @@ namespace SAModManager.Controls.SA2
         {
             InitializeComponent();
             GameProfile = (GameSettings)gameSettings;
-            graphics = new GraphicsHelper(ref comboScreen);
             if (App.CurrentGame?.modDirectory != null)
             {
                 string pathDest = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
@@ -84,17 +82,18 @@ namespace SAModManager.Controls.SA2
 
         private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            graphics?.screenNumBox_SelectChanged(ref comboScreen, ref comboDisplay);
-        }
+			if (GraphicsManager.Screens.Count > 1)
+				GraphicsManager.UpdateResolutionPresets(comboScreen.SelectedIndex);
+		}
 
         private void chkRatio_Click(object sender, RoutedEventArgs e)
         {
             if (chkRatio.IsChecked == true)
             {
                 txtResX.IsEnabled = false;
-                decimal resYDecimal = (decimal)txtResY.Value;
-                decimal roundedValue = Math.Round(resYDecimal * GraphicsHelper.ratio);
-                txtResX.Value = (double)roundedValue;
+                double resYDecimal = txtResY.Value;
+                double roundedValue = Math.Round(resYDecimal * GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
+                txtResX.Value = roundedValue;
             }
             else if (!suppressEvent)
             {
@@ -116,17 +115,17 @@ namespace SAModManager.Controls.SA2
             switch (box.Name)
             {
                 case "comboDisplay":
-                    txtResY.Value = graphics.resolutionPresets[index].Height;
+                    txtResY.Value = GraphicsManager.ResolutionPresets[index].Height;
 
                     if (chkRatio.IsChecked == false)
-                        txtResX.Value = graphics.resolutionPresets[index].Width;
+                        txtResX.Value = GraphicsManager.ResolutionPresets[index].Width;
                     break;
 
                 case "comboCustomWindow":
-                    txtCustomResY.Value = graphics.resolutionPresets[index].Height;
+                    txtCustomResY.Value = GraphicsManager.ResolutionPresets[index].Height;
 
                     if (chkRatio.IsChecked == false)
-                        txtCustomResX.Value = graphics.resolutionPresets[index].Width;
+                        txtCustomResX.Value = GraphicsManager.ResolutionPresets[index].Width;
                     break;
             }
 
@@ -293,6 +292,8 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay,
             });
+			comboScreen.ItemsSource = GraphicsManager.Screens;
+			comboScreen.DisplayMemberPath = "Key";
             txtResX.MinValue = 0;
             txtResY.MinValue = 0;
             txtResX.SetBinding(NumericUpDown.ValueProperty, new Binding("HorizontalResolution")
@@ -315,11 +316,8 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay,
             });
-            System.Drawing.Rectangle rect = graphics.GetRectangleStruct();
             txtCustomResX.MinValue = 0;
             txtCustomResY.MinValue = 0;
-            txtCustomResX.MaxValue = rect.Width;
-            txtCustomResY.MaxValue = rect.Height;
             txtCustomResX.SetBinding(NumericUpDown.ValueProperty, new Binding("CustomWindowWidth")
             {
                 Source = GameProfile.Graphics,
