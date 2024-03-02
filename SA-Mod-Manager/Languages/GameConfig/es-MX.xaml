@@ -24,7 +24,8 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Custom Window</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Like Borderless Fullscreen but for the window and not fullscreen modes.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolución:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Ajustes</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Window Size:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Ajustes</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forzar relación de aspecto 4:3</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Habilitar sincronización vertical</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausar al estar inactivo</system:String>
@@ -58,6 +59,9 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Habilitar escalado de la interfaz</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Habilitar D3D8to9</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Actualizar D3D8to9</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Download DXVK</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Using the button bellow allows you to download DXVK. This program can improve performance and stability with SA2. It will only download the program, it will not install it.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Once you download the archive, you only need to extract d3d9.dll from the archive and place it in the game folder where sonic2app is.</system:String>
     <!--#endregion-->
 
     <!--Options Tab Strings-->

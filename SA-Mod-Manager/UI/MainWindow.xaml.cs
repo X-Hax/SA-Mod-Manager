@@ -96,7 +96,7 @@ namespace SAModManager
                     tempPath = currentPath;
                     App.CurrentGame.gameDirectory = currentPath;
                     UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                    await VanillaTransition.ConvertOldProfile(false, currentPath);
+                    await VanillaTransition.ConvertOldProfile(currentPath);
                     await Load(true);
                     isValid = true;
                     break;
@@ -1509,7 +1509,7 @@ namespace SAModManager
         private void BuildCodeFiles()
         {
             List<Code> selectedCodes = new();
-            List<Code> selectedPatches = new List<Code>();
+            List<Code> selectedPatches = new();
 
             foreach (CodeData code in CodeListView.Items)
             {
@@ -2475,31 +2475,47 @@ namespace SAModManager
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
             UIHelper.DisableButton(ref SaveAndPlayButton);
             UIHelper.DisableButton(ref btnInstallLoader);
+            bool retry = false;
 
-
-            //File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
-            if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+            do
             {
-                await GamesInstall.InstallDLL_Loader(App.CurrentGame);
-                await GamesInstall.UpdateDependencies(App.CurrentGame);
-                await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
-            }
-            else
-            {
-                await GamesInstall.InstallDLL_Loader(App.CurrentGame);
-                await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
-                UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
-                //now we can move the loader files to the accurate folders.
-                await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
-                await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
-            }
+                try
+                {
+                    //this is a failsafe in case the user has already the origin file, such as with the legacy loader
+                    if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+                    {
+                        await GamesInstall.InstallDLL_Loader(App.CurrentGame);
+                        await GamesInstall.UpdateDependencies(App.CurrentGame);
+                        await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+                    }
+                    else //install normally
+                    {
+                        await GamesInstall.InstallDLL_Loader(App.CurrentGame);
+                        await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
+                        UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
+                        //now we can move the loader files to the accurate folders.
+                        await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
+                        await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
+                    }
 
-            UpdateGameConfig(App.CurrentGame.id);
-            await App.EnableOneClickInstall();
+                    UpdateGameConfig(App.CurrentGame.id);
+                    await App.EnableOneClickInstall();
 
-            UIHelper.EnableButton(ref SaveAndPlayButton);
-            UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
-            App.CurrentGame.loader.installed = true;
+                    UIHelper.EnableButton(ref SaveAndPlayButton);
+                    UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
+                    App.CurrentGame.loader.installed = true;
+                    retry = false;
+                }
+                catch (Exception ex)
+                {
+                    var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.LoaderCopy"), App.CurrentGame?.loader?.name) + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.RetryCancel);
+                    msg.ShowDialog();
+                    retry = msg.isRetry;
+                }
+
+            } while (retry == true);
+
+
             UpdateBtnInstallLoader_State();
             UIHelper.EnableButton(ref btnInstallLoader);
         }
@@ -2507,27 +2523,45 @@ namespace SAModManager
         private async Task HandleLoaderInstall()
         {
             UIHelper.DisableButton(ref btnInstallLoader);
-            //if user requested to uninstall the loader...
-            if (App.CurrentGame.loader.installed && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
-            {
-                UIHelper.DisableButton(ref SaveAndPlayButton);
 
-                UpdateManagerStatusText(Lang.GetString("UpdateStatus.UninstallLoader"));
-
-                File.Delete(App.CurrentGame.loader.dataDllPath);
-                await Util.MoveFile(App.CurrentGame.loader.dataDllOriginPath, App.CurrentGame.loader.dataDllPath);
-                UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderUninstalled"));
-                UIHelper.EnableButton(ref SaveAndPlayButton);
-            }
-            else //if user asked to install the loader
+            bool retry = false;
+            do
             {
-                await InstallLoader();
-            }
+                try
+                {
+                    //if user requested to uninstall the loader...
+                    if (App.CurrentGame.loader.installed && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+                    {
+                        UIHelper.DisableButton(ref SaveAndPlayButton);
+
+                        UpdateManagerStatusText(Lang.GetString("UpdateStatus.UninstallLoader"));
+
+                        File.Delete(App.CurrentGame.loader.dataDllPath);
+                        await Util.MoveFile(App.CurrentGame.loader.dataDllOriginPath, App.CurrentGame.loader.dataDllPath);
+                        UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderUninstalled"));
+                        UIHelper.EnableButton(ref SaveAndPlayButton);
+                    }
+                    else //if user asked to install the loader
+                    {
+                        await InstallLoader();
+                    }
+                    retry = false;
+                }
+                catch (Exception ex)
+                {
+                    var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.LoaderCopy"), App.CurrentGame?.loader?.name) + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.RetryCancel);
+                    msg.ShowDialog();
+                    retry = msg.isRetry;
+                }
+
+            } while (retry == true);
+
 
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
             UIHelper.EnableButton(ref btnInstallLoader);
             UpdateBtnInstallLoader_State();
         }
+
         #endregion
 
         #endregion
@@ -2663,10 +2697,12 @@ namespace SAModManager
 
                 if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
                 {
-                #if !DEBUG
+#if !DEBUG
                     await ForceInstallLoader();
                     UpdateButtonsState();
-                #endif
+                    if (string.IsNullOrWhiteSpace(App.CurrentGame.gameDirectory) == false)
+                        await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
+#endif
                 }
 
 

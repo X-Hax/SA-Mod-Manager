@@ -24,6 +24,7 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Custom Window</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Like Borderless Fullscreen but for the window and not fullscreen modes.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Разрешение:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Window Size:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Настройки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Принудительно вкл. 4:3</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Вкл. верт. синхронизацию</system:String>
@@ -31,6 +32,7 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамическое распределение памяти</system:String>
     
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Изменяемое окно</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Keep Ratio on Resize</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Сохранять пропорции</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Свой размер окна:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Окно без рамки</system:String>
@@ -58,6 +60,9 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Включить масштабирование интерфейса</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Включить D3D8to9</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Обновить D3D8to9</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Download DXVK</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Using the button bellow allows you to download DXVK. This program can improve performance and stability with SA2. It will only download the program, it will not install it.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Once you download the archive, you only need to extract d3d9.dll from the archive and place it in the game folder where sonic2app is.</system:String>
     <!--#endregion-->
 
     <!--Options Tab Strings-->

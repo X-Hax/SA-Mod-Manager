@@ -120,7 +120,28 @@ namespace SAModManager.Controls
 		}
 	}
 
-	public class ScreenModeConverter : IValueConverter
+    public class SA2CustomWindowEnabledConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is int index)
+            {
+                if (index == 2)
+                    return true;
+                else
+                    return false;
+            }
+
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return Binding.DoNothing;
+        }
+    }
+
+    public class ScreenModeConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{

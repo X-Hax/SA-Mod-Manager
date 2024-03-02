@@ -77,8 +77,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Enable D3D8to9</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Update D3D8to9</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Download DXVK</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Using the Download button takes you to a download for DXVK. This can improve performance and stability with SA2. It will only take you to the download for the program, it will not install it.</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Once you download the archive, you only need to take the d3d9.dll from the archive and place it in the game folder where sonic2app is.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Using the button bellow allows you to download DXVK. This program can improve performance and stability with SA2. It will only download the program, it will not install it.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Once you download the archive, you only need to extract d3d9.dll from the archive and place it in the game folder where sonic2app is.</system:String>
     <!--#endregion-->
     
     <!--Options Tab Strings-->

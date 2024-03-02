@@ -47,7 +47,7 @@ namespace SAModManager.Profile
             "/mods/SADXModLoader.dll"
         };
 
-        private static async Task<bool> HandleProfiles(bool installed, string gamePath)
+        private static async Task<bool> HandleProfiles(string gamePath)
         {
             try
             {
@@ -56,27 +56,28 @@ namespace SAModManager.Profile
                 Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
                 string defaultJson = Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json");
                 //if user is about to install the loader backup vanilla profiles
-                if (!installed)
+
+                foreach (var item in Directory.EnumerateFiles(modFolder, "*.ini"))
                 {
-                    foreach (var item in Directory.EnumerateFiles(modFolder, "*.ini"))
+                    string destinationPath = Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item));
+                    if (!File.Exists(destinationPath))
                     {
-                        string destinationPath = Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item));
-                        await Util.CopyFileAsync(item, destinationPath, true);
-                        // Deserializes old profiles and converts to new profile format, then saves to Profiles folder.
-                    }
-
-                    string originFile = Path.Combine(App.CurrentGame.ProfilesDirectory, App.CurrentGame.defaultIniProfile);
-                    if (File.Exists(originFile))
-                    {
-                        if (File.Exists(defaultJson))
-                        {
-                            File.Delete(defaultJson);
-                        }
-
-                        Util.ConvertProfiles(originFile, defaultJson);
-                        return true;
+                        await Util.CopyFileAsync(item, destinationPath, false);
                     }
                 }
+
+                string originFile = Path.Combine(App.CurrentGame.ProfilesDirectory, App.CurrentGame.defaultIniProfile);
+                if (File.Exists(originFile))
+                {
+                    if (File.Exists(defaultJson))
+                    {
+                        File.Delete(defaultJson);
+                    }
+
+                    Util.ConvertProfiles(originFile, defaultJson);
+                    return true;
+                }
+
             }
             catch { }
 
@@ -123,9 +124,9 @@ namespace SAModManager.Profile
 
         }
 
-        public async static Task<bool> ConvertOldProfile(bool installed, string gamePath)
+        public async static Task<bool> ConvertOldProfile(string gamePath)
         {
-            return await HandleProfiles(installed, gamePath);
+            return await HandleProfiles(gamePath);
         }
     }
 }
