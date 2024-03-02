@@ -97,6 +97,7 @@ namespace SAModManager.Profile
             }
 
             Profiles profiles = new();
+            bool converted = false;
 
             try
             {
@@ -109,11 +110,19 @@ namespace SAModManager.Profile
                 foreach (var item in Directory.EnumerateFiles(modFolder, "*.ini"))
                 {
                     string destinationPath = Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item));
-                    if (!File.Exists(destinationPath))
+                    string newFileName = Path.GetFileNameWithoutExtension(destinationPath) + ".json";
+                    //don't duplicate profile
+                    if (!File.Exists(destinationPath) && !File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName)))
                     {
                         await Util.CopyFileAsync(item, destinationPath, false);
                         Util.ConvertProfiles(destinationPath, ref profiles);
+                        converted = true;
                     }
+                }
+
+                if (!converted) 
+                {
+                    return null;
                 }
 
                 return profiles.ProfilesList;
