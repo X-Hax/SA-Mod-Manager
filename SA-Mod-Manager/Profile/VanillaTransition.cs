@@ -110,9 +110,8 @@ namespace SAModManager.Profile
                 foreach (var item in Directory.EnumerateFiles(modFolder, "*.ini"))
                 {
                     string destinationPath = Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item));
-                    string newFileName = Path.GetFileNameWithoutExtension(destinationPath) + ".json";
-                    //don't duplicate profile
-                    if (!File.Exists(destinationPath) && !File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName)))
+
+                    if (!File.Exists(destinationPath))
                     {
                         await Util.CopyFileAsync(item, destinationPath, false);
                         Util.ConvertProfiles(destinationPath, ref profiles);

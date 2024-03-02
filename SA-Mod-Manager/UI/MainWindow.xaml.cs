@@ -95,19 +95,7 @@ namespace SAModManager
                     tempPath = currentPath;
                     App.CurrentGame.gameDirectory = currentPath;
                     UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                    var list = await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
-                    if (list is not null)
-                    {
-                        foreach (var item in list)
-                        {
-                            if (GameProfiles.ProfilesList.Contains(item))
-                                continue;
-
-                            GameProfiles.ProfilesList.Add(item);
-                        }
-                    }
-
-                    ProfileSettings_SaveProfileFile();
+                    await UpdateProfileList();
                     await Load(true);
                     isValid = true;
                     break;
@@ -1068,6 +1056,7 @@ namespace SAModManager
             }
             else
             {
+                App.CancelUpdate = true;
                 var game = GamesInstall.GetGamePerID(setGame);
 
                 if (App.GamesList.Contains(game) == false)
@@ -1080,19 +1069,7 @@ namespace SAModManager
                 await Load(true);
                 await ForceInstallLoader();
                 UpdateButtonsState();
-                var list = await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
-                if (list is not null)
-                {
-                    foreach (var item in list)
-                    {
-                        if (GameProfiles.ProfilesList.Contains(item))
-                            continue;
-
-                        GameProfiles.ProfilesList.Add(item);
-                    }
-                }
-
-                ProfileSettings_SaveProfileFile();
+                await UpdateProfileList();
 
                 Save();
             }
@@ -2704,25 +2681,35 @@ namespace SAModManager
             ComboGameSelection_SelectionChanged(null, null);
         }
 
+        private async Task UpdateProfileList()
+        {
+            var list = await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
+            if (list is not null)
+            {
+                foreach (var item in list)
+                {
+                    for (int i = 0; i < GameProfiles.ProfilesList.Count; i++)
+                    {
+                        if (GameProfiles.ProfilesList[i].Filename == item.Filename)
+                        {
+                            GameProfiles.ProfilesList.RemoveAt(i); 
+                        }
+                    }
+
+                    GameProfiles.ProfilesList.Add(item);
+                }
+            }
+
+            ProfileSettings_SaveProfileFile();
+        }
+
         private async Task FirstBootInstallLoader()
         {
             if (string.IsNullOrWhiteSpace(App.CurrentGame?.gameDirectory) == false)
             {
                 await ForceInstallLoader();
                 UpdateButtonsState();
-                var list = await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
-                if (list is not null)
-                {
-                    foreach (var item in list)
-                    {
-                        if (GameProfiles.ProfilesList.Contains(item))
-                            continue;
-
-                        GameProfiles.ProfilesList.Add(item);
-                    }
-                }
-
-                ProfileSettings_SaveProfileFile();
+                await UpdateProfileList();
             }
         }
 
@@ -2750,9 +2737,7 @@ namespace SAModManager
 
                 if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
                 {
-#if !DEBUG
                     await FirstBootInstallLoader();
-#endif
                 }
 
                 await App.EnableOneClickInstall();
