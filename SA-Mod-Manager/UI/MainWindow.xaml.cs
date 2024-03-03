@@ -1385,12 +1385,12 @@ namespace SAModManager
                 case SetGame.SADX:
                     EnableUI(true);
                     stackPanel.Children.Add(new Controls.SADX.GameConfig(ref GameProfile));
-                    tsPanel.Children.Add(new Controls.SADX.TestSpawn(ref GameProfile, ref mods, ref EnabledMods));
+                    tsPanel.Children.Add(new Controls.SADX.TestSpawn(ref GameProfile));
                     break;
                 case SetGame.SA2:
                     EnableUI(true);
                     stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile));
-                    tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile, ref mods, ref EnabledMods));
+                    tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile));
                     break;
                 case SetGame.None:
                 default:
