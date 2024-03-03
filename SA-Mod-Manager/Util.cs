@@ -12,6 +12,7 @@ using SAModManager.Configuration;
 using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.Readers;
+using SAModManager.Ini;
 
 namespace SAModManager
 {
