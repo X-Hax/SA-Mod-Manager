@@ -355,7 +355,6 @@ namespace SAModManager.Controls.SADX
                 }
                 catch
                 {
-                    throw new Exception("Failed to extract AppLauncher.");
                 }
 
                 if (File.Exists(fullPath))
@@ -364,8 +363,6 @@ namespace SAModManager.Controls.SADX
                 }
 
             }
-
-            await Task.Delay(10);
         }
 
         private async void btnGetAppLauncher_Click(object sender, RoutedEventArgs e)

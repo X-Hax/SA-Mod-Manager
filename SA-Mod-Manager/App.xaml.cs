@@ -506,6 +506,8 @@ namespace SAModManager
                     {
                         return false;
                     }
+
+                    await GameConfig.UpdateAppLauncher();
                 }
 
                 await GameConfig.UpdateAppLauncher();
