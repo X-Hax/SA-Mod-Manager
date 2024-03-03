@@ -674,6 +674,8 @@ namespace SAModManager.Configuration.SADX
 		public bool DisableCDCheck { get; set; } = false;       // SADXLoaderInfo.DisableCDCheck
         [DefaultValue(true)]
         public bool ExtendedSaveSupport { get; set; } = true;
+        [DefaultValue(true)]
+        public bool CrashGuard { get; set; } = true;
 
         /// <summary>
         /// Converts from original settings file.

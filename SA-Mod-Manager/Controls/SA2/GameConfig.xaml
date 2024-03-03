@@ -42,9 +42,7 @@
 								</Grid.RowDefinitions>
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Screen}" Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen}"/>
-								<ComboBox x:Name="comboScreen" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
-									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Screen.All}"/>
-								</ComboBox>
+								<ComboBox x:Name="comboScreen" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged"/>
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption}" Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Center"/>
 								<ComboBox x:Name="comboScreenMode" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0">

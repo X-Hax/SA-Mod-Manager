@@ -20,8 +20,6 @@ namespace SAModManager.Controls.SADX
     {
         #region Variables
         private GameSettings GameProfile;
-        private Dictionary<string, SAModInfo> GameMods;
-        private List<string> SelectedMods;
         public static Dictionary<int, string> EventNames;
 
         #region ComboBox Sources
@@ -386,11 +384,9 @@ namespace SAModManager.Controls.SADX
         }
         #endregion
 
-        public TestSpawn(ref object gameSettings, ref Dictionary<string, SAModInfo> modList, ref List<string> enabledMods)
+        public TestSpawn(ref object gameSettings)
         {
             GameProfile = (gameSettings as GameSettings);
-            SelectedMods = enabledMods;
-            GameMods = modList;
 
             InitializeComponent();
 
@@ -420,7 +416,9 @@ namespace SAModManager.Controls.SADX
                 return;
             }
 
-			string executablePath = SelectedMods?.Select(item => GameMods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+            var mainWindow = ((MainWindow)Application.Current.MainWindow);
+
+            string executablePath = mainWindow.EnabledMods?.Select(item => mainWindow.mods[item]?.EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
 
             string commandLine = GetTestSpawnCommandLine();
 

@@ -24,13 +24,15 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Fenêtre Personnalisée</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Comme le Plein Écran Sans Bordure, mais pour les modes fenêtré.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Résolution:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Taille de la Fenêtre :</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Paramètres</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forcer Ratio d'Aspect 4:3</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Synchronisation Verticale</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Synchro. Verticale</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pause si inactif</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Allouage dynamique des Tampons</system:String>
     
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Fenêtre Redimensionnable</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Conserver le Ratio lors du Redimensionnement</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Maintenir le Ratio d'Aspect</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Taille de Fenêtre Personnalisée:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Sans Bordures</system:String>
@@ -58,6 +60,9 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Activer Mise à l'échelle de l'interface</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Activer D3D8to9</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Mettre à jour D3D8to9</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Télécharger DXVK</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Le bouton ci-dessous vous permet de télécharger DXVK. Ce programme peut améliorer les performances et la stabilité de SA2. Le bouton vous mènera uniquement au téléchargement du programme, il ne l'installera pas.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Une fois que vous avez téléchargé l'archive, il vous suffit d'extraire d3d9.dll et de le placer dans le dossier du jeu où se trouve Sonic2app.</system:String>
     <!--#endregion-->
 
     <!--Options Tab Strings-->

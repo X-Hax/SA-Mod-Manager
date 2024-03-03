@@ -97,6 +97,7 @@
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Ошибка удаления мода: {0}.&#x0a;Убедитесь, что файлы существуют и не используются другой программой. Затем попробуйте ещё раз.</system:String>
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">При загрузке профилей произошла непредвиденная ошибка. Если проблема не устранена, сообщите о ней.</system:String>
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Не удалось создать папку с настройками по пути {0}.&#x0a;Менеджер модов не будет работать корректно.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Failed to install or update {0}.&#x0a;If the game is open, please close it and try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->

@@ -98,6 +98,7 @@
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">No se pudo eliminar el mod {0}.&#x0a;Por favor, asegúrate de que los archivos existen y no están siendo utilizados por otro programa e inténtalo de nuevo.</system:String>
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">Ocurrió un error inesperado al cargar los perfile. Por favor, reporta este error si el problema persiste.</system:String>
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Error al crear la carpeta de configuración en {0}.&#x0a;El Mod Manager no podrá funcionar correctamente.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Failed to install or update {0}.&#x0a;If the game is open, please close it and try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->

@@ -6,6 +6,9 @@ using SAModManager.UI;
 using System.IO.Compression;
 using Microsoft.Win32;
 using System.Security.Principal;
+using SAModManager.Configuration.SADX;
+using SAModManager.Configuration.SA2;
+using SAModManager.Configuration;
 using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.Readers;
@@ -142,34 +145,42 @@ namespace SAModManager
             }
         }
 
-        public static bool ConvertProfiles(string sourceFile, string destinationFile)
+        public static void ConvertProfiles(string sourceFile, ref Profiles pro)
         {
-     
+            if (!File.Exists(sourceFile))
+                return;
+
+            Configuration.SADX.GameSettings settings = new();
+            Configuration.SA2.GameSettings settingsSA2 = new();
+            string newFileName = Path.GetFileNameWithoutExtension(sourceFile);
+            string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
+
             try
             {
                 switch (App.CurrentGame.id)
                 {
                     case Configuration.SetGame.SADX:
-                        Configuration.SADX.GameSettings newProfile = new();
-                        newProfile.LoadConfigs(sourceFile);
-                        newProfile.Serialize(destinationFile, "Default.json");
-                        return true;
+                        SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
+                        settings.ConvertFromV0(info);
+                        settings.Serialize(newFilePath, newFileName + ".json");
+                        break;
                     case Configuration.SetGame.SA2:
-                        Configuration.SA2.GameSettings newSA2Profile = new();
-                        newSA2Profile.LoadConfigs(sourceFile);
-                        newSA2Profile.Serialize(destinationFile, "Default.json");
-                        return true;
-
+                        SA2LoaderInfo sa2INFO = IniSerializer.Deserialize<SA2LoaderInfo>(sourceFile);
+                        settingsSA2.ConvertFromV0(sa2INFO);
+                        settingsSA2.Serialize(newFilePath, newFileName + ".json");
+                        break;
                 }
+
+                pro.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
+                File.Delete(sourceFile);
 
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Profile Conversion Failed: {ex.Message}");
-                return false;
+                return;
             }
 
-            return false;
         }
 
         public static async Task MoveFile(string origin, string dest, bool overwrite = false)

@@ -43,9 +43,9 @@
 								</Grid.RowDefinitions>
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Screen}" Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen}"/>
-								<ComboBox x:Name="comboScreen" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged">
+								<ComboBox x:Name="comboScreen" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged"/>
 									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Screen.All}"/>
-								</ComboBox>
+
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption}" Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Center"/>
 								<ComboBox x:Name="comboScreenMode" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0">
@@ -132,8 +132,8 @@
 									</Grid.ColumnDefinitions>
 									<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" Grid.Column="0" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
 									<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" Grid.Column="1" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
-									<CheckBox x:Name="chkShowMouse" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}" Grid.Column="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen}"/>
-									<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="3" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
+                                    <CheckBox x:Name="chkShowMouse" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}" Grid.Column="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}"/> 
+                                    <CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" Grid.Column="3" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
 								</Grid>
 							</Grid>
 						</Grid>
