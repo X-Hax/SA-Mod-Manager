@@ -71,6 +71,15 @@ namespace SAModManager.Controls
 		public static readonly DependencyProperty ValueChangedProperty =
 			DependencyProperty.Register("ValueChanged", typeof(RoutedEventHandler), typeof(NumericUpDown));
 
+		public bool NoNegatives
+		{
+			get { return (bool)GetValue(NoNegativesProperty); }
+			set { SetValue(NoNegativesProperty, value); }
+		}
+
+		public static readonly DependencyProperty NoNegativesProperty = 
+			DependencyProperty.Register("NoNegatives", typeof(bool), typeof(NumericUpDown), new PropertyMetadata(false));
+
 		#endregion
 
 		public NumericUpDown()
@@ -145,7 +154,7 @@ namespace SAModManager.Controls
 		private void NumValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
 			var regex = ValueType == DataType.Integer ? new Regex("[^0-9]+") : new Regex("[^0-9.-]+");
-			
+
 			if (regex.IsMatch(e.Text))
 			{
 				if (double.TryParse(e.Text, out double value))
@@ -160,20 +169,34 @@ namespace SAModManager.Controls
 		{
 			if (e.Key == Key.Enter)
 			{
-				MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-			}
+				if (Text.Length <= 0)
+					Value = 0;
 
-			// Allow only numeric keys and some control keys (e.g., Backspace, Delete, Enter)
-			if (!(e.Key >= Key.D0 && e.Key <= Key.D9) &&
-				!(e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) &&
-				!(e.Key == Key.Decimal || e.Key == Key.OemPeriod || e.Key == Key.OemComma || e.Key == Key.Back || e.Key == Key.Delete))
-			{
+				MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
 				e.Handled = true;
 			}
 
 			if (e.Key == Key.Subtract || e.Key == Key.OemMinus)
 			{
-				Value *= -1.0f;
+				if (!NoNegatives)
+					if (Value > 0.001 || Value < -0.001)
+						Value *= -1.0f;
+			}
+
+			if (e.Key == Key.Back || e.Key == Key.Delete)
+			{
+				if (Text.Length <= 0)
+					Value = 0;
+
+				e.Handled = true;
+			}
+
+			// Allow only numeric keys and some control keys (e.g., Backspace, Delete, Enter)
+			if (!(e.Key >= Key.D0 && e.Key <= Key.D9) &&
+				!(e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) &&
+				!(e.Key == Key.Decimal || e.Key == Key.OemPeriod || e.Key == Key.OemComma))
+			{
+				e.Handled = true;
 			}
 		}
 
