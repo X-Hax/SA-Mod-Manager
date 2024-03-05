@@ -281,17 +281,17 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumCharacter.SetBinding(NumericUpDown.ValueProperty, new Binding("CharacterIndex")
+            tsNumCharacter.SetBinding(NumberBox.ValueProperty, new Binding("CharacterIndex")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumLevel.SetBinding(NumericUpDown.ValueProperty, new Binding("LevelIndex")
+            tsNumLevel.SetBinding(NumberBox.ValueProperty, new Binding("LevelIndex")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumMission.SetBinding(NumericUpDown.ValueProperty, new Binding("MissionIndex")
+            tsNumMission.SetBinding(NumberBox.ValueProperty, new Binding("MissionIndex")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
@@ -301,22 +301,22 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumPosX.SetBinding(NumericUpDown.ValueProperty, new Binding("XPosition")
+            tsNumPosX.SetBinding(NumberBox.ValueProperty, new Binding("XPosition")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumPosY.SetBinding(NumericUpDown.ValueProperty, new Binding("YPosition")
+            tsNumPosY.SetBinding(NumberBox.ValueProperty, new Binding("YPosition")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumPosZ.SetBinding(NumericUpDown.ValueProperty, new Binding("ZPosition")
+            tsNumPosZ.SetBinding(NumberBox.ValueProperty, new Binding("ZPosition")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumAngle.SetBinding(NumericUpDown.ValueProperty, new Binding("Rotation")
+            tsNumAngle.SetBinding(NumberBox.ValueProperty, new Binding("Rotation")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
@@ -544,14 +544,14 @@ namespace SAModManager.Controls.SA2
                 {
                     int charIndex = GameProfile.TestSpawn.CharacterIndex;
                     AdjustCharIndex(ref charIndex);
-                    cmdline.Add("-c " + charIndex.ToString());
+                    cmdline.Add($"-c {charIndex}");
                 }
            
             if (GameProfile.TestSpawn.Player2Index > -1)
             {
                 int charIndex = GameProfile.TestSpawn.Player2Index;
                 AdjustCharIndex(ref charIndex);
-                cmdline.Add("-p2 " + charIndex.ToString());
+                cmdline.Add($"-p2 {charIndex}");
             }
 
             if (GameProfile.TestSpawn.LevelIndex > -1)
@@ -569,24 +569,21 @@ namespace SAModManager.Controls.SA2
                         }
                         lvl++;
                     }
-                    cmdline.Add("-l " + lvl_result.ToString());
+                    cmdline.Add($"-l {lvl_result}");
                 }
             }
 
             if (GameProfile.TestSpawn.MissionIndex > -1)
                 if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
-                    cmdline.Add("-m " + GameProfile.TestSpawn.MissionIndex.ToString());
+                    cmdline.Add($"-m {GameProfile.TestSpawn.MissionIndex}");
 
 
-            if (GameProfile.TestSpawn.UsePosition)
-                cmdline.Add("-p " +
-                    GameProfile.TestSpawn.XPosition.ToString() + " " +
-                    GameProfile.TestSpawn.YPosition.ToString() + " " +
-                    GameProfile.TestSpawn.ZPosition.ToString() + " -r " +
-                    GameProfile.TestSpawn.Rotation.ToString());
+			if (GameProfile.TestSpawn.UsePosition)
+				cmdline.Add($"-p {GameProfile.TestSpawn.XPosition} {GameProfile.TestSpawn.YPosition} {GameProfile.TestSpawn.ZPosition} -r {GameProfile.TestSpawn.Rotation}");
 
-            if (GameProfile.TestSpawn.UseEvent && GameProfile.TestSpawn.EventIndex > -1)
-                cmdline.Add("-e " + GameProfile.TestSpawn.EventIndex.ToString());
+
+			if (GameProfile.TestSpawn.UseEvent && GameProfile.TestSpawn.EventIndex > -1)
+                cmdline.Add($"-e {GameProfile.TestSpawn.EventIndex}");
 
 
             if (GameProfile.TestSpawn.UseSave && GameProfile.TestSpawn.SaveIndex > -1)

@@ -44,8 +44,6 @@
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Screen}" Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen}"/>
 								<ComboBox x:Name="comboScreen" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0" SelectionChanged="comboScreen_SelectionChanged"/>
-									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Screen.All}"/>
-								</ComboBox>
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption}" Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Center"/>
 								<ComboBox x:Name="comboScreenMode" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" SelectedIndex="0">
@@ -62,9 +60,9 @@
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 									<StackPanel Orientation="Horizontal" Margin="5" Grid.Column="0">
-										<elements:NumericUpDown x:Name="txtResX" Height="22" Width="75" IsEnabled="{Binding ElementName=chkRatio, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
+										<elements:NumberBox x:Name="txtResX" Height="22" Width="75" Type="Integer" IsEnabled="{Binding ElementName=chkRatio, Path=IsChecked, Converter={StaticResource FlipBool}}" ValueChanged="ResolutionChanged"/>
 										<Label Content="x" VerticalContentAlignment="Center"/>
-										<elements:NumericUpDown x:Name="txtResY" Height="22" Width="75" ValueChanged="ResolutionChanged"/>
+										<elements:NumberBox x:Name="txtResY" Height="22" Width="75" Type="Integer" ValueChanged="ResolutionChanged"/>
 									</StackPanel>
 
 									<ComboBox x:Name="comboDisplay" Grid.Column="1" Margin="5" SelectionChanged="DisplaySize_SelectionChanged">
@@ -91,9 +89,9 @@
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 									<StackPanel Margin="5" Grid.Column="0" Orientation="Horizontal">
-										<elements:NumericUpDown x:Name="txtCustomResX" Height="22" Width="75"/>
+										<elements:NumberBox x:Name="txtCustomResX" Height="22" Width="75" Type="Integer" IsEnabled="{Binding ElementName=chkMaintainRatio, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
 										<Label Content="x" VerticalContentAlignment="Center"/>
-										<elements:NumericUpDown x:Name="txtCustomResY" Height="22" Width="75" ValueChanged="ResolutionChanged"/>
+										<elements:NumberBox x:Name="txtCustomResY" Height="22" Width="75" Type="Integer" ValueChanged="ResolutionChanged"/>
 									</StackPanel>
 
 									<ComboBox x:Name="comboCustomWindow" Grid.Column="1" Margin="5" SelectionChanged="DisplaySize_SelectionChanged">
