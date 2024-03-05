@@ -58,7 +58,7 @@
 			<Style TargetType="Control">
 				<Setter Property="Foreground" Value="{DynamicResource Control.Brushes.Foreground}"/>
 			</Style>
-			<Style TargetType="{x:Type TextBox}">
+			<Style x:Key="TextBoxStyling" TargetType="{x:Type TextBox}">
 				<Setter Property="Background" Value="{DynamicResource TextBox.Brushes.Background}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource TextBox.Brushes.Border}"/>
 				<Setter Property="Foreground" Value="{DynamicResource TextBlock.Brushes.Foreground}"/>
@@ -100,6 +100,17 @@
 						</MultiTrigger.Conditions>
 						<Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
 					</MultiTrigger>
+				</Style.Triggers>
+			</Style>
+			<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyling}"/>
+			<Style TargetType="{x:Type elements:NumberBox}">
+				<Setter Property="Background" Value="Transparent"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource Borders.Brushes.Border}"/>
+				<Setter Property="Foreground" Value="{DynamicResource TextBox.Brushes.Background}"/>
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver" Value="True">
+						<Setter Property="BorderBrush" Value="{DynamicResource TextBox.Brushes.MouseOver.Border}"/>
+					</Trigger>
 				</Style.Triggers>
 			</Style>
 			<!--#endregion-->
