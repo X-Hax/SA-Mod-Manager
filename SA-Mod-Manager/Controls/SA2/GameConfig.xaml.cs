@@ -294,12 +294,12 @@ namespace SAModManager.Controls.SA2
 			comboScreen.DisplayMemberPath = "Key";
             txtResX.MinValue = 0;
             txtResY.MinValue = 0;
-            txtResX.SetBinding(NumericUpDown.ValueProperty, new Binding("HorizontalResolution")
+            txtResX.SetBinding(NumberBox.ValueProperty, new Binding("HorizontalResolution")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
-            txtResY.SetBinding(NumericUpDown.ValueProperty, new Binding("VerticalResolution")
+            txtResY.SetBinding(NumberBox.ValueProperty, new Binding("VerticalResolution")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
