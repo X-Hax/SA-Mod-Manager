@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SAModManager.Configuration;
 using SAModManager.UI;
 
 namespace SAModManager.Profile
@@ -47,42 +48,6 @@ namespace SAModManager.Profile
             "/mods/SADXModLoader.dll"
         };
 
-        private static async Task<bool> HandleProfiles(string gamePath)
-        {
-            try
-            {
-                string modFolder = Path.Combine(gamePath, "mods");
-
-                Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
-                string defaultJson = Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json");
-                //if user is about to install the loader backup vanilla profiles
-
-                foreach (var item in Directory.EnumerateFiles(modFolder, "*.ini"))
-                {
-                    string destinationPath = Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item));
-                    if (!File.Exists(destinationPath))
-                    {
-                        await Util.CopyFileAsync(item, destinationPath, false);
-                    }
-                }
-
-                string originFile = Path.Combine(App.CurrentGame.ProfilesDirectory, App.CurrentGame.defaultIniProfile);
-                if (File.Exists(originFile))
-                {
-                    if (File.Exists(defaultJson))
-                    {
-                        File.Delete(defaultJson);
-                    }
-
-                    Util.ConvertProfiles(originFile, defaultJson);
-                    return true;
-                }
-
-            }
-            catch { }
-
-            return false;
-        }
 
         private static async Task BackupAndRestoreManagerFiles(bool installed, string gamePath)
         {
@@ -124,9 +89,47 @@ namespace SAModManager.Profile
 
         }
 
-        public async static Task<bool> ConvertOldProfile(string gamePath)
+        public async static Task<List<ProfileEntry>> ConvertOldProfile(string gamePath)
         {
-            return await HandleProfiles(gamePath);
+            if (!Directory.Exists(gamePath))
+            {
+                return null;
+            }
+
+            Profiles profiles = new();
+            bool converted = false;
+
+            try
+            {
+                string modFolder = Path.Combine(gamePath, "mods");
+
+                Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+                string defaultJson = Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json");
+                //if user is about to install the loader backup vanilla profiles
+
+                foreach (var item in Directory.EnumerateFiles(modFolder, "*.ini"))
+                {
+                    string destinationPath = Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item));
+
+                    if (!File.Exists(destinationPath))
+                    {
+                        await Util.CopyFileAsync(item, destinationPath, false);
+                        Util.ConvertProfiles(destinationPath, ref profiles);
+                        converted = true;
+                    }
+                }
+
+                if (!converted) 
+                {
+                    return null;
+                }
+
+                return profiles.ProfilesList;
+
+            }
+            catch { }
+
+            return null;
         }
     }
 }

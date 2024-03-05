@@ -20,7 +20,8 @@
     <system:String x:Key="GamePatches.KillGBIX">Deshabilitar GBIX (Experimental)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Deshabilitar Revisión de CD</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Soporte de guardado extendido</system:String>
-    
+    <system:String x:Key="GamePatches.CrashGuard">Crash Guard</system:String>
+
     <system:String x:Key="GamePatches.HRTFSoundDesc">Ajusta DirectSound para que utilice algoritmos más avanzados para procesar sonidos 3D. Este parche no es necesario cuando BASS para efectos de sonido está activado.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Corrige un error que impide que los ajustes de la cámara libre se guarden correctamente al morir o al cargar una zona/acto.</system:String>
     <system:String x:Key="GamePatches.FixVertexColorRenderingDesc" xml:space="preserve">SADX ignora deliberadamente el color de los vértices de los modelos y en su lugar utiliza un color de vértice global incluso cuando no debería.&#x0a;&#x0a;Este parche re-implementa las funciones para manejar el asunto CORRECTAMENTE y usar los colores de vértices proporcionados por el modelo.</system:String>
@@ -37,6 +38,7 @@
     <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">Un índice global (GBIX, por sus siglas en inglés) es un valor usado en el sistema de caché de texturas del juego. Cada textura del juego tiene asignado uno.&#x0a;Antes de que el juego cargue una nueva textura, compara el GBIX de esta con el de otras texturas que ya fueron cargadas.&#x0a;Si encuentra una coincidencia, el juego reutiliza la textura ya cargada en lugar de cargar una nueva.&#x0a;&#x0a;Este parche deshabilita la mayor parte del sistema GBIX para evitar errores/conflictos (con pequeñas excepciones, como en la interfaz).</system:String>
 	<system:String x:Key="GamePatches.DisableCDCheckDesc">Deshabilita la Revisión de CD por parte del juego.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Permite usar datos guardados de la versión de Steam, así como archivos con nombres personalizados (hasta 48 caracteres).</system:String>
+    <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Prevents common crashes with missing textures and missing binary files.&#x0a;&#x0a;This will not prevent the game from crashing in all circumstances.</system:String>
 
     <!--#region SA2 Patches-->
     <system:String x:Key="GamePatchesSA2.FramerateLimiter">Lock Framerate</system:String>

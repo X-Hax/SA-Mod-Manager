@@ -18,6 +18,7 @@
     <system:String x:Key="GamePatches.LightFix">Fix Illuminazione</system:String>
     <system:String x:Key="GamePatches.KillGBIX">Disabilita GBIX (Sperimentale)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Disabilita Controllo CD</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Crash Guard</system:String>
 
     <!--#region SA2 Patches-->
     <system:String x:Key="GamePatchesSA2.FramerateLimiter">Lock Framerate</system:String>

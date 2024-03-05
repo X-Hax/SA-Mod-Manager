@@ -44,6 +44,7 @@ namespace SAModManager
         public static bool isVanillaTransition = false; //used when installing the manager from an update
         public static bool isFirstBoot = false; //used when installing the new manager manually
         public static bool isLinux = false;
+        public static bool CancelUpdate = false;
 
         public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
         public static ManagerSettings ManagerSettings { get; set; }
@@ -381,6 +382,11 @@ namespace SAModManager
                     return false;
                 }
 
+                if (App.CancelUpdate)
+                {
+                    return false;
+                }
+
                 var manager = new InfoManagerUpdate(changelog, App.CurrentGame.loader.name);
                 manager.ShowDialog();
 
@@ -402,9 +408,10 @@ namespace SAModManager
 
         public static async Task<bool> PerformUpdateCodesCheck()
         {
+            var mainWindow = ((MainWindow)Application.Current.MainWindow);
             try
             {
-                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkCodesUpdates"));
+                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkCodesUpdates"));
 
                 var codesPath = Path.Combine(App.CurrentGame.modDirectory, "Codes.lst");
 
@@ -421,6 +428,11 @@ namespace SAModManager
                     {
                         return false;
                     }
+                }
+
+                if (App.CancelUpdate)
+                {
+                    return false;
                 }
 
                 await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
@@ -440,7 +452,8 @@ namespace SAModManager
         {
             try
             {
-                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkPatchesUpdates"));
+                var mainWindow = ((MainWindow)Application.Current.MainWindow);
+                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkPatchesUpdates"));
 
                 var jsonPath = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
 
@@ -455,6 +468,11 @@ namespace SAModManager
                     {
                         return false;
                     }
+                }
+
+                if (App.CancelUpdate)
+                {
+                    return false;
                 }
 
                 await GamesInstall.UpdatePatches(App.CurrentGame); //update patch

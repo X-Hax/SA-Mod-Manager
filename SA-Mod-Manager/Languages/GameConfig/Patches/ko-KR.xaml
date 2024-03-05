@@ -18,6 +18,7 @@
     <system:String x:Key="GamePatches.LightFix">광원 수정</system:String>
     <system:String x:Key="GamePatches.KillGBIX">GBIX 비활성화 (실험용)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">CD 확인 비활성화</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Crash Guard</system:String>
 
     <!--#region SA2 Patches-->
     <system:String x:Key="GamePatchesSA2.FramerateLimiter">Lock Framerate</system:String>

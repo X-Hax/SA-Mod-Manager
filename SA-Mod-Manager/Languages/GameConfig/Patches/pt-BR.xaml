@@ -20,6 +20,7 @@
     <system:String x:Key="GamePatches.KillGBIX">Desabilitar GBIX (Experimental)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Desabilitar Verificação de CD</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Suporte de Save Extendido</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Crash Guard</system:String>
 
     <system:String x:Key="GamePatches.HRTFSoundDesc">Define DirectSound para usar algoritmos mais avançados para processar sons 3D. Esta correção não é necessário caso "Usar BASS para Efeitos Sonoros" esteja habilitado.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Corrige um bug que impede a configuração da Free Cam de ser salva corretamente enquanto morre ou carrega uma zona/ato.</system:String>
@@ -37,6 +38,7 @@
     <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">Global Index (GBIX) é um valor utilizado no sistema de cache das texturas do jogo. Cada textura em SADX possui um.&#x0a;Antes do jogo carregar uma nova textura, ele compara o valor GBIX da nova textura com os índices de outras texturas que já foram carregadas.&#x0a;Se uma equivalência for achada, o jogo irá reusar a textura que já foi carregada ao invés de carregar uma textura nova.&#x0a;&#x0a;Este patch desabilita a maioria do sistema GBIX do jogo para reduzir erros de textura/conflitos. (Algumas exceções como os elementos de HUD aplicam.)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheckDesc">Desabilita a verificação de CD do jogo.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Habilita suporte para jogos salvos da versão da Steam e permite a customização de seus nomes (com até 48 caracteres).</system:String>
+    <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Prevents common crashes with missing textures and missing binary files.&#x0a;&#x0a;This will not prevent the game from crashing in all circumstances.</system:String>
 
     <!--#region SA2 Patches-->
     <system:String x:Key="GamePatchesSA2.FramerateLimiter">Lock Framerate</system:String>

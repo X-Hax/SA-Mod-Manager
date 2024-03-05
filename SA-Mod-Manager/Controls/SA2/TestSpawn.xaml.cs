@@ -19,8 +19,6 @@ namespace SAModManager.Controls.SA2
     {
         #region Variables
         private GameSettings GameProfile;
-        private Dictionary<string, SAModInfo> GameMods;
-        private List<string> SelectedMods;
         public static Dictionary<int, string> EventNames;
          public static Dictionary<int, string> LevelNames { get; set; } = new();
 
@@ -90,11 +88,9 @@ namespace SAModManager.Controls.SA2
         }
         #endregion
 
-        public TestSpawn(ref object gameSettings, ref Dictionary<string, SAModInfo> modList, ref List<string> enabledMods)
+        public TestSpawn(ref object gameSettings)
         {
             GameProfile = (gameSettings as GameSettings);
-            SelectedMods = enabledMods;
-            GameMods = modList;
 
             InitializeComponent();
 
@@ -123,8 +119,10 @@ namespace SAModManager.Controls.SA2
                 new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathNotFound.Title"), Lang.GetString("MessageWindow.Errors.GamePathNotFound"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                 return;
             }
+            var mainWindow = ((MainWindow)Application.Current.MainWindow);
 
-            string executablePath = SelectedMods?.Select(item => GameMods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+            string executablePath = mainWindow.EnabledMods?.Select(item => mainWindow.mods[item]?.EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+          
             string commandLine = GetTestSpawnCommandLine();
             string folderPath = Path.GetDirectoryName(executablePath);
 

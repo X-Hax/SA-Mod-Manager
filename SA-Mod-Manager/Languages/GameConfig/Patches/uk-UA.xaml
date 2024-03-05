@@ -19,6 +19,7 @@
     <system:String x:Key="GamePatches.LightFix">Полагодження Освітлення</system:String>
     <system:String x:Key="GamePatches.KillGBIX">Вимкнути GBIX (Експериментально)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Вимкнути Перевірку CD</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Crash Guard</system:String>
 
 
     <system:String x:Key="GamePatches.HRTFSoundDesc">Налаштовує DirectSound для використання більш розвинених алгоритмів обробки 3D звуку. Цей патч не є обов'язковим якщо BASS для SFX увімкнено.</system:String>
@@ -36,6 +37,7 @@
     <system:String x:Key="GamePatches.LightFixDesc">Лагодить місця де світло не правильно застосоване на LandTables і зберігає тип світла для моделей у черзі.</system:String>
     <system:String x:Key="GamePatches.DisableCDCheckDesc" xml:space="preserve">Глобальний Індекс (GBIX) це значення яке використовується системою кешування гри. Кожна текстура у SADX має таке.&#x0a;перед тим як гра завантажить нову текстуру, вона перевіряє значення GBIX нової текстури зі старими.&#x0a;Якщо знайшлося таке, гра перевикористовує завантажену текстуру замість нової.&#x0a;&#x0a;Цей патч по більшості вимикає систему GBIX щоб знизити помилки/конфлікти текстур. (Є деякі виключення як елементи HUD.)</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Вимикає перевірку диску.</system:String>
+    <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Prevents common crashes with missing textures and missing binary files.&#x0a;&#x0a;This will not prevent the game from crashing in all circumstances.</system:String>
 
     <!--#region SA2 Patches-->
     <system:String x:Key="GamePatchesSA2.FramerateLimiter">Lock Framerate</system:String>
