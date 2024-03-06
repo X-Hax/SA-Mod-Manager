@@ -331,18 +331,19 @@ namespace SAModManager.Updater
                     continue;
                 }
 
-                if (System.Windows.Application.Current == null || MainWindow.cancelUpdate)
-                {
-                    break;
-                }
-
                 try
                 {
+                    if (System.Windows.Application.Current == null || App.CancelUpdate == true)
+                    {
+                        break;
+                    }
+
                     System.Windows.Application.Current.Dispatcher.Invoke(() =>
                     {
                         ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ChkCurModUpdate"), mod.Name));
                     });
-                } catch
+                }
+                catch
                 {
 
                 }

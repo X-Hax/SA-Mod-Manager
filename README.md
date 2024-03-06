@@ -6,7 +6,7 @@
 	<img src="https://github.com/X-Hax/SA-Mod-Manager/actions/workflows/build.yml/badge.svg">
 </h1>
 
-Version 1.1
+Version 1.2
 
 
 ## System Requirements
@@ -17,7 +17,7 @@ To use SA Mod Manager, you must have:
 
 ## Supported Games
 * Sonic Adventure DX PC, 2004 version (US release, but If you have the Steam version, or a different region, you can convert it to 2004 US.)
-* Sonic Adventure 2 (Battle) PC (Support coming soon.)
+* Sonic Adventure 2 (Battle) PC
 
 ## How To Use
 - Download the [latest version from GitHub](https://github.com/X-Hax/SA-Mod-Manager/releases/latest) then extract the zip anywhere.
@@ -42,5 +42,5 @@ or warranty.
 
 ## Trademarks
 
-SEGA, Sonic, Sonic the Hedgehog, and Sonic Adventure DX are either
+SEGA, Sonic, Sonic the Hedgehog, Sonic Adventure DX and Sonic Adventure 2 are either
 trademarks or registered trademarks of SEGA of America, Inc.

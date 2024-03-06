@@ -11,9 +11,9 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Cada mod deve ser colocado em uma subpasta dentro da pasta de mods. Não extraia mods diretamente para a pasta de mods.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Mova ou exclua o mod.ini na pasta de mods e abra o Gerenciador de Mods novamente.</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">não pôde ser achado.&#x0a;&#x0a;Este mod será removido da lista.</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Falha ao definir o Caminho para o Jogo</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Falha ao definir o Caminho para o Jogo</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Falha ao tentar detectar sonic.exe, tente selecionar uma pasta onde SADX esteja instalado.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Falha ao detectar o Caminho para o Jogo</system:String>
@@ -81,6 +81,7 @@
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">An unexpected error occurred while loading profiles, if the problem persists, please report the issue.</system:String>
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Failed to create config folder at {0}.&#x0a;The Mod Manager won't be able to work properly.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Failed to install or update {0}.&#x0a;If the game is open, please close it and try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->

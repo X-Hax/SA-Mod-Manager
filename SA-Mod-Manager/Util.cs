@@ -4,15 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows;
-using SAModManager.Common;
+using SAModManager.UI;
 using SAModManager.Updater;
 using System.Diagnostics;
 using System.IO.Compression;
 using SAModManager.Ini;
 using Microsoft.Win32;
 using System.Security.Principal;
+using SAModManager.Configuration.SADX;
+using SAModManager.Configuration.SA2;
+using SAModManager.Configuration;
 
 namespace SAModManager
 {
@@ -36,6 +38,7 @@ namespace SAModManager
             "SADXModManager.exe",
         };
 
+
         public static List<string> BASSFiles = new()
         {
             "libogg.dll",
@@ -58,6 +61,64 @@ namespace SAModManager
             "COPYING_BASS_VGMSTREAM",
             "COPYING_VGMSTREAM",
         };
+
+        public static List<string> SA2ManagerFiles = new()
+        {
+            "7z.dll",
+            "7z.exe",
+            "ModManagerCommon.dll",
+            "ModManagerCommon.pdb",
+            "SA2ModManager.exe.config",
+            "SA2ModManager.pdb",
+            "SA2ModLoader.exp",
+            "sa2mlver.txt",
+            "loader.manifest",
+            "Newtonsoft.Json.dll",
+            "SA2ModManager.exe",
+        };
+
+        public static List<string> OldManagersName = new()
+        {
+            "SADXModManager.exe",
+            "SA2ModManager.exe",
+            "SonicRModManager.exe"
+        };
+
+        private static void MoveFilesToArchive(string root, string archive, List<string> FilesToMove)
+        {
+            foreach (var file in FilesToMove)
+            {
+                if (File.Exists(Path.Combine(root, file)))
+                    File.Move(Path.Combine(root, file), Path.Combine(archive, file), true);
+            }
+        }
+
+        public static void DoVanillaFilesCleanup(string[] args, int index)
+        {
+            string root = null;
+
+            foreach (string exeName in Util.OldManagersName)
+            {
+                root = exeName;
+                if (!File.Exists(root) && index + 1 < args.Length)
+                {
+                    root = Path.GetFullPath(Path.Combine(args[index + 1], exeName));
+
+                    if (File.Exists(root))
+                        break;
+                }
+            }
+
+            if (File.Exists(root))
+            {
+                string archive = Path.Combine(root, "Archive_Old_Manager");
+                Directory.CreateDirectory(archive);
+                MoveFilesToArchive(root, archive, Util.SADXManagerFiles);
+                MoveFilesToArchive(root, archive, Util.SA2ManagerFiles);
+                MoveFilesToArchive(root, archive, Util.BASSFiles);
+            }
+
+        }
 
         public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
         {
@@ -87,21 +148,42 @@ namespace SAModManager
             }
         }
 
-        public static async Task<bool> ConvertProfiles(string sourceFile, string destinationFile)
+        public static void ConvertProfiles(string sourceFile, ref Profiles pro)
         {
+            if (!File.Exists(sourceFile))
+                return;
+
+            Configuration.SADX.GameSettings settings = new();
+            Configuration.SA2.GameSettings settingsSA2 = new();
+            string newFileName = Path.GetFileNameWithoutExtension(sourceFile);
+            string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
+
             try
             {
-                // TODO: Add switch case to properly do the new config for either game.
-                Configuration.SADX.GameSettings newProfile = new();
-                newProfile.ConvertFromV0(IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile));
-                await Task.Run(() => newProfile.Serialize(destinationFile, "Default.json"));
-                return true;
+                switch (App.CurrentGame.id)
+                {
+                    case Configuration.SetGame.SADX:
+                        SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
+                        settings.ConvertFromV0(info);
+                        settings.Serialize(newFilePath, newFileName + ".json");
+                        break;
+                    case Configuration.SetGame.SA2:
+                        SA2LoaderInfo sa2INFO = IniSerializer.Deserialize<SA2LoaderInfo>(sourceFile);
+                        settingsSA2.ConvertFromV0(sa2INFO);
+                        settingsSA2.Serialize(newFilePath, newFileName + ".json");
+                        break;
+                }
+
+                pro.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
+                File.Delete(sourceFile);
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Profile Conversion Failed: {ex.Message}");
-                return false;
+                return;
             }
+
         }
 
         public static async Task MoveFile(string origin, string dest, bool overwrite = false)

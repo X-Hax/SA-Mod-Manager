@@ -1,5 +1,4 @@
-﻿using SAModManager.Common;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -9,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Shell;
+using SAModManager.UI;
 
 namespace SAModManager.Updater
 {
@@ -99,17 +99,18 @@ namespace SAModManager.Updater
         {
             await Dispatcher.InvokeAsync(() =>
             {
+                DLInfo.Text = this.fileName + " ";
                 switch (Type)
                 {
                     case DLType.Download:
                     default:
-                        DLInfo.Text = Lang.GetString("Updater.DL.Dep.Download") + " ";
+                        DLInfo.Text += Lang.GetString("Updater.DL.Dep.Download") + " ";
                         break;
                     case DLType.Install:
-                        DLInfo.Text = Lang.GetString("Updater.DL.Dep.Install") + " ";
+                        DLInfo.Text += Lang.GetString("Updater.DL.Dep.Install") + " ";
                         break;
                     case DLType.Update:
-                        DLInfo.Text = Lang.GetString("Updater.DL.Dep.Update") + " ";
+                        DLInfo.Text += Lang.GetString("Updater.DL.Dep.Update") + " ";
                         break;
                 }
 

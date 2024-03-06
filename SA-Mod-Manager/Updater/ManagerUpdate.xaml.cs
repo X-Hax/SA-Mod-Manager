@@ -1,15 +1,12 @@
-﻿using SAModManager.Updater;
-using System.Threading.Tasks;
-using System.Threading;
+﻿using System.Threading.Tasks;
 using System;
 using System.Windows;
-using System.Security.Policy;
-using System.Net;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Shell;
+using SAModManager.UI;
 
-namespace SAModManager.Common
+namespace SAModManager.Updater
 {
     /// <summary>
     /// Interaction logic for ManagerUpdate.xaml
@@ -71,7 +68,7 @@ namespace SAModManager.Common
                 }
                 else
                 {
-                    new MessageWindow(Lang.GetString("MessageWindow.Errors.UpdateFailed.Title"), Lang.GetString("MessageWindow.Errors.ManagerUpdate.Error0"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+                    throw new Exception("Couldn't find new version of the manager\n");
                 }
             }
             else

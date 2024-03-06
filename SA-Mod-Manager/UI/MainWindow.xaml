@@ -5,12 +5,12 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:SAModManager"
-		xmlns:elements="clr-namespace:SAModManager.Elements"
+		xmlns:elements="clr-namespace:SAModManager.Controls"
 		xmlns:dd="urn:gong-wpf-dragdrop"
 		mc:Ignorable="d"
-		Title="SADX Mod Manager"
+		Title="SA Mod Manager"
 		Style="{DynamicResource SAWindow}"
-		MinHeight="550" MinWidth="590" Height="736" Width="700" WindowStartupLocation="CenterScreen"
+		MinHeight="550" MinWidth="590" Height="730" Width="660" WindowStartupLocation="CenterScreen"
 		Loaded="MainWindowManager_Loaded" PreviewKeyDown="Window_PreviewKeyDown"
         Closed="MainForm_FormClosing">
 
@@ -469,7 +469,7 @@
 								</UniformGrid>
 							</GroupBox>
 
-                            <GroupBox Grid.Row="2" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.About}"  Margin="5">
+                            <GroupBox Grid.Row="2" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.About}" Margin="5" MaxHeight="150" VerticalAlignment="Top">
 								<UniformGrid Rows="2" Columns="2" Margin="5">
 									<Button x:Name="btnCredits" Margin="5" Grid.Column="0" Click="AboutBtn_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.Contributors}">
 										<StackPanel Orientation="Horizontal">
@@ -524,20 +524,33 @@
                     <RowDefinition Height="10"/>
                 </Grid.RowDefinitions>
                 <Button x:Name="SaveAndPlayButton" Grid.Column="1" Grid.Row="1" Click="SaveAndPlayButton_Click" ToolTip="{DynamicResource MainWindow.Tips.SaveAndPlay}">
-					<StackPanel Orientation="Horizontal">
-						<Image x:Name="savePlayIcon" Stretch="UniformToFill" Source="{StaticResource IconPlay}" Margin="3,3,5,3"/>
-						<TextBlock Text="{DynamicResource Manager.Buttons.SaveAndPlay}" VerticalAlignment="Center"/>
-					</StackPanel>
-				</Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Image x:Name="savePlayIcon" Stretch="UniformToFill" Source="{StaticResource IconPlay}" Margin="3,3,5,3"/>
+                        <TextBlock Text="{DynamicResource Manager.Buttons.SaveAndPlay}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
                 <Button x:Name="SaveButton" Grid.Column="3" Grid.Row="1" Click="SaveButton_Click" ToolTip="{DynamicResource MainWindow.Tips.Save}">
-					<StackPanel Orientation="Horizontal">
-						<Image Stretch="UniformToFill" Source="{StaticResource IconSave}" Margin="3,3,5,3"/>
-						<TextBlock Text="{DynamicResource CommonStrings.Save}" VerticalAlignment="Center"/>
-					</StackPanel>
-				</Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Stretch="UniformToFill" Source="{StaticResource IconSave}" Margin="3,3,5,3"/>
+                        <TextBlock Text="{DynamicResource CommonStrings.Save}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
-				<ComboBox x:Name="ComboGameSelection" Grid.Row="1" Grid.Column="5" IsEnabled="False" Visibility="Collapsed"/>
-			</Grid>
+                <ComboBox x:Name="ComboGameSelection" ItemsSource="{Binding Games}" Grid.Row="1" Grid.Column="5" SelectionChanged="ComboGameSelection_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="32" Height="32" CornerRadius="3" RenderOptions.BitmapScalingMode="Fant">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding gameImage}"/>
+                                </Border.Background>
+                            </Border>
+                            <Label Content="{Binding gameName}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

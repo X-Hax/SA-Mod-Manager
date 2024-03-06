@@ -20,6 +20,7 @@
     <system:String x:Key="GamePatches.KillGBIX">Désactiver GBIX (Expérimental)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Désactiver la vérification du CD</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Suport de Sauvegarde étendue</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Garde Anti-Crash</system:String>
 
     <system:String x:Key="GamePatches.HRTFSoundDesc">Configure DirectSound pour qu'il utilise des algorithmes plus avancés pour traiter les sons 3D. Ce patch n'est pas nécessaire lorsque l'option "BASS SFX" est activé.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Corrige un bug du jeu qui empêche la sauvegarde des paramètres "Free Cam" lors d'une mort ou du chargement d'une zone ou d'un acte.</system:String>
@@ -37,6 +38,27 @@
     <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">Global Index (GBIX) est une valeur utilisée par le système de mise en cache des textures du jeu. Chaque texture dans SADX en a une.&#x0a;Avant que le jeu ne charge une nouvelle texture, il compare la valeur GBIX de la nouvelle texture avec les indices d'autres textures déjà chargées.&#x0a;Si une correspondance est trouvée, le jeu réutilise la texture déjà chargée au lieu de charger la nouvelle.&#x0a;&#x0a;Ce patch désactive la plupart du système GBIX du jeu pour réduire les erreurs/conflits de textures.(Quelques exceptions comme les éléments HUD s'appliquent.)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheckDesc">Désactive la vérification du CD du jeu.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Active la prise en charge des sauvegardes de la version Steam et permet des noms de sauvegarde personnalisés (jusqu'à 48 caractères).</system:String>
+    <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Empêche les plantages courants dus à des textures manquantes et à des fichiers binaires manquants.&#x0a;&#x0a;Ce patch n’empêche pas le jeu de planter dans toutes les circonstances.</system:String>
+    <!--#endregion-->
+
+    <!--#region SA2 Patches-->
+    <system:String x:Key="GamePatchesSA2.FramerateLimiter">Limiteur de Framerate</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Désactive la demande de sortie</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoad">Désactive l'Animation des chargements</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBuffer">Augmente la limite du Tampon de Sommets (Vertex Buffer)</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFix">Correctif de l'application de l'environnement (Env Map)</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFix">Correctif du Fondu de l'écran</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFix">Correctif des voitures de City Escape</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFix">Correctifs des effets de Particules</system:String>
+
+    <system:String x:Key="GamePatchesSA2.FramerateLimiterDesc">Limite le Framerate à 60 FPS, résolvant ainsi le problème du jeu qui tourne trop vite sur les écrans à fréquence de rafraîchissement plus élevée.</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPromptDesc">Désactive le message d'avertissement lors de la fermeture du jeu.</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoadDesc">Désactive l'animation de Omochao lors des chargements, ceci devrait réduire les plantages au démarrage.</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBufferDesc">Augmente la limite du tampon de sommets à 32k, permettant l'intégration de modèles de polygones plus élevés dans le jeu, ce patch est obligatoire pour que certains mods fonctionnent.</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFixDesc">Corrige un bug de condition avec la cartographie de l'environnement (principalement dans le monde des Chao), permettant un meilleur rendu.</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">Corrige un bug avec le fondu lors de l'écran de résultat de victoire.</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFixDesc">Corrige le célèbre glitch de la voiture à City Escape (GPU Intel).</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Corrige les effets de particules (portail de la Mélodie Mystique, etc.) qui ne s'affichent pas (GPU Intel).</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>

@@ -7,8 +7,8 @@ using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
-namespace SAModManager.Common
-{
+namespace SAModManager.Updater
+{ 
 	/// <summary>
 	/// Interaction logic for ModChangelog.xaml
 	/// </summary>

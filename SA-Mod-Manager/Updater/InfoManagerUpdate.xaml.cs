@@ -1,9 +1,7 @@
-﻿using System;
-
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 
-namespace SAModManager.Common
+namespace SAModManager.Updater
 {
     /// <summary>
     /// Interaction logic for InfoManagerUpdate.xaml

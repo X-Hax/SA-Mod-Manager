@@ -4,7 +4,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:local="clr-namespace:SAModManager"
 			 xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
-			 xmlns:elements="clr-namespace:SAModManager.Elements"
+			 xmlns:elements="clr-namespace:SAModManager.Controls"
 			 xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit">
 	<Application.Resources>
 		<ResourceDictionary>
@@ -58,7 +58,7 @@
 			<Style TargetType="Control">
 				<Setter Property="Foreground" Value="{DynamicResource Control.Brushes.Foreground}"/>
 			</Style>
-			<Style TargetType="{x:Type TextBox}">
+			<Style x:Key="TextBoxStyling" TargetType="{x:Type TextBox}">
 				<Setter Property="Background" Value="{DynamicResource TextBox.Brushes.Background}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource TextBox.Brushes.Border}"/>
 				<Setter Property="Foreground" Value="{DynamicResource TextBlock.Brushes.Foreground}"/>
@@ -100,6 +100,17 @@
 						</MultiTrigger.Conditions>
 						<Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
 					</MultiTrigger>
+				</Style.Triggers>
+			</Style>
+			<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyling}"/>
+			<Style TargetType="{x:Type elements:NumberBox}">
+				<Setter Property="Background" Value="Transparent"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource Borders.Brushes.Border}"/>
+				<Setter Property="Foreground" Value="{DynamicResource TextBox.Brushes.Background}"/>
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver" Value="True">
+						<Setter Property="BorderBrush" Value="{DynamicResource TextBox.Brushes.MouseOver.Border}"/>
+					</Trigger>
 				</Style.Triggers>
 			</Style>
 			<!--#endregion-->
@@ -1989,7 +2000,7 @@
 												<ColumnDefinition Width="Auto"/>
 											</Grid.ColumnDefinitions>
 
-											<Image Grid.Column="0" Source="Icons/SADXModManager_.png" Margin="0,0,5,5"/>
+											<Image x:Name="IconTitleBar" Grid.Column="0" Source="Icons/SADXModManager_.png" Margin="0,0,5,5"/>
 											<TextBlock Text="{TemplateBinding Title}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 											<StackPanel Grid.Column="2" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
 												<Button Style="{DynamicResource WindowMinButton}" x:Name="ButtonMinimize" Click="MinimizeWindow"/>
@@ -2047,7 +2058,7 @@
 												<ColumnDefinition Width="Auto"/>
 											</Grid.ColumnDefinitions>
 
-											<Image Grid.Column="0" Source="Icons/SADXModManager_.png" Margin="0,0,5,5"/>
+                                            <Image Grid.Column="0" x:Name="IconTitleBar2" Source="Icons/SADXModManager_.png" Margin="0,0,5,5"/>
 											<TextBlock Text="{TemplateBinding Title}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 											<StackPanel Grid.Column="2" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
 												<Button Style="{DynamicResource WindowCloseButton}" x:Name="ButtonClose" Click="CloseWindow"/>

@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<system:String x:Key="MessageWindow.DefaultTitle">SADX Mod Manager</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle">SA Mod Manager</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Error">Erro</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Aviso</system:String>
 	
@@ -11,9 +11,9 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Cada mod deve ser colocado numa subpasta na pasta de mods. Não extraia os mods para a pasta de mods.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Mova ou apague o ficheiro mod.ini da pasta de mods e execute o Mod Manager de novo.</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">não foi encontrado.&#x0a;&#x0a;Este mod será removido da lista.</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Falha ao definir Destino do Jogo</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Falha ao definir Destino do Jogo</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Falha ao detetar sonic.exe, Certifique-se que escolheu a pasta correta onde SADX está instalado.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Falha ao detetar Destino do Jogo</system:String>
@@ -74,13 +74,14 @@
 
     <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Não foi possivel receber informações da atualização."</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.Net7Missing">SADX Mod Manager não consegue executar sem .NET 7.</system:String>
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">SA Mod Manager não consegue executar sem .NET 7.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">VC++ em falta</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Parece que tem em falta alguns redistribuíveis da Visual C++ Redistributables, alguns mods não irão funcionar sem estes componentes.&#x0a;&#x0a;Gostaria de fazer download e de os instalar agora?</system:String>
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">An unexpected error occurred while loading profiles, if the problem persists, please report the issue.</system:String>
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Failed to create config folder at {0}.&#x0a;The Mod Manager won't be able to work properly.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Failed to install or update {0}.&#x0a;If the game is open, please close it and try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->

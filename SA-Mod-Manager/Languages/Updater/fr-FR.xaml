@@ -4,8 +4,8 @@
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <!--Dependencies-->
-    <system:String x:Key="Updater.DL.Dep.Download">Télécharger</system:String>
-    <system:String x:Key="Updater.DL.Dep.Install">Installer</system:String>
+    <system:String x:Key="Updater.DL.Dep.Download">Téléchargement</system:String>
+    <system:String x:Key="Updater.DL.Dep.Install">Installation</system:String>
     <system:String x:Key="Updater.DL.Dep.Update">Mise à jour</system:String>
     <system:String x:Key="Updater.DL.Dep.Downloading">Téléchargement</system:String>
     <system:String x:Key="Updater.DL.Dep.Installing">Installation</system:String>

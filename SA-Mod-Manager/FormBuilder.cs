@@ -6,11 +6,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using GongSolutions.Wpf.DragDrop.Utilities;
-using SAModManager.Common;
+using SAModManager.UI;
 using SAModManager.Properties;
-using SAModManager.Elements;
+using SAModManager.Controls;
 using System.Windows.Media;
-
+using SAModManager.ModsCommon;
+using SAModManager.Configuration;
 
 namespace SAModManager
 {
@@ -111,7 +112,7 @@ namespace SAModManager
 			return panel;
 		}
 
-		public static UIElement CreateNumericBox(ConfigSchemaProperty property, CustomPropertyStore storeInfo, NumericUpDown.DataType dataType)
+		public static UIElement CreateNumericBox(ConfigSchemaProperty property, CustomPropertyStore storeInfo)
 		{
 			Grid panel = new()
 			{
@@ -134,17 +135,29 @@ namespace SAModManager
 			};
 			panel.Children.Add(backing);
 
-			NumericUpDown element = new()
+			NumberBox element = new()
 			{
 				MinWidth = 100,
 				Height = 22,
-				ValueType = dataType,
-				Value = double.Parse(storeInfo.GetConfigValue().ToString()),
+				Value = Decimal.Parse(storeInfo.GetConfigValue().ToString()),
 				HorizontalAlignment = HorizontalAlignment.Right,
-				//MinValue = (double)storeInfo.GetConfigMinValue(),
-				//MaxValue = (double)storeInfo.GetConfigMaxValue(),
+				MinValue = property.MinValue != "" ? Decimal.Parse(property.MinValue.ToString()) : Decimal.MinValue,
+				MaxValue = property.MaxValue != "" ? Decimal.Parse(property.MaxValue.ToString()) : Decimal.MaxValue,
 				Tag = storeInfo
 			};
+
+			switch (property.Type)
+			{
+				case "float":
+					element.Type = NumberBox.ValueType.Float;
+					element.DecimalCount = 2;
+					break;
+				default:
+				case "int":
+					element.Type = NumberBox.ValueType.Integer;
+					element.DecimalCount = 0;
+					break;
+			}
 
 			element.ValueChanged += ModSetting_NumericElementChanged;
 			panel.Children.Add(element);
@@ -272,9 +285,8 @@ namespace SAModManager
 				case "bool":
 					return CreateCheckBox(elem, storeInfo);
 				case "int":
-					return CreateNumericBox(elem, storeInfo, NumericUpDown.DataType.Integer);
 				case "float":
-					return CreateNumericBox(elem, storeInfo, NumericUpDown.DataType.Float);
+					return CreateNumericBox(elem, storeInfo);
 				case "string":
 					return CreateStringBox(elem, storeInfo);
 				default:
@@ -393,7 +405,7 @@ namespace SAModManager
 
 		private static void ModSetting_NumericElementChanged(object sender, RoutedEventArgs e)
 		{
-			NumericUpDown box = (NumericUpDown)sender;
+			NumberBox box = (NumberBox)sender;
 
 			var info = box.Tag as CustomPropertyStore;
 			if ( info != null )
@@ -412,4 +424,3 @@ namespace SAModManager
         #endregion
     }
 }
-

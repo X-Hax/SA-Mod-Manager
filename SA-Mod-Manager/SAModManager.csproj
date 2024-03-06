@@ -10,9 +10,9 @@
 		<Nullable>disable</Nullable>
 		<BaseOutputPath>..\bin\</BaseOutputPath>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/X-Hax/sadx-mod-loader</RepositoryUrl>
+		<RepositoryUrl>https://github.com/X-Hax/SA-Mod-Manager</RepositoryUrl>
 		<PlatformTarget>AnyCPU</PlatformTarget>
-		<AssemblyVersion>1.1.1.6</AssemblyVersion>
+		<AssemblyVersion>1.2.0.0</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -31,15 +31,34 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="Common\OpCodeSyntaxDark.xshd" />
-		<None Remove="Common\OpCodeSyntaxLight.xshd" />
+		<None Remove="Configuration\SA2\SA2FileHashes.ini" />
+		<None Remove="Icons\Manager\SA2Amy.ico" />
+		<None Remove="Icons\Manager\SA2Eggman.ico" />
+		<None Remove="Icons\Manager\SA2Knux.ico" />
+		<None Remove="Icons\Manager\SA2Maria.ico" />
+		<None Remove="Icons\Manager\SA2MM.png" />
+		<None Remove="Icons\Manager\SA2Omochao.ico" />
+		<None Remove="Icons\Manager\SA2Rouge.ico" />
+		<None Remove="Icons\Manager\SA2SE.ico" />
+		<None Remove="Icons\Manager\SA2Shadow.ico" />
+		<None Remove="Icons\Manager\SA2Sonic.ico" />
+		<None Remove="Icons\Manager\SA2Tails.ico" />
 		<None Remove="Icons\SADXModManager_.png" />
+		<None Remove="Resources\Games\sa1.png" />
+		<None Remove="Resources\Games\sa2.png" />
 		<None Remove="Updater\ModDownloadDialog.xaml.cs~RF2e7deabf.TMP" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="Common\OpCodeSyntaxLight.xshd" />
-		<EmbeddedResource Include="Common\OpCodeSyntaxDark.xshd" />
+	  <Resource Include="Configuration\SA2\SA2FileHashes.ini" />
+	  <Resource Include="Icons\Manager\SA2Maria.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Codes\OpCodeSyntaxLight.xshd" />
+		<EmbeddedResource Include="Codes\OpCodeSyntaxDark.xshd" />
+		<EmbeddedResource Include="Resources\Games\sa1.png" />
+		<EmbeddedResource Include="Resources\Games\sa2.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -53,12 +72,14 @@
 		<PackageReference Include="AvalonEdit" Version="6.3.0.90" />
 		<PackageReference Include="Costura.Fody" Version="5.7.0">
 			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<!--<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets><-->
 		</PackageReference>
 		<PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
 		<PackageReference Include="NetCoreInstallChecker" Version="3.0.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+		<PackageReference Include="PropertyChanged.Fody" Version="4.1.0">
+			<PrivateAssets>all</PrivateAssets>
+			</PackageReference>
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>
 
@@ -72,7 +93,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Resource Include="Icons\SADXModManager_.png" />
+	  <Resource Include="Icons\Manager\SA2Amy.ico" />
+	  <Resource Include="Icons\Manager\SA2Eggman.ico" />
+	  <Resource Include="Icons\Manager\SA2Knux.ico" />
+	  <Resource Include="Icons\Manager\SA2MM.png" />
+	  <Resource Include="Icons\Manager\SA2Omochao.ico" />
+	  <Resource Include="Icons\Manager\SA2Rouge.ico" />
+	  <Resource Include="Icons\Manager\SA2SE.ico" />
+	  <Resource Include="Icons\Manager\SA2Shadow.ico" />
+	  <Resource Include="Icons\Manager\SA2Sonic.ico" />
+	  <Resource Include="Icons\Manager\SA2Tails.ico" />
+	  <Resource Include="Icons\SADXModManager_.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -109,6 +140,14 @@
 	  <Page Update="Languages\Updater\es-MX.xaml">
 	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
 	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <NativeLibs Remove="Configuration\SADX\SADXPatchHashes.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <NativeLibs Remove="ConfigSchema.cs" />
 	</ItemGroup>
 
 
