@@ -616,6 +616,9 @@ namespace SAModManager.Updater
                     var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
                     error.ShowDialog();
                 });
+
+                if (updates?.Count <= 1)
+                    this.Close();
             }
         }
 

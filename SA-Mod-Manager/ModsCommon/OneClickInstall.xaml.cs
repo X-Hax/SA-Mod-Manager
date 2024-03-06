@@ -152,12 +152,13 @@ namespace SAModManager
 
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             BringIntoView();
-
+            
             Activate();
 
-            if (App.CurrentGame is null)
+            if (App.CurrentGame is null || string.IsNullOrEmpty(App.CurrentGame?.gameDirectory))
                 return;
 
+           
             //check if the user has a different selected game than the one they are trying to download a mod for 
             foreach (var game in GamesInstall.GetSupportedGames())
             {
@@ -283,6 +284,8 @@ namespace SAModManager
         {
 
             bool retry = false;
+            this.updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", ".updates"));
+            this.modPath = App.CurrentGame.modDirectory;
 
             do
             {
