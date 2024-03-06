@@ -12,6 +12,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using SAModManager.UI;
+using SAModManager.Configuration;
 
 namespace SAModManager
 {

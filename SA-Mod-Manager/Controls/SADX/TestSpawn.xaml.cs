@@ -581,17 +581,17 @@ namespace SAModManager.Controls.SADX
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumCharacter.SetBinding(NumericUpDown.ValueProperty, new Binding("CharacterIndex")
+            tsNumCharacter.SetBinding(NumberBox.ValueProperty, new Binding("CharacterIndex")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumLevel.SetBinding(NumericUpDown.ValueProperty, new Binding("LevelIndex")
+            tsNumLevel.SetBinding(NumberBox.ValueProperty, new Binding("LevelIndex")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumAct.SetBinding(NumericUpDown.ValueProperty, new Binding("ActIndex")
+            tsNumAct.SetBinding(NumberBox.ValueProperty, new Binding("ActIndex")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
@@ -601,22 +601,22 @@ namespace SAModManager.Controls.SADX
 				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
-			tsNumPosX.SetBinding(NumericUpDown.ValueProperty, new Binding("XPosition")
+			tsNumPosX.SetBinding(NumberBox.ValueProperty, new Binding("XPosition")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumPosY.SetBinding(NumericUpDown.ValueProperty, new Binding("YPosition")
+            tsNumPosY.SetBinding(NumberBox.ValueProperty, new Binding("YPosition")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumPosZ.SetBinding(NumericUpDown.ValueProperty, new Binding("ZPosition")
+            tsNumPosZ.SetBinding(NumberBox.ValueProperty, new Binding("ZPosition")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-            tsNumAngle.SetBinding(NumericUpDown.ValueProperty, new Binding("Rotation")
+            tsNumAngle.SetBinding(NumberBox.ValueProperty, new Binding("Rotation")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
@@ -708,37 +708,34 @@ namespace SAModManager.Controls.SADX
             return acts[index];
         }
 
-        private string GetTestSpawnCommandLine()
-        {
-            List<string> cmdline = new List<string>();
+		private string GetTestSpawnCommandLine()
+		{
+			List<string> cmdline = new List<string>();
 
-            if (GameProfile.TestSpawn.CharacterIndex > -1)
-                if (GameProfile.TestSpawn.UseCharacter || GameProfile.TestSpawn.UseManual)
-                    cmdline.Add("-c " + GameProfile.TestSpawn.CharacterIndex.ToString());
+			if (GameProfile.TestSpawn.CharacterIndex > -1)
+				if (GameProfile.TestSpawn.UseCharacter || GameProfile.TestSpawn.UseManual)
+					cmdline.Add($"-c {GameProfile.TestSpawn.CharacterIndex}");
 
-            if (GameProfile.TestSpawn.LevelIndex > -1)
-                if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
-                    cmdline.Add("-l " + GameProfile.TestSpawn.LevelIndex.ToString());
+			if (GameProfile.TestSpawn.LevelIndex > -1)
+				if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
+					cmdline.Add($"-l {GameProfile.TestSpawn.LevelIndex}");
 
-            if (GameProfile.TestSpawn.ActIndex > -1)
-                if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
-                    cmdline.Add("-a " + GameProfile.TestSpawn.ActIndex.ToString());
+			if (GameProfile.TestSpawn.ActIndex > -1)
+				if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
+					cmdline.Add($"-a {GameProfile.TestSpawn.ActIndex}");
 
             if (GameProfile.TestSpawn.UseLevel && tsComboTime.SelectedIndex > 0)
-                cmdline.Add("-t " + (tsComboTime.SelectedIndex - 1).ToString());
+                cmdline.Add($"-t {tsComboTime.SelectedIndex - 1}");
 
-            if (GameProfile.TestSpawn.UsePosition)
-                cmdline.Add("-p " +
-                    GameProfile.TestSpawn.XPosition.ToString() + " " +
-                    GameProfile.TestSpawn.YPosition.ToString() + " " +
-                    GameProfile.TestSpawn.ZPosition.ToString() + " -r " +
-                    GameProfile.TestSpawn.Rotation.ToString());
+			if (GameProfile.TestSpawn.UsePosition)
+				cmdline.Add($"-p {GameProfile.TestSpawn.XPosition} {GameProfile.TestSpawn.YPosition} {GameProfile.TestSpawn.ZPosition} -r {GameProfile.TestSpawn.Rotation}");
 
-            if (GameProfile.TestSpawn.UseEvent && GameProfile.TestSpawn.EventIndex > -1)
-                cmdline.Add("-e " + GameProfile.TestSpawn.EventIndex.ToString());
+
+			if (GameProfile.TestSpawn.UseEvent && GameProfile.TestSpawn.EventIndex > -1)
+                cmdline.Add($"-e {GameProfile.TestSpawn.EventIndex}");
 
             if (GameProfile.TestSpawn.UseGameMode && GameProfile.TestSpawn.GameModeIndex > -1)
-                cmdline.Add("-g " + GameProfile.TestSpawn.GameModeIndex.ToString());
+                cmdline.Add($"-g {GameProfile.TestSpawn.GameModeIndex}");
 
             if (GameProfile.TestSpawn.UseSave && GameProfile.TestSpawn.SaveIndex > -1)
             {

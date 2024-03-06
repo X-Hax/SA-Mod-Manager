@@ -91,30 +91,28 @@ namespace SAModManager.Controls.SADX
         #region Graphics Tab
         private void ResolutionChanged(object sender, RoutedEventArgs e)
         {
-
-            NumericUpDown box = sender as NumericUpDown;
+            NumberBox box = sender as NumberBox;
 
             switch (box.Name)
             {
                 case "txtResY":
                     if (chkRatio.IsChecked == true)
                     {
-                        double ratio = (4.0 / 3.0);
+                        decimal ratio = GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43);
                         txtResX.Value = Math.Ceiling(txtResY.Value * ratio);
                     }
                     break;
                 case "txtCustomResY":
                     if (chkMaintainRatio.IsChecked == true)
                     {
-                        double ratio = txtResX.Value / txtResY.Value;
-                        txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
+                        decimal ratio = (txtResX.Value / txtResY.Value);
+                        txtCustomResX.Value = Math.Ceiling((txtCustomResY.Value * ratio));
                     }
                     break;
             }
 
             if (!suppressEvent)
                 comboDisplay.SelectedIndex = -1;
-
         }
 
         private void HorizontalRes_Changed(object sender, RoutedEventArgs e)
@@ -123,20 +121,20 @@ namespace SAModManager.Controls.SADX
                 comboDisplay.SelectedIndex = -1;
         }
 
-        private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 			if (GraphicsManager.Screens.Count > 1)
 				GraphicsManager.UpdateResolutionPresets(comboScreen.SelectedIndex);
-        }
+		}
 
 		private void chkRatio_Click(object sender, RoutedEventArgs e)
 		{
 			if (chkRatio.IsChecked == true)
 			{
 				txtResX.IsEnabled = false;
-				double resYDecimal = txtResY.Value;
-				double roundedValue = Math.Round(resYDecimal * GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
-				txtResX.Value = (double)roundedValue;
+				decimal resYDecimal = txtResY.Value;
+				decimal roundedValue = Math.Round(resYDecimal * (decimal)GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
+				txtResX.Value = roundedValue;
 			}
 			else if (!suppressEvent)
 			{
@@ -180,7 +178,7 @@ namespace SAModManager.Controls.SADX
             if (chkMaintainRatio.IsChecked == true)
             {
                 txtCustomResX.IsEnabled = false;
-                double ratio = txtResX.Value / txtResY.Value;
+				decimal ratio = txtResX.Value / txtResY.Value;
                 txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
             }
             else if (!suppressEvent)
@@ -657,12 +655,12 @@ namespace SAModManager.Controls.SADX
 			});
 			txtResX.MinValue = 0;
 			txtResY.MinValue = 0;
-			txtResX.SetBinding(NumericUpDown.ValueProperty, new Binding("HorizontalResolution")
+			txtResX.SetBinding(NumberBox.ValueProperty, new Binding("HorizontalResolution")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			txtResY.SetBinding(NumericUpDown.ValueProperty, new Binding("VerticalResolution")
+			txtResY.SetBinding(NumberBox.ValueProperty, new Binding("VerticalResolution")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
@@ -681,23 +679,23 @@ namespace SAModManager.Controls.SADX
 			txtCustomResX.MinValue = 0;
 			txtCustomResY.MinValue = 0;
 
-			txtCustomResX.SetBinding(NumericUpDown.ValueProperty, new Binding("CustomWindowWidth")
+			txtCustomResX.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowWidth")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			txtCustomResX.SetBinding(NumericUpDown.IsEnabledProperty, new Binding("ScreenMode")
+			txtCustomResX.SetBinding(NumberBox.IsEnabledProperty, new Binding("ScreenMode")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay,
 				Converter = new CustomWindowEnabledConverter()
 			});
-			txtCustomResY.SetBinding(NumericUpDown.ValueProperty, new Binding("CustomWindowHeight")
+			txtCustomResY.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowHeight")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			txtCustomResY.SetBinding(NumericUpDown.IsEnabledProperty, new Binding("ScreenMode")
+			txtCustomResY.SetBinding(NumberBox.IsEnabledProperty, new Binding("ScreenMode")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay,

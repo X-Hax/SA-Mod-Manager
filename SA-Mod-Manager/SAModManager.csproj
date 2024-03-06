@@ -147,6 +147,10 @@
 	  <NativeLibs Remove="Configuration\SADX\SADXPatchHashes.cs" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <NativeLibs Remove="ConfigSchema.cs" />
+	</ItemGroup>
+
 
 
 </Project>

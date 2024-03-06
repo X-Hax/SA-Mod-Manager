@@ -111,82 +111,82 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
                                     <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="50"/>
                                 </Grid.RowDefinitions>
                                 <CheckBox x:Name="tsCheckManual" Content="{DynamicResource TestSpawn.Group.Advanced.Check.Manual}" Grid.Column="0" Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center" Click="tsCheckManual_Clicked" ToolTip="{DynamicResource MainWindow.Tips.Tab.TestSpawn.Manual}" TabIndex="14"/>
                                 <Grid x:Name="gridTSLevelManual" Grid.Column="1" Grid.Row="0" Margin="5,5,5,5">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid Grid.Column="0" HorizontalAlignment="Right">
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0" Margin="5">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="80"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource TestSpawn.Check.Character}" VerticalAlignment="Center"/>
-                                        <elements:NumericUpDown x:Name="tsNumCharacter" Grid.Column="1" Height="22" MinWidth="50" MinValue="-1" MaxValue="8" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}" TabIndex="15"/>
+										<elements:NumberBox x:Name="tsNumCharacter" Grid.Column="1" Height="24" Type="Integer" MinValue="-1" MaxValue="8" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}" TabIndex="15"/>
                                     </Grid>
-                                    <Grid Grid.Column="1" HorizontalAlignment="Right">
+                                    <Grid Grid.Column="1" Margin="5">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="80"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource TestSpawn.Check.Level}" VerticalAlignment="Center"/>
-                                        <elements:NumericUpDown x:Name="tsNumLevel" Grid.Column="1" Height="22" MinWidth="65" MinValue="-1" MaxValue="42" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}" TabIndex="16"/>
+										<elements:NumberBox x:Name="tsNumLevel" Grid.Column="1" Height="24" Type="Integer" MinValue="-1" MaxValue="42" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}" TabIndex="16"/>
                                     </Grid>
-                                    <Grid Grid.Column="2" HorizontalAlignment="Right">
+                                    <Grid Grid.Column="2" Margin="5">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="80"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource TestSpawn.Mission}" VerticalAlignment="Center"/>
-                                        <elements:NumericUpDown x:Name="tsNumMission" Grid.Column="2" Height="22" MinWidth="65" MinValue="-1" MaxValue="7" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}" TabIndex="17"/>
+										<elements:NumberBox x:Name="tsNumMission" Grid.Column="2" Height="24" Type="Integer" MinValue="-1" MaxValue="7" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}" TabIndex="17"/>
                                     </Grid>
                                 </Grid>
 
                                 <CheckBox x:Name="tsCheckPosition" Content="{DynamicResource TestSpawn.Group.Advanced.Check.Position}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.TestSpawn.Position}" TabIndex="18"/>
-                                <Grid x:Name="gridTSPosition" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5">
+                                <Grid x:Name="gridTSPosition" Grid.ColumnSpan="2" Grid.Row="2" Margin="5,5,5,5">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Grid Grid.Column="0" HorizontalAlignment="Right">
+                                    <Grid Grid.Column="0" Margin="5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource TestSpawn.Group.Advanced.PosX}" VerticalAlignment="Center"/>
-                                        <elements:NumericUpDown x:Name="tsNumPosX" Grid.Column="1" Height="22" MinWidth="65" ValueType="Float" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}" TabIndex="19"/>
+										<elements:NumberBox x:Name="tsNumPosX" Grid.Column="1" Height="24" Type="Float" DecimalCount="2" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}" TabIndex="19"/>
                                     </Grid>
-                                    <Grid Grid.Column="1" HorizontalAlignment="Right">
+                                    <Grid Grid.Column="1" Margin="5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource TestSpawn.Group.Advanced.PosY}" VerticalAlignment="Center"/>
-                                        <elements:NumericUpDown x:Name="tsNumPosY" Grid.Column="1" Height="22" MinWidth="65" ValueType="Float" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}" TabIndex="20"/>
+										<elements:NumberBox x:Name="tsNumPosY" Grid.Column="1" Height="24" Type="Float" DecimalCount="2" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}" TabIndex="20"/>
                                     </Grid>
-                                    <Grid Grid.Column="2" HorizontalAlignment="Right">
+                                    <Grid Grid.Column="2" Margin="5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource TestSpawn.Group.Advanced.PosZ}" VerticalAlignment="Center"/>
-                                        <elements:NumericUpDown x:Name="tsNumPosZ" Grid.Column="1" Height="22" MinWidth="65" ValueType="Float" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}" TabIndex="21"/>
+										<elements:NumberBox x:Name="tsNumPosZ" Grid.Column="1" Height="24" Type="Float" DecimalCount="2" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}" TabIndex="21"/>
                                     </Grid>
-                                    <Grid Grid.Column="3" HorizontalAlignment="Right">
+                                    <Grid Grid.Column="3" Margin="5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource TestSpawn.Group.Advanced.Angle}" VerticalAlignment="Center"/>
-                                        <elements:NumericUpDown x:Name="tsNumAngle" Grid.Column="1" Height="22" MinWidth="65" ValueType="Float" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}" TabIndex="22"/>
+										<elements:NumberBox x:Name="tsNumAngle" Grid.Column="1" Height="24" Type="Float" DecimalCount="2" IsEnabled="{Binding ElementName=tsCheckPosition, Path=IsChecked}" TabIndex="22"/>
                                     </Grid>
                                 </Grid>
                             </Grid>

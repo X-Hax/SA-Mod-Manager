@@ -53,14 +53,14 @@ namespace SAModManager.Configuration
 
 		#region Functions
 		#region Private Functions
-		private static float Get43Ratio()
+		private static Decimal Get43Ratio()
 		{
-			return (4 / 3);
+			return (4m / 3m);
 		}
 
-		private static float Get169Ratio()
+		private static Decimal Get169Ratio()
 		{
-			return (16 / 9);
+			return (16m / 9m);
 		}
 
 		private static Rectangle GetAllScreenBounds()
@@ -105,7 +105,7 @@ namespace SAModManager.Configuration
 			ResolutionPresets[8] = new Size(rect.Width * 2, rect.Height * 2);
 		}
 
-		public static float GetRatio(Ratio ratio)
+		public static Decimal GetRatio(Ratio ratio)
 		{
 			switch (ratio)
 			{
