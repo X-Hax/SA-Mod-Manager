@@ -2744,7 +2744,7 @@ namespace SAModManager
                 }
 
                 await App.EnableOneClickInstall();
-                Refresh();
+                Save();
             }
         }
     }
