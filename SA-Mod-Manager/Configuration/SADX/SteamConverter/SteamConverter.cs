@@ -1,8 +1,8 @@
-﻿using SharpHDiffPatch.Core;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System;
 
+//todo add sharpHDDiff patch back 
 namespace SAModManager.Configuration.SADX
 {
     public partial class SteamConverter
@@ -139,11 +139,11 @@ namespace SAModManager.Configuration.SADX
                     }
 
                     // Start patching
-                    HDiffPatch patcher = new();
+                    /*HDiffPatch patcher = new();
                     patcher.Initialize(Path.Combine(patchFolder, patch.PatchFilename));
                     patcher.Patch(backupFolder, Path.GetDirectoryName(sonicexe), true, default, true, false);
                     message = patch.GameName + " was patched successfully.";
-                    return ConversionResult.Success;
+                    return ConversionResult.Success;*/
                 }
             }
             message = "Unknown game version.";
