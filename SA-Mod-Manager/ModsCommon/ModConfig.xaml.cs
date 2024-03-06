@@ -225,8 +225,19 @@ namespace SAModManager.ModsCommon
 				case "bool":
 					return bool.Parse(val);
 				case "int":
-					return int.Parse(val.Trim(), CultureInfo.InvariantCulture);
-				case "float":
+					if (int.TryParse(val.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int intValue))
+					{
+						return intValue;
+					}
+					else
+					{
+						// If overflow, decide whether to use max or min value
+						if (val.StartsWith("-"))
+							return int.MinValue;
+						else
+							return int.MaxValue;
+					}
+                case "float":
 					deciValue = decimal.Parse(val.Trim(), CultureInfo.InvariantCulture);
 					formatted = deciValue.ToString("0.0");
 					return decimal.Parse(formatted);
