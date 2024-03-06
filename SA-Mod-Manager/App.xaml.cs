@@ -510,7 +510,6 @@ namespace SAModManager
                     await GameConfig.UpdateAppLauncher();
                 }
 
-                await GameConfig.UpdateAppLauncher();
                 return true;
             }
             catch
