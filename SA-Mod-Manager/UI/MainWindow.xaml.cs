@@ -2655,14 +2655,16 @@ namespace SAModManager
                         case SetGame.SADX:
                         default:
                             icon = "SADXModManager_.png";
+                            iconTitleBar.Margin = new Thickness(0, 0, 5, 5);
                             break;
                         case SetGame.SA2:
                             icon = getSA2Icon();
+                            iconTitleBar.Margin = new Thickness(2, 2, 5, 5);
                             break;
                     }
 
                     var newImg = new BitmapImage(new Uri("pack://application:,,,/" + fullResourceName + ";component/Icons/" + icon));
-                    iconTitleBar.Source = newImg;
+                    iconTitleBar.Source = newImg;             
                 }
             }
             catch { }
@@ -2705,7 +2707,7 @@ namespace SAModManager
 
         private async Task FirstBootInstallLoader()
         {
-            if (string.IsNullOrWhiteSpace(App.CurrentGame?.gameDirectory) == false)
+            if (string.IsNullOrWhiteSpace(App.CurrentGame?.gameDirectory) == false && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
             {
                 await ForceInstallLoader();
                 UpdateButtonsState();
@@ -2729,7 +2731,6 @@ namespace SAModManager
                         GamesInstall.HandleGameSwap(game);
                         await Load();
                         await UpdateManagerInfo();
-                        UpdateManagerIcons();
                         foundGame = true;
                         break;
                     }
@@ -2737,7 +2738,9 @@ namespace SAModManager
 
                 if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
                 {
+#if !DEBUG
                     await FirstBootInstallLoader();
+#endif
                 }
 
                 await App.EnableOneClickInstall();
