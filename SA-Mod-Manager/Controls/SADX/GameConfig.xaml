@@ -121,12 +121,22 @@
 
 								<Separator Grid.ColumnSpan="4" Grid.Row="0" Margin="5,5,5,10"/>
 
-								<UniformGrid Grid.Row="1" HorizontalAlignment="Center" Columns="3">
-									<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
-									<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
-                                    <CheckBox x:Name="chkShowMouse" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}"/> 
-                                    <CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
-								</UniformGrid>
+								<Grid Grid.Row="1" HorizontalAlignment="Center">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="125"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+									<StackPanel Orientation="Vertical">
+										<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
+										<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
+									</StackPanel>
+
+									<StackPanel Grid.Column="2" Orientation="Vertical">
+										<CheckBox x:Name="chkShowMouse" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}"/>
+										<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
+									</StackPanel>
+								</Grid>
 							</Grid>
 						</Grid>
 					</GroupBox>
