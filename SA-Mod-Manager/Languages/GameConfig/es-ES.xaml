@@ -8,7 +8,9 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics">Gráficos</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input">Entrada</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound">Sonido</system:String>
+    <system:String x:Key="GameConfig.Tabs.Lang">Idioma</system:String>
 	<system:String x:Key="GameConfig.Tabs.Patches">Parches</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options">Opciones</system:String>
 
 	<!--Graphics Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Opciones de Pantalla</system:String>
@@ -24,22 +26,36 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Custom Window</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Like Borderless Fullscreen but for the window and not fullscreen modes.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolución:</system:String>
+    
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Window Size:</system:String>
+
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r480">640x480</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r600">800x600</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r768">1024x768</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r864">1152x864</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r960">1280x960</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1024">1280x1024</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Nativo</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">1/2x Nativo</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">2x Nativo</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r720">720p</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1080">1080p</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r4K">4K</system:String>
+
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Configuración</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forzar Relación de Aspecto 4:3</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Activar Sincronización Vertical</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausar cuando el juego esté inactivo</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Dynamically Allocate Buffers</system:String>
-    
+
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Ventana Ajustable</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Mantener Relación de Aspecto</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Keep Ratio on Resize</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamaño de Ventana Personalizado:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Pantalla Completa Sin Bordes</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Show Mouse in Fullscreen</system:String>
-    
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Escalar a la Pantalla</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Otras Opciones Gráficas</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Mantener Relación de Aspecto</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Igualar Relación de Aspecto</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamaño de Ventana Personalizado:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Pantalla Completa Sin Bordes</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Mostar Cursor en Pantalla Completa</system:String>
+
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Otras Opciones Gráficas</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Frecuencia de Imagen:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Nivel de Detalle:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High">Alto (mejor)</system:String>
@@ -60,16 +76,16 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Activar Escalado de UI</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Activar D3D8to9</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Actualizar D3D8to9</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Download DXVK</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Using the button below allows you to download DXVK. This program can improve performance and stability with SA2. It will only download the program, it will not install it.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Once you download the archive, you only need to extract d3d9.dll from the archive and place it in the game folder where sonic2app is.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Descargar DXVK</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">El botón de abajo te permite descargar DXVK. Este programa puede mejorar el rendimiento y estabilidad de SA2. Esto solo descargará el programa, no lo instalará.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Una vez se haya descargado el archivo, simplemente tienes que extraer d3d9.dll del archivo y moverlo a la carpeta del juego donde se encuentre sonic2app.</system:String>
     <!--#endregion-->
     
     <!--Options Tab Strings-->
-    <system:String x:Key="GameConfig.Tabs.Options.Title">Misc Options</system:String>
-    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Skip Intro</system:String>
-    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. These options are overwritten by the save file once one is loaded.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. Voice option will change depending on the loaded save file.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Title">Opciones Misceláneas</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Saltar Intro</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">El Idioma de las Voces y Texto se pueden ajustar al iniciar el juego por primera vez. Estas opciones tendrán efecto al iniciar el juego mediante Test Spawn. Estas opciones serán sobrescritas por el archivo de guardado al cargarlo.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">El Idioma de las Voces y Texto se pueden ajustar al iniciar el juego por primera vez. Estas opciones tendrán efecto al iniciar el juego mediante Test Spawn. Las opciones de voz serán sobrescritas por el archivo de guardado al cargarlo.</system:String>
     <!--#endregion-->
     
     <!--Input Tab Strings-->
@@ -99,8 +115,9 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Abrir AppLauncher</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Descargar AppLauncher</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">La Entrada Mejorada es una implementación de SDL2 en SADX. Es recomendable utilizarla para jugar ya que arregla Errores del sistema DInput original.</system:String>
-
-	<!--Sound Tab Strings-->
+    <!--#endregion-->
+	
+    <!--Sound Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Ajustes de Sonido</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">Control de Volumen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Utilizar BASS para la Música</system:String>
@@ -130,8 +147,8 @@
     <system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
     <system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
     <system:String x:Key="TestSpawn.Group.Advanced.Angle">Ángulo:</system:String>
-    <system:String x:Key="TestSpawn.Player2">Player 2:</system:String>
-    <system:String x:Key="TestSpawn.Mission">Mission:</system:String>
+    <system:String x:Key="TestSpawn.Player2">Jugador 2:</system:String>
+    <system:String x:Key="TestSpawn.Mission">Misión:</system:String>
 
     <system:String x:Key="TestSpawn.Language.Voice">Idioma de voces:</system:String>
     <system:String x:Key="TestSpawn.Language.Text">Idioma de texto:</system:String>

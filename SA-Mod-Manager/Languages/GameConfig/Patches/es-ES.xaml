@@ -8,7 +8,7 @@
     <system:String x:Key="GamePatches.KeepCamSettings">Correciones del Código de la Cámara</system:String>
     <system:String x:Key="GamePatches.FixVertexColorRendering">Correciones de Color de Vértice</system:String>
     <system:String x:Key="GamePatches.MaterialColorFix">Correciones de Color de Material</system:String>
-    <system:String x:Key="GamePatches.NodeLimit">Increase Node Limit</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Incrementar Límite de Nodos</system:String>
     <system:String x:Key="GamePatches.FOVFix">Correciones de Campo Visual</system:String>
     <system:String x:Key="GamePatches.SkyChaseResolutionFix">Correciones de Sky Chase</system:String>
     <system:String x:Key="GamePatches.Chaos2CrashFix">Correciones de Chaos 2</system:String>
@@ -20,13 +20,13 @@
     <system:String x:Key="GamePatches.KillGBIX">Desactivar GBIX (Experimental)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Desactivar Comprobación del CD</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Soporte Extendido de Archivos de Guardado</system:String>
-    <system:String x:Key="GamePatches.CrashGuard">Crash Guard</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Protección de Bloqueo</system:String>
 
     <system:String x:Key="GamePatches.HRTFSoundDesc">Este parche permite Audio 3D HRTF.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Este parche arregla un error del juego base que impide que la configuración de Cámara Libre se guarde debidamente al morir o cargar otro nivel/acto.</system:String>
     <system:String x:Key="GamePatches.FixVertexColorRenderingDesc" xml:space="preserve">El juego base ignora a propósito los colores de vértice proporcionados por los modelos y en su lugar utiliza un color de vértice global incluso cuando no se tendría que usar.&#x0a;&#x0a;Este parche reimplementa las funciones para controlar el uso de los colores de vértice CORRECTAMENTE por caso y así utilizar los colores de vertice proporcionados por los modelos.</system:String>
     <system:String x:Key="GamePatches.MaterialColorFixDesc" xml:space="preserve">Este parche revisa todos los modelos del juego para reemplazar sus colores materiales por blanco.&#x0a;&#x0a;Esto arregla varias inconsistencias y hace que los modelos se vean más parecidos a como lo hacían en las versiones de Dreamcast y GameCube.</system:String>
-    <system:String x:Key="GamePatches.NodeLimitDesc" xml:space="preserve">SADX originally has a limit of 111 nodes per character for models and animations.&#x0a;&#x0a;This patch increases the limit to 255, enabling the integration of more modern and complex models into the game.</system:String>
+    <system:String x:Key="GamePatches.NodeLimitDesc" xml:space="preserve">SADX tiene un límite de 111 nodos por personaje para modelos y animaciones.&#x0a;&#x0a;Este parche aumenta ese límite a 255, permitiendo la implementación de modelos más modernos y complejos en el juego.</system:String>
     <system:String x:Key="GamePatches.FOVFixDesc">Este parche mejora campo de visión (FOV) y permite el uso de resoluciones/dimensiones verticales.</system:String>
     <system:String x:Key="GamePatches.SkyChaseResolutionFixDesc" xml:space="preserve">Este parche arregla la retícula y el multiplicador en Sky Chase, restaurando como se jugaba el nivel originalmente en resolución 640x480.&#x0a;&#x0a;Esto baja la dificultad para conseguir la puntuación requerida en resoluciones 16:9.</system:String>
     <system:String x:Key="GamePatches.Chaos2CrashFixDesc">Este parche arregla un error del juego base que bloquea el juego cuando derrotas a Chaos 2 y reinicias la pelea.</system:String>
@@ -38,26 +38,26 @@
     <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">El Índice Global (GBIX) es un valor numérico utilizado en el sistema de cacheo de las texturas del juego. Todas las texturas de SADX tienen uno.&#x0a;Antes de que el juego cargue una textura, este compara el valor GBIX de la nueva textura con los índices de las texturas que ya han sido cargadas.&#x0a;En el caso de encontrar una coincidencia, el juego reutiliza la textura que ya ha sido cargada en vez de utilizar una nueva.&#x0a;&#x0a;Este parche deshabilita la mayoría del sistema GBIX en el juego para reducir errores/conflictos de texturas. (Con algunas excepciones como por ejemplo los elementos de la interfaz.)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheckDesc">Desactiva la comprobación del CD.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Este parche permite el uso de archivos de guardado de la versión de Steam y archivos de guardado con nombres personalizados (máx. 48 carácteres).</system:String>
-    <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Prevents common crashes with missing textures and missing binary files.&#x0a;&#x0a;This will not prevent the game from crashing in all circumstances.</system:String>
+    <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Este parche previene los bloqueos más comunes relacionados con texturas y archivos que falten.&#x0a;&#x0a;Esto no previene que el juego se bloqueé por otras razones.</system:String>
 
     <!--#region SA2 Patches-->
-    <system:String x:Key="GamePatchesSA2.FramerateLimiter">Lock Framerate</system:String>
-    <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Disable Exit Prompt</system:String>
-    <system:String x:Key="GamePatchesSA2.SyncLoad">Disable Loading Animation</system:String>
-    <system:String x:Key="GamePatchesSA2.ExtendVertexBuffer">Increase Vertex Buffer Limit</system:String>
-    <system:String x:Key="GamePatchesSA2.EnvMapFix">Environment Mapping Fixes</system:String>
-    <system:String x:Key="GamePatchesSA2.ScreenFadeFix">Screen Fade Fixes</system:String>
-    <system:String x:Key="GamePatchesSA2.CECarFix">City Escape Car Fixes</system:String>
-    <system:String x:Key="GamePatchesSA2.ParticlesFix">Particles Effect Fixes</system:String>
+    <system:String x:Key="GamePatchesSA2.FramerateLimiter">Bloquear Frecuencia de Imagen</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Deshabilitar el Diálogo de Cierre</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoad">Deshabilitar Animaciones durante Pantallas de Carga</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBuffer">Incrementar el Límite del Buffer de Vértices</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFix">Correciones del Mapeado del Entorno</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFix">Correciones del Degradado de Pantalla</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFix">Correciones de Coches en City Escape</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFix">Correciones de Efecto de Partículas</system:String>
 
-    <system:String x:Key="GamePatchesSA2.FramerateLimiterDesc">Lock the framerate at 60 FPS, this resolves the issue of the game running too fast on monitors with higher refresh rates.</system:String>
-    <system:String x:Key="GamePatchesSA2.DisableExitPromptDesc">Disable the warning prompt when closing the game.</system:String>
-    <system:String x:Key="GamePatchesSA2.SyncLoadDesc">Disable Omochao Loading animation, this should reduce crashes on startup.</system:String>
-    <system:String x:Key="GamePatchesSA2.ExtendVertexBufferDesc">Increase the Vertex Buffer Limit to 32k, enabling the integration of higher poly models into the game, this is mandatory for some mods to work.</system:String>
-    <system:String x:Key="GamePatchesSA2.EnvMapFixDesc">Fixes a condition bug with Environment Mapping (mostly in Chao World) allowing a better render.</system:String>
-    <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">Fixes a bug with the screen fading during the Victory Result Screen.</system:String>
-    <system:String x:Key="GamePatchesSA2.CECarFixDesc">Fixes the infamous trolley car glitch in City Escape (intel GPU).</system:String>
-    <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Fixes Particles Effect (Mystic Melody portail etc.) not showing up (intel GPU).</system:String>
+    <system:String x:Key="GamePatchesSA2.FramerateLimiterDesc">Este parche bloquea la frequencia de imagen a 60 FPS, esto resuelve el problema del juego funcionando demasiado rápido en monitores que soportan una frequencia de imagen más alta.</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPromptDesc">Este parche deshabilita el diálogo de confirmación que aparece al cerrar el juego.</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoadDesc">Este parche deshabilita la animación de Omochao durante las pantallas de carga, esto tendría que reducir los bloqueos al iniciar el juego.</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBufferDesc">Este parche incrementa el límite del Buffer de Vértices a 32mil, permitiendo la implementación de modelos más detallados con más polígonos en el juego. Este parche es mandatorio para que funcionen ciertos mods.</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFixDesc">Este parche arregla un bug de condición con el Mapeado del Entorno (ocurre mayormente en el Mundo Chao), permitiendo un mejor renderizado.</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">Este parche arregla un bug con el degradado de pantalla que ocurre el la pantalla de resultados.</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFixDesc">Este parche arregla un bug del tranvía en City Escape (Ocurre en GPUs de Intel).</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Este parche arregla los efectos de partículas que no aparecen en las GPUs de Intel (Como los efectos de la Mystic Melody).</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>
