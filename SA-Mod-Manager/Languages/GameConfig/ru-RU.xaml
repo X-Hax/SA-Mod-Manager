@@ -63,8 +63,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Включить D3D8to9</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Обновить D3D8to9</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Скачать DXVK</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Нажмите кнопку ниже, чтобы скачать DXVK. Программа повышает производительность и стабильность SA2. Установка производится вручную.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">После загрузки архива, вам необходимо извлечь d3d9.dll и поместить этот файл в папку с игрок, где располагается sonic2app.exe.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Нажмите кнопку ниже, чтобы скачать DXVK. Библиотека повышает производительность и стабильность SA2. Установка производится вручную.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">После загрузки архива, вам необходимо извлечь d3d9.dll и поместить этот файл в папку с игрой, где располагается sonic2app.exe.</system:String>
     <!--#endregion-->
 
     <!--Options Tab Strings-->
