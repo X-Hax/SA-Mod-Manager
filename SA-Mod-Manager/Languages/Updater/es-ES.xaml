@@ -27,8 +27,9 @@
     <system:String x:Key="Updater.DL.Mod.UpdatingMod">Actualizando mod</system:String>
     <system:String x:Key="Updater.DL.Mod.StartingDownload">Comenzando descarga...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadComplete">Descarga completada.</system:String>
-    <system:String x:Key="Updater.DL.Mod.ManifestFail">Failed to download manifest</system:String>
-    <system:String x:Key="Updater.DL.Mod.ManifestApplyFail">Failed to apply manifest</system:String>
+    
+    <system:String x:Key="Updater.DL.Mod.ManifestFail">Error al descargar el manifesto</system:String>
+    <system:String x:Key="Updater.DL.Mod.ManifestApplyFail">Error al aplicar el manifesto</system:String>
 
 
 
