@@ -136,9 +136,6 @@ namespace SAModManager
             DataContext = ViewModel;
             SetBindings();
 
-            if (App.isVanillaTransition)
-                await VanillaUpdate_CheckGame();
-
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
                 var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
