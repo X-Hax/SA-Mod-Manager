@@ -29,7 +29,7 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Размер окна:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Настройки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Принудительно вкл. 4:3</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Вкл. верт. синхронизацию</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Включить верт. синхронизацию</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Пауза, когда неактивно</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамическое распределение памяти</system:String>
     
@@ -38,7 +38,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Сохранять пропорции</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Свой размер окна:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Окно без рамки</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Отобр. мышь в режиме на весь экран.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Мышь в режиме "на весь экран"</system:String>
     
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Подогнать под экран</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Прочие настройки графики</system:String>
