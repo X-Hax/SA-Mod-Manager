@@ -141,6 +141,7 @@
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Met à l’échelle les éléments de l’interface utilisateur en plein écran.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Le jeu démarrera en mode fenêtré.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Permet de redimensionner la fenêtre de jeu lorsqu'elle est ouverte.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse">Shows mouse cursor in full screen mode.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Conserve le rapport hauteur/largeur de la résolution définie lors de la définition d’une taille de fenêtre personnalisée.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Définit la taille de la fenêtre séparément de la résolution. Par exemple, il vous permet de jouer en résolution 4K dans une fenêtre plus petite.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Définit le framerate du jeu.</system:String>

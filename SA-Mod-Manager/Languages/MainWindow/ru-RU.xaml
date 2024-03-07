@@ -7,7 +7,7 @@
 	<system:String x:Key="Manager.Tabs.Mods">Моды</system:String>
 	<system:String x:Key="Manager.Tabs.Codes">Коды</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig">Настройки игры</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig">Настройки Менеджера</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig">Настройки менеджера</system:String>
 	<system:String x:Key="Manager.Tabs.TestSpawn">Дебаг</system:String>
 	<!--#endregion-->
 
@@ -50,19 +50,19 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Выключить "1-Click Install"</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Открыть папку игры</system:String>
 
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Включить Загрузчик модов</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Отключить Загрузчик модов</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Включить загрузчик модов</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Отключить загрузчик модов</system:String>
 
 	<!--Updates-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Обновления</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Проверять обновления Менеджера при запуске</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Проверять обновления Загрузчика при запуске</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Проверять обновления менеджера при запуске</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Проверять обновления загрузчика при запуске</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Проверять обновления модов при запуске</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Проверить обновления</system:String>
 
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Дополнительные настройки</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Не закрывать Менеджер при запуске игры</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Не закрывать менеджер при запуске игры</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Включить опции разработчика</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Писать в консоль</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Вывод отладочных сообщений в игре</system:String>
@@ -73,7 +73,7 @@
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">О программе</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">О моде</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">Менеджер модов SA – программа, позволяющая управлять модами для Sonic Adventure DX без особых трудностей.</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">Менеджер модов SA – приложение для управления модами для Sonic Adventure DX и Sonic Adventure 2 без особых трудностей.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Разработчики</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Исходники</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Исходники загрузчика</system:String>
@@ -87,7 +87,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Codes">Выбор кодов, активных во время игры.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig">Настройки игры, видео и звука.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn">Опции быстрого запуска игры с нужными персонажами на нужных уровнях.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options">Настройка Менеджера (в т.ч. темы и языка интерфейса).</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options">Настройка менеджера (в т.ч. темы и языка интерфейса).</system:String>
 	<system:String x:Key="MainWindow.Tips.SaveAndPlay">Сохранить изменения и запустить игру.</system:String>
 	<system:String x:Key="MainWindow.Tips.Save">Сохранить изменения.</system:String>
 
@@ -125,7 +125,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Масштабировать интерфейс на весь экран.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Игра будет запускаться в окне.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Позволяет изменять размер окна во время игры.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Зафиксировать соотношение сторон при выборе кастомного разрешения.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeAspectRatio">Зафиксировать соотношение сторон экрана при изменении его размера, когда включено изменаемое окно.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Зафиксировать соотношение сторон при выборе кастомного разрешения.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Выставить размер окна вне зависимости от разрешения. Так, например, можно играть в разрешении 4К в небольшом окне.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Настроить частоту смены кадров.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">Включить режим эмуляции тумана. Использовать только со слабым видеоядром. В остальных случаях рекомендуется включить автоматический режим.</system:String>
@@ -181,8 +182,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Включить ручную настройку параметров персонажа, уровня и акта. Перезаписывает настройки выше, когда включено.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Включить настройку начального положения.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Запустить игру с принятыми выше параметрами.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Enables setting for player 2.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Sets the Mission of the selected level.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Включить настройку выбора второго игрока.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Выбор миссии для выбранного уровня.</system:String>
     <!--#endregion-->
 
 	<!--#region Manager Config Tips-->
@@ -191,24 +192,24 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Полный путь до каталога с установленной игрой.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Откроется папка с игрой.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Открыть окно с выбором каталога игры.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Выбор используемой темы Менеджера модов.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Выбор языка интерфейса Менеджера модов.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Оставлять Менеджер модов включённым при нажатии "Сохранить и играть".</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Включить вкладку "Дебаг" в Менеджере модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Выбор используемой темы менеджера модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Выбор языка интерфейса менеджера модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Оставлять менеджер модов включённым при нажатии "Сохранить и играть".</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Включить вкладку "Дебаг" в менеджере модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Когда включено, при нажатии на кнопку "1-Click Install" на GameBanana будет открываться окно загрузки мода.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Когда включено, активируется Загрузчик модов, благодаря чему можно играть с модами, патчами и кодами.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Включить автоматическую проверку Менеджера модов при запуске.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Включить автоматическую проверку обновлений Загрузчика модов при запуске Менеджера модов.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Включить автоматическую проверку обновлений модов при запуске Менеджера модов.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Запустить проверку обновлений Загрузчика модов и установленных модов.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Когда включено, активируется загрузчик модов, благодаря чему можно играть с модами, патчами и кодами.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Включить автоматическую проверку менеджера модов при запуске.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Включить автоматическую проверку обновлений загрузчика модов при запуске менеджера модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Включить автоматическую проверку обновлений модов при запуске менеджера модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Запустить проверку обновлений загрузчика модов и установленных модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Открывать консоль с отладочной информации по игре.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Выводить отладочную информацию поверх игрового окна.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Сохранять отладочную информацию в log-файл.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Включить запись дампов вылетов при возникновении ошибок игры. Может быть полезно для выяснения причин вылетов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Открыть окно со списком разработчиков и информацией о менеджере.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Открыть страницу с репозиторием Загрузчика модов на GitHub.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Открыть страницу с репозиторием загрузчика модов на GitHub.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Открыть страницу с SA Docs, где будет доступна различная информация о создании модов для SA1 и SA2.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Открыть страницу обратной связи на GitHub для приёма  сообщений о проблемах и ошибках Загрузчика модов.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Открыть страницу обратной связи на GitHub для приёма  сообщений о проблемах и ошибках загрузчика модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Запуск проверки состояния игры для выявления отсутствующих или изменённых файлов.</system:String>
 	<!--#endregion-->
 

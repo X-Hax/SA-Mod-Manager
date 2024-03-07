@@ -7,17 +7,18 @@
     <system:String x:Key="Updater.DL.Dep.Download">Загрузка</system:String>
     <system:String x:Key="Updater.DL.Dep.Install">Установка</system:String>
     <system:String x:Key="Updater.DL.Dep.Update">Обновление</system:String>
-    <system:String x:Key="Updater.DL.Dep.Downloading">Загрузка</system:String>
-    <system:String x:Key="Updater.DL.Dep.Installing">Установка</system:String>
-    <system:String x:Key="Updater.DL.Dep.Updating">Обновление</system:String>
-    <system:String x:Key="Updater.DL.Dep.Completed">завершено(-а).</system:String>
+    <system:String x:Key="Updater.DL.Dep.Downloading">Загрузка:</system:String>
+    <system:String x:Key="Updater.DL.Dep.Installing">Установка:</system:String>
+    <system:String x:Key="Updater.DL.Dep.Updating">Обновление:</system:String>
+    <system:String x:Key="Updater.DL.Dep.Completed">завершено.</system:String>
     <system:String x:Key="Updater.DL.Dep.Copying">Копирование файлов...</system:String>
 
     <system:String x:Key="Updater.DL.Offline.Title">Оффлайн-установка</system:String>
     <system:String x:Key="Updater.DL.Offline.Failed">Не удалось скачать {0}</system:String>
     <system:String x:Key="Updater.DL.Offline.InstallAttempt">Попытка оффлайн-установки, подождите...</system:String>
 
-    <system:String x:Key="Updater.DL.Mod.Init">Подготовка к обновлению. Пожалуйста, подождите...</system:String>
+    <!--Mod Update-->
+    <system:String x:Key="Updater.DL.Mod.Init">Подготовка к загрузке. Пожалуйста, подождите...</system:String>
     <system:String x:Key="Updater.DL.Mod.Extracting">Извлечение...</system:String>
     <system:String x:Key="Updater.DL.Mod.ParsingManifest">Чтение манифеста...</system:String>
     <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Применение манифеста...</system:String>
@@ -27,5 +28,8 @@
     <system:String x:Key="Updater.DL.Mod.UpdatingMod">Обновление мода</system:String>
     <system:String x:Key="Updater.DL.Mod.StartingDownload">Начало загрузки...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadComplete">Загрузка завершена.</system:String>
+
+    <system:String x:Key="Updater.DL.Mod.ManifestFail">Ошибка при загрузке манифеста</system:String>
+    <system:String x:Key="Updater.DL.Mod.ManifestApplyFail">Ошибки при применении манифеста</system:String>    
 
 </ResourceDictionary>

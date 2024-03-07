@@ -133,7 +133,7 @@
 									</StackPanel>
 
 									<StackPanel Grid.Column="2" Orientation="Vertical">
-										<CheckBox x:Name="chkShowMouse" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}"/>
+                                        <CheckBox x:Name="chkShowMouse" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse}"/>
 										<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
 									</StackPanel>
 								</Grid>
