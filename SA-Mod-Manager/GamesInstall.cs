@@ -724,13 +724,12 @@ namespace SAModManager
                         path = Path.Combine(pathValue, "steamapps", "common", game.gameName);
                         if (Directory.Exists(path))
                         {
-                            string gameDir = Path.GetFullPath(Path.GetDirectoryName(path));
                             App.ManagerSettings.CurrentSetGame = (int)game.id;
                             if (App.CurrentGame.id != SetGame.None)
                             {
-                                ((MainWindow)App.Current.MainWindow).tempPath = gameDir;
-                                App.CurrentGame.gameDirectory = gameDir;
-                                ((MainWindow)App.Current.MainWindow).textGameDir.Text = gameDir;
+                                ((MainWindow)App.Current.MainWindow).tempPath = path;
+                                App.CurrentGame.gameDirectory = path;
+                                ((MainWindow)App.Current.MainWindow).textGameDir.Text = path;
                             }
                         }
                     }
