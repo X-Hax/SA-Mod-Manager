@@ -561,6 +561,7 @@ namespace SAModManager
         private static void HandleVanillaTransition(string[] args)
         {
             int index = 0;
+            Debugger.Launch();
             foreach (var arg in args)
             {
                 if (arg == "vanillaUpdate")

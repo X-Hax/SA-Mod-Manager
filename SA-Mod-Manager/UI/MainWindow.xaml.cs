@@ -86,13 +86,16 @@ namespace SAModManager
             foreach (var game in GamesInstall.GetSupportedGames())
             {
                 if (File.Exists(game.exeName))
-                {       
-                    App.CurrentGame = GamesInstall.GetGamePerID(game.id);
-                    string currentPath = Path.GetDirectoryName(game.exeName);
-                    tempPath = currentPath;
-                    App.CurrentGame.gameDirectory = currentPath;
-                    textGameDir.Text = currentPath;
-                    UIHelper.ToggleButton(ref btnOpenGameDir, true);
+                {
+                    if (App.CurrentGame != GamesInstall.GetGamePerID(game.id))
+                    {
+                        App.CurrentGame = GamesInstall.GetGamePerID(game.id);
+                        string currentPath = Path.GetDirectoryName(game.exeName);
+                        tempPath = currentPath;
+                        App.CurrentGame.gameDirectory = currentPath;
+                        textGameDir.Text = currentPath;
+                        UIHelper.ToggleButton(ref btnOpenGameDir, true);
+                    }
                     isValid = true;
                     break;
                 }
@@ -132,7 +135,6 @@ namespace SAModManager
             await Load();
             DataContext = ViewModel;
             SetBindings();
-
 
             if (App.isVanillaTransition)
                 await VanillaUpdate_CheckGame();
@@ -1248,6 +1250,7 @@ namespace SAModManager
                 comboProfile.ItemsSource = GameProfiles.ProfilesList;
                 if (index > -1)
                     comboProfile.SelectedIndex = index;
+
                 comboProfile.Items.Refresh();
             }
         }
@@ -2279,7 +2282,7 @@ namespace SAModManager
             }
 
             if (listMods.Items.Count > 0)
-                UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalMods"), listMods.Items.Count), 2000);           
+                UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.TotalMods"), listMods.Items.Count), 2000);
             await Task.Delay(2200);
 
             if (CodeListView.Items.Count > 0)
@@ -2666,7 +2669,7 @@ namespace SAModManager
                     }
 
                     var newImg = new BitmapImage(new Uri("pack://application:,,,/" + fullResourceName + ";component/Icons/" + icon));
-                    iconTitleBar.Source = newImg;             
+                    iconTitleBar.Source = newImg;
                 }
             }
             catch { }
@@ -2688,6 +2691,7 @@ namespace SAModManager
         private async Task UpdateProfileList()
         {
             var list = await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
+
             if (list is not null)
             {
                 foreach (var item in list)
@@ -2696,7 +2700,7 @@ namespace SAModManager
                     {
                         if (GameProfiles.ProfilesList[i].Filename == item.Filename)
                         {
-                            GameProfiles.ProfilesList.RemoveAt(i); 
+                            GameProfiles.ProfilesList.RemoveAt(i);
                         }
                     }
 
@@ -2705,6 +2709,14 @@ namespace SAModManager
             }
 
             ProfileSettings_SaveProfileFile();
+            foreach (ProfileEntry item in comboProfile.Items)
+            {
+                if (item.Name.Contains(App.CurrentGame.loader.name))
+                {
+                    comboProfile.SelectedItem = item;
+                }
+            }
+
         }
 
         private async Task FirstBootInstallLoader()

@@ -708,7 +708,7 @@ namespace SAModManager
             {
                 if (File.Exists(path))
                 {
-                    string gameDir = Path.GetDirectoryName(path);
+                    string gameDir = Path.GetFullPath(Path.GetDirectoryName(path));
                     App.ManagerSettings.CurrentSetGame = (int)game.id;
                     if (App.CurrentGame.id != SetGame.None)
                     {
@@ -724,7 +724,7 @@ namespace SAModManager
                         path = Path.Combine(pathValue, "steamapps", "common", game.gameName);
                         if (Directory.Exists(path))
                         {
-                            string gameDir = Path.GetDirectoryName(path);
+                            string gameDir = Path.GetFullPath(Path.GetDirectoryName(path));
                             App.ManagerSettings.CurrentSetGame = (int)game.id;
                             if (App.CurrentGame.id != SetGame.None)
                             {

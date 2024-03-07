@@ -84,13 +84,16 @@ namespace SAModManager
             "SonicRModManager.exe"
         };
 
-        private static void MoveFilesToArchive(string root, string archive, List<string> FilesToMove)
+        private static void DeleteLegacyFiles(string root, List<string> LegacyFiles)
         {
-            foreach (var file in FilesToMove)
+            try
             {
-                if (File.Exists(Path.Combine(root, file)))
-                    File.Move(Path.Combine(root, file), Path.Combine(archive, file), true);
-            }
+                foreach (var file in LegacyFiles)
+                {
+                    if (File.Exists(Path.Combine(root, file)))
+                        File.Delete(Path.Combine(root, file));
+                }
+            } catch { }
         }
 
         public static void DoVanillaFilesCleanup(string[] args, int index)
@@ -107,17 +110,19 @@ namespace SAModManager
                     if (File.Exists(root))
                         break;
                 }
+                else
+                {
+                    break;
+                }
             }
 
             if (File.Exists(root))
             {
-                string archive = Path.Combine(root, "Archive_Old_Manager");
-                Directory.CreateDirectory(archive);
-                MoveFilesToArchive(root, archive, Util.SADXManagerFiles);
-                MoveFilesToArchive(root, archive, Util.SA2ManagerFiles);
-                MoveFilesToArchive(root, archive, Util.BASSFiles);
+                var gameDir = Path.GetDirectoryName(root);
+                DeleteLegacyFiles(gameDir, Util.SADXManagerFiles);
+                DeleteLegacyFiles(gameDir, Util.SA2ManagerFiles);
+                DeleteLegacyFiles(gameDir, Util.BASSFiles);
             }
-
         }
 
         public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
