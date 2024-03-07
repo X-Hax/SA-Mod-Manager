@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="SAModManager.Controls.NumberBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SAModManager.Controls"
+             mc:Ignorable="d" x:Name="NumBox" Loaded="NumBox_Loaded"
+             d:DesignHeight="30" d:DesignWidth="100" >
+	<UserControl.Resources>
+		<Style x:Key="StyleSpinnerUp" TargetType="{x:Type RepeatButton}">
+			<Setter Property="Background" Value="{DynamicResource Button.Brushes.Background}"/>
+			<Setter Property="Foreground" Value="{DynamicResource Button.Brushes.Border}"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type RepeatButton}">
+						<Border BorderThickness="0" Background="{TemplateBinding Background}" CornerRadius="0,2,0,0">
+							<Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+								<Viewbox>
+									<Path Fill="{TemplateBinding Foreground}" 
+										  Data="F1 M33.333333,33.333333z M0,0z M16.696791,7.4571988L33.31743,24.066129 21.854059,24.066129 16.696791,18.908863 M16.696791,7.4571988L0.07615283,24.066129 11.539522,24.066129 16.696791,18.908863"/>
+								</Viewbox>
+							</Grid>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Background" Value="{DynamicResource Button.Brushes.MouseOver.Background}"/>
+							</Trigger>
+							<Trigger Property="IsPressed" Value="True">
+								<Setter Property="Background" Value="{DynamicResource Button.Brushes.Pressed.Background}"/>
+							</Trigger>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Background" Value="{DynamicResource Button.Brushes.Disabled.Background}"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="StyleSpinnerDown" TargetType="{x:Type RepeatButton}">
+			<Setter Property="Background" Value="{DynamicResource Button.Brushes.Background}"/>
+			<Setter Property="Foreground" Value="{DynamicResource Button.Brushes.Border}"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type RepeatButton}">
+						<Border BorderThickness="0" Background="{TemplateBinding Background}" CornerRadius="0,0,2,0">
+							<Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+								<Viewbox>
+									<Path Fill="{TemplateBinding Foreground}" 
+											  Data="F1 M33.333333,33.333333z M0,0z M16.666666,25.829622L33.287305,9.2206919 21.823934,9.2206919 16.666666,14.377958 M16.666666,25.829622L0.04602774,9.2206919 11.509397,9.2206919 16.666666,14.377958"/>
+								</Viewbox>
+							</Grid>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Background" Value="{DynamicResource Button.Brushes.MouseOver.Background}"/>
+							</Trigger>
+							<Trigger Property="IsPressed" Value="True">
+								<Setter Property="Background" Value="{DynamicResource Button.Brushes.Pressed.Background}"/>
+							</Trigger>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Background" Value="{DynamicResource Button.Brushes.Disabled.Background}"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="NumBoxBorder" TargetType="{x:Type Border}">
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource Borders.Brushes.Border}"/>
+			<Setter Property="CornerRadius" Value="{DynamicResource Button.CornerRadius}"/>
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="Background" Value="{DynamicResource Button.Brushes.MouseOver.Border}"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+		<Style x:Key="NumBoxRectangle" TargetType="{x:Type Rectangle}">
+			<Setter Property="Fill" Value="{DynamicResource Borders.Brushes.Border}"/>
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="Fill" Value="{DynamicResource Button.Brushes.MouseOver.Border}"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+		<Style x:Key="StyleTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyling}">
+			<Style.Triggers>
+				<Trigger Property="IsEnabled" Value="False">
+					<Setter Property="Background" Value="{DynamicResource Button.Brushes.Disabled.Background}"/>
+				</Trigger>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="BorderBrush" Value="Transparent"/>
+					<Setter Property="Background" Value="{DynamicResource ComboBox.Brushes.MouseOver.Background}"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+	</UserControl.Resources>
+	<Border x:Name="PART_Border" BorderThickness="1" CornerRadius="{DynamicResource Button.CornerRadius}" BorderBrush="{Binding ElementName=NumBox, Path=BorderBrush}">
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="1"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+
+			<TextBox x:Name="Input" Style="{StaticResource StyleTextBox}" Grid.Column="0" BorderThickness="0" TextAlignment="Right" VerticalContentAlignment="Center" AutoWordSelection="True"
+					 LostFocus="Input_LostFocus" UndoLimit="1" IsUndoEnabled="True" IsEnabled="{Binding ElementName=NumBox, Path=IsEnabled}"/>
+			<Rectangle x:Name="PART_Rect1" Fill="{Binding ElementName=NumBox, Path=BorderBrush}" Grid.Column="1"/>
+			<Grid x:Name="SpinnerGroup" Grid.Column="2" MinWidth="20" MaxWidth="30">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="1"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<RepeatButton x:Name="TopSpinner" Style="{StaticResource StyleSpinnerUp}" Grid.Row="0" ClickMode="Press" Click="TopSpinner_Click" PreviewMouseDown="Spinner_PreviewMouseDown" PreviewMouseUp="Spinner_PreviewMouseUp" IsEnabled="{Binding ElementName=NumBox, Path=IsEnabled}"/>
+				<Rectangle x:Name="PART_Rect2" Fill="{Binding ElementName=NumBox, Path=BorderBrush}" Grid.Row="1"/>
+				<RepeatButton x:Name="BottomSpinner" Style="{StaticResource StyleSpinnerDown}" Grid.Row="2" ClickMode="Press" Click="BottomSpinner_Click" PreviewMouseDown="Spinner_PreviewMouseDown" PreviewMouseUp="Spinner_PreviewMouseUp" IsEnabled="{Binding ElementName=NumBox, Path=IsEnabled}"/>
+			</Grid>
+		</Grid>
+	</Border>
+
+</UserControl>

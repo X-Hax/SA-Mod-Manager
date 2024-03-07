@@ -9,8 +9,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
+using SAModManager.Configuration;
 
-namespace SAModManager.Common
+namespace SAModManager.ModsCommon
 {
 	/// <summary>
 	/// Interaction logic for ModConfig.xaml
@@ -34,7 +35,6 @@ namespace SAModManager.Common
 
 		public ModConfig(string Modname, string path, bool reset = false)
 		{
-
 			InitializeComponent();
 			_Instance = this;
 
@@ -225,8 +225,19 @@ namespace SAModManager.Common
 				case "bool":
 					return bool.Parse(val);
 				case "int":
-					return int.Parse(val.Trim(), CultureInfo.InvariantCulture);
-				case "float":
+					if (int.TryParse(val.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int intValue))
+					{
+						return intValue;
+					}
+					else
+					{
+						// If overflow, decide whether to use max or min value
+						if (val.StartsWith("-"))
+							return int.MinValue;
+						else
+							return int.MaxValue;
+					}
+                case "float":
 					deciValue = decimal.Parse(val.Trim(), CultureInfo.InvariantCulture);
 					formatted = deciValue.ToString("0.0");
 					return decimal.Parse(formatted);
@@ -269,113 +280,6 @@ namespace SAModManager.Common
 					settings.SetPropertyValue(groupName, propertyName, @enum[(int)value].Name);
 					break;
 			}
-		}
-	}
-
-
-
-	[XmlRoot(Namespace = "http://www.sonicretro.org")]
-	public class ConfigSchema
-	{
-		[XmlArray]
-		[XmlArrayItem("Group")]
-		public List<ConfigSchemaGroup> Groups { get; set; }
-		[XmlArray]
-		[XmlArrayItem("Enum")]
-		public List<ConfigSchemaEnum> Enums { get; set; }
-
-		private static XmlSerializer xs = new XmlSerializer(typeof(ConfigSchema));
-		public static ConfigSchema Load(string filename)
-		{
-			using (FileStream fs = File.OpenRead(filename))
-				return (ConfigSchema)xs.Deserialize(fs);
-		}
-
-		public ConfigSchema()
-		{
-			Groups = new List<ConfigSchemaGroup>();
-			Enums = new List<ConfigSchemaEnum>();
-		}
-	}
-
-	public class ConfigSchemaGroup
-	{
-		[XmlAttribute("name")]
-		public string Name { get; set; }
-		[XmlAttribute("display")]
-		public string DisplayName { get; set; }
-		[XmlElement("Property")]
-		public List<ConfigSchemaProperty> Properties { get; set; }
-
-		public ConfigSchemaGroup()
-		{
-			Name = string.Empty;
-			DisplayName = string.Empty;
-		}
-
-		public ConfigSchemaProperty GetProperty(string name)
-		{
-			return Properties.Single(a => a.Name == name);
-		}
-	}
-
-	public class ConfigSchemaProperty
-	{
-		[XmlAttribute("name")]
-		public string Name { get; set; }
-		[XmlAttribute("display")]
-		public string DisplayName { get; set; }
-		[XmlAttribute("type")]
-		public string Type { get; set; }
-		[XmlAttribute("defaultvalue")]
-		public string DefaultValue { get; set; }
-		[XmlAttribute("alwaysinclude")]
-		public bool AlwaysInclude { get; set; }
-		[XmlAttribute("minvalue")]
-		public string MinValue { get; set; }
-		[XmlAttribute("maxvalue")]
-		public string MaxValue { get; set; }
-		[XmlElement]
-		public string HelpText { get; set; }
-
-		public ConfigSchemaProperty()
-		{
-			Name = string.Empty;
-			DisplayName = string.Empty;
-			Type = string.Empty;
-			DefaultValue = string.Empty;
-			AlwaysInclude = false;
-			MinValue = string.Empty;
-			MaxValue = string.Empty;
-			HelpText = string.Empty;
-		}
-	}
-
-	public class ConfigSchemaEnum
-	{
-		[XmlAttribute("name")]
-		public string Name { get; set; }
-		[XmlElement("EnumMember")]
-		public List<ConfigSchemaEnumMember> Members { get; set; }
-
-		public ConfigSchemaEnum()
-		{
-			Name = string.Empty;
-			Members = new List<ConfigSchemaEnumMember>();
-		}
-	}
-
-	public class ConfigSchemaEnumMember
-	{
-		[XmlAttribute("name")]
-		public string Name { get; set; }
-		[XmlAttribute("display")]
-		public string DisplayName { get; set; }
-
-		public ConfigSchemaEnumMember()
-		{
-			Name = string.Empty;
-			DisplayName = string.Empty;
 		}
 	}
 }

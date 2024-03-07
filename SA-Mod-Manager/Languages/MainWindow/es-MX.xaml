@@ -180,7 +180,9 @@
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Permite configurar manualmente el personaje, el nivel y el acto. Anula la configuración anterior cuando está activada.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Permite fijar la posición inicial y la rotación.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Inicia el juego con los ajustes que elegiste.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Enables setting for player 2.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Sets the Mission of the selected level.</system:String>
+    <!--#endregion-->
 
 	<!--#region Manager Config Tips-->
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Selecciona qué perfil se utiliza para la lista de mods y los ajustes.</system:String>

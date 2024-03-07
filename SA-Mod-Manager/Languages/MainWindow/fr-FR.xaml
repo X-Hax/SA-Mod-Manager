@@ -89,7 +89,7 @@
     <!--About-->
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">À Propos</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">À Propos</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SADX Mod Manager est un programme qui vous permet de gérer facilement les mods dans Sonic Adventure DX.</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SA Mod Manager est un programme qui vous permet de gérer facilement les mods dans Sonic Adventure DX.</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contributeurs</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Code Source</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Mod Loader Code Source</system:String>
@@ -138,22 +138,22 @@
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Si activé, le jeu sera mis en pause si la fenêtre n'est pas focalisée.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">La fenêtre du jeu démarrera en plein écran.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Règle la fenêtre de jeu plein écran sur sans bordure.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Scales UI elements in fullscreen.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Game window will boot in windowed mode.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Allows the game window to be resized while open.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Maintains the aspect ratio from the set resolution when setting a custom window size.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Sets the window size separate from the resolution. E.g., it allows you to play at 4K resolution in a smaller window.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Sets the game's framerate.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Met à l’échelle les éléments de l’interface utilisateur en plein écran.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Le jeu démarrera en mode fenêtré.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Permet de redimensionner la fenêtre de jeu lorsqu'elle est ouverte.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Conserve le rapport hauteur/largeur de la résolution définie lors de la définition d’une taille de fenêtre personnalisée.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Définit la taille de la fenêtre séparément de la résolution. Par exemple, il vous permet de jouer en résolution 4K dans une fenêtre plus petite.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Définit le framerate du jeu.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">Sets the emulation type with the renderer. Auto is recommended. Only use emulated if working with a very old graphics card/chipset.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Sets the texture filter type for all model textures.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Sets the texture filtering type for all GUI related textures.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Sets the detail level for the draw distance.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">Sets the fill method for the borders image when playing in widescreen with a locked 4:3 render aspect ratio.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Sets the fill method when the game is performing FMV playback.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Generated MipMaps for all textures that do not have them.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Enables use of the D3D8to9 Shim, allowing the game to make use of D3D9 features. Required for some mods.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Enables the UI to scale properly depending on the game resolution.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Checks for, and downloads any, updates to d3d8to9.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Définit le niveau de détail avec la distance d'affichage.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">Définit la méthode de remplissage de l'image des bordures lorsque vous jouer avec l'option écran large avec un rapport hauteur/largeur 4:3 verrouillé.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Définit la méthode de remplissage lorsque le jeu lance un FMV.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Génération de MipMaps pour toutes les textures qui n'en ont pas.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Permet l'utilisation de D3D8to9 Shim, permettant au jeu d'utiliser les fonctionnalités de D3D9. Requis pour certains mods.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Permet à l'interface utilisateur d'évoluer correctement en fonction de la résolution du jeu.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Recherche et télécharge les mises à jour de d3d8to9.</system:String>
     <!--#endregion-->
 
     <!--#region Input Settings-->
@@ -197,6 +197,8 @@
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Permet de définir manuellement le personnage, le niveau et l'action. Remplace les paramètres ci-dessus lorsqu'il est activé.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Permet de définir la position de départ et la rotation.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Lance le jeu avec les paramètres ci-dessus appliqués.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Permet de définir le joueur 2.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Définit la mission du niveau sélectionné.</system:String>
     <!--#endregion-->
 
     <!--#region Manager Config Tips-->

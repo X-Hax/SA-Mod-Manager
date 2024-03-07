@@ -181,7 +181,9 @@
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Включить ручную настройку параметров персонажа, уровня и акта. Перезаписывает настройки выше, когда включено.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Включить настройку начального положения.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Запустить игру с принятыми выше параметрами.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Enables setting for player 2.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Sets the Mission of the selected level.</system:String>
+    <!--#endregion-->
 
 	<!--#region Manager Config Tips-->
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Выбор профиля со списком активных модов и настроек.</system:String>

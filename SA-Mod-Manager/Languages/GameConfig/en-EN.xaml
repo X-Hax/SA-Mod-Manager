@@ -8,24 +8,53 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics">Graphics</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input">Input</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound">Sound</system:String>
+	<system:String x:Key="GameConfig.Tabs.Lang">Language</system:String>
 	<system:String x:Key="GameConfig.Tabs.Patches">Patches</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options">Options</system:String>
 
-	<!--Graphics Tab Strings-->
+    <!--Graphics Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Display Options</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Screen:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolution:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Display:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">All Displays</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">Screen Mode:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Windowed</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Standard window mode.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Exclusive Fullscreen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Not Recommended. Window will update monitor resolution and is prone to crashes when the window is unfocused.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Borderless Fullscreen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Recommended Fullscreen Mode. Allows for rendering the game at different resolutions to the window and fixes the alt tab bug.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Custom Window</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Like Borderless Fullscreen but for the window and not fullscreen modes.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Render Resolution:</system:String>
+
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Window Size:</system:String>
+
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r480">640x480</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r600">800x600</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r768">1024x768</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r864">1152x864</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r960">1280x960</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1024">1280x1024</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Native</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">1/2x Native</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">2x Native</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r720">720p</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1080">1080p</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r4K">4K</system:String>
+	
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Settings</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Force 4:3 Aspect Ratio</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">4:3 Ratio</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Enable V-Sync</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pause When Inactive</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Dynamically Allocate Buffers</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Fullscreen</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">Windowed</system:String>
+
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Resizable Window</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Maintain Aspect Ratio</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Keep Ratio on Resize</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Match Render Ratio</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Custom Window Size:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Borderless Fullscreen</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Scale to Screen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Show Mouse in Fullscreen</system:String>
+	
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Other Graphics Options</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Framerate:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Detail Level:</system:String>
@@ -47,8 +76,19 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Enable UI Scaling</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Enable D3D8to9</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Update D3D8to9</system:String>
-
-	<!--Input Tab Strings-->
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Download DXVK</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Using the button below allows you to download DXVK. This program can improve performance and stability with SA2. It will only download the program, it will not install it.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Once you download the archive, you only need to extract d3d9.dll from the archive and place it in the game folder where sonic2app is.</system:String>
+    <!--#endregion-->
+    
+    <!--Options Tab Strings-->
+    <system:String x:Key="GameConfig.Tabs.Options.Title">Misc Options</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Skip Intro</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. These options are overwritten by the save file once one is loaded.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. Voice option will change depending on the loaded save file.</system:String>
+	<!--#endregion-->
+    
+    <!--Input Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input">Input Options</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Vanilla Input (DInput)</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Better Input (SDL2)</system:String>
@@ -75,8 +115,9 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Open AppLauncher</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Get AppLauncher</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">The Better Input system is an implementation of SDL2 into SADX. It's recommended for playing as it fixes issues with the original DInput system.</system:String>
+    <!--#endregion-->
 
-	<!--Sound Tab Strings-->
+    <!--Sound Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Sound Settings</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">Volume Control</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Use BASS for Music</system:String>
@@ -106,8 +147,10 @@
 	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Angle">Angle:</system:String>
+    <system:String x:Key="TestSpawn.Player2">Player 2:</system:String>
+    <system:String x:Key="TestSpawn.Mission">Mission:</system:String>
 
-	<system:String x:Key="TestSpawn.Language.Voice">Voice Language:</system:String>
+    <system:String x:Key="TestSpawn.Language.Voice">Voice Language:</system:String>
 	<system:String x:Key="TestSpawn.Language.Text">Text Language:</system:String>
 	<system:String x:Key="TestSpawn.Language.Japanese">日本語</system:String>
 	<system:String x:Key="TestSpawn.Language.English">English</system:String>

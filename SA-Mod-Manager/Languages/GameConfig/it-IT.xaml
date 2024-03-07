@@ -13,18 +13,31 @@
 	<!--Graphics Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Opzioni Display</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Schermo:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Risoluzione:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forza Aspect Ratio 4:3</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">All Displays</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">Screen Mode:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Windowed</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Standard window mode.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Exclusive Fullscreen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Not Recommended. Window will update monitor resolution and is prone to crashes when the window is unfocused.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Borderless Fullscreen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Recommended Fullscreen Mode. Allows for rendering the game at different resolutions to the window and fixes the alt tab bug.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Custom Window</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Like Borderless Fullscreen but for the window and not fullscreen modes.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Risoluzione:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Window Size:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forza Aspect Ratio 4:3</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Attiva V-Sync</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausa Quando Inattivo</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Allocazione Buffer Dinamica</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Schermo Intero</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">Finestra</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Finestra Ridimensionabile</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Allocazione Buffer Dinamica</system:String>
+    
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Finestra Ridimensionabile</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Keep Ratio on Resize</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Mantieni Aspect Ratio</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Dimensione Finestra Personalizzata:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Finestra Senza Bordi</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Adatta a Schermo</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Show Mouse in Fullscreen</system:String>
+    
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Adatta a Schermo</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Altre Impostazioni Grafiche</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Framerate:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Livello di Dettaglio:</system:String>
@@ -46,8 +59,19 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Abilita Ingrandimenti UI</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Abilita D3D8to9</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Aggiorna D3D8to9</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Download DXVK</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Using the button below allows you to download DXVK. This program can improve performance and stability with SA2. It will only download the program, it will not install it.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Once you download the archive, you only need to extract d3d9.dll from the archive and place it in the game folder where sonic2app is.</system:String>
+    <!--#endregion-->
 
-	<!--Input Tab Strings-->
+    <!--Options Tab Strings-->
+    <system:String x:Key="GameConfig.Tabs.Options.Title">Misc Options</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Skip Intro</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. These options are overwritten by the save file once one is loaded.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. Voice option will change depending on the loaded save file.</system:String>
+    <!--#endregion-->
+    
+    <!--Input Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input">Opzioni Controlli</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Controlli Default(DInput)</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Controlli Migliori (SDL2)</system:String>
@@ -97,7 +121,9 @@
 	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Angle">Angolo:</system:String>
-	<!--#endregion-->
+    <system:String x:Key="TestSpawn.Player2">Player 2:</system:String>
+    <system:String x:Key="TestSpawn.Mission">Mission:</system:String>
+    <!--#endregion-->
 	
 	<!--#region SADX-->
 	

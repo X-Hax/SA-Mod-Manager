@@ -1,14 +1,11 @@
-﻿using Newtonsoft.Json.Bson;
-using SAModManager.Common;
-using SAModManager.Ini;
+﻿using SAModManager.Ini;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using SAModManager.UI;
+using SAModManager.Configuration.SA2;
+using SAModManager.Configuration.SADX;
 
 namespace SAModManager.Configuration
 {
@@ -96,7 +93,16 @@ namespace SAModManager.Configuration
 			EnableDebugCrashLog = oldSettings.DebugCrashLog;
 			EnableShowConsole = oldSettings.ShowConsole;
 		}
-	}
+
+        public void ConvertFromV0(SA2LoaderInfo oldSettings)
+        {
+            EnableDebugConsole = oldSettings.DebugConsole;
+            EnableDebugScreen = oldSettings.DebugScreen;
+            EnableDebugFile = oldSettings.DebugFile;
+            EnableDebugCrashLog = oldSettings.DebugCrashLog;
+            EnableShowConsole = oldSettings.ShowConsole;
+        }
+    }
 
 	public class ManagerSettings
 	{

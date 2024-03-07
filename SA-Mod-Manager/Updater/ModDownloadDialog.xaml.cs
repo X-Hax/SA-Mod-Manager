@@ -1,5 +1,4 @@
-﻿using SAModManager.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -10,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Shell;
 using System.Windows.Threading;
+using SAModManager.UI;
 
 namespace SAModManager.Updater
 {
@@ -26,7 +26,7 @@ namespace SAModManager.Updater
         private IProgress<double?> _progress;
         private IProgress<double?> _progressOverall;
         private bool isUpdate;
-      
+
         public ModDownloadDialog(List<ModDownload> updates, string dest, bool update = true)
         {
             InitializeComponent();
@@ -180,12 +180,35 @@ namespace SAModManager.Updater
             }
         }
 
-        private async Task ParsingManifest(ModDownload file, string filePath, string dataDir)
+        private async Task ParseManifestAndAdjustFiles(ModDownload file, string filePath, string dataDir)
         {
             try
             {
                 UpdateHeaderTextDirect(Lang.GetString("Updater.DL.Mod.ParsingManifest"));
                 string[] subfolders = Directory.GetDirectories(dataDir);
+
+                //if the mod didn't come with any folder, create one and move all the files there
+                if (File.Exists(Path.Combine(dataDir, "mod.ini"))) 
+                {
+                    string newDirectory = Path.Combine(dataDir, Path.GetFileName(filePath) + "_Dir");
+                    Directory.CreateDirectory(newDirectory);
+
+                    foreach (string subfolder in subfolders) 
+                    {
+                        if (Directory.Exists(subfolder))
+                            Directory.Move(subfolder, Path.Combine(newDirectory, Path.GetFileName(subfolder)));
+                    }
+
+                    string[] files = Directory.GetFiles(dataDir);
+
+                    foreach (string curFile in files)
+                    {
+                        if (File.Exists(curFile))
+                            File.Move(curFile, Path.Combine(newDirectory, Path.GetFileName(curFile)), true);
+                    }
+
+                    subfolders = Directory.GetDirectories(dataDir);
+                }
 
                 //move all folders in mods folder (sometimes a zip can have multiple mods)
                 foreach (var subfolder in subfolders)
@@ -230,7 +253,7 @@ namespace SAModManager.Updater
             }
             catch (Exception ex)
             {
-     
+
                 await Dispatcher.InvokeAsync(() =>
                 {
                     string s = Lang.GetString("Updater.DL.Mod.ManifestApplyFail") + " " + file.Name + "\n" + currentFilePath + "\n" + ex.Message + "\n\n";
@@ -239,7 +262,7 @@ namespace SAModManager.Updater
                 });
             }
         }
-        
+
 
         async Task ApplyingManifest(string oldManPath, string newManPath, ModDownload mod, string workDir)
         {
@@ -518,8 +541,11 @@ namespace SAModManager.Updater
                         dataDir = dataDir.Remove(20).TrimEnd(' ');
 
                     dataDir = Path.Combine(this.dest, dataDir);
-                    await Extracting(dataDir, filePath);
-                    await ParsingManifest(mod, filePath, dataDir);
+                    if (File.Exists(filePath))
+                    {
+                        await Extracting(dataDir, filePath);
+                        await ParseManifestAndAdjustFiles(mod, filePath, dataDir);
+                    }
                     CleanUp(mod, dataDir, filePath);
                 }
                 else if (mod.Type == ModDownloadType.Modular)
@@ -542,9 +568,12 @@ namespace SAModManager.Updater
                 UpdateProgressText(count.ToString(), updates.Count.ToString());
                 _progressOverall?.Report(count);
             }
-            catch { }
+            catch
+            {
+                Console.WriteLine("welp");
+            }
 
-           ModsUpdateComplete();
+            ModsUpdateComplete();
         }
 
         private async Task DoDownloadAsync(ModDownload file, Uri uri, CancellationToken cancelToken = default)
@@ -587,6 +616,9 @@ namespace SAModManager.Updater
                     var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
                     error.ShowDialog();
                 });
+
+                if (updates?.Count <= 1)
+                    this.Close();
             }
         }
 

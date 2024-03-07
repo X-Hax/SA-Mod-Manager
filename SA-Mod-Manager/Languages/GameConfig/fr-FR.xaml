@@ -8,22 +8,36 @@
     <system:String x:Key="GameConfig.Tabs.Input">Contrôles</system:String>
     <system:String x:Key="GameConfig.Tabs.Sound">Son</system:String>
     <system:String x:Key="GameConfig.Tabs.Patches">Patches</system:String>
+    <!--#endregion-->
 
     <!--Graphics Tab Strings-->
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Options d'Affichage</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Écran:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">Tous les Écrans</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">Mode Écran :</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Fenêtré</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Mode Fenêtré Standard.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Plein Écran Exclusif</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Non recommandé. La Fenêtre mettra à jour la résolution du moniteur, ce qui peut provoquer des plantages lorsque la fenêtre n'est pas focalisée.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Plein Écran Sans Bordure</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Recommandé. Mode Plein Écran. Permet de rendre le jeu à différentes résolutions de la fenêtre et corrige le bug de alt + tab.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Fenêtre Personnalisée</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Comme le Plein Écran Sans Bordure, mais pour les modes fenêtré.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Résolution:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Taille de la Fenêtre :</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Paramètres</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forcer Ratio d'Aspect 4:3</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Activer Synchronisation Verticale</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Synchro. Verticale</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pause si inactif</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Allouage dynamique des Tampons</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Fullscreen">Plein Écran</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Radio.Windowed">Fenêtré</system:String>
+    
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Fenêtre Redimensionnable</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Conserver le Ratio lors du Redimensionnement</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Maintenir le Ratio d'Aspect</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Taille de fenêtre Personnalisée:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Sans bordures</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Taille de Fenêtre Personnalisée:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Sans Bordures</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Afficher la souris en Plein Écran</system:String>
+
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Mise à l'echelle de l'Écran</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Autre Options Graphiques</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Fréquence d'Images:</system:String>
@@ -46,12 +60,22 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Activer Mise à l'échelle de l'interface</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Activer D3D8to9</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Mettre à jour D3D8to9</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Télécharger DXVK</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Le bouton ci-dessous vous permet de télécharger DXVK. Ce programme peut améliorer les performances et la stabilité de SA2. Le bouton vous mènera uniquement au téléchargement du programme, il ne l'installera pas.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Une fois que vous avez téléchargé l'archive, il vous suffit d'extraire d3d9.dll et de le placer dans le dossier du jeu où se trouve Sonic2app.</system:String>
+    <!--#endregion-->
+
+    <!--Options Tab Strings-->
+    <system:String x:Key="GameConfig.Tabs.Options.Title">Diverses options</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Passer l'Introduction</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">La langue du texte et des voix peut être définie pour le premier démarrage. Ces options prennent effet lors du démarrage du jeu à l'aide de Test Spawn. Ces options sont écrasées par le fichier de sauvegarde une fois celui-ci chargé.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">La langue du texte et des voix peut être définie pour le premier démarrage. Ces options prennent effet lors du démarrage à l'aide de Test Spawn. L'option des voix changera en fonction du fichier de sauvegarde chargé.</system:String>
     <!--#endregion-->
 
     <!--Input Tab Strings-->
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input">Options Contrôles</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Contrôles Classique (DInput)</system:String>
-    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Meilleur Contrôles (SDL2)</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Better Input (SDL2)</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Configuration des Contrôles Classique</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Souris et Clavier</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Glisser et Maintenez</system:String>
@@ -73,7 +97,8 @@
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Ouvrir l'AppLauncher</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Obtenir l'AppLauncher</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Better Input est une implémentation de SDL2 dans SADX. Il est recommandé pour jouer car il résout des bugs avec le système DInput d'origine.</system:String>
-
+    <!--#endregion-->
+    
     <!--Sound Input Strings-->
     <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Paramètres du Son</system:String>
     <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">Contrôle du Volume</system:String>
@@ -104,6 +129,8 @@
     <system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
     <system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
     <system:String x:Key="TestSpawn.Group.Advanced.Angle">Angle:</system:String>
+    <system:String x:Key="TestSpawn.Player2">Joueur 2:</system:String>
+    <system:String x:Key="TestSpawn.Mission">Mission:</system:String>
 
     <system:String x:Key="TestSpawn.Language.Voice">Langue des voix:</system:String>
     <system:String x:Key="TestSpawn.Language.Text">Langue des textes:</system:String>

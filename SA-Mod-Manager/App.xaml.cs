@@ -11,7 +11,6 @@ using System.Linq;
 using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SAModManager.Common;
 using SAModManager.Updater;
 using SAModManager.Ini;
 using System.Reflection;
@@ -23,7 +22,7 @@ using System.Data;
 using System.Net.Http;
 using System.Net;
 using SAModManager.UI;
-using SAModManager.Elements.SADX;
+using SAModManager.Controls.SADX;
 
 namespace SAModManager
 {
@@ -35,7 +34,6 @@ namespace SAModManager
     public partial class App : Application
     {
         private const string pipeName = "sa-mod-manager";
-        private const string protocol = "sadxmm:";
         public static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
         public static string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -46,6 +44,7 @@ namespace SAModManager
         public static bool isVanillaTransition = false; //used when installing the manager from an update
         public static bool isFirstBoot = false; //used when installing the new manager manually
         public static bool isLinux = false;
+        public static bool CancelUpdate = false;
 
         public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
         public static ManagerSettings ManagerSettings { get; set; }
@@ -58,9 +57,10 @@ namespace SAModManager
         public static LanguageList LangList { get; set; }
 
         public static ThemeEntry CurrentTheme { get; set; }
-		public static bool IsLightTheme = false;
+        public static bool IsLightTheme = false;
         public static ThemeList ThemeList { get; set; }
-        public static Common.Game CurrentGame = new();
+        public static Game CurrentGame = new();
+        public static List<Game> GamesList = new();
 
         [STAThread]
         /// <summary>
@@ -96,7 +96,7 @@ namespace SAModManager
             SetupThemes();
 
             ManagerSettings = LoadManagerConfig();
-            await ExecuteDependenciesCheck();
+            await SAModManager.Startup.StartupCheck();
 
             await InitUriAsync(args, alreadyRunning);
 
@@ -158,18 +158,18 @@ namespace SAModManager
             Current.Resources.MergedDictionaries.Insert(4, dictionary);
         }
 
-		public static void SetLightBool()
-		{
-			switch (CurrentTheme.FileName)
-			{
-				case "LightTheme":
-					IsLightTheme = true;
-					break;
+        public static void SetLightBool()
+        {
+            switch (CurrentTheme.FileName)
+            {
+                case "LightTheme":
+                    IsLightTheme = true;
+                    break;
                 default:
-					IsLightTheme = false;
-					break;
-			}
-		}
+                    IsLightTheme = false;
+                    break;
+            }
+        }
 
         public static void SwitchTheme()
         {
@@ -185,7 +185,7 @@ namespace SAModManager
             Current.Resources.MergedDictionaries.RemoveAt(1);
             Current.Resources.MergedDictionaries.Insert(1, dictionary);
 
-			SetLightBool();
+            SetLightBool();
         }
 
         public static void SetupThemes()
@@ -198,23 +198,30 @@ namespace SAModManager
 
         private static bool CheckinstallURLHandler(string[] args)
         {
+            int index = 0;
+
             foreach (var arg in args)
             {
                 if (arg == "urlhandler")
                 {
-                    using var hkcu = Microsoft.Win32.Registry.CurrentUser;
-                    using var key = hkcu.CreateSubKey("Software\\Classes\\sadxmm");
-                    key.SetValue(null, "URL:SADX Mod Manager Protocol");
-                    key.SetValue("URL Protocol", string.Empty);
-                    using (var k2 = key.CreateSubKey("DefaultIcon"))
-                        k2.SetValue(null, Environment.ProcessPath + ",1");
-                    using var k3 = key.CreateSubKey("shell");
-                    using var k4 = k3.CreateSubKey("open");
-                    using var k5 = k4.CreateSubKey("command");
-                    k5.SetValue(null, $"\"{Environment.ProcessPath}\" \"%1\"");
-                    key.Close();
-                    return true;
+                    if (index + 1 < args.Length)
+                    {
+                        using var hkcu = Microsoft.Win32.Registry.CurrentUser;
+
+                        using var key = hkcu.CreateSubKey("Software\\Classes\\" + args[index + 1]);
+                        key.SetValue(null, "URL:SA Mod Manager Protocol");
+                        key.SetValue("URL Protocol", string.Empty);
+                        using (var k2 = key.CreateSubKey("DefaultIcon"))
+                            k2.SetValue(null, Environment.ProcessPath + ",1");
+                        using var k3 = key.CreateSubKey("shell");
+                        using var k4 = k3.CreateSubKey("open");
+                        using var k5 = k4.CreateSubKey("command");
+                        k5.SetValue(null, $"\"{Environment.ProcessPath}\" \"%1\"");
+                        key.Close();
+                        return true;
+                    }
                 }
+                index++;
             }
 
             return false;
@@ -227,31 +234,40 @@ namespace SAModManager
                 UriQueue = new UriQueue(pipeName);
             }
 
-            List<string> uris = args
-                .Where(x => x.Length > protocol.Length && x.StartsWith(protocol, StringComparison.Ordinal))
+            foreach (var game in GamesInstall.GetSupportedGames())
+            {
+
+                List<string> uris = args
+                .Where(x => x.Length > game?.oneClickName.Length && x.StartsWith(game?.oneClickName + ":", StringComparison.Ordinal))
                 .ToList();
 
-            if (uris.Count > 0)
-            {
-                using (var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.Out))
+                if (uris.Count > 0)
                 {
-                    try
+                    if (game != App.CurrentGame)
                     {
-                        await pipe.ConnectAsync();
-
-                        using (var writer = new StreamWriter(pipe))
-                        {
-                            foreach (string s in uris)
-                            {
-                                await writer.WriteLineAsync(s);
-                            }
-                            await writer.FlushAsync();
-                        }
+                        App.CurrentGame = game;
                     }
-                    catch (Exception ex)
+
+                    using (var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.Out))
                     {
-                        // Handle connection or writing errors here
-                        Console.WriteLine($"Error sending URIs: {ex.Message}");
+                        try
+                        {
+                            await pipe.ConnectAsync();
+
+                            using (var writer = new StreamWriter(pipe))
+                            {
+                                foreach (string s in uris)
+                                {
+                                    await writer.WriteLineAsync(s);
+                                }
+                                await writer.FlushAsync();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle connection or writing errors here
+                            Console.WriteLine($"Error sending URIs: {ex.Message}");
+                        }
                     }
                 }
             }
@@ -284,7 +300,7 @@ namespace SAModManager
         {
             var mainWindow = ((MainWindow)Application.Current.MainWindow);
 
-             mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
+            mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
 
             try
             {
@@ -316,7 +332,7 @@ namespace SAModManager
 
                 var dl = new ManagerUpdate(dlLink, destFolder, fileName)
                 {
-                    DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName) 
+                    DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName)
                 };
 
                 dl.StartManagerDL();
@@ -366,6 +382,11 @@ namespace SAModManager
                     return false;
                 }
 
+                if (App.CancelUpdate)
+                {
+                    return false;
+                }
+
                 var manager = new InfoManagerUpdate(changelog, App.CurrentGame.loader.name);
                 manager.ShowDialog();
 
@@ -387,9 +408,10 @@ namespace SAModManager
 
         public static async Task<bool> PerformUpdateCodesCheck()
         {
+            var mainWindow = ((MainWindow)Application.Current.MainWindow);
             try
             {
-                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkCodesUpdates"));
+                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkCodesUpdates"));
 
                 var codesPath = Path.Combine(App.CurrentGame.modDirectory, "Codes.lst");
 
@@ -406,6 +428,11 @@ namespace SAModManager
                     {
                         return false;
                     }
+                }
+
+                if (App.CancelUpdate)
+                {
+                    return false;
                 }
 
                 await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
@@ -425,7 +452,8 @@ namespace SAModManager
         {
             try
             {
-                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkPatchesUpdates"));
+                var mainWindow = ((MainWindow)Application.Current.MainWindow);
+                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkPatchesUpdates"));
 
                 var jsonPath = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
 
@@ -440,6 +468,11 @@ namespace SAModManager
                     {
                         return false;
                     }
+                }
+
+                if (App.CancelUpdate)
+                {
+                    return false;
                 }
 
                 await GamesInstall.UpdatePatches(App.CurrentGame); //update patch
@@ -473,15 +506,16 @@ namespace SAModManager
                     {
                         return false;
                     }
+
+                    await GameConfig.UpdateAppLauncher();
                 }
 
-                await GameConfig.UpdateAppLauncher();
                 return true;
             }
             catch
             {
 
-            
+
             }
 
             return false;
@@ -502,7 +536,7 @@ namespace SAModManager
                     await dialog.InstallUpdate();
                     Util.ClearTempFolder();
                     Application.Current.Shutdown();
-                    
+
                     return true;
                 }
 
@@ -523,50 +557,60 @@ namespace SAModManager
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.CreateConfigFolder"), "'" + App.ConfigFolder + "'"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
             }
         }
-        
+
         private static void HandleVanillaTransition(string[] args)
         {
+
+            int index = 0;
             foreach (var arg in args)
             {
                 if (arg == "vanillaUpdate")
                 {
                     isVanillaTransition = true;
                     isFirstBoot = true;
-                    //todo add SA2 support
-                    if (File.Exists("SADXModManager.exe") || File.Exists("SA2ModManager.exe"))
-                    {
-                    
-                        string archive = "Archive_Old_Manager";
-                        Directory.CreateDirectory(archive);
-
-                        foreach (var file in Util.SADXManagerFiles)
-                        {
-                            if (File.Exists(file))
-                                File.Move(file, Path.Combine(archive, file), true);
-                        }
-
-                        foreach (var file in Util.BASSFiles)
-                        {
-                            if (File.Exists(file))
-                                File.Move(file, Path.Combine(archive, file), true);
-                        }
-                    }
+                    Util.DoVanillaFilesCleanup(args, index);
                 }
+
+                index++;
+            }
+        }
+        public static Uri GetResourceUri(string resourceName)
+        {
+            // Get the assembly where the resource is located
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            // Construct the full resource name
+            string fullResourceName = assembly.GetName().Name + ".Resources." + resourceName;
+
+            // Load the resource stream from the assembly
+            using (Stream stream = assembly.GetManifestResourceStream(fullResourceName))
+            {
+                // Check if the resource stream is found
+                if (stream == null)
+                {
+                    Console.WriteLine($"Resource not found: {fullResourceName}");
+                    return null;
+                }
+
+                // Copy the resource stream to a temporary file
+                string tempFilePath = Path.GetTempFileName();
+                using (FileStream fileStream = File.Create(tempFilePath))
+                {
+                    stream.CopyTo(fileStream);
+                }
+
+                // Return the URI to the temporary file
+                return new Uri($"file://{tempFilePath}");
             }
         }
 
-        public static async Task<bool> ExecuteDependenciesCheck()
-        {
-            return await SAModManager.Startup.StartupCheck();
-        }
 
-        private ManagerSettings LoadManagerConfig()
+        private static ManagerSettings LoadManagerConfig()
         {
-			ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
+            ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
 
-			switch (settings.CurrentSetGame)
+            switch (settings.CurrentSetGame)
             {
-                default:
                 case (int)SetGame.SADX:
                     CurrentGame = GamesInstall.SonicAdventure;
                     break;
@@ -575,7 +619,23 @@ namespace SAModManager
                     break;
             }
 
-			return settings;
+            return settings;
+        }
+
+
+        public static async Task EnableOneClickInstall()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(App.CurrentGame?.oneClickName) == false)
+                {
+                    string execPath = Environment.ProcessPath;
+                    string clickName = App.CurrentGame?.oneClickName;
+                    await Process.Start(new ProcessStartInfo(execPath, $"urlhandler \"{clickName}\"") { UseShellExecute = true }).WaitForExitAsync();
+                }
+            }
+            catch
+            { }
         }
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)

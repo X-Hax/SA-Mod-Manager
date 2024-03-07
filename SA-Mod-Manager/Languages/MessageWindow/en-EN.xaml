@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<system:String x:Key="MessageWindow.DefaultTitle">SADX Mod Manager</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle">SA Mod Manager</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Error">Error</system:String>
 	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Warning</system:String>
 	
@@ -11,7 +11,7 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Each mod must be placed in a subfolder in the mods folder. Do not extract mods directly to the mods folder.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Move or delete mod.ini in the mods folder and run the Mod Manager again.</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">could not be found.&#x0a;&#x0a;This mod will be removed from the list.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Failed to set Game Path</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect sonic.exe, make sure to select a folder where SADX is installed.</system:String>
@@ -76,7 +76,7 @@
 
     <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Unable to retrieve update information.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.Net7Missing">SADX Mod Manager cannot run without .NET 7.</system:String>
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">SA Mod Manager cannot run without .NET 7.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Missing VC++</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">It looks like you're missing some Visual C++ Redistributables, some mods won't work without them.&#x0a;&#x0a;Would you like to download and install them now?</system:String>
@@ -98,6 +98,7 @@
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">An unexpected error occurred while loading profiles, if the problem persists, please report the issue.</system:String>
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Failed to create config folder at {0}.&#x0a;The Mod Manager won't be able to work properly.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Failed to install or update {0}.&#x0a;If the game is open, please close it and try again.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->

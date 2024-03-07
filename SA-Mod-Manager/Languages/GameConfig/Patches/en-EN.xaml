@@ -20,6 +20,7 @@
     <system:String x:Key="GamePatches.KillGBIX">Disable GBIX (Experimental)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Disable CD Check</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Extended Save Support</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Crash Guard</system:String>
 
     <system:String x:Key="GamePatches.HRTFSoundDesc">Sets DirectSound to use more advanced algorithms to process 3D sounds. This patch is unnecessary when BASS for SFX is enabled.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Fixes a vanilla bug that prevents Free Cam Settings from being saved properly when dying or loading a zone/act.</system:String>
@@ -37,7 +38,26 @@
     <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">Global Index (GBIX) is a value used in the game's texture caching system. Each texture in SADX has one.&#x0a;Before the game loads a new texture, it compares the new texture's GBIX value with indices of other textures that are already loaded.&#x0a;If a match is found, the game reuses the already loaded texture instead of loading the new one.&#x0a;&#x0a;This patch disables most of the GBIX system in the game to reduce texture errors/conflicts. (A few exceptions like HUD elements apply.)</system:String>
 	<system:String x:Key="GamePatches.DisableCDCheckDesc">Disables the game's CD check.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Enables support for saved games from the Steam version and allows custom save names (up to 48 characters).</system:String>
+    <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Prevents common crashes with missing textures and missing binary files.&#x0a;&#x0a;This will not prevent the game from crashing in all circumstances.</system:String>
 
+    <!--#region SA2 Patches-->
+    <system:String x:Key="GamePatchesSA2.FramerateLimiter">Lock Framerate</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Disable Exit Prompt</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoad">Disable Loading Animation</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBuffer">Increase Vertex Buffer Limit</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFix">Environment Mapping Fixes</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFix">Screen Fade Fixes</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFix">City Escape Car Fixes</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFix">Particles Effect Fixes</system:String>
 
+    <system:String x:Key="GamePatchesSA2.FramerateLimiterDesc">Lock the framerate at 60 FPS, this resolves the issue of the game running too fast on monitors with higher refresh rates.</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPromptDesc">Disable the warning prompt when closing the game.</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoadDesc">Disable Omochao Loading animation, this should reduce crashes on startup.</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBufferDesc">Increase the Vertex Buffer Limit to 32k, enabling the integration of higher poly models into the game, this is mandatory for some mods to work.</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFixDesc">Fixes a condition bug with Environment Mapping (mostly in Chao World) allowing a better render.</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">Fixes a bug with the screen fading during the Victory Result Screen.</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFixDesc">Fixes the infamous trolley car glitch in City Escape (intel GPU).</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Fixes Particles Effect (Mystic Melody portail etc.) not showing up (intel GPU).</system:String>
+    <!--#endregion-->
 
 </ResourceDictionary>

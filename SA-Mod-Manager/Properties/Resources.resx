@@ -125,10 +125,16 @@
     <value>..\Resources\d3d8m.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="OpCodeSyntaxDark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Common\OpCodeSyntaxDark.xshd;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>..\Codes\OpCodeSyntaxDark.xshd;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="OpCodeSyntaxLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Common\OpCodeSyntaxLight.xshd;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>..\Codes\OpCodeSyntaxLight.xshd;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SA2FileHashes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Configuration\SA2\SA2FileHashes.ini;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SA2ModLoader" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SA2ModLoader.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="SADXFileHashes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Configuration\SADX\SADXFileHashes;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -144,6 +150,21 @@
   </data>
   <data name="URL_D3D8M" xml:space="preserve">
     <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/d3d8m.dll</value>
+  </data>
+  <data name="URL_SA2_BORDER" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Border_Default.png</value>
+  </data>
+  <data name="URL_SA2_CODE" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Codes.lst</value>
+  </data>
+  <data name="URL_SA2_DL" xml:space="preserve">
+    <value>https://github.com/X-Hax/sa2-mod-loader/raw/master/extlib/SA2ModLoader.dll</value>
+  </data>
+  <data name="URL_SA2_PATCH" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Patches.json</value>
+  </data>
+  <data name="URL_SADX_BORDER" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/e3a476800b05f163a1c4bd60257552c81313e15e/data/Border_Default.png</value>
   </data>
   <data name="URL_SADX_CODE" xml:space="preserve">
     <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Codes.lst</value>

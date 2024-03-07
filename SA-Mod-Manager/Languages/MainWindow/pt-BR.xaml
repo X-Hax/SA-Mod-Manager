@@ -70,7 +70,7 @@
 
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Sobre</system:String> 
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">O SADX Mod Manager é um programa que lhe permite gerenciar mods facilmente no Sonic Adventure DX.</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">O SA Mod Manager é um programa que lhe permite gerenciar mods facilmente no Sonic Adventure DX.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contribuidores</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Código Fonte</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Relatar um Bug (somente em Inglês)</system:String>
@@ -177,7 +177,9 @@
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Habilita a opção de manualmente definir o personagem, nível, e ato. Substitui configurações acima desta quando habilitada.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Habilita a opção de definir a posição e rotação inicial do personagem.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Inicia o jogo com as configurações acima aplicadas.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Enables setting for player 2.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Sets the Mission of the selected level.</system:String>
+    <!--#endregion-->
 
 	<!--#region Manager Config Tips-->
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Selecione qual perfil está sendo usado para a lista de mods e configurações.</system:String>
