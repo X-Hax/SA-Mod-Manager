@@ -125,7 +125,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Масштабировать интерфейс на весь экран.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Игра будет запускаться в окне.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Позволяет изменять размер окна во время игры.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Зафиксировать соотношение сторон при выборе кастомного разрешения.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeAspectRatio">Зафиксировать соотношение сторон экрана при изменении его размера, когда включено изменаемое окно.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Зафиксировать соотношение сторон при выборе кастомного разрешения.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Выставить размер окна вне зависимости от разрешения. Так, например, можно играть в разрешении 4К в небольшом окне.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Настроить частоту смены кадров.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">Включить режим эмуляции тумана. Использовать только со слабым видеоядром. В остальных случаях рекомендуется включить автоматический режим.</system:String>
@@ -181,8 +182,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Включить ручную настройку параметров персонажа, уровня и акта. Перезаписывает настройки выше, когда включено.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Включить настройку начального положения.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Запустить игру с принятыми выше параметрами.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Enables setting for player 2.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Sets the Mission of the selected level.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Включить настройку выбора второго игрока.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Выбор миссии для выбранного уровня.</system:String>
     <!--#endregion-->
 
 	<!--#region Manager Config Tips-->

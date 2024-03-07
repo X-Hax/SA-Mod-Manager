@@ -11,7 +11,7 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Не помещайте моды напрямую в папку Mods! Каждый мод должен находиться в своей подпапке.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Переместите или удалите файл mod.ini в папке Mods и запустите Менеджер модов снова.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Указанные моды не были найдены:&#x0a;&#x0a;</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Ошибка при установке пути к игре</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Файл sonic.exe не найден. Убедитесь, что выбрали папку с установленной игрой SADX.</system:String>
@@ -97,7 +97,7 @@
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Ошибка удаления мода: {0}.&#x0a;Убедитесь, что файлы существуют и не используются другой программой. Затем попробуйте ещё раз.</system:String>
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">При загрузке профилей произошла непредвиденная ошибка. Если проблема не устранена, сообщите о ней.</system:String>
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Не удалось создать папку с настройками по пути {0}.&#x0a;Менеджер модов не будет работать корректно.</system:String>
-    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Failed to install or update {0}.&#x0a;If the game is open, please close it and try again.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Ошибка при установке или обновлении {0}.&#x0a;Если игра запущена, то закройте её и повторите снова.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
