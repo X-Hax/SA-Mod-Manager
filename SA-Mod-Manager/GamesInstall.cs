@@ -703,19 +703,19 @@ namespace SAModManager
         public static void HandleGameSwap(Game game)
         {
             string path = Path.Combine(Environment.CurrentDirectory, game.exeName);
+
             try
             {
                 if (File.Exists(path))
                 {
-     
+                    string gameDir = Path.GetDirectoryName(path);
                     App.ManagerSettings.CurrentSetGame = (int)game.id;
                     if (App.CurrentGame.id != SetGame.None)
                     {
-                        ((MainWindow)App.Current.MainWindow).tempPath = path;
-                        App.CurrentGame.gameDirectory = path;
-                        ((MainWindow)App.Current.MainWindow).textGameDir.Text = path;
+                        ((MainWindow)App.Current.MainWindow).tempPath = gameDir;
+                        App.CurrentGame.gameDirectory = gameDir;
+                        ((MainWindow)App.Current.MainWindow).textGameDir.Text = gameDir;
                     }
-
                 }
                 else
                 {
@@ -724,13 +724,13 @@ namespace SAModManager
                         path = Path.Combine(pathValue, "steamapps", "common", game.gameName);
                         if (Directory.Exists(path))
                         {
-
+                            string gameDir = Path.GetDirectoryName(path);
                             App.ManagerSettings.CurrentSetGame = (int)game.id;
                             if (App.CurrentGame.id != SetGame.None)
                             {
-                                ((MainWindow)App.Current.MainWindow).tempPath = path;
-                                App.CurrentGame.gameDirectory = path;
-                                ((MainWindow)App.Current.MainWindow).textGameDir.Text = path;
+                                ((MainWindow)App.Current.MainWindow).tempPath = gameDir;
+                                App.CurrentGame.gameDirectory = gameDir;
+                                ((MainWindow)App.Current.MainWindow).textGameDir.Text = gameDir;
                             }
                         }
                     }

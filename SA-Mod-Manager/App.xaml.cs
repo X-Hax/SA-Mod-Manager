@@ -560,7 +560,6 @@ namespace SAModManager
 
         private static void HandleVanillaTransition(string[] args)
         {
-
             int index = 0;
             foreach (var arg in args)
             {

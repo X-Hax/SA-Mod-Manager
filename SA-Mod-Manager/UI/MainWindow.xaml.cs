@@ -82,30 +82,34 @@ namespace SAModManager
         private async Task VanillaUpdate_CheckGame()
         {
             bool isValid = false;
+
             foreach (var game in GamesInstall.GetSupportedGames())
             {
                 if (File.Exists(game.exeName))
-                {
-                    if (game == GamesInstall.SonicAdventure)
-                        App.CurrentGame = GamesInstall.GetGamePerID(SetGame.SADX);
-                    if (game == GamesInstall.SonicAdventure2)
-                        App.CurrentGame = GamesInstall.GetGamePerID(SetGame.SA2);
-
-                    string currentPath = Environment.CurrentDirectory;
+                {       
+                    App.CurrentGame = GamesInstall.GetGamePerID(game.id);
+                    string currentPath = Path.GetDirectoryName(game.exeName);
                     tempPath = currentPath;
                     App.CurrentGame.gameDirectory = currentPath;
+                    textGameDir.Text = currentPath;
                     UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                    await UpdateProfileList();
-                    await Load(true);
                     isValid = true;
                     break;
                 }
             }
+
+            if (App.CurrentGame?.loader?.installed == false && string.IsNullOrEmpty(App.CurrentGame.gameDirectory) == false && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
+            {
+                isValid = true;
+            }
+
             if (isValid)
             {
                 await ForceInstallLoader();
                 UpdateButtonsState();
+                await UpdateProfileList();
                 Save();
+                ClearUpdateFolder();
                 App.isVanillaTransition = false;
             }
         }
@@ -129,11 +133,9 @@ namespace SAModManager
             DataContext = ViewModel;
             SetBindings();
 
-            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
 
-            if (App.isVanillaTransition && (App.CurrentGame is null || App.CurrentGame.gameDirectory is null))
+            if (App.isVanillaTransition)
                 await VanillaUpdate_CheckGame();
-
 
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
@@ -178,10 +180,10 @@ namespace SAModManager
 
                     await CheckForModUpdates();
                 }
-
-                UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             }
 #endif
+
+            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             // Save Manager Settings
             Save();
         }
