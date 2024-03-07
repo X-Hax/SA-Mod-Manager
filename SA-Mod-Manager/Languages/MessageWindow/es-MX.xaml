@@ -11,7 +11,7 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Cada mod debe colocarse en una subcarpeta que se ubique en la carpeta mods. No extraigas mods directamente a la carpeta mods.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Mueve o borra mod.ini de la carpeta mods e inicia el Gestor de mods de nuevo.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">No se encontraron los siguientes mods:&#x0a;&#x0a;</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Error al establecer la ruta de juego</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">No se pudo encontrar sonic.exe, asegúrate de seleccionar una carpeta en la que esté instalado SADX.</system:String>
@@ -76,7 +76,7 @@
 
     <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">No se ha podido obtener la información de la actualización.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.Net7Missing">El Gestor de mods de SADX no funciona sin .NET 7.</system:String>
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">El Gestor de mods de SA no funciona sin .NET 7.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.VCMissing.Title">VC++ faltantes</system:String>
     <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Parece que te faltan algunos redistribuibles de Visual C++, algunos mods no funcionarán sin ellos.&#x0a;&#x0a;¿Quieres descargarlos e instalarlos ahora?</system:String>
@@ -94,10 +94,11 @@
 	
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Error desconocido</system:String>
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Ocurrió un error desconocido.</system:String>
+    
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">No se pudo borrar el mod {0}.&#x0a;Por favor, asegúrate de que los archivos existen y de que no están siendo usados por otro programa, luego vuélvelo a intentar.</system:String>
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">Ocurrió un error inesperado al cargar los perfiles. Si el problema persiste, reporta el problema, por favor.</system:String>
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">No se pudo crear un folder confing en {0}.&#x0a;El Gestor de mods no funcionará de forma adecuada.</system:String>
-    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Failed to install or update {0}&#x0a;If the game is open, please close it and try again.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">No se pudo instalar o actualizar {0}&#x0a;Si el juego está abierto, ciérralo e inténtalo de nuevo.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -105,19 +106,14 @@
     <system:String x:Key="MessageWindow.Warnings.DeleteMod1">¿Estás seguro(a) de que quieres continuar?</system:String>
     
     <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Estás a punto de desactivar la redirección de guardado de este mod. Si continúas, todos los archivos guardados en la carpeta de este mod serán eliminados.&#x0a;&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
-	
 	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">¿Seguro(a) que quieres borrar el/los perfil(es) seleccionado(s)?</system:String>
-	
 	<system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Esto obligará a que todos los mods seleccionados se vuelvan a descargar por completo.&#x0a;&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
 	
 	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">Esto puede causar la PÉRDIDA DE LOS DATOS DEL USUARIO DEL MOD (ARCHIVOS DE GUARDADO, ARCHIVOS DE CONFIGURACIÓN) hasta la próxima actualización. Para evitar esto, nunca debes ejecutar esto en mods que no has desarrollado.&#x0a;&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">¡.NET 7.0 Desktop Runtime no está instalado!&#x0a;&#x0a;¿Quieres instalarlo ahora?</system:String>
-	
 	<system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Esto borrará todos los códigos seleccionados.&#x0a;&#x0a;¿Seguro(a) que quieres continuar?</system:String>
-
 	<system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">Estás a punto de desactivar las actualizaciones de este mod. Si continúas, el Gestor NUNCA revisará si existen actualizaciones de este mod.&#x0a;¿Estás seguro(a) de que quieres continuar?</system:String>
-
 	<system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">El Gestor de mods necesita 7-zip para extraer mods y poder actualizarse.&#x0a;&#x0a;¿Quieres instalarlo ahora?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Perfiles faltantes</system:String>
@@ -127,7 +123,6 @@
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Error al importar</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">No se pudieron importar los siguientes archivos como perfiles:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Por favor, asegúrate de que sólo utilizas archivos JSON de perfil de juego o archivos INI del antiguo cargador.</system:String>
-    
     <!--#endregion-->
 	
 	<!--#region Information-->
