@@ -30,6 +30,7 @@ using SAModManager.Profile;
 using SAModManager.Configuration.SA2;
 using SAModManager.Configuration.SADX;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using SAModManager.ModsCommon;
 
 namespace SAModManager
 {
@@ -202,6 +203,8 @@ namespace SAModManager
         private void SaveAndPlayButton_Click(object sender, RoutedEventArgs e)
         {
             Save();
+			if (ModDependency.CheckDependencies(EnabledMods, mods))
+				return;
             StartGame();
         }
 
