@@ -56,7 +56,7 @@
                     <ComboBox x:Name="tsComboCharacter" Grid.Column="1" Margin="5" VerticalAlignment="Center" IsEnabled="{Binding ElementName=tsCheckCharacter, Path=IsChecked}" TabIndex="1"/>
                     <CheckBox x:Name="tsCheckLevel" Content="{DynamicResource TestSpawn.Check.Level}" Grid.Row="1" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.TestSpawn.Level}" 
 						  IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked, Converter={StaticResource FlipBool}}" Checked="CheckBox_Checked" TabIndex="2"/>
-                    <ComboBox x:Name="tsComboLevel" Grid.Column="1" Grid.Row="1" Margin="5" VerticalAlignment="Center" SelectionChanged="tsComboLevel_SelectionChanged" IsEnabled="{Binding ElementName=tsCheckLevel, Path=IsChecked}" TabIndex="3"/>
+                    <ComboBox x:Name="tsComboLevel" Grid.Column="1" Grid.Row="1" Margin="5" VerticalAlignment="Center" SelectionChanged="tsComboLevel_SelectionChanged" IsEnabled="{Binding ElementName=tsCheckLevel, Path=IsChecked}" TabIndex="3" DisplayMemberPath="Value"/>
                 </Grid>
 
                 <Grid Grid.Column="1" Grid.Row="0">
