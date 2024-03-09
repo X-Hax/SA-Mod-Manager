@@ -18,7 +18,8 @@
         <ResourceDictionary Source="MessageWindow/es-ES.xaml"/>
         <ResourceDictionary Source="ModChangelog/es-ES.xaml"/>
         <ResourceDictionary Source="ModConfig/es-ES.xaml"/>
-        <ResourceDictionary Source="ModProfile/es-ES.xaml"/>
+		<ResourceDictionary Source="ModDependency/es-ES.xaml"/>
+		<ResourceDictionary Source="ModProfile/es-ES.xaml"/>
         <ResourceDictionary Source="NewCode/es-ES.xaml"/>
         <ResourceDictionary Source="SelectDependencies/es-ES.xaml"/>
         <ResourceDictionary Source="SplashScreen/es-ES.xaml"/>
@@ -55,8 +56,10 @@
     <system:String x:Key="CommonStrings.Disabled">Disabled</system:String>
     <system:String x:Key="CommonStrings.Success">¡Éxito!</system:String>
     <system:String x:Key="CommonStrings.Failed">Falló</system:String>
+	<system:String x:Key="CommonStrings.ID">ID</system:String>
+	<system:String x:Key="CommonString.Dependency">Dependency</system:String>
 
-    <!--Region Create Code-->
+	<!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Tipo</system:String>
     <system:String x:Key="CommonStrings.TypeCode">Código</system:String>
     <system:String x:Key="CommonStrings.TypePatch">Parche</system:String>

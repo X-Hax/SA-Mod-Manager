@@ -18,6 +18,7 @@
 		<ResourceDictionary Source="MessageWindow/uk-UA.xaml"/>
 		<ResourceDictionary Source="ModChangelog/uk-UA.xaml"/>
 		<ResourceDictionary Source="ModConfig/uk-UA.xaml"/>
+		<ResourceDictionary Source="ModDependency/uk-UA.xaml"/>
 		<ResourceDictionary Source="ModProfile/uk-UA.xaml"/>
 		<ResourceDictionary Source="NewCode/uk-UA.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/uk-UA.xaml"/>
@@ -55,8 +56,10 @@
     <system:String x:Key="CommonStrings.Disabled">Вимкнено</system:String>
     <system:String x:Key="CommonStrings.Success">Success!</system:String>
     <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+	<system:String x:Key="CommonStrings.ID">ID</system:String>
+	<system:String x:Key="CommonString.Dependency">Dependency</system:String>
 
-    <!--Region Create Code-->
+	<!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Тип</system:String>
     <system:String x:Key="CommonStrings.TypeCode">Код</system:String>
     <system:String x:Key="CommonStrings.Typepatch">Патч</system:String>
