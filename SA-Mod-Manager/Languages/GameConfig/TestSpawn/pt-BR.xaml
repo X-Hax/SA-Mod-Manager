@@ -210,6 +210,74 @@
     <system:String x:Key="TSCutscene379">A passagem para Angel Island abre (Tails)</system:String>
     <system:String x:Key="TSCutscene380">A passagem para Angel Island abre (Gamma)</system:String>
     <system:String x:Key="TSCutscene384">Sonic avista o Egg Carrier de Red Mountain</system:String>
+	<!--#endregion-->
 
+	<!--#region SA2 Cutscenes-->
+	<system:String x:Key="SA2EventName00">Hero Story Intro</system:String>
+	<system:String x:Key="SA2EventName01">Sonic Encounters Shadow</system:String>
+	<system:String x:Key="SA2EventName02">Knuckles Meets Rouge</system:String>
+	<system:String x:Key="SA2EventName03">Tails Flies to Prison Island</system:String>
+	<system:String x:Key="SA2EventName04">Tails vs. Eggman Aftermath</system:String>
+	<system:String x:Key="SA2EventName05">Sonic Escapes from his Cell</system:String>
+	<system:String x:Key="SA2EventName06">Sonic and Friends Witness the ARK's Power</system:String>
+	<system:String x:Key="SA2EventName07">Where's Eggman?</system:String>
+	<system:String x:Key="SA2EventName08">Sonic And Tails intercept Eggman's Video.</system:String>
+	<system:String x:Key="SA2EventName09">Locate Eggman's Pyramid Base</system:String>
+	<system:String x:Key="SA2EventName10">Knuckles Begins Looking for the Gate Keys</system:String>
+	<system:String x:Key="SA2EventName11">Eggman Ambushes Sonic inside the Base.</system:String>
+	<system:String x:Key="SA2EventName12">Tails Explains His Plan to Destroy the Eclipse Cannon</system:String>
+	<system:String x:Key="SA2EventName13">Sonic Receives a Call for Ransom from Eggman</system:String>
+	<system:String x:Key="SA2EventName14">Knuckles vs. Rouge Aftermath</system:String>
+	<system:String x:Key="SA2EventName15">Sonic and Eggman Face Off</system:String>
+	<system:String x:Key="SA2EventName16">Sonic Saves Himself</system:String>
+	<system:String x:Key="SA2EventName17">Sonic and Shadow Final Battle</system:String>
+	<system:String x:Key="SA2EventName18">Hero Story Ending</system:String>
+	<system:String x:Key="SA2EventName19">Dark Story Intro</system:String>
+	<system:String x:Key="SA2EventName20">Eggman Awakens Shadow</system:String>
+	<system:String x:Key="SA2EventName21">Shadow Instructs Eggman</system:String>
+	<system:String x:Key="SA2EventName22">Rouge Meets Knuckles</system:String>
+	<system:String x:Key="SA2EventName23">Eggman Hears of Shadow's Highway Robbery</system:String>
+	<system:String x:Key="SA2EventName24">Shadow's Pathos</system:String>
+	<system:String x:Key="SA2EventName25">Shadow Encounters Sonic</system:String>
+	<system:String x:Key="SA2EventName26">Rouge Follows Eggman</system:String>
+	<system:String x:Key="SA2EventName27">Gathering of the Dark</system:String>
+	<system:String x:Key="SA2EventName28">Arrive on Prison Island</system:String>
+	<system:String x:Key="SA2EventName29">Eggman's Plan is Complicated by Tails and Amy</system:String>
+	<system:String x:Key="SA2EventName30">Shadow's Conscience Begins to Surface</system:String>
+	<system:String x:Key="SA2EventName31">Sonic vs. Shadow 1 Aftermath</system:String>
+	<system:String x:Key="SA2EventName32">Shadow's Past Life with Maria</system:String>
+	<system:String x:Key="SA2EventName33">Eggman Reworks His Plan</system:String>
+	<system:String x:Key="SA2EventName34">Shadow Spots the Heroes approaching the Pyramid Base</system:String>
+	<system:String x:Key="SA2EventName35">Eggman Fails to Ambush Sonic inside the base.</system:String>
+	<system:String x:Key="SA2EventName36">Rouge Learns the Truth About Project Shadow.</system:String>
+	<system:String x:Key="SA2EventName37">Knuckles vs. Rouge Aftermath</system:String>
+	<system:String x:Key="SA2EventName38">Eggman's Final Plan to Crush the Heroes</system:String>
+	<system:String x:Key="SA2EventName39">Eggman Sets a Diabolical Trap for Sonic</system:String>
+	<system:String x:Key="SA2EventName40">Mystery of Shadow the Hedgehog</system:String>
+	<system:String x:Key="SA2EventName41">Shadow and Sonic Final Battle</system:String>
+	<system:String x:Key="SA2EventName42">Dark Story Ending</system:String>
+	<system:String x:Key="SA2EventName43">Last Episode Intro</system:String>
+	<system:String x:Key="SA2EventName44">The ARK Falls</system:String>
+	<system:String x:Key="SA2EventName45">Gerald's Diary and Descent into Madness</system:String>
+	<system:String x:Key="SA2EventName46">Shadow and Amy.</system:String>
+	<system:String x:Key="SA2EventName47">Gerald's Final Trump Card</system:String>
+	<system:String x:Key="SA2EventName48">Knuckles Stops the Chaos Emeralds</system:String>
+	<system:String x:Key="SA2EventName49">Sonic and Shadow Transform</system:String>
+	<system:String x:Key="SA2EventName50">Shadow gives his life to save the world</system:String>
+	<system:String x:Key="SA2EventName51">Last Episode Ending/Credits</system:String>
+	<system:String x:Key="SA2EventName52">Epilogue</system:String>
+	<system:String x:Key="SA2EventName53">SA2B Intro</system:String>
+	<system:String x:Key="SA2EventName54">SA2 Intro (FMV)</system:String>
+	<system:String x:Key="SA2EventName55">Prison Island Explodes</system:String>
+	<system:String x:Key="SA2EventName56">Eggman's Threat to Earth</system:String>
+	<system:String x:Key="SA2EventName57">Sonic and Friends go to Space (Hero)</system:String>
+	<system:String x:Key="SA2EventName58">The Eclipse Cannon Malfunctions</system:String>
+	<system:String x:Key="SA2EventName59">Dark Story Trailer</system:String>
+	<system:String x:Key="SA2EventName60">Last Story Trailer</system:String>
+	<system:String x:Key="SA2EventName61">Sonic and Friends go to Space (Dark)</system:String>
+	<system:String x:Key="SA2EventName62">Hero Story Trailer</system:String>
+	<system:String x:Key="SA2EventName63">Gerald's Revenge</system:String>
+	<system:String x:Key="SA2EventName64">The ARK is Neutralized</system:String>
+	<!--#endregion-->
 
 </ResourceDictionary>
