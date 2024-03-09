@@ -216,7 +216,7 @@
 	<system:String x:Key="SA2EventName00">История героев: начало</system:String>
 	<system:String x:Key="SA2EventName01">Соник наткнулся на Шедоу</system:String>
 	<system:String x:Key="SA2EventName02">Наклз встречает Руж</system:String>
-	<system:String x:Key="SA2EventName03">Тейлз летит к тюремному острову</system:String>
+	<system:String x:Key="SA2EventName03">Тейлз летит к Тюремному острову</system:String>
 	<system:String x:Key="SA2EventName04">После сражения Тейлза и Эггмана</system:String>
 	<system:String x:Key="SA2EventName05">Побег Соника из его клетки</system:String>
 	<system:String x:Key="SA2EventName06">Соник и друзья видят мощь ARK</system:String>
@@ -241,7 +241,7 @@
 	<system:String x:Key="SA2EventName25">Шедоу натыкается на Соника</system:String>
 	<system:String x:Key="SA2EventName26">Руж следует за Эггманом</system:String>
 	<system:String x:Key="SA2EventName27">Злодеи собираются вместе</system:String>
-	<system:String x:Key="SA2EventName28">Прибытие на тюремный остров</system:String>
+	<system:String x:Key="SA2EventName28">Прибытие на Тюремный остров</system:String>
 	<system:String x:Key="SA2EventName29">План Эггмана усложняют Тейлз с Эми</system:String>
 	<system:String x:Key="SA2EventName30">Начала проявляться совесть Шедоу</system:String>
 	<system:String x:Key="SA2EventName31">После сражения Соника и Шедоу</system:String>
@@ -268,7 +268,7 @@
 	<system:String x:Key="SA2EventName52">Эпилог</system:String>
 	<system:String x:Key="SA2EventName53">Интро SA2B</system:String>
 	<system:String x:Key="SA2EventName54">Интро SA2 (FMV)</system:String>
-	<system:String x:Key="SA2EventName55">Взрывы на тюремном острове</system:String>
+	<system:String x:Key="SA2EventName55">Взрывы на Тюремном острове</system:String>
 	<system:String x:Key="SA2EventName56">Эггман угрожает Земле</system:String>
 	<system:String x:Key="SA2EventName57">Соник и остальные отправляются в космос (герои)</system:String>
 	<system:String x:Key="SA2EventName58">Повреждение пушки затмения</system:String>
