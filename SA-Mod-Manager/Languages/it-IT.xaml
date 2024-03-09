@@ -16,6 +16,7 @@
 		<ResourceDictionary Source="MessageWindow/it-IT.xaml"/>
 		<ResourceDictionary Source="ModChangelog/it-IT.xaml"/>
 		<ResourceDictionary Source="ModConfig/it-IT.xaml"/>
+		<ResourceDictionary Source="ModDependency/it-IT.xaml"/>
 		<ResourceDictionary Source="ModProfile/it-IT.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/it-IT.xaml"/>
         <ResourceDictionary Source="ExceptionHandler/it-IT.xaml"/>
@@ -49,8 +50,10 @@
     <system:String x:Key="CommonStrings.Disabled">Disabled</system:String>
     <system:String x:Key="CommonStrings.Success">Success!</system:String>
     <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+	<system:String x:Key="CommonStrings.ID">ID</system:String>
+	<system:String x:Key="CommonString.Dependency">Dependency</system:String>
 
-    <!--Window Tips-->
+	<!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Riduci a Icona</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Ingrandisci</system:String>
 	<system:String x:Key="Window.Tips.Restore">Ripristina Finestra</system:String>

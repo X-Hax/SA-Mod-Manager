@@ -16,6 +16,7 @@
 		<ResourceDictionary Source="MessageWindow/pt-PT.xaml"/>
 		<ResourceDictionary Source="ModChangelog/pt-PT.xaml"/>
 		<ResourceDictionary Source="ModConfig/pt-PT.xaml"/>
+		<ResourceDictionary Source="ModDependency/pt-PT.xaml"/>
 		<ResourceDictionary Source="ModProfile/pt-PT.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/pt-PT.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/pt-PT.xaml"/>
@@ -47,8 +48,10 @@
 	<system:String x:Key="CommonStrings.OpenFolder">Abrir Pasta</system:String>
     <system:String x:Key="CommonStrings.Success">Success!</system:String>
     <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+	<system:String x:Key="CommonStrings.ID">ID</system:String>
+	<system:String x:Key="CommonString.Dependency">Dependency</system:String>
 
-    <!--Window Tips-->
+	<!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Minimizar</system:String>
 	<system:String x:Key="Window.Tips.Maximize">Maximizar</system:String>
 	<system:String x:Key="Window.Tips.Restore">Restaurar</system:String>

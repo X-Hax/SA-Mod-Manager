@@ -16,6 +16,7 @@
 		<ResourceDictionary Source="MessageWindow/ko-KR.xaml"/>
 		<ResourceDictionary Source="ModChangelog/ko-KR.xaml"/>
 		<ResourceDictionary Source="ModConfig/ko-KR.xaml"/>
+		<ResourceDictionary Source="ModDependency/ko-KR.xaml"/>
 		<ResourceDictionary Source="ModProfile/ko-KR.xaml"/>
 		<ResourceDictionary Source="SelectDependencies/ko-KR.xaml"/>
         <ResourceDictionary Source="ExceptionHandler/ko-KR.xaml"/>
@@ -46,8 +47,10 @@
 	<system:String x:Key="CommonStrings.OpenFolder">폴더 열기</system:String>
     <system:String x:Key="CommonStrings.Success">Success!</system:String>
     <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+	<system:String x:Key="CommonStrings.ID">ID</system:String>
+	<system:String x:Key="CommonString.Dependency">Dependency</system:String>
 
-    <!--Window Tips-->
+	<!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">축소하기</system:String>
 	<system:String x:Key="Window.Tips.Maximize">확대하기</system:String>
 	<system:String x:Key="Window.Tips.Restore">창 복구하기</system:String>
