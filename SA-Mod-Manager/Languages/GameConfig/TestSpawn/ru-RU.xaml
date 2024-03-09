@@ -224,7 +224,7 @@
 	<system:String x:Key="SA2EventName08">Соник и Тейлз перехватывают видео Эггмана</system:String>
 	<system:String x:Key="SA2EventName09">Расположение базы Эггмана в пирамиде</system:String>
 	<system:String x:Key="SA2EventName10">Наклз отправляется на поиски ключей от ворот</system:String>
-	<system:String x:Key="SA2EventName11">Соник попал в ловушку Эггмана в пирамиде.</system:String>
+	<system:String x:Key="SA2EventName11">Соник попал в ловушку Эггмана в пирамиде</system:String>
 	<system:String x:Key="SA2EventName12">Тейлз объясняет план по уничтожению пушки затмения</system:String>
 	<system:String x:Key="SA2EventName13">Эггман оглашает Сонику требования выкупа</system:String>
 	<system:String x:Key="SA2EventName14">После сражения Наклза и Руж</system:String>
