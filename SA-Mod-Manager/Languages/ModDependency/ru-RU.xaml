@@ -3,9 +3,9 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<system:String x:Key="ModDependency.Duplicate.Header">Повторяющийся ID мода</system:String>
-	<system:String x:Key="ModDependency.Duplicate.DuplicatesFound1">Обнаружен повторяющийся ID!</system:String>
-	<system:String x:Key="ModDependency.Duplicate.DuplicatesFound2">Уберите дубликат мода или убедитесь, что у нескольких модов нет повторяющихся ID мода.</system:String>
+	<system:String x:Key="ModDependency.Duplicate.Header">Моды с одинаковыми ID</system:String>
+	<system:String x:Key="ModDependency.Duplicate.DuplicatesFound1">Обнаружены моды с одинаковыми ID!</system:String>
+	<system:String x:Key="ModDependency.Duplicate.DuplicatesFound2">Уберите дубликат мода или убедитесь, что у нескольких модов нет одинаковых ID.</system:String>
 	
 	<system:String x:Key="ModDependency.Dependency.Header">Ошибка зависимости</system:String>
 	
