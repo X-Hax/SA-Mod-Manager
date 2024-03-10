@@ -94,7 +94,6 @@ namespace SAModManager
             Steam.Init();
             SetupLanguages();
             SetupThemes();
-
             ManagerSettings = LoadManagerConfig();
             await SAModManager.Startup.StartupCheck();
 
