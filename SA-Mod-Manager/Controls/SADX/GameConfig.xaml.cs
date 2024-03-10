@@ -588,10 +588,6 @@ namespace SAModManager.Controls.SADX
                 {
                     propertyInfo.SetValue(settings.Patches, patch.IsChecked);
                 }
-                else
-                {
-                    throw new InvalidOperationException($"Property {propertyName} not found or read-only.");
-                }
             }
         }
 
