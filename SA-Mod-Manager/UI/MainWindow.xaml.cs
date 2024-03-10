@@ -151,13 +151,16 @@ namespace SAModManager
 #if !DEBUG
             if (App.isFirstBoot == false)
             {
-                UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
-                UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
-                bool managerUpdate = chkUpdateManager.IsChecked == true && await App.PerformUpdateManagerCheck();
-                if (managerUpdate)
+                if (chkUpdateManager.IsChecked == true)
                 {
-                    Refresh();
-                    return;
+                    UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
+                    UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
+                    bool managerUpdate = await App.PerformUpdateManagerCheck();
+                    if (managerUpdate)
+                    {
+                        Refresh();
+                        return;
+                    }
                 }
 
 
@@ -167,6 +170,7 @@ namespace SAModManager
                     {
                         if (chkUpdatesML.IsChecked == true)
                         {
+                            UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
                             await App.PerformUpdateLoaderCheck();
                             await App.PerformUpdateCodesCheck();
                             await App.PerformUpdatePatchesCheck();
