@@ -3,21 +3,21 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<system:String x:Key="ModDependency.Duplicate.Header">Duplicate Mod IDs</system:String>
-	<system:String x:Key="ModDependency.Duplicate.DuplicatesFound1">Duplicate IDs Detected!</system:String>
-	<system:String x:Key="ModDependency.Duplicate.DuplicatesFound2">Please remove the duplicate mods or make sure Mod IDs are not shared between multiple mods.</system:String>
+	<system:String x:Key="ModDependency.Duplicate.Header">Моды с одинаковыми ID</system:String>
+	<system:String x:Key="ModDependency.Duplicate.DuplicatesFound1">Обнаружены моды с одинаковыми ID!</system:String>
+	<system:String x:Key="ModDependency.Duplicate.DuplicatesFound2">Уберите дубликат мода или убедитесь, что у нескольких модов нет одинаковых ID.</system:String>
 	
-	<system:String x:Key="ModDependency.Dependency.Header">Dependency Error</system:String>
+	<system:String x:Key="ModDependency.Dependency.Header">Ошибка зависимости</system:String>
 	
 	<!--For translators, the following strings are all partial string and are used in tandem with information given in the ModDependency Class.-->
 	<!--Usage in the ModDependency class begins in the checks at the bottom of the ModDependency.cs file if you need a reference.-->
 	<!--In most cases, the partials have a mod name or ID in front of them and a mod name at the end of the string.-->
-	<system:String x:Key="ModDependency.Dependency.EnabledOrder">needs to be placed above</system:String>
-	<system:String x:Key="ModDependency.Dependency.DisabledOrder1">is not enabled.</system:String>
-	<system:String x:Key="ModDependency.Dependency.DisabledOrder2">Please enabled the mod and place it above</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled1">is not installed.</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled2">Please install</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled3">and place it above</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled4">Would you like to download this mod now?</system:String>
+	<system:String x:Key="ModDependency.Dependency.EnabledOrder">необходимо поместить над</system:String>
+	<system:String x:Key="ModDependency.Dependency.DisabledOrder1">выключен.</system:String>
+	<system:String x:Key="ModDependency.Dependency.DisabledOrder2">Пожалуйста, включите мод и поместите его над</system:String>
+	<system:String x:Key="ModDependency.Dependency.NotInstalled1">не установлен.</system:String>
+	<system:String x:Key="ModDependency.Dependency.NotInstalled2">Пожалуйста, установите</system:String>
+	<system:String x:Key="ModDependency.Dependency.NotInstalled3">и поместите его над</system:String>
+	<system:String x:Key="ModDependency.Dependency.NotInstalled4">Желаете загрузить мод сейчас?</system:String>
 
 </ResourceDictionary>
