@@ -155,7 +155,37 @@ namespace SAModManager.Ini
 			return result;
 		}
 
-		internal static bool IsNullOrWhiteSpace(string value)
+		public static void RemoveGroupLine(IniDictionary INI, string groupName)
+		{
+			foreach (IniNameGroup group in INI)
+			{
+				group.Value.Remove(groupName);	
+			}
+		}
+
+        public static void AddModIniGroup(IniDictionary INI, string groupName, bool toggle)
+        {
+            foreach (IniNameGroup group in INI)
+            {
+				if (group.Value.ContainsKey("Name"))
+				{
+					if (group.Value.ContainsKey(groupName) == false)
+					{
+                        group.Value.Add(groupName, toggle.ToString());
+                    }
+					else
+					{
+						if (toggle == false)
+						{
+							group.Value.Remove(groupName);
+						}
+					}
+					break;
+                }
+            }
+        }
+
+        internal static bool IsNullOrWhiteSpace(string value)
 		{
 			if (string.IsNullOrEmpty(value))
 				return true;
