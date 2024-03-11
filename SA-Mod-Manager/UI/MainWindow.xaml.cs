@@ -80,44 +80,6 @@ namespace SAModManager
         }
 
         #region Form: Functions
-        private async Task VanillaUpdate_CheckGame()
-        {
-            bool isValid = false;
-
-            foreach (var game in GamesInstall.GetSupportedGames())
-            {
-                if (File.Exists(game.exeName))
-                {
-                    if (App.CurrentGame != GamesInstall.GetGamePerID(game.id))
-                    {
-                        App.CurrentGame = GamesInstall.GetGamePerID(game.id);
-                        string currentPath = Path.GetDirectoryName(game.exeName);
-                        tempPath = currentPath;
-                        App.CurrentGame.gameDirectory = currentPath;
-                        textGameDir.Text = currentPath;
-                        UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                    }
-                    isValid = true;
-                    break;
-                }
-            }
-
-            if (App.CurrentGame?.loader?.installed == false && string.IsNullOrEmpty(App.CurrentGame.gameDirectory) == false && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
-            {
-                isValid = true;
-            }
-
-            if (isValid)
-            {
-                await ForceInstallLoader();
-                UpdateButtonsState();
-                await UpdateProfileList();
-                Save();
-                ClearUpdateFolder();
-                App.isVanillaTransition = false;
-            }
-        }
-
         private async void MainWindowManager_Loaded(object sender, RoutedEventArgs e)
         {
             this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
@@ -132,11 +94,10 @@ namespace SAModManager
             }
 
             ViewModel.Games = App.GamesList;
-
-            await Load();
             DataContext = ViewModel;
-            SetBindings();
-
+            await Load();
+            SetBindings(); //theme is set here
+     
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
                 var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
@@ -151,13 +112,16 @@ namespace SAModManager
 #if !DEBUG
             if (App.isFirstBoot == false)
             {
-                UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
-                UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
-                bool managerUpdate = chkUpdateManager.IsChecked == true && await App.PerformUpdateManagerCheck();
-                if (managerUpdate)
+                if (chkUpdateManager.IsChecked == true)
                 {
-                    Refresh();
-                    return;
+                    UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
+                    UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
+                    bool managerUpdate = await App.PerformUpdateManagerCheck();
+                    if (managerUpdate)
+                    {
+                        Refresh();
+                        return;
+                    }
                 }
 
 
@@ -167,6 +131,7 @@ namespace SAModManager
                     {
                         if (chkUpdatesML.IsChecked == true)
                         {
+                            UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
                             await App.PerformUpdateLoaderCheck();
                             await App.PerformUpdateCodesCheck();
                             await App.PerformUpdatePatchesCheck();
@@ -177,7 +142,7 @@ namespace SAModManager
                             await App.PerformUpdateAppLauncherCheck();
                         }
                     }
-
+            
                     await CheckForModUpdates();
                 }
             }
@@ -1726,7 +1691,6 @@ namespace SAModManager
 
             // Update the UI based on the loaded game.
             SetGameUI();
-            await Task.Delay(200);
         }
 
         public void Save()
@@ -2238,8 +2202,8 @@ namespace SAModManager
 
         private void SetBindings()
         {
-            SetGameDebugBindings();
             SetManagerBindings();
+            SetGameDebugBindings();
         }
         #endregion
 
@@ -2744,7 +2708,6 @@ namespace SAModManager
                         App.CurrentGame = game;
                         GamesInstall.HandleGameSwap(game);
                         await Load();
-                        await UpdateManagerInfo();
                         foundGame = true;
                         break;
                     }
