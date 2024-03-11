@@ -484,7 +484,7 @@ namespace SAModManager
 
             ModContextDeveloper.Visibility = (bool)checkDevEnabled.IsChecked ? Visibility.Visible : Visibility.Collapsed;
 
-            string UpdateStateString = "Manager.Tabs.Mods.ContextMenu.Dfeveloper.DisableUpdate";
+            string UpdateStateString = "Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate";
 
             if (mods[curMod.Tag].DisableUpdate == true)
                 UpdateStateString = "Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate";
