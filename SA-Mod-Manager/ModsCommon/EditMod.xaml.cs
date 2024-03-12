@@ -35,7 +35,7 @@ namespace SAModManager
 		static bool editMod { get; set; } = false;
 		private string folderName;
 		public static SAModInfo Mod { get; set; } = new();
-		static string CurrentTime = string.Empty;
+        static string CurrentTime = string.Empty;
 
 		public static EditCodeList CodeList { get; set; } = new EditCodeList();
 
@@ -86,7 +86,7 @@ namespace SAModManager
                 LoadModUpdates(mod);
 				LoadDependencies(mod);
 				LoadCodes(mod);
-                LoadConfigSchema(mod.Name);
+                LoadConfigSchema();
 
 				openFolderChk.IsChecked = false;
 			}
@@ -224,7 +224,7 @@ namespace SAModManager
 		#endregion
 
 		#region Config Schema Tab Functions
-		public void LoadConfigSchema(string modName)
+		public void LoadConfigSchema()
 		{
 			string fullName = string.Empty;
 			string moddir = editMod ? App.CurrentGame.modDirectory : Path.Combine(App.CurrentGame.modDirectory, ValidateFilename(nameBox.Text));
@@ -443,24 +443,41 @@ namespace SAModManager
 			//Assign variables to null if the string are empty so they won't show up at all in mod.ini.
 			SAModInfo newMod = editMod ? Mod : new SAModInfo();
 			newMod.Name = nameBox.Text;
-			newMod.Author = GetStringContent(authorBox.Text);
-			newMod.AuthorURL = GetStringContent(authorURLBox.Text);
-			newMod.Description = GetStringContent(descriptionBox.Text);
-			newMod.Version = GetStringContent(versionBox.Text);
-			newMod.Category = GetStringContent(categoryBox.Text);
-			newMod.SourceCode = GetStringContent(sourceURLBox.Text);
+			newMod.Author = authorBox.Text;
+			newMod.AuthorURL = authorURLBox.Text;
+			newMod.Description = descriptionBox.Text;
+			newMod.Version = versionBox.Text;
+			newMod.Category = categoryBox.Text;
+			newMod.SourceCode = sourceURLBox.Text;
 			newMod.RedirectMainSave = mainSaveBox.IsChecked.GetValueOrDefault();
 			newMod.RedirectChaoSave = chaoSaveBox.IsChecked.GetValueOrDefault();
-			newMod.ModID = GetStringContent(modIDBox.Text);
-			newMod.DLLFile = GetStringContent(dllText.Text);
+			newMod.ModID = modIDBox.Text;
+			newMod.DLLFile = dllText.Text;
 
             SaveModUpdates(newMod);
+
+            var modIniPath = Path.Combine(moddir, "mod.ini");
+
 			if (editMod)
+			{
 				SaveModDependencies(newMod);
 
-			var modIniPath = Path.Combine(moddir, "mod.ini");
-			IniSerializer.Serialize(newMod, modIniPath);
-		}
+				//since not all the info from the original mod.ini are saved, we backup the whole ini here
+                string[] modIniString = File.ReadAllLines(modIniPath);
+                var oldmodIni = IniFile.Load(modIniString);
+                var edited = IniSerializer.Serialize(newMod);
+				var merged = IniFile.Combine(oldmodIni, edited); //then we combine the old and new edited mod ini so no information are lost
+				IniFile.ClearEmptyGroup(merged);
+				IniFile.Save(merged, modIniPath); //save final result
+            }
+			else
+			{
+				var ResultNewMod = IniSerializer.Serialize(newMod);
+				IniFile.ClearEmptyGroup(ResultNewMod);
+                IniFile.Save(ResultNewMod, modIniPath);
+			}
+
+        }
 
 		private void SaveMod(string modPath)
 		{

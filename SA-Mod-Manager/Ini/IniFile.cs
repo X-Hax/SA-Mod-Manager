@@ -114,7 +114,7 @@ namespace SAModManager.Ini
 			return Load(data.ToArray());
 		}
 
-		public static string[] Save(IniDictionary INI)
+        public static string[] Save(IniDictionary INI)
 		{
 			List<string> result = new List<string>();
 			foreach (IniNameGroup group in INI)
@@ -155,7 +155,51 @@ namespace SAModManager.Ini
 			return result;
 		}
 
-		internal static bool IsNullOrWhiteSpace(string value)
+		public static void ClearEmptyGroup(IniDictionary ini)
+		{
+			foreach (IniNameGroup group in ini)
+			{
+				foreach (IniNameValue item in group.Value)
+				{
+                    if (string.IsNullOrEmpty(item.Value))
+                    {
+                        group.Value.Remove(item.Key);
+                    }
+                }
+			}
+		}
+
+		public static void RemoveGroupLine(IniDictionary INI, string groupName)
+		{
+			foreach (IniNameGroup group in INI)
+			{
+				group.Value.Remove(groupName);	
+			}
+		}
+
+        public static void AddModIniGroup(IniDictionary INI, string groupName, bool toggle)
+        {
+            foreach (IniNameGroup group in INI)
+            {
+				if (group.Value.ContainsKey("Name"))
+				{
+					if (group.Value.ContainsKey(groupName) == false)
+					{
+                        group.Value.Add(groupName, toggle.ToString());
+                    }
+					else
+					{
+						if (toggle == false)
+						{
+							group.Value.Remove(groupName);
+						}
+					}
+					break;
+                }
+            }
+        }
+
+        internal static bool IsNullOrWhiteSpace(string value)
 		{
 			if (string.IsNullOrEmpty(value))
 				return true;

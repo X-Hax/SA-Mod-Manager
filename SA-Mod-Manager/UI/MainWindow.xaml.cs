@@ -31,6 +31,7 @@ using SAModManager.Configuration.SA2;
 using SAModManager.Configuration.SADX;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using SAModManager.ModsCommon;
+using System.Security.Policy;
 
 namespace SAModManager
 {
@@ -512,7 +513,7 @@ namespace SAModManager
 
                 var modPath = Path.Combine(App.CurrentGame.modDirectory, (string)item.Tag);
                 var manifestPath = Path.Combine(modPath, "mod.manifest");
-
+ 
                 foreach (string filename in SAModInfo.GetModFiles(new DirectoryInfo(modPath)))
                 {
                     if (filename.Contains("mod.ini")) //reload mod ini in case the user edited it
@@ -524,11 +525,14 @@ namespace SAModManager
 
                 var CurMod = mods[item.Tag];
 
-                if (CurMod is not null)
+                if (CurMod is not null && CurMod.DisableUpdate == true)
                 {
                     CurMod.DisableUpdate = false;
                     string fullPath = Path.Combine(App.CurrentGame.modDirectory, item.Tag, "mod.ini");
-                    IniSerializer.Serialize(CurMod, fullPath);
+                    string[] modIniString = File.ReadAllLines(fullPath);
+                    var modIni = IniFile.Load(modIniString);
+                    IniFile.RemoveGroupLine(modIni, "DisableUpdate");
+                    Ini.IniFile.Save(modIni, fullPath);
                 }
 
                 List<Updater.ModManifestEntry> manifest;
@@ -592,8 +596,12 @@ namespace SAModManager
             }
 
             modInfo.DisableUpdate = !modInfo.DisableUpdate;
+         
             string fullPath = Path.Combine(App.CurrentGame.modDirectory, mod.Tag, "mod.ini");
-            IniSerializer.Serialize(modInfo, fullPath);
+            string[] modIniString = File.ReadAllLines(fullPath);
+            var modIni = IniFile.Load(modIniString);
+            IniFile.AddModIniGroup(modIni, "DisableUpdate", modInfo.DisableUpdate);
+            Ini.IniFile.Save(modIni, fullPath);
         }
 
         private void ModContextOpenFolder_Click(object sender, RoutedEventArgs e)
