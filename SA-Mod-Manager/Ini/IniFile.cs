@@ -114,7 +114,7 @@ namespace SAModManager.Ini
 			return Load(data.ToArray());
 		}
 
-		public static string[] Save(IniDictionary INI)
+        public static string[] Save(IniDictionary INI)
 		{
 			List<string> result = new List<string>();
 			foreach (IniNameGroup group in INI)
@@ -153,6 +153,20 @@ namespace SAModManager.Ini
 				else
 					result.Add(group.Key, new IniGroup(group.Value));
 			return result;
+		}
+
+		public static void ClearEmptyGroup(IniDictionary ini)
+		{
+			foreach (IniNameGroup group in ini)
+			{
+				foreach (IniNameValue item in group.Value)
+				{
+                    if (string.IsNullOrEmpty(item.Value))
+                    {
+                        group.Value.Remove(item.Key);
+                    }
+                }
+			}
 		}
 
 		public static void RemoveGroupLine(IniDictionary INI, string groupName)
