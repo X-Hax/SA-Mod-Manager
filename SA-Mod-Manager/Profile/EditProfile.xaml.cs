@@ -39,12 +39,14 @@ namespace SAModManager.Profile
             ProfileNameTextbox.Text = profile.Name;
             origProfile = profile.Filename;
             KeepMods.Visibility = Visibility.Collapsed;
+
+            UIHelper.DisableButton(ref btnOK);
             isEditing = true;
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && btnOK.IsEnabled == true)
             {
                 SaveProfile();
                 e.Handled = true;
@@ -61,7 +63,7 @@ namespace SAModManager.Profile
             string profileName = ProfileNameTextbox.Text;
             string profileFilename = profileName + ".json";
 
-            if (profileName != string.Empty)
+            if (string.IsNullOrWhiteSpace(ProfileNameTextbox.Text) == false)
             {
                 if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename)))
                 {
@@ -159,6 +161,18 @@ namespace SAModManager.Profile
         private void UI_Cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void ProfileNameTextbox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if (( string.IsNullOrWhiteSpace(ProfileNameTextbox.Text) == false) && (ProfileNameTextbox.Text.Length > 1))
+             {
+                UIHelper.EnableButton(ref btnOK);
+            }
+            else
+            {
+                UIHelper.DisableButton(ref btnOK);
+            }
         }
     }
 }
