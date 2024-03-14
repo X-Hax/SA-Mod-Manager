@@ -197,11 +197,14 @@ namespace SAModManager.Profile
                     {
                         foreach (ProfileEntry item in selectedItems)
                         {
-                            var fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, item.Filename);
-                            if (File.Exists(fullPath))
+                            if (item is not null)
                             {
-                                File.Delete(fullPath);
-                                Profiles.ProfilesList.Remove(item);
+                                var fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, item.Filename);
+                                if (File.Exists(fullPath))
+                                {
+                                    File.Delete(fullPath);
+                                    Profiles.ProfilesList.Remove(item);
+                                }
                             }
                         }
 

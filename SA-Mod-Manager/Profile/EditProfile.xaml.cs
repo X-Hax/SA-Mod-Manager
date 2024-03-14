@@ -26,7 +26,7 @@ namespace SAModManager.Profile
             InitializeComponent();
             Title = Lang.GetString("ManagerProfile.Buttons.Create");
             Header.Text = Title;
-
+            UIHelper.DisableButton(ref btnOK);
             Mods = mods ?? new List<string>();
             Codes = codes ?? new List<string>();
         }
