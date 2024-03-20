@@ -673,7 +673,6 @@ namespace SAModManager
 
         public static void AddGamesInstall()
         {
-
             try
             {
                 foreach (var game in GamesInstall.GetSupportedGames())
@@ -684,15 +683,16 @@ namespace SAModManager
                     {
                         App.GamesList.Add(game);
                     }
-                    else
+                }                
+                
+                foreach (var game in GamesInstall.GetSupportedGames())
+                {
+                    foreach (var pathValue in Steam.steamAppsPaths)
                     {
-                        foreach (var pathValue in Steam.steamAppsPaths)
-                        {
-                            string gameInstallPath = Path.Combine(pathValue, "steamapps", "common", game.gameName);
+                        string gameInstallPath = Path.Combine(pathValue, "steamapps", "common", game.gameName);
 
-                            if (Directory.Exists(gameInstallPath))
-                                App.GamesList.Add(game);
-                        }
+                        if (Directory.Exists(gameInstallPath) && !App.GamesList.Contains(game))
+                            App.GamesList.Add(game);
                     }
                 }
             }
