@@ -22,7 +22,8 @@
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Lançar Recurso:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB">Definições da Autalização do GameBanana</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">ID do Mod:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self">Definições da Autalização Auto-Hospedadas</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">Mod Type:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.Self">Definições da Autalização Auto-Hospedadas</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">Atualizar URL:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">Changelog URL:</system:String>
 

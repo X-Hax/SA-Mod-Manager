@@ -175,8 +175,10 @@
 									</Grid.RowDefinitions>
 
 									<Label Content="{DynamicResource EditMod.Tabs.Updates.GB.ModID}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-									<TextBox x:Name="boxGBURL" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
-								</Grid>
+									<TextBox x:Name="boxGBID" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left"/>
+                                    <Label Content="{DynamicResource EditMod.Tabs.Updates.GB.ModType}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+                                    <TextBox x:Name="boxGBType" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="22" TextBlock.TextAlignment="Left" Text="Mod"/>
+                                </Grid>
 							</GroupBox>
 
 							<!--GroupBox for Self-Hosted Updates-->

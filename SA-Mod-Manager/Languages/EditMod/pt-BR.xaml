@@ -24,7 +24,8 @@
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Asset do Release:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB">Opções de Atualização por Gamebanana</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">ID do Mod:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self">Opções de Atualização Auto-Hospedada</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">Mod Type:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.Self">Opções de Atualização Auto-Hospedada</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL de Atualizações:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL de Changelog:</system:String>
 
