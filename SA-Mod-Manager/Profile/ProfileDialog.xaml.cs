@@ -102,8 +102,11 @@ namespace SAModManager.Profile
             {
                 if (ProfileListView.SelectedItems.Count > 0 && ProfileListView.SelectedItems.Count < 2)
                 {
-                    ProfileRename_Click(null, null);
-                    e.Handled = true;
+                    if (!ProfileListView.SelectedItems.Contains(currentProfile))
+                    {
+                        ProfileRename_Click(null, null);
+                        e.Handled = true;
+                    }
                 }
             }
 
@@ -122,16 +125,17 @@ namespace SAModManager.Profile
         {
             var currentProfile = ProfileListView.Items[SelectedIndex];
 
-            // Delete Available Checks
+            // Delete and Rename Available Checks
             if (ProfileListView.SelectedItems.Contains(currentProfile))
+            {
                 ProfileDelete.IsEnabled = false;
-            else
-                ProfileDelete.IsEnabled = true;
-
-            if (ProfileListView.SelectedItems.Count > 1)
                 ProfileRename.IsEnabled = false;
+            }    
             else
+            {
+                ProfileDelete.IsEnabled = true;
                 ProfileRename.IsEnabled = true;
+            }            
         }
 
         private void ProfileRename_Click(object sender, RoutedEventArgs e)
