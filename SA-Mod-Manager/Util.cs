@@ -103,16 +103,19 @@ namespace SAModManager
             foreach (string exeName in Util.OldManagersName)
             {
                 root = exeName;
-                if (!File.Exists(root) && index + 1 < args.Length)
+
+                if (File.Exists(root))
+                {
+                    break;
+                }
+                else if (!File.Exists(root) && index + 1 < args.Length)
                 {
                     root = Path.GetFullPath(Path.Combine(args[index + 1], exeName));
 
                     if (File.Exists(root))
+                    {
                         break;
-                }
-                else
-                {
-                    break;
+                    }
                 }
             }
 

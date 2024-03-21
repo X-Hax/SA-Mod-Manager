@@ -148,7 +148,7 @@ namespace SAModManager
                 }
             }
 #endif
-
+            App.isVanillaTransition = false;
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             // Save Manager Settings
             Save();
@@ -1675,6 +1675,15 @@ namespace SAModManager
                 suppressEvent = true;
                 comboProfile.SelectedIndex = GameProfiles.ProfileIndex;
                 suppressEvent = false;
+
+                if (App.isVanillaTransition)
+                {
+                    if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
+                    {
+                        if (App.Current.MainWindow is not null)
+                            ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
+                    }
+                }
 
                 // Set the existing profiles to the ones from the loaded Manager Settings.
                 LoadGameSettings(newSetup);

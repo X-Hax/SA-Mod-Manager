@@ -24,7 +24,8 @@
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Ассет Релізу:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB">Налаштування Оновлення з Gamebanana</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">ID Моду:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self">Налаштування для Власного Джерела</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">Mod Type:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.Self">Налаштування для Власного Джерела</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL для Оновлення:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL для Списку Змін:</system:String>
 

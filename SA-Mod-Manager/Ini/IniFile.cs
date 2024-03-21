@@ -143,19 +143,19 @@ namespace SAModManager.Ini
 
 		public static IniDictionary Combine(IniDictionary dictA, IniDictionary dictB)
 		{
-			IniDictionary result = new IniDictionary();
+			IniDictionary result = new();
 			foreach (IniNameGroup group in dictA)
 				result.Add(group.Key, new IniGroup(group.Value));
 			foreach (IniNameGroup group in dictB)
-				if (result.ContainsKey(group.Key))
+				if (result.TryGetValue(group.Key, out IniGroup value))
 					foreach (IniNameValue item in group.Value)
-						result[group.Key][item.Key] = item.Value;
+                        value[item.Key] = item.Value;
 				else
 					result.Add(group.Key, new IniGroup(group.Value));
 			return result;
 		}
 
-		public static void ClearEmptyGroup(IniDictionary ini)
+        public static void ClearEmptyGroup(IniDictionary ini)
 		{
 			foreach (IniNameGroup group in ini)
 			{
@@ -165,6 +165,13 @@ namespace SAModManager.Ini
                     {
                         group.Value.Remove(item.Key);
                     }
+					else if (item.Key.ToLower().Contains("gamebananaitemid")) 
+					{
+						if (item.Value == "-1") //dirty way to remove itemID but needed due to the ini failsafe and long type shenanigans conversion
+						{
+                            group.Value.Remove(item.Key);
+                        }
+					}
                 }
 			}
 		}

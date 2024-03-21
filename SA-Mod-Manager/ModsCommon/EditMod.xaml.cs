@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SAModManager.UI;
 using SAModManager.Configuration;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SAModManager
 {
@@ -277,7 +278,6 @@ namespace SAModManager
 		{
 			ComboBox comboBox = (ComboBox)sender;
 			var btn = (Button)sender;
-			var item = (ConfigSchemaGroup)btn.DataContext;
 
 			switch (comboBox.SelectedItem)
 			{
@@ -303,10 +303,11 @@ namespace SAModManager
 				boxGitURL.Text = mod.GitHubRepo;
 				boxGitAsset.Text = mod.GitHubAsset;
 			}
-			else if (mod.GameBananaItemId != null)
-			{
+			else if (mod.GameBananaItemId != null || mod.GameBananaItemType != null)
+            {
 				radGamebanana.IsChecked = true;
-				boxGBURL.Text = mod.GameBananaItemId.ToString();
+				boxGBID.Text = mod.GameBananaItemId?.ToString();
+				boxGBType.Text = mod.GameBananaItemType is null ? "Mod" : mod.GameBananaItemType.ToString();
 			}
 			else if (mod.UpdateUrl != null)
 			{
@@ -320,18 +321,28 @@ namespace SAModManager
 			}
 		}
 
-		private void SaveModUpdates(SAModInfo mod)
+		private void SaveModUpdates(ref SAModInfo mod)
 		{
-			if (radGithub.IsChecked == true && isStringNotEmpty(boxGitURL.Text))
+			if (radGithub.IsChecked == true)
 			{
 				mod.GitHubRepo = boxGitURL.Text;
 				mod.GitHubAsset = boxGitAsset.Text;
 			}
-			else if (radGamebanana.IsChecked == true && isStringNotEmpty(boxGBURL.Text))
+			else if (radGamebanana.IsChecked == true)
 			{
-				mod.GameBananaItemId = int.Parse(boxGBURL.Text);
+				long number;
+				bool success = long.TryParse(boxGBID.Text, out number);
+				if (success)
+				{
+					mod.GameBananaItemId = number;
+				}
+				else 
+				{
+					mod.GameBananaItemId = -1;
+				}
+                mod.GameBananaItemType = boxGBType.Text;
 			}
-			else if (radSelf.IsChecked == true && isStringNotEmpty(boxSelfURL.Text))
+			else if (radSelf.IsChecked == true)
 			{
 				mod.UpdateUrl = boxSelfURL.Text;
 				mod.ChangelogUrl = boxChangeURL.Text;
@@ -340,7 +351,7 @@ namespace SAModManager
 		#endregion
 
 		#region Dependency Functions
-		private void SaveModDependencies(SAModInfo mod)
+		private void SaveModDependencies(ref SAModInfo mod)
 		{
 			mod.Dependencies.Clear();
 			if (DependencyGrid.Items.Count > 0)
@@ -454,13 +465,13 @@ namespace SAModManager
 			newMod.ModID = modIDBox.Text;
 			newMod.DLLFile = dllText.Text;
 
-            SaveModUpdates(newMod);
+            SaveModUpdates(ref newMod);
 
             var modIniPath = Path.Combine(moddir, "mod.ini");
 
 			if (editMod)
 			{
-				SaveModDependencies(newMod);
+				SaveModDependencies(ref newMod);
 
 				//since not all the info from the original mod.ini are saved, we backup the whole ini here
                 string[] modIniString = File.ReadAllLines(modIniPath);

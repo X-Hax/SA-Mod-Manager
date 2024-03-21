@@ -118,15 +118,22 @@ namespace SAModManager.Configuration
         {
             try
             {
-                if (!string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory))
+                if (!string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory) && !string.IsNullOrWhiteSpace(App.CurrentGame.ProfilesDirectory))
                 {
                     List<ProfileEntry> list = new();
                     int count = 0;
                     foreach (ProfileEntry entry in ProfilesList)
                     {
-                        if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, entry.Filename)))
+                        if (entry is not null)
                         {
-                            list.Add(entry);
+                            if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, entry.Filename)))
+                            {
+                                list.Add(entry);
+                            }
+                        }
+                        else
+                        {
+                            ProfilesList.Remove(entry);
                         }
                         count++;
                     }
