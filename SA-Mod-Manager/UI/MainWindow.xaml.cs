@@ -1454,7 +1454,7 @@ namespace SAModManager
 
         private void LoadGameConfigFile()
         {
-            // TODO: Properly update this for loading SA2's config file.
+
             List<string> gameConfig = new();
             foreach (string file in App.CurrentGame.GameConfigFile)
             {
