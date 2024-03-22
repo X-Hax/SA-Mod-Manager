@@ -1037,18 +1037,16 @@ namespace SAModManager
                 var game = GamesInstall.GetGamePerID(setGame);
 
                 if (App.GamesList.Contains(game) == false)
+                {
                     App.GamesList.Add(game);
-
+                    GamesInstall.AddMissingGamesList(game);
+                }
+        
                 tempPath = path;
-                App.CurrentGame = game;
-                App.CurrentGame.gameDirectory = tempPath;
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                await Load(true);
-                await ForceInstallLoader();
-                UpdateButtonsState();
-                await UpdateProfileList();
-
                 Save();
+                ComboGameSelection_SetNewItem(game);
+                UpdateButtonsState();
             }
         }
 
@@ -1680,7 +1678,7 @@ namespace SAModManager
                 {
                     if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
                     {
-                        if (App.Current.MainWindow is not null)
+                        if (App.Current.MainWindow is not null && App.GamesList.Count > 0)
                             ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
                     }
                 }
@@ -2677,6 +2675,9 @@ namespace SAModManager
             {
                 foreach (var item in list)
                 {
+                    if (item.Filename.ToLower() == "default")
+                        continue;
+
                     for (int i = 0; i < GameProfiles.ProfilesList.Count; i++)
                     {
                         if (GameProfiles.ProfilesList[i].Filename == item.Filename)
