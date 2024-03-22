@@ -62,21 +62,30 @@ namespace SAModManager.Configuration.SA2
 
 		public void Serialize(string path)
 		{
-			XmlSerializer serializer = new XmlSerializer(typeof(SA2GameConfig));
-
-			using (TextWriter writer = new StreamWriter(path))
+			try
 			{
-				serializer.Serialize(writer, this);
+				XmlSerializer serializer = new(typeof(SA2GameConfig));
+                using TextWriter writer = new StreamWriter(path);
+                serializer.Serialize(writer, this);
+            }
+			catch
+			{
+
 			}
 		}
 
 		public static SA2GameConfig Deserialize(string path)
 		{
-			XmlSerializer serializer = new XmlSerializer(typeof(SA2GameConfig));
-
-			using (TextReader reader = new StreamReader(path))
+			try
 			{
-				return (SA2GameConfig)serializer.Deserialize(reader);
+				XmlSerializer serializer = new(typeof(SA2GameConfig));
+
+                using TextReader reader = new StreamReader(path);
+                return (SA2GameConfig)serializer.Deserialize(reader);
+            }
+			catch
+			{
+				return new SA2GameConfig();
 			}
 		}
     }
