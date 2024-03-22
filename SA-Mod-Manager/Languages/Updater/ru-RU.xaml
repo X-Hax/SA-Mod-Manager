@@ -6,7 +6,7 @@
     <!--Dependencies-->
     <system:String x:Key="Updater.DL.Dep.Download">Загрузка</system:String>
     <system:String x:Key="Updater.DL.Dep.Install">Установка</system:String>
-    <system:String x:Key="Updater.DL.Dep.Update">Обновление</system:String>
+    <system:String x:Key="Updater.DL.Dep.Update">: обновление</system:String>
     <system:String x:Key="Updater.DL.Dep.Downloading">Загрузка:</system:String>
     <system:String x:Key="Updater.DL.Dep.Installing">Установка:</system:String>
     <system:String x:Key="Updater.DL.Dep.Updating">Обновление:</system:String>
