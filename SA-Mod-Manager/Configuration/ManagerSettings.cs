@@ -6,6 +6,8 @@ using System.Text.Json;
 using SAModManager.UI;
 using SAModManager.Configuration.SA2;
 using SAModManager.Configuration.SADX;
+using System.Collections.Generic;
+using System.Security.RightsManagement;
 
 namespace SAModManager.Configuration
 {
@@ -153,6 +155,8 @@ namespace SAModManager.Configuration
 		/// </summary>
 		[IniAlwaysInclude]
 		public UpdateSettings UpdateSettings { get; set; } = new();
+		//store game id installed 
+		public List<uint> gamesInstalled { get; set; } = new();
 
 		/// <summary>
 		/// Deserializes a Manager Settings CFG (JSON) file and returns a populated class.
