@@ -1701,7 +1701,7 @@ namespace SAModManager
 
                 if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
                 {
-                    if (App.Current.MainWindow is not null)
+                    if (App.Current.MainWindow is not null && App.GamesList.Count > 0)
                         ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
                 }
             }
