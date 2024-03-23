@@ -135,16 +135,17 @@ namespace SAModManager
 			};
 			panel.Children.Add(backing);
 
-			Decimal numVal;
-			Decimal.TryParse(storeInfo.GetConfigValue().ToString(), out numVal);
-			Decimal numMax;
-			Decimal.TryParse(property.MaxValue.ToString(), out numMax);
-			if (numMax == 0)
-				numMax = Decimal.MaxValue;
-			Decimal numMin;
-			Decimal.TryParse(property.MinValue.ToString(), out numMin);
-			if (numMin == 0)
-				numMin = Decimal.MinValue;
+			Decimal numVal = 0;
+			if (!Decimal.TryParse(storeInfo.GetConfigValue().ToString(), out numVal))
+				numVal = 0;
+			Decimal numMax = Decimal.MaxValue;
+			if (property.MaxValue.ToString() != "")
+				if (!Decimal.TryParse(property.MaxValue.ToString(), out numMax))
+					numMax = Decimal.MaxValue;
+			Decimal numMin = Decimal.MinValue;
+			if (property.MinValue.ToString() != "")
+				if (!Decimal.TryParse(property.MinValue.ToString(), out numMin))
+					numMin = Decimal.MinValue;
 
 			NumberBox element = new()
 			{
