@@ -1775,7 +1775,7 @@ namespace SAModManager
             string modNotFound = string.Empty;
 
             //load checked mods
-            foreach (string mod in EnabledMods)
+            foreach (string mod in EnabledMods.ToList())
             {
                 if (mods.TryGetValue(mod, out SAModInfo value))
                 {
