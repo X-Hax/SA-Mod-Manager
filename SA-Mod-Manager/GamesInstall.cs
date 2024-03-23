@@ -195,6 +195,10 @@ namespace SAModManager
                     {
                         File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, lastCommit);
                     }
+                    else
+                    {
+                        File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, "loaderInstalledNoCommitIDFound");
+                    }
                 }
             }
             catch (Exception ex)
