@@ -1052,9 +1052,11 @@ namespace SAModManager
                 else
                 {
                     ComboGameSelection.SelectedItem = game;
-                    await DoGameSwap(true);
-                    await ForceInstallLoader();
-                    await UpdateProfileList();
+                    if (await DoGameSwap(true))
+                    {
+                        await ForceInstallLoader();
+                        await UpdateProfileList();
+                    }
                 }
 
                 UpdateButtonsState();
