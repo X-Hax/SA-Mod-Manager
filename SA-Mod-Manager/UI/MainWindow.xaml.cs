@@ -1769,16 +1769,17 @@ namespace SAModManager
             foreach (string filename in SAModInfo.GetModFiles(new DirectoryInfo(App.CurrentGame.modDirectory)))
             {
                 SAModInfo mod = IniSerializer.Deserialize<SAModInfo>(filename);
-                mods.Add((Path.GetDirectoryName(filename) ?? string.Empty).Substring(App.CurrentGame.modDirectory.Length + 1), mod);
+                mods.Add((Path.GetDirectoryName(filename) ?? string.Empty)[(App.CurrentGame.modDirectory.Length + 1)..], mod);
             }
 
             string modNotFound = string.Empty;
 
-            foreach (string mod in EnabledMods.ToList())
+            //load checked mods
+            foreach (string mod in EnabledMods)
             {
-                if (mods.ContainsKey(mod))
+                if (mods.TryGetValue(mod, out SAModInfo value))
                 {
-                    SAModInfo inf = mods[mod];
+                    SAModInfo inf = value;
                     suppressEvent = true;
                     var item = new ModData()
                     {
@@ -1828,13 +1829,12 @@ namespace SAModManager
                     modNotFound += mod + "\n";
                     EnabledMods.Remove(mod);
                 }
-
-
             }
 
             if (!string.IsNullOrEmpty(modNotFound))
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Errors.ModNotFound") + modNotFound, MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 
+            //load unchecked mods
             foreach (KeyValuePair<string, SAModInfo> inf in mods.OrderBy(x => x.Value.Name))
             {
                 if (!EnabledMods.Contains(inf.Key))
