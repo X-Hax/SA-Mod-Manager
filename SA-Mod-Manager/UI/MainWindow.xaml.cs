@@ -1043,7 +1043,20 @@ namespace SAModManager
                 tempPath = path;
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
                 Save();
-                ComboGameSelection_SetNewItem(game);
+                if (ComboGameSelection.SelectedItem != game)
+                {
+                    ComboGameSelection_SetNewItem(game);
+                }
+                else
+                {
+                    ComboGameSelection.SelectedItem = game;
+                    if (await DoGameSwap(true))
+                    {
+                        await ForceInstallLoader();
+                        await UpdateProfileList();
+                    }
+                }
+
                 UpdateButtonsState();
             }
         }
@@ -2651,25 +2664,30 @@ namespace SAModManager
             }
         }
 
+        private async Task<bool> DoGameSwap(bool newsetup = false)
+        {
+            App.CancelUpdate = true;
+            foreach (var game in GamesInstall.GetSupportedGames())
+            {
+                if (game == ComboGameSelection.SelectedItem && App.GamesList.Contains(game))
+                {
+                    EnabledMods.Clear();
+                    EnabledCodes.Clear();
+                    App.CurrentGame = game;
+                    GamesInstall.HandleGameSwap(game);
+                    await Load(newsetup);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
             {
-                App.CancelUpdate = true;
-                bool foundGame = false;
-                foreach (var game in GamesInstall.GetSupportedGames())
-                {
-                    if (game == ComboGameSelection.SelectedItem && App.GamesList.Contains(game))
-                    {
-                        EnabledMods.Clear();
-                        EnabledCodes.Clear();
-                        App.CurrentGame = game;
-                        GamesInstall.HandleGameSwap(game);
-                        await Load();
-                        foundGame = true;
-                        break;
-                    }
-                }
+                bool foundGame = await DoGameSwap();
 
                 if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
                 {

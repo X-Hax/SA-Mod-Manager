@@ -22,7 +22,7 @@ To use SA Mod Manager, you must have:
 ## How To Use
 - Download the [latest version from GitHub](https://github.com/X-Hax/SA-Mod-Manager/releases/latest) then extract the zip anywhere.
 - Run SAModManager.exe
-- In the "Manager Config" tab, set your Game location and it will automatically install the Mod Loader.
+- Your games should be detected automatically, but if they are not, you can set their location in the "Manager Config" tab and it will install the Mod Loader.
 - Enjoy!
 
 ## Troubleshooting Guide
