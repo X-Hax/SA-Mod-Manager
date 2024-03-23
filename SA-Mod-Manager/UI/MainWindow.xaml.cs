@@ -2740,6 +2740,7 @@ namespace SAModManager
 
                 await App.EnableOneClickInstall();
                 Save();
+				SetBindings();
             }
         }
     }
