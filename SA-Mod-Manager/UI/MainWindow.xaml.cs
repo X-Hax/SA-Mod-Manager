@@ -1053,7 +1053,8 @@ namespace SAModManager
                     if (await DoGameSwap(true))
                     {
                         await ForceInstallLoader();
-                        await UpdateProfileList();
+                        ProfileManager.SetProfile();
+						SetBindings();
                     }
                 }
 
@@ -1602,8 +1603,7 @@ namespace SAModManager
             sadxSettings.DebugSettings = gameDebugSettings;
 
             // Save Game Settings to Current Profile
-            string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GetCurrentProfileName());
-            sadxSettings.Serialize(profilePath, GetCurrentProfileName());
+            sadxSettings.Serialize(App.CurrentGame.ProfilesDirectory, ProfileManager.GetCurrentProfile().Filename);
 
             // Save to Loader Info
             sadxSettings.WriteConfigs();
@@ -1625,11 +1625,10 @@ namespace SAModManager
             sa2.DebugSettings = gameDebugSettings;
 
             // Save Game Settings to Current Profile
-            string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GetCurrentProfileName());
-            sa2.Serialize(profilePath, GetCurrentProfileName());
+			sa2.Serialize(App.CurrentGame.ProfilesDirectory, ProfileManager.GetCurrentProfile().Filename);
 
-            // Save to Loader Info
-            sa2.WriteConfigs();
+			// Save to Loader Info
+			sa2.WriteConfigs();
         }
 
         private void ManualLoaderUpdateCheck()
