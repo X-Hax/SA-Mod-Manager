@@ -96,7 +96,8 @@ namespace SAModManager
             ViewModel.Games = App.GamesList;
             DataContext = ViewModel;
 			await Load();
-     
+            SetBindings(); //theme is set here
+
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
                 var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
@@ -108,7 +109,7 @@ namespace SAModManager
                 }
             }
 
-#if !DEBUG
+
             if (App.isFirstBoot == false)
             {
                 if (chkUpdateManager.IsChecked == true)
@@ -145,12 +146,11 @@ namespace SAModManager
                     await CheckForModUpdates();
                 }
             }
-#endif
+
             App.isVanillaTransition = false;
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             // Save Manager Settings
             Save();
-			SetBindings(); //theme is set here
 		}
 
         private void MainForm_FormClosing(object sender, EventArgs e)
