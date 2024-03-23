@@ -25,7 +25,7 @@ namespace SAModManager.Profile
         public int SelectedIndex = 0;
         private Profiles Profiles { get; set; }
 
-        public ProfileDialog(ref Profiles profiles, int index)
+        public ProfileDialog(Profiles profiles, int index)
         {
             InitializeComponent();
             SelectedIndex = index;

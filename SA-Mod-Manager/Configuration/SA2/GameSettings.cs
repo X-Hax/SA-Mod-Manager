@@ -467,7 +467,9 @@ namespace SAModManager.Configuration.SA2
         /// <param name="path"></param>
         public void Serialize(string path, string profileName)
         {
-            try
+			// TODO: Fix this function.
+			path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
+			try
             {
                 if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
                 {
@@ -480,7 +482,6 @@ namespace SAModManager.Configuration.SA2
                     Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
                     if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
                     {
-                        path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
                         string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
                         File.WriteAllText(path, jsonContent);
                     }

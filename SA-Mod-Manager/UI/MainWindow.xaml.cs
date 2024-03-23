@@ -64,7 +64,6 @@ namespace SAModManager
 
         private bool displayedManifestWarning;
         public MainWindowViewModel ViewModel = new();
-        public Profiles GameProfiles = new();
         object GameProfile;
         public string tempPath = "";
 
@@ -96,8 +95,7 @@ namespace SAModManager
 
             ViewModel.Games = App.GamesList;
             DataContext = ViewModel;
-            await Load();
-            SetBindings(); //theme is set here
+			await Load();
      
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
@@ -152,7 +150,8 @@ namespace SAModManager
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             // Save Manager Settings
             Save();
-        }
+			SetBindings(); //theme is set here
+		}
 
         private void MainForm_FormClosing(object sender, EventArgs e)
         {
@@ -1022,7 +1021,6 @@ namespace SAModManager
         #endregion
 
         #region Form: Manager Tab: Functions
-
         private async Task ResultPickGame(string path)
         {
             var setGame = await GamesInstall.SetGameInstallManual(path);
@@ -1049,7 +1047,6 @@ namespace SAModManager
                 UpdateButtonsState();
             }
         }
-
 
         private async void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
         {
@@ -1211,34 +1208,16 @@ namespace SAModManager
             FlowDirectionHelper.UpdateFlowDirection();
         }
 
-        private void ProfileSettings_SaveProfileFile(int index = -1)
-        {
-            // Save the Profiles file.
-            if (GameProfiles is not null && comboProfile is not null)
-            {
-                GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
-
-                comboProfile.ItemsSource = GameProfiles.ProfilesList;
-                if (index > -1)
-                    comboProfile.SelectedIndex = index;
-
-                comboProfile.Items.Refresh();
-            }
-        }
-
         private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
         {
             if (!App.CurrentGame.loader.installed)
                 return;
 
             int index = comboProfile.SelectedIndex;
-            ProfileDialog dialog = new(ref GameProfiles, index);
+            ProfileDialog dialog = new(App.Profiles, index);
             UpdateModsCodes();
             dialog.Owner = this;
             dialog.ShowDialog();
-
-            // Save the Profiles file.
-            ProfileSettings_SaveProfileFile(dialog.SelectedIndex);
         }
 
         private void ModProfile_FormClosing(object sender, EventArgs e)
@@ -1255,8 +1234,6 @@ namespace SAModManager
 
             if (selectedItem != null)
             {
-                GameProfiles.ProfileIndex = comboProfile.SelectedIndex;
-
                 LoadGameSettings();
                 SetBindings();
                 SetGameUI();
@@ -1427,7 +1404,7 @@ namespace SAModManager
         public string GetCurrentProfileName()
         {
             int index = comboProfile.SelectedIndex >= 0 ? comboProfile.SelectedIndex : 0;
-            return GameProfiles.ProfilesList[index].Filename;
+            return App.Profiles.ProfilesList[index].Filename;
         }
 
         private void UpdateModsCodes()
@@ -1449,7 +1426,6 @@ namespace SAModManager
         }
 
         #region Private: Load & Save
-
         private void LoadGameConfigFile()
         {
 
@@ -1581,7 +1557,7 @@ namespace SAModManager
 
         private void LoadGameSettings(bool newSetup = false)
         {
-            string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, GameProfiles.GetProfileFilename());
+            string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, ProfileManager.GetCurrentProfile().Filename);
 
             switch (App.CurrentGame.id)
             {
@@ -1656,22 +1632,16 @@ namespace SAModManager
                 }
             }
         }
+
         public async Task Load(bool newSetup = false)
         {
             if (App.CurrentGame.id != SetGame.None)
             {
-                // Load Profiles before doing anything.
-                string profiles = Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
-                GameProfiles = File.Exists(profiles) ? Profiles.Deserialize(profiles) : Profiles.MakeDefaultProfileFile();
-                if (GameProfiles.ValidateProfiles() == false)
-                {
-                    GameProfiles.ProfileIndex = 0; //if validation fail, default to 0 and save changes
-                    GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
-                }
-                comboProfile.ItemsSource = GameProfiles.ProfilesList;
-                comboProfile.DisplayMemberPath = "Name";
+				if (App.isFirstBoot)
+					ProfileManager.CreateProfiles();
+				ProfileManager.SetProfile();
+
                 suppressEvent = true;
-                comboProfile.SelectedIndex = GameProfiles.ProfileIndex;
                 suppressEvent = false;
 
                 if (App.isVanillaTransition)
@@ -1739,8 +1709,8 @@ namespace SAModManager
                     break;
             }
 
-            // Save the Profiles file.
-            GameProfiles.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
+			// Save the Profiles file.
+			ProfileManager.SaveProfiles();
 
             // Refresh thing so everything updates as intended.
             Refresh();
@@ -2179,6 +2149,12 @@ namespace SAModManager
 
         private void SetManagerBindings()
         {
+			comboProfile.ItemsSource = App.Profiles.ProfilesList;
+			comboProfile.DisplayMemberPath = "Name";
+			comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
+			{
+				Source = App.Profiles
+			});
             comboLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Language")
             {
                 Source = App.ManagerSettings
@@ -2654,7 +2630,6 @@ namespace SAModManager
             catch { }
         }
 
-
         private void UpdateManagerIcons()
         {
             SetNewIcon("IconTitleBar");
@@ -2667,47 +2642,12 @@ namespace SAModManager
             ComboGameSelection_SelectionChanged(null, null);
         }
 
-        private async Task UpdateProfileList()
-        {
-            var list = await VanillaTransition.ConvertOldProfile(App.CurrentGame.gameDirectory);
-
-            if (list is not null)
-            {
-                foreach (var item in list)
-                {
-                    if (item.Filename.ToLower() == "default")
-                        continue;
-
-                    for (int i = 0; i < GameProfiles.ProfilesList.Count; i++)
-                    {
-                        if (GameProfiles.ProfilesList[i].Filename == item.Filename)
-                        {
-                            GameProfiles.ProfilesList.RemoveAt(i);
-                        }
-                    }
-
-                    GameProfiles.ProfilesList.Add(item);
-                }
-            }
-
-            ProfileSettings_SaveProfileFile();
-            foreach (ProfileEntry item in comboProfile.Items)
-            {
-                if (item.Name.Contains(App.CurrentGame.loader.name))
-                {
-                    comboProfile.SelectedItem = item;
-                }
-            }
-
-        }
-
         private async Task FirstBootInstallLoader()
         {
             if (string.IsNullOrWhiteSpace(App.CurrentGame?.gameDirectory) == false && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
             {
                 await ForceInstallLoader();
                 UpdateButtonsState();
-                await UpdateProfileList();
             }
         }
 
@@ -2733,9 +2673,9 @@ namespace SAModManager
 
                 if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
                 {
-#if !DEBUG
+//#if !DEBUG
                     await FirstBootInstallLoader();
-#endif
+//#endif
                 }
 
                 await App.EnableOneClickInstall();
@@ -2744,5 +2684,4 @@ namespace SAModManager
             }
         }
     }
-
 }
