@@ -59,7 +59,6 @@ namespace SAModManager
         bool suppressEvent = false;
         private bool manualModUpdate;
         readonly Updater.ModUpdater modUpdater = new();
-        private object gameConfigFile;
         private DebugSettings gameDebugSettings = new();
 
         private bool displayedManifestWarning;
@@ -95,7 +94,7 @@ namespace SAModManager
 
             ViewModel.Games = App.GamesList;
             DataContext = ViewModel;
-			await Load();
+            await Load();
             SetBindings(); //theme is set here
 
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
@@ -109,7 +108,7 @@ namespace SAModManager
                 }
             }
 
-
+#if !DEBUG
             if (App.isFirstBoot == false)
             {
                 if (chkUpdateManager.IsChecked == true)
@@ -142,16 +141,17 @@ namespace SAModManager
                             await App.PerformUpdateAppLauncherCheck();
                         }
                     }
-            
+
                     await CheckForModUpdates();
                 }
             }
+#endif
 
             App.isVanillaTransition = false;
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
             // Save Manager Settings
             Save();
-		}
+        }
 
         private void MainForm_FormClosing(object sender, EventArgs e)
         {
@@ -168,8 +168,8 @@ namespace SAModManager
         private void SaveAndPlayButton_Click(object sender, RoutedEventArgs e)
         {
             Save();
-			if (ModDependency.CheckDependencies(EnabledMods, mods))
-				return;
+            if (ModDependency.CheckDependencies(EnabledMods, mods))
+                return;
             StartGame();
         }
 
@@ -512,7 +512,7 @@ namespace SAModManager
 
                 var modPath = Path.Combine(App.CurrentGame.modDirectory, (string)item.Tag);
                 var manifestPath = Path.Combine(modPath, "mod.manifest");
- 
+
                 foreach (string filename in SAModInfo.GetModFiles(new DirectoryInfo(modPath)))
                 {
                     if (filename.Contains("mod.ini")) //reload mod ini in case the user edited it
@@ -595,7 +595,7 @@ namespace SAModManager
             }
 
             modInfo.DisableUpdate = !modInfo.DisableUpdate;
-         
+
             string fullPath = Path.Combine(App.CurrentGame.modDirectory, mod.Tag, "mod.ini");
             string[] modIniString = File.ReadAllLines(fullPath);
             var modIni = IniFile.Load(modIniString);
@@ -1031,6 +1031,8 @@ namespace SAModManager
             }
             else
             {
+                UIHelper.ToggleImgButton(ref btnBrowseGameDir, false);
+                UIHelper.ToggleImgButton(ref btnProfileSettings, false);
                 App.CancelUpdate = true;
                 var game = GamesInstall.GetGamePerID(setGame);
 
@@ -1039,26 +1041,24 @@ namespace SAModManager
                     App.GamesList.Add(game);
                     GamesInstall.AddMissingGamesList(game);
                 }
-        
+
                 tempPath = path;
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
                 Save();
-                if (ComboGameSelection.SelectedItem != game)
+                suppressEvent = true;
+                ComboGameSelection.SelectedItem = game;
+                if (await DoGameSwap(path))
                 {
-                    ComboGameSelection_SetNewItem(game);
-                }
-                else
-                {
-                    ComboGameSelection.SelectedItem = game;
-                    if (await DoGameSwap(true))
-                    {
-                        await ForceInstallLoader();
-                        ProfileManager.SetProfile();
-						SetBindings();
-                    }
+                    Save();
+                    await ForceInstallLoader();
+                    SetBindings();
                 }
 
                 UpdateButtonsState();
+                UIHelper.ToggleImgButton(ref btnProfileSettings, true);
+                UIHelper.ToggleImgButton(ref btnBrowseGameDir, true);
+                suppressEvent = false;
+
             }
         }
 
@@ -1251,12 +1251,11 @@ namespace SAModManager
                 LoadGameSettings();
                 SetBindings();
                 SetGameUI();
-                Refresh();
                 Save();
             }
         }
         #endregion
-        #endregion
+#endregion
 
         #region Private Functions
         private void StartGame()
@@ -1440,26 +1439,6 @@ namespace SAModManager
         }
 
         #region Private: Load & Save
-        private void LoadGameConfigFile()
-        {
-
-            List<string> gameConfig = new();
-            foreach (string file in App.CurrentGame.GameConfigFile)
-            {
-                gameConfig.Add(Path.Combine(App.CurrentGame.gameDirectory, file));
-            }
-
-            switch (App.CurrentGame.id)
-            {
-                case SetGame.SADX:
-                    gameConfigFile = File.Exists(gameConfig[0]) ? IniSerializer.Deserialize<SADXConfigFile>(gameConfig[0]) : new SADXConfigFile();
-                    break;
-                case SetGame.SA2:
-                    gameConfigFile = File.Exists(gameConfig[1]) ? SA2GameConfig.Deserialize(gameConfig[1]) : new SA2GameConfig();
-                    break;
-            }
-        }
-
         private void LoadCodes()
         {
             EnabledCodes = new List<string>(EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
@@ -1625,10 +1604,10 @@ namespace SAModManager
             sa2.DebugSettings = gameDebugSettings;
 
             // Save Game Settings to Current Profile
-			sa2.Serialize(App.CurrentGame.ProfilesDirectory, ProfileManager.GetCurrentProfile().Filename);
+            sa2.Serialize(App.CurrentGame.ProfilesDirectory, ProfileManager.GetCurrentProfile().Filename);
 
-			// Save to Loader Info
-			sa2.WriteConfigs();
+            // Save to Loader Info
+            sa2.WriteConfigs();
         }
 
         private void ManualLoaderUpdateCheck()
@@ -1649,12 +1628,9 @@ namespace SAModManager
         {
             if (App.CurrentGame.id != SetGame.None)
             {
-				if (App.isFirstBoot)
-					ProfileManager.CreateProfiles();
-				ProfileManager.SetProfile();
-
-                suppressEvent = true;
-                suppressEvent = false;
+                if (App.isFirstBoot)
+                    ProfileManager.CreateProfiles();
+                ProfileManager.SetProfile();
 
                 if (App.isVanillaTransition)
                 {
@@ -1721,8 +1697,8 @@ namespace SAModManager
                     break;
             }
 
-			// Save the Profiles file.
-			ProfileManager.SaveProfiles();
+            // Save the Profiles file.
+            ProfileManager.SaveProfiles();
 
             // Refresh thing so everything updates as intended.
             Refresh();
@@ -2161,12 +2137,12 @@ namespace SAModManager
 
         private void SetManagerBindings()
         {
-			comboProfile.ItemsSource = App.Profiles.ProfilesList;
-			comboProfile.DisplayMemberPath = "Name";
-			comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
-			{
-				Source = App.Profiles
-			});
+            comboProfile.ItemsSource = App.Profiles.ProfilesList;
+            comboProfile.DisplayMemberPath = "Name";
+            comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
+            {
+                Source = App.Profiles
+            });
             comboLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Language")
             {
                 Source = App.ManagerSettings
@@ -2408,15 +2384,6 @@ namespace SAModManager
                 imgInstall.Source = Icon;
         }
 
-        private void UpdateGameConfig(SetGame game)
-        {
-            App.CurrentGame = GamesInstall.GetGamePerID(game);
-            Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
-            LoadGameConfigFile();
-            SetGameUI();
-            SetBindings();
-        }
-
         private void UpdateDLLData()
         {
             if (App.CurrentGame.loader is null)
@@ -2442,7 +2409,6 @@ namespace SAModManager
                 //now we can move the loader files to the accurate folders.
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
-                UpdateGameConfig(App.CurrentGame.id);
                 await App.EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
@@ -2478,7 +2444,6 @@ namespace SAModManager
                         await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
                     }
 
-                    UpdateGameConfig(App.CurrentGame.id);
                     await App.EnableOneClickInstall();
 
                     UIHelper.EnableButton(ref SaveAndPlayButton);
@@ -2663,7 +2628,7 @@ namespace SAModManager
             }
         }
 
-        private async Task<bool> DoGameSwap(bool newsetup = false)
+        private async Task<bool> DoGameSwap(string newPath = null)
         {
             App.CancelUpdate = true;
             foreach (var game in GamesInstall.GetSupportedGames())
@@ -2673,8 +2638,8 @@ namespace SAModManager
                     EnabledMods.Clear();
                     EnabledCodes.Clear();
                     App.CurrentGame = game;
-                    GamesInstall.HandleGameSwap(game);
-                    await Load(newsetup);
+                    GamesInstall.HandleGameSwap(game, newPath);
+                    await Load(newPath is not null);
                     return true;
                 }
             }
@@ -2684,20 +2649,23 @@ namespace SAModManager
 
         private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (suppressEvent) 
+                return;
+
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
             {
                 bool foundGame = await DoGameSwap();
 
                 if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
                 {
-//#if !DEBUG
+#if !DEBUG
                     await FirstBootInstallLoader();
-//#endif
+#endif
                 }
 
                 await App.EnableOneClickInstall();
                 Save();
-				SetBindings();
+                SetBindings();
             }
         }
     }

@@ -154,7 +154,7 @@ namespace SAModManager.Configuration
 		{
 			MigrateProfiles(false);
 
-			Profiles profiles = new Profiles();
+			Profiles profiles = new();
 
 			foreach (var item in Directory.EnumerateFiles(App.CurrentGame.ProfilesDirectory, "*.json"))
 			{

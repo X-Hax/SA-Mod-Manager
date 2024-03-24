@@ -730,25 +730,34 @@ namespace SAModManager
 
         }
 
-        public static void HandleGameSwap(Game game)
+        public static void HandleGameSwap(Game game, string newPath = null)
         {
             try
             {
+                if (newPath == null && (string.IsNullOrEmpty(game.gameDirectory) == false))
+                {
+                    if (File.Exists(Path.Combine(game.gameDirectory, game.exeName)))
+                    {
+                        return;
+                    }
+                }
+
                 string path = Path.Combine(Environment.CurrentDirectory, game.exeName);
                 
                 string gameDir = string.Empty;
 
-                if (File.Exists(path))
+                if (string.IsNullOrEmpty(newPath) == false)
                 {
-                    gameDir = Path.GetFullPath(Path.GetDirectoryName(path));
-                }
-                else if (string.IsNullOrEmpty(((MainWindow)App.Current.MainWindow).tempPath) == false)
-                {
-                    string newpath = Path.Combine(((MainWindow)App.Current.MainWindow).tempPath, game.exeName);
-                   
+                    string newpath = Path.Combine(newPath, game.exeName);
+
                     if (File.Exists(newpath))
                         gameDir = Path.GetFullPath(Path.GetDirectoryName(newpath));
                 }
+                else if (File.Exists(path))
+                {
+                    gameDir = Path.GetFullPath(Path.GetDirectoryName(path));
+                }
+
 
                 if (string.IsNullOrEmpty(gameDir) == false)
                 {
