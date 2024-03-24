@@ -1251,6 +1251,7 @@ namespace SAModManager
                 LoadGameSettings();
                 SetBindings();
                 SetGameUI();
+                Refresh();
                 Save();
             }
         }

@@ -156,47 +156,6 @@ namespace SAModManager
             }
         }
 
-        public static void ConvertProfiles(string sourceFile, ref Profiles pro)
-        {
-            if (!File.Exists(sourceFile))
-                return;
-
-            string newFileName = Path.GetFileNameWithoutExtension(sourceFile);
-            string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory);
-
-			if (newFileName == "SADXModLoader" ||
-				newFileName == "SA2ModLoader")
-				newFileName = "Default";
-
-            try
-            {
-                switch (App.CurrentGame.id)
-                {
-                    case Configuration.SetGame.SADX:
-						Configuration.SADX.GameSettings settings = new();
-						SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
-                        settings.ConvertFromV0(info);
-                        settings.Serialize(newFilePath, newFileName + ".json");
-                        break;
-                    case Configuration.SetGame.SA2:
-						Configuration.SA2.GameSettings settingsSA2 = new();
-						SA2LoaderInfo sa2INFO = IniSerializer.Deserialize<SA2LoaderInfo>(sourceFile);
-                        settingsSA2.ConvertFromV0(sa2INFO);
-                        settingsSA2.Serialize(newFilePath, newFileName + ".json");
-                        break;
-                }
-
-                pro.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
-                File.Delete(sourceFile);
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Profile Conversion Failed: {ex.Message}");
-                return;
-            }
-
-        }
 
         public static async Task MoveFile(string origin, string dest, bool overwrite = false)
         {

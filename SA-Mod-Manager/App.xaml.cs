@@ -23,6 +23,7 @@ using System.Net.Http;
 using System.Net;
 using SAModManager.UI;
 using SAModManager.Controls.SADX;
+using SAModManager.Profile;
 
 namespace SAModManager
 {
