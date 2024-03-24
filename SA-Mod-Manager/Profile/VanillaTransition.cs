@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -104,9 +105,8 @@ namespace SAModManager.Profile
                 string modFolder = Path.Combine(gamePath, "mods");
 
                 Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
-                string defaultJson = Path.Combine(App.CurrentGame.ProfilesDirectory, "Default.json");
-                //if user is about to install the loader backup vanilla profiles
 
+                //if user is about to install the loader backup vanilla profiles
                 foreach (var item in Directory.EnumerateFiles(modFolder, "*.ini"))
                 {
                     string destinationPath = Path.Combine(App.CurrentGame.ProfilesDirectory, Path.GetFileName(item));
@@ -114,7 +114,7 @@ namespace SAModManager.Profile
                     if (!File.Exists(destinationPath))
                     {
                         await Util.CopyFileAsync(item, destinationPath, false);
-                        Util.ConvertProfiles(destinationPath, ref profiles);
+						Util.ConvertProfiles(destinationPath, ref profiles);
                         converted = true;
                     }
                 }

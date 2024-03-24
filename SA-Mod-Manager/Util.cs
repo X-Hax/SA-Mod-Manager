@@ -161,22 +161,26 @@ namespace SAModManager
             if (!File.Exists(sourceFile))
                 return;
 
-            Configuration.SADX.GameSettings settings = new();
-            Configuration.SA2.GameSettings settingsSA2 = new();
             string newFileName = Path.GetFileNameWithoutExtension(sourceFile);
-            string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
+            string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory);
+
+			if (newFileName == "SADXModLoader" ||
+				newFileName == "SA2ModLoader")
+				newFileName = "Default";
 
             try
             {
                 switch (App.CurrentGame.id)
                 {
                     case Configuration.SetGame.SADX:
-                        SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
+						Configuration.SADX.GameSettings settings = new();
+						SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
                         settings.ConvertFromV0(info);
                         settings.Serialize(newFilePath, newFileName + ".json");
                         break;
                     case Configuration.SetGame.SA2:
-                        SA2LoaderInfo sa2INFO = IniSerializer.Deserialize<SA2LoaderInfo>(sourceFile);
+						Configuration.SA2.GameSettings settingsSA2 = new();
+						SA2LoaderInfo sa2INFO = IniSerializer.Deserialize<SA2LoaderInfo>(sourceFile);
                         settingsSA2.ConvertFromV0(sa2INFO);
                         settingsSA2.Serialize(newFilePath, newFileName + ".json");
                         break;

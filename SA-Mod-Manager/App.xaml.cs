@@ -48,6 +48,7 @@ namespace SAModManager
 
         public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
         public static ManagerSettings ManagerSettings { get; set; }
+		public static Profiles Profiles { get; set; }
 
         private static readonly Mutex mutex = new(true, pipeName);
         public static Updater.UriQueue UriQueue;
@@ -573,6 +574,7 @@ namespace SAModManager
                 index++;
             }
         }
+
         public static Uri GetResourceUri(string resourceName)
         {
             // Get the assembly where the resource is located
@@ -603,7 +605,6 @@ namespace SAModManager
             }
         }
 
-
         private static ManagerSettings LoadManagerConfig()
         {
             ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
@@ -620,7 +621,6 @@ namespace SAModManager
 
             return settings;
         }
-
 
         public static async Task EnableOneClickInstall()
         {

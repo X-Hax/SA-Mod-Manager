@@ -114,6 +114,9 @@ namespace SAModManager.Configuration
             }
         }
 
+		/// <summary>
+		/// Runs a validation check on profiles to ensure that no files have been manually deleted or manually renamed. Removes any missing/renamed entries.
+		/// </summary>
         public bool ValidateProfiles()
         {
             try
@@ -178,6 +181,10 @@ namespace SAModManager.Configuration
             return true;
         }
 
+		/// <summary>
+		/// Creates a Default Profile file.
+		/// </summary>
+		/// <returns></returns>
         public static Profiles MakeDefaultProfileFile()
         {
             return new()
