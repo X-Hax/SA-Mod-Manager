@@ -94,7 +94,7 @@ namespace SAModManager
 
             ViewModel.Games = App.GamesList;
             DataContext = ViewModel;
-            await Load();
+            Load();
             SetBindings(); //theme is set here
 
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
@@ -1367,7 +1367,7 @@ namespace SAModManager
         }
 
         //update all the games information such as loader and mods path
-        private async Task UpdateManagerInfo()
+        private void UpdateManagerInfo()
         {
             if (!string.IsNullOrEmpty(App.CurrentGame.gameDirectory) && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
             {
@@ -1388,12 +1388,6 @@ namespace SAModManager
                 if (App.CurrentGame?.id == SetGame.SADX)
                     Controls.SADX.GameConfig.UpdateD3D8Paths();
 
-                //this is a failsafe in case the User deleted the Loader file manually without restoring the original files
-                if (!File.Exists(App.CurrentGame.loader.loaderdllpath) && File.Exists(App.CurrentGame.loader.dataDllOriginPath))
-                {
-                    await GamesInstall.InstallDLL_Loader(App.CurrentGame); //re install the loader to avoid corrupted install
-                    File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
-                }
             }
             else
             {
@@ -1625,7 +1619,7 @@ namespace SAModManager
             }
         }
 
-        public async Task Load(bool newSetup = false)
+        public void Load(bool newSetup = false)
         {
             if (App.CurrentGame.id != SetGame.None)
             {
@@ -1645,7 +1639,7 @@ namespace SAModManager
                 // Set the existing profiles to the ones from the loaded Manager Settings.
                 LoadGameSettings(newSetup);
                 UpdateManagerIcons();
-                await UpdateManagerInfo();
+                UpdateManagerInfo();
                 if (!App.isVanillaTransition)
                     ManualLoaderUpdateCheck();
                 InitCodes();
@@ -2648,7 +2642,7 @@ namespace SAModManager
             return false;
         }
 
-        private void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (suppressEvent) 
                 return;
@@ -2664,7 +2658,7 @@ namespace SAModManager
 #endif
                 }
 
-                App.EnableOneClickInstall();
+                await App.EnableOneClickInstall();
                 Save();
                 SetBindings();
             }

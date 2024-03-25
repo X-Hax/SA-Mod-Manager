@@ -37,7 +37,7 @@ namespace SAModManager
         private const string pipeName = "sa-mod-manager";
         public static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
-        public static string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        public static readonly string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
         public static readonly string tempFolder = Path.Combine(StartDirectory, ".SATemp");
