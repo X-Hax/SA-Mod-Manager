@@ -1047,7 +1047,7 @@ namespace SAModManager
                 Save();
                 suppressEvent = true;
                 ComboGameSelection.SelectedItem = game;
-                if (await DoGameSwap(path))
+                if (DoGameSwap(path))
                 {
                     Save();
                     await ForceInstallLoader();
@@ -1228,7 +1228,7 @@ namespace SAModManager
                 return;
 
             int index = comboProfile.SelectedIndex;
-            ProfileDialog dialog = new(App.Profiles, index);
+            ProfileDialog dialog = new();
             UpdateModsCodes();
             dialog.Owner = this;
             dialog.ShowDialog();
@@ -2629,7 +2629,7 @@ namespace SAModManager
             }
         }
 
-        private async Task<bool> DoGameSwap(string newPath = null)
+        private bool DoGameSwap(string newPath = null)
         {
             App.CancelUpdate = true;
             foreach (var game in GamesInstall.GetSupportedGames())
@@ -2640,7 +2640,7 @@ namespace SAModManager
                     EnabledCodes.Clear();
                     App.CurrentGame = game;
                     GamesInstall.HandleGameSwap(game, newPath);
-                    await Load(newPath is not null);
+                    Load(newPath is not null);
                     return true;
                 }
             }
@@ -2648,14 +2648,14 @@ namespace SAModManager
             return false;
         }
 
-        private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (suppressEvent) 
                 return;
 
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
             {
-                bool foundGame = await DoGameSwap();
+                bool foundGame = DoGameSwap();
 
                 if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
                 {
@@ -2664,7 +2664,7 @@ namespace SAModManager
 #endif
                 }
 
-                await App.EnableOneClickInstall();
+                App.EnableOneClickInstall();
                 Save();
                 SetBindings();
             }

@@ -25,11 +25,11 @@ namespace SAModManager.Profile
         public int SelectedIndex = 0;
         private Profiles Profiles { get; set; }
 
-        public ProfileDialog(Profiles profiles, int index)
+        public ProfileDialog()
         {
             InitializeComponent();
-            SelectedIndex = index;
-            Profiles = profiles;
+            Profiles = App.Profiles;
+			SelectedIndex = App.Profiles.ProfileIndex;
             Title = Lang.GetString("ManagerProfile.Title");
 
             Loaded += ModProfile_Loaded;
