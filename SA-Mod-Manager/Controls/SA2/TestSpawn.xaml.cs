@@ -545,7 +545,7 @@ namespace SAModManager.Controls.SA2
                     cmdline.Add($"-c {charIndex}");
                 }
            
-            if (GameProfile.TestSpawn.Player2Index > -1)
+            if (GameProfile.TestSpawn.Player2Index > -1 && GameProfile.TestSpawn.UsePlayer2)
             {
                 int charIndex = GameProfile.TestSpawn.Player2Index;
                 AdjustCharIndex(ref charIndex);
