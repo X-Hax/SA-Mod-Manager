@@ -1034,6 +1034,7 @@ namespace SAModManager
                 UIHelper.ToggleImgButton(ref btnBrowseGameDir, false);
                 UIHelper.ToggleImgButton(ref btnProfileSettings, false);
                 App.CancelUpdate = true;
+                Save();
                 var game = GamesInstall.GetGamePerID(setGame);
 
                 if (App.GamesList.Contains(game) == false)
@@ -1043,13 +1044,11 @@ namespace SAModManager
                 }
 
                 tempPath = path;
-                UIHelper.ToggleButton(ref btnOpenGameDir, true);
-                Save();
+                UIHelper.ToggleButton(ref btnOpenGameDir, true);        
                 suppressEvent = true;
                 ComboGameSelection.SelectedItem = game;
                 if (DoGameSwap(path))
                 {
-                    Save();
                     await ForceInstallLoader();
                     SetBindings();
                 }
@@ -1058,7 +1057,6 @@ namespace SAModManager
                 UIHelper.ToggleImgButton(ref btnProfileSettings, true);
                 UIHelper.ToggleImgButton(ref btnBrowseGameDir, true);
                 suppressEvent = false;
-
             }
         }
 
@@ -1623,7 +1621,7 @@ namespace SAModManager
         {
             if (App.CurrentGame.id != SetGame.None)
             {
-                if (App.isFirstBoot)
+                if (App.isFirstBoot || newSetup)
                     ProfileManager.CreateProfiles();
                 ProfileManager.SetProfile();
 
@@ -1694,9 +1692,6 @@ namespace SAModManager
 
             // Save the Profiles file.
             ProfileManager.SaveProfiles();
-
-            // Refresh thing so everything updates as intended.
-            Refresh();
         }
 
         private void LoadModList()
@@ -2651,16 +2646,18 @@ namespace SAModManager
             {
                 bool foundGame = DoGameSwap();
 
-                if (foundGame && File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
+                if (foundGame)
                 {
+                    Save();
+                    SetBindings();
 #if !DEBUG
-                    await FirstBootInstallLoader();
+                    if (File.Exists(App.CurrentGame.loader?.loaderVersionpath) == false)
+                        await FirstBootInstallLoader();
 #endif
-                }
 
-                await App.EnableOneClickInstall();
-                Save();
-                SetBindings();
+                    await App.EnableOneClickInstall();
+
+                }
             }
         }
     }

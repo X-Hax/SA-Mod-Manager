@@ -143,10 +143,9 @@ namespace SAModManager
 			}
 
 			SaveMod(moddir);
-
 			((MainWindow)Application.Current.MainWindow).Save();
-
-		}
+			((MainWindow)Application.Current.MainWindow).Refresh();
+        }
 
 		private void cancelBtn_Click(object sender, RoutedEventArgs e)
 		{
