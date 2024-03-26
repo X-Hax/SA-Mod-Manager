@@ -249,8 +249,7 @@ namespace SAModManager
         {
             var key = Registry.LocalMachine.OpenSubKey(registryKeyPath);
 
-            if (key == null)
-                key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+            key ??= RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
                     .OpenSubKey(registryKeyPath);
 
             return key?.GetValue("Path") as string;
@@ -365,6 +364,7 @@ namespace SAModManager
                     await Process.Start(new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y")
                     {
                         UseShellExecute = true,
+                        CreateNoWindow = true
                     }).WaitForExitAsync();
 
                     return true;
