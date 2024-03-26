@@ -163,13 +163,17 @@ namespace SAModManager
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Save();
+            Refresh();
         }
 
         private void SaveAndPlayButton_Click(object sender, RoutedEventArgs e)
         {
             Save();
+            Refresh();
+
             if (ModDependency.CheckDependencies(EnabledMods, mods))
                 return;
+
             StartGame();
         }
 
