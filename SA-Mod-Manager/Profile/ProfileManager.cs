@@ -12,10 +12,37 @@ namespace SAModManager.Profile
     /// </summary>
     static public class ProfileManager
     {
+		/// <summary>
+		/// Checks if the Game Profile directory exists. Tries to create it if it doesn't. 
+		/// </summary>
+		/// <returns>Returns True when directory exists or has been created otherwise returns False.</returns>
+		private static bool CheckProfileDirectory()
+		{
+			if (!Directory.Exists(App.CurrentGame.ProfilesDirectory))
+			{
+				try
+				{
+					Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+					return true;
+				}
+				catch (Exception ex)
+				{
+
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Gets the profile path. Will create the directory if it doesn't exist.
+		/// </summary>
+		/// <returns>Full path to currently selected game's Profiles.json file.</returns>
         private static string GetProfilePath()
         {
             string s = App.CurrentGame.ProfilesDirectory;
-            if (string.IsNullOrEmpty(s))
+
+			if (string.IsNullOrEmpty(s))
                 return null;
 
             return Path.Combine(s, "Profiles.json");
@@ -25,7 +52,7 @@ namespace SAModManager.Profile
         /// Checks to ensure an index is within the bounds of the App's Profile List.
         /// </summary>
         /// <param name="index"></param>
-        /// <returns></returns>
+        /// <returns>Returns True if index is within the profile count, False if not.</returns>
         private static bool CheckIndexBounds(int index)
         {
             if (!(index > App.Profiles.ProfilesList.Count) && !(index < 0))
@@ -124,11 +151,8 @@ namespace SAModManager.Profile
         {
             if (App.CurrentGame.gameDirectory != "")
             {
-                if (Directory.Exists(App.CurrentGame.gameDirectory))
+                if (CheckProfileDirectory())
                 {
-                    if (!Directory.Exists(App.CurrentGame.ProfilesDirectory))
-                        Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
-
                     foreach (var item in Directory.EnumerateFiles(Path.Combine(App.CurrentGame.gameDirectory, "mods"), "*.ini"))
                     {
                         string sourceFile = Path.GetFileName(item);
