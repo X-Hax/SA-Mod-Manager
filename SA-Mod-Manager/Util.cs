@@ -272,6 +272,10 @@ namespace SAModManager
                      var dl = new DownloadDialog(uri, "7-zip", "7z.exe", App.tempFolder, DownloadDialog.DLType.Download);
                      dl.StartDL();
                  }
+                 else
+                 {
+                     return;
+                 }
              });
 
             await Process.Start(new ProcessStartInfo(Path.Combine(App.tempFolder, "7z.exe"), "/S")
