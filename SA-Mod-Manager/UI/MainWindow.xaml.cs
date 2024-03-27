@@ -1635,16 +1635,18 @@ namespace SAModManager
 
             ProfileManager.SetProfile();
 
-            if (ComboGameSelection?.SelectedItem == null)
+            if (App.CurrentGame.id == SetGame.None)
             {
-                if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
+                if (ComboGameSelection?.SelectedItem == null)
                 {
-                    if (App.Current.MainWindow is not null && App.GamesList.Count > 0)
-                        ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
+                    if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
+                    {
+                        if (App.Current.MainWindow is not null && App.GamesList.Count > 0)
+                            ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
+                    }
                 }
             }
-
-            if (App.CurrentGame.id != SetGame.None)
+            else
             {
                 // Set the existing profiles to the ones from the loaded Manager Settings.
                 LoadGameSettings(newSetup);
@@ -1655,11 +1657,8 @@ namespace SAModManager
                 InitCodes();
                 LoadModList();
             }
-            else
-            {
-                UpdateButtonsState();
-            }
 
+            UpdateButtonsState();
             // Update the UI based on the loaded game.
             SetGameUI();
         }
