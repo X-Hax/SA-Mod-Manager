@@ -151,7 +151,7 @@ namespace SAModManager.Profile
         /// </summary>
         public static void MigrateProfiles(bool deletesource = false)
         {
-            if (App.CurrentGame.gameDirectory != "")
+            if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) == false)
             {
                 if (CheckProfileDirectory())
                 {
