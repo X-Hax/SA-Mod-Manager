@@ -11,7 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using SAModManager.UI;
 
-namespace SAModManager.Configuration
+namespace SAModManager.Profile
 {
     public class ProfileEntry
     {
@@ -70,7 +70,7 @@ namespace SAModManager.Configuration
                 {
                     return new()
                     {
-                        ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
+                        ProfilesList = new List<ProfileEntry> { new("Default", "Default.json") }
                     };
                 }
             }
@@ -80,7 +80,7 @@ namespace SAModManager.Configuration
 
             }
 
-            return new() { ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") } };       
+            return new() { ProfilesList = new List<ProfileEntry> { new("Default", "Default.json") } };
         }
 
         /// <summary>
@@ -114,9 +114,9 @@ namespace SAModManager.Configuration
             }
         }
 
-		/// <summary>
-		/// Runs a validation check on profiles to ensure that no files have been manually deleted or manually renamed. Removes any missing/renamed entries.
-		/// </summary>
+        /// <summary>
+        /// Runs a validation check on profiles to ensure that no files have been manually deleted or manually renamed. Removes any missing/renamed entries.
+        /// </summary>
         public bool ValidateProfiles()
         {
             try
@@ -181,10 +181,10 @@ namespace SAModManager.Configuration
             return true;
         }
 
-		/// <summary>
-		/// Creates a Default Profile file.
-		/// </summary>
-		/// <returns></returns>
+        /// <summary>
+        /// Creates a Default Profile file.
+        /// </summary>
+        /// <returns></returns>
         public static Profiles MakeDefaultProfileFile()
         {
             return new()
