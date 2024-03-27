@@ -2,6 +2,7 @@
 using SAModManager.Configuration.SA2;
 using SAModManager.Configuration.SADX;
 using SAModManager.Ini;
+using SAModManager.UI;
 using System;
 using System.IO;
 
@@ -27,7 +28,8 @@ namespace SAModManager.Profile
 				}
 				catch (Exception ex)
 				{
-
+					ExceptionHandler exception = new (ex);
+					exception.ShowDialog();
 					return false;
 				}
 			}
