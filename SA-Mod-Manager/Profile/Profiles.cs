@@ -70,7 +70,7 @@ namespace SAModManager.Profile
                 {
                     return new()
                     {
-                        ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
+                        ProfilesList = new List<ProfileEntry> { new("Default", "Default.json") }
                     };
                 }
             }
@@ -80,7 +80,7 @@ namespace SAModManager.Profile
 
             }
 
-            return new() { ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") } };
+            return new() { ProfilesList = new List<ProfileEntry> { new("Default", "Default.json") } };
         }
 
         /// <summary>

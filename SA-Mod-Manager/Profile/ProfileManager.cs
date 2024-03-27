@@ -14,7 +14,11 @@ namespace SAModManager.Profile
     {
         private static string GetProfilePath()
         {
-            return Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json");
+            string s = App.CurrentGame.ProfilesDirectory;
+            if (string.IsNullOrEmpty(s))
+                return null;
+
+            return Path.Combine(s, "Profiles.json");
         }
 
         /// <summary>
@@ -151,13 +155,22 @@ namespace SAModManager.Profile
 
             Profiles profiles = new();
 
-            foreach (var item in Directory.EnumerateFiles(App.CurrentGame.ProfilesDirectory, "*.json"))
+            if (App.CurrentGame.ProfilesDirectory is not null)
             {
-                if (Path.GetFileName(item) != "Profiles.json")
-                    profiles.ProfilesList.Add(new ProfileEntry(Path.GetFileNameWithoutExtension(item), Path.GetFileName(item)));
-            }
+                foreach (var item in Directory.EnumerateFiles(App.CurrentGame.ProfilesDirectory, "*.json"))
+                {
+                    if (Path.GetFileName(item) != "Profiles.json")
+                        profiles.ProfilesList.Add(new ProfileEntry(Path.GetFileNameWithoutExtension(item), Path.GetFileName(item)));
+                }
 
-            profiles.Serialize(GetProfilePath());
+                if (profiles.ProfilesList.Count <= 0) 
+                {
+                    profiles = Profiles.MakeDefaultProfileFile();
+                }
+
+                profiles.Serialize(GetProfilePath());
+               
+            }
 
             App.Profiles = profiles;
         }
@@ -168,7 +181,10 @@ namespace SAModManager.Profile
         /// <returns></returns>
         public static ProfileEntry GetCurrentProfile()
         {
-            return App.Profiles.ProfilesList[App.Profiles.ProfileIndex];
+            if (App.Profiles.ProfileIndex < App.Profiles.ProfilesList.Count)
+                return App.Profiles.ProfilesList[App.Profiles.ProfileIndex];
+            else
+                return App.Profiles.ProfilesList[0];
         }
 
         /// <summary>

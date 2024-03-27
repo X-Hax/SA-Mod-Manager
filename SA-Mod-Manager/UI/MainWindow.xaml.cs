@@ -32,6 +32,7 @@ using SAModManager.Configuration.SADX;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using SAModManager.ModsCommon;
 using System.Security.Policy;
+using PropertyChanged;
 
 namespace SAModManager
 {
@@ -94,6 +95,7 @@ namespace SAModManager
 
             ViewModel.Games = App.GamesList;
             DataContext = ViewModel;
+
             Load();
             SetBindings(); //theme is set here
 
@@ -1547,6 +1549,11 @@ namespace SAModManager
 
         private void LoadGameSettings(bool newSetup = false)
         {
+            if (App.CurrentGame.id == SetGame.None || string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory))
+                return;
+
+            ProfileManager.ValidateProfiles();
+
             string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, ProfileManager.GetCurrentProfile().Filename);
 
             switch (App.CurrentGame.id)
@@ -1622,22 +1629,23 @@ namespace SAModManager
         }
 
         public void Load(bool newSetup = false)
-        {
+        {            
+            if (newSetup || App.isFirstBoot)
+                ProfileManager.CreateProfiles();
+
+            ProfileManager.SetProfile();
+
+            if (ComboGameSelection?.SelectedItem == null)
+            {
+                if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
+                {
+                    if (App.Current.MainWindow is not null && App.GamesList.Count > 0)
+                        ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
+                }
+            }
+
             if (App.CurrentGame.id != SetGame.None)
             {
-                if (App.isFirstBoot || newSetup)
-                    ProfileManager.CreateProfiles();
-                ProfileManager.SetProfile();
-
-                if (App.isVanillaTransition)
-                {
-                    if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
-                    {
-                        if (App.Current.MainWindow is not null && App.GamesList.Count > 0)
-                            ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
-                    }
-                }
-
                 // Set the existing profiles to the ones from the loaded Manager Settings.
                 LoadGameSettings(newSetup);
                 UpdateManagerIcons();
@@ -1650,13 +1658,6 @@ namespace SAModManager
             else
             {
                 UpdateButtonsState();
-
-
-                if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
-                {
-                    if (App.Current.MainWindow is not null && App.GamesList.Count > 0)
-                        ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
-                }
             }
 
             // Update the UI based on the loaded game.
