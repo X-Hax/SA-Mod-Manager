@@ -63,7 +63,7 @@ namespace SAModManager.Updater
 
                 if (File.Exists(newExec))
                 {
-                    Process.Start(newExec, $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"");
+                    Process.Start(new ProcessStartInfo { FileName = newExec,  Arguments = $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"", UseShellExecute = true});
                     App.Current.Shutdown();
                 }
                 else

@@ -96,27 +96,36 @@ namespace SAModManager
             } catch { }
         }
 
-        public static void DoVanillaFilesCleanup(string[] args, int index)
+        public static void DoVanillaFilesCleanup(string[] args)
         {
             string root = null;
 
+            bool foundGameFolder = false;
             foreach (string exeName in Util.OldManagersName)
             {
                 root = exeName;
 
-                if (File.Exists(root))
+                for (int i = 0; i < args.Length; i++)
                 {
-                    break;
-                }
-                else if (!File.Exists(root) && index + 1 < args.Length)
-                {
-                    root = Path.GetFullPath(Path.Combine(args[index + 1], exeName));
-
                     if (File.Exists(root))
                     {
+                        foundGameFolder = true;
                         break;
                     }
+                    else 
+                    {
+                        root = Path.GetFullPath(Path.Combine(args[i], exeName));
+
+                        if (File.Exists(root))
+                        {
+                            foundGameFolder = true;
+                            break;
+                        }
+                    }
                 }
+
+                if (foundGameFolder)
+                    break;
             }
 
             if (File.Exists(root))

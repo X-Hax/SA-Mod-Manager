@@ -561,18 +561,18 @@ namespace SAModManager
 
         private static void HandleVanillaTransition(string[] args)
         {
-            int index = 0;
-  
             foreach (var arg in args)
             {
                 if (arg == "vanillaUpdate")
                 {
                     isVanillaTransition = true;
                     isFirstBoot = true;
-                    Util.DoVanillaFilesCleanup(args, index);
+                    Util.DoVanillaFilesCleanup(args);
                 }
-
-                index++;
+                else if (arg == "clearLegacy")
+                {
+                    Util.DoVanillaFilesCleanup(args);
+                }
             }
         }
 
