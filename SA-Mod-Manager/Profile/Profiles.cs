@@ -190,7 +190,7 @@ namespace SAModManager.Profile
             return new()
             {
                 ProfileIndex = 0,
-                ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
+                ProfilesList = new List<ProfileEntry> { new("Default", "Default.json") }
             };
         }
     }

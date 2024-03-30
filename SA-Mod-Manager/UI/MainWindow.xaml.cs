@@ -1240,11 +1240,11 @@ namespace SAModManager
             if (!App.CurrentGame.loader.installed)
                 return;
 
-            int index = comboProfile.SelectedIndex;
             ProfileDialog dialog = new();
             UpdateModsCodes();
             dialog.Owner = this;
             dialog.ShowDialog();
+            comboProfile.Items.Refresh();
         }
 
         private void ModProfile_FormClosing(object sender, EventArgs e)

@@ -171,6 +171,18 @@ namespace SAModManager.Profile
             }
         }
 
+        public static void MigrateOneProfile(string path)
+        {
+            if (File.Exists(path))
+            {
+                string sourceFile = Path.GetFileName(path);
+                string destFile = Path.GetFileNameWithoutExtension(sourceFile) == App.CurrentGame.loader?.name ? "Default.json" : Path.GetFileNameWithoutExtension(sourceFile) + ".json";
+
+                File.Copy(Path.GetFullPath(path), Path.Combine(App.CurrentGame.ProfilesDirectory, destFile), true);
+                ConvertProfile(sourceFile, destFile);
+            }
+        }
+
         /// <summary>
         /// This should only ever be run a single time on boot/initial install for a game.
         /// The MigrateProfiles function is public and should be used in any other instance of mass migrating.

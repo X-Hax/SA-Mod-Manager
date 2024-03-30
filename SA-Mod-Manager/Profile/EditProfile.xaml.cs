@@ -150,6 +150,7 @@ namespace SAModManager.Profile
             else
                 SaveNewProfile();
 
+            ProfileManager.SaveProfiles();
             DialogResult = true;
         }
 

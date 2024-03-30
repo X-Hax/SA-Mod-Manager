@@ -247,7 +247,7 @@ namespace SAModManager.Profile
         {
             var dialog = new System.Windows.Forms.OpenFileDialog
             {
-                Filter = "Profiles|*.json|Old Profiles|*.ini",
+                Filter = "Old Profiles|*.ini|Profiles|*.json",
                 Multiselect = true
             };
 
@@ -304,17 +304,7 @@ namespace SAModManager.Profile
                             case ".ini":
                                 try
                                 {
-                                    switch (App.CurrentGame.id)
-                                    {
-                                        case SetGame.SADX:
-                                            SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(file);
-                                            settings.ConvertFromV0(info);
-                                            break;
-                                        case SetGame.SA2:
-                                            SA2LoaderInfo info2 = IniSerializer.Deserialize<SA2LoaderInfo>(file);
-                                            settingsSA2.ConvertFromV0(info2);
-                                            break;
-                                    }
+                                    ProfileManager.MigrateOneProfile(file);
                                 }
                                 catch
                                 {
@@ -367,6 +357,7 @@ namespace SAModManager.Profile
 
         private void UI_OK_Click(object sender, RoutedEventArgs e)
         {
+            ProfileManager.SaveProfiles();
             this.Close();
         }
         #endregion
