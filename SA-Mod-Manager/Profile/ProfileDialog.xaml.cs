@@ -23,12 +23,10 @@ namespace SAModManager.Profile
     public partial class ProfileDialog : Window
     {
         public int SelectedIndex = 0;
-        private Profiles Profiles { get; set; }
 
         public ProfileDialog()
         {
             InitializeComponent();
-            Profiles = App.Profiles;
 			SelectedIndex = App.Profiles.ProfileIndex;
             Title = Lang.GetString("ManagerProfile.Title");
 
@@ -37,7 +35,7 @@ namespace SAModManager.Profile
 
         private void ModProfile_Loaded(object sender, RoutedEventArgs e)
         {
-            ProfileListView.ItemsSource = Profiles.ProfilesList;
+            ProfileListView.ItemsSource = App.Profiles.ProfilesList;
         }
 
         #region Private Functions
@@ -54,18 +52,18 @@ namespace SAModManager.Profile
 
             bool? result = editProfile.ShowDialog();
 
-            if (result == true)
-            {
-                Profiles.ProfilesList[ProfileListView.SelectedIndex] = editProfile.Result;
-            }
-            RefreshList();
+            //if (result == true)
+            //{
+			//	App.Profiles.ProfilesList[ProfileListView.SelectedIndex] = editProfile.Result;
+            //}
+            //RefreshList();
         }
         #endregion
 
         #region Window
         private void NewProfile_Closed(object sender, EventArgs e)
         {
-            RefreshList();
+            //RefreshList();
         }
         #endregion
 
@@ -178,51 +176,26 @@ namespace SAModManager.Profile
                     if (File.Exists(fullPath))
                         File.Copy(fullPath, Path.Combine(App.CurrentGame.ProfilesDirectory, clonedProfile.Filename), true);
 
-                    Profiles.ProfilesList.Add(clonedProfile);
+					App.Profiles.ProfilesList.Add(clonedProfile);
                 }
             }
 
-            RefreshList();
+            //RefreshList();
         }
 
         private void ProfileDelete_Click(object sender, RoutedEventArgs e)
         {
-            List<ProfileEntry> selectedItems = ProfileListView.SelectedItems.Cast<ProfileEntry>().ToList();
-            var profile = Profiles.ProfilesList[SelectedIndex];
+			int index = ProfileListView.SelectedIndex;
+			List<ProfileEntry> selection = ProfileListView.SelectedItems.Cast<ProfileEntry>().ToList();
 
-            if (selectedItems.Count > 0)
-            {
-                var msg = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DeleteProfile"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-                msg.ShowDialog();
-
-                if (msg.isYes)
-                {
-                    try
-                    {
-                        foreach (ProfileEntry item in selectedItems)
-                        {
-                            if (item is not null)
-                            {
-                                var fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, item.Filename);
-                                if (File.Exists(fullPath))
-                                {
-                                    File.Delete(fullPath);
-                                    Profiles.ProfilesList.Remove(item);
-                                }
-                            }
-                        }
-
-                        SelectedIndex = Profiles.ProfilesList.FindIndex(item => item.Name == profile.Name);
-
-                        RefreshList();
-                    }
-                    catch
-                    {
-                        throw new Exception("Failed to delete profile.");
-                    }
-                }
-            }
-        }
+			if (selection.Count > 0)
+			{
+				foreach (ProfileEntry profile in selection)
+				{
+					ProfileManager.RemoveProfile(profile.Name);
+				}
+			}
+		}
         #endregion
         #endregion
 
@@ -235,12 +208,12 @@ namespace SAModManager.Profile
             };
             bool? dialogResult = newProfile.ShowDialog();
 
-            if (dialogResult == true)
-            {
-                Profiles.ProfilesList.Add(newProfile.Result);
-            }
+            //if (dialogResult == true)
+            //{
+			//	ProfileManager.AddNewProfile(newProfile.Result);
+            //}
 
-            RefreshList();
+            //RefreshList();
         }
 
         private void Migrate_Click(object sender, RoutedEventArgs e)
@@ -254,6 +227,8 @@ namespace SAModManager.Profile
             System.Windows.Forms.DialogResult result = dialog.ShowDialog();
 
             List<string> failedFiles = new();
+
+			/*
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
@@ -341,10 +316,12 @@ namespace SAModManager.Profile
                     i++;
                 }
 
-                RefreshList();
+                //RefreshList();
             }
 
-            if (failedFiles.Count > 0)
+			*/
+
+			if (failedFiles.Count > 0)
             {
                 string failedFilesList = string.Join(Environment.NewLine, failedFiles);
                 string failedMessage = Lang.GetString("MessageWindow.Warnings.ProfileMigration.Message1") +

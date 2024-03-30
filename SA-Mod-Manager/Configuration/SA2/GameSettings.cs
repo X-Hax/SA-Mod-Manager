@@ -465,10 +465,13 @@ namespace SAModManager.Configuration.SA2
         /// Serializes an SA2 GameSettings JSON File.
         /// </summary>
         /// <param name="path"></param>
-        public void Serialize(string path, string profileName)
+        public void Serialize(string profileName)
         {
+			if (!profileName.Contains(".json"))
+				profileName += ".json";
+
 			// TODO: Fix this function.
-			path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
+			string path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
 			try
             {
                 if (Directory.Exists(App.CurrentGame.ProfilesDirectory))

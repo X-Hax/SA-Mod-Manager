@@ -83,7 +83,7 @@ namespace SAModManager.Profile
                             sadxSettings.EnabledMods = Mods;
                             sadxSettings.EnabledCodes = Codes;
                         }
-                        sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
+                        ProfileManager.AddNewProfile(profileName, sadxSettings);
                         break;
                     case SetGame.SA2:
                         Configuration.SA2.GameSettings sa2Settings = new()
@@ -95,11 +95,9 @@ namespace SAModManager.Profile
                             sa2Settings.EnabledMods = Mods;
                             sa2Settings.EnabledCodes = Codes;
                         }
-                        sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
+						ProfileManager.AddNewProfile(profileName, sa2Settings);
                         break;
                 }
-
-                Result = new(profileName, profileFilename);
             }
         }
 
@@ -129,17 +127,15 @@ namespace SAModManager.Profile
                     case SetGame.SADX:
                         Configuration.SADX.GameSettings sadxSettings = Configuration.SADX.GameSettings.Deserialize(originalProfile);
                         sadxSettings.GamePath = App.CurrentGame.gameDirectory;
-                        sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
+						ProfileManager.AddNewProfile(profileName, sadxSettings);
                         break;
                     case SetGame.SA2:
                         Configuration.SA2.GameSettings sa2Settings = Configuration.SA2.GameSettings.Deserialize(originalProfile);
                         sa2Settings.GamePath = App.CurrentGame.gameDirectory;
-                        sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
-                        break;
+						ProfileManager.AddNewProfile(profileName, sa2Settings);
+						break;
                 }
                 File.Delete(originalProfile);
-
-                Result = new(profileName, profileFilename);
             }
         }
 

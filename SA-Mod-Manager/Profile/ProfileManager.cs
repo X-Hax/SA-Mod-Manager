@@ -80,13 +80,13 @@ namespace SAModManager.Profile
                         Configuration.SADX.GameSettings sadxSettings = new();
                         SADXLoaderInfo sadxLoader = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
                         sadxSettings.ConvertFromV0(sadxLoader);
-                        sadxSettings.Serialize(App.CurrentGame.ProfilesDirectory, destFile);
+                        sadxSettings.Serialize(destFile);
                         break;
                     case SetGame.SA2:
                         Configuration.SA2.GameSettings sa2Settings = new();
                         SA2LoaderInfo sa2Loader = IniSerializer.Deserialize<SA2LoaderInfo>(sourceFile);
                         sa2Settings.ConvertFromV0(sa2Loader);
-                        sa2Settings.Serialize(App.CurrentGame.ProfilesDirectory, destFile);
+                        sa2Settings.Serialize(destFile);
                         break;
                 }
             }
@@ -114,8 +114,30 @@ namespace SAModManager.Profile
             App.Profiles.ProfilesList.Add(new ProfileEntry(name, name + ".json"));
         }
 
+		/// <summary>
+		/// Adds a new profile and writes the settings file.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="gameSettings"></param>
+		public static void AddNewProfile(string name, object gameSettings)
+		{
+			switch (App.CurrentGame.id)
+			{
+				case SetGame.SADX:
+					Configuration.SADX.GameSettings sadxSettings = gameSettings as Configuration.SADX.GameSettings;
+					sadxSettings.Serialize(name);
+					break;
+				case SetGame.SA2:
+					Configuration.SA2.GameSettings sa2Settings = gameSettings as Configuration.SA2.GameSettings;
+					sa2Settings.Serialize(name);
+					break;
+			}
+
+			AddProfile(name);
+		}
+
         /// <summary>
-        /// Remove a profile from the App's Profile List by name.
+        /// Remove a profile from the App's Profile List by name and delete the source file.
         /// </summary>
         /// <param name="name"></param>
         public static void RemoveProfile(string name)
@@ -123,7 +145,22 @@ namespace SAModManager.Profile
             foreach (ProfileEntry entry in App.Profiles.ProfilesList)
             {
                 if (entry.Name == name)
+				{
+					string filePath = Path.Combine(App.CurrentGame.ProfilesDirectory, entry.Filename);
+                    if (File.Exists(filePath))
+                    {
+						try
+						{
+							File.Delete(filePath);
+						}
+						catch
+						{
+							throw new Exception("Failed to delete profile.");
+						}
+                    }
+
                     App.Profiles.ProfilesList.Remove(entry);
+				}
             }
         }
 
