@@ -5,6 +5,7 @@ using SAModManager.Ini;
 using SAModManager.UI;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace SAModManager.Profile
 {
@@ -142,7 +143,7 @@ namespace SAModManager.Profile
         /// <param name="name"></param>
         public static void RemoveProfile(string name)
         {
-            foreach (ProfileEntry entry in App.Profiles.ProfilesList)
+            foreach (ProfileEntry entry in App.Profiles.ProfilesList.ToList<ProfileEntry>())
             {
                 if (entry.Name == name)
 				{
