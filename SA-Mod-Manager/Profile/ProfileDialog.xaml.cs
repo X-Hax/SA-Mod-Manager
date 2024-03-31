@@ -27,6 +27,7 @@ namespace SAModManager.Profile
         public ProfileDialog()
         {
             InitializeComponent();
+			ProfileListView.ItemsSource = App.Profiles.ProfilesList;
 			SelectedIndex = App.Profiles.ProfileIndex;
             Title = Lang.GetString("ManagerProfile.Title");
 
@@ -35,7 +36,9 @@ namespace SAModManager.Profile
 
         private void ModProfile_Loaded(object sender, RoutedEventArgs e)
         {
-            ProfileListView.ItemsSource = App.Profiles.ProfilesList;
+			//ProfileListView.ItemsSource = App.Profiles.ProfilesList;
+			ListViewItem item = ProfileListView.ItemContainerGenerator.ContainerFromIndex(SelectedIndex) as ListViewItem;
+			item.FontWeight = FontWeights.Bold;
         }
 
         #region Private Functions
@@ -190,9 +193,15 @@ namespace SAModManager.Profile
 
 			if (selection.Count > 0)
 			{
-				foreach (ProfileEntry profile in selection)
+				var msg = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DeleteProfile"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+				msg.ShowDialog();
+				
+				if (msg.isYes)
 				{
-					ProfileManager.RemoveProfile(profile.Name);
+					foreach (ProfileEntry profile in selection)
+					{
+						ProfileManager.RemoveProfile(profile.Name);
+					}
 				}
 			}
 		}

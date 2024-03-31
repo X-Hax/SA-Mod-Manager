@@ -26,9 +26,9 @@
                   Margin="5"  PreviewKeyDown="ProfileList_OnPreviewKeyDown"
                   dd:DragDrop.IsDragSource="False" dd:DragDrop.IsDropTarget="True" AllowDrop="True">
             <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
-                    <EventSetter Event="MouseDoubleClick" Handler="UI_MouseDoubleClick"/>
-                </Style>
+                <Style TargetType="{ x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+					<EventSetter Event="MouseDoubleClick" Handler="UI_MouseDoubleClick"/>
+				</Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
