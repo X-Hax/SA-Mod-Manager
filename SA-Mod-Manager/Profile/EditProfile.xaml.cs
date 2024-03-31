@@ -19,8 +19,6 @@ namespace SAModManager.Profile
         private List<string> Mods;
         private List<string> Codes;
 
-        public ProfileEntry Result { get; set; }
-
         public EditProfile(List<string> mods = null, List<string> codes = null)
         {
             InitializeComponent();
@@ -37,7 +35,7 @@ namespace SAModManager.Profile
             Title = Lang.GetString("ManagerProfile.Buttons.Rename");
             Header.Text = Title;
             ProfileNameTextbox.Text = profile.Name;
-            origProfile = profile.Filename;
+            origProfile = profile.Name;
             KeepMods.Visibility = Visibility.Collapsed;
 
             UIHelper.DisableButton(ref btnOK);
@@ -106,11 +104,8 @@ namespace SAModManager.Profile
             string profileName = ProfileNameTextbox.Text;
             string profileFilename = profileName + ".json";
 
-            if (profileFilename == origProfile)
-            {
-                Result = new ProfileEntry(profileName, profileFilename);
+            if (profileName == origProfile)
                 return;
-            }
 
             if (profileName != string.Empty)
             {
@@ -135,7 +130,8 @@ namespace SAModManager.Profile
 						ProfileManager.AddNewProfile(profileName, sa2Settings);
 						break;
                 }
-                File.Delete(originalProfile);
+
+				ProfileManager.RemoveProfile(origProfile);
             }
         }
 
