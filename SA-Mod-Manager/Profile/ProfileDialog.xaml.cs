@@ -36,7 +36,6 @@ namespace SAModManager.Profile
 
         private void ModProfile_Loaded(object sender, RoutedEventArgs e)
         {
-			//ProfileListView.ItemsSource = App.Profiles.ProfilesList;
 			ListViewItem item = ProfileListView.ItemContainerGenerator.ContainerFromIndex(SelectedIndex) as ListViewItem;
 			item.FontWeight = FontWeights.Bold;
         }
@@ -55,11 +54,7 @@ namespace SAModManager.Profile
 
             bool? result = editProfile.ShowDialog();
 
-            //if (result == true)
-            //{
-			//	App.Profiles.ProfilesList[ProfileListView.SelectedIndex] = editProfile.Result;
-            //}
-            //RefreshList();
+			ProfileListView.Items.Refresh();
         }
         #endregion
 

@@ -101,37 +101,20 @@ namespace SAModManager.Profile
 
         private void SaveEditedProfile()
         {
-            string profileName = ProfileNameTextbox.Text;
-            string profileFilename = profileName + ".json";
+			string profileName = ProfileNameTextbox.Text;
 
             if (profileName == origProfile)
                 return;
 
             if (profileName != string.Empty)
             {
-                string originalProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, origProfile);
-
-                if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename)))
+                if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileName + ".json")))
                 {
                     new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                     return;
                 }
 
-                switch (App.CurrentGame.id)
-                {
-                    case SetGame.SADX:
-                        Configuration.SADX.GameSettings sadxSettings = Configuration.SADX.GameSettings.Deserialize(originalProfile);
-                        sadxSettings.GamePath = App.CurrentGame.gameDirectory;
-						ProfileManager.AddNewProfile(profileName, sadxSettings);
-                        break;
-                    case SetGame.SA2:
-                        Configuration.SA2.GameSettings sa2Settings = Configuration.SA2.GameSettings.Deserialize(originalProfile);
-                        sa2Settings.GamePath = App.CurrentGame.gameDirectory;
-						ProfileManager.AddNewProfile(profileName, sa2Settings);
-						break;
-                }
-
-				ProfileManager.RemoveProfile(origProfile);
+				ProfileManager.RenameProfile(origProfile, profileName);
             }
         }
 

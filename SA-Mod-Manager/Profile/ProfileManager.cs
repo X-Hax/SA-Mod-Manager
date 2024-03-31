@@ -137,6 +137,27 @@ namespace SAModManager.Profile
 			AddProfile(name);
 		}
 
+		/// <summary>
+		/// Renames a profile in the Profiles List.
+		/// </summary>
+		/// <param name="name"></param>
+		public static void RenameProfile(string oldname, string newname)
+		{
+			foreach (ProfileEntry entry in App.Profiles.ProfilesList.ToList<ProfileEntry>())
+			{
+				if (entry.Name == oldname)
+				{
+					string oldFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, oldname + ".json");
+					string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newname + ".json");
+
+					entry.Name = newname;
+					entry.Filename = newname + ".json";
+
+					File.Move(oldFilePath, newFilePath);
+				}
+			}
+		}
+
         /// <summary>
         /// Remove a profile from the App's Profile List by name and delete the source file.
         /// </summary>
