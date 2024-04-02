@@ -232,8 +232,7 @@ namespace SAModManager.Profile
 
             List<string> failedFiles = new();
 
-			/*
-
+	
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 int i = 0;
@@ -294,7 +293,7 @@ namespace SAModManager.Profile
 
                         if (!invalid)
                         {
-                            foreach (ProfileEntry entry in Profiles.ProfilesList)
+                            foreach (ProfileEntry entry in App.Profiles.ProfilesList)
                             {
                                 if (entry.Name == newFileName)
                                 {
@@ -306,24 +305,23 @@ namespace SAModManager.Profile
                             switch (App.CurrentGame.id)
                             {
                                 case SetGame.SADX:
-                                    settings.Serialize(newFilePath, newFileName + ".json");
+                                    settings.Serialize(newFileName + ".json");
                                     break;
                                 case SetGame.SA2:
-                                    settingsSA2.Serialize(newFilePath, newFileName + ".json");
+                                    settingsSA2.Serialize(newFileName + ".json");
                                     break;
                             }
 
 
-                            Profiles.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
+                            App.Profiles.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
                         }
                     }
                     i++;
                 }
 
-                //RefreshList();
+                RefreshList();
             }
 
-			*/
 
 			if (failedFiles.Count > 0)
             {
