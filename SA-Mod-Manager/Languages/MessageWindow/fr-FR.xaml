@@ -13,7 +13,7 @@
     <system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Déplacez ou supprimer le mod.ini dans le dossier mods puis lancer le Mod Manager à nouveau.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Echec Chemin d'accès</system:String>
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Impossible de trouver sonic.exe, assurez-vous de selectionner le dossier qui contient SADX.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Impossible de trouver un jeu supporté, assurez-vous de selectionner un dossier qui contient un jeu.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Echec détection du chemin d'accès</system:String>
     <system:String x:Key="MessageWindow.Errors.GamePathNotFound">Impossible de trouver le chemin d'accès du répertoire du jeu. Veuillez sélectionner le chemin dans les paramètres et assurez vous de prendre le dossier qui contient sonic.exe.</system:String>

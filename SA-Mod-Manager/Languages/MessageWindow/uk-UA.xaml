@@ -14,7 +14,7 @@
     <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Не вийшло встановити Шлях до Гри</system:String>
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Не вийшло знайти sonic.exe, виберіть папку де встановлено SADX.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Не вийшло знайти шлях до гри</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Не вийшло знатйи шлях до гри. Будь ласка встановіть шлях у Конфігурації і впевніться що у ній є sonic.exe.</system:String>

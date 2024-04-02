@@ -14,7 +14,7 @@
     <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Falha ao definir Destino do Jogo</system:String>
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Falha ao detetar sonic.exe, Certifique-se que escolheu a pasta correta onde SADX está instalado.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Falha ao detetar Destino do Jogo</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Falha ao detetar o destino do jogo. Por favor, defina o destino no Gerenciador do Manager e certifique-se de selecionar uma pasta onde SADX/sonic.exe esteje instalado.</system:String>
