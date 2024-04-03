@@ -140,7 +140,7 @@
     <system:String x:Key="TestSpawn.Language.Japanese">Японский</system:String>
     <system:String x:Key="TestSpawn.Language.English">Английский</system:String>
     <system:String x:Key="TestSpawn.Language.French">Французский</system:String>
-    <system:String x:Key="TestSpawn.Language.Italian">Italiano</system:String>
+    <system:String x:Key="TestSpawn.Language.Italian">Итальянский</system:String>
     <system:String x:Key="TestSpawn.Language.Spanish">Испанский</system:String>
     <system:String x:Key="TestSpawn.Language.German">Немецкий</system:String>
     <!--#endregion-->

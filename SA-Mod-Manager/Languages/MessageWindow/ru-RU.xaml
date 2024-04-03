@@ -14,7 +14,7 @@
     <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Указанные моды не были найдены:&#x0a;&#x0a;</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Ошибка при установке пути к игре</system:String>
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Не удалось обнаружить поддерживаемую игру. Убедитесь, что путь к игре указан корректно.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Ошибка при обнаружении пути к игре</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Не удалось найти путь к игре. Настройте путь в настройках Менеджера и проверьте, чтобы была выбрана папка с файлом sonic.exe.</system:String>
