@@ -379,7 +379,7 @@ namespace SAModManager.Controls.SA2
             });
 			tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
 			{
-				Source = GameProfile.TestSpawn,
+				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
 			tsVoiceLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameVoiceLanguage")

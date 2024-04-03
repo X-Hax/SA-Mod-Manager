@@ -15,8 +15,7 @@ namespace SAModManager.Configuration.SA2
         Deutsch = 1,
         Espanol = 2,
         Francais = 3,
-        Italiano = 4,
-        Japanese = 5,
+        Japanese = 4,
     }
 
     public class GraphicsSettings
@@ -94,7 +93,7 @@ namespace SAModManager.Configuration.SA2
         /// This will be saved and used on each boot.
         /// </summary>
         [DefaultValue((int)SA2Lang.English)]
-        public int Text { get; set; } = (int)SA2Lang.English;
+        public int GameTextLanguage { get; set; } = (int)SA2Lang.English;
 
         /// <summary>
         /// Allows skipping the intro to the game.
@@ -119,6 +118,8 @@ namespace SAModManager.Configuration.SA2
             CustomWindowHeight = oldSettings.WindowHeight;
             EnableKeepResolutionRatio = oldSettings.MaintainAspectRatio;
             EnableResizableWindow = oldSettings.ResizableWindow;
+            GameTextLanguage = oldSettings.TextLanguage;
+            SkipIntro = oldSettings.SkipIntro;
         }
 
         public void LoadGameConfig(ref SA2GameConfig config)
@@ -126,6 +127,7 @@ namespace SAModManager.Configuration.SA2
             SelectedScreen = config.Display;
             HorizontalResolution = config.Width;
             VerticalResolution = config.Height;
+            GameTextLanguage = config.Language;
         }
 
         public void LoadConfigs(ref SA2GameConfig config)
@@ -153,6 +155,7 @@ namespace SAModManager.Configuration.SA2
 
             config.Width = HorizontalResolution;
             config.Height = VerticalResolution;
+            config.Language = GameTextLanguage;
         }
 
         public void ToConfigs(ref SA2GameConfig config)
