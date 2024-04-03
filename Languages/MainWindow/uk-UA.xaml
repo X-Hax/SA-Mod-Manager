@@ -1,0 +1,214 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<!--#region Main Window Strings-->
+	<system:String x:Key="Manager.Buttons.SaveAndPlay">Зберегти &amp; Грати</system:String>
+	<system:String x:Key="Manager.Tabs.Mods">Моди</system:String>
+	<system:String x:Key="Manager.Tabs.Codes">Коди</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig">Налаштування Гри</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig">Налаштування</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn">Тестове Завантаження</system:String>
+	<!--#endregion-->
+
+	<!--#region Mods Tab Strings-->
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">Оновити</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">Налаштувати Мод</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">Додати Мод</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">Не Вибрано Моду.</system:String>
+
+	<!--Mods Context Menu-->
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Перевірити Оновлення</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Перевірити цілісність</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Насильно Оновити</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">Налаштувати Мод</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Редагувати Мод</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Видалити Мод</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Розробник</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Згенерувати Manifest</system:String>	
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Вимкнути Оновлення</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Увімкнути Оновлення</system:String>
+    <!--#endregion-->
+
+	<!--#region Codes Tab Strings-->
+	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Новий Код</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Редагувати Код</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Видалити Код</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Код</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Зроблено (ким)</system:String>
+	<!--#endregion-->
+
+	<!--#region Manager Config Tab Strings-->
+	<!--Options-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Налаштування</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Теми:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Мова:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Профіль:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Папка Гри:</system:String>
+
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Встановити 1-Click Install</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Вимкнути 1-Click Install</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Відкрити Папку Гри</system:String>
+
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Встановити Завантажувач Модів</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Видалити Завантажувач Модів</system:String>
+
+	<!--Updates-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Оновлення</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Перевіряти Оновлення Мод Менеджеру на Запуску</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Перевіряти Оновлення Завантажувачу Модів на Запуску</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Перевіряти Оновлення Модів на Запуску</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Перевірити Оновлення</system:String>
+
+	<!--Debug Features-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Розширені Налаштування</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Залишати Завантажувач Модів відкритим після запуску гри</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Увімкнути Налаштування Розробника</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Увімкнути Консоль</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Печатати Debug у Вікні Гри</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Записувати Debug Info до файлу</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Створювати Crash Dumps</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Перевірити Цілісність Гри</system:String>
+
+	<!--About-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Про Нас</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SA Mod Manager це програма яка легко дозволяє керувати модифікаціями для ігор Sonic Adventure.</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Співробітники</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Вихідний Код Мод Менеджеру</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Вихідний Код Завантажувачу Модів</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Повідомити про Глюк (Тільки Англійська)</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Відкрити SA Docs (Тільки Англійська)</system:String>
+	<!--#endregion-->
+	
+	<!--#region Tooltips-->
+	<!--#region Main Window Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Mods">Вибрати, редагувати, та налаштувати моди.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes">Вибрати коди які будуть під час гри.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig">Налаштувати гру включно з графікою та звуком.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn">Налаштування щоб завантажити гру з будь яким персонажем та рівнем.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options">Налаштувати Завантажувач, включно з темою та мовою.</system:String>
+	<system:String x:Key="MainWindow.Tips.SaveAndPlay">Зберегти вибрані налаштування та запустити гру.</system:String>
+	<system:String x:Key="MainWindow.Tips.Save">Зберегти вибрані налаштування.</system:String>
+
+	<!--#region Mods Tab Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.Refresh">Оновлює список модів.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveCeiling">Переміщює мод на верхівку списку.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveUp">Переміщює мод по одному на гору.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveDown">Переміщює мод по одному вниз.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveFloor">Переміщює мод на дно списку.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.SelectAll">Вибирає всі моди. Запуск гри з усіма модамо може призвести до аварії.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.DeselectAll">Прибирає вибір з усіх модів.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.NewMod">Створює нове вікно де можна самостійно встановити або створити мод.</system:String>
+	<!--#endregion-->
+
+	<!--#region Codes Tab Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.SelectAll">Вибирає усі коди.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.DeselectAll">Прибирає вибір з усіх кодів.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.NewCode">Відкриває вікно Створення Коду.</system:String>
+	<!--#endregion-->
+
+	<!--#region Game Config Tab -->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">Редагувати налаштування графіки.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">Редагувати налаштування вводу.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">Редагувати налаштування звуку.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">Увімкнути або вимкнути патчі.</system:String>
+
+	<!--#region Graphics Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen">Вибрати монітор на якому буде гра.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Самостійно встановити роздільну здатність, або вибрати зі списку.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Примушує гру до співвідношення сторін 4:3, не зважаючи на роздільну здатність.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Вмикає V-Sync.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Якщо увімкнено, і гра буде не у фокусі, вона призупиниться.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Вікно гри запуститься на повний екран.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Встановлює гру у повному екрані до без-рамок.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Масштабує елементи UI у повному екрані.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Гра запуститься у віконному режимі.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Дозволяє вікну змінювати розмір під час гри.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Залишає співвідношення сторін вибраною роздільної здатності коли встановлено вручну.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Встановлює розмір вікна окремо від роздільної здатності. Тобто, Дозволяє грати у 4K у меншому вікні.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Встановлює частоту кадрів.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">Вибирає тип емуляції з рендером. Рекомендоване - Авто. Використовуйте емульоване тільки на старих відеокартах/чіпсетах.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Вибирає фільтр для текстур на всіх модельках.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Вибирає фільтр текстур GUI та інших пов'язаних елементів.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Встановлює кількість деталей для дальності малювання.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">Встановлює метод заповнення задньої картинки коли граєш у широко-екрані з примусовим співвідношенням сторін рендеру 4:3.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Встановлює метод заповнення коли гра прогарває FMV запис.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Згенеровані MipMap текстури для всіх текстур які їх не мають.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Вмикає D3D8to9 Shim, дозволяючи грі використовувати функції D3D9. Необхідно для деяких модів.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Дозволяє UI правильно масштабуватися у залежності від роздільної здатності гри.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Перевіряє та завантажує будьякі оновлення для d3d8to9.</system:String>
+	<!--#endregion-->
+
+	<!--#region Input Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">Використовує оригінальну систему вводу SADX. Ця система схильна до проблем, по більшості оберти камери. Бажано не використовувати цю опцію.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput">Вбудовує систему на базі SDL2, яка імітує оригінальну. Це рекомендований метод вводу.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold">Використовує Рухи Миші (перетягуванняя та утримання) щоб керувати персонажем.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate">Встановлює режим Руху Миші де перетягування прискорить гравця.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Jump">Ця клавіша вибирає у меню і робить Стрибок, взагалому A або Хрестик.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Action">Ця кнопка робить дію персонажу, взагалому X або Квадрат.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Cancel">Ця кнопка робить дію "назад" у меню (також друга атака), Взагалому B або Кружок.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Start">Кнопка Старт. Використовуєш щоб розпочати та поставити гру на паузу. взагалому Start.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamLeft">Ця кнопка повертає камеру наліво, взагалому Лівий Бампер. Не можна поставити на джойстик.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamRight">Ця кнопка повертає камеру направо, взагалому Правий Бампер. Не можна поставити на джойстик.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Flute">Ця кнопка щоб Свистіти у Саду Чао. Взагалому Y або Трикутник.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher">Це відкриє AppLauncher де можна налаштувати керування.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher">Це відкриє посилання для завантаження AppLauncher, щоб налаштувати керування.</system:String>
+	<!--#endregion-->
+
+	<!--#region Sound Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">Замінює бекенд звуку на vgmbass. Це рекомендовано для найкращого досвіду, і моди базуються на ньому.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">Вмикає музику у грі.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">Вмикає 3D звук у грі.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">Використовує BASS як бекенд для відтворення звуків.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">Вмикає Звуки та Голоси у грі.</system:String>
+	<!--#endregion-->
+
+	<!--#region Patches Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">Вибирає усі патчі у списку.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">Прибирає вибір з усіх патчів.</system:String>
+	<!--#endregion-->
+	<!--#endregion-->
+
+	<!--#region Test Spawn Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Character">Вмикає налаштування ерсонажа за якого ти з'явишся.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Level">Вмикає налаштування рівеню на який ти попадеш.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Time">Встановлює час на Полях Пригод.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Act">Вибирає Акт рівню.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Event">Вмикає завантаження у подію.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.GameMode">Вмикає налаштування режиму гри.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Save">Вмикає перенапрям файлу збереження.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Вмикає самостійний вибір персонажу, рівня та акту. Перезаписує налаштування вище.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Вмикає налаштування стартової позиції та оберту.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Запускає гру з налаштуваннями вище.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Вмикає налаштування для гравця 2.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Встановлює місію на вибраному рівні.</system:String>
+    <!--#endregion-->
+
+	<!--#region Manager Config Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Виберіть Профіль який буде використаний для Списку Модів та Налаштувань.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Відкриває Менеджер Профілів де можна Створити та Видалити Профілі.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Повний шлях до папки де встановлена гра.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Відкриває вікно де можна вибрати папку гри.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Відкриває папку де встановлена гра.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Вибирає тему для Мод Менеджера.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Вибирає мову яка встановлюється Мод Менеджером.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Залишає вікно Мод Менеджера відкритим після натискання Зберегти та Грати.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Вмикає сорінку Тестового Завантаження у Мод Менеджері.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Коли увімкнено, натискаючи на посилання "One Click" на GameBanana відкриє вікно завантаження моду.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Коли увімкнено, Завантажувач Модів встановлено і можна грати з модами, патчами і чітами.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Автоматично перевіряє оновлення Мод Менеджеру при запуску.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Автоматично перевіряє оновлення Завантажувачу Модів при запуску.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Автоматично перевіряє оновлення встановлених модів при запуску.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Перевіряє оновлення усіх компонентів (окрім гри).</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Вмикає Косноль куди гра виводить Debug інформацію.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Печатає Debug інформацію у вікні гри.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Зберігає інформацію Debug у файл.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Автоматично зберігає звіт аварії при помилці. Це корисно коли досліджуєш незрозумілі аварії.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Відкриває вікна "Про Нас" та "Співробітники".</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Відкриває посилання на Репозиторій GitHub Мод Менеджеру.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Відкриває посилання на Вебсайт SA Docs де є купа різноманітної інформації як модифікувати ігри Sonic Adventure.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Відкриває посилання на сторінку Помилок у Репозиторії GitHub Мод Менеджеру щоб сповістити про глюк.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Перевіряє цілісність гри щоб повідомити про пропавші/модифіковані файли.</system:String>
+	<!--#endregion-->
+
+</ResourceDictionary>

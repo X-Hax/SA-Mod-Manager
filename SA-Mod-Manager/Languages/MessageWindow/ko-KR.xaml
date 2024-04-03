@@ -14,7 +14,7 @@
     <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Failed to set Game Path</system:String>
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect sonic.exe, make sure to select a folder where SADX is installed.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Failed to detect Game Path</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.</system:String>

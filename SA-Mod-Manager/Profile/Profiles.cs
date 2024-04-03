@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using SAModManager.UI;
+using System.Collections.ObjectModel;
 
 namespace SAModManager.Profile
 {
@@ -36,7 +37,7 @@ namespace SAModManager.Profile
         /// <summary>
         /// List of Profile options.
         /// </summary>
-        public List<ProfileEntry> ProfilesList { get; set; } = new();
+        public ObservableCollection<ProfileEntry> ProfilesList { get; set; } = new();
 
         /// <summary>
         /// Returns the Profile to load using the Manager's settings and the Profiles.json file for the specified game.
@@ -70,7 +71,7 @@ namespace SAModManager.Profile
                 {
                     return new()
                     {
-                        ProfilesList = new List<ProfileEntry> { new("Default", "Default.json") }
+                        ProfilesList = new ObservableCollection<ProfileEntry> { new("Default", "Default.json") }
                     };
                 }
             }
@@ -80,7 +81,7 @@ namespace SAModManager.Profile
 
             }
 
-            return new() { ProfilesList = new List<ProfileEntry> { new("Default", "Default.json") } };
+            return new() { ProfilesList = new ObservableCollection<ProfileEntry> { new("Default", "Default.json") } };
         }
 
         /// <summary>
@@ -190,7 +191,7 @@ namespace SAModManager.Profile
             return new()
             {
                 ProfileIndex = 0,
-                ProfilesList = new List<ProfileEntry> { new ProfileEntry("Default", "Default.json") }
+                ProfilesList = new ObservableCollection<ProfileEntry> { new("Default", "Default.json") }
             };
         }
     }

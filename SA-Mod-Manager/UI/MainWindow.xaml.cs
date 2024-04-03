@@ -1240,11 +1240,11 @@ namespace SAModManager
             if (!App.CurrentGame.loader.installed)
                 return;
 
-            int index = comboProfile.SelectedIndex;
             ProfileDialog dialog = new();
             UpdateModsCodes();
             dialog.Owner = this;
             dialog.ShowDialog();
+            comboProfile.Items.Refresh();
         }
 
         private void ModProfile_FormClosing(object sender, EventArgs e)
@@ -1593,7 +1593,7 @@ namespace SAModManager
             sadxSettings.DebugSettings = gameDebugSettings;
 
             // Save Game Settings to Current Profile
-            sadxSettings.Serialize(App.CurrentGame.ProfilesDirectory, ProfileManager.GetCurrentProfile().Filename);
+            sadxSettings.Serialize(ProfileManager.GetCurrentProfile().Filename);
 
             // Save to Loader Info
             sadxSettings.WriteConfigs();
@@ -1613,7 +1613,7 @@ namespace SAModManager
             sa2.DebugSettings = gameDebugSettings;
 
             // Save Game Settings to Current Profile
-            sa2.Serialize(App.CurrentGame.ProfilesDirectory, ProfileManager.GetCurrentProfile().Filename);
+            sa2.Serialize(ProfileManager.GetCurrentProfile().Filename);
 
             // Save to Loader Info
             sa2.WriteConfigs();

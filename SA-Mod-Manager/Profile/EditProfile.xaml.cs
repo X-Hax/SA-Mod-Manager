@@ -19,8 +19,6 @@ namespace SAModManager.Profile
         private List<string> Mods;
         private List<string> Codes;
 
-        public ProfileEntry Result { get; set; }
-
         public EditProfile(List<string> mods = null, List<string> codes = null)
         {
             InitializeComponent();
@@ -37,7 +35,7 @@ namespace SAModManager.Profile
             Title = Lang.GetString("ManagerProfile.Buttons.Rename");
             Header.Text = Title;
             ProfileNameTextbox.Text = profile.Name;
-            origProfile = profile.Filename;
+            origProfile = profile.Name;
             KeepMods.Visibility = Visibility.Collapsed;
 
             UIHelper.DisableButton(ref btnOK);
@@ -83,7 +81,7 @@ namespace SAModManager.Profile
                             sadxSettings.EnabledMods = Mods;
                             sadxSettings.EnabledCodes = Codes;
                         }
-                        sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
+                        ProfileManager.AddNewProfile(profileName, sadxSettings);
                         break;
                     case SetGame.SA2:
                         Configuration.SA2.GameSettings sa2Settings = new()
@@ -95,51 +93,28 @@ namespace SAModManager.Profile
                             sa2Settings.EnabledMods = Mods;
                             sa2Settings.EnabledCodes = Codes;
                         }
-                        sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
+						ProfileManager.AddNewProfile(profileName, sa2Settings);
                         break;
                 }
-
-                Result = new(profileName, profileFilename);
             }
         }
 
         private void SaveEditedProfile()
         {
-            string profileName = ProfileNameTextbox.Text;
-            string profileFilename = profileName + ".json";
+			string profileName = ProfileNameTextbox.Text;
 
-            if (profileFilename == origProfile)
-            {
-                Result = new ProfileEntry(profileName, profileFilename);
+            if (profileName == origProfile)
                 return;
-            }
 
             if (profileName != string.Empty)
             {
-                string originalProfile = Path.Combine(App.CurrentGame.ProfilesDirectory, origProfile);
-
-                if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename)))
+                if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileName + ".json")))
                 {
                     new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                     return;
                 }
 
-                switch (App.CurrentGame.id)
-                {
-                    case SetGame.SADX:
-                        Configuration.SADX.GameSettings sadxSettings = Configuration.SADX.GameSettings.Deserialize(originalProfile);
-                        sadxSettings.GamePath = App.CurrentGame.gameDirectory;
-                        sadxSettings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
-                        break;
-                    case SetGame.SA2:
-                        Configuration.SA2.GameSettings sa2Settings = Configuration.SA2.GameSettings.Deserialize(originalProfile);
-                        sa2Settings.GamePath = App.CurrentGame.gameDirectory;
-                        sa2Settings.Serialize(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename), profileFilename);
-                        break;
-                }
-                File.Delete(originalProfile);
-
-                Result = new(profileName, profileFilename);
+				ProfileManager.RenameProfile(origProfile, profileName);
             }
         }
 
@@ -150,6 +125,7 @@ namespace SAModManager.Profile
             else
                 SaveNewProfile();
 
+            ProfileManager.SaveProfiles();
             DialogResult = true;
         }
 

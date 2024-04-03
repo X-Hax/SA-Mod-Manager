@@ -1,0 +1,32 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="SplashScreen.Title">Ласкаво Просимо</system:String>
+	<system:String x:Key="SplashScreen.Welcome">Привітики від SA Mod Manager</system:String>
+
+	<system:String x:Key="SplashScreen.Intro" xml:space="preserve">Ти оновився з SA Mod Manager!&#x0a;&#x0a;Цей новий Менеджер має покращення, нові функції, і маленькі оновлення до Завантажувача Модів. Всі моди працюватимуть як треба. Знизу ти знайдеш майже повний список змін.</system:String>
+
+	<system:String x:Key="SplashScreen.QOL">Покращення</system:String>
+	<system:String x:Key="SplashScreen.QOL.Themes">Цей Менеджер Підтримує Теми! Їх можна змінити у вкладці "Налаштування".</system:String>
+	<system:String x:Key="SplashScreen.QOL.Languages">Цей менеджер підтримує різні мови! Так, Менеджер твоєю рідною солов'їною! Мови можна змінити у вкладці "Налаштування".</system:String>
+	<system:String x:Key="SplashScreen.QOL.Manager">Файл програми (.exe) може знаходитись поза межами розташування гри! Якщо ти бачиш цей екран після оновлення зі старої версії, файл запуску зараз знаходиться у папці гри. Ти маєш право перемістити його куди захочеш!</system:String>
+	<system:String x:Key="SplashScreen.QOL.Profiles">Профілі мігрували у новий формат і тепер мають оремий інструмент де можна їми керувати. Також у можливість мігрувати старі профілі у нові, якщо у вас були такі і ви хочете ними користуватися.</system:String>
+	<system:String x:Key="SplashScreen.QOL.Config">Налаштування Гри та Менеджера тепер у різних вкладках. Налаштування debug (Печатання у Консоль, Журналювання файлів, Звіти Аварій, тощо.) можна знайти у вкладці "Налаштування". Всі налаштування які стосуються гри можна знайти у вкладці "Налаштування Гри".</system:String>
+	<system:String x:Key="SplashScreen.QOL.KeepOpen">З'явилася нова функція яка залишає Менеджер відкритим після натискання "Зберегти та Грати". Вона увімкнена за замовчуванням.</system:String>
+
+	<system:String x:Key="SplashScreen.Features">Нові Функції</system:String>
+	<system:String x:Key="SplashScreen.Features.AddMod">Кнопка Новий Мод була перероблена у Додати Мод. Вона дозволяє як створити, так і самостійно встановити мод. Встановити можна з папки або архіву.</system:String>
+	<system:String x:Key="SplashScreen.Features.About">Модифікації та Коди тепер мають описи. Моди тепер підтримують Посилання на Автора та Вихідний Код. Вони будуть у вікні опису якщо наявні у налаштуваннях.</system:String>
+	<system:String x:Key="SplashScreen.Features.HealthCheck">Створено "Перевірку Цілісності Гри". Ця функція може знайти зникші або модифіковані файли. Зауважте що модифіковані файли не завжди є проблемою, і Менеджер не виправить вашу гру.</system:String>
+	<system:String x:Key="SplashScreen.Features.Search">Тепер можна шукати Моди та Коди. Коли у вкладці Модифікацій чи Кодів, можна натиснути Ctrl+F щоб шукати щось.</system:String>
+	<system:String x:Key="SplashScreen.Features.Codes">Створено спеціальний інструмент для Написання Кодів (читів). Коли Створюєш новий Мод, або редагуєш існуючий, можна додати специфічний для мода код. Тепер легше додавати коди з вікном яке підтримує синтаксис для нашої системи OpCodes. Воно також перевірить чи правильно написано код.</system:String>
+	<system:String x:Key="SplashScreen.Features.NewMod">Створення Нового Моду тепер полегшене. Тепер можливо додати Оновлення і/або Залежності прямо у тому самому вікні. Це можна знайти у будь-який момент у вікні Редагування Моду.</system:String>
+	<system:String x:Key="SplashScreen.Features.CodeDesc">Коди тепер мають описи. Додано тільки до кодів які не легко зрозуміти просто по імені. Користувацькі Коди можуть мати описи.</system:String>
+
+	<system:String x:Key="SplashScreen.ML">Зміни SADX Mod Loader</system:String>
+	<system:String x:Key="SplashScreen.ML.Patches">Тихі Полагодження (Патчі) які Завантажувач встановлював сам тепер можна самому увімкнути/вимкнути. Більшість увімкнено за замовчуванням. Їх можна знайти у "Налаштування Гри->Патчі".</system:String>
+	<system:String x:Key="SplashScreen.ML.SDL2">Input Mod (SDL2) було нативно вставлено у Завантажувач. Він увімкнений за замовчуванням. Можна перемкнутися між SDL2 та Звичайним введеням у "Налаштування Гри->Введення".</system:String>
+	
+</ResourceDictionary>

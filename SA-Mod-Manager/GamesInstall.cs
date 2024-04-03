@@ -524,6 +524,8 @@ namespace SAModManager
             gameImage = App.GetResourceUri("Games.sa2.png"),
             exeName = "sonic2app.exe",
             defaultIniProfile = "SA2ModLoader.ini",
+            codeURL = Properties.Resources.URL_SA2_CODE,
+            patchURL = Properties.Resources.URL_SA2_PATCH,
             id = SetGame.SA2,
             gameAbbreviation = "SA2",
             oneClickName = "sa2mm",

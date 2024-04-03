@@ -1,0 +1,161 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<system:String x:Key="MessageWindow.DefaultTitle">SA Mod Manager</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle.Error">Помилка</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Попередження</system:String>
+	
+	<!--#region Errors-->
+	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">Наявний mod.ini у папці модів.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Кожен мод має бути у підпапці папки модів. Не розпаковуйте мод прямо у папку модів.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Перемістіть або видаліть mod.ini у папці модів, та перезавантажте програму.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Не вдалося знайти ці моди:&#x0a;&#x0a;</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Не вийшло встановити Шлях до Гри</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Не вийшло знайти sonic.exe, виберіть папку де встановлено SADX.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Не вийшло знайти шлях до гри</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Не вийшло знатйи шлях до гри. Будь ласка встановіть шлях у Конфігурації і впевніться що у ній є sonic.exe.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Мод вже існує"</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Мод з цим ім'ям вже існує.&#x0a;Будь ласка встановіть інше ім'я або перейменуйте другий.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.ModCreationFailed.Title">"Помилка створення моду"</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.NoModName.Title">Неправильне ім'я моду</system:String>
+	<system:String x:Key="MessageWindow.Errors.NoModName">Ти не можеш мати мод без імені.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.MissingLoaderDLL" xml:space="preserve">Файл SADXModLoader.dll не можливо знайти, Завантажувач не буде працювати.&#x0a;&#x0a;Будь ласка перевстановіть Завантажувач.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.DontDoThat">Хм... ні, ти не хочеш цього робити. :)</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.InvalidFramerate.Title">Неправильне Налаштування</system:String>
+	<system:String x:Key="MessageWindow.Errors.InvalidFramerate">Вказана неправильна частота кадрів.</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Помилка встановлення коду</system:String>
+	<system:String x:Key="MessageWindow.Errors.CodesListFailed">Помилка завантаження списку кодів</system:String>
+	
+	<system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Помилки Оновлень</system:String>
+	<system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Ці Помилки сталися при перевірці оновлень:&#x0a;&#x0a;</system:String>
+	<system:String x:Key="MessageWindow.Errors.D3D8Update">Неможливо оновити d3d8.dll</system:String>
+    <system:String x:Key="MessageWindow.Errors.D3D8UpdateCheck">Неможливо перевірити версію d3d8to9</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.MissingManifest.Title">Немає mod.manifest</system:String>
+    <system:String x:Key="MessageWindow.Errors.MissingManifest">Ніякі з вибраних модів мають manifest-ти, Тому їх не можливо перевірити.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif.Title">Помилка Цілісності</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif0" xml:space="preserve">Ці моди не пройшли перевірку:&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif1">Файл(и)</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif2" xml:space="preserve">&#x0a;&#x0a;Чи бажаєте спробувати полагодження?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.URIParseFail.Title">URI Parse Failure</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail0">Malformed One-Click Install URI</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail1" xml:space="preserve">caused parse failure:&#x0a;</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GBAPIFail.Title">Помилка API GameBanana</system:String>
+    <system:String x:Key="MessageWindow.Errors.GBAPIFail">Помилка запиту API GameBanana:</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields0">One-Click Install URI</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields1">не заповнені потрібні поля.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail.Title">Не вдалося видалити папку</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail0">Не вдалося прибрати тимчасову папку для оновлень</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail1">Спробувати ще? Ви можете видалити папку самостійно пізніше.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail.Title">Не вдалося створити папку</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail0">Не вийшло створити тимчасову папку для оновлень</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail1">Спробувати ще раз?</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Оновлення не вдалося"</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed">Не вдалося оновити:"</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Не вдалося оновити мод"</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">Натисніть "Ще Раз", або "Відмінити" Щоб пропустити цей мод."</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Не вдалося отримати інформацію про оновлення."</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">SA Mod Manager не може працювати без .NET 7.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Відсутній VC++</system:String>
+    <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Схоже що у тебе немає деяких Випусків Visual C++, деякі моди не будуть працювати без них.&#x0a;&#x0a;Would you like to download and install them now?</system:String>
+
+<system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Помилка Завантаження</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail0">Не вдалося завантажити</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Хочеш спробувати ще раз?</system:String>
+
+	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave.Title">Інформація Завантажувача не збережена.</system:String>
+	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">"Шлях до папки модів не є правильним, впевніться що він правильний. Ваші налаштування не збережено для налаштувань Завантажувача."</system:String>
+
+	<system:String x:Key="MessageWindow.Errors.CodeFail.Title">Невірна Строка Коду</system:String>
+	<system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">Наявна пуста строка у коді.&#x0a;&#x0a;Будь ласка, приберіть пусту(і) строки і збережіть ще раз.</system:String>
+	<system:String x:Key="Messagewindow.Errors.CodeFailInvalid">Наявний Код не правильний.&#x0a;&#x0a;Будь ласка, полагодіть помилку та збережіть ще раз.</system:String>
+
+	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Невідома Помилка</system:String>
+	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Сталася невідома нам помилка.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Не вдалося видалити мод {0}.&#x0a;Впевніться що файли не використовуються іншою програмою, а потім спробуйте ще.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ProfileLoad">Сталася неочікувана помилка при завантаження профілів, якщо помилка залишається, будь ласка, повідомте про неї.</system:String>
+    <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Не вдалося створити папку налаштувань у {0}.&#x0a;Менеджер Модів не зможе працювати правильно.</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateInstallCopy" xml:space="preserve">Не вдалося встановити оновлення {0}.&#x0a;Якщо гра відкрита, вимкніть її і спробуйте ще.</system:String>
+    <!--#endregion-->
+	
+	<!--#region Warnings-->
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Це видалить вибрані моди:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Чи бажаєш продовжити? (Дію не звернути)</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Ти зараз вимкнеш Перенапрям Збереження для цього моду. Якщо продовжиш, будь-який сейв у папці моду буде видалено.&#x0a;&#x0a;Чи бажаєш продовжити?</system:String>
+
+	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">Певен що хочеш видалити вибрані профілі?</system:String>
+	
+	<system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Ця дія пере-завантажить усі вибрані моди на диск.&#x0a;&#x0a;Певен що хочеш продовжити?</system:String>
+	
+	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">Це може спричинити видалення усіх ДАНИХ КОРИСТУВАЧА У МОДІ (ФАЙЛИ ЗБЕРЕЖЕННЯ, НАЛАШТУВАННЯ) при наступному оновленні! Щоб запобігти цьому, Не роби цього на модах які ти не створював.&#x0a;&#x0a;Чи бажаєш продовжити?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime не встановлено!&#x0a;&#x0a;Хочеш встановити зараз?</system:String>
+
+	<system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Це видалить усі вибрані коди.&#x0a;&#x0a;Чи бажаєш продовжити?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">ти зараз вимкнеш оновлення для цього моду. Якщо продовжиш, Менеджер НЕ ПЕРЕВІРЯТИМЕ оновлення для нього (поки не увімкнеш назад).&#x0a;Певен що хочеш продовжти?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">Мод Менеджеру потрібен 7-Zip щоб розпаковувати та оновлювати моди.&#x0a;&#x0a;Чи бажаєш встановити зараз?</system:String>
+
+    <!--#endregion-->
+	
+	<!--#region Information-->
+	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">Не Знайдено Оновлень для Модів</system:String>
+	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Моди Останніх Версій.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.D3D8Update">Версія d3d8.dll у папці SADX різниться від тієї яка іде зЗавантажувачем Модів. Чи оновлювати наявну копію?</system:String>
+
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Результати Перевірки</system:String>
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif">Всі вибрані моди пройшли перевірку успішно.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Game found</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">{0} game has been detected at '{1}'&#x0a;&#x0a;Would you like to download and install the Mod Loader?</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Please download and install SADX Mod Installer to convert your game to 2004. (Your saves will be converted as well).</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">Папка гри SADX знайдена, Але схоже на те що це версія Steam.&#x0a;Завантажувач Модів працює тільки з версією 2004 року.&#x0a;&#x0a;Чи бажаєш встановити Mod Installer? Він перетворить твою версію на версію 2004 року (Збереження також будуть конвертовані).</system:String>
+
+	<system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Перевірка Цілісності</system:String>
+	<system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Ти зараз запустиш Перевірку Цілісності Гри. Вона перевірить усі файли гри окрім аудіо.&#x0a;&#x0a;Чи бажаєш продовжити?</system:String>
+
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">Знайдено Проблеми з Файлами</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">Знайдені проблеми у файлах твоєї гри:</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles2">Зауважте, якщо гра працює без проблем, проблеми наведені зверху ніяк не впливають на гру.</system:String>
+
+	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Перевірку Пройдено</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Всі файли були перевірені.</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Title">Включити налаштування</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Message">Чи хочете скопіювати налаштування Менеджеру та Профілю щоб додати їх до повідомлення?&#x0a;&#x0a;Це не обов'язково, але це може допомогти у вирішенні проблем.</system:String>
+
+    <system:String x:Key="MessageWindow.Information.BugReport.Title">Повідомити Глюк</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1">Ви зараз відправите Повідомлення про Помилку, будь ласка впевністься:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Ваш Менеджер останньої версії.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Ваш Завантажувач останньої версії.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message4">Всі моди останньої версії.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message5">Якщо ви перевірили все вище, тоді, будь ласка, слідуйте за напрямами нижче щоб відправити помилку правильно:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Якщо є будь яка проблема саме з програмою, використайте кнопку Менеджера Модів.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Якщо є будь яка проблема саме з грою, як от зависи, аварії, тощо, використайте кнопку Завантажувача Модів.</system:String>
+    <!--#endregion-->
+
+</ResourceDictionary>

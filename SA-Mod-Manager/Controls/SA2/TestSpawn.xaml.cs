@@ -158,6 +158,7 @@ namespace SAModManager.Controls.SA2
                 case "tsCheckPlayer2":
                     if (tsComboPlayer2.SelectedIndex < 0)
                         tsComboPlayer2.SelectedIndex = 0;
+
                     break;
                 case "tsCheckLevel":
                     if (tsComboLevel.SelectedIndex < 0)
