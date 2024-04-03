@@ -816,6 +816,15 @@ namespace SAModManager
                 if (match.Groups.Count >= 2)
                 {
                     string pathValue = match.Groups[1].Value;
+
+                    if (App.isLinux)
+                    {
+                        if (pathValue.Contains('\\'))
+                            pathValue = pathValue.Replace('\\', '/');
+
+                        Util.AdjustPathForLinux(ref pathValue);
+                    }
+
                     paths.Add(Path.GetFullPath(pathValue)); //getfullpath fixes the extra backslashes, lol
                 }
             }
@@ -843,7 +852,20 @@ namespace SAModManager
             if (App.isLinux)
             {
                 string home = Environment.GetEnvironmentVariable("WINEHOMEDIR").Replace("\\??\\", "");
-                SteamLocation = Path.Combine(home, ".steam/steam"); //unused
+                if (string.IsNullOrEmpty(home) == false)
+                {
+                    SteamLocation = Path.Combine(home, ".steam/steam");
+                    return;
+                }
+                else
+                {
+                    string steamDir = Environment.GetEnvironmentVariable("STEAM_DIR");
+                    if (string.IsNullOrEmpty(steamDir) == false)
+                    {
+                        SteamLocation = steamDir;
+                        return;
+                    }
+                }
             }
 
             string steamInstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Valve\Steam", "InstallPath", null);
@@ -904,7 +926,6 @@ namespace SAModManager
                             if (success)
                                 break;
                         }
-
                     }
                 }
             }
