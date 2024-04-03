@@ -698,12 +698,14 @@ namespace SAModManager
 
         public static void AddGamesInstall()
         {
+            Logger.Log("\nAuto Game Detection starts now...");
+            Logger.Log("Now looking for games in the same folder as the Manager...");
             try
             {
                 foreach (var game in GamesInstall.GetSupportedGames())
                 {
                     string path = Path.Combine(Environment.CurrentDirectory, game.exeName);
-
+                    Logger.Log("Checking for: " + path);
                     if (File.Exists(path))
                     {
                         App.GamesList.Add(game);
@@ -711,14 +713,18 @@ namespace SAModManager
                     }
                 }
 
+                Logger.Log("Now looking for games through Steam...");
+
                 foreach (var game in GamesInstall.GetSupportedGames())
                 {
                     foreach (var pathValue in Steam.steamAppsPaths)
                     {
                         string gameInstallPath = Path.Combine(pathValue, "steamapps", "common", game.gameName);
-
+                        
+                        Logger.Log("Checking for: " + gameInstallPath);
                         if (Directory.Exists(gameInstallPath) && !App.GamesList.Contains(game))
                         {
+                            Logger.Log("Found Game!");
                             App.GamesList.Add(game);
                             AddMissingGamesList(game);
                         }
@@ -820,12 +826,16 @@ namespace SAModManager
                     if (App.isLinux)
                     {
                         if (pathValue.Contains('\\'))
+                        {
                             pathValue = pathValue.Replace('\\', '/');
+                            Logger.Log("Linux: Detected backslashes, adjusted to forward slashes.");
+                        }
 
                         Util.AdjustPathForLinux(ref pathValue);
                     }
 
                     paths.Add(Path.GetFullPath(pathValue)); //getfullpath fixes the extra backslashes, lol
+                    Logger.Log("Path Found: " + Path.GetFullPath(pathValue));
                 }
             }
 
@@ -837,10 +847,12 @@ namespace SAModManager
             if (SteamLocation is null)
                 return;
 
+            Logger.Log("Now looking for Steam config file...");
             string configPath = Path.Combine(SteamLocation, "config", "libraryfolders.vdf");
 
             if (File.Exists(configPath))
             {
+                Logger.Log("libraryfolders.vdf file found... now attempting to get paths...");
                 steamAppsPaths = new();
                 string fileContent = File.ReadAllText(configPath);
                 steamAppsPaths = GetPathValues(fileContent);
@@ -854,6 +866,7 @@ namespace SAModManager
                 string home = Environment.GetEnvironmentVariable("WINEHOMEDIR").Replace("\\??\\", "");
                 if (string.IsNullOrEmpty(home) == false)
                 {
+                    Logger.Log("Steam Folder using Linux found at: " + home);
                     SteamLocation = Path.Combine(home, ".steam/steam");
                     return;
                 }
@@ -862,11 +875,13 @@ namespace SAModManager
                     string steamDir = Environment.GetEnvironmentVariable("STEAM_DIR");
                     if (string.IsNullOrEmpty(steamDir) == false)
                     {
+                        Logger.Log("Steam Folder using Linux found at: " + steamDir);
                         SteamLocation = steamDir;
                         return;
                     }
                 }
             }
+
 
             string steamInstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Valve\Steam", "InstallPath", null);
 
@@ -875,11 +890,15 @@ namespace SAModManager
                 var key = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Default).OpenSubKey("Software\\Valve\\Steam");
 
                 if (key != null && key.GetValue("SteamPath") is string steamPath)
+                {
                     SteamLocation = steamPath;
+                    Logger.Log("Steam Folder was found through Windows method at: " + steamPath);
+                }   
             }
             else
             {
                 SteamLocation = steamInstallPath;
+                Logger.Log("Steam Folder was found through Windows method at: " + steamInstallPath);
             }
         }
 

@@ -46,6 +46,7 @@ namespace SAModManager
         public static bool isFirstBoot = false; //used when installing the new manager manually
         public static bool isLinux = false;
         public static bool CancelUpdate = false;
+        public static bool isDebug = false;
 
         public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
         public static ManagerSettings ManagerSettings { get; set; }
@@ -92,7 +93,7 @@ namespace SAModManager
 
             UpdateHelper.InitHttpClient();
             Util.CheckLinux();
-            HandleVanillaTransition(args);
+            SetExeCommands(args);
             Steam.Init();
             SetupLanguages();
             SetupThemes();
@@ -559,7 +560,7 @@ namespace SAModManager
             }
         }
 
-        private static void HandleVanillaTransition(string[] args)
+        private static void SetExeCommands(string[] args)
         {
             foreach (var arg in args)
             {
@@ -572,6 +573,23 @@ namespace SAModManager
                 else if (arg == "clearLegacy")
                 {
                     Util.DoVanillaFilesCleanup(args);
+                }
+                else if (arg == "debug")
+                {
+                    App.isDebug = true;
+                    Logger.Log("debug mode enabled");
+                }
+                else if (arg == "reset")
+                {
+                    if (Directory.Exists(ConfigFolder))
+                    {
+                        try
+                        {
+                            Directory.Delete(ConfigFolder, true);
+                            App.isFirstBoot = true;
+                        }
+                        catch { }
+                    }
                 }
             }
         }

@@ -563,6 +563,7 @@ namespace SAModManager
             {
                 key.Close();
                 App.isLinux = true;
+                Logger.Log("Linux detected with first method");
                 return;
             }
 
@@ -571,6 +572,7 @@ namespace SAModManager
             if (!string.IsNullOrEmpty(winePrefix))
             {
                 App.isLinux = true;
+                Logger.Log("Linux detected with second method");
                 return;
             }
 
@@ -581,9 +583,12 @@ namespace SAModManager
                 if (File.Exists(path))
                 {
                     App.isLinux = true;
+                    Logger.Log("Linux detected with last method, wow that was close.");
                     return;
                 }
             }
+
+            Logger.Log("Linux wasn't detected, the Manager will act like we are on Windows.");
         }
 
         public static bool RunningAsAdmin()
