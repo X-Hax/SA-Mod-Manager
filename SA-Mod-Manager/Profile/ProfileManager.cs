@@ -212,9 +212,12 @@ namespace SAModManager.Profile
         {
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) == false)
             {
-                if (CheckProfileDirectory())
+                string modPath = Path.Combine(App.CurrentGame.gameDirectory, "mods");
+                Directory.CreateDirectory(modPath);
+
+                if (CheckProfileDirectory() && Directory.Exists(modPath))
                 {
-                    foreach (var item in Directory.EnumerateFiles(Path.Combine(App.CurrentGame.gameDirectory, "mods"), "*.ini"))
+                    foreach (var item in Directory.EnumerateFiles(modPath, "*.ini"))
                     {
                         string sourceFile = Path.GetFileName(item);
                         string destFile =
