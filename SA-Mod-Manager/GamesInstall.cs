@@ -219,6 +219,23 @@ namespace SAModManager
                     var dl = new DownloadDialog(uri, "Border Loader", "Border_Default.png", game.modDirectory, DownloadDialog.DLType.Download, true);
                     dl.StartDL();
                 }
+
+                //gross and hopefully Temp
+                if (App.CurrentGame?.id == SetGame.SA2) 
+                {
+                    string shader = Path.Combine(game.modDirectory, "DebugTextShader.hlsl"); 
+                    if (!File.Exists(shader))
+                    {
+                        Uri debugUriTex = new(Properties.Resources.URL_SA2_DEBUGFONT_TEX);
+                        var dl = new DownloadDialog(debugUriTex, "DebugFontTexture", "DebugFontTexture.dds", game.modDirectory, DownloadDialog.DLType.Download);
+                        dl.StartDL();
+
+                        Uri debugUriShader = new(Properties.Resources.URL_SA2_DEBUGTEXT_SHADER);
+                        var dl2 = new DownloadDialog(debugUriShader, "DebugFontShader", "DebugTextShader.hlsl", game.modDirectory, DownloadDialog.DLType.Download);
+                        dl2.StartDL();
+                    }
+
+                }
             }
             catch { }
         }
