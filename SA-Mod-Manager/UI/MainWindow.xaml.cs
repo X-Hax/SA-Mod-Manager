@@ -2628,6 +2628,8 @@ namespace SAModManager
             {
                 await ForceInstallLoader();
                 UpdateButtonsState();
+                Refresh();
+                Save();
             }
         }
 
