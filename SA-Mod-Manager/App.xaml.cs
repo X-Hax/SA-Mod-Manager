@@ -300,12 +300,12 @@ namespace SAModManager
 
         public static async Task<bool> PerformUpdateManagerCheck()
         {
-            var mainWindow = ((MainWindow)Application.Current.MainWindow);
-
-            mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
-
+            MainWindow mainWindow = null;
             try
             {
+                mainWindow = ((MainWindow)Application.Current.MainWindow);
+                mainWindow?.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
+
                 var update = await GitHub.GetLatestManagerRelease();
 
                 if (update.Item1 == false) //no update found
@@ -342,9 +342,11 @@ namespace SAModManager
             }
             catch
             {
-                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdateFail"));
+                mainWindow?.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdateFail"));
                 return false;
             }
+
+
         }
 
         private static async Task<(bool, string)> CheckLoaderUpdate()

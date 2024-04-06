@@ -1299,7 +1299,10 @@ namespace SAModManager
             catch { }
 
             if ((bool)!checkManagerOpen.IsChecked)
-                Close();
+            {
+                App.Current.Shutdown();
+            }
+          
         }
 
         public void SetModManagerVersion()
@@ -1734,13 +1737,14 @@ namespace SAModManager
                 catch { }
             }
 
+
             if (File.Exists(Path.Combine(App.CurrentGame.modDirectory, "mod.ini")))
             {
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ModWithoutFolder0") + Lang.GetString("MessageWindow.Errors.ModWithoutFolder1") +
                             Lang.GetString("MessageWindow.Errors.ModWithoutFolder2"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error,
                             MessageWindow.Buttons.OK).ShowDialog();
 
-                Close();
+                App.Current.Shutdown();
                 return;
             }
 
