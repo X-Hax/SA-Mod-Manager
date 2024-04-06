@@ -378,7 +378,8 @@ namespace SAModManager
                     await Process.Start(new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y")
                     {
                         UseShellExecute = true,
-                        CreateNoWindow = true
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden
                     }).WaitForExitAsync();
 
                     return true;
