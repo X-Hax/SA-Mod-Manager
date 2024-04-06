@@ -1517,7 +1517,7 @@ namespace SAModManager
             if (newSetup || sadxSettings.GamePath is null)
                 sadxSettings.GamePath = tempPath;
 
-            if (!string.IsNullOrEmpty(sadxSettings.GamePath))
+            if (!string.IsNullOrEmpty(sadxSettings.GamePath) && Directory.Exists(sadxSettings.GamePath))
             {
                 textGameDir.Text = sadxSettings.GamePath;
                 App.CurrentGame.gameDirectory = sadxSettings.GamePath;
@@ -1539,7 +1539,7 @@ namespace SAModManager
                 sa2.GamePath = tempPath;
 
 
-            if (!string.IsNullOrEmpty(sa2.GamePath))
+            if (!string.IsNullOrEmpty(sa2.GamePath) && Directory.Exists(sa2.GamePath))
             {
                 textGameDir.Text = sa2.GamePath;
                 App.CurrentGame.gameDirectory = sa2.GamePath;
