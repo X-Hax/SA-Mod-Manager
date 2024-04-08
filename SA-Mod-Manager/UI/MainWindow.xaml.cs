@@ -389,7 +389,12 @@ namespace SAModManager
                 {
                     SAModInfo inf = value;
                     if (!string.IsNullOrEmpty(inf.Codes))
-                        codes.AddRange(CodeList.Load(Path.Combine(Path.Combine(modDir, mod), inf.Codes)).Codes);
+                    {   
+                        string codePath = Path.Combine(Path.Combine(modDir, mod), inf.Codes);
+                        if (File.Exists(codePath))
+                            codes.AddRange(CodeList.Load(codePath).Codes);
+                    }
+                      
                 }
             }
 
