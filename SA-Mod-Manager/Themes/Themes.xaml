@@ -6,6 +6,8 @@
 		<local:ThemeEntry FileName="DarkTheme" Name="Dark"/>
 		<local:ThemeEntry FileName="LightTheme" Name="Light"/>
 		<local:ThemeEntry FileName="TelegramTheme" Name="Telegram Night"/>
+		<local:ThemeEntry FileName="DarkGreenTheme" Name="Dark Green"/> 
+		<local:ThemeEntry FileName="LightGreenTheme" Name="Light Green"/>
 	</local:ThemeList>
 
 </ResourceDictionary>
