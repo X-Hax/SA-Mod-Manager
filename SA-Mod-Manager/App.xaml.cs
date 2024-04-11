@@ -8,19 +8,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Linq;
-using System.Windows.Threading;
-using System.Windows.Controls;
-using System.Windows.Media;
 using SAModManager.Updater;
-using SAModManager.Ini;
 using System.Reflection;
 using SAModManager.Configuration;
 using System.Diagnostics;
-using System.Security.Cryptography;
-using SAModManager.Properties;
 using System.Data;
-using System.Net.Http;
-using System.Net;
 using SAModManager.UI;
 using SAModManager.Controls.SADX;
 using SAModManager.Profile;
@@ -46,6 +38,7 @@ namespace SAModManager
         public static bool isFirstBoot = false; //used when installing the new manager manually
         public static bool isLinux = false;
         public static bool CancelUpdate = false;
+        public static bool isDebug = false;
 
         public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
         public static ManagerSettings ManagerSettings { get; set; }
@@ -92,7 +85,7 @@ namespace SAModManager
 
             UpdateHelper.InitHttpClient();
             Util.CheckLinux();
-            HandleVanillaTransition(args);
+            SetExeCommands(args);
             Steam.Init();
             SetupLanguages();
             SetupThemes();
@@ -299,12 +292,12 @@ namespace SAModManager
 
         public static async Task<bool> PerformUpdateManagerCheck()
         {
-            var mainWindow = ((MainWindow)Application.Current.MainWindow);
-
-            mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
-
+            MainWindow mainWindow = null;
             try
             {
+                mainWindow = ((MainWindow)Application.Current.MainWindow);
+                mainWindow?.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
+
                 var update = await GitHub.GetLatestManagerRelease();
 
                 if (update.Item1 == false) //no update found
@@ -341,9 +334,11 @@ namespace SAModManager
             }
             catch
             {
-                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdateFail"));
+                mainWindow?.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdateFail"));
                 return false;
             }
+
+
         }
 
         private static async Task<(bool, string)> CheckLoaderUpdate()
@@ -559,7 +554,7 @@ namespace SAModManager
             }
         }
 
-        private static void HandleVanillaTransition(string[] args)
+        private static void SetExeCommands(string[] args)
         {
             foreach (var arg in args)
             {
@@ -572,6 +567,23 @@ namespace SAModManager
                 else if (arg == "clearLegacy")
                 {
                     Util.DoVanillaFilesCleanup(args);
+                }
+                else if (arg == "debug")
+                {
+                    App.isDebug = true;
+                    Logger.Log("debug mode enabled");
+                }
+                else if (arg == "reset")
+                {
+                    if (Directory.Exists(ConfigFolder))
+                    {
+                        try
+                        {
+                            Directory.Delete(ConfigFolder, true);
+                            App.isFirstBoot = true;
+                        }
+                        catch { }
+                    }
                 }
             }
         }

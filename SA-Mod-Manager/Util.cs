@@ -93,7 +93,8 @@ namespace SAModManager
                     if (File.Exists(Path.Combine(root, file)))
                         File.Delete(Path.Combine(root, file));
                 }
-            } catch { }
+            }
+            catch { }
         }
 
         public static void DoVanillaFilesCleanup(string[] args)
@@ -112,7 +113,7 @@ namespace SAModManager
                         foundGameFolder = true;
                         break;
                     }
-                    else 
+                    else
                     {
                         root = Path.GetFullPath(Path.Combine(args[i], exeName));
 
@@ -365,7 +366,7 @@ namespace SAModManager
             exePath ??= FindExePathFromRegistry("SOFTWARE\\7-Zip");
 
             // If still not found, try with the PATH variable
-            exePath ??=  Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
+            exePath ??= Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
                 .Where(s => File.Exists(Path.Combine(s, "7z.exe"))).FirstOrDefault();
 
             if (exePath != null)
@@ -377,7 +378,8 @@ namespace SAModManager
                     await Process.Start(new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y")
                     {
                         UseShellExecute = true,
-                        CreateNoWindow = true
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden
                     }).WaitForExitAsync();
 
                     return true;
@@ -557,17 +559,48 @@ namespace SAModManager
 
         public static void CheckLinux()
         {
-            RegistryKey key = null;
+            RegistryKey key;
             if ((key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey("SOFTWARE\\Wine")) != null)
             {
                 key.Close();
                 App.isLinux = true;
+                Logger.Log("Linux detected with first method");
+                return;
             }
+
+            // Method 2: Check for Wine Environment Variables
+            string winePrefix = Environment.GetEnvironmentVariable("WINEPREFIX");
+            if (!string.IsNullOrEmpty(winePrefix))
+            {
+                App.isLinux = true;
+                Logger.Log("Linux detected with second method");
+                return;
+            }
+
+            // Method 3: Check for Common Linux Paths
+            string[] commonLinuxPaths = { "/usr/bin/wine", "/usr/bin/steam", "/opt/steam" };
+            foreach (string path in commonLinuxPaths)
+            {
+                if (File.Exists(path))
+                {
+                    App.isLinux = true;
+                    Logger.Log("Linux detected with last method, wow that was close.");
+                    return;
+                }
+            }
+
+            Logger.Log("Linux wasn't detected, the Manager will act like we are on Windows.");
         }
 
         public static bool RunningAsAdmin()
         {
             return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        public static void AdjustPathForLinux(ref string s)
+        {
+            if (App.isLinux && s.StartsWith("/"))
+                s = $"Z:{s}";
         }
     }
 }

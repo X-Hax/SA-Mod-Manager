@@ -389,7 +389,12 @@ namespace SAModManager
                 {
                     SAModInfo inf = value;
                     if (!string.IsNullOrEmpty(inf.Codes))
-                        codes.AddRange(CodeList.Load(Path.Combine(Path.Combine(modDir, mod), inf.Codes)).Codes);
+                    {   
+                        string codePath = Path.Combine(Path.Combine(modDir, mod), inf.Codes);
+                        if (File.Exists(codePath))
+                            codes.AddRange(CodeList.Load(codePath).Codes);
+                    }
+                      
                 }
             }
 
@@ -1299,7 +1304,10 @@ namespace SAModManager
             catch { }
 
             if ((bool)!checkManagerOpen.IsChecked)
-                Close();
+            {
+                App.Current.Shutdown();
+            }
+          
         }
 
         public void SetModManagerVersion()
@@ -1517,7 +1525,7 @@ namespace SAModManager
             if (newSetup || sadxSettings.GamePath is null)
                 sadxSettings.GamePath = tempPath;
 
-            if (!string.IsNullOrEmpty(sadxSettings.GamePath))
+            if (!string.IsNullOrEmpty(sadxSettings.GamePath) && Directory.Exists(sadxSettings.GamePath))
             {
                 textGameDir.Text = sadxSettings.GamePath;
                 App.CurrentGame.gameDirectory = sadxSettings.GamePath;
@@ -1539,7 +1547,7 @@ namespace SAModManager
                 sa2.GamePath = tempPath;
 
 
-            if (!string.IsNullOrEmpty(sa2.GamePath))
+            if (!string.IsNullOrEmpty(sa2.GamePath) && Directory.Exists(sa2.GamePath))
             {
                 textGameDir.Text = sa2.GamePath;
                 App.CurrentGame.gameDirectory = sa2.GamePath;
@@ -1621,7 +1629,10 @@ namespace SAModManager
 
         private void ManualLoaderUpdateCheck()
         {
-            if (File.Exists(App.CurrentGame.loader.dataDllOriginPath) && File.Exists(App.CurrentGame.loader.dataDllPath))
+            if (!File.Exists(App.CurrentGame.loader?.loaderdllpath))
+                return;
+
+            if (File.Exists(App.CurrentGame.loader?.dataDllOriginPath) && File.Exists(App.CurrentGame.loader?.dataDllPath))
             {
                 byte[] hash1 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.loaderdllpath));
                 byte[] hash2 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.dataDllPath));
@@ -1731,13 +1742,14 @@ namespace SAModManager
                 catch { }
             }
 
+
             if (File.Exists(Path.Combine(App.CurrentGame.modDirectory, "mod.ini")))
             {
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ModWithoutFolder0") + Lang.GetString("MessageWindow.Errors.ModWithoutFolder1") +
                             Lang.GetString("MessageWindow.Errors.ModWithoutFolder2"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error,
                             MessageWindow.Buttons.OK).ShowDialog();
 
-                Close();
+                App.Current.Shutdown();
                 return;
             }
 
@@ -2625,6 +2637,8 @@ namespace SAModManager
             {
                 await ForceInstallLoader();
                 UpdateButtonsState();
+                Refresh();
+                Save();
             }
         }
 

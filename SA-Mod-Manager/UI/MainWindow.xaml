@@ -501,8 +501,8 @@
         </TabControl>
 
 		<!--Manager Current Message-->
-		<Grid Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,10,0" Height="30" Width="Auto" MaxWidth="275">
-			<TextBlock x:Name="WhatTheManagerDoin" VerticalAlignment="Center" TextWrapping="NoWrap"/>
+		<Grid Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,10,0" Height="30" Width="Auto" MaxWidth="240">
+			<TextBlock x:Name="WhatTheManagerDoin" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
 		</Grid>
 		
         <!--This Grid manages the Save, Play, and Install buttons at the bottom of the app.-->
