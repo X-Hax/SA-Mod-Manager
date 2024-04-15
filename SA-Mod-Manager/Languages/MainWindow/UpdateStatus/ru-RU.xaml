@@ -3,12 +3,12 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <system:String x:Key="UpdateStatus.ChkUpdate">Проверка обновлений...</system:String>
-    <system:String x:Key="UpdateStatus.ChkManagerUpdate">Проверка обновлений Менеджера модов...</system:String>
+    <system:String x:Key="UpdateStatus.ChkManagerUpdate">Проверка обновлений менеджера модов...</system:String>
     <system:String x:Key="UpdateStatus.ChkLoaderUpdate">Проверка обновлений Загрузчика модов...</system:String>
     <system:String x:Key="UpdateStatus.ChkModsUpdates">Проверка обновлений модов...</system:String>
     <system:String x:Key="UpdateStatus.ChkCodesUpdates">Проверка обновлений читов...</system:String>
     <system:String x:Key="UpdateStatus.ChkPatchesUpdates">Проверка обновлений патчей...</system:String>
-    <system:String x:Key="UpdateStatus.ChkManagerUpdateFail">Ошибка обновления Менеджера модов</system:String>
+    <system:String x:Key="UpdateStatus.ChkManagerUpdateFail">Ошибка обновления менеджера модов</system:String>
     <system:String x:Key="UpdateStatus.ChkLoaderUpdateFail">Ошибка обновления Загрузчика модов</system:String>
     <!-- '{0}' will be used to display the name of the mod, ex: "Checking for Super Sonic Mod Update..."-->
     <system:String x:Key="UpdateStatus.ChkCurModUpdate">Проверка обновлений мода {0}...</system:String>
@@ -21,7 +21,7 @@
     <system:String x:Key="UpdateStatus.FailedUpdateCodes">Ошибка обновления читов</system:String>
     <system:String x:Key="UpdateStatus.UpdateDependencies">Обновление зависимостей, подождите...</system:String>
     <system:String x:Key="UpdateStatus.FailedUpdateDependencies">Ошибка обновления зависимостей</system:String>
-    <system:String x:Key="UpdateStatus.ManagerUpdate">Обновление Менеджера модов...</system:String>
+    <system:String x:Key="UpdateStatus.ManagerUpdate">Обновление менеджера модов...</system:String>
     <system:String x:Key="UpdateStatus.LoaderUpdate">Обновление Загрузчика модов...</system:String>
     <system:String x:Key="UpdateStatus.LoaderInstalled">Загрузчик модов успешно установлен</system:String>
     <system:String x:Key="UpdateStatus.LoaderUninstalled">Загрузчик модов успешно удалён</system:String>

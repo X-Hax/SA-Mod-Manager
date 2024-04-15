@@ -9,7 +9,7 @@
 	<!--#region Errors-->
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">Обнаружен файл mod.ini в папке с модами.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Не помещайте моды напрямую в папку Mods! Каждый мод должен находиться в своей подпапке.</system:String>
-	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Переместите или удалите файл mod.ini в папке Mods и запустите Менеджер модов снова.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Переместите или удалите файл mod.ini в папке Mods и запустите менеджер модов снова.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Указанные моды не были найдены:&#x0a;&#x0a;</system:String>
 
@@ -17,7 +17,7 @@
     <system:String x:Key="MessageWindow.Errors.GamePathFailed">Не удалось обнаружить поддерживаемую игру. Убедитесь, что путь к игре указан корректно.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Ошибка при обнаружении пути к игре</system:String>
-	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Не удалось найти путь к игре. Настройте путь в настройках Менеджера и проверьте, чтобы была выбрана папка с файлом sonic.exe.</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Не удалось найти путь к игре. Настройте путь в настройках менеджера и проверьте, чтобы была выбрана папка с файлом sonic.exe.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Мод уже существует"</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Мод с таким именем уже существует.&#x0a;Введите другое имя или переименуйте существующий файл.</system:String>
@@ -27,7 +27,7 @@
 	<system:String x:Key="MessageWindow.Errors.NoModName.Title">Недопустимое название мода</system:String>
 	<system:String x:Key="MessageWindow.Errors.NoModName">У мода должно быть название.</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.MissingLoaderDLL" xml:space="preserve">Не найден файл SADXModLoader.dll, Загрузчик модов работать не будет.&#x0a;&#x0a;Перекачайте Менеджер модов заново.</system:String>
+	<system:String x:Key="MessageWindow.Errors.MissingLoaderDLL" xml:space="preserve">Не найден файл SADXModLoader.dll, Загрузчик модов работать не будет.&#x0a;&#x0a;Перекачайте менеджер модов заново.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.DontDoThat">Ну... Не, тебе это точно не нужно :)</system:String>
 	
@@ -114,11 +114,11 @@
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">Не установлен компонент .NET 7.0 Desktop Runtime!&#x0a;&#x0a;Установить его сейчас?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Вы удалите все выбранные коды.&#x0a;&#x0a;Желаете продолжить?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Будут удалены все выбранные коды.&#x0a;&#x0a;Желаете продолжить?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">Вы выключите обновления этого мода. Если продолжите, Менеджер больше не будет проверять обновления для этого мода.&#x0a;Желаете продолжить?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">Будет выключена проверка обновлений для выбранного мода. Если продолжите, менеджер больше не будет проверять наличие обновления для него.&#x0a;Желаете продолжить?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">Для работы Менеджера необходим 7-zip, чтобы можно было извлекать моды и обновления.&#x0a;&#x0a;Желаете установить его сейчас?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">Для работы менеджера необходим 7-zip, чтобы можно было извлекать моды и обновления.&#x0a;&#x0a;Желаете установить его сейчас?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Профили не найдены</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">Указанные профили не были найдены:</system:String>
@@ -154,11 +154,11 @@
     <system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Все файлы были успешно проверены.</system:String>
     
     <system:String x:Key="MessageWindow.Information.Exception.Title">Добавление настроек</system:String>
-    <system:String x:Key="MessageWindow.Information.Exception.Message">Желаете скопировать настройки Менеджера и профилей в отсчёт?&#x0a;&#x0a;Это необязательно, но может помочь в решении проблемы.</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Message">Желаете скопировать настройки менеджера и профилей в отсчёт?&#x0a;&#x0a;Это необязательно, но может помочь в решении проблемы.</system:String>
 
     <system:String x:Key="MessageWindow.Information.BugReport.Title">Отчёт об ошибке</system:String>
     <system:String x:Key="MessageWindow.Information.BugReport.Message1">Вы собираетесь отправить отчёт об ошибке. Пожалуйста, убедитесь в следующем:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2">У вас обновлён Менеджер.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2">У вас обновлён менеджер.</system:String>
     <system:String x:Key="MessageWindow.Information.BugReport.Message3">У вас обновлён Загрузчик.</system:String>
     <system:String x:Key="MessageWindow.Information.BugReport.Message4">Все моды обновлены.</system:String>
     <system:String x:Key="MessageWindow.Information.BugReport.Message5">Если вы убедились в вышеуказанном, следуйте приведенным ниже инструкциям для отправки в правильный репозиторий:</system:String>
