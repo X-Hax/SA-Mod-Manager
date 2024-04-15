@@ -19,9 +19,10 @@
     <system:String x:Key="GamePatches.LightFix">Полагодження Освітлення</system:String>
     <system:String x:Key="GamePatches.KillGBIX">Вимкнути GBIX (Експериментально)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Вимкнути Перевірку CD</system:String>
-    <system:String x:Key="GamePatches.CrashGuard">Crash Guard</system:String>
-
-
+	<system:String x:Key="GamePatches.ExtendedSaveSupport">Extended Save Support</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Захист від Аварій</system:String>
+	
+	
     <system:String x:Key="GamePatches.HRTFSoundDesc">Налаштовує DirectSound для використання більш розвинених алгоритмів обробки 3D звуку. Цей патч не є обов'язковим якщо BASS для SFX увімкнено.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Лагодить глюк який не дозволяє налаштуванням Вільної Камери правильно зберегтися після (пере)завантаження мапи.</system:String>
     <system:String x:Key="GamePatches.FixVertexColorRenderingDesc" xml:space="preserve">Зазвичай SADX повністю ігнорує надані кольори вершин і використовує глобальні кольори коли не має.&#x0a;&#x0a;Цей патч відновлює функції щоб усе було ПРАВИЛЬНО і кольори надані моделькою використовувалися.</system:String>
@@ -35,28 +36,29 @@
     <system:String x:Key="GamePatches.ChaoPanelFixDesc">Лагодить віконце відображення статистики Чао.</system:String>
     <system:String x:Key="GamePatches.PixelOffSetFixDesc">Лагодить суб-піксельне розташування 2D елементів де можна помітити при вищій роздільній здатності.</system:String>
     <system:String x:Key="GamePatches.LightFixDesc">Лагодить місця де світло не правильно застосоване на LandTables і зберігає тип світла для моделей у черзі.</system:String>
-    <system:String x:Key="GamePatches.DisableCDCheckDesc" xml:space="preserve">Глобальний Індекс (GBIX) це значення яке використовується системою кешування гри. Кожна текстура у SADX має таке.&#x0a;перед тим як гра завантажить нову текстуру, вона перевіряє значення GBIX нової текстури зі старими.&#x0a;Якщо знайшлося таке, гра перевикористовує завантажену текстуру замість нової.&#x0a;&#x0a;Цей патч по більшості вимикає систему GBIX щоб знизити помилки/конфлікти текстур. (Є деякі виключення як елементи HUD.)</system:String>
-    <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Вимикає перевірку диску.</system:String>
+    <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">Глобальний Індекс (GBIX) це значення яке використовується системою кешування гри. Кожна текстура у SADX має таке.&#x0a;перед тим як гра завантажить нову текстуру, вона перевіряє значення GBIX нової текстури зі старими.&#x0a;Якщо знайшлося таке, гра перевикористовує завантажену текстуру замість нової.&#x0a;&#x0a;Цей патч по більшості вимикає систему GBIX щоб знизити помилки/конфлікти текстур. (Є деякі виключення як елементи HUD.)</system:String>
+	<system:String x:Key="GamePatches.DisableCDCheckDesc">Вимикає перевірку диску.</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Вмикає підтримку збережень Стім версії і дозволяє їм назви (до 48 символів).</system:String>
     <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Prevents common crashes with missing textures and missing binary files.&#x0a;&#x0a;This will not prevent the game from crashing in all circumstances.</system:String>
 
     <!--#region SA2 Patches-->
-    <system:String x:Key="GamePatchesSA2.FramerateLimiter">Lock Framerate</system:String>
-    <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Disable Exit Prompt</system:String>
-    <system:String x:Key="GamePatchesSA2.SyncLoad">Disable Loading Animation</system:String>
-    <system:String x:Key="GamePatchesSA2.ExtendVertexBuffer">Increase Vertex Buffer Limit</system:String>
-    <system:String x:Key="GamePatchesSA2.EnvMapFix">Environment Mapping Fixes</system:String>
-    <system:String x:Key="GamePatchesSA2.ScreenFadeFix">Screen Fade Fixes</system:String>
-    <system:String x:Key="GamePatchesSA2.CECarFix">City Escape Car Fixes</system:String>
-    <system:String x:Key="GamePatchesSA2.ParticlesFix">Particles Effect Fixes</system:String>
+    <system:String x:Key="GamePatchesSA2.FramerateLimiter">Замкнути FPS</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Вимкнути Вікно Виходу</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoad">Вимкнути Анміацію Завантаження</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBuffer">Збільшити ліміт Vertex Buffer</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFix">Полагодження Environment Mapping</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFix">Полагодження Затемнення Екрану</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFix">Полагодження Машин у City Escape</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFix">Полагодження ефектів часточок</system:String>
 
-    <system:String x:Key="GamePatchesSA2.FramerateLimiterDesc">Lock the framerate at 60 FPS, this resolves the issue of the game running too fast on monitors with higher refresh rates.</system:String>
-    <system:String x:Key="GamePatchesSA2.DisableExitPromptDesc">Disable the warning prompt when closing the game.</system:String>
-    <system:String x:Key="GamePatchesSA2.SyncLoadDesc">Disable Omochao Loading animation, this should reduce crashes on startup.</system:String>
-    <system:String x:Key="GamePatchesSA2.ExtendVertexBufferDesc">Increase the Vertex Buffer Limit to 32k, enabling the integration of higher poly models into the game, this is mandatory for some mods to work.</system:String>
-    <system:String x:Key="GamePatchesSA2.EnvMapFixDesc">Fixes a condition bug with Environment Mapping (mostly in Chao World) allowing a better render.</system:String>
-    <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">Fixes a bug with the screen fading during the Victory Result Screen.</system:String>
-    <system:String x:Key="GamePatchesSA2.CECarFixDesc">Fixes the infamous trolley car glitch in City Escape (intel GPU).</system:String>
-    <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Fixes Particles Effect (Mystic Melody portail etc.) not showing up (intel GPU).</system:String>
+    <system:String x:Key="GamePatchesSA2.FramerateLimiterDesc">Заблокувати FPS на 60 кадрів на секунду, це прибриає проблему коли гра працює занадто швидко на моніторах з вищою швидкістю оновлення.</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPromptDesc">Вимкнути попереджальний діалог коли закриваєш гру.</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoadDesc">Вимкнути Анміацію Завантаження з ОМочао на початку, це має зменшити кількість аварій на запуску.</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBufferDesc">Збільшує ліміт Vertex Buffer до 32k, Дозволяючи деталізованіші модельки у гру, це є необхідністю для деяких модів.</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFixDesc">Лагодить глюк стану Environment Mapping (переважно у Світі Чао) дозволяючи кращий рендер.</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">лагодить глюк з затемненням екрану коли пройшлов рівень.</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFixDesc">Лагодить відомий глюк з тролейбусом у City Escape (Intel GPU).</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Лагодить часточкові ефекти (Портал Містичної Мелодії тощо) щоб вони показувались (Intel GPU).</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>
