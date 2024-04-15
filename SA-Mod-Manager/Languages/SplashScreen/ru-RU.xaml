@@ -6,7 +6,7 @@
     <system:String x:Key="SplashScreen.Title">Приветствуем!</system:String>
     <system:String x:Key="SplashScreen.Welcome">Приветствуем в обновлённом менеджере модов SA!</system:String>
 
-    <system:String x:Key="SplashScreen.Intro" xml:space="preserve">Перед вами обновлённый менеджер модов SA!&#x0a;&#x0a;Он привносит улучшения пользовательского опыта, новые особенности и минорные обновления Загрузчика модов. Все существующие моды продолжат с ним работать. Ниже приведён список основных изменений.</system:String>
+    <system:String x:Key="SplashScreen.Intro" xml:space="preserve">Перед вами обновлённый менеджер модов SA!&#x0a;&#x0a;Он привносит улучшения пользовательского опыта, новые особенности и обновления загрузчика модов. Все существующие моды продолжат работать с ним. Ниже приведён список основных изменений.</system:String>
     <system:String x:Key="SplashScreen.QOL">Список улучшений:</system:String>
     <system:String x:Key="SplashScreen.QOL.Themes">Теперь менеджер поддерживает темы! Тему можно сменить во вкладке "Настройки".</system:String>
     <system:String x:Key="SplashScreen.QOL.Languages">Теперь менеджер поддерживает разные языки! Язык можно сменить во вкладке "Настройки".</system:String>
@@ -24,8 +24,8 @@
     <system:String x:Key="SplashScreen.Features.NewMod">Создание новых модов было упрощено. Можно добавить информацию о том, откуда брать обновления, а также о зависимостях прямо в окне создания мода. Для существующих модов необходимо выбрать пункт контекстного меню "Изменить мод" и заполнить соответствующие поля.</system:String>
     <system:String x:Key="SplashScreen.Features.CodeDesc">Теперь у кодов есть описание. Это необходимо для кодов, по названию которых может быть тяжело понять, для чего они нужны. Также описание можно добавить и для пользовательских кодов.</system:String>
 
-    <system:String x:Key="SplashScreen.ML">Изменения Загрузчика модов SADX</system:String>
-    <system:String x:Key="SplashScreen.ML.Patches">Можно включать или отключать патчи, которые раньше просто шли с Загрузчиком. Большинство из них включено по умолчанию, а найти их можно по вкладке "Опции игры" -> "Патчи"</system:String>
-    <system:String x:Key="SplashScreen.ML.SDL2">The Input Mod (SDL2) был встроен непосредственно в Загрузчик модов. Он включён по умолчанию. Можно переключаться между SDL2 и стандартной системой управления во вкладке "Опции игры" -> "Управление".</system:String>
+    <system:String x:Key="SplashScreen.ML">Изменения загрузчика модов SADX и SA2</system:String>
+    <system:String x:Key="SplashScreen.ML.Patches">Можно включать или отключать патчи, которые раньше просто шли с загрузчиком. Большинство из них включено по умолчанию, а найти их можно по вкладке "Опции игры" -> "Патчи"</system:String>
+    <system:String x:Key="SplashScreen.ML.SDL2">The Input Mod (SDL2) был встроен непосредственно в загрузчик модов. Он включён по умолчанию. Можно переключаться между SDL2 и стандартной системой управления во вкладке "Опции игры" -> "Управление".</system:String>
     
 </ResourceDictionary>
