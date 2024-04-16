@@ -1,8 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:system="clr-namespace:System;assembly=mscorlib">
-
-	<system:String x:Key="InfoManagerUpdate.Title">Оновлення Менеджеру</system:String>
-	<system:String x:Key="InfoManagerUpdate.Changelog">Зміни:</system:String>
-    <system:String x:Key="InfoManagerUpdate.DLQuestion">Чи хочеш ти завантажити оновлення?</system:String>
-</ResourceDictionary>

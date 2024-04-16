@@ -11,10 +11,10 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Кожен мод має бути у підпапці папки модів. Не розпаковуйте мод прямо у папку модів.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Перемістіть або видаліть mod.ini у папці модів, та перезавантажте програму.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Не вдалося знайти ці моди:&#x0a;&#x0a;</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Не вийшло встановити Шлях до Гри</system:String>
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed.</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Не вийшло знайти sonic.exe, виберіть папку де встановлено SADX.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Не вийшло знайти шлях до гри</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Не вийшло знатйи шлях до гри. Будь ласка встановіть шлях у Конфігурації і впевніться що у ній є sonic.exe.</system:String>
@@ -94,10 +94,10 @@
 
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Невідома Помилка</system:String>
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Сталася невідома нам помилка.</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
-    <system:String x:Key="MessageWindow.Errors.ProfileLoad">An unexpected error occurred while loading profiles, if the problem persists, please report the issue.</system:String>
-    <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Failed to create config folder at {0}.&#x0a;The Mod Manager won't be able to work properly.</system:String>
-    <system:String x:Key="MessageWindow.Errors.UpdateInstallCopy" xml:space="preserve">Failed to install or update {0}.&#x0a;If the game is open, please close it and try again.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Не вдалося видалити мод {0}.&#x0a;Впевніться що файли не використовуються іншою програмою, а потім спробуйте ще.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ProfileLoad">Сталася неочікувана помилка при завантаження профілів, якщо помилка залишається, будь ласка, повідомте про неї.</system:String>
+    <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Не вдалося створити папку налаштувань у {0}.&#x0a;Менеджер Модів не зможе працювати правильно.</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateInstallCopy" xml:space="preserve">Не вдалося встановити оновлення {0}.&#x0a;Якщо гра відкрита, вимкніть її і спробуйте ще.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -145,17 +145,17 @@
 
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Перевірку Пройдено</system:String>
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Всі файли були перевірені.</system:String>
-    <system:String x:Key="MessageWindow.Information.Exception.Title">Include Settings</system:String>
-    <system:String x:Key="MessageWindow.Information.Exception.Message">Would you like to copy your Manager and Profile settings to your clipboard to provide in your report?&#x0a;&#x0a;This is not necessary, but it can assist in resolving problems.</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Title">Включити налаштування</system:String>
+    <system:String x:Key="MessageWindow.Information.Exception.Message">Чи хочете скопіювати налаштування Менеджеру та Профілю щоб додати їх до повідомлення?&#x0a;&#x0a;Це не обов'язково, але це може допомогти у вирішенні проблем.</system:String>
 
-    <system:String x:Key="MessageWindow.Information.BugReport.Title">Report Bug</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message1">You are about to submit a bug report, please ensure the following:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Your Manager is up to date.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Your Mod Loader is up to date.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message4">All mods are up to date.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message5">If you have verified the above, then please follow the directions below to submit to the correct repository:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Any issues with the program you're currently using, please use the Mod Manager button.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Any issues with the game, such as freezes, game crashes, etc, please use the Mod Loader button.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Title">Повідомити Глюк</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1">Ви зараз відправите Повідомлення про Помилку, будь ласка впевністься:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Ваш Менеджер останньої версії.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Ваш Завантажувач останньої версії.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message4">Всі моди останньої версії.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message5">Якщо ви перевірили все вище, тоді, будь ласка, слідуйте за напрямами нижче щоб відправити помилку правильно:</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Якщо є будь яка проблема саме з програмою, використайте кнопку Менеджера Модів.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Якщо є будь яка проблема саме з грою, як от зависи, аварії, тощо, використайте кнопку Завантажувача Модів.</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>
