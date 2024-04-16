@@ -199,6 +199,7 @@ namespace SAModManager.Controls.SA2
                 tsCheckCharacter.IsChecked = false;
                 tsCheckLevel.IsChecked = false;
                 tsCheckPlayer2.IsChecked = false;
+                tsCheckEvent.IsChecked = false;
             }
         }
         #endregion
@@ -547,10 +548,10 @@ namespace SAModManager.Controls.SA2
                 cmdline.Add($"-p2 {charIndex}");
             }
 
-            if (GameProfile.TestSpawn.LevelIndex > -1)
+            if (GameProfile.TestSpawn.LevelIndex > -1 && GameProfile.TestSpawn.UseEvent == false)
             {
                 int lvl_result = GameProfile.TestSpawn.LevelIndex;
-                if (GameProfile.TestSpawn.UseLevel && tsCheckManual.IsChecked == false)
+                if (tsCheckManual.IsChecked == false)
                 {
                     int currentIndex = 0;
 
