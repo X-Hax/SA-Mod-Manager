@@ -13,30 +13,30 @@
 	<!--Graphics Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Налаштування Дисплею</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Екран:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">All Displays</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">Screen Mode:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Windowed</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Standard window mode.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Exclusive Fullscreen</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Not Recommended. Window will update monitor resolution and is prone to crashes when the window is unfocused.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Borderless Fullscreen</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Recommended Fullscreen Mode. Allows for rendering the game at different resolutions to the window and fixes the alt tab bug.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Custom Window</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Like Borderless Fullscreen but for the window and not fullscreen modes.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">Всі Екрани</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">Режим Екрану:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Віконний</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Стандартне вікно.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Ексклюзивний повний екран</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Не Рекомендовано. Зазвичай ламається якщо не у фокусі і змінює розширення монітору.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Наповну без Країв</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Рекомендований режим. Дозволяє рендерити гру у іному розширенні і лагодить глюк alt-tab.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Налаштовуване Вікно</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Як Наповну без Країв, але у вікні.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Роздільна Здатність:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Window Size:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Розмір Вікна:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Налаштування</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Примусове 4:3</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Увімкнути V-Sync</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Зупинити коли не у Фокусі </system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамічно розподіляти буфери</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Вікно з Змінним Розміром</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Keep Ratio on Resize</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Зберігати співвідношення на зміні розміру</system:String>
     
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Зберігати Співвідношення</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Свій Розмір Вікна:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Наповну без Країв</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Show Mouse in Fullscreen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Показувати Мишку у Повному Екрані</system:String>
     
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Збільшувати до Екрану</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Інші Опіції Графіки</system:String>
@@ -60,16 +60,16 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Увімкнути Збільшення UI</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Увімкнути D3D8to9</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Оновити D3D8to9</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Download DXVK</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Using the button below allows you to download DXVK. This program can improve performance and stability with SA2. It will only download the program, it will not install it.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Once you download the archive, you only need to extract d3d9.dll from the archive and place it in the game folder where sonic2app is.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Завантажити DXVK</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Кнопка нижче дозволить вам завантажити DXVK. Ця програма може допомогти зі швидкістю та стабільністю SA2. Опція тільки завантажить програму, не встановить її.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Коли архів завантажився, потрібно тільки витягти d3d9.dll з архіву і покласти біля sonic2app.</system:String>
     <!--#endregion-->
 
     <!--Options Tab Strings-->
-    <system:String x:Key="GameConfig.Tabs.Options.Title">Misc Options</system:String>
-    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Skip Intro</system:String>
-    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. These options are overwritten by the save file once one is loaded.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. Voice option will change depending on the loaded save file.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Title">Різні Опції</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Пропустити Інтро</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">Мова тексту та голосу можуть бути змінені при завантаженні гри. Ці опції вступлять у дію у Тестовому Завантаженні. Але опції будуть перезаписані при завантаженні файлу збереження.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">Мова тексту та голосу можуть бути змінені при завантаженні гри. Ці опції вступлять у дію у Тестовому Завантаженні. Налаштування Голосу зміняться у залежності від файлу збереження.</system:String>
     <!--#endregion-->
     
     <!--Input Tab Strings-->

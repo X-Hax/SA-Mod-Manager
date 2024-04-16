@@ -13,10 +13,10 @@
 
     <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">No se encontraron los siguientes mods:&#x0a;&#x0a;</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Error al establecer la ruta de juego</system:String>
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed">No se pudo encontrar sonic.exe, asegúrate de seleccionar una carpeta en la que esté instalado SADX.</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">No se detecta la ruta del juego</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">No se pudo fijar la ruta del juego</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed">No se pudieron encontrar juegos compatibles. Asegúrate de elegir una carpeta en donde esté instalado un juego.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">No se detecta la ruta del juego</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">No se encontró el directorio del juego. Por favor, fija la ruta en la Configuración del gestor y asegúrate de elegir una carpeta donde esté instalado sonic.exe.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"El mod ya existe"</system:String>

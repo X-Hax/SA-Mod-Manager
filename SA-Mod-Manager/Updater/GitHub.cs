@@ -417,7 +417,8 @@ namespace SAModManager.Updater
                                 string pattern = @"^\w+\s+"; // This regular expression matches any word followed by one or more spaces at the beginning of the string.
                                 string result = Regex.Replace(version, pattern, "").Trim();
                                 Version commitVersion = new(result);
-                                int comparison = commitVersion.CompareTo(App.Version);
+                                Version managerVersion = new(App.VersionString);
+                                int comparison = commitVersion.CompareTo(managerVersion);
                                 hasUpdate = comparison > 0;
                             }
                             catch

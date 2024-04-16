@@ -879,8 +879,13 @@ namespace SAModManager.Configuration.SADX
 		/// Serializes an SADX GameSettings JSON File.
 		/// </summary>
 		/// <param name="path"></param>
-		public void Serialize(string path, string profileName)
+		public void Serialize(string profileName)
 		{
+			if (!profileName.Contains(".json"))
+				profileName += ".json";
+
+			// TODO: Fix this function
+			string path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
 			try
 			{
 				if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
@@ -894,7 +899,6 @@ namespace SAModManager.Configuration.SADX
 					Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
 					if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
 					{
-						path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
 						string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
 						File.WriteAllText(path, jsonContent);
 					}

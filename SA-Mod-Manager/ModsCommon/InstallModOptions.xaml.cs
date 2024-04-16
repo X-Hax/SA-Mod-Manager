@@ -120,6 +120,7 @@ namespace SAModManager
 
                 Util.ClearTempFolder();
                 ((MainWindow)App.Current.MainWindow).Save();
+                ((MainWindow)Application.Current.MainWindow).Refresh();
 
             }
             catch
@@ -178,6 +179,7 @@ namespace SAModManager
 
             Util.ClearTempFolder();
             ((MainWindow)App.Current.MainWindow).Save();
+            ((MainWindow)Application.Current.MainWindow).Refresh();
         }
     }
 }

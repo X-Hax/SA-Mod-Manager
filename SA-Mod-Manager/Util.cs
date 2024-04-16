@@ -93,30 +93,40 @@ namespace SAModManager
                     if (File.Exists(Path.Combine(root, file)))
                         File.Delete(Path.Combine(root, file));
                 }
-            } catch { }
+            }
+            catch { }
         }
 
-        public static void DoVanillaFilesCleanup(string[] args, int index)
+        public static void DoVanillaFilesCleanup(string[] args)
         {
             string root = null;
 
+            bool foundGameFolder = false;
             foreach (string exeName in Util.OldManagersName)
             {
                 root = exeName;
 
-                if (File.Exists(root))
+                for (int i = 0; i < args.Length; i++)
                 {
-                    break;
-                }
-                else if (!File.Exists(root) && index + 1 < args.Length)
-                {
-                    root = Path.GetFullPath(Path.Combine(args[index + 1], exeName));
-
                     if (File.Exists(root))
                     {
+                        foundGameFolder = true;
                         break;
                     }
+                    else
+                    {
+                        root = Path.GetFullPath(Path.Combine(args[i], exeName));
+
+                        if (File.Exists(root))
+                        {
+                            foundGameFolder = true;
+                            break;
+                        }
+                    }
                 }
+
+                if (foundGameFolder)
+                    break;
             }
 
             if (File.Exists(root))
@@ -156,43 +166,6 @@ namespace SAModManager
             }
         }
 
-        public static void ConvertProfiles(string sourceFile, ref Profiles pro)
-        {
-            if (!File.Exists(sourceFile))
-                return;
-
-            Configuration.SADX.GameSettings settings = new();
-            Configuration.SA2.GameSettings settingsSA2 = new();
-            string newFileName = Path.GetFileNameWithoutExtension(sourceFile);
-            string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
-
-            try
-            {
-                switch (App.CurrentGame.id)
-                {
-                    case Configuration.SetGame.SADX:
-                        SADXLoaderInfo info = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
-                        settings.ConvertFromV0(info);
-                        settings.Serialize(newFilePath, newFileName + ".json");
-                        break;
-                    case Configuration.SetGame.SA2:
-                        SA2LoaderInfo sa2INFO = IniSerializer.Deserialize<SA2LoaderInfo>(sourceFile);
-                        settingsSA2.ConvertFromV0(sa2INFO);
-                        settingsSA2.Serialize(newFilePath, newFileName + ".json");
-                        break;
-                }
-
-                pro.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
-                File.Delete(sourceFile);
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Profile Conversion Failed: {ex.Message}");
-                return;
-            }
-
-        }
 
         public static async Task MoveFile(string origin, string dest, bool overwrite = false)
         {
@@ -286,8 +259,7 @@ namespace SAModManager
         {
             var key = Registry.LocalMachine.OpenSubKey(registryKeyPath);
 
-            if (key == null)
-                key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+            key ??= RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
                     .OpenSubKey(registryKeyPath);
 
             return key?.GetValue("Path") as string;
@@ -309,6 +281,10 @@ namespace SAModManager
 
                      var dl = new DownloadDialog(uri, "7-zip", "7z.exe", App.tempFolder, DownloadDialog.DLType.Download);
                      dl.StartDL();
+                 }
+                 else
+                 {
+                     return;
                  }
              });
 
@@ -390,7 +366,7 @@ namespace SAModManager
             exePath ??= FindExePathFromRegistry("SOFTWARE\\7-Zip");
 
             // If still not found, try with the PATH variable
-            exePath ??=  Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
+            exePath ??= Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
                 .Where(s => File.Exists(Path.Combine(s, "7z.exe"))).FirstOrDefault();
 
             if (exePath != null)
@@ -402,6 +378,8 @@ namespace SAModManager
                     await Process.Start(new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y")
                     {
                         UseShellExecute = true,
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden
                     }).WaitForExitAsync();
 
                     return true;
@@ -579,19 +557,63 @@ namespace SAModManager
             return string.Join("/", paths);
         }
 
+        private static void UpdatePathsForPortableMode()
+        {
+            if (App.isLinux && Directory.Exists(App.extLibPath) == false) //force portable mode for new users on Linux since it tends to work better.
+            {
+                App.ConfigFolder = Path.Combine(App.StartDirectory, "SAManager");
+                App.extLibPath = Path.Combine(App.ConfigFolder, "extlib");
+                App.crashFolder = Path.Combine(App.ConfigFolder, "CrashDump");
+            }
+        }
+
         public static void CheckLinux()
         {
-            RegistryKey key = null;
+            RegistryKey key;
             if ((key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey("SOFTWARE\\Wine")) != null)
             {
                 key.Close();
                 App.isLinux = true;
+                Logger.Log("Linux detected with first method");
+                UpdatePathsForPortableMode();
+                return;
             }
+
+            // Method 2: Check for Wine Environment Variables
+            string winePrefix = Environment.GetEnvironmentVariable("WINEPREFIX");
+            if (!string.IsNullOrEmpty(winePrefix))
+            {
+                App.isLinux = true;
+                Logger.Log("Linux detected with second method");
+                UpdatePathsForPortableMode();
+                return;
+            }
+
+            // Method 3: Check for Common Linux Paths
+            string[] commonLinuxPaths = { "/usr/bin/wine", "/usr/bin/steam", "/opt/steam" };
+            foreach (string path in commonLinuxPaths)
+            {
+                if (File.Exists(path))
+                {
+                    App.isLinux = true;
+                    Logger.Log("Linux detected with last method, wow that was close.");
+                    UpdatePathsForPortableMode();
+                    return;
+                }
+            }
+
+            Logger.Log("Linux wasn't detected, the Manager will act like we are on Windows.");
         }
 
         public static bool RunningAsAdmin()
         {
             return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        public static void AdjustPathForLinux(ref string s)
+        {
+            if (App.isLinux && s.StartsWith("/"))
+                s = $"Z:{s}";
         }
     }
 }

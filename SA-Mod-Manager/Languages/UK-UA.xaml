@@ -54,10 +54,10 @@
     <system:String x:Key="CommonStrings.None">Жоден</system:String>
     <system:String x:Key="CommonStrings.Enabled">Увімкнено</system:String>
     <system:String x:Key="CommonStrings.Disabled">Вимкнено</system:String>
-    <system:String x:Key="CommonStrings.Success">Success!</system:String>
-    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+    <system:String x:Key="CommonStrings.Success">Вийшло!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Не вдалося</system:String>
 	<system:String x:Key="CommonStrings.ID">ID</system:String>
-	<system:String x:Key="CommonString.Dependency">Dependency</system:String>
+	<system:String x:Key="CommonString.Dependency">Залежність</system:String>
 
 	<!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Тип</system:String>

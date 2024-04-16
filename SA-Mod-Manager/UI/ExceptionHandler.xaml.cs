@@ -1,5 +1,4 @@
-﻿using SAModManager.Configuration;
-
+﻿using SAModManager.Profile;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,10 +13,10 @@ using System.Windows;
 
 namespace SAModManager.UI
 {
-	/// <summary>
-	/// Interaction logic for ExceptionHandler.xaml
-	/// </summary>
-	public partial class ExceptionHandler : Window, INotifyPropertyChanged
+    /// <summary>
+    /// Interaction logic for ExceptionHandler.xaml
+    /// </summary>
+    public partial class ExceptionHandler : Window, INotifyPropertyChanged
 	{
 		private Exception exception;
 		public string ErrorText { get; set; }

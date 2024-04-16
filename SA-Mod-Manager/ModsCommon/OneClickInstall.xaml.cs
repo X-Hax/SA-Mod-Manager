@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +26,7 @@ namespace SAModManager
         private string modPath;
         private Dictionary<string, string> fields;
         public bool isEmpty { get; private set; } = true;
+        private string uriTemp;
 
 
         public OneClickInstall(string updatePath, string modPath)
@@ -147,18 +149,11 @@ namespace SAModManager
             catch { }
         }
 
-        private async Task HandleUri(string uri)
+        private void UpdateModPath(string uri)
         {
-
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            BringIntoView();
-            
-            Activate();
-
-            if (App.CurrentGame is null || string.IsNullOrEmpty(App.CurrentGame?.gameDirectory))
+            if (string.IsNullOrEmpty((uri)))
                 return;
 
-           
             //check if the user has a different selected game than the one they are trying to download a mod for 
             foreach (var game in GamesInstall.GetSupportedGames())
             {
@@ -176,7 +171,22 @@ namespace SAModManager
                     }
                 }
             }
+        }
 
+        private async Task HandleUri(string uri)
+        {
+
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            BringIntoView();
+            
+            Activate();
+
+            if (App.CurrentGame is null || string.IsNullOrEmpty(App.CurrentGame?.gameDirectory))
+                return;
+
+            App.CancelUpdate = true;
+            this.uriTemp = uri;
+            UpdateModPath(uriTemp);
 
             string oneClickName = App.CurrentGame.oneClickName + ":";
 
@@ -228,7 +238,7 @@ namespace SAModManager
             }
 
             ButtonDownload.IsEnabled = true;
-            this.ShowDialog();
+            this.Show();
         }
 
 
@@ -285,7 +295,7 @@ namespace SAModManager
 
             bool retry = false;
             this.updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", ".updates"));
-            this.modPath = App.CurrentGame.modDirectory;
+            UpdateModPath(this.uriTemp);
 
             do
             {
@@ -356,7 +366,5 @@ namespace SAModManager
             e.Cancel = true; // Prevent the window from closing
             this.Visibility = Visibility.Hidden; // Hide the window
         }
-
-
     }
 }

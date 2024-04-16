@@ -491,19 +491,15 @@ namespace SAModManager.Controls.SADX
         {
             if (GameProfile.TestSpawn.UseManual)
             {
-                tsNumCharacter.Value = GameProfile.TestSpawn.CharacterIndex;
-                tsNumLevel.Value = GameProfile.TestSpawn.LevelIndex;
-                tsNumAct.Value = GameProfile.TestSpawn.ActIndex;
-
                 tsCheckCharacter.IsChecked = false;
                 tsCheckLevel.IsChecked = false;
-            }
-            else
-            {
-                if (GameProfile.TestSpawn.CharacterIndex > -1)
-                    tsCheckCharacter.IsChecked = true;
-                if (GameProfile.TestSpawn.LevelIndex > -1)
-                    tsCheckLevel.IsChecked = true;
+
+                if (tsCheckCharacter.IsEnabled)
+                    tsNumCharacter.Value = tsComboCharacter.SelectedIndex;
+                if (tsCheckLevel.IsEnabled)
+                    tsNumLevel.Value = tsComboLevel.SelectedIndex;
+                if (tsComboAct.SelectedIndex > -1)
+                    tsNumAct.Value = tsComboAct.SelectedIndex; 
             }
         }
         #endregion
@@ -596,7 +592,7 @@ namespace SAModManager.Controls.SADX
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
             });
-			tsCheckPosition.SetBinding(CheckBox.IsCheckedProperty, new Binding("UsePosition")
+            tsCheckPosition.SetBinding(CheckBox.IsCheckedProperty, new Binding("UsePosition")
 			{
 				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
@@ -691,8 +687,7 @@ namespace SAModManager.Controls.SADX
                 if (cutsceneName.Contains("TSCutscene") || string.IsNullOrEmpty(cutsceneName))
                     continue;
 
-                string displayName = "EV" + i.ToString("X4") + ": " + cutsceneName;
-
+                string displayName = "EV" + i.ToString("D4") + ": " + cutsceneName;
                 EventNames.Add(i, displayName);
             }
         }
@@ -714,7 +709,7 @@ namespace SAModManager.Controls.SADX
 
 			if (GameProfile.TestSpawn.CharacterIndex > -1)
 				if (GameProfile.TestSpawn.UseCharacter || GameProfile.TestSpawn.UseManual)
-					cmdline.Add($"-c {GameProfile.TestSpawn.CharacterIndex}");
+					cmdline.Add($"-c { GameProfile.TestSpawn.CharacterIndex}");
 
 			if (GameProfile.TestSpawn.LevelIndex > -1)
 				if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
