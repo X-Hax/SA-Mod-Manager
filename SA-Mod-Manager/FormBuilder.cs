@@ -315,13 +315,19 @@ namespace SAModManager
             // Step 2: Remove whitespace
             string noWhitespaceString = Regex.Replace(noSymbols, @"\s", "");
 
-            // Step 3: If numbers are found, put them at the end
+            // Step 3: If numbers are found, put them at the end to avoid crash ie: "46Group" become "Group46"
             Match numberMatch = Regex.Match(noWhitespaceString, @"^(\d+)(.*)$");
             if (numberMatch.Success)
             {
                 string numberPart = numberMatch.Groups[1].Value;
                 string restOfString = numberMatch.Groups[2].Value;
-                noWhitespaceString = restOfString + numberPart;
+
+				if (string.IsNullOrEmpty(restOfString)) //if the string is empty it means the group only had number originally
+				{
+					restOfString = "_"; //add an extra "_" to prevent crash 
+				}
+                
+				noWhitespaceString = restOfString + numberPart;
             }
 
             return noWhitespaceString;
