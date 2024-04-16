@@ -549,16 +549,20 @@ namespace SAModManager.Controls.SA2
 
             if (GameProfile.TestSpawn.LevelIndex > -1)
             {
-                if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
+                int lvl_result = GameProfile.TestSpawn.LevelIndex;
+                if (GameProfile.TestSpawn.UseLevel && tsCheckManual.IsChecked == false)
                 {
-                    int lvl_result = GameProfile.TestSpawn.LevelIndex;
+                    int currentIndex = 0;
+
                     foreach (var item in LevelNames)
                     {
-                        if (item.Key == GameProfile.TestSpawn.LevelIndex)
+                        if (currentIndex == lvl_result)
                         {
                             lvl_result = item.Key;
                             break;
                         }
+                        currentIndex++;
+                    }
                     }
 
                     cmdline.Add($"-l {lvl_result}");
