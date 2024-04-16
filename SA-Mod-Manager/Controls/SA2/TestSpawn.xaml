@@ -128,7 +128,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource TestSpawn.Check.Character}" VerticalAlignment="Center"/>
-										<elements:NumberBox x:Name="tsNumCharacter" Grid.Column="1" Height="24" Type="Integer" MinValue="-1" MaxValue="8" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}" TabIndex="15"/>
+										<elements:NumberBox x:Name="tsNumCharacter" Grid.Column="1" Height="24" Type="Integer" MinValue="-1" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}" TabIndex="15"/>
                                     </Grid>
                                     <Grid Grid.Column="1" Margin="5">
                                         <Grid.ColumnDefinitions>
@@ -144,7 +144,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource TestSpawn.Mission}" VerticalAlignment="Center"/>
-										<elements:NumberBox x:Name="tsNumMission" Grid.Column="2" Height="24" Type="Integer" MinValue="-1" MaxValue="7" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}" TabIndex="17"/>
+										<elements:NumberBox x:Name="tsNumMission" Grid.Column="2" Height="24" Type="Integer" MinValue="-1" IsEnabled="{Binding ElementName=tsCheckManual, Path=IsChecked}" TabIndex="17"/>
                                     </Grid>
                                 </Grid>
 

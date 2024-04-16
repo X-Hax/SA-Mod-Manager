@@ -189,22 +189,16 @@ namespace SAModManager.Controls.SA2
         {
             if (GameProfile.TestSpawn.UseManual)
             {
-                tsNumCharacter.Value = GameProfile.TestSpawn.CharacterIndex;
-                tsNumLevel.Value = GameProfile.TestSpawn.LevelIndex;
-                tsNumMission.Value = GameProfile.TestSpawn.MissionIndex;
+                if (tsCheckCharacter.IsEnabled)
+                    tsNumCharacter.Value = tsComboCharacter.SelectedIndex;
+                if (tsCheckLevel.IsEnabled)
+                    tsNumLevel.Value = tsComboLevel.SelectedIndex;
+                if (tsComboMission.SelectedIndex > -1)
+                    tsNumMission.Value = tsComboMission.SelectedIndex;
 
                 tsCheckCharacter.IsChecked = false;
                 tsCheckLevel.IsChecked = false;
                 tsCheckPlayer2.IsChecked = false;
-            }
-            else
-            {
-                if (GameProfile.TestSpawn.CharacterIndex > -1)
-                    tsCheckCharacter.IsChecked = true;
-                if (GameProfile.TestSpawn.LevelIndex > -1)
-                    tsCheckLevel.IsChecked = true;
-                if (GameProfile.TestSpawn.Player2Index > -1)
-                    tsCheckPlayer2.IsChecked = true;
             }
         }
         #endregion
@@ -528,7 +522,7 @@ namespace SAModManager.Controls.SA2
 
         private static void AdjustCharIndex(ref int index)
         {
-            if (index >= 9) //super sonic / shadow and big aren't in the list, we adjust the offset from the ComboBox
+            if (index >= 9 && index < CharacterNames.Count) //super sonic / shadow and big aren't in the list, we adjust the offset from the ComboBox
             {
                 index += 3;
             }
@@ -557,17 +551,16 @@ namespace SAModManager.Controls.SA2
             {
                 if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
                 {
-                    int lvl = 0;
-                    int lvl_result = 0;
+                    int lvl_result = GameProfile.TestSpawn.LevelIndex;
                     foreach (var item in LevelNames)
                     {
-                        if (lvl == GameProfile.TestSpawn.LevelIndex)
+                        if (item.Key == GameProfile.TestSpawn.LevelIndex)
                         {
                             lvl_result = item.Key;
                             break;
                         }
-                        lvl++;
                     }
+
                     cmdline.Add($"-l {lvl_result}");
                 }
             }
