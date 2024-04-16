@@ -687,8 +687,7 @@ namespace SAModManager.Controls.SADX
                 if (cutsceneName.Contains("TSCutscene") || string.IsNullOrEmpty(cutsceneName))
                     continue;
 
-                string displayName = "EV" + i.ToString("X4") + ": " + cutsceneName;
-
+                string displayName = "EV" + i.ToString("D4") + ": " + cutsceneName;
                 EventNames.Add(i, displayName);
             }
         }

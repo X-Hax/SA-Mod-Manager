@@ -20,7 +20,7 @@ namespace SAModManager.Controls.SA2
         #region Variables
         private GameSettings GameProfile;
         public static Dictionary<int, string> EventNames;
-         public static Dictionary<int, string> LevelNames { get; set; } = new();
+        public static Dictionary<int, string> LevelNames { get; set; } = new();
 
         #region ComboBox Sources
 
@@ -446,6 +446,15 @@ namespace SAModManager.Controls.SA2
                 { 71, "Kart Race" },
                 { 90, "Chao World" }
             };
+
+            //display level ID after the name.
+            foreach (var pair in LevelNames.ToList())
+            {
+                // Update the value
+                string updatedValue = pair.Value + " (" + pair.Key + ")";
+                LevelNames.Remove(pair.Key);
+                LevelNames.Add(pair.Key, updatedValue);
+            }
         }
 
         private static void InitCutsceneList()
@@ -519,6 +528,15 @@ namespace SAModManager.Controls.SA2
 				{ 602, Lang.GetString("SA2EventName63") },
 				{ 609, Lang.GetString("SA2EventName64") }
 			};
+
+
+            //display event ID after their name.
+            foreach (var pair in EventNames.ToList())
+            {
+                string displayName = "EV" + pair.Key.ToString("D4") + ": " + pair.Value;
+                EventNames.Remove(pair.Key);
+                EventNames.Add(pair.Key, displayName);
+            }
         }
 
         private static void AdjustCharIndex(ref int index)
@@ -564,20 +582,17 @@ namespace SAModManager.Controls.SA2
                         }
                         currentIndex++;
                     }
-                    }
-
-                    cmdline.Add($"-l {lvl_result}");
                 }
+
+                cmdline.Add($"-l {lvl_result}");
             }
 
             if (GameProfile.TestSpawn.MissionIndex > -1)
                 if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
                     cmdline.Add($"-m {GameProfile.TestSpawn.MissionIndex}");
 
-
 			if (GameProfile.TestSpawn.UsePosition)
 				cmdline.Add($"-p {GameProfile.TestSpawn.XPosition} {GameProfile.TestSpawn.YPosition} {GameProfile.TestSpawn.ZPosition} -r {GameProfile.TestSpawn.Rotation}");
-
 
 			if (GameProfile.TestSpawn.UseEvent && GameProfile.TestSpawn.EventIndex > -1)
                 cmdline.Add($"-e {GameProfile.TestSpawn.EventIndex}");
