@@ -1539,7 +1539,6 @@ namespace SAModManager
 
         private void LoadSA2Settings(string profilePath, bool newSetup = false)
         {
-
             Configuration.SA2.GameSettings sa2 = File.Exists(profilePath) ? Configuration.SA2.GameSettings.Deserialize(profilePath) : new();
             GameProfile = sa2;
 
