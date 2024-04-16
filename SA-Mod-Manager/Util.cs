@@ -557,6 +557,16 @@ namespace SAModManager
             return string.Join("/", paths);
         }
 
+        private static void UpdatePathsForPortableMode()
+        {
+            if (App.isLinux && Directory.Exists(App.extLibPath) == false) //force portable mode for new users on Linux since it tends to work better.
+            {
+                App.ConfigFolder = Path.Combine(App.StartDirectory, "SAManager");
+                App.extLibPath = Path.Combine(App.ConfigFolder, "extlib");
+                App.crashFolder = Path.Combine(App.ConfigFolder, "CrashDump");
+            }
+        }
+
         public static void CheckLinux()
         {
             RegistryKey key;
@@ -565,6 +575,7 @@ namespace SAModManager
                 key.Close();
                 App.isLinux = true;
                 Logger.Log("Linux detected with first method");
+                UpdatePathsForPortableMode();
                 return;
             }
 
@@ -574,6 +585,7 @@ namespace SAModManager
             {
                 App.isLinux = true;
                 Logger.Log("Linux detected with second method");
+                UpdatePathsForPortableMode();
                 return;
             }
 
@@ -585,6 +597,7 @@ namespace SAModManager
                 {
                     App.isLinux = true;
                     Logger.Log("Linux detected with last method, wow that was close.");
+                    UpdatePathsForPortableMode();
                     return;
                 }
             }

@@ -632,8 +632,8 @@ namespace SAModManager
         //will probably end making our own installer ig
         public static async Task GetSADXModInstaller()
         {
-            var destFolder = Path.Combine(Environment.CurrentDirectory, App.tempFolder);
-            var zipPath = Path.Combine(Environment.CurrentDirectory, App.tempFolder, "sadx_setup_full.zip");
+            var destFolder = Path.Combine(App.StartDirectory, App.tempFolder);
+            var zipPath = Path.Combine(App.StartDirectory, App.tempFolder, "sadx_setup_full.zip");
 
             try
             {
@@ -721,7 +721,7 @@ namespace SAModManager
             {
                 foreach (var game in GamesInstall.GetSupportedGames())
                 {
-                    string path = Path.Combine(Environment.CurrentDirectory, game.exeName);
+                    string path = Path.Combine(App.StartDirectory, game.exeName);
                     Logger.Log("Checking for: " + path);
                     if (File.Exists(path))
                     {
@@ -767,7 +767,7 @@ namespace SAModManager
                     }
                 }
 
-                string path = Path.Combine(Environment.CurrentDirectory, game.exeName);
+                string path = Path.Combine(App.StartDirectory, game.exeName);
                 
                 string gameDir = string.Empty;
 
@@ -947,7 +947,7 @@ namespace SAModManager
             {
                 foreach (var game in GamesInstall.GetSupportedGames())
                 {
-                    if (await FindAndSetGameInPaths(Environment.CurrentDirectory, game, true))
+                    if (await FindAndSetGameInPaths(App.StartDirectory, game, true))
                     {
                         success = true;
                         break;
