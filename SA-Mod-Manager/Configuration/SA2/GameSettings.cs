@@ -102,7 +102,7 @@ namespace SAModManager.Configuration.SA2
         public bool SkipIntro { get; set; } = false;
 
         /// <summary>
-        /// Set's the game's refresh rate
+        /// Set's the monitor's refresh rate when in exclusive full screen mode.
         /// </summary>
         [DefaultValue(60)]
         public int RefreshRate { get; set; } = 60;
