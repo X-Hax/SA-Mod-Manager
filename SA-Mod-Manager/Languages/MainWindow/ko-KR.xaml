@@ -83,7 +83,7 @@
     <!--#region Main Window Tool Tips-->
     <system:String x:Key="MainWindow.Tips.Tab.Mods">모드를 선택, 편집, 설정합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Codes">플레이 중에 사용할 코드를 선택합니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig">그래픽과 소리를 포함한 게임 설정을 변경합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig">그래픽과 사운드를 포함한 게임 설정을 변경합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn">선택한 설정으로 아무 레벨에서 아무 캐릭터로 게임을 빠르게 시작합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options">테마와 언어 설정을 포함한 매니저 설정을 변경합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.SaveAndPlay">선택한 설정을 저장하고 게임을 시작합니다.</system:String>
@@ -108,8 +108,9 @@
 
     <!--#region Game Config Tab -->
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">그래픽 설정을 변경합니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">게임 입력 설정을 변경합니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">게임 사운드 설정을 변경합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">게임의 입력 설정을 변경합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">게임의 사운드 설정을 변경합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Options">기타 설정을 변경합니다.</system:String> // not displayed yet
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">게임 패치를 활성화하거나 비활성화합니다.</system:String>
 
     <!--#region Graphics Settings-->
@@ -117,9 +118,9 @@
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">사용자 지정 해상도를 설정하고 프리셋 해상도의 목록을 선택합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">설정한 해상도에도 게임을 4:3 종횡비로 고정합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">수직 동기화를 활성화합니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">활성화된 경우 게임 창이 포커스를 맞추지 않으면 게임이 일시 중지됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">활성화된 경우 게임 창이 비활성화되었을 때 게임이 일시 정지됩니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">게임이 전체 화면으로 실행됩니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">전체 화면 게임 창에서 테두리 없이 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">게임을 테두리 없는 창 모드로 실행합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">전체 화면의 UI 요소를 크게 합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">게임 창이 창 모드에서 부팅됩니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">게임 창을 여는 동안 크기를 조정할 수 있습니다.</system:String>
@@ -155,8 +156,8 @@
     <!--#endregion-->
 
     <!--#region Sound Settings-->
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">사운드 백엔드를 vgmbass로 교체합니다. 이 옵션은 최고의 경험을 위해 권장하며, 많은 모드가 이것에 의존합니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">게임 내 음악을 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">사운드 백엔드를 vgmbass로 교체합니다. 많은 모드가 이것에 의존하며, 최고의 경험을 위해서는 활성화하는 것을 권장합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">게임 내 BGM을 활성화합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">게임 내 3D 사운드를 활성화합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">효과음 재생을 위해 BASS를 백엔드로 사용합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">게임 내 효과음과 음성을 활성화합니다.</system:String>
@@ -194,11 +195,12 @@
     <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">모드 매니저에서 테스트 스폰 탭을 활성화합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">활성화된 경우, GameBanana의 원클릭 링크를 클릭하면 모드에 대한 다운로드 대화 상자가 열립니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">활성화된 경우, 모드로더를 설치하고 모드, 패치, 치트로 플레이할 수 있습니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Mod Manager가 열릴 때 모드로더의 업데이트 자동 확인을 활성화합니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Mod Manager가 열릴 때 설치한 모드 업데이트의 자동 확인을 활성화합니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">모드로더와 설치한 모드의 업데이트에 대한 확인을 실행합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">매니저 실행 시 SA Mod Manager의 업데이트가 있는지 확인합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">매니저 실행 시 모드로더의 업데이트가 있는지 확인합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">매니저 실행 시 설치한 모드의 업데이트가 있는지 확인합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">모드로더와 설치한 모드의 업데이트가 있는지 확인합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">게임에서 디버그 정보가 표시된 콘솔 창을 엽니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">게임 창에 디버그 정보를 출력합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">게임 화면에 디버그 정보를 출력합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">로그 파일에 디버그 정보를 저장합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">게임에 오류가 발생했을 때 크래시 덤프 로깅을 활성화합니다. 이 옵션은 예기치 않은 충돌을 조사하는 데 유용합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">기여자와 About 창을 엽니다.</system:String>

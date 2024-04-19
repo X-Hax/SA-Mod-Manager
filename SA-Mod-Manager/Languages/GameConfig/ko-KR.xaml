@@ -7,7 +7,7 @@
     <!--Game Tabs Strings-->
     <system:String x:Key="GameConfig.Tabs.Graphics">그래픽</system:String>
     <system:String x:Key="GameConfig.Tabs.Input">입력</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound">소리</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound">사운드</system:String>
     <system:String x:Key="GameConfig.Tabs.Patches">패치</system:String>
     <system:String x:Key="GameConfig.Tabs.Options">설정</system:String>
 
@@ -93,16 +93,16 @@
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Better Input 시스템은 SDL2을 소닉 어드벤처 DX에 구현한 것입니다. Better Input은 원래 DInput 시스템의 문제를 해결하므로 이것으로 플레이하는 것을 권장합니다.</system:String>
 
     <!--Sound Tab Strings-->
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">소리 설정</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">볼륨 조절</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">음악에 BASS 사용</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">SFX에 BASS 사용</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">음악 허용</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">소리 허용</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">3D 사운드 허용</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">음악 볼륨:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">음성 볼륨:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">효과음 볼륨:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">사운드 설정</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">음량 조절</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">BGM에 BASS 사용</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">효과음에 BASS 사용</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">BGM 재생 활성화</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">사운드 재생 활성화</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">3D 사운드 활성화</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">BGM 음량:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">음성 음량:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">효과음 음량:</system:String>
     <!--#endregion-->
 
     <!--#region Test Spawn Tab Strings-->
