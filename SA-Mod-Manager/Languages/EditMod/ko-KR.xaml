@@ -7,25 +7,27 @@
 	<system:String x:Key="EditMod.Header.NewMod">새 모드</system:String>
 
 	<system:String x:Key="EditMod.Tabs.Info">모드 정보</system:String>
-	<system:String x:Key="EditMod.Tabs.Info.AuthorURL">저자 URL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.AuthorURL">제작자 URL:</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.ModID">모드 ID:</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.DLL">DLL:</system:String>
-	<system:String x:Key="EditMod.Tabs.Info.Source">소스코드 URL:</system:String>
-	<system:String x:Key="EditMod.Tabs.Info.SaveRedirect">리다이렉트 저장:</system:String>
-	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">메인 저장</system:String>
-	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">챠오 저장</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Source">소스 코드 URL:</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.SaveRedirect">저장 데이터 리다이렉트:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">메인 저장 데이터</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">챠오 저장 데이터</system:String>
+    <system:String x:Key="EditMod.Tabs.Btn.Advanced">고급 설정</system:String>
 
-	<system:String x:Key="EditMod.Tabs.Updates">업데이트 정보</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Method">업데이트 방식</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.GitHub">Github 업데이트 설정</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">저자와 레포:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">릴리스 에셋:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates">업데이트 정보</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.Method">업데이트 방식</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.SelfHosted">자체 호스팅</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GitHub">Github 업데이트 설정</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">제작자와 저장소:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">패키지 이름:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB">Gamebanana 업데이트 설정</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">모드 ID:</system:String>
-    <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">Mod Type:</system:String>
-    <system:String x:Key="EditMod.Tabs.Updates.Self">자체 호스팅된 업데이트 설정</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL 업로드:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL 변경 로그:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">모드 유형:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.Self">업데이트 서버 설정</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.Self.URL">업데이트 데이터 경로:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">변경 사항 경로:</system:String>
 
 	<system:String x:Key="EditMod.Tabs.Dependencies">종속성</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Warning">종속성 시스템은 제대로 작동하기 위해 다른 모드에 의존하는 모드를 생성한 경우에만 사용할 수 있습니다. </system:String>

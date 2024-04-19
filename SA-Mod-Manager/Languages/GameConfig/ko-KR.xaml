@@ -8,43 +8,44 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics">그래픽</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input">입력</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound">소리</system:String>
-	<system:String x:Key="GameConfig.Tabs.Patches">패치</system:String>
+    <system:String x:Key="GameConfig.Tabs.Patches">패치</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options">설정</system:String>
 
-	<!--Graphics Tab Strings-->
+    <!--Graphics Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">디스플레이 옵션</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">화면:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">All Displays</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">Screen Mode:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Windowed</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">모든 디스플레이</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">화면 모드:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">창 모드</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Standard window mode.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Exclusive Fullscreen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">전체 화면</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Not Recommended. Window will update monitor resolution and is prone to crashes when the window is unfocused.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Borderless Fullscreen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">전체 창 모드</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Recommended Fullscreen Mode. Allows for rendering the game at different resolutions to the window and fixes the alt tab bug.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Custom Window</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Like Borderless Fullscreen but for the window and not fullscreen modes.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">해상도:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Window Size:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">창 크기:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">4:3 종횡비 고정</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">V-Sync 허용</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">비활성화 시 일시중지</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">수직 동기화 허용</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">비활성화 시 일시정지</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">버퍼를 동적으로 할당</system:String>
     
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">창 크기 조절</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Keep Ratio on Resize</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">창 크기 조절 시 화면 비율 유지</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">종횡비 유지</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">사용자 정의 창 크기:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">경계 없는 전체화면</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Show Mouse in Fullscreen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">전체 창 모드</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">전체 화면에서 마우스 커서 표시</system:String>
     
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">화면 확대</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">다른 그래픽 옵션</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">프레임레이트:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">프레임:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel">디테일 레벨:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High">높음(최고)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High">높음 (최고)</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low">낮음</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest">아주 낮음</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog">Fog Emulation:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog">포그 에뮬레이션:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Auto">자동</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation">에뮬레이션</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill">배경 채우기 모드:</system:String>
@@ -54,9 +55,9 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">FMV 채우기 모드:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.TexFilter">텍스쳐 필터링:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.UIFilter">GUI 필터링</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">향상</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap">강제 맵핑</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">UI Scaling 활성화</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">그래픽 개선</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap">강제 밉매핑</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">UI 확대 활성화</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">D3D8to9 활성화</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">D3D8to9 업데이트</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Download DXVK</system:String>
@@ -65,10 +66,10 @@
     <!--#endregion-->
 
     <!--Options Tab Strings-->
-    <system:String x:Key="GameConfig.Tabs.Options.Title">Misc Options</system:String>
-    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Skip Intro</system:String>
-    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. These options are overwritten by the save file once one is loaded.</system:String>
-    <system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">Text and Voice Language can be set for the game to load on first boot. These options take effect when booting using Test Spawn. Voice option will change depending on the loaded save file.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Title">기타 설정</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">오프닝 건너뛰기</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">게임 실행 시의 자막과 음성 언어를 변경할 수 있습니다. 테스트 스폰 사용 시 반영됩니다. 저장 데이터를 불러올 경우 저장 데이터의 설정에 따릅니다.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">게임 실행 시의 자막과 음성 언어를 변경할 수 있습니다. 테스트 스폰 사용 시 반영됩니다. 음성 설정의 경우 저장 데이터의 설정을 따릅니다.</system:String>
     <!--#endregion-->
 
     <!--Input Tab Strings-->
@@ -89,7 +90,7 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2">Better Input 구성</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">AppLauncher 열기</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">AppLauncher 가져오기</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Better Input 시스템은 SDL2을 소닉 어드벤처DX로 구현한 것입니다. Better Input은 원래 DInput 시스템의 문제를 해결하므로 이것으로 플레이하는 것을 권장합니다.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Better Input 시스템은 SDL2을 소닉 어드벤처 DX에 구현한 것입니다. Better Input은 원래 DInput 시스템의 문제를 해결하므로 이것으로 플레이하는 것을 권장합니다.</system:String>
 
 	<!--Sound Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">소리 설정</system:String>
@@ -101,28 +102,37 @@
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">3D 사운드 허용</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">음악 볼륨:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">음성 볼륨:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">SFX 볼륨:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">효과음 볼륨:</system:String>
 	<!--#endregion-->
 
 	<!--#region Test Spawn Tab Strings-->
 	<system:String x:Key="TestSpawn.Check.Character">캐릭터:</system:String>
-	<system:String x:Key="TestSpawn.Check.Level">레벨:</system:String>
+	<system:String x:Key="TestSpawn.Check.Level">스테이지:</system:String>
 	<system:String x:Key="TestSpawn.Time">시간:</system:String>
-	<system:String x:Key="TestSpawn.Act">Act:</system:String>
+    <system:String x:Key="TestSpawn.Act">액트:</system:String>
 	<system:String x:Key="TestSpawn.Check.Mode">게임 모드:</system:String>
-	<system:String x:Key="TestSpawn.Check.Save">세이브 파일 리디렉션:</system:String>
+	<system:String x:Key="TestSpawn.Check.Save">저장 파일 리다이렉션:</system:String>
 	<system:String x:Key="TestSpawn.Check.Event">이벤트:</system:String>
 	<system:String x:Key="TestSpawn.Warning">이벤트에서 레벨 또는 캐릭터를 무시하면 충돌이 일어날 수 있습니다.</system:String>
 	<system:String x:Key="TestSpawn.Buttons.Launch">게임 시작</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced">고급 옵션</system:String>
+	<system:String x:Key="TestSpawn.Group.Advanced">고급 설정</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Check.Manual">수동 설정:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Check.Position">위치:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosX">X축:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Y축:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">Z축:</system:String>
-	<system:String x:Key="TestSpawn.Group.Advanced.Angle">앵글:</system:String>
-    <system:String x:Key="TestSpawn.Player2">Player 2:</system:String>
-    <system:String x:Key="TestSpawn.Mission">Mission:</system:String>
+	<system:String x:Key="TestSpawn.Group.Advanced.Angle">각도:</system:String>
+    <system:String x:Key="TestSpawn.Player2">플레이어 2:</system:String>
+    <system:String x:Key="TestSpawn.Mission">미션:</system:String>
+
+    <system:String x:Key="TestSpawn.Language.Voice">음성 언어:</system:String>
+    <system:String x:Key="TestSpawn.Language.Text">자막 언어:</system:String>
+    <system:String x:Key="TestSpawn.Language.Japanese">日本語</system:String>
+    <system:String x:Key="TestSpawn.Language.English">English</system:String>
+    <system:String x:Key="TestSpawn.Language.French">Français</system:String>
+    <system:String x:Key="TestSpawn.Language.Italian">Italiano</system:String>
+    <system:String x:Key="TestSpawn.Language.Spanish">Español</system:String>
+    <system:String x:Key="TestSpawn.Language.German">Deutsch</system:String>
     <!--#endregion-->
 	
 	<!--#region SADX-->
