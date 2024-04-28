@@ -180,6 +180,8 @@ namespace SAModManager.Configuration.SADX
         public bool ExtendedSaveSupport { get; set; }
         [DefaultValue(true)]
         public bool CrashGuard { get; set; }
+        [DefaultValue(true)]
+        public bool XInputFix { get; set; }
 
         #endregion
 

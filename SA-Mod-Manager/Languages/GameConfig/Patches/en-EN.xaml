@@ -21,6 +21,7 @@
     <system:String x:Key="GamePatches.DisableCDCheck">Disable CD Check</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Extended Save Support</system:String>
     <system:String x:Key="GamePatches.CrashGuard">Crash Guard</system:String>
+    <system:String x:Key="GamePatches.XInputFix">XInput Fix</system:String>
 
     <system:String x:Key="GamePatches.HRTFSoundDesc">Sets DirectSound to use more advanced algorithms to process 3D sounds. This patch is unnecessary when BASS for SFX is enabled.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Fixes a vanilla bug that prevents Free Cam Settings from being saved properly when dying or loading a zone/act.</system:String>
@@ -39,6 +40,7 @@
 	<system:String x:Key="GamePatches.DisableCDCheckDesc">Disables the game's CD check.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Enables support for saved games from the Steam version and allows custom save names (up to 48 characters).</system:String>
     <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Prevents common crashes with missing textures and missing binary files.&#x0a;&#x0a;This will not prevent the game from crashing in all circumstances.</system:String>
+    <system:String x:Key="GamePatches.XInputFixDesc" xml:space="preserve">Fixes spinning camera with XInput controllers when Vanilla Input is used.</system:String>
 
     <!--#region SA2 Patches-->
     <system:String x:Key="GamePatchesSA2.FramerateLimiter">Lock Framerate</system:String>

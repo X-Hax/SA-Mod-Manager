@@ -21,6 +21,7 @@
     <system:String x:Key="GamePatches.DisableCDCheck">Deshabilitar Revisión de CD</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Soporte de guardado extendido</system:String>
     <system:String x:Key="GamePatches.CrashGuard">Anti-congelamientos</system:String>
+    <system:String x:Key="GamePatches.XInputFix">XInput Fix</system:String>
 
     <system:String x:Key="GamePatches.HRTFSoundDesc">Ajusta DirectSound para que utilice algoritmos más avanzados para procesar sonidos 3D. Este parche no es necesario cuando BASS para efectos de sonido está activado.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Corrige un error que impide que los ajustes de la cámara libre se guarden correctamente al morir o al cargar una zona/acto.</system:String>
@@ -39,7 +40,8 @@
 	<system:String x:Key="GamePatches.DisableCDCheckDesc">Deshabilita la Revisión de CD por parte del juego.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Permite usar datos guardados de la versión de Steam, así como archivos con nombres personalizados (hasta 48 caracteres).</system:String>
     <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Previene fallos comunes de texturas o archivos binarios faltantes.&#x0a;&#x0a;Esto no evitará todas los fallos que puedan congelar el juego.</system:String>
-
+    <system:String x:Key="GamePatches.XInputFixDesc" xml:space="preserve">Fixes spinning camera with XInput controllers when Vanilla Input is used.</system:String>
+    
     <!--#region SA2 Patches-->
     <system:String x:Key="GamePatchesSA2.FramerateLimiter">Fijar velocidad de fotogramas</system:String>
     <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Desactivar confirmación de salida</system:String>

@@ -676,6 +676,8 @@ namespace SAModManager.Configuration.SADX
         public bool ExtendedSaveSupport { get; set; } = true;
         [DefaultValue(true)]
         public bool CrashGuard { get; set; } = true;
+        [DefaultValue(true)]
+        public bool XInputFix { get; set; } = true;
 
         /// <summary>
         /// Converts from original settings file.
@@ -700,6 +702,7 @@ namespace SAModManager.Configuration.SADX
 			DisableCDCheck = oldSettings.DisableCDCheck;
 			ExtendedSaveSupport = oldSettings.ExtendedSaveSupport;
 			CrashGuard = oldSettings.CrashGuard;
+			XInputFix = oldSettings.XInputFix;
 		}
 	}
 

@@ -21,6 +21,7 @@
     <system:String x:Key="GamePatches.DisableCDCheck">Вимкнути Перевірку CD</system:String>
 	<system:String x:Key="GamePatches.ExtendedSaveSupport">Extended Save Support</system:String>
     <system:String x:Key="GamePatches.CrashGuard">Захист від Аварій</system:String>
+    <system:String x:Key="GamePatches.XInputFix">XInput Fix</system:String>
 	
 	
     <system:String x:Key="GamePatches.HRTFSoundDesc">Налаштовує DirectSound для використання більш розвинених алгоритмів обробки 3D звуку. Цей патч не є обов'язковим якщо BASS для SFX увімкнено.</system:String>
@@ -40,7 +41,8 @@
 	<system:String x:Key="GamePatches.DisableCDCheckDesc">Вимикає перевірку диску.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Вмикає підтримку збережень Стім версії і дозволяє їм назви (до 48 символів).</system:String>
     <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Prevents common crashes with missing textures and missing binary files.&#x0a;&#x0a;This will not prevent the game from crashing in all circumstances.</system:String>
-
+    <system:String x:Key="GamePatches.XInputFixDesc" xml:space="preserve">Fixes spinning camera with XInput controllers when Vanilla Input is used.</system:String>
+    
     <!--#region SA2 Patches-->
     <system:String x:Key="GamePatchesSA2.FramerateLimiter">Замкнути FPS</system:String>
     <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Вимкнути Вікно Виходу</system:String>
