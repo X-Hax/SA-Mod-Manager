@@ -110,7 +110,7 @@
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">그래픽 설정을 변경합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">게임의 입력 설정을 변경합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">게임의 사운드 설정을 변경합니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Options">기타 설정을 변경합니다.</system:String> // not displayed yet
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Options">기타 설정을 변경합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">게임 패치를 활성화하거나 비활성화합니다.</system:String>
 
     <!--#region Graphics Settings-->
