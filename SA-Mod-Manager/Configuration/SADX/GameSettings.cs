@@ -676,8 +676,8 @@ namespace SAModManager.Configuration.SADX
         public bool ExtendedSaveSupport { get; set; } = true;
         [DefaultValue(true)]
         public bool CrashGuard { get; set; } = true;
-        [DefaultValue(true)]
-        public bool XInputFix { get; set; } = true;
+        [DefaultValue(false)]
+        public bool XInputFix { get; set; } = false;
 
         /// <summary>
         /// Converts from original settings file.
