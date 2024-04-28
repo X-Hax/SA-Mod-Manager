@@ -699,6 +699,7 @@ namespace SAModManager.Configuration.SADX
 			KillGBIX = oldSettings.KillGbix;
 			DisableCDCheck = oldSettings.DisableCDCheck;
 			ExtendedSaveSupport = oldSettings.ExtendedSaveSupport;
+			CrashGuard = oldSettings.CrashGuard;
 		}
 	}
 
