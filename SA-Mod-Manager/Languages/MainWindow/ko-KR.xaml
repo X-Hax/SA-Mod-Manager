@@ -2,206 +2,212 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<!--#region Main Window Strings-->
-	<system:String x:Key="Manager.Buttons.SaveAndPlay">저장하고 &amp; 플레이</system:String>
-	<system:String x:Key="Manager.Tabs.Mods">모드</system:String>
-	<system:String x:Key="Manager.Tabs.Codes">코드</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig">게임 설정</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig">Manager 설정</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn">테스트 스폰</system:String>
-	<!--#endregion-->
+    <!--#region Main Window Strings-->
+    <system:String x:Key="Manager.Buttons.SaveAndPlay">저장하고 게임 실행</system:String>
+    <system:String x:Key="Manager.Tabs.Mods">모드</system:String>
+    <system:String x:Key="Manager.Tabs.Codes">코드</system:String>
+    <system:String x:Key="Manager.Tabs.GameConfig">게임 설정</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig">매니저 설정</system:String>
+    <system:String x:Key="Manager.Tabs.TestSpawn">테스트 스폰</system:String>
+    <!--#endregion-->
 
-	<!--#region Mods Tab Strings-->
-	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">새로 고침</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">모드 구성</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">모드 추가</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">선택된 모드가 없음.</system:String>
+    <!--#region Mods Tab Strings-->
+    <system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">새로 고침</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">모드 설정</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Buttons.Add">모드 추가</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">선택된 모드가 없습니다.</system:String>
 
-	<!--Mods Context Menu-->
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">업데이트 확인</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">무결성 확인</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">강제 업데이트</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">모드 구성</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">모드 편집</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">모드 삭제</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">개발자</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">매니페스트 생성</system:String>
-	<!--#endregion-->
+    <!--Mods Context Menu-->
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">업데이트 확인</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">무결성 확인</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">강제 업데이트</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">모드 설정</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">모드 편집</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">모드 삭제</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">개발자</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">매니페스트 생성</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">업데이트 비활성화</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">업데이트 활성화</system:String>
+    <!--#endregion-->
 
-	<!--#region Codes Tab Strings-->
-	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">새 코드</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Edit Code</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Delete Code</system:String>
+    <!--#region Codes Tab Strings-->
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">새 코드 만들기</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">코드 편집</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">코드 삭제</system:String>
     <system:String x:Key="Manager.Tabs.Codes.CodeHeader">코드</system:String>
-	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Made by</system:String>
-	<!--#endregion-->
+    <system:String x:Key="Manager.Tabs.Codes.MadeBy">제작:</system:String>
+    <!--#endregion-->
 
-	<!--#region Manager Config Tab Strings-->
-	<!--Options-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">옵션</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">테마:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">언어:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">프로필:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">게임 디렉토리:</system:String>
+    <!--#region Manager Config Tab Strings-->
+    <!--Options-->
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">옵션</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">테마:</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">언어:</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">프로필:</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">게임 설치 경로:</system:String>
 
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">원 클릭 설치 활성화</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">원 클릭 설치 비활성화</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">원클릭 설치 활성화</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">원클릭 설치 비활성화</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">게임 설치 경로 열기</system:String>
 
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">모드로더 설치</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">모드로더 제거</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">모드로더 설치</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">모드로더 제거</system:String>
 
-	<!--Updates-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">업데이트</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">시작 시 모드로더 업데이트 확인</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">시작 시 모드 업데이트 확인</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">업데이트 확인</system:String>
+    <!--Updates-->
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">업데이트</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">시작 시 SA Mod Manager 업데이트 확인</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">시작 시 모드로더 업데이트 확인</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">시작 시 모드 업데이트 확인</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">업데이트 확인</system:String>
 
-	<!--Debug Features-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">고급 옵션</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">게임 시작 후 모드 Mod Manager 열린 상태로 유지</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">개발자 옵션 허용</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">창 조절 활성화</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">게임 창에 디버그 출력</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">파일에 디버그 정보 로그</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">충돌 덤프 생성</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">게임 상태 점검</system:String>
+    <!--Debug Features-->
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">고급 옵션</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">게임 실행 후에도 SA Mod Manager를 열린 상태로 유지</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">개발자 옵션 활성화</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">콘솔 창 활성화</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">게임 화면에 디버그 정보 출력</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">디버그 정보를 파일에 기록</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">충돌 덤프 생성</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">게임 상태 확인</system:String>
 
-	<!--About-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">About</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SA Mod Manager는 소닉 어드벤처 DX의 모드를 관리하기 쉽게 하는 프로그램입니다.</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">기여자</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">소스코드</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">버그 제보 (영어만)</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">SA 문서 열기 (영어만)</system:String>
-	<!--#endregion-->
-	
-	<!--#region Tooltips-->
-	<!--#region Main Window Tool Tips-->
-	<system:String x:Key="MainWindow.Tips.Tab.Mods">모드를 선택, 편집, 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Codes">플레이 중에 사용할 코드를 선택합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig">그래픽과 소리를 포함한 게임 옵션을 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn">선택한 옵션으로 아무 레벨에서 아무 캐릭터로 게임을 빠르게 시작합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options">테마와 언어 설정을 포함한 Manager 옵션을 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.SaveAndPlay">선택한 설정을 저장하고 게임을 시작합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Save">선택한 설정을 저장합니다.</system:String>
+    <!--About-->
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">정보</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SA Mod Manager는 소닉 어드벤처 시리즈의 모드를 간편하게 관리할 수 있는 프로그램입니다.</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">기여자</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">소스 코드</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">버그 제보 (영어만 가능)</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">관련 문서 열기 (영어만 가능)</system:String>
+    <!--#endregion-->
 
-	<!--#region Mods Tab Tool Tips-->
-	<system:String x:Key="MainWindow.Tips.Tab.Mods.Refresh">모드 목록을 새로 고침합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveCeiling">선택한 모드를 모드 목록의 맨 위로 이동합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveUp">선택한 모드를 목록에서 위로 이동합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveDown">선택한 모드를 목록에서 아래로 이동합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveFloor">선택한 모드를 목록의 맨 아래로 이동합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.SelectAll">목록에서 모든 모드를 선택합니다. 모든 모드를 선택한 상태에서 게임을 시작하면 충돌이 일어날 수 있습니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.DeselectAll">목록에서 모든 모드를 선택 해제합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Mods.NewMod">모드를 수동으로 설치하거나 새로 만들 새 모드 창을 엽니다.</system:String>
-	<!--#endregion-->
+    <!--#region Tooltips-->
+    <!--#region Main Window Tool Tips-->
+    <system:String x:Key="MainWindow.Tips.Tab.Mods">모드를 선택, 편집, 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Codes">플레이 중에 사용할 코드를 선택합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig">그래픽과 사운드를 포함한 게임 설정을 변경합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn">선택한 설정으로 아무 레벨에서 아무 캐릭터로 게임을 빠르게 시작합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options">테마와 언어 설정을 포함한 매니저 설정을 변경합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.SaveAndPlay">선택한 설정을 저장하고 게임을 시작합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Save">선택한 설정을 저장합니다.</system:String>
 
-	<!--#region Codes Tab Tool Tips-->
-	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.SelectAll">사용 가능한 모든 코드를 선택합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.DeselectAll">사용 가능한 모든 코드를 선택 해제합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Codes.NewCode">코드 생성 창을 엽니다.</system:String>
-	<!--#endregion-->
+    <!--#region Mods Tab Tool Tips-->
+    <system:String x:Key="MainWindow.Tips.Tab.Mods.Refresh">모드 목록을 새로 고칩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Mods.MoveCeiling">선택한 모드를 모드 목록의 맨 위로 이동합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Mods.MoveUp">선택한 모드를 목록에서 위로 이동합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Mods.MoveDown">선택한 모드를 목록에서 아래로 이동합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Mods.MoveFloor">선택한 모드를 목록의 맨 아래로 이동합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.SelectAll">목록에서 모든 모드를 선택합니다. 모든 모드를 선택한 상태에서 게임을 시작하면 충돌이 일어날 수 있습니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.DeselectAll">목록에서 모든 모드를 선택 해제합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Mods.NewMod">모드를 수동으로 설치하거나 새로 만듭니다.</system:String>
+    <!--#endregion-->
 
-	<!--#region Game Config Tab -->
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">그래픽 옵션을 변경합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">게임 입력 옵션을 변경합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">게임 사운드 설정을 변경합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">게임 패치를 활성화하거나 비활성화합니다.</system:String>
+    <!--#region Codes Tab Tool Tips-->
+    <system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.SelectAll">사용 가능한 모든 코드를 선택합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.DeselectAll">사용 가능한 모든 코드를 선택 해제합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Codes.NewCode">코드 생성 창을 엽니다.</system:String>
+    <!--#endregion-->
 
-	<!--#region Graphics Settings-->
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen">게임을 불러울 모니터를 선택합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">사용자 지정 해상도를 설정하고 프리셋 해상도의 목록을 선택합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">설정한 해상도에도 게임을 4:3 종횡비로 고정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">V-Sync을 활성화합니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">활성화된 경우 게임 창이 포커스를 맞추지 않으면 게임이 일시 중지됩니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">게임 창이 전체화면에서 부팅됩니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">전체 화면 게임 창에서 테두리 없이 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">전체 화면의 UI 요소를 크게 합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">게임 창이 창 모드에서 부팅됩니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">게임 창을 여는 동안 크기를 조정할 수 있습니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">사용자 지정 창 크기를 설정할 때 설정된 해상도로 종횡비를 유지합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">해상도와 별도로 창 크기를 설정합니다. 예를 들어, 더 작은 창에서 4K 해상도로 플레이할 수 있습니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">게임의 프레임레이트를 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">렌더러로 에뮬레이션 유형을 설정합니다. 자동이 권장됩니다. 매우 오래된 그래픽 카드/칩셋으로 작동하는 경우에만 에뮬레이트를 사용하시오.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">모든 모델 텍스쳐에 대한 텍스쳐 타입을 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">모든 GUI 관련 텍스쳐에 대한 텍스쳐 필터링 타입을 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">당기는 거리에 대한 디테일 레벨을 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">고정된 4:3 렌더 비율로 와이드스크린에서 재생할 때 테두리 이미지의 채우기 방법을 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">게임이 FMV 재생할 때 채우기 방법을 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">미니맵이 없는 모든 텍스쳐에 대해 미니맵을 생성합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">D3D8to9 Shim 사용하여 게임에서 D3D9 기능을 활성화합니다. 이 기능을 키려면 일부 모드가 필요합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">게임 해상도에 따라 적절하게 UI의 스케일을 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">d3d8to9에 대한 업데이트 확인하고 다운로드합니다.</system:String>
-	<!--#endregion-->
+    <!--#region Game Config Tab -->
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">그래픽 설정을 변경합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">게임의 입력 설정을 변경합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">게임의 사운드 설정을 변경합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Options">기타 설정을 변경합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">게임 패치를 활성화하거나 비활성화합니다.</system:String>
 
-	<!--#region Input Settings-->
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">SADX에 내장된 원래 입력 시스템을 사용합니다. 이 시스템은 가장 일반적으로 회전하는 카메라에 문제가 생기기 쉽습니다. 이 옵션은 사용하지 않는 것이 좋습니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput">원래 입력 시스템을 대체하는 SDL2 기반 시스템을 구현합니다. 이 입력 방식을 권장합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold">마우스 이동 모드로 플레이어를 이동하기 위해 끌어서 누른 상태로 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate">마우스 이동 모드로 드래그하면 플레이어가 가속되는 위치로 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Jump">이 버튼은 메뉴에서 수락하거나 점프에 사용하며, 가장 일반적으로 × 또는 A에 할당됩니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Action">이 버튼은 각각의 캐릭터의 기본 액션 버튼이며, 가장 일반적으로 □ 또는 X에 할당됩니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Cancel">이 버튼은 메뉴에서 취소하거나 게임에서 공격하기 위한 또 다른 버튼으로, 가장 일반적으로 ○ 또는 B에 할당됩니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Start">이 버튼은 시작 버튼입니다. 게임을 시작하거나 일시중지할 때 사용합니다. 가장 일반적으로 Start 버튼에 할당됩니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamLeft">이 버튼은 왼쪽으로 카메라를 움직일 때 사용되며, 가장 일반적으로 왼쪽 숄더 버튼에 할당됩니다. 조이스틱에 할당할 수 없습니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamRight">이 버튼은 오른쪽으로 카메라를 움직일 때 사용되며, 가장 일반적으로 오른쪽 숄더 버튼에 할당됩니다. 조이스틱에 할당할 수 없습니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Flute">이 버튼은 챠오가든의 호루라기에 사용됩니다. 가장 일반적으로 △ 또는 Y에 할당됩니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher">이것은 AppLauncher을 열고 컨트롤을 구성할 수 있습니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher">이것은 컨트롤을 구성하기 위한 AppLauncher을 다운로드할 수 있는 링크가 열립니다.</system:String>
-	<!--#endregion-->
+    <!--#region Graphics Settings-->
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen">게임 화면을 출력할 모니터를 선택합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">사용자 지정 해상도를 설정하고 프리셋 해상도의 목록을 선택합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">설정한 해상도에도 게임을 4:3 종횡비로 고정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">수직 동기화를 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">활성화된 경우 게임 창이 비활성화되었을 때 게임이 일시 정지됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">게임이 전체 화면으로 실행됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">게임을 테두리 없는 창 모드로 실행합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">전체 화면의 UI 요소를 크게 합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">게임 창이 창 모드에서 부팅됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">게임 창을 여는 동안 크기를 조정할 수 있습니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">사용자 지정 창 크기를 설정할 때 설정된 해상도로 종횡비를 유지합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">해상도와 별도로 창 크기를 설정합니다. 예를 들어, 더 작은 창에서 4K 해상도로 플레이할 수 있습니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">게임의 프레임레이트를 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">렌더러로 에뮬레이션 유형을 설정합니다. 자동이 권장됩니다. 매우 오래된 그래픽 카드/칩셋으로 작동하는 경우에만 에뮬레이트를 사용하시오.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">모든 모델 텍스쳐에 대한 텍스쳐 타입을 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">모든 GUI 관련 텍스쳐에 대한 텍스쳐 필터링 타입을 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">당기는 거리에 대한 디테일 레벨을 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">고정된 4:3 렌더 비율로 와이드스크린에서 재생할 때 테두리 이미지의 채우기 방법을 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">게임이 FMV 재생할 때 채우기 방법을 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">미니맵이 없는 모든 텍스쳐에 대해 미니맵을 생성합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">D3D8to9 Shim 사용하여 게임에서 D3D9 기능을 활성화합니다. 이 기능을 키려면 일부 모드가 필요합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">게임 해상도에 따라 적절하게 UI의 스케일을 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">d3d8to9에 대한 업데이트 확인하고 다운로드합니다.</system:String>
+    <!--#endregion-->
 
-	<!--#region Sound Settings-->
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">사운드 백엔드를 vgmbass로 교체합니다. 이 옵션은 최고의 경험을 위해 권장하며, 많은 모드가 이것에 의존합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">게임 내 음악을 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">게임 내 3D 사운드를 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">효과음 재생을 위해 BASS를 백엔드로 사용합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">게임 내 효과음과 음성을 활성화합니다.</system:String>
-	<!--#endregion-->
+    <!--#region Input Settings-->
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">SADX에 내장된 원래 입력 시스템을 사용합니다. 이 시스템은 가장 일반적으로 회전하는 카메라에 문제가 생기기 쉽습니다. 이 옵션은 사용하지 않는 것이 좋습니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput">원래 입력 시스템을 대체하는 SDL2 기반 시스템을 구현합니다. 이 입력 방식을 권장합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold">마우스 이동 모드로 플레이어를 이동하기 위해 끌어서 누른 상태로 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate">마우스 이동 모드로 드래그하면 플레이어가 가속되는 위치로 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Jump">이 버튼은 메뉴에서 수락하거나 점프에 사용하며, 가장 일반적으로 × 또는 A에 할당됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Action">이 버튼은 각각의 캐릭터의 기본 액션 버튼이며, 가장 일반적으로 □ 또는 X에 할당됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Cancel">이 버튼은 메뉴에서 취소하거나 게임에서 공격하기 위한 또 다른 버튼으로, 가장 일반적으로 ○ 또는 B에 할당됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Start">이 버튼은 시작 버튼입니다. 게임을 시작하거나 일시중지할 때 사용합니다. 가장 일반적으로 Start 버튼에 할당됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamLeft">이 버튼은 왼쪽으로 카메라를 움직일 때 사용되며, 가장 일반적으로 왼쪽 숄더 버튼에 할당됩니다. 조이스틱에 할당할 수 없습니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamRight">이 버튼은 오른쪽으로 카메라를 움직일 때 사용되며, 가장 일반적으로 오른쪽 숄더 버튼에 할당됩니다. 조이스틱에 할당할 수 없습니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Flute">이 버튼은 챠오가든의 호루라기에 사용됩니다. 가장 일반적으로 △ 또는 Y에 할당됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher">이것은 AppLauncher을 열고 컨트롤을 구성할 수 있습니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher">이것은 컨트롤을 구성하기 위한 AppLauncher을 다운로드할 수 있는 링크가 열립니다.</system:String>
+    <!--#endregion-->
 
-	<!--#region Patches Settings-->
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">목록의 모든 패치를 선택합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">목록의 모든 패치를 선택 해제합니다.</system:String>
-	<!--#endregion-->
-	<!--#endregion-->
+    <!--#region Sound Settings-->
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">사운드 백엔드를 vgmbass로 교체합니다. 많은 모드가 이것에 의존하며, 최고의 경험을 위해서는 활성화하는 것을 권장합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">게임 내 BGM을 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">게임 내 3D 사운드를 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">효과음 재생을 위해 BASS를 백엔드로 사용합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">게임 내 효과음과 음성을 활성화합니다.</system:String>
+    <!--#endregion-->
 
-	<!--#region Test Spawn Tips-->
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Character">스폰된 캐릭터 설정을 활성화 합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Level">생성된 레벨 설정을 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Time">어드벤처 필드의 시간을 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Act">선택한 레벨의 Act를 설정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Event">이벤트에서 로딩을 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.GameMode">게임 모드를 특정 유형으로 설정을 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Save">게임 부팅 중 로드된 세이브 파일 교체를 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">캐릭터, 레벨, Act 설정을 수동으로 활성화합니다. 활성화된 경우 위의 설정을 재조정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">시작 위치 및 각도 조정을 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">위 설정을 적용하여 게임을 시작합니다.</system:String>
+    <!--#region Patches Settings-->
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">목록의 모든 패치를 선택합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">목록의 모든 패치를 선택 해제합니다.</system:String>
+    <!--#endregion-->
+    <!--#endregion-->
+
+    <!--#region Test Spawn Tips-->
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Character">스폰된 캐릭터 설정을 활성화 합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Level">생성된 레벨 설정을 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Time">어드벤처 필드의 시간을 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Act">선택한 레벨의 Act를 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Event">이벤트에서 로딩을 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.GameMode">게임 모드를 특정 유형으로 설정을 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Save">게임 부팅 중 로드된 세이브 파일 교체를 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">캐릭터, 레벨, Act 설정을 수동으로 활성화합니다. 활성화된 경우 위의 설정을 재조정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">시작 위치 및 각도 조정을 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">위 설정을 적용하여 게임을 시작합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Enables setting for player 2.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Sets the Mission of the selected level.</system:String>
     <!--#endregion-->
 
-	<!--#region Manager Config Tips-->
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">모드 목록 및 설정에 사용할 프로필을 선택합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">프로필을 생성하거나 삭제할 수 있는 Profile Manager를 엽니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">게임이 설치된 디렉터리의 전체 경로입니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">게임 디렉터리를 정할 창을 엽니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Mod Manager에서 사용할 테마를 지정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Mod Manager에서 사용되는 언어를 지정합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">저장하고 플레이를 누른 경우, Mod Manager가 열린 상태로 유지됩니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">모드 매니저에서 테스트 스폰 탭을 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">활성화된 경우, GameBanana의 원클릭 링크를 클릭하면 모드에 대한 다운로드 대화 상자가 열립니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">활성화된 경우, 모드로더를 설치하고 모드, 패치, 치트로 플레이할 수 있습니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Mod Manager가 열릴 때 모드로더의 업데이트 자동 확인을 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Mod Manager가 열릴 때 설치한 모드 업데이트의 자동 확인을 활성화합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">모드로더와 설치한 모드의 업데이트에 대한 확인을 실행합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">게임에서 디버그 정보가 표시된 콘솔 창을 엽니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">게임 창에 디버그 정보를 출력합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">로그 파일에 디버그 정보를 저장합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">게임에 오류가 발생했을 때 크래시 덤프 로깅을 활성화합니다. 이 옵션은 예기치 않은 충돌을 조사하는 데 유용합니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">기여자와 About 창을 엽니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Mod Manager에 대한 GitHub 레포 링크를 엽니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">어드벤처 게임들의 모딩과 관련된 다양한 정보가 있는 SA 문서 웹사이트 링크를 엽니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">버그를 보고하려면 Mod Manager Github 레포의 Issues 링크를 엽니다.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">게임 설치 상태 검사를 실행하여 누락되거나 수정된 파일이 있는지 확인합니다.</system:String>
-	<!--#endregion-->
+    <!--#region Manager Config Tips-->
+    <system:String x:Key="MainWindow.Tips.Tab.Options.Profile">모드 목록 및 설정에 사용할 프로필을 선택합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">프로필을 생성하거나 삭제할 수 있는 Profile Manager를 엽니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">게임이 설치된 디렉터리의 전체 경로입니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">게임 디렉터리를 정할 창을 엽니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Mod Manager에서 사용할 테마를 지정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.Language">Mod Manager에서 사용되는 언어를 지정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">저장하고 플레이를 누른 경우, Mod Manager가 열린 상태로 유지됩니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">모드 매니저에서 테스트 스폰 탭을 활성화합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">활성화된 경우, GameBanana의 원클릭 링크를 클릭하면 모드에 대한 다운로드 대화 상자가 열립니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">활성화된 경우, 모드로더를 설치하고 모드, 패치, 치트로 플레이할 수 있습니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">매니저 실행 시 SA Mod Manager의 업데이트가 있는지 확인합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">매니저 실행 시 모드로더의 업데이트가 있는지 확인합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">매니저 실행 시 설치한 모드의 업데이트가 있는지 확인합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">모드로더와 설치한 모드의 업데이트가 있는지 확인합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">게임에서 디버그 정보가 표시된 콘솔 창을 엽니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">게임 화면에 디버그 정보를 출력합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">로그 파일에 디버그 정보를 저장합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">게임에 오류가 발생했을 때 크래시 덤프 로깅을 활성화합니다. 이 옵션은 예기치 않은 충돌을 조사하는 데 유용합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">기여자와 About 창을 엽니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.Source">Mod Manager에 대한 GitHub 레포 링크를 엽니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">어드벤처 게임들의 모딩과 관련된 다양한 정보가 있는 SA 문서 웹사이트 링크를 엽니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">버그를 보고하려면 Mod Manager Github 레포의 Issues 링크를 엽니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">게임 설치 상태 검사를 실행하여 누락되거나 수정된 파일이 있는지 확인합니다.</system:String>
+    <!--#endregion-->
 
 </ResourceDictionary>

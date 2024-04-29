@@ -30,10 +30,10 @@ namespace SAModManager
         public static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
         public static readonly string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        public static readonly string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
-        public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
+        public static string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(StartDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
+        public static string extLibPath = Path.Combine(ConfigFolder, "extlib");
         public static readonly string tempFolder = Path.Combine(StartDirectory, ".SATemp");
-        public static readonly string crashFolder = Path.Combine(ConfigFolder, "CrashDump");
+        public static string crashFolder = Path.Combine(ConfigFolder, "CrashDump");
         public static bool isVanillaTransition = false; //used when installing the manager from an update
         public static bool isFirstBoot = false; //used when installing the new manager manually
         public static bool isLinux = false;
@@ -386,7 +386,7 @@ namespace SAModManager
                 var manager = new InfoManagerUpdate(changelog, App.CurrentGame.loader.name);
                 manager.ShowDialog();
 
-                if (manager.DialogResult != true)
+                if (manager.DialogResult != true || App.CancelUpdate)
                     return false;
 
                 if (await GamesInstall.UpdateLoader(App.CurrentGame))

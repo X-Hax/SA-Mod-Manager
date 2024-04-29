@@ -20,7 +20,7 @@ namespace SAModManager.Controls.SA2
         #region Variables
         private GameSettings GameProfile;
         public static Dictionary<int, string> EventNames;
-         public static Dictionary<int, string> LevelNames { get; set; } = new();
+        public static Dictionary<int, string> LevelNames { get; set; } = new();
 
         #region ComboBox Sources
 
@@ -189,22 +189,17 @@ namespace SAModManager.Controls.SA2
         {
             if (GameProfile.TestSpawn.UseManual)
             {
-                tsNumCharacter.Value = GameProfile.TestSpawn.CharacterIndex;
-                tsNumLevel.Value = GameProfile.TestSpawn.LevelIndex;
-                tsNumMission.Value = GameProfile.TestSpawn.MissionIndex;
+                if (tsCheckCharacter.IsEnabled)
+                    tsNumCharacter.Value = tsComboCharacter.SelectedIndex;
+                if (tsCheckLevel.IsEnabled)
+                    tsNumLevel.Value = tsComboLevel.SelectedIndex;
+                if (tsComboMission.SelectedIndex > -1)
+                    tsNumMission.Value = tsComboMission.SelectedIndex;
 
                 tsCheckCharacter.IsChecked = false;
                 tsCheckLevel.IsChecked = false;
                 tsCheckPlayer2.IsChecked = false;
-            }
-            else
-            {
-                if (GameProfile.TestSpawn.CharacterIndex > -1)
-                    tsCheckCharacter.IsChecked = true;
-                if (GameProfile.TestSpawn.LevelIndex > -1)
-                    tsCheckLevel.IsChecked = true;
-                if (GameProfile.TestSpawn.Player2Index > -1)
-                    tsCheckPlayer2.IsChecked = true;
+                tsCheckEvent.IsChecked = false;
             }
         }
         #endregion
@@ -451,6 +446,15 @@ namespace SAModManager.Controls.SA2
                 { 71, "Kart Race" },
                 { 90, "Chao World" }
             };
+
+            //display level ID after the name.
+            foreach (var pair in LevelNames.ToList())
+            {
+                // Update the value
+                string updatedValue = pair.Value + " (" + pair.Key + ")";
+                LevelNames.Remove(pair.Key);
+                LevelNames.Add(pair.Key, updatedValue);
+            }
         }
 
         private static void InitCutsceneList()
@@ -524,11 +528,20 @@ namespace SAModManager.Controls.SA2
 				{ 602, Lang.GetString("SA2EventName63") },
 				{ 609, Lang.GetString("SA2EventName64") }
 			};
+
+
+            //display event ID after their name.
+            foreach (var pair in EventNames.ToList())
+            {
+                string displayName = "EV" + pair.Key.ToString("D4") + ": " + pair.Value;
+                EventNames.Remove(pair.Key);
+                EventNames.Add(pair.Key, displayName);
+            }
         }
 
         private static void AdjustCharIndex(ref int index)
         {
-            if (index >= 9) //super sonic / shadow and big aren't in the list, we adjust the offset from the ComboBox
+            if (index >= 9 && index < CharacterNames.Count) //super sonic / shadow and big aren't in the list, we adjust the offset from the ComboBox
             {
                 index += 3;
             }
@@ -553,33 +566,33 @@ namespace SAModManager.Controls.SA2
                 cmdline.Add($"-p2 {charIndex}");
             }
 
-            if (GameProfile.TestSpawn.LevelIndex > -1)
+            if (GameProfile.TestSpawn.LevelIndex > -1 && GameProfile.TestSpawn.UseEvent == false)
             {
-                if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
+                int lvl_result = GameProfile.TestSpawn.LevelIndex;
+                if (tsCheckManual.IsChecked == false)
                 {
-                    int lvl = 0;
-                    int lvl_result = 0;
+                    int currentIndex = 0;
+
                     foreach (var item in LevelNames)
                     {
-                        if (lvl == GameProfile.TestSpawn.LevelIndex)
+                        if (currentIndex == lvl_result)
                         {
                             lvl_result = item.Key;
                             break;
                         }
-                        lvl++;
+                        currentIndex++;
                     }
-                    cmdline.Add($"-l {lvl_result}");
                 }
+
+                cmdline.Add($"-l {lvl_result}");
             }
 
             if (GameProfile.TestSpawn.MissionIndex > -1)
                 if (GameProfile.TestSpawn.UseLevel || GameProfile.TestSpawn.UseManual)
                     cmdline.Add($"-m {GameProfile.TestSpawn.MissionIndex}");
 
-
 			if (GameProfile.TestSpawn.UsePosition)
 				cmdline.Add($"-p {GameProfile.TestSpawn.XPosition} {GameProfile.TestSpawn.YPosition} {GameProfile.TestSpawn.ZPosition} -r {GameProfile.TestSpawn.Rotation}");
-
 
 			if (GameProfile.TestSpawn.UseEvent && GameProfile.TestSpawn.EventIndex > -1)
                 cmdline.Add($"-e {GameProfile.TestSpawn.EventIndex}");

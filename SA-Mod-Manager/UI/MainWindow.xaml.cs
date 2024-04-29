@@ -105,7 +105,7 @@ namespace SAModManager
                 await oneClick.UriInit();
 
                 if (oneClick.isEmpty == false)
-                {
+                {                  
                     return;
                 }
             }
