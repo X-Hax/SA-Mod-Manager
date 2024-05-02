@@ -20,7 +20,7 @@
     <system:String x:Key="GamePatches.DisableCDCheck">Отключить проверку диска</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Расширенная поддержка сохранений</system:String>
     <system:String x:Key="GamePatches.CrashGuard">Защита от вылетов</system:String>
-    <system:String x:Key="GamePatches.XInputFix">XInput Fix</system:String>
+    <system:String x:Key="GamePatches.XInputFix">Исправление XInput</system:String>
 
     <system:String x:Key="GamePatches.HRTFSoundDesc">Настраивает DirectSound на использование более продвинутых алгоритмов для обработки 3D-звуков. Этот патч не нужен, если включен BASS для звуков.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Исправляет ошибку, из-за которой настройки свободной камеры не сохраняются после смерти или загрузки зоны/акта.</system:String>
@@ -39,7 +39,7 @@
     <system:String x:Key="GamePatches.DisableCDCheckDesc">Отключение проверки диска.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Включает поддержку стимовских сохранений и кастомных имён (с поддержкой до 48 символов).</system:String>
     <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Предотвращает вылеты из-за отсутствия текстур и bin-файлов. &#x0a;&#x0a;Патч не обезопасит вас от любых других вылетов.</system:String>
-    <system:String x:Key="GamePatches.XInputFixDesc" xml:space="preserve">Fixes spinning camera with XInput controllers when Vanilla Input is used.</system:String>
+    <system:String x:Key="GamePatches.XInputFixDesc" xml:space="preserve">Исправляет вращение камеры в режиме XInput при выборе Стандартного управления (DInput).</system:String>
 
     <!--#region SA2 Patches-->
     <system:String x:Key="GamePatchesSA2.FramerateLimiter">Ограничить частоту кадров</system:String>
