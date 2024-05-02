@@ -645,7 +645,7 @@ namespace SAModManager
 
                 if (DL.done == true)
                 {
-                    await Util.Extract(zipPath, destFolder);
+                    await Util.Extract(zipPath, destFolder, true);
 
                     await Process.Start(new ProcessStartInfo(Path.Combine(destFolder, "sadx_setup.exe"), "/install /passive /norestart")
                     {

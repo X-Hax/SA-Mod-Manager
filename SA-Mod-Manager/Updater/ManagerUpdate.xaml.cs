@@ -52,18 +52,16 @@ namespace SAModManager.Updater
             //once dl is finished, move manager zip in .SATemp folder
             if (File.Exists(dest) && tempFolderPath is not null)
             {
-                await Task.Delay(100);
                 //extract Manager zip
-                await Util.Extract(dest, tempFolderPath);
+                await Util.Extract(dest, tempFolderPath, true);
                 //delete zip
                 File.Delete(dest);
 
-                await Task.Delay(50);
                 string newExec = Path.Combine(tempFolderPath, Path.GetFileName(Environment.ProcessPath));
 
                 if (File.Exists(newExec))
                 {
-                    Process.Start(new ProcessStartInfo { FileName = newExec,  Arguments = $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"", UseShellExecute = true});
+                    Process.Start(new ProcessStartInfo { FileName = newExec, Arguments = $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"", UseShellExecute = true});
                     App.Current.Shutdown();
                 }
                 else

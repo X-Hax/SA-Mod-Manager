@@ -527,7 +527,7 @@ namespace SAModManager
                         try { mutex.WaitOne(); }
                         catch (AbandonedMutexException) { }
 
-
+                    Logger.Log("DoUpdate command started");
                     var dialog = new InstallManagerUpdate(args[2], args[3]);
                     await dialog.InstallUpdate();
                     Util.ClearTempFolder();

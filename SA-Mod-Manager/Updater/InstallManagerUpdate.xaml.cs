@@ -19,7 +19,6 @@ namespace SAModManager.Updater
         private readonly string managerExePath;
         private readonly CancellationTokenSource tokenSource = new();
         public event EventHandler CancelEvent;
-        public bool done = false;
 
         public InstallManagerUpdate(string updatePath, string managerPath)
         {
@@ -31,26 +30,22 @@ namespace SAModManager.Updater
         public async Task InstallUpdate()
         {
             string executablePath = Environment.ProcessPath;
-
-            await Application.Current.Dispatcher.Invoke(async () =>
+            Logger.Log("Now Replacing old exe...");
+            try
             {
-                try
-                {    
-                    await Util.MoveFile(Path.Combine(updatePath, executablePath), managerExePath, true);
-                    Process.Start(new ProcessStartInfo { FileName = managerExePath, UseShellExecute = true });
-                    done = true;
+                await Util.MoveFile(Path.Combine(updatePath, executablePath), managerExePath, true);
+                Process.Start(new ProcessStartInfo { FileName = managerExePath, UseShellExecute = true });
 
-                }
-                catch (AggregateException ae)
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(ex =>
                 {
-                    ae.Handle(ex =>
-                    {
-                        string error = Lang.GetString("MessageWindow.Errors.UpdateFailed") + $"\r\n{ex.Message}";
-                        new MessageWindow(Lang.GetString("MessageWindow.Errors.UpdateFailed.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
-                        return true;
-                    });
-                }
-            });
+                    string error = Lang.GetString("MessageWindow.Errors.UpdateFailed") + $"\r\n{ex.Message}";
+                    new MessageWindow(Lang.GetString("MessageWindow.Errors.UpdateFailed.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+                    return true;
+                });
+            }
 
             this.Close();
 

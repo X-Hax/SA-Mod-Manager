@@ -1527,7 +1527,7 @@ namespace SAModManager
 
             if (!string.IsNullOrEmpty(sadxSettings.GamePath) && Directory.Exists(sadxSettings.GamePath))
             {
-                textGameDir.Text = sadxSettings.GamePath;
+                textGameDir.Text = Path.GetFullPath(sadxSettings.GamePath);
                 App.CurrentGame.gameDirectory = sadxSettings.GamePath;
                 App.CurrentGame.modDirectory = Path.Combine(sadxSettings.GamePath, "mods");
             }
@@ -1549,7 +1549,7 @@ namespace SAModManager
 
             if (!string.IsNullOrEmpty(sa2.GamePath) && Directory.Exists(sa2.GamePath))
             {
-                textGameDir.Text = sa2.GamePath;
+                textGameDir.Text = Path.GetFullPath(sa2.GamePath);
                 App.CurrentGame.gameDirectory = sa2.GamePath;
                 App.CurrentGame.modDirectory = Path.Combine(sa2.GamePath, "mods");
             }
@@ -1590,7 +1590,7 @@ namespace SAModManager
         private void SaveSADXSettings()
         {
             // Update any GameSettings Info first.
-            (GameProfile as Configuration.SADX.GameSettings).GamePath = App.CurrentGame.gameDirectory;
+            (GameProfile as Configuration.SADX.GameSettings).GamePath = Path.GetFullPath(App.CurrentGame.gameDirectory);
             Controls.SADX.GameConfig gameConfig = (Controls.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
             gameConfig.SavePatches(ref GameProfile);
             Configuration.SADX.GameSettings sadxSettings = GameProfile as Configuration.SADX.GameSettings;
@@ -1610,7 +1610,7 @@ namespace SAModManager
         private void SaveSA2Settings()
         {
             // Update any GameSettings Info first.
-            (GameProfile as Configuration.SA2.GameSettings).GamePath = App.CurrentGame.gameDirectory;
+            (GameProfile as Configuration.SA2.GameSettings).GamePath = Path.GetFullPath(App.CurrentGame.gameDirectory);
             Controls.SA2.GameConfig gameConfig = (Controls.SA2.GameConfig)(tabGame.Content as Grid).Children[0];
             gameConfig.SavePatches(ref GameProfile);
             Configuration.SA2.GameSettings sa2 = GameProfile as Configuration.SA2.GameSettings;

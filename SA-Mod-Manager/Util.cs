@@ -147,6 +147,7 @@ namespace SAModManager
             }
             catch (Exception ex)
             {
+                Logger.Log("Failed to move the new exe.");
                 Console.WriteLine($"File move failed: {ex.Message}");
                 return false; // File move failed
             }
@@ -161,6 +162,7 @@ namespace SAModManager
             }
             catch (Exception ex)
             {
+                Logger.Log("failed to copy file!");
                 Console.WriteLine($"File copy failed: {ex.Message}");
                 return false; // File copy failed
             }
@@ -171,12 +173,15 @@ namespace SAModManager
         {
             try
             {
+                Logger.Log("Moving new file...");
                 await MoveFileAsync(origin, dest, overwrite);
             }
             catch //File.Move doesn't work if hard drive destination is different from source, copy doesn't have this problem
             {
+                Logger.Log("Attempting to copy the file instead...");
                 if (await CopyFileAsync(origin, dest, overwrite))
                 {
+                    Logger.Log("success!");
                     File.Delete(origin);
                 }
             }
@@ -335,13 +340,13 @@ namespace SAModManager
         }
 
 
-        public static async Task ExtractArchive(string zipPath, string destFolder, bool overwright = false)
+        public static async Task ExtractArchive(string zipPath, string destFolder, bool overwrite = false)
         {
             Directory.CreateDirectory(destFolder);
 
             if (Path.GetExtension(zipPath) == ".zip")
             {
-                ZipFile.ExtractToDirectory(zipPath, destFolder, overwright);
+                ZipFile.ExtractToDirectory(zipPath, destFolder, overwrite);
                 return;
             }
 
@@ -354,7 +359,7 @@ namespace SAModManager
                 }
             }
 
-            await Task.Delay(1000);
+            await Task.Delay(500);
         }
 
         public static async Task<bool> ExtractArchiveUsing7Zip(string path, string dest)
@@ -416,18 +421,18 @@ namespace SAModManager
             return false;
         }
 
-        public static async Task Extract(string zipPath, string destFolder, bool overwright = false)
+        public static async Task Extract(string zipPath, string destFolder, bool overwrite = false)
         {
             try
             {
-                await ExtractArchive(zipPath, destFolder, overwright);
+                await ExtractArchive(zipPath, destFolder, overwrite);
             }
             catch (Exception ex)
             {
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
             }
 
-            await Task.Delay(1000);
+            await Task.Delay(100);
         }
 
         public static async Task<bool> ExtractZipFromResource(byte[] resource, string outputDirectory)
