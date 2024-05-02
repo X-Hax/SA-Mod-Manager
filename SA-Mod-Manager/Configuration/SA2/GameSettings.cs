@@ -102,6 +102,12 @@ namespace SAModManager.Configuration.SA2
         public bool SkipIntro { get; set; } = false;
 
         /// <summary>
+        /// Sets the monitor's refresh rate when in exclusive full screen mode.
+        /// </summary>
+        [DefaultValue(60)]
+        public int RefreshRate { get; set; } = 60;
+
+        /// <summary>
         /// Converts from the original settings file.
         /// </summary>
         /// <param name="oldSettings"></param>
@@ -128,6 +134,7 @@ namespace SAModManager.Configuration.SA2
             HorizontalResolution = config.Width;
             VerticalResolution = config.Height;
             GameTextLanguage = config.Language;
+            RefreshRate = config.RefreshRate;
         }
 
         public void LoadConfigs(ref SA2GameConfig config)
@@ -156,6 +163,7 @@ namespace SAModManager.Configuration.SA2
             config.Width = HorizontalResolution;
             config.Height = VerticalResolution;
             config.Language = GameTextLanguage;
+            config.RefreshRate = RefreshRate;
         }
 
         public void ToConfigs(ref SA2GameConfig config)
