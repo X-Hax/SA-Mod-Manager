@@ -135,6 +135,19 @@ namespace SAModManager.Updater
                 });
             }
             catch { }
+        }       
+        
+        private void ResetCurFileText()
+        {
+            try
+            {
+                // Update UI on the UI thread using Dispatcher
+                Dispatcher.Invoke(() =>
+                {
+                    curFile.Text = string.Empty;
+                });
+            }
+            catch { }
         }
 
         private void RemoveEmptyDirectories(ModDownload file, IEnumerable<ModManifestEntry> oldManifest, IEnumerable<ModManifestEntry> newManifest)
@@ -560,6 +573,7 @@ namespace SAModManager.Updater
                     await MoveFiles_Modular(tempDir, newEntries, mod);
                 }
 
+                ResetCurFileText();
                 count++;
             }
 
@@ -569,9 +583,7 @@ namespace SAModManager.Updater
                 _progressOverall?.Report(count);
             }
             catch
-            {
-                Console.WriteLine("welp");
-            }
+            { }
 
             ModsUpdateComplete();
         }
