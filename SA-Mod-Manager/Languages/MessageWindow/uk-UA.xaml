@@ -98,6 +98,12 @@
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">Сталася неочікувана помилка при завантаження профілів, якщо помилка залишається, будь ласка, повідомте про неї.</system:String>
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Не вдалося створити папку налаштувань у {0}.&#x0a;Менеджер Модів не зможе працювати правильно.</system:String>
     <system:String x:Key="MessageWindow.Errors.UpdateInstallCopy" xml:space="preserve">Не вдалося встановити оновлення {0}.&#x0a;Якщо гра відкрита, вимкніть її і спробуйте ще.</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Error Reading Ini File</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">An unexpected error occurred while reading an ini file. Ini files cannot have the same key or group multiple times.</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Mod Name: {0}&#x0a;Mod Author: {1}&#x0a;</system:String>
+    <!--> this is assuming the ini file was a mod <!-->
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->

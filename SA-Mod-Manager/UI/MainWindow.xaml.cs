@@ -1756,6 +1756,10 @@ namespace SAModManager
             foreach (string filename in SAModInfo.GetModFiles(new DirectoryInfo(App.CurrentGame.modDirectory)))
             {
                 SAModInfo mod = IniSerializer.Deserialize<SAModInfo>(filename);
+                if (mod is null)
+                {
+                    continue;
+                }
                 mods.Add((Path.GetDirectoryName(filename) ?? string.Empty)[(App.CurrentGame.modDirectory.Length + 1)..], mod);
             }
 
@@ -1822,7 +1826,7 @@ namespace SAModManager
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Errors.ModNotFound") + modNotFound, MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 
             //load unchecked mods
-            foreach (KeyValuePair<string, SAModInfo> inf in mods.OrderBy(x => x.Value.Name))
+            foreach (KeyValuePair<string, SAModInfo> inf in mods?.OrderBy(x => x.Value?.Name))
             {
                 if (!EnabledMods.Contains(inf.Key))
                 {
