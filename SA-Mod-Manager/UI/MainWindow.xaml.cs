@@ -1631,6 +1631,8 @@ namespace SAModManager
             if (!File.Exists(App.CurrentGame.loader?.loaderdllpath))
                 return;
 
+            try
+            {
             if (File.Exists(App.CurrentGame.loader?.dataDllOriginPath) && File.Exists(App.CurrentGame.loader?.dataDllPath))
             {
                 byte[] hash1 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.loaderdllpath));
@@ -1641,6 +1643,7 @@ namespace SAModManager
                     File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
                 }
             }
+            } catch { }
         }
 
         public void Load(bool newSetup = false)
