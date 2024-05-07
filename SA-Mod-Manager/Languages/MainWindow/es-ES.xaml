@@ -138,7 +138,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Activa el use de D3D8to9 Shim, permitiendo al juego usar funciones de D3D9. Es necesario para algunos mods (como Lantern Engine).</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Activa el escalado de interfaz para que esta se escale apropiadamente dependiendo de la resolución del juego.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Comprueba y descarga (si existen), actualizaciones para d3d8to9.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Sets the refresh rate, be aware that the game doesn't support more than 60 fps and there is a patch which locks the framerate, change this at your own risk.</system:String>
+    <!--#endregion-->
 
 	<!--#region Input Settings-->
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">Utiliza el sistema de Entrada original de SADX. Este sistema es muy propenso a problemas, como por ejemplo la cámara girando sobre si misma. Es preferible NO utilizar esta opción.</system:String>

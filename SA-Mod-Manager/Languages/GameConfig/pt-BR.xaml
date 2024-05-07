@@ -29,7 +29,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Habilitar V-Sync</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausar Quando Inativo</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Alocar Buffers Dinamicamente</system:String>
-    
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Refresh Rate:</system:String>
+
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Janela Redimensionável</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Keep Ratio on Resize</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Manter Proporção de Tela</system:String>

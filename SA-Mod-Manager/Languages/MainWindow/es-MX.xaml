@@ -139,7 +139,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Habilita el uso de D3D8to9 Shim, permitiendo que el juego use características de D3D9. Se necesita para algunos mods.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Permite escalar correctamente la interfaz de usuario en función de la resolución del juego.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Comprueba si hay actualizaciones de d3d8to9 y las descarga.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Sets the refresh rate, be aware that the game doesn't support more than 60 fps and there is a patch which locks the framerate, change this at your own risk.</system:String>
+    <!--#endregion-->
 
 	<!--#region Input Settings-->
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">Utiliza el sistema de entrada original integrado en SADX. Este sistema es propenso a problemas, usualmente al girar la cámara. Se recomienda no usar esta opción.</system:String>

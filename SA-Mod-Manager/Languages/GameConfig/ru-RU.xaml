@@ -32,7 +32,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Включить верт. синхронизацию</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Пауза, когда неактивно</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамическое распределение памяти</system:String>
-    
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Refresh Rate:</system:String>
+
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Изменяемое окно</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Сохр. пропорции при смене разрешения</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Сохранять пропорции</system:String>

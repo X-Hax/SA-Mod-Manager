@@ -139,7 +139,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Включает программную прослойку D3D8to9, позволяющую игре задействовать особенности D3D9-рендеринга. Требуется для работы некоторых модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Включает масштабирование интерфейса в соответствии с разрешением игры.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Проверка, загрузка и обновление прослойки d3d8to9.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Sets the refresh rate, be aware that the game doesn't support more than 60 fps and there is a patch which locks the framerate, change this at your own risk.</system:String>
+    <!--#endregion-->
 
 	<!--#region Input Settings-->
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">Использовать изначальную систему управления. Она имеет ряд проблем, в первую очередь вращающуюся камеру. Не рекомендуется использовать.</system:String>

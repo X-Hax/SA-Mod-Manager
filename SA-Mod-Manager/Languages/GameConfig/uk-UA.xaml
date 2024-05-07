@@ -30,6 +30,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Увімкнути V-Sync</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Зупинити коли не у Фокусі </system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамічно розподіляти буфери</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Refresh Rate:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Вікно з Змінним Розміром</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Зберігати співвідношення на зміні розміру</system:String>
     

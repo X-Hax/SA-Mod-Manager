@@ -29,13 +29,14 @@
 
 							<!--Graphics Display Top-->
 							<Grid Grid.Row="0">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto"/>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
 									<ColumnDefinition Width="*"/>
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
 									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="*"/>
@@ -52,7 +53,7 @@
 									<ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen}" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip}"/>
 								</ComboBox>
 
-								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution}" Margin="5" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution}"/>
+                                <Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Resolution}" Margin="5" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution}"/>
 								<Grid Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
@@ -109,7 +110,10 @@
 									</ComboBox>
 								</Grid>
 								<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.AspectRatio}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect}" Click="chkMaintainRatio_Click" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}"/>
-							</Grid>
+
+                                <Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.RefreshRate}" Margin="5" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" ToolTip=""/>
+                                <elements:NumberBox x:Name="refreshRateNum" Margin="5" Height="22" Width="75" Type="Integer" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Value="60" MinValue="1" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate}"/>
+                            </Grid>
 
 							<!--Graphics Display Middle-->
 							<Grid Grid.Row="1">

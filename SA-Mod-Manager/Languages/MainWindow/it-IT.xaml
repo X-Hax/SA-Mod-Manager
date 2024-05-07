@@ -132,7 +132,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Abilita l'uso di D3D8to9, permettendo al gioco di usare feature di D3D9. Richiesto per alcune mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Permette alla UI di essere ridimensionata correttamente in base alla risoluzione di gioco.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Controlla e scarica aggiornamenti per D3D8to9.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Sets the refresh rate, be aware that the game doesn't support more than 60 fps and there is a patch which locks the framerate, change this at your own risk.</system:String>
+    <!--#endregion-->
 
 	<!--#region Input Settings-->
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">Usa il sistema di controlli originale di SADX. Il sistema ha problemi, il più comune la telecamera che gira sempre. Si raccomanda di non usare questa opzione.</system:String>

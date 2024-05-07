@@ -25,9 +25,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Recommended Fullscreen Mode. Allows for rendering the game at different resolutions to the window and fixes the alt tab bug.</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Custom Window</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Like Borderless Fullscreen but for the window and not fullscreen modes.</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Render Resolution:</system:String>
-
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Window Size:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Render Resolution:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Window Size:</system:String>
 
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r480">640x480</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r600">800x600</system:String>
@@ -47,15 +46,17 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Enable V-Sync</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pause When Inactive</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Dynamically Allocate Buffers</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Refresh Rate:</system:String>
 
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Resizable Window</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Resizable Window</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Keep Ratio on Resize</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Match Render Ratio</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Custom Window Size:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Borderless Fullscreen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Show Mouse in Fullscreen</system:String>
-	
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Other Graphics Options</system:String>
+
+
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Other Graphics Options</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Framerate:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Detail Level:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High">High (best)</system:String>

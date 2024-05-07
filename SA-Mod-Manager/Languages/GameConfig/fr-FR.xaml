@@ -30,7 +30,8 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Synchro. Verticale</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pause si inactif</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Allouage dynamique des Tampons</system:String>
-    
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Fréquence de Rafraîchissement:</system:String>
+
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Fenêtre Redimensionnable</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Conserver le Ratio lors du Redimensionnement</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Maintenir le Ratio d'Aspect</system:String>

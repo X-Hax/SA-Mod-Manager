@@ -414,22 +414,6 @@ namespace SAModManager.Configuration.SA2
             EnabledCodes = oldSettings.EnabledCodes;
         }
 
-        /// <summary>
-        /// Loads the SA2 Loader Info and SA2 Config into Game Settings.
-        /// </summary>
-        /// <param name="iniSource"></param>
-        public void LoadConfigs(string iniSource)
-        {
-            SA2GameConfig config = new();
-            var JsonSerializerSettings = new JsonSerializerOptions();
-            JsonSerializerSettings.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-
-            string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[1]);
-            if (File.Exists(configPath))
-                config = SA2GameConfig.Deserialize(configPath);
-
-            Graphics.LoadConfigs(ref config);
-        }
 
         /// <summary>
         /// Writes LoaderInfo and SA2Config files.

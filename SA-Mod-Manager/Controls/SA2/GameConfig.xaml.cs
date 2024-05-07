@@ -360,6 +360,12 @@ namespace SAModManager.Controls.SA2
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
+            refreshRateNum.SetBinding(NumberBox.ValueProperty, new Binding("RefreshRate")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+
 
             // Settings
             chkPause.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnablePauseOnInactive")

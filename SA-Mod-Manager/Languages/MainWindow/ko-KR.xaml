@@ -137,6 +137,7 @@
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">D3D8to9 Shim 사용하여 게임에서 D3D9 기능을 활성화합니다. 이 기능을 키려면 일부 모드가 필요합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">게임 해상도에 따라 적절하게 UI의 스케일을 활성화합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">d3d8to9에 대한 업데이트 확인하고 다운로드합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Sets the refresh rate, be aware that the game doesn't support more than 60 fps and there is a patch which locks the framerate, change this at your own risk.</system:String>
     <!--#endregion-->
 
     <!--#region Input Settings-->

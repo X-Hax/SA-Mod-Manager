@@ -47,6 +47,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Activar Sincronización Vertical</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausar cuando el juego esté inactivo</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Dynamically Allocate Buffers</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Refresh Rate:</system:String>
 
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Ventana Ajustable</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Mantener Relación de Aspecto</system:String>
