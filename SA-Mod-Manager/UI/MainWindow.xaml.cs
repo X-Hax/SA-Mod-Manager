@@ -101,7 +101,7 @@ namespace SAModManager
 
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
-                var oneClick = new OneClickInstall(updatePath, App.CurrentGame.modDirectory);
+                var oneClick = new OneClickInstall(updatePath);
                 await oneClick.UriInit();
 
                 if (oneClick.isEmpty == false)
@@ -1633,16 +1633,16 @@ namespace SAModManager
 
             try
             {
-            if (File.Exists(App.CurrentGame.loader?.dataDllOriginPath) && File.Exists(App.CurrentGame.loader?.dataDllPath))
-            {
-                byte[] hash1 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.loaderdllpath));
-                byte[] hash2 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.dataDllPath));
-
-                if (!hash1.SequenceEqual(hash2))
+                if (File.Exists(App.CurrentGame.loader?.dataDllOriginPath) && File.Exists(App.CurrentGame.loader?.dataDllPath))
                 {
-                    File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+                    byte[] hash1 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.loaderdllpath));
+                    byte[] hash2 = MD5.HashData(File.ReadAllBytes(App.CurrentGame.loader.dataDllPath));
+
+                    if (!hash1.SequenceEqual(hash2))
+                    {
+                        File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+                    }
                 }
-            }
             } catch { }
         }
 

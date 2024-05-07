@@ -23,16 +23,14 @@ namespace SAModManager
         private GameBananaItem gbi;
         private string author;
         private string updatePath;
-        private string modPath;
         private Dictionary<string, string> fields;
         public bool isEmpty { get; private set; } = true;
         private string uriTemp;
 
 
-        public OneClickInstall(string updatePath, string modPath)
+        public OneClickInstall(string updatePath)
         {
             this.updatePath = updatePath;
-            this.modPath = modPath;
             InitializeComponent();
         }
 
@@ -162,11 +160,10 @@ namespace SAModManager
                 {
                     if (game != App.CurrentGame)
                     {
+                        Logger.Log("Game didn't match the one that contains the mod, now swapping game.");
                         if (Application.Current.MainWindow is not null)
                             ((MainWindow)Application.Current.MainWindow).ComboGameSelection_SetNewItem(game);
 
-
-                        this.modPath = App.CurrentGame.modDirectory; //update mod directory since the game got swapped
                         break;
                     }
                 }
@@ -184,6 +181,7 @@ namespace SAModManager
             if (App.CurrentGame is null || string.IsNullOrEmpty(App.CurrentGame?.gameDirectory))
                 return;
 
+            Logger.Log("One Click install init...");
             App.CancelUpdate = true;
             this.uriTemp = uri;
             UpdateModPath(uriTemp);
@@ -271,7 +269,6 @@ namespace SAModManager
             gbi = null;
             author = null;
             updatePath = null;
-            modPath = null;
 
             fields.Clear();
             this.Visibility = Visibility.Hidden; // Hide the window when the button is clicked
@@ -294,8 +291,10 @@ namespace SAModManager
         {
 
             bool retry = false;
-            this.updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", ".updates"));
             UpdateModPath(this.uriTemp);
+            this.updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, ".updates"));
+            Logger.Log("Downloading One click install mod...");
+            Logger.Log("Current Mod Install Path: " + updatePath);
 
             do
             {
@@ -332,7 +331,7 @@ namespace SAModManager
                 dummyPath = dummyPath.Replace(c, '_');
             }
 
-            dummyPath = Path.Combine(modPath, dummyPath);
+            dummyPath = Path.Combine(App.CurrentGame.modDirectory, dummyPath);
 
 
             var updates = new List<ModDownload>
@@ -344,7 +343,6 @@ namespace SAModManager
             var modDL = new ModDownloadDialog(updates, updatePath, false);
             modDL.StartDL();
 
-            await Task.Delay(1000);
 
             await Task.Delay(500);
             if (Directory.Exists(updatePath))
@@ -357,7 +355,7 @@ namespace SAModManager
                 { }
             }
 
-
+            Logger.Log("Finished dowloading mod. " + updatePath);
             ((MainWindow)App.Current.MainWindow).Refresh();
         }
 

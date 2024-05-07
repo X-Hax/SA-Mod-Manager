@@ -75,6 +75,7 @@ namespace SAModManager
 
         public async Task InstallModOptionsArchive(string[] path, string root)
         {
+            int index = 0;
             try
             {
                 var tempFolder = Path.Combine(root, App.tempFolder);
@@ -116,6 +117,7 @@ namespace SAModManager
                             }
                         }
                     }
+                    index++;
                 }
 
                 Util.ClearTempFolder();
@@ -125,7 +127,12 @@ namespace SAModManager
             }
             catch
             {
-                throw new Exception("Failed to install one mod.");
+                if (index > 0 && path.Length <= 1)
+                {
+                    index = 0;
+                }
+
+                throw new Exception("Failed to install one mod. " + path[index]);
             }
         }
 
