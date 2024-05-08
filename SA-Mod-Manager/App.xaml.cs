@@ -358,7 +358,7 @@ namespace SAModManager
             return (loaderVersion != lastCommit, lastCommit);
         }
 
-        public static async Task<bool> PerformUpdateLoaderCheck()
+        public static async Task PerformUpdateLoaderCheck()
         {
             try
             {
@@ -368,38 +368,36 @@ namespace SAModManager
 
                 if (update.Item1 == false) //no update found
                 {
-                    return false;
+                    return;
                 }
 
                 string changelog = await GitHub.GetGitLoaderChangeLog(update.Item2); //item2 is commit hash
 
                 if (string.IsNullOrEmpty(changelog)) //if string is null, we got error(s) so the DL can't continue
                 {
-                    return false;
+                    return;
                 }
 
                 if (App.CancelUpdate)
                 {
-                    return false;
+                    return;
                 }
 
                 var manager = new InfoManagerUpdate(changelog, App.CurrentGame.loader.name);
                 manager.ShowDialog();
 
                 if (manager.DialogResult != true || App.CancelUpdate)
-                    return false;
+                    return;
 
                 if (await GamesInstall.UpdateLoader(App.CurrentGame))
                 {
                     File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
-                    await GamesInstall.UpdateDependencies(App.CurrentGame);
-                    return true;
+                    await GamesInstall.InstallAndUpdateDependencies(App.CurrentGame, true);
+ 
                 }
             }
             catch
             { }
-
-            return false;
         }
 
         public static async Task<bool> PerformUpdateCodesCheck()
@@ -426,13 +424,9 @@ namespace SAModManager
                     }
                 }
 
-                if (App.CancelUpdate)
-                {
-                    return false;
-                }
+                return App.CancelUpdate == false;
 
-                await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
-                return true;
+
             }
             catch
             {
@@ -466,13 +460,7 @@ namespace SAModManager
                     }
                 }
 
-                if (App.CancelUpdate)
-                {
-                    return false;
-                }
-
-                await GamesInstall.UpdatePatches(App.CurrentGame); //update patch
-                return true;
+                return App.CancelUpdate == false;
             }
             catch
             {

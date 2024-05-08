@@ -187,28 +187,33 @@ namespace SAModManager
             }
         }
 
-        public static async Task<bool> ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
+        public static bool ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
         {
             string outputFilePath = null;
-            // Get the resource stream from Properties.Resources
-            using (Stream resourceStream = new MemoryStream(resource))
+            try
             {
-                byte[] buffer = new byte[resourceStream.Length];
-                resourceStream.Read(buffer, 0, buffer.Length);
-
+                Directory.CreateDirectory(outputDirectory);
                 outputFilePath = Path.Combine(outputDirectory, resourceName + ".dll");
 
-                // Write the DLL data to the output file
+                // Get the resource stream from Properties.Resources
+                using Stream resourceStream = new MemoryStream(resource);
                 using (FileStream fileStream = new(outputFilePath, FileMode.Create, FileAccess.Write))
                 {
-                    fileStream.Write(buffer, 0, buffer.Length);
+                    // Asynchronously copy the stream to the output file
+                    resourceStream.CopyTo(fileStream);
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception during DLL extraction: {ex}");
+                return false;
+            }
 
-            await Task.Delay(100);
             FileInfo fileInfo = new(outputFilePath);
             return fileInfo is not null && fileInfo.Length > 0;
         }
+
+
 
         public static async Task Install7Zip()
         {
@@ -283,8 +288,12 @@ namespace SAModManager
                  {
                      bool is64Bits = Environment.Is64BitOperatingSystem;
                      Uri uri = new(is64Bits ? "https://www.7-zip.org/a/7z2301-x64.exe" : "https://www.7-zip.org/a/7z2301.exe" + "\r\n");
-
-                     var dl = new DownloadDialog(uri, "7-zip", "7z.exe", App.tempFolder, DownloadDialog.DLType.Download);
+                     var info = new List<DownloadInfo>
+                     {
+                         new DownloadInfo("7-zip", "7z.exe", App.tempFolder, uri, DownloadDialog.DLType.Download)
+                     };
+         
+                     var dl = new DownloadDialog(info);
                      dl.StartDL();
                  }
                  else
@@ -435,7 +444,7 @@ namespace SAModManager
             await Task.Delay(100);
         }
 
-        public static async Task<bool> ExtractZipFromResource(byte[] resource, string outputDirectory)
+        public static bool ExtractZipFromResource(byte[] resource, string outputDirectory)
         {
             try
             {
@@ -446,7 +455,6 @@ namespace SAModManager
                         archive.ExtractToDirectory(outputDirectory, true);
                     }
                 }
-                await Task.Delay(100);
                 return true;
 
             }

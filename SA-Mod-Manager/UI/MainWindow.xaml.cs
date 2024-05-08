@@ -134,8 +134,19 @@ namespace SAModManager
                         {
                             UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
                             await App.PerformUpdateLoaderCheck();
-                            await App.PerformUpdateCodesCheck();
-                            await App.PerformUpdatePatchesCheck();
+
+                            var updates = new List<DownloadInfo>();
+                            if (await App.PerformUpdateCodesCheck())
+                                GamesInstall.SetUpdateCodes(App.CurrentGame, ref updates); //update codes
+
+                            if (await App.PerformUpdatePatchesCheck())
+                                GamesInstall.SetUpdatePatches(App.CurrentGame, ref updates); //update patch
+
+                            if (updates.Count > 0)
+                            {
+                                var DL = new DownloadDialog(updates);
+                                DL.StartDL();
+                            }
                         }
 
                         if (App.CurrentGame.id == SetGame.SADX)
@@ -1039,7 +1050,7 @@ namespace SAModManager
         #region Form: Manager Tab: Functions
         private async Task ResultPickGame(string path)
         {
-            var setGame = await GamesInstall.SetGameInstallManual(path);
+            var setGame = GamesInstall.SetGameInstallManual(path);
 
             if (setGame == SetGame.None)
             {
@@ -1104,9 +1115,22 @@ namespace SAModManager
 
             if (App.CurrentGame.loader.installed)
             {
+
                 await App.PerformUpdateLoaderCheck();
-                await App.PerformUpdateCodesCheck();
-                await App.PerformUpdatePatchesCheck();
+
+                var updates = new List<DownloadInfo>();
+                if (await App.PerformUpdateCodesCheck())
+                    GamesInstall.SetUpdateCodes(App.CurrentGame, ref updates); //update codes
+               
+                if (await App.PerformUpdatePatchesCheck())
+                    GamesInstall.SetUpdatePatches(App.CurrentGame, ref updates); //update patch
+
+
+                if (updates.Count > 0)
+                {
+                    var DL = new DownloadDialog(updates);
+                    DL.StartDL();
+                }
 
                 if (App.CurrentGame.id == SetGame.SADX)
                 {
@@ -2421,7 +2445,7 @@ namespace SAModManager
                 UIHelper.DisableButton(ref SaveAndPlayButton);
 
                 await GamesInstall.InstallDLL_Loader(App.CurrentGame); //first, we download and extract the loader DLL in the mods folder
-                await GamesInstall.CheckAndInstallDependencies(App.CurrentGame); //we check if some libraries are missing (BASS, D3D9...)
+                await GamesInstall.InstallAndUpdateDependencies(App.CurrentGame, false); //we check if some libraries are missing (BASS, D3D9...)
 
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                 //now we can move the loader files to the accurate folders.
@@ -2449,13 +2473,13 @@ namespace SAModManager
                     if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
                     {
                         await GamesInstall.InstallDLL_Loader(App.CurrentGame);
-                        await GamesInstall.UpdateDependencies(App.CurrentGame);
+                        await GamesInstall.InstallAndUpdateDependencies(App.CurrentGame, true);
                         await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
                     }
                     else //install normally
                     {
                         await GamesInstall.InstallDLL_Loader(App.CurrentGame);
-                        await GamesInstall.CheckAndInstallDependencies(App.CurrentGame);
+                        await GamesInstall.InstallAndUpdateDependencies(App.CurrentGame, false);
                         UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                         //now we can move the loader files to the accurate folders.
                         await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);

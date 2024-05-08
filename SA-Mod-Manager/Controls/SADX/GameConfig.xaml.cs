@@ -14,7 +14,6 @@ using SAModManager.Configuration;
 using SAModManager.Configuration.SADX;
 using SAModManager.Ini;
 using System.Threading.Tasks;
-using System.Windows.Media.Media3D;
 
 namespace SAModManager.Controls.SADX
 {
@@ -330,16 +329,21 @@ namespace SAModManager.Controls.SADX
             string fullPath = Path.Combine(destName, fullName);
 
             Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
-            var DL = new DownloadDialog(uri, "App Launcher", fullName, destName, DownloadDialog.DLType.Update);
+            var update = new List<DownloadInfo>
+            {
+                new DownloadInfo("App Launcher", fullName, destName, uri, DownloadDialog.DLType.Update)
+            };
+
+            var DL = new DownloadDialog(update);
 
             DL.DownloadFailed += (ex) =>
             {
-                DL.DisplayDownloadFailedMSG(ex);
+                DL.DisplayDownloadFailedMSG(ex, fullName);
             };
 
             DL.StartDL();
 
-            if (DL.done)
+            if (DL.errorCount <= 0)
             {
                 try
                 {
@@ -372,20 +376,24 @@ namespace SAModManager.Controls.SADX
 
             btnGetAppLauncher.IsEnabled = false;
             btnGetAppLauncher.Opacity = LowOpacityBtn;
-
             Uri uri = new("https://dcmods.unreliable.network/owncloud/data/PiKeyAr/files/Setup/data/AppLauncher.7z" + "\r\n");
-            var DL = new DownloadDialog(uri, "App Launcher", fullName, destName);
+            var AppLaunch = new List<DownloadInfo>
+            {
+                new DownloadInfo("App Launcher", fullName, destName, uri, DownloadDialog.DLType.Download)
+            };
+
+            var DL = new DownloadDialog(AppLaunch);
 
             DL.DownloadFailed += (ex) =>
             {
                 btnGetAppLauncher.IsEnabled = true;
                 btnGetAppLauncher.Opacity = 1;
-                DL.DisplayDownloadFailedMSG(ex);
+                DL.DisplayDownloadFailedMSG(ex, fullName);
             };
 
             DL.StartDL();
 
-            if (DL.done)
+            if (DL.errorCount <= 0)
             {
                 try
                 {
