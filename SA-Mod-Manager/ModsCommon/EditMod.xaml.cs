@@ -1,19 +1,15 @@
 ﻿using SAModManager.Codes;
 using SAModManager.Ini;
 using SAModManager.ModsCommon;
-using SAModManager.Properties;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using SAModManager.UI;
 using SAModManager.Configuration;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SAModManager
 {
@@ -444,10 +440,10 @@ namespace SAModManager
 			if (isStringNotEmpty(authorBox.Text)) //save mod author
 			{
 				App.ManagerSettings.ModAuthor = authorBox.Text;
-			}
-		}
+            }
+        }
 
-		private void BuildModINI(string moddir)
+        private void BuildModINI(string moddir)
 		{
 
 			//Assign variables to null if the string are empty so they won't show up at all in mod.ini.
@@ -478,7 +474,15 @@ namespace SAModManager
                 var edited = IniSerializer.Serialize(newMod);
 				var merged = IniFile.Combine(oldmodIni, edited); //then we combine the old and new edited mod ini so no information are lost
 				IniFile.ClearEmptyGroup(merged);
-				IniFile.Save(merged, modIniPath); //save final result
+
+				//dirty way because of a bug with bool, todo: find a better way to handle all of this
+				if (newMod.RedirectMainSave == false)
+                    IniFile.RemoveGroupLine(merged, "RedirectMainSave");
+                if (newMod.RedirectChaoSave == false)
+                    IniFile.RemoveGroupLine(merged, "RedirectChaoSave");
+
+
+                IniFile.Save(merged, modIniPath); //save final result
             }
 			else
 			{
