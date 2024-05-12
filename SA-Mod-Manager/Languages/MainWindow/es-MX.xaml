@@ -139,7 +139,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Habilita el uso de D3D8to9 Shim, permitiendo que el juego use características de D3D9. Se necesita para algunos mods.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Permite escalar correctamente la interfaz de usuario en función de la resolución del juego.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Comprueba si hay actualizaciones de d3d8to9 y las descarga.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Sets the refresh rate, be aware that the game doesn't support more than 60 fps and there is a patch which locks the framerate, change this at your own risk.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Fija la frecuancia de actualización. Considera que el juego no soporta más de 60 FPS y que hay un parche que fija la velocidad de fotogramas. Cámbialo bajo tu propio riesgo.</system:String>
     <!--#endregion-->
 
 	<!--#region Input Settings-->
