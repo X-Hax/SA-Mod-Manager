@@ -346,7 +346,7 @@ namespace SAModManager
 		#endregion
 
 		#region Dependency Functions
-		private void SaveModDependencies(ref SAModInfo mod)
+		private void SaveModDependencies(ref SAModInfo mod, ref string[] modIniString)
 		{
 			mod.Dependencies.Clear();
 			if (DependencyGrid.Items.Count > 0)
@@ -364,6 +364,16 @@ namespace SAModManager
 					mod.Dependencies.Add(sb.ToString());
 				}
 			}
+
+			var modIniStringList = modIniString.ToList();
+
+            for (int i = 0; i < modIniStringList.Count; i++)
+			{
+				if (modIniStringList[i].Contains("Dependency"))
+					modIniStringList.Remove(modIniStringList[i]);
+            }
+
+			modIniString = modIniStringList.ToArray();
 		}
 
 		private void SaveCodes(string path)
@@ -466,13 +476,14 @@ namespace SAModManager
 
 			if (editMod)
 			{
-				SaveModDependencies(ref newMod);
-
-				//since not all the info from the original mod.ini are saved, we backup the whole ini here
+                //since not all the info from the original mod.ini are saved, we backup the whole ini here
                 string[] modIniString = File.ReadAllLines(modIniPath);
+
+                SaveModDependencies(ref newMod, ref modIniString);
+
                 var oldmodIni = IniFile.Load(modIniString);
                 var edited = IniSerializer.Serialize(newMod);
-				var merged = IniFile.Combine(oldmodIni, edited); //then we combine the old and new edited mod ini so no information are lost
+                var merged = IniFile.Combine(oldmodIni, edited); //then we combine the old and new edited mod ini so no information are lost
 				IniFile.ClearEmptyGroup(merged);
 
 				//dirty way because of a bug with bool, todo: find a better way to handle all of this
