@@ -9,6 +9,7 @@ using static SAModManager.Updater.GitHubAction;
 using static SAModManager.Updater.GitHubArtifact;
 using static SAModManager.Updater.WorkflowRunInfo.GitHubTagInfo;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace SAModManager.Updater
 {
@@ -506,8 +507,10 @@ namespace SAModManager.Updater
             {
                 string jsonResult = await response.Content.ReadAsStringAsync();
                 var info = JsonConvert.DeserializeObject<GHCommitInfo[]>(jsonResult);
+                string loaderCommitPath = App.CurrentGame?.loader.loaderVersionpath;
+                string curCommitID = File.Exists(loaderCommitPath) ? File.ReadAllText(loaderCommitPath) : App.RepoCommit;
 
-                int limit = info.ToList().FindIndex(t => t.SHA == App.RepoCommit);
+                int limit = info.ToList().FindIndex(t => t.SHA == curCommitID);
 
                 if (limit == -1)
                     limit = info.Length;
