@@ -33,7 +33,7 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Fréquence de Rafraîchissement:</system:String>
 
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Fenêtre Redimensionnable</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Conserver le Ratio lors du Redimensionnement</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Maintenir le Ratio d'Aspect</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Maintenir le Ratio d'Aspect</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Taille de Fenêtre Personnalisée:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Sans Bordures</system:String>

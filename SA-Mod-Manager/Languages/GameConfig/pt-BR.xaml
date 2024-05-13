@@ -32,8 +32,8 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Refresh Rate:</system:String>
 
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Janela Redimensionável</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Keep Ratio on Resize</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Manter Proporção de Tela</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Maintain Aspect Ratio</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Manter Proporção de Tela</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamanho Específico:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Tela Cheia Sem Borda</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Show Mouse in Fullscreen</system:String>
