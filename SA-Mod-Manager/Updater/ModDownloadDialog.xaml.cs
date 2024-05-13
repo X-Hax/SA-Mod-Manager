@@ -624,13 +624,13 @@ namespace SAModManager.Updater
             {
                 await Dispatcher.InvokeAsync(() =>
                 {
+                    if (updates?.Count <= 1)
+                        this.Close();
                     string s = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + " " + curName + "\n" + currentFilePath + "\n" + ex.Message + "\n\n";
                     var error = new MessageWindow(Lang.GetString("MessageWindow.Errors.GenericDLFail.Title"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
                     error.ShowDialog();
                 });
 
-                if (updates?.Count <= 1)
-                    this.Close();
             }
         }
 

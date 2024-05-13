@@ -182,6 +182,9 @@ namespace SAModManager
                 return;
 
             Logger.Log("One Click install init...");
+            
+            Logger.Log("Current Game " + App.CurrentGame.gameName);
+
             App.CancelUpdate = true;
             this.uriTemp = uri;
             UpdateModPath(uriTemp);

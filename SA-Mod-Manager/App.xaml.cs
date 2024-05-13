@@ -32,7 +32,7 @@ namespace SAModManager
         public static readonly string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public static string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(StartDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
         public static string extLibPath = Path.Combine(ConfigFolder, "extlib");
-        public static readonly string tempFolder = Path.Combine(StartDirectory, ".SATemp");
+        public static readonly string tempFolder = Path.Combine(StartDirectory, "SATemp");
         public static string crashFolder = Path.Combine(ConfigFolder, "CrashDump");
         public static bool isVanillaTransition = false; //used when installing the manager from an update
         public static bool isFirstBoot = false; //used when installing the new manager manually
