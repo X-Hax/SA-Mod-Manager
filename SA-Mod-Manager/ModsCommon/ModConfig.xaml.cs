@@ -1,285 +1,310 @@
-﻿using SAModManager.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml.Serialization;
 using SAModManager.Configuration;
 
 namespace SAModManager.ModsCommon
 {
-	/// <summary>
-	/// Interaction logic for ModConfig.xaml
-	/// </summary>
-	public partial class ModConfig : Window
-	{
+    /// <summary>
+    /// Interaction logic for ModConfig.xaml
+    /// </summary>
+    public partial class ModConfig : Window
+    {
 
-		string pathXML = string.Empty;
-		ConfigSettings settings;
-		private static ModConfig _Instance;
-		string modName = string.Empty;
-		public bool reset = false;
+        string pathXML = string.Empty;
+        ConfigSettings settings;
+        private static ModConfig _Instance;
+        string modName = string.Empty;
+        public bool reset = false;
 
-		public static ModConfig GetInstance()
-		{
-			if (_Instance == null)
-				return null;
+        public static ModConfig GetInstance()
+        {
+            if (_Instance == null)
+                return null;
 
-			return _Instance;
-		}
+            return _Instance;
+        }
 
-		public ModConfig(string Modname, string path, bool reset = false)
-		{
-			InitializeComponent();
-			_Instance = this;
+        public ModConfig(string Modname, string path, bool reset = false)
+        {
+            InitializeComponent();
+            _Instance = this;
 
-			modName = Modname;
+            modName = Modname;
 
-			this.reset = reset;
-			pathXML = path;
-			Title = Lang.GetString("ModConfig.Title") + " " + modName;
-			settings = new ConfigSettings(pathXML);
-			DelayResetBtn(reset);
-			var panel = FormBuilder.ConfigBuild(ref settings);
-			panel.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-			panel.VerticalAlignment = VerticalAlignment.Stretch;
-			ItemsHost.Children.Add(panel);
-		}
+            this.reset = reset;
+            pathXML = path;
+            Title = Lang.GetString("ModConfig.Title") + " " + modName;
+            settings = new ConfigSettings(pathXML);
+            DelayResetBtn(reset);
+            var panel = FormBuilder.ConfigBuild(ref settings);
+            panel.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+            panel.VerticalAlignment = VerticalAlignment.Stretch;
+            ItemsHost.Children.Add(panel);
+        }
 
-		private async void DelayResetBtn(bool reset)
-		{
-			if (!reset)
-				return;
+        private async void DelayResetBtn(bool reset)
+        {
+            if (!reset)
+                return;
 
-			resetBtn.IsEnabled = false;
-			resetBtn.Opacity = 0.3;
-			await Task.Delay(1050);
-			resetBtn.IsEnabled = true;
-			resetBtn.Opacity = 1.0;
-		}
+            resetBtn.IsEnabled = false;
+            resetBtn.Opacity = 0.3;
+            await Task.Delay(1050);
+            resetBtn.IsEnabled = true;
+            resetBtn.Opacity = 1.0;
+        }
 
-		public void OnItemHover(string des)
-		{
-			DescBox.Text = des;
-		}
+        public void OnItemHover(string des)
+        {
+            DescBox.Text = des;
+        }
 
-		public void OnItemLeave()
-		{
-			DescBox.Text = string.Empty;
-		}
+        public void OnItemLeave()
+        {
+            DescBox.Text = string.Empty;
+        }
 
-		private void SaveButton_Click(object sender, RoutedEventArgs e)
-		{
-			settings.Save();
-			this.Close();
-		}
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            settings.Save();
+            this.Close();
+        }
 
-		private async void ResetButton_Click(object sender, RoutedEventArgs e)
-		{
-			settings.ResetValues();
-			await Task.Delay(10);
-			settings.Save();
-			await Task.Delay(30);
+        private async void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            settings.ResetValues();
+            await Task.Delay(10);
+            settings.Save();
+            await Task.Delay(30);
 
             var config = new ModConfig(modName, pathXML, true);
             this.Close();
-			config.ShowDialog();
+            config.ShowDialog();
         }
 
-		private void CancelButton_Click(object sender, RoutedEventArgs e)
-		{
-			this.Close();
-		}
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+    }
 
+    public class ConfigSettings
+    {
+        public ConfigSchema schema;
+        public Dictionary<string, Dictionary<string, string>> configINI;
+        private string configfilename;
+        public Dictionary<string, Dictionary<string, string>> modINI;
+        private string modiniFilename;
+        public string modPath;
 
-	}
+        public ConfigSettings(string path)
+        {
+            modPath = path;
+            schema = ConfigSchema.Load(Path.Combine(path, "configschema.xml"));
+            configfilename = Path.Combine(path, "config.ini");
+            modiniFilename = Path.Combine(modPath, "mod.ini");
+            modINI = Ini.IniFile.Load(modiniFilename);
 
-	public class ConfigSettings
-	{
-		public ConfigSchema schema;
-		public Dictionary<string, Dictionary<string, string>> configINI;
-		private string configfilename;
+            if (File.Exists(configfilename))
+                configINI = Ini.IniFile.Load(configfilename);
+            else
+                configINI = new Dictionary<string, Dictionary<string, string>>();
 
-		public ConfigSettings(string path)
-		{
-			schema = ConfigSchema.Load(Path.Combine(path, "configschema.xml"));
-			configfilename = Path.Combine(path, "config.ini");
+            foreach (ConfigSchemaGroup group in schema.Groups)
+            {
+                if (!configINI.ContainsKey(group.Name))
+                    configINI.Add(group.Name, new Dictionary<string, string>());
+                foreach (ConfigSchemaProperty prop in group.Properties)
+                {
+                    if (!configINI[group.Name].ContainsKey(prop.Name))
+                        configINI[group.Name].Add(prop.Name, prop.DefaultValue);
 
-			if (File.Exists(configfilename))
-				configINI = Ini.IniFile.Load(configfilename);
-			else
-				configINI = new Dictionary<string, Dictionary<string, string>>();
+                    //for basic mods config without code injection
+                    if (modINI is not null && prop.Name.ToLower().Contains("includedir"))
+                    {
+                        if (!modINI.ContainsKey("Config"))
+                            modINI.Add("Config", new Dictionary<string, string>());
 
-			foreach (ConfigSchemaGroup group in schema.Groups)
-			{
-				if (!configINI.ContainsKey(group.Name))
-					configINI.Add(group.Name, new Dictionary<string, string>());
-				foreach (ConfigSchemaProperty prop in group.Properties)
-					if (!configINI[group.Name].ContainsKey(prop.Name))
-						configINI[group.Name].Add(prop.Name, prop.DefaultValue);
-			}
-		}
+                        var value = prop.DefaultValue;
+                        if (IsEnum(prop.Type))
+                            value = GetEnum(prop.Type).Members[int.Parse(value)].Name;
 
-		public void Save()
-		{
-			foreach (ConfigSchemaGroup group in schema.Groups)
-			{
-				foreach (ConfigSchemaProperty prop in group.Properties)
-				{
-					if (!prop.AlwaysInclude && configINI[group.Name][prop.Name] == prop.DefaultValue)
-						configINI[group.Name].Remove(prop.Name);
-				}
-				if (configINI[group.Name].Count == 0)
-					configINI.Remove(group.Name);
-			}
-
-			Ini.IniFile.Save(configINI, configfilename);
-
-            FileInfo fileInfo = new(configfilename);
-
-            if (fileInfo is not null)
-			{
-                if (fileInfo.Length == 0)
-				{
-                    fileInfo.Delete();
-                    File.Delete(configfilename);
+                        if (!modINI["Config"].ContainsKey(prop.Name))
+                            modINI["Config"].Add(prop.Name, value);
+                    }
                 }
+
+
             }
         }
 
-		public void ResetValues()
-		{
-			foreach (ConfigSchemaGroup group in schema.Groups)
-				foreach (ConfigSchemaProperty prop in group.Properties)
-					configINI[group.Name][prop.Name] = prop.DefaultValue;
-		}
+        public void Save()
+        {
+            foreach (ConfigSchemaGroup group in schema.Groups)
+            {
+                foreach (ConfigSchemaProperty prop in group.Properties)
+                {
+                    if (!prop.AlwaysInclude && configINI[group.Name][prop.Name] == prop.DefaultValue)
+                        configINI[group.Name].Remove(prop.Name);
 
-		public ConfigSchemaGroup GetGroup(string name)
-		{
-			return schema.Groups.SingleOrDefault(a => a.Name == name);
-		}
+                    if (configINI[group.Name].Count == 0)
+                        configINI.Remove(group.Name);
+                }
+            }
 
-		public ConfigSchemaEnum GetEnum(string name)
-		{
-			return schema.Enums.SingleOrDefault(a => a.Name == name);
-		}
+            Ini.IniFile.Save(configINI, configfilename);
+            if (modINI != null)
+                Ini.IniFile.Save(modINI, modiniFilename);
 
-		public string GetPropertyValue(string groupName, string propertyName)
-		{
-			return configINI[groupName][propertyName];
-		}
+            FileInfo fileInfo = new(configfilename);
 
-		public void SetPropertyValue(string groupName, string propertyName, string value)
-		{
-			configINI[groupName][propertyName] = value;
-		}
+            if (fileInfo is not null && fileInfo.Length == 0)
+            {
+                fileInfo.Delete();
+                File.Delete(configfilename);
+            }
+        }
 
-	}
+        public void ResetValues()
+        {
+            foreach (ConfigSchemaGroup group in schema.Groups)
+                foreach (ConfigSchemaProperty prop in group.Properties)
+                {
+                    configINI[group.Name][prop.Name] = prop.DefaultValue;
+                    if (prop.Name.ToLower().Contains("includedir"))
+                    {
+                        var value = prop.DefaultValue;
+                        if (IsEnum(prop.Type))
+                            value = GetEnum(prop.Type).Members[int.Parse(value)].Name;
+                        modINI["Config"][prop.Name] = value;
+                    }
 
-	public class CustomPropertyStore
-	{
-		public string groupName { get; set; }
-		public string propertyName { get; set; }
-		public string helpText { get; set; }
-		public string type { get; set; }
+                }
+        }
 
-		List<ConfigSchemaEnumMember> @enum;
+        public ConfigSchemaGroup GetGroup(string name)
+        {
+            return schema.Groups.SingleOrDefault(a => a.Name == name);
+        }
 
-		private ConfigSettings settings;
+        public ConfigSchemaEnum GetEnum(string name)
+        {
+            return schema.Enums.SingleOrDefault(a => a.Name == name);
+        }
 
-		public CustomPropertyStore(string groupName, string propertyName, string helpText, string type, ref ConfigSettings settings)
-		{
-			this.groupName = groupName;
-			this.propertyName = propertyName;
-			this.helpText = helpText;
-			this.type = type;
-			this.settings = settings;
+        public bool IsEnum(string name)
+        {
+            string s = name.ToLower();
+            return s != "bool" && s != "string" && s != "int" && s != "float";
+        }
 
-			switch (type)
-			{
-				case "string":
-				case "bool":
-				case "int":
-				case "float":
-					break;
-				default:
-					@enum = settings.GetEnum(type).Members;
-					break;
-			}
-		}
+        public string GetPropertyValue(string groupName, string propertyName)
+        {
+            return configINI[groupName][propertyName];
+        }
 
-		public object GetConfigValue()
-		{
-			var val = settings.GetPropertyValue(groupName, propertyName);
+        public void SetPropertyValue(string groupName, string propertyName, string value)
+        {
+            configINI[groupName][propertyName] = value;
+            if (propertyName.ToLower().Contains("includedir"))
+                modINI["Config"][propertyName] = value;
+        }
+    }
 
-			decimal deciValue;
-			string formatted;
+    public class CustomPropertyStore
+    {
+        public string groupName { get; set; }
+        public string propertyName { get; set; }
+        public string helpText { get; set; }
+        public string type { get; set; }
 
-			switch (type.ToLower())
-			{
-				case "bool":
-					return bool.Parse(val);
-				case "int":
-					if (int.TryParse(val.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int intValue))
-					{
-						return intValue;
-					}
-					else
-					{
-						// If overflow, decide whether to use max or min value
-						if (val.StartsWith("-"))
-							return int.MinValue;
-						else
-							return int.MaxValue;
-					}
+        List<ConfigSchemaEnumMember> @enum;
+
+        private ConfigSettings settings;
+
+        public CustomPropertyStore(string groupName, string propertyName, string helpText, string type, ref ConfigSettings settings)
+        {
+            this.groupName = groupName;
+            this.propertyName = propertyName;
+            this.helpText = helpText;
+            this.type = type;
+            this.settings = settings;
+
+            if (settings.IsEnum(type))
+                @enum = settings.GetEnum(type).Members;
+        }
+
+        public object GetConfigValue()
+        {
+            var val = settings.GetPropertyValue(groupName, propertyName);
+
+            decimal deciValue;
+            string formatted;
+
+            switch (type.ToLower())
+            {
+                case "bool":
+                    return bool.Parse(val);
+                case "int":
+                    if (int.TryParse(val.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int intValue))
+                    {
+                        return intValue;
+                    }
+                    else
+                    {
+                        // If overflow, decide whether to use max or min value
+                        if (val.StartsWith("-"))
+                            return int.MinValue;
+                        else
+                            return int.MaxValue;
+                    }
                 case "float":
-					deciValue = decimal.Parse(val.Trim(), CultureInfo.InvariantCulture);
-					formatted = deciValue.ToString("0.0");
-					return decimal.Parse(formatted);
-				case "string":
-					return val;
-				default:
-					for (int i = 0; i < @enum.Count; i++)
-						if (@enum[i].Name == val)
-							return i;
+                    deciValue = decimal.Parse(val.Trim(), CultureInfo.InvariantCulture);
+                    formatted = deciValue.ToString("0.0");
+                    return decimal.Parse(formatted);
+                case "string":
+                    return val;
+                default:
+                    for (int i = 0; i < @enum.Count; i++)
+                        if (@enum[i].Name == val)
+                            return i;
 
-					return 0;
+                    return 0;
 
-			}
-		}
+            }
+        }
 
-		public int GetEnumIndex(string disp)
-		{
-			for (int i = 0; i < @enum.Count; i++)
-				if (@enum[i].DisplayName == disp || @enum[i].Name == disp)
-					return i;
-			return 0;
-		}
+        public int GetEnumIndex(string disp)
+        {
+            for (int i = 0; i < @enum.Count; i++)
+                if (@enum[i].DisplayName == disp || @enum[i].Name == disp)
+                    return i;
+            return 0;
+        }
 
-		public void SetValue(object value)
-		{
-			switch (type)
-			{
-				case "bool":
-				case "string":
-				case "int":
-				case "float":
-					settings.SetPropertyValue(groupName, propertyName, value.ToString());
-					break;
-				default:
-					if (value is string)
-					{
-						value = GetEnumIndex((string)value);
-					}
+        public void SetValue(object value)
+        {
+            switch (type)
+            {
+                case "bool":
+                case "string":
+                case "int":
+                case "float":
+                    settings.SetPropertyValue(groupName, propertyName, value.ToString());
+                    break;
+                default:
+                    if (value is string)
+                    {
+                        value = GetEnumIndex((string)value);
+                    }
 
-					settings.SetPropertyValue(groupName, propertyName, @enum[(int)value].Name);
-					break;
-			}
-		}
-	}
+                    settings.SetPropertyValue(groupName, propertyName, @enum[(int)value].Name);
+                    break;
+            }
+        }
+    }
 }

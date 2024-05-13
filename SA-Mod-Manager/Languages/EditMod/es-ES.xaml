@@ -15,6 +15,7 @@
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Archivo de Guardado Principal</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Archivo de Guardado Chao</system:String>
     <system:String x:Key="EditMod.Tabs.Btn.Advanced">Avanzado</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Include Directories:</system:String>
 
     <system:String x:Key="EditMod.Tabs.Updates">Información de Actualizaciones</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Method">Método de Actualización</system:String>

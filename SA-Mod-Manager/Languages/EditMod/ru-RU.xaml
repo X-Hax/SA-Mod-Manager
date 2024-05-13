@@ -15,6 +15,7 @@
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Основной файл</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Файл Чао</system:String>
     <system:String x:Key="EditMod.Tabs.Btn.Advanced">Дополнительно</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Include Directories:</system:String>
 
     <system:String x:Key="EditMod.Tabs.Updates">Данные обновлений</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Method">Способ обновления</system:String>

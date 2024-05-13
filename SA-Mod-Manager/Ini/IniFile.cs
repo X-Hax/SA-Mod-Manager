@@ -183,6 +183,9 @@ namespace SAModManager.Ini
 		{
 			foreach (IniNameGroup group in ini)
 			{
+				if (group.Value != null && group.Value.Count == 0)
+					ini.Remove(group.Key);
+
 				foreach (IniNameValue item in group.Value)
 				{
                     if (string.IsNullOrEmpty(item.Value))

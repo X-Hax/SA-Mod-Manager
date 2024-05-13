@@ -15,6 +15,7 @@
     <system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">메인 저장 데이터</system:String>
     <system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">챠오 저장 데이터</system:String>
     <system:String x:Key="EditMod.Tabs.Btn.Advanced">고급 설정</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Include Directories:</system:String>
 
     <system:String x:Key="EditMod.Tabs.Updates">업데이트 정보</system:String>
     <system:String x:Key="EditMod.Tabs.Updates.Method">업데이트 방식</system:String>

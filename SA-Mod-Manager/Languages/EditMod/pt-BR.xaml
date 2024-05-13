@@ -14,8 +14,9 @@
 	<system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Redirecionar Save:</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Save Principal</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Save de Chao</system:String>
-	
-	<system:String x:Key="EditMod.Tabs.Btn.Advanced">Avançado</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Include Directories:</system:String>
+
+    <system:String x:Key="EditMod.Tabs.Btn.Advanced">Avançado</system:String>
 	
 	<system:String x:Key="EditMod.Tabs.Updates">Informações de Atualizações</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Method">Método de Atualização</system:String>

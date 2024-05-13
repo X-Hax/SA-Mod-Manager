@@ -14,8 +14,9 @@
 	<system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Redirecioar Save:</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Save Principal</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Save do Chao</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Include Directories:</system:String>
 
-	<system:String x:Key="EditMod.Tabs.Updates">Atualizar Informação</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates">Atualizar Informação</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Method">Atualizar Método</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub">Definições da Autalização do Github</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Autor e Repositório:</system:String>
