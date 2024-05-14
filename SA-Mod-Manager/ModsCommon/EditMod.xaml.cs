@@ -443,7 +443,7 @@ namespace SAModManager
                     string codesfile = Path.Combine(path, Mod.Codes);
                     if (File.Exists(codesfile))
                         File.Delete(codesfile);
-                    Mod.Codes = null;
+                    Mod.Codes = string.Empty;
                 }
             }
         }
