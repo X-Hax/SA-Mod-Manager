@@ -25,8 +25,8 @@ namespace SAModManager.Codes
             else
                 using (StreamReader sr = File.OpenText(filename))
                 {
-                    CodeList result = new CodeList();
-                    Stack<Tuple<List<CodeLine>, List<CodeLine>>> stack = new Stack<Tuple<List<CodeLine>, List<CodeLine>>>();
+                    CodeList result = new();
+                    Stack<Tuple<List<CodeLine>, List<CodeLine>>> stack = new();
                     int linenum = 0;
                     int lastIndex = 0;
                     while (!sr.EndOfStream)

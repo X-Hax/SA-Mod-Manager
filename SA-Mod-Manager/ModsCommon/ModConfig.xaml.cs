@@ -13,12 +13,10 @@ namespace SAModManager.ModsCommon
     /// </summary>
     public partial class ModConfig : Window
     {
-
         string pathXML = string.Empty;
         ConfigSettings settings;
         private static ModConfig _Instance;
         string modName = string.Empty;
-        public bool reset = false;
 
         public static ModConfig GetInstance()
         {
@@ -28,32 +26,31 @@ namespace SAModManager.ModsCommon
             return _Instance;
         }
 
-        public ModConfig(string Modname, string path, bool reset = false)
+        public ModConfig(string Modname, string path)
         {
             InitializeComponent();
             _Instance = this;
-
             modName = Modname;
-
-            this.reset = reset;
             pathXML = path;
             Title = Lang.GetString("ModConfig.Title") + " " + modName;
+            Init();
+        }
+
+        void Init()
+        {
+            ItemsHost?.Children?.Clear();
             settings = new ConfigSettings(pathXML);
-            DelayResetBtn(reset);
             var panel = FormBuilder.ConfigBuild(ref settings);
             panel.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
             panel.VerticalAlignment = VerticalAlignment.Stretch;
             ItemsHost.Children.Add(panel);
         }
 
-        private async void DelayResetBtn(bool reset)
+        private async Task DelayResetBtn()
         {
-            if (!reset)
-                return;
-
             resetBtn.IsEnabled = false;
             resetBtn.Opacity = 0.3;
-            await Task.Delay(1050);
+            await Task.Delay(100);
             resetBtn.IsEnabled = true;
             resetBtn.Opacity = 1.0;
         }
@@ -77,13 +74,9 @@ namespace SAModManager.ModsCommon
         private async void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             settings.ResetValues();
-            await Task.Delay(10);
             settings.Save();
-            await Task.Delay(30);
-
-            var config = new ModConfig(modName, pathXML, true);
-            this.Close();
-            config.ShowDialog();
+            await DelayResetBtn();
+            Init();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -130,8 +123,11 @@ namespace SAModManager.ModsCommon
                             modINI.Add("Config", new Dictionary<string, string>());
 
                         var value = prop.DefaultValue;
-                        if (IsEnum(prop.Type))
-                            value = GetEnum(prop.Type).Members[int.Parse(value)].Name;
+                        if (IsEnum(prop.Type) && int.TryParse(value, out int result))
+                        {
+                            var EnumProp = GetEnum(prop.Type).Members[result];
+                            value = string.IsNullOrEmpty(EnumProp.DisplayName) ? EnumProp.Name : EnumProp.DisplayName;
+                        }
 
                         if (!modINI["Config"].ContainsKey(prop.Name))
                             modINI["Config"].Add(prop.Name, value);
@@ -175,12 +171,18 @@ namespace SAModManager.ModsCommon
                 foreach (ConfigSchemaProperty prop in group.Properties)
                 {
                     configINI[group.Name][prop.Name] = prop.DefaultValue;
+
                     if (prop.Name.ToLower().Contains("includedir"))
                     {
                         var value = prop.DefaultValue;
+                        if (IsEnum(prop.Type) && int.TryParse(value, out int result))
+                        {
+                            var EnumProp = GetEnum(prop.Type).Members[result];
+                            value = string.IsNullOrEmpty(EnumProp.DisplayName) ? EnumProp.Name : EnumProp.DisplayName;
+                        }
+
                         if (IsEnum(prop.Type))
-                            value = GetEnum(prop.Type).Members[int.Parse(value)].Name;
-                        modINI["Config"][prop.Name] = value;
+                            modINI["Config"][prop.Name] = value;
                     }
 
                 }
@@ -196,6 +198,7 @@ namespace SAModManager.ModsCommon
             return schema.Enums.SingleOrDefault(a => a.Name == name);
         }
 
+
         public bool IsEnum(string name)
         {
             string s = name.ToLower();
@@ -207,11 +210,23 @@ namespace SAModManager.ModsCommon
             return configINI[groupName][propertyName];
         }
 
-        public void SetPropertyValue(string groupName, string propertyName, string value)
+        public void SetPropertyValue(string groupName, string propertyName, string value, string type = null)
         {
             configINI[groupName][propertyName] = value;
             if (propertyName.ToLower().Contains("includedir"))
-                modINI["Config"][propertyName] = value;
+            {
+                if (string.IsNullOrEmpty(type) == false && IsEnum(type))
+                {
+                    if (int.TryParse(value, out int result))
+                    {
+                        string enumName = GetEnum(type).Members[result].DisplayName;
+                        value = string.IsNullOrEmpty(enumName) ? value : enumName;
+                    }
+
+                    modINI["Config"][propertyName] = value;
+                }
+            }
+              
         }
     }
 
@@ -302,7 +317,7 @@ namespace SAModManager.ModsCommon
                         value = GetEnumIndex((string)value);
                     }
 
-                    settings.SetPropertyValue(groupName, propertyName, @enum[(int)value].Name);
+                    settings.SetPropertyValue(groupName, propertyName, @enum[(int)value].Name, type);
                     break;
             }
         }
