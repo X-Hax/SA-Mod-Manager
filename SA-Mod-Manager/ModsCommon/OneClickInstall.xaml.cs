@@ -266,7 +266,7 @@ namespace SAModManager
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            App.CancelUpdate = false;
             urlPage = null;
             url = null;
             gbi = null;
@@ -294,6 +294,7 @@ namespace SAModManager
         {
 
             bool retry = false;
+            App.CancelUpdate = false;
             UpdateModPath(this.uriTemp);
             this.updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, ".updates"));
             Logger.Log("Downloading One click install mod...");
