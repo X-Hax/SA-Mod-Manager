@@ -82,11 +82,11 @@ namespace SAModManager.Configuration.SA2
         [DefaultValue(DisplayMode.Borderless)]
         public int ScreenMode { get; set; } = (int)DisplayMode.Borderless;
 
-        /// <summary>
-        /// Maintains the ratio when resizing the window if resizable window is enabled.
-        /// </summary>
-        [DefaultValue(true)]
-        public bool KeepAspectWhenResizing { get; set; }
+		/// <summary>
+		/// Stretches the inner window (game render) to the outer window's size.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool StretchToWindow { get; set; } = false;
 
         /// <summary>
         /// Placed here to provide parity with the launcher as it also allows a language selection. 
@@ -106,6 +106,12 @@ namespace SAModManager.Configuration.SA2
         /// </summary>
         [DefaultValue(60)]
         public int RefreshRate { get; set; } = 60;
+
+		/// <summary>
+		/// Disables the Border Image from being loaded and rendered.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool DisableBorderImage { get; set; } = false;
 
         /// <summary>
         /// Converts from the original settings file.
@@ -349,15 +355,16 @@ namespace SAModManager.Configuration.SA2
         /// </summary>
         public enum SA2SettingsVersions
         {
-            v0 = 0, // Version 0: Original LoaderInfo Version
-            v1 = 1  // Version 1: Launch Version, functional parity with SA2GameSettings.
+            v0 = 0,		// Version 0: Original LoaderInfo Version
+            v1 = 1,		// Version 1: Launch Version, functional parity with SA2GameSettings.
+			v2 = 2,		// Version 2: Removed KeepAspectOnResize option, added StretchToWindow and DisableBorderImage
         }
 
         /// <summary>
         /// Versioning for the SA2 Settings file.
         /// </summary>
-        [DefaultValue((int)SA2SettingsVersions.v1)]
-        public int SettingsVersion { get; set; } = (int)SA2SettingsVersions.v1;
+        [DefaultValue((int)SA2SettingsVersions.v2)]
+        public int SettingsVersion { get; set; } = (int)SA2SettingsVersions.v2;
 
         /// <summary>
         /// Graphics Settings for SA2.
