@@ -147,7 +147,7 @@ namespace SAModManager
             }
             catch (Exception ex)
             {
-                Logger.Log("Failed to move the new exe.");
+                Logger.Log("Failed to move File." + ex.Message);
                 Console.WriteLine($"File move failed: {ex.Message}");
                 return false; // File move failed
             }
@@ -173,15 +173,23 @@ namespace SAModManager
         {
             try
             {
-                Logger.Log("Moving new file...");
-                await MoveFileAsync(origin, dest, overwrite);
+                Logger.Log("Moving File: " + origin + " to " + dest);
+                if (await MoveFileAsync(origin, dest, overwrite) == false)
+                {
+                    Logger.Log("Attempting to copy the file instead...");
+                    if (await CopyFileAsync(origin, dest, overwrite))
+                    {
+                        Logger.Log("Success!");
+                        File.Delete(origin);
+                    }
+                }
             }
             catch //File.Move doesn't work if hard drive destination is different from source, copy doesn't have this problem
             {
                 Logger.Log("Attempting to copy the file instead...");
                 if (await CopyFileAsync(origin, dest, overwrite))
                 {
-                    Logger.Log("success!");
+                    Logger.Log("Success!");
                     File.Delete(origin);
                 }
             }
