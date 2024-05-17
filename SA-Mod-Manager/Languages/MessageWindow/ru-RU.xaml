@@ -99,11 +99,11 @@
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Не удалось создать папку с настройками по пути {0}.&#x0a;Менеджер модов не будет работать корректно.</system:String>
     <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Ошибка при установке или обновлении {0}.&#x0a;Если игра запущена, то закройте её и повторите снова.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Error Reading Ini File</system:String>
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">An unexpected error occurred while reading an ini file. Ini files cannot have the same key or group multiple times.</system:String>
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Mod Name: {0}&#x0a;Mod Author: {1}&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Ошибка чтения ini-файла</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">Произошла непредвиденная ошибка чтения ini-файла. Ini-файл не может содержать в себе повторяющиеся группы или поля.</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Имя мода: {0}&#x0a;Автор: {1}&#x0a;</system:String>
     <!--> this is assuming the ini file was a mod <!-->
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">Этот мод не будет работать. Свяжитесь с автором мода и расскажите ему об ошибке, чтобы он мог её исправить.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
