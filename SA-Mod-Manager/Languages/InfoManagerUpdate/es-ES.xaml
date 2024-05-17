@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-	<system:String x:Key="InfoManagerUpdate.Title">Actualizaciones del Manager</system:String>
-	<system:String x:Key="InfoManagerUpdate.Changelog">Notas de Actualización:</system:String>
+    <system:String x:Key="InfoManagerUpdate.Title">New Mod Manager Update</system:String>
+    <system:String x:Key="InfoLoaderUpdate.Title">New {0} Update</system:String> <!--This is a placeholder for the Loader name (ie "New SADX Mod Loader Update"...)!-->
+    <system:String x:Key="InfoManagerUpdate.Changelog">Notas de Actualización:</system:String>
     <system:String x:Key="InfoManagerUpdate.DLQuestion">¿Quieres descargar las actualizaciones?</system:String>
 </ResourceDictionary>

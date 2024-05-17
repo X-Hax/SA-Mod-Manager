@@ -78,9 +78,19 @@ namespace SAModManager
             try { alreadyRunning = !mutex.WaitOne(0, true); }
             catch (AbandonedMutexException) { alreadyRunning = false; }
 
-            if (await DoUpdate(args, alreadyRunning))
+            foreach (var arg in args)
             {
-                return;
+                if (arg == "doupdate")
+                {
+                    if (alreadyRunning)
+                        try { mutex.WaitOne(); }
+                        catch (AbandonedMutexException) { }
+
+                    Logger.Log("DoUpdate command started");
+                    InstallUpdate(args[2], args[3], args[4]);
+                    return;
+                }
+
             }
 
             UpdateHelper.InitHttpClient();
@@ -301,31 +311,29 @@ namespace SAModManager
                 var update = await GitHub.GetLatestManagerRelease();
 
                 if (update.Item1 == false) //no update found
-                {
                     return false;
-                }
 
-                string changelog = await GitHub.GetGitChangeLog(update.Item2);
+                string changelog = await GitHub.GetGitChangeLog(update.Item2); 
 
                 if (string.IsNullOrEmpty(changelog)) //update found but no changelog (?)
-                {
                     return false;
-                }
 
-                var manager = new InfoManagerUpdate(changelog);
+                var manager = new InfoManagerUpdate(changelog, update.Item4);
                 manager.ShowDialog();
 
                 if (manager.DialogResult != true)
                     return false;
 
+                Logger.Log("Now Installing New Manager Update...");
                 // string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
-                string dlLink = update.Item3.DownloadUrl;
-                string fileName = update.Item3.Name;
+                string dlLink = update.Item3.DownloadUrl;         
+                string fileName = update.Item3.Name;     
+                string version = update.Item4;
                 string destFolder = App.tempFolder;
                 Directory.CreateDirectory(destFolder);
 
-                var dl = new ManagerUpdate(dlLink, destFolder, fileName)
-                {
+                var dl = new ManagerUpdate(dlLink, destFolder, fileName, version)
+                { 
                     DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName)
                 };
 
@@ -337,8 +345,6 @@ namespace SAModManager
                 mainWindow?.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdateFail"));
                 return false;
             }
-
-
         }
 
         private static async Task<(bool, string)> CheckLoaderUpdate()
@@ -367,23 +373,15 @@ namespace SAModManager
                 var update = await CheckLoaderUpdate();
 
                 if (update.Item1 == false) //no update found
-                {
                     return;
-                }
 
                 string changelog = await GitHub.GetGitLoaderChangeLog(update.Item2); //item2 is commit hash
 
-                if (string.IsNullOrEmpty(changelog)) //if string is null, we got error(s) so the DL can't continue
-                {
+                if (string.IsNullOrEmpty(changelog) || App.CancelUpdate) //if string is null, we got error(s) so the DL can't continue
                     return;
-                }
 
-                if (App.CancelUpdate)
-                {
-                    return;
-                }
 
-                var manager = new InfoManagerUpdate(changelog, App.CurrentGame.loader.name);
+                var manager = new InfoManagerUpdate(changelog, update.Item2[..7], App.CurrentGame.loader.name);
                 manager.ShowDialog();
 
                 if (manager.DialogResult != true || App.CancelUpdate)
@@ -505,29 +503,27 @@ namespace SAModManager
             return false;
         }
 
-        private static async Task<bool> DoUpdate(string[] args, bool alreadyRunning)
+        public static void InstallUpdate(string updatePath, string managerPath, string pID)
         {
-            foreach (var arg in args)
+            string executablePath = Environment.ProcessPath;
+            Logger.Log("Now Replacing old exe...");
+
+            try
             {
-                if (arg == "doupdate")
-                {
-                    if (alreadyRunning)
-                        try { mutex.WaitOne(); }
-                        catch (AbandonedMutexException) { }
-
-                    Logger.Log("DoUpdate command started");
-                    var dialog = new InstallManagerUpdate(args[2], args[3]);
-                    await dialog.InstallUpdate();
-                    Util.ClearTempFolder();
-                    Application.Current.Shutdown();
-
-                    return true;
-                }
+                //check if old Manager process is still enabled, if so wait that it's killed properly
+                int.TryParse(pID, out int pid);
+                var process = Process.GetProcessById(pid);
+                process.WaitForExit();
 
             }
+            catch { }
 
-            return false;
+            //Finally, Copy and run the new Manager version and replace the old one
+            File.Copy(Path.Combine(updatePath, executablePath), managerPath, true);
+            Process.Start(new ProcessStartInfo { FileName = managerPath, UseShellExecute = true });
+            Environment.Exit(0);
         }
+
 
         public static void CreateConfigFolder()
         {
