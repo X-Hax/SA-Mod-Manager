@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Input;
-using System.Text.RegularExpressions;
 using System.Windows.Threading;
 using System.Diagnostics;
 using SAModManager.Properties;
@@ -27,12 +26,7 @@ using SAModManager.Codes;
 using System.Windows.Media.Imaging;
 using System.Reflection;
 using SAModManager.Profile;
-using SAModManager.Configuration.SA2;
-using SAModManager.Configuration.SADX;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using SAModManager.ModsCommon;
-using System.Security.Policy;
-using PropertyChanged;
 
 namespace SAModManager
 {
@@ -644,6 +638,7 @@ namespace SAModManager
 
         private async void ModContextChkUpdate_Click(object sender, RoutedEventArgs e)
         {
+            App.CancelUpdate = false;
             await UpdateSelectedMods();
         }
 

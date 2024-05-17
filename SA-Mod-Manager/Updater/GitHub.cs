@@ -389,7 +389,7 @@ namespace SAModManager.Updater
         }
 
 
-        public static async Task<(bool, string, GitHubAsset)> GetLatestManagerRelease()
+        public static async Task<(bool, string, GitHubAsset, string)> GetLatestManagerRelease()
         {
             bool hasUpdate = false;
 
@@ -426,8 +426,9 @@ namespace SAModManager.Updater
                             {
                                 throw new Exception("Couldn't check version difference, update won't work.");
                             }
+                 
 
-                            return (hasUpdate, sha, targetAsset);
+                            return (hasUpdate, sha, targetAsset, version);
                         }
                     }
                 }
@@ -437,7 +438,7 @@ namespace SAModManager.Updater
                 Console.WriteLine("Error fetching latest release: " + ex.Message);
             }
 
-            return (false, null, null);
+            return (false, null, null, null);
         }
 
         public static async Task<string> GetGitChangeLog(string hash)

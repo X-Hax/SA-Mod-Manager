@@ -350,26 +350,28 @@ namespace SAModManager.Configuration.SA2
 
     public class GameSettings
     {
-        /// <summary>
-        /// Versioning.
-        /// </summary>
-        public enum SA2SettingsVersions
-        {
-            v0 = 0,		// Version 0: Original LoaderInfo Version
-            v1 = 1,		// Version 1: Launch Version, functional parity with SA2GameSettings.
-			v2 = 2,		// Version 2: Removed KeepAspectOnResize option, added StretchToWindow and DisableBorderImage
-        }
+		/// <summary>
+		/// Versioning.
+		/// </summary>
+		public enum SA2SettingsVersions
+		{
+			v0,     // Version 0: Original LoaderInfo Version
+			v1,     // Version 1: Launch Version, functional parity with SA2GameSettings.
+			v2,     // Version 2: Removed KeepAspectOnResize option, added StretchToWindow and DisableBorderImage
 
-        /// <summary>
-        /// Versioning for the SA2 Settings file.
-        /// </summary>
-        [DefaultValue((int)SA2SettingsVersions.v2)]
-        public int SettingsVersion { get; set; } = (int)SA2SettingsVersions.v2;
+			MAX,    // Do Not Modify, new versions are placed above this.
+		}
 
-        /// <summary>
-        /// Graphics Settings for SA2.
-        /// </summary>
-        public GraphicsSettings Graphics { get; set; } = new();
+		/// <summary>
+		/// Versioning for the SA2 Settings file.
+		/// </summary>
+		[DefaultValue((int)(SA2SettingsVersions.MAX - 1))]
+		public int SettingsVersion { get; set; } = (int)(SA2SettingsVersions.MAX - 1);
+
+		/// <summary>
+		/// Graphics Settings for SA2.
+		/// </summary>
+		public GraphicsSettings Graphics { get; set; } = new();
 
         /// <summary>
         /// TestSpawn Settings for SA2.
@@ -444,30 +446,47 @@ namespace SAModManager.Configuration.SA2
             }
         }
 
-        public static GameSettings Deserialize(string path)
-        {
-            try
-            {
-                if (File.Exists(path))
-                {
-                    string jsonContent = File.ReadAllText(path);
+		/// <summary>
+		/// Deserializes an SA2 GameSettings JSON File and returns a populated class.
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
+		public static GameSettings Deserialize(string path)
+		{
+			try
+			{
+				if (File.Exists(path))
+				{
+					string jsonContent = File.ReadAllText(path);
 
-                    return JsonSerializer.Deserialize<GameSettings>(jsonContent);
-                }
-                else
-                    return new();
-            }
-            catch
-            {
-                return new();
-            }
-        }
+					GameSettings settings = JsonSerializer.Deserialize<GameSettings>(jsonContent);
 
-        /// <summary>
-        /// Serializes an SA2 GameSettings JSON File.
-        /// </summary>
-        /// <param name="path"></param>
-        public void Serialize(string profileName)
+					// This is where the settings versions get bumped on load.
+					// Set in a switch case in the event we need to make changes on a specific version.
+					switch (settings.SettingsVersion)
+					{
+						default:
+							if (settings.SettingsVersion < (int)(SA2SettingsVersions.MAX - 1))
+								settings.SettingsVersion = (int)(SA2SettingsVersions.MAX - 1);
+							break;
+					}
+
+					return settings;
+				}
+				else
+					return new();
+			}
+			catch
+			{
+				return new();
+			}
+		}
+
+		/// <summary>
+		/// Serializes an SA2 GameSettings JSON File.
+		/// </summary>
+		/// <param name="path"></param>
+		public void Serialize(string profileName)
         {
 			if (!profileName.Contains(".json"))
 				profileName += ".json";
