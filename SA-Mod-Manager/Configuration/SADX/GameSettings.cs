@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.CodeDom.Compiler;
 using System;
 using System.Text.Json.Serialization;
+using static SAModManager.Configuration.SA2.GameSettings;
 
 namespace SAModManager.Configuration.SADX
 {
@@ -713,16 +714,18 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		public enum SADXSettingsVersions
 		{
-			v0 = 0,	// Version 0: Original LoaderInfo version
-			v1 = 1,	// Version 1: Initial version at launch
-			v2 = 2,	// Version 2: Updated to include all settings, intended to be used as the only loaded file, now writes SADXLoaderInfo and SADXConfigFile.
+			v0,		// Version 0: Original LoaderInfo version
+			v1,		// Version 1: Initial version at launch
+			v2,		// Version 2: Updated to include all settings, intended to be used as the only loaded file, now writes SADXLoaderInfo and SADXConfigFile.
+
+			MAX,	// Do Not Modify, new versions are placed above this.
 		}
 
 		/// <summary>
 		/// Versioning for the SADX Settings file.
 		/// </summary>
-		[DefaultValue((int)SADXSettingsVersions.v2)]
-		public int SettingsVersion { get; set; } = (int)SADXSettingsVersions.v2;
+		[DefaultValue((int)(SADXSettingsVersions.MAX - 1))]
+		public int SettingsVersion { get; set; } = (int)(SADXSettingsVersions.MAX - 1);
 
 		/// <summary>
 		/// Graphics Settings for SADX.
@@ -849,12 +852,12 @@ namespace SAModManager.Configuration.SADX
 
 					GameSettings settings = JsonSerializer.Deserialize<GameSettings>(jsonContent);
 
-					// Version update changes go here.
-					switch ((SADXSettingsVersions)settings.SettingsVersion)
+					// This is where the settings versions get bumped on load.
+					// Set in a switch case in the event we need to make changes on a specific version.
+					switch (settings.SettingsVersion)
 					{
-						case SADXSettingsVersions.v1:
-							// Update to Version 2
-							settings.SettingsVersion = (int)SADXSettingsVersions.v2;
+						case (int)SADXSettingsVersions.v1:
+							settings.SettingsVersion = (int)(SADXSettingsVersions.MAX - 1);
 							SADXConfigFile config = new();
 							string configPath = Path.Combine(settings.GamePath, App.CurrentGame.GameConfigFile[0]);
 							if (File.Exists(configPath))
@@ -863,6 +866,10 @@ namespace SAModManager.Configuration.SADX
 							settings.Graphics.LoadGameConfig(ref config);
 							settings.Controller.LoadGameConfig(ref config);
 							settings.Sound.LoadGameConfig(ref config);
+							break;
+						default:
+							if (settings.SettingsVersion < (int)(SADXSettingsVersions.MAX - 1))
+								settings.SettingsVersion = (int)(SA2SettingsVersions.MAX - 1);
 							break;
 					}
 
