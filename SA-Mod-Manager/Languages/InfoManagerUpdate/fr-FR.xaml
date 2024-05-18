@@ -3,6 +3,7 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <system:String x:Key="InfoManagerUpdate.Title">Manager Nouvelle Mise à Jour</system:String>
+    <system:String x:Key="InfoLoaderUpdate.Title">{0} Nouvelle Mise à Jour</system:String> <!--This is a placeholder for the Loader name (sadx, sa2...)--> 
     <system:String x:Key="InfoManagerUpdate.Changelog">Journal des modifications:</system:String>
     <system:String x:Key="InfoManagerUpdate.DLQuestion">Voulez-vous télécharger la mise à jour?</system:String>
 </ResourceDictionary>

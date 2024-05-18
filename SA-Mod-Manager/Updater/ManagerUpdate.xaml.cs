@@ -21,12 +21,13 @@ namespace SAModManager.Updater
         private IProgress<double?> _progress;
 
 
-        public ManagerUpdate(string url, string updatePath, string fileName)
+        public ManagerUpdate(string url, string updatePath, string fileName, string version)
         {
             InitializeComponent();
             this.URL = url;
             this.fileName = fileName;
             this.destPath = Path.Combine(updatePath, fileName);
+            UpdateTitle.Text += " v" + version;
 
             _progress = new Progress<double?>((v) =>
             {
@@ -49,7 +50,7 @@ namespace SAModManager.Updater
         {
             string dest = Path.Combine(tempFolderPath, fileName);
 
-            //once dl is finished, move manager zip in .SATemp folder
+            //once dl is finished, move manager zip in SATemp folder
             if (File.Exists(dest) && tempFolderPath is not null)
             {
                 //extract Manager zip
@@ -61,7 +62,7 @@ namespace SAModManager.Updater
 
                 if (File.Exists(newExec))
                 {
-                    Process.Start(new ProcessStartInfo { FileName = newExec, Arguments = $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\"", UseShellExecute = true});
+                    Process.Start(new ProcessStartInfo { FileName = newExec, Arguments = $"doupdate \"{tempFolderPath}\" \"{Environment.ProcessPath}\" {Environment.ProcessId}", UseShellExecute = true });
                     App.Current.Shutdown();
                 }
                 else
