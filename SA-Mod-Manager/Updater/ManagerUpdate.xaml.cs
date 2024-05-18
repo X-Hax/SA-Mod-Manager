@@ -50,7 +50,7 @@ namespace SAModManager.Updater
         {
             string dest = Path.Combine(tempFolderPath, fileName);
 
-            //once dl is finished, move manager zip in .SATemp folder
+            //once dl is finished, move manager zip in SATemp folder
             if (File.Exists(dest) && tempFolderPath is not null)
             {
                 //extract Manager zip
