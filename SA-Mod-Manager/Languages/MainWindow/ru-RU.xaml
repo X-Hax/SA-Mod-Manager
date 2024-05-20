@@ -120,10 +120,10 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Принудительно выставить соотношение сторон 4:3, игнорируя выбранное разрешение.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Включение вертикальной синхронизации.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Когда выключено, игра будет ставиться на паузу, если окно не в фокусе.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Разворачивать игру на весь экран.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Разворачивать игру в окне без рамки.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Масштабировать интерфейс на весь экран.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Игра будет запускаться в окне.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Игра будет запускаться в окне.</system:String>	
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse">Отображать курсор мыши в полноэкранном режиме.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Позволяет изменять размер окна во время игры.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeAspectRatio">Зафиксировать соотношение сторон экрана при изменении его размера, когда включено изменаемое окно.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Зафиксировать соотношение сторон при выборе кастомного разрешения.</system:String>
