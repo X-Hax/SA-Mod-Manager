@@ -39,6 +39,7 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r720">720p</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1080">1080p</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r4K">4K</system:String>
+    
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Ajustes</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Forzar relación de aspecto 4:3</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Habilitar sincronización vertical</system:String>
@@ -47,12 +48,12 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Frecuencia de actualización:</system:String>
 
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Ventana redimensionable</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Maintain Aspect Ratio</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Mantener relación de aspecto</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Mantener relación de aspecto</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Igualar relación de renderizado</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamaño de ventana personalizado:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Pantalla completa sin bordes</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Mostrar cursor en pantalla completa</system:String>
-    
+        
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Ajustar a la pantalla</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Otras opciones de gráficos</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Velocidad de fotogramas:</system:String>
@@ -114,6 +115,7 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Abrir AppLauncher</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Obtener AppLauncher</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">El sistema de entrada mejorada es una implementación de SDL2 en SADX. Se recomienda para jugar, ya que soluciona los problemas del sistema DInput original.</system:String>
+    <!--#endregion-->
 
 	<!--Sound Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Ajustes de sónido</system:String>
@@ -145,7 +147,7 @@
 	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Angle">Ángulo:</system:String>
-    <system:String x:Key="TestSpawn.Player2">Jugador 2 2:</system:String>
+    <system:String x:Key="TestSpawn.Player2">Jugador 2:</system:String>
     <system:String x:Key="TestSpawn.Mission">Misión:</system:String>
 
     <system:String x:Key="TestSpawn.Language.Voice">Idioma de la voz:</system:String>
