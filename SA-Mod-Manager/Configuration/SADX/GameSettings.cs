@@ -14,7 +14,7 @@ namespace SAModManager.Configuration.SADX
 {
 	public class GraphicsSettings
 	{
-		enum FillMode
+		public enum FillMode
 		{
 			Stretch = 0,
 			Fit = 1,
@@ -62,7 +62,7 @@ namespace SAModManager.Configuration.SADX
 		/// V-Sync.
 		/// </summary>
 		[DefaultValue(true)]
-			public bool EnableVsync { get; set; } = true;           // SADXLoaderInfo.EnableVSync
+		public bool EnableVsync { get; set; } = true;           // SADXLoaderInfo.EnableVSync
 
 		/// <summary>
 		/// Enables the window to be paused when not focused.
@@ -163,6 +163,18 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		[DefaultValue(false)]
 		public bool ShowMouseInFullscreen { get; set; }
+
+		/// <summary>
+		/// Stretches the game render to match the outer window's size regardless of inner window's resolution.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool StretchToWindow { get; set; }
+
+		/// <summary>
+		/// Disables the Border Image from rendering when the game render does not match the outer window size.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool DisableBorderImage { get; set; }
 
 		#region Deprecated
 		/// <summary>
@@ -673,11 +685,23 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		[DefaultValue(false)]
 		public bool DisableCDCheck { get; set; } = false;       // SADXLoaderInfo.DisableCDCheck
+
+		/// <summary>
+		/// Extends save support to allow custom names and alternate save directories.
+		/// </summary>
         [DefaultValue(true)]
         public bool ExtendedSaveSupport { get; set; } = true;
-        [DefaultValue(true)]
+        
+		/// <summary>
+		/// Prevents common crashes in the game, namely texture related ones.
+		/// </summary>
+		[DefaultValue(true)]
         public bool CrashGuard { get; set; } = true;
-        [DefaultValue(false)]
+        
+		/// <summary>
+		/// Fixes XInput without the need for using SDL/Better Input.
+		/// </summary>
+		[DefaultValue(false)]
         public bool XInputFix { get; set; } = false;
 
         /// <summary>
@@ -717,6 +741,7 @@ namespace SAModManager.Configuration.SADX
 			v0,		// Version 0: Original LoaderInfo version
 			v1,		// Version 1: Initial version at launch
 			v2,		// Version 2: Updated to include all settings, intended to be used as the only loaded file, now writes SADXLoaderInfo and SADXConfigFile.
+			v3,		// Version 3: Added Graphics.StretchToWindow and Graphics.DisableBorderWindow.
 
 			MAX,	// Do Not Modify, new versions are placed above this.
 		}
