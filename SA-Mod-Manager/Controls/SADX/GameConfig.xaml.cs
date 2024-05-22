@@ -722,6 +722,16 @@ namespace SAModManager.Controls.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
+			chkStretchToWindow.SetBinding(CheckBox.IsCheckedProperty, new Binding("StretchToWindow")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
+			chkDisableBorderImage.SetBinding(CheckBox.IsCheckedProperty, new Binding("DisableBorderImage")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
 
 			// Settings
 			chkVSync.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableVsync")
