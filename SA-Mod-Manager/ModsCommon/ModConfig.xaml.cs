@@ -68,6 +68,8 @@ namespace SAModManager.ModsCommon
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             settings.Save();
+            if (settings.modNeedRefresh)
+                ((MainWindow)Application.Current.MainWindow)?.Refresh();
             this.Close();
         }
 
@@ -93,6 +95,7 @@ namespace SAModManager.ModsCommon
         public Dictionary<string, Dictionary<string, string>> modINI;
         private string modiniFilename;
         public string modPath;
+        public bool modNeedRefresh = false;
 
         public ConfigSettings(string path)
         {
@@ -154,7 +157,10 @@ namespace SAModManager.ModsCommon
 
             Ini.IniFile.Save(configINI, configfilename);
             if (modINI != null)
+            {
                 Ini.IniFile.Save(modINI, modiniFilename);
+            }
+              
 
             FileInfo fileInfo = new(configfilename);
 
@@ -174,6 +180,7 @@ namespace SAModManager.ModsCommon
 
                     if (prop.Name.ToLower().Contains("includedir"))
                     {
+                        modNeedRefresh = true;
                         var value = prop.DefaultValue;
                         if (IsEnum(prop.Type) && int.TryParse(value, out int result))
                         {
@@ -215,6 +222,7 @@ namespace SAModManager.ModsCommon
             configINI[groupName][propertyName] = value;
             if (propertyName.ToLower().Contains("includedir"))
             {
+                modNeedRefresh = true;
                 if (string.IsNullOrEmpty(type) == false && IsEnum(type))
                 {
                     if (int.TryParse(value, out int result))

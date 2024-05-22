@@ -87,7 +87,8 @@ namespace SAModManager
                         catch (AbandonedMutexException) { }
 
                     Logger.Log("DoUpdate command started");
-                    InstallUpdate(args[2], args[3], args[4]);
+                    string pID = args.Length > 4 ? args[4] : null;
+                    InstallUpdate(args[2], args[3], pID);
                     return;
                 }
 
@@ -510,10 +511,14 @@ namespace SAModManager
 
             try
             {
+
                 //check if old Manager process is still enabled, if so wait that it's killed properly
-                int.TryParse(pID, out int pid);
-                var process = Process.GetProcessById(pid);
-                process.WaitForExit();
+                if (string.IsNullOrEmpty(pID) == false)
+                {
+                    int.TryParse(pID, out int pid);
+                    var process = Process.GetProcessById(pid);
+                    process.WaitForExit();
+                }
 
             }
             catch { }

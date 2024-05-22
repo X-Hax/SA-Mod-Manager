@@ -15,7 +15,7 @@
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Archivo de guardado principal</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Archivo de guardado de Chao</system:String>
     <system:String x:Key="EditMod.Tabs.Btn.Advanced">Avanzado</system:String>
-    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Include Directories:</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Directorios a incluir:</system:String>
 
     <system:String x:Key="EditMod.Tabs.Updates">Información de la actualización</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Method">Método de actualización</system:String>
@@ -25,7 +25,7 @@
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Activo liberado:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB">Ajustes de actualización por Gamebanana</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">ID del mod:</system:String>
-    <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">Mod Type:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">Tipo de mod:</system:String>
     <system:String x:Key="EditMod.Tabs.Updates.Self">Ajustes de actualización de mod autoalojado</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL de la actualización:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL del registro de cambios:</system:String>

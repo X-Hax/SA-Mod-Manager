@@ -321,6 +321,8 @@ namespace SAModManager
         public static void ClearTempFolder()
         {
             Util.DeleteReadOnlyDirectory(App.tempFolder);
+            if (Directory.Exists(".SATemp")) //temp support for previous version but no longer used
+                Util.DeleteReadOnlyDirectory(".SATemp");
         }
 
         public static void DeleteReadOnlyDirectory(string dir)

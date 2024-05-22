@@ -120,15 +120,15 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Принудительно выставить соотношение сторон 4:3, игнорируя выбранное разрешение.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Включение вертикальной синхронизации.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Когда выключено, игра будет ставиться на паузу, если окно не в фокусе.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Разворачивать игру на весь экран.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Разворачивать игру в окне без рамки.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Масштабировать интерфейс на весь экран.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Игра будет запускаться в окне.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Игра будет запускаться в окне.</system:String>	
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse">Отображать курсор мыши в полноэкранном режиме.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Позволяет изменять размер окна во время игры.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeAspectRatio">Зафиксировать соотношение сторон экрана при изменении его размера, когда включено изменаемое окно.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Зафиксировать соотношение сторон при выборе кастомного разрешения.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Выставить размер окна вне зависимости от разрешения. Так, например, можно играть в разрешении 4К в небольшом окне.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Настроить частоту смены кадров.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Выставить частоту смены кадров.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">Включить режим эмуляции тумана. Использовать только со слабым видеоядром. В остальных случаях рекомендуется включить автоматический режим.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Включить фильтрацию текстур для всех моделей.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Включить фильтрацию текстур для всех текстур интерфейса.</system:String>
@@ -139,7 +139,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Включает программную прослойку D3D8to9, позволяющую игре задействовать особенности D3D9-рендеринга. Требуется для работы некоторых модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Включает масштабирование интерфейса в соответствии с разрешением игры.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Проверка, загрузка и обновление прослойки d3d8to9.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Sets the refresh rate, be aware that the game doesn't support more than 60 fps and there is a patch which locks the framerate, change this at your own risk.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Выставить частоту смены кадров. Учтите, что игра не поддерживает частоту выше 60 кадров в секунду и есть патч, ограничиваюзий её. Меняйте значение на свой страх и риск.</system:String>
     <!--#endregion-->
 
 	<!--#region Input Settings-->
