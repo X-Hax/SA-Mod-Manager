@@ -659,7 +659,7 @@ namespace SAModManager.Controls.SADX
                         string name = Path.GetFileNameWithoutExtension(file);
                         string nameDup = name.ToLower();
 
-                        if (!nameDup.Contains("chao")) //skip chao garden save
+                        if (!nameDup.Contains("chaogarden")) //skip chao garden save
                             list.Add(name);
                     }
 
