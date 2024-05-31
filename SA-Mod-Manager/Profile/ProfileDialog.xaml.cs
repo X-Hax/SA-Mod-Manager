@@ -36,9 +36,20 @@ namespace SAModManager.Profile
 
         private void ModProfile_Loaded(object sender, RoutedEventArgs e)
         {
-			ListViewItem item = ProfileListView.ItemContainerGenerator.ContainerFromIndex(SelectedIndex) as ListViewItem;
-			item.FontWeight = FontWeights.Bold;
-        }
+			this.Dispatcher.BeginInvoke(new Action(() =>
+			{
+				ListViewItem item = null;
+				if (SelectedIndex >= 0 && SelectedIndex < ProfileListView.Items.Count)
+				{
+					ProfileListView.ScrollIntoView(ProfileListView.Items[SelectedIndex]);
+					item = ProfileListView.ItemContainerGenerator.ContainerFromIndex(SelectedIndex) as ListViewItem;
+					if (item != null)
+					{
+						item.FontWeight = FontWeights.Bold;
+					}
+				}
+			}), System.Windows.Threading.DispatcherPriority.Background);
+		}
 
         #region Private Functions
         private void RefreshList()
