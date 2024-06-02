@@ -101,11 +101,10 @@
     <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">No se pudo instalar o actualizar {0}&#x0a;Si el juego está abierto, ciérralo e inténtalo de nuevo.</system:String>
 
 
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Error Reading Ini File</system:String>
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">An unexpected error occurred while reading an ini file. Ini files cannot have the same key or group multiple times.</system:String>
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Mod Name: {0}&#x0a;Mod Author: {1}&#x0a;</system:String>
-    <!--> this is assuming the ini file was a mod <!-->
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Error al leer el archivo ini</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">Ocurrió un error inesperado al leer un archivo ini. Los archivos ini no pueden tener la misma clave o grupo varias veces.</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Nombre del mod: {0}&#x0a;Autor(a): {1}&#x0a;</system:String> <!--> this is assuming the ini file was a mod <!-->
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">Este mod no funcionará. Por favor, reporta este error a el/la creador(a) del mod para que pueda arreglarlo.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->

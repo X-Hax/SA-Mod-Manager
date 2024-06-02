@@ -1520,8 +1520,11 @@ namespace SAModManager
                 }
             }
 
-            CodeList.WriteDatFile(patchdatpath, selectedPatches);
-            CodeList.WriteDatFile(codedatpath, selectedCodes);
+            if (Directory.Exists(App.CurrentGame.modDirectory))
+            {
+                CodeList.WriteDatFile(patchdatpath, selectedPatches);
+                CodeList.WriteDatFile(codedatpath, selectedCodes);
+            }
         }
 
         private void UpdateButtonsState()
@@ -1710,6 +1713,8 @@ namespace SAModManager
             // Save Manager Settings
             App.ManagerSettings.CurrentSetGame = (int)App.CurrentGame?.id;
             App.ManagerSettings.Serialize(App.ManagerConfigFile);
+           
+            UpdateManagerInfo();
 
             // Save Mods and Codes
             UpdateModsCodes();
