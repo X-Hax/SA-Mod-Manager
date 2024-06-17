@@ -30,7 +30,7 @@
     <system:String x:Key="TSCutscene33">Соник попадает в прошлое</system:String>
     <system:String x:Key="TSCutscene34">Соник слушает Тикал в прошлом</system:String>
     <system:String x:Key="TSCutscene35">Соник: Эггман летит к своей базе</system:String>
-    <system:String x:Key="TSCutscene36">Соник против Эгг-Змея</system:String>
+    <system:String x:Key="TSCutscene36">Соник против Эгг-Гадюки</system:String>
     <system:String x:Key="TSCutscene38">Соник: конец</system:String>
     <system:String x:Key="TSCutscene40">Соник против Наклза</system:String>
     <system:String x:Key="TSCutscene41">Соник и Тейлз приземляются на Эгг-Крейсер </system:String>
@@ -186,7 +186,7 @@
     <system:String x:Key="TSCutscene305">Эми победила в Ежинном молоте</system:String>
     <system:String x:Key="TSCutscene320">Гамме приказано забрать Бустер</system:String>
     <system:String x:Key="TSCutscene321">Гамма направляется в Паровой бункер</system:String>
-    <system:String x:Key="TSCutscene322">Гамма заметил E-101R</system:String>
+    <system:String x:Key="TSCutscene322">Гамма заметил E-101 модель 2</system:String>
     <system:String x:Key="TSCutscene336">Отмена режима ЧС (Биг)</system:String>
     <system:String x:Key="TSCutscene352">Племя Ехидн встретило Хаоса</system:String>
     <system:String x:Key="TSCutscene357">Соник получил Кристальное кольцо</system:String>
