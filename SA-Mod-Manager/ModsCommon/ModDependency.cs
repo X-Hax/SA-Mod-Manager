@@ -142,7 +142,12 @@ namespace SAModManager.ModsCommon
 								dg.ShowDialog();
 								if (dg.isYes)
 								{
-									Process.Start(dependency.Link);
+									var ps = new ProcessStartInfo(dependency.Link)
+									{
+										UseShellExecute = true,
+										Verb = "open"
+									};
+									Process.Start(ps);
 								}
 								check = true;
 							}
