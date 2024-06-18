@@ -475,17 +475,54 @@ namespace SAModManager
 
             if (categoryBox.Text == "Music")
             {
-                Directory.CreateDirectory(@Path.Combine(moddir, "system/SoundData/bgm/wma"));
+                switch (App.CurrentGame.id)
+                {
+                    case SetGame.SADX:
+                        Directory.CreateDirectory(@Path.Combine(moddir, "system/SoundData/bgm/wma"));
+                        break;
+                    case SetGame.SA2:
+                        Directory.CreateDirectory(@Path.Combine(moddir, "gd_PC/ADX"));
+                        break;
+                }
+           
             }
-
-            if (categoryBox.Text == "Sound")
+            else if (categoryBox.Text == "Sound")
             {
-                Directory.CreateDirectory(@Path.Combine(moddir, "system/SoundData/SE"));
+                switch (App.CurrentGame.id)
+                {
+                    case SetGame.SADX:
+                        Directory.CreateDirectory(@Path.Combine(moddir, "system/SoundData/SE"));
+                        break;
+                    case SetGame.SA2:
+                        Directory.CreateDirectory(@Path.Combine(moddir, "gd_PC/MPB"));
+                        Directory.CreateDirectory(@Path.Combine(moddir, "gd_PC/MLT"));
+                        break;
+                }
             }
-
-            if (categoryBox.Text == "Textures")
+            else if (categoryBox.Text == "Textures")
             {
-                Directory.CreateDirectory(Path.Combine(moddir, "textures"));
+                switch (App.CurrentGame.id)
+                {
+                    case SetGame.SADX:
+                        Directory.CreateDirectory(Path.Combine(moddir, "textures"));
+                        break;
+                    case SetGame.SA2:
+                        Directory.CreateDirectory(@Path.Combine(moddir, "gd_PC/PRS"));
+                        break;
+                }
+              
+            }
+            else
+            {
+                switch (App.CurrentGame.id)
+                {
+                    case SetGame.SADX:
+                        Directory.CreateDirectory(@Path.Combine(moddir, "system"));
+                        break;
+                    case SetGame.SA2:
+                        Directory.CreateDirectory(@Path.Combine(moddir, "gd_PC"));
+                        break;
+                }
             }
 
             if (isStringNotEmpty(authorBox.Text)) //save mod author

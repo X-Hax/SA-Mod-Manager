@@ -1610,6 +1610,9 @@ namespace SAModManager
 
         private void SaveSADXSettings()
         {
+            if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
+                return;
+
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SADX.GameSettings).GamePath = Path.GetFullPath(App.CurrentGame.gameDirectory);
             Controls.SADX.GameConfig gameConfig = (Controls.SADX.GameConfig)(tabGame.Content as Grid).Children[0];
@@ -1630,6 +1633,9 @@ namespace SAModManager
 
         private void SaveSA2Settings()
         {
+            if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
+                return;
+
             // Update any GameSettings Info first.
             (GameProfile as Configuration.SA2.GameSettings).GamePath = Path.GetFullPath(App.CurrentGame.gameDirectory);
             Controls.SA2.GameConfig gameConfig = (Controls.SA2.GameConfig)(tabGame.Content as Grid).Children[0];
