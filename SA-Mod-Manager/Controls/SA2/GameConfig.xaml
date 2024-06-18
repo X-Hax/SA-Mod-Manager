@@ -111,8 +111,13 @@
 								</Grid>
 								<CheckBox x:Name="chkMaintainRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.AspectRatio}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Margin="5,5,5,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect}" Click="chkMaintainRatio_Click" IsEnabled="{Binding ElementName=chkCustomWinSize, Path=IsChecked}"/>
 
-                                <Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.RefreshRate}" Margin="5" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" ToolTip=""/>
-                                <elements:NumberBox x:Name="refreshRateNum" Margin="5" Height="22" Width="75" Type="Integer" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Value="60" MinValue="1" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate}"/>
+								<Grid Grid.Row="4" Grid.Column="1">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="6"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+								</Grid>
                             </Grid>
 
 							<!--Graphics Display Middle-->
@@ -124,10 +129,11 @@
 
 								<Separator Grid.ColumnSpan="4" Grid.Row="0" Margin="5,5,5,10"/>
 
-								<UniformGrid Grid.Row="1" HorizontalAlignment="Center" Columns="3">
+								<UniformGrid Grid.Row="1" HorizontalAlignment="Center" Columns="4">
 									<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
 									<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
-									<CheckBox x:Name="chkResizeAspect" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeAspectRatio}"/>
+									<CheckBox x:Name="chkStretchToWindow" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.StretchToWindow}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.StretchToWindow}"/>
+									<CheckBox x:Name="chkDisableBorderImage" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.DisableBorderImage}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DisableBorderImage}"/>
 								</UniformGrid>
 							</Grid>
 						</Grid>
@@ -141,19 +147,33 @@
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
 
-
-							<Grid Grid.Row="1">
+							<Grid Grid.Row="0" Margin="5">
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="30"/>
 								</Grid.RowDefinitions>
-								<Separator Margin="5"/>
-								<TextBlock Text="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel}" Grid.Row="1" TextAlignment="Center" Margin="5"/>
-								<TextBlock Text="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2}" Grid.Row="2" TextAlignment="Center" Margin="5"/>
-								<Button Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.GetDXVK}" Grid.Row="3" Margin="5,0,5,0" Click="DownloadDXVK_Click"/>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<StackPanel Orientation="Horizontal">
+									<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.RefreshRate}" Margin="5" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" ToolTip=""/>
+									<elements:NumberBox x:Name="refreshRateNum" Margin="5" Height="22" Width="75" Type="Integer" Grid.Column="0" HorizontalAlignment="Left" Value="60" MinValue="1" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate}"/>
+								</StackPanel>
 							</Grid>
+
+							<GroupBox Grid.Row="1" Margin="5" Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements}">
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="30"/>
+									</Grid.RowDefinitions>
+									<TextBlock Text="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel}" Grid.Row="1" TextAlignment="Center" Margin="5"/>
+									<TextBlock Text="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2}" Grid.Row="2" TextAlignment="Center" Margin="5"/>
+									<Button Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.GetDXVK}" Grid.Row="3" Margin="5,0,5,0" Click="DownloadDXVK_Click"/>
+								</Grid>
+							</GroupBox>
+
 						</Grid>
 					</GroupBox>
 				</Grid>
