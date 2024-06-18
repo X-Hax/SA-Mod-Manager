@@ -134,12 +134,12 @@
 
 									<StackPanel Grid.Column="1" Orientation="Vertical" Margin="5,0,5,0">
 										<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
-										<CheckBox x:Name="chkStretchToWindow" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.StretchToWindow}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.StretchToWindow}"/>
+										<CheckBox x:Name="chkDisableBorderImage" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.DisableBorderImage}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DisableBorderImage}"/>
 									</StackPanel>
 
 									<StackPanel Grid.Column="2" Orientation="Vertical" Margin="5,0,5,0">
 										<CheckBox x:Name="chkShowMouse" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse}"/>
-										<CheckBox x:Name="chkDisableBorderImage" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.DisableBorderImage}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DisableBorderImage}"/>
+										<CheckBox x:Name="chkStretchToWindow" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.StretchToWindow}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.StretchToWindow}" Visibility="Hidden"/>
 									</StackPanel>
 								</Grid>
 							</Grid>
