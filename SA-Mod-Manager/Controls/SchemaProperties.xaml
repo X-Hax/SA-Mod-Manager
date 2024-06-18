@@ -67,11 +67,11 @@
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 				<Label Content="Default:" Grid.Column="0" VerticalAlignment="Center"/>
-				<local:NumericUpDown x:Name="PropDefaultValue" Grid.Column="1" VerticalAlignment="Center" Margin="5"/>
+				<local:NumberBox x:Name="PropDefaultValue" Grid.Column="1" VerticalAlignment="Center" Margin="5"/>
 				<Label Content="Minimum:" Grid.Column="2" VerticalAlignment="Center"/>
-				<local:NumericUpDown x:Name="PropMinValue" Grid.Column="3" VerticalAlignment="Center" Margin="5"/>
+				<local:NumberBox x:Name="PropMinValue" Grid.Column="3" VerticalAlignment="Center" Margin="5"/>
 				<Label Content="Maximum:" Grid.Column="4" VerticalAlignment="Center"/>
-				<local:NumericUpDown x:Name="PropMaxValue" Grid.Column="5" VerticalAlignment="Center" Margin="5"/>
+				<local:NumberBox x:Name="PropMaxValue" Grid.Column="5" VerticalAlignment="Center" Margin="5"/>
 			</Grid>
 
 			<!--String Property-->

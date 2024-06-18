@@ -287,7 +287,7 @@ namespace SAModManager.ModsCommon
                     }
                 case "float":
                     deciValue = decimal.Parse(val.Trim(), CultureInfo.InvariantCulture);
-                    formatted = deciValue.ToString("0.0");
+                    formatted = deciValue.ToString("0.00");
                     return decimal.Parse(formatted);
                 case "string":
                     return val;
