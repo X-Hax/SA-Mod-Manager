@@ -1309,7 +1309,7 @@ namespace SAModManager
 			foreach (var mod in EnabledMods)
 			{
 				SAModInfo checkmod = mods[mod];
-				if (checkmod.EXEFile.Length > 0)
+				if (checkmod.EXEFile?.Length > 0)
 					executablePath = Path.Combine(App.CurrentGame.modDirectory, mod, checkmod.EXEFile);
 			}
 
