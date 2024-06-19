@@ -124,17 +124,22 @@
 								<Grid Grid.Row="1" HorizontalAlignment="Center">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
-										<ColumnDefinition Width="125"/>
+										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="Auto"/>
 									</Grid.ColumnDefinitions>
-									<StackPanel Orientation="Vertical">
+									<StackPanel Orientation="Vertical" Margin="5,0,5,0">
 										<CheckBox x:Name="chkVSync" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.VSync}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync}"/>
-										<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
+										<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
 									</StackPanel>
 
-									<StackPanel Grid.Column="2" Orientation="Vertical">
-                                        <CheckBox x:Name="chkShowMouse" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse}"/>
-										<CheckBox x:Name="chkResizableWin" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ResizeWindow}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow}"/>
+									<StackPanel Grid.Column="1" Orientation="Vertical" Margin="5,0,5,0">
+										<CheckBox x:Name="chkPause" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.Pause}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause}"/>
+										<CheckBox x:Name="chkDisableBorderImage" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.DisableBorderImage}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DisableBorderImage}"/>
+									</StackPanel>
+
+									<StackPanel Grid.Column="2" Orientation="Vertical" Margin="5,0,5,0">
+										<CheckBox x:Name="chkShowMouse" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.ShowMouse}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse}"/>
+										<CheckBox x:Name="chkStretchToWindow" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Check.StretchToWindow}" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.StretchToWindow}" Visibility="Hidden"/>
 									</StackPanel>
 								</Grid>
 							</Grid>
@@ -174,7 +179,7 @@
                                     <Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Framerate}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate}"/>
                                     <Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Fog}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog}"/>
                                     <Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.TexFilter}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering}"/>
-                                    <Label Opacity="0.3" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.UIFilter}"  Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering}"/>
+                                    <Label Opacity="0.3" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.UIFilter}"  Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering}" Visibility="Hidden"/>
                                 </Grid>
 
                                 <Grid Grid.Column="1" HorizontalAlignment="Stretch">
@@ -197,7 +202,7 @@
                                     <ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" SelectedIndex="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectionChanged="comboTextureFilter_SelectionChanged">
 
                                     </ComboBox>
-                                    <ComboBox x:Name="comboUIFilter" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0" IsEnabled="False">
+                                    <ComboBox x:Name="comboUIFilter" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0" IsEnabled="False" Visibility="Hidden">
 
                                     </ComboBox>
                                 </Grid>

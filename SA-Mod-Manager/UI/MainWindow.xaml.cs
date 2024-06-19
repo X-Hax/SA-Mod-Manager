@@ -1305,13 +1305,17 @@ namespace SAModManager
             }
 
             App.CancelUpdate = true;
-            string executablePath = EnabledMods.Select(item => mods[item].EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
-            string folderPath = Path.GetDirectoryName(executablePath);
-
+			string executablePath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+			foreach (var mod in EnabledMods)
+			{
+				SAModInfo checkmod = mods[mod];
+				if (checkmod.EXEFile.Length > 0)
+					executablePath = Path.Combine(App.CurrentGame.modDirectory, mod, checkmod.EXEFile);
+			}
 
             Process process = Process.Start((new ProcessStartInfo(executablePath)
             {
-                WorkingDirectory = folderPath,
+                WorkingDirectory = App.CurrentGame.gameDirectory,
                 UseShellExecute = true,
 
             }));
