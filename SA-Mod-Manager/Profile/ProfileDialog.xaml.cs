@@ -247,8 +247,9 @@ namespace SAModManager.Profile
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 int i = 0;
-                foreach (string file in dialog.FileNames)
+                foreach (string filename in dialog.FileNames)
                 {
+					string file = Path.GetFullPath(filename);
                     if (File.Exists(file))
                     {
                         bool invalid = false;
@@ -266,23 +267,20 @@ namespace SAModManager.Profile
                                     {
                                         case SetGame.SADX:
                                             settings = Configuration.SADX.GameSettings.Deserialize(file);
-                                            if (settings.EnabledMods.Count == 0 && settings.EnabledCodes.Count == 0)
+                                            if (settings.Graphics == null)
                                             {
-                                                // Due to ensuring GameSettings can deserialize between versions, it allows for deserialization of any json file.
-                                                // We just assume if there's no mods and no codes, it's an invalid file.
                                                 invalid = true;
                                                 throw new Exception();
                                             }
                                             break;
                                         case SetGame.SA2:
                                             settingsSA2 = Configuration.SA2.GameSettings.Deserialize(file);
-                                            if (settingsSA2.EnabledMods.Count == 0 && settingsSA2.EnabledCodes.Count == 0)
+                                            if (settingsSA2.Graphics == null)
                                             {
                                                 invalid = true;
                                                 throw new Exception();
                                             }
                                             break;
-
                                     }
                                 }
                                 catch
@@ -291,15 +289,10 @@ namespace SAModManager.Profile
                                 }
                                 break;
                             case ".ini":
-                                try
-                                {
-                                    ProfileManager.MigrateOneProfile(file);
-                                }
-                                catch
-                                {
-                                    failedFiles.Add(Path.GetFileName(file));
-                                }
-                                break;
+								if (!ProfileManager.MigrateProfile(file))
+									failedFiles.Add(Path.GetFileName(file));
+
+								break;
                         }
 
                         if (!invalid)
@@ -312,17 +305,6 @@ namespace SAModManager.Profile
                                     newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
                                 }
                             }
-
-                            switch (App.CurrentGame.id)
-                            {
-                                case SetGame.SADX:
-                                    settings.Serialize(newFileName + ".json");
-                                    break;
-                                case SetGame.SA2:
-                                    settingsSA2.Serialize(newFileName + ".json");
-                                    break;
-                            }
-
 
                             App.Profiles.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
                         }
