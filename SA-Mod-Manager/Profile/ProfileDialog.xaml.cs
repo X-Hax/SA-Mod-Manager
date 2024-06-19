@@ -319,7 +319,7 @@ namespace SAModManager.Profile
 			if (failedFiles.Count > 0)
             {
                 string failedFilesList = string.Join(Environment.NewLine, failedFiles);
-                string failedMessage = Lang.GetString("MessageWindow.Warnings.ProfileMigration.Message1") +
+                string failedMessage = Lang.GetString("MessageWindow.Warnings.ProfileMigration.Message1") + "\n" +
                     failedFilesList + Lang.GetString("MessageWindow.Warnings.ProfileMigration.Message2");
 
                 MessageWindow message = new MessageWindow(Lang.GetString("MessageWindow.Warnings.ProfileMigration.Title"), failedMessage, icon: MessageWindow.Icons.Warning);
