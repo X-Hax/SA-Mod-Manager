@@ -14,8 +14,9 @@
 	<system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Reindirizzamento Salvataggio:</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Salvataggio Principale</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Salvataggio Chao</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Include Directories:</system:String>
 
-	<system:String x:Key="EditMod.Tabs.Updates">Informazioni su Aggiornamenti</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates">Informazioni su Aggiornamenti</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Method">Metodo di Aggiornamento</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub">Opzioni Aggiornamento Github</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Autore e Repo:</system:String>

@@ -7,7 +7,7 @@
     <system:String x:Key="UpdateStatus.ChkLoaderUpdate">Перевірка Оновлень для Завантажувачу модів...</system:String>
     <system:String x:Key="UpdateStatus.ChkModsUpdates">Перевірка Оновлень Модифікацій...</system:String>
     <system:String x:Key="UpdateStatus.ChkCodesUpdates">перевірка Оновлень Кодів...</system:String>
-    <system:String x:Key="UpdateStatus.ChkPatchesUpdates">Checking for Patches Updates...</system:String>
+    <system:String x:Key="UpdateStatus.ChkPatchesUpdates">Перевірка Оновлень Патчів...</system:String>
     <system:String x:Key="UpdateStatus.ChkManagerUpdateFail">Не вдалося оновити SA Mod Manager</system:String>
     <system:String x:Key="UpdateStatus.ChkLoaderUpdateFail">Не вдалося оновити Завантажувач Модів</system:String>
     <!-- '{0}' will be used to display the name of the mod, ex: "Checking for Super Sonic Mod Update..."-->

@@ -107,8 +107,8 @@ namespace SAModManager.ModsCommon
 								{
 									// Dependency Mod is enabled, but is lower in priority.
 
-									sb.AppendLine($"{depName} {Lang.GetString("ModDependency.Dependency.EnabledOrder")} {mod.Name}");
-									new MessageWindow(Lang.GetString("ModDependency.Dependency.Header"), sb.ToString(), button: MessageWindow.Buttons.OKCancel).ShowDialog();
+									sb.AppendLine($"{depName} {Lang.GetString("ModDependency.Dependency.EnabledOrder")} {mod.Name}" + ".");
+                                    new MessageWindow(Lang.GetString("ModDependency.Dependency.Header"), sb.ToString(), button: MessageWindow.Buttons.OKCancel).ShowDialog();
 									check = true;
 								}
 							}
@@ -117,7 +117,7 @@ namespace SAModManager.ModsCommon
 								// Dependency Mod is not enabled but exists.
 
 								sb.AppendLine($"{depName} {Lang.GetString("ModDependency.Dependency.DisabledOrder1")}");
-								sb.AppendLine($"{Lang.GetString("ModDependency.Dependency.DisabledOrder2")} {mod.Name}");
+								sb.AppendLine($"{Lang.GetString("ModDependency.Dependency.DisabledOrder2")} {mod.Name}" + ".");
 								new MessageWindow(Lang.GetString("ModDependency.Dependency.Header"), sb.ToString(), button: MessageWindow.Buttons.OKCancel).ShowDialog();
 								check = true;
 							}
@@ -126,7 +126,7 @@ namespace SAModManager.ModsCommon
 						{
 							// Dependency Mod is not enabled.
 							sb.AppendLine($"{Lang.GetString("CommonStrings.Dependency")} {depName} {Lang.GetString("ModDependency.Dependency.NotInstalled1")}");
-							sb.AppendLine($"{Lang.GetString("ModDependency.Dependency.NotInstalled2")} {depName} {Lang.GetString("ModDependency.Dependency.NotInstalled3")} {mod.Name}");
+							sb.AppendLine($"{Lang.GetString("ModDependency.Dependency.NotInstalled2")} {depName} {Lang.GetString("ModDependency.Dependency.NotInstalled3")} {mod.Name}" + ".");
 							
 							if (dependency.Link == "")
 							{
@@ -142,7 +142,12 @@ namespace SAModManager.ModsCommon
 								dg.ShowDialog();
 								if (dg.isYes)
 								{
-									Process.Start(dependency.Link);
+									var ps = new ProcessStartInfo(dependency.Link)
+									{
+										UseShellExecute = true,
+										Verb = "open"
+									};
+									Process.Start(ps);
 								}
 								check = true;
 							}

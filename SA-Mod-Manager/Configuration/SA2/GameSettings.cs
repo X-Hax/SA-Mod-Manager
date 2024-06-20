@@ -15,8 +15,7 @@ namespace SAModManager.Configuration.SA2
         Deutsch = 1,
         Espanol = 2,
         Francais = 3,
-        Italiano = 4,
-        Japanese = 5,
+        Japanese = 4,
     }
 
     public class GraphicsSettings
@@ -83,24 +82,36 @@ namespace SAModManager.Configuration.SA2
         [DefaultValue(DisplayMode.Borderless)]
         public int ScreenMode { get; set; } = (int)DisplayMode.Borderless;
 
-        /// <summary>
-        /// Maintains the ratio when resizing the window if resizable window is enabled.
-        /// </summary>
-        [DefaultValue(true)]
-        public bool KeepAspectWhenResizing { get; set; }
+		/// <summary>
+		/// Stretches the inner window (game render) to the outer window's size.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool StretchToWindow { get; set; } = false;
 
         /// <summary>
         /// Placed here to provide parity with the launcher as it also allows a language selection. 
         /// This will be saved and used on each boot.
         /// </summary>
         [DefaultValue((int)SA2Lang.English)]
-        public int Text { get; set; } = (int)SA2Lang.English;
+        public int GameTextLanguage { get; set; } = (int)SA2Lang.English;
 
         /// <summary>
         /// Allows skipping the intro to the game.
         /// </summary>
         [DefaultValue(false)]
         public bool SkipIntro { get; set; } = false;
+
+        /// <summary>
+        /// Sets the monitor's refresh rate when in exclusive full screen mode.
+        /// </summary>
+        [DefaultValue(60)]
+        public int RefreshRate { get; set; } = 60;
+
+		/// <summary>
+		/// Disables the Border Image from being loaded and rendered.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool DisableBorderImage { get; set; } = false;
 
         /// <summary>
         /// Converts from the original settings file.
@@ -119,6 +130,8 @@ namespace SAModManager.Configuration.SA2
             CustomWindowHeight = oldSettings.WindowHeight;
             EnableKeepResolutionRatio = oldSettings.MaintainAspectRatio;
             EnableResizableWindow = oldSettings.ResizableWindow;
+            GameTextLanguage = oldSettings.TextLanguage;
+            SkipIntro = oldSettings.SkipIntro;
         }
 
         public void LoadGameConfig(ref SA2GameConfig config)
@@ -126,6 +139,8 @@ namespace SAModManager.Configuration.SA2
             SelectedScreen = config.Display;
             HorizontalResolution = config.Width;
             VerticalResolution = config.Height;
+            GameTextLanguage = config.Language;
+            RefreshRate = config.RefreshRate;
         }
 
         public void LoadConfigs(ref SA2GameConfig config)
@@ -153,6 +168,8 @@ namespace SAModManager.Configuration.SA2
 
             config.Width = HorizontalResolution;
             config.Height = VerticalResolution;
+            config.Language = GameTextLanguage;
+            config.RefreshRate = RefreshRate;
         }
 
         public void ToConfigs(ref SA2GameConfig config)
@@ -333,25 +350,28 @@ namespace SAModManager.Configuration.SA2
 
     public class GameSettings
     {
-        /// <summary>
-        /// Versioning.
-        /// </summary>
-        public enum SA2SettingsVersions
-        {
-            v0 = 0, // Version 0: Original LoaderInfo Version
-            v1 = 1  // Version 1: Launch Version, functional parity with SA2GameSettings.
-        }
+		/// <summary>
+		/// Versioning.
+		/// </summary>
+		public enum SA2SettingsVersions
+		{
+			v0,     // Version 0: Original LoaderInfo Version
+			v1,     // Version 1: Launch Version, functional parity with SA2GameSettings.
+			v2,     // Version 2: Removed KeepAspectOnResize option, added StretchToWindow and DisableBorderImage
 
-        /// <summary>
-        /// Versioning for the SA2 Settings file.
-        /// </summary>
-        [DefaultValue((int)SA2SettingsVersions.v1)]
-        public int SettingsVersion { get; set; } = (int)SA2SettingsVersions.v1;
+			MAX,    // Do Not Modify, new versions are placed above this.
+		}
 
-        /// <summary>
-        /// Graphics Settings for SA2.
-        /// </summary>
-        public GraphicsSettings Graphics { get; set; } = new();
+		/// <summary>
+		/// Versioning for the SA2 Settings file.
+		/// </summary>
+		[DefaultValue((int)(SA2SettingsVersions.MAX - 1))]
+		public int SettingsVersion { get; set; } = (int)(SA2SettingsVersions.MAX - 1);
+
+		/// <summary>
+		/// Graphics Settings for SA2.
+		/// </summary>
+		public GraphicsSettings Graphics { get; set; } = new();
 
         /// <summary>
         /// TestSpawn Settings for SA2.
@@ -403,22 +423,6 @@ namespace SAModManager.Configuration.SA2
             EnabledCodes = oldSettings.EnabledCodes;
         }
 
-        /// <summary>
-        /// Loads the SA2 Loader Info and SA2 Config into Game Settings.
-        /// </summary>
-        /// <param name="iniSource"></param>
-        public void LoadConfigs(string iniSource)
-        {
-            SA2GameConfig config = new();
-            var JsonSerializerSettings = new JsonSerializerOptions();
-            JsonSerializerSettings.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-
-            string configPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.GameConfigFile[1]);
-            if (File.Exists(configPath))
-                config = SA2GameConfig.Deserialize(configPath);
-
-            Graphics.LoadConfigs(ref config);
-        }
 
         /// <summary>
         /// Writes LoaderInfo and SA2Config files.
@@ -442,33 +446,53 @@ namespace SAModManager.Configuration.SA2
             }
         }
 
-        public static GameSettings Deserialize(string path)
-        {
-            try
-            {
-                if (File.Exists(path))
-                {
-                    string jsonContent = File.ReadAllText(path);
+		/// <summary>
+		/// Deserializes an SA2 GameSettings JSON File and returns a populated class.
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
+		public static GameSettings Deserialize(string path)
+		{
+			try
+			{
+				if (File.Exists(path))
+				{
+					string jsonContent = File.ReadAllText(path);
 
-                    return JsonSerializer.Deserialize<GameSettings>(jsonContent);
-                }
-                else
-                    return new();
-            }
-            catch
-            {
-                return new();
-            }
-        }
+					GameSettings settings = JsonSerializer.Deserialize<GameSettings>(jsonContent);
 
-        /// <summary>
-        /// Serializes an SA2 GameSettings JSON File.
-        /// </summary>
-        /// <param name="path"></param>
-        public void Serialize(string path, string profileName)
+					// This is where the settings versions get bumped on load.
+					// Set in a switch case in the event we need to make changes on a specific version.
+					switch (settings.SettingsVersion)
+					{
+						default:
+							if (settings.SettingsVersion < (int)(SA2SettingsVersions.MAX - 1))
+								settings.SettingsVersion = (int)(SA2SettingsVersions.MAX - 1);
+							break;
+					}
+
+					return settings;
+				}
+				else
+					return new();
+			}
+			catch
+			{
+				return new();
+			}
+		}
+
+		/// <summary>
+		/// Serializes an SA2 GameSettings JSON File.
+		/// </summary>
+		/// <param name="path"></param>
+		public void Serialize(string profileName)
         {
+			if (!profileName.Contains(".json"))
+				profileName += ".json";
+
 			// TODO: Fix this function.
-			path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
+			string path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
 			try
             {
                 if (Directory.Exists(App.CurrentGame.ProfilesDirectory))

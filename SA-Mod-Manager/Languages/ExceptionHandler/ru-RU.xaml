@@ -3,13 +3,13 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="ExceptionHandler.Title">Ошибка работы Менеджера</system:String>
-	<system:String x:Key="ExceptionHandler.Header">Возникла ошибка в работе Менеджера</system:String>
+    <system:String x:Key="ExceptionHandler.Title">Ошибка работы менеджера</system:String>
+	<system:String x:Key="ExceptionHandler.Header">Возникла ошибка в работе менеджера</system:String>
     <system:String x:Key="ExceptionHandler.Copy">Скопировать лог ошибки</system:String>
 	<system:String x:Key="ExceptionHandler.Ignore">Игнорировать и закрыть</system:String>
     <system:String x:Key="ExceptionHandler.Report">Сообщить об ошибке (English only)</system:String>
 
     <system:String x:Key="ExceptionHandler.ToolTip.Copy">Скопировать лог ошибки вместе с форматированием в буфер обмена.</system:String>
 	<system:String x:Key="ExceptionHandler.ToolTip.Ignore">Игнорировать ошибку и закрыть окно. Менеджер может закрыться.</system:String>
-	<system:String x:Key="ExceptionHandler.ToolTip.Report">Открыть раздел Issue в репозитории Менеджера на GitHub с шаблоном для добавления информации и копирования отчёта об исключении.</system:String>
+	<system:String x:Key="ExceptionHandler.ToolTip.Report">Открыть раздел Issue в репозитории менеджера на GitHub с шаблоном для добавления информации и копирования отчёта об исключении.</system:String>
 </ResourceDictionary>

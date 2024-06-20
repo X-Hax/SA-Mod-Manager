@@ -18,42 +18,43 @@
 		<ResourceDictionary Source="ModConfig/ko-KR.xaml"/>
 		<ResourceDictionary Source="ModDependency/ko-KR.xaml"/>
 		<ResourceDictionary Source="ModProfile/ko-KR.xaml"/>
-		<ResourceDictionary Source="SelectDependencies/ko-KR.xaml"/>
+        <ResourceDictionary Source="SelectDependencies/ko-KR.xaml"/>
+        <ResourceDictionary Source="MainWindow/UpdateStatus/ko-KR.xaml"/>
         <ResourceDictionary Source="ExceptionHandler/ko-KR.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->
-    <system:String x:Key="CommonStrings.OK">OK</system:String>
-    <system:String x:Key="CommonStrings.Cancel">취소하기</system:String>
+    <system:String x:Key="CommonStrings.OK">확인</system:String>
+    <system:String x:Key="CommonStrings.Cancel">취소</system:String>
 	<system:String x:Key="CommonStrings.Yes">예</system:String>
 	<system:String x:Key="CommonStrings.No">아니오</system:String>
-	<system:String x:Key="CommonStrings.Retry">재시도</system:String>
+	<system:String x:Key="CommonStrings.Retry">다시 시도</system:String>
 	<system:String x:Key="CommonStrings.Warning">경고</system:String>
 	<system:String x:Key="CommonStrings.Error">오류</system:String>
-    <system:String x:Key="CommonStrings.Reset">재시작</system:String>
+    <system:String x:Key="CommonStrings.Reset">설정 초기화</system:String>
     <system:String x:Key="CommonStrings.Create">생성하기</system:String>
 	<system:String x:Key="CommonStrings.SelectAll">모두 선택</system:String>
-	<system:String x:Key="CommonStrings.DeselectAll">모두 선택 취소</system:String>
+	<system:String x:Key="CommonStrings.DeselectAll">모두 선택 해제</system:String>
 	<system:String x:Key="CommonStrings.Name">이름</system:String>
 	<system:String x:Key="CommonStrings.Status">상태</system:String>
 	<system:String x:Key="CommonStrings.Save">저장</system:String>
-	<system:String x:Key="CommonStrings.Author">저자</system:String>
+	<system:String x:Key="CommonStrings.Author">제작자</system:String>
 	<system:String x:Key="CommonStrings.Version">버전</system:String>
 	<system:String x:Key="CommonStrings.Category">카테고리</system:String>
 	<system:String x:Key="CommonStrings.Description">설명:</system:String>
 	<system:String x:Key="CommonStrings.Search">찾기</system:String>
-	<system:String x:Key="CommonStrings.Credits">크레딧</system:String>
+	<system:String x:Key="CommonStrings.Credits">제작진</system:String>
 	<system:String x:Key="CommonStrings.Download">다운로드</system:String>
 	<system:String x:Key="CommonStrings.OpenFolder">폴더 열기</system:String>
-    <system:String x:Key="CommonStrings.Success">Success!</system:String>
-    <system:String x:Key="CommonStrings.Failed">Failed</system:String>
+    <system:String x:Key="CommonStrings.Success">성공</system:String>
+    <system:String x:Key="CommonStrings.Failed">실패</system:String>
 	<system:String x:Key="CommonStrings.ID">ID</system:String>
-	<system:String x:Key="CommonString.Dependency">Dependency</system:String>
+	<system:String x:Key="CommonString.Dependency">종속성</system:String>
 
 	<!--Window Tips-->
-	<system:String x:Key="Window.Tips.Minimize">축소하기</system:String>
-	<system:String x:Key="Window.Tips.Maximize">확대하기</system:String>
-	<system:String x:Key="Window.Tips.Restore">창 복구하기</system:String>
+	<system:String x:Key="Window.Tips.Minimize">최소화</system:String>
+	<system:String x:Key="Window.Tips.Maximize">최대화</system:String>
+	<system:String x:Key="Window.Tips.Restore">이전 크기로 복원</system:String>
 	<system:String x:Key="Window.Tips.Close">닫기</system:String>
 
 </ResourceDictionary>

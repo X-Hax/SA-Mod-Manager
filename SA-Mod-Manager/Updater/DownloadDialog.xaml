@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SAModManager.Updater"
         mc:Ignorable="d"
-        Title="GenericUpdateDialog" Height="310" Width="800"
+        Title="GenericUpdateDialog" Height="280" Width="600"
         Style="{DynamicResource SAWindow}" WindowStartupLocation="CenterScreen">
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="Normal"/>
@@ -13,12 +13,20 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="90"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="DLInfo" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{DynamicResource Updater.DL.Downloading}" FontSize="24" Margin="10,0,10,0" TextWrapping="Wrap"/>
+        <TextBlock x:Name="DLInfo" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" Margin="10,0,10,0" TextWrapping="Wrap"/>
+        <TextBlock x:Name="curFile" Text="" FontSize="14"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Margin="20, 0,20,0" Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
 
-        <ProgressBar x:Name="DLProgress" Grid.Row="1" Maximum="1" VerticalAlignment="Center" Height="50" Margin="10,0,10,0"/>
+        <ProgressBar x:Name="DLProgress" Maximum="1" Grid.Row="2" Margin="24"/>
+        <TextBlock x:Name="ProgressTxt" Text="0 / 0" FontSize="16"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="3"  Foreground="{DynamicResource TextBox.Brushes.Foreground}"/>
+        <ProgressBar x:Name="ProgressOverall" Grid.Row="4" Margin="24"/>
+        <Button Grid.Row="5" Content="{StaticResource CommonStrings.Cancel}" Margin="0,0,15,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Height="23" IsCancel="True" IsEnabled="False" />
     </Grid>
 </Window>

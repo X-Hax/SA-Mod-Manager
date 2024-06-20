@@ -1,21 +1,17 @@
-﻿using NetCoreInstallChecker.Structs;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SAModManager.Codes
 {
     [XmlRoot(Namespace = "http://www.sonicretro.org")]
     public class CodeList
     {
-        static readonly XmlSerializer serializer = new XmlSerializer(typeof(CodeList));
+        static readonly XmlSerializer serializer = new(typeof(CodeList));
 
         public static CodeList Load(string filename)
         {
@@ -25,8 +21,8 @@ namespace SAModManager.Codes
             else
                 using (StreamReader sr = File.OpenText(filename))
                 {
-                    CodeList result = new CodeList();
-                    Stack<Tuple<List<CodeLine>, List<CodeLine>>> stack = new Stack<Tuple<List<CodeLine>, List<CodeLine>>>();
+                    CodeList result = new();
+                    Stack<Tuple<List<CodeLine>, List<CodeLine>>> stack = new();
                     int linenum = 0;
                     int lastIndex = 0;
                     while (!sr.EndOfStream)

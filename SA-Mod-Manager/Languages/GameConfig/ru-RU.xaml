@@ -32,10 +32,11 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Включить верт. синхронизацию</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Пауза, когда неактивно</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамическое распределение памяти</system:String>
-    
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Частота кадров:</system:String>
+
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Изменяемое окно</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Сохр. пропорции при смене разрешения</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Сохранять пропорции</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Сохранять пропорции окна</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Сохранять пропорции рендера</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Свой размер окна:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Окно без рамки</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Мышь в режиме "на весь экран"</system:String>
@@ -140,6 +141,7 @@
     <system:String x:Key="TestSpawn.Language.Japanese">Японский</system:String>
     <system:String x:Key="TestSpawn.Language.English">Английский</system:String>
     <system:String x:Key="TestSpawn.Language.French">Французский</system:String>
+    <system:String x:Key="TestSpawn.Language.Italian">Итальянский</system:String>
     <system:String x:Key="TestSpawn.Language.Spanish">Испанский</system:String>
     <system:String x:Key="TestSpawn.Language.German">Немецкий</system:String>
     <!--#endregion-->

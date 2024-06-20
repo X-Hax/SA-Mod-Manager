@@ -83,15 +83,21 @@ namespace SAModManager
                     if (dialog.isYes)
                     {
                         Uri uri = new(VCURLs[i] + "\r\n");
-                        var DL = new DownloadDialog(uri, "Visual C++", "vc_redist.x86.exe");
+                        var info = new List<DownloadInfo>
+                        {
+                            new DownloadInfo("Visual C++", "vc_redist.x86.exe", null, uri, DownloadDialog.DLType.Update)
+                        };
+
+                        var DL = new DownloadDialog(info);
+
                         DL.DownloadFailed += (ex) =>
                         {
-                            DL.DisplayDownloadFailedMSG(ex);
+                            DL.DisplayDownloadFailedMSG(ex, "vc_redist.x86.exe");
                         };
 
                         DL.StartDL();
 
-                        if (DL.done)
+                        if (DL.errorCount <= 0)
                         {
                             // Asynchronous operation using async/await
                             await Process.Start(new ProcessStartInfo(Path.Combine(App.tempFolder, "vc_redist.x86.exe"), "/Q /install /quiet /norestart")

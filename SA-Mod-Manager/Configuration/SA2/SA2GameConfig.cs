@@ -42,17 +42,6 @@ namespace SAModManager.Configuration.SA2
 			Analytics = 0;
 		}
 
-		public SA2GameConfig(bool useFullscreen, int display, int res, int width, int height, int refreshrate, int lang, bool useAnalytics)
-		{
-			FullScreen = useFullscreen ? 1 : 0;
-			Display = display;
-			Res = res;
-			Width = width;
-			Height = height;
-			RefreshRate = refreshrate;
-			Language = lang;
-			Analytics = useAnalytics ? 1 : 0;
-		}
 
 		public void Serialize(string path)
 		{

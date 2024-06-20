@@ -1,0 +1,319 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	
+	<!--#region Misc Variables-->
+	<CornerRadius x:Key="Button.CornerRadius">3</CornerRadius>
+	<CornerRadius x:Key="ProgressBar.CornerRadius">2</CornerRadius>
+	<CornerRadius x:Key="ComboBox.CornerRadius">2</CornerRadius>
+	<CornerRadius x:Key="ListView.CornerRadius">3</CornerRadius>
+	<CornerRadius x:Key="ContextMenu.CornerRadius">4</CornerRadius>
+	<CornerRadius x:Key="Scrollbar.CornerRadius">4</CornerRadius>
+	<CornerRadius x:Key="TabItem.CornerRadius">2,2,0,0</CornerRadius>
+	<!--#endregion-->
+	
+	<!--#region Shared Colors-->
+	<Color x:Key="Colors.Background" A="255" R="25" G="25" B="25"/>
+	<Color x:Key="Colors.Background.Disabled" A="255" R="50" G="50" B="50"/>
+	<Color x:Key="Colors.Highlight" A="255" R="106" G="188" B="0"/>
+	<Color x:Key="Colors.Highlight.Bright" A="255" R="163" G="255" B="44"/>
+	<Color x:Key="Colors.Border" A="255" R="63" G="63" B="63"/>
+	<Color x:Key="Colors.Text" A="255" R="255" G="255" B="255"/>
+	<Color x:Key="Colors.Text.Disabled" A="255" R="201" G="201" B="201"/>
+	<Color x:Key="Colors.Hover" A="255" R="45" G="45" B="45"/>
+	<Color x:Key="Colors.Button" A="255" R="32" G="32" B="32"/>
+	<!--#endregion-->
+	
+	<!--#region SolidColorBrushes-->	
+	<SolidColorBrush x:Key="Window.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="Window.Brushes.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="Window.Brushes.Inactive.Border" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.Background" Color="Transparent"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.Foreground" Color="#FF9E9E9E"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.MouseOver.Foreground" Color="#FFB0B0B0"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.Pressed.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="WindowButton.Brushes.Pressed.Foreground" Color="{DynamicResource Colors.Highlight.Bright}"/>
+
+	<SolidColorBrush x:Key="WindowCloseButton.Brushes.MouseOver.Foreground" Color="#FFFF2C2C"/>
+	<SolidColorBrush x:Key="WindowCloseButton.Brushes.Pressed.Background" Color="#FFFF2C2C"/>
+	<SolidColorBrush x:Key="WindowCloseButton.Brushes.Pressed.Foreground" Color="#FFFF7979"/>
+
+	<SolidColorBrush x:Key="ToolTip.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="ToolTip.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="ToolTip.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="Borders.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="Caret.Brushes" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="TextBlock.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+
+	<SolidColorBrush x:Key="TextBox.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="TextBox.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="TextBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="TextBox.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="TextBox.Brushes.Focus.Border" Color="{DynamicResource Colors.Highlight}"/>
+
+	<SolidColorBrush x:Key="Control.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+
+	<SolidColorBrush x:Key="TabControl.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="TabControl.Brushes.Selected" Color="{DynamicResource Colors.Highlight}"/>
+
+	<SolidColorBrush x:Key="TabItem.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="TabItem.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="TabItem.Brushes.Selected.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="TabItem.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="TabItem.Brushes.Control.Background" Color="Transparent"/>
+
+	<SolidColorBrush x:Key="ListView.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="ListView.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="ListViewItem.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="ListViewItem.Brushes.Selected.Background" Color="{DynamicResource Colors.Hover}"/>
+
+	<SolidColorBrush x:Key="Button.Brushes.Background" Color="{DynamicResource Colors.Button}"/>
+	<SolidColorBrush x:Key="Button.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="Button.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="Button.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="Button.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="Button.Brushes.Pressed.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="Button.Brushes.Pressed.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="Button.Brushes.Disabled.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="Button.Brushes.Disabled.Foreground" Color="{DynamicResource Colors.Text.Disabled}"/>
+	<SolidColorBrush x:Key="Button.Brushes.Disabled.Border" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="ContextMenu.Brushes.Background" Color="{DynamicResource Colors.Button}"/>
+	<SolidColorBrush x:Key="ContextMenu.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+
+	<SolidColorBrush x:Key="Menu.Brushes.Background" Color="{DynamicResource Colors.Button}"/>
+	<SolidColorBrush x:Key="Menu.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="Menu.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="Menu.Brushes.Separator" Color="Transparent"/>
+	<SolidColorBrush x:Key="Menu.Brushes.Disabled.Foreground" Color="{DynamicResource Colors.Text.Disabled}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Selected.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Selected.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Highlight.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Highlight.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Highlight.Disabled.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="MenuItem.Brushes.Highlight.Disabled.Border" Color="{DynamicResource Colors.Text.Disabled}"/>
+
+	<SolidColorBrush x:Key="NumericBox.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="NumericBox.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="NumericBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="NumericBox.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="NumericBox.Brushes.Disabled.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+
+	<SolidColorBrush x:Key="GridViewColumnHeader.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="GridViewColumnHeader.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="GridViewColumnHeader.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+
+	<SolidColorBrush x:Key="DataGrid.Brushes.Background" Color="#FF202020"/>
+	<SolidColorBrush x:Key="DataGrid.Brushes.Border" Color="#FFD2D2D2"/>
+
+	<SolidColorBrush x:Key="DataGridColumnsHeader.Brushes.Background" Color="Transparent"/>
+	<SolidColorBrush x:Key="DataGridColumnHeader.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="DataGridColumnHeader.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+
+	<SolidColorBrush x:Key="DataGridRowHeader.Brushes.Background" Color="#FF202020"/>
+	<SolidColorBrush x:Key="DataGridRowHeader.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+
+	<SolidColorBrush x:Key="DataGridRow.Brushes.Background" Color="Transparent"/>
+	<SolidColorBrush x:Key="DataGridRow.Brushes.Foreground" Color="Transparent"/>
+
+	<SolidColorBrush x:Key="DataGridCell.Brushes.Background" Color="Transparent"/>
+	<SolidColorBrush x:Key="DataGridCell.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="DataGridCell.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="DataGridCell.Brushes.Selected.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="DataGridCell.Brushes.Selected.Border" Color="#806F6F6F"/>
+	<SolidColorBrush x:Key="DataGridCell.Brushes.Editing.Background" Color="Transparent"/>
+
+	<SolidColorBrush x:Key="TreeView.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+
+	<SolidColorBrush x:Key="TreeViewItem.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="TreeViewItem.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="TreeViewItem.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="RepeatButton.Brushes.Background" Color="Transparent"/>
+
+	<SolidColorBrush x:Key="SliderThumb.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="SliderThumb.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="SliderThumb.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="SliderThumb.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="SliderThumb.Brushes.Dragging.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="SliderThumb.Brushes.Dragging.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="SliderThumb.Brushes.Disabled.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="SliderThumb.Brushes.Disabled.Border" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="SliderTrack.Brushes.Background" Color="#FF484848"/>
+	<SolidColorBrush x:Key="SliderTrack.Brushes.Border" Color="#FFD6D6D6"/>
+
+	<SolidColorBrush x:Key="Slider.Brushes.Background" Color="Transparent"/>
+	<SolidColorBrush x:Key="Slider.Brushes.Foreground" Color="Transparent"/>
+	<SolidColorBrush x:Key="Slider.Brushes.Border" Color="#FFE5E5E5"/>
+
+	<SolidColorBrush x:Key="ScrollBarThumb.Brushes.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="ScrollBarThumb.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ScrollBarThumb.Brushes.Dragging.Background" Color="{DynamicResource Colors.Highlight.Bright}"/>
+
+	<SolidColorBrush x:Key="ScrollBar.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="ScrollBar.Brushes.Border" Color="Transparent"/>
+
+	<SolidColorBrush x:Key="ComboBox.Brushes.Background" Color="{DynamicResource Colors.Button}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Button.Image" Color="#FF9E9E9E"/>
+
+	<SolidColorBrush x:Key="ComboBox.Brushes.Editing.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Editing.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Editing.Button.Border" Color="Transparent"/>
+
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Button.Image" Color="#FFBCBCBC"/>
+
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Editing.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Editing.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.MouseOver.Editing.Button.Border" Color="{DynamicResource Colors.Highlight}"/>
+
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Button.Image" Color="{DynamicResource Colors.Highlight.Bright}"/>
+
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Editing.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Editing.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Pressed.Editing.Button.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Foreground" Color="{DynamicResource Colors.Text.Disabled}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Button.Image" Color="{DynamicResource Colors.Text.Disabled}"/>
+
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Foreground" Color="{DynamicResource Colors.Text.Disabled}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="ComboBox.Brushes.Disabled.Editing.Button.Border" Color="Transparent"/>
+
+	<SolidColorBrush x:Key="ComboBoxItem.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="ComboBoxItem.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="ComboBoxItem.Brushes.Highlighted.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="ComboBoxItem.Brushes.Selected.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ComboBoxItem.Brushes.Disabled.Foreground" Color="{DynamicResource Colors.Text.Disabled}"/>
+
+	<SolidColorBrush x:Key="RadioButton.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.Mark" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.MouseOver.Mark" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.Disabled.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.Disabled.Border" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.Disabled.Mark" Color="{DynamicResource Colors.Text.Disabled}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.Pressed.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.Pressed.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="RadioButton.Brushes.Pressed.Mark" Color="{DynamicResource Colors.Highlight.Bright}"/>
+
+	<SolidColorBrush x:Key="CheckBox.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.Mark" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.MouseOver.Background" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.MouseOver.Mark" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.Disabled.Background" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.Disabled.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.Disabled.Mark" Color="{DynamicResource Colors.Text.Disabled}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.Pressed.Background" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.Pressed.Border" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="CheckBox.Brushes.Pressed.Mark" Color="{DynamicResource Colors.Highlight.Bright}"/>
+
+	<SolidColorBrush x:Key="GroupBox.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="GroupBox.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="GroupBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="GroupBox.Brushes.MouseOver.Border" Color="#FF505050"/>
+
+	<SolidColorBrush x:Key="Separator.Brushes.Background" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="ProgressBar.Brushes.Progress" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="ProgressBar.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="ProgressBar.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="Expander.Static.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="Expander.Static.Circle.Stroke" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="Expander.Static.Circle.Fill" Color="{DynamicResource Colors.Background}"/>
+	<SolidColorBrush x:Key="Expander.Static.Arrow.Stroke" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="Expander.MouseOver.Circle.Fill" Color="{DynamicResource Colors.Hover}"/>
+	<SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="Expander.Pressed.Circle.Stroke" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="Expander.Pressed.Circle.Fill" Color="{DynamicResource Colors.Highlight}"/>
+	<SolidColorBrush x:Key="Expander.Pressed.Arrow.Stroke" Color="{DynamicResource Colors.Highlight.Bright}"/>
+	<SolidColorBrush x:Key="Expander.Disabled.Circle.Stroke" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="Expander.Disabled.Circle.Fill" Color="{DynamicResource Colors.Background.Disabled}"/>
+	<SolidColorBrush x:Key="Expander.Disabled.Arrow.Stroke" Color="{DynamicResource Colors.Border}"/>
+
+	<SolidColorBrush x:Key="TextEditor.Brushes.Background" Color="#FF282828"/>
+	<SolidColorBrush x:Key="TextEditor.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+	<SolidColorBrush x:Key="TextEditor.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
+	<SolidColorBrush x:Key="TextEditor.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
+	<!--#endregion-->
+	
+	<!--#region LinearGradientBrushes-->
+
+	<!--#region -->
+	
+	<!--#region Icon SolidColorBrushes-->
+	<Color x:Key="IconColorGreen" A="255" R="0" G="188" B="0"/>
+	<Color x:Key="IconColorBlue" A="255" R="0" G="106" B="188"/>
+	<Color x:Key="IconColorRed" A="255" R="188" G="0" B="0"/>
+	<Color x:Key="IconColorGray" A="255" R="158" G="158" B="158"/>
+	<Color x:Key="IconColorYellow" A="255" R="188" G="188" B="0"/>
+
+	<SolidColorBrush x:Key="Icon.Brushes.Gray" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Gray" Color="#FFBCBCBC"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Gray" Color="#FF505050"/>
+
+	<SolidColorBrush x:Key="Icon.Brushes.Red" Color="{DynamicResource IconColorRed}"/>
+	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Red" Color="#FFF54242"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Red" Color="#FF844C4C"/>
+	
+	<SolidColorBrush x:Key="Icon.Brushes.Blue" Color="{DynamicResource IconColorBlue}"/>
+	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Blue" Color="#FF2CA3FF"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Blue" Color="#FF2E5573"/>
+	
+	<SolidColorBrush x:Key="Icon.Brushes.Green" Color="{DynamicResource IconColorGreen}"/>
+	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Green" Color="#FF5BEA5B"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Green" Color="#FF396F39"/>
+	
+	<SolidColorBrush x:Key="Icon.Brushes.Yellow" Color="{DynamicResource IconColorYellow}"/>
+	<SolidColorBrush x:Key="Icon.Brushes.MouseOver.Yellow" Color="#FFEDED5C"/>
+	<SolidColorBrush x:Key="Icon.Brushes.Disabled.Yellow" Color="#FF6D6D3A"/>
+
+	<SolidColorBrush x:Key="IconBrushAdd" Color="{DynamicResource IconColorGreen}"/>
+	<SolidColorBrush x:Key="IconBrushRefresh" Color="{DynamicResource IconColorBlue}"/>
+	<SolidColorBrush x:Key="IconBrushConfig" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushEdit" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushCheck" Color="{DynamicResource IconColorGreen}"/>
+	<SolidColorBrush x:Key="IconBrushClose" Color="{DynamicResource IconColorRed}"/>
+	<SolidColorBrush x:Key="IconBrushSave" Color="{DynamicResource IconColorBlue}"/>
+	<SolidColorBrush x:Key="IconBrushDelete" Color="{DynamicResource IconColorRed}"/>
+	<SolidColorBrush x:Key="IconBrushPlay" Color="{DynamicResource IconColorGreen}"/>
+	<SolidColorBrush x:Key="IconBrushOpen" Color="{DynamicResource IconColorBlue}"/>
+	<SolidColorBrush x:Key="IconBrushGithub" Color="White"/>
+	<SolidColorBrush x:Key="IconBrushDocs" Color="{DynamicResource IconColorBlue}"/>
+	<SolidColorBrush x:Key="IconBrushDown" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushUp" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushDownload" Color="{DynamicResource IconColorGreen}"/>
+	<SolidColorBrush x:Key="IconBrushFolder" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushProfiles" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushSelectAll" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushDeselectAll" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushCopy" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushRename" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushWarning" Color="{DynamicResource IconColorRed}"/>
+	<SolidColorBrush x:Key="IconBrushCaution" Color="{DynamicResource IconColorYellow}"/>
+	<SolidColorBrush x:Key="IconBrushInfo" Color="{DynamicResource IconColorGray}"/>
+	<SolidColorBrush x:Key="IconBrushError" Color="{DynamicResource IconColorRed}"/>
+	<SolidColorBrush x:Key="IconBrushBugReport" Color="{DynamicResource IconColorRed}"/>
+	<SolidColorBrush x:Key="IconBrushInstall" Color="{DynamicResource IconColorGreen}"/>
+	<SolidColorBrush x:Key="IconBrushUninstall" Color="{DynamicResource IconColorRed}"/>
+	<SolidColorBrush x:Key="IconBrushUpdate" Color="{DynamicResource IconColorBlue}"/>
+	<!--#endregion-->
+
+</ResourceDictionary>

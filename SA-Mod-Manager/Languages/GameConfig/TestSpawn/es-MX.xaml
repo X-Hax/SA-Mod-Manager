@@ -63,7 +63,7 @@
     <system:String x:Key="TSCutscene82">Final de Tails</system:String>
     <system:String x:Key="TSCutscene83">Error</system:String>
     <system:String x:Key="TSCutscene84">Tails y Sonic abordan el Egg Carrier</system:String>
-    <system:String x:Key="TSCutscene85">Tails y Froggy van al Past</system:String>
+    <system:String x:Key="TSCutscene85">Tails y Froggy van al pasado</system:String>
     <system:String x:Key="TSCutscene86">Tails y Sonic despiertan</system:String>
     <system:String x:Key="TSCutscene88">No se usa</system:String>
     <system:String x:Key="TSCutscene96">Intro de Amy</system:String>
@@ -78,7 +78,7 @@
     <system:String x:Key="TSCutscene105">Amy ve a Eggman tomar la esmeralda del pajarito</system:String>
     <system:String x:Key="TSCutscene106">Amy y Tails escapan del Egg Carrier</system:String>
     <system:String x:Key="TSCutscene107">Error</system:String>
-    <system:String x:Key="TSCutscene108">Amy regresa al present</system:String>
+    <system:String x:Key="TSCutscene108">Amy regresa al presente</system:String>
     <system:String x:Key="TSCutscene109">Amy decide ayudar a encontrar a la familia del pajarito</system:String>
     <system:String x:Key="TSCutscene110">Amy descubre la base Final Egg</system:String>
     <system:String x:Key="TSCutscene111">Amy es perseguida por Zero en Final Egg</system:String>

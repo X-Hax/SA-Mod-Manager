@@ -222,7 +222,7 @@
 	<system:String x:Key="SA2EventName06">Sonic and Friends Witness the ARK's Power</system:String>
 	<system:String x:Key="SA2EventName07">Where's Eggman?</system:String>
 	<system:String x:Key="SA2EventName08">Sonic And Tails intercept Eggman's Video.</system:String>
-	<system:String x:Key="SA2EventName09">Locate Eggman's Pyramid Base</system:String>
+	<system:String x:Key="SA2EventName09">Locating Eggman's Pyramid Base</system:String>
 	<system:String x:Key="SA2EventName10">Knuckles Begins Looking for the Gate Keys</system:String>
 	<system:String x:Key="SA2EventName11">Eggman Ambushes Sonic inside the Base.</system:String>
 	<system:String x:Key="SA2EventName12">Tails Explains His Plan to Destroy the Eclipse Cannon</system:String>
@@ -232,6 +232,7 @@
 	<system:String x:Key="SA2EventName16">Sonic Saves Himself</system:String>
 	<system:String x:Key="SA2EventName17">Sonic and Shadow Final Battle</system:String>
 	<system:String x:Key="SA2EventName18">Hero Story Ending</system:String>
+	
 	<system:String x:Key="SA2EventName19">Dark Story Intro</system:String>
 	<system:String x:Key="SA2EventName20">Eggman Awakens Shadow</system:String>
 	<system:String x:Key="SA2EventName21">Shadow Instructs Eggman</system:String>
@@ -241,7 +242,7 @@
 	<system:String x:Key="SA2EventName25">Shadow Encounters Sonic</system:String>
 	<system:String x:Key="SA2EventName26">Rouge Follows Eggman</system:String>
 	<system:String x:Key="SA2EventName27">Gathering of the Dark</system:String>
-	<system:String x:Key="SA2EventName28">Arrive on Prison Island</system:String>
+	<system:String x:Key="SA2EventName28">Team Dark arrives on Prison Island</system:String>
 	<system:String x:Key="SA2EventName29">Eggman's Plan is Complicated by Tails and Amy</system:String>
 	<system:String x:Key="SA2EventName30">Shadow's Conscience Begins to Surface</system:String>
 	<system:String x:Key="SA2EventName31">Sonic vs. Shadow 1 Aftermath</system:String>
@@ -256,6 +257,7 @@
 	<system:String x:Key="SA2EventName40">Mystery of Shadow the Hedgehog</system:String>
 	<system:String x:Key="SA2EventName41">Shadow and Sonic Final Battle</system:String>
 	<system:String x:Key="SA2EventName42">Dark Story Ending</system:String>
+
 	<system:String x:Key="SA2EventName43">Last Episode Intro</system:String>
 	<system:String x:Key="SA2EventName44">The ARK Falls</system:String>
 	<system:String x:Key="SA2EventName45">Gerald's Diary and Descent into Madness</system:String>
@@ -266,18 +268,19 @@
 	<system:String x:Key="SA2EventName50">Shadow gives his life to save the world</system:String>
 	<system:String x:Key="SA2EventName51">Last Episode Ending/Credits</system:String>
 	<system:String x:Key="SA2EventName52">Epilogue</system:String>
-	<system:String x:Key="SA2EventName53">SA2B Intro</system:String>
+
+	<system:String x:Key="SA2EventName53">E0360/SA2B Intro</system:String>
 	<system:String x:Key="SA2EventName54">SA2 Intro (FMV)</system:String>
-	<system:String x:Key="SA2EventName55">Prison Island Explodes</system:String>
-	<system:String x:Key="SA2EventName56">Eggman's Threat to Earth</system:String>
-	<system:String x:Key="SA2EventName57">Sonic and Friends go to Space (Hero)</system:String>
-	<system:String x:Key="SA2EventName58">The Eclipse Cannon Malfunctions</system:String>
-	<system:String x:Key="SA2EventName59">Dark Story Trailer</system:String>
-	<system:String x:Key="SA2EventName60">Last Story Trailer</system:String>
-	<system:String x:Key="SA2EventName61">Sonic and Friends go to Space (Dark)</system:String>
-	<system:String x:Key="SA2EventName62">Hero Story Trailer</system:String>
-	<system:String x:Key="SA2EventName63">Gerald's Revenge</system:String>
-	<system:String x:Key="SA2EventName64">The ARK is Neutralized</system:String>
+	<system:String x:Key="SA2EventName55">Prison Island Explodes (FMV)</system:String>
+	<system:String x:Key="SA2EventName56">Eggman's Threat to Earth (FMV)</system:String>
+	<system:String x:Key="SA2EventName57">Sonic and Friends go to Space (Hero) (FMV)</system:String>
+	<system:String x:Key="SA2EventName58">The Eclipse Cannon Malfunctions (FMV)</system:String>
+	<system:String x:Key="SA2EventName59">Dark Story Trailer (FMV)</system:String>
+	<system:String x:Key="SA2EventName60">Last Story Trailer (FMV)</system:String>
+	<system:String x:Key="SA2EventName61">Sonic and Friends go to Space (Dark) (FMV)</system:String>
+	<system:String x:Key="SA2EventName62">Hero Story Trailer (FMV)</system:String>
+	<system:String x:Key="SA2EventName63">Gerald's Revenge (FMV)</system:String>
+	<system:String x:Key="SA2EventName64">The ARK is Neutralized (FMV)</system:String>
 	<!--#endregion-->
 
 </ResourceDictionary>

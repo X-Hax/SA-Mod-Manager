@@ -3,13 +3,13 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 	
-	<system:String x:Key="ExceptionHandler.Title">Manager Crashed</system:String>
-	<system:String x:Key="ExceptionHandler.Header">The Manager has encountered an Error</system:String>
-	<system:String x:Key="ExceptionHandler.Copy">Copy Error Log</system:String>
-	<system:String x:Key="ExceptionHandler.Ignore">Ignore and Close</system:String>
-    <system:String x:Key="ExceptionHandler.Report">Report Error (English only)</system:String>
+	<system:String x:Key="ExceptionHandler.Title">Менеджер Зламався</system:String>
+	<system:String x:Key="ExceptionHandler.Header">Менеджер наштовхнувся на Помилку</system:String>
+	<system:String x:Key="ExceptionHandler.Copy">Копіювати лог Помилок</system:String>
+	<system:String x:Key="ExceptionHandler.Ignore">Ігнорувати та продовжити</system:String>
+    <system:String x:Key="ExceptionHandler.Report">Повідомити помилку (Тільки на Англійській)</system:String>
 
-    <system:String x:Key="ExceptionHandler.ToolTip.Copy">Copies the error log to the clipboard with markdown formatting included.</system:String>
-	<system:String x:Key="ExceptionHandler.ToolTip.Ignore">Ignores the error and closes this window. The Manager may close.</system:String>
-	<system:String x:Key="ExceptionHandler.ToolTip.Report">Opens an Issue on the Manager's Repository on GitHub with the a template for you to provide additional info and a copy of the exception report.</system:String>
+    <system:String x:Key="ExceptionHandler.ToolTip.Copy">Копіює лог помилок з форматуванням.</system:String>
+	<system:String x:Key="ExceptionHandler.ToolTip.Ignore">Ігнорує помилку і закриває це вікно. Менеджер може закритися.</system:String>
+	<system:String x:Key="ExceptionHandler.ToolTip.Report">Відкриває Проблему на GitHub Репозиторії Мод Менеджеру з шаблоном де можна описати проблему і вставити копію помилки.</system:String>
 </ResourceDictionary>
