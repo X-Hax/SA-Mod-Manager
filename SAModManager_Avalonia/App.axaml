@@ -4,7 +4,18 @@
              xmlns:local="using:SAModManager_Avalonia"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="/UI/Resources/Languages/Language.axaml"/>
+				<ResourceInclude Source="/UI/Resources/Themes/Theme.axaml"/>
+				
+				<ResourceInclude Source="/UI/Resources/Styles/Style.axaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
 
+	
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>

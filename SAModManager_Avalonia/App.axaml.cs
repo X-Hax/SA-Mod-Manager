@@ -24,7 +24,7 @@ namespace SAModManager_Avalonia
                 BindingPlugins.DataValidators.RemoveAt(0);
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = new VMMainWindow(),
                 };
             }
 

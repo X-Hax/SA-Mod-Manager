@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="590"
+			 x:Name="ModControl" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+             x:Class="SAModManager_Avalonia.UI.Controls.ModsControl">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" MinWidth="100"/>
+			<ColumnDefinition Width="40"/>
+		</Grid.ColumnDefinitions>
+
+		<Grid Grid.Column="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<ListBox Grid.Column="0" Margin="5">
+				
+			</ListBox>
+		</Grid>
+
+		<Grid Grid.Row="1">
+			
+		</Grid>
+
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="5"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			
+			<Button x:Name="RefreshList" Grid.Column="0"/>
+			<Button x:Name="ConfigureMod" Grid.Column="2"/>
+		</Grid>
+
+		<Grid Grid.Row="1" Margin="5">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="5"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="5"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="10"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="5"/>
+				<RowDefinition Height="30"/>
+			</Grid.RowDefinitions>
+
+			<Button x:Name="MoveModTop" Grid.Row="0"/>
+			<Button x:Name="MoveModUp" Grid.Row="2"/>
+			<Button x:Name="MoveModDown" Grid.Row="4"/>
+			<Button x:Name="MoveModBottom" Grid.Row="6"/>
+			<Separator Grid.Row="7" VerticalAlignment="Center"/>
+			<Button x:Name="CheckAllMods" Grid.Row="8"/>
+			<Button x:Name="UncheckAllMods" Grid.Row="10"/>
+		</Grid>
+	</Grid>
+</UserControl>

@@ -3,9 +3,10 @@
         xmlns:vm="using:SAModManager_Avalonia.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:uic="using:SAModManager_Avalonia.UI.Controls"
         mc:Ignorable="d" d:DesignWidth="660" d:DesignHeight="730"
         x:Class="SAModManager_Avalonia.UI.Windows.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
+        x:DataType="vm:VMMainWindow"
         Icon="/UI/Resources/Icons/SADXModManager.ico"
         Title="SAModManager_Avalonia"
 		MinHeight="550" MinWidth="590" Height="730" Width="660">
@@ -13,9 +14,28 @@
 	<Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+		<vm:VMMainWindow/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<TabControl>
+		<TabItem Header="Mods">
+			<uic:ModsControl/>
+		</TabItem>
 
+		<TabItem Header="Codes">
+			
+		</TabItem>
+
+		<TabItem Header="Game Configuration">
+			
+		</TabItem>
+
+		<TabItem Header="Test Spawn">
+			
+		</TabItem>
+
+		<TabItem Header="Manager Settings">
+			
+		</TabItem>
+	</TabControl>
 </Window>
