@@ -4,7 +4,10 @@ using SAModManager.Configuration.SADX;
 using SAModManager.Ini;
 using SAModManager.UI;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace SAModManager.Profile
 {
@@ -70,32 +73,24 @@ namespace SAModManager.Profile
         /// <param name="destFile"></param>
         private static void ConvertProfile(string sourceFile, string destFile)
         {
-            sourceFile = Path.Combine(App.CurrentGame.gameDirectory, "mods", sourceFile);
+            sourceFile = Path.GetFullPath(sourceFile);
 
-            try
-            {
-                switch (App.CurrentGame.id)
-                {
-                    case SetGame.SADX:
-                        Configuration.SADX.GameSettings sadxSettings = new();
-                        SADXLoaderInfo sadxLoader = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
-                        sadxSettings.ConvertFromV0(sadxLoader);
-                        sadxSettings.Serialize(App.CurrentGame.ProfilesDirectory, destFile);
-                        break;
-                    case SetGame.SA2:
-                        Configuration.SA2.GameSettings sa2Settings = new();
-                        SA2LoaderInfo sa2Loader = IniSerializer.Deserialize<SA2LoaderInfo>(sourceFile);
-                        sa2Settings.ConvertFromV0(sa2Loader);
-                        sa2Settings.Serialize(App.CurrentGame.ProfilesDirectory, destFile);
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                //new ExceptionHandler(ex);
-                return;
-            }
-        }
+			switch (App.CurrentGame.id)
+			{
+				case SetGame.SADX:
+					Configuration.SADX.GameSettings sadxSettings = new();
+					SADXLoaderInfo sadxLoader = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
+					sadxSettings.ConvertFromV0(sadxLoader);
+					sadxSettings.Serialize(destFile);
+					break;
+				case SetGame.SA2:
+					Configuration.SA2.GameSettings sa2Settings = new();
+					SA2LoaderInfo sa2Loader = IniSerializer.Deserialize<SA2LoaderInfo>(sourceFile);
+					sa2Settings.ConvertFromV0(sa2Loader);
+					sa2Settings.Serialize(destFile);
+					break;
+			}
+		}
 
         /// <summary>
         /// Saves the App Profile's file.
@@ -114,16 +109,74 @@ namespace SAModManager.Profile
             App.Profiles.ProfilesList.Add(new ProfileEntry(name, name + ".json"));
         }
 
+		/// <summary>
+		/// Adds a new profile and writes the settings file.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="gameSettings"></param>
+		public static void AddNewProfile(string name, object gameSettings)
+		{
+			switch (App.CurrentGame.id)
+			{
+				case SetGame.SADX:
+					Configuration.SADX.GameSettings sadxSettings = gameSettings as Configuration.SADX.GameSettings;
+					sadxSettings.Serialize(name);
+					break;
+				case SetGame.SA2:
+					Configuration.SA2.GameSettings sa2Settings = gameSettings as Configuration.SA2.GameSettings;
+					sa2Settings.Serialize(name);
+					break;
+			}
+
+			AddProfile(name);
+		}
+
+		/// <summary>
+		/// Renames a profile in the Profiles List.
+		/// </summary>
+		/// <param name="name"></param>
+		public static void RenameProfile(string oldname, string newname)
+		{
+			foreach (ProfileEntry entry in App.Profiles.ProfilesList.ToList<ProfileEntry>())
+			{
+				if (entry.Name == oldname)
+				{
+					string oldFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, oldname + ".json");
+					string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newname + ".json");
+
+					entry.Name = newname;
+					entry.Filename = newname + ".json";
+
+					File.Move(oldFilePath, newFilePath);
+				}
+			}
+		}
+
         /// <summary>
-        /// Remove a profile from the App's Profile List by name.
+        /// Remove a profile from the App's Profile List by name and delete the source file.
         /// </summary>
         /// <param name="name"></param>
         public static void RemoveProfile(string name)
         {
-            foreach (ProfileEntry entry in App.Profiles.ProfilesList)
+            foreach (ProfileEntry entry in App.Profiles.ProfilesList.ToList<ProfileEntry>())
             {
                 if (entry.Name == name)
+				{
+					string filePath = Path.Combine(App.CurrentGame.ProfilesDirectory, entry.Filename);
+                    if (File.Exists(filePath))
+                    {
+						try
+						{
+							File.Delete(filePath);
+						}
+						catch
+						{
+							throw new Exception("Failed to delete profile.");
+						}
+                    }
+
                     App.Profiles.ProfilesList.Remove(entry);
+				}
             }
         }
 
@@ -145,41 +198,70 @@ namespace SAModManager.Profile
             App.Profiles = Profiles.Deserialize(GetProfilePath());
         }
 
-        /// <summary>
-        /// Automatically migrates any profiles found in the Game Install>mods directory to the new GameSettings format.
-        /// Set deletesource to true if you want to delete the source file when conversion is completed.
-        /// </summary>
-        public static void MigrateProfiles(bool deletesource = false)
+		public static bool MigrateProfile(string path)
+		{
+			if (File.Exists(path))
+			{
+				string sourceFile = path;
+				string destFile = Path.GetFileNameWithoutExtension(sourceFile) == App.CurrentGame.loader?.name ? "Default.json" : Path.GetFileNameWithoutExtension(sourceFile) + ".json";
+
+				File.Copy(Path.GetFullPath(path), Path.Combine(App.CurrentGame.ProfilesDirectory, destFile), true);
+				ConvertProfile(sourceFile, destFile);
+				return true;
+			}
+			else return false;
+		}
+
+		/// <summary>
+		/// Automatically migrates any profiles found in the Game Install>mods directory to the new GameSettings format.
+		/// Set deletesource to true if you want to delete the source file when conversion is completed.
+		/// </summary>
+		public static void MigrateProfiles(bool deletesource = false)
         {
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) == false)
             {
-                if (CheckProfileDirectory())
+                string modPath = Path.Combine(App.CurrentGame.gameDirectory, "mods");
+                Directory.CreateDirectory(modPath);
+
+                if (CheckProfileDirectory() && Directory.Exists(modPath))
                 {
-                    foreach (var item in Directory.EnumerateFiles(Path.Combine(App.CurrentGame.gameDirectory, "mods"), "*.ini"))
+                    foreach (var item in Directory.EnumerateFiles(modPath, "*.ini"))
                     {
-                        string sourceFile = Path.GetFileName(item);
-                        string destFile =
-                            Path.GetFileNameWithoutExtension(sourceFile) == App.CurrentGame.loader.name ? "Default.json" : Path.GetFileNameWithoutExtension(sourceFile) + ".json";
+						string itempath = Path.GetFullPath(item);
+                        
+						if (!MigrateProfile(itempath))
+						{
+							StringBuilder sb = new StringBuilder();
+							sb.AppendLine(Lang.GetString("MessageWindow.Warnings.FirstMigrationFail.Message1"));
+							sb.AppendLine();
+							sb.AppendLine(Lang.GetString("MessageWindow.Warnings.FirstMigrationFail.Message2"));
+							MessageWindow msg = new MessageWindow(
+								windowName: Lang.GetString("MessageWindow.Warnings.FirstMigrationFail.Title"),
+								ErrorText: sb.ToString());
 
-                        File.Copy(Path.GetFullPath(item), Path.Combine(App.CurrentGame.ProfilesDirectory, destFile), true);
-                        ConvertProfile(sourceFile, destFile);
+							msg.ShowDialog();
 
-                        if (deletesource)
-                            File.Delete(Path.GetFullPath(sourceFile));
-                    }
+							if (msg.isClosed)
+							{
+								string destFile = Path.GetFileNameWithoutExtension(itempath) == App.CurrentGame.loader?.name ? "Default.json" : Path.GetFileNameWithoutExtension(item) + ".json";
+
+								switch (App.CurrentGame.id)
+								{
+									case SetGame.SADX:
+										Configuration.SADX.GameSettings sadxSettings = new();
+										sadxSettings.Serialize(destFile);
+										break;
+									case SetGame.SA2:
+										Configuration.SA2.GameSettings sa2Settings = new();
+										sa2Settings.Serialize(destFile);
+										break;
+								}
+							}
+						}
+						if (deletesource)
+							File.Delete(itempath);
+					}
                 }
-            }
-        }
-
-        public static void MigrateOneProfile(string path)
-        {
-            if (File.Exists(path))
-            {
-                string sourceFile = Path.GetFileName(path);
-                string destFile = Path.GetFileNameWithoutExtension(sourceFile) == App.CurrentGame.loader?.name ? "Default.json" : Path.GetFileNameWithoutExtension(sourceFile) + ".json";
-
-                File.Copy(Path.GetFullPath(path), Path.Combine(App.CurrentGame.ProfilesDirectory, destFile), true);
-                ConvertProfile(sourceFile, destFile);
             }
         }
 

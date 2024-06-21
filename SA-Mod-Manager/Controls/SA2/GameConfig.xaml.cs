@@ -355,11 +355,12 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
-			chkResizeAspect.SetBinding(CheckBox.IsCheckedProperty, new Binding("KeepAspectWhenResizing")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
+            refreshRateNum.SetBinding(NumberBox.ValueProperty, new Binding("RefreshRate")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+
 
             // Settings
             chkPause.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnablePauseOnInactive")
@@ -372,6 +373,16 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
+			chkStretchToWindow.SetBinding(CheckBox.IsCheckedProperty, new Binding("StretchToWindow")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay,
+			});
+			chkDisableBorderImage.SetBinding(CheckBox.IsCheckedProperty, new Binding("DisableBorderImage")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
             ChkSkipIntro.SetBinding(CheckBox.IsCheckedProperty, new Binding("SkipIntro")
             {
                 Source = GameProfile.Graphics,
@@ -379,7 +390,7 @@ namespace SAModManager.Controls.SA2
             });
 			tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
 			{
-				Source = GameProfile.TestSpawn,
+				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
 			tsVoiceLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameVoiceLanguage")

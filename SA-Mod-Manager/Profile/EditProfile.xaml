@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="{DynamicResource NewProfile.Title}" Height="200" Width="400"
+        Title="{DynamicResource NewProfile.Title}" Height="220" Width="400"
         WindowStartupLocation="CenterScreen" PreviewKeyDown="Window_PreviewKeyDown" 
 		Loaded="Window_Loaded"
         Style="{StaticResource SAWindowUtil}">
@@ -16,12 +16,16 @@
         </Grid.RowDefinitions>
 		<TextBlock x:Name="Header" Text="{DynamicResource NewProfile.Text.NewProfile}" TextAlignment="Center" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20,0" TextWrapping="Wrap"/>
 
-		<Grid Grid.Row="1" VerticalAlignment="Stretch">
-			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-				<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{DynamicResource CommonStrings.Name}" Margin="5,0,0,5"/>
-				<TextBox x:Name="ProfileNameTextbox" Height="22" HorizontalAlignment="Stretch" TextChanged="ProfileNameTextbox_TextChanged"/>
-				<CheckBox x:Name="KeepMods" Content="{DynamicResource NewProfile.CheckBox.ModsAndCodes}" Margin="0,5,0,0" IsChecked="True"/>
-			</StackPanel>
+		<Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="20">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="10"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{DynamicResource CommonStrings.Name}" Margin="0,0,0,5"/>
+			<TextBox x:Name="ProfileNameTextbox" Grid.Row="1" Height="22" VerticalContentAlignment="Stretch" TextChanged="ProfileNameTextbox_TextChanged"/>
+			<CheckBox x:Name="KeepMods" Grid.Row="3" Content="{DynamicResource NewProfile.CheckBox.ModsAndCodes}" IsChecked="True"/>
 		</Grid>
 
 		<Grid Grid.Row="2" HorizontalAlignment="Right">

@@ -2,6 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 	
-	<system:String x:Key="About.Mod.Buttons.AuthorSite">저자 사이트</system:String>
-	<system:String x:Key="About.Mod.Buttons.SourceCode">모드 소스코드</system:String>
+	<system:String x:Key="About.Mod.Buttons.AuthorSite">제작자 홈페이지</system:String>
+	<system:String x:Key="About.Mod.Buttons.SourceCode">모드 소스 코드</system:String>
 </ResourceDictionary>

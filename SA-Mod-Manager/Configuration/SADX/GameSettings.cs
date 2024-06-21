@@ -8,12 +8,13 @@ using System.Text.Json;
 using System.CodeDom.Compiler;
 using System;
 using System.Text.Json.Serialization;
+using static SAModManager.Configuration.SA2.GameSettings;
 
 namespace SAModManager.Configuration.SADX
 {
 	public class GraphicsSettings
 	{
-		enum FillMode
+		public enum FillMode
 		{
 			Stretch = 0,
 			Fit = 1,
@@ -61,7 +62,7 @@ namespace SAModManager.Configuration.SADX
 		/// V-Sync.
 		/// </summary>
 		[DefaultValue(true)]
-			public bool EnableVsync { get; set; } = true;           // SADXLoaderInfo.EnableVSync
+		public bool EnableVsync { get; set; } = true;           // SADXLoaderInfo.EnableVSync
 
 		/// <summary>
 		/// Enables the window to be paused when not focused.
@@ -162,6 +163,18 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		[DefaultValue(false)]
 		public bool ShowMouseInFullscreen { get; set; }
+
+		/// <summary>
+		/// Stretches the game render to match the outer window's size regardless of inner window's resolution.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool StretchToWindow { get; set; }
+
+		/// <summary>
+		/// Disables the Border Image from rendering when the game render does not match the outer window size.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool DisableBorderImage { get; set; }
 
 		#region Deprecated
 		/// <summary>
@@ -672,10 +685,24 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		[DefaultValue(false)]
 		public bool DisableCDCheck { get; set; } = false;       // SADXLoaderInfo.DisableCDCheck
+
+		/// <summary>
+		/// Extends save support to allow custom names and alternate save directories.
+		/// </summary>
         [DefaultValue(true)]
         public bool ExtendedSaveSupport { get; set; } = true;
-        [DefaultValue(true)]
+        
+		/// <summary>
+		/// Prevents common crashes in the game, namely texture related ones.
+		/// </summary>
+		[DefaultValue(true)]
         public bool CrashGuard { get; set; } = true;
+        
+		/// <summary>
+		/// Fixes XInput without the need for using SDL/Better Input.
+		/// </summary>
+		[DefaultValue(false)]
+        public bool XInputFix { get; set; } = false;
 
         /// <summary>
         /// Converts from original settings file.
@@ -699,6 +726,8 @@ namespace SAModManager.Configuration.SADX
 			KillGBIX = oldSettings.KillGbix;
 			DisableCDCheck = oldSettings.DisableCDCheck;
 			ExtendedSaveSupport = oldSettings.ExtendedSaveSupport;
+			CrashGuard = oldSettings.CrashGuard;
+			XInputFix = oldSettings.XInputFix;
 		}
 	}
 
@@ -709,16 +738,19 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		public enum SADXSettingsVersions
 		{
-			v0 = 0,	// Version 0: Original LoaderInfo version
-			v1 = 1,	// Version 1: Initial version at launch
-			v2 = 2,	// Version 2: Updated to include all settings, intended to be used as the only loaded file, now writes SADXLoaderInfo and SADXConfigFile.
+			v0,		// Version 0: Original LoaderInfo version
+			v1,		// Version 1: Initial version at launch
+			v2,		// Version 2: Updated to include all settings, intended to be used as the only loaded file, now writes SADXLoaderInfo and SADXConfigFile.
+			v3,		// Version 3: Added Graphics.StretchToWindow and Graphics.DisableBorderWindow.
+
+			MAX,	// Do Not Modify, new versions are placed above this.
 		}
 
 		/// <summary>
 		/// Versioning for the SADX Settings file.
 		/// </summary>
-		[DefaultValue((int)SADXSettingsVersions.v2)]
-		public int SettingsVersion { get; set; } = (int)SADXSettingsVersions.v2;
+		[DefaultValue((int)(SADXSettingsVersions.MAX - 1))]
+		public int SettingsVersion { get; set; } = (int)(SADXSettingsVersions.MAX - 1);
 
 		/// <summary>
 		/// Graphics Settings for SADX.
@@ -845,12 +877,12 @@ namespace SAModManager.Configuration.SADX
 
 					GameSettings settings = JsonSerializer.Deserialize<GameSettings>(jsonContent);
 
-					// Version update changes go here.
-					switch ((SADXSettingsVersions)settings.SettingsVersion)
+					// This is where the settings versions get bumped on load.
+					// Set in a switch case in the event we need to make changes on a specific version.
+					switch (settings.SettingsVersion)
 					{
-						case SADXSettingsVersions.v1:
-							// Update to Version 2
-							settings.SettingsVersion = (int)SADXSettingsVersions.v2;
+						case (int)SADXSettingsVersions.v1:
+							settings.SettingsVersion = (int)(SADXSettingsVersions.MAX - 1);
 							SADXConfigFile config = new();
 							string configPath = Path.Combine(settings.GamePath, App.CurrentGame.GameConfigFile[0]);
 							if (File.Exists(configPath))
@@ -859,6 +891,10 @@ namespace SAModManager.Configuration.SADX
 							settings.Graphics.LoadGameConfig(ref config);
 							settings.Controller.LoadGameConfig(ref config);
 							settings.Sound.LoadGameConfig(ref config);
+							break;
+						default:
+							if (settings.SettingsVersion < (int)(SADXSettingsVersions.MAX - 1))
+								settings.SettingsVersion = (int)(SA2SettingsVersions.MAX - 1);
 							break;
 					}
 
@@ -879,10 +915,13 @@ namespace SAModManager.Configuration.SADX
 		/// Serializes an SADX GameSettings JSON File.
 		/// </summary>
 		/// <param name="path"></param>
-		public void Serialize(string path, string profileName)
+		public void Serialize(string profileName)
 		{
+			if (!profileName.Contains(".json"))
+				profileName += ".json";
+
 			// TODO: Fix this function
-			path = Path.Combine(path, profileName);
+			string path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
 			try
 			{
 				if (Directory.Exists(App.CurrentGame.ProfilesDirectory))

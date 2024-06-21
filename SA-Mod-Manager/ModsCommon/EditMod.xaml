@@ -7,7 +7,7 @@
 		xmlns:elements="clr-namespace:SAModManager.Controls"
 		mc:Ignorable="d"
 		WindowStartupLocation="CenterScreen" 
-		MinHeight="550" MinWidth="450" Height="560" Width="650"
+		MinHeight="580" MinWidth="450" Height="580" Width="640"
 		Style="{StaticResource SAWindow}"
 		ResizeMode="NoResize" Closing="Window_Closing">
 	<Window.Resources>
@@ -59,8 +59,9 @@
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="30"/>
-								<RowDefinition Height="30"/>
-							</Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
 
                             <Label x:Name="modName" Content="{DynamicResource CommonStrings.Name}" Grid.Row="0" VerticalAlignment="Center"/>
                             <Label x:Name="modAuthor" Content="{DynamicResource CommonStrings.Author}" Grid.Row="1" VerticalAlignment="Center"/>
@@ -69,9 +70,10 @@
                             <Label x:Name="modDLL" Content="{DynamicResource EditMod.Tabs.Info.DLL}" Grid.Row="4" VerticalAlignment="Center"/>
                             <Label x:Name="modCategory" Content="{DynamicResource CommonStrings.Category}" Grid.Row="5" VerticalAlignment="Center"/>
                             <Label x:Name="modID" Content="{DynamicResource EditMod.Tabs.Info.ModID}" Grid.Row="6" VerticalAlignment="Center"/>
-                            <Label x:Name="modAuthorURL" Content="{DynamicResource EditMod.Tabs.Info.AuthorURL}" Grid.Row="7" VerticalAlignment="Center"/>
-                            <Label x:Name="modSourceURL" Content="{DynamicResource EditMod.Tabs.Info.Source}" Grid.Row="8" VerticalAlignment="Center"/>
-							<Label x:Name="modSaveRedirect" Content="{DynamicResource EditMod.Tabs.Info.SaveRedirect}" Grid.Row="9" VerticalAlignment="Center"/>
+                            <Label x:Name="modIncludeDir" Content="{DynamicResource EditMod.Tabs.Info.IncludeDir}" Grid.Row="7" VerticalAlignment="Center"/>
+                            <Label x:Name="modAuthorURL" Content="{DynamicResource EditMod.Tabs.Info.AuthorURL}" Grid.Row="8" VerticalAlignment="Center"/>
+                            <Label x:Name="modSourceURL" Content="{DynamicResource EditMod.Tabs.Info.Source}" Grid.Row="9" VerticalAlignment="Center"/>
+							<Label x:Name="modSaveRedirect" Content="{DynamicResource EditMod.Tabs.Info.SaveRedirect}" Grid.Row="10" VerticalAlignment="Center"/>
 						</Grid>
 
                         <Grid Grid.Column="2" Grid.Row="0" Margin="0,0,10,0">
@@ -79,6 +81,7 @@
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="70"/>
+                                <RowDefinition Height="30"/>
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="30"/>
@@ -95,11 +98,12 @@
                             <TextBox x:Name="dllText" Grid.Row="4" VerticalAlignment="Center" Height="22"/>
                             <ComboBox x:Name="categoryBox" Grid.Row="5" VerticalAlignment="Center" ItemsSource="{Binding Path=ModCategory}"/>
                             <TextBox x:Name="modIDBox" Grid.Row="6" VerticalAlignment="Center" Height="22"/>
-                            <TextBox x:Name="authorURLBox"  Grid.Row="7" VerticalAlignment="Center" Height="22"/>
-                            <TextBox x:Name="sourceURLBox" Grid.Row="8" VerticalAlignment="Center" Height="22"/>
+                            <TextBox x:Name="includeDirBox" Grid.Row="7" VerticalAlignment="Center" Height="22"/>
+                            <TextBox x:Name="authorURLBox"  Grid.Row="8" VerticalAlignment="Center" Height="22"/>
+                            <TextBox x:Name="sourceURLBox" Grid.Row="9" VerticalAlignment="Center" Height="22"/>
 
-                            <CheckBox x:Name="mainSaveBox" Content="{DynamicResource EditMod.Tabs.Info.Check.RedirectMainSave}" Grid.Row="9" VerticalAlignment="Center"></CheckBox>
-                            <CheckBox x:Name="chaoSaveBox" Content="{DynamicResource EditMod.Tabs.Info.Check.RedirectChaoSave}" Grid.Row="10" VerticalAlignment="Center"></CheckBox>
+                            <CheckBox x:Name="mainSaveBox" Content="{DynamicResource EditMod.Tabs.Info.Check.RedirectMainSave}" Grid.Row="10" VerticalAlignment="Center"></CheckBox>
+                            <CheckBox x:Name="chaoSaveBox" Content="{DynamicResource EditMod.Tabs.Info.Check.RedirectChaoSave}" Grid.Row="11" VerticalAlignment="Center"></CheckBox>
 
                         </Grid>
                     </Grid>

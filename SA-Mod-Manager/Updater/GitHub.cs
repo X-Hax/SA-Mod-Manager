@@ -9,6 +9,7 @@ using static SAModManager.Updater.GitHubAction;
 using static SAModManager.Updater.GitHubArtifact;
 using static SAModManager.Updater.WorkflowRunInfo.GitHubTagInfo;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace SAModManager.Updater
 {
@@ -388,7 +389,7 @@ namespace SAModManager.Updater
         }
 
 
-        public static async Task<(bool, string, GitHubAsset)> GetLatestManagerRelease()
+        public static async Task<(bool, string, GitHubAsset, string)> GetLatestManagerRelease()
         {
             bool hasUpdate = false;
 
@@ -417,15 +418,17 @@ namespace SAModManager.Updater
                                 string pattern = @"^\w+\s+"; // This regular expression matches any word followed by one or more spaces at the beginning of the string.
                                 string result = Regex.Replace(version, pattern, "").Trim();
                                 Version commitVersion = new(result);
-                                int comparison = commitVersion.CompareTo(App.Version);
+                                Version managerVersion = new(App.VersionString);
+                                int comparison = commitVersion.CompareTo(managerVersion);
                                 hasUpdate = comparison > 0;
                             }
                             catch
                             {
                                 throw new Exception("Couldn't check version difference, update won't work.");
                             }
+                 
 
-                            return (hasUpdate, sha, targetAsset);
+                            return (hasUpdate, sha, targetAsset, version);
                         }
                     }
                 }
@@ -435,7 +438,7 @@ namespace SAModManager.Updater
                 Console.WriteLine("Error fetching latest release: " + ex.Message);
             }
 
-            return (false, null, null);
+            return (false, null, null, null);
         }
 
         public static async Task<string> GetGitChangeLog(string hash)
@@ -505,8 +508,10 @@ namespace SAModManager.Updater
             {
                 string jsonResult = await response.Content.ReadAsStringAsync();
                 var info = JsonConvert.DeserializeObject<GHCommitInfo[]>(jsonResult);
+                string loaderCommitPath = App.CurrentGame?.loader.loaderVersionpath;
+                string curCommitID = File.Exists(loaderCommitPath) ? File.ReadAllText(loaderCommitPath) : App.RepoCommit;
 
-                int limit = info.ToList().FindIndex(t => t.SHA == App.RepoCommit);
+                int limit = info.ToList().FindIndex(t => t.SHA == curCommitID);
 
                 if (limit == -1)
                     limit = info.Length;

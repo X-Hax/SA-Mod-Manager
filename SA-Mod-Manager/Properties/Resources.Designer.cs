@@ -220,6 +220,24 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://github.com/X-Hax/sa2-mod-loader/raw/a7bba5ab10314eb44816f027e1368125c7f0e4df/data/DebugFontTexture.dds.
+        /// </summary>
+        internal static string URL_SA2_DEBUGFONT_TEX {
+            get {
+                return ResourceManager.GetString("URL_SA2_DEBUGFONT_TEX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://github.com/X-Hax/sa2-mod-loader/raw/a7bba5ab10314eb44816f027e1368125c7f0e4df/data/DebugTextShader.hlsl.
+        /// </summary>
+        internal static string URL_SA2_DEBUGTEXT_SHADER {
+            get {
+                return ResourceManager.GetString("URL_SA2_DEBUGTEXT_SHADER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://github.com/X-Hax/sa2-mod-loader/raw/master/extlib/SA2ModLoader.dll.
         /// </summary>
         internal static string URL_SA2_DL {

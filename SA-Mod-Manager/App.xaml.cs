@@ -8,19 +8,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Linq;
-using System.Windows.Threading;
-using System.Windows.Controls;
-using System.Windows.Media;
 using SAModManager.Updater;
-using SAModManager.Ini;
 using System.Reflection;
 using SAModManager.Configuration;
 using System.Diagnostics;
-using System.Security.Cryptography;
-using SAModManager.Properties;
 using System.Data;
-using System.Net.Http;
-using System.Net;
 using SAModManager.UI;
 using SAModManager.Controls.SADX;
 using SAModManager.Profile;
@@ -38,14 +30,15 @@ namespace SAModManager
         public static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
         public static readonly string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        public static readonly string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
-        public static readonly string extLibPath = Path.Combine(ConfigFolder, "extlib");
-        public static readonly string tempFolder = Path.Combine(StartDirectory, ".SATemp");
-        public static readonly string crashFolder = Path.Combine(ConfigFolder, "CrashDump");
+        public static string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(StartDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
+        public static string extLibPath = Path.Combine(ConfigFolder, "extlib");
+        public static readonly string tempFolder = Path.Combine(StartDirectory, "SATemp");
+        public static string crashFolder = Path.Combine(ConfigFolder, "CrashDump");
         public static bool isVanillaTransition = false; //used when installing the manager from an update
         public static bool isFirstBoot = false; //used when installing the new manager manually
         public static bool isLinux = false;
         public static bool CancelUpdate = false;
+        public static bool isDebug = false;
 
         public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
         public static ManagerSettings ManagerSettings { get; set; }
@@ -85,14 +78,25 @@ namespace SAModManager
             try { alreadyRunning = !mutex.WaitOne(0, true); }
             catch (AbandonedMutexException) { alreadyRunning = false; }
 
-            if (await DoUpdate(args, alreadyRunning))
+            foreach (var arg in args)
             {
-                return;
+                if (arg == "doupdate")
+                {
+                    if (alreadyRunning)
+                        try { mutex.WaitOne(); }
+                        catch (AbandonedMutexException) { }
+
+                    Logger.Log("DoUpdate command started");
+                    string pID = args.Length > 4 ? args[4] : null;
+                    InstallUpdate(args[2], args[3], pID);
+                    return;
+                }
+
             }
 
             UpdateHelper.InitHttpClient();
             Util.CheckLinux();
-            HandleVanillaTransition(args);
+            SetExeCommands(args);
             Steam.Init();
             SetupLanguages();
             SetupThemes();
@@ -299,40 +303,38 @@ namespace SAModManager
 
         public static async Task<bool> PerformUpdateManagerCheck()
         {
-            var mainWindow = ((MainWindow)Application.Current.MainWindow);
-
-            mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
-
+            MainWindow mainWindow = null;
             try
             {
+                mainWindow = ((MainWindow)Application.Current.MainWindow);
+                mainWindow?.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdate"));
+
                 var update = await GitHub.GetLatestManagerRelease();
 
                 if (update.Item1 == false) //no update found
-                {
                     return false;
-                }
 
-                string changelog = await GitHub.GetGitChangeLog(update.Item2);
+                string changelog = await GitHub.GetGitChangeLog(update.Item2); 
 
                 if (string.IsNullOrEmpty(changelog)) //update found but no changelog (?)
-                {
                     return false;
-                }
 
-                var manager = new InfoManagerUpdate(changelog);
+                var manager = new InfoManagerUpdate(changelog, update.Item4);
                 manager.ShowDialog();
 
                 if (manager.DialogResult != true)
                     return false;
 
+                Logger.Log("Now Installing New Manager Update...");
                 // string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
-                string dlLink = update.Item3.DownloadUrl;
-                string fileName = update.Item3.Name;
+                string dlLink = update.Item3.DownloadUrl;         
+                string fileName = update.Item3.Name;     
+                string version = update.Item4;
                 string destFolder = App.tempFolder;
                 Directory.CreateDirectory(destFolder);
 
-                var dl = new ManagerUpdate(dlLink, destFolder, fileName)
-                {
+                var dl = new ManagerUpdate(dlLink, destFolder, fileName, version)
+                { 
                     DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName)
                 };
 
@@ -341,7 +343,7 @@ namespace SAModManager
             }
             catch
             {
-                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdateFail"));
+                mainWindow?.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkManagerUpdateFail"));
                 return false;
             }
         }
@@ -363,7 +365,7 @@ namespace SAModManager
             return (loaderVersion != lastCommit, lastCommit);
         }
 
-        public static async Task<bool> PerformUpdateLoaderCheck()
+        public static async Task PerformUpdateLoaderCheck()
         {
             try
             {
@@ -372,39 +374,29 @@ namespace SAModManager
                 var update = await CheckLoaderUpdate();
 
                 if (update.Item1 == false) //no update found
-                {
-                    return false;
-                }
+                    return;
 
                 string changelog = await GitHub.GetGitLoaderChangeLog(update.Item2); //item2 is commit hash
 
-                if (string.IsNullOrEmpty(changelog)) //if string is null, we got error(s) so the DL can't continue
-                {
-                    return false;
-                }
+                if (string.IsNullOrEmpty(changelog) || App.CancelUpdate) //if string is null, we got error(s) so the DL can't continue
+                    return;
 
-                if (App.CancelUpdate)
-                {
-                    return false;
-                }
 
-                var manager = new InfoManagerUpdate(changelog, App.CurrentGame.loader.name);
+                var manager = new InfoManagerUpdate(changelog, update.Item2[..7], App.CurrentGame.loader.name);
                 manager.ShowDialog();
 
-                if (manager.DialogResult != true)
-                    return false;
+                if (manager.DialogResult != true || App.CancelUpdate)
+                    return;
 
                 if (await GamesInstall.UpdateLoader(App.CurrentGame))
                 {
                     File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
-                    await GamesInstall.UpdateDependencies(App.CurrentGame);
-                    return true;
+                    await GamesInstall.InstallAndUpdateDependencies(App.CurrentGame, true);
+ 
                 }
             }
             catch
             { }
-
-            return false;
         }
 
         public static async Task<bool> PerformUpdateCodesCheck()
@@ -431,13 +423,9 @@ namespace SAModManager
                     }
                 }
 
-                if (App.CancelUpdate)
-                {
-                    return false;
-                }
+                return App.CancelUpdate == false;
 
-                await GamesInstall.UpdateCodes(App.CurrentGame); //update codes
-                return true;
+
             }
             catch
             {
@@ -471,13 +459,7 @@ namespace SAModManager
                     }
                 }
 
-                if (App.CancelUpdate)
-                {
-                    return false;
-                }
-
-                await GamesInstall.UpdatePatches(App.CurrentGame); //update patch
-                return true;
+                return App.CancelUpdate == false;
             }
             catch
             {
@@ -522,29 +504,31 @@ namespace SAModManager
             return false;
         }
 
-        private static async Task<bool> DoUpdate(string[] args, bool alreadyRunning)
+        public static void InstallUpdate(string updatePath, string managerPath, string pID)
         {
-            foreach (var arg in args)
+            string executablePath = Environment.ProcessPath;
+            Logger.Log("Now Replacing old exe...");
+
+            try
             {
-                if (arg == "doupdate")
+
+                //check if old Manager process is still enabled, if so wait that it's killed properly
+                if (string.IsNullOrEmpty(pID) == false)
                 {
-                    if (alreadyRunning)
-                        try { mutex.WaitOne(); }
-                        catch (AbandonedMutexException) { }
-
-
-                    var dialog = new InstallManagerUpdate(args[2], args[3]);
-                    await dialog.InstallUpdate();
-                    Util.ClearTempFolder();
-                    Application.Current.Shutdown();
-
-                    return true;
+                    int.TryParse(pID, out int pid);
+                    var process = Process.GetProcessById(pid);
+                    process.WaitForExit();
                 }
 
             }
+            catch { }
 
-            return false;
+            //Finally, Copy and run the new Manager version and replace the old one
+            File.Copy(Path.Combine(updatePath, executablePath), managerPath, true);
+            Process.Start(new ProcessStartInfo { FileName = managerPath, UseShellExecute = true });
+            Environment.Exit(0);
         }
+
 
         public static void CreateConfigFolder()
         {
@@ -559,7 +543,7 @@ namespace SAModManager
             }
         }
 
-        private static void HandleVanillaTransition(string[] args)
+        private static void SetExeCommands(string[] args)
         {
             foreach (var arg in args)
             {
@@ -572,6 +556,23 @@ namespace SAModManager
                 else if (arg == "clearLegacy")
                 {
                     Util.DoVanillaFilesCleanup(args);
+                }
+                else if (arg == "debug")
+                {
+                    App.isDebug = true;
+                    Logger.Log("debug mode enabled");
+                }
+                else if (arg == "reset")
+                {
+                    if (Directory.Exists(ConfigFolder))
+                    {
+                        try
+                        {
+                            Directory.Delete(ConfigFolder, true);
+                            App.isFirstBoot = true;
+                        }
+                        catch { }
+                    }
                 }
             }
         }

@@ -21,6 +21,7 @@
     <system:String x:Key="GamePatches.DisableCDCheck">Desactivar Comprobación del CD</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupport">Soporte Extendido de Archivos de Guardado</system:String>
     <system:String x:Key="GamePatches.CrashGuard">Protección de Bloqueo</system:String>
+    <system:String x:Key="GamePatches.XInputFix">XInput Fix</system:String>
 
     <system:String x:Key="GamePatches.HRTFSoundDesc">Este parche permite Audio 3D HRTF.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Este parche arregla un error del juego base que impide que la configuración de Cámara Libre se guarde debidamente al morir o cargar otro nivel/acto.</system:String>
@@ -39,7 +40,8 @@
     <system:String x:Key="GamePatches.DisableCDCheckDesc">Desactiva la comprobación del CD.</system:String>
     <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Este parche permite el uso de archivos de guardado de la versión de Steam y archivos de guardado con nombres personalizados (máx. 48 carácteres).</system:String>
     <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Este parche previene los bloqueos más comunes relacionados con texturas y archivos que falten.&#x0a;&#x0a;Esto no previene que el juego se bloqueé por otras razones.</system:String>
-
+    <system:String x:Key="GamePatches.XInputFixDesc" xml:space="preserve">Fixes spinning camera with XInput controllers when Vanilla Input is used.</system:String>
+    
     <!--#region SA2 Patches-->
     <system:String x:Key="GamePatchesSA2.FramerateLimiter">Bloquear Frecuencia de Imagen</system:String>
     <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Deshabilitar el Diálogo de Cierre</system:String>

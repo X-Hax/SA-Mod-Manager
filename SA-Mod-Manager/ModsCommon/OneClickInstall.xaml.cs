@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,15 +23,14 @@ namespace SAModManager
         private GameBananaItem gbi;
         private string author;
         private string updatePath;
-        private string modPath;
         private Dictionary<string, string> fields;
         public bool isEmpty { get; private set; } = true;
+        private string uriTemp;
 
 
-        public OneClickInstall(string updatePath, string modPath)
+        public OneClickInstall(string updatePath)
         {
             this.updatePath = updatePath;
-            this.modPath = modPath;
             InitializeComponent();
         }
 
@@ -147,6 +147,29 @@ namespace SAModManager
             catch { }
         }
 
+        private void UpdateModPath(string uri)
+        {
+            if (string.IsNullOrEmpty((uri)))
+                return;
+
+            //check if the user has a different selected game than the one they are trying to download a mod for 
+            foreach (var game in GamesInstall.GetSupportedGames())
+            {
+
+                if (uri.ToLower().Contains(game.oneClickName))
+                {
+                    if (game != App.CurrentGame)
+                    {
+                        Logger.Log("Game didn't match the one that contains the mod, now swapping game.");
+                        if (Application.Current.MainWindow is not null)
+                            ((MainWindow)Application.Current.MainWindow).ComboGameSelection_SetNewItem(game);
+
+                        break;
+                    }
+                }
+            }
+        }
+
         private async Task HandleUri(string uri)
         {
 
@@ -158,25 +181,13 @@ namespace SAModManager
             if (App.CurrentGame is null || string.IsNullOrEmpty(App.CurrentGame?.gameDirectory))
                 return;
 
-           
-            //check if the user has a different selected game than the one they are trying to download a mod for 
-            foreach (var game in GamesInstall.GetSupportedGames())
-            {
+            Logger.Log("One Click install init...");
+            
+            Logger.Log("Current Game " + App.CurrentGame.gameName);
 
-                if (uri.ToLower().Contains(game.oneClickName))
-                {
-                    if (game != App.CurrentGame)
-                    {
-                        if (Application.Current.MainWindow is not null)
-                            ((MainWindow)Application.Current.MainWindow).ComboGameSelection_SetNewItem(game);
-
-
-                        this.modPath = App.CurrentGame.modDirectory; //update mod directory since the game got swapped
-                        break;
-                    }
-                }
-            }
-
+            App.CancelUpdate = true;
+            this.uriTemp = uri;
+            UpdateModPath(uriTemp);
 
             string oneClickName = App.CurrentGame.oneClickName + ":";
 
@@ -228,7 +239,7 @@ namespace SAModManager
             }
 
             ButtonDownload.IsEnabled = true;
-            this.ShowDialog();
+            this.Show();
         }
 
 
@@ -255,13 +266,12 @@ namespace SAModManager
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            App.CancelUpdate = false;
             urlPage = null;
             url = null;
             gbi = null;
             author = null;
             updatePath = null;
-            modPath = null;
 
             fields.Clear();
             this.Visibility = Visibility.Hidden; // Hide the window when the button is clicked
@@ -284,8 +294,11 @@ namespace SAModManager
         {
 
             bool retry = false;
-            this.updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.gameDirectory, "mods", ".updates"));
-            this.modPath = App.CurrentGame.modDirectory;
+            App.CancelUpdate = false;
+            UpdateModPath(this.uriTemp);
+            this.updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, ".updates"));
+            Logger.Log("Downloading One click install mod...");
+            Logger.Log("Current Mod Install Path: " + updatePath);
 
             do
             {
@@ -322,7 +335,7 @@ namespace SAModManager
                 dummyPath = dummyPath.Replace(c, '_');
             }
 
-            dummyPath = Path.Combine(modPath, dummyPath);
+            dummyPath = Path.Combine(App.CurrentGame.modDirectory, dummyPath);
 
 
             var updates = new List<ModDownload>
@@ -334,7 +347,6 @@ namespace SAModManager
             var modDL = new ModDownloadDialog(updates, updatePath, false);
             modDL.StartDL();
 
-            await Task.Delay(1000);
 
             await Task.Delay(500);
             if (Directory.Exists(updatePath))
@@ -347,7 +359,7 @@ namespace SAModManager
                 { }
             }
 
-
+            Logger.Log("Finished dowloading mod. " + updatePath);
             ((MainWindow)App.Current.MainWindow).Refresh();
         }
 
@@ -356,7 +368,5 @@ namespace SAModManager
             e.Cancel = true; // Prevent the window from closing
             this.Visibility = Visibility.Hidden; // Hide the window
         }
-
-
     }
 }

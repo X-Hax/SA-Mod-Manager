@@ -15,7 +15,7 @@
 	<system:String x:Key="ManagerProfile.Errors.ProfileExists">Профиль с таким именем уже существует. Придумайте другое имя.</system:String>
 
     <system:String x:Key="ManagerProfile.ToolTip.Create">Создать новый профиль.</system:String>
-    <system:String x:Key="ManagerProfile.ToolTip.Migrate">Импортировать существующие json-профили или преобразовать профили старого Менеджера в новый формат.</system:String>
+    <system:String x:Key="ManagerProfile.ToolTip.Migrate">Импортировать существующие json-профили или преобразовать профили старого менеджера в новый формат.</system:String>
 
     <system:String x:Key="NewProfile.Title">Создать профиль</system:String>
     <system:String x:Key="NewProfile.Text.NewProfile">Новый профиль</system:String>

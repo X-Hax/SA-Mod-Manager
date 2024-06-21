@@ -14,12 +14,12 @@
     <system:String x:Key="Updater.DL.Dep.Copying">Копіюємо Файли...</system:String>
 
     <!--Mod Update-->
-    <system:String x:Key="Updater.DL.Mod.Init">Preparing Download, please wait...</system:String>
+    <system:String x:Key="Updater.DL.Mod.Init">Готуємо Завантаження, зачекайте будь ласка...</system:String>
     <system:String x:Key="Updater.DL.Mod.Extracting">Видобуваємо...</system:String>
     <system:String x:Key="Updater.DL.Mod.ParsingManifest">Скануємо маніфест...</system:String>
     <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Застосовуємо маніфест...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadingFile">Завантажуємо файл</system:String>
-    <system:String x:Key="Updater.DL.Mod.of">of</system:String> <!-- "of" files to download-->
+    <system:String x:Key="Updater.DL.Mod.of"></system:String> <!-- "of" files to download-->
     <system:String x:Key="Updater.DL.Mod.UpdatingMod">Оновлюємо мод</system:String>
     <system:String x:Key="Updater.DL.Mod.StartingDownload">Початок завантаження...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadComplete">Завантаження завершено.</system:String>

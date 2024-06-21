@@ -4,9 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
-using PropertyChanged;
 using SAModManager.Codes;
-using SAModManager.Configuration;
 using SAModManager.Ini;
 
 namespace SAModManager
@@ -33,6 +31,14 @@ namespace SAModManager
         [IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
         public List<string> Dependencies { get; set; }
         public bool DisableUpdate { get; set; }
+
+        [IniName("Config", "IncludeDir")]
+        [IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 0)]
+
+        public List<string> IncludeDirs  { get; set; }
+
+        [IniName("Config", "IncludeDirCount")]
+        public string IncludeDirCount { get; set; }
 
         public static IEnumerable<string> GetModFiles(DirectoryInfo directoryInfo)
         {

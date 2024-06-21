@@ -14,7 +14,7 @@
 	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Failed to set Game Path</system:String>
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect sonic.exe, make sure to select a folder where SADX is installed.</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Failed to detect Game Path</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Failed to detect Game directory path. Please set the path in the Manager Config and make sure to select a folder where sonic.exe is installed.</system:String>
@@ -99,6 +99,12 @@
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">An unexpected error occurred while loading profiles, if the problem persists, please report the issue.</system:String>
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Failed to create config folder at {0}.&#x0a;The Mod Manager won't be able to work properly.</system:String>
     <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Failed to install or update {0}.&#x0a;If the game is open, please close it and try again.</system:String>
+
+
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Error Reading Ini File</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">An unexpected error occurred while reading an ini file. Ini files cannot have the same key or group multiple times.</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Mod Name: {0}&#x0a;Mod Author: {1}&#x0a;</system:String> <!--> this is assuming the ini file was a mod <!-->
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -119,6 +125,10 @@
 	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Profiles Missing</system:String>
 	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">The following profiles were not found:</system:String>
 	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">They will be removed from the Profiles list and the selected profile will be defaulted to the first profile in the list.</system:String>
+
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Title" xml:space="preserve">Automatic Profile Migration Failed</system:String>
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message1" xml:space="preserve">The SA Mod Manager was unable to convert your last used profile.</system:String>
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message2" xml:space="preserve">A new default profile will be created. You can retry conversion in the Profiles Manager.</system:String>
 
 	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Import Failed</system:String>
 	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">The following files failed to be imported as profiles:</system:String>

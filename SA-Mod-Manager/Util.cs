@@ -93,7 +93,8 @@ namespace SAModManager
                     if (File.Exists(Path.Combine(root, file)))
                         File.Delete(Path.Combine(root, file));
                 }
-            } catch { }
+            }
+            catch { }
         }
 
         public static void DoVanillaFilesCleanup(string[] args)
@@ -112,7 +113,7 @@ namespace SAModManager
                         foundGameFolder = true;
                         break;
                     }
-                    else 
+                    else
                     {
                         root = Path.GetFullPath(Path.Combine(args[i], exeName));
 
@@ -146,6 +147,7 @@ namespace SAModManager
             }
             catch (Exception ex)
             {
+                Logger.Log("Failed to move File." + ex.Message);
                 Console.WriteLine($"File move failed: {ex.Message}");
                 return false; // File move failed
             }
@@ -160,6 +162,7 @@ namespace SAModManager
             }
             catch (Exception ex)
             {
+                Logger.Log("failed to copy file!");
                 Console.WriteLine($"File copy failed: {ex.Message}");
                 return false; // File copy failed
             }
@@ -170,39 +173,55 @@ namespace SAModManager
         {
             try
             {
-                await MoveFileAsync(origin, dest, overwrite);
+                Logger.Log("Moving File: " + origin + " to " + dest);
+                if (await MoveFileAsync(origin, dest, overwrite) == false)
+                {
+                    Logger.Log("Attempting to copy the file instead...");
+                    if (await CopyFileAsync(origin, dest, overwrite))
+                    {
+                        Logger.Log("Success!");
+                        File.Delete(origin);
+                    }
+                }
             }
             catch //File.Move doesn't work if hard drive destination is different from source, copy doesn't have this problem
             {
+                Logger.Log("Attempting to copy the file instead...");
                 if (await CopyFileAsync(origin, dest, overwrite))
                 {
+                    Logger.Log("Success!");
                     File.Delete(origin);
                 }
             }
         }
 
-        public static async Task<bool> ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
+        public static bool ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
         {
             string outputFilePath = null;
-            // Get the resource stream from Properties.Resources
-            using (Stream resourceStream = new MemoryStream(resource))
+            try
             {
-                byte[] buffer = new byte[resourceStream.Length];
-                resourceStream.Read(buffer, 0, buffer.Length);
-
+                Directory.CreateDirectory(outputDirectory);
                 outputFilePath = Path.Combine(outputDirectory, resourceName + ".dll");
 
-                // Write the DLL data to the output file
+                // Get the resource stream from Properties.Resources
+                using Stream resourceStream = new MemoryStream(resource);
                 using (FileStream fileStream = new(outputFilePath, FileMode.Create, FileAccess.Write))
                 {
-                    fileStream.Write(buffer, 0, buffer.Length);
+                    // Asynchronously copy the stream to the output file
+                    resourceStream.CopyTo(fileStream);
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception during DLL extraction: {ex}");
+                return false;
+            }
 
-            await Task.Delay(100);
             FileInfo fileInfo = new(outputFilePath);
             return fileInfo is not null && fileInfo.Length > 0;
         }
+
+
 
         public static async Task Install7Zip()
         {
@@ -277,8 +296,12 @@ namespace SAModManager
                  {
                      bool is64Bits = Environment.Is64BitOperatingSystem;
                      Uri uri = new(is64Bits ? "https://www.7-zip.org/a/7z2301-x64.exe" : "https://www.7-zip.org/a/7z2301.exe" + "\r\n");
-
-                     var dl = new DownloadDialog(uri, "7-zip", "7z.exe", App.tempFolder, DownloadDialog.DLType.Download);
+                     var info = new List<DownloadInfo>
+                     {
+                         new DownloadInfo("7-zip", "7z.exe", App.tempFolder, uri, DownloadDialog.DLType.Download)
+                     };
+         
+                     var dl = new DownloadDialog(info);
                      dl.StartDL();
                  }
                  else
@@ -298,6 +321,8 @@ namespace SAModManager
         public static void ClearTempFolder()
         {
             Util.DeleteReadOnlyDirectory(App.tempFolder);
+            if (Directory.Exists(".SATemp")) //temp support for previous version but no longer used
+                Util.DeleteReadOnlyDirectory(".SATemp");
         }
 
         public static void DeleteReadOnlyDirectory(string dir)
@@ -334,13 +359,13 @@ namespace SAModManager
         }
 
 
-        public static async Task ExtractArchive(string zipPath, string destFolder, bool overwright = false)
+        public static async Task ExtractArchive(string zipPath, string destFolder, bool overwrite = false)
         {
             Directory.CreateDirectory(destFolder);
 
             if (Path.GetExtension(zipPath) == ".zip")
             {
-                ZipFile.ExtractToDirectory(zipPath, destFolder, overwright);
+                ZipFile.ExtractToDirectory(zipPath, destFolder, overwrite);
                 return;
             }
 
@@ -353,7 +378,7 @@ namespace SAModManager
                 }
             }
 
-            await Task.Delay(1000);
+            await Task.Delay(500);
         }
 
         public static async Task<bool> ExtractArchiveUsing7Zip(string path, string dest)
@@ -365,7 +390,7 @@ namespace SAModManager
             exePath ??= FindExePathFromRegistry("SOFTWARE\\7-Zip");
 
             // If still not found, try with the PATH variable
-            exePath ??=  Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
+            exePath ??= Environment.GetEnvironmentVariable("PATH").Split(';').ToList()
                 .Where(s => File.Exists(Path.Combine(s, "7z.exe"))).FirstOrDefault();
 
             if (exePath != null)
@@ -377,7 +402,8 @@ namespace SAModManager
                     await Process.Start(new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y")
                     {
                         UseShellExecute = true,
-                        CreateNoWindow = true
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden
                     }).WaitForExitAsync();
 
                     return true;
@@ -414,21 +440,21 @@ namespace SAModManager
             return false;
         }
 
-        public static async Task Extract(string zipPath, string destFolder, bool overwright = false)
+        public static async Task Extract(string zipPath, string destFolder, bool overwrite = false)
         {
             try
             {
-                await ExtractArchive(zipPath, destFolder, overwright);
+                await ExtractArchive(zipPath, destFolder, overwrite);
             }
             catch (Exception ex)
             {
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
             }
 
-            await Task.Delay(1000);
+            await Task.Delay(100);
         }
 
-        public static async Task<bool> ExtractZipFromResource(byte[] resource, string outputDirectory)
+        public static bool ExtractZipFromResource(byte[] resource, string outputDirectory)
         {
             try
             {
@@ -439,7 +465,6 @@ namespace SAModManager
                         archive.ExtractToDirectory(outputDirectory, true);
                     }
                 }
-                await Task.Delay(100);
                 return true;
 
             }
@@ -555,19 +580,63 @@ namespace SAModManager
             return string.Join("/", paths);
         }
 
+        private static void UpdatePathsForPortableMode()
+        {
+            if (App.isLinux && Directory.Exists(App.extLibPath) == false) //force portable mode for new users on Linux since it tends to work better.
+            {
+                App.ConfigFolder = Path.Combine(App.StartDirectory, "SAManager");
+                App.extLibPath = Path.Combine(App.ConfigFolder, "extlib");
+                App.crashFolder = Path.Combine(App.ConfigFolder, "CrashDump");
+            }
+        }
+
         public static void CheckLinux()
         {
-            RegistryKey key = null;
+            RegistryKey key;
             if ((key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey("SOFTWARE\\Wine")) != null)
             {
                 key.Close();
                 App.isLinux = true;
+                Logger.Log("Linux detected with first method");
+                UpdatePathsForPortableMode();
+                return;
             }
+
+            // Method 2: Check for Wine Environment Variables
+            string winePrefix = Environment.GetEnvironmentVariable("WINEPREFIX");
+            if (!string.IsNullOrEmpty(winePrefix))
+            {
+                App.isLinux = true;
+                Logger.Log("Linux detected with second method");
+                UpdatePathsForPortableMode();
+                return;
+            }
+
+            // Method 3: Check for Common Linux Paths
+            string[] commonLinuxPaths = { "/usr/bin/wine", "/usr/bin/steam", "/opt/steam" };
+            foreach (string path in commonLinuxPaths)
+            {
+                if (File.Exists(path))
+                {
+                    App.isLinux = true;
+                    Logger.Log("Linux detected with last method, wow that was close.");
+                    UpdatePathsForPortableMode();
+                    return;
+                }
+            }
+
+            Logger.Log("Linux wasn't detected, the Manager will act like we are on Windows.");
         }
 
         public static bool RunningAsAdmin()
         {
             return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        public static void AdjustPathForLinux(ref string s)
+        {
+            if (App.isLinux && s.StartsWith("/"))
+                s = $"Z:{s}";
         }
     }
 }

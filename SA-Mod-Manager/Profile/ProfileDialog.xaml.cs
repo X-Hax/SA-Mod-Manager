@@ -23,12 +23,11 @@ namespace SAModManager.Profile
     public partial class ProfileDialog : Window
     {
         public int SelectedIndex = 0;
-        private Profiles Profiles { get; set; }
 
         public ProfileDialog()
         {
             InitializeComponent();
-            Profiles = App.Profiles;
+			ProfileListView.ItemsSource = App.Profiles.ProfilesList;
 			SelectedIndex = App.Profiles.ProfileIndex;
             Title = Lang.GetString("ManagerProfile.Title");
 
@@ -37,8 +36,20 @@ namespace SAModManager.Profile
 
         private void ModProfile_Loaded(object sender, RoutedEventArgs e)
         {
-            ProfileListView.ItemsSource = Profiles.ProfilesList;
-        }
+			this.Dispatcher.BeginInvoke(new Action(() =>
+			{
+				ListViewItem item = null;
+				if (SelectedIndex >= 0 && SelectedIndex < ProfileListView.Items.Count)
+				{
+					ProfileListView.ScrollIntoView(ProfileListView.Items[SelectedIndex]);
+					item = ProfileListView.ItemContainerGenerator.ContainerFromIndex(SelectedIndex) as ListViewItem;
+					if (item != null)
+					{
+						item.FontWeight = FontWeights.Bold;
+					}
+				}
+			}), System.Windows.Threading.DispatcherPriority.Background);
+		}
 
         #region Private Functions
         private void RefreshList()
@@ -54,18 +65,14 @@ namespace SAModManager.Profile
 
             bool? result = editProfile.ShowDialog();
 
-            if (result == true)
-            {
-                Profiles.ProfilesList[ProfileListView.SelectedIndex] = editProfile.Result;
-            }
-            RefreshList();
+			ProfileListView.Items.Refresh();
         }
         #endregion
 
         #region Window
         private void NewProfile_Closed(object sender, EventArgs e)
         {
-            RefreshList();
+            //RefreshList();
         }
         #endregion
 
@@ -178,51 +185,32 @@ namespace SAModManager.Profile
                     if (File.Exists(fullPath))
                         File.Copy(fullPath, Path.Combine(App.CurrentGame.ProfilesDirectory, clonedProfile.Filename), true);
 
-                    Profiles.ProfilesList.Add(clonedProfile);
+					App.Profiles.ProfilesList.Add(clonedProfile);
                 }
             }
 
-            RefreshList();
+            //RefreshList();
         }
 
         private void ProfileDelete_Click(object sender, RoutedEventArgs e)
         {
-            List<ProfileEntry> selectedItems = ProfileListView.SelectedItems.Cast<ProfileEntry>().ToList();
-            var profile = Profiles.ProfilesList[SelectedIndex];
+			int index = ProfileListView.SelectedIndex;
+			List<ProfileEntry> selection = ProfileListView.SelectedItems.Cast<ProfileEntry>().ToList();
 
-            if (selectedItems.Count > 0)
-            {
-                var msg = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DeleteProfile"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-                msg.ShowDialog();
-
-                if (msg.isYes)
-                {
-                    try
-                    {
-                        foreach (ProfileEntry item in selectedItems)
-                        {
-                            if (item is not null)
-                            {
-                                var fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, item.Filename);
-                                if (File.Exists(fullPath))
-                                {
-                                    File.Delete(fullPath);
-                                    Profiles.ProfilesList.Remove(item);
-                                }
-                            }
-                        }
-
-                        SelectedIndex = Profiles.ProfilesList.FindIndex(item => item.Name == profile.Name);
-
-                        RefreshList();
-                    }
-                    catch
-                    {
-                        throw new Exception("Failed to delete profile.");
-                    }
-                }
-            }
-        }
+			if (selection.Count > 0)
+			{
+				var msg = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DeleteProfile"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+				msg.ShowDialog();
+				
+				if (msg.isYes)
+				{
+					foreach (ProfileEntry profile in selection)
+					{
+						ProfileManager.RemoveProfile(profile.Name);
+					}
+				}
+			}
+		}
         #endregion
         #endregion
 
@@ -235,12 +223,12 @@ namespace SAModManager.Profile
             };
             bool? dialogResult = newProfile.ShowDialog();
 
-            if (dialogResult == true)
-            {
-                Profiles.ProfilesList.Add(newProfile.Result);
-            }
+            //if (dialogResult == true)
+            //{
+			//	ProfileManager.AddNewProfile(newProfile.Result);
+            //}
 
-            RefreshList();
+            //RefreshList();
         }
 
         private void Migrate_Click(object sender, RoutedEventArgs e)
@@ -255,11 +243,13 @@ namespace SAModManager.Profile
 
             List<string> failedFiles = new();
 
+	
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 int i = 0;
-                foreach (string file in dialog.FileNames)
+                foreach (string filename in dialog.FileNames)
                 {
+					string file = Path.GetFullPath(filename);
                     if (File.Exists(file))
                     {
                         bool invalid = false;
@@ -277,23 +267,20 @@ namespace SAModManager.Profile
                                     {
                                         case SetGame.SADX:
                                             settings = Configuration.SADX.GameSettings.Deserialize(file);
-                                            if (settings.EnabledMods.Count == 0 && settings.EnabledCodes.Count == 0)
+                                            if (settings.Graphics == null)
                                             {
-                                                // Due to ensuring GameSettings can deserialize between versions, it allows for deserialization of any json file.
-                                                // We just assume if there's no mods and no codes, it's an invalid file.
                                                 invalid = true;
                                                 throw new Exception();
                                             }
                                             break;
                                         case SetGame.SA2:
                                             settingsSA2 = Configuration.SA2.GameSettings.Deserialize(file);
-                                            if (settingsSA2.EnabledMods.Count == 0 && settingsSA2.EnabledCodes.Count == 0)
+                                            if (settingsSA2.Graphics == null)
                                             {
                                                 invalid = true;
                                                 throw new Exception();
                                             }
                                             break;
-
                                     }
                                 }
                                 catch
@@ -302,20 +289,15 @@ namespace SAModManager.Profile
                                 }
                                 break;
                             case ".ini":
-                                try
-                                {
-                                    ProfileManager.MigrateOneProfile(file);
-                                }
-                                catch
-                                {
-                                    failedFiles.Add(Path.GetFileName(file));
-                                }
-                                break;
+								if (!ProfileManager.MigrateProfile(file))
+									failedFiles.Add(Path.GetFileName(file));
+
+								break;
                         }
 
                         if (!invalid)
                         {
-                            foreach (ProfileEntry entry in Profiles.ProfilesList)
+                            foreach (ProfileEntry entry in App.Profiles.ProfilesList)
                             {
                                 if (entry.Name == newFileName)
                                 {
@@ -324,18 +306,7 @@ namespace SAModManager.Profile
                                 }
                             }
 
-                            switch (App.CurrentGame.id)
-                            {
-                                case SetGame.SADX:
-                                    settings.Serialize(newFilePath, newFileName + ".json");
-                                    break;
-                                case SetGame.SA2:
-                                    settingsSA2.Serialize(newFilePath, newFileName + ".json");
-                                    break;
-                            }
-
-
-                            Profiles.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
+                            App.Profiles.ProfilesList.Add(new ProfileEntry(newFileName, newFileName + ".json"));
                         }
                     }
                     i++;
@@ -344,10 +315,11 @@ namespace SAModManager.Profile
                 RefreshList();
             }
 
-            if (failedFiles.Count > 0)
+
+			if (failedFiles.Count > 0)
             {
                 string failedFilesList = string.Join(Environment.NewLine, failedFiles);
-                string failedMessage = Lang.GetString("MessageWindow.Warnings.ProfileMigration.Message1") +
+                string failedMessage = Lang.GetString("MessageWindow.Warnings.ProfileMigration.Message1") + "\n" +
                     failedFilesList + Lang.GetString("MessageWindow.Warnings.ProfileMigration.Message2");
 
                 MessageWindow message = new MessageWindow(Lang.GetString("MessageWindow.Warnings.ProfileMigration.Title"), failedMessage, icon: MessageWindow.Icons.Warning);
