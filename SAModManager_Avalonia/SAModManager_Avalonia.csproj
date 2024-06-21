@@ -21,6 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaResource Remove="UI\Resources\Styles\ButtonStyle.axaml" />
+    <AvaloniaResource Remove="UI\Resources\Themes\DarkTheme.axaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.11" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.11" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.11" />
@@ -34,5 +39,15 @@
 
   <ItemGroup>
     <Resource Include="UI\Resources\Icons\SADXModManager_.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="UI\Resources\Styles\ButtonStyle.axaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaXaml Update="UI\Resources\Themes\DarkTheme.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
   </ItemGroup>
 </Project>
