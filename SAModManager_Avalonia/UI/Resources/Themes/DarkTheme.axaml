@@ -2,13 +2,50 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- Add Resources Here -->
 
-	<!--  -->
+	<!-- Primary Colors -->
+	<Color x:Key="SAMM.Colors.Backgrounds.Default">#FF191919</Color>
+	<Color x:Key="SAMM.Colors.Backgrounds.Default.Highlight">#FF2D2D2D</Color>
+	<Color x:Key="SAMM.Colors.Backgrounds.Default.Disabled">#CB323232</Color>
 
+	<Color x:Key="SAMM.Colors.Borders.Default">#FF3F3F3F</Color>
+	<Color x:Key="SAMM.Colors.Borders.Default.Highlight">#FF535353</Color>
+	<Color x:Key="SAMM.Colors.Borders.Default.Disabled">#CB585858</Color>
 
-	<!--  -->
+	<Color x:Key="SAMM.Colors.Buttons.Default">#FF202020</Color>
+	<Color x:Key="SAMM.Colors.Buttons.Default.Highlight">#FF323232</Color>
+	<Color x:Key="SAMM.Colors.Buttons.Default.Disabled">#CB3C3C3C</Color>
 
+	<Color x:Key="SAMM.Colors.Text.Default">#FFFFFFFF</Color>
+	<Color x:Key="SAMM.Colors.Text.Default.Disabled">#CBCCCCCC</Color>
 
-	<!--  -->
+	<Color x:Key="SAMM.Colors.Accents.Blue">#FF006ABC</Color>
+	<Color x:Key="SAMM.Colors.Accents.Blue.Highlight">#FF2CA3FF</Color>
+
+	<!-- Primary Brushes -->
+	<SolidColorBrush x:Key="SAMM.Brushes.Backgrounds.Default" Color="{DynamicResource SAMM.Colors.Backgrounds.Default}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Backgrounds.Default.Highlight" Color="{DynamicResource SAMM.Colors.Backgrounds.Default.Highlight}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Backgrounds.Default.Disabled" Color="{DynamicResource SAMM.Colors.Backgrounds.Default.Disabled}"/>
 	
+	<SolidColorBrush x:Key="SAMM.Brushes.Borders.Default" Color="{DynamicResource SAMM.Colors.Borders.Default}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Borders.Default.Highlight" Color="{DynamicResource SAMM.Colors.Borders.Default.Highlight}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Borders.Default.Disabled" Color="{DynamicResource SAMM.Colors.Borders.Default.Disabled}"/>
+	
+	<SolidColorBrush x:Key="SAMM.Brushes.Buttons.Default" Color="{DynamicResource SAMM.Colors.Buttons.Default}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Buttons.Default.Highlight" Color="{DynamicResource SAMM.Colors.Buttons.Default.Highlight}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Buttons.Default.Disabled" Color="{DynamicResource SAMM.Colors.Buttons.Default.Disabled}"/>
+	
+	<SolidColorBrush x:Key="SAMM.Brushes.Text.Default" Color="{DynamicResource SAMM.Colors.Text.Default}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Text.Default.Disabled" Color="{DynamicResource SAMM.Colors.Text.Default.Disabled}"/>
+	
+	<SolidColorBrush x:Key="SAMM.Brushes.Accents.Blue" Color="{DynamicResource SAMM.Colors.Accents.Blue}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Accents.Blue.Highlight" Color="{DynamicResource SAMM.Colors.Accents.Blue.Highlight}"/>
+	
+	<!-- Corner Values -->
+	<CornerRadius x:Key="SAMM.Corner.Button">3</CornerRadius>
+	<CornerRadius x:Key="SAMM.Corner.ComboBox">2</CornerRadius>
+	<CornerRadius x:Key="SAMM.Corner.ListView">3</CornerRadius>
+	<CornerRadius x:Key="SAMM.Corner.ContextMenu">4</CornerRadius>
+	<CornerRadius x:Key="SAMM.Corner.ScrollBar">4</CornerRadius>
+	<CornerRadius x:Key="SAMM.Corner.TabItem">2,2,0,0</CornerRadius>
 	
 </ResourceDictionary>
