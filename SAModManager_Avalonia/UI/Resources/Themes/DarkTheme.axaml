@@ -3,42 +3,82 @@
     <!-- Add Resources Here -->
 
 	<!-- Primary Colors -->
+	<!-- Background Colors -->
 	<Color x:Key="SAMM.Colors.Backgrounds.Default">#FF191919</Color>
 	<Color x:Key="SAMM.Colors.Backgrounds.Default.Highlight">#FF2D2D2D</Color>
 	<Color x:Key="SAMM.Colors.Backgrounds.Default.Disabled">#CB323232</Color>
 
+	<!-- Border Colors -->
 	<Color x:Key="SAMM.Colors.Borders.Default">#FF3F3F3F</Color>
 	<Color x:Key="SAMM.Colors.Borders.Default.Highlight">#FF535353</Color>
 	<Color x:Key="SAMM.Colors.Borders.Default.Disabled">#CB585858</Color>
 
+	<!-- Button Colors -->
 	<Color x:Key="SAMM.Colors.Buttons.Default">#FF202020</Color>
 	<Color x:Key="SAMM.Colors.Buttons.Default.Highlight">#FF323232</Color>
 	<Color x:Key="SAMM.Colors.Buttons.Default.Disabled">#CB3C3C3C</Color>
 
+	<Color x:Key="SAMM.Colors.Buttons.Window">#FF9E9E9E</Color>
+	<Color x:Key="SAMM.Colors.Buttons.Window.Highlight">#FFB0B0B0</Color>
+	<Color x:Key="SAMM.Colors.Buttons.WindowExit.Highlight">#FFFF2C2C</Color>
+
+	<!-- Text Colors -->
 	<Color x:Key="SAMM.Colors.Text.Default">#FFFFFFFF</Color>
 	<Color x:Key="SAMM.Colors.Text.Default.Disabled">#CBCCCCCC</Color>
 
+	<!-- Accent Colors -->
 	<Color x:Key="SAMM.Colors.Accents.Blue">#FF006ABC</Color>
 	<Color x:Key="SAMM.Colors.Accents.Blue.Highlight">#FF2CA3FF</Color>
 
+	<Color x:Key="SAMM.Colors.Accents.Red">#FFFF2C2C</Color>
+	<Color x:Key="SAMM.Colors.Accents.Red.Highlight">#FFFF7979</Color>
+
+	<!-- Icon Colors -->
+	<Color x:Key="SAMM.Colors.Icons.Green">#FF00BC00</Color>
+	<Color x:Key="SAMM.Colors.Icons.Blue">#FF006ABC</Color>
+	<Color x:Key="SAMM.Colors.Icons.Red">#FFBC0000</Color>
+	<Color x:Key="SAMM.Colors.Icons.Grey">#FF9E9E9E</Color>
+	<Color x:Key="SAMM.Colors.Icons.Yellow">#FFBCBC00</Color>
+
+	
 	<!-- Primary Brushes -->
+	<!-- Background Brushes -->
 	<SolidColorBrush x:Key="SAMM.Brushes.Backgrounds.Default" Color="{DynamicResource SAMM.Colors.Backgrounds.Default}"/>
 	<SolidColorBrush x:Key="SAMM.Brushes.Backgrounds.Default.Highlight" Color="{DynamicResource SAMM.Colors.Backgrounds.Default.Highlight}"/>
 	<SolidColorBrush x:Key="SAMM.Brushes.Backgrounds.Default.Disabled" Color="{DynamicResource SAMM.Colors.Backgrounds.Default.Disabled}"/>
 	
+	<!-- Border Brushes -->
 	<SolidColorBrush x:Key="SAMM.Brushes.Borders.Default" Color="{DynamicResource SAMM.Colors.Borders.Default}"/>
 	<SolidColorBrush x:Key="SAMM.Brushes.Borders.Default.Highlight" Color="{DynamicResource SAMM.Colors.Borders.Default.Highlight}"/>
 	<SolidColorBrush x:Key="SAMM.Brushes.Borders.Default.Disabled" Color="{DynamicResource SAMM.Colors.Borders.Default.Disabled}"/>
 	
+	<!-- Button Brushes -->
 	<SolidColorBrush x:Key="SAMM.Brushes.Buttons.Default" Color="{DynamicResource SAMM.Colors.Buttons.Default}"/>
 	<SolidColorBrush x:Key="SAMM.Brushes.Buttons.Default.Highlight" Color="{DynamicResource SAMM.Colors.Buttons.Default.Highlight}"/>
 	<SolidColorBrush x:Key="SAMM.Brushes.Buttons.Default.Disabled" Color="{DynamicResource SAMM.Colors.Buttons.Default.Disabled}"/>
 	
+	<SolidColorBrush x:Key="SAMM.Brushes.Buttons.Window" Color="{DynamicResource SAMM.Colors.Buttons.Window}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Buttons.Window.Highlight" Color="{DynamicResource SAMM.Colors.Buttons.Window.Highlight}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Buttons.WindowExit.Highlight" Color="{DynamicResource SAMM.Colors.Buttons.WindowExit.Highlight}"/>
+	
+	<!-- Text Brushes -->
 	<SolidColorBrush x:Key="SAMM.Brushes.Text.Default" Color="{DynamicResource SAMM.Colors.Text.Default}"/>
 	<SolidColorBrush x:Key="SAMM.Brushes.Text.Default.Disabled" Color="{DynamicResource SAMM.Colors.Text.Default.Disabled}"/>
 	
+	<!-- Accent Brushes -->
 	<SolidColorBrush x:Key="SAMM.Brushes.Accents.Blue" Color="{DynamicResource SAMM.Colors.Accents.Blue}"/>
 	<SolidColorBrush x:Key="SAMM.Brushes.Accents.Blue.Highlight" Color="{DynamicResource SAMM.Colors.Accents.Blue.Highlight}"/>
+	
+	<SolidColorBrush x:Key="SAMM.Brushes.Accents.Red" Color="{DynamicResource SAMM.Colors.Accents.Red}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Accents.Red.Highlight" Color="{DynamicResource SAMM.Colors.Accents.Red.Highlight}"/>
+
+	<!-- Icon Brushes -->
+	<SolidColorBrush x:Key="SAMM.Brushes.Icons.Green" Color="{DynamicResource SAMM.Colors.Icons.Green}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Icons.Blue" Color="{DynamicResource SAMM.Colors.Icons.Blue}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Icons.Red" Color="{DynamicResource SAMM.Colors.Icons.Red}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Icons.Grey" Color="{DynamicResource SAMM.Colors.Icons.Grey}"/>
+	<SolidColorBrush x:Key="SAMM.Brushes.Icons.Yellow" Color="{DynamicResource SAMM.Colors.Icons.Yellow}"/>
+	
 	
 	<!-- Corner Values -->
 	<CornerRadius x:Key="SAMM.Corner.Button">3</CornerRadius>
