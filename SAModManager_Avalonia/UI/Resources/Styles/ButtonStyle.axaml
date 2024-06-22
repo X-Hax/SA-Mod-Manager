@@ -1,0 +1,34 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Add Resources Here -->
+	<ControlTheme x:Key="{x:Type Button}" TargetType="Button">
+		<Setter Property="Background" Value="{DynamicResource SAMM.Brushes.Buttons.Default}"/>
+		<Setter Property="Foreground" Value="{DynamicResource SAMM.Brushes.Text.Default}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource SAMM.Brushes.Borders.Default}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="CornerRadius" Value="{DynamicResource SAMM.Corner.Button}"/>
+		<Setter Property="Padding" Value="8"/>
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Panel>
+					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+							CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}"
+							VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+					<ContentPresenter x:Name="PART_ContentPresenter" Foreground="{TemplateBinding Foreground}"
+									  Content="{TemplateBinding Content}"
+									  Margin="{TemplateBinding Padding}"/>
+				</Panel>
+			</ControlTemplate>
+		</Setter>
+
+		<Style Selector="^:pointerover">
+			<Setter Property="Background" Value="{DynamicResource SAMM.Brushes.Buttons.Default.Highlight}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource SAMM.Brushes.Accents.Blue}"/>
+		</Style>
+
+		<Style Selector="^:pressed">
+			<Setter Property="Background" Value="{DynamicResource SAMM.Brushes.Accents.Blue}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource SAMM.Brushes.Accents.Blue.Highlight}"/>
+		</Style>
+	</ControlTheme>
+</ResourceDictionary>

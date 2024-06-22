@@ -1,4 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- Include Style Resources Here -->
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceInclude Source="/UI/Resources/Styles/ButtonStyle.axaml"/>
+	</ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
