@@ -6,14 +6,14 @@
 	<img src="https://github.com/X-Hax/SA-Mod-Manager/actions/workflows/build.yml/badge.svg">
 </h1>
 
-Version 1.2
+Version 1.3
 
 
 ## System Requirements
 
 To use SA Mod Manager, you must have:
 * Windows 7 or later
-* [.NET Desktop Runtime 7.0](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.9-windows-x64-installer)
+* [.NET Desktop Runtime 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.6-windows-x64-installer)
 
 ## Supported Games
 * Sonic Adventure DX PC, 2004 version (US release, but If you have the Steam version, or a different region, you can convert it to 2004 US.)
