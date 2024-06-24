@@ -126,7 +126,11 @@
 
     <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">Для работы менеджера необходим 7-zip, чтобы можно было извлекать моды и обновления.&#x0a;&#x0a;Желаете установить его сейчас?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Профили не найдены</system:String>
+    <system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Title" xml:space="preserve">Не удалась автоматическая миграция профиля</system:String>
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message1" xml:space="preserve">Менеджер модов SA не смог преобразовать ваш последний использованный профиль.</system:String>
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message2" xml:space="preserve">Был создан новый профиль по умолчанию. Вы можете повторить действие в менеджере профилей.</system:String>
+	
+	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Профили не найдены</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">Указанные профили не были найдены:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">Они будут убраны из списка профилей, а выбранный профиль будет установлен по умолчанию на первый профиль в списке.</system:String>
 
