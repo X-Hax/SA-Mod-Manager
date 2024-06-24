@@ -1551,6 +1551,10 @@ namespace SAModManager
             if (newSetup || sadxSettings.GamePath is null)
                 sadxSettings.GamePath = tempPath;
 
+            // In Portable Mode (SA Manager EXE placed in game main folder), override the game folder specified in the profile.
+            if (Directory.Exists(Path.Combine(App.StartDirectory, "SAManager")) && File.Exists(Path.Combine(App.StartDirectory, App.CurrentGame.exeName)))
+                sadxSettings.GamePath = Path.GetFullPath(App.StartDirectory);
+
             if (!string.IsNullOrEmpty(sadxSettings.GamePath) && Directory.Exists(sadxSettings.GamePath))
             {
                 textGameDir.Text = Path.GetFullPath(sadxSettings.GamePath);
@@ -1571,6 +1575,9 @@ namespace SAModManager
             if (newSetup || sa2.GamePath is null)
                 sa2.GamePath = tempPath;
 
+            // In Portable Mode (SA Manager EXE placed in game main folder), override the game folder specified in the profile.
+            if (Directory.Exists(Path.Combine(App.StartDirectory, "SAManager")) && File.Exists(Path.Combine(App.StartDirectory, App.CurrentGame.exeName)))
+                sa2.GamePath = Path.GetFullPath(App.StartDirectory);
 
             if (!string.IsNullOrEmpty(sa2.GamePath) && Directory.Exists(sa2.GamePath))
             {
