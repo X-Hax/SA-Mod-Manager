@@ -48,7 +48,8 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Frecuencia de actualización:</system:String>
 
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Ventana redimensionable</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Mantener relación de aspecto</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.StretchToWindow">Estirar a la ventana</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.DisableBorderImage">Deshabilitar imagen de reborde</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Igualar relación de renderizado</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Tamaño de ventana personalizado:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Pantalla completa sin bordes</system:String>

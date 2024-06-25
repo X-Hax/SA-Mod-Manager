@@ -126,6 +126,10 @@
     <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">No se encontraron los siguientes perfiles:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">Se eliminarán de la lista de Perfiles y el perfil seleccionado se convertirá en el primero de la lista.</system:String>
 
+    <system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Title" xml:space="preserve">Falló la migración automática de perfiles.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message1" xml:space="preserve">El Gestor de mods de SA no pudo convertir el último perfil que usaste.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message2" xml:space="preserve">Se creará un nuevo perfil por defecto. Puedes volver a intentar la conversión en el gestor de perfiles.</system:String>
+
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Error al importar</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">No se pudieron importar los siguientes archivos como perfiles:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Por favor, asegúrate de que sólo utilizas archivos JSON de perfil de juego o archivos INI del antiguo cargador.</system:String>

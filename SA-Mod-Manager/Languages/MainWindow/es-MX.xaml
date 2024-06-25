@@ -125,8 +125,9 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">La ventana del juego arrancará en modo ventana.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Permite cambiar el tamaño de la ventana del juego mientras está abierta.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse">Muestra el cursor del mouse en el modo pantalla completa.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeAspectRatio">Mantiene la relación de aspecto de la ventana al redimensionarla si está activada la opción Ventana redimensionable.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Mantiene la relación de aspecto de la resolución ajustada al establecer un tamaño de ventana personalizado.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.StretchToWindow">Estira el renderizado del juego para ajustarlo al tamaño de la ventana. Puede provocar una imagen estirada.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DisableBorderImage">Impide que la imagen de los bordes sea cargada y renderizada.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Mantiene la relación de aspecto de la resolución ajustada al establecer un tamaño de ventana personalizado.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Establece el tamaño de la ventana independientemente de la resolución. Por ejemplo, permite jugar a 4K en una ventana más pequeña.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Ajusta la velocidad de fotogramas del juego.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">Ajusta el tipo de emulación con el renderizador. Se recomienda Automática. Solo usa Emulada si usas una tarjeta gráfica/chipset muy antiguo(a).</system:String>
