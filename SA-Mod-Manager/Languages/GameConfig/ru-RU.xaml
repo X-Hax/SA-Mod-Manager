@@ -27,6 +27,11 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Оконный режим, который работает как окно без рамки, но не на весь экран.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Разрешение:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Размер окна:</system:String>
+	
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Родное разрешение</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">Половина от родного</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">Двойное родное</system:String>
+	
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Настройки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Принудительно вкл. 4:3</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Включить верт. синхронизацию</system:String>
@@ -34,8 +39,9 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамическое распределение памяти</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Частота кадров:</system:String>
 
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Изменяемое окно</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Сохранять пропорции окна</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Изменяемое окно</system:String>    
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.StretchToWindow">Растянуть по окну</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.DisableBorderImage">Откл. фон. изображение</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Сохранять пропорции рендера</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Свой размер окна:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Окно без рамки</system:String>
@@ -91,13 +97,13 @@
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Правая и левая кнопки мыши</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Action">Действие:</system:String>
     <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.BtnAssignment">Назначение кнопок:</system:String>
-    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Прыжок:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Действие:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Отмена/Атака:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Старт/Назначить:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Поворот камеры влево:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Поворот камеры вправо:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Свистеть:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Прыжок</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Действие</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Отмена/Атака</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Старт/Назначить</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Поворот камеры влево</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Поворот камеры вправо</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Свистеть</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2">Настройка улучшенного управления</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Открыть AppLauncher</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Скачать AppLauncher</system:String>
