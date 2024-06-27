@@ -303,6 +303,9 @@ namespace SAModManager
 
         private async void NewModBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (App.CurrentGame?.id == SetGame.None)
+                return;
+
             var form = new InstallModOptions();
             var choice = form.Ask();
 
@@ -2572,6 +2575,9 @@ namespace SAModManager
 
         private void btnHealthCheck_Click(object sender, RoutedEventArgs e)
         {
+            if (App.CurrentGame?.id == SetGame.None)
+                return;
+
             MessageWindow message = new(Lang.GetString("MessageWindow.Warnings.HealthCheckTitle"), Lang.GetString("MessageWindow.Warnings.HealthCheck"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Caution, button: MessageWindow.Buttons.YesNo);
 
             message.ShowDialog();
