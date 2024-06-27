@@ -19,10 +19,9 @@
     <system:String x:Key="GamePatches.LightFix">Полагодження Освітлення</system:String>
     <system:String x:Key="GamePatches.KillGBIX">Вимкнути GBIX (Експериментально)</system:String>
     <system:String x:Key="GamePatches.DisableCDCheck">Вимкнути Перевірку CD</system:String>
-	<system:String x:Key="GamePatches.ExtendedSaveSupport">Extended Save Support</system:String>
+	<system:String x:Key="GamePatches.ExtendedSaveSupport">Розширена Підтримка Збережень</system:String>
     <system:String x:Key="GamePatches.CrashGuard">Захист від Аварій</system:String>
-    <system:String x:Key="GamePatches.XInputFix">XInput Fix</system:String>
-	
+    <system:String x:Key="GamePatches.XInputFix">Полагодження XInput</system:String>
 	
     <system:String x:Key="GamePatches.HRTFSoundDesc">Налаштовує DirectSound для використання більш розвинених алгоритмів обробки 3D звуку. Цей патч не є обов'язковим якщо BASS для SFX увімкнено.</system:String>
     <system:String x:Key="GamePatches.KeepCamSettingsDesc">Лагодить глюк який не дозволяє налаштуванням Вільної Камери правильно зберегтися після (пере)завантаження мапи.</system:String>

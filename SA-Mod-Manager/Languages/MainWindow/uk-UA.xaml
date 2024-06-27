@@ -72,6 +72,7 @@
 
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Про Нас</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">Про Мод</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SA Mod Manager це програма яка легко дозволяє керувати модифікаціями для ігор Sonic Adventure.</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Співробітники</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Вихідний Код Мод Менеджеру</system:String>
@@ -119,7 +120,9 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Примушує гру до співвідношення сторін 4:3, не зважаючи на роздільну здатність.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Вмикає V-Sync.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Якщо увімкнено, і гра буде не у фокусі, вона призупиниться.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Встановлює повне вікно гри на Повну без країв.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fullscreen">Вікно гри запуститься на повний екран.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Гра завантажиться у віконному режимі.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Встановлює гру у повному екрані до без-рамок.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Масштабує елементи UI у повному екрані.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Гра запуститься у віконному режимі.</system:String>
