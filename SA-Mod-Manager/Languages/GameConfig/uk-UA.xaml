@@ -8,7 +8,9 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics">Графіка</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input">Введення</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound">Звук</system:String>
+	<system:String x:Key="GameConfig.Tabs.Lang">Мова</system:String>
 	<system:String x:Key="GameConfig.Tabs.Patches">Патчі</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options">Налаштування</system:String>
 
 	<!--Graphics Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Налаштування Дисплею</system:String>
@@ -25,21 +27,35 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Як Наповну без Країв, але у вікні.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Роздільна Здатність:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Розмір Вікна:</system:String>
+
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r480">640x480</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r600">800x600</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r768">1024x768</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r864">1152x864</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r960">1280x960</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1024">1280x1024</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Основа</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">1/2x Основи</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">2x Основи</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r720">720p</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1080">1080p</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r4K">4K</system:String>
+
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Налаштування</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Примусове 4:3</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Увімкнути V-Sync</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Зупинити коли не у Фокусі </system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Зупинити коли не у Фокусі</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Динамічно розподіляти буфери</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Refresh Rate:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Частота Оновлення:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Вікно з Змінним Розміром</system:String>
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeAspectRatio">Maintain Aspect Ratio</system:String>
-    
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.StretchToWindow">Розтягувати на вікно</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.DisableBorderImage">Вимкнути Бокові Картинки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Зберігати Співвідношення</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Свій Розмір Вікна:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Наповну без Країв</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Показувати Мишку у Повному Екрані</system:String>
     
-    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Збільшувати до Екрану</system:String>
+
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Інші Опіції Графіки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Частота Кадрів:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Рівень Деталізації:</system:String>
@@ -53,7 +69,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Розтягнути [Початкове]</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit">Вписати</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Заповнити</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">Режим Щаповнення FMV:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">Режим Заповнення FMV:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.TexFilter">Фільтрація Текстур:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.UIFilter">Фільтрація GUI</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Покращення</system:String>
@@ -100,6 +116,7 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Відкрити AppLauncher</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Отримати AppLauncher</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Краще Введення це інтеграція SDL2 у SADX. Ця опція рекомендована, бо вона лагодить помилки наявні у оригінальній системі DInput</system:String>
+    <!--#endregion-->					 
 
 	<!--Sound Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Налаштування Звуку</system:String>
@@ -131,14 +148,15 @@
 	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Поз Y:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">поз Z:</system:String>
 	<system:String x:Key="TestSpawn.Group.Advanced.Angle">Кут:</system:String>
-    <system:String x:Key="TestSpawn.Player2">Player 2:</system:String>
-    <system:String x:Key="TestSpawn.Mission">Mission:</system:String>
+    <system:String x:Key="TestSpawn.Player2">Гравець 2:</system:String>
+    <system:String x:Key="TestSpawn.Mission">Місія:</system:String>
 
     <system:String x:Key="TestSpawn.Language.Voice">Мова Голосів:</system:String>
 	<system:String x:Key="TestSpawn.Language.Text">Мова Тексту:</system:String>
-	<system:String x:Key="TestSpawn.Language.Japanese">日本語і</system:String>
+	<system:String x:Key="TestSpawn.Language.Japanese">日本語</system:String>
 	<system:String x:Key="TestSpawn.Language.English">English</system:String>
 	<system:String x:Key="TestSpawn.Language.French">Français</system:String>
+    <system:String x:Key="TestSpawn.Language.Italian">Italiano</system:String>
 	<system:String x:Key="TestSpawn.Language.Spanish">Español</system:String>
 	<system:String x:Key="TestSpawn.Language.German">Deutsch</system:String>
 	<!--#endregion-->

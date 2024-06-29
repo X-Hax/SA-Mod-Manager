@@ -15,7 +15,7 @@
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Головний Сейв</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Сейв Чао</system:String>
     <system:String x:Key="EditMod.Tabs.Btn.Advanced">Додатково</system:String>
-    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Include Directories:</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Включити Папки:</system:String>
 
     <system:String x:Key="EditMod.Tabs.Updates">Оновлення</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Method">Метод Оновлення</system:String>

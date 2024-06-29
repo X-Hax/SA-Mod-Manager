@@ -15,8 +15,9 @@
 	<system:String x:Key="ManagerProfile.Errors.ProfileExists">Профіль з цим ім'ям вже існує, будь ласка використайте інше ім'я.</system:String>
 	
 	<system:String x:Key="ManagerProfile.ToolTip.Create">Створити Новий Профіль.</system:String>
-	<system:String x:Key="ManagerProfile.ToolTip.Migrate">Мігрує старі профілі у новий формат. Деякі налаштування можуть бути загублені.</system:String>
+	<system:String x:Key="ManagerProfile.ToolTip.Migrate">Імпортує існуючі профілі (json) або Мігрує старі профілі (ini).</system:String>
 
 	<system:String x:Key="NewProfile.Title">Створити Профіль</system:String>
 	<system:String x:Key="NewProfile.Text.NewProfile">Новий Профіль</system:String>
+	<system:String x:Key="NewProfile.CheckBox.ModsAndCodes">Зберегти зараз вибрані коди і моди.</system:String>
 </ResourceDictionary>
