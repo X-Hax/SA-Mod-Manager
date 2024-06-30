@@ -211,14 +211,17 @@
 				<TabItem x:Name="tabCodes" Header="{DynamicResource Manager.Tabs.Codes}">
 					<Grid>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
 						</Grid.ColumnDefinitions>
+                        
 						<ListView x:Name="CodeListView" Grid.Column="0" Margin="5">
 							<ListView.View>
+                             
 								<GridView>
+                                 
 									<GridView.Columns>
-										<GridViewColumn Header="{DynamicResource CommonStrings.Name}" Width="Auto" DisplayMemberBinding="{Binding Path=Name}"/>
+										<GridViewColumn Header="{DynamicResource CommonStrings.Name}"  Width="Auto" DisplayMemberBinding="{Binding Path=Name}"/>
                                         <GridViewColumn Header="{DynamicResource CommonStrings.Author}" Width="Auto" DisplayMemberBinding="{Binding Path=Author}"/>
 									</GridView.Columns>
 								</GridView>
@@ -316,8 +319,7 @@
 				<ColumnDefinition Width="Auto"/>
 			</Grid.ColumnDefinitions>
             <CheckBox x:Name="openFolderChk" Content="{DynamicResource CommonStrings.OpenFolder}" Grid.Column="1" VerticalAlignment="Center" IsChecked="True"></CheckBox>
-            <CheckBox x:Name="checkAdvancedOptions" Content="{DynamicResource EditMod.Tabs.Btn.Advanced}" Grid.Column="3" VerticalAlignment="Center" Click="checkAdvancedOptions_Click"/>
-		</Grid>
+        </Grid>
 
 		<Grid Grid.Row="2" HorizontalAlignment="Right">
 			<Grid.ColumnDefinitions>

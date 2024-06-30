@@ -92,9 +92,8 @@ namespace SAModManager
                 Title = Lang.GetString("EditMod.Header.NewMod");
                 authorBox.Text = App.ManagerSettings.ModAuthor;
                 versionBox.Text = "0.1";
-                bottomGrid.Children.Remove(checkAdvancedOptions);
-                tabCodes.IsEnabled = false;
-                tabCodes.Visibility = Visibility.Collapsed;
+
+
             }
 
             DataContext = new SAModInfo();
@@ -107,20 +106,6 @@ namespace SAModManager
 
             // TODO: Remove when schema builder is fully implemented.
             tabSchema.Visibility = Visibility.Collapsed;
-
-            if (dependencies.Count > 0 || Schema.Groups.Count > 0)
-            {
-                checkAdvancedOptions.IsChecked = true;
-                tabDepdencies.Visibility = Visibility.Visible;
-                // TODO: Uncomment once schema builder is implemented.
-                //tabSchema.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                tabDepdencies.Visibility = Visibility.Hidden;
-                // TODO: Uncomment once the schema builder is implemented.
-                //tabSchema.Visibility = Visibility.Hidden;
-            }
 
         }
         #endregion
@@ -161,6 +146,9 @@ namespace SAModManager
             if (!string.IsNullOrEmpty(nameBox.Text))
             {
                 modIDBox.Text = GenerateModID().Replace(" ", "");
+
+                if (editMod == false)
+                    folderName = Path.Combine(App.CurrentGame.modDirectory, nameBox.Text);
             }
             else
             {
@@ -195,9 +183,10 @@ namespace SAModManager
         #region Dependency Tab Functions
         private void btnAddDependency_Click(object sender, RoutedEventArgs e)
         {
-            if (editMod)
+            if (!string.IsNullOrEmpty(nameBox.Text) && !string.IsNullOrEmpty(folderName))
             {
-                selectWindow = new SelectDependencies();
+
+                selectWindow = new SelectDependencies(dependencies);
                 selectWindow.ShowDialog();
                 if (selectWindow.IsClosed)
                     if (selectWindow.NeedRefresh)
@@ -207,7 +196,7 @@ namespace SAModManager
 
         private void btnRemDependency_Click(object sender, RoutedEventArgs e)
         {
-            if (editMod)
+            if (DependencyGrid.Items is not null && DependencyGrid.Items.Count > 0)
             {
                 List<ModDependency> selected = DependencyGrid.SelectedItems.Cast<ModDependency>().ToList();
                 foreach (ModDependency dep in selected)
@@ -347,7 +336,8 @@ namespace SAModManager
 
         private void SaveModDependencies(ref SAModInfo mod, ref string[] modIniString)
         {
-            mod.Dependencies.Clear();
+
+            mod.Dependencies = new();
             if (DependencyGrid.Items.Count > 0)
             {
                 foreach (ModDependency dep in DependencyGrid.Items)
@@ -364,15 +354,22 @@ namespace SAModManager
                 }
             }
 
-            var modIniStringList = modIniString.ToList();
-
-            for (int i = 0; i < modIniStringList.Count; i++)
+            //remove all dependencies from mod.ini we will add the missing ones after
+            if (modIniString is not null)
             {
-                if (modIniStringList[i].Contains("Dependency"))
-                    modIniStringList.Remove(modIniStringList[i]);
-            }
+                var modIniStringList = modIniString.ToList();
+                List<int> indicesToRemove = new List<int>();
+                for (int i = 0; i < modIniStringList.Count; i++)
+                {
+                    if (modIniStringList[i].Contains("Dependency"))
+                        indicesToRemove.Add(i);
+                }
 
-            modIniString = modIniStringList.ToArray();
+                for (int i = indicesToRemove.Count - 1; i >= 0; i--)
+                    modIniStringList.RemoveAt(indicesToRemove[i]);
+
+                modIniString = modIniStringList.ToArray();
+            }
         }
 
         private void LoadDependencies(SAModInfo mod)
@@ -387,10 +384,10 @@ namespace SAModManager
             mod.IncludeDirs = new();
 
             if (string.IsNullOrEmpty(includeDirBox.Text) == false)
-            {  
+            {
                 string text = includeDirBox.Text.Trim();
                 string[] inclurDirList = text.Split(',');
-           
+
                 foreach (string includeDir in inclurDirList)
                 {
                     string trimmedIncludeDir = includeDir.Trim();
@@ -398,7 +395,7 @@ namespace SAModManager
                     {
                         mod.IncludeDirs.Add(trimmedIncludeDir);
                         string includeDirFolder = Path.Combine(modPath, trimmedIncludeDir);
-           
+
                         if (Directory.Exists(includeDirFolder) == false)
                             Directory.CreateDirectory(includeDirFolder);
                     }
@@ -465,12 +462,6 @@ namespace SAModManager
         #region Build Functions
         private void NewModSetup(string moddir)
         {
-            if (Directory.Exists(moddir))
-            {
-                new MessageWindow(Lang.GetString("MessageWindow.Errors.ModAlreadyExists.Title"), Lang.GetString("MessageWindow.Errors.ModAlreadyExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-                return;
-            }
-
             Directory.CreateDirectory(moddir);
 
             if (categoryBox.Text == "Music")
@@ -484,7 +475,7 @@ namespace SAModManager
                         Directory.CreateDirectory(@Path.Combine(moddir, "gd_PC/ADX"));
                         break;
                 }
-           
+
             }
             else if (categoryBox.Text == "Sound")
             {
@@ -510,7 +501,7 @@ namespace SAModManager
                         Directory.CreateDirectory(@Path.Combine(moddir, "gd_PC/PRS"));
                         break;
                 }
-              
+
             }
             else
             {
@@ -535,7 +526,7 @@ namespace SAModManager
         {
 
             //Assign variables to null if the string are empty so they won't show up at all in mod.ini.
-            SAModInfo newMod = editMod ? Mod : new SAModInfo();
+            SAModInfo newMod = Mod;
             newMod.Name = nameBox.Text;
             newMod.Author = authorBox.Text;
             newMod.AuthorURL = authorURLBox.Text;
@@ -548,18 +539,18 @@ namespace SAModManager
             newMod.ModID = modIDBox.Text;
             newMod.DLLFile = dllText.Text;
 
+
             SaveModUpdates(ref newMod);
 
             var modIniPath = Path.Combine(moddir, "mod.ini");
+            SaveModIncludeDirectories(ref newMod, moddir);
+
+            string[] modIniString = editMod ? File.ReadAllLines(modIniPath) : null;
+            SaveModDependencies(ref newMod, ref modIniString);
 
             if (editMod)
             {
                 //since not all the info from the original mod.ini are saved, we backup the whole ini here
-                string[] modIniString = File.ReadAllLines(modIniPath);
-
-                SaveModDependencies(ref newMod, ref modIniString);
-                SaveModIncludeDirectories(ref newMod, moddir);
-
                 var oldmodIni = IniFile.Load(modIniString);
                 oldmodIni.Remove("Config");
                 var edited = IniSerializer.Serialize(newMod);
@@ -577,7 +568,6 @@ namespace SAModManager
             }
             else
             {
-                SaveModIncludeDirectories(ref newMod, moddir);
                 var ResultNewMod = IniSerializer.Serialize(newMod);
                 IniFile.ClearEmptyGroup(ResultNewMod);
                 IniFile.Save(ResultNewMod, modIniPath);
@@ -588,7 +578,16 @@ namespace SAModManager
         private void SaveMod(string modPath)
         {
             if (!editMod)
+            {
+                if (Directory.Exists(modPath))
+                {
+                    new MessageWindow(Lang.GetString("MessageWindow.Errors.ModAlreadyExists.Title"), Lang.GetString("MessageWindow.Errors.ModAlreadyExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+                    return;
+                }
+
                 NewModSetup(modPath);
+            }
+
 
             HandleSaveRedirection(modPath);
             SaveCodes(modPath);
@@ -671,41 +670,21 @@ namespace SAModManager
             }
         }
 
-        private void checkAdvancedOptions_Click(object sender, RoutedEventArgs e)
-        {
-
-            if ((bool)checkAdvancedOptions.IsChecked)
-            {
-                tabDepdencies.Visibility = Visibility.Visible;
-                // TODO: Once the schema builder is properly implemented, this can be restored.
-                //tabSchema.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                if (tabDepdencies.IsSelected || tabSchema.IsSelected)
-                {
-                    tabSchema.IsSelected = false;
-                    tabDepdencies.IsSelected = false;
-                    tabProperties.IsSelected = true;
-                }
-
-                tabDepdencies.Visibility = Visibility.Hidden;
-                // TODO: Also remove this comment once schema builder is finished.
-                //tabSchema.Visibility = Visibility.Hidden;
-            }
-        }
 
         private void btnNewCode_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(folderName) || string.IsNullOrEmpty(nameBox.Text))
+                return;
+
             NewCode newCodeWindow = new();
             newCodeWindow.ShowDialog();
 
             if (newCodeWindow.Code != null)
-            {
                 CodeList.Codes.Add(newCodeWindow.Code);
-            }
 
-            SaveCodes(Path.Combine(App.CurrentGame.modDirectory, folderName));
+
+            if (editMod)
+                SaveCodes(Path.Combine(App.CurrentGame.modDirectory, folderName));
 
             CodeListView.Items.Refresh();
         }
