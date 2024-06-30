@@ -94,15 +94,14 @@
 
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Невідома Помилка</system:String>
 	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Сталася невідома нам помилка.</system:String>
+
     <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Не вдалося видалити мод {0}.&#x0a;Впевніться що файли не використовуються іншою програмою, а потім спробуйте ще.</system:String>
     <system:String x:Key="MessageWindow.Errors.ProfileLoad">Сталася неочікувана помилка при завантаження профілів, якщо помилка залишається, будь ласка, повідомте про неї.</system:String>
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Не вдалося створити папку налаштувань у {0}.&#x0a;Менеджер Модів не зможе працювати правильно.</system:String>
-    <system:String x:Key="MessageWindow.Errors.UpdateInstallCopy" xml:space="preserve">Не вдалося встановити оновлення {0}.&#x0a;Якщо гра відкрита, вимкніть її і спробуйте ще.</system:String>
-
+    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Не вдалося встановити оновлення {0}.&#x0a;Якщо гра відкрита, вимкніть її і спробуйте ще.</system:String>
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Error Reading Ini File</system:String>
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">An unexpected error occurred while reading an ini file. Ini files cannot have the same key or group multiple times.</system:String>
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Mod Name: {0}&#x0a;Mod Author: {1}&#x0a;</system:String>
-    <!--> this is assuming the ini file was a mod <!-->
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
     <!--#endregion-->
 	
@@ -111,21 +110,27 @@
     <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Чи бажаєш продовжити? (Дію не звернути)</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Ти зараз вимкнеш Перенапрям Збереження для цього моду. Якщо продовжиш, будь-який сейв у папці моду буде видалено.&#x0a;&#x0a;Чи бажаєш продовжити?</system:String>
-
 	<system:String x:Key="MessageWindow.Warnings.DeleteProfile">Певен що хочеш видалити вибрані профілі?</system:String>
-	
 	<system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Ця дія пере-завантажить усі вибрані моди на диск.&#x0a;&#x0a;Певен що хочеш продовжити?</system:String>
-	
+
 	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">Це може спричинити видалення усіх ДАНИХ КОРИСТУВАЧА У МОДІ (ФАЙЛИ ЗБЕРЕЖЕННЯ, НАЛАШТУВАННЯ) при наступному оновленні! Щоб запобігти цьому, Не роби цього на модах які ти не створював.&#x0a;&#x0a;Чи бажаєш продовжити?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime не встановлено!&#x0a;&#x0a;Хочеш встановити зараз?</system:String>
-
 	<system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Це видалить усі вибрані коди.&#x0a;&#x0a;Чи бажаєш продовжити?</system:String>
-
     <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">ти зараз вимкнеш оновлення для цього моду. Якщо продовжиш, Менеджер НЕ ПЕРЕВІРЯТИМЕ оновлення для нього (поки не увімкнеш назад).&#x0a;Певен що хочеш продовжти?</system:String>
-
     <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">Мод Менеджеру потрібен 7-Zip щоб розпаковувати та оновлювати моди.&#x0a;&#x0a;Чи бажаєш встановити зараз?</system:String>
 
+	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Профілі не Знайдено</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">Наступні профілі не було знайдено:</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">Їх буде видалено зі списку а активним стане перший наявий у списку.</system:String>
+
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Title" xml:space="preserve">Помилка у Автоматичний Міграції Профілів</system:String>
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message1" xml:space="preserve">SA Mod Manager не зміг конвертувати твій останній використаний профіль.</system:String>
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message2" xml:space="preserve">Новий основний профіль буде вибрано. Ти можеш спробувати конвертувати у Менеджері Профілів.</system:String>
+
+	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Помилка Імпортування</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">Наступні файли не вдалося імпортувати як профілі:</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;впевніться що ви використовуєте тільки JSON файли або INI файли старого завантажувача модів.</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->
@@ -137,11 +142,10 @@
     <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Результати Перевірки</system:String>
     <system:String x:Key="MessageWindow.Information.ModPassedVerif">Всі вибрані моди пройшли перевірку успішно.</system:String>
 
-    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Game found</system:String>
-    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">{0} game has been detected at '{1}'&#x0a;&#x0a;Would you like to download and install the Mod Loader?</system:String>
-    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Please download and install SADX Mod Installer to convert your game to 2004. (Your saves will be converted as well).</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Гру Знайдено</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">{0} гру було знайдено у '{1}'&#x0a;&#x0a;Бажаєте завантажити та встановити Завантажувач Модів?</system:String>
     <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">Папка гри SADX знайдена, Але схоже на те що це версія Steam.&#x0a;Завантажувач Модів працює тільки з версією 2004 року.&#x0a;&#x0a;Чи бажаєш встановити Mod Installer? Він перетворить твою версію на версію 2004 року (Збереження також будуть конвертовані).</system:String>
-
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Please download and install SADX Mod Installer to convert your game to 2004. (Your saves will be converted as well).</system:String>
 	<system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Перевірка Цілісності</system:String>
 	<system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Ти зараз запустиш Перевірку Цілісності Гри. Вона перевірить усі файли гри окрім аудіо.&#x0a;&#x0a;Чи бажаєш продовжити?</system:String>
 
@@ -151,6 +155,7 @@
 
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Перевірку Пройдено</system:String>
 	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Всі файли були перевірені.</system:String>
+	
     <system:String x:Key="MessageWindow.Information.Exception.Title">Включити налаштування</system:String>
     <system:String x:Key="MessageWindow.Information.Exception.Message">Чи хочете скопіювати налаштування Менеджеру та Профілю щоб додати їх до повідомлення?&#x0a;&#x0a;Це не обов'язково, але це може допомогти у вирішенні проблем.</system:String>
 

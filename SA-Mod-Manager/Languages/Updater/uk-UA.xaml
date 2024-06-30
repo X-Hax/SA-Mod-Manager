@@ -13,6 +13,10 @@
     <system:String x:Key="Updater.DL.Dep.Completed">Готово.</system:String>
     <system:String x:Key="Updater.DL.Dep.Copying">Копіюємо Файли...</system:String>
 
+    <system:String x:Key="Updater.DL.Offline.Title">Оффлайн Встановлення</system:String>
+    <system:String x:Key="Updater.DL.Offline.Failed">Не вдалося завантажити {0}</system:String>
+    <system:String x:Key="Updater.DL.Offline.InstallAttempt">Намагаємося оновитись оффлайн, зачекайте будь ласка...</system:String>
+
     <!--Mod Update-->
     <system:String x:Key="Updater.DL.Mod.Init">Готуємо Завантаження, зачекайте будь ласка...</system:String>
     <system:String x:Key="Updater.DL.Mod.Extracting">Видобуваємо...</system:String>
@@ -23,6 +27,9 @@
     <system:String x:Key="Updater.DL.Mod.UpdatingMod">Оновлюємо мод</system:String>
     <system:String x:Key="Updater.DL.Mod.StartingDownload">Початок завантаження...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadComplete">Завантаження завершено.</system:String>
+
+    <system:String x:Key="Updater.DL.Mod.ManifestFail">Не вдалося завантажити маніфест</system:String>
+    <system:String x:Key="Updater.DL.Mod.ManifestApplyFail">Не вдалося застосувати маніфест</system:String>
 
 
 
