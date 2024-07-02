@@ -24,6 +24,7 @@
     <system:String x:Key="UpdateStatus.FailedUpdateDependencies">Echec de la mise à jour des Dépendences</system:String>
     <system:String x:Key="UpdateStatus.ManagerUpdate">Mise à jour de SA Mod Manager...</system:String>
     <system:String x:Key="UpdateStatus.LoaderUpdate">Mise à jour du Mod Loader...</system:String>
+    <system:String x:Key="UpdateStatus.LoaderUpdateManual">Mod Loader mis à jour localement.</system:String>
     <system:String x:Key="UpdateStatus.LoaderInstalled">Installation du Mod Loader avec succès</system:String>
     <system:String x:Key="UpdateStatus.LoaderUninstalled">Désinstallation du Mod Loader avec succès</system:String>
     <system:String x:Key="UpdateStatus.TotalMods">{0} Mods Chargés</system:String>

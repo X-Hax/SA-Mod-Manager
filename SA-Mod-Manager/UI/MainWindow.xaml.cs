@@ -1682,6 +1682,7 @@ namespace SAModManager
 
                     if (!hash1.SequenceEqual(hash2))
                     {
+                        UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderUpdateManual"), 4000);
                         File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
                     }
                 }
@@ -2474,7 +2475,7 @@ namespace SAModManager
                 await App.EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
-                UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
+                UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));      
             }
         }
 

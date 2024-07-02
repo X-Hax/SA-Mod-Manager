@@ -25,6 +25,7 @@
     <system:String x:Key="UpdateStatus.ManagerUpdate">Оновлюємо SA Mod Manager...</system:String>
     <system:String x:Key="UpdateStatus.LoaderUpdate">Оновлюємо Завантажувач Модів...</system:String>
     <system:String x:Key="UpdateStatus.LoaderInstalled">Успішно Встановлено Завантажувач Модів</system:String>
+    <system:String x:Key="UpdateStatus.LoaderUpdateManual">Updated Mod Loader locally.</system:String>
     <system:String x:Key="UpdateStatus.LoaderUninstalled">Успішно Прибрано Завантажувач Модів</system:String>
     <system:String x:Key="UpdateStatus.TotalMods">Наявно {0} Модів</system:String>
     <system:String x:Key="UpdateStatus.TotalCodes">Наявно {0} Кодів</system:String>

@@ -25,6 +25,7 @@
     <system:String x:Key="UpdateStatus.ManagerUpdate">SA Mod Manager 업데이트 중...</system:String>
     <system:String x:Key="UpdateStatus.LoaderUpdate">모드로더 업데이트 중...</system:String>
     <system:String x:Key="UpdateStatus.LoaderInstalled">모드로더 설치 완료</system:String>
+    <system:String x:Key="UpdateStatus.LoaderUpdateManual">Updated Mod Loader locally.</system:String>
     <system:String x:Key="UpdateStatus.LoaderUninstalled">모드로더 제거 완료</system:String>
     <system:String x:Key="UpdateStatus.TotalMods">{0}개의 모드를 불러왔습니다.</system:String>
     <system:String x:Key="UpdateStatus.TotalCodes">{0}개의 코드를 불러왔습니다.</system:String>
