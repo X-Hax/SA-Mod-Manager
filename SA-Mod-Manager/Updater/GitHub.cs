@@ -163,9 +163,15 @@ namespace SAModManager.Updater
         public CommitDetails commit { get; set; }
     }
 
+    public class CommitAuthor
+    {
+        public string name { get; set; }
+    }
+
     public class CommitDetails
     {
         public string message { get; set; }
+        public CommitAuthor author { get; set; }
     }
 
     public class CommitComparisonResponse
@@ -474,7 +480,8 @@ namespace SAModManager.Updater
                         if (message.Contains("\n"))
                             message = message[..message.IndexOf("\n", StringComparison.Ordinal)];
 
-                        text += " - " + message + "\n";
+                        string author = info[i].Commit.Author.Name;
+                        text += $" - {message} - {author}\n";
                     }
                 }
                 else //get all the commits between new version and current version
@@ -487,7 +494,8 @@ namespace SAModManager.Updater
                         if (commit.commit.message.Contains("Merge branch") && text.Length > 5)
                             continue;
 
-                        text += " - " + commit.commit.message + "\n";
+                        string author = commit.commit.author?.name ?? "Unknown";
+                        text += $" - {commit.commit.message} - {author}\n";
                     }
                 }
             }
@@ -525,7 +533,8 @@ namespace SAModManager.Updater
                     if (message.Contains("\n"))
                         message = message[..message.IndexOf("\n", StringComparison.Ordinal)];
 
-                    text += $" - {message}\n";
+                    string author = info[i].Commit.Author.Name;
+                    text += $" - {message} - {author}\n";
                 }
             }
 
