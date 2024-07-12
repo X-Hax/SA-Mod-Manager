@@ -1,18 +1,12 @@
 ﻿using SAModManager.Configuration;
-using SAModManager.Ini;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using SAModManager.UI;
-using SAModManager.Configuration.SA2;
-using SAModManager.Configuration.SADX;
 
 namespace SAModManager.Profile
 {
@@ -282,6 +276,8 @@ namespace SAModManager.Profile
                                             }
                                             break;
                                     }
+                                    if (!invalid)
+                                        File.Copy(file, newFilePath, true);
                                 }
                                 catch
                                 {
