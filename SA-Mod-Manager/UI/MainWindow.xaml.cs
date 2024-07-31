@@ -1139,6 +1139,7 @@ namespace SAModManager
             manualModUpdate = true;
             await CheckForModUpdates(true);
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
+            Util.ClearTempFolder();
             Dispatcher.Invoke(Refresh);
         }
 
@@ -1320,7 +1321,6 @@ namespace SAModManager
             {
                 WorkingDirectory = App.CurrentGame.gameDirectory,
                 UseShellExecute = true,
-
             }));
 
             try

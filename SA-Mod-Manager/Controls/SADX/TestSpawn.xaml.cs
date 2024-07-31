@@ -418,23 +418,31 @@ namespace SAModManager.Controls.SADX
 
             var mainWindow = ((MainWindow)Application.Current.MainWindow);
 
-            string executablePath = mainWindow.EnabledMods?.Select(item => mainWindow.mods[item]?.EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
-
             string commandLine = GetTestSpawnCommandLine();
 
-            ProcessStartInfo startInfo = new(executablePath)
+
+            string executablePath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+            foreach (var mod in mainWindow.EnabledMods)
+            {
+                SAModInfo checkmod = mainWindow.mods[mod];
+                if (checkmod.EXEFile?.Length > 0)
+                    executablePath = Path.Combine(App.CurrentGame.modDirectory, mod, checkmod.EXEFile);
+            }
+
+            Process process = Process.Start((new ProcessStartInfo(executablePath)
             {
                 WorkingDirectory = App.CurrentGame.gameDirectory,
                 Arguments = commandLine,
                 UseShellExecute = true,
-            };
+            }));
 
-            Process process = Process.Start(startInfo);
+
             try
             {
                 process?.WaitForInputIdle(10000);
             }
             catch { }
+
         }
 
         private void tsComboLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
