@@ -30,12 +30,23 @@ namespace SAModManager
 			if (addColon)
 				content += ":";
 
-			Label label = new()
+            TextBlock textBlock = new()
+            {
+                Text = content,
+                TextTrimming = TextTrimming.CharacterEllipsis,
+                TextWrapping = TextWrapping.NoWrap,
+                Padding = new Thickness(2),
+				MaxWidth = 240,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            Label label = new()
 			{
-				Content = content,
+				Content = textBlock,
 				VerticalAlignment = VerticalAlignment.Center,
 				Tag = property.HelpText
 			};
+
 			return label;
 		}
 
@@ -84,7 +95,7 @@ namespace SAModManager
 			Dictionary<string, string> list = EnumItems(enums.Find(x => x.Name == property.Type));
 			ComboBox box = new()
 			{
-				Width = 200,
+				Width = 190,
 				SelectedValuePath = "Key",
 				DisplayMemberPath = "Value",
 				SelectedValue = storeInfo.GetConfigValue(),
@@ -351,6 +362,7 @@ namespace SAModManager
 					Text = groupBoxHeader,
 					FontSize = 14,
 					FontWeight = FontWeights.Bold,
+			
 				};
 
 				box.Header = headerTex;
