@@ -72,6 +72,20 @@ namespace SAModManager
             InitializeComponent();
             UpdateDLLData();
             GraphicsManager.SetupGraphics();
+
+            try
+            {
+                var set = App.ManagerSettings;
+                if (set is not null)
+                {
+                    if (set.managerWidth >= this.MinWidth && set.managerWidth <= this.MaxWidth)
+                        this.Width = set.managerWidth;
+
+                    if (set.managerHeight >= this.MinHeight && set.managerHeight <= this.MaxHeight)
+                        this.Height = set.managerHeight;
+                }
+            }
+            catch { }
         }
 
         #region Form: Functions
@@ -1766,7 +1780,10 @@ namespace SAModManager
                 return;
 
             // Save Manager Settings
+       
             App.ManagerSettings.CurrentSetGame = (int)App.CurrentGame?.id;
+            App.ManagerSettings.managerWidth = this.Width;
+            App.ManagerSettings.managerHeight = this.Height;
             App.ManagerSettings.Serialize(App.ManagerConfigFile);
            
             UpdateManagerInfo();
@@ -1935,6 +1952,7 @@ namespace SAModManager
 
         private void Save_AppUserSettings()
         {
+           
             Settings.Default.Save();
         }
         #endregion

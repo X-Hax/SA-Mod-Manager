@@ -624,7 +624,7 @@ namespace SAModManager
         private static ManagerSettings LoadManagerConfig()
         {
             ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
-
+    
             switch (settings.CurrentSetGame)
             {
                 case (int)SetGame.None:
