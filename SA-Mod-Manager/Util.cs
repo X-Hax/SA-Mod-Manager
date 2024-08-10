@@ -10,8 +10,10 @@ using System.Diagnostics;
 using System.IO.Compression;
 using Microsoft.Win32;
 using System.Security.Principal;
-using System.Security.AccessControl;
 using System.Reflection;
+using NetCoreInstallChecker.Structs.Config;
+using NetCoreInstallChecker;
+using NetCoreInstallChecker.Structs.Config.Enum;
 
 namespace SAModManager
 {
@@ -297,7 +299,7 @@ namespace SAModManager
                      {
                          new DownloadInfo("7-zip", "7z.exe", App.tempFolder, uri, DownloadDialog.DLType.Download)
                      };
-         
+
                      var dl = new DownloadDialog(info);
                      dl.StartDL();
                  }
@@ -515,7 +517,7 @@ namespace SAModManager
         {
 
             CreateSafeDirectory(destinationPath);
-            
+
             foreach (string file in Directory.GetFiles(sourcePath))
             {
                 string destFile = Path.Combine(destinationPath, Path.GetFileName(file));
@@ -565,6 +567,49 @@ namespace SAModManager
                 {
                     MoveDirectory(subfolder, destinationSubfolderPath);
                 }
+            }
+
+            return true;
+        }
+
+        public static async Task<bool> Net8Check()
+        {
+            var finder = new FrameworkFinder(Environment.Is64BitOperatingSystem);
+            var resolver = new DependencyResolver(finder);
+            var framework = new Framework("Microsoft.WindowsDesktop.App", "8.0.7");
+            var options = new RuntimeOptions("net8.0", framework, RollForwardPolicy.Minor);
+            var result = resolver.Resolve(options);
+
+            if (!result.Available)
+            {
+                var res = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Warning"), Lang.GetString("MessageWindow.Warnings.Net8Missing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+                res.ShowDialog();
+
+                if (res.isYes != true)
+                {
+                    return false;
+                }
+
+                FrameworkDownloader frameworkDownloader = new(framework.NuGetVersion, framework.FrameworkName);
+                var url = await frameworkDownloader.GetDownloadUrlAsync(Environment.Is64BitOperatingSystem ? Architecture.Amd64 : Architecture.x86);
+                Uri uri = new(url + "\r\n");
+
+                if (url != null)
+                {
+                    string name = "aspnetcore-runtime-8.0.exe";
+                    string fullPath = Path.GetFullPath(Path.Combine(App.tempFolder, name));
+                    var netDL = new List<DownloadInfo>
+                    {
+                        new("Net Core 8.0", name, App.tempFolder, uri, DownloadDialog.DLType.Download)
+                    };
+                    var DL = new DownloadDialog(netDL);
+                    DL.StartDL();
+
+                    if (File.Exists(fullPath))
+                        Process.Start(fullPath);
+                }
+
+                 return false;
             }
 
             return true;
@@ -654,7 +699,7 @@ namespace SAModManager
         {
             try
             {
-                if (!string.IsNullOrEmpty(path) &&!Directory.Exists(path))
+                if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }

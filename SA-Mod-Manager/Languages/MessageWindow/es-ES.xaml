@@ -130,6 +130,7 @@
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">No se pudo Importar</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">No se pudieron importar los siguientes archivos como perfiles:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Por favor, asegúrate de que estás usando un archivo .JSON de Perfil de Juego o un archivo .INI del antiguo Mod Loader.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">The new Mod Manager update requires at least .NET 8.0.7 Desktop Runtime to work.&#x0a;&#x0a;Would you like to install it now?</system:String>
     <!--#endregion-->
 
     <!--#region Information-->

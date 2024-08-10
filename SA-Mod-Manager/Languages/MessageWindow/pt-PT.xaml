@@ -105,8 +105,8 @@
 	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">Isto pode causar com que MOD USER DATA (SAVE FILES, CONFIG FILES) SEJAM PERDIDOS após a próxima atualização! Para evitar, Nunca deverá executar o manifesto em mods que não foram desenvolvidos pelo usuário.&#x0a;&#x0a;Tem a certeza que deseja continuar?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime não está instalado!&#x0a;&#x0a;Gostaria de istalar agora?</system:String>
-    
-	<!--#endregion-->
+    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">The new Mod Manager update requires at least .NET 8.0.7 Desktop Runtime to work.&#x0a;&#x0a;Would you like to install it now?</system:String>
+    <!--#endregion-->
 	
 	<!--#region Information-->
 	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">Não foram encontradas Autalizações de Mods</system:String>

@@ -136,6 +136,7 @@
 	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">The following files failed to be imported as profiles:</system:String>
 	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Please ensure you are only using Game Profile JSON files or old Loader INI files.</system:String>
 
+    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">The new Mod Manager update requires at least .NET 8.0.7 Desktop Runtime to work.&#x0a;&#x0a;Would you like to install it now?</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->
