@@ -932,7 +932,7 @@ namespace SAModManager.Configuration.SADX
 				else
 				{
 					App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
-					Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+					Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);
 					if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
 					{
 						string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });

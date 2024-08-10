@@ -71,6 +71,9 @@ namespace SAModManager.ModsCommon
 			bool check = false;
 			Dictionary<string, string> cMods = GetModReferences(allmods);
 
+			if (allmods is null || allmods.Count == 0)
+				return true;
+
 			foreach (string checkmod in modlist)
 			{
 				SAModInfo mod = allmods[checkmod];
@@ -79,7 +82,7 @@ namespace SAModManager.ModsCommon
 					int mID = modlist.IndexOf(checkmod);
 					foreach (string sDependency in mod.Dependencies)
 					{
-						ModDependency dependency = new ModDependency(sDependency);
+                        ModDependency dependency = new ModDependency(sDependency);
 						if (dependency.ID == "" && dependency.Folder == "")
 							return false;
 

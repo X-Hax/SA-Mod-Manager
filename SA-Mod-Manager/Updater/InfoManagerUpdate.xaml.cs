@@ -39,10 +39,8 @@ namespace SAModManager.Updater
             {
                 try
                 {
-                    if (!Directory.Exists(App.tempFolder))
-                    {
-                        Directory.CreateDirectory(App.tempFolder);
-                    }
+
+                    Util.CreateSafeDirectory(App.tempFolder);
                 }
                 catch {}
             } while (retry == true);

@@ -45,6 +45,7 @@ namespace SAModManager
         string codexmlpath = "mods\\Codes.xml";
         string codedatpath = "mods\\Codes.dat";
         string patchdatpath = "mods\\Patches.dat";
+        private static bool gameMissingFlag = false;
 
         // Shared Variables
         CodeList mainCodes = null;
@@ -80,6 +81,13 @@ namespace SAModManager
 
             StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
             GamesInstall.AddGamesInstall();
+
+            if (App.GamesList.Count == 0)
+            {
+                App.GamesList.Add(GamesInstall.Unknown);
+                GamesInstall.AddMissingGamesList(GamesInstall.Unknown);
+            }
+
             SetModManagerVersion();
 
             if (App.isFirstBoot)
@@ -303,7 +311,7 @@ namespace SAModManager
 
         private async void NewModBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (App.CurrentGame?.id == SetGame.None)
+            if (App.CurrentGame == GamesInstall.Unknown || App.CurrentGame?.id == SetGame.None)
                 return;
 
             var form = new InstallModOptions();
@@ -1151,6 +1159,9 @@ namespace SAModManager
         private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Check the todos within this function
+            if (App.CurrentGame == GamesInstall.Unknown ||  App.CurrentGame.id == SetGame.None) 
+                return;
+
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) || !File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
             {
                 new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
@@ -1302,6 +1313,9 @@ namespace SAModManager
         #region Private Functions
         private void StartGame()
         {
+            if (App.CurrentGame == GamesInstall.Unknown)
+                return;
+
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
             {
                 new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
@@ -1564,6 +1578,16 @@ namespace SAModManager
                 App.CurrentGame.gameDirectory = sadxSettings.GamePath;
                 App.CurrentGame.modDirectory = Path.Combine(sadxSettings.GamePath, "mods");
             }
+            else
+            {
+                if (gameMissingFlag == false)
+                {
+                    var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.GameNoLongerFound"), App.CurrentGame.gameName, "\n'" + sadxSettings.GamePath + "'\n"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+                    msg.ShowDialog();
+                    gameMissingFlag = true;
+                }
+                textGameDir.Text = null;
+            }
 
             EnabledMods = sadxSettings.EnabledMods;
             EnabledCodes = sadxSettings.EnabledCodes;
@@ -1587,6 +1611,16 @@ namespace SAModManager
                 textGameDir.Text = Path.GetFullPath(sa2.GamePath);
                 App.CurrentGame.gameDirectory = sa2.GamePath;
                 App.CurrentGame.modDirectory = Path.Combine(sa2.GamePath, "mods");
+            }
+            else
+            {
+                if (gameMissingFlag == false)
+                {
+                    var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.GameNoLongerFound"), App.CurrentGame.gameName, "\n'" + sa2.GamePath + "'\n"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+                    msg.ShowDialog();
+                    gameMissingFlag = true;
+                }
+                textGameDir.Text = null;
             }
 
             //to do add XML Config support
@@ -1744,8 +1778,7 @@ namespace SAModManager
             BuildCodeFiles();
 
             // Create the Profiles Directory if it doesn't exist.
-            if (!Directory.Exists(App.CurrentGame.ProfilesDirectory))
-                Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+            Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);
 
             // Save Game Settings here.
             switch (App.CurrentGame.id)
@@ -1775,7 +1808,7 @@ namespace SAModManager
 
             //if mod folder doesn't exist and game path hasn't been set, give up the process of loading mods.
 
-            if (!modFolderExist && string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
+            if (App.GamesList.Count == 0 || !modFolderExist && string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
             {
                 UpdateMainButtonsState();
                 return;
@@ -1784,7 +1817,7 @@ namespace SAModManager
             {
                 try
                 {
-                    Directory.CreateDirectory(App.CurrentGame.modDirectory);
+                    Util.CreateSafeDirectory(App.CurrentGame.modDirectory);
                 }
                 catch { }
             }
@@ -2119,14 +2152,8 @@ namespace SAModManager
                 return;
             }
 
-            try
-            {
-                if (!Directory.Exists(updatePath))
-                {
-                    Directory.CreateDirectory(updatePath);
-                }
-            }
-            catch { }
+
+            Util.CreateSafeDirectory(updatePath);
 
             var modDL = new Updater.ModDownloadDialog(updates, updatePath);
             modDL.StartDL();

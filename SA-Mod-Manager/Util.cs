@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using SAModManager.UI;
 using SAModManager.Updater;
 using System.Diagnostics;
 using System.IO.Compression;
-using SAModManager.Ini;
 using Microsoft.Win32;
 using System.Security.Principal;
-using SAModManager.Configuration.SADX;
-using SAModManager.Configuration.SA2;
-using SAModManager.Configuration;
+using System.Security.AccessControl;
+using System.Reflection;
 
 namespace SAModManager
 {
@@ -200,7 +197,7 @@ namespace SAModManager
             string outputFilePath = null;
             try
             {
-                Directory.CreateDirectory(outputDirectory);
+                Util.CreateSafeDirectory(outputDirectory);
                 outputFilePath = Path.Combine(outputDirectory, resourceName + ".dll");
 
                 // Get the resource stream from Properties.Resources
@@ -361,7 +358,7 @@ namespace SAModManager
 
         public static async Task ExtractArchive(string zipPath, string destFolder, bool overwrite = false)
         {
-            Directory.CreateDirectory(destFolder);
+            Util.CreateSafeDirectory(destFolder);
 
             if (Path.GetExtension(zipPath) == ".zip")
             {
@@ -516,11 +513,9 @@ namespace SAModManager
 
         public static void MoveDirectory(string sourcePath, string destinationPath)
         {
-            if (!Directory.Exists(destinationPath))
-            {
-                Directory.CreateDirectory(destinationPath);
-            }
 
+            CreateSafeDirectory(destinationPath);
+            
             foreach (string file in Directory.GetFiles(sourcePath))
             {
                 string destFile = Path.Combine(destinationPath, Path.GetFileName(file));
@@ -633,10 +628,49 @@ namespace SAModManager
             return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
         }
 
+        public static void RequestAdminPrivileges()
+        {
+            var processInfo = new ProcessStartInfo
+            {
+                UseShellExecute = true,
+                WorkingDirectory = Environment.CurrentDirectory,
+                FileName = Assembly.GetEntryAssembly().Location,
+                Verb = "runas" // This will prompt for admin rights
+            };
+
+            try
+            {
+                Process.Start(processInfo);
+                Environment.Exit(0); // Exit the current instance
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                // The user refused the elevation
+                Console.WriteLine("The application requires administrative privileges to continue.");
+            }
+        }
+
+        public static void CreateSafeDirectory(string path)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(path) &&!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                new MessageWindow(Lang.GetString("MessageWindow.Errors.PermissionTitle"), string.Format(Lang.GetString("MessageWindow.Errors.FolderPermission"), path) + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+            }
+        }
+
         public static void AdjustPathForLinux(ref string s)
         {
             if (App.isLinux && s.StartsWith("/"))
                 s = $"Z:{s}";
         }
+
+
     }
 }

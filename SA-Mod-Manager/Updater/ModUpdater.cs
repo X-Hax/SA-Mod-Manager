@@ -186,19 +186,27 @@ namespace SAModManager.Updater
                 }
             }
 
-            string body = string.Join(Environment.NewLine, latestUpdate.Changes.Select(a => a.Category + ": " + a.Text)) + Environment.NewLine + latestUpdate.Text;
-
-            GameBananaItemFile dl = gbi.Files.First().Value;
-
-            return new ModDownload(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), dl.DownloadUrl, body, dl.Filesize)
+            try
             {
-                HomePage = gbi.ProfileUrl,
-                Name = latestUpdate.Title,
-                Version = latestUpdate.Title,
-                Published = latestUpdate.DateAdded,
-                Updated = latestUpdate.DateAdded,
-                ReleaseUrl = gbi.ProfileUrl
-            };
+                string body = string.Join(Environment.NewLine, latestUpdate.Changes.Select(a => a.Category + ": " + a.Text)) + Environment.NewLine + latestUpdate.Text;
+
+                GameBananaItemFile dl = gbi.Files.First().Value;
+
+                return new ModDownload(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), dl.DownloadUrl, body, dl.Filesize)
+                {
+                    HomePage = gbi.ProfileUrl,
+                    Name = latestUpdate.Title,
+                    Version = latestUpdate.Title,
+                    Published = latestUpdate.DateAdded,
+                    Updated = latestUpdate.DateAdded,
+                    ReleaseUrl = gbi.ProfileUrl
+                };
+            }
+            catch (Exception ex)
+            {
+                errors.Add($"[{mod.Name}] Error checking for updates: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<ModDownload> CheckModularVersion(ModInfo mod, string modsFolder, string folder, List<ModManifestEntry> localManifest,

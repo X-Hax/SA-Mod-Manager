@@ -75,12 +75,7 @@ namespace SAModManager.Updater
                 this.dest = dest;
             }
 
-            try
-            {
-                Directory.CreateDirectory(this.dest);
-
-            }
-            catch { }
+             Util.CreateSafeDirectory(this.dest);
         }
 
         private void UpdateHeaderTextDirect(string txt)
@@ -180,11 +175,7 @@ namespace SAModManager.Updater
             try
             {
                 UpdateHeaderTextDirect(Lang.GetString("Updater.DL.Mod.Extracting"));
-                if (!Directory.Exists(dataDir))
-                {
-                    Directory.CreateDirectory(dataDir);
-                }
-
+                Util.CreateSafeDirectory(dataDir);
                 await Util.ExtractArchive(filePath, dataDir, true);
             }
             catch (Exception ex)
@@ -204,7 +195,7 @@ namespace SAModManager.Updater
                 if (File.Exists(Path.Combine(dataDir, "mod.ini"))) 
                 {
                     string newDirectory = Path.Combine(dataDir, Path.GetFileName(filePath) + "_Dir");
-                    Directory.CreateDirectory(newDirectory);
+                    Util.CreateSafeDirectory(newDirectory);
 
                     foreach (string subfolder in subfolders) 
                     {
@@ -300,10 +291,8 @@ namespace SAModManager.Updater
                 if (!string.IsNullOrEmpty(dir))
                 {
                     string newDir = Path.Combine(mod.Folder, dir);
-                    if (!Directory.Exists(newDir))
-                    {
-                        Directory.CreateDirectory(newDir);
-                    }
+                    Util.CreateSafeDirectory(newDir);
+                    
                 }
 
                 var sourceFile = new FileInfo(Path.Combine(workDir, file.FilePath));
@@ -342,21 +331,16 @@ namespace SAModManager.Updater
                 string tempDir = Path.Combine(updatePath, uri.Segments.Last());
                 var httpClient = UpdateHelper.HttpClient;
 
-                if (!Directory.Exists(tempDir))
-                {
-                    Directory.CreateDirectory(tempDir);
-                }
+                Util.CreateSafeDirectory(tempDir);
 
                 foreach (ModManifestDiff i in newEntries)
                 {
                     string filePath = Path.GetFullPath(Path.Combine(tempDir, i.Current.FilePath));
                     string dir = Path.GetDirectoryName(filePath);
 
-                    if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
-                    {
-                        Directory.CreateDirectory(dir);
-                    }
 
+                    Util.CreateSafeDirectory(dir);
+     
                     var info = new FileInfo(filePath);
 
                     if (!info.Exists || info.Length != i.Current.FileSize ||
@@ -418,10 +402,9 @@ namespace SAModManager.Updater
 
                     string dir = Path.GetDirectoryName(newPath);
 
-                    if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
-                    {
-                        Directory.CreateDirectory(dir);
-                    }
+
+                    Util.CreateSafeDirectory(dir);
+                    
 
                     await Util.CopyFileAsync(oldPath, newPath, true);
                 }
@@ -434,10 +417,9 @@ namespace SAModManager.Updater
                     string workPath = Path.Combine(file.Folder, i.Current.FilePath);
                     string dir = Path.GetDirectoryName(workPath);
 
-                    if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
-                    {
-                        Directory.CreateDirectory(dir);
-                    }
+      
+                    Util.CreateSafeDirectory(dir);
+                    
 
                     await Util.CopyFileAsync(tempPath, workPath, true);
                 }

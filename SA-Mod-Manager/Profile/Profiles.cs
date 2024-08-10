@@ -100,7 +100,7 @@ namespace SAModManager.Profile
                 else
                 {
                     App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
-                    Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+                    Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);
                     if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
                     {
 

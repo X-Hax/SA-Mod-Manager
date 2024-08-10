@@ -26,7 +26,7 @@ namespace SAModManager.Profile
 			{
 				try
 				{
-					Directory.CreateDirectory(App.CurrentGame.ProfilesDirectory);
+					Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);
 					return true;
 				}
 				catch (Exception ex)
@@ -221,7 +221,7 @@ namespace SAModManager.Profile
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) == false)
             {
                 string modPath = Path.Combine(App.CurrentGame.gameDirectory, "mods");
-                Directory.CreateDirectory(modPath);
+                Util.CreateSafeDirectory(modPath);
 
                 if (CheckProfileDirectory() && Directory.Exists(modPath))
                 {

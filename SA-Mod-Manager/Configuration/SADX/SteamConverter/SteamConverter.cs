@@ -113,8 +113,7 @@ namespace SAModManager.Configuration.SADX
                     }
 
                     // Create backup folder
-                    if (!Directory.Exists(backupFolder))
-                        Directory.CreateDirectory(backupFolder);
+                    Util.CreateSafeDirectory(backupFolder);
 
                     // Check files included in the patch and copy them to the temp folder
                     foreach (PatchHashData patchHash in patch.FileHashes)
@@ -133,8 +132,8 @@ namespace SAModManager.Configuration.SADX
                             DeleteBackupFolder(backupFolder);
                             return ConversionResult.Error;
                         }
-                        if (!Directory.Exists(Path.GetDirectoryName(Path.Combine(backupFolder, patchHash.filename))))
-                            Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(backupFolder, patchHash.filename)));
+
+                        Util.CreateSafeDirectory(Path.GetDirectoryName(Path.Combine(backupFolder, patchHash.filename)));
                         File.Copy(checkpath, Path.Combine(backupFolder, patchHash.filename), true);
                     }
 

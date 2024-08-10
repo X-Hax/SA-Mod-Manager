@@ -104,6 +104,9 @@
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">The Manager couldn't select the language {0}.&#x0a;If the issue persists, please report it on the X-Hax Server.&#x0a;&#x0a;Advanced Error Code: {1}</system:String>
+    <system:String x:Key="MessageWindow.Errors.PermissionTitle">Access Denied</system:String>
+    <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Failed to create directory, the program does not have the authorization to write at this path: {0}&#x0a;&#x0a;Please restart the Manager with Administrator Privileges.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Failed to find the game path of {0} at {1}&#x0a;If you have moved your game directory to a different location, please re set the game path in the Manager Config tab.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -132,7 +135,8 @@
 	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Import Failed</system:String>
 	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">The following files failed to be imported as profiles:</system:String>
 	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Please ensure you are only using Game Profile JSON files or old Loader INI files.</system:String>
-	<!--#endregion-->
+
+    <!--#endregion-->
 	
 	<!--#region Information-->
 	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">No Mod Updates Found</system:String>

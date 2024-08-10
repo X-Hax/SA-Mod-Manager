@@ -346,7 +346,7 @@ namespace SAModManager
                 string fileName = update.Item3.Name;     
                 string version = update.Item4;
                 string destFolder = App.tempFolder;
-                Directory.CreateDirectory(destFolder);
+                Util.CreateSafeDirectory(destFolder);
 
                 var dl = new ManagerUpdate(dlLink, destFolder, fileName, version)
                 { 
@@ -549,8 +549,7 @@ namespace SAModManager
         {
             try
             {
-                if (!Directory.Exists(App.ConfigFolder))
-                    Directory.CreateDirectory(App.ConfigFolder);
+                Util.CreateSafeDirectory(App.ConfigFolder);
             }
             catch
             {
@@ -628,6 +627,9 @@ namespace SAModManager
 
             switch (settings.CurrentSetGame)
             {
+                case (int)SetGame.None:
+                    CurrentGame = GamesInstall.Unknown; 
+                    break;
                 case (int)SetGame.SADX:
                     CurrentGame = GamesInstall.SonicAdventure;
                     break;

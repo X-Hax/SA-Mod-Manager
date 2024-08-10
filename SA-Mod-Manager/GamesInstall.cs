@@ -154,10 +154,8 @@ namespace SAModManager
             if (game is null || !File.Exists(Path.Combine(game?.gameDirectory, game?.exeName)))
                 return;
 
-            if (Directory.Exists(game.modDirectory) == false)
-            {
-                Directory.CreateDirectory(game.modDirectory);
-            }
+
+            Util.CreateSafeDirectory(game.modDirectory);
 
             string loaderPath = Path.Combine(game.modDirectory, game.loader.name + ".dll");
 
@@ -336,7 +334,7 @@ namespace SAModManager
             var offline = new OfflineInstall(dependency.name);
             offline.Show();
             await Task.Delay(250);
-            bool success =  InstallDependenciesOffline(dependency);
+            bool success = InstallDependenciesOffline(dependency);
             offline.CheckSuccess(success);
             await Task.Delay(250);
             offline.Close();
@@ -388,7 +386,7 @@ namespace SAModManager
                 {
                     string dest = Path.Combine(dependency.path, dependency.name);
                     string fullPath = dest + ".zip";
-        
+
                     if (!GamesInstall.DependencyInstalled(dependency) && !isUpdate && (!File.Exists(fullPath) || dl.isInError(dependency.name)))
                     {
                         await PerformOfflineInstall(dependency);
@@ -396,7 +394,7 @@ namespace SAModManager
                     else
                     {
                         //check if file need to be extracted
-               
+
 
                         if (File.Exists(fullPath))
                         {
@@ -412,6 +410,8 @@ namespace SAModManager
                 ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateDependencies"));
             }
         }
+
+        public static Game Unknown = new();
 
         public static Game SonicAdventure = new()
         {
@@ -560,7 +560,7 @@ namespace SAModManager
             foreach (var id in App.ManagerSettings?.gamesInstalled)
             {
                 var game = GetGamePerID((SetGame)id);
-                if (App.GamesList.Contains(game) == false)
+                if (id > 0 && App.GamesList.Contains(game) == false && game != null)
                 {
                     App.GamesList.Add(game);
                 }
@@ -659,6 +659,8 @@ namespace SAModManager
                 }
 
                 GamesInstall.LoadMissingGamesList();
+
+
             }
             catch { }
 

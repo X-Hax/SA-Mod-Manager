@@ -182,7 +182,7 @@ namespace SAModManager.UI
 		{
 			try
 			{
-				Directory.CreateDirectory(App.crashFolder);
+				Util.CreateSafeDirectory(App.crashFolder);
                 DateTime currentDateTime = DateTime.Now;
 				string formattedDateTime = "log_" + currentDateTime.ToString("dd.MM.yyyy_HH.mm") + ".txt";
                 error.AppendLine();

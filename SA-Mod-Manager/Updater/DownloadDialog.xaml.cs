@@ -205,7 +205,7 @@ namespace SAModManager.Updater
 
             try
             {
-                Directory.CreateDirectory(dlList[index].Folder);
+                Util.CreateSafeDirectory(dlList[index].Folder);
 
             }
             catch { }

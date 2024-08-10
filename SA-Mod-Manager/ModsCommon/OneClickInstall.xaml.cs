@@ -304,10 +304,7 @@ namespace SAModManager
             {
                 try
                 {
-                    if (!Directory.Exists(updatePath))
-                    {
-                        Directory.CreateDirectory(updatePath);
-                    }
+                    Util.CreateSafeDirectory(updatePath);
                 }
                 catch (Exception ex)
                 {

@@ -41,6 +41,10 @@
     <!--> this is assuming the ini file was a mod <!-->
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
     <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">Le Mod Manager n'a pas pu sélectionner la langue {0}.&#x0a;Si le problème persiste, veuillez le signaler sur le serveur X-Hax.&#x0a;&#x0a;Code d'erreur avancé : {1}</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.PermissionTitle">Accès Refusé</system:String>
+    <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Échec de la création du dossier, le programme n'a pas l'autorisation d'écrire sur ce chemin : {0}&#x0a;&#x0a;Veuillez redémarrer le Mod Manager avec les privilèges d'administrateur.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Failed to find the game path of {0} at {1}&#x0a;If you have moved your game directory to a different location, please re set the game path in the Manager Config tab.</system:String>
     <!--#endregion-->
     
     <!--#region Warnings-->

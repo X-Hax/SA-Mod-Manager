@@ -79,10 +79,9 @@ namespace SAModManager
             try
             {
                 var tempFolder = Path.Combine(root, App.tempFolder);
-                if (!Directory.Exists(tempFolder))
-                {
-                    Directory.CreateDirectory(tempFolder);
-                }
+
+                Util.CreateSafeDirectory(tempFolder);
+                
 
                 foreach (string file in path)
                 {
@@ -94,7 +93,7 @@ namespace SAModManager
                     {
                         var newModPath = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(file));
 
-                        Directory.CreateDirectory(newModPath);
+                        Util.CreateSafeDirectory(newModPath);
 
                         if (Util.MoveAllFilesAndSubfolders(tempFolder, newModPath, newModPath))
                             Util.MoveDirectory(newModPath, Path.Combine(root, Path.GetFileNameWithoutExtension(file)));
@@ -174,9 +173,9 @@ namespace SAModManager
                     // If it doesn't know the name of the mod its installing
 
                     // Creates all of the directories.
-                    Directory.CreateDirectory(Path.Combine(root, Path.GetFileName(folder)));
+                    Util.CreateSafeDirectory(Path.Combine(root, Path.GetFileName(folder)));
                     foreach (string dirPath in Directory.GetDirectories(folder, "*", SearchOption.AllDirectories))
-                        Directory.CreateDirectory(dirPath.Replace(folder, Path.Combine(root, directoryName)));
+                        Util.CreateSafeDirectory(dirPath.Replace(folder, Path.Combine(root, directoryName)));
 
                     // Copies all the files from the Directories.
                     foreach (string filePath in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
