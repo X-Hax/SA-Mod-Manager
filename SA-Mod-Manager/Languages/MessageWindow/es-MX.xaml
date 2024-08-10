@@ -102,6 +102,7 @@
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">Ocurrió un error inesperado al leer un archivo ini. Los archivos ini no pueden tener la misma clave o grupo varias veces.</system:String>
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Nombre del mod: {0}&#x0a;Autor(a): {1}&#x0a;</system:String> <!--> this is assuming the ini file was a mod <!-->
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">Este mod no funcionará. Por favor, reporta este error a el/la creador(a) del mod para que pueda arreglarlo.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">The Manager couldn't select the language {0}.&#x0a;If the issue persists, please report it on the X-Hax Server.&#x0a;&#x0a;Advanced Error Code: {1}</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->

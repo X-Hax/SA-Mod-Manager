@@ -84,6 +84,8 @@
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Error Reading Ini File</system:String>
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">An unexpected error occurred while reading an ini file. Ini files cannot have the same key or group multiple times.</system:String>
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Mod Name: {0}&#x0a;Mod Author: {1}&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">The Manager couldn't select the language {0}.&#x0a;If the issue persists, please report it on the X-Hax Server.&#x0a;&#x0a;Advanced Error Code: {1}</system:String>
+
     <!--> this is assuming the ini file was a mod <!-->
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
     <!--#endregion-->

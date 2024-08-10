@@ -141,26 +141,41 @@ namespace SAModManager
             if (LangList is null)
                 return;
 
-            string name = "Languages/" + CurrentLang.FileName + ".xaml";
-            ResourceDictionary dictionary = new()
+            try
             {
-                Source = new Uri(name, UriKind.Relative)
-            };
+                string name = "Languages/" + CurrentLang.FileName + ".xaml";
+                ResourceDictionary dictionary = new()
+                {
+                    Source = new Uri(name, UriKind.Relative)
+                };
 
-            //if a language different than english is set, remove the previous one.
-            if (Current.Resources.MergedDictionaries.Count >= 5)
+                //if a language different than english is set, remove the previous one.
+                if (Current.Resources.MergedDictionaries.Count >= 5)
+                {
+                    Current.Resources.MergedDictionaries.RemoveAt(4);
+                }
+
+                //if we go back to english, give up the process as it's always in the list.
+                if (Current.Resources.MergedDictionaries[3].Source.ToString().Contains("en-EN") && name.Contains("en-EN"))
+                {
+                    return;
+                }
+
+                //add new language
+                Current.Resources.MergedDictionaries.Insert(4, dictionary);
+            }
+            catch(Exception ex)
             {
-                Current.Resources.MergedDictionaries.RemoveAt(4);
+                var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.LanguageSwitch"), CurrentLang.FileName, ex.Message), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+                msg.ShowDialog();
+               var  mainWindow = ((MainWindow)Application.Current.MainWindow);
+                if (mainWindow != null)
+                {
+                    mainWindow.comboLanguage.SelectedIndex = 0;
+                }
+        
             }
 
-            //if we go back to english, give up the process as it's always in the list.
-            if (Current.Resources.MergedDictionaries[3].Source.ToString().Contains("en-EN") && name.Contains("en-EN"))
-            {
-                return;
-            }
-
-            //add new language
-            Current.Resources.MergedDictionaries.Insert(4, dictionary);
         }
 
         public static void SetLightBool()

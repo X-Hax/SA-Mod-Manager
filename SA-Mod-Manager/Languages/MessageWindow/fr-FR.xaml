@@ -40,6 +40,7 @@
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Mod Name: {0}&#x0a;Mod Author: {1}&#x0a;</system:String>
     <!--> this is assuming the ini file was a mod <!-->
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">Le Mod Manager n'a pas pu sélectionner la langue {0}.&#x0a;Si le problème persiste, veuillez le signaler sur le serveur X-Hax.&#x0a;&#x0a;Code d'erreur avancé : {1}</system:String>
     <!--#endregion-->
     
     <!--#region Warnings-->
