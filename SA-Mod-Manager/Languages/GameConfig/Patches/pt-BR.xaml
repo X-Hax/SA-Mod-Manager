@@ -59,6 +59,6 @@
     <system:String x:Key="GamePatchesSA2.EnvMapFixDesc">Fixes a condition bug with Environment Mapping (mostly in Chao World) allowing a better render.</system:String>
     <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">Fixes a bug with the screen fading during the Victory Result Screen.</system:String>
     <system:String x:Key="GamePatchesSA2.CECarFixDesc">Fixes the infamous trolley car glitch in City Escape (intel GPU).</system:String>
-    <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Fixes Particles Effect (Mystic Melody portail etc.) not showing up (intel GPU).</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Fixes Particles Effect (Mystic Melody portal etc.) not showing up (intel GPU).</system:String>
     <!--#endregion-->
 </ResourceDictionary>
