@@ -13,12 +13,9 @@
 
     <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Falha ao definir o Caminho para o Jogo</system:String>
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed.</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Falha ao detectar o Caminho para o Jogo</system:String>
-	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Falha ao tentar detectar o caminho para a pasta do Jogo. Por favor defina o caminho nas Definições do Gerenciador e selecione uma pasta onde sonic.exe estiver instalado.</system:String>
-	
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Failed to set Game Path</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed. If you renamed the original exe, the game detection won't work.</system:String>
+    
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Mod já existe"</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Um mod com esse nome já existe.&#x0a;Por favor escolha um nome diferente ou renomeie o existente.</system:String>
 	

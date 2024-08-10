@@ -12,13 +12,8 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Переместите или удалите файл mod.ini в папке Mods и запустите менеджер модов снова.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Указанные моды не были найдены:&#x0a;&#x0a;</system:String>
-
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Ошибка при установке пути к игре</system:String>
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Не удалось обнаружить поддерживаемую игру. Убедитесь, что путь к игре указан корректно.</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.GamePathNotFound.Title">Ошибка при обнаружении пути к игре</system:String>
-	<system:String x:Key="MessageWindow.Errors.GamePathNotFound">Не удалось найти путь к игре. Настройте путь в настройках менеджера и проверьте, чтобы была выбрана папка с файлом sonic.exe.</system:String>
-	
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Failed to set Game Path</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed. If you renamed the original exe, the game detection won't work.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Мод уже существует"</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Мод с таким именем уже существует.&#x0a;Введите другое имя или переименуйте существующий файл.</system:String>
 	
