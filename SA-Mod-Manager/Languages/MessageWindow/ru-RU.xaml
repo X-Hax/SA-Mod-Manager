@@ -12,8 +12,8 @@
 	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Переместите или удалите файл mod.ini в папке Mods и запустите менеджер модов снова.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Указанные моды не были найдены:&#x0a;&#x0a;</system:String>
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Failed to set Game Path</system:String>
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed. If you renamed the original exe, the game detection won't work.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Не удалось назначить путь к игре</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Ошибка обнаружения поддерживаемой игры. Убедитесь, что выбрали папку, содержащую игру. Если вы меняли имя exe-файла, то игра не будет обнаружена.</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Мод уже существует"</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Мод с таким именем уже существует.&#x0a;Введите другое имя или переименуйте существующий файл.</system:String>
 	
@@ -99,11 +99,11 @@
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Имя мода: {0}&#x0a;Автор: {1}&#x0a;</system:String>
     <!--> this is assuming the ini file was a mod <!-->
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">Этот мод не будет работать. Свяжитесь с автором мода и расскажите ему об ошибке, чтобы он мог её исправить.</system:String>
-    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">The Manager couldn't select the language {0}.&#x0a;If the issue persists, please report it on the X-Hax Server.&#x0a;&#x0a;Advanced Error Code: {1}</system:String>
+    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">Менеджер не смог выбрать язык интерфейса "{0}".&#x0a;Если проблема сохраняется, сообщите о ней на сервере X-Hax.&#x0a;&#x0a;Код ошибки: {1}</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.PermissionTitle">Access Denied</system:String>
-    <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Failed to create directory, the program does not have the authorization to write at this path: {0}&#x0a;&#x0a;Please restart the Manager with Administrator Privileges.</system:String>
-    <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Failed to find the game path of {0} at {1}&#x0a;If you have moved your game directory to a different location, please re set the game path in the Manager Config tab.</system:String>
+    <system:String x:Key="MessageWindow.Errors.PermissionTitle">Доступ запрещён</system:String>
+    <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Не удалось создать каталог. Программа не имеет прав на запись по данному пути: {0}&#x0a;&#x0a;Перезапустите менеджер от имени администратора.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Не удалось найти игру {0} по пути {1}&#x0a;Если каталог с игрой был перемещён в другое место, укажите заново путь до него в настройках менеджера.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
