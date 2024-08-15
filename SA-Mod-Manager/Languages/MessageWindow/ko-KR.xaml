@@ -120,6 +120,7 @@
     <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime is not installed!&#x0a;&#x0a;Would you like to install it now?</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">This will delete all selected codes.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">The new Mod Manager update requires at least .NET 8.0.7 Desktop Runtime to work.&#x0a;&#x0a;Would you like to install it now?</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->

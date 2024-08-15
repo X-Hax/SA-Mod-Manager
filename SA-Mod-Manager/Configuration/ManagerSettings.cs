@@ -158,6 +158,9 @@ namespace SAModManager.Configuration
         //store game id installed 
         public List<uint> gamesInstalled { get; set; } = new();
 
+        public double managerWidth { get; set; }
+        public double managerHeight { get; set; }
+
         /// <summary>
         /// Deserializes a Manager Settings CFG (JSON) file and returns a populated class.
         /// </summary>

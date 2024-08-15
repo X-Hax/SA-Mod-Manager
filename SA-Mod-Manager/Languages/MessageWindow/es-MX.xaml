@@ -106,6 +106,7 @@
     <system:String x:Key="MessageWindow.Errors.PermissionTitle">Access Denied</system:String>
     <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Failed to create directory, the program does not have the authorization to write at this path: {0}&#x0a;&#x0a;Please restart the Manager with Administrator Privileges.</system:String>
     <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Failed to find the game path of {0} at {1}&#x0a;If you have moved your game directory to a different location, please re set the game path in the Manager Config tab.</system:String>
+   
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -134,6 +135,7 @@
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Error al importar</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">No se pudieron importar los siguientes archivos como perfiles:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Por favor, asegúrate de que sólo utilizas archivos JSON de perfil de juego o archivos INI del antiguo cargador.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">The new Mod Manager update requires at least .NET 8.0.7 Desktop Runtime to work.&#x0a;&#x0a;Would you like to install it now?</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->

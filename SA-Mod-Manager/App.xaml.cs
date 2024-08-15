@@ -329,6 +329,9 @@ namespace SAModManager
                 if (update.Item1 == false) //no update found
                     return false;
 
+                if (await Util.Net8Check() == false)
+                    return false;
+
                 string changelog = await GitHub.GetGitChangeLog(update.Item2); 
 
                 if (string.IsNullOrEmpty(changelog)) //update found but no changelog (?)
@@ -624,7 +627,7 @@ namespace SAModManager
         private static ManagerSettings LoadManagerConfig()
         {
             ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
-
+    
             switch (settings.CurrentSetGame)
             {
                 case (int)SetGame.None:
