@@ -74,6 +74,7 @@
                     <Label Content="Birb"/>
                     <Label Content="Holoska"/>
                     <Label Content="Semka"/>
+                    <Label Content="ProximalElk6186"/>
 
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="5,0,0,0">
@@ -87,6 +88,7 @@
                     <Label Content="Italian translation"/>
                     <Label Content="Korean translation"/>
                     <Label Content="Ukrainian translation"/>
+                    <Label Content="Estonian translation"/>
 
                 </StackPanel>
             </Grid>
