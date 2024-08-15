@@ -137,7 +137,7 @@
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Ошибка при импорте</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">Указанные файлы не были импортированы как профили:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Убедитесь, что используете только файлы профилей в JSON или файлы в INI старого загрузчика.</system:String>
-    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">The new Mod Manager update requires at least .NET 8.0.7 Desktop Runtime to work.&#x0a;&#x0a;Would you like to install it now?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">Новая версия менеджера модов требует наличия установленного пакета .NET 8.0.7 Desktop Runtime.&#x0a;&#x0a;Желаете установить его сейчас?</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->
