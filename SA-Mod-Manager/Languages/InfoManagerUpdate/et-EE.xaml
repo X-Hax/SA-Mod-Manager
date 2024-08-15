@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="InfoManagerUpdate.Title">Halduri värskendused</system:String>
+    <system:String x:Key="InfoLoaderUpdate.Title">Uus värskendus {0}</system:String>
+    <!--See on laadija nime kohatäide (st "Uus SADX-i modifikatsioonilaaduri värskendus"...) !-->
+    <system:String x:Key="InfoManagerUpdate.Changelog">Muudatuste loend:</system:String>
+    <system:String x:Key="InfoManagerUpdate.DLQuestion">kas soovite värskendusi alla laadida?</system:String>
+</ResourceDictionary>

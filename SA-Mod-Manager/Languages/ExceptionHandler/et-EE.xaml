@@ -1,0 +1,15 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="ExceptionHandler.Title">Halduri tööviga</system:String>
+    <system:String x:Key="ExceptionHandler.Header">Halduris ilmnes viga</system:String>
+    <system:String x:Key="ExceptionHandler.Copy">Kopeeri vealogi</system:String>
+    <system:String x:Key="ExceptionHandler.Ignore">Ignoreeri ja sulge</system:String>
+    <system:String x:Key="ExceptionHandler.Report">Teata veast (ainult inglise keeles)</system:String>
+
+    <system:String x:Key="ExceptionHandler.ToolTip.Copy">Kopeerige vealogi koos vormindamisega lõikelauale.</system:String>
+    <system:String x:Key="ExceptionHandler.ToolTip.Ignore">Ignoreeri tõrget ja sulge aken. Haldur võib sulgeda.</system:String>
+    <system:String x:Key="ExceptionHandler.ToolTip.Report">Avage halduri GitHubi hoidlas jaotis Probleem koos malliga teabe lisamiseks ja erandiaruande kopeerimiseks.</system:String>
+</ResourceDictionary>

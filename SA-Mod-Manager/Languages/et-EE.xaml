@@ -1,0 +1,74 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="AboutMod/et-EE.xaml"/>
+		<ResourceDictionary Source="EditMod/et-EE.xaml"/>
+		<ResourceDictionary Source="GameConfig/et-EE.xaml"/>
+		<ResourceDictionary Source="GameConfig/Patches/et-EE.xaml"/>
+		<ResourceDictionary Source="GameConfig/TestSpawn/et-EE.xaml"/>
+        <ResourceDictionary Source="HealthProgress/et-EE.xaml"/>
+		<ResourceDictionary Source="InfoManagerUpdate/et-EE.xaml"/>
+		<ResourceDictionary Source="InstallModOptions/et-EE.xaml"/>
+		<ResourceDictionary Source="MainWindow/et-EE.xaml"/>
+		<ResourceDictionary Source="ManifestChanges/et-EE.xaml"/>
+		<ResourceDictionary Source="MessageWindow/et-EE.xaml"/>
+		<ResourceDictionary Source="ModChangelog/et-EE.xaml"/>
+		<ResourceDictionary Source="ModConfig/et-EE.xaml"/>
+		<ResourceDictionary Source="ModDependency/et-EE.xaml"/>
+		<ResourceDictionary Source="ModProfile/et-EE.xaml"/>
+		<ResourceDictionary Source="NewCode/et-EE.xaml"/>
+		<ResourceDictionary Source="SelectDependencies/et-EE.xaml"/>
+        <ResourceDictionary Source="SplashScreen/et-EE.xaml"/>
+        <ResourceDictionary Source="Updater/et-EE.xaml"/>
+        <ResourceDictionary Source="MainWindow/UpdateStatus/et-EE.xaml"/>
+        <ResourceDictionary Source="ExceptionHandler/et-EE.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!--Region Common UI-->
+    <system:String x:Key="CommonStrings.OK">ОК</system:String>
+    <system:String x:Key="CommonStrings.Cancel">Tütista</system:String>
+	<system:String x:Key="CommonStrings.Yes">Jah</system:String>
+	<system:String x:Key="CommonStrings.No">Ei</system:String>
+	<system:String x:Key="CommonStrings.Retry">Proovi uuesti</system:String>
+	<system:String x:Key="CommonStrings.Warning">Tähelepanu</system:String>
+	<system:String x:Key="CommonStrings.Error">Viga</system:String>
+    <system:String x:Key="CommonStrings.Reset">Lähtesta</system:String>
+    <system:String x:Key="CommonStrings.Create">Luua</system:String>
+	<system:String x:Key="CommonStrings.SelectAll">Vali kõik</system:String>
+	<system:String x:Key="CommonStrings.DeselectAll">Lähista vali</system:String>
+	<system:String x:Key="CommonStrings.Status">Olek</system:String>
+	<system:String x:Key="CommonStrings.Name">Nimi</system:String>
+	<system:String x:Key="CommonStrings.Save">Salvestada</system:String>
+	<system:String x:Key="CommonStrings.Author">Autor</system:String>
+	<system:String x:Key="CommonStrings.Version">Versioon</system:String>
+	<system:String x:Key="CommonStrings.Category">Kategooria</system:String>
+	<system:String x:Key="CommonStrings.Description">Kirjeldus:</system:String>
+	<system:String x:Key="CommonStrings.Search">Otsimine:</system:String>
+	<system:String x:Key="CommonStrings.Credits">Autorid</system:String>
+	<system:String x:Key="CommonStrings.Download">Laadi alla</system:String>
+    <system:String x:Key="CommonStrings.OpenFolder">Ava kausta</system:String>
+    <system:String x:Key="CommonStrings.None">Mitte midagi!</system:String>
+    <system:String x:Key="CommonStrings.Enabled">Sisse lülitatud</system:String>
+    <system:String x:Key="CommonStrings.Disabled">Välja lülitatud</system:String>
+    <system:String x:Key="CommonStrings.Success">Õnnestatud!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Mitteõnnestatud!</system:String>
+	<system:String x:Key="CommonStrings.ID">ID</system:String>
+	<system:String x:Key="CommonString.Dependency">Sõltuvus</system:String>
+
+	<!--Region Create Code-->
+    <system:String x:Key="CommonStrings.Type">Tüüp:</system:String>
+    <system:String x:Key="CommonStrings.TypeCode">Kood</system:String>
+    <system:String x:Key="CommonStrings.TypePatch">Patch</system:String>
+    <system:String x:Key="CommonStrings.IsRequired"> Kohustuslik</system:String>
+
+    <!--Window Tips-->
+	<system:String x:Key="Window.Tips.Minimize">Kollaps</system:String>
+	<system:String x:Key="Window.Tips.Maximize">Laienda!</system:String>
+	<system:String x:Key="Window.Tips.Restore">Taasta aknat!</system:String>
+	<system:String x:Key="Window.Tips.Close">Suletada!</system:String>
+
+</ResourceDictionary>

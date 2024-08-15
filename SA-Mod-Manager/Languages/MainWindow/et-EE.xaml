@@ -1,0 +1,219 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<!--#region Main Window Strings-->
+	<system:String x:Key="Manager.Buttons.SaveAndPlay">Salvestada ja mängida</system:String>
+	<system:String x:Key="Manager.Tabs.Mods">Moded</system:String>
+	<system:String x:Key="Manager.Tabs.Codes">Koodid</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig">Mängude seaded</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig">Manageri seaded</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn">Siluda</system:String>
+	<!--#endregion-->
+
+	<!--#region Mods Tab Strings-->
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">Värskenda</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">Modi seaded</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">Lisa mod</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">Moded ei ole valitud!</system:String>
+
+    <!--Mods Context Menu-->
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Kontrollige värskendusi</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Kontrolli terviklikkust</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Sunnitud värskendus</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">Modi seaded</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Muuda mod</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Eemalda mod</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Areneda</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Luua manifestit</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Lülita värskendusi Välja</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Lülita värskendusi sisse</system:String>
+    <!--#endregion-->
+
+	<!--#region Codes Tab Strings-->
+	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Uus kood</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Muuda kood</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Eemalda kood</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Kood</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Koodi autor</system:String>
+	<!--#endregion-->
+
+	<!--#region Manager Config Tab Strings-->
+	<!--Options-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Seadused</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Teemasid:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Keel:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profiil:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Mängude kausta:</system:String>
+
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Lülita "1-Click Install" (GameBanana) sisse</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Lülita "1-Click Install" Välja</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Tee mängude kausta ava</system:String>
+
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Installida "Mod Loader"</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Eemalda "Mod Loader"</system:String>
+
+	<!--Updates-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Värskendused</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Värskendada "Mod Manager" alguses</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Värskendada "Mod Loader" alguses</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Värskendada Mod'it alguses</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Kontrollige värskendusi</system:String>
+
+	<!--Debug Features-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Muud seaded</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Ärge sulgege haldurit mängu alustamisel</system:String>
+  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Luba arendaja valikud</system:String>
+  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Kirjutage konsooli</system:String>
+  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Silumissõnumite väljastamine mängus</system:String>
+  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Silumisandmete kirjutamine faili</system:String>
+  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Loo krahhi tõmmisfail</system:String>
+  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Kontrollige mängu olekut</system:String>
+
+	<!--About-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">Teave</system:String>
+  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">Teave modi kohta</system:String>
+ 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">SA Mod Manager on rakendus Sonic Adventure DX ja Sonic Adventure 2 modifikatsioonide haldamiseks ilma suuremate raskusteta.</system:String>
+  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Arendajad</system:String>
+  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Allikad</system:String>
+ 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Laadi allikad</system:String>
+ 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Vigadest teatamine (ainult inglise keeles)</system:String>
+  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Ava SA Docs (ainult inglise keeles)</system:String>
+  <!--#endregion-->
+	<!--#endregion-->
+	
+	<!--#region Tooltips-->
+	<!--#region Main Window Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Mods">Valige, muutke ja kohandage oma modifikatsioone.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Codes">Valige mängu ajal aktiivsed koodid.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig">Mängu-, video- ja heliseaded.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn">Valikud mängu kiireks alustamiseks soovitud tähemärkidega soovitud tasemel.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options">Halduri seaded (sh teema ja liidese keel).</system:String>
+  	<system:String x:Key="MainWindow.Tips.SaveAndPlay">Salvestage muudatused ja käivitage mäng.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Save">Salvesta muudatused.</system:String>
+
+	<!--#region Mods Tab Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.Refresh">Värskendage modifikatsioonide loendit.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveCeiling">Teisaldage valitud mod loendi ülaossa.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveUp">Teisaldage valitud mod ühe koha võrra ülespoole.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveDown">Teisaldage valitud mod loendi lõppu.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveFloor">Teisaldage valitud mod ühe koha võrra allapoole.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.SelectAll">Lubage kõik olemasolevad modifikatsioonid. See toiming võib põhjustada mängu krahhi.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.DeselectAll">Keela kõik modifikatsioonid.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Mods.NewMod">Avaneb uue modifikatsiooni loomise aken, kus saate modi käsitsi installida või luua uue.</system:String>
+	<!--#endregion-->
+
+	<!--#region Codes Tab Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.SelectAll">Luba kõik koodid.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.DeselectAll">Keela kõik koodid.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.Codes.NewCode">Avaneb uue koodi loomise aken.</system:String>
+	<!--#endregion-->
+
+	<!--#region Game Config Tab -->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">Muutke graafikaseadeid.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">Muutke juhtseadeid.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">Muutke heliseadeid.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">Lubage või keelake patchid.</system:String>
+
+	<!--#region Graphics Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen">Valige monitor, millel mängu kuvatakse.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Valige kohandatud või eelseadistatud ekraani eraldusvõime.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Sundi kuvasuhteks 4:3, ignoreerides valitud eraldusvõimet.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Luba vertikaalne sünkroonimine.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">Kui mäng on keelatud, peatub mäng, kui aken pole fookuses.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Juutage mäng ilma ääriseta aknas.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Skaalake liides nii, et see sobiks kogu ekraaniga.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Mäng jookseb aknas.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse">Hiirekursori kuvamine täisekraanirežiimis.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Võimaldab teil mängu ajal akna suurust muuta.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.StretchToWindow">Venutage mängu pilt, et see sobiks mänguaknaga.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DisableBorderImage">Keelab taustapildi laadimise ja renderdamise ekraani külgedel (kui renderdatakse aknast väiksemaks).</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Parandage kuvasuhet kohandatud eraldusvõime valimisel.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Määrake akna suurus sõltumata eraldusvõimest. Nii saate näiteks väikeses aknas mängida 4K eraldusvõimega.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Kaadrisageduse määramine.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">Lubage udu emuleerimise režiim. Kasutage ainult nõrga videotuumaga. Muudel juhtudel on soovitatav lubada automaatrežiim.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Luba tekstuuride filtreerimine kõigi mudelite jaoks.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Lubage kõigi liidese tekstuuride tekstuuride filtreerimine.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Konfigureerige joonistuskauguse üksikasjade tase.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">Määrake laiekraanil mängides tausta täitmise režiimiks servad, kuid fikseeritud renderdussuhtega 4:3.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Video täitmisrežiimi määramine.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Looge kõigi tekstuuride jaoks mipkaardid, isegi kui neid pole vaja.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Lubab D3D8to9 tarkvarakihi, mis võimaldab mängul D3D9 renderdusfunktsioone kasutada. Mõne modifikatsiooni töötamiseks on vajalik.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Lubab liidese skaleerimise vastavalt mängu eraldusvõimele.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">D3d8to9 kihi kontrollimine, laadimine ja värskendamine.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Määrake kaadrisagedus. Pange tähele, et mäng ei toeta kaadrisagedust, mis on suurem kui 60 kaadrit sekundis ja on patch, mis seda piirab. Muutke väärtust omal vastutusel.</system:String>
+    <!--#endregion-->
+
+	<!--#region Input Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">Kasutage algset juhtimissüsteemi. Sellel on mitmeid probleeme, eelkõige pöörleva kaameraga. Pole soovitatav.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput">Rakendab SDL2-põhise juhtimissüsteemi, asendades algse. Soovitatav, kui kasutate xinput mängupulte (Xboxiga ühilduv).</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold">Seadistab hiire juhtimisrežiimi, milles mängija liigub, kui LMB all hoides tõmbab kursorit soovitud suunas.</system:String >
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate">Seadistab hiire juhtimisrežiimi, milles mängija liigub, kui hoiate LMB all, tõmmake kursorit soovitud suunas, siis vabasta. Tegelane jätkab liikumist, kuni mängija toimingut kordab.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Jump">Menüü kinnitus- või hüppenupp, tavaliselt määratud A-le või Crossile.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Action">Kõigi tähemärkide toimingunupp, mis tavaliselt määratakse X-le või ruudule.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Cancel">Tühista menüü või rünnakunupp, mis tavaliselt määratakse B-le või Circle'ile.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Start">Start-nupp, mida kasutatakse mängu käivitamiseks ja peatamiseks. Tavaliselt määratakse nupule Start.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamLeft">Nupp pöörab kaamerat vasakule, tavaliselt määratakse see vasakpoolsele kaitserauale. Ei saa määrata analoogpulgale.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamRight">Nupp pöörab kaamerat paremale, tavaliselt määratakse see paremale kaitserauale. Ei saa määrata analoogpulgale.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Flute">Nupp, mis võimaldab teil Chao aedades vilistada. Tavaliselt määratakse Y-le või kolmnurgale.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher">Avab AppLauncheri ja võimaldab teil seadistada juhtelemente.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher">Avab lingi, kust saate AppLauncheri alla laadida.</system:String>
+	<!--#endregion-->
+
+	<!--#region Sound Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">Aktiveerib vgmbassi heli alamsüsteemi. Soovitatav parema kasutuskogemuse tagamiseks. Mõne modifikatsiooni jaoks on nõutav.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">Lubab muusika mängus.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">Lubab mängus 3D-heli.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">Lubab BASS-i alamsüsteemi heliefektide esitamiseks.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">Lubab mängus heliefekte ja häältoiminguid.</system:String>
+	<!--#endregion-->
+
+	<!--#region Patches Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">Luba kõik loendis olevad patchid.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">Keela kõik loendis olevad patchid.</system:String>
+	<!--#endregion-->
+	<!--#endregion-->
+
+	<!--#region Test Spawn Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Character">Luba märkide valik spawni jaoks.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Level">Luba kudemistaseme valik.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Time">Seiklusväljade kellaaja määramine.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Act">Määrake valitud tasemel tegu.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Event">Luba stseenis laadimine.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.GameMode">Lubage nõutava mängurežiimi valik.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Save">Mängu laadimise ajal salvestusfaili vahetamine.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Lubage tähemärgi, taseme ja toimingu parameetrite käsitsi seadistamine. Kui see on lubatud, kirjutab ülalolevad sätted üle.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Luba algpositsiooni seadistus.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Käivitage mäng ülaltoodud parameetritega.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Luba teise mängija valiku seade.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Valige valitud tasemel missioon.</system:String>
+    <!--#endregion-->
+
+	<!--#region Manager Config Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Valige profiil aktiivsete modifikatsioonide ja sätete loendiga.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Avage profiilihaldur, kus saate profiile luua või kustutada.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Täielik tee installitud mänguga kataloogi.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Avaneb mängu kaust.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Avage aken mängukataloogi valimiseks.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Valige kasutatav modihalduri teema.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Valige modihalduri liidese keel.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Hoidke modihaldur sisse lülitatuna, kui klõpsate nupul "Salvesta ja esita".</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Lubage modihalduris vahekaart "Silumine".</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Kui see on lubatud, avaneb GameBanana nupul "Ühe klõpsuga installimine" klõpsates modi allalaadimise aken.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Kui see on lubatud, aktiveeritakse modilaadija, mis võimaldab teil mängida modifikatsioonide, paikade ja koodidega.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Lubage modihalduri automaatne kontrollimine käivitamisel.</system:String>
+ 	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Luba modilaadija värskenduste automaatne kontroll, kui modihaldur käivitub.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Luba modihalduri käivitumisel automaatne mooduli värskenduste kontrollimine.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Alustage modilaaduri ja installitud modifikatsioonide värskenduste otsimist.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Avage konsool mängu silumisinfoga.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Väljutage mänguakna ülaossa silumise teave.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Salvestage silumisteave logifaili.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Lubage mängutõrgete ilmnemisel krahhi tõmmiste salvestamine. Võib olla kasulik krahhide põhjuste väljaselgitamiseks.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Avage aken, kus on arendajate loend ja teave halduri kohta.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Avage GitHubis mod loaderi hoidla leht.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Avage SA Docsi leht, kus on saadaval mitmesugune teave SA1 ja SA2 modifikatsioonide loomise kohta.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Avage GitHubi tagasiside leht, et saada aruandeid modifikatsioonilaaduri probleemide ja vigade kohta.</system:String>
+  	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Käitab mängu tervisekontrolli, et tuvastada puuduvad või muudetud failid.</system:String>
+	<!--#endregion-->
+
+</ResourceDictionary>
