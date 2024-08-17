@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SAModManager"
         mc:Ignorable="d"
-        Title="{StaticResource Manager.Tabs.ManagerConfig.Group.About}" Height="480" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="{StaticResource Manager.Tabs.ManagerConfig.Group.About}" Height="490" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         Style="{StaticResource SAWindow}">
     <Grid>
         <Grid.RowDefinitions>
@@ -59,39 +59,41 @@
             </Grid>
         </GroupBox>
         <GroupBox Header="Translators" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2" Grid.Column="1" Margin="5,8,8,16">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.61*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
-                    <Label Content="Sora"/>
-                    <Label Content="Jesus__PK" Foreground="White"/>
-                    <Label Content="Kawaiikaorichan" Foreground="White"/>
-                    <Label Content="Raphael Drew Boltman"/>
-                    <Label Content="Henrykado"/>
-                    <Label Content="TimTH"/>
-                    <Label Content="Birb"/>
-                    <Label Content="Holoska"/>
-                    <Label Content="Semka"/>
-                    <Label Content="ProximalElk6186"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.61*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Sora"/>
+                        <Label Content="Jesus__PK" Foreground="White"/>
+                        <Label Content="Kawaiikaorichan" Foreground="White"/>
+                        <Label Content="Raphael Drew Boltman"/>
+                        <Label Content="Henrykado"/>
+                        <Label Content="TimTH"/>
+                        <Label Content="Birb"/>
+                        <Label Content="Holoska"/>
+                        <Label Content="Semka"/>
+                        <Label Content="ProximalElk6186"/>
 
-                </StackPanel>
-                <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="5,0,0,0">
 
-                    <Label Content="French translation"/>
-                    <Label Content="Spanish (Spain) translation"/>
-                    <Label Content="Spanish (Mexico) translation"/>
-                    <Label Content="Portuguese (Portugal) translation"/>
-                    <Label Content="Portuguese (Brazil) translation"/>
-                    <Label Content="Russian translation"/>
-                    <Label Content="Italian translation"/>
-                    <Label Content="Korean translation"/>
-                    <Label Content="Ukrainian translation"/>
-                    <Label Content="Estonian translation"/>
+                        <Label Content="French translation"/>
+                        <Label Content="Spanish (Spain) translation"/>
+                        <Label Content="Spanish (Mexico) translation"/>
+                        <Label Content="Portuguese (Portugal) translation"/>
+                        <Label Content="Portuguese (Brazil) translation"/>
+                        <Label Content="Russian translation"/>
+                        <Label Content="Italian translation"/>
+                        <Label Content="Korean translation"/>
+                        <Label Content="Ukrainian translation"/>
+                        <Label Content="Estonian translation"/>
 
-                </StackPanel>
-            </Grid>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </GroupBox>
         <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="-4" Grid.Row="3" Grid.ColumnSpan="2">
             <Button Content="GitHub"  Margin="8,0,0,0" VerticalAlignment="Center" Width="75" Height="23" Click="ButtonGitHub_Click"/>
