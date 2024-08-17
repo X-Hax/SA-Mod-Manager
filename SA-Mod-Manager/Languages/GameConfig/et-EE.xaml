@@ -1,0 +1,163 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+    
+	<!--#region Shared-->
+	<!--Game Tabs Strings-->
+    <system:String x:Key="GameConfig.Tabs.Graphics">Graafika</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input">Juhtseade</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound">Heli</system:String>
+    <system:String x:Key="GameConfig.Tabs.Lang">Keel</system:String>
+    <system:String x:Key="GameConfig.Tabs.Patches">Laiad</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options">Seaded</system:String>
+
+    <!--Graphics Tab Strings-->
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Kuvaseaded</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Monitor:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">Kõik monitorid</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">Aknarežiim:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Aknas</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Tavaline aknarežiim.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Täisekraan</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Pole soovitatav. Aken muudab ekraani eraldusvõimet. See režiim põhjustab kokkuvarisemisel kokkujooksmisi.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Ääristeta aken</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Soovitatav aknarežiim. Ekraan töötab erinevates eraldusvõimetes. Alt+Tab kasutamisel ei esine krahhi.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Kohandatud aknarežiim</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Aknarežiim, mis toimib ääristeta aknana, kuid mitte täisekraanina.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Resolutsioon:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Akna suurus:</system:String>
+
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Omaeraldusvõime</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">Pool omakeelsest</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">Kahekordne algne</system:String>
+
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Seaded</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Sunni sisse. 4:3</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">Luba vert. sünkroonimine</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Peata, kui mitteaktiivne</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Dünaamiline mälu eraldamine</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Kaadrisagedus:</system:String>
+
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Muudatava suurusega aken</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.StretchToWindow">Aknani venitamine</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.DisableBorderImage">Keelatud taustal. pilt</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Säilita renderdamise kuvasuhe</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Kohandatud akna suurus:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Ääristeta aken</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Hiir täisekraanirežiimis</system:String>
+
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ScaleScreen">Mahuta ekraanile</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Muud graafikaseaded</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Kaadrisagedus:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Üksikasjad:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High">Kõrge (parim)</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low">Madal</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest">Halvim</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog">Udurežiim:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Auto">Automaatne</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation">Emulatsioon</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill">Kuidas tausta täita:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Venutada [vaikeseade]</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit">Mahuta laiusele</system:String>
+  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Täida</system:String>
+  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">Kuidas videot täita:</system:String>
+  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.TexFilter">Tekstuuri filtreerimine:</system:String>
+  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.UIFilter">Liidese filtreerimine:</system:String>
+  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Täiustused</system:String>
+  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap">Sundi mipmapping</system:String>
+  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">Kasutajaliidese skaleerimise lubamine</system:String>
+  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">Luba D3D8to9</system:String>
+  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">Värskenda D3D8to9</system:String>
+ <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">DXVK allalaadimine</system:String>
+ <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">DXVK allalaadimiseks klõpsake alloleval nupul. Teek parandab SA2 jõudlust ja stabiilsust. Installimine toimub käsitsi.</system:String>
+ <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Pärast arhiivi allalaadimist peate ekstraktima faili d3d9.dll ja asetama selle faili mängu kausta, kus asub sonic2app.exe.</system:String>
+    <!--#endregion-->
+
+    <!--Options Tab Strings-->
+    <system:String x:Key="GameConfig.Tabs.Options.Title">Muud seaded</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Jäta sissejuhatus vahele</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">Saate seadistada teksti- ja häälekeeli, mida mängu käivitamisel rakendatakse. See valik kehtib ka mängu käivitamisel jaotise "Silumine" kaudu ja see kirjutatakse üle ka salvestusfaili laadimisel.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">Saate seadistada teksti- ja häälekeeli, mida mängu käivitamisel kasutatakse. See valik kehtib ka mängu alustamisel jaotise "Silumine" kaudu. Heli keel kirjutatakse üle salvestusfaili laadimisel.</system:String>
+    <!--#endregion-->
+    
+    <!--Input Tab Strings-->
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input">Juhtseaded</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Standardjuhtimine (DInput)</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Täiustatud juhtimine (SDL2)</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Standardsed juhtimisseaded</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Hiir ja klaviatuur</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Lohistage ja hoidke</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Kiirendamiseks lohistage</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn">Hiire vasak nupp</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn">Hiire parem nupp</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn">Hiire keskmine nupp</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Lisa. hiirenupp 1</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn">Hiire vasak ja parem nupp</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Hiire parem ja vasak nupp</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Action">Toiming:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.BtnAssignment">Nupu määramine:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Hüppa</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Toiming</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Tühista/rünnata</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Alusta/määramine</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Pööra kaamera vasakule</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Pööra kaamerat paremale</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Vile</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2">Täpsemad juhtimise konfiguratsioonid</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">Ava AppLauncher</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">Laadi alla AppLauncher</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Täiustatud juhtimissüsteem lisab SADX-ile SDL2 kihi. Soovitatav mängude jaoks, kuna see lahendab algse süsteemi probleemid DInputiga.</system:String>
+
+    <!--Sound Tab Strings-->
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Heli seaded</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">Helitugevuse juhtimine</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Luba BASS (muusika)</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Luba BASS (efektid)</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">Luba muusika</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Luba helid</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">Sees. ruumilised helid</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Muusika helitugevus:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Hääle helitugevus:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">Heli helitugevus:</system:String>
+    <!--#endregion-->
+
+	<!--#region Test Spawn Tab Strings-->
+    <system:String x:Key="TestSpawn.Check.Character">Tähemärk:</system:String>
+    <system:String x:Key="TestSpawn.Check.Level">Tase:</system:String>
+    <system:String x:Key="TestSpawn.Time">Kellaaeg:</system:String>
+    <system:String x:Key="TestSpawn.Act">Act:</system:String>
+    <system:String x:Key="TestSpawn.Check.Mode">Mängurežiim:</system:String>
+    <system:String x:Key="TestSpawn.Check.Save">Kasuta salvestusfaili:</system:String>
+    <system:String x:Key="TestSpawn.Check.Event">Lõige:</system:String>
+    <system:String x:Key="TestSpawn.Warning">Linkstseenides tasemete või tegelaste muutmine võib mängu krahhi.</system:String>
+    <system:String x:Key="TestSpawn.Buttons.Launch">Käivita mäng</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced">Täpsem</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.Check.Manual">Seadista käsitsi:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.Check.Position">Asukoha ümberkirjutamine:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.PosX">Coord. X:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.PosY">Coord. Y:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.PosZ">Coord. Z:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.Angle">Nurk:</system:String>
+    <system:String x:Key="TestSpawn.Player2">2. mängija:</system:String>
+    <system:String x:Key="TestSpawn.Mission">Eesmärk:</system:String>
+
+    <system:String x:Key="TestSpawn.Language.Voice">Häälekeel:</system:String>
+    <system:String x:Key="TestSpawn.Language.Text">Teksti keel:</system:String>
+    <system:String x:Key="TestSpawn.Language.Japanese">jaapani keel</system:String>
+    <system:String x:Key="TestSpawn.Language.English">inglise keel</system:String>
+    <system:String x:Key="TestSpawn.Language.French">prantsuse keel</system:String>
+    <system:String x:Key="TestSpawn.Language.Italian">itaalia keel</system:String>
+    <system:String x:Key="TestSpawn.Language.Spanish">hispaania keel</system:String>
+    <system:String x:Key="TestSpawn.Language.German">saksa keel</system:String>
+    <!--#endregion-->
+	
+	<!--#region SADX-->
+	
+	<!--#endregion-->
+	
+	<!--#region SA2-->
+	
+	<!--#endregion-->
+	
+</ResourceDictionary>

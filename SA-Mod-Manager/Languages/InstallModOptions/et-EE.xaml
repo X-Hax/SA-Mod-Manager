@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="InstallModOptions.Title">Installige või looge uus mod</system:String>
+	<system:String x:Key="InstallModOptions.Radio.Archive">Installige arhivist</system:String>
+	<system:String x:Key="InstallModOptions.Radio.Folder">Installige kaustast</system:String>
+	<system:String x:Key="InstallModOptions.Radio.New">Uus mod (Arendajatele)</system:String>
+
+    <!--Mod Download-->
+    <system:String x:Key="ModDL.DLMod">Laadige mod</system:String>
+    <system:String x:Key="ModDL.OpenLink">Modi veebileht</system:String>
+</ResourceDictionary>

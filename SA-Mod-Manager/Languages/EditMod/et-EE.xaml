@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="EditMod.Description">Täitke oma modifikatsiooni üksikasjad.</system:String>
+    <system:String x:Key="EditMod.Header.EditMod">Muuda</system:String>
+    <system:String x:Key="EditMod.Header.NewMod">Uus mod</system:String>
+
+    <system:String x:Key="EditMod.Tabs.Info">Modifikatsiooniandmed</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.AuthorURL">Autori link:</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.ModID">Modifikatsiooni ID parameeter:</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.DLL">DLL:</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.Source">Allika link:</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Alista salvestusfail:</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Põhifail</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Chao-fail</system:String>
+    <system:String x:Key="EditMod.Tabs.Btn.Advanced">Täpsem</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Kaasatud kataloogid:</system:String>
+
+    <system:String x:Key="EditMod.Tabs.Updates">Värskenda andmeid</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.Method">Värskenda meetod</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.SelfHosted">Kohandatud hostimine</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GitHub">GitHubi värskenduste seadistamine</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Hoidla omanik:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Värskenda arhiivi:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GB">GameBanana värskenduste konfigureerimine</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GB.ModID">Modifikatsiooni ID:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">Modifikatsiooni tüüp:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.Self">Värskenduste seadistamine hostimise kaudu</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.Self.URL">Värskenda linki:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">Link muudatuste loendile:</system:String>
+
+    <system:String x:Key="EditMod.Tabs.Dependencies">Sõltuvused</system:String>
+    <system:String x:Key="EditMod.Tabs.Dependencies.Warning">Soovitame kasutada sõltuvussüsteemi, kui teie modi korrektseks tööks on vaja muid.</system:String>
+    <system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Add">Lisa sõltuvused</system:String>
+    <system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Remove">Eemalda sõltuvused</system:String>
+    <system:String x:Key="EditMod.Tabs.Dependencies.Grid.ID">ID</system:String>
+    <system:String x:Key="EditMod.Tabs.Dependencies.Grid.Folder">Fail</system:String>
+    <system:String x:Key="EditMod.Tabs.Dependencies.Grid.Column">Laadi alla link</system:String>
+</ResourceDictionary>

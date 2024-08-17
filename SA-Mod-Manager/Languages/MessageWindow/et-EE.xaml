@@ -1,0 +1,180 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+<system:String x:Key="MessageWindow.DefaultTitle">SA Modifikatsiooni laadija</system:String>
+  <system:String x:Key="MessageWindow.DefaultTitle.Error">Viga</system:String>
+  <system:String x:Key="MessageWindow.DefaultTitle.Warning">Hoiatus</system:String>
+	
+	<!--#region Errors-->
+<system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">Mod.ini fail leiti kaustast mods.</system:String>
+  <system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Ärge pange modifikatsioone otse kausta Mods! Iga mod peab olema oma alamkaustas.</system:String>
+  <system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Teisaldage või kustutage mod.ini fail kaustas Mods ja käivitage modihaldur uuesti.</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Määratud modifikatsioone ei leitud:&#x0a;&#x0a;</system:String>
+ <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Mängutee määramine nurjus</system:String>
+ <system:String x:Key="MessageWindow.Errors.GamePathFailed">Toetatud mängu tuvastamine ebaõnnestus. Valige kindlasti kaust, kuhu mäng on installitud. Kui nimetasite algse exe-faili ümber, siis mängutuvastus ei tööta.</system:String>
+  <system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Modifikatsioon on juba olemas"</system:String>
+  <system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Sama nimega mod on juba olemas.&#x0a;Sisestage mõni muu nimi või nimetage olemasolev fail ümber.</system:String>
+
+  <system:String x:Key="MessageWindow.Errors.ModCreationFailed.Title">"Viga modi loomisel"</system:String>
+
+  <system:String x:Key="MessageWindow.Errors.NoModName.Title">Vale modi nimi</system:String>
+  <system:String x:Key="MessageWindow.Errors.NoModName">Modifikatsioonil peab olema nimi.</system:String>
+
+  <system:String x:Key="MessageWindow.Errors.MissingLoaderDLL" xml:space="preserve">Faili SADXModLoader.dll ei leitud, modi laadija ei tööta.&#x0a;&#x0a;Laadi mod üles. haldur uuesti.</system:String>
+
+  <system:String x:Key="MessageWindow.Errors.DontDoThat">Noh... Ei, seda pole kindlasti vaja :)</system:String>
+
+  <system:String x:Key="MessageWindow.Errors.InvalidFramerate.Title">Vigane väärtus</system:String>
+  <system:String x:Key="MessageWindow.Errors.InvalidFramerate">Tuvastati kehtetu kaadrisagedus.</system:String>
+
+  <system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Viga pettuste laadimisel</system:String>
+  <system:String x:Key="MessageWindow.Errors.CodesListFailed">Petiste loendi laadimisel ilmnes viga</system:String>
+
+  <system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Värskendamise viga</system:String>
+  <system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Värskenduste otsimisel ilmnesid järgmised vead:&#x0a;&#x0a;</system:String>
+ <system:String x:Key="MessageWindow.Errors.D3D8Update">D3d8.dll värskendamine ebaõnnestus</system:String>
+ <system:String x:Key="MessageWindow.Errors.D3D8UpdateCheck">Versiooni d3d8to9 kontrollimine ebaõnnestus</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.MissingManifest.Title">mod.manifesti ei leitud</system:String>
+ <system:String x:Key="MessageWindow.Errors.MissingManifest">Ükski valitud modifikatsioon ei sisalda manifestifaili. Neid ei saa kontrollida.</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.ModFailedVerif.Title">Kinnitusviga</system:String>
+ <system:String x:Key="MessageWindow.Errors.ModFailedVerif0" xml:space="preserve">Määratud modifikatsioonid ei ole läbinud kinnitust:&#x0a;</system:String>
+ <system:String x:Key="MessageWindow.Errors.ModFailedVerif1">fail(id)</system:String>
+ <system:String x:Key="MessageWindow.Errors.ModFailedVerif2" xml:space="preserve">&#x0a;&#x0a;Kas soovite proovida neid taastada?</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.URIParseFail.Title">URL-i ei saanud lugeda</system:String>
+ <system:String x:Key="MessageWindow.Errors.URIParseFail0">Vigane ühe klõpsuga installilink</system:String>
+ <system:String x:Key="MessageWindow.Errors.URIParseFail1" xml:space="preserve">tulemuseks oli viga:&#x0a;</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.GBAPIFail.Title">GameBanana API tõrge</system:String>
+ <system:String x:Key="MessageWindow.Errors.GBAPIFail">GameBanana API taotlus nurjus:</system:String>
+
+<system:String x:Key="MessageWindow.Errors.URIParseFailFields0">Ühe klõpsuga installilink</system:String>
+ <system:String x:Key="MessageWindow.Errors.URIParseFailFields1">ei sisalda kohustuslikke välju.</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail.Title">Viga kataloogi kustutamisel</system:String>
+ <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail0">Värskenduste ajutise kausta kustutamine ebaõnnestus</system:String>
+ <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail1">Kas soovite korrata? Saate kausta hiljem kustutada.</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail.Title">Viga kataloogi loomisel</system:String>
+ <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail0">Ei saanud värskenduste jaoks ajutist kausta luua</system:String>
+ <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail1">Kas soovite korrata?</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Värskendamise viga</system:String>
+ <system:String x:Key="MessageWindow.Errors.UpdateFailed">Värskendamine ebaõnnestus:"</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Modifikatsiooni värskendamine ebaõnnestus</system:String>
+ <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">"Modifikatsiooni vahelejätmiseks klõpsake nuppu Proovi uuesti või Loobu."</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Värskendamise teabe hankimine ebaõnnestus.</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.Net7Missing">SADX-i modihaldurit ei saa käivitada ilma .NET 7ta.</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.VCMissing.Title">VC++ komponenti ei leitud</system:String>
+ <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Teil puuduvad Visual C++ Redistributablesi paketid. Mõned modifikatsioonid ei tööta ilma nendeta.&#x0a;&#x0a;Kas soovite need kohe alla laadida ja installida?</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Viga laadimisel</system:String>
+ <system:String x:Key="MessageWindow.Errors.GenericDLFail0">Laadimine ebaõnnestus</system:String>
+ <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Kas soovite uuesti proovida?</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.LoaderFailedToSave.Title">Laadija teavet ei salvestatud.</system:String>
+ <system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">"Kaust "Mods" asub kehtetul teel. Veenduge, et tee on õige. Praeguseid modilaaduri sätteid ei salvestatud."</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.CodeFail.Title">Vale petturida</system:String>
+ <system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">Koodikirjutaja ridade hulgas on tühi rida.&#x0a;&#x0a;Eemaldage see ja salvestage kood uuesti.</system:String>
+ <system:String x:Key="Messagewindow.Errors.CodeFailInvalid">Kood on valesti kirjutatud.&#x0a;&#x0a;Parandage vead ja salvestage see uuesti.</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Tundmatu viga</system:String>
+ <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Ilmnes tundmatu viga.</system:String>
+ <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Modimendi kustutamise viga: {0}.&#x0a;Veenduge, et failid on olemas ja neid ei kasutaks mõni muu programm. Seejärel proovige uuesti.</system:String>
+ <system:String x:Key="MessageWindow.Errors.ProfileLoad">Profiilide laadimisel ilmnes ootamatu viga. Kui probleem püsib, andke sellest teada.</system:String>
+ <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Teel {0} ei saanud seadistuste kausta luua.&#x0a;Modihaldur ei tööta korralikult.</system:String>
+ <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Viga faili {0} installimisel või värskendamisel.&#x0a;Kui mäng töötab, sulgege see ja proovige uuesti.</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Viga ini-faili lugemisel</system:String>
+ <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">Ini-faili lugemisel ilmnes ootamatu viga. Ini-fail ei tohi sisaldada dubleerivaid rühmi ega välju.</system:String>
+ <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Modifikatsiooni nimi: {0}&#x0a;Autor: {1}&#x0a;</system:String>
+    <!--> this is assuming the ini file was a mod <!-->
+<system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">See mod ei tööta. Võtke ühendust modi autoriga ja rääkige talle veast, et ta saaks selle parandada.</system:String>
+ <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">Haldur ei saanud keelt {0} valida.&#x0a;Kui probleem püsib, teavitage sellest X-il -Hax server.&#x0a;&#x0a;Täpsem veakood: {1}</system:String>
+
+ <system:String x:Key="MessageWindow.Errors.PermissionTitle">Juurdepääs keelatud</system:String>
+ <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Kataloogi loomine ebaõnnestus, programmil pole õigust kirjutada sellel teel: {0}&#x0a;&#x0a;Taaskäivitage haldur administraatoriõigustega.</system:String>
+ <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Kasutaja {0} mängutee leidmine nurjus {1}&#x0a;Kui olete oma mängukataloogi teisaldanud erinevas asukohas, määrake mängutee uuesti vahekaardil Manager Config.</system:String>
+    <!--#endregion-->
+	
+	<!--#region Warnings-->
+<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">See toiming kustutab valitud modifikatsioonid:&#x0a;&#x0a;</system:String>
+ <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Kas soovite jätkata?</system:String>
+
+ <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Olete keelamas selle modi salvestamise ümbersuunamise. Kui jätkate, kustutatakse kõik selle modi kausta salvestused.&#x0a;&#x0a;Kas soovite jätkata?</system:String>
+
+  <system:String x:Key="MessageWindow.Warnings.DeleteProfile">Kas soovite kindlasti selle profiili kustutada?</system:String>
+
+  <system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Valitud modifikatsioonid laaditakse sunniviisiliselt uuesti alla.&#x0a;&#x0a;Kas soovite jätkata?</system:String>
+
+  <system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">See võib järgmise värskenduse ajal kaasa tuua KASUTAJAMODIMISE ANDMETE KAOTUSE (SALVESTAMISED, KONFIGERIMISED)! Selle vältimiseks ärge kunagi käivitage seda modifikatsioonidel, mida te pole välja töötanud.&#x0a;&#x0a;Kas soovite jätkata?</system:String>
+
+ <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime komponenti pole installitud!&#x0a;&#x0a;Installi see kohe?</system:String>
+
+ <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Kõik valitud koodid kustutatakse.&#x0a;&#x0a;Kas soovite jätkata?</system:String>
+
+ <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">Värskenduste otsimine on valitud modi puhul keelatud. Kui jätkate, ei kontrolli haldur enam selle värskendust.&#x0a;Kas soovite jätkata?</system:String>
+
+ <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">Haldur vajab modifikatsioonide ja värskenduste ekstraktimiseks 7 ZIP-faili.&#x0a;&#x0a;Kas soovite installige see kohe?</system:String>
+
+ <system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Title" xml:space="preserve">Profiili automaatne üleviimine ebaõnnestus</system:String>
+  <system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message1" xml:space="preserve">SA Mod Manager ei suutnud teie viimati kasutatud profiili teisendada.</system:String>
+  <system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message2" xml:space="preserve">Loodi uus vaikeprofiil. Saate toimingut korrata profiilihalduris.</system:String>
+
+  <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Profiile ei leitud</system:String>
+ <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">Määratud profiile ei leitud:</system:String>
+ <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">Need eemaldatakse profiilide loendist ja valitud profiiliks on vaikimisi loendi esimene profiil.</system:String>
+
+ <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Impordiviga</system:String>
+ <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">Määratud faile ei imporditud profiilidena:</system:String>
+ <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Kasutage ainult JSON-profiilifaile või alglaaduri INI-faile.</system:String>
+ <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">Uue Mod Manageri värskenduse jaoks on töötamiseks vaja vähemalt .NET 8.0.7 Desktop Runtime.&#x0a;&#x0a; kas teile meeldib see kohe installida?</system:String>
+    <!--#endregion-->
+	
+	<!--#region Information-->
+<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">Modifikatsioonivärskendusi ei leitud</system:String>
+  <system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Kõiki modifikatsioone on juba värskendatud.</system:String>
+
+ <system:String x:Key="MessageWindow.Information.D3D8Update">Mooduli d3d8.dll versioon SADX kaustas erineb modloaderis sisalduvast versioonist. Kas soovite värskendada?</system:String>
+
+ <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Terveduse kontroll läbitud</system:String>
+ <system:String x:Key="MessageWindow.Information.ModPassedVerif">Kõik valitud modifikatsioonid on kinnitatud.</system:String>
+
+ <system:String x:Key="MessageWindow.Information.GameDetected.Title">Tuvastati mäng</system:String>
+ <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">Mäng {0} tuvastati teel "{1}"&#x0a;&#x0a;Kas soovite alla laadida ja lubab mod loader ?</system:String >
+ <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">Teelt "{0}" leiti SADX-iga kaust, mis on Steami versioon.&#x0a; mod loader töötab ainult mängu 2004. aasta versiooniga.&#x0a;&#x0a;Kas soovite alla laadida ja installida Mod Installeri, et teisendada mäng 2004. aasta versiooniks (ka salvestatud failid teisendatakse)?</system:String>
+ <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">Teelt "{0}" leiti SADX-iga kaust, mis on Steami versioon.&#x0a; mod loader töötab ainult mängu 2004. aasta versiooniga. Mängu 2004. aasta versiooniks teisendamiseks laadige alla ja installige SADX Mod Installer. (ka salvestamised teisendatakse).</system:String>
+
+ <system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Tervisekontroll</system:String>
+ <system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Olete alustanud mängu oleku kontrollimist.&#x0a;Kõiki mängufaile kontrollitakse (välja arvatud helifailid).&#x0a;&#x0a;Kas soovite jätkata?</system:String>
+
+ <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">Leiti failiprobleeme</system:String>
+ <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">Need mängufailid sisaldavad probleeme:</system:String>
+ <system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles2">Kui mäng töötab korralikult, ei mõjuta ülaltoodud probleemid mängu.</system:String>
+
+ <system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Kinnitamine lõpetatud</system:String>
+ <system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Kõik failid kinnitati edukalt.</system:String>
+
+ <system:String x:Key="MessageWindow.Information.Exception.Title">Seadete lisamine</system:String>
+ <system:String x:Key="MessageWindow.Information.Exception.Message">Kas soovite kopeerida halduri ja profiili sätted pöördloendusse?&#x0a;&#x0a;See on valikuline, kuid võib aidata probleemi lahendada .</system:String >
+
+ <system:String x:Key="MessageWindow.Information.BugReport.Title">Veaaruanne</system:String>
+ <system:String x:Key="MessageWindow.Information.BugReport.Message1">Olete esitamas veateadet. Kontrollige järgmist:</system:String>
+ <system:String x:Key="MessageWindow.Information.BugReport.Message2">Teie haldurit on värskendatud.</system:String>
+ <system:String x:Key="MessageWindow.Information.BugReport.Message3">Teie alglaadurit on värskendatud.</system:String>
+ <system:String x:Key="MessageWindow.Information.BugReport.Message4">Kõik modifikatsioonid on värskendatud.</system:String>
+ <system:String x:Key="MessageWindow.Information.BugReport.Message5">Kui olete ülaltooduga veendunud, järgige õigesse hoidlasse suunamiseks allolevaid juhiseid:</system:String>
+ <system:String x:Key="MessageWindow.Information.BugReport.Message6">Kui teil tekib praegu kasutatava programmiga probleeme, kasutage nuppu "Mod Manager".</system:String>
+ <system:String x:Key="MessageWindow.Information.BugReport.Message7">Kui teil tekib mänguga probleeme (nt hangumist, kokkujooksmist jne), kasutage nuppu "Mod Loader".</system:String>
+    <!--#endregion-->
+
+</ResourceDictionary>

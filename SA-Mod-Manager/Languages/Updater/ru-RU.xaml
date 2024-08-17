@@ -11,11 +11,10 @@
     <system:String x:Key="Updater.DL.Dep.Installing">Установка:</system:String>
     <system:String x:Key="Updater.DL.Dep.Updating">Обновление</system:String>
     <system:String x:Key="Updater.DL.Dep.Completed">завершено.</system:String>
-    <system:String x:Key="Updater.DL.Dep.Copying">Копирование файлов...</system:String>
-
     <system:String x:Key="Updater.DL.Offline.Title">Оффлайн-установка</system:String>
     <system:String x:Key="Updater.DL.Offline.Failed">Не удалось скачать {0}</system:String>
     <system:String x:Key="Updater.DL.Offline.InstallAttempt">Попытка оффлайн-установки, подождите...</system:String>
+    <system:String x:Key="Updater.DL.Dep.Copying">Копирование файлов...</system:String>
 
     <!--Mod Update-->
     <system:String x:Key="Updater.DL.Mod.Init">Подготовка к загрузке. Пожалуйста, подождите...</system:String>
@@ -30,6 +29,6 @@
     <system:String x:Key="Updater.DL.Mod.DownloadComplete">Загрузка завершена.</system:String>
 
     <system:String x:Key="Updater.DL.Mod.ManifestFail">Ошибка при загрузке манифеста</system:String>
-    <system:String x:Key="Updater.DL.Mod.ManifestApplyFail">Ошибки при применении манифеста</system:String>    
+    <system:String x:Key="Updater.DL.Mod.ManifestApplyFail">Ошибки при применении манифеста</system:String>
 
 </ResourceDictionary>

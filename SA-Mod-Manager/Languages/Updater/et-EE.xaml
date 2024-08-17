@@ -1,0 +1,35 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+<!--Sõltuvused-->
+ <system:String x:Key="Updater.DL.Dep.Download">Allalaadimine</system:String>
+ <system:String x:Key="Updater.DL.Dep.Install">Install</system:String>
+ <system:String x:Key="Updater.DL.Dep.Update">Värskenda</system:String>
+ <system:String x:Key="Updater.DL.Dep.Downloading">Allalaadimine</system:String>
+ <system:String x:Key="Updater.DL.Dep.Installing">Installing:</system:String>
+ <system:String x:Key="Updater.DL.Dep.Updating">Värskendamine</system:String>
+ <system:String x:Key="Updater.DL.Dep.Completed">lõpetatud.</system:String>
+ <system:String x:Key="Updater.DL.Dep.Copying">Failide kopeerimine...</system:String>
+
+ <system:String x:Key="Updater.DL.Offline.Title">Võrguühenduseta installimine</system:String>
+ <system:String x:Key="Updater.DL.Offline.Failed">Allalaadimine ebaõnnestus {0}</system:String>
+ <system:String x:Key="Updater.DL.Offline.InstallAttempt">Võrguühenduseta installimise katse, palun oodake...</system:String>
+
+ <!--Modifikatsiooni värskendus-->
+ <system:String x:Key="Updater.DL.Mod.Init">Laadimise ettevalmistamine. Palun oodake...</system:String>
+ <system:String x:Key="Updater.DL.Mod.Extracting">Extracting...</system:String>
+ <system:String x:Key="Updater.DL.Mod.ParsingManifest">Manifesti lugemine...</system:String>
+ <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Manifesti rakendamine...</system:String>
+ <system:String x:Key="Updater.DL.Mod.DownloadingFile">Faili allalaadimine</system:String>
+ <system:String x:Key="Updater.DL.Mod.of">/</system:String>
+ <!-- allalaaditavatest failidest-->
+ <system:String x:Key="Updater.DL.Mod.UpdatingMod">Modifikatsiooni värskendus</system:String>
+ <system:String x:Key="Updater.DL.Mod.StartingDownload">Allalaadimise alustamine...</system:String>
+ <system:String x:Key="Updater.DL.Mod.DownloadComplete">Allalaadimine on lõpetatud.</system:String>
+
+ <system:String x:Key="Updater.DL.Mod.ManifestFail">Viga manifesti laadimisel</system:String>
+ <system:String x:Key="Updater.DL.Mod.ManifestApplyFail">Vead manifesti rakendamisel</system:String> 
+
+</ResourceDictionary>

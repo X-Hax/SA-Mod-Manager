@@ -1,0 +1,64 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="GamePatches.Title">Paik</system:String>
+    <system:String x:Key="GamePatches.HRTFSound">HRTF-i ruumiheli lubamine</system:String>
+    <system:String x:Key="GamePatches.KeepCamSettings">Kaamerakoodi veaparandused</system:String>
+    <system:String x:Key="GamePatches.FixVertexColorRendering">Parandab mudelite tipuvärvi</system:String>
+    <system:String x:Key="GamePatches.MaterialColorFix">Materjali värviparandused</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Mudelite osade arvu piirangu suurendamine</system:String>
+    <system:String x:Key="GamePatches.FOVFix">Kuva ala parandused</system:String>
+    <system:String x:Key="GamePatches.SkyChaseResolutionFix">Sky Chase'i parandused</system:String>
+    <system:String x:Key="GamePatches.Chaos2CrashFix">Chaos 2 krahhiparandused</system:String>
+    <system:String x:Key="GamePatches.ChunkSpecularFix">Tükkide peegelduse parandused</system:String>
+    <system:String x:Key="GamePatches.E102NGonFix">Gamma-okulaari parandused</system:String>
+    <system:String x:Key="GamePatches.ChaoPanelFix">Chao võimete akna asukoha parandamine</system:String>
+    <system:String x:Key="GamePatches.PixelOffSetFix">2D-renderduspositsiooni parandused</system:String>
+    <system:String x:Key="GamePatches.LightFix">Valgustuse parandused</system:String>
+    <system:String x:Key="GamePatches.KillGBIX">GBIX-i indeksite keelamine (katseline)</system:String>
+    <system:String x:Key="GamePatches.DisableCDCheck">Keela kettakontroll</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupport">Laiendatud salvestamise tugi</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Kõrkekaitse</system:String>
+    <system:String x:Key="GamePatches.XInputFix">XInput-i parandus</system:String>
+
+    <system:String x:Key="GamePatches.HRTFSoundDesc">Seadistab DirectSoundi kasutama 3D-helide töötlemiseks täpsemaid algoritme. Seda paika pole vaja, kui BASS on helide jaoks lubatud.</system:String>
+    <system:String x:Key="GamePatches.KeepCamSettingsDesc">Parandab vea, mille korral tasuta kaamera sätteid ei salvestata pärast suremist või tsooni/toimingu laadimist.</system:String>
+    <system:String x:Key="GamePatches.FixVertexColorRenderingDesc" xml:space="preserve">Vanilla SADX ignoreerib mudelite tipuvärvimist, kasutades selle asemel globaalset väärtust, isegi kui seda pole vaja.&#x0a;&#x0a; See paik tühistab tipuvärvide õige rakendamisega seotud funktsioonid.</system:String>
+    <system:String x:Key="GamePatches.MaterialColorFixrDes" xml:space="preserve">Mäng läbib kõik mudelid, asendades materjali värvid valgega.&#x0a;&#x0a; See plaaster parandab värvide ebakõlad, muutes mudelid sarnasemaks mängu Dreamcasti ja Gamecube'i versioonide analoogidega.</system:String>
+    <system:String x:Key="GamePatches.NodeLimitDesc" xml:space="preserve">Alguses mängus on mudeli ja animatsioonide jaoks 111 mudeliosa tegelase kohta.&#x0a;&#x0a;Plaaster suurendab seda number 255-ni, mis võimaldab lisada mängu keerukamaid ja keerukamaid mudeleid.</system:String>
+    <system:String x:Key="GamePatches.FovFixDesc">Parandab vaateala ja võimaldab mängida portree kuvasuhtega.</system:String>
+    <system:String x:Key="GamePatches.SkyChaseResolutionFixDesc" xml:space="preserve">Võimaldab Sky Chase'il töötada kõigi ekraanieraldusvõimetega ühtmoodi. Plaaster fikseerib Tornaado liikumise ja sihiku, aga ka vaenlaste tulekiiruse.&#x0a;&#x0a;Selle plaastriga on lihtsam kui 640x480 eraldusvõimega embleemi saamiseks punktide kogumine lihtsam kui vaniljega mäng.</system:String>
+    <system:String x:Key="GamePatches.Chaos2CrashFixDesc">Lahendab probleemi, mille korral Chaos 2 lõpuleviimine ja bossi taaskäivitamine põhjustaks mängu kokkuvarisemise.</system:String>
+    <system:String x:Key="GamePatches.ChunkSpecularFixDesc">Parandab tükkmudelite peegeldused.</system:String>
+    <system:String x:Key="GamePatches.E102NGonFixDesc">Parandab N-nurksed hulknurgad (gamma-okulaarid), kasutades kolmnurkse riba tipupuhvrit.</system:String>
+    <system:String x:Key="GamePatches.ChaoPanelFixDesc">Parandab Chao statistika paneeli. Selle paigaga kuvatakse paneel ekraanil õigesti.</system:String>
+    <system:String x:Key="GamePatches.PixelOffSetFixDesc">Parandab enamiku 2D-elementide alampikslite kõrvalekaldeid, mida võib näha suurema eraldusvõimega.</system:String>
+    <system:String x:Key="GamePatches.LightFixDesc">Parandab LandTablesi valgustuse vale rakendamise ja võimaldab järjekorda pandud mudelite valgustuse tüübi säilimist.</system:String>
+    <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">Globaalseid indekseid (GBIX) kasutatakse mängu tekstuuri vahemällu salvestamise süsteemis. Iga SADX-i tekstuur on kordumatu. Enne uue tekstuuri laadimist võrreldakse seda globaalse indeksi abil juba laaditud tekstuuridega. Kui indeks leiti, kasutab mäng varem laaditud tekstuuri, selle asemel, et laadida tekstuuri uus.&#x0a;&#x0a;See plaaster keelab selle süsteemi, et vältida võimalikke vigu või konflikte (välja arvatud mõned erandid, näiteks liidese elemendid.)</system:String>
+    <system:String x:Key="GamePatches.DisableCDCheckDesc">Keela kettakontroll.</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Lubab Steami salvestuste ja kohandatud nimede toe (toetab kuni 48 tähemärki).</system:String>
+    <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Takistab krahhe, mis on tingitud puuduvatest tekstuuridest ja prügikastifailidest. &#x0a;&#x0a;Plaaster ei kaitse teid muude kokkujooksmiste eest.</system:String>
+    <system:String x:Key="GamePatches.XInputFixDesc" xml:space="preserve">Parandab kaamera pööramise režiimis XInput, kui valite standardse juhtimise (DInput).</system:String>
+
+    <!--#region SA2 Patches-->
+    <system:String x:Key="GamePatchesSA2.FramerateLimiter">Kaadrisageduse piiramine</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Keela sõnum mängust väljumisel</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoad">Animatsiooni laadimise keelamine</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBuffer">Suurendage tipupuhvri limiiti</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFix">Keskkonna kaardistamise parandus</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFix">Ekraani tuhmumise parandus</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFix">City Escape trammiparandus</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFix">Osakeste fikseerimine</system:String>
+
+    <system:String x:Key="GamePatchesSA2.FramerateLimiterDesc">Piirab kaadrisagedust 60 kaadrit sekundis. Lahendab probleemi, mille korral mäng töötab suure värskendussagedusega monitoridel liiga kiiresti.</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPromptDesc">Keelab hoiatusakna mängust väljumisel.</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoadDesc">Keelab Omochaost laadimise animatsiooni. See vaste peaks aitama peatada mängu kokkujooksmise käivitamisel.</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBufferDesc">Suurendab tipupuhvri limiidi 32k-ni. Plaaster võimaldab lisada modifikatsioonidele rohkem suure võimsusega mudeleid ja see on vajalik ka mõne modifikatsiooni töötamiseks.</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFixDesc">Parandab keskkonna kaardistamise oleku vea (peamiselt Chao Worldi jaoks), et muuta õiget renderdamist.</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">Parandab tulemuste kuva ajal ekraani tuhmumisega seotud vea.</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFixDesc">Parandab trammiga seotud vea City Escape tasemel, kui kasutatakse Inteli integreeritud graafikat.</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Parandab mittekuvatavad osakeste efektid (nagu Mystic Melody portaal) Inteli integreeritud graafikal.</system:String>
+    <!--#endregion-->
+
+</ResourceDictionary>
