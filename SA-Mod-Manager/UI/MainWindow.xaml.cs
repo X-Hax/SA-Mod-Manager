@@ -121,7 +121,7 @@ namespace SAModManager
                 await oneClick.UriInit();
 
                 if (oneClick.isEmpty == false)
-                {                  
+                {
                     return;
                 }
             }
@@ -419,12 +419,12 @@ namespace SAModManager
                 {
                     SAModInfo inf = value;
                     if (!string.IsNullOrEmpty(inf.Codes))
-                    {   
+                    {
                         string codePath = Path.Combine(Path.Combine(modDir, mod), inf.Codes);
                         if (File.Exists(codePath))
                             codes.AddRange(CodeList.Load(codePath).Codes);
                     }
-                      
+
                 }
             }
 
@@ -1141,7 +1141,7 @@ namespace SAModManager
                 var updates = new List<DownloadInfo>();
                 if (await App.PerformUpdateCodesCheck())
                     GamesInstall.SetUpdateCodes(App.CurrentGame, ref updates); //update codes
-               
+
                 if (await App.PerformUpdatePatchesCheck())
                     GamesInstall.SetUpdatePatches(App.CurrentGame, ref updates); //update patch
 
@@ -1173,7 +1173,7 @@ namespace SAModManager
         private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Check the todos within this function
-            if (App.CurrentGame == GamesInstall.Unknown ||  App.CurrentGame.id == SetGame.None) 
+            if (App.CurrentGame == GamesInstall.Unknown || App.CurrentGame.id == SetGame.None)
                 return;
 
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) || !File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
@@ -1337,13 +1337,13 @@ namespace SAModManager
             }
 
             App.CancelUpdate = true;
-			string executablePath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
-			foreach (var mod in EnabledMods)
-			{
-				SAModInfo checkmod = mods[mod];
-				if (checkmod.EXEFile?.Length > 0)
-					executablePath = Path.Combine(App.CurrentGame.modDirectory, mod, checkmod.EXEFile);
-			}
+            string executablePath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+            foreach (var mod in EnabledMods)
+            {
+                SAModInfo checkmod = mods[mod];
+                if (checkmod.EXEFile?.Length > 0)
+                    executablePath = Path.Combine(App.CurrentGame.modDirectory, mod, checkmod.EXEFile);
+            }
 
             Process process = Process.Start((new ProcessStartInfo(executablePath)
             {
@@ -1361,7 +1361,7 @@ namespace SAModManager
             {
                 App.Current.Shutdown();
             }
-          
+
         }
 
         public void SetModManagerVersion()
@@ -1734,7 +1734,8 @@ namespace SAModManager
                         File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
                     }
                 }
-            } catch { }
+            }
+            catch { }
         }
 
         public void Load(bool newSetup = false)
@@ -1749,7 +1750,7 @@ namespace SAModManager
                             ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
                     }
                 }
-            } 
+            }
 
             if (newSetup || App.isFirstBoot)
                 ProfileManager.CreateProfiles();
@@ -1776,16 +1777,16 @@ namespace SAModManager
         public void Save()
         {
             // If the mods folder doesn't exist, don't save anything.
-            if (!Directory.Exists(App.CurrentGame.modDirectory))
+            if (!Directory.Exists(App.CurrentGame.gameDirectory) || !Directory.Exists(App.CurrentGame.modDirectory))
                 return;
 
             // Save Manager Settings
-       
+
             App.ManagerSettings.CurrentSetGame = (int)App.CurrentGame?.id;
             App.ManagerSettings.managerWidth = this.Width;
             App.ManagerSettings.managerHeight = this.Height;
             App.ManagerSettings.Serialize(App.ManagerConfigFile);
-           
+
             UpdateManagerInfo();
 
             // Save Mods and Codes
@@ -1821,22 +1822,12 @@ namespace SAModManager
             codes = new List<Code>(mainCodes.Codes);
             codesSearch = new();
 
-            bool modFolderExist = Directory.Exists(App.CurrentGame.modDirectory);
+            //if game path hasn't been set, give up the process of loading mods.
 
-            //if mod folder doesn't exist and game path hasn't been set, give up the process of loading mods.
-
-            if (App.GamesList.Count == 0 || !modFolderExist && string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
+            if (App.GamesList.Count == 0 || App.CurrentGame == GamesInstall.Unknown || Directory.Exists(App.CurrentGame.gameDirectory) == false)
             {
                 UpdateMainButtonsState();
                 return;
-            }
-            else if (Directory.Exists(App.CurrentGame.gameDirectory) && !modFolderExist)
-            {
-                try
-                {
-                    Util.CreateSafeDirectory(App.CurrentGame.modDirectory);
-                }
-                catch { }
             }
 
 
@@ -1952,7 +1943,7 @@ namespace SAModManager
 
         private void Save_AppUserSettings()
         {
-           
+
             Settings.Default.Save();
         }
         #endregion
@@ -2520,7 +2511,7 @@ namespace SAModManager
                 await App.EnableOneClickInstall();
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
-                UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));      
+                UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
             }
         }
 
