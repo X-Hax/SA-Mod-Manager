@@ -26,7 +26,7 @@ To use SA Mod Manager, you must have:
 - Enjoy!
 
 ## Troubleshooting Guide
-- If you are experimenting issues with the new Manager, please [check this guide](https://github.com/X-Hax/SA-Mod-Manager/wiki/Troubleshooting-Guide)
+- If you are experiencing issues with the new Manager, please [check this guide](https://github.com/X-Hax/SA-Mod-Manager/wiki/Troubleshooting-Guide)
 
 ## Languages
 SA Mod Manager does support multi languages for most of its UI, this means it can be translated into another language.
