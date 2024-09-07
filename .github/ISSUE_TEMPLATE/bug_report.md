@@ -7,9 +7,11 @@ assignees: ''
 
 ---
 
-Please check the troubleshooting guide in the Wiki before submitting an issue.
+Please check the troubleshooting guide in the Wiki before submitting an issue. 
 
-NOTE! This issue tracker is for bug reports for the SA Mod Manager only. This isn't a place to troubleshoot game crashes with your mods. If you need help with mods, please post on the x-hax Discord instead.
+NOTE! This issue tracker is for bug reports for the SA Mod Manager only. This isn't a place to troubleshoot game crashes with your mods. If you need help with mods, please post on the x-hax Discord instead. 
+
+Please stick to english and add as many details as possible.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
