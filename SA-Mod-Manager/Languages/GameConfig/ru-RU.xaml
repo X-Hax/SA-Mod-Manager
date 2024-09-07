@@ -28,9 +28,9 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Разрешение:</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Размер окна:</system:String>
 	
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Родное разрешение</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">Половина от родного</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">Двойное родное</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Нативное разрешение</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">1/2x от нативного</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">2x от нативного</system:String>
 	
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Настройки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Принудительно вкл. 4:3</system:String>
