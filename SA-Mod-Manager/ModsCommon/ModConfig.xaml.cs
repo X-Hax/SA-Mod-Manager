@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using SAModManager.Configuration;
 
 namespace SAModManager.ModsCommon
@@ -17,6 +19,7 @@ namespace SAModManager.ModsCommon
         ConfigSettings settings;
         private static ModConfig _Instance;
         string modName = string.Empty;
+        public static List<GroupBox> allGroupBoxes = new List<GroupBox>();
 
         public static ModConfig GetInstance()
         {
@@ -75,6 +78,7 @@ namespace SAModManager.ModsCommon
 
         private async void ResetButton_Click(object sender, RoutedEventArgs e)
         {
+            ModConfig.allGroupBoxes.Clear();
             settings.ResetValues();
             settings.Save();
             await DelayResetBtn();
@@ -83,9 +87,51 @@ namespace SAModManager.ModsCommon
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            ModConfig.allGroupBoxes.Clear();
             this.Close();
         }
+
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border header)
+            {
+                var groupBox = header.TemplatedParent as GroupBox;
+
+                if (groupBox != null)
+                {
+                    // Toggle between Collapsed and Visible
+                    if (groupBox.Tag?.ToString() == "Collapsed")
+                    {
+                        groupBox.Tag = "Visible";
+                    }
+                    else
+                    {
+                        groupBox.Tag = "Collapsed";
+                    }
+
+                }
+            }
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = SearchTextBox.Text.ToLower();
+            foreach (var groupBox in allGroupBoxes)
+            {
+                // Check if the Header text matches the search term
+                if (groupBox.Header is TextBox headerTextBlock && headerTextBlock.Text.ToLowerInvariant().Contains(searchText))
+                {
+                    groupBox.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    groupBox.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
     }
+
+
 
     public class ConfigSettings
     {
