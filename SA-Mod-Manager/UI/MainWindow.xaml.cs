@@ -1537,8 +1537,12 @@ namespace SAModManager
 
         private void BuildCodeFiles()
         {
-            List<Code> selectedCodes = new();
-            List<Code> selectedPatches = new();
+            if (CodeListView.Items is null || CodeListView.Items.Count == 0)
+                return;
+
+
+            List<Code> selectedCodes = [];
+            List<Code> selectedPatches = [];
 
             foreach (CodeData code in CodeListView.Items)
             {
@@ -2309,8 +2313,8 @@ namespace SAModManager
                 };
 
                 listMods.SetBinding(ListView.ItemsSourceProperty, binding);
-                listMods.SetValue(GongSolutions.Wpf.DragDrop.DragDrop.IsDragSourceProperty, text.Length == 0 ? true : false);
-                listMods.SetValue(GongSolutions.Wpf.DragDrop.DragDrop.IsDropTargetProperty, text.Length == 0 ? true : false);
+                listMods.SetValue(GongSolutions.Wpf.DragDrop.DragDrop.IsDragSourceProperty, text.Length == 0);
+                listMods.SetValue(GongSolutions.Wpf.DragDrop.DragDrop.IsDropTargetProperty, text.Length == 0);
             }
         }
 
