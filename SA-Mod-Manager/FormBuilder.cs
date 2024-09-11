@@ -354,14 +354,11 @@ namespace SAModManager
                     Margin = GroupMargin,
                 };
 
-                var groupBoxHeader = box.Header as string;
-
                 TextBlock headerTex = new()
                 {
                     Text = HeaderName,
                     FontSize = 14,
                     FontWeight = FontWeights.Bold,
-
                 };
 
                 box.Header = headerTex;

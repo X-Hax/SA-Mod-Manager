@@ -10,13 +10,10 @@
     
     <Window.Resources>
         <Style TargetType="{x:Type GroupBox}">
-            <Setter Property="MinHeight" Value="18px"/>
-            <Setter Property="MinWidth"  Value="18px"/>
             <Setter Property="Background" Value="{DynamicResource GroupBox.Brushes.Background}"/>
-            <Setter Property="Foreground" Value="{DynamicResource GroupBox.Brushes.Foreground}"/>
-			<Setter Property="BorderBrush" Value="{DynamicResource GroupBox.Brushes.Border}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource GroupBox.Brushes.Border}"/>
             <Setter Property="BorderThickness" Value=".5"/>
-			<Setter Property="Template">
+            <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type GroupBox}">
                         <Grid SnapsToDevicePixels="true">
@@ -26,13 +23,12 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="6"/>
                             </Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" />
+                            <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="6"/>
-							</Grid.RowDefinitions>
+                            </Grid.RowDefinitions>
                             <Border Background="{TemplateBinding Background}" 
                             BorderBrush="Transparent" 
                             BorderThickness="{TemplateBinding BorderThickness}" 
@@ -62,7 +58,7 @@
                                     BorderThickness="{TemplateBinding BorderThickness}" 
                                     CornerRadius="2"/>
                                 </Border>
-							</Border>
+                            </Border>
 
                             <!-- Header with Arrow -->
                             <Border x:Name="Header" 
@@ -81,7 +77,7 @@
                                               RecognizesAccessKey="True" 
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                                 </DockPanel>
-							</Border>
+                            </Border>
 
                             <!-- ContentPresenter for Content -->
                             <ContentPresenter x:Name="ContentPresenter"
@@ -90,21 +86,21 @@
                                       Margin="{TemplateBinding Padding}" 
                                       Grid.Row="2" 
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-						</Grid>
+                        </Grid>
 
                         <!-- Triggers -->
-						<ControlTemplate.Triggers>
+                        <ControlTemplate.Triggers>
                             <!-- Trigger for Mouse Over -->
-							<Trigger Property="IsMouseOver" Value="True">
-								<Setter Property="BorderBrush" Value="{DynamicResource GroupBox.Brushes.MouseOver.Border}"/>
-							</Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{DynamicResource GroupBox.Brushes.MouseOver.Border}"/>
+                            </Trigger>
 
                             <!-- Trigger for Toggling Content Visibility -->
                             <Trigger Property="Tag" Value="Collapsed">
                                 <Setter TargetName="ContentPresenter" Property="Visibility" Value="Collapsed"/>
                                 <Setter TargetName="Arrow" Property="Text" Value="▼"/>
                             </Trigger>
-						</ControlTemplate.Triggers>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -121,12 +117,25 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="35"/>
+
         </Grid.RowDefinitions>
-        <Grid x:Name="ConfigGrid"/>
+        <Grid x:Name="ConfigGrid">
+     
 
-        <ScrollViewer Margin="20">
+            <DockPanel VerticalAlignment="top" HorizontalAlignment="Center" Margin="10">
+                <!-- Search Bar -->
+                <TextBox x:Name="SearchTextBox" DockPanel.Dock="Top"  Foreground="Gray" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Top" Width="150" Margin="0,0,6,0" Text="{DynamicResource CommonStrings.Search}" TextChanged="SearchTextBox_TextChanged"/>
+            </DockPanel>
+        </Grid>
 
-            <Grid x:Name="ItemsHost" Margin="5"/>
+        <ScrollViewer x:Name="scrollViewer" Margin="20,30,20,20">
+
+            <Grid x:Name="ItemsHost" Margin="5">
+
+
+            </Grid>
+            
 
         </ScrollViewer>
 

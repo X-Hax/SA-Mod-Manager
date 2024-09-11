@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using SAModManager.Configuration;
 
 namespace SAModManager.ModsCommon
@@ -19,7 +22,9 @@ namespace SAModManager.ModsCommon
         ConfigSettings settings;
         private static ModConfig _Instance;
         string modName = string.Empty;
-        public static List<GroupBox> allGroupBoxes = new List<GroupBox>();
+        public static List<GroupBox> allGroupBoxes = new();
+        public Grid modConfigSearch = new();
+        public bool placeHolder = false;
 
         public static ModConfig GetInstance()
         {
@@ -36,6 +41,7 @@ namespace SAModManager.ModsCommon
             modName = Modname;
             pathXML = path;
             Title = Lang.GetString("ModConfig.Title") + " " + modName;
+            SearchTextBox.Text =  Lang.GetString("CommonStrings.Search") + "...";
             Init();
         }
 
@@ -47,6 +53,7 @@ namespace SAModManager.ModsCommon
             panel.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
             panel.VerticalAlignment = VerticalAlignment.Stretch;
             ItemsHost.Children.Add(panel);
+
         }
 
         private async Task DelayResetBtn()
@@ -73,6 +80,7 @@ namespace SAModManager.ModsCommon
             settings.Save();
             if (settings.modNeedRefresh)
                 ((MainWindow)Application.Current.MainWindow)?.Refresh();
+            placeHolder = false;
             this.Close();
         }
 
@@ -81,6 +89,8 @@ namespace SAModManager.ModsCommon
             ModConfig.allGroupBoxes.Clear();
             settings.ResetValues();
             settings.Save();
+
+            modConfigSearch.Children.Clear();
             await DelayResetBtn();
             Init();
         }
@@ -88,6 +98,7 @@ namespace SAModManager.ModsCommon
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             ModConfig.allGroupBoxes.Clear();
+            placeHolder = false;
             this.Close();
         }
 
@@ -113,22 +124,124 @@ namespace SAModManager.ModsCommon
             }
         }
 
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void ToggleHeader_GroupBox(object sender, bool toggle)
         {
-            string searchText = SearchTextBox.Text.ToLower();
-            foreach (var groupBox in allGroupBoxes)
+            if (sender is GroupBox header)
             {
-                // Check if the Header text matches the search term
-                if (groupBox.Header is TextBox headerTextBlock && headerTextBlock.Text.ToLowerInvariant().Contains(searchText))
+                if (header != null)
                 {
-                    groupBox.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    groupBox.Visibility = Visibility.Collapsed;
+                    // Toggle between Collapsed and Visible
+                    if (toggle)
+                    {
+                        header.Tag = "Visible";
+                    }
+                    else
+                    {
+                        header.Tag = "Collapsed";
+                    }
+
                 }
             }
         }
+
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = SearchTextBox.Text.ToLower();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                foreach (var control in FindAllControls(ItemsHost)) // Pass the grid that holds everything
+                {
+                    if (control is Label lab)
+                    {
+                        if (lab.Content is TextBlock && lab.Parent is Grid grid)
+                        {
+                            grid.Visibility = Visibility.Visible;
+                        }
+                    }
+
+                    if (control is GroupBox groupBox)
+                    {
+                        if (groupBox.Header is TextBlock)
+                        {
+                            ToggleHeader_GroupBox(groupBox, true);
+                        }
+                    }
+                }
+            }
+
+
+            scrollViewer?.ScrollToTop();
+            SearchAndFilter(searchText);
+        }
+
+        private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // Remove placeholder text when the TextBox gets focus
+            if (!placeHolder)
+            {
+                SearchTextBox.Text = "";
+                placeHolder = true;
+            }
+            SearchTextBox.Foreground = Brushes.White;
+        }
+
+        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Restore placeholder text when the TextBox loses focus and is empty
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            {
+                //SearchTextBox.Text = Lang.GetString("CommonStrings.Search") + "...";
+                SearchTextBox.Text = "";
+                SearchTextBox.Foreground = Brushes.Gray;
+            }
+        }
+
+
+        private IEnumerable<FrameworkElement> FindAllControls(DependencyObject parent)
+        {
+            if (parent == null)
+                yield break;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is FrameworkElement element)
+                {
+                    yield return element;
+
+                    // Recursively check the children of this element
+                    foreach (var subChild in FindAllControls(child))
+                    {
+                        yield return subChild;
+                    }
+                }
+            }
+        }
+
+        private void SearchAndFilter(string searchTerm)
+        {
+            foreach (var control in FindAllControls(ItemsHost)) // Pass the grid that holds everything
+            {
+                if (control is Label lab)
+                {
+                    if (lab.Content is TextBlock txt && lab.Parent is Grid grid)
+                    {
+                        if (txt.Text.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                        {
+                            grid.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            grid.Visibility = Visibility.Collapsed;
+                        }
+
+                    }
+                }
+            }
+        }
+
     }
 
 
@@ -206,7 +319,7 @@ namespace SAModManager.ModsCommon
             {
                 Ini.IniFile.Save(modINI, modiniFilename);
             }
-              
+
 
             FileInfo fileInfo = new(configfilename);
 
@@ -280,7 +393,7 @@ namespace SAModManager.ModsCommon
                     modINI["Config"][propertyName] = value;
                 }
             }
-              
+
         }
     }
 
