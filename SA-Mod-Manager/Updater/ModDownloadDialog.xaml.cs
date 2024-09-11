@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -75,7 +76,7 @@ namespace SAModManager.Updater
                 this.dest = dest;
             }
 
-             Util.CreateSafeDirectory(this.dest);
+            Util.CreateSafeDirectory(this.dest);
         }
 
         private void UpdateHeaderTextDirect(string txt)
@@ -130,8 +131,8 @@ namespace SAModManager.Updater
                 });
             }
             catch { }
-        }       
-        
+        }
+
         private void ResetCurFileText()
         {
             try
@@ -172,6 +173,14 @@ namespace SAModManager.Updater
 
         private async Task Extracting(string dataDir, string filePath)
         {
+            string isValid = Path.GetExtension(filePath);
+            if (Util.IsStringValid(isValid) == false)
+            {
+                Close();
+                throw new Exception("Failed to extract '" + filePath + "'\n at " + dataDir + "\n\n");
+           
+            }
+
             try
             {
                 UpdateHeaderTextDirect(Lang.GetString("Updater.DL.Mod.Extracting"));
@@ -180,6 +189,7 @@ namespace SAModManager.Updater
             }
             catch (Exception ex)
             {
+                Close();
                 throw new Exception("Failed to extract '" + filePath + "'\n at " + dataDir + "\n\n", ex);
             }
         }
@@ -192,12 +202,12 @@ namespace SAModManager.Updater
                 string[] subfolders = Directory.GetDirectories(dataDir);
 
                 //if the mod didn't come with any folder, create one and move all the files there
-                if (File.Exists(Path.Combine(dataDir, "mod.ini"))) 
+                if (File.Exists(Path.Combine(dataDir, "mod.ini")))
                 {
                     string newDirectory = Path.Combine(dataDir, Path.GetFileName(filePath) + "_Dir");
                     Util.CreateSafeDirectory(newDirectory);
 
-                    foreach (string subfolder in subfolders) 
+                    foreach (string subfolder in subfolders)
                     {
                         if (Directory.Exists(subfolder))
                             Directory.Move(subfolder, Path.Combine(newDirectory, Path.GetFileName(subfolder)));
@@ -292,7 +302,7 @@ namespace SAModManager.Updater
                 {
                     string newDir = Path.Combine(mod.Folder, dir);
                     Util.CreateSafeDirectory(newDir);
-                    
+
                 }
 
                 var sourceFile = new FileInfo(Path.Combine(workDir, file.FilePath));
@@ -340,7 +350,7 @@ namespace SAModManager.Updater
 
 
                     Util.CreateSafeDirectory(dir);
-     
+
                     var info = new FileInfo(filePath);
 
                     if (!info.Exists || info.Length != i.Current.FileSize ||
@@ -404,7 +414,7 @@ namespace SAModManager.Updater
 
 
                     Util.CreateSafeDirectory(dir);
-                    
+
 
                     await Util.CopyFileAsync(oldPath, newPath, true);
                 }
@@ -417,9 +427,9 @@ namespace SAModManager.Updater
                     string workPath = Path.Combine(file.Folder, i.Current.FilePath);
                     string dir = Path.GetDirectoryName(workPath);
 
-      
+
                     Util.CreateSafeDirectory(dir);
-                    
+
 
                     await Util.CopyFileAsync(tempPath, workPath, true);
                 }
@@ -521,6 +531,7 @@ namespace SAModManager.Updater
                 {
                     UpdateProgressText(count.ToString(), updates.Count.ToString());
                     _progressOverall?.Report(count);
+
                 }
                 catch { }
 

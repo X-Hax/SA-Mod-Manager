@@ -156,7 +156,7 @@ namespace SAModManager
             foreach (var game in GamesInstall.GetSupportedGames())
             {
 
-                if (uri.ToLower().Contains(game.oneClickName))
+                if (uri.Contains(game.oneClickName, StringComparison.CurrentCultureIgnoreCase))
                 {
                     if (game != App.CurrentGame)
                     {

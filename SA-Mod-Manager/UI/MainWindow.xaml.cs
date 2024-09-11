@@ -361,6 +361,10 @@ namespace SAModManager
                         await form.InstallMod(FileName, App.CurrentGame.modDirectory);
                     }
                     break;
+                case (int)InstallModOptions.Type.ModUrl:
+                    InstallModUrl url = new();
+                    url.ShowDialog();
+                    break;
                 case (int)InstallModOptions.Type.NewMod: //create mod
                     EditMod Edit = new(null, null);
                     Edit.ShowDialog();

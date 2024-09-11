@@ -5,7 +5,8 @@
 	<system:String x:Key="InstallModOptions.Title">새 모드를 만들거나 설치합니다.</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Archive">압축 파일에서 설치</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Folder">폴더에서 설치</system:String>
-	<system:String x:Key="InstallModOptions.Radio.New">새 모드 만들기 (개발자 전용)</system:String>
+    <system:String x:Key="InstallModOptions.Radio.Url">Installing from an url</system:String>
+    <system:String x:Key="InstallModOptions.Radio.New">새 모드 만들기 (개발자 전용)</system:String>
 
     <!--Mod Download-->
     <system:String x:Key="ModDL.DLMod">모드 다운로드</system:String>

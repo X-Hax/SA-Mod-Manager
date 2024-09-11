@@ -6,7 +6,8 @@
     <!--#region Install New Mod Options-->
     <system:String x:Key="InstallModOptions.Title">Installer ou Créer un Nouveau Mod.</system:String>
     <system:String x:Key="InstallModOptions.Radio.Archive">Installer à partir d'une archive</system:String>
-    <system:String x:Key="InstallModOptions.Radio.Folder">Installier à partir d'un dossier</system:String>
+    <system:String x:Key="InstallModOptions.Radio.Folder">Installer à partir d'un dossier</system:String>
+    <system:String x:Key="InstallModOptions.Radio.Url">Installer à partir d'une url</system:String>
     <system:String x:Key="InstallModOptions.Radio.New">Nouveau Mod (Pour les Développeurs)</system:String>
 
     <!--Mod Download-->

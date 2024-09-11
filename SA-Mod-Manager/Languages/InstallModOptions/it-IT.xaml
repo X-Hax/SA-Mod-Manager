@@ -5,7 +5,8 @@
 	<system:String x:Key="InstallModOptions.Title">Installa o Crea una Nuova Mod.</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Archive">Installando da un archivio</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Folder">Installando da una cartella</system:String>
-	<system:String x:Key="InstallModOptions.Radio.New">Nuova Mod (Per Sviluppatori)</system:String>
+    <system:String x:Key="InstallModOptions.Radio.Url">Installing from an url</system:String>
+    <system:String x:Key="InstallModOptions.Radio.New">Nuova Mod (Per Sviluppatori)</system:String>
 
     <!--Mod Download-->
     <system:String x:Key="ModDL.DLMod">Download Mod</system:String>

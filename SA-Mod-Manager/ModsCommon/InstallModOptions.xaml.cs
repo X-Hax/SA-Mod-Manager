@@ -19,6 +19,7 @@ namespace SAModManager
             NewMod,
             ModArchive,
             ModFolder,
+            ModUrl,
         }
 
         public InstallModOptions()
@@ -30,6 +31,7 @@ namespace SAModManager
             CheckStack.Children.Add(new RadioButton() { IsChecked = true, Content = Lang.GetString("InstallModOptions.Radio.New"), Margin = new Thickness(2) }); ;
             CheckStack.Children.Add(new RadioButton() { Content = Lang.GetString("InstallModOptions.Radio.Archive"), Margin = new Thickness(2) });
             CheckStack.Children.Add(new RadioButton() { Content = Lang.GetString("InstallModOptions.Radio.Folder"), Margin = new Thickness(2) });
+            CheckStack.Children.Add(new RadioButton() { Content = Lang.GetString("InstallModOptions.Radio.Url"), Margin = new Thickness(2) });
         }
 
 
