@@ -24,7 +24,6 @@ namespace SAModManager.ModsCommon
         string modName = string.Empty;
         public static List<GroupBox> allGroupBoxes = new();
         public Grid modConfigSearch = new();
-        public bool placeHolder = false;
 
         public static ModConfig GetInstance()
         {
@@ -41,7 +40,7 @@ namespace SAModManager.ModsCommon
             modName = Modname;
             pathXML = path;
             Title = Lang.GetString("ModConfig.Title") + " " + modName;
-            SearchTextBox.Text =  Lang.GetString("CommonStrings.Search") + "...";
+            SearchTextBox.Text = Lang.GetString("CommonStrings.Search") + "...";
             Init();
         }
 
@@ -80,7 +79,7 @@ namespace SAModManager.ModsCommon
             settings.Save();
             if (settings.modNeedRefresh)
                 ((MainWindow)Application.Current.MainWindow)?.Refresh();
-            placeHolder = false;
+
             this.Close();
         }
 
@@ -95,10 +94,11 @@ namespace SAModManager.ModsCommon
             Init();
         }
 
+
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             ModConfig.allGroupBoxes.Clear();
-            placeHolder = false;
+
             this.Close();
         }
 
@@ -124,6 +124,12 @@ namespace SAModManager.ModsCommon
             }
         }
 
+        private bool IsSearchTextPlaceHolder()
+        {
+            return SearchTextBox.Text.ToLower() == Lang.GetString("CommonStrings.Search").ToLower() + "...";
+
+        }
+
         private void ToggleHeader_GroupBox(object sender, bool toggle)
         {
             if (sender is GroupBox header)
@@ -147,9 +153,13 @@ namespace SAModManager.ModsCommon
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+
+            if (IsSearchTextPlaceHolder())
+                return;
+
             string searchText = SearchTextBox.Text.ToLower();
 
-            if (string.IsNullOrEmpty(searchText))
+            if (!Util.IsStringValid(searchText))
             {
                 foreach (var control in FindAllControls(ItemsHost)) // Pass the grid that holds everything
                 {
@@ -178,12 +188,11 @@ namespace SAModManager.ModsCommon
 
         private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            // Remove placeholder text when the TextBox gets focus
-            if (!placeHolder)
+            if (IsSearchTextPlaceHolder())
             {
                 SearchTextBox.Text = "";
-                placeHolder = true;
             }
+
             SearchTextBox.Foreground = Brushes.White;
         }
 
@@ -192,9 +201,8 @@ namespace SAModManager.ModsCommon
             // Restore placeholder text when the TextBox loses focus and is empty
             if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
             {
-                //SearchTextBox.Text = Lang.GetString("CommonStrings.Search") + "...";
-                SearchTextBox.Text = "";
                 SearchTextBox.Foreground = Brushes.Gray;
+                SearchTextBox.Text = Lang.GetString("CommonStrings.Search") + "...";
             }
         }
 

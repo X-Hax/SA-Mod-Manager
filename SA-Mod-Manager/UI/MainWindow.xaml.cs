@@ -41,10 +41,10 @@ namespace SAModManager
         public readonly string titleName = "SA Mod Manager";
         private readonly string Version = App.VersionString;
         private static string updatePath = "mods\\.updates";
-        string codelstpath = "mods\\Codes.lst";
-        string codexmlpath = "mods\\Codes.xml";
-        string codedatpath = "mods\\Codes.dat";
-        string patchdatpath = "mods\\Patches.dat";
+        string codelstpath = string.Empty;
+        string codexmlpath = string.Empty;
+        string codedatpath = string.Empty;
+        string patchdatpath = string.Empty;
         private static bool gameMissingFlag = false;
 
         // Shared Variables
@@ -1561,8 +1561,11 @@ namespace SAModManager
 
             if (Directory.Exists(App.CurrentGame.modDirectory))
             {
-                CodeList.WriteDatFile(patchdatpath, selectedPatches);
-                CodeList.WriteDatFile(codedatpath, selectedCodes);
+                if (Util.IsStringValid(patchdatpath))
+                    CodeList.WriteDatFile(patchdatpath, selectedPatches);
+
+                if (Util.IsStringValid(codedatpath))
+                    CodeList.WriteDatFile(codedatpath, selectedCodes);
             }
         }
 

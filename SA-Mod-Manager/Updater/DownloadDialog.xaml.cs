@@ -55,7 +55,7 @@ namespace SAModManager.Updater
             string error = Lang.GetString("MessageWindow.Errors.GenericDLFail0") + ":\n";
             foreach (var dl in dlList)
             {
-                if (!string.IsNullOrEmpty(dl.errorMessage))
+                if (Util.IsStringValid(dl.errorMessage))
                     error += "\n" + dl.errorMessage;
             }
 
@@ -143,7 +143,7 @@ namespace SAModManager.Updater
 
             await Task.Delay(200);
 
-            if (!string.IsNullOrEmpty(dl.Folder) && File.Exists(dl.FileName) && dl.Folder != Path.GetDirectoryName(Environment.ProcessPath))
+            if (Util.IsStringValid(dl.Folder) && File.Exists(dl.FileName) && dl.Folder != Path.GetDirectoryName(Environment.ProcessPath))
                 File.Delete(dl.FileName);
 
         }

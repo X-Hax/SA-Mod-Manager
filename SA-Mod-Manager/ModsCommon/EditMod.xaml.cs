@@ -143,7 +143,7 @@ namespace SAModManager
         #region Properties Tab Functions
         private void nameBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(nameBox.Text))
+            if (Util.IsStringValid(nameBox.Text))
             {
                 modIDBox.Text = GenerateModID().Replace(" ", "");
 
@@ -183,7 +183,7 @@ namespace SAModManager
         #region Dependency Tab Functions
         private void btnAddDependency_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(nameBox.Text) && !string.IsNullOrEmpty(folderName))
+            if (Util.IsStringValid(nameBox.Text) && Util.IsStringValid(folderName))
             {
 
                 selectWindow = new SelectDependencies(dependencies);
@@ -383,7 +383,7 @@ namespace SAModManager
         {
             mod.IncludeDirs = new();
 
-            if (string.IsNullOrEmpty(includeDirBox.Text) == false)
+            if (Util.IsStringValid(includeDirBox.Text))
             {
                 string text = includeDirBox.Text.Trim();
                 string[] inclurDirList = text.Split(',');
@@ -391,7 +391,7 @@ namespace SAModManager
                 foreach (string includeDir in inclurDirList)
                 {
                     string trimmedIncludeDir = includeDir.Trim();
-                    if (!string.IsNullOrEmpty(trimmedIncludeDir))
+                    if (Util.IsStringValid(trimmedIncludeDir))
                     {
                         mod.IncludeDirs.Add(trimmedIncludeDir);
                         string includeDirFolder = Path.Combine(modPath, trimmedIncludeDir);
@@ -415,7 +415,7 @@ namespace SAModManager
                 foreach (string dep in mod.IncludeDirs)
                     includeDirBox.Text += dep + ", ";
 
-                if (string.IsNullOrEmpty(includeDirBox.Text) == false) //remove the last , at the end
+                if (Util.IsStringValid(includeDirBox.Text)) //remove the last , at the end
                     includeDirBox.Text = includeDirBox.Text.Remove(includeDirBox.Text.Length - 2, 2);
             }
         }
@@ -673,7 +673,7 @@ namespace SAModManager
 
         private void btnNewCode_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(folderName) || string.IsNullOrEmpty(nameBox.Text))
+            if (!Util.IsStringValid(folderName) || !Util.IsStringValid(nameBox.Text))
                 return;
 
             NewCode newCodeWindow = new();

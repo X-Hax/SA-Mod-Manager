@@ -334,7 +334,7 @@ namespace SAModManager
 
                 string changelog = await GitHub.GetGitChangeLog(update.Item2); 
 
-                if (string.IsNullOrEmpty(changelog)) //update found but no changelog (?)
+                if (!Util.IsStringValid(changelog)) //update found but no changelog (?)
                     return false;
 
                 var manager = new InfoManagerUpdate(changelog, update.Item4);
@@ -396,7 +396,7 @@ namespace SAModManager
 
                 string changelog = await GitHub.GetGitLoaderChangeLog(update.Item2); //item2 is commit hash
 
-                if (string.IsNullOrEmpty(changelog) || App.CancelUpdate) //if string is null, we got error(s) so the DL can't continue
+                if (!Util.IsStringValid(changelog) || App.CancelUpdate) //if string is null, we got error(s) so the DL can't continue
                     return;
 
 
@@ -648,10 +648,10 @@ namespace SAModManager
         {
             try
             {
-                if (string.IsNullOrEmpty(App.CurrentGame?.oneClickName) == false)
+                if (Util.IsStringValid(App.CurrentGame.oneClickName))
                 {
                     string execPath = Environment.ProcessPath;
-                    string clickName = App.CurrentGame?.oneClickName;
+                    string clickName = App.CurrentGame.oneClickName;
                     await Process.Start(new ProcessStartInfo(execPath, $"urlhandler \"{clickName}\"") { UseShellExecute = true }).WaitForExitAsync();
                 }
             }

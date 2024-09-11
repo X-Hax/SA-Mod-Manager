@@ -125,11 +125,11 @@
             <DockPanel VerticalAlignment="top" HorizontalAlignment="Center" Margin="10">
                 <!-- Search Bar -->
                 <TextBox x:Name="SearchTextBox" DockPanel.Dock="Top"  Foreground="Gray" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Top" Width="150" Margin="0,0,6,0" Text="{DynamicResource CommonStrings.Search}" TextChanged="SearchTextBox_TextChanged"/>
+                         VerticalAlignment="Top" Width="160" FontSize="12" Text="{DynamicResource CommonStrings.Search}" TextChanged="SearchTextBox_TextChanged"/>
             </DockPanel>
         </Grid>
 
-        <ScrollViewer x:Name="scrollViewer" Margin="20,30,20,20">
+        <ScrollViewer x:Name="scrollViewer" Margin="20,35,20,20">
 
             <Grid x:Name="ItemsHost" Margin="5">
 

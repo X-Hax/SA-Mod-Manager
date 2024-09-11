@@ -716,6 +716,10 @@ namespace SAModManager
                 s = $"Z:{s}";
         }
 
+        public static bool IsStringValid(string str)
+        {
+            return !string.IsNullOrEmpty(str) && !string.IsNullOrWhiteSpace(str);
+        }
 
     }
 }
