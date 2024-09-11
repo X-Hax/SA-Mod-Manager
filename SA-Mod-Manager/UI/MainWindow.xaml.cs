@@ -27,6 +27,7 @@ using System.Windows.Media.Imaging;
 using System.Reflection;
 using SAModManager.Profile;
 using SAModManager.ModsCommon;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace SAModManager
 {
@@ -963,6 +964,7 @@ namespace SAModManager
                             CodesFind.Visibility = Visibility.Visible;
                             FilterCodes(TextBox_CodesSearch.Text.ToLowerInvariant());
                             TextBox_CodesSearch.Focus();
+
                         }
                     }
                 }
@@ -1494,6 +1496,32 @@ namespace SAModManager
             return App.Profiles.ProfilesList[index].Filename;
         }
 
+        private void SortCodeAlphanumerically()
+        {
+            List<CodeData> newCodeList = new();
+            foreach (Code item in codes)
+            {
+                CodeData extraItem = new()
+                {
+                    codes = item,
+                    IsChecked = EnabledCodes.Contains(item.Name),
+                    IsEnabled = !item.Required,
+                };
+
+                newCodeList.Add(extraItem);
+            }
+
+            var sortedCodeDataList = newCodeList.OrderBy(codeData => codeData.codes.Name).ToList();
+
+            foreach (var code in sortedCodeDataList)
+            {
+                CodeListView.Items.Add(code);
+                codesSearch.Add(code);
+            }
+
+            newCodeList.Clear();
+        }
+
         private void UpdateModsCodes()
         {
             // Update EnabledMods for saving.
@@ -1523,18 +1551,8 @@ namespace SAModManager
             foreach (Code item in codes.Where(a => a.Required && !EnabledCodes.Contains(a.Name)))
                 EnabledCodes.Add(item.Name);
 
-            foreach (Code item in codes)
-            {
-                CodeData extraItem = new()
-                {
-                    codes = item,
-                    IsChecked = EnabledCodes.Contains(item.Name),
-                    IsEnabled = !item.Required,
-                };
 
-                codesSearch.Add(extraItem);
-                CodeListView.Items.Add(extraItem);
-            }
+            SortCodeAlphanumerically();
 
             CodeListView.EndInit();
         }
