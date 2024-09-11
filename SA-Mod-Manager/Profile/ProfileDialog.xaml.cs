@@ -229,7 +229,7 @@ namespace SAModManager.Profile
         {
             var dialog = new System.Windows.Forms.OpenFileDialog
             {
-                Filter = "Old Profiles|*.ini|Profiles|*.json",
+                Filter = "Profiles|*.ini;*.json",
                 Multiselect = true
             };
 
@@ -243,6 +243,11 @@ namespace SAModManager.Profile
                 int i = 0;
                 foreach (string filename in dialog.FileNames)
                 {
+                    if (dialog.SafeFileNames[i].Equals("Profiles.json", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        continue;
+                    }
+
 					string file = Path.GetFullPath(filename);
                     if (File.Exists(file))
                     {
@@ -276,7 +281,8 @@ namespace SAModManager.Profile
                                             }
                                             break;
                                     }
-                                    if (!invalid)
+
+                                    if (!invalid && file.Equals(newFilePath, StringComparison.CurrentCultureIgnoreCase) == false)
                                         File.Copy(file, newFilePath, true);
                                 }
                                 catch

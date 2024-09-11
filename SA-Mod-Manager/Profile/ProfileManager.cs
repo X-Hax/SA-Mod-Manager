@@ -80,7 +80,7 @@ namespace SAModManager.Profile
 				case SetGame.SADX:
 					Configuration.SADX.GameSettings sadxSettings = new();
 					SADXLoaderInfo sadxLoader = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
-					sadxSettings.ConvertFromV0(sadxLoader);
+                    sadxSettings.ConvertFromV0(sadxLoader);
 					sadxSettings.Serialize(destFile);
 					break;
 				case SetGame.SA2:

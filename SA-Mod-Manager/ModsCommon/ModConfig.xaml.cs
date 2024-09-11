@@ -299,8 +299,7 @@ namespace SAModManager.ModsCommon
                             value = string.IsNullOrEmpty(EnumProp.DisplayName) ? EnumProp.Name : EnumProp.DisplayName;
                         }
 
-                        if (!modINI["Config"].ContainsKey(prop.Name))
-                            modINI["Config"].Add(prop.Name, value);
+                         modINI["Config"].TryAdd(prop.Name, value);
                     }
                 }
 
