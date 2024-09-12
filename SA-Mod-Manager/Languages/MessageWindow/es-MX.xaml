@@ -13,8 +13,8 @@
 
     <system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">No se encontraron los siguientes mods:&#x0a;&#x0a;</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Failed to set Game Path</system:String>
-    <system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed. If you renamed the original exe, the game detection won't work.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Error al establecer la ruta del juego</system:String>
+    <system:String x:Key="MessageWindow.Errors.GamePathFailed">No se pudo un juego compatible. Asegúrate de elegir una carpeta donde esté instalado un juego. Si renombraste el ejecutable (EXE) original, la detección del juego no servirá.</system:String>
     
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"El mod ya existe"</system:String>
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Ya existe un mod con ese nombre.&#x0a;Por favor, elige un nuevo nombre o renombra el existente.</system:String>
@@ -102,11 +102,11 @@
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">Ocurrió un error inesperado al leer un archivo ini. Los archivos ini no pueden tener la misma clave o grupo varias veces.</system:String>
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Nombre del mod: {0}&#x0a;Autor(a): {1}&#x0a;</system:String> <!--> this is assuming the ini file was a mod <!-->
     <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">Este mod no funcionará. Por favor, reporta este error a el/la creador(a) del mod para que pueda arreglarlo.</system:String>
-    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">The Manager couldn't select the language {0}.&#x0a;If the issue persists, please report it on the X-Hax Server.&#x0a;&#x0a;Advanced Error Code: {1}</system:String>
-    <system:String x:Key="MessageWindow.Errors.PermissionTitle">Access Denied</system:String>
-    <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Failed to create directory, the program does not have the authorization to write at this path: {0}&#x0a;&#x0a;Please restart the Manager with Administrator Privileges.</system:String>
-    <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Failed to find the game path of {0} at {1}&#x0a;If you have moved your game directory to a different location, please re set the game path in the Manager Config tab.</system:String>
-   
+    
+    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">El Gestor no pudo elegir el idioma {0}.&#x0a;Si el problema persiste, repórtalo, por favor, en el servidor de X-Hax.&#x0a;&#x0a;Código de error avanzado: {1}</system:String>
+    <system:String x:Key="MessageWindow.Errors.PermissionTitle">Acceso denegado</system:String>
+    <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">No se pudo crear el directorio. El programa no tiene permiso de escritura en esta ruta: {0}&#x0a;&#x0a;Por favor, reinicia el Gestor con privilegios de administrador.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">No se pudo encontrar la ruta del juego {0} en {1}&#x0a;Si moviste el directorio de tu juego a otra ubicación, por favor, vuelve a indicar la ruta en la pestaña Configuración del gestor.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -135,7 +135,8 @@
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Error al importar</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">No se pudieron importar los siguientes archivos como perfiles:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Por favor, asegúrate de que sólo utilizas archivos JSON de perfil de juego o archivos INI del antiguo cargador.</system:String>
-    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">The new Mod Manager update requires at least .NET 8.0.7 Desktop Runtime to work.&#x0a;&#x0a;Would you like to install it now?</system:String>
+    
+    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">La nueva actualización del Gestor de Mods requiere, por lo menos, .NET 8.0.7 Desktop Runtime para funcionar.&#x0a;&#x0a;¿Quieres instalarlo ahora?</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->
