@@ -5,10 +5,14 @@
 	<system:String x:Key="InstallModOptions.Title">Установить или создать новый мод.</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Archive">Установить из архива</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Folder">Установить из папки</system:String>
-    <system:String x:Key="InstallModOptions.Radio.Url">Installing from an url</system:String>
+    <system:String x:Key="InstallModOptions.Radio.Url">Установить по ссылке</system:String>
     <system:String x:Key="InstallModOptions.Radio.New">Новый мод (для разработчиков)</system:String>
+
+	<system:String x:Key="InstallModUrl.Radio.Header">Скопируйте и вставьте ссылку для загрузки мода сюда:</system:String>
 
     <!--Mod Download-->
     <system:String x:Key="ModDL.DLMod">Загрузить мод</system:String>
     <system:String x:Key="ModDL.OpenLink">Страница мода</system:String>
+	<system:String x:Key="ModDL.NoDescript">Описание не найдено.</system:String>
+	
 </ResourceDictionary>
