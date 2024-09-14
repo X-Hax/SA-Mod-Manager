@@ -84,6 +84,7 @@
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Logger les infos de Debug dans un fichier</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Créer des Crash Dumps</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Bilan de santé du jeu</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintenir l'ordre des mods</system:String>
     <!--#endregion-->
 
     <!--About-->
@@ -228,6 +229,7 @@
     <system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Ouvre un lien vers le site Web SA Docs qui contient diverses informations concernant la modification des jeux Sonic Adventure.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Ouvre un lien vers le dépôt GitHub du Mod Manager pour signaler des bugs.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Lance un contrôle de santé sur l'installation de votre jeu pour voir si vous avez des fichiers manquants ou modifiés.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Les mods activées ne seront plus déplacés en haut de la liste lors de la sauvegarde du Manager.</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>

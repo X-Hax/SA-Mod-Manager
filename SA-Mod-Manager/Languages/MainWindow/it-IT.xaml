@@ -59,7 +59,8 @@
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Opzioni Avanzate</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Mantieni il Mod Loader aperto dopo aver lanciato il gioco</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Abilita Opzioni da Sviluppatore</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Abilita Opzioni da Sviluppatore</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Abilita Finestra Console</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Print Debug nella Finestra di Gioco</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Salva Log Debug come File</system:String>
@@ -188,7 +189,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Imposta il tema usato dal Mod Manager</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Imposta il linguaggio usato dal Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantiene il Mod Manager aperto quando si preme Salva e Gioca.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Abilita la scheda "Test Spawn" nel Mod Manager."</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Abilita la scheda "Test Spawn" nel Mod Manager."</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Quando abilitato, cliccare un One Click Link su GameBanana aprirà una finestra di dialogo per il download della mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Quando abilitato, il Mod Loader è installato e puoi giocare con le mod, patch e trucchi.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Abilita il controllo automatico per gli aggiornamenti del Mod Loader quando si apre il Mod Manager.</system:String>

@@ -63,6 +63,7 @@
     <!--Debug Features-->
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">고급 옵션</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">게임 실행 후에도 SA Mod Manager를 열린 상태로 유지</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">개발자 옵션 활성화</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">콘솔 창 활성화</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">게임 화면에 디버그 정보 출력</system:String>
@@ -193,6 +194,7 @@
     <system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Mod Manager에서 사용할 테마를 지정합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.Language">Mod Manager에서 사용되는 언어를 지정합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">저장하고 플레이를 누른 경우, Mod Manager가 열린 상태로 유지됩니다.</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">모드 매니저에서 테스트 스폰 탭을 활성화합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">활성화된 경우, GameBanana의 원클릭 링크를 클릭하면 모드에 대한 다운로드 대화 상자가 열립니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">활성화된 경우, 모드로더를 설치하고 모드, 패치, 치트로 플레이할 수 있습니다.</system:String>
