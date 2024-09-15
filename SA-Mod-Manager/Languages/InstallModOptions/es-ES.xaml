@@ -5,12 +5,14 @@
 	<system:String x:Key="InstallModOptions.Title">Instalar o crear un nuevo mod.</system:String>
     <system:String x:Key="InstallModOptions.Radio.Archive">Instalar desde un archivo</system:String>
     <system:String x:Key="InstallModOptions.Radio.Folder">Instalar desde una carpeta</system:String>
-    <system:String x:Key="InstallModOptions.Radio.Url">Installing from an url</system:String>
+    <system:String x:Key="InstallModOptions.Radio.Url">Installing desde una url</system:String>
     <system:String x:Key="InstallModOptions.Radio.New">Nuevo Mod (Para desarrolladores)</system:String>
 
+    <system:String x:Key="InstallModUrl.Radio.Header">Copia y pega el enlace de la página de descarga de los mods aquí:</system:String>
+
     <!--Mod Download-->
-    <system:String x:Key="ModDL.DLMod">Download Mod</system:String>
-    <system:String x:Key="ModDL.OpenLink">Open Link</system:String>
+    <system:String x:Key="ModDL.DLMod">Descargar Mod</system:String>
+    <system:String x:Key="ModDL.OpenLink">Abrir Enlace</system:String>
     <system:String x:Key="ModDL.NoDescript">No se encontró ninguna descripción.</system:String>
 
 </ResourceDictionary>
