@@ -63,6 +63,7 @@
 	<!--Debug Features-->
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Opciones Avanzandas</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Mantener el Mod Manager abierto después de iniciar el juego</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Activar Opciones de Desarrollador</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Activar Consola</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Mostrar mensajes Debug en la Ventana del Juego</system:String>
@@ -197,7 +198,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Ajusta el tema del Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Ajusta el idioma del Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantiene el Mod Manager abierto al pulsa Guardar y Jugar.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Activa la pestaña Test Spawn en el Mod Manager.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Activa la pestaña Test Spawn en el Mod Manager.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Al activarlo, al hacer clic en enlaces 1-Clic en GameBanana abrirá una ventana de descarga para el mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Al activarlo, el Mod Loader será instalado y podrás jugar con mods, parches y códigos.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Activa la búsqueda automática de actualizaciones del Mod Manager al iniciarlo.</system:String>

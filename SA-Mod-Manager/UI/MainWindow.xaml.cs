@@ -1842,34 +1842,66 @@ namespace SAModManager
             ProfileManager.SaveProfiles();
         }
 
-        private void LoadModList()
+        private void LoadConsistentModList()
         {
-            btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
-            ViewModel.Modsdata.Clear();
 
-            mods = new Dictionary<string, SAModInfo>();
-            codes = new List<Code>(mainCodes.Codes);
-            codesSearch = new();
-
-            //if game path hasn't been set, give up the process of loading mods.
-
-            if (App.GamesList.Count == 0 || App.CurrentGame == GamesInstall.Unknown || Directory.Exists(App.CurrentGame.gameDirectory) == false)
+            //browse the mods folder and get each mod name by their ini file
+            foreach (string filename in SAModInfo.GetModFiles(new DirectoryInfo(App.CurrentGame.modDirectory)))
             {
-                UpdateMainButtonsState();
-                return;
+                SAModInfo mod = IniSerializer.Deserialize<SAModInfo>(filename);
+                if (mod is null)
+                {
+                    continue;
+                }
+                mods.Add((Path.GetDirectoryName(filename) ?? string.Empty)[(App.CurrentGame.modDirectory.Length + 1)..], mod);
             }
 
+            var enabledList = EnabledMods.ToList();
 
-            if (File.Exists(Path.Combine(App.CurrentGame.modDirectory, "mod.ini")))
+            //load unchecked mods
+            foreach (KeyValuePair<string, SAModInfo> inf in mods?.OrderBy(x => x.Value?.Name))
             {
-                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ModWithoutFolder0") + Lang.GetString("MessageWindow.Errors.ModWithoutFolder1") +
-                            Lang.GetString("MessageWindow.Errors.ModWithoutFolder2"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error,
-                            MessageWindow.Buttons.OK).ShowDialog();
+                bool Checked = false;
 
-                App.Current.Shutdown();
-                return;
+                if (enabledList.Contains(inf.Key))
+                    Checked = true;
+
+                var item = new ModData()
+                {
+                    Name = inf.Value.Name,
+                    Author = inf.Value.Author,
+                    AuthorURL = inf.Value.AuthorURL,
+                    Description = inf.Value.Description,
+                    Version = inf.Value.Version,
+                    Category = inf.Value.Category,
+                    SourceCode = inf.Value.SourceCode,
+                    IsChecked = Checked,
+                    Tag = inf.Key,
+                };
+
+                ViewModel.Modsdata.Add(item);
+
             }
 
+            string modNotFound = string.Empty;
+
+            //check for errors
+            foreach (string mod in enabledList)
+            {
+                if (!mods.TryGetValue(mod, out SAModInfo value))
+                {
+                    modNotFound += mod + "\n";
+                    EnabledMods.Remove(mod);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(modNotFound))
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Errors.ModNotFound") + modNotFound, MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
+
+        }
+
+        private void LoadRegularModList()
+        {
             //browse the mods folder and get each mod name by their ini file
             foreach (string filename in SAModInfo.GetModFiles(new DirectoryInfo(App.CurrentGame.modDirectory)))
             {
@@ -1963,6 +1995,45 @@ namespace SAModManager
 
                     ViewModel.Modsdata.Add(item);
                 }
+            }
+        }
+
+        private void LoadModList()
+        {
+            btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
+            ViewModel.Modsdata.Clear();
+
+            mods = new Dictionary<string, SAModInfo>();
+            codes = new List<Code>(mainCodes.Codes);
+            codesSearch = new();
+
+            //if game path hasn't been set, give up the process of loading mods.
+
+            if (App.GamesList.Count == 0 || App.CurrentGame == GamesInstall.Unknown || Directory.Exists(App.CurrentGame.gameDirectory) == false)
+            {
+                UpdateMainButtonsState();
+                return;
+            }
+
+
+            if (File.Exists(Path.Combine(App.CurrentGame.modDirectory, "mod.ini")))
+            {
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ModWithoutFolder0") + Lang.GetString("MessageWindow.Errors.ModWithoutFolder1") +
+                            Lang.GetString("MessageWindow.Errors.ModWithoutFolder2"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error,
+                            MessageWindow.Buttons.OK).ShowDialog();
+
+                App.Current.Shutdown();
+                return;
+            }
+
+            //if setting enabled, don't put checked mods on top of the list
+            if (checkKeepModOrder.IsChecked == true)
+            {
+                LoadConsistentModList();
+            }
+            else
+            {
+                LoadRegularModList();
             }
 
             LoadCodes();
@@ -2296,6 +2367,10 @@ namespace SAModManager
                 Source = App.ManagerSettings
             });
             checkManagerOpen.SetBinding(CheckBox.IsCheckedProperty, new Binding("KeepManagerOpen")
+            {
+                Source = App.ManagerSettings
+            });
+            checkKeepModOrder.SetBinding(CheckBox.IsCheckedProperty, new Binding("KeepModOrder")
             {
                 Source = App.ManagerSettings
             });

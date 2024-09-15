@@ -160,6 +160,8 @@ namespace SAModManager.Configuration
 
         public double managerWidth { get; set; }
         public double managerHeight { get; set; }
+        [DefaultValue(false)]
+        public bool KeepModOrder { get; set; } = false;
 
         /// <summary>
         /// Deserializes a Manager Settings CFG (JSON) file and returns a populated class.

@@ -61,7 +61,8 @@
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Opções Avançadas</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Manter Gerenciador de Mod Aberto após iniciar o jogo</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Habilitar Opções de Desenvolvedor</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Habilitar Opções de Desenvolvedor</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Habilitar Janela de Console</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Mostrar Texto de Depuração na Janela do Jogo</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Registrar Informação de Depuração em Arquivo</system:String>
@@ -191,7 +192,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Define o tema usado pelo Gerenciador de Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Define o idioma usado pelo Gerenciador de Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantém o Gerenciador de Mod aberto após pressionar Salvar e Jogar.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Habilita a Aba de Spawn de Teste no Gerenciador de Mod.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Habilita a Aba de Spawn de Teste no Gerenciador de Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Quando habilitado, clicar em um link de One Click no GameBanana irá abrir um diálogo de download para o mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Quando habilitado, o Carregador de Mod é instalado e você pode jogar com mods, correções, e trapaças.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Habilita a verificação automática por atualizações do Gerenciador de Mod quando este programa for aberto.</system:String>

@@ -63,7 +63,8 @@
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Muud seaded</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Ärge sulgege haldurit mängu alustamisel</system:String>
-  	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Luba arendaja valikud</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Luba arendaja valikud</system:String>
   	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Kirjutage konsooli</system:String>
   	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Silumissõnumite väljastamine mängus</system:String>
   	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Silumisandmete kirjutamine faili</system:String>
@@ -198,7 +199,8 @@
   	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Valige kasutatav modihalduri teema.</system:String>
   	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Valige modihalduri liidese keel.</system:String>
   	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Hoidke modihaldur sisse lülitatuna, kui klõpsate nupul "Salvesta ja esita".</system:String>
-  	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Lubage modihalduris vahekaart "Silumine".</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Lubage modihalduris vahekaart "Silumine".</system:String>
   	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Kui see on lubatud, avaneb GameBanana nupul "Ühe klõpsuga installimine" klõpsates modi allalaadimise aken.</system:String>
  	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Kui see on lubatud, aktiveeritakse modilaadija, mis võimaldab teil mängida modifikatsioonide, paikade ja koodidega.</system:String>
  	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Lubage modihalduri automaatne kontrollimine käivitamisel.</system:String>

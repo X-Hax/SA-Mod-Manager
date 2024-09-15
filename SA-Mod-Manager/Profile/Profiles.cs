@@ -124,7 +124,7 @@ namespace SAModManager.Profile
             {
                 if (!string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory) && !string.IsNullOrWhiteSpace(App.CurrentGame.ProfilesDirectory))
                 {
-                    List<ProfileEntry> list = new();
+                    List<ProfileEntry> list = [];
                     int count = 0;
                     foreach (ProfileEntry entry in ProfilesList)
                     {
