@@ -32,8 +32,8 @@
 
 	<!--#region Codes Tab Strings-->
 	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Nuevo código</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Edit Code</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Delete Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Editar código</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Borrar código</system:String>
     <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Código</system:String>
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Creado por</system:String>
 	<!--#endregion-->
@@ -42,6 +42,7 @@
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Ajustes del juego</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Temas:</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Canal de actualización:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Idioma:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Perfil:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Directorio del juego:</system:String>
@@ -63,7 +64,7 @@
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Opciones avanzadas</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Mantener el gestor de mods abierto tras iniciar el juego</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Mantener el orden de los mods</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Activar las opciones de desarrollador</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Habilitar la ventana de la consola</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Mostrar depuración en la ventana de juego</system:String>
@@ -198,7 +199,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Establece el tema utilizado por el gestor de mods.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Establece el idioma utilizado por el gestor de mods.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantiene abierto el gestor de mods al presionar Guardar y jugar.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Los mods seleccionados ya no se moverán al guardar después de haberlos seleccionado.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Habilita la pestaña Generar prueba en el gestor de mods.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Cuando está Activado, al usar los enlaces de 1 click en GameBanana se abrirá un cuadro de diálogo para descargar el mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Cuando está activado, se instala el Cargador de mods y puedes jugar con mods, parches y trucos.</system:String>
