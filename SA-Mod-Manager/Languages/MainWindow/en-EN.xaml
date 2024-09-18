@@ -42,6 +42,7 @@
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Game Settings</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Themes:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Update Channel:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Language:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profile:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Game Directory:</system:String>
@@ -63,6 +64,7 @@
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Advanced Options</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Keep Mod Manager Open after launching game</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Enable Developer Options</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Enable Console Window</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Print Debug in Game Window</system:String>
@@ -197,6 +199,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Sets the theme used by the Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Sets the language used by the Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Keeps the Mod Manager open when pressing Save and Play.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Enables the Test Spawn Tab in the Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">When Enabled, clicking One Click links on GameBanana will open a download dialog for the mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">When enabled, the Mod Loader is installed and you can play with mods, patches, and cheats.</system:String>

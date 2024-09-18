@@ -72,7 +72,7 @@ namespace SAModManager.ModsCommon
 			Dictionary<string, string> cMods = GetModReferences(allmods);
 
 			if (allmods is null || allmods.Count == 0)
-				return true;
+				return false;
 
 			foreach (string checkmod in modlist)
 			{

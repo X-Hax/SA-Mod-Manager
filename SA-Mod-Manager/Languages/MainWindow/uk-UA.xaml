@@ -63,7 +63,8 @@
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Розширені Налаштування</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Залишати Завантажувач Модів відкритим після запуску гри</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Увімкнути Налаштування Розробника</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Увімкнути Налаштування Розробника</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Увімкнути Консоль</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Печатати Debug у Вікні Гри</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Записувати Debug Info до файлу</system:String>
@@ -195,7 +196,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Вибирає тему для Мод Менеджера.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Вибирає мову яка встановлюється Мод Менеджером.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Залишає вікно Мод Менеджера відкритим після натискання Зберегти та Грати.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Вмикає сорінку Тестового Завантаження у Мод Менеджері.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Вмикає сорінку Тестового Завантаження у Мод Менеджері.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Коли увімкнено, натискаючи на посилання "One Click" на GameBanana відкриє вікно завантаження моду.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Коли увімкнено, Завантажувач Модів встановлено і можна грати з модами, патчами і чітами.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Автоматично перевіряє оновлення Мод Менеджеру при запуску.</system:String>

@@ -60,7 +60,8 @@
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Opções Avançadas</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Manter o Mod Loader aberto após o jogo aberto</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Ativar Opções para Desenvolvedores</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Ativar Opções para Desenvolvedores</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Ativar Janela de Consola</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Imprimir Debug na Janela do Jogo</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Registar Informação de Debug no Ficheiro</system:String>
@@ -189,7 +190,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Define o tema usado pelo Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Define o idioma usado pelo Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantém o Mod Manager aberto após clicares em Salvar e Jogar.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Ativa a aba de testes de aparecimento no Mod Manager.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Ativa a aba de testes de aparecimento no Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Quando ativado, ao clicar nos botóes de One-Click Install no GameBanana irá abrir um diálogo de download para o mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Quando ativado, o Mod Loader é instalado e poderás jogar com mods, patches e cheats.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Ativa verificações automaticas para atualizações do Mod Loader quando abrires o Mod Manager.</system:String>
