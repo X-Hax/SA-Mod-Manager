@@ -35,26 +35,23 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
+                    <Label Content="Sora"/>
+                    <Label Content="ItsEasyActually"/>
                     <Label Content="MainMemory"/>
                     <Label Content="SonicFreak94"/>
                     <Label Content="GerbilSoft"/>
                     <Label Content="PkR"/>
-                    <Label Content="ItsEasyActually"/>
                     <Label Content="Kell"/>
-                    <Label Content="Sora"/>
-                    <Label Content="Speeps"/>
-                    <Label Content="DankRank"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
-                    <Label Content="Original Author"/>
-                    <Label Content="Contributor (Update System)"/>
-                    <Label Content="Contributor"/>
-                    <Label Content="Contributor"/>
-                    <Label Content="Contributor + (Refactoring WPF)"/>
-                    <Label Content="Contributor"/>
-                    <Label Content="Contributor + (Refactoring WPF)"/>
-                    <Label Content="Contributor"/>
-                    <Label Content="Contributor"/>
+                    <Label Content="Author - Developer"/>
+                    <Label Content="Author - Designer / Developer"/>
+                    <Label Content="Loader - Original Manager Developer"/>
+                    <Label Content="Contributor - (Original Update System)"/>
+                    <Label Content="Contributor - (Legacy Manager)"/>
+                    <Label Content="Contributor - (Legacy Manager)"/>
+                    <Label Content="Contributor - (Legacy Manager)"/>
+
                 </StackPanel>
             </Grid>
         </GroupBox>
