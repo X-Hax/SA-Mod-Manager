@@ -42,6 +42,7 @@
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Opciones del Juego:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Temas:</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Canal de Actualizaciones:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Idioma:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Perfil:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Directorio del Juego:</system:String>
@@ -63,7 +64,7 @@
 	<!--Debug Features-->
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Opciones Avanzandas</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Mantener el Mod Manager abierto después de iniciar el juego</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Mantener el Orden de los Mods</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Activar Opciones de Desarrollador</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Activar Consola</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Mostrar mensajes Debug en la Ventana del Juego</system:String>
@@ -124,8 +125,10 @@
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Activa el modo pantalla completa sin bordes en vez de pantalla completa exclusiva.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Escala los elementos de la interfaz en pantalla completa.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">El juego se iniciará en una ventana.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Permite que se pueda ajustar el tamaño de la ventana del juego mientras está abierta.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeAspectRatio">Mantiene la relación de aspecto de la ventana al cambiarla de tamaño si ventana ajustable está activada.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Permite que se pueda ajustar el tamaño de la ventana del juego mientras está abierta.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse">Muestra el cursor al usar pantalla completa.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.StretchToWindow">Redimensiona el renderizado del juego para igualar el tamaño de la ventana del juego. Puede causar una imagen estirada.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DisableBorderImage">Desactiva la imagen del borde.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Mantiene la relación de aspecto de la resolución elegida al utilizar un tamaño de ventana personalizado.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Permite que el tamaño de la ventana sea diferente de la resolución. Por ejemplo, te permite jugar a resolución 4K en una ventana más pequeña.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Establece la frecuencia de imagen del juego.</system:String>
@@ -196,7 +199,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Ajusta el tema del Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Ajusta el idioma del Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Mantiene el Mod Manager abierto al pulsa Guardar y Jugar.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Los mods seleccionados no se moverán al guardar después de seleccionarlos.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Activa la pestaña Test Spawn en el Mod Manager.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Al activarlo, al hacer clic en enlaces 1-Clic en GameBanana abrirá una ventana de descarga para el mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Al activarlo, el Mod Loader será instalado y podrás jugar con mods, parches y códigos.</system:String>

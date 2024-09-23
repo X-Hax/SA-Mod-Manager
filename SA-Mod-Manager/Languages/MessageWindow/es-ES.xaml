@@ -97,15 +97,16 @@
     <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Error al crear la carpeta de configuración en {0}.&#x0a;El Mod Manager no podrá funcionar correctamente.</system:String>
     <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Failed to install or update {0}.&#x0a;If the game is open, please close it and try again.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Error Reading Ini File</system:String>
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">An unexpected error occurred while reading an ini file. Ini files cannot have the same key or group multiple times.</system:String>
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Mod Name: {0}&#x0a;Mod Author: {1}&#x0a;</system:String>
-    <!--> this is assuming the ini file was a mod <!-->
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
-    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">The Manager couldn't select the language {0}.&#x0a;If the issue persists, please report it on the X-Hax Server.&#x0a;&#x0a;Advanced Error Code: {1}</system:String>
-    <system:String x:Key="MessageWindow.Errors.PermissionTitle">Access Denied</system:String>
-    <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Failed to create directory, the program does not have the authorization to write at this path: {0}&#x0a;&#x0a;Please restart the Manager with Administrator Privileges.</system:String>
-    <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Failed to find the game path of {0} at {1}&#x0a;If you have moved your game directory to a different location, please re set the game path in the Manager Config tab.</system:String>
+    
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Error al leer el archivo .ini</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">Ocurrió un error inesperado cuando se estaba leyendo el archivo .ini. Los archivos .ini no pueden utilizar la misma key o grupo múltiples veces.</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Nombre del Mod: {0}&#x0a;Autor del Mod: {1}&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">Este mod no funcionará. Por favor, reporta este error al autor del mod para que lo arregle.</system:String>
+    
+    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">El Manager no pudo seleccionar el idioma {0}.&#x0a;Si el error persiste. Por favor, reporta este error en el servidor X-Hax.&#x0a;&#x0a;Código Avanzado del Error: {1}</system:String>
+    <system:String x:Key="MessageWindow.Errors.PermissionTitle">Acceso Denegado</system:String>
+    <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Error al crear directorio. El programa no tiene acceso de escritura en esta ruta: {0}&#x0a;&#x0a;Por favor, reinicia el Manager como Administrador .</system:String>
+    <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Error al encontrar la ruta de juego de {0} en {1}&#x0a;Si has movido el directorio del juego, vuelve a seleccionar la ruta del juego en la pestaña de Configuración del Manager.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
@@ -127,10 +128,15 @@
     <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">No se pudieron encontrar los siguientes perfiles:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">Estos perfiles serán eliminados de la lista de Perfiles y el perfil seleccionado será el primer perfil de la lista.</system:String>
 
+    <system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Title" xml:space="preserve">Error durante la migración automática de perfiles</system:String>
+    <system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message1" xml:space="preserve">El SA Mod Manager no pudo convertir el último perfil que usaste.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message2" xml:space="preserve">Se va a crear un nuevo perfil por defecto. Puedes volver a intentar la conversión en la Gestión de Perfiles.</system:String>
+
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">No se pudo Importar</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">No se pudieron importar los siguientes archivos como perfiles:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Por favor, asegúrate de que estás usando un archivo .JSON de Perfil de Juego o un archivo .INI del antiguo Mod Loader.</system:String>
-    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">The new Mod Manager update requires at least .NET 8.0.7 Desktop Runtime to work.&#x0a;&#x0a;Would you like to install it now?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">La nueva actualización del Mod Manager necesita al menos la versión 8.0.7 de .NET Desktop para funcionar correctamente.&#x0a;&#x0a;¿Quieres instalarla ahora?</system:String>
     <!--#endregion-->
 
     <!--#region Information-->

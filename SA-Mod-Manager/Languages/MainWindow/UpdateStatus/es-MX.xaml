@@ -24,7 +24,7 @@
     <system:String x:Key="UpdateStatus.FailedUpdateDependencies">Error al actualizar las dependencias</system:String>
     <system:String x:Key="UpdateStatus.ManagerUpdate">Actualizando el Gestor de mods de SA...</system:String>
     <system:String x:Key="UpdateStatus.LoaderUpdate">Actualizando el Cargador de mods...</system:String>
-    <system:String x:Key="UpdateStatus.LoaderUpdateManual">Updated Mod Loader locally.</system:String>
+    <system:String x:Key="UpdateStatus.LoaderUpdateManual">Se actualizó el Cargador de mods localmente.</system:String>
     <system:String x:Key="UpdateStatus.LoaderInstalled">El Cargador de mods se instaló exitosamente</system:String>
     <system:String x:Key="UpdateStatus.LoaderUninstalled">El Cargador de mods se desinstaló exitosamente</system:String>
     <system:String x:Key="UpdateStatus.TotalMods">Mods cargados: {0}</system:String>
