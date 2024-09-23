@@ -342,10 +342,11 @@ namespace SAModManager.Updater
                 var httpClient = UpdateHelper.HttpClient;
 
                 Util.CreateSafeDirectory(tempDir);
-
+                Path.Combine(dest, Path.GetFileName(uri.LocalPath));
                 foreach (ModManifestDiff i in newEntries)
                 {
                     string filePath = Path.GetFullPath(Path.Combine(tempDir, i.Current.FilePath));
+                    currentFilePath = filePath;
                     string dir = Path.GetDirectoryName(filePath);
 
 
