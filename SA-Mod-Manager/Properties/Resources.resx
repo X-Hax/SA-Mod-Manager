@@ -164,7 +164,7 @@
     <value>https://github.com/X-Hax/sa2-mod-loader/raw/a7bba5ab10314eb44816f027e1368125c7f0e4df/data/DebugTextShader.hlsl</value>
   </data>
   <data name="URL_SA2_DL" xml:space="preserve">
-    <value>https://github.com/X-Hax/sa2-mod-loader/raw/master/extlib/SA2ModLoader.dll</value>
+    <value>https://mm.reimuhakurei.net/sa2mods/SA2ModLoader.dll</value>
   </data>
   <data name="URL_SA2_PATCH" xml:space="preserve">
     <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Patches.json</value>
@@ -176,7 +176,7 @@
     <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Codes.lst</value>
   </data>
   <data name="URL_SADX_DL" xml:space="preserve">
-    <value>https://github.com/X-Hax/sadx-mod-loader/raw/master/extlib/ModLoaders/SADXModLoader.dll</value>
+    <value>https://mm.reimuhakurei.net/sadxmods/SADXModLoader.dll</value>
   </data>
   <data name="URL_SADX_PATCH" xml:space="preserve">
     <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Patches.json</value>
