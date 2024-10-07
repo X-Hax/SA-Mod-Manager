@@ -721,5 +721,7 @@ namespace SAModManager
             return !string.IsNullOrEmpty(str) && !string.IsNullOrWhiteSpace(str);
         }
 
+
+
     }
 }

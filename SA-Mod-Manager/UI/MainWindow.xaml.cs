@@ -2691,6 +2691,7 @@ namespace SAModManager
                     }
                     else //if user asked to install the loader
                     {
+                        ASLR.CheckIfEnabled();
                         await InstallLoader();
                     }
                     retry = false;

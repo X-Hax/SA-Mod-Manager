@@ -137,6 +137,8 @@
 	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Please ensure you are only using Game Profile JSON files or old Loader INI files.</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">The new Mod Manager update requires at least .NET 8.0.7 Desktop Runtime to work.&#x0a;&#x0a;Would you like to install it now?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ASLRDetected" xml:space="preserve">It looks like you have the Windows settings ASLR enabled, this can prevent the Mod Loader to work, it is recommended to disable it.</system:String>
+
     <!--#endregion-->
 	
 	<!--#region Information-->

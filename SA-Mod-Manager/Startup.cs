@@ -140,9 +140,14 @@ namespace SAModManager
 
             await UpdateDependenciesFolder();
 
-            if (App.isFirstBoot == true && App.isVanillaTransition == false)
+            if (App.isFirstBoot == true)
             {
-                await VC_DependenciesCheck();
+                ASLR.CheckIfEnabled();
+
+                if (App.isVanillaTransition == false)
+                {
+                    await VC_DependenciesCheck();
+                }
             }
 
             Util.ClearTempFolder();
