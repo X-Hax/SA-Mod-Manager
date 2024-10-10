@@ -2179,6 +2179,9 @@ namespace SAModManager
 
         private async Task ExecuteModsUpdateCheck()
         {
+            if (!(Util.IsStringValid(App.CurrentGame.gameDirectory) || File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName))))
+                return;
+
             try
             {
                 ClearUpdateFolder();
