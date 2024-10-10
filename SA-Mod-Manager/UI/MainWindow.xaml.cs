@@ -180,7 +180,6 @@ namespace SAModManager
             if (App.isVanillaTransition && App.CurrentGame?.loader?.installed == false)
             {
                 await ForceInstallLoader();
-                UpdateButtonsState();
             }
             App.isVanillaTransition = false;
             UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
@@ -1600,7 +1599,6 @@ namespace SAModManager
             UIHelper.ToggleImgButton(ref btnCheckUpdates, installed);
             UIHelper.ToggleImgButton(ref btnHealthCheck, installed);
             UpdateBtnInstallLoader_State();
-            Update_PlayButtonsState();
         }
 
         private void LoadSADXSettings(string profilePath, bool newSetup = false)
@@ -1695,8 +1693,12 @@ namespace SAModManager
                     break;
             }
 
+
+
             if (ComboGameSelection is not null && App.CurrentGame is not null)
+            {
                 ComboGameSelection.SelectedValue = App.CurrentGame;
+            }
         }
 
         private void SaveSADXSettings()
@@ -2050,13 +2052,6 @@ namespace SAModManager
 
         #region Private: Update
 
-        private void Update_PlayButtonsState()
-        {
-            bool isInstalled = App.CurrentGame.loader.installed;
-            UIHelper.ToggleButton(ref SaveAndPlayButton, isInstalled);
-            Image iconSavePlay = FindName("savePlayIcon") as Image;
-            UIHelper.ToggleImage(ref iconSavePlay, isInstalled);
-        }
 
         private void UpdateMainButtonsState()
         {

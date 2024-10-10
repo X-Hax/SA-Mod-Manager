@@ -42,7 +42,7 @@ namespace SAModManager
 
         public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
         public static ManagerSettings ManagerSettings { get; set; }
-		public static Profiles Profiles { get; set; }
+        public static Profiles Profiles { get; set; }
 
         private static readonly Mutex mutex = new(true, pipeName);
         public static Updater.UriQueue UriQueue;
@@ -164,16 +164,16 @@ namespace SAModManager
                 //add new language
                 Current.Resources.MergedDictionaries.Insert(4, dictionary);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.LanguageSwitch"), CurrentLang.FileName, ex.Message), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
                 msg.ShowDialog();
-               var  mainWindow = ((MainWindow)Application.Current.MainWindow);
+                var mainWindow = ((MainWindow)Application.Current.MainWindow);
                 if (mainWindow != null)
                 {
                     mainWindow.comboLanguage.SelectedIndex = 0;
                 }
-        
+
             }
 
         }
@@ -332,7 +332,7 @@ namespace SAModManager
                 if (await Util.Net8Check() == false)
                     return false;
 
-                string changelog = await GitHub.GetGitChangeLog(update.Item2); 
+                string changelog = await GitHub.GetGitChangeLog(update.Item2);
 
                 if (!Util.IsStringValid(changelog)) //update found but no changelog (?)
                     return false;
@@ -345,14 +345,14 @@ namespace SAModManager
 
                 Logger.Log("Now Installing New Manager Update...");
                 // string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
-                string dlLink = update.Item3.DownloadUrl;         
-                string fileName = update.Item3.Name;     
+                string dlLink = update.Item3.DownloadUrl;
+                string fileName = update.Item3.Name;
                 string version = update.Item4;
                 string destFolder = App.tempFolder;
                 Util.CreateSafeDirectory(destFolder);
 
                 var dl = new ManagerUpdate(dlLink, destFolder, fileName, version)
-                { 
+                {
                     DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName)
                 };
 
@@ -410,7 +410,7 @@ namespace SAModManager
                 {
                     File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
                     await GamesInstall.InstallAndUpdateDependencies(App.CurrentGame, true);
- 
+
                 }
             }
             catch
@@ -627,18 +627,23 @@ namespace SAModManager
         private static ManagerSettings LoadManagerConfig()
         {
             ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
-    
-            switch (settings.CurrentSetGame)
+
+            if (settings is not null)
             {
-                case (int)SetGame.None:
-                    CurrentGame = GamesInstall.Unknown; 
-                    break;
-                case (int)SetGame.SADX:
-                    CurrentGame = GamesInstall.SonicAdventure;
-                    break;
-                case (int)SetGame.SA2:
-                    CurrentGame = GamesInstall.SonicAdventure2;
-                    break;
+
+                switch (settings.CurrentSetGame)
+                {
+                    case (int)SetGame.None:
+                        CurrentGame = GamesInstall.Unknown;
+                        break;
+                    case (int)SetGame.SADX:
+                        CurrentGame = GamesInstall.SonicAdventure;
+                        break;
+                    case (int)SetGame.SA2:
+                        CurrentGame = GamesInstall.SonicAdventure2;
+                        break;
+                }
+
             }
 
             return settings;

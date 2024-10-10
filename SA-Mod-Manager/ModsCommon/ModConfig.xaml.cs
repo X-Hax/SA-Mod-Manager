@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using SAModManager.Configuration;
+using SAModManager.Themes;
 
 namespace SAModManager.ModsCommon
 {
@@ -193,7 +194,7 @@ namespace SAModManager.ModsCommon
                 SearchTextBox.Text = "";
             }
 
-            SearchTextBox.Foreground = Brushes.White;
+            SearchTextBox.Foreground = ThemeBrush.GetThemeBrush("TextBox.Brushes.Foreground");
         }
 
         private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
@@ -201,7 +202,7 @@ namespace SAModManager.ModsCommon
             // Restore placeholder text when the TextBox loses focus and is empty
             if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
             {
-                SearchTextBox.Foreground = Brushes.Gray;
+                SearchTextBox.Foreground = ThemeBrush.GetThemeBrush("TextBox.Brushes.Placeholder");
                 SearchTextBox.Text = Lang.GetString("CommonStrings.Search") + "...";
             }
         }

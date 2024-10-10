@@ -200,16 +200,19 @@ namespace SAModManager.Profile
 
 		public static bool MigrateProfile(string path)
 		{
-			if (File.Exists(path))
-			{
-				string sourceFile = path;
-				string destFile = Path.GetFileNameWithoutExtension(sourceFile) == App.CurrentGame.loader?.name ? "Default.json" : Path.GetFileNameWithoutExtension(sourceFile) + ".json";
+            if (File.Exists(path))
+            {
+                string sourceFile = path;
+                string destFile = Path.GetFileNameWithoutExtension(sourceFile) == App.CurrentGame.loader?.name ? "Default.json" : Path.GetFileNameWithoutExtension(sourceFile) + ".json";
 
-				File.Copy(Path.GetFullPath(path), Path.Combine(App.CurrentGame.ProfilesDirectory, destFile), true);
-				ConvertProfile(sourceFile, destFile);
-				return true;
-			}
-			else return false;
+                File.Copy(Path.GetFullPath(path), Path.Combine(App.CurrentGame.ProfilesDirectory, destFile), true);
+                ConvertProfile(sourceFile, destFile);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 		}
 
 		/// <summary>

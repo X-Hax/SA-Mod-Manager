@@ -51,8 +51,9 @@
 	<SolidColorBrush x:Key="TextBox.Brushes.Border" Color="{DynamicResource Colors.Border}"/>
 	<SolidColorBrush x:Key="TextBox.Brushes.MouseOver.Border" Color="{DynamicResource Colors.Highlight}"/>
 	<SolidColorBrush x:Key="TextBox.Brushes.Focus.Border" Color="{DynamicResource Colors.Highlight}"/>
+    <SolidColorBrush x:Key="TextBox.Brushes.Placeholder" Color="#FF9E9E9E"/>
 
-	<SolidColorBrush x:Key="Control.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
+    <SolidColorBrush x:Key="Control.Brushes.Foreground" Color="{DynamicResource Colors.Text}"/>
 
 	<SolidColorBrush x:Key="TabControl.Brushes.Background" Color="{DynamicResource Colors.Background}"/>
 	<SolidColorBrush x:Key="TabControl.Brushes.Selected" Color="{DynamicResource Colors.Highlight}"/>
