@@ -56,6 +56,9 @@
     <system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Vous êtes sur le point d'exécuter le bilan de santé du jeu. Cette action vérifiera tous les fichiers du jeu, à l'exception des fichiers audio.&#x0a;&#x0a;Souhaitez-vous continuer?</system:String>
     <system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">Cette action peut causer la perte des DONNÉES UTILISATEUR DU MOD (FICHIERS DE SAUVEGARDE ET CONFIG) lors de la prochaine mise à jour ! Pour éviter cela, vous ne devez jamais exécuter cette action sur des mods que vous n'avez pas développés.&#x0a;&#x0a;Êtes-vous sûr de vouloir continuer ?</system:String>
     <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">La nouvelle mise à jour de Mod Manager nécessite au moins .NET 8.0.7 Desktop Runtime pour fonctionner.&#x0a;&#x0a;Souhaitez-vous l'installer maintenant ?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.ChannelReleaseSwap" xml:space="preserve">Vous êtes sur le point de passer à la version actuelle du Manager. Voulez-vous continuer ? Le Manager va redémarrer pour changer de canal.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ChannelDevSwap" xml:space="preserve">Vous êtes sur le point de passer à la version de développement du Manager. Cette version peut contenir des fonctionnalités non testés ainsi que des bugs. Voulez-vous vraiment continuer ? Le Manager va redémarrer pour changer de canal.</system:String>
     <!--#endregion-->
 
     <!--#region Information-->

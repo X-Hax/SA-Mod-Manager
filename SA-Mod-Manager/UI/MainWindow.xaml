@@ -10,7 +10,7 @@
 		mc:Ignorable="d"
 		Title="SA Mod Manager"
 		Style="{DynamicResource SAWindow}"
-		MinHeight="720" MinWidth="590" Width="650" Height="720" WindowStartupLocation="CenterScreen"
+		MinHeight="720" MinWidth="590" Width="650" Height="725" WindowStartupLocation="CenterScreen"
 		Loaded="MainWindowManager_Loaded" PreviewKeyDown="Window_PreviewKeyDown"
         Closed="MainForm_FormClosing">
 
@@ -461,14 +461,14 @@
 
 									<Label Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Lang}" Grid.Row="0"/>
 									<Label Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Theme}" Grid.Row="2"/>
-									<Label Visibility="Collapsed" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel}" Grid.Row="4"/>
+									<Label Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel}" Grid.Row="4"/>
 
 									<ComboBox x:Name="comboLanguage" Grid.Column="1" ItemsSource="{Binding LangList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentLang, Source={x:Static Application.Current}}" 
 											  Height="24" Width="335" VerticalAlignment="Center" HorizontalAlignment="Right" Loaded="comboLanguage_Loaded" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
 									<ComboBox x:Name="comboThemes" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding ThemeList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentTheme, Source={x:Static Application.Current}}" 
 											  Height="24" Width="335" VerticalAlignment="Center" HorizontalAlignment="Right" Loaded="comboThemes_Loaded" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
-									<ComboBox x:Name="comboUpdateChannel" Visibility="Collapsed" Grid.Column="1" Grid.Row="4" Height="24" Width="335" VerticalAlignment="Center" HorizontalAlignment="Right" SelectedIndex="0"/>
-								</Grid>
+                                    <ComboBox x:Name="comboUpdateChannel" Grid.Column="1" Grid.Row="4" Height="24" Width="335" VerticalAlignment="Center" HorizontalAlignment="Right"  ItemsSource="{Binding UpdateChannels, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentChannel, Source={x:Static Application.Current}}" SelectionChanged="ComboBoxChannel_SelectionChanged" SelectedIndex="0" />
+                                </Grid>
 
 
 							</Grid>

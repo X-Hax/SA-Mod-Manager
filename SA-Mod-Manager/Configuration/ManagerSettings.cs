@@ -164,6 +164,12 @@ namespace SAModManager.Configuration
         public bool KeepModOrder { get; set; } = false;
 
         /// <summary>
+        /// The set Update Channel for the Manager.
+        /// </summary>
+        [DefaultValue(0)]
+        public int UpdatesChannel { get; set; } = 0;
+
+        /// <summary>
         /// Deserializes a Manager Settings CFG (JSON) file and returns a populated class.
         /// </summary>
         /// <param name="path"></param>

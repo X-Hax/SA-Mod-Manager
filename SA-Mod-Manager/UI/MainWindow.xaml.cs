@@ -1372,9 +1372,13 @@ namespace SAModManager
         public void SetModManagerVersion()
         {
             if (string.IsNullOrEmpty(App.RepoCommit)) //dev
+            {
                 Title = titleName + " " + "(Dev Build - " + Version + ")";
+            }
             else
+            {
                 Title = titleName + " " + "(" + Version + " - " + App.RepoCommit[..7] + ")";
+            }
         }
 
         private void EnableUI(bool enable)
@@ -2397,6 +2401,10 @@ namespace SAModManager
             {
                 Source = App.ManagerSettings
             });
+            comboUpdateChannel.SetBinding(ComboBox.SelectedIndexProperty, new Binding("UpdatesChannel")
+            {
+                Source = App.ManagerSettings
+            });
             tabTestSpawn.SetBinding(TabItem.VisibilityProperty, new Binding("IsChecked")
             {
                 Source = checkDevEnabled,
@@ -2902,5 +2910,83 @@ namespace SAModManager
                 }
             }
         }
+
+        private async void ComboBoxChannel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (suppressEvent) 
+                return;
+
+            bool isDev = Title.Contains("Dev");
+            string currentChannel = isDev ? App.UpdateChannels[1] : App.UpdateChannels[0];
+
+            if (comboUpdateChannel.SelectedItem != null && currentChannel != comboUpdateChannel.SelectedItem as string)
+            {
+                if (isDev)
+                {
+                    var msg = new MessageWindow(Lang.GetString("CommonStrings.Warning"), Lang.GetString("MessageWindow.Warnings.ChannelReleaseSwap"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+                    msg.ShowDialog();
+                    if (msg.isYes)
+                    {
+                        var update = await GitHub.GetLatestManagerReleaseChannelUpdate();
+                        if (update.Item2 is not null)
+                        {
+
+                            Logger.Log("Now Installing Latest Manager Update from Channel swap (Release)...");
+
+                            string dlLink = update.Item1.DownloadUrl;
+                            string fileName = update.Item1.Name;
+                            string version = update.Item2;
+                            string destFolder = App.tempFolder;
+                            Util.CreateSafeDirectory(destFolder);
+
+                            var dl = new ManagerUpdate(dlLink, destFolder, fileName, version)
+                            {
+                                DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName)
+                            };
+
+                            dl.StartManagerDL();
+                        }
+                    }
+                    else
+                    {
+                       comboUpdateChannel.SelectedItem = currentChannel;
+                    }
+                }
+                else 
+                { 
+       
+                    var msg = new MessageWindow(Lang.GetString("CommonStrings.Warning"), Lang.GetString("MessageWindow.Warnings.ChannelDevSwap"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+                    msg.ShowDialog();
+                    if (msg.isYes)
+                    {
+                        var update = await App.GetArtifact();
+                        if (update.Item2 is not null)
+                        {
+
+                            Logger.Log("Now Installing Latest Manager Update from Channel swap (Release)...");
+
+                            string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
+                            string fileName = update.Item3.Name;
+                            string version = update.Item2.HeadSHA[..7];
+                            string destFolder = App.tempFolder;
+                            Util.CreateSafeDirectory(destFolder);
+
+                            var dl = new ManagerUpdate(dlLink, destFolder, fileName, version)
+                            {
+                                DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName)
+                            };
+
+                            dl.StartManagerDL();
+                        }
+
+                    }
+                    else
+                    {
+                        comboUpdateChannel.SelectedItem = currentChannel;
+                    }
+                }
+            }
+        }
     }
+
 }

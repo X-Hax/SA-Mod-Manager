@@ -58,6 +58,7 @@
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Options du jeu</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Thèmes:</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Langue:</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Canal de Mise à Jour:</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profil:</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Répertoire du Jeu:</system:String>
 

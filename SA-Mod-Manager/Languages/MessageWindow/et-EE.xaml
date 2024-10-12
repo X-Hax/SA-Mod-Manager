@@ -138,6 +138,9 @@
  <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">Määratud faile ei imporditud profiilidena:</system:String>
  <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Kasutage ainult JSON-profiilifaile või alglaaduri INI-faile.</system:String>
  <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">Uue Mod Manageri värskenduse jaoks on töötamiseks vaja vähemalt .NET 8.0.7 Desktop Runtime.&#x0a;&#x0a; kas teile meeldib see kohe installida?</system:String>
+
+    <system:String x:Key="MessageWindow.Warnings.ChannelReleaseSwap" xml:space="preserve">You are about to switch to the current release version of the Manager.&#x0a;Do you want to continue? The Manager will restart to switch channels.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ChannelDevSwap" xml:space="preserve">You are about to switch to the development build of the Manager. This version may contain untested features and bugs.&#x0a;Do you want to continue? The Manager will restart to switch channels.</system:String>
     <!--#endregion-->
 	
 	<!--#region Information-->

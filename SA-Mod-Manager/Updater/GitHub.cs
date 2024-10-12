@@ -394,6 +394,53 @@ namespace SAModManager.Updater
             return lastTag?.Commit.Sha;
         }
 
+        public static async Task<(GitHubAsset, string)> GetLatestManagerReleaseChannelUpdate()
+        {
+
+            try
+            {
+                var httpClient = UpdateHelper.HttpClient;
+
+                string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
+
+                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var release = JsonConvert.DeserializeObject<GitHubRelease>(responseBody);
+                    if (release != null && release.Assets != null)
+                    {
+                        var targetAsset = release.Assets.FirstOrDefault(asset => asset.Name.Contains(Environment.Is64BitOperatingSystem ? "x64" : "x86"));
+                        if (targetAsset != null)
+                        {
+                            string version = release.TagName;
+
+                            try
+                            {
+                                string pattern = @"^\w+\s+"; // This regular expression matches any word followed by one or more spaces at the beginning of the string.
+                                string result = Regex.Replace(version, pattern, "").Trim();
+        
+                            }
+                            catch
+                            {
+                                throw new Exception("Couldn't check version difference, update won't work.");
+                            }
+
+
+                            return (targetAsset, version);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error fetching latest release: " + ex.Message);
+            }
+
+            return (null, null);
+        }
+
 
         public static async Task<(bool, string, GitHubAsset, string)> GetLatestManagerRelease()
         {

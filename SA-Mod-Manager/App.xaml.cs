@@ -54,6 +54,9 @@ namespace SAModManager
         public static ThemeEntry CurrentTheme { get; set; }
         public static bool IsLightTheme = false;
         public static ThemeList ThemeList { get; set; }
+        public static List<string> UpdateChannels { get; set; } = ["Release", "Development"];
+        public static string CurrentChannel { get; set; }
+
         public static Game CurrentGame = new();
         public static List<Game> GamesList = new();
 
@@ -293,28 +296,38 @@ namespace SAModManager
             }
         }
 
-        //left over from previous method to update, maybe will be re used for a dev purpose.
-        /* private async static void GetArtifact()
-         {
-             GitHubAction latestAction = await GitHub.GetLatestAction();
-             GitHubArtifact info = null;
 
-             if (latestAction != null)
-             {
-                 List<GitHubArtifact> artifacts = await GitHub.GetArtifactsForAction(latestAction.Id);
+        public static async Task<(bool, WorkflowRunInfo, GitHubArtifact)> GetArtifact()
+        {
+            var workflowRun = await GitHub.GetLatestWorkflowRun();
 
-                 if (artifacts != null)
-                 {
-                     bool is64BitSystem = Environment.Is64BitOperatingSystem;
-                     string targetArchitecture = is64BitSystem ? "x64" : "x86";
+            if (workflowRun is null)
+                return (false, null, null);
 
-                     info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release-" + targetArchitecture));
 
-                     // If there's no specific architecture match, try to get a generic "Release" artifact
-                     info ??= artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
+            bool hasUpdate = RepoCommit != workflowRun.HeadSHA;
+
+            GitHubAction latestAction = await GitHub.GetLatestAction();
+            GitHubArtifact info = null;
+
+            if (latestAction != null)
+            {
+                List<GitHubArtifact> artifacts = await GitHub.GetArtifactsForAction(latestAction.Id);
+
+                if (artifacts != null)
+                {
+                    bool is64BitSystem = Environment.Is64BitOperatingSystem;
+                    string targetArchitecture = is64BitSystem ? "x64" : "x86";
+
+                    info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release-" + targetArchitecture));
+
+                    // If there's no specific architecture match, try to get a generic "Release" artifact
+                    info ??= artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
                  }
-             }
-         }*/
+            }
+
+            return (hasUpdate, workflowRun, info);
+        }
 
         public static async Task<bool> PerformUpdateManagerCheck()
         {
@@ -327,9 +340,6 @@ namespace SAModManager
                 var update = await GitHub.GetLatestManagerRelease();
 
                 if (update.Item1 == false) //no update found
-                    return false;
-
-                if (await Util.Net8Check() == false)
                     return false;
 
                 string changelog = await GitHub.GetGitChangeLog(update.Item2);
