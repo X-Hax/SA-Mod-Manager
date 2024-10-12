@@ -407,6 +407,8 @@ namespace SAModManager.Configuration.SA2
         [IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
         public List<string> EnabledCodes { get; set; }      // SA2LoaderInfo.EnabledCodes
 
+        public List<string> ModsList { get; set; } = new();   // used for consistent mod order option
+
         /// <summary>
         /// Converts from original settings file.
         /// </summary>

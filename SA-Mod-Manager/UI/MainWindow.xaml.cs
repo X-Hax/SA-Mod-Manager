@@ -1716,6 +1716,9 @@ namespace SAModManager
             sadxSettings.EnabledMods = EnabledMods;
             sadxSettings.EnabledCodes = EnabledCodes;
             sadxSettings.DebugSettings = gameDebugSettings;
+            sadxSettings.ModsList.Clear();
+            foreach (var mod in ViewModel.Modsdata.ToList())
+                sadxSettings.ModsList.Add(mod.Tag);
 
             // Save Game Settings to Current Profile
             sadxSettings.Serialize(ProfileManager.GetCurrentProfile().Filename);
@@ -1737,6 +1740,10 @@ namespace SAModManager
 
             // Save Selected Mods
             sa2.EnabledMods = EnabledMods;
+            sa2.ModsList.Clear();
+            foreach (var mod in ViewModel.Modsdata.ToList())
+                sa2.ModsList.Add(mod.Tag);
+
             sa2.EnabledCodes = EnabledCodes;
             sa2.DebugSettings = gameDebugSettings;
 
@@ -1860,7 +1867,7 @@ namespace SAModManager
 
             var enabledList = EnabledMods.ToList();
 
-            //load unchecked mods
+
             foreach (KeyValuePair<string, SAModInfo> inf in mods?.OrderBy(x => x.Value?.Name))
             {
                 bool Checked = false;
@@ -1896,6 +1903,24 @@ namespace SAModManager
                     EnabledMods.Remove(mod);
                 }
             }
+
+            switch (App.CurrentGame.id)
+            {
+                case SetGame.SADX:
+                    {
+                        Configuration.SADX.GameSettings sadxSettings = GameProfile as Configuration.SADX.GameSettings;
+                        ViewModel.SortViewModelCollection(ViewModel, sadxSettings.ModsList);
+                    }
+                    break;
+                case SetGame.SA2:
+                    {
+                        Configuration.SA2.GameSettings sa2Settings = GameProfile as Configuration.SA2.GameSettings;
+                        ViewModel.SortViewModelCollection(ViewModel, sa2Settings.ModsList);
+                    }
+                    break;
+            }
+    
+
 
             if (!string.IsNullOrEmpty(modNotFound))
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Errors.ModNotFound") + modNotFound, MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
@@ -2005,9 +2030,9 @@ namespace SAModManager
             btnMoveTop.IsEnabled = btnMoveUp.IsEnabled = btnMoveDown.IsEnabled = btnMoveBottom.IsEnabled = ConfigureModBtn.IsEnabled = false;
             ViewModel.Modsdata.Clear();
 
-            mods = new Dictionary<string, SAModInfo>();
+            mods = [];
             codes = new List<Code>(mainCodes.Codes);
-            codesSearch = new();
+            codesSearch = [];
 
             //if game path hasn't been set, give up the process of loading mods.
 

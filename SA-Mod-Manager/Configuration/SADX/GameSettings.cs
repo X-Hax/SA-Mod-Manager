@@ -801,11 +801,14 @@ namespace SAModManager.Configuration.SADX
 		[IniCollection(IniCollectionMode.NoSquareBrackets, StartIndex = 1)]
 		public List<string> EnabledCodes { get; set; } = new();      // SADXLoaderInfo.EnabledCodes
 
-		/// <summary>
-		/// Used for Profiles Migration, for initial boot, see <see cref="LoadConfigs"/>
-		/// </summary>
-		/// <param name="oldSettings"></param>
-		public void ConvertFromV0(SADXLoaderInfo oldSettings)
+
+        public List<string> ModsList { get; set; } = new();   // used for consistent mod order option
+
+        /// <summary>
+        /// Used for Profiles Migration, for initial boot, see <see cref="LoadConfigs"/>
+        /// </summary>
+        /// <param name="oldSettings"></param>
+        public void ConvertFromV0(SADXLoaderInfo oldSettings)
 		{
 			Graphics.ConvertFromV0(oldSettings);
 			Controller.ConvertFromV0(oldSettings);
