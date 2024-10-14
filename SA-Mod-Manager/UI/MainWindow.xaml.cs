@@ -1610,7 +1610,7 @@ namespace SAModManager
             Configuration.SADX.GameSettings sadxSettings = File.Exists(profilePath) ? Configuration.SADX.GameSettings.Deserialize(profilePath) : new();
             GameProfile = sadxSettings;
 
-            if (newSetup || sadxSettings.GamePath is null)
+            if (newSetup || Util.IsStringValid(sadxSettings.GamePath) == false)
                 sadxSettings.GamePath = tempPath;
 
             // In Portable Mode (SA Manager EXE placed in game main folder), override the game folder specified in the profile.
@@ -1644,7 +1644,7 @@ namespace SAModManager
             Configuration.SA2.GameSettings sa2 = File.Exists(profilePath) ? Configuration.SA2.GameSettings.Deserialize(profilePath) : new();
             GameProfile = sa2;
 
-            if (newSetup || sa2.GamePath is null)
+            if (newSetup || Util.IsStringValid(sa2.GamePath) == false)
                 sa2.GamePath = tempPath;
 
             // In Portable Mode (SA Manager EXE placed in game main folder), override the game folder specified in the profile.
@@ -2056,6 +2056,9 @@ namespace SAModManager
                 App.Current.Shutdown();
                 return;
             }
+
+            if (Directory.Exists(App.CurrentGame.modDirectory) == false)
+                Util.CreateSafeDirectory(App.CurrentGame.modDirectory);
 
             //if setting enabled, don't put checked mods on top of the list
             if (checkKeepModOrder.IsChecked == true)
@@ -2631,7 +2634,10 @@ namespace SAModManager
 
         private async Task InstallLoader()
         {
-            if (!File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+            bool dataDllOrigExist = File.Exists(App.CurrentGame.loader.dataDllOriginPath);
+            bool loaderExist = File.Exists(App.CurrentGame.loader.loaderdllpath);
+
+            if (!loaderExist || !dataDllOrigExist)
             {
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                 UIHelper.DisableButton(ref SaveAndPlayButton);

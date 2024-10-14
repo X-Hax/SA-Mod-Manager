@@ -139,6 +139,13 @@ namespace SAModManager
 
         public static async Task<bool> MoveFileAsync(string sourceFile, string destinationFile, bool overwrite)
         {
+            if (File.Exists(destinationFile) && overwrite == false)
+            {
+                Console.WriteLine($"Skipped copy, file already exist.", destinationFile);
+                return false;
+            }
+
+
             try
             {
                 await Task.Run(() => File.Move(sourceFile, destinationFile, overwrite));
@@ -609,7 +616,7 @@ namespace SAModManager
                         Process.Start(fullPath);
                 }
 
-                 return false;
+                return false;
             }
 
             return true;
