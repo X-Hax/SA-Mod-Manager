@@ -2404,10 +2404,6 @@ namespace SAModManager
             {
                 Source = App.ManagerSettings
             });
-            comboUpdateChannel.SetBinding(ComboBox.SelectedIndexProperty, new Binding("UpdatesChannel")
-            {
-                Source = App.ManagerSettings
-            });
             tabTestSpawn.SetBinding(TabItem.VisibilityProperty, new Binding("IsChecked")
             {
                 Source = checkDevEnabled,
