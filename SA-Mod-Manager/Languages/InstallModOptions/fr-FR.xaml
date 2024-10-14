@@ -10,6 +10,8 @@
     <system:String x:Key="InstallModOptions.Radio.Url">Installer à partir d'une url</system:String>
     <system:String x:Key="InstallModOptions.Radio.New">Nouveau Mod (Pour les Développeurs)</system:String>
 
+    <system:String x:Key="InstallModUrl.Radio.Header">Copiez et collez l'URL de la page de téléchargement des mods ici :</system:String>
+
     <!--Mod Download-->
     <system:String x:Key="ModDL.DLMod">Téléchargement Mod</system:String>
     <system:String x:Key="ModDL.OpenLink">Ouvrir le Lien</system:String>
