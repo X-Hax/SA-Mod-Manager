@@ -8,7 +8,11 @@
     <system:String x:Key="InstallModOptions.Radio.Url">Installing from an url</system:String>
     <system:String x:Key="InstallModOptions.Radio.New">Uus mod (Arendajatele)</system:String>
 
+    <system:String x:Key="InstallModUrl.Radio.Header">Modi allalaadimise URL:</system:String>
+
     <!--Mod Download-->
     <system:String x:Key="ModDL.DLMod">Laadige mod</system:String>
     <system:String x:Key="ModDL.OpenLink">Modi veebileht</system:String>
+    <system:String x:Key="ModDL.NoDescript">Ei leidnud kirjelduse.</system:String>
+
 </ResourceDictionary>
