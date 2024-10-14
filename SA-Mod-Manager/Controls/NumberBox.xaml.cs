@@ -373,7 +373,7 @@ namespace SAModManager.Controls
 
 		private void Spinner_PreviewMouseUp(object sender, MouseButtonEventArgs e)
 		{
-			timer.Stop();
+			timer?.Stop();
 		}
 		#endregion
 
