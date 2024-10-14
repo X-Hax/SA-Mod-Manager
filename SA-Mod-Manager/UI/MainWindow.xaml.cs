@@ -2404,12 +2404,7 @@ namespace SAModManager
             {
                 Source = App.ManagerSettings
             });
-            tabTestSpawn.SetBinding(TabItem.VisibilityProperty, new Binding("IsChecked")
-            {
-                Source = checkDevEnabled,
-                Mode = BindingMode.OneWay,
-                Converter = new VisibilityConverter()
-            });
+
         }
 
         private void SetBindings()
