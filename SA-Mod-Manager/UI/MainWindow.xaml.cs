@@ -2913,7 +2913,7 @@ namespace SAModManager
             if (suppressEvent) 
                 return;
 
-            bool isDev = Title.Contains("Dev");
+            bool isDev = !string.IsNullOrEmpty(App.RepoCommit);
             string currentChannel = isDev ? App.UpdateChannels[1] : App.UpdateChannels[0];
 
             if (comboUpdateChannel.SelectedItem != null && currentChannel != comboUpdateChannel.SelectedItem as string)

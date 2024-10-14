@@ -55,7 +55,7 @@ namespace SAModManager
         public static bool IsLightTheme = false;
         public static ThemeList ThemeList { get; set; }
         public static List<string> UpdateChannels { get; set; } = ["Release", "Development"];
-        public static string CurrentChannel { get; set; }
+        public static string CurrentChannel { get; set; } = string.IsNullOrEmpty(RepoCommit) ? UpdateChannels[0] : UpdateChannels[1];
 
         public static Game CurrentGame = new();
         public static List<Game> GamesList = new();
