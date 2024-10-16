@@ -76,7 +76,7 @@ namespace SAModManager.UI
 
                     foreach (string hash in file.Hashes)
                     {
-                        if (hash == currenthash)
+                        if (hash.Equals(currenthash, StringComparison.CurrentCultureIgnoreCase))
                         {
                             return StatusValue.Good;
                         }
@@ -108,34 +108,41 @@ namespace SAModManager.UI
 
             try
             {
-   
+
                 if (File.Exists(filename))
                 {
                     byte[] hash;
-                    using (SHA256 sha = SHA256.Create())
+                    using FileStream stream = File.OpenRead(filename);
+                    using BinaryReader binr = new(stream);
+
+                    // Move the stream's position to 0x004DB2A0 (start reading from this offset)
+                    stream.Seek(0x004DB2A0, SeekOrigin.Begin);
+
+                    byte[] checkrange = new byte[50445648];
+
+                    // Read data into checkrange array
+                    int bytesRead = stream.Read(checkrange, 0, 50445648);
+
+                    if (bytesRead == 50445648)
                     {
-                        using (FileStream stream = File.OpenRead(filename))
+                        hash = SHA256.HashData(checkrange);
+
+                        string hashed = string.Concat(hash.Select(x => x.ToString("x2")));
+
+                        foreach (string filehash in file.Value.Hashes)
                         {
-                            using (BinaryReader binr = new BinaryReader(stream))
+                            if (hashed.Equals(filehash, StringComparison.CurrentCultureIgnoreCase))
                             {
-                                byte[] checkrange = new byte[50445648];
-                                stream.Read(checkrange, 0x004DB2A0, 50445648);
-                                hash = sha.ComputeHash(checkrange);
+                                statusValue = StatusValue.Good;
+                                break;
                             }
                         }
                     }
-
-                    string hashed = string.Concat(hash.Select(x => x.ToString("x2")));
-
-                    foreach (string filehash in file.Value.Hashes)
-                    {
-                        if (hashed == filehash)
-                            statusValue = StatusValue.Good;
-                        break;
-                    }
                 }
                 else
+                {
                     statusValue = StatusValue.NotFound;
+                }
             } catch { }
 
             return new(Path.GetFileName(file.Value.Filename), statusValue);
@@ -277,10 +284,14 @@ namespace SAModManager.UI
 
                         FileStatus status;
 
-                        if (game == SetGame.SADX && file.Value.Filename == "sonic.exe")
+                        if (game == SetGame.SADX && file.Value.Filename.Equals("sonic.exe", StringComparison.CurrentCultureIgnoreCase))
+                        {
                             status = SADXExecutableCheck(file);
+                        }
                         else
+                        {
                             status = new(Path.GetFileName(file.Value.Filename), FileStatus.GetFileStatus(App.CurrentGame.gameDirectory, file.Value));
+                        }
 
                         if (status.Status != FileStatus.StatusValue.Good)
                         {
