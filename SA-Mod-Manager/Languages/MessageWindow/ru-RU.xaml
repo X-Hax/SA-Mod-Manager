@@ -138,7 +138,7 @@
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">Указанные файлы не были импортированы как профили:</system:String>
     <system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Убедитесь, что используете только файлы профилей в JSON или файлы в INI старого загрузчика.</system:String>
     <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">Новая версия менеджера модов требует наличия установленного пакета .NET 8.0.7 Desktop Runtime.&#x0a;&#x0a;Желаете установить его сейчас?</system:String>
-    <system:String x:Key="MessageWindow.Warnings.ASLRDetected" xml:space="preserve">Похоже, у вас включена технология ASL. Она может помешать работе загрузчика модов. Рекомендуется отключить эту технологию в настройках системы.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ASLRDetected" xml:space="preserve">Похоже, у вас включена технология ASLR. Она может помешать работе загрузчика модов. Рекомендуется отключить эту технологию в настройках системы.</system:String>
 
     <system:String x:Key="MessageWindow.Warnings.ChannelReleaseSwap" xml:space="preserve">Вы перейдёте на основной канал обновлений менеджера. Желаете продолжить? Менеджер перезапустится, чтобы сменить канал.</system:String>
     <system:String x:Key="MessageWindow.Warnings.ChannelDevSwap" xml:space="preserve">Вы перейдёте на канал обновлений менеджера для разработки. Желаете продолжить? Менеджер перезапустится, чтобы сменить канал..</system:String>
