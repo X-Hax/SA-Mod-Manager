@@ -26,10 +26,6 @@ jobs:
       with:
         fetch-depth: 0
         submodules: 'recursive'      
-    
-    - name: Add Git hash to resources
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: echo ${{github.sha}} > SA-Mod-Manager/Resources/Version.txt
 
     - name: Setup AutoChangelog
       run: npm install -g auto-changelog

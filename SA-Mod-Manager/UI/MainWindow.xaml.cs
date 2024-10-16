@@ -1371,13 +1371,14 @@ namespace SAModManager
 
         public void SetModManagerVersion()
         {
-            if (string.IsNullOrEmpty(App.RepoCommit)) //dev
+            if (string.IsNullOrEmpty(App.RepoCommit)) //release
             {
-                Title = titleName + " " + "(Dev Build - " + Version + ")";
+                Title = titleName + " " + "(" + Version + ")";
             }
             else
             {
-                Title = titleName + " " + "(" + Version + " - " + App.RepoCommit[..7] + ")";
+                Title = titleName + " " + "(Dev Build - " + Version + " - " + App.RepoCommit[..7] + ")";
+
             }
         }
 
@@ -2910,9 +2911,6 @@ namespace SAModManager
 
         private async void ComboBoxChannel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (suppressEvent) 
-                return;
-
             bool isDev = !string.IsNullOrEmpty(App.RepoCommit);
             string currentChannel = isDev ? App.UpdateChannels[1] : App.UpdateChannels[0];
 
