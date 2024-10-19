@@ -79,8 +79,8 @@ namespace SAModManager.Configuration.SA2
         /// <summary>
         /// Sets the Screen Mode (Windowed, Fullscreen, Borderless, or Custom Window)
         /// </summary>
-        [DefaultValue(DisplayMode.Borderless)]
-        public int ScreenMode { get; set; } = (int)DisplayMode.Borderless;
+        [DefaultValue(DisplayMode.Windowed)]
+        public int ScreenMode { get; set; } = (int)DisplayMode.Windowed;
 
 		/// <summary>
 		/// Stretches the inner window (game render) to the outer window's size.
@@ -496,24 +496,29 @@ namespace SAModManager.Configuration.SA2
 			// TODO: Fix this function.
 			string path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
 			try
-            {
-                if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
-                {
-                    string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
-                    File.WriteAllText(path, jsonContent);
-                }
-                else
-                {
-                    App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
-                    Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);
-                    if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
-                    {
-                        string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
-                        File.WriteAllText(path, jsonContent);
-                    }
-                }
-            }
-            catch
+			{
+				if (!Directory.Exists(App.CurrentGame.ProfilesDirectory))
+				{
+					App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
+					Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);
+				}
+
+				if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+				{
+					if (profileName == "Default" || profileName == "Default.json")
+					{
+						if (!Path.Exists(path))
+						{
+							System.Drawing.Rectangle rect = GraphicsManager.GetDisplayBounds(1);
+							Graphics.VerticalResolution = rect.Height;
+							Graphics.HorizontalResolution = rect.Width;
+						}
+					}
+					string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+					File.WriteAllText(path, jsonContent);
+				}
+			}
+			catch
             {
 
             }
