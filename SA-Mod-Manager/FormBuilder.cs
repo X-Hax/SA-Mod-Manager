@@ -367,7 +367,7 @@ namespace SAModManager
                 Tag = property.HelpText,
             };
 
-            if (isFloatType)
+            if (isFloatType || numMax >= 100)
                 label.Width += 10;
 
            // Create the slider
