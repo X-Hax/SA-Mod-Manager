@@ -10,7 +10,7 @@
 		mc:Ignorable="d"
 		Title="SA Mod Manager"
 		Style="{DynamicResource SAWindow}"
-		MinHeight="720" MinWidth="590" Width="650" Height="725" WindowStartupLocation="CenterScreen"
+		MinHeight="660" MinWidth="580" Width="640" Height="705" WindowStartupLocation="CenterScreen"
 		Loaded="MainWindowManager_Loaded" PreviewKeyDown="Window_PreviewKeyDown"
         Closed="MainForm_FormClosing">
 
@@ -53,7 +53,7 @@
                             <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
                         <ListView x:Name="listMods" Focusable="True" Foreground="White" Grid.Column="1" Grid.Row="1" PreviewKeyDown="ModsList_OnPreviewKeyDown" 
-                                  FontSize="12" ItemsSource="{Binding Modsdata}" SelectedItem="{Binding SelectedMod}"  
+                                  ItemsSource="{Binding Modsdata}" SelectedItem="{Binding SelectedMod}"  
                                       dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
                                       dd:DragDrop.UseDefaultDragAdorner="True" dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
                                       dd:DragDrop.DropHandler="{Binding}"  SelectionChanged="modListView_SelectedIndexChanged" AllowDrop="True">
@@ -252,7 +252,7 @@
 											   Icon="{StaticResource Icons.Deselect}" Content="{DynamicResource CommonStrings.DeselectAll}" Click="btnDeselectAllCode_Click"/>
                         </Grid>
 
-                        <ListView x:Name="CodeListView" Foreground="White" Grid.Column="1" Grid.Row="2" FontSize="12" PreviewKeyDown="CodesList_OnPreviewKeyDown" SelectionChanged="CodeListView_SelectionChanged" SelectedItem="{Binding SelectedCode}">
+                        <ListView x:Name="CodeListView" Foreground="White" Grid.Column="1" Grid.Row="2"  PreviewKeyDown="CodesList_OnPreviewKeyDown" SelectionChanged="CodeListView_SelectionChanged" SelectedItem="{Binding SelectedCode}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
                                     <EventSetter Event="MouseDoubleClick" Handler="CodesView_Item_MouseDoubleClick"/>
@@ -339,7 +339,7 @@
 						</Grid.RowDefinitions>
 						<!--Group Box for Game Manager Configuration-->
 						<GroupBox x:Name="grpManSettings" Grid.Row="0" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options}">
-							<Grid>
+							<Grid Margin="0, 2, 0, 0" >
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="*"/>
@@ -425,7 +425,7 @@
 									<RowDefinition Height="Auto"/>
 								</Grid.RowDefinitions>
 
-								<Grid Margin="5">
+								<Grid Margin="5, 0, 5, 5">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto"/>
 										<RowDefinition Height="*"/>
@@ -442,9 +442,9 @@
 											<RowDefinition Height="5"/>
 											<RowDefinition Height="Auto"/>
 										</Grid.RowDefinitions>
-										<CheckBox x:Name="checkDevEnabled" Grid.Row="0" Grid.Column="0" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.TestSpawn}" Margin="5"/>
-										<CheckBox x:Name="checkKeepModOrder" Grid.Row="0" Grid.Column="2" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.KeepModOrder}" Margin="5"/>
-										<CheckBox x:Name="checkManagerOpen" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.KeepOpen}" Margin="5"/>
+										<CheckBox x:Name="checkDevEnabled" Grid.Row="0" Grid.Column="0" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.TestSpawn}" Margin="5, 2, 5, 5"/>
+										<CheckBox x:Name="checkKeepModOrder" Grid.Row="0" Grid.Column="2" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.KeepModOrder}" Margin="5, 2, 5 ,5"/>
+										<CheckBox x:Name="checkManagerOpen" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.KeepOpen}" Margin="5, 2, 5, 5"/>
 									</Grid>
 
 									<Grid Grid.Row="1" Margin="5">
@@ -479,22 +479,22 @@
 										<CheckBox x:Name="chkUpdateManager" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ManagerUpdates}"/>
 										<CheckBox x:Name="chkUpdatesML" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.LoaderUpdates}"/>
 										<CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ModUpdates}"/>
-										<elements:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnCheckUpdates" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.CheckUpdates}"
-													  MaxHeight="30" Icon="{StaticResource Icons.Update}" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow}"
+                                        <elements:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnCheckUpdates" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.CheckUpdates}"
+													  MaxHeight="28" Icon="{StaticResource Icons.Update}" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow}"
 													   ImageBrush="{DynamicResource Icon.Brushes.Blue}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Blue}"/>
 									</UniformGrid>
 								</GroupBox>
 
 								<GroupBox Grid.Row="2" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.About}">
 									<UniformGrid Rows="0" Columns="2" Margin="5">
-										<Button x:Name="btnCredits" Margin="5" Grid.Column="0" Click="AboutBtn_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.Contributors}">
+										<Button x:Name="btnCredits" MaxHeight="28" Margin="5" Grid.Column="0" Click="AboutBtn_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.Contributors}">
 											<StackPanel Orientation="Horizontal">
 												<Image Source="{StaticResource IconContributors}" Width="30" Margin="0,0,5,0"/>
 												<TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits}" VerticalAlignment="Center"/>
 											</StackPanel>
 										</Button>
 										<elements:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnReport" Margin="5" Click="btnReport_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ReportBug}"
-											   Icon="{StaticResource Icons.BugReport}" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug}"
+											   MaxHeight="28" Icon="{StaticResource Icons.BugReport}" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug}"
 											   ImageBrush="{DynamicResource Icon.Brushes.Red}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Red}"/>
 									</UniformGrid>
 								</GroupBox>
@@ -516,9 +516,9 @@
             <Grid x:Name="bottomGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="185"/>
                     <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="185"/>
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="10"/>
@@ -528,7 +528,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="10"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="SaveAndPlayButton" Grid.Column="1" Grid.Row="1" Click="SaveAndPlayButton_Click" ToolTip="{DynamicResource MainWindow.Tips.SaveAndPlay}">
+                <Button x:Name="SaveAndPlayButton" Grid.Column="1"  Grid.Row="1" Click="SaveAndPlayButton_Click" ToolTip="{DynamicResource MainWindow.Tips.SaveAndPlay}">
                     <StackPanel Orientation="Horizontal">
                         <Image x:Name="savePlayIcon" Stretch="UniformToFill" Source="{StaticResource IconPlay}" Margin="3,3,5,3"/>
                         <TextBlock Text="{DynamicResource Manager.Buttons.SaveAndPlay}" VerticalAlignment="Center"/>

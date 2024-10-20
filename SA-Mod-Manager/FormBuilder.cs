@@ -7,6 +7,8 @@ using SAModManager.Controls;
 using System.Windows.Media;
 using SAModManager.ModsCommon;
 using SAModManager.Configuration;
+using System.Reflection.Metadata;
+using System.Windows.Documents;
 
 namespace SAModManager
 {
@@ -17,6 +19,17 @@ namespace SAModManager
 
         #region Mod Config Form Build
         static private ConfigSettings settings;
+
+        //Helper method for formatting the number
+        private static string FormatNumber(decimal number, bool intType = false)
+        {
+            if (number >= 1000 && number < 1000000)
+                return (number / 1000).ToString("0.#") + "k";  //For thousands (e.g. 30k)
+            else if (number >= 1000000)
+                return (number / 1000000).ToString("0.#") + "M";  //For millions (e.g. 1.5M)
+            else
+                return number.ToString(intType ? "" : "F2");  // Default to showing two decimal places
+        }
 
         public static UIElement CreateLabel(ConfigSchemaProperty property, bool addColon = true)
         {
@@ -146,11 +159,11 @@ namespace SAModManager
                 numVal = 0;
             Decimal numMax = Decimal.MaxValue;
             if (property.MaxValue.ToString() != "")
-                if (!Decimal.TryParse(property.MaxValue.ToString(), out numMax))
+                if (!Decimal.TryParse(property.MaxValue.ToString().ToLower(), out numMax))
                     numMax = Decimal.MaxValue;
             Decimal numMin = Decimal.MinValue;
             if (property.MinValue.ToString() != "")
-                if (!Decimal.TryParse(property.MinValue.ToString(), out numMin))
+                if (!Decimal.TryParse(property.MinValue.ToString().ToLower(), out numMin))
                     numMin = Decimal.MinValue;
 
             NumberBox element = new()
@@ -296,6 +309,100 @@ namespace SAModManager
             return panel;
         }
 
+        public static UIElement CreateSlider(ConfigSchemaProperty property, CustomPropertyStore storeInfo)
+        {
+            bool isFloatType = property.Type.Equals("float", StringComparison.CurrentCultureIgnoreCase);
+            Grid panel = new()
+            {
+                ColumnDefinitions =
+        {
+            new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },  // For the label
+            new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) },  // For the slider
+            new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },  // For the value text
+        },
+                Margin = ElementMargin,
+                Tag = property.HelpText
+            };
+
+            // Create the label on the left
+            panel.Children.Add(CreateLabel(property));
+            Grid.SetColumn(panel.Children[0], 0);
+
+            Border backing = new()
+            {
+                Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Margin = new Thickness(0)
+            };
+            panel.Children.Add(backing);
+            Grid.SetColumn(backing, 1);
+            Grid.SetColumnSpan(backing, 2);
+
+            if (!Decimal.TryParse(storeInfo.GetConfigValue().ToString(), out decimal numVal))
+                numVal = 0;
+            Decimal numMax = Decimal.MaxValue;
+            if (property.MaxValue.ToString() != "")
+                if (!Decimal.TryParse(property.MaxValue.ToString(), out numMax))
+                    numMax = Decimal.MaxValue;
+            Decimal numMin = Decimal.MinValue;
+            if (property.MinValue.ToString() != "")
+                if (!Decimal.TryParse(property.MinValue.ToString(), out numMin))
+                    numMin = Decimal.MinValue;
+
+            // Create the number label
+            TextBlock textBlock = new()
+            {
+                Text = isFloatType ? FormatNumber(numVal) : FormatNumber(numVal, true),
+
+            };
+
+            Label label = new()
+            {
+                Height = 30,
+                Width = numMax >= 100000 ? 45 : 30,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Content = textBlock,
+                Tag = property.HelpText,
+            };
+
+            if (isFloatType)
+                label.Width += 10;
+
+           // Create the slider
+           Slider element = new()
+            {
+                Width = numMax < 10000 ? 210 : 250,
+                Height = 22,
+                Value = ((double)numVal),
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Center,
+                Minimum = ((double)numMin),
+                Maximum = ((double)numMax),
+                Tag = (storeInfo, textBlock),
+            };
+
+            element.ValueChanged += isFloatType ? ModSetting_SliderChangedFloat : ModSetting_SliderChanged;
+
+            // Add the slider to the second column
+            panel.Children.Add(element);
+            Grid.SetColumn(element, 1);
+
+
+            panel.Children.Add(label);
+            Grid.SetColumn(label, 2);
+
+            panel.Children.Add(new Separator()
+            {
+                Margin = new Thickness(0, 2, 0, 0),
+                VerticalAlignment = VerticalAlignment.Bottom
+            });
+            Grid.SetColumnSpan(panel.Children[4], 3);
+
+            return panel;
+        }
+
         private static UIElement ConfigCreateItem(ConfigSchemaProperty elem, ConfigSettings config, CustomPropertyStore storeInfo)
         {
             switch (elem.Type.ToLower())
@@ -304,7 +411,7 @@ namespace SAModManager
                     return CreateCheckBox(elem, storeInfo);
                 case "int":
                 case "float":
-                    return CreateNumericBox(elem, storeInfo);
+                    return (elem.Slider == true) ? CreateSlider(elem, storeInfo) : CreateNumericBox(elem, storeInfo);
                 case "string":
                     return CreateStringBox(elem, storeInfo);
                 default:
@@ -446,6 +553,31 @@ namespace SAModManager
             var info = text.Tag as CustomPropertyStore;
             if (info != null)
                 settings.SetPropertyValue(info.groupName, info.propertyName, text.Text);
+        }
+
+        private static void ModSetting_SliderChanged(object sender, RoutedEventArgs e)
+        {
+            Slider slide = (Slider)sender;
+
+            if (slide.Tag is (CustomPropertyStore storeInfo, TextBlock textBlock))
+            {
+
+                string rounded = FormatNumber(Math.Floor(((decimal)slide.Value)), true);
+                settings.SetPropertyValue(storeInfo.groupName, storeInfo.propertyName, rounded);
+                textBlock.Text = rounded;
+            }
+        }
+
+        private static void ModSetting_SliderChangedFloat(object sender, RoutedEventArgs e)
+        {
+            Slider slide = (Slider)sender;
+
+            if (slide.Tag is (CustomPropertyStore storeInfo, TextBlock textBlock))
+            {
+                string floatRes = FormatNumber(((decimal)slide.Value));
+                settings.SetPropertyValue(storeInfo.groupName, storeInfo.propertyName, floatRes);
+                textBlock.Text = floatRes;
+            }
         }
 
         #endregion

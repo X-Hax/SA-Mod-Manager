@@ -282,6 +282,7 @@ namespace SAModManager.ModsCommon
             {
                 if (!configINI.ContainsKey(group.Name))
                     configINI.Add(group.Name, new Dictionary<string, string>());
+
                 foreach (ConfigSchemaProperty prop in group.Properties)
                 {
                     if (!configINI[group.Name].ContainsKey(prop.Name))
@@ -291,7 +292,7 @@ namespace SAModManager.ModsCommon
                     if (modINI is not null && prop.Name.ToLower().Contains("includedir"))
                     {
                         if (!modINI.ContainsKey("Config"))
-                            modINI.Add("Config", new Dictionary<string, string>());
+                            modINI.Add("Config", []);
 
                         var value = prop.DefaultValue;
                         if (IsEnum(prop.Type) && int.TryParse(value, out int result))
