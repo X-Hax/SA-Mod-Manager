@@ -1551,6 +1551,7 @@ namespace SAModManager
 
             CodeListView.BeginInit();
             CodeListView.Items.Clear();
+            codesSearch.Clear();
 
             foreach (Code item in codes.Where(a => a.Required && !EnabledCodes.Contains(a.Name)))
                 EnabledCodes.Add(item.Name);
@@ -1856,6 +1857,33 @@ namespace SAModManager
             ProfileManager.SaveProfiles();
         }
 
+        private void LoadCodesFromMods(SAModInfo inf, string mod)
+        {
+            //if a mod has a code, add it to the list
+            if (!string.IsNullOrEmpty(inf.Codes))
+            {
+                string fullPath = Path.Combine(Path.Combine(App.CurrentGame.modDirectory, mod), inf.Codes);
+                if (File.Exists(fullPath))
+                {
+                    var t = CodeList.Load(fullPath);
+                    codes.AddRange(t.Codes);
+
+                    foreach (var code in t.Codes)
+                    {
+                        CodeData extraItem = new()
+                        {
+                            codes = code,
+                            IsChecked = EnabledCodes.Contains(inf.Name),
+                            IsEnabled = !code.Required,
+                        };
+
+                        extraItem.codes.Category = "Codes From " + inf.Name;
+                        codesSearch.Add(extraItem);
+                    }
+                }
+            }
+        }
+
         private void LoadConsistentModList()
         {
 
@@ -1895,6 +1923,7 @@ namespace SAModManager
 
                 ViewModel.Modsdata.Add(item);
 
+
             }
 
             string modNotFound = string.Empty;
@@ -1907,6 +1936,9 @@ namespace SAModManager
                     modNotFound += mod + "\n";
                     EnabledMods.Remove(mod);
                 }
+
+                SAModInfo inf = value;
+                LoadCodesFromMods(inf, mod);
             }
 
             switch (App.CurrentGame.id)
@@ -1924,13 +1956,15 @@ namespace SAModManager
                     }
                     break;
             }
-    
+
 
 
             if (!string.IsNullOrEmpty(modNotFound))
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Errors.ModNotFound") + modNotFound, MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 
         }
+
+
 
         private void LoadRegularModList()
         {
@@ -1969,32 +2003,7 @@ namespace SAModManager
 
                     ViewModel.Modsdata.Add(item);
 
-                    //if a mod has a code, add it to the list
-                    if (!string.IsNullOrEmpty(inf.Codes))
-                    {
-                        string fullPath = Path.Combine(Path.Combine(App.CurrentGame.modDirectory, mod), inf.Codes);
-                        if (File.Exists(fullPath))
-                        {
-                            var t = CodeList.Load(fullPath);
-                            codes.AddRange(t.Codes);
-
-                            foreach (var code in t.Codes)
-                            {
-                                CodeData extraItem = new()
-                                {
-                                    codes = code,
-                                    IsChecked = EnabledCodes.Contains(item.Name),
-                                    IsEnabled = !code.Required,
-                                };
-
-                                extraItem.codes.Category = "Codes From " + inf.Name;
-
-                                codesSearch.Add(extraItem);
-                                CodeListView.Items.Add(extraItem);
-                            }
-                        }
-                    }
-
+                    LoadCodesFromMods(inf, mod);
                     suppressEvent = false;
                 }
                 else
@@ -2944,12 +2953,12 @@ namespace SAModManager
                     }
                     else
                     {
-                       comboUpdateChannel.SelectedItem = currentChannel;
+                        comboUpdateChannel.SelectedItem = currentChannel;
                     }
                 }
-                else 
-                { 
-       
+                else
+                {
+
                     var msg = new MessageWindow(Lang.GetString("CommonStrings.Warning"), Lang.GetString("MessageWindow.Warnings.ChannelDevSwap"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
                     msg.ShowDialog();
                     if (msg.isYes)
