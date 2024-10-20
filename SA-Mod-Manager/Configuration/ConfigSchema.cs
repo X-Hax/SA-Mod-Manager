@@ -71,6 +71,8 @@ namespace SAModManager.Configuration
 		public string MaxValue { get; set; }
 		[XmlElement]
 		public string HelpText { get; set; }
+        [XmlAttribute("slider")]
+        public bool Slider { get; set; }
 
 		public ConfigSchemaProperty()
 		{
@@ -82,6 +84,7 @@ namespace SAModManager.Configuration
 			MinValue = string.Empty;
 			MaxValue = string.Empty;
 			HelpText = string.Empty;
+			Slider = false;
 		}
 	}
 
