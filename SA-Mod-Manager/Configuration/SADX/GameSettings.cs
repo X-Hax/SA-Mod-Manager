@@ -940,8 +940,12 @@ namespace SAModManager.Configuration.SADX
 						if (!Path.Exists(path))
 						{
 							System.Drawing.Rectangle rect = GraphicsManager.GetDisplayBounds(1);
-							Graphics.VerticalResolution = rect.Height;
-							Graphics.HorizontalResolution = rect.Width;
+							if (rect.Height > 0)
+							{
+								Graphics.VerticalResolution = rect.Height;
+								Graphics.HorizontalResolution = rect.Width;
+								Graphics.ScreenMode = (int)GraphicsSettings.DisplayMode.Borderless;
+							}
 						}
 					}
 					string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
