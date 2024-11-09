@@ -134,7 +134,9 @@ namespace SAModManager
                 {
                     UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
                     UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
-                    bool managerUpdate = await App.PerformUpdateManagerCheck();
+                    bool isDev = !string.IsNullOrEmpty(App.RepoCommit);
+
+                    bool managerUpdate = isDev ? await App.PerformDevUpdateManagerCheck() : await App.PerformUpdateManagerCheck();
                     if (managerUpdate)
                     {
                         Refresh();
@@ -1131,16 +1133,17 @@ namespace SAModManager
         private async void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
             UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
-
+            bool isDev = !string.IsNullOrEmpty(App.RepoCommit);
+            bool managerUpdate = isDev ? await App.PerformDevUpdateManagerCheck() : await App.PerformUpdateManagerCheck();
             App.CancelUpdate = false;
-            if (await App.PerformUpdateManagerCheck())
+
+            if (managerUpdate)
             {
-                return;
+               return;
             }
 
             if (App.CurrentGame.loader.installed)
             {
-
                 await App.PerformUpdateLoaderCheck();
 
                 var updates = new List<DownloadInfo>();
@@ -2963,25 +2966,7 @@ namespace SAModManager
                     msg.ShowDialog();
                     if (msg.isYes)
                     {
-                        var update = await App.GetArtifact();
-                        if (update.Item2 is not null)
-                        {
-
-                            Logger.Log("Now Installing Latest Manager Update from Channel swap (Release)...");
-
-                            string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
-                            string fileName = update.Item3.Name;
-                            string version = update.Item2.HeadSHA[..7];
-                            string destFolder = App.tempFolder;
-                            Util.CreateSafeDirectory(destFolder);
-
-                            var dl = new ManagerUpdate(dlLink, destFolder, fileName, version)
-                            {
-                                DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName)
-                            };
-
-                            dl.StartManagerDL();
-                        }
+                        await App.PerformDevUpdateManagerCheck();
 
                     }
                     else

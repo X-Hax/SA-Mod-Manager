@@ -329,6 +329,33 @@ namespace SAModManager
             return (hasUpdate, workflowRun, info);
         }
 
+        public static async Task<bool> PerformDevUpdateManagerCheck()
+        {
+
+            var update = await App.GetArtifact();
+            if (update.Item2 is not null)
+            {
+
+                Logger.Log("Now Installing Latest Dev Build Update ...");
+
+                string dlLink = string.Format(SAModManager.Properties.Resources.URL_SAMM_UPDATE, update.Item2.CheckSuiteID, update.Item3.Id);
+                string fileName = update.Item3.Name;
+                string version = update.Item2.HeadSHA[..7];
+                string destFolder = App.tempFolder;
+                Util.CreateSafeDirectory(destFolder);
+
+                var dl = new ManagerUpdate(dlLink, destFolder, fileName, version)
+                {
+                    DownloadCompleted = async () => await ManagerUpdate.DownloadManagerCompleted(destFolder, fileName)
+                };
+
+                dl.StartManagerDL();
+                return true;
+            }
+
+            return false;
+        }
+
         public static async Task<bool> PerformUpdateManagerCheck()
         {
             MainWindow mainWindow = null;
