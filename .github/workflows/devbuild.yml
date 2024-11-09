@@ -51,13 +51,13 @@ jobs:
 
       # Step to upload the dev build artifact
       - name: Upload 64-bit Build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: SAModManager_x64_${{ matrix.configuration }}
           path: bin/${{ matrix.configuration }}/net8.0-windows7.0/win-x64/publish
 
       - name: Upload 32-bit Build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: SAModManager_x86_${{ matrix.configuration }}
           path: bin/${{ matrix.configuration }}/net8.0-windows7.0/win-x86/publish
