@@ -6,6 +6,7 @@ using System.Text.Json;
 using SAModManager.UI;
 using System.Text.Json.Serialization;
 using System.ComponentModel.Design;
+using System;
 
 // TODO: Build SA2 Game Settings
 namespace SAModManager.Configuration.SA2
@@ -382,7 +383,11 @@ namespace SAModManager.Configuration.SA2
         /// <summary>
         /// Patches for SA2.
         /// </summary>
+        [Obsolete]
         public GamePatches Patches { get; set; } = new();
+
+
+        public List<string> EnabledGamePatches { get; set; } = [];
 
         /// <summary>
         /// Debug Settings.

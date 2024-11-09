@@ -28,7 +28,7 @@ namespace SAModManager.Controls.SA2
         {
             InitializeComponent();
             GameProfile = (GameSettings)gameSettings;
-            if (App.CurrentGame?.modDirectory != null)
+            if (App.CurrentGame?.modDirectory != null && Directory.Exists(App.CurrentGame.modDirectory))
             {
                 string pathDest = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
                 if (File.Exists(pathDest))
@@ -186,6 +186,7 @@ namespace SAModManager.Controls.SA2
             list.Items.Clear();
 
             var patches = PatchesList.Deserialize(patchesPath);
+            bool isListEmpty = set.EnabledGamePatches.Count == 0;
 
             if (patches is not null)
             {
@@ -193,20 +194,28 @@ namespace SAModManager.Controls.SA2
 
                 foreach (var patch in listPatch)
                 {
-                    // Convert patch name to the corresponding property name in GamePatches class
-                    string propertyName = patch.Name.Replace(" ", ""); // Adjust the naming convention as needed
-                    var property = typeof(GamePatches).GetProperty(propertyName);
-
-                    if (property != null)
+                    if (isListEmpty)
                     {
-                        // Update the IsChecked property based on the GamePatches class
-                        patch.IsChecked = (bool)property.GetValue(set.Patches);
+                        // Convert patch name to the corresponding property name in GamePatches class
+                        string propertyName = patch.Name.Replace(" ", ""); // Adjust the naming convention as needed
+                        var property = typeof(GamePatches).GetProperty(propertyName);
+
+                        if (property != null)
+                        {
+                            // Update the IsChecked property based on the GamePatches class
+                            patch.IsChecked = (bool)property.GetValue(set.Patches);
+                        }
+                    }
+                    else
+                    {
+                        patch.IsChecked = set.EnabledGamePatches.Contains(patch.Name);
                     }
 
                     string desc = "GamePatchesSA2." + patch.Name + "Desc";
                     patch.InternalName = patch.Name;
                     patch.Name = Lang.GetString("GamePatchesSA2." + patch.Name);
                     patch.Description = Lang.GetString(desc); //need to use a variable otherwise it fails for some reason
+
                 }
 
                 return listPatch;
@@ -263,20 +272,10 @@ namespace SAModManager.Controls.SA2
             if (listPatches is null)
                 return;
 
+            settings.EnabledGamePatches.Clear();
             foreach (PatchesData patch in listPatches.Items)
-            {
-                string propertyName = patch.InternalName;
-                var propertyInfo = typeof(GamePatches).GetProperty(propertyName);
-
-                if (propertyInfo != null && propertyInfo.CanWrite)
-                {
-                    propertyInfo.SetValue(settings.Patches, patch.IsChecked);
-                }
-                else
-                {
-                    throw new InvalidOperationException($"Property {propertyName} not found or read-only.");
-                }
-            }
+                if (patch.IsChecked == true)
+                    settings.EnabledGamePatches.Add(patch.InternalName);
         }
 
         #region Private Functions

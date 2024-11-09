@@ -503,6 +503,7 @@ namespace SAModManager.Controls.SADX
             list.Items.Clear();
 
             var patches = PatchesList.Deserialize(patchesPath);
+            bool isListEmpty = set.EnabledGamePatches.Count == 0;
 
             if (patches is not null)
             {
@@ -510,14 +511,21 @@ namespace SAModManager.Controls.SADX
 
                 foreach (var patch in listPatch)
                 {
-                    // Convert patch name to the corresponding property name in GamePatches class
-                    string propertyName = patch.Name.Replace(" ", ""); // Adjust the naming convention as needed
-                    var property = typeof(GamePatches).GetProperty(propertyName);
-
-                    if (property != null)
+                    if (isListEmpty) 
                     {
-                        // Update the IsChecked property based on the GamePatches class
-                        patch.IsChecked = (bool)property.GetValue(set.Patches);
+                        // Convert patch name to the corresponding property name in GamePatches class
+                        string propertyName = patch.Name.Replace(" ", ""); // Adjust the naming convention as needed
+                        var property = typeof(GamePatches).GetProperty(propertyName);
+
+                        if (property != null)
+                        {
+                            // Update the IsChecked property based on the GamePatches class
+                            patch.IsChecked = (bool)property.GetValue(set.Patches);
+                        }
+                    }
+                    else
+                    {
+                        patch.IsChecked = set.EnabledGamePatches.Contains(patch.Name);
                     }
 
                     string desc = "GamePatches." + patch.Name + "Desc";
@@ -587,16 +595,11 @@ namespace SAModManager.Controls.SADX
             if (listPatches is null)
                 return;
 
-            foreach (PatchesData patch in listPatches.Items)
-            {
-                string propertyName = patch.InternalName;
-                var propertyInfo = typeof(GamePatches).GetProperty(propertyName);
+            settings.EnabledGamePatches.Clear();
 
-                if (propertyInfo != null && propertyInfo.CanWrite)
-                {
-                    propertyInfo.SetValue(settings.Patches, patch.IsChecked);
-                }
-            }
+            foreach (PatchesData patch in listPatches.Items)
+                if (patch.IsChecked == true)
+                    settings.EnabledGamePatches.Add(patch.InternalName);
         }
 
 		private void SetItemFromPad(int action)

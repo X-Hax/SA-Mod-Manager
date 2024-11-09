@@ -772,15 +772,18 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		public TestSpawnSettings TestSpawn { get; set; } = new();
 
-		/// <summary>
-		/// Patches for SADX.
-		/// </summary>
-		public GamePatches Patches { get; set; } = new();
+        /// <summary>
+        /// Patches for SADX.
+        /// </summary>
+        [Obsolete]
+        public GamePatches Patches { get; set; } = new();
 
-		/// <summary>
-		/// Debug Settings.
-		/// </summary>
-		public DebugSettings DebugSettings { get; set; } = new();
+        public List<string> EnabledGamePatches { get; set; } = [];
+
+        /// <summary>
+        /// Debug Settings.
+        /// </summary>
+        public DebugSettings DebugSettings { get; set; } = new();
 
 		/// <summary>
 		/// Path to the game install saved with this configuration.
