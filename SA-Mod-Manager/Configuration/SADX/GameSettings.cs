@@ -196,6 +196,8 @@ namespace SAModManager.Configuration.SADX
 		public bool EnableScreenScaling { get; set; } = true;     // SADXLoaderInfo.StretchFullscreen
 		#endregion
 
+		[DefaultValue(0)]
+		public int RenderBackend { get; set; } = 0;
 		/// <summary>
 		/// Converts from original settings file.
 		/// </summary>
@@ -225,7 +227,8 @@ namespace SAModManager.Configuration.SADX
 			EnableUIScaling = oldSettings.ScaleHud;
 			EnableForcedMipmapping = oldSettings.AutoMipmap;
 			EnableForcedTextureFilter = oldSettings.TextureFilter;
-		}
+
+        }
 
 		public void LoadGameConfig(ref SADXConfigFile config)
 		{

@@ -54,7 +54,7 @@ namespace SAModManager.Controls.SADX
         {
             SetupBindings();
             SetPatches();
-            SetUp_UpdateD3D9();
+            CheckOldD3D9Dll();
             SetTextureFilterList();
             InitMouseList();
 
@@ -186,81 +186,35 @@ namespace SAModManager.Controls.SADX
             }
         }
 
-        private void SetUp_UpdateD3D9()
+        private void CheckOldD3D9Dll()
         {
-            bool isUpdateAvailable = CheckD3D8to9Update();
 
-            btnUpdateD3D9.Visibility = isUpdateAvailable ? Visibility.Visible : Visibility.Hidden;
-            btnUpdateD3D9.IsEnabled = !isUpdateAvailable;
             checkD3D9.IsEnabled = File.Exists(d3d8to9StoredDLLName);
-            checkD3D9.IsChecked = File.Exists(d3d8to9InstalledDLLName);
+
+            if (File.Exists(d3d8to9InstalledDLLName))
+            {
+                checkD3D9.IsChecked = true;
+                checkD3D9_Click(null, null);
+                File.Delete(d3d8to9InstalledDLLName);
+            }
+
         }
 
-        private void CopyD3D9Dll()
-        {
-            try
-            {
-                File.Copy(d3d8to9StoredDLLName, d3d8to9InstalledDLLName, true);
-            }
-            catch (Exception ex)
-            {
-                string error = Lang.GetString("MessageWindow.Errors.D3D8Update") + "\n" + ex.Message;
-                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
-            }
-        }
-
-        private bool CheckD3D8to9Update()
-        {
-            if (!File.Exists(d3d8to9StoredDLLName) || !File.Exists(d3d8to9InstalledDLLName))
-                return false;
-
-            try
-            {
-                long length1 = new FileInfo(d3d8to9InstalledDLLName).Length;
-                long length2 = new FileInfo(d3d8to9StoredDLLName).Length;
-                if (length1 != length2)
-                    return true;
-                else
-                {
-                    byte[] file1 = File.ReadAllBytes(d3d8to9InstalledDLLName);
-                    byte[] file2 = File.ReadAllBytes(d3d8to9StoredDLLName);
-                    for (int i = 0; i < file1.Length; i++)
-                    {
-                        if (file1[i] != file2[i])
-                            return true;
-                    }
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                string error = Lang.GetString("MessageWindow.Errors.D3D8UpdateCheck") + "\n" + ex.Message;
-                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
-                return false;
-            }
-        }
-
-        private void btnUpdateD3D9_Click(object sender, RoutedEventArgs e)
-        {
-            string info = Lang.GetString("MessageWindow.Information.D3D8Update");
-            var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString(info), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Information, MessageWindow.Buttons.YesNo);
-            msg.ShowDialog();
-
-            if (msg.isYes)
-            {
-                CopyD3D9Dll();
-                btnUpdateD3D9.IsEnabled = CheckD3D8to9Update();
-            }
-        }
 
         private void checkD3D9_Click(object sender, RoutedEventArgs e)
         {
             if (checkD3D9.IsChecked == true)
             {
-                CopyD3D9Dll();
+                GameProfile.Graphics.RenderBackend = 1;
             }
-            else if (checkD3D9.IsChecked == false && File.Exists(d3d8to9InstalledDLLName))
-                File.Delete(d3d8to9InstalledDLLName);
+            else if (checkD3D9.IsChecked == false)
+            {
+                GameProfile.Graphics.RenderBackend = 0;
+
+                if (File.Exists(d3d8to9InstalledDLLName))
+                    File.Delete(d3d8to9InstalledDLLName);
+            }
+                
 
         }
         #endregion
