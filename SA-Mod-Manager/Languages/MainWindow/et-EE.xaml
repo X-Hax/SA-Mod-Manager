@@ -8,7 +8,7 @@
 	<system:String x:Key="Manager.Tabs.Codes">Koodid</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig">Mängude seaded</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig">Manageri seaded</system:String>
-	<system:String x:Key="Manager.Tabs.TestSpawn">Siluda</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn">Testeerimine spawn</system:String>
 	<!--#endregion-->
 
 	<!--#region Mods Tab Strings-->
@@ -43,6 +43,7 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Seadused</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Teemasid:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Keel:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Värskenduse kanaal:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profiil:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Mängude kausta:</system:String>
 
@@ -50,8 +51,8 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Lülita "1-Click Install" Välja</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Tee mängude kausta ava</system:String>
 
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Installida "Mod Loader"</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Eemalda "Mod Loader"</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Installida Mod Loaderit</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Eemalda Mod Loaderit</system:String>
 
 	<!--Updates-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Värskendused</system:String>
@@ -63,7 +64,7 @@
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Muud seaded</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Ärge sulgege haldurit mängu alustamisel</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Salvestada modi järjekord</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Luba arendaja valikud</system:String>
   	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Kirjutage konsooli</system:String>
   	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Silumissõnumite väljastamine mängus</system:String>
