@@ -45,20 +45,9 @@ namespace SAModManager
         public string ProfilesDirectory { get; set; }
 
         /// <summary>
-        /// List of Dependencies for the game that the manager will get.
-        /// </summary>
-        public List<Dependencies> Dependencies { get; set; }
-
-        /// <summary>
         /// Information on the Loader for the game.
         /// </summary>
         public Loader loader { get; set; }
-
-        /// <summary>
-        /// URL to the Codes.lst file.
-        /// </summary>
-        public string codeURL { get; set; }
-        public string patchURL { get; set; }
 
         /// <summary>
         /// Default Profile, used?
@@ -72,7 +61,6 @@ namespace SAModManager
         public SetGame id = SetGame.None;
         public string gameAbbreviation { get; set; }
         public string oneClickName { get; set; }
-        public string BorderLoaderLink { get; set; }
     }
 
     public enum Format
@@ -107,47 +95,16 @@ namespace SAModManager
         public string dataDllOriginPath;
         public string dataDllPath;
         public string loaderdllpath;
-        public string loaderVersionpath; //used to check version
-        public string loaderinipath;
+        public string mlverPath; //used to check version
+        public string mlverfile;
+        public string IniPath;
+        public string defaultReleaseID;
         public defaultLoaderPath originPath;
     }
 
     public static class GamesInstall
     {
-        private static bool DependencyInstalled(Dependencies dependency)
-        {
-            return File.Exists(Path.Combine(dependency.path, dependency.name + ".dll"));
-        }
 
-        public static void SetDependencyPath()
-        {
-            foreach (var game in GetSupportedGames())
-            {
-                if (game is null || game.Dependencies is null)
-                    continue;
-
-                foreach (var dependency in game.Dependencies)
-                {
-                    dependency.path = Path.Combine(App.extLibPath, dependency.name);
-                }
-            }
-        }
-
-        private static bool InstallDependenciesOffline(Dependencies dependency)
-        {
-            bool success = false;
-            switch (dependency.format)
-            {
-                case Format.zip:
-                    success = Util.ExtractZipFromResource(dependency.data, dependency.path);
-                    break;
-                case Format.dll:
-                    success = Util.ExtractEmbeddedDLL(dependency.data, dependency.name, dependency.path);
-                    break;
-            }
-
-            return success;
-        }
 
         public static async Task InstallDLL_Loader(Game game, bool isupdate = false)
         {
@@ -179,7 +136,7 @@ namespace SAModManager
                         await Task.Delay(1000);
                         bool success = Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
                         offline.CheckSuccess(success);
-                        File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, "offlineVersionInstalled");
+                        File.WriteAllText(App.CurrentGame.loader.mlverPath, "offlineVersionInstalled");
                         await Task.Delay(500);
                         offline.Close();
                     }
@@ -193,11 +150,11 @@ namespace SAModManager
                     var lastCommit = await GitHub.GetLoaderHashCommit();
                     if (lastCommit is not null)
                     {
-                        File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, lastCommit);
+                        File.WriteAllText(App.CurrentGame.loader.mlverPath, lastCommit);
                     }
                     else
                     {
-                        File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, "loaderInstalledNoCommitIDFound");
+                        File.WriteAllText(App.CurrentGame.loader.mlverPath, "loaderInstalledNoCommitIDFound");
                     }
                 }
             }
@@ -207,33 +164,6 @@ namespace SAModManager
             }
 
             var resources = new List<DownloadInfo>();
-
-
-            SetUpdateCodes(App.CurrentGame, ref resources); //update codes
-            SetUpdatePatches(App.CurrentGame, ref resources); //update patches
-
-            string border = Path.Combine(game.modDirectory, "Border_Default.png");
-
-            if (!File.Exists(border) && !string.IsNullOrEmpty(game.BorderLoaderLink))
-            {
-                Uri uri = new(game.BorderLoaderLink);
-                resources.Add(new DownloadInfo("Border Loader", "Border_Default.png", game.modDirectory, uri, DownloadDialog.DLType.Download));
-            }
-
-            //gross and hopefully Temp
-            if (App.CurrentGame?.id == SetGame.SA2)
-            {
-                string shader = Path.Combine(game.modDirectory, "DebugTextShader.hlsl");
-                if (!File.Exists(shader))
-                {
-                    Uri debugUriTex = new(Properties.Resources.URL_SA2_DEBUGFONT_TEX);
-                    resources.Add(new DownloadInfo("DebugFontTexture", "DebugFontTexture.dds", game.modDirectory, debugUriTex, DownloadDialog.DLType.Download));
-
-                    Uri debugUriShader = new(Properties.Resources.URL_SA2_DEBUGTEXT_SHADER);
-                    resources.Add(new DownloadInfo("DebugFontShader", "DebugTextShader.hlsl", game.modDirectory, debugUriShader, DownloadDialog.DLType.Download));
-                }
-
-            }
 
             if (resources.Count > 0)
             {
@@ -252,17 +182,19 @@ namespace SAModManager
             }
         }
 
-        public static async Task<bool> UpdateLoader(Game game)
+        public static async Task<bool> UpdateLoader(Game game, string dlLink)
         {
             if (game is null)
                 return false;
 
             try
             {
-                Uri uri = new(game.loader.URL + "\r\n");
+                string fileName = game.loader.name + ".7z";
+                Uri uri = new(dlLink);
+                string pathFinal = Path.Combine(game.modDirectory, fileName);
                 var loaderInfo = new List<DownloadInfo>
                 {
-                     new DownloadInfo(game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, uri, DownloadDialog.DLType.Update)
+                     new DownloadInfo(game.loader.name, fileName, game.modDirectory, uri, DownloadDialog.DLType.Update)
                 };
 
                 var dl = new DownloadDialog(loaderInfo);
@@ -284,7 +216,7 @@ namespace SAModManager
                         {
                             try
                             {
-                                File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+     
                                 success = true;
                                 retry = false;
                             }
@@ -300,6 +232,14 @@ namespace SAModManager
                 };
 
                 dl.StartDL();
+                if (success)
+                {
+                    List<string> excludeFile = new();
+                    excludeFile.Add("extlib");
+                    await Util.ExtractWExcludeFile(pathFinal, game.modDirectory, excludeFile);
+                    await Util.ExtractSpecificFile(pathFinal, "extlib", App.ConfigFolder);
+                    File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+                }
                 return success;
             }
             catch
@@ -310,106 +250,17 @@ namespace SAModManager
             return false;
         }
 
-        public static void SetUpdateCodes(Game game, ref List<DownloadInfo> updates)
-        {
-            if (game is null)
-                return;
-
-            try
-            {
-                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.UpdateCodes"));
-                string codePath = Path.Combine(game.modDirectory, "Codes.lst");
-                Uri uri = new(game.codeURL + "\r\n");
-                updates.Add(new DownloadInfo("Codes", "Codes.lst", game.modDirectory, uri, DownloadDialog.DLType.Update));
-            }
-            catch
-            {
-                Console.WriteLine("Failed to update code\n");
-                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateCodes"));
-            }
-        }
-
         private static async Task<bool> PerformOfflineInstall(Dependencies dependency)
         {
             var offline = new OfflineInstall(dependency.name);
             offline.Show();
             await Task.Delay(250);
-            bool success = InstallDependenciesOffline(dependency);
-            offline.CheckSuccess(success);
+            offline.CheckSuccess(true);
             await Task.Delay(250);
             offline.Close();
-            return success;
+            return true;
         }
 
-        public static void SetUpdatePatches(Game game, ref List<DownloadInfo> updates)
-        {
-            if (game is null)
-                return;
-
-            try
-            {
-                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkPatchesUpdates"));
-                string codePath = Path.Combine(game.modDirectory, "Patches.json");
-                Uri uri = new(game.patchURL + "\r\n");
-                updates.Add(new DownloadInfo("Patches", "Patches.json", game.modDirectory, uri, DownloadDialog.DLType.Update));
-            }
-            catch
-            {
-                Console.WriteLine("Failed to update patches\n");
-                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdatePatches"));
-            }
-        }
-
-        public static async Task InstallAndUpdateDependencies(Game game, bool isUpdate)
-        {
-            if (game is null)
-                return;
-
-            try
-            {
-                List<DownloadInfo> updates = new();
-                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString(isUpdate ? "UpdateStatus.UpdateDependencies" : "UpdateStatus.InstallDependencies"));
-
-                foreach (var dependency in game.Dependencies)
-                {
-                    Uri uri = new(dependency.URL + "\r\n");
-                    updates.Add(new DownloadInfo(dependency.name, Path.GetFileName(dependency.URL), dependency.path, uri, DependencyInstalled(dependency) ? DownloadDialog.DLType.Update : DownloadDialog.DLType.Download));
-                }
-
-                if (updates.Count == 0) //todo add proper check for dependency update
-                    return;
-
-                DownloadDialog dl = new(updates);
-                dl.StartDL();
-
-                foreach (var dependency in game.Dependencies)
-                {
-                    string dest = Path.Combine(dependency.path, dependency.name);
-                    string fullPath = dest + ".zip";
-
-                    if (!GamesInstall.DependencyInstalled(dependency) && !isUpdate && (!File.Exists(fullPath) || dl.isInError(dependency.name)))
-                    {
-                        await PerformOfflineInstall(dependency);
-                    }
-                    else
-                    {
-                        //check if file need to be extracted
-
-
-                        if (File.Exists(fullPath))
-                        {
-                            await Util.Extract(fullPath, dependency.path, true);
-                            File.Delete(fullPath);
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                Console.WriteLine("Failed to update Dependencies\n");
-                ((MainWindow)App.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateDependencies"));
-            }
-        }
 
         public static Game Unknown = new();
 
@@ -417,15 +268,12 @@ namespace SAModManager
         {
             gameName = "Sonic Adventure DX",
             gameImage = App.GetResourceUri("Games.sa1.png"),
-            exeList = new() { "sonic.exe", "Sonic Adventure DX.exe" },
+            exeList = ["sonic.exe", "Sonic Adventure DX.exe"],
             exeName = "sonic.exe",
             defaultIniProfile = "SADXModLoader.ini",
-            codeURL = Properties.Resources.URL_SADX_CODE,
-            patchURL = Properties.Resources.URL_SADX_PATCH,
             id = SetGame.SADX,
             gameAbbreviation = "SADX",
             oneClickName = "sadxmm",
-            BorderLoaderLink = Properties.Resources.URL_SADX_BORDER,
 
             loader = new()
             {
@@ -433,7 +281,9 @@ namespace SAModManager
                 data = Properties.Resources.SADXModLoader,
                 URL = Properties.Resources.URL_SADX_DL,
                 repoName = "sadx-mod-loader",
-                loaderVersionpath = Path.Combine(App.ConfigFolder, "SADXLoaderVersion.ini"),
+                mlverPath = "",
+                mlverfile = "sadxmlver.txt",
+                defaultReleaseID = "608",
 
                 originPath = new()
                 {
@@ -443,33 +293,6 @@ namespace SAModManager
                 }
             },
 
-            Dependencies = new()
-            {
-                new Dependencies()
-                {
-                    name = "BASS",
-                    data = Properties.Resources.bass,
-                    format = Format.zip,
-                    URL = Properties.Resources.URL_BASS,
-                },
-
-                new Dependencies()
-                {
-                    name = "SDL2",
-                    data = Properties.Resources.SDL2,
-                    format = Format.dll,
-                    URL = Properties.Resources.URL_SDL
-
-                },
-
-                new Dependencies()
-                {
-                    name = "D3D8M",
-                    data = Properties.Resources.d3d8m,
-                    format = Format.dll,
-                    URL = Properties.Resources.URL_D3D8M,
-                },
-            },
 
             ProfilesDirectory = Path.Combine(App.ConfigFolder, "SADX"),
 
@@ -485,12 +308,9 @@ namespace SAModManager
             gameImage = App.GetResourceUri("Games.sa2.png"),
             exeName = "sonic2app.exe",
             defaultIniProfile = "SA2ModLoader.ini",
-            codeURL = Properties.Resources.URL_SA2_CODE,
-            patchURL = Properties.Resources.URL_SA2_PATCH,
             id = SetGame.SA2,
             gameAbbreviation = "SA2",
             oneClickName = "sa2mm",
-            BorderLoaderLink = Properties.Resources.URL_SA2_BORDER,
 
             loader = new()
             {
@@ -498,8 +318,10 @@ namespace SAModManager
                 data = Properties.Resources.SA2ModLoader,
                 URL = Properties.Resources.URL_SA2_DL,
                 repoName = "sa2-mod-loader",
-                loaderVersionpath = Path.Combine(App.ConfigFolder, "SA2LoaderVersion.ini"),
-                loaderinipath = "mods/SA2ModLoader.ini",
+                mlverPath = "",
+                mlverfile = "sa2mlver.txt",
+                IniPath = "mods/SA2ModLoader.ini",
+                defaultReleaseID = "284",
 
                 originPath = new()
                 {
@@ -509,25 +331,6 @@ namespace SAModManager
                 }
             },
 
-            Dependencies = new()
-            {
-                new Dependencies()
-                {
-                    name = "BASS",
-                    data = Properties.Resources.bass,
-                    format = Format.zip,
-                    URL = Properties.Resources.URL_BASS,
-                },
-
-                new Dependencies()
-                {
-                    name = "SDL2",
-                    data = Properties.Resources.SDL2,
-                    format = Format.dll,
-                    URL = Properties.Resources.URL_SDL
-
-                },
-            },
 
             ProfilesDirectory = Path.Combine(App.ConfigFolder, "SA2"),
 

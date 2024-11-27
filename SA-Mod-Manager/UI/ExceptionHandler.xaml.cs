@@ -57,8 +57,8 @@ namespace SAModManager.UI
             error.AppendLine($"\tManager Location: {App.StartDirectory}");
             error.AppendLine($"\tRunning as Admin: {Util.RunningAsAdmin().ToString()}");
 
-            if (File.Exists(App.CurrentGame.loader.loaderVersionpath))
-				 error.AppendLine($"\tMod Loader Version (Hash): {File.ReadAllText(App.CurrentGame.loader.loaderVersionpath)}");
+            if (File.Exists(App.CurrentGame.loader.mlverPath))
+				 error.AppendLine($"\tMod Loader Version (ID): {File.ReadAllText(App.CurrentGame.loader.mlverPath)}");
 			if (markdown) 
 				error.AppendLine("```");
 

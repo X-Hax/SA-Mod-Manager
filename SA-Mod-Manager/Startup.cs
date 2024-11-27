@@ -114,19 +114,16 @@ namespace SAModManager
             }
         }
 
-        private static async Task UpdateDependenciesFolder()
+        private static async Task InitConfigFolder()
         {
             try
             {
-                GamesInstall.SetDependencyPath();
-
                 App.CreateConfigFolder();
 
                 if (!File.Exists(App.ManagerConfigFile)) //If config page isn't found, assume this is the first boot.
                 {
                     App.isFirstBoot = true;
                     await SetLanguageFirstBoot();
-                    await Util.Install7Zip();
                 }
 
             }
@@ -138,7 +135,7 @@ namespace SAModManager
         {
             Console.WriteLine("Checking dependencies...");
 
-            await UpdateDependenciesFolder();
+            await InitConfigFolder();
 
             if (App.isFirstBoot == true)
             {

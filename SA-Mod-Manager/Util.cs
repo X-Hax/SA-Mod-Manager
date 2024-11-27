@@ -14,6 +14,9 @@ using System.Reflection;
 using NetCoreInstallChecker.Structs.Config;
 using NetCoreInstallChecker;
 using NetCoreInstallChecker.Structs.Config.Enum;
+using SharpCompress.Archives;
+using SharpCompress.Common;
+using SharpCompress.Readers;
 
 namespace SAModManager
 {
@@ -228,51 +231,6 @@ namespace SAModManager
         }
 
 
-
-        public static async Task Install7Zip()
-        {
-            try
-            {
-                if (!IsZipToolInstalled())
-                {
-                    await Exec7zipInstall();
-                }
-            }
-            catch
-            {
-                throw new Exception("What");
-            }
-        }
-
-        public static bool IsZipToolInstalled()
-        {
-            string exePath = FindExePath("7z.exe");
-
-            if (exePath != null)
-                return true;
-
-            exePath = FindExePathFromRegistry("SOFTWARE\\7-Zip");
-
-            if (exePath != null)
-                return true;
-
-            exePath = Environment.GetEnvironmentVariable("PATH")
-                .Split(';')
-                .Select(s => Path.Combine(s, "7z.exe"))
-                .FirstOrDefault(File.Exists);
-
-            if (exePath != null)
-                return true;
-
-            if (Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR") != null ||
-                RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("SOFTWARE\\WinRAR") != null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         private static string FindExePath(string exeName)
         {
             string path = Path.Combine(App.StartDirectory, exeName);
@@ -364,8 +322,97 @@ namespace SAModManager
             catch { }
         }
 
+        private static async Task<bool> ExtractWithSharpCompressSpecificFolder(string zipPath, string specificFolder, string destFolder)
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    using var archive = ArchiveFactory.Open(zipPath);
 
-        public static async Task ExtractArchive(string zipPath, string destFolder, bool overwrite = false)
+                    foreach (var entry in archive.Entries)
+                    {
+                        if (!entry.IsDirectory && entry.Key.StartsWith(specificFolder, StringComparison.OrdinalIgnoreCase))
+                        {
+                            string destinationPath = Path.Combine(destFolder, entry.Key);
+                            Util.CreateSafeDirectory(Path.GetDirectoryName(destinationPath));
+                            entry.WriteToFile(destinationPath, new ExtractionOptions()
+                            {
+                                ExtractFullPath = true,
+                                Overwrite = true
+                            });
+                        }
+                    }
+                });
+
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static async Task<bool> ExtractWithSharpCompress(string zipPath, string destFolder, List<string> excludeFolder = null)
+        {
+
+            try
+            {
+                await Task.Run(() =>
+                {
+                    using var archive = ArchiveFactory.Open(zipPath);
+
+                    if (excludeFolder is null)
+                    {
+                        using (var reader = archive.ExtractAllEntries())
+                        {
+                            reader.WriteAllToDirectory(destFolder, new ExtractionOptions()
+                            {
+                                ExtractFullPath = true,
+                                Overwrite = true
+
+                            });
+                        }
+
+                    }
+                    else
+                    {
+
+                        foreach (var entry in archive.Entries)
+                        {
+                            bool skip = false;
+                            foreach (string exclude in excludeFolder)
+                            {
+                                if (entry.Key.StartsWith(exclude, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    skip = true;
+                                }
+                            }
+
+                            if (skip)
+                                continue;
+
+                            if (!entry.IsDirectory)
+                            {
+                                string destinationPath = Path.Combine(destFolder, entry.Key);
+                                Util.CreateSafeDirectory(Path.GetDirectoryName(destinationPath));
+                                entry.WriteToFile(destinationPath);
+                            }
+                        }
+
+                    }
+                });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static async Task ExtractArchive(string zipPath, string destFolder, List<string> excludeFolder = null, bool overwrite = false)
         {
             Util.CreateSafeDirectory(destFolder);
 
@@ -375,19 +422,37 @@ namespace SAModManager
                 return;
             }
 
-            if (await ExtractArchiveUsing7Zip(zipPath, destFolder) == false)
+            if (await ExtractWithSharpCompress(zipPath, destFolder, excludeFolder) == false)
             {
-                if (await ExtractArchiveUsingWinRAR(zipPath, destFolder) == false)
+                if (await ExtractArchiveUsing7Zip(zipPath, destFolder, excludeFolder) == false)
                 {
                     await Exec7zipInstall();
-                    await ExtractArchiveUsing7Zip(zipPath, destFolder);
+                    await ExtractArchiveUsing7Zip(zipPath, destFolder, excludeFolder);
+
                 }
             }
 
-            await Task.Delay(500);
+            await Task.Delay(150);
         }
 
-        public static async Task<bool> ExtractArchiveUsing7Zip(string path, string dest)
+        public static async Task ExtractSpecificFile(string zipPath, string specificFile, string destFolder)
+        {
+            Util.CreateSafeDirectory(destFolder);
+
+            if (await ExtractWithSharpCompressSpecificFolder(zipPath, specificFile, destFolder) == false)
+            {
+                if (await ExtractArchiveUsing7Zip(zipPath, destFolder, null, specificFile) == false)
+                {
+                    await Exec7zipInstall();
+                    await ExtractArchiveUsing7Zip(zipPath, destFolder, null, specificFile);
+
+                }
+            }
+
+            await Task.Delay(150);
+        }
+
+        public static async Task<bool> ExtractArchiveUsing7Zip(string path, string dest, List<string> excludeFolder = null, string specificFile = null)
         {
             // Check if file exists in the root folder of the Manager
             string exePath = FindExePath("7z.exe");
@@ -405,7 +470,20 @@ namespace SAModManager
 
                 if (File.Exists(exe))
                 {
-                    await Process.Start(new ProcessStartInfo(exe, $"x \"{path}\" -o\"{dest}\" -y")
+                    string fullLine = $"x \"{path}\" -o\"{dest}\" -y";
+                    if (excludeFolder is not null && excludeFolder.Count > 0)
+                    {
+                        foreach (var banned in excludeFolder)
+                        {
+                            fullLine += $" -xr!\"{banned}\"";
+                        }
+                    }
+                    else if (Util.IsStringValid(specificFile))
+                    {
+                        fullLine += $" -ir!\"{specificFile}\\*\"";
+                    }
+
+                    await Process.Start(new ProcessStartInfo(exe, fullLine)
                     {
                         UseShellExecute = true,
                         CreateNoWindow = true,
@@ -419,38 +497,26 @@ namespace SAModManager
             return false;
         }
 
-        public static async Task<bool> ExtractArchiveUsingWinRAR(string path, string dest)
-        {
-            // Gets WinRAR's Registry Key
-            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR");
-
-            key ??= RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
-                    .OpenSubKey("SOFTWARE\\WinRAR");
-            // Checks if WinRAR is installed by checking if the key and path value exists
-            if (key != null && key.GetValue("exe64") is string exePath)
-            {
-                exePath = Path.GetFullPath(exePath);
-                // Extracts the archive to the temp directory
-                if (File.Exists(exePath))
-                {
-                    await Process.Start(new ProcessStartInfo(exePath, $"x \"{path}\" -IBCK \"{dest}\"")
-                    {
-                        UseShellExecute = true,
-                    }).WaitForExitAsync();
-
-                    key.Close();
-                    return true;
-                }
-            }
-            // WinRAR is not installed
-            return false;
-        }
 
         public static async Task Extract(string zipPath, string destFolder, bool overwrite = false)
         {
             try
             {
-                await ExtractArchive(zipPath, destFolder, overwrite);
+                await ExtractArchive(zipPath, destFolder, null, overwrite);
+            }
+            catch (Exception ex)
+            {
+                new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+            }
+
+            await Task.Delay(100);
+        }
+
+        public static async Task ExtractWExcludeFile(string zipPath, string destFolder, List<string> excludeList)
+        {
+            try
+            {
+                await ExtractArchive(zipPath, destFolder, excludeList);
             }
             catch (Exception ex)
             {

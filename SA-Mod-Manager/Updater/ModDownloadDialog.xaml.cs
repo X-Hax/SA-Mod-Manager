@@ -185,7 +185,7 @@ namespace SAModManager.Updater
             {
                 UpdateHeaderTextDirect(Lang.GetString("Updater.DL.Mod.Extracting"));
                 Util.CreateSafeDirectory(dataDir);
-                await Util.ExtractArchive(filePath, dataDir, true);
+                await Util.ExtractArchive(filePath, dataDir, null, true);
             }
             catch (Exception ex)
             {

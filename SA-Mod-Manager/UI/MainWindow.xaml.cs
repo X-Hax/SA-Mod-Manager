@@ -1146,20 +1146,6 @@ namespace SAModManager
             {
                 await App.PerformUpdateLoaderCheck();
 
-                var updates = new List<DownloadInfo>();
-                if (await App.PerformUpdateCodesCheck())
-                    GamesInstall.SetUpdateCodes(App.CurrentGame, ref updates); //update codes
-
-                if (await App.PerformUpdatePatchesCheck())
-                    GamesInstall.SetUpdatePatches(App.CurrentGame, ref updates); //update patch
-
-
-                if (updates.Count > 0)
-                {
-                    var DL = new DownloadDialog(updates);
-                    DL.StartDL();
-                }
-
                 if (App.CurrentGame.id == SetGame.SADX)
                 {
                     await App.PerformUpdateAppLauncherCheck();
@@ -1461,8 +1447,8 @@ namespace SAModManager
             {
 
                 App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");
-
-                App.CurrentGame.loader.loaderinipath = Path.Combine(App.CurrentGame.gameDirectory, Path.Combine("mods", App.CurrentGame.defaultIniProfile));
+                App.CurrentGame.loader.mlverPath = Path.Combine(App.CurrentGame.modDirectory, App.CurrentGame.loader.mlverfile);
+                App.CurrentGame.loader.IniPath = Path.Combine(App.CurrentGame.gameDirectory, Path.Combine("mods", App.CurrentGame.defaultIniProfile));
                 App.CurrentGame.loader.dataDllOriginPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.loader.originPath.defaultDataDllOriginPath);
                 App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, Path.Combine(App.CurrentGame.modDirectory, App.CurrentGame.loader.name + ".dll"));
                 App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.loader.originPath.defaultDataDllPath);
@@ -2647,8 +2633,7 @@ namespace SAModManager
                 UIHelper.DisableButton(ref SaveAndPlayButton);
 
                 await GamesInstall.InstallDLL_Loader(App.CurrentGame); //first, we download and extract the loader DLL in the mods folder
-                await GamesInstall.InstallAndUpdateDependencies(App.CurrentGame, false); //we check if some libraries are missing (BASS, D3D9...)
-
+     
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                 //now we can move the loader files to the accurate folders.
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
@@ -2675,13 +2660,11 @@ namespace SAModManager
                     if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
                     {
                         await GamesInstall.InstallDLL_Loader(App.CurrentGame);
-                        await GamesInstall.InstallAndUpdateDependencies(App.CurrentGame, true);
                         await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
                     }
                     else //install normally
                     {
                         await GamesInstall.InstallDLL_Loader(App.CurrentGame);
-                        await GamesInstall.InstallAndUpdateDependencies(App.CurrentGame, false);
                         UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                         //now we can move the loader files to the accurate folders.
                         await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);

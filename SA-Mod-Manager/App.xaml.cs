@@ -16,6 +16,11 @@ using System.Data;
 using SAModManager.UI;
 using SAModManager.Controls.SADX;
 using SAModManager.Profile;
+using Newtonsoft.Json;
+using static TheArtOfDev.HtmlRenderer.Adapters.RGraphicsPath;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace SAModManager
 {
@@ -323,7 +328,7 @@ namespace SAModManager
 
                     // If there's no specific architecture match, try to get a generic "Release" artifact
                     info ??= artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
-                 }
+                }
             }
 
             return (hasUpdate, workflowRun, info);
@@ -403,7 +408,7 @@ namespace SAModManager
             }
         }
 
-        private static async Task<(bool, string)> CheckLoaderUpdate()
+        private static async Task<(bool, string)> CheckLoaderUpdateOld()
         {
             var lastCommit = await GitHub.GetLoaderHashCommit();
 
@@ -411,7 +416,7 @@ namespace SAModManager
                 return (false, null);
 
             string loaderVersion = string.Empty;
-            string loaderversionPath = App.CurrentGame.loader.loaderVersionpath;
+            string loaderversionPath = App.CurrentGame.loader.mlverPath;
             if (File.Exists(loaderversionPath))
             {
                 loaderVersion = File.ReadAllText(loaderversionPath);
@@ -420,111 +425,91 @@ namespace SAModManager
             return (loaderVersion != lastCommit, lastCommit);
         }
 
+        private static async Task<(bool, GitHubAsset, string, StringBuilder)> CheckLoaderUpdate()
+        {
+            bool hasUpdate = false;
+            StringBuilder changelog = new StringBuilder();
+            try
+            {
+                string url_releases = App.CurrentGame.loader.URL;
+                string text_releases = string.Empty;
+                string assetName = App.CurrentGame.loader.name + ".7z";
+                string mlverfile = App.CurrentGame.loader.mlverPath;
+                string currentTagName = File.Exists(mlverfile) ? File.ReadAllText(mlverfile) : App.CurrentGame.loader.defaultReleaseID;
+
+                if (!uint.TryParse(currentTagName, out uint currentID))
+                    currentID = uint.Parse(App.CurrentGame.loader.defaultReleaseID);
+
+                var httpClient = UpdateHelper.HttpClient;
+                string apiUrl = App.CurrentGame.loader.URL;
+
+                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var release = JsonConvert.DeserializeObject<GitHubRelease>(responseBody);
+                    if (release != null && release.Assets != null)
+                    {
+                        var targetAsset = release.Assets.FirstOrDefault(asset => asset.Name.Equals(assetName, StringComparison.OrdinalIgnoreCase));
+                        if (targetAsset != null)
+                        {
+                            if (uint.TryParse(release.TagName, out uint releaseID))
+                            {
+                                if (releaseID > currentID)
+                                {
+                                    hasUpdate = true;
+                                    changelog.AppendLine(string.Format("Revision {0}\n{1}\n", release.TagName, release.Body));
+                                }
+                            }
+                  
+
+                            return (hasUpdate, targetAsset, release.TagName, changelog);
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error fetching latest release: " + ex.Message);
+            }
+
+
+            return (false, null, null, null);
+        }
+
+        //also check for code, patches, lib  etc.
         public static async Task PerformUpdateLoaderCheck()
         {
             try
             {
                 var mainWindow = ((MainWindow)Application.Current.MainWindow);
                 mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkLoaderUpdate"));
+
                 var update = await CheckLoaderUpdate();
 
                 if (update.Item1 == false) //no update found
                     return;
 
-                string changelog = await GitHub.GetGitLoaderChangeLog(update.Item2); //item2 is commit hash
+                string changeLog = update.Item4.ToString();
 
-                if (!Util.IsStringValid(changelog) || App.CancelUpdate) //if string is null, we got error(s) so the DL can't continue
+                if (!Util.IsStringValid(changeLog) || App.CancelUpdate) //if string is null, we got error(s) so the DL can't continue
                     return;
 
 
-                var manager = new InfoManagerUpdate(changelog, update.Item2[..7], App.CurrentGame.loader.name);
+                var manager = new InfoManagerUpdate(changeLog, update.Item3, App.CurrentGame.loader.name);
                 manager.ShowDialog();
 
                 if (manager.DialogResult != true || App.CancelUpdate)
                     return;
 
-                if (await GamesInstall.UpdateLoader(App.CurrentGame))
-                {
-                    File.WriteAllText(App.CurrentGame.loader.loaderVersionpath, update.Item2);
-                    await GamesInstall.InstallAndUpdateDependencies(App.CurrentGame, true);
-
-                }
+                await GamesInstall.UpdateLoader(App.CurrentGame, update.Item2.DownloadUrl);
             }
             catch
             { }
         }
 
-        public static async Task<bool> PerformUpdateCodesCheck()
-        {
-            var mainWindow = ((MainWindow)Application.Current.MainWindow);
-            try
-            {
-                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkCodesUpdates"));
-
-                var codesPath = Path.Combine(App.CurrentGame.modDirectory, "Codes.lst");
-
-                bool CodeExist = File.Exists(codesPath);
-
-                if (CodeExist)
-                {
-                    string localCodes = File.ReadAllText(codesPath);
-                    var httpClient = UpdateHelper.HttpClient;
-
-                    string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.codeURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
-
-                    if (localCodes == repoCodes)
-                    {
-                        return false;
-                    }
-                }
-
-                return App.CancelUpdate == false;
-
-
-            }
-            catch
-            {
-
-                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdateCodes"));
-
-            }
-
-            return false;
-        }
-
-        public static async Task<bool> PerformUpdatePatchesCheck()
-        {
-            try
-            {
-                var mainWindow = ((MainWindow)Application.Current.MainWindow);
-                mainWindow.UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkPatchesUpdates"));
-
-                var jsonPath = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
-
-                if (File.Exists(jsonPath))
-                {
-                    string localCodes = File.ReadAllText(jsonPath);
-                    var httpClient = UpdateHelper.HttpClient;
-
-                    string repoCodes = await httpClient.GetStringAsync(App.CurrentGame.patchURL + $"?t={DateTime.Now:yyyyMMddHHmmss}");
-
-                    if (localCodes == repoCodes)
-                    {
-                        return false;
-                    }
-                }
-
-                return App.CancelUpdate == false;
-            }
-            catch
-            {
-
-                ((MainWindow)Application.Current.MainWindow).UpdateManagerStatusText(Lang.GetString("UpdateStatus.FailedUpdatePatches"));
-
-            }
-
-            return false;
-        }
 
         public static async Task<bool> PerformUpdateAppLauncherCheck()
         {

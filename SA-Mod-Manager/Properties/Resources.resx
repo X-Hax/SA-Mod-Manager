@@ -118,12 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="bass" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BASS.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="d3d8m" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\d3d8m.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="OpCodeSyntaxDark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Codes\OpCodeSyntaxDark.xshd;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -133,61 +127,25 @@
   <data name="SA2FileHashes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Configuration\SA2\SA2FileHashes.ini;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="SA2ModLoader" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SA2ModLoader.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="SADXFileHashes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Configuration\SADX\SADXFileHashes;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="SADXModLoader" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SADXModLoader.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="SDL2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SDL2.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="URL_BASS" xml:space="preserve">
-    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/bass.zip</value>
-  </data>
-  <data name="URL_D3D8M" xml:space="preserve">
-    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/d3d8m.dll</value>
-  </data>
-  <data name="URL_SA2_BORDER" xml:space="preserve">
-    <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Border_Default.png</value>
-  </data>
-  <data name="URL_SA2_CODE" xml:space="preserve">
-    <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Codes.lst</value>
-  </data>
-  <data name="URL_SA2_DEBUGFONT_TEX" xml:space="preserve">
-    <value>https://github.com/X-Hax/sa2-mod-loader/raw/a7bba5ab10314eb44816f027e1368125c7f0e4df/data/DebugFontTexture.dds</value>
-  </data>
-  <data name="URL_SA2_DEBUGTEXT_SHADER" xml:space="preserve">
-    <value>https://github.com/X-Hax/sa2-mod-loader/raw/a7bba5ab10314eb44816f027e1368125c7f0e4df/data/DebugTextShader.hlsl</value>
-  </data>
-  <data name="URL_SA2_DL" xml:space="preserve">
-    <value>https://mm.reimuhakurei.net/sa2mods/SA2ModLoader.dll</value>
-  </data>
-  <data name="URL_SA2_PATCH" xml:space="preserve">
-    <value>https://raw.githubusercontent.com/X-Hax/sa2-mod-loader/master/data/Patches.json</value>
-  </data>
-  <data name="URL_SADX_BORDER" xml:space="preserve">
-    <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/e3a476800b05f163a1c4bd60257552c81313e15e/data/Border_Default.png</value>
-  </data>
-  <data name="URL_SADX_CODE" xml:space="preserve">
-    <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Codes.lst</value>
-  </data>
-  <data name="URL_SADX_DL" xml:space="preserve">
-    <value>https://mm.reimuhakurei.net/sadxmods/SADXModLoader.dll</value>
-  </data>
-  <data name="URL_SADX_PATCH" xml:space="preserve">
-    <value>https://raw.githubusercontent.com/X-Hax/sadx-mod-loader/master/data/Patches.json</value>
   </data>
   <data name="URL_SAMM_UPDATE" xml:space="preserve">
     <value>https://nightly.link/X-Hax/SA-Mod-Manager/suites/{0}/artifacts/{1}</value>
   </data>
-  <data name="URL_SDL" xml:space="preserve">
-    <value>https://github.com/X-Hax/SA-Mod-Manager/raw/master/SA-Mod-Manager/Resources/SDL2.dll</value>
-  </data>
   <data name="Version" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Version.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>..\Resources\Version.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;iso-8859-1</value>
+  </data>
+  <data name="URL_SA2_DL" xml:space="preserve">
+    <value>https://api.github.com/repos/x-hax/sa2-mod-loader/releases/latest</value>
+  </data>
+  <data name="URL_SADX_DL" xml:space="preserve">
+    <value>https://api.github.com/repos/x-hax/sadx-mod-loader/releases/latest</value>
+  </data>
+  <data name="SA2ModLoader" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SA2ModLoader.7z;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SADXModLoader" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SADXModLoader.7z;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

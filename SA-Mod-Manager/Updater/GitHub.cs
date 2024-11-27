@@ -563,7 +563,7 @@ namespace SAModManager.Updater
             {
                 string jsonResult = await response.Content.ReadAsStringAsync();
                 var info = JsonConvert.DeserializeObject<GHCommitInfo[]>(jsonResult);
-                string loaderCommitPath = App.CurrentGame?.loader.loaderVersionpath;
+                string loaderCommitPath = App.CurrentGame?.loader.mlverPath;
                 string curCommitID = File.Exists(loaderCommitPath) ? File.ReadAllText(loaderCommitPath) : App.RepoCommit;
 
                 int limit = info.ToList().FindIndex(t => t.SHA == curCommitID);
