@@ -153,19 +153,6 @@ namespace SAModManager
                         {
                             UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
                             await App.PerformUpdateLoaderCheck();
-
-                            var updates = new List<DownloadInfo>();
-                            if (await App.PerformUpdateCodesCheck())
-                                GamesInstall.SetUpdateCodes(App.CurrentGame, ref updates); //update codes
-
-                            if (await App.PerformUpdatePatchesCheck())
-                                GamesInstall.SetUpdatePatches(App.CurrentGame, ref updates); //update patch
-
-                            if (updates.Count > 0)
-                            {
-                                var DL = new DownloadDialog(updates);
-                                DL.StartDL();
-                            }
                         }
 
                         if (App.CurrentGame.id == SetGame.SADX)
@@ -2894,7 +2881,7 @@ namespace SAModManager
                     Save();
                     SetBindings();
 #if !DEBUG
-                    if (File.Exists(App.CurrentGame?.loader?.loaderVersionpath) == false || App.isVanillaTransition && App.CurrentGame?.loader?.installed == false)
+                    if (File.Exists(App.CurrentGame?.loader?.mlverPath) == false || App.isVanillaTransition && App.CurrentGame?.loader?.installed == false)
                         await FirstBootInstallLoader();
 #endif
 
