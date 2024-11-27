@@ -26,8 +26,8 @@ namespace SAModManager.Controls.SADX
         public GameSettings GameProfile;
 
 		bool suppressEvent = false;
-		private static string d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
-		private static string d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
+		private static string OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
+		private static string d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
 		private readonly double LowOpacityBtn = 0.7;
 		private static string patchesPath = null;
 		#endregion
@@ -189,13 +189,13 @@ namespace SAModManager.Controls.SADX
         private void CheckOldD3D9Dll()
         {
 
-            checkD3D9.IsEnabled = File.Exists(d3d8to9StoredDLLName);
+            checkD3D9.IsEnabled = File.Exists(d3d8to9Path);
 
-            if (File.Exists(d3d8to9InstalledDLLName))
+            if (File.Exists(OldD3d8to9GamePath))
             {
                 checkD3D9.IsChecked = true;
                 checkD3D9_Click(null, null);
-                File.Delete(d3d8to9InstalledDLLName);
+                File.Delete(OldD3d8to9GamePath);
             }
 
         }
@@ -211,8 +211,8 @@ namespace SAModManager.Controls.SADX
             {
                 GameProfile.Graphics.RenderBackend = 0;
 
-                if (File.Exists(d3d8to9InstalledDLLName))
-                    File.Delete(d3d8to9InstalledDLLName);
+                if (File.Exists(OldD3d8to9GamePath))
+                    File.Delete(OldD3d8to9GamePath);
             }
                 
 
@@ -301,8 +301,6 @@ namespace SAModManager.Controls.SADX
             {
                 try
                 {
-                    await Util.Extract(fullPath, destName, true);
-
                     string SDL2Game = Path.Combine(App.CurrentGame.gameDirectory, "SDL2.dll");
                     if (File.Exists(SDL2Game))
                     {
@@ -538,8 +536,8 @@ namespace SAModManager.Controls.SADX
 
         public static void UpdateD3D8Paths()
         {
-            d3d8to9InstalledDLLName = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
-            d3d8to9StoredDLLName = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
+            OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
+            d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
         }
 
         public void SavePatches(ref object input)
@@ -758,6 +756,11 @@ namespace SAModManager.Controls.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
+            checkD3D9.SetBinding(CheckBox.IsCheckedProperty, new Binding("RenderBackend")
+             {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
 
 			// Input Settings
 			radBetterInput.SetBinding(RadioButton.IsCheckedProperty, new Binding("EnabledInputMod")
