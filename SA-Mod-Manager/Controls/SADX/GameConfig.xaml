@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SAModManager.Controls.SADX"
 			 xmlns:elements="clr-namespace:SAModManager.Controls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" x:Name="SADXConfig"
              d:DesignHeight="636" d:DesignWidth="700">
     <UserControl.Resources>
         <elements:BoolFlipConverter x:Key="FlipBool"/>
@@ -442,7 +442,9 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <GroupBox Header="{DynamicResource GameConfig.Tabs.Options.Title}" Grid.Row="0" Margin="5">
+					<elements:DebugOptions x:Name="DebugConfig" Grid.Row="0" Margin="5"/>
+
+					<GroupBox Header="{DynamicResource GameConfig.Tabs.Options.Title}" Grid.Row="1" Margin="5">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
