@@ -41,7 +41,7 @@
 	<!--#region Manager Config Tab Strings-->
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Game Settings</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Themes:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Theme:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Update Channel:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Language:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profile:</system:String>
