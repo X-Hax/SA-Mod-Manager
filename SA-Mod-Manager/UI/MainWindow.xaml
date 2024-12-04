@@ -382,36 +382,28 @@
 
 								</Grid>
 
-								<Grid Grid.Row="1" Margin="5">
+								<Grid Grid.Row="1" Margin="5" Height="40">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
-									<UniformGrid Rows="4">
-										<CheckBox x:Name="checkEnableLogConsole" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console}" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ConsoleWindow}"/>
-										<CheckBox x:Name="checkEnableLogScreen" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug}" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.PrintDebug}"/>
-										<CheckBox x:Name="checkEnableLogFile" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug}" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.LogDebug}"/>
-										<CheckBox x:Name="checkEnableCrashDump" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps}" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.CrashDumps}"/>
-									</UniformGrid>
-
-									<UniformGrid Grid.Column="1" Rows="3">
-										<Button x:Name="btnInstallLoader" Height="25" Margin="0,5,0,5" Click="btnInstallLoader_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.InstallLoader}">
-											<StackPanel Orientation="Horizontal">
-												<Image x:Name="imgInstall" Source="{StaticResource IconInstall}" Height="15" Width="20" Margin="0,0,5,0"/>
-												<TextBlock x:Name="txtInstallLoader" Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader}" VerticalAlignment="Center"/>
-											</StackPanel>
-										</Button>
-										<Button x:Name="btnOpenGameDir" Height="25" Margin="0,5,0,5" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.OpenGameDirectory}" Click="btnOpenGameDir_Click">
-											<StackPanel Orientation="Horizontal">
-												<Image Source="{StaticResource Icon.OpenFolder}" Width="20" Margin="0,0,5,0"/>
-												<TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir}" VerticalAlignment="Center"/>
-											</StackPanel>
-										</Button>
-										<elements:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnHealthCheck" Height="25" Margin="0,5,0,5" Click="btnHealthCheck_Click"
-													  ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.HealthCheck}"
-													  Icon="{StaticResource Icons.Health}" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck}"
-												      ImageBrush="{DynamicResource Icon.Brushes.Green}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Green}"/>
-									</UniformGrid>
+									<Button x:Name="btnInstallLoader" Grid.Column="0" Margin="5" Click="btnInstallLoader_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.InstallLoader}">
+										<StackPanel Orientation="Horizontal">
+											<Image x:Name="imgInstall" Source="{StaticResource IconInstall}" Height="15" Width="20" Margin="0,0,5,0"/>
+											<TextBlock x:Name="txtInstallLoader" Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader}" VerticalAlignment="Center"/>
+										</StackPanel>
+									</Button>
+									<Button x:Name="btnOpenGameDir" Grid.Column="1" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.OpenGameDirectory}" Click="btnOpenGameDir_Click">
+										<StackPanel Orientation="Horizontal">
+											<Image Source="{StaticResource Icon.OpenFolder}" Width="20" Margin="0,0,5,0"/>
+											<TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir}" VerticalAlignment="Center"/>
+										</StackPanel>
+									</Button>
+									<elements:ImageButton Grid.Column="2" Margin="5" Style="{StaticResource ImageTextButtonStyle}" x:Name="btnHealthCheck" Click="btnHealthCheck_Click"
+												  ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.HealthCheck}"
+												  Icon="{StaticResource Icons.Health}" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck}"
+								      ImageBrush="{DynamicResource Icon.Brushes.Green}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Green}"/>
 								</Grid>
 							</Grid>
 						</GroupBox>
