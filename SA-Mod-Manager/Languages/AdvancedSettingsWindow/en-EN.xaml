@@ -3,7 +3,9 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+	<system:String x:Key="Advancedwindow.Title">Advanced Settings</system:String>
+
 	<system:String x:Key="AdvancedWindow.Option.PortableMode">Enable Portable Mode</system:String>
-	<system:String x:Key="AdvancedWindow.Option.PortableMode.Description">This enables a portable mode where user settings for the SA Mod Manager will be stored in a folder named SAManager in the same directory as the program.&#x0a;&#x0a;This allows the program to be run across user accounts on the same PC, makes it easier to run off of an external drive without worrying about losing settings, and may help running the program on non-Windows systems.</system:String>
+	<system:String x:Key="AdvancedWindow.Option.PortableMode.Description" xml:space="preserve">This enables a portable mode where user settings for the SA Mod Manager will be stored in a folder named SAManager in the same directory as the program.&#x0a;&#x0a;This allows the program to be run across different user accounts on the same PC, makes it easier to run off of an external drive without worrying about losing settings, and may help running the program on non-Windows systems.</system:String>
 
 </ResourceDictionary>

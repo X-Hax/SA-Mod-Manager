@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SAModManager.UI" Loaded="Window_Loaded"
         mc:Ignorable="d" Style="{DynamicResource SAWindow}"
-        Title="Advanced Settings" Height="400" Width="600">
+        Title="{DynamicResource Advancedwindow.Title}" Height="400" Width="600">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
