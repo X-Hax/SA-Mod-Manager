@@ -81,6 +81,7 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Mod Loader Source Code</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Report a Bug (English only)</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Open SA Docs (English only)</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.AdvancedOptions">Advanced Options</system:String>
 	<!--#endregion-->
 	
 	<!--#region Tooltips-->
