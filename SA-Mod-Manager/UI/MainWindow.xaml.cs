@@ -171,7 +171,7 @@ namespace SAModManager
                 await ForceInstallLoader();
             }
             App.isVanillaTransition = false;
-            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
+            UIHelper.ToggleButton(ref btnCheckUpdates, true);
             // Save Manager Settings
             Save();
         }
@@ -714,7 +714,7 @@ namespace SAModManager
                     return;
                 }
 
-                UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
+                UIHelper.ToggleButton(ref btnCheckUpdates, false);
                 await UpdateChecker_DoWork();
                 modUpdater.ForceUpdate = true;
                 await UpdateChecker_DoWorkForced();
@@ -1119,7 +1119,7 @@ namespace SAModManager
 
         private async void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
-            UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
+            UIHelper.ToggleButton(ref btnCheckUpdates, false);
             bool isDev = !string.IsNullOrEmpty(App.RepoCommit);
             bool managerUpdate = isDev ? await App.PerformDevUpdateManagerCheck() : await App.PerformUpdateManagerCheck();
             App.CancelUpdate = false;
@@ -1141,7 +1141,7 @@ namespace SAModManager
 
             manualModUpdate = true;
             await CheckForModUpdates(true);
-            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
+            UIHelper.ToggleButton(ref btnCheckUpdates, true);
             Util.ClearTempFolder();
             Dispatcher.Invoke(Refresh);
         }
@@ -1578,7 +1578,7 @@ namespace SAModManager
                 return;
 
             bool installed = App.CurrentGame != null && App.CurrentGame.loader.installed;
-            UIHelper.ToggleImgButton(ref btnCheckUpdates, installed);
+            UIHelper.ToggleButton(ref btnCheckUpdates, installed);
             UIHelper.ToggleImgButton(ref btnHealthCheck, installed);
             UpdateBtnInstallLoader_State();
         }
@@ -2080,7 +2080,7 @@ namespace SAModManager
         private void UpdateChecker_EnableControls()
         {
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.NoUpdateFound"));
-            UIHelper.ToggleImgButton(ref btnCheckUpdates, true);
+            UIHelper.ToggleButton(ref btnCheckUpdates, true);
 
             ModContextChkUpdate.IsEnabled = true;
 
@@ -2110,7 +2110,7 @@ namespace SAModManager
 
             Dispatcher.Invoke(() =>
             {
-                UIHelper.ToggleImgButton(ref btnCheckUpdates, false);
+                UIHelper.ToggleButton(ref btnCheckUpdates, false);
                 ModContextChkUpdate.IsEnabled = false;
                 ModContextDeleteMod.IsEnabled = false;
 
@@ -2330,26 +2330,6 @@ namespace SAModManager
         #endregion
 
         #region Setup Bindings
-        private void SetGameDebugBindings()
-        {
-            checkEnableLogConsole.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableDebugConsole")
-            {
-                Source = gameDebugSettings,
-            });
-            checkEnableLogScreen.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableDebugScreen")
-            {
-                Source = gameDebugSettings,
-            });
-            checkEnableLogFile.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableDebugFile")
-            {
-                Source = gameDebugSettings,
-            });
-            checkEnableCrashDump.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableDebugCrashLog")
-            {
-                Source = gameDebugSettings,
-            });
-        }
-
         private void SetManagerBindings()
         {
             comboProfile.ItemsSource = App.Profiles.ProfilesList;
@@ -2396,7 +2376,6 @@ namespace SAModManager
         private void SetBindings()
         {
             SetManagerBindings();
-            SetGameDebugBindings();
         }
         #endregion
 

@@ -335,6 +335,8 @@
 					<Grid Margin="5">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="*"/>
 						</Grid.RowDefinitions>
 						<!--Group Box for Game Manager Configuration-->
@@ -382,7 +384,7 @@
 
 								</Grid>
 
-								<Grid Grid.Row="1" Margin="5" Height="40">
+								<Grid Grid.Row="1" Margin="5" Height="45">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="*"/>
@@ -408,88 +410,104 @@
 							</Grid>
 						</GroupBox>
 
-						<!--Group Box for About Section-->
-						<GroupBox x:Name="grpManagerSettings" Grid.Row="1" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced}">
+						<GroupBox x:Name="grpManUpdates" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates}" Grid.Row="1" Margin="0,5,0,0">
 							<Grid Margin="5">
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="Auto"/>
 								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<CheckBox x:Name="chkUpdateManager" Grid.Column="0" Grid.Row="0" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ManagerUpdates}"/>
+								<CheckBox x:Name="chkUpdatesML" Grid.Column="0" Grid.Row="1" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.LoaderUpdates}"/>
+								<CheckBox x:Name="chkUpdatesMods" Grid.Column="0" Grid.Row="2" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ModUpdates}"/>
+								<Button x:Name="btnCheckUpdates" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Margin="5" Height="40" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.CheckUpdates}">
+									<StackPanel Orientation="Horizontal">
+										<Image Source="{StaticResource IconUpdate}" Width="20"/>
+										<Rectangle Width="5"/>
+										<TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow}"/>
+									</StackPanel>
+								</Button>
+							</Grid>
+						</GroupBox>
 
-								<Grid Margin="5, 0, 5, 5">
+						<!--Group Box for About Section-->
+						<GroupBox x:Name="grpManagerSettings" Grid.Row="2" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced}" Margin="0,5,0,0">
+							<Grid Margin="5">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+
+								<Grid Grid.Row="0">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="200"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
 									<Grid.RowDefinitions>
-										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
 										<RowDefinition Height="*"/>
 									</Grid.RowDefinitions>
+									<Label Grid.Column="0" Grid.Row="0" Margin="0,5,0,0" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Lang}"/>
+									<ComboBox x:Name="comboLanguage" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding LangList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentLang, Source={x:Static Application.Current}}" Height="24" Loaded="comboLanguage_Loaded" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
 
-									<Grid Margin="5" HorizontalAlignment="Stretch">
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="*"/>
-											<ColumnDefinition Width="5"/>
-											<ColumnDefinition Width="*"/>
-										</Grid.ColumnDefinitions>
-										<Grid.RowDefinitions>
-											<RowDefinition Height="Auto"/>
-											<RowDefinition Height="5"/>
-											<RowDefinition Height="Auto"/>
-										</Grid.RowDefinitions>
-										<CheckBox x:Name="checkDevEnabled" Grid.Row="0" Grid.Column="0" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.TestSpawn}" Margin="5, 2, 5, 5"/>
-										<CheckBox x:Name="checkKeepModOrder" Grid.Row="0" Grid.Column="2" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.KeepModOrder}" Margin="5, 2, 5 ,5"/>
-										<CheckBox x:Name="checkManagerOpen" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.KeepOpen}" Margin="5, 2, 5, 5"/>
-									</Grid>
+									<Label Grid.Column="0" Grid.Row="1" Margin="0,5,0,0" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Theme}"/>
+									<ComboBox x:Name="comboThemes" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding ThemeList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentTheme, Source={x:Static Application.Current}}" Height="24" Loaded="comboThemes_Loaded" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
 
-									<Grid Grid.Row="1" Margin="5">
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="Auto"/>
-											<ColumnDefinition Width="*"/>
-										</Grid.ColumnDefinitions>
-										<Grid.RowDefinitions>
-											<RowDefinition Height="Auto"/>
-											<RowDefinition Height="5"/>
-											<RowDefinition Height="Auto"/>
-											<RowDefinition Height="5"/>
-											<RowDefinition Height="Auto"/>
-										</Grid.RowDefinitions>
-
-										<Label Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Lang}" Grid.Row="0"/>
-										<Label Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Theme}" Grid.Row="2"/>
-										<Label Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel}" Grid.Row="4"/>
-
-										<ComboBox x:Name="comboLanguage" Grid.Column="1" ItemsSource="{Binding LangList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentLang, Source={x:Static Application.Current}}" 
-										  Height="24" Width="335" VerticalAlignment="Center" HorizontalAlignment="Right" Loaded="comboLanguage_Loaded" SelectionChanged="comboLanguage_SelectionChanged" SelectedIndex="0"/>
-										<ComboBox x:Name="comboThemes" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding ThemeList, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentTheme, Source={x:Static Application.Current}}" 
-										  Height="24" Width="335" VerticalAlignment="Center" HorizontalAlignment="Right" Loaded="comboThemes_Loaded" SelectionChanged="comboThemes_SelectionChanged" SelectedIndex="0"/>
-										<ComboBox x:Name="comboUpdateChannel" Grid.Column="1" Grid.Row="4" Height="24" Width="335" VerticalAlignment="Center" HorizontalAlignment="Right"  ItemsSource="{Binding UpdateChannels, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentChannel, Source={x:Static Application.Current}}" SelectionChanged="ComboBoxChannel_SelectionChanged" SelectedIndex="0" />
-									</Grid>
-
-
+									<Label Grid.Column="0" Grid.Row="2" Margin="0,5,0,0" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel}"/>
+									<ComboBox x:Name="comboUpdateChannel" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding UpdateChannels, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentChannel, Source={x:Static Application.Current}}" Height="24" SelectionChanged="ComboBoxChannel_SelectionChanged" SelectedIndex="0" />
 								</Grid>
 
-								<GroupBox x:Name="grpManUpdates" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates}" Grid.Row="1">
-									<UniformGrid Rows="2" Columns="2" Margin="5">
-										<CheckBox x:Name="chkUpdateManager" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ManagerUpdates}"/>
-										<CheckBox x:Name="chkUpdatesML" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.LoaderUpdates}"/>
-										<CheckBox x:Name="chkUpdatesMods" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ModUpdates}"/>
-                                        <elements:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnCheckUpdates" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.CheckUpdates}"
-													  MaxHeight="28" Icon="{StaticResource Icons.Update}" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow}"
-													   ImageBrush="{DynamicResource Icon.Brushes.Blue}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Blue}"/>
-									</UniformGrid>
-								</GroupBox>
+								<Grid Grid.Row="1" Margin="5">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="260"/>
+									</Grid.ColumnDefinitions>
 
-								<GroupBox Grid.Row="2" Header="{DynamicResource Manager.Tabs.ManagerConfig.Group.About}">
-									<UniformGrid Rows="0" Columns="2" Margin="5">
-										<Button x:Name="btnCredits" MaxHeight="28" Margin="5" Grid.Column="0" Click="AboutBtn_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.Contributors}">
+									<Grid Grid.Column="0">
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto"/>
+											<RowDefinition Height="Auto"/>
+											<RowDefinition Height="Auto"/>
+										</Grid.RowDefinitions>
+										<CheckBox x:Name="checkManagerOpen" Grid.Row="0" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.KeepOpen}"/>
+										<CheckBox x:Name="checkDevEnabled" Grid.Row="1" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.TestSpawn}"/>
+										<CheckBox x:Name="checkKeepModOrder" Grid.Row="2" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.KeepModOrder}"/>
+									</Grid>
+
+									<Grid Grid.Column="1">
+										<Grid.RowDefinitions>
+											<RowDefinition Height="46"/>
+											<RowDefinition Height="46"/>
+											<RowDefinition Height="46"/>
+										</Grid.RowDefinitions>
+										<Button x:Name="btnAdvancedOptions" Grid.Row="0" Grid.Column="2" Margin="5">
 											<StackPanel Orientation="Horizontal">
-												<Image Source="{StaticResource IconContributors}" Width="30" Margin="0,0,5,0"/>
+												<Image Source="{StaticResource IconConfig}" Width="20"/>
+												<Rectangle Width="5"/>
+												<TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.About.Buttons.AdvancedOptions}" VerticalAlignment="Center"/>
+											</StackPanel>
+										</Button>
+										<Button x:Name="btnReport" Grid.Row="1" Grid.Column="2" Margin="5" Click="btnReport_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ReportBug}">
+											<StackPanel Orientation="Horizontal">
+												<Image Source="{StaticResource IconBugReport}" Width="20"/>
+												<Rectangle Width="5"/>
+												<TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug}" VerticalAlignment="Center"/>
+											</StackPanel>
+										</Button>
+										<Button x:Name="btnCredits" Margin="5" Grid.Row="2" Grid.Column="2" Click="AboutBtn_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.Contributors}">
+											<StackPanel Orientation="Horizontal">
+												<Image Source="{StaticResource IconContributors}" Width="30"/>
+												<Rectangle Width="5"/>
 												<TextBlock Text="{DynamicResource Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits}" VerticalAlignment="Center"/>
 											</StackPanel>
 										</Button>
-										<elements:ImageButton Style="{StaticResource ImageTextButtonStyle}" x:Name="btnReport" Margin="5" Click="btnReport_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ReportBug}"
-											   MaxHeight="28" Icon="{StaticResource Icons.BugReport}" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug}"
-											   ImageBrush="{DynamicResource Icon.Brushes.Red}" ImageBrushHover="{DynamicResource Icon.Brushes.MouseOver.Red}"/>
-									</UniformGrid>
-								</GroupBox>
+									</Grid>
+								</Grid>
 							</Grid>
 						</GroupBox>
 					</Grid>
