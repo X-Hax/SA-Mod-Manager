@@ -15,6 +15,9 @@ namespace SAModManager.Configuration
     {
         v0 = 0,
         v1 = 1,
+		v2 = 2,
+
+		MAX,
     }
 
     public enum SetGame
@@ -106,14 +109,27 @@ namespace SAModManager.Configuration
         }
     }
 
+	public class AdvancedSettings
+	{
+		/// <summary>
+		/// Enables Portable Mode.
+		/// 
+		/// When enabled, the manager will create a local folder it will use to store its own settings. 
+		/// When enabling, it will attempt to copy settings from the User/Local folder if possible.
+		/// </summary>
+		[DefaultValue(false)]
+		public bool EnablePortableMode { get; set; } = false;
+
+		public AdvancedSettings() { }
+	}
+
     public class ManagerSettings
     {
         /// <summary>
         /// Versioning for the Manager Settings file.
         /// </summary>
-        [IniAlwaysInclude]
-        [DefaultValue((int)ManagerSettingsVersions.v1)]
-        public int SettingsVersion { get; set; } = (int)ManagerSettingsVersions.v1;
+        [DefaultValue((int)ManagerSettingsVersions.MAX-1)]
+        public int SettingsVersion { get; set; } = (int)ManagerSettingsVersions.MAX-1;
 
         /// <summary>
         /// Last Loaded Game
@@ -155,6 +171,12 @@ namespace SAModManager.Configuration
         /// </summary>
         [IniAlwaysInclude]
         public UpdateSettings UpdateSettings { get; set; } = new();
+
+		/// <summary>
+		/// Advanced Settings for the Manager.
+		/// </summary>
+		public AdvancedSettings AdvancedSettings { get; set; } = new();
+
         //store game id installed 
         public List<uint> gamesInstalled { get; set; } = new();
 

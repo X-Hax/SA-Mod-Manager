@@ -2925,6 +2925,12 @@ namespace SAModManager
                 }
             }
         }
-    }
+
+		private void btnAdvancedOptions_Click(object sender, RoutedEventArgs e)
+		{
+			AdvancedSettingsWindow wind = new AdvancedSettingsWindow();
+			wind.Show();
+		}
+	}
 
 }

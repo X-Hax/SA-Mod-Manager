@@ -485,7 +485,7 @@
 											<RowDefinition Height="46"/>
 											<RowDefinition Height="46"/>
 										</Grid.RowDefinitions>
-										<Button x:Name="btnAdvancedOptions" Grid.Row="0" Grid.Column="2" Margin="5">
+										<Button x:Name="btnAdvancedOptions" Grid.Row="0" Grid.Column="2" Margin="5" Click="btnAdvancedOptions_Click">
 											<StackPanel Orientation="Horizontal">
 												<Image Source="{StaticResource IconConfig}" Width="20"/>
 												<Rectangle Width="5"/>
