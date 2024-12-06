@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using SAModManager.Configuration.SA2;
+using SAModManager.Management;
 
 namespace SAModManager.Controls.SA2
 {

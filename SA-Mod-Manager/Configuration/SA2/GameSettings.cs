@@ -7,6 +7,7 @@ using SAModManager.UI;
 using System.Text.Json.Serialization;
 using System.ComponentModel.Design;
 using System;
+using SAModManager.Management;
 
 // TODO: Build SA2 Game Settings
 namespace SAModManager.Configuration.SA2

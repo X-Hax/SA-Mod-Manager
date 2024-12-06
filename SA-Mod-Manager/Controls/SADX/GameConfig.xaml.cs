@@ -14,6 +14,7 @@ using SAModManager.Configuration;
 using SAModManager.Configuration.SADX;
 using SAModManager.Ini;
 using System.Threading.Tasks;
+using SAModManager.Management;
 
 namespace SAModManager.Controls.SADX
 {

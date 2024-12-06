@@ -9,6 +9,7 @@ using System.CodeDom.Compiler;
 using System;
 using System.Text.Json.Serialization;
 using static SAModManager.Configuration.SA2.GameSettings;
+using SAModManager.Management;
 
 namespace SAModManager.Configuration.SADX
 {

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using SAModManager.UI;
+using SAModManager.Management;
 
 namespace SAModManager.Profile
 {

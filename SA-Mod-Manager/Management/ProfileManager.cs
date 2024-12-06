@@ -1,32 +1,42 @@
-﻿using SAModManager.Configuration;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using SAModManager.Configuration;
 using SAModManager.Configuration.SA2;
 using SAModManager.Configuration.SADX;
 using SAModManager.Ini;
 using SAModManager.UI;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
+using SAModManager.Profile;
 
-namespace SAModManager.Profile
+namespace SAModManager.Management
 {
     /// <summary>
     /// Static Class to manage the App Profiles.
     /// </summary>
     static public class ProfileManager
     {
+		private static string ProfilesDirectory { 
+			get 
+			{
+				if (App.CurrentGame.modDirectory == null)
+					return ".profiles";
+				else
+					return Path.Combine(App.CurrentGame.modDirectory, ".profiles"); 
+			}
+		} 
+
 		/// <summary>
 		/// Checks if the Game Profile directory exists. Tries to create it if it doesn't. 
 		/// </summary>
 		/// <returns>Returns True when directory exists or has been created otherwise returns False.</returns>
 		private static bool CheckProfileDirectory()
 		{
-			if (!Directory.Exists(App.CurrentGame.ProfilesDirectory))
+			if (!Directory.Exists(ProfilesDirectory))
 			{
 				try
 				{
-					Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);
+					Util.CreateSafeDirectory(ProfilesDirectory);
 					return true;
 				}
 				catch (Exception ex)
@@ -45,12 +55,10 @@ namespace SAModManager.Profile
 		/// <returns>Full path to currently selected game's Profiles.json file.</returns>
         private static string GetProfilePath()
         {
-            string s = App.CurrentGame.ProfilesDirectory;
-
-			if (string.IsNullOrEmpty(s))
+			if (string.IsNullOrEmpty(ProfilesDirectory) && !string.Equals(".profiles", ProfilesDirectory))
                 return null;
 
-            return Path.Combine(s, "Profiles.json");
+            return Path.Combine(ProfilesDirectory, "Profiles.json");
         }
 
         /// <summary>
@@ -198,6 +206,11 @@ namespace SAModManager.Profile
             App.Profiles = Profiles.Deserialize(GetProfilePath());
         }
 
+		/// <summary>
+		/// Migrates a single profile from the supplied path.
+		/// </summary>
+		/// <param name="path">Path to the profile.</param>
+		/// <returns>True when successful, otherwise false.</returns>
 		public static bool MigrateProfile(string path)
 		{
             if (File.Exists(path))
@@ -323,12 +336,18 @@ namespace SAModManager.Profile
                 return null;
         }
 
+		/// <summary>
+		/// Validates that the Profile index is within the boundaries of the list. Resets it to 0 if it is not in bounds.
+		/// </summary>
         public static void ValidateProfileIndex()
         {
             if (App.Profiles.ProfileIndex < 0 || App.Profiles.ProfileIndex > App.Profiles.ProfilesList.Count)
                 App.Profiles.ProfileIndex = 0;
         }
 
+		/// <summary>
+		/// Validates all profiles for the currently selected game.
+		/// </summary>
         public static void ValidateProfiles()
         {
             ValidateProfileIndex();

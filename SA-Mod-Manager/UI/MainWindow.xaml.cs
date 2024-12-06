@@ -28,6 +28,7 @@ using System.Reflection;
 using SAModManager.Profile;
 using SAModManager.ModsCommon;
 using System.DirectoryServices.ActiveDirectory;
+using SAModManager.Management;
 
 namespace SAModManager
 {
