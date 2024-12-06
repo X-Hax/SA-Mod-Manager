@@ -48,5 +48,10 @@ namespace SAModManager.UI
 				Mode = BindingMode.TwoWay,
 			});
 		}
-	}
+
+		private void chkPortableMode_Click(object sender, RoutedEventArgs e)
+		{
+
+        }
+    }
 }
