@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using SAModManager.UI;
 using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
 
 namespace SAModManager.Profile
 {
@@ -19,6 +20,9 @@ namespace SAModManager.Profile
         public string Name { get; set; } = string.Empty;
 
         public string Filename { get; set; } = string.Empty;
+
+		[JsonIgnore]
+		public string Filepath { get { return Path.Combine(App.CurrentGame.modDirectory, ".profiles", Filename); } }
 
         public ProfileEntry(string name, string filename)
         {

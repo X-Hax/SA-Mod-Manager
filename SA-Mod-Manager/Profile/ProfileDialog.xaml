@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SAModManager.Profile"
         xmlns:dd="urn:gong-wpf-dragdrop"
         mc:Ignorable="d"
-        Title="{StaticResource ManagerProfile.Title}" Height="300" Width="500"
+        Title="{StaticResource ManagerProfile.Title}" Height="300" Width="700"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource SAWindow}">
 	<Window.Resources>
@@ -32,7 +32,7 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-					<GridViewColumn Header="{DynamicResource CommonStrings.Name}" Width="250">
+					<GridViewColumn Header="{DynamicResource CommonStrings.Name}" Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -41,7 +41,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="{StaticResource ManagerProfile.Path}" Width="250" DisplayMemberBinding="{Binding Filename}"/>
+                    <GridViewColumn Header="{StaticResource ManagerProfile.Path}" Width="Auto" DisplayMemberBinding="{Binding Filepath}"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
