@@ -21,6 +21,7 @@ using static TheArtOfDev.HtmlRenderer.Adapters.RGraphicsPath;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Text;
+using SAModManager.Management;
 
 namespace SAModManager
 {
@@ -108,7 +109,7 @@ namespace SAModManager
             Steam.Init();
             SetupLanguages();
             SetupThemes();
-            ManagerSettings = LoadManagerConfig();
+            LoadManagerConfig();
             await SAModManager.Startup.StartupCheck();
 
             await InitUriAsync(args, alreadyRunning);
@@ -646,14 +647,13 @@ namespace SAModManager
             }
         }
 
-        private static ManagerSettings LoadManagerConfig()
+        private static void LoadManagerConfig()
         {
-            ManagerSettings settings = ManagerSettings.Deserialize(Path.Combine(ConfigFolder, ManagerConfigFile));
+			SettingsManager.InitializeSettingsManager();
 
-            if (settings is not null)
+            if (ManagerSettings is not null)
             {
-
-                switch (settings.CurrentSetGame)
+                switch (ManagerSettings.CurrentSetGame)
                 {
                     case (int)SetGame.None:
                         CurrentGame = GamesInstall.Unknown;
@@ -665,10 +665,7 @@ namespace SAModManager
                         CurrentGame = GamesInstall.SonicAdventure2;
                         break;
                 }
-
             }
-
-            return settings;
         }
 
         public static async Task EnableOneClickInstall()

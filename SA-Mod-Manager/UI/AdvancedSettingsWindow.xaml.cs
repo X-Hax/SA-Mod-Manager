@@ -1,4 +1,5 @@
 ﻿using SAModManager.Configuration;
+using SAModManager.Management;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace SAModManager.UI
 		public AdvancedSettingsWindow()
 		{
 			InitializeComponent();
+			chkPortableMode.IsChecked = SettingsManager.IsPortableMode();
 		}
 
 		private void CheckBox_MouseEnter(object sender, MouseEventArgs e)
@@ -40,18 +42,11 @@ namespace SAModManager.UI
 			SettingDescription.Text = string.Empty;
 		}
 
-		private void Window_Loaded(object sender, RoutedEventArgs e)
-		{
-			chkPortableMode.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnablePortableMode")
-			{
-				Source = App.ManagerSettings.AdvancedSettings,
-				Mode = BindingMode.TwoWay,
-			});
-		}
-
 		private void chkPortableMode_Click(object sender, RoutedEventArgs e)
 		{
+			SettingsManager.ProcessPortableMode();
 
-        }
-    }
+			chkPortableMode.IsChecked = SettingsManager.IsPortableMode();
+		}
+	}
 }

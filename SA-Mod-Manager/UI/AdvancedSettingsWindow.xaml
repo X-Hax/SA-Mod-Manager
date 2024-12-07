@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SAModManager.UI" Loaded="Window_Loaded"
-        mc:Ignorable="d" Style="{DynamicResource SAWindow}"
+        xmlns:local="clr-namespace:SAModManager.UI" 
+        mc:Ignorable="d" Style="{DynamicResource SAWindow}" xmlns:p="clr-namespace:SAModManager.Properties"
         Title="{DynamicResource Advancedwindow.Title}" Height="450" Width="600">
 	<Grid>
 		<Grid.RowDefinitions>
@@ -23,7 +23,7 @@
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto"/>
 						</Grid.RowDefinitions>
-						<CheckBox x:Name="chkPortableMode" Click="chkPortableMode_Click" Content="{DynamicResource AdvancedWindow.Option.PortableMode}" Tag="{DynamicResource AdvancedWindow.Option.PortableMode.Description}" MouseEnter="CheckBox_MouseEnter" MouseLeave="CheckBox_MouseLeave"/>
+						<CheckBox x:Name="chkPortableMode" Click="chkPortableMode_Click" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=IsPortable, Mode=TwoWay}" Content="{DynamicResource AdvancedWindow.Option.PortableMode}" Tag="{DynamicResource AdvancedWindow.Option.PortableMode.Description}" MouseEnter="CheckBox_MouseEnter" MouseLeave="CheckBox_MouseLeave"/>
 					</Grid>
 				</ScrollViewer>
 			</Border>

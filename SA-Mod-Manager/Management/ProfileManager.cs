@@ -16,7 +16,11 @@ namespace SAModManager.Management
     /// </summary>
     static public class ProfileManager
     {
-		private static string ProfilesDirectory { 
+		/// <summary>
+		/// Directory where the game profiles (<see cref="Configuration.SADX.GameSettings"/> or <see cref="Configuration.SA2.GameSettings"/>) are stored.
+		/// </summary>
+		private static string ProfilesDirectory 
+		{ 
 			get 
 			{
 				if (App.CurrentGame.modDirectory == null)
@@ -24,7 +28,15 @@ namespace SAModManager.Management
 				else
 					return Path.Combine(App.CurrentGame.modDirectory, ".profiles"); 
 			}
-		} 
+		}
+
+		/// <summary>
+		/// The file that stores the profiles info.
+		/// </summary>
+		private static string ProfilesFile
+		{
+			get { return Path.Combine(ProfilesDirectory, "Profiles.json"); }
+		}
 
 		/// <summary>
 		/// Checks if the Game Profile directory exists. Tries to create it if it doesn't. 

@@ -40,7 +40,6 @@ namespace SAModManager
             "SADXModManager.exe",
         };
 
-
         public static List<string> BASSFiles = new()
         {
             "libogg.dll",
@@ -177,7 +176,6 @@ namespace SAModManager
             }
         }
 
-
         public static async Task MoveFile(string origin, string dest, bool overwrite = false)
         {
             try
@@ -203,6 +201,27 @@ namespace SAModManager
                 }
             }
         }
+
+		public static void CopyAllFiles(string sourceDirectory, string destinationDirectory, bool overwrite = true)
+		{
+			if (Directory.Exists(sourceDirectory))
+			{
+				Directory.CreateDirectory(destinationDirectory);
+				DirectoryInfo sDir = new DirectoryInfo(sourceDirectory);
+				DirectoryInfo dDir = new DirectoryInfo(destinationDirectory);
+
+				foreach (FileInfo fileInfo in sDir.GetFiles())
+				{
+					string destName = Path.Combine(dDir.FullName, fileInfo.Name);
+					fileInfo.CopyTo(destName, true);
+				}
+
+				foreach (DirectoryInfo subDir in sDir.GetDirectories())
+				{
+					CopyAllFiles(subDir.FullName, Path.Combine(destinationDirectory, subDir.Name), overwrite);
+				}
+			}
+		}
 
         public static bool ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
         {
@@ -230,7 +249,6 @@ namespace SAModManager
             return fileInfo is not null && fileInfo.Length > 0;
         }
 
-
         private static string FindExePath(string exeName)
         {
             string path = Path.Combine(App.StartDirectory, exeName);
@@ -246,7 +264,6 @@ namespace SAModManager
 
             return key?.GetValue("Path") as string;
         }
-
 
         public static async Task Exec7zipInstall()
         {
@@ -496,7 +513,6 @@ namespace SAModManager
 
             return false;
         }
-
 
         public static async Task Extract(string zipPath, string destFolder, bool overwrite = false)
         {
@@ -793,8 +809,5 @@ namespace SAModManager
         {
             return !string.IsNullOrEmpty(str) && !string.IsNullOrWhiteSpace(str);
         }
-
-
-
     }
 }
