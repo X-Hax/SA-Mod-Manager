@@ -111,14 +111,7 @@ namespace SAModManager.Configuration
 
 	public class AdvancedSettings
 	{
-		/// <summary>
-		/// Enables Portable Mode.
-		/// 
-		/// When enabled, the manager will create a local folder it will use to store its own settings. 
-		/// When enabling, it will attempt to copy settings from the User/Local folder if possible.
-		/// </summary>
-		[DefaultValue(false)]
-		public bool EnablePortableMode { get; set; } = false;
+		
 
 		public AdvancedSettings() { }
 	}
@@ -175,7 +168,7 @@ namespace SAModManager.Configuration
 		/// <summary>
 		/// Advanced Settings for the Manager.
 		/// </summary>
-		public AdvancedSettings AdvancedSettings { get; set; } = new();
+		//public AdvancedSettings AdvancedSettings { get; set; } = new();
 
         //store game id installed 
         public List<uint> gamesInstalled { get; set; } = new();
