@@ -70,11 +70,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="AvalonEdit" Version="6.3.0.90" />
-		<PackageReference Include="Costura.Fody" Version="5.7.0">
+		<PackageReference Include="Costura.Fody" Version="6.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<!--<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets><-->
 		</PackageReference>
-		<PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
+		<PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
 		<PackageReference Include="NetCoreInstallChecker" Version="3.0.4" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="PropertyChanged.Fody" Version="4.1.0">

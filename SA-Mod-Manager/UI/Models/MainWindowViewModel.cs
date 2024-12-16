@@ -25,12 +25,12 @@ namespace SAModManager.UI
 
             var sortedData = viewModel.Modsdata.OrderBy(customData =>
             {
-                // Try to get the index of the customData.Name in the order list
+                //Try to get the index of the customData.Name in the order list
                 if (orderMap.TryGetValue(customData.Tag, out int index))
                 {
                     return index;
                 }
-                return int.MaxValue; // Place it at the end if not found
+                return int.MaxValue; //Place it at the end if not found
             }).ToList();
 
             //Replace with the sorted data
@@ -44,6 +44,7 @@ namespace SAModManager.UI
 
         public void DragOver(IDropInfo dropInfo)
         {
+            dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
             if (dropInfo.Data is IDataObject dataObject && dataObject.GetDataPresent(DataFormats.FileDrop))
                 dropInfo.Effects = DragDropEffects.Copy;
             else
@@ -55,9 +56,8 @@ namespace SAModManager.UI
             GongSolutions.Wpf.DragDrop.DragDrop.DefaultDropHandler.Drop(dropInfo);
 
             var mainWindow = (MainWindow)App.Current.MainWindow;
-            var selectedItems = dropInfo.Data as List<object>;
 
-            if (selectedItems != null)
+            if (dropInfo.Data is List<object> selectedItems)
             {
                 mainWindow.listMods.SelectedItems.Clear();
 
