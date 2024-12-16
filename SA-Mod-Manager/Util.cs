@@ -17,6 +17,7 @@ using NetCoreInstallChecker.Structs.Config.Enum;
 using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.Readers;
+using SharpCompress.Archives.SevenZip;
 
 namespace SAModManager
 {
@@ -204,31 +205,7 @@ namespace SAModManager
             }
         }
 
-        public static bool ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
-        {
-            string outputFilePath = null;
-            try
-            {
-                Util.CreateSafeDirectory(outputDirectory);
-                outputFilePath = Path.Combine(outputDirectory, resourceName + ".dll");
 
-                // Get the resource stream from Properties.Resources
-                using Stream resourceStream = new MemoryStream(resource);
-                using (FileStream fileStream = new(outputFilePath, FileMode.Create, FileAccess.Write))
-                {
-                    // Asynchronously copy the stream to the output file
-                    resourceStream.CopyTo(fileStream);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception during DLL extraction: {ex}");
-                return false;
-            }
-
-            FileInfo fileInfo = new(outputFilePath);
-            return fileInfo is not null && fileInfo.Length > 0;
-        }
 
 
         private static string FindExePath(string exeName)
@@ -451,6 +428,25 @@ namespace SAModManager
 
             await Task.Delay(150);
         }
+
+        public static void ExtractEmbedded7z(string resourceName, string outputDirectory)
+        {
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            string fullResourceName = assembly.GetName().Name + ".Resources." + resourceName;
+            using Stream resourceStream = assembly.GetManifestResourceStream(fullResourceName) ?? throw new InvalidOperationException($"Resource {resourceName} not found.");
+            using var archive = SevenZipArchive.Open(resourceStream);
+            foreach (var entry in archive.Entries)
+            {
+                if (!entry.IsDirectory)
+                {
+                    string outputPath = Path.Combine(outputDirectory, entry.Key);
+                    Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
+                    entry.WriteToFile(outputPath, new ExtractionOptions { ExtractFullPath = true, Overwrite = true });
+                }
+            }
+        }
+    
 
         public static async Task<bool> ExtractArchiveUsing7Zip(string path, string dest, List<string> excludeFolder = null, string specificFile = null)
         {

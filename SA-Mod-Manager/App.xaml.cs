@@ -625,25 +625,23 @@ namespace SAModManager
             string fullResourceName = assembly.GetName().Name + ".Resources." + resourceName;
 
             // Load the resource stream from the assembly
-            using (Stream stream = assembly.GetManifestResourceStream(fullResourceName))
+            using Stream stream = assembly.GetManifestResourceStream(fullResourceName);
+            // Check if the resource stream is found
+            if (stream == null)
             {
-                // Check if the resource stream is found
-                if (stream == null)
-                {
-                    Console.WriteLine($"Resource not found: {fullResourceName}");
-                    return null;
-                }
-
-                // Copy the resource stream to a temporary file
-                string tempFilePath = Path.GetTempFileName();
-                using (FileStream fileStream = File.Create(tempFilePath))
-                {
-                    stream.CopyTo(fileStream);
-                }
-
-                // Return the URI to the temporary file
-                return new Uri($"file://{tempFilePath}");
+                Console.WriteLine($"Resource not found: {fullResourceName}");
+                return null;
             }
+
+            // Copy the resource stream to a temporary file
+            string tempFilePath = Path.GetTempFileName();
+            using (FileStream fileStream = File.Create(tempFilePath))
+            {
+                stream.CopyTo(fileStream);
+            }
+
+            // Return the URI to the temporary file
+            return new Uri($"file://{tempFilePath}");
         }
 
         private static ManagerSettings LoadManagerConfig()
