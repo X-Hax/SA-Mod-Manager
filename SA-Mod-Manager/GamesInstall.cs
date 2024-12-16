@@ -234,8 +234,7 @@ namespace SAModManager
                 dl.StartDL();
                 if (success)
                 {
-                    List<string> excludeFile = new();
-                    excludeFile.Add("extlib");
+                    List<string> excludeFile = ["extlib"];
                     await Util.ExtractWExcludeFile(pathFinal, game.modDirectory, excludeFile);
                     await Util.ExtractSpecificFile(pathFinal, "extlib", App.ConfigFolder);
                     File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);

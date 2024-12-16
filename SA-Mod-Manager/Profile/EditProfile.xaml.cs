@@ -141,7 +141,7 @@ namespace SAModManager.Profile
 
         private void ProfileNameTextbox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            if (( string.IsNullOrWhiteSpace(ProfileNameTextbox.Text) == false) && (ProfileNameTextbox.Text.Length > 1))
+            if (( string.IsNullOrWhiteSpace(ProfileNameTextbox.Text) == false) && (ProfileNameTextbox.Text.Length > 1) && Util.IsValidFileName(ProfileNameTextbox.Text))
              {
                 UIHelper.EnableButton(ref btnOK);
             }

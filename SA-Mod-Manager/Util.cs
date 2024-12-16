@@ -794,6 +794,22 @@ namespace SAModManager
             return !string.IsNullOrEmpty(str) && !string.IsNullOrWhiteSpace(str);
         }
 
+        public static bool IsValidFileName(string filename)
+        {
+
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+
+            // Check if the filename contains any invalid characters eg ?, " etc.
+            foreach (char c in invalidChars)
+            {
+                if (filename.Contains(c))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
 
     }
