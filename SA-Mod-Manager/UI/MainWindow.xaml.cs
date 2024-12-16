@@ -159,6 +159,8 @@ namespace SAModManager
                         {
                             await App.PerformUpdateAppLauncherCheck();
                         }
+
+                        Util.ClearTempFolder();
                     }
 
                     await CheckForModUpdates();
@@ -1347,15 +1349,19 @@ namespace SAModManager
 
         public void SetModManagerVersion()
         {
+            bool isPortable = Directory.Exists(Path.Combine(App.StartDirectory, "SAManager"));
+            string portable = isPortable ? " Portable" : "";
             if (string.IsNullOrEmpty(App.RepoCommit)) //release
             {
-                Title = titleName + " " + "(" + Version + ")";
+
+                Title = titleName + portable + " " + "(" + Version + ")";
             }
             else
             {
-                Title = titleName + " " + "(Dev Build - " + Version + " - " + App.RepoCommit[..7] + ")";
+                Title = titleName + portable + " " + "(Dev Build - " + Version + " - " + App.RepoCommit[..7] + ")";
 
             }
+
         }
 
         private void EnableUI(bool enable)
