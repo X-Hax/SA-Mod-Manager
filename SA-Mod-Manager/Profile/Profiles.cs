@@ -148,6 +148,7 @@ namespace SAModManager.Profile
 
                     if (list.Count == 1 && count == 1) //no profile at all
                     {
+                        ProfileManager.MigrateProfiles(false);
                         return false;
                     }
 
