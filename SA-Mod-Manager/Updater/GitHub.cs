@@ -423,7 +423,7 @@ namespace SAModManager.Updater
                             {
                                 string pattern = @"^\w+\s+"; // This regular expression matches any word followed by one or more spaces at the beginning of the string.
                                 string result = Regex.Replace(version, pattern, "").Trim();
-        
+
                             }
                             catch
                             {
@@ -482,7 +482,7 @@ namespace SAModManager.Updater
                             {
                                 throw new Exception("Couldn't check version difference, update won't work.");
                             }
-                 
+
 
                             return (hasUpdate, sha, targetAsset, version);
                         }
@@ -503,51 +503,30 @@ namespace SAModManager.Updater
 
             // string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/commits?sha={hash}&per_page=100&sha={branch}";
 
-            bool isEmpty = string.IsNullOrEmpty(App.RepoCommit); //empty means we are on dev version
-            string apiUrl = isEmpty == false ? $"https://api.github.com/repos/{owner}/{repo}/compare/{App.RepoCommit}...{hash[..7]}" : $"https://api.github.com/repos/{owner}/{repo}/commits?sha={hash}&per_page=100&sha={branch}";
+
+            string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/compare/{App.RepoCommit}...{hash[..7]}";
 
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-            string text = "";
+            string text = "No changelog found";
 
             if (response.IsSuccessStatusCode)
             {
+                text = "";
                 string jsonResult = await response.Content.ReadAsStringAsync();
 
-                if (isEmpty) //if we are on dev version get the last 100 commits
+
+                var info = JsonConvert.DeserializeObject<CommitComparisonResponse>(jsonResult);
+
+                foreach (var commit in info.commits)
                 {
-                    var info = JsonConvert.DeserializeObject<GHCommitInfo[]>(jsonResult);
+                    //we skip the message "merge branch master" thing as the end user wouldn't understand
+                    if (commit.commit.message.Contains("Merge branch") && text.Length > 5)
+                        continue;
 
-                    int limit = info.ToList().FindIndex(t => t.SHA == App.RepoCommit);
-                    if (limit == -1)
-                        limit = info.Length;
-
-                    for (int i = 0; i < limit; ++i)
-                    {
-                        if (info[i].Commit.IsSkipCI())
-                            continue;
-
-                        string message = info[i].Commit.Message.Replace("\r", "");
-                        if (message.Contains("\n"))
-                            message = message[..message.IndexOf("\n", StringComparison.Ordinal)];
-
-                        string author = info[i].Commit.Author.Name;
-                        text += $" - {message} - {author}\n";
-                    }
+                    string author = commit.commit.author?.name ?? "Unknown";
+                    text += $" - {commit.commit.message} - {author}\n";
                 }
-                else //get all the commits between new version and current version
-                {
-                    var info = JsonConvert.DeserializeObject<CommitComparisonResponse>(jsonResult);
 
-                    foreach (var commit in info.commits)
-                    {
-                        //we skip the message "merge branch master" thing as the end user wouldn't understand
-                        if (commit.commit.message.Contains("Merge branch") && text.Length > 5)
-                            continue;
-
-                        string author = commit.commit.author?.name ?? "Unknown";
-                        text += $" - {commit.commit.message} - {author}\n";
-                    }
-                }
             }
 
             return text;

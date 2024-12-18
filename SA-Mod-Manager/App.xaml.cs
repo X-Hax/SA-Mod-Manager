@@ -302,16 +302,20 @@ namespace SAModManager
         }
 
 
-        public static async Task<(bool, WorkflowRunInfo, GitHubArtifact, string)> GetArtifact()
+        public static async Task<(bool, WorkflowRunInfo, GitHubArtifact)> GetArtifact()
         {
-            Debugger.Launch();
+     
             var workflowRun = await GitHub.GetLatestWorkflowRun();
 
             if (workflowRun is null)
-                return (false, null, null, null);
+                return (false, null, null);
 
 
             bool hasUpdate = RepoCommit != workflowRun.HeadSHA;
+            
+            if (hasUpdate == false)
+                return (false, null, null);
+
 
             GitHubAction latestAction = await GitHub.GetLatestAction();
             GitHubArtifact info = null;
@@ -332,7 +336,7 @@ namespace SAModManager
                 }
             }
 
-            return (hasUpdate, workflowRun, info, "Changelog are currently not available for dev version.\n");
+            return (hasUpdate, workflowRun, info);
         }
 
         public static async Task<bool> PerformDevUpdateManagerCheck()
@@ -341,7 +345,7 @@ namespace SAModManager
             var update = await App.GetArtifact();
             if (update.Item2 is not null)
             {
-                string changelog = await GitHub.GetGitChangeLog(update.Item4);
+                string changelog = await GitHub.GetGitChangeLog(update.Item2.HeadSHA);
                 var manager = new InfoManagerUpdate(changelog, "Dev");
                 manager.ShowDialog();
 
