@@ -38,7 +38,12 @@
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Made by</system:String>
 	<!--#endregion-->
 
-	<!--#region Manager Config Tab Strings-->
+
+    <!--Game-->
+    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <!--#endregion-->
+
+    <!--#region Manager Config Tab Strings-->
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Game Settings</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Themes:</system:String>
@@ -81,7 +86,8 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Mod Loader Source Code</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Report a Bug (English only)</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Open SA Docs (English only)</system:String>
-	<!--#endregion-->
+
+    <!--#endregion-->
 	
 	<!--#region Tooltips-->
 	<!--#region Main Window Tool Tips-->

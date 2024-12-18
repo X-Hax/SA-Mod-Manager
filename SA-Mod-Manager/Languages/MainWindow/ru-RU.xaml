@@ -38,7 +38,11 @@
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Создан</system:String>
 	<!--#endregion-->
 
-	<!--#region Manager Config Tab Strings-->
+    <!--Game-->
+    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <!--#endregion-->
+
+    <!--#region Manager Config Tab Strings-->
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Настройки</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Темы:</system:String>

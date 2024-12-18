@@ -45,6 +45,7 @@
 		<None Remove="Icons\Manager\SA2Sonic.ico" />
 		<None Remove="Icons\Manager\SA2Tails.ico" />
 		<None Remove="Icons\SADXModManager_.png" />
+		<None Remove="Resources\Games\plus.png" />
 		<None Remove="Resources\Games\sa1.png" />
 		<None Remove="Resources\Games\sa2.png" />
 		<None Remove="Resources\SA2ModLoader.7z" />
@@ -60,6 +61,7 @@
 	<ItemGroup>
 		<EmbeddedResource Include="Codes\OpCodeSyntaxLight.xshd" />
 		<EmbeddedResource Include="Codes\OpCodeSyntaxDark.xshd" />
+		<EmbeddedResource Include="Resources\Games\plus.png" />
 		<EmbeddedResource Include="Resources\Games\sa1.png" />
 		<EmbeddedResource Include="Resources\Games\sa2.png" />
 		<EmbeddedResource Include="Resources\SA2ModLoader.7z" />

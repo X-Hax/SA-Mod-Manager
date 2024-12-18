@@ -28,6 +28,7 @@ using System.Reflection;
 using SAModManager.Profile;
 using SAModManager.ModsCommon;
 using System.DirectoryServices.ActiveDirectory;
+using System.Collections.ObjectModel;
 
 namespace SAModManager
 {
@@ -102,6 +103,9 @@ namespace SAModManager
                 App.GamesList.Add(GamesInstall.Unknown);
                 GamesInstall.AddMissingGamesList(GamesInstall.Unknown);
             }
+
+            //option to add game for users
+            App.UpdateAddNewGameItem();
 
             SetModManagerVersion();
 
@@ -1079,20 +1083,24 @@ namespace SAModManager
                 App.CancelUpdate = true;
                 Save();
                 var game = GamesInstall.GetGamePerID(setGame);
+                bool isMultipleInstall = App.GamesList.Contains(game) && GamesInstall.IsMultipleGamesInstall(game, path);
+                Game Clone = null;
 
-                if (App.GamesList.Contains(game) == false)
+                if (App.GamesList.Contains(game) == false || isMultipleInstall)
                 {
-                    App.GamesList.Add(game);
+                    Clone = game.Clone();
+                    if (isMultipleInstall)
+                        Clone.gameName += " (" + GamesInstall.GetMultipleGamesInstallCount(game, path).ToString() + ")";
+                    App.GamesList.Add(Clone);
                     GamesInstall.AddMissingGamesList(game);
+                    App.UpdateAddNewGameItem();
                 }
-
-                ComboGameSelection.ItemsSource = null;
 
                 tempPath = path;
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
                 suppressEvent = true;
-                ComboGameSelection.ItemsSource = App.GamesList;
-                ComboGameSelection.SelectedItem = game;
+       
+                ComboGameSelection.SelectedItem = Clone is null ? game : Clone;
                 if (DoGameSwap(path))
                 {
                     await ForceInstallLoader();
@@ -1107,7 +1115,7 @@ namespace SAModManager
             }
         }
 
-        private async void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
+        private async Task<bool> AddGameManually()
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
 
@@ -1116,7 +1124,15 @@ namespace SAModManager
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 await ResultPickGame(dialog.SelectedPath);
+                return true;
             }
+
+            return false;
+        }
+
+        private async void btnBrowseGameDir_Click(object sender, RoutedEventArgs e)
+        {
+            await AddGameManually();
         }
 
         private async void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
@@ -1128,7 +1144,7 @@ namespace SAModManager
 
             if (managerUpdate)
             {
-               return;
+                return;
             }
 
             if (App.CurrentGame.loader.installed)
@@ -1269,6 +1285,9 @@ namespace SAModManager
             App.SwitchLanguage();
             UpdateBtnInstallLoader_State();
             FlowDirectionHelper.UpdateFlowDirection();
+            App.UpdateAddNewGameItem();
+
+
         }
 
         private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
@@ -2626,7 +2645,7 @@ namespace SAModManager
                 UIHelper.DisableButton(ref SaveAndPlayButton);
 
                 await GamesInstall.InstallDLL_Loader(App.CurrentGame, false); //first, we download and extract the loader DLL in the mods folder
-     
+
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                 //now we can move the loader files to the accurate folders.
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
@@ -2880,21 +2899,32 @@ namespace SAModManager
             if (suppressEvent)
                 return;
 
+       
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
             {
-                bool foundGame = DoGameSwap();
-
-                if (foundGame)
+                if (ComboGameSelection.SelectedItem == GamesInstall.AddGame)
                 {
-                    Save();
-                    SetBindings();
+                    if (await AddGameManually() == false)
+                        ComboGameSelection.SelectedItem = App.CurrentGame;
+
+                    return;
+                }
+                else
+                {
+                    bool foundGame = DoGameSwap();
+
+                    if (foundGame)
+                    {
+                        Save();
+                        SetBindings();
 #if !DEBUG
-                    if (File.Exists(App.CurrentGame?.loader?.mlverPath) == false || App.isVanillaTransition && App.CurrentGame?.loader?.installed == false)
-                        await FirstBootInstallLoader();
+                        if (File.Exists(App.CurrentGame?.loader?.mlverPath) == false || App.isVanillaTransition && App.CurrentGame?.loader?.installed == false)
+                            await FirstBootInstallLoader();
 #endif
 
-                    await App.EnableOneClickInstall();
+                        await App.EnableOneClickInstall();
 
+                    }
                 }
             }
         }

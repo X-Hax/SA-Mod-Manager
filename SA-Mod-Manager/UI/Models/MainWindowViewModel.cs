@@ -14,7 +14,7 @@ namespace SAModManager.UI
         public ObservableCollection<ModData> ModsSearch { get; set; } = new();
         public ModData SelectedMod { get; set; }
         public CodeData SelectedCode { get; set; }
-        public IEnumerable<Game> Games { get; set; }
+        public ObservableCollection<Game> Games { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

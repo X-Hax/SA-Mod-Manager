@@ -38,6 +38,10 @@
     <system:String x:Key="Manager.Tabs.Codes.MadeBy">제작:</system:String>
     <!--#endregion-->
 
+    <!--Game-->
+    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <!--#endregion-->
+
     <!--#region Manager Config Tab Strings-->
     <!--Options-->
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">옵션</system:String>

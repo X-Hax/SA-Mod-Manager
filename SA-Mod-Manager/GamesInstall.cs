@@ -63,6 +63,11 @@ namespace SAModManager
         public SetGame id = SetGame.None;
         public string gameAbbreviation { get; set; }
         public string oneClickName { get; set; }
+
+        public Game Clone()
+        {
+            return (Game)this.MemberwiseClone();
+        }
     }
 
     public enum Format
@@ -198,6 +203,37 @@ namespace SAModManager
             }
         }
 
+        public static int GetMultipleGamesInstallCount(Game newGame, string newGamePath)
+        {
+            int count = 0;
+            foreach (var oldGame in App.GamesList)
+            {
+                if (oldGame.gameName.Equals(newGame.gameName, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    if (oldGame.gameDirectory != newGamePath)
+                        count++;
+                }
+            }
+
+            return count;
+        }
+
+        public static bool IsMultipleGamesInstall(Game newGame, string newGamePath)
+        {
+            foreach (var oldGame in App.GamesList)
+            {
+                if (oldGame.gameName.Equals(newGame.gameName, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    if (oldGame.gameDirectory != newGamePath)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+
+
         public static async Task<bool> UpdateLoader(Game game, string dlLink, bool update = true)
         {
             if (game is null)
@@ -271,6 +307,12 @@ namespace SAModManager
 
 
         public static Game Unknown = new();
+
+        public static Game AddGame = new()
+        {
+            gameName = Lang.GetString("Manager.Buttons.AddGame"),
+            gameImage = App.GetResourceUri("Games.plus.png")
+        };
 
         public static Game SonicAdventure = new()
         {
