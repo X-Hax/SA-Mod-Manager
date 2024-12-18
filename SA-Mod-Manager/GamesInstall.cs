@@ -155,8 +155,12 @@ namespace SAModManager
 
                         }
                     }
+     
                 }
-
+                else
+                {
+                    ((MainWindow)App.Current.MainWindow)?.UpdateManagerStatusText("Error Install Loader: " + response.StatusCode);
+                }
 
                 //offline version
                 if (!File.Exists(loaderPath))

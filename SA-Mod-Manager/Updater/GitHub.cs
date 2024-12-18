@@ -312,12 +312,12 @@ namespace SAModManager.Updater
 
                 if (actions != null && actions.Actions.Count > 0)
                 {
-                    return actions.Actions[0]; // The first workflow run in the list is the most recent one
+                    return actions.Actions[0]; //The first workflow run in the list is the most recent one
                 }
 
             }
 
-            Console.WriteLine($"Error: {response.StatusCode}");
+          ((MainWindow)App.Current.MainWindow)?.UpdateManagerStatusText("Error GitHub Action: " + response.StatusCode);
             return null;
 
         }
@@ -341,8 +341,11 @@ namespace SAModManager.Updater
                     return artifacts.Artifacts; // The first workflow run in the list is the most recent one
                 }
             }
+            else
+            {
+                ((MainWindow)App.Current.MainWindow)?.UpdateManagerStatusText("Error Artifacts: " + response.StatusCode);
+            }
 
-            Console.WriteLine($"Error: {response.StatusCode}");
             return null;
 
         }
@@ -365,7 +368,7 @@ namespace SAModManager.Updater
                 {
                     for (int i = 0; i < apiResponse.Runs.Count; i++)
                     {
-                        if (apiResponse.Runs[i].HeadBranch.ToLower() == branch.ToLower()) //only get builds from the current branch.
+                        if (apiResponse.Runs[i].HeadBranch.Equals(branch, StringComparison.CurrentCultureIgnoreCase)) //only get builds from the current branch.
                         {
                             return apiResponse.Runs[i]; //return the first build that contains the right branch, this should be the last update every time.
                         }
@@ -373,7 +376,7 @@ namespace SAModManager.Updater
                 }
             }
 
-            Console.WriteLine($"Error: {response.StatusCode}");
+            ((MainWindow)App.Current.MainWindow)?.UpdateManagerStatusText("Error WorkFlow: " + response.StatusCode);
             return null;
 
         }
