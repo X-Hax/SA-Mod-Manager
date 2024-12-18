@@ -314,6 +314,7 @@ namespace SAModManager
 
         public static async Task<(bool, WorkflowRunInfo, GitHubArtifact)> GetArtifact()
         {
+     
             var workflowRun = await GitHub.GetLatestWorkflowRun();
 
             if (workflowRun is null)
@@ -321,6 +322,10 @@ namespace SAModManager
 
 
             bool hasUpdate = RepoCommit != workflowRun.HeadSHA;
+            
+            if (hasUpdate == false)
+                return (false, null, null);
+
 
             GitHubAction latestAction = await GitHub.GetLatestAction();
             GitHubArtifact info = null;
@@ -350,6 +355,12 @@ namespace SAModManager
             var update = await App.GetArtifact();
             if (update.Item2 is not null)
             {
+                string changelog = await GitHub.GetGitChangeLog(update.Item2.HeadSHA);
+                var manager = new InfoManagerUpdate(changelog, "Dev");
+                manager.ShowDialog();
+
+                if (manager.DialogResult != true)
+                    return false;
 
                 Logger.Log("Now Installing Latest Dev Build Update ...");
 
