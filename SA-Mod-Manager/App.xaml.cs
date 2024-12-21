@@ -346,7 +346,7 @@ namespace SAModManager
             if (update.Item2 is not null)
             {
                 string changelog = await GitHub.GetGitChangeLog(update.Item2.HeadSHA);
-                var manager = new InfoManagerUpdate(changelog, "Dev");
+                var manager = new InfoManagerUpdate(changelog, ".Dev");
                 manager.ShowDialog();
 
                 if (manager.DialogResult != true)

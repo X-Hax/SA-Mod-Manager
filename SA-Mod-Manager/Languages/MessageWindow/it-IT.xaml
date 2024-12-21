@@ -32,8 +32,9 @@
 	
 	<system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Error Loading Code</system:String>
 	<system:String x:Key="MessageWindow.Errors.CodesListFailed">Error loading code list</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Update Errors</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodeBuildFail" xml:space="preserve">Failed to build {0}, this could be a permission issue.&#x0a;&#x0a;Advanced Error:&#x0a;{1}</system:String>
+
+    <system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Update Errors</system:String>
 	<system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">The following Errors occurred while checking for updates:&#x0a;&#x0a;</system:String>
     <system:String x:Key="MessageWindow.Errors.D3D8Update">Unable to update d3d8.dll</system:String>
     <system:String x:Key="MessageWindow.Errors.D3D8UpdateCheck">Unable to check d3d8to9 version</system:String>

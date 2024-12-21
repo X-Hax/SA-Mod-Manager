@@ -33,8 +33,9 @@
 	
 	<system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Error al cargar el Código</system:String>
 	<system:String x:Key="MessageWindow.Errors.CodesListFailed">Error al cargar la lista de códigos</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Error al actualizar</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodeBuildFail" xml:space="preserve">Failed to build {0}, this could be a permission issue.&#x0a;&#x0a;Advanced Error:&#x0a;{1}</system:String>
+    
+    <system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Error al actualizar</system:String>
     <system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Los siguientes errores han ocurrido mientras se buscaban las actualizaciones:&#x0a;&#x0a;</system:String>
     <system:String x:Key="MessageWindow.Errors.D3D8Update">No se pudo actualizar d3d8.dll</system:String>
     <system:String x:Key="MessageWindow.Errors.D3D8UpdateCheck">No se pudo comprobar la versión de d3d8to9</system:String>

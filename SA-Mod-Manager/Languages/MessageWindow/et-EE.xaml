@@ -86,7 +86,8 @@
  <system:String x:Key="MessageWindow.Errors.CodeFail.Title">Vale petturida</system:String>
  <system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">Koodikirjutaja ridade hulgas on tühi rida.&#x0a;&#x0a;Eemaldage see ja salvestage kood uuesti.</system:String>
  <system:String x:Key="Messagewindow.Errors.CodeFailInvalid">Kood on valesti kirjutatud.&#x0a;&#x0a;Parandage vead ja salvestage see uuesti.</system:String>
-
+ <system:String x:Key="MessageWindow.Errors.CodeBuildFail" xml:space="preserve">Failed to build {0}, this could be a permission issue.&#x0a;&#x0a;Advanced Error:&#x0a;{1}</system:String>
+    
  <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Tundmatu viga</system:String>
  <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Ilmnes tundmatu viga.</system:String>
  <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Modimendi kustutamise viga: {0}.&#x0a;Veenduge, et failid on olemas ja neid ei kasutaks mõni muu programm. Seejärel proovige uuesti.</system:String>
