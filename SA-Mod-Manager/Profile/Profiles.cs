@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using SAModManager.UI;
 using System.Collections.ObjectModel;
+using SAModManager.Management;
 
 namespace SAModManager.Profile
 {
@@ -92,16 +93,15 @@ namespace SAModManager.Profile
         {
             try
             {
-                if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+                if (Directory.Exists(ProfileManager.GetProfilesDirectory()))
                 {
                     string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
                     File.WriteAllText(path, jsonContent);
                 }
                 else
                 {
-                    App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
-                    Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);
-                    if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+                    Util.CreateSafeDirectory(ProfileManager.GetProfilesDirectory());
+                    if (Directory.Exists(ProfileManager.GetProfilesDirectory()))
                     {
 
                         string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });

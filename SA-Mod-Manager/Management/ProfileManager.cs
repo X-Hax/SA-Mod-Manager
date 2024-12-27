@@ -24,9 +24,9 @@ namespace SAModManager.Management
 			get 
 			{
 				if (App.CurrentGame.modDirectory == null)
-					return ".profiles";
+					return string.Empty;
 				else
-					return Path.Combine(App.CurrentGame.modDirectory, ".profiles"); 
+					return Path.Combine(App.CurrentGame.modDirectory, ".modloader", "profiles"); 
 			}
 		}
 
@@ -37,6 +37,8 @@ namespace SAModManager.Management
 		{
 			get { return Path.Combine(ProfilesDirectory, "Profiles.json"); }
 		}
+
+		public static string GetProfilesDirectory() { return ProfilesDirectory; }
 
 		/// <summary>
 		/// Checks if the Game Profile directory exists. Tries to create it if it doesn't. 
@@ -67,10 +69,10 @@ namespace SAModManager.Management
 		/// <returns>Full path to currently selected game's Profiles.json file.</returns>
         private static string GetProfilePath()
         {
-			if (string.IsNullOrEmpty(ProfilesDirectory) && !string.Equals(".profiles", ProfilesDirectory))
-                return null;
-
-            return Path.Combine(ProfilesDirectory, "Profiles.json");
+			if (ProfilesDirectory.Length > 0 && CheckProfileDirectory())
+				return Path.Combine(ProfilesDirectory, "Profiles.json");
+			else
+				return string.Empty;
         }
 
         /// <summary>
@@ -230,7 +232,7 @@ namespace SAModManager.Management
                 string sourceFile = path;
                 string destFile = Path.GetFileNameWithoutExtension(sourceFile) == App.CurrentGame.loader?.name ? "Default.json" : Path.GetFileNameWithoutExtension(sourceFile) + ".json";
 
-                File.Copy(Path.GetFullPath(path), Path.Combine(App.CurrentGame.ProfilesDirectory, destFile), true);
+                File.Copy(Path.GetFullPath(path), Path.Combine(ProfilesDirectory, destFile), true);
                 ConvertProfile(sourceFile, destFile);
                 return true;
             }
@@ -303,9 +305,9 @@ namespace SAModManager.Management
 
             Profiles profiles = new();
 
-            if (App.CurrentGame.ProfilesDirectory is not null)
+            if (ProfilesDirectory != string.Empty)
             {
-                foreach (var item in Directory.EnumerateFiles(App.CurrentGame.ProfilesDirectory, "*.json"))
+                foreach (var item in Directory.EnumerateFiles(ProfilesDirectory, "*.json"))
                 {
                     if (Path.GetFileName(item) != "Profiles.json")
                         profiles.ProfilesList.Add(new ProfileEntry(Path.GetFileNameWithoutExtension(item), Path.GetFileName(item)));
@@ -365,5 +367,28 @@ namespace SAModManager.Management
             ValidateProfileIndex();
             App.Profiles.ValidateProfiles();
         }
+
+		/// <summary>
+		/// Post 1.3.2, profiles have been restored to the game mod folder over being in the user settings. 
+		/// 
+		/// This function is to validate that profiles have been moved for users so no settings are lost. 
+		/// </summary>
+		public static void ValidateProfileFolder()
+		{
+			if (!Directory.Exists(ProfilesDirectory) && ProfilesDirectory.Length > 0)
+			{
+				// As we are validating the new folder, we are also going with the simplest solution.
+				// If the new profiles folder exists, assume everything was migrated. Normal users shouldn't have any problems with this.
+
+				DirectoryInfo newProfiles = new DirectoryInfo(ProfilesDirectory);
+				newProfiles.Create();
+
+				DirectoryInfo oldProfiles = new DirectoryInfo(App.CurrentGame.ProfilesDirectory);
+				if (oldProfiles.Exists)
+				{
+					Util.CopyAllFiles(oldProfiles.FullName, newProfiles.FullName);
+				}
+			}
+		}
     }
 }

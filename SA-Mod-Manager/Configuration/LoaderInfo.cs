@@ -8,12 +8,6 @@ using System.Threading.Tasks;
 
 namespace SAModManager.Configuration
 {
-	public enum GameType
-	{
-		SADX,
-		SA2
-	}
-
 	public enum UpdateUnit
 	{
 		Always,

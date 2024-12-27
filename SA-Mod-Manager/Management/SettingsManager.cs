@@ -123,8 +123,15 @@ namespace SAModManager.Management
 			// TODO: Implement this.
 		}
 
+		public static void SaveSettings()
+		{
+			
+		}
+
 		/// <summary>
 		/// Saves a text file to the current game's mod directory that the mod loader uses to find the extlib folder.
+		/// 
+		/// Not currently used, but left in place if it ever becomes useful.
 		/// </summary>
 		public static void SaveAppDirectoryInfo()
 		{

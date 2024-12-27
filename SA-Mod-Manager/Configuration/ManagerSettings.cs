@@ -116,6 +116,23 @@ namespace SAModManager.Configuration
 		public AdvancedSettings() { }
 	}
 
+    public class GameEntry
+    {
+		public enum GameType
+		{
+			Unsupported = 0,
+			SADX = 1,
+			SA2 = 2
+		}
+
+		public string Name { get; set; }
+		public string Directory { get; set; }
+		public string Executable { get; set; }
+		public GameType Type { get; set; }
+
+		public GameEntry() { }
+	}
+
     public class ManagerSettings
     {
         /// <summary>
@@ -172,6 +189,11 @@ namespace SAModManager.Configuration
 
         //store game id installed 
         public List<uint> gamesInstalled { get; set; } = new();
+
+		/// <summary>
+		/// List of installed games.
+		/// </summary>
+		public List<GameEntry> GameEntries { get; set; } = new();
 
         public double managerWidth { get; set; }
         public double managerHeight { get; set; }

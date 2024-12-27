@@ -931,16 +931,10 @@ namespace SAModManager.Configuration.SADX
 				profileName += ".json";
 
 			// TODO: Fix this function
-			string path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
+			string path = Path.Combine(ProfileManager.GetProfilesDirectory(), profileName);
 			try
 			{
-				if (!Directory.Exists(App.CurrentGame.ProfilesDirectory))
-				{
-					App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
-					Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);	
-				}
-
-				if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+				if (Directory.Exists(ProfileManager.GetProfilesDirectory()))
 				{
 					if (profileName == "Default" || profileName == "Default.json")
 					{

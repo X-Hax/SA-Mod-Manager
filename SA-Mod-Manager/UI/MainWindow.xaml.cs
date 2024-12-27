@@ -74,6 +74,7 @@ namespace SAModManager
             InitializeComponent();
             UpdateDLLData();
             GraphicsManager.SetupGraphics();
+			ProfileManager.ValidateProfileFolder();
 
             try
             {
@@ -1592,10 +1593,6 @@ namespace SAModManager
             if (newSetup || Util.IsStringValid(sadxSettings.GamePath) == false)
                 sadxSettings.GamePath = tempPath;
 
-            // In Portable Mode (SA Manager EXE placed in game main folder), override the game folder specified in the profile.
-            if (Directory.Exists(Path.Combine(App.StartDirectory, "SAManager")) && File.Exists(Path.Combine(App.StartDirectory, App.CurrentGame.exeName)))
-                sadxSettings.GamePath = Path.GetFullPath(App.StartDirectory);
-
             if (!string.IsNullOrEmpty(sadxSettings.GamePath) && Directory.Exists(sadxSettings.GamePath))
             {
                 textGameDir.Text = Path.GetFullPath(sadxSettings.GamePath);
@@ -1625,10 +1622,6 @@ namespace SAModManager
 
             if (newSetup || Util.IsStringValid(sa2.GamePath) == false)
                 sa2.GamePath = tempPath;
-
-            // In Portable Mode (SA Manager EXE placed in game main folder), override the game folder specified in the profile.
-            if (Directory.Exists(Path.Combine(App.StartDirectory, "SAManager")) && File.Exists(Path.Combine(App.StartDirectory, App.CurrentGame.exeName)))
-                sa2.GamePath = Path.GetFullPath(App.StartDirectory);
 
             if (!string.IsNullOrEmpty(sa2.GamePath) && Directory.Exists(sa2.GamePath))
             {
@@ -1816,9 +1809,6 @@ namespace SAModManager
             // Build the Code Files.
             BuildCodeFiles();
 
-            // Create the Profiles Directory if it doesn't exist.
-            Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);
-
             // Save Game Settings here.
             switch (App.CurrentGame.id)
             {
@@ -1832,7 +1822,7 @@ namespace SAModManager
 
             // Save the Profiles file.
             ProfileManager.SaveProfiles();
-        }
+		}
 
         private void LoadCodesFromMods(SAModInfo inf, string mod)
         {
@@ -1940,8 +1930,6 @@ namespace SAModManager
                 new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle"), Lang.GetString("MessageWindow.Errors.ModNotFound") + modNotFound, MessageWindow.WindowType.Message, MessageWindow.Icons.Information, MessageWindow.Buttons.OK).ShowDialog();
 
         }
-
-
 
         private void LoadRegularModList()
         {
