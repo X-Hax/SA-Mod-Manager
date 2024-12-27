@@ -37,6 +37,10 @@
     <system:String x:Key="Manager.Tabs.Codes.MadeBy">Créer par</system:String>
     <!--#endregion-->
 
+    <!--Game-->
+    <system:String x:Key="Manager.Buttons.AddGame">Ajouter un Jeu...</system:String>
+    <!--#endregion-->
+
     <!--Mod About Window-->
     <system:String x:Key="AuthorSite">Site de l'Auteur</system:String>
     <system:String x:Key="ModSourceCode">Code Source du Mod</system:String>

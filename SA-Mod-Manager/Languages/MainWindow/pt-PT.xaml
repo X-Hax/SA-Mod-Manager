@@ -36,7 +36,11 @@
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Criado por</system:String>
 	<!--#endregion-->
 
-	<!--#region Manager Config Tab Strings-->
+    <!--Game-->
+    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <!--#endregion-->
+
+    <!--#region Manager Config Tab Strings-->
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Opções</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Temas:</system:String>

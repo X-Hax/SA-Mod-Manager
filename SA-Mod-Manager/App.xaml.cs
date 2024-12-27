@@ -21,6 +21,7 @@ using static TheArtOfDev.HtmlRenderer.Adapters.RGraphicsPath;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Text;
+using System.Collections.ObjectModel;
 using SAModManager.Management;
 
 namespace SAModManager
@@ -64,7 +65,7 @@ namespace SAModManager
         public static string CurrentChannel { get; set; } = string.IsNullOrEmpty(RepoCommit) ? UpdateChannels[0] : UpdateChannels[1];
 
         public static Game CurrentGame = new();
-        public static List<Game> GamesList = new();
+        public static ObservableCollection<Game> GamesList = new();
 
         [STAThread]
         /// <summary>
@@ -135,6 +136,15 @@ namespace SAModManager
 
         }
 
+        public static void UpdateAddNewGameItem()
+        {
+            if (App.GamesList.Count > 0)
+            {
+                App.GamesList.Remove(GamesInstall.AddGame);
+                App.GamesList.Add(GamesInstall.AddGame);
+                App.GamesList.Last().gameName = Lang.GetString("Manager.Buttons.AddGame");
+            }
+        }
         public static void SetupLanguages()
         {
             var resource = Current.TryFindResource("Languages");
@@ -474,7 +484,7 @@ namespace SAModManager
                                     changelog.AppendLine(string.Format("Revision {0}\n{1}\n", release.TagName, release.Body));
                                 }
                             }
-                  
+
 
                             return (hasUpdate, targetAsset, release.TagName, changelog);
 
