@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SAModManager.UI;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace SAModManager
 {
@@ -105,7 +107,6 @@ namespace SAModManager
     public static class GamesInstall
     {
 
-
         public static async Task InstallDLL_Loader(Game game, bool isupdate = false)
         {
             if (game is null || !File.Exists(Path.Combine(game?.gameDirectory, game?.exeName)))
@@ -118,45 +119,64 @@ namespace SAModManager
 
             try
             {
-                Uri uri = new(game.loader.URL + "\r\n");
-                var loader = new List<DownloadInfo>
-                {
-                    new DownloadInfo(game.loader.name, Path.GetFileName(game.loader.URL), game.modDirectory, uri, DownloadDialog.DLType.Install)
-                };
+                string url_releases = App.CurrentGame.loader.URL;
+                string text_releases = string.Empty;
+                string assetName = App.CurrentGame.loader.name + ".7z";
+                string mlverfile = App.CurrentGame.loader.mlverPath;
+                string currentTagName = File.Exists(mlverfile) ? File.ReadAllText(mlverfile) : App.CurrentGame.loader.defaultReleaseID;
 
-                var dl = new DownloadDialog(loader);
-                dl.StartDL();
+                if (!uint.TryParse(currentTagName, out uint currentID))
+                    currentID = uint.Parse(App.CurrentGame.loader.defaultReleaseID);
 
-                if (dl.errorCount > 0 && !isupdate)
+                var httpClient = UpdateHelper.HttpClient;
+                string apiUrl = App.CurrentGame.loader.URL;
+
+                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    if (!File.Exists(loaderPath))
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var release = JsonConvert.DeserializeObject<GitHubRelease>(responseBody);
+                    if (release != null && release.Assets != null)
                     {
-                        var offline = new OfflineInstall(game.loader.name);
-                        offline.Show();
-                        await Task.Delay(1000);
-                        bool success = Util.ExtractEmbeddedDLL(game.loader.data, game.loader.name, game.modDirectory);
-                        offline.CheckSuccess(success);
-                        File.WriteAllText(App.CurrentGame.loader.mlverPath, "offlineVersionInstalled");
-                        await Task.Delay(500);
-                        offline.Close();
+                        var targetAsset = release.Assets.FirstOrDefault(asset => asset.Name.Equals(assetName, StringComparison.OrdinalIgnoreCase));
+                        if (targetAsset != null)
+                        {
+
+                            if (uint.TryParse(release.TagName, out uint releaseID))
+                            {
+                                if (releaseID > currentID)
+                                {
+                                    await UpdateLoader(game, targetAsset.DownloadUrl, isupdate);
+                                    return;
+                                }
+                            }
+
+
+                        }
                     }
-                    else
-                    {
-                        dl.DisplayDownloadFailedMSG(null, game.loader.name);
-                    }
+     
                 }
                 else
                 {
-                    var lastCommit = await GitHub.GetLoaderHashCommit();
-                    if (lastCommit is not null)
-                    {
-                        File.WriteAllText(App.CurrentGame.loader.mlverPath, lastCommit);
-                    }
-                    else
-                    {
-                        File.WriteAllText(App.CurrentGame.loader.mlverPath, "loaderInstalledNoCommitIDFound");
-                    }
+                    ((MainWindow)App.Current.MainWindow)?.UpdateManagerStatusText("Error Install Loader: " + response.StatusCode);
                 }
+
+                //offline version
+                if (!File.Exists(loaderPath))
+                {
+                    var offline = new OfflineInstall(game.loader.name);
+                    offline.Show();
+                    await Task.Delay(700);
+                    Util.ExtractEmbedded7z(game.loader.name + ".7z", game.modDirectory);
+                    bool success = File.Exists(Path.Combine(game.modDirectory, game.loader.name + ".dll"));
+                    offline.CheckSuccess(success);
+
+                    await Task.Delay(500);
+                    offline.Close();
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -182,7 +202,7 @@ namespace SAModManager
             }
         }
 
-        public static async Task<bool> UpdateLoader(Game game, string dlLink)
+        public static async Task<bool> UpdateLoader(Game game, string dlLink, bool update = true)
         {
             if (game is null)
                 return false;
@@ -194,7 +214,7 @@ namespace SAModManager
                 string pathFinal = Path.Combine(game.modDirectory, fileName);
                 var loaderInfo = new List<DownloadInfo>
                 {
-                     new DownloadInfo(game.loader.name, fileName, game.modDirectory, uri, DownloadDialog.DLType.Update)
+                     new(game.loader.name, fileName, game.modDirectory, uri, update ? DownloadDialog.DLType.Update : DownloadDialog.DLType.Install)
                 };
 
                 var dl = new DownloadDialog(loaderInfo);
@@ -209,14 +229,14 @@ namespace SAModManager
 
                 dl.DownloadCompleted += () =>
                 {
-                    if (File.Exists(App.CurrentGame.loader.dataDllOriginPath))
+                    if (File.Exists(pathFinal))
                     {
                         bool retry = false;
                         do
                         {
                             try
                             {
-     
+
                                 success = true;
                                 retry = false;
                             }
@@ -234,11 +254,14 @@ namespace SAModManager
                 dl.StartDL();
                 if (success)
                 {
-                    List<string> excludeFile = new();
-                    excludeFile.Add("extlib");
+                    List<string> excludeFile = ["extlib"];
                     await Util.ExtractWExcludeFile(pathFinal, game.modDirectory, excludeFile);
                     await Util.ExtractSpecificFile(pathFinal, "extlib", App.ConfigFolder);
-                    File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+                    if (update)
+                        File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
+
+                    if (File.Exists(pathFinal))
+                        File.Delete(pathFinal);
                 }
                 return success;
             }
@@ -248,17 +271,6 @@ namespace SAModManager
             }
 
             return false;
-        }
-
-        private static async Task<bool> PerformOfflineInstall(Dependencies dependency)
-        {
-            var offline = new OfflineInstall(dependency.name);
-            offline.Show();
-            await Task.Delay(250);
-            offline.CheckSuccess(true);
-            await Task.Delay(250);
-            offline.Close();
-            return true;
         }
 
 

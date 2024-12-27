@@ -305,6 +305,7 @@ namespace SAModManager
 
         public static async Task<(bool, WorkflowRunInfo, GitHubArtifact)> GetArtifact()
         {
+     
             var workflowRun = await GitHub.GetLatestWorkflowRun();
 
             if (workflowRun is null)
@@ -312,6 +313,10 @@ namespace SAModManager
 
 
             bool hasUpdate = RepoCommit != workflowRun.HeadSHA;
+            
+            if (hasUpdate == false)
+                return (false, null, null);
+
 
             GitHubAction latestAction = await GitHub.GetLatestAction();
             GitHubArtifact info = null;
@@ -341,6 +346,12 @@ namespace SAModManager
             var update = await App.GetArtifact();
             if (update.Item2 is not null)
             {
+                string changelog = await GitHub.GetGitChangeLog(update.Item2.HeadSHA);
+                var manager = new InfoManagerUpdate(changelog, ".Dev");
+                manager.ShowDialog();
+
+                if (manager.DialogResult != true)
+                    return false;
 
                 Logger.Log("Now Installing Latest Dev Build Update ...");
 
@@ -626,25 +637,23 @@ namespace SAModManager
             string fullResourceName = assembly.GetName().Name + ".Resources." + resourceName;
 
             // Load the resource stream from the assembly
-            using (Stream stream = assembly.GetManifestResourceStream(fullResourceName))
+            using Stream stream = assembly.GetManifestResourceStream(fullResourceName);
+            // Check if the resource stream is found
+            if (stream == null)
             {
-                // Check if the resource stream is found
-                if (stream == null)
-                {
-                    Console.WriteLine($"Resource not found: {fullResourceName}");
-                    return null;
-                }
-
-                // Copy the resource stream to a temporary file
-                string tempFilePath = Path.GetTempFileName();
-                using (FileStream fileStream = File.Create(tempFilePath))
-                {
-                    stream.CopyTo(fileStream);
-                }
-
-                // Return the URI to the temporary file
-                return new Uri($"file://{tempFilePath}");
+                Console.WriteLine($"Resource not found: {fullResourceName}");
+                return null;
             }
+
+            // Copy the resource stream to a temporary file
+            string tempFilePath = Path.GetTempFileName();
+            using (FileStream fileStream = File.Create(tempFilePath))
+            {
+                stream.CopyTo(fileStream);
+            }
+
+            // Return the URI to the temporary file
+            return new Uri($"file://{tempFilePath}");
         }
 
         private static void LoadManagerConfig()

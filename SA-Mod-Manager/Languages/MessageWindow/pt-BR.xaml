@@ -33,8 +33,10 @@
 	
 	<system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Erro Carregando Código</system:String>
 	<system:String x:Key="MessageWindow.Errors.CodesListFailed">Erro carregando lista de códigos.</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Erros de Atualização</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodeBuildFail" xml:space="preserve">Failed to build {0}, this could be a permission issue.&#x0a;&#x0a;Advanced Error:&#x0a;{1}</system:String>
+
+
+    <system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Erros de Atualização</system:String>
 	<system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Os seguintes erros ocorrem durante a verificação de atualizações:&#x0a;&#x0a;</system:String>
 
     <system:String x:Key="MessageWindow.Errors.MissingManifest.Title">Mod faltando.manifest</system:String>

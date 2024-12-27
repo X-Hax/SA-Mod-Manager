@@ -123,6 +123,7 @@ namespace SAModManager
                 return;
             }
 
+
             SaveMod(moddir);
             ((MainWindow)Application.Current.MainWindow).Save();
             ((MainWindow)Application.Current.MainWindow).Refresh();
@@ -143,15 +144,18 @@ namespace SAModManager
         #region Properties Tab Functions
         private void nameBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            if (Util.IsStringValid(nameBox.Text))
+            if (Util.IsStringValid(nameBox.Text) && Util.IsValidFileName(nameBox.Text))
             {
                 modIDBox.Text = GenerateModID().Replace(" ", "");
 
                 if (editMod == false)
                     folderName = Path.Combine(App.CurrentGame.modDirectory, nameBox.Text);
+
+                UIHelper.EnableButton(ref okBtn);
             }
             else
             {
+                UIHelper.DisableButton(ref okBtn);
                 modIDBox.Text = string.Empty;
             }
         }

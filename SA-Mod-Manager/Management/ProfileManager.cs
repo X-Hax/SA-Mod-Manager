@@ -248,7 +248,7 @@ namespace SAModManager.Management
 		/// </summary>
 		public static void MigrateProfiles(bool deletesource = false)
         {
-            if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) == false)
+            if (Util.IsStringValid(App.CurrentGame.gameDirectory))
             {
                 string modPath = Path.Combine(App.CurrentGame.gameDirectory, "mods");
                 Util.CreateSafeDirectory(modPath);

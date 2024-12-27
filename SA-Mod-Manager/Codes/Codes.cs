@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAModManager.UI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -264,14 +265,15 @@ namespace SAModManager.Codes
         }
 
         [XmlElement("Code")]
-        public List<Code> Codes { get; set; } = new List<Code>();
+        public List<Code> Codes { get; set; } = [];
 
         public static void WriteDatFile(string path, IList<Code> codes)
         {
-            using (FileStream fs = File.Create(path))
-            using (BinaryWriter bw = new BinaryWriter(fs, Encoding.ASCII))
+            try
             {
-                bw.Write(new[] { 'c', 'o', 'd', 'e', 'v', '5' });
+                using FileStream fs = File.Create(path);
+                using BinaryWriter bw = new(fs, Encoding.ASCII);
+                bw.Write(['c', 'o', 'd', 'e', 'v', '5']);
                 bw.Write(codes.Count);
                 foreach (Code item in codes)
                 {
@@ -280,6 +282,11 @@ namespace SAModManager.Codes
                     WriteCodes(item.Lines, bw);
                 }
                 bw.Write(byte.MaxValue);
+            }
+            catch (Exception ex)
+            {
+                var msg = new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), string.Format(Lang.GetString("MessageWindow.Errors.CodeBuildFail"), path, ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK));
+                msg.ShowDialog();
             }
         }
 

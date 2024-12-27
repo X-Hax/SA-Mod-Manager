@@ -161,6 +161,8 @@ namespace SAModManager
                         {
                             await App.PerformUpdateAppLauncherCheck();
                         }
+
+                        Util.ClearTempFolder();
                     }
 
                     await CheckForModUpdates();
@@ -1349,15 +1351,19 @@ namespace SAModManager
 
         public void SetModManagerVersion()
         {
+            bool isPortable = Directory.Exists(Path.Combine(App.StartDirectory, "SAManager"));
+            string portable = isPortable ? " Portable" : "";
             if (string.IsNullOrEmpty(App.RepoCommit)) //release
             {
-                Title = titleName + " " + "(" + Version + ")";
+
+                Title = titleName + portable + " " + "(" + Version + ")";
             }
             else
             {
-                Title = titleName + " " + "(Dev Build - " + Version + " - " + App.RepoCommit[..7] + ")";
+                Title = titleName + portable + " " + "(Dev Build - " + Version + " - " + App.RepoCommit[..7] + ")";
 
             }
+
         }
 
         private void EnableUI(bool enable)
@@ -2587,13 +2593,15 @@ namespace SAModManager
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                 UIHelper.DisableButton(ref SaveAndPlayButton);
 
-                await GamesInstall.InstallDLL_Loader(App.CurrentGame); //first, we download and extract the loader DLL in the mods folder
+                await GamesInstall.InstallDLL_Loader(App.CurrentGame, false); //first, we download and extract the loader DLL in the mods folder
      
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                 //now we can move the loader files to the accurate folders.
                 await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
                 await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
                 await App.EnableOneClickInstall();
+                UpdateBtnInstallLoader_State();
+                UIHelper.EnableButton(ref btnInstallLoader);
                 UIHelper.EnableButton(ref SaveAndPlayButton);
 
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
@@ -2619,7 +2627,7 @@ namespace SAModManager
                     }
                     else //install normally
                     {
-                        await GamesInstall.InstallDLL_Loader(App.CurrentGame);
+                        await GamesInstall.InstallDLL_Loader(App.CurrentGame, false);
                         UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                         //now we can move the loader files to the accurate folders.
                         await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);

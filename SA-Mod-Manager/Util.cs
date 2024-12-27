@@ -17,6 +17,7 @@ using NetCoreInstallChecker.Structs.Config.Enum;
 using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.Readers;
+using SharpCompress.Archives.SevenZip;
 
 namespace SAModManager
 {
@@ -245,9 +246,6 @@ namespace SAModManager
                 return false;
             }
 
-            FileInfo fileInfo = new(outputFilePath);
-            return fileInfo is not null && fileInfo.Length > 0;
-        }
 
         private static string FindExePath(string exeName)
         {
@@ -468,6 +466,25 @@ namespace SAModManager
 
             await Task.Delay(150);
         }
+
+        public static void ExtractEmbedded7z(string resourceName, string outputDirectory)
+        {
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            string fullResourceName = assembly.GetName().Name + ".Resources." + resourceName;
+            using Stream resourceStream = assembly.GetManifestResourceStream(fullResourceName) ?? throw new InvalidOperationException($"Resource {resourceName} not found.");
+            using var archive = SevenZipArchive.Open(resourceStream);
+            foreach (var entry in archive.Entries)
+            {
+                if (!entry.IsDirectory)
+                {
+                    string outputPath = Path.Combine(outputDirectory, entry.Key);
+                    Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
+                    entry.WriteToFile(outputPath, new ExtractionOptions { ExtractFullPath = true, Overwrite = true });
+                }
+            }
+        }
+    
 
         public static async Task<bool> ExtractArchiveUsing7Zip(string path, string dest, List<string> excludeFolder = null, string specificFile = null)
         {
@@ -809,5 +826,24 @@ namespace SAModManager
         {
             return !string.IsNullOrEmpty(str) && !string.IsNullOrWhiteSpace(str);
         }
+
+        public static bool IsValidFileName(string filename)
+        {
+
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+
+            // Check if the filename contains any invalid characters eg ?, " etc.
+            foreach (char c in invalidChars)
+            {
+                if (filename.Contains(c))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
     }
 }

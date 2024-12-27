@@ -31,8 +31,10 @@
 	
 	<system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Ошибка загрузки читов</system:String>
 	<system:String x:Key="MessageWindow.Errors.CodesListFailed">В процессе загрузки списка читов возникла ошибка</system:String>
-	
-	<system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Ошибка обновления</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodeBuildFail" xml:space="preserve">Failed to build {0}, this could be a permission issue.&#x0a;&#x0a;Advanced Error:&#x0a;{1}</system:String>
+
+
+    <system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Ошибка обновления</system:String>
 	<system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Возникли следующие ошибки в процессе проверки обновлений:&#x0a;&#x0a;</system:String>
     <system:String x:Key="MessageWindow.Errors.D3D8Update">Не удалось обновить d3d8.dll</system:String>
     <system:String x:Key="MessageWindow.Errors.D3D8UpdateCheck">Не удалось проверить версию d3d8to9</system:String>
