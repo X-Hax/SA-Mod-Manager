@@ -1086,12 +1086,9 @@ namespace SAModManager
                     GamesInstall.AddMissingGamesList(game);
                 }
 
-                ComboGameSelection.ItemsSource = null;
-
                 tempPath = path;
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
                 suppressEvent = true;
-                ComboGameSelection.ItemsSource = App.GamesList;
                 ComboGameSelection.SelectedItem = game;
                 if (DoGameSwap(path))
                 {

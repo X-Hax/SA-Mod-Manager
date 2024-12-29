@@ -21,6 +21,7 @@ using static TheArtOfDev.HtmlRenderer.Adapters.RGraphicsPath;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Text;
+using System.Collections.ObjectModel;
 
 namespace SAModManager
 {
@@ -63,7 +64,7 @@ namespace SAModManager
         public static string CurrentChannel { get; set; } = string.IsNullOrEmpty(RepoCommit) ? UpdateChannels[0] : UpdateChannels[1];
 
         public static Game CurrentGame = new();
-        public static List<Game> GamesList = new();
+        public static ObservableCollection<Game> GamesList = new();
 
         [STAThread]
         /// <summary>
