@@ -1070,13 +1070,14 @@ namespace SAModManager
         #endregion
 
         #region Form: Manager Tab: Functions
-        private async Task ResultPickGame(string path)
+        private async Task<bool> ResultPickGame(string path)
         {
             var setGame = GamesInstall.SetGameInstallManual(path);
 
             if (setGame == SetGame.None)
             {
                 new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+                return false;
             }
             else
             {
@@ -1114,6 +1115,7 @@ namespace SAModManager
                 UIHelper.ToggleImgButton(ref btnBrowseGameDir, true);
                 suppressEvent = false;
                 Refresh();
+                return true;
             }
         }
 
@@ -1125,8 +1127,7 @@ namespace SAModManager
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                await ResultPickGame(dialog.SelectedPath);
-                return true;
+                return await ResultPickGame(dialog.SelectedPath);
             }
 
             return false;

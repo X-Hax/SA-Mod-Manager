@@ -246,6 +246,9 @@ namespace SAModManager
                 return false;
             }
 
+            return true;
+        }
+
 
         private static string FindExePath(string exeName)
         {
