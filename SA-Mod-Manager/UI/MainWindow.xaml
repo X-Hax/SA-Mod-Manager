@@ -10,7 +10,7 @@
 		mc:Ignorable="d"
 		Title="SA Mod Manager"
 		Style="{DynamicResource SAWindow}"
-		MinHeight="660" MinWidth="580" Width="640" Height="705" WindowStartupLocation="CenterScreen"
+		MinHeight="600" MinWidth="580" Width="640" Height="680" WindowStartupLocation="CenterScreen"
 		Loaded="MainWindowManager_Loaded" PreviewKeyDown="Window_PreviewKeyDown"
         Closed="MainForm_FormClosing">
 
@@ -485,7 +485,7 @@
 											<RowDefinition Height="38"/>
 											<RowDefinition Height="38"/>
 										</Grid.RowDefinitions>
-										<Button x:Name="btnAdvancedOptions" Grid.Row="0" Grid.Column="2" Margin="5" Click="btnAdvancedOptions_Click">
+										<Button x:Name="btnAdvancedOptions" IsEnabled="False" Grid.Row="0" Grid.Column="2" Margin="5" Click="btnAdvancedOptions_Click">
 											<StackPanel Orientation="Horizontal">
 												<Image Source="{StaticResource IconConfig}" Width="20"/>
 												<Rectangle Width="5"/>
