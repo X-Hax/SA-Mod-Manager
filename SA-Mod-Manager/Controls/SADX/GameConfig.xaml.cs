@@ -28,7 +28,7 @@ namespace SAModManager.Controls.SADX
 
 		bool suppressEvent = false;
 		private static string OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
-		private static string d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
+		private static string d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
 		private readonly double LowOpacityBtn = 0.7;
 		private static string patchesPath = null;
 		#endregion
@@ -538,7 +538,7 @@ namespace SAModManager.Controls.SADX
         public static void UpdateD3D8Paths()
         {
             OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
-            d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m", "d3d8m.dll");
+            d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
         }
 
         public void SavePatches(ref object input)

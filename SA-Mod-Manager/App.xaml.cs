@@ -38,7 +38,8 @@ namespace SAModManager
         public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
         public static readonly string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public static string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(StartDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
-        public static string extLibPath = Path.Combine(ConfigFolder, "extlib");
+        public static string oldExtLibPath = Path.Combine(ConfigFolder, "extlib"); //for migration
+        public static string extLibPath = oldExtLibPath; //will be updated if a game is set as new path use mods folder
         public static readonly string tempFolder = Path.Combine(StartDirectory, "SATemp");
         public static string crashFolder = Path.Combine(ConfigFolder, "CrashDump");
         public static bool isVanillaTransition = false; //used when installing the manager from an update
@@ -134,6 +135,24 @@ namespace SAModManager
             base.OnStartup(e);
             MainWindow.Show();
 
+        }
+
+        public static void UpdateDependenciesLocation()
+        {
+            if (Directory.Exists(App.extLibPath) == false && Directory.Exists(App.oldExtLibPath))
+            {
+                Util.CreateSafeDirectory(App.extLibPath);
+
+                foreach (string dirPath in Directory.GetDirectories(App.oldExtLibPath, "*", SearchOption.AllDirectories))
+                {
+                    Util.CreateSafeDirectory(dirPath.Replace(App.oldExtLibPath, App.extLibPath));
+                }
+
+                foreach (string newPath in Directory.GetFiles(App.oldExtLibPath, "*.*", SearchOption.AllDirectories))
+                {
+                    File.Copy(newPath, newPath.Replace(App.oldExtLibPath, App.extLibPath), true);
+                }
+            }
         }
 
         public static void UpdateAddNewGameItem()
