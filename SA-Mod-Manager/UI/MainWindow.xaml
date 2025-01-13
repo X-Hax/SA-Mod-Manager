@@ -384,7 +384,7 @@
 
 								</Grid>
 
-								<Grid Grid.Row="1" Margin="5" Height="45">
+								<Grid Grid.Row="1" Margin="5" Height="38">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="*"/>
@@ -424,7 +424,7 @@
 								<CheckBox x:Name="chkUpdateManager" Grid.Column="0" Grid.Row="0" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ManagerUpdates}"/>
 								<CheckBox x:Name="chkUpdatesML" Grid.Column="0" Grid.Row="1" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.LoaderUpdates}"/>
 								<CheckBox x:Name="chkUpdatesMods" Grid.Column="0" Grid.Row="2" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods}" IsChecked="True" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ModUpdates}"/>
-								<Button x:Name="btnCheckUpdates" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Margin="5" Height="40" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.CheckUpdates}">
+								<Button x:Name="btnCheckUpdates" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Margin="5" Height="36" Click="btnCheckUpdates_Click" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.CheckUpdates}">
 									<StackPanel Orientation="Horizontal">
 										<Image Source="{StaticResource IconUpdate}" Width="20"/>
 										<Rectangle Width="5"/>
@@ -481,9 +481,9 @@
 
 									<Grid Grid.Column="1">
 										<Grid.RowDefinitions>
-											<RowDefinition Height="46"/>
-											<RowDefinition Height="46"/>
-											<RowDefinition Height="46"/>
+											<RowDefinition Height="38"/>
+											<RowDefinition Height="38"/>
+											<RowDefinition Height="38"/>
 										</Grid.RowDefinitions>
 										<Button x:Name="btnAdvancedOptions" Grid.Row="0" Grid.Column="2" Margin="5" Click="btnAdvancedOptions_Click">
 											<StackPanel Orientation="Horizontal">
