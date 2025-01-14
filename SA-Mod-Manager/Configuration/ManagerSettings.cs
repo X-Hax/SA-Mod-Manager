@@ -8,6 +8,7 @@ using SAModManager.Configuration.SA2;
 using SAModManager.Configuration.SADX;
 using System.Collections.Generic;
 using System.Security.RightsManagement;
+using System.Text;
 
 namespace SAModManager.Configuration
 {
@@ -116,8 +117,8 @@ namespace SAModManager.Configuration
 		public AdvancedSettings() { }
 	}
 
-    public class GameEntry
-    {
+	public class GameEntry
+	{
 		public enum GameType
 		{
 			Unsupported = 0,
@@ -125,12 +126,50 @@ namespace SAModManager.Configuration
 			SA2 = 2
 		}
 
+		/// <summary>
+		/// Name of the <see cref="GameEntry"/>.
+		/// </summary>
 		public string Name { get; set; }
+
+		/// <summary>
+		/// Installation directory of the <see cref="GameEntry"/>.
+		/// </summary>
 		public string Directory { get; set; }
+
+		/// <summary>
+		/// Executable name for the <see cref="GameEntry"/>
+		/// </summary>
 		public string Executable { get; set; }
+
+		/// <summary>
+		/// <see cref="GameType"/> for the <see cref="GameEntry"/>.
+		/// </summary>
 		public GameType Type { get; set; }
 
 		public GameEntry() { }
+
+		public void Create(string executablePath)
+		{
+			Executable = Path.GetFileName(executablePath);
+			Directory = Path.GetDirectoryName(executablePath);
+
+			switch (Executable)
+			{
+				default:
+					Name = Path.GetFileNameWithoutExtension(Executable);
+					Type = GameType.Unsupported;
+					break;
+				case "sonic.exe":
+					Name = "Sonic Adventure DX";
+					Type = GameType.SADX;
+					break;
+				case "sonic2app.exe":
+				case "sonic2app_decrypted.exe":
+					Name = "Sonic Adventure 2";
+					Type = GameType.SA2;
+					break;
+			}
+		}
 	}
 
     public class ManagerSettings
