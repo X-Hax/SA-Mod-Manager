@@ -1820,16 +1820,12 @@ namespace SAModManager
 
         public void Save()
         {
-            // If the mods folder doesn't exist, don't save anything.
-            if (!Directory.Exists(App.CurrentGame.gameDirectory) || !Directory.Exists(App.CurrentGame.modDirectory))
+			// Save Manager Settings
+			SettingsManager.SaveSettings();
+
+			// If the mods folder doesn't exist, don't save anything.
+			if (!Directory.Exists(App.CurrentGame.gameDirectory) || !Directory.Exists(App.CurrentGame.modDirectory))
                 return;
-
-            // Save Manager Settings
-
-            App.ManagerSettings.CurrentSetGame = (int)App.CurrentGame?.id;
-            App.ManagerSettings.managerWidth = this.Width;
-            App.ManagerSettings.managerHeight = this.Height;
-            App.ManagerSettings.Serialize(App.ManagerConfigFile);
 
             UpdateManagerInfo();
 
@@ -2330,7 +2326,7 @@ namespace SAModManager
             if (!force && !Updater.UpdateHelper.UpdateTimeElapsed(App.ManagerSettings.UpdateSettings.UpdateCheckCount, App.ManagerSettings.UpdateSettings.UpdateTimeOutCD))
             {
                 UpdateHelper.HandleRefreshUpdateCD();
-                App.ManagerSettings.Serialize(App.ManagerConfigFile);
+				SettingsManager.SaveSettings();
                 return;
             }
 
@@ -2343,14 +2339,24 @@ namespace SAModManager
             {
                 App.ManagerSettings.UpdateSettings.UpdateCheckCount++;
                 UpdateHelper.HandleRefreshUpdateCD();
-                App.ManagerSettings.Serialize(App.ManagerConfigFile);
-            }
+				SettingsManager.SaveSettings();
+			}
         }
         #endregion
 
         #region Setup Bindings
         private void SetManagerBindings()
         {
+			this.SetBinding(Window.WidthProperty, new Binding("managerWidth")
+			{
+				Source = App.ManagerSettings,
+				Mode = BindingMode.TwoWay
+			});
+			this.SetBinding(Window.HeightProperty, new Binding("managerHeight")
+			{
+				Source = App.ManagerSettings,
+				Mode = BindingMode.TwoWay
+			});
             comboProfile.ItemsSource = App.Profiles.ProfilesList;
             comboProfile.DisplayMemberPath = "Name";
             comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")

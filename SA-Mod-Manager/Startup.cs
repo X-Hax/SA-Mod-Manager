@@ -1,4 +1,5 @@
-﻿using SAModManager.UI;
+﻿using SAModManager.Management;
+using SAModManager.UI;
 using SAModManager.Updater;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace SAModManager
             }
 
 
-            App.ManagerSettings.Serialize(App.ManagerConfigFile);
+			SettingsManager.SaveSettings();
             await Task.Delay(20);
         }
 

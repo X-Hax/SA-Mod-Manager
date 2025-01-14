@@ -7,6 +7,7 @@ using SAModManager.Configuration;
 using System.IO;
 using SAModManager;
 using System.Windows;
+using System.Runtime.CompilerServices;
 
 namespace SAModManager.Management
 {
@@ -52,11 +53,20 @@ namespace SAModManager.Management
 		}
 
 		/// <summary>
-		/// Initializes the Settings Manager.
+		/// Initializes the <see cref="SettingsManager"/> and loads the <see cref="ManagerSettings"/> file.
 		/// </summary>
 		public static void InitializeSettingsManager()
 		{
 			App.ManagerSettings = ManagerSettings.Deserialize(SettingsFile);
+		}
+
+		/// <summary>
+		/// Saves the <see cref="ManagerSettings"/> to the correct location based.
+		/// </summary>
+		public static void SaveSettings()
+		{
+			App.ManagerSettings.CurrentSetGame = (int)App.CurrentGame?.id;
+			App.ManagerSettings.Serialize(SettingsFile);
 		}
 
 		/// <summary>
@@ -123,10 +133,7 @@ namespace SAModManager.Management
 			// TODO: Implement this.
 		}
 
-		public static void SaveSettings()
-		{
-			
-		}
+
 
 		/// <summary>
 		/// Saves a text file to the current game's mod directory that the mod loader uses to find the extlib folder.
