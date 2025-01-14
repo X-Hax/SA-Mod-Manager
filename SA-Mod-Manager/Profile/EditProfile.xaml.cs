@@ -64,7 +64,7 @@ namespace SAModManager.Profile
 
             if (string.IsNullOrWhiteSpace(ProfileNameTextbox.Text) == false)
             {
-                if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename)))
+                if (File.Exists(Path.Combine(ProfileManager.GetProfilesDirectory(), profileFilename)))
                 {
                     new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                     return;

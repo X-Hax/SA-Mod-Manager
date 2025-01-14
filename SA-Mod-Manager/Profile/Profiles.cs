@@ -23,7 +23,7 @@ namespace SAModManager.Profile
         public string Filename { get; set; } = string.Empty;
 
 		[JsonIgnore]
-		public string Filepath { get { return Path.Combine(App.CurrentGame.modDirectory, ".profiles", Filename); } }
+		public string Filepath { get { return Path.Combine(ProfileManager.GetProfilesDirectory(), ".profiles", Filename); } }
 
         public ProfileEntry(string name, string filename)
         {
@@ -134,7 +134,7 @@ namespace SAModManager.Profile
                     {
                         if (entry is not null)
                         {
-                            if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, entry.Filename)))
+                            if (!File.Exists(Path.Combine(ProfileManager.GetProfilesDirectory(), entry.Filename)))
                             {
                                 list.Add(entry);
                             }
