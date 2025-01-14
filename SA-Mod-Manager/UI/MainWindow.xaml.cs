@@ -1682,12 +1682,12 @@ namespace SAModManager
 
         private void LoadGameSettings(bool newSetup = false)
         {
-            if (App.CurrentGame.id == SetGame.None || string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory))
+            if (App.CurrentGame.id == SetGame.None || string.IsNullOrEmpty(ProfileManager.GetProfilesDirectory()))
                 return;
 
             ProfileManager.ValidateProfiles();
 
-            string profilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, ProfileManager.GetCurrentProfile().Filename);
+            string profilePath = Path.Combine(ProfileManager.GetProfilesDirectory(), ProfileManager.GetCurrentProfile().Filename);
 
             switch (App.CurrentGame.id)
             {

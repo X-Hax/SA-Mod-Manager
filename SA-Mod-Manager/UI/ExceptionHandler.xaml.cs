@@ -1,4 +1,5 @@
-﻿using SAModManager.Profile;
+﻿using SAModManager.Management;
+using SAModManager.Profile;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -124,10 +125,10 @@ namespace SAModManager.UI
 			else
 				info.AppendLine("No Manager Settings File exists.");
 
-			if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json")))
+			if (File.Exists(Path.Combine(ProfileManager.GetProfilesDirectory(), "Profiles.json")))
 			{
-				Profiles profiles = Profiles.Deserialize(Path.Combine(App.CurrentGame.ProfilesDirectory, "Profiles.json"));
-				string profile = Path.Combine(App.CurrentGame.ProfilesDirectory, profiles.GetProfileFilename());
+				Profiles profiles = Profiles.Deserialize(Path.Combine(ProfileManager.GetProfilesDirectory(), "Profiles.json"));
+				string profile = Path.Combine(ProfileManager.GetProfilesDirectory(), profiles.GetProfileFilename());
 				info.AppendLine("```");
 				info.AppendLine($"{File.ReadAllText(profile)}");
 				info.AppendLine("```");

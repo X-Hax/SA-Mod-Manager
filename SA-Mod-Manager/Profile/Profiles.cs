@@ -126,7 +126,7 @@ namespace SAModManager.Profile
         {
             try
             {
-                if (!string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory) && !string.IsNullOrWhiteSpace(App.CurrentGame.ProfilesDirectory))
+                if (!string.IsNullOrEmpty(ProfileManager.GetProfilesDirectory()) && !string.IsNullOrWhiteSpace(ProfileManager.GetProfilesDirectory()))
                 {
                     List<ProfileEntry> list = [];
                     int count = 0;

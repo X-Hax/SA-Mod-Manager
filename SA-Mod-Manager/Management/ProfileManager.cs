@@ -250,7 +250,7 @@ namespace SAModManager.Management
         {
             if (Util.IsStringValid(App.CurrentGame.gameDirectory))
             {
-                string modPath = Path.Combine(App.CurrentGame.gameDirectory, "mods");
+                string modPath = App.CurrentGame.modDirectory;
                 Util.CreateSafeDirectory(modPath);
 
                 if (CheckProfileDirectory() && Directory.Exists(modPath))

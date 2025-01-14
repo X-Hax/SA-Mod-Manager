@@ -172,13 +172,13 @@ namespace SAModManager.Profile
             {
                 foreach (ProfileEntry profile in selection)
                 {
-                    string fullPath = Path.Combine(App.CurrentGame.ProfilesDirectory, profile.Filename);
+                    string fullPath = Path.Combine(ProfileManager.GetProfilesDirectory(), profile.Filename);
 
-                    string clonedName = CopyFileWithAutoRename(Path.Combine(App.CurrentGame.ProfilesDirectory, profile.Filename));
+                    string clonedName = CopyFileWithAutoRename(Path.Combine(ProfileManager.GetProfilesDirectory(), profile.Filename));
                     ProfileEntry clonedProfile = new(clonedName, clonedName + ".json");
 
                     if (File.Exists(fullPath))
-                        File.Copy(fullPath, Path.Combine(App.CurrentGame.ProfilesDirectory, clonedProfile.Filename), true);
+                        File.Copy(fullPath, Path.Combine(ProfileManager.GetProfilesDirectory(), clonedProfile.Filename), true);
 
 					App.Profiles.ProfilesList.Add(clonedProfile);
                 }
@@ -256,7 +256,7 @@ namespace SAModManager.Profile
                         Configuration.SADX.GameSettings settings = new();
                         Configuration.SA2.GameSettings settingsSA2 = new();
                         string newFileName = Path.GetFileNameWithoutExtension(file);
-                        string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
+                        string newFilePath = Path.Combine(ProfileManager.GetProfilesDirectory(), newFileName + ".json");
 
                         switch (Path.GetExtension(file))
                         {
@@ -305,7 +305,7 @@ namespace SAModManager.Profile
                                 if (entry.Name == newFileName)
                                 {
                                     newFileName = newFileName + " (" + i.ToString() + ")";
-                                    newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newFileName + ".json");
+                                    newFilePath = Path.Combine(ProfileManager.GetProfilesDirectory(), newFileName + ".json");
                                 }
                             }
 

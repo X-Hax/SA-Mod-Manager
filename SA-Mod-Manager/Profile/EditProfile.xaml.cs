@@ -109,7 +109,7 @@ namespace SAModManager.Profile
 
             if (profileName != string.Empty)
             {
-                if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileName + ".json")))
+                if (File.Exists(Path.Combine(ProfileManager.GetProfilesDirectory(), profileName + ".json")))
                 {
                     new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                     return;
