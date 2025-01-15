@@ -14,18 +14,11 @@ namespace SAModManager.Configuration
 {
     public enum ManagerSettingsVersions
     {
-        v0 = 0,
-        v1 = 1,
-		v2 = 2,
+        v0 = 0,	// V0: Pre-Release
+        v1 = 1,	// V1: Initial Release
+		v2 = 2,	// V2: Migrated to GameEntry system for managing game selection setup.
 
 		MAX,
-    }
-
-    public enum SetGame
-    {
-        None = 0,
-        SADX = 1,
-        SA2 = 2,
     }
 
     public class UpdateSettings
@@ -148,6 +141,14 @@ namespace SAModManager.Configuration
 
 		public GameEntry() { }
 
+		public GameEntry(Game game)
+		{
+			Name = game.gameName;
+			Directory = game.gameDirectory;
+			Executable = game.exeName;
+			Type = game.id;
+		}
+
 		public void Create(string executablePath)
 		{
 			Executable = Path.GetFileName(executablePath);
@@ -178,13 +179,13 @@ namespace SAModManager.Configuration
         /// Versioning for the Manager Settings file.
         /// </summary>
         [DefaultValue((int)ManagerSettingsVersions.MAX-1)]
-        public int SettingsVersion { get; set; } = (int)ManagerSettingsVersions.MAX-1;
+        public int SettingsVersion { get; set; } = (int)(ManagerSettingsVersions.MAX-1);
 
         /// <summary>
         /// Last Loaded Game
         /// </summary>
-        [DefaultValue((int)SetGame.None)]
-        public int CurrentSetGame { get; set; } = (int)SetGame.None;
+        [DefaultValue(-1)]
+        public int CurrentSetGame { get; set; } = -1;
 
         /// <summary>
         /// The set Theme for the Manager.
@@ -226,9 +227,6 @@ namespace SAModManager.Configuration
 		/// </summary>
 		//public AdvancedSettings AdvancedSettings { get; set; } = new();
 
-        //store game id installed 
-        public List<uint> gamesInstalled { get; set; } = new();
-
 		/// <summary>
 		/// List of installed games.
 		/// </summary>
@@ -252,7 +250,18 @@ namespace SAModManager.Configuration
                 {
                     string jsonContent = File.ReadAllText(path);
 
-                    return JsonSerializer.Deserialize<ManagerSettings>(jsonContent);
+					ManagerSettings settings = JsonSerializer.Deserialize<ManagerSettings>(jsonContent);
+
+					// Switch case to bump settings version. Allows for manual adjustment if needed for any version bumps.
+					switch (settings.SettingsVersion)
+					{
+						default:
+							if (settings.SettingsVersion < (int)(ManagerSettingsVersions.MAX - 1))
+								settings.SettingsVersion = (int)(ManagerSettingsVersions.MAX - 1);
+							break;
+					}
+
+                    return settings;
                 }
                 else
                 {

@@ -456,7 +456,7 @@ namespace SAModManager.Controls.SADX
             list.Items.Clear();
 
             var patches = PatchesList.Deserialize(patchesPath);
-            bool isListEmpty = set.EnabledGamePatches.Count == 0;
+            bool isListEmpty = (set.EnabledGamePatches.Count <= 0);
 
             if (patches is not null)
             {

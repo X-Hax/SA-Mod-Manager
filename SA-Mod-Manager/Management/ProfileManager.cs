@@ -99,13 +99,13 @@ namespace SAModManager.Management
 
 			switch (App.CurrentGame.id)
 			{
-				case SetGame.SADX:
+				case GameEntry.GameType.SADX:
 					Configuration.SADX.GameSettings sadxSettings = new();
 					SADXLoaderInfo sadxLoader = IniSerializer.Deserialize<SADXLoaderInfo>(sourceFile);
                     sadxSettings.ConvertFromV0(sadxLoader);
 					sadxSettings.Serialize(destFile);
 					break;
-				case SetGame.SA2:
+				case GameEntry.GameType.SA2:
 					Configuration.SA2.GameSettings sa2Settings = new();
 					SA2LoaderInfo sa2Loader = IniSerializer.Deserialize<SA2LoaderInfo>(sourceFile);
 					sa2Settings.ConvertFromV0(sa2Loader);
@@ -140,11 +140,11 @@ namespace SAModManager.Management
 		{
 			switch (App.CurrentGame.id)
 			{
-				case SetGame.SADX:
+				case GameEntry.GameType.SADX:
 					Configuration.SADX.GameSettings sadxSettings = gameSettings as Configuration.SADX.GameSettings;
 					sadxSettings.Serialize(name);
 					break;
-				case SetGame.SA2:
+				case GameEntry.GameType.SA2:
 					Configuration.SA2.GameSettings sa2Settings = gameSettings as Configuration.SA2.GameSettings;
 					sa2Settings.Serialize(name);
 					break;
@@ -277,11 +277,11 @@ namespace SAModManager.Management
 
 								switch (App.CurrentGame.id)
 								{
-									case SetGame.SADX:
+									case GameEntry.GameType.SADX:
 										Configuration.SADX.GameSettings sadxSettings = new();
 										sadxSettings.Serialize(destFile);
 										break;
-									case SetGame.SA2:
+									case GameEntry.GameType.SA2:
 										Configuration.SA2.GameSettings sa2Settings = new();
 										sa2Settings.Serialize(destFile);
 										break;
@@ -375,6 +375,9 @@ namespace SAModManager.Management
 		/// </summary>
 		public static void ValidateProfileFolder()
 		{
+			if (App.CurrentGame?.id == GameEntry.GameType.Unsupported)
+				return;
+
 			if (!Directory.Exists(ProfilesDirectory) && ProfilesDirectory.Length > 0)
 			{
 				// As we are validating the new folder, we are also going with the simplest solution.

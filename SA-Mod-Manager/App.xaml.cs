@@ -691,18 +691,25 @@ namespace SAModManager
 
             if (ManagerSettings is not null)
             {
-                switch (ManagerSettings.CurrentSetGame)
-                {
-                    case (int)SetGame.None:
-                        CurrentGame = GamesInstall.Unknown;
-                        break;
-                    case (int)SetGame.SADX:
-                        CurrentGame = GamesInstall.SonicAdventure;
-                        break;
-                    case (int)SetGame.SA2:
-                        CurrentGame = GamesInstall.SonicAdventure2;
-                        break;
-                }
+				if (ManagerSettings.GameEntries.Count() > 0)
+				{
+					switch (SettingsManager.GetCurrentGame().Type)
+					{
+						case GameEntry.GameType.Unsupported:
+							CurrentGame = GamesInstall.Unknown;
+							break;
+						case GameEntry.GameType.SADX:
+							CurrentGame = GamesInstall.SonicAdventure;
+							CurrentGame.gameDirectory = SettingsManager.GetCurrentGame().Directory;
+							break;
+						case GameEntry.GameType.SA2:
+							CurrentGame = GamesInstall.SonicAdventure2;
+							CurrentGame.gameDirectory = SettingsManager.GetCurrentGame().Directory;
+							break;
+					}
+				}
+				else
+					CurrentGame = GamesInstall.Unknown;
             }
         }
 

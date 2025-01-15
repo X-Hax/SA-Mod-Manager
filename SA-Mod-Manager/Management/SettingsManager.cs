@@ -65,8 +65,18 @@ namespace SAModManager.Management
 		/// </summary>
 		public static void SaveSettings()
 		{
-			App.ManagerSettings.CurrentSetGame = (int)App.CurrentGame?.id;
+			App.ManagerSettings.GameEntries.Clear();
+			foreach (var game in App.GamesList)
+			{
+				if (game.id != GameEntry.GameType.Unsupported)
+					App.ManagerSettings.GameEntries.Add(new GameEntry(game));
+			}
 			App.ManagerSettings.Serialize(SettingsFile);
+		}
+
+		public static GameEntry GetCurrentGame()
+		{
+			return App.ManagerSettings.GameEntries[App.ManagerSettings.CurrentSetGame];
 		}
 
 		/// <summary>
@@ -132,8 +142,6 @@ namespace SAModManager.Management
 		{
 			// TODO: Implement this.
 		}
-
-
 
 		/// <summary>
 		/// Saves a text file to the current game's mod directory that the mod loader uses to find the extlib folder.

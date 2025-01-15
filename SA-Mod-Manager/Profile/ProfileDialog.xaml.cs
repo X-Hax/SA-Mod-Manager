@@ -265,7 +265,7 @@ namespace SAModManager.Profile
                                 {
                                     switch (App.CurrentGame.id)
                                     {
-                                        case SetGame.SADX:
+                                        case GameEntry.GameType.SADX:
                                             settings = Configuration.SADX.GameSettings.Deserialize(file);
                                             if (settings.Graphics == null)
                                             {
@@ -273,7 +273,7 @@ namespace SAModManager.Profile
                                                 throw new Exception();
                                             }
                                             break;
-                                        case SetGame.SA2:
+                                        case GameEntry.GameType.SA2:
                                             settingsSA2 = Configuration.SA2.GameSettings.Deserialize(file);
                                             if (settingsSA2.Graphics == null)
                                             {

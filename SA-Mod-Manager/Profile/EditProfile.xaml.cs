@@ -72,7 +72,7 @@ namespace SAModManager.Profile
 
                 switch (App.CurrentGame.id)
                 {
-                    case SetGame.SADX:
+                    case GameEntry.GameType.SADX:
                         Configuration.SADX.GameSettings sadxSettings = new()
                         {
                             GamePath = App.CurrentGame.gameDirectory,
@@ -84,7 +84,7 @@ namespace SAModManager.Profile
                         }
                         ProfileManager.AddNewProfile(profileName, sadxSettings);
                         break;
-                    case SetGame.SA2:
+                    case GameEntry.GameType.SA2:
                         Configuration.SA2.GameSettings sa2Settings = new()
                         {
                             GamePath = App.CurrentGame.gameDirectory,

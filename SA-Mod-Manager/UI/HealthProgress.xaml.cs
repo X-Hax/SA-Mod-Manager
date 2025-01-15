@@ -29,9 +29,9 @@ namespace SAModManager.UI
         public static List<FileStatus> Fails { get; set; } = new();
 
         public bool Failed = false;
-        SetGame game = SetGame.SADX;
+		GameEntry.GameType game = GameEntry.GameType.Unsupported;
 
-        public HealthChecker(SetGame game)
+        public HealthChecker(GameEntry.GameType game)
         {
             InitializeComponent();
             this.game = game;
@@ -257,13 +257,13 @@ namespace SAModManager.UI
                 switch (game)
                 {
                     default:
-                    case SetGame.SADX:
+                    case GameEntry.GameType.SADX:
                         using (MemoryStream stream = new(Properties.Resources.SADXFileHashes))
                         {
                             Files = IniSerializer.Deserialize<Dictionary<int, HealthInfo>>(IniFile.Load(stream));
                         }
                         break;
-                    case SetGame.SA2:
+                    case GameEntry.GameType.SA2:
                         using (MemoryStream stream = new(Properties.Resources.SA2FileHashes))
                         {
                             Files = IniSerializer.Deserialize<Dictionary<int, HealthInfo>>(IniFile.Load(stream));
@@ -284,7 +284,7 @@ namespace SAModManager.UI
 
                         FileStatus status;
 
-                        if (game == SetGame.SADX && file.Value.Filename.Equals("sonic.exe", StringComparison.CurrentCultureIgnoreCase))
+                        if (game == GameEntry.GameType.SADX && file.Value.Filename.Equals("sonic.exe", StringComparison.CurrentCultureIgnoreCase))
                         {
                             status = SADXExecutableCheck(file);
                         }
@@ -297,10 +297,10 @@ namespace SAModManager.UI
                         {
                             switch (game)
                             {
-                                case SetGame.SADX:
+                                case GameEntry.GameType.SADX:
                                     SADXRecheck(status, file.Value);
                                     break;
-                                case SetGame.SA2:
+                                case GameEntry.GameType.SA2:
                                     SA2Recheck(status, file.Value);
                                     break;
                             }
