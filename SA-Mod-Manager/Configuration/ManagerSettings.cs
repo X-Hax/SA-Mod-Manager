@@ -116,7 +116,7 @@ namespace SAModManager.Configuration
 		{
 			Unsupported = 0,
 			SADX = 1,
-			SA2 = 2
+			SA2 = 2,
 		}
 
 		/// <summary>

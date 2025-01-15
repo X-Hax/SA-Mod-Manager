@@ -424,7 +424,7 @@ namespace SAModManager
                 var game = GetGamePerID(entry.Type);
                 if (entry.Type > 0 && App.GamesList.Contains(game) == false && game != null)
                 {
-                    App.GamesList.Add(game);
+                    App.GamesList.Insert((App.GamesList.Count-1),game);
                 }
             }
         }
@@ -497,7 +497,7 @@ namespace SAModManager
                     Logger.Log("Checking for: " + path);
                     if (File.Exists(path))
                     {
-                        App.GamesList.Add(game);
+                        App.GamesList.Insert((App.GamesList.Count-1),game);
                         AddMissingGamesList(game);
                     }
                 }
@@ -514,7 +514,7 @@ namespace SAModManager
                         if (Directory.Exists(gameInstallPath) && !App.GamesList.Contains(game))
                         {
                             Logger.Log("Found Game!");
-                            App.GamesList.Add(game);
+                            App.GamesList.Insert((App.GamesList.Count-1),game);
                             AddMissingGamesList(game);
                         }
 

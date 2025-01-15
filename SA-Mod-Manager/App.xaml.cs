@@ -26,47 +26,50 @@ using SAModManager.Management;
 
 namespace SAModManager
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    /// 
+	/// <summary>
+	/// Interaction logic for App.xaml
+	/// </summary>
+	/// 
 
-    public partial class App : Application
-    {
-        private const string pipeName = "sa-mod-manager";
-        public static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
-        public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
-        public static readonly string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        public static string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(StartDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
-        public static string oldExtLibPath = Path.Combine(ConfigFolder, "extlib"); //for migration
-        public static string extLibPath = oldExtLibPath; //will be updated if a game is set as new path use mods folder
-        public static readonly string tempFolder = Path.Combine(StartDirectory, "SATemp");
-        public static string crashFolder = Path.Combine(ConfigFolder, "CrashDump");
-        public static bool isVanillaTransition = false; //used when installing the manager from an update
-        public static bool isFirstBoot = false; //used when installing the new manager manually
-        public static bool isLinux = false;
-        public static bool CancelUpdate = false;
-        public static bool isDebug = false;
+	public partial class App : Application
+	{
+		private const string pipeName = "sa-mod-manager";
+		public static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
+		public static string VersionString = $"{Version.Major}.{Version.Minor}.{Version.Revision}";
+		public static readonly string StartDirectory = AppDomain.CurrentDomain.BaseDirectory;
+		public static string ConfigFolder = Directory.Exists(Path.Combine(StartDirectory, "SAManager")) ? Path.Combine(StartDirectory, "SAManager") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SAManager");
+		public static string oldExtLibPath = Path.Combine(ConfigFolder, "extlib"); //for migration
+		public static string extLibPath = oldExtLibPath; //will be updated if a game is set as new path use mods folder
+		public static readonly string tempFolder = Path.Combine(StartDirectory, "SATemp");
+		public static string crashFolder = Path.Combine(ConfigFolder, "CrashDump");
+		public static bool isVanillaTransition = false; //used when installing the manager from an update
+		public static bool isFirstBoot = false; //used when installing the new manager manually
+		public static bool isLinux = false;
+		public static bool CancelUpdate = false;
+		public static bool isDebug = false;
 
-        public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
-        public static ManagerSettings ManagerSettings { get; set; }
-        public static Profiles Profiles { get; set; }
+		public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
+		public static ManagerSettings ManagerSettings { get; set; }
+		public static Profiles Profiles { get; set; }
 
-        private static readonly Mutex mutex = new(true, pipeName);
-        public static Updater.UriQueue UriQueue;
-        public static string RepoCommit = SAModManager.Properties.Resources.Version.Trim();
+		private static readonly Mutex mutex = new(true, pipeName);
+		public static Updater.UriQueue UriQueue;
+		public static string RepoCommit = SAModManager.Properties.Resources.Version.Trim();
 
-        public static LangEntry CurrentLang { get; set; }
-        public static LanguageList LangList { get; set; }
+		public static LangEntry CurrentLang { get; set; }
+		public static LanguageList LangList { get; set; }
 
-        public static ThemeEntry CurrentTheme { get; set; }
-        public static bool IsLightTheme = false;
-        public static ThemeList ThemeList { get; set; }
-        public static List<string> UpdateChannels { get; set; } = ["Release", "Development"];
-        public static string CurrentChannel { get; set; } = string.IsNullOrEmpty(RepoCommit) ? UpdateChannels[0] : UpdateChannels[1];
+		public static ThemeEntry CurrentTheme { get; set; }
+		public static bool IsLightTheme = false;
+		public static ThemeList ThemeList { get; set; }
+		public static List<string> UpdateChannels { get; set; } = ["Release", "Development"];
+		public static string CurrentChannel { get; set; } = string.IsNullOrEmpty(RepoCommit) ? UpdateChannels[0] : UpdateChannels[1];
 
-        public static Game CurrentGame = new();
-        public static ObservableCollection<Game> GamesList = new();
+		public static Game CurrentGame = new();
+		public static ObservableCollection<Game> GamesList = new
+			([
+				GamesInstall.AddGame
+			]);
 
         [STAThread]
         /// <summary>
@@ -155,15 +158,6 @@ namespace SAModManager
             }
         }
 
-        public static void UpdateAddNewGameItem()
-        {
-            if (App.GamesList.Count > 0)
-            {
-                App.GamesList.Remove(GamesInstall.AddGame);
-                App.GamesList.Add(GamesInstall.AddGame);
-                App.GamesList.Last().gameName = Lang.GetString("Manager.Buttons.AddGame");
-            }
-        }
         public static void SetupLanguages()
         {
             var resource = Current.TryFindResource("Languages");

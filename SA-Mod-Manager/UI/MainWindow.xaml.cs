@@ -100,15 +100,6 @@ namespace SAModManager
             StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
             GamesInstall.AddGamesInstall();
 
-            if (App.GamesList.Count == 0)
-            {
-                App.GamesList.Add(GamesInstall.Unknown);
-                GamesInstall.AddMissingGamesList(GamesInstall.Unknown);
-            }
-
-            //option to add game for users
-            App.UpdateAddNewGameItem();
-
             SetModManagerVersion();
 
             if (App.isFirstBoot)
@@ -1094,9 +1085,8 @@ namespace SAModManager
                     Clone = game.Clone();
                     if (isMultipleInstall)
                         Clone.gameName += " (" + GamesInstall.GetMultipleGamesInstallCount(game, path).ToString() + ")";
-                    App.GamesList.Add(Clone);
+                    App.GamesList.Insert((App.GamesList.Count-1),Clone);
                     GamesInstall.AddMissingGamesList(game);
-                    App.UpdateAddNewGameItem();
                 }
 
                 tempPath = path;
@@ -1288,9 +1278,6 @@ namespace SAModManager
             App.SwitchLanguage();
             UpdateBtnInstallLoader_State();
             FlowDirectionHelper.UpdateFlowDirection();
-            App.UpdateAddNewGameItem();
-
-
         }
 
         private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
@@ -2875,18 +2862,22 @@ namespace SAModManager
         {
             if (suppressEvent)
                 return;
-
        
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
             {
-                if (ComboGameSelection.SelectedItem == GamesInstall.AddGame)
-                {
-                    if (await AddGameManually() == false)
-                        ComboGameSelection.SelectedItem = App.CurrentGame;
-
-                    return;
-                }
-                else
+				Game entry = ComboGameSelection.SelectedItem as Game;
+				if (entry == GamesInstall.AddGame)
+				{
+					if (await AddGameManually())
+					{
+						// Do stuff if it adds it successfully
+					}
+					else
+					{
+						ComboGameSelection.SelectedItem = App.CurrentGame;
+					}
+				}
+				else
                 {
                     bool foundGame = DoGameSwap();
 
