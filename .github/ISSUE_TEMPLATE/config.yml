@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: SADX Mod Loader Issue Reporting
+    url: https://github.com/X-Hax/sadx-mod-loader/issues
+    about: Issues with SADX involving the Mod Loader should be reported here.
+  - name: SA2 Mod Loader Issue Reporting
+    url: https://github.com/X-Hax/sa2-mod-loader/issues
+    about: Issues with SA2 involving the Mod Loader should be reported here.

@@ -1,0 +1,17 @@
+name: "Feature Request"
+description: "Request new features or alterations to the program here. Please be mindful that while you can make a request, we will not always accept it as it may not align with features we need and/or want."
+title: "[Feature Request]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    attributes:
+      label: Request Details
+      description: Please explain what the feature is you're requesting.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional Information
+      description: If you have any additional information you would like to provide, please do so here. You can include screenshots by highlighting the box and dragging in your images.
+    validations:
+      required: false

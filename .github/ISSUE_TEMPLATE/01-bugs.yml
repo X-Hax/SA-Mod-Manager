@@ -1,0 +1,50 @@
+name: "Bug Report"
+description: "File a Bug Report"
+title: "[Bug Report]: "
+labels: ["bug"]
+body:
+- type: checkboxes
+  attributes:
+	label: Is this report for the Mod Manager?
+	description: Please confirm that this report you are submitting is for the Mod Manager. If it is for game crashes pertaining to the Mod Loader, please report those to the corresponding repository. If it's a mod related issue, please report that to the mod developer.
+	options:
+	- label: This report is for a bug with the SA Mod Manager.
+	  required: true
+- type: checkboxes
+  attributes:
+	label: Is there an existing issue for your report?
+	description: Please search the Issues to ensure that your report has not been reported before.
+	options:
+	- label: I have checked and this issue has not been reported.
+	  required: true
+- type: textarea
+  attributes:
+	label: Bug Description
+	description: Please provide a clear and concise description of the bug you're experiencing.
+  validations:
+	required: true
+- type: textarea
+  attributes:
+	label: Reproduction Steps
+	description: Please provide the steps you were taking when the bug occurred.
+	value: |
+	  1. 
+	  2. 
+	  3. 
+	  ...
+	validations:
+	  required: true
+- type: textarea
+  attributes:
+	label: Operating System
+	description: Please provide what your operating system is.
+	placeholder: e.g. Windows 10, Linux Mint, MacOS, SteamOS (SteamDeck), etc.
+  validations:
+	required: true
+- type: textarea
+  attributes:
+	label: Additional Information
+	description: Please provide any additional information you believe may pertain to this bug.
+	Tip: You can provide screenshots, videos, and any potential logs by clicking this area to highlight it, then dragging the file(s) in.
+  validations:
+	required: false
