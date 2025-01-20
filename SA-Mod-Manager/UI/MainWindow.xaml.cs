@@ -55,7 +55,7 @@ namespace SAModManager
         List<Code> codes = null;
         protected Timer StatusTimer;
         public List<CodeData> codesSearch { get; set; }
-        bool suppressEvent = false;
+        public bool suppressEvent = false;
         private bool manualModUpdate;
         readonly Updater.ModUpdater modUpdater = new();
         private DebugSettings gameDebugSettings = new();
@@ -99,7 +99,6 @@ namespace SAModManager
 
             StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
             GamesInstall.AddGamesInstall();
-
             SetModManagerVersion();
 
             if (App.isFirstBoot)
@@ -152,7 +151,7 @@ namespace SAModManager
                             await App.PerformUpdateLoaderCheck();
                         }
 
-                        if (App.CurrentGame.id == SetGame.SADX)
+                        if (App.CurrentGame.id == GameEntry.GameType.SADX)
                         {
                             await App.PerformUpdateAppLauncherCheck();
                         }
@@ -171,8 +170,14 @@ namespace SAModManager
             }
             App.isVanillaTransition = false;
             UIHelper.ToggleButton(ref btnCheckUpdates, true);
+
+            suppressEvent = true;
+            App.GamesList.Add(GamesInstall.AddGame);
+            ComboGameSelection.SelectedItem = App.CurrentGame;
             // Save Manager Settings
             Save();
+            suppressEvent = false;
+
         }
 
         private void MainForm_FormClosing(object sender, EventArgs e)
@@ -1072,6 +1077,7 @@ namespace SAModManager
             }
             else
             {
+                App.GamesList.Remove(GamesInstall.AddGame);
                 UIHelper.ToggleImgButton(ref btnBrowseGameDir, false);
                 UIHelper.ToggleImgButton(ref btnProfileSettings, false);
                 App.CancelUpdate = true;
@@ -1082,11 +1088,19 @@ namespace SAModManager
 
                 if (App.GamesList.Contains(game) == false || isMultipleInstall)
                 {
-                    Clone = game.Clone();
                     if (isMultipleInstall)
+                    {
+                        Clone = game.Clone();
                         Clone.gameName += " (" + GamesInstall.GetMultipleGamesInstallCount(game, path).ToString() + ")";
-                    App.GamesList.Insert((App.GamesList.Count-1),Clone);
-                    GamesInstall.AddMissingGamesList(game);
+                        Clone.gameDirectory = path;
+                        App.GamesList.Add(Clone);
+                        GamesInstall.AddMissingGamesList(Clone);
+                    }
+                    else
+                    {
+                        game.gameDirectory = path;
+                        GamesInstall.AddMissingGamesList(game);
+                    }
                 }
 
                 tempPath = path;
@@ -1094,7 +1108,7 @@ namespace SAModManager
                 suppressEvent = true;
        
                 ComboGameSelection.SelectedItem = Clone is null ? game : Clone;
-                if (DoGameSwap(path))
+                if (DoGameSwap((Game)ComboGameSelection.SelectedItem, path))
                 {
                     await ForceInstallLoader();
                     SetBindings();
@@ -1103,6 +1117,7 @@ namespace SAModManager
                 UpdateButtonsState();
                 UIHelper.ToggleImgButton(ref btnProfileSettings, true);
                 UIHelper.ToggleImgButton(ref btnBrowseGameDir, true);
+                App.GamesList.Add(GamesInstall.AddGame);
                 suppressEvent = false;
                 Refresh();
                 return true;
@@ -2825,7 +2840,7 @@ namespace SAModManager
         public void ComboGameSelection_SetNewItem(Game game)
         {
             ComboGameSelection.SelectedItem = game;
-            ComboGameSelection_SelectionChanged(null, null);
+           // ComboGameSelection_SelectionChanged(null, null);
         }
 
         private async Task FirstBootInstallLoader()
@@ -2839,19 +2854,31 @@ namespace SAModManager
             }
         }
 
-        private bool DoGameSwap(string newPath = null)
+        private bool DoGameSwap(Game newGame = null, string newPath = null)
         {
             App.CancelUpdate = true;
-            foreach (var game in GamesInstall.GetSupportedGames())
+            if (newGame is not null)
             {
-                if (game == ComboGameSelection.SelectedItem && App.GamesList.Contains(game))
+                EnabledMods.Clear();
+                EnabledCodes.Clear();
+                App.CurrentGame = newGame;
+                GamesInstall.HandleGameSwap(newGame, newPath);
+                Load(newPath is not null);
+                return true;
+            }
+            else
+            {
+                foreach (var game in GamesInstall.GetSupportedGames())
                 {
-                    EnabledMods.Clear();
-                    EnabledCodes.Clear();
-                    App.CurrentGame = game;
-                    GamesInstall.HandleGameSwap(game, newPath);
-                    Load(newPath is not null);
-                    return true;
+                    if (game == ComboGameSelection.SelectedItem && App.GamesList.Contains(game))
+                    {
+                        EnabledMods.Clear();
+                        EnabledCodes.Clear();
+                        App.CurrentGame = game;
+                        GamesInstall.HandleGameSwap(game, newPath);
+                        Load(newPath is not null);
+                        return true;
+                    }
                 }
             }
 
@@ -2870,8 +2897,10 @@ namespace SAModManager
 				{
 					if (await AddGameManually())
 					{
-						// Do stuff if it adds it successfully
-					}
+                 
+
+                        // Do stuff if it adds it successfully
+                    }
 					else
 					{
 						ComboGameSelection.SelectedItem = App.CurrentGame;

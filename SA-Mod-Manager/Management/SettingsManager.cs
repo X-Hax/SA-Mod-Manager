@@ -76,7 +76,7 @@ namespace SAModManager.Management
 
 		public static GameEntry GetCurrentGame()
 		{
-			return App.ManagerSettings.GameEntries[App.ManagerSettings.CurrentSetGame];
+            return App.ManagerSettings.GameEntries[App.ManagerSettings.CurrentSetGame];
 		}
 
 		/// <summary>

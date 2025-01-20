@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using SAModManager.UI;
 using Newtonsoft.Json;
 using System.Net.Http;
+using SharpCompress;
 
 namespace SAModManager
 {
@@ -72,7 +73,9 @@ namespace SAModManager
 
         public Game Clone()
         {
-            return (Game)this.MemberwiseClone();
+            Game clone = (Game)this.MemberwiseClone();
+            GamesInstall.UpdateSupportedGameList(clone);
+            return clone;
         }
     }
 
@@ -400,11 +403,27 @@ namespace SAModManager
             },
         };
 
+        private static readonly List<Game> _supportedGames = new List<Game>
+        {
+            SonicAdventure,
+            SonicAdventure2
+        };
+
+        public static void UpdateSupportedGameList(Game newGame)
+        {
+            _supportedGames.Add(newGame);
+        }
+
         public static IEnumerable<Game> GetSupportedGames()
+        {
+            return _supportedGames;
+        }
+
+        /*public static IEnumerable<Game> GetSupportedGames()
         {
             yield return SonicAdventure;
             yield return SonicAdventure2;
-        }
+        }*/
 
         public static Game GetGamePerID(GameEntry.GameType gameID)
         {
@@ -431,7 +450,7 @@ namespace SAModManager
 
         public static void AddMissingGamesList(Game game)
         {
-			GameEntry entry = new GameEntry(game);
+			GameEntry entry = new(game);
             if (App.ManagerSettings?.GameEntries.Contains(entry) == false)
                 App.ManagerSettings?.GameEntries.Add(entry);
         }
@@ -497,7 +516,7 @@ namespace SAModManager
                     Logger.Log("Checking for: " + path);
                     if (File.Exists(path))
                     {
-                        App.GamesList.Insert((App.GamesList.Count-1),game);
+                        game.gameDirectory = path;
                         AddMissingGamesList(game);
                     }
                 }
@@ -514,7 +533,8 @@ namespace SAModManager
                         if (Directory.Exists(gameInstallPath) && !App.GamesList.Contains(game))
                         {
                             Logger.Log("Found Game!");
-                            App.GamesList.Insert((App.GamesList.Count-1),game);
+                            game.gameDirectory = gameInstallPath;
+                            App.GamesList.Add(game);
                             AddMissingGamesList(game);
                         }
 
@@ -522,6 +542,11 @@ namespace SAModManager
                 }
 
                 GamesInstall.LoadMissingGamesList();
+
+                if (App.GamesList.Count <= 0)
+                {
+                    App.GamesList.Add(GamesInstall.Unknown);
+                }
 
 
             }
@@ -560,7 +585,7 @@ namespace SAModManager
 
                 if (string.IsNullOrEmpty(gameDir) == false)
                 {
-                    App.ManagerSettings.CurrentSetGame = (int)game.id;
+                    //App.ManagerSettings.CurrentSetGame = (int)game.id;
                     if (App.CurrentGame.id != GameEntry.GameType.Unsupported)
                     {
                         App.CurrentGame.gameDirectory = gameDir;
@@ -573,7 +598,7 @@ namespace SAModManager
                         path = Path.Combine(pathValue, "steamapps", "common", game.gameName);
                         if (Directory.Exists(path))
                         {
-                            App.ManagerSettings.CurrentSetGame = (int)game.id;
+                            //App.ManagerSettings.CurrentSetGame = (int)game.id;
                             if (App.CurrentGame.id != GameEntry.GameType.Unsupported)
                             {
                                 App.CurrentGame.gameDirectory = path;

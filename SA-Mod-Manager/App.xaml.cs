@@ -66,10 +66,7 @@ namespace SAModManager
 		public static string CurrentChannel { get; set; } = string.IsNullOrEmpty(RepoCommit) ? UpdateChannels[0] : UpdateChannels[1];
 
 		public static Game CurrentGame = new();
-		public static ObservableCollection<Game> GamesList = new
-			([
-				GamesInstall.AddGame
-			]);
+		public static ObservableCollection<Game> GamesList = new();
 
         [STAThread]
         /// <summary>
