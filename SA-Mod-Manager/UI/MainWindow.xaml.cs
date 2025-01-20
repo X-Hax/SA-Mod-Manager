@@ -1084,30 +1084,24 @@ namespace SAModManager
                 Save();
                 var game = GamesInstall.GetGamePerID(setGame);
                 bool isMultipleInstall = App.GamesList.Contains(game) && GamesInstall.IsMultipleGamesInstall(game, path);
-                Game Clone = null;
-
+ 
                 if (App.GamesList.Contains(game) == false || isMultipleInstall)
                 {
+                    game.gameDirectory = path;
+
                     if (isMultipleInstall)
-                    {
-                        Clone = game.Clone();
-                        Clone.gameName += " (" + GamesInstall.GetMultipleGamesInstallCount(game, path).ToString() + ")";
-                        Clone.gameDirectory = path;
-                        App.GamesList.Add(Clone);
-                        GamesInstall.AddMissingGamesList(Clone);
-                    }
-                    else
-                    {
-                        game.gameDirectory = path;
-                        GamesInstall.AddMissingGamesList(game);
-                    }
+                        App.GamesList.Remove(game);
+
+        
+                       App.GamesList.Add(game);
+                    
                 }
 
                 tempPath = path;
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
                 suppressEvent = true;
-       
-                ComboGameSelection.SelectedItem = Clone is null ? game : Clone;
+
+                ComboGameSelection.SelectedItem = game;
                 if (DoGameSwap((Game)ComboGameSelection.SelectedItem, path))
                 {
                     await ForceInstallLoader();

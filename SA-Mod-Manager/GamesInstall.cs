@@ -71,12 +71,6 @@ namespace SAModManager
         public string gameAbbreviation { get; set; }
         public string oneClickName { get; set; }
 
-        public Game Clone()
-        {
-            Game clone = (Game)this.MemberwiseClone();
-            GamesInstall.UpdateSupportedGameList(clone);
-            return clone;
-        }
     }
 
     public enum Format
@@ -409,21 +403,11 @@ namespace SAModManager
             SonicAdventure2
         };
 
-        public static void UpdateSupportedGameList(Game newGame)
-        {
-            _supportedGames.Add(newGame);
-        }
-
         public static IEnumerable<Game> GetSupportedGames()
-        {
-            return _supportedGames;
-        }
-
-        /*public static IEnumerable<Game> GetSupportedGames()
         {
             yield return SonicAdventure;
             yield return SonicAdventure2;
-        }*/
+        }
 
         public static Game GetGamePerID(GameEntry.GameType gameID)
         {
@@ -443,7 +427,8 @@ namespace SAModManager
                 var game = GetGamePerID(entry.Type);
                 if (entry.Type > 0 && App.GamesList.Contains(game) == false && game != null)
                 {
-                    App.GamesList.Insert((App.GamesList.Count-1),game);
+                    game.gameDirectory = entry.Directory;
+                    App.GamesList.Add(game);
                 }
             }
         }
@@ -506,6 +491,10 @@ namespace SAModManager
 
         public static void AddGamesInstall()
         {
+
+            GamesInstall.LoadMissingGamesList();
+
+
             Logger.Log("\nAuto Game Detection starts now...");
             Logger.Log("Now looking for games in the same folder as the Manager...");
             try
@@ -514,7 +503,7 @@ namespace SAModManager
                 {
                     string path = Path.Combine(App.StartDirectory, game.exeName);
                     Logger.Log("Checking for: " + path);
-                    if (File.Exists(path))
+                    if (File.Exists(path) && !App.GamesList.Contains(game))
                     {
                         game.gameDirectory = path;
                         AddMissingGamesList(game);
@@ -541,7 +530,6 @@ namespace SAModManager
                     }
                 }
 
-                GamesInstall.LoadMissingGamesList();
 
                 if (App.GamesList.Count <= 0)
                 {

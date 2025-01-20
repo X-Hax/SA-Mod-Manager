@@ -76,6 +76,10 @@ namespace SAModManager.Management
 
 		public static GameEntry GetCurrentGame()
 		{
+			int index = App.ManagerSettings.CurrentSetGame;
+			if (index < 0 || index > App.ManagerSettings.GameEntries.Count)
+                App.ManagerSettings.CurrentSetGame = 0;
+
             return App.ManagerSettings.GameEntries[App.ManagerSettings.CurrentSetGame];
 		}
 
