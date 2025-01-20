@@ -111,7 +111,10 @@ namespace SAModManager
 
             Load();
             SetBindings(); //theme is set here
-
+            suppressEvent = true;
+            App.GamesList.Add(GamesInstall.AddGame);
+            ComboGameSelection.SelectedItem = App.CurrentGame;
+            suppressEvent = false;
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
                 var oneClick = new OneClickInstall(updatePath);
@@ -174,9 +177,7 @@ namespace SAModManager
             App.isVanillaTransition = false;
             UIHelper.ToggleButton(ref btnCheckUpdates, true);
 
-            suppressEvent = true;
-            App.GamesList.Add(GamesInstall.AddGame);
-            ComboGameSelection.SelectedItem = App.CurrentGame;
+ 
             // Save Manager Settings
             Save();
             suppressEvent = false;
@@ -1080,7 +1081,8 @@ namespace SAModManager
             }
             else
             {
-                App.GamesList.Remove(GamesInstall.AddGame);
+                App.GamesList.Remove(GamesInstall.AddGame);    
+                App.GamesList.Remove(GamesInstall.Unknown);
                 UIHelper.ToggleImgButton(ref btnBrowseGameDir, false);
                 UIHelper.ToggleImgButton(ref btnProfileSettings, false);
                 App.CancelUpdate = true;
@@ -2885,8 +2887,15 @@ namespace SAModManager
         private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (suppressEvent)
+            {
+                Game entry = ComboGameSelection.SelectedItem as Game;
+
+                if (entry == GamesInstall.AddGame)
+                    ComboGameSelection.SelectedItem = App.CurrentGame;
+
                 return;
-       
+            }
+             
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
             {
 				Game entry = ComboGameSelection.SelectedItem as Game;

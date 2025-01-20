@@ -305,7 +305,7 @@ namespace SAModManager.Management
 
             Profiles profiles = new();
 
-            if (ProfilesDirectory != string.Empty)
+            if (Util.IsStringValid(ProfilesDirectory) && Directory.Exists(ProfilesDirectory))
             {
                 foreach (var item in Directory.EnumerateFiles(ProfilesDirectory, "*.json"))
                 {
