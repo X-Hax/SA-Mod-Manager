@@ -312,7 +312,10 @@ namespace SAModManager
             return false;
         }
 
-        public static Game Unknown = new();
+        public static Game Unknown = new()
+        {
+            gameName = "No Game"
+        };
 
         public static Game AddGame = new()
         {
